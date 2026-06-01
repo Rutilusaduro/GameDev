@@ -1710,6 +1710,18 @@ const SKILL_CATEGORIES = {
 };
 
 // ── DINNER EVENT DATA ──────────────────────────────────────────
+const WAITER_DESC = {
+  bistro:        (s)=>`A young woman in a bistro apron comes over. She's softly built — the kind of figure that comes from working around good food every day. She smiles warmly at ${s.name}. "Ready for more?"`,
+  italian:       (s)=>`A warm, round woman bustles over — full-figured in the way of someone who grew up cooking. She refills the bread basket without being asked and beams at ${s.name}. "More? Of course more."`,
+  steakhouse:    (s)=>`A broad, solid woman in a leather apron approaches. She's substantial, clearly someone who eats well on shift and often. She surveys the cleared plates with professional approval. "Ready for the next round?"`,
+  french:        (s)=>`The sommelier — a heavyset woman in a crisp blazer — drifts over. Her figure suggests someone who takes research very seriously. She refills the wine without comment. "Another course?"`,
+  japanese:      (s)=>`A quietly round woman in formal dark attire appears. She replaces the chopsticks, replenishes the water, and waits. She says nothing. ${s.name} reaches for the fresh menu.`,
+  private_club:  (s)=>`A large woman in club livery appears, moving with the unhurried ease of someone extremely comfortable in their body. She sets down a new menu card without being asked. "The kitchen is ready whenever you are."`,
+  chefs_table:   (s)=>`The floor manager — an immensely soft woman in tailored black — materializes beside the table. The kind of person who samples everything, constantly. "Shall I tell the kitchen to continue?" There's no other answer.`,
+  home_dinner:   (s)=>`You head back to the kitchen to bring out the next course.`,
+  brunch_hall:   (s)=>`A cheerfully plump woman in a floral apron refills both coffees and sets down a fresh card. She looks at ${s.name} approvingly. "There's plenty more where that came from."`,
+  atelier:       (s)=>`The maître d' — a truly enormous woman in impeccable black, who navigates the dining room with the serene authority of someone who has never once heard 'no' — arrives at your table. She does not ask what you want. She tells the kitchen. ${s.name} sits up slightly straighter.`,
+};
 
 const DINNER_VENUES = [
   { id:"bistro",    label:"🥖 Campus Bistro",      tier:1, baseCourses:2, gainRange:[4,8],
@@ -2398,6 +2410,7 @@ export default function ProfessorSim(){
   };
 
   const orderDish=(dish)=>{
+    if((dinnerEvent.dishes||[]).includes(dish.id)) return;
     const gain=rnd(dish.gain[0],dish.gain[1]);
     const scaledGain=Math.round(gain*skillGainMult*(dinnerEvent.student.gainMultiplier||1));
     const newFullness=(dinnerEvent.fullness||0)+(dish.fullness||15);
@@ -2407,6 +2420,14 @@ export default function ProfessorSim(){
     setDinnerLog(dl=>[...dl, `🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain} lbs)${fullMsg}`]);
     push(`🍴 ${dinnerEvent.student.name}: ${dish.label} (+${scaledGain} lbs)`);
     setStudents(prev=>prev.map(s=>s.id!==dinnerEvent.student.id?s:{...s,lbs:s.lbs+scaledGain}));
+  };
+
+  const callWaiter=()=>{
+    const s=dinnerEvent.student;
+    const venueId=dinnerEvent.venue.id;
+    const desc=(WAITER_DESC[venueId]||((s)=>`The server arrives. "Shall I bring more?" she asks.`))(s);
+    setDinnerLog(dl=>[...dl,`🫆 ${desc}`]);
+    setDinnerEvent(prev=>({...prev, dishes:[]}));
   };
 
   const useDinnerConversation=(conv)=>{
@@ -2763,35 +2784,41 @@ export default function ProfessorSim(){
                   </div>
 
                   {/* Dishes grid */}
-                  <div style={{...C.secT,marginBottom:7}}>Menu</div>
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:12}}>
-                    {dinnerEvent.venue.dishes.map(dish=>{
-                      const timesOrdered=dinnerEvent.dishes.filter(d=>d===dish.id).length;
-                      return(
-                        <div key={dish.id}
-                          style={{...C.card,cursor:isAlmostFull?"default":"pointer",
-                            border:`1px solid ${timesOrdered?"#408040":isAlmostFull?"#301820":"#180830"}`,
-                            opacity:isAlmostFull&&timesOrdered===0?0.5:1}}
-                          onClick={()=>!isAlmostFull&&orderDish(dish)}>
-                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                            <span style={{fontWeight:700,fontSize:12,color:"#d8a8ff"}}>{dish.label}</span>
-                            <span style={{fontSize:9,color:"#a07050"}}>+{dish.gain[0]}–{dish.gain[1]} lbs</span>
-                          </div>
-                          <div style={{fontSize:10,color:"#6a4870",lineHeight:1.4,marginTop:2}}>{dish.desc}</div>
-                          <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
-                            {timesOrdered>0&&<span style={{fontSize:9,color:"#60a060"}}>×{timesOrdered} ordered</span>}
-                            <span style={{fontSize:9,color:"#5a3060",marginLeft:"auto"}}>fills {dish.fullness}%</span>
-                          </div>
+                  {(()=>{
+                    const orderedIds=dinnerEvent.dishes||[];
+                    const availDishes=dinnerEvent.venue.dishes.filter(d=>!orderedIds.includes(d.id));
+                    const allOrdered=availDishes.length===0;
+                    return(<>
+                      <div style={{...C.secT,marginBottom:7}}>Menu</div>
+                      {allOrdered?(
+                        <div style={{textAlign:"center",padding:"10px 0",marginBottom:12}}>
+                          <div style={{fontSize:11,color:"#6a4870",fontStyle:"italic",marginBottom:8}}>The table is cleared.</div>
+                          <button style={{...C.btn("#4a2060")}} onClick={callWaiter}>🫆 Call for More</button>
                         </div>
-                      );
-                    })}
-                  </div>
-
-                  {isAlmostFull&&(
-                    <div style={{...C.infoBox("rgba(80,20,20,0.3)"),fontSize:12,color:"#e08060",marginBottom:10,fontStyle:"italic"}}>
-                      She's very full — use conversation to make room for more, or let the evening end naturally.
-                    </div>
-                  )}
+                      ):(
+                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:12}}>
+                          {availDishes.map(dish=>(
+                            <div key={dish.id}
+                              style={{...C.card,cursor:isAlmostFull?"default":"pointer",
+                                border:`1px solid ${isAlmostFull?"#301820":"#180830"}`,
+                                opacity:isAlmostFull?0.5:1}}
+                              onClick={()=>!isAlmostFull&&orderDish(dish)}>
+                              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                                <span style={{fontWeight:700,fontSize:12,color:"#d8a8ff"}}>{dish.label}</span>
+                                <span style={{fontSize:9,color:"#a07050"}}>+{dish.gain[0]}–{dish.gain[1]} lbs</span>
+                              </div>
+                              <div style={{fontSize:10,color:"#6a4870",lineHeight:1.4,marginTop:2}}>{dish.desc}</div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {isAlmostFull&&!allOrdered&&(
+                        <div style={{...C.infoBox("rgba(80,20,20,0.3)"),fontSize:12,color:"#e08060",marginBottom:10,fontStyle:"italic"}}>
+                          She's very full — use conversation to make room for more, or let the evening end naturally.
+                        </div>
+                      )}
+                    </>);
+                  })()}
 
                   {/* Conversation */}
                   <div style={{...C.secT,marginBottom:7}}>Conversation</div>
@@ -2800,21 +2827,14 @@ export default function ProfessorSim(){
                       .filter(conv=>!conv.requires||hasSkill(conv.requires))
                       .map(conv=>{
                         const used=dinnerEvent.conversationUsed.includes(conv.id);
-                        const isRisky=(conv.offenseRisk||0)>0;
-                        const reducesFullness=(conv.fullnessEffect||0)<0;
                         return(
                           <button key={conv.id}
-                            style={{...C.smBtn,
-                              opacity:used?0.4:1,
-                              textDecoration:used?"line-through":"none",
-                              borderColor:isRisky?"#604030":"#4a1280",
-                              color:reducesFullness?"#60d090":isRisky?"#c06040":"#b080e8"}}
+                            style={{...C.smBtn,opacity:used?0.4:1,textDecoration:used?"line-through":"none"}}
                             onClick={()=>!used&&useDinnerConversation(conv)}>
-                            {conv.label}{reducesFullness?" 💨":""}{isRisky?" ⚠":""}</button>
+                            {conv.label}</button>
                         );
                       })}
                   </div>
-                  <div style={{fontSize:9,color:"#3a2040",marginBottom:10}}>💨 makes room for more · ⚠ may cause offense</div>
 
                   {/* Dinner log */}
                   <div style={{background:"rgba(20,5,35,0.8)",border:"1px solid #2a0848",borderRadius:8,padding:10,marginBottom:10,maxHeight:160,overflowY:"auto",display:"flex",flexDirection:"column",gap:3}}>
