@@ -93,6 +93,31 @@ const STAGE_REACTIONS = {
   transfer:["New to campus, a little lost, eager to fit in.","Campus food is so good compared to back home!","Made friends! Mostly at the dining hall.","Feeling much more settled here. In every sense.","Hometown friends visited and didn't recognize her. She laughed.","This campus really suits her. She has really… settled in.","Considers herself a local now. A large, local presence.","She IS campus, basically.","Listed her weight as a campus landmark.","Fully integrated. Irreplaceable. Immovable."],
 };
 
+const STAGE_DROP_REACTIONS = {
+  cheerleader:["Ugh, I feel so light. I don't know what to do with that.","My uniform almost fits again. I can't decide if that's good.","Lost a size. Squad is acting like it's a comeback. I miss my curves.","Dropped some. Coach is pleased. I'm… processing.","I was getting comfortable at that weight. This feels wrong.","Noticeably smaller. Still bigger than before. Strange in-between.","My clothes fit differently. I miss how they were.","That much gone. There was a lot of me there. I miss it.","Even at this size, losing is disorienting. I had grown attached.","Down from something extraordinary. I don't know who I am at this scale."],
+  bookworm:["Lower body mass means a different relationship to sitting. Academically interesting, personally ambivalent.","My notes on metabolic change are fascinating. I preferred the other data.","The numbers are down. I've updated my charts. I don't love the new trend.","Quantifiably smaller. I'm choosing not to feel anything about it. Mostly.","Lost a significant amount. My research subject (me) has changed. Neutral affect. Mostly.","Down a stage. I keep rereading my earlier entries from when I was… more.","A significant reduction. The chair feels different. I keep noticing it.","I've lost a lot. I was studying myself at that size. The chapter feels closed.","Down from something remarkable. The data documents the loss with great reluctance.","Even from here, the absence is felt. I had built a life at that scale."],
+  influencer:["Posting a 'soft journey' update but honestly… I miss my old content era.","The comments are weird. Half say 'queen' and half say 'glowup.' I feel like neither.","Lost some. My engagement is down. My audience liked me bigger.","Dropped a size and my DMs were very opinionated about it. I preferred before.","My BBW audience is concerned. I'm concerned. We're all concerned.","That scale, that content — I was really thriving. Now what?","Lost a lot. My whole brand was that. I need to rebrand and I'm grieving.","My monetization at that level was incredible. Coming down is a loss in every sense.","That content was my best era. This is a new chapter. I hate new chapters.","Even from where I am, I feel the absence of what I had. Very present-tense grief."],
+  athlete:["Lighter technically. But I'd gotten used to carrying all that.","My center of gravity has changed. Have to relearn my body.","A drop on the scale. Coach would've been thrilled once. Now I'm just confused.","Lost training mass. I was powerful just moving around. I miss that.","Slimmer. There was a physics to that size I'm going to miss.","Down a stage. My old PRs were set when I was much heavier. The body remembers.","Significant loss. I had adapted entirely to that size. Starting over.","That's a lot of weight gone. My body had reached equilibrium at the last stage.","Even here, the loss feels physical. That mass was mine.","Down from truly enormous. I don't know what to do with a body this 'small.'"],
+  artsy:["Something has changed about how I move through space. The art will reflect this.","Lost some. My work was processing these proportions. Back to the canvas.","Down a stage. The negative space around me is different. The piece feels incomplete.","My figure work was inspired by this body. It's harder to paint something shrinking.","Lost significant weight. I was sculpting abundance. This feels like erasure.","A whole stage gone. My gallery was building toward something. Now the theme has shifted.","The loss is real and so is the grief. Every body I've been deserves to be witnessed.","Down from something I was only beginning to understand artistically. The work was just getting good.","That scale of presence — I was making work about it. Now it's retrospective.","Even from here, the absence is felt aesthetically. I wore my size like a medium."],
+  gamer:["My character's heavier than me now. Weird feeling.","Lost some weight. My viewers noticed before I did. They're disappointed.","Stream donation amounts are down. The correlation is obvious.","Down a stage. My setup feels weirdly spacious now.","My snack sponsors are worried. I've reassured them. I'm still committed.","Significant loss. My whole 'bigger than the setup' aesthetic is compromised.","Lost a lot. I was architecture at that size. Now just furniture.","That much gone. I had truly become the beanbag. This is smaller.","That content era is over and I'm grieving it, one snack at a time.","Even here, I feel reduced. The beanbag and I have grown apart."],
+  sorority:["Lost some. The sisters are being weird about it. I feel the difference.","Dropped a size. Event dresses from before might fit. I don't know how I feel.","Down on the scale. My chapter thinks this is good news. I'm not so sure.","Notable loss. The formal looks different on me now. I miss how it used to fit.","A real drop. I'd gotten very comfortable at that weight. I miss the comfort.","Down a stage. I had really grown into my presence. Now I feel strangely smaller.","Significant reduction. My event outfits are all too big. There's a metaphor somewhere.","That much lost. I was hosting all events because I preferred to stay put. Now what?","Down from something substantial. The chapter house felt like mine at that size.","Even from here, the absence is social. I WAS the event. Now I'm just attending it."],
+  overachiever:["Lost some weight. Noted. Adjusted my metrics. Still optimizing, now downward.","Down a stage. I have updated my body-mass projection charts accordingly. Reluctantly.","Weight reduction logged. The data is complicated. I preferred the upward trend.","Dropped significantly. My thesis on metabolic self-optimization is now… ironic.","A real loss. I had achieved something at that weight. This is a regression.","Stage drop confirmed. My notes from that chapter are extensive and bittersweet.","Significant reduction. I had adapted my entire schedule around that body.","That much gone. I was most productive at that scale. The correlation is not accidental.","Down from something I had documented carefully. The archive remains, at least.","Even here, the loss is measurable. I had achieved peak everything at that stage."],
+  quiet:["…","Lighter. Not sure I wanted that.","Things feel different now. Not in a good way.","I had gotten comfortable with how I was. This is harder to adjust to.","Something is missing that I didn't realize I had until now.","The chair fits differently. I notice things like that.","I was… a lot. Now I'm less. I don't know how to feel about less.","I got used to taking up that much space. This doesn't feel like me.","That was who I was for a long time. This feels like starting over.","Even at this size, the absence of what I was is very loud."],
+  transfer:["This campus was feeling right. Now I feel like a stranger again.","Back to feeling like I don't quite fit. I was just getting settled.","Lost some. My friends noticed. The dining hall feels different.","Down a size. I'd found my rhythm here. This disrupts it.","Significant loss. I had found my people — at the dining hall table, literally.","Down a stage. I was finally a local. Now I feel like a visitor.","Lost a lot. I had integrated completely. My presence here was established.","That's a lot gone. I had made this campus mine at that size.","Down from something real. My identity here was tied to who I'd become.","Even from here, the transition hurts. I arrived small and became something. This is smaller."],
+};
+
+const PROFESSOR_RANKS = [
+  { min:0,  label:"Substitute" },
+  { min:1,  label:"Lecturer" },
+  { min:3,  label:"Associate Professor" },
+  { min:6,  label:"Professor" },
+  { min:10, label:"Senior Professor" },
+  { min:14, label:"Distinguished Professor" },
+  { min:18, label:"Department Chair" },
+  { min:22, label:"Dean of Excess" },
+  { min:27, label:"The Architect" },
+];
+
 const OUTFITS = {
   cheerleader:[
     "Squad jacket, perfectly pressed. Uniform fits like a glove.",
@@ -1776,6 +1801,7 @@ export default function ProfessorSim(){
   const [skillCat,setSkillCat]=useState("environment");
   const [classSession,setClassSession]=useState(null);
   const [semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
+  const [skillPurchase,setSkillPurchase]=useState(null);
   const logRef=useRef(null);
 
   useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
@@ -2031,8 +2057,8 @@ export default function ProfessorSim(){
 
 
 
-  const unlockSkill=(sk)=>{
-    if(!canUnlock(sk)) return;
+  const unlockSkill=(sk,bypass=false)=>{
+    if(!bypass&&!canUnlock(sk)) return;
     setUnlockedSkills(prev=>[...prev,sk.id]);
     push(`🔓 Skill unlocked: ${sk.label}`);
     if(sk.apBonus>0) setAp(a=>Math.min(a+sk.apBonus,20));
@@ -2044,6 +2070,52 @@ export default function ProfessorSim(){
       },300);
     }
     if(sk.passiveBonus>0) push(`   📈 Passive gain increased by +${sk.passiveBonus} lbs/week`);
+  };
+
+  const startSkillPurchase=(sk)=>{
+    if(!canUnlock(sk)) return;
+    setSkillPurchase({skill:sk,allocation:{}});
+  };
+
+  const adjustAllocation=(studentId,delta)=>{
+    setSkillPurchase(prev=>{
+      const s=students.find(st=>st.id===studentId);
+      if(!s) return prev;
+      const current=prev.allocation[studentId]||0;
+      const maxLoss=Math.max(0,s.lbs-100);
+      const newVal=Math.max(0,Math.min(maxLoss,current+delta));
+      return{...prev,allocation:{...prev.allocation,[studentId]:newVal}};
+    });
+  };
+
+  const distributeEvenly=()=>{
+    if(!skillPurchase) return;
+    const{skill}=skillPurchase;
+    const perStudent=Math.ceil(skill.cost/students.length);
+    const newAlloc={};
+    students.forEach(s=>{ newAlloc[s.id]=Math.min(perStudent,Math.max(0,s.lbs-100)); });
+    setSkillPurchase(prev=>({...prev,allocation:newAlloc}));
+  };
+
+  const confirmSkillPurchase=()=>{
+    if(!skillPurchase) return;
+    const{skill,allocation}=skillPurchase;
+    const updated=students.map(s=>{
+      const loss=allocation[s.id]||0;
+      if(!loss) return s;
+      const oldStage=getStage(s.lbs).id;
+      const newLbs=Math.max(100,s.lbs-loss);
+      const newStage=getStage(newLbs).id;
+      if(newStage<oldStage){
+        setTimeout(()=>push(`📉 ${s.name} drops to ${WEIGHT_STAGES[newStage].label}. "${STAGE_DROP_REACTIONS[s.archetype]?.[newStage]||'…'}"`) ,60);
+      }else{
+        setTimeout(()=>push(`⚖️ ${s.name} loses ${loss} lbs (${newLbs} lbs).`),60);
+      }
+      return{...s,lbs:newLbs};
+    });
+    setStudents(updated);
+    setSkillPurchase(null);
+    unlockSkill(skill,true);
   };
 
   const startDinner=(s)=>{
@@ -2155,6 +2227,72 @@ export default function ProfessorSim(){
 
   return (
     <div style={C.app}>
+
+{/* SKILL PURCHASE MODAL */}
+      {skillPurchase&&(()=>{
+        const{skill,allocation}=skillPurchase;
+        const totalAllocated=Object.values(allocation).reduce((a,v)=>a+v,0);
+        const remaining=Math.max(0,skill.cost-totalAllocated);
+        const canConfirm=totalAllocated>=skill.cost;
+        return(
+          <div style={C.overlay}>
+            <div style={{...C.modal,maxWidth:580}}>
+              <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:3}}>UNLOCK SKILL</div>
+              <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:18}}>{skill.label}</h2>
+              <div style={{fontSize:11,color:"#9070b0",lineHeight:1.5,marginBottom:4}}>{skill.desc}</div>
+              <div style={{fontSize:11,color:"#c090d0",fontStyle:"italic",marginBottom:12}}>{skill.effect}</div>
+              <div style={{...C.infoBox("rgba(100,40,200,0.1)"),display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                <span style={{fontSize:12,color:"#d0b8e8"}}>Cost: <strong style={{color:"#f0a060"}}>{skill.cost} lbs</strong></span>
+                <span style={{fontSize:12,color:canConfirm?"#80e080":"#f0a060",fontWeight:700}}>
+                  {totalAllocated} / {skill.cost} lbs assigned {canConfirm?"✓":`— need ${remaining} more`}
+                </span>
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                <div style={C.secT}>Assign weight loss per student</div>
+                <button style={C.smBtn} onClick={distributeEvenly}>Distribute evenly</button>
+              </div>
+              <div style={{maxHeight:320,overflowY:"auto",display:"flex",flexDirection:"column",gap:5,marginBottom:12}}>
+                {students.map(s=>{
+                  const alloc=allocation[s.id]||0;
+                  const maxLoss=Math.max(0,s.lbs-100);
+                  const st=getStage(s.lbs);
+                  const newStage=alloc>0?getStage(Math.max(100,s.lbs-alloc)):null;
+                  const willDrop=newStage&&newStage.id<st.id;
+                  return(
+                    <div key={s.id} style={{...C.card,cursor:"default",display:"flex",alignItems:"center",gap:8,padding:"7px 10px"}}>
+                      <div style={{flex:1,minWidth:0}}>
+                        <span style={{fontWeight:700,fontSize:12,color:"#d8a8ff"}}>{s.name}</span>
+                        <span style={{fontSize:10,color:"#6a4880",marginLeft:6}}>{s.lbs} lbs</span>
+                        {alloc>0&&<span style={{fontSize:10,color:willDrop?"#f06060":"#f0a060",marginLeft:6}}>
+                          → {s.lbs-alloc} lbs{willDrop?` (${newStage.label}!)`:""}
+                        </span>}
+                      </div>
+                      <div style={{display:"flex",alignItems:"center",gap:3,flexShrink:0}}>
+                        {[[-10,"−10"],[-5,"−5"],[-1,"−1"]].map(([d,lbl])=>(
+                          <button key={d} style={{...C.smBtn,padding:"2px 6px",opacity:alloc<=0?0.3:1}} onClick={()=>adjustAllocation(s.id,d)}>{lbl}</button>
+                        ))}
+                        <span style={{fontSize:13,fontWeight:700,color:alloc>0?"#f0a060":"#3a2050",minWidth:30,textAlign:"center"}}>
+                          {alloc>0?`-${alloc}`:"0"}
+                        </span>
+                        {[[1,"+1"],[5,"+5"],[10,"+10"]].map(([d,lbl])=>(
+                          <button key={d} style={{...C.smBtn,padding:"2px 6px",opacity:alloc>=maxLoss?0.3:1}} onClick={()=>adjustAllocation(s.id,d)}>{lbl}</button>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div style={{display:"flex",gap:8}}>
+                <button style={C.btn("#444")} onClick={()=>setSkillPurchase(null)}>Cancel</button>
+                <button style={{...C.btn(canConfirm?"#5020a0":"#2a1040"),flex:1,opacity:canConfirm?1:0.6}}
+                  onClick={()=>canConfirm&&confirmSkillPurchase()}>
+                  {canConfirm?`🔓 Unlock ${skill.label}`:`Assign ${remaining} more lbs to unlock`}
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
 {/* CLASS SESSION MODAL */}
       {classSession&&(()=>{
@@ -2391,12 +2529,21 @@ export default function ProfessorSim(){
           <div style={{fontSize:10,color:"#60389a",letterSpacing:3}}>A WEIGHT MANAGEMENT SIMULATION</div>
         </div>
         <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
-          {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Σ+",`${totalGained}lb`,"#f0b060"],["Skills",unlockedSkills.length,"#a0e0b0"]].map(([l,v,c])=>(
+          {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Skills",unlockedSkills.length,"#a0e0b0"]].map(([l,v,c])=>(
             <div key={l} style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px"}}>
               <span style={{fontSize:17,fontWeight:700,color:c,display:"block"}}>{l==="Wk"?`Wk ${v}`:v}</span>
-              <span style={{fontSize:9,color:"#60389a",letterSpacing:2}}>{l==="Wk"?"WEEK":l==="AP"?"ACTION PTS":"TOTAL GAIN"}</span>
+              <span style={{fontSize:9,color:"#60389a",letterSpacing:2}}>{l==="Wk"?"WEEK":l==="AP"?"ACTION PTS":"SKILLS"}</span>
             </div>
           ))}
+          {(()=>{
+            const rank=([...PROFESSOR_RANKS].reverse().find(r=>unlockedSkills.length>=r.min)||PROFESSOR_RANKS[0]);
+            return(
+              <div style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:90}}>
+                <span style={{fontSize:13,fontWeight:700,color:"#f0c060",display:"block",letterSpacing:0.5}}>{rank.label}</span>
+                <span style={{fontSize:9,color:"#60389a",letterSpacing:2}}>RANK</span>
+              </div>
+            );
+          })()}
           <button onClick={startClass} style={C.btn("#186028")}>⏩ Next Week (+5 AP)</button>
         </div>
       </div>
@@ -2719,7 +2866,7 @@ export default function ProfessorSim(){
                           <g key={sk.id}
                             onMouseEnter={()=>setHovered(sk.id)}
                             onMouseLeave={()=>setHovered(null)}
-                            onClick={()=>available&&unlockSkill(sk)}
+                            onClick={()=>available&&startSkillPurchase(sk)}
                             style={{cursor:available?"pointer":"default"}}>
                             <rect
                               x={sk.x-nodeW/2} y={sk.y-nodeH/2}
@@ -2794,10 +2941,10 @@ export default function ProfessorSim(){
                           {unlocked
                             ? <div style={{background:"rgba(30,60,30,0.5)",border:"1px solid #306030",borderRadius:6,padding:"6px 10px",fontSize:11,color:"#70c070"}}>✓ Unlocked</div>
                             : available
-                            ? <button style={{...C.btn("#5020a0"),width:"100%"}} onClick={()=>unlockSkill(sk)}>Unlock — {sk.cost} lbs gained</button>
+                            ? <button style={{...C.btn("#5020a0"),width:"100%"}} onClick={()=>startSkillPurchase(sk)}>Unlock — spend {sk.cost} lbs</button>
                             : !reqsMet
                             ? <div style={{fontSize:10,color:"#4a2050"}}>Unlock prerequisites first.</div>
-                            : <div style={{fontSize:10,color:"#4a2050"}}>Need {sk.cost-totalGained} more lbs gained.</div>
+                            : <div style={{fontSize:10,color:"#4a2050"}}>Need {sk.cost-totalGained} more lbs on the class total.</div>
                           }
                         </div>
                       );
@@ -2809,7 +2956,7 @@ export default function ProfessorSim(){
                     <div style={{marginTop:10,background:"rgba(20,8,40,0.8)",border:"1px solid #200838",borderRadius:10,padding:12}}>
                       <div style={{fontSize:9,letterSpacing:2,color:"#5028a0",marginBottom:8}}>ACTIVE BONUSES</div>
                       {unlockedSkills.length===0
-                        ?<div style={{fontSize:10,color:"#3a2050"}}>None yet. Gain lbs to unlock Tier 1 ({Math.max(0,50-totalGained)} lbs away).</div>
+                        ?<div style={{fontSize:10,color:"#3a2050"}}>None yet. Fatten the class to unlock Tier 1 ({Math.max(0,50-totalGained)} lbs away).</div>
                         :<div style={{display:"flex",flexDirection:"column",gap:5}}>
                           {skillPassiveBonus>0&&<div style={{fontSize:11,color:"#80e080"}}>+{skillPassiveBonus} passive lbs/week</div>}
                           {skillApBonus>0&&<div style={{fontSize:11,color:"#80a0e0"}}>+{skillApBonus} AP/week (max 20)</div>}
