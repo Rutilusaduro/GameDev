@@ -2036,7 +2036,7 @@ const ADMIN_EVENTS=[
   },
   {
     id:"dept_chair",threshold:50,title:"Dean's Office",
-    scene:()=>`Dean Holloway's assistant leaves a note in your mailbox: a brief check-in, Thursday, 2pm. You go. The Dean is warm and precise. She compliments your evaluations — genuinely, it seems. Then: "A few students have mentioned — not complaints exactly. More observations. About how often they socialize with you outside class." She folds her hands. "I want to make sure everyone feels comfortable." She's giving you room to speak.`,
+    scene:()=>`Dean Holloway's assistant — a crisp young woman who makes appointments feel like verdicts — leaves a note in your mailbox: a brief check-in, Thursday, 2pm. You go. The Dean is warm and precise. She compliments your evaluations — genuinely, it seems. Then: "A few students have mentioned — not complaints exactly. More observations. About how often they socialize with you outside class." She folds her hands. "I want to make sure everyone feels comfortable." She's giving you room to speak.`,
     choices:[
       {label:"Reassure professionally",delta:0,text:`"Mentorship," you say. "These students are genuinely invested in their development." The Dean nods. Something settles.`},
       {label:"Walk her through specifics",delta:-12,text:`Two or three clean, plausible mentorship examples. She seems satisfied. The scrutiny drops noticeably.`},
@@ -2045,16 +2045,24 @@ const ADMIN_EVENTS=[
   },
   {
     id:"irb_inquiry",threshold:65,title:"IRB Inquiry",
-    scene:()=>`An email from the Institutional Review Board at 7am. "It's come to our attention that you may be conducting informal research with students." The language is careful, bureaucratic. "Proper documentation would need to be submitted for review." Signed by someone you don't know. They've been talking.`,
+    scene:()=>`An email from Dr. Mercer in Compliance at 7am. "It has come to our attention that you may be conducting informal research with students." The language is careful, bureaucratic. "Proper documentation would need to be submitted for review." You look her up: sharp photo, short hair, the smile of someone who files things. They've been talking.`,
     choices:[
       {label:"File paperwork",delta:-8,text:`You spend an afternoon generating plausible documentation. The inquiry quiets.`},
-      {label:"Pause the study",delta:-15,text:`You put the formal check-ins on hold. The IRB stops asking.`},
+      {label:"Pause the study",delta:-15,text:`You put the formal check-ins on hold. Dr. Mercer stops asking.`},
       {label:"Ignore it",delta:20,text:`You don't respond. The scrutiny builds.`},
     ]
   },
   {
+    id:"observer_assigned",threshold:70,title:"Class Observer",
+    scene:()=>`An email from HR arrives Tuesday morning: "As part of our ongoing review process, a member of our team will be sitting in on several of your classes over the coming weeks. This is standard procedure." It is not standard. The follow-up arrives within the hour — a name, a start date. Next Monday.`,
+    choices:[
+      {label:"Accept it",delta:0,text:`"Of course," you reply. You begin to think about Monday.`},
+    ],
+    spawnsObserver:true,
+  },
+  {
     id:"formal_review",threshold:80,title:"Formal Review",
-    scene:()=>`HR schedules a review. Two of them and a union rep. They have a folder. The questions are procedural: "Can you describe the nature of your extracurricular contact with students?" The HR officer — a broad, unhurried woman — watches you with the patience of someone who has done this many times and knows how it ends.`,
+    scene:()=>`HR schedules a review. Two of them — a senior analyst in a blazer and her colleague, quieter and watchful — plus a union rep, a compact woman with reading glasses who takes notes but doesn't look at you. They have a folder. The questions are procedural: "Can you describe the nature of your extracurricular contact with students?" The senior analyst watches you with the patience of someone who has done this many times.`,
     choices:[
       {label:"Cooperate fully",delta:-10,text:`You answer every question carefully. The review concludes inconclusively. The scrutiny drops, but the record exists.`},
       {label:"Request representation",delta:5,text:`They postpone. Procedurally correct. But it registers. Scrutiny holds.`},
@@ -2062,7 +2070,7 @@ const ADMIN_EVENTS=[
   },
   {
     id:"termination",threshold:95,title:"End of Semester",
-    scene:()=>`The letter arrives on a Tuesday. "Following a thorough review…" You read it standing in the hallway. Through the window you can see the quad. Three of your students are walking together. One of them is much, much larger than she was in September. She moves carefully through the cold, filling her coat beautifully. She laughs at something, and the laugh travels through her whole body. She has no idea you're watching. She has no idea it's over.`,
+    scene:()=>`The letter arrives on a Tuesday. "Following a thorough review…" You read it standing in the hallway. Through the window you can see the quad. Three of your students are walking together. One of them is much, much larger than she was in September. She moves carefully through the cold, filling her coat beautifully. She laughs at something, and the laugh travels through her whole body. She has no idea you're watching.`,
     choices:[{label:"Accept it",delta:0,text:`You put the letter in your bag. You'll clear your office this week.`}],
     isGameOver:true,
   },
@@ -2150,6 +2158,57 @@ const STUDY_SCENE_DEFAULT=[
   (s)=>`She's wearing different clothes today — larger, softer. ${s.lbs} lbs. She answers the recall fully, without the hesitation of the first session, like someone who has stopped pretending.`,
   (s)=>`${s.lbs} lbs. "Does it ever stop?" she asks. That's one of the things the study is trying to understand, you tell her. She finds this funny. "Right," she says. "The study."`,
   (s)=>`Final session. Gets on the scale — ${s.lbs} lbs — sits, does the recall. At the end: "What happens now?" Formal part is done, you say. She nods. She doesn't ask about the informal part. She already knows.`,
+];
+
+// ═══════════════════════════════════════════════════════════════
+// HR OBSERVER
+// ═══════════════════════════════════════════════════════════════
+
+const HR_OBSERVER_POOL=[
+  {name:"Ms. Hargrove",startLbs:149,bodyType:"straight",
+   intro:`Ms. Hargrove arrives with a leather portfolio and the manner of someone who has sat in on many classes and found all of them wanting. She takes the chair at the back, uncaps her pen, and begins to write.`},
+  {name:"Dr. Ashworth",startLbs:164,bodyType:"hourglass",
+   intro:`Dr. Ashworth occupies the back row with the practiced stillness of someone paid to watch. She has a coffee, a folder, and hasn't smiled yet.`},
+  {name:"Ms. Pellegrini",startLbs:156,bodyType:"pear",
+   intro:`Ms. Pellegrini is younger than you expected — composed, careful, with the slightly too-neutral posture of someone taking this very seriously. She writes down things you wish she wouldn't.`},
+];
+
+const HR_DISP_LEVELS=[
+  {min:0, label:"Watchful",     color:"#c04040"},
+  {min:20,label:"Settling In",  color:"#c07020"},
+  {min:40,label:"Comfortable",  color:"#b0a020"},
+  {min:65,label:"Sympathetic",  color:"#40a060"},
+  {min:80,label:"Your Advocate",color:"#30c070"},
+];
+const getHrDispLevel=(d)=>[...HR_DISP_LEVELS].reverse().find(l=>d>=l.min)||HR_DISP_LEVELS[0];
+
+const HR_DISP_DESC={
+  0: hr=>`${hr.name} is watching the room with professional attention, pen moving steadily. She has accepted nothing from the refreshments.`,
+  20:hr=>`${hr.name} accepted a coffee at the start of class. Her notes have gotten less frequent. She looked out the window twice.`,
+  40:hr=>`${hr.name} smiled at a student who gave a good answer. She has visited the refreshments. Her jacket is over the back of her chair.`,
+  65:hr=>`${hr.name} laughed at something from the front row today. She has eaten considerably. Her portfolio sits unopened. She seems, against her original intentions, to be enjoying herself.`,
+  80:hr=>`${hr.name} stayed after the last session to tell you she finds the pedagogy "genuinely innovative." Her skirt was doing interesting things when she stood. You made a note.`,
+};
+const getHrDispDesc=(hr)=>{
+  const key=[80,65,40,20,0].find(k=>hr.disposition>=k);
+  return (HR_DISP_DESC[key]||HR_DISP_DESC[0])(hr);
+};
+
+const HR_FEED_LINES=[
+  hr=>`You set something near ${hr.name}'s end of the table — nothing obvious. She eats it without looking up from her folder. Her pen moves less after that.`,
+  hr=>`The spread arrives and you gesture toward ${hr.name}'s side of the room. She hesitates, then takes a plate. Then a second. "I skipped lunch," she says, to no one in particular.`,
+  hr=>`${hr.name} drifts toward the refreshments and you catch the moment she decides on the second pastry. She notices you noticing. Neither of you says anything.`,
+  hr=>`You pass ${hr.name} a small plate on your way to the board. "Thank you," she says, and she means it. Something shifts fractionally.`,
+  hr=>`${hr.name} reaches for the tray you've placed within her reach. You watch the decision happen — the brief pause, the rationalization, the reaching. She eats comfortably, like someone who has stopped resisting something minor.`,
+  hr=>`${hr.name} accepts the coffee and the pastry without breaking eye contact with her notes. By the end of class her folder is closed and she has finished everything.`,
+];
+
+const HR_TALK_LINES=[
+  hr=>`You stop by ${hr.name}'s chair between sections. She's guarded at first — professional, correct. But she relaxes when you ask a genuine question about the process. "It's usually more adversarial than this," she says. A small thing.`,
+  hr=>`You sit at the corner of her desk during the break. She closes her folder — she doesn't have to. You talk about the class, the students. She's been doing this eleven years. "It gets predictable," she says. "This isn't."`,
+  hr=>`${hr.name} initiates conversation today — a question about one of your students, professionally framed. But it's the first time she's come to you. You answer warmly. Her pen doesn't move.`,
+  hr=>`She stays after class, ostensibly finishing notes. You make coffee. She stays for it. The conversation goes somewhere you didn't expect. She's perceptive, interesting, and increasingly comfortable in the chair she's sitting in.`,
+  hr=>`${hr.name} mentions, unprompted, a review she ran three years ago where the complaint turned out to be entirely correct. "You're not that," she says. She has eaten considerably this session. Her jacket is on the back of her chair.`,
 ];
 
 const DINNER_VENUES = [
@@ -2476,6 +2535,8 @@ export default function ProfessorSim(){
   // participants: {[studentId]:{enrolled,checkInCount:0}}
   const [studyCheckIn,setStudyCheckIn]=useState(null);
   // studyCheckIn: {student, scene, index}
+  const [hrObserver,setHrObserver]=useState(null);
+  // hrObserver: {name,lbs,startLbs,bodyType,disposition,weeksPresent}
   const [charCreation,setCharCreation]=useState({name:"",subject:null,traits:[]});
   const logRef=useRef(null);
 
@@ -2543,6 +2604,21 @@ export default function ProfessorSim(){
     setResearchStudy(prev=>({...prev,participants:{...prev.participants,[s.id]:{...pData,checkInCount:pData.checkInCount+1}}}));
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+5)}));
     addScrutiny(professorProfile?.traits?.includes("discreet")?1:2);
+  };
+
+  const feedObserver=(gain,dispGain)=>{
+    if(!hrObserver) return;
+    const line=HR_FEED_LINES[rnd(0,HR_FEED_LINES.length-1)](hrObserver);
+    push(`👤 ${line}`);
+    setHrObserver(prev=>({...prev,lbs:Math.round(prev.lbs+gain),disposition:Math.min(100,prev.disposition+dispGain)}));
+  };
+
+  const talkToObserver=()=>{
+    if(!hrObserver||ap<1){push("⚠️ Need 1 AP.");return;}
+    setAp(a=>a-1);
+    const line=HR_TALK_LINES[rnd(0,HR_TALK_LINES.length-1)](hrObserver);
+    push(`💬 ${line}`);
+    setHrObserver(prev=>({...prev,disposition:Math.min(100,prev.disposition+12)}));
   };
 
   const applyGainToStudent=(s,gain)=>{
@@ -2639,6 +2715,11 @@ export default function ProfessorSim(){
     // Admin notices visibly large students
     const visibleCount=updated.filter(s=>getStage(s.lbs).id>=5).length;
     if(visibleCount>0) addScrutiny(visibleCount);
+    // Observer settles in week by week
+    if(hrObserver){
+      const obsGain=rnd(1,2);
+      setHrObserver(prev=>({...prev,lbs:Math.round(prev.lbs+obsGain),weeksPresent:(prev.weeksPresent||0)+1}));
+    }
     push(`📅 Week ${newWeek} begins. ${newAp} AP available.`);
     if(semEv) setTimeout(()=>push(`🎉 Semester Event: ${semEv.title} — ${semEv.text}`),100);
     if(randomEv) setTimeout(()=>push(`🎲 ${randomEv.text(updated[rnd(0,14)])}`),150);
@@ -2753,6 +2834,12 @@ export default function ProfessorSim(){
     }
     const evs=collectEvents(updated);
     setStudents(updated);
+    // Observer passively eats alongside class food events
+    if(hrObserver&&["snacks","bake","feast","on_demand_feast","study_break"].includes(action.id)){
+      const obsGain=rnd(1,3);
+      const dispGain=(action.id==="feast"||action.id==="on_demand_feast")?4:2;
+      setHrObserver(prev=>({...prev,lbs:Math.round(prev.lbs+obsGain),disposition:Math.min(100,prev.disposition+dispGain)}));
+    }
     if(evs.length){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
@@ -3882,6 +3969,33 @@ export default function ProfessorSim(){
       <div style={C.body}>
         <div style={C.main}>
 
+          {/* ── HR OBSERVER CARD ── */}
+          {hrObserver&&view==="class"&&(()=>{
+            const dl=getHrDispLevel(hrObserver.disposition);
+            const st=getStage(hrObserver.lbs);
+            return(
+              <div style={{background:"rgba(60,10,10,0.35)",border:`1px solid ${dl.color}40`,borderRadius:10,padding:12,marginBottom:14}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                  <div>
+                    <span style={{fontSize:13,fontWeight:700,color:dl.color}}>{hrObserver.name}</span>
+                    <span style={{fontSize:10,color:"#805060",marginLeft:8,letterSpacing:1}}>HR OBSERVER · {hrObserver.lbs} lbs · {st.label}</span>
+                  </div>
+                  <span style={{fontSize:10,fontWeight:700,color:dl.color,background:`${dl.color}25`,borderRadius:8,padding:"2px 8px"}}>{dl.label}</span>
+                </div>
+                <div style={{position:"relative",height:5,background:"rgba(255,255,255,0.07)",borderRadius:3,marginBottom:8}}>
+                  <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:3,background:dl.color,width:`${hrObserver.disposition}%`,transition:"width 0.4s"}}/>
+                  <div style={{position:"absolute",left:"65%",top:-1,height:7,width:2,background:"rgba(255,255,255,0.3)",borderRadius:1}}/>
+                </div>
+                <div style={{fontSize:11,color:"#907090",lineHeight:1.6,marginBottom:8,fontStyle:"italic"}}>{getHrDispDesc(hrObserver)}</div>
+                <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                  <button style={C.btn("#5a1030")} onClick={()=>feedObserver(rnd(2,5),8)}>🍽️ Offer her something (free)</button>
+                  <button style={{...C.btn("#3a1060"),opacity:ap<1?0.4:1}} onClick={talkToObserver}>💬 Discuss pedagogy (1 AP, +12 disp)</button>
+                  {hrObserver.disposition>=65&&<span style={{fontSize:11,color:"#40c060",alignSelf:"center"}}>✓ Will intervene at termination</span>}
+                </div>
+              </div>
+            );
+          })()}
+
           {/* ── CLASS ROSTER ── */}
           {view==="class"&&(
             <div>
@@ -4380,6 +4494,16 @@ export default function ProfessorSim(){
             <div style={{...C.infoBox("rgba(80,10,10,0.3)"),lineHeight:1.8,fontSize:13,color:"#d0b0a0",marginBottom:16,fontStyle:"italic"}}>
               {adminEvent.scene()}
             </div>
+            {/* Termination: show observer intervention status */}
+            {adminEvent.isGameOver&&(
+              <div style={{...C.infoBox(hrObserver&&hrObserver.disposition>=65?"rgba(20,70,20,0.4)":"rgba(60,20,0,0.3)"),fontSize:12,marginBottom:12,color:hrObserver&&hrObserver.disposition>=65?"#70d080":"#906040"}}>
+                {hrObserver
+                  ? hrObserver.disposition>=65
+                    ? `✅ ${hrObserver.name} has become sympathetic (${hrObserver.disposition} disposition). She will intervene on your behalf.`
+                    : `⚠️ ${hrObserver.name} is observing (${hrObserver.disposition}/65 needed to save you). If she were more sympathetic, she could file a favorable report.`
+                  : `No one is in your corner right now.`}
+              </div>
+            )}
             <div style={{display:"flex",flexDirection:"column",gap:7}}>
               {adminEvent.choices.map((ch,i)=>(
                 <button key={i} style={{...C.btn(ch.delta<0?"#184020":ch.delta>5?"#601010":"#2a1040"),textAlign:"left",padding:"9px 13px"}}
@@ -4387,7 +4511,21 @@ export default function ProfessorSim(){
                     push(`🏛️ ${adminEvent.title}: ${ch.text}`);
                     if(ch.delta>0) addScrutiny(ch.delta);
                     else if(ch.delta<0) setAdminScrutiny(prev=>Math.max(0,prev+ch.delta));
-                    if(adminEvent.isGameOver) push("💀 Your contract has not been renewed. The semester ends here.");
+                    if(adminEvent.spawnsObserver){
+                      const obs=HR_OBSERVER_POOL[rnd(0,HR_OBSERVER_POOL.length-1)];
+                      setHrObserver({...obs,disposition:0,weeksPresent:0});
+                      push(`👤 ${obs.intro}`);
+                    }
+                    if(adminEvent.isGameOver){
+                      if(hrObserver&&hrObserver.disposition>=65){
+                        push(`✅ ${hrObserver.name} files her report. "I cannot support the findings of the initial review. The pedagogy is excellent, the students are thriving, and I am closing the file."`);
+                        push(`📧 Dean Holloway replies within the hour: "Thank you for your thorough assessment." The semester continues.`);
+                        setAdminScrutiny(30);
+                        setHrObserver(prev=>({...prev,saved:true}));
+                      } else {
+                        push("💀 Your contract has not been renewed. The semester ends here.");
+                      }
+                    }
                     setAdminEvent(null);
                   }}>
                   {ch.label}
