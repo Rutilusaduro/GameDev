@@ -1556,6 +1556,7 @@ export default function ProfessorSim(){
   const [dinnerEvent,setDinnerEvent]=useState(null);
   const [dinnerLog,setDinnerLog]=useState([]);
   const [hovered,setHovered]=useState(null);
+  const [skillCat,setSkillCat]=useState("environment");
   const logRef=useRef(null);
 
   useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
@@ -2260,15 +2261,16 @@ export default function ProfessorSim(){
             const CAT_COLORS={"environment":"#3a8060","feeding":"#804020","efficiency":"#304080","social":"#802040"};
             const TIERS=[1,2,3,4,5];
             const TIER_COSTS=[50,150,350,700,1200];
-            // Build node positions
-            const nodes=SKILL_TREE.map(sk=>{
-              const col=CATS.indexOf(sk.category);
-              const row=sk.tier-1;
-              const x=PAD_X+col*COL_W+COL_W/2;
-              const y=PAD_Y+row*ROW_H+ROW_H/2;
-              return {...sk,x,y};
-            });
-            const svgW=PAD_X*2+CATS.length*COL_W;
+            // Build node positions — single column for active category
+            const nodes=SKILL_TREE
+              .filter(sk=>sk.category===skillCat)
+              .map(sk=>{
+                const row=sk.tier-1;
+                const x=PAD_X+COL_W/2;
+                const y=PAD_Y+row*ROW_H+ROW_H/2;
+                return {...sk,x,y};
+              });
+            const svgW=PAD_X*2+COL_W;
             const svgH=PAD_Y*2+TIERS.length*ROW_H;
             const hoveredNode=hovered?nodes.find(n=>n.id===hovered):null;
             // Build edges: each node's requires -> parent nodes
@@ -2281,14 +2283,19 @@ export default function ProfessorSim(){
             });
             return(
               <div>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:10}}>
-                  <p style={{...C.secT,margin:0}}>Classroom Upgrades · {totalGained} lbs gained</p>
-                  <div style={{display:"flex",gap:6}}>
-                    {CATS.map(cat=>(
-                      <span key={cat} style={{background:CAT_COLORS[cat]+"44",border:`1px solid ${CAT_COLORS[cat]}88`,borderRadius:6,padding:"2px 8px",fontSize:10,color:"#c0a0e8"}}>
-                        {SKILL_CATEGORIES[cat]?.label||cat}
-                      </span>
-                    ))}
+                <div style={{marginBottom:10}}>
+                  <p style={{...C.secT,margin:"0 0 10px"}}>Classroom Upgrades · {totalGained} lbs gained</p>
+                  <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                    {CATS.map(cat=>{
+                      const active=cat===skillCat;
+                      return(
+                        <button key={cat}
+                          style={{background:active?CAT_COLORS[cat]+"99":"transparent",border:`1px solid ${CAT_COLORS[cat]}${active?"":"55"}`,borderRadius:6,padding:"5px 13px",fontSize:11,color:active?"#fff":"#7060a0",cursor:"pointer",fontFamily:"inherit",fontWeight:active?700:400,transition:"all 0.15s"}}
+                          onClick={()=>{setSkillCat(cat);setHovered(null);}}>
+                          {SKILL_CATEGORIES[cat]?.label||cat}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
                 <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
@@ -2300,13 +2307,11 @@ export default function ProfessorSim(){
                         <text key={t} x={8} y={PAD_Y+i*ROW_H+ROW_H/2+5} fill="#3a2050" fontSize={9} letterSpacing={2}
                           fontFamily="'Palatino Linotype',serif">T{t} · {TIER_COSTS[i]}</text>
                       ))}
-                      {/* Category headers */}
-                      {CATS.map((cat,ci)=>(
-                        <text key={cat} x={PAD_X+ci*COL_W+COL_W/2} y={22} fill={CAT_COLORS[cat]} fontSize={10}
-                          textAnchor="middle" fontFamily="'Palatino Linotype',serif" fontWeight="bold">
-                          {SKILL_CATEGORIES[cat]?.label||cat}
-                        </text>
-                      ))}
+                      {/* Active category label */}
+                      <text x={PAD_X+COL_W/2} y={22} fill={CAT_COLORS[skillCat]} fontSize={11}
+                        textAnchor="middle" fontFamily="'Palatino Linotype',serif" fontWeight="bold">
+                        {SKILL_CATEGORIES[skillCat]?.label||skillCat}
+                      </text>
                       {/* Tier dividers */}
                       {TIERS.map((t,i)=>(
                         <line key={t} x1={PAD_X-10} y1={PAD_Y+i*ROW_H} x2={svgW-10} y2={PAD_Y+i*ROW_H}
@@ -2334,7 +2339,6 @@ export default function ProfessorSim(){
                         const unlocked=unlockedSkills.includes(sk.id);
                         const available=canUnlock(sk);
                         const isHovered=hovered===sk.id;
-                        const col=CATS.indexOf(sk.category);
                         const baseColor=CAT_COLORS[sk.category];
                         const fillColor=unlocked?"#1a4020":available?"#2a1048":"#0e0618";
                         const borderColor=unlocked?"#50c050":available?"#8030d0":isHovered?"#3a1060":"#200830";
