@@ -100,16 +100,16 @@ const STAGE_REACTIONS = {
 };
 
 const STAGE_DROP_REACTIONS = {
-  cheerleader:["Below starting weight now. The uniform swims on me. This is a problem I know how to solve.","Ugh, I feel so light. I don't know what to do with that.","My uniform almost fits again. I can't decide if that's good.","Lost a size. Squad is acting like it's a comeback. I miss my curves.","Dropped some. Coach is pleased. I'm… processing.","I was getting comfortable at that weight. This feels wrong.","Noticeably smaller. Still bigger than before. Strange in-between.","My clothes fit differently. I miss how they were.","That much gone. There was a lot of me there. I miss it.","Even at this size, losing is disorienting. I had grown attached.","Down from something extraordinary. I don't know who I am at this scale."],
-  bookworm:["Underweight, technically. The medical literature is quite clear. I've drafted a corrective dietary schedule.","Lower body mass means a different relationship to sitting. Academically interesting, personally ambivalent.","My notes on metabolic change are fascinating. I preferred the other data.","The numbers are down. I've updated my charts. I don't love the new trend.","Quantifiably smaller. I'm choosing not to feel anything about it. Mostly.","Lost a significant amount. My research subject (me) has changed. Neutral affect. Mostly.","Down a stage. I keep rereading my earlier entries from when I was… more.","A significant reduction. The chair feels different. I keep noticing it.","I've lost a lot. I was studying myself at that size. The chapter feels closed.","Down from something remarkable. The data documents the loss with great reluctance.","Even from here, the absence is felt. I had built a life at that scale."],
-  influencer:["My audience is staging a group intervention in my comments. I'm choosing to address this with a meal haul video.","Posting a 'soft journey' update but honestly… I miss my old content era.","The comments are weird. Half say 'queen' and half say 'glowup.' I feel like neither.","Lost some. My engagement is down. My audience liked me bigger.","Dropped a size and my DMs were very opinionated about it. I preferred before.","My BBW audience is concerned. I'm concerned. We're all concerned.","That scale, that content — I was really thriving. Now what?","Lost a lot. My whole brand was that. I need to rebrand and I'm grieving.","My monetization at that level was incredible. Coming down is a loss in every sense.","That content was my best era. This is a new chapter. I hate new chapters.","Even from where I am, I feel the absence of what I had. Very present-tense grief."],
-  athlete:["Below racing weight now. This isn't power. I need to fix this. Starting immediately.","Lighter technically. But I'd gotten used to carrying all that.","My center of gravity has changed. Have to relearn my body.","A drop on the scale. Coach would've been thrilled once. Now I'm just confused.","Lost training mass. I was powerful just moving around. I miss that.","Slimmer. There was a physics to that size I'm going to miss.","Down a stage. My old PRs were set when I was much heavier. The body remembers.","Significant loss. I had adapted entirely to that size. Starting over.","That's a lot of weight gone. My body had reached equilibrium at the last stage.","Even here, the loss feels physical. That mass was mine.","Down from truly enormous. I don't know what to do with a body this 'small.'"],
-  artsy:["The angularity is interesting but there's not enough of me to work with. Time to fix that.","Something has changed about how I move through space. The art will reflect this.","Lost some. My work was processing these proportions. Back to the canvas.","Down a stage. The negative space around me is different. The piece feels incomplete.","My figure work was inspired by this body. It's harder to paint something shrinking.","Lost significant weight. I was sculpting abundance. This feels like erasure.","A whole stage gone. My gallery was building toward something. Now the theme has shifted.","The loss is real and so is the grief. Every body I've been deserves to be witnessed.","Down from something I was only beginning to understand artistically. The work was just getting good.","That scale of presence — I was making work about it. Now it's retrospective.","Even from here, the absence is felt aesthetically. I wore my size like a medium."],
-  gamer:["The chair barely knows I'm here. This is not the direction I thought I was going. Delivery ordered.","My character's heavier than me now. Weird feeling.","Lost some weight. My viewers noticed before I did. They're disappointed.","Stream donation amounts are down. The correlation is obvious.","Down a stage. My setup feels weirdly spacious now.","My snack sponsors are worried. I've reassured them. I'm still committed.","Significant loss. My whole 'bigger than the setup' aesthetic is compromised.","Lost a lot. I was architecture at that size. Now just furniture.","That much gone. I had truly become the beanbag. This is smaller.","That content era is over and I'm grieving it, one snack at a time.","Even here, I feel reduced. The beanbag and I have grown apart."],
-  sorority:["Below starting weight. The chapter is staging interventions. I'm accepting all the food offerings.","Lost some. The sisters are being weird about it. I feel the difference.","Dropped a size. Event dresses from before might fit. I don't know how I feel.","Down on the scale. My chapter thinks this is good news. I'm not so sure.","Notable loss. The formal looks different on me now. I miss how it used to fit.","A real drop. I'd gotten very comfortable at that weight. I miss the comfort.","Down a stage. I had really grown into my presence. Now I feel strangely smaller.","Significant reduction. My event outfits are all too big. There's a metaphor somewhere.","That much lost. I was hosting all events because I preferred to stay put. Now what?","Down from something substantial. The chapter house felt like mine at that size.","Even from here, the absence is social. I WAS the event. Now I'm just attending it."],
-  overachiever:["Underweight. That's a failing grade on my own metrics. Corrective plan: immediate and comprehensive.","Lost some weight. Noted. Adjusted my metrics. Still optimizing, now downward.","Down a stage. I have updated my body-mass projection charts accordingly. Reluctantly.","Weight reduction logged. The data is complicated. I preferred the upward trend.","Dropped significantly. My thesis on metabolic self-optimization is now… ironic.","A real loss. I had achieved something at that weight. This is a regression.","Stage drop confirmed. My notes from that chapter are extensive and bittersweet.","Significant reduction. I had adapted my entire schedule around that body.","That much gone. I was most productive at that scale. The correlation is not accidental.","Down from something I had documented carefully. The archive remains, at least.","Even here, the loss is measurable. I had achieved peak everything at that stage."],
-  quiet:["...","…","Lighter. Not sure I wanted that.","Things feel different now. Not in a good way.","I had gotten comfortable with how I was. This is harder to adjust to.","Something is missing that I didn't realize I had until now.","The chair fits differently. I notice things like that.","I was… a lot. Now I'm less. I don't know how to feel about less.","I got used to taking up that much space. This doesn't feel like me.","That was who I was for a long time. This feels like starting over.","Even at this size, the absence of what I was is very loud."],
-  transfer:["Lighter than when I came here. It feels like going backwards. I don't like it.","This campus was feeling right. Now I feel like a stranger again.","Back to feeling like I don't quite fit. I was just getting settled.","Lost some. My friends noticed. The dining hall feels different.","Down a size. I'd found my rhythm here. This disrupts it.","Significant loss. I had found my people — at the dining hall table, literally.","Down a stage. I was finally a local. Now I feel like a visitor.","Lost a lot. I had integrated completely. My presence here was established.","That's a lot gone. I had made this campus mine at that size.","Down from something real. My identity here was tied to who I'd become.","Even from here, the transition hurts. I arrived small and became something. This is smaller."],
+  cheerleader:["Wait, I'm actually lighter? That's weird. I liked where I was going.","My uniform almost fits again. I don't know how I feel about that, honestly.","Lost a bit. I was getting used to my figure. Kinda annoying.","That's frustrating. I liked being that size. Working on getting it back.","My old gear fits better now. Not what I was going for.","Down a size. I was comfortable at the bigger one. This doesn't feel right.","Noticeably smaller. Still soft, still there, just less of it. I miss the more.","I'd really grown into that size. The uniform was working for me.","That much gone. I was really starting to settle in at that weight.","I know it's a lot but I miss every pound of it. That was me at my best.","Even down here, all I can think about is getting back up there. That was perfect."],
+  bookworm:["Underweight now per the literature. I've revised my dietary schedule. This is correctable.","Lower weight this week. I've noted it. I have a corrective plan.","Down a stage. The data is moving the wrong direction. Addressing it.","Lost some. My chair feels different. I've added to my meal log accordingly.","Dropped. I had good research momentum at that size. This disrupts the study.","Lost a significant amount. I was tracking good data at that weight. The trend reversal is unwelcome.","A whole stage down. I was just getting comfortable studying at that size. Reset.","Significant loss. I'd built my whole routine around that body. Recalibrating.","That's a lot of mass gone. I was most productive there. The correlation is documented.","Down from something I was genuinely invested in. My notes from that stage are extensive.","Even from here the absence is notable. I had built something at that scale. Getting it back."],
+  influencer:["Okay so my comments section is going to be a mess about this. Already stress-eating.","Lost a bit. My audience is upset. I'm also upset. We're experiencing this together.","Down a size. My engagement is already dipping. The algorithm noticed before I did.","Dropped. My DMs are a lot right now. Half of them are upset on my behalf.","Lost a real amount. That was my whole look for like two months. Rebrand incoming.","Significant drop. My BBW audience is concerned. Valid. I'm concerned too.","A whole stage gone. My best content was from that era. Genuinely grieving it.","Lost a lot. I had such good momentum going. My brand was that body.","Down from something that was genuinely working for me. All my best metrics.","That era of content was my peak. Now it's archive. Going back up.","Even from here, less is just less. My audience knows what I should look like. Working on it."],
+  athlete:["Lighter. My split times might actually improve but I don't want them to. This feels wrong.","Lost some. I was getting used to carrying that weight. It felt powerful.","Down a bit. My center of gravity is off again. This is annoying.","Dropped. I was finally adjusted to that size. Now I'm starting over.","Lost a real amount. I was powerful at that weight. Like, physically imposing.","Down a stage. The mass was mine. Took a while to build and now it's gone.","Noticeably lighter. I don't feel like myself at this size. My body had adapted.","Lost a lot. I'd found my equilibrium at that weight. It wasn't easy to get to.","Down from the biggest I've ever been. All that work.","That much gone. I was genuinely comfortable there for the first time.","Even here, lighter doesn't mean better. I was exactly where I needed to be."],
+  artsy:["The angles are back and honestly I was done with angular. Not the direction I wanted.","Lost some. My work was processing these proportions. Back to the drawing board. Literally.","Down a bit. I was just starting to figure out this body artistically. Frustrating.","Lost a stage. The visual vocabulary I was building was specific to that size.","Dropped. I was the subject matter. The subject matter has changed.","Lost a real amount. I was building toward something with both the art and the body.","Significant loss. My gallery was going to be about abundance. Now it's about less.","That much gone. I was at my most interesting at that size. The work was good.","Down from something I was only beginning to understand aesthetically. It was mine.","That scale of presence was the whole point. Now it's retrospective.","Even from here the absence is felt. I wore that size well and it suited me."],
+  gamer:["My setup feels enormous now. I should be the enormous thing. Ordering immediately.","Lost some. My viewers spotted it on stream before I did. They're not happy.","Down a bit. My whole aesthetic was 'too big for the setup.' That's currently untrue.","Dropped a size. The gaming chair has room in it. I hate that.","Lost a real amount. My 'permanently fused with the chair' energy is suspended.","Significant drop. I was the largest streamer in my category. Need to fix that.","A whole stage gone. My content was about being an immovable presence. I'm moveable. Ugh.","Lost a lot. My setup was perfect for that body. This body doesn't fill it right.","Down from something I'd worked up to for months. All that delivery.","That body was the whole brand. The chair and I had achieved something.","Even from here, all I think about is fixing this. The grind starts now."],
+  sorority:["The chapter is being weird about it. Yes I've lost weight, I'm aware, thank you.","Down some. My sisters think this is good news. It's not good news to me.","Lost a bit. My event dresses from the smaller era might fit. I don't want them to fit.","Dropped. I was comfortable at that size. Very comfortable. This isn't that.","Lost a real amount. My custom pieces were sized for that body. Inconvenient.","Significant drop. I had settled in at that weight. Now everything feels off.","A whole stage gone. I'd really grown into my presence in the house.","Lost a lot. I was hosting everything from my favorite spot. Now I feel restless.","Down from something I was very comfortable being. The house felt right at that size.","That much lost. I was the house at that size. This version of me is smaller in every sense.","Even from here I know what I was and it was better. Getting back up there."],
+  overachiever:["Underweight. Failing metric. Corrective meal plan active immediately. I don't fail metrics.","Down on the scale. Noted. Unacceptable. Course correction begins today.","Lost a stage. I had optimized everything around that weight. Regression logged.","Dropped. My productivity was peaking at the higher weight. The data supports this.","Lost a real amount. My thesis literally argued for maintaining that stage. Awkward.","Significant loss. I was achieving peak efficiency at that size. This is a setback.","A whole stage gone. My entire schedule was calibrated for that body.","Lost a lot. I had the most productive semester of my life at that weight.","Down from peak performance. I'm documenting everything and correcting immediately.","That was my best stage in every measurable category. The loss is fully documented.","Even from here, the variance is unacceptable. Getting back to target."],
+  quiet:["...oh. Less. I didn't want less.","Lighter. Hm.","Lost some. I'd just gotten used to myself.","Down. I was good where I was.","I liked how I felt before. This is different.","Lost more than I wanted to.","Smaller. I don't prefer smaller.","I had gotten used to taking up that much space. This feels wrong.","I was that size for a while. It was mine.","Down from something I'd come to think of as permanent. Weird.","Even at this size, going back feels smaller in every way."],
+  transfer:["Lighter than when I got here. That's not the direction I wanted.","Down some. I was just starting to feel settled here.","Lost a bit. The campus was starting to feel mine. This makes it feel newer.","Dropped. My friends here knew me at that size. This is different.","Lost a real amount. I was finding my rhythm. Now everything's slightly off.","Significant drop. I'd finally started to feel like a local here.","A whole stage gone. I was embedded in this place at that size.","Lost a lot. Home feels like this campus and this campus felt right at that weight.","Down from real comfort. I'd made this place mine. Now I feel newer again.","That much lost. I had become part of this place at that size.","Even from here it feels like going backwards. I know what I had here."],
 };
 
 const PROFESSOR_RANKS = [
@@ -327,10 +327,19 @@ const INFLUENCE_PAIRS = [
 const NARRATIVE_EVENTS = [
   { id:"uniform_split", stageMin:3, archetype:"cheerleader", title:"Uniform Incident",
     text:(s)=>{
+      if(s.role==="Cheer Captain"){
+        const pool=[
+          `During tryouts — tryouts ${s.name} is running as captain — her cheer uniform splits along the seam with an audible pop. The entire squad freezes. ${s.name} looks down at herself, at the soft belly now escaping the fabric, and very deliberately straightens up. "Take five," she tells the squad. She finds you afterward. "I'm going to need a new uniform. Four sizes up. I'm still captain. Don't give me a look."`,
+          `${s.name}'s captain sash won't close over her middle anymore. She's been ignoring this for weeks, but today, in front of the whole squad for the routine review, it gives up entirely. A seam splits at the shoulder. The gym goes quiet. ${s.name} looks around at twenty-two juniors watching their captain, tilts her chin up, and says: "Dismissed for today." She finds you after. "Please tell no one. Also do you know a seamstress. Also I had three dinners last week and it was worth it."`,
+          `Her squad jacket hasn't closed in a month. Today the uniform top finally splits at the back mid-demonstration, in front of the school, in full view of the stands. ${s.name} keeps the movement going for two more counts, then stops. She walks off the floor with the quiet dignity of someone who is not ready to have this conversation yet. She texts you that night: "New uniforms. Bigger. I'm still running tryouts. Don't say anything to the athletic director. I will handle it."`,
+        ];
+        return pool[s.id % pool.length];
+      }
+      // Dance Co-Captain (Jasmine)
       const pool=[
-        `During what ${s.name} swears will be her last practice, her cheer uniform splits along the seam with an audible pop. The gym goes quiet. ${s.name} looks down at herself — at the soft belly now escaping the fabric — and starts laughing. She texts you that evening. "So I definitely need a new uniform. Four sizes up minimum. Also I just had pizza and it was incredible. Life is weird. Good weird."`,
-        `It happens mid-routine: a seam goes, then another, and ${s.name}'s uniform simply gives up. She freezes. The squad freezes. Then ${s.name} looks down at herself — genuinely round now, soft everywhere the uniform used to be tight — and shrugs. "Honestly, saw that coming." She texts you from the parking lot. "Retired the uniform. Getting dinner. The two events feel related and I'm fine with both."`,
-        `${s.name}'s squad jacket won't button anymore. She's been ignoring this for weeks, but today it splits at the shoulder seam during warm-ups in front of everyone. There's a beat of silence. Then she smooths her hands over her very round middle, tilts her chin up, and says, "Okay. That's where we are." After class she finds you. "Do you know a good seamstress? Asking for a friend who is me and is very large now."`,
+        `Mid-routine — a difficult lift section ${s.name} choreographed herself — her dance costume splits at the hip with a sharp crack. The music keeps playing. ${s.name} lands the count, finishes the eight, and then walks calmly off to the wings. She finds you in the corridor afterward, still in the damaged costume, eating a granola bar. "So. New costume. I've already emailed the seamstress. Four sizes up probably." She thinks. "Make it five."`,
+        `The recital costumes arrived this week and none of them fit. ${s.name} holds one up against herself in the studio, looks in the mirror, and laughs. "I designed these," she says. "I designed them to fit me." She turns to the full-length mirror. "I am no longer that person." She calls the costume shop. She tells you afterward: "The new ones will be better. I've had some ideas. My body is different now. The choreography will adapt."`,
+        `It happens during the showcase — exactly the wrong moment, exactly the right uniform to fail. ${s.name}'s costume splits at the seam during her own solo. She pauses, adjusts, and finishes the piece. The audience thinks it's intentional. She texts you: "I hate that it happened and also I've never moved better in my life. Ordering new costumes. Going to dinner. These two facts are connected."`,
       ];
       return pool[s.id % pool.length];
     },
@@ -341,7 +350,7 @@ const NARRATIVE_EVENTS = [
         `A classroom chair gives way under ${s.name} with a loud crack. She goes bright red. You slide a sturdier chair over without a word. After class she hangs back. "Thank you for… not making it weird." She glances down at herself, pats her belly almost fondly. "I've gotten kind of big, haven't I." It doesn't come out like a problem.`,
         `The chair under ${s.name} lets out a sharp crack and lists sideways. ${s.name} grabs the desk with both hands. For a moment the room is very quiet. You produce a reinforced chair from the back as if this were planned. She sits in it, cheeks pink, then after class catches you at the door. "That was smooth of you," she says. "Very diplomatic." She's smiling. "I should probably stop being surprised when furniture can't handle me."`,
         `It happens during a quiet part of lecture — a groan of plastic and then ${s.name} is suddenly much lower than she was. She lets out a short laugh before she can stop herself. You wave off the moment and keep talking, and she settles into your sturdier desk chair. Afterwards: "I actually feel better about it than I expected to," she admits, pressing a hand to her soft middle. "I mean. Look at me. I've gotten enormous. I think I knew the chairs were on borrowed time."`,
-        `${s.name}'s chair goes with a crack that makes everyone look up. Her face is unreadable for a long beat — then she sighs the sigh of someone who saw this coming. You hand her the solid chair from behind your desk. "I ordered three of these," you tell her quietly. "For high achievers." She snorts. "Sure you did." But she sits down and, after a moment, she's smiling. After class: "I've gained like sixty pounds this semester. I should have seen that coming." She pats her belly. "Anyway."`,
+        `${s.name}'s chair goes with a crack that makes everyone look up. Her face is unreadable for a long beat — then she sighs the sigh of someone who saw this coming. You hand her the solid chair from behind your desk. "I ordered three of these," you tell her quietly. "For high achievers." She snorts. "Sure you did." But she sits down and, after a moment, she's smiling. After class: "I've gained like ${s.lbs-s.startLbs} pounds this semester. I should have seen that coming." She pats her belly. "Anyway."`,
       ];
       return pool[s.id % pool.length];
     },
@@ -439,6 +448,112 @@ const TALK_RESPONSES = {
     if(st<=3) return `"Graduate, get a job, the usual," ${s.name} says. "Oh, and I want to try that new restaurant downtown. That's also a priority."`;
     if(st<=6) return `"Honestly?" ${s.name} says. "More of this. More food, more comfort, more of just… being." She looks content. "My plans have simplified."`;
     return `${s.name} smiles slowly. "My plans are right here," she says. "This." She spreads her hands across her vast body. "I think I've arrived."`;
+  },
+};
+
+// ─── CHARACTER-SPECIFIC TALK RESPONSES ────────────────────────────────────────
+// Keyed by student id. Overrides archetype fallback in TALK_RESPONSES.
+const CHAR_TALK = {
+  // Brittany — Cheer Captain: commanding, competitive, proud, softening over time
+  0:{
+    how_are_you:(s,st)=>st<=2?`${s.name} tosses her ponytail. "Running tryouts, keeping the squad in line. I've been eating more than usual. Stress probably." She shrugs. "I'm fine."`:st<=4?`${s.name} settles back with the easy authority of someone who's stopped fighting herself. "Good. Really good, actually." She pats her soft belly absently. "I've gotten bigger. I know. I don't care anymore."`:st<=7?`${s.name} grins. "Honestly? Never more comfortable." She smooths her hands over her wide hips. "Retired the uniform drama. Best decision I ever made."`:  `${s.name} looks up with total serenity. "Spectacular." She resumes eating. That's the full answer.`,
+    compliment_figure:(s,st)=>st<=2?`${s.name} tilts her chin. "Obviously." There's something almost uncertain under the confidence. "But — thanks."`:st<=4?`${s.name} looks at herself with a complicated expression that settles into pride. "I've grown into myself." She sounds like she's still getting used to believing it.`:st<=7?`${s.name} laughs, surprised by her own pleasure at the comment. "Yeah I look amazing, right? I've gotten big. Whatever. I look incredible."`:  `${s.name} gives you one slow, satisfied look. "I know." She goes back to eating.`,
+    food_talk:(s,st)=>st<=3?`"The new place by the stadium has these loaded fries." ${s.name} says this immediately, like it's been waiting. "I've been going every other day. I should stop." She pauses. "I won't stop."`:st<=6?`${s.name} leans forward. "I have opinions. The catering for the spring social was genuinely bad and I have been thinking about it for three weeks."`: `${s.name} laughs. "Food is basically my full personality now." She looks around hopefully. "Is there something here?"`,
+    encourage_eating:(s,st)=>st<=2?`${s.name} hesitates. "I mean — " She looks at the food, then takes it. "Okay fine. Don't make it weird."`:st<=5?`"I was already going to." She takes a large bite. "But noted."`: `${s.name} gives you a look. "I don't need the encouragement. I appreciate the enthusiasm." She eats. A lot.`,
+    ask_weight:(s,st)=>st<=2?`${s.name} shrugs. "I've put on a bit. Stress eating probably. Not sweating it."`:st<=4?`${s.name} looks at herself. "I know I've gotten big. It just stopped feeling like a problem." She shrugs. "Took me a while to get there."`:st<=7?`${s.name} spreads her hands across her belly with obvious pride. "Enormous. I'm enormous." She grins. "Weighed myself last week. Ordered a victory meal after."`: `${s.name} snorts. "Is that a real question? Look at me." She sounds thoroughly pleased with herself.`,
+  },
+  // Madeline — Literature PhD: analytical, precise, emotionally private
+  1:{
+    how_are_you:(s,st)=>st<=2?`Madeline looks up from her book. "Productive. Eating adequately. Thank you." She returns to the book.`:st<=4?`Madeline sets the book down — a significant gesture. "Good. The thesis is going well. I've been eating considerably more. The productivity correlation is interesting." She picks the book back up.`:st<=7?`Madeline closes her book fully. "Excellent. My research is advancing. My appetite has also advanced. Both are noted." She produces a snack. "The data is interesting."`:  `Madeline looks up with vast, placid calm. "I am extremely large and extremely knowledgeable. Both at peak levels."`,
+    food_talk:(s,st)=>st<=3?`"I've been making notes on the dining hall's menu construction," Madeline says, as if this is normal. "Academically. Also the library granola bars are very good. I've had eleven today."`:st<=6?`Madeline looks thoughtful. "The campus bakery on Wednesday mornings is an underutilized resource. I've been correcting that." She pats her belly absently.`: `"I know the caloric composition of everything in a three-block radius. This is not intentional. It's what happens when you spend this much time eating and researching simultaneously."`,
+    encourage_eating:(s,st)=>st<=2?`Madeline adjusts her glasses. "That's logistically reasonable." She eats with the focused thoroughness of someone conducting a study.`:st<=5?`"I was already planning to." She eats. "Your encouragement is noted. It doesn't change the outcome."`: `Madeline gives you a patient look. "I am aware." She eats. It takes a while. She does not stop.`,
+    compliment_figure:(s,st)=>st<=2?`Madeline blinks. "That is — thank you. I don't usually receive data on that." She makes a note. Possibly literally.`:st<=4?`"I've observed the changes," Madeline says. "I find them interesting. Apparently so do you." She sounds mildly pleased.`:st<=7?`Madeline tilts her head. "My research indicates that bodies carrying significant weight are often perceived as impressive. I am beginning to understand this empirically."`: `"Thank you," Madeline says, with the serenity of someone who has accepted a large and accurate truth.`,
+  },
+  // Kylie — Content Creator: savvy, competitive, image-conscious, evolving
+  2:{
+    how_are_you:(s,st)=>st<=2?`Kylie checks her phone while answering. "Good. Content is doing well. The dining hall has been incredible this week." She glances at herself. "Numbers are up everywhere."`:st<=4?`Kylie puts her phone face-down, which means this is a real answer. "Really good. My audience loves me right now." She looks at her rounder figure. "Which is saying something."`:st<=7?`"Amazing," Kylie says, and she means it. "My numbers, my brand, my whole life is working." She gestures at herself. "This is working. Can you believe that."`:  `Kylie smiles with the satisfaction of someone who figured it out. "Thriving. Completely." She shows you her phone. The numbers are absurd.`,
+    food_talk:(s,st)=>st<=3?`"Rosetti's Tuesday special is a content goldmine," Kylie says immediately. "I've filmed there three times this month. Also the food is genuinely unreal." She lowers her voice. "I've been doing a lot of personal testing."`:st<=6?`"I have a spreadsheet of where I've eaten and how it performed content-wise. Also in terms of how good it was." She pauses. "I'm very thorough."`: `"Food content is my life and food is also my life. These are the same thing now." She looks at herself. "The numbers back me up."`,
+    encourage_eating:(s,st)=>st<=2?`Kylie narrows her eyes at you. "Is this for content?" She looks at the food. "Actually — doesn't matter." She eats it.`:st<=5?`"I was already on it," Kylie says, slightly defensively. "I don't need prompting." She is indeed already eating.`: `Kylie laughs. "You don't have to tell me twice. Or once." She's already eating, possibly filming.`,
+    ask_weight:(s,st)=>st<=2?`"Yeah, I've gained a bit," Kylie says. "My audience is more into it than I expected. Adjusting my brand accordingly."`:st<=4?`Kylie looks at herself with the calculating eye of a content strategist. "I know. I've decided to lean into it. The metrics support that choice."`:st<=7?`"Enormous and going up," Kylie says, with the tone of a quarterly report. "Brand is thriving. The audience loves this trajectory."`: `Kylie spreads her hands. "I am a monument at this point. A large, well-monetized monument."`,
+  },
+  // Serena — Track Sprinter: matter-of-fact, competitive, adapting gracefully
+  3:{
+    how_are_you:(s,st)=>st<=2?`Serena stretches her legs out. "Good. Recovery week. Eating a lot. Probably fine." She glances at her arms. "I look different. My times are different. Working on figuring that out."`:st<=4?`"Good," Serena says, and it's genuinely meant. "I've stopped worrying about the numbers and started worrying about how I feel." She pauses. "I feel better than fine."`:st<=7?`Serena shrugs with comfortable authority. "Good. Moving less, eating more, somehow feel more at ease than I ever did in training." She pats herself. "The science is interesting."`:  `Serena looks at you with the calm of someone who has stopped measuring. "Good," she says simply. That's all she has. It's enough.`,
+    food_talk:(s,st)=>st<=3?`"I've been eating a lot of pasta," Serena says. "For energy." Pause. "I know I'm not training right now. Still for energy." Another pause. "In theory."`:st<=6?`"I used to eat to run. Now I eat because eating is good." Serena says this like a personal philosophy. "This is better. I stand by it."`: `"My whole relationship with food changed when I stopped tracking it. I used to eat strategically. Now I just eat a lot." She pats her middle. "Much simpler."`,
+    encourage_eating:(s,st)=>st<=2?`Serena considers this with athletic seriousness. "Recovery nutrition logic. Valid." She eats it like she means business.`:st<=5?`Serena is already eating. She acknowledges your suggestion with a brief nod mid-bite.`: `"Were you not watching me?" Serena asks. She has been eating for the last five minutes without pausing.`,
+    ask_weight:(s,st)=>st<=2?`"Yeah, I've put on some weight," Serena says. "Off-season. Not worried about it. Bodies change."`:st<=4?`Serena looks at herself. "A lot, honestly. Weirdly okay with it." She sounds surprised by this. "I thought I'd be more upset. I'm not."`:st<=7?`"Big," Serena says, easily. "I'm big. That's fine." She shifts. "I used to be fast. Now I'm large. These are just different sports."`: `Serena spreads her arms. "Enormous. I used to run eight miles. Now I mostly watch running on TV." She seems at total peace with this fact.`,
+  },
+  // Fiona — Fine Art Major: dreamy, observational, food-as-aesthetic
+  4:{
+    how_are_you:(s,st)=>st<=2?`Fiona looks up from her sketchbook. "I'm exploring something. The relationship between negative space and a body that doesn't have much of it." She gestures at herself. "I'm working on it."`:st<=4?`Fiona sets down her pencil. "Good. My work is going somewhere and I am also going somewhere." She looks at her rounder figure. "I think they're the same direction."`:st<=7?`"Really good." There's paint on her cheek and something peaceful in her eyes. "I've been painting bodies. Lots of body. Including this one." She pats herself fondly.`:  `Fiona looks up with the distant serenity of someone who has transcended their own biography. "The work is good," she says. "I am extremely large and the two things are connected."`,
+    food_talk:(s,st)=>st<=3?`"I've started painting food," Fiona says. "Still lifes. Bowls of things." She holds up her sketchbook. Very detailed cheese board. "The subject keeps eating into the art somehow. Literally."`:st<=6?`"Food is a medium," Fiona says, with complete sincerity. "I've been working with it. Not just visually. Also by eating a lot of it. That's also artistic research."`: `Fiona spreads her arms. "My body has become the piece. The eating is the practice." She sounds genuinely moved by this. "Also I'm hungry. Do you have anything?"`,
+    compliment_figure:(s,st)=>st<=2?`Fiona tilts her head. "There's an interesting angularity to it," she says. "Like a study in lines. Though I'm working on adding more texture." She picks up her pencil.`:st<=4?`Fiona looks at herself with an artist's eye. "It's changing. Rounding. More interesting to draw." She doesn't seem to be paying you a compliment back but she's clearly pleased.`:st<=7?`"The proportions are becoming significant," Fiona says. "I've been working from my own figure. The abundance of it is — yes." She seems to be agreeing with both you and a private aesthetic theory.`: `Fiona looks at you and then at herself, as if confirming something. "The scale is correct," she says. It's a compliment to herself, which she shares with you.`,
+  },
+  // Destiny — Pro Streamer: dry, direct, minimal, doesn't explain herself
+  5:{
+    how_are_you:(s,st)=>st<=2?`Destiny doesn't look up from her phone. "Fine. Chat hates my desk setup. Getting a new one."`:st<=4?`"Good." Pause. "Chat's being supportive about the weight thing which is weird. I didn't ask them." Another pause. "Not complaining."`:st<=7?`"Good." Destiny adjusts herself in her chair. "Numbers are up. Chair is new. There's food within arm's reach." She nods. "Good situation."`:  `Destiny looks at you. "Good." She's eating. She continues eating. That's the whole answer.`,
+    food_talk:(s,st)=>st<=3?`"Ramen," Destiny says. "That's it. That's the food talk." She's eating ramen.`:st<=6?`"My sponsors send food. I eat it on stream. Viewers enjoy it. Simple." She gestures at the pile of boxes. "This week's was good."`: `"The supply chain between the door and my chair is now optimized. There is always food within reach." She does not elaborate. She doesn't need to.`,
+    encourage_eating:(s,st)=>st<=2?`Destiny looks at you. Looks at the food. Eats it. No comment.`:st<=5?`"I was already going to." She eats. That's it.`: `Destiny doesn't respond. She was already eating. She continues. This tracks.`,
+    ask_weight:(s,st)=>st<=2?`"Yeah." That's it. Destiny goes back to her phone.`:st<=4?`"I know." She keeps scrolling. "Chat talks about it constantly. I don't respond. They keep talking about it anyway."`:st<=7?`Destiny looks at herself briefly. "A lot." She looks back at her screen. "The numbers are good. Both kinds."`: `Destiny doesn't look up. "Maximum," she says. She means it in all senses.`,
+  },
+  // Tiffany — Chapter President: warm, social, perfectly at ease, natural hostess
+  6:{
+    how_are_you:(s,st)=>st<=2?`Tiffany sets down her event binder. "Wonderful, thank you for asking." She gestures at the spread on her desk. "I've been stress-catering for the spring formal and the research casualties are on me."`:st<=4?`Tiffany beams. "Perfect. The chapter is thriving. I'm thriving." She smooths her skirt over her rounder figure. "I've been hosting dinners basically every night." Beat. "Somebody has to test the menu."`:st<=7?`"Exceptional," Tiffany says with genuine warmth. "Never been more comfortable and the chapter has never been better organized." She pats her enormous belly. "Never been fuller. All good metrics."`:  `Tiffany spreads her arms. "Spectacular." She settles deeper. "Sit down, there's food." There is always food when Tiffany is present.`,
+    food_talk:(s,st)=>st<=3?`"I have opinions," Tiffany says, which is an understatement. "The new venue catering is inadequate. I've been doing personal calibration dinners to set a benchmark." She slides you a spreadsheet.`:st<=6?`Tiffany leans forward. "The alumni chapter dinner last week was exceptional. I ate my weight in passed appetizers." She considers. "I mean. Not literally. Aspirationally."`: `"I consider myself a professional eater at this point," Tiffany says serenely. "The chapter agrees. They've stopped offering me the salad option. I appreciate the respect."`,
+    compliment_figure:(s,st)=>st<=2?`Tiffany smiles warmly. "You're sweet. I've been hosting a lot of events. Food is a love language." She pats her hands together. "I accept the compliment on behalf of all the dinners."`:st<=4?`Tiffany tilts her chin up with practiced grace. "Thank you. I've been filling out." She smooths her skirt. "The chapter says I look 'maternal.' I've decided to take that as a compliment."`:st<=7?`Tiffany laughs with genuine delight. "Thank you. I've really grown into myself, haven't I." She looks down with obvious satisfaction. "More of me to love. More hosting capacity."`: `Tiffany accepts the compliment the way she accepts an excellent dinner: with serene, thorough pleasure. "Obviously," she says.`,
+  },
+  // Priya — Triple Major: driven, documents everything, secretly a pioneer in her own study
+  7:{
+    how_are_you:(s,st)=>st<=2?`Priya looks up from three laptops. "Good. On track. I've been eating more during study sessions." She pops a snack. "I've documented the productivity correlation. Results are interesting."`:st<=4?`Priya is already pulling up a spreadsheet. "Good. Three papers, two internships, significant weight gain — also studying." She says this completely levelly.`:st<=7?`"Peak performance," Priya says, and she means it in every sense. "Output is up. Weight is up. Charts are very interesting right now."`:  `Priya looks at you with serene, data-backed confidence. "I am achieving everything simultaneously. The charts are at their best." She produces a graph.`,
+    food_talk:(s,st)=>st<=3?`"I've been optimizing caloric intake per study hour," Priya says. "The peak productivity window is wider than expected." She eats something efficiently. "I have a paper on this."`:st<=6?`Priya pulls up a document. "I published on this. Adaptive caloric strategy as cognitive performance enhancement. Peer reviewed. Passed. Very proud."`: `"My relationship with food is a published academic topic," Priya says. "This is the most on-brand thing that has ever happened to me." She's eating while saying this.`,
+    encourage_eating:(s,st)=>st<=2?`Priya considers. "Caloric augmentation during high-output periods is well-supported." She eats it efficiently. "Documented."`:st<=5?`"I was already factoring that in," Priya says. She has a spreadsheet open. She's eating. Both are happening at once.`: `Priya looks at you briefly. "I have a system." She returns to the system. The system involves eating constantly.`,
+    ask_weight:(s,st)=>st<=2?`"I've logged a consistent gain trend," Priya says. "It correlates with productivity increases. I find the data compelling."`:st<=4?`Priya pulls up a chart. "I've been tracking it." The chart is meticulous. "The correlation with output metrics is statistically significant."`:st<=7?`"Extensive," Priya says. "I've gained more weight this semester than most people gain in a decade. My thesis documents every pound." She seems proud of this.`: `"I am an enormous data set," Priya says. "A very large, very interesting, very well-documented data set."`,
+  },
+  // Maya — Studio Art Minor: quiet, observational, opens up only with deep trust
+  8:{
+    how_are_you:(s,st)=>st<=2?`Maya looks up from her notebook, takes a moment. "...Good." Goes back to drawing. After a beat: "Thank you for asking."`:st<=4?`Maya looks at you more directly than usual. "Good." A pause. "I've been eating more. Drawing more. They're connected somehow." She looks at the notebook. "Still working out how."`:st<=7?`Maya smiles — quiet but real. "Good." She looks at herself, at the space she takes up. "I like how I feel right now." She's not asking for input on that.`:  `Maya looks up with immense, peaceful presence. "Good," she says. It doesn't need anything else.`,
+    food_talk:(s,st)=>st<=3?`Maya's expression shifts to something more animated. "The place near the art building has this pastry — " She stops, almost shy. "It's very good. I go three times a week." She goes back to drawing.`:st<=6?`Maya holds up her sketchbook. There are very detailed drawings of food among the figure studies. "It's the same thing," she says quietly. "Looking closely at something you love."`: `"I have favorite foods the way I have favorite colors," Maya says. "It's how I understand the world." She pats her enormous middle with complete ease.`,
+    compliment_figure:(s,st)=>st<=2?`Maya looks up, surprised. She looks at herself, then back at you. "...Oh." A long pause. "Thank you." She looks at her notebook. You think she might be smiling.`:st<=4?`Maya is quiet for a moment. "I've been noticing too," she says finally. "That I look different." Her voice is soft. "I think I like it." She goes back to drawing.`:st<=7?`Maya looks at you steadily and says nothing for a moment. Then: "I know." Not vain. Just — certain. She pats herself and picks up her pencil.`: `Maya nods once. She already knew. She's fine with it. She's been fine with it for a while.`,
+  },
+  // Chloe — Transfer Student: curious, enthusiastic, discovering herself
+  9:{
+    how_are_you:(s,st)=>st<=2?`Chloe looks up with the wide-eyed energy of someone very awake. "Good! Great! There's so much to try here, I'm still — " She gestures vaguely. "Exploring. Extensively."`:st<=4?`"Really good," Chloe says, and means it. "I've been here a while and it finally feels like home." She looks at herself. "I'm significantly heavier. Those two things are related."`:st<=7?`Chloe beams. "I feel like a real student here." She pats her soft belly. "A large student. A real one. This campus made me who I am."`:  `Chloe looks settled in a way she didn't when she arrived. "Good. Very good." She looks at herself with complete comfort. "I found my people. Same day I found the good food spots."`,
+    food_talk:(s,st)=>st<=3?`Chloe basically levitates. "Oh, food talk? The dining hall on Thursdays — okay but also the underground market, have you been? Also there's this place — " She has a lot of places. She keeps going.`:st<=6?`"This campus has the best food I've ever had anywhere," Chloe says, with the authority of research. "I've been thorough." She pats herself. "The data is conclusive."`: `"My whole identity here is tied to the food," Chloe says, and this doesn't bother her at all. "Maya started me on it and I just kept going." She looks extremely comfortable with this.`,
+    encourage_eating:(s,st)=>st<=2?`Chloe brightens like you just gave her permission. "Yeah? Yeah!" She eats it with the energy of someone who really wanted to do that.`:st<=5?`Chloe laughs. "You don't have to tell me twice. I was already — " She's already eating.`: `Chloe grins. "The encouragement is sweet but honestly unnecessary at this point." She eats a lot. Happily.`,
+    ask_weight:(s,st)=>st<=2?`"I've gained some weight since I got here," Chloe says. "Which makes sense. I've been eating everything." She sounds genuinely pleased by this.`:st<=4?`"A lot, actually," Chloe says. "Campus food is incredible. I've been doing very thorough exploration." She looks at herself. "The results speak for themselves."`:st<=7?`Chloe spreads her hands across her substantial middle. "Enormous by my standards. I came here and I just — grew into this place." She grins. "Best transfer decision ever."`: `Chloe looks at you like this is a wonderful question. "A whole new person," she says. "A very large new person. Same enthusiasm, more surface area."`,
+  },
+  // Jasmine — Dance Co-Captain: loud, expressive, loves everything at full volume
+  10:{
+    how_are_you:(s,st)=>st<=2?`Jasmine grins at full wattage. "Amazing! New piece, insane schedule, ate an incredible amount at dinner last night." She says all of this at equal volume.`:st<=4?`"SO good," Jasmine says. "My choreo is evolving, my costumes need to evolve, and I found a restaurant with portions —" She holds her hands far apart. "This big. Every dish."`:st<=7?`Jasmine spreads her arms wide. "AMAZING. Everything is amazing." She looks at herself with pure, uncut delight. "I've gotten huge and my movement is somehow better? I don't fully understand it but I'm leaning in."`:  `Jasmine is beaming. "Wonderful," she announces. "Enormous and wonderful." She reaches for food. "Those are the same thing for me now."`,
+    food_talk:(s,st)=>st<=3?`Jasmine claps once. "The Italian place near the studio does a four-cheese pasta that I think about during rehearsal. It's a problem. I've been four times this week."`:st<=6?`"I order based on what will bring me the most joy per bite," Jasmine says. "I have a system. Very good system. Very large portions."`: `"I have never been more enthusiastic about eating in my life," Jasmine says. "And I was always enthusiastic. This is new levels." She looks around for more.`,
+    compliment_figure:(s,st)=>st<=2?`Jasmine beams. "Thank you! I feel great." She does a little spin. Still very graceful. "I've been eating well and it shows."`:st<=4?`Jasmine claps her hands together. "Right?! I've really filled out." She looks down at herself with obvious delight. "My costumes are a whole project but I look incredible."`:st<=7?`Jasmine does a little shimmy in her chair, which takes some doing. "YES. Thank you. I am HUGE and I look AMAZING." She seems genuinely overjoyed by both facts.`: `Jasmine throws her head back. "I KNOW. Thank you. The scale of me is something else." She's delighted. She is always delighted. It just keeps scaling up.`,
+  },
+  // Emma — Cultural Studies: gentle, intellectual, finds meaning in everything
+  11:{
+    how_are_you:(s,st)=>st<=2?`Emma smiles softly. "Good. I've been doing fieldwork on campus food culture." She gestures at the tea and spread. "Very hands-on fieldwork."`:st<=4?`Emma looks up with a warm expression. "Really good. My research is going somewhere interesting and I've been eating very well." She pats her soft middle. "Both connected, I think."`:st<=7?`"Wonderful," Emma says. "PhD application in, at my heaviest, genuinely at peace." She takes a sip of tea. "I think that's what growth looks like."`:  `Emma looks up with quiet, full contentment. "Good," she says softly. "Quite large and quite happy and quite full." She takes another bite. "All three feel right."`,
+    food_talk:(s,st)=>st<=3?`Emma brightens. "I've been tracing food customs across three cultures for my thesis. Very thorough tasting methodology required." She holds up notes. They are extensive.`:st<=6?`"I wrote my last paper over tea cakes for three hours," Emma says. "I ate a lot of tea cakes." She looks at her rounder figure. "Studying food culture as a lived experience. Very immersive."`: `"Food is how I understand every culture I study," Emma says. "Also how I understand myself, apparently." She gestures at her enormous form. "The immersion has been significant."`,
+    encourage_eating:(s,st)=>st<=2?`Emma hesitates, then smiles. "I suppose it would be rude not to." She eats it thoughtfully.`:st<=5?`"Oh — yes, I was going to." Emma reaches for more with gentle enthusiasm.`: `Emma laughs softly. "I was already well ahead of you on that." She eats with the serene momentum of someone who hasn't stopped.`,
+    ask_weight:(s,st)=>st<=2?`"I've been gaining a little," Emma says. "The fieldwork requires extensive tasting. It would be unscholarly not to eat." She takes a sip of tea.`:st<=4?`Emma looks at herself thoughtfully. "Quite a lot, actually. I've been very thorough in my research." She sounds genuinely content.`:st<=7?`"Significantly," Emma says, with scholarly care. "More than I've ever weighed. More than I expected." She pauses. "I find I don't mind at all. The research continues."`: `Emma looks at you with peaceful, enormous calm. "Extensively," she says. "I'm very thoroughly myself now." She takes another bite.`,
+  },
+  // Roxanne — Music & Visual Art: passionate, loud, full commitment to everything
+  12:{
+    how_are_you:(s,st)=>st<=2?`Roxanne looks up from her sketchbook. "Intense. Show's in three weeks. Studio fourteen hours a day. Also there's this incredible taco truck by the arts building." These seem equally important.`:st<=4?`"GREAT," Roxanne says at her standard volume. "My work is going well and I've been eating at full capacity, which is my preferred state." She taps her round belly. "I work better big."`:st<=7?`Roxanne makes an expansive gesture. "Amazing. Everything is at maximum intensity." She's eating while talking. "My band, my art, my appetite. All peak."`:  `"Phenomenal," Roxanne says, at great volume. "Enormous and loud and producing the best work of my life and eating constantly." She spreads her arms. "This is the good timeline."`,
+    food_talk:(s,st)=>st<=3?`Roxanne leans forward immediately. "Street food. Taco truck by the studio. Dumpling cart on Thursdays. Have you been? Go." She seems personally invested in your food journey.`:st<=6?`"Food is the same as music to me," Roxanne says. "It's about intensity. Volume. The big experience." She pats her side. "I pursue it the same way."`: `"I eat like I make music," Roxanne announces. "Loud, a lot, full commitment." She looks at herself with satisfaction. "The audience is me and I'm a great audience."`,
+    compliment_figure:(s,st)=>st<=2?`Roxanne looks up with the focused energy she brings to everything. "Yeah? Cool. I'm working on it." She returns to her sketchbook, but there's a small smile.`:st<=4?`Roxanne is briefly, visibly pleased before returning to full volume. "RIGHT? I've been eating a lot and apparently it suits me." She gestures at herself expansively.`:st<=7?`"YES," Roxanne says immediately and at volume. "I KNOW. I look incredible. I feel incredible." She thumps the table once for emphasis. "Maximum."`: `Roxanne points at you. "Correct." She points at herself. "Enormous. Magnificent. Maximum." She goes back to eating at full commitment.`,
+  },
+  // Aaliyah — Basketball Star: easygoing, confident, nothing fazes her
+  13:{
+    how_are_you:(s,st)=>st<=2?`Aaliyah leans back. "Good. Off-season so just eating and vibing." She looks at her arms. "I look different. I feel different." Beat. "Good different, actually."`:st<=4?`"Really good," Aaliyah says, with the ease of someone who doesn't stress about things. "Retired the athletic schedule, added a full culinary one. The tradeoff is working out."`:st<=7?`Aaliyah grins. "Excellent." She shifts her considerable weight. "I used to move for a living. Now I mostly eat. Both are valid. I'm good at both."`:  `Aaliyah looks at you with easy, enormous calm. "Perfect," she says. "Never been more comfortable in my life." She reaches for more food. "You want some?"`,
+    food_talk:(s,st)=>st<=3?`"Burgers," Aaliyah says immediately. "The place on the corner does a double that's ridiculous. I've been twice this week." Pause. "Three times. Three times this week."`:st<=6?`Aaliyah gets a focused expression — the same one she used to get about basketball. "You want my actual thoughts on food near campus? I've done the research." She has clearly done the research.`: `"I have a rotation," Aaliyah says. "Six places, hit each one in a cycle, best food every day." She pats her belly with deep satisfaction. "The system works."`,
+    encourage_eating:(s,st)=>st<=2?`Aaliyah gives you an easy grin. "I was thinking about it." She eats it. No drama.`:st<=5?`Aaliyah already has another bite going. She nods at you. "Ahead of you."`: `Aaliyah gives you a look of comfortable disbelief. "Was I not?" She's been eating this whole time.`,
+    ask_weight:(s,st)=>st<=2?`Aaliyah shrugs easily. "Yeah I've been eating a lot. Off-season. Body changes." She doesn't seem remotely concerned.`:st<=4?`"A lot," Aaliyah says. "I don't weigh myself but I can tell." She looks at herself. "I'm good with it. I was always too intense about numbers."`:st<=7?`Aaliyah spreads her hands on the table. "Huge," she says comfortably. "I'm huge. Used to be fast. Now I'm heavy." She shrugs. "Both are just facts."`: `Aaliyah looks at you with complete equanimity. "Enormous," she says. "By any reasonable measure." She returns to eating. No big deal.`,
+  },
+  // Sophie — New Pledge: sweet, eager, discovering herself, growing in confidence
+  14:{
+    how_are_you:(s,st)=>st<=2?`Sophie perks up immediately. "Good! Really good! I'm still learning everything but Tiffany's been amazing and the food at events is — " She stops herself. "I've been eating a lot. It's fine."`:st<=4?`Sophie smiles, more settled. "Really good, actually. I feel like I'm finding my footing." She looks at herself. "I've gotten bigger. I don't mind as much as I thought I would."`:st<=7?`"Good," Sophie says with new, easy confidence. "Really good. I stopped worrying and started enjoying things." She gestures at her full figure. "This is the enjoying-things version of me."`:  `Sophie looks at you with the warm, settled glow of someone who's found their home. "Amazing," she says. "I am very large and very comfortable and I have stopped apologizing for things." She smiles. "It's great."`,
+    food_talk:(s,st)=>st<=3?`"Oh! The bakery near the chapter house does these cupcakes — " Sophie lights up completely. "I've had one every day for three weeks. I'm not sure they're healthy." Pause. "I'm going back tomorrow."`:st<=6?`Sophie grins. "I've become the unofficial chapter food scout. Everyone comes to me for recommendations now." She sounds genuinely pleased. "I've been doing very thorough research."`: `"Food is my love language," Sophie says, and then looks slightly surprised that she said it out loud. "That's a thing I believe. That I just said." She nods. "Yeah. That's me."`,
+    compliment_figure:(s,st)=>st<=2?`Sophie blinks, then smiles — a little uncertain but warm. "Oh — thank you. I've been eating a lot at chapter events. It shows, I guess." She touches her slightly softer middle.`:st<=4?`Sophie's whole expression softens into something genuinely pleased. "Really?" She looks at herself. "I've been getting more comfortable with it. With all of it." She smiles.`:st<=7?`Sophie straightens up with visible, easy pride. "Thank you. I used to be so nervous about everything." She smooths her hands over her sides. "I think I'm doing okay."`: `Sophie smiles with the full confidence of someone who has arrived. "Thank you. I've figured out what suits me." She pats her enormous belly. "Apparently this suits me."`,
+    encourage_eating:(s,st)=>st<=2?`Sophie hesitates, then brightens. "Okay yeah? Yeah." She eats it with the energy of someone who just got permission they really wanted.`:st<=5?`Sophie laughs. "You don't have to tell me twice. I was already — " She's already eating.`: `Sophie gives you a warm grin. "The encouragement is appreciated but honestly unnecessary now." She eats a lot. Happily.`,
   },
 };
 
@@ -1461,6 +1576,11 @@ const SKILL_TREE = [
     effect:"Unlocks 'Take to Dinner' as a proper interactive event. Unlocks: Bistro, Italian.",
     unlocks:["dinner_action"], passiveBonus:0, apBonus:0, gainMult:0 },
 
+  { id:"dinner_casual",   tier:2, cost:150, category:"social", label:"🥂 Brunch Scene",
+    desc:"You've discovered the city's best upscale brunch spots. Unlimited drinks, absurd portions.",
+    effect:"Unlocks 'The Brunch Palace' venue. Ideal for daytime dates.",
+    requires:["dinner_basic"], passiveBonus:0, apBonus:0, gainMult:0 },
+
   // ── TIER 2: 150 lbs total gained ─────────────────────────────
   { id:"wide_desks",      tier:2, cost:150, category:"environment", label:"🪵 Wide Desks",
     desc:"Larger desks with more space. More room for food, materials, and expanding figures.",
@@ -1556,6 +1676,11 @@ const SKILL_TREE = [
     effect:"Unlocks 'Home Dinner Party' (3 girls, evening-long event). Dinner gain x1.5.",
     requires:["dinner_private"], passiveBonus:0, apBonus:0, gainMult:0, unlocks:["dinner_party"] },
 
+  { id:"dinner_accessible", tier:4, cost:700, category:"social", label:"♿ Accessible Dining",
+    desc:"A private luxury dining suite with custom arrangements. No standard seating — designed around the guest. Only suitable for students who find regular restaurants inconvenient.",
+    effect:"Unlocks 'The Atelier' — a specialty venue for students at stage 6+. Largest gain range of any venue.",
+    requires:["dinner_private"], passiveBonus:0, apBonus:0, gainMult:0 },
+
   // ── TIER 5: 1200 lbs total gained ────────────────────────────
   { id:"full_environment", tier:5, cost:1200, category:"environment", label:"🌟 Perfect Environment",
     desc:"Everything optimised for comfort and abundance. Students never want to leave.",
@@ -1590,66 +1715,83 @@ const DINNER_VENUES = [
   { id:"bistro",    label:"🥖 Campus Bistro",      tier:1, baseCourses:2, gainRange:[4,8],
     desc:"Cosy neighbourhood bistro. Good portions, comfortable atmosphere.",
     dishes:[
-      { id:"soup_bread", label:"Soup & Bread Board", gain:[1,3], desc:"Thick potato soup with a full bread board." },
-      { id:"pasta",      label:"Pasta Carbonara",    gain:[2,4], desc:"Generous portion, rich sauce, topped with parmesan." },
-      { id:"salad_big",  label:"'House Salad'",      gain:[1,2], desc:"Technically a salad. More cheese than greens." },
+      { id:"soup_bread", label:"Soup & Bread Board", gain:[1,3], fullness:12, desc:"Thick potato soup with a full bread board." },
+      { id:"pasta",      label:"Pasta Carbonara",    gain:[2,4], fullness:22, desc:"Generous portion, rich sauce, topped with parmesan." },
+      { id:"salad_big",  label:"'House Salad'",      gain:[1,2], fullness:8,  desc:"Technically a salad. More cheese than greens." },
     ] },
   { id:"italian",   label:"🍝 Rosetti's Italian",  tier:1, baseCourses:3, gainRange:[5,10],
     desc:"Family Italian. Courses keep coming until you say stop — which you won't.",
     dishes:[
-      { id:"bruschetta",  label:"Antipasto Board",   gain:[2,4], desc:"Bruschetta, olives, cured meats, fresh bread." },
-      { id:"risotto",     label:"Truffle Risotto",   gain:[3,5], desc:"Enormous bowl. Extremely rich." },
-      { id:"lasagne",     label:"House Lasagne",     gain:[3,6], desc:"Three layers. A complete structure of food." },
-      { id:"tiramisu",    label:"Tiramisu",          gain:[1,3], desc:"Full portion. She does not need encouragement." },
+      { id:"bruschetta",  label:"Antipasto Board",   gain:[2,4], fullness:14, desc:"Bruschetta, olives, cured meats, fresh bread." },
+      { id:"risotto",     label:"Truffle Risotto",   gain:[3,5], fullness:22, desc:"Enormous bowl. Extremely rich." },
+      { id:"lasagne",     label:"House Lasagne",     gain:[3,6], fullness:28, desc:"Three layers. A complete structure of food." },
+      { id:"tiramisu",    label:"Tiramisu",          gain:[1,3], fullness:12, desc:"Full portion. She does not need encouragement." },
     ] },
   { id:"steakhouse",label:"🥩 The Grill Room",     tier:2, baseCourses:3, gainRange:[6,12],
     desc:"Traditional steakhouse. Portions are architectural.",
     dishes:[
-      { id:"shrimp_cocktail", label:"Shrimp Cocktail",  gain:[1,3], desc:"A tower of shrimp." },
-      { id:"ribeye",          label:"18oz Ribeye",      gain:[4,7], desc:"An enormous steak. Served with three sides by default." },
-      { id:"loaded_potato",   label:"Loaded Baked Potato", gain:[2,4], desc:"Barely qualifies as a potato anymore." },
-      { id:"cheesecake",      label:"NY Cheesecake",    gain:[2,4], desc:"Full slice. Enormous. Rich." },
+      { id:"shrimp_cocktail", label:"Shrimp Cocktail",  gain:[1,3], fullness:9,  desc:"A tower of shrimp." },
+      { id:"ribeye",          label:"18oz Ribeye",      gain:[4,7], fullness:35, desc:"An enormous steak. Served with three sides by default." },
+      { id:"loaded_potato",   label:"Loaded Baked Potato", gain:[2,4], fullness:18, desc:"Barely qualifies as a potato anymore." },
+      { id:"cheesecake",      label:"NY Cheesecake",    gain:[2,4], fullness:14, desc:"Full slice. Enormous. Rich." },
     ] },
   { id:"french",    label:"🥐 Maison Laurent",     tier:2, baseCourses:4, gainRange:[7,14],
     desc:"Upscale French. Multiple courses mandatory. Chef's feelings are involved.",
     dishes:[
-      { id:"amuse",       label:"Amuse-Bouche",        gain:[1,2], desc:"Five tiny courses that add up to a full meal." },
-      { id:"foie_gras",   label:"Foie Gras",           gain:[2,4], desc:"Rich and indulgent. The chef insists on a full portion." },
-      { id:"duck_confit", label:"Duck Confit",         gain:[3,6], desc:"Crispy skin, rich meat, enormous portion." },
-      { id:"soufle",      label:"Chocolate Soufflé",   gain:[2,4], desc:"Cannot be shared. Will not be shared." },
-      { id:"cheese",      label:"Cheese Course",       gain:[2,4], desc:"Seven cheeses. Mandatory." },
+      { id:"amuse",       label:"Amuse-Bouche",        gain:[1,2], fullness:8,  desc:"Five tiny courses that add up to a full meal." },
+      { id:"foie_gras",   label:"Foie Gras",           gain:[2,4], fullness:14, desc:"Rich and indulgent. The chef insists on a full portion." },
+      { id:"duck_confit", label:"Duck Confit",         gain:[3,6], fullness:28, desc:"Crispy skin, rich meat, enormous portion." },
+      { id:"soufle",      label:"Chocolate Soufflé",   gain:[2,4], fullness:12, desc:"Cannot be shared. Will not be shared." },
+      { id:"cheese",      label:"Cheese Course",       gain:[2,4], fullness:14, desc:"Seven cheeses. Mandatory." },
     ] },
   { id:"omakase",   label:"🍱 Nakamura Omakase",   tier:2, baseCourses:5, gainRange:[6,12],
     desc:"Japanese omakase. The chef decides. There are many courses. They are all large.",
     dishes:[
-      { id:"sashimi",    label:"Sashimi Selection",   gain:[1,3], desc:"Course one. Many pieces." },
-      { id:"wagyu",      label:"A5 Wagyu",            gain:[3,5], desc:"The richest beef available. Multiple pieces." },
-      { id:"ramen",      label:"Truffle Ramen",       gain:[3,6], desc:"The signature. Extremely rich broth." },
-      { id:"mochi",      label:"Mochi & Matcha",      gain:[1,2], desc:"Dessert. Five pieces. She will eat all of them." },
+      { id:"sashimi",    label:"Sashimi Selection",   gain:[1,3], fullness:10, desc:"Course one. Many pieces." },
+      { id:"wagyu",      label:"A5 Wagyu",            gain:[3,5], fullness:24, desc:"The richest beef available. Multiple pieces." },
+      { id:"ramen",      label:"Truffle Ramen",       gain:[3,6], fullness:30, desc:"The signature. Extremely rich broth." },
+      { id:"mochi",      label:"Mochi & Matcha",      gain:[1,2], fullness:10, desc:"Dessert. Five pieces. She will eat all of them." },
     ] },
   { id:"private_club", label:"🎩 The Meridian Club", tier:3, baseCourses:4, gainRange:[8,16],
     desc:"Member-only private dining club. Portions are described as 'generous' which means 'extraordinary'.",
     dishes:[
-      { id:"tasting_menu", label:"Chef's Tasting Menu",  gain:[5,9],  desc:"Seven courses. Non-negotiable." },
-      { id:"wagyu_private",label:"Private Reserve Wagyu",gain:[4,7],  desc:"Different wagyu. More of it." },
-      { id:"truffle_pasta",label:"Black Truffle Pasta",  gain:[3,6],  desc:"Buried in truffle. Buried in parmesan." },
-      { id:"mille_feuille",label:"Mille-Feuille",        gain:[2,4],  desc:"The pastry alone counts as a meal." },
+      { id:"tasting_menu", label:"Chef's Tasting Menu",  gain:[5,9],  fullness:40, desc:"Seven courses. Non-negotiable." },
+      { id:"wagyu_private",label:"Private Reserve Wagyu",gain:[4,7],  fullness:30, desc:"Different wagyu. More of it." },
+      { id:"truffle_pasta",label:"Black Truffle Pasta",  gain:[3,6],  fullness:24, desc:"Buried in truffle. Buried in parmesan." },
+      { id:"mille_feuille",label:"Mille-Feuille",        gain:[2,4],  fullness:14, desc:"The pastry alone counts as a meal." },
     ] },
   { id:"chefs_table",  label:"👨‍🍳 Chef's Table",        tier:3, baseCourses:5, gainRange:[10,18],
     desc:"Private chef's table. The chef cooks for her specifically. It is excessive.",
     dishes:[
-      { id:"personal_menu", label:"Personal Menu",        gain:[6,10], desc:"The chef has designed this entirely around her preferences." },
-      { id:"wagyu_special", label:"Wagyu Tasting",        gain:[4,8],  desc:"Four cuts. Each enormous." },
-      { id:"dessert_cart",  label:"Full Dessert Cart",    gain:[3,6],  desc:"Every dessert. All of them." },
+      { id:"personal_menu", label:"Personal Menu",        gain:[6,10], fullness:45, desc:"The chef has designed this entirely around her preferences." },
+      { id:"wagyu_special", label:"Wagyu Tasting",        gain:[4,8],  fullness:34, desc:"Four cuts. Each enormous." },
+      { id:"dessert_cart",  label:"Full Dessert Cart",    gain:[3,6],  fullness:24, desc:"Every dessert. All of them." },
     ] },
   { id:"home_dinner",  label:"🏡 Professor's Home",    tier:4, baseCourses:6, gainRange:[12,22],
     desc:"An evening at your home. You cook everything. There is no limit to how much you make.",
     dishes:[
-      { id:"home_app",    label:"Home Appetisers",    gain:[3,6],  desc:"A full spread before the main event." },
-      { id:"home_main",   label:"Main Course",        gain:[5,9],  desc:"Whatever she loves most, in enormous quantity." },
-      { id:"home_second", label:"Second Helpings",    gain:[4,8],  desc:"The offer she cannot refuse." },
-      { id:"home_dessert",label:"Dessert & More",     gain:[3,7],  desc:"Dessert, then more dessert, then more dessert." },
-      { id:"midnight",    label:"Late Night Snacks",  gain:[3,6],  desc:"She's still here. You keep feeding her." },
+      { id:"home_app",    label:"Home Appetisers",    gain:[3,6],  fullness:18, desc:"A full spread before the main event." },
+      { id:"home_main",   label:"Main Course",        gain:[5,9],  fullness:40, desc:"Whatever she loves most, in enormous quantity." },
+      { id:"home_second", label:"Second Helpings",    gain:[4,8],  fullness:28, desc:"The offer she cannot refuse." },
+      { id:"home_dessert",label:"Dessert & More",     gain:[3,7],  fullness:20, desc:"Dessert, then more dessert, then more dessert." },
+      { id:"midnight",    label:"Late Night Snacks",  gain:[3,6],  fullness:15, desc:"She's still here. You keep feeding her." },
+    ] },
+  { id:"brunch_hall",  label:"🥂 The Brunch Palace",  tier:2, baseCourses:3, gainRange:[6,11],
+    desc:"Upscale weekend brunch. Bottomless drinks, absurdly generous plates, no concept of portion control.",
+    dishes:[
+      { id:"eggs_bene",   label:"Eggs Benedict Stack",  gain:[2,5],  fullness:22, desc:"Three layers of egg, hollandaise, and everything else. Per person." },
+      { id:"french_toast",label:"French Toast Tower",   gain:[3,6],  fullness:28, desc:"Seven thick slices, caramelized fruit, whipped cream. A monument." },
+      { id:"brunch_board",label:"Sharing Board",        gain:[2,4],  fullness:18, desc:"Charcuterie, artisan bread, cheeses, honeycomb. She will not share." },
+      { id:"waffle_stack",label:"Waffle Stack",         gain:[2,5],  fullness:24, desc:"Four waffles stacked high with everything sweet. Aggressively indulgent." },
+    ] },
+  { id:"atelier",      label:"🌟 The Atelier",         tier:4, minStage:6, baseCourses:5, gainRange:[14,26],
+    desc:"A private, fully accessible luxury dining suite. No standard seating — custom arrangements for every guest. The chef comes to you. Designed for guests who find conventional restaurants inconvenient.",
+    dishes:[
+      { id:"atelier_welcome", label:"Welcome Spread",   gain:[4,8],  fullness:22, desc:"An entire table of small luxuries arranged by the chef on arrival." },
+      { id:"atelier_main",    label:"Custom Main",      gain:[6,11], fullness:42, desc:"The chef designs the course entirely around her. This always results in something enormous." },
+      { id:"atelier_cheese",  label:"Artisan Cheese Cart", gain:[3,6], fullness:18, desc:"The cart is wheeled to her position. She waves away the menu and takes from all of them." },
+      { id:"atelier_dessert", label:"Dessert Tasting",  gain:[4,7],  fullness:28, desc:"Six desserts. Not a selection — all six. The chef insists." },
+      { id:"atelier_nightcap",label:"Late Indulgence",  gain:[3,6],  fullness:16, desc:"She hasn't moved. More food arrives. This is the point of the place." },
     ] },
 ];
 
@@ -1711,6 +1853,61 @@ const DINNER_CONVERSATION = [
       : st<=5 ? `"I genuinely cannot believe how much you've eaten," you say. ${s.name} looks down at herself, at the pile of empty plates, and laughs. "I can." She orders dessert.`
       : `You survey the wreckage of the table. "That was extraordinary." ${s.name} pats her vast belly with a look of absolute serenity. "I'm just getting started," she says — and means it.`,
     gainBonus:[2,4], relBonus:7 },
+
+  { id:"ask_passion",         label:"Ask about what she loves", requires:null,
+    text:(s,st)=>{
+      const roleLines={"Cheer Captain":`You ask about the squad. ${s.name}'s whole posture changes. "We're building something," she says. "A legacy." She describes tryout strategy for ten minutes. At some point the entire main course disappears without her noticing.`,"Dance Co-Captain":`You ask about her choreography. ${s.name} puts her fork down entirely — which she hasn't done all evening — and starts describing a movement sequence with her hands. "I want it to feel inevitable," she says. She picks up her fork and finishes everything on the plate.`,"Track Sprinter":`You ask about running. ${s.name} is quiet for a moment. "I miss it less than I thought I would," she says finally. "I still dream about it sometimes." She takes a large bite. "But this is also good."`, "Basketball Star":`You ask about basketball. ${s.name} laughs. "God. I think about the game differently now — like, I watch it differently." She tilts her head. "I'm kind of glad I'm not playing right now. I'd be a liability." She pats herself. "A comfortable liability."`, default:`You ask what she's most passionate about right now. ${s.name} looks genuinely pleased by the question. She talks for twenty minutes — animated, specific, completely unselfconscious. At some point she's eaten the entire main course without noticing.`};
+      return roleLines[s.role]||roleLines.default;
+    },
+    gainBonus:[2,4], relBonus:10, fullnessEffect:-8 },
+
+  { id:"talk_genuinely",      label:"Ask how she's really doing", requires:null,
+    text:(s,st)=>st<=2
+      ? `You set the menu down and actually ask. ${s.name} looks surprised. Then she talks — really talks — about her semester, things outside of class. She's more present than usual. She also keeps eating through it, almost unconsciously.`
+      : `You turn the conversation to her, genuinely. ${s.name} pauses, then opens up. Something real passes between you. She eats steadily through the whole thing, comfortable and unhurried. She finishes three courses before she realizes.`,
+    gainBonus:[1,4], relBonus:12, fullnessEffect:-5 },
+
+  { id:"toast_together",      label:"Propose a toast", requires:null,
+    text:(s,st)=>`You raise your glass. "To good food and good company." ${s.name} looks at you for a moment, then lifts her glass. The toast is simple, but something settles between you — warm and unhurried. She eats more after that.`,
+    gainBonus:[1,3], relBonus:7, fullnessEffect:-4 },
+
+  { id:"share_a_dish",        label:"Order something to share", requires:null,
+    text:(s,st)=>st<=3
+      ? `You order a dish for the table. "We can share." ${s.name} looks at it and, after a beat, reaches in. "Okay." She eats most of it.`
+      : `You order an extra dish between you. ${s.name} looks delighted. "Perfect." She eats significantly more than half. You don't point this out.`,
+    gainBonus:[2,5], relBonus:6, fullnessEffect:6 },
+
+  { id:"after_dinner_stroll", label:"Suggest staying for another course", requires:null,
+    text:(s,st)=>st<=3
+      ? `"We should do the cheese course," you say. ${s.name} pauses. "I don't — " She looks at the menu. "Actually. Yes. Obviously yes."`
+      : st<=6 ? `"I'm going to get more," you say. "Obviously I'm joining you," ${s.name} says. She did not need the invitation.`
+      : `You gesture toward the dessert menu. ${s.name} already has it. "I've been reading it for five minutes," she says. "Let's do all of it."`,
+    gainBonus:[3,7], relBonus:5, fullnessEffect:10 },
+
+  { id:"awkward_comment",     label:"Comment on her portions", requires:null,
+    text:(s,st)=>st<=2
+      ? `"That's... quite a lot," you say. ${s.name}'s expression flickers. "I know," she says, shortly. She puts her fork down and picks it up again more slowly. The evening is a degree cooler now.`
+      : `You gesture at her plate. "You've really eaten a lot tonight." ${s.name} gives you a flat look. "Yes. I have." She continues eating, but something in the warmth has shifted.`,
+    gainBonus:[0,0], relBonus:-5, offenseRisk:2, fullnessEffect:0 },
+
+  { id:"suggest_diet",        label:"Point out the lighter option", requires:null,
+    text:(s,st)=>st<=1
+      ? `You mention there's a lighter option on the menu. ${s.name} glances at it, then at what she'd already chosen. "I'll stick with what I ordered, thanks." She eats it with slightly more purpose than before.`
+      : `You gesture toward the salad section. ${s.name} puts her fork down. Very deliberately. "I'm sorry?" A beat. "I know what's on the menu." Another beat. "I don't need the recommendation."`,
+    gainBonus:[0,0], relBonus:-8, offenseRisk:3, fullnessEffect:0 },
+
+  { id:"ask_about_weight",    label:"Ask about the gaining", requires:null,
+    text:(s,st)=>st<=2
+      ? `You ask lightly whether she's noticed any changes lately. ${s.name} stiffens slightly. "I mean... yeah." She looks at her food. "Are you asking that at dinner?" There's an edge now.`
+      : st<=5 ? `You bring it up. ${s.name} puts her fork down. "I know," she says, flatly. "I'm here." She picks the fork back up but the ease of the evening has changed.`
+      : `You comment on it. ${s.name} gives you a long, measuring look. "I was having a very good time," she says. "You should be more careful with your dinner conversation." She eats, but something is cooler.`,
+    gainBonus:[0,0], relBonus:-6, offenseRisk:2, fullnessEffect:0 },
+
+  { id:"second_table",        label:"Move to a more comfortable spot", requires:"dinner_private",
+    text:(s,st)=>st<=4
+      ? `You suggest a more private corner table. ${s.name} appreciates the gesture. The move is easy, the new spot better. She orders again as soon as she sits.`
+      : `You notice she's shifted twice to accommodate herself in the standard chair, and quietly arrange a better setup. ${s.name} settles in. "How did you know?" You shrug. She eats considerably more after that.`,
+    gainBonus:[2,4], relBonus:9, fullnessEffect:-6 },
 ];
 
 
@@ -1844,6 +2041,25 @@ export default function ProfessorSim(){
       setEventQueue(prev=>prev.slice(1));
     }
   },[eventQueue,activeEvent,classSession]);
+
+  // Auto-end dinner when fullness hits max
+  useEffect(()=>{
+    if(!dinnerEvent||dinnerEvent.phase!=="dishes") return;
+    if((dinnerEvent.fullness||0)<(dinnerEvent.maxFullness||999)) return;
+    const s=students.find(st=>st.id===dinnerEvent.student.id);
+    const timer=setTimeout(()=>{
+      setDinnerLog(dl=>[...dl,`😌 ${dinnerEvent.student.name} leans back with a long, satisfied sigh. She's completely full. A perfect evening.`]);
+      setTimeout(()=>{
+        setAp(a=>a-2);
+        push(`✅ Dinner with ${dinnerEvent.student.name} complete — she was fully satisfied! +${dinnerEvent.totalGain} lbs · +20 relationship.`);
+        setStudents(prev=>prev.map(st=>st.id!==dinnerEvent.student.id?st:{...st,relationship:Math.min(100,st.relationship+20)}));
+        const evs=collectEvents(s?[{...s}]:[]);
+        if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
+        setDinnerEvent(null);
+      },1200);
+    },400);
+    return ()=>clearTimeout(timer);
+  },[dinnerEvent?.fullness,dinnerEvent?.maxFullness]);
 
   const push=useCallback((msg)=>setLog(prev=>[...prev,msg]),[]);
 
@@ -2034,13 +2250,38 @@ export default function ProfessorSim(){
   const doClass=(action)=>{
     if(ap<action.cost){push("⚠️ Not enough AP!");return;}
     setAp(a=>a-action.cost);
-    const updated=students.map(s=>{
-      const gain=rnd(action.gain[0],action.gain[1]);
-      return processStudentGain(s,gain,7);
-    });
+    let updated;
+    if(action.id==="on_demand_feast"){
+      const scaledGain=Math.round((8+avgLbs/100)*(0.8+Math.random()*0.6));
+      updated=students.map(s=>processStudentGain(s,scaledGain,7));
+      push(`🍾 On-Demand Feast: catering arrives immediately! Each student gains ~${scaledGain} lbs.`);
+    } else if(action.id==="group_dinner"){
+      // Pick first available influence pair
+      const pair=INFLUENCE_PAIRS.find(([a,b])=>students.find(s=>s.id===a)&&students.find(s=>s.id===b));
+      if(pair){
+        const [idA,idB]=pair;
+        updated=students.map(s=>{
+          if(s.id===idA||s.id===idB){
+            const gain=rnd(action.gain[0],action.gain[1]);
+            return processStudentGain(s,gain+(s.id===idA||s.id===idB?3:0),10);
+          }
+          return s;
+        });
+        const sA=students.find(s=>s.id===idA),sB=students.find(s=>s.id===idB);
+        push(`👥 Group Dinner: ${sA?.name} and ${sB?.name} dine together. Their bond amplifies the evening.`);
+      } else {
+        updated=students.map(s=>{const gain=rnd(action.gain[0],action.gain[1]);return processStudentGain(s,gain,7);});
+        push(`👥 ${action.label}: The class arranged a group dinner!`);
+      }
+    } else {
+      updated=students.map(s=>{
+        const gain=rnd(action.gain[0],action.gain[1]);
+        return processStudentGain(s,gain,7);
+      });
+      push(`🎉 ${action.label}: The whole class participated!`);
+    }
     const evs=collectEvents(updated);
     setStudents(updated);
-    push(`🎉 ${action.label}: The whole class participated!`);
     if(evs.length){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
@@ -2048,10 +2289,12 @@ export default function ProfessorSim(){
   };
 
   const doTalk=(topicId,s)=>{
-    const topic=TALK_RESPONSES[topicId];
-    if(!topic){push(`💬 ${s.name} smiles politely.`);return;}
     const stId=getStage(s.lbs).id;
-    const resp=topic(s,stId);
+    const charTopic=CHAR_TALK[s.id]?.[topicId];
+    const archTopic=TALK_RESPONSES[topicId];
+    const handler=charTopic||archTopic;
+    if(!handler){push(`💬 ${s.name} smiles politely.`);return;}
+    const resp=handler(s,stId);
     const tLabel={"how_are_you":"How are you doing?","compliment_figure":"Compliment her figure","food_talk":"Talk about food","class_talk":"Discuss class","encourage_eating":"Encourage her to eat more","ask_lifestyle":"Ask about her lifestyle","ask_weight":"Ask about her weight","about_gaining":"Ask about her gaining","future_plans":"Ask about future plans"}[topicId]||topicId;
     push(`💬 You: "${tLabel}"`);
     push(`   ${resp}`);
@@ -2143,7 +2386,8 @@ export default function ProfessorSim(){
   const startDinner=(s)=>{
     if(!dinnerUnlocked){push("⚠️ Unlock 'Dining Connections' in the Skill Tree first.");return;}
     if(ap<2){push("⚠️ Need 2 AP for a dinner.");return;}
-    setDinnerEvent({ student:s, phase:"venue", venue:null, dishes:[], conversationUsed:[], totalGain:0 });
+    const maxFullness=60+getStage(s.lbs).id*14;
+    setDinnerEvent({ student:s, phase:"venue", venue:null, dishes:[], conversationUsed:[], totalGain:0, fullness:0, maxFullness, offenseLevel:0 });
     setDinnerLog([]);
   };
 
@@ -2156,8 +2400,11 @@ export default function ProfessorSim(){
   const orderDish=(dish)=>{
     const gain=rnd(dish.gain[0],dish.gain[1]);
     const scaledGain=Math.round(gain*skillGainMult*(dinnerEvent.student.gainMultiplier||1));
-    setDinnerEvent(prev=>({...prev, dishes:[...prev.dishes,dish.id], totalGain:prev.totalGain+scaledGain}));
-    setDinnerLog(dl=>[...dl, `🍴 You order the ${dish.label}. ${dish.desc} (+${scaledGain} lbs)`]);
+    const newFullness=(dinnerEvent.fullness||0)+(dish.fullness||15);
+    const maxFull=dinnerEvent.maxFullness||80;
+    setDinnerEvent(prev=>({...prev, dishes:[...prev.dishes,dish.id], totalGain:prev.totalGain+scaledGain, fullness:newFullness}));
+    const fullMsg=newFullness>=maxFull*0.8&&newFullness<maxFull?" — getting full...":"";
+    setDinnerLog(dl=>[...dl, `🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain} lbs)${fullMsg}`]);
     push(`🍴 ${dinnerEvent.student.name}: ${dish.label} (+${scaledGain} lbs)`);
     setStudents(prev=>prev.map(s=>s.id!==dinnerEvent.student.id?s:{...s,lbs:s.lbs+scaledGain}));
   };
@@ -2169,10 +2416,22 @@ export default function ProfessorSim(){
     const gainBonus=rnd(conv.gainBonus[0],conv.gainBonus[1]);
     const scaledBonus=Math.round(gainBonus*skillGainMult*(s.gainMultiplier||1));
     const convText=conv.text(s,stId);
-    setDinnerLog(dl=>[...dl, `💬 ${convText}${scaledBonus>0?` (+${scaledBonus} lbs)`:""}` ]);
+    const fullnessChange=conv.fullnessEffect||0;
+    const newFullness=Math.max(0,(dinnerEvent.fullness||0)+fullnessChange);
+    const newOffense=(dinnerEvent.offenseLevel||0)+(conv.offenseRisk||0);
+    setDinnerLog(dl=>[...dl, `💬 ${convText}${scaledBonus>0?` (+${scaledBonus} lbs)`:""}${fullnessChange<0?" (She seems more at ease.)":""}` ]);
     push(`💬 Dinner conversation: ${conv.label}`);
-    setDinnerEvent(prev=>({...prev, conversationUsed:[...prev.conversationUsed,conv.id], totalGain:prev.totalGain+scaledBonus}));
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+scaledBonus,relationship:Math.min(100,st.relationship+conv.relBonus)}));
+    setDinnerEvent(prev=>({...prev, conversationUsed:[...prev.conversationUsed,conv.id], totalGain:prev.totalGain+scaledBonus, fullness:newFullness, offenseLevel:newOffense}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+scaledBonus,relationship:Math.min(100,st.relationship+(conv.relBonus||0))}));
+    if(newOffense>=6){
+      setTimeout(()=>{
+        setDinnerLog(dl=>[...dl,`😤 ${s.name} sets her napkin down. "I think I should head home." She leaves.`]);
+        push(`💔 Dinner ended — ${s.name} left. Relationship -15.`);
+        setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.max(0,st.relationship-15)}));
+        setAp(a=>a-2);
+        setDinnerEvent(null);
+      },800);
+    }
   };
 
   const finishDinner=()=>{
@@ -2207,8 +2466,38 @@ export default function ProfessorSim(){
   const skillApBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.apBonus,0);
   const skillGainMult=1+SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.gainMult,0);
   const dinnerUnlocked=unlockedSkills.includes("dinner_basic");
+
+  // ── EFFECTIVE ACTIONS (applying unlocked skill effects) ──────
+  const effectiveSingleActions=ACTIONS_SINGLE.map(a=>({
+    ...a,
+    cost:Math.max(0,a.cost-(hasSkill("ap_mastery")?1:0)),
+    gain:hasSkill("private_kitchen")&&a.id==="homecooked"?[a.gain[0]+4,a.gain[1]+4]
+        :hasSkill("private_kitchen")&&a.id==="bake"?[a.gain[0]+3,a.gain[1]+3]
+        :a.gain,
+  }));
+  const effectiveClassActions=[
+    ...ACTIONS_CLASS.map(a=>({
+      ...a,
+      cost:a.id==="snacks"&&hasSkill("snack_station")?0
+          :a.id==="feast"&&hasSkill("catering_contact")?Math.max(0,a.cost-1)
+          :a.cost,
+      gain:a.id==="feast"&&hasSkill("catering_contact")?[a.gain[0]+4,a.gain[1]+4]:a.gain,
+    })),
+    ...(hasSkill("full_catering")?[{
+      id:"on_demand_feast",label:"🍾 On-Demand Feast",cost:3,
+      gain:[Math.round(8+avgLbs/100),Math.round(14+avgLbs/80)],
+      desc:"Call the catering team now. Portions scale with your class's average weight.",
+    }]:[]),
+    ...(hasSkill("group_dynamics")?[{
+      id:"group_dinner",label:"👥 Arrange Group Dinner",cost:3,gain:[4,9],
+      desc:"Arrange a dinner for two students from an influence pair. Their bond amplifies the result for both.",
+    }]:[]),
+  ];
+
   const availableVenues=DINNER_VENUES.filter(v=>{
     if(v.id==="home_dinner") return unlockedSkills.includes("dinner_residence");
+    if(v.id==="brunch_hall") return unlockedSkills.includes("dinner_casual");
+    if(v.id==="atelier") return false; // filtered per-student inside dinner modal
     if(v.tier===1) return unlockedSkills.includes("dinner_basic");
     if(v.tier===2) return unlockedSkills.includes("dinner_upscale");
     if(v.tier===3) return unlockedSkills.includes("dinner_private");
@@ -2410,11 +2699,17 @@ export default function ProfessorSim(){
       {dinnerEvent&&(()=>{
         const ds=students.find(s=>s.id===dinnerEvent.student.id)||dinnerEvent.student;
         const stId=getStage(ds.lbs).id;
+        const fullnessPct=Math.min(100,Math.round(((dinnerEvent.fullness||0)/(dinnerEvent.maxFullness||80))*100));
+        const fullnessColor=fullnessPct>=80?"#c04020":fullnessPct>=50?"#c08020":"#20a060";
+        const isAlmostFull=fullnessPct>=80;
+        const atelier=DINNER_VENUES.find(v=>v.id==="atelier");
+        const showAtelier=hasSkill("dinner_accessible")&&stId>=6;
+        const venueList=[...availableVenues,...(showAtelier?[atelier]:[])];
         return(
           <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:620}}>
+            <div style={{...C.modal,maxWidth:640}}>
               {/* Header */}
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
                 <div>
                   <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:3}}>DINNER OUT</div>
                   <h2 style={{margin:0,color:"#c898ff",fontSize:20}}>Dinner with {ds.name}</h2>
@@ -2422,9 +2717,23 @@ export default function ProfessorSim(){
                 </div>
                 <div style={{textAlign:"right"}}>
                   <div style={{fontSize:13,color:"#f0a060",fontWeight:700}}>+{dinnerEvent.totalGain} lbs so far</div>
-                  <div style={{fontSize:10,color:"#5a4070",marginTop:3}}>{dinnerEvent.dishes.length} dishes ordered</div>
+                  <div style={{fontSize:10,color:"#5a4070",marginTop:3}}>{dinnerEvent.dishes.length} dishes · {dinnerEvent.conversationUsed.length} conversations</div>
                 </div>
               </div>
+
+              {/* Fullness meter — only in dishes phase */}
+              {dinnerEvent.phase==="dishes"&&(
+                <div style={{marginBottom:12}}>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:10,marginBottom:3}}>
+                    <span style={{color:"#7a5070",letterSpacing:1}}>APPETITE</span>
+                    <span style={{color:fullnessColor,fontWeight:700}}>{fullnessPct}%{fullnessPct>=100?" — satisfied!":isAlmostFull?" — almost full":""}</span>
+                  </div>
+                  <div style={{background:"#0d0816",borderRadius:4,height:7,overflow:"hidden"}}>
+                    <div style={{width:`${fullnessPct}%`,height:"100%",background:fullnessColor,borderRadius:4,transition:"width 0.5s ease"}}/>
+                  </div>
+                  <div style={{fontSize:10,color:"#5a3060",marginTop:2,fontStyle:"italic"}}>Fatter girls have more capacity. Use conversation to make room.</div>
+                </div>
+              )}
 
               {/* PHASE: VENUE SELECTION */}
               {dinnerEvent.phase==="venue"&&(
@@ -2433,11 +2742,12 @@ export default function ProfessorSim(){
                     Where would you like to take {ds.name} tonight?
                   </div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-                    {availableVenues.map(v=>(
-                      <div key={v.id} style={{...C.card,cursor:"pointer"}} onClick={()=>chooseDinnerVenue(v)}>
-                        <div style={{fontWeight:700,fontSize:13,color:"#d8a8ff",marginBottom:3}}>{v.label}</div>
+                    {venueList.map(v=>(
+                      <div key={v.id} style={{...C.card,cursor:"pointer",border:v.id==="atelier"?"1px solid #806020":"1px solid #180830"}} onClick={()=>chooseDinnerVenue(v)}>
+                        <div style={{fontWeight:700,fontSize:13,color:v.id==="atelier"?"#f0d060":"#d8a8ff",marginBottom:3}}>{v.label}</div>
                         <div style={{fontSize:11,color:"#6a4888",lineHeight:1.4,marginBottom:5}}>{v.desc}</div>
-                        <div style={{fontSize:10,color:"#7a5040"}}>{v.baseCourses} base courses · +{v.gainRange[0]}–{v.gainRange[1]} lbs est.</div>
+                        <div style={{fontSize:10,color:"#7a5040"}}>{v.baseCourses} courses · +{v.gainRange[0]}–{v.gainRange[1]} lbs est.</div>
+                        {v.id==="atelier"&&<div style={{fontSize:9,color:"#a08030",marginTop:3}}>✦ Specialty — stage 6+ only</div>}
                       </div>
                     ))}
                   </div>
@@ -2448,65 +2758,80 @@ export default function ProfessorSim(){
               {/* PHASE: DINING */}
               {dinnerEvent.phase==="dishes"&&dinnerEvent.venue&&(
                 <div>
-                  <div style={{fontSize:11,color:"#7a5090",marginBottom:12,fontStyle:"italic"}}>
-                    You're at {dinnerEvent.venue.label}. {dinnerEvent.venue.desc}
+                  <div style={{fontSize:11,color:"#7a5090",marginBottom:10,fontStyle:"italic"}}>
+                    {dinnerEvent.venue.label} — {dinnerEvent.venue.desc}
                   </div>
 
-                  {/* Order dishes */}
-                  <div style={{...C.secT,marginBottom:8}}>Order Dishes</div>
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:7,marginBottom:14}}>
+                  {/* Dishes grid */}
+                  <div style={{...C.secT,marginBottom:7}}>Menu</div>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:12}}>
                     {dinnerEvent.venue.dishes.map(dish=>{
-                      const alreadyOrdered=dinnerEvent.dishes.filter(d=>d===dish.id).length;
+                      const timesOrdered=dinnerEvent.dishes.filter(d=>d===dish.id).length;
                       return(
-                        <div key={dish.id} style={{...C.card,cursor:"pointer",border:`1px solid ${alreadyOrdered?"#408040":"#180830"}`}} onClick={()=>orderDish(dish)}>
+                        <div key={dish.id}
+                          style={{...C.card,cursor:isAlmostFull?"default":"pointer",
+                            border:`1px solid ${timesOrdered?"#408040":isAlmostFull?"#301820":"#180830"}`,
+                            opacity:isAlmostFull&&timesOrdered===0?0.5:1}}
+                          onClick={()=>!isAlmostFull&&orderDish(dish)}>
                           <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
                             <span style={{fontWeight:700,fontSize:12,color:"#d8a8ff"}}>{dish.label}</span>
-                            <span style={{fontSize:10,color:"#a07050"}}>+{dish.gain[0]}–{dish.gain[1]} lbs</span>
+                            <span style={{fontSize:9,color:"#a07050"}}>+{dish.gain[0]}–{dish.gain[1]} lbs</span>
                           </div>
-                          <div style={{fontSize:10,color:"#6a4870",lineHeight:1.4,marginTop:3}}>{dish.desc}</div>
-                          {alreadyOrdered>0&&<div style={{fontSize:9,color:"#60a060",marginTop:3}}>Ordered ×{alreadyOrdered}</div>}
+                          <div style={{fontSize:10,color:"#6a4870",lineHeight:1.4,marginTop:2}}>{dish.desc}</div>
+                          <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
+                            {timesOrdered>0&&<span style={{fontSize:9,color:"#60a060"}}>×{timesOrdered} ordered</span>}
+                            <span style={{fontSize:9,color:"#5a3060",marginLeft:"auto"}}>fills {dish.fullness}%</span>
+                          </div>
                         </div>
                       );
                     })}
                   </div>
 
-                  {/* Conversation options */}
-                  <div style={{...C.secT,marginBottom:8}}>Conversation</div>
-                  <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:14}}>
+                  {isAlmostFull&&(
+                    <div style={{...C.infoBox("rgba(80,20,20,0.3)"),fontSize:12,color:"#e08060",marginBottom:10,fontStyle:"italic"}}>
+                      She's very full — use conversation to make room for more, or let the evening end naturally.
+                    </div>
+                  )}
+
+                  {/* Conversation */}
+                  <div style={{...C.secT,marginBottom:7}}>Conversation</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:12}}>
                     {DINNER_CONVERSATION
                       .filter(conv=>!conv.requires||hasSkill(conv.requires))
                       .map(conv=>{
                         const used=dinnerEvent.conversationUsed.includes(conv.id);
+                        const isRisky=(conv.offenseRisk||0)>0;
+                        const reducesFullness=(conv.fullnessEffect||0)<0;
                         return(
-                          <button key={conv.id} style={{...C.smBtn,opacity:used?0.4:1,textDecoration:used?"line-through":"none"}}
-                            onClick={()=>!used&&useDinnerConversation(conv,ds,stId)}>
-                            {conv.label}
-                          </button>
+                          <button key={conv.id}
+                            style={{...C.smBtn,
+                              opacity:used?0.4:1,
+                              textDecoration:used?"line-through":"none",
+                              borderColor:isRisky?"#604030":"#4a1280",
+                              color:reducesFullness?"#60d090":isRisky?"#c06040":"#b080e8"}}
+                            onClick={()=>!used&&useDinnerConversation(conv)}>
+                            {conv.label}{reducesFullness?" 💨":""}{isRisky?" ⚠":""}</button>
                         );
                       })}
                   </div>
+                  <div style={{fontSize:9,color:"#3a2040",marginBottom:10}}>💨 makes room for more · ⚠ may cause offense</div>
 
-                  {/* Dinner dialogue feed */}
-                  <div style={{background:"rgba(20,5,35,0.8)",border:"1px solid #2a0848",borderRadius:8,padding:10,marginBottom:12,maxHeight:180,overflowY:"auto",display:"flex",flexDirection:"column",gap:4}}>
+                  {/* Dinner log */}
+                  <div style={{background:"rgba(20,5,35,0.8)",border:"1px solid #2a0848",borderRadius:8,padding:10,marginBottom:10,maxHeight:160,overflowY:"auto",display:"flex",flexDirection:"column",gap:3}}>
                     {dinnerLog.length===0
                       ?<div style={{fontSize:12,color:"#5a3070",fontStyle:"italic"}}>{ds.name} looks at the menu with obvious interest.</div>
                       :dinnerLog.map((line,i)=>(
-                        <div key={i} style={{fontSize:12,color:line.startsWith("💬")?"#e8d0a8":line.startsWith("🍴")?"#d0a860":"#b090c8",lineHeight:1.65,borderBottom:i<dinnerLog.length-1?"1px solid rgba(80,20,120,0.15)":"none",paddingBottom:i<dinnerLog.length-1?4:0}}>
+                        <div key={i} style={{fontSize:12,color:line.startsWith("💬")?"#e8d0a8":line.startsWith("🍴")?"#d0a860":line.startsWith("😤")?"#f06040":"#b090c8",lineHeight:1.6,borderBottom:i<dinnerLog.length-1?"1px solid rgba(80,20,120,0.1)":"none",paddingBottom:i<dinnerLog.length-1?3:0}}>
                           {line}
                         </div>
                       ))
                     }
                   </div>
-                  <div style={{fontSize:11,color:"#f0a060",fontWeight:700,marginBottom:10,textAlign:"right"}}>
-                    +{dinnerEvent.totalGain} lbs · {dinnerEvent.dishes.length} dishes · {dinnerEvent.conversationUsed.length} conversations
-                  </div>
 
-                  <div style={{display:"flex",gap:8}}>
-                    <button style={C.btn("#2a7830")} onClick={finishDinner}>
-                      End Evening (+15 relationship)
-                    </button>
-                    <button style={C.btn("#444")} onClick={()=>setDinnerEvent(null)}>
-                      Leave Early (no relationship bonus)
+                  <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                    <div style={{fontSize:11,color:"#f0a060",fontWeight:700,flex:1}}>+{dinnerEvent.totalGain} lbs total</div>
+                    <button style={C.btn("#444")} onClick={()=>{setAp(a=>a-2);setDinnerEvent(null);}}>
+                      Leave Early
                     </button>
                   </div>
                 </div>
@@ -2757,12 +3082,12 @@ export default function ProfessorSim(){
                 {/* Personal actions */}
                 <div style={{...C.secT,marginBottom:7}}>Personal Actions · {ap} AP</div>
                 <div style={C.grid3}>
-                  {ACTIONS_SINGLE.map(a=>(
+                  {effectiveSingleActions.map(a=>(
                     <div key={a.id} style={{...C.card,opacity:ap<a.cost?0.35:1}} onClick={()=>doSingle(a,s)}>
                       <div style={{fontWeight:700,fontSize:12,color:"#c090e8",marginBottom:2}}>{a.label}</div>
                       <div style={{fontSize:10,color:"#5a3888",lineHeight:1.4,marginBottom:4}}>{a.desc}</div>
                       <div style={{display:"flex",justifyContent:"space-between"}}>
-                        <span style={{fontSize:10,color:"#e07030"}}>{a.cost} AP</span>
+                        <span style={{fontSize:10,color:"#e07030"}}>{a.cost} AP{a.cost===0?<span style={{color:"#60c060",marginLeft:3}}>FREE</span>:null}</span>
                         {a.gain[1]>0&&<span style={{fontSize:10,color:"#685040"}}>+{a.gain[0]}–{a.gain[1]} lbs</span>}
                       </div>
                     </div>
@@ -2777,12 +3102,12 @@ export default function ProfessorSim(){
             <div>
               <p style={C.secT}>Class-Wide Actions · {ap} AP remaining</p>
               <div style={C.grid2}>
-                {ACTIONS_CLASS.map(a=>(
+                {effectiveClassActions.map(a=>(
                   <div key={a.id} style={{...C.card,opacity:ap<a.cost?0.35:1}}>
                     <div style={{fontWeight:700,color:"#c090e8",marginBottom:3}}>{a.label}</div>
                     <div style={{fontSize:11,color:"#5a3888",marginBottom:8,lineHeight:1.4}}>{a.desc}</div>
                     <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
-                      <span style={{fontSize:11,color:"#e07030"}}>{a.cost} AP</span>
+                      <span style={{fontSize:11,color:a.cost===0?"#60c060":"#e07030"}}>{a.cost===0?"FREE":a.cost+" AP"}</span>
                       <span style={{fontSize:10,color:"#604030"}}>+{a.gain[0]}–{a.gain[1]} lbs ea</span>
                     </div>
                     <button style={{...C.btn(),width:"100%",opacity:ap<a.cost?0.4:1}} disabled={ap<a.cost} onClick={()=>doClass(a)}>Use Action</button>
@@ -2988,6 +3313,13 @@ export default function ProfessorSim(){
                           {skillApBonus>0&&<div style={{fontSize:11,color:"#80a0e0"}}>+{skillApBonus} AP/week (max 20)</div>}
                           {skillGainMult>1&&<div style={{fontSize:11,color:"#e0a060"}}>×{skillGainMult.toFixed(2)} all gain multiplier</div>}
                           {dinnerUnlocked&&<div style={{fontSize:11,color:"#c080f0"}}>🍽️ Dinner events active</div>}
+                          {hasSkill("snack_station")&&<div style={{fontSize:11,color:"#60d090"}}>🍪 Desk Snacks FREE</div>}
+                          {hasSkill("catering_contact")&&<div style={{fontSize:11,color:"#60d090"}}>🤝 Feast: -1 AP, +4 lbs</div>}
+                          {hasSkill("private_kitchen")&&<div style={{fontSize:11,color:"#60d090"}}>🍳 Home-Cooked +4 lbs, Bake +3 lbs</div>}
+                          {hasSkill("ap_mastery")&&<div style={{fontSize:11,color:"#60d090"}}>⚡ All single actions -1 AP</div>}
+                          {hasSkill("full_catering")&&<div style={{fontSize:11,color:"#60d090"}}>🍾 On-Demand Feast unlocked</div>}
+                          {hasSkill("group_dynamics")&&<div style={{fontSize:11,color:"#60d090"}}>👥 Group Dinner unlocked</div>}
+                          {hasSkill("dinner_accessible")&&<div style={{fontSize:11,color:"#d0a030"}}>🌟 The Atelier unlocked</div>}
                           <div style={{fontSize:10,color:"#5a3070",marginTop:3}}>{unlockedSkills.length} / {SKILL_TREE.length} skills</div>
                         </div>
                       }
