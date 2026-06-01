@@ -3766,12 +3766,6 @@ export default function ProfessorSim(){
   const sel=selectedId!==null?students.find(s=>s.id===selectedId):null;
   const totalGained=students.reduce((a,s)=>a+(s.lbs-s.startLbs),0);
   const avgLbs=Math.round(students.reduce((a,s)=>a+s.lbs,0)/students.length);
-  // ── SKILL TREE DERIVED VALUES ──────────────────────────────
-  const hasSkill=(id)=>unlockedSkills.includes(id);
-  const skillPassiveBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.passiveBonus,0)+profPassiveBonus;
-  const skillApBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.apBonus,0);
-  const skillGainMult=(1+SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.gainMult,0))*profGainMult;
-  const dinnerUnlocked=unlockedSkills.includes("dinner_basic");
   // ── PROFESSOR SUBJECT / TRAIT EFFECTS ───────────────────────
   const hasTrait=(id)=>professorProfile?.traits?.includes(id)||false;
   const hasSubj=(id)=>professorProfile?.subject===id;
@@ -3780,6 +3774,12 @@ export default function ProfessorSim(){
   const observeFree=hasSubj("art_history")||hasTrait("observant");
   const alwaysShowWeight=hasSubj("physical_ed")||hasTrait("observant");
   const talkRelBonus=hasTrait("charismatic")?4:hasSubj("psychology")?2:0;
+  // ── SKILL TREE DERIVED VALUES ──────────────────────────────
+  const hasSkill=(id)=>unlockedSkills.includes(id);
+  const skillPassiveBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.passiveBonus,0)+profPassiveBonus;
+  const skillApBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.apBonus,0);
+  const skillGainMult=(1+SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.gainMult,0))*profGainMult;
+  const dinnerUnlocked=unlockedSkills.includes("dinner_basic");
 
   // ── EFFECTIVE ACTIONS (applying unlocked skill effects) ──────
   const effectiveSingleActions=ACTIONS_SINGLE.map(a=>({
