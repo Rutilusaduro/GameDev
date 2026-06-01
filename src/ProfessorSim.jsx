@@ -2000,6 +2000,158 @@ const UNBUTTON_LINES=[
   (s)=>`${s.name} pauses, does something discreet under the table, and continues. Her expression doesn't change. The pace of eating does.`,
 ];
 
+// ═══════════════════════════════════════════════════════════════
+// PROFESSOR CHARACTER CREATION
+// ═══════════════════════════════════════════════════════════════
+
+const PROF_SUBJECTS=[
+  {id:"psychology",label:"Psychology",emoji:"🧠",desc:"You study the mind. The rationalizations, the quiet negotiations people make with themselves — you see the shape of them before anyone else does.",bonus:"Talk actions grant +2 additional relationship. Observe reveals emotional state."},
+  {id:"literature",label:"Literature",emoji:"📚",desc:"You read transformation into every text. You recognize a character arc when you're living one — and when you're writing someone else's.",bonus:"+15% relationship from conversation actions. Dinner conversations are richer."},
+  {id:"nutrition",label:"Nutrition Science",emoji:"🔬",desc:"The body is your subject. Intake, accumulation, the whole scientific romance of how things change and where they end up.",bonus:"All feeding actions +10% gain. Study check-ins unlock caloric analysis."},
+  {id:"art_history",label:"Art History",emoji:"🎨",desc:"You've spent a career teaching people to really look at form. The appreciative eye is a habit by now. You can't turn it off.",bonus:"Observe costs 0 AP. Group dinner jealousy triggers more frequently."},
+  {id:"physical_ed",label:"Physical Education",emoji:"🏋️",desc:"Years preaching fitness. There's a particular poetry in what you're doing now. You know exactly where each pound lands.",bonus:"Student weight and stage always visible. Stage transitions unlock unique commentary."},
+  {id:"philosophy",label:"Philosophy",emoji:"⚖️",desc:"Everything is relative. Consequence is deferred. You are examining several lives, including your own.",bonus:"+5% all gain actions. Admin scrutiny rises 20% more slowly."},
+];
+
+const PROF_TRAITS=[
+  {id:"patient",label:"Patient",emoji:"🕰️",desc:"You play a long game. The slow accumulation, the inevitable tipping points — these are more satisfying to you than brute force.",effect:"+2 relationship from every action. Passive gain +1 lb/student/week."},
+  {id:"observant",label:"Observant",emoji:"👁️",desc:"Nothing escapes you. Weight stages, how a shirt fits, the slight breathlessness on stairs — you clock all of it, always.",effect:"Student weight always visible. Observe costs 0 AP."},
+  {id:"generous",label:"Generous",emoji:"🍽️",desc:"You express care through food. It's almost automatic. The portions are just enthusiastic.",effect:"All feeding actions +15% gain. Dinner fullness +10%."},
+  {id:"charismatic",label:"Charismatic",emoji:"✨",desc:"Students listen when you talk. They lean in. They stay for office hours longer than they intended.",effect:"Talk actions grant double relationship. Dinner conversations unlock sooner."},
+  {id:"discreet",label:"Discreet",emoji:"🔇",desc:"You're good at making the unusual seem unremarkable. Keeping things quiet is a skill you've honed.",effect:"Admin scrutiny rises 35% more slowly. Research study risk halved."},
+];
+
+// ═══════════════════════════════════════════════════════════════
+// ADMIN EVENTS
+// ═══════════════════════════════════════════════════════════════
+
+const ADMIN_EVENTS=[
+  {
+    id:"lounge_talk",threshold:25,title:"Faculty Lounge",
+    scene:()=>`Dr. Pembrook catches you at the coffee machine. "Good semester?" She fills her mug, not really watching you. "I've been hearing nice things about engagement in your class. Students seem very invested." A pause while she stirs. "Though someone mentioned a few of them have been looking a bit different lately. Dr. Haynes said it's probably just the dining hall." She takes her coffee and goes.`,
+    choices:[
+      {label:"Agree warmly",delta:0,text:`"It's been a wonderful group," you say. "Very engaged."`},
+      {label:"Blame the dining hall",delta:-5,text:`"Campus food does its work," you say. She laughs. Something settles slightly.`},
+    ]
+  },
+  {
+    id:"dept_chair",threshold:50,title:"Dean's Office",
+    scene:()=>`Dean Holloway's assistant leaves a note in your mailbox: a brief check-in, Thursday, 2pm. You go. The Dean is warm and precise. She compliments your evaluations — genuinely, it seems. Then: "A few students have mentioned — not complaints exactly. More observations. About how often they socialize with you outside class." She folds her hands. "I want to make sure everyone feels comfortable." She's giving you room to speak.`,
+    choices:[
+      {label:"Reassure professionally",delta:0,text:`"Mentorship," you say. "These students are genuinely invested in their development." The Dean nods. Something settles.`},
+      {label:"Walk her through specifics",delta:-12,text:`Two or three clean, plausible mentorship examples. She seems satisfied. The scrutiny drops noticeably.`},
+      {label:"Keep it brief",delta:10,text:`"Everything is fine," you say. Short. She notes it. The scrutiny ticks up.`},
+    ]
+  },
+  {
+    id:"irb_inquiry",threshold:65,title:"IRB Inquiry",
+    scene:()=>`An email from the Institutional Review Board at 7am. "It's come to our attention that you may be conducting informal research with students." The language is careful, bureaucratic. "Proper documentation would need to be submitted for review." Signed by someone you don't know. They've been talking.`,
+    choices:[
+      {label:"File paperwork",delta:-8,text:`You spend an afternoon generating plausible documentation. The inquiry quiets.`},
+      {label:"Pause the study",delta:-15,text:`You put the formal check-ins on hold. The IRB stops asking.`},
+      {label:"Ignore it",delta:20,text:`You don't respond. The scrutiny builds.`},
+    ]
+  },
+  {
+    id:"formal_review",threshold:80,title:"Formal Review",
+    scene:()=>`HR schedules a review. Two of them and a union rep. They have a folder. The questions are procedural: "Can you describe the nature of your extracurricular contact with students?" The HR officer — a broad, unhurried woman — watches you with the patience of someone who has done this many times and knows how it ends.`,
+    choices:[
+      {label:"Cooperate fully",delta:-10,text:`You answer every question carefully. The review concludes inconclusively. The scrutiny drops, but the record exists.`},
+      {label:"Request representation",delta:5,text:`They postpone. Procedurally correct. But it registers. Scrutiny holds.`},
+    ]
+  },
+  {
+    id:"termination",threshold:95,title:"End of Semester",
+    scene:()=>`The letter arrives on a Tuesday. "Following a thorough review…" You read it standing in the hallway. Through the window you can see the quad. Three of your students are walking together. One of them is much, much larger than she was in September. She moves carefully through the cold, filling her coat beautifully. She laughs at something, and the laugh travels through her whole body. She has no idea you're watching. She has no idea it's over.`,
+    choices:[{label:"Accept it",delta:0,text:`You put the letter in your bag. You'll clear your office this week.`}],
+    isGameOver:true,
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// RESEARCH STUDY CHECK-IN SCENES
+// ═══════════════════════════════════════════════════════════════
+
+const STUDY_SCENES={
+  cheerleader:[
+    (s)=>`${s.name} comes in after practice, warm-up jacket still on. She steps on the scale with the mild curiosity of someone being weighed for a physical. ${s.lbs} lbs. She watches you write it down. "So is this for a real paper?" You explain the framework. She nods. You take measurements. When you're done she pulls her jacket down over her waist — a gesture that's new.`,
+    (s)=>`The jacket is tighter today. She answers the dietary recall with more detail than before — the late-night orders, the team dinners, the habit of finishing other people's plates because it feels rude not to. When you mention she's up significantly from baseline, she says, "That can't be right." You show her the chart. She stares at it. "Huh," she says finally, in a voice that's somewhere between surprised and not very surprised at all.`,
+    (s)=>`She doesn't bother with the jacket today. "I've been thinking about what you said." You didn't say anything — you recorded and listened. Something has been working on her. You note that her squad has shifted her to the back formation; she tells you this without self-pity, and then: "I don't hate how I look, though. Is that weird?" You write it down.`,
+    (s)=>`${s.name} arrives slightly breathless from the stairs. She drops into the chair and your notes update themselves: the roundness of her cheeks, the way the desk arm presses into her side. ${s.lbs} lbs. "I tried calorie counting," she says. "For three days. It felt worse than not knowing." She picks up your pen and turns it over. "Can I see the graph again?" She studies it. "That's wild," she says softly.`,
+    (s)=>`Final check-in. You go through the protocol. She answers, but she's looking at the window. At the end she asks: "Do you think about us outside this?" You say the data is anonymized. She looks at you. "That's not what I asked." You close your notebook. The study, technically, is complete.`,
+  ],
+  scholar:[
+    (s)=>`${s.name} arrives with a request: can she see the methodology? You explain the longitudinal framework. She listens with focused skepticism. ${s.lbs} lbs — she watches the number with an expression like she's being tested on it. "That's higher than I expected," she says. You ask when she last weighed herself. "Freshman year," she says.`,
+    (s)=>`She's done research. She arrives with printed papers — metabolism studies, adipogenesis. "I've been thinking about the mechanisms," she says. You let her talk. It's impressive and slightly defensive and it circles the fact that her clothes are getting tight without quite landing there. ${s.lbs} lbs. "That's consistent with the trend," she says carefully.`,
+    (s)=>`"You're not a nutrition researcher," she says today. "Are you." Not quite a question. You hold the silence. She looks at the chart — ${s.lbs} lbs — and then at you. "I'm still participating," she says, after a long moment. "For now."`,
+    (s)=>`She's stopped asking methodological questions. She sits, you weigh her — ${s.lbs} lbs — and she watches the pen move. "My advisor says I look different," she says. "I told her I'm in a dietary study. She seemed satisfied with that." The word 'satisfied' sits between you.`,
+    (s)=>`Final check-in. She brings coffee for both of you. At the end: "What happens to the data?" Private, you tell her. She nods. "I want a copy of my chart," she says. "For my own reference." You print it. She folds it carefully and puts it in her bag.`,
+  ],
+  athlete:[
+    (s)=>`${s.name} comes straight from the weight room. There's a brief irony in watching her step on the scale. ${s.lbs} lbs. She stares at the number with the look of someone whose relationship with that number was once very tactical. "Okay," she says, to herself. You note: the weight room isn't doing the same work it used to.`,
+    (s)=>`She mentions her coach casually, mid-recall: "He said I'm carrying extra. I told him I'm in a study." She looks at you steadily. "He seemed annoyed." You record this. Does any of this go anywhere? she asks. Confidential, you say. She finds this satisfying in a way you don't entirely understand.`,
+    (s)=>`${s.name} isn't in athletic wear today — jeans and a soft shirt, and the shirt is doing interesting things. "I dropped the morning run," she says. "I'm sleeping better." ${s.lbs} lbs. She looks at the number. "Huh," she says, and her tone carries something that isn't quite regret.`,
+    (s)=>`She's stopped talking about her coach. ${s.lbs} lbs. Equanimity now, where there used to be tactical distance. The posture has changed — she takes up more space without apologizing for it. "I feel better," she says, unprompted. "I know that doesn't make sense." It makes perfect sense. You write it down.`,
+    (s)=>`Final check-in, answered from memory, almost rote. At the end: "So what did you find?" You say something truthful and vague. She looks at the window. "I used to weigh myself every day," she says. "Every single day." She doesn't say what she does now. She doesn't have to.`,
+  ],
+  quiet:[
+    (s)=>`${s.name} closes your door behind her without making eye contact with anyone in the hallway. The weigh-in is quiet. ${s.lbs} lbs. She looks at the number for a long moment. Your recall questions get short, accurate answers. "Thank you," she says at the end, and leaves. You look at your notes. There's more there than in any other session you've run.`,
+    (s)=>`She notices the chart on the wall. She looks at her line — climbing — for a full minute before you start the paperwork. "Is that a lot?" she asks. You say it's significant. She nods, once. Gets on the scale. ${s.lbs} lbs. Gets off. Sits down. "Okay," she says. You begin the recall.`,
+    (s)=>`She arrives today with food — a bag from the bakery, two things. She puts one on your desk without comment and eats hers while you take measurements. ${s.lbs} lbs. She finishes her pastry, brushes crumbs from the front of her shirt — a new shirt, larger than last month's — and says: "Same time next week?"`,
+    (s)=>`The chart needs a new scale. She notices and tilts her head. "You need a bigger chart." You agree. ${s.lbs} lbs. Near the end of the recall she says, quietly: "I feel like myself." You look up. She meets your eyes for a moment, then looks away. You write it down verbatim.`,
+    (s)=>`Last session. Bakery bag again. Final protocol. When you say it's the last formal check-in, she's quiet. Then: "You can still observe, right? Informally?" You say you can. She nods and goes. The chair is glad to see her — it's been a tight fit for a while now.`,
+  ],
+  party:[
+    (s)=>`${s.name} arrives eleven minutes late, apologetic and slightly breathless. She gets on the scale and says, "Okay, that's a lot," and laughs. A real laugh. "Do I get a gold star?" ${s.lbs} lbs. The recall is thorough and unfazed.`,
+    (s)=>`"I weighed myself before I came," she says. She shows you the number on her phone — it matches yours to the pound. "Cool." She has to angle herself slightly to sit with the chair arms, and does this without self-consciousness. She answers the recall like someone who has arranged her feelings about the situation into something close to delight.`,
+    (s)=>`She arrives with a café drink and asks if you want anything. Gets on the scale without being asked — "${s.lbs}, write it down" — and sits. "My friends think I'm in a weight loss study," she says. She grins. "I haven't corrected them."`,
+    (s)=>`She's wearing a dress that fits her very well right now and won't in another month, and she knows this, and she's wearing it anyway. ${s.lbs} lbs. "The dining hall staff know me by name," she says. "They have my usual ready. I feel great, by the way." You write that down too.`,
+    (s)=>`Final check-in. She's brought snacks for both of you. "I don't know, it felt right." At the end: "So what's next?" Formal part is done, you tell her. "Informal still works for me," she says. You hear her greet someone in the hallway, warm and loud and very much herself.`,
+  ],
+  sorority:[
+    (s)=>`${s.name} arrives with the posture of someone treating this like a board meeting. ${s.lbs} lbs. "What does that represent as a trajectory?" You show her the chart. She studies it. "I see," she says. The recall is complete and gives you more context than you asked for, as if she's briefing a committee.`,
+    (s)=>`She's made a spreadsheet. Thorough, cross-referenced. You compare it against your recall questions — it matches almost perfectly. "I find it's better to understand a thing than to be surprised by it." Her weight has increased substantially. She is not surprised.`,
+    (s)=>`The chapter has apparently had conversations. "Some of the girls have asked about how I look. I told them I'm in a study and everything is fine." Things are, by certain metrics, fine: ${s.lbs} lbs, and something easier about her than there used to be. "I want to see the chart."`,
+    (s)=>`Spreadsheet updated through last night. "I've been cross-referencing." ${s.lbs} lbs. She looks at the figures with the satisfaction of someone watching a plan go well. "I've updated the chapter records accordingly." You don't ask what that means.`,
+    (s)=>`Final check-in with a formal agenda, three items. Item three: "Discussion of study conclusion and ongoing relationship." "I'd like to continue providing data. Voluntarily. Without the formal structure." You tell her you can discuss that. "Good," she says, and uncrosses her ankles.`,
+  ],
+  honors:[
+    (s)=>`${s.name} arrives five minutes early and waits in the hallway until you open the door. Polite and thorough. ${s.lbs} lbs. At the end: "Is there anything you need me to do differently?" You say no. She seems faintly disappointed, as if she could be performing better.`,
+    (s)=>`She has prepared questions. From her phone, in order: "Is the weight gain intentional? Is this related to the dinners? Should I be managing this?" You are somewhat vague. She notes this. ${s.lbs} lbs. She writes the number herself.`,
+    (s)=>`She arrives in different clothes — softer, less structured. ${s.lbs} lbs. "I've told my family I'm in a study. My mother said I look healthy." She says this carefully. "She used to say I looked thin."`,
+    (s)=>`She brings tea — for both of you. The blazer is gone permanently now. At the end: "I was doing a lot of things because I thought I should. I'm doing fewer of them. I weigh ${s.lbs} lbs and things seem…" She looks for the word. "Fine," she says. "Actually fine."`,
+    (s)=>`Final check-in. Tea again. At the end: "Thank you for including me." A pause. "I know what this is." Another pause. "I don't mind." She stands — considerably more than September — and moves with a careful, settled grace, and leaves.`,
+  ],
+  influencer:[
+    (s)=>`${s.name} photographs the scale — "${s.lbs}, okay" — before you've recorded anything. "I've been posting a wellness study series. Very vague. Very aspirational." She has the recall questions memorized. She answers like someone who always knows she's being documented and has decided to be authentic anyway.`,
+    (s)=>`Her study diary posts are getting engagement. Comments want to know: is she gaining on purpose? She's saying nothing. "The mystery is the content." ${s.lbs} lbs. She photographs the chart. "It's cropped, don't worry." She describes her eating with the half-awareness of someone who knows she's always being watched.`,
+    (s)=>`She turns her phone face-down when she enters. Recall proceeds. At the weigh-in — ${s.lbs} — she looks at the chart and then at you. "Is this what you expected? The rate?" You say the data has been interesting. "Me too," she says.`,
+    (s)=>`She shows you a post: herself, before the study and now, overlaid. No captions. The difference is clear and significant, framed in warm, beautiful light. "I've disabled comments. I just wanted to make something honest." ${s.lbs} lbs. You write it down. She watches your face.`,
+    (s)=>`Final check-in. She arrives without her phone. At the end: "I want to keep going. Just for me. Not for the account." She leaves the phone on your desk when she goes. A minute later she comes back for it.`,
+  ],
+  artsy:[
+    (s)=>`${s.name} steps on the scale with the air of someone witnessing an art installation — curious, slightly removed. "${s.lbs}," she says, reading it herself. "That's a number." The recall is vivid: flavors, textures, the hour, the quality of the light.`,
+    (s)=>`She brings her sketchbook today. While you take measurements she opens it — not to show you, just to have it present. You catch a glimpse: studies. Forms you recognize. "I've been thinking about documentation," she says. "How a thing recorded is different from a thing just experienced."`,
+    (s)=>`"I want to see the chart," before you've started. You turn the screen toward her. She looks at the line for a long time. "That's actually beautiful." She means the shape of it, the arc. ${s.lbs} lbs. She traces it with one finger. "What does that feel like, from the inside?" She's asking herself.`,
+    (s)=>`She arrives with a canvas bag and a paint smock she's forgotten to remove. The chair makes a quiet sound. ${s.lbs} lbs. "I've been making work about this. About accumulation. The evidence building." She watches your face. "Does that concern you?" You shake your head. "Good," she says, and opens the recall form herself.`,
+    (s)=>`Final check-in. She gives you a small print at the end — rolled in a rubber band. You unroll it after she leaves. It's the chart. Her weight gain, traced in charcoal, specific and beautiful. At the bottom: "For the record."`,
+  ],
+  foodie:[
+    (s)=>`${s.name} has a lot to say about her dietary recall. Each item comes with provenance and commentary. You record more than you need to. She weighs ${s.lbs} lbs and accepts the number with the satisfaction of someone watching an investment mature.`,
+    (s)=>`She's keeping a narrative journal — not nutritional, but descriptive. She reads you excerpts. It's extraordinary. ${s.lbs} lbs. "This is the most interesting thing I've ever participated in," she says. You agree, though you phrase it differently.`,
+    (s)=>`The chair is noticeably snug today, and she notes it with academic interest. "The physical consequences are becoming part of the experience." ${s.lbs} lbs. "My palate is sharper and my frame is considerably less sharp, and I find I don't mind." She pulls out the journal. "Can I read you something?"`,
+    (s)=>`She reads you the entry about the first time she noticed the change — week four, the specific dinner where she realized she was past the point of turning back, and found herself, unexpectedly, delighted. ${s.lbs} lbs. "I've been thinking about writing it up properly," she says. "Not for anyone. Just to have."`,
+    (s)=>`Final check-in. She brings food — three things, beautifully packed. "I made them. I needed to close the loop." You eat together. At the end: "The study is over." Then, precisely: "My research continues."`,
+  ],
+};
+const STUDY_SCENE_DEFAULT=[
+  (s)=>`${s.name} sits across from you. The scale reads ${s.lbs} lbs — you note the number without comment, and she watches the pen move with an expression you're learning to read. The recall is brief and complete.`,
+  (s)=>`${s.lbs} lbs. She looks at the chart and then at her own hands on the desk. "It's going somewhere," she says. You ask what she means. She looks at you. "It's going somewhere," she says again, as if the sentence is self-explanatory.`,
+  (s)=>`She's wearing different clothes today — larger, softer. ${s.lbs} lbs. She answers the recall fully, without the hesitation of the first session, like someone who has stopped pretending.`,
+  (s)=>`${s.lbs} lbs. "Does it ever stop?" she asks. That's one of the things the study is trying to understand, you tell her. She finds this funny. "Right," she says. "The study."`,
+  (s)=>`Final session. Gets on the scale — ${s.lbs} lbs — sits, does the recall. At the end: "What happens now?" Formal part is done, you say. She nods. She doesn't ask about the informal part. She already knows.`,
+];
+
 const DINNER_VENUES = [
   { id:"bistro",    label:"🥖 Campus Bistro",      tier:1, baseCourses:2, gainRange:[4,8],
     desc:"Cosy neighbourhood bistro. Good portions, comfortable atmosphere.",
@@ -2315,6 +2467,16 @@ export default function ProfessorSim(){
   const [classSession,setClassSession]=useState(null);
   const [semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
+  const [professorProfile,setProfessorProfile]=useState(null);
+  // professorProfile: {name, subject, traits:[]}
+  const [adminScrutiny,setAdminScrutiny]=useState(0);
+  const [adminEvent,setAdminEvent]=useState(null);
+  const [adminFiredIds,setAdminFiredIds]=useState([]);
+  const [researchStudy,setResearchStudy]=useState({participants:{}});
+  // participants: {[studentId]:{enrolled,checkInCount:0}}
+  const [studyCheckIn,setStudyCheckIn]=useState(null);
+  // studyCheckIn: {student, scene, index}
+  const [charCreation,setCharCreation]=useState({name:"",subject:null,traits:[]});
   const logRef=useRef(null);
 
   useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
@@ -2338,7 +2500,50 @@ export default function ProfessorSim(){
 
   // (auto-end dinner removed — endings now handled by overfill check or manual "End Evening")
 
+  // Fire admin events at scrutiny thresholds
+  useEffect(()=>{
+    if(!professorProfile) return;
+    const next=ADMIN_EVENTS.slice().sort((a,b)=>b.threshold-a.threshold)
+      .find(ev=>adminScrutiny>=ev.threshold&&!adminFiredIds.includes(ev.id));
+    if(next&&!adminEvent){
+      setAdminEvent(next);
+      setAdminFiredIds(prev=>[...prev,next.id]);
+    }
+  },[adminScrutiny,adminFiredIds,adminEvent,professorProfile]);
+
   const push=useCallback((msg)=>setLog(prev=>[...prev,msg]),[]);
+
+  const addScrutiny=(n)=>{
+    const mult=(1-(professorProfile?.traits?.includes("discreet")?0.35:0))
+              *(1-(professorProfile?.subject==="philosophy"?0.2:0));
+    const actual=Math.max(0,Math.round(n*mult));
+    if(actual>0) setAdminScrutiny(prev=>Math.min(100,prev+actual));
+  };
+
+  const proposeStudy=(s)=>{
+    if(ap<1){push("⚠️ Need 1 AP.");return;}
+    if(s.relationship<55){push("⚠️ Need 55 relationship to enroll a student in the study.");return;}
+    if(researchStudy.participants[s.id]){push(`${s.name} is already enrolled.`);return;}
+    setAp(a=>a-1);
+    setResearchStudy(prev=>({...prev,participants:{...prev.participants,[s.id]:{enrolled:true,checkInCount:0}}}));
+    push(`📋 ${s.name} agrees to participate in your dietary habits study.`);
+    addScrutiny(3);
+  };
+
+  const runCheckIn=(s)=>{
+    if(ap<1){push("⚠️ Need 1 AP.");return;}
+    const pData=researchStudy.participants[s.id];
+    if(!pData){return;}
+    if(pData.checkInCount>=5){push(`${s.name}'s study arc is complete.`);return;}
+    setAp(a=>a-1);
+    const scenes=STUDY_SCENES[s.archetype]||STUDY_SCENE_DEFAULT;
+    const sceneFn=scenes[Math.min(pData.checkInCount,scenes.length-1)];
+    const scene=sceneFn?sceneFn(s):"Session complete.";
+    setStudyCheckIn({student:s,scene,index:pData.checkInCount});
+    setResearchStudy(prev=>({...prev,participants:{...prev.participants,[s.id]:{...pData,checkInCount:pData.checkInCount+1}}}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+5)}));
+    addScrutiny(professorProfile?.traits?.includes("discreet")?1:2);
+  };
 
   const applyGainToStudent=(s,gain)=>{
     const oldSt=getStage(s.lbs).id;
@@ -2431,6 +2636,9 @@ export default function ProfessorSim(){
 
     const evs=collectEvents(updated);
     setStudents(updated);
+    // Admin notices visibly large students
+    const visibleCount=updated.filter(s=>getStage(s.lbs).id>=5).length;
+    if(visibleCount>0) addScrutiny(visibleCount);
     push(`📅 Week ${newWeek} begins. ${newAp} AP available.`);
     if(semEv) setTimeout(()=>push(`🎉 Semester Event: ${semEv.title} — ${semEv.text}`),100);
     if(randomEv) setTimeout(()=>push(`🎲 ${randomEv.text(updated[rnd(0,14)])}`),150);
@@ -2561,7 +2769,7 @@ export default function ProfessorSim(){
     const tLabel={"how_are_you":"How are you doing?","compliment_figure":"Compliment her figure","food_talk":"Talk about food","class_talk":"Discuss class","encourage_eating":"Encourage her to eat more","ask_lifestyle":"Ask about her lifestyle","ask_weight":"Ask about her weight","about_gaining":"Ask about her gaining","future_plans":"Ask about future plans"}[topicId]||topicId;
     push(`💬 You: "${tLabel}"`);
     push(`   ${resp}`);
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4)}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4+talkRelBonus)}));
   };
 
   const doGossip=(gossip, speaker, line)=>{
@@ -2668,6 +2876,7 @@ export default function ProfessorSim(){
     const maxFullness=60+getStage(s.lbs).id*14;
     setDinnerEvent({ student:s, phase:"venue", venue:null, dishes:[], conversationUsed:[], totalGain:0, fullness:0, maxFullness, offenseLevel:0 });
     setDinnerLog([]);
+    addScrutiny(2);
   };
 
   const chooseDinnerVenue=(venue)=>{
@@ -2756,6 +2965,7 @@ export default function ProfessorSim(){
     }));
     setGroupDinnerEvent({ students:gStudents, phase:"venue", venue:null, conversationUsed:[], reactionLevels:{} });
     setGroupDinnerLog([]);
+    addScrutiny(5);
   };
 
   const chooseGroupVenue=(venue)=>{
@@ -2874,7 +3084,7 @@ export default function ProfessorSim(){
     const firstS=groupDinnerEvent.students[0];
     const desc=(WAITER_DESC[vId]||(()=>`The server arrives with fresh menus.`))(firstS);
     setGroupDinnerLog(dl=>[...dl,`🫆 ${desc}`]);
-    setGroupDinnerEvent(prev=>({...prev,reactionLevels:{},students:prev.students.map(s=>({...s,dishes:[]}))}));
+    setGroupDinnerEvent(prev=>({...prev,students:prev.students.map(s=>({...s,dishes:[]}))}));
   };
 
   const useGroupConversation=(conv)=>{
@@ -2926,15 +3136,23 @@ export default function ProfessorSim(){
   const avgLbs=Math.round(students.reduce((a,s)=>a+s.lbs,0)/students.length);
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
   const hasSkill=(id)=>unlockedSkills.includes(id);
-  const skillPassiveBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.passiveBonus,0);
+  const skillPassiveBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.passiveBonus,0)+profPassiveBonus;
   const skillApBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.apBonus,0);
-  const skillGainMult=1+SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.gainMult,0);
+  const skillGainMult=(1+SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.gainMult,0))*profGainMult;
   const dinnerUnlocked=unlockedSkills.includes("dinner_basic");
+  // ── PROFESSOR SUBJECT / TRAIT EFFECTS ───────────────────────
+  const hasTrait=(id)=>professorProfile?.traits?.includes(id)||false;
+  const hasSubj=(id)=>professorProfile?.subject===id;
+  const profGainMult=1+(hasSubj("nutrition")?0.1:0)+(hasSubj("philosophy")?0.05:0)+(hasTrait("generous")?0.15:0);
+  const profPassiveBonus=hasTrait("patient")?1:0;
+  const observeFree=hasSubj("art_history")||hasTrait("observant");
+  const alwaysShowWeight=hasSubj("physical_ed")||hasTrait("observant");
+  const talkRelBonus=hasTrait("charismatic")?4:hasSubj("psychology")?2:0;
 
   // ── EFFECTIVE ACTIONS (applying unlocked skill effects) ──────
   const effectiveSingleActions=ACTIONS_SINGLE.map(a=>({
     ...a,
-    cost:Math.max(0,a.cost-(hasSkill("ap_mastery")?1:0)),
+    cost:Math.max(0,(a.id==="observe"&&observeFree)?0:a.cost-(hasSkill("ap_mastery")?1:0)),
     gain:hasSkill("private_kitchen")&&a.id==="homecooked"?[a.gain[0]+4,a.gain[1]+4]
         :hasSkill("private_kitchen")&&a.id==="bake"?[a.gain[0]+3,a.gain[1]+3]
         :a.gain,
@@ -2999,6 +3217,83 @@ export default function ProfessorSim(){
 
   const views=["class","actions","achievements","log"];
   if(sel) views.splice(1,0,"student");
+
+  // ── CHARACTER CREATION SCREEN ─────────────────────────────────
+  if(!professorProfile){
+    const cc=charCreation;
+    const canFinish=cc.name.trim()&&cc.subject&&cc.traits.length===2;
+    const toggleTrait=(id)=>{
+      setCharCreation(prev=>{
+        const has=prev.traits.includes(id);
+        if(has) return{...prev,traits:prev.traits.filter(t=>t!==id)};
+        if(prev.traits.length>=2) return prev;
+        return{...prev,traits:[...prev.traits,id]};
+      });
+    };
+    return(
+      <div style={{...C.app,alignItems:"center",justifyContent:"center",padding:20}}>
+        <div style={{maxWidth:700,width:"100%"}}>
+          <div style={{textAlign:"center",marginBottom:28}}>
+            <div style={{fontSize:11,letterSpacing:4,color:"#7030c0",marginBottom:6}}>PROFESSOR'S QUARTERS</div>
+            <h1 style={{color:"#d0a0ff",margin:"0 0 6px",fontSize:26,fontWeight:400,fontFamily:"inherit"}}>Before the Semester Begins</h1>
+            <div style={{color:"#7060a0",fontSize:13}}>Tell us who you are.</div>
+          </div>
+
+          {/* Name */}
+          <div style={{marginBottom:22}}>
+            <div style={C.secT}>Your Name</div>
+            <input value={cc.name} onChange={e=>setCharCreation(prev=>({...prev,name:e.target.value}))}
+              placeholder="Professor…"
+              style={{background:"rgba(255,255,255,0.05)",border:"1px solid #4a1580",borderRadius:6,padding:"9px 13px",color:"#ddd0b8",fontSize:14,fontFamily:"inherit",width:"100%",boxSizing:"border-box"}}/>
+          </div>
+
+          {/* Subject */}
+          <div style={{marginBottom:22}}>
+            <div style={C.secT}>Your Subject</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:8}}>
+              {PROF_SUBJECTS.map(sub=>{
+                const sel=cc.subject===sub.id;
+                return(
+                  <div key={sub.id} onClick={()=>setCharCreation(prev=>({...prev,subject:sub.id}))}
+                    style={{background:sel?"rgba(120,40,220,0.25)":"rgba(255,255,255,0.03)",border:`1px solid ${sel?"#8040d0":"#200e40"}`,borderRadius:8,padding:10,cursor:"pointer",transition:"all 0.15s"}}>
+                    <div style={{fontSize:13,color:sel?"#d090ff":"#b080d8",marginBottom:3}}>{sub.emoji} {sub.label}</div>
+                    <div style={{fontSize:11,color:"#7060a0",lineHeight:1.5,marginBottom:4}}>{sub.desc}</div>
+                    <div style={{fontSize:10,color:"#5030a0",fontStyle:"italic"}}>{sub.bonus}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Traits */}
+          <div style={{marginBottom:28}}>
+            <div style={C.secT}>Your Traits <span style={{fontWeight:400,color:"#5030a0"}}>(pick 2)</span></div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(195px,1fr))",gap:8}}>
+              {PROF_TRAITS.map(tr=>{
+                const sel=cc.traits.includes(tr.id);
+                const disabled=!sel&&cc.traits.length>=2;
+                return(
+                  <div key={tr.id} onClick={()=>!disabled&&toggleTrait(tr.id)}
+                    style={{background:sel?"rgba(120,40,220,0.25)":"rgba(255,255,255,0.03)",border:`1px solid ${sel?"#8040d0":"#200e40"}`,borderRadius:8,padding:10,cursor:disabled?"not-allowed":"pointer",opacity:disabled?0.45:1,transition:"all 0.15s"}}>
+                    <div style={{fontSize:13,color:sel?"#d090ff":"#b080d8",marginBottom:3}}>{tr.emoji} {tr.label}</div>
+                    <div style={{fontSize:11,color:"#7060a0",lineHeight:1.5,marginBottom:4}}>{tr.desc}</div>
+                    <div style={{fontSize:10,color:"#5030a0",fontStyle:"italic"}}>{tr.effect}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div style={{textAlign:"center"}}>
+            <button disabled={!canFinish} onClick={()=>setProfessorProfile({name:cc.name.trim(),subject:cc.subject,traits:cc.traits})}
+              style={{...C.btn(canFinish?"#7020c8":"#2a1040"),fontSize:14,padding:"11px 32px",opacity:canFinish?1:0.5,cursor:canFinish?"pointer":"not-allowed"}}>
+              Begin the Semester
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={C.app}>
@@ -3563,6 +3858,15 @@ export default function ProfessorSim(){
               </div>
             );
           })()}
+          {/* Admin scrutiny meter */}
+          {adminScrutiny>0&&(
+            <div style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:70}}>
+              <div style={{position:"relative",height:6,background:"rgba(255,255,255,0.08)",borderRadius:3,width:70,margin:"4px 0 2px"}}>
+                <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:3,width:`${adminScrutiny}%`,background:adminScrutiny>=80?"#c02020":adminScrutiny>=50?"#c08020":"#7a30c8",transition:"width 0.4s"}}/>
+              </div>
+              <span style={{fontSize:9,color:adminScrutiny>=80?"#ff6060":adminScrutiny>=50?"#ffaa40":"#60389a",letterSpacing:2}}>SCRUTINY</span>
+            </div>
+          )}
           <button onClick={startClass} style={C.btn("#186028")}>⏩ Next Week (+5 AP)</button>
         </div>
       </div>
@@ -3765,6 +4069,41 @@ export default function ProfessorSim(){
                     </div>
                   ))}
                 </div>
+
+                {/* Research Study */}
+                <div style={{marginTop:14}}>
+                  <div style={C.secT}>Research Study</div>
+                  {(()=>{
+                    const pData=researchStudy.participants[s.id];
+                    if(!pData){
+                      return(
+                        <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
+                          <div style={{fontSize:11,color:"#5a3888",flex:1}}>
+                            {s.relationship<55
+                              ?`Need 55 relationship to enroll ${s.name} (${s.relationship}/55).`
+                              :`${s.name} is eligible for your dietary habits study.`}
+                          </div>
+                          {s.relationship>=55&&<button style={C.btn("#3a1070")} onClick={()=>proposeStudy(s)}>Propose Study (1 AP)</button>}
+                        </div>
+                      );
+                    }
+                    const sessions=pData.checkInCount;
+                    return(
+                      <div>
+                        <div style={{display:"flex",gap:5,marginBottom:7,alignItems:"center"}}>
+                          {[0,1,2,3,4].map(i=>(
+                            <div key={i} style={{width:11,height:11,borderRadius:"50%",background:i<sessions?"#a060e0":"rgba(80,18,140,0.2)",border:"1px solid #4a1280"}}/>
+                          ))}
+                          <span style={{fontSize:11,color:"#8060b0",marginLeft:4}}>{sessions}/5 sessions</span>
+                        </div>
+                        {sessions<5
+                          ?<button style={{...C.btn("#5020a0"),opacity:ap<1?0.4:1}} onClick={()=>runCheckIn(s)}>Schedule Check-in (1 AP)</button>
+                          :<div style={{fontSize:11,color:"#5a3888",fontStyle:"italic"}}>Study arc complete.</div>}
+                      </div>
+                    );
+                  })()}
+                </div>
+
               </div>
             );
           })()}
@@ -4031,6 +4370,49 @@ export default function ProfessorSim(){
           </div>
         </div>
       </div>
+
+      {/* ── ADMIN EVENT MODAL ── */}
+      {adminEvent&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:520}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#c04030",marginBottom:6}}>ADMINISTRATION</div>
+            <h2 style={{margin:"0 0 14px",color:"#ff8070",fontSize:17,fontWeight:400}}>{adminEvent.title}</h2>
+            <div style={{...C.infoBox("rgba(80,10,10,0.3)"),lineHeight:1.8,fontSize:13,color:"#d0b0a0",marginBottom:16,fontStyle:"italic"}}>
+              {adminEvent.scene()}
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:7}}>
+              {adminEvent.choices.map((ch,i)=>(
+                <button key={i} style={{...C.btn(ch.delta<0?"#184020":ch.delta>5?"#601010":"#2a1040"),textAlign:"left",padding:"9px 13px"}}
+                  onClick={()=>{
+                    push(`🏛️ ${adminEvent.title}: ${ch.text}`);
+                    if(ch.delta>0) addScrutiny(ch.delta);
+                    else if(ch.delta<0) setAdminScrutiny(prev=>Math.max(0,prev+ch.delta));
+                    if(adminEvent.isGameOver) push("💀 Your contract has not been renewed. The semester ends here.");
+                    setAdminEvent(null);
+                  }}>
+                  {ch.label}
+                </button>
+              ))}
+            </div>
+            <div style={{fontSize:10,color:"#502030",marginTop:10}}>Scrutiny: {adminScrutiny}/100</div>
+          </div>
+        </div>
+      )}
+
+      {/* ── STUDY CHECK-IN MODAL ── */}
+      {studyCheckIn&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:520}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>RESEARCH CHECK-IN — SESSION {studyCheckIn.index+1}</div>
+            <div style={{fontSize:12,color:"#9070b0",marginBottom:10}}>{studyCheckIn.student.name} · {studyCheckIn.student.lbs} lbs · {getStage(studyCheckIn.student.lbs).label}</div>
+            <div style={{...C.infoBox("rgba(60,20,100,0.2)"),lineHeight:1.85,fontSize:13,color:"#d0c0e0",fontStyle:"italic",marginBottom:16}}>
+              {studyCheckIn.scene}
+            </div>
+            <button style={C.btn("#5020a0")} onClick={()=>setStudyCheckIn(null)}>Close</button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
