@@ -1723,6 +1723,79 @@ const WAITER_DESC = {
   atelier:       (s)=>`The maître d' — a truly enormous woman in impeccable black, who navigates the dining room with the serene authority of someone who has never once heard 'no' — arrives at your table. She does not ask what you want. She tells the kitchen. ${s.name} sits up slightly straighter.`,
 };
 
+// ── DINNER ENDING NARRATIVES ──────────────────────────────────
+// [stageGroup 0-3][fullnessGroup 0-3]: (s) => ~150-word string
+const DINNER_ENDING_TEXT = [
+  // Stage 0-2 (slim / gaining)
+  [
+    (s)=>`The bill arrives while ${s.name} is still looking at the dessert menu. She sets it down with something like regret — "I'm actually full," she says, which sounds surprised even as she says it. She sits back, one hand resting on her stomach, a new gesture she doesn't seem entirely aware of. The evening light is good on her. She's happy. She talks for another fifteen minutes about the meal in a way that suggests she's already thinking about coming back. On the walk out she floats the idea of dessert somewhere else, then doesn't follow through. She goes home and texts you later: she fell asleep immediately, the portions were exactly right. You think about the soft line of her hand on her belly and the uncomplicated look on her face, and it seems like a very good place to leave things.`,
+    (s)=>`The moment of reckoning arrives mid-dessert: ${s.name} sets her spoon down, looks at what's left, and picks the spoon back up. She finishes it. She is quiet for a moment after, doing a kind of internal accounting that arrives at a number she hadn't expected. "I ate," she says eventually, "a lot." This appears to surprise her. She sits in the booth a little longer than necessary, in the comfortable way of someone who is not entirely sure they can stand yet. When she does stand, she straightens carefully, tucks her shirt — it had come untucked at some point, she hadn't noticed — and looks genuinely pleased with herself. She tells you the pasta was worth it, and she means the entire evening. She texts on the way home to say she's very full, as if this were news she needed to deliver.`,
+    (s)=>`She goes quiet around the second-to-last dish — not unhappily, more the quiet of someone redirecting all resources inward. She finishes it anyway. Then the last dish. She puts her hands flat on the table and breathes for a moment, looking at the empty plates with an expression between pride and mild alarm. "I need to not move for a minute," she says, and she doesn't, for more than a minute. The waiter comes and goes. When she finally gathers herself to leave, she moves with the careful precision of someone managing something fragile, which is herself. Outside she adjusts — jacket, bag, sense of self — and takes a slow breath. She texts from the taxi: she would absolutely do this again and she doesn't know what that says about her. She sounds completely delighted.`,
+    (s)=>`She couldn't stop. Each dish arrived and she ate it, and when the next one came she looked at it and ate that too, because the food was excellent and the evening was good and she had lost the ability to choose otherwise. She is very full. Comprehensively. She sits for a long time after the last plate, arms on the table, head tipped back slightly, eyes closed, breathing slowly. "I need you to know," she says eventually, "that I don't regret any of it." This is clearly true. She goes home still full, and texts in the morning that the pasta was worth every bite and can you book again next week. She sounds completely serious. You think she probably ate something on the way home and doesn't mention it. This seems right.`,
+  ],
+  // Stage 3-5 (plump / heavy)
+  [
+    (s)=>`${s.name} leans back with the easy satisfaction of someone who has calibrated herself to this. The plates are cleared. She is full in the uncomplicated way of a person who knows how to be full — not surprised by it, not fighting it, just settled into it. She has a second glass of something. She talks about the meal with the detail of someone who paid close attention to every dish, which she was. At some point recently she stopped noticing when she was full and started noticing only when the food was gone. Tonight they coincide. She looks satisfied in a way that extends beyond dinner, as if the whole arrangement of her life is working out correctly. The check arrives. She waves at the empty plates with something like affection.`,
+    (s)=>`There's a moment where ${s.name} pauses, registers something, and continues eating. That's the whole story. The pause is the tell — her body filing a report — and the continuing is the answer: noted, irrelevant. She is full in a way that has weight to it, literally. She settles deeper into her chair at some point during the final course and doesn't come back up to her original height, the way a person sinks when they stop holding themselves in place. When the bill arrives she doesn't look at it, just taps her card and waves the waiter away with the benevolent authority of someone who has nothing left to give attention to. The walk out is slower than the walk in. She notices this and doesn't mention it. Outside she breathes deeply, looks pleased. "Good choice," she says.`,
+    (s)=>`She orders the last dish the way someone presses a button they know they shouldn't — with awareness, with intention, with no hesitation whatsoever. She is already full when it arrives. She is fuller when it's gone. The restaurant has gone quiet around your table in the comfortable way of a place beginning to close, and she's still sitting, because she has no intention of moving yet, and also because standing would require a coordination she's not currently confident about. She puts both palms flat on her stomach, not embarrassed, just aware. "I'm," she says, and doesn't finish the sentence, because the word seems inadequate for the specific experience. She smiles anyway. She sends you a voice message from home later: she is lying completely flat and extremely happy, and you should definitely go back.`,
+    (s)=>`The question of when she would stop eating had an empirical answer: now, at the end of this meal, when there is nothing left in front of her. She didn't stop before that. She's aware of this, and not particularly sorry. She sits with the particular stillness of someone who has exceeded her usual limits and is adjusting to the new position — physically, existentially. Both hands settle on her belly, which is rounder and more present than usual. She says nothing for a while. The restaurant makes small sounds around her. Eventually: "That got away from me a little." Delivered with complete composure. She means: it was perfect. She means: she ate everything and would do it again and is already thinking about it. She moves slowly to the door. She tips generously.`,
+  ],
+  // Stage 6-7 (very heavy)
+  [
+    (s)=>`The table is cleared around ${s.name}. She doesn't move much — movement has been negotiated down to what's necessary, for her — but she's present, attentive, pleased. She ate well. She always eats well, but tonight was particular. She sits the way she always sits: fully, completely, in a way that leaves no ambiguity about how much of her there is. She is a substantial woman. The chair knows this. The staff know this. She knows this, with the comfortable certainty of someone who arrived at this understanding a long time ago and found it agreeable. She looks at the empty plates with something like affection. She looks at you with something warmer. "This was good," she says. The understatement is deliberate. She means: excellent. She means: again. She reaches for the last piece of bread.`,
+    (s)=>`${s.name} acknowledges it. That's notable. She sits with both hands on her belly, which is rounder and more solid than usual, and says: "I'm full." She says it the way you'd note unusual weather — with interest, without alarm. It doesn't happen often, exactly like this. She has calibrated herself across time to new tolerances, and those tolerances are considerable, and tonight she has exceeded them, and she finds this genuinely interesting. She is not unhappy. She is very happy — happy in the slow, warm, heavy way of a person entirely at home in her body, which has never been more present than it is right now, packed and warm and settled into the chair with the solidity of something not going anywhere. She smiles. "Good dinner," she says. High praise. The highest.`,
+    (s)=>`She's beyond what's usual for her, which is not a small achievement. She has been building toward this kind of capacity for a long time, and she has done something significant tonight, and she knows it, and she is pleased in the quiet, satisfied way of someone who has set a personal record. She doesn't speak for a moment. She breathes. Her belly is round and warm and enormous and she rests both hands on it like they've come home. The restaurant has gone quiet. The staff have stopped moving near your table, giving her space, giving the moment space. When she finally speaks, her voice is slower than usual. "That," she says, "was a meal." She doesn't try to get up for another fifteen minutes. When she does, it takes a while. She smiles the entire way to the door.`,
+    (s)=>`She found a point tonight, somewhere after the third course past her limit, that she didn't know existed. A new ceiling. She has been raising ceilings for some time now and tonight she pushed past one she'd never encountered, and she is sitting here in the aftermath of something significant. She is fuller than she has been. She knows it. She sits with it, breathing carefully, her enormous belly pushed against the table edge, both hands resting on its apex. Around her the restaurant has gone quiet. She is the still center of it. "Well," she says, eventually. One word. It means: I am very full. It means: I am extremely pleased. It means: we are coming back. All of these things at once, delivered with the serene authority of a woman who has never once been dissatisfied with herself.`,
+  ],
+  // Stage 8-10 (enormous / immobile)
+  [
+    (s)=>`The table is cleared. ${s.name} surveys the situation with the practiced authority of someone who has done this many times and has strong opinions about how it went. She is satisfied, in the comprehensive physical sense — her body has registered the meal with a fullness that, for her, is simply a comfortable middle. She takes up a great deal of space in the chair, and the chair accommodates this without comment. She is happy. She talks about the food with expertise. She does not hurry to leave. She orders more water. She sits in the pleasant aftermath of a good meal with the comfort of someone very accustomed to this feeling, and the feeling has never felt wrong to her, not once, not for a long time now. "Same time next week," she says, and means it. There is no irony in this.`,
+    (s)=>`${s.name} registers it — she's full, genuinely full, in a way that meets the specific meaning of the word and not just the approximation. This happens less often than you'd think, given the scale she's working with. She sits with both hands on her immense belly and takes a slow breath, the way someone does when they've arrived somewhere after a long journey. She is comfortable. She is very comfortable. She is the most comfortable she's been all evening, which is saying something. She looks at you with warm, unhurried satisfaction. She is a large woman in a good chair, full of good food, and everything is exactly as it should be. "Perfect," she says. She means the food. She means the evening. She means, more broadly, everything. She orders dessert to take home.`,
+    (s)=>`She has exceeded her considerable capacity, which she rarely admits is possible. She sits in full knowledge of this, both hands on her vast belly, doing the quiet internal accounting that follows a meal that went further than expected. Further than most meals go. Further than she'd gone in a while. She is not distressed. She is, if anything, more at ease than usual — there's something clarifying about reaching a real limit rather than an approximation of one. The staff give her wide berth. The chair holds. The evening settles around her with the patience of something that understands its role. After a while she says: "Help me up." You do. She moves slowly, magnificently, like a ship leaving harbour. She thanks you with genuine warmth. Outside the air is cool. She breathes it in. She is happy.`,
+    (s)=>`There is no word for what ${s.name} is right now that isn't insufficient. She is past full, past stuffed, past the vocabulary of fullness, in territory that only experience can describe. She is sitting absolutely still. Her belly, vast and round and warm, extends past the table edge. Both hands rest on it. She breathes very slowly, very carefully, the way you breathe when breathing is itself an achievement. The restaurant has emptied around her. The staff wait at a respectful distance. She has been sitting here for some time and will sit here for some time more, because she is not yet ready to attempt the geometry of standing. Eventually she opens her eyes. She looks at you. She smiles, slowly, completely. "Well done," she says. She means it as a compliment. It is the highest compliment she gives.`,
+  ],
+];
+
+const getOverfillEndMsg=(s,stId)=>
+  stId<=2 ? `${s.name} goes very still. Both hands on her middle. "I think I need to stop," she says quietly, with genuine surprise. She means it this time.`
+  :stId<=5 ? `${s.name} puts her fork down with a kind of finality. "Okay," she says. "Okay, I think that's it." She doesn't move for a moment. Even for her, that's a lot.`
+  :stId<=7 ? `${s.name} breathes out slowly, both hands settling on her belly. "I'm done," she announces, with the gravity of a formal statement. Even she has a limit.`
+  : `${s.name} goes completely still. Even she has reached a genuine limit. The room seems to hold its breath.`;
+
+const getJealousyLine=(neglected,fed)=>{
+  const m={
+    cheerleader:`${neglected.name} glances at ${fed.name}'s plate, then at her own empty place. "So we're feeding her first?" The smile doesn't quite reach her eyes.`,
+    quiet:`${neglected.name} watches ${fed.name}'s dish arrive and says nothing. She watches it quite intently for someone who's saying nothing.`,
+    party:`"Hey!" ${neglected.name} points at ${fed.name}'s food. "I want that. I want more of everything, for the record."`,
+    sorority:`${neglected.name} notices the discrepancy and tilts her chin. "Are we being equitable here?" she asks pleasantly, which isn't quite pleasant.`,
+    scholar:`${neglected.name} observes that ${fed.name} has received food and she has not. She says nothing. She is watching you, though.`,
+    athlete:`"Hey." ${neglected.name} taps the table. "My side is empty. Hers isn't." She nods at ${fed.name}'s plate. This is the entire complaint.`,
+    artsy:`${neglected.name} turns her face slightly toward the window. This is not indifference. This is very much not indifference.`,
+    honors:`${neglected.name} says nothing about ${fed.name} getting the first dish. She's keeping a tally, though. She's absolutely keeping a tally.`,
+    influencer:`${neglected.name} picks up her phone, looks at it, sets it down. "I'm just going to say," she says, "for the record." She doesn't finish the sentence.`,
+    foodie:`${neglected.name} watches ${fed.name}'s dish arrive with an expression of profound personal injury. "That," she says, "should have come to me."`,
+  };
+  return m[neglected.archetype]||`${neglected.name} looks meaningfully at ${fed.name}'s food and then at her own empty place setting.`;
+};
+
+const GROUP_CONVERSATIONS=[
+  { id:"get_them_talking", label:"Get them talking",
+    text:(s1,s2)=>`You redirect the conversation toward ${s1.name} and ${s2.name}. They pick up a thread — there's warmth here, a good evening settling into itself. Both relax. The food seems incidental for a moment.`,
+    relBonus:8, fullnessEffect:-4 },
+  { id:"compliment_both", label:"Compliment them both",
+    text:(s1,s2)=>`You find something genuine to say about each of them. ${s1.name} accepts this with varying degrees of grace. ${s2.name} does too. Both look pleased. The dynamic shifts slightly in your favour.`,
+    relBonus:5, fullnessEffect:0 },
+  { id:"let_it_settle", label:"Let it settle",
+    text:(s1,s2)=>`The conversation lapses into comfortable quiet. Both of them are eating. The evening has found its rhythm and doesn't need you to sustain it.`,
+    relBonus:4, fullnessEffect:5 },
+  { id:"toast_together_group", label:"Toast the evening",
+    text:(s1,s2)=>`You raise a glass. They raise theirs. ${s1.name} says something that makes ${s2.name} laugh. A good moment — the kind both of them will mention later.`,
+    relBonus:7, fullnessEffect:-3 },
+  { id:"order_for_table", label:"Order another round",
+    text:(s1,s2)=>`You catch the waiter's eye and gesture at the table generally. More arrives. Both of them look at it, look at each other, look back at it. The evening continues.`,
+    relBonus:6, fullnessEffect:8 },
+];
+
 const DINNER_VENUES = [
   { id:"bistro",    label:"🥖 Campus Bistro",      tier:1, baseCourses:2, gainRange:[4,8],
     desc:"Cosy neighbourhood bistro. Good portions, comfortable atmosphere.",
@@ -2028,6 +2101,9 @@ export default function ProfessorSim(){
   const [unlockedSkills,setUnlockedSkills]=useState([]);
   const [dinnerEvent,setDinnerEvent]=useState(null);
   const [dinnerLog,setDinnerLog]=useState([]);
+  const [groupDinnerEvent,setGroupDinnerEvent]=useState(null);
+  const [groupDinnerLog,setGroupDinnerLog]=useState([]);
+  const [dinnerEndPopup,setDinnerEndPopup]=useState(null);
   const [hovered,setHovered]=useState(null);
   const [skillCat,setSkillCat]=useState("environment");
   const [classSession,setClassSession]=useState(null);
@@ -2054,24 +2130,7 @@ export default function ProfessorSim(){
     }
   },[eventQueue,activeEvent,classSession]);
 
-  // Auto-end dinner when fullness hits max
-  useEffect(()=>{
-    if(!dinnerEvent||dinnerEvent.phase!=="dishes") return;
-    if((dinnerEvent.fullness||0)<(dinnerEvent.maxFullness||999)) return;
-    const s=students.find(st=>st.id===dinnerEvent.student.id);
-    const timer=setTimeout(()=>{
-      setDinnerLog(dl=>[...dl,`😌 ${dinnerEvent.student.name} leans back with a long, satisfied sigh. She's completely full. A perfect evening.`]);
-      setTimeout(()=>{
-        setAp(a=>a-2);
-        push(`✅ Dinner with ${dinnerEvent.student.name} complete — she was fully satisfied! +${dinnerEvent.totalGain} lbs · +20 relationship.`);
-        setStudents(prev=>prev.map(st=>st.id!==dinnerEvent.student.id?st:{...st,relationship:Math.min(100,st.relationship+20)}));
-        const evs=collectEvents(s?[{...s}]:[]);
-        if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
-        setDinnerEvent(null);
-      },1200);
-    },400);
-    return ()=>clearTimeout(timer);
-  },[dinnerEvent?.fullness,dinnerEvent?.maxFullness]);
+  // (auto-end dinner removed — endings now handled by overfill check or manual "End Evening")
 
   const push=useCallback((msg)=>setLog(prev=>[...prev,msg]),[]);
 
@@ -2267,24 +2326,16 @@ export default function ProfessorSim(){
       const scaledGain=Math.round((8+avgLbs/100)*(0.8+Math.random()*0.6));
       updated=students.map(s=>processStudentGain(s,scaledGain,7));
       push(`🍾 On-Demand Feast: catering arrives immediately! Each student gains ~${scaledGain} lbs.`);
-    } else if(action.id==="group_dinner"){
-      // Pick first available influence pair
+    } else if(action.id==="group_dinner"||action.id==="dinner_party"){
+      // Launch interactive group dinner UI — refund the AP cost (startGroupDinner deducts it)
+      setAp(a=>a+action.cost);
       const pair=INFLUENCE_PAIRS.find(([a,b])=>students.find(s=>s.id===a)&&students.find(s=>s.id===b));
-      if(pair){
-        const [idA,idB]=pair;
-        updated=students.map(s=>{
-          if(s.id===idA||s.id===idB){
-            const gain=rnd(action.gain[0],action.gain[1]);
-            return processStudentGain(s,gain+(s.id===idA||s.id===idB?3:0),10);
-          }
-          return s;
-        });
-        const sA=students.find(s=>s.id===idA),sB=students.find(s=>s.id===idB);
-        push(`👥 Group Dinner: ${sA?.name} and ${sB?.name} dine together. Their bond amplifies the evening.`);
-      } else {
-        updated=students.map(s=>{const gain=rnd(action.gain[0],action.gain[1]);return processStudentGain(s,gain,7);});
-        push(`👥 ${action.label}: The class arranged a group dinner!`);
-      }
+      const pairStudents=pair?[students.find(s=>s.id===pair[0]),students.find(s=>s.id===pair[1])].filter(Boolean):students.slice(0,2);
+      const partyStudents=action.id==="dinner_party"
+        ?[...students].sort((a,b)=>b.relationship-a.relationship).slice(0,3)
+        :pairStudents;
+      startGroupDinner(partyStudents);
+      return;
     } else {
       updated=students.map(s=>{
         const gain=rnd(action.gain[0],action.gain[1]);
@@ -2395,6 +2446,22 @@ export default function ProfessorSim(){
     unlockSkill(skill,true);
   };
 
+  // ── DINNER END (single) ──────────────────────────────────────
+  const triggerDinnerEnd=(s,finalFullness,maxFullness,totalGain,relBonus)=>{
+    const stId=getStage(s.lbs).id;
+    const stGrp=stId<=2?0:stId<=5?1:stId<=7?2:3;
+    const ratio=finalFullness/maxFullness;
+    const fullGrp=ratio<=1.0?0:ratio<=1.3?1:ratio<=1.6?2:3;
+    const narrative=DINNER_ENDING_TEXT[stGrp][fullGrp](s);
+    setAp(a=>a-2);
+    push(`✅ Dinner with ${s.name} complete. +${totalGain} lbs · +${relBonus} relationship.`);
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+relBonus)}));
+    const evs=collectEvents([s]);
+    if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
+    setDinnerEvent(null);
+    setDinnerEndPopup({ student:s, finalFullness, maxFullness, totalGain, narrative });
+  };
+
   const startDinner=(s)=>{
     if(!dinnerUnlocked){push("⚠️ Unlock 'Dining Connections' in the Skill Tree first.");return;}
     if(ap<2){push("⚠️ Need 2 AP for a dinner.");return;}
@@ -2413,21 +2480,41 @@ export default function ProfessorSim(){
     if((dinnerEvent.dishes||[]).includes(dish.id)) return;
     const gain=rnd(dish.gain[0],dish.gain[1]);
     const scaledGain=Math.round(gain*skillGainMult*(dinnerEvent.student.gainMultiplier||1));
-    const newFullness=(dinnerEvent.fullness||0)+(dish.fullness||15);
+    const prevFullness=dinnerEvent.fullness||0;
+    const newFullness=prevFullness+(dish.fullness||15);
     const maxFull=dinnerEvent.maxFullness||80;
-    setDinnerEvent(prev=>({...prev, dishes:[...prev.dishes,dish.id], totalGain:prev.totalGain+scaledGain, fullness:newFullness}));
-    const fullMsg=newFullness>=maxFull*0.8&&newFullness<maxFull?" — getting full...":"";
-    setDinnerLog(dl=>[...dl, `🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain} lbs)${fullMsg}`]);
-    push(`🍴 ${dinnerEvent.student.name}: ${dish.label} (+${scaledGain} lbs)`);
+    const newTotalGain=dinnerEvent.totalGain+scaledGain;
+    const newDishes=[...(dinnerEvent.dishes||[]),dish.id];
     setStudents(prev=>prev.map(s=>s.id!==dinnerEvent.student.id?s:{...s,lbs:s.lbs+scaledGain}));
+    push(`🍴 ${dinnerEvent.student.name}: ${dish.label} (+${scaledGain} lbs)`);
+    // Overfill probabilistic ending
+    if(newFullness>maxFull){
+      const overfillRatio=(newFullness-maxFull)/maxFull;
+      const endChance=Math.min(0.8,overfillRatio);
+      if(Math.random()<endChance){
+        const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
+        const sUpdated={...s,lbs:s.lbs+scaledGain};
+        const endMsg=getOverfillEndMsg(sUpdated,getStage(sUpdated.lbs).id);
+        setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain} lbs)`,`😵 ${endMsg}`]);
+        setTimeout(()=>triggerDinnerEnd(sUpdated,newFullness,maxFull,newTotalGain,12),1000);
+        return;
+      }
+    }
+    const firstHit=newFullness>=maxFull&&prevFullness<maxFull;
+    const fullMsg=firstHit?" — she's completely satisfied. The evening could end here..."
+      :newFullness>maxFull?" — she's past full, but she doesn't stop."
+      :newFullness>=maxFull*0.8?" — getting full..."
+      :"";
+    setDinnerEvent(prev=>({...prev,dishes:newDishes,totalGain:newTotalGain,fullness:newFullness}));
+    setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain} lbs)${fullMsg}`]);
   };
 
   const callWaiter=()=>{
     const s=dinnerEvent.student;
     const venueId=dinnerEvent.venue.id;
-    const desc=(WAITER_DESC[venueId]||((s)=>`The server arrives. "Shall I bring more?" she asks.`))(s);
+    const desc=(WAITER_DESC[venueId]||(()=>`The server arrives. "Shall I bring more?" she asks.`))(s);
     setDinnerLog(dl=>[...dl,`🫆 ${desc}`]);
-    setDinnerEvent(prev=>({...prev, dishes:[]}));
+    setDinnerEvent(prev=>({...prev,dishes:[]}));
   };
 
   const useDinnerConversation=(conv)=>{
@@ -2440,30 +2527,144 @@ export default function ProfessorSim(){
     const fullnessChange=conv.fullnessEffect||0;
     const newFullness=Math.max(0,(dinnerEvent.fullness||0)+fullnessChange);
     const newOffense=(dinnerEvent.offenseLevel||0)+(conv.offenseRisk||0);
-    setDinnerLog(dl=>[...dl, `💬 ${convText}${scaledBonus>0?` (+${scaledBonus} lbs)`:""}${fullnessChange<0?" (She seems more at ease.)":""}` ]);
+    setDinnerLog(dl=>[...dl,`💬 ${convText}${scaledBonus>0?` (+${scaledBonus} lbs)`:""}`]);
     push(`💬 Dinner conversation: ${conv.label}`);
-    setDinnerEvent(prev=>({...prev, conversationUsed:[...prev.conversationUsed,conv.id], totalGain:prev.totalGain+scaledBonus, fullness:newFullness, offenseLevel:newOffense}));
+    setDinnerEvent(prev=>({...prev,conversationUsed:[...prev.conversationUsed,conv.id],totalGain:prev.totalGain+scaledBonus,fullness:newFullness,offenseLevel:newOffense}));
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+scaledBonus,relationship:Math.min(100,st.relationship+(conv.relBonus||0))}));
     if(newOffense>=6){
       setTimeout(()=>{
         setDinnerLog(dl=>[...dl,`😤 ${s.name} sets her napkin down. "I think I should head home." She leaves.`]);
         push(`💔 Dinner ended — ${s.name} left. Relationship -15.`);
         setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.max(0,st.relationship-15)}));
-        setAp(a=>a-2);
-        setDinnerEvent(null);
+        setAp(a=>a-2); setDinnerEvent(null);
       },800);
     }
   };
 
-  const finishDinner=()=>{
-    const s=students.find(st=>st.id===dinnerEvent.student.id);
-    setAp(a=>a-2);
-    push(`✅ Dinner with ${dinnerEvent.student.name} complete. Total: +${dinnerEvent.totalGain} lbs gained.`);
-    const ns=processStudentGain(s,0,15);
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+15)}));
-    const evs=collectEvents([{...s,lbs:s.lbs}]);
-    if(evs.length){ setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length})); setEventQueue(prev=>[...prev,...evs]); }
-    setDinnerEvent(null);
+  const endEvening=()=>{
+    const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
+    triggerDinnerEnd(s,dinnerEvent.fullness,dinnerEvent.maxFullness,dinnerEvent.totalGain,18);
+  };
+
+  // ── GROUP DINNER ─────────────────────────────────────────────
+  const startGroupDinner=(studentList)=>{
+    if(!dinnerUnlocked){push("⚠️ Unlock 'Dining Connections' first.");return;}
+    const apCost=studentList.length>=3?3:3;
+    if(ap<apCost){push(`⚠️ Need ${apCost} AP for a group dinner.`);return;}
+    const gStudents=studentList.map(s=>({
+      ...s, fullness:0, maxFullness:60+getStage(s.lbs).id*14, dishes:[], totalGain:0,
+    }));
+    setGroupDinnerEvent({ students:gStudents, phase:"venue", venue:null, conversationUsed:[] });
+    setGroupDinnerLog([]);
+  };
+
+  const chooseGroupVenue=(venue)=>{
+    setGroupDinnerEvent(prev=>({...prev,venue,phase:"dishes"}));
+    const names=groupDinnerEvent.students.map(s=>s.name).join(" & ");
+    setGroupDinnerLog(dl=>[...dl,`You arrive at ${venue.label} with ${names}. ${venue.desc}`]);
+    push(`🍽️ Group dinner at ${venue.label}.`);
+  };
+
+  const orderGroupDish=(dish,targetId)=>{
+    const target=groupDinnerEvent.students.find(s=>s.id===targetId);
+    if(!target||target.dishes.includes(dish.id)) return;
+    const gain=rnd(dish.gain[0],dish.gain[1]);
+    const scaledGain=Math.round(gain*skillGainMult*(target.gainMultiplier||1));
+    const newFullness=target.fullness+(dish.fullness||15);
+    const maxFull=target.maxFullness;
+    const newTotalGain=target.totalGain+scaledGain;
+    setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,lbs:s.lbs+scaledGain}));
+    push(`🍴 ${target.name}: ${dish.label} (+${scaledGain} lbs)`);
+    // Overfill check
+    if(newFullness>maxFull){
+      const overfillRatio=(newFullness-maxFull)/maxFull;
+      const endChance=Math.min(0.8,overfillRatio);
+      if(Math.random()<endChance){
+        const sLive=students.find(s=>s.id===targetId)||target;
+        const sUpdated={...sLive,lbs:sLive.lbs+scaledGain};
+        const endMsg=getOverfillEndMsg(sUpdated,getStage(sUpdated.lbs).id);
+        setGroupDinnerLog(dl=>[...dl,`🍴 ${dish.label} for ${target.name}. (+${scaledGain} lbs)`,`😵 ${endMsg}`]);
+        // Remove this girl from the group; if no one left, end the dinner
+        setGroupDinnerEvent(prev=>{
+          const remaining=prev.students.filter(s=>s.id!==targetId);
+          if(remaining.length===0){
+            setTimeout(()=>{
+              setAp(a=>a-3);
+              push(`✅ Group dinner complete.`);
+              setGroupDinnerEvent(null);
+            },900);
+            return prev;
+          }
+          return {...prev,students:remaining};
+        });
+        // Show ending popup for this girl
+        const stId=getStage(sUpdated.lbs).id;
+        const stGrp=stId<=2?0:stId<=5?1:stId<=7?2:3;
+        const ratio=newFullness/maxFull;
+        const fullGrp=ratio<=1.0?0:ratio<=1.3?1:ratio<=1.6?2:3;
+        setTimeout(()=>{
+          setDinnerEndPopup({ student:sUpdated, finalFullness:newFullness, maxFullness:maxFull, totalGain:newTotalGain, narrative:DINNER_ENDING_TEXT[stGrp][fullGrp](sUpdated) });
+          setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,relationship:Math.min(100,s.relationship+12)}));
+        },1100);
+        return;
+      }
+    }
+    const firstHit=newFullness>=maxFull&&target.fullness<maxFull;
+    const fullMsg=firstHit?` — ${target.name} is satisfied. You can keep going.`
+      :newFullness>maxFull?` — ${target.name} is past full.`
+      :newFullness>=maxFull*0.8?` — ${target.name} is getting full.`:"";
+    setGroupDinnerLog(dl=>[...dl,`🍴 ${dish.label} for ${target.name}. ${dish.desc} (+${scaledGain} lbs)${fullMsg}`]);
+    setGroupDinnerEvent(prev=>({
+      ...prev,
+      students:prev.students.map(s=>s.id!==targetId?s:{...s,fullness:newFullness,dishes:[...s.dishes,dish.id],totalGain:newTotalGain}),
+    }));
+    // Jealousy check — girl with fewest dishes reacts
+    const others=groupDinnerEvent.students.filter(s=>s.id!==targetId);
+    others.forEach(other=>{
+      if(other.dishes.length<target.dishes.length&&Math.random()<0.45){
+        setTimeout(()=>setGroupDinnerLog(dl=>[...dl,`👀 ${getJealousyLine(other,target)}`]),400);
+      }
+    });
+  };
+
+  const callGroupWaiter=()=>{
+    const vId=groupDinnerEvent.venue?.id||"bistro";
+    const firstS=groupDinnerEvent.students[0];
+    const desc=(WAITER_DESC[vId]||(()=>`The server arrives with fresh menus.`))(firstS);
+    setGroupDinnerLog(dl=>[...dl,`🫆 ${desc}`]);
+    setGroupDinnerEvent(prev=>({...prev,students:prev.students.map(s=>({...s,dishes:[]}))}));
+  };
+
+  const useGroupConversation=(conv)=>{
+    if(groupDinnerEvent.conversationUsed.includes(conv.id)) return;
+    const [s1,s2]=groupDinnerEvent.students;
+    const text=conv.text(s1,s2||s1);
+    const relB=conv.relBonus||0;
+    const fullE=conv.fullnessEffect||0;
+    setGroupDinnerLog(dl=>[...dl,`💬 ${text}`]);
+    push(`💬 Group conversation: ${conv.label}`);
+    setGroupDinnerEvent(prev=>({
+      ...prev,
+      conversationUsed:[...prev.conversationUsed,conv.id],
+      students:prev.students.map(s=>({...s,fullness:Math.max(0,s.fullness+fullE),totalGain:s.totalGain})),
+    }));
+    setStudents(prev=>prev.map(s=>{
+      const inGroup=groupDinnerEvent.students.some(gs=>gs.id===s.id);
+      if(!inGroup) return s;
+      return {...s,relationship:Math.min(100,s.relationship+relB)};
+    }));
+  };
+
+  const endGroupDinner=()=>{
+    const totalG=groupDinnerEvent.students.reduce((a,s)=>a+s.totalGain,0);
+    setAp(a=>a-3);
+    push(`✅ Group dinner complete. +${totalG} lbs total across ${groupDinnerEvent.students.length} girls.`);
+    setStudents(prev=>prev.map(s=>{
+      const inGroup=groupDinnerEvent.students.some(gs=>gs.id===s.id);
+      if(!inGroup) return s;
+      return {...s,relationship:Math.min(100,s.relationship+15)};
+    }));
+    setGroupDinnerEvent(null);
   };
 
   const resolveNarrative=(ev,s,accept)=>{
@@ -2720,9 +2921,12 @@ export default function ProfessorSim(){
       {dinnerEvent&&(()=>{
         const ds=students.find(s=>s.id===dinnerEvent.student.id)||dinnerEvent.student;
         const stId=getStage(ds.lbs).id;
-        const fullnessPct=Math.min(100,Math.round(((dinnerEvent.fullness||0)/(dinnerEvent.maxFullness||80))*100));
-        const fullnessColor=fullnessPct>=80?"#c04020":fullnessPct>=50?"#c08020":"#20a060";
-        const isAlmostFull=fullnessPct>=80;
+        const rawPct=Math.round(((dinnerEvent.fullness||0)/(dinnerEvent.maxFullness||80))*100);
+        const fullnessPct=rawPct;
+        const fullnessColor=rawPct>=130?"#801010":rawPct>=100?"#c02020":rawPct>=80?"#c08020":"#20a060";
+        const isOverfull=rawPct>100;
+        const isAtCapacity=rawPct>=100;
+        const isAlmostFull=rawPct>=80;
         const atelier=DINNER_VENUES.find(v=>v.id==="atelier");
         const showAtelier=hasSkill("dinner_accessible")&&stId>=6;
         const venueList=[...availableVenues,...(showAtelier?[atelier]:[])];
@@ -2746,13 +2950,16 @@ export default function ProfessorSim(){
               {dinnerEvent.phase==="dishes"&&(
                 <div style={{marginBottom:12}}>
                   <div style={{display:"flex",justifyContent:"space-between",fontSize:10,marginBottom:3}}>
-                    <span style={{color:"#7a5070",letterSpacing:1}}>APPETITE</span>
-                    <span style={{color:fullnessColor,fontWeight:700}}>{fullnessPct}%{fullnessPct>=100?" — satisfied!":isAlmostFull?" — almost full":""}</span>
+                    <span style={{color:"#7a5070",letterSpacing:1}}>FULLNESS</span>
+                    <span style={{color:fullnessColor,fontWeight:700}}>
+                      {fullnessPct}%{isOverfull?" — overfull, risky...":isAtCapacity?" — completely full":isAlmostFull?" — getting full":""}
+                    </span>
                   </div>
-                  <div style={{background:"#0d0816",borderRadius:4,height:7,overflow:"hidden"}}>
-                    <div style={{width:`${fullnessPct}%`,height:"100%",background:fullnessColor,borderRadius:4,transition:"width 0.5s ease"}}/>
+                  <div style={{background:"#0d0816",borderRadius:4,height:7,overflow:"hidden",position:"relative"}}>
+                    <div style={{width:`${Math.min(100,fullnessPct)}%`,height:"100%",background:fullnessColor,borderRadius:4,transition:"width 0.4s ease"}}/>
+                    {isOverfull&&<div style={{position:"absolute",left:`${Math.round(100*dinnerEvent.maxFullness/(dinnerEvent.fullness||1))}%`,top:0,bottom:0,width:2,background:"#ffffff44"}}/>}
                   </div>
-                  <div style={{fontSize:10,color:"#5a3060",marginTop:2,fontStyle:"italic"}}>Fatter girls have more capacity. Use conversation to make room.</div>
+                  {isOverfull&&<div style={{fontSize:10,color:"#c04020",marginTop:2,fontStyle:"italic"}}>Each additional dish risks ending the evening.</div>}
                 </div>
               )}
 
@@ -2799,22 +3006,17 @@ export default function ProfessorSim(){
                         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:12}}>
                           {availDishes.map(dish=>(
                             <div key={dish.id}
-                              style={{...C.card,cursor:isAlmostFull?"default":"pointer",
-                                border:`1px solid ${isAlmostFull?"#301820":"#180830"}`,
-                                opacity:isAlmostFull?0.5:1}}
-                              onClick={()=>!isAlmostFull&&orderDish(dish)}>
+                              style={{...C.card,cursor:"pointer",
+                                border:`1px solid ${isOverfull?"#502020":"#180830"}`,
+                                opacity:isOverfull?0.75:1}}
+                              onClick={()=>orderDish(dish)}>
                               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                                <span style={{fontWeight:700,fontSize:12,color:"#d8a8ff"}}>{dish.label}</span>
+                                <span style={{fontWeight:700,fontSize:12,color:isOverfull?"#e09090":"#d8a8ff"}}>{dish.label}</span>
                                 <span style={{fontSize:9,color:"#a07050"}}>+{dish.gain[0]}–{dish.gain[1]} lbs</span>
                               </div>
                               <div style={{fontSize:10,color:"#6a4870",lineHeight:1.4,marginTop:2}}>{dish.desc}</div>
                             </div>
                           ))}
-                        </div>
-                      )}
-                      {isAlmostFull&&!allOrdered&&(
-                        <div style={{...C.infoBox("rgba(80,20,20,0.3)"),fontSize:12,color:"#e08060",marginBottom:10,fontStyle:"italic"}}>
-                          She's very full — use conversation to make room for more, or let the evening end naturally.
                         </div>
                       )}
                     </>);
@@ -2848,11 +3050,167 @@ export default function ProfessorSim(){
                     }
                   </div>
 
-                  <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                  <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
                     <div style={{fontSize:11,color:"#f0a060",fontWeight:700,flex:1}}>+{dinnerEvent.totalGain} lbs total</div>
-                    <button style={C.btn("#444")} onClick={()=>{setAp(a=>a-2);setDinnerEvent(null);}}>
+                    {isAtCapacity&&(
+                      <button style={C.btn("#2a6830")} onClick={endEvening}>End Evening ✓</button>
+                    )}
+                    <button style={C.btn("#333")} onClick={()=>{setAp(a=>a-2);setDinnerEvent(null);}}>
                       Leave Early
                     </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* DINNER ENDING POPUP */}
+      {dinnerEndPopup&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:500}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>EVENING ENDS</div>
+            <div style={{fontSize:11,color:"#7a5090",marginBottom:14}}>
+              {dinnerEndPopup.student.name} · {getStage(dinnerEndPopup.student.lbs).label} · {dinnerEndPopup.student.lbs} lbs
+              {" · "}{Math.round((dinnerEndPopup.finalFullness/dinnerEndPopup.maxFullness)*100)}% full
+              {" · "}+{dinnerEndPopup.totalGain} lbs tonight
+            </div>
+            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20,whiteSpace:"pre-line"}}>
+              {dinnerEndPopup.narrative}
+            </p>
+            <button style={C.btn("#5818a8")} onClick={()=>setDinnerEndPopup(null)}>Continue →</button>
+          </div>
+        </div>
+      )}
+
+      {/* GROUP DINNER MODAL */}
+      {groupDinnerEvent&&(()=>{
+        const gev=groupDinnerEvent;
+        const venueList=[...availableVenues,...(hasSkill("dinner_accessible")&&gev.students.some(s=>getStage(s.lbs).id>=6)?[DINNER_VENUES.find(v=>v.id==="atelier")]:[])].filter(Boolean);
+        const allDishIds=gev.venue?.dishes.map(d=>d.id)||[];
+        const allFed=gev.students.every(s=>allDishIds.every(id=>s.dishes.includes(id)));
+        return(
+          <div style={C.overlay}>
+            <div style={{...C.modal,maxWidth:640,padding:20}}>
+              <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:8}}>GROUP DINNER</div>
+
+              {/* Per-girl fullness bars */}
+              <div style={{display:"flex",gap:10,marginBottom:14,flexWrap:"wrap"}}>
+                {gev.students.map(gs=>{
+                  const rawP=Math.round((gs.fullness/gs.maxFullness)*100);
+                  const col=rawP>=130?"#801010":rawP>=100?"#c02020":rawP>=80?"#c08020":"#20a060";
+                  return(
+                    <div key={gs.id} style={{flex:1,minWidth:120}}>
+                      <div style={{display:"flex",justifyContent:"space-between",fontSize:10,marginBottom:2}}>
+                        <span style={{color:"#c0a0e0",fontWeight:700}}>{gs.name.split(" ")[0]}</span>
+                        <span style={{color:col,fontWeight:700}}>{rawP}%{rawP>=100?" 🔴":rawP>=80?" 🟡":""}</span>
+                      </div>
+                      <div style={{background:"#0d0816",borderRadius:3,height:5}}>
+                        <div style={{width:`${Math.min(100,rawP)}%`,height:"100%",background:col,borderRadius:3,transition:"width 0.4s"}}/>
+                      </div>
+                      <div style={{fontSize:9,color:"#5a3060",marginTop:1}}>+{gs.totalGain} lbs · {gs.dishes.length} dishes</div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Venue selection */}
+              {gev.phase==="venue"&&(
+                <div>
+                  <div style={{fontSize:12,color:"#9070c0",marginBottom:10,fontStyle:"italic"}}>
+                    Where are you taking {gev.students.map(s=>s.name.split(" ")[0]).join(" & ")} tonight?
+                  </div>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:7,marginBottom:12}}>
+                    {venueList.map(v=>(
+                      <div key={v.id} style={{...C.card,cursor:"pointer",border:v.id==="atelier"?"1px solid #806020":"1px solid #180830"}}
+                        onClick={()=>chooseGroupVenue(v)}>
+                        <div style={{fontWeight:700,fontSize:12,color:v.id==="atelier"?"#f0d060":"#d8a8ff",marginBottom:2}}>{v.label}</div>
+                        <div style={{fontSize:10,color:"#5a3860",lineHeight:1.4}}>{v.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <button style={C.btn("#444")} onClick={()=>setGroupDinnerEvent(null)}>Cancel</button>
+                </div>
+              )}
+
+              {/* Dining phase */}
+              {gev.phase==="dishes"&&gev.venue&&(
+                <div>
+                  <div style={{fontSize:10,color:"#7a5090",marginBottom:10,fontStyle:"italic"}}>{gev.venue.label} — {gev.venue.desc}</div>
+
+                  {/* Menu — each dish shows Feed buttons per girl */}
+                  <div style={{...C.secT,marginBottom:6}}>Menu</div>
+                  {allFed?(
+                    <div style={{textAlign:"center",padding:"8px 0",marginBottom:10}}>
+                      <div style={{fontSize:11,color:"#6a4870",fontStyle:"italic",marginBottom:8}}>The table is cleared.</div>
+                      <button style={C.btn("#4a2060")} onClick={callGroupWaiter}>🫆 Call for More</button>
+                    </div>
+                  ):(
+                    <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:12}}>
+                      {gev.venue.dishes.map(dish=>{
+                        const unfedGirls=gev.students.filter(s=>!s.dishes.includes(dish.id));
+                        if(unfedGirls.length===0) return null;
+                        const isOver=gev.students.some(s=>s.fullness>s.maxFullness);
+                        return(
+                          <div key={dish.id} style={{...C.card,border:`1px solid ${isOver?"#502020":"#180830"}`}}>
+                            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
+                              <span style={{fontWeight:700,fontSize:12,color:"#d8a8ff"}}>{dish.label}</span>
+                              <span style={{fontSize:9,color:"#a07050"}}>+{dish.gain[0]}–{dish.gain[1]} lbs</span>
+                            </div>
+                            <div style={{fontSize:10,color:"#6a4870",marginBottom:6}}>{dish.desc}</div>
+                            <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+                              {unfedGirls.map(gs=>{
+                                const gRaw=Math.round((gs.fullness/gs.maxFullness)*100);
+                                const overText=gRaw>=100?" (overfull!)":"";
+                                return(
+                                  <button key={gs.id}
+                                    style={{...C.smBtn,borderColor:gRaw>=100?"#602020":"#4a1280",color:gRaw>=100?"#e08080":"#b080e8"}}
+                                    onClick={()=>orderGroupDish(dish,gs.id)}>
+                                    Feed {gs.name.split(" ")[0]}{overText}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Group conversations */}
+                  <div style={{...C.secT,marginBottom:6}}>Conversation</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:10}}>
+                    {GROUP_CONVERSATIONS.map(conv=>{
+                      const used=gev.conversationUsed.includes(conv.id);
+                      return(
+                        <button key={conv.id}
+                          style={{...C.smBtn,opacity:used?0.4:1,textDecoration:used?"line-through":"none"}}
+                          onClick={()=>!used&&useGroupConversation(conv)}>
+                          {conv.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Log */}
+                  <div style={{background:"rgba(20,5,35,0.8)",border:"1px solid #2a0848",borderRadius:8,padding:10,marginBottom:10,maxHeight:140,overflowY:"auto",display:"flex",flexDirection:"column",gap:3}}>
+                    {groupDinnerLog.length===0
+                      ?<div style={{fontSize:12,color:"#5a3070",fontStyle:"italic"}}>{gev.students.map(s=>s.name.split(" ")[0]).join(" and ")} look at the menu.</div>
+                      :groupDinnerLog.map((line,i)=>(
+                        <div key={i} style={{fontSize:12,color:line.startsWith("💬")?"#e8d0a8":line.startsWith("👀")?"#d8a8c8":line.startsWith("😵")?"#f06040":"#d0a860",lineHeight:1.6}}>
+                          {line}
+                        </div>
+                      ))
+                    }
+                  </div>
+
+                  <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
+                    <div style={{fontSize:11,color:"#f0a060",fontWeight:700,flex:1}}>
+                      +{gev.students.reduce((a,s)=>a+s.totalGain,0)} lbs total
+                    </div>
+                    <button style={C.btn("#2a6830")} onClick={endGroupDinner}>End Evening ✓</button>
+                    <button style={C.btn("#333")} onClick={()=>{setAp(a=>a-3);setGroupDinnerEvent(null);}}>Leave Early</button>
                   </div>
                 </div>
               )}
