@@ -2023,7 +2023,7 @@ export default function ProfessorSim(){
     push(`🤝 ${speaker.name} agrees to help fatten up ${target.name}. A multiplier is now active!`);
     push(`   "${gossip.offerHelp}"`);
     setStudents(prev=>prev.map(s=>{
-      if(s.id===gossip.targetId) return {...s, gainMultiplier:(s.gainMultiplier||1)*gossip.helpMultiplier};
+      if(s.id===gossip.targetId) return {...s, gainMultiplier:(s.gainMultiplier||1)*gossip.helpMultiplier, gainHelpers:[...(s.gainHelpers||[]),gossip.speakerId]};
       if(s.id===gossip.speakerId) return {...s, relationship:Math.min(100,s.relationship+8)};
       return s;
     }));
@@ -2524,8 +2524,9 @@ export default function ProfessorSim(){
                         const attColor={catty:"#802020",warm:"#205040",curious:"#203860",conspiratorial:"#402060"}[g.attitude]||"#333";
                         const attEmoji={catty:"😒",warm:"🥰",curious:"🤔",conspiratorial:"😏"}[g.attitude]||"💬";
                         const hasMultiplier=(target.gainMultiplier||1)>1;
-                        const canHelp=g.offerHelp && s.relationship>=65 && !hasMultiplier;
-                        const almostUnlocked=g.offerHelp && s.relationship>=50 && s.relationship<65 && !hasMultiplier;
+                        const thisStudentHelping=(target.gainHelpers||[]).includes(s.id);
+                        const canHelp=g.offerHelp && s.relationship>=65 && !thisStudentHelping;
+                        const almostUnlocked=g.offerHelp && s.relationship>=50 && s.relationship<65 && !thisStudentHelping;
                         return (
                           <div key={g.targetId} style={{...C.card,cursor:"default",marginBottom:8,border:`1px solid ${attColor}88`}}>
                             {/* Header */}
@@ -2549,7 +2550,7 @@ export default function ProfessorSim(){
                               ))}
                             </div>
                             {/* Already helping */}
-                            {hasMultiplier&&(
+                            {thisStudentHelping&&(
                               <div style={{background:"rgba(30,80,30,0.3)",border:"1px solid #305030",borderRadius:6,padding:"6px 8px"}}>
                                 <div style={{fontSize:10,color:"#80d080",fontWeight:700,marginBottom:2}}>✓ Active — helping fatten {target.name}</div>
                                 <div style={{fontSize:10,color:"#508050",fontStyle:"italic"}}>{g.helpReason}</div>
@@ -2572,7 +2573,7 @@ export default function ProfessorSim(){
                               </div>
                             )}
                             {/* Far from unlock — just show lock */}
-                            {g.offerHelp && s.relationship<50 && !hasMultiplier&&(
+                            {g.offerHelp && s.relationship<50 && !thisStudentHelping&&(
                               <div style={{fontSize:10,color:"#3a2050",fontStyle:"italic",marginTop:4}}>
                                 🔒 Build more trust with {s.name} to unlock a special offer…
                               </div>
