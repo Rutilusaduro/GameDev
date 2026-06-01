@@ -2211,6 +2211,154 @@ const HR_TALK_LINES=[
   hr=>`${hr.name} mentions, unprompted, a review she ran three years ago where the complaint turned out to be entirely correct. "You're not that," she says. She has eaten considerably this session. Her jacket is on the back of her chair.`,
 ];
 
+// ── INNER CIRCLE ────────────────────────────────────────────────
+const INNER_CIRCLE_TIERS=[
+  {id:0,label:"Acquaintance",emoji:"👋",relMin:0,  color:"#503060"},
+  {id:1,label:"Close",       emoji:"🤝",relMin:45, color:"#7040a0"},
+  {id:2,label:"Intimate",    emoji:"💜",relMin:70, color:"#9050c8"},
+  {id:3,label:"Devoted",     emoji:"🖤",relMin:90, color:"#c060ff"},
+];
+const getTier=(rel)=>[...INNER_CIRCLE_TIERS].reverse().find(t=>rel>=t.relMin)||INNER_CIRCLE_TIERS[0];
+
+const TIER_SCENES={
+  cheerleader:[
+    s=>`${s.name} stops you after class — not with a question, just to talk. "You're different from other professors," she says. She doesn't elaborate, but she smiles when she leaves. You notice she's started sitting closer to the front.`,
+    s=>`She's waiting outside your office when you arrive. Not for anything specific. "I just wanted to talk," she says, already making herself comfortable in the chair across from you. She stays for forty minutes and eats the snacks you have out without asking.`,
+    s=>`"I don't really think about it anymore," ${s.name} says one afternoon, smoothing her hands over her enormous thighs with quiet familiarity. "I just know that whatever you suggest is usually right." She leans forward, full of trust. "So what do you suggest?"`,
+  ],
+  bookworm:[
+    s=>`${s.name} starts leaving academic papers on your desk — things she thinks you'll find interesting. Her annotations are in careful handwriting in the margins. You start leaving responses.`,
+    s=>`She brings you coffee without asking. Black, the way you take it. You don't remember telling her that. She just knows, the way she knows most things — by watching carefully and making notes.`,
+    s=>`${s.name} closes her laptop when you walk in — both of them. "I've been thinking," she says, "that I trust your judgment more than my own on certain things." She says it matter-of-factly, like a research finding. "I wanted you to know that."`,
+  ],
+  influencer:[
+    s=>`${s.name} mentions you in a post — vague, complimentary. "My professor says" something kind. The comments say "you love her." She messages you the link privately: "Thought you'd like that."`,
+    s=>`She stops filtering her posts when you're around. "You're one of the only people I can just be with," she says. For her, being unguarded is the intimacy. She doesn't reach for her phone the entire afternoon.`,
+    s=>`${s.name} turns down a sponsored deal. "Not aligned," she says. The product was about restriction and she isn't doing that anymore. "You've made me different," she says. "Better, I think."`,
+  ],
+  athlete:[
+    s=>`${s.name} asks if you want to eat together after class — just lunch, nothing formal. She piles the tray high without noticing. "I just figured you'd be heading to eat anyway," she says.`,
+    s=>`She calls you just to talk. She does that now. The call goes long. She eats her protein bar and a second one. "You're the only one who gets it," she says eventually.`,
+    s=>`${s.name} comes to you first now — for everything. "You're the only one who gets it," she says, dropping her bag and settling into the couch. She takes up a lot of it now. Neither of you mentions it. It's simply how things are.`,
+  ],
+  artsy:[
+    s=>`${s.name} shows you a sketchbook page marked DO NOT SHOW. "But you can," she says. "You're different." The drawing is of her own hands, relaxed, holding something. You think you understand.`,
+    s=>`She starts leaving small drawings on your desk. A coffee cup with your initial. A window with rain. They're not signed. She doesn't mention them. You start keeping them.`,
+    s=>`"I've been painting us," ${s.name} says, not looking up. On the canvas: a table, two chairs, food, warmth. Her figure is enormous and rendered with obvious tenderness. "It's how I see it. I wanted you to see it too."`,
+  ],
+  gamer:[
+    s=>`${s.name} adds you to her Discord — the small private server, six people total. "Don't make it weird," she says, then talks to you for three hours. "You're actually cool," she finally says, like this surprises her.`,
+    s=>`She sends links without context — memes, clips, screenshots. Each one lands exactly right. "I'm just good at people," she says. "You're easy." She's been paying very close attention.`,
+    s=>`${s.name} names an NPC after you in a game she's building. "You're the good one," she says. "Always has food, never judges." She shows you the sprite. It's accurate. "I wanted to put you somewhere permanent."`,
+  ],
+  sorority:[
+    s=>`${s.name} introduces you to her closest sisters as "basically family." Casually, like it's established. When you leave she catches your arm. "I meant that," she says quietly. Then back to being loud, as if nothing happened.`,
+    s=>`She confides something real — not gossip, something she's actually worried about. She picks at the snacks between sentences. "You're the first person I've told," she says. She finishes the whole plate before she realizes.`,
+    s=>`${s.name} quits one of her committees. "The culture wasn't right." She means one of the places that used to make her feel bad about eating. She doesn't say that. You understand anyway. "Things are better now. You're part of that."`,
+  ],
+  overachiever:[
+    s=>`${s.name} asks for your opinion on something academic — not competitively but genuinely. She takes notes. "You think differently than I expected," she says. It might be the most honest compliment she gives anyone.`,
+    s=>`She revises her thesis around feedback you gave her in passing. Not for a grade. "I just needed it to be right," she says. She hands you thirty pages. She'd clearly spent a weekend on it. "I trust your judgment."`,
+    s=>`${s.name} drops one of her majors. "Three was too many," she says — which everyone has been telling her for two years. "You made me see that." She looks lighter, even though she's heavier. "I want to do fewer things properly."`,
+  ],
+  quiet:[
+    s=>`${s.name} leaves a note on your desk — not a message, just a drawing of a bird she saw on campus. No explanation. It's small and precise and somehow says everything. You put it in a drawer. She notices it's gone. She smiles.`,
+    s=>`She starts sitting beside you when she studies, in silence. After a while she says, "I don't usually do this," meaning be close to anyone. "I know," you say. She nods. That's enough.`,
+    s=>`${s.name} speaks up in class for the first time — not hesitantly, but with something to say. Afterward she looks at you. Not for approval. Just sharing. "Thank you," she says once, later. She doesn't say for what. You know.`,
+  ],
+  transfer:[
+    s=>`${s.name} stops calling this place temporary. "I think I belong here," she says, surprised. You've noticed her routes on campus have changed — longer, more comfortable, lingering. "It's because of you, partly," she says.`,
+    s=>`She brings you food from a restaurant she found, just leaving it with a note: "You have to try this." Local, generous, good. She takes you there herself the following week. "This is home now," she says. She means it.`,
+    s=>`${s.name} applies for permanent residency in the city. "I'm staying," she says, like it's the simplest thing. She's grown into this place in every way — rounder, slower, easier in her skin. "Why would I leave?"`,
+  ],
+};
+
+// ── PROFESSOR VAUGHAN ───────────────────────────────────────────
+const VAUGHAN_BASE={
+  name:"Dr. Elaine Vaughan",
+  dept:"Wellness & Kinesiology",
+  startLbs:134,
+  bodyType:"athletic",
+  intro:`Dr. Vaughan passes you in the corridor — compact, purposeful, the kind of person who still runs at 6am. Her eyes move to your classroom door as she passes. She says nothing. But she looked.`,
+};
+
+const VAUGHAN_EVENTS=[
+  {id:"first_glance",suspicion:20,title:"A Colleague Takes Notice",
+   scene:()=>`Dr. Vaughan catches you in the faculty corridor. "Professor," she says — just the word, with a tone you can't quite read. She continues walking. But she looked first, at your classroom door.`,
+   choices:[
+     {label:"Nod professionally",delta:0,text:"You nod. Nothing to see here."},
+     {label:"Strike up conversation",vDelta:-8,text:"Easy, collegial. She relaxes. Slightly."},
+   ]},
+  {id:"direct_question",suspicion:40,title:"Direct Question",
+   scene:()=>`Dr. Vaughan appears at your office door. "Student health metrics from my department are showing anomalies," she says. "I've been hearing things about your classroom environment." She watches you closely.`,
+   choices:[
+     {label:"Deflect professionally",delta:3,text:"You redirect. She writes something down."},
+     {label:"Invite her to observe",vDelta:-15,delta:-8,text:"Openness disarms her — for now."},
+     {label:"Challenge her data",delta:8,vDelta:10,text:"Her expression hardens."},
+   ]},
+  {id:"formal_concern",suspicion:60,title:"Formal Concern",
+   scene:()=>`Dr. Vaughan has submitted a written memo to the faculty council. "I have a professional responsibility," she says when you confront her. "What's happening in your classroom is not normal. Not physically."`,
+   choices:[
+     {label:"Call it coincidence",delta:5,text:"She doesn't believe you. She can't prove otherwise. Yet."},
+     {label:"Thank her sincerely",delta:-8,vDelta:-12,text:"Graciousness confounds her. She retreats for now."},
+   ]},
+  {id:"turning_point",suspicion:80,title:"She Knows",
+   scene:()=>`Dr. Vaughan corners you privately. "I know what you're doing," she says. But she looks different — her blazer fits differently. She's been spending time at your students' table in the dining hall. "I should report you," she says. She hasn't.`,
+   choices:[
+     {label:"Tell her the truth",vDelta:20,text:"You speak plainly. She listens. Something in her goes very still."},
+     {label:"Offer her dinner",vDelta:25,text:"The same invitation you extend your students. She hesitates. Then: yes."},
+     {label:"Call her bluff",delta:15,text:"She blinks. Doesn't move. You both know she won't."},
+   ]},
+];
+
+const VAUGHAN_WEIGHT_SCENES=[
+  {minLbs:145,scene:v=>`Dr. Vaughan's blazer doesn't button all the way today. She doesn't mention it. You don't mention it. But you both notice.`},
+  {minLbs:162,scene:v=>`${v.name} has stopped eating salads at faculty events. Today she had the pasta. Twice. She caught your eye across the room and looked away first.`},
+  {minLbs:180,scene:v=>`${v.name} has gained visibly — enough that colleagues are talking. The athletic frame is still there under a generous softness. In her wellness curriculum, she now mentions "metabolism" with less certainty than before.`},
+  {minLbs:200,scene:v=>`${v.name} submitted a modified wellness curriculum this semester — less emphasis on weight metrics. "Bodies are more complex than the data suggests," she wrote. She has begun sitting with your students at lunch. They like her.`},
+];
+
+const VAUGHAN_ALLY_SCENE=v=>`${v.name} appears at your door with a bottle of wine and a slightly defensive expression. "This is not an endorsement of your methods," she says, setting it down. "It's a professional reconciliation." She has changed enormously. The uniform is gone, replaced by something looser. She fills the chair completely. "What you've built here," she says finally, "is something I can't call wrong." She pours two glasses without asking. "So I've stopped trying."`;
+
+// ── SOCIAL EVENTS ───────────────────────────────────────────────
+const SOCIAL_EVENTS=[
+  {id:"study_hall",    label:"📚 Study Hall",        apCost:1,minStudents:2,maxStudents:6,
+   baseGain:[2,5],relBonus:8,scrutinyAdd:1,
+   desc:"Host a study session. Snacks are mandatory. The work is the pretext.",
+   scene:(names,gain)=>`The study hall fills slowly. Books open, but the food comes out first. ${names} spread out across the table, comfortable and unhurried. By the end, about ${gain} lbs each — and the notes are surprisingly good.`,
+   vaughanEffect:-3,observerGain:[1,1],observerDisp:3},
+  {id:"dept_social",   label:"🥂 Department Social", apCost:2,minStudents:3,maxStudents:8,
+   baseGain:[3,7],relBonus:12,scrutinyAdd:3,
+   desc:"Faculty mixer. Your students attend. The platters empty. The atmosphere warms.",
+   scene:(names,gain)=>`The social is exactly as these things always are — too much food, too much wine. ${names} cluster together and call you over. The platters near your group empty first. No one else seems to notice.`,
+   vaughanEffect:-5,observerGain:[1,2],observerDisp:6,vaughanAttends:true},
+  {id:"field_trip",    label:"🚌 Field Trip",         apCost:2,minStudents:2,maxStudents:6,
+   baseGain:[4,8],relBonus:10,scrutinyAdd:2,
+   desc:"Campus excursion. Officially about education. Unofficially about the three-hour lunch.",
+   scene:(names,gain)=>`The field trip is officially about the museum. Unofficially, it's about the restaurant two blocks away. ${names} occupy an entire table. Nobody stops at one course. The museum is viewed briefly, on the way back, with full contentment.`,
+   vaughanEffect:0,observerGain:[1,2],observerDisp:5},
+  {id:"game_night",    label:"🎲 Game Night",         apCost:1,minStudents:2,maxStudents:5,
+   baseGain:[3,6],relBonus:14,scrutinyAdd:1,
+   desc:"Games, snacks, no pressure. The most natural feeding context there is.",
+   scene:(names,gain)=>`Nobody remembers what games they played. They remember the food — the enormous spread that appeared and disappeared over four hours while ${names} laughed and argued. The scores are meaningless. The calories are not.`,
+   vaughanEffect:-2,observerGain:[1,2],observerDisp:4},
+  {id:"symposium",     label:"🎓 Symposium",          apCost:2,minStudents:3,maxStudents:10,
+   baseGain:[5,9],relBonus:9,scrutinyAdd:4,
+   desc:"Academic event with catering that is decidedly informal. Everyone overeats at symposiums.",
+   scene:(names,gain)=>`The symposium is notionally about pedagogy. In practice, a three-hour catered event with an open bar and a chef who overestimated attendance. ${names} benefit enormously from this miscalculation. The talks are good. The food is better.`,
+   vaughanEffect:-8,observerGain:[2,3],observerDisp:8,vaughanAttends:true},
+  {id:"house_dinner",  label:"🏡 House Dinner",       apCost:3,minStudents:2,maxStudents:5,
+   baseGain:[8,14],relBonus:18,scrutinyAdd:2,
+   desc:"An evening at yours. You cook. There is no restraint built into this format.",
+   scene:(names,gain)=>`Your home is warm and smells like cooking before they arrive. ${names} fill your kitchen and your evening completely. The food comes in waves — you keep bringing it. Nobody declines anything. By the end the conversation is slow and easy, the way it gets when everyone is genuinely full.`,
+   vaughanEffect:0,observerGain:[3,4],observerDisp:10},
+  {id:"banquet",       label:"🍾 End-of-Term Banquet",apCost:4,minStudents:4,maxStudents:15,
+   baseGain:[10,18],relBonus:20,scrutinyAdd:6,
+   desc:"The whole class. Maximum scale, maximum impact.",
+   scene:(names,gain)=>`The banquet hall is yours for the evening. All your students arrive dressed for the occasion. The courses are formal, the portions architectural. By the final course the room is notably different: louder, looser, rounder, happier. You refill every glass and call for more food twice.`,
+   vaughanEffect:-12,observerGain:[4,5],observerDisp:15,vaughanAttends:true},
+];
+
 const DINNER_VENUES = [
   { id:"bistro",    label:"🥖 Campus Bistro",      tier:1, baseCourses:2, gainRange:[4,8],
     desc:"Cosy neighbourhood bistro. Good portions, comfortable atmosphere.",
@@ -2538,9 +2686,67 @@ export default function ProfessorSim(){
   const [hrObserver,setHrObserver]=useState(null);
   // hrObserver: {name,lbs,startLbs,bodyType,disposition,weeksPresent}
   const [charCreation,setCharCreation]=useState({name:"",subject:null,traits:[]});
+  // DLC: Inner Circle
+  const seenTiersRef=useRef(new Set());
+  const prevRelsRef=useRef(Object.fromEntries(INIT_STUDENTS.map(s=>[s.id,s.relationship])));
+  const [tierUpModal,setTierUpModal]=useState(null);
+  // DLC: Vaughan
+  const [vaughan,setVaughan]=useState(null);
+  const [vaughanModal,setVaughanModal]=useState(null);
+  const [vaughanFiredIds,setVaughanFiredIds]=useState([]);
+  const [vaughanAlly,setVaughanAlly]=useState(false);
+  // DLC: Social Events
+  const [socialPicker,setSocialPicker]=useState(null);
+  const [socialResult,setSocialResult]=useState(null);
+  const [socialWeeks,setSocialWeeks]=useState([]);
   const logRef=useRef(null);
 
   useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
+
+  // Tier-up detection
+  useEffect(()=>{
+    if(!professorProfile) return;
+    const ups=[];
+    students.forEach(s=>{
+      const prevRel=prevRelsRef.current[s.id]??s.relationship;
+      const ot=getTier(prevRel);
+      const nt=getTier(s.relationship);
+      if(nt.id>ot.id){
+        const key=`${s.id}_t${nt.id}`;
+        if(!seenTiersRef.current.has(key)){
+          seenTiersRef.current.add(key);
+          ups.push({student:s,oldTier:ot,newTier:nt});
+        }
+      }
+      prevRelsRef.current[s.id]=s.relationship;
+    });
+    if(ups.length>0&&!tierUpModal){
+      const u=ups[0];
+      const scenes=TIER_SCENES[u.student.archetype]||TIER_SCENES.quiet;
+      const fn=scenes[u.newTier.id-1];
+      if(fn) setTierUpModal({student:u.student,oldTier:u.oldTier,newTier:u.newTier,scene:fn(u.student)});
+    }
+  },[students,professorProfile]);
+
+  // Spawn Vaughan when scrutiny becomes notable
+  useEffect(()=>{
+    if(!professorProfile||vaughan) return;
+    if(adminScrutiny>=15){
+      setVaughan({...VAUGHAN_BASE,lbs:VAUGHAN_BASE.startLbs,suspicion:0,disposition:0,weightScenesSeen:[]});
+      push(`👓 ${VAUGHAN_BASE.name} of ${VAUGHAN_BASE.dept} has taken notice.`);
+      push(`   ${VAUGHAN_BASE.intro}`);
+    }
+  },[adminScrutiny,professorProfile]);
+
+  // Fire Vaughan confrontation events
+  useEffect(()=>{
+    if(!vaughan||vaughanAlly) return;
+    const next=VAUGHAN_EVENTS.find(ev=>vaughan.suspicion>=ev.suspicion&&!vaughanFiredIds.includes(ev.id));
+    if(next&&!vaughanModal){
+      setVaughanModal(next);
+      setVaughanFiredIds(prev=>[...prev,next.id]);
+    }
+  },[vaughan,vaughanFiredIds,vaughanModal,vaughanAlly]);
 
   // Check achievements
   useEffect(()=>{
@@ -2720,6 +2926,31 @@ export default function ProfessorSim(){
       const obsGain=rnd(1,2);
       setHrObserver(prev=>({...prev,lbs:Math.round(prev.lbs+obsGain),weeksPresent:(prev.weeksPresent||0)+1}));
     }
+    // Devoted students passively cover scrutiny and buffer Vaughan
+    const devotedCount=updated.filter(s=>getTier(s.relationship).id>=3).length;
+    if(devotedCount>0) setAdminScrutiny(prev=>Math.max(0,prev-devotedCount));
+    // Vaughan weekly tick
+    if(vaughan&&!vaughanAlly){
+      const suspBase=Math.max(0,1+Math.floor(visibleCount*0.3)-devotedCount*2);
+      const vLbsGain=rnd(0,1);
+      const newSusp=Math.min(100,vaughan.suspicion+suspBase);
+      const newLbs=vaughan.lbs+vLbsGain;
+      const unseenScene=VAUGHAN_WEIGHT_SCENES.filter(ws=>newLbs>=ws.minLbs&&!(vaughan.weightScenesSeen||[]).includes(ws.minLbs))[0];
+      if(unseenScene) setTimeout(()=>push(`👓 ${unseenScene.scene({...vaughan,lbs:newLbs})}`),200);
+      const willAlly=newLbs>=162&&vaughan.disposition>=40;
+      setVaughan({...vaughan,suspicion:newSusp,lbs:newLbs,
+        weightScenesSeen:[...(vaughan.weightScenesSeen||[]),...(unseenScene?[unseenScene.minLbs]:[])]
+      });
+      if(willAlly){
+        setTimeout(()=>{
+          push(`🤝 Dr. Vaughan has become your ally.`);
+          push(`   ${VAUGHAN_ALLY_SCENE({...vaughan,lbs:newLbs})}`);
+          setVaughanAlly(true);
+          setAdminScrutiny(p=>Math.max(0,p-20));
+        },500);
+      }
+    }
+    if(vaughanAlly) setAdminScrutiny(prev=>Math.max(0,prev-3));
     push(`📅 Week ${newWeek} begins. ${newAp} AP available.`);
     if(semEv) setTimeout(()=>push(`🎉 Semester Event: ${semEv.title} — ${semEv.text}`),100);
     if(randomEv) setTimeout(()=>push(`🎲 ${randomEv.text(updated[rnd(0,14)])}`),150);
@@ -3216,6 +3447,60 @@ export default function ProfessorSim(){
       push(`📖 ${ev.title} — noted.`);
     }
     setActiveEvent(null);
+  };
+
+  const resolveVaughanEvent=(ev,choice)=>{
+    push(`👓 ${ev.title}: ${choice.text}`);
+    if(choice.delta&&choice.delta>0) addScrutiny(choice.delta);
+    else if(choice.delta&&choice.delta<0) setAdminScrutiny(prev=>Math.max(0,prev+choice.delta));
+    if(choice.vDelta) setVaughan(prev=>prev?{...prev,disposition:Math.min(100,prev.disposition+choice.vDelta)}:prev);
+    setVaughanModal(null);
+  };
+
+  const startSocialEvent=(evt)=>{
+    if(ap<evt.apCost){push(`⚠️ Need ${evt.apCost} AP.`);return;}
+    if(socialWeeks.includes(week)){push("⚠️ You've already hosted a social event this week.");return;}
+    setSocialPicker({event:evt,selected:[]});
+  };
+
+  const confirmSocialEvent=()=>{
+    if(!socialPicker) return;
+    const{event,selected}=socialPicker;
+    if(selected.length<event.minStudents){push(`⚠️ Need at least ${event.minStudents} students.`);return;}
+    setAp(a=>a-event.apCost);
+    setSocialWeeks(prev=>[...prev,week]);
+    addScrutiny(event.scrutinyAdd);
+    let totalGain=0;
+    const updatedStudents=students.map(s=>{
+      if(!selected.includes(s.id)) return s;
+      const gain=rnd(event.baseGain[0],event.baseGain[1]);
+      totalGain+=gain;
+      return processStudentGain(s,gain,event.relBonus);
+    });
+    setStudents(updatedStudents);
+    if(vaughan&&!vaughanAlly){
+      if(event.vaughanAttends){
+        const vGain=rnd(1,3);
+        const vSuspDelta=event.vaughanEffect;
+        const vDispGain=vSuspDelta<0?Math.round(Math.abs(vSuspDelta)*0.6):0;
+        setVaughan(prev=>prev?{...prev,lbs:prev.lbs+vGain,suspicion:Math.max(0,prev.suspicion+vSuspDelta),disposition:Math.min(100,prev.disposition+vDispGain)}:prev);
+        push(`👓 Dr. Vaughan attended ${event.label} — +${vGain} lbs, suspicion ${vSuspDelta}`);
+      } else if(event.vaughanEffect!==0){
+        setVaughan(prev=>prev?{...prev,suspicion:Math.max(0,prev.suspicion+event.vaughanEffect)}:prev);
+      }
+    }
+    if(hrObserver&&event.observerGain){
+      const oGain=rnd(event.observerGain[0],event.observerGain[1]);
+      setHrObserver(prev=>prev?{...prev,lbs:prev.lbs+oGain,disposition:Math.min(100,prev.disposition+event.observerDisp)}:prev);
+      push(`👤 ${hrObserver.name} attended — +${oGain} lbs, +${event.observerDisp} disposition`);
+    }
+    const names=selected.map(id=>students.find(s=>s.id===id)?.name).filter(Boolean).join(", ");
+    const perGain=Math.round(totalGain/Math.max(1,selected.length));
+    push(`🎉 ${event.label}: ${names} attended. +${totalGain} lbs total.`);
+    setSocialResult({event,names,totalGain,scene:event.scene(names,perGain),attendees:selected.length});
+    setSocialPicker(null);
+    const evs=collectEvents(updatedStudents);
+    if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
   };
 
   const sel=selectedId!==null?students.find(s=>s.id===selectedId):null;
@@ -3960,7 +4245,7 @@ export default function ProfessorSim(){
 
       {/* NAV */}
       <div style={C.nav}>
-        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["skills","🌳 Skills"],["achievements","🏆 Achievements"]].map(([v,l])=>(
+        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["social","🎉 Events"],["skills","🌳 Skills"],["achievements","🏆 Achievements"]].map(([v,l])=>(
           v==="student"&&!sel?null:
           <button key={v} style={C.navB(view===v)} onClick={()=>setView(v)}>{l}</button>
         ))}
@@ -3996,6 +4281,65 @@ export default function ProfessorSim(){
             );
           })()}
 
+          {/* ── VAUGHAN CARD ── */}
+          {vaughan&&view==="class"&&(()=>{
+            const vSt=getStage(vaughan.lbs);
+            return(
+              <div style={{background:"rgba(10,30,50,0.45)",border:`1px solid ${vaughanAlly?"#30905050":"#20405060"}`,borderRadius:10,padding:12,marginBottom:14}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                  <div>
+                    <span style={{fontSize:13,fontWeight:700,color:vaughanAlly?"#50c080":"#4080a0"}}>{vaughan.name}</span>
+                    <span style={{fontSize:10,color:"#3a5060",marginLeft:8,letterSpacing:1}}>{vaughan.dept} · {vaughan.lbs} lbs · {vSt.label}</span>
+                  </div>
+                  <span style={{fontSize:10,fontWeight:700,color:vaughanAlly?"#50c080":"#c05040",background:vaughanAlly?"rgba(30,80,30,0.35)":"rgba(70,15,15,0.35)",borderRadius:8,padding:"2px 8px"}}>
+                    {vaughanAlly?"ALLY":"RIVAL"}
+                  </span>
+                </div>
+                {!vaughanAlly&&(
+                  <div>
+                    <div style={{display:"flex",gap:10,marginBottom:6}}>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:9,color:"#405060",letterSpacing:1,marginBottom:2}}>SUSPICION</div>
+                        <div style={{position:"relative",height:4,background:"rgba(255,255,255,0.07)",borderRadius:2}}>
+                          <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:2,transition:"width 0.4s",
+                            background:vaughan.suspicion>=80?"#c03030":vaughan.suspicion>=50?"#c06020":"#406080",
+                            width:`${vaughan.suspicion}%`}}/>
+                        </div>
+                        <div style={{fontSize:9,color:"#506070",marginTop:1}}>{vaughan.suspicion}/100</div>
+                      </div>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:9,color:"#405060",letterSpacing:1,marginBottom:2}}>DISPOSITION</div>
+                        <div style={{position:"relative",height:4,background:"rgba(255,255,255,0.07)",borderRadius:2}}>
+                          <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:2,transition:"width 0.4s",
+                            background:vaughan.disposition>=40?"#40c070":"#607090",
+                            width:`${vaughan.disposition}%`}}/>
+                          <div style={{position:"absolute",left:"40%",top:-1,height:6,width:2,background:"rgba(255,255,255,0.25)",borderRadius:1}}/>
+                        </div>
+                        <div style={{fontSize:9,color:"#506070",marginTop:1}}>{vaughan.disposition}/40 needed</div>
+                      </div>
+                    </div>
+                    <div style={{fontSize:10,color:"#4a6070",lineHeight:1.55,fontStyle:"italic"}}>
+                      {vaughan.disposition>=40&&vaughan.lbs>=162?"She is close to letting this go entirely."
+                      :vaughan.suspicion>=80?"She knows. One confrontation away from a crisis — or an alliance."
+                      :vaughan.suspicion>=50?"She's been asking questions. Feed her at social events to shift her perspective."
+                      :"She's noticed something. Not sure what yet."}
+                    </div>
+                    {vaughan.disposition>=40&&vaughan.lbs<162&&(
+                      <div style={{fontSize:9,color:"#40806050",marginTop:3}}>
+                        Ally trigger: {162-vaughan.lbs} lbs to go — host events she attends to help her gain.
+                      </div>
+                    )}
+                  </div>
+                )}
+                {vaughanAlly&&(
+                  <div style={{fontSize:11,color:"#4a9060",lineHeight:1.65,fontStyle:"italic"}}>
+                    She files favorable reports and covers for you with HR. Scrutiny reduced by 3/week.
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+
           {/* ── CLASS ROSTER ── */}
           {view==="class"&&(
             <div>
@@ -4006,7 +4350,10 @@ export default function ProfessorSim(){
                   return(
                     <div key={s.id} style={C.card} onClick={()=>{setSelectedId(s.id);setView("student")}}>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:3}}>
-                        <span style={{fontWeight:700,fontSize:15,color:"#d8a8ff"}}>{s.name}</span>
+                        <div style={{display:"flex",alignItems:"center",gap:5}}>
+                          <span style={{fontWeight:700,fontSize:15,color:"#d8a8ff"}}>{s.name}</span>
+                          {(()=>{const tier=getTier(s.relationship);return tier.id>0?<span style={{fontSize:12,opacity:0.9}}>{tier.emoji}</span>:null;})()}
+                        </div>
                         <StageTag stage={st}/>
                       </div>
                       <div style={{fontSize:10,color:"#70508a",marginBottom:3}}>{s.role||s.archetype} · {s.bodyType} · {s.age}y · <MoodBadge mood={s.mood}/></div>
@@ -4049,6 +4396,17 @@ export default function ProfessorSim(){
                       <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:1}}>RELATIONSHIP</div>
                       <Bar val={s.relationship} max={100} color="#c040e0"/>
                       <div style={{fontSize:11,color:"#b08840"}}>{s.relationship}% · <MoodBadge mood={s.mood}/></div>
+                      {(()=>{
+                        const tier=getTier(s.relationship);
+                        const next=INNER_CIRCLE_TIERS[tier.id+1];
+                        return(
+                          <div style={{fontSize:10,color:tier.color,marginTop:3,display:"flex",alignItems:"center",gap:5}}>
+                            <span>{tier.emoji} {tier.label}</span>
+                            {next&&<span style={{color:"#40304060"}}>· {next.relMin-s.relationship}% to {next.emoji} {next.label}</span>}
+                            {tier.id===3&&<span style={{fontSize:9,color:"#a050e0"}}>· +10% gain bonus active</span>}
+                          </div>
+                        );
+                      })()}
                     </div>
                   </div>
 
@@ -4455,6 +4813,52 @@ export default function ProfessorSim(){
             );
           })()}
 
+          {/* ── SOCIAL EVENTS ── */}
+          {view==="social"&&(
+            <div>
+              <p style={C.secT}>Social Events</p>
+              <div style={{fontSize:11,color:"#6050a0",marginBottom:12,lineHeight:1.7}}>
+                Host events to feed multiple students at once, build relationships, and manage Dr. Vaughan's suspicion.
+                One event per week.
+                {socialWeeks.includes(week)&&<span style={{color:"#f0a040",marginLeft:8}}>✓ Event held this week</span>}
+              </div>
+              {vaughan&&!vaughanAlly&&(
+                <div style={{...C.infoBox("rgba(10,30,50,0.4)"),fontSize:11,color:"#4080a0",marginBottom:12}}>
+                  👓 Vaughan attends department socials, symposiums, and the end-of-term banquet. When she attends events, she gains weight and her suspicion drops.
+                  Events that don't require her attendance still reduce suspicion passively.
+                </div>
+              )}
+              <div style={C.grid2}>
+                {SOCIAL_EVENTS.map(ev=>{
+                  const canAfford=ap>=ev.apCost;
+                  const heldThisWeek=socialWeeks.includes(week);
+                  const locked=!canAfford||heldThisWeek;
+                  return(
+                    <div key={ev.id}
+                      style={{...C.card,opacity:locked?0.5:1,cursor:locked?"not-allowed":"pointer",transition:"border-color 0.15s"}}
+                      onClick={()=>!locked&&startSocialEvent(ev)}>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
+                        <span style={{fontWeight:700,fontSize:13,color:"#d8a8ff"}}>{ev.label}</span>
+                        <span style={{fontSize:10,color:"#a080c0",background:"rgba(80,20,120,0.3)",borderRadius:8,padding:"1px 7px"}}>{ev.apCost} AP</span>
+                      </div>
+                      <div style={{fontSize:11,color:"#6a4870",lineHeight:1.5,marginBottom:6}}>{ev.desc}</div>
+                      <div style={{display:"flex",gap:8,flexWrap:"wrap",fontSize:10,color:"#5a3860"}}>
+                        <span>+{ev.baseGain[0]}–{ev.baseGain[1]} lbs</span>
+                        <span>+{ev.relBonus} rel</span>
+                        <span>{ev.minStudents}–{ev.maxStudents} students</span>
+                      </div>
+                      {ev.vaughanAttends&&vaughan&&!vaughanAlly&&(
+                        <div style={{fontSize:9,color:"#306070",marginTop:4}}>
+                          👓 Vaughan attends · suspicion {ev.vaughanEffect}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* ── ACHIEVEMENTS ── */}
           {view==="achievements"&&(
             <div>
@@ -4547,6 +4951,139 @@ export default function ProfessorSim(){
               {studyCheckIn.scene}
             </div>
             <button style={C.btn("#5020a0")} onClick={()=>setStudyCheckIn(null)}>Close</button>
+          </div>
+        </div>
+      )}
+
+      {/* ── TIER-UP MODAL ── */}
+      {tierUpModal&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:500}}>
+            <div style={{fontSize:9,letterSpacing:3,color:tierUpModal.newTier.color,marginBottom:8}}>RELATIONSHIP MILESTONE</div>
+            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
+              <span style={{fontSize:26}}>{tierUpModal.newTier.emoji}</span>
+              <div>
+                <div style={{fontSize:17,fontWeight:700,color:tierUpModal.newTier.color}}>{tierUpModal.student.name}</div>
+                <div style={{fontSize:12,color:"#7060a0",marginTop:2}}>
+                  {tierUpModal.oldTier.emoji} {tierUpModal.oldTier.label}
+                  <span style={{margin:"0 6px",color:"#4030608a"}}>→</span>
+                  <span style={{color:tierUpModal.newTier.color,fontWeight:700}}>{tierUpModal.newTier.emoji} {tierUpModal.newTier.label}</span>
+                </div>
+              </div>
+            </div>
+            <div style={{...C.infoBox("rgba(60,20,100,0.2)"),lineHeight:1.85,fontSize:13,color:"#e0d0b0",fontStyle:"italic",marginBottom:14}}>
+              {tierUpModal.scene}
+            </div>
+            {tierUpModal.newTier.id===3&&(
+              <div style={{...C.infoBox("rgba(80,10,130,0.3)"),fontSize:11,color:"#c060ff",marginBottom:12,lineHeight:1.6}}>
+                🖤 <strong>Devoted.</strong> She accepts her situation completely.
+                +10% gain multiplier applied. She passively covers 1 scrutiny point per week through glowing feedback.
+              </div>
+            )}
+            {tierUpModal.newTier.id===2&&(
+              <div style={{...C.infoBox("rgba(60,10,100,0.25)"),fontSize:11,color:"#9050c8",marginBottom:12}}>
+                💜 <strong>Intimate.</strong> She trusts you implicitly. Talk actions give bonus relationship.
+              </div>
+            )}
+            <button style={{...C.btn("#5020a0"),background:tierUpModal.newTier.color+"99"}} onClick={()=>{
+              if(tierUpModal.newTier.id===3){
+                setStudents(prev=>prev.map(s=>s.id!==tierUpModal.student.id?s:{...s,gainMultiplier:(s.gainMultiplier||1)*1.1}));
+              }
+              setTierUpModal(null);
+            }}>Continue →</button>
+          </div>
+        </div>
+      )}
+
+      {/* ── VAUGHAN EVENT MODAL ── */}
+      {vaughanModal&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:520}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#408090",marginBottom:6}}>DR. VAUGHAN — WELLNESS & KINESIOLOGY</div>
+            <h2 style={{margin:"0 0 14px",color:"#70c0d8",fontSize:17,fontWeight:400}}>{vaughanModal.title}</h2>
+            <div style={{...C.infoBox("rgba(5,25,40,0.5)"),lineHeight:1.8,fontSize:13,color:"#d0c8b8",fontStyle:"italic",marginBottom:16}}>
+              {vaughanModal.scene()}
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:7}}>
+              {vaughanModal.choices.map((ch,i)=>(
+                <button key={i}
+                  style={{...C.btn(ch.vDelta&&ch.vDelta>10?"#204060":ch.delta&&ch.delta>5?"#601010":"#2a2a40"),textAlign:"left",padding:"9px 13px"}}
+                  onClick={()=>resolveVaughanEvent(vaughanModal,ch)}>
+                  {ch.label}
+                </button>
+              ))}
+            </div>
+            <div style={{fontSize:10,color:"#304050",marginTop:10}}>
+              Suspicion: {vaughan?.suspicion||0}/100 · Disposition: {vaughan?.disposition||0}/100 · {vaughan?.lbs||0} lbs
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── SOCIAL EVENT PICKER ── */}
+      {socialPicker&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:520}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>SOCIAL EVENT</div>
+            <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:18}}>{socialPicker.event.label}</h2>
+            <div style={{fontSize:12,color:"#7060a0",lineHeight:1.6,marginBottom:12}}>{socialPicker.event.desc}</div>
+            <div style={{...C.secT,marginBottom:8}}>
+              Invite students
+              <span style={{fontWeight:400,color:"#5030a0",marginLeft:6}}>
+                {socialPicker.selected.length} selected · need {socialPicker.event.minStudents}–{socialPicker.event.maxStudents}
+              </span>
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:4,marginBottom:14,maxHeight:290,overflowY:"auto"}}>
+              {students.map(s=>{
+                const tier=getTier(s.relationship);
+                const isSel=socialPicker.selected.includes(s.id);
+                const atMax=!isSel&&socialPicker.selected.length>=socialPicker.event.maxStudents;
+                return(
+                  <div key={s.id}
+                    style={{...C.card,padding:"7px 10px",cursor:atMax?"not-allowed":"pointer",opacity:atMax?0.4:1,
+                      background:isSel?"rgba(80,20,140,0.35)":"rgba(255,255,255,0.03)",
+                      border:isSel?"1px solid #8040c8":"1px solid #180830"}}
+                    onClick={()=>!atMax&&setSocialPicker(prev=>({
+                      ...prev,
+                      selected:isSel?prev.selected.filter(id=>id!==s.id):[...prev.selected,s.id]
+                    }))}>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <span style={{fontSize:13}}>{isSel?"☑":"☐"}</span>
+                      <span style={{fontWeight:700,fontSize:12,color:"#d8a8ff"}}>{s.name}</span>
+                      <span style={{fontSize:10,color:tier.color}}>{tier.emoji} {tier.label}</span>
+                      <span style={{fontSize:10,color:"#6a4880",marginLeft:"auto"}}>{getStage(s.lbs).label} · {s.lbs} lbs</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{display:"flex",gap:8}}>
+              <button style={C.btn("#444")} onClick={()=>setSocialPicker(null)}>Cancel</button>
+              <button
+                style={{...C.btn("#5020a0"),flex:1,opacity:socialPicker.selected.length>=socialPicker.event.minStudents?1:0.5}}
+                onClick={confirmSocialEvent}>
+                {socialPicker.selected.length>=socialPicker.event.minStudents
+                  ?`Host — ${socialPicker.event.apCost} AP →`
+                  :`Need ${socialPicker.event.minStudents-socialPicker.selected.length} more`}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── SOCIAL EVENT RESULT ── */}
+      {socialResult&&(
+        <div style={C.overlay}>
+          <div style={C.modal}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>EVENT COMPLETE</div>
+            <h2 style={{margin:"0 0 10px",color:"#c898ff",fontSize:18}}>{socialResult.event.label}</h2>
+            <div style={{...C.infoBox("rgba(60,20,100,0.2)"),lineHeight:1.85,fontSize:13,color:"#e0d0b0",fontStyle:"italic",marginBottom:14}}>
+              {socialResult.scene}
+            </div>
+            <div style={{fontSize:12,color:"#a080c0",marginBottom:16}}>
+              {socialResult.attendees} students · +{socialResult.totalGain} lbs total gained
+            </div>
+            <button style={C.btn("#5020a0")} onClick={()=>setSocialResult(null)}>Continue →</button>
           </div>
         </div>
       )}
