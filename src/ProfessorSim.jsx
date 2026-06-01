@@ -5,20 +5,22 @@ import { useState, useEffect, useRef, useCallback } from "react";
 // ═══════════════════════════════════════════════════════════════
 
 const WEIGHT_STAGES = [
-  { id:0, label:"Slim",      min:100, color:"#3a8a3a", desc:"Slender and toned — clothes hang loosely, effortless movement." },
-  { id:1, label:"Soft",      min:135, color:"#6a9a20", desc:"A gentle softness settling in. Belly pooching slightly, cheeks a touch fuller, thighs pressing together at the top." },
-  { id:2, label:"Chubby",    min:162, color:"#b0a000", desc:"Visibly rounded belly pushing at waistbands. Face rounder, arms softer, hips wider. Clothes are noticeably tighter." },
-  { id:3, label:"Plump",     min:195, color:"#c07010", desc:"A real belly rounding outward. Double chin forming. Thighs rubbing together. Shirts riding up. Breathing heavier on stairs." },
-  { id:4, label:"Heavy",     min:238, color:"#b05010", desc:"Belly hangs forward prominently. Arms thick and jiggly, legs genuinely chunky. Standard chairs creak. Walks with a slight waddle." },
-  { id:5, label:"Fat",       min:285, color:"#982808", desc:"A clear, rolling waddle. Belly past the hips. Cheeks very round and soft. Chair armrests a tight squeeze. Breathing audible." },
-  { id:6, label:"Very Fat",  min:360, color:"#800000", desc:"Belly cascades toward the knees. Arms like soft bolsters. Needs wide doorways. Can't see her feet. Movement slow and deliberate." },
-  { id:7, label:"Enormous",  min:465, color:"#600000", desc:"Fills an entire couch. Can't fit in a car. Belly rests on thighs. Getting up requires leverage and real effort." },
-  { id:8, label:"Immobile",  min:595, color:"#400000", desc:"Too wide for standard hallways. Reinforced furniture required. Shuffles a few steps at most. A vast, soft, commanding presence." },
-  { id:9, label:"Blob",      min:820, color:"#200000", desc:"Entirely immobile. A breathtaking mountain of warm, soft flesh. The room is organised around her." },
+  { id:0,  label:"Slight",   min:80,  color:"#2a8070", desc:"Noticeably underweight — clothes hang off her frame, collarbone prominent, limbs very slender and angular." },
+  { id:1,  label:"Slim",     min:100, color:"#3a8a3a", desc:"Slender and toned — clothes hang loosely, effortless movement." },
+  { id:2,  label:"Soft",     min:135, color:"#6a9a20", desc:"A gentle softness settling in. Belly pooching slightly, cheeks a touch fuller, thighs pressing together at the top." },
+  { id:3,  label:"Chubby",   min:162, color:"#b0a000", desc:"Visibly rounded belly pushing at waistbands. Face rounder, arms softer, hips wider. Clothes are noticeably tighter." },
+  { id:4,  label:"Plump",    min:195, color:"#c07010", desc:"A real belly rounding outward. Double chin forming. Thighs rubbing together. Shirts riding up. Breathing heavier on stairs." },
+  { id:5,  label:"Heavy",    min:238, color:"#b05010", desc:"Belly hangs forward prominently. Arms thick and jiggly, legs genuinely chunky. Standard chairs creak. Walks with a slight waddle." },
+  { id:6,  label:"Fat",      min:285, color:"#982808", desc:"A clear, rolling waddle. Belly past the hips. Cheeks very round and soft. Chair armrests a tight squeeze. Breathing audible." },
+  { id:7,  label:"Very Fat", min:360, color:"#800000", desc:"Belly cascades toward the knees. Arms like soft bolsters. Needs wide doorways. Can't see her feet. Movement slow and deliberate." },
+  { id:8,  label:"Enormous", min:465, color:"#600000", desc:"Fills an entire couch. Can't fit in a car. Belly rests on thighs. Getting up requires leverage and real effort." },
+  { id:9,  label:"Immobile", min:595, color:"#400000", desc:"Too wide for standard hallways. Reinforced furniture required. Shuffles a few steps at most. A vast, soft, commanding presence." },
+  { id:10, label:"Blob",     min:820, color:"#200000", desc:"Entirely immobile. A breathtaking mountain of warm, soft flesh. The room is organised around her." },
 ];
 
 const BODY_DESCS = {
   pear:[
+    "Extremely lean legs, angular hips, very flat stomach — a wispy, almost fragile frame.",
     "Long, lean legs and a flat tummy — a light, easy frame.",
     "Hips filling out noticeably. Thighs touching at the top. Tummy softening.",
     "Wide, rounded hips and thick thighs. Belly rounding out softly between them.",
@@ -31,6 +33,7 @@ const BODY_DESCS = {
     "Immovable. A magnificent, towering mass.",
   ],
   hourglass:[
+    "Very slight frame, minimal curves, a small waist with barely any padding. Almost angular.",
     "A classic trim figure — neat waist, balanced curves.",
     "Curves getting bigger in every direction. Waist still visible but softening.",
     "Very curvy — bust, belly and hips all noticeably fuller.",
@@ -43,6 +46,7 @@ const BODY_DESCS = {
     "A breathtaking, immovable mountain of curves.",
   ],
   straight:[
+    "Extremely lean and angular — clothes hang off her frame, very little padding anywhere.",
     "A lean, straight frame — minimal curves, easy movement.",
     "Soft all over now — belly poking forward, face and arms rounding gently.",
     "A real belly on her straight frame. Arms and face noticeably fuller.",
@@ -55,6 +59,7 @@ const BODY_DESCS = {
     "A colossal, still presence.",
   ],
   apple:[
+    "Very slim torso and limbs, almost no softness anywhere on her frame. Looks lighter than usual.",
     "Tummy-forward figure, otherwise fairly slim.",
     "Belly rounder and softer. Face and cheeks filling out.",
     "A proper round belly, getting heavy. Arms and neck filling.",
@@ -67,6 +72,7 @@ const BODY_DESCS = {
     "Immovable. A vast, soft monument.",
   ],
   athletic:[
+    "Pure compact muscle, almost no body fat. A runner's build taken to the extreme — very lean.",
     "Powerful and toned — real muscle under smooth skin.",
     "The athletic tone softening. Muscle blurring under new softness.",
     "Thick and soft now. Muscle buried under visible fat.",
@@ -81,29 +87,29 @@ const BODY_DESCS = {
 };
 
 const STAGE_REACTIONS = {
-  cheerleader:["Fitting in her uniform just fine, thanks.","Uniform feels a tiny bit snug. Probably just bloating.","Okay something is DEFINITELY off. My captain is giving me looks.","Got benched. 'Affecting team dynamics.' Whatever.","Dropped off the squad. Practice was exhausting anyway.","Can't believe I used to do cartwheels. My thighs won't let me jog now.","Squad came to visit. They seemed… impressed? Weird vibe.","Could probably just sit on the opposing team at this point.","Coach asked if I'd be team mascot. I said only if they bring food.","I am the couch now. Bring snacks."],
-  bookworm:["Focused entirely on her thesis. Barely notices food.","Library snacks are a perfectly reasonable study aid.","My chair squeaks now. Must be a loose bolt.","Had to get a new desk chair. The armrests were digging in.","Research into caloric science has been very… hands-on.","Found a paper correlating body fat with cushioning for long study sessions. Compelling.","Started studying from home. Libraries are so far.","Online classes only now. I've never been more productive.","Biggest brain in the department. Also the biggest everything else.","Dissertation is finished. Just going to sit here and be massive."],
-  influencer:["Posts fitness content every 3 hours.","'Soft era' content performing surprisingly well.","'Body neutrality era' is my brand now.","Followers went UP. They love the glow-up content.","BBW influencer now. Monetized and thriving.","Just hit 500k. The algorithm loves me like this.","Gaining journey content is viral. Book deal incoming.","Can barely hold the phone but my assistant films for me.","I basically run the fat acceptance corner of the internet.","I am the content. The content is me."],
-  athlete:["Fastest girl on the track team. Eats like a horse anyway.","PRs slipping. Probably overtraining.","Cut from varsity. 'Weight concerns.' Rude.","Used to be able to do pull-ups. Now I mostly watch.","Gym membership cancelled. The treadmills were making a noise.","Incredible core strength. It's just buried now.","Old coach came by. I think she cried. I don't know why.","The couch is the only sport I play now. I'm very good at it.","Former teammates came to visit. They are very small compared to me.","I am the biggest thing that has ever sat on this street."],
-  artsy:["Always in paint-splattered overalls. Ethereal energy.","Started painting still lifes of food. 'Inspired' she says.","Subjects are getting bigger. So is the artist.","Switched to sculpting. Clay is more 'tactile.' So am I.","Work explores 'abundance themes.' Yes.","Gallery show: 'The Body as Canvas.' I am the canvas.","Critics call my aesthetic 'opulent.' They mean me, I think.","Too big to move my own sculptures. I direct others now.","Artist-in-residency ended. Still here.","I have transcended. I am art."],
-  gamer:["Energy drinks, ramen, 14-hour sessions. It's a lifestyle.","Desk chair is suddenly uncomfortable. Upgrading to a gaming throne.","New gaming chair rated for 300 lbs. 'Future-proofing,' I said.","Stream viewers keep donating food delivery to my address. I accept.","Sponsored by a snack company. This is my dream life.","Setup includes a minifridge within arm's reach.","Standing is optional. My character does the moving for me.","Viewers call me 'Queen.' Fridge on either side of my chair.","Most consecutive hours gaming record. And most snacks consumed.","Final form achieved. One with the beanbag."],
-  sorority:["Always camera-ready, salad for lunch, wine on weekends.","Brunch calories 'don't count.' Brunch is four times a week.","Sisters staged an intervention. I staged a pizza party.","Dropped the diet talk. Added a second dessert.","I am now the 'fun one' of the house. I was always the fun one.","Formal dress had to be custom ordered. Worth it.","Didn't fit in the chapter room chair. Brought my own.","Hosting all events now because I prefer not to travel.","House voted me 'most comfortable to be around.' Literally.","I have become the sorority house. Spiritually."],
-  overachiever:["4.0 GPA, two internships, varsity, student council. Also stressed.","Stress eating is a documented response. She's documented it.","Self-care means a full meal between each scheduled activity.","Dropped one internship. 'Work-life balance.' Work is eating now.","Thesis on metabolic adaptations. Primary source: herself.","GPA still 3.9. Everything else has changed dramatically.","Academic advisor asked if she was 'okay.' She said 'thriving.'","Graduated early. Currently in bed. Victorious.","Plans to pursue a PhD. Remotely. From this spot.","She has achieved everything. Now she just achieves mass."],
-  quiet:["Sits in the back. Never raises her hand. Always watching.","Brings extra snacks to class. Shares with no one.","Smiled at a compliment for the first time.","Sitting in the middle of class now. Takes up more room.","Asked a question for the first time. About nutrition.","She's… blooming. Literally and figuratively.","Has opinions now. Mostly about food. Very good opinions.","The whole class knows her name. She fills the room.","She is the room.","Serene. Vast. At peace."],
-  transfer:["New to campus, a little lost, eager to fit in.","Campus food is so good compared to back home!","Made friends! Mostly at the dining hall.","Feeling much more settled here. In every sense.","Hometown friends visited and didn't recognize her. She laughed.","This campus really suits her. She has really… settled in.","Considers herself a local now. A large, local presence.","She IS campus, basically.","Listed her weight as a campus landmark.","Fully integrated. Irreplaceable. Immovable."],
+  cheerleader:["I've never been this light. Uniforms fall off me. Something feels off.","Fitting in her uniform just fine, thanks.","Uniform feels a tiny bit snug. Probably just bloating.","Okay something is DEFINITELY off. My captain is giving me looks.","Got benched. 'Affecting team dynamics.' Whatever.","Dropped off the squad. Practice was exhausting anyway.","Can't believe I used to do cartwheels. My thighs won't let me jog now.","Squad came to visit. They seemed… impressed? Weird vibe.","Could probably just sit on the opposing team at this point.","Coach asked if I'd be team mascot. I said only if they bring food.","I am the couch now. Bring snacks."],
+  bookworm:["She weighs herself in the library bathroom and immediately searches PubMed. Underweight. A paper idea forms.","Focused entirely on her thesis. Barely notices food.","Library snacks are a perfectly reasonable study aid.","My chair squeaks now. Must be a loose bolt.","Had to get a new desk chair. The armrests were digging in.","Research into caloric science has been very… hands-on.","Found a paper correlating body fat with cushioning for long study sessions. Compelling.","Started studying from home. Libraries are so far.","Online classes only now. I've never been more productive.","Biggest brain in the department. Also the biggest everything else.","Dissertation is finished. Just going to sit here and be massive."],
+  influencer:["Posts a 'delicate era' selfie. Comments are alarmed. She's conflicted. Ordering a large meal.","Posts fitness content every 3 hours.","'Soft era' content performing surprisingly well.","'Body neutrality era' is my brand now.","Followers went UP. They love the glow-up content.","BBW influencer now. Monetized and thriving.","Just hit 500k. The algorithm loves me like this.","Gaining journey content is viral. Book deal incoming.","Can barely hold the phone but my assistant films for me.","I basically run the fat acceptance corner of the internet.","I am the content. The content is me."],
+  athlete:["Fastest times in years, technically. Coach is asking questions she doesn't have answers for.","Fastest girl on the track team. Eats like a horse anyway.","PRs slipping. Probably overtraining.","Cut from varsity. 'Weight concerns.' Rude.","Used to be able to do pull-ups. Now I mostly watch.","Gym membership cancelled. The treadmills were making a noise.","Incredible core strength. It's just buried now.","Old coach came by. I think she cried. I don't know why.","The couch is the only sport I play now. I'm very good at it.","Former teammates came to visit. They are very small compared to me.","I am the biggest thing that has ever sat on this street."],
+  artsy:["Sketches her own wrist — the bones very visible. Files it under 'interesting.' Eats immediately after.","Always in paint-splattered overalls. Ethereal energy.","Started painting still lifes of food. 'Inspired' she says.","Subjects are getting bigger. So is the artist.","Switched to sculpting. Clay is more 'tactile.' So am I.","Work explores 'abundance themes.' Yes.","Gallery show: 'The Body as Canvas.' I am the canvas.","Critics call my aesthetic 'opulent.' They mean me, I think.","Too big to move my own sculptures. I direct others now.","Artist-in-residency ended. Still here.","I have transcended. I am art."],
+  gamer:["Her character weighs more than her now. Ordered double ramen to address this. It's a start.","Energy drinks, ramen, 14-hour sessions. It's a lifestyle.","Desk chair is suddenly uncomfortable. Upgrading to a gaming throne.","New gaming chair rated for 300 lbs. 'Future-proofing,' I said.","Stream viewers keep donating food delivery to my address. I accept.","Sponsored by a snack company. This is my dream life.","Setup includes a minifridge within arm's reach.","Standing is optional. My character does the moving for me.","Viewers call me 'Queen.' Fridge on either side of my chair.","Most consecutive hours gaming record. And most snacks consumed.","Final form achieved. One with the beanbag."],
+  sorority:["Dress falls off her shoulder at chapter. Sisters are concerned. She accepts every offered snack.","Always camera-ready, salad for lunch, wine on weekends.","Brunch calories 'don't count.' Brunch is four times a week.","Sisters staged an intervention. I staged a pizza party.","Dropped the diet talk. Added a second dessert.","I am now the 'fun one' of the house. I was always the fun one.","Formal dress had to be custom ordered. Worth it.","Didn't fit in the chapter room chair. Brought my own.","Hosting all events now because I prefer not to travel.","House voted me 'most comfortable to be around.' Literally.","I have become the sorority house. Spiritually."],
+  overachiever:["Clinically underweight per her personal BMI tracker. Corrective meal schedule implemented immediately.","4.0 GPA, two internships, varsity, student council. Also stressed.","Stress eating is a documented response. She's documented it.","Self-care means a full meal between each scheduled activity.","Dropped one internship. 'Work-life balance.' Work is eating now.","Thesis on metabolic adaptations. Primary source: herself.","GPA still 3.9. Everything else has changed dramatically.","Academic advisor asked if she was 'okay.' She said 'thriving.'","Graduated early. Currently in bed. Victorious.","Plans to pursue a PhD. Remotely. From this spot.","She has achieved everything. Now she just achieves mass."],
+  quiet:["...","Sits in the back. Never raises her hand. Always watching.","Brings extra snacks to class. Shares with no one.","Smiled at a compliment for the first time.","Sitting in the middle of class now. Takes up more room.","Asked a question for the first time. About nutrition.","She's… blooming. Literally and figuratively.","Has opinions now. Mostly about food. Very good opinions.","The whole class knows her name. She fills the room.","She is the room.","Serene. Vast. At peace."],
+  transfer:["Lighter than the day she arrived. Something doesn't feel right about that.","New to campus, a little lost, eager to fit in.","Campus food is so good compared to back home!","Made friends! Mostly at the dining hall.","Feeling much more settled here. In every sense.","Hometown friends visited and didn't recognize her. She laughed.","This campus really suits her. She has really… settled in.","Considers herself a local now. A large, local presence.","She IS campus, basically.","Listed her weight as a campus landmark.","Fully integrated. Irreplaceable. Immovable."],
 };
 
 const STAGE_DROP_REACTIONS = {
-  cheerleader:["Ugh, I feel so light. I don't know what to do with that.","My uniform almost fits again. I can't decide if that's good.","Lost a size. Squad is acting like it's a comeback. I miss my curves.","Dropped some. Coach is pleased. I'm… processing.","I was getting comfortable at that weight. This feels wrong.","Noticeably smaller. Still bigger than before. Strange in-between.","My clothes fit differently. I miss how they were.","That much gone. There was a lot of me there. I miss it.","Even at this size, losing is disorienting. I had grown attached.","Down from something extraordinary. I don't know who I am at this scale."],
-  bookworm:["Lower body mass means a different relationship to sitting. Academically interesting, personally ambivalent.","My notes on metabolic change are fascinating. I preferred the other data.","The numbers are down. I've updated my charts. I don't love the new trend.","Quantifiably smaller. I'm choosing not to feel anything about it. Mostly.","Lost a significant amount. My research subject (me) has changed. Neutral affect. Mostly.","Down a stage. I keep rereading my earlier entries from when I was… more.","A significant reduction. The chair feels different. I keep noticing it.","I've lost a lot. I was studying myself at that size. The chapter feels closed.","Down from something remarkable. The data documents the loss with great reluctance.","Even from here, the absence is felt. I had built a life at that scale."],
-  influencer:["Posting a 'soft journey' update but honestly… I miss my old content era.","The comments are weird. Half say 'queen' and half say 'glowup.' I feel like neither.","Lost some. My engagement is down. My audience liked me bigger.","Dropped a size and my DMs were very opinionated about it. I preferred before.","My BBW audience is concerned. I'm concerned. We're all concerned.","That scale, that content — I was really thriving. Now what?","Lost a lot. My whole brand was that. I need to rebrand and I'm grieving.","My monetization at that level was incredible. Coming down is a loss in every sense.","That content was my best era. This is a new chapter. I hate new chapters.","Even from where I am, I feel the absence of what I had. Very present-tense grief."],
-  athlete:["Lighter technically. But I'd gotten used to carrying all that.","My center of gravity has changed. Have to relearn my body.","A drop on the scale. Coach would've been thrilled once. Now I'm just confused.","Lost training mass. I was powerful just moving around. I miss that.","Slimmer. There was a physics to that size I'm going to miss.","Down a stage. My old PRs were set when I was much heavier. The body remembers.","Significant loss. I had adapted entirely to that size. Starting over.","That's a lot of weight gone. My body had reached equilibrium at the last stage.","Even here, the loss feels physical. That mass was mine.","Down from truly enormous. I don't know what to do with a body this 'small.'"],
-  artsy:["Something has changed about how I move through space. The art will reflect this.","Lost some. My work was processing these proportions. Back to the canvas.","Down a stage. The negative space around me is different. The piece feels incomplete.","My figure work was inspired by this body. It's harder to paint something shrinking.","Lost significant weight. I was sculpting abundance. This feels like erasure.","A whole stage gone. My gallery was building toward something. Now the theme has shifted.","The loss is real and so is the grief. Every body I've been deserves to be witnessed.","Down from something I was only beginning to understand artistically. The work was just getting good.","That scale of presence — I was making work about it. Now it's retrospective.","Even from here, the absence is felt aesthetically. I wore my size like a medium."],
-  gamer:["My character's heavier than me now. Weird feeling.","Lost some weight. My viewers noticed before I did. They're disappointed.","Stream donation amounts are down. The correlation is obvious.","Down a stage. My setup feels weirdly spacious now.","My snack sponsors are worried. I've reassured them. I'm still committed.","Significant loss. My whole 'bigger than the setup' aesthetic is compromised.","Lost a lot. I was architecture at that size. Now just furniture.","That much gone. I had truly become the beanbag. This is smaller.","That content era is over and I'm grieving it, one snack at a time.","Even here, I feel reduced. The beanbag and I have grown apart."],
-  sorority:["Lost some. The sisters are being weird about it. I feel the difference.","Dropped a size. Event dresses from before might fit. I don't know how I feel.","Down on the scale. My chapter thinks this is good news. I'm not so sure.","Notable loss. The formal looks different on me now. I miss how it used to fit.","A real drop. I'd gotten very comfortable at that weight. I miss the comfort.","Down a stage. I had really grown into my presence. Now I feel strangely smaller.","Significant reduction. My event outfits are all too big. There's a metaphor somewhere.","That much lost. I was hosting all events because I preferred to stay put. Now what?","Down from something substantial. The chapter house felt like mine at that size.","Even from here, the absence is social. I WAS the event. Now I'm just attending it."],
-  overachiever:["Lost some weight. Noted. Adjusted my metrics. Still optimizing, now downward.","Down a stage. I have updated my body-mass projection charts accordingly. Reluctantly.","Weight reduction logged. The data is complicated. I preferred the upward trend.","Dropped significantly. My thesis on metabolic self-optimization is now… ironic.","A real loss. I had achieved something at that weight. This is a regression.","Stage drop confirmed. My notes from that chapter are extensive and bittersweet.","Significant reduction. I had adapted my entire schedule around that body.","That much gone. I was most productive at that scale. The correlation is not accidental.","Down from something I had documented carefully. The archive remains, at least.","Even here, the loss is measurable. I had achieved peak everything at that stage."],
-  quiet:["…","Lighter. Not sure I wanted that.","Things feel different now. Not in a good way.","I had gotten comfortable with how I was. This is harder to adjust to.","Something is missing that I didn't realize I had until now.","The chair fits differently. I notice things like that.","I was… a lot. Now I'm less. I don't know how to feel about less.","I got used to taking up that much space. This doesn't feel like me.","That was who I was for a long time. This feels like starting over.","Even at this size, the absence of what I was is very loud."],
-  transfer:["This campus was feeling right. Now I feel like a stranger again.","Back to feeling like I don't quite fit. I was just getting settled.","Lost some. My friends noticed. The dining hall feels different.","Down a size. I'd found my rhythm here. This disrupts it.","Significant loss. I had found my people — at the dining hall table, literally.","Down a stage. I was finally a local. Now I feel like a visitor.","Lost a lot. I had integrated completely. My presence here was established.","That's a lot gone. I had made this campus mine at that size.","Down from something real. My identity here was tied to who I'd become.","Even from here, the transition hurts. I arrived small and became something. This is smaller."],
+  cheerleader:["Below starting weight now. The uniform swims on me. This is a problem I know how to solve.","Ugh, I feel so light. I don't know what to do with that.","My uniform almost fits again. I can't decide if that's good.","Lost a size. Squad is acting like it's a comeback. I miss my curves.","Dropped some. Coach is pleased. I'm… processing.","I was getting comfortable at that weight. This feels wrong.","Noticeably smaller. Still bigger than before. Strange in-between.","My clothes fit differently. I miss how they were.","That much gone. There was a lot of me there. I miss it.","Even at this size, losing is disorienting. I had grown attached.","Down from something extraordinary. I don't know who I am at this scale."],
+  bookworm:["Underweight, technically. The medical literature is quite clear. I've drafted a corrective dietary schedule.","Lower body mass means a different relationship to sitting. Academically interesting, personally ambivalent.","My notes on metabolic change are fascinating. I preferred the other data.","The numbers are down. I've updated my charts. I don't love the new trend.","Quantifiably smaller. I'm choosing not to feel anything about it. Mostly.","Lost a significant amount. My research subject (me) has changed. Neutral affect. Mostly.","Down a stage. I keep rereading my earlier entries from when I was… more.","A significant reduction. The chair feels different. I keep noticing it.","I've lost a lot. I was studying myself at that size. The chapter feels closed.","Down from something remarkable. The data documents the loss with great reluctance.","Even from here, the absence is felt. I had built a life at that scale."],
+  influencer:["My audience is staging a group intervention in my comments. I'm choosing to address this with a meal haul video.","Posting a 'soft journey' update but honestly… I miss my old content era.","The comments are weird. Half say 'queen' and half say 'glowup.' I feel like neither.","Lost some. My engagement is down. My audience liked me bigger.","Dropped a size and my DMs were very opinionated about it. I preferred before.","My BBW audience is concerned. I'm concerned. We're all concerned.","That scale, that content — I was really thriving. Now what?","Lost a lot. My whole brand was that. I need to rebrand and I'm grieving.","My monetization at that level was incredible. Coming down is a loss in every sense.","That content was my best era. This is a new chapter. I hate new chapters.","Even from where I am, I feel the absence of what I had. Very present-tense grief."],
+  athlete:["Below racing weight now. This isn't power. I need to fix this. Starting immediately.","Lighter technically. But I'd gotten used to carrying all that.","My center of gravity has changed. Have to relearn my body.","A drop on the scale. Coach would've been thrilled once. Now I'm just confused.","Lost training mass. I was powerful just moving around. I miss that.","Slimmer. There was a physics to that size I'm going to miss.","Down a stage. My old PRs were set when I was much heavier. The body remembers.","Significant loss. I had adapted entirely to that size. Starting over.","That's a lot of weight gone. My body had reached equilibrium at the last stage.","Even here, the loss feels physical. That mass was mine.","Down from truly enormous. I don't know what to do with a body this 'small.'"],
+  artsy:["The angularity is interesting but there's not enough of me to work with. Time to fix that.","Something has changed about how I move through space. The art will reflect this.","Lost some. My work was processing these proportions. Back to the canvas.","Down a stage. The negative space around me is different. The piece feels incomplete.","My figure work was inspired by this body. It's harder to paint something shrinking.","Lost significant weight. I was sculpting abundance. This feels like erasure.","A whole stage gone. My gallery was building toward something. Now the theme has shifted.","The loss is real and so is the grief. Every body I've been deserves to be witnessed.","Down from something I was only beginning to understand artistically. The work was just getting good.","That scale of presence — I was making work about it. Now it's retrospective.","Even from here, the absence is felt aesthetically. I wore my size like a medium."],
+  gamer:["The chair barely knows I'm here. This is not the direction I thought I was going. Delivery ordered.","My character's heavier than me now. Weird feeling.","Lost some weight. My viewers noticed before I did. They're disappointed.","Stream donation amounts are down. The correlation is obvious.","Down a stage. My setup feels weirdly spacious now.","My snack sponsors are worried. I've reassured them. I'm still committed.","Significant loss. My whole 'bigger than the setup' aesthetic is compromised.","Lost a lot. I was architecture at that size. Now just furniture.","That much gone. I had truly become the beanbag. This is smaller.","That content era is over and I'm grieving it, one snack at a time.","Even here, I feel reduced. The beanbag and I have grown apart."],
+  sorority:["Below starting weight. The chapter is staging interventions. I'm accepting all the food offerings.","Lost some. The sisters are being weird about it. I feel the difference.","Dropped a size. Event dresses from before might fit. I don't know how I feel.","Down on the scale. My chapter thinks this is good news. I'm not so sure.","Notable loss. The formal looks different on me now. I miss how it used to fit.","A real drop. I'd gotten very comfortable at that weight. I miss the comfort.","Down a stage. I had really grown into my presence. Now I feel strangely smaller.","Significant reduction. My event outfits are all too big. There's a metaphor somewhere.","That much lost. I was hosting all events because I preferred to stay put. Now what?","Down from something substantial. The chapter house felt like mine at that size.","Even from here, the absence is social. I WAS the event. Now I'm just attending it."],
+  overachiever:["Underweight. That's a failing grade on my own metrics. Corrective plan: immediate and comprehensive.","Lost some weight. Noted. Adjusted my metrics. Still optimizing, now downward.","Down a stage. I have updated my body-mass projection charts accordingly. Reluctantly.","Weight reduction logged. The data is complicated. I preferred the upward trend.","Dropped significantly. My thesis on metabolic self-optimization is now… ironic.","A real loss. I had achieved something at that weight. This is a regression.","Stage drop confirmed. My notes from that chapter are extensive and bittersweet.","Significant reduction. I had adapted my entire schedule around that body.","That much gone. I was most productive at that scale. The correlation is not accidental.","Down from something I had documented carefully. The archive remains, at least.","Even here, the loss is measurable. I had achieved peak everything at that stage."],
+  quiet:["...","…","Lighter. Not sure I wanted that.","Things feel different now. Not in a good way.","I had gotten comfortable with how I was. This is harder to adjust to.","Something is missing that I didn't realize I had until now.","The chair fits differently. I notice things like that.","I was… a lot. Now I'm less. I don't know how to feel about less.","I got used to taking up that much space. This doesn't feel like me.","That was who I was for a long time. This feels like starting over.","Even at this size, the absence of what I was is very loud."],
+  transfer:["Lighter than when I came here. It feels like going backwards. I don't like it.","This campus was feeling right. Now I feel like a stranger again.","Back to feeling like I don't quite fit. I was just getting settled.","Lost some. My friends noticed. The dining hall feels different.","Down a size. I'd found my rhythm here. This disrupts it.","Significant loss. I had found my people — at the dining hall table, literally.","Down a stage. I was finally a local. Now I feel like a visitor.","Lost a lot. I had integrated completely. My presence here was established.","That's a lot gone. I had made this campus mine at that size.","Down from something real. My identity here was tied to who I'd become.","Even from here, the transition hurts. I arrived small and became something. This is smaller."],
 };
 
 const PROFESSOR_RANKS = [
@@ -120,6 +126,7 @@ const PROFESSOR_RANKS = [
 
 const OUTFITS = {
   cheerleader:[
+    "Squad jacket hangs off her angular shoulders. Uniform won't stay up. Extremely slight frame.",
     "Squad jacket, perfectly pressed. Uniform fits like a glove.",
     "Squad jacket looking a little snug. Uniform rides up slightly.",
     "Wearing her jacket open — won't button anymore. Leggings instead of the skirt.",
@@ -132,6 +139,7 @@ const OUTFITS = {
     "Whatever fits. Custom made. Extensive.",
   ],
   bookworm:[
+    "Cardigan hangs off angular shoulders. Jeans need a belt. Very slight under all the layers.",
     "Neat cardigan, slim jeans, sensible shoes.",
     "Cardigan straining at the buttons. Looser jeans today.",
     "Oversized cardigan open, leggings replacing jeans entirely.",
@@ -144,6 +152,7 @@ const OUTFITS = {
     "Draped in fabric. Serene. Vast.",
   ],
   default:[
+    "Clothes hang off her angular frame. Everything too large, nothing fits properly.",
     "Whatever she usually wears. Fits fine.",
     "Clothes are a little snug. She hasn't updated her size yet.",
     "Wearing bigger sizes. Waistbands replaced with elastics.",
@@ -155,6 +164,19 @@ const OUTFITS = {
     "Bespoke reinforced everything.",
     "Whatever can be made for her. A project.",
   ],
+};
+
+const SLIGHT_DIARY = {
+  cheerleader:"Practice today. Uniform is falling off me — had to pin it twice. Coach asked if everything was okay. I said yes. I don't know if that's true.",
+  bookworm:"Subsisting on coffee and determination. Weighed myself today. The number is… lower than expected. Noted. Adding a dietary appendix to my research schedule.",
+  influencer:"Woke up and my collarbone was very visible in the ring light. Posted it anyway. Comments were unexpected. Mostly worried. I'm going to the dining hall.",
+  athlete:"Split times are actually good right now. But I look in the mirror and I barely recognize myself. Coach says I look 'lean.' The word feels wrong.",
+  artsy:"Everything feels angular. My brushstrokes are too. There's an interesting aesthetic to the fragility but I don't want to romanticize it. Eating something.",
+  gamer:"Fourteen-hour session. Forgot to eat again. My stream chat noticed before I did. They sent me a delivery. I ate all of it.",
+  sorority:"Dress fitting for the social. The seamstress asked if I'd 'lost some.' I nodded. She didn't say anything else. I stopped at the bakery on the way home.",
+  overachiever:"BMI: 17.1. That's the clinical threshold. I've added a meal schedule to my planner. Optimizing upward. This is correctable.",
+  quiet:"—",
+  transfer:"I've been here two months and I weigh less than when I left home. The dining hall is good. I've been forgetting to go. I should fix that.",
 };
 
 const DIARY_ENTRIES = {
@@ -303,7 +325,7 @@ const INFLUENCE_PAIRS = [
 ];
 
 const NARRATIVE_EVENTS = [
-  { id:"uniform_split", stageMin:2, archetype:"cheerleader", title:"Uniform Incident",
+  { id:"uniform_split", stageMin:3, archetype:"cheerleader", title:"Uniform Incident",
     text:(s)=>{
       const pool=[
         `During what ${s.name} swears will be her last practice, her cheer uniform splits along the seam with an audible pop. The gym goes quiet. ${s.name} looks down at herself — at the soft belly now escaping the fabric — and starts laughing. She texts you that evening. "So I definitely need a new uniform. Four sizes up minimum. Also I just had pizza and it was incredible. Life is weird. Good weird."`,
@@ -313,7 +335,7 @@ const NARRATIVE_EVENTS = [
       return pool[s.id % pool.length];
     },
     gain:[4,8], rel:12 },
-  { id:"chair_breaks", stageMin:3, archetype:null, title:"The Chair Incident",
+  { id:"chair_breaks", stageMin:4, archetype:null, title:"The Chair Incident",
     text:(s)=>{
       const pool=[
         `A classroom chair gives way under ${s.name} with a loud crack. She goes bright red. You slide a sturdier chair over without a word. After class she hangs back. "Thank you for… not making it weird." She glances down at herself, pats her belly almost fondly. "I've gotten kind of big, haven't I." It doesn't come out like a problem.`,
@@ -324,98 +346,98 @@ const NARRATIVE_EVENTS = [
       return pool[s.id % pool.length];
     },
     gain:[3,5], rel:18 },
-  { id:"viral_post", stageMin:3, archetype:"influencer", title:"Going Viral",
+  { id:"viral_post", stageMin:4, archetype:"influencer", title:"Going Viral",
     text:(s)=>`${s.name} posts a video attempting to fit into her old jeans. It goes viral overnight. Two million views in twelve hours. Comments are overwhelmingly enthusiastic. She shows you in class, glowing. "Two. Million." She tilts the phone to show you the view count. Her old jeans are somewhere around her thighs in the thumbnail. "I think this is my era," she says.`,
     gain:[5,9], rel:20 },
-  { id:"thesis_rewrite", stageMin:2, archetype:"bookworm", title:"Academic Pivot",
+  { id:"thesis_rewrite", stageMin:3, archetype:"bookworm", title:"Academic Pivot",
     text:(s)=>`${s.name} submits a revised thesis outline. New title: 'Adaptive Caloric Strategy and Cognitive Performance: An Ethnographic Self-Study.' The abstract is rigorous. It is also clearly an elaborate academic justification for eating constantly. You approve it immediately. She beams with the energy of someone who has made weight gain count toward her GPA.`,
     gain:[3,6], rel:15 },
-  { id:"gaming_sponsor", stageMin:4, archetype:"gamer", title:"Snack Sponsorship",
+  { id:"gaming_sponsor", stageMin:5, archetype:"gamer", title:"Snack Sponsorship",
     text:(s)=>`${s.name} has a snack sponsorship deal. She tells you with enormous satisfaction, adjusting herself in her chair. "They send boxes. Every week. Full boxes." She pauses. "I've been doing a lot of product testing." You look at her — noticeably bigger — and nod. "Thorough research," you say. She grins. "The most thorough."`,
     gain:[5,10], rel:18 },
-  { id:"intervention_fails", stageMin:3, archetype:"sorority", title:"The Intervention That Wasn't",
+  { id:"intervention_fails", stageMin:4, archetype:"sorority", title:"The Intervention That Wasn't",
     text:(s)=>`${s.name}'s sisters stage an 'intervention' about her eating. It devolves into a two-hour dinner when ${s.name} orders for the table. By dessert everyone has forgotten the intervention. ${s.name} has eaten more than anyone. She tells you the next day, delighted. "I think I accidentally converted three of them."`,
     gain:[5,8], rel:22 },
-  { id:"art_exhibition", stageMin:4, archetype:"artsy", title:"The Body Exhibition",
+  { id:"art_exhibition", stageMin:5, archetype:"artsy", title:"The Body Exhibition",
     text:(s)=>`${s.name}'s senior show opens and every piece is a meditation on abundance — overflowing bowls, voluptuous figures, textures of excess. Critics write 'opulent' and 'unapologetically sensual.' ${s.name} stands at the opening in a flowing dress that shows every curve, eating cheese from the reception table. "The artist," she says, gesturing at herself, "is also the subject matter."`,
     gain:[4,7], rel:20 },
-  { id:"team_weigh_in", stageMin:2, archetype:"athlete", title:"The Weigh-In",
+  { id:"team_weigh_in", stageMin:3, archetype:"athlete", title:"The Weigh-In",
     text:(s)=>`${s.name} has been avoiding the athletics department scale for weeks. Today she can't. She tells you flatly: "Thirty-five pounds over their limit." Beat. "They were very professional about it." Another beat. "I ate an entire pizza on the way home and I feel fine, actually." She does look fine — soft and full-cheeked and more relaxed than you've ever seen her.`,
     gain:[4,7], rel:15 },
-  { id:"quiet_opens_up", stageMin:3, archetype:"quiet", title:"She Opens Up",
+  { id:"quiet_opens_up", stageMin:4, archetype:"quiet", title:"She Opens Up",
     text:(s)=>`After class, ${s.name} catches you packing up. She's looking at her own rounded belly with an expression you can't read. Then she looks up. "I actually like how I look now," she says quietly. "Is that weird?" You tell her it isn't. She nods, pulls a pastry from her bag, takes a bite. The two of you eat in comfortable silence for a moment. She smiles.`,
     gain:[3,5], rel:28 },
-  { id:"overachiever_pivot", stageMin:3, archetype:"overachiever", title:"A Change of Thesis",
+  { id:"overachiever_pivot", stageMin:4, archetype:"overachiever", title:"A Change of Thesis",
     text:(s)=>`${s.name} submits a revised thesis proposal: 'Adaptive Caloric Strategy and Cognitive Performance: A Self-Study.' You read the abstract. It is rigorous. It is also clearly an elaborate academic justification for eating constantly. You approve it. She beams with the energy of someone who has made gaining weight count toward her GPA.`,
     gain:[3,6], rel:20 },
-  { id:"transfer_settled", stageMin:4, archetype:"transfer", title:"Finally Home",
+  { id:"transfer_settled", stageMin:5, archetype:"transfer", title:"Finally Home",
     text:(s)=>`${s.name} gets a call from her parents asking if she wants to transfer back home. She's quiet for a moment, looking out the window at the campus she's come to know so intimately. "No," she says finally. "I think I'm where I'm supposed to be." She hangs up, pats her enormous belly with obvious affection, and heads to the dining hall.`,
     gain:[4,8], rel:22 },
-  { id:"custom_clothing", stageMin:5, archetype:null, title:"Shopping Trip",
+  { id:"custom_clothing", stageMin:6, archetype:null, title:"Shopping Trip",
     text:(s)=>`${s.name} announces she's had to go up four clothing sizes and nothing in stores fits anymore. Rather than distress, there's satisfaction in her voice. "I got measured properly for the first time. Did you know I carry most of it here —" she pats her belly "— and here." She pats her hips. "Custom order. It's going to look incredible."`,
     gain:[2,5], rel:16 },
-  { id:"immobility_peace", stageMin:7, archetype:null, title:"Comfortable",
+  { id:"immobility_peace", stageMin:8, archetype:null, title:"Comfortable",
     text:(s)=>`You find ${s.name} settled into the reinforced couch, a plate balanced on her enormous belly, utterly at ease. "I've been thinking," she says, "I used to spend so much energy on movement. Walking, exercising, all of that." She takes a slow bite. "This is better." She isn't asking for your opinion. She's just telling you how things are. You bring her something else to eat.`,
     gain:[5,12], rel:22 },
-  { id:"blob_ending", stageMin:9, archetype:null, title:"Final Form",
+  { id:"blob_ending", stageMin:10, archetype:null, title:"Final Form",
     text:(s)=>`${s.name} can no longer come to class. You bring class to her. She holds court from her specially furnished room — vast, warm, content. Students orbit her. She eats, talks, laughs. When you ask how she feels, she considers this. "Full," she finally says. "Really, genuinely full." She smiles. "Keep it coming."`,
     gain:[0,0], rel:35 },
 ];
 
 const TALK_RESPONSES = {
   how_are_you:(s,st)=>{
-    if(st<=1) return `${s.name} tucks hair behind her ear. "Doing well! Eating a little more than usual maybe, but — yeah. Good." She pats her slightly softer middle, barely noticing it.`;
-    if(st<=3) return `${s.name} settles back, chair creaking softly. "Honestly? Really good. I feel comfortable lately. More than before." She smiles, belly resting forward noticeably.`;
-    if(st<=6) return `${s.name} grins, shifting her considerable weight. "Amazing, actually." She glances at her round belly with obvious affection. "I don't know when I got so big, but I'm genuinely happy."`;
+    if(st<=2) return `${s.name} tucks hair behind her ear. "Doing well! Eating a little more than usual maybe, but — yeah. Good." She pats her slightly softer middle, barely noticing it.`;
+    if(st<=4) return `${s.name} settles back, chair creaking softly. "Honestly? Really good. I feel comfortable lately. More than before." She smiles, belly resting forward noticeably.`;
+    if(st<=7) return `${s.name} grins, shifting her considerable weight. "Amazing, actually." She glances at her round belly with obvious affection. "I don't know when I got so big, but I'm genuinely happy."`;
     return `${s.name} looks up serenely, full cheeks flushed. "Perfect," she says simply. "I am absolutely perfect." She resumes eating.`;
   },
   compliment_figure:(s,st)=>{
-    if(st<=1) return `${s.name} blinks, then flushes. "Oh — thank you. I don't usually get…" She glances down at herself uncertainly. "Yeah. Thank you."`;
-    if(st<=2) return `${s.name} looks at her softened figure and smiles cautiously. "I mean… I have been feeling a bit different lately. In a good way, I think?"`;
-    if(st<=4) return `${s.name} beams. She smooths her hands over her sides, feeling the heft of herself. "I think so too. I've really filled out." She sounds very pleased.`;
-    if(st<=6) return `${s.name} laughs warmly, adjusting her heavy frame. "I know, right? I'm huge." She says it with obvious pride. "I just keep getting bigger."`;
+    if(st<=2) return `${s.name} blinks, then flushes. "Oh — thank you. I don't usually get…" She glances down at herself uncertainly. "Yeah. Thank you."`;
+    if(st<=3) return `${s.name} looks at her softened figure and smiles cautiously. "I mean… I have been feeling a bit different lately. In a good way, I think?"`;
+    if(st<=5) return `${s.name} beams. She smooths her hands over her sides, feeling the heft of herself. "I think so too. I've really filled out." She sounds very pleased.`;
+    if(st<=7) return `${s.name} laughs warmly, adjusting her heavy frame. "I know, right? I'm huge." She says it with obvious pride. "I just keep getting bigger."`;
     return `${s.name} regards you with serene amusement from her enormous settled mass. "Obviously," she says. "I'm spectacular." She returns to eating.`;
   },
   food_talk:(s,st)=>{
     const places=["the new place on campus","that spot near the library","the dining hall extension","the off-campus bistro"];
     const p=places[s.id%places.length];
-    if(st<=2) return `"Oh, we're talking food?" ${s.name} brightens. "Have you tried ${p}? I've been going every few days. The portions are enormous."`;
-    if(st<=5) return `${s.name} lights up immediately. "I've really developed my palate lately. Mostly in the direction of 'more.'" She gestures at herself. "Evidence present."`;
+    if(st<=3) return `"Oh, we're talking food?" ${s.name} brightens. "Have you tried ${p}? I've been going every few days. The portions are enormous."`;
+    if(st<=6) return `${s.name} lights up immediately. "I've really developed my palate lately. Mostly in the direction of 'more.'" She gestures at herself. "Evidence present."`;
     return `${s.name} laughs. "I could talk about food endlessly. Actually — are there snacks here? There should be snacks." She looks around hopefully.`;
   },
   class_talk:(s,st)=>{
-    if(st<=2) return `"I've been really into the anthropology readings," ${s.name} says. "The stuff about feasting culture? It's making me think about food differently." She pauses. "Hungrily."`;
-    if(st<=5) return `"I love this class," ${s.name} says simply. "The assignments are my favourite. Especially the eating ones." She pats her belly contentedly.`;
+    if(st<=3) return `"I've been really into the anthropology readings," ${s.name} says. "The stuff about feasting culture? It's making me think about food differently." She pauses. "Hungrily."`;
+    if(st<=6) return `"I love this class," ${s.name} says simply. "The assignments are my favourite. Especially the eating ones." She pats her belly contentedly.`;
     return `"Can we do another food assignment?" ${s.name} asks earnestly. "For my learning. I learn best by eating things." She appears completely sincere.`;
   },
   encourage_eating:(s,st)=>{
-    if(st<=1) return `${s.name} hesitates, glancing at her slightly softer middle. "I mean… I probably shouldn't—" She wavers. "— but maybe just a little more. It does smell amazing."`;
-    if(st<=3) return `${s.name} barely needs convincing. "Oh I was already planning to," she says, reaching for more. "You just gave me permission to go faster."`;
-    if(st<=6) return `${s.name} laughs. "Was I not already? I've been eating basically constantly." She doesn't look remotely bothered. "But yes. More. Absolutely."`;
+    if(st<=2) return `${s.name} hesitates, glancing at her slightly softer middle. "I mean… I probably shouldn't—" She wavers. "— but maybe just a little more. It does smell amazing."`;
+    if(st<=4) return `${s.name} barely needs convincing. "Oh I was already planning to," she says, reaching for more. "You just gave me permission to go faster."`;
+    if(st<=7) return `${s.name} laughs. "Was I not already? I've been eating basically constantly." She doesn't look remotely bothered. "But yes. More. Absolutely."`;
     return `${s.name} gives you a look of serene amusement. "I appreciate the enthusiasm," she says, already eating, "but I genuinely have this handled."`;
   },
   ask_lifestyle:(s,st)=>{
-    if(st<=1) return `"Pretty normal," ${s.name} says. "Class, ${s.hobby}, dining hall. The food here is actually really good."`;
-    if(st<=3) return `"I've simplified," ${s.name} says. "Class, ${s.hobby}, and eating. Mostly eating, honestly. I'm happier."`;
-    if(st<=6) return `${s.name} considers. "Eat, relax, the occasional ${s.hobby} when I feel like moving." She looks at her enormous body. "Bigger in some ways. Better in all of them."`;
+    if(st<=2) return `"Pretty normal," ${s.name} says. "Class, ${s.hobby}, dining hall. The food here is actually really good."`;
+    if(st<=4) return `"I've simplified," ${s.name} says. "Class, ${s.hobby}, and eating. Mostly eating, honestly. I'm happier."`;
+    if(st<=7) return `${s.name} considers. "Eat, relax, the occasional ${s.hobby} when I feel like moving." She looks at her enormous body. "Bigger in some ways. Better in all of them."`;
     return `${s.name} shifts comfortably. "Eat. Sit. Exist. I'm excellent at all three. That's the full lifestyle summary."`;
   },
   ask_weight:(s,st)=>{
-    if(st<=1) return `${s.name} laughs awkwardly. "I've put on a bit. The food here is genuinely dangerous." She doesn't seem very worried.`;
-    if(st<=2) return `${s.name} looks down and sighs — not quite distress. "Yeah. I know. My clothes have been…" She prods her belly thoughtfully. "Unhappy."`;
-    if(st<=4) return `${s.name} pats her belly with resigned amusement. "I'm aware I've gotten kind of big." Beat. "I also had a huge lunch and I'm thinking about dinner. So."`;
-    if(st<=6) return `${s.name} spreads her hands across her wide middle. "Enormous," she says, with growing pride. "I weighed myself last week and then immediately ordered pizza to celebrate."`;
+    if(st<=2) return `${s.name} laughs awkwardly. "I've put on a bit. The food here is genuinely dangerous." She doesn't seem very worried.`;
+    if(st<=3) return `${s.name} looks down and sighs — not quite distress. "Yeah. I know. My clothes have been…" She prods her belly thoughtfully. "Unhappy."`;
+    if(st<=5) return `${s.name} pats her belly with resigned amusement. "I'm aware I've gotten kind of big." Beat. "I also had a huge lunch and I'm thinking about dinner. So."`;
+    if(st<=7) return `${s.name} spreads her hands across her wide middle. "Enormous," she says, with growing pride. "I weighed myself last week and then immediately ordered pizza to celebrate."`;
     return `${s.name} laughs richly. "I am magnificently, spectacularly fat." She settles deeper. "And getting bigger. I love it." She reaches for more food.`;
   },
   about_gaining:(s,st)=>{
-    if(st<=1) return `${s.name} blinks. "I mean — yeah, I've put on a few. The food here is so good." She seems unbothered. "Is it that noticeable?"`;
-    if(st<=3) return `${s.name} looks at herself, at the real belly now resting forward. "I mean… yeah. I know." A pause. "I don't really mind, honestly. Is that weird?"`;
-    if(st<=5) return `${s.name} grins. "I know. I'm huge and getting huger." She sounds delighted. "Every week there's just more of me. I think it suits me."`;
+    if(st<=2) return `${s.name} blinks. "I mean — yeah, I've put on a few. The food here is so good." She seems unbothered. "Is it that noticeable?"`;
+    if(st<=4) return `${s.name} looks at herself, at the real belly now resting forward. "I mean… yeah. I know." A pause. "I don't really mind, honestly. Is that weird?"`;
+    if(st<=6) return `${s.name} grins. "I know. I'm huge and getting huger." She sounds delighted. "Every week there's just more of me. I think it suits me."`;
     return `${s.name} laughs warmly. "Keep going, I say. There's clearly no stopping now." She gestures at her enormous mass with obvious satisfaction.`;
   },
   future_plans:(s,st)=>{
-    if(st<=2) return `"Graduate, get a job, the usual," ${s.name} says. "Oh, and I want to try that new restaurant downtown. That's also a priority."`;
-    if(st<=5) return `"Honestly?" ${s.name} says. "More of this. More food, more comfort, more of just… being." She looks content. "My plans have simplified."`;
+    if(st<=3) return `"Graduate, get a job, the usual," ${s.name} says. "Oh, and I want to try that new restaurant downtown. That's also a priority."`;
+    if(st<=6) return `"Honestly?" ${s.name} says. "More of this. More food, more comfort, more of just… being." She looks content. "My plans have simplified."`;
     return `${s.name} smiles slowly. "My plans are right here," she says. "This." She spreads her hands across her vast body. "I think I've arrived."`;
   },
 };
@@ -1149,9 +1171,9 @@ const GOSSIP = [
 ];
 
 function getGossipLines(gossip, targetStageId){
-  if(targetStageId<=2) return gossip.lines.low;
-  if(targetStageId<=5) return gossip.lines.mid;
-  if(targetStageId<=8) return gossip.lines.high;
+  if(targetStageId<=3) return gossip.lines.low;
+  if(targetStageId<=6) return gossip.lines.mid;
+  if(targetStageId<=9) return gossip.lines.high;
   return gossip.lines.blob;
 }
 
@@ -1326,7 +1348,7 @@ const CLASS_SCENES = [
       { label:"Ask where she's from",              effect:{gain:[0,0], mood:"content",rel:10}, result:s=>`You ask about home. She talks for twenty minutes — food, places, people, traditions. She's surprised how much she's missed it. You listen to all of it.` },
     ] },
   // ── WEIGHT-STAGE-BASED ───────────────────────────────────────
-  { id:"stage_early", target:"student", filter:s=>getStage(s.lbs).id<=1,
+  { id:"stage_early", target:"student", filter:s=>getStage(s.lbs).id<=2,
     title:"Still Watching",
     text:s=>`${s.name} pauses mid-lecture to smooth her shirt, frowning slightly. She's noticed something. Not alarmed yet — just aware. She mentions she's been going to the gym more.`,
     choices:[
@@ -1334,7 +1356,7 @@ const CLASS_SCENES = [
       { label:"Redirect to academics",             effect:{gain:[0,0], mood:"focused",rel:3}, result:s=>`You pivot to her coursework, which she's genuinely interested in. The self-scrutiny fades into the background of something she cares about more.` },
       { label:"Introduce 'study fuel' snacks",     effect:{gain:[5,10],mood:"content",rel:4}, result:s=>`You bring out a range of snacks framed as brain food. She tries them all with scholarly thoroughness. She doesn't go to the gym that afternoon.` },
     ] },
-  { id:"stage_mid", target:"student", filter:s=>{const id=getStage(s.lbs).id;return id>=2&&id<=3;},
+  { id:"stage_mid", target:"student", filter:s=>{const id=getStage(s.lbs).id;return id>=3&&id<=4;},
     title:"Finding Her Rhythm",
     text:s=>`${s.name} has clearly made peace with a lot of things lately. She moves more slowly, eats more openly, cares less about what anyone thinks. She seems genuinely at ease.`,
     choices:[
@@ -1342,7 +1364,7 @@ const CLASS_SCENES = [
       { label:"Have a candid check-in",            effect:{gain:[0,0], mood:"content",rel:9}, result:s=>`You ask directly how she's been. She thinks, then says: "Good, actually." And means it. Short, but honest.` },
       { label:"Assign a comfortable project",      effect:{gain:[2,5], mood:"content",rel:4}, result:s=>`A project at her own pace. She settles into it with the competent ease of someone who knows what they're doing.` },
     ] },
-  { id:"stage_heavy", target:"student", filter:s=>getStage(s.lbs).id>=4,
+  { id:"stage_heavy", target:"student", filter:s=>getStage(s.lbs).id>=5,
     title:"Command of the Room",
     text:s=>`${s.name} takes up space with absolute ease now. She settles into her reinforced seat, arranges her things precisely, and looks around the room with the calm authority of someone completely at home in their body.`,
     choices:[
@@ -1694,14 +1716,14 @@ const DINNER_CONVERSATION = [
 
 const ACHIEVEMENT_LIST = [
   { id:"first_gain",    label:"🌱 First Feeding",       desc:"Successfully feed a student for the first time.",            check:(sts)=>sts.some(s=>s.lbs>s.startLbs) },
-  { id:"stage2",        label:"📈 Chubby Club",         desc:"Any student reaches the Chubby stage.",                     check:(sts)=>sts.some(s=>getStage(s.lbs).id>=2) },
-  { id:"stage4",        label:"🍔 Heavy Hitter",        desc:"Any student reaches Heavy.",                                check:(sts)=>sts.some(s=>getStage(s.lbs).id>=4) },
-  { id:"stage6",        label:"🛋️ Couch Queen",        desc:"Any student reaches Very Fat.",                             check:(sts)=>sts.some(s=>getStage(s.lbs).id>=6) },
-  { id:"stage8",        label:"🏠 Immovable Object",   desc:"Any student reaches Immobile.",                             check:(sts)=>sts.some(s=>getStage(s.lbs).id>=8) },
-  { id:"stage9",        label:"🌕 Blob Status",         desc:"Any student reaches Blob.",                                 check:(sts)=>sts.some(s=>getStage(s.lbs).id>=9) },
-  { id:"all_soft",      label:"🫧 Soft Semester",       desc:"All students reach at least Soft.",                         check:(sts)=>sts.every(s=>getStage(s.lbs).id>=1) },
-  { id:"all_chubby",    label:"🥧 Chubby Class",        desc:"All students reach at least Chubby.",                       check:(sts)=>sts.every(s=>getStage(s.lbs).id>=2) },
-  { id:"all_plump",     label:"🍮 Plump Roster",        desc:"All students reach at least Plump.",                        check:(sts)=>sts.every(s=>getStage(s.lbs).id>=3) },
+  { id:"stage2",        label:"📈 Chubby Club",         desc:"Any student reaches the Chubby stage.",                     check:(sts)=>sts.some(s=>getStage(s.lbs).id>=3) },
+  { id:"stage4",        label:"🍔 Heavy Hitter",        desc:"Any student reaches Heavy.",                                check:(sts)=>sts.some(s=>getStage(s.lbs).id>=5) },
+  { id:"stage6",        label:"🛋️ Couch Queen",        desc:"Any student reaches Very Fat.",                             check:(sts)=>sts.some(s=>getStage(s.lbs).id>=7) },
+  { id:"stage8",        label:"🏠 Immovable Object",   desc:"Any student reaches Immobile.",                             check:(sts)=>sts.some(s=>getStage(s.lbs).id>=9) },
+  { id:"stage9",        label:"🌕 Blob Status",         desc:"Any student reaches Blob.",                                 check:(sts)=>sts.some(s=>getStage(s.lbs).id>=10) },
+  { id:"all_soft",      label:"🫧 Soft Semester",       desc:"All students reach at least Soft.",                         check:(sts)=>sts.every(s=>getStage(s.lbs).id>=2) },
+  { id:"all_chubby",    label:"🥧 Chubby Class",        desc:"All students reach at least Chubby.",                       check:(sts)=>sts.every(s=>getStage(s.lbs).id>=3) },
+  { id:"all_plump",     label:"🍮 Plump Roster",        desc:"All students reach at least Plump.",                        check:(sts)=>sts.every(s=>getStage(s.lbs).id>=4) },
   { id:"total100",      label:"💯 Century Club",        desc:"Total class weight gain reaches 100 lbs.",                  check:(sts)=>sts.reduce((a,s)=>a+(s.lbs-s.startLbs),0)>=100 },
   { id:"total500",      label:"🎖️ Five Hundred",        desc:"Total class weight gain reaches 500 lbs.",                  check:(sts)=>sts.reduce((a,s)=>a+(s.lbs-s.startLbs),0)>=500 },
   { id:"total1000",     label:"🏆 One Thousand",        desc:"Total class weight gain reaches 1,000 lbs.",                check:(sts)=>sts.reduce((a,s)=>a+(s.lbs-s.startLbs),0)>=1000 },
@@ -1721,7 +1743,7 @@ function getStage(lbs){
 }
 function getBodyDesc(s){ const bd=BODY_DESCS[s.bodyType]||BODY_DESCS.straight; return bd[Math.min(getStage(s.lbs).id,bd.length-1)]; }
 function getOutfit(s){ const o=OUTFITS[s.archetype]||OUTFITS.default; return o[Math.min(getStage(s.lbs).id,o.length-1)]; }
-function getDiary(s){ const d=DIARY_ENTRIES[s.archetype]; return d?d[Math.min(getStage(s.lbs).id,9)]:"—"; }
+function getDiary(s){ const id=getStage(s.lbs).id; if(id===0) return SLIGHT_DIARY[s.archetype]||"—"; const d=DIARY_ENTRIES[s.archetype]; return d?d[Math.min(id-1,9)]:"—"; }
 function rnd(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
 function generateClassSession(students,week){
   const scenes=[];
@@ -1736,21 +1758,21 @@ function generateClassSession(students,week){
 }
 
 const INIT_STUDENTS = [
-  { id:0,  name:"Brittany", archetype:"cheerleader",  age:19, bodyType:"pear",      lbs:118, startLbs:118, desc:"Petite, tight ponytail, squad jacket always on.",                  favFood:"protein shakes", hobby:"cheerleading",  personality:"bubbly",      relationship:20, triggeredEvents:[], mood:"happy" },
-  { id:1,  name:"Madeline", archetype:"bookworm",     age:20, bodyType:"straight",  lbs:125, startLbs:125, desc:"Lanky, cardigans, glasses perpetually sliding.",                   favFood:"granola bars",   hobby:"research",      personality:"analytical",  relationship:20, triggeredEvents:[], mood:"focused" },
-  { id:2,  name:"Kylie",    archetype:"influencer",   age:18, bodyType:"hourglass", lbs:122, startLbs:122, desc:"Perfectly contoured, phone always raised.",                        favFood:"acai bowls",     hobby:"content",       personality:"confident",   relationship:20, triggeredEvents:[], mood:"excited" },
-  { id:3,  name:"Serena",   archetype:"athlete",      age:21, bodyType:"athletic",  lbs:145, startLbs:145, desc:"Broad-shouldered, muscled, always in compression gear.",           favFood:"pasta",          hobby:"track",         personality:"competitive", relationship:20, triggeredEvents:[], mood:"focused" },
-  { id:4,  name:"Fiona",    archetype:"artsy",        age:22, bodyType:"straight",  lbs:115, startLbs:115, desc:"Flowy linen, paint under nails, mismatched earrings.",             favFood:"cheese boards",  hobby:"painting",      personality:"dreamy",      relationship:20, triggeredEvents:[], mood:"content" },
-  { id:5,  name:"Destiny",  archetype:"gamer",        age:19, bodyType:"apple",     lbs:155, startLbs:155, desc:"Oversized hoodie, headphones around neck, always sleepy.",         favFood:"ramen",          hobby:"gaming",        personality:"dry",         relationship:20, triggeredEvents:[], mood:"tired" },
-  { id:6,  name:"Tiffany",  archetype:"sorority",     age:20, bodyType:"hourglass", lbs:128, startLbs:128, desc:"Pastel everything, perfect blowout, Greek letters on tote.",       favFood:"rosé and brie",  hobby:"events",        personality:"social",      relationship:20, triggeredEvents:[], mood:"happy" },
-  { id:7,  name:"Priya",    archetype:"overachiever", age:21, bodyType:"straight",  lbs:120, startLbs:120, desc:"Planner out, colour-coded highlighters, always typing.",           favFood:"anything fast",  hobby:"studying",      personality:"driven",      relationship:20, triggeredEvents:[], mood:"stressed" },
-  { id:8,  name:"Maya",     archetype:"quiet",        age:18, bodyType:"pear",      lbs:130, startLbs:130, desc:"Oversized sweater, back row, notebook full of drawings.",          favFood:"pastries",       hobby:"journaling",    personality:"observant",   relationship:20, triggeredEvents:[], mood:"content" },
-  { id:9,  name:"Chloe",    archetype:"transfer",     age:20, bodyType:"apple",     lbs:135, startLbs:135, desc:"Wide-eyed, campus map in hand, tries everything once.",            favFood:"local foods",    hobby:"exploring",     personality:"curious",     relationship:20, triggeredEvents:[], mood:"curious" },
-  { id:10, name:"Jasmine",  archetype:"cheerleader",  age:19, bodyType:"hourglass", lbs:123, startLbs:123, desc:"Co-captain, impossibly coordinated, laughs at full volume.",       favFood:"smoothies",      hobby:"dance",         personality:"energetic",   relationship:20, triggeredEvents:[], mood:"happy" },
-  { id:11, name:"Emma",     archetype:"bookworm",     age:22, bodyType:"straight",  lbs:119, startLbs:119, desc:"PhD aspirations, book always open, tea always in hand.",           favFood:"tea cakes",      hobby:"writing",       personality:"gentle",      relationship:20, triggeredEvents:[], mood:"focused" },
-  { id:12, name:"Roxanne",  archetype:"artsy",        age:21, bodyType:"pear",      lbs:138, startLbs:138, desc:"Shaved side of head, band shirts, strong opinions always.",        favFood:"street tacos",   hobby:"music",         personality:"passionate",  relationship:20, triggeredEvents:[], mood:"excited" },
-  { id:13, name:"Aaliyah",  archetype:"athlete",      age:20, bodyType:"athletic",  lbs:140, startLbs:140, desc:"Basketball player, easy loud laugh, owns every room she enters.", favFood:"burgers",        hobby:"basketball",    personality:"easygoing",   relationship:20, triggeredEvents:[], mood:"happy" },
-  { id:14, name:"Sophie",   archetype:"sorority",     age:18, bodyType:"straight",  lbs:113, startLbs:113, desc:"Fresh freshman, just pledged, a little overwhelmed.",              favFood:"cupcakes",       hobby:"socialising",   personality:"sweet",       relationship:20, triggeredEvents:[], mood:"nervous" },
+  { id:0,  name:"Brittany", archetype:"cheerleader",  role:"Cheer Captain",       age:19, bodyType:"pear",      lbs:118, startLbs:118, desc:"Squad captain, tight ponytail, commands the room with a look.",         favFood:"protein shakes", hobby:"cheerleading",  personality:"commanding",  relationship:20, triggeredEvents:[], mood:"happy" },
+  { id:1,  name:"Madeline", archetype:"bookworm",     role:"Literature PhD",       age:20, bodyType:"straight",  lbs:125, startLbs:125, desc:"Lanky, cardigans, glasses perpetually sliding.",                       favFood:"granola bars",   hobby:"research",      personality:"analytical",  relationship:20, triggeredEvents:[], mood:"focused" },
+  { id:2,  name:"Kylie",    archetype:"influencer",   role:"Content Creator",      age:18, bodyType:"hourglass", lbs:122, startLbs:122, desc:"Perfectly contoured, phone always raised, brand in every gesture.",     favFood:"acai bowls",     hobby:"content",       personality:"confident",   relationship:20, triggeredEvents:[], mood:"excited" },
+  { id:3,  name:"Serena",   archetype:"athlete",      role:"Track Sprinter",       age:21, bodyType:"athletic",  lbs:145, startLbs:145, desc:"Compact and muscled, always in compression gear, restless energy.",     favFood:"pasta",          hobby:"track",         personality:"competitive", relationship:20, triggeredEvents:[], mood:"focused" },
+  { id:4,  name:"Fiona",    archetype:"artsy",        role:"Fine Art Major",       age:22, bodyType:"straight",  lbs:115, startLbs:115, desc:"Flowy linen, paint under nails, mismatched earrings.",                 favFood:"cheese boards",  hobby:"painting",      personality:"dreamy",      relationship:20, triggeredEvents:[], mood:"content" },
+  { id:5,  name:"Destiny",  archetype:"gamer",        role:"Pro Streamer",         age:19, bodyType:"apple",     lbs:155, startLbs:155, desc:"Oversized hoodie, headphones around neck, always on her phone.",       favFood:"ramen",          hobby:"gaming",        personality:"dry",         relationship:20, triggeredEvents:[], mood:"tired" },
+  { id:6,  name:"Tiffany",  archetype:"sorority",     role:"Chapter President",    age:20, bodyType:"hourglass", lbs:128, startLbs:128, desc:"Pastel everything, perfect blowout, Greek letters on tote.",           favFood:"rosé and brie",  hobby:"events",        personality:"social",      relationship:20, triggeredEvents:[], mood:"happy" },
+  { id:7,  name:"Priya",    archetype:"overachiever", role:"Triple Major",         age:21, bodyType:"straight",  lbs:120, startLbs:120, desc:"Planner out, colour-coded highlighters, three laptops open.",         favFood:"anything fast",  hobby:"studying",      personality:"driven",      relationship:20, triggeredEvents:[], mood:"stressed" },
+  { id:8,  name:"Maya",     archetype:"quiet",        role:"Studio Art Minor",     age:18, bodyType:"pear",      lbs:130, startLbs:130, desc:"Oversized sweater, back row, notebook full of careful drawings.",      favFood:"pastries",       hobby:"journaling",    personality:"observant",   relationship:20, triggeredEvents:[], mood:"content" },
+  { id:9,  name:"Chloe",    archetype:"transfer",     role:"Transfer Student",     age:20, bodyType:"apple",     lbs:135, startLbs:135, desc:"Wide-eyed, campus map in hand, trying everything at least once.",     favFood:"local foods",    hobby:"exploring",     personality:"curious",     relationship:20, triggeredEvents:[], mood:"curious" },
+  { id:10, name:"Jasmine",  archetype:"cheerleader",  role:"Dance Co-Captain",     age:19, bodyType:"hourglass", lbs:123, startLbs:123, desc:"Impossibly coordinated, laughs at full volume, owns every routine.",   favFood:"smoothies",      hobby:"dance",         personality:"energetic",   relationship:20, triggeredEvents:[], mood:"happy" },
+  { id:11, name:"Emma",     archetype:"bookworm",     role:"Cultural Studies",     age:22, bodyType:"straight",  lbs:119, startLbs:119, desc:"PhD aspirations, book always open, tea always in hand.",               favFood:"tea cakes",      hobby:"writing",       personality:"gentle",      relationship:20, triggeredEvents:[], mood:"focused" },
+  { id:12, name:"Roxanne",  archetype:"artsy",        role:"Music & Visual Art",   age:21, bodyType:"pear",      lbs:138, startLbs:138, desc:"Shaved side of head, band shirts, loud opinions, sketchbook out.",     favFood:"street tacos",   hobby:"music",         personality:"passionate",  relationship:20, triggeredEvents:[], mood:"excited" },
+  { id:13, name:"Aaliyah",  archetype:"athlete",      role:"Basketball Star",      age:20, bodyType:"athletic",  lbs:140, startLbs:140, desc:"Basketball player, easy loud laugh, owns every room she enters.",     favFood:"burgers",        hobby:"basketball",    personality:"easygoing",   relationship:20, triggeredEvents:[], mood:"happy" },
+  { id:14, name:"Sophie",   archetype:"sorority",     role:"New Pledge",           age:18, bodyType:"straight",  lbs:113, startLbs:113, desc:"Fresh freshman, just pledged, campus map in one hand, cupcake in the other.", favFood:"cupcakes", hobby:"socialising",   personality:"sweet",       relationship:20, triggeredEvents:[], mood:"nervous" },
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -1842,7 +1864,7 @@ export default function ProfessorSim(){
     INFLUENCE_PAIRS.forEach(([a,b])=>{
       if((s.id===a||s.id===b)){
         const other=students.find(st=>st.id===(s.id===a?b:a));
-        if(other && getStage(other.lbs).id>=2) bonusInfluence+=Math.floor(gain*0.15);
+        if(other && getStage(other.lbs).id>=3) bonusInfluence+=Math.floor(gain*0.15);
       }
     });
     return { newLbs:newLbs+bonusInfluence, oldStageId:oldSt, newStageId:newSt, narrativeEvents:triggered };
@@ -1859,7 +1881,7 @@ export default function ProfessorSim(){
       lbs:newLbs,
       relationship:Math.min(100,s.relationship+extraRel),
       triggeredEvents:[...s.triggeredEvents,...narrativeEvents.map(e=>e.id)],
-      mood: newStageId>=4?"content":s.mood,
+      mood: newStageId>=5?"content":s.mood,
     };
   };
 
@@ -1992,7 +2014,7 @@ export default function ProfessorSim(){
     if(action.id==="observe"){
       const stId=getStage(s.lbs).id;
       const lines=[
-        `You spend the day quietly observing ${s.name}.\n\nMorning: ${stId<=2?"She arrives to class on time, finding a seat easily.":"She arrives a little breathless, taking her time settling into her reinforced seat."}\n\nLunch: ${stId<=1?"A modest meal at the dining hall.":stId<=4?"Two full plates and dessert at the dining hall.":"An enormous spread — she's clearly a dining hall regular. Staff greet her by name."}\n\nAfternoon: ${stId<=3?"She moves through campus normally.":"She moves slowly, deliberately, each step carrying real weight."}\n\nEvening: ${stId<=2?"A quiet night, some snacking.":"Delivery arrives at her dorm. Multiple bags. She tips well."}\n\nCurrent weight: ${s.lbs} lbs. Stage: ${getStage(s.lbs).label}.`,
+        `You spend the day quietly observing ${s.name}.\n\nMorning: ${stId<=3?"She arrives to class on time, finding a seat easily.":"She arrives a little breathless, taking her time settling into her reinforced seat."}\n\nLunch: ${stId<=2?"A modest meal at the dining hall.":stId<=5?"Two full plates and dessert at the dining hall.":"An enormous spread — she's clearly a dining hall regular. Staff greet her by name."}\n\nAfternoon: ${stId<=4?"She moves through campus normally.":"She moves slowly, deliberately, each step carrying real weight."}\n\nEvening: ${stId<=3?"A quiet night, some snacking.":"Delivery arrives at her dorm. Multiple bags. She tips well."}\n\nCurrent weight: ${s.lbs} lbs. Stage: ${getStage(s.lbs).label}.`,
       ];
       setObserveText(lines[0]);
       return;
@@ -2082,7 +2104,7 @@ export default function ProfessorSim(){
       const s=students.find(st=>st.id===studentId);
       if(!s) return prev;
       const current=prev.allocation[studentId]||0;
-      const maxLoss=Math.max(0,s.lbs-100);
+      const maxLoss=Math.max(0,s.lbs-80);
       const newVal=Math.max(0,Math.min(maxLoss,current+delta));
       return{...prev,allocation:{...prev.allocation,[studentId]:newVal}};
     });
@@ -2093,7 +2115,7 @@ export default function ProfessorSim(){
     const{skill}=skillPurchase;
     const perStudent=Math.ceil(skill.cost/students.length);
     const newAlloc={};
-    students.forEach(s=>{ newAlloc[s.id]=Math.min(perStudent,Math.max(0,s.lbs-100)); });
+    students.forEach(s=>{ newAlloc[s.id]=Math.min(perStudent,Math.max(0,s.lbs-80)); });
     setSkillPurchase(prev=>({...prev,allocation:newAlloc}));
   };
 
@@ -2104,7 +2126,7 @@ export default function ProfessorSim(){
       const loss=allocation[s.id]||0;
       if(!loss) return s;
       const oldStage=getStage(s.lbs).id;
-      const newLbs=Math.max(100,s.lbs-loss);
+      const newLbs=Math.max(80,s.lbs-loss);
       const newStage=getStage(newLbs).id;
       if(newStage<oldStage){
         setTimeout(()=>push(`📉 ${s.name} drops to ${WEIGHT_STAGES[newStage].label}. "${STAGE_DROP_REACTIONS[s.archetype]?.[newStage]||'…'}"`) ,60);
@@ -2254,9 +2276,9 @@ export default function ProfessorSim(){
               <div style={{maxHeight:320,overflowY:"auto",display:"flex",flexDirection:"column",gap:5,marginBottom:12}}>
                 {students.map(s=>{
                   const alloc=allocation[s.id]||0;
-                  const maxLoss=Math.max(0,s.lbs-100);
+                  const maxLoss=Math.max(0,s.lbs-80);
                   const st=getStage(s.lbs);
-                  const newStage=alloc>0?getStage(Math.max(100,s.lbs-alloc)):null;
+                  const newStage=alloc>0?getStage(Math.max(80,s.lbs-alloc)):null;
                   const willDrop=newStage&&newStage.id<st.id;
                   return(
                     <div key={s.id} style={{...C.card,cursor:"default",display:"flex",alignItems:"center",gap:8,padding:"7px 10px"}}>
@@ -2572,7 +2594,7 @@ export default function ProfessorSim(){
                         <span style={{fontWeight:700,fontSize:15,color:"#d8a8ff"}}>{s.name}</span>
                         <StageTag stage={st}/>
                       </div>
-                      <div style={{fontSize:10,color:"#70508a",marginBottom:3}}>{s.archetype} · {s.bodyType} · {s.age}y · <MoodBadge mood={s.mood}/></div>
+                      <div style={{fontSize:10,color:"#70508a",marginBottom:3}}>{s.role||s.archetype} · {s.bodyType} · {s.age}y · <MoodBadge mood={s.mood}/></div>
                       <Bar val={s.lbs} color={st.color}/>
                       <div style={{fontSize:11,color:"#a88050",margin:"2px 0"}}>{s.lbs} lbs (+{s.lbs-s.startLbs}) · ❤ {s.relationship}%</div>
                       <div style={{fontSize:10,color:"#504060",fontStyle:"italic",lineHeight:1.4,marginTop:3}}>
@@ -2600,7 +2622,7 @@ export default function ProfessorSim(){
                       <span style={C.tag("#2a1050","#b080e0")}>{s.personality}</span>
                     </div>
                   </div>
-                  <div style={{fontSize:11,color:"#70509a",marginBottom:8}}>{s.archetype} · age {s.age} · {s.bodyType} body · fav: {s.favFood} · hobby: {s.hobby}</div>
+                  <div style={{fontSize:11,color:"#70509a",marginBottom:8}}>{s.role||s.archetype} · {s.archetype} · age {s.age} · {s.bodyType} body · fav: {s.favFood} · hobby: {s.hobby}</div>
 
                   <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:8}}>
                     <div style={{flex:1,minWidth:150}}>
@@ -2802,7 +2824,11 @@ export default function ProfessorSim(){
             return(
               <div>
                 <div style={{marginBottom:10}}>
-                  <p style={{...C.secT,margin:"0 0 10px"}}>Classroom Upgrades · {totalGained} lbs gained</p>
+                  <div style={{display:"flex",alignItems:"baseline",gap:10,marginBottom:10}}>
+                    <p style={{...C.secT,margin:0}}>Classroom Upgrades</p>
+                    <span style={{fontSize:22,fontWeight:700,color:"#f0c060",letterSpacing:-0.5,lineHeight:1}}>{totalGained}</span>
+                    <span style={{fontSize:11,color:"#8050a0",letterSpacing:1}}>lbs gained</span>
+                  </div>
                   <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
                     {CATS.map(cat=>{
                       const active=cat===skillCat;
