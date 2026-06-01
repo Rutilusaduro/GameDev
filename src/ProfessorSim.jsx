@@ -1169,6 +1169,212 @@ const SEMESTER_EVENTS = [
   { week:30, title:"Class Anniversary",      text:"It's been thirty weeks. The class has grown enormously — in every sense. A celebratory feast is in order.", gain:[10,20], target:"class" },
 ];
 
+const CLASS_SCENES = [
+  // ── MOOD-BASED ───────────────────────────────────────────────
+  { id:"mood_stressed", target:"student", filter:s=>s.mood==="stressed",
+    title:"Burning Out",
+    text:s=>`${s.name} slumps into her seat with the hollow look of someone who hasn't slept properly in days. An energy drink sweats on the desk in front of her. Her notebook is still closed.`,
+    choices:[
+      { label:"Slide her a snack",    effect:{gain:[3,6],mood:"content",rel:5},  result:s=>`You quietly set a bag of cookies on her desk. She blinks, then eats them slowly, and some color returns to her face.` },
+      { label:"Let her vent",          effect:{gain:[0,0],mood:"focused",rel:8},  result:s=>`You pause and check in. She offloads everything — deadlines, dorm drama, personal problems. By the end she's noticeably lighter. "Thanks, Professor."` },
+      { label:"Give her busywork",     effect:{gain:[1,3],mood:"focused",rel:2},  result:s=>`A small, completable in-class task. She locks in and works quietly through it, which is more than she was doing before.` },
+    ] },
+  { id:"mood_tired", target:"student", filter:s=>s.mood==="tired",
+    title:"Running on Empty",
+    text:s=>`${s.name} is already half-asleep by the second slide. Her chin keeps dropping toward her chest. She's technically present, but only technically.`,
+    choices:[
+      { label:"Bring coffee and pastries", effect:{gain:[4,8],mood:"content",rel:6}, result:s=>`You produce a thermos and a pastry box. ${s.name} revives with remarkable speed. She eats two before you've finished your sentence.` },
+      { label:"Call on her gently",        effect:{gain:[0,0],mood:"focused",rel:4}, result:s=>`You call her name, softly. She snaps awake, answers surprisingly well, and stays engaged for the rest of the hour.` },
+      { label:"Let her rest in the back",  effect:{gain:[0,0],mood:"tired",  rel:1}, result:s=>`You wave her to the back row and dim the lights. She naps through the lecture, but she seems genuinely grateful.` },
+    ] },
+  { id:"mood_nervous", target:"student", filter:s=>s.mood==="nervous",
+    title:"Jittery Energy",
+    text:s=>`${s.name} sits near the front today, fidgeting. She keeps picking up her phone and putting it down. Something has her wound tight.`,
+    choices:[
+      { label:"Offer warm comfort food",  effect:{gain:[5,9],mood:"content",rel:7}, result:s=>`You pull out a tin of warm baked goods. "For when you need it." She eats the whole thing and visibly unclenches.` },
+      { label:"Give her a speaking role", effect:{gain:[0,0],mood:"focused",rel:5}, result:s=>`You call on her for a structured, easy contribution. She gets through it fine, and the success bleeds the anxiety out of her posture.` },
+      { label:"Check in privately",       effect:{gain:[2,4],mood:"content",rel:9}, result:s=>`After class you hold her back a moment. She tells you what's going on. You listen, offer perspective, and leave her a snack for the walk home.` },
+    ] },
+  { id:"mood_focused", target:"student", filter:s=>s.mood==="focused",
+    title:"Deep in the Zone",
+    text:s=>`${s.name} has barely looked up from her work all session. Her notes are immaculate. She's clearly in the flow today.`,
+    choices:[
+      { label:"Reward her focus with treats", effect:{gain:[3,6],mood:"focused",rel:5}, result:s=>`You slide a little reward onto her desk — chocolate, a pastry. She acknowledges it with a nod and keeps working. Gone by the end of class.` },
+      { label:"Offer an extension project",   effect:{gain:[0,0],mood:"focused",rel:3}, result:s=>`You offer her optional extra work on today's material. She accepts immediately and starts planning. Exactly what she wanted.` },
+      { label:"Leave her to it",              effect:{gain:[0,0],mood:"focused",rel:1}, result:s=>`You simply don't disturb her. She powers through. Sometimes the best thing is to get out of the way.` },
+    ] },
+  { id:"mood_excited", target:"student", filter:s=>s.mood==="excited",
+    title:"Bubbling Over",
+    text:s=>`${s.name} can barely stay in her seat. She's answered three questions before you've asked them and is whispering enthusiastically to her neighbor.`,
+    choices:[
+      { label:"Channel it into a group activity", effect:{gain:[2,5],mood:"excited",rel:4}, result:s=>`You redirect her energy into a group discussion. She basically facilitates it herself. The snacks you bring disappear in the process.` },
+      { label:"Let her lead the segment",         effect:{gain:[0,0],mood:"excited",rel:7}, result:s=>`You call her up and let her explain the concept. She thrives. Everyone pays attention. It goes very well.` },
+      { label:"Feed the energy — literally",      effect:{gain:[5,10],mood:"excited",rel:6}, result:s=>`You produce a celebratory spread. ${s.name}'s excitement cranks up to eleven. She eats enthusiastically through the whole session.` },
+    ] },
+  { id:"mood_content", target:"student", filter:s=>s.mood==="content",
+    title:"Comfortable and Settled",
+    text:s=>`${s.name} is the picture of ease today — deep in her chair, soft smile, barely moving. She looks like she's exactly where she wants to be.`,
+    choices:[
+      { label:"Bring something warm to eat",    effect:{gain:[4,7],mood:"content",rel:5}, result:s=>`You produce a warm pastry box and set one in front of her. She accepts it without breaking her peaceful expression and eats it slowly, savoring every bite.` },
+      { label:"Give her a comfortable solo task",effect:{gain:[0,0],mood:"content",rel:3}, result:s=>`A quiet reading assignment, just for her. She settles into it completely. She's still there twenty minutes after class ends.` },
+      { label:"Sit and chat",                   effect:{gain:[1,3],mood:"content",rel:8}, result:s=>`You sit on the edge of the desk and just talk. She opens up — what she's thinking about, where she wants to be. Easy, unhurried.` },
+    ] },
+  // ── ARCHETYPE-SPECIFIC ───────────────────────────────────────
+  { id:"arch_cheerleader", target:"student", filter:s=>s.archetype==="cheerleader",
+    title:"Squad Pressure",
+    text:s=>`${s.name} arrives late and flustered. There's drama on the squad — uniforms, tryouts, something political. She drops into her seat and sighs loudly at no one.`,
+    choices:[
+      { label:"Take her for comfort food",  effect:{gain:[6,12],mood:"content",rel:8}, result:s=>`You take her to the campus diner. She vents over the largest slice of cake on the menu. By the third bite she's already laughing about it.` },
+      { label:"Help her draft a message",   effect:{gain:[0,0], mood:"focused",rel:6}, result:s=>`You help her think through the situation calmly. She writes it up between slides. "Thanks for not just saying 'it'll be fine.'"` },
+      { label:"Compliment her publicly",    effect:{gain:[2,4], mood:"happy",  rel:7}, result:s=>`You mention something she's genuinely good at, in front of everyone. She lights up. The squad drama suddenly seems a lot smaller.` },
+    ] },
+  { id:"arch_bookworm", target:"student", filter:s=>s.archetype==="bookworm",
+    title:"Research Spiral",
+    text:s=>`${s.name} found a gap in the literature on Thursday and hasn't really stopped since. She looks brilliant and slightly hollow. She hasn't mentioned food once.`,
+    choices:[
+      { label:"Bring food to the library",  effect:{gain:[5,9], mood:"focused",rel:8}, result:s=>`You find her at her usual table and set down a full meal. She looks up briefly, nods, and starts eating without pausing her reading. You sit opposite and say nothing.` },
+      { label:"Offer course credit",         effect:{gain:[0,0], mood:"focused",rel:7}, result:s=>`You say the work could count as an independent study project. She looks up for the first time in hours. "...Really?" Real delight, quickly returned to academic focus.` },
+      { label:"Lure her out with snacks",    effect:{gain:[7,13],mood:"content",rel:9}, result:s=>`You propose a snack-and-discuss session. She agrees because it's technically still intellectual. Two hours later the food is gone and she looks genuinely nourished.` },
+    ] },
+  { id:"arch_influencer", target:"student", filter:s=>s.archetype==="influencer",
+    title:"Sponsored Content",
+    text:s=>`${s.name} is filming a haul video between slides, whispering reviews of the snacks you've provided. Her followers are apparently very invested in the "Professor's Snacks" series.`,
+    choices:[
+      { label:"Bring premium snacks for the shoot", effect:{gain:[6,11],mood:"excited",rel:7}, result:s=>`You bring out artisan chocolates and imported cheese. She films delightedly. The video does numbers.` },
+      { label:"Ask to see the content",              effect:{gain:[0,0], mood:"excited",rel:9}, result:s=>`She shows you the channel. It's surprisingly good. You tell her so. She's visibly touched. "Nobody ever actually asks."` },
+      { label:"Collaborate on a class food feature", effect:{gain:[8,14],mood:"excited",rel:8}, result:s=>`You suggest she document a class-wide food event. A full sponsor spread appears the next day. The class eats very well.` },
+    ] },
+  { id:"arch_athlete", target:"student", filter:s=>s.archetype==="athlete",
+    title:"Recovery Week",
+    text:s=>`${s.name} mentions training has been lighter — coach gave them a recovery period. She seems restless without the physical outlet, energy with nowhere to go.`,
+    choices:[
+      { label:"Suggest she use recovery to fuel up", effect:{gain:[7,14],mood:"content",rel:6}, result:s=>`You suggest recovery is a good time to really load up. She considers this with athletic seriousness. Athletes respect fuel logic. By end of day she's put away an impressive amount.` },
+      { label:"Give her an energetic group task",     effect:{gain:[1,3], mood:"focused",rel:5}, result:s=>`You pair her with students on a project that requires moving, presenting, debating. She's immediately in her element.` },
+      { label:"Talk training and nutrition",          effect:{gain:[2,5], mood:"focused",rel:7}, result:s=>`You have a genuine conversation about athletic nutrition. She's sharp on the subject. You learn things about carb-loading that give you ideas.` },
+    ] },
+  { id:"arch_artsy", target:"student", filter:s=>s.archetype==="artsy",
+    title:"Creative Block",
+    text:s=>`${s.name} is staring at a blank page. She's been staring for thirty minutes. Charcoal in hand, nothing happening. A creative block, visibly painful.`,
+    choices:[
+      { label:"Arrange food as an art subject", effect:{gain:[4,9], mood:"content",rel:8}, result:s=>`You arrange a spread on her desk — fruit, pastries, something colorful — and say "draw that." Her eyes light up. She eats half while drawing. Both improve.` },
+      { label:"Take her on a campus walk",       effect:{gain:[0,0], mood:"dreamy", rel:6}, result:s=>`You take her on a quiet loop around campus. She doesn't say much, but by the time you return she's sketching furiously.` },
+      { label:"Share a creative struggle",       effect:{gain:[2,4], mood:"dreamy", rel:9}, result:s=>`You tell her about a time you were stuck. What you did, how it felt. She listens with her whole body, and something in her visibly relaxes.` },
+    ] },
+  { id:"arch_gamer", target:"student", filter:s=>s.archetype==="gamer",
+    title:"Patch Day",
+    text:s=>`${s.name} walked in wearing yesterday's clothes. She's dropped a body pillow next to her chair and put her headphones on. There's a new patch out, apparently.`,
+    choices:[
+      { label:"Bring her delivery order",  effect:{gain:[6,12],mood:"content",rel:7}, result:s=>`You produce a bag of her usual delivery — you've noticed the patterns. She stares at it for a second, then takes her headphones down. "...How'd you know?"` },
+      { label:"Ask about the patch",        effect:{gain:[0,0], mood:"excited",rel:8}, result:s=>`You ask a completely genuine question. She pivots and explains build theory for twenty minutes with startling depth. She leaves class energized.` },
+      { label:"Let her game in the back",   effect:{gain:[2,4], mood:"tired",  rel:3}, result:s=>`You quietly move her to the back and offer to catch her up on notes later. A single thumbs-up. She games through the whole lecture.` },
+    ] },
+  { id:"arch_sorority", target:"student", filter:s=>s.archetype==="sorority",
+    title:"Event Planning Crisis",
+    text:s=>`${s.name} is in full event-planner mode: spreadsheet open, phone taking calls on mute, the look of someone managing something large that is not cooperating.`,
+    choices:[
+      { label:"Offer the classroom as venue", effect:{gain:[5,10],mood:"excited",rel:8}, result:s=>`You offer the classroom after hours. She practically vibrates. The event happens, the catering is spectacular. You're invited.` },
+      { label:"Help with logistics",           effect:{gain:[0,0], mood:"focused",rel:7}, result:s=>`You spend ten minutes helping untangle the vendor issue. "I didn't think you'd know about this stuff." You have depths.` },
+      { label:"Suggest a potluck component",   effect:{gain:[8,15],mood:"happy",  rel:6}, result:s=>`You suggest potluck. She pauses, then starts planning tables, themes, recipes. The class ends up eating extremely well.` },
+    ] },
+  { id:"arch_overachiever", target:"student", filter:s=>s.archetype==="overachiever",
+    title:"Impossible Standards",
+    text:s=>`${s.name} hands in a forty-page paper for a five-page assignment. She's circled three things she considers weaknesses. She's asking if there's extra credit on top of this.`,
+    choices:[
+      { label:"Tell her to rest and eat",      effect:{gain:[5,9], mood:"content",rel:6}, result:s=>`You tell her firmly: the paper is excellent. Rest. Eat. You produce lunch. She eats it in uncomfortable silence that slowly becomes grateful silence.` },
+      { label:"Give her a real challenge",      effect:{gain:[0,0], mood:"focused",rel:7}, result:s=>`You assign something genuinely hard — a problem without a clean answer. She immediately forgets everything else and dives in. The most at peace she's looked all week.` },
+      { label:"Praise her work publicly",       effect:{gain:[2,4], mood:"focused",rel:8}, result:s=>`You read a passage from her paper aloud without attribution, then reveal the author. She goes completely red. The class applauds. Mortified and delighted.` },
+    ] },
+  { id:"arch_quiet", target:"student", filter:s=>s.archetype==="quiet",
+    title:"Invisible by Choice",
+    text:s=>`${s.name} has been in the back corner so long you're not sure when she arrived. Her notebook is covered in small careful drawings. Something in her posture says she's paying very close attention.`,
+    choices:[
+      { label:"Leave her something anonymously", effect:{gain:[3,7], mood:"content",rel:9},  result:s=>`You leave a pastry on her desk without comment, without eye contact. She looks at it for a long moment, then eats it very slowly. You don't make it a thing. She appreciates this enormously.` },
+      { label:"Ask to see her notebook",          effect:{gain:[0,0], mood:"content",rel:10}, result:s=>`You approach quietly and ask. She hesitates, then holds it out. The drawings are extraordinary. You say so, simply. She doesn't respond, but her shoulders drop in visible relief.` },
+      { label:"Include her in a small group",     effect:{gain:[1,3], mood:"nervous",rel:4},  result:s=>`You carefully include her in a small group. She participates, minimally. It's clearly effortful. But she doesn't leave, and she thanks you after.` },
+    ] },
+  { id:"arch_transfer", target:"student", filter:s=>s.archetype==="transfer",
+    title:"Still Adjusting",
+    text:s=>`${s.name} is trying everything with the intensity of someone who hasn't figured out what she likes yet. Today she's brought food from three different campus spots to cross-reference.`,
+    choices:[
+      { label:"Bring something she hasn't tried", effect:{gain:[5,9], mood:"happy",  rel:8},  result:s=>`You produce something unusual, from somewhere she hasn't found yet. Her face goes through five different emotions. "This is incredible. Where is this FROM?"` },
+      { label:"Give her a campus food map",        effect:{gain:[4,8], mood:"excited",rel:7},  result:s=>`You sketch a map of your personal favorite spots, including some that require knowing where to look. She stares at it like you've handed her treasure.` },
+      { label:"Ask where she's from",              effect:{gain:[0,0], mood:"content",rel:10}, result:s=>`You ask about home. She talks for twenty minutes — food, places, people, traditions. She's surprised how much she's missed it. You listen to all of it.` },
+    ] },
+  // ── WEIGHT-STAGE-BASED ───────────────────────────────────────
+  { id:"stage_early", target:"student", filter:s=>getStage(s.lbs).id<=1,
+    title:"Still Watching",
+    text:s=>`${s.name} pauses mid-lecture to smooth her shirt, frowning slightly. She's noticed something. Not alarmed yet — just aware. She mentions she's been going to the gym more.`,
+    choices:[
+      { label:"Reassure her and bring snacks",    effect:{gain:[4,8], mood:"content",rel:5}, result:s=>`You tell her she looks great — which, to be fair, she does. You set out snacks as you say it. She relaxes and takes some. The gym mention doesn't come up again.` },
+      { label:"Redirect to academics",             effect:{gain:[0,0], mood:"focused",rel:3}, result:s=>`You pivot to her coursework, which she's genuinely interested in. The self-scrutiny fades into the background of something she cares about more.` },
+      { label:"Introduce 'study fuel' snacks",     effect:{gain:[5,10],mood:"content",rel:4}, result:s=>`You bring out a range of snacks framed as brain food. She tries them all with scholarly thoroughness. She doesn't go to the gym that afternoon.` },
+    ] },
+  { id:"stage_mid", target:"student", filter:s=>{const id=getStage(s.lbs).id;return id>=2&&id<=3;},
+    title:"Finding Her Rhythm",
+    text:s=>`${s.name} has clearly made peace with a lot of things lately. She moves more slowly, eats more openly, cares less about what anyone thinks. She seems genuinely at ease.`,
+    choices:[
+      { label:"Celebrate her ease with a spread", effect:{gain:[6,12],mood:"content",rel:6}, result:s=>`You produce a table spread — nothing fancy, just abundant. She helps herself generously, without apology. It's a good session.` },
+      { label:"Have a candid check-in",            effect:{gain:[0,0], mood:"content",rel:9}, result:s=>`You ask directly how she's been. She thinks, then says: "Good, actually." And means it. Short, but honest.` },
+      { label:"Assign a comfortable project",      effect:{gain:[2,5], mood:"content",rel:4}, result:s=>`A project at her own pace. She settles into it with the competent ease of someone who knows what they're doing.` },
+    ] },
+  { id:"stage_heavy", target:"student", filter:s=>getStage(s.lbs).id>=4,
+    title:"Command of the Room",
+    text:s=>`${s.name} takes up space with absolute ease now. She settles into her reinforced seat, arranges her things precisely, and looks around the room with the calm authority of someone completely at home in their body.`,
+    choices:[
+      { label:"Arrange something special for her", effect:{gain:[5,10],mood:"content",rel:8},  result:s=>`You set something up specifically for her — her preferences, her portion, her timing. She notices the care. "You remembered." Warmth, genuine.` },
+      { label:"Ask her to mentor someone",          effect:{gain:[0,0], mood:"content",rel:7},  result:s=>`You ask her to work with a struggling student. She agrees immediately and does it well, with patience and zero fanfare.` },
+      { label:"Acknowledge her growth",             effect:{gain:[3,7], mood:"content",rel:10}, result:s=>`You find a quiet moment and say, simply, that you've noticed how much she's grown — academically, personally. "That actually means something, Professor."` },
+    ] },
+  // ── CLASS-WIDE ───────────────────────────────────────────────
+  { id:"class_snack_break", target:"class",
+    title:"Impromptu Snack Break",
+    text:"You call an unscheduled break mid-lecture and produce a box of assorted snacks. No reason given. The class needs no reason.",
+    choices:[
+      { label:"Basic spread — quick and filling",      effect:{gain:[3,6]},  result:"The class descends on it efficiently. Gone in four minutes. The lecture resumes with noticeably better energy." },
+      { label:"Premium spread — variety and excess",   effect:{gain:[5,10]}, result:"You went all out. Three kinds of pastries, imported chocolates, something local. The class takes their time. The lecture ends fifteen minutes late." },
+      { label:"Tasting exercise — they rate each one", effect:{gain:[4,8]},  result:"You frame it as a sensory evaluation exercise. They review each item with comically serious academic rigor. Everybody eats a lot." },
+    ] },
+  { id:"class_group_project", target:"class",
+    title:"Group Project Day",
+    text:"You announce today's lecture is cancelled in favor of a group project — designing a meal plan for an entirely hypothetical context. The class gets very into it.",
+    choices:[
+      { label:"Let them be creative",             effect:{gain:[2,5]},  result:"The projects are elaborate and extensively taste-tested using supplies they apparently brought for this exact possibility." },
+      { label:"Provide research materials (food)", effect:{gain:[4,9]},  result:"You bring extensive research samples. This is treated as primary research. The class is still conducting experiments after the bell." },
+      { label:"Award points for best proposal",   effect:{gain:[3,7]},  result:"Competition emerges. The class sources sample materials with alarming speed. Three students present full spreads. Everyone eats everything." },
+    ] },
+  { id:"class_birthday", target:"class",
+    title:"Mystery Birthday",
+    text:"Someone in the class has a birthday this week. Word has spread. There is an expectation of cake.",
+    choices:[
+      { label:"Bring one cake",                    effect:{gain:[3,6]},  result:"A solid cake, well-received. The birthday student gets the first slice. Everyone gets seconds." },
+      { label:"Bring a full dessert spread",        effect:{gain:[6,12]}, result:"You dramatically overdeliver: three cakes, cupcakes, tarts, macarons. The class is overwhelmed and grateful and eats everything." },
+      { label:"Declare it a week-long celebration", effect:{gain:[4,9]},  result:"You declare the whole week birthday week. Snacks every day. The birthday student is embarrassed and delighted in equal measure." },
+    ] },
+  { id:"class_slump", target:"class",
+    title:"3PM Energy Crash",
+    text:"The 3PM slump is real and the class is suffering. Heads are drooping. Someone is asleep. Someone else is asleep more aggressively. Action is required.",
+    choices:[
+      { label:"Snacks and caffeine",    effect:{gain:[4,8]}, result:"Coffee, tea, energy drinks, and a mountain of snacks. The class revives. Several students look grateful enough to tear up." },
+      { label:"Quick movement break",   effect:{gain:[1,3]}, result:"A stretch break and some movement. Energy returns, though you notice several students were clearly much more comfortable staying seated." },
+      { label:"Dim lights and chill",   effect:{gain:[2,5]}, result:"You lower the lights, put on ambient music, and present this as a contemplative learning environment. Everyone eats their snacks in peaceful semi-darkness." },
+    ] },
+  { id:"class_potluck", target:"class",
+    title:"Class Potluck",
+    text:"You announced a class potluck. You underestimated how seriously they would take this. The room is lined with containers and the smell is extraordinary.",
+    choices:[
+      { label:"Try everything and praise all",       effect:{gain:[6,12]}, result:"You try each dish and comment thoughtfully. The class is thrilled. Second and third helpings are consumed under the banner of thorough academic comparison." },
+      { label:"Formalize it with a scoring rubric",  effect:{gain:[4,9]},  result:"You produce a rubric. The class suddenly cares very deeply about their dishes. The stakes make everyone eat more to properly evaluate." },
+      { label:"Abandon pretense — just party",       effect:{gain:[5,11]}, result:"You put on music and let it be what it is. The class eats freely for ninety minutes. It's the best class session of the semester." },
+    ] },
+  { id:"class_extended", target:"class",
+    title:"Extended Session",
+    text:"Today runs long — dense material, real engagement, the kind of class where nobody looks at the clock. You've been going for two hours and nobody has left.",
+    choices:[
+      { label:"Order delivery for the room",         effect:{gain:[5,10]}, result:"You produce your phone and order three different things. The class nominates favorites. The food arrives and disappears without interrupting the discussion." },
+      { label:"Break with a spread you brought",     effect:{gain:[3,7]},  result:"You pull out a prepared spread from your bag. The class is impressed you came prepared. Someone says 'this is the best class.' You feel it's true." },
+      { label:"Push through without food",           effect:{gain:[0,2]},  result:"Nobody gets fed but everyone gets educated. Grudging respect. Several stomachs are audibly registering their objection." },
+    ] },
+];
 
 // ═══════════════════════════════════════════════════════════════
 // SKILL TREE
@@ -1492,6 +1698,17 @@ function getBodyDesc(s){ const bd=BODY_DESCS[s.bodyType]||BODY_DESCS.straight; r
 function getOutfit(s){ const o=OUTFITS[s.archetype]||OUTFITS.default; return o[Math.min(getStage(s.lbs).id,o.length-1)]; }
 function getDiary(s){ const d=DIARY_ENTRIES[s.archetype]; return d?d[Math.min(getStage(s.lbs).id,9)]:"—"; }
 function rnd(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+function generateClassSession(students,week){
+  const scenes=[];
+  const shuffled=[...students].sort(()=>Math.random()-0.5);
+  for(const s of shuffled){
+    const matching=CLASS_SCENES.filter(sc=>sc.target==="student"&&sc.filter&&sc.filter(s));
+    if(matching.length){ scenes.push({type:"student",scene:matching[rnd(0,matching.length-1)],student:{...s}}); break; }
+  }
+  const classWide=CLASS_SCENES.filter(sc=>sc.target==="class");
+  if(classWide.length) scenes.push({type:"class",scene:classWide[rnd(0,classWide.length-1)],student:null});
+  return scenes;
+}
 
 const INIT_STUDENTS = [
   { id:0,  name:"Brittany", archetype:"cheerleader",  age:19, bodyType:"pear",      lbs:118, startLbs:118, desc:"Petite, tight ponytail, squad jacket always on.",                  favFood:"protein shakes", hobby:"cheerleading",  personality:"bubbly",      relationship:20, triggeredEvents:[], mood:"happy" },
@@ -1557,6 +1774,8 @@ export default function ProfessorSim(){
   const [dinnerLog,setDinnerLog]=useState([]);
   const [hovered,setHovered]=useState(null);
   const [skillCat,setSkillCat]=useState("environment");
+  const [classSession,setClassSession]=useState(null);
+  const [semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const logRef=useRef(null);
 
   useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
@@ -1570,13 +1789,13 @@ export default function ProfessorSim(){
     }
   },[students,globalStats]);
 
-  // Process event queue
+  // Process event queue — hold events until class session is done
   useEffect(()=>{
-    if(eventQueue.length>0 && !activeEvent){
+    if(eventQueue.length>0 && !activeEvent && !classSession){
       setActiveEvent(eventQueue[0]);
       setEventQueue(prev=>prev.slice(1));
     }
-  },[eventQueue,activeEvent]);
+  },[eventQueue,activeEvent,classSession]);
 
   const push=useCallback((msg)=>setLog(prev=>[...prev,msg]),[]);
 
@@ -1678,6 +1897,67 @@ export default function ProfessorSim(){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
     }
+  };
+
+  const startClass=()=>{
+    const scenes=generateClassSession(students,week);
+    if(!scenes.length){advanceWeek();return;}
+    setClassSession({scenes,sceneIdx:0,outcomes:[],pendingResult:null});
+  };
+
+  const makeChoice=(choiceIdx)=>{
+    if(!classSession)return;
+    const{scenes,sceneIdx}=classSession;
+    const{scene,student,type}=scenes[sceneIdx];
+    const choice=scene.choices[choiceIdx];
+    let newStudents=[...students];
+    let gainAmt=0;
+    let targetName=null;
+    if(type==="student"&&student){
+      const s=newStudents.find(st=>st.id===student.id);
+      if(s){
+        gainAmt=rnd(choice.effect.gain[0],choice.effect.gain[1]);
+        const ns=processStudentGain(s,gainAmt,0);
+        newStudents=newStudents.map(st=>st.id===s.id?{
+          ...ns,
+          ...(choice.effect.mood?{mood:choice.effect.mood}:{}),
+          relationship:Math.min(100,ns.relationship+(choice.effect.rel||0)),
+        }:st);
+        targetName=s.name;
+      }
+    }else if(type==="class"){
+      gainAmt=rnd(choice.effect.gain[0],choice.effect.gain[1]);
+      newStudents=newStudents.map(s=>processStudentGain(s,gainAmt,0));
+      targetName="the class";
+    }
+    const evs=collectEvents(newStudents);
+    setStudents(newStudents);
+    if(evs.length){
+      setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
+      setEventQueue(prev=>[...prev,...evs]);
+    }
+    const resultText=typeof choice.result==="function"?choice.result(student||newStudents[0]):choice.result;
+    const outcome={sceneTitle:scene.title,choice:choice.label,result:resultText,gain:gainAmt,target:targetName};
+    setClassSession(prev=>({...prev,pendingResult:outcome}));
+  };
+
+  const confirmResult=()=>{
+    setClassSession(prev=>({
+      ...prev,
+      sceneIdx:prev.sceneIdx+1,
+      outcomes:[...prev.outcomes,prev.pendingResult],
+      pendingResult:null,
+    }));
+  };
+
+  const finishClass=()=>{
+    const{outcomes}=classSession;
+    setSemesterData(prev=>({
+      weeksCompleted:prev.weeksCompleted+1,
+      classHistory:[...prev.classHistory,{week,outcomes}],
+    }));
+    setClassSession(null);
+    advanceWeek();
   };
 
   const doSingle=(action,s)=>{
@@ -1876,6 +2156,96 @@ export default function ProfessorSim(){
   return (
     <div style={C.app}>
 
+{/* CLASS SESSION MODAL */}
+      {classSession&&(()=>{
+        const{scenes,sceneIdx,outcomes,pendingResult}=classSession;
+        const isDone=sceneIdx>=scenes.length&&!pendingResult;
+        const current=!isDone&&!pendingResult?scenes[sceneIdx]:null;
+        return(
+          <div style={C.overlay}>
+            <div style={{...C.modal,maxWidth:600}}>
+              <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:3}}>CLASS SESSION — WEEK {week}</div>
+              <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:19}}>
+                {isDone?"Session Complete":pendingResult?pendingResult.sceneTitle:current?.scene.title}
+              </h2>
+              <div style={{display:"flex",gap:6,margin:"8px 0 14px"}}>
+                {scenes.map((_,i)=>(
+                  <div key={i} style={{width:8,height:8,borderRadius:"50%",background:
+                    (isDone||i<sceneIdx||(pendingResult&&i<=sceneIdx))?"#8040c8":
+                    i===sceneIdx?"#c898ff":"#180830"}}/>
+                ))}
+              </div>
+
+              {pendingResult&&(
+                <div>
+                  <div style={{...C.infoBox("rgba(100,40,200,0.1)"),fontSize:13,lineHeight:1.75,color:"#d0b8e8",marginBottom:12}}>
+                    {pendingResult.result}
+                  </div>
+                  {pendingResult.gain>0&&(
+                    <div style={{fontSize:12,color:"#f0a060",marginBottom:12}}>
+                      {pendingResult.target==="the class"
+                        ?`📊 Each student gains ~${pendingResult.gain} lbs`
+                        :`⚖️ ${pendingResult.target} gains ${pendingResult.gain} lbs`}
+                    </div>
+                  )}
+                  <button onClick={confirmResult} style={C.btn("#5818a8")}>
+                    {sceneIdx<scenes.length-1?"Continue →":"View Summary →"}
+                  </button>
+                </div>
+              )}
+
+              {current&&!pendingResult&&(()=>{
+                const{scene,student}=current;
+                return(
+                  <div>
+                    {student&&(
+                      <div style={{fontSize:11,color:"#7a50a0",marginBottom:8}}>
+                        {student.archetype} · {student.lbs} lbs · <MoodBadge mood={student.mood}/>
+                      </div>
+                    )}
+                    <div style={{...C.infoBox("rgba(20,8,40,0.8)"),fontSize:13,lineHeight:1.75,color:"#c8a8e8",marginBottom:14}}>
+                      {typeof scene.text==="function"?scene.text(student):scene.text}
+                    </div>
+                    <div style={C.secT}>How do you respond?</div>
+                    <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                      {scene.choices.map((ch,i)=>(
+                        <div key={i} style={{...C.card,cursor:"pointer"}} onClick={()=>makeChoice(i)}>
+                          <div style={{fontWeight:700,fontSize:13,color:"#d8a8ff",marginBottom:2}}>{ch.label}</div>
+                          {(ch.effect.gain?.[1]>0||ch.effect.rel||ch.effect.mood)&&(
+                            <div style={{fontSize:10,color:"#7a5040"}}>
+                              {ch.effect.rel?`❤ +${ch.effect.rel}  `:""}
+                              {ch.effect.gain?.[1]>0?`⚖ +${ch.effect.gain[0]}–${ch.effect.gain[1]} lbs  `:""}
+                              {ch.effect.mood?`😊 → ${ch.effect.mood}`:""}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {isDone&&(
+                <div>
+                  <div style={{...C.secT,marginBottom:10}}>This Week's Events</div>
+                  {outcomes.map((o,i)=>(
+                    <div key={i} style={{...C.infoBox("rgba(20,8,40,0.6)"),marginBottom:8}}>
+                      <div style={{fontWeight:700,fontSize:12,color:"#d8a8ff",marginBottom:3}}>{o.sceneTitle}</div>
+                      <div style={{fontSize:11,color:"#7a5090",marginBottom:4}}>You chose: {o.choice}</div>
+                      <div style={{fontSize:12,color:"#c0a0d8",lineHeight:1.6}}>{o.result}</div>
+                      {o.gain>0&&<div style={{fontSize:11,color:"#f0a060",marginTop:4}}>
+                        {o.target==="the class"?`Class: +${o.gain} lbs each`:`${o.target}: +${o.gain} lbs`}
+                      </div>}
+                    </div>
+                  ))}
+                  <button onClick={finishClass} style={{...C.btn("#186028"),marginTop:4}}>⏩ End Week</button>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
 {/* DINNER EVENT MODAL */}
       {dinnerEvent&&(()=>{
         const ds=students.find(s=>s.id===dinnerEvent.student.id)||dinnerEvent.student;
@@ -2027,7 +2397,7 @@ export default function ProfessorSim(){
               <span style={{fontSize:9,color:"#60389a",letterSpacing:2}}>{l==="Wk"?"WEEK":l==="AP"?"ACTION PTS":"TOTAL GAIN"}</span>
             </div>
           ))}
-          <button onClick={advanceWeek} style={C.btn("#186028")}>⏩ Next Week (+5 AP)</button>
+          <button onClick={startClass} style={C.btn("#186028")}>⏩ Next Week (+5 AP)</button>
         </div>
       </div>
 
