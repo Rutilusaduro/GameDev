@@ -1784,19 +1784,19 @@ const GROUP_CONVERSATIONS=[
       const topics={cheerleader:"the upcoming competition",quiet:"her current project",party:"last weekend",sorority:"the chapter event",scholar:"her research",athlete:"her training",artsy:"her current piece",honors:"her family",influencer:"her content strategy",foodie:"the menu"};
       const t1=topics[s1.archetype]||"her plans";
       return `You ask ${s1.name} about ${t1}. She starts — and ${s2.name} leans in, more interested than she expected.\n"Wait, really?" ${s2.name} says. "I didn't know you were doing that."\n${s1.name}: "You never asked." No edge in it. Just fact.\n${s2.name} considers this, reaches for her drink. "Fair." Then: "Tell me the rest."`;
-    }, relBonus:8, fullnessEffect:-4 },
+    }, relBonus:4, fullnessEffect:-4 },
   { id:"compliment_both", label:"Compliment them both",
     text:(s1,s2)=>`You say something genuine about each of them — something you've actually noticed. ${s1.name} receives it differently than expected: more quietly, more truly. ${s2.name} looks at her, then at you.\n"He means it," ${s2.name} says.\n${s1.name}: "I know." Something about the table shifts half a degree warmer.`,
-    relBonus:5, fullnessEffect:0 },
+    relBonus:3, fullnessEffect:0 },
   { id:"let_it_settle", label:"Let it settle",
     text:(s1,s2)=>`The conversation drops away. Both of them are eating. The restaurant makes its small sounds. Then ${s1.name} says something about the sauce. ${s2.name} responds. Neither is talking to you, and that's fine — better, actually. The evening has found something you weren't planning for.`,
-    relBonus:4, fullnessEffect:5 },
+    relBonus:2, fullnessEffect:5 },
   { id:"toast_together_group", label:"Toast the evening",
     text:(s1,s2)=>`You raise your glass. They raise theirs.\n${s1.name}: "To what?"\n"To a good evening."\n${s2.name}: "We should toast to something real." She thinks. "To the food."\n${s1.name} looks at her. Then she laughs — actually laughs. "To the food." The glasses clink.`,
-    relBonus:7, fullnessEffect:-3 },
+    relBonus:4, fullnessEffect:-3 },
   { id:"order_for_table", label:"Order another round",
     text:(s1,s2)=>`You catch the server's eye and gesture at the table generally. More arrives. ${s1.name} and ${s2.name} look at the new dishes, look at each other.\n${s2.name}: "We didn't need more."\n${s1.name}, already reaching: "I know." She keeps reaching. ${s2.name} watches for a moment, then reaches too. The evening continues.`,
-    relBonus:6, fullnessEffect:8 },
+    relBonus:3, fullnessEffect:8 },
 ];
 
 // ── GROUP DINNER REACTION DATA ────────────────────────────────
@@ -2328,37 +2328,37 @@ const VAUGHAN_ALLY_SCENE=v=>`${v.name} appears at your door with a bottle of win
 // ── SOCIAL EVENTS ───────────────────────────────────────────────
 const SOCIAL_EVENTS=[
   {id:"study_hall",    label:"📚 Study Hall",        apCost:1,minStudents:2,maxStudents:6,
-   baseGain:[2,5],relBonus:8,scrutinyAdd:1,
+   baseGain:[2,5],relBonus:4,scrutinyAdd:1,
    desc:"Host a study session. Snacks are mandatory. The work is the pretext.",
    scene:(names,gain)=>`The study hall fills slowly. Books open, but the food comes out first. ${names} spread out across the table, comfortable and unhurried. By the end, about ${gain} lbs each — and the notes are surprisingly good.`,
    vaughanEffect:-3,observerGain:[1,1],observerDisp:3},
   {id:"dept_social",   label:"🥂 Department Social", apCost:2,minStudents:3,maxStudents:8,
-   baseGain:[3,7],relBonus:12,scrutinyAdd:3,
+   baseGain:[3,7],relBonus:6,scrutinyAdd:3,
    desc:"Faculty mixer. Your students attend. The platters empty. The atmosphere warms.",
    scene:(names,gain)=>`The social is exactly as these things always are — too much food, too much wine. ${names} cluster together and call you over. The platters near your group empty first. No one else seems to notice.`,
    vaughanEffect:-5,observerGain:[1,2],observerDisp:6,vaughanAttends:true},
   {id:"field_trip",    label:"🚌 Field Trip",         apCost:2,minStudents:2,maxStudents:6,
-   baseGain:[4,8],relBonus:10,scrutinyAdd:2,
+   baseGain:[4,8],relBonus:5,scrutinyAdd:2,
    desc:"Campus excursion. Officially about education. Unofficially about the three-hour lunch.",
    scene:(names,gain)=>`The field trip is officially about the museum. Unofficially, it's about the restaurant two blocks away. ${names} occupy an entire table. Nobody stops at one course. The museum is viewed briefly, on the way back, with full contentment.`,
    vaughanEffect:0,observerGain:[1,2],observerDisp:5},
   {id:"game_night",    label:"🎲 Game Night",         apCost:1,minStudents:2,maxStudents:5,
-   baseGain:[3,6],relBonus:14,scrutinyAdd:1,
+   baseGain:[3,6],relBonus:7,scrutinyAdd:1,
    desc:"Games, snacks, no pressure. The most natural feeding context there is.",
    scene:(names,gain)=>`Nobody remembers what games they played. They remember the food — the enormous spread that appeared and disappeared over four hours while ${names} laughed and argued. The scores are meaningless. The calories are not.`,
    vaughanEffect:-2,observerGain:[1,2],observerDisp:4},
   {id:"symposium",     label:"🎓 Symposium",          apCost:2,minStudents:3,maxStudents:10,
-   baseGain:[5,9],relBonus:9,scrutinyAdd:4,
+   baseGain:[5,9],relBonus:5,scrutinyAdd:4,
    desc:"Academic event with catering that is decidedly informal. Everyone overeats at symposiums.",
    scene:(names,gain)=>`The symposium is notionally about pedagogy. In practice, a three-hour catered event with an open bar and a chef who overestimated attendance. ${names} benefit enormously from this miscalculation. The talks are good. The food is better.`,
    vaughanEffect:-8,observerGain:[2,3],observerDisp:8,vaughanAttends:true},
   {id:"house_dinner",  label:"🏡 House Dinner",       apCost:3,minStudents:2,maxStudents:5,
-   baseGain:[8,14],relBonus:18,scrutinyAdd:2,
+   baseGain:[8,14],relBonus:9,scrutinyAdd:2,
    desc:"An evening at yours. You cook. There is no restraint built into this format.",
    scene:(names,gain)=>`Your home is warm and smells like cooking before they arrive. ${names} fill your kitchen and your evening completely. The food comes in waves — you keep bringing it. Nobody declines anything. By the end the conversation is slow and easy, the way it gets when everyone is genuinely full.`,
    vaughanEffect:0,observerGain:[3,4],observerDisp:10},
   {id:"banquet",       label:"🍾 End-of-Term Banquet",apCost:4,minStudents:4,maxStudents:15,
-   baseGain:[10,18],relBonus:20,scrutinyAdd:6,
+   baseGain:[10,18],relBonus:10,scrutinyAdd:6,
    desc:"The whole class. Maximum scale, maximum impact.",
    scene:(names,gain)=>`The banquet hall is yours for the evening. All your students arrive dressed for the occasion. The courses are formal, the portions architectural. By the final course the room is notably different: louder, looser, rounder, happier. You refill every glass and call for more food twice.`,
    vaughanEffect:-12,observerGain:[4,5],observerDisp:15,vaughanAttends:true},
@@ -2503,30 +2503,30 @@ const ENCOURAGEMENT_ACTIONS=[
    line:(s,fPct)=>fPct<70
      ?`"You're doing so well," you say. ${s.name} looks up at you — pleased and a little distracted from her fullness — and keeps eating.`
      :`"You're doing so well," you say. ${s.name} lets out a slow breath. "I feel like I'm going to burst," she says. She takes another bite. "Keep saying that."`,
-   toleranceBoost:12, relBonus:4, lbsBonus:[0,1]},
+   toleranceBoost:12, relBonus:2, lbsBonus:[0,1]},
   {id:"enc_body",      label:"Tell her how she looks",
    line:(s,fPct)=>fPct<90
      ?`You describe what you see. ${s.name} goes still for a moment, then something in her posture changes — she takes up more space, holds herself more fully. She eats with more confidence.`
      :`You describe exactly what she looks like right now — full and round and warm and impossibly appealing. ${s.name}'s expression goes soft. "Keep watching," she says. She keeps eating.`,
-   toleranceBoost:18, relBonus:8, lbsBonus:[1,2]},
+   toleranceBoost:18, relBonus:4, lbsBonus:[1,2]},
   {id:"enc_just_more", label:"\"Just a little more\"",
    line:(s,fPct)=>fPct<95
      ?`"Just a little more," you say. ${s.name} raises an eyebrow, then reaches for the food. The little more is considerably more than a little.`
      :`"Just a little more," you say. ${s.name} gives you a long look. Her belly is round and full and enormous. "You always say that," she says. She eats the little more.`,
-   toleranceBoost:8, relBonus:3, lbsBonus:[1,3]},
+   toleranceBoost:8, relBonus:2, lbsBonus:[1,3]},
   {id:"enc_made_you",  label:"\"I made this for you\"",
    line:(s,fPct)=>`"I made this specifically for you," you say. ${s.name} looks at the food differently now — something shifts. She eats it. She always eats what you've made for her.`,
-   toleranceBoost:22, relBonus:9, lbsBonus:[1,2]},
+   toleranceBoost:22, relBonus:4, lbsBonus:[1,2]},
   {id:"enc_beautiful", label:"\"Your body is beautiful\"",
    line:(s,fPct)=>fPct<100
      ?`You tell her how beautiful she is right now. She blinks. Then she keeps eating, with something more settled in her expression. She believes you.`
      :`You tell her exactly how beautiful she is — how full and round and present she is in her body right now. ${s.name} closes her eyes. "I know," she says. Her hand rests on her belly. She reaches for more.`,
-   toleranceBoost:25, relBonus:12, lbsBonus:[0,2]},
+   toleranceBoost:25, relBonus:6, lbsBonus:[0,2]},
   {id:"enc_belly",     label:"Describe her belly to her",
    line:(s,fPct)=>fPct<80
      ?`You describe the soft, gentle swell of her belly — how it's grown through the meal, how warm and round it looks. ${s.name}'s cheeks colour. She doesn't stop eating.`
      :`You describe her belly carefully and specifically — the roundness, the firmness, the way it sits in her lap with real weight. ${s.name} looks down at herself. Then at you. "You really see it," she says. She keeps eating, slower now, like she's savouring both things at once.`,
-   toleranceBoost:20, relBonus:10, lbsBonus:[0,2]},
+   toleranceBoost:20, relBonus:5, lbsBonus:[0,2]},
 ];
 
 const SESSION_AFTERMATH=[
@@ -2632,87 +2632,87 @@ const DINNER_CONVERSATION = [
       ? `You mention how much she's enjoying herself. ${s.name} flushes slightly but picks up her fork with renewed purpose.`
       : st<=5 ? `"I love watching you eat," you say. ${s.name} grins without looking up from her plate. "Then keep watching." She takes an enormous bite.`
       : `"You eat beautifully," you tell her. ${s.name} laughs warmly. "I know. It's my best quality." She gestures for more bread.`,
-    gainBonus:[1,3], relBonus:5 },
+    gainBonus:[1,3], relBonus:3 },
 
   { id:"suggest_second",      label:"Suggest a second helping", requires:null,
     text:(s,st)=>st<=2
-      ? `"You should try the other dish," you suggest. ${s.name} hesitates, then: "You know what, yes. Why not."` 
+      ? `"You should try the other dish," you suggest. ${s.name} hesitates, then: "You know what, yes. Why not."`
       : st<=5 ? `"More?" ${s.name} is already raising her hand for the waiter. "I was already going to, but thank you for the permission."`
       : `You gesture at her nearly empty plate. "Again?" ${s.name} pats her enormous middle contentedly. "Obviously."`,
-    gainBonus:[2,5], relBonus:4 },
+    gainBonus:[2,5], relBonus:2 },
 
   { id:"food_talk_dinner",    label:"Talk about the food",      requires:null,
     text:(s,st)=>`You and ${s.name} spend ten minutes discussing the dish in detail. She is an enthusiastic critic. She demonstrates her critique by eating more of it.`,
-    gainBonus:[1,3], relBonus:6 },
+    gainBonus:[1,3], relBonus:3 },
 
   { id:"order_for_her",       label:"Order for her",            requires:"dinner_upscale",
     text:(s,st)=>st<=3
       ? `You order before she can deliberate too long — all the richest options, extra courses. ${s.name} raises her eyebrows. "That's a lot." She says it like a compliment.`
       : `You order for the table. Extensively. ${s.name} watches the dishes arrive with visible pleasure. "You know exactly what you're doing," she says. "I appreciate that."`,
-    gainBonus:[3,6], relBonus:8 },
+    gainBonus:[3,6], relBonus:4 },
 
   { id:"wine_and_cheese",     label:"Insist on cheese course",  requires:"dinner_upscale",
     text:(s,st)=>`"We're having the cheese course," you say. It is not a question. ${s.name} settles back with a smile. "Obviously we are." The board that arrives is enormous. She works through all of it.`,
-    gainBonus:[2,5], relBonus:5 },
+    gainBonus:[2,5], relBonus:3 },
 
   { id:"overcomes_hesitation",label:"Talk her through hesitation",requires:null,
     text:(s,st)=>st<=2
       ? `${s.name} glances at the menu uncertainly. "I shouldn't really—" You remind her she deserves a good meal. She considers this. Orders the larger option.`
       : st<=4 ? `${s.name} pauses mid-plate, looking at herself. "I've eaten so much." You tell her she's doing wonderfully. She laughs and keeps going.`
       : `${s.name} is full — visibly, obviously full. "I literally cannot," she says. You slide the dessert menu toward her. She opens it. "Fine." She eats it all.`,
-    gainBonus:[2,4], relBonus:7 },
+    gainBonus:[2,4], relBonus:4 },
 
   { id:"body_compliment",     label:"Compliment how she looks", requires:null,
     text:(s,st)=>st<=1
       ? `You tell ${s.name} she looks wonderful tonight. She blinks, then smiles and takes a large bite of her food. "Thank you." She sounds like she means it.`
       : st<=4 ? `You tell ${s.name} she looks incredible. She pats her very round belly and grins. "I've been working on it." She takes another bite. "Still working on it, actually."`
-      : `You tell ${s.name} she looks spectacular. She spreads her hands across her enormous, soft middle and raises an eyebrow. "I know," she says simply. She resumes eating with great satisfaction.`,
-    gainBonus:[1,3], relBonus:9 },
+      : `You tell ${s.name} she looks spectacular. She spreads her hands across her enormous, soft middle and raises an eybrow. "I know," she says simply. She resumes eating with great satisfaction.`,
+    gainBonus:[1,3], relBonus:5 },
 
   { id:"personal_chef_story", label:"Tell her about the chef",  requires:"dinner_private",
     text:(s,st)=>`You tell ${s.name} the chef prepared the menu specifically around her preferences. She goes still for a moment, then something in her expression shifts. "Really?" You nod. She looks at her plate differently now — with something more personal — and eats every last bite.`,
-    gainBonus:[2,5], relBonus:10 },
+    gainBonus:[2,5], relBonus:5 },
 
   { id:"endless_courses",     label:"Keep ordering courses",    requires:"dinner_private",
     text:(s,st)=>`Every time ${s.name} finishes a dish you signal for another. She notices after the fourth course. "Are you just going to keep ordering?" You shrug. She laughs. "Okay." She doesn't stop eating for another two hours.`,
-    gainBonus:[4,8], relBonus:8 },
+    gainBonus:[4,8], relBonus:4 },
 
   { id:"praise_capacity",     label:"Express amazement at her appetite", requires:null,
     text:(s,st)=>st<=2
       ? `"I'm impressed," you say. ${s.name} grins and finishes the dish. "I've always eaten a lot." She orders another.`
       : st<=5 ? `"I genuinely cannot believe how much you've eaten," you say. ${s.name} looks down at herself, at the pile of empty plates, and laughs. "I can." She orders dessert.`
       : `You survey the wreckage of the table. "That was extraordinary." ${s.name} pats her vast belly with a look of absolute serenity. "I'm just getting started," she says — and means it.`,
-    gainBonus:[2,4], relBonus:7 },
+    gainBonus:[2,4], relBonus:4 },
 
   { id:"ask_passion",         label:"Ask about what she loves", requires:null,
     text:(s,st)=>{
       const roleLines={"Cheer Captain":`You ask about the squad. ${s.name}'s whole posture changes. "We're building something," she says. "A legacy." She describes tryout strategy for ten minutes. At some point the entire main course disappears without her noticing.`,"Dance Co-Captain":`You ask about her choreography. ${s.name} puts her fork down entirely — which she hasn't done all evening — and starts describing a movement sequence with her hands. "I want it to feel inevitable," she says. She picks up her fork and finishes everything on the plate.`,"Track Sprinter":`You ask about running. ${s.name} is quiet for a moment. "I miss it less than I thought I would," she says finally. "I still dream about it sometimes." She takes a large bite. "But this is also good."`, "Basketball Star":`You ask about basketball. ${s.name} laughs. "God. I think about the game differently now — like, I watch it differently." She tilts her head. "I'm kind of glad I'm not playing right now. I'd be a liability." She pats herself. "A comfortable liability."`, default:`You ask what she's most passionate about right now. ${s.name} looks genuinely pleased by the question. She talks for twenty minutes — animated, specific, completely unselfconscious. At some point she's eaten the entire main course without noticing.`};
       return roleLines[s.role]||roleLines.default;
     },
-    gainBonus:[2,4], relBonus:10, fullnessEffect:-8 },
+    gainBonus:[2,4], relBonus:5, fullnessEffect:-8 },
 
   { id:"talk_genuinely",      label:"Ask how she's really doing", requires:null,
     text:(s,st)=>st<=2
       ? `You set the menu down and actually ask. ${s.name} looks surprised. Then she talks — really talks — about her semester, things outside of class. She's more present than usual. She also keeps eating through it, almost unconsciously.`
       : `You turn the conversation to her, genuinely. ${s.name} pauses, then opens up. Something real passes between you. She eats steadily through the whole thing, comfortable and unhurried. She finishes three courses before she realizes.`,
-    gainBonus:[1,4], relBonus:12, fullnessEffect:-5 },
+    gainBonus:[1,4], relBonus:6, fullnessEffect:-5 },
 
   { id:"toast_together",      label:"Propose a toast", requires:null,
     text:(s,st)=>`You raise your glass. "To good food and good company." ${s.name} looks at you for a moment, then lifts her glass. The toast is simple, but something settles between you — warm and unhurried. She eats more after that.`,
-    gainBonus:[1,3], relBonus:7, fullnessEffect:-4 },
+    gainBonus:[1,3], relBonus:4, fullnessEffect:-4 },
 
   { id:"share_a_dish",        label:"Order something to share", requires:null,
     text:(s,st)=>st<=3
       ? `You order a dish for the table. "We can share." ${s.name} looks at it and, after a beat, reaches in. "Okay." She eats most of it.`
       : `You order an extra dish between you. ${s.name} looks delighted. "Perfect." She eats significantly more than half. You don't point this out.`,
-    gainBonus:[2,5], relBonus:6, fullnessEffect:6 },
+    gainBonus:[2,5], relBonus:3, fullnessEffect:6 },
 
   { id:"after_dinner_stroll", label:"Suggest staying for another course", requires:null,
     text:(s,st)=>st<=3
       ? `"We should do the cheese course," you say. ${s.name} pauses. "I don't — " She looks at the menu. "Actually. Yes. Obviously yes."`
       : st<=6 ? `"I'm going to get more," you say. "Obviously I'm joining you," ${s.name} says. She did not need the invitation.`
       : `You gesture toward the dessert menu. ${s.name} already has it. "I've been reading it for five minutes," she says. "Let's do all of it."`,
-    gainBonus:[3,7], relBonus:5, fullnessEffect:10 },
+    gainBonus:[3,7], relBonus:3, fullnessEffect:10 },
 
   { id:"awkward_comment",     label:"Comment on her portions", requires:null,
     text:(s,st)=>st<=2
@@ -2737,7 +2737,7 @@ const DINNER_CONVERSATION = [
     text:(s,st)=>st<=4
       ? `You suggest a more private corner table. ${s.name} appreciates the gesture. The move is easy, the new spot better. She orders again as soon as she sits.`
       : `You notice she's shifted twice to accommodate herself in the standard chair, and quietly arrange a better setup. ${s.name} settles in. "How did you know?" You shrug. She eats considerably more after that.`,
-    gainBonus:[2,4], relBonus:9, fullnessEffect:-6 },
+    gainBonus:[2,4], relBonus:5, fullnessEffect:-6 },
 ];
 
 
@@ -2887,6 +2887,7 @@ export default function ProfessorSim(){
   const [sessionHistory,setSessionHistory]=useState({});
   // {[studentId]:{count,totalGain,capacityBonus}}
   const [sessionResult,setSessionResult]=useState(null);
+  const [sessionLog,setSessionLog]=useState([]);
   const logRef=useRef(null);
 
   useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
@@ -2996,7 +2997,7 @@ export default function ProfessorSim(){
     const scene=sceneFn?sceneFn(s):"Session complete.";
     setStudyCheckIn({student:s,scene,index:pData.checkInCount});
     setResearchStudy(prev=>({...prev,participants:{...prev.participants,[s.id]:{...pData,checkInCount:pData.checkInCount+1}}}));
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+5)}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+3)}));
     addScrutiny(professorProfile?.traits?.includes("discreet")?1:2);
   };
 
@@ -3086,7 +3087,7 @@ export default function ProfessorSim(){
         if(randomEv.target==="class") gain+=rnd(randomEv.gain[0],randomEv.gain[1]);
         else if(randomEv.target==="single"&&s.id===rnd(0,14)) gain+=rnd(randomEv.gain[0],randomEv.gain[1]);
       }
-      return processStudentGain(s,gain,1);
+      return processStudentGain(s,gain,0);
     });
 
     // Influence spread
@@ -3222,7 +3223,7 @@ export default function ProfessorSim(){
     }
     setAp(a=>a-action.cost);
     const gain=rnd(action.gain[0],action.gain[1]);
-    const ns=processStudentGain(s,gain,12);
+    const ns=processStudentGain(s,gain,4);
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:ns));
     push(`🍽️ ${action.label} with ${s.name}: +${gain} lbs (now ${ns.lbs} lbs)`);
     const evs=collectEvents([ns]);
@@ -3247,7 +3248,7 @@ export default function ProfessorSim(){
     } else {
       updated=students.map(s=>{
         const gain=rnd(action.gain[0],action.gain[1]);
-        return processStudentGain(s,gain,7);
+        return processStudentGain(s,gain,1);
       });
       push(`🎉 ${action.label}: The whole class participated!`);
     }
@@ -3275,14 +3276,14 @@ export default function ProfessorSim(){
     const tLabel={"how_are_you":"How are you doing?","compliment_figure":"Compliment her figure","food_talk":"Talk about food","class_talk":"Discuss class","encourage_eating":"Encourage her to eat more","ask_lifestyle":"Ask about her lifestyle","ask_weight":"Ask about her weight","about_gaining":"Ask about her gaining","future_plans":"Ask about future plans"}[topicId]||topicId;
     push(`💬 You: "${tLabel}"`);
     push(`   ${resp}`);
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4+talkRelBonus)}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+2+talkRelBonus)}));
   };
 
   const doGossip=(gossip, speaker, line)=>{
     const target=students.find(s=>s.id===gossip.targetId);
     push(`💬 You ask ${speaker.name} about ${target?.name||"her classmate"}…`);
     push(`   ${line}`);
-    setStudents(prev=>prev.map(s=>s.id!==speaker.id?s:{...s,relationship:Math.min(100,s.relationship+3)}));
+    setStudents(prev=>prev.map(s=>s.id!==speaker.id?s:{...s,relationship:Math.min(100,s.relationship+2)}));
   };
 
   const doHelpFatten=(gossip, speaker)=>{
@@ -3292,7 +3293,7 @@ export default function ProfessorSim(){
     push(`   "${gossip.offerHelp}"`);
     setStudents(prev=>prev.map(s=>{
       if(s.id===gossip.targetId) return {...s, gainMultiplier:(s.gainMultiplier||1)*gossip.helpMultiplier, gainHelpers:[...(s.gainHelpers||[]),gossip.speakerId]};
-      if(s.id===gossip.speakerId) return {...s, relationship:Math.min(100,s.relationship+8)};
+      if(s.id===gossip.speakerId) return {...s, relationship:Math.min(100,s.relationship+4)};
       return s;
     }));
   };
@@ -3411,7 +3412,7 @@ export default function ProfessorSim(){
         const sUpdated={...s,lbs:s.lbs+scaledGain};
         const endMsg=getOverfillEndMsg(sUpdated,getStage(sUpdated.lbs).id);
         setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain} lbs)`,`😵 ${endMsg}`]);
-        setTimeout(()=>triggerDinnerEnd(sUpdated,newFullness,maxFull,newTotalGain,12),1000);
+        setTimeout(()=>triggerDinnerEnd(sUpdated,newFullness,maxFull,newTotalGain,6),1000);
         return;
       }
     }
@@ -3458,7 +3459,7 @@ export default function ProfessorSim(){
 
   const endEvening=()=>{
     const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
-    triggerDinnerEnd(s,dinnerEvent.fullness,dinnerEvent.maxFullness,dinnerEvent.totalGain,18);
+    triggerDinnerEnd(s,dinnerEvent.fullness,dinnerEvent.maxFullness,dinnerEvent.totalGain,9);
   };
 
   // ── GROUP DINNER ─────────────────────────────────────────────
@@ -3564,7 +3565,7 @@ export default function ProfessorSim(){
         const fullGrp=ratio<=1.0?0:ratio<=1.3?1:ratio<=1.6?2:3;
         setTimeout(()=>{
           setDinnerEndPopup({student:sUpdated,finalFullness:newFullness,maxFullness:maxFull,totalGain:newTotalGain,narrative:DINNER_ENDING_TEXT[stGrp][fullGrp](sUpdated)});
-          setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,relationship:Math.min(100,s.relationship+12)}));
+          setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,relationship:Math.min(100,s.relationship+5)}));
         },1100);
         return;
       }
@@ -3620,7 +3621,7 @@ export default function ProfessorSim(){
     setStudents(prev=>prev.map(s=>{
       const inGroup=groupDinnerEvent.students.some(gs=>gs.id===s.id);
       if(!inGroup) return s;
-      return {...s,relationship:Math.min(100,s.relationship+15)};
+      return {...s,relationship:Math.min(100,s.relationship+7)};
     }));
     setGroupDinnerEvent(null);
   };
@@ -3697,6 +3698,7 @@ export default function ProfessorSim(){
     if(tier.id<1){push(`⚠️ ${s.name} needs to be at least Close tier for a private session.`);return;}
     if(ap<2){push("⚠️ Need 2 AP.");return;}
     const hist=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
+    setSessionLog([]);
     setPrivateSession({
       student:s,phase:"venue",venue:null,foods:[],totalGain:0,
       fullness:0,maxFullness:100+hist.capacityBonus,
@@ -3708,7 +3710,7 @@ export default function ProfessorSim(){
     const s=privateSession.student;
     setPrivateSession(prev=>({...prev,venue,phase:"feeding"}));
     push(`🌙 Private session with ${s.name} — ${venue.label}.`);
-    push(`   ${venue.intro(s)}`);
+    setSessionLog([venue.intro(s)]);
   };
 
   const feedInSession=(food)=>{
@@ -3723,7 +3725,7 @@ export default function ProfessorSim(){
     const desc=descFns[Math.min(fsStage.id,descFns.length-1)](s);
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+scaledGain}));
     push(`🍽️ ${food.label}: +${scaledGain} lbs`);
-    push(`   ${desc}`);
+    setSessionLog(sl=>[...sl,`🍽️ ${food.label} (+${scaledGain} lbs) — ${food.desc}`,`   ${desc}`]);
     setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:prev.totalGain+scaledGain,fullness:newFullness}));
   };
 
@@ -3733,7 +3735,9 @@ export default function ProfessorSim(){
     const effectiveMax=privateSession.maxFullness+privateSession.toleranceBuffer;
     const fPct=Math.round((privateSession.fullness/effectiveMax)*100);
     const lbsBonus=enc.lbsBonus?rnd(enc.lbsBonus[0],enc.lbsBonus[1]):0;
-    push(`💬 ${enc.line(s,fPct)}`);
+    const encLine=enc.line(s,fPct);
+    push(`💬 ${encLine}`);
+    setSessionLog(sl=>[...sl,`💬 ${encLine}`]);
     if(lbsBonus>0){
       setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+lbsBonus}));
     }
@@ -3755,7 +3759,7 @@ export default function ProfessorSim(){
     const hist=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
     const newCapBonus=hist.capacityBonus+8;
     setSessionHistory(prev=>({...prev,[s.id]:{count:hist.count+1,totalGain:hist.totalGain+privateSession.totalGain,capacityBonus:newCapBonus}}));
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+8)}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4)}));
     const aftermath=getAftermath(fPct);
     const liveStudent=students.find(st=>st.id===s.id)||s;
     push(`✅ Session with ${s.name} complete. +${privateSession.totalGain} lbs · capacity expanded (+8).`);
@@ -5482,6 +5486,18 @@ export default function ProfessorSim(){
                         </div>
                       );
                     })}
+                  </div>
+
+                  {/* Session log */}
+                  <div style={{background:"rgba(20,5,35,0.8)",border:"1px solid #2a0848",borderRadius:8,padding:10,marginBottom:10,maxHeight:150,overflowY:"auto",display:"flex",flexDirection:"column",gap:3}}>
+                    {sessionLog.length===0
+                      ?<div style={{fontSize:12,color:"#5a3070",fontStyle:"italic"}}>{s.name} settles in. The evening begins.</div>
+                      :sessionLog.map((line,i)=>(
+                        <div key={i} style={{fontSize:12,lineHeight:1.6,color:line.startsWith("💬")?"#e8d0a8":line.startsWith("🍽️")?"#d0a860":line.startsWith("   ")?"#c0a8d0":"#b090c8",borderBottom:i<sessionLog.length-1?"1px solid rgba(80,20,120,0.1)":"none",paddingBottom:i<sessionLog.length-1?3:0}}>
+                          {line}
+                        </div>
+                      ))
+                    }
                   </div>
 
                   {/* Encouragement */}
