@@ -2314,8 +2314,13 @@ const VAUGHAN_EVENTS=[
 const VAUGHAN_WEIGHT_SCENES=[
   {minLbs:145,scene:v=>`Dr. Vaughan's blazer doesn't button all the way today. She doesn't mention it. You don't mention it. But you both notice.`},
   {minLbs:162,scene:v=>`${v.name} has stopped eating salads at faculty events. Today she had the pasta. Twice. She caught your eye across the room and looked away first.`},
-  {minLbs:180,scene:v=>`${v.name} has gained visibly — enough that colleagues are talking. The athletic frame is still there under a generous softness. In her wellness curriculum, she now mentions "metabolism" with less certainty than before.`},
+  {minLbs:180,scene:v=>`${v.name} has gained visibly — enough that colleagues are talking. The athletic frame is still there under a generous new softness. In her wellness curriculum, she now mentions "metabolism" with less certainty than before.`},
   {minLbs:200,scene:v=>`${v.name} submitted a modified wellness curriculum this semester — less emphasis on weight metrics. "Bodies are more complex than the data suggests," she wrote. She has begun sitting with your students at lunch. They like her.`},
+  {minLbs:230,scene:v=>`${v.name} has stopped wearing her department polo. She favours loose blouses now, the kind that flow over her belly and hips without commenting on them. In the faculty meeting she takes a wider chair without looking around first. Her students have noticed she's "more chill" this semester. Her approval ratings are the highest they've ever been.`},
+  {minLbs:265,scene:v=>`${v.name} runs into you in the corridor and you both stop. She looks different — genuinely, substantially different. Her face is rounder, her middle a real presence beneath her cardigan, her hips wide and unhurried. She notices you noticing. "I know," she says, before you can say anything. "I really don't mind," she adds, and the remarkable thing is that she's telling the truth.`},
+  {minLbs:310,scene:v=>`${v.name}'s Wellness & Kinesiology course has a new unit this semester: Body Autonomy and Nutritional Joy. The course description emphasises "movement as celebration rather than correction" and "abundance-positive approaches to nutrition." Half the faculty think she's had a breakdown. The students are enrolling in record numbers.`},
+  {minLbs:360,scene:v=>`Dr. Vaughan finds you after a faculty meeting. She has become — there is no other word — enormous. Round and soft and enormous, filling her chair with real authority, walking with the deliberate ease of someone who has made peace with every inch of themselves. "I've been thinking," she says, settling heavily into the seat across from you, "that I owe you an apology. And possibly a thank you." She opens her bag and produces a container of something homemade. "I've been cooking more," she adds. "Try it."`,},
+  {minLbs:400,scene:v=>`${v.name} announces she's writing a book. The working title, she mentions at the department social — from the largest chair, which she has quietly begun reserving in advance — is "Against Metrics: A Wellness Practitioner's Reconsideration." She looks extraordinary: vast and unhurried and completely at home in her body. She pours herself a second glass of wine and settles deeper into her chair. "You should write the foreword," she tells you. "You started this."`,},
 ];
 
 const VAUGHAN_ALLY_SCENE=v=>`${v.name} appears at your door with a bottle of wine and a slightly defensive expression. "This is not an endorsement of your methods," she says, setting it down. "It's a professional reconciliation." She has changed enormously. The uniform is gone, replaced by something looser. She fills the chair completely. "What you've built here," she says finally, "is something I can't call wrong." She pours two glasses without asking. "So I've stopped trying."`;
@@ -2358,6 +2363,183 @@ const SOCIAL_EVENTS=[
    scene:(names,gain)=>`The banquet hall is yours for the evening. All your students arrive dressed for the occasion. The courses are formal, the portions architectural. By the final course the room is notably different: louder, looser, rounder, happier. You refill every glass and call for more food twice.`,
    vaughanEffect:-12,observerGain:[4,5],observerDisp:15,vaughanAttends:true},
 ];
+
+// ── PRIVATE SESSIONS ─────────────────────────────────────────────
+const PRIVATE_VENUES=[
+  {id:"office",    label:"🏢 After Hours — Office", minTier:1,
+   desc:"The building empties by evening. You order in. The door is locked. Time is not a factor.",
+   intro:s=>`${s.name} arrives after the last light in the corridor goes out. She looks at what you've laid out and her expression changes — something quiet and wanting settling over her. "You planned this," she says. It isn't a question.`},
+  {id:"apartment", label:"🏡 Your Apartment",       minTier:2,
+   desc:"Your kitchen, your rules. No pretense, no schedule. Just food and time.",
+   intro:s=>`You've been cooking since the afternoon. When ${s.name} arrives she stands in the doorway and breathes in. "It smells incredible," she says, and you can already see what's going to happen.`},
+  {id:"her_space", label:"🛋️ Her Place",             minTier:3,
+   desc:"Her territory. She is fully comfortable, there are snacks everywhere, and she never has to hold back.",
+   intro:s=>`You bring the food to ${s.name} this time. She opens the door in her most comfortable clothes — the ones she only wears when she doesn't care. Which, increasingly, is most of the time.`},
+];
+
+const PRIVATE_FOODS=[
+  {id:"pr_board",      label:"Charcuterie & Bread",     course:"opener",  gain:[2,4], fullness:14, desc:"A generous spread to start — cured meats, three cheeses, warm bread. Just to get things moving."},
+  {id:"pr_soup",       label:"Rich Cream Soup",          course:"opener",  gain:[2,3], fullness:12, desc:"Thick, warm, deeply satisfying. The bread goes straight into it."},
+  {id:"pr_bruschetta", label:"Bruschetta Tower",         course:"opener",  gain:[1,3], fullness:10, desc:"Piled high with everything. She eats half before she realises she's doing it."},
+  {id:"pr_pasta",      label:"Four-Cheese Pasta",        course:"main",    gain:[5,8], fullness:32, desc:"You've made enough for three people. She doesn't know that yet."},
+  {id:"pr_risotto",    label:"Truffle Risotto",          course:"main",    gain:[4,7], fullness:28, desc:"An enormous bowl. Deeply rich. She works through it steadily, in the way she's learned."},
+  {id:"pr_roast",      label:"Slow Roast & Three Sides", course:"main",    gain:[5,9], fullness:36, desc:"A full roast with everything. The kind of meal that sits heavily even on an empty stomach."},
+  {id:"pr_burger",     label:"Double Stack Burger",      course:"main",    gain:[4,7], fullness:26, desc:"Built to an architectural height. Fries already in her hand before it lands."},
+  {id:"pr_more_pasta", label:"Second Serving",           course:"more",    gain:[4,6], fullness:22, desc:"The pot isn't empty. She looks at it. You look at her. She holds out her bowl."},
+  {id:"pr_bread",      label:"Warm Bread Basket",        course:"more",    gain:[2,4], fullness:14, desc:"Butter. Always more butter. She doesn't argue."},
+  {id:"pr_sides",      label:"Extra Sides Plate",        course:"more",    gain:[3,5], fullness:18, desc:"Everything that was on the side of the main, now in a bowl, now in front of her."},
+  {id:"pr_cake",       label:"Full Chocolate Cake",      course:"dessert", gain:[3,6], fullness:22, desc:"Not a slice. A cake. She stares at it. Then she picks up a fork."},
+  {id:"pr_icecream",   label:"Ice Cream Sundae",         course:"dessert", gain:[2,5], fullness:16, desc:"Four scoops. Multiple sauces. Whipped cream. She does not hesitate."},
+  {id:"pr_brownie",    label:"Warm Brownie & Cream",     course:"dessert", gain:[2,4], fullness:14, desc:"Warm, dense, impossibly rich. She eats every crumb."},
+  {id:"pr_mille",      label:"Mille-Feuille",            course:"dessert", gain:[2,4], fullness:14, desc:"Layers and layers of pastry and cream. The chef called it indulgent. They weren't wrong."},
+  {id:"pr_snack_tray", label:"Late-Night Snack Tray",    course:"extra",   gain:[2,5], fullness:16, desc:"More food, no explanation needed. She's stopped asking questions."},
+  {id:"pr_wine_cheese",label:"Wine & Cheese",            course:"extra",   gain:[2,4], fullness:12, desc:"It pairs well with everything she's already eaten. She agrees."},
+  {id:"pr_chocolates", label:"Box of Chocolates",        course:"extra",   gain:[1,4], fullness:10, desc:"She doesn't even pick them up one at a time anymore."},
+];
+
+const SESSION_FULLNESS_STAGES=[
+  {id:0, label:"Comfortable",       range:[0,  40],  color:"#30a060"},
+  {id:1, label:"Warm & Full",       range:[40, 70],  color:"#909030"},
+  {id:2, label:"Genuinely Full",    range:[70, 95],  color:"#c06020"},
+  {id:3, label:"Stuffed",           range:[95, 120], color:"#c02020"},
+  {id:4, label:"Overfull",          range:[120,155], color:"#900020"},
+  {id:5, label:"Absolutely Packed", range:[155,999], color:"#500010"},
+];
+const getFullnessStage=(pct)=>[...SESSION_FULLNESS_STAGES].reverse().find(s=>pct>=s.range[0])||SESSION_FULLNESS_STAGES[0];
+
+const SESSION_FULLNESS_DESCS={
+  default:[
+    s=>`${s.name} is eating easily, comfortably. She has barely started.`,
+    s=>`A warmth spreading through her middle. She's been eating a while now, but she's not stopping.`,
+    s=>`${s.name} is genuinely full. You can see it — the way she slows slightly, breathes a little heavier. She's eating anyway.`,
+    s=>`Her belly is firm and round and very full. She presses her hand briefly against it and then picks her fork back up. "I'm okay," she says, to herself as much as to you.`,
+    s=>`She is past full — has been past full for some time. Her belly sits heavily in her lap and her movements have gone slow and deliberate. She takes a breath between each bite. She doesn't stop.`,
+    s=>`${s.name} has eaten an extraordinary amount. Her middle is enormous with it — round and tight and warm. She finishes the bite she's on and rests back, hands pressed softly against herself. "I can't believe I ate all of that," she says. She sounds genuinely impressed.`,
+  ],
+  cheerleader:[
+    s=>`${s.name} eats efficiently, like everything she does. Good posture. Squad mentality: commit fully.`,
+    s=>`Her cheeks are rosy. She was talking between bites but slower now, more focused on the food than the conversation.`,
+    s=>`She's full enough that she's stopped pretending she isn't. Her shirt has ridden up slightly. She pulls it down. Then reaches for more.`,
+    s=>`"Okay, I'm pretty full," ${s.name} says. She does not stop eating. The captain finishes what she starts.`,
+    s=>`She is visibly overfull. Her belly presses forward, round and taut. She sits straighter to give herself room, which doesn't help. She takes another bite.`,
+    s=>`${s.name} sets her fork down for a long moment, both hands resting on the enormous swell of her belly. Then she picks the fork back up. "I'm not done," she says. It sounds like a practice affirmation.`,
+  ],
+  bookworm:[
+    s=>`${s.name} is cross-legged beside her book, eating the way she reads — thoroughly and without looking up.`,
+    s=>`She's stopped reading. She's just eating now. Focused, methodical. The book is closed.`,
+    s=>`"I've consumed," ${s.name} says precisely, gesturing at her plate, "a non-trivial quantity of food." She keeps eating. Documenting the phenomenon from the inside.`,
+    s=>`She is studying her own fullness with the same attention she gives everything else. Pressing her fingers against her stomach. "It's interesting," she says. "Biologically speaking." She takes another bite.`,
+    s=>`${s.name} has set aside the scientific detachment. She is simply full, and still eating, and has stopped justifying it.`,
+    s=>`She rests her head back and stays still. Then: "I want to note that my previous understanding of my own capacity was clearly incomplete." She has another piece of cake.`,
+  ],
+  athlete:[
+    s=>`${s.name} eats fast — fuel, not pleasure. Making up for it in quantity.`,
+    s=>`Halfway through and already breathing differently. Not exertion. She notices. Doesn't say anything.`,
+    s=>`"This is a lot of food," she says, without criticism. She finishes the plate and looks at the next one. "Okay."`,
+    s=>`She's full the way she used to be after long training sessions — that specific heavy, settled fullness she now recognises from a very different context.`,
+    s=>`${s.name} is well past her old limits, and her old limits were genuinely impressive. She keeps going with the grim determination of someone finishing a race.`,
+    s=>`She is done. Completely, spectacularly done — belly warm and round, she doesn't move for several minutes. "Okay," she says finally. "I see why you keep doing this."`,
+  ],
+  influencer:[
+    s=>`${s.name} has stopped filming. She eats privately when she eats like this. You are the only audience.`,
+    s=>`Her eyes close sometimes between bites. She is genuinely enjoying this in a way that doesn't translate to content.`,
+    s=>`"Don't document this," she says, without hostility. You aren't. She eats her enormous plate naturally, without any persona.`,
+    s=>`She is full and she looks it and she has long since stopped caring about any of that. "God," she says, "this is good." She means the eating as much as the food.`,
+    s=>`${s.name} has abandoned every trained instinct about portion size and imagery. She is simply, enormously, contentedly eating.`,
+    s=>`She is sprawled slightly, her bloated middle pressing visibly against her top, and she has the expression of someone who has just discovered something important. "This is who I actually am," she says.`,
+  ],
+  gamer:[
+    s=>`${s.name} eats one-handed. Efficient. She's been doing this for years.`,
+    s=>`Both hands on the food now. Too full for multitasking.`,
+    s=>`"I don't usually eat this much at once," she says, eating this much at once. "Usually it's spread out over twelve hours."`,
+    s=>`She has gone quiet and focused — the specific way she gets during difficult sections. She is not going to lose this.`,
+    s=>`${s.name} is breathing through her mouth slightly. Her belly is visibly round, pressing the table edge. She adjusts, keeps eating.`,
+    s=>`She rests her controller on her enormous middle — it fits perfectly there, which makes her laugh quietly. "New setup," she says.`,
+  ],
+  quiet:[
+    s=>`${s.name} eats in the comfortable silence she prefers. She is very much in her element.`,
+    s=>`She doesn't say anything. She doesn't need to. She just eats.`,
+    s=>`She presses her hand against her belly once — not checking, just feeling. Then she keeps eating.`,
+    s=>`"I'm full," ${s.name} says quietly. A pause. "Keep going?" She means: will you keep feeding her. The answer is yes.`,
+    s=>`She has found a rhythm in being overfull. Slow, careful bites. Long pauses that aren't stopping. She trusts you to know.`,
+    s=>`${s.name} sits with her hands resting on her round, full belly, in a silence that is completely comfortable. "Thank you," she says eventually. She means a lot of things at once.`,
+  ],
+  sorority:[
+    s=>`${s.name} eats comfortably, the way she does at every party — like she's exactly where she should be.`,
+    s=>`She's starting to slow, but she keeps up a running commentary about the food. Every bite gets a verdict. All verdicts are positive.`,
+    s=>`"Okay this is genuinely a lot," she says. She takes another bite. "Like genuinely a lot." Another bite. "Amazing though."`,
+    s=>`Her belly is noticeably round now and pressing at her waistband. She undoes the top button of her jeans without comment. "So much better," she announces.`,
+    s=>`${s.name} is in deeply committed territory. Her belly is enormous and round and she keeps patting it absently between bites like she's checking in with it.`,
+    s=>`She has eaten everything. She is enormous with it. She puts both hands flat on her huge belly and grins. "Okay," she says, "this might be my best night."`,
+  ],
+  artsy:[
+    s=>`${s.name} eats slowly, with attention — the way she experiences everything. She is tasting each bite properly.`,
+    s=>`She's gone quiet in a particular way, the way she gets when she's absorbing something. The food is its own kind of sensation.`,
+    s=>`"This is very good," she says, with the precision of someone who means the experience, not just the food. She keeps eating.`,
+    s=>`Her belly is soft and round and she rests her hand on it like a subject she's considering painting. She keeps eating with the other hand.`,
+    s=>`${s.name} has found something in this — she eats overfull with a kind of intense, interior focus, like she's inside a feeling she wants to understand completely.`,
+    s=>`She is still for a long time after. Both hands on her enormous full belly. "I want to paint this," she says quietly. "Not me. This. This feeling."`,
+  ],
+  overachiever:[
+    s=>`${s.name} has made a list of what she's eating. Nutritional content. Macros. She is eating it all anyway.`,
+    s=>`She has abandoned the list. She is just eating now. This counts as self-care. She has decided.`,
+    s=>`"I have consumed significantly more than my target intake," ${s.name} announces. She reaches for more. "Adjusting the target upward."`,
+    s=>`She is full in a way that would alarm her previous self. She checks in with herself, adjusts her assessment of what she can handle, and keeps going.`,
+    s=>`${s.name} is overfull by any metric and she knows every metric. She has simply decided the metrics don't apply tonight.`,
+    s=>`She rests back and breathes carefully, both hands on her vast, tight belly. "New personal record," she says. "I'm going to count this as an achievement."`,
+  ],
+  transfer:[
+    s=>`${s.name} eats with the enthusiasm of someone who has discovered something wonderful about this campus.`,
+    s=>`"We didn't have anything like this back home," she says, taking another enormous bite. "I mean we had food. Not like this."`,
+    s=>`She is full and she keeps going, the way she approaches everything new here — thoroughly, without reservation.`,
+    s=>`Her belly is round and soft and she pats it happily. "I'm so glad I transferred," she says. She means many things at once.`,
+    s=>`${s.name} is seriously, impressively full and she keeps eating with the dedication of someone who doesn't want to miss anything.`,
+    s=>`She is enormous with food and deeply, completely happy about it. "I feel like I'm home," she says. It's unclear whether she means here or in her body. Both, probably.`,
+  ],
+};
+
+const ENCOURAGEMENT_ACTIONS=[
+  {id:"enc_praise",    label:"\"You're doing so well\"",
+   line:(s,fPct)=>fPct<70
+     ?`"You're doing so well," you say. ${s.name} looks up at you — pleased and a little distracted from her fullness — and keeps eating.`
+     :`"You're doing so well," you say. ${s.name} lets out a slow breath. "I feel like I'm going to burst," she says. She takes another bite. "Keep saying that."`,
+   toleranceBoost:12, relBonus:4, lbsBonus:[0,1]},
+  {id:"enc_body",      label:"Tell her how she looks",
+   line:(s,fPct)=>fPct<90
+     ?`You describe what you see. ${s.name} goes still for a moment, then something in her posture changes — she takes up more space, holds herself more fully. She eats with more confidence.`
+     :`You describe exactly what she looks like right now — full and round and warm and impossibly appealing. ${s.name}'s expression goes soft. "Keep watching," she says. She keeps eating.`,
+   toleranceBoost:18, relBonus:8, lbsBonus:[1,2]},
+  {id:"enc_just_more", label:"\"Just a little more\"",
+   line:(s,fPct)=>fPct<95
+     ?`"Just a little more," you say. ${s.name} raises an eyebrow, then reaches for the food. The little more is considerably more than a little.`
+     :`"Just a little more," you say. ${s.name} gives you a long look. Her belly is round and full and enormous. "You always say that," she says. She eats the little more.`,
+   toleranceBoost:8, relBonus:3, lbsBonus:[1,3]},
+  {id:"enc_made_you",  label:"\"I made this for you\"",
+   line:(s,fPct)=>`"I made this specifically for you," you say. ${s.name} looks at the food differently now — something shifts. She eats it. She always eats what you've made for her.`,
+   toleranceBoost:22, relBonus:9, lbsBonus:[1,2]},
+  {id:"enc_beautiful", label:"\"Your body is beautiful\"",
+   line:(s,fPct)=>fPct<100
+     ?`You tell her how beautiful she is right now. She blinks. Then she keeps eating, with something more settled in her expression. She believes you.`
+     :`You tell her exactly how beautiful she is — how full and round and present she is in her body right now. ${s.name} closes her eyes. "I know," she says. Her hand rests on her belly. She reaches for more.`,
+   toleranceBoost:25, relBonus:12, lbsBonus:[0,2]},
+  {id:"enc_belly",     label:"Describe her belly to her",
+   line:(s,fPct)=>fPct<80
+     ?`You describe the soft, gentle swell of her belly — how it's grown through the meal, how warm and round it looks. ${s.name}'s cheeks colour. She doesn't stop eating.`
+     :`You describe her belly carefully and specifically — the roundness, the firmness, the way it sits in her lap with real weight. ${s.name} looks down at herself. Then at you. "You really see it," she says. She keeps eating, slower now, like she's savouring both things at once.`,
+   toleranceBoost:20, relBonus:10, lbsBonus:[0,2]},
+];
+
+const SESSION_AFTERMATH=[
+  {key:"light", maxPct:60,
+   scene:(s)=>`${s.name} is full and comfortable and loose-limbed with it. She eats the last few bites slowly, without urgency. "I'm glad I came," she says. You both know this will happen again.`},
+  {key:"full",  maxPct:95,
+   scene:(s)=>`${s.name} leans back and stays back, both hands resting on her full, round belly. She breathes carefully. "I can't move," she says. She doesn't try. Eventually you cover her with a blanket and let her sleep where she's sitting.`},
+  {key:"stuffed",maxPct:140,
+   scene:(s)=>`${s.name} has gone very still, the way people do when they're genuinely, spectacularly full. Her belly is a round, warm mass. She presses her hands flat against it. "I ate everything," she says, in quiet wonder. "I always eat everything." She sounds glad.`},
+  {key:"packed", maxPct:999,
+   scene:(s)=>`You don't speak for a while. ${s.name} is enormous with food — her belly rounded and firm and extraordinary. She keeps her hands on it, feeling its weight, its warmth, its absoluteness. "This is what I want," she says eventually. It's not clear if she means the food or something bigger. You think maybe both.`},
+];
+const getAftermath=(fPct)=>SESSION_AFTERMATH.find(a=>fPct<=a.maxPct)||SESSION_AFTERMATH[SESSION_AFTERMATH.length-1];
 
 const DINNER_VENUES = [
   { id:"bistro",    label:"🥖 Campus Bistro",      tier:1, baseCourses:2, gainRange:[4,8],
@@ -2699,6 +2881,12 @@ export default function ProfessorSim(){
   const [socialPicker,setSocialPicker]=useState(null);
   const [socialResult,setSocialResult]=useState(null);
   const [socialWeeks,setSocialWeeks]=useState([]);
+  // DLC: Private Sessions
+  const [privateSession,setPrivateSession]=useState(null);
+  // {student,venue,phase,foods:[],totalGain,fullness,maxFullness,encouragementsUsed:[],toleranceBuffer,sessionNum}
+  const [sessionHistory,setSessionHistory]=useState({});
+  // {[studentId]:{count,totalGain,capacityBonus}}
+  const [sessionResult,setSessionResult]=useState(null);
   const logRef=useRef(null);
 
   useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
@@ -3501,6 +3689,78 @@ export default function ProfessorSim(){
     setSocialPicker(null);
     const evs=collectEvents(updatedStudents);
     if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
+  };
+
+  // ── PRIVATE SESSION FUNCTIONS ──────────────────────────────────
+  const startPrivateSession=(s)=>{
+    const tier=getTier(s.relationship);
+    if(tier.id<1){push(`⚠️ ${s.name} needs to be at least Close tier for a private session.`);return;}
+    if(ap<2){push("⚠️ Need 2 AP.");return;}
+    const hist=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
+    setPrivateSession({
+      student:s,phase:"venue",venue:null,foods:[],totalGain:0,
+      fullness:0,maxFullness:100+hist.capacityBonus,
+      encouragementsUsed:[],toleranceBuffer:0,sessionNum:hist.count+1,
+    });
+  };
+
+  const chooseSessionVenue=(venue)=>{
+    const s=privateSession.student;
+    setPrivateSession(prev=>({...prev,venue,phase:"feeding"}));
+    push(`🌙 Private session with ${s.name} — ${venue.label}.`);
+    push(`   ${venue.intro(s)}`);
+  };
+
+  const feedInSession=(food)=>{
+    const s=privateSession.student;
+    const gain=rnd(food.gain[0],food.gain[1]);
+    const scaledGain=Math.round(gain*skillGainMult*(s.gainMultiplier||1));
+    const newFullness=privateSession.fullness+food.fullness;
+    const effectiveMax=privateSession.maxFullness+privateSession.toleranceBuffer;
+    const fPct=Math.round((newFullness/effectiveMax)*100);
+    const fsStage=getFullnessStage(fPct);
+    const descFns=SESSION_FULLNESS_DESCS[s.archetype]||SESSION_FULLNESS_DESCS.default;
+    const desc=descFns[Math.min(fsStage.id,descFns.length-1)](s);
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+scaledGain}));
+    push(`🍽️ ${food.label}: +${scaledGain} lbs`);
+    push(`   ${desc}`);
+    setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:prev.totalGain+scaledGain,fullness:newFullness}));
+  };
+
+  const useSessionEncouragement=(enc)=>{
+    if(!privateSession||privateSession.encouragementsUsed.includes(enc.id)) return;
+    const s=privateSession.student;
+    const effectiveMax=privateSession.maxFullness+privateSession.toleranceBuffer;
+    const fPct=Math.round((privateSession.fullness/effectiveMax)*100);
+    const lbsBonus=enc.lbsBonus?rnd(enc.lbsBonus[0],enc.lbsBonus[1]):0;
+    push(`💬 ${enc.line(s,fPct)}`);
+    if(lbsBonus>0){
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+lbsBonus}));
+    }
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+enc.relBonus)}));
+    setPrivateSession(prev=>({
+      ...prev,
+      encouragementsUsed:[...prev.encouragementsUsed,enc.id],
+      toleranceBuffer:prev.toleranceBuffer+enc.toleranceBoost,
+      totalGain:prev.totalGain+lbsBonus,
+    }));
+  };
+
+  const endPrivateSession=()=>{
+    const s=privateSession.student;
+    const effectiveMax=privateSession.maxFullness+privateSession.toleranceBuffer;
+    const fPct=Math.round((privateSession.fullness/effectiveMax)*100);
+    setAp(a=>a-2);
+    addScrutiny(2);
+    const hist=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
+    const newCapBonus=hist.capacityBonus+8;
+    setSessionHistory(prev=>({...prev,[s.id]:{count:hist.count+1,totalGain:hist.totalGain+privateSession.totalGain,capacityBonus:newCapBonus}}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+8)}));
+    const aftermath=getAftermath(fPct);
+    const liveStudent=students.find(st=>st.id===s.id)||s;
+    push(`✅ Session with ${s.name} complete. +${privateSession.totalGain} lbs · capacity expanded (+8).`);
+    setSessionResult({student:liveStudent,totalGain:privateSession.totalGain,fullnessPct:fPct,scene:aftermath.scene(liveStudent),sessionCount:hist.count+1,capacityBonus:newCapBonus});
+    setPrivateSession(null);
   };
 
   const sel=selectedId!==null?students.find(s=>s.id===selectedId):null;
@@ -4542,6 +4802,39 @@ export default function ProfessorSim(){
                   ))}
                 </div>
 
+                {/* Private Session */}
+                {(()=>{
+                  const tier=getTier(s.relationship);
+                  const hist=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
+                  const eligible=tier.id>=1;
+                  return(
+                    <div style={{marginTop:14}}>
+                      <div style={{...C.secT,marginBottom:7,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                        <span>Private Feeding Session</span>
+                        {hist.count>0&&<span style={{fontSize:9,color:"#7040c0",fontWeight:400}}>{hist.count} sessions · +{hist.totalGain} lbs · capacity +{hist.capacityBonus}</span>}
+                      </div>
+                      {!eligible?(
+                        <div style={{fontSize:11,color:"#5a3888"}}>
+                          Reach <span style={{color:"#7040a0",fontWeight:700}}>🤝 Close</span> tier to unlock private sessions with {s.name}.
+                          <span style={{color:"#5030a0",marginLeft:6}}>{45-s.relationship > 0 ? `(${45-s.relationship}% to go)`:""}</span>
+                        </div>
+                      ):(
+                        <div>
+                          {hist.count>0&&(
+                            <div style={{...C.infoBox("rgba(60,10,100,0.2)"),fontSize:11,color:"#8050b0",marginBottom:8,lineHeight:1.6}}>
+                              {hist.count} session{hist.count!==1?"s":""} completed.
+                              Her appetite has expanded — she can now comfortably eat {hist.capacityBonus}% more than when you started.
+                            </div>
+                          )}
+                          <button style={{...C.btn("#5818a8"),opacity:ap<2?0.4:1}} onClick={()=>startPrivateSession(s)}>
+                            🌙 Private Session (2 AP)
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+
                 {/* Research Study */}
                 <div style={{marginTop:14}}>
                   <div style={C.secT}>Research Study</div>
@@ -5084,6 +5377,166 @@ export default function ProfessorSim(){
               {socialResult.attendees} students · +{socialResult.totalGain} lbs total gained
             </div>
             <button style={C.btn("#5020a0")} onClick={()=>setSocialResult(null)}>Continue →</button>
+          </div>
+        </div>
+      )}
+
+      {/* ── PRIVATE SESSION MODAL ── */}
+      {privateSession&&(()=>{
+        const ps=privateSession;
+        const s=ps.student;
+        const effectiveMax=ps.maxFullness+ps.toleranceBuffer;
+        const fPct=ps.fullness>0?Math.round((ps.fullness/effectiveMax)*100):0;
+        const fsStage=getFullnessStage(fPct);
+        const descFns=SESSION_FULLNESS_DESCS[s.archetype]||SESSION_FULLNESS_DESCS.default;
+        const currentDesc=ps.fullness>0?descFns[Math.min(fsStage.id,descFns.length-1)](s):null;
+        const courseOrder=["opener","main","more","dessert","extra"];
+        const tier=getTier(s.relationship);
+        const availableVenueList=PRIVATE_VENUES.filter(v=>tier.id>=v.minTier);
+        return(
+          <div style={C.overlay}>
+            <div style={{...C.modal,maxWidth:640,padding:20}}>
+
+              {/* Header */}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
+                <div>
+                  <div style={{fontSize:9,letterSpacing:3,color:"#9050c8",marginBottom:3}}>PRIVATE SESSION #{ps.sessionNum}</div>
+                  <div style={{fontSize:16,fontWeight:700,color:"#d8a8ff"}}>{s.name}</div>
+                  <div style={{fontSize:10,color:"#6a4880"}}>{s.lbs} lbs · {getStage(s.lbs).label} · {tier.emoji} {tier.label}</div>
+                </div>
+                <div style={{textAlign:"right"}}>
+                  <div style={{fontSize:10,color:"#806090",marginBottom:2}}>+{ps.totalGain} lbs this session</div>
+                  <div style={{fontSize:10,color:"#504060"}}>Capacity: {effectiveMax} ({ps.toleranceBuffer>0?`+${ps.toleranceBuffer} buffer`:"base"})</div>
+                </div>
+              </div>
+
+              {/* Venue selection */}
+              {ps.phase==="venue"&&(
+                <div>
+                  <div style={{fontSize:12,color:"#7060a0",marginBottom:10,fontStyle:"italic"}}>
+                    Where are you taking {s.name} tonight?
+                  </div>
+                  <div style={{display:"flex",flexDirection:"column",gap:7,marginBottom:14}}>
+                    {availableVenueList.map(v=>(
+                      <div key={v.id} style={{...C.card,cursor:"pointer"}} onClick={()=>chooseSessionVenue(v)}>
+                        <div style={{fontWeight:700,fontSize:13,color:"#d8a8ff",marginBottom:2}}>{v.label}</div>
+                        <div style={{fontSize:11,color:"#6a4870"}}>{v.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <button style={C.btn("#444")} onClick={()=>setPrivateSession(null)}>Cancel</button>
+                </div>
+              )}
+
+              {/* Feeding phase */}
+              {ps.phase==="feeding"&&(
+                <div>
+                  {/* Fullness bar */}
+                  <div style={{marginBottom:12}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                      <span style={{fontSize:11,fontWeight:700,color:fsStage.color}}>{fsStage.label}</span>
+                      <span style={{fontSize:11,color:fPct>=100?"#e04040":"#a080c0"}}>{fPct}% full</span>
+                    </div>
+                    <div style={{position:"relative",height:10,background:"rgba(255,255,255,0.07)",borderRadius:5,overflow:"hidden"}}>
+                      <div style={{
+                        position:"absolute",left:0,top:0,height:"100%",borderRadius:5,
+                        background:`linear-gradient(90deg,#30a060,${fsStage.color})`,
+                        width:`${Math.min(100,fPct)}%`,transition:"width 0.5s ease"
+                      }}/>
+                      {fPct>100&&(
+                        <div style={{position:"absolute",left:`${Math.min(100,fPct-100)/2}%`,top:0,height:"100%",width:`${Math.min(50,fPct-100)/2}%`,background:"rgba(200,20,20,0.5)"}}/>
+                      )}
+                    </div>
+                    {currentDesc&&(
+                      <div style={{fontSize:12,color:"#c0a8d0",fontStyle:"italic",marginTop:6,lineHeight:1.65}}>
+                        {currentDesc}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Food menu */}
+                  <div style={{...C.secT,marginBottom:6}}>Food</div>
+                  <div style={{maxHeight:220,overflowY:"auto",display:"flex",flexDirection:"column",gap:3,marginBottom:10}}>
+                    {courseOrder.map(course=>{
+                      const items=PRIVATE_FOODS.filter(f=>f.course===course);
+                      const courseLabel={opener:"Starters",main:"Main Course",more:"Second Helpings",dessert:"Dessert",extra:"More"}[course];
+                      return(
+                        <div key={course}>
+                          <div style={{fontSize:9,color:"#4a2060",letterSpacing:2,padding:"4px 0 2px",borderTop:"1px solid rgba(80,18,140,0.15)"}}>{courseLabel.toUpperCase()}</div>
+                          <div style={{display:"flex",flexDirection:"column",gap:2}}>
+                            {items.map(food=>{
+                              const ordered=ps.foods.includes(food.id);
+                              return(
+                                <div key={food.id}
+                                  style={{display:"flex",alignItems:"center",gap:8,padding:"4px 6px",borderRadius:5,
+                                    background:ordered?"rgba(80,18,140,0.08)":"transparent",
+                                    cursor:ordered?"default":"pointer",opacity:ordered?0.45:1}}
+                                  onClick={()=>!ordered&&feedInSession(food)}>
+                                  <span style={{flex:1,fontSize:12,color:ordered?"#5a3888":"#c8a8f0"}}>{ordered?"✓ ":""}{food.label}</span>
+                                  <span style={{fontSize:10,color:"#8060a0"}}>+{food.gain[0]}–{food.gain[1]} lbs</span>
+                                  {!ordered&&<div style={{fontSize:9,color:"#6a4880",maxWidth:140,textAlign:"right"}}>{food.desc.slice(0,45)}…</div>}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Encouragement */}
+                  <div style={{...C.secT,marginBottom:6}}>Encouragement</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:10}}>
+                    {ENCOURAGEMENT_ACTIONS.map(enc=>{
+                      const used=ps.encouragementsUsed.includes(enc.id);
+                      return(
+                        <button key={enc.id}
+                          style={{...C.smBtn,opacity:used?0.35:1,textDecoration:used?"line-through":"none",
+                            background:used?"rgba(40,10,60,0.2)":"rgba(80,18,140,0.35)"}}
+                          onClick={()=>!used&&useSessionEncouragement(enc)}>
+                          {enc.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                    <div style={{fontSize:11,color:fPct>=100?"#f07050":"#f0a060",fontWeight:700,flex:1}}>
+                      {fPct>=155?"Absolutely packed 🔴"
+                      :fPct>=120?"Overfull 🔴"
+                      :fPct>=95?"Stuffed 🟠"
+                      :fPct>=70?"Full 🟡"
+                      :fPct>=40?"Getting warm 🟢"
+                      :"Still hungry 🟢"}
+                    </div>
+                    <button style={C.btn("#2a6830")} onClick={endPrivateSession}>End Session ✓</button>
+                    <button style={C.btn("#333")} onClick={()=>{setAp(a=>a-2);setPrivateSession(null);}}>Leave Early</button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── SESSION RESULT ── */}
+      {sessionResult&&(
+        <div style={C.overlay}>
+          <div style={C.modal}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#9050c8",marginBottom:6}}>SESSION COMPLETE — #{sessionResult.sessionCount}</div>
+            <div style={{fontSize:12,color:"#7a50a0",marginBottom:12}}>
+              {sessionResult.student.name} · {sessionResult.student.lbs} lbs · {getFullnessStage(sessionResult.fullnessPct).label} ({sessionResult.fullnessPct}%)
+            </div>
+            <div style={{...C.infoBox("rgba(60,10,100,0.25)"),lineHeight:1.9,fontSize:13,color:"#e0d0b0",fontStyle:"italic",marginBottom:16}}>
+              {sessionResult.scene}
+            </div>
+            <div style={{...C.infoBox("rgba(40,5,70,0.3)"),fontSize:11,color:"#9060c0",marginBottom:14}}>
+              +{sessionResult.totalGain} lbs this session · Appetite capacity expanded by +8 (total bonus: +{sessionResult.capacityBonus})
+              <div style={{fontSize:10,color:"#604080",marginTop:3}}>
+                She can now comfortably eat {sessionResult.capacityBonus}% more than when you first started feeding her privately.
+              </div>
+            </div>
+            <button style={C.btn("#5818a8")} onClick={()=>setSessionResult(null)}>Continue →</button>
           </div>
         </div>
       )}
