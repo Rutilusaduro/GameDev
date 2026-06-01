@@ -1780,20 +1780,224 @@ const getJealousyLine=(neglected,fed)=>{
 
 const GROUP_CONVERSATIONS=[
   { id:"get_them_talking", label:"Get them talking",
-    text:(s1,s2)=>`You redirect the conversation toward ${s1.name} and ${s2.name}. They pick up a thread — there's warmth here, a good evening settling into itself. Both relax. The food seems incidental for a moment.`,
-    relBonus:8, fullnessEffect:-4 },
+    text:(s1,s2)=>{
+      const topics={cheerleader:"the upcoming competition",quiet:"her current project",party:"last weekend",sorority:"the chapter event",scholar:"her research",athlete:"her training",artsy:"her current piece",honors:"her family",influencer:"her content strategy",foodie:"the menu"};
+      const t1=topics[s1.archetype]||"her plans";
+      return `You ask ${s1.name} about ${t1}. She starts — and ${s2.name} leans in, more interested than she expected.\n"Wait, really?" ${s2.name} says. "I didn't know you were doing that."\n${s1.name}: "You never asked." No edge in it. Just fact.\n${s2.name} considers this, reaches for her drink. "Fair." Then: "Tell me the rest."`;
+    }, relBonus:8, fullnessEffect:-4 },
   { id:"compliment_both", label:"Compliment them both",
-    text:(s1,s2)=>`You find something genuine to say about each of them. ${s1.name} accepts this with varying degrees of grace. ${s2.name} does too. Both look pleased. The dynamic shifts slightly in your favour.`,
+    text:(s1,s2)=>`You say something genuine about each of them — something you've actually noticed. ${s1.name} receives it differently than expected: more quietly, more truly. ${s2.name} looks at her, then at you.\n"He means it," ${s2.name} says.\n${s1.name}: "I know." Something about the table shifts half a degree warmer.`,
     relBonus:5, fullnessEffect:0 },
   { id:"let_it_settle", label:"Let it settle",
-    text:(s1,s2)=>`The conversation lapses into comfortable quiet. Both of them are eating. The evening has found its rhythm and doesn't need you to sustain it.`,
+    text:(s1,s2)=>`The conversation drops away. Both of them are eating. The restaurant makes its small sounds. Then ${s1.name} says something about the sauce. ${s2.name} responds. Neither is talking to you, and that's fine — better, actually. The evening has found something you weren't planning for.`,
     relBonus:4, fullnessEffect:5 },
   { id:"toast_together_group", label:"Toast the evening",
-    text:(s1,s2)=>`You raise a glass. They raise theirs. ${s1.name} says something that makes ${s2.name} laugh. A good moment — the kind both of them will mention later.`,
+    text:(s1,s2)=>`You raise your glass. They raise theirs.\n${s1.name}: "To what?"\n"To a good evening."\n${s2.name}: "We should toast to something real." She thinks. "To the food."\n${s1.name} looks at her. Then she laughs — actually laughs. "To the food." The glasses clink.`,
     relBonus:7, fullnessEffect:-3 },
   { id:"order_for_table", label:"Order another round",
-    text:(s1,s2)=>`You catch the waiter's eye and gesture at the table generally. More arrives. Both of them look at it, look at each other, look back at it. The evening continues.`,
+    text:(s1,s2)=>`You catch the server's eye and gesture at the table generally. More arrives. ${s1.name} and ${s2.name} look at the new dishes, look at each other.\n${s2.name}: "We didn't need more."\n${s1.name}, already reaching: "I know." She keeps reaching. ${s2.name} watches for a moment, then reaches too. The evening continues.`,
     relBonus:6, fullnessEffect:8 },
+];
+
+// ── GROUP DINNER REACTION DATA ────────────────────────────────
+const THIN_JEALOUSY={
+  cheerleader:[
+    (t,f)=>`${t.name} watches ${f.name}'s plate arrive. "She eats with a lot of... commitment," she says, to no one particular.`,
+    (t,f)=>`${t.name} tilts her head. "I've genuinely lost count of her courses." Her smile is unchanged. "Impressive."`,
+    (t,f)=>`"No wonder she keeps getting bigger," ${t.name} says. "Look at how she goes at it. Really look."`,
+    (t,f)=>`${t.name} leans across and gives ${f.name}'s belly a deliberate poke. "Does she even feel full? I'm genuinely curious." She withdraws her hand. "At some point the body just says stop, right?"`,
+  ],
+  quiet:[
+    (t,f)=>`${t.name} glances at ${f.name}'s plate and then at her own empty one. Says nothing. But she is watching.`,
+    (t,f)=>`${t.name} says, very quietly: "She hasn't stopped." Observation or accusation. Both, maybe.`,
+    (t,f)=>`"No wonder she's that size," ${t.name} says. Most she's spoken all evening. It sits in the quiet.`,
+    (t,f)=>`${t.name} reaches over and prods ${f.name}'s stomach once, clinically. "That's a lot," she says. "That's just a lot." She looks at her empty plate.`,
+  ],
+  party:[
+    (t,f)=>`"Okay, I love that for her," ${t.name} says, watching another dish arrive. "I'm noting it. It's just a lot."`,
+    (t,f)=>`"I was being generous before," ${t.name} says. "She's eaten more than everyone here combined. I'm just pointing it out."`,
+    (t,f)=>`${t.name} drops the cheer briefly. "No wonder she's the size she is. Look at her." Then: "I mean that with love. Mostly."`,
+    (t,f)=>`${t.name} reaches over and jostles ${f.name}'s arm mid-bite, watching what happens. "Sorry. I just — see that? That's the food, right there." She points. "All of it."`,
+  ],
+  sorority:[
+    (t,f)=>`${t.name} watches another dish arrive for ${f.name} with a carefully maintained expression. "The chapter has always encouraged hearty appetites," she says.`,
+    (t,f)=>`"I want to be supportive," ${t.name} says. "But I've eaten nothing and she's eaten everything, and I think as a chapter matter that warrants discussion."`,
+    (t,f)=>`"No wonder she takes up two seats at meetings." ${t.name} smooths her napkin. "I said what I said."`,
+    (t,f)=>`${t.name} leans over and, without breaking eye contact with you, gives ${f.name}'s belly a deliberate jiggle. "That," she says, "is a semester of chapter snacks." She sits back. "I have eaten nothing this entire evening."`,
+  ],
+  scholar:[
+    (t,f)=>`${t.name} observes ${f.name}'s portion and does arithmetic. "That's roughly three days of baseline intake," she says. "Per course."`,
+    (t,f)=>`"The cumulative caloric intake," ${t.name} says, "is statistically remarkable for the time period." She has been counting.`,
+    (t,f)=>`${t.name} stops being academic. "No wonder she can't fit through the lab door anymore. Look at her eat." She stares at her own empty plate. "This is not equitable."`,
+    (t,f)=>`"I want to note, for the record," ${t.name} says, "that I have eaten nothing, and she has eaten —" She gestures at ${f.name}, then prods her belly with one finger. "That. That's accumulated. I'm filing a formal complaint."`,
+  ],
+  athlete:[
+    (t,f)=>`${t.name} watches ${f.name}'s plate arrive with the focus she saves for game tape. "She eats like it's a sport," she says. "Respect. Genuinely."`,
+    (t,f)=>`"My coach would have me running laps for a third of that," ${t.name} says. "She's eating laps." She's not pleased about her empty plate.`,
+    (t,f)=>`${t.name} gives up on composure. "No wonder she can't move fast anymore. Look at what she's putting in." She stares at her empty place. "Meanwhile."`,
+    (t,f)=>`${t.name} leans in and presses her palm flat to ${f.name}'s belly. "That's the meal. Right there. All of it." She withdraws. Spreads her hands at her empty table. "I got nothing."`,
+  ],
+  artsy:[
+    (t,f)=>`${t.name} watches ${f.name}'s dish arrive. "There's almost a grotesque beauty to the volume," she says. Almost a compliment.`,
+    (t,f)=>`"I'm trying to decide if this is a performance," ${t.name} says. "The eating. Like, is she making a point? Because if not —" She lets it hang.`,
+    (t,f)=>`${t.name} stops being philosophical. "No wonder she looks like that. The evidence arrives every ten minutes." She pushes her empty plate forward. "By contrast."`,
+    (t,f)=>`${t.name} presses her palm against ${f.name}'s side with the focus of someone conducting an experiment. "Do you feel that? That's dinner, physically present." She withdraws. "I've had nothing to evaluate. It's an insult to the whole evening."`,
+  ],
+  honors:[
+    (t,f)=>`${t.name} clears her throat delicately. "I'm not one to comment on others' dining habits," she says — which is the opening move of someone who absolutely is.`,
+    (t,f)=>`"I was raised to believe moderation was a virtue," ${t.name} says. She watches another dish arrive. "I'm reflecting on that now. Vigorously."`,
+    (t,f)=>`"No wonder she requires so much room wherever she goes." ${t.name} smooths her napkin with precision. "I won't say anything further." She has said enough.`,
+    (t,f)=>`${t.name} prods ${f.name}'s belly with deliberate precision. "That," she says, "is not a figure. That is a consequence." She sits back. "I have eaten nothing this evening. I'm noting it officially."`,
+  ],
+  influencer:[
+    (t,f)=>`${t.name} has her phone half-raised. "This would be great content," she says. "The contrast." She almost takes the photo.`,
+    (t,f)=>`"My engagement would spike if I posted this table," ${t.name} says. "Her, me, the ratio." The warmth has left her voice.`,
+    (t,f)=>`"No wonder her before-and-after arc is what it is," ${t.name} says. "I've watched it happen. From the front row. Without a single dish."`,
+    (t,f)=>`${t.name} grabs ${f.name}'s wrist, gives her side a quick firm squeeze. "That's insane. That's so much." She releases her. "And I have eaten literally nothing. The disparity is genuinely unreal. I'm putting this in my next video."`,
+  ],
+  foodie:[
+    (t,f)=>`${t.name} watches ${f.name}'s course arrive with professional detachment. "She's not even savoring it," she observes. "Just eating."`,
+    (t,f)=>`"There's a point where quantity stops being about taste," ${t.name} says. "We passed that several courses ago." She looks at her empty plate.`,
+    (t,f)=>`${t.name} sets down her empty fork. "No wonder she's that size. She's not experiencing the food, she's just processing it." Deeply personally offended.`,
+    (t,f)=>`${t.name} prods ${f.name}'s stomach. "Do you even register it? Or is it just more?" She withdraws. "I've had nothing to evaluate and it's frankly an insult to the meal."`,
+  ],
+};
+
+const FAT_ENCOURAGE={
+  cheerleader:[
+    (f,t)=>`${f.name} glances at ${t.name}'s empty setting and frowns. "She hasn't eaten anything." A pause. Then, louder: "Someone should fix that."`,
+    (f,t)=>`${f.name} slides bread toward ${t.name}. "Here. Eat something. You're making me uncomfortable." Generously, as if doing her a favour.`,
+    (f,t)=>`${f.name} prods ${t.name}'s arm, then gives her shoulder a shake. "Nothing there. You need this more than I do." She looks at you. "Feed her."`,
+    (f,t)=>`${f.name} takes ${t.name}'s hand and places it against her own belly. "Feel that? That's dinner. That's what it does." She holds it there. "You should try it."`,
+  ],
+  quiet:[
+    (f,t)=>`${f.name} quietly slides her dish an inch toward ${t.name}. She doesn't say anything. She looks at her.`,
+    (f,t)=>`"You should eat," ${f.name} says. That's all. She means it.`,
+    (f,t)=>`${f.name} gets up slightly, reaches across, moves ${t.name}'s glass to make room for a plate. "You need space for food," she says. "Get her a plate."`,
+    (f,t)=>`${f.name} looks at you, then at ${t.name}, then at you again. "She needs to eat." She puts a hand on her own belly. "I know what this feels like. She doesn't. It's not fair."`,
+  ],
+  party:[
+    (f,t)=>`${f.name} points her fork at ${t.name}'s empty place. "Excuse me? Are we not feeding her?" She looks at you. "Why are we not feeding her?"`,
+    (f,t)=>`${f.name} starts pushing dishes toward ${t.name}. "Here. Take this. Have some. I don't need the whole thing." She has eaten the whole thing.`,
+    (f,t)=>`${f.name} grabs ${t.name} by both shoulders. "Look at you. You're practically transparent." A good shake. "Someone put food in front of this woman RIGHT NOW."`,
+    (f,t)=>`${f.name} pats ${t.name}'s arm, cheek, stomach, in sequence — comparing textures. "See? Nothing." She pats her own. "And then this." Beaming. "Feed her. Let her catch up."`,
+  ],
+  sorority:[
+    (f,t)=>`${f.name} notices ${t.name}'s empty place with full chapter-president concern. "She's not eating. That's a hospitality failure. Fix it."`,
+    (f,t)=>`"As the senior member at this table," ${f.name} says, "I'm ruling she needs food." She looks at you. "Chapter rule: no one sits unfed."`,
+    (f,t)=>`${f.name} slides her dessert toward ${t.name}. "Take it. I have plenty. She has nothing." She pats ${t.name}'s shoulder. "You're too small. We need to fix that."`,
+    (f,t)=>`${f.name} takes ${t.name}'s hand and places it on her own belly, patting twice. "This is a chapter body," she says, with complete sincerity. "We build each other up. You need building." She keeps hold. "Feed her. Right now."`,
+  ],
+  scholar:[
+    (f,t)=>`${f.name} calculates the disparity and looks at ${t.name}. "You've received nothing. Statistically, that's unsustainable."`,
+    (f,t)=>`"I've been reviewing the caloric distribution at this table," ${f.name} says, "and it's deeply inequitable. She needs to be eating." She points at ${t.name}.`,
+    (f,t)=>`${f.name} sets down her fork. "This is affecting my conscience. I feel bad eating when she's not. This is unusual for me." She picks it up again. "But also: feed her."`,
+    (f,t)=>`${f.name} takes ${t.name}'s hand, places it firmly on her own stomach, and holds it. "Ten weeks of eating. Right there. I want this for you. You should be eating."`,
+  ],
+  athlete:[
+    (f,t)=>`${f.name} surveys the table. "She's running on empty," she says, with the authority of someone who knows what that does to performance. "Get her something."`,
+    (f,t)=>`"As someone who knows what fuel means," ${f.name} says, "she needs it." She pushes her own dish forward. "Take some of this."`,
+    (f,t)=>`${f.name} gives ${t.name}'s arm a competitive squeeze. "Nothing there. She needs to eat." She waves at you. "I'm serious. She needs to build something."`,
+    (f,t)=>`${f.name} presses ${t.name}'s palm to her own belly and moves it. "Mine, and hers." She compares. "She needs to get there. Or partway. Something. Feed her."`,
+  ],
+  artsy:[
+    (f,t)=>`${f.name} glances at ${t.name} with the look of someone struck by an aesthetic problem. "The contrast is interesting," she says, "but I think she should eat."`,
+    (f,t)=>`"There's a tension here," ${f.name} says, "between abundance and absence." She slides a dish toward ${t.name}. "Resolve the tension. Eat this."`,
+    (f,t)=>`${f.name} moves to ${t.name}'s side of the table and gives her shoulder a gentle squeeze. "You're too light. It's a visual problem. Eat."`,
+    (f,t)=>`${f.name} places ${t.name}'s hand on her own belly and holds it. "This is what I want for you," she says. Not as comparison — as genuine wanting. "You should have something here. Eat."`,
+  ],
+  honors:[
+    (f,t)=>`${f.name} looks at ${t.name}'s empty place with the expression of someone noting a social failing. "She hasn't been offered anything. That isn't how we do things."`,
+    (f,t)=>`"In my family," ${f.name} says, "to let a guest sit without food would be unforgivable." She signals for more. "She needs a plate."`,
+    (f,t)=>`${f.name} turns fully to face ${t.name}. "You're entirely too thin. I mean that as fact. Eat something. I insist." She actually insists.`,
+    (f,t)=>`${f.name} takes ${t.name}'s hand with both of hers and places it against her considerable belly. "That's hospitality," she says. "You're being denied it. I won't have it." She holds the hand there. "Feed her properly."`,
+  ],
+  influencer:[
+    (f,t)=>`${f.name} looks at ${t.name}'s empty table and thinks about optics. "This isn't balanced," she says. "The content doesn't work. She needs food."`,
+    (f,t)=>`"Do you know what the algorithm loves?" ${f.name} says. "Contrast. Transformation. She has no story yet." She slides a dish toward ${t.name}. "Give her a story."`,
+    (f,t)=>`${f.name} takes ${t.name}'s face in her hands. "Look at me. This is a journey. You could be on it. But you need to eat first." She releases her. "Feed this girl."`,
+    (f,t)=>`${f.name} guides ${t.name}'s hand to her own stomach and holds it there. "Feel my journey," she says, completely unironically. "I want this for you. Eat." She beams at you over ${t.name}'s head.`,
+  ],
+  foodie:[
+    (f,t)=>`${f.name} looks at ${t.name}'s empty plate and winces. "This is unacceptable. She's missing the experience entirely. Get her something immediately."`,
+    (f,t)=>`${f.name} begins describing the current dish to ${t.name} in exhausting detail, with the intensity of someone who needs a second person to eat through. "You have to try this. You're missing it."`,
+    (f,t)=>`${f.name} picks up a dish and physically places it in front of ${t.name}. "Eat. I'm giving you this. I'm sharing." This is an enormous personal sacrifice. "Eat it now."`,
+    (f,t)=>`${f.name} guides ${t.name}'s hand to a fork. "Taste it," she says. "I need someone else to experience it." She pats ${t.name}'s hand. "You're too light. You can't appreciate flavour without body weight behind it. It's science."`,
+  ],
+};
+
+const FAT_RETORT={
+  cheerleader:[
+    (f,t)=>`${f.name} smiles at ${t.name} with the patience of someone who hasn't decided to be insulted yet. "Bless your heart," she says.`,
+    (f,t)=>`${f.name} looks at ${t.name} for a long moment. "Jealousy is very unbecoming," she says. "I say this for your own good."`,
+    (f,t)=>`${f.name} reaches across and gives ${t.name}'s stomach a pointed prod. "Nothing to protect yourself with," she says. "Very exposed." She pats her own. "I'm well-insulated. I'm fine."`,
+  ],
+  quiet:[
+    (f,t)=>`${f.name} looks at ${t.name} without expression. Then looks away and continues eating.`,
+    (f,t)=>`"She's jealous," ${f.name} says. Not to ${t.name}. Just generally, as an observation.`,
+    (f,t)=>`${f.name} sets down her fork and says very quietly: "At least I'm actually here."`,
+  ],
+  party:[
+    (f,t)=>`${f.name} laughs. Actually laughs. "Okay, fair point. But also — more for me, then."`,
+    (f,t)=>`"Mean!" ${f.name} says, sounding not at all hurt. She grabs another bite. "Mean, and also wrong."`,
+    (f,t)=>`${f.name} grabs ${t.name}'s hand and presses it to her belly. "Feel that," she says. "That's called being happy. You should try it."`,
+  ],
+  sorority:[
+    (f,t)=>`${f.name} raises an eyebrow with chapter-level precision. "Noted," she says.`,
+    (f,t)=>`"I'll take that under advisement," ${f.name} says. "At the next meeting. With everyone present." Her smile doesn't move.`,
+    (f,t)=>`${f.name} regards ${t.name} with complete calm and gives her belly a single deliberate shake. "This is the presidency," she says. "You're welcome to earn it."`,
+  ],
+  scholar:[
+    (f,t)=>`${f.name} looks at ${t.name}. "Statistically," she says, "you're wrong." She goes back to eating.`,
+    (f,t)=>`"I've run the numbers," ${f.name} says. "I've come out ahead on every metric that matters." She means this literally.`,
+    (f,t)=>`${f.name} gives her belly a contemplative pat. "The data is right here," she says. "I'm very comfortable with the data."`,
+  ],
+  athlete:[
+    (f,t)=>`${f.name} looks at ${t.name} with the flat gaze of someone who has won more competitions than she can count. "Okay," she says. Picks up her fork.`,
+    (f,t)=>`"I've carried more weight in competition than you'd manage in a lifetime," ${f.name} says. "Literally and otherwise." She eats.`,
+    (f,t)=>`${f.name} pats her belly with competitive satisfaction. "This is called performance," she says. "And I'm performing excellently."`,
+  ],
+  artsy:[
+    (f,t)=>`${f.name} tilts her head. "That's actually interesting feedback," she says. "I'm choosing not to use it."`,
+    (f,t)=>`"The jealousy is emotionally authentic," ${f.name} says. "Well-rendered. But still jealousy."`,
+    (f,t)=>`${f.name} gives her belly a philosophical pat. "I find I'm very at peace with the composition," she says.`,
+  ],
+  honors:[
+    (f,t)=>`${f.name} straightens. "In my family," she says, "we don't comment on others at the table." Her tone does the rest.`,
+    (f,t)=>`"I appreciate the candor," ${f.name} says, "and I don't appreciate the candor." She continues eating.`,
+    (f,t)=>`${f.name} looks at ${t.name} with controlled warmth. "Careful, dear," she says.`,
+  ],
+  influencer:[
+    (f,t)=>`"Okay, but that comment?" ${f.name} says. "Content. I'm using that." She already is.`,
+    (f,t)=>`"The jealousy is actually great for my brand," ${f.name} says. "Thank you. Genuinely."`,
+    (f,t)=>`${f.name} takes a photo of her food. "For context," she says. "I'm comfortable with my journey."`,
+  ],
+  foodie:[
+    (f,t)=>`${f.name} pauses mid-bite. "Bold critique from someone who hasn't eaten anything," she says.`,
+    (f,t)=>`"My palate has developed along with everything else," ${f.name} says. "The two are related. Don't be reductive."`,
+    (f,t)=>`${f.name} gives ${t.name} the look of a critic whose review has been challenged. "You'd know better if you'd eaten something. Eat something."`,
+  ],
+};
+
+const THIN_CONTEXTUAL={
+  athlete: (t,f)=>`${t.name} studies ${f.name} with dawning recognition. "You used to be on the team, right?" she says. "No wonder they — I mean, looking at you now, the uniform situation alone must be..." She doesn't finish. She doesn't have to.`,
+  cheerleader: (t,f)=>`"Do they still try to lift you?" ${t.name} asks. "During routines. How does that work now, exactly. I'm genuinely asking." Tilted head, perfect sincerity.`,
+  sorority: (t,f)=>`"The chapter formals must be an adventure," ${t.name} says. "All those tailors, all that custom work, every single year. Very committed seamstresses."`,
+  influencer: (t,f)=>`"The angles you must need," ${t.name} says. "For your posts. All that camera work, all that cropping. I could never work that hard just to look normal." She smiles pleasantly.`,
+  scholar: (t,f)=>`"I wonder," ${t.name} says, "if the university provides wider lecture chairs. For extended scholarly comfort. I'd imagine it's a concern by now."`,
+  honors: (t,f)=>`"The legacy portraits must be interesting to compare," ${t.name} says. "Early ones and recent ones. Very distinct subjects, technically. The family must have a lot to say at reunions."`,
+  artsy: (t,f)=>`"Your self-portraits must be interesting to track," ${t.name} says. "Early work versus recent. Very different subjects, technically speaking. Same person, though."`,
+  foodie: (t,f)=>`"I've read some of your reviews," ${t.name} says. "The credibility does suffer when the reviewer has clearly — well. You know. Stopped discriminating."`,
+  quiet: (t,f)=>`${t.name} watches ${f.name} eat in complete silence, then: "Do you ever get full?" She genuinely wants to know. It lands harder than anything specific would have.`,
+  party: (t,f)=>`"I've seen the party photos from last year," ${t.name} says. "And the ones from now." A beat. "That's a very different size of person in those pictures. I hope she's happy, though."`,
+};
+
+const UNBUTTON_LINES=[
+  (s)=>`${s.name} shifts in her seat. There's a small, deliberate movement under the table — a button giving way, the waistband releasing. She exhales. Continues eating.`,
+  (s)=>`${s.name} reaches down, adjusts something quietly, and settles deeper into her chair. She looks fractionally more comfortable. She doesn't mention it.`,
+  (s)=>`A quiet click from under the table. ${s.name} doesn't look up. She just keeps eating.`,
+  (s)=>`${s.name} reaches down with the practiced ease of someone who has done this before, undoes her waistband, and picks up her fork again without comment.`,
+  (s)=>`${s.name} pauses, does something discreet under the table, and continues. Her expression doesn't change. The pace of eating does.`,
 ];
 
 const DINNER_VENUES = [
@@ -2104,6 +2308,8 @@ export default function ProfessorSim(){
   const [groupDinnerEvent,setGroupDinnerEvent]=useState(null);
   const [groupDinnerLog,setGroupDinnerLog]=useState([]);
   const [dinnerEndPopup,setDinnerEndPopup]=useState(null);
+  const [groupDinnerPicker,setGroupDinnerPicker]=useState(null);
+  // groupDinnerPicker: { count:2|3, selected:[] }
   const [hovered,setHovered]=useState(null);
   const [skillCat,setSkillCat]=useState("environment");
   const [classSession,setClassSession]=useState(null);
@@ -2327,14 +2533,8 @@ export default function ProfessorSim(){
       updated=students.map(s=>processStudentGain(s,scaledGain,7));
       push(`🍾 On-Demand Feast: catering arrives immediately! Each student gains ~${scaledGain} lbs.`);
     } else if(action.id==="group_dinner"||action.id==="dinner_party"){
-      // Launch interactive group dinner UI — refund the AP cost (startGroupDinner deducts it)
-      setAp(a=>a+action.cost);
-      const pair=INFLUENCE_PAIRS.find(([a,b])=>students.find(s=>s.id===a)&&students.find(s=>s.id===b));
-      const pairStudents=pair?[students.find(s=>s.id===pair[0]),students.find(s=>s.id===pair[1])].filter(Boolean):students.slice(0,2);
-      const partyStudents=action.id==="dinner_party"
-        ?[...students].sort((a,b)=>b.relationship-a.relationship).slice(0,3)
-        :pairStudents;
-      startGroupDinner(partyStudents);
+      if(ap<3){push("⚠️ Need 3 AP for a group dinner.");return;}
+      setGroupDinnerPicker({count:action.id==="dinner_party"?3:2,selected:[]});
       return;
     } else {
       updated=students.map(s=>{
@@ -2554,7 +2754,7 @@ export default function ProfessorSim(){
     const gStudents=studentList.map(s=>({
       ...s, fullness:0, maxFullness:60+getStage(s.lbs).id*14, dishes:[], totalGain:0,
     }));
-    setGroupDinnerEvent({ students:gStudents, phase:"venue", venue:null, conversationUsed:[] });
+    setGroupDinnerEvent({ students:gStudents, phase:"venue", venue:null, conversationUsed:[], reactionLevels:{} });
     setGroupDinnerLog([]);
   };
 
@@ -2573,8 +2773,58 @@ export default function ProfessorSim(){
     const newFullness=target.fullness+(dish.fullness||15);
     const maxFull=target.maxFullness;
     const newTotalGain=target.totalGain+scaledGain;
+    const newDishes=[...target.dishes,dish.id];
     setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,lbs:s.lbs+scaledGain}));
     push(`🍴 ${target.name}: ${dish.label} (+${scaledGain} lbs)`);
+
+    // Build reaction log entries before state updates
+    const reactionLines=[];
+    const newReactionLevels={...groupDinnerEvent.reactionLevels};
+    groupDinnerEvent.students.filter(s=>s.id!==targetId).forEach(neg=>{
+      const dishDiff=newDishes.length-neg.dishes.length;
+      if(dishDiff<=2) return;
+      const negStage=getStage(neg.lbs).id;
+      const fedStage=getStage(target.lbs).id;
+      const stageDiff=fedStage-negStage; // positive = fed girl is fatter
+      const level=Math.min(3,newReactionLevels[neg.id]||0);
+      const lines=[];
+      if(Math.abs(stageDiff)>=2){
+        if(stageDiff>=2){
+          // Fat girl being fed; thin girl neglected → thin jealousy
+          const jFn=THIN_JEALOUSY[neg.archetype]?.[level];
+          if(jFn) lines.push(jFn(neg,target));
+          // Contextual override at level 2+
+          if(level>=2){
+            const ctx=THIN_CONTEXTUAL[target.archetype]?.(neg,target);
+            if(ctx&&Math.random()<0.5) lines.push(ctx);
+          }
+          // Fat girl retorts at level 1+
+          if(level>=1){
+            const retArr=FAT_RETORT[target.archetype];
+            if(retArr&&Math.random()<0.65){
+              const rFn=retArr[Math.min(level-1,retArr.length-1)];
+              if(rFn) lines.push(rFn(target,neg));
+            }
+          }
+        } else {
+          // Thin girl being fed; fat girl neglected → fat girl encourages feeding thin one
+          const eFn=FAT_ENCOURAGE[neg.archetype]?.[level];
+          if(eFn) lines.push(eFn(neg,target));
+        }
+      } else {
+        lines.push(getJealousyLine(neg,target));
+      }
+      if(lines.length){
+        reactionLines.push(...lines.filter(Boolean));
+        newReactionLevels[neg.id]=(newReactionLevels[neg.id]||0)+1;
+      }
+    });
+
+    // Unbutton line when first crossing capacity
+    if(newFullness>maxFull&&target.fullness<=maxFull){
+      reactionLines.push(UNBUTTON_LINES[rnd(0,UNBUTTON_LINES.length-1)](target));
+    }
+
     // Overfill check
     if(newFullness>maxFull){
       const overfillRatio=(newFullness-maxFull)/maxFull;
@@ -2583,32 +2833,27 @@ export default function ProfessorSim(){
         const sLive=students.find(s=>s.id===targetId)||target;
         const sUpdated={...sLive,lbs:sLive.lbs+scaledGain};
         const endMsg=getOverfillEndMsg(sUpdated,getStage(sUpdated.lbs).id);
-        setGroupDinnerLog(dl=>[...dl,`🍴 ${dish.label} for ${target.name}. (+${scaledGain} lbs)`,`😵 ${endMsg}`]);
-        // Remove this girl from the group; if no one left, end the dinner
+        setGroupDinnerLog(dl=>[...dl,`🍴 ${dish.label} for ${target.name}. (+${scaledGain} lbs)`,`😵 ${endMsg}`,...reactionLines.map(r=>`👀 ${r}`)]);
         setGroupDinnerEvent(prev=>{
           const remaining=prev.students.filter(s=>s.id!==targetId);
           if(remaining.length===0){
-            setTimeout(()=>{
-              setAp(a=>a-3);
-              push(`✅ Group dinner complete.`);
-              setGroupDinnerEvent(null);
-            },900);
+            setTimeout(()=>{setAp(a=>a-3);push(`✅ Group dinner complete.`);setGroupDinnerEvent(null);},900);
             return prev;
           }
-          return {...prev,students:remaining};
+          return {...prev,students:remaining,reactionLevels:newReactionLevels};
         });
-        // Show ending popup for this girl
         const stId=getStage(sUpdated.lbs).id;
         const stGrp=stId<=2?0:stId<=5?1:stId<=7?2:3;
         const ratio=newFullness/maxFull;
         const fullGrp=ratio<=1.0?0:ratio<=1.3?1:ratio<=1.6?2:3;
         setTimeout(()=>{
-          setDinnerEndPopup({ student:sUpdated, finalFullness:newFullness, maxFullness:maxFull, totalGain:newTotalGain, narrative:DINNER_ENDING_TEXT[stGrp][fullGrp](sUpdated) });
+          setDinnerEndPopup({student:sUpdated,finalFullness:newFullness,maxFullness:maxFull,totalGain:newTotalGain,narrative:DINNER_ENDING_TEXT[stGrp][fullGrp](sUpdated)});
           setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,relationship:Math.min(100,s.relationship+12)}));
         },1100);
         return;
       }
     }
+
     const firstHit=newFullness>=maxFull&&target.fullness<maxFull;
     const fullMsg=firstHit?` — ${target.name} is satisfied. You can keep going.`
       :newFullness>maxFull?` — ${target.name} is past full.`
@@ -2616,15 +2861,12 @@ export default function ProfessorSim(){
     setGroupDinnerLog(dl=>[...dl,`🍴 ${dish.label} for ${target.name}. ${dish.desc} (+${scaledGain} lbs)${fullMsg}`]);
     setGroupDinnerEvent(prev=>({
       ...prev,
-      students:prev.students.map(s=>s.id!==targetId?s:{...s,fullness:newFullness,dishes:[...s.dishes,dish.id],totalGain:newTotalGain}),
+      reactionLevels:newReactionLevels,
+      students:prev.students.map(s=>s.id!==targetId?s:{...s,fullness:newFullness,dishes:newDishes,totalGain:newTotalGain}),
     }));
-    // Jealousy check — girl with fewest dishes reacts
-    const others=groupDinnerEvent.students.filter(s=>s.id!==targetId);
-    others.forEach(other=>{
-      if(other.dishes.length<target.dishes.length&&Math.random()<0.45){
-        setTimeout(()=>setGroupDinnerLog(dl=>[...dl,`👀 ${getJealousyLine(other,target)}`]),400);
-      }
-    });
+    if(reactionLines.length){
+      setTimeout(()=>setGroupDinnerLog(dl=>[...dl,...reactionLines.map(r=>`👀 ${r}`)]),450);
+    }
   };
 
   const callGroupWaiter=()=>{
@@ -3065,6 +3307,58 @@ export default function ProfessorSim(){
           </div>
         );
       })()}
+
+      {/* GIRL PICKER */}
+      {groupDinnerPicker&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:580}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>SELECT GIRLS</div>
+            <div style={{fontSize:12,color:"#9070c0",marginBottom:14,fontStyle:"italic"}}>
+              Choose {groupDinnerPicker.count} girls to take to dinner.
+              {" "}({groupDinnerPicker.selected.length}/{groupDinnerPicker.count} selected)
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:14,maxHeight:340,overflowY:"auto"}}>
+              {students.map(s=>{
+                const isSelected=groupDinnerPicker.selected.includes(s.id);
+                const isFull=!isSelected&&groupDinnerPicker.selected.length>=groupDinnerPicker.count;
+                const stg=getStage(s.lbs);
+                return(
+                  <div key={s.id}
+                    style={{...C.card,cursor:isFull?"default":"pointer",
+                      border:`1px solid ${isSelected?"#7a30d8":isFull?"#180830":"#280840"}`,
+                      background:isSelected?"rgba(80,20,140,0.3)":"rgba(255,255,255,0.03)",
+                      opacity:isFull?0.45:1}}
+                    onClick={()=>{
+                      if(isFull) return;
+                      setGroupDinnerPicker(prev=>({
+                        ...prev,
+                        selected:isSelected?prev.selected.filter(id=>id!==s.id):[...prev.selected,s.id],
+                      }));
+                    }}>
+                    <div style={{fontWeight:700,fontSize:12,color:isSelected?"#d0a0ff":"#c0a0e0",marginBottom:2}}>{s.name.split(" ")[0]}</div>
+                    <div style={{fontSize:10,color:"#7a5090"}}>{stg.label}</div>
+                    <div style={{fontSize:10,color:"#5a3060"}}>{s.lbs} lbs · ❤ {s.relationship}</div>
+                    {isSelected&&<div style={{fontSize:9,color:"#a060f0",marginTop:3}}>✓ Selected</div>}
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{display:"flex",gap:8}}>
+              <button
+                style={{...C.btn("#5818a8"),opacity:groupDinnerPicker.selected.length<groupDinnerPicker.count?0.4:1}}
+                disabled={groupDinnerPicker.selected.length<groupDinnerPicker.count}
+                onClick={()=>{
+                  const chosen=groupDinnerPicker.selected.map(id=>students.find(s=>s.id===id)).filter(Boolean);
+                  setGroupDinnerPicker(null);
+                  startGroupDinner(chosen);
+                }}>
+                Confirm →
+              </button>
+              <button style={C.btn("#333")} onClick={()=>setGroupDinnerPicker(null)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* DINNER ENDING POPUP */}
       {dinnerEndPopup&&(
