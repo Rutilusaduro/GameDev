@@ -3193,6 +3193,607 @@ const EVOLVED_ACTIVITY_META = {
   ff_author:       { label:"Read Her Latest Chapter",  apCost:1, gainRange:[3,6],  relBonus:12 },
 };
 
+// ── EP2: INTERACTIVE EVOLVED EVENTS ────────────────────────────────────────
+// Forms listed here get a multi-phase interactive modal instead of the simple activity popup.
+// Structure per entry: { title, phases:[{text(h)=>str, choices:[{id,label,result,lbs?,rel?,flag?,feedOther?}]}], endings:[{condition,text,gainBonus,relBonus}] }
+const EVOLVED_EVENTS = {
+  sumo:[
+    // stage 5 — ~258 lbs
+    {
+      title:"Regional Qualifier",
+      phases:[
+        {
+          text:()=>`She's at the weigh-in table: 258 pounds, recorded by the official. Her opponent is 232. She stands in her mawashi with her belly round and warm below the wrap, her thighs pressing together, looking calm in the way people look calm when they've stopped being nervous and started being certain. You're backstage. She has fifteen minutes.`,
+          choices:[
+            {id:"feed_pregame",label:"Slip her food before she enters",result:`You pass a bag through the curtain — dense rice balls, two sweet potatoes, a protein bar. She eats without looking up, methodical, all of it. Her belly is noticeably fuller when she ties the mawashi back.`,lbs:5,rel:5,flag:"fed_pregame"},
+            {id:"encourage_pregame",label:"Tell her she's the biggest person in that ring",result:`You say it plainly: "You're the biggest person in that ring. Make sure they feel that." She looks at you once, then at the curtain, and nods once.`,rel:8},
+          ]
+        },
+        {
+          text:(h)=>h.includes("fed_pregame")
+            ?`First tachi-ai. She hits the opponent and the sound carries — two women colliding, 258 pounds of warm belly leading, the food sitting heavy and right inside her. Her opponent staggers back. She presses forward. Her belly is a weapon and she's learning to use it.`
+            :`First tachi-ai. She hits the opponent with 258 pounds behind it, her belly compressing against the other woman's middle. The opponent holds. She works for it. It's a good match.`,
+          choices:[
+            {id:"cheer_loud",label:"Cheer from the stands — make sure she hears you",result:`She hears you. Her stance shifts. She digs in.`,rel:6},
+            {id:"feed_corner",label:"Get more food to her corner between rounds",result:`Her corner feeds her between bouts — you arranged it. She eats with focus. Her belly is warm and full and she settles into her size like a foundation.`,lbs:8,rel:8,flag:"fed_corner",requires:"fed_pregame"},
+            {id:"study_opponent",label:"Study the opponent, signal her from ringside",result:`You catch her eye and signal twice. She adjusts her grip and her stance. The opponent doesn't know what changed.`,rel:4},
+          ]
+        },
+        {
+          text:(h)=>{
+            if(h.includes("fed_pregame")&&h.includes("fed_corner")) return `Final bout. She is heavier and slower and completely in control. The food is in her — warm and real, 258 pounds plus everything she's eaten today — and the opponent is running out of ring. She doesn't hurry. She waits. She uses her belly to shove the woman toward the boundary and the boundary comes up fast.`;
+            if(h.includes("fed_pregame")) return `Final bout. She's been fed and she knows it. Her belly is warm and full and forward and she walks the opponent toward the rope with the patience of someone who is simply larger.`;
+            return `Final bout. She wins, clean. The fight was closer than it needed to be but she was the bigger woman throughout.`;
+          },
+          choices:[
+            {id:"meet_at_ramp",label:"Meet her at the exit ramp",result:`You're there when she comes through the curtain. She looks at you and says: "I'm hungry." You both understand this is a different kind of statement than it would have been three months ago.`,rel:10,flag:"celebrated"},
+            {id:"watch_victory",label:"Watch from the stands, let her have her moment",result:`She takes her moment in the ring. You watch. She bows to the crowd and her belly rounds forward in the bow and she looks like what she is.`,rel:4},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_corner")&&h.includes("celebrated"),text:`She wins decisively. In the locker room afterward she eats everything her corner prepared plus everything you brought and sits with her belly warm and round on her lap and says: "I want to weigh 300 before the next one. I want to be the heaviest person on the circuit by spring." She means all of it. She is very satisfied with what 258 pounds can do and she intends to find out what 300 can do.`,gainBonus:14,relBonus:12},
+        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_corner"),text:`She wins with authority. Afterward she eats her corner's preparations in full and tells you: "More of that before every match. The food is right." She pats her belly — 258 pounds plus today's intake — with the specific satisfaction of an athlete in correct form.`,gainBonus:9,relBonus:7},
+        {condition:h=>h.includes("fed_pregame"),text:`She wins. The food helped and she knows it. "More of that before the next match," she says, and goes to find dinner.`,gainBonus:5,relBonus:4},
+        {condition:()=>true,text:`She wins. A solid match. She eats alone afterward and you watch from across the room.`,gainBonus:0,relBonus:2},
+      ]
+    },
+    // stage 6 — ~320 lbs
+    {
+      title:"Circuit Tournament",
+      phases:[
+        {
+          text:()=>`She's 320 pounds on the official scale and she's been on the circuit for one season and the other competitors know her name now. Today's bracket has four women, the heaviest at 290. She rolls her shoulders in the warm-up room and her belly rolls with her — soft and round and enormous below the mawashi wrap, warm against her thighs. You have access to the backstage area.`,
+          choices:[
+            {id:"feed_pregame",label:"Bring a full pre-match meal",result:`You arrive with a significant amount of food — rice, dense protein, two large portions of something sweet. She works through all of it in the warm-up room while reviewing her bracket. "Good," she says, when it's gone. Her belly presses the mawashi noticeably tighter.`,lbs:7,rel:6,flag:"fed_pregame"},
+            {id:"warm_up_coach",label:"Coach her through warm-ups",result:`You call her movements in the warm-up: plant, drive, push. She goes through the sequences with full weight behind them. 320 pounds of focused woman is an impressive thing to watch move.`,rel:9},
+          ]
+        },
+        {
+          text:(h)=>h.includes("fed_pregame")
+            ?`Semi-final. She hits her opponent — 275 pounds — and the belly-to-belly contact is significant: two large women compressing against each other, your student's belly soft and full and enormous and hers alone. The opponent isn't small. It doesn't matter. 320 pounds of warm fed woman pushes her toward the rope.`
+            :`Semi-final. She hits the 275-pound opponent hard and works for the win. 320 pounds driving forward, belly leading, methodical.`,
+          choices:[
+            {id:"feed_between",label:"Feed her between semi and final",result:`You get to her corner in the break. She eats fast — another good meal, another intake of weight into an already warm belly. The wait between matches passes full.`,lbs:9,rel:8,flag:"fed_between"},
+            {id:"scouting",label:"Scout the finalist while she rests",result:`You watch the second semi-final and report back. She listens. She adjusts.`,rel:7},
+          ]
+        },
+        {
+          text:(h)=>{
+            const wellFed=h.includes("fed_pregame")&&h.includes("fed_between");
+            if(wellFed) return `Final. She is the largest person in this tournament and she's been fed and she knows it and the opponent — 290 pounds, the current circuit record holder — knows it too. The tachi-ai shakes the ring. Her belly, full and warm and real, compresses against the opponent's chest. She wins in two bouts.`;
+            return `Final. 320 versus 290, her the heavier. She wins with technique and size. It's not close by the end.`;
+          },
+          choices:[
+            {id:"celebrate_full",label:"Take her to dinner after",result:`You take her to dinner. She orders twice. Her belly is full and warm and enormous when she sits back from the table. "I want to be 370 before the spring circuit," she says. "I want to walk into the room and be the undeniable one." She finishes her plate.`,lbs:8,rel:12,flag:"celebrated"},
+            {id:"watch_ceremony",label:"Watch the award ceremony",result:`She takes the placing ribbon with both hands. She bows. The crowd is loud. She looks like she belongs on a circuit that doesn't know yet how much bigger she's going to get.`,rel:5},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_between")&&h.includes("celebrated"),text:`Tournament win. She was the biggest and the best-fed and you took her to dinner and she said: "370 by spring." You believe her completely. Her belly filled the restaurant chair and was warm and soft and present and she ate every plate.`,gainBonus:16,relBonus:13},
+        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_between"),text:`Tournament win. She was well-fed throughout and it showed. She finds you after the ceremony and says: "Good support today." This is high praise.`,gainBonus:10,relBonus:8},
+        {condition:h=>h.includes("fed_pregame")||h.includes("fed_between"),text:`Tournament win. The food helped. She notes it and plans for more of it.`,gainBonus:5,relBonus:4},
+        {condition:()=>true,text:`Tournament win. Clean bracket. She eats well on her own afterward.`,gainBonus:0,relBonus:3},
+      ]
+    },
+    // stage 7 — ~419 lbs
+    {
+      title:"State Championship",
+      phases:[
+        {
+          text:()=>`419 pounds on the state scale, certified, and she's one of three competitors above 380. The crowd is large — this is a real event with spectators who know the sport and came specifically to see the heavy women compete. She warms up in the hall and her footsteps are present in the floor and her belly, enormous and warm, swings slightly as she plants and drives through her sequences. You're backstage.`,
+          choices:[
+            {id:"full_prep_meal",label:"Prepare a full staging meal — everything",result:`You've coordinated with her corner: a full pre-match spread, dense and warm, everything timed right. She eats in the preparation room with the focus of an athlete fueling for performance. Her belly, already massive, fills tighter against the mawashi. "Right," she says.`,lbs:10,rel:7,flag:"fed_pregame"},
+            {id:"media_handling",label:"Handle the media so she can focus",result:`You intercept three reporters and two photographers so she can prepare undisturbed. She notices the absence of interruption and says: "Thank you." She means it.`,rel:10},
+          ]
+        },
+        {
+          text:(h)=>h.includes("fed_pregame")
+            ?`Quarter-final, then semi. Both opponents are above 350 pounds and both times the collision is dramatic: two enormous women meeting at the tachi-ai, belly fat compressing between them, her 419 pounds of warm fed weight driving forward. She wins both. Her belly is a wall.`
+            :`Quarter-final, then semi. Both opponents over 350. She wins both on technique and on being the biggest woman in each bout. 419 pounds is a lot to move.`,
+          choices:[
+            {id:"corner_feeding",label:"Feed her in every interval",result:`You're at her corner in every break. She eats between bouts — the warm dense food she needs, timed correctly. By the final her belly is full and her stance is planted and she is unmovable.`,lbs:12,rel:9,flag:"fed_intervals"},
+            {id:"tactical_coaching",label:"Coach tactically through the bracket",result:`You read the opponents and tell her what you see. She incorporates the information efficiently. Her wins are clean.`,rel:8},
+          ]
+        },
+        {
+          text:(h)=>{
+            const fed=h.includes("fed_pregame")&&h.includes("fed_intervals");
+            if(fed) return `State final. The opponent is 410 pounds and this is the best sumo match you've seen. Two enormous women, belly-to-belly, 419 and 410 pounds pressing together, the sound enormous in the hall. Your student is warm and full and heavier-feeling than her certified weight. She drives. The opponent drives. She wins — her belly pressing the opponent out of the ring by inches, warm and vast and real.`;
+            return `State final. 419 versus 410. She wins on will and size. The crowd is very loud.`;
+          },
+          choices:[
+            {id:"post_match_feast",label:"Organize a post-match feast",result:`You've arranged dinner for after. She arrives and sits down and looks at the table with the expression of someone who intends to eat all of it. She does. Her belly, enormous and warm and full, fills her lap when she sits back. "I want to be 480 before nationals," she says.`,lbs:10,rel:13,flag:"celebrated"},
+            {id:"trophy_moment",label:"Give her the moment — step back",result:`She takes the state title and lifts it with both hands and her belly rounds forward in the lift and the crowd sees 419 pounds of state champion and reacts accordingly.`,rel:6},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_intervals")&&h.includes("celebrated"),text:`State champion. She ate well throughout the day and she ate enormously after and she said "480 before nationals" with the certainty of a woman describing a plan she has already executed. Her belly was warm and full and she finished the last plate and didn't leave a single thing on the table.`,gainBonus:18,relBonus:14},
+        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_intervals"),text:`State champion. Fed throughout. She says: "The food is the training. Get me the same setup for nationals."`,gainBonus:11,relBonus:9},
+        {condition:h=>h.includes("fed_pregame")||h.includes("fed_intervals"),text:`State champion. The food helped. She's already thinking about nationals.`,gainBonus:6,relBonus:5},
+        {condition:()=>true,text:`State champion. Clean bracket, decisive win. She's enormous and she's only going to get larger.`,gainBonus:0,relBonus:3},
+      ]
+    },
+    // stage 8 — ~519 lbs
+    {
+      title:"National Qualifier",
+      phases:[
+        {
+          text:()=>`She weighs 519 pounds for the national qualifier certification and the official writes it down without expression, which is its own kind of acknowledgement. She is the heaviest woman competing today by 80 pounds. Her belly hangs in a warm, heavy apron below the mawashi — soft and enormous, real weight, real presence — and when she walks the mat the floor communicates her. The other competitors are watching.`,
+          choices:[
+            {id:"pre_event_meal",label:"Full pre-event meal — three courses",result:`You've arranged it properly: three courses, timed to digest correctly before competition. She eats in the private preparation room with focused attention, her enormous belly filling and settling with each course. When she stands to warm up she is warm and heavy and ready.`,lbs:12,rel:8,flag:"fed_pregame"},
+            {id:"presence_strategy",label:"Tell her to let them see her first",result:`You say: walk the mat slowly before warm-ups. Let them calculate. Let them arrive at the number themselves. She does. The watching competitors do their math and several of them look away first.`,rel:11,flag:"psych_advantage"},
+          ]
+        },
+        {
+          text:(h)=>{
+            const both=h.includes("fed_pregame")&&h.includes("psych_advantage");
+            if(both) return `First two bouts: the opponents came in with calculations and left with evidence. 519 pounds of fed, warm woman pressing belly-first through two competitors. The belly-to-belly contact is significant: she's so much larger than both that her apron alone displaces them.`;
+            if(h.includes("fed_pregame")) return `First two bouts. She's been fed and she uses it. 519 pounds driving through opponents who are strong women and are simply smaller.`;
+            return `First two bouts. She dominates. 519 pounds, technique, will.`;
+          },
+          choices:[
+            {id:"interval_feeding",label:"Feed her in every break — treat it like a training day",result:`Every break between bouts you're there with food. She eats with the systematic focus she brings to training: intake, fuel, continue. Her belly is warm and full throughout the bracket.`,lbs:14,rel:10,flag:"fed_intervals"},
+            {id:"crowd_management",label:"Work the crowd — get them cheering for her",result:`You work the section near her corner and by the semi-final the crowd knows her name and is using it. She hears it. Her stance broadens.`,rel:9},
+          ]
+        },
+        {
+          text:(h)=>{
+            const fed=h.includes("fed_pregame")&&h.includes("fed_intervals");
+            if(fed) return `National qualifier final. The opponent is 490 pounds, the second-heaviest person in the draw. The tachi-ai is the loudest sound in the building: 519 and 490 meeting, two enormous warm bodies pressing together, the apron fat of both women compressing between them. Your student drives. She has been eating all day. She is heavier than her certified weight by now and she knows it and she uses it.`;
+            return `Qualifier final. 519 versus 490. Enormous women, enormous match. She wins.`;
+          },
+          choices:[
+            {id:"nationals_dinner",label:"Book a restaurant for the qualifying celebration",result:`You've booked a table. She arrives and sits and her belly fills her lap and she looks at the menu with the calm focus of someone planning a serious meal. She orders extensively. She eats all of it. She says: "I want to be 580 for nationals. I want to be the undeniable largest thing in that building." She is already planning the weight.`,lbs:12,rel:14,flag:"celebrated"},
+            {id:"press_statement",label:"Help her with the post-qualifying press",result:`Three journalists want statements. She gives them plainly: her weight, her training, what she plans to weigh at nationals. She says the number clearly. The journalists write it down.`,rel:7},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_intervals")&&h.includes("celebrated"),text:`National qualifier champion. She ate all day and she said "580 for nationals" and she meant it and you believe her because 519 was already the most impressive thing you'd seen and she has every intention of adding to it.`,gainBonus:20,relBonus:15},
+        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_intervals"),text:`National qualifier champion. Fed throughout. She's planning her intake approach for nationals right now.`,gainBonus:12,relBonus:10},
+        {condition:h=>h.includes("fed_pregame")||h.includes("fed_intervals"),text:`National qualifier champion. The food helped. She knows. She'll plan better for next time.`,gainBonus:7,relBonus:5},
+        {condition:()=>true,text:`National qualifier champion. She qualifies for nationals. She will be the largest person there.`,gainBonus:0,relBonus:4},
+      ]
+    },
+    // stage 9 — ~630 lbs
+    {
+      title:"National Circuit Finals",
+      phases:[
+        {
+          text:()=>`630 pounds on the national circuit scale and the official reads it into the microphone and the room goes quiet the way rooms go quiet when a number is that large and unambiguous. She stands in her mawashi and her belly hangs in a deep warm apron below the wrap — enormous, soft, real — and her thighs are vast and pressing and her arms are thick and her face is calm. The other competitors watch her from across the preparation hall. Three of them weigh between 380 and 450 pounds. She is a different category.`,
+          choices:[
+            {id:"ritual_meal",label:"Pre-match ritual meal — the full protocol",result:`You've been doing this together long enough that it's a ritual now: the specific foods, the timing, the quiet. She eats in the preparation room and you don't talk. Her belly fills and settles under the mawashi and when she stands she is warm and vast and fed and ready.`,lbs:15,rel:9,flag:"fed_pregame"},
+            {id:"presence_walk",label:"Walk the hall with her — let the field see her",result:`She walks the preparation hall at full stride and you walk beside her and the other competitors see 630 pounds moving through the space and the calculations they make don't arrive anywhere reassuring for any of them.`,rel:12,flag:"psych_advantage"},
+          ]
+        },
+        {
+          text:(h)=>{
+            const both=h.includes("fed_pregame")&&h.includes("psych_advantage");
+            if(both) return `Opening bracket. She goes through three opponents and the matches are, technically, competitive. In practice: a 630-pound fed woman who has been on this circuit for two years is operating at a different level. The belly-to-belly contacts are overwhelming — her apron compressing against opponents' chests, her weight irreversible once moving. She wins each bout cleanly.`;
+            return `Opening bracket. Three opponents. She wins all three. 630 pounds is an argument that ends discussions.`;
+          },
+          choices:[
+            {id:"full_day_feeding",label:"Feed her between every bout all day",result:`All day, every interval: food. She eats with the focused efficiency she has developed over two years of this. By the semi-final she is heavier than her certified weight by a meaningful amount and she is aware of this and uses it.`,lbs:18,rel:11,flag:"fed_all_day"},
+            {id:"tactical_breakdown",label:"Break down every opponent she'll face",result:`You've scouted the bracket and you give her a complete tactical breakdown at lunch. She listens. She asks two questions. She wins accordingly.`,rel:10},
+          ]
+        },
+        {
+          text:(h)=>{
+            const fed=h.includes("fed_pregame")&&h.includes("fed_all_day");
+            if(fed) return `National final. The opponent is the defending champion at 520 pounds — the best technical competitor on the circuit, fast, strong, a perfect match for anyone except what your student has become. They meet at the tachi-ai and the sound is definitive: 630-plus pounds of warm, full, enormous woman hitting 520 with everything behind it. The belly contact is complete — apron on chest, fat on fat, her weight making the outcome clear from the first collision. She wins in two bouts.`;
+            return `National final. 630 versus 520. The defending champion is the best technical competitor in the draw. Your student is the largest. She wins.`;
+          },
+          choices:[
+            {id:"legend_dinner",label:"Dinner at the best restaurant in the city",result:`You take her somewhere worth taking her. She sits and her belly fills her lap and rounds against the table and she opens the menu with the expression of someone who has earned the right to order everything on it. She orders most of it. She eats all of it. "800 pounds," she says, at the end, looking at you directly. "I want to be 800 pounds on the circuit." She says it like stating her next goal, which it is.`,lbs:14,rel:16,flag:"celebrated"},
+            {id:"press_circuit",label:"Run the post-match press circuit with her",result:`National champion press. She says her weight clearly and calmly. The journalists write the number. The circuit photographers position her and she fills their frames with 630 pounds of national champion and she is completely at ease with the space she takes.`,rel:8},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_all_day")&&h.includes("celebrated"),text:`National champion. She was fed all day, she won all day, and at dinner she said "800 pounds" with the certainty of a woman who has already done the harder thing twice. Her belly was warm and enormous and full and she ate everything on the table and was satisfied with all of it.`,gainBonus:22,relBonus:16},
+        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_all_day"),text:`National champion. Fed throughout the day. The combination of her size and the day's intake made the final an inevitability. She's already planning how to be larger for the next circuit.`,gainBonus:14,relBonus:11},
+        {condition:h=>h.includes("fed_pregame")||h.includes("fed_all_day"),text:`National champion. The food helped when it was there. She makes a note of it.`,gainBonus:8,relBonus:6},
+        {condition:()=>true,text:`National champion. 630 pounds, first place, unambiguous. The circuit hasn't seen anything like her.`,gainBonus:0,relBonus:5},
+      ]
+    },
+  ],
+
+  eating_captain:[
+    // stage 5 — ~258 lbs
+    {
+      title:"First Squad Practice",
+      phases:[
+        {
+          text:()=>`She's called the first practice of her tenure as eating captain. The squad — including two of your cheerleader students — is seated at the long table in the gym annex and she's at the head of it, 258 pounds, her belly warm and round under her captain's pullover. She's arranged the food herself. The squad is watching her set the tone.`,
+          choices:[
+            {id:"feed_captain_first",label:"Bring extra food for her, set the example",result:`You arrive with a second spread specifically for her: dense, warm, abundant. She understands immediately. She pulls it in and begins eating with the deliberate focus of a captain who is demonstrating the standard. The squad watches and several of them start eating more seriously.`,lbs:6,rel:7,flag:"fed_captain"},
+            {id:"encourage_culture",label:"Tell her to make them all eat more",result:`You lean in before she starts and say: "Get them all eating more. That's the culture now." She nods and turns to the squad and says, plainly: "We eat here. Everyone eats. Let's go."`,rel:8},
+          ]
+        },
+        {
+          text:(h)=>h.includes("fed_captain")
+            ?`Midway through practice. She's been eating steadily and her belly is warm and noticeably fuller under the pullover. The squad has been eating too, encouraged by her example. One girl — a cheerleader you recognize — is on her second plate and looks surprised that she's still eating. Your student is at her third.`
+            :`Midway through practice. She's been eating throughout and the squad is keeping up with her. The table is going down. One of the cheerleaders has been at it for forty minutes straight.`,
+          choices:[
+            {id:"feed_the_squad",label:"Order more food for the whole squad",result:`You order another full round for the table. The delivery arrives twenty minutes later and the squad — all of them, the cheerleaders especially — eats on. Your cheerleader students gain weight from the extra round. Your captain watches them eat and looks satisfied.`,rel:8,flag:"fed_squad",feedOther:{archetype:"cheerleader",lbs:4,text:"The cheerleaders eat through the extra round. You can see the food going somewhere."}},
+            {id:"coach_captain",label:"Coach her through the second half of practice",result:`You run the practice structure while she focuses on eating. She eats through the drills. The squad follows her lead.`,lbs:5,rel:6},
+          ]
+        },
+        {
+          text:(h)=>{
+            const full=h.includes("fed_captain")&&h.includes("fed_squad");
+            if(full) return `End of practice. She sits back and her belly presses her pullover forward, round and warm and full, 258 pounds plus everything she's eaten today. The squad is in various states of very full contentment. One cheerleader is still eating. Your captain looks at the table — at the empty dishes, at the full girls — and is satisfied.`;
+            return `End of practice. The table is largely gone. The squad is fed. She looks at what she's accomplished in the first practice and is satisfied.`;
+          },
+          choices:[
+            {id:"post_practice_talk",label:"Talk with her about the culture she's building",result:`Afterward, she sits with her belly warm and full and says: "I want all of them bigger by the end of the season. I want us to be the heaviest squad in the conference." She looks at the cheerleaders still eating. "We're getting there."`,rel:12,flag:"vision_set"},
+            {id:"help_clean_up",label:"Help clear the table, stay close",result:`You help with the table and she's beside you and she says, quietly: "Good first practice." Her belly presses your arm as she reaches past you and neither of you acknowledges it directly.`,rel:7},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("fed_captain")&&h.includes("fed_squad")&&h.includes("vision_set"),text:`First practice down. She ate well, the squad ate well, the cheerleaders are heavier, and she told you she wants the heaviest squad in the conference. You believe her. Her belly was warm and round and full and she looked at those girls eating and was completely satisfied.`,gainBonus:10,relBonus:13},
+        {condition:h=>h.includes("fed_captain")&&h.includes("fed_squad"),text:`First practice down. She ate well, the squad ate well. The cheerleaders leave heavier. The culture is setting.`,gainBonus:7,relBonus:8},
+        {condition:h=>h.includes("fed_captain"),text:`First practice down. She ate well and led well. The squad is fed.`,gainBonus:4,relBonus:5},
+        {condition:()=>true,text:`First practice. She ran it well. The table was cleared.`,gainBonus:0,relBonus:3},
+      ]
+    },
+    // stage 6 — ~320 lbs
+    {
+      title:"Weekly Squad Feast",
+      phases:[
+        {
+          text:()=>`320 pounds and she runs the weekly squad feast like a production: the table, the food, the pacing, the culture she has spent six months building. The cheerleaders on your roster are here and they are both noticeably heavier than when the season started. She presides from her chair with her belly warm and round against the table, eating steadily, watching everyone else eat.`,
+          choices:[
+            {id:"arrive_with_extra",label:"Arrive with additional food — significantly more",result:`You arrive with enough for a second feast. She looks at what you've brought and says: "Good." She incorporates it into the spread immediately. The table becomes very large.`,lbs:7,rel:7,flag:"fed_captain"},
+            {id:"recruit_new_members",label:"Bring two new students to introduce to the culture",result:`You've brought two girls who haven't been to a squad feast before. She receives them at the door, personally, with plates already poured. They sit. They eat. Neither of them leaves early.`,rel:9,flag:"new_recruits"},
+          ]
+        },
+        {
+          text:(h)=>h.includes("fed_captain")
+            ?`Midway. She's deep into her second round and the table is going hard. Her belly, enormous at 320 pounds, presses the table noticeably. The cheerleaders you know are on their third plates. The newer girls are finding their rhythm.`
+            :`Midway. She's been eating steadily and the table is active. The cheerleaders are at their third plates. Someone has gone for seconds twice.`,
+          choices:[
+            {id:"feed_squad_round",label:"Fund another full round for the whole table",result:`You signal to the kitchen for another full round. When it arrives your captain says "keep eating" and the table keeps eating. The cheerleaders go through their fourth plates. You can see it on them.`,rel:9,flag:"fed_squad",feedOther:{archetype:"cheerleader",lbs:5,text:"The cheerleaders are deep into their fourth plates. They're eating with the ease of women who have been doing this for months."}},
+            {id:"encourage_competition",label:"Suggest a friendly eating competition",result:`You propose it and she immediately seconds it: most plates, by the end of the night. The table accelerates. She wins, clearly, but three cheerleaders post numbers that would have been unthinkable at the start of the semester.`,lbs:8,rel:8},
+          ]
+        },
+        {
+          text:(h)=>{
+            if(h.includes("fed_captain")&&h.includes("fed_squad")) return `End of feast. The table is cleared. The cheerleaders are full and showing it — you can see the weight on them in a way you couldn't at the start of the night. She sits back and her belly is warm and vast and round against her clothes, 320 pounds plus tonight's intake, and she looks at the table with the calm satisfaction of a captain who has done her job exactly right.`;
+            return `End of feast. Table mostly cleared. The squad is fed. She looks at the room and is satisfied.`;
+          },
+          choices:[
+            {id:"end_of_feast_talk",label:"Sit with her after, let her talk",result:`After everyone else leaves she stays at the table with her belly warm and full and says: "I want every girl here above 200 by spring. I'm at 320. I should be at 380." She looks at the table. "I want more of these. I want them bigger."`,rel:12,flag:"vision_articulated"},
+            {id:"walk_out_together",label:"Walk out with the squad, be seen with her",result:`You leave with the group. She walks beside you and her presence is substantial and warm and several girls glance over with expressions that have no convenient name.`,rel:6},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("fed_captain")&&h.includes("fed_squad")&&h.includes("vision_articulated"),text:`She said she wants every girl above 200 and herself at 380. Her belly was full and enormous and warm and she looked at the cleared table with the satisfaction of someone who is building exactly what she intends to build. The cheerleaders left heavier.`,gainBonus:13,relBonus:14},
+        {condition:h=>h.includes("fed_captain")&&h.includes("fed_squad"),text:`Good feast. She was well-fed, the squad was well-fed, the cheerleaders are heavier. The culture is intact.`,gainBonus:8,relBonus:9},
+        {condition:h=>h.includes("fed_captain"),text:`Good feast. She ate well and ran it well.`,gainBonus:5,relBonus:5},
+        {condition:()=>true,text:`Good feast. Table cleared. Squad fed.`,gainBonus:0,relBonus:3},
+      ]
+    },
+    // stage 7 — ~419 lbs
+    {
+      title:"Conference Meet",
+      phases:[
+        {
+          text:()=>`419 pounds and the conference eating meet is today — her squad against four others. She is easily the largest captain present. The other squads are watching her warm up: her belly enormous and warm and soft under the team jersey, her thighs broad, her presence filling the warm-up area. The cheerleaders on your roster have been training under her for months and it shows.`,
+          choices:[
+            {id:"full_team_prep",label:"Provide a pre-meet meal for the whole squad",result:`You've arranged catering for the squad: full pre-meet spread, enough for everyone. The cheerleaders eat well. Your captain eats significantly more, leading from the front, her belly pressing her jersey out with unmistakable warmth by the time warm-ups end.`,lbs:9,rel:8,flag:"fed_captain",feedOther:{archetype:"cheerleader",lbs:5,text:"The cheerleaders eat through the pre-meet spread and arrive at the tables heavier and more ready than they've been all season."}},
+            {id:"intimidation_warmup",label:"Run a visible warm-up — let the other squads watch",result:`You put the squad through warm-ups in the main hall, in full view. The other squads see 419 pounds of captain leading six well-fed women through the sequences. Several other captains are recalculating their strategy.`,rel:10,flag:"intimidation"},
+          ]
+        },
+        {
+          text:(h)=>h.includes("fed_captain")
+            ?`First two rounds. She leads her squad through them and she personally competes in the captain's bracket — 419 pounds, her belly enormous and warm, eating with the absolute focus of someone who has trained for exactly this. She wins both. Her cheerleaders are performing above expectations.`
+            :`First two rounds. She competes and her squad competes. She wins the captain's bracket. Her cheerleaders are doing well.`,
+          choices:[
+            {id:"mid_meet_feeding",label:"Keep feeding the whole squad between rounds",result:`You've arranged interval food for the whole squad. The cheerleaders eat between rounds — they've been trained for this. Your captain eats the most, as always, her belly settling warm and fuller with each interval.`,lbs:12,rel:10,flag:"interval_fed",feedOther:{archetype:"cheerleader",lbs:6,text:"The cheerleaders eat between rounds with the practiced ease of women who have been doing this all semester. They're visibly heavier by the third round."}},
+            {id:"tactical_adjustments",label:"Coach adjustments for the second half",result:`You give her tactical adjustments at the interval. She passes them to the squad. Their second-half performance improves.`,rel:8},
+          ]
+        },
+        {
+          text:(h)=>{
+            const dominated=h.includes("fed_captain")&&h.includes("interval_fed");
+            if(dominated) return `Finals. She sits at the head of the table, 419 pounds and everything she's eaten today, her belly warm and enormous against the table, and she eats the final round with the patient focus of a captain who knows her squad is behind her. Her cheerleaders — heavier than the other squad's competitors, better trained, better fed — perform accordingly. The conference title goes to your squad.`;
+            return `Finals. She leads her squad through the final round. They win the conference title.`;
+          },
+          choices:[
+            {id:"championship_feast",label:"Take the whole squad out to celebrate",result:`You take the whole squad to dinner. The cheerleaders eat enormously. Your captain eats more than any of them, her belly enormous and full, and at the end of the meal she looks around the table at her well-fed squad and says: "I want every one of you heavier next conference. Including me. Especially me."`,lbs:11,rel:14,flag:"squad_vision",feedOther:{archetype:"cheerleader",lbs:7,text:"The cheerleaders eat through the celebration dinner. They're going to be noticeably larger this week."}},
+            {id:"captain_solo_celebration",label:"Take her alone to dinner, skip the group",result:`You take her separately. She eats an enormous dinner alone with you and says: "The squad did well. They need to be bigger next year. So do I." She finishes the last plate.`,lbs:9,rel:11},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("fed_captain")&&h.includes("interval_fed")&&h.includes("squad_vision"),text:`Conference champions. She fed her squad and her squad performed and she ate throughout and at dinner she said "heavier next conference, especially me." The cheerleaders went home heavier. She went home full and warm and already planning.`,gainBonus:17,relBonus:15},
+        {condition:h=>h.includes("fed_captain")&&h.includes("interval_fed"),text:`Conference champions. She and the squad were fed throughout. The cheerleaders are heavier. She's planning next season.`,gainBonus:11,relBonus:10},
+        {condition:h=>h.includes("fed_captain"),text:`Conference champions. She led well and ate well. The squad followed.`,gainBonus:6,relBonus:6},
+        {condition:()=>true,text:`Conference champions. Clean win. She'll prepare more aggressively next time.`,gainBonus:0,relBonus:4},
+      ]
+    },
+    // stage 8 — ~519 lbs
+    {
+      title:"National Championship Training Camp",
+      phases:[
+        {
+          text:()=>`519 pounds and nationals training camp, which means a week of practices and meals and conditioning. The cheerleaders on your roster have been under her for over a year and they are not the same women who started the season. She runs the camp like she runs the feasts: with complete certainty about what the culture should be. The camp kitchen is at her disposal.`,
+          choices:[
+            {id:"fund_camp_kitchen",label:"Fund the camp kitchen fully — no limits",result:`You tell her: no limits on the kitchen this week. She processes this information without visible reaction, then goes directly to the kitchen and begins planning the week's meals. The result is ambitious. She eats more at camp than she has at any previous event and the squad follows her lead completely.`,lbs:13,rel:9,flag:"fed_captain"},
+            {id:"bring_specialist",label:"Bring in a performance nutrition specialist",result:`You bring in someone who understands exactly what the squad is doing and can articulate the performance case for more food. The cheerleaders respond well to the framing. Your captain responds to the specialist with the respect one professional gives another.`,rel:10,feedOther:{archetype:"cheerleader",lbs:5,text:"The cheerleaders take the specialist's recommendations seriously. The specialist's recommendations involve eating significantly more."}},
+          ]
+        },
+        {
+          text:(h)=>h.includes("fed_captain")
+            ?`Midcamp. She's been eating comprehensively and training hard and the combination is visible: 519 pounds and the camp diet on top of it, her belly enormous and warm against the training pullover. The squad is matching her culture. The cheerleaders are eating at every meal like they're training for something, which they are.`
+            :`Midcamp. Training, meals, culture. She runs it with her usual completeness. The squad is following. The cheerleaders are eating well.`,
+          choices:[
+            {id:"midnight_feast",label:"Organize a midnight feast for the squad",result:`You arrange a late-night spread for the whole squad. The cheerleaders come down and eat seriously for an hour after lights-out. Your captain eats for two hours. Her belly is warm and enormous when she finally sleeps.`,lbs:14,rel:11,flag:"midnight_feast",feedOther:{archetype:"cheerleader",lbs:7,text:"The cheerleaders eat seriously at the midnight feast. Several of them are going to need new camp clothes before the week is out."}},
+            {id:"one_on_one",label:"Work one-on-one with her on her personal intake goals",result:`You spend an afternoon with her building her personal camp plan: specific targets, specific meals, specific goals for the week. She executes it with the systematic focus she brings to everything.`,lbs:11,rel:12},
+          ]
+        },
+        {
+          text:(h)=>{
+            const full=h.includes("fed_captain")&&h.includes("midnight_feast");
+            if(full) return `Last day of camp. She weighs herself — more than when camp started, a meaningful amount more — and records it without expression except for the brief satisfaction she shows when a number is exactly where it should be. The cheerleaders have been transformed by the week. She looks at them and is satisfied. "Nationals," she says. "I want to be 580 at nationals. I want the squad to average 280."`;
+            return `Last day of camp. She's heavier than when it started. The squad is heavier. She's already planning nationals.`;
+          },
+          choices:[
+            {id:"end_of_camp_meal",label:"Host a full end-of-camp feast",result:`You host the closing feast. It runs three hours. The cheerleaders eat everything on the table. Your captain eats substantially more than that and her belly is warm and enormous in the camp chair and she looks at her squad — well-fed, trained, heavier — with complete satisfaction.`,lbs:11,rel:14,flag:"vision_complete",feedOther:{archetype:"cheerleader",lbs:8,text:"The cheerleaders eat through the entire closing feast. They are noticeably, significantly heavier than they were at the start of camp."}},
+            {id:"debrief_privately",label:"Debrief with her privately about what worked",result:`You sit with her after the squad disperses and she tells you exactly what worked and what she wants different at nationals. She is very specific. Her belly is warm and enormous and she eats through the whole conversation.`,rel:11},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("fed_captain")&&h.includes("midnight_feast")&&h.includes("vision_complete"),text:`Camp over. She said "580 at nationals, squad averaging 280." The cheerleaders leave camp significantly heavier than they arrived. She leaves heavier than that. The culture is intact and it is going to nationals.`,gainBonus:19,relBonus:16},
+        {condition:h=>h.includes("fed_captain")&&h.includes("midnight_feast"),text:`Camp over. She ate comprehensively, the squad ate comprehensively. The cheerleaders are noticeably heavier. She's ready for nationals.`,gainBonus:12,relBonus:11},
+        {condition:h=>h.includes("fed_captain"),text:`Camp over. Good week. She's heavier, the squad is heavier, nationals is next.`,gainBonus:7,relBonus:6},
+        {condition:()=>true,text:`Camp over. Productive week. Nationals is coming.`,gainBonus:0,relBonus:4},
+      ]
+    },
+    // stage 9 — ~630 lbs
+    {
+      title:"National Showcase",
+      phases:[
+        {
+          text:()=>`630 pounds and the national showcase, which is the largest event she's captained. The cheerleaders on your roster have been under her for two full years. They are not recognizably the same women. She arrives at the showcase venue at 630 pounds and the other squads' captains are watching her walk in and making the kind of calculations that produce uncomfortable conclusions. She finds the event kitchen immediately.`,
+          choices:[
+            {id:"full_showcase_catering",label:"Arrange full catering for the squad all day",result:`You've arranged it: full-day catering for her squad, all meals, all intervals, the kitchen at their disposal. She receives this information with the focused satisfaction of a captain who has always known that the culture she's building runs on this. She briefs the squad. They eat.`,lbs:15,rel:10,flag:"fed_captain",feedOther:{archetype:"cheerleader",lbs:8,text:"The cheerleaders eat through the full-day catering with the ease of women who have been trained for exactly this. They are going to be significantly heavier by the end of today."}},
+            {id:"national_arrival",label:"Make an entrance — walk the squad through the venue",result:`You orchestrate the squad's arrival: 630 pounds of captain leading a group of well-fed, trained women through the national showcase venue. The other squads see them. The effect is measurable.`,rel:12,flag:"entrance_made"},
+          ]
+        },
+        {
+          text:(h)=>h.includes("fed_captain")
+            ?`Competition rounds. She competes in the captain's exhibition and eats between every round, her squad eating alongside her. The cheerleaders are performing at their best — trained and fed and following a captain who has made the culture irresistible. She's the largest captain at the national showcase by over 100 pounds and she is eating continuously and it is completely evident in her belly, warm and enormous and forward, visible to the entire venue.`
+            :`Competition rounds. She competes. Her squad performs. The cheerleaders are doing well.`,
+          choices:[
+            {id:"showcase_continuous_feed",label:"Keep feeding — all day, everyone, no stopping",result:`The catering runs continuous. Your captain eats between every round, at every break, during set changes. The cheerleaders match the culture she's established. By the final rounds they are visibly heavier than when the day started.`,lbs:18,rel:12,flag:"all_day_fed",feedOther:{archetype:"cheerleader",lbs:10,text:"The cheerleaders have been eating all day. They are noticeably, substantially heavier than they arrived. They are competing better than they ever have."}},
+            {id:"squad_motivation",label:"Give the squad a mid-day speech",result:`You let her give the speech while you watch. She tells the squad exactly what she wants: better, heavier, more. She says her own weight out loud: 630 pounds. She says: "I want to be bigger. I want all of you bigger. That is the standard." The squad is inspired.`,rel:11},
+          ]
+        },
+        {
+          text:(h)=>{
+            const dominated=h.includes("fed_captain")&&h.includes("all_day_fed");
+            if(dominated) return `Finals. She sits at the captain's table — 630 pounds, everything she's eaten today, her belly vast and warm and enormously present — and competes in the final captain's exhibition. Her squad performs behind her. The cheerleaders have eaten all day and performed all day and they are the heaviest, best-fed, best-performing squad at the national showcase. First place. She stands for the presentation and 630 pounds of national champion captain fills the stage and she looks completely at home in it.`;
+            return `Finals. She leads. The squad performs. National showcase champions.`;
+          },
+          choices:[
+            {id:"national_celebration",label:"Host a full celebration feast for the squad tonight",result:`You reserve a private room and the squad comes. The cheerleaders eat for three hours. Your captain eats for four and her belly is warm and vast and full and she looks at the table — at the empty dishes, at the full, heavier, well-fed women she has built — and says: "This is what I came to build." She means all of it. The squad. The culture. Her own size. All of it together.`,lbs:14,rel:16,flag:"culture_complete",feedOther:{archetype:"cheerleader",lbs:9,text:"The cheerleaders eat through the celebration feast. By the end of the evening they are the heaviest they have ever been."}},
+            {id:"awards_circuit",label:"Take her through the awards circuit",result:`Press, ceremony, awards. She says her weight at every stop. The journalists write the number. The photographers try to frame her and her belly defeats every expected shot. She looks magnificent.`,rel:9},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("fed_captain")&&h.includes("all_day_fed")&&h.includes("culture_complete"),text:`National showcase champions. She ate all day, the squad ate all day, the cheerleaders are the heaviest they've ever been, and at the celebration feast she said "this is what I came to build." Her belly was warm and enormous and full and she looked at those women and she was right.`,gainBonus:22,relBonus:17},
+        {condition:h=>h.includes("fed_captain")&&h.includes("all_day_fed"),text:`National showcase champions. Fed all day, squad and captain both. The cheerleaders are significantly heavier. She's built exactly what she planned.`,gainBonus:14,relBonus:12},
+        {condition:h=>h.includes("fed_captain"),text:`National showcase champions. She led and ate well and the squad followed.`,gainBonus:8,relBonus:7},
+        {condition:()=>true,text:`National showcase champions. She is 630 pounds of national champion captain.`,gainBonus:0,relBonus:5},
+      ]
+    },
+  ],
+
+  chapter_hostess:[
+    // stage 5 — ~258 lbs
+    {
+      title:"Wednesday Feast",
+      phases:[
+        {
+          text:()=>`She's been in the chapter kitchen since two in the afternoon and it's now seven and the table is extraordinary. She is 258 pounds in her hostess apron, belly warm and rounded against it, moving through the kitchen with the ease of someone who has been planning this for weeks. The sorority sisters are gathering. Your sorority students are here, both of them, and several other chapter members in various stages of arrival.`,
+          choices:[
+            {id:"arrive_with_more",label:"Arrive with additional food — double the dessert course",result:`You arrive with a significant supplemental course: desserts, dense and sweet, more than the table needs. She sees what you've brought and incorporates it without hesitation. The table becomes larger than she planned.`,lbs:5,rel:7,flag:"extra_food"},
+            {id:"help_serve",label:"Help serve — be useful, watch how she runs it",result:`You help carry plates and she runs the service and you learn something about how she does this: with complete authority and genuine pleasure, making sure every plate is full before she sits down.`,rel:9},
+          ]
+        },
+        {
+          text:(h)=>h.includes("extra_food")
+            ?`Midway through the feast. The extra dessert course is visible in the dynamic at the table — sisters eating past the point of full, coming back for more because more is there. Your sorority students are both on generous helpings. Your hostess is eating at the head of the table with the deliberate, pleasured focus of someone who has made something she's proud of.`
+            :`Midway. The table is active, the food is going, your sorority students are both eating well. She presides from the head, eating steadily.`,
+          choices:[
+            {id:"encourage_seconds",label:"Encourage the sisters to go back for more",result:`You circulate and suggest seconds to everyone. Several take you up on it. Your sorority students both return for second plates. She watches this from the head of the table and nods once.`,rel:8,feedOther:{archetype:"sorority",lbs:4,text:"Your sorority students go back for seconds. The food finds them."}},
+            {id:"talk_with_hostess",label:"Talk with her while she eats",result:`You sit near her and she talks while eating — about the table, the recipes, what she wants to add next time. She eats through the whole conversation without slowing.`,lbs:6,rel:10,flag:"personal_moment"},
+          ]
+        },
+        {
+          text:(h)=>{
+            if(h.includes("extra_food")&&h.includes("encourage_seconds")) return `End of feast. The table is cleared. The sorority students are full — visibly, warmly full — and several sisters are still eating from the dessert course. She sits at the head of the table with her belly warm and round against her clothes, 258 pounds plus tonight's considerable intake, and surveys the room. Everyone she wanted to feed has been fed.`;
+            return `End of feast. Table cleared. The sisters are fed. She's satisfied.`;
+          },
+          choices:[
+            {id:"end_of_feast_talk",label:"Stay after — help her clean up, talk",result:`You stay and help. She talks while cleaning: "I want these tables bigger. I want the girls eating more each time. I want them coming in knowing they're going to leave heavier." She says it plainly. She means it.`,rel:12,flag:"vision_shared"},
+            {id:"leave_with_group",label:"Leave with the sisters, let her have the close",result:`You say goodnight with the departing group. She stands at the door, enormous and warm, saying goodnight to each one personally.`,rel:5},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("extra_food")&&h.includes("encourage_seconds")&&h.includes("vision_shared"),text:`First feast down. She said she wants them "coming in knowing they're going to leave heavier." The sorority students are heavier. The table was extraordinary. Her belly was warm and full and she meant everything she said.`,gainBonus:10,relBonus:13},
+        {condition:h=>h.includes("extra_food")&&h.includes("encourage_seconds"),text:`Good feast. Extra food, seconds encouraged, sorority students are heavier. She's building exactly the culture she described.`,gainBonus:7,relBonus:8},
+        {condition:h=>h.includes("extra_food"),text:`Good feast. The extra food was right. She appreciated it.`,gainBonus:4,relBonus:5},
+        {condition:()=>true,text:`Good feast. Table cleared. Sisters fed. Culture established.`,gainBonus:0,relBonus:3},
+      ]
+    },
+    // stage 6 — ~320 lbs
+    {
+      title:"The Grand Feast",
+      phases:[
+        {
+          text:()=>`320 pounds and the feast has evolved. Six months of Wednesday feasts and the culture is established: the table is always large, the sisters always stay, the food is always more than you'd think anyone could eat. She's outdone herself this week — twelve courses, warm and fragrant, the table extraordinary. She presides at 320 pounds, her belly enormous and warm against her hostess clothes.`,
+          choices:[
+            {id:"supplement_feast",label:"Arrive with a thirteenth course — surprise",result:`You arrive with a thirteenth course: something substantial, warm, timed perfectly for after the twelfth. She sees it and says: "Good." She incorporates it immediately. The table becomes the largest she's ever set.`,lbs:7,rel:8,flag:"extra_food"},
+            {id:"bring_new_guests",label:"Bring two guests outside the chapter",result:`You bring two women who haven't been to a chapter feast. She receives them at the door personally, with plates ready. By the second course they have settled in as if they've been here before. By the eighth they haven't left their seats in ninety minutes.`,rel:9,flag:"new_guests"},
+          ]
+        },
+        {
+          text:(h)=>h.includes("extra_food")
+            ?`Midway through the feast. Twelve courses in and a thirteenth on the way and the table is eating with sustained, pleasured focus. Your sorority students are deep in it — both of them, eating with the ease of women who have been doing this for months. Their bellies, noticeably rounder than when the semester started, press their blouses warmly. Your hostess is on her fifth plate and watching everything with warm satisfaction.`
+            :`Midway. The table is deep into the feast. Your sorority students are eating well. She watches from the head and eats steadily.`,
+          choices:[
+            {id:"triple_dessert",label:"Fund triple dessert — for everyone, extra portions",result:`You fund a triple dessert course: three rounds, substantial portions, enough that by the end the table is extremely full. Your sorority students eat through all three. The sisters are in various states of very warm, very full contentment.`,rel:10,flag:"triple_dessert",feedOther:{archetype:"sorority",lbs:6,text:"Your sorority students eat through the triple dessert course. They are going to feel this tomorrow."}},
+            {id:"seat_beside_her",label:"Sit beside her for the second half",result:`You take the seat beside her and she talks while eating — about each course, about what she's been planning, about what she wants the feasts to become. She eats through the conversation. She never stops.`,lbs:8,rel:11,flag:"close_moment"},
+          ]
+        },
+        {
+          text:(h)=>{
+            if(h.includes("extra_food")&&h.includes("triple_dessert")) return `End of feast. The table is cleared. The sorority students are full in a way that will last through tomorrow. Several sisters haven't moved from their seats in forty minutes. She sits at the head of the table and her belly is vast and warm and round against her clothes and she has fed everyone exactly as much as she intended. She looks at the room and is completely satisfied.`;
+            return `End of feast. Table cleared. Everyone is fed. She is satisfied.`;
+          },
+          choices:[
+            {id:"private_close",label:"Stay after — share the last course with her, just you",result:`Everyone else leaves. You sit with her at the cleared table and she finds the last serving of something and puts it between you and you eat together in the quiet kitchen. She says: "I want to do this every week until I can't cook it fast enough." You both understand what that means.`,rel:14,flag:"intimate_close"},
+            {id:"group_send_off",label:"See the sisters out with her",result:`You stand at the door with her as the sisters leave. She is 320 pounds and warm and full and enormous in the doorway and she says goodnight to each one personally.`,rel:6},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("extra_food")&&h.includes("triple_dessert")&&h.includes("intimate_close"),text:`Extraordinary feast. Triple dessert, thirteen courses, the sorority students heavier, and you ate the last course together in the quiet kitchen and she said she wants to do this until she can't cook it fast enough. Her belly was warm and vast and full and she meant all of it.`,gainBonus:13,relBonus:15},
+        {condition:h=>h.includes("extra_food")&&h.includes("triple_dessert"),text:`Extraordinary feast. The sorority students are noticeably heavier. The culture has matured into something significant.`,gainBonus:8,relBonus:10},
+        {condition:h=>h.includes("extra_food"),text:`Very good feast. The extra course was right. She'll plan even larger next time.`,gainBonus:5,relBonus:6},
+        {condition:()=>true,text:`Good feast. The culture is established. She runs it better every time.`,gainBonus:0,relBonus:4},
+      ]
+    },
+    // stage 7 — ~419 lbs
+    {
+      title:"Alumni Dinner",
+      phases:[
+        {
+          text:()=>`419 pounds and the alumni dinner, which is the largest event the chapter has held. A dozen alumni, several of them substantial women in their own right, including one at around 340 pounds who has been funding the feasts for three years without ever attending one. Your sorority students are here. The table is extraordinary — eighteen courses, the kitchen running since morning. She presides at 419 pounds, her belly enormous and warm, completely at ease.`,
+          choices:[
+            {id:"coordinate_kitchen",label:"Help coordinate the kitchen — ensure she can host, not cook",result:`You manage the kitchen logistics so she can focus on the hosting. She circulates the table, talking, serving, attending to the alumni personally. Her belly, enormous at 419 pounds, presses past guests as she moves through the room. Nobody minds. Several alumni watch her with complicated expressions.`,lbs:6,rel:10,flag:"coordinated"},
+            {id:"introduce_her",label:"Introduce her to the primary funder as the architect of this culture",result:`You introduce her to the 340-pound alumna specifically, as the woman who built what the alumna has been funding. The alumna looks at your student — 419 pounds, warm, enormous — and says: "I've been funding this for three years and I didn't understand what it was until now." She's smiling when she says it.`,rel:12,flag:"funder_met"},
+          ]
+        },
+        {
+          text:(h)=>h.includes("funder_met")
+            ?`Midway. The 340-pound alumna has been eating since the introduction. She's been eating with the focused attention of a woman who has been missing this for years without knowing what she was missing. Your sorority students are both deep in it. Your hostess is eating at the head of the table and watching the whole room with the warm satisfaction of a person feeding exactly the people she wants to feed.`
+            :`Midway. Eighteen courses and the alumni are responding well. Your sorority students are eating with practiced ease. She presides and eats.`,
+          choices:[
+            {id:"extra_course_alumni",label:"Fund an additional course specifically for the alumni",result:`You supplement with a nineteenth course, timed for the late middle of the dinner. The alumni eat it. The 340-pound alumna eats it twice. Your sorority students are on their fourth plates and showing it.`,rel:9,feedOther:{archetype:"sorority",lbs:6,text:"Your sorority students eat through the extra alumni course. They're well past comfortable and haven't considered stopping."}},
+            {id:"sit_with_hostess",label:"Sit beside her and watch her work the room",result:`You sit beside her and she eats and you watch her watch the table — assessing, adjusting, sending another plate to someone who's slowing, refilling the glass of someone who's still going. She is magnificent at this.`,lbs:8,rel:11},
+          ]
+        },
+        {
+          text:(h)=>{
+            if(h.includes("funder_met")&&h.includes("extra_course_alumni")) return `End of dinner. The table is cleared. The alumni are in various states of warm, full contentment — the 340-pound alumna hasn't moved in an hour and looks very pleased about this. Your sorority students are visibly heavier than when they arrived. She sits at the head of the table, 419 pounds plus everything she's cooked and eaten, and the alumna across the table says: "I've been funding this without understanding it. I understand it now." Your hostess puts another course in front of her.`;
+            return `End of dinner. Table cleared. Alumni fed. She has demonstrated what she's built.`;
+          },
+          choices:[
+            {id:"after_dinner_planning",label:"Stay for after-dinner planning — the next feast",result:`After the alumni leave she stays at the table with you and the sorority students and talks about the next feast: bigger, more courses, more food. She eats what remains while she talks. The sorority students eat with her. The planning is extensive.`,lbs:8,rel:14,flag:"next_planned",feedOther:{archetype:"sorority",lbs:5,text:"Your sorority students eat through the after-dinner planning session. They go home heavier than they arrived."}},
+            {id:"walk_out_alumna",label:"Walk the primary alumna out — cultivate the relationship",result:`You walk the 340-pound alumna to the door and she says: "I'd like to come back next month." You arrange it. The culture gains a powerful ally.`,rel:9},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("funder_met")&&h.includes("extra_course_alumni")&&h.includes("next_planned"),text:`Alumni dinner success. The funder said "I understand it now" and your hostess put more food in front of her. The sorority students went home heavier. The next feast is already planned. Her belly was warm and enormous and full and she was satisfied with everything she built.`,gainBonus:17,relBonus:15},
+        {condition:h=>h.includes("funder_met")&&h.includes("extra_course_alumni"),text:`Alumni dinner success. The funder converted. The sorority students are heavier. The culture has been demonstrated to its patron.`,gainBonus:11,relBonus:10},
+        {condition:h=>h.includes("funder_met"),text:`Alumni dinner. The funder met the hostess. The relationship is established.`,gainBonus:5,relBonus:7},
+        {condition:()=>true,text:`Alumni dinner. Well-run. The table was extraordinary.`,gainBonus:0,relBonus:4},
+      ]
+    },
+    // stage 8 — ~519 lbs
+    {
+      title:"Rush Season Opening Feast",
+      phases:[
+        {
+          text:()=>`519 pounds and rush season, which means the opening feast is the most important table she will set this year: this is what the incoming pledges will be told they're joining. She has been planning for three weeks. The table is the largest she has ever set. Your sorority students are here as the cultural anchor — both of them, well-established, noticeably heavier than when they started. She stands at the head of the table at 519 pounds and her belly is vast and warm and real and she looks exactly like what she is.`,
+          choices:[
+            {id:"full_opening_spread",label:"Fund the opening spread fully — anything she wants",result:`You've told her: anything she wants for the opening feast. She has used this completely. The table is seventeen courses and the kitchen has been running for eight hours and she is 519 pounds of warmth and certainty at the head of it and the pledges who are about to arrive are going to understand something new about what they've joined.`,lbs:12,rel:9,flag:"full_funding"},
+            {id:"brief_pledges",label:"Brief the incoming pledges before they arrive",result:`You meet the pledges at the door and give them context: this feast is the chapter's founding culture. The woman at the head of the table built it. They're being invited to participate in it. Several of them look at each other. None of them leave.`,rel:11,flag:"pledges_prepared"},
+          ]
+        },
+        {
+          text:(h)=>h.includes("full_funding")
+            ?`Midway. The pledges are eating — tentatively at first, then with increasing conviction, as the culture of the table becomes clear. Your sorority students are modeling: eating steadily, warmly, without apology. Several pledges have gone back for seconds. Your hostess is at her fourth plate and her belly, enormous and warm, is a presence at the head of the table that communicates the standard.`
+            :`Midway. The pledges are finding their rhythm. Your sorority students are modeling the culture. She presides and eats.`,
+          choices:[
+            {id:"push_pledges_further",label:"Fund additional courses specifically for the pledges",result:`You fund another two courses for the pledges specifically, timed for the mid-feast energy dip. The pledges eat. Several of them have stopped putting their forks down between bites. Your sorority students eat the extra courses too, with the ease of women who have been doing this for a year.`,rel:10,feedOther:{archetype:"sorority",lbs:7,text:"Your sorority students eat through the extra pledge courses with practiced ease. They are going to need to update their wardrobes."}},
+            {id:"hostess_speech",label:"Ask her to say something to the pledges midway through",result:`You suggest it and she stands — 519 pounds, warm, vast, her belly enormous against her hostess clothes — and tells the pledges exactly what this table is: a culture, a commitment, a choice about what kind of life to build. Several pledges are visibly moved. Several are eating harder.`,lbs:8,rel:12,flag:"speech_given"},
+          ]
+        },
+        {
+          text:(h)=>{
+            const full=h.includes("full_funding")&&h.includes("push_pledges_further");
+            if(full) return `End of feast. The pledges are in various states of very full, warm contentment — several of them haven't moved in thirty minutes and look completely comfortable about this. Your sorority students are visibly heavier than when the feast started. She sits at the head of the table at 519 pounds plus everything she's eaten tonight and surveys the room: the pledges, the sisters, the empty dishes. She is satisfied.`;
+            return `End of feast. Table cleared. Pledges fed. The culture has been transmitted.`;
+          },
+          choices:[
+            {id:"close_with_pledges",label:"Stay for the pledge close — hear her speak to them",result:`After the main feast clears she speaks to the pledges directly: what the chapter is, what she expects, what they've just participated in. She says her weight out loud — 519 pounds — and says: "I built this at every size. This is the culture." The pledges look at her with the expression of people who have just understood something important.`,rel:14,flag:"pledge_close"},
+            {id:"leave_early_with_senior_sisters",label:"Leave with the senior sisters — let her close alone",result:`You leave with the senior group. She stays behind with the pledges and the sorority students to close the feast.`,rel:5},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("full_funding")&&h.includes("push_pledges_further")&&h.includes("pledge_close"),text:`Rush season opening feast. She said "519 pounds, I built this at every size" and the pledges understood. Your sorority students are heavier. The culture has been transmitted to the incoming class and it will persist.`,gainBonus:19,relBonus:16},
+        {condition:h=>h.includes("full_funding")&&h.includes("push_pledges_further"),text:`Opening feast. Fully funded, pledges fed extra, sorority students heavier. The culture is transmitted.`,gainBonus:12,relBonus:11},
+        {condition:h=>h.includes("full_funding"),text:`Opening feast. Full table. The pledges understand what they've joined.`,gainBonus:7,relBonus:7},
+        {condition:()=>true,text:`Opening feast. Table cleared. Culture transmitted.`,gainBonus:0,relBonus:4},
+      ]
+    },
+    // stage 9 — ~630 lbs
+    {
+      title:"Annual Grand Feast",
+      phases:[
+        {
+          text:()=>`630 pounds and the annual grand feast, which is the event the chapter now plans the entire year around. She has been in the kitchen since six in the morning. It is now six in the evening. The table is the most extraordinary thing she has ever set: twenty-three courses, warm and fragrant and prepared entirely by her. Your sorority students are here — both of them, deeply embedded in the culture, substantially heavier than when this started. The whole chapter is here.`,
+          choices:[
+            {id:"witness_setup",label:"Arrive early — watch her set the table",result:`You arrive at five and watch her work the final hour of preparation: the last courses, the table arrangement, the care she brings to each placement. She is 630 pounds moving through the chapter kitchen with total command. Her belly, vast and warm and apron-hanging, brushes the counter as she passes and she doesn't pause.`,lbs:8,rel:11,flag:"witnessed_setup"},
+            {id:"full_supplemental",label:"Bring a supplemental feast — match her twenty-three with ten more",result:`You arrive with ten additional courses, high quality, warm. She looks at what you've brought and says: "Good." She incorporates all of it. The table becomes the largest any of them have ever seen.`,lbs:10,rel:9,flag:"supplemented"},
+          ]
+        },
+        {
+          text:(h)=>h.includes("supplemented")
+            ?`Midway — thirty-three courses in, the chapter is eating with sustained, warm, pleasured focus. Your sorority students are on their seventh plates. Several sisters haven't left the table in two hours. She sits at the head of the table, 630 pounds and everything she's eaten today, her belly warm and vast and enormously present, eating with the unhurried pleasure of someone who has built this and is now living in it.`
+            :`Midway. Twenty-three courses, the chapter is eating steadily. Your sorority students are deep in it. She presides and eats.`,
+          choices:[
+            {id:"grand_feast_extra",label:"Fund additional courses for everyone at the midpoint",result:`You fund another round for the whole table at the midpoint. The chapter eats it. Your sorority students eat through it with the ease of women who have been training for this for two years. They are going to be significantly heavier.`,rel:11,feedOther:{archetype:"sorority",lbs:9,text:"Your sorority students eat through the grand feast extra round. They have been doing this for two years and it shows on their bodies and in the ease with which they keep eating."}},
+            {id:"sit_at_head_with_her",label:"Sit beside her at the head of the table",result:`You take the seat beside her for the second half and she eats and you sit together and watch the table — the sisters eating, your sorority students deep in it — and she says: "I want to do this every year until I'm too large to stand at the stove." She means it as a goal.`,lbs:9,rel:13,flag:"together_at_head"},
+          ]
+        },
+        {
+          text:(h)=>{
+            const full=h.includes("supplemented")&&h.includes("grand_feast_extra");
+            if(full) return `End of the grand feast. The table is cleared. The chapter is in various states of very full, very warm contentment — several sisters have not moved in an hour and are completely satisfied about this. Your sorority students are the heaviest they have ever been and they are still at the table. She sits at the head — 630 pounds, everything she's cooked, everything she's eaten today, her belly vast and warm and enormous against her hostess dress — and looks at the room. This is what she built.`;
+            return `End of the grand feast. Table cleared. Chapter fed. The annual tradition is cemented.`;
+          },
+          choices:[
+            {id:"last_plate_together",label:"Share the last plate with her — just you two",result:`After the chapter disperses you find the last plate she's saved and she puts it between you and you eat together in the empty chapter room and she says: "I'm going to be too large to cook this alone next year. I'll need help." She is asking you something. You understand what it is.`,rel:17,flag:"intimate_close"},
+            {id:"chapter_close",label:"Stand at the door with her as the chapter leaves",result:`You stand beside her as the sisters file out, each one saying goodnight, each one heavier than they arrived, and she is 630 pounds of warmth in the doorway and she says goodnight to all of them personally and stays until the last one is gone.`,rel:8},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("supplemented")&&h.includes("grand_feast_extra")&&h.includes("intimate_close"),text:`Annual grand feast. She said she'll need help next year because she'll be too large to cook alone. Your sorority students are the heaviest they've ever been. The chapter is fed. She is 630 pounds and completely satisfied and she ate the last plate with you in the empty chapter room.`,gainBonus:22,relBonus:18},
+        {condition:h=>h.includes("supplemented")&&h.includes("grand_feast_extra"),text:`Annual grand feast. Thirty-three courses, the whole chapter fed, your sorority students are significantly heavier. The tradition is cemented.`,gainBonus:14,relBonus:13},
+        {condition:h=>h.includes("supplemented"),text:`Grand feast. The supplemental courses were right. The chapter ate extraordinarily.`,gainBonus:8,relBonus:8},
+        {condition:()=>true,text:`Annual grand feast. Twenty-three courses. Table cleared. Culture intact.`,gainBonus:0,relBonus:5},
+      ]
+    },
+  ],
+};
+
 const EVOLVED_FORM_META = {
   sumo:                 { title:"Sumo Wrestler",        color:"#c0392b" },
   eating_competitor:    { title:"Circuit Competitor",   color:"#e67e22" },
@@ -4901,6 +5502,8 @@ export default function ProfessorSim(){
   // evolutionModal: {student, paths:{pathA:{id,label,desc}, pathB:{id,label,desc}}}
   const [evolvedActivityModal,setEvolvedActivityModal]=useState(null);
   // evolvedActivityModal: {student, stageIdx, text}
+  const [evolvedEventState,setEvolvedEventState]=useState(null);
+  // evolvedEventState: {studentId,formId,stageIdx,phaseIdx,history:[],logLines:[],gainAccum,relAccum,done,endingText,gainBonus,relBonus}
   const logRef=useRef(null);
 
   useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
@@ -5484,6 +6087,13 @@ export default function ProfessorSim(){
     const meta=EVOLVED_ACTIVITY_META[s.evolvedForm]; if(!meta) return;
     if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
     const stageIdx=getEvolvedActivityStageIdx(s);
+    // Route to interactive event if one exists for this form+stage
+    const evDef=EVOLVED_EVENTS[s.evolvedForm]?.[stageIdx];
+    if(evDef){
+      setAp(a=>a-meta.apCost);
+      setEvolvedEventState({studentId:s.id,formId:s.evolvedForm,stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});
+      return;
+    }
     const actArr=EVOLVED_ACTIVITY_TEXT[s.evolvedForm];
     const text=actArr?actArr[stageIdx]:"She's in her element.";
     // Calculate bonuses from evolved skills
@@ -5500,6 +6110,51 @@ export default function ProfessorSim(){
     push(`✦ ${s.name} — ${meta.label}: +${gain} lbs · +${relGain} rel`);
     setEvolvedActivityModal({student:s,stageIdx,text});
   };
+
+  const makeEvolvedEventChoice=(choiceId)=>{
+    if(!evolvedEventState) return;
+    const {studentId,formId,stageIdx,phaseIdx,history,logLines,gainAccum,relAccum}=evolvedEventState;
+    const s=students.find(st=>st.id===studentId); if(!s) return;
+    const evDef=EVOLVED_EVENTS[formId]?.[stageIdx]; if(!evDef) return;
+    const phase=evDef.phases[phaseIdx]; if(!phase) return;
+    const choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
+    const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
+    const newLog=[...logLines,choice.result];
+    const newGain=gainAccum+(choice.lbs||0);
+    const newRel=relAccum+(choice.rel||0);
+    // Handle feedOther — feed classmates of matching archetype
+    if(choice.feedOther){
+      const{archetype:targetArch,lbs:otherLbs,text:foText}=choice.feedOther;
+      setStudents(prev=>prev.map(st=>{
+        if(st.archetype===targetArch&&st.id!==studentId&&!consumedStudents.find(x=>x.id===st.id)){
+          return processStudentGain(st,otherLbs,2);
+        }
+        return st;
+      }));
+      push(`🍽️ ${foText}`);
+    }
+    const nextPhase=phaseIdx+1;
+    if(nextPhase>=evDef.phases.length){
+      // Find best matching ending
+      const ending=evDef.endings.find(e=>e.condition(newHistory))||evDef.endings[evDef.endings.length-1];
+      const totalGain=newGain+ending.gainBonus;
+      const totalRel=newRel+ending.relBonus;
+      // Apply gains for the main student — use skills bonuses
+      setStudents(prev=>prev.map(st=>{
+        if(st.id!==studentId) return st;
+        const skList=(st.evolvedSkills||[]);
+        const tree=EVOLVED_SKILL_TREES[formId]||[];
+        const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
+        return processStudentGain(st,totalGain,totalRel+bonusRel);
+      }));
+      push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
+      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:ending.text,gainBonus:ending.gainBonus,relBonus:ending.relBonus}));
+    } else {
+      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
+    }
+  };
+
+  const closeEvolvedEvent=()=>setEvolvedEventState(null);
 
   const purchaseEvolvedSkill=(studentId,skillId)=>{
     const s=students.find(s=>s.id===studentId); if(!s||!s.evolvedForm) return;
@@ -8641,6 +9296,58 @@ export default function ProfessorSim(){
           </div>
         </div>
       )}
+
+      {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
+      {evolvedEventState&&(()=>{
+        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText}=evolvedEventState;
+        const s=students.find(st=>st.id===studentId);
+        const evDef=EVOLVED_EVENTS[formId]?.[stageIdx];
+        if(!s||!evDef) return null;
+        const phase=!done?evDef.phases[phaseIdx]:null;
+        const phaseText=phase?(typeof phase.text==="function"?phase.text(history):phase.text):null;
+        const evMeta=EVOLVED_FORM_META[formId];
+        const accentColor=evMeta?.color||"#7030c0";
+        return(
+          <div style={C.overlay}>
+            <div style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#07030f,#120820,#07030f)",border:`1px solid ${accentColor}50`,maxHeight:"85vh",overflowY:"auto"}}>
+              <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>{evDef.title.toUpperCase()}</div>
+              <div style={{fontSize:15,fontWeight:700,color:evMeta?.color||"#d8a8ff",marginBottom:12}}>{s.name}</div>
+              {/* History of completed phases */}
+              {logLines.length>0&&(
+                <div style={{marginBottom:12}}>
+                  {logLines.map((line,i)=>(
+                    <div key={i} style={{fontSize:11,color:"#7060a0",lineHeight:1.75,marginBottom:6,fontStyle:"italic",paddingLeft:10,borderLeft:`2px solid ${accentColor}30`}}>{line}</div>
+                  ))}
+                </div>
+              )}
+              {/* Current phase or ending */}
+              <div style={{fontSize:12,color:"#c0b0e0",lineHeight:1.9,marginBottom:14,fontStyle:"italic"}}>{done?endingText:phaseText}</div>
+              {/* Choices or close button */}
+              {!done&&phase&&(
+                <div style={{display:"flex",flexDirection:"column",gap:7}}>
+                  {phase.choices.map(ch=>{
+                    const locked=ch.requires&&!history.includes(ch.requires);
+                    const excluded=ch.requiresNot&&history.includes(ch.requiresNot);
+                    if(excluded) return null;
+                    return(
+                      <button key={ch.id}
+                        style={{...C.btn(locked?"#1a1a2a":accentColor),opacity:locked?0.35:1,textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5}}
+                        disabled={!!locked}
+                        onClick={()=>makeEvolvedEventChoice(ch.id)}>
+                        <span style={{fontWeight:700}}>{ch.label}</span>
+                        {ch.lbs&&<span style={{color:"#ffdd80",marginLeft:8,fontSize:10}}>+{ch.lbs} lbs</span>}
+                        {ch.rel&&<span style={{color:"#80ddff",marginLeft:4,fontSize:10}}>+{ch.rel} rel</span>}
+                        {ch.feedOther&&<span style={{color:"#ff9060",marginLeft:4,fontSize:10}}>feeds squad</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+              {done&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* ── EP2: EVOLVED ACTIVITY MODAL ── */}
       {evolvedActivityModal&&(
