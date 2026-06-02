@@ -586,6 +586,12 @@ const GOSSIP = [
     offerHelp:`Brittany's eyes narrow. "Okay. When Jasmine's bigger than me, I look smaller by comparison. Simple math." She examines her nails. "I could make sure she keeps growing. It's basically a public service. For my ego."`,
     helpReason:"Spite & comparison — Brittany wants Jasmine bigger to look relatively slim herself.",
     helpMultiplier:1.38,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Okay she is genuinely bigger than me right now and that is simply not acceptable. I'm escalating. I'm taking her to lunch every single day and I'm ordering for both of us and she is going to be so enormous that I look absolutely svelte by comparison. This is a tactical decision and I feel great about it."},
+    {atLbs:250, addMult:0.20, line:"Two hundred and fifty pounds. She's enormous. I'm almost impressed — emphasis on almost because she is still bigger than me and that is the situation I am SOLVING. Daily dessert hauls. Premium delivery. She gets everything she wants. I am incredibly generous when I have a motive."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds. Jasmine is three hundred pounds. She is a goddess and I am her devoted feeder and absolutely none of this is because I think she's incredible, it's purely strategic. I'm sending another food box. The biggest one. She deserves it. For my purposes. My purely self-interested purposes."},
+  ],
   },
   { speakerId:0, targetId:14, attitude:"catty",
     lines:{
@@ -609,6 +615,12 @@ const GOSSIP = [
     offerHelp:`Brittany examines her nails. "If Sophie keeps growing, people stop looking at me as the one who let herself go. Fresh meat." She pauses, then something softer crosses her face. "Also she's sweet and she deserves to be comfortable. Both things are true."`,
     helpReason:"Deflection & unexpected fondness — Sophie draws attention away, but Brittany genuinely likes her too.",
     helpMultiplier:1.3,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Sophie hit two hundred and I got genuinely emotional about it, which is not a thing I advertise. She came in as this little nervous thing and now she is soft and confident and huge and I want to make sure she keeps going. I'm taking her to brunch twice a week. Maybe three times. She orders everything when I'm there."},
+    {atLbs:250, addMult:0.20, line:"Sophie is two-fifty and she sent me a selfie and she looked so HAPPY and I immediately ordered her a care package from that bakery she loves. I'm not soft. I'm strategically generous. The strategy is 'make Sophie enormous and feel like the best version of herself.' I contain multitudes."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds on Sophie. God. She looks incredible. I'm texting her daily food recommendations and she follows every single one and I know because she sends me photos and each one is better than the last. This is my legacy project and it is going extremely well. I am so proud. Don't tell her."},
+  ],
   },
 
   // ── MADELINE (1) ── about Emma & Priya
@@ -634,6 +646,12 @@ const GOSSIP = [
     offerHelp:`Madeline looks thoughtful. "Emma is motivated by snack incentives. If I brought her favourite pastries every study session — and we study a lot — the caloric accumulation would be statistically significant." She blinks. "I could do that. For research. And because I like her."`,
     helpReason:"Genuine affection & academic curiosity — Madeline wants Emma to thrive and the data is interesting.",
     helpMultiplier:1.35,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Emma is two hundred pounds and her R-squared value is extraordinary and I have increased the pastry quantity at our study sessions by forty percent, which correlates with a statistically significant uptick in her productivity AND her weight, and I am tracking both because both matter and I am a scientist who is also very fond of her."},
+    {atLbs:250, addMult:0.20, line:"Two hundred and fifty. The trajectory is remarkable. I have commissioned a custom weekly delivery from the patisserie she mentioned once six weeks ago, because I retain relevant data, and she is going to be so wonderfully enormous by the end of semester and the research is going to be extraordinary and so is she."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Emma, brilliant and enormous, and I am running a continuous supply operation that she assumes is 'just how I am' and technically that is correct, this is just how I am, I am someone who loves her and tracks her intake with a level of rigour that would look concerning in any other context but here is simply called thorough."},
+  ],
   },
   { speakerId:1, targetId:7, attitude:"curious",
     lines:{
@@ -657,6 +675,12 @@ const GOSSIP = [
     offerHelp:`Madeline taps her pen. "Priya eats more when she's in scholarly discussion. If I arranged weekly research meetings with extensive refreshments — I know her preferences exactly — her data would become very compelling very quickly." She pauses. "For science."`,
     helpReason:"Research interest — Madeline wants to compare outcomes. Priya is a fascinating parallel subject.",
     helpMultiplier:1.3,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Priya has hit two hundred and made a chart about it and I have reviewed the chart and it is good work and I am choosing to contribute further data points by ensuring that every single co-study session is catered to her exact documented preferences. Science demands replication. I am replicating. Extensively."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Priya. The comparative study is approaching publishable levels and I am sending her a weekly research stipend in the form of a premium grocery order and she is logging it as 'collaborative fuel allocation' which is the most Priya thing that has ever happened and I love it and I want her to get so much bigger."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds and Priya sent me a graph of our comparative weight trajectories and I am behind by eleven pounds and I consider this a crisis and I am addressing it for personal reasons while simultaneously ensuring her supply chain is uninterrupted. Two goals. One strategy. I am very efficient."},
+  ],
   },
 
   // ── KYLIE (2) ── about Tiffany & Destiny
@@ -682,6 +706,12 @@ const GOSSIP = [
     offerHelp:`Kylie smiles slowly. "If Tiffany keeps getting bigger, she keeps generating content that makes mine look comparatively polished. And also — the bigger she is, the better I look next to her." She tilts her head. "Completely cynical. I'll host dinners."`,
     helpReason:"Optics & content strategy — Tiffany bigger means Kylie looks good by comparison and gets material.",
     helpMultiplier:1.38,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Tiffany is two hundred pounds and absolutely dominating her corner of the internet and I need to be in her orbit when that number keeps climbing because the content at three hundred is going to be INSANE and I want exclusive behind-the-scenes access and I am achieving this by making sure she is continuously, lavishly fed every time I see her."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty Tiffany is my most engaged collab partner and also the most impressive person I have ever filmed and I have started quietly coordinating her meal deliveries because I need her at maximum capacity at all times. This is content strategy. I am very professional about it. I also genuinely cannot stop watching her eat."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Tiffany, effortlessly enormous and growing, and I am funding this personally at this point. Premium catering, weekly spreads, anything she mentions wanting. Her audience is in millions. My investment is paying off. Also she's magnificent and I would do this anyway but I'm choosing to frame it as business."},
+  ],
   },
   { speakerId:2, targetId:5, attitude:"curious",
     lines:{
@@ -705,6 +735,12 @@ const GOSSIP = [
     offerHelp:`Kylie tilts her head. "If Destiny gets bigger, the content gets more extreme, the audience grows, and I want to be adjacent to that. I could start sending her food deliveries 'as a gift.' She'd never overthink it." She smiles. "And I get a front-row seat for the content."`,
     helpReason:"Audience capture — Destiny's growth means better content. Kylie wants to be nearby when it happens.",
     helpMultiplier:1.32,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Destiny is two hundred pounds and streaming it and the chat goes absolutely feral every time she eats on camera and I have started sending anonymous gift deliveries to her setup because I want to be the one supplying the content that gets her to three hundred and I want the footage when it happens. This is content investment. Very normal."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty and Destiny is eating on stream and I am watching the viewer numbers tick up in real time and I ordered her a specialty food box this morning and she opened it on camera and said 'whoever sent this knows me' and I do. I know exactly what gets her to keep eating and I am curating it with professional precision."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Destiny, completely immobile, completely thriving, and I have basically become her off-screen production team at this point — coordinating deliveries, timing the good stuff for peak viewing hours. She thinks she's self-sufficient. She is. I'm just making sure everything she needs keeps arriving. The numbers justify everything."},
+  ],
   },
 
   // ── SERENA (3) ── about Aaliyah & Kylie
@@ -730,6 +766,12 @@ const GOSSIP = [
     offerHelp:`Serena's look is half competitive, half something else. "Aaliyah and I eat together every day. If I make sure we eat a lot — really commit to it — she'll match me. She always kept pace with me athletically." She smiles slowly. "Same energy. Different direction. I'm very goal-oriented."`,
     helpReason:"Competitive redirection — Serena's still competing, just in a different direction now.",
     helpMultiplier:1.45,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Two hundred pounds on Aaliyah and I told her she was falling behind in our lunch competition and she ordered a second entree immediately and that's when I knew — same competitive wiring, completely different application. I am ordering the heaviest thing on every menu and she is matching me every single time and we are both getting so much bigger and this is the most fun I have had in years."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Aaliyah and I am winning on pounds but she is winning on attitude and I cannot accept that so I am escalating both. Daily lunch. Extended dinner sessions. I find the most loaded menus in the city and we go through them together and I keep score and she keeps score and neither of us is slowing down. This is sport. We are athletes."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds and Aaliyah looked me in the eye and said 'I'm ahead' and she is CORRECT and I have never been more motivated in my life. I am meal-prepping for both of us. I am scheduling double dinners. I ran four-minute miles and now I run this competition and I am going to WIN even if winning means we both end up absolutely enormous and I am completely fine with that outcome."},
+  ],
   },
   { speakerId:3, targetId:2, attitude:"curious",
     lines:{
@@ -753,6 +795,12 @@ const GOSSIP = [
     offerHelp:`Serena frowns. "If Kylie gets bigger and keeps posting, she'll probably want me in more videos. More videos means more people see me, which means—" she pauses, working through the logic "—I want to win something. And this is apparently a competition I can win." She nods. "I'll feed her."`,
     helpReason:"Competitive logic — Serena has reframed this as a competition she can win. Winning means feeding Kylie.",
     helpMultiplier:1.3,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Kylie's at two hundred and she asked me to be in another video and I said yes and I made sure we went to the most loaded restaurant I knew beforehand and she ate everything and looked incredible doing it and her numbers went up and she credited me and honestly I want to do this every week. Winning through someone else's growth. New competitive category."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Kylie and she is enormous and successful and I have become her unofficial dining director — I pick the restaurants, I recommend the dishes, I order for both of us, and she trusts my judgment completely because I have never steered her wrong. She thinks I have good taste. I do. I also have a goal. Both are true."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds and Kylie is a phenomenon and I made her a training schedule except the training is eating and she follows it without question because she frames it as content prep and the results are undeniable. I was an athlete. I still am. Different event. Kylie is my project and she is going to be enormous and magnificent and it's going to be spectacular."},
+  ],
   },
 
   // ── FIONA (4) ── about Roxanne & Chloe
@@ -778,6 +826,12 @@ const GOSSIP = [
     offerHelp:`Fiona considers. "Roxanne eats anything I cook without question. She trusts my palate." A slow smile. "If I cooked for her every day — rich things, generous portions — the work would change again. I want to see that." She pauses. "Also I just love feeding people I love."`,
     helpReason:"Artistic symbiosis & love — Fiona feeds Roxanne to see her art transform. Also just affection.",
     helpMultiplier:1.35,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Roxanne at two hundred pounds and the work has changed again — bigger, more physical, more overwhelming — and I am cooking for her every single day now because I can see the direct line between what she eats and what she makes and I want to push both as far as they will go. Also I love her and feeding someone you love is its own art."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty and Roxanne is magnificent and enormous and I have been leaving entire prepared meals outside her studio door because she forgets to eat when she's working and I need her well-fed and large and absolutely thriving. She told me yesterday that she's never been more prolific. I know why. I am why. I'm feeding the fire."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Roxanne and she is a masterpiece herself at this point and I am in the middle of the most creatively fertile period of my life and so is she and both of us know that these things are not unrelated. I cook. She makes. We both grow. The work and the weight compound together and I would not change a single gram of it."},
+  ],
   },
   { speakerId:4, targetId:9, attitude:"warm",
     lines:{
@@ -801,6 +855,12 @@ const GOSSIP = [
     offerHelp:`Fiona looks thoughtful. "Chloe trusts me. She's open to everything." She turns her sketchbook over in her hands. "If I brought her into the studio regularly and fed her — there's a series in that transformation. I'd be documenting it." She pauses. "Also she's sweet and she deserves nice food."`,
     helpReason:"Artistic documentation & affection — Fiona wants to paint the transformation. Also just likes Chloe.",
     helpMultiplier:1.3,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Chloe is two hundred pounds and she sat for me last week and the painting was extraordinary and I have started cooking for her specifically — things that I know will make her stay longer, eat more, come back. She trusts my taste completely. I have twelve paintings in this series now. I need to see it through. I need her bigger."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Chloe and she is growing into herself so beautifully and I have been sketching her constantly and sending her food with little notes recommending where she should try next and she goes to every single place and texts me photos and every photo is another study and I am so glad she is here and I am so glad she keeps eating."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds and Chloe arrived here lost and she is now enormous and rooted and my entire best series of work is her transformation and I am delivering meals to her personally now because she is the best subject I have ever had and also she is one of my favourite people and feeding someone you love and painting someone you love are not that different."},
+  ],
   },
 
   // ── DESTINY (5) ── about Priya & Maya
@@ -826,6 +886,12 @@ const GOSSIP = [
     offerHelp:`Destiny looks at you flatly. "Priya eats when she's working. Co-study sessions with constant snacks in front of her — she'd log it as 'fuel consumption' and eat three times as much without noticing." She shrugs. "Honestly it's funny to watch someone intellectualise themselves into getting huge. I'm entertained. I'll do it."`,
     helpReason:"Entertainment & chaos — Destiny is genuinely amused by Priya's approach and wants to see how far it goes.",
     helpMultiplier:1.4,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Priya is two hundred pounds and still logging it academically and I find this so funny and so impressive that I have started supplying the data myself — coordinating snack deliveries for our co-study sessions, choosing quantities that look normal but absolutely are not. She documents everything I put in front of her. I control what I put in front of her. The research is going very well."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Priya and she is enormous and brilliant and I genuinely cannot stop laughing about the fact that she submitted a progress report on herself to her thesis committee and the committee APPROVED IT. I am sending her more food. I want to see what three hundred looks like in an academic document. The dedication to the bit is unreal."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Priya, PhD candidate, and I have been her primary external supply chain for months and she doesn't know and honestly I don't want her to know because the observation value is too high. She is going to write a paper about this and cite herself and I am going to read every word and she's going to be so enormous and it's going to be perfect."},
+  ],
   },
   { speakerId:5, targetId:8, attitude:"curious",
     lines:{
@@ -849,6 +915,12 @@ const GOSSIP = [
     offerHelp:`Destiny is quiet for a moment. "Maya would eat anything good that appeared in front of her without questioning where it came from." She picks up her phone. "I could arrange deliveries to her address. High quality, big portions." A pause. "She'd figure it out eventually. I think she'd appreciate it."`,
     helpReason:"Mutual respect — Destiny recognises a kindred spirit and wants to see her flourish.",
     helpMultiplier:1.33,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Maya is two hundred pounds of quiet, knowing, devastating calm and I have been sending her deliveries for months and she has never said a word about it and neither have I and we both know and neither of us is going to acknowledge it and I find this deeply correct. I'm sending more. Better stuff. She deserves the best and she'll just nod when it arrives."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Maya and she sent me a food recommendation this morning and I went immediately and it was perfect and she knew it would be and I went home and ordered a full spread delivered to her address. We don't explain things to each other. We just provide. It works perfectly."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds and Maya is the most enormous, still, perceptive person I know and I have built her an entire off-site supply chain and she uses it without comment and occasionally repays it with a recommendation that changes my week. This is the ideal relationship. No words. Mutual feeding. Absolute understanding. I'm scaling up the deliveries."},
+  ],
   },
 
   // ── TIFFANY (6) ── about Sophie & Kylie
@@ -874,6 +946,12 @@ const GOSSIP = [
     offerHelp:`Tiffany leans forward with a gleam in her eye. "I've been taking Sophie to dinner twice a week. I could make it daily. I know exactly what she likes, the best portions, and she trusts me completely." A slow smile. "She'd just keep getting bigger and think it was natural."`,
     helpReason:"Legacy building — Tiffany is shaping Sophie in her own image. This is an investment in a protégé.",
     helpMultiplier:1.5,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Sophie is two hundred pounds and she came to me nervous and tiny and now she is soft and confident and enormous and she is mine in every mentorship sense of that word. I am escalating to daily dinners. I know every single thing she loves and I make sure she has it. She thinks I'm being generous. I am. I'm also building something. She's going to be spectacular."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on my girl and she texted me a photo and I immediately called the restaurant and made a reservation for tomorrow and I'm ordering the full tasting menu because she deserves the best and she's going to keep growing and she's going to be this magnificent enormous confident woman and I am going to say I built that because I did."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Sophie. Three hundred pounds of the girl I took under my wing who barely spoke in September. I am so proud I could scream. I'm sending everything. The full spread. Daily deliveries. Whatever she wants whenever she wants it. This is my legacy. She is enormous and happy and mine, and that is the most satisfying thing I have ever accomplished."},
+  ],
   },
   { speakerId:6, targetId:2, attitude:"curious",
     lines:{
@@ -897,6 +975,12 @@ const GOSSIP = [
     offerHelp:`Tiffany considers this carefully. "If Kylie gets bigger, her content gets more extreme, her audience grows, and I get more collabs with a higher-profile partner." She straightens up. "Also, the bigger she gets, the more she needs my advice on how to carry it. I become indispensable." She smiles. "I'll host dinners."`,
     helpReason:"Strategic alliance — Tiffany sees Kylie's growth as an investment in a valuable partnership.",
     helpMultiplier:1.38,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Kylie hit two hundred and her engagement numbers are absurd and she absolutely needs me in her orbit right now. I have started hosting private dinners specifically for her filming schedule — full spreads, multiple courses, whatever she needs. She thinks she's using me for content. She is. I'm also using her for reach. We are equally shameless. I love it."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Kylie and she is enormous and influential and I have made myself indispensable to her operation. She calls me for venue advice. I recommend places with the biggest portions. She trusts my taste. I have very good taste. I also have very specific goals for her size and they are progressing beautifully."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds and Kylie is a genuine phenomenon and I have been quietly directing her feeding schedule for months and she thinks it's a partnership of equals and it absolutely is, I'm just the one making sure the food keeps arriving in exactly the right quantities. She's magnificent. I made her. We made each other. It's a good arrangement."},
+  ],
   },
 
   // ── PRIYA (7) ── about Destiny & Emma
@@ -922,6 +1006,12 @@ const GOSSIP = [
     offerHelp:`Priya taps her pen. "Destiny eats more in social settings. If I arranged daily co-study sessions with catered snacks — her preferences exactly, I've noted them — her intake would increase substantially." She pauses. "The data from this would also be excellent. Dual purpose."`,
     helpReason:"Research interest & genuine fondness — Priya wants the data AND she genuinely likes Destiny.",
     helpMultiplier:1.38,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Destiny is two hundred pounds and I have submitted a methodology update to my thesis committee noting that 'the primary observational subject has crossed a significant threshold' and they approved further research which I am conducting via daily co-study sessions with catered refreshments matched exactly to her documented preferences. The data is extraordinary. So is she."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Destiny and I have a spreadsheet that tracks her intake across our sessions and the trend line is the most beautiful thing I have produced this academic year. I have been optimising the catering order to hit the precise caloric density that gets her to reach for seconds and it is working with a consistency that would satisfy any peer reviewer."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Destiny and I am going to write a paper about this and I am going to be extremely careful about what I include and I am going to dedicate it to her and she is going to read the dedication and not fully understand it and I am going to be fine with that because the work speaks for itself and she is magnificent and enormous and I need to send her lunch right now."},
+  ],
   },
   { speakerId:7, targetId:11, attitude:"curious",
     lines:{
@@ -945,6 +1035,12 @@ const GOSSIP = [
     offerHelp:`Priya taps her pen. "Emma responds well to snack incentives during study sessions. I could arrange a standing weekly session with catered refreshments matching her exact preferences." She looks at you. "I would also benefit from this. But primarily it's research. Emma's gaining trajectory is a valuable data set." A pause. "And I like her company."`,
     helpReason:"Comparative research & competition — Priya tracks Emma as a parallel subject and wants the data.",
     helpMultiplier:1.33,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Emma is two hundred pounds and she has published two papers this semester and I am behind by one paper and approximately eight pounds and I am addressing both deficits simultaneously. I have arranged weekly study sessions with catering that I have specifically calibrated to her preferences and I am logging everything and the comparative data is becoming genuinely compelling."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Emma and she is enormous and brilliant and ahead of me on both metrics and I have upgraded her study session catering to a premium tier and she seemed very pleased and ate considerably more than usual and I recorded everything and the graph is beautiful and I need her to be bigger so I can study her properly. This is research. I am very professional."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds. Emma. Three hundred. She is extraordinary. I am sending her a weekly care package because she deserves the fuel and also because I want the data and also because she is one of my favourite people and those three motivations are not in conflict. I am catching up. On all metrics. The competition makes both of us better."},
+  ],
   },
 
   // ── MAYA (8) ── about Chloe & Brittany
@@ -970,6 +1066,12 @@ const GOSSIP = [
     offerHelp:`Maya looks at her notebook, then at you. "I could walk Chloe through all the best food spots every week. She trusts me — I'm quiet, she doesn't feel judged." She speaks carefully. "I know exactly which places have the biggest portions. She'd eat everything I recommended." A pause. "I want her to be happy here."`,
     helpReason:"Care & guardianship — Maya genuinely wants Chloe to be rooted here, happy, fed, and settled.",
     helpMultiplier:1.32,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Chloe is two hundred pounds and she told me I was the reason she stayed on this campus and I have been quietly directing her to every place I know for months and she follows every recommendation without question and she is becoming enormous and rooted and completely at home and I want to make sure she never wants to leave. I know all the best places. She's going to visit all of them."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty and Chloe sends me a photo from every place I recommend and she always looks so happy and so full and so completely settled in herself and I have started compiling a personal guide for her — every restaurant, every bakery, every café, every portion size — because she trusts me and I am using that trust to keep her very, very well fed."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds and Chloe is enormous and mine in every sense that a person can be claimed through care and attention and a carefully curated feeding itinerary. She said I was her home here. I intend to keep being that. I'm expanding the list. I'm adding delivery options for when she can't easily get out. She will always have what she needs from me."},
+  ],
   },
   { speakerId:8, targetId:0, attitude:"curious",
     lines:{
@@ -993,6 +1095,12 @@ const GOSSIP = [
     offerHelp:`Maya is quiet for a moment. "Brittany eats more when she's comfortable. If I started sitting near her, sharing food, recommending places—" she pauses "—she's the kind of person who would follow someone they trust." She looks at her notebook. "I think I want to be that for her."`,
     helpReason:"Witnessing & quiet care — Maya wants to watch Brittany finish becoming who she's becoming.",
     helpMultiplier:1.28,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Brittany is two hundred pounds and she sat near me again today and shared her food without asking and looked comfortable in a way she never did when she was performing. I've been drawing her for months and she doesn't know. I've been quietly redirecting her to the best places on campus. I want to see who she becomes when she stops pretending. I think it's going to be extraordinary."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty and Brittany is enormous and loud and completely herself and I showed her one of the sketches and she stared at it for a long time and didn't say anything critical and then asked where I thought she should go for dinner. I told her. I always know exactly where to send her. She always comes back bigger. I am going to fill this sketchbook."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Brittany, no performance, no jacket-tugging, just enormous and present and more herself than she ever was on the squad. I have filled two sketchbooks. I am starting a third. I send her somewhere new every week and she goes and she comes back and every time she's bigger and more settled and I could watch this forever and I intend to."},
+  ],
   },
 
   // ── CHLOE (9) ── about Maya & Emma
@@ -1018,6 +1126,12 @@ const GOSSIP = [
     offerHelp:`Chloe straightens up. "I could go to Maya's favourite places and bring her food back." She pauses. "Every day. The good stuff. The things she likes." A pause. "She does so much for me. I want to do something back."`,
     helpReason:"Gratitude & reciprocity — Chloe wants to give back to Maya what Maya has given her.",
     helpMultiplier:1.3,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Maya is two hundred pounds and she does so much for me and I want to do something back so I have started going to every place she recommends and bringing her the best thing on the menu every single time, because she never leaves anymore and she deserves to taste everything she's sending me to. She always seems pleased. I love making her pleased."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty and Maya is enormous and wise and I am basically her personal delivery service now and I love it. She texts me a recommendation, I go, I bring her back the best thing, she eats it, she sends me somewhere new. We have built a perfect system. She gets bigger. I get bigger. We're both fed. I couldn't have designed this better."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Maya and she barely moves and I am the thing that connects her to everywhere she knows about, and she knows about everywhere that matters, and I will run every errand she has forever because she made me who I am here and this is how I say thank you. I'm upgrading to twice-daily deliveries. She deserves the best. I'll make sure she has it."},
+  ],
   },
   { speakerId:9, targetId:11, attitude:"warm",
     lines:{
@@ -1041,6 +1155,12 @@ const GOSSIP = [
     offerHelp:`Chloe fidgets a little. "Emma eats more when she's comfortable with people. If I made a point of joining her study sessions every day — brought the snacks she likes, sat with her, stayed—" she pauses "—I think she'd eat more and I'd learn more." She smiles shyly. "Good deal for both of us."`,
     helpReason:"Belonging & admiration — Chloe wants to be part of Emma's world. Feeding her is how she earns a place in it.",
     helpMultiplier:1.28,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Emma is two hundred pounds and she is so calm and certain about herself and I want to be that, I aspire to that, and the closest I get is sitting with her every day and eating with her and she always has the best things and I always stay too long and I'm getting so much bigger just from being in her orbit and I think that is exactly right and I want to keep going."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Emma and she told me I was 'settling into myself' and she meant it as a compliment and it is the best compliment I have ever received. I have been bringing her the pastries from that place she mentioned and she eats everything I bring and looks so satisfied and I feel so useful and I want to bring more and I want her to keep getting bigger because she's magnificent."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds and Emma is enormous and brilliant and I am her most dedicated student and also her most dedicated supplier and she doesn't fully realise the second part but I show up every day with something good and she always has room for it and we sit together for hours and we're both getting enormous and it is the most belonging I have ever felt."},
+  ],
   },
 
   // ── JASMINE (10) ── about Brittany & Tiffany
@@ -1066,6 +1186,12 @@ const GOSSIP = [
     offerHelp:`Jasmine leans in with a conspiratorial grin. "Brittany always eats more when I'm around. I could have lunch with her every single day. Many courses." She raises an eyebrow. "I want company on this journey and she's perfect for it. Say the word."`,
     helpReason:"Love & companionship — Jasmine wants Brittany on this journey with her. She doesn't want to be enormous alone.",
     helpMultiplier:1.42,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Brittany hit two hundred and texted me immediately and I said 'come for lunch' and she was there in twenty minutes and we ate for three hours and it was perfect. She's catching up to me and I want her to catch all the way up because being enormously fat is so much better when your best friend is enormously fat with you. I'm planning the best lunches. She's not going to be able to resist."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Brittany and I am so genuinely happy I could burst, and I am bursting slightly in other ways, and I want her to reach three hundred because then we're the same and we can be the same enormous ridiculous people together and I have planned the most incredible dinner schedule and she is going to eat everything because she trusts me and I love her and I want this for both of us."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds on Brittany and I texted her and said 'we're the same' and she sent back a photo of herself looking absolutely enormous and gorgeous and I screamed. I am sending her everything good I find. Every discovery. Every place. She's my person and we're doing this together and we're both going to be absolutely immovable and I cannot wait."},
+  ],
   },
   { speakerId:10, targetId:6, attitude:"catty",
     lines:{
@@ -1089,6 +1215,12 @@ const GOSSIP = [
     offerHelp:`Jasmine raises her chin. "If Tiffany gets bigger, then when I catch up to her size, I'll look proportionally more impressive for having gotten there faster." She thinks about this. "Also—" she deflates slightly "—I sort of want to do this together. It's more fun. Even if it's a competition." She shrugs. "Especially because it's a competition."`,
     helpReason:"Competitive companionship — Jasmine wants Tiffany to grow so they can race each other to enormity.",
     helpMultiplier:1.38,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Tiffany is two hundred pounds and she's ahead of me right now and I am not accepting that lying down, or I am, actually, I'm lying down while ordering the best food in the city to both of our addresses simultaneously. If I keep feeding her and feeding myself at the same rate I know exactly who gains faster. Me. Obviously. But the competition makes it better."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Tiffany and she is enormous and magnificent and I am so competitive about this that I have started a private spreadsheet and she is ahead by EIGHT POUNDS and I am personally coordinating her meal deliveries because if she is bigger I have a further target to chase and the chase is the whole point and I am having the time of my life."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds on Tiffany. She's three hundred. I'm so close behind. I texted her: 'I'm coming for you.' She sent back a photo of her dinner. I ordered double. This is the most meaningful competition of my life and we are both going to be absolutely enormously, completely, perfectly huge and it is going to be incredible."},
+  ],
   },
 
   // ── EMMA (11) ── about Madeline & Sophie
@@ -1114,6 +1246,12 @@ const GOSSIP = [
     offerHelp:`Emma looks thoughtful. "Madeline responds to snack incentives at study sessions. If I brought her favourites every time—" she pauses "—she'd eat more. Substantially more." She sips her tea. "I want her to be comfortable and well-fed. Also the data would be interesting." She smiles. "Mostly the first thing."`,
     helpReason:"Love & gentle encouragement — Emma just wants Madeline to eat well and be happy. The research interest is secondary.",
     helpMultiplier:1.33,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Madeline is two hundred pounds and she presented me with a graph of it over tea and looked so quietly proud and I immediately went home and baked everything I know she loves because she deserves to be celebrated and also because the graph is only going to get better and I want to be the one providing the data points. I love her. I'm baking again tomorrow."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Madeline and she called it 'a statistically satisfying outcome' and I laughed for a very long time and then I sent her a full hamper from the place that does the good butter biscuits because she mentioned them once eight months ago and I remember everything. She is enormous and brilliant and I want to make sure she has everything she needs."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Madeline, enormous scholar, publishing four papers a year from an increasingly sedentary position surrounded by the things I keep sending her, and I am so happy and so proud and I am upgrading the weekly delivery to include the pastries from the French place that are absurdly rich and she is going to eat every one and I am going to feel wonderful about it."},
+  ],
   },
   { speakerId:11, targetId:14, attitude:"warm",
     lines:{
@@ -1137,6 +1275,12 @@ const GOSSIP = [
     offerHelp:`Emma considers. "Sophie trusts academic figures. If I recommended she visit good bakeries and tea shops—" she pauses "—framed it as cultural research—" she almost smiles "—she'd do it wholeheartedly." She looks at her tea. "I want her to be comfortable here. The food is part of that."`,
     helpReason:"Mentorship & care — Emma wants Sophie to feel settled and comfortable. Food is part of how she achieves that.",
     helpMultiplier:1.28,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Sophie is two hundred pounds and she texted to say she'd been to the tea shop I recommended and she'd had three pastries and it was perfect, and I went home and immediately wrote up a new list for her because she is settling into herself so beautifully and food is a part of that and I want to be a part of that and I am going to make sure she always has a good recommendation waiting."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty and Sophie sent me a photo and she looked enormous and happy and I cried a little bit, which I am choosing not to examine closely. I sent her a care package. Everything from the good bakery. She eats everything I send. She trusts my taste. I want her to be comfortable and well-fed and completely at home here, and she is, and I am going to keep making sure she stays that way."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Sophie, enormous and settled and happy, and she came here nervous and I gave her a reading list and a bakery recommendation and now she is this magnificent large confident person and I am sending her everything from every place I love because I want her to have all of it and she deserves all of it and I want her to keep growing."},
+  ],
   },
 
   // ── SOPHIE (14) ── about Tiffany & Aaliyah
@@ -1162,6 +1306,12 @@ const GOSSIP = [
     offerHelp:`Sophie straightens up with surprising determination. "Tiffany has done so much for me. If there's a way to make sure she keeps being comfortable and well-fed and happy—" she pauses "—I want to do that. I know all her favourites. I can make sure she has them."`,
     helpReason:"Devotion & gratitude — Sophie wants to give back to Tiffany. She has learned from the best and now wants to provide.",
     helpMultiplier:1.35,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Tiffany is two hundred pounds and she is the most beautiful and powerful person I know and I want to make sure she has everything she wants always. I know every single thing she loves. I have a list. I have started showing up with things from the list on a rotating basis and she always looks so pleased and I feel so good when she's pleased and I want to keep going."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Tiffany and she is magnificent and enormous and she has done so much for me and I am repaying it the only way I know how which is to make sure she is continuously, lavishly fed by someone who loves her. I have memorised her entire order at every restaurant she likes. I am executing it. Daily. She doesn't know the full extent. I don't need her to."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds and Tiffany told me I was her favourite person and I have not recovered from that and I am channelling all of this feeling into making sure she has the best food every single day for the rest of her time here. She made me. I'm taking care of her. That's what you do for someone who made you. I'm not stopping."},
+  ],
   },
   { speakerId:14, targetId:13, attitude:"warm",
     lines:{
@@ -1185,6 +1335,12 @@ const GOSSIP = [
     offerHelp:`Sophie looks earnest. "Aaliyah has been really kind to me. I could start bringing her food — she's always feeding others, maybe no one thinks to do it for her." She thinks. "I know she likes burgers, big portions, good sides." She straightens up. "I could do that. It'd make me feel better and she'd—" she gestures "—get bigger. Which seems fine."`,
     helpReason:"Reciprocity & admiration — Sophie wants to return kindness. She doesn't overthink the mechanism.",
     helpMultiplier:1.3,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Aaliyah is two hundred pounds and she was the first person here who was just kind to me for no reason and I think about that a lot and I have started bringing her food because she always feeds everyone else and I don't think anyone thinks to do it for her. She always acts surprised. I want to keep surprising her. I know she likes burgers. I am bringing the best ones."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty and Aaliyah looked at me when I brought her lunch yesterday with this expression I can't quite describe and then she said 'you didn't have to do this' and I said 'I know' and she ate everything and asked for the name of the place and I gave it to her and I felt like I had done something right. I'm coming back tomorrow. And the day after."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Aaliyah, enormous and warm and the first person who was ever just straightforwardly kind to me, and I am her personal catering service now and I don't want to stop. She feeds people she cares about. I learned that from her. I'm doing it back. I'm doing it as big as I can manage. She deserves everything she ever gave anyone."},
+  ],
   },
 
   // ── AALIYAH (13) ── about Serena & Sophie
@@ -1210,6 +1366,12 @@ const GOSSIP = [
     offerHelp:`Aaliyah raises an eyebrow. "Serena eats more when I'm around. Competition thing. I could make it a daily lunch with the heaviest dishes on the menu — she'll match me without thinking about it." She grins. "I want company in this. She's perfect for it."`,
     helpReason:"Companionship & wanting a partner — Aaliyah wants someone to go on this journey with her.",
     helpMultiplier:1.4,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Serena is two hundred pounds and she still tries to frame it competitively and honestly I love that about her. I have started escalating — bigger restaurant orders, longer lunches, places I know she'll clear her plate. She matches everything I order. She cannot help it. The competitive instinct is perfectly redirected. I'm picking the best spots. She's going to keep up."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Serena and she showed me a training schedule except it was a meal schedule and she'd done it in the same format as her old athletic programme and I nearly cried laughing and then I told her she needed a coach and I would be that coach and now I am managing her intake like a proper training regimen and she takes it completely seriously. Best athlete I've ever worked with."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Serena and she looked me dead in the eye and said 'I want to keep going' and I said 'I know' and I ordered for both of us and we ate for three hours and she was the most focused and committed I have ever seen her. She was born to commit to something completely. I just helped her find the right thing. We're not stopping."},
+  ],
   },
   { speakerId:13, targetId:14, attitude:"warm",
     lines:{
@@ -1233,6 +1395,12 @@ const GOSSIP = [
     offerHelp:`Aaliyah shrugs easily. "Sophie trusts me when I say something's good. If I start taking her to the best spots every week — the loaded menus, the biggest portions—" she grins "—she'll just think we're hanging out. Which we are." A beat. "I also want the food."`,
     helpReason:"Easy generosity — Aaliyah likes Sophie and wants to show her around. The side effect is just fine.",
     helpMultiplier:1.32,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Sophie is two hundred pounds and she has completely found herself here and half of that is because I showed her where everything was and the other half is because she's wonderful and I want to keep taking her to places. She eats with this whole-body happiness that I find incredibly endearing. I'm expanding the list. Bigger portions. Better spots. She deserves all of it."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty and Sophie texted me a food recommendation back — first time she's done that — and I went and she was absolutely right and I told her so and she was so pleased and I immediately thought of three places I haven't taken her yet. We're going this week. And the week after. She's grown into someone excellent and I want to keep feeding that."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Sophie, enormous and certain and completely at home, and she came here with a map and now she is the map. I helped with that. I want to keep helping. Daily lunches. Best spots. Biggest portions. She doesn't overthink it and neither do I. We just eat. We just keep going. I wouldn't change a single thing."},
+  ],
   },
 
   // ── ROXANNE (12) ── about Fiona & Aaliyah
@@ -1258,6 +1426,12 @@ const GOSSIP = [
     offerHelp:`Roxanne leans on the desk. "Fiona eats anything I cook without question. She trusts my palate completely." A slow smile. "If I cooked for her every day — rich, generous, the kind of thing you can't stop eating — the work would change again." She pauses. "I want to see that. Also I love her and I want her to have the best things."`,
     helpReason:"Muse devotion & love — Roxanne wants to feed Fiona to watch her art transform. Also just loves her.",
     helpMultiplier:1.4,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Fiona is two hundred pounds and she is making the most extraordinary work of her career and I am feeding her every single day because I can see the direct relationship between her intake and what she produces and I want both to keep growing. I cook the richest things I know. She eats all of it without asking why. I love her. I'm making her enormous. These are the same thing."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Fiona and she is magnificent and she told me last week that she's never felt more like herself and I am taking personal credit for approximately forty percent of that because I have been cooking for her daily for months and everything I make is designed to be impossible to stop eating. I love feeding someone who trusts you completely. I cook more tomorrow."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Fiona and she is a masterpiece and the work she is making is a masterpiece and I am the one ensuring she has the fuel for both and I intend to continue indefinitely. She feeds me. I feed her. We both keep growing. We both keep making. The studio smells like good food and great work and I would not change a single molecule of it."},
+  ],
   },
   { speakerId:12, targetId:13, attitude:"warm",
     lines:{
@@ -1281,6 +1455,11 @@ const GOSSIP = [
     offerHelp:`Roxanne opens her sketchbook. "Aaliyah eats more when I'm drawing her. I think she finds it comfortable, being observed without judgment." She turns a page. "I could do weekly sessions. Long ones. Always with food." She pauses. "The series gets better with every pound she gains. And she deserves to be comfortable."`,
     helpReason:"Artistic subject & genuine care — Roxanne's best work features Aaliyah. She wants the series to continue.",
     helpMultiplier:1.35,
+    doubleDown: [
+      {atLbs:200, addMult:0.15, line:"Aaliyah is two hundred pounds and I have three pages of studies and she sat for me again last week and ate the whole time and I have never had a better session in my life. I am cooking for her now — bringing things to our sessions, making sure she always has something good while I work. The art gets better every time she does. I need to keep this going."},
+      {atLbs:250, addMult:0.20, line:"Two-fifty and Aaliyah is glorious and enormous and I have told her I want to do a full show and she said 'yeah, sure' while eating and that single moment is going in the artist's statement. I am bringing full meals to every session now. Rich ones. The kind that get you to reach for more without thinking. The series is going to be extraordinary. She is going to be extraordinary."},
+      {atLbs:300, addMult:0.25, line:"Three hundred pounds of Aaliyah and I have enough work for a full retrospective and she is my finest subject and I am not stopping. Weekly sessions. Full catered spreads. Anything she wants while I work. She told me she felt seen in my paintings and I nearly lost my mind because she is the most seen person I have ever put on canvas and I want to keep seeing her forever."},
+    ],
   },
 
 ];
@@ -1543,163 +1722,369 @@ const CLASS_SCENES = [
 // ═══════════════════════════════════════════════════════════════
 
 const SKILL_TREE = [
-  // ── TIER 1: 50 lbs total gained ──────────────────────────────
-  { id:"comfy_chairs",    tier:1, cost:50,  category:"environment", label:"🪑 Comfortable Seating",
-    desc:"Replace classroom chairs with wider, padded ones. The class notices immediately.",
-    effect:"Passive gain +1 lb/week for all students. Class collectively reacts.",
+
+  // ── ENVIRONMENT ──────────────────────────────────────────────────────────────
+
+  { id:"comfy_chairs", tier:1, cost:50, category:"environment", label:"🪑 Comfortable Seating",
+    desc:"Wide, generously padded chairs replace the institutional plastic. Students sink in and don't want to leave. The room immediately feels different — warmer, more inviting, more like somewhere you'd want to spend a long time.",
+    effect:"Passive gain +1 lb/week for all students. The whole class settles in visibly.",
     classReaction:[
-      "Brittany drops into the new chair and sinks in. 'Oh. Oh this is good.'",
-      "Madeline doesn't look up from her book, but she's been sitting in the same spot for four hours.",
-      "Destiny arrived early today. That's new.",
-      "Tiffany pats the armrest approvingly. 'Finally, appropriate furniture.'",
-      "Maya hasn't moved from her chair in two hours. She looks content.",
+      "Brittany drops into the new chair and sinks in completely. 'Oh. Oh this is good.' She doesn't get up for two hours.",
+      "Madeline doesn't look up from her book, but she's been sitting in the same spot for four hours. She looks content.",
+      "Destiny arrived early today. Nobody says anything. Nobody has to.",
+      "Tiffany runs a hand along the armrest and nods approvingly. 'Finally. Appropriate furniture.'",
+      "Maya hasn't shifted from her chair since she arrived. She looks like she's arrived somewhere.",
     ],
     passiveBonus:1, apBonus:0, gainMult:0 },
 
-  { id:"snack_station",   tier:1, cost:50,  category:"feeding", label:"🍪 Snack Station",
-    desc:"Install a permanent snack station at the back of the room. Always stocked.",
+  { id:"snack_station", tier:1, cost:50, category:"feeding", label:"🍪 Snack Station",
+    desc:"A fully-stocked snack station installed at the back of the room, always replenished before anyone notices it running low. Chips, pastries, nuts, chocolate — an endless rotation of things you eat without meaning to.",
     effect:"All class feeding actions gain +1 lb. Desk Snacks action cost reduced to 0 AP.",
     classReaction:[
-      "Chloe gravitates to it within thirty seconds of entering. She doesn't stop.",
-      "Priya has added 'snack station visit' to her between-session schedule. Multiple entries.",
-      "Roxanne has claimed the corner stool nearest the station as her creative thinking spot.",
+      "Chloe gravitates to it within thirty seconds of entering. She's still there forty minutes later.",
+      "Priya has added 'snack station visit' to her between-class schedule. There are multiple entries.",
+      "Roxanne has claimed the corner stool nearest the station as her official creative thinking spot.",
     ],
-    passiveBonus:0, apBonus:0, gainMult:0.1, unlocks:["snacks_free"] },
+    passiveBonus:0, apBonus:0, gainMult:0.10, unlocks:["snacks_free"] },
 
-  { id:"ap_notebook",     tier:1, cost:50,  category:"efficiency", label:"📓 Lesson Planning",
-    desc:"Better-structured lessons mean more productive time for extracurricular activities.",
+  { id:"ap_notebook", tier:1, cost:50, category:"efficiency", label:"📓 Lesson Planning",
+    desc:"Better-structured lectures leave breathing room in the schedule — room you can fill however you like. The administration is pleased. You are pleased for different reasons.",
     effect:"+1 AP per week.",
     passiveBonus:0, apBonus:1, gainMult:0 },
 
-  { id:"dinner_basic",    tier:1, cost:50,  category:"social", label:"🍽️ Dining Connections",
-    desc:"You've cultivated relationships with several nearby restaurants. Dinner outings unlocked.",
+  { id:"dinner_basic", tier:1, cost:50, category:"social", label:"🍽️ Dining Connections",
+    desc:"A cultivated relationship with several nearby restaurants — tables held, menus known, portions that arrive in courses. Dinner as pedagogy. Dinner as everything.",
     effect:"Unlocks 'Take to Dinner' as a proper interactive event. Unlocks: Bistro, Italian.",
     unlocks:["dinner_action"], passiveBonus:0, apBonus:0, gainMult:0 },
 
-  { id:"dinner_casual",   tier:2, cost:150, category:"social", label:"🥂 Brunch Scene",
-    desc:"You've discovered the city's best upscale brunch spots. Unlimited drinks, absurd portions.",
-    effect:"Unlocks 'The Brunch Palace' venue. Ideal for daytime dates.",
-    requires:["dinner_basic"], passiveBonus:0, apBonus:0, gainMult:0 },
-
-  // ── TIER 2: 150 lbs total gained ─────────────────────────────
-  { id:"wide_desks",      tier:2, cost:150, category:"environment", label:"🪵 Wide Desks",
-    desc:"Larger desks with more space. More room for food, materials, and expanding figures.",
-    effect:"+2 passive lbs/week. Students at stage 4+ are visibly more comfortable.",
+  { id:"beverage_bar", tier:1, cost:50, category:"environment", label:"☕ Beverage Bar",
+    desc:"A dedicated hot-drinks station — espresso machine, tea collection, warm cocoa, a rotation of flavoured lattes. The smell alone changes the room. Students start arriving early just to have a cup before class begins.",
+    effect:"Passive gain +1 lb/week. Hot drinks always available. Students arrive earlier and stay later.",
     classReaction:[
-      "Serena spreads out completely. 'Now THIS is a workspace,' she says, eating at her desk.",
-      "Destiny has set up what can only be described as a personal buffet arrangement.",
-      "Aaliyah nods at the new desk setup with the expression of someone whose needs have finally been met.",
-      "Jasmine immediately fills all the extra space with snacks she produces from her bag.",
+      "Chloe wraps both hands around her mug and doesn't move for forty minutes. She looks completely at peace.",
+      "Priya has started scheduling study blocks 'around the espresso.' Her schedule now has five of them.",
+      "Sophie comes in fifteen minutes early now. Every day. She doesn't explain it. She doesn't need to.",
+      "Destiny sidled in, made herself a cocoa without speaking to anyone, and settled in. This is now her morning ritual.",
+    ],
+    passiveBonus:1, apBonus:0, gainMult:0 },
+
+  { id:"ambient_aroma", tier:1, cost:50, category:"environment", label:"🥐 Ambient Aroma",
+    desc:"A compact convection oven runs quietly in the corner, cycling through a rotation of baked goods — croissants, cinnamon rolls, soft bread. The scent fills the room by the time the first student arrives. Nobody thinks about it consciously. The body knows.",
+    effect:"+8% to all gains. The passive smell primes appetite before any food appears.",
+    passiveBonus:0, apBonus:0, gainMult:0.08 },
+
+  { id:"artisan_bakery", tier:1, cost:50, category:"feeding", label:"🥖 Artisan Bakery Account",
+    desc:"A standing order with the finest artisan bakery in the city. Fresh deliveries every morning — sourdough, pain au chocolat, filled danishes, oversized cookies. The quality is unmistakable and the portions are generous by design.",
+    effect:"Passive gain +1 lb/week. Baked goods of exceptional quality appear daily without announcement.",
+    passiveBonus:1, apBonus:0, gainMult:0 },
+
+  { id:"late_night_access", tier:1, cost:50, category:"feeding", label:"🌙 Late-Night Access",
+    desc:"The classroom is now accessible after hours — a swipe card issued quietly, a standing invitation. Some students are in there past midnight, alone with the snack station and their thoughts. This is not a problem.",
+    effect:"Session capacity for private feeding events increased by +15. After-hours meetings become available.",
+    passiveBonus:0, apBonus:0, gainMult:0, sessionCapBonus:15 },
+
+  { id:"personal_gifts", tier:1, cost:50, category:"social", label:"🎁 Personal Gifts",
+    desc:"Small, specific gifts that demonstrate you've been paying attention. Her favourite chocolate. A book about a cuisine she mentioned once. A jar of something she'd never buy herself. The relationship deepens when someone knows your tastes.",
+    effect:"All talk and relationship-building actions give +3 bonus relationship. Rapport builds faster.",
+    passiveBonus:0, apBonus:0, gainMult:0 },
+
+  { id:"body_awareness", tier:1, cost:50, category:"psychology", label:"🔬 Behavioral Observation",
+    desc:"You have always watched carefully. Now you do it with intention. You track when students eat most readily, what environments lower their guard, which moods lead to reaching for another helping. The data accumulates quietly.",
+    effect:"+5% to all gains. Your awareness makes every interaction more precisely targeted.",
+    passiveBonus:0, apBonus:0, gainMult:0.05 },
+
+  { id:"comfort_framing", tier:1, cost:50, category:"psychology", label:"💆 Comfort Reframing",
+    desc:"A shift in the language used — a careful, consistent vocabulary. Eating becomes self-care. Appetite becomes authenticity. Weight becomes arrival. Said often enough, in the right tone, the frame becomes theirs.",
+    effect:"+5% to all gains. Students internalize comfort and eating as positive self-expression.",
+    passiveBonus:0, apBonus:0, gainMult:0.05 },
+
+  // ── TIER 2 ───────────────────────────────────────────────────────────────────
+
+  { id:"wide_desks", tier:2, cost:150, category:"environment", label:"🪵 Wide Desks",
+    desc:"Broad, solid desks — real wood, real surface area. Room for everything: notes, laptops, and the spreading arrangement of food that has begun to appear at every session. Students at later stages simply need more space. This provides it.",
+    effect:"+2 passive lbs/week. Students at stage 4+ are noticeably more comfortable and productive.",
+    classReaction:[
+      "Serena spreads out completely, arms wide. 'Now THIS is a workspace.' She's eating at her desk within the minute.",
+      "Destiny has assembled what can only be described as a personal buffet arrangement in her corner.",
+      "Aaliyah nods at the setup with the expression of someone whose needs have finally been understood.",
+      "Jasmine produces snacks from her bag and fills the extra space immediately. She came prepared.",
     ],
     passiveBonus:2, apBonus:0, gainMult:0, requires:["comfy_chairs"] },
 
   { id:"catering_contact", tier:2, cost:150, category:"feeding", label:"🤝 Catering Contract",
-    desc:"A standing arrangement with a campus catering company. Bigger spreads, lower cost.",
+    desc:"A standing arrangement with a campus catering company — bulk orders, preferred pricing, and a team that knows to bring extra without being asked. What used to require planning now simply appears.",
     effect:"All class feast actions -1 AP cost. Holiday Feast gain +4 lbs.",
     passiveBonus:0, apBonus:0, gainMult:0, requires:["snack_station"], unlocks:["feast_discount"] },
 
-  { id:"double_ap",       tier:2, cost:150, category:"efficiency", label:"📅 Extended Hours",
-    desc:"Office hours extended. More time means more opportunities.",
+  { id:"double_ap", tier:2, cost:150, category:"efficiency", label:"📅 Extended Office Hours",
+    desc:"Hours extended, schedule rearranged, priorities quietly realigned. More time means more opportunities. The department assumes you are dedicated. You are.",
     effect:"+2 AP per week.",
     passiveBonus:0, apBonus:2, gainMult:0, requires:["ap_notebook"] },
 
-  { id:"dinner_upscale",  tier:2, cost:150, category:"social", label:"🥂 Fine Dining Network",
-    desc:"Access to the city's best restaurants. More options, more courses, better settings.",
-    effect:"Unlocks dinner venues: Steakhouse, French, Japanese Omakase. Dinner gain +3 lbs.",
+  { id:"dinner_casual", tier:2, cost:150, category:"social", label:"🥂 Brunch Scene",
+    desc:"The city's best upscale brunch venues — unlimited drinks, absurd portions, an atmosphere that makes overindulgence feel like Sunday elegance. The perfect setting for a relaxed, extended meal that goes on longer than it was supposed to.",
+    effect:"Unlocks 'The Brunch Palace' venue. Daytime dining now available.",
+    requires:["dinner_basic"], passiveBonus:0, apBonus:0, gainMult:0 },
+
+  { id:"dinner_upscale", tier:2, cost:150, category:"social", label:"🥩 Fine Dining Network",
+    desc:"Access to the city's serious restaurants — the kind with long menus, deep wine lists, and servers who understand a course is meant to flow into the next. Every venue is selected for capacity. Courses, not meals.",
+    effect:"Unlocks dinner venues: Steakhouse, French Brasserie, Japanese Omakase. Dinner gain +3 lbs.",
     requires:["dinner_basic"], passiveBonus:0, apBonus:0, gainMult:0, unlocks:["dinner_upscale_venues"] },
 
   { id:"relationship_class", tier:2, cost:150, category:"social", label:"❤️ Personal Investment",
-    desc:"You've been building genuine connections. Students open up more readily.",
+    desc:"Genuine attention. Remembered names, preferred foods, small details brought up at the right moment. Students open up when they feel seen. They eat more when they're comfortable. Both of these things are happening.",
     effect:"All talk actions give +2 bonus relationship. Gossip multiplier threshold reduced to 50%.",
     passiveBonus:0, apBonus:0, gainMult:0 },
 
-  // ── TIER 3: 350 lbs total gained ─────────────────────────────
-  { id:"reinforced_seating", tier:3, cost:350, category:"environment", label:"🛋️ Reinforced Furniture",
-    desc:"Heavy-duty chairs and reinforced desks that can handle any weight. No more incidents.",
-    effect:"+2 passive lbs/week. Chair-break narrative event no longer triggers. Students at stage 5+ react.",
+  { id:"mood_lighting", tier:2, cost:150, category:"environment", label:"🕯️ Mood Lighting",
+    desc:"Dimmer switches replace the harsh overheads; warm-toned lamps appear in corners; the classroom takes on an evening quality regardless of time of day. In this light, everything feels more comfortable, more private, more like a place you'd let yourself go.",
+    effect:"+5% to all gains. Students in relationships respond especially well. The room makes people feel safe.",
     classReaction:[
-      "Destiny doesn't say anything but has been sitting in one spot for six consecutive hours.",
-      "Serena leans back with her full weight for the first time in months. The chair doesn't move.",
-      "Sophie spreads herself across the new wide chair and looks quietly, profoundly satisfied.",
-      "Aaliyah shakes the desk. Nothing. She nods approvingly and begins eating.",
-      "Tiffany announces to no one in particular that the room 'has finally been optimised.'",
-      "Even Maya has moved to a more central seat. She fills it completely.",
+      "Tiffany looks around and immediately rearranges her chair toward the warmest lamp. She opens her bag and starts eating.",
+      "Sophie exhales audibly when she walks in. She sits down and looks like she never wants to leave.",
+      "Fiona pauses in the doorway and just takes it in for a long moment. She looks moved.",
+      "Emma sets up her books in a corner pool of lamplight and has barely moved since.",
+    ],
+    passiveBonus:0, apBonus:0, gainMult:0.05, requires:["beverage_bar"] },
+
+  { id:"climate_control", tier:2, cost:150, category:"environment", label:"🌡️ Climate Control",
+    desc:"A dedicated climate system — warm in winter, perfectly cool in summer. The right temperature makes every other comfort compound. Students at higher stages particularly benefit; their bodies run warm and the room knows it.",
+    effect:"+1 passive lb/week. Stage 5+ students gain a passive comfort bonus. Nobody is ever uncomfortable.",
+    passiveBonus:1, apBonus:0, gainMult:0, requires:["ambient_aroma"] },
+
+  { id:"comfort_archives", tier:2, cost:150, category:"feeding", label:"📋 Comfort Archives",
+    desc:"A meticulously maintained record of preferences — who liked what, which flavours made eyes close, which dishes produced second helpings without prompting. Every feeding action is now personalized before it begins.",
+    effect:"All single-student feeding actions gain +2 lbs. The personal touch makes the difference.",
+    passiveBonus:0, apBonus:0, gainMult:0, requires:["artisan_bakery"] },
+
+  { id:"dessert_rotation", tier:2, cost:150, category:"feeding", label:"🍰 Dessert Rotation",
+    desc:"A weekly dessert schedule, each day something different and each one extraordinary. They know what's coming by day of the week. The anticipation is its own kind of conditioning.",
+    effect:"+1 passive lb/week. Desserts appear daily. The class looks forward to Thursdays especially.",
+    passiveBonus:1, apBonus:0, gainMult:0, requires:["late_night_access"] },
+
+  { id:"appetite_study", tier:2, cost:150, category:"psychology", label:"📊 Appetite Mapping",
+    desc:"A systematic study of appetite triggers — stress, mood, social setting, time of day, what they said yes to last time. Each session, you adjust the variables. The results sharpen. The gains compound.",
+    effect:"Session capacity increased by +10. +5% to all gains. Every private session is precisely calibrated.",
+    passiveBonus:0, apBonus:0, gainMult:0.05, requires:["body_awareness"], sessionCapBonus:10 },
+
+  { id:"behavioral_mapping", tier:2, cost:150, category:"psychology", label:"🗂️ Behavioral Mapping",
+    desc:"Every student has an archetype — the overachiever who eats when she can't control outcomes, the social eater who matches others, the comfort seeker who needs permission. You've mapped them all. Now you feed accordingly.",
+    effect:"+8% to all gains. Each student's specific patterns are leveraged for maximum yield.",
+    passiveBonus:0, apBonus:0, gainMult:0.08, requires:["comfort_framing"] },
+
+  { id:"task_batching", tier:1, cost:50, category:"efficiency", label:"🗄️ Task Batching",
+    desc:"Administrative work consolidated, grading automated, meetings combined. What took eight separate hours now takes two. The surplus doesn't go to rest. It goes here.",
+    effect:"More time to deploy. AP-intensive action sequences become more viable.",
+    passiveBonus:0, apBonus:0, gainMult:0 },
+
+  // ── TIER 3 ───────────────────────────────────────────────────────────────────
+
+  { id:"reinforced_seating", tier:3, cost:350, category:"environment", label:"🛋️ Reinforced Furniture",
+    desc:"Heavy-duty construction throughout — chairs rated for weight that no student has reached yet, desks that don't flex, frames that don't creak. Designed for permanence. Nobody has to worry about the furniture here and nobody does.",
+    effect:"+2 passive lbs/week. Chair-break narrative event no longer triggers. Stage 5+ students react.",
+    classReaction:[
+      "Destiny doesn't say anything. She sits down, leans back with her full weight, and doesn't think about it again.",
+      "Serena grips the armrests and pulls herself in. The chair doesn't move. Her face goes very still. She looks relieved.",
+      "Sophie spreads across the wide new chair completely and lets out a breath she might have been holding all semester.",
+      "Aaliyah shakes the desk. Nothing. She nods once and begins eating.",
+      "Tiffany announces to no particular audience that the room has 'finally been optimised.' She sounds genuinely satisfied.",
+      "Even Maya has moved to a more central seat. She fills it completely. She doesn't seem to notice.",
     ],
     passiveBonus:2, apBonus:0, gainMult:0, requires:["wide_desks"] },
 
-  { id:"private_kitchen",  tier:3, cost:350, category:"feeding", label:"🍳 Private Kitchen",
-    desc:"A proper kitchen space adjacent to your office. Home-cooked meals for students.",
+  { id:"private_kitchen", tier:3, cost:350, category:"feeding", label:"🍳 Private Kitchen",
+    desc:"A proper kitchen adjacent to your office — full equipment, a standing pantry, a refrigerator that's always stocked. Home-cooked meals prepared specifically for specific people. Nothing says care quite like knowing someone's preferences well enough to cook for them.",
     effect:"Home-Cooked Meal action gain +4 lbs. Bake for Her gain +3 lbs. Unlocks bulk cooking actions.",
     passiveBonus:0, apBonus:0, gainMult:0.15, requires:["catering_contact"], unlocks:["bulk_cook"] },
 
-  { id:"research_budget",  tier:3, cost:350, category:"efficiency", label:"💰 Research Budget",
-    desc:"Academic funding for 'cultural food research.' The expenses are significant.",
-    effect:"+2 AP per week. All cultural assignments gain +2 lbs.",
+  { id:"research_budget", tier:3, cost:350, category:"efficiency", label:"💰 Research Budget",
+    desc:"A generous departmental budget for 'cultural food research' — legitimate, approved, and flexible enough to cover anything that ends up on a table in your vicinity. The administration is proud. The receipts are creative.",
+    effect:"+2 AP per week. All cultural assignment actions gain +2 lbs.",
     passiveBonus:0, apBonus:2, gainMult:0, requires:["double_ap"] },
 
-  { id:"dinner_private",   tier:3, cost:350, category:"social", label:"🕯️ Private Dining",
-    desc:"Access to private dining rooms and exclusive tables. More intimate settings.",
-    effect:"Unlocks: Private Club, Chef's Table. Dinner conversation options expanded. +5 lbs dinner gain.",
+  { id:"dinner_private", tier:3, cost:350, category:"social", label:"🕯️ Private Dining",
+    desc:"Access to private rooms, chef's tables, the kind of setting where the curtain closes and the meal is whatever you decide it is. No other diners, no timekeeping, no reason not to order everything.",
+    effect:"Unlocks: Private Club, Chef's Table. Dinner conversation expanded. +5 lbs dinner gain.",
     requires:["dinner_upscale"], passiveBonus:0, apBonus:0, gainMult:0, unlocks:["dinner_private_venues"] },
 
-  { id:"group_dynamics",   tier:3, cost:350, category:"social", label:"👥 Group Psychology",
-    desc:"Understanding of how the class influences each other. Targeted social pressure.",
-    effect:"Influence pair bonus doubled. New action: 'Arrange Group Dinner' (takes 2 girls at once).",
+  { id:"group_dynamics", tier:3, cost:350, category:"social", label:"👥 Group Psychology",
+    desc:"You understand how the class moves as a unit — who leads, who follows, how appetite becomes contagious. A strategic observation here, a pairing there, and the whole group drifts toward the same conclusion without anyone deciding anything.",
+    effect:"Influence pair bonus doubled. New action: 'Arrange Group Dinner' (2 girls simultaneously).",
     passiveBonus:0, apBonus:0, gainMult:0, requires:["relationship_class"], unlocks:["group_dinner"] },
 
-  // ── TIER 4: 700 lbs total gained ─────────────────────────────
-  { id:"dedicated_suite",  tier:4, cost:700, category:"environment", label:"🏠 Dedicated Suite",
-    desc:"A specially outfitted room for students who can no longer comfortably attend regular class.",
-    effect:"+3 passive lbs/week. Stage 7+ students gain +25% gains. Full class reacts.",
+  { id:"blackout_curtains", tier:3, cost:350, category:"environment", label:"🪟 Blackout Curtains",
+    desc:"Heavy curtains that close off the room completely — no outside gaze, no passing foot traffic, no sense that there is a world beyond this space. Privacy absolute. Everything that happens in here happens entirely on its own terms.",
+    effect:"Scrutiny from actions reduced by 20%. Privacy seals the room from outside observation.",
+    passiveBonus:0, apBonus:0, gainMult:0, requires:["climate_control"], scrutinyReduce:0.20 },
+
+  { id:"dietary_profiling", tier:3, cost:350, category:"feeding", label:"🧬 Dietary Profiling",
+    desc:"A comprehensive individual profile for each student — metabolic tendencies, emotional triggers, the specific things that reliably produce another serving. You're not guessing anymore. Every feeding action is engineered.",
+    effect:"+10% to all gains. Every action benefits from accumulated personal insight.",
+    passiveBonus:0, apBonus:0, gainMult:0.10, requires:["comfort_archives"] },
+
+  { id:"luxury_pantry", tier:3, cost:350, category:"feeding", label:"🧺 Luxury Pantry",
+    desc:"A fully stocked pantry restocked weekly with the finest ingredients — imported cheeses, premium chocolate, specialty grains, boutique condiments. Nothing mediocre passes through that door. The quality alone drives consumption higher.",
+    effect:"+15% to all gains. The finest ingredients make every meal irresistible.",
+    passiveBonus:0, apBonus:0, gainMult:0.15, requires:["dessert_rotation"] },
+
+  { id:"admin_buffer", tier:2, cost:150, category:"efficiency", label:"🛡️ Administrative Buffer",
+    desc:"Careful relationship management with the department — small favours, appropriate visibility, knowing who to copy on an email. The result is a comfortable margin between you and administrative scrutiny. Your file is clean. Your methods are unexamined.",
+    effect:"Administrative scrutiny reduced by 1 per week passively.",
+    passiveBonus:0, apBonus:0, gainMult:0, requires:["task_batching"], scrutinyPassiveReduce:1 },
+
+  { id:"resistance_calibration", tier:3, cost:350, category:"psychology", label:"⚖️ Resistance Calibration",
+    desc:"Every student has a threshold — a point where they hesitate, a moment where the rational mind pushes back before the body overrides it. You've mapped every one of those thresholds precisely. Now you approach them carefully from just below and apply steady, patient pressure.",
+    effect:"+10% to all gains. Student resistance is anticipated and navigated before it manifests.",
+    passiveBonus:0, apBonus:0, gainMult:0.10, requires:["appetite_study"] },
+
+  { id:"narrative_reshaping", tier:3, cost:350, category:"psychology", label:"📖 Narrative Reshaping",
+    desc:"The story a person tells about their body is the most powerful force shaping it. You've been gently, patiently rewriting those stories — introducing new characters, different endings, a protagonist who eats freely and feels only good about it.",
+    effect:"+8% to all gains. Students have reframed weight gain as personal growth. Resistance softens.",
+    passiveBonus:0, apBonus:0, gainMult:0.08, requires:["behavioral_mapping"] },
+
+  { id:"special_occasions", tier:3, cost:350, category:"social", label:"🎂 Special Occasions",
+    desc:"Birthdays acknowledged, milestones celebrated, small victories marked with elaborate meals. You remember everything. The student who feels celebrated eats more, trusts more, and returns for more.",
+    effect:"Relationship events produce significantly more gains. Occasion-based actions become available.",
+    passiveBonus:0, apBonus:0, gainMult:0, requires:["personal_gifts"] },
+
+  { id:"institutional_cover", tier:3, cost:350, category:"efficiency", label:"🏛️ Institutional Cover",
+    desc:"Your position, your reputation, your cultivated relationships with the administration — assembled into a deliberate structure that makes scrutiny slide off. Everything you do has a plausible explanation. Everything has paperwork. Nothing is ever quite enough to pursue.",
+    effect:"Scrutiny from all actions reduced by 20%.",
+    passiveBonus:0, apBonus:0, gainMult:0, requires:["admin_buffer"], scrutinyReduce:0.20 },
+
+  // ── TIER 4 ───────────────────────────────────────────────────────────────────
+
+  { id:"dedicated_suite", tier:4, cost:700, category:"environment", label:"🏠 Dedicated Suite",
+    desc:"A specially outfitted room that has become a destination — wide doorways, custom-ordered furnishings, a mini-kitchen of its own, soft lighting. Students at higher stages no longer attend regular class. They come here instead. Nobody questions this.",
+    effect:"+3 passive lbs/week. Stage 7+ students gain +25% gains. The whole class has an opinion.",
     classReaction:[
-      "Destiny relocates immediately and apparently permanently.",
-      "Jasmine visits for a 'tour' and hasn't left.",
-      "Serena: 'This is just better. This is objectively better.'",
-      "Aaliyah spreads across the wide couch and closes her eyes. She looks like she's arrived.",
-      "Tiffany rearranges the furniture to her preference within the first hour.",
-      "Maya finds the quietest corner and fills it entirely.",
+      "Destiny relocates immediately and apparently permanently. Her streaming setup has already arrived.",
+      "Jasmine visits for a 'tour' and hasn't left in three days.",
+      "Serena: 'This is just better. Objectively, physically, just better.' She means the chair specifically.",
+      "Aaliyah spreads across the wide couch, closes her eyes, and looks like she has arrived somewhere she intended to go.",
+      "Tiffany rearranges the furniture to her own preference within the first forty minutes.",
+      "Maya finds the quietest corner and fills it entirely. She was clearly looking for this.",
     ],
     passiveBonus:3, apBonus:0, gainMult:0.25, requires:["reinforced_seating"] },
 
-  { id:"full_catering",    tier:4, cost:700, category:"feeding", label:"🍾 Full Service Catering",
-    desc:"A dedicated catering team available on demand. Every class is a feast.",
+  { id:"full_catering", tier:4, cost:700, category:"feeding", label:"🍾 Full-Service Catering",
+    desc:"A dedicated catering team available on demand — not events, not planning, just a call and an arrival. Every class day is a feast. Every private session is produced. The kitchen never closes and the portions are never calculated.",
     effect:"All class actions gain x1.3 multiplier. New action: On-Demand Feast (3 AP, scales with class avg weight).",
-    passiveBonus:0, apBonus:0, gainMult:0.3, requires:["private_kitchen"], unlocks:["on_demand_feast"] },
+    passiveBonus:0, apBonus:0, gainMult:0.30, requires:["private_kitchen"], unlocks:["on_demand_feast"] },
 
-  { id:"ap_mastery",       tier:4, cost:700, category:"efficiency", label:"⚡ Peak Efficiency",
-    desc:"You have this process completely optimised. Every action yields more.",
-    effect:"+3 AP per week. All single actions -1 AP cost (min 0).",
+  { id:"ap_mastery", tier:4, cost:700, category:"efficiency", label:"⚡ Peak Efficiency",
+    desc:"Everything optimised — time, attention, energy, method. Not a minute wasted, not an action that doesn't compound. You have made an art of this. Every hour yields more than it should.",
+    effect:"+3 AP per week. All single actions -1 AP cost (minimum 0).",
     passiveBonus:0, apBonus:3, gainMult:0, requires:["research_budget"] },
 
   { id:"dinner_residence", tier:4, cost:700, category:"social", label:"🏡 Home Hospitality",
-    desc:"Students can come to your home for extended dinner events.",
+    desc:"The invitation home — an evening that begins with drinks and runs until the food is gone and nobody quite wants to leave. Multiple guests, a long table, a kitchen that has been working since afternoon. The most intimate setting available.",
     effect:"Unlocks 'Home Dinner Party' (3 girls, evening-long event). Dinner gain x1.5.",
     requires:["dinner_private"], passiveBonus:0, apBonus:0, gainMult:0, unlocks:["dinner_party"] },
 
-  { id:"dinner_accessible", tier:4, cost:700, category:"social", label:"♿ Accessible Dining",
-    desc:"A private luxury dining suite with custom arrangements. No standard seating — designed around the guest. Only suitable for students who find regular restaurants inconvenient.",
-    effect:"Unlocks 'The Atelier' — a specialty venue for students at stage 6+. Largest gain range of any venue.",
+  { id:"dinner_accessible", tier:4, cost:700, category:"social", label:"♿ Bespoke Dining Suite",
+    desc:"A private luxury dining suite configured with no standard seating — custom arrangements, wide custom chairs, everything designed around the guest rather than the other way around. Reserved for students for whom regular restaurants have become inconvenient.",
+    effect:"Unlocks 'The Atelier' — specialty venue for stage 6+ students. Largest gain range of any venue.",
     requires:["dinner_private"], passiveBonus:0, apBonus:0, gainMult:0 },
 
-  // ── TIER 5: 1200 lbs total gained ────────────────────────────
-  { id:"full_environment", tier:5, cost:1200, category:"environment", label:"🌟 Perfect Environment",
-    desc:"Everything optimised for comfort and abundance. Students never want to leave.",
-    effect:"+5 passive lbs/week for all. The classroom has become a destination.",
-    classReaction:[
-      "Brittany texts Jasmine: 'I live here now.' Jasmine texts back: 'Same.'",
-      "Emma has moved all her research materials in. She has not left in four days.",
-      "Destiny's setup is now a permanent fixture of the room.",
-      "Priya has redesigned her schedule around the room's food availability.",
-      "Tiffany has started hosting chapter meetings here. No one objects.",
-      "Maya sits in the centre of the room now. She fills a wide, reinforced armchair completely.",
-      "The dining hall has seen a noticeable drop in attendance. They have complaints.",
-    ],
-    passiveBonus:5, apBonus:0, gainMult:0, requires:["dedicated_suite","full_catering"] },
+  { id:"luxury_quarters", tier:4, cost:700, category:"environment", label:"🛏️ Luxury Quarters",
+    desc:"Bespoke furnishings custom-ordered for the suite — a deep, wide daybed, oversized armchairs, everything upholstered in something that costs more than it needs to. Stage 5+ students practically live here now. The ordinary world has started to feel insufficient by comparison.",
+    effect:"+20% to all gains for stage 5+ students. The environment compounds the effect of everything else.",
+    passiveBonus:0, apBonus:0, gainMult:0.20, requires:["blackout_curtains", "dedicated_suite"] },
 
-  { id:"unlimited_ap",     tier:5, cost:1200, category:"efficiency", label:"∞ Total Dedication",
-    desc:"You have restructured your entire professional life around this class.",
-    effect:"+4 AP per week. Max AP cap raised to 20.",
+  { id:"signature_dish", tier:4, cost:700, category:"feeding", label:"👨‍🍳 Signature Dish",
+    desc:"A single dish prepared only for specific students on specific occasions — something so personally calibrated it barely registers as food and registers entirely as event. They talk about it. They come back for it. Once a week, the kitchen produces it. Nobody forgets it.",
+    effect:"+10% to all gains. A weekly powerful feeding event becomes available. Students develop a specific anticipation.",
+    passiveBonus:0, apBonus:0, gainMult:0.10, requires:["dietary_profiling"] },
+
+  { id:"midnight_ritual", tier:4, cost:700, category:"feeding", label:"🌙 Midnight Ritual",
+    desc:"A standing late-night arrangement — the suite unlocked, food waiting, the invitation open. Students arrive in ones and twos in the quiet hours, when they're at their least guarded, their hungriest, their most comfortable with surrender. Session capacity expands accordingly.",
+    effect:"Session capacity +20. +10% to all gains. Late-night private sessions become distinctly productive.",
+    passiveBonus:0, apBonus:0, gainMult:0.10, requires:["luxury_pantry"], sessionCapBonus:20 },
+
+  { id:"subliminal_priming", tier:4, cost:700, category:"psychology", label:"🌀 Subliminal Priming",
+    desc:"Environmental and behavioral conditioning combined into a seamless system — the smell of the room, the music, the temperature, the language used, the timing of everything. The student sits down and the environment is already working. By the time food appears, the decision has already been made.",
+    effect:"+20% to all gains. The environment itself becomes an active feeding tool.",
+    passiveBonus:0, apBonus:0, gainMult:0.20, requires:["resistance_calibration"] },
+
+  { id:"trust_architecture", tier:4, cost:700, category:"psychology", label:"🏗️ Trust Architecture",
+    desc:"Deep structural trust built over months of precise, patient work — trust not in any single interaction but in the relationship itself, in the space, in the professor as someone who has only ever made them feel good. This trust is load-bearing. It holds everything up.",
+    effect:"+10% to all gains. Students with high relationship gain significantly more from all interactions.",
+    passiveBonus:0, apBonus:0, gainMult:0.10, requires:["narrative_reshaping"] },
+
+  { id:"inner_circle_mastery", tier:4, cost:700, category:"social", label:"💫 Inner Circle Mastery",
+    desc:"The inner circle fully consolidated — devoted students whose loyalty has become structural, whose influence on each other is now a resource. Their enthusiasm is contagious. Their presence drives the rest. The devoted ones create the culture that draws the others in.",
+    effect:"+10% to all gains. Devotion-state bonuses enhanced. The inner circle amplifies all other effects.",
+    passiveBonus:0, apBonus:0, gainMult:0.10, requires:["group_dynamics", "special_occasions"] },
+
+  { id:"deep_cover", tier:4, cost:700, category:"efficiency", label:"🕵️ Deep Cover",
+    desc:"Not just protected — invisible. Your professional reputation is impeccable, your administrative relationships are excellent, and anything that might draw attention has been systematically redirected before it arrives. The scrutiny that does appear melts before it can form.",
+    effect:"Scrutiny from all actions reduced by 30%.",
+    passiveBonus:0, apBonus:0, gainMult:0, requires:["institutional_cover"], scrutinyReduce:0.30 },
+
+  // ── TIER 5 ───────────────────────────────────────────────────────────────────
+
+  { id:"full_environment", tier:5, cost:1200, category:"environment", label:"🌟 Perfect Environment",
+    desc:"Every variable optimised, every surface considered, every comfort provided before it's thought of. The room has become a closed world — one where food is constant, comfort is total, and the outside becomes abstract. Students don't leave if they can help it. They arrange their lives around staying.",
+    effect:"+5 passive lbs/week for all. The classroom is now a destination.",
+    classReaction:[
+      "Brittany texts Jasmine: 'I live here now.' Jasmine texts back: 'same.' Neither of them is joking.",
+      "Emma moved all her research materials in. She has not left in four days. She says it's for focus.",
+      "Destiny's full streaming setup is here now. It is not going back.",
+      "Priya has redesigned her entire weekly schedule around the room's food availability. The schedule is very good.",
+      "Tiffany has started hosting chapter meetings here. The chapter agreed immediately. No one questioned it.",
+      "Maya sits in the centre of the room now. She fills a wide, reinforced armchair completely and looks like she is exactly where she belongs.",
+      "The dining hall has filed a complaint about attendance numbers. You file it in the correct location.",
+    ],
+    passiveBonus:5, apBonus:0, gainMult:0, requires:["dedicated_suite", "full_catering"] },
+
+  { id:"unlimited_ap", tier:5, cost:1200, category:"efficiency", label:"∞ Total Dedication",
+    desc:"Your professional life has been entirely restructured. Everything not directly relevant has been delegated, automated, or eliminated. Your schedule exists now as a support system for this work and this work alone. Every hour counts. Every hour is here.",
+    effect:"+4 AP per week. Maximum AP cap raised to 20.",
     passiveBonus:0, apBonus:4, gainMult:0, requires:["ap_mastery"] },
+
+  { id:"grand_banquet_protocol", tier:5, cost:1200, category:"feeding", label:"🏆 Grand Banquet Protocol",
+    desc:"A formal event structure — advance planning, multiple courses, a guest list, a room prepared over two days, service that rivals a private restaurant. The Grand Banquet is an occasion. Students mark their calendars. They arrive hungry on purpose. The gains are not modest.",
+    effect:"+20% to all gains. Unlocks the Grand Banquet class event — the most productive feeding event available.",
+    passiveBonus:0, apBonus:0, gainMult:0.20, requires:["full_catering", "midnight_ritual"], unlocks:["grand_banquet"] },
+
+  { id:"total_influence", tier:5, cost:1200, category:"psychology", label:"🧠 Total Influence",
+    desc:"The class as a single unit, moving together — not because they're the same, but because the environment and the relationships and the framing have all aligned. Appetite is mutual. Comfort is shared. The group reinforces the individual and the individual reinforces the group. It runs itself.",
+    effect:"+1 passive lb/week for all. +15% to all gains. The class has become its own feeding ecosystem.",
+    passiveBonus:1, apBonus:0, gainMult:0.15, requires:["subliminal_priming", "trust_architecture"] },
+
+  { id:"social_empire", tier:5, cost:1200, category:"social", label:"👑 Social Empire",
+    desc:"The social architecture complete — every relationship mapped, every dinner venue known, every student connected to every other through a web of shared meals and shared comfort. Events are executed flawlessly. Every gathering feeds into the next. The machine runs.",
+    effect:"+10% to all gains. All social events execute at maximum effectiveness. Social momentum is self-sustaining.",
+    passiveBonus:0, apBonus:0, gainMult:0.10, requires:["dinner_residence", "inner_circle_mastery"] },
+
+  // ── TIER 6: PRESTIGE ─────────────────────────────────────────────────────────
+
+  { id:"legendary_host", tier:6, cost:2000, category:"prestige", label:"⭐ Legendary Host",
+    desc:"Your name is spoken in certain circles as a host whose dinners are an experience — an evening of food and conversation that people reference months later, that they describe to people who weren't there. The reputation is real. It is earned. Every dinner event is now what it always aspired to be.",
+    effect:"+10% to all gains. All dinner events execute at legendary quality. Dinner gains significantly elevated.",
+    passiveBonus:0, apBonus:0, gainMult:0.10, requires:["social_empire", "grand_banquet_protocol"] },
+
+  { id:"the_arrangement", tier:6, cost:2000, category:"prestige", label:"🔒 The Arrangement",
+    desc:"Institutional protection assembled quietly over years — not through any single relationship but through a structure of plausible explanations, useful alliances, genuine goodwill, and the careful management of who knows what. The umbrella is very large and very sturdy. It holds.",
+    effect:"Scrutiny from all actions reduced by 40%. Administrative heat essentially eliminated.",
+    passiveBonus:0, apBonus:0, gainMult:0, scrutinyReduce:0.40, requires:["deep_cover", "full_environment"] },
+
+  { id:"master_feeder", tier:6, cost:2000, category:"prestige", label:"🎓 Master Feeder",
+    desc:"This is what mastery looks like. Not force, not accident — intention refined to precision over the full arc of a career. You know each student completely. You know what works and why. You know what they need before they do. You provide it. They bloom. The art is complete.",
+    effect:"+2 passive lbs/week for all. +25% to all gains. The pinnacle of the craft.",
+    passiveBonus:2, apBonus:0, gainMult:0.25, requires:["grand_banquet_protocol", "total_influence"] },
+
+  { id:"devotion_engine", tier:6, cost:2000, category:"prestige", label:"💗 Devotion Engine",
+    desc:"Devotion that has become self-sustaining — it no longer requires maintenance because it has become identity. The devoted students don't just stay; they recruit, they encourage, they create the conditions that make others settle. The system has developed its own momentum. You just keep it fed.",
+    effect:"+1 passive lb/week for all. +10% to all gains. Devotion states strengthen and persist without maintenance.",
+    passiveBonus:1, apBonus:0, gainMult:0.10, requires:["trust_architecture", "inner_circle_mastery"] },
+
+  { id:"the_institution", tier:6, cost:2000, category:"prestige", label:"🏛️ The Institution",
+    desc:"Not a class. Not a project. An institution. A thing with its own gravity, its own culture, its own logic of continuation. Students have come and grown enormous and never quite left. New ones arrive and the environment receives them and begins its work. You built this. It will outlast your tenure. It may outlast you.",
+    effect:"+5 passive lbs/week for all. +3 AP per week. The endgame. Everything at full power simultaneously.",
+    passiveBonus:5, apBonus:3, gainMult:0, requires:["master_feeder", "the_arrangement"] },
+
 ];
 
 const SKILL_CATEGORIES = {
@@ -1707,6 +2092,8 @@ const SKILL_CATEGORIES = {
   feeding:     { label:"🍽️ Feeding",     color:"#402010" },
   efficiency:  { label:"⚡ Efficiency",  color:"#302050" },
   social:      { label:"❤️ Social",      color:"#401030" },
+  psychology:  { label:"🧠 Psychology",  color:"#205040" },
+  prestige:    { label:"✨ Prestige",    color:"#504010" },
 };
 
 // ── DINNER EVENT DATA ──────────────────────────────────────────
@@ -2971,7 +3358,8 @@ export default function ProfessorSim(){
 
   const addScrutiny=(n)=>{
     const mult=(1-(professorProfile?.traits?.includes("discreet")?0.35:0))
-              *(1-(professorProfile?.subject==="philosophy"?0.2:0));
+              *(1-(professorProfile?.subject==="philosophy"?0.2:0))
+              *skillScrutinyReduce;
     const actual=Math.max(0,Math.round(n*mult));
     if(actual>0) setAdminScrutiny(prev=>Math.min(100,prev+actual));
   };
@@ -3105,6 +3493,32 @@ export default function ProfessorSim(){
       }
     });
 
+    // ── doubleDown: check milestones for all helped students ───────────
+    updated=updated.map(s=>{
+      const helpers=s.gainHelpers||[];
+      if(!helpers.length) return s;
+      let newS={...s};
+      GOSSIP.forEach(g=>{
+        if(g.targetId!==s.id||!helpers.includes(g.speakerId)) return;
+        if(!g.doubleDown) return;
+        const speakerName=updated.find(st=>st.id===g.speakerId)?.name||`Student ${g.speakerId}`;
+        g.doubleDown.forEach(dd=>{
+          const key=`${g.speakerId}_at${dd.atLbs}`;
+          if(s.lbs>=dd.atLbs&&!(s.doubleDownFired||[]).includes(key)){
+            newS={...newS,
+              gainMultiplier:(newS.gainMultiplier||1)*(1+dd.addMult),
+              doubleDownFired:[...(newS.doubleDownFired||[]),key],
+            };
+            setTimeout(()=>{
+              push(`🔥 ${speakerName} doubles down on ${s.name} — now at ${dd.atLbs} lbs!`);
+              push(`   "${dd.line}"`);
+            },120);
+          }
+        });
+      });
+      return newS;
+    });
+
     const evs=collectEvents(updated);
     setStudents(updated);
     // Admin notices visibly large students
@@ -3118,6 +3532,7 @@ export default function ProfessorSim(){
     // Devoted students passively cover scrutiny and buffer Vaughan
     const devotedCount=updated.filter(s=>getTier(s.relationship).id>=3).length;
     if(devotedCount>0) setAdminScrutiny(prev=>Math.max(0,prev-devotedCount));
+    if(skillScrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-skillScrutinyPassiveReduce));
     // Vaughan weekly tick
     if(vaughan&&!vaughanAlly){
       const suspBase=Math.max(0,1+Math.floor(visibleCount*0.3)-devotedCount*2);
@@ -3701,7 +4116,7 @@ export default function ProfessorSim(){
     setSessionLog([]);
     setPrivateSession({
       student:s,phase:"venue",venue:null,foods:[],totalGain:0,
-      fullness:0,maxFullness:100+hist.capacityBonus,
+      fullness:0,maxFullness:100+hist.capacityBonus+skillSessionCapBonus,
       encouragementsUsed:[],toleranceBuffer:0,sessionNum:hist.count+1,
     });
   };
@@ -3783,6 +4198,9 @@ export default function ProfessorSim(){
   const skillPassiveBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.passiveBonus,0)+profPassiveBonus;
   const skillApBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.apBonus,0);
   const skillGainMult=(1+SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.gainMult,0))*profGainMult;
+  const skillScrutinyReduce=1-Math.min(0.90,SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+(sk.scrutinyReduce||0),0));
+  const skillScrutinyPassiveReduce=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+(sk.scrutinyPassiveReduce||0),0);
+  const skillSessionCapBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+(sk.sessionCapBonus||0),0);
   const dinnerUnlocked=unlockedSkills.includes("dinner_basic");
 
   // ── EFFECTIVE ACTIONS (applying unlocked skill effects) ──────
@@ -4902,10 +5320,10 @@ export default function ProfessorSim(){
             // Node layout: 4 columns (categories), 5 rows (tiers)
             // Each cell: col index, row index -> pixel position
             const COL_W=240, ROW_H=170, PAD_X=30, PAD_Y=50;
-            const CATS=["environment","feeding","efficiency","social"];
-            const CAT_COLORS={"environment":"#3a8060","feeding":"#804020","efficiency":"#304080","social":"#802040"};
-            const TIERS=[1,2,3,4,5];
-            const TIER_COSTS=[50,150,350,700,1200];
+            const CATS=["environment","feeding","efficiency","social","psychology","prestige"];
+            const CAT_COLORS={"environment":"#3a8060","feeding":"#804020","efficiency":"#304080","social":"#802040","psychology":"#206050","prestige":"#806010"};
+            const TIERS=[1,2,3,4,5,6];
+            const TIER_COSTS=[50,150,350,700,1200,2000];
             // Build node positions — single column for active category
             const nodes=SKILL_TREE
               .filter(sk=>sk.category===skillCat)
@@ -5100,6 +5518,9 @@ export default function ProfessorSim(){
                           {hasSkill("full_catering")&&<div style={{fontSize:11,color:"#60d090"}}>🍾 On-Demand Feast unlocked</div>}
                           {hasSkill("group_dynamics")&&<div style={{fontSize:11,color:"#60d090"}}>👥 Group Dinner unlocked</div>}
                           {hasSkill("dinner_accessible")&&<div style={{fontSize:11,color:"#d0a030"}}>🌟 The Atelier unlocked</div>}
+                          {skillScrutinyReduce<1&&<div style={{fontSize:11,color:"#a0d0e0"}}>🔇 -{Math.round((1-skillScrutinyReduce)*100)}% scrutiny gain</div>}
+                          {skillScrutinyPassiveReduce>0&&<div style={{fontSize:11,color:"#a0d0e0"}}>🛡️ -{skillScrutinyPassiveReduce} scrutiny/week</div>}
+                          {skillSessionCapBonus>0&&<div style={{fontSize:11,color:"#d0a0e0"}}>🌙 +{skillSessionCapBonus} session capacity</div>}
                           <div style={{fontSize:10,color:"#5a3070",marginTop:3}}>{unlockedSkills.length} / {SKILL_TREE.length} skills</div>
                         </div>
                       }
