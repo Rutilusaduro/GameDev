@@ -146,7 +146,7 @@ const STAGE_REACTIONS = {
   bookworm:["She weighs herself in the library bathroom and immediately searches PubMed. Underweight. A paper idea forms.","Focused entirely on her thesis. Barely notices food.","Library snacks are a perfectly reasonable study aid.","My chair squeaks now. Must be a loose bolt.","Had to get a new desk chair. The armrests were digging in.","Research into caloric science has been very… hands-on.","Found a paper correlating body fat with cushioning for long study sessions. Compelling.","Started studying from home. Libraries are so far.","Online classes only now. I've never been more productive.","Biggest brain in the department. Also the biggest everything else.","Dissertation is finished. Just going to sit here and be massive."],
   influencer:["Posts a 'delicate era' selfie. Comments are alarmed. She's conflicted. Ordering a large meal.","Posts fitness content every 3 hours.","'Soft era' content performing surprisingly well.","'Body neutrality era' is my brand now.","Followers went UP. They love the glow-up content.","BBW influencer now. Monetized and thriving.","Just hit 500k. The algorithm loves me like this.","Gaining journey content is viral. Book deal incoming.","Can barely hold the phone but my assistant films for me.","I basically run the fat acceptance corner of the internet.","I am the content. The content is me."],
   athlete:["Fastest times in years, technically. Coach is asking questions she doesn't have answers for.","Fastest girl on the track team. Eats like a horse anyway.","PRs slipping. Probably overtraining.","Cut from varsity. 'Weight concerns.' Rude.","Used to be able to do pull-ups. Now I mostly watch.","Gym membership cancelled. The treadmills were making a noise.","Incredible core strength. It's just buried now.","Old coach came by. I think she cried. I don't know why.","The couch is the only sport I play now. I'm very good at it.","Former teammates came to visit. They are very small compared to me.","I am the biggest thing that has ever sat on this street."],
-  artsy:["Sketches her own wrist — the bones very visible. Files it under 'interesting.' Eats immediately after.","Always in paint-splattered overalls. Ethereal energy.","Started painting still lifes of food. 'Inspired' she says.","Subjects are getting bigger. So is the artist.","Switched to sculpting. Clay is more 'tactile.' So am I.","Work explores 'abundance themes.' Yes.","Gallery show: 'The Body as Canvas.' I am the canvas.","Critics call my aesthetic 'opulent.' They mean me, I think.","Too big to move my own sculptures. I direct others now.","Artist-in-residency ended. Still here.","I have transcended. I am art."],
+  artsy:["Sketches her own wrist — the bones very visible. Files it under 'interesting.' Eats immediately after.","Always in paint-splattered overalls. Ethereal energy.","I've been doing a lot of still lifes of food lately. When people ask what inspired the shift, I say 'inspiration' and leave it at that.","Subjects are getting bigger. So is the artist.","Switched to sculpting. Clay is more 'tactile.' So am I.","My work is about abundance now — not metaphorically, or also metaphorically, but very literally. I've stopped being subtle about it.","Gallery show: 'The Body as Canvas.' I am the canvas.","Critics call my aesthetic 'opulent.' They mean me, I think.","Too big to move my own sculptures. I direct others now.","Artist-in-residency ended. Still here.","I have transcended. I am art."],
   gamer:["Her character weighs more than her now. Ordered double ramen to address this. It's a start.","Energy drinks, ramen, 14-hour sessions. It's a lifestyle.","Desk chair is suddenly uncomfortable. Upgrading to a gaming throne.","New gaming chair rated for 300 lbs. 'Future-proofing,' I said.","Stream viewers keep donating food delivery to my address. I accept.","Sponsored by a snack company. This is my dream life.","Setup includes a minifridge within arm's reach.","Standing is optional. My character does the moving for me.","Viewers call me 'Queen.' Fridge on either side of my chair.","Most consecutive hours gaming record. And most snacks consumed.","Final form achieved. One with the beanbag."],
   sorority:["Dress falls off her shoulder at chapter. Sisters are concerned. She accepts every offered snack.","Always camera-ready, salad for lunch, wine on weekends.","Brunch calories 'don't count.' Brunch is four times a week.","Sisters staged an intervention. I staged a pizza party.","Dropped the diet talk. Added a second dessert.","I am now the 'fun one' of the house. I was always the fun one.","Formal dress had to be custom ordered. Worth it.","Didn't fit in the chapter room chair. Brought my own.","Hosting all events now because I prefer not to travel.","House voted me 'most comfortable to be around.' Literally.","I have become the sorority house. Spiritually."],
   overachiever:["Clinically underweight per her personal BMI tracker. Corrective meal schedule implemented immediately.","4.0 GPA, two internships, varsity, student council. Also stressed.","Stress eating is a documented response. She's documented it.","Self-care means a full meal between each scheduled activity.","Dropped one internship. 'Work-life balance.' Work is eating now.","Thesis on metabolic adaptations. Primary source: herself.","GPA still 3.9. Everything else has changed dramatically.","Academic advisor asked if she was 'okay.' She said 'thriving.'","Graduated early. Currently in bed. Victorious.","Plans to pursue a PhD. Remotely. From this spot.","She has achieved everything. Now she just achieves mass."],
@@ -2544,6 +2544,15 @@ const EVOLVED_REACTIONS = {
     "Cultural ambassador is the phrase they use. I prefer 'someone who ate everything and wrote it all down.'",
     "I have tasted everything. I have grown into everything. The journey and the destination are the same.",
   ],
+  // ── BOOKWORM alt path ────────────────────────────────────────────
+  ff_author:[
+    "I've been writing. The character is fictional. She happens to be a cheerleader and she happens to gain weight in chapter three. I have genuinely no idea where I got the idea.",
+    "Posting anonymously. Fifteen thousand readers now. The chapter where the bookworm character gets stuck in her study carrel has a four-star average on the reaction tracker. I wrote her very carefully.",
+    "Someone in class quoted a line from the story in passing. They didn't look at me. I ate an entire dinner thinking about whether they knew.",
+    "Three hundred thousand words posted. Some of it is more honest about what I want than anything I've said out loud. The fandom writes their own versions. I read them late at night.",
+    "The most popular character is based on myself. She gets everything she wants. The readership responds very well to this. So do I.",
+    "The fiction and the body are the same project. I've known this for a while. The writing is just the form the knowing takes.",
+  ],
 };
 
 const EVOLVED_DIARY = {
@@ -2706,6 +2715,14 @@ const EVOLVED_DIARY = {
     `Two book deals. One here, one at home. Both publishers want the same story from two different angles. I can give them that. The story is about distance and food and what you carry across both. I know it very well. I am it.`,
     `Cultural ambassador. It's on a press release somewhere. I'm someone who ate everything in one city while thinking about everything she left behind in another. The food was always the bridge. I've grown to fill the bridge.`,
     `I've tasted everything. The list is documented, the notes are extensive, the body is the record of every meal. I came here a stranger and grew into something that belongs here and to home simultaneously. The eating made that possible. It always does.`,
+  ],
+  ff_author:[
+    `The character started as someone else. Or I told myself that. She's a literature student who gains weight over the course of the story — slowly, without apology — and the people around her find it beautiful and bring her food and want her to keep growing. I spent four hours on a single scene where someone notices how soft her belly has become and tells her. I posted the first chapter at 2am and couldn't sleep. There were forty-three comments by morning. Forty-three strangers who understood exactly what I'd written.`,
+    `The readership has opinions. Very specific preferences about the rate and distribution of the characters' gain. One commenter left a two-paragraph analysis of the chapter where the cheerleader's uniform finally splits that was more precise than anything my thesis committee has ever said about my actual academic work. I've been thinking about that a lot. I've also been eating more. I don't think these two things are unrelated.`,
+    `A classmate stood behind me on the library steps and said, very quietly, "I've been reading something." I didn't turn around. "It's very good," she said. "I think I know who wrote it." I went home and wrote four thousand words that night. The character based on her gains ten pounds in the new chapter. I consider this a generous tribute.`,
+    `The author account is anonymous but the fiction is not. Everyone I've written about is in it. The gaining is the point. The love that surrounds it is the point — the way the characters grow into themselves and are seen clearly and wanted for exactly what they are. I've stopped pretending I'm writing about imaginary people. I've stopped pretending I'm not one of the characters.`,
+    `Three hundred thousand words. The fandom writes their own versions of the story, and some of those versions are about me — the anonymous author, imagined as the main character, large and cared for and fed. They're not wrong. The character I write most honestly is the one who eats everything and is loved for exactly that. She has been me for a long time.`,
+    `I don't write as much now. Not because I've run out — I haven't — but because the distance between the fiction and the reality has closed. Everything I wrote was true: the gaining, the care, the body as something beautiful rather than something to manage. I wrote it into being. Then I became it. That's the best thing I've ever made.`,
   ],
 };
 
@@ -2870,6 +2887,14 @@ const EVOLVED_OUTFITS = {
     "Cultural bridge attire — something that belongs in two places. She found it. It fits.",
     "Wide, practical, present. Made for someone who is both places at once.",
   ],
+  ff_author:[
+    "Cardigan open, something soft underneath, laptop always nearby. She's found the writing uniform and she doesn't deviate from it. She eats while she writes. The snacks appear and disappear without her noticing.",
+    "An enormous pullover, hair up, the desk organized around two monitors. One for the document, one for the comment section. She checks both with equal seriousness.",
+    "Wide linen trousers and a loose top with pockets — the outfit of someone who has committed fully to desk life. She has a look now. It accommodates everything.",
+    "Custom-ordered wide pieces in soft, dark colors. The desk chair has been upgraded twice. Everything in her space has been chosen to accommodate her completely.",
+    "She dresses for the body she has and the life she's built around it. Everything wide, everything deliberate, everything soft. She looks like what she writes about, which is to say: exactly what she wants.",
+    "She wears what fits. Everything fits because everything is made for her now. The room is made for her. The desk is made for her. She writes surrounded by things that understand what she is.",
+  ],
 };
 
 const EVOLVED_ACTIVITY_TEXT = {
@@ -3033,6 +3058,14 @@ const EVOLVED_ACTIVITY_TEXT = {
     `Cultural ambassador invitation. An official one, from an exchange program. The letter is formal and the title is real. She accepts. The role involves eating across the cities in the program and writing about it. She considers this the most accurate job description she's ever received.`,
     `The last restaurant on the original list. She documented every cuisine she'd set out to find and this is the last one. She goes alone, sits for three hours, orders everything she hasn't tried, and writes for an hour after. The list is complete. She immediately starts a new list.`,
   ],
+  ff_author:[
+    `She hands you a printed chapter — single-spaced, no cover page, the kind of document someone produces when they haven't decided yet if they're sharing or just showing. The protagonist is round and soft and described with unusual attention. The eating scenes are specific. You read it slowly and hand it back. She watches your face the whole time and says nothing. You tell her it's good. She goes home and opens the document and writes for six hours.`,
+    `She sends you a new chapter by email with no subject line. You read it on your phone before bed. The protagonist's body is described at length in a scene you read twice: the belly spilling over a waistband, the thighs wide and warm, the way she takes up space in a chair that's beginning to accommodate her completely. You recognize the figure. You know this body. You close the phone and lie in the dark for a while thinking about what she's decided to say, and how, and why she sent it to you.`,
+    `She shows you her profile page — a pseudonym, five completed chapters, a kudos count climbing past a thousand. The comment section has noticed something. One reader writes: 'I don't know who these characters are based on but I need to know more about Magdalene.' You look at the character description. You know exactly who that is. She's eating a sandwich while you read this. She's very calm. 'The comments are nice,' she says.`,
+    `The latest chapter is the one she's most satisfied with. She marks the passage she wants you to read first — a dense paragraph where the main character undresses and looks in the mirror and doesn't apologize for a single thing she sees. Every line is specific. Every detail earns its place. She watches your face as you read it. You look up when you're done. 'This is good,' you say, and mean it in a way that covers everything. She nods, once, and goes back to her laptop.`,
+    `She reads a passage aloud. You haven't asked her to — she's decided. She finds the page, clears her throat once, and reads with the unhurried attention of someone who has practiced this. The passage is about a woman who looks exactly like her: the weight and the warmth and the specific softness described with the precision of someone who has been paying very close attention for a long time. When she finishes she sets the manuscript down. 'That one's my favorite,' she says. You don't say anything. There's nothing to add.`,
+    `The latest work is the most explicit yet — not in the sense of reaching for excess, but in the sense of refusing to look away. Every line is deliberate. The characters are unmistakably drawn from life. She knows you know this. You sit across from her in the library while she works on the next chapter, watching her face while she writes, and there is something in the way she pauses to think and then types without hesitation that answers every question you might have had about what she's writing and why.`,
+  ],
 };
 
 const EVOLVED_ACTIVITY_META = {
@@ -3056,6 +3089,44 @@ const EVOLVED_ACTIVITY_META = {
   asmr_creator:    { label:"Watch a Recording Session",apCost:1, gainRange:[3,6],  relBonus:12 },
   campus_legend:   { label:"Share a Meal at the Booth",apCost:1, gainRange:[5,10], relBonus:11 },
   food_tourist:    { label:"Join an Expedition",       apCost:1, gainRange:[4,8],  relBonus:10 },
+  ff_author:       { label:"Read Her Latest Chapter",  apCost:1, gainRange:[3,6],  relBonus:12 },
+};
+
+const EVOLVED_FORM_META = {
+  sumo:                 { title:"Sumo Wrestler",        color:"#c0392b" },
+  eating_competitor:    { title:"Circuit Competitor",   color:"#e67e22" },
+  feedee_creator:       { title:"Feedee Creator",       color:"#8e44ad" },
+  body_positive_creator:{ title:"Body Positive Creator",color:"#27ae60" },
+  eating_captain:       { title:"Eating Captain",       color:"#2980b9" },
+  big_squad_captain:    { title:"Squad Reformation",    color:"#16a085" },
+  eating_diarist:       { title:"Eating Diarist",       color:"#9b59b6" },
+  food_researcher:      { title:"Food Researcher",      color:"#2c3e50" },
+  eating_streamer:      { title:"Eating Streamer",      color:"#e74c3c" },
+  speed_eater:          { title:"Speed Eater",          color:"#d35400" },
+  chapter_hostess:      { title:"Chapter Hostess",      color:"#6c3483" },
+  body_positive_greek:  { title:"Greek Pioneer",        color:"#1abc9c" },
+  metrics_eater:        { title:"Metrics Obsessive",    color:"#3498db" },
+  food_scientist:       { title:"Food Scientist",       color:"#2471a3" },
+  installation_artist:  { title:"Installation Artist",  color:"#f39c12" },
+  food_photographer:    { title:"Food Photographer",    color:"#ca6f1e" },
+  anonymous_blogger:    { title:"Anonymous Blogger",    color:"#5d6d7e" },
+  asmr_creator:         { title:"ASMR Creator",         color:"#7d3c98" },
+  campus_legend:        { title:"Campus Legend",        color:"#b7950b" },
+  food_tourist:         { title:"Food Tourist",         color:"#148f77" },
+  ff_author:            { title:"FF Author",            color:"#922b21" },
+};
+
+const EVOLUTION_BUTTON_BLURB = {
+  athlete:(s)=>`You see her in the gym doorway on a Tuesday afternoon, not working out — just standing there looking at the equipment that used to be hers. The pull-up bar. The bench press. None of it fits anymore, not really. She has more mass now than the sport knows what to do with. Her jaw is set, the way it gets when she's about to solve something. You watch her and think: she's still competitive. She just needs a new arena.`,
+  influencer:(s)=>`You walk past her on the quad and she doesn't notice you. She's filming herself on her phone — mouth open to say something, then stopping, deleting, starting again. The angle that used to work doesn't work now. She's bigger, softer, undeniable in ways her old content pretended weren't happening. She deletes the clip again. She doesn't look upset. She looks like someone who knows the answer is somewhere and hasn't found the framing yet. You think you might have an idea.`,
+  cheerleader:(s)=>`You stop by the gym during practice. ${s.name} is standing at the edge of the mat in her old uniform — or most of it, the waist seam split, the fabric at her thighs taut past bearing — watching the squad run through a routine she used to lead. She's not sad about it. The crowd at the open practice is still watching her. Some of them more than they're watching the performance. She's still the most present person in the room. You think about where that kind of presence could go.`,
+  bookworm:(s)=>`You find her in the late stacks at the library, long after the undergrads have gone. There's a notebook open on the table beside her laptop and a half-eaten sandwich she's forgotten about. When she hears you she closes the notebook with a firmness that suggests you just missed something. She doesn't look guilty. She looks like someone managing information carefully. You've seen that look before, when she had a thesis draft she wasn't ready to show. You wonder what she's writing.`,
+  gamer:(s)=>`You glance through her open door without meaning to. She's at her setup, the screen glowing, a game paused mid-level. She's eating — slowly, automatically, the bag of chips just there and going down without her noticing — and she's not looking at the game. She's looking at something on the second monitor, reading something. The room is warm and soft with the ambient light and her presence in it, her body filling the chair, comfortable in a way that suggests the chair has been arranged around her. You think about what she could do with this setup.`,
+  sorority:(s)=>`You walk past the chapter room during a meeting. The door is open. ${s.name} is technically not running things — she graduated from the formal role two months ago — but the room is still orienting itself around her. When she speaks, people write things down. When she pauses, people wait. She's larger now than when she held the title and somehow that makes it more true, not less. After the meeting empties you catch her in the hallway. She looks like someone with a plan that doesn't have a name yet.`,
+  overachiever:(s)=>`You find her planner left open on a library table while she's in the bathroom. You don't mean to read it. The weight gain is charted in a color-coded column alongside her GPA, her sleep, her caloric intake. She is tracking this the way she tracks everything. The numbers are precise and the trend is unmistakable and the color she's chosen for that column is gold. Not warning-red. Gold. You close the planner and wait. When she comes back she sees you saw it and just nods, once, like: yes, that's accurate, what are we going to do with it.`,
+  artsy:(s)=>`You stop by her studio during open hours. The new work is on the wall — three large canvases, all featuring generous female figures. They're not abstractions. They're specific. The lines are loving, the weight is warm, the bodies are real and present and unapologetic. She's standing in front of the largest one with her head tilted, deciding something. She doesn't explain the shift in subject matter when you ask. She says: 'It's what I want to look at.' She says this the way someone says something that is also about themselves. You think about what a larger project might look like.`,
+  quiet:(s)=>`You see her at the campus coffee shop on a Thursday morning, alone at a corner table with her laptop. She's typing quickly, absorbed, the kind of focus she reserves for things that matter. When she looks up and sees you she closes the laptop with one smooth motion, not alarmed but deliberate, and smiles. There's something behind the smile that isn't embarrassment — more like being caught in the middle of something private that hasn't been decided as a secret yet. You think about what she might be writing. You think you might have a better idea of what to do with it than she does.`,
+  transfer:(s)=>`You pass through the dining hall mid-afternoon and the staff behind the counter lights up when ${s.name} walks in behind you. They know her name. They have her order started before she reaches the counter. There's a booth in the corner that other students seem to drift away from, not consciously, just leaving it available in the particular way that space gets left for something or someone that belongs in it. She settles into it and the room adjusts slightly. You watch from across the hall and think: she's become part of this place faster than anyone else ever has.`,
 };
 
 const EVOLVED_SKILL_TREES = {
@@ -3199,6 +3270,13 @@ const EVOLVED_SKILL_TREES = {
     { id:"ft_bookdeal",   tier:4, label:"Two Book Deals",     cost:110, desc:"+1 passive lbs/week. The project is her life.",                             passiveBonus:1 },
     { id:"ft_ambassador", tier:5, label:"Cultural Ambassador",cost:160, desc:"+2 passive, +6 lbs/activity, +4 rel/activity. Both places, one person.",   passiveBonus:2, activityGainBonus:6, activityRelBonus:4 },
   ],
+  ff_author:[
+    { id:"ffa_draft",     tier:1, label:"First Draft",        cost:20, desc:"+5 relationship per activity viewing. She values your opinion.",             activityRelBonus:5 },
+    { id:"ffa_following", tier:2, label:"Growing Readership", cost:40, desc:"+1 passive lbs/week. The writing routine and the eating are inseparable.",   passiveBonus:1 },
+    { id:"ffa_pseudonym", tier:3, label:"The Pseudonym",      cost:70, desc:"Scrutiny -3/week. Nobody can prove the blog is hers.",                      weeklyScrutinyReduce:3 },
+    { id:"ffa_viral",     tier:4, label:"Viral Chapter",      cost:110, desc:"+2 passive lbs/week. The chapter that went everywhere keeps her writing.", passiveBonus:2 },
+    { id:"ffa_canon",     tier:5, label:"Canonical Work",     cost:160, desc:"+3 passive, +6 rel/activity, scrutiny -2/week. Her work defines the genre.",passiveBonus:3, activityRelBonus:6, weeklyScrutinyReduce:2 },
+  ],
 };
 
 const EVOLUTION_OFFER = {
@@ -3224,10 +3302,10 @@ const EVOLUTION_OFFER = {
     },
   },
   bookworm:{
-    intro:(s)=>`${s.name} slides a folder across the table. Inside: two outlines. One is a newsletter. One is an IRB application. 'I've been thinking about what this is,' she says, gesturing at herself with the careful imprecision of someone who hasn't quite found the right words yet. 'And I think it's either literature or science. You choose.'`,
+    intro:(s)=>`${s.name} slides a folder across the table. Inside: two things. One is a newsletter outline. The other is a printed manuscript — she printed it, which means she wants you to hold it — and the cover page has a pseudonym on it that is not her name. She doesn't explain either document. She just looks at you and waits.`,
     paths:{
-      eating_diarist: { label:"The Diarist",    desc:"A newsletter, then a book. Her transformation as literature. Intimate, honest, publishable." },
-      food_researcher:{ label:"The Researcher", desc:"IRB-approved self-study. Academic cover. Institutional backing. The data is extraordinary." },
+      eating_diarist: { label:"The Diarist",  desc:"A newsletter, then a book. Her transformation as literature. Intimate, honest, under her own name — eventually." },
+      ff_author:      { label:"The Author",   desc:"Fanfiction, fat fetish fiction, stories about women who look exactly like the people in her life. Under a pseudonym. For now." },
     },
   },
   gamer:{
@@ -3295,6 +3373,7 @@ const ASCENSION_BRIDGE = {
   asmr_creator:     (s)=>`${s.name} turns off the microphone — the careful, ceremonial way she always does — and sits in the silence for a long time. Then: 'I've been making space for people to be calm,' she says. 'Feeding them something quiet.' She looks at her hands. 'But something is asking me for the opposite of quiet now. Something big.' She looks up. 'I think it's time to answer.'`,
   campus_legend:    (s)=>`${s.name} sits in the booth — the one with her name on the plaque — and looks at the dining hall. 'I came here a stranger,' she says. 'And I became the place.' She's quiet for a long time. 'But a campus is still a small thing. The goddess made something bigger.' She looks at you. 'I think she made it out of me.' She touches the plaque once, gently. 'I'm ready.'`,
   food_tourist:     (s)=>`${s.name} closes the final notebook — the one that started with a map and a list and became something no map could hold — and sets it beside the others. 'I've tasted everything,' she says. 'Every dish, every cuisine, every place I could reach.' She looks at you. 'But there's a flavor I haven't found yet. One that doesn't come from a restaurant.' She's very quiet. 'I think the goddess has been saving it for me.'`,
+  ff_author:        (s)=>`${s.name} closes the manuscript — the full archive, every chapter, printed and bound, the work of years — and holds it in both hands for a moment before setting it down. 'I wrote about all of them,' she says. 'Everyone in that room. What they became. What they're still becoming.' She's quiet. 'And I wrote about myself more than I let anyone see.' She doesn't look at the manuscript. She looks at you. 'The last character I never figured out how to end — the one who kept getting bigger every chapter, the one who was always about to become something beyond the story.' A long pause. 'I think I'm at that page now.'`,
 };
 
 // ── DINNER EVENT DATA ──────────────────────────────────────────
@@ -6940,15 +7019,19 @@ export default function ProfessorSim(){
               <div style={C.grid2}>
                 {students.map(s=>{
                   const st=getStage(s.lbs);
+                  const evMeta=s.evolvedForm?EVOLVED_FORM_META[s.evolvedForm]:null;
+                  const cardBorder=s.ascensionPath==="convergence"?"2px solid #ffffff60":s.ascensionPath==="celestial"?"1px solid #8060c060":s.ascensionPath==="umbral"?"1px solid #80101060":evMeta?`1px solid ${evMeta.color}80`:"1px solid #180830";
+                  const nameColor=s.ascensionPath==="convergence"?"#ffffff":s.ascensionPath==="celestial"?"#c8b0ff":s.ascensionPath==="umbral"?"#ff9090":evMeta?evMeta.color:"#d8a8ff";
                   return(
-                    <div key={s.id} style={{...C.card,border:s.ascensionPath==="convergence"?"2px solid #ffffff60":s.ascensionPath==="celestial"?"1px solid #8060c060":s.ascensionPath==="umbral"?"1px solid #80101060":"1px solid #180830"}} onClick={()=>{setSelectedId(s.id);setView("student")}}>
+                    <div key={s.id} style={{...C.card,border:cardBorder}} onClick={()=>{setSelectedId(s.id);setView("student")}}>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:3}}>
                         <div style={{display:"flex",alignItems:"center",gap:5}}>
-                          <span style={{fontWeight:700,fontSize:15,color:s.ascensionPath==="convergence"?"#ffffff":s.ascensionPath==="celestial"?"#c8b0ff":s.ascensionPath==="umbral"?"#ff9090":"#d8a8ff"}}>{s.name}</span>
+                          <span style={{fontWeight:700,fontSize:15,color:nameColor}}>{s.name}</span>
                           {(()=>{const tier=getTier(s.relationship);return tier.id>0?<span style={{fontSize:12,opacity:0.9}}>{tier.emoji}</span>:null;})()}
                           {s.ascensionPath==="celestial"&&<span style={{fontSize:11,color:"#a080ff"}}>✦{CELESTIAL_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
                           {s.ascensionPath==="umbral"&&<span style={{fontSize:11,color:"#cc4040"}}>🌑{UMBRAL_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
                           {s.ascensionPath==="convergence"&&<span style={{fontSize:11,color:"#ffffff"}}>⚡Singularity</span>}
+                          {!s.ascensionPath&&evMeta&&<span style={{fontSize:10,color:evMeta.color,fontWeight:600}}>✦ {evMeta.title}</span>}
                         </div>
                         <StageTag stage={st}/>
                       </div>
@@ -6976,9 +7059,13 @@ export default function ProfessorSim(){
             return(
               <div>
                 {/* Header card */}
-                <div style={{...C.card,cursor:"default",marginBottom:10}}>
+                {(()=>{const detailEvMeta=s.evolvedForm?EVOLVED_FORM_META[s.evolvedForm]:null; return(
+                <div style={{...C.card,cursor:"default",marginBottom:10,borderColor:detailEvMeta&&!s.ascensionPath?`${detailEvMeta.color}60`:""}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                    <h2 style={{margin:0,color:"#d8a8ff",fontSize:22}}>{s.name}</h2>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <h2 style={{margin:0,color:detailEvMeta&&!s.ascensionPath?detailEvMeta.color:"#d8a8ff",fontSize:22}}>{s.name}</h2>
+                      {detailEvMeta&&!s.ascensionPath&&<span style={{fontSize:11,fontWeight:700,color:detailEvMeta.color,background:`${detailEvMeta.color}22`,borderRadius:6,padding:"2px 8px"}}>✦ {detailEvMeta.title}</span>}
+                    </div>
                     <div style={{display:"flex",gap:6,alignItems:"center"}}>
                       <StageTag stage={st}/>
                       <span style={C.tag("#2a1050","#b080e0")}>{s.personality}</span>
@@ -7029,6 +7116,7 @@ export default function ProfessorSim(){
                     {s.ascensionPath==="convergence"&&<span style={{background:"#222",color:"#fff",borderRadius:8,padding:"2px 7px",fontSize:9,border:"1px solid #fff",fontWeight:700}}>⚡Singularity</span>}
                   </div>
                 </div>
+                );})()}
 
                 {/* Appearance */}
                 <div style={C.infoBox("rgba(70,15,110,0.25)")}>
@@ -7224,21 +7312,28 @@ export default function ProfessorSim(){
                   if(!canOffer&&!hasEvolved) return null;
                   return(
                     <div style={{marginBottom:14}}>
-                      {canOffer&&!hasEvolved&&(
-                        <div style={{background:"rgba(40,10,80,0.5)",border:"1px solid #7030c0",borderRadius:10,padding:12,marginBottom:10}}>
-                          <div style={{fontSize:9,letterSpacing:3,color:"#9040e0",marginBottom:5}}>✦ EVOLUTION AVAILABLE</div>
-                          <div style={{fontSize:12,color:"#c0a0e0",lineHeight:1.7,marginBottom:8}}>
-                            {s.name} has grown into something the original path can't contain. A new direction is possible — and she knows it.
+                      {canOffer&&!hasEvolved&&(()=>{
+                        const blurb=EVOLUTION_BUTTON_BLURB[s.archetype];
+                        return(
+                          <div style={{background:"rgba(40,10,80,0.5)",border:"1px solid #7030c0",borderRadius:10,padding:12,marginBottom:10}}>
+                            <div style={{fontSize:9,letterSpacing:3,color:"#9040e0",marginBottom:5}}>✦ EVOLUTION AVAILABLE</div>
+                            <div style={{fontSize:12,color:"#c0a0e0",lineHeight:1.75,marginBottom:8,fontStyle:"italic"}}>
+                              {blurb?blurb(s):`${s.name} has grown into something the original path can't contain. A new direction is possible.`}
+                            </div>
+                            <button style={{...C.btn("#5a18b0"),width:"100%"}} onClick={()=>openEvolutionModal(s)}>
+                              ✦ Propose a New Direction
+                            </button>
                           </div>
-                          <button style={{...C.btn("#5a18b0"),width:"100%"}} onClick={()=>openEvolutionModal(s)}>
-                            ✦ Propose a New Direction
-                          </button>
-                        </div>
-                      )}
-                      {hasEvolved&&(
-                        <div style={{background:"rgba(30,8,60,0.5)",border:"1px solid #6030b080",borderRadius:10,padding:12}}>
+                        );
+                      })()}
+                      {hasEvolved&&(()=>{
+                        const evFormMeta=EVOLVED_FORM_META[s.evolvedForm];
+                        const borderColor=evFormMeta?`${evFormMeta.color}80`:"#6030b080";
+                        const titleColor=evFormMeta?evFormMeta.color:"#c080ff";
+                        return(
+                        <div style={{background:"rgba(30,8,60,0.5)",border:`1px solid ${borderColor}`,borderRadius:10,padding:12}}>
                           <div style={{fontSize:9,letterSpacing:3,color:"#9040e0",marginBottom:4}}>✦ EVOLVED PATH</div>
-                          <div style={{fontSize:13,fontWeight:700,color:"#c080ff",marginBottom:4}}>{meta?.label||s.evolvedForm}</div>
+                          <div style={{fontSize:13,fontWeight:700,color:titleColor,marginBottom:4}}>{evFormMeta?.title||meta?.label||s.evolvedForm}</div>
                           <button style={{...C.btn("#401890"),opacity:ap<(meta?.apCost||1)?0.4:1,marginBottom:10,width:"100%"}} onClick={()=>doEvolvedActivity(s)}>
                             {meta?.label||"Activity"} ({meta?.apCost||1} AP) · +{meta?.gainRange?.[0]}–{meta?.gainRange?.[1]} lbs
                           </button>
@@ -7265,7 +7360,8 @@ export default function ProfessorSim(){
                             </div>
                           )}
                         </div>
-                      )}
+                        );
+                      })()}
                     </div>
                   );
                 })()}
