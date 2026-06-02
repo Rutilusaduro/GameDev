@@ -302,22 +302,47 @@ const DIARY_ENTRIES = {
   },
 };
 
+// TAP_OUT_DIALOGUE placeholder — will be replaced with agent content
+const TAP_OUT_DIALOGUE = {
+  default:[
+    (s)=>`${s.name} sets her fork down slowly. "I—" She presses a hand to her stomach. "I think I'm done." She breathes carefully. "That was a lot." She doesn't sound disappointed. Just honest.`,
+    (s)=>`${s.name} leans back from the table with the deliberate care of someone managing their own weight. "Okay," she says quietly. "I'm done. I'm genuinely done." She doesn't look unhappy about it.`,
+    (s)=>`${s.name} puts both hands flat on the table. "No more," she says, not unkindly. "I've hit the wall." She exhales slowly, pressing gently at her very full middle. "That was exceptional, but I am finished."`,
+    (s)=>`"No." ${s.name} says it softly, almost fondly. "I'm at absolute capacity. I'd like to sit here for a while." She settles back with the ease of someone who knows exactly where her limits are and has arrived at them with some satisfaction.`,
+  ],
+};
+
 const RANDOM_EVENTS = [
-  { id:"dining_special", text:(s)=>`The dining hall is running an all-you-can-eat special today. ${s.name} stays for three hours.`, gain:[3,8], target:"class" },
-  { id:"stress_week", text:(s)=>`Midterms stress sends ${s.name} straight to the vending machines. She empties two of them.`, gain:[2,6], target:"single" },
-  { id:"food_delivery", text:(s)=>`${s.name} discovers a new delivery app with a first-order discount. She makes several first orders.`, gain:[3,7], target:"single" },
-  { id:"bake_sale", text:()=>`Campus bake sale today. The class buys out most of the table between them.`, gain:[2,5], target:"class" },
-  { id:"pizza_deal", text:()=>`Local pizza place is doing buy-2-get-2 free. The class has collectively ordered fourteen pizzas.`, gain:[4,9], target:"class" },
-  { id:"study_group", text:(s)=>`${s.name}'s study group meets at a restaurant. Academic content: minimal. Food content: extensive.`, gain:[2,6], target:"single" },
-  { id:"food_festival", text:()=>`There's a food festival near campus this weekend. The class returns visibly fuller.`, gain:[4,10], target:"class" },
-  { id:"care_package", text:(s)=>`${s.name} receives a care package from home. Mostly food. Large amounts.`, gain:[3,7], target:"single" },
-  { id:"netflix_binge", text:(s)=>`${s.name} spends the weekend watching a new series. She snacks through all twelve episodes, both seasons.`, gain:[2,6], target:"single" },
-  { id:"class_cancelled", text:()=>`Class cancelled today. Everyone goes to brunch instead. Brunch lasts until dinner.`, gain:[3,7], target:"class" },
-  { id:"holiday_nearby", text:()=>`A nearby holiday means extended dining hall hours. The class takes full advantage.`, gain:[3,8], target:"class" },
-  { id:"potluck_invitation", text:(s)=>`${s.name} gets invited to an off-campus potluck. She brings a dish. She eats five.`, gain:[2,5], target:"single" },
-  { id:"cooking_experiment", text:(s)=>`${s.name} has been experimenting with cooking. She's very enthusiastic. The portions are enormous.`, gain:[2,5], target:"single" },
-  { id:"birthday", text:(s)=>`It's ${s.name}'s birthday this week! The whole class celebrates. There is a lot of cake.`, gain:[5,10], target:"single" },
-  { id:"rainy_weekend", text:()=>`A rainy weekend keeps everyone indoors. The class collectively orders delivery and doesn't move.`, gain:[2,6], target:"class" },
+  { id:"dining_special",   target:"class",  gain:[3,8],
+    text:()=>`The dining hall announces an all-you-can-eat special. The class goes. No one leaves when they should. There is a distinct change in posture all around by the time the hall closes.` },
+  { id:"stress_week",      target:"single", gain:[2,6],
+    text:(s)=>`${s.name} is deep in assignments. The equation is simple: stress in, food out. By Thursday she's finished the contents of her fridge, a bag of chips she didn't remember buying, and most of something she found in a cabinet. She seems fine.` },
+  { id:"food_delivery",    target:"single", gain:[3,7],
+    text:(s)=>`${s.name} finds a new delivery app with an aggressive new-user discount. She exhausts the welcome offer thoroughly. The restaurant calls to confirm the order is correct. It is. She eats all of it.` },
+  { id:"bake_sale",        target:"class",  gain:[2,5],
+    text:()=>`There's a bake sale in the quad. The class doesn't just buy — they buy out. Several students make return trips. The volunteers are impressed. The class returns with crumbs on their clothes and the quiet satisfaction of people who took care of business.` },
+  { id:"pizza_deal",       target:"class",  gain:[4,9],
+    text:()=>`Someone in the group chat finds a pizza deal: buy two, get two free. The logic spiral that follows results in fourteen pizzas arriving at a single dorm suite. Not one slice goes uneaten. The room is warm and quiet by ten pm.` },
+  { id:"study_group",      target:"single", gain:[2,6],
+    text:(s)=>`${s.name}'s study group books a booth at a restaurant. They study for approximately twenty minutes. They eat for three hours. When pressed later, ${s.name} says the academic content was covered. She does not say when.` },
+  { id:"food_festival",    target:"class",  gain:[4,10],
+    text:()=>`There's a food festival in town this weekend. The class goes together and doesn't come back the same. Each student has a story. Most of them involve going back for seconds of something they'd already had twice. The van ride home is very quiet.` },
+  { id:"care_package",     target:"single", gain:[3,7],
+    text:(s)=>`${s.name} receives a package from home. It is almost entirely food — the kind of food that implies a parent who communicates through portions. She calls to say thank you. She does not mention that it's mostly gone already.` },
+  { id:"netflix_binge",    target:"single", gain:[2,6],
+    text:(s)=>`${s.name} finds a series on Friday evening. It is Sunday before she surfaces. She doesn't fully account for what she ate during this period — the snacking was ambient, automatic, barely noticed. The empty bags are her only evidence.` },
+  { id:"class_cancelled",  target:"class",  gain:[3,7],
+    text:()=>`Class is cancelled. No explanation given. The class, with nowhere to be and a collective appetite, goes to brunch. Brunch lasts until dinner. By some logic this becomes dinner too.` },
+  { id:"holiday_nearby",   target:"class",  gain:[3,8],
+    text:()=>`A holiday means extended dining hall hours. The class treats this as an invitation. They go early. They stay late. They make the most of it in the specific way people make the most of things when there is unlimited food and no particular reason to leave.` },
+  { id:"potluck_invitation",target:"single", gain:[2,5],
+    text:(s)=>`${s.name} is invited to a potluck. She brings something she spent actual effort on. Then she eats continuously for three hours and comes home with no leftovers, because the night went that way and she has no complaints.` },
+  { id:"cooking_experiment",target:"single", gain:[2,5],
+    text:(s)=>`${s.name} has decided to learn to cook. She is enthusiastic. The portions she produces are, by any standard, enormous — calibrated, it seems, by someone whose internal sense of 'enough' has recently shifted. She reports the experiments successful.` },
+  { id:"birthday",         target:"single", gain:[5,10],
+    text:(s)=>`It is ${s.name}'s birthday. The class brings cake. Several cakes. There is food, and then more food, and then someone produces a cake they've been hiding. ${s.name} eats with the specific happiness of someone who is being celebrated and has decided to take full advantage of it.` },
+  { id:"rainy_weekend",    target:"class",  gain:[2,6],
+    text:()=>`It rains all weekend. No one goes out. Delivery apps work overtime. The class is collectively, comfortably, productively indoors — horizontal for most of it, eating for most of that, genuinely content in the way only sustained rain and unlimited food can produce.` },
 ];
 
 const INFLUENCE_PAIRS = [
@@ -1920,7 +1945,7 @@ const SKILL_TREE = [
   { id:"dietary_profiling", tier:3, cost:350, category:"feeding", label:"🧬 Dietary Profiling",
     desc:"A comprehensive individual profile for each student — metabolic tendencies, emotional triggers, the specific things that reliably produce another serving. You're not guessing anymore. Every feeding action is engineered.",
     effect:"+10% to all gains. Every action benefits from accumulated personal insight.",
-    passiveBonus:0, apBonus:0, gainMult:0.10, requires:["comfort_archives"] },
+    passiveBonus:0, apBonus:0, gainMult:0.10, tapOutResistance:0.10, requires:["comfort_archives"] },
 
   { id:"luxury_pantry", tier:3, cost:350, category:"feeding", label:"🧺 Luxury Pantry",
     desc:"A fully stocked pantry restocked weekly with the finest ingredients — imported cheeses, premium chocolate, specialty grains, boutique condiments. Nothing mediocre passes through that door. The quality alone drives consumption higher.",
@@ -1935,7 +1960,7 @@ const SKILL_TREE = [
   { id:"resistance_calibration", tier:3, cost:350, category:"psychology", label:"⚖️ Resistance Calibration",
     desc:"Every student has a threshold — a point where they hesitate, a moment where the rational mind pushes back before the body overrides it. You've mapped every one of those thresholds precisely. Now you approach them carefully from just below and apply steady, patient pressure.",
     effect:"+10% to all gains. Student resistance is anticipated and navigated before it manifests.",
-    passiveBonus:0, apBonus:0, gainMult:0.10, requires:["appetite_study"] },
+    passiveBonus:0, apBonus:0, gainMult:0.10, tapOutResistance:0.15, requires:["appetite_study"] },
 
   { id:"narrative_reshaping", tier:3, cost:350, category:"psychology", label:"📖 Narrative Reshaping",
     desc:"The story a person tells about their body is the most powerful force shaping it. You've been gently, patiently rewriting those stories — introducing new characters, different endings, a protagonist who eats freely and feels only good about it.",
@@ -2010,7 +2035,7 @@ const SKILL_TREE = [
   { id:"trust_architecture", tier:4, cost:700, category:"psychology", label:"🏗️ Trust Architecture",
     desc:"Deep structural trust built over months of precise, patient work — trust not in any single interaction but in the relationship itself, in the space, in the professor as someone who has only ever made them feel good. This trust is load-bearing. It holds everything up.",
     effect:"+10% to all gains. Students with high relationship gain significantly more from all interactions.",
-    passiveBonus:0, apBonus:0, gainMult:0.10, requires:["narrative_reshaping"] },
+    passiveBonus:0, apBonus:0, gainMult:0.10, tapOutResistance:0.12, requires:["narrative_reshaping"] },
 
   { id:"inner_circle_mastery", tier:4, cost:700, category:"social", label:"💫 Inner Circle Mastery",
     desc:"The inner circle fully consolidated — devoted students whose loyalty has become structural, whose influence on each other is now a resource. Their enthusiasm is contagious. Their presence drives the rest. The devoted ones create the culture that draws the others in.",
@@ -3275,6 +3300,7 @@ export default function ProfessorSim(){
   // {[studentId]:{count,totalGain,capacityBonus}}
   const [sessionResult,setSessionResult]=useState(null);
   const [sessionLog,setSessionLog]=useState([]);
+  const [pendingDoubleDowns,setPendingDoubleDowns]=useState([]);
   const logRef=useRef(null);
 
   useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
@@ -3493,7 +3519,8 @@ export default function ProfessorSim(){
       }
     });
 
-    // ── doubleDown: check milestones for all helped students ───────────
+    // ── doubleDown: check milestones, queue for player to activate ─────
+    const newPending=[];
     updated=updated.map(s=>{
       const helpers=s.gainHelpers||[];
       if(!helpers.length) return s;
@@ -3505,19 +3532,15 @@ export default function ProfessorSim(){
         g.doubleDown.forEach(dd=>{
           const key=`${g.speakerId}_at${dd.atLbs}`;
           if(s.lbs>=dd.atLbs&&!(s.doubleDownFired||[]).includes(key)){
-            newS={...newS,
-              gainMultiplier:(newS.gainMultiplier||1)*(1+dd.addMult),
-              doubleDownFired:[...(newS.doubleDownFired||[]),key],
-            };
-            setTimeout(()=>{
-              push(`🔥 ${speakerName} doubles down on ${s.name} — now at ${dd.atLbs} lbs!`);
-              push(`   "${dd.line}"`);
-            },120);
+            newS={...newS,doubleDownFired:[...(newS.doubleDownFired||[]),key]};
+            newPending.push({speakerId:g.speakerId,targetId:g.targetId,atLbs:dd.atLbs,addMult:dd.addMult,line:dd.line,targetName:s.name,speakerName});
+            setTimeout(()=>push(`🔥 ${speakerName} is ready to go harder on ${s.name} — activate in Gossip tab!`),120);
           }
         });
       });
       return newS;
     });
+    if(newPending.length) setPendingDoubleDowns(prev=>[...prev,...newPending]);
 
     const evs=collectEvents(updated);
     setStudents(updated);
@@ -3714,6 +3737,16 @@ export default function ProfessorSim(){
   };
 
 
+
+  const activateDoubleDown=(dd)=>{
+    setStudents(prev=>prev.map(s=>{
+      if(s.id!==dd.targetId) return s;
+      return {...s,gainMultiplier:(s.gainMultiplier||1)*(1+dd.addMult)};
+    }));
+    push(`🔥 ${dd.speakerName} doubles down on ${dd.targetName}! (×${(1+dd.addMult).toFixed(2)} multiplier applied)`);
+    push(`   "${dd.line}"`);
+    setPendingDoubleDowns(prev=>prev.filter(p=>!(p.speakerId===dd.speakerId&&p.targetId===dd.targetId&&p.atLbs===dd.atLbs)));
+  };
 
   const unlockSkill=(sk,bypass=false)=>{
     if(!bypass&&!canUnlock(sk)) return;
@@ -4118,6 +4151,7 @@ export default function ProfessorSim(){
       student:s,phase:"venue",venue:null,foods:[],totalGain:0,
       fullness:0,maxFullness:100+hist.capacityBonus+skillSessionCapBonus,
       encouragementsUsed:[],toleranceBuffer:0,sessionNum:hist.count+1,
+      refillRound:0,tappedOut:false,tapOutDialogue:null,
     });
   };
 
@@ -4141,7 +4175,31 @@ export default function ProfessorSim(){
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+scaledGain}));
     push(`🍽️ ${food.label}: +${scaledGain} lbs`);
     setSessionLog(sl=>[...sl,`🍽️ ${food.label} (+${scaledGain} lbs) — ${food.desc}`,`   ${desc}`]);
-    setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:prev.totalGain+scaledGain,fullness:newFullness}));
+    // Check for tap-out
+    const tapProb=fPct<150?0:fPct>=250?Infinity:((fPct-150)/100)*0.90;
+    const adjustedTapProb=tapProb===Infinity?1:Math.max(0,tapProb-skillTapOutResistance);
+    const tapsOut=Math.random()<adjustedTapProb;
+    if(tapsOut){
+      const liveS=students.find(st=>st.id===s.id)||s;
+      const stage=getStage(liveS.lbs);
+      const tapStage=liveS.lbs<160?0:liveS.lbs<240?1:liveS.lbs<320?2:3;
+      const dialogueSet=TAP_OUT_DIALOGUE[s.id]||TAP_OUT_DIALOGUE.default;
+      const tapLine=dialogueSet[tapStage](liveS);
+      setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:prev.totalGain+scaledGain,fullness:newFullness,tappedOut:true,tapOutDialogue:tapLine}));
+      push(`⛔ ${s.name} taps out!`);
+    } else {
+      setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:prev.totalGain+scaledGain,fullness:newFullness}));
+    }
+  };
+
+  const getMoreFood=()=>{
+    const refreshable=PRIVATE_FOODS.filter(f=>f.course==="more"||f.course==="extra").map(f=>f.id);
+    setPrivateSession(prev=>({
+      ...prev,
+      refillRound:(prev.refillRound||0)+1,
+      foods:prev.foods.filter(id=>!refreshable.includes(id)),
+    }));
+    setSessionLog(sl=>[...sl,"🛒 You step out briefly and return with more food. The table fills again."]);
   };
 
   const useSessionEncouragement=(enc)=>{
@@ -4201,6 +4259,7 @@ export default function ProfessorSim(){
   const skillScrutinyReduce=1-Math.min(0.90,SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+(sk.scrutinyReduce||0),0));
   const skillScrutinyPassiveReduce=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+(sk.scrutinyPassiveReduce||0),0);
   const skillSessionCapBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+(sk.sessionCapBonus||0),0);
+  const skillTapOutResistance=Math.min(0.60,SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+(sk.tapOutResistance||0),0));
   const dinnerUnlocked=unlockedSkills.includes("dinner_basic");
 
   // ── EFFECTIVE ACTIONS (applying unlocked skill effects) ──────
@@ -5180,6 +5239,16 @@ export default function ProfessorSim(){
                                 <div style={{fontSize:10,color:"#508050",fontStyle:"italic"}}>{g.helpReason}</div>
                               </div>
                             )}
+                            {/* Pending double-down activations */}
+                            {thisStudentHelping&&pendingDoubleDowns.filter(dd=>dd.speakerId===g.speakerId&&dd.targetId===g.targetId).map((dd,i)=>(
+                              <div key={i} style={{background:"rgba(120,40,0,0.35)",border:"1px solid #c06020",borderRadius:6,padding:"8px",marginTop:6}}>
+                                <div style={{fontSize:10,color:"#ffb060",fontWeight:700,marginBottom:3}}>🔥 Double Down Available — {target.name} reached {dd.atLbs} lbs!</div>
+                                <div style={{fontSize:10,color:"#c08040",fontStyle:"italic",marginBottom:6,lineHeight:1.5}}>{dd.line.length>120?dd.line.slice(0,120)+"…":dd.line}</div>
+                                <button style={{...C.btn("#a03000"),fontSize:11,width:"100%"}} onClick={()=>activateDoubleDown(dd)}>
+                                  🔥 Activate — ×{(1+dd.addMult).toFixed(2)} multiplier on {target.name}
+                                </button>
+                              </div>
+                            ))}
                             {/* Unlock offer */}
                             {canHelp&&(
                               <div style={{background:"rgba(60,20,100,0.35)",border:"1px solid #5a20a0",borderRadius:6,padding:"8px"}}>
@@ -5324,17 +5393,25 @@ export default function ProfessorSim(){
             const CAT_COLORS={"environment":"#3a8060","feeding":"#804020","efficiency":"#304080","social":"#802040","psychology":"#206050","prestige":"#806010"};
             const TIERS=[1,2,3,4,5,6];
             const TIER_COSTS=[50,150,350,700,1200,2000];
-            // Build node positions — single column for active category
-            const nodes=SKILL_TREE
-              .filter(sk=>sk.category===skillCat)
-              .map(sk=>{
-                const row=sk.tier-1;
-                const x=PAD_X+COL_W/2;
-                const y=PAD_Y+row*ROW_H+ROW_H/2;
-                return {...sk,x,y};
-              });
-            const svgW=PAD_X*2+COL_W;
+            // Build node positions — group by tier, lay out horizontally per tier
+            const filteredSkills=SKILL_TREE.filter(sk=>sk.category===skillCat);
+            const byTier={};
+            filteredSkills.forEach(sk=>{if(!byTier[sk.tier])byTier[sk.tier]=[];byTier[sk.tier].push(sk);});
+            const NODE_W=120,NODE_H=52,NODE_GAP=14;
+            const maxPerTier=Math.max(1,...Object.values(byTier).map(g=>g.length));
+            const svgContentW=maxPerTier*(NODE_W+NODE_GAP)-NODE_GAP;
+            const svgW=PAD_X*2+svgContentW;
             const svgH=PAD_Y*2+TIERS.length*ROW_H;
+            const nodes=filteredSkills.map(sk=>{
+              const tierNodes=byTier[sk.tier]||[sk];
+              const idx=tierNodes.indexOf(sk);
+              const count=tierNodes.length;
+              const groupW=count*NODE_W+(count-1)*NODE_GAP;
+              const startX=PAD_X+(svgContentW-groupW)/2+NODE_W/2;
+              const x=startX+idx*(NODE_W+NODE_GAP);
+              const y=PAD_Y+(sk.tier-1)*ROW_H+ROW_H/2;
+              return {...sk,x,y};
+            });
             const hoveredNode=hovered?nodes.find(n=>n.id===hovered):null;
             // Build edges: each node's requires -> parent nodes
             const edges=[];
@@ -5937,18 +6014,38 @@ export default function ProfessorSim(){
                     })}
                   </div>
 
-                  <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                  {/* Tap-out scene */}
+                  {ps.tappedOut&&(
+                    <div style={{background:"rgba(40,10,10,0.8)",border:"1px solid #c03030",borderRadius:8,padding:12,marginBottom:10}}>
+                      <div style={{fontSize:10,letterSpacing:2,color:"#c06060",fontWeight:700,marginBottom:6}}>⛔ SHE TAPS OUT</div>
+                      <div style={{fontSize:12,color:"#e0b0a0",fontStyle:"italic",lineHeight:1.7,marginBottom:10}}>{ps.tapOutDialogue}</div>
+                      <button style={{...C.btn("#602020"),width:"100%"}} onClick={endPrivateSession}>End Session →</button>
+                    </div>
+                  )}
+
+                  {/* Normal footer — hide if tapped out */}
+                  {!ps.tappedOut&&(
+                  <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
                     <div style={{fontSize:11,color:fPct>=100?"#f07050":"#f0a060",fontWeight:700,flex:1}}>
-                      {fPct>=155?"Absolutely packed 🔴"
+                      {fPct>=200?"Well past limits 🔴"
+                      :fPct>=155?"Absolutely packed 🔴"
                       :fPct>=120?"Overfull 🔴"
                       :fPct>=95?"Stuffed 🟠"
                       :fPct>=70?"Full 🟡"
                       :fPct>=40?"Getting warm 🟢"
                       :"Still hungry 🟢"}
+                      {fPct>=150&&<span style={{fontSize:9,color:"#ff7050",marginLeft:6}}>
+                        {fPct>=250?"WILL tap out":"tap-out risk"}
+                        {skillTapOutResistance>0?` (−${Math.round(skillTapOutResistance*100)}% from skills)`:""}
+                      </span>}
                     </div>
+                    {ps.foods.length>0&&(ps.refillRound||0)<2&&(
+                      <button style={{...C.btn("#304060"),fontSize:10}} onClick={getMoreFood}>🛒 Get More</button>
+                    )}
                     <button style={C.btn("#2a6830")} onClick={endPrivateSession}>End Session ✓</button>
                     <button style={C.btn("#333")} onClick={()=>{setAp(a=>a-2);setPrivateSession(null);}}>Leave Early</button>
                   </div>
+                  )}
                 </div>
               )}
             </div>
