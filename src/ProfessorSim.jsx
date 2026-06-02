@@ -299,6 +299,84 @@ const PROFESSOR_RANKS = [
   { min:27, label:"The Architect" },
 ];
 
+const IMMOBILE_REDIRECT = {
+  0:{ // Brittany — cheerleader
+    blob:      "You reach for your keys, then stop. Brittany hasn't left her room in weeks — her thighs press the arms of her reinforced chair, her belly rests warm and settled in her lap, and a restaurant is somewhere between impossible and absurd. She knows you're thinking about dinner. She's already thinking about what you should bring.",
+    celestial: "You consider calling the restaurant, then remember: goddesses don't come to dinner. Dinner comes to them. Brittany's light fills her room from wall to wall, her wings folded against the ceiling, her vast glowing form taking up every corner of the space. Bring something worthy.",
+    umbral:    "She doesn't go out anymore. Going out implies a limit to the hunger, a boundary to the darkness — and there isn't one. Brittany's void fills the room and bends outward. You're going to her, and you're bringing everything you can carry.",
+  },
+  1:{ // Madeline — bookworm
+    blob:      "Madeline documented this, actually. Three weeks ago. She noted, with clinical precision, that she had reached a size where transit to public venues was no longer practical and proposed that you come to her instead. The proposal was filed, annotated, and left on the desk she can barely reach over her belly.",
+    celestial: "You think about the restaurant and then think about Madeline — her golden wings folded across the research papers, her halo making the overhead light redundant, her vast warm form barely contained by the reinforced chair. You know better. She expects you to come to her.",
+    umbral:    "Madeline's notes have grown darker lately. The void that pools around her makes the room cold and her handwriting strange. She documented this too, dispassionately. She doesn't go anywhere now. Things come to her. You are bringing dinner.",
+  },
+  2:{ // Kylie — influencer
+    blob:      "Going to a restaurant would mean cameras, questions, and the walk from car to table that Kylie physically can't make anymore. She solved this a long time ago: everything comes to her. The cameras come to her, the food comes to her, and so do you.",
+    celestial: "Kylie could probably get a restaurant to close for her — the following alone would justify it. But her light fills her apartment from every corner, and she stopped pretending she needs to go anywhere. She'll livestream whatever you bring. You're going to her.",
+    umbral:    "She hasn't gone out in months. The void that follows her would swallow a dining room whole. Kylie doesn't leave anymore, and the content is better for it — everything comes to her now. Including you.",
+  },
+  3:{ // Serena — athlete
+    blob:      "You think about the restaurant for a moment, then think about Serena's thighs alone and let it go. She hasn't left her apartment since last month — the hallway is manageable, the stairs are not. You're bringing dinner. She's already hungry.",
+    celestial: "Serena's divine form doesn't fit in restaurants. Her wings alone would clear a room. The warm light she radiates makes the concept of going somewhere feel small and insufficient. You are going to her, and you'll bring enough.",
+    umbral:    "She doesn't move now. The hunger that replaced her competitive drive has made stillness into its own kind of power. The void is patient. Serena expects you, and she expects you to bring a great deal.",
+  },
+  4:{ // Fiona — artsy
+    blob:      "Fiona hasn't left her studio in three weeks and calls it a residency. Her belly fills the chair in soft warm folds, her arms rest across its expanse, and the work covers every surface around her. She's not going to the restaurant. You're going to her.",
+    celestial: "The studio glows now, and not from the lights. Fiona sits at the centre of it like the subject and the artist and the gallery all at once, her wings half-folded, her vast form radiating warmth. You're not taking her to dinner. You're bringing it.",
+    umbral:    "The studio has gotten cold. The void follows her canvases now, makes the colours go strange. Fiona doesn't go out — the dark she carries would unsettle the other patrons. You're coming to her with food, and she'll accept it without looking up.",
+  },
+  5:{ // Destiny — gamer
+    blob:      "Destiny hasn't moved from her setup in so long the chair has moulded itself to her. Her belly settles between the armrests, her thighs spread to the edges, and the idea of a restaurant is incompatible with every metric of her current lifestyle. You're doing delivery. You know where to find her.",
+    celestial: "The setup is bathed in warm golden light that isn't the monitor. Destiny's wings interfere with the peripherals but she's adapted. She doesn't go anywhere. The game goes to her, the food goes to her, and so do you.",
+    umbral:    "The screen is the only light in the void of the room. Destiny doesn't leave. The darkness that pools around her setup is old now, familiar, and she'd rather you bring what she needs than have anything interrupted. You know the order. You know where she is.",
+  },
+  6:{ // Tiffany — sorority
+    blob:      "Tiffany is the house now — she hosts from her bed, food delivered in waves, the girls coming to her. She stopped going out when the doorframe became a problem, and nobody mentioned it because everyone adjusted around her, which is just how it's always been with Tiffany. You're bringing dinner. She'll tell you where to put it.",
+    celestial: "The house chapter moved to Tiffany's room by unspoken consensus. Her warm golden light fills it from corner to ceiling. She holds court from the centre of it all, vast and radiant and completely settled. You are going to her. Everyone goes to her.",
+    umbral:    "The house has grown quieter since the void started following Tiffany from room to room. The girls still come to her — everything centres on her — but it's colder now. You're bringing food. She expects it.",
+  },
+  7:{ // Priya — overachiever
+    blob:      "Priya filed a report about this three weeks ago. She cited logistics, efficiency metrics, and a cost-benefit analysis of transit versus delivery, and concluded that you coming to her was the optimal solution. The report is on her desk. She is also mostly on her desk. You're going to her.",
+    celestial: "Priya runs the numbers and the numbers agree: divine forms don't commute. Her halo has been useful for illuminating spreadsheets. Her wings are carefully folded so they don't interfere with the monitor. She expects you to bring dinner on time.",
+    umbral:    "Priya has been very efficient about the void. She documented its onset, indexed its spread, and concluded that going out was no longer logistically sound. Things come to her. You are coming to her with dinner, on schedule.",
+  },
+  8:{ // Maya — quiet
+    blob:      "Maya doesn't need to say anything about why she's not going out — you can tell from the doorframe and from the way she's settled into her space like something permanent. She's there. She's warm. She's been waiting. Bring her food.",
+    celestial: "Maya's room is filled with soft golden light from somewhere that isn't the lamp. She doesn't come to the door anymore but she knows you're coming. She doesn't say much. She just waits. Bring something good.",
+    umbral:    "The cold reaches you at the door. Maya doesn't go out. The void she carries is quiet and patient, the same as her. She's there. Bring food.",
+  },
+  9:{ // Chloe — transfer
+    blob:      "Chloe made this place home and now she is this place — they named a spot for her in the dining hall and deliver to her room because she stopped being able to make the walk. She's fine with it. She's happier than she's been in years. You're going to her. She'll be glad you came.",
+    celestial: "The room has the faint warmth of divine light, and Chloe sits at the centre of it like someone who finally stopped feeling temporary. She doesn't go out. This is home. You're coming to her.",
+    umbral:    "The cold has settled into Chloe's room like it belongs there. She's home, completely home, the hunger that replaced homesickness fed by everything that comes to her now. You're going to her with dinner.",
+  },
+  10:{ // Jasmine — cheerleader
+    blob:      "Jasmine hasn't made it down the stairs in two weeks. Her belly fills the entire couch when she sits — warm, soft, spreading wide and forward — and she is emphatically at peace with this. You're bringing dinner. She'll have opinions about the order.",
+    celestial: "Jasmine's light fills the room and flows into the hallway. She sits at the centre of it, vast and warm and absolutely certain of herself. The restaurant isn't where this happens anymore. You're going to her, and you're bringing enough.",
+    umbral:    "Jasmine doesn't go out. The hunger is too large for restaurants now, too dark, too certain. She stays in and things come to her. Including you. Including dinner.",
+  },
+  11:{ // Emma — bookworm
+    blob:      "Emma ordered a reinforced desk chair four months ago and hasn't left its radius since. Her belly rests forward and warm in her lap, papers spread around her, the work continuing regardless. She knows you want to take her to dinner. She'll accept delivery instead and pretend it was her idea.",
+    celestial: "Emma's golden halo has been illuminating the footnotes without the overhead light for weeks. Her vast warm form fills the chair to every edge. She doesn't go anywhere now — things come to her, including you. Bring something scholarly to discuss.",
+    umbral:    "The cold around Emma's desk is old now. The darkness has settled into the papers without disturbing them. She doesn't go anywhere. The void is contained, patient. You're bringing dinner and she'll accept it without looking up from the page.",
+  },
+  12:{ // Roxanne — artsy
+    blob:      "Roxanne hasn't left the studio in a month and refers to it as total immersion. Her belly rounds forward over the worktable, her arms resting across it, and the scale of her is indistinguishable from the scale of the work around her. She's not going anywhere. You're coming to her.",
+    celestial: "The studio is full of light that isn't from the skylights. Roxanne sits in the middle of it — her wings folded into the canvases, her vast form part of the installation now. She doesn't go anywhere. She's the work and the artist. You're bringing dinner.",
+    umbral:    "The void has made Roxanne's paintings go strange and beautiful and dark. She stays in. The cold that follows her would disturb the restaurant and the restaurant would disturb the work. You're coming to her with something good.",
+  },
+  13:{ // Aaliyah — athlete
+    blob:      "Aaliyah hasn't been outside in three weeks. Her body — vast, warm, the muscle still somewhere underneath the soft weight — fills the room in a way she finds completely acceptable. You're bringing dinner. She'll want a lot of it.",
+    celestial: "The room is warm with divine light and Aaliyah's enormous form fills it from wall to wall. Her wings make the ceiling feel low. She doesn't go anywhere now — she receives things instead. Bring enough.",
+    umbral:    "Aaliyah doesn't go out. The void that settled into her room has a stillness to it that suits her. The hunger is absolute. You're going to her with food, and you're bringing everything she'll need.",
+  },
+  14:{ // Sophie — sorority
+    blob:      "Sophie has been hosting chapter from her bed for two months and nobody has suggested meeting anywhere else because the setup is honestly better at hers. She's warm, she's central, she's not going anywhere. You're bringing dinner. She'll already have a preference.",
+    celestial: "Sophie's room is the warmest place on campus — golden, close, full of her light. She presides from the centre of it, vast and certain and completely settled. You go to her. Everyone does.",
+    umbral:    "The cold that follows Sophie through the house has made her room into something quiet and permanent. She stays in. Things come to her. You are coming to her with dinner, and she'll accept it with that particular smile that hasn't changed.",
+  },
+};
+
 const OUTFITS = {
   cheerleader:[
     "Squad jacket hangs off her angular shoulders. Uniform won't stay up. Extremely slight frame.",
@@ -5554,6 +5632,8 @@ export default function ProfessorSim(){
   const [dinnerEndPopup,setDinnerEndPopup]=useState(null);
   const [groupDinnerPicker,setGroupDinnerPicker]=useState(null);
   // groupDinnerPicker: { count:2|3, selected:[] }
+  const [immobileRedirect,setImmobileRedirect]=useState(null);
+  // immobileRedirect: { student, text } | null
   const [hovered,setHovered]=useState(null);
   const [skillCat,setSkillCat]=useState("environment");
   const [classSession,setClassSession]=useState(null);
@@ -6573,10 +6653,38 @@ export default function ProfessorSim(){
     setDinnerEndPopup({ student:s, finalFullness, maxFullness, totalGain, narrative });
   };
 
-  const startDinner=(s)=>{
+  const startDinner=(s,opts={})=>{
+    if(!opts.skipImmobileCheck){
+      const isImmobile=getStage(s.lbs).id>=10||!!s.ascensionPath;
+      if(isImmobile){
+        const tier=s.ascensionPath==="celestial"?"celestial"
+          :(s.ascensionPath==="umbral"||s.ascensionPath==="convergence")?"umbral":"blob";
+        const entry=IMMOBILE_REDIRECT[s.id];
+        const text=entry?.[tier]||`${s.name} can't go anywhere anymore. You'll have to bring the food to her.`;
+        setImmobileRedirect({student:s,text});
+        return;
+      }
+    }
     if(!dinnerUnlocked){push("⚠️ Unlock 'Dining Connections' in the Skill Tree first.");return;}
     if(ap<2){push("⚠️ Need 2 AP for a dinner.");return;}
     const maxFullness=60+getStage(s.lbs).id*14;
+    if(opts.skipImmobileCheck){
+      const path=s.ascensionPath;
+      const venueLabel=path==="celestial"?"✨ The Sanctum":path==="umbral"||path==="convergence"?"🌑 The Void Chamber":"🏠 Her Room";
+      const venueId=path==="celestial"?"sanctum":path==="umbral"||path==="convergence"?"void_chamber":"her_room";
+      const venueDesc=path==="celestial"
+        ?"Golden light fills every corner. She sits at the centre of it, vast and warm and immovable. The chef arrives and says nothing about the wings."
+        :path==="umbral"||path==="convergence"
+        ?"Cold. The room is cold and very still. She sits in the dark and waits. The food arrives. She accepts it without speaking."
+        :`Her room. She is here, she is enormous, she is warm. She knew you were coming.`;
+      const atelier=DINNER_VENUES.find(v=>v.id==="atelier");
+      const homeVenue={id:venueId,label:venueLabel,desc:venueDesc,dishes:atelier?atelier.dishes:[]};
+      setDinnerEvent({student:s,phase:"dishes",venue:homeVenue,dishes:[],conversationUsed:[],totalGain:0,fullness:0,maxFullness,offenseLevel:0});
+      setDinnerLog([`You bring dinner to ${s.name}. ${venueDesc}`]);
+      addScrutiny(2);
+      push(`🏠 Visiting ${s.name}.`);
+      return;
+    }
     setDinnerEvent({ student:s, phase:"venue", venue:null, dishes:[], conversationUsed:[], totalGain:0, fullness:0, maxFullness, offenseLevel:0 });
     setDinnerLog([]);
     addScrutiny(2);
@@ -6661,6 +6769,8 @@ export default function ProfessorSim(){
   // ── GROUP DINNER ─────────────────────────────────────────────
   const startGroupDinner=(studentList)=>{
     if(!dinnerUnlocked){push("⚠️ Unlock 'Dining Connections' first.");return;}
+    const immobile=studentList.find(s=>getStage(s.lbs).id>=10||!!s.ascensionPath);
+    if(immobile){push(`⚠️ ${immobile.name} can't leave her location. Visit her individually to bring food.`);return;}
     const apCost=studentList.length>=3?3:3;
     if(ap<apCost){push(`⚠️ Need ${apCost} AP for a group dinner.`);return;}
     const gStudents=studentList.map(s=>({
@@ -7509,6 +7619,26 @@ export default function ProfessorSim(){
       })()}
 
       {/* GIRL PICKER */}
+      {/* IMMOBILE REDIRECT POPUP */}
+      {immobileRedirect&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:520}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#c05070",marginBottom:6}}>SHE CAN'T GO OUT</div>
+            <div style={{fontSize:11,color:"#9070a0",marginBottom:14}}>
+              {immobileRedirect.student.name} · {getStage(immobileRedirect.student.lbs).label} · {Math.round(immobileRedirect.student.lbs)} lbs
+            </div>
+            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
+              {immobileRedirect.text}
+            </p>
+            <button style={C.btn("#5818a8")} onClick={()=>{
+              const s=immobileRedirect.student;
+              setImmobileRedirect(null);
+              startDinner(s,{skipImmobileCheck:true});
+            }}>Bring her food instead →</button>
+          </div>
+        </div>
+      )}
+
       {groupDinnerPicker&&(
         <div style={C.overlay}>
           <div style={{...C.modal,maxWidth:580}}>
@@ -7520,25 +7650,28 @@ export default function ProfessorSim(){
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:14,maxHeight:340,overflowY:"auto"}}>
               {students.map(s=>{
                 const isSelected=groupDinnerPicker.selected.includes(s.id);
-                const isFull=!isSelected&&groupDinnerPicker.selected.length>=groupDinnerPicker.count;
                 const stg=getStage(s.lbs);
+                const isImmobile=stg.id>=10||!!s.ascensionPath;
+                const isFull=!isSelected&&groupDinnerPicker.selected.length>=groupDinnerPicker.count;
+                const isDisabled=isImmobile||isFull;
                 return(
                   <div key={s.id}
-                    style={{...C.card,cursor:isFull?"default":"pointer",
-                      border:`1px solid ${isSelected?"#7a30d8":isFull?"#180830":"#280840"}`,
-                      background:isSelected?"rgba(80,20,140,0.3)":"rgba(255,255,255,0.03)",
-                      opacity:isFull?0.45:1}}
+                    style={{...C.card,cursor:isDisabled?"default":"pointer",
+                      border:`1px solid ${isSelected?"#7a30d8":isImmobile?"#400020":isFull?"#180830":"#280840"}`,
+                      background:isSelected?"rgba(80,20,140,0.3)":isImmobile?"rgba(60,0,20,0.3)":"rgba(255,255,255,0.03)",
+                      opacity:isDisabled?0.45:1}}
                     onClick={()=>{
-                      if(isFull) return;
+                      if(isDisabled) return;
                       setGroupDinnerPicker(prev=>({
                         ...prev,
                         selected:isSelected?prev.selected.filter(id=>id!==s.id):[...prev.selected,s.id],
                       }));
                     }}>
-                    <div style={{fontWeight:700,fontSize:12,color:isSelected?"#d0a0ff":"#c0a0e0",marginBottom:2}}>{s.name.split(" ")[0]}</div>
+                    <div style={{fontWeight:700,fontSize:12,color:isSelected?"#d0a0ff":isImmobile?"#c05070":"#c0a0e0",marginBottom:2}}>{s.name.split(" ")[0]}</div>
                     <div style={{fontSize:10,color:"#7a5090"}}>{stg.label}</div>
                     <div style={{fontSize:10,color:"#5a3060"}}>{s.lbs} lbs · ❤ {s.relationship}</div>
                     {isSelected&&<div style={{fontSize:9,color:"#a060f0",marginTop:3}}>✓ Selected</div>}
+                    {isImmobile&&<div style={{fontSize:9,color:"#c05070",marginTop:3}}>🔒 Can't leave</div>}
                   </div>
                 );
               })}
