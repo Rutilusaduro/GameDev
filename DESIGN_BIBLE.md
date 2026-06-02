@@ -1,5 +1,38 @@
 # Professor Sim — Design Bible
 
+## Core Development Rules
+
+### Weight Stage Coverage (non-negotiable)
+
+Any constant, dialogue, description, or reaction that relates to weight must have an entry for **every applicable weight stage** — no gaps, no fallback blur. Use "contextually relevant" as the only filter:
+
+- Immobility, doorframe descriptions, floor-pooling mass → Blob (stage 10) and ascension stages only
+- Clothing strain, chair complaints → stage 3+ (Heavy and up)
+- Evolving identity, self-concept shifts → all 11 base stages
+- Ascension-path content → all 5 stages of that path + convergence where applicable
+
+**The full stage ladder:**
+| Stage | Label | Min lbs |
+|-------|-------|---------|
+| 0 | Slight | 80 |
+| 1 | Plump | 120 |
+| 2 | Chubby | 160 |
+| 3 | Heavy | 210 |
+| 4 | Full | 265 |
+| 5 | Hefty | 330 |
+| 6 | Large | 400 |
+| 7 | Massive | 490 |
+| 8 | Enormous | 595 |
+| 9 | Colossal | 695 |
+| 10 | Blob | 820 |
+| Celestial 0–4 | Seed → Apex | 820+ |
+| Umbral 0–4 | Seed → Sovereign | 820+ |
+| Convergence | — | secret |
+
+When writing a new constant: count the entries before committing. If the count doesn't match the applicable range, add the missing ones.
+
+---
+
 ## What This Game Is
 
 This game is about fat women being made fatter, and the way their bodies and personalities transform as they grow. That transformation is the subject, the pleasure, and the point. It is framed as a good thing — desirable, beautiful, erotic — and the game never apologizes for that framing or hedges toward a more acceptable reading.
