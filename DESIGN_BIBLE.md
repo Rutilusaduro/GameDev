@@ -59,3 +59,56 @@ The celestial and umbral paths represent two kinds of overflow: warmth and hunge
 ## EP3: Supernatural
 
 The planned supernatural expansion adds four forms that sit between "college student" and "goddess": werewolf, vampire, half-ghost, djinn. These forms unlock at the Devoted tier and stack on top of an existing evolved identity. They are genuinely monstrous in the classical sense — beautiful and terrible and beyond the ordinary, in ways that are explicitly erotic. The body is no longer entirely human. That is the point.
+
+---
+
+## Reference Style Notes — Source Texts
+
+These notes are synthesized from six source stories shared by the project owner. Internalize this as the descriptive register for all in-game writing, especially for blob-stage and above bodies.
+
+### Physical Description
+
+**Motion is the primary description technique.** Don't describe fat statically. Describe it in motion: the momentum of a belly swinging forward as someone turns, the way flesh continues moving for several seconds after the person stops, the lag and settling after each step. Fat has its own physics — delayed, heavy, present. *"Everything moved on its own for about thirty seconds after each footfall."*
+
+**Sound is a secondary description technique.** The rhythmic swish of thighs passing each other. The labored breath. The creak of a chair accepting weight. The specific three-phase sound of a very heavy step: grunt on the lift, stomp on the land, sigh for recovery. Gut sounds — deep satisfied gurgles after a large meal.
+
+**Clothing failure marks milestones.** Buttons popping off. Seams splitting with specific onomatopoeia. Elastic waistbands giving. The moment a garment fails is a milestone in the character's progression and should be treated as one — with some ceremony and with the character's reaction noted.
+
+**Spatial blocking conveys extreme size better than measurement.** "If you looked at her straight on you'd see mostly belly, her shins below it, maybe her hands resting on the middle." The doorframe she fills completely. The chair that lifts slightly when she stands. These spatial facts communicate scale through the environment reacting to the body.
+
+**Architectural/comparative framing grounds the imagination.** Yoga ball belly. Wrecking-ball gut. Truck-tire thighs. Circus-tent dress. When describing very large bodies, anchor the reader in a known object. The comparison should feel exactly right, not reach.
+
+**Procedural detail creates physicality.** When a very heavy woman gets dressed, gets up from a chair, climbs into a car — describe the actual sequence of events. Tilt onto back, pull pants off, roll to stomach, get shirt over head. The step-by-step makes it real. This is observation, not cruelty.
+
+**Weight numbers as punctuation, not constant tracking.** Don't report weight in every paragraph. Deploy it at emotional high points: when she steps on the scale, when someone says the number out loud, when she says it herself. The number lands harder when it's been earned by the scene.
+
+### Vocabulary Register
+
+Stay in the middle register — neither clinical nor cartoonishly crude. The goal is language that feels lived-in and matter-of-fact, the way a person thinks about their own body.
+
+**Use:** belly, gut, rolls, belly rolls, apron (the hanging overhang), flab, blubber, bulk, softness, roundness, double chin, neck fat, handles, folds. Plus body parts named plainly: thighs, ass, tits, hips, back rolls. Body fat described as warm, heavy, soft, pillowy.
+
+**Avoid:** adipose tissue, BMI, obesity (as a clinical noun used neutrally — the source texts use it but always with some charge), "weight issues," any construction that implies the fat is a disease or mistake.
+
+**The belly is the primary architectural feature.** It is central, forward, dominant. Everything else is organized around it. Breasts and ass are secondary; they often appear as things the belly interacts with or eclipses.
+
+### Tone and Register
+
+**Affectionate grotesque.** The body is funny, inconvenient, physically real, and sympathetic, all at once. Neither pure cringe nor pure celebration. The reader should feel affection for the body being described even when the description is comedic.
+
+**Bathos.** Big emotional moments get punctured by physical reality. Someone makes a declaration of self-acceptance — the bartender delivers her onion rings. Someone achieves a philosophical breakthrough — she's still sitting on her ass unable to get up. This is not mockery; it's honesty about how the body and the spirit coexist.
+
+**Food is never just food.** Every specific food carries an emotional charge. The last chicken tender on the plate is anxiety, restraint, desire. The milkshake made with heavy cream and cake is love. The ordered salad instead of the burger is self-betrayal. Name the specific food. Let it mean something.
+
+**Lists for accumulation.** When describing a very large body comprehensively, or building a sense of excess, use grammatical lists rather than metaphor. "Her lungs screaming and her throat burning, her thighs so tenderly chafed that she was practically salivating at the thought of the gold bond powder, her belly sore from hanging vertically longer than it had in years and her upper arms much the same." Accumulation communicates completeness — nothing left out, every part accounted for.
+
+### Blob Stage and Above — Specific Notes
+
+At blob stage and above, the descriptions should shift toward the architectural. The body has become environmental. She fills a space rather than occupying it. 
+
+- Movement is deliberate, slow, and creates visible effects in the space around her — furniture reacts, floors communicate, doorframes become an issue.
+- Breath and cardiovascular effort are present in almost every scene — not as pathology, but as physical texture.
+- Her size is simply where she is now. The narrative doesn't apologize for it or marvel at it — it observes it with precision and warmth, as a good nature documentary observes landscape.
+- Other people's reactions are data. Note who can't look away and who looks away first.
+- She is aware of her own size with the familiarity of someone who has been living in this body for some time. She knows how much room she takes. She knows what chairs will hold her and which ones she's not going to try. This awareness is practical, not distressed.
+- At the extreme end (600+ lbs, ascended), spatial comparisons to objects should escalate accordingly — the belly that precedes her through doorways, the chair that doesn't exist yet that would hold her comfortably, the way she has to turn sideways and it doesn't actually help.
