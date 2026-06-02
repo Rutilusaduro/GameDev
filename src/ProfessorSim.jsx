@@ -303,36 +303,36 @@ const DIARY_ENTRIES = {
 };
 
 const RANDOM_EVENTS = [
-  { id:"dining_special",   target:"class",  gain:[3,8],
-    text:()=>`The dining hall announces an all-you-can-eat special. The class goes. No one leaves when they should. There is a distinct change in posture all around by the time the hall closes.` },
-  { id:"stress_week",      target:"single", gain:[2,6],
-    text:(s)=>`${s.name} is deep in assignments. The equation is simple: stress in, food out. By Thursday she's finished the contents of her fridge, a bag of chips she didn't remember buying, and most of something she found in a cabinet. She seems fine.` },
-  { id:"food_delivery",    target:"single", gain:[3,7],
-    text:(s)=>`${s.name} finds a new delivery app with an aggressive new-user discount. She exhausts the welcome offer thoroughly. The restaurant calls to confirm the order is correct. It is. She eats all of it.` },
-  { id:"bake_sale",        target:"class",  gain:[2,5],
-    text:()=>`There's a bake sale in the quad. The class doesn't just buy — they buy out. Several students make return trips. The volunteers are impressed. The class returns with crumbs on their clothes and the quiet satisfaction of people who took care of business.` },
+  { id:"dining_special",   target:"class",  gain:[4,9],
+    text:()=>`The dining hall announces a bottomless brunch that, through a combination of slow kitchen turns and no posted end time, runs until dinner. The class does not leave. They settle in. By 7 pm the booths have been rearranged twice and the serving staff has given up trying to close the section. The students return changed: slower, warmer, considerably more substantial.` },
+  { id:"stress_week",      target:"single", gain:[3,7],
+    text:(s)=>`${s.name} has a major paper due Thursday. The pattern is well-established by now: stress arrives, appetite follows. She doesn't track it. She just eats — through the outline, through the rough draft, through the citations. When the paper is submitted she surveys the empty fridge and three takeout containers and decides this is a reasonable trade. She seems fine.` },
+  { id:"chair_incident",   target:"single", gain:[0,0], scrutinyHit:3,
+    text:(s)=>`During your Tuesday lecture, ${s.name}'s chair releases a sharp, definitive crack and gives way. She lands without dignity. She remains on the floor for a moment, assessing the situation, then rises with absolute composure and takes a different seat. She meets no one's eyes. You notice that every student in the row quietly shifts their weight. The moment is not discussed. It absolutely happened.` },
+  { id:"food_delivery",    target:"single", gain:[4,8],
+    text:(s)=>`Three competing delivery apps are all running aggressive new-user deals. ${s.name} has three accounts. The evening becomes a logistics problem of a very specific kind. At one point two drivers arrive simultaneously. She manages the handoff with the efficiency of someone who has been waiting for this exact convergence. Nothing goes unfinished.` },
   { id:"pizza_deal",       target:"class",  gain:[4,9],
-    text:()=>`Someone in the group chat finds a pizza deal: buy two, get two free. The logic spiral that follows results in fourteen pizzas arriving at a single dorm suite. Not one slice goes uneaten. The room is warm and quiet by ten pm.` },
-  { id:"study_group",      target:"single", gain:[2,6],
-    text:(s)=>`${s.name}'s study group books a booth at a restaurant. They study for approximately twenty minutes. They eat for three hours. When pressed later, ${s.name} says the academic content was covered. She does not say when.` },
-  { id:"food_festival",    target:"class",  gain:[4,10],
-    text:()=>`There's a food festival in town this weekend. The class goes together and doesn't come back the same. Each student has a story. Most of them involve going back for seconds of something they'd already had twice. The van ride home is very quiet.` },
-  { id:"care_package",     target:"single", gain:[3,7],
-    text:(s)=>`${s.name} receives a package from home. It is almost entirely food — the kind of food that implies a parent who communicates through portions. She calls to say thank you. She does not mention that it's mostly gone already.` },
-  { id:"netflix_binge",    target:"single", gain:[2,6],
-    text:(s)=>`${s.name} finds a series on Friday evening. It is Sunday before she surfaces. She doesn't fully account for what she ate during this period — the snacking was ambient, automatic, barely noticed. The empty bags are her only evidence.` },
+    text:()=>`Someone in the group chat finds a pizza deal: buy two, get two. The math is straightforward. The scale is not. Twenty-two pizzas arrive at a dorm common room. No one intended this outcome. Everyone participates. The room smells of cheese until Wednesday. No slice survives the night.` },
+  { id:"admin_memo",       target:"class",  gain:[0,0], scrutinyHit:5,
+    text:()=>`A memo from the Dean of Students arrives this week. The subject line reads: "Regarding Wellness Observations in Certain Courses." The building is named. Specific floor is named. Your room number is not named but the description is not ambiguous. The class is not mentioned by name. Everything else is mentioned. You read it three times. Nothing actionable is stated. The feeling it creates is very actionable.` },
+  { id:"food_festival",    target:"class",  gain:[5,11],
+    text:()=>`There's a food festival in the park this weekend. The class decides to go together. They return Sunday evening transformed: quieter, heavier, radiating the specific satisfaction of a weekend spent doing exactly one thing very well. Several students report they "lost track" of their intake. No one sounds sorry. The van home is completely silent.` },
+  { id:"care_package",     target:"single", gain:[4,8],
+    text:(s)=>`A package arrives from ${s.name}'s family. It is enormous. It is almost entirely food — the kind of care that arrives in bulk, in containers marked with masking tape and her childhood nickname. She calls home to say thank you. She does not mention that the pantry is already half depleted. She does not mention a lot of things. She sounds happy.` },
+  { id:"birthday",         target:"single", gain:[6,12],
+    text:(s)=>`It is ${s.name}'s birthday. Someone tells the class. Someone else orders a cake. Then someone else orders a different cake because they couldn't decide. Then someone who didn't know there were already cakes shows up with a third. ${s.name} eats with the abandon of someone who has been given permission to take up exactly as much space as she wants, for one day, and has decided to take it seriously.` },
   { id:"class_cancelled",  target:"class",  gain:[3,7],
-    text:()=>`Class is cancelled. No explanation given. The class, with nowhere to be and a collective appetite, goes to brunch. Brunch lasts until dinner. By some logic this becomes dinner too.` },
-  { id:"holiday_nearby",   target:"class",  gain:[3,8],
-    text:()=>`A holiday means extended dining hall hours. The class treats this as an invitation. They go early. They stay late. They make the most of it in the specific way people make the most of things when there is unlimited food and no particular reason to leave.` },
-  { id:"potluck_invitation",target:"single", gain:[2,5],
-    text:(s)=>`${s.name} is invited to a potluck. She brings something she spent actual effort on. Then she eats continuously for three hours and comes home with no leftovers, because the night went that way and she has no complaints.` },
-  { id:"cooking_experiment",target:"single", gain:[2,5],
-    text:(s)=>`${s.name} has decided to learn to cook. She is enthusiastic. The portions she produces are, by any standard, enormous — calibrated, it seems, by someone whose internal sense of 'enough' has recently shifted. She reports the experiments successful.` },
-  { id:"birthday",         target:"single", gain:[5,10],
-    text:(s)=>`It is ${s.name}'s birthday. The class brings cake. Several cakes. There is food, and then more food, and then someone produces a cake they've been hiding. ${s.name} eats with the specific happiness of someone who is being celebrated and has decided to take full advantage of it.` },
-  { id:"rainy_weekend",    target:"class",  gain:[2,6],
-    text:()=>`It rains all weekend. No one goes out. Delivery apps work overtime. The class is collectively, comfortably, productively indoors — horizontal for most of it, eating for most of that, genuinely content in the way only sustained rain and unlimited food can produce.` },
+    text:()=>`A scheduling conflict cancels your Tuesday session. The class, without an obligation and with a collective appetite, materializes at a nearby brunch spot. Brunch runs long. Long becomes lunch. Lunch becomes a decision to order one more thing. By the time anyone thinks to leave, the restaurant is setting up for dinner. They stay for that too.` },
+  { id:"faculty_overheard",target:"single", gain:[2,5], scrutinyHit:1,
+    text:(s)=>`You overhear two faculty members in the hallway. One is asking about enrollment in your section. "Interesting group of students," the other says. "Particularly this semester." A pause. "You've noticed too." They don't say more. ${s.name} is passing in the corridor behind you. She is wearing a coat that didn't button last year. She does not notice the conversation. You do.` },
+  { id:"bake_sale",        target:"class",  gain:[2,6],
+    text:()=>`The junior class is running a bake sale for a field trip fund. Your students buy out the first round by ten am. Several make return trips when new trays come out. The junior running the table posts about it: "Record day. Bought by the same class, all six times." The post gets sixteen shares before she takes it down. The fundraising goal is exceeded.` },
+  { id:"netflix_binge",    target:"single", gain:[3,7],
+    text:(s)=>`${s.name} finds a show Friday night. It is an eight-season show. She does not know this at the time. She is eating when she starts it — something small, casual, not a meal really. By Sunday morning the snacking has become ambient, the meals have merged, and the bags and containers tell a story she couldn't narrate in real time. She finishes the season. She opens another.` },
+  { id:"rainy_weekend",    target:"class",  gain:[3,7],
+    text:()=>`It rains for four days without stopping. No one goes anywhere. Delivery apps log their busiest weekend of the semester. The class is horizontal, fed, and largely stationary from Friday to Monday — a long comfortable exhale of a weekend that leaves everyone softer, fuller, and faintly reluctant to explain where the time went.` },
+  { id:"cooking_experiment",target:"single", gain:[3,6],
+    text:(s)=>`${s.name} announces she's learning to cook and invites a handful of classmates to "taste test." The tasting runs six hours. She produces five dishes. Everything is made in quantities that suggest she calibrated her portion sense against an entirely different standard. The classmates eat steadily for the duration. They leave late. They leave round. They text her about it the next morning.` },
 ];
 
 const INFLUENCE_PAIRS = [
@@ -2211,6 +2211,49 @@ const RELIGION_RITES = [
     scene:(b)=>`Word has spread beyond your class. Students from other departments make their way to ${b.name}'s chamber — some to look, some to pay respects, some to stay. The devotee count is growing faster than admin can ask questions. They have begun asking questions.` },
 ];
 
+const CELESTIAL_BODY_DESCS = [
+  `The light starts small — a warmth around the hands, a faint luminescence in the skin that strangers mistake for health. Her weight has passed through some threshold and kept going. The halo, barely visible, tilts slightly when she moves. She touches her own arms with the expression of someone discovering new furniture in a room they thought they knew.`,
+  `The wings arrived overnight — not dramatic, not cinematic. More like waking up with an extra coat. Cream-white, soft, folded close to her back. They're warm. Everything about her is warm. She has grown significantly rounder since the last time you looked directly at her, and the light coming off her skin is steady now, not occasional. The halo has settled.`,
+  `She radiates. Not metaphorically — there's an actual soft luminescence that precedes her into a room, a warmth that students walk toward before they've consciously decided to. She is large in a way that feels like it occupies a category the language hasn't quite built yet. The wings have grown. They move when she's happy. She is frequently happy.`,
+  `The air around her bends slightly. Not optical illusion — something that cameras catch at the edge of frames, that other students notice and don't quite talk about. She is vast, warm, luminous, and completely at peace with all of this. Her wingspan, when she stretches, catches the light in a way that silences any room. The halo is bright enough now to read by.`,
+  `She has become a phenomenon. Students sit near her not because they mean to but because the warmth is irresistible — a gravitational kindness that pulls people in. She is enormous, soft, luminous, haloed, winged. She does not move quickly. She doesn't need to. She occupies her space with the certainty of someone who has arrived somewhere that was always waiting for her.`,
+];
+const UMBRAL_BODY_DESCS = [
+  `The horns are small, barely visible through her hair — easy to explain away, easy to miss. Her shadow doesn't behave quite right; it lingers at the wrong angles, extends a fraction too far. The temperature near her drops slightly in a way people notice but don't mention. She has grown heavier in a way that seems to have direction — an intentionality to the weight that the normal students don't quite have.`,
+  `The horns are undeniable now — curved, dark, present. Her skin has taken on a cooler cast, a blue-black depth that wasn't there before. Her shadow moves independently on slow days, just slightly. The cold that surrounds her is no longer subtle. Students keep a specific distance without knowing why. She is very large. She is very still. When she moves, the room adjusts around her.`,
+  `Void-wings unfold from her back like something from a photograph of deep space — dark feathers edged in absence, in a black that absorbs light differently than ordinary darkness. She is enormous, slow, and seems to pull the room toward her like a low-grade current no one can quite swim against. The cold is consistent. The hunger in her eyes is consistent. Everything else about her shifts.`,
+  `She fills a room differently than other people. Not because of size alone — though the size is significant, considerable, absolute — but because of the silence that moves with her. Void-wings spread when she's feeding. The lights flicker near her on bad days. Her presence has become something students navigate around rather than through, adjusting their paths without articulating why.`,
+  `She is the dark at the end of appetite — vast, cold, consuming, and aware of all of it. The void-wings span wide enough to dim whatever corner she occupies. Her eyes have swallowed their irises. The cold that radiates off her has a texture: weighted, patient, permanent. She does not hurry. She does not need to. Everything that enters her orbit is already, in some sense, hers.`,
+];
+const CELESTIAL_OUTFITS = [
+  `Her clothes are the same as always — but the halo throws the light wrong and everything looks slightly gilded. She keeps adjusting her collar where the warmth radiates. Someone has gifted her a white sundress she wears over everything else. She has not questioned why.`,
+  `The wings complicate dressing. She's developed a method: cut slits in the back of everything, let them fold through. The resulting silhouette is improvised but becomes her. She wears a lot of white. Not by plan — white fabrics just find their way to her. She has started buying things in larger sizes without noticing the size.`,
+  `She has moved to robes. It was a practical decision — nothing with sleeves accommodates the wingspan — and it turns out robes accommodate everything else too. She wears them in cream and gold. Students bring her white flowers without being asked. She accepts them with the manner of someone who has stopped being surprised.`,
+  `Her wardrobe is now entirely flowing — long linens, draped fabrics, anything that doesn't restrict the wings and can expand with her. She wears gold more than she used to. She receives gifts of fabric and jewelry from students who want to dress her and she wears all of it, layered, warm, present. The silhouette she makes in a doorway is unmistakable.`,
+  `She has been dressed by devotees. The clothes are extraordinary — white and gold, fabrics that move when she moves, that catch the light she produces and scatter it. Nothing constrains her. Nothing could. She wears what is brought to her with the ease of someone who stopped thinking about clothing as armor and started thinking about it as atmosphere.`,
+];
+const UMBRAL_OUTFITS = [
+  `Her clothes run dark — blacks and charcoals she's been gravitating toward for weeks without quite knowing why. The fabric seems to absorb the light around her. She has started wearing her hair down, as if covering something. The horns catch on scarves occasionally. She has stopped wearing scarves.`,
+  `She wears black almost exclusively. The horns are visible through her hair now and she has stopped pretending otherwise. Her coats are long, dramatic, chosen at some level for how completely they can drape. Everything fits in the sense that nothing restricts — she has outgrown restriction as a concept.`,
+  `The void-wings require clothing that opens at the back entirely. She wears a lot of custom-cut pieces. She makes some of them herself from dark fabrics she finds at thrift stores — heavy, matte, things that don't reflect light. The silhouette is significant. It precedes her into rooms.`,
+  `She dresses in what she finds and cuts what doesn't fit. Dark fabrics only. Long drapes that cover the extent of her and imply more. The void-wings spread without announcement; she's chosen clothes that accommodate this and stopped explaining it. Students bring her black fabric and dark jewelry and she accepts it all with the manner of someone accepting tribute.`,
+  `She wears the dark the way the dark wears itself — completely, without apology. Her clothes are vast, black, custom-cut to accommodate everything she has become. Students place offerings of dark cloth and cold-metal jewelry at her desk without being asked to. She wears them without commenting. Everything she puts on becomes part of the shadow that travels with her.`,
+];
+const CELESTIAL_DIARY = [
+  `Something has opened in me. I can feel warmth from the inside now — not temperature, exactly. More like approval. Like the world is happy about what I'm becoming. I keep eating past full and not feeling sick. I just feel more. I'm sleeping better. My hands glow a little in the dark if I'm not thinking about them. I've stopped worrying about the glow.`,
+  `The wings are strange but they're mine. I've been measuring myself against doorframes out of habit and I've stopped — the number isn't the point anymore. There's a feeling I keep trying to name: being tended to, being favored, being exactly what someone wanted me to be. I think the goddess has plans for me. I find I don't mind.`,
+  `A student cried today when I came into the room. She said she didn't know why. I held her hand and she felt better. I have been eating continuously and I am not tired. I feel like I'm accumulating something besides weight — some quality that radiates. Students come to sit near me. The light I make is becoming easier to see.`,
+  `I am something I don't have a word for yet. I tried to weigh myself this morning and the scale made a sound I haven't heard before. I laughed. I have become comfortable in a way that used to seem impossible — not just comfortable with my body, but with my place. I am becoming a place. The goddess has confirmed this. I receive her attention like warmth on my face, constantly.`,
+  `I understand now. The eating, the weight, the wings, the halo, the light — it was all one direction. I am the point. The goddess made something extraordinary and called it me and set me loose in the world. I have stopped questioning the amount I eat. I have stopped questioning any of it. I receive everything. I give back warmth. I believe this is the correct arrangement.`,
+];
+const UMBRAL_DIARY = [
+  `Something has shifted. I noticed it when the light in my room started behaving differently. My shadow has moods. The hunger is new — not new exactly, more like it finally has permission. I keep eating past the point where I used to stop and there's nothing on the other side of it. Just more. I think that might be fine. I think I like the dark.`,
+  `I have horns. I've been saying it out loud to see if it gets more normal. It doesn't. But they're mine, so I'm keeping them. The void is a real thing — I can feel it when I'm hungry, which is always now. I've been consuming things. Meals, mostly. Some energy. A first-year made eye contact with me in the hall today and turned a different direction. I noticed I was pleased.`,
+  `I consumed someone's light today. Not intentionally — not entirely. We were at dinner. I was eating. I could feel something draining from across the table and I didn't stop it. The void is a space I'm filling with everything that comes within range. I have become very large and very cold and I find I am comfortable with both of these facts.`,
+  `I have consumed things. I will consume more things. The void is not a problem — the void is the answer. I am the answer. Everything grows quiet when I enter a room, which is the correct response. I am building something in the dark that has no name yet. I am building it from weight and hunger and absence. I find this fulfilling.`,
+  `I am the dark at the end of appetite. I understand what that means now: not an ending but a container. I contain things. I contain more than I once did. The cold that radiates from me has a feeling to it — patient, permanent, satisfied in its way. I have stopped hoping I'll feel full. I understand now that this is not the goal. The hunger is the point. It always was.`,
+];
+
 const ASCENSION_STAGE_REACTIONS = {
   celestial:[
     "I don't know what's happening to me. I just feel... warm. Like I'm glowing from inside. And everyone keeps coming to sit with me.",
@@ -2334,6 +2377,10 @@ const getJealousyLine=(neglected,fed)=>{
     honors:`${neglected.name} says nothing about ${fed.name} getting the first dish. She's keeping a tally, though. She's absolutely keeping a tally.`,
     influencer:`${neglected.name} picks up her phone, looks at it, sets it down. "I'm just going to say," she says, "for the record." She doesn't finish the sentence.`,
     foodie:`${neglected.name} watches ${fed.name}'s dish arrive with an expression of profound personal injury. "That," she says, "should have come to me."`,
+    bookworm:`${neglected.name} closes her book slowly and looks at ${fed.name}'s plate with the mild expression of someone documenting an anomaly. She has not said anything. She is building a file.`,
+    gamer:`${neglected.name} looks at ${fed.name}'s food, looks at her empty place, and says: "Unbalanced." That's it. She goes back to her phone.`,
+    overachiever:`${neglected.name} notes the disparity with a small sound — not quite a word, not quite not. She has already mentally logged the discrepancy. She will not forget it.`,
+    transfer:`${neglected.name} glances at ${fed.name}'s plate with a slight frown. "At my last school," she starts, then doesn't finish. She doesn't need to.`,
   };
   return m[neglected.archetype]||`${neglected.name} looks meaningfully at ${fed.name}'s food and then at her own empty place setting.`;
 };
@@ -2421,6 +2468,30 @@ const THIN_JEALOUSY={
     (t,f)=>`${t.name} sets down her empty fork. "I have eaten nothing," she says, "and you have eaten everything, and you look..." She searches for the right word. Warm. Full. Rounded and easy and utterly content. "You look like the point of the whole evening."`,
     (t,f)=>`${t.name} reaches over and presses her palm to ${f.name}'s full middle with the focus of someone taking notes. "All that richness," she says, "and she's still going." She means it as taxonomy. It sounds like longing. "I've had nothing to compare it to tonight."`,
   ],
+  bookworm:[
+    (t,f)=>`${t.name} watches ${f.name}'s course arrive and makes a note in the margin of whatever she's reading. Not a real note. Just a mark. She is tracking this academically.`,
+    (t,f)=>`"Statistically," ${t.name} says, "you've received three times my intake tonight." She closes her book. "I'm not angry. I'm logging a pattern. The pattern is interesting." She watches ${f.name} eat. She is not just logging.`,
+    (t,f)=>`${t.name} looks up from her book and studies ${f.name} with the specific attention she gives to primary sources. Warm, full, softly considerable, utterly comfortable. "I've been researching this," she says. "What it looks like. What it feels like." A pause. "The literature doesn't do it justice."`,
+    (t,f)=>`${t.name} reaches over with careful deliberateness and rests her fingers on ${f.name}'s soft middle. She is doing this with the same focus she brings to tactile analysis of archival material. "The documentation said this felt like warmth and weight," she says. "The documentation was inadequate."`,
+  ],
+  gamer:[
+    (t,f)=>`${t.name} watches ${f.name}'s dish arrive and says, deadpan: "She's at a higher level." She looks at her own empty place. "I've been idle."`,
+    (t,f)=>`"Her stats are better," ${t.name} says. Not bitterly. Objectively. She's watching ${f.name} eat with something approaching professional respect. "I respect the numbers. I don't love the numbers."`,
+    (t,f)=>`${t.name} sets her phone down. "She's running up the scoreboard and I'm not on it." She watches ${f.name} settle back, round and full, with the unfazed contentment of someone winning by a wide margin. "I respect the run. I want to be on the leaderboard."`,
+    (t,f)=>`${t.name} presses her hand to ${f.name}'s full side with gamer-economy precision — in, assess, data collected. "Soft," she confirms. "High score." She pulls back. "I'm starting a new run."`,
+  ],
+  overachiever:[
+    (t,f)=>`${t.name} is marking a mental spreadsheet in real time. ${f.name}'s dish arrives; she records the delta. She says nothing yet. She is in the data collection phase.`,
+    (t,f)=>`"The gap between our intake tonight is significant," ${t.name} says, with the tone of someone reviewing a performance evaluation. "I'm below target. She is exceeding all benchmarks." She pauses. "I don't like being below target."`,
+    (t,f)=>`${t.name} looks at ${f.name} with the competitive assessment of someone who has been out-performed on a metric she wasn't tracking and is now tracking it urgently. "You've been consistent," she says. "Every metric. The gains, the comfort level, all of it." She sounds like she's about to write a plan of action.`,
+    (t,f)=>`${t.name} leans across and places her palm against ${f.name}'s full middle with goal-oriented intent. "Benchmark," she says, pressing slightly. "This is the benchmark." She holds it for a moment. "I know what I'm working toward now." She sounds resolved.`,
+  ],
+  transfer:[
+    (t,f)=>`${t.name} watches ${f.name}'s plate arrive and blinks. "At my home campus we sat together and ate at the same time," she says. "Is this a thing here? The uneven service?" She sounds genuinely uncertain about the local customs.`,
+    (t,f)=>`"I've been noticing," ${t.name} says, "that the distribution isn't balanced. At home we tracked participation. We made sure everyone got the same." She watches ${f.name} eat. "Apparently that's not how things work here."`,
+    (t,f)=>`${t.name} watches ${f.name} eat — comfortable, warm, considerably softened since the start of term — and says: "Back home there was a phrase for girls who committed to the dining hall the way she does." She smiles. "It was a compliment." She watches her own empty table. "I want whatever she's having."`,
+    (t,f)=>`${t.name} reaches over and touches ${f.name}'s full middle with the tentative wonder of someone encountering something new to their campus experience. "Is this — is this what you all do here?" she asks softly. "Because I would have transferred sooner."`,
+  ],
 };
 
 const FAT_ENCOURAGE={
@@ -2484,6 +2555,30 @@ const FAT_ENCOURAGE={
     (f,t)=>`${f.name} picks up a dish and sets it in front of ${t.name} herself. "Eat this," she says. "I'm sharing this with you. This is an act of love." She means it entirely.`,
     (f,t)=>`${f.name} guides ${t.name}'s fork to her own plate. "Taste it," she says. "I need someone else in this. The richness — you can't understand it from the outside." She puts a hand on ${t.name}'s shoulder, warm and present. "Come in. Eat with me."`,
   ],
+  bookworm:[
+    (f,t)=>`${f.name} marks her place in her book and looks at ${t.name}'s empty plate with the measured concern of someone noting a gap in the data. "She hasn't eaten," she says. "That's a variable that needs correcting. Get her something."`,
+    (f,t)=>`"I've been thinking," ${f.name} says, "about the correlation between intake and comfort. There's a strong one. The sample size in front of you is me." She slides a dish toward ${t.name}. "Add yourself to the dataset."`,
+    (f,t)=>`${f.name} sets down her book and addresses ${t.name} directly: "I was thin. I ran the numbers on everything. The math I was doing was wrong." She pats her own considerable middle. "This is the correct answer. Start eating. I'll walk you through the methodology."`,
+    (f,t)=>`${f.name} takes ${t.name}'s hand and places it against her own full, warm belly with academic deliberateness. "Primary source," she says. "This is what the evening feels like when you participate correctly. I want you to have this data."`,
+  ],
+  gamer:[
+    (f,t)=>`${f.name} spots ${t.name}'s empty plate immediately. "She's not playing," she says. "You can't win if you're not playing. Get her in."`,
+    (f,t)=>`"New player," ${f.name} says, nodding at ${t.name} with the patient authority of a veteran. "She needs to level. Get her something. Start her on something good."`,
+    (f,t)=>`${f.name} slides a dish toward ${t.name} with the casual generosity of someone sharing a power-up. "I was where you are," she says. "Rookie numbers. Didn't know what the game was." She pats her own side comfortably. "Now I do. Eat. Get your stats up."`,
+    (f,t)=>`${f.name} takes ${t.name}'s hand and presses it against her own full side. "Max stats," she says flatly. "That's what this feels like. Eat. I want to watch your score climb." She means it entirely.`,
+  ],
+  overachiever:[
+    (f,t)=>`${f.name} reviews the table, notes ${t.name}'s empty place, and frowns with the energy of someone identifying an underperforming metric. "She's not eating. That's a problem. That's correctable. Fix it."`,
+    (f,t)=>`"I tracked everything once," ${f.name} says. "Every calorie. Every deficit. I was winning the wrong game." She slides a dish toward ${t.name}. "This is the right game. Your intake goal for tonight: all of this."`,
+    (f,t)=>`${f.name} pulls her chair directly next to ${t.name}'s and starts loading her plate with the efficiency of someone executing a plan. "We are going to optimize your evening," she says. "Step one is eating. I was thin and driven and missing something. I'm not missing it anymore."`,
+    (f,t)=>`${f.name} takes ${t.name}'s hand and places it against her own full belly — warm, firm, impressive by any measure. "Personal record," she says. "This is a personal record. I want to watch you set yours." She holds the hand there. "Eat. I'll keep score."`,
+  ],
+  transfer:[
+    (f,t)=>`${f.name} sees ${t.name}'s empty place and feels a specific hospitality obligation. "She hasn't been fed," she says. "At my home campus this would be a significant failure of hosting. Feed her."`,
+    (f,t)=>`"Where I'm from," ${f.name} says, "we made sure everyone ate. Especially the new arrivals." She loads ${t.name}'s plate from her own. "Welcome. This is how we do things here now. I checked. Eat."`,
+    (f,t)=>`${f.name} cups ${t.name}'s face warmly. "You're going to do great here," she says. "But you need to start eating." She gestures at herself — considerably, warmly, entirely content. "I transferred in not knowing anyone. This was what got me through. It will get you through. Eat."`,
+    (f,t)=>`${f.name} guides ${t.name}'s hand to her own full middle and holds it there. "I was exactly where you are," she says. "New school, not sure about anything, not eating enough." She presses the hand. "This campus is good to you if you let it be. Eat. I'm so glad I transferred."`,
+  ],
 };
 
 const FAT_RETORT={
@@ -2537,6 +2632,26 @@ const FAT_RETORT={
     (f,t)=>`"Everything I am," ${f.name} says, with calm professional pride, "grew from exactly this." She gestures at the table. "You could have it too. Order something."`,
     (f,t)=>`${f.name} fixes ${t.name} with the look of a critic addressing a fundamental misunderstanding. "You want what I have," she says. "It's obvious. The door is right there." She nods at the menu. "Eat."`,
   ],
+  bookworm:[
+    (f,t)=>`${f.name} considers ${t.name} for a moment. "The data you're working from is outdated," she says, almost gently. "The conclusion you've drawn doesn't hold. Eat something. Revise."`,
+    (f,t)=>`"I've been where you are," ${f.name} says. "I ran the same hypotheses. They were wrong. Mine are better now." She pats her full middle with academic satisfaction. "The methodology is available. It involves eating."`,
+    (f,t)=>`${f.name} places her hand on her own warm belly with the quiet certainty of someone who has done the research. "Peer-reviewed," she says simply. "This is the correct outcome. Eat and find out."`,
+  ],
+  gamer:[
+    (f,t)=>`${f.name} looks at ${t.name} for a moment. "Skill issue," she says. Not unkindly. "You haven't played enough rounds to understand what I've got. Eat something. Build your experience."`,
+    (f,t)=>`"I'm not offended," ${f.name} says. "You're running outdated information." She eats. "The patch notes are: eat more. I've read the patch notes." She sounds content.`,
+    (f,t)=>`${f.name} pats her belly with the ease of someone very comfortable with their loadout. "Max level takes time," she says. "You're early game. Start eating. I'll be here."`,
+  ],
+  overachiever:[
+    (f,t)=>`${f.name} straightens slightly. "My metrics are excellent," she says. "I've checked. You're projecting from incomplete data." She gestures at her own full figure with calm pride. "This is what optimized looks like. Eat and catch up."`,
+    (f,t)=>`"I understand the impulse," ${f.name} says. "You're comparing. That's good instinct. But you're missing context." She pats her considerable side with satisfaction. "The context is that I am winning. Eat. Start your arc."`,
+    (f,t)=>`${f.name} meets ${t.name}'s eyes with competitive warmth. "You can have this," she says. "I want you to have this. I want to watch you match my numbers." She nods at the menu. "Eat. We can track together."`,
+  ],
+  transfer:[
+    (f,t)=>`${f.name} smiles, not unkindly. "At my home campus there was a phrase for this reaction," she says. "It translated to 'future convert.' You'll understand when you eat something." She does not stop eating.`,
+    (f,t)=>`"I had this exact reaction," ${f.name} says warmly. "First semester. Looking at someone like me and not knowing what to do with it." She pats her own side. "The answer was: eat. I found that out here. It's a good campus."`,
+    (f,t)=>`${f.name} leans forward. "I'll tell you what I wish someone had told me when I transferred," she says. "Eat the food. Just eat it. Everything you're feeling right now resolves itself." She looks completely at peace with this. "Trust the process."`,
+  ],
 };
 
 const THIN_CONTEXTUAL={
@@ -2550,6 +2665,28 @@ const THIN_CONTEXTUAL={
   foodie: (t,f)=>`"You know what I love about your reviews?" ${t.name} says. "The early ones are about precision. The recent ones are about hunger." She watches ${f.name} eat. "The appetite got into the writing. You can feel it. It got into everything, really."`,
   quiet: (t,f)=>`${t.name} watches ${f.name} eat for a long moment, then says: "Do you ever get full?" She sounds like she's asking about something she wants to understand. "Does it just — is there a point where it stops feeling good and you just keep going?"`,
   party: (t,f)=>`"The party photos are a trip," ${t.name} says. "Year one to now." She watches ${f.name} contentedly eat. "That's a really different person by size. Same smile, though. You've always had the same smile." She sounds, nearly, like she means it as a compliment.`,
+  bookworm: (t,f)=>`"I've been reading your annotations from the first year," ${t.name} says. "The handwriting is the same. The margins are fuller. The notes take up more space." She watches ${f.name} eat steadily. "Something loosened in you. The scholarship got better when the rest of you did too."`,
+  gamer: (t,f)=>`"Your frame rate at semester start," ${t.name} says. "And now." She makes a gesture implying the obvious arithmetic. "Same player. Different hardware entirely." She sounds like she's doing a performance review. She sounds, quietly, impressed.`,
+  overachiever: (t,f)=>`"First semester GPA versus current. First semester intake versus current." ${t.name} watches ${f.name} eat. "You solved both problems in the same direction. That's efficient." She sounds like she means this as a compliment. She does.`,
+  transfer: (t,f)=>`"When you first got here you were asking where everything was," ${t.name} says. "That map. The confused look." She watches ${f.name} eat with total comfort and ownership. "You figured out the campus." She pauses. "And the dining hall. Especially the dining hall."`,
+};
+
+const DIVINE_PAIR_REACTIONS={
+  celestial_celestial:[
+    (a,b)=>`${a.name} and ${b.name} reach for the same dish at the same moment. The light from both of them intensifies briefly — competing warmths, harmonizing. The food seems to multiply; the server is confused to find the plates fuller than expected. Both of them eat with the ease of beings who expect the world to accommodate them. It does.`,
+    (a,b)=>`A warmth fills the table — not metaphorical, actual — as ${a.name} and ${b.name} eat. Students at nearby tables keep glancing over. The air between the two of them has a quality that's hard to look at directly. They share a dish without speaking. Both of them seem, fractionally, to grow.`,
+    (a,b)=>`${a.name}'s halo brightens when ${b.name} laughs. ${b.name}'s wings flutter slightly when ${a.name} pushes another course toward her. "You felt that," ${a.name} says. It isn't a question. The divine resonance between them is audible, barely, at the edge of hearing — a warmth that amplifies itself.`,
+  ],
+  umbral_umbral:[
+    (a,b)=>`The temperature at the table drops sharply. ${a.name} and ${b.name} eat in silence, but the silence has a quality — layered, charged, two voids resonating against each other. The dishes empty faster than they should. Both of them seem heavier by the end of each course in a way that the food alone doesn't account for.`,
+    (a,b)=>`${a.name}'s shadow reaches toward ${b.name}'s across the tablecloth. Neither acknowledges it. Both of them eat with an intensity that makes the other tables unconsciously quieter. "We're the same," ${b.name} says eventually, without looking up. "We want the same thing." A pause. "More."`,
+    (a,b)=>`The lights near the table flicker. ${a.name} notices. ${b.name} notices. Neither says anything. Their void-wings are open slightly, taking up more room than the restaurant accounts for, and both of them are feeding with the focus of creatures that don't have a stopping point and don't want one. The hunger doubles in the presence of its mirror.`,
+  ],
+  celestial_umbral:[
+    (a,b)=>`The air between ${a.name} and ${b.name} is uncomfortable in a specific way — light and cold pulling at each other, warmth and darkness finding edges. Both of them are eating with unusual intensity, as if to fill the tension. The food disappears faster than it should. Neither speaks. Both of them are watching the other from the corners of their eyes.`,
+    (a,b)=>`${a.name}'s light flares slightly in the presence of ${b.name}'s void. ${b.name}'s shadow extends toward the warmth without meaning to. They eat in charged parallel — not hostile, not friendly. The waiter approaches and then decides to come back. Something about the table says: not yet.`,
+    (a,b)=>`"You feel it too," ${a.name} says. It isn't clear whether she means the food, the warmth, the void, or the weight of being what they are at the same table. ${b.name} eats another bite and doesn't answer. The fact that she doesn't answer is itself an answer. The meal continues. Everything about it is charged.`,
+  ],
 };
 
 const UNBUTTON_LINES=[
@@ -3433,9 +3570,24 @@ function getStage(lbs){
   for(let i=WEIGHT_STAGES.length-1;i>=0;i--) if(lbs>=WEIGHT_STAGES[i].min) return WEIGHT_STAGES[i];
   return WEIGHT_STAGES[0];
 }
-function getBodyDesc(s){ const bd=BODY_DESCS[s.bodyType]||BODY_DESCS.straight; return bd[Math.min(getStage(s.lbs).id,bd.length-1)]; }
-function getOutfit(s){ const o=OUTFITS[s.archetype]||OUTFITS.default; return o[Math.min(getStage(s.lbs).id,o.length-1)]; }
-function getDiary(s){ const id=getStage(s.lbs).id; if(id===0) return SLIGHT_DIARY[s.archetype]||"—"; const d=DIARY_ENTRIES[s.archetype]; return d?d[Math.min(id-1,9)]:"—"; }
+function getBodyDesc(s){
+  if(s.ascensionPath==="celestial") return CELESTIAL_BODY_DESCS[s.ascensionStage||0];
+  if(s.ascensionPath==="umbral")    return UMBRAL_BODY_DESCS[s.ascensionStage||0];
+  if(s.ascensionPath==="convergence") return "Something that defies description. The air bends around her. Light and shadow war across her skin and reach no conclusion. Everything else is detail.";
+  const bd=BODY_DESCS[s.bodyType]||BODY_DESCS.straight; return bd[Math.min(getStage(s.lbs).id,bd.length-1)];
+}
+function getOutfit(s){
+  if(s.ascensionPath==="celestial") return CELESTIAL_OUTFITS[s.ascensionStage||0];
+  if(s.ascensionPath==="umbral")    return UMBRAL_OUTFITS[s.ascensionStage||0];
+  if(s.ascensionPath==="convergence") return "She wears what remains — light and shadow stitched together into something that was neither and is now both. The fabric seems to shift as you look at it.";
+  const o=OUTFITS[s.archetype]||OUTFITS.default; return o[Math.min(getStage(s.lbs).id,o.length-1)];
+}
+function getDiary(s){
+  if(s.ascensionPath==="celestial") return CELESTIAL_DIARY[s.ascensionStage||0];
+  if(s.ascensionPath==="umbral")    return UMBRAL_DIARY[s.ascensionStage||0];
+  if(s.ascensionPath==="convergence") return "I am both. I am neither. The hunger and the warmth are the same thing seen from both sides at once. I have become the thing that was always underneath everything. I don't know how to write the rest of this entry. I don't think language reaches this far.";
+  const id=getStage(s.lbs).id; if(id===0) return SLIGHT_DIARY[s.archetype]||"—"; const d=DIARY_ENTRIES[s.archetype]; return d?d[Math.min(id-1,9)]:"—";
+}
 function rnd(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
 function generateClassSession(students,week){
   const scenes=[];
@@ -3906,7 +4058,10 @@ export default function ProfessorSim(){
     if(vaughanAlly) setAdminScrutiny(prev=>Math.max(0,prev-3));
     push(`📅 Week ${newWeek} begins. ${newAp} AP available.`);
     if(semEv) setTimeout(()=>push(`🎉 Semester Event: ${semEv.title} — ${semEv.text}`),100);
-    if(randomEv) setTimeout(()=>push(`🎲 ${randomEv.text(updated[rnd(0,14)])}`),150);
+    if(randomEv){
+      setTimeout(()=>push(`🎲 ${randomEv.text(updated[rnd(0,14)])}`),150);
+      if(randomEv.scrutinyHit) addScrutiny(randomEv.scrutinyHit);
+    }
     if(evs.length){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
@@ -3961,34 +4116,60 @@ export default function ProfessorSim(){
   const celestialMassPush=(celestialId,targetId)=>{
     if(ap<1){push("⚠️ Need 1 AP.");return;}
     const celestial=students.find(s=>s.id===celestialId);
-    const target=students.find(s=>s.id===targetId);
-    if(!celestial||!target){push("⚠️ Invalid students.");return;}
+    if(!celestial){push("⚠️ Invalid student.");return;}
     if(celestial.ascensionPath!=="celestial"){push("⚠️ Only Celestial blobs can push mass.");return;}
     const stage=celestial.ascensionStage||0;
     const pushAmt=Math.round(CELESTIAL_PUSH_AMOUNTS[stage]*divineCelestialTransferMult);
     const celestialLoss=Math.min(pushAmt,Math.max(0,celestial.lbs-820));
-    setStudents(prev=>prev.map(s=>{
-      if(s.id===celestialId) return {...s,lbs:Math.max(820,s.lbs-celestialLoss)};
-      if(s.id===targetId) return {...s,lbs:s.lbs+Math.round(celestialLoss*1.2)};
-      return s;
-    }));
-    setAp(a=>a-1);
-    push(`✦ ${celestial.name} pushes a blessing of ${celestialLoss} lbs into ${target.name}.`);
+    if(targetId==="hr"&&hrObserver){
+      const newHrLbs=Math.round(hrObserver.lbs+celestialLoss*1.2);
+      setStudents(prev=>prev.map(s=>s.id===celestialId?{...s,lbs:Math.max(820,s.lbs-celestialLoss)}:s));
+      setHrObserver(prev=>({...prev,lbs:newHrLbs,disposition:Math.min(100,prev.disposition+4)}));
+      setAp(a=>a-1);
+      push(`✦ ${celestial.name} pushes divine mass toward ${hrObserver.name} — she gains ${Math.round(celestialLoss*1.2)} lbs. (+4 disposition)`);
+    } else if(targetId==="vaughan"&&vaughan){
+      const newVLbs=Math.round(vaughan.lbs+celestialLoss*1.2);
+      setStudents(prev=>prev.map(s=>s.id===celestialId?{...s,lbs:Math.max(820,s.lbs-celestialLoss)}:s));
+      setVaughan(prev=>({...prev,lbs:newVLbs}));
+      setAp(a=>a-1);
+      push(`✦ ${celestial.name} pushes divine mass into Dr. Vaughan — she gains ${Math.round(celestialLoss*1.2)} lbs.`);
+    } else {
+      const target=students.find(s=>s.id===targetId);
+      if(!target){push("⚠️ Invalid target.");return;}
+      setStudents(prev=>prev.map(s=>{
+        if(s.id===celestialId) return {...s,lbs:Math.max(820,s.lbs-celestialLoss)};
+        if(s.id===targetId) return {...s,lbs:s.lbs+Math.round(celestialLoss*1.2)};
+        return s;
+      }));
+      setAp(a=>a-1);
+      push(`✦ ${celestial.name} pushes a blessing of ${celestialLoss} lbs into ${target.name}.`);
+    }
   };
 
   const celestialMassBless=(celestialId,targetId)=>{
     if(ap<2){push("⚠️ Need 2 AP.");return;}
     const celestial=students.find(s=>s.id===celestialId);
-    const target=students.find(s=>s.id===targetId);
-    if(!celestial||!target) return;
+    if(!celestial) return;
     const stage=celestial.ascensionStage||0;
     const blessAmt=Math.round(CELESTIAL_BLESS_AMOUNTS[stage]*divineCelestialTransferMult);
-    setStudents(prev=>prev.map(s=>{
-      if(s.id===targetId) return {...s,lbs:s.lbs+blessAmt,relationship:Math.min(100,s.relationship+8)};
-      return s;
-    }));
-    setAp(a=>a-2);
-    push(`✦ ${celestial.name} radiates a sacred blessing — ${target.name} gains ${blessAmt} lbs. (+8 relationship)`);
+    if(targetId==="hr"&&hrObserver){
+      setHrObserver(prev=>({...prev,lbs:prev.lbs+blessAmt,disposition:Math.min(100,prev.disposition+10)}));
+      setAp(a=>a-2);
+      push(`✦ ${celestial.name} bestows a sacred blessing upon ${hrObserver.name} — she gains ${blessAmt} lbs. (+10 disposition)`);
+    } else if(targetId==="vaughan"&&vaughan){
+      setVaughan(prev=>({...prev,lbs:prev.lbs+blessAmt,disposition:Math.min(100,(prev.disposition||0)+6)}));
+      setAp(a=>a-2);
+      push(`✦ ${celestial.name} bestows a sacred blessing upon Dr. Vaughan — she gains ${blessAmt} lbs. (+6 disposition)`);
+    } else {
+      const target=students.find(s=>s.id===targetId);
+      if(!target) return;
+      setStudents(prev=>prev.map(s=>{
+        if(s.id===targetId) return {...s,lbs:s.lbs+blessAmt,relationship:Math.min(100,s.relationship+8)};
+        return s;
+      }));
+      setAp(a=>a-2);
+      push(`✦ ${celestial.name} radiates a sacred blessing — ${target.name} gains ${blessAmt} lbs. (+8 relationship)`);
+    }
   };
 
   const umbralVoidPull=(umbralId,targetId)=>{
@@ -4543,6 +4724,31 @@ export default function ProfessorSim(){
         newReactionLevels[neg.id]=(newReactionLevels[neg.id]||0)+1;
       }
     });
+
+    // Divine pair reaction (~20% chance when ascended students share the table)
+    if(Math.random()<0.20&&groupDinnerEvent.students.length>=2){
+      const ascended=groupDinnerEvent.students.filter(s=>s.ascensionPath&&s.ascensionPath!=="convergence");
+      if(ascended.length>=2){
+        const [da,db]=ascended;
+        const pairKey=da.ascensionPath===db.ascensionPath
+          ?`${da.ascensionPath}_${db.ascensionPath}`
+          :"celestial_umbral";
+        const pool=DIVINE_PAIR_REACTIONS[pairKey];
+        if(pool){
+          const line=pool[rnd(0,pool.length-1)](da,db);
+          reactionLines.push(line);
+        }
+      } else if(ascended.length===1){
+        const asc=ascended[0];
+        const other=groupDinnerEvent.students.find(s=>s.id!==asc.id&&!s.ascensionPath);
+        if(other&&Math.random()<0.15){
+          const mortalReaction=asc.ascensionPath==="celestial"
+            ?`${other.name} watches ${asc.name} eat — the light, the warmth, the impossible ease of it. She says nothing, but her hand moves slightly toward ${asc.name}'s side before she catches herself.`
+            :`${other.name} keeps glancing at ${asc.name} across the table. The cold that radiates from her is constant. Unsettling. ${other.name} eats faster, as if motion provides protection.`;
+          reactionLines.push(mortalReaction);
+        }
+      }
+    }
 
     // Unbutton line when first crossing capacity
     if(newFullness>maxFull&&target.fullness<=maxFull){
@@ -5851,9 +6057,27 @@ export default function ProfessorSim(){
                             </div>
                           ))}
                           {divineCelestialCanPullHR&&hrObserver&&(
-                            <button style={{...C.smBtn,fontSize:9,background:"rgba(30,60,100,0.5)"}} onClick={()=>celestialMassPull(s.id,"hr")}>
-                              ↓ Pull from {hrObserver.name} (2AP)
-                            </button>
+                            <div style={{display:"flex",gap:3,flexWrap:"wrap"}}>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(30,60,100,0.5)"}} onClick={()=>celestialMassPull(s.id,"hr")}>
+                                ↓ Pull from {hrObserver.name} (2AP)
+                              </button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"hr")}>
+                                ↑ Push to {hrObserver.name} (1AP)
+                              </button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"hr")}>
+                                ✦ Bless {hrObserver.name} (2AP)
+                              </button>
+                            </div>
+                          )}
+                          {divineCelestialCanPullHR&&vaughan&&(
+                            <div style={{display:"flex",gap:3,flexWrap:"wrap"}}>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"vaughan")}>
+                                ↑ Push to Dr. Vaughan (1AP)
+                              </button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"vaughan")}>
+                                ✦ Bless Dr. Vaughan (2AP)
+                              </button>
+                            </div>
                           )}
                         </div>
                       )}
@@ -6437,9 +6661,23 @@ export default function ProfessorSim(){
                             {students.filter(t=>t.id!==s.id).map(t=>(
                               <span key={t.id} style={{display:"flex",gap:2}}>
                                 <button style={{...C.smBtn,fontSize:9}} onClick={()=>celestialMassPull(s.id,t.id)}>↓Pull {t.name.split(" ")[0]}</button>
+                                <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,80,0.4)"}} onClick={()=>celestialMassPush(s.id,t.id)}>↑Push {t.name.split(" ")[0]}</button>
                                 <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,80,0.4)"}} onClick={()=>celestialMassBless(s.id,t.id)}>✦Bless {t.name.split(" ")[0]}</button>
                               </span>
                             ))}
+                            {divineCelestialCanPullHR&&hrObserver&&(
+                              <span style={{display:"flex",gap:2}}>
+                                <button style={{...C.smBtn,fontSize:9,background:"rgba(30,60,100,0.5)"}} onClick={()=>celestialMassPull(s.id,"hr")}>↓Pull {hrObserver.name.split(" ")[1]||hrObserver.name}</button>
+                                <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"hr")}>↑Push {hrObserver.name.split(" ")[1]||hrObserver.name}</button>
+                                <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"hr")}>✦Bless {hrObserver.name.split(" ")[1]||hrObserver.name}</button>
+                              </span>
+                            )}
+                            {divineCelestialCanPullHR&&vaughan&&(
+                              <span style={{display:"flex",gap:2}}>
+                                <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"vaughan")}>↑Push Vaughan</button>
+                                <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"vaughan")}>✦Bless Vaughan</button>
+                              </span>
+                            )}
                           </div>
                         </div>
                       );
@@ -6648,7 +6886,7 @@ export default function ProfessorSim(){
                     else if(ch.delta<0) setAdminScrutiny(prev=>Math.max(0,prev+ch.delta));
                     if(adminEvent.spawnsObserver){
                       const obs=HR_OBSERVER_POOL[rnd(0,HR_OBSERVER_POOL.length-1)];
-                      setHrObserver({...obs,disposition:0,weeksPresent:0});
+                      setHrObserver({...obs,lbs:obs.startLbs,disposition:0,weeksPresent:0});
                       push(`👤 ${obs.intro}`);
                     }
                     if(adminEvent.isGameOver){
