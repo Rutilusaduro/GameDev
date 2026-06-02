@@ -302,16 +302,6 @@ const DIARY_ENTRIES = {
   },
 };
 
-// TAP_OUT_DIALOGUE placeholder — will be replaced with agent content
-const TAP_OUT_DIALOGUE = {
-  default:[
-    (s)=>`${s.name} sets her fork down slowly. "I—" She presses a hand to her stomach. "I think I'm done." She breathes carefully. "That was a lot." She doesn't sound disappointed. Just honest.`,
-    (s)=>`${s.name} leans back from the table with the deliberate care of someone managing their own weight. "Okay," she says quietly. "I'm done. I'm genuinely done." She doesn't look unhappy about it.`,
-    (s)=>`${s.name} puts both hands flat on the table. "No more," she says, not unkindly. "I've hit the wall." She exhales slowly, pressing gently at her very full middle. "That was exceptional, but I am finished."`,
-    (s)=>`"No." ${s.name} says it softly, almost fondly. "I'm at absolute capacity. I'd like to sit here for a while." She settles back with the ease of someone who knows exactly where her limits are and has arrived at them with some satisfaction.`,
-  ],
-};
-
 const RANDOM_EVENTS = [
   { id:"dining_special",   target:"class",  gain:[3,8],
     text:()=>`The dining hall announces an all-you-can-eat special. The class goes. No one leaves when they should. There is a distinct change in posture all around by the time the hall closes.` },
@@ -2952,6 +2942,111 @@ const SESSION_AFTERMATH=[
    scene:(s)=>`You don't speak for a while. ${s.name} is enormous with food — her belly rounded and firm and extraordinary. She keeps her hands on it, feeling its weight, its warmth, its absoluteness. "This is what I want," she says eventually. It's not clear if she means the food or something bigger. You think maybe both.`},
 ];
 const getAftermath=(fPct)=>SESSION_AFTERMATH.find(a=>fPct<=a.maxPct)||SESSION_AFTERMATH[SESSION_AFTERMATH.length-1];
+
+const TAP_OUT_DIALOGUE = {
+  0: [  // Brittany
+    (s) => `${s.name} presses both hands flat against her middle and her eyes go wide, like she's been ambushed by her own body. "Okay. Okay, that's — I'm tapping out, I'm literally tapping out, that doesn't happen to me." She says it with competitive outrage, like her stomach has personally betrayed her.`,
+    (s) => `${s.name} sits back heavily, breathing through her nose, one hand splayed over the round curve of her belly. "I know my limits now and this is past them." She says it with more dignity than the situation requires, which is very on-brand. "I'm calling it. Don't look at me like that."`,
+    (s) => `${s.name} exhales slowly, settling back into the cushions like someone surrendering a war they picked themselves. "Okay. Done. I'm done." She presses her belly with both hands to confirm the obvious. "That's a record and I'm claiming it and also I need to not move for a while."`,
+    (s) => `${s.name} holds up one hand — flat, authoritative, squad-captain energy even now. "I'm calling it." Her enormous belly rises and falls with careful breaths. "I know exactly what I'm doing and what I'm doing right now is stopping, and that is a choice, not a defeat." A beat. "I'm going to need to lie down."`,
+  ],
+  1: [  // Madeline
+    (s) => `${s.name} sets down her fork with precise, deliberate care. "I need to note that I have reached an empirically verifiable limit." She presses her fingers against the tight round swell of her belly. "This is data. I am logging it. The session is over."`,
+    (s) => `${s.name} folds her hands on the table in a way that says she is being very professional about this. "My capacity has been exceeded by a statistically significant margin." She breathes carefully. "I'm calling the session. I want it on record that I held out considerably longer than I anticipated."`,
+    (s) => `${s.name} looks at her belly with the expression she reserves for a very compelling dataset. "I've exceeded my own documented baseline by approximately — " she pauses to calculate, which is impressive given the circumstances " — a lot." She exhales. "Stopping now. The numbers are extraordinary. I'm going to lie very still and think about them."`,
+    (s) => `${s.name} closes her eyes briefly. "The threshold has been passed. Considerably." She rests both hands on her massive, taut belly with scholarly calm. "I want to note that this outcome represents a personal record and I intend to write a very thorough summary." She opens her eyes. "After I stop moving. Which is now."`,
+  ],
+  2: [  // Kylie
+    (s) => `${s.name} puts down her fork and immediately reaches for her phone — then stops, because actually she cannot hold the phone at that angle right now, her stomach is in the way. "Okay. Tapping out." She sounds more surprised than anything. "That's actually — that's a lot of content in there. I need a minute."`,
+    (s) => `${s.name} presses her hand against her bloated middle and makes the face of someone recalculating a very important metric. "My engagement rate when I look like this is insane but I also genuinely cannot eat another bite." She breathes slowly. "Calling it. We got the content. I need to horizontal."`,
+    (s) => `${s.name} leans back and surveys the situation with the practiced eye of someone who has documented many extreme eating moments. "Okay. That is a look." She presses both hands to the enormous, straining curve of her belly. "We are done for tonight. My body is giving me very clear analytics right now and they say stop."`,
+    (s) => `${s.name} holds up a hand. "Done. I'm done." She takes a slow, careful breath over the vast swell of her stomach. "The numbers on my body right now are unreal and I am choosing to appreciate them from a horizontal position." She reaches for her phone with the other hand. "Someone's going to need to help me up eventually. Not yet though."`,
+  ],
+  3: [  // Serena
+    (s) => `${s.name} goes quiet in the way she used to go quiet at the end of a brutal interval set — body accounting for itself. "I'm tapping out." She says it simply, hands on her tight, distended belly. "I've hit my wall. I know what hitting my wall feels like. This is it."`,
+    (s) => `${s.name} breathes through her mouth for a moment, slow and controlled, like she's managing something. "Okay. My body is done." She presses her palm flat against her full, round stomach. "I trained long enough to know when to call it. Calling it." She leans back carefully. "Good session though."`,
+    (s) => `${s.name} rests both hands on the wide swell of her belly with the focused attention of someone monitoring an important gauge. "I'm past threshold." She exhales steadily. "I spent years ignoring my body's signals. I don't do that anymore." She meets your eyes. "It's saying stop. I'm stopping."`,
+    (s) => `${s.name} sits with the particular stillness of a large, powerful body that has reached its absolute limit — no drama, no protest, just the settled authority of a woman who knows herself very well. "That's it for me," she says. Her enormous belly presses firmly against her palms. "I know this feeling. I've earned this feeling. We're done."`,
+  ],
+  4: [  // Fiona
+    (s) => `${s.name} goes very still, eyes unfocusing slightly, like she's listening to something interior. "I think — " She presses a hand to her full, round belly. "I think I'm at my absolute edge." She sounds almost reverent. "There's no more space. That's — that's a complete feeling. I need to stop."`,
+    (s) => `${s.name} closes her eyes and breathes very slowly. "My body has become a kind of still life," she says softly. "Everything full and heavy and finished." She rests both hands on the warm curve of her stomach. "I can't continue. I don't want to ruin it." She exhales. "This is the end of it."`,
+    (s) => `${s.name} is quiet for a long moment, both hands moving slowly over the enormous swell of her belly like she's mapping it. "There's a point," she says finally, "where fullness becomes its own complete thing. A form." She looks up. "I'm there. I'm absolutely there. I need to stop and just be in it."`,
+    (s) => `${s.name} breathes in slowly, the expansion visibly limited by the vast, round mass of her belly, and then out even slower. "That's all I have," she says, with the quiet finality of a completed work. "I am entirely full. Every single part of me." She doesn't move. "I just need to exist in this for a while. The session is over."`,
+  ],
+  5: [  // Destiny
+    (s) => `${s.name} puts her fork down. Looks at her stomach. Looks at you. "I'm tapping out." She says it with zero inflection. "My body has made a unilateral decision and I'm respecting the process." She reclines approximately two inches, which is all she can manage. "This is fine."`,
+    (s) => `${s.name} stops eating mid-bite, considers the situation, and sets the food down with the energy of someone closing a tab. "Done," she says. She presses one hand to her bloated belly without looking at it. "Capacity reached. Session ended. I have no further comments." She stares at the ceiling.`,
+    (s) => `${s.name} exhales through her nose. "Yeah. That's my limit." She splays one hand over the round, taut dome of her stomach with the same energy she'd use to acknowledge a final boss. "I found the wall. Good to know where it is." She leans back slightly. "I need to not move now. That's happening."`,
+    (s) => `${s.name} holds up two fingers. "Tapping out." She places one hand on her colossal, straining belly without ceremony. "I have exceeded my own parameters by a measurable amount and my body has filed a formal complaint." A pause. "I'm going to lie here and load something on my phone. Don't talk to me for ten minutes."`,
+  ],
+  6: [  // Tiffany
+    (s) => `${s.name} dabs the corner of her mouth with a napkin, sets it down, and folds her hands with perfect composure. "I need to call it there." Her belly is visibly strained beneath her top. "I know my limits. I'm choosing to respect them tonight." She smiles serenely. "It was a beautiful session."`,
+    (s) => `${s.name} exhales with the quiet grace of someone who has decided that stopping is simply the most elegant choice available. "That's everything I have," she says pleasantly. She rests one hand on her full, round stomach. "I've genuinely outdone myself tonight." She adjusts her posture carefully. "I'm going to need a moment."`,
+    (s) => `${s.name} straightens — or tries to; the attempt is limited by the considerable mass of her belly — and settles back instead with effortless poise. "I'm done," she says. "Not because I want to be, but because my body has made a compelling case." She pats her stomach gently. "Magnificent session. I need to not move for some time."`,
+    (s) => `${s.name} takes a slow breath over her vast, round belly and looks at you with the serene authority of someone who has never once been embarrassed by herself. "Calling it," she says. She places one hand on her stomach as if resting it on a throne. "I am completely and perfectly full." She closes her eyes. "Come back in an hour."`,
+  ],
+  7: [  // Priya
+    (s) => `${s.name} sets her fork down and immediately produces her phone to note the time. "I'm stopping," she says. "My stomach is at maximum capacity, I can confirm this empirically, and continuing would yield diminishing returns." She presses her hand to her tight belly. "Logging this. Outstanding outcome."`,
+    (s) => `${s.name} presses both palms flat against her bloated, distended middle with the expression of someone verifying a calculation. "I've exceeded my own projected limit by twenty-two percent." She breathes carefully. "That's — that's actually excellent data." She leans back. "I need to stop now. I'm stopping. This is me stopping."`,
+    (s) => `${s.name} exhales through her nose in a controlled way that suggests she would like to not exhale at all because there is no room. "Threshold crossed. Session complete." She keeps her hands pressed to her enormous, full belly. "The trajectory on tonight's intake is remarkable. I want to discuss it when I can breathe at a normal depth again." A pause. "Which isn't yet."`,
+    (s) => `${s.name} looks at her own vast, round belly with the expression of someone reviewing an exceptional quarterly report. "This is past any number I've previously documented," she says. "By a significant margin." She breathes very slowly. "I'm calling it. Everything hurts in a way that is technically interesting." She closes her eyes. "Give me twenty minutes. I'll have a full summary."`,
+  ],
+  8: [  // Maya
+    (s) => `${s.name} places both hands flat on her distended belly and shakes her head — once, small, definitive. That's all. She's done.`,
+    (s) => `${s.name} goes still, hands folded over the round swell of her stomach, and looks at you with an expression that is completely legible: this is it, she has no more. She exhales slowly through her nose. Done.`,
+    (s) => `${s.name} presses one hand to her enormous, full belly, closes her eyes, and leans back. When she opens them again she gives you a single slow blink. The session is over. She communicates this entirely without words, the way she communicates most things.`,
+    (s) => `${s.name} rests both hands on the vast curve of her belly and stays very still for a long moment. Then she looks at you. Her eyes say: full. Completely full. No more. She doesn't move. She doesn't need to say anything else.`,
+  ],
+  9: [  // Chloe
+    (s) => `${s.name} presses her hands to her stomach and her eyes go wide. "Oh. Oh, wow, I think I — I'm tapping out." She sounds genuinely surprised and a little delighted. "I didn't know I could get this full. That's a new thing I know about myself now!"`,
+    (s) => `${s.name} leans back and makes a soft, overwhelmed sound. "Okay, I've — I've hit a wall." She rubs her bloated belly with both hands. "This campus keeps giving me new experiences and I guess this is one of them." She laughs weakly. "I need to lie down. Do I lie down? I'm lying down."`,
+    (s) => `${s.name} breathes carefully, hands spread wide over the round, straining swell of her stomach. "I really pushed it tonight," she says, half-impressed with herself. "I'm — okay, I'm done. I'm genuinely done." She looks up with a giddy, slightly overwhelmed smile. "That was incredible. I can't move though."`,
+    (s) => `${s.name} takes stock of herself — her enormous, packed belly, her general immobility — with the warm, wondering expression of someone who has genuinely, fully settled in somewhere. "I can't believe this is my life," she says. "In the best way." She pats herself gently. "I'm tapping out. I love it here. I can't move. Both true."`,
+  ],
+  10: [  // Jasmine
+    (s) => `${s.name} tries to sit up straighter and can't quite manage it — there's simply too much in the way. "Okay, I'm out," she says, and laughs at herself freely. "My body is sending me very clear notes right now." She presses a hand to her tight, bloated middle. "Loudest notes I've gotten all semester."`,
+    (s) => `${s.name} breathes out long and slow, hands resting on her full, round belly. "I know my body," she says. "I've been in it a long time. It's telling me we're done." She grins. "We're done." There's no distress in it — just physical fact, delivered with the ease of someone who has always been comfortable in herself.`,
+    (s) => `${s.name} goes through what looks like a dancer's instinct to rebalance — then stops, because rebalancing around the enormous swell of her belly requires a different centre of gravity than she's used to. "Okay," she says. "I found the limit." She settles back. "I'm done. That was a lot and I mean that as a compliment."`,
+    (s) => `${s.name} splays both hands over her vast, heavy belly and holds them there, feeling the fullness, the warmth, the sheer mass of it. "Done," she says simply. She's not distressed. She's not surprised. She's a woman who knows her body better than most, and her body is simply, completely, spectacularly full. "Good session," she says.`,
+  ],
+  11: [  // Emma
+    (s) => `${s.name} sets down her fork and reaches for her tea with slightly unsteady hands. "I think I've reached a natural endpoint," she says carefully. She presses her hand to her full, rounded belly. "There's — there are definitely sensations happening that I would describe as terminal fullness." She blinks. "I need to stop. I am stopping."`,
+    (s) => `${s.name} looks at her belly with genuine scholarly interest, which would be more convincing if she weren't also clearly struggling to breathe at full depth. "This is a fascinating physiological state," she says. "I would very much like to write about it." She exhales carefully. "After I stop being in it. Which needs to happen now. I'm done."`,
+    (s) => `${s.name} closes her book — she'd been holding it as a prop and they both know it — and folds her hands over the round, enormous swell of her stomach. "Calling it," she says quietly. "I've eaten well past the point a reasonable person would have stopped and I have no regrets, but I am physically finished." She breathes slowly. "I might write a short essay about this later."`,
+    (s) => `${s.name} looks down at herself — the vast, round mass of her belly pressing against her cardigan, her hands resting on it like bookends — and smiles softly. "I am extraordinarily full," she says. "I've exceeded every previous benchmark." She tucks her pen behind her ear. "I'm stopping now. I want to lie somewhere soft and think about everything I just ate. Is that available?"`,
+  ],
+  12: [  // Roxanne
+    (s) => `${s.name} stops mid-sentence — she'd been talking about something entirely unrelated — and presses both hands to her stomach. "Oh. Okay. That's it." She looks genuinely impressed. "That is absolutely the end of it. I have found the wall." She slumps back in her chair dramatically. "Wow. Okay. That happened."`,
+    (s) => `${s.name} breathes in and the breath stops short, blocked by her bloated, straining belly, and she makes a short, surprised sound. "Okay, we're done," she says. She pats her stomach with both hands. "I have hit maximum. I feel enormous and full and honestly kind of incredible but also I cannot eat another bite. Session over."`,
+    (s) => `${s.name} leans back with the boneless energy of someone who has genuinely given everything. "That," she says, voice lower than usual, "is my entire capacity." She spreads her hands wide over the enormous swell of her belly. "All of it. Every bit." She closes her eyes. "I feel like a completed piece. Like the work is done." She exhales. "Done. Done done done."`,
+    (s) => `${s.name} goes still — which is rare for her — and the stillness is its own kind of loudness. "I'm tapping out," she says. "And I want it noted that I held on for a long time and gave everything I had and this belly is a masterpiece and I need to stop now." She presses her hands to the vast, full curve of herself. "Someone write that down. That's my artist's statement."`,
+  ],
+  13: [  // Aaliyah
+    (s) => `${s.name} leans back and hooks her thumbs in her waistband, assessing. "Yeah, that's it," she says. Matter-of-fact, no drama. She presses her hand to her tight, bloated belly. "I've played through pain before. This isn't pain. This is just done." She grins. "Good game."`,
+    (s) => `${s.name} does the thing athletes do when they've hit their limit — a slow exhale, a stillness, a quiet accounting. "I'm out," she says. "My body's talking to me." She rests a hand on the round, full curve of her stomach. "I've learned to listen to it. Took long enough." She leans back. "That was a good session."`,
+    (s) => `${s.name} straightens — tries to — and the significant mass of her belly makes itself known in a very practical way. She laughs, low and easy. "Alright, alright." She keeps both hands on her stomach, feeling its weight. "I know when a game's over." She settles back. "Called it. I'm done. That was a lot."`,
+    (s) => `${s.name} is quiet for a moment, both palms resting on the enormous, round swell of her belly, feeling it the way she'd feel the score at the end of a game — just the clean fact of it. "Done," she says. She doesn't need more words than that. She leans back carefully, slowly, the weight of herself a real and present thing. "Good session."`,
+  ],
+  14: [  // Sophie
+    (s) => `${s.name} presses her hands to her stomach and her face goes soft with surprise. "Oh — I think I have to stop." She says it apologetically, like she's letting someone down. "I'm really, really full. Like actually really full." She looks down at herself. "Is it okay if I stop? I have to stop."`,
+    (s) => `${s.name} exhales slowly, hands cradling her bloated, round belly with the gentle care of someone still getting used to it being there. "I'm tapping out," she says. "I tried really hard." She looks at you, earnest. "That's the fullest I've ever been. I think." She smiles weakly. "I can't move. Is that normal? That's probably normal."`,
+    (s) => `${s.name} rests her hands on the firm, round swell of her belly and takes careful stock of things. "Okay," she says. "Okay, that's — I'm done." She sounds settled about it, not distressed — the ease of someone who's been here enough times to know this particular feeling. "I pushed it tonight. I can tell." She leans back slowly. "Worth it."`,
+    (s) => `${s.name} takes a breath that doesn't go all the way in — her stomach's too full for it — and exhales soft and slow. "I'm calling it," she says, with a warmth that has nothing apologetic in it anymore. She spreads both hands over her vast, straining belly. "I'm completely full." She smiles at the ceiling. "I really love this. I can't move, but I love this."`,
+  ],
+  vaughan: [  // Dr. Vaughan
+    (s) => `${s.name} sets down her fork with controlled precision and reaches for her water glass, mostly to have something professional to do with her hands. "I should — I think I need to stop there." She clears her throat. Her belly is visibly straining against her blazer buttons. "Professionally speaking, this is — I'm stopping. That's my decision."`,
+    (s) => `${s.name} sits up straighter and then immediately wishes she hadn't, because the blazer is not cooperating with the fullness situation. "I'm going to call it there," she says, with the tone of someone reading from a procedural document. She places her hands flat on the table instead of where she obviously wants to put them. "This has been — the session is over."`,
+    (s) => `${s.name} presses her lips together briefly, something professional warring with something else entirely. "I need to stop," she says. Her voice is level. Her belly, full and round and straining against every professional instinct she arrived with, is not. She folds her hands on the table carefully. "I will note for the record that this was exceptional." A pause. "The food. The food was exceptional."`,
+    (s) => `${s.name} is quiet for a moment — very still, very full, very aware that she is currently the furthest from the person who walked into this building months ago with a leather portfolio and a mandate. "That's everything I have," she says finally. She rests one hand on her enormous, round belly, just for a moment, before placing it back on the table. "I'm tapping out." She looks at you. Something in her expression has entirely stopped pretending.`,
+  ],
+  default: [
+    (s) => `${s.name} puts her hands flat on her middle and shakes her head. "I'm done," she says. Her voice is steady. Her belly is full and round and she is past her limit in every measurable sense. "I can't."`,
+    (s) => `${s.name} leans back carefully, both hands resting on the bloated swell of her stomach. "That's it for me," she says. She sounds sure. "I found my wall tonight." She breathes slowly. "I'm done."`,
+    (s) => `${s.name} presses her palms against her enormous, full belly and meets your eyes. "I'm tapping out." She says it plainly — no apology, no drama. "I'm completely full and I'm stopping." She exhales. "Good session."`,
+    (s) => `${s.name} sits very still, hands on the vast, warm swell of her belly, breathing slowly and carefully. "Done," she says. One word. Final. She doesn't try to move. She just exists in the fullness of it, which is considerable, and that's enough.`,
+  ],
+};
 
 const DINNER_VENUES = [
   { id:"bistro",    label:"🥖 Campus Bistro",      tier:1, baseCourses:2, gainRange:[4,8],
