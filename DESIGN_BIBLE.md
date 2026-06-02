@@ -112,3 +112,29 @@ At blob stage and above, the descriptions should shift toward the architectural.
 - Other people's reactions are data. Note who can't look away and who looks away first.
 - She is aware of her own size with the familiarity of someone who has been living in this body for some time. She knows how much room she takes. She knows what chairs will hold her and which ones she's not going to try. This awareness is practical, not distressed.
 - At the extreme end (600+ lbs, ascended), spatial comparisons to objects should escalate accordingly — the belly that precedes her through doorways, the chair that doesn't exist yet that would hold her comfortably, the way she has to turn sideways and it doesn't actually help.
+
+### The Professor/Feeder POV — Story_w Notes
+
+This story is written in second-person, directly addressing the feeder/professor. It's the single best model for the professor character's inner voice in this game.
+
+**The escalation of desire is documented as accumulation, not explosion.** "You thought 150 would be enough. But once she got there, you wanted 160. And then 170. Eventually, you realized you'd never be satisfied." The desire grows by increment. Each milestone creates the next one. Write the professor's investment this way: always a little further, always a little more, never arriving at a fixed ceiling.
+
+**Investment and love are not distinguished.** The professor doesn't separate "I want her bigger" from "I love her." They're the same impulse. The food is an expression of care. The weight gain is an expression of intimacy. This is the emotional logic of the game and it should be present in the professor's voice throughout — not analyzed, just lived.
+
+**The subject's consent is tacit, not declared.** "She knew what you were doing to her, and she accepted it." She didn't say yes explicitly. She stopped saying no. She noticed your reaction and chose to keep getting what caused it. This is how the relationship works in the game — the students don't need to announce their consent; they demonstrate it by eating, by coming back, by leaning in. When she says "I want to be heavier," that's the culmination, not the premise.
+
+**The outside world's reading matters.** The story uses friends and family as a mirror — they see what's happening and it tells us something about the professor's power and investment. In the game, Vaughan, the HR observer, and the jealous students serve this function. Their reactions are evidence of what the professor has done.
+
+**The warmth of the conclusion is not hedged.** "If she wants to lie around, cramming food into her six-hundred-pound body and getting fucked passionately all day long, who am I to judge?" The judgment gets resolved. The friends come around. The story ends with acceptance. The game should do the same — the arc ends in arrival, not in ambiguity.
+
+### Bodies Described Through Others' Eyes — Story_1 Notes
+
+This fantasy story introduces weight gain through a third-party observer (Quinn) who watches two women she's attracted to get larger. Her gaze is the mechanism for almost all the physical description. This is useful model for the professor's observational register.
+
+**Reveal the body through clothing as constraint.** "Her breasts, squeezed inwards and upwards by the pressure of her outgrown leather armor." "The abdomen that was straining out against her leather armor." Clothing that's too small creates the body's new shape for the reader. The constraint reveals the abundance underneath. In game writing, clothes should be present and reactive: the waistband accommodating, the seams straining, the hem riding up.
+
+**New fat on muscle is described as addition, not replacement.** "New pockets of fat made for perfect complements to Liya's muscle." The fat doesn't erase what was there; it adds to it. This applies to athletes especially — the sumo wrestler's muscle and mass coexist and the body becomes more, not different.
+
+**Fullness described with physical texture, not shame.** The goodberry bloating is genuinely uncomfortable — the ache, the hard distended stomach, the inability to get comfortable — and none of it carries moral weight. The discomfort is physical fact. The women are annoyed, not ashamed. They're full and they're still going to eat more. The physical consequence and the desire exist simultaneously without one canceling the other.
+
+**The fabric-as-reveal technique.** "Every time one of Liya's hands pressed the fabric flat against her girlfriend's skin, the outline of her elven body was further revealed to the onlooker." This is a technique for describing a body through another character's interaction with it — the shape appearing through the impression made on fabric or another surface. Use this when you want to describe a body at a remove, through observation rather than direct inventory.
