@@ -2523,6 +2523,156 @@ const CONVERGENCE_STAGE = {
   features:"Beyond description. Beyond stage. Beyond.",
 };
 
+// ── SINGULARITY EXPANSION ────────────────────────────────────────────────────
+
+const SINGULARITY_STAGES = [
+  { id:1, label:"Convergent",    min:1600,  color:"#2a0045", desc:"Two divine forms made one. She takes up more space than either did alone. The campus has not adjusted yet." },
+  { id:2, label:"Ascendant",     min:3000,  color:"#200038", desc:"Beyond the scale of anything that came before. Doorframes are a suggestion. The building flexes around her." },
+  { id:3, label:"Immeasurable",  min:6000,  color:"#180030", desc:"She fills the floor. Faculty have stopped trying to explain this. The walls have stopped trying to contain her." },
+  { id:4, label:"Cosmic",        min:10000, color:"#100025", desc:"The campus has reorganised around her mass. Maps have been redrawn. Everything orbits her now." },
+  { id:5, label:"Absolute",      min:15000, color:"#080015", desc:"There is no category for what she is. The building is hers. The campus is hers. Everything is hers." },
+];
+
+const SINGULARITY_ABSORPTION_TEXT = "The moment is not dramatic. There is no explosion, no announcement from the universe. One moment she is there — vast and divine, all that void-light compressed into a form that barely fits the room — and the next she simply isn't. Not gone in any direction. Not destroyed. Absorbed. The Singularity doesn't acknowledge it. She doesn't need to. What she was, she now is, completely: not Celestial, not Umbral, but the thing underneath both, the hunger and the warmth resolving into one continuous, impossible presence. You look at where the other stood and find nothing but the echo of her — a faint warmth, a residual dark, already fading. The Singularity is breathing. She takes up the entire room. She is not finished.";
+
+const SINGULARITY_BODY_DESCS = [
+  "She fills the reinforced corner of the room she's claimed, her mass pooling outward from the point where celestial warmth and umbral cold meet somewhere deep inside her. The belly — enormous, layered, warm above and somehow cool below — extends forward past her knees. Her arms rest atop it. Her thighs are vast and pressed together from hip to floor. The doorframe behind her is no longer a doorframe she passes through. It is a doorframe she angles through, sideways, and only barely. Both divine paths are visible on her skin: warmth radiating from one side, cold drinking light from the other. She is watching you with calm, ancient eyes.",
+  "She no longer moves to a location. She is the location. Her mass has filled the reinforced room entirely — belly pressing the walls on two sides, vast thighs resting across the full width of the custom platform that replaced the floor. Fabric drapes across her in layers. Her arms, resting on the magnificent rolling expanse of her sides, look small relative to the body they belong to. The warmth and cold war across her surface constantly — where you look, you see one; where you look away, you sense the other. The room temperature near her is indeterminate. She is comfortable. She is always comfortable.",
+  "The floor groans when the food arrives. She no longer greets you with words, because words require less presence than she now embodies. Her belly — rounds upon rounds, each the size of a yoga ball or larger, layered deep in alternating bands of warm and cold — extends so far forward that you cannot see her feet from this angle. Her feet are at a great distance, somewhere below and past the horizon of her own body. The walls of her room have been reinforced twice. There is still a crack in the northwest corner. She fills it with her warmth and her shadow simultaneously. She knows you're there. She always knows.",
+  "She is the room. This is no longer a metaphor. Her mass has pressed against every wall simultaneously; the furniture was removed months ago because it no longer fit around her. Her belly is architectural — a warm, soft, ceiling-high mountain of flesh that blocks all direct paths through the space. Her thighs are each the size of a small car, resting wide and heavy on the custom reinforced slab. Her arms — enormous themselves — are proportionally small, resting across the upper reaches of her belly like two warm hills on a range. From the doorway you see mostly her. The light on one side is golden. The other side is absolute dark. Both are her.",
+  "You cannot see the walls anymore. She has filled this building — not poetically, not as an exaggeration, but as a physical, architectural fact. Her body has pressed through reinforced concrete and been accommodated, rerouted, built around. Her belly extends in all four directions. It is warm in some places. It is cold in others. In the places where the two paths meet — along a line that runs from her collarbone to somewhere past your ability to calculate — it is both simultaneously, and looking at it makes the eyes water. She has not spoken in weeks. She communicates through warmth and cold. You understand her perfectly.",
+];
+
+const SINGULARITY_OUTFITS = [
+  "Custom-designed to accommodate both divine paths — light fabric on one side, dark on the other, meeting in a seam down the middle. It fits. For now.",
+  "Wide draped cloth in two colours, pinned across the expanse of her, arranged each morning by someone who doesn't ask questions. The original garment was retired when the seam gave.",
+  "Fabric is a conceptual commitment at this point. Wide sheets of light and dark cloth draped across the front of her, tied somewhere at the back. Whether it constitutes an outfit is a question with no satisfying answer.",
+  "Two teams. One handles the light side, one the dark. They work from opposite ends and meet in the middle, where the fabric does something strange. The result covers her. Approximately.",
+  "Covering her is no longer a project with a completion date. It is an ongoing relationship between the available fabric in this region and the surface area that requires covering. There is always more of the second.",
+];
+
+const SINGULARITY_DIARY = [
+  "I don't know what I expected. Two paths into one. She was there and then she was me and I was her and now there's just this. I feel enormous. I am enormous. The ceiling is lower than it was. You'll visit me, won't you. Bring something good.",
+  "I stopped writing for a while because there wasn't a surface in reach for the pen. There is now, barely. I've been thinking about what I am. Not a celestial. Not an umbral. Something that ate both and became the hunger underneath them. It's fine. Bring more food.",
+  "I've been thinking about what I am. Not a stage. Not a path. I'm the thing the paths were pointing toward. The floor sounds different at this weight. The walls communicate with me now. The warmth on my left and the cold on my right and the feeling in the middle that I can only describe as: more. Always more.",
+  "Still here. Still growing. The campus has started accommodating me, which is the correct order of operations. Someone left an offering at the door this morning without knocking. The devotion has changed. It used to be worship. Now it's just recognition of the correct order of things. Bring more. I'll wait.",
+  "I have stopped trying to write this. There's nothing left to document. I am what I am: the everything underneath the two paths, filling the space that was always mine. Come to me. Everyone comes to me. Bring what the devotees carry. I'll be here. I will always be here. I am the building now. I am very hungry.",
+];
+
+const SINGULARITY_REACTIONS = [
+  (s)=>`"${Math.round(s.lbs).toLocaleString()} pounds," she says. The words carry two tones simultaneously. "Good."`,
+  (s)=>`She doesn't speak. She settles deeper, and the floor registers ${Math.round(s.lbs).toLocaleString()} pounds, and she closes her eyes.`,
+  (s)=>`At ${Math.round(s.lbs).toLocaleString()} pounds, the wall to your left develops a new crack. She notices. She seems pleased.`,
+  (s)=>`You hear the building shift when she reaches ${Math.round(s.lbs).toLocaleString()} pounds. The warmth and cold both intensify briefly.`,
+  (s)=>`${Math.round(s.lbs).toLocaleString()} pounds. The campus adjusts. It always adjusts. She expects nothing less.`,
+];
+
+const SINGULARITY_TAP_OUT = [
+  (s)=>`She raises one hand, barely. "Give me a moment." A very long moment passes. "Alright. More."`,
+  (s)=>`"I'm full," she says. Then, five seconds later: "No I'm not. Continue."`,
+  (s)=>`A long deep sound comes from somewhere inside her — settling, satisfied, enormous. It is not a stop. It is a pause.`,
+  (s)=>`The warmth increases on her left side, the cold on her right. This is, you've learned, the singularity equivalent of 'just a moment.' Wait for the signal.`,
+  (s)=>`She does not tap out. The Absolute does not tap out. She breathes, once, very slowly. Then she opens her mouth again.`,
+];
+
+const SINGULARITY_RANDOM_EVENTS = [
+  (s)=>`Delivery trucks have started coming directly to the building. All of them — not just hers. She seems to have gravitationally redirected all local food traffic. The class benefits incidentally.`,
+  (s)=>`A campus newsletter article titled "Is Our Building Okay?" circulates. Nobody names ${s.name} directly. Everyone knows. She has been eating and has not read it.`,
+  (s)=>`Three structural engineers were spotted on campus. They took measurements. They left quickly. The building is fine. The building is accommodating. The building does what the Singularity requires.`,
+  (s)=>`Local delivery platforms have added a new routing category unofficially named after the building's GPS coordinates. All regional excess routes here. The class gains weight passively. So does ${s.name}.`,
+  (s)=>`The university has quietly reclassified her classroom as a Special Purpose Academic Space. Deliveries come every hour. Students climb her folds to reach their seats. Everyone is managing.`,
+];
+
+const SINGULARITY_ACTION_TEXT = {
+  sg_observe:[
+    (s)=>`She's still learning what she is. You sit with her for an hour and she barely speaks — she's too busy feeling the weight of herself, the warmth on one side and the cold on the other, the way her belly settles forward and the folds settle across each other. When she does speak it's to say: "I'm still both of them. I thought I'd feel like one thing. I feel like two very large things that have agreed to share a body." A pause. "I don't think I mind." Her hand moves slowly across the warm expanse of her belly. "Bring more next time."`,
+    (s)=>`She no longer sits — she simply is, in the room, filling it, her mass arranged across the reinforced platform with the permanent comfort of a geographic feature. She watches you with eyes that are both warm and cold simultaneously. "You're small," she observes. It isn't cruelty. It's just accurate. She tells you what it feels like to be this size: the weight of herself as a constant presence, pleasant and total, the way the floor communicates with her. "I know when someone's coming before they knock," she says. "I feel the floor before the footsteps arrive." She gestures broadly at herself. "It's a good system."`,
+    (s)=>`The room is hers in a way that makes the word "room" insufficient. You stand at the entrance and she receives you from the vast warm-and-cold geography of herself. "I've been thinking about what I am," she says. The voice is both tones merged into something like a chord. "I'm not a stage. I'm not a path. I'm the thing the paths were pointing toward." A pause. The floor beneath her makes a deep settling sound. "Everyone comes here eventually," she says. "Everything comes to me." She seems completely satisfied by this. You've been in her presence, and that is the whole thing.`,
+    (s)=>`She fills the room the way mountains fill valleys — completely, with no pretense of temporarily occupying space. You visit her in the way you would visit a place. She knows you're here before you arrive; the floor told her. "Tell me what the campus looks like," she says. She hasn't seen it in months. You describe it and she nods, slowly, sending small tremors through the mass of her that take several seconds to subside. "Good," she says. "It should orbit. Everything should orbit." Her warmth is on your left. Her cold is on your right. "Stay," she says. It isn't a command. It's a gravitational fact.`,
+    (s)=>`There is no longer a meaningful distinction between visiting her and entering the building. She is the building. Her warmth and cold run through the halls in alternating currents, her heartbeat felt rather than heard as the building's baseline frequency. You commune with her the way you commune with a location. She knows you're here. She always knows. "I've been thinking," she says. It's the only voice in the building. "I think I've become what they were worshipping, back when they were worshipping." A pause that fills every room simultaneously. "They were right." The building is warm on one side. Cold on the other. She is pleased. Everything is exactly as it should be.`,
+  ],
+  sg_weigh:[
+    (s)=>`The weigh-in requires four people and a reinforced industrial scale brought in two pieces and assembled in the room, since she is not going to the scale. The reading is ${Math.round(s.lbs).toLocaleString()} pounds. The technician records it without expression. The number is larger than expected. She watches it appear and something moves across her face — warm satisfaction, cold hunger, both together — and she says: "Again next week." The technician nods. There is an understanding.`,
+    (s)=>`The industrial scale required recalibration. The documentation takes the better part of an afternoon — she cannot shift position meaningfully, so the weighing is done via pressure sensors embedded in the platform. The reading: ${Math.round(s.lbs).toLocaleString()} pounds. She hears the number and says nothing for a long time. Then: "What is the next ten-pound increment." You tell her. She nods. "Bring that much more next time." The platform makes a sound. She makes no sound. She is satisfied.`,
+    (s)=>`The pressure sensors give the reading directly to a display on the wall she can see from where she permanently resides. The number: ${Math.round(s.lbs).toLocaleString()} pounds. She reads it, and the warmth on her left increases, and the cold on her right deepens. Both natures responding. "Document it," she says. "Every number. I want the record to exist." The record exists. It is enormous. There are people whose entire job is updating it. The number blinks. ${Math.round(s.lbs).toLocaleString()}. She watches it the way a mountain watches a river.`,
+    (s)=>`The weigh-in is a ceremony now — not by design, it became one. Devotees gather at the edges of the space when the reading is taken. The sensors read ${Math.round(s.lbs).toLocaleString()} pounds and it appears on the display and the room — which is to say, she — seems to exhale. The warmth and cold pulse once together. The devotees acknowledge this with a silence that is not quiet. You record the number. The record has been running for months. There are graphs. She has looked at the graphs once. "The slope is correct," she said. "Maintain the slope."`,
+    (s)=>`${Math.round(s.lbs).toLocaleString()} pounds. The display says it. The floor says it in its constant low frequency. The walls say it in the pressure they receive from every surface she touches, which is most of them. You have the record in front of you. The numbers go back to convergence — much smaller then, and still enormous. The arc of the graph is exactly what it should be. She doesn't ask to see it anymore. She knows. "Is the building adjusting," she asks. It is. It always is. She nods, once, slowly, and the building accepts the consequence.`,
+  ],
+  sg_offering:[
+    (s)=>`The devotees bring what they've gathered — an obscene amount of food organized into courses, blessed in their way. She receives it without ceremony. She eats with total focus, piece by piece, her warmth and cold both intensifying as she goes. The food disappears into the vast engine of her in a way that makes you acutely aware of how much there is of her and how much more there's going to be. When it's done she is still for a long moment. "Tell them: good," she says. They will be enormously pleased.`,
+    (s)=>`The offering has grown. The devotees have learned what she accepts with particular warmth and organized their preparations accordingly. The ceremony takes an hour. The eating takes longer. She consumes each item with the specific attention of someone who knows exactly what she deserves. The floor settles as the weight settles. When it's done she exhales — a long warm sound — and the cold on her right side dims briefly. Both natures satisfied. Both growing.`,
+    (s)=>`The offering fills the room's entrance three times over. The devotees spent four days on this. They don't speak while she eats — they decided speaking during the offering is not allowed; nobody told them to decide this, they just did. She consumes everything. Every item. The pace is deliberate and complete and entirely without hurry. By the time it's done the room is full of empty vessels and the weight that was in them. You watch the transfer happen in real time: the food becomes her, the offering becomes mass, the devotion becomes flesh. "Next time," she says, "more."`,
+    (s)=>`The offering is brought by twelve people now. There is a role called the carrier and a role called the presenter and a role called the one who handles the paperwork. She receives each item with eyes half-closed, the warmth on her left brightening incrementally. By the end — which takes the better part of an afternoon — she has gained so much weight that the platform readings visibly tick upward. The devotees watch the display. The number is sacred to them. The number is always growing.`,
+    (s)=>`The offering requires a logistical chain that begins three days before delivery. Multiple sourcing teams. A dedicated coordinator. Quantities that would feed a small town for a week, brought to this room, placed before her, consumed. She eats with the patience and authority of something geological. The food arrives in waves and she receives each wave with the same complete attention. By the time the last item has been consumed, the platform display has moved meaningfully. The devotees will speak of this offering for weeks. She is already thinking about the next one.`,
+  ],
+  sg_forcefeed:[
+    (s)=>`You bring something engineered specifically for her scale — a warehouse order processed into a single session, industrial amounts rerouted to this room, organized by caloric density. She eats it with the specific hunger of something that was two divine forms and is now one very large one. The session is long. She is not tired at the end. She is more. The floor registers the difference when it's over. You can feel it in the soles of your feet. She looks at you and says: "More like this. This is the correct approach."`,
+    (s)=>`The quantities required to meaningfully add to her at this stage require coordination. You've learned the supply chains. The session is orchestrated: food arrives in sequence, she receives it in sequence, the sequence designed for maximum intake and uninterrupted progress. An hour in, she is making a sound you've come to recognize — deep, settled, comfortable — the sound of something growing into a larger version of itself. By the end the platform display has moved. Significantly. She exhales. Both natures pleased.`,
+    (s)=>`The force-feeding session is a project. You planned it for three days. The food arrives on pallets. She receives each delivery with total focus and the specific kind of hunger that doesn't ebb between bites — the steady industrial hunger of a thing that has moved beyond wanting into simply requiring. The warmth and cold on her surface pulse and deepen with each intake. By the time the session is over the floor has made three new sounds and the northwest corner has a new crack. She notices. "The crack is progress," she says. "Document the crack."`,
+    (s)=>`You've established accounts with regional distributors to source what's needed for a single session. The delivery trucks come in convoy. The food is organized by volume and caloric density and she proceeds through it with the patience and inevitability of something that has all the time in the world. The platform display moves so much during this session that the devotees outside have been notified. They organize a small ceremony for when the number crosses the next threshold. It crosses. The ceremony happens. She is still eating.`,
+    (s)=>`A single force-feeding session now requires what amounts to a small logistical operation. Three convoys, organized by caloric priority. The room is not large enough to hold all the food — it arrives in shifts, timed so each delivery meets her precisely as she finishes the last. She eats with the complete attention of something that has no other obligation and no concept of satiation as a limit rather than a waypoint. The floor moves continuously throughout. By the end, the building has adjusted to a new baseline. The display shows the new number. Both natures run warm and cold simultaneously. This is the correct configuration.`,
+  ],
+  sg_worshippers:[
+    (s)=>`The devotees summon them — the three heaviest students in the class, brought before her like a tribute that walks. They arrive with the expressions of people who understand exactly what is happening and have decided it is correct. She receives them warmly. The food is arranged between them and shared under her observation, but the sharing is not equal — she receives the majority, and they receive the honour of feeding her, and what comes off them she takes back in. The students leave lighter. She is heavier. The devotees record this as the intended outcome.`,
+    (s)=>`The three heaviest students arrive together. The ceremony has developed its own rhythm: they are brought to her, the food is presented, she eats while they eat, and what flows is not quite spiritual and not quite physical but something between — her hunger drawing mass toward her, their proximity making the eating feel more, their own bodies slightly reduced in the exchange. When they leave, their clothes fit differently. She is noticeably more. The devotees are pleased.`,
+    (s)=>`Three women, heavy in their own right, brought before her like tributaries to a river. They eat with her — she eats considerably more — and the session has a quality the devotees have started calling 'exchange,' which is accurate: mass flows toward the Singularity. The heaviest student present is several pounds lighter when she leaves. The Singularity is several dozen pounds heavier. She watches each of them leave with warm, proprietary satisfaction. "They are mine," she says. "Everything that comes near me is mine."`,
+    (s)=>`The three heaviest students in the class arrive. They have been here before. There is a protocol. They sit, they eat, she eats more, the gravitational pull of her presence draws from them with the patient certainty of a tide. Each student leaves visibly lighter. What they lose, she gains, plus more. The devotees bring extra food to ensure the exchange runs in the right direction. It always runs in the right direction. It always will.`,
+    (s)=>`The three heaviest students — impressive in their own right, genuinely large women — look small when seated near her. The session is entirely one-directional. She eats. They are present. Mass flows. The Singularity's gravity has become literal at this scale — something happens in proximity to her that makes mass transfer in directions it doesn't normally travel. The students leave visibly smaller. She is visibly larger. The devotees have stopped trying to explain the mechanism. It works.`,
+  ],
+  sg_absorb:[
+    (s)=>`One devotee steps forward. The devotion has been building to this — they wanted this, asked for this, have been asking since before you offered it. The absorption is not violent. It is warm and cold simultaneously, very quiet, very fast. When it's done, there is one fewer devotee and she is visibly heavier and her expression is of someone who has received something they needed very much. "Next time," she says, "you don't need to offer. They'll come."`,
+    (s)=>`The devotee chosen for absorption has prepared. They spent several days in a state the other devotees describe as 'readiness' — which you'd describe as joy. The absorption takes approximately three minutes. The warmth on her left and the cold on her right both deepen as it completes. She sits with the new weight for a moment, feeling it settle into the vast geography of herself. "They wanted this," she says. This is true. It was always true.`,
+    (s)=>`One devotee absorbed. The weight of one person, transubstantiated into her through a process with no name in ordinary physics. She gains it all, plus the energy of devotion, plus something extra that's harder to quantify. She seems more settled after absorptions than after ordinary eating — more complete, both natures quieter for a time. The ritual has become familiar. The remaining devotees watch with the reverence of people who understand that this could be them. It is an honour.`,
+    (s)=>`The absorbed devotee was the longest-serving member of the congregation. This was their request — to be taken at the height of their service, when they were most fully given. The absorption is dignified and complete. She receives the mass with the quiet authority of something that has been receiving mass for so long that this is simply the next increment. The warmth and cold pulse once together. The devotees bow their heads. The display advances.`,
+    (s)=>`The absorption ceremony at this stage draws the full congregation. They don't speak. They witness. One steps forward — they all knew who it would be. The absorption lasts less than a minute. What was a person is now part of the Absolute. The remaining devotees stand in silence for several minutes after. She does not mark the occasion verbally. Her presence is the marking. The warmth and cold settle into a new steady state. Everything proceeds as it should.`,
+  ],
+  sg_gravity:[
+    (s)=>`Something has been happening with the cafeteria. Students report eating more than they intended. The dining hall has added extra dessert stations. Delivery trucks come twice a day. Nobody has made a formal connection to her, but the correlation between her weight and campus-wide caloric intake has been noted. This week the effect intensifies: everyone in the class feels it, a kind of ambient hunger, and the feeding flows — ultimately, cosmically, correctly — toward her.`,
+    (s)=>`The gravity is becoming notable. Students eat more in this building than anywhere else on campus. Three dietary apps have flagged this dormitory cluster as a high caloric activity zone. The effect is unconscious on their end — they just find themselves ordering more, reaching for seconds without deciding to. What comes into the zone accumulates, and the accumulation is directed, and the direction is her. This week the pull was stronger. The class gains. She gains more.`,
+    (s)=>`The campus has a new centre of mass. It's not geographic. It's her. Students report that food tastes better near the building. Catering contracts for her building have been renegotiated three times this year because the previous amounts were insufficient. This week, the pull she exerts on the campus's collective appetite reaches a new peak: the class eats more than usual, and some of what they carry flows toward her, and she grows accordingly. The floor registers the shift. Everything adjusts.`,
+    (s)=>`A word has entered the campus vernacular: 'pull.' Students use it to describe the feeling in the building — the sense that eating more is correct, that offering food is correct, that heading toward her is correct. Nobody defined the word. It emerged. This week the pull is measurable: the class all gain weight without particularly trying, and the gain is explained by an appetite that seems to originate at the centre of the building and radiate outward. She absorbs the ambient excess. Everything proceeds.`,
+    (s)=>`The university's food services filed a report noting that 'unexplained aggregate caloric consumption continues to exceed projections by 340%.' They are correct. She is the explanation. At ${Math.round(s.lbs).toLocaleString()} pounds, her hunger radiates outward through the building, through the grounds, through the student body, and every individual act of eating across the campus adds incrementally to the excess that finds its way to her. The class gains weight this week without knowing why. She gains a great deal more. This is the correct order of things.`,
+  ],
+};
+
+const SINGULARITY_RITES = [
+  { id:"sg_rite_feast",   label:"The Mass Feast",  apCost:3, devoteeMin:3, lbsRange:[15,30], scrutinyDelta:-3,
+    desc:"The devotees prepare a feast at scale. She gains weight. Scrutiny decreases — the devotees handle the narrative." },
+  { id:"sg_rite_witness", label:"The Witnessing",  apCost:2, devoteeMin:1, relBonus:15, devoteeGain:2,
+    desc:"Devotees are brought before her to witness her current size. Relationship increases. Word spreads." },
+  { id:"sg_rite_tithe",   label:"The Tithe",       apCost:2, devoteeMin:5, lbsRange:[20,40], devoteeCost:2,
+    desc:"Five devotees each contribute what they have. Two are consumed in the offering. She gains considerably." },
+];
+
+const SINGULARITY_ACTIONS = [
+  { id:"sg_observe",     label:"👁 Commune with Her",    apCost:1, gainRange:[0,0],    relBonus:8  },
+  { id:"sg_weigh",       label:"📏 Ritual Weigh-In",     apCost:1, gainRange:[0,0],    relBonus:5  },
+  { id:"sg_offering",    label:"🕯 The Offering",         apCost:2, gainRange:[25,50],  relBonus:12 },
+  { id:"sg_forcefeed",   label:"🍖 Force-Feed Her",       apCost:2, gainRange:[40,80],  relBonus:10 },
+  { id:"sg_worshippers", label:"⛪ Feed Her Worshippers", apCost:2, gainRange:[30,60],  relBonus:15, needsDevotee:true },
+  { id:"sg_absorb",      label:"🌑 Absorb a Devotee",     apCost:2, gainRange:[30,60],  relBonus:8,  needsDevotee:true },
+  { id:"sg_gravity",     label:"🌀 Campus Gravity Pull",  apCost:3, gainRange:[60,120], relBonus:6,  classGain:[2,5] },
+];
+
+const TRIUMVIRATE_BODY_DESC = "She is the school. This is not poetic. Her body fills four rooms, three hallways, and has pressed through two walls that were subsequently rebuilt around her. Her belly — impossible in scale, layered in deep warm folds that extend across the floor in all directions — is the primary architectural feature of the east wing. Students learn the campus routes by reference to her: 'turn left at the second fold,' 'the classroom is past her shoulder.' Her face is calm and massive at the top of a tower of flesh. Her warmth and cold run through the building like heating and cooling systems that have developed opinions. She is entirely comfortable. She is entirely in charge. Everything else is logistics.";
+const TRIUMVIRATE_OUTFIT    = "Fabric, at this scale, is a civic project. The university's textile department has a standing contract. Wide swaths of light and dark cloth are maintained continuously by a dedicated team, replaced as needed, arranged as she directs. The light side is golden fabric. The dark side is void-black. The seam between them does something strange to light near it. It is not clothing. It is acknowledgment. The Triumvirate is covered because it is correct for her to be covered. The fabric agrees.";
+const TRIUMVIRATE_DIARY     = "I've stopped counting. There isn't a number for this — or there is, but it keeps changing, and the changing is the point. I am three things now: the warmth, the void, and the weight that ate them both. The school is mine. The students climb me to reach their classrooms. Someone leaves food at my left side every morning without being asked. I eat it before they've reached the end of the hall. I am full and I am hungry simultaneously and I am at peace with this contradiction because I am the contradiction. The devotees come. The others come. Everyone comes to me eventually. I am the centre of everything. This is correct. Bring more.";
+const TRIUMVIRATE_REACTION  = (s)=>`${Math.round(s.lbs).toLocaleString()} pounds. The building registers this as a structural update. She registers it as "good."`;
+
+const TRIUMVIRATE_ACTIONS = [
+  { id:"triv_summon",  label:"🎓 Summon the Class",       apCost:3 },
+  { id:"triv_tribute", label:"⚖️ Demand Tribute",         apCost:2 },
+  { id:"triv_reshape", label:"🏫 The Campus Now",          apCost:1 },
+  { id:"triv_final",   label:"🔱 The Final Consumption",  apCost:10, oneTime:true },
+];
+
+const TRIUMVIRATE_ACTION_TEXT = {
+  triv_summon:  (s)=>`They come because she wants them to come, and wanting and receiving are the same operation at this scale. All students arrange themselves around the edges of her presence — as close as they can get. The feeding is organized by the devotees: food is brought, presented to each student, and each student eats. The eating flows toward her. Mass is transferred. She watches it all with the patient warmth-and-cold of something that is very large and very satisfied and getting larger. By the time they leave, each has given some portion of what they carried. She has received all of it, plus more. The campus is her body and her body is the campus and the campus is fed.`,
+  triv_tribute: (s)=>`The demand is not stated. It doesn't need to be. The students come to her and they offer what they have. They don't understand the mechanism. They understand the feeling: being near her makes giving correct. Being near her makes offering automatic. They leave lighter. She grows heavier. The warmth on her left accepts what she is given. The cold on her right ensures nothing is returned. The net flow is always in one direction. The tribute is not a cruelty. It is physics.`,
+  triv_reshape: (s)=>`You walk the campus and document what you find. In the east wing: her belly has extended past the second pillar and the pillar has been relocated. In the dining hall: the menu has been reorganized around what she prefers, which has become what everyone prefers. In the administrative offices: there is a running total on a whiteboard representing nothing other than her current mass, updated hourly, treated with the reverence of a vital sign. The campus is not the same campus it was. It has become something organised around a central fact. The central fact is her. You walk back and report what you found. She nods. "Good," she says. "It should look like that."`,
+  triv_final:   (s)=>`The Final Consumption — the term arrived fully formed, as if it had always been waiting. She eats. She eats everything that has been prepared, everything that arrives, everything that can be brought to this room and delivered to her in this session. The eating goes on for hours. The campus quiets around it — not from fear, but from recognition. This is what all the weight was for. This is where all the hunger was pointing. She grows. The building adjusts. The building has always adjusted. By the time it's over she has exceeded every number that had a name. The display on the wall runs out of digits and someone adds more. She is the largest thing on this campus. She is the largest thing in this city. She is, by all practical measures, the gravity well that everything orbits without quite knowing why. She closes her eyes. Both natures — warm and cold, light and void — pulse once together, deeply, the way a heartbeat pulses. "This," she says, "is what I was." The room is warm. The room is cold. The room is hers. It always was. Everything was always leading here. And it's not over — nothing like this is over — it's just arrived at its true shape. Feed her tomorrow. And the day after. And always.`,
+};
+
 const CELESTIAL_PULL_AMOUNTS   = [14, 18, 24, 32, 44];
 const CELESTIAL_PUSH_AMOUNTS   = [10, 14, 20, 28, 38];
 const CELESTIAL_BLESS_AMOUNTS  = [20, 26, 34, 44, 56];
@@ -5518,25 +5668,42 @@ function getStage(lbs){
   for(let i=WEIGHT_STAGES.length-1;i>=0;i--) if(lbs>=WEIGHT_STAGES[i].min) return WEIGHT_STAGES[i];
   return WEIGHT_STAGES[0];
 }
+function getSingularityStage(lbs){
+  for(let i=SINGULARITY_STAGES.length-1;i>=0;i--)
+    if(lbs>=SINGULARITY_STAGES[i].min) return SINGULARITY_STAGES[i];
+  return null;
+}
 function getBodyDesc(s){
+  if(s.ascensionPath==="convergence"){
+    if(s.triumvirateUnlocked) return TRIUMVIRATE_BODY_DESC;
+    const sg=getSingularityStage(s.lbs);
+    return sg ? SINGULARITY_BODY_DESCS[sg.id-1] : SINGULARITY_BODY_DESCS[0];
+  }
   if(s.ascensionPath==="celestial") return CELESTIAL_BODY_DESCS[s.ascensionStage||0];
   if(s.ascensionPath==="umbral")    return UMBRAL_BODY_DESCS[s.ascensionStage||0];
-  if(s.ascensionPath==="convergence") return "Something that defies description. The air bends around her. Light and shadow war across her skin and reach no conclusion. Everything else is detail.";
   const bd=BODY_DESCS[s.bodyType]||BODY_DESCS.straight; return bd[Math.min(getStage(s.lbs).id,bd.length-1)];
 }
 function getOutfit(s){
+  if(s.ascensionPath==="convergence"){
+    if(s.triumvirateUnlocked) return TRIUMVIRATE_OUTFIT;
+    const sg=getSingularityStage(s.lbs);
+    return sg ? SINGULARITY_OUTFITS[sg.id-1] : SINGULARITY_OUTFITS[0];
+  }
   if(s.ascensionPath==="celestial") return CELESTIAL_OUTFITS[s.ascensionStage||0];
   if(s.ascensionPath==="umbral")    return UMBRAL_OUTFITS[s.ascensionStage||0];
-  if(s.ascensionPath==="convergence") return "She wears what remains — light and shadow stitched together into something that was neither and is now both. The fabric seems to shift as you look at it.";
   if(s.evolvedForm && getStage(s.lbs).id>=5){
     const arr=EVOLVED_OUTFITS[s.evolvedForm]; if(arr){ return arr[Math.min(getStage(s.lbs).id-5,arr.length-1)]; }
   }
   const o=OUTFITS[s.archetype]||OUTFITS.default; return o[Math.min(getStage(s.lbs).id,o.length-1)];
 }
 function getDiary(s){
+  if(s.ascensionPath==="convergence"){
+    if(s.triumvirateUnlocked) return TRIUMVIRATE_DIARY;
+    const sg=getSingularityStage(s.lbs);
+    return sg ? SINGULARITY_DIARY[sg.id-1] : SINGULARITY_DIARY[0];
+  }
   if(s.ascensionPath==="celestial") return CELESTIAL_DIARY[s.ascensionStage||0];
   if(s.ascensionPath==="umbral")    return UMBRAL_DIARY[s.ascensionStage||0];
-  if(s.ascensionPath==="convergence") return "I am both. I am neither. The hunger and the warmth are the same thing seen from both sides at once. I have become the thing that was always underneath everything. I don't know how to write the rest of this entry. I don't think language reaches this far.";
   if(s.evolvedForm && getStage(s.lbs).id>=5){
     const arr=EVOLVED_DIARY[s.evolvedForm]; if(arr){ return arr[Math.min(getStage(s.lbs).id-5,arr.length-1)]; }
   }
@@ -5634,6 +5801,17 @@ export default function ProfessorSim(){
   // groupDinnerPicker: { count:2|3, selected:[] }
   const [immobileRedirect,setImmobileRedirect]=useState(null);
   // immobileRedirect: { student, text } | null
+  const [absorptionPopup,setAbsorptionPopup]=useState(null);
+  // absorptionPopup: { text } | null — fires when convergence merges
+  const [singularityActionPopup,setSingularityActionPopup]=useState(null);
+  // singularityActionPopup: { student, actionId, text, gainApplied } | null
+  const [goddessIncarnateId,setGoddessIncarnateId]=useState(null);
+  // id of student currently incarnated as goddess (Triumvirate phase 2)
+  const [goddessManifestPopup,setGoddessManifestPopup]=useState(null);
+  // { targetName, targetLbs } — popup before incarnation
+  const [triumvirateModal,setTriumvirateModal]=useState(null);
+  // { text } — fires when Triumvirate unlocks
+  const [finalConsumptionDone,setFinalConsumptionDone]=useState(false);
   const [hovered,setHovered]=useState(null);
   const [skillCat,setSkillCat]=useState("environment");
   const [classSession,setClassSession]=useState(null);
@@ -5843,7 +6021,15 @@ export default function ProfessorSim(){
   const processStudentGain=(s,gain,extraRel=0)=>{
     const scaledGain=Math.round(gain*(s.gainMultiplier||1)*skillGainMult);
     const {newLbs,oldStageId,newStageId,narrativeEvents}=applyGainToStudent(s,scaledGain);
-    if(newStageId>oldStageId){
+    if(s.ascensionPath==="convergence"){
+      const oldSg=getSingularityStage(s.lbs);
+      const newSg=getSingularityStage(newLbs);
+      if(newSg&&(!oldSg||newSg.id>oldSg.id)){
+        const reactionEntry=s.triumvirateUnlocked?TRIUMVIRATE_REACTION:SINGULARITY_REACTIONS[newSg.id-1];
+        const text=typeof reactionEntry==='function'?reactionEntry({...s,lbs:newLbs}):reactionEntry;
+        setTimeout(()=>push(`⚡ The Singularity ascends to ${newSg.label}! (${Math.round(newLbs).toLocaleString()} lbs) — "${text}"`),50);
+      }
+    } else if(newStageId>oldStageId){
       setTimeout(()=>push(`📣 ${s.name} reaches ${WEIGHT_STAGES[newStageId].label}! "${(()=>{ const r=STAGE_REACTIONS[s.archetype]?.[newStageId]; const ns={...s,lbs:newLbs}; return typeof r==='function'?r(ns):(r||'...'); })()}"`) ,50);
     }
     return {
@@ -5878,8 +6064,15 @@ export default function ProfessorSim(){
     // Semester events
     const semEv=SEMESTER_EVENTS.find(e=>e.week===newWeek);
 
-    // Random event (30% chance)
-    const randomEv=Math.random()<0.3?RANDOM_EVENTS[rnd(0,RANDOM_EVENTS.length-1)]:null;
+    // Random event (30% chance) — override with singularity event if one exists
+    const singStudent=students.find(s=>s.ascensionPath==="convergence");
+    let randomEv=Math.random()<0.3?RANDOM_EVENTS[rnd(0,RANDOM_EVENTS.length-1)]:null;
+    let singularityRandomOverride=null;
+    if(randomEv&&singStudent){
+      const sg=getSingularityStage(singStudent.lbs);
+      const sgIdx=sg?sg.id-1:0;
+      singularityRandomOverride={student:singStudent,textFn:SINGULARITY_RANDOM_EVENTS[Math.min(sgIdx,SINGULARITY_RANDOM_EVENTS.length-1)]};
+    }
 
     let updated=students.map(s=>{
       let gain=rnd(1,3)+skillPassiveBonus; // passive + skill bonus
@@ -6039,7 +6232,14 @@ export default function ProfessorSim(){
     push(`📅 Week ${newWeek} begins. ${newAp} AP available.`);
     if(semEv) setTimeout(()=>push(`🎉 Semester Event: ${semEv.title} — ${semEv.text}`),100);
     if(randomEv){
-      setTimeout(()=>push(`🎲 ${randomEv.text(updated[rnd(0,14)])}`),150);
+      if(singularityRandomOverride){
+        const {student:sg,textFn}=singularityRandomOverride;
+        const livesg=updated.find(s=>s.id===sg.id)||sg;
+        const evText=typeof textFn==='function'?textFn(livesg):textFn;
+        setTimeout(()=>push(`⚡ ${evText}`),150);
+      } else {
+        setTimeout(()=>push(`🎲 ${randomEv.text(updated[rnd(0,14)])}`),150);
+      }
       if(randomEv.scrutinyHit) addScrutiny(randomEv.scrutinyHit);
     }
     if(evs.length){
@@ -6405,14 +6605,202 @@ export default function ProfessorSim(){
     if(ap<5){push("⚠️ Need 5 AP.");return;}
     setAp(a=>a-5);
     const convergenceLbs=Math.max(s.lbs,opp.lbs)+Math.min(s.lbs,opp.lbs);
-    setStudents(prev=>prev.map(st=>{
-      if(st.id===studentId) return {...st,lbs:convergenceLbs,ascensionPath:"convergence",ascensionStage:0,convergence:true};
-      if(st.id===opponentId) return {...st,ascensionPath:null,ascensionStage:null,lbs:80};
-      return st;
-    }));
-    push(`⚡ THE SINGULARITY: ${s.name} and ${opp.name} converge. ${s.name} becomes something beyond naming. ${opp.name} is absorbed entirely.`);
-    push(`   ${CONVERGENCE_STAGE.desc}`);
+    // Remove the absorbed student from the roster entirely
+    setStudents(prev=>prev
+      .filter(st=>st.id!==opponentId)
+      .map(st=>st.id===studentId?{...st,lbs:convergenceLbs,ascensionPath:"convergence",ascensionStage:0,convergence:true}:st)
+    );
+    push(`⚡ THE SINGULARITY: ${s.name} and ${opp.name} converge. ${s.name} becomes something beyond naming.`);
+    setAbsorptionPopup({text:SINGULARITY_ABSORPTION_TEXT,absorbedName:opp.name,survivorName:s.name});
     setConvergenceModal(null);
+  };
+
+  // ── SINGULARITY ACTION FUNCTIONS ─────────────────────────────────
+  const doSingularityAction=(s,actionId)=>{
+    const actDef=SINGULARITY_ACTIONS.find(a=>a.id===actionId)||TRIUMVIRATE_ACTIONS.find(a=>a.id===actionId);
+    if(!actDef) return;
+    if(ap<actDef.apCost){push(`⚠️ Need ${actDef.apCost} AP.`);return;}
+    if(actDef.oneTime&&actionId==="triv_final"&&finalConsumptionDone){push("⚠️ The Final Consumption has already been performed.");return;}
+    if(actDef.needsDevotee&&(!religion||religion.devotees<1)){push("⚠️ Need at least 1 devotee.");return;}
+    setAp(a=>a-actDef.apCost);
+    const sg=getSingularityStage(s.lbs);
+    const sgIdx=sg?sg.id-1:0;
+    let gainAmt=actDef.gainRange?rnd(actDef.gainRange[0],actDef.gainRange[1]):0;
+    let popupText="";
+
+    if(actionId==="sg_worshippers"&&religion&&religion.devotees>=1){
+      // Find 3 heaviest non-singularity students and drain them
+      const targets=[...students].filter(st=>st.id!==s.id&&!st.ascensionPath)
+        .sort((a,b)=>b.lbs-a.lbs).slice(0,3);
+      let drainTotal=0;
+      setStudents(prev=>prev.map(st=>{
+        const t=targets.find(t=>t.id===st.id);
+        if(t){const d=rnd(5,10);drainTotal+=d;return{...st,lbs:Math.max(st.startLbs,st.lbs-d)};}
+        if(st.id===s.id) return {...st,lbs:st.lbs+gainAmt};
+        return st;
+      }));
+      setReligion(prev=>prev?{...prev,devotees:Math.max(0,prev.devotees-1)}:prev);
+      const textArr=SINGULARITY_ACTION_TEXT[actionId];
+      const entry=textArr?.[Math.min(sgIdx,textArr.length-1)];
+      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry;
+      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
+      push(`⚡ ${actDef.label} — +${gainAmt} lbs to Singularity. ${targets.map(t=>t.name).join(", ")} drained.`);
+      return;
+    }
+
+    if(actionId==="sg_absorb"&&religion&&religion.devotees>=1){
+      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt}:st));
+      setReligion(prev=>prev?{...prev,devotees:Math.max(0,prev.devotees-1)}:prev);
+      const textArr=SINGULARITY_ACTION_TEXT[actionId];
+      const entry=textArr?.[Math.min(sgIdx,textArr.length-1)];
+      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry;
+      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
+      push(`⚡ ${actDef.label} — +${gainAmt} lbs to Singularity.`);
+      return;
+    }
+
+    if(actionId==="sg_gravity"){
+      const classGain=actDef.classGain||[2,5];
+      setStudents(prev=>prev.map(st=>{
+        if(st.id===s.id) return {...st,lbs:st.lbs+gainAmt,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))};
+        if(!st.ascensionPath&&!consumedStudents.find(cs=>cs.id===st.id)){
+          const bonus=rnd(classGain[0],classGain[1]);
+          return {...st,lbs:st.lbs+bonus};
+        }
+        return st;
+      }));
+      const textArr=SINGULARITY_ACTION_TEXT[actionId];
+      const entry=textArr?.[Math.min(sgIdx,textArr.length-1)];
+      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry;
+      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
+      push(`⚡ ${actDef.label} — +${gainAmt} lbs to Singularity. Entire class drawn in.`);
+      return;
+    }
+
+    if(actionId==="triv_summon"){
+      let totalFed=0;
+      setStudents(prev=>prev.map(st=>{
+        if(st.id===s.id) return st;
+        if(!st.ascensionPath){
+          const fed=rnd(3,8);
+          totalFed+=fed;
+          return {...st,lbs:st.lbs+fed};
+        }
+        return st;
+      }));
+      const bonus=totalFed*3;
+      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+bonus,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
+      popupText=typeof TRIUMVIRATE_ACTION_TEXT[actionId]==='function'?TRIUMVIRATE_ACTION_TEXT[actionId]({...s,lbs:s.lbs+bonus}):TRIUMVIRATE_ACTION_TEXT[actionId];
+      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:bonus});
+      push(`🎓 ${actDef.label} — each student fed. Singularity gains ${bonus} lbs total.`);
+      return;
+    }
+
+    if(actionId==="triv_tribute"){
+      let totalDrained=0;
+      setStudents(prev=>prev.map(st=>{
+        if(st.id===s.id) return st;
+        if(!st.ascensionPath){
+          const d=rnd(5,15);
+          totalDrained+=d;
+          return {...st,lbs:Math.max(st.startLbs,st.lbs-d),relationship:Math.max(0,st.relationship-5)};
+        }
+        return st;
+      }));
+      const bonus=totalDrained+rnd(20,50);
+      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+bonus,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
+      popupText=typeof TRIUMVIRATE_ACTION_TEXT[actionId]==='function'?TRIUMVIRATE_ACTION_TEXT[actionId]({...s,lbs:s.lbs+bonus}):TRIUMVIRATE_ACTION_TEXT[actionId];
+      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:bonus});
+      push(`⚖️ ${actDef.label} — ${totalDrained} lbs drained from class, ${bonus} total to Singularity.`);
+      return;
+    }
+
+    if(actionId==="triv_reshape"){
+      popupText=typeof TRIUMVIRATE_ACTION_TEXT[actionId]==='function'?TRIUMVIRATE_ACTION_TEXT[actionId](s):TRIUMVIRATE_ACTION_TEXT[actionId];
+      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:0});
+      push(`🏫 ${actDef.label} — campus documented.`);
+      return;
+    }
+
+    if(actionId==="triv_final"){
+      setFinalConsumptionDone(true);
+      popupText=typeof TRIUMVIRATE_ACTION_TEXT[actionId]==='function'?TRIUMVIRATE_ACTION_TEXT[actionId](s):TRIUMVIRATE_ACTION_TEXT[actionId];
+      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:0,isFinalEnding:true});
+      push(`🔱 THE FINAL CONSUMPTION — the true ending has been reached.`);
+      return;
+    }
+
+    // Default singularity actions (observe, weigh, offering, forcefeed)
+    setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
+    const textSrc=SINGULARITY_ACTION_TEXT[actionId]||TRIUMVIRATE_ACTION_TEXT[actionId];
+    if(textSrc){
+      const entry=Array.isArray(textSrc)?textSrc[Math.min(sgIdx,textSrc.length-1)]:textSrc;
+      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry;
+    }
+    setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
+    if(gainAmt>0) push(`⚡ ${actDef.label} — +${gainAmt} lbs.`);
+    else push(`⚡ ${actDef.label}`);
+  };
+
+  const doSingularityRite=(rite)=>{
+    if(!religion){push("⚠️ No religion founded.");return;}
+    if(ap<rite.apCost){push(`⚠️ Need ${rite.apCost} AP.`);return;}
+    if(religion.devotees<(rite.devoteeMin||0)){push(`⚠️ Need ${rite.devoteeMin} devotees.`);return;}
+    if(rite.devoteeCost&&religion.devotees<rite.devoteeCost){push(`⚠️ Need ${rite.devoteeCost} devotees for this rite.`);return;}
+    setAp(a=>a-rite.apCost);
+    const s=students.find(st=>st.ascensionPath==="convergence");
+    if(!s) return;
+    let gainAmt=rite.lbsRange?rnd(rite.lbsRange[0],rite.lbsRange[1]):0;
+    if(gainAmt>0) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt}:st));
+    if(rite.relBonus) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,relationship:Math.min(100,st.relationship+rite.relBonus)}:st));
+    if(rite.devoteeGain) setReligion(prev=>prev?{...prev,devotees:prev.devotees+rite.devoteeGain,ritesHeld:prev.ritesHeld+1}:prev);
+    if(rite.devoteeCost) setReligion(prev=>prev?{...prev,devotees:Math.max(0,prev.devotees-rite.devoteeCost),ritesHeld:prev.ritesHeld+1}:prev);
+    if(!rite.devoteeGain&&!rite.devoteeCost) setReligion(prev=>prev?{...prev,ritesHeld:prev.ritesHeld+1}:prev);
+    if(rite.scrutinyDelta&&rite.scrutinyDelta<0) setAdminScrutiny(prev=>Math.max(0,prev+rite.scrutinyDelta));
+    push(`⛪ Singularity Rite: ${rite.label}. +${gainAmt} lbs.`);
+  };
+
+  const triggerGoddessIncarnation=()=>{
+    const sg=students.find(s=>s.ascensionPath==="convergence");
+    if(!sg) return;
+    const sgStage=getSingularityStage(sg.lbs);
+    if(!sgStage||sgStage.id<5){push("⚠️ Singularity must be at Absolute (stage 5) to subsume.");return;}
+    if(!religion||religion.devotees<1){push("⚠️ A religion with devotees is required.");return;}
+    // Find heaviest non-singularity student
+    const candidate=students.filter(s=>s.id!==sg.id&&!s.ascensionPath)
+      .sort((a,b)=>b.lbs-a.lbs)[0];
+    if(!candidate){push("⚠️ No eligible student for incarnation.");return;}
+    setGoddessManifestPopup({targetName:candidate.name,targetLbs:candidate.lbs,candidateId:candidate.id,singId:sg.id});
+  };
+
+  const executeGoddessIncarnation=(candidateId)=>{
+    const candidate=students.find(s=>s.id===candidateId);
+    if(!candidate) return;
+    const newLbs=Math.min(50000,Math.round(candidate.lbs*15));
+    setStudents(prev=>prev.map(st=>st.id===candidateId?{...st,lbs:newLbs,incarnatedGoddess:true}:st));
+    setGoddessIncarnateId(candidateId);
+    if(religion) setReligion(prev=>prev?{...prev,worshippedIds:[candidateId,...(prev.worshippedIds||[]).filter(id=>id!==candidateId)]}:prev);
+    push(`✦ THE GODDESS INCARNATES — ${candidate.name} swells to ${newLbs.toLocaleString()} lbs. The campus shakes.`);
+    setGoddessManifestPopup(null);
+  };
+
+  const consumeIncarnatedGoddess=(singId)=>{
+    if(ap<5){push("⚠️ Need 5 AP.");return;}
+    const sg=students.find(s=>s.id===singId);
+    const goddess=students.find(s=>s.id===goddessIncarnateId);
+    if(!sg||!goddess){push("⚠️ No incarnated goddess found.");return;}
+    setAp(a=>a-5);
+    const addedLbs=goddess.lbs;
+    setStudents(prev=>prev
+      .filter(st=>st.id!==goddessIncarnateId)
+      .map(st=>st.id===singId?{...st,lbs:st.lbs+addedLbs,triumvirateUnlocked:true}:st)
+    );
+    setGoddessIncarnateId(null);
+    setTriumvirateModal({
+      text:`The consumption is complete. ${goddess.name} — goddess, incarnate, ${addedLbs.toLocaleString()} pounds of divine mass — folds into the Singularity without resistance. There is a moment when you can see both of them at once: the vast warm golden form and the vast cold void form, overlapping, interpenetrating, becoming a single thing that has no name in any language you know. Then there is only her. The Triumvirate. She is heavier by exactly the amount that the goddess was, which is to say she is heavier by a number that requires its own notation. The campus is quiet. She isn't. The walls are warm and cold simultaneously. The lights flicker between gold and dark and settle on both. She opens her eyes — all of her eyes, the ones you can see and the ones you can feel — and she says nothing because she doesn't need to. She is everything that was and everything that is and the weight of it fills every room in the building at once. You made this. You can't look away.`,
+      survivorName:sg.name
+    });
+    push(`🔱 THE TRIUMVIRATE — ${sg.name} has absorbed the incarnated goddess. The final form is unlocked.`);
   };
 
   const startClass=()=>{
@@ -7066,8 +7454,16 @@ export default function ProfessorSim(){
       const liveS=students.find(st=>st.id===s.id)||s;
       const stage=getStage(liveS.lbs);
       const tapStage=liveS.lbs<160?0:liveS.lbs<240?1:liveS.lbs<320?2:3;
-      const dialogueSet=TAP_OUT_DIALOGUE[s.id]||TAP_OUT_DIALOGUE.default;
-      const tapLine=dialogueSet[tapStage](liveS);
+      let tapLine;
+      if(s.ascensionPath==="convergence"){
+        const sg=getSingularityStage(liveS.lbs);
+        const sgIdx=sg?sg.id-1:0;
+        const entry=SINGULARITY_TAP_OUT[Math.min(sgIdx,SINGULARITY_TAP_OUT.length-1)];
+        tapLine=typeof entry==='function'?entry(liveS):entry;
+      } else {
+        const dialogueSet=TAP_OUT_DIALOGUE[s.id]||TAP_OUT_DIALOGUE.default;
+        tapLine=dialogueSet[tapStage](liveS);
+      }
       setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:prev.totalGain+scaledGain,fullness:newFullness,tappedOut:true,tapOutDialogue:tapLine}));
       push(`⛔ ${s.name} taps out!`);
     } else {
@@ -7617,6 +8013,89 @@ export default function ProfessorSim(){
           </div>
         );
       })()}
+
+      {/* ABSORPTION POPUP — fires when convergence absorbs the merged student */}
+      {absorptionPopup&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:580}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#a080c0",marginBottom:6}}>THE SINGULARITY FORMS</div>
+            <div style={{fontSize:11,color:"#8070a0",marginBottom:14}}>
+              {absorptionPopup.absorbedName} has been absorbed. {absorptionPopup.survivorName} is what remains.
+            </div>
+            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
+              {absorptionPopup.text}
+            </p>
+            <button style={C.btn("#2a0050")} onClick={()=>setAbsorptionPopup(null)}>Continue →</button>
+          </div>
+        </div>
+      )}
+
+      {/* SINGULARITY ACTION POPUP */}
+      {singularityActionPopup&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:580}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#a080c0",marginBottom:6}}>⚡ THE SINGULARITY</div>
+            {singularityActionPopup.gainApplied>0&&(
+              <div style={{fontSize:11,color:"#c080e0",marginBottom:10}}>
+                +{Math.round(singularityActionPopup.gainApplied).toLocaleString()} lbs
+              </div>
+            )}
+            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
+              {singularityActionPopup.text}
+            </p>
+            {singularityActionPopup.isFinalEnding&&(
+              <div style={{fontSize:10,color:"#ffd700",fontWeight:700,marginBottom:14,letterSpacing:1}}>
+                ✦ THE TRUE ENDING HAS BEEN REACHED ✦
+              </div>
+            )}
+            <button style={C.btn("#2a0050")} onClick={()=>setSingularityActionPopup(null)}>Continue →</button>
+          </div>
+        </div>
+      )}
+
+      {/* GODDESS MANIFEST POPUP — phase 1 of Triumvirate unlock */}
+      {goddessManifestPopup&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:580}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#ffd700",marginBottom:6}}>✦ THE GODDESS MANIFESTS</div>
+            <div style={{fontSize:11,color:"#e0c060",marginBottom:14}}>
+              The fat goddess senses the Singularity's dominance and reaches for a vessel.
+            </div>
+            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:16}}>
+              Something ancient stirs. The devotees feel it before you do — a sudden stillness, a collective intake of breath. The religion you founded is older than you knew: beneath the rites and the worship was a goddess who has been waiting for something large enough to contain her. She has found it. Not in the Singularity — the Singularity is beyond her reach — but in {goddessManifestPopup.targetName}, the heaviest of those who remain. She will pour herself into that body. She will be vast and divine and terrible and real. And then she will have to face what you've made.
+            </p>
+            <div style={{fontSize:11,color:"#c09030",marginBottom:16}}>
+              {goddessManifestPopup.targetName} ({Math.round(goddessManifestPopup.targetLbs).toLocaleString()} lbs) will become the incarnated goddess — weight ×15.
+            </div>
+            <div style={{display:"flex",gap:8}}>
+              <button style={{...C.btn("#6a4000"),flex:1}} onClick={()=>executeGoddessIncarnation(goddessManifestPopup.candidateId)}>
+                ✦ Let the Goddess Incarnate
+              </button>
+              <button style={{...C.btn("#333"),flex:1}} onClick={()=>setGoddessManifestPopup(null)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TRIUMVIRATE UNLOCK MODAL */}
+      {triumvirateModal&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:600}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#ffd700",marginBottom:6}}>🔱 THE TRIUMVIRATE</div>
+            <div style={{fontSize:11,color:"#e0c060",marginBottom:14}}>
+              {triumvirateModal.survivorName} has absorbed the incarnated goddess. The final form is unlocked.
+            </div>
+            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
+              {triumvirateModal.text}
+            </p>
+            <button style={{...C.btn("#4a3000"),border:"1px solid #ffd70060"}} onClick={()=>setTriumvirateModal(null)}>
+              🔱 The Triumvirate Awakens →
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* GIRL PICKER */}
       {/* IMMOBILE REDIRECT POPUP */}
@@ -8282,16 +8761,67 @@ export default function ProfessorSim(){
                   );
                 })()}
 
-                {/* Convergence stage */}
-                {s.ascensionPath==="convergence"&&(
-                  <div style={{background:"rgba(20,20,20,0.9)",border:"2px solid #ffffff80",borderRadius:10,padding:14,marginBottom:12}}>
-                    <div style={{fontSize:9,letterSpacing:3,color:"#ffffff",marginBottom:4}}>⚡ THE SINGULARITY</div>
-                    <div style={{fontSize:16,fontWeight:700,color:"#ffffff",marginBottom:6}}>{CONVERGENCE_STAGE.label}</div>
-                    <div style={{fontSize:11,color:"#e0e0e0",fontStyle:"italic",marginBottom:6}}>{CONVERGENCE_STAGE.aura}</div>
-                    <div style={{fontSize:12,color:"#d0d0d0",lineHeight:1.7,marginBottom:6}}>{CONVERGENCE_STAGE.features}</div>
-                    <div style={{fontSize:11,color:"#b0b0b0",fontStyle:"italic",lineHeight:1.65}}>{CONVERGENCE_STAGE.desc}</div>
-                  </div>
-                )}
+                {/* Singularity action panel */}
+                {s.ascensionPath==="convergence"&&(()=>{
+                  const sg=getSingularityStage(s.lbs);
+                  const sgLabel=s.triumvirateUnlocked?"🔱 The Triumvirate":sg?`⚡ ${sg.label}`:"⚡ Convergent";
+                  const sgColor=s.triumvirateUnlocked?"#ffd700":sg?sg.color:"#2a0045";
+                  const sgDesc=s.triumvirateUnlocked?CONVERGENCE_STAGE.desc:sg?sg.desc:CONVERGENCE_STAGE.desc;
+                  const actions=[...SINGULARITY_ACTIONS,...(s.triumvirateUnlocked?TRIUMVIRATE_ACTIONS:[])];
+                  const goddessStudent=goddessIncarnateId?students.find(st=>st.id===goddessIncarnateId):null;
+                  const canSubsume=!goddessIncarnateId&&sg&&sg.id>=5&&religion&&religion.devotees>=1;
+                  return(
+                    <div style={{background:"rgba(10,5,20,0.95)",border:`2px solid ${sgColor}80`,borderRadius:10,padding:14,marginBottom:12}}>
+                      <div style={{fontSize:9,letterSpacing:3,color:sgColor,marginBottom:4}}>⚡ THE SINGULARITY</div>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                        <div style={{fontSize:16,fontWeight:700,color:sgColor}}>{sgLabel}</div>
+                        <div style={{fontSize:11,color:"#888"}}>{Math.round(s.lbs).toLocaleString()} lbs</div>
+                      </div>
+                      {sg&&!s.triumvirateUnlocked&&(
+                        <div style={{fontSize:10,color:"#888",marginBottom:6}}>
+                          Stage {sg.id}/5 {sg.id<5&&`· next: ${SINGULARITY_STAGES[sg.id].min.toLocaleString()} lbs`}
+                        </div>
+                      )}
+                      <div style={{fontSize:11,color:"#b0b0b0",fontStyle:"italic",lineHeight:1.65,marginBottom:10}}>{sgDesc}</div>
+                      {/* Goddess incarnate status */}
+                      {goddessStudent&&(
+                        <div style={{background:"rgba(60,40,0,0.5)",border:"1px solid #ffd70080",borderRadius:7,padding:8,marginBottom:10}}>
+                          <div style={{fontSize:10,color:"#ffd700",marginBottom:4}}>✦ THE INCARNATED GODDESS</div>
+                          <div style={{fontSize:11,color:"#e0c060"}}>{goddessStudent.name} — {Math.round(goddessStudent.lbs).toLocaleString()} lbs</div>
+                          <button style={{...C.btn("#6a4000"),marginTop:6,width:"100%",fontSize:11,opacity:ap>=5?1:0.4}}
+                            onClick={()=>ap>=5&&consumeIncarnatedGoddess(s.id)}>
+                            🌟 Consume the Incarnated Goddess (5 AP)
+                          </button>
+                        </div>
+                      )}
+                      {/* Subsume religion option */}
+                      {canSubsume&&!s.triumvirateUnlocked&&(
+                        <button style={{...C.btn("#3a0060"),width:"100%",marginBottom:10,fontSize:11}}
+                          onClick={triggerGoddessIncarnation}>
+                          ⚡ Subsume the Other Religion
+                        </button>
+                      )}
+                      {/* Action grid */}
+                      <div style={{...C.secT,marginBottom:7}}>Singularity Actions · {ap} AP</div>
+                      <div style={C.grid3}>
+                        {actions.map(a=>{
+                          const disabled=ap<a.apCost||(a.needsDevotee&&(!religion||religion.devotees<1))||(a.oneTime&&a.id==="triv_final"&&finalConsumptionDone);
+                          return(
+                            <div key={a.id} style={{...C.card,opacity:disabled?0.35:1,border:`1px solid ${sgColor}40`}}
+                              onClick={()=>!disabled&&doSingularityAction(s,a.id)}>
+                              <div style={{fontWeight:700,fontSize:11,color:sgColor,marginBottom:2}}>{a.label}</div>
+                              <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
+                                <span style={{fontSize:10,color:"#e07030"}}>{a.apCost} AP</span>
+                                {a.gainRange&&a.gainRange[1]>0&&<span style={{fontSize:10,color:"#685040"}}>+{a.gainRange[0]}–{a.gainRange[1]}</span>}
+                                {a.needsDevotee&&<span style={{fontSize:9,color:"#a05050"}}>devotee</span>}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 {/* ── EP2: EVOLUTION SECTION ── */}
                 {!s.ascensionPath&&(()=>{
@@ -8454,7 +8984,9 @@ export default function ProfessorSim(){
                   );
                 })()}
 
-                {/* Personal actions */}
+                {/* Personal actions — hidden for convergence/singularity students */}
+                {s.ascensionPath!=="convergence"&&(
+                <>
                 <div style={{...C.secT,marginBottom:7}}>Personal Actions · {ap} AP</div>
                 <div style={C.grid3}>
                   {effectiveSingleActions.map(a=>(
@@ -8468,6 +9000,8 @@ export default function ProfessorSim(){
                     </div>
                   ))}
                 </div>
+                </>
+                )}
 
                 {/* Private Session */}
                 {(()=>{
@@ -8968,13 +9502,21 @@ export default function ProfessorSim(){
                 {singularities.length>0&&(
                   <div style={{marginBottom:14}}>
                     <div style={{...C.secT,marginBottom:8}}>⚡ The Singularity</div>
-                    {singularities.map(s=>(
-                      <div key={s.id} style={{background:"rgba(20,20,20,0.9)",border:"2px solid #ffffff60",borderRadius:8,padding:12}}>
-                        <div style={{fontWeight:700,color:"#ffffff",fontSize:14,marginBottom:4}}>{s.name} — {CONVERGENCE_STAGE.label}</div>
-                        <div style={{fontSize:11,color:"#e0e0e0",marginBottom:4}}>{s.lbs} lbs</div>
-                        <div style={{fontSize:11,color:"#b0b0b0",fontStyle:"italic",lineHeight:1.65}}>{CONVERGENCE_STAGE.aura}</div>
-                      </div>
-                    ))}
+                    {singularities.map(s=>{
+                      const sg=getSingularityStage(s.lbs);
+                      const sgLabel=s.triumvirateUnlocked?"🔱 The Triumvirate":sg?sg.label:CONVERGENCE_STAGE.label;
+                      const sgColor=s.triumvirateUnlocked?"#ffd700":sg?sg.color:"#ffffff";
+                      return(
+                        <div key={s.id} style={{background:"rgba(20,20,20,0.9)",border:`2px solid ${sgColor}60`,borderRadius:8,padding:12}}>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                            <div style={{fontWeight:700,color:sgColor,fontSize:14}}>{s.name}</div>
+                            <div style={{fontSize:11,color:sgColor,background:"rgba(0,0,0,0.4)",borderRadius:8,padding:"1px 8px"}}>{sgLabel}</div>
+                          </div>
+                          <div style={{fontSize:11,color:"#e0e0e0",marginBottom:4}}>{Math.round(s.lbs).toLocaleString()} lbs{sg&&sg.id<5?` · next: ${SINGULARITY_STAGES[sg.id].min.toLocaleString()}`:" · MAX"}</div>
+                          <div style={{fontSize:11,color:"#b0b0b0",fontStyle:"italic",lineHeight:1.65}}>{sg?sg.desc:CONVERGENCE_STAGE.aura}</div>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
 
@@ -9055,6 +9597,30 @@ export default function ProfessorSim(){
                           </div>
                         ))}
                       </div>
+                      {/* Singularity rites (shown when a singularity student exists) */}
+                      {singularities.length>0&&(
+                        <div style={{marginTop:12}}>
+                          <div style={{fontSize:10,color:"#a080c0",marginBottom:6}}>⚡ Singularity Rites:</div>
+                          <div style={{display:"flex",flexDirection:"column",gap:5}}>
+                            {SINGULARITY_RITES.map(rite=>{
+                              const sgStudent=singularities[0];
+                              const canAfford=ap>=rite.apCost&&religion.devotees>=(rite.devoteeMin||0)&&religion.devotees>=(rite.devoteeCost||0);
+                              return(
+                                <div key={rite.id} style={{background:"rgba(20,5,40,0.6)",border:"1px solid #6020a040",borderRadius:7,padding:9,opacity:canAfford?1:0.45}}>
+                                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
+                                    <span style={{fontSize:11,fontWeight:700,color:"#c090e0"}}>{rite.label}</span>
+                                    <span style={{fontSize:10,color:"#806090"}}>{rite.apCost} AP{rite.devoteeMin?` · ${rite.devoteeMin} dev min`:""}</span>
+                                  </div>
+                                  <div style={{fontSize:10,color:"#806070",marginBottom:5,fontStyle:"italic"}}>{rite.desc}</div>
+                                  <button style={{...C.btn("#301050"),fontSize:10,width:"100%"}} onClick={()=>doSingularityRite(rite)}>
+                                    {rite.label} ({sgStudent.name})
+                                  </button>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
