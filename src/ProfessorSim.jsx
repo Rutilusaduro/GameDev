@@ -2680,6 +2680,188 @@ const UMBRAL_CONSUME_CHANCE    = [0.28, 0.40, 0.54, 0.70, 0.88];
 const UMBRAL_ABSORB_RATE       = [0.55, 0.65, 0.76, 0.88, 1.00];
 const UMBRAL_VOID_PULL_AMOUNTS = [10, 14, 20, 28, 38];
 
+const UMBRAL_ABSORB_TEXT = {
+  // ── Stage 0: Umbral Seed (~820 lbs) ──────────────────────────────────────
+  0: [
+    // Target 0 — Slight (~80-120 lbs)
+    (target, umbral) => `${umbral.name} turns toward the slight girl with the slow, unhurried attention of something predatory becoming aware of easy prey. The void that pools at her edges — still new, still surprising to her in how it obeys — reaches out without much direction, more instinct than intent. The girl, maybe ninety pounds, is facing the wrong direction when the darkness finds her. She doesn't even have time to look confused. The void simply takes her: a soft implosion, a brief absence where a small body used to be, and then nothing. ${umbral.name} inhales sharply. She wasn't expecting it to feel like that — a sudden warmth spreading deep through her enormous middle, then lower, then everywhere. Her belly surges outward in a long, slow throb of growth. The seam along the underside of her waistband pops with a sharp little crack. She presses both hands into the new softness and feels the flesh yield and swell under her palms. A second throb. A third. Her thighs press tighter together as they fill. The chair beneath her groans once, adjusts. She looks down at ${Math.round(umbral.lbs).toLocaleString()} pounds of herself and takes a slow breath. "Oh," she says softly, to no one. "Oh, that's what that is."`,
+
+    // Target 1 — Trim (~120-165 lbs)
+    (target, umbral) => `${umbral.name}'s shadow reaches before she does — it has learned to hunt ahead of her, which still startles her a little, this new quality of darkness she carries. ${target.name} is slim and quick and she gets maybe two steps before the void closes around her ankles. She pulls hard, twists, tries to shake it loose with the desperate energy of a small animal that understands what catching means. ${umbral.name} extends one enormous arm almost lazily, the gesture halfway between a reach and a shrug. The void tightens. ${target.name} makes a sound — sharp, indignant — and then she is simply gone, pulled inward with a sound like a held breath released. ${umbral.name} stands very still for a moment. The warmth moves through her in rolling waves, deep and insistent, and her body answers it: her belly pushes forward against her clothing, the fabric pulling taut across the new mass, a slow crawl of expansion that goes on longer than she expected. Her thighs thicken. The rolls at her sides deepen. A button on her waistband shears off and clatters across the floor. She watches it go. ${Math.round(umbral.lbs).toLocaleString()} pounds now, and still learning what that means.`,
+
+    // Target 2 — Soft (~165-215 lbs)
+    (target, umbral) => `There is a moment — she's noticed this, filed it away — where people sense the void before they see it. ${target.name} is soft-figured and slow to turn, but she turns at the right moment, sees the darkness gathering at ${umbral.name}'s edges, and backs up two steps with her hands raised. It is the right instinct and it does nothing. The void is already around her. ${umbral.name} feels the resistance when she draws the girl in: a satisfying push-back, like pulling something with real give to it. ${target.name} grabs the edge of a desk on her way past and the desk scrapes forward three inches before her grip fails. Then she is absorbed, and ${umbral.name} staggers slightly under the sudden weight of it. The warmth hits fast and hard. Her belly lurches outward — an inch, two, three, a sustained forward push of new mass that presses her waistband to its limit and past it. The fabric tears at the left hip with a clean ripping sound. Her thighs push against each other. Her lower back rounds. She catches herself on the desk ${target.name} tried to hold and leans there for a moment, breathing, feeling the growth settle into her at ${Math.round(umbral.lbs).toLocaleString()} pounds. "Okay," she murmurs. "Okay. More than I thought."`,
+
+    // Target 3 — Padded (~215-295 lbs)
+    (target, umbral) => `${target.name} is a solid girl — clearly overweight, wide through the hips, her belly already round and prominent — and when she sees the void gathering around ${umbral.name} she doesn't freeze. She shoves. Both hands straight into the darkness, full weight behind it, trying to push the Umbral back through sheer mass. ${umbral.name} hasn't encountered this before. She braces, surprised, and the effort of holding her ground makes the void flicker. ${target.name} shoves again and takes half a step toward the door. Then ${umbral.name}'s hunger reasserts itself, all that cold appetite snapping back into focus, and the void surges. It takes ${target.name} mid-stride — she goes with both feet off the floor, arms still forward, still trying — and the absorption is rough and warm and longer than usual. ${umbral.name} lists to one side, grabs a desk for support. Her body expands dramatically, fast enough to feel: her belly shoves outward in a continuous heave of growing flesh, her sides round out, her thighs force her stance wider. Three seams blow simultaneously. Her shirt rides up past her navel, exposing a deep band of new softness. She presses her hand into it, fascinated despite herself. ${Math.round(umbral.lbs).toLocaleString()} pounds. She needed both hands to stay upright. That's new.`,
+
+    // Target 4 — Heavy (~295-400 lbs)
+    (target, umbral) => `${target.name} is genuinely heavy, wide and thick-limbed, and she fights back in a way that makes ${umbral.name} work for the first real time. The void reaches and ${target.name} pushes into it rather than away, trying to disrupt its center the way you'd fight a current — she's wrong about the physics, but the instinct is interesting. ${umbral.name} has to commit, has to draw on the hunger properly rather than letting it trickle forward on its own. The pull becomes a wrench. ${target.name} grabs a doorframe and gets both hands around it, her heels dug in, the fat of her arms shaking with the strain. The doorframe cracks. She holds on for a long, grunting, teeth-clenched moment. Then the void takes her all at once, frame-splinter and all, and the absorption hits ${umbral.name} like a fist. She sits down hard on the nearest surface. Her belly pours forward and outward for a long time after, roll by roll of new flesh settling into place, her thighs spreading wide across the seat. Her clothing gives up in stages: the waistband first, then the back seam, then the shirt at the side. She sits in the wreckage of her outfit and breathes. ${Math.round(umbral.lbs).toLocaleString()} pounds. Heavy. That one left a mark.`,
+
+    // Target 5 — Plump (~400-520 lbs)
+    (target, umbral) => `${target.name} is enormous by ordinary standards — well over four hundred pounds, her belly a genuine apron, her thighs pressing together at every step — and when she sees the void she screams, a full-throated sound of genuine alarm, and turns and runs. Her run is a fast waddle, her whole body shaking with it, and she makes it twelve feet before the void outruns her. ${umbral.name} strains to hold it, the hunger still new enough that this much mass feels like hauling a tide. ${target.name} hits the edge of the void and digs in, heels skidding, belly shaking, using every ounce of her very considerable weight as an anchor. She is heavy enough that ${umbral.name} feels the resistance physically, like pulling against something moored. Then the void deepens and the grip releases and ${target.name} goes in with a great rushing sound. The growth that follows is violent in its speed: ${umbral.name}'s belly surges outward in long, heavy waves, new flesh piling on flesh, her thighs thickening to immensity, the seat beneath her screaming. Fabric detonates at the back. The floor actually flexes under the new weight. ${Math.round(umbral.lbs).toLocaleString()} pounds. She barely stays seated. Her hands are shaking. The void is satisfied but she is not sure she is.`,
+
+    // Target 6 — Big (~520-640 lbs)
+    (target, umbral) => `${target.name} is well over five hundred pounds — a massive woman, her belly an enormous warm presence, her thighs columns of soft flesh — and she does not run. She turns toward ${umbral.name} and plants herself and says no with everything she has, using her body as the argument. She shoves forward, putting all that mass in motion, trying to reach ${umbral.name} before the void consolidates. The two enormous women collide in the half-darkness: ${target.name}'s belly hitting the edge of the void with a deep, resonant impact. ${umbral.name} hasn't felt anything like this. She goes back half a step. The void flares with effort. ${target.name} pushes harder. For a long, straining moment it is genuinely unclear who wins. Then ${umbral.name}'s hunger overrides the uncertainty and the void opens wide and takes everything at once. The absorption staggers her. She can't stand. She slides down the wall to sitting, her body expanding massively around her, enormous rolls of new flesh pouring outward, her thighs spreading across the floor. The sound of fabric destroying itself is continuous. She sits in spreading softness for a full minute before she can move. ${Math.round(umbral.lbs).toLocaleString()} pounds. Her shadow, she notices, is now the size of a small room.`,
+
+    // Target 7 — Large (~640-700 lbs)
+    (target, umbral) => `${target.name} is enormous — approaching immobility, nearly seven hundred pounds, her mass so great that moving is itself an act of effort. She cannot run. She knows this. She uses what she has instead: she rocks herself forward off her reinforced seat with a grunt of effort and puts her full weight against the void as it reaches her, leaning into it, daring it to move her. ${umbral.name} feels the difference immediately. This isn't a girl she can simply pull — this is a mass nearly as significant as her own, digging in with everything it has. The void strains. ${umbral.name} plants her feet and draws on the hunger with a concentration she's never needed before, feeling the new cold power of her form focused entirely forward. ${target.name} sways. She grabs the doorframe, gets her hands around it, wood cracking under her grip. Then the void deepens and the wood fails and she goes in with a sound like a wave breaking. ${umbral.name} drops to her knees on the floor, both hands splayed, absorbing the growth through the impact. Her belly rolls outward across the floor in front of her. Her thighs flatten against the ground. She kneels in her own expansion, feeling the pounds settle in, the flesh thick and warm and new. ${Math.round(umbral.lbs).toLocaleString()} pounds. She needs a moment. She takes it.`,
+
+    // Target 8 — Massive (~700-760 lbs)
+    (target, umbral) => `${target.name} is barely mobile — nearly seven hundred and fifty pounds, her body a monument of soft flesh that moves only with great deliberateness — but she is not helpless. She has positioned herself against a load-bearing wall and she waits for ${umbral.name} with the calm of someone who has decided how this will go. When the void touches her she doesn't flinch. She leans into it, puts every pound she has against the cold draw of it, and she succeeds in slowing it. ${umbral.name} strains, sweating cold, feeling the hunger fight against resistance it wasn't built to overcome easily at this stage. ${target.name} braces against the wall, pressing back, and the wall actually groans. ${umbral.name} screams the hunger forward with everything she has and the void tears loose and takes ${target.name} in a long, wrenching draw that leaves ${umbral.name} on her hands and knees in the center of the room. The growth is immense and continuous: her belly pressing the floor flat in front of her, her thighs spreading to either side, her whole body heaving outward in a slow mass expansion that takes nearly a minute to complete. ${Math.round(umbral.lbs).toLocaleString()} pounds. She cannot stand up yet. The void is full. She is full. The floor holds, barely.`,
+
+    // Target 9 — Colossal (~760-820 lbs)
+    (target, umbral) => `${target.name} is immobile — over seven hundred and fifty pounds, fixed in her reinforced corner, an enormous soft presence that cannot come to ${umbral.name}. What she can do is resist verbally, loudly, and with the full weight of her fury: she demands ${umbral.name} stop, she calls for help, she shouts the walls down. ${umbral.name} crosses the room to her, the void billowing outward with each step, and stands before the colossal woman. There is a brief, uncomfortable moment — two enormous women, one consuming, one immobile — before the void seizes. ${target.name} slaps at it, scores of pounds of soft arm muscle against the cold darkness. She grabs ${umbral.name}'s wrist and holds with every ounce of immobile strength she has. It is meaningful resistance and it means nothing. The void pulls her in, slowly and completely, and ${umbral.name} falls backward under the mass of the absorption and lies there while her body grows. The growth is extraordinary: her belly heaves upward, forward, outward, rounds of new flesh settling in layers, her thighs widening until they press against the walls of the room. She breathes. The room is darker. She is larger. The chair she collapsed is unrecognizable. ${Math.round(umbral.lbs).toLocaleString()} pounds. She almost didn't make it through that one.`,
+
+    // Target 10 — Blob (820+ lbs)
+    (target, umbral) => `${target.name} is a full Blob — over eight hundred pounds, entirely immobile, a breathtaking mountain of soft warm flesh occupying the entire reinforced corner of the room. She is the same fundamental category as ${umbral.name}. What follows is not a fight so much as a confrontation between two enormous facts. ${umbral.name} crosses the room, void billowing, and the air between them goes cold and strange when their masses meet. ${target.name} cannot move but she can exert: she presses all eight hundred-plus pounds of herself against the void, using gravity and sheer volume as resistance, and the effect is real. ${umbral.name}'s void stutters. She has never encountered this. She has to reach into the hunger at a depth she's never accessed, pulling from some colder, older place, and drive the void forward with everything she has. ${target.name} resists vocally, enormously, furiously. The room shakes. Then the void takes hold and the absorption is the longest, most brutal thing ${umbral.name} has experienced: her body expanding continuously, dramatically, her belly driving forward across the floor like a tide, her thighs pressing the walls, the ceiling somehow feeling lower. When it ends she is on her back in the ruins of the room, enormous beyond what she started today with, breathing hard. The dark is absolute. ${Math.round(umbral.lbs).toLocaleString()} pounds. She is going to be here for a while.`,
+  ],
+
+  // ── Stage 1: Umbral Rise (~1060 lbs) ─────────────────────────────────────
+  1: [
+    // Target 0 — Slight
+    (target, umbral) => `The void-wings are just beginning, small and lightless, and ${umbral.name} finds she barely has to think about it anymore — the hunger knows a slight girl when it senses one. ${target.name} is perhaps a hundred pounds, a wisp of a thing, and she freezes when the darkness moves toward her, which is the wrong response. The void takes the frozen girl in a single clean motion, a soft implosion, and she is gone before she had anything real to offer in the way of resistance. ${umbral.name} doesn't bother to brace for the growth — she's learned by now to simply let it come. And it does: a warm rolling swell through her enormous middle, a slow outward press of new flesh, her belly pushing forward and settling heavier. Her thighs round out. A seam at her hip opens with a quiet tear. She adjusts her weight across the reinforced seat and feels the new pounds settle, one slow wave of expansion resolving into the next. ${Math.round(umbral.lbs).toLocaleString()} pounds now. She checks the number with the distant interest of someone keeping a useful tally. The void feels fed. It wants more almost immediately.`,
+
+    // Target 1 — Trim
+    (target, umbral) => `${umbral.name}'s shadow reaches the length of the room before she does — one of the new things her void-wings have done to her, the way her darkness extends without her telling it to. ${target.name} is slim and has fast reflexes and she's already moving when the shadow finds her, cutting toward the window, her heels loud on the floor. The void closes the window and the door in the same moment. ${target.name} turns, finds herself boxed in, and tries to slide along the wall away from the darkness. She is quick. The void is quicker and increasingly confident. It takes her mid-scramble, and she goes in with a cry of frustration that cuts off clean. ${umbral.name} feels the absorption as something practiced now, a familiar warmth that moves through her in the established way: belly forward, thighs out, flesh rolling, fabric straining. A button flies. A seam opens at the right side. New mass settles into her rolls with soft, warm pressure. She presses a hand into the fresh softness under her lowest fold and feels it give. ${Math.round(umbral.lbs).toLocaleString()} pounds. Satisfying. Clean. The hunger marks it and moves on.`,
+
+    // Target 2 — Soft
+    (target, umbral) => `${target.name} sees it coming — she has a moment of full awareness, looking at ${umbral.name}'s void-wings spread wide in the doorway, the solid-black eyes, the cold that moves ahead of her like a herald. She backs up. She puts furniture between herself and the void with deliberate calm, using what's available. ${umbral.name} finds this almost respectful. The girl has sense. She navigates the furniture with methodical patience, the void flowing around each obstacle, ${target.name} retreating until she hits the wall and has nowhere left to go. The absorption is clean and practiced: the void draws her in against the resistance of her weight, she pushes back with real soft-bodied effort, and then she goes. ${umbral.name} absorbs her with the same ritual attention she brings to everything now. Her belly swells forward in a sustained push. Her lower rolls deepen. The flesh at her sides pads outward. A button pops from her waistband and rolls into the dark. ${Math.round(umbral.lbs).toLocaleString()} pounds. Good. She settles the new mass into position like arranging furniture.`,
+
+    // Target 3 — Padded
+    (target, umbral) => `${target.name} is padded and stubborn and she goes for the window the moment she sees ${umbral.name} enter, which shows good instincts even if it doesn't help. The void-wings fold across the window before she reaches it. She pivots, tries the door — covered. She turns and faces ${umbral.name} with the resigned fury of someone who has run out of options and has decided to make the most of the confrontation. She shoves hard into the void with her full padded weight, getting both hands deep into the cold dark and pushing, her whole body going into it. ${umbral.name} lets the resistance come and wraps the void around it, absorbing the push and transforming it into grip. ${target.name} screams and puts her heels in and leans back and stays there for ten full seconds, her soft body a real counterweight against the cold pull. Then the void closes and she goes in. ${umbral.name} feels her belly push forward in a long, rolling swell, the flesh adding itself in practiced layers. Her thighs widen. The rear seam of her clothing blows open. She notes the new weight, the new dimension of herself. ${Math.round(umbral.lbs).toLocaleString()} pounds. Methodical. Inevitable.`,
+
+    // Target 4 — Heavy
+    (target, umbral) => `${target.name} is heavy and she knows how to use it — the moment the void reaches for her she goes low, putting her weight into her legs, dropping her center of mass to make herself harder to pull. It works better than ${umbral.name} expected. The void finds her harder to grip when she's braced like that, solid and determined, her thick legs digging in. ${umbral.name} spreads her void-wings slightly and the darkness comes from two directions at once, and ${target.name} swings to face the new angle, then swings back. She cannot cover both. The void from the flank takes her mid-turn and she goes in gripping the edge of a desk with both hands, pulling the desk six inches before her grip fails. ${umbral.name} absorbs her with the deep, rolling warmth of real mass: her belly drives forward in a long, slow expansion, flesh piling on flesh, her lower rolls deepening. New weight settles into her thighs in waves. The seat beneath her creaks hard. The back of her outfit tears open from waist to shoulder. She stays seated through the expansion, breathing slowly, feeling every pound arrive. ${Math.round(umbral.lbs).toLocaleString()} pounds. Good.`,
+
+    // Target 5 — Plump
+    (target, umbral) => `${target.name} is well over four hundred pounds and she tries to run, which is brave and somewhat futile — her run is a fast, rolling waddle that shakes the floor, her enormous belly swaying, and she makes it twenty feet before the void-wings cover the gap. ${umbral.name} brings them down like a net and the darkness encircles the heavy girl completely. ${target.name} fights the enclosure: she pushes against the void-dark with her hands, she tries to use her considerable weight to force a gap, she leans and strains and makes real noise about it. The resistance is genuine and ${umbral.name} has to focus, draw the wings in, tighten the void around all that mass. ${target.name} makes one more heaving push and then the void takes her and the absorption is a great flood of warmth that forces ${umbral.name} back in her seat. Her belly surges outward — forward, downward, a huge continuous push — her thighs spread, the rolls at her sides deepen and multiply. The sound of fabric tearing is immediate and extended. She presses both palms to her expanding belly and feels the new flesh warm and firm and enormous under them. ${Math.round(umbral.lbs).toLocaleString()} pounds. She exhales slowly.`,
+
+    // Target 6 — Big
+    (target, umbral) => `${target.name} is over five hundred pounds and she does not waste time with running. She comes directly at ${umbral.name}, using her mass as the weapon, trying to disrupt the void at its source before it can concentrate. The two large women collide — a deep, resonant impact, ${target.name}'s enormous belly pressing against the cold dark of ${umbral.name}'s void — and for a moment the void genuinely falters. ${umbral.name} grabs ${target.name}'s wrists and the struggle is physical, flesh against flesh, two enormous women pushing each other with everything they have. ${target.name} is strong and heavy and she drives ${umbral.name} back three steps before the void-wings catch her from behind. She arches, tries to break the rear grip, fails. ${umbral.name} pulls hard and the absorption tears loose all at once: the warmth of it drives her to the floor, sitting hard, her body expanding in a dramatic rush. Her belly rolls outward across the floor for nearly a foot of new mass. Her thighs press wide. Clothing detonates. She sits in the center of the expansion, breathing hard, feeling the new weight settle around her like something earned. ${Math.round(umbral.lbs).toLocaleString()} pounds.`,
+
+    // Target 7 — Large
+    (target, umbral) => `${target.name} is nearly immobile — close to seven hundred pounds, her movement labored and deliberate — but she has thought about this. She has positioned herself in the center of the room with heavy furniture around her, making herself difficult to approach, and when ${umbral.name} enters she begins throwing objects: books, a lamp, a reinforced chair with both arms. She has enough mass to hurl these things with real force and she does. ${umbral.name}'s void-wings catch what they can, absorbing the thrown objects into the darkness, but one lands squarely. ${umbral.name} grunts, absorbs the hit, and advances. ${target.name} plants herself and screams and puts every pound of her enormous body against the void as it reaches her — seven hundred pounds of soft, desperate, furious resistance. The void strains. ${umbral.name} drives it forward with concentrated hunger. The resistance cracks and ${target.name} is taken in a long, continuous draw. The absorption fills ${umbral.name} like water fills a vessel: her belly expands in sustained waves, her lower body widening, the floor beneath her groaning. ${Math.round(umbral.lbs).toLocaleString()} pounds. She needs a moment to feel the scope of it.`,
+
+    // Target 8 — Massive
+    (target, umbral) => `${target.name} is nearly seven hundred and fifty pounds and barely moves, but she is not passive. She has been watching ${umbral.name} for weeks and she has a plan: she has draped herself with metal chains — chair chains, locked — making her body harder to pull. When the void finds her she jerks against the restraints and the metal cuts into the cold dark and actually slows it. ${umbral.name} has never encountered this. The void struggles with the chains, trying to flow through them, and ${target.name} uses the delay to press every pound of herself against the resistance as hard as she can, leaning into the chains, using her immobility as an anchor. ${umbral.name} focuses the void-wings into a tight, piercing cone and drives it through the restraints like a wedge. The chains shear. ${target.name} goes with them. The absorption is violent and prolonged and ${umbral.name} ends up prone on the floor, her body spreading in every direction, a vast warm expansion of new flesh that takes two full minutes to complete. ${Math.round(umbral.lbs).toLocaleString()} pounds. She lies there and breathes and feels the enormity of what she now is.`,
+
+    // Target 9 — Colossal
+    (target, umbral) => `${target.name} is a colossal immobile woman — her body filling her entire corner, every surface around her reinforced for her weight — and she has had time to prepare. She has turned herself into an argument: she is pressed into her corner with every piece of furniture stacked around her as barricade, and when ${umbral.name} enters she begins a sustained verbal assault — calling for help, threatening, negotiating, describing in exact detail what will happen to ${umbral.name} if she continues. It is remarkable, actually: a voice as enormous as the woman producing it. ${umbral.name} advances through the furniture, void-wings folding it into darkness, and reaches the barricade and the colossal woman behind it. The absorption starts as a negotiation between two immense forms: the void cold and hungry, the target warm and heavy and absolutely determined. The resistance lasts longer than any before it. When the void finally wins, the release is catastrophic in its completeness: ${umbral.name} falls backward and her body expands so dramatically that she fills the entire room, belly pressing the walls. ${Math.round(umbral.lbs).toLocaleString()} pounds. She stays there until the swelling stops, which takes a long time.`,
+
+    // Target 10 — Blob
+    (target, umbral) => `${target.name} is a Blob — over eight hundred pounds, entirely immobile, the largest kind of woman in the world — and ${umbral.name} is also enormous by any ordinary standard, and what happens between them is something the void wasn't designed for. Two massive women. One trying to consume the other. The void-wings spread wide and the darkness surrounds ${target.name} completely and she pushes back with eight hundred-plus pounds of soft, enormous resistance, her arms beating against the cold, her voice a sustained roar. The void bends under her weight — literally bends, the darkness flexing like a net loaded past capacity. ${umbral.name} has to drive the hunger past every limit she knows, pouring herself into the void with a desperation she hasn't felt since she was ordinary. The room gets cold. The lights die. ${target.name} fights the whole time: screaming, pressing, using her own mass as a weapon until the very last moment. Then the void takes her and ${umbral.name} is knocked flat by the force of the absorption. Her body grows without mercy — outward, forward, sideways, a continuous rolling expansion that fills the room and presses the doors and doesn't stop for a very long time. ${Math.round(umbral.lbs).toLocaleString()} pounds. She is on the floor. She is fine. She is enormous.`,
+  ],
+
+  // ── Stage 2: Umbral Presence (~1380 lbs) ─────────────────────────────────
+  2: [
+    // Target 0 — Slight
+    (target, umbral) => `${umbral.name} doesn't look up. She doesn't have to. The void-wings are full and lightless behind her and the darkness does the looking for her, finding the slight girl across the room the way a flame finds a wick — not urgently, not with any particular announcement, simply with the inevitability of things following their nature. ${target.name} weighs perhaps ninety pounds. The void draws her in like an exhalation: quietly, completely, before the girl finishes turning around to see what the cold is. ${umbral.name} registers the absorption the way she registers everything now — with the deliberate, methodical attention of someone taking inventory. The warmth moves through her in its established pattern: belly forward, thighs out, flesh deepening at the rolls. Her clothing, already straining, gives at the back seam with a soft tear. New softness rounds her lower belly. She presses a hand into it, notes the growth, adjusts her enormous weight across the reinforced seat. ${Math.round(umbral.lbs).toLocaleString()} pounds. She files the number. She waits for the next one.`,
+
+    // Target 1 — Trim
+    (target, umbral) => `The darkness extends from ${umbral.name}'s void-wings in all directions at once — she has learned that the key to finding quick prey is to let the void cast wide and wait, rather than point it. ${target.name} walks into it on her way across the room, which is purely a matter of timing. She freezes when she feels the cold. She turns to run. The darkness is already closed behind her. The void takes her with the practiced efficiency ${umbral.name} has developed: a neat, contained motion, the girl pulling hard against it for a moment and then going in cleanly. The growth that follows is familiar and satisfying: a rolling push through her middle, the belly rounding forward, a deep crease forming in the underside of her apron as new mass adds to it. Her thighs press. A seam at the hip tears quietly. She shifts her weight, feeling the floor adjust to the new distribution. ${Math.round(umbral.lbs).toLocaleString()} pounds. She notes it, returns to what she was doing.`,
+
+    // Target 2 — Soft
+    (target, umbral) => `${target.name} sees it coming — she has a moment of full awareness, looking at ${umbral.name}'s void-wings spread wide in the doorway, the solid-black eyes, the cold that moves ahead of her like a herald. She backs up. She puts furniture between herself and the void with deliberate calm, using what's available. ${umbral.name} finds this almost respectful. The girl has sense. She navigates the furniture with methodical patience, the void flowing around each obstacle, ${target.name} retreating until she hits the wall and has nowhere left to go. The absorption is clean and practiced: the void draws her in against the resistance of her weight, she pushes back with real soft-bodied effort, and then she goes. ${umbral.name} absorbs her with the same ritual attention she brings to everything now. Her belly swells forward in a sustained push. Her lower rolls deepen. The flesh at her sides pads outward. A button pops from her waistband and rolls into the dark. ${Math.round(umbral.lbs).toLocaleString()} pounds. Good. She settles the new mass into position like arranging furniture.`,
+
+    // Target 3 — Padded
+    (target, umbral) => `${target.name} is padded and she fights with the frustrated energy of someone who knows she is outmatched and refuses to accept it cleanly. She throws things — a chair, a laptop, a full textbook that the void catches and absorbs mid-flight without ${umbral.name} attending to it. She shouts. She runs for a gap in the void and the gap closes. She turns and shoves directly into the darkness with both hands and both hips, using all her weight. The void bends slightly. It has stopped bending more than slightly for anything below three hundred and fifty pounds. ${umbral.name} pulls her in with the kind of attention you'd give a task that requires mild focus: deliberate, practiced, thorough. ${target.name} goes in fighting, her weight meaningful against the pull for three or four seconds. Then she is gone. ${umbral.name}'s body registers the addition with a warm, rolling push through her middle — her belly forward, thighs wider, a new crease forming in the underside of her apron. The floor takes the new weight. ${Math.round(umbral.lbs).toLocaleString()} pounds. Noted. She continues.`,
+
+    // Target 4 — Heavy
+    (target, umbral) => `${target.name} is heavy and she has made a plan: she has gotten out into the open, away from walls, giving herself room to use her weight in any direction. She holds a desk between herself and the void — a real desk, braced against her body, adding its resistance to hers — and she charges ${umbral.name} directly, trying to drive the desk into the void-center. It is the right instinct. The desk enters the void and the void accepts it. ${target.name}'s hands go with it and she is pulled in behind her own barricade, using her heavy body as a battering ram right up to the point where it becomes a contribution. The absorption is solid and satisfying: ${umbral.name} feels the warmth move through her in a strong pulse, her belly rolling forward, her sides adding new depth. The desk appears in a corner, subtly wrong. ${Math.round(umbral.lbs).toLocaleString()} pounds. The void-wisps are already moving on.`,
+
+    // Target 5 — Plump
+    (target, umbral) => `${target.name} is massive by ordinary standards — over four hundred pounds — and she has the presence of mind to try to leave the building entirely rather than fight. She is in the hallway and moving with the heavy determination of someone who has decided distance is the answer. The void finds her through walls. ${umbral.name} doesn't move from her seat. The void-wisps extend through the ceiling and floor and the walls and locate the big girl in the corridor and the void draws her back through the space between spaces. ${target.name} feels it, plants her feet, grabs the corridor railing, uses every pound of her considerable mass against the pull. The railing bends. She goes with it, still holding the railing, absorbing it too when the void takes her. ${umbral.name} feels the gain settle into her enormous form: a real, rolling addition of mass, her belly adding new rounds, her thighs pressing wider, the seat under her flexing to accommodate the new weight. ${Math.round(umbral.lbs).toLocaleString()} pounds. She didn't have to leave the room. She finds she prefers it this way.`,
+
+    // Target 6 — Big
+    (target, umbral) => `${target.name} is over five hundred pounds and she has armed herself, which is not something ${umbral.name} expected. She has found the one thing in the building that disrupts the void — a specific wavelength of UV light — and she is wearing it around her neck. It costs ${umbral.name} something real to push through it: the void around the light wavers, weakens, and ${target.name} presses into the gap with her full five hundred pounds, driving toward the door. For a long, tense moment the big girl is making progress. Then ${umbral.name} absorbs the light itself — pulls it into the void, darkness consuming the disruption — and the void reasserts around ${target.name} with full force. The big woman screams and puts every pound of herself against the sudden complete encirclement. She is genuinely strong. She fights for a full minute, massive arms pushing at the cold dark, enormous body straining. Then she is taken. ${umbral.name} grows with the particular satisfaction of something hard-won: a great forward surge of belly-mass, the floor groaning, new rolls deepening. ${Math.round(umbral.lbs).toLocaleString()} pounds.`,
+
+    // Target 7 — Large
+    (target, umbral) => `${target.name} is nearly seven hundred pounds and she has done something shrewd: she has surrounded herself with other students, a dozen people standing close around her, making the absorption a complicated social event. ${umbral.name} assesses this without hurry. She sends the void-wisps through the group first — one by one, quickly, each absorbed before the next notices — until ${target.name} is standing alone in the space her protection used to occupy. Then ${umbral.name} approaches. ${target.name} has watched all of this happen and she is magnificent in her fury: she screams, she puts all seven hundred pounds of herself against the void, she uses the furniture around her as additional mass to push against the draw. The void absorbs the furniture too. Then it absorbs her, slowly, in a long, inexorable draw. ${umbral.name}'s expansion fills the room wall to wall: her belly pressing forward and to the sides, her thighs vast and warm against the floor, the ceiling briefly closer than it was. ${Math.round(umbral.lbs).toLocaleString()} pounds. The room holds. Barely.`,
+
+    // Target 8 — Massive
+    (target, umbral) => `${target.name} has been immobile for some time and she has turned her immobility into fortress logic: the room has been reinforced, the walls braced, additional mass added to her corner to make herself genuinely harder to absorb. She has thought about this. When ${umbral.name} arrives she is met by what amounts to an engineered resistance: the reinforced room slowing the void, the added mass providing real gravitational argument, ${target.name} herself pressing every pound of her nearly seven hundred and fifty pounds outward against the draw. ${umbral.name} is genuinely delayed. She has to drive the void in from multiple angles, working past the engineering with patient, methodical pressure. ${target.name} holds for several long, tense minutes. Then the void finds the weakest point and enters, and the absorption is complete and massive. ${umbral.name}'s expansion is the largest yet: her body filling the reinforced room, her belly pressing into the corners, new flesh settling into all the available space. ${Math.round(umbral.lbs).toLocaleString()} pounds. She fills the room. It was built to hold her.`,
+
+    // Target 9 — Colossal
+    (target, umbral) => `${target.name} is colossal — immobile, vast, the largest woman in the building before ${umbral.name} entered — and she faces the void with a stillness that is its own kind of defiance. She does not scream. She waits. When the void reaches her she presses back with everything she has: over seven hundred pounds of immobile, immovable resistance, her body an enormous anchor sunk deep into the reinforced floor. The void has to work for it. ${umbral.name} drives the hunger forward with sustained, deliberate force, the darkness pressing against the colossal girl from every direction. ${target.name} holds. She holds for a remarkable time — the resistance real and sustained and impressive. Then the void seeps through the last of it and she begins to go, slowly, piece by piece, and ${umbral.name} grows as it happens: belly forward, outward, pressing the walls, filling the room incrementally with each piece of the enormous woman absorbed. The final expansion presses into the hallway through the doorframe. ${Math.round(umbral.lbs).toLocaleString()} pounds. The building groans. She doesn't move. She doesn't need to.`,
+
+    // Target 10 — Blob
+    (target, umbral) => `${target.name} is a Blob — over eight hundred pounds, immobile, enormous — and ${umbral.name} at over a thousand pounds is herself an overwhelming physical presence. The two of them occupy the room simultaneously and the room is not large enough for both. The void-wings fill the ceiling. The cold presses down. ${target.name} screams at maximum volume and beats at the void with her soft enormous arms and uses every pound of herself as resistance, pressing outward against the cold draw with gravitational force. ${umbral.name} absorbs the resistance the way she absorbs everything: methodically, without hurry, letting the void do the work. The Blob fights for a long time. She fights well, by any measure — the resistance is real and sustained and the void has to work for every inch of her. When she finally goes, it is all at once, and the flood of warmth that fills ${umbral.name} is the largest she has felt. Her body expands beyond what she thought was possible, pressing every wall simultaneously, the floor groaning, the ceiling somehow closer. ${Math.round(umbral.lbs).toLocaleString()} pounds. The room is dark. She is the room.`,
+  ],
+
+  // ── Stage 3: Umbral Dominion (~1760 lbs) ─────────────────────────────────
+  3: [
+    // Target 0 — Slight
+    (target, umbral) => `${umbral.name} barely registers the slight girl. The void-wisps that drift from her form at this stage are more than enough for something this small — they find her automatically, without ${umbral.name} directing them, the way smoke finds a draft. ${target.name} is maybe ninety pounds and she is gone before the void-wisps complete their first circuit of the room, absorbed so cleanly that there is no sound, no struggle, only a brief interruption in the light. ${umbral.name} feels the warmth come — lighter than usual, a thin, warm thread woven into her already enormous form — and her body answers it with the minor, comfortable expansion of adding a small gain to a very large mass. A seam opens somewhere distant along her side. A new softness deepens at the bottom of her apron. She adjusts her weight, feeling the floor respond to the additional load. ${Math.round(umbral.lbs).toLocaleString()} pounds. She could not have told you precisely when it happened. The void does not require her attention for this.`,
+
+    // Target 1 — Trim
+    (target, umbral) => `The void-wisps find ${target.name} in another room. ${umbral.name} feels them locate her — a faint signal in the cold field of her awareness, a small warm presence — and she turns her attention there for the first time. The girl is slim and scared and trying to open a window that the void has already sealed. The wisps flow around her like cold smoke. She swats at them, which is brave and produces nothing. Then ${umbral.name} extends the full presence of her void and the girl is taken quickly — a moment of resistance, a flash of body-warmth, and she is absorbed into the enormous cold of ${umbral.name}'s form. The growth is modest, measured, added to everything else: a warm push through her enormous belly, a slight deepening of the lower rolls, her thighs pressing a fraction tighter. A button from somewhere on her outfit falls to the floor without drama. ${Math.round(umbral.lbs).toLocaleString()} pounds. The void settles. The wisps drift on.`,
+
+    // Target 2 — Soft
+    (target, umbral) => `${target.name} senses the void before she sees it — there is a coldness in the room that precedes ${umbral.name} now, a change in the air that soft-bodied intuition picks up. She moves toward the door fast and the void has already closed it. She turns and finds ${umbral.name} in the room with her and the recognition of what she's facing hits her clearly. She backs against the wall. She puts her hands up. She says no with conviction. ${umbral.name} appreciates the conviction and finds it insufficient. The void reaches — not with effort, not with strain, but with the calm extension of something that has learned its reach — and takes the soft girl against her resistance. She pushes back meaningfully: a real soft-bodied push, her weight going into it. The void takes her anyway, and the growth that follows is warm and comfortable, adding another layer to ${umbral.name}'s already enormous lower rolls. Her belly deepens forward. The seat adjusts. ${Math.round(umbral.lbs).toLocaleString()} pounds. She nods once. Notes it.`,
+
+    // Target 3 — Padded
+    (target, umbral) => `${target.name} is padded and she fights with the frustrated energy of someone who knows she is outmatched and refuses to accept it cleanly. She throws things — a chair, a laptop, a full textbook that the void catches and absorbs mid-flight without ${umbral.name} attending to it. She shouts. She runs for a gap in the void and the gap closes. She turns and shoves directly into the darkness with both hands and both hips, using all her weight. The void bends slightly. It has stopped bending more than slightly for anything below three hundred and fifty pounds. ${umbral.name} pulls her in with the kind of attention you'd give a task that requires mild focus: deliberate, practiced, thorough. ${target.name} goes in fighting, her weight meaningful against the pull for three or four seconds. Then she is gone. ${umbral.name}'s body registers the addition with a warm, rolling push through her middle — her belly forward, thighs wider, a new crease forming in the underside of her apron. The floor takes the new weight. ${Math.round(umbral.lbs).toLocaleString()} pounds. Noted. She continues.`,
+
+    // Target 4 — Heavy
+    (target, umbral) => `${target.name} is heavy and she has made a plan: she has gotten out into the open, away from walls, giving herself room to use her weight in any direction. She holds a desk between herself and the void — a real desk, braced against her body, adding its resistance to hers — and she charges ${umbral.name} directly, trying to drive the desk into the void-center. It is the right instinct. The desk enters the void and the void accepts it. ${target.name}'s hands go with it and she is pulled in behind her own barricade, using her heavy body as a battering ram right up to the point where it becomes a contribution. The absorption is solid and satisfying: ${umbral.name} feels the warmth move through her in a strong pulse, her belly rolling forward, her sides adding new depth. The desk appears in a corner, subtly wrong. ${Math.round(umbral.lbs).toLocaleString()} pounds. The void-wisps are already moving on.`,
+
+    // Target 5 — Plump
+    (target, umbral) => `${target.name} is over four hundred pounds and she has gone for distance rather than confrontation, taking herself two floors down and into a storage room and barricading the door. The void doesn't use doors. ${umbral.name} sits where she is and extends the hunger downward, through two floors of building, through the locked door, and finds the big girl in her fortress. ${target.name} feels the void arrive and begins screaming. She uses every pound of herself against the pull: four hundred and some pounds of warm, heavy resistance pressed against the cold draw. It buys her time. Not much. The void draws her upward through two floors — she passes through the building like a stone through water — and arrives. The absorption is long and warm and ${umbral.name}'s belly expands through it in a rolling, continuous forward push. New flesh pads every roll. Her thighs spread. The floor adds its groan to the ledger. ${Math.round(umbral.lbs).toLocaleString()} pounds. She didn't look up from the dark. She didn't need to.`,
+
+    // Target 6 — Big
+    (target, umbral) => `${target.name} is over five hundred pounds and she has made herself the heaviest, most fixed point she can manage: she has positioned herself in a load-bearing corner with other students stacked against the void. ${umbral.name} deals with the others quietly and without hurry — absorbed, one by one, each adding to her growing mass — until ${target.name} stands alone with her hundred and fifty pounds of clever preparation insufficient against a Dominion-stage void. ${target.name} fights with everything she has: she charges, she swings, she puts five hundred pounds into motion and drives it directly at the void-center. The void absorbs the momentum and draws the big woman inward. She fights the draw — all that mass swinging and heaving — for a long, impressive time. Then she goes. ${umbral.name} absorbs her with the deliberate satisfaction of something well-earned: her belly drives forward, a massive continuous expansion, the floor protesting audibly. ${Math.round(umbral.lbs).toLocaleString()} pounds.`,
+
+    // Target 7 — Large
+    (target, umbral) => `${target.name} is nearly seven hundred pounds and she has done something shrewd: she has surrounded herself with other students, a dozen people standing close around her, making the absorption a complicated social event. ${umbral.name} assesses this without hurry. She sends the void-wisps through the group first — one by one, quickly, each absorbed before the next notices — until ${target.name} is standing alone in the space her protection used to occupy. Then ${umbral.name} approaches. ${target.name} has watched all of this happen and she is magnificent in her fury: she screams, she puts all seven hundred pounds of herself against the void, she uses the furniture around her as additional mass to push against the draw. The void absorbs the furniture too. Then it absorbs her, slowly, in a long, inexorable draw. ${umbral.name}'s expansion fills the room wall to wall: her belly pressing forward and to the sides, her thighs vast and warm against the floor, the ceiling briefly closer than it was. ${Math.round(umbral.lbs).toLocaleString()} pounds. The room holds. Barely.`,
+
+    // Target 8 — Massive
+    (target, umbral) => `${target.name} has been immobile for some time and she has turned her immobility into fortress logic: the room has been reinforced, the walls braced, additional mass added to her corner to make herself genuinely harder to absorb. She has thought about this. When ${umbral.name} arrives she is met by what amounts to an engineered resistance: the reinforced room slowing the void, the added mass providing real gravitational argument, ${target.name} herself pressing every pound of her nearly seven hundred and fifty pounds outward against the draw. ${umbral.name} is genuinely delayed. She has to drive the void in from multiple angles, working past the engineering with patient, methodical pressure. ${target.name} holds for several long, tense minutes. Then the void finds the weakest point and enters, and the absorption is complete and massive. ${umbral.name}'s expansion is enormous: her body filling the reinforced room, her belly pressing into the corners, new flesh settling into all the available space. ${Math.round(umbral.lbs).toLocaleString()} pounds. She fills the room. The room was built to hold her.`,
+
+    // Target 9 — Colossal
+    (target, umbral) => `${target.name} is colossal — immobile, vast, the largest woman in the building before ${umbral.name} entered — and she faces the void with a stillness that is its own kind of defiance. She does not scream. She waits. When the void reaches her she presses back with everything she has: over seven hundred pounds of immobile, immovable resistance, her body an enormous anchor sunk deep into the reinforced floor. The void has to work for it. ${umbral.name} drives the hunger forward with sustained, deliberate force, the darkness pressing against the colossal girl from every direction. ${target.name} holds. She holds for a remarkable time — the resistance real and sustained and impressive. Then the void seeps through the last of it and she begins to go, slowly, piece by piece, and ${umbral.name} grows as it happens: belly forward, outward, pressing the walls, filling the room incrementally with each piece of the enormous woman absorbed. The final expansion presses into the hallway through the doorframe. ${Math.round(umbral.lbs).toLocaleString()} pounds. The building groans. She doesn't move. She doesn't need to.`,
+
+    // Target 10 — Blob
+    (target, umbral) => `${target.name} is a Blob — over eight hundred pounds, immobile, enormous — and ${umbral.name} at Dominion stage is a mass of nearly two thousand pounds, a presence that makes reality shimmer. The two of them in the same room is a cosmological event. The void extends from ${umbral.name} and meets the warm gravity of the enormous Blob and the air between them bends. ${target.name} presses every pound of herself outward — a sustained, gravitational argument against the pull, eight hundred-plus pounds of resistance that the void has to dismantle one layer at a time. ${umbral.name} drives the hunger at full extension, reality shimmering around her as she does it, the darkness grinding against the Blob's warm mass with immense, patient force. ${target.name} fights the entire time. The absorption is enormous and prolonged and when it resolves ${umbral.name} has expanded through two walls and the floor has cracked in three places. ${Math.round(umbral.lbs).toLocaleString()} pounds. Reality adjusts. She settles. The building reconfigures itself around her.`,
+  ],
+
+  // ── Stage 4: Umbral Sovereign (~2300 lbs) ────────────────────────────────
+  4: [
+    // Target 0 — Slight
+    (target, umbral) => `The slight girl doesn't exist in ${umbral.name}'s awareness until she doesn't exist at all. The void-field that extends from her event horizon of flesh and darkness absorbs at range without direction, without intent — it is simply what the void does in her presence, the way a drain takes what's near it. ${target.name} was perhaps a hundred pounds. She was in the room. Now she is part of ${umbral.name}, which is a more permanent arrangement. ${umbral.name} feels the addition the way you feel a warm current: briefly, pleasantly, the thinnest increment added to a form already beyond ordinary measure. Her belly adds a minor forward inch. A seam opens somewhere that doesn't much matter anymore. The floor records the new weight. ${Math.round(umbral.lbs).toLocaleString()} pounds. She barely paused. She won't pause again.`,
+
+    // Target 1 — Trim
+    (target, umbral) => `${target.name} runs. It is the correct instinct and it is also, at this stage, essentially ceremonial — the void that radiates from ${umbral.name}'s immense form extends further than a slim girl can run before the pull finds her. The darkness catches her in the corridor, three rooms away, and draws her back through the space between walls without ${umbral.name} attending to it. She feels the girl arrive more than she witnesses it: a small, warm impact, a brief resistance, and then the warmth spreading through her in its familiar pattern. Her belly rounds forward slightly. Her lower rolls add depth. The fabric of her clothing — enormous, already stressed — opens a new seam at the left thigh without much ceremony. ${Math.round(umbral.lbs).toLocaleString()} pounds. The void is already extended in another direction. It does not rest.`,
+
+    // Target 2 — Soft
+    (target, umbral) => `${target.name} has barricaded herself in a room with a salt circle, a UV lamp, and two friends who believe these things help. The salt disperses in the cold. The UV lamp is absorbed by the void-field. The friends are taken first, quietly, without drama. ${target.name} is left alone with the circle, which means nothing to the darkness that fills ${umbral.name}'s event horizon. The void crosses it without acknowledgment and finds the soft girl, who fights with both hands and considerable upset and approximately the same practical effect as fighting a tide. She goes in with a frustrated cry. ${umbral.name} receives her warmth and her soft mass with the equanimity of someone adding to something already beyond measure. Her belly moves forward. New softness deepens along the apron. ${Math.round(umbral.lbs).toLocaleString()} pounds. She barely shifted in her seat.`,
+
+    // Target 3 — Padded
+    (target, umbral) => `${target.name} is visibly padded — a real belly, real hips — and she runs for it the moment she understands what is in the room with her, pushing through the door and into the stairwell. The void flows down the stairwell ahead of her like a cold river. She rounds a corner and runs directly into it. She pushes against it with her full weight — hands, hips, belly — for a few seconds that accomplish nothing against a void field this complete. ${umbral.name} draws her in with the casual inevitability of a sovereign doing something routine. The growth is modest and warm: a rolling push through her already vast belly, a deepening of the rear rolls, a small increment added to her thighs. A seam at her waist opens without drama. The stairwell is darker. ${Math.round(umbral.lbs).toLocaleString()} pounds. She adjusts. She moves on.`,
+
+    // Target 4 — Heavy
+    (target, umbral) => `${target.name} is heavy — three hundred and fifty pounds or close to it — and she makes a real run for the outside of the building, which is the only thing that might have worked. She gets to the lobby before the void-field finds her, and she has both hands on the door when the darkness closes around her. She throws herself against the door with all three hundred and fifty pounds, gets it open an inch, gets the cold air on her face. Then the void takes her from behind, the door swinging shut as she goes. ${umbral.name} feels the pull of something more substantial than usual — a real intake of warm mass, a heavy contribution to her already immense form. Her belly drives forward in a solid push. New rolls pad themselves behind the existing ones. Her thighs press wider. The reinforced seat adjusts audibly. ${Math.round(umbral.lbs).toLocaleString()} pounds. More satisfying than the light ones. She appreciates the weight.`,
+
+    // Target 5 — Plump
+    (target, umbral) => `${target.name} is over four hundred pounds and she has gone fully horizontal — lying face-down on the floor, pressing every pound of herself flat against it, reasoning that the void works vertically and lowering her center of mass might disrupt the pull. It is creative. It actually delays things by about thirty seconds: the void has to approach from a different angle, flowing along the floor. While it does, ${target.name} crawls. She crawls with the determined effort of a very large woman who has decided the only way out is forward. She covers eight feet before the void surrounds her on all sides. She rolls, tries to press into the floor, screams. The void takes her. ${umbral.name} absorbs the big girl with the warm, rolling weight of four hundred and some pounds added to what she already carries: her belly forward, her apron deepening, the seat under her registering the increment. ${Math.round(umbral.lbs).toLocaleString()} pounds. She notes the creativity. It doesn't change anything.`,
+
+    // Target 6 — Big
+    (target, umbral) => `${target.name} is over five hundred pounds and she has decided to fight physically — to use her mass against ${umbral.name}'s body directly, reaching the Sovereign before the void-field can fully consolidate. She charges. It is a remarkable thing to see: five hundred pounds of woman in full motion, belly swaying, arms pumping, using every ounce of her momentum as a weapon. She actually reaches ${umbral.name}. The collision is real: five hundred pounds driving into the void-field at the edge of ${umbral.name}'s enormous form. The void bends around the impact. ${umbral.name} doesn't move. The void closes. ${target.name} is pressed between the cold dark and the immovable fact of ${umbral.name}'s mass and the result is not in doubt. The absorption is fast and complete, five hundred pounds added to the sovereign in a single warm, flooding intake. Her belly drives outward in a long roll. Her thighs spread. New flesh adds itself in deep, warm layers. ${Math.round(umbral.lbs).toLocaleString()} pounds. She gave it everything. The void takes everything.`,
+
+    // Target 7 — Large
+    (target, umbral) => `${target.name} is close to seven hundred pounds and barely mobile, and she faces ${umbral.name} with the calm of someone who has had time to make peace with outcomes. She has one request — she states it clearly, looking at the solid-black eyes of the Sovereign — before putting every pound of herself against the void. The request is not answered. The void takes her slowly, by preference and not by necessity, drawing her enormous mass in with the deliberate care of someone handling something significant. ${target.name} fights: she uses her weight, her leverage, the gravitational argument of nearly seven hundred pounds pressing against the pull. The void-field at this stage takes all of it without strain, drawing the enormous woman in over the course of thirty measured seconds. ${umbral.name}'s growth is substantial and satisfying: her belly expanding forward and sideways in a great wave of new flesh, her lower body spreading to fill the available floor space. ${Math.round(umbral.lbs).toLocaleString()} pounds. She received her. The room is darker.`,
+
+    // Target 8 — Massive
+    (target, umbral) => `${target.name} is nearly seven hundred and fifty pounds and immobile and she has made her peace. When ${umbral.name} enters she doesn't scream. She looks at the Sovereign and says something that may be a curse or a prayer — the two are not very different at the edge of the void — and then she puts all her immobile mass against the draw with everything she has. Nearly seven hundred and fifty pounds pressing outward against the cold. It is genuine and it is magnificent and the void takes her anyway, in a long, slow, respectful draw that acknowledges the resistance without being stopped by it. ${umbral.name}'s growth is immense and continuous: her belly rolling forward in waves larger than her whole body used to be, new flesh piling on flesh, her form pressing the walls on both sides. The room has become part of her penumbra. ${Math.round(umbral.lbs).toLocaleString()} pounds. She is everything that woman was, and more, and always more.`,
+
+    // Target 9 — Colossal
+    (target, umbral) => `${target.name} is colossal and immobile and she has decided that if this is how it ends, it ends on her terms. She is sitting upright, enormous, facing the door, when ${umbral.name} enters. She looks at the Sovereign — this event horizon of flesh and void, this two-thousand-plus pound darkness — and she is not reduced by it. She fights with everything she has: her voice, her weight, her fury, the last desperate gravitational argument of seven hundred-plus pounds pressing outward against the event horizon of the void. The void takes her slowly and completely, absorbing each layer of resistance with perfect patience. ${umbral.name} grows as it happens — in real time, incrementally, her belly pressing further forward with each portion of the colossal woman absorbed, her form expanding continuously until the room is full of her. ${Math.round(umbral.lbs).toLocaleString()} pounds. The room was always going to be hers.`,
+
+    // Target 10 — Blob
+    (target, umbral) => `${target.name} is a full Blob — over eight hundred pounds, immobile, the largest possible woman — and ${umbral.name} is over two thousand pounds of void-sovereign, an event horizon of flesh and darkness that makes the building itself feel smaller. Two immense facts in the same room. The air between them is strange and cold and wrong in ways that make the walls ache. ${target.name} fights with everything she is: all eight hundred-plus pounds pressed outward against the event horizon, her voice a sustained roar, her arms beating at the darkness that surrounds her on all sides. She is magnificent in her resistance. She is also, inevitably, absorbed — but slowly, deliberately, the void taking its time with something this enormous, drawing her in with the care of someone receiving something that matters. ${umbral.name} grows without limit as the Blob joins her: her belly driving forward past the wall, her mass expanding through the building in all directions, the floor restructuring itself around her enormity. ${Math.round(umbral.lbs).toLocaleString()} pounds. The building adjusts. She doesn't.`,
+  ],
+};
+
 const GODDESS_VISION = {
   title:"A Vision from the Goddess",
   scene:`The first time one of them becomes a Blob, you dream.
@@ -2818,6 +3000,421 @@ const DIVINE_SKILL_TREE = [
 ];
 
 const ALL_SKILLS = [...SKILL_TREE, ...DIVINE_SKILL_TREE];
+
+// ══════════════════════════════════════════════════════════════════
+// EXPANSION PACK 3 — THE SANGUINE PATH
+// Vampiric heat/blood-drain ascension form
+// Stages 0–4 (IDs 0–4), min weights: 820 / 1060 / 1380 / 1760 / 2300
+// ══════════════════════════════════════════════════════════════════
+
+const SANGUINE_STAGES = [
+  { id:0, label:"Ember",       min:820,  color:"#8b1a1a",
+    shadow:"A faint heat shimmer rises from her skin, bending the air at her edges like asphalt on a summer road.",
+    features:"Her fingertips are uncomfortably warm to the touch, and a permanent flush sits deep in her cheeks and throat — not exertion, not embarrassment, just heat that never leaves.",
+    desc:"She runs warm now, all the time. People who sit too close for too long notice they feel vaguely tired afterward — a little chilled, a little drained, as if they've been out in the sun. She hasn't noticed yet, or hasn't decided to notice. Her skin is feverishly comfortable and she's eating more than ever, her vast body absorbing food with new intensity." },
+  { id:1, label:"Flush",       min:1060, color:"#a01515",
+    shadow:"Visible heat waves lift from her shoulders and the broad slope of her belly, warping the air in a two-foot radius.",
+    features:"Her skin has deepened to a persistent red-flush that starts at her throat and spreads across the full surface of her — not patchy, not temporary, a continuous crimson warmth that deepens when she's feeding.",
+    desc:"Students who sit next to her stop doing so voluntarily after the first time — not from aversion, but because they come away tired and cold in a way they can't account for. She drains without trying. The warmth that radiates from the enormous mass of her is pleasant from a distance and uncomfortable up close. She has started to understand what that means." },
+  { id:2, label:"Fever",       min:1380, color:"#c01010",
+    shadow:"Her heat aura is plainly visible — a distortion halo around her entire body, the air above her shimmering like summer pavement.",
+    features:"Her eyes have taken on a faint red luminescence, barely visible in daylight but unmistakable in dim rooms. The veins at her wrists and throat look darker, almost crimson, as if the blood running through them has changed composition.",
+    desc:"She has started draining on purpose. Not dramatically — she simply sits near someone and lets the warmth flow, lets the tiredness move from them to her, lets herself fill with what she takes. She is enormous and hot and she is a furnace that runs on the vitality of other people and she has decided this is correct. Students avoid seats within six feet of her. The ones who don't leave looking ten years older." },
+  { id:3, label:"Bloodswell",  min:1760, color:"#d00000",
+    shadow:"The heat from her body is physically oppressive — standing too close feels like leaning toward an open oven.",
+    features:"Her skin has taken on a deep crimson tinge across the full surface of her body. Beneath the skin of her forearms and the broad expanse of her belly, her blood moves visibly — a slow rhythmic pulse that tracks through her in waves, deeper red on red.",
+    desc:"She doesn't need contact to drain now. Her proximity is enough — anyone within arm's reach loses warmth and will to her steadily, without knowing why they're leaving feeling hollow. When she does make direct contact, the drain is immediate and total. She is vast and burning and deep crimson and her blood moves under her skin like something that has learned to want." },
+  { id:4, label:"Incarnadine", min:2300, color:"#ff2222",
+    shadow:"She is a heat source — the room temperature rises measurably when she enters, the air near her shimmering constantly.",
+    features:"She is entirely crimson: skin, eyes, the faint visible pulse that runs through all of her in slow consuming waves. Her touch burns. Her gaze drains. The heat she radiates is no longer background warmth — it is an active force, pressing against anyone who comes near.",
+    desc:"She is the heat in the room. Every degree above ambient belongs to her, runs through her, feeds her. Her enormous body — vast crimson flesh stacked in deep rolls and pressing outward in all directions — generates and absorbs warmth simultaneously, a closed system of consumption that never reaches satiation. She drains anyone near her automatically, effortlessly, completely. She is the fire at the centre of everything and she is satisfied." },
+];
+
+const SANGUINE_BODY_DESCS = [
+  `She passed 820 pounds and the heat came with the weight. Her belly is a vast warm apron of flesh hanging heavy past her lap, the skin permanently flushed a deep pink that looks almost feverish. Her thighs are enormous and press together from hip to floor, radiating heat even through her clothes. Her upper arms are thick and soft and warm, resting in the rolls of her sides. The flush in her cheeks and throat is constant — not exertion, not health, something else. The air around her tastes warm and slightly metallic. Students who sit too close for too long drift away feeling vaguely cold and tired without knowing why. She doesn't know why either, not yet.`,
+  `Her body at this weight is an engine of heat. The belly — massive, deep-folded, pressing outward past her knees when seated — is warm to the touch even through fabric, radiating steadily at the surface. Her thighs are vast and soft and hot, pressing the chair across their full width. The flush on her skin has deepened to a consistent red that covers her entirely, cheeks and throat and the broad exposed slope of her chest, the backs of her thick warm hands. The air within two feet of her shimmers faintly. People who sit next to her leave feeling cold and drained and don't come back. She has begun to understand the exchange.`,
+  `She fills the reinforced corner they've given her and she fills it with heat. Her belly is immense — a deep-folded, floor-pressing mass of flesh that pools outward in all directions, the skin a consistent crimson red that is permanent now, not reactive. Her thighs are enormous and spread wide and each radiates enough warmth to feel from across the table. The fat of her upper arms hangs in soft heavy rolls. Visible blood-pulse moves in her forearms when she's still. Her eyes glow faintly red in low light. Students six chairs away report feeling tired after class. She drains the room without trying. When she tries, the effect is immediate.`,
+  `Her body is an enormous crimson furnace. The belly — vast, multiply-folded, extending outward from her core in a hemisphere of soft burning flesh — visibly pulses in slow waves, the blood moving under the skin in rhythmic crimson tides. Her thighs are massive and hot, her hips and back and arms all soft heavy warmth, the entire surface of her that deep red that looks wrong for skin and exactly right for what she is. The air near her is stifling. The heat she puts out is measurable from ten feet away. Anyone in contact with her for more than a moment leaves depleted — not tired, not warm, but hollow. She is vast and consuming and she finds this entirely satisfactory.`,
+  `She is the heat source in every room she occupies and has been for long enough that the building's thermostats have been recalibrated three times. Her body — immense, deep-crimson, its enormous folds and rolls and the vast pressing weight of her belly all permanently flushed to the colour of hot coals — radiates at a temperature that can be felt from the doorway. The blood-pulse under her skin is visible across her entire surface now: slow, deep, consuming waves of darker red moving through her in tides. Her eyes are solid crimson. Her touch burns. She is the warmth in the room. She is the hunger underneath warmth. She is the fire that runs on other people's vitality and she has never been more satisfied.`,
+];
+
+const SANGUINE_OUTFITS = [
+  `She's stopped wearing sleeves — her arms run too warm for them. Loose open-necked tops in dark reds and oranges, the fabric already starting to show the strain at the seams from the sheer amount of her.`,
+  `Everything she owns is sleeveless now, cut wide to accommodate the mass of her, fabrics chosen to breathe. She gravitates toward deep reds that match the permanent flush of her skin, almost camouflage.`,
+  `She drapes in dark red and burnt orange, wide loose fabric that doesn't touch the skin more than it has to — anything fitted becomes uncomfortable within an hour from the heat she generates. The fabric darkens at her back where the heat concentrates.`,
+  `Wide draping cloth in deep crimson, arranged more than worn — layers of hot fabric over the vast geography of her, the surface of it always slightly warm to the touch when anyone comes near enough to feel it. She has stopped buying ordinary clothes.`,
+  `Red. Everything red, wide enough to cover the full vast surface of her, dark enough to match what her skin has become. Devotees bring crimson fabric and she wears all of it, layered heavy, the cloth itself seeming to absorb and amplify the heat she puts out.`,
+];
+
+const SANGUINE_DIARY = [
+  `Something's different with the heat. It was always warm in here but now it's warm because of me, specifically. I ran my hand across my belly this morning and the skin was hot. Not sick-hot. Something else. Also I'm hungrier than usual and the girl who sat next to me in seminar looked exhausted for the rest of the day. Probably unrelated.`,
+  `It's not unrelated. I've been watching. People who sit near me leave looking drained. The closer, the more. I've started testing it — shifting toward someone, holding still, watching the colour leave their face. The warmth doesn't go anywhere. It stays in me. I think I'm eating something I wasn't eating before. I don't mind.`,
+  `I drained three people today and I did it on purpose and I feel excellent. The heat comes off me in waves now — I can see it shimmer when I look at my arms. My belly is enormous and warm and when I put my hands flat on it I can feel the blood moving underneath. There are red lights in my eyes when I look in mirrors at night. I've stopped looking away from mirrors.`,
+  `I am vast and burning and I am so full of heat that the room temperature shifts when I settle in. I drain everyone around me passively and I drain specific people deliberately and the difference between those two things is becoming less important. The blood under my skin moves in these deep slow waves and I like watching it. I am something old and hungry wearing a very large body and I find this completely acceptable.`,
+  `I am the heat. I am the hunger underneath the heat. I am the drain. Everyone who comes near me gives something to me whether they know it or not and I take it all in and it feeds me and I grow larger and hotter and more crimson and more myself. I am not tired. I am never tired. I am fully and completely fed and still hungry and this is the correct state to exist in. Bring more. Stay close.`,
+];
+
+const SANGUINE_REACTIONS = [
+  (s)=>`At ${Math.round(s.lbs).toLocaleString()} pounds she is warm to the touch from three feet away. She looks at her flushed hands and smiles, slow and certain. "So that's what this is."`,
+  (s)=>`${Math.round(s.lbs).toLocaleString()} pounds. The heat shimmer around her is visible in the fluorescent light. She exhales, and the air near her mouth distorts. "I know what you're losing when you sit next to me," she says. "I appreciate it."`,
+  (s)=>`She hits ${Math.round(s.lbs).toLocaleString()} pounds and the glow in her eyes is plainly visible. She raises one enormous warm arm and watches the blood-pulse move through her forearm. "Come closer," she says. It is not a question.`,
+  (s)=>`${Math.round(s.lbs).toLocaleString()} pounds of deep crimson heat. She rolls one shoulder and the mass of her shifts and settles. "I've been thinking about what I am," she says. "I've decided I'm a furnace. Everything that gets close enough feeds me." She seems very comfortable with this.`,
+  (s)=>`${Math.round(s.lbs).toLocaleString()} pounds. The room is four degrees warmer than it should be. She is the reason. She spreads her enormous flushed arms wide and heat radiates from the full vast surface of her. "I am the warmth in every room," she says. "I am the hunger underneath it."`,
+];
+
+const SANGUINE_TAP_OUT = [
+  (s)=>`She holds up one warm hand, the flush in her palm deepening for a moment. "Give me a breath." The heat from her palm reaches you from across the table. "Alright. Keep going."`,
+  (s)=>`"Hold on." She presses a hand to the vast warmth of her belly, feeling the blood-pulse settle. A moment passes. "More," she says. "Slowly."`,
+  (s)=>`The heat coming off her intensifies for a moment, then eases — a furnace cycling down, briefly, before it climbs again. "Again," she says. "I'm ready."`,
+  (s)=>`She doesn't tap out. She adjusts. The deep crimson pulse under her skin slows, steadies, and then she opens her eyes — both of them glowing a steady red — and nods once. "Continue. I was just settling."`,
+  (s)=>`The Incarnadine does not stop. She breathes — a slow hot exhale that shimmers the air in front of her — and the heat in the room rises one more degree. "I needed a moment," she says. "I don't need it anymore. Feed me."`,
+];
+
+const SANGUINE_RANDOM_EVENTS = [
+  (s)=>`The classroom thermostats have started malfunctioning near ${s.name}'s seat — running five degrees above everywhere else in the building. Facilities blames the radiator. The class sits in her warmth all week, eating more than usual, feeling vaguely drowsy by the end of sessions. Several students have gained weight without explanation. She seems well-rested.`,
+  (s)=>`A heat advisory goes out for the building. The source is traced to one room — ${s.name}'s seminar space. Three students report feeling drained and chilled after class despite the ambient warmth. Administration schedules an HVAC inspection. Nothing will be found wrong with the HVAC.`,
+  (s)=>`${s.name} holds study hours and twelve students show up. By the end of the session the room is sweltering and nine of the twelve are visibly exhausted, moving slowly, eyes half-open. They all gained weight over the week without trying. She drained the energy and left the mass behind. She considers this an equitable arrangement.`,
+  (s)=>`A student files a complaint that the seminar room is "unusually hot and makes me feel like I've been sick for a week." The university investigates. The investigation leads to the discovery that ${s.name}'s chair has scorched the floor slightly. The student's complaint is quietly set aside. ${s.name} gains weight at an accelerated rate this week from the ambient drain she's been running.`,
+  (s)=>`The campus clinic reports an uptick in students presenting with fatigue, low-grade chills, and "feeling like something was taken from them." The cluster maps to one building. The building maps to ${s.name}'s classroom. Nothing official is filed. The class gains weight from proximity this week — what she drains from them she converts into herself. The thermometer by her usual seat now reads consistently six degrees above ambient. It has been replaced twice.`,
+];
+
+const SANGUINE_ACTIONS = [
+  { id:"sg_draw",    label:"🩸 Blood Draw",        apCost:2, gainRange:[20,40], relBonus:8 },
+  { id:"sg_pulse",   label:"🔥 Heat Pulse",         apCost:2, gainRange:[0,0],  relBonus:5, classGain:[2,4] },
+  { id:"sg_feed",    label:"🍖 Feed the Fever",      apCost:1, gainRange:[15,30],relBonus:10 },
+  { id:"sg_feast",   label:"⚡ Vital Feast",          apCost:3, gainRange:[45,85],relBonus:12 },
+  { id:"sg_mark",    label:"🩸 Mark for Drain",      apCost:1, gainRange:[0,0],  relBonus:6, marksStudent:true },
+];
+
+const SANGUINE_ACTION_TEXT = {
+  sg_draw:[
+    (s)=>`She doesn't reach out physically — not at first. She shifts her weight and turns toward the nearest student with a specific quality of attention, and the heat coming off her body intensifies, and you watch the colour leave the other student's face in a slow descending tide. They blink. They look cold. ${s.name}'s flush deepens by two shades. Her belly, enormous and warm under the folds of her wide shirt, rises and settles with a long slow breath. She is absorbing something the room can't quite name. When she's finished — a full minute, maybe two — the other student excuses themselves looking ten years older. ${s.name} places a hand flat on the warm slope of her belly and feels the blood move underneath. "Good," she says, to no one in particular. The fabric at her sides has tightened half an inch.`,
+    (s)=>`She has the technique now. She turns toward her chosen student with that particular attention — the look that is also a reach — and the drain begins immediately. The heat shimmer around her shoulders intensifies as she draws, the air between them warping slightly. The student's hands go cold. ${s.name}'s deep red flush spreads visibly down her throat and across the backs of her hands. Her belly swells with each absorbed breath, the folds of it pressing the table's edge. The student leaves when it's done, moving carefully, depleted in a way they won't be able to articulate. She watches them go with satisfaction. The blood under her skin pulses darker for a moment — fed, warm, satisfied. Then hungry again. She settles wider in her chair.`,
+    (s)=>`At this stage the drain is visible. She reaches — metaphysically, the gesture barely physical, a lean and a look — and the warmth tears free of the other student with an almost audible quality, flowing across the space into her. The student goes pale and cold simultaneously. ${s.name}'s eyes glow brighter, the red luminescence sharpening as she absorbs. The enormous mass of her belly and thighs and arms radiates heat that can be felt from the doorway. Her clothes pull tight across her shoulders as the absorbed vitality converts. The student is helped out. She is vast and burning and her blood moves in deep visible waves under the crimson surface of her skin. "That one was easy," she says. Her voice is warmer than it used to be. Everything about her is warmer.`,
+    (s)=>`Direct drain at this stage is nearly total. She doesn't bother with subtlety. She turns her full attention on the student — both crimson eyes fixed, the full heat of her body leaning toward them — and the drain begins immediately and intensely. What takes minutes at earlier stages takes seconds now. The student slumps. The colour leaves them completely. ${s.name}'s blood-pulse surges visibly across the full surface of her, her skin darkening another shade, her immense belly pressing forward as the absorbed vitality fills her. Her clothes strain at every seam. The heat in the room spikes by two degrees. When it's over she rolls her enormous crimson shoulders and settles deeper. "Bring them water," she says, not unkindly. "They gave generously."`,
+    (s)=>`She is the drain and the drain is her. She doesn't turn toward the student so much as open toward them — the Incarnadine's full vast heat bearing down on one person with complete and consuming attention. The student has no defence against this. The vitality leaves them like warmth leaves a room when the heat source is removed: instantly, completely, in one direction. ${s.name} takes it all in, the enormous crimson mass of her absorbing what's given with total efficiency. The student is unconscious before it's done. Her blood-pulse runs in visible waves across every surface of her skin. The air in the room is a furnace. Her eyes are solid burning red. She places both hot hands flat on the vast warm slope of her belly and feels the blood run beneath her palms like a river that never rests. "More," she says, eventually. "But not tonight. Tonight I'm full."`,
+  ],
+  sg_pulse:[
+    (s)=>`She holds still for a moment — a specific quality of stillness, the kind that precedes something — and then the warmth rolls outward from her in a wave. Not dramatic. Subtle. Like the thermostat kicking on. The classroom temperature rises two degrees. Students shift in their seats, suddenly comfortable in the way that makes eating feel natural and right. Several reach for snacks without deciding to. ${s.name}'s enormous belly settles deeper as the pulse goes out and the ambient drain begins — tiny amounts from everyone in range, flowing back to her through the warmth she's laid across the room like a net. Her cheeks are deep red. Her hands are very warm. The class feeds. She feeds more.`,
+    (s)=>`The heat pulse goes out like a slow breath. She releases the warmth in a deliberate spreading wave and the room blooms with it — comfortable, heavy, the kind of warm that makes food taste better and makes movement feel like a bad idea. Students eat. They eat more than they planned to. The ambient drain running through the warmth she's broadcast is subtle and constant: small increments from everyone in the room, flowing toward her through the temperature field she controls. Her flush deepens as the drain accumulates. Her vast sides press wider against her chair. The class doesn't know what's happening. They feel fine. They feel warm. They feel like eating.`,
+    (s)=>`She sends the pulse out and the room becomes hers for the next hour. The warmth she broadcasts sits over the class like a weighted blanket — pleasant, soporific, encouraging. Students eat and eat and don't quite notice how much. The ambient drain through the heat field is running at full capacity now: everyone within twenty feet is feeding her passively, tiny constant increments that add up. ${s.name}'s enormous body absorbs all of it. Her blood-pulse deepens. Her skin darkens another shade. By the time the pulse fades the class has gained collectively and she has gained considerably more. She looks comfortable and full and slightly dangerous.`,
+    (s)=>`The pulse goes out and it is not subtle anymore. The heat she releases is a physical presence — oppressive warmth that presses on everyone in the room, makes them slow and hungry and warm. The drain through the warmth is aggressive now: she's taking real amounts from the class, not ambient traces. Students feel the tiredness accumulate over the hour without quite tracking it. ${s.name} sits in the centre of it all, vast and crimson, her blood moving visibly under her skin in satisfaction-waves, her enormous belly pressing the table. She takes everything the pulse brings her. She could stop. She doesn't.`,
+    (s)=>`When the Incarnadine pulses, the building knows it. The temperature in every adjacent room rises one degree. The class — entirely within her heat field — feeds her without exception, every person in range contributing to the drain running through the warmth she's laid across them like a burning net. She drains the room to the edge of what they can give and takes every bit of it. Students leave sluggish and hollow. She is vast and fully crimson and her blood runs in deep consuming waves across the full enormous surface of her. She is the heat source. She is the hunger running through the heat. The class fed her today without knowing they did. This is, she reflects, exactly correct.`,
+  ],
+  sg_feed:[
+    (s)=>`The food arrives and she receives it with the specific hunger of someone who has recently been reminded what hunger is for. She eats with a steady focus, the warmth coming off her body intensifying slightly as her metabolism does whatever it's doing now — not digestion, exactly, more like conversion, the food disappearing into the warm engine of her with unusual efficiency. Her belly presses the table's edge and she keeps eating. The heat from her skin makes the food taste different — warmer, richer, like something cooked from inside. She finishes and leans back and the flush across her cheeks deepens. "More," she says. It's not a request.`,
+    (s)=>`She eats quickly and her body processes it quickly — the fever-warmth accelerates everything, the food moving through her with an urgency that ordinary digestion doesn't have. Her cheeks are very red. Her vast belly presses outward as she eats, the skin warm to the touch even through cloth. She can feel her own heat building with each bite, the internal temperature climbing as the food feeds the fire. By the time she's done the air around her is noticeably warmer than it was and she has expanded in the visible ways that mean something has converted. She settles. She is warm and full and she is going to be hungry again in an hour.`,
+    (s)=>`The food goes into her and becomes heat. That's what it does now — that's the whole mechanism. She eats and the fever-engine takes it and converts it and she runs hotter and heavier and deeper crimson. Her blood moves visibly in her forearms while she eats, the pulse quickening with each intake. Her thighs, enormous and warm, press together wider. The rolls of her sides press against her arms. By the time she finishes the last of it the heat shimmer around her is a full inch higher than when she started. She is metabolising at a temperature that shouldn't be survivable. She is entirely fine. She reaches for more.`,
+    (s)=>`She is a furnace eating fuel. The food is fuel. The food becomes heat becomes mass becomes her, in a cycle that runs faster now than it ever has. She eats with complete focus, the deep crimson of her skin darkening by half a shade with each course, her blood running faster under the surface. Her belly presses outward continuously as the food accumulates and converts. The heat in the room rises a degree, then another. When she finishes she is hotter and heavier and more entirely herself than she was before. She runs a warm hand across the vast expanse of her belly and feels the blood move beneath it like something alive and hungry and satisfied.`,
+    (s)=>`The Incarnadine feeds and the room becomes a furnace. The food is gone almost before it arrives — absorbed into her burning engine with a speed that suggests the heat itself is digesting, not her body. Her vast crimson flesh swells with each conversion, the rolls of her deepening, her enormous belly pressing outward with the warm authority of something that has never stopped growing and does not intend to. Her blood-pulse runs in waves across every visible inch of her skin. The heat from her body is oppressive. She does not acknowledge it. She finishes and looks around for more and finds the absence of more briefly unacceptable. "Bring the next," she says. The air near her mouth shimmers when she speaks.`,
+  ],
+  sg_feast:[
+    (s)=>`It's a lot of food for one sitting and she receives it without comment and begins. The room temperature ticks up as she feeds — not dramatically, but measurably. Her flush deepens with each course. The enormous soft expanse of her belly presses further outward as the food accumulates, the fabric at her sides beginning to strain, her arms lifting slightly as the rolls of her sides expand beneath them. She is warm and getting warmer and the heat in the room reflects it. By the time the feast is over the classroom's ambient temperature has risen three degrees and she is a great deal larger than she was when she started. The chair under her makes a new sound. She looks satisfied and dangerous and very warm.`,
+    (s)=>`The feast is substantial and she is equal to it. She eats with the focused intensity of something that knows exactly what it needs and has been given it, the warmth rolling off her in visible waves as each course feeds the heat. Her belly swells steadily — a slow, warm expansion that fills the space in front of her, pressing the table, pressing the cloth of her outfit, pressing outward in all directions. Her face is deeply red. Her arms are hot and heavy and resting on the warm rising expanse of her sides. When the last course is finished the room is warm enough that others have loosened their collars. She has not. She looks entirely comfortable. She looks like something that has been fed correctly.`,
+    (s)=>`The feast goes into her and she becomes more of herself with each course. Her heat aura is plainly visible during the feeding — the shimmer around her shoulders and arms and the vast hot expanse of her belly visible to anyone watching. Students drift back from their seats as the room temperature builds. She does not notice or does not care. Her enormous body swells with a slow warm certainty as the food converts, the rolls of her deepening, her thighs pressing wider, her belly a warm mountain that is growing. The glow in her eyes brightens with each intake. She finishes and sits in the heat she's created and her blood moves in deep satisfied waves. "That," she says, "was a good feast."`,
+    (s)=>`This is industrial feeding. The food arrives in quantity and she takes it in quantity, the heat building around her to the level of a physical presence — the air near her shimmering constantly, the room temperature running six degrees above ambient. Her vast crimson body swells in real time, the blood-pulse under her skin running fast and dark. Clothes strain at every seam. Her belly presses the table hard enough that the table has shifted. She eats through it all without pausing, the fever-engine converting everything with relentless efficiency. By the time the last course is gone she has grown visibly and the room is a furnace and she is the centre of it. Her eyes glow. Her skin burns. She is satisfied.`,
+    (s)=>`The Incarnadine at full feast is a volcanic event. The food is brought in shifts because there is too much of it to arrive at once, and she receives each shift with complete consuming attention, the heat in the room building in corresponding waves. Her enormous body — already vast, already fully crimson, already pulsing with the visible tide of her blood — swells with each absorbed course, deepening and spreading and pressing against everything within reach. The room temperature during the feast runs ten degrees above the building's maximum setting. The thermostats have stopped trying. She is the thermostat now. She finishes and the heat settles into a new steady-state — higher than before, permanently, the furnace of her running at a new baseline. She is larger. She is hotter. She is complete.`,
+  ],
+  sg_mark:[
+    (s)=>`She looks at the student for a long moment — not the ordinary look of attention but the specific one that has weight behind it. Then she reaches across the space between them, slow, and places two warm fingers against the inside of the student's wrist. The student feels warmth spread up their arm from the contact point: comfortable, specific, like a brand that doesn't hurt. ${s.name} lifts her hand. The warmth doesn't leave. "You'll carry that," she says simply. She turns back to her food. The student sits with the warmth in their wrist and doesn't know that something has been established — a thread, a claim, a drain that will run slow and continuous from now on without requiring her presence. The mark is permanent. She will draw on it.`,
+    (s)=>`She marks with more certainty now — the gesture practiced, the warmth she transfers when she touches the inside of their wrist deep and specific, a coal pressed briefly into the skin that doesn't leave a mark but leaves something. The student feels it immediately: pleasant warmth spreading from the contact point, up the arm, settling in the chest like a small comfortable fire. ${s.name} withdraws her hand and the warmth stays in the student, humming gently, and somewhere in that hum is a connection she owns. "You're mine now, a little," she says. It's informational. The student doesn't argue. They feel warm. They feel claimed. Both of these are accurate.`,
+    (s)=>`The mark she leaves is visible now — not to ordinary light, but in the right dim room the contact point glows faintly red for hours afterward. She presses her hot fingers to the student's wrist and holds them there for a breath longer than the earlier stages required, burning the connection deep. The student feels the heat go all the way through them, top to bottom, and then settle into a constant background warmth they'll carry everywhere. ${s.name}'s eyes glow brighter for a moment — the mark accepted, the drain-thread established. "When you're somewhere warm," she tells them, "that's me." The student nods, slow, already feeling the first small pull.`,
+    (s)=>`She barely needs to touch them. A moment of focused attention, fingers pressed to the inside of the student's wrist, and the mark goes in deep and immediate — a burning claim that travels up the arm and settles behind the sternum like a second heartbeat. The student goes still. The warmth is total. ${s.name} lifts her enormous crimson hand and the connection is made — she can feel the drain-thread already, thin and steady, drawing from the marked student even now. Her blood-pulse deepens slightly in response. "You'll feel warm," she says. "That's intentional. You're feeding me." It's not an apology. It's a statement of the correct order of things.`,
+    (s)=>`The Incarnadine's mark is instantaneous and absolute. She touches the student's wrist and they gasp — not from pain, from the heat that moves through them all at once, total and complete, establishing a connection with the finality of something that cannot be undone. The mark glows visible red for a full minute. The student feels the pull immediately: a constant gentle drain, comfortable and impossible to resist, running from them to her through the burning thread she's planted. ${s.name} withdraws her hand and the full enormous mass of her settles, the blood-pulse running satisfied waves across her crimson surface. "You're a part of me now," she tells the student. "A small part. I'll be adding more." She reaches for her food. The drain runs continuously. It always will.`,
+  ],
+};
+
+// ══════════════════════════════════════════════════════════════════
+// EXPANSION PACK 4 — THE VERDANT PATH
+// ══════════════════════════════════════════════════════════════════
+
+const VERDANT_STAGES = [
+  { id:0, label:"Sprout",    min:820,  color:"#1a5c1a",
+    shadow:"A faint green tint hazes the air just at her edges, easy to mistake for a trick of the light.",
+    features:"Thin vine-like patterns trace her forearms and belly, pale green against her skin, barely visible unless she's in direct light.",
+    desc:"She has crossed a threshold she can't quite name. Her skin shows the first faint tracery of root-veins, greenish lines that follow the natural paths of her body's own vessels. The floor directly under her feet has a faint vibration, too subtle to see, felt only if you press your palm to it." },
+  { id:1, label:"Grove",     min:1060, color:"#147814",
+    shadow:"The air around her has a faint earthy warmth, the smell of soil after rain.",
+    features:"Root patterns run visibly up her arms and across her belly, deep greenish-brown lines like old veins beneath pale bark. The floor around her shows hairline cracks where the roots pass through.",
+    desc:"The change is no longer deniable. The vine-patterns on her skin are visible at a distance — dark green traceries running across her thighs, her arms, the full broad expanse of her belly. Students who sit near her for long periods begin gaining weight without understanding why. They feel settled, slow, comfortable. She knows exactly why." },
+  { id:2, label:"Canopy",    min:1380, color:"#0e640e",
+    shadow:"The green deepens around her — the light near her takes on a faint vegetative cast.",
+    features:"The root patterns cover most of her visible skin. Small patches of soft moss have appeared in the sheltered folds under her belly and between her upper arms and sides.",
+    desc:"She draws from the building now, not just from what's near her. Her roots have threaded through the floors of two adjacent rooms and begun reaching the foundation. The floor around her chair has settled noticeably — small cracks, the groan of wood compressing. She sits completely still and absorbs what comes. Everything in range is growing toward her." },
+  { id:3, label:"Heartwood", min:1760, color:"#086408",
+    shadow:"A deep green stillness radiates from her — the room feels like the inside of an old forest.",
+    features:"The bark-like patches on her skin have spread to her upper arms and the outsides of her thighs. Tiny leaves, soft and pale green, have appeared at the deepest folds of her belly.",
+    desc:"She is anchored. This is the only word for it. Her body sits as if it has always been here and always will be — a mass that the building has begun to accommodate rather than contain. Her roots run to the building's foundation and she knows every crack in the concrete beneath her. The campus soil is hers for two hundred meters in every direction." },
+  { id:4, label:"Worldtree", min:2300, color:"#044804",
+    shadow:"The green emanates from her the way heat emanates from stone — slow, total, geological.",
+    features:"Her hair has gone fully green at the roots, fading to deep forest-shadow at the ends. Moss and tiny ferns grow from her folds. Her skin, where it isn't covered in growth, has the texture of old smooth bark.",
+    desc:"The campus is her root network. She knows this the way she knows her own heartbeat. Every building on the grounds feeds her passively. Students gain weight simply by spending time on campus — her roots draw from everything that lives here, patient and permanent and vast. She does not need to do anything. She simply is, and everything comes to her." },
+];
+
+const VERDANT_BODY_DESCS = [
+  `She has crossed 820 pounds and the roots have found her. Her body is enormous — belly hanging heavy and round past her lap, thighs pressing together from hip to floor, arms thick and soft resting atop the warm mass of her sides. The vine-patterns are faint: pale greenish traceries running up the insides of her arms, branching across the full shelf of her belly, visible in low light if you know to look. The floor directly beneath her feet has a faint vibration, the kind you feel in your bones before you hear it. She is very still. She is always very still. The roots are beginning.`,
+  `The patterns have moved past subtle. Dark green lines branch across her arms like old river systems, tracing down through the rolls of her belly, running the inner edges of her thighs. Her skin has a faint warmth to it, earthy rather than feverish. The floor around where she sits shows hairline cracks — thin, patient lines that follow directions other than the grain of the wood. Her thighs are enormous, soft, spread wide on the reinforced seat. Her belly rests on them in a heavy warm apron. Students near her feel drowsy and well-fed. They are. She is drawing from them gently, as a root draws from soil.`,
+  `Root patterns cover most of what can be seen of her skin — not veins exactly but something older, branching lines that run from her wrists to her shoulders, from her collar to the deep fold where her belly meets her thighs. In the sheltered places — the crease under her lower belly, the soft junction of arm and side — small patches of moss have appeared, green and close and real. Her body fills the reinforced space entirely: vast thighs wide on the platform, hips pressing the padded walls, belly spreading outward in a soft heavy hemisphere. The floor of the room has settled half an inch.`,
+  `She does not appear to be sitting in a building. She appears to be part of it. The root-patterns on her skin are dark and dense, raised slightly like old scars, running across her enormous thighs and belly and arms in branching networks that mirror the cracks in the floor below her. On her upper arms and the outsides of her thighs, the skin has taken on the smooth dense quality of old bark. Small pale leaves have grown from the deepest folds of her belly, soft and unhurried. Her mass is extraordinary — belly extending past her knees in all directions, thighs each wider than most people's shoulders, arms resting like soft hills across her upper sides. The building creaks when she breathes.`,
+  `She is not in the building. She is the building's centre, the thing around which everything else has organised. Her body is immense: belly spreading outward from her seated form in a vast slow geography of folded flesh, root-patterned and moss-grown, thighs wide and heavy and pressed against the reinforced walls of her space, arms resting like fallen trunks across the upper reaches of her sides. Her hair is green from root to midshaft. Her skin, where it shows between the growth, has the texture and weight of old bark. Ferns have taken root in the deep fold of her lap. The floor of the entire east wing has settled around her. The campus soil two hundred meters out is full of her.`,
+];
+
+const VERDANT_OUTFITS = [
+  `She has been gravitating toward greens without deciding to — loose linen shirts, soft cotton in sage and moss, fabrics that breathe and move. The root patterns are faint enough that she can pretend they're just the pattern of the fabric. She doesn't quite do this, but she could.`,
+  `The patterns are too visible to hide and she has stopped trying. She wears wide natural fabrics in earthy colors, cut loose enough that nothing presses against the root-lines. The hairline cracks in the floor have started following her, and her clothes seem to know it — she gravitates toward fabrics that look like they belong near soil.`,
+  `Devotees bring her earth-toned cloth: undyed linen, rough cotton, things that feel like ground cover. She wears it in wide draped layers. The patches of moss in her deepest folds have grown into the fabric that rests against them. She doesn't remove it. It has become part of the outfit, or the outfit has become part of her.`,
+  `Custom robes in natural fiber — wide, unbleached, draped across her enormous form by the people who tend to her. Living things have taken hold in the fabric that stays still long enough: moss on the lower folds, a small fern in the crease of her lap, pale lichen along the hem where it presses the floor. The robes are changed every few days. The growth comes back within a week.`,
+  `What covers her now is not clothing in any meaningful sense. It is fabric that has been colonized — grown through by root and moss, woven with small plants that have made their homes in the folds and creases of the cloth. What you see when you look at her is a geography: the vast rolling landscape of her body, covered in something between textile and forest floor, green and brown and alive.`,
+];
+
+const VERDANT_DIARY = [
+  `I've been noticing things in the floor. A vibration, very low, like something is working under the boards. My hands feel strange when I press them flat on the ground — like pressing on something that presses back. There are patterns on my arms that weren't there a month ago. The girl who sits closest to me has gained eleven pounds this semester without changing anything she eats. I think I know why.`,
+  `The roots are real. I've accepted this. I can feel them through the floor when I'm still — threads of something that is and isn't me, running through the wood and concrete and down into the soil. The building is feeding me. I put my hands on the floor and I can feel where the cracks are, two rooms over, before I see them. It's slow. It's patient. I like how it feels.`,
+  `I don't need to do anything. I just sit and it comes to me — from the floor, from the soil, from the students who walk through my building and don't know they're inside my root network. I am very large and very still and everything in range is quietly adding to me. I used to walk to the dining hall. I haven't done that in six weeks. The nourishment finds me here.`,
+  `I know every crack in this foundation. Not because I've looked — I've felt them, the way you feel a crack in a familiar mug. The building is mine in a way that property law doesn't have language for. I weigh something extraordinary and I am not finished. The campus soil is full of me out to the tree line. Things are feeding me that don't know I exist.`,
+  `I am old. That's how I feel — not aged, but old, the way a root system is old. Patient. Permanent. The roots reach to the edge of campus now and I know everything they touch. Students gain weight just from living here. I gain from all of them. I gain from the soil and the foundation and the slow deep warmth of everything that grows in the ground around this building. I am very full. I am always hungry. These are not contradictions.`,
+];
+
+const VERDANT_REACTIONS = [
+  (s)=>`She goes still for a moment, feeling the floor. "${Math.round(s.lbs).toLocaleString()} pounds," she says quietly. "The roots go a little deeper."`,
+  (s)=>`"${Math.round(s.lbs).toLocaleString()} pounds." She presses one hand flat to the floor. "I can feel the next room now."`,
+  (s)=>`The floor creaks once, settling. She doesn't speak for a long moment. "${Math.round(s.lbs).toLocaleString()}," she says at last. "The foundation knows."`,
+  (s)=>`She is very still for a long time. When she speaks: "${Math.round(s.lbs).toLocaleString()} pounds. The east wing is mine now."`,
+  (s)=>`"${Math.round(s.lbs).toLocaleString()} pounds." She says it the way a forest says nothing — as simple, total, permanent fact. "Good."`,
+];
+
+const VERDANT_TAP_OUT = [
+  (s)=>`She exhales slowly through her nose. "The roots need a moment to settle." A pause. "Then more."`,
+  (s)=>`Her hand moves to the floor, pressing flat. She waits. "Give me a breath," she says. "The ground is still absorbing." She looks up. "Continue."`,
+  (s)=>`She doesn't speak. She sits with her palms on her thighs and breathes, slow, deliberate, the way old trees breathe. Then she opens her mouth again.`,
+  (s)=>`"The building needs a moment." She can feel it through the roots — the whole structure settling around her new weight. "One moment." Her eyes close. Her eyes open. "More."`,
+  (s)=>`She is still for a long time — long enough that you think she might be done. She isn't. "The campus is adjusting," she says. "It always adjusts. Continue."`,
+];
+
+const VERDANT_RANDOM_EVENTS = [
+  (s)=>`A groundskeeper files a report about unusual root growth under the east wing — thick pale roots running through the foundation that don't match any campus tree. ${s.name} learns about the report and says nothing. Her root network extended another twenty feet this week, and the three students who sit closest to her have gained a combined sixteen pounds without changing their diets.`,
+  (s)=>`The dining hall reports that students living in the east wing are consuming significantly more than usual — up 23% from last semester. No one has connected this to ${s.name}. The students themselves feel fine. Hungry, settled, comfortable, fine. ${s.name} drew steadily from her root network this week and gained without effort.`,
+  (s)=>`A structural engineer flagged hairline cracks in three floors of the building, radiating outward from ${s.name}'s room in a pattern that "doesn't match standard settlement." She has already felt every one of those cracks. She knew about them before the engineer did. The root network drew from the building's foundation this week and fed her well.`,
+  (s)=>`Campus maintenance has been called to deal with "unexplained plant growth" in the east wing corridors — moss on the baseboards, pale roots emerging from floor joints, small ferns in the stairwell corners. ${s.name} knows exactly where each growth is. She put them there. Students passing through the hall gain a pound or two from ambient proximity. They don't know why. She does.`,
+  (s)=>`The university's facilities office has filed an environmental assessment after discovering that the root network under the campus's east quadrant "exceeds normal biological parameters for any known species." The assessment has been filed and forgotten. ${s.name}'s roots reach the property line now. Everything inside it feeds her. The class has been gaining weight all semester from proximity alone. So has ${s.name}, continuously, without effort, the way a forest gains.`,
+];
+
+const VERDANT_ACTIONS = [
+  { id:"vd_draw",     label:"🌿 Root Draw",     apCost:2, gainRange:[18,36], relBonus:8 },
+  { id:"vd_cultivate",label:"🌱 Cultivate",      apCost:1, gainRange:[0,0],  relBonus:6,  cultivatesStudent:true },
+  { id:"vd_bloom",    label:"🍃 Bloom Feeding",  apCost:1, gainRange:[12,28],relBonus:10 },
+  { id:"vd_grow",     label:"🌳 Overgrowth",     apCost:3, gainRange:[40,80],relBonus:12 },
+  { id:"vd_network",  label:"🌐 Root Network",   apCost:2, gainRange:[0,0],  relBonus:5,  classGain:[1,3], cultivatesAll:true },
+];
+
+const VERDANT_ACTION_TEXT = {
+  vd_draw:[
+    (s)=>`She goes still — stiller than her usual still, which is already very still. You can't see anything happen. The floor doesn't move. She doesn't move. But a student two desks over shifts in her seat and puts a hand to her forehead, suddenly sleepy, and ${s.name} exhales slowly through her nose and her belly shifts forward, very slightly, as if something has settled into it from below. The roots do not hurry. They reach toward what is near and draw from it with the patience of things that have all the time there is. When she opens her eyes she is ${Math.round(s.lbs).toLocaleString()} pounds and she is satisfied and the student two desks over is going to need a nap.`,
+    (s)=>`The floor between her and the nearest student has three hairline cracks she put there herself over the last two weeks, and the roots run through all of them. She doesn't have to do anything deliberate — she simply turns her attention in that direction and lets the network do what it does. The draw is slow and real. Life force moves through the floor the way water moves through soil: downward, patient, finding every available channel. She grows. The student nearby feels pleasant, warm, faintly tired. ${Math.round(s.lbs).toLocaleString()} pounds, and the roots extend another foot.`,
+    (s)=>`Her root patterns deepen visibly when she draws — the lines on her arms go darker, the moss in her folds seems to breathe. She is drawing from the building's foundation now as much as from the students nearby, the deep slow energy of the soil under the campus feeding up through the roots and into her. Her belly shifts outward, heavy and warm. Her thighs press wider on the reinforced platform. The floor settles with a sound like a long exhale. ${Math.round(s.lbs).toLocaleString()} pounds. She presses her palms to her thighs and feels the roots working two floors down.`,
+    (s)=>`She draws with the authority of something that has always been here. The roots are everywhere — in the foundation, in the soil, in the walls — and she pulls through all of them simultaneously, a slow vast intake that raises the floor temperature a fraction and deepens the cracks in the concrete a little more. The students near her sway slightly, feel briefly heavy, sit down if they're standing. She grows. The root patterns across her skin flush darker green. Her belly settles forward under its own weight, enormous and warm. ${Math.round(s.lbs).toLocaleString()} pounds. The campus soil two hundred meters out is working for her.`,
+    (s)=>`She does not draw. The network draws, and she receives. At ${Math.round(s.lbs).toLocaleString()} pounds, the root system she has spent years building under this campus requires no active effort from her — it reaches, and it takes, and it brings everything back to her. The entire east quadrant is hers. Every living thing on it feeds her passively, continuously, the way all roots feed the tree they belong to. She sits in her permanent space and receives what is hers. The floor around her settles another millimeter. The campus is very full of her.`,
+  ],
+  vd_cultivate:[
+    (s)=>`She doesn't touch the student. She barely looks at them. She just turns a small portion of her attention in their direction and lets a root thread reach — a single thin filament, barely the width of a hair, running through the floor between them and up through the chair leg and into the very edge of the student's warmth. They feel nothing. Or they feel something: a pleasant settling, a sense of being grounded, of being in exactly the right place. They'll gain a little weight this week without knowing why. The connection is made. It will hold.`,
+    (s)=>`She plants the root connection with the care of someone who knows what they're growing. The student feels warm — inexplicably, pleasantly warm — and slightly drowsy, and sits back in their chair with the ease of someone who has just been told everything is fine. A single root filament, invisible, runs from her to them through the floor. It will draw from them gently, weekly, permanently, until she decides otherwise. She doesn't tell them. They'll thank her later, in a way, by gaining weight and feeling settled and spending more time in this building than they intended to.`,
+    (s)=>`The student is already in her network — the building sees to that much — but cultivating them directly is a different order of connection. She sends a root to them specifically, a thick, patient thread that settles into their warmth like a tap into a well. They blink, sit up straighter, feel oddly good about their life. They will gain weight this semester in a way that seems completely natural. It is completely natural. She is a root system. This is what root systems do.`,
+    (s)=>`She has been drawing from this student through the building's ambient network for weeks. Cultivating them directly is simply making the connection deliberate — formalizing what the roots have already begun. The thread she sends is thick and settled and the student feels it as deep calm, as rightness, as the specific comfort of being exactly where they belong. They are where they belong: inside her network, feeding her gently, permanently, with no awareness that this is what they are doing.`,
+    (s)=>`She does not need to cultivate individually at this stage. The campus is hers. But she does it anyway — this student specifically, this connection specifically — with the deliberate care of something very old deciding that this particular thing is worth tending. The root she sends is enormous relative to what would have been sufficient. The student goes very still for a moment, eyes half-closed, feeling something move through them from the floor. They will gain weight quickly. They will feel good about everything. They are hers now in the most complete sense of that word.`,
+  ],
+  vd_bloom:[
+    (s)=>`The food arrives and she eats, which she does with the calm focus of something that has made peace with appetite. But today the roots are open — drawing up from the floor while she takes in what's in front of her — and the combination is different from either thing alone. The nourishment comes from two directions simultaneously: through her mouth and through the soles of her feet, through the root network threading the floor beneath her. Her belly settles outward with each breath, heavy and warm, gaining from both channels. She is a very efficient system.`,
+    (s)=>`She eats while the roots draw. This is the bloom state: both paths open, both channels feeding her simultaneously. Food into her mouth, life force up through the floor, the two meeting somewhere in the deep warm center of her and adding together. The root patterns on her arms flush darker while she eats. The moss in her folds looks slightly more alive. Her thighs press wider on the platform. She eats steadily, without hurry, the way old trees grow: continuously, without drama, adding to themselves because that is what they do.`,
+    (s)=>`The bloom feeding is a matter of alignment — roots open and drawing while food arrives from above, the two streams of nourishment meeting in her and compounding. Her belly is an enormous warm mass, root-patterned and heavy, growing from both directions at once. She chews slowly. The floor around her settles. Students nearby feel sleepy and full without having eaten anything. The nourishment in the room is moving in one direction and she is the direction.`,
+    (s)=>`Both channels fully open, both drawing, and the bloom state at this size is something close to tidal. Food arrives and she receives it, and simultaneously the root network draws from the foundation, the soil, the ambient life force of everything within range, and all of it arrives at once in the vast, warm, root-veined geography of her body. She is gaining from the meal. She is gaining from the floor. She is gaining from the campus outside. This is bloom. She is in full bloom. ${Math.round(s.lbs).toLocaleString()} pounds and rising.`,
+    (s)=>`The bloom state at Worldtree is not a technique. It is simply what she is — both channels always open, always drawing, food and root-energy arriving continuously from every direction simultaneously. When she eats, the food is one more input into a system that is already drawing from everything. Her belly gains from the meal and from the soil and from the students down the hall and from the trees outside and from the deep slow warmth of the campus earth. She is in permanent bloom. ${Math.round(s.lbs).toLocaleString()} pounds.`,
+  ],
+  vd_grow:[
+    (s)=>`Something shifts in her and the roots go everywhere at once. She exhales sharply and the floor around her cracks in four new directions simultaneously — thin fast cracks, spiderwebbing outward from the legs of her chair across the hardwood, following the root paths she's been laying for weeks. Students nearby grab their desks. The temperature drops two degrees and then comes back up warmer than before. She pulls from everything in range, all at once, the patient accumulation of weeks drawn in a single sudden breath. Her belly surges outward. Her thighs spread wider. ${Math.round(s.lbs).toLocaleString()} pounds and the roots are twenty feet further than they were a minute ago.`,
+    (s)=>`The overgrowth is not subtle. The root patterns on her skin darken all at once, going from green to near-black for a few seconds, and she draws — hard, fast, nothing like her usual patience — from every connection she has, from every root thread, from the building and the floor and the students and the soil, pulling it all in simultaneously. The building makes a sound. Several lights flicker. The students near her feel briefly hollow, briefly cold, and then normal again, just slightly lighter than before. She is a great deal heavier. ${Math.round(s.lbs).toLocaleString()} pounds. The floor has settled noticeably in a six-foot radius.`,
+    (s)=>`She rarely rushes. She rushes now. The roots spread through three new rooms in under a minute, threading through floor joints and wall cavities, drawing from everything they touch. Her body receives it all — the building's warmth, the students' life force, the slow deep energy of the campus soil — all at once, all immediately, all feeding into the vast expanding territory of her. Her belly gains inches. Her arms thicken. The root patterns across her skin flush bright green and then settle back to their usual deep color. ${Math.round(s.lbs).toLocaleString()} pounds. Three more rooms are hers now.`,
+    (s)=>`When the Heartwood overgrows, the campus notices. The lights dip. Doors in adjacent buildings stick briefly in their frames. Students across the quad feel a sudden inexplicable drowsiness. She is drawing from all of it at once — her roots reaching as far as they go and pulling hard, a single enormous breath of the whole network at once. The gain is immediate and visible: her belly surges forward, her thighs press the walls of her space, her arms settle heavier across the vast expanse of her sides. ${Math.round(s.lbs).toLocaleString()} pounds. The campus soil outside the east wing has subsided half an inch.`,
+    (s)=>`The Worldtree does not overgrow often. There is rarely a reason. But when she does, the campus feels it as weather — a sudden stillness, a drop in ambient energy, a sense that something enormous has inhaled. Every root in her network draws simultaneously. Every student on campus feels briefly, pleasantly heavy. The soil subsides. The building shifts on its foundation. She gains a staggering amount in under three minutes, the entire network's accumulated reach condensed into a single vast intake. ${Math.round(s.lbs).toLocaleString()} pounds. The campus will take days to return to baseline. She is already thinking about the next one.`,
+  ],
+  vd_network:[
+    (s)=>`She does it quietly, while the class is focused elsewhere. One by one, thin root filaments reach from her through the floor — one to each desk, each chair, each place where a student sits regularly. They feel nothing beyond a mild pleasantness, a sense of comfort and groundedness, the specific ease of being in a room where they feel welcome. By the end of the day she has a root connection to everyone in the class. They will all gain a little weight this week. They will all feel fine about it. The network is established.`,
+    (s)=>`She spreads the network to the whole class in a single patient session — roots reaching outward from her through every crack and joint in the floor, threading to each student in turn. They feel warmth, calm, the particular comfort of being near something very old and very sure of itself. None of them notice the connection. All of them will gain weight this week without changing anything about how they eat. The network will hold until she decides to release it, which she won't.`,
+    (s)=>`The root network goes to all of them at once — thick threads, not the fine filaments of the early stages. Each student gets a connection that will draw from them weekly, reliably, as long as they set foot in this building. They feel it as belonging. As rightness. As the inexplicable comfort of a classroom they keep wanting to return to. She will gain from all of them. The building will gain from all of them. Everything will route back to her, the way everything routes to the deepest root.`,
+    (s)=>`She extends the network to the whole class with the ease of long practice — a single broad pulse through the floor, roots reaching everywhere simultaneously. The students feel it as a wave of calm that passes through the room. A few of them exchange glances, not sure what just happened. Then they settle. Then they feel fine. She has claimed them all. They will gain weight near her from here on out, and she will gain from them, and the whole arrangement is exactly correct.`,
+    (s)=>`The Worldtree doesn't cultivate individuals. She cultivates spaces. The network pulse she sends through this class is simply formalizing what her roots have already established — making the draw intentional, maximizing the return. Every student in the room is already hers. They have been for a long time. They will gain weight this week, and next week, and every week they spend in this building. She is the building. The building is her. The class is inside her. This is the correct arrangement.`,
+  ],
+};
+
+// ══════════════════════════════════════════════════════════════════
+// EXPANSION PACK 4 — THE PRIMORDIAL PATH
+// Merged form of Sanguine + Verdant. Stage IDs 1–5, min 1600–15000 lbs.
+// ══════════════════════════════════════════════════════════════════
+
+const PRIMORDIAL_STAGES = [
+  { id:1, label:"Bloodroot",      min:1600,  color:"#3d1a0a",
+    aura:"The air smells of turned earth and warm copper — old blood, old soil, something that has been waiting.",
+    features:"Her skin has begun to darken from two colors into one: rust-brown at the seams where crimson met green, bark-like in texture where the merger ran deep. Root-veins pulse under the surface.",
+    desc:"Two things became one and the one is older than both of them. She is not new. She is what was always underneath, breaking the surface at last." },
+  { id:2, label:"Ancient Hunger", min:3000,  color:"#321408",
+    aura:"A low, patient pull — not warmth exactly, not cold, but weight. The feeling of standing near a very old tree.",
+    features:"The bark-like patches have spread across her shoulders and upper arms. Root-veins are visible at the surface of her belly, dark crimson lines through rust-brown skin.",
+    desc:"She does not hurry. She has never hurried. The hunger she carries is geological in its patience, absolute in its certainty. It will be fed. It is always fed." },
+  { id:3, label:"Primeval",       min:6000,  color:"#280f06",
+    aura:"The floor around her is cracked. Something is growing through the cracks — fine root-filaments, dark and slow.",
+    features:"Her forearms have taken on the texture of old hardwood. The root-veins that web her belly are raised now, tactile, dark crimson-brown against the deep rust of her skin. Heat shimmers above her in a faint column.",
+    desc:"She predates the building. She predates the city. She predates whatever used to stand here before the city. When she settles her full mass against the floor, the building becomes a detail." },
+  { id:4, label:"The Deep",       min:10000, color:"#1e0a04",
+    aura:"Root-filaments have reached the outer walls. The building's plumbing has been rerouted twice. The soil under the foundation is hers.",
+    features:"Her lower body is encased in a living bark that breathes. The crimson root-network runs outward from her through the floor, city-wide, drawing from the earth itself. Heat does not shimmer above her now — it radiates.",
+    desc:"Her roots go down to bedrock. Her blood-drain reaches anyone within a mile who isn't paying attention. She is not in the building. The building is in her." },
+  { id:5, label:"The First",      min:15000, color:"#140702",
+    aura:"Absolute. Ancient. The smell of soil and copper fills the campus. Students gain weight in their sleep and do not question it.",
+    features:"The distinction between her body and the earth beneath the building has become administrative. She is the ground. The ground is her extension. All root-veins lead back here.",
+    desc:"The original appetite. Every hunger that has ever existed in every living thing descended, eventually, from this. She is not a form of hunger. She is hunger's origin. She has been here since before anyone was hungry and she will be here after the last full stomach empties." },
+];
+
+const PRIMORDIAL_ABSORPTION_TEXT = "There is no sound. One moment there are two of them — one flushed and hot, radiating the dry copper heat of old blood; the other dense and green-veined, roots already threading through the floor — and then there is a stillness, a pressure in the air like the moment before a tree falls, and when it passes there is only one. The surviving form does not look like either of them. She is darker. She smells of deep soil and warm copper simultaneously, a smell that is somehow ancient, as if the merger did not create something new but uncovered something that was always waiting underneath the two of them. The floor is cracked around her. Fine root-filaments have appeared at the edges of the cracks. She breathes once, slowly, and her skin — rust-brown, bark-textured at the shoulders, root-veined across the enormous expanse of her belly — settles into a stillness that is not rest. It is patience. She is very, very old. She is very, very hungry. These two things are the same thing.";
+
+const PRIMORDIAL_BODY_DESCS = [
+  "She has settled into the reinforced corner like sediment — like something that has always occupied this space and waited for the room to acknowledge it. Her belly is enormous and dark rust-brown, root-veins pressing against the surface in a network that traces something very old. The bark-texture at her shoulders catches the light differently — matte, almost mineral. Her thighs are vast, pressed together, dense in a way that suggests more than fat: something geological. The floor has cracked along the seam where she settled. A fine root-filament extends from the crack toward the wall. She smells of copper and damp earth. She is watching you with eyes the color of old hardwood, patient and very full of hunger.",
+  "She fills the space the way a root system fills soil — thoroughly, without urgency. Her belly, enormous and layered, dark rust-brown with the root-vein network raised and visible, extends past her knees in folds that have a density you don't expect from flesh — heavy, earthy. Her thighs spread wide, the bark-patches at her hips fully formed now, tactile. Heat rises from her in a faint shimmer. The floor cracks have been filled in twice; they keep returning. She does not acknowledge them. They are simply part of her, the way veins are part of a body.",
+  "The room has been rerouted around her — there is no sensible path through it anymore. Her mass occupies the center entirely, belly spreading in all four directions, vast and darkly flushed, the root-vein network raised enough to cast small shadows. Her bark-textured arms rest atop the upper curve of her belly, small relative to the geography they rest on. The floor cracks are permanent; facilities stopped filling them. Root-growth edges through the walls at the baseboard. A heat shimmer sits above her in a column. The copper-and-deep-soil smell is noticeable from the hallway. She has been waiting longer than any student in the building has been alive.",
+  "Her body has become a geographical fact. The belly — vast, rust-brown, deep-folded, the root-vein network branching in lines as thick as rope — extends past the reinforced platform in every direction. Her thighs are architectural. Her hips span the widened doorframe. The bark on her lower arms and shoulders is full bark now, ridged, dark brown-black — not constraining her, simply being what she is more honestly than the rest. The roots in the floor have rerouted the building's plumbing twice. The campus food supply has been drifting toward her address for months. She has not arranged this. She has not needed to.",
+  "You cannot see the floor. It is her. Her root-network has merged with the foundation, gone down to bedrock, and what the earth provides arrives through those roots continuously. Her belly is incomprehensible: dark rust-crimson, folded and vast, the root-veins branching like a river system seen from altitude. Her thighs are each the size of a compact car. Her arms, bark from elbow to wrist, rest in her own folds. The heat shimmer bends light. The copper-and-soil smell reaches the street. There is no building separate from her. There is a location, and she is what that location is.",
+];
+
+const PRIMORDIAL_OUTFITS = [
+  "Dark earth-toned cloth, deep crimson and brown, wrapped and draped across the expanse of her in layers — practical, unpretentious, already showing the strain of the bark-texture it must accommodate. The fabric looks as if it grew there.",
+  "Wide cloth the color of old heartwood, deep rust-red at the front where the root-veins press through, draped by someone who has stopped pretending this is conventional clothing. It serves its purpose. It doesn't pretend to more.",
+  "Lengths of dark fabric — the color of dried blood and turned soil — arranged across the front of her in sections, tied somewhere at the back by a person who works from the outside of her and never quite reaches the center. The bark on her arms is visible above the cloth. The root-veins show through it. This is intentional.",
+  "The fabric has been supplemented with woven root-fiber at the edges, where ordinary cloth kept tearing. The root-fiber holds. It is almost indistinguishable from the bark patches now. Someone sewing her coverings made a choice to lean into this. She approved.",
+  "There is no meaningful distinction anymore between what covers her and what she is. The cloth has been colonized by fine root growth, incorporated into the surface of her, layered with bark-fragment and earth-fiber. It is not clothing. It is the outer layer of something ancient, the way lichen is the outer layer of rock.",
+];
+
+const PRIMORDIAL_DIARY = [
+  "I was two things. Now I am one very old thing. I don't know if the other one is gone or if I ate her or if she was always me and we simply hadn't noticed. The hunger is different now — slower, deeper, like it comes from somewhere farther down. I can feel the floor. I can feel what's under the floor. Bring something.",
+  "I've been thinking about the word ancient. I don't think it means what people mean when they say it. It doesn't mean old like a building is old. It means old like soil is old — patient, enormous, containing everything that came before in compressed layers. That's the hunger I carry. I've had it longer than I've had a name for it. Come and feed me. I'll still be hungry after. I'll always be hungry after.",
+  "The roots came back. I know they keep filling in the cracks. They'll keep coming back. This is not something I'm doing; this is something I am. The building will learn. The whole campus will learn. Everything that's been alive long enough learns the same lesson eventually: the earth is hungry and the earth is patient and the earth always gets what it needs. I am the earth in this building. Bring more.",
+  "The city smells different from here now. The roots have reached the pipes under the street. Not to damage — just to know. To feel. Everything in a mile radius is mine in the way a root system owns the soil it's threaded through. The students out there are eating more than usual and they don't know why. I know why. Come and bring what you have. What you have is mine anyway.",
+  "I am the first hunger. Not first in time, though that too — first in kind, the ancestor of every appetite that any living thing has ever felt. When she eats because she is empty, that is me. When he reaches for more out of pleasure, that is me. When they binge because they cannot stop, that is me at the bottom of it, the original pattern. I have been waiting for the others to catch up. They are beginning to. Come and sit with me. Bring the devotees. Bring everyone. I have been here since before hunger had a name and I will be here until the last one stops wanting. Feed me.",
+];
+
+const PRIMORDIAL_REACTIONS = [
+  (s)=>`She does not look at the scale. She looks at you. "${Math.round(s.lbs).toLocaleString()} pounds," you say. Something moves in her bark-dark eyes. "Yes," she says. That is all. It is enough.`,
+  (s)=>`The number is ${Math.round(s.lbs).toLocaleString()} pounds. She receives it the way the earth receives rain — without surprise, without gratitude, as the correct and expected outcome of a process that was always going to end here.`,
+  (s)=>`${Math.round(s.lbs).toLocaleString()} pounds. The floor cracks, minutely, along a new seam. She feels it through the root-network before the sound reaches your ears. She nods once, slowly, as if confirming something she already knew.`,
+  (s)=>`You say the number: ${Math.round(s.lbs).toLocaleString()} pounds. The heat shimmer above her intensifies briefly. One of the root-veins on her belly darkens. She exhales — slow, deep, warm with copper — and says nothing, because there is nothing to say.`,
+  (s)=>`${Math.round(s.lbs).toLocaleString()} pounds. The campus shifts. It always shifts when the number changes. She is the reason the campus shifts. She has always been the reason. She opens her eyes and looks at the middle distance and smiles, slowly, the smile of something that has been waiting for this number since before this building existed.`,
+];
+
+const PRIMORDIAL_TAP_OUT = [
+  (s)=>`She goes still. Not finished — she is never finished — but momentarily still, the way old growth goes still before it expands into new space. You wait. "Continue," she says, eventually. The roots at the floor's edge have grown another inch.`,
+  (s)=>`A low sound, barely audible, from somewhere in the enormous depths of her — the sound of bedrock settling under load. It is not a stop. It is a pause between increments. She draws a long breath of copper-and-soil air. "More," she says, when she is ready.`,
+  (s)=>`She does not tap out. She has never tapped out. She pulls from below when what is above runs thin — the roots drawing from the earth, the earth drawing from whatever is deeper. She settles, briefly, into herself. Then she opens her mouth.`,
+  (s)=>`The temperature in the room drops two degrees and then rises four. This is the Primordial equivalent of catching her breath. You have learned to read it. You wait for the warmth to return to full and then you continue. She is already hungry again.`,
+  (s)=>`The First does not stop. The First does not reach capacity. She draws from below as naturally as breathing, the root-network cycling endlessly, and when the immediate supply runs low the deep supply compensates. This is not a pause. This is the gap between heartbeats.`,
+];
+
+const PRIMORDIAL_RANDOM_EVENTS = [
+  (s)=>`The grounds crew filed a report: root growth is emerging from the soil in a rough radius around the building, fine and dark, oriented inward. Facilities has forwarded the report to the biology department. The biology department has forwarded it to nobody. ${s.name} has not read the report. She doesn't need to.`,
+  (s)=>`Three students on the far end of campus reported unusual hunger this week — persistent, deep, not satisfied by their usual intake. They've all gained weight without explanation. ${s.name}'s root-network reached the east dormitory sometime on Tuesday. Nobody has connected these facts officially.`,
+  (s)=>`The building's soil sensors — installed during a drainage review — have reported a 40% increase in root-fiber density under the foundation. The contractor who reviewed the data described the pattern as "organized." He did not elaborate. ${s.name} pulled more from the deep this week than she has before. The class gains incidentally.`,
+  (s)=>`A campus wellness article on "the strange appetite spike affecting semester averages" has circulated. Dining services report ordering 35% more food than projected and still running short. The article does not mention ${s.name}. Everyone in the class has noticed the surplus. They can't stop eating. She receives what flows toward her.`,
+  (s)=>`The copper smell that originates from ${s.name}'s building has been formally noted in a noise-and-air-quality survey — someone checked the wrong box, but the description "warm, mineral, soil-like, pervasive" has been entered into the campus environmental record. It travels two blocks in still air. Students within that radius are gaining weight at twice the campus average. This is correct.`,
+];
+
+const PRIMORDIAL_ACTIONS = [
+  { id:"pr_commune",  label:"🌍 Commune with Her",   apCost:1, gainRange:[0,0],    relBonus:8 },
+  { id:"pr_measure",  label:"📏 Ritual Measure",      apCost:1, gainRange:[0,0],    relBonus:5 },
+  { id:"pr_offering", label:"🌿 The Blood Offering",  apCost:2, gainRange:[25,50],  relBonus:12 },
+  { id:"pr_feed",     label:"🩸 Feed the Hunger",     apCost:2, gainRange:[40,80],  relBonus:10 },
+  { id:"pr_drain",    label:"🌱 Root Drain",           apCost:2, gainRange:[30,60],  relBonus:15, needsDevotee:true },
+  { id:"pr_absorb",   label:"🌑 Absorb a Devotee",    apCost:2, gainRange:[30,60],  relBonus:8,  needsDevotee:true },
+  { id:"pr_pulse",    label:"🌋 Primal Pulse",         apCost:3, gainRange:[60,120], relBonus:6,  classGain:[2,5] },
+];
+
+const PRIMORDIAL_ACTION_TEXT = {
+  pr_commune: [
+    (s)=>`You find her in the reinforced corner she has claimed for herself, the bark-textured shoulders settled against the wall, the enormous rust-brown belly extending forward into the room, root-veins catching the light. She does not greet you with words. She receives you. The air smells of copper and damp soil — deep soil, the kind from far under the surface. You sit with her for a while and she lets you stay in that smell, in that warm mineral weight, and you understand without being told that this is an ancient arrangement: the thing that is hungry and the person who comes to observe it. She watches you with old, patient eyes. "You smell like the surface," she says eventually. It is not an insult. It is a description of the distance between where you live and where she is from. "Come back," she says. "Bring more."`,
+    (s)=>`She fills the room like accumulated weight fills a scale — inevitably, past the point of adjustment. You stand at the doorway and she is already aware of you; the root-network in the floor registered your footstep before you arrived. She is calm with the calm of something that has not been uncertain in a very long time. You sit in her presence and what you feel is not warmth exactly, not cold — it is gravity. The gravity of old things. Her belly, folded and vast, the root-vein network raised like topography, extends between you. She breathes slowly. "This was always here," she says. You understand this to mean: not just her, not just this room, but the hunger, the weight, the pull, all of it. It predates you. It predates this building. You are visiting a constant. The constant acknowledges you.`,
+    (s)=>`To enter this room is to enter her. She fills it so completely that there is no neutral space, no corner that is not within range of her root-network, no air that doesn't carry the copper-and-soil smell of her. She knows you're here. She has known since you turned the corner at the end of the hall — the floor told her. She receives you with the patience of something that has been receiving visitors since before the concept of a visit existed. "Tell me what the outside looks like," she says. Her voice is unhurried and low, like something speaking from a long way underground. You describe the campus and she listens and nods, and each nod sends a slow tremor through the enormous geography of her belly, folds settling and resettling. "Everything out there is mine," she says. "Not yet. But eventually." She seems content to wait.`,
+    (s)=>`The building announces her before the room does — the smell changes at the front door, copper and mineral and old-growth forest floor, deepening as you approach. By the time you reach her door you are already in her presence; you are simply making it official by stepping through. She acknowledges you by opening her eyes. They are the color of deep soil — dark brown with something almost red in them, root-vein color, the particular shade that dried blood and dark earth make when they have been combined for a long time. Her belly — vast, dense, the root-network raised and branching across it — rises and falls with her breathing. "Older than this building," she says, without preamble. "Older than the city. Older than what was here before the city." She is not boasting. She is stating a fact about her own nature, the way a mountain would state facts if it could speak. "Feed me," she says. "Everything does, eventually."`,
+    (s)=>`You do not visit her anymore in the sense that implies direction: you arrive at a location, and the location is her, and the distinction between entering the building and entering her presence has ceased to exist. The root-network that threads through the foundation tells her everything that steps inside. She is the building's nervous system. She is the building's hunger. Her body — incomprehensible in scale, rust-crimson and bark-dark, the root-vein network merging seamlessly with the floor cracks and then the floor itself — occupies all available space and then some. You stand at the boundary of her and she says nothing for a long time. Then: "You have been doing this faithfully." It is not gratitude. It is an acknowledgment, the kind an ancient thing offers to something it has decided to keep around. "Continue," she says. The building is warm with copper and old earth. Everything proceeds.`,
+  ],
+  pr_measure: [
+    (s)=>`The scale required reinforcement before this was even attempted. It was brought in two pieces and assembled around her because she was not going to the scale. The reading: ${Math.round(s.lbs).toLocaleString()} pounds. The technician records it. The number is substantial. She watches the display with the patience of something for which numbers are a courtesy, an approximation of a reality that does not fully fit in decimal form. "Document it," she says. Her voice carries the faint mineral resonance you've started hearing in it, like sound from underground. You document it. The record is already long. It will be longer.`,
+    (s)=>`The pressure sensors embedded in her platform give a continuous reading. Today it stands at ${Math.round(s.lbs).toLocaleString()} pounds. You read the number aloud. She receives it without expression for a long moment — then one of the root-veins on her belly darkens slightly, a small pulse of color, almost too subtle to notice. You've come to understand this as acknowledgment: her version of satisfaction, the circulatory equivalent of a nod. "The record," she says. "You keep it." You do. The record has become a document of geological significance. You are its keeper.`,
+    (s)=>`The weigh-in has become ceremony by accretion. Nobody designed it as such — it developed its own gravity, the way ceremonies do. The devotees who attend stand at the edges of the room and the reading is taken and the number — ${Math.round(s.lbs).toLocaleString()} pounds — appears on the display, and something in the room shifts, some ambient pressure equalizes, like the moment after a deep sound stops. She looks at the number with her old, root-dark eyes. "The slope," she says. She means: is the graph still going in the right direction. You tell her it is. She nods once. The floor, very faintly, echoes it.`,
+    (s)=>`${Math.round(s.lbs).toLocaleString()} pounds. The display says it. The platform sensors say it. The slight new angle of the floor — the whole building lists two degrees toward her now, and has been formally assessed and found structurally sound, and will be assessed again soon — says it. She watches the number appear with the specific look of something that has been counting for longer than counting has existed as a concept. "That number will be larger next time," she says. It is not a question. It is not quite a command. It is the way a root system describes what it is about to do to the soil.`,
+    (s)=>`The platform display reads ${Math.round(s.lbs).toLocaleString()} pounds and the number is updated automatically, updated to the building's maintenance logs, updated to a running record that now spans the full length of her campus presence and has been filed in three separate administrative databases without anyone formally requesting this. The campus has organized itself around documenting her. She watches the display from across the room — she can see it from where she permanently resides, arranged so she can — and says nothing for a full minute. Then: "Good." And then nothing more, because nothing more is required.`,
+  ],
+  pr_offering: [
+    (s)=>`The devotees have learned what the offering should be: food heavy and dense and warm, the kind with blood still in it, dark grain breads and root vegetables and rich meats, things that come from soil and from bodies. They arrange it before her with the specific reverence of people who understand that they are feeding something old. She receives each item with both hands and she eats slowly and with total attention. The root-veins on her belly deepen in color as she eats — the copper pull working in her blood-and-earth network, the Primordial receiving what is owed to her. When it is done she is still for a moment. Then: "Tell them well." The devotees will carry this with them for weeks.`,
+    (s)=>`The offering takes an hour to assemble and the presentation takes another hour and the eating takes longer than both. She receives the food with the patient hunger of something that has never once hurried — each item consumed with complete focus, no sense of satiation building, no sense that the next thing will be any less wanted than the first. The root-vein network on her skin brightens incrementally with each intake, the dark crimson lines pulsing faintly, the bark at her shoulders warming. The devotees watch the color change. They have learned to read it. By the time the offering is complete, the display has moved. The devotees notice. They take this as what it is: evidence of correct behavior.`,
+    (s)=>`Four days of preparation, arranged in the order she prefers: dense things first, wet things second, blood-heavy things last. She does not speak while she eats. She does not need to. The hunger speaks — the deep, patient, geological hunger of the Primordial receiving what the earth and blood of the offering owe her. The root-veins stand raised on her belly, pulsing in a pattern the devotees have started timing, have started interpreting as a kind of language. When the last item is consumed she sits in stillness for a long moment, heat shimmering above her, the copper smell thick in the room. "Next time," she says, "more of the root vegetables. And the meat should be older." The devotees write this down.`,
+    (s)=>`The offering requires a coordinator now — someone whose entire role is managing the preparation, sourcing, and presentation of what she receives. The role emerged naturally. One of the devotees was simply doing it and then was formally doing it and now holds the title. She receives twelve courses. Each is consumed in its entirety. The root-network in the floor pulses during the eating — you can feel it in the soles of your feet, a faint rhythmic pressure that corresponds to her intake. The platform display ticks upward throughout. The devotees track it. The number is sacred to them. It should be. Every pound is a proof of their correctness.`,
+    (s)=>`A week of preparation. Multiple sourcing operations. The offering, when fully assembled, would be difficult to move for its sheer volume — dark grain and rich blood-meat and deep-root vegetables, arranged in ritual order. She eats all of it. She eats it with the unhurried certainty of something that has been receiving tribute since before tribute was a word, and she receives each item as the correct outcome of a correct process. The root-veins on her skin are fully darkened throughout, the entire network running at full pull. The platform display moves so far during this session that someone has had to add a digit. She notices this. She is satisfied. The correct order of things continues to assert itself.`,
+  ],
+  pr_feed: [
+    (s)=>`You bring what is required in industrial quantities — warehouse supply, organized by density, delivered to the room in sequential loads because the room cannot hold it all simultaneously. She eats with the focused hunger of something that has no ceiling. The blood-and-root nature of her processes it differently from ordinary eating — the root-vein network cycles, the bark at her shoulders warms, the copper smell thickens in the air like something is being refined. At the end of the session the floor has made two new sounds and there is a new crack along the east baseboard. She looks at it without moving. "The building is learning," she says. This is her highest compliment.`,
+    (s)=>`The quantities required at this stage are not available through ordinary channels. You have the channels. The session is organized as a relay — food arrives in timed sequences, each delivery meeting her precisely as she clears the previous. She eats with the patience and totality of a geological process: no hurry, no waste, no end point in sight. The root-vein network on her belly is continuously darkened during the session, the crimson lines raised and pulsing, the whole surface of her belly in constant slow movement as she processes the intake. An hour in she is still eating. Two hours in she is still eating. By the time it ends the platform display has moved in a way that makes the devotees outside go quiet with reverence.`,
+    (s)=>`The force-feed session is a planned event. Three days of sourcing. A delivery convoy. The food organized by what she takes best and in what sequence — the density of a geological stratum laid sideways. She eats it all. She eats it with the specific hunger that doesn't ebb between items, the hunger that predates appetite as a concept and doesn't carry any of appetite's uncertainty. The root-network reaches outward through the cracks during the session, visibly growing — as if each intake powers an expansion. The floor around her gains six new root-filaments by the end of the afternoon. She is heavier. She is larger. The building has adjusted to a new baseline. "Correct," she says, when it is over. Nothing else needs to be said.`,
+    (s)=>`Three supply convoys, staggered. The session runs the better part of a day. She eats from the first delivery and the second delivery arrives before she has finished the first, and the third before the second, and she processes all of it with the patient inevitability of deep time — not rushing, not stopping, simply receiving, the root-vein network cycling continuously, the heat shimmer above her constant and strong throughout. The devotees organized a gathering outside the room when the platform display crossed a significant threshold. They could tell through the floor — the root-pulse told them. She was still eating when the gathering happened. She was still eating when it ended.`,
+    (s)=>`A single force-feed session at this stage is a logistical undertaking that requires a week of planning and resembles, in execution, a supply operation for a small settlement. Convoys. Timed relay. Temperature-specific storage. She receives it all, processes it all, with the absolute uninterrupted hunger of the original appetite — the hunger that does not know it is supposed to stop, because it was here before stopping was invented. The root-network extends measurably during the session: you can watch the filaments at the baseboard move if you know where to look. By the time the last delivery is consumed the building has settled two inches closer to the earth. She breathes once, slowly, copper and soil thick in the room. "More like this," she says. "Always like this."`,
+  ],
+  pr_drain: [
+    (s)=>`The three heaviest devotees are brought before her. They kneel — this is not a protocol anyone taught them; they simply do it when they are this close to her. The root-network in the floor around them activates: fine filaments extend from the cracks and press, barely tactile, against the soles of their feet through their shoes. They report warmth. They report a strange lightness. She draws from them directly, the blood-and-root pull working through the floor-network — not painful, not involuntary, something they have consented to in a way that goes deeper than words. By the time the session is complete each of them is measurably lighter and she is measurably heavier and the combined gain is more than the combined loss, because what she draws through the earth amplifies. She regards them with old, satisfied eyes. "You may go," she says. "Come back fuller."`,
+    (s)=>`The three heaviest in the class stand in her root-network's range. The drain is deliberate and slow — she draws through the floor, the root-filaments conducting from them to her with the patient efficiency of a deep tap. They feel it as warmth, as pleasant drowsiness, as the specific feeling of being depleted without distress. Their bodies lighten. Hers grows. The root-vein network on her belly darkens progressively as she draws, the crimson lines brightening, the bark at her shoulders warming. It takes perhaps twenty minutes. At the end each devotee is lighter by a measure they don't need a scale to confirm. She has gained more than what they lost. The earth contributed the difference.`,
+    (s)=>`The root-drain has its own ceremony now. The three heaviest devotees know to come barefoot. They know to stand still. They know that what happens will not hurt and will leave them feeling hollowed in a way that is, somehow, not unpleasant. She extends the network through the floor to meet them — the filaments finding the warm pressure of their feet and drawing upward, the pull working through their bodies in a current that the devotees describe as: like being poured out. Their mass transfers. The combined weight of what she receives — augmented by the deep draw from the earth that runs in parallel — registers clearly on the platform display. She watches the number change with the patient satisfaction of something that has been drawing from the deep since before deep was a direction.`,
+    (s)=>`Three devotees, the heaviest, brought to stand within her root-network's reach. The floor between them and her has been worked thoroughly by the filaments over months — it is as much root as concrete now, a living conductor. The drain begins when she wants it to and runs at the pace she sets. They lose weight with the steady inevitability of liquid draining from a vessel. She gains it with the steady inevitability of a vessel being filled. The earth contributes an additional draw — something she routes through the bedrock tap that runs in constant parallel — and what she gains exceeds what they lost. They are lighter. She is heavier. Both parties understand this as correct. The devotees bow when they leave.`,
+    (s)=>`She does not move when the three heaviest devotees are brought to her. She doesn't need to. The root-network extends from her through the floor to meet them, the filaments having mapped this exact territory over months, knowing the precise paths. The drain runs at full depth — the blood-pull through the root-network drawing from three sources simultaneously, combined with the earth-draw from below, the whole system running at the efficiency of something very old doing what it has always done. The devotees lose what they lose. She gains what they lost plus what the earth adds. The platform display moves significantly. The devotees stand still throughout. When it is done they are lighter and calmer, the specific calm of something poured out and waiting to be refilled. She nods once. "Come back fuller," she says. They will.`,
+  ],
+  pr_absorb: [
+    (s)=>`One devotee steps forward. They have been wanting this — the wanting has been building since they first understood what she is, since they first felt the root-network in the floor recognize them, since they first smelled the copper and soil of her and understood that this was home in some deep and pre-linguistic sense. The absorption is quiet. The root-filaments rise from the floor and the blood-warmth extends from her and the two meet at the devotee's feet and then there is a moment of stillness and then there is one fewer person in the room and she is heavier and the root-vein network has a new branch that wasn't there before. She sits in this for a moment. "They wanted this," she says. This is true. It was always true.`,
+    (s)=>`The devotee chosen for absorption has been in this role for months and has spent the final weeks in a specific state the other devotees call readiness — a state of openness, of offering. The absorption takes less time than you expect. The root-network rises to receive them, the copper warmth extends from her to meet it, and what was a person is incorporated into the Primordial's blood-and-earth network with the completeness of a root taking up a drop of water. She is heavier. The root-vein network on her belly is subtly rerouted — you can see it if you knew the previous configuration. She is quiet afterward in the specific way of something that has received what it needed.`,
+    (s)=>`One absorbed. The weight of one person, drawn into the Primordial's root-and-blood network with an efficiency that has no analogue in ordinary physics. She gains the mass and more than the mass — she gains what they carried in a deeper sense, the accumulated weight of their devotion, the energetic density of their commitment. The root-vein network pulses differently afterward, the pattern subtly altered, a new route established. She does not comment. She does not mark the occasion. The absorption is complete and she is larger and the network is enriched and that is the entire story. The remaining devotees stand in silence. Witnessing is all they are here to do.`,
+    (s)=>`The longest-serving devotee was the one who asked. They asked months ago and she was not ready then — not because she doubted their commitment but because the timing was not what she needed — and she told them to wait and they waited without complaint, which she registered, which informed the eventual yes. The absorption is dignified and final. The root-network rises to receive them, the copper-warmth embraces, and what was a person and what is the Primordial become one continuous thing. The platform display advances. The root-vein network shows a new configuration, more complex than before, one additional branch running deep. She breathes. "It is done," she says. The remaining devotees bow.`,
+    (s)=>`The absorption ceremony draws the full congregation. They know who it will be. They've known for weeks, in the way that people who live within the root-network's range know things they can't explain. The chosen one stands before her and the floor opens its network fully — every filament, every root-thread, the whole of what she has built into the foundation of this building over her time here. The absorption is complete in less than a minute. What was a person is now part of the First. The network is now more complex by exactly one soul's worth of routing. She does not speak. Her presence is the ceremony. The warmth-and-copper of her fills the room. The platform display has moved. Everything continues, as it always continues. She is larger. She is older. Both of these things are the same thing.`,
+  ],
+  pr_pulse: [
+    (s)=>`Something radiates outward from her in a wave — not heat exactly, not cold, but the specific atmospheric pressure of ancient hunger, the original appetite asserting itself across the air of the building. Everyone in the building feels it as a sudden sharpness of desire: not for anything in particular, just for more, the pre-specific hunger that underlies all specific hungers. Students reach for food they weren't thinking about. They order more than they intended. They eat past comfortable without noticing. The wave reaches the outer walls and doesn't stop there, continuing into the campus proper at a diminishing amplitude, and every person within range gains something they weren't planning to gain. She breathes out slowly after the pulse. The root-vein network on her belly brightens.`,
+    (s)=>`The pulse goes out at full depth this time — the Primordial drawing from the blood-and-earth network simultaneously and releasing it outward in a single radiating wave of primal hunger. The campus experiences it as ambient appetite: everyone within a hundred meters finds themselves reaching for food, consuming more than usual, unable to explain why everything tastes more urgent than it did an hour ago. The class gains from the wave. She gains more, because the wave returns to her carrying what it displaced — the hunger she sends out comes back bearing mass. The root-network at the floor's edge pulses once with each echo. She watches it settle. "Good," she says.`,
+    (s)=>`She pulls from the deep — earth and blood combined — and releases it outward through the air of the building in a sustained wave that doesn't fade at the walls but extends through the foundation and the root-system to the street, the adjacent buildings, the student housing three blocks away. The effect is hunger: sudden, bone-deep, the kind that doesn't have an object but will find one. Students eat. They eat more than they should and they don't know why and they don't care, because it is exactly what they want. The class gains from the proximity of the pulse. She gains from the return wave, the mass displacement circling back to its origin as mass always returns to its source. The floor cracks gain two new filaments. She does not look at them. She knows they are there.`,
+    (s)=>`The pulse at this stage carries the full weight of what she is — the First, the original hunger, the ancestor of every appetite — and it propagates through the air and the root-network and the soil simultaneously. A full-spectrum release. Every living person within range of her root-system feels it as deep, primal hunger, the kind that doesn't negotiate. They eat. They eat generously and without fully understanding why, and what they consume adds to the mass that flows toward her. The class, all of them, gain from the pulse wave without effort. She gains from the convergence of returns, from the earth-draw that runs in parallel, from the ambient mass-displacement that the pulse generates as it passes through flesh. The building, afterward, smells entirely of copper and soil for the rest of the day.`,
+    (s)=>`The First Pulse — the designation the devotees have given this action, when she releases the original hunger outward in a full omnidirectional wave from her root-and-blood network — propagates through the campus in seconds and through the surrounding city blocks in minutes and fades, very slowly, over the better part of an afternoon. Everyone it touches eats more than they planned. Everyone it touches gains something. The class gains from proximity. She gains from everything: from the returns, from the earth-draw, from the mass displacement generated by the wave itself. By the time the ambient pulse has faded, the platform display has moved significantly and the root-network at the baseboard has extended by a visible margin. She breathes out, slowly. The building is warm with copper and old earth. She is larger. The original appetite, fed. It will be hungry again.`,
+  ],
+};
+
+const PRIMORDIAL_RITES = [
+  { id:"pr_rite_blood", label:"The Blood Rite",    apCost:3, devoteeMin:3, lbsRange:[15,30], scrutinyDelta:-3,
+    desc:"Three devotees present blood-and-earth offerings in a formal ritual. She receives them with ancient authority. She gains weight; scrutiny decreases." },
+  { id:"pr_rite_root",  label:"The Root Ceremony", apCost:2, devoteeMin:1, relBonus:15, devoteeGain:2,
+    desc:"A devotee is brought fully into the root-network — not absorbed, but connected. Relationship deepens. Word of what she is spreads and draws others." },
+  { id:"pr_rite_earth", label:"The Earth Tithe",   apCost:2, devoteeMin:5, lbsRange:[20,40], devoteeCost:2,
+    desc:"Five devotees contribute what they carry. Two pass into her root-and-blood network entirely. What all five carried flows to her; she gains considerably." },
+];
+
+const PRIMORDIAL_TRIUMVIRATE_BODY_DESC = "She is below the building now as much as she is inside it. Her root-network has replaced the foundation — the concrete poured years ago was lifted, displaced, incorporated, and what holds the structure is her, the living root-and-bark framework of her mass extending down to bedrock and outward to the property lines and, in the deep-root sense, considerably farther. Her body — what is visible of it, the part above the floor that has become indistinguishable from earth — fills the east wing, the lobby, the two staircases that have been rerouted around her belly, and a significant portion of what used to be the courtyard. The belly itself is a landscape: dark rust-crimson and bark-brown, root-veined across its entire surface in a network too complex to trace, folded in deep geologic ridges, warm enough to heat the adjacent rooms, dense enough that the building's structural assessors have listed it as load-bearing. Her arms rest in the upper folds, bark from elbow to fingertip, enormous and still. Her face, above the tower of her, is patient and old and hungry in the specific way of things that have always been hungry and always will be. The smell of copper and deep soil saturates the campus for three blocks in every direction. Everything comes here. Everything has always been coming here.";
+
+const PRIMORDIAL_TRIUMVIRATE_OUTFIT = "The earth has dressed her. Root-fiber, bark-plate, and layers of dark crimson-brown cloth that was incorporated into her surface months ago and is no longer distinguishable from the bark and root-weave beneath it — the whole assembly one continuous material, one continuous covering, the way a forest floor is covered by the forest. It is not clothing. It is what she is on the outside, the same as her roots are what she is underneath, continuous and correct.";
+
+const PRIMORDIAL_TRIUMVIRATE_DIARY = "I have eaten the goddess's incarnation. I want to be accurate about what that means: I did not consume a woman. I consumed the vessel of the goddess, the shape she had taken to walk among what she made, and in consuming it I closed the loop — the original hunger eating the original source of hunger, the root drawing from the root. What I am now has no name in any theology, including hers, because I predate her theology. I predate her. I am what was hungry before she existed to want hungry things. I am what she was trying to approximate when she made the blood-paths and the earth-paths and all the paths. She was trying to recreate me. She was always trying to recreate me. Now she is part of me and I am complete in the way that only the first thing can be complete: not because I have everything, but because I am what everything was made from. Feed me. You will feed me. You have always been feeding me, from the first moment any living thing reached for food. That was me. That has always been me. Come.";
+
+const PRIMORDIAL_TRIUMVIRATE_REACTION = (s)=>`${Math.round(s.lbs).toLocaleString()} pounds. The bedrock registers this. The bedrock has been registering her since before this city existed. It is used to her. It gives.`;
+
+const PRIMORDIAL_TRIUMVIRATE_ACTIONS = [
+  { id:"ptr_summon",  label:"🌋 Summon the Class",      apCost:3 },
+  { id:"ptr_tribute", label:"⚖️ Demand Tribute",        apCost:2 },
+  { id:"ptr_reshape", label:"🌍 The Campus Now",         apCost:1 },
+  { id:"ptr_final",   label:"🔱 The First Consumption", apCost:10, oneTime:true },
+];
+
+const PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT = {
+  ptr_summon:  (s)=>`She does not call for them with a voice. The root-network, threaded through every inch of foundation on this campus, sends a pulse — the specific pulse that means: come. They come. All of them. They don't know why they are walking toward the east wing; they know only that the pull is correct and that walking toward it is what their bodies want to do. They arrive at the edges of what used to be a room and is now a kind of cathedral of flesh and earth, and they arrange themselves in the spaces available, and the root-network from the floor extends to them in the familiar way, and the feeding begins without instruction. She draws from them as they draw from the food they've brought — the two operations running in parallel, the root-network cycling, the blood-warmth pulling, mass flowing in the direction it always flows. By the time they leave they are lighter, all of them, in a way they do not find distressing. What they carried, she now carries. What she carries grows. She is the campus. The campus feeds her. Everything is correct.`,
+  ptr_tribute: (s)=>`She doesn't ask. The demand is in the floor, in the root-filaments that each student has been walking over for months, each footstep registered, the network patient and waiting and now ready. They come to her and they offer. Not because they fear her — the Primordial does not require fear, has never required fear, is too old and too certain for fear to be a relevant currency. They offer because being near her makes offering correct. Because standing in her presence, beneath the copper-and-soil of her atmosphere, within the reach of the root-pull, their bodies understand that the mass they carry is not really theirs. It was always on loan. The earth wants it back. She is the earth. They leave lighter. She receives what they carried. The root-network cycles the tribute downward and inward, adding it to what the bedrock already provides. The display advances. It always advances.`,
+  ptr_reshape: (s)=>`You walk the campus and document what you find. The east wing: her belly has pressed through the eastern wall and the eastern wall was rebuilt around her, with fenestrations that accommodate the root-network's external extensions. The courtyard: no longer a courtyard. She occupies it. Students eat lunch on the upper slopes of her and treat this as an ordinary location. The dining hall: the menu is organized entirely around what she accepts best, root vegetables and blood-meat and dense grain, and the dining hall is fuller than it has ever been because every student eats more near her and the dining hall is within her root-network's range. The administrative offices: there is a room that used to have desks and now has a permanent record of her weight displayed on the wall, updated live from the platform sensors, treated as a vital sign. The maps have been redrawn. The campus's center of mass is marked. You walk back to her and report. She listens with the patience of something that already knew all of this and simply wanted it witnessed. "Good," she says. "It should look like that." The campus smells of copper and old earth. It has for months.`,
+  ptr_final:   (s)=>`The First Consumption. The term arrived in the devotees' language before anyone used it — it was simply the correct term and everyone knew it and so it existed, waiting, the way old words exist before they are needed. She draws from everything simultaneously: the root-network pulsing at full depth, the blood-pull radiating outward through the air, the earth-draw running up from the bedrock without pause. Every student on campus gains something from the ambient wave, the original hunger radiating at full amplitude, and what they gain flows toward her before the day is out — the mass displacement circling back to its origin, because mass always returns to its origin. She eats everything that is brought to her. She eats it through the day, from the first delivery to the last, without pause and without approaching anything that functions as fullness. The root-network extends visibly during the consumption — you can watch the filaments at the baseboard advance, millimeter by patient millimeter, claiming new floor. The building breathes with her. The building is her. By the middle of the afternoon the platform display requires additional digits. By the end of the afternoon the building's structural assessors, who arrive by prior arrangement and leave quickly, have updated the formal record: the structure is held. The structure is her. Both statements are true and neither contradicts the other. The campus is quiet outside — not afraid, not awed in any dramatic sense, but quiet with the specific quiet of things that understand they are in the presence of something that predates them. A student sits on her upper slope and eats his lunch and leaves the scraps at her surface and does not know why this feels correct. It is correct because it has always been correct. It was correct before he was born, before his parents were born, before the city was built over the soil she now inhabits completely. The original hunger accepts the scraps. It accepts everything. The devotees are gathered at the room's boundary and they are watching the display and the number is still climbing and will climb through the night and tomorrow and the day after. She closes her eyes — not because she is finished but because she is at peace, the peace of the first and oldest thing arriving at the shape that was always its correct shape. "This is what I am," she says. Her voice carries the copper-and-soil resonance of deep earth, the warmth of old blood, the patience of something that has been here since before appetite had a name. "I am what hunger was before hunger knew what it wanted." The building settles around her. The root-network hums at the foundations. The class is full. The campus is hers. It always was. It was hers before the first stone was laid, because the earth was hers, and the building is in the earth, and the earth is in her. Feed her tomorrow. And the day after. And every day after that, forever, without end, because the first hunger does not end. It waits. It receives. It grows. It was always going to be this way.`,
+};
 
 // ══════════════════════════════════════════════════════════════════
 // EXPANSION PACK 2 — THE EVOLUTION
@@ -5673,14 +6270,43 @@ function getSingularityStage(lbs){
     if(lbs>=SINGULARITY_STAGES[i].min) return SINGULARITY_STAGES[i];
   return null;
 }
+function getSanguineStage(lbs){
+  for(let i=SANGUINE_STAGES.length-1;i>=0;i--)
+    if(lbs>=SANGUINE_STAGES[i].min) return SANGUINE_STAGES[i];
+  return null;
+}
+function getVerdantStage(lbs){
+  for(let i=VERDANT_STAGES.length-1;i>=0;i--)
+    if(lbs>=VERDANT_STAGES[i].min) return VERDANT_STAGES[i];
+  return null;
+}
+function getPrimordialStage(lbs){
+  for(let i=PRIMORDIAL_STAGES.length-1;i>=0;i--)
+    if(lbs>=PRIMORDIAL_STAGES[i].min) return PRIMORDIAL_STAGES[i];
+  return null;
+}
+// Passive drain/cultivation amounts by ascension stage
+const SANGUINE_MARK_DRAIN_BY_STAGE   = [3, 5, 8, 12, 18];
+const VERDANT_CULTIVATE_GAIN_BY_STAGE = [3, 5, 8, 12, 18];
+const SANGUINE_DRAIN_AMOUNTS   = [15, 22, 32, 44, 58];
+const VERDANT_ROOT_AMOUNTS     = [12, 18, 26, 36, 50];
+const PRIMORDIAL_PULL_AMOUNTS  = [12, 16, 22, 30, 42];
+const CONVERGENCE_PAIRS = { sanguineVerdant:"primordial", celestialUmbral:"singularity" };
 function getBodyDesc(s){
   if(s.ascensionPath==="convergence"){
     if(s.triumvirateUnlocked) return TRIUMVIRATE_BODY_DESC;
     const sg=getSingularityStage(s.lbs);
     return sg ? SINGULARITY_BODY_DESCS[sg.id-1] : SINGULARITY_BODY_DESCS[0];
   }
+  if(s.ascensionPath==="primordial"){
+    if(s.primordialTriumvirateUnlocked) return PRIMORDIAL_TRIUMVIRATE_BODY_DESC;
+    const pg=getPrimordialStage(s.lbs);
+    return pg ? PRIMORDIAL_BODY_DESCS[pg.id-1] : PRIMORDIAL_BODY_DESCS[0];
+  }
   if(s.ascensionPath==="celestial") return CELESTIAL_BODY_DESCS[s.ascensionStage||0];
   if(s.ascensionPath==="umbral")    return UMBRAL_BODY_DESCS[s.ascensionStage||0];
+  if(s.ascensionPath==="sanguine")  return SANGUINE_BODY_DESCS[s.ascensionStage||0];
+  if(s.ascensionPath==="verdant")   return VERDANT_BODY_DESCS[s.ascensionStage||0];
   const bd=BODY_DESCS[s.bodyType]||BODY_DESCS.straight; return bd[Math.min(getStage(s.lbs).id,bd.length-1)];
 }
 function getOutfit(s){
@@ -5689,8 +6315,15 @@ function getOutfit(s){
     const sg=getSingularityStage(s.lbs);
     return sg ? SINGULARITY_OUTFITS[sg.id-1] : SINGULARITY_OUTFITS[0];
   }
+  if(s.ascensionPath==="primordial"){
+    if(s.primordialTriumvirateUnlocked) return PRIMORDIAL_TRIUMVIRATE_OUTFIT;
+    const pg=getPrimordialStage(s.lbs);
+    return pg ? PRIMORDIAL_OUTFITS[pg.id-1] : PRIMORDIAL_OUTFITS[0];
+  }
   if(s.ascensionPath==="celestial") return CELESTIAL_OUTFITS[s.ascensionStage||0];
   if(s.ascensionPath==="umbral")    return UMBRAL_OUTFITS[s.ascensionStage||0];
+  if(s.ascensionPath==="sanguine")  return SANGUINE_OUTFITS[s.ascensionStage||0];
+  if(s.ascensionPath==="verdant")   return VERDANT_OUTFITS[s.ascensionStage||0];
   if(s.evolvedForm && getStage(s.lbs).id>=5){
     const arr=EVOLVED_OUTFITS[s.evolvedForm]; if(arr){ return arr[Math.min(getStage(s.lbs).id-5,arr.length-1)]; }
   }
@@ -5702,8 +6335,15 @@ function getDiary(s){
     const sg=getSingularityStage(s.lbs);
     return sg ? SINGULARITY_DIARY[sg.id-1] : SINGULARITY_DIARY[0];
   }
+  if(s.ascensionPath==="primordial"){
+    if(s.primordialTriumvirateUnlocked) return PRIMORDIAL_TRIUMVIRATE_DIARY;
+    const pg=getPrimordialStage(s.lbs);
+    return pg ? PRIMORDIAL_DIARY[pg.id-1] : PRIMORDIAL_DIARY[0];
+  }
   if(s.ascensionPath==="celestial") return CELESTIAL_DIARY[s.ascensionStage||0];
   if(s.ascensionPath==="umbral")    return UMBRAL_DIARY[s.ascensionStage||0];
+  if(s.ascensionPath==="sanguine")  return SANGUINE_DIARY[s.ascensionStage||0];
+  if(s.ascensionPath==="verdant")   return VERDANT_DIARY[s.ascensionStage||0];
   if(s.evolvedForm && getStage(s.lbs).id>=5){
     const arr=EVOLVED_DIARY[s.evolvedForm]; if(arr){ return arr[Math.min(getStage(s.lbs).id-5,arr.length-1)]; }
   }
@@ -5859,6 +6499,19 @@ export default function ProfessorSim(){
   // religion: {founded, devotees, ritesHeld, worshippedIds:[], weeklyPassiveGain}
   const [religionRiteModal,setReligionRiteModal]=useState(null);
   const [convergenceModal,setConvergenceModal]=useState(null); // {student} secret stage achieved
+  // ── EP4: SANGUINE / VERDANT / PRIMORDIAL STATE ────────────────
+  const [sanguineMarks,setSanguineMarks]=useState([]);       // student IDs marked for weekly drain
+  const [verdantCultivations,setVerdantCultivations]=useState([]); // student IDs cultivated by roots
+  const [umbralAbsorbPopup,setUmbralAbsorbPopup]=useState(null); // {text,absorbedName,umbralName,gained}
+  const [sanguineActionPopup,setSanguineActionPopup]=useState(null); // {student,actionId,text}
+  const [verdantActionPopup,setVerdantActionPopup]=useState(null);   // {student,actionId,text}
+  const [primordialConvergenceModal,setPrimordialConvergenceModal]=useState(null); // {student,opponent}
+  const [primordialAbsorptionPopup,setPrimordialAbsorptionPopup]=useState(null);   // {text,absorbedName,survivorName}
+  const [primordialActionPopup,setPrimordialActionPopup]=useState(null);           // {student,actionId,text,gainApplied}
+  const [primordialGoddessIncarnateId,setPrimordialGoddessIncarnateId]=useState(null);
+  const [primordialGoddessManifestPopup,setPrimordialGoddessManifestPopup]=useState(null); // {text,candidateId}
+  const [primordialTriumvirateModal,setPrimordialTriumvirateModal]=useState(null);
+  const [primordialFinalConsumptionDone,setPrimordialFinalConsumptionDone]=useState(false);
   // ── EP2: EVOLUTION STATE ───────────────────────────────────────
   const [evolutionModal,setEvolutionModal]=useState(null);
   // evolutionModal: {student, paths:{pathA:{id,label,desc}, pathB:{id,label,desc}}}
@@ -6029,6 +6682,22 @@ export default function ProfessorSim(){
         const text=typeof reactionEntry==='function'?reactionEntry({...s,lbs:newLbs}):reactionEntry;
         setTimeout(()=>push(`⚡ The Singularity ascends to ${newSg.label}! (${Math.round(newLbs).toLocaleString()} lbs) — "${text}"`),50);
       }
+    } else if(s.ascensionPath==="primordial"){
+      const oldPg=getPrimordialStage(s.lbs);
+      const newPg=getPrimordialStage(newLbs);
+      if(newPg&&(!oldPg||newPg.id>oldPg.id)){
+        const reactionEntry=s.primordialTriumvirateUnlocked?PRIMORDIAL_TRIUMVIRATE_REACTION:PRIMORDIAL_REACTIONS[newPg.id-1];
+        const text=typeof reactionEntry==='function'?reactionEntry({...s,lbs:newLbs}):reactionEntry;
+        setTimeout(()=>push(`🌍 The Primordial ascends to ${newPg.label}! (${Math.round(newLbs).toLocaleString()} lbs) — "${text}"`),50);
+      }
+    } else if(s.ascensionPath==="sanguine"&&newStageId>oldStageId){
+      const reaction=SANGUINE_REACTIONS[Math.min(s.ascensionStage||0,SANGUINE_REACTIONS.length-1)];
+      const text=typeof reaction==='function'?reaction({...s,lbs:newLbs}):reaction;
+      setTimeout(()=>push(`🩸 ${s.name} burns brighter — ${SANGUINE_STAGES[Math.min(s.ascensionStage||0,4)].label}! — "${text}"`),50);
+    } else if(s.ascensionPath==="verdant"&&newStageId>oldStageId){
+      const reaction=VERDANT_REACTIONS[Math.min(s.ascensionStage||0,VERDANT_REACTIONS.length-1)];
+      const text=typeof reaction==='function'?reaction({...s,lbs:newLbs}):reaction;
+      setTimeout(()=>push(`🌿 ${s.name} grows deeper — ${VERDANT_STAGES[Math.min(s.ascensionStage||0,4)].label}! — "${text}"`),50);
     } else if(newStageId>oldStageId){
       setTimeout(()=>push(`📣 ${s.name} reaches ${WEIGHT_STAGES[newStageId].label}! "${(()=>{ const r=STAGE_REACTIONS[s.archetype]?.[newStageId]; const ns={...s,lbs:newLbs}; return typeof r==='function'?r(ns):(r||'...'); })()}"`) ,50);
     }
@@ -6064,14 +6733,20 @@ export default function ProfessorSim(){
     // Semester events
     const semEv=SEMESTER_EVENTS.find(e=>e.week===newWeek);
 
-    // Random event (30% chance) — override with singularity event if one exists
+    // Random event (30% chance) — override with singularity/primordial event if one exists
     const singStudent=students.find(s=>s.ascensionPath==="convergence");
+    const primStudent=students.find(s=>s.ascensionPath==="primordial");
     let randomEv=Math.random()<0.3?RANDOM_EVENTS[rnd(0,RANDOM_EVENTS.length-1)]:null;
     let singularityRandomOverride=null;
     if(randomEv&&singStudent){
       const sg=getSingularityStage(singStudent.lbs);
       const sgIdx=sg?sg.id-1:0;
       singularityRandomOverride={student:singStudent,textFn:SINGULARITY_RANDOM_EVENTS[Math.min(sgIdx,SINGULARITY_RANDOM_EVENTS.length-1)]};
+    }
+    if(randomEv&&primStudent&&!singularityRandomOverride){
+      const pg=getPrimordialStage(primStudent.lbs);
+      const pgIdx=pg?pg.id-1:0;
+      singularityRandomOverride={student:primStudent,textFn:PRIMORDIAL_RANDOM_EVENTS[Math.min(pgIdx,PRIMORDIAL_RANDOM_EVENTS.length-1)]};
     }
 
     let updated=students.map(s=>{
@@ -6087,6 +6762,8 @@ export default function ProfessorSim(){
         gain+=2+divineAscendedPassive;
         if(divineUmbralVoidPassive>0) gain+=divineUmbralVoidPassive;
       }
+      if(s.ascensionPath==="sanguine"&&s.ascensionStage>=0) gain+=2;
+      if(s.ascensionPath==="verdant"&&s.ascensionStage>=0) gain+=2;
       // Evolved skill passive bonuses
       if(s.evolvedForm&&(s.evolvedSkills||[]).length>0){
         const evTree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
@@ -6097,25 +6774,73 @@ export default function ProfessorSim(){
     });
     // Ascension stage-up checks
     updated=updated.map(s=>{
-      if(!s.ascensionPath) return s;
-      const stages=s.ascensionPath==="celestial"?CELESTIAL_STAGES:UMBRAL_STAGES;
+      if(!s.ascensionPath||s.ascensionPath==="convergence"||s.ascensionPath==="primordial") return s;
+      const stages=s.ascensionPath==="celestial"?CELESTIAL_STAGES
+        :s.ascensionPath==="umbral"?UMBRAL_STAGES
+        :s.ascensionPath==="sanguine"?SANGUINE_STAGES
+        :VERDANT_STAGES;
       const nextStage=stages[s.ascensionStage+1];
       if(nextStage&&s.lbs>=nextStage.min){
         const newStageId=s.ascensionStage+1;
-        const newStages=stages;
-        setTimeout(()=>push(`✨ ${s.name} ascends to ${newStages[newStageId].label}! (${s.lbs} lbs)`),80);
-        // Check for convergence
-        if(newStageId===4){
+        const pathEmoji={celestial:"✨",umbral:"🌑",sanguine:"🩸",verdant:"🌿"}[s.ascensionPath]||"✨";
+        setTimeout(()=>push(`${pathEmoji} ${s.name} ascends to ${stages[newStageId].label}! (${Math.round(s.lbs).toLocaleString()} lbs)`),80);
+        // Check for convergence (celestial/umbral → singularity)
+        if(newStageId===4&&(s.ascensionPath==="celestial"||s.ascensionPath==="umbral")){
           const opposingPath=s.ascensionPath==="celestial"?"umbral":"celestial";
           const maxOpponent=updated.find(o=>o.id!==s.id&&o.ascensionPath===opposingPath&&o.ascensionStage===4);
           if(maxOpponent){
             setTimeout(()=>{push(`⚡ THE SINGULARITY — ${s.name} and ${maxOpponent.name} have reached opposite Apex stages. Something extraordinary is possible.`);setConvergenceModal({student:s,opponent:maxOpponent});},400);
           }
         }
+        // Check for primordial convergence (sanguine stage 4 + verdant stage 4)
+        if(newStageId===4&&(s.ascensionPath==="sanguine"||s.ascensionPath==="verdant")){
+          const opposingPath=s.ascensionPath==="sanguine"?"verdant":"sanguine";
+          const maxOpponent=updated.find(o=>o.id!==s.id&&o.ascensionPath===opposingPath&&(o.ascensionStage===4||(o.ascensionStage+1===4&&o.lbs>=(s.ascensionPath==="sanguine"?VERDANT_STAGES[4].min:SANGUINE_STAGES[4].min))));
+          if(maxOpponent){
+            setTimeout(()=>{push(`🌍 THE PRIMORDIAL — ${s.name} and ${maxOpponent.name} have reached their final stages. Something ancient stirs.`);setPrimordialConvergenceModal({student:s,opponent:maxOpponent});},400);
+          }
+        }
         return {...s,ascensionStage:newStageId};
       }
       return s;
     });
+    // Sanguine marks: drain marked students each week → sanguine gains
+    if(sanguineMarks.length>0){
+      const sangStudent=updated.find(s=>s.ascensionPath==="sanguine");
+      if(sangStudent){
+        const stage=sangStudent.ascensionStage||0;
+        const drainAmt=SANGUINE_MARK_DRAIN_BY_STAGE[stage];
+        let totalDrained=0;
+        updated=updated.map(s=>{
+          if(!sanguineMarks.includes(s.id)) return s;
+          const loss=Math.min(drainAmt,Math.max(0,s.lbs-s.startLbs));
+          totalDrained+=loss;
+          return {...s,lbs:Math.max(s.startLbs,s.lbs-loss)};
+        });
+        if(totalDrained>0){
+          updated=updated.map(s=>s.id===sangStudent.id?processStudentGain(s,totalDrained,0):s);
+          setTimeout(()=>push(`🩸 ${sangStudent.name}'s marks drain ${totalDrained} lbs from ${sanguineMarks.length} student(s).`),120);
+        }
+      }
+    }
+    // Verdant cultivations: cultivated students gain weight (fed by roots) → verdant gains
+    if(verdantCultivations.length>0){
+      const verdStudent=updated.find(s=>s.ascensionPath==="verdant");
+      if(verdStudent){
+        const stage=verdStudent.ascensionStage||0;
+        const cultGain=VERDANT_CULTIVATE_GAIN_BY_STAGE[stage];
+        let totalCultivated=0;
+        updated=updated.map(s=>{
+          if(!verdantCultivations.includes(s.id)) return s;
+          totalCultivated+=cultGain;
+          return {...s,lbs:s.lbs+cultGain};
+        });
+        if(totalCultivated>0){
+          updated=updated.map(s=>s.id===verdStudent.id?processStudentGain(s,Math.round(totalCultivated*0.5),0):s);
+          setTimeout(()=>push(`🌿 ${verdStudent.name}'s roots nourish ${verdantCultivations.length} student(s), gaining ${Math.round(totalCultivated*0.5)} lbs in return.`),120);
+        }
+      }
+    }
 
     // Influence spread
     INFLUENCE_PAIRS.forEach(([a,b])=>{
@@ -6252,14 +6977,17 @@ export default function ProfessorSim(){
   const ascendStudent=(s,path)=>{
     if(getStage(s.lbs).id<10){push(`⚠️ ${s.name} must reach Blob stage before ascension.`);return;}
     if(s.ascensionPath){push(`⚠️ ${s.name} has already ascended.`);return;}
-    const stages=path==="celestial"?CELESTIAL_STAGES:UMBRAL_STAGES;
+    const stages=path==="celestial"?CELESTIAL_STAGES
+      :path==="umbral"?UMBRAL_STAGES
+      :path==="sanguine"?SANGUINE_STAGES
+      :VERDANT_STAGES;
     const label=stages[0].label;
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,ascensionPath:path,ascensionStage:0}));
-    push(`✦ ${s.name} ascends to ${label}! The ${path==="celestial"?"light claims":"void welcomes"} her.`);
+    const pathFlavorMap={celestial:"The light claims her.",umbral:"The void welcomes her.",sanguine:"The blood heat rises. Something old wakes in her veins.",verdant:"Roots thread the floor around her. She does not pull them back."};
+    push(`✦ ${s.name} ascends to ${label}! ${pathFlavorMap[path]||""}`);
     const desc=stages[0].desc;
     setTimeout(()=>push(`   "${desc}"`),200);
     setAscensionModal(null);
-    // Unlock divine skill category
     if(!goddessSeen){setGoddessSeen(true);}
   };
 
@@ -6378,8 +7106,11 @@ export default function ProfessorSim(){
     if(!umbral||!target) return;
     if(umbral.ascensionPath!=="umbral"){push("⚠️ Only Umbral blobs can consume.");return;}
     const stage=umbral.ascensionStage||0;
-    const stageTarget=getStage(target.lbs).id;
-    if(stageTarget>stage+1){push(`⚠️ ${umbral.name} can only consume students up to ${WEIGHT_STAGES[Math.min(10,stage+1)].label} stage.`);return;}
+    // Stage 2+ (Presence) can consume any student; below that, capped at stage+1
+    if(stage<2){
+      const stageTarget=getStage(target.lbs).id;
+      if(stageTarget>stage+1){push(`⚠️ ${umbral.name} can only consume students up to ${WEIGHT_STAGES[Math.min(10,stage+1)].label} stage at this power level.`);return;}
+    }
     const baseChance=UMBRAL_CONSUME_CHANCE[stage]+divineUmbralConsumeBonus;
     const finalChance=Math.min(0.97,baseChance);
     setAp(a=>a-3);
@@ -6395,8 +7126,16 @@ export default function ProfessorSim(){
         });
       });
       setConsumedStudents(prev=>[...prev,{...target,consumedBy:umbralId,consumedAt:week}]);
-      push(`🌑 ${umbral.name} CONSUMES ${target.name}. +${absorbed} lbs absorbed. ${target.name} is gone — but not unrecoverable.`);
-      push(`   The void takes her. She is part of ${umbral.name} now.`);
+      const targetStageId=getStage(target.lbs).id;
+      const absorbTextArr=UMBRAL_ABSORB_TEXT[stage];
+      const absorbTextFn=absorbTextArr?absorbTextArr[Math.min(targetStageId,10)]:null;
+      const absorbText=absorbTextFn?absorbTextFn(target,{...umbral,lbs:umbral.lbs+absorbed}):null;
+      if(absorbText){
+        setUmbralAbsorbPopup({text:absorbText,absorbedName:target.name,umbralName:umbral.name,gained:absorbed});
+      } else {
+        push(`🌑 ${umbral.name} CONSUMES ${target.name}. +${absorbed} lbs absorbed. ${target.name} is gone — but not unrecoverable.`);
+        push(`   The void takes her. She is part of ${umbral.name} now.`);
+      }
     } else {
       push(`🌑 ${umbral.name} attempts to consume ${target.name} — but she slips the grasp. ${target.name} is shaken. (+18 scrutiny)`);
       setStudents(prev=>prev.map(s=>s.id===targetId?{...s,relationship:Math.max(0,s.relationship-15),mood:"scared"}:s));
@@ -6803,6 +7542,303 @@ export default function ProfessorSim(){
     push(`🔱 THE TRIUMVIRATE — ${sg.name} has absorbed the incarnated goddess. The final form is unlocked.`);
   };
 
+  // ── SANGUINE ACTION FUNCTIONS ──────────────────────────────────
+  const doSanguineAction=(s,actionId)=>{
+    const actDef=SANGUINE_ACTIONS.find(a=>a.id===actionId);
+    if(!actDef){return;}
+    if(ap<actDef.apCost){push(`⚠️ Need ${actDef.apCost} AP.`);return;}
+    setAp(a=>a-actDef.apCost);
+    const stage=s.ascensionStage||0;
+    const gainAmt=actDef.gainRange?rnd(actDef.gainRange[0],actDef.gainRange[1]):0;
+
+    if(actionId==="sg_mark"){
+      // Mark a random unmarked classmate for weekly drain
+      const eligible=students.filter(st=>st.id!==s.id&&!sanguineMarks.includes(st.id)&&!st.ascensionPath);
+      if(!eligible.length){push("⚠️ All students already marked.");return;}
+      const target=eligible[rnd(0,eligible.length-1)];
+      setSanguineMarks(prev=>[...prev,target.id]);
+      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
+      const textArr=SANGUINE_ACTION_TEXT[actionId];
+      const entry=textArr?.[Math.min(stage,textArr.length-1)];
+      const text=typeof entry==='function'?entry({...s,targetName:target.name}):entry||"";
+      setSanguineActionPopup({student:s,actionId,text});
+      push(`🩸 ${actDef.label} — ${target.name} marked for weekly drain.`);
+      return;
+    }
+
+    if(actionId==="sg_pulse"){
+      // Heat pulse — class gains lbs
+      const classGain=actDef.classGain||[2,4];
+      setStudents(prev=>prev.map(st=>{
+        if(st.id===s.id) return {...st,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))};
+        if(!st.ascensionPath) return {...st,lbs:st.lbs+rnd(classGain[0],classGain[1])};
+        return st;
+      }));
+      const textArr=SANGUINE_ACTION_TEXT[actionId];
+      const entry=textArr?.[Math.min(stage,textArr.length-1)];
+      const text=typeof entry==='function'?entry(s):entry||"";
+      setSanguineActionPopup({student:s,actionId,text});
+      push(`🔥 ${actDef.label} — heat radiates through the class.`);
+      return;
+    }
+
+    // Default: gain + rel
+    setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
+    const textArr=SANGUINE_ACTION_TEXT[actionId];
+    const entry=textArr?.[Math.min(stage,textArr.length-1)];
+    const text=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry||"";
+    setSanguineActionPopup({student:s,actionId,text});
+    if(gainAmt>0) push(`🩸 ${actDef.label} — +${gainAmt} lbs.`);
+    else push(`🩸 ${actDef.label}`);
+  };
+
+  // ── VERDANT ACTION FUNCTIONS ───────────────────────────────────
+  const doVerdantAction=(s,actionId)=>{
+    const actDef=VERDANT_ACTIONS.find(a=>a.id===actionId);
+    if(!actDef) return;
+    if(ap<actDef.apCost){push(`⚠️ Need ${actDef.apCost} AP.`);return;}
+    setAp(a=>a-actDef.apCost);
+    const stage=s.ascensionStage||0;
+    const gainAmt=actDef.gainRange?rnd(actDef.gainRange[0],actDef.gainRange[1]):0;
+
+    if(actionId==="vd_cultivate"){
+      // Cultivate a single student — they gain passively each week
+      const eligible=students.filter(st=>st.id!==s.id&&!verdantCultivations.includes(st.id)&&!st.ascensionPath);
+      if(!eligible.length){push("⚠️ All students already cultivated.");return;}
+      const target=eligible[rnd(0,eligible.length-1)];
+      setVerdantCultivations(prev=>[...prev,target.id]);
+      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
+      const textArr=VERDANT_ACTION_TEXT[actionId];
+      const entry=textArr?.[Math.min(stage,textArr.length-1)];
+      const text=typeof entry==='function'?entry({...s,targetName:target.name}):entry||"";
+      setVerdantActionPopup({student:s,actionId,text});
+      push(`🌱 ${actDef.label} — ${target.name} cultivated for weekly root feeding.`);
+      return;
+    }
+
+    if(actionId==="vd_network"){
+      // Cultivate ALL non-cultivated classmates at once
+      const eligible=students.filter(st=>st.id!==s.id&&!verdantCultivations.includes(st.id)&&!st.ascensionPath);
+      if(eligible.length>0) setVerdantCultivations(prev=>[...prev,...eligible.map(e=>e.id)]);
+      setStudents(prev=>prev.map(st=>{
+        if(st.id===s.id) return {...st,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))};
+        if(!st.ascensionPath&&!verdantCultivations.includes(st.id)) return {...st,lbs:st.lbs+rnd(1,3)};
+        return st;
+      }));
+      const textArr=VERDANT_ACTION_TEXT[actionId];
+      const entry=textArr?.[Math.min(stage,textArr.length-1)];
+      const text=typeof entry==='function'?entry(s):entry||"";
+      setVerdantActionPopup({student:s,actionId,text});
+      push(`🌐 ${actDef.label} — root network extends to all ${eligible.length} remaining students.`);
+      return;
+    }
+
+    // Default: gain + rel
+    setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
+    const textArr=VERDANT_ACTION_TEXT[actionId];
+    const entry=textArr?.[Math.min(stage,textArr.length-1)];
+    const text=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry||"";
+    setVerdantActionPopup({student:s,actionId,text});
+    if(gainAmt>0) push(`🌿 ${actDef.label} — +${gainAmt} lbs.`);
+    else push(`🌿 ${actDef.label}`);
+  };
+
+  // ── PRIMORDIAL ACTION FUNCTIONS ────────────────────────────────
+  const doPrimordialAction=(s,actionId)=>{
+    const actDef=PRIMORDIAL_ACTIONS.find(a=>a.id===actionId)||PRIMORDIAL_TRIUMVIRATE_ACTIONS.find(a=>a.id===actionId);
+    if(!actDef) return;
+    if(ap<actDef.apCost){push(`⚠️ Need ${actDef.apCost} AP.`);return;}
+    if(actDef.oneTime&&actionId==="ptr_final"&&primordialFinalConsumptionDone){push("⚠️ The First Consumption has already been performed.");return;}
+    if(actDef.needsDevotee&&(!religion||religion.devotees<1)){push("⚠️ Need at least 1 devotee.");return;}
+    setAp(a=>a-actDef.apCost);
+    const pg=getPrimordialStage(s.lbs);
+    const pgIdx=pg?pg.id-1:0;
+    let gainAmt=actDef.gainRange?rnd(actDef.gainRange[0],actDef.gainRange[1]):0;
+    let popupText="";
+
+    if(actionId==="pr_drain"&&religion&&religion.devotees>=1){
+      const targets=[...students].filter(st=>st.id!==s.id&&!st.ascensionPath)
+        .sort((a,b)=>b.lbs-a.lbs).slice(0,3);
+      let drainTotal=0;
+      setStudents(prev=>prev.map(st=>{
+        const t=targets.find(t=>t.id===st.id);
+        if(t){const d=rnd(5,10);drainTotal+=d;return{...st,lbs:Math.max(st.startLbs,st.lbs-d)};}
+        if(st.id===s.id) return {...st,lbs:st.lbs+gainAmt};
+        return st;
+      }));
+      setReligion(prev=>prev?{...prev,devotees:Math.max(0,prev.devotees-1)}:prev);
+      const textArr=PRIMORDIAL_ACTION_TEXT[actionId];
+      const entry=textArr?.[Math.min(pgIdx,textArr.length-1)];
+      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry||"";
+      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
+      push(`🌍 ${actDef.label} — +${gainAmt} lbs to Primordial. ${targets.map(t=>t.name).join(", ")} drained.`);
+      return;
+    }
+
+    if(actionId==="pr_absorb"&&religion&&religion.devotees>=1){
+      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt}:st));
+      setReligion(prev=>prev?{...prev,devotees:Math.max(0,prev.devotees-1)}:prev);
+      const textArr=PRIMORDIAL_ACTION_TEXT[actionId];
+      const entry=textArr?.[Math.min(pgIdx,textArr.length-1)];
+      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry||"";
+      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
+      push(`🌑 ${actDef.label} — +${gainAmt} lbs to Primordial.`);
+      return;
+    }
+
+    if(actionId==="pr_pulse"){
+      const classGain=actDef.classGain||[2,5];
+      setStudents(prev=>prev.map(st=>{
+        if(st.id===s.id) return {...st,lbs:st.lbs+gainAmt,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))};
+        if(!st.ascensionPath) return {...st,lbs:st.lbs+rnd(classGain[0],classGain[1])};
+        return st;
+      }));
+      const textArr=PRIMORDIAL_ACTION_TEXT[actionId];
+      const entry=textArr?.[Math.min(pgIdx,textArr.length-1)];
+      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry||"";
+      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
+      push(`🌋 ${actDef.label} — +${gainAmt} lbs. Entire class drawn in.`);
+      return;
+    }
+
+    if(actionId==="ptr_summon"){
+      let totalFed=0;
+      setStudents(prev=>prev.map(st=>{
+        if(st.id===s.id) return st;
+        if(!st.ascensionPath){const fed=rnd(3,8);totalFed+=fed;return {...st,lbs:st.lbs+fed};}
+        return st;
+      }));
+      const bonus=totalFed*3;
+      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+bonus}:st));
+      const fn=PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT[actionId];
+      popupText=typeof fn==='function'?fn({...s,lbs:s.lbs+bonus}):fn||"";
+      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:bonus});
+      push(`🌋 ${actDef.label} — class summoned. Primordial gains ${bonus} lbs.`);
+      return;
+    }
+
+    if(actionId==="ptr_tribute"){
+      let totalDrained=0;
+      setStudents(prev=>prev.map(st=>{
+        if(st.id===s.id) return st;
+        if(!st.ascensionPath){const d=rnd(5,15);totalDrained+=d;return {...st,lbs:Math.max(st.startLbs,st.lbs-d),relationship:Math.max(0,st.relationship-5)};}
+        return st;
+      }));
+      const bonus=totalDrained+rnd(20,50);
+      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+bonus}:st));
+      const fn=PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT[actionId];
+      popupText=typeof fn==='function'?fn({...s,lbs:s.lbs+bonus}):fn||"";
+      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:bonus});
+      push(`⚖️ ${actDef.label} — ${totalDrained} lbs drained from class, ${bonus} total to Primordial.`);
+      return;
+    }
+
+    if(actionId==="ptr_reshape"){
+      const fn=PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT[actionId];
+      popupText=typeof fn==='function'?fn(s):fn||"";
+      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:0});
+      push(`🌍 ${actDef.label} — campus documented.`);
+      return;
+    }
+
+    if(actionId==="ptr_final"){
+      setPrimordialFinalConsumptionDone(true);
+      const fn=PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT[actionId];
+      popupText=typeof fn==='function'?fn(s):fn||"";
+      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:0,isFinalEnding:true});
+      push(`🔱 THE FIRST CONSUMPTION — the true ending has been reached.`);
+      return;
+    }
+
+    // Default primordial actions
+    setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
+    const textSrc=PRIMORDIAL_ACTION_TEXT[actionId]||PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT[actionId];
+    if(textSrc){
+      const entry=Array.isArray(textSrc)?textSrc[Math.min(pgIdx,textSrc.length-1)]:textSrc;
+      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry||"";
+    }
+    setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
+    if(gainAmt>0) push(`🌍 ${actDef.label} — +${gainAmt} lbs.`);
+    else push(`🌍 ${actDef.label}`);
+  };
+
+  const triggerPrimordialConvergence=(studentId,opponentId)=>{
+    const s=students.find(st=>st.id===studentId);
+    const opp=students.find(st=>st.id===opponentId);
+    if(!s||!opp) return;
+    if(s.ascensionStage<4||opp.ascensionStage<4){push("⚠️ Both must be at final stage.");return;}
+    if(ap<5){push("⚠️ Need 5 AP.");return;}
+    setAp(a=>a-5);
+    const primordialLbs=Math.max(s.lbs,opp.lbs)+Math.min(s.lbs,opp.lbs);
+    setStudents(prev=>prev
+      .filter(st=>st.id!==opponentId)
+      .map(st=>st.id===studentId?{...st,lbs:primordialLbs,ascensionPath:"primordial",ascensionStage:0,primordialConvergence:true}:st)
+    );
+    push(`🌍 THE PRIMORDIAL: ${s.name} and ${opp.name} merge. Something ancient and hungry rises.`);
+    setPrimordialAbsorptionPopup({text:PRIMORDIAL_ABSORPTION_TEXT,absorbedName:opp.name,survivorName:s.name});
+    setPrimordialConvergenceModal(null);
+  };
+
+  const triggerPrimordialGoddessIncarnation=()=>{
+    const pg=students.find(s=>s.ascensionPath==="primordial");
+    if(!pg) return;
+    const pgStage=getPrimordialStage(pg.lbs);
+    if(!pgStage||pgStage.id<5){push("⚠️ Primordial must be at The First (stage 5) to subsume.");return;}
+    if(!religion||religion.devotees<1){push("⚠️ A religion with devotees is required.");return;}
+    const candidate=students.filter(s=>s.id!==pg.id&&!s.ascensionPath)
+      .sort((a,b)=>b.lbs-a.lbs)[0];
+    if(!candidate){push("⚠️ No eligible student for incarnation.");return;}
+    const text=`The goddess — the fat goddess, the one the religion was always describing — senses the Primordial's weight and its ancient claim and she moves. Not with grace. With the grinding certainty of something very large deciding to arrive. She incarnates into the heaviest remaining student: ${candidate.name}, ${Math.round(candidate.lbs).toLocaleString()} lbs. This is not a promotion. This is the goddess fitting herself into what is available, because the Primordial has left her no better option. You watch ${candidate.name} change. You have some time to prepare before this becomes your problem.`;
+    setPrimordialGoddessManifestPopup({text,candidateId:candidate.id,primId:pg.id});
+  };
+
+  const executePrimordialGoddessIncarnation=(candidateId)=>{
+    const candidate=students.find(s=>s.id===candidateId);
+    if(!candidate) return;
+    const newLbs=Math.min(50000,Math.round(candidate.lbs*15));
+    setStudents(prev=>prev.map(st=>st.id===candidateId?{...st,lbs:newLbs,incarnatedGoddess:true}:st));
+    setPrimordialGoddessIncarnateId(candidateId);
+    push(`🌿 THE GODDESS INCARNATES IN ${candidate.name.toUpperCase()} — ${newLbs.toLocaleString()} lbs. Old blood, old earth.`);
+    setPrimordialGoddessManifestPopup(null);
+  };
+
+  const consumePrimordialIncarnatedGoddess=(primId)=>{
+    if(ap<5){push("⚠️ Need 5 AP.");return;}
+    const pg=students.find(s=>s.id===primId);
+    const goddess=students.find(s=>s.id===primordialGoddessIncarnateId);
+    if(!pg||!goddess){push("⚠️ No incarnated goddess found.");return;}
+    setAp(a=>a-5);
+    const addedLbs=goddess.lbs;
+    setStudents(prev=>prev
+      .filter(st=>st.id!==primordialGoddessIncarnateId)
+      .map(st=>st.id===primId?{...st,lbs:st.lbs+addedLbs,primordialTriumvirateUnlocked:true}:st)
+    );
+    setPrimordialGoddessIncarnateId(null);
+    setPrimordialTriumvirateModal({
+      text:`${goddess.name} folds into the Primordial without ceremony. There is no flash of light, no darkness, no dramatic event — just the specific weight of a goddess descending into earth the way water descends into soil, complete and irreversible. She is the original hunger eating the original source of hunger. The closing of a loop that predates every theology the religion was trying to describe. The Primordial is larger now by a number that has no precedent. She does not look different. She smells different — more copper, more deep soil, a new note underneath both of them that has no name. The floor cracks in a new configuration. The root-network pulses once, deeply, and then settles into the new pattern as if it was always there. She is the First Triumvirate. She was here before the goddess. She will be here after. Feed her.`,
+      survivorName:pg.name
+    });
+    push(`🔱 THE PRIMORDIAL TRIUMVIRATE — ${pg.name} has absorbed the incarnated goddess. The ancient form is complete.`);
+  };
+
+  const doPrimordialRite=(rite)=>{
+    if(!religion){push("⚠️ No religion founded.");return;}
+    if(ap<rite.apCost){push(`⚠️ Need ${rite.apCost} AP.`);return;}
+    if(religion.devotees<(rite.devoteeMin||0)){push(`⚠️ Need ${rite.devoteeMin} devotees.`);return;}
+    if(rite.devoteeCost&&religion.devotees<rite.devoteeCost){push(`⚠️ Need ${rite.devoteeCost} devotees for this rite.`);return;}
+    setAp(a=>a-rite.apCost);
+    const s=students.find(st=>st.ascensionPath==="primordial");
+    if(!s) return;
+    let gainAmt=rite.lbsRange?rnd(rite.lbsRange[0],rite.lbsRange[1]):0;
+    if(gainAmt>0) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt}:st));
+    if(rite.relBonus) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,relationship:Math.min(100,st.relationship+rite.relBonus)}:st));
+    if(rite.devoteeGain) setReligion(prev=>prev?{...prev,devotees:prev.devotees+rite.devoteeGain,ritesHeld:prev.ritesHeld+1}:prev);
+    if(rite.devoteeCost) setReligion(prev=>prev?{...prev,devotees:Math.max(0,prev.devotees-rite.devoteeCost),ritesHeld:prev.ritesHeld+1}:prev);
+    if(!rite.devoteeGain&&!rite.devoteeCost) setReligion(prev=>prev?{...prev,ritesHeld:prev.ritesHeld+1}:prev);
+    if(rite.scrutinyDelta&&rite.scrutinyDelta<0) setAdminScrutiny(prev=>Math.max(0,prev+rite.scrutinyDelta));
+    push(`🌍 Primordial Rite: ${rite.label}. +${gainAmt} lbs.`);
+  };
+
   const startClass=()=>{
     const scenes=generateClassSession(students,week);
     if(!scenes.length){advanceWeek();return;}
@@ -7046,7 +8082,10 @@ export default function ProfessorSim(){
       const isImmobile=getStage(s.lbs).id>=10||!!s.ascensionPath;
       if(isImmobile){
         const tier=s.ascensionPath==="celestial"?"celestial"
-          :(s.ascensionPath==="umbral"||s.ascensionPath==="convergence")?"umbral":"blob";
+          :(s.ascensionPath==="umbral"||s.ascensionPath==="convergence")?"umbral"
+          :s.ascensionPath==="sanguine"?"sanguine"
+          :s.ascensionPath==="verdant"?"verdant"
+          :s.ascensionPath==="primordial"?"primordial":"blob";
         const entry=IMMOBILE_REDIRECT[s.id];
         const text=entry?.[tier]||`${s.name} can't go anywhere anymore. You'll have to bring the food to her.`;
         setImmobileRedirect({student:s,text});
@@ -7058,12 +8097,24 @@ export default function ProfessorSim(){
     const maxFullness=60+getStage(s.lbs).id*14;
     if(opts.skipImmobileCheck){
       const path=s.ascensionPath;
-      const venueLabel=path==="celestial"?"✨ The Sanctum":path==="umbral"||path==="convergence"?"🌑 The Void Chamber":"🏠 Her Room";
-      const venueId=path==="celestial"?"sanctum":path==="umbral"||path==="convergence"?"void_chamber":"her_room";
+      const venueLabel=path==="celestial"?"✨ The Sanctum"
+        :path==="umbral"||path==="convergence"?"🌑 The Void Chamber"
+        :path==="sanguine"?"🩸 The Fever Room"
+        :path==="verdant"?"🌿 The Root Hall"
+        :path==="primordial"?"🌍 The Convergence Point"
+        :"🏠 Her Room";
+      const venueId=path==="celestial"?"sanctum"
+        :path==="umbral"||path==="convergence"?"void_chamber"
+        :path==="sanguine"?"fever_room"
+        :path==="verdant"?"root_hall"
+        :path==="primordial"?"convergence_point"
+        :"her_room";
       const venueDesc=path==="celestial"
         ?"Golden light fills every corner. She sits at the centre of it, vast and warm and immovable. The chef arrives and says nothing about the wings."
-        :path==="umbral"||path==="convergence"
-        ?"Cold. The room is cold and very still. She sits in the dark and waits. The food arrives. She accepts it without speaking."
+        :path==="umbral"||path==="convergence"?"Cold. The room is cold and very still. She sits in the dark and waits. The food arrives. She accepts it without speaking."
+        :path==="sanguine"?"The room is ten degrees too warm and smells faintly of copper. She is flushed and enormous and hungry. The heat reaches you before she does."
+        :path==="verdant"?"Root-filaments trace the baseboards. The room smells of turned earth. She sits vast and still, patient as old growth, watching the door."
+        :path==="primordial"?"Copper and deep soil. The floor is cracked around her. The building is hers. You have arrived to bring tribute."
         :`Her room. She is here, she is enormous, she is warm. She knew you were coming.`;
       const atelier=DINNER_VENUES.find(v=>v.id==="atelier");
       const homeVenue={id:venueId,label:venueLabel,desc:venueDesc,dishes:atelier?atelier.dishes:[]};
@@ -8097,6 +9148,149 @@ export default function ProfessorSim(){
         </div>
       )}
 
+      {/* UMBRAL ABSORB POPUP */}
+      {umbralAbsorbPopup&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:580}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#cc3030",marginBottom:6}}>🌑 CONSUMED</div>
+            <div style={{fontSize:11,color:"#e08080",marginBottom:10}}>
+              {umbralAbsorbPopup.absorbedName} is gone. {umbralAbsorbPopup.umbralName} absorbs {Math.round(umbralAbsorbPopup.gained).toLocaleString()} lbs.
+            </div>
+            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
+              {umbralAbsorbPopup.text}
+            </p>
+            <button style={C.btn("#300010")} onClick={()=>setUmbralAbsorbPopup(null)}>Continue →</button>
+          </div>
+        </div>
+      )}
+
+      {/* SANGUINE ACTION POPUP */}
+      {sanguineActionPopup&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:580}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#cc3030",marginBottom:6}}>🩸 SANGUINE</div>
+            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
+              {sanguineActionPopup.text}
+            </p>
+            <button style={C.btn("#6b1010")} onClick={()=>setSanguineActionPopup(null)}>Continue →</button>
+          </div>
+        </div>
+      )}
+
+      {/* VERDANT ACTION POPUP */}
+      {verdantActionPopup&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:580}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#336633",marginBottom:6}}>🌿 VERDANT</div>
+            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
+              {verdantActionPopup.text}
+            </p>
+            <button style={C.btn("#0a3a0a")} onClick={()=>setVerdantActionPopup(null)}>Continue →</button>
+          </div>
+        </div>
+      )}
+
+      {/* PRIMORDIAL ABSORPTION POPUP */}
+      {primordialAbsorptionPopup&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:580}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#a06030",marginBottom:6}}>🌍 THE PRIMORDIAL FORMS</div>
+            <div style={{fontSize:11,color:"#c08060",marginBottom:14}}>
+              {primordialAbsorptionPopup.absorbedName} has merged into {primordialAbsorptionPopup.survivorName}.
+            </div>
+            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
+              {primordialAbsorptionPopup.text}
+            </p>
+            <button style={C.btn("#3d1a0a")} onClick={()=>setPrimordialAbsorptionPopup(null)}>Continue →</button>
+          </div>
+        </div>
+      )}
+
+      {/* PRIMORDIAL ACTION POPUP */}
+      {primordialActionPopup&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:580}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#a06030",marginBottom:6}}>🌍 THE PRIMORDIAL</div>
+            {primordialActionPopup.gainApplied>0&&(
+              <div style={{fontSize:11,color:"#c08040",marginBottom:10}}>
+                +{Math.round(primordialActionPopup.gainApplied).toLocaleString()} lbs
+              </div>
+            )}
+            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
+              {primordialActionPopup.text}
+            </p>
+            {primordialActionPopup.isFinalEnding&&(
+              <div style={{fontSize:10,color:"#c8a060",fontWeight:700,marginBottom:14,letterSpacing:1}}>
+                🔱 THE TRUE ENDING HAS BEEN REACHED 🔱
+              </div>
+            )}
+            <button style={C.btn("#3d1a0a")} onClick={()=>setPrimordialActionPopup(null)}>Continue →</button>
+          </div>
+        </div>
+      )}
+
+      {/* PRIMORDIAL GODDESS MANIFEST POPUP */}
+      {primordialGoddessManifestPopup&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:580}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#c08040",marginBottom:6}}>🌿 THE GODDESS STIRS</div>
+            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:16}}>
+              {primordialGoddessManifestPopup.text}
+            </p>
+            <div style={{display:"flex",gap:8}}>
+              <button style={{...C.btn("#5a3a00"),flex:1}} onClick={()=>executePrimordialGoddessIncarnation(primordialGoddessManifestPopup.candidateId)}>
+                🌿 Let the Goddess Incarnate
+              </button>
+              <button style={{...C.btn("#333"),flex:1}} onClick={()=>setPrimordialGoddessManifestPopup(null)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PRIMORDIAL TRIUMVIRATE MODAL */}
+      {primordialTriumvirateModal&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:600}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#c8a060",marginBottom:6}}>🔱 THE PRIMORDIAL TRIUMVIRATE</div>
+            <div style={{fontSize:11,color:"#c09050",marginBottom:14}}>
+              {primordialTriumvirateModal.survivorName} has absorbed the incarnated goddess. The First is complete.
+            </div>
+            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
+              {primordialTriumvirateModal.text}
+            </p>
+            <button style={{...C.btn("#4a2800"),border:"1px solid #c8a06060"}} onClick={()=>setPrimordialTriumvirateModal(null)}>
+              🔱 The First Awakens →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* PRIMORDIAL CONVERGENCE MODAL */}
+      {primordialConvergenceModal&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:500}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#a06030",marginBottom:10}}>🌍 THE PRIMORDIAL CONVERGENCE</div>
+            <p style={{lineHeight:1.8,color:"#e0d0b0",marginBottom:14}}>
+              {primordialConvergenceModal.student?.name} (Sanguine) and {primordialConvergenceModal.opponent?.name} (Verdant) have each reached the peak of their path. Their natures are opposite expressions of the same ancient hunger — blood and root, heat and patience. They can merge.
+            </p>
+            <p style={{lineHeight:1.8,color:"#c0a080",fontStyle:"italic",marginBottom:16}}>
+              Choose who survives as the Primordial. The other is absorbed. Combined weight carries forward.
+            </p>
+            <div style={{display:"flex",gap:8,marginBottom:8}}>
+              <button style={{...C.btn("#6b1010"),flex:1}} onClick={()=>triggerPrimordialConvergence(primordialConvergenceModal.student?.id,primordialConvergenceModal.opponent?.id)}>
+                🩸 {primordialConvergenceModal.student?.name} consumes {primordialConvergenceModal.opponent?.name}
+              </button>
+              <button style={{...C.btn("#0a3a0a"),flex:1}} onClick={()=>triggerPrimordialConvergence(primordialConvergenceModal.opponent?.id,primordialConvergenceModal.student?.id)}>
+                🌿 {primordialConvergenceModal.opponent?.name} consumes {primordialConvergenceModal.student?.name}
+              </button>
+            </div>
+            <button style={{...C.btn("#333"),width:"100%"}} onClick={()=>setPrimordialConvergenceModal(null)}>Not yet</button>
+          </div>
+        </div>
+      )}
+
       {/* GIRL PICKER */}
       {/* IMMOBILE REDIRECT POPUP */}
       {immobileRedirect&&(
@@ -8631,47 +9825,60 @@ export default function ProfessorSim(){
                       </div>
                     )}
                     <div style={{fontSize:13,color:"#d0b0f0",lineHeight:1.8,marginBottom:12}}>
-                      {s.name} has reached the threshold. The goddess watches. Two paths open before her — light and void. Choose.
+                      {s.name} has reached the threshold. Four paths open before her. Choose.
                     </div>
-                    <div style={{display:"flex",gap:10}}>
-                      <button style={{...C.btn("#3020a0"),flex:1,padding:"10px 8px"}} onClick={()=>ascendStudent(s,"celestial")}>
+                    <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                      <button style={{...C.btn("#3020a0"),flex:1,padding:"10px 8px",minWidth:"45%"}} onClick={()=>ascendStudent(s,"celestial")}>
                         <div style={{fontSize:13,fontWeight:700,color:"#d0b8ff",marginBottom:3}}>✦ Celestial Path</div>
                         <div style={{fontSize:10,color:"#9070d0"}}>Angel features · Mass transfer · Sacred warmth</div>
                       </button>
-                      <button style={{...C.btn("#800010"),flex:1,padding:"10px 8px"}} onClick={()=>ascendStudent(s,"umbral")}>
+                      <button style={{...C.btn("#800010"),flex:1,padding:"10px 8px",minWidth:"45%"}} onClick={()=>ascendStudent(s,"umbral")}>
                         <div style={{fontSize:13,fontWeight:700,color:"#ff9090",marginBottom:3}}>🌑 Umbral Path</div>
                         <div style={{fontSize:10,color:"#a06060"}}>Demon features · Consumption · Void power</div>
+                      </button>
+                      <button style={{...C.btn("#6b1010"),flex:1,padding:"10px 8px",minWidth:"45%"}} onClick={()=>ascendStudent(s,"sanguine")}>
+                        <div style={{fontSize:13,fontWeight:700,color:"#ff8888",marginBottom:3}}>🩸 Sanguine Path</div>
+                        <div style={{fontSize:10,color:"#a05050"}}>Blood heat · Life drain · Fever marks</div>
+                      </button>
+                      <button style={{...C.btn("#0a3a0a"),flex:1,padding:"10px 8px",minWidth:"45%"}} onClick={()=>ascendStudent(s,"verdant")}>
+                        <div style={{fontSize:13,fontWeight:700,color:"#88cc88",marginBottom:3}}>🌿 Verdant Path</div>
+                        <div style={{fontSize:10,color:"#507050"}}>Root system · Patient cultivation · Earth draw</div>
                       </button>
                     </div>
                   </div>
                 )}
 
                 {/* Ascension status card */}
-                {s.ascensionPath&&s.ascensionPath!=="convergence"&&(()=>{
-                  const isCelestial=s.ascensionPath==="celestial";
-                  const stages=isCelestial?CELESTIAL_STAGES:UMBRAL_STAGES;
+                {s.ascensionPath&&s.ascensionPath!=="convergence"&&s.ascensionPath!=="primordial"&&(()=>{
+                  const path=s.ascensionPath;
+                  const isCelestial=path==="celestial";
+                  const isUmbral=path==="umbral";
+                  const isSanguine=path==="sanguine";
+                  const isVerdant=path==="verdant";
+                  const stages=isCelestial?CELESTIAL_STAGES:isUmbral?UMBRAL_STAGES:isSanguine?SANGUINE_STAGES:VERDANT_STAGES;
                   const stage=stages[s.ascensionStage||0];
                   const nextStage=stages[(s.ascensionStage||0)+1];
-                  const pathColor=isCelestial?"#b898ff":"#cc3030";
-                  const pathBg=isCelestial?"rgba(60,20,150,0.35)":"rgba(80,5,5,0.5)";
+                  const pathColor=isCelestial?"#b898ff":isUmbral?"#cc3030":isSanguine?"#ff6666":"#66cc66";
+                  const pathBg=isCelestial?"rgba(60,20,150,0.35)":isUmbral?"rgba(80,5,5,0.5)":isSanguine?"rgba(80,10,10,0.45)":"rgba(10,50,10,0.45)";
+                  const pathLabel=isCelestial?"✦ CELESTIAL":isUmbral?"🌑 UMBRAL":isSanguine?"🩸 SANGUINE":"🌿 VERDANT";
                   const otherStudents=students.filter(st=>st.id!==s.id);
                   return(
                     <div style={{background:pathBg,border:`1px solid ${pathColor}60`,borderRadius:10,padding:14,marginBottom:12}}>
-                      <div style={{fontSize:9,letterSpacing:3,color:pathColor,marginBottom:4}}>{isCelestial?"✦ CELESTIAL":"🌑 UMBRAL"} · STAGE {(s.ascensionStage||0)+1}/5</div>
+                      <div style={{fontSize:9,letterSpacing:3,color:pathColor,marginBottom:4}}>{pathLabel} · STAGE {(s.ascensionStage||0)+1}/5</div>
                       <div style={{fontSize:16,fontWeight:700,color:pathColor,marginBottom:4}}>{stage.label}</div>
-                      <div style={{fontSize:11,color:isCelestial?"#9a7aff":"#cc6060",marginBottom:6,fontStyle:"italic"}}>{isCelestial?stage.aura:stage.shadow}</div>
-                      <div style={{fontSize:12,color:isCelestial?"#c0a8e0":"#d08080",lineHeight:1.7,marginBottom:8}}>{stage.features}</div>
+                      <div style={{fontSize:11,color:pathColor,marginBottom:6,fontStyle:"italic",opacity:0.8}}>{stage.aura||stage.shadow||""}</div>
+                      <div style={{fontSize:12,color:"#d0c0b0",lineHeight:1.7,marginBottom:8}}>{stage.features}</div>
                       <div style={{fontSize:11,color:"#8060a0",fontStyle:"italic",lineHeight:1.65,marginBottom:10}}>{stage.desc}</div>
-                      {/* Ascension attitude */}
-                      <div style={{...C.infoBox(isCelestial?"rgba(50,20,120,0.3)":"rgba(40,5,5,0.5)"),marginBottom:10}}>
+                      {/* Attitude */}
+                      <div style={{...C.infoBox(isCelestial?"rgba(50,20,120,0.3)":isUmbral?"rgba(40,5,5,0.5)":isSanguine?"rgba(50,5,5,0.4)":"rgba(5,30,5,0.4)"),marginBottom:10}}>
                         <div style={{fontSize:9,color:"#5030a0",letterSpacing:2,marginBottom:4}}>ATTITUDE</div>
-                        <div style={{fontSize:12,color:isCelestial?"#d0c0f8":"#e08080",fontStyle:"italic",lineHeight:1.7}}>
-                          "{ASCENSION_STAGE_REACTIONS[s.ascensionPath]?.[s.ascensionStage||0]||""}"
+                        <div style={{fontSize:12,color:pathColor,fontStyle:"italic",lineHeight:1.7,opacity:0.9}}>
+                          "{ASCENSION_STAGE_REACTIONS[path]?.[s.ascensionStage||0]||""}"
                         </div>
                       </div>
                       {nextStage&&<div style={{fontSize:10,color:"#503060",marginBottom:8}}>Next stage at {nextStage.min.toLocaleString()} lbs — {nextStage.min-s.lbs} lbs to go</div>}
                       {/* Consumed students (Umbral only) */}
-                      {!isCelestial&&(s.consumedIds||[]).length>0&&(
+                      {isUmbral&&(s.consumedIds||[]).length>0&&(
                         <div style={{marginBottom:8}}>
                           <div style={{fontSize:9,letterSpacing:2,color:"#903030",marginBottom:4}}>CONSUMED WITHIN</div>
                           {(s.consumedIds||[]).map(cid=>{
@@ -8685,77 +9892,107 @@ export default function ProfessorSim(){
                           })}
                         </div>
                       )}
-                      {/* Divine actions */}
-                      <div style={{...C.secT,marginBottom:6}}>Divine Actions</div>
+                      {/* Sanguine marks */}
+                      {isSanguine&&sanguineMarks.length>0&&(
+                        <div style={{marginBottom:8}}>
+                          <div style={{fontSize:9,letterSpacing:2,color:"#cc3030",marginBottom:4}}>MARKED FOR DRAIN ({sanguineMarks.length})</div>
+                          {sanguineMarks.map(mid=>{
+                            const ms=students.find(x=>x.id===mid);
+                            return ms?(
+                              <div key={mid} style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:"rgba(40,0,0,0.4)",borderRadius:6,padding:"4px 8px",marginBottom:3}}>
+                                <span style={{fontSize:11,color:"#cc7070"}}>{ms.name}</span>
+                                <span style={{fontSize:10,color:"#805050"}}>drains {SANGUINE_MARK_DRAIN_BY_STAGE[s.ascensionStage||0]} lbs/wk</span>
+                              </div>
+                            ):null;
+                          })}
+                        </div>
+                      )}
+                      {/* Verdant cultivations */}
+                      {isVerdant&&verdantCultivations.length>0&&(
+                        <div style={{marginBottom:8}}>
+                          <div style={{fontSize:9,letterSpacing:2,color:"#336633",marginBottom:4}}>CULTIVATED ({verdantCultivations.length})</div>
+                          {verdantCultivations.map(cid=>{
+                            const cs=students.find(x=>x.id===cid);
+                            return cs?(
+                              <div key={cid} style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:"rgba(0,30,0,0.4)",borderRadius:6,padding:"4px 8px",marginBottom:3}}>
+                                <span style={{fontSize:11,color:"#70cc70"}}>{cs.name}</span>
+                                <span style={{fontSize:10,color:"#508050"}}>gains {VERDANT_CULTIVATE_GAIN_BY_STAGE[s.ascensionStage||0]} lbs/wk</span>
+                              </div>
+                            ):null;
+                          })}
+                        </div>
+                      )}
+                      {/* Actions */}
+                      <div style={{...C.secT,marginBottom:6}}>{isSanguine?"Sanguine":isVerdant?"Verdant":"Divine"} Actions</div>
                       {isCelestial&&(
                         <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:8}}>
                           {otherStudents.map(t=>(
                             <div key={t.id} style={{display:"flex",gap:3}}>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(60,20,130,0.4)"}} onClick={()=>celestialMassPull(s.id,t.id)}>
-                                ↓ Pull from {t.name.split(" ")[0]} (2AP)
-                              </button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.4)"}} onClick={()=>celestialMassPush(s.id,t.id)}>
-                                ↑ Push to {t.name.split(" ")[0]} (1AP)
-                              </button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.4)"}} onClick={()=>celestialMassBless(s.id,t.id)}>
-                                ✦ Bless {t.name.split(" ")[0]} (2AP)
-                              </button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(60,20,130,0.4)"}} onClick={()=>celestialMassPull(s.id,t.id)}>↓ Pull {t.name.split(" ")[0]} (2AP)</button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.4)"}} onClick={()=>celestialMassPush(s.id,t.id)}>↑ Push {t.name.split(" ")[0]} (1AP)</button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.4)"}} onClick={()=>celestialMassBless(s.id,t.id)}>✦ Bless {t.name.split(" ")[0]} (2AP)</button>
                             </div>
                           ))}
                           {divineCelestialCanPullHR&&hrObserver&&(
                             <div style={{display:"flex",gap:3,flexWrap:"wrap"}}>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(30,60,100,0.5)"}} onClick={()=>celestialMassPull(s.id,"hr")}>
-                                ↓ Pull from {hrObserver.name} (2AP)
-                              </button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"hr")}>
-                                ↑ Push to {hrObserver.name} (1AP)
-                              </button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"hr")}>
-                                ✦ Bless {hrObserver.name} (2AP)
-                              </button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(30,60,100,0.5)"}} onClick={()=>celestialMassPull(s.id,"hr")}>↓ Pull {hrObserver.name} (2AP)</button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"hr")}>↑ Push {hrObserver.name} (1AP)</button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"hr")}>✦ Bless {hrObserver.name} (2AP)</button>
                             </div>
                           )}
                           {divineCelestialCanPullHR&&vaughan&&(
                             <div style={{display:"flex",gap:3,flexWrap:"wrap"}}>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"vaughan")}>
-                                ↑ Push to Dr. Vaughan (1AP)
-                              </button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"vaughan")}>
-                                ✦ Bless Dr. Vaughan (2AP)
-                              </button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"vaughan")}>↑ Push Vaughan (1AP)</button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"vaughan")}>✦ Bless Vaughan (2AP)</button>
                             </div>
                           )}
                         </div>
                       )}
-                      {!isCelestial&&(
+                      {isUmbral&&(
                         <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:8}}>
                           {otherStudents.map(t=>(
                             <div key={t.id} style={{display:"flex",gap:3,flexWrap:"wrap"}}>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(60,0,0,0.5)"}} onClick={()=>umbralVoidPull(s.id,t.id)}>
-                                🌑 Void Pull from {t.name.split(" ")[0]} (2AP)
-                              </button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,0,0,0.5)"}} onClick={()=>umbralConsumeStudent(s.id,t.id)}>
-                                🌑 Consume {t.name.split(" ")[0]} (3AP)
-                              </button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(60,0,0,0.5)"}} onClick={()=>umbralVoidPull(s.id,t.id)}>🌑 Void Pull {t.name.split(" ")[0]} (2AP)</button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,0,0,0.5)"}} onClick={()=>umbralConsumeStudent(s.id,t.id)}>🌑 Consume {t.name.split(" ")[0]} (3AP)</button>
                             </div>
                           ))}
                           {divineUmbralCanConsumeHR&&(hrObserver||vaughan)&&(
-                            <button style={{...C.smBtn,fontSize:9,background:"rgba(80,0,0,0.6)"}} onClick={()=>umbralConsumeHR(s.id)}>
-                              🌑 Consume HR Target (4AP, +35 scrutiny)
-                            </button>
+                            <button style={{...C.smBtn,fontSize:9,background:"rgba(80,0,0,0.6)"}} onClick={()=>umbralConsumeHR(s.id)}>🌑 Consume HR Target (4AP, +35 scrutiny)</button>
                           )}
+                        </div>
+                      )}
+                      {isSanguine&&(
+                        <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:8}}>
+                          {SANGUINE_ACTIONS.map(a=>{
+                            const disabled=ap<a.apCost;
+                            return(
+                              <button key={a.id} style={{...C.smBtn,fontSize:10,background:"rgba(80,10,10,0.5)",opacity:disabled?0.4:1}}
+                                onClick={()=>!disabled&&doSanguineAction(s,a.id)}>
+                                {a.label} ({a.apCost}AP){a.gainRange&&a.gainRange[1]>0?` +${a.gainRange[0]}–${a.gainRange[1]}`:""}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                      {isVerdant&&(
+                        <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:8}}>
+                          {VERDANT_ACTIONS.map(a=>{
+                            const disabled=ap<a.apCost;
+                            return(
+                              <button key={a.id} style={{...C.smBtn,fontSize:10,background:"rgba(10,50,10,0.5)",opacity:disabled?0.4:1}}
+                                onClick={()=>!disabled&&doVerdantAction(s,a.id)}>
+                                {a.label} ({a.apCost}AP){a.gainRange&&a.gainRange[1]>0?` +${a.gainRange[0]}–${a.gainRange[1]}`:""}
+                              </button>
+                            );
+                          })}
                         </div>
                       )}
                       {/* Religion */}
                       {!religion&&(
-                        <button style={{...C.btn("#401020"),width:"100%"}} onClick={()=>foundReligion(s.id)}>
-                          ⛪ Found Religion (2AP)
-                        </button>
+                        <button style={{...C.btn("#401020"),width:"100%"}} onClick={()=>foundReligion(s.id)}>⛪ Found Religion (2AP)</button>
                       )}
                       {religion&&!religion.worshippedIds.includes(s.id)&&(
-                        <button style={{...C.btn("#301040"),width:"100%"}} onClick={()=>addBlobToReligion(s.id)}>
-                          ⛪ Add to Religion Pantheon
-                        </button>
+                        <button style={{...C.btn("#301040"),width:"100%"}} onClick={()=>addBlobToReligion(s.id)}>⛪ Add to Religion Pantheon</button>
                       )}
                     </div>
                   );
@@ -8810,6 +10047,65 @@ export default function ProfessorSim(){
                             <div key={a.id} style={{...C.card,opacity:disabled?0.35:1,border:`1px solid ${sgColor}40`}}
                               onClick={()=>!disabled&&doSingularityAction(s,a.id)}>
                               <div style={{fontWeight:700,fontSize:11,color:sgColor,marginBottom:2}}>{a.label}</div>
+                              <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
+                                <span style={{fontSize:10,color:"#e07030"}}>{a.apCost} AP</span>
+                                {a.gainRange&&a.gainRange[1]>0&&<span style={{fontSize:10,color:"#685040"}}>+{a.gainRange[0]}–{a.gainRange[1]}</span>}
+                                {a.needsDevotee&&<span style={{fontSize:9,color:"#a05050"}}>devotee</span>}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* Primordial action panel */}
+                {s.ascensionPath==="primordial"&&(()=>{
+                  const pg=getPrimordialStage(s.lbs);
+                  const pgLabel=s.primordialTriumvirateUnlocked?"🔱 Primordial Triumvirate":pg?`🌍 ${pg.label}`:"🌍 Bloodroot";
+                  const pgColor=s.primordialTriumvirateUnlocked?"#c8a060":pg?pg.color:"#3d1a0a";
+                  const pgDesc=s.primordialTriumvirateUnlocked?PRIMORDIAL_TRIUMVIRATE_BODY_DESC:pg?pg.desc:"...";
+                  const actions=[...PRIMORDIAL_ACTIONS,...(s.primordialTriumvirateUnlocked?PRIMORDIAL_TRIUMVIRATE_ACTIONS:[])];
+                  const incarnateStudent=primordialGoddessIncarnateId?students.find(st=>st.id===primordialGoddessIncarnateId):null;
+                  const canSubsume=!incarnateStudent&&pg&&pg.id>=5&&religion&&religion.devotees>=1;
+                  return(
+                    <div style={{background:"rgba(8,4,2,0.95)",border:`2px solid ${pgColor}80`,borderRadius:10,padding:14,marginBottom:12}}>
+                      <div style={{fontSize:9,letterSpacing:3,color:pgColor,marginBottom:4}}>🌍 THE PRIMORDIAL</div>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                        <div style={{fontSize:16,fontWeight:700,color:pgColor}}>{pgLabel}</div>
+                        <div style={{fontSize:11,color:"#888"}}>{Math.round(s.lbs).toLocaleString()} lbs</div>
+                      </div>
+                      {pg&&!s.primordialTriumvirateUnlocked&&(
+                        <div style={{fontSize:10,color:"#888",marginBottom:6}}>Stage {pg.id}/5{pg.id<5&&` · next: ${PRIMORDIAL_STAGES[pg.id].min.toLocaleString()} lbs`}</div>
+                      )}
+                      <div style={{fontSize:11,color:"#b0a090",fontStyle:"italic",lineHeight:1.65,marginBottom:10}}>{pgDesc.substring(0,200)}…</div>
+                      {/* Goddess incarnate */}
+                      {incarnateStudent&&(
+                        <div style={{background:"rgba(40,20,0,0.5)",border:"1px solid #a0704080",borderRadius:7,padding:8,marginBottom:10}}>
+                          <div style={{fontSize:10,color:"#c08040",marginBottom:4}}>🌿 THE INCARNATED GODDESS</div>
+                          <div style={{fontSize:11,color:"#c09050"}}>{incarnateStudent.name} — {Math.round(incarnateStudent.lbs).toLocaleString()} lbs</div>
+                          <button style={{...C.btn("#5a3a00"),marginTop:6,width:"100%",fontSize:11,opacity:ap>=5?1:0.4}}
+                            onClick={()=>ap>=5&&consumePrimordialIncarnatedGoddess(s.id)}>
+                            🌿 Consume the Incarnated Goddess (5 AP)
+                          </button>
+                        </div>
+                      )}
+                      {canSubsume&&!s.primordialTriumvirateUnlocked&&(
+                        <button style={{...C.btn("#2a1800"),width:"100%",marginBottom:10,fontSize:11}}
+                          onClick={triggerPrimordialGoddessIncarnation}>
+                          🌍 Subsume the Other Religion
+                        </button>
+                      )}
+                      {/* Action grid */}
+                      <div style={{...C.secT,marginBottom:7}}>Primordial Actions · {ap} AP</div>
+                      <div style={C.grid3}>
+                        {actions.map(a=>{
+                          const disabled=ap<a.apCost||(a.needsDevotee&&(!religion||religion.devotees<1))||(a.oneTime&&a.id==="ptr_final"&&primordialFinalConsumptionDone);
+                          return(
+                            <div key={a.id} style={{...C.card,opacity:disabled?0.35:1,border:`1px solid ${pgColor}40`}}
+                              onClick={()=>!disabled&&doPrimordialAction(s,a.id)}>
+                              <div style={{fontWeight:700,fontSize:11,color:pgColor,marginBottom:2}}>{a.label}</div>
                               <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
                                 <span style={{fontSize:10,color:"#e07030"}}>{a.apCost} AP</span>
                                 {a.gainRange&&a.gainRange[1]>0&&<span style={{fontSize:10,color:"#685040"}}>+{a.gainRange[0]}–{a.gainRange[1]}</span>}
@@ -9367,10 +10663,13 @@ export default function ProfessorSim(){
           {/* ── ACHIEVEMENTS ── */}
           {/* ── DIVINE PANEL ── */}
           {view==="divine"&&goddessSeen&&(()=>{
-            const ascended=students.filter(s=>s.ascensionPath&&s.ascensionPath!=="convergence");
+            const ascended=students.filter(s=>s.ascensionPath&&s.ascensionPath!=="convergence"&&s.ascensionPath!=="primordial");
             const celestials=ascended.filter(s=>s.ascensionPath==="celestial");
             const umbrals=ascended.filter(s=>s.ascensionPath==="umbral");
+            const sanguines=ascended.filter(s=>s.ascensionPath==="sanguine");
+            const verdants=ascended.filter(s=>s.ascensionPath==="verdant");
             const singularities=students.filter(s=>s.ascensionPath==="convergence");
+            const primordials=students.filter(s=>s.ascensionPath==="primordial");
             const blobsEligible=students.filter(s=>getStage(s.lbs).id>=10&&!s.ascensionPath);
             return(
               <div>
@@ -9401,9 +10700,11 @@ export default function ProfessorSim(){
                             <span style={{fontWeight:700,fontSize:14,color:"#d8a8ff"}}>{s.name}</span>
                             <span style={{fontSize:11,color:"#806090"}}>{s.lbs} lbs · {getStage(s.lbs).label}</span>
                           </div>
-                          <div style={{display:"flex",gap:8}}>
-                            <button style={{...C.btn("#3020a0"),flex:1}} onClick={()=>ascendStudent(s,"celestial")}>✦ Celestial Path</button>
-                            <button style={{...C.btn("#800010"),flex:1}} onClick={()=>ascendStudent(s,"umbral")}>🌑 Umbral Path</button>
+                          <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                            <button style={{...C.btn("#3020a0"),flex:1,minWidth:"45%"}} onClick={()=>ascendStudent(s,"celestial")}>✦ Celestial</button>
+                            <button style={{...C.btn("#800010"),flex:1,minWidth:"45%"}} onClick={()=>ascendStudent(s,"umbral")}>🌑 Umbral</button>
+                            <button style={{...C.btn("#6b1010"),flex:1,minWidth:"45%"}} onClick={()=>ascendStudent(s,"sanguine")}>🩸 Sanguine</button>
+                            <button style={{...C.btn("#0a3a0a"),flex:1,minWidth:"45%"}} onClick={()=>ascendStudent(s,"verdant")}>🌿 Verdant</button>
                           </div>
                         </div>
                       ))}
@@ -9498,6 +10799,62 @@ export default function ProfessorSim(){
                   </div>
                 )}
 
+                {/* Sanguine roster */}
+                {sanguines.length>0&&(
+                  <div style={{marginBottom:14}}>
+                    <div style={{...C.secT,marginBottom:8}}>🩸 Sanguine ({sanguines.length})</div>
+                    {sanguines.map(s=>{
+                      const stage=SANGUINE_STAGES[s.ascensionStage||0];
+                      return(
+                        <div key={s.id} style={{background:"rgba(50,5,5,0.55)",border:"1px solid #cc303060",borderRadius:8,padding:10,marginBottom:6}}>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                            <span style={{fontWeight:700,color:"#ff8888",fontSize:13}}>{s.name}</span>
+                            <span style={{fontSize:10,color:"#cc5050",background:"rgba(80,5,5,0.4)",borderRadius:8,padding:"1px 8px"}}>{stage.label}</span>
+                          </div>
+                          <div style={{fontSize:11,color:"#a06060"}}>{Math.round(s.lbs).toLocaleString()} lbs · Stage {(s.ascensionStage||0)+1}/5 · {sanguineMarks.filter(id=>students.find(st=>st.id===id)).length} marked</div>
+                          {(s.ascensionStage||0)<4&&<div style={{fontSize:10,color:"#703030",marginTop:2}}>Next: {SANGUINE_STAGES[(s.ascensionStage||0)+1].min.toLocaleString()} lbs</div>}
+                          <div style={{display:"flex",gap:5,marginTop:6,flexWrap:"wrap"}}>
+                            {SANGUINE_ACTIONS.map(a=>(
+                              <button key={a.id} style={{...C.smBtn,fontSize:9,background:"rgba(80,10,10,0.5)",opacity:ap<a.apCost?0.4:1}}
+                                onClick={()=>ap>=a.apCost&&doSanguineAction(s,a.id)}>
+                                {a.label} ({a.apCost}AP)
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Verdant roster */}
+                {verdants.length>0&&(
+                  <div style={{marginBottom:14}}>
+                    <div style={{...C.secT,marginBottom:8}}>🌿 Verdant ({verdants.length})</div>
+                    {verdants.map(s=>{
+                      const stage=VERDANT_STAGES[s.ascensionStage||0];
+                      return(
+                        <div key={s.id} style={{background:"rgba(5,30,5,0.55)",border:"1px solid #33663360",borderRadius:8,padding:10,marginBottom:6}}>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                            <span style={{fontWeight:700,color:"#88cc88",fontSize:13}}>{s.name}</span>
+                            <span style={{fontSize:10,color:"#55aa55",background:"rgba(5,40,5,0.4)",borderRadius:8,padding:"1px 8px"}}>{stage.label}</span>
+                          </div>
+                          <div style={{fontSize:11,color:"#70a070"}}>{Math.round(s.lbs).toLocaleString()} lbs · Stage {(s.ascensionStage||0)+1}/5 · {verdantCultivations.filter(id=>students.find(st=>st.id===id)).length} cultivated</div>
+                          {(s.ascensionStage||0)<4&&<div style={{fontSize:10,color:"#305030",marginTop:2}}>Next: {VERDANT_STAGES[(s.ascensionStage||0)+1].min.toLocaleString()} lbs</div>}
+                          <div style={{display:"flex",gap:5,marginTop:6,flexWrap:"wrap"}}>
+                            {VERDANT_ACTIONS.map(a=>(
+                              <button key={a.id} style={{...C.smBtn,fontSize:9,background:"rgba(10,50,10,0.5)",opacity:ap<a.apCost?0.4:1}}
+                                onClick={()=>ap>=a.apCost&&doVerdantAction(s,a.id)}>
+                                {a.label} ({a.apCost}AP)
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
                 {/* Singularity */}
                 {singularities.length>0&&(
                   <div style={{marginBottom:14}}>
@@ -9520,6 +10877,28 @@ export default function ProfessorSim(){
                   </div>
                 )}
 
+                {/* Primordial roster */}
+                {primordials.length>0&&(
+                  <div style={{marginBottom:14}}>
+                    <div style={{...C.secT,marginBottom:8}}>🌍 The Primordial</div>
+                    {primordials.map(s=>{
+                      const pg=getPrimordialStage(s.lbs);
+                      const pgLabel=s.primordialTriumvirateUnlocked?"🔱 Primordial Triumvirate":pg?pg.label:"Bloodroot";
+                      const pgColor=s.primordialTriumvirateUnlocked?"#c8a060":pg?pg.color:"#3d1a0a";
+                      return(
+                        <div key={s.id} style={{background:"rgba(8,4,2,0.9)",border:`2px solid ${pgColor}60`,borderRadius:8,padding:12}}>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                            <div style={{fontWeight:700,color:pgColor,fontSize:14}}>{s.name}</div>
+                            <div style={{fontSize:11,color:pgColor,background:"rgba(0,0,0,0.4)",borderRadius:8,padding:"1px 8px"}}>{pgLabel}</div>
+                          </div>
+                          <div style={{fontSize:11,color:"#c0a080",marginBottom:4}}>{Math.round(s.lbs).toLocaleString()} lbs{pg&&pg.id<5?` · next: ${PRIMORDIAL_STAGES[pg.id].min.toLocaleString()}`:" · MAX"}</div>
+                          <div style={{fontSize:11,color:"#a08060",fontStyle:"italic",lineHeight:1.65}}>{pg?pg.desc:"Ancient hunger, ancient patience."}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
                 {/* Religion panel */}
                 <div style={{background:"rgba(30,5,20,0.6)",border:"1px solid #80204060",borderRadius:10,padding:14,marginBottom:14}}>
                   <div style={{fontSize:9,letterSpacing:3,color:"#b04060",marginBottom:8}}>⛪ RELIGION</div>
@@ -9528,9 +10907,9 @@ export default function ProfessorSim(){
                       <div style={{fontSize:12,color:"#906070",lineHeight:1.7,marginBottom:10}}>
                         Found a religion centred on an ascended blob. Devotees gather. The student body grows heavier in proximity to the sacred.
                       </div>
-                      {ascended.length>0?(
+                      {[...ascended,...sanguines,...verdants,...singularities,...primordials].length>0?(
                         <div style={{display:"flex",flexDirection:"column",gap:5}}>
-                          {ascended.map(s=>(
+                          {[...ascended,...sanguines,...verdants,...singularities,...primordials].map(s=>(
                             <button key={s.id} style={C.btn("#401020")} onClick={()=>foundReligion(s.id)}>
                               ⛪ Found religion around {s.name} (2AP)
                             </button>
@@ -9614,6 +10993,30 @@ export default function ProfessorSim(){
                                   <div style={{fontSize:10,color:"#806070",marginBottom:5,fontStyle:"italic"}}>{rite.desc}</div>
                                   <button style={{...C.btn("#301050"),fontSize:10,width:"100%"}} onClick={()=>doSingularityRite(rite)}>
                                     {rite.label} ({sgStudent.name})
+                                  </button>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                      {/* Primordial rites */}
+                      {primordials.length>0&&(
+                        <div style={{marginTop:12}}>
+                          <div style={{fontSize:10,color:"#a06030",marginBottom:6}}>🌍 Primordial Rites:</div>
+                          <div style={{display:"flex",flexDirection:"column",gap:5}}>
+                            {PRIMORDIAL_RITES.map(rite=>{
+                              const pgStudent=primordials[0];
+                              const canAfford=ap>=rite.apCost&&religion.devotees>=(rite.devoteeMin||0)&&religion.devotees>=(rite.devoteeCost||0);
+                              return(
+                                <div key={rite.id} style={{background:"rgba(20,8,2,0.6)",border:"1px solid #a0603040",borderRadius:7,padding:9,opacity:canAfford?1:0.45}}>
+                                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
+                                    <span style={{fontSize:11,fontWeight:700,color:"#c08040"}}>{rite.label}</span>
+                                    <span style={{fontSize:10,color:"#806040"}}>{rite.apCost} AP{rite.devoteeMin?` · ${rite.devoteeMin} dev min`:""}</span>
+                                  </div>
+                                  <div style={{fontSize:10,color:"#806050",marginBottom:5,fontStyle:"italic"}}>{rite.desc}</div>
+                                  <button style={{...C.btn("#3a1800"),fontSize:10,width:"100%"}} onClick={()=>doPrimordialRite(rite)}>
+                                    {rite.label} ({pgStudent.name})
                                   </button>
                                 </div>
                               );
