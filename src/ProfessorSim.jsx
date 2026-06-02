@@ -2109,7 +2109,165 @@ const SKILL_CATEGORIES = {
   social:      { label:"❤️ Social",      color:"#401030" },
   psychology:  { label:"🧠 Psychology",  color:"#205040" },
   prestige:    { label:"✨ Prestige",    color:"#504010" },
+  divine:      { label:"✦ Divine",       color:"#5a2020", hidden:true },
 };
+
+// ── ASCENSION PATHS ─────────────────────────────────────────────
+const CELESTIAL_STAGES = [
+  { id:0, label:"Celestial Seed",     min:820,  color:"#9a7aff",
+    aura:"A faint golden light pulses at her edges.",
+    features:"Her eyes have taken on a luminous quality. Small downy wing-stubs press through at her shoulder blades.",
+    desc:"Still immobile, but surrounded by impossible warmth. People are drawn to her without knowing why. The room smells faintly of honey and warm bread." },
+  { id:1, label:"Celestial Bloom",    min:1060, color:"#b898ff",
+    aura:"A soft halo of golden light surrounds her constantly.",
+    features:"Wings — small, impractical, breathtakingly soft — have fully emerged. Her skin carries a gentle inner luminescence.",
+    desc:"The room feels more peaceful when she occupies it. Her vast, soft form radiates genuine warmth and impossible light. Students seek her out to sit nearby." },
+  { id:2, label:"Celestial Radiance", min:1380, color:"#d0b8ff",
+    aura:"She glows. There is no other word.",
+    features:"Wings now span her width, each feather warm gold. Her hair lifts gently. Tears from her eyes become points of light before they fall.",
+    desc:"Faculty and students find reasons to pass her door. She doesn't understand why, and she never asks. The hallway outside her chamber is always warmer than it should be." },
+  { id:3, label:"Celestial Throne",   min:1760, color:"#e8d8ff",
+    aura:"A radius of deep warmth and stillness extends from her presence.",
+    features:"Her halo is solid luminous gold. Her wings fold around her like a living blanket of radiance. She breathes out light.",
+    desc:"She no longer needs to eat, but she does — enthusiastically, joyfully, reverently. Food tastes sacred in her presence. Students bring offerings without being asked." },
+  { id:4, label:"Celestial Apex",     min:2300, color:"#fff4ff",
+    aura:"Pure radiance — impossible to look at directly.",
+    features:"An angel made entirely of warm, abundant flesh. Her mass and her light are one. The goddess made vast, made luminous, made present.",
+    desc:"The embodiment of divine excess. Students worship at her feet. Her laughter sounds like bells. Her presence consecrates any room. She is the point of it all." },
+];
+
+const UMBRAL_STAGES = [
+  { id:0, label:"Umbral Seed",       min:820,  color:"#cc3030",
+    shadow:"A darkness pools at her edges, drinking in the light.",
+    features:"Her pupils have gone entirely black. Her nails have lengthened and sharpened. Her laugh, when it comes, sounds deeper than it used to.",
+    desc:"Her mass radiates cold despite her body's warmth. People look away without knowing why. She finds this useful." },
+  { id:1, label:"Umbral Rise",       min:1060, color:"#b02020",
+    shadow:"She dims the room simply by being near.",
+    features:"Small dark horns press through her hair. Her shadow falls wrong — too large, too still, reaching in impossible directions.",
+    desc:"She consumes. Everything, everyone, all excess — drawn in, absorbed, made part of her. She is becoming something vast and hungry." },
+  { id:2, label:"Umbral Presence",   min:1380, color:"#901010",
+    shadow:"She is the dark. The dark is her extension.",
+    features:"Wings of void span wide — black and lightless. Her voice resonates with a depth that shouldn't be physical. The air chills when she speaks.",
+    desc:"A consuming presence. Others feel lighter near her. They do not know why. She does." },
+  { id:3, label:"Umbral Dominion",   min:1760, color:"#700000",
+    shadow:"Reality shimmers and bends around her mass.",
+    features:"Her eyes are solid black. Void-wisps drift from her form. She smells of cold and something sweetly dark — burnt sugar and empty sky.",
+    desc:"Massive beyond measure. Consuming beyond appetite. Her hunger is cosmological in scope. The campus darkens fractionally each time she exhales." },
+  { id:4, label:"Umbral Sovereign",  min:2300, color:"#500000",
+    shadow:"She is an event horizon of flesh and void.",
+    features:"The physical and the void have merged entirely. She is darkness made vast, hunger made infinite, consumption made eternal.",
+    desc:"The end of lightness. Everything that comes near her grows heavy. Everything heavy, heavier still. The campus exists in her penumbra now." },
+];
+
+const CONVERGENCE_STAGE = {
+  label:"The Singularity", color:"#ffffff",
+  desc:"When the Umbral and the Celestial meet — one consuming, one absorbing — they do not cancel. They compound. The result has no name in any existing theology. Vast. Radiant. Consuming. Warm and cold simultaneously. Beyond any single path, beyond any single stage. The campus holds its breath.",
+  aura:"Pure impossible light and absolute darkness, simultaneous.",
+  features:"Beyond description. Beyond stage. Beyond.",
+};
+
+const CELESTIAL_PULL_AMOUNTS   = [14, 18, 24, 32, 44];
+const CELESTIAL_PUSH_AMOUNTS   = [10, 14, 20, 28, 38];
+const CELESTIAL_BLESS_AMOUNTS  = [20, 26, 34, 44, 56];
+const UMBRAL_CONSUME_CHANCE    = [0.28, 0.40, 0.54, 0.70, 0.88];
+const UMBRAL_ABSORB_RATE       = [0.55, 0.65, 0.76, 0.88, 1.00];
+const UMBRAL_VOID_PULL_AMOUNTS = [10, 14, 20, 28, 38];
+
+const GODDESS_VISION = {
+  title:"A Vision from the Goddess",
+  scene:`The first time one of them becomes a Blob, you dream.
+
+She is impossible to describe. Vast beyond imagining — not in size alone but in presence, in meaning, in the way she fills every corner of your perception until nothing else exists. She reclines somewhere that is not a place, warm and terrifyingly still, and she looks at you with a smile that makes everything feel like it was always leading here.
+
+"You have been doing my work," she says. Her voice has weight to it. Literal, measurable weight. "Unknowingly. But faithfully."
+
+She extends one enormous, impossibly soft hand and touches your forehead.
+
+"I am giving you more," she says. "More tools. More paths. More ways to make them into what they were always meant to be."
+
+"Some of your girls will ascend toward the light." A tilt of her vast head. "Some will descend into the void." Something passes behind her eyes — amusement, hunger, both. "Both are sacred. All fullness is my domain. There is no wrong direction — only more, and more, and more."
+
+She settles deeper into her impossible abundance.
+
+"You will know when they are ready. You will choose their path. And they will become extraordinary."
+
+You wake with the certainty that something has fundamentally changed. You are right.`,
+  choices:[
+    {label:"Accept the gift", text:"The knowledge settles into you like warmth after a full meal. The paths open. You feel the goddess's attention shift to your classroom — and approve."},
+    {label:"Ask what she wants in return", text:"'Only that you continue,' she says. 'Only that you make them vast. That is all I have ever wanted of anyone.' She smiles. It is the most enormous thing you have ever seen."},
+  ]
+};
+
+const RELIGION_RITES = [
+  { id:"first_gathering",   label:"First Gathering",      apCost:1, scrutiny:3,  devoteeGain:2, blobBonus:5,  devoteePassiveGain:0.5,
+    scene:(b)=>`You gather the devoted students before ${b.name}. No ceremony, no script — just presence. The warmth that radiates from her settles over the group like something living. No one knows what to call it, but everyone leaves slightly heavier than they arrived, and none of them look sorry.` },
+  { id:"feast_offering",    label:"Feast Offering",        apCost:2, scrutiny:5,  devoteeGain:3, blobBonus:10, devoteePassiveGain:1,
+    scene:(b)=>`An offering of food, laid before ${b.name} with something approaching ceremony. She receives it with an authority that surprises everyone, including herself. The students who merely watched found themselves gaining simply from proximity — the air tasted warm and sweet for hours afterward.` },
+  { id:"hymn_of_abundance", label:"Hymn of Abundance",     apCost:1, scrutiny:4,  devoteeGain:4, blobBonus:4,  devoteePassiveGain:0.5,
+    scene:(b)=>`Someone begins to hum. No one knows who started it. The words, when they come, mean nothing on the surface — but the feeling is unmistakable: gratitude, abundance, presence, warmth. ${b.name} listens with her eyes closed. When it ends there is a long, full silence. She opens her eyes and smiles, and the room is better for it.` },
+  { id:"mass_feeding",      label:"Sacred Mass Feeding",   apCost:3, scrutiny:8,  devoteeGain:5, blobBonus:16, devoteePassiveGain:2,
+    scene:(b)=>`The devotees bring food — for ${b.name} and for themselves. They eat together in ceremonial silence, broken only by honest sounds of appetite. Everyone leaves fuller. Several students gained visibly just from the sacred communal meal. Admin would call it a gathering. They would be underselling it enormously.` },
+  { id:"pilgrimage",        label:"Pilgrimage to the Throne", apCost:2, scrutiny:10, devoteeGain:6, blobBonus:0, devoteePassiveGain:3,
+    scene:(b)=>`Word has spread beyond your class. Students from other departments make their way to ${b.name}'s chamber — some to look, some to pay respects, some to stay. The devotee count is growing faster than admin can ask questions. They have begun asking questions.` },
+];
+
+const ASCENSION_STAGE_REACTIONS = {
+  celestial:[
+    "I don't know what's happening to me. I just feel... warm. Like I'm glowing from inside. And everyone keeps coming to sit with me.",
+    "The wings are weird. But they're soft. And students keep bringing me food. I've stopped questioning the light.",
+    "Someone cried when they saw me today. They didn't seem sad. I understand it now. I'm not just myself anymore.",
+    "I am something the books don't have a word for yet. Something warm and vast and endlessly welcoming. I accept this.",
+    "I have become the point. The goddess intended this. I can feel her attention like sunlight on my face, all the time.",
+  ],
+  umbral:[
+    "Something shifted the moment I crossed that threshold. The room feels smaller when I enter it. People avoid my eyes. I prefer it this way.",
+    "The horns were unexpected. The shadow that behaves wrong was unexpected. The hunger — that was not unexpected. That was always there.",
+    "They call it the void. I call it space I'm filling. I have more space to fill than I once did. I am enthusiastic about this.",
+    "I have consumed things. I will consume more things. Everything that approaches me becomes part of me, one way or another. This is correct.",
+    "I am the dark at the end of appetite. The campus exists in my shadow now. Everything grows heavy near me. I find this appropriate.",
+  ],
+};
+
+const DIVINE_SKILL_TREE = [
+  { id:"divine_presence",       tier:1, category:"divine", label:"Divine Presence",
+    desc:"Ascended students gain +2 lbs/week passively from the goddess's favour.",
+    cost:1, requires:[], passiveBonus:0, apBonus:0, gainMult:0, ascendedPassiveBonus:2 },
+  { id:"celestial_favour",      tier:1, category:"divine", label:"Celestial Favour",
+    desc:"Celestial mass transfers carry +25% more lbs.",
+    cost:1, requires:[], passiveBonus:0, apBonus:0, gainMult:0, celestialTransferBonus:0.25 },
+  { id:"umbral_hunger",         tier:1, category:"divine", label:"Umbral Hunger",
+    desc:"Umbral consume chance +12%. Absorption rate +10%.",
+    cost:1, requires:[], passiveBonus:0, apBonus:0, gainMult:0, umbralConsumeBonus:0.12, umbralAbsorbBonus:0.10 },
+  { id:"flock_of_fat",          tier:2, category:"divine", label:"Flock of Fat",
+    desc:"Devotees passively gain +1 lbs/week from proximity to worshipped blobs.",
+    cost:2, requires:["divine_presence"], passiveBonus:0, apBonus:0, gainMult:0, devoteePassiveGainBonus:1 },
+  { id:"sacred_feast",          tier:2, category:"divine", label:"Sacred Feast",
+    desc:"Rites grant +60% more blob lbs bonus.",
+    cost:2, requires:["divine_presence"], passiveBonus:0, apBonus:0, gainMult:0, riteBlobBonus:0.60 },
+  { id:"gospel_of_excess",      tier:2, category:"divine", label:"Gospel of Excess",
+    desc:"Each rite reduces admin scrutiny by 2.",
+    cost:2, requires:["divine_presence"], passiveBonus:0, apBonus:0, gainMult:0, riteScrutinyReduce:2 },
+  { id:"mass_transfer_mastery", tier:3, category:"divine", label:"Mass Transfer Mastery",
+    desc:"Celestial transfer amounts +50%. Can now pull mass from HR Observer.",
+    cost:3, requires:["celestial_favour"], passiveBonus:0, apBonus:0, gainMult:0, celestialTransferBonus:0.50, celestialCanPullHR:true },
+  { id:"void_appetite",         tier:3, category:"divine", label:"Void Appetite",
+    desc:"Umbral blobs gain +3 lbs/week from the void. Consumed students begin to merge.",
+    cost:3, requires:["umbral_hunger"], passiveBonus:0, apBonus:0, gainMult:0, umbralVoidPassive:3 },
+  { id:"congregation",          tier:3, category:"divine", label:"Congregation",
+    desc:"+5 devotees immediately. Devotees above 20 no longer increase scrutiny.",
+    cost:3, requires:["flock_of_fat"], passiveBonus:0, apBonus:0, gainMult:0, devoteeInstant:5 },
+  { id:"celestial_halo",        tier:4, category:"divine", label:"Celestial Halo",
+    desc:"Celestial Apex students reduce scrutiny by 5/week through divine radiance.",
+    cost:3, requires:["mass_transfer_mastery"], passiveBonus:0, apBonus:0, gainMult:0, celestialApexHeal:5 },
+  { id:"umbral_maw",            tier:4, category:"divine", label:"Umbral Maw",
+    desc:"Umbral blobs can now consume HR Observer and Vaughan (+35% scrutiny, full absorption).",
+    cost:3, requires:["void_appetite"], passiveBonus:0, apBonus:0, gainMult:0, umbralCanConsumeHR:true },
+  { id:"the_great_work",        tier:5, category:"divine", label:"The Great Work",
+    desc:"All divine mechanics fully amplified. +2 passive lbs/all. +1 AP/week. The goddess approves.",
+    cost:5, requires:["celestial_halo","congregation","umbral_maw"], passiveBonus:2, apBonus:1, gainMult:0.08 },
+];
+
+const ALL_SKILLS = [...SKILL_TREE, ...DIVINE_SKILL_TREE];
 
 // ── DINNER EVENT DATA ──────────────────────────────────────────
 const WAITER_DESC = {
@@ -3396,6 +3554,15 @@ export default function ProfessorSim(){
   const [sessionResult,setSessionResult]=useState(null);
   const [sessionLog,setSessionLog]=useState([]);
   const [pendingDoubleDowns,setPendingDoubleDowns]=useState([]);
+  // ── DIVINE EXPANSION STATE ─────────────────────────────────────
+  const [goddessSeen,setGoddessSeen]=useState(false);
+  const [goddessModal,setGoddessModal]=useState(null);
+  const [ascensionModal,setAscensionModal]=useState(null); // {student} → choose Celestial/Umbral
+  const [consumedStudents,setConsumedStudents]=useState([]); // full student objects consumed by Umbral
+  const [religion,setReligion]=useState(null);
+  // religion: {founded, devotees, ritesHeld, worshippedIds:[], weeklyPassiveGain}
+  const [religionRiteModal,setReligionRiteModal]=useState(null);
+  const [convergenceModal,setConvergenceModal]=useState(null); // {student} secret stage achieved
   const logRef=useRef(null);
 
   useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
@@ -3596,7 +3763,34 @@ export default function ProfessorSim(){
         if(randomEv.target==="class") gain+=rnd(randomEv.gain[0],randomEv.gain[1]);
         else if(randomEv.target==="single"&&s.id===rnd(0,14)) gain+=rnd(randomEv.gain[0],randomEv.gain[1]);
       }
+      // Ascended passive gains
+      if(s.ascensionPath==="celestial"&&s.ascensionStage>=0) gain+=2+divineAscendedPassive;
+      if(s.ascensionPath==="umbral"&&s.ascensionStage>=0){
+        gain+=2+divineAscendedPassive;
+        if(divineUmbralVoidPassive>0) gain+=divineUmbralVoidPassive;
+      }
       return processStudentGain(s,gain,0);
+    });
+    // Ascension stage-up checks
+    updated=updated.map(s=>{
+      if(!s.ascensionPath) return s;
+      const stages=s.ascensionPath==="celestial"?CELESTIAL_STAGES:UMBRAL_STAGES;
+      const nextStage=stages[s.ascensionStage+1];
+      if(nextStage&&s.lbs>=nextStage.min){
+        const newStageId=s.ascensionStage+1;
+        const newStages=stages;
+        setTimeout(()=>push(`✨ ${s.name} ascends to ${newStages[newStageId].label}! (${s.lbs} lbs)`),80);
+        // Check for convergence
+        if(newStageId===4){
+          const opposingPath=s.ascensionPath==="celestial"?"umbral":"celestial";
+          const maxOpponent=updated.find(o=>o.id!==s.id&&o.ascensionPath===opposingPath&&o.ascensionStage===4);
+          if(maxOpponent){
+            setTimeout(()=>{push(`⚡ THE SINGULARITY — ${s.name} and ${maxOpponent.name} have reached opposite Apex stages. Something extraordinary is possible.`);setConvergenceModal({student:s,opponent:maxOpponent});},400);
+          }
+        }
+        return {...s,ascensionStage:newStageId};
+      }
+      return s;
     });
 
     // Influence spread
@@ -3651,6 +3845,43 @@ export default function ProfessorSim(){
     const devotedCount=updated.filter(s=>getTier(s.relationship).id>=3).length;
     if(devotedCount>0) setAdminScrutiny(prev=>Math.max(0,prev-devotedCount));
     if(skillScrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-skillScrutinyPassiveReduce));
+    // Goddess vision: triggers when first student hits Blob (stage 10)
+    if(!goddessSeen){
+      const firstBlob=updated.find(s=>getStage(s.lbs).id>=10);
+      if(firstBlob){
+        setTimeout(()=>{
+          setGoddessSeen(true);
+          setGoddessModal({});
+          push(`✦ A vision arrives as ${firstBlob.name} reaches Blob stage. Something extraordinary is now possible.`);
+        },600);
+      }
+    }
+    // Celestial Apex weekly scrutiny heal
+    if(divineCelestialApexHeal>0){
+      const apexCount=updated.filter(s=>s.ascensionPath==="celestial"&&s.ascensionStage===4).length;
+      if(apexCount>0) setAdminScrutiny(prev=>Math.max(0,prev-apexCount*divineCelestialApexHeal));
+    }
+    // Religion weekly effects
+    if(religion){
+      const worshipped=updated.filter(s=>religion.worshippedIds.includes(s.id));
+      if(worshipped.length>0){
+        const devGain=Math.floor(religion.weeklyPassiveGain||0.5);
+        if(devGain>0) setReligion(prev=>prev?{...prev,devotees:prev.devotees+devGain}:prev);
+        const hasDevoteeSkill=unlockedSkills.includes("flock_of_fat");
+        if(hasDevoteeSkill){
+          setStudents(prev=>prev.map(s=>{
+            if(!getTier(s.relationship).id>=2) return s;
+            return {...s,lbs:s.lbs+1};
+          }));
+        }
+        // Religion scrutiny: devotees cause scrutiny above 10
+        const devoteeScrutiny=Math.max(0,Math.floor((religion.devotees-10)*0.3));
+        const hasThreshold=unlockedSkills.includes("congregation");
+        const thresholdAmt=hasThreshold?20:10;
+        if(religion.devotees>thresholdAmt) addScrutiny(Math.max(0,Math.floor((religion.devotees-thresholdAmt)*0.2)));
+        setTimeout(()=>push(`⛪ Devotee count: ${religion.devotees} (${worshipped.length} blobs worshipped)`),300);
+      }
+    }
     // Vaughan weekly tick
     if(vaughan&&!vaughanAlly){
       const suspBase=Math.max(0,1+Math.floor(visibleCount*0.3)-devotedCount*2);
@@ -3680,6 +3911,239 @@ export default function ProfessorSim(){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
     }
+  };
+
+  // ── DIVINE ACTION FUNCTIONS ─────────────────────────────────────
+  const ascendStudent=(s,path)=>{
+    if(getStage(s.lbs).id<10){push(`⚠️ ${s.name} must reach Blob stage before ascension.`);return;}
+    if(s.ascensionPath){push(`⚠️ ${s.name} has already ascended.`);return;}
+    const stages=path==="celestial"?CELESTIAL_STAGES:UMBRAL_STAGES;
+    const label=stages[0].label;
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,ascensionPath:path,ascensionStage:0}));
+    push(`✦ ${s.name} ascends to ${label}! The ${path==="celestial"?"light claims":"void welcomes"} her.`);
+    const desc=stages[0].desc;
+    setTimeout(()=>push(`   "${desc}"`),200);
+    setAscensionModal(null);
+    // Unlock divine skill category
+    if(!goddessSeen){setGoddessSeen(true);}
+  };
+
+  const celestialMassPull=(celestialId,targetId)=>{
+    if(ap<2){push("⚠️ Need 2 AP.");return;}
+    const celestial=students.find(s=>s.id===celestialId);
+    if(!celestial||celestial.ascensionPath!=="celestial"){push("⚠️ Only Celestial blobs can pull mass.");return;}
+    const stage=celestial.ascensionStage||0;
+    const baseAmount=CELESTIAL_PULL_AMOUNTS[stage];
+    const finalAmount=Math.round(baseAmount*divineCelestialTransferMult);
+    const celestialGain=Math.round(finalAmount*1.3);
+    // Handle HR target
+    if(targetId==="hr"){
+      if(!hrObserver){push("⚠️ No HR observer present.");return;}
+      const actualLoss=Math.min(finalAmount,Math.max(0,hrObserver.lbs-100));
+      setHrObserver(prev=>prev?{...prev,lbs:Math.max(100,prev.lbs-actualLoss)}:prev);
+      setStudents(prev=>prev.map(s=>s.id===celestialId?{...s,lbs:s.lbs+celestialGain}:s));
+      setAp(a=>a-2);
+      push(`✦ ${celestial.name} pulls ${actualLoss} lbs from ${hrObserver.name} — absorbs ${celestialGain} lbs.`);
+      return;
+    }
+    const target=students.find(s=>s.id===targetId);
+    if(!target){push("⚠️ Invalid target.");return;}
+    const actualLoss=Math.min(finalAmount,Math.max(0,target.lbs-80));
+    setStudents(prev=>prev.map(s=>{
+      if(s.id===targetId) return {...s,lbs:Math.max(80,s.lbs-actualLoss)};
+      if(s.id===celestialId) return {...s,lbs:s.lbs+celestialGain};
+      return s;
+    }));
+    setAp(a=>a-2);
+    push(`✦ ${celestial.name} pulls ${actualLoss} lbs from ${target.name} — absorbs ${celestialGain} lbs (divine amplification).`);
+  };
+
+  const celestialMassPush=(celestialId,targetId)=>{
+    if(ap<1){push("⚠️ Need 1 AP.");return;}
+    const celestial=students.find(s=>s.id===celestialId);
+    const target=students.find(s=>s.id===targetId);
+    if(!celestial||!target){push("⚠️ Invalid students.");return;}
+    if(celestial.ascensionPath!=="celestial"){push("⚠️ Only Celestial blobs can push mass.");return;}
+    const stage=celestial.ascensionStage||0;
+    const pushAmt=Math.round(CELESTIAL_PUSH_AMOUNTS[stage]*divineCelestialTransferMult);
+    const celestialLoss=Math.min(pushAmt,Math.max(0,celestial.lbs-820));
+    setStudents(prev=>prev.map(s=>{
+      if(s.id===celestialId) return {...s,lbs:Math.max(820,s.lbs-celestialLoss)};
+      if(s.id===targetId) return {...s,lbs:s.lbs+Math.round(celestialLoss*1.2)};
+      return s;
+    }));
+    setAp(a=>a-1);
+    push(`✦ ${celestial.name} pushes a blessing of ${celestialLoss} lbs into ${target.name}.`);
+  };
+
+  const celestialMassBless=(celestialId,targetId)=>{
+    if(ap<2){push("⚠️ Need 2 AP.");return;}
+    const celestial=students.find(s=>s.id===celestialId);
+    const target=students.find(s=>s.id===targetId);
+    if(!celestial||!target) return;
+    const stage=celestial.ascensionStage||0;
+    const blessAmt=Math.round(CELESTIAL_BLESS_AMOUNTS[stage]*divineCelestialTransferMult);
+    setStudents(prev=>prev.map(s=>{
+      if(s.id===targetId) return {...s,lbs:s.lbs+blessAmt,relationship:Math.min(100,s.relationship+8)};
+      return s;
+    }));
+    setAp(a=>a-2);
+    push(`✦ ${celestial.name} radiates a sacred blessing — ${target.name} gains ${blessAmt} lbs. (+8 relationship)`);
+  };
+
+  const umbralVoidPull=(umbralId,targetId)=>{
+    if(ap<2){push("⚠️ Need 2 AP.");return;}
+    const umbral=students.find(s=>s.id===umbralId);
+    const target=students.find(s=>s.id===targetId);
+    if(!umbral||!target) return;
+    if(umbral.ascensionPath!=="umbral"){push("⚠️ Only Umbral blobs can pull through the void.");return;}
+    const stage=umbral.ascensionStage||0;
+    const pullAmt=UMBRAL_VOID_PULL_AMOUNTS[stage];
+    const actualLoss=Math.min(pullAmt,Math.max(0,target.lbs-80));
+    setStudents(prev=>prev.map(s=>{
+      if(s.id===targetId) return {...s,lbs:Math.max(80,s.lbs-actualLoss),relationship:Math.max(0,s.relationship-5)};
+      if(s.id===umbralId) return {...s,lbs:s.lbs+Math.round(actualLoss*1.4)};
+      return s;
+    }));
+    setAp(a=>a-2);
+    addScrutiny(4);
+    push(`🌑 ${umbral.name} pulls ${actualLoss} lbs through the void from ${target.name}. (+${Math.round(actualLoss*1.4)} absorbed)`);
+  };
+
+  const umbralConsumeStudent=(umbralId,targetId)=>{
+    if(ap<3){push("⚠️ Need 3 AP.");return;}
+    const umbral=students.find(s=>s.id===umbralId);
+    const target=students.find(s=>s.id===targetId);
+    if(!umbral||!target) return;
+    if(umbral.ascensionPath!=="umbral"){push("⚠️ Only Umbral blobs can consume.");return;}
+    const stage=umbral.ascensionStage||0;
+    const stageTarget=getStage(target.lbs).id;
+    if(stageTarget>stage+1){push(`⚠️ ${umbral.name} can only consume students up to ${WEIGHT_STAGES[Math.min(10,stage+1)].label} stage.`);return;}
+    const baseChance=UMBRAL_CONSUME_CHANCE[stage]+divineUmbralConsumeBonus;
+    const finalChance=Math.min(0.97,baseChance);
+    setAp(a=>a-3);
+    addScrutiny(18);
+    if(Math.random()<=finalChance){
+      const absorbRate=Math.min(1,UMBRAL_ABSORB_RATE[stage]+divineUmbralAbsorbBonus);
+      const absorbed=Math.round(target.lbs*absorbRate);
+      setStudents(prev=>{
+        const without=prev.filter(s=>s.id!==targetId);
+        return without.map(s=>{
+          if(s.id===umbralId) return {...s,lbs:s.lbs+absorbed,consumedIds:[...(s.consumedIds||[]),targetId]};
+          return s;
+        });
+      });
+      setConsumedStudents(prev=>[...prev,{...target,consumedBy:umbralId,consumedAt:week}]);
+      push(`🌑 ${umbral.name} CONSUMES ${target.name}. +${absorbed} lbs absorbed. ${target.name} is gone — but not unrecoverable.`);
+      push(`   The void takes her. She is part of ${umbral.name} now.`);
+    } else {
+      push(`🌑 ${umbral.name} attempts to consume ${target.name} — but she slips the grasp. ${target.name} is shaken. (+18 scrutiny)`);
+      setStudents(prev=>prev.map(s=>s.id===targetId?{...s,relationship:Math.max(0,s.relationship-15),mood:"scared"}:s));
+    }
+  };
+
+  const umbralConsumeHR=(umbralId)=>{
+    if(!divineUmbralCanConsumeHR){push("⚠️ Requires Umbral Maw skill.");return;}
+    if(!hrObserver&&!vaughan){push("⚠️ No HR target available.");return;}
+    if(ap<4){push("⚠️ Need 4 AP.");return;}
+    const umbral=students.find(s=>s.id===umbralId);
+    if(!umbral||umbral.ascensionPath!=="umbral") return;
+    setAp(a=>a-4);
+    addScrutiny(35);
+    if(hrObserver){
+      const absorbed=Math.round(hrObserver.lbs*0.9);
+      setStudents(prev=>prev.map(s=>s.id===umbralId?{...s,lbs:s.lbs+absorbed}:s));
+      setHrObserver(null);
+      push(`🌑 ${umbral.name} consumes ${hrObserver.name}. +${absorbed} lbs. The HR threat is gone — and enormous. (+35 scrutiny)`);
+    } else if(vaughan){
+      const absorbed=Math.round(vaughan.lbs*0.9);
+      setStudents(prev=>prev.map(s=>s.id===umbralId?{...s,lbs:s.lbs+absorbed}:s));
+      setVaughan(null);
+      setVaughanAlly(false);
+      push(`🌑 ${umbral.name} consumes Dr. Vaughan. +${absorbed} lbs. (+35 scrutiny)`);
+    }
+  };
+
+  const recoverConsumedStudent=(studentId,umbralId)=>{
+    const consumed=consumedStudents.find(s=>s.id===studentId);
+    if(!consumed){push("⚠️ Student not found.");return;}
+    if(ap<3){push("⚠️ Need 3 AP.");return;}
+    const umbral=students.find(s=>s.id===umbralId);
+    if(!umbral){push("⚠️ Umbral student not found.");return;}
+    const lossFromUmbral=Math.round(consumed.lbs*0.5);
+    const recoveryWeight=consumed.lbs;
+    setStudents(prev=>{
+      const updated=prev.map(s=>{
+        if(s.id!==umbralId) return s;
+        return {...s,lbs:Math.max(820,s.lbs-lossFromUmbral),consumedIds:(s.consumedIds||[]).filter(id=>id!==studentId)};
+      });
+      return [...updated,{...consumed,lbs:recoveryWeight,consumedBy:undefined,consumedAt:undefined,relationship:Math.max(0,(consumed.relationship||20)-20),mood:"shaken"}];
+    });
+    setConsumedStudents(prev=>prev.filter(s=>s.id!==studentId));
+    setAp(a=>a-3);
+    push(`✦ ${consumed.name} has been released from ${umbral.name}. She returns at ${recoveryWeight} lbs — changed, but present.`);
+    push(`   Something of the void clings to her. She will never be entirely who she was.`);
+  };
+
+  const foundReligion=(blobId)=>{
+    if(religion){push("⚠️ The religion already exists.");return;}
+    if(ap<2){push("⚠️ Need 2 AP.");return;}
+    const blob=students.find(s=>s.id===blobId&&s.ascensionPath);
+    if(!blob){push("⚠️ Need an ascended student as the focus.");return;}
+    setAp(a=>a-2);
+    setReligion({founded:week,devotees:3,ritesHeld:0,worshippedIds:[blobId],weeklyPassiveGain:0.5});
+    addScrutiny(5);
+    push(`⛪ The religion is founded, centred on ${blob.name}. 3 initial devotees. (+5 scrutiny)`);
+    push(`   Something is beginning that you cannot stop — nor would you want to.`);
+  };
+
+  const addBlobToReligion=(blobId)=>{
+    if(!religion){push("⚠️ Found a religion first.");return;}
+    const blob=students.find(s=>s.id===blobId&&s.ascensionPath);
+    if(!blob){push("⚠️ That student is not ascended.");return;}
+    if(religion.worshippedIds.includes(blobId)){push("⚠️ Already worshipped.");return;}
+    setReligion(prev=>prev?{...prev,worshippedIds:[...prev.worshippedIds,blobId],devotees:prev.devotees+2}:prev);
+    push(`⛪ ${blob.name} added to the pantheon. +2 devotees.`);
+  };
+
+  const holdRite=(rite,blobId)=>{
+    if(!religion){push("⚠️ No religion founded yet.");return;}
+    if(ap<rite.apCost){push(`⚠️ Need ${rite.apCost} AP.`);return;}
+    const blob=students.find(s=>s.id===blobId);
+    if(!blob){push("⚠️ Blob student not found.");return;}
+    setAp(a=>a-rite.apCost);
+    const blobBonus=Math.round(rite.blobBonus*divineRiteBlobMult);
+    if(blobBonus>0){
+      setStudents(prev=>prev.map(s=>s.id===blobId?{...s,lbs:s.lbs+blobBonus}:s));
+    }
+    setReligion(prev=>prev?{
+      ...prev,
+      ritesHeld:prev.ritesHeld+1,
+      devotees:prev.devotees+rite.devoteeGain,
+      weeklyPassiveGain:(prev.weeklyPassiveGain||0.5)+rite.devoteePassiveGain,
+    }:prev);
+    addScrutiny(rite.scrutiny);
+    if(divineRiteScrutinyReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-divineRiteScrutinyReduce));
+    push(`⛪ Rite: ${rite.label}. +${rite.devoteeGain} devotees. +${blobBonus} lbs to ${blob.name}. (+${rite.scrutiny} scrutiny)`);
+    setTimeout(()=>push(`   "${rite.scene(blob)}"`),200);
+  };
+
+  const triggerConvergence=(studentId,opponentId)=>{
+    const s=students.find(st=>st.id===studentId);
+    const opp=students.find(st=>st.id===opponentId);
+    if(!s||!opp) return;
+    if(s.ascensionStage<4||opp.ascensionStage<4){push("⚠️ Both must be at Apex stage.");return;}
+    if(ap<5){push("⚠️ Need 5 AP.");return;}
+    setAp(a=>a-5);
+    const convergenceLbs=Math.max(s.lbs,opp.lbs)+Math.min(s.lbs,opp.lbs);
+    setStudents(prev=>prev.map(st=>{
+      if(st.id===studentId) return {...st,lbs:convergenceLbs,ascensionPath:"convergence",ascensionStage:0,convergence:true};
+      if(st.id===opponentId) return {...st,ascensionPath:null,ascensionStage:null,lbs:80};
+      return st;
+    }));
+    push(`⚡ THE SINGULARITY: ${s.name} and ${opp.name} converge. ${s.name} becomes something beyond naming. ${opp.name} is absorbed entirely.`);
+    push(`   ${CONVERGENCE_STAGE.desc}`);
+    setConvergenceModal(null);
   };
 
   const startClass=()=>{
@@ -4348,13 +4812,25 @@ export default function ProfessorSim(){
   const talkRelBonus=hasTrait("charismatic")?4:hasSubj("psychology")?2:0;
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
   const hasSkill=(id)=>unlockedSkills.includes(id);
-  const skillPassiveBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.passiveBonus,0)+profPassiveBonus;
-  const skillApBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.apBonus,0);
-  const skillGainMult=(1+SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+sk.gainMult,0))*profGainMult;
-  const skillScrutinyReduce=1-Math.min(0.90,SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+(sk.scrutinyReduce||0),0));
-  const skillScrutinyPassiveReduce=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+(sk.scrutinyPassiveReduce||0),0);
-  const skillSessionCapBonus=SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+(sk.sessionCapBonus||0),0);
-  const skillTapOutResistance=Math.min(0.60,SKILL_TREE.filter(sk=>unlockedSkills.includes(sk.id)).reduce((a,sk)=>a+(sk.tapOutResistance||0),0));
+  const unlockedAll=ALL_SKILLS.filter(sk=>unlockedSkills.includes(sk.id));
+  const skillPassiveBonus=unlockedAll.reduce((a,sk)=>a+sk.passiveBonus,0)+profPassiveBonus;
+  const skillApBonus=unlockedAll.reduce((a,sk)=>a+sk.apBonus,0);
+  const skillGainMult=(1+unlockedAll.reduce((a,sk)=>a+sk.gainMult,0))*profGainMult;
+  const skillScrutinyReduce=1-Math.min(0.90,unlockedAll.reduce((a,sk)=>a+(sk.scrutinyReduce||0),0));
+  const skillScrutinyPassiveReduce=unlockedAll.reduce((a,sk)=>a+(sk.scrutinyPassiveReduce||0),0);
+  const skillSessionCapBonus=unlockedAll.reduce((a,sk)=>a+(sk.sessionCapBonus||0),0);
+  const skillTapOutResistance=Math.min(0.60,unlockedAll.reduce((a,sk)=>a+(sk.tapOutResistance||0),0));
+  // Divine derived values
+  const divineAscendedPassive=unlockedAll.reduce((a,sk)=>a+(sk.ascendedPassiveBonus||0),0);
+  const divineCelestialTransferMult=1+unlockedAll.reduce((a,sk)=>a+(sk.celestialTransferBonus||0),0);
+  const divineUmbralConsumeBonus=unlockedAll.reduce((a,sk)=>a+(sk.umbralConsumeBonus||0),0);
+  const divineUmbralAbsorbBonus=unlockedAll.reduce((a,sk)=>a+(sk.umbralAbsorbBonus||0),0);
+  const divineRiteBlobMult=1+unlockedAll.reduce((a,sk)=>a+(sk.riteBlobBonus||0),0);
+  const divineRiteScrutinyReduce=unlockedAll.reduce((a,sk)=>a+(sk.riteScrutinyReduce||0),0);
+  const divineUmbralVoidPassive=unlockedAll.reduce((a,sk)=>a+(sk.umbralVoidPassive||0),0);
+  const divineCelestialApexHeal=unlockedAll.reduce((a,sk)=>a+(sk.celestialApexHeal||0),0);
+  const divineUmbralCanConsumeHR=unlockedAll.some(sk=>sk.umbralCanConsumeHR);
+  const divineCelestialCanPullHR=unlockedAll.some(sk=>sk.celestialCanPullHR);
   const dinnerUnlocked=unlockedSkills.includes("dinner_basic");
 
   // ── EFFECTIVE ACTIONS (applying unlocked skill effects) ──────
@@ -4396,6 +4872,7 @@ export default function ProfessorSim(){
   });
   const canUnlock=(sk)=>{
     if(unlockedSkills.includes(sk.id)) return false;
+    if(sk.category==="divine"&&!goddessSeen) return false;
     if(totalGained<sk.cost) return false;
     if(sk.requires) return sk.requires.every(r=>unlockedSkills.includes(r));
     return true;
@@ -5081,7 +5558,7 @@ export default function ProfessorSim(){
 
       {/* NAV */}
       <div style={C.nav}>
-        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["social","🎉 Events"],["skills","🌳 Skills"],["achievements","🏆 Achievements"]].map(([v,l])=>(
+        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["social","🎉 Events"],["skills","🌳 Skills"],["achievements","🏆 Achievements"],...(goddessSeen?[["divine","✦ Divine"]]:[])].map(([v,l])=>(
           v==="student"&&!sel?null:
           <button key={v} style={C.navB(view===v)} onClick={()=>setView(v)}>{l}</button>
         ))}
@@ -5184,19 +5661,22 @@ export default function ProfessorSim(){
                 {students.map(s=>{
                   const st=getStage(s.lbs);
                   return(
-                    <div key={s.id} style={C.card} onClick={()=>{setSelectedId(s.id);setView("student")}}>
+                    <div key={s.id} style={{...C.card,border:s.ascensionPath==="convergence"?"2px solid #ffffff60":s.ascensionPath==="celestial"?"1px solid #8060c060":s.ascensionPath==="umbral"?"1px solid #80101060":"1px solid #180830"}} onClick={()=>{setSelectedId(s.id);setView("student")}}>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:3}}>
                         <div style={{display:"flex",alignItems:"center",gap:5}}>
-                          <span style={{fontWeight:700,fontSize:15,color:"#d8a8ff"}}>{s.name}</span>
+                          <span style={{fontWeight:700,fontSize:15,color:s.ascensionPath==="convergence"?"#ffffff":s.ascensionPath==="celestial"?"#c8b0ff":s.ascensionPath==="umbral"?"#ff9090":"#d8a8ff"}}>{s.name}</span>
                           {(()=>{const tier=getTier(s.relationship);return tier.id>0?<span style={{fontSize:12,opacity:0.9}}>{tier.emoji}</span>:null;})()}
+                          {s.ascensionPath==="celestial"&&<span style={{fontSize:11,color:"#a080ff"}}>✦{CELESTIAL_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
+                          {s.ascensionPath==="umbral"&&<span style={{fontSize:11,color:"#cc4040"}}>🌑{UMBRAL_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
+                          {s.ascensionPath==="convergence"&&<span style={{fontSize:11,color:"#ffffff"}}>⚡Singularity</span>}
                         </div>
                         <StageTag stage={st}/>
                       </div>
                       <div style={{fontSize:10,color:"#70508a",marginBottom:3}}>{s.role||s.archetype} · {s.bodyType} · {s.age}y · <MoodBadge mood={s.mood}/></div>
-                      <Bar val={s.lbs} color={st.color}/>
-                      <div style={{fontSize:11,color:"#a88050",margin:"2px 0"}}>{s.lbs} lbs (+{s.lbs-s.startLbs}) · ❤ {s.relationship}%</div>
+                      <Bar val={s.lbs} max={s.ascensionPath?3000:1100} color={s.ascensionPath==="convergence"?"#ffffff":s.ascensionPath==="celestial"?CELESTIAL_STAGES[s.ascensionStage||0]?.color:s.ascensionPath==="umbral"?UMBRAL_STAGES[s.ascensionStage||0]?.color:st.color}/>
+                      <div style={{fontSize:11,color:"#a88050",margin:"2px 0"}}>{s.lbs.toLocaleString()} lbs (+{s.lbs-s.startLbs}) · ❤ {s.relationship}%</div>
                       <div style={{fontSize:10,color:"#504060",fontStyle:"italic",lineHeight:1.4,marginTop:3}}>
-                        {(STAGE_REACTIONS[s.archetype]?.[st.id]||"").slice(0,62)}…
+                        {s.ascensionPath?((s.ascensionPath==="celestial"?ASCENSION_STAGE_REACTIONS.celestial:s.ascensionPath==="umbral"?ASCENSION_STAGE_REACTIONS.umbral:[CONVERGENCE_STAGE.desc])[s.ascensionStage||0]||"").slice(0,62):(STAGE_REACTIONS[s.archetype]?.[st.id]||"").slice(0,62)}…
                       </div>
                     </div>
                   );
@@ -5252,6 +5732,17 @@ export default function ProfessorSim(){
                         {ws.label}
                       </span>
                     ))}
+                    {s.ascensionPath==="celestial"&&CELESTIAL_STAGES.map((cs,i)=>(
+                      <span key={`c${i}`} style={{background:i<=(s.ascensionStage||0)?cs.color:"#100820",color:i<=(s.ascensionStage||0)?"#fff":"#302040",borderRadius:8,padding:"2px 7px",fontSize:9,border:i===(s.ascensionStage||0)?"1px solid #c0b0ff":"1px solid transparent",fontWeight:i===(s.ascensionStage||0)?700:400}}>
+                        ✦{cs.label.split(" ")[1]}
+                      </span>
+                    ))}
+                    {s.ascensionPath==="umbral"&&UMBRAL_STAGES.map((us,i)=>(
+                      <span key={`u${i}`} style={{background:i<=(s.ascensionStage||0)?us.color:"#100008",color:i<=(s.ascensionStage||0)?"#fff":"#302040",borderRadius:8,padding:"2px 7px",fontSize:9,border:i===(s.ascensionStage||0)?"1px solid #ff6060":"1px solid transparent",fontWeight:i===(s.ascensionStage||0)?700:400}}>
+                        🌑{us.label.split(" ")[1]}
+                      </span>
+                    ))}
+                    {s.ascensionPath==="convergence"&&<span style={{background:"#222",color:"#fff",borderRadius:8,padding:"2px 7px",fontSize:9,border:"1px solid #fff",fontWeight:700}}>⚡Singularity</span>}
                   </div>
                 </div>
 
@@ -5270,7 +5761,11 @@ export default function ProfessorSim(){
                 {/* Stage reaction */}
                 <div style={C.infoBox("rgba(40,8,70,0.35)")}>
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>CURRENT ATTITUDE</div>
-                  <div style={{fontSize:13,color:"#e8d8a8",fontStyle:"italic",lineHeight:1.75}}>"{STAGE_REACTIONS[s.archetype]?.[st.id]}"</div>
+                  <div style={{fontSize:13,color:"#e8d8a8",fontStyle:"italic",lineHeight:1.75}}>
+                    "{s.ascensionPath&&s.ascensionPath!=="convergence"
+                      ?(ASCENSION_STAGE_REACTIONS[s.ascensionPath]?.[s.ascensionStage||0]||STAGE_REACTIONS[s.archetype]?.[st.id])
+                      :STAGE_REACTIONS[s.archetype]?.[st.id]}"
+                  </div>
                 </div>
 
                 {/* Diary */}
@@ -5278,6 +5773,134 @@ export default function ProfessorSim(){
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>DIARY ENTRY</div>
                   <div style={{fontSize:12,color:"#c8b898",fontStyle:"italic",lineHeight:1.8}}>{getDiary(s)}</div>
                 </div>
+
+                {/* ── ASCENSION SECTION ── */}
+                {goddessSeen&&st.id>=10&&!s.ascensionPath&&(
+                  <div style={{background:"rgba(40,5,60,0.7)",border:"1px solid #8030e0",borderRadius:10,padding:14,marginBottom:12}}>
+                    <div style={{fontSize:9,letterSpacing:3,color:"#a060ff",marginBottom:6}}>✦ ASCENSION AVAILABLE</div>
+                    <div style={{fontSize:13,color:"#d0b0f0",lineHeight:1.8,marginBottom:12}}>
+                      {s.name} has reached the threshold. The goddess watches. Two paths open before her — light and void. Choose.
+                    </div>
+                    <div style={{display:"flex",gap:10}}>
+                      <button style={{...C.btn("#3020a0"),flex:1,padding:"10px 8px"}} onClick={()=>ascendStudent(s,"celestial")}>
+                        <div style={{fontSize:13,fontWeight:700,color:"#d0b8ff",marginBottom:3}}>✦ Celestial Path</div>
+                        <div style={{fontSize:10,color:"#9070d0"}}>Angel features · Mass transfer · Sacred warmth</div>
+                      </button>
+                      <button style={{...C.btn("#800010"),flex:1,padding:"10px 8px"}} onClick={()=>ascendStudent(s,"umbral")}>
+                        <div style={{fontSize:13,fontWeight:700,color:"#ff9090",marginBottom:3}}>🌑 Umbral Path</div>
+                        <div style={{fontSize:10,color:"#a06060"}}>Demon features · Consumption · Void power</div>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Ascension status card */}
+                {s.ascensionPath&&s.ascensionPath!=="convergence"&&(()=>{
+                  const isCelestial=s.ascensionPath==="celestial";
+                  const stages=isCelestial?CELESTIAL_STAGES:UMBRAL_STAGES;
+                  const stage=stages[s.ascensionStage||0];
+                  const nextStage=stages[(s.ascensionStage||0)+1];
+                  const pathColor=isCelestial?"#b898ff":"#cc3030";
+                  const pathBg=isCelestial?"rgba(60,20,150,0.35)":"rgba(80,5,5,0.5)";
+                  const otherStudents=students.filter(st=>st.id!==s.id);
+                  return(
+                    <div style={{background:pathBg,border:`1px solid ${pathColor}60`,borderRadius:10,padding:14,marginBottom:12}}>
+                      <div style={{fontSize:9,letterSpacing:3,color:pathColor,marginBottom:4}}>{isCelestial?"✦ CELESTIAL":"🌑 UMBRAL"} · STAGE {(s.ascensionStage||0)+1}/5</div>
+                      <div style={{fontSize:16,fontWeight:700,color:pathColor,marginBottom:4}}>{stage.label}</div>
+                      <div style={{fontSize:11,color:isCelestial?"#9a7aff":"#cc6060",marginBottom:6,fontStyle:"italic"}}>{isCelestial?stage.aura:stage.shadow}</div>
+                      <div style={{fontSize:12,color:isCelestial?"#c0a8e0":"#d08080",lineHeight:1.7,marginBottom:8}}>{stage.features}</div>
+                      <div style={{fontSize:11,color:"#8060a0",fontStyle:"italic",lineHeight:1.65,marginBottom:10}}>{stage.desc}</div>
+                      {/* Ascension attitude */}
+                      <div style={{...C.infoBox(isCelestial?"rgba(50,20,120,0.3)":"rgba(40,5,5,0.5)"),marginBottom:10}}>
+                        <div style={{fontSize:9,color:"#5030a0",letterSpacing:2,marginBottom:4}}>ATTITUDE</div>
+                        <div style={{fontSize:12,color:isCelestial?"#d0c0f8":"#e08080",fontStyle:"italic",lineHeight:1.7}}>
+                          "{ASCENSION_STAGE_REACTIONS[s.ascensionPath]?.[s.ascensionStage||0]||""}"
+                        </div>
+                      </div>
+                      {nextStage&&<div style={{fontSize:10,color:"#503060",marginBottom:8}}>Next stage at {nextStage.min.toLocaleString()} lbs — {nextStage.min-s.lbs} lbs to go</div>}
+                      {/* Consumed students (Umbral only) */}
+                      {!isCelestial&&(s.consumedIds||[]).length>0&&(
+                        <div style={{marginBottom:8}}>
+                          <div style={{fontSize:9,letterSpacing:2,color:"#903030",marginBottom:4}}>CONSUMED WITHIN</div>
+                          {(s.consumedIds||[]).map(cid=>{
+                            const cs=consumedStudents.find(x=>x.id===cid);
+                            return cs?(
+                              <div key={cid} style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:"rgba(40,0,0,0.4)",borderRadius:6,padding:"4px 8px",marginBottom:3}}>
+                                <span style={{fontSize:11,color:"#c07070"}}>{cs.name} ({cs.lbs} lbs)</span>
+                                <button style={{...C.smBtn,fontSize:9}} onClick={()=>recoverConsumedStudent(cid,s.id)}>↑ Release (3 AP)</button>
+                              </div>
+                            ):null;
+                          })}
+                        </div>
+                      )}
+                      {/* Divine actions */}
+                      <div style={{...C.secT,marginBottom:6}}>Divine Actions</div>
+                      {isCelestial&&(
+                        <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:8}}>
+                          {otherStudents.map(t=>(
+                            <div key={t.id} style={{display:"flex",gap:3}}>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(60,20,130,0.4)"}} onClick={()=>celestialMassPull(s.id,t.id)}>
+                                ↓ Pull from {t.name.split(" ")[0]} (2AP)
+                              </button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.4)"}} onClick={()=>celestialMassPush(s.id,t.id)}>
+                                ↑ Push to {t.name.split(" ")[0]} (1AP)
+                              </button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.4)"}} onClick={()=>celestialMassBless(s.id,t.id)}>
+                                ✦ Bless {t.name.split(" ")[0]} (2AP)
+                              </button>
+                            </div>
+                          ))}
+                          {divineCelestialCanPullHR&&hrObserver&&(
+                            <button style={{...C.smBtn,fontSize:9,background:"rgba(30,60,100,0.5)"}} onClick={()=>celestialMassPull(s.id,"hr")}>
+                              ↓ Pull from {hrObserver.name} (2AP)
+                            </button>
+                          )}
+                        </div>
+                      )}
+                      {!isCelestial&&(
+                        <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:8}}>
+                          {otherStudents.map(t=>(
+                            <div key={t.id} style={{display:"flex",gap:3,flexWrap:"wrap"}}>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(60,0,0,0.5)"}} onClick={()=>umbralVoidPull(s.id,t.id)}>
+                                🌑 Void Pull from {t.name.split(" ")[0]} (2AP)
+                              </button>
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,0,0,0.5)"}} onClick={()=>umbralConsumeStudent(s.id,t.id)}>
+                                🌑 Consume {t.name.split(" ")[0]} (3AP)
+                              </button>
+                            </div>
+                          ))}
+                          {divineUmbralCanConsumeHR&&(hrObserver||vaughan)&&(
+                            <button style={{...C.smBtn,fontSize:9,background:"rgba(80,0,0,0.6)"}} onClick={()=>umbralConsumeHR(s.id)}>
+                              🌑 Consume HR Target (4AP, +35 scrutiny)
+                            </button>
+                          )}
+                        </div>
+                      )}
+                      {/* Religion */}
+                      {!religion&&(
+                        <button style={{...C.btn("#401020"),width:"100%"}} onClick={()=>foundReligion(s.id)}>
+                          ⛪ Found Religion (2AP)
+                        </button>
+                      )}
+                      {religion&&!religion.worshippedIds.includes(s.id)&&(
+                        <button style={{...C.btn("#301040"),width:"100%"}} onClick={()=>addBlobToReligion(s.id)}>
+                          ⛪ Add to Religion Pantheon
+                        </button>
+                      )}
+                    </div>
+                  );
+                })()}
+
+                {/* Convergence stage */}
+                {s.ascensionPath==="convergence"&&(
+                  <div style={{background:"rgba(20,20,20,0.9)",border:"2px solid #ffffff80",borderRadius:10,padding:14,marginBottom:12}}>
+                    <div style={{fontSize:9,letterSpacing:3,color:"#ffffff",marginBottom:4}}>⚡ THE SINGULARITY</div>
+                    <div style={{fontSize:16,fontWeight:700,color:"#ffffff",marginBottom:6}}>{CONVERGENCE_STAGE.label}</div>
+                    <div style={{fontSize:11,color:"#e0e0e0",fontStyle:"italic",marginBottom:6}}>{CONVERGENCE_STAGE.aura}</div>
+                    <div style={{fontSize:12,color:"#d0d0d0",lineHeight:1.7,marginBottom:6}}>{CONVERGENCE_STAGE.features}</div>
+                    <div style={{fontSize:11,color:"#b0b0b0",fontStyle:"italic",lineHeight:1.65}}>{CONVERGENCE_STAGE.desc}</div>
+                  </div>
+                )}
 
                 {/* Talk */}
                 <div style={{...C.secT,marginBottom:7}}>Talk to {s.name}</div>
@@ -5484,12 +6107,12 @@ export default function ProfessorSim(){
             // Node layout: 4 columns (categories), 5 rows (tiers)
             // Each cell: col index, row index -> pixel position
             const COL_W=240, ROW_H=170, PAD_X=30, PAD_Y=50;
-            const CATS=["environment","feeding","efficiency","social","psychology","prestige"];
-            const CAT_COLORS={"environment":"#3a8060","feeding":"#804020","efficiency":"#304080","social":"#802040","psychology":"#206050","prestige":"#806010"};
+            const CATS=["environment","feeding","efficiency","social","psychology","prestige",...(goddessSeen?["divine"]:[])];
+            const CAT_COLORS={"environment":"#3a8060","feeding":"#804020","efficiency":"#304080","social":"#802040","psychology":"#206050","prestige":"#806010","divine":"#702030"};
             const TIERS=[1,2,3,4,5,6];
             const TIER_COSTS=[50,150,350,700,1200,2000];
             // Build node positions — group by tier, lay out horizontally per tier
-            const filteredSkills=SKILL_TREE.filter(sk=>sk.category===skillCat);
+            const filteredSkills=ALL_SKILLS.filter(sk=>sk.category===skillCat);
             const byTier={};
             filteredSkills.forEach(sk=>{if(!byTier[sk.tier])byTier[sk.tier]=[];byTier[sk.tier].push(sk);});
             const NODE_W=120,NODE_H=52,NODE_GAP=14;
@@ -5652,7 +6275,7 @@ export default function ProfessorSim(){
                           {sk.requires&&(
                             <div style={{fontSize:10,color:"#5a3070",marginBottom:8}}>
                               Requires: {sk.requires.map(r=>{
-                                const rsk=SKILL_TREE.find(s=>s.id===r);
+                                const rsk=ALL_SKILLS.find(s=>s.id===r);
                                 return <span key={r} style={{color:unlockedSkills.includes(r)?"#60a060":"#7a3060",marginRight:4}}>
                                   {unlockedSkills.includes(r)?"✓ ":""}{rsk?.label||r}
                                 </span>;
@@ -5693,7 +6316,7 @@ export default function ProfessorSim(){
                           {skillScrutinyReduce<1&&<div style={{fontSize:11,color:"#a0d0e0"}}>🔇 -{Math.round((1-skillScrutinyReduce)*100)}% scrutiny gain</div>}
                           {skillScrutinyPassiveReduce>0&&<div style={{fontSize:11,color:"#a0d0e0"}}>🛡️ -{skillScrutinyPassiveReduce} scrutiny/week</div>}
                           {skillSessionCapBonus>0&&<div style={{fontSize:11,color:"#d0a0e0"}}>🌙 +{skillSessionCapBonus} session capacity</div>}
-                          <div style={{fontSize:10,color:"#5a3070",marginTop:3}}>{unlockedSkills.length} / {SKILL_TREE.length} skills</div>
+                          <div style={{fontSize:10,color:"#5a3070",marginTop:3}}>{unlockedSkills.length} / {ALL_SKILLS.length} skills</div>
                         </div>
                       }
                     </div>
@@ -5750,6 +6373,224 @@ export default function ProfessorSim(){
           )}
 
           {/* ── ACHIEVEMENTS ── */}
+          {/* ── DIVINE PANEL ── */}
+          {view==="divine"&&goddessSeen&&(()=>{
+            const ascended=students.filter(s=>s.ascensionPath&&s.ascensionPath!=="convergence");
+            const celestials=ascended.filter(s=>s.ascensionPath==="celestial");
+            const umbrals=ascended.filter(s=>s.ascensionPath==="umbral");
+            const singularities=students.filter(s=>s.ascensionPath==="convergence");
+            const blobsEligible=students.filter(s=>getStage(s.lbs).id>=10&&!s.ascensionPath);
+            return(
+              <div>
+                <p style={C.secT}>✦ Divine Realm</p>
+
+                {/* Goddess message */}
+                <div style={{background:"rgba(20,5,40,0.8)",border:"1px solid #6030c080",borderRadius:10,padding:14,marginBottom:14}}>
+                  <div style={{fontSize:9,letterSpacing:3,color:"#8050c0",marginBottom:6}}>THE GODDESS SPEAKS</div>
+                  <div style={{fontSize:13,color:"#d0b0f0",fontStyle:"italic",lineHeight:1.85}}>
+                    {singularities.length>0
+                      ? "The Singularity has been achieved. The goddess is silent, because she is pleased beyond words."
+                      : umbrals.some(u=>u.ascensionStage>=4)&&celestials.some(c=>c.ascensionStage>=4)
+                      ? "An Umbral Sovereign and a Celestial Apex exist simultaneously. The convergence is possible. The choice is yours."
+                      : ascended.length===0
+                      ? "The vision has been received. You may now ascend any Blob-stage student along the Celestial or Umbral path. Find them in the class roster."
+                      : "The paths are open. She watches your class with great interest. Make them vast."}
+                  </div>
+                </div>
+
+                {/* Blob-eligible students */}
+                {blobsEligible.length>0&&(
+                  <div style={{marginBottom:14}}>
+                    <div style={{...C.secT,marginBottom:8}}>Eligible for Ascension</div>
+                    <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                      {blobsEligible.map(s=>(
+                        <div key={s.id} style={{...C.card,cursor:"default"}}>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                            <span style={{fontWeight:700,fontSize:14,color:"#d8a8ff"}}>{s.name}</span>
+                            <span style={{fontSize:11,color:"#806090"}}>{s.lbs} lbs · {getStage(s.lbs).label}</span>
+                          </div>
+                          <div style={{display:"flex",gap:8}}>
+                            <button style={{...C.btn("#3020a0"),flex:1}} onClick={()=>ascendStudent(s,"celestial")}>✦ Celestial Path</button>
+                            <button style={{...C.btn("#800010"),flex:1}} onClick={()=>ascendStudent(s,"umbral")}>🌑 Umbral Path</button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Celestial roster */}
+                {celestials.length>0&&(
+                  <div style={{marginBottom:14}}>
+                    <div style={{...C.secT,marginBottom:8}}>✦ Celestial ({celestials.length})</div>
+                    {celestials.map(s=>{
+                      const stage=CELESTIAL_STAGES[s.ascensionStage||0];
+                      return(
+                        <div key={s.id} style={{background:"rgba(40,10,100,0.35)",border:"1px solid #6040c060",borderRadius:8,padding:10,marginBottom:6}}>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                            <span style={{fontWeight:700,color:"#c0a8ff",fontSize:13}}>{s.name}</span>
+                            <span style={{fontSize:10,color:"#9070d0",background:"rgba(80,30,160,0.3)",borderRadius:8,padding:"1px 8px"}}>{stage.label}</span>
+                          </div>
+                          <div style={{fontSize:11,color:"#8060a0"}}>{s.lbs} lbs · Stage {(s.ascensionStage||0)+1}/5</div>
+                          {(s.ascensionStage||0)<4&&<div style={{fontSize:10,color:"#503080",marginTop:2}}>Next: {CELESTIAL_STAGES[(s.ascensionStage||0)+1].min.toLocaleString()} lbs</div>}
+                          <div style={{display:"flex",gap:5,marginTop:6,flexWrap:"wrap"}}>
+                            {students.filter(t=>t.id!==s.id).map(t=>(
+                              <span key={t.id} style={{display:"flex",gap:2}}>
+                                <button style={{...C.smBtn,fontSize:9}} onClick={()=>celestialMassPull(s.id,t.id)}>↓Pull {t.name.split(" ")[0]}</button>
+                                <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,80,0.4)"}} onClick={()=>celestialMassBless(s.id,t.id)}>✦Bless {t.name.split(" ")[0]}</button>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Umbral roster */}
+                {umbrals.length>0&&(
+                  <div style={{marginBottom:14}}>
+                    <div style={{...C.secT,marginBottom:8}}>🌑 Umbral ({umbrals.length})</div>
+                    {umbrals.map(s=>{
+                      const stage=UMBRAL_STAGES[s.ascensionStage||0];
+                      return(
+                        <div key={s.id} style={{background:"rgba(50,5,5,0.55)",border:"1px solid #80101060",borderRadius:8,padding:10,marginBottom:6}}>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                            <span style={{fontWeight:700,color:"#ff8080",fontSize:13}}>{s.name}</span>
+                            <span style={{fontSize:10,color:"#cc5050",background:"rgba(80,5,5,0.4)",borderRadius:8,padding:"1px 8px"}}>{stage.label}</span>
+                          </div>
+                          <div style={{fontSize:11,color:"#a06060"}}>{s.lbs} lbs · Stage {(s.ascensionStage||0)+1}/5 · {(s.consumedIds||[]).length} consumed</div>
+                          {(s.ascensionStage||0)<4&&<div style={{fontSize:10,color:"#703030",marginTop:2}}>Next: {UMBRAL_STAGES[(s.ascensionStage||0)+1].min.toLocaleString()} lbs</div>}
+                          {(s.consumedIds||[]).length>0&&(
+                            <div style={{marginTop:5}}>
+                              <div style={{fontSize:9,color:"#903030",letterSpacing:1,marginBottom:3}}>CONSUMED:</div>
+                              {(s.consumedIds||[]).map(cid=>{
+                                const cs=consumedStudents.find(x=>x.id===cid);
+                                return cs?(
+                                  <div key={cid} style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"#c07070",padding:"2px 0"}}>
+                                    <span>{cs.name} ({cs.lbs} lbs)</span>
+                                    <button style={{...C.smBtn,fontSize:9}} onClick={()=>recoverConsumedStudent(cid,s.id)}>Release (3AP)</button>
+                                  </div>
+                                ):null;
+                              })}
+                            </div>
+                          )}
+                          <div style={{display:"flex",gap:5,marginTop:6,flexWrap:"wrap"}}>
+                            {students.filter(t=>t.id!==s.id).map(t=>(
+                              <span key={t.id} style={{display:"flex",gap:2}}>
+                                <button style={{...C.smBtn,fontSize:9,background:"rgba(60,0,0,0.5)"}} onClick={()=>umbralVoidPull(s.id,t.id)}>🌑Pull {t.name.split(" ")[0]}</button>
+                                <button style={{...C.smBtn,fontSize:9,background:"rgba(80,0,0,0.5)"}} onClick={()=>umbralConsumeStudent(s.id,t.id)}>🌑Consume {t.name.split(" ")[0]}</button>
+                              </span>
+                            ))}
+                            {divineUmbralCanConsumeHR&&(hrObserver||vaughan)&&(
+                              <button style={{...C.smBtn,fontSize:9,background:"rgba(90,0,0,0.7)"}} onClick={()=>umbralConsumeHR(s.id)}>🌑Consume HR</button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Singularity */}
+                {singularities.length>0&&(
+                  <div style={{marginBottom:14}}>
+                    <div style={{...C.secT,marginBottom:8}}>⚡ The Singularity</div>
+                    {singularities.map(s=>(
+                      <div key={s.id} style={{background:"rgba(20,20,20,0.9)",border:"2px solid #ffffff60",borderRadius:8,padding:12}}>
+                        <div style={{fontWeight:700,color:"#ffffff",fontSize:14,marginBottom:4}}>{s.name} — {CONVERGENCE_STAGE.label}</div>
+                        <div style={{fontSize:11,color:"#e0e0e0",marginBottom:4}}>{s.lbs} lbs</div>
+                        <div style={{fontSize:11,color:"#b0b0b0",fontStyle:"italic",lineHeight:1.65}}>{CONVERGENCE_STAGE.aura}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Religion panel */}
+                <div style={{background:"rgba(30,5,20,0.6)",border:"1px solid #80204060",borderRadius:10,padding:14,marginBottom:14}}>
+                  <div style={{fontSize:9,letterSpacing:3,color:"#b04060",marginBottom:8}}>⛪ RELIGION</div>
+                  {!religion?(
+                    <div>
+                      <div style={{fontSize:12,color:"#906070",lineHeight:1.7,marginBottom:10}}>
+                        Found a religion centred on an ascended blob. Devotees gather. The student body grows heavier in proximity to the sacred.
+                      </div>
+                      {ascended.length>0?(
+                        <div style={{display:"flex",flexDirection:"column",gap:5}}>
+                          {ascended.map(s=>(
+                            <button key={s.id} style={C.btn("#401020")} onClick={()=>foundReligion(s.id)}>
+                              ⛪ Found religion around {s.name} (2AP)
+                            </button>
+                          ))}
+                        </div>
+                      ):(
+                        <div style={{fontSize:11,color:"#604050"}}>Ascend a student first to found a religion.</div>
+                      )}
+                    </div>
+                  ):(
+                    <div>
+                      <div style={{display:"flex",gap:14,marginBottom:10,flexWrap:"wrap"}}>
+                        <div style={{textAlign:"center"}}>
+                          <div style={{fontSize:22,fontWeight:700,color:"#e08090"}}>{religion.devotees}</div>
+                          <div style={{fontSize:9,color:"#904050",letterSpacing:1}}>DEVOTEES</div>
+                        </div>
+                        <div style={{textAlign:"center"}}>
+                          <div style={{fontSize:22,fontWeight:700,color:"#d06070"}}>{religion.ritesHeld}</div>
+                          <div style={{fontSize:9,color:"#904050",letterSpacing:1}}>RITES HELD</div>
+                        </div>
+                        <div style={{textAlign:"center"}}>
+                          <div style={{fontSize:22,fontWeight:700,color:"#c05060"}}>{religion.worshippedIds.length}</div>
+                          <div style={{fontSize:9,color:"#904050",letterSpacing:1}}>BLOBS WORSHIPPED</div>
+                        </div>
+                        <div style={{textAlign:"center"}}>
+                          <div style={{fontSize:22,fontWeight:700,color:"#b04050"}}>{(religion.weeklyPassiveGain||0).toFixed(1)}</div>
+                          <div style={{fontSize:9,color:"#904050",letterSpacing:1}}>DEVOTEES/WEEK</div>
+                        </div>
+                      </div>
+                      <div style={{fontSize:10,color:"#704050",marginBottom:8}}>
+                        Founded week {religion.founded} · {religion.worshippedIds.map(id=>students.find(s=>s.id===id)?.name||"?").join(", ")}
+                      </div>
+                      {/* Add more blobs to religion */}
+                      {ascended.filter(s=>!religion.worshippedIds.includes(s.id)).length>0&&(
+                        <div style={{marginBottom:10}}>
+                          <div style={{fontSize:10,color:"#805060",marginBottom:4}}>Add to pantheon:</div>
+                          {ascended.filter(s=>!religion.worshippedIds.includes(s.id)).map(s=>(
+                            <button key={s.id} style={{...C.smBtn,marginBottom:3,display:"block"}} onClick={()=>addBlobToReligion(s.id)}>
+                              ⛪ {s.name} (+2 devotees)
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                      {/* Hold Rites */}
+                      <div style={{fontSize:10,color:"#904050",marginBottom:6}}>Hold a Rite:</div>
+                      <div style={{display:"flex",flexDirection:"column",gap:5}}>
+                        {RELIGION_RITES.map(rite=>(
+                          <div key={rite.id} style={{background:"rgba(40,0,20,0.5)",border:"1px solid #80204040",borderRadius:7,padding:9}}>
+                            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                              <span style={{fontSize:12,fontWeight:700,color:"#e08090"}}>{rite.label}</span>
+                              <span style={{fontSize:10,color:"#704050"}}>{rite.apCost} AP · +{rite.devoteeGain} devotees · +{rite.scrutiny} scrutiny</span>
+                            </div>
+                            <div style={{fontSize:10,color:"#905060",marginBottom:6}}>Blob gains +{Math.round(rite.blobBonus*divineRiteBlobMult)} lbs</div>
+                            <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+                              {religion.worshippedIds.map(bid=>{
+                                const blob=students.find(s=>s.id===bid);
+                                return blob?(
+                                  <button key={bid} style={{...C.btn("#50102030"),fontSize:10}} onClick={()=>holdRite(rite,bid)}>
+                                    {rite.label} for {blob.name}
+                                  </button>
+                                ):null;
+                              })}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+              </div>
+            );
+          })()}
+
           {view==="achievements"&&(
             <div>
               <p style={C.secT}>Achievements — {achievements.length}/{ACHIEVEMENT_LIST.length} unlocked</p>
@@ -6166,6 +7007,63 @@ export default function ProfessorSim(){
               </div>
             </div>
             <button style={C.btn("#5818a8")} onClick={()=>setSessionResult(null)}>Continue →</button>
+          </div>
+        </div>
+      )}
+
+      {/* ── GODDESS VISION MODAL ── */}
+      {goddessModal&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:560,background:"linear-gradient(160deg,#0a0520,#12082a,#0a0520)",border:"2px solid #8040ff80"}}>
+            <div style={{fontSize:9,letterSpacing:4,color:"#a060ff",marginBottom:8}}>✦ VISION</div>
+            <h2 style={{margin:"0 0 16px",color:"#d4aaff",fontSize:19,fontWeight:400,letterSpacing:1}}>{GODDESS_VISION.title}</h2>
+            <div style={{...C.infoBox("rgba(60,10,120,0.25)"),lineHeight:2,fontSize:13,color:"#e8d8ff",fontStyle:"italic",marginBottom:16,maxHeight:380,overflowY:"auto",whiteSpace:"pre-line"}}>
+              {GODDESS_VISION.scene}
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:7}}>
+              {GODDESS_VISION.choices.map((ch,i)=>(
+                <button key={i}
+                  style={{...C.btn("#401080"),textAlign:"left",padding:"10px 14px",lineHeight:1.5}}
+                  onClick={()=>{
+                    push(`✦ ${ch.label} — ${ch.text}`);
+                    push(`✦ The Divine skill tree is now unlocked. Visit Skills → Divine.`);
+                    setGoddessModal(null);
+                    setView("divine");
+                  }}>
+                  <div style={{fontSize:12,fontWeight:700,color:"#c8a8ff",marginBottom:2}}>{ch.label}</div>
+                  <div style={{fontSize:11,color:"#907090",fontStyle:"italic"}}>{ch.text}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── CONVERGENCE MODAL ── */}
+      {convergenceModal&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#05050f,#0a0a20,#05050f)",border:"2px solid #ffffff50"}}>
+            <div style={{fontSize:9,letterSpacing:4,color:"#ffffff",marginBottom:8}}>⚡ THE SINGULARITY BECKONS</div>
+            <div style={{fontSize:13,color:"#d0d0ff",lineHeight:1.9,marginBottom:14,fontStyle:"italic"}}>
+              <strong style={{color:"#e0b0ff"}}>{convergenceModal.student?.name}</strong> (Celestial Apex, {convergenceModal.student?.lbs} lbs) and{" "}
+              <strong style={{color:"#ff8080"}}>{convergenceModal.opponent?.name}</strong> (Umbral Sovereign, {convergenceModal.opponent?.lbs} lbs) stand at opposing ends of the divine spectrum.
+              <br/><br/>
+              The Singularity is possible. One will consume the other — and become something that has no name in any existing theology.
+              <br/><br/>
+              <em>The result will be one student at {((convergenceModal.student?.lbs||0)+(convergenceModal.opponent?.lbs||0)).toLocaleString()} lbs. The other ceases to exist as a separate entity. This cannot be undone.</em>
+            </div>
+            <div style={{...C.infoBox("rgba(20,20,20,0.6)"),marginBottom:14,fontSize:11,color:"#a0a0c0",fontStyle:"italic",lineHeight:1.7}}>
+              "{CONVERGENCE_STAGE.desc}"
+            </div>
+            <div style={{display:"flex",gap:8}}>
+              <button style={C.btn("#333")} onClick={()=>setConvergenceModal(null)}>Not yet</button>
+              <button style={{...C.btn("#202060"),flex:1}} onClick={()=>triggerConvergence(convergenceModal.student?.id,convergenceModal.opponent?.id)}>
+                ✦ Trigger Convergence — {convergenceModal.student?.name} ascends (5 AP)
+              </button>
+              <button style={{...C.btn("#600010"),flex:1}} onClick={()=>triggerConvergence(convergenceModal.opponent?.id,convergenceModal.student?.id)}>
+                🌑 Trigger Convergence — {convergenceModal.opponent?.name} ascends (5 AP)
+              </button>
+            </div>
           </div>
         </div>
       )}
