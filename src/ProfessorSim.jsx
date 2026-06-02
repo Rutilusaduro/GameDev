@@ -20,69 +20,124 @@ const WEIGHT_STAGES = [
 
 const BODY_DESCS = {
   pear:[
-    "Extremely lean legs, angular hips, very flat stomach — a wispy, almost fragile frame.",
-    "Long, lean legs and a flat tummy — a light, easy frame.",
-    "Hips filling out noticeably. Thighs touching at the top. Tummy softening.",
-    "Wide, rounded hips and thick thighs. Belly rounding out softly between them.",
-    "Hips genuinely wide now. Thighs like pillows, belly prominent. Pear shape amplified dramatically.",
-    "Enormous hips and thighs dominate her lower half. Heavy belly hanging forward. Needs extra seat room.",
-    "Her lower body is extraordinary — thighs vast, hips flared wide, belly cascading.",
-    "Walking is a slow, rolling sway. Her lower mass commands the room.",
-    "She fills any space from the hips. Footsteps heavy and deliberate.",
-    "Barely mobile. Her lower body is vast, soft geography.",
-    "Immovable. A magnificent, towering mass.",
+    // 0 — Slight
+    `A wispy, angular frame — her face is sharp at the cheekbones and jaw, neck slender, collarbones pronounced and visible. Her arms are thin enough that the tendons show at the wrist. Her torso is flat, ribs faintly countable through thin fabric. Her hips are present but narrow, her thighs long and slim with a visible gap from ankle to pelvis. She moves quickly, effortlessly, taking up very little space.`,
+    // 1 — Slim
+    `A slender, easy frame — her face is smooth and lightly rounded at the cheeks, a neat jaw, clear neck. Her arms are slim with a little softness at the upper arm. Her torso is flat with just the gentlest suggestion of a belly when she sits. Hips flare slightly, thighs touch at the very top. She moves easily, clothes falling off her without effort.`,
+    // 2 — Soft
+    `Her face has filled out softly — fuller cheeks, a rounded jaw, the angular edges gone. Her neck is smooth and slightly thicker. Her arms have lost their boniness; the upper arms are soft and rounded. Her torso shows a small, soft belly poking forward at the navel, a gentle pouch above her waistband. The dramatic lower-body development is beginning: hips visibly wider, thighs pressing together from mid-thigh down, a noticeable curve at the seatline.`,
+    // 3 — Chubby
+    `Her face is noticeably rounder — full cheeks, a soft double chin forming when she looks down, her neck thicker and smooth. Her shoulders have softened; her upper arms are pillowy, dimpled at the elbow. Her belly rounds forward visibly below the navel, a soft apron forming. But the real story is her lower half: hips wide enough to brush doorframes, thighs thick and pressed together from hip to knee, her bottom full and heavy and pulling at waistbands. She's begun to move with the slight, shifting gait of someone with real weight between her thighs.`,
+    // 4 — Plump
+    `Her face is genuinely round and full — cheeks soft and prominent, a clear double chin now, her neck smooth and thick. Her shoulders round and padded; her arms heavy, the upper arms deeply soft and swinging when she moves. Her belly hangs forward in a distinct apron, navel pointing slightly down. Below the waist she is striking: hips genuinely wide, thighs massive and round, their inner surfaces in continuous contact from groin to knee, the skin warm and dimpled. Sitting, her thighs spread wide and her bottom overflows a standard chair on both sides. Stairs are taken one at a time now.`,
+    // 5 — Heavy
+    `Her face is very full — soft round cheeks touching her shoulders when she turns, a full double chin that rests against her neck when she looks forward, small ears framed by softness. Her neck is thick and smooth, her shoulders wide and padded. Her upper arms are heavy, the flesh swinging freely, the crease at her elbow deep. Her belly hangs forward and down in a substantial apron, the lower roll resting on the tops of her thighs when she sits. Her lower body is overwhelming: hips enormously wide, her profile from behind defined by the vast sweep of her thighs and bottom, flesh overfilling every chair she attempts. Walking is a full-body event — a slow, rolling gait, her thighs displaced outward by each other's mass.`,
+    // 6 — Fat
+    `Her face is a soft, round abundance — full cheeks resting on her shoulders, layers of chin stacked smoothly, her eyes set deep in softness. Her neck has largely merged with her shoulders. Her arms hang at an angle from her sides, pushed outward by the mass of her torso; the upper arms are enormous bolsters of soft flesh, the elbows deeply dimpled. Her belly cascades forward in heavy overlapping rolls, the lowest apron hanging past her hips. Her lower body is extraordinary: hips that fill hallways, thighs that require a wide, rolling gait, the flesh of her inner thighs extending past her knees, her bottom an enormous soft shelf that dominates any surface she sits on, overflowing chairs generously.`,
+    // 7 — Very Fat
+    `Her face has become its own landscape — a soft, full moonface, cheeks wide and prominent, the chin a continuous smooth slope to her chest. Her neck is gone, replaced by the soft curve between face and shoulder. Her arms project nearly horizontally from her body, their lower surfaces deeply concave, the upper arms vast and swaying. Her torso is immense: a deep, round bust above several heavy belly rolls, the apron hanging to mid-thigh when she stands. Her lower body is the dominant fact of her figure: hips that must turn sideways to clear doorframes, thighs that brush together continuously from waist to knee, the inner flesh extended further still, her seat a vast soft monument that requires custom furniture. Movement is deliberate, a wide rolling walk, each step placed with the care of significant mass.`,
+    // 8 — Enormous
+    `Her face is soft and vast — a wide moonface framed entirely by softness, the features gentle and small in their abundance of cheek and chin. Her shoulders are rounded mountains; her arms rest at steep angles from her sides and she cannot bring them together in front of her without effort. Her torso is an enormous soft landscape: the bust heavy and wide, the belly hanging in deep, heavy rolls, the lowest apron resting on her thighs even while she stands. Her lower half is staggering — hips that fill any standard doorway from side to side, thighs that require a wide stance simply to stand upright, her bottom an overwhelming shelf of soft flesh that no standard seating can accommodate. She moves with the careful, swaying momentum of someone managing enormous weight, each step deliberate, each surface chosen for what it can hold.`,
+    // 9 — Immobile
+    `Her face is a soft, vast terrain — wide and round, the features barely distinct from the surrounding softness, her chin a smooth cascade to her chest. Her upper body is immense: arms that can barely move, hands soft and dimpled, her torso a rolling mountain of flesh that she can neither fully see over nor reach around. Her belly cascades in enormous, layered rolls, the lowest extending far in front of her. Her lower body is geography: hips that extend far beyond her shoulders when viewed from above, thighs of extraordinary circumference, each one a presence unto itself. She is barely mobile — a shuffle of inches possible on good days, her enormous mass requiring assistance for anything beyond shifting position. She fills and overwhelms any furniture built to accommodate her.`,
+    // 10 — Blob
+    `She has become something the usual descriptors don't quite reach. Her face is a soft, warm island of expression in a vast sea of flesh — gentle features, full cheeks, a serene expression that seems to float above the enormity below. Her arms are largely immobile, embedded in the great soft mass of her sides. Her torso, her lower body, her hips — the distinctions have blurred; she is a continuous, breathtaking expanse of warm, soft flesh, layered and immense, the largest thing in any room she occupies. She does not move. She receives the room. Everything is organized around her.`,
   ],
   hourglass:[
-    "Very slight frame, minimal curves, a small waist with barely any padding. Almost angular.",
-    "A classic trim figure — neat waist, balanced curves.",
-    "Curves getting bigger in every direction. Waist still visible but softening.",
-    "Very curvy — bust, belly and hips all noticeably fuller.",
-    "Curves becoming exaggerated. Real belly, wide hips, heavy bust straining fabric.",
-    "Every curve amplified enormously. Belly rounds prominently forward.",
-    "Dramatically oversized curves. Belly hanging. Clothes barely containing her.",
-    "An overwhelming figure — soft, heavy, enormous in every dimension.",
-    "Massive rolls of soft flesh. Still vaguely hourglass but on a gigantic scale.",
-    "Immense. Every part of her vast and soft.",
-    "A breathtaking, immovable mountain of curves.",
+    // 0 — Slight
+    `A fine, narrow frame — her face angular and precise, cheekbones prominent, jaw defined. Her neck is long and slender. Her shoulders are narrow, arms very thin, the muscle visible at the forearm. Her torso is almost flat with minimal chest; a small, distinct waist flares to narrow hips. Her legs are long, slim, and toned. She moves quickly and takes up very little space.`,
+    // 1 — Slim
+    `A neat, balanced figure — her face smooth and symmetrical, cheeks lightly rounded, a clean jaw. Her neck is slim. Shoulders trim, arms slender with a softness at the upper arm. Her waist nips in cleanly; her hips flare gently from it, creating the beginning of the classic curve. Her legs are toned and slim. She moves with natural ease.`,
+    // 2 — Soft
+    `Her face has filled out gently — cheeks softer, jaw line rounder, a hint of softness at the chin. Her neck is slightly fuller. Her bust has grown noticeably, straining the buttons of shirts. Her waist is still visible but has softened, losing its sharp definition. Her hips have widened further; her thighs are touching. A small, round belly has appeared between waist and hip. The curves are larger in every direction — she fills her clothes more completely.`,
+    // 3 — Chubby
+    `Her face is full and soft — round cheeks, a smooth jawline that has lost its angles, the beginning of a second chin when she looks down. Her neck is fuller. Her bust is large and heavy now, pulling at her necklines. Below it, a definite belly rounds forward, softening the once-sharp waist. Her hips are strikingly wide, her thighs thick and in constant contact, her bottom full and round. The hourglass is still visible but has grown dramatically in every dimension. She moves with a gentle sway.`,
+    // 4 — Plump
+    `Her face is genuinely round — full, soft cheeks, a distinct double chin, her neck smooth and thick. Her bust is very large, heavy, shaping everything she wears. Her waist has largely disappeared, replaced by a round, prominent belly that protrudes forward and rests over her waistband. Her hips are very wide, her thighs massively thick and dimpled, pressing together from groin to knee, her bottom overflowing chairs. The hourglass shape is now an amplified, overwhelming version of itself — every curve at enormous scale. She walks with a visible waddle.`,
+    // 5 — Heavy
+    `Her face is full and soft, cheeks resting on her shoulders when she turns, a generous double chin, small ears set in softness. Her bust is enormous and heavy, her neck thick. Her waist is gone entirely; her torso is round and full from chest to hips. Her belly is a prominent, heavy globe hanging forward below the navel. Her hips are extraordinarily wide — the widest part of a very wide figure — her thighs vast and warm, her bottom an enormous soft presence that dominates everything she sits on. Despite the extreme curves she carries herself with a kind of authority.`,
+    // 6 — Fat
+    `Her face is a soft, round fullness — cheeks wide and prominent, chin resting on her chest, her profile almost circular. Her bust is tremendous, layered with rolls above and below. Her belly is a heavy, round mass that hangs forward significantly, rolls visible above and below the navel. Her hips are staggering in their width — she turns sideways to navigate narrow spaces — her thighs enormous, dimpled, pressing together continuously, her bottom a vast soft shelf. The curves that defined her have been amplified to an extreme: enormous in every direction, overwhelming in every dimension.`,
+    // 7 — Very Fat
+    `Her face is vast and soft — a full, round moonface where the jaw, cheeks, and multiple chins merge into a warm, continuous softness. Her neck has disappeared into the mass of her shoulders and chest. Her bust is tremendous; beneath it her belly hangs in deep, heavy rolls. Her hips cannot be described in ordinary terms — they extend far beyond her shoulders in profile, requiring wide doorways and custom seating. Her thighs are enormous and constant in their contact; her bottom is a monument that overwhelms any surface it meets. She moves with the deliberate care of someone managing very great mass.`,
+    // 8 — Enormous
+    `She fills any room in an immediate, physical way. Her face is a wide, soft moonface framed entirely by soft flesh, her features gentle and sweet. Her torso is immense — bust, belly, rolls, the layered softness of a body that has expanded far beyond any standard frame. Her hips project far to either side; her arms hang at steep angles, pushed out by the mass of her sides. Her lower body is extraordinary: thighs of vast circumference, a bottom that requires specially reinforced seating, the flesh of her inner thighs hanging past her knees. She moves only slowly and with great deliberateness.`,
+    // 9 — Immobile
+    `She is vast in every direction. Her face is a small, soft, serene island in the expanse of her upper body — cheeks wide, multiple chins cascading softly. Her bust, belly, hips, and lower body have become a continuous, enormous landscape of soft flesh, rolls and folds layered upon each other, her sides extending far beyond any standard measurement. Her thighs are individually enormous; together they fill the width of a small sofa. She does not move independently. The room is organized around her comfort.`,
+    // 10 — Blob
+    `She has exceeded every category. Her face is gentle and serene, floating above an incomprehensible abundance of warm, soft flesh. The curves that once defined her — waist, hips, bust — have become part of one continuous, breathtaking mass that fills the room. She is immobile, permanent, and overwhelmingly present. Everything she rests on was built for her. Everything else adjusts.`,
   ],
   straight:[
-    "Extremely lean and angular — clothes hang off her frame, very little padding anywhere.",
-    "A lean, straight frame — minimal curves, easy movement.",
-    "Soft all over now — belly poking forward, face and arms rounding gently.",
-    "A real belly on her straight frame. Arms and face noticeably fuller.",
-    "Round belly, thick arms, full face. The straight figure is long gone.",
-    "Heavy belly dominating. Arms thick, legs chunky.",
-    "Belly hanging prominently. Big and round all over.",
-    "Enormous belly. Thick everywhere. Slow, deliberate movement.",
-    "Vast round torso, thick limbs. Furniture chosen carefully for her.",
-    "Immense. Barely mobile.",
-    "A colossal, still presence.",
+    // 0 — Slight
+    `An angular, spare frame — her face lean and angular, cheekbones and jaw prominent, the hollows of her temples visible. Her neck is long and thin. Her shoulders are narrow and bony; her arms are very thin, the wrists small. Her torso is flat in every direction — minimal chest, no visible waist curve, hip bones slightly prominent. Her legs are long and thin. She moves very easily.`,
+    // 1 — Slim
+    `A lean, straight figure — her face smooth and lightly defined, clean jaw, neat features. Her neck is slim. Her shoulders are narrow, arms slender. Her torso is flat from chest to hip with very little variation; the waist doesn't nip in. Legs are lean and straight. She moves with easy efficiency.`,
+    // 2 — Soft
+    `Her face has softened — cheeks rounder, jaw less defined, the early suggestion of a chin. Her neck is slightly fuller. Her upper arms have lost their leanness and developed a gentle softness. Her belly has appeared: a small, round pouch pushing forward below the navel, visible through fitted shirts. Her chest has filled out a little. Her hips and thighs have rounded only slightly — the softening is even across her whole body, no dramatic curves, just a uniform gentle rounding everywhere.`,
+    // 3 — Chubby
+    `Her face is noticeably fuller — round cheeks, the jaw softened, a second chin forming when she looks down. Her neck is thick and smooth. Her upper arms are padded and soft, the flesh spilling slightly over elbow joints. Her torso has rounded everywhere: a definite belly pushing forward and down, a rounded back, a chest that has grown significantly. Her hips are wider but remain relatively balanced with her upper body. Her thighs have thickened, pressing together from mid-thigh. The softening is still relatively even — she is round all over rather than dramatically bottom or top heavy.`,
+    // 4 — Plump
+    `Her face is very full — prominent round cheeks, a clear double chin, her neck smooth and wide. Her arms are heavy, the upper arms soft and swinging slightly. Her belly is the dominant feature of her torso now: a round, prominent globe hanging forward and down, rolls visible above and below the navel. Her chest is large and heavy. Her hips have widened proportionally; her thighs are thick and touch continuously. She is full and round in every direction, the weight distributed evenly across her entire body. She breathes more heavily climbing stairs.`,
+    // 5 — Heavy
+    `Her face is round and full, the cheeks wide and soft, multiple chins visible, her neck smooth and thick. Her shoulders have rounded and padded. Her arms hang with significant mass, the upper arms large soft cylinders, the forearms thick. Her belly hangs forward heavily in a prominent apron, rolls stacked above it. Her chest is very large. Her hips are wide; her thighs thick and constantly in contact; her bottom heavy and round. The weight is remarkably even — no dominant feature, just a large, full, round body in every measurement. She walks with a slow, deliberate gait.`,
+    // 6 — Fat
+    `Her face is a soft, full moonface — round cheeks sitting high, multiple chins, her neck all but absorbed into her shoulders. Her arms are large and hang at an angle, the upper arms enormous and swinging. Her torso is an immense, round mass — chest, belly, and back all at significant scale, the belly hanging in heavy rolls. Her hips and thighs and bottom match the upper body in scale, the full-body evenness maintained. She is large and round and soft in every direction, filling chairs, doorframes, and rooms without any single point of dramatic emphasis. Just everywhere.`,
+    // 7 — Very Fat
+    `Her face has become a vast, soft roundness — a moonface where the jaw and cheeks and chins form one continuous gentle curve. She moves very slowly, her arms barely able to hang at her sides, the rolls of her torso displacing them outward. Her belly hangs in deep, heavy folds. Her back is as round as her front. Her hips and thighs and bottom are enormous and match the scale of her upper body. She fills doorways and requires custom furniture. Every movement is effortful.`,
+    // 8 — Enormous
+    `She is an enormous, round presence. Her face is small and sweet at the center of a vast, soft head. Her arms project at extreme angles, mostly decorative now. Her torso is an immense round mass — front, sides, and back all equally vast — with the belly hanging far in front of her and the back equally full. Her lower body matches completely. She fills the largest chairs and extends beyond them. Movement requires care and assistance.`,
+    // 9 — Immobile
+    `She is a vast, round mass. Her face is soft and small and visible; the rest of her is a landscape — an enormous, even, continuous softness that fills the room. Her upper and lower body have lost their distinction, merging into one immense whole. She does not move. She has not moved in some time. The room has been organized around her.`,
+    // 10 — Blob
+    `A breathtaking, still, enormous presence. Her face is serene and small at the summit of what she has become. She fills the room. She is the room, in all the ways that matter. Everything else is detail.`,
   ],
   apple:[
-    "Very slim torso and limbs, almost no softness anywhere on her frame. Looks lighter than usual.",
-    "Tummy-forward figure, otherwise fairly slim.",
-    "Belly rounder and softer. Face and cheeks filling out.",
-    "A proper round belly, getting heavy. Arms and neck filling.",
-    "Big heavy belly dominating. Breathing audible after short movement.",
-    "Belly enormous and hanging forward. Arms thick, face very round.",
-    "A truly massive belly, arms like bolsters.",
-    "Belly cascading down. Hard to see past it. Very slow moving.",
-    "Enormous round belly. Fills a couch alone.",
-    "Barely moves. Belly alone fills a large chair.",
-    "Immovable. A vast, soft monument.",
+    // 0 — Slight
+    `A very slim figure that leans toward the torso: her face is lean and precise, cheekbones prominent, jaw clean. Her neck is slender. Her shoulders are narrow; arms thin. Her torso is flat with a very slight tendency to carry weight through the midsection, not yet visible but structurally present. Her hips are narrow, legs long and slim. She moves quickly and very lightly.`,
+    // 1 — Slim
+    `A slender, neatly proportioned figure — her face clean-lined and smooth, a well-defined jaw. Her neck is slim. Her torso is trim with a very gentle forward suggestion at the belly that would only be noticed on close inspection. Her hips are relatively narrow compared to her torso. Legs are slim and long. She moves easily and quickly.`,
+    // 2 — Soft
+    `Her face has rounded out at the cheeks; her jaw is softer. Her neck has filled slightly. Her torso shows its apple nature: a round, soft belly is forming decisively — the midsection is where weight goes first and most noticeably. It presses forward below the navel and softens the waistline entirely. Her arms have softened at the upper arm. Her hips and thighs remain relatively slim by comparison — the contrast is becoming noticeable.`,
+    // 3 — Chubby
+    `Her face is full and round — cheeks prominent, jaw soft, the beginning of a double chin. Her neck is thick and smooth. Her belly is the defining feature: round and forward, hanging over the waistband, the navel shifting downward. She carries the bulk of her weight here — her torso is significantly rounder than her lower half. Her arms are thickening quickly: upper arms soft and padded. Her hips and thighs are modest by comparison, giving her a distinctive round-bellied, full-armed silhouette.`,
+    // 4 — Plump
+    `Her face is very round and full — a soft, wide face, clear double chin, smooth thick neck. Her arms are heavily padded, upper arms large and soft. Her torso is the primary event: a massive, heavy belly that hangs forward in a prominent apron, resting below the navel, pulling at every waistband. Her chest has grown large. Her back is correspondingly round. Her lower half — hips, thighs, bottom — is significantly slimmer than her upper body, giving her a distinctive front-heavy appearance. Breathing is audible after any exertion.`,
+    // 5 — Heavy
+    `Her face is full and soft, multiple chins, her neck absorbed into her shoulders. Her arms are enormous — the upper arms are large bolsters of soft flesh, the forearms thick. Her belly is the axis of her body: an enormous, heavy mass that hangs far forward and down, the lowest apron resting on the tops of her thighs when she sits. Her sides are deep; her back is round and full. Her lower half remains significantly smaller — the contrast between the enormous belly and the relatively modest hips and thighs is striking. She walks with a forward lean to balance the mass in front.`,
+    // 6 — Fat
+    `Her face is a soft, round fullness — moonface features, chin resting on her chest. Her arms hang at steep angles, displaced by the mass of her torso. Her belly is extraordinary: an enormous, hanging mass that extends far in front of her, rolls deep and heavy, the lowest apron hanging to mid-thigh. Her chest and belly and back are all immense. Her lower half, while significantly grown, remains clearly smaller than the torso — the apple shape is dramatically amplified. She walks with the slow, careful gait of someone managing a very heavy front.`,
+    // 7 — Very Fat
+    `Her face is soft and round, barely visible above the mass of her upper body. She can see almost nothing of her lower half over her belly. The belly is the primary physical fact of her existence: vast, heavy, hanging in deep rolls, extending far in front and to the sides. Her arms are large but functionally mostly immobile, embedded in the rolls of her sides. Her lower body has grown but remains less vast than the enormous torso. Movement is slow and requires considerable effort and planning.`,
+    // 8 — Enormous
+    `She is defined by her belly. It is the largest thing in the room. Her face is small and soft above the mass; her arms are barely functional. The belly extends so far in front that she cannot see her feet, cannot reach past it, cannot easily navigate around it. The rest of her body — back, sides, lower half — are all very large, but everything refers back to the belly as the dominant fact. She fills the largest available furniture and overflows it.`,
+    // 9 — Immobile
+    `The belly has become the room. She sits — or is positioned — within the vast expanse of herself, her face a small, serene presence above the immense soft landscape. Her arms are embedded. Her lower body is barely distinguishable from the general mass. She does not move. Movement is no longer the relevant concept. Presence is.`,
+    // 10 — Blob
+    `An overwhelming, still presence organized around the enormous mass of her belly. Her face is gentle and present above the summit of what she has become. She fills the room. The room fills around her. Neither concept requires further description.`,
   ],
   athletic:[
-    "Pure compact muscle, almost no body fat. A runner's build taken to the extreme — very lean.",
-    "Powerful and toned — real muscle under smooth skin.",
-    "The athletic tone softening. Muscle blurring under new softness.",
-    "Thick and soft now. Muscle buried under visible fat.",
-    "Big, heavy frame. The athleticism gone — just mass now.",
-    "Very heavy, thick all over. Powerful frame under enormous weight.",
-    "Massively built — thick limbs, heavy belly, enormous presence.",
-    "A giant, soft figure. Built like a wall of warm flesh.",
-    "Fills doorways. Thunderous footsteps.",
-    "Barely fits anywhere. An enormous, immovable mass.",
-    "The biggest girl in any room. Always.",
+    // 0 — Slight
+    `A compact, powerfully lean figure — her face is clean-featured and angular, jaw defined, cheekbones visible. Her neck is lean with visible muscle. Her shoulders are broad for her frame, narrow hips below. Her arms are lean and muscular — bicep and forearm clearly defined, no excess tissue. Her torso is flat and hard, the abdominals visible, minimal body fat. Her legs are long, powerful, and very lean — quadriceps and calves defined through the skin. She moves quickly and efficiently, every movement economical.`,
+    // 1 — Slim
+    `A lean, athletic build — her face clean and defined, strong jaw, clear features. Her neck is slim and muscular. Broad shoulders, arms with visible tone and muscle definition. Her torso is flat and firm. Her legs are strong and toned — the muscle definition of someone who trains regularly. She carries herself with the upright posture and fluid movement of an athlete.`,
+    // 2 — Soft
+    `Her face has softened slightly — the sharp definition of her cheekbones muted by a new roundness at the cheeks. Her neck is slightly thicker. Her shoulders are still broad and strong. Her arms have retained much of their muscle but a new softness has settled over it — the definition remains but is less sharp. Her belly has appeared: a firm, round softness pushing forward at the midsection where there was nothing before. Her thighs have thickened with the combination of muscle and new fat, pressed against each other at the top.`,
+    // 3 — Chubby
+    `Her face is visibly rounder — full cheeks, a softer jaw, the athletic sharpness replaced by a rounded warmth. Her neck is thick. Her shoulders remain broad and strong. Her arms are now a mix of muscle and soft tissue — the bicep still present under a layer of padding. Her belly is definitively round and forward-hanging: a soft, heavy mound that sits below her ribcage, the muscle structure buried. Her thighs are thick and heavy, still powerful but soft, pressing together from the hip. Her bottom has grown substantially — round and prominent, straining fabric.`,
+    // 4 — Plump
+    `Her face is full and round — prominent cheeks, a double chin forming, her neck smooth and wide. Her shoulders are still broad, but the narrowness has gone; she is wide at the shoulder and continuing to widen below. Her arms are heavy — thick upper arms, the muscle buried under substantial padding. Her belly hangs forward heavily, a full apron below the navel, the old abdominal definition entirely gone. Her thighs are massive — the athlete's quadriceps now deep under layers of soft, heavy flesh. Her bottom is enormous and round. She moves with the particular gait of someone both powerful and very heavy.`,
+    // 5 — Heavy
+    `Her face is soft and full — round cheeks, clear double chin, her neck thick and strong-looking. Her shoulders are very broad, her back wide. Her arms are large: the upper arms are very thick, soft-over-muscle, hanging with real weight. Her torso is enormously thick — the chest, belly, and back all substantial. The belly hangs forward in a prominent apron. Her lower half continues the theme: thighs of extraordinary thickness, her bottom enormous and dominant. The former athlete's frame carries this weight powerfully — there is still something powerful in the way she takes up space — but the power is now the power of mass.`,
+    // 6 — Fat
+    `Her face is a full, round softness — cheeks wide and prominent, multiple chins, her neck thick and short. The broad shoulders remain, giving her an imposing width. Her arms are very large — the upper arms enormous soft cylinders that swing when she moves. Her torso is vast: deep chest, a huge belly hanging in rolls, a back equally round. Her thighs and bottom are tremendous — she takes up the space of two standard seats. She moves with a slow, rolling gait, her body a massive, warm presence.`,
+    // 7 — Very Fat
+    `Her face is soft and round, floating above the enormous mass of her upper body. Her shoulders — still broad — disappear into the rolls of her torso. Her arms are very large, barely mobile, hanging at steep angles. Her belly hangs in deep, heavy rolls. Her thighs are individually enormous; together they require a very wide stance. Her bottom cannot be accommodated by standard furniture. She moves deliberately, slowly, with the careful authority of someone managing great mass.`,
+    // 8 — Enormous
+    `She is a very large person. Her face is small and soft above the immensity of her body. Her shoulders and the width of her former athletic frame now form the foundation of something far greater — an enormous, wide, deep, heavy presence. Her belly extends far in front of her. Her thighs are vast. Her arms are largely decorative. She fills and overflows any standard chair. Movement requires planning and assistance.`,
+    // 9 — Immobile
+    `A vast, still presence. Her face is serene above the enormous expanse of her body — the breadth of her former athletic frame is now the breadth of something far greater. She does not move independently. Her body fills the room in the immediate, physical sense. The furniture was built for her.`,
+    // 10 — Blob
+    `She was an athlete. The body remembers it in the way it holds the mass — upright, vast, and permanent. Her face is gentle and present above what she has become. She fills the room. She is the heaviest, most permanent thing in it. Everything is organized around her.`,
   ],
 };
 
@@ -2312,6 +2367,936 @@ const DIVINE_SKILL_TREE = [
 
 const ALL_SKILLS = [...SKILL_TREE, ...DIVINE_SKILL_TREE];
 
+// ══════════════════════════════════════════════════════════════════
+// EXPANSION PACK 2 — THE EVOLUTION
+// Evolved form content: reactions, diary, outfits, activity, skills
+// Index 0 = weight stage 5 (Heavy), index 5 = weight stage 10 (Blob)
+// ══════════════════════════════════════════════════════════════════
+
+const EVOLVED_REACTIONS = {
+  // ── ATHLETE paths ──────────────────────────────────────────────
+  sumo:[
+    "First real match tonight. The ring made a sound I've never heard before. I made that sound. I won.",
+    "Going three-for-three now. People in the circuit are starting to know my name. I love the ring.",
+    "Regional tournament this weekend. I trained all week. The training is mostly eating. I'm okay with this.",
+    "National spotlight. Cameras, crowds, the announcer can barely describe what they're seeing. Neither can I.",
+    "I am the thing opponents have nightmares about. I have not lost in fourteen months. I do not plan to start.",
+    "I've retired from competitive sumo. The ring was too small. I just exist now, and that's enough.",
+  ],
+  eating_competitor:[
+    "First contest. Timer on the table, crowd watching. I finished three minutes early. Walked out knowing.",
+    "Circuit regular now. The other competitors nod when I walk in. The MCs know how to say my name.",
+    "New regional record. The old one stood for four years. It stood for four minutes against me.",
+    "National contender. Sponsorships. My face on a hot sauce bottle. I accept all of this.",
+    "World-record territory. The table can barely hold what I put away. The crowd barely breathes.",
+    "I've eaten everything. I've broken everything. Now I just eat, and that is the entire life.",
+  ],
+  // ── INFLUENCER paths ────────────────────────────────────────────
+  feedee_creator:[
+    "First dedicated feedee post went up at midnight. Woke up to more comments than I've ever had. Oh.",
+    "Subscribers keep coming. The algorithm knows what I'm doing. The algorithm approves.",
+    "A clip went viral. Eight million views. Not what I expected. Everything I expected.",
+    "This is my full-time career now. Deliveries every day. Film everything. The brand is the body.",
+    "I am a cultural figure in a space I didn't know existed six months ago. I built this. It built me back.",
+    "The content is endless. So am I. We have become the same thing.",
+  ],
+  body_positive_creator:[
+    "Rebranded the channel. First body-positive post up. My old audience is confused. My new one is enormous.",
+    "First brand deal. A clothing company that actually means it. The cheque cleared. I bought dinner.",
+    "TEDx talk. Twelve minutes, full house. The standing ovation went on long enough to be uncomfortable. Good.",
+    "My face is on a billboard. I drove past it and cried and then ate a full meal and cried more.",
+    "Cultural touchstone is a phrase people use about me in articles. I eat well and feel enormous and correct.",
+    "The platform is a legacy now. The body is the argument. The argument has been won.",
+  ],
+  // ── CHEERLEADER paths ───────────────────────────────────────────
+  eating_captain:[
+    "Organized the first squad eating competition. Ran it like a cheer meet. We swept it. I swept it.",
+    "The squad is committed now. We train twice a week. Training is mostly eating. The results speak.",
+    "Regional circuit scouts showed up to watch us. They had not expected us to be this organized.",
+    "National invite. We're representing the school at a competitive eating championship. Regalia included.",
+    "I am the most decorated eating captain in my school's history. The trophy case needed an extension.",
+    "The squad runs itself now. I made something permanent. Also I am permanent.",
+  ],
+  big_squad_captain:[
+    "Told the squad: no more size rules, no more weigh-ins. Two girls cried. One said she'd been waiting years.",
+    "New pledges are choosing us specifically for the culture. Word has spread. The chapter is full.",
+    "National cheerleading press wrote about us. 'The squad that changed the conversation.' Yes we did.",
+    "Speaking at the national Greek leadership conference. My slides are very good. My presence is better.",
+    "Coaches at other schools have quietly stopped the weigh-ins. I'll take the quiet version too.",
+    "What I built is permanent. The culture outlasts the captain. I am very large and very proud.",
+  ],
+  // ── BOOKWORM paths ──────────────────────────────────────────────
+  eating_diarist:[
+    "First newsletter issue. Thirty subscribers. Thirty is enough to start. I sent it. I ate dinner after.",
+    "Six hundred subscribers. A literary agent emailed. I reread it four times before replying.",
+    "Book deal. Two-book deal, actually. The second one hasn't been written yet. I'm already planning the meals.",
+    "Published. The reviews say 'intimate,' 'unsettling,' 'surprisingly funny.' All correct. I ate at the launch.",
+    "The book is being taught in a food studies course at a university I didn't attend. I sent them a note.",
+    "I wrote the thing. It exists. The writing and the eating were always the same act. I understand that now.",
+  ],
+  food_researcher:[
+    "IRB approved the self-study. Officially a research subject. The data I'm collecting is extraordinary.",
+    "The institution is taking the study seriously. I have a lab. I have a grant application in. I have snacks.",
+    "First publication. A real journal. The reviewers called the methodology 'novel.' The methodology is me.",
+    "Cited in three other papers. One of them is from a program I applied to and didn't get in. Interesting.",
+    "Keynote at a nutrition conference. I arrived to the auditorium. The auditorium was not entirely prepared.",
+    "The researcher and the research subject have fully merged. The experiment is complete. The subject remains.",
+  ],
+  // ── GAMER paths ─────────────────────────────────────────────────
+  eating_streamer:[
+    "First gaming + eating stream. Thirty-two viewers became four hundred in two hours. The chat was chaos.",
+    "Regular mukbang gaming content now. The viewers who came for the games stay for the eating. Both grow.",
+    "Community of dedicated viewers who follow every meal and every match. They send food suggestions. I use them.",
+    "Platform featured me. The algorithm loves this exact combination. I've been doing it natively for months.",
+    "Mukbang gaming legend. My clips get remixed. My food orders are documented by fans.",
+    "The stream is always on. The eating never stops. I am the stream. The stream is me.",
+  ],
+  speed_eater:[
+    "First timed challenge. Beat the record by forty seconds. The chat went silent and then exploded.",
+    "Records are falling in order. I write them down. Then I break them. The list is long now.",
+    "Regional eating championship, plus a speedrun of the new DLC, same weekend. Both won. Efficient.",
+    "National recognition — two records in one week. The gaming community and the eating community overlap more than expected.",
+    "I hold simultaneous records in gaming and competitive eating. I'm told this is unprecedented. Obviously.",
+    "I've transcended both worlds. Speed means nothing when you're this size, this full, this complete.",
+  ],
+  // ── SORORITY paths ──────────────────────────────────────────────
+  chapter_hostess:[
+    "First organized chapter feast. Twelve courses. Nobody left early. Nobody left not full.",
+    "The feasting traditions are established now. Wednesday is feast night. Everyone knows.",
+    "Other chapters are talking about our Wednesday feasts. Three people transferred in specifically for them.",
+    "Greek-wide, our chapter is known for the food. The administration has noticed. They've been very quiet about it.",
+    "Alumni are funding the feasts. A former sister sent a check with 'for the table' in the memo line.",
+    "I am no longer chapter president. I am the feast. The feast continues without me. This is correct.",
+  ],
+  body_positive_greek:[
+    "Proposal: end the weigh-in tradition, end the size requirements. One sister voted against. She later apologized.",
+    "New pledges are choosing us because of what we stand for. The class is the largest we've ever had.",
+    "National Greek press covered us. The article used the word 'radical' twice. We ordered pizza to celebrate.",
+    "Speaking at the national Panhellenic leadership conference. My chapter is in the front row. We fill a row.",
+    "The national organization quietly changed its guidance on member wellness. We were mentioned in the notes.",
+    "What I started is permanent. My chapter grows. My body grows. Everything I built is real.",
+  ],
+  // ── OVERACHIEVER paths ──────────────────────────────────────────
+  metrics_eater:[
+    "Spreadsheet active. Intake, rate, progression, projections. The data is already more interesting than I expected.",
+    "Optimized eating schedule across three meal windows. The efficiency is measurable. The gains are documented.",
+    "Personal record logged and verified. The methodology is rigorous. The results are extraordinary.",
+    "Competing on data quality as much as outcomes. My documentation has been cited by two competitors.",
+    "Legendary for the data alone. Someone made a subreddit dedicated to my methodology. I check it daily.",
+    "The spreadsheet has four thousand rows. I can no longer update the later ones. The early data holds.",
+  ],
+  food_scientist:[
+    "IRB-approved self-study, institutional backing. I am officially a research subject and lead researcher simultaneously.",
+    "Lab access secured. I have a proper methodology. I have documented everything. I have a second breakfast.",
+    "First peer-reviewed publication. The journal sent reviewer notes. Reviewer 2 was, as always, an obstacle.",
+    "Prestigious citations in three major journals. My advisor asked to be on the next paper. I said I'd consider it.",
+    "Keynote at the international food science symposium. The room was not large enough for both the talk and me.",
+    "The experiment is complete. The data is unambiguous. The subject is enormous and entirely at peace.",
+  ],
+  // ── ARTSY paths ─────────────────────────────────────────────────
+  installation_artist:[
+    "First body-positive installation opened. One critic said 'challenging.' I consider that a win.",
+    "Gallery interest from two cities. I will ship the work. I will also ship myself. The logistics are complex.",
+    "Review in a major publication: 'unapologetically confrontational.' I am confronting them right now.",
+    "Major exhibition, three rooms, one of them is me. Critics don't know where the art ends.",
+    "Retrospective. A retrospective of someone who is still in progress. I appreciate the confidence.",
+    "The body IS the final installation. The work and the artist have merged. I am the piece.",
+  ],
+  food_photographer:[
+    "First food photography show: sold out. The prints were expensive. They bought them anyway.",
+    "Gallery show opened. People stood in front of the biggest prints for a long time without speaking.",
+    "A book deal: my images with my text. The publisher said the combination was 'unprecedented.' Good.",
+    "Collector interest. A museum in Helsinki acquired three prints. I ate something extraordinary that night.",
+    "Museum acquisition in three countries. The work is in permanent collections. So is the artist.",
+    "The photographer became the subject. The subject has become the photograph. I've been hanging here for years.",
+  ],
+  // ── QUIET paths ─────────────────────────────────────────────────
+  anonymous_blogger:[
+    "First post went up at 2am. I didn't sleep. By morning, forty-three people had read it. That's forty-three.",
+    "The following is growing. I don't know most of them. They don't know me. That feels exactly right.",
+    "A post went viral. A journalist is trying to find me. I am very findable and also perfectly hidden.",
+    "Journalists and podcasters want interviews. I do them by email only. My words, my body, my rules.",
+    "I am a cultural phenomenon with no face attached. The anonymity is the whole point. Also the food.",
+    "The blog and the body are the same record now. I wrote everything and gained everything. Both are real.",
+  ],
+  asmr_creator:[
+    "First ASMR eating video. I whispered. I chewed slowly. Three hundred people watched in the first hour.",
+    "Dedicated following, small and loyal. They leave very quiet comments. We understand each other.",
+    "The algorithm found me. New viewers every day. They say it helps them sleep. I say I'm honored.",
+    "Mainstream crossover. A content creator I watch cited me as an influence. I watched it four times.",
+    "A therapist used one of my videos in a treatment session. She asked my permission first. I gave it.",
+    "The sound of me eating has become something people find comfort in. I find comfort in the eating. We're even.",
+  ],
+  // ── TRANSFER paths ──────────────────────────────────────────────
+  campus_legend:[
+    "The dining hall staff knows my order before I arrive. A booth has been 'mine' for three months.",
+    "Stories are spreading. A freshman I've never met referenced 'the legend of the dining hall.' That's me.",
+    "The booth now has my name on it. Unofficially. Then officially. The dining director did it herself.",
+    "Future students hear about me before they arrive. A campus tour guide mentioned me by name. She was kind.",
+    "I am campus mythology. Incoming classes are told about me during orientation. I have heard this directly.",
+    "I have become the campus. The campus has grown around me. We are one thing now.",
+  ],
+  food_tourist:[
+    "Systematic expedition through every cuisine available within thirty miles. Documenting everything.",
+    "The blog has readers from three countries. Two of them recognize dishes from their home regions in my posts.",
+    "A publication from my home country ran a feature. My family read it. My grandmother approved of the portions.",
+    "Two book deals — one from here, one from home. Both publishers want the same story. I can give them both.",
+    "Cultural ambassador is the phrase they use. I prefer 'someone who ate everything and wrote it all down.'",
+    "I have tasted everything. I have grown into everything. The journey and the destination are the same.",
+  ],
+};
+
+const EVOLVED_DIARY = {
+  sumo:[
+    `Training is eating and eating is training and the line has dissolved entirely. I win matches I shouldn't win, against opponents who are technically superior, and the margin between us is exactly the weight I've put on since we last met. This is a documented phenomenon. I have become the documentation.`,
+    `I have a handler now — someone who manages my match schedule, my weight class, my meal plan. The meal plan is the most interesting document I've ever been party to. It is more ambition than restriction. I have never been so well fed in the service of a legitimate purpose.`,
+    `Regional tournament. I walked out to the ring and the crowd made a sound I felt in my sternum. Not fear, not quite awe — something in between that I don't have a word for. I know what it means, though. It means they understand what they're seeing. I understand it too.`,
+    `National. My name in brackets on a printed draw sheet. I looked at it for a long time. The name fits differently now than it did before I started. Everything fits differently. I have grown into the sport and the sport has grown into me.`,
+    `I have not lost in so long that the wins have stopped feeling like events and started feeling like weather — inevitable, continuous, the background condition of my life. The opponents are good. I am better. I am heavier. These are the same sentence.`,
+    `I've retired from competition. The ring held me for as long as it could. Now I exist beyond the brackets, beyond the records. The weight is mine. The victories are on record. I am what remains after all of that.`,
+  ],
+  eating_competitor:[
+    `The timer is honest. It doesn't negotiate. It runs, and at the end of it either the plate is clear or it isn't, and tonight it was clear four minutes before the buzzer and I sat there with my hands in my lap watching the others finish and felt something I can only call certainty.`,
+    `Circuit regular. I have a slot on the roster at four regional events. My face is on a flyer. This is surreal and also completely logical — I am very good at this, and the circuit needs people who are very good at this. The flyer has a good photo.`,
+    `The regional record stood for four years. It stood for four minutes against me. I was told this afterward, as if I hadn't been there, as if I hadn't felt the record give way the moment I exceeded it. I felt it. I kept going.`,
+    `Sponsorships now. A hot sauce brand, an energy drink, a restaurant chain doing promotional events. My agent — I have an agent — negotiated all of it. I ate through the signing meeting. Everyone found this appropriate.`,
+    `The world record is a number I keep in my head. I wake up with it. I eat toward it. I am not there yet. I am approaching it with the same steady inevitability I bring to everything else. The number is getting closer. So am I.`,
+    `I have eaten everything on every circuit in this country and some in others. The records are documents of a life. I am done chasing them. I just eat now, freely, completely, without a timer or a crowd — just appetite and the endless satisfaction of filling it.`,
+  ],
+  feedee_creator:[
+    `I posted the first dedicated video at midnight because I was nervous and midnight felt like the right time to do something nervous. By morning there were comments I hadn't expected, from people I hadn't imagined existed, saying things that made me sit down and eat something large and think for a long time.`,
+    `The subscriber count passed a threshold I had written on a notepad as a goal three months ago. I crossed it off. I ate dinner. I wrote a new number. The new number already feels achievable. Everything feels achievable now.`,
+    `Eight million views on a clip I almost didn't post. I keep opening the analytics and closing them. The numbers are not imaginary but they feel imaginary. I am a real person eating a real meal and eight million people watched it and found something true in it.`,
+    `This is my job. The deliveries come every day. I film everything. The channel is monetized and growing and I have a management company and a brand deals manager. None of this was the plan. The plan was a notebook and a camera. This is what the notebook became.`,
+    `I am a figure in a community I helped build. People tag me in their own journeys. They write to say the videos changed something for them. I write back when I can. I eat between responses. The community and the eating have become the same act.`,
+    `The content is endless because I am endless. There is always another meal, another video, another subscriber who finds something in the footage that resonates. I have become something larger than I planned. The scale is both literal and figurative. I have made peace with both.`,
+  ],
+  body_positive_creator:[
+    `The rebrand felt like a risk. It was a risk. The algorithm dipped for six weeks and then recovered, and what it recovered with was twice the audience and three times the engagement and a comments section that reads like letters I wish I'd received when I was eighteen.`,
+    `The brand deal came through. A clothing company that makes things in real sizes and takes real photos of real bodies. I wore the dress on camera and cried slightly and my editor left it in and that clip has more views than anything else I've posted this year.`,
+    `Twelve minutes on a TEDx stage. I wrote and rewrote the talk for three months. I delivered it in twelve minutes and it felt like it lasted thirty seconds. The standing ovation was real and sustained and I stood there accepting it feeling larger than I ever have.`,
+    `My face on a billboard. On a highway I drive regularly. I saw it and had to pull over and sit with it for a moment. Then I drove home and ate a full meal and cried again. I am very large on a billboard on a major highway and I am correct.`,
+    `Cultural touchstone. Journalists use that phrase in profile pieces. Students cite me in thesis papers. I get speaking requests from places I've never been. I eat well and exist largely and apparently that has become something worth studying. I am the study.`,
+    `The platform is legacy. The body is the argument. The argument did not require me to be small or quiet or apologetic, and I wasn't, and now I am enormous and permanent and the work is done in the sense that it continues without requiring my active defense. That is what winning looks like.`,
+  ],
+  eating_captain:[
+    `I ran the first squad eating competition the same way I run cheer meets — registration, seeding, brackets, a trophy. The trophy was my idea. The squad thought I was joking. I was absolutely not joking. We swept the competition. I swept everything.`,
+    `Twice-a-week training now. The squad has committed. We eat together and time ourselves and track our progress on a whiteboard in the gym. The whiteboard is very detailed. I made a spreadsheet. The spreadsheet is also very detailed.`,
+    `Regional scouts came to our last competition. They arrived expecting a novelty act and left with clipboards full of notes. I handed them our training documentation on the way out. They seemed surprised that it existed. It is extensive.`,
+    `National invite. The letter arrived and I read it twice and then stood in the gym and looked at the trophy case and thought about the squad I had before and the squad I have now and the distance between them. Then I called an emergency practice and ordered pizza.`,
+    `Most decorated eating captain in this school's history. The athletic director came to our last competition. She presented the trophy herself. Afterward she said: 'I didn't know this was what you were building.' I said: 'I always knew.' That is true.`,
+    `The squad runs itself. The traditions are set, the training is codified, the culture is established. I made something that will continue. I am the largest person in any room I enter and I made something permanent and I am at peace with both of these facts.`,
+  ],
+  big_squad_captain:[
+    `I stood in front of the squad and said: no more weigh-ins, no more size requirements, no more conversations about who fits the uniform before we talk about who can do the work. Two girls cried. One left. Six signed up the next week.`,
+    `Pledges are choosing us. They say they heard about the culture — that we celebrate what bodies can do rather than what they look like. This is accurate. The chapter is the fullest it has been in years. Some of the fullness is literal. I'm proud of all of it.`,
+    `A journalist called for a quote. Then they asked for a sit-down. The article ran with the headline 'The Squad That Changed the Conversation.' I read it three times and ate something good and thought about what a long way this has come.`,
+    `National Greek leadership conference. I spoke for forty minutes. My chapter was in the front row. At the end there was a long silence and then the room started. I said afterward that the silence was the best part. That's true.`,
+    `The national organization changed its guidance. Quietly. In a footnote of a wellness document. We were mentioned. My name was mentioned. I filed it and made dinner and told the squad and they screamed and we ate together.`,
+    `I built a thing that doesn't need me to sustain it anymore. The culture lives in the chapter, in the pledges, in the alumnae who write back and say it changed how they think about their own bodies. That is permanent. I am permanent. We are the same size in different ways.`,
+  ],
+  eating_diarist:[
+    `The newsletter went out to thirty people. Thirty. I wrote it like an assignment I was grading myself on, which means I rewrote the opening line eleven times and sent it at 11:47pm. Thirty people opened it by morning. Thirty felt like a beginning.`,
+    `An agent emailed. A real literary agent, with a list of authors I've actually read. She said she'd been following the newsletter and had ideas. I reread the email six times. I ate a full breakfast before I replied. The reply took four drafts.`,
+    `Two-book deal. The first is memoir. The second is something she called 'a companion piece' which I am interpreting as permission to write whatever I want. Both advances cleared. I bought myself a dinner I'd been meaning to have for six months.`,
+    `Published. The book is out in the world. Reviews say 'intimate,' 'funny in a way that catches you off guard,' 'a document of a transformation that refuses to apologize.' That last one is accurate. I did not apologize. Not once.`,
+    `The book is being taught. A food studies course assigned it. A gender studies course included it in a unit. I went to one of the classes and sat in the back and listened to students argue about sentences I'd written and felt something I didn't have a word for until later: permanence.`,
+    `The writing and the eating were always the same act — both a form of taking in, of accumulating, of making something mine. I understand that now the way I understand my own body: completely, without effort, as a fact that was always true and simply needed time to become obvious.`,
+  ],
+  food_researcher:[
+    `The IRB paperwork was forty-seven pages. I am the only researcher I know who is also the primary research subject. The committee found this unusual. They approved it. The methodology section is the most honest thing I've ever submitted.`,
+    `I have a lab space. I have a grant. I have a meal plan that is technically research infrastructure. The institutional support for what I'm doing has exceeded my expectations at every stage, which suggests either that my work is good or that the institution doesn't fully understand what I'm studying. Possibly both.`,
+    `Published. Peer-reviewed, actual journal, impact factor above two. Reviewer 2 called the self-study design 'ethically complex.' Reviewer 1 called it 'a methodological innovation.' The editor agreed with Reviewer 1. I agree with the editor.`,
+    `Three citations. A paper at a school I didn't attend cited my methodology. A paper I disagree with cited my findings. A paper I admire cited both. Citation counts are a strange kind of conversation. I've entered it. I'm staying.`,
+    `Keynote. The conference was not prepared for the physical reality of having me at the podium. The podium was adjusted. The microphone was adjusted. The audience adjusted. I gave the talk. The Q&A ran thirty minutes over scheduled time. Nobody left.`,
+    `The experiment has concluded in the sense that the study period has ended. The subject has not concluded. The data is complete. The researcher remains. I am both, simultaneously, at the scale that data set always implied I would reach. This was always the endpoint.`,
+  ],
+  eating_streamer:[
+    `First gaming + eating stream. I was nervous in a way I haven't been nervous about streaming in years. Within two hours the viewer count had done something I'd never seen it do before, and the chat was completely alive, and I understood that I had found the correct format.`,
+    `The viewers who came for the games stay for the eating. The viewers who came for the eating are learning the games. The crossover is larger and more genuine than I expected. The snacks arrive in boxes now. I have a dedicated shelf.`,
+    `My community follows every meal and every match. They know my order at six different restaurants. They track my high scores. They send delivery gifts in amounts that require a second fridge. I have a second fridge. I bought it with stream revenue.`,
+    `The platform featured my channel in a collection titled 'New Formats.' I've been doing this for months. The platform finally noticed. The algorithm turned on like a light. The viewer count doubled in a week. I ate through the entire surge.`,
+    `Mukbang gaming legend. My clips get remixed and cited and reposted. My setups and orders are documented on a fan wiki I did not create. I had a conversation with another creator about this and she said 'you built a genre.' That might be accurate.`,
+    `The stream is always on in some sense. I eat in front of people every day and they watch and something genuine happens in that watching. I don't fully understand what it is. I don't need to. The food is real. The audience is real. The rest is detail.`,
+  ],
+  speed_eater:[
+    `Timer ran. I finished forty seconds early. The crowd didn't know how to react. The MC found words eventually. I sat with my hands folded and waited, because there was nothing else to do — the plate was empty, the record was over, I was done.`,
+    `Records are falling in sequence. I write each one down in a notebook before I break it. The notebook is three-quarters full. The remaining quarter is projections. The projections keep proving accurate.`,
+    `Regional eating championship on Saturday, DLC speedrun on Sunday. Both won. I slept for twelve hours after and woke up hungry and started planning the next one. The two disciplines feel identical to me now: set a target, exceed it, rest, repeat.`,
+    `My name shows up in two different competitive communities now. They've started to overlap — people show up to eating competitions who know my gaming records, and vice versa. I hold simultaneous records. It's unprecedented. Apparently.`,
+    `World-record territory on multiple tables. I've broken things that people thought were unbreakable. The documentation is meticulous. The methodology is reproducible. Nobody has reproduced it. I suspect nobody will.`,
+    `Speed doesn't mean anything at this size and weight and scale of appetite. I've transcended the timed format. I eat until I'm done, and when I'm done I'm done, and the numbers are beside the point. The life is the point. The eating is the point.`,
+  ],
+  chapter_hostess:[
+    `Twelve courses. I planned every one of them, sourced every ingredient, set every table. The chapter arrived uncertain and left full and grateful and different in a way I can't fully quantify but absolutely recognize. We did something real in that dining room.`,
+    `Wednesday feast night is established. The chapter knows it, the schedule reflects it, the kitchen is stocked by Tuesday. I have become the person who feeds everyone, which is a role I did not apply for and have accepted completely.`,
+    `Three people transferred specifically for the Wednesday feasts. I know this because they told me. They found out about the chapter through secondhand accounts of the food. I am building the chapter's reputation through abundance. I'm okay with this.`,
+    `The administration noticed. A wellness coordinator came to speak with me. I served her the Wednesday feast menu and she left with a full tupperware container and has not filed anything. I consider this a diplomatic victory.`,
+    `Alumni are funding the feasts. A check arrived with 'for the table' in the memo line, from a sister who graduated seven years ago. She heard about the chapter from someone who heard about it from someone else. The feast has a legacy.`,
+    `The chapter hosts itself now. The traditions are real, the recipes are documented, the Wednesday ritual continues. I made a culture. I am also a culture. Both will outlast me in one direction or another.`,
+  ],
+  body_positive_greek:[
+    `The proposal passed with one abstention. The one who abstained came to my room three days later and said she'd been thinking about it and changed her mind. The vote is now unanimous. I considered this a signal.`,
+    `Pledges are choosing us because of what we stand for. They say it at rush: 'I heard about your chapter.' They mean the culture, the size acceptance, the fact that we eat dinner together and nobody comments on portions. We fill every slot in the pledge class.`,
+    `National press. The article was sympathetic and got everything right and quoted three of my sisters by name. We printed it. We put it on the chapter bulletin board. We ordered pizza to celebrate. The irony was appreciated.`,
+    `I spoke for forty minutes at the Panhellenic conference. My chapter was in the front row. When it was over and the applause had settled, a chapter president from another school came up and said: 'We've been doing the weigh-ins wrong. We're stopping.' I didn't say anything. I just nodded.`,
+    `The national organization changed the wellness guidance. Three sentences, in a footnote, in the appendix. My name was in one of those sentences. A footnote in a document that governs thousands of chapters. That is not nothing.`,
+    `I built it. The culture lives in the chapter and in the chapters that modeled themselves on ours and in the pledges who become sisters who become alumnae who go out and change other things. I made something that makes things. That is enough.`,
+  ],
+  metrics_eater:[
+    `The spreadsheet started as a joke. Three weeks in it is absolutely not a joke. I have intake data, rate data, projection models, variance analysis. The methodology would satisfy a peer reviewer. The results would concern one.`,
+    `Optimized meal windows: three primary, two supplementary, one extended. The optimization was based on absorption modeling I did myself using secondary sources and primary experience. The gains are measurable. The measurements are precise.`,
+    `Personal record. Verified by three independent measurements and confirmed against prior entries. The methodology is sound. The record stood for eight days before I broke it again. I documented both.`,
+    `Two competitors have cited my tracking methodology in their own documentation. I read their citations. The methodology was accurately represented. I sent each of them a note. I also quietly noted that their numbers are still below mine.`,
+    `My data has been requested by four researchers, two dietitians, and one journalist. I declined the journalist. I am considering the researchers. The data is mine. I collected it in real time, with my own body. I decide what it's for.`,
+    `The spreadsheet has four thousand rows. The most recent rows are blank because I can no longer update them manually. My phone does voice entry. The data continues. I continue. The last entry will be made by someone else, eventually. That is fine.`,
+  ],
+  food_scientist:[
+    `The IRB approval arrived on a Tuesday. I read it three times, ate a late breakfast, and began the study that morning. I am the most motivated research subject I've ever encountered, which is saying something, because I've also been the researcher.`,
+    `Lab access, institutional email, a key to a room with proper scales and proper documentation. I am official. I am also the most interesting thing that has ever happened in this lab, and I know because I've read the prior study files.`,
+    `Published. The journal's editorial board noted 'methodological originality' in the acceptance letter. Reviewer 2 asked whether the self-study design introduced bias. I wrote back four pages explaining that the bias is the methodology. It was published anyway.`,
+    `A researcher at a university I applied to and didn't get in has cited my work in two papers. I emailed to say thank you. She responded with a collaboration invitation. I accepted. The collaboration involves my body. I find this appropriate.`,
+    `Keynote at the international symposium. I arrived. The auditorium adjusted. I gave the talk. Every slide was a data point from my own body. The Q&A lasted an hour. I had a meal during the Q&A. Nobody found this inappropriate. It was, in fact, exactly right.`,
+    `The experiment is complete in the sense that the study period has ended and the papers have been filed and the citations are accumulating. The subject has not ended. I remain — large, documented, at peace. The science and the body are the same record.`,
+  ],
+  installation_artist:[
+    `First installation: a room. Mirrors, photographs of my body at each stage, audio of my voice describing what I saw in the mirror at each weight. The opening was quiet for three minutes. Then someone started talking and the conversation didn't stop.`,
+    `Two galleries made offers for the next show. One is in another city. I am shipping the work and also shipping myself, which required a logistics conversation that I found genuinely funny and also slightly absurd. I am the largest thing in both shipments.`,
+    `The review in the major publication called it 'a confrontation with comfort and with scale.' I read that and ate something and thought: yes. That is precisely what it is. I am confronting you. I am also very comfortable.`,
+    `Major exhibition: three rooms, multiple installations, one of them is entirely me — my body, documented in real time, present and being present. Critics spent long minutes in front of each piece. Several of them did not know where the art ended and I began. That is the work.`,
+    `Retrospective. For someone still in progress. The curator said 'we want to capture the arc while you're still in it.' I said I appreciated the confidence that there was an arc and not just a continuous expansion. She laughed. I think she understood.`,
+    `The body is the final installation. The body is always the final installation. Everything I made was documentation of this body becoming itself. Now it has become itself. I am the piece. The gallery is wherever I am.`,
+  ],
+  food_photographer:[
+    `First show sold out. I was surprised and then I wasn't surprised, because the work is good and the subject is present — I photographed every meal I've eaten this year and the cumulative effect is something that lands differently than any individual image.`,
+    `Gallery show in a proper space with proper lighting and proper people who stand in front of the prints and go quiet. I spent the whole opening eating from the reception table, which I'd argued should serve the foods that appeared in the photographs. The gallerist agreed.`,
+    `Book deal: my photographs, my text. The publisher said the combination was 'unprecedented in the food photography space.' I pointed out that I am precedent. I am setting it. The book is what happens after.`,
+    `Collector interest from people who own real things. A museum in Helsinki acquired three prints for the permanent collection. I flew to see the installation. The prints looked good in natural light. I ate a tremendous amount of Scandinavian food.`,
+    `Permanent collections in three countries. The work will be there after I am not. I don't think about that often but when I do I feel something that isn't quite pride and isn't quite peace but sits between them.`,
+    `I set out to photograph food. The food changed me. I photographed the change. The photographs became the subject. I became the photograph. The gallery has my face on the wall and my body in the chair by the desk and the distance between them is one career.`,
+  ],
+  anonymous_blogger:[
+    `Forty-three readers by morning. I know that's small. It wasn't small to me. Forty-three people found a thing I made in the middle of the night and read it. I ate breakfast and started the next post immediately.`,
+    `The following has grown past what I can track informally. I have spreadsheets now. The posts with the most engagement are never the ones I expected. The ones I wrote quickly, at odd hours, slightly recklessly — those are the ones.`,
+    `A post went viral. A journalist tried to find me. She published a piece about looking for me, which meant that ten times as many people read my work trying to figure out who I was. Nobody found me. This is intentional. The anonymity is load-bearing.`,
+    `Interview requests by email only. Voice notes with my filter active. One podcast published an episode 'about' me that was really about what I represent, which is the correct framing. What I represent is more interesting than what I am.`,
+    `Cultural phenomenon with no face attached. There are fan accounts analyzing my writing style and my food choices and what my identity might be. I follow three of them. One is surprisingly close. I have not said so.`,
+    `The blog and the body are the same record. Everything I wrote happened to the same person who ate everything. The words and the weight are both accumulations. Both are real. Both are mine. That is the entire project.`,
+  ],
+  asmr_creator:[
+    `I whispered into a microphone and chewed slowly and the three hundred people who watched in the first hour left comments that made me sit very quietly for a long time. They said things like 'this is the only thing that helped me sleep this week.' I felt responsible in a good way.`,
+    `The community is small and loyal and understands something that I'm still learning to articulate. They show up for every video. They leave careful comments. We are in some kind of agreement that I didn't formally sign but honor completely.`,
+    `The algorithm found the channel. New viewers arrive daily now — people who don't know the community, who found the video through a recommendation. They become part of the community. The community is patient with newcomers. I'm proud of that.`,
+    `A creator I watch included me in a 'recommended channels' post. The message was generous and accurate. Her audience came over and many of them stayed. The comment section is larger now but the care in it has not diminished.`,
+    `A therapist wrote to say she'd used one of my videos in a session — with client permission, as background for a relaxation exercise. She said it worked. She asked whether she could recommend the channel to other clients. I said yes, obviously.`,
+    `The sound of me eating is something people find comfort in. I find comfort in the eating. The camera is the only thing between us and it's not much of a barrier. We are two sides of the same thing: appetite and the peace that comes from feeding it.`,
+  ],
+  campus_legend:[
+    `The dining staff knows my order. They start preparing it when they see me cross the quad. The booth in the corner has been 'mine' for months in the informal sense that nobody sits in it when I'm coming. I appreciate the courtesy.`,
+    `A freshman I've never spoken to referenced 'the legend of the dining hall' in a group chat I was added to. She meant me. The story she told was accurate in the facts and somehow smaller than the reality. Legends usually are.`,
+    `My name on a booth. The dining director did it herself, with a small brass plaque, and told me about it during a meal I was having. I looked at the plaque for a while. Then I finished eating. The plaque is still there.`,
+    `A campus tour guide mentioned me by name to a group of prospectives. I was eating nearby and overheard. She described me as 'part of the character of this campus.' I considered interrupting. I decided to finish my meal instead.`,
+    `Incoming classes are told about me during orientation. I've confirmed this with four separate first-years who told me independently. The story varies slightly in the telling. The core of it — a person who became part of this place — is consistent.`,
+    `I came here not knowing anyone or anything. Now I am known before I arrive anywhere on this campus. The campus shaped me and I shaped it back. We are the same thing now. I am the place and the place is me.`,
+  ],
+  food_tourist:[
+    `Systematic expedition: I have a map, a list, a notebook. Every cuisine I've identified within thirty miles gets a documented visit. The notebook is filling. The visits are never disappointing. I eat well everywhere.`,
+    `The blog has readers from my home country who write to say 'that restaurant is run by someone from my village.' The world is smaller than I expected and food is the thing that makes it smaller. I am grateful for both.`,
+    `A publication from home ran a feature on the blog. My family read it. My grandmother called to say the portions I was eating were 'respectable.' That is the best review I've received and it required no formal publication.`,
+    `Two book deals. One here, one at home. Both publishers want the same story from two different angles. I can give them that. The story is about distance and food and what you carry across both. I know it very well. I am it.`,
+    `Cultural ambassador. It's on a press release somewhere. I'm someone who ate everything in one city while thinking about everything she left behind in another. The food was always the bridge. I've grown to fill the bridge.`,
+    `I've tasted everything. The list is documented, the notes are extensive, the body is the record of every meal. I came here a stranger and grew into something that belongs here and to home simultaneously. The eating made that possible. It always does.`,
+  ],
+};
+
+const EVOLVED_OUTFITS = {
+  sumo:[
+    "Training gear — compression shorts, a thick practice mawashi worn over sweats. Built for the ring, nothing else.",
+    "Practice uniform fits like it was made for her body because it was. Her coach measured everything twice.",
+    "Competition mawashi, ceremonial and precise. The weight of the garment is nothing compared to the weight she carries.",
+    "Championship regalia. Her manager handles the presentation garments now. She receives them without comment.",
+    "Ceremonial attire between bouts — a wide kimono-style wrap, open, relaxed. She fills it completely.",
+    "She wears what's comfortable. Everything is wide, everything is soft, everything accommodates what she's become.",
+  ],
+  eating_competitor:[
+    "Contest shirt — her sponsor's logo, custom-ordered, already tight at the collar. She wears it with pride.",
+    "Circuit gear. Tracksuit in her competition colors, sponsor patches on both sleeves. She's recognizable now.",
+    "Competition day: her lucky shirt, three sizes larger than last year's lucky shirt. The luck transferred.",
+    "Sponsored athlete gear head to toe. The brand sent custom pieces without being asked. They know what fits.",
+    "She travels in her competition colors. Hotels recognize her. The food arrives before she finishes checking in.",
+    "Whatever she can find that accommodates her. Competition gear is custom now. She doesn't mind.",
+  ],
+  feedee_creator:[
+    "Content-ready always — camera-friendly outfit, good lighting angles considered, food accessible on the table.",
+    "Soft-era aesthetic fully embraced. Flowy pieces in warm colors, everything shot-ready, nothing restrictive.",
+    "Her brand has a look: comfortable, abundant, unapologetic. The clothing is part of the content.",
+    "Custom pieces from brands that sponsor her. Wide cuts, premium fabric. She wears them on camera first.",
+    "Everything wide, everything deliberate, everything designed to be seen doing exactly what it's doing.",
+    "The outfit doesn't matter as much as what she's eating. But she looks incredible. Both things are true.",
+  ],
+  body_positive_creator:[
+    "Brand-deal clothing — the good kind, the kind made for her actual body. She wears it on camera first.",
+    "Press-ready always. A wardrobe coordinator helps now. The clothes are extraordinary.",
+    "She dresses for the platform and for herself simultaneously. The overlap is large. So is she.",
+    "Everything she wears becomes merch demand within a week. The stylist has learned to expect this.",
+    "Billboard clothing. Iconic pieces. A wardrobe that says exactly what she wants to say.",
+    "She wears what exists at this scale. It has been made for her. It fits. She has arrived.",
+  ],
+  eating_captain:[
+    "Squad training gear in team colors, eating bib on top. The combination is both absurd and completely correct.",
+    "Team competition uniform, custom-ordered in her specifications. She had input on the design. It shows.",
+    "Full captain regalia at events. The title is on the back of her jacket in block letters.",
+    "Championship gear. The athletic director commissioned a custom set after the national invite.",
+    "Her jacket has more patches than room for patches now. She had an extension panel added.",
+    "She wears the captain's sash everywhere. Nothing else fits the way it used to. The sash always fits.",
+  ],
+  big_squad_captain:[
+    "Squad jacket modified by her own hand — the old size requirements cut out, new ethos written in marker on the lining.",
+    "The uniform that fits the body, not a body built to fit the uniform. She commissioned it herself.",
+    "Chapter captain gear in their colors. Wide, dignified, present. She made the design.",
+    "Her conference presentation outfit. A wide-fit suit she wore on the national stage. Donated to the chapter archives.",
+    "Custom everything now, all of it chosen deliberately. She knows what she's saying with what she wears.",
+    "She dresses like the monument she's become. The chapter follows her lead. The closet is legendary.",
+  ],
+  eating_diarist:[
+    "Cardigan open over a good dress. Writing outfit. She eats while she writes and the outfits accommodate this.",
+    "She dresses for the reading series now — events, talks, bookstore signings. Wide linen, good earrings.",
+    "Book launch outfit: a wide-cut statement piece she chose six months before the book came out.",
+    "Speaking engagement attire. She has a rotation now. Everything wide, everything deliberate, everything documented.",
+    "She dresses the way she writes — with intention, with detail, with nothing apologized for.",
+    "Whatever fits this body. She has a tailor. The tailor is excellent. The clothes are extraordinary.",
+  ],
+  food_researcher:[
+    "Lab coat, custom-ordered. The standard one didn't cover the data. She made a note in the methodology.",
+    "Academic casual with a purpose — she needs pockets, always. The blazer accommodates everything.",
+    "Presentation attire for conferences. Wide-cut, professional, memorable. The slides are also memorable.",
+    "Keynote outfit. Her institution had a photographer there. The photos are impressive.",
+    "Research gear that accommodates field work, office work, and being the field. Practical and extraordinary.",
+    "She dresses like someone whose research has outlasted the original hypothesis. With confidence.",
+  ],
+  eating_streamer:[
+    "Stream outfit — comfortable, camera-ready, no restriction. The snacks are in frame. She is in frame.",
+    "Gaming hoodie, eating bib, both sponsors represented. The aesthetic is cohesive by now.",
+    "Her branded gear from the platform deal. She wore it live. The chat went immediately to 'new merch?'",
+    "She dresses for the camera and for six to eight hours of sitting. Wide, soft, documented.",
+    "Merch she designed herself. The sizing runs large because she asked for that specifically.",
+    "She wears what fits. Everything is wide. The setup is custom. She is the best part of the setup.",
+  ],
+  speed_eater:[
+    "Competition shirt, timer-ready, sponsor logo centered. She pins the bib herself before every contest.",
+    "Her lucky competition tracksuit. It has been let out twice. The luck has not diminished.",
+    "Full competition gear, both sponsors represented, her record count in small text on the sleeve.",
+    "Championship kit. Her coach had it made when the national record fell. She wore it the next day.",
+    "She travels in her competition colors. Everything is custom. The logos are earned.",
+    "She wears what accommodates her. Everything does, because everything is made for her now.",
+  ],
+  chapter_hostess:[
+    "Hosting apron over her chapter formal. The apron has seen more feasts than most dining rooms.",
+    "Full chapter formal for Wednesday feasts. She instituted a dress code. She set the example.",
+    "Event attire that says 'I am in charge of this table and this table is magnificent.'",
+    "Her signature wide-cut blazer and the chapter's formal colors. She has hosted in this outfit at the national level.",
+    "She commissions one new hosting outfit per semester. The tradition is documented in chapter records.",
+    "She dresses like the feast she's hosting — abundant, deliberate, impossible to ignore.",
+  ],
+  body_positive_greek:[
+    "Chapter colors in a wide-cut blazer she had commissioned when the old one stopped working.",
+    "Conference attire. She wore this on a national stage. The outfit has its own legacy.",
+    "Full formal in chapter colors, every detail chosen deliberately, nothing apologized for.",
+    "Her speaking outfit. She could be recognized by it at this point. That's not an accident.",
+    "She dresses for the culture she's building. Intentional. Inclusive. Exactly as large as she is.",
+    "Everything is custom. Everything fits. Everything says exactly what she wants it to say.",
+  ],
+  metrics_eater:[
+    "Tracking gear — comfortable, pockets for devices, nothing that would interfere with measurements.",
+    "Optimized for the data collection session. Every item considered. The spreadsheet has a column for this.",
+    "Competition day gear, logged in advance, photographed for the documentation record.",
+    "Her record-attempt outfit. She decided this would be consistent across all record attempts. It is.",
+    "She dresses for efficiency. The efficiency has a consistent aesthetic that other competitors have noticed.",
+    "Wide, comfortable, documented. She has worn this size for longer than any prior size. She is accurate.",
+  ],
+  food_scientist:[
+    "Lab coat, properly fitted, her name embroidered because she asked for it specifically.",
+    "Conference blazer in the department color. She wore it to her first invited talk. It has an origin story now.",
+    "Keynote attire. Her institution's communications office asked to use the photo. She agreed.",
+    "She dresses like someone whose research has been cited by the people who rejected her. Well.",
+    "Research-formal: dignified, wide, professional, present. The lab coat is underneath.",
+    "Everything is custom at this point. The fit is excellent. The science is also excellent.",
+  ],
+  installation_artist:[
+    "Something she made herself — fabric, found materials, a garment that documents the body wearing it.",
+    "Gallery opening attire that is itself a piece. Visitors aren't always sure where the show starts.",
+    "Her major exhibition outfit. It was photographed by three publications. It's in the catalogue.",
+    "She dresses for the work and the work dresses her. The boundary is genuinely unclear.",
+    "Retrospective attire: something that holds the whole arc of the work. She designed it herself.",
+    "She wears her body the way she makes installations: with intention, with presence, as the piece itself.",
+  ],
+  food_photographer:[
+    "Gallery opening attire — something that photographs well, because someone will always photograph her.",
+    "The outfit she wore when the Helsinki museum acquired the prints. She remembers it exactly.",
+    "Book launch clothes — a wide statement piece that appeared in press photos. Recognizable.",
+    "She dresses for both sides of the lens now. The subject understands the photographer.",
+    "Her studio look: wide linen, room to move, good in the shots her assistant takes behind the scenes.",
+    "Everything is custom, everything is deliberate, everything accommodates the body that makes the work.",
+  ],
+  anonymous_blogger:[
+    "Anonymous-compatible — nothing identifiable, nothing logo'd, nothing that would give her away.",
+    "She dresses for invisibility and comfort simultaneously. Both are achieved.",
+    "Cozy, unremarkable from the outside. The inside is the work. The outside protects it.",
+    "She has a consistent aesthetic that nobody has been able to place online. She maintains it carefully.",
+    "Wide, soft, present in rooms, invisible in photographs. The balance is intentional.",
+    "She dresses for the life she's living, which is enormous and private and exactly as she planned.",
+  ],
+  asmr_creator:[
+    "Soft textures only — the microphone picks up fabric noise, so everything she wears is deliberate.",
+    "ASMR-compatible clothing. She's thought about this more than most people think about anything.",
+    "Recording day attire: soft fabrics, nothing synthetic, nothing that will interrupt the session.",
+    "She dresses for sound now as much as sight. The clothes are very quiet. So is she.",
+    "Wide, soft, silent fabric. She moves slowly and everything moves slowly with her.",
+    "She wears the textures that are kindest to the microphone. Also the ones kindest to her skin.",
+  ],
+  campus_legend:[
+    "Her dining hall regular outfit — the clothes she's worn so often here that they're part of the myth.",
+    "Comfortable campus gear in her colors. Students recognize the outfit before they recognize the face.",
+    "She dresses like someone who belongs here completely, because she does.",
+    "Wide everything. Soft everything. Exactly as present as she is.",
+    "The outfit that appears in the campus tour guide's description. She didn't plan this.",
+    "She wears what fits. Everything fits because everything was eventually made to fit.",
+  ],
+  food_tourist:[
+    "Travel-ready always — practical, wide-cut, pockets for the notebook and the camera.",
+    "Her blog aesthetic: dressed for wherever the food is, which is everywhere.",
+    "The outfit she wore in the home-country magazine feature. Both publishers asked to use it.",
+    "She dresses for the food, not the other way around. The food is everywhere. So is she.",
+    "Cultural bridge attire — something that belongs in two places. She found it. It fits.",
+    "Wide, practical, present. Made for someone who is both places at once.",
+  ],
+};
+
+const EVOLVED_ACTIVITY_TEXT = {
+  sumo:[
+    `She's found her footing in the ring — literally. Standing across from an opponent twice, three times in a week, learning the physics of her own center of gravity with the methodical patience of someone who has decided this matters. The practice matches are unofficial, low-pressure, mostly about learning the weight. She's learning fast.`,
+    `A proper bout now. Crowd thin but present. She enters with the particular composure of someone who hasn't lost yet and is starting to understand why. The match lasts eleven seconds. She explains this to you afterward with the detached precision of a physicist. 'It's simple,' she says. 'I just use what I have.'`,
+    `Regional circuit. The drive was long and the weigh-in was fine and the bracket was harder than the ones before. She won every match. The last one was the closest — thirty seconds, the crowd genuinely uncertain — and when it was over she sat down in the side corridor and ate the dinner she'd packed and didn't say very much.`,
+    `The announcement. Your name in the national draw, printed on a bracket at a scale she'd been imagining for a year. She calls you before she calls anyone else. 'I'm in,' she says. 'I made it.' Then she goes to dinner and eats as if the record is already set.`,
+    `Tournament week. You watch from the audience as she processes through the draw — match after match, deliberate and inevitable, the crowd louder with each round until the final when the arena is at a volume you can feel in your teeth. She wins. She bows. She eats.`,
+    `She's stopped competing officially. The weight classes can't hold her anymore. You watch her in the practice space — alone, vast, moving through the forms she's memorized, the ring invisible but still somehow present in the way she takes up space. She knows you're there. She finishes the form, looks up, and smiles.`,
+  ],
+  eating_competitor:[
+    `First contest. She arrives early, reviews the rules, accepts the bib, sits at the table while the crowd files in. When the timer starts she doesn't rush — she moves with an economy of motion that looks almost casual until you notice the plate is half empty at the ninety-second mark.`,
+    `Circuit event, mid-season. Her name is on the schedule now. The MC introduces her and the crowd reacts — not hugely, but measurably, the recognition of a regular. She finishes second-fastest in the regional heat and looks at the leaderboard with the expression of someone already planning next time.`,
+    `Regional record attempt. The MC announces the target at the start. The crowd is watching with the specific attention of people who understand they might be present for something official. She exceeds the target by forty-one seconds. The official verifier is already reaching for his paperwork before she sets her fork down.`,
+    `National event. The table is long, the competitors are serious, the crowd is the largest she's eaten in front of. She sits down, reviews the plate, and begins. You watch her face: calm, focused, moving with the absorbed concentration of someone solving a pleasant problem.`,
+    `World record territory. The venue is quiet in the way that large venues get quiet when something real is happening. She eats with the inevitability of weather. The clock shows the threshold approaching. She crosses it. The room erupts. She sits very still for a moment, then asks for a napkin.`,
+    `She comes to you with the notebook — the one she's kept since the first contest, every time and every record, every circuit and every opponent. 'I think I'm done with competition,' she says. Then she orders twice what would have been a normal dinner and eats with exactly the same focus, the same economy, the same certainty. Competition was never the point.`,
+  ],
+  feedee_creator:[
+    `A setup call: ring light adjusted, microphone positioned, the meal on the table in the exact arrangement she's spent forty minutes considering. She looks at the camera. She looks at you. 'Ready?' You tell her yes. She presses record and begins.`,
+    `She's found her pace — the posting schedule, the editing rhythm, the way she talks to the camera like it's someone she trusts. You watch a recording session: an hour of footage that will become fifteen minutes, every meal genuinely present, every reaction genuinely hers.`,
+    `Viral clip review. She pulls up the analytics on her tablet and shows you the spike — the thirty-six hours when the views tripled and the subscribers followed and the comments arrived faster than she could read them. She's very calm about it. She finishes her lunch while explaining the metrics.`,
+    `Brand deal meeting. A company that makes oversized clothing wants to partner. The deal document is specific and fair. She reviews it over dinner — annotating, asking questions, eating steadily throughout. She signs at the bottom of the last page and orders dessert.`,
+    `The video she's most proud of: ninety minutes, one meal, three hundred thousand views. She shows you the comments section — sorted by most-liked, each one a small piece of evidence that what she's doing lands for people. She eats while you read them together.`,
+    `She doesn't call it work anymore. The camera is on, the food is there, she eats — and the recording captures something true about the relationship between appetite and presence that she couldn't have explained in advance and doesn't need to explain now. You watch with the quiet feeling of witnessing something that has finished becoming itself.`,
+  ],
+  body_positive_creator:[
+    `The rebrand video is up. She explains the shift — same person, wider frame, less apology. You watch the first twenty-four hours of comments with her. The negative ones exist; they're minority; the others are the kind she prints and keeps.`,
+    `Brand deal shoot day. A clothing campaign: proper sizing, real lighting, a photographer who doesn't tell her to stand at an angle. She reviews the shots on the photographer's screen and finds them accurate and good. That's all she asks of a photograph.`,
+    `TEDx prep session. You watch her rehearse the talk in her living room, food nearby, the twelve minutes refined to a precision that doesn't feel rehearsed. She times it. She notes one section that needs trimming. She trims it while eating.`,
+    `The billboard photo is up. You drive past it together. She's very still for the first thirty seconds. Then she says: 'Pull over.' You pull over. She looks at it for two full minutes. 'Okay,' she says. 'Okay. That's what I look like.' You drive to dinner.`,
+    `Profile piece interview. The journalist is thoughtful, the questions are good, the conversation runs two hours over the scheduled time. She eats throughout — not performatively, just normally, as she always does. The journalist notes this in the piece with the phrase 'unhurried presence.'`,
+    `She shows you the university thesis that cites her work. A graduate student in gender studies. The citation is exact and fair. She reads it twice and then puts her phone down and finishes dinner. 'That's the job,' she says. You don't say anything. The job is done.`,
+  ],
+  eating_captain:[
+    `Practice session. She sets up the table in the gym — full contest setup, timing equipment, documentation sheet. The squad arrives uncertain. She runs it exactly like a cheer meet and they understand within the first round that this is serious.`,
+    `First sanctioned competition. The squad in their eating bibs over their squad jackets — a sight that still makes the opposing teams do a double take. She's already eaten her warm-up portion. She starts the timer. They're good.`,
+    `Regional meet. The bracket is posted. She studies it the way she used to study cheerleading formations — systematically, looking for edges. The squad advances through every round. In the final she enters the table last, waits for the signal, and begins.`,
+    `National invite announcement. She reads it to the squad in the gym. There's a moment — a real one — where everyone is quiet and then everyone is extremely not quiet. She lets it happen. Then she calls practice.`,
+    `Tournament week. You're in the stands for every round. In the final she's at the head of the table, the captain, the person the rest of the squad looks at when the clock is running. She doesn't look back. She leads from the front. They win.`,
+    `She's done competing. She comes to watch the squad's current captain run a practice and sits in the bleachers eating from a container she brought. At one point the squad's captain catches her eye and nods. She nods back. Everything is in order.`,
+  ],
+  big_squad_captain:[
+    `First practice under the new rules. The weigh-in board is gone. The size requirement is gone. Two girls arrive who'd never come before. She introduces herself to both of them without making it notable.`,
+    `Rush week under the new culture. She runs the information session the way she runs everything: with authority and with the direct statement of what this chapter is and what it isn't. Nine people sign up before the session ends.`,
+    `The journalist is here to observe a practice. She runs the practice exactly as usual. She answers questions afterward with the same directness. 'I didn't change cheerleading,' she says. 'I changed what this squad thinks cheerleading is for.'`,
+    `Conference keynote. She arrives in the chapter's colors, wide and prepared, and speaks for forty minutes without notes. You watch from the audience. At one point the room is completely silent. She's said something true. The silence is the response.`,
+    `The national organization representative came to watch a practice and stayed for dinner. The representative asked questions that were genuinely curious rather than adversarial. She answered every one. Before leaving the representative said: 'We're going to need to update some language.'`,
+    `She attends the homecoming game as an alumna. The squad is in new uniforms, with new rules, with the culture she built. The captain runs the halftime show. It looks like what cheerleading could be. She watches from the stands, eating, very still.`,
+  ],
+  eating_diarist:[
+    `She sends you the draft of the first newsletter before it goes out. Twelve hundred words. The writing is direct and specific and funny in places she didn't plan. You tell her to send it. She sends it at 11:47pm.`,
+    `The agent meeting: a video call, an hour long, very good croissants on her end, she tells you afterward. The agent has a clear vision. The vision involves the newsletter becoming a book. The book involves sitting at a table eating things and writing about it. She's already doing that.`,
+    `Draft review session. She reads sections aloud — not performing, just testing — and you listen and ask questions when something needs clarification and she notes your questions in the margin. The draft is better than the previous one. The previous one was good.`,
+    `Book launch. A bookstore, an evening, an audience that fills the room and spills into the next. She reads for twenty minutes from the chapter about her grandmother's kitchen. Someone in the front row cries. She doesn't stop reading.`,
+    `You find the university course syllabus online. Her book is listed under week seven: 'The Body as Text.' She looks at it for a while. Then she makes dinner — a long one, unhurried — and tells you about the chapter she's starting to write for the second book.`,
+    `The second book is done. She sends you the final draft on a Tuesday. You read it that night. It's better than the first, which was excellent. You text her to say so. She responds an hour later, probably from a meal: 'I know. I ate well while writing it.'`,
+  ],
+  food_researcher:[
+    `She shows you the approved IRB document — forty-seven pages, all correct, her own name in the subject line as both researcher and participant. The dual role is noted and approved. She begins data collection that afternoon.`,
+    `Lab visit. She shows you the setup: proper measurement equipment, a data logging system she designed herself, a weekly meal-window protocol that is both methodologically sound and extremely comfortable to be on the receiving end of.`,
+    `Pre-publication review. She shares the draft paper — you read it over dinner, she eats beside you and answers questions as they arise. The methodology section is as dense as anything you've read. The conclusions are unambiguous.`,
+    `Acceptance email. She forwards it to you with no message and you understand that means she wants you to know but doesn't want to say it aloud yet. You reply with three words. She calls ten minutes later and speaks for forty-five minutes. Then she makes dinner.`,
+    `Keynote prep. She rehearses the talk in her kitchen, papers spread everywhere, eating at the counter between runs. When she presents it to you in full, you sit without speaking for a moment after it ends. She mistakes your silence for criticism. You tell her it isn't.`,
+    `You visit her in the lab on the last official day of the study period. The equipment will be dismantled. The data is complete. She's eating lunch at her workstation, going over the final analysis, as ordinary as any other Tuesday. You don't say anything. There's nothing that needs to be said.`,
+  ],
+  eating_streamer:[
+    `Pre-stream setup: she arranges the food in frame, checks audio levels, does a mic test by eating one chip and reviewing the waveform. Everything checks out. She goes live. In the first thirty seconds the viewer count doubles.`,
+    `Mid-session check-in. You arrive during an active stream — she's in the middle of a boss fight and a bowl of ramen simultaneously, navigating both with the same calm efficiency. The chat is extremely enthusiastic. She finishes the boss. She finishes the ramen.`,
+    `Viral clip origin. She finds the recording in her archive and shows you — the specific moment, about forty minutes into a stream, when she did something simultaneously impressive in-game and at the table, and the chat reacted with a volume she can still feel.`,
+    `Brand deal stream. The sponsor's product is on the table, she's been briefed on the talking points, and for three minutes of a four-hour stream she mentions the brand. The rest is games and food and the community showing up like they do every time.`,
+    `Behind the scenes: she shows you the shipping manifest for the week's delivery orders — a document that requires two columns. She has it organized by meal category. The organization is extremely thorough. She's eating while showing you.`,
+    `She invites you to watch a stream from the beginning — a four-hour session, full run. You sit in the corner and watch. The food arrives regularly. The chat is alive. She plays and eats and talks to the camera with the ease of someone who has arrived somewhere they fit.`,
+  ],
+  speed_eater:[
+    `Challenge setup. She positions herself at the table, reviews the format, accepts the timer from the official. The pre-challenge ritual takes six minutes. She's made it exact. When the timer starts she's already moving.`,
+    `Record attempt. The official weight is certified, the format is verified, the video is running. She begins. You know forty seconds in that it's happening — the pace, the certainty, the crowd starting to understand what they're watching.`,
+    `Cross-discipline week: gaming speedrun Monday, eating record Wednesday. She documents both in the same notebook. The preparation overlaps more than you'd expect — the focus, the optimization, the knowledge of your own physical limits and how far past them you can go.`,
+    `National event. The auditorium holds three thousand people and most of them are there. She enters from the side, the MC announces her current record count, and the room responds with the particular sound of recognition. She sits. She waits for the signal.`,
+    `Simultaneous record week. She breaks the eating record on Saturday and the gaming record on Sunday. By Tuesday both are in the databases. She shows you the entries side by side on her screen. She's eating while showing you.`,
+    `She brings you the notebook. Four years of records, every one crossed out with the date she beat it, the current standing marked in a different color at the bottom of each page. 'I think I'm done trying to beat them,' she says. She starts a new page. She writes today's date. She orders dinner.`,
+  ],
+  chapter_hostess:[
+    `Wednesday prep. She arrives in the chapter kitchen four hours before feast night — not because it requires four hours, but because she wants four hours. The menu is planned, the portions are calibrated, the kitchen produces something tremendous.`,
+    `Feast night. The sisters arrive, the table is set, and for three hours the chapter dining room is the best room in any building on campus. She circulates, serves, adjusts. At the end she sits and eats what remains, which is always more than a normal person's meal.`,
+    `The alumni donor visit. A former sister who has been funding the feasts comes to Wednesday dinner for the first time. She sits at the table and eats with the chapter and at the end says: 'I understand now. This is exactly what I was paying for.'`,
+    `New sister onboarding. Wednesday feast is the first chapter event the pledge class attends as full sisters. She plans this feast specifically — it's different from the regular ones, bigger, more formal, a welcoming. The kitchen runs for six hours.`,
+    `The competing chapter's invite. Another chapter heard about Wednesday and asked if they could send someone. She said one person, the president, for one dinner. The president arrived, ate, stayed three hours past the scheduled time, and left with a printed copy of the menu.`,
+    `The last feast she cooks personally before stepping down as hostess. The recipe files are documented and organized. The successor is trained. The chapter will eat this well without her because she made sure of it. She eats her portion at the end and is satisfied.`,
+  ],
+  body_positive_greek:[
+    `Rush week open house. She stands at the front of the chapter room and explains what this chapter is. No weigh-ins. No size requirements. Membership based on character and commitment. The room fills past capacity before she finishes.`,
+    `First pledge class under the new culture. The induction ceremony: she modified the traditional script to remove every size reference. She reads the new version aloud and the room is very quiet and then someone starts clapping and it goes from there.`,
+    `Journalist visit. The article process takes three sessions — observation, interview, follow-up. She participates fully and without rehearsal, which is what the journalist later calls 'the most refreshing part.' She eats during all three sessions.`,
+    `Conference prep. She's booked to speak for forty minutes at a national Panhellenic event. You help her prep. She's not nervous — she's done the work, she has the experience, she knows what she wants to say. You're not sure why she wants you there. She tells you later: 'I wanted you to see it before I said it out loud to strangers.'`,
+    `The follow-up call from the national organization. A representative, formal but not adversarial, asking questions about the chapter's practices. She answers each one completely and without qualification. At the end the representative says: 'We'll be in touch about some language changes.'`,
+    `She attends a chapter event two years after stepping down from the captaincy. The culture is intact. The new captain runs things with the same principles. During the meal she watches from across the room and says nothing. Afterward, in the car: 'It held.'`,
+  ],
+  metrics_eater:[
+    `Data review session. She opens the spreadsheet — currently at row 847 — and walks you through the trend analysis she ran this morning. The methodology is impeccable. The gains are substantial. She is visibly pleased by both things simultaneously.`,
+    `Optimized meal session. She's mapped a new three-window schedule and is testing it. You observe one window: the preparation, the execution, the real-time logging. She eats steadily and records continuously and at the end of the window closes the laptop and says: 'Variance is within acceptable range.'`,
+    `Record attempt, formally documented. The setup: certified scale, timestamp, witness (you), video record. The previous record is written on a card and placed on the table. She eats. The card is subsequently placed in an envelope and filed. The new record is entered.`,
+    `Competitor citation review. She pulls up a paper that used her methodology and annotates the citation — accurate, she says, but missing a key footnote. She sends the authors a correction note. They respond within an hour. She replies while eating lunch.`,
+    `Subreddit review. She scrolls the forum dedicated to her methodology — people applying her tracking systems to their own data, running the models, posting results. She reads every thread. She posts twice, anonymously, with technical corrections.`,
+    `The notebook alongside the spreadsheet: she's been keeping a paper record as well, the way she always does when the data really matters. She shows you both. Four years of simultaneous documentation. 'The redundancy is the point,' she says. She eats while explaining.`,
+  ],
+  food_scientist:[
+    `Lab onboarding. She shows you the setup — the equipment, the protocols, the timeline. The study has official institutional backing. The sample size is one. The one is fully invested.`,
+    `Mid-study check-in. You visit the lab and she walks you through the week's data: intake, measurements, control variables, anomalies noted and investigated. She presents it the way she'd present any dataset, which is to say, with complete authority.`,
+    `Paper draft review. She emails you the draft and you read it over a meal. The methodology section is sixty pages. The results section is dense. The discussion section ends with a sentence she rewrote sixteen times and which is now exactly right.`,
+    `Publication celebration. Not a party — she doesn't do parties. A dinner, the two of you, at the restaurant she's been documenting the longest. She orders the complete menu. She makes notes throughout.`,
+    `Keynote rehearsal. She runs the talk in the lab, slides on the screen, standing at a podium she borrowed from a lecture hall. You're the audience. She presents for fifty minutes. The Q&A simulation runs thirty. You ask the hard questions. She has the answers.`,
+    `Final study date. The official study period ends today. She takes the last measurement, enters the last data point, closes the dataset. Then she makes a reservation at the restaurant and you go to dinner and she eats as if nothing has concluded, because it hasn't.`,
+  ],
+  installation_artist:[
+    `The first installation in progress. She's working in the studio — photographs arranged on the floor, audio files queued, the room taking shape around her. She eats between decisions. The work has a clarity she couldn't have reached earlier.`,
+    `Gallery walkthrough with the curator. She moves through the installation explaining each piece and the curator listens and takes notes and at one point simply stops talking. She continues. The curator eventually says: 'I think this is the most important work we've shown.'`,
+    `Review reading session. She reads the major publication's review aloud, stopping to annotate — agrees, disagrees, noted, missed-the-point. At the end she folds the review, puts it in the folder with the others, and starts the next piece.`,
+    `Major exhibition install. Three rooms taking shape over a week. You help with logistics. On the final day before opening she stands in room one, then room two, then three, and doesn't say anything for a long time. Then: 'This is what I meant.'`,
+    `Retrospective planning meeting. The curator wants to document the arc — early work to present. She's brought every notebook. The meeting runs four hours. She eats throughout. At the end the curator says: 'There's a book in this.' She says: 'I know.'`,
+    `Opening night of the retrospective. She stands near the entrance, eating from a small plate, watching people move through the rooms. A student stops in front of the largest photograph — her body documented at each stage — and doesn't move for several minutes. She watches the student. She eats.`,
+  ],
+  food_photographer:[
+    `Shoot day. She sets up the table — the food, the lighting, the camera angle — with the focused efficiency of someone who has prepared this setup a hundred times. You watch her work. At some point you realize you're watching someone who has fully merged their life and their art.`,
+    `Gallery installation. The prints go up. She reviews each placement, adjusts two, stands back and looks at the full wall. Then she looks at you. 'Is it what I said it would be?' You tell her it's better.`,
+    `Book proof review. The publisher sent the bound proof. She opens it at the table and you sit with her while she goes through it — page by page, making small notes, eating steadily throughout. At the end she closes it and says nothing for a minute. Then: 'We got it.'`,
+    `Helsinki acquisition confirmation. The museum's email is detailed and formal and confirms the purchase of three prints for the permanent collection. She reads it twice, then puts her phone down and makes dinner — the specific meal she photographs when she wants to celebrate.`,
+    `Permanent collection installation. She flies to see the Helsinki show. You see photographs she sends: the prints, properly hung, lit correctly, in a room they belong in. The last message is a photograph of her at the museum restaurant, a meal in front of her, nothing written.`,
+    `The final shoot. She's not retiring — she says she'll never stop photographing food. But this series is complete. She shoots the last meal, reviews the image, and sits for a long time looking at it on the screen. Then she eats the meal.`,
+  ],
+  anonymous_blogger:[
+    `Draft review session. She shares the post-in-progress — unedited, 2am energy, the kind of writing that comes out right the first time. You read it on your phone while she eats. You tell her to change nothing. She changes one word. She posts it.`,
+    `Analytics review. She opens the dashboard and shows you the growth curve — slow, consistent, accelerating in the last six weeks in a way that means something. She explains the pattern with the calm satisfaction of someone who planned for exactly this.`,
+    `Viral moment debrief. The post that went everywhere: she shows you the traffic data, the referral sources, the inbound links from journalism pieces she'd never heard of. 'They're looking for me,' she says, with the same tone she'd use to report mild weather.`,
+    `Interview by email. She shows you the journalist's questions, her draft responses, the version she's decided to send. The answers are exact. Nothing identifying. The food is very specific, which she considers a deliberate offering.`,
+    `Fan theory review. She shows you three different threads analyzing her identity. The most comprehensive one has narrowed the field to four people. She is not on the list. She reads the thread twice and eats dinner with the expression of someone very satisfied.`,
+    `She shows you the full archive — every post, chronological, from the first thirty-reader entry to the current one. She scrolls through it slowly. It takes a long time. 'It's a record of everything that happened to me,' she says. You look at the archive. You look at her. 'Yes,' you say.`,
+  ],
+  asmr_creator:[
+    `Recording session. Everything quiet — the soft light, the microphone, the food arranged just so. She sits, adjusts the mic angle by two degrees, and looks at the food for a moment. Then she begins. The session runs ninety minutes. She reviews the first five and says it's good.`,
+    `Community session review. She opens the comments from the most recent video — scrolling slowly, reading each one, occasionally eating while reading. 'They call it a ritual,' she says. 'Their word, not mine. But it's not wrong.'`,
+    `Algorithm spike. She shows you the analytics curve — the week the channel was recommended by the platform, the sudden influx, the comment section managing the transition from small community to larger one. 'The old viewers helped orient the new ones,' she says. 'I'm proud of them.'`,
+    `The mainstream crossover: a large creator mentioned her channel. She watches the video twice and both times sits very still during the mention. 'Six years of the same small channel,' she says, 'and now this.' She eats. 'I don't want it to change.' It doesn't.`,
+    `The therapist collaboration. You sit with her while she reads the email from the therapist — the request is genuine, the framing is careful, the ethics are in order. She replies yes, obviously, and then sits for a long time thinking about what it means that her eating helps people sleep.`,
+    `You visit during a recording session. She doesn't acknowledge you until it's done — an hour and forty minutes, the full session. Afterward she offers you some of what she's been eating and you sit together in the quiet that comes after recording and both of you understand what just happened.`,
+  ],
+  campus_legend:[
+    `Dining hall, Tuesday evening. The staff has her regular ready. The booth is open. She sits down and the room adjusts slightly around her presence — not dramatically, just the natural adjustment of a space acknowledging what's in it. You eat across from her.`,
+    `Campus tour walk-by. You're with her when a tour group passes and the guide — not knowing she's there — points in the direction of the dining hall and says her name. The prospective students look. She lifts a hand. The tour guide freezes beautifully for a moment.`,
+    `Booth naming ceremony. The dining director made it official: a small brass plate with her name, installed at the corner of the largest booth. The director told her about it at lunch. She finished her meal before going to look at it. She looked at it for a long time.`,
+    `Orientation mention. She sits in the back of an orientation session and a returning student mentions her name as 'part of the character of this place.' The first-years look around. She doesn't raise her hand. Afterward she finds the student and thanks them.`,
+    `The archive project. A campus historian is documenting notable community figures. She's been asked to participate. The interview takes three sessions. She eats throughout all of them. The historian later publishes a piece titled, simply, her name.`,
+    `End of year. She sits in the booth — the one with the plaque, the one that was always hers — and looks at the dining hall. Students who don't know her eat nearby. Students who know her stop to say goodbye for the summer. She stays until closing.`,
+  ],
+  food_tourist:[
+    `Expedition day. She has the map, the list, the notebook. The restaurant she's visiting today has been on the list for six weeks. She orders one of everything. She takes three hours. The notes are meticulous.`,
+    `Blog post collaboration. A reader from her home country reached out — they know a restaurant she hasn't documented yet, run by someone from their home village. She goes that week. The meal runs four hours. The post is the longest one on the site.`,
+    `Home country publication visit. The journalist has read the entire blog. The interview is in her language and she hasn't spoken it formally in two years. She finds it comes back with the food — the context, the vocabulary, the ability to describe flavors in the right words.`,
+    `Two book deals, same meeting. Both editors on the same call, which was her agent's idea and which she found audacious and then correct. She ate during the call. Both editors were surprised. She said: 'This is what the book is about. You should see how this works.'`,
+    `Cultural ambassador invitation. An official one, from an exchange program. The letter is formal and the title is real. She accepts. The role involves eating across the cities in the program and writing about it. She considers this the most accurate job description she's ever received.`,
+    `The last restaurant on the original list. She documented every cuisine she'd set out to find and this is the last one. She goes alone, sits for three hours, orders everything she hasn't tried, and writes for an hour after. The list is complete. She immediately starts a new list.`,
+  ],
+};
+
+const EVOLVED_ACTIVITY_META = {
+  sumo:            { label:"Watch Her Compete",        apCost:1, gainRange:[4,8],  relBonus:10 },
+  eating_competitor:{ label:"Attend a Competition",    apCost:1, gainRange:[3,7],  relBonus:9  },
+  feedee_creator:  { label:"Review Her Latest Post",   apCost:1, gainRange:[3,6],  relBonus:12 },
+  body_positive_creator:{ label:"Watch Her Latest Video", apCost:1, gainRange:[2,5], relBonus:11 },
+  eating_captain:  { label:"Watch Team Practice",      apCost:1, gainRange:[4,7],  relBonus:10 },
+  big_squad_captain:{ label:"Attend a Squad Event",    apCost:1, gainRange:[2,5],  relBonus:12 },
+  eating_diarist:  { label:"Read Her Latest Entry",    apCost:1, gainRange:[3,6],  relBonus:11 },
+  food_researcher: { label:"Visit Her Lab",            apCost:1, gainRange:[3,6],  relBonus:10 },
+  eating_streamer: { label:"Tune In to the Stream",    apCost:1, gainRange:[4,8],  relBonus:10 },
+  speed_eater:     { label:"Watch a Challenge",        apCost:1, gainRange:[4,9],  relBonus:9  },
+  chapter_hostess: { label:"Attend Wednesday Feast",   apCost:1, gainRange:[5,10], relBonus:11 },
+  body_positive_greek:{ label:"Attend Chapter Event",  apCost:1, gainRange:[2,5],  relBonus:12 },
+  metrics_eater:   { label:"Review Her Spreadsheet",   apCost:1, gainRange:[3,7],  relBonus:9  },
+  food_scientist:  { label:"Visit the Lab",            apCost:1, gainRange:[3,6],  relBonus:10 },
+  installation_artist:{ label:"View the Installation", apCost:1, gainRange:[2,5],  relBonus:12 },
+  food_photographer:{ label:"Review the Latest Shoot", apCost:1, gainRange:[2,5],  relBonus:11 },
+  anonymous_blogger:{ label:"Read the Latest Post",    apCost:1, gainRange:[3,6],  relBonus:10 },
+  asmr_creator:    { label:"Watch a Recording Session",apCost:1, gainRange:[3,6],  relBonus:12 },
+  campus_legend:   { label:"Share a Meal at the Booth",apCost:1, gainRange:[5,10], relBonus:11 },
+  food_tourist:    { label:"Join an Expedition",       apCost:1, gainRange:[4,8],  relBonus:10 },
+};
+
+const EVOLVED_SKILL_TREES = {
+  sumo:[
+    { id:"sumo_stance",   tier:1, label:"Match Stance",      cost:20, desc:"Her bouts end 20% faster. Activity gives +2 extra lbs.",                    activityGainBonus:2 },
+    { id:"sumo_crowd",    tier:2, label:"Crowd Draw",         cost:40, desc:"Each activity viewing gives +3 extra relationship.",                         activityRelBonus:3 },
+    { id:"sumo_rep",      tier:3, label:"Circuit Reputation", cost:70, desc:"Her weekly passive gain +1 lbs/week from the training lifestyle.",            passiveBonus:1 },
+    { id:"sumo_record",   tier:4, label:"Regional Record",    cost:110, desc:"Once per game: activity costs 0 AP (auto-resets after 8 weeks).",            freeActivityCharge:1 },
+    { id:"sumo_legend",   tier:5, label:"Ring Legend",        cost:160, desc:"+3 passive lbs/week. Activity give +5 extra lbs. Her weight spreads awe.",   passiveBonus:3, activityGainBonus:5 },
+  ],
+  eating_competitor:[
+    { id:"ec_timer",      tier:1, label:"Timer Sense",        cost:20, desc:"Activity gives +3 extra lbs from the competitive eating.",                   activityGainBonus:3 },
+    { id:"ec_circuit",    tier:2, label:"Circuit Regular",    cost:40, desc:"+1 passive lbs/week — the circuit lifestyle keeps her eating.",               passiveBonus:1 },
+    { id:"ec_record",     tier:3, label:"Record Holder",      cost:70, desc:"+3 relationship per activity viewing. Crowds follow her.",                   activityRelBonus:3 },
+    { id:"ec_sponsor",    tier:4, label:"Sponsorship Deal",   cost:110, desc:"Scrutiny -2/week. Sponsors make her eating look legitimate.",               weeklyScrutinyReduce:2 },
+    { id:"ec_legend",     tier:5, label:"Eating Legend",      cost:160, desc:"+2 passive, +4 activity lbs, +4 activity rel. A record-breaking presence.", passiveBonus:2, activityGainBonus:4, activityRelBonus:4 },
+  ],
+  feedee_creator:[
+    { id:"fc_upload",     tier:1, label:"Upload Schedule",    cost:20, desc:"+1 passive lbs/week from the content routine.",                              passiveBonus:1 },
+    { id:"fc_subs",       tier:2, label:"Subscriber Base",    cost:40, desc:"Activity gives +4 extra relationship — they love her.",                       activityRelBonus:4 },
+    { id:"fc_viral",      tier:3, label:"Viral Moment",       cost:70, desc:"Once per 10 weeks: activity gives double lbs. Auto-tracks cooldown.",         doubleActivityCharge:1 },
+    { id:"fc_brand",      tier:4, label:"Brand Deals",        cost:110, desc:"Scrutiny -3/week. The corporate legitimacy covers everything.",              weeklyScrutinyReduce:3 },
+    { id:"fc_empire",     tier:5, label:"Content Empire",     cost:160, desc:"+2 passive, +5 rel per activity, scrutiny -2/week. She is a brand.",         passiveBonus:2, activityRelBonus:5, weeklyScrutinyReduce:2 },
+  ],
+  body_positive_creator:[
+    { id:"bpc_rebrand",   tier:1, label:"The Rebrand",        cost:20, desc:"Scrutiny -2/week. Mainstream acceptance changes the calculus.",               weeklyScrutinyReduce:2 },
+    { id:"bpc_brand",     tier:2, label:"Brand Deals",        cost:40, desc:"+1 passive lbs/week. The content keeps her eating.",                         passiveBonus:1 },
+    { id:"bpc_viral",     tier:3, label:"Viral Platform",     cost:70, desc:"+4 relationship per activity viewing.",                                       activityRelBonus:4 },
+    { id:"bpc_ted",       tier:4, label:"Cultural Figure",    cost:110, desc:"Scrutiny -4/week. She's a public figure. Admin hesitates.",                  weeklyScrutinyReduce:4 },
+    { id:"bpc_legacy",    tier:5, label:"Legacy Platform",    cost:160, desc:"+2 passive, +5 rel/activity, scrutiny -3/week. She's the argument.",         passiveBonus:2, activityRelBonus:5, weeklyScrutinyReduce:3 },
+  ],
+  eating_captain:[
+    { id:"cap_drill",     tier:1, label:"Team Drill",         cost:20, desc:"Activity gives +3 extra lbs. The team training feeds back.",                 activityGainBonus:3 },
+    { id:"cap_squad",     tier:2, label:"Committed Squad",    cost:40, desc:"+1 passive lbs/week from the training culture.",                             passiveBonus:1 },
+    { id:"cap_trophy",    tier:3, label:"Trophy Run",         cost:70, desc:"+3 relationship per activity viewing.",                                       activityRelBonus:3 },
+    { id:"cap_national",  tier:4, label:"National Invite",    cost:110, desc:"Scrutiny -2/week. The legitimate competition covers everything.",             weeklyScrutinyReduce:2 },
+    { id:"cap_dynasty",   tier:5, label:"Eating Dynasty",     cost:160, desc:"+2 passive, +4 lbs/activity, +4 rel/activity. A permanent institution.",    passiveBonus:2, activityGainBonus:4, activityRelBonus:4 },
+  ],
+  big_squad_captain:[
+    { id:"bsc_culture",   tier:1, label:"Culture Shift",      cost:20, desc:"Scrutiny -2/week. The body-positive framing changes admin's read.",           weeklyScrutinyReduce:2 },
+    { id:"bsc_pledges",   tier:2, label:"Pledge Class",       cost:40, desc:"+1 passive lbs/week. New sisters join the chapter's culture.",               passiveBonus:1 },
+    { id:"bsc_press",     tier:3, label:"National Press",     cost:70, desc:"+5 relationship per activity viewing. She's a public figure.",               activityRelBonus:5 },
+    { id:"bsc_policy",    tier:4, label:"Policy Change",      cost:110, desc:"Scrutiny -5/week. The national org is on board.",                           weeklyScrutinyReduce:5 },
+    { id:"bsc_permanent", tier:5, label:"Permanent Culture",  cost:160, desc:"+2 passive, +6 rel/activity, scrutiny -3/week. The chapter carries on.",    passiveBonus:2, activityRelBonus:6, weeklyScrutinyReduce:3 },
+  ],
+  eating_diarist:[
+    { id:"ed_newsletter", tier:1, label:"Newsletter",         cost:20, desc:"+1 passive lbs/week from the writing + eating routine.",                     passiveBonus:1 },
+    { id:"ed_agent",      tier:2, label:"Literary Agent",     cost:40, desc:"+4 relationship per activity viewing.",                                       activityRelBonus:4 },
+    { id:"ed_book",       tier:3, label:"Book Deal",          cost:70, desc:"Scrutiny -3/week. She's a published author. Admin is careful with authors.", weeklyScrutinyReduce:3 },
+    { id:"ed_reviews",    tier:4, label:"Critical Acclaim",   cost:110, desc:"+2 passive lbs/week. The writing legitimizes everything.",                  passiveBonus:2 },
+    { id:"ed_canon",      tier:5, label:"Canonical Text",     cost:160, desc:"+3 passive, +5 rel/activity, scrutiny -2/week. She's in the curriculum.",   passiveBonus:3, activityRelBonus:5, weeklyScrutinyReduce:2 },
+  ],
+  food_researcher:[
+    { id:"fr_irb",        tier:1, label:"IRB Approval",       cost:20, desc:"Scrutiny -3/week. Institutional backing is powerful cover.",                 weeklyScrutinyReduce:3 },
+    { id:"fr_lab",        tier:2, label:"Lab Access",         cost:40, desc:"+1 passive lbs/week. The study requires consistent intake.",                 passiveBonus:1 },
+    { id:"fr_published",  tier:3, label:"Published",          cost:70, desc:"+4 relationship per activity. Academic recognition bonds.",                   activityRelBonus:4 },
+    { id:"fr_grant",      tier:4, label:"Grant Funding",      cost:110, desc:"Scrutiny -4/week. Grants convert skeptics.",                                weeklyScrutinyReduce:4 },
+    { id:"fr_keynote",    tier:5, label:"Keynote Speaker",    cost:160, desc:"+2 passive, +5 rel/activity, scrutiny -4/week. She IS the research.",        passiveBonus:2, activityRelBonus:5, weeklyScrutinyReduce:4 },
+  ],
+  eating_streamer:[
+    { id:"es_setup",      tier:1, label:"Full Setup",         cost:20, desc:"Activity gives +3 extra lbs. The fridge is always stocked.",                 activityGainBonus:3 },
+    { id:"es_community",  tier:2, label:"Stream Community",   cost:40, desc:"+4 relationship per activity viewing.",                                       activityRelBonus:4 },
+    { id:"es_viral",      tier:3, label:"Viral Clip",         cost:70, desc:"+1 passive lbs/week. The algorithm feeds her content and her.",               passiveBonus:1 },
+    { id:"es_platform",   tier:4, label:"Platform Feature",   cost:110, desc:"Scrutiny -2/week. Platform backing changes the conversation.",               weeklyScrutinyReduce:2 },
+    { id:"es_legend",     tier:5, label:"Streaming Legend",   cost:160, desc:"+2 passive, +5 lbs/activity, +4 rel/activity. Iconic.",                     passiveBonus:2, activityGainBonus:5, activityRelBonus:4 },
+  ],
+  speed_eater:[
+    { id:"se_timer",      tier:1, label:"Timer Sense",        cost:20, desc:"Activity gives +4 extra lbs. The records come with mass.",                   activityGainBonus:4 },
+    { id:"se_record",     tier:2, label:"Record Breaker",     cost:40, desc:"+3 relationship per activity viewing.",                                       activityRelBonus:3 },
+    { id:"se_crossover",  tier:3, label:"Cross-Discipline",   cost:70, desc:"+1 passive lbs/week. Two communities, twice the lifestyle.",                  passiveBonus:1 },
+    { id:"se_national",   tier:4, label:"National Recognition",cost:110,desc:"Scrutiny -2/week. National status is a shield.",                             weeklyScrutinyReduce:2 },
+    { id:"se_legend",     tier:5, label:"Record Legend",      cost:160, desc:"+2 passive, +6 lbs/activity, +3 rel/activity. Unprecedented.",              passiveBonus:2, activityGainBonus:6, activityRelBonus:3 },
+  ],
+  chapter_hostess:[
+    { id:"ch_menu",       tier:1, label:"The Menu",           cost:20, desc:"Activity gives +5 extra lbs. Wednesday feasts are serious.",                 activityGainBonus:5 },
+    { id:"ch_tradition",  tier:2, label:"Feast Tradition",    cost:40, desc:"+1 passive lbs/week from the Wednesday routine.",                            passiveBonus:1 },
+    { id:"ch_alumni",     tier:3, label:"Alumni Funding",     cost:70, desc:"+4 relationship per activity. She's a chapter institution.",                 activityRelBonus:4 },
+    { id:"ch_reputation", tier:4, label:"Chapter Reputation", cost:110, desc:"Scrutiny -3/week. The chapter is well-regarded. Admin is careful.",         weeklyScrutinyReduce:3 },
+    { id:"ch_legacy",     tier:5, label:"Feast Legacy",       cost:160, desc:"+2 passive, +7 lbs/activity, +4 rel/activity. The feast is permanent.",     passiveBonus:2, activityGainBonus:7, activityRelBonus:4 },
+  ],
+  body_positive_greek:[
+    { id:"bpg_proposal",  tier:1, label:"The Proposal",       cost:20, desc:"Scrutiny -3/week. The progressive framing resets admin's assumptions.",       weeklyScrutinyReduce:3 },
+    { id:"bpg_pledges",   tier:2, label:"Pledge Class",       cost:40, desc:"+1 passive lbs/week. The chapter attracts the right people.",                passiveBonus:1 },
+    { id:"bpg_press",     tier:3, label:"National Press",     cost:70, desc:"+5 relationship per activity. She's a figure, not just a captain.",           activityRelBonus:5 },
+    { id:"bpg_policy",    tier:4, label:"Policy Change",      cost:110, desc:"Scrutiny -5/week. The national org has publicly aligned.",                  weeklyScrutinyReduce:5 },
+    { id:"bpg_permanent", tier:5, label:"Permanent Change",   cost:160, desc:"+2 passive, +6 rel/activity, scrutiny -4/week. Legacy secured.",            passiveBonus:2, activityRelBonus:6, weeklyScrutinyReduce:4 },
+  ],
+  metrics_eater:[
+    { id:"me_sheet",      tier:1, label:"The Spreadsheet",    cost:20, desc:"Activity gives +3 extra lbs. The data tracks the gains.",                    activityGainBonus:3 },
+    { id:"me_optimize",   tier:2, label:"Optimized Windows",  cost:40, desc:"+1 passive lbs/week. Three windows, maximum efficiency.",                    passiveBonus:1 },
+    { id:"me_record",     tier:3, label:"Personal Record",    cost:70, desc:"+3 relationship per activity. The records impress.",                         activityRelBonus:3 },
+    { id:"me_cited",      tier:4, label:"Cited Methodology",  cost:110, desc:"Scrutiny -2/week. Academic legitimacy from the documentation.",              weeklyScrutinyReduce:2 },
+    { id:"me_legend",     tier:5, label:"Data Legend",        cost:160, desc:"+2 passive, +5 lbs/activity, +4 rel/activity. The numbers are extraordinary.",passiveBonus:2, activityGainBonus:5, activityRelBonus:4 },
+  ],
+  food_scientist:[
+    { id:"fs_irb",        tier:1, label:"IRB Approval",       cost:20, desc:"Scrutiny -3/week. Institutional cover is the strongest shield.",              weeklyScrutinyReduce:3 },
+    { id:"fs_lab",        tier:2, label:"Lab Access",         cost:40, desc:"+1 passive lbs/week. The study protocol requires it.",                       passiveBonus:1 },
+    { id:"fs_published",  tier:3, label:"First Publication",  cost:70, desc:"+4 relationship per activity. Academic bond deepens.",                       activityRelBonus:4 },
+    { id:"fs_cited",      tier:4, label:"Cited Research",     cost:110, desc:"Scrutiny -4/week. Prestigious citations change the conversation.",           weeklyScrutinyReduce:4 },
+    { id:"fs_keynote",    tier:5, label:"Keynote",            cost:160, desc:"+2 passive, +5 rel/activity, scrutiny -4/week. The experiment is complete.", passiveBonus:2, activityRelBonus:5, weeklyScrutinyReduce:4 },
+  ],
+  installation_artist:[
+    { id:"ia_first",      tier:1, label:"First Installation", cost:20, desc:"+4 relationship per activity viewing.",                                       activityRelBonus:4 },
+    { id:"ia_gallery",    tier:2, label:"Gallery Interest",   cost:40, desc:"Scrutiny -2/week. Art legitimizes everything.",                               weeklyScrutinyReduce:2 },
+    { id:"ia_review",     tier:3, label:"Major Review",       cost:70, desc:"+1 passive lbs/week. The artist's process is continuous.",                   passiveBonus:1 },
+    { id:"ia_exhibition", tier:4, label:"Major Exhibition",   cost:110, desc:"Scrutiny -4/week. She's a recognized artist. Admin is careful.",            weeklyScrutinyReduce:4 },
+    { id:"ia_retro",      tier:5, label:"Retrospective",      cost:160, desc:"+2 passive, +6 rel/activity, scrutiny -3/week. She is the piece.",           passiveBonus:2, activityRelBonus:6, weeklyScrutinyReduce:3 },
+  ],
+  food_photographer:[
+    { id:"fp_shoot",      tier:1, label:"First Shoot",        cost:20, desc:"+4 relationship per activity viewing.",                                       activityRelBonus:4 },
+    { id:"fp_gallery",    tier:2, label:"Gallery Show",       cost:40, desc:"Scrutiny -2/week. The gallery changes her status.",                           weeklyScrutinyReduce:2 },
+    { id:"fp_book",       tier:3, label:"Book Deal",          cost:70, desc:"+1 passive lbs/week. The project is continuous.",                            passiveBonus:1 },
+    { id:"fp_collector",  tier:4, label:"Collector Interest", cost:110, desc:"Scrutiny -3/week. Serious collectors are serious cover.",                   weeklyScrutinyReduce:3 },
+    { id:"fp_permanent",  tier:5, label:"Permanent Collection",cost:160,desc:"+2 passive, +5 rel/activity, scrutiny -4/week. Museum-grade.",              passiveBonus:2, activityRelBonus:5, weeklyScrutinyReduce:4 },
+  ],
+  anonymous_blogger:[
+    { id:"ab_post",       tier:1, label:"First Post",         cost:20, desc:"+4 relationship per activity viewing.",                                       activityRelBonus:4 },
+    { id:"ab_following",  tier:2, label:"Growing Following",  cost:40, desc:"+1 passive lbs/week. The routine of posting keeps her going.",              passiveBonus:1 },
+    { id:"ab_viral",      tier:3, label:"Viral Post",         cost:70, desc:"Scrutiny -2/week. The anonymity deflects attention elsewhere.",               weeklyScrutinyReduce:2 },
+    { id:"ab_journalist", tier:4, label:"Journalist Interest",cost:110, desc:"Scrutiny -3/week. The press attention is on the blog, not her.",            weeklyScrutinyReduce:3 },
+    { id:"ab_phenomenon", tier:5, label:"Cultural Phenomenon",cost:160, desc:"+2 passive, +5 rel/activity, scrutiny -3/week. Anonymous legend.",          passiveBonus:2, activityRelBonus:5, weeklyScrutinyReduce:3 },
+  ],
+  asmr_creator:[
+    { id:"ac_first",      tier:1, label:"First Video",        cost:20, desc:"+5 relationship per activity viewing.",                                       activityRelBonus:5 },
+    { id:"ac_community",  tier:2, label:"Loyal Community",    cost:40, desc:"+1 passive lbs/week. The ritual feeds her too.",                             passiveBonus:1 },
+    { id:"ac_algorithm",  tier:3, label:"Algorithm Finds Her",cost:70, desc:"Scrutiny -2/week. Cozy content attracts no scrutiny.",                       weeklyScrutinyReduce:2 },
+    { id:"ac_mainstream", tier:4, label:"Mainstream Crossover",cost:110,desc:"Scrutiny -3/week. Everyone knows her and nobody finds her threatening.",    weeklyScrutinyReduce:3 },
+    { id:"ac_comfort",    tier:5, label:"Comfort Ritual",     cost:160, desc:"+2 passive, +6 rel/activity, scrutiny -3/week. A therapeutic presence.",   passiveBonus:2, activityRelBonus:6, weeklyScrutinyReduce:3 },
+  ],
+  campus_legend:[
+    { id:"cl_booth",      tier:1, label:"The Booth",          cost:20, desc:"Activity gives +5 extra lbs. The booth feasts are real.",                    activityGainBonus:5 },
+    { id:"cl_stories",    tier:2, label:"The Stories",        cost:40, desc:"+4 relationship per activity viewing.",                                       activityRelBonus:4 },
+    { id:"cl_plaque",     tier:3, label:"Brass Plaque",       cost:70, desc:"+1 passive lbs/week. The legend maintains itself.",                          passiveBonus:1 },
+    { id:"cl_myth",       tier:4, label:"Campus Mythology",   cost:110, desc:"Scrutiny -3/week. Legends don't get written up.",                           weeklyScrutinyReduce:3 },
+    { id:"cl_place",      tier:5, label:"She IS the Campus",  cost:160, desc:"+2 passive, +7 lbs/activity, +4 rel/activity. Permanent institution.",      passiveBonus:2, activityGainBonus:7, activityRelBonus:4 },
+  ],
+  food_tourist:[
+    { id:"ft_map",        tier:1, label:"The Map",            cost:20, desc:"Activity gives +4 extra lbs. Every expedition is serious.",                  activityGainBonus:4 },
+    { id:"ft_blog",       tier:2, label:"The Blog",           cost:40, desc:"+4 relationship per activity viewing.",                                       activityRelBonus:4 },
+    { id:"ft_homepress",  tier:3, label:"Home Country Press", cost:70, desc:"Scrutiny -2/week. International profile changes things.",                    weeklyScrutinyReduce:2 },
+    { id:"ft_bookdeal",   tier:4, label:"Two Book Deals",     cost:110, desc:"+1 passive lbs/week. The project is her life.",                             passiveBonus:1 },
+    { id:"ft_ambassador", tier:5, label:"Cultural Ambassador",cost:160, desc:"+2 passive, +6 lbs/activity, +4 rel/activity. Both places, one person.",   passiveBonus:2, activityGainBonus:6, activityRelBonus:4 },
+  ],
+};
+
+const EVOLUTION_OFFER = {
+  athlete:{
+    intro:(s)=>`${s.name} catches you after class. She's been thinking about what comes next — the weight she's carrying is real, undeniable, and the old sport doesn't fit anymore. But she's competitive in a way that doesn't turn off. She wants to do something with this body. She just needs a direction.`,
+    paths:{
+      sumo:    { label:"The Sumo Path",        desc:"Channel her athletic drive into sumo wrestling. The ring awaits. So does the crowd." },
+      eating_competitor:{ label:"The Circuit", desc:"Competitive eating circuits. Timers, records, a legitimate sport for exactly this body." },
+    },
+  },
+  influencer:{
+    intro:(s)=>`${s.name} puts her phone down — which you've never actually seen her do — and looks at you. 'The fitness content isn't landing anymore,' she says. 'My audience can see what's happening. I need a new angle. Two options.' She pulls her phone back out and shows you two draft pitches.`,
+    paths:{
+      feedee_creator:       { label:"Feedee Channel",         desc:"A niche, dedicated content brand built around exactly what's happening to her." },
+      body_positive_creator:{ label:"Body Positive Platform", desc:"Mainstream crossover: brand deals, TEDx, a cultural argument she can win." },
+    },
+  },
+  cheerleader:{
+    intro:(s)=>`${s.name} arrives with her captain's sash still on, slightly breathless. She's been thinking. The squad has a future. She has a body. The two things can be connected, but not in the old way. What's the new way?`,
+    paths:{
+      eating_captain:  { label:"Competitive Eating Captain", desc:"Rebrand the squad around competitive eating. Tournament structure, real competition, glory." },
+      big_squad_captain:{ label:"Body Positive Captain",     desc:"Change the squad's culture from the top. No more weigh-ins. A new kind of power." },
+    },
+  },
+  bookworm:{
+    intro:(s)=>`${s.name} slides a folder across the table. Inside: two outlines. One is a newsletter. One is an IRB application. 'I've been thinking about what this is,' she says, gesturing at herself with the careful imprecision of someone who hasn't quite found the right words yet. 'And I think it's either literature or science. You choose.'`,
+    paths:{
+      eating_diarist: { label:"The Diarist",    desc:"A newsletter, then a book. Her transformation as literature. Intimate, honest, publishable." },
+      food_researcher:{ label:"The Researcher", desc:"IRB-approved self-study. Academic cover. Institutional backing. The data is extraordinary." },
+    },
+  },
+  gamer:{
+    intro:(s)=>`${s.name} swivels her chair toward you mid-session, something she never does. The game is still running. 'I've been thinking about what to do with this,' she says, indicating herself with one hand while the other keeps moving on the controller. 'And I have two ideas. Both involve this setup.' She gestures at the room.`,
+    paths:{
+      eating_streamer:{ label:"Eating Streamer", desc:"Gaming + mukbang content. The crossover is real and the audience is waiting." },
+      speed_eater:    { label:"Speed Eater",     desc:"Competitive eating with the same optimizer's brain. Records. Timers. That leaderboard mentality applied to food." },
+    },
+  },
+  sorority:{
+    intro:(s)=>`${s.name} closes the chapter meeting early and waits until everyone else has left. Then she turns to you. 'I've been thinking about what this chapter could be,' she says. 'And I think it's one of two things.' She pours two glasses of wine. The conversation is going to take a while.`,
+    paths:{
+      chapter_hostess:     { label:"The Hostess",              desc:"Wednesday feast nights. A culture of abundance. She feeds the chapter and the chapter grows." },
+      body_positive_greek: { label:"Body Positive Greek Life", desc:"End the weigh-ins. Change the culture. A permanent shift in what a sorority can be." },
+    },
+  },
+  overachiever:{
+    intro:(s)=>`${s.name} arrives with a color-coded presentation. Two options, two methodologies, both rigorous. She presents both in six minutes and then sits down and looks at you. 'I've decided this body is a project,' she says. 'The question is which kind.' She waits for your input.`,
+    paths:{
+      metrics_eater:  { label:"Metrics Obsessed", desc:"Data-driven eating as a discipline. Spreadsheets, records, optimization. The overachiever applied to appetite." },
+      food_scientist: { label:"Food Scientist",   desc:"IRB-approved self-study. Academic frame, institutional backing, a career built around the research." },
+    },
+  },
+  artsy:{
+    intro:(s)=>`${s.name} comes in late carrying a portfolio and sits down without speaking for thirty seconds. Then: 'I've been thinking about what the work is about now.' She opens the portfolio: two sets of sketches. Two directions. Both use this body as the primary material.`,
+    paths:{
+      installation_artist:{ label:"Installation Artist",   desc:"Document the transformation as art. Galleries, reviews, a retrospective of a body in progress." },
+      food_photographer:  { label:"Food Photographer",     desc:"Aesthetic eating as visual art. Shoots, gallery shows, museum collections." },
+    },
+  },
+  quiet:{
+    intro:(s)=>`${s.name} leaves a note on your desk. Not a spoken conversation — a note, slipped under the door sometime before anyone else arrived. Inside: two links and a short paragraph. 'I've been thinking,' the paragraph says, 'about what to do with the fact that I'm different now. Here are two ideas. You don't have to respond immediately.'`,
+    paths:{
+      anonymous_blogger:{ label:"Anonymous Blogger", desc:"A secret identity, a public record. Nobody knows who she is. The work speaks for itself." },
+      asmr_creator:     { label:"ASMR Creator",      desc:"Quiet, careful, therapeutic eating content. The perfect format for the person she's always been." },
+    },
+  },
+  transfer:{
+    intro:(s)=>`${s.name} sits across from you with the expression of someone who has figured something out. 'I've been here long enough to know this place,' she says. 'And I've been eating long enough to have something to say about it. Two options.' She slides two napkins across the table, each one with an idea scrawled on it.`,
+    paths:{
+      campus_legend: { label:"Campus Legend",   desc:"Become mythology. The dining hall, the booth, the stories incoming students hear about her before they arrive." },
+      food_tourist:  { label:"Food Tourist",    desc:"Document every cuisine available to her. A blog, a book deal, a cultural bridge between here and home." },
+    },
+  },
+};
+
+const ASCENSION_BRIDGE = {
+  sumo:             (s)=>`${s.name} sets the championship belt down on the table — slowly, carefully, the way you set down something that's been held a long time. She looks at her hands. 'The ring gave me a reason,' she says. 'But reasons run out eventually. This doesn't.' She touches her own mass, slowly, the way you touch something that belongs to you completely. 'I think the goddess needs more than a wrestler.'`,
+  eating_competitor:(s)=>`${s.name} closes the record notebook — the one with four years of times and weights and personal bests — and sits with it in her hands for a long moment. 'I've run out of records to break,' she says. 'Every number is gone. There's nothing left to beat. Except the whole concept of a limit.' She looks up. 'I think it's time.'`,
+  feedee_creator:   (s)=>`${s.name} closes her laptop, the analytics still glowing on the screen behind her. 'The channel is done,' she says. Not sad — matter-of-fact. 'I made it. I outgrew it. What I'm becoming now doesn't fit in a format.' She's very still. 'The goddess has been watching for a while. I can feel it.'`,
+  body_positive_creator:(s)=>`${s.name} puts her phone away — the way she does when a conversation matters — and looks at you. 'I've said everything the platform could hold,' she says. 'The argument is won. The body is beyond argument now.' She's quiet for a moment. 'Something else is starting.'`,
+  eating_captain:   (s)=>`${s.name} hangs the captain's sash on the back of the chair with the deliberateness of someone who won't need it again. 'The squad is good,' she says. 'The records stand. The culture is set.' She looks at her hands. 'I was a captain. I think now I'm something else.' She waits for you to understand. You do.`,
+  big_squad_captain:(s)=>`${s.name} sits down slowly, the weight of everything she's built evident in the way she holds herself. 'The culture is permanent,' she says. 'The change is done. The chapter runs itself.' She looks out the window. 'I keep feeling like there's something on the other side of all this. Something bigger than a squad.' She looks at you. 'Is it time?'`,
+  eating_diarist:   (s)=>`${s.name} closes the notebook — the original one, the one from before the newsletter, before the agent, before the book. She holds it in both hands. 'The writing documented me,' she says. 'Now I've grown past what writing can hold.' She's quiet. 'Whatever comes next, I don't think it fits in a sentence.' A long pause. 'I think it fits in a goddess.'`,
+  food_researcher:  (s)=>`${s.name} prints the final page of the dataset — the last measurement, the last data point — and holds it for a moment. 'The study is complete,' she says. 'All variables accounted for except one.' She looks at you. 'The study never accounted for what happens when the subject exceeds the study's capacity to describe her.' A smile. 'I think we're there.'`,
+  eating_streamer:  (s)=>`${s.name} turns the camera off — properly off, not just paused — and sits in the sudden silence. 'I've been streaming for years,' she says. 'I've eaten everything on camera. The audience has watched every pound.' She looks at her hands. 'But there's something that can't be streamed. Something that needs to happen in private.' She looks at you. 'I think this is it.'`,
+  speed_eater:      (s)=>`${s.name} opens the notebook to the last page and looks at the final record for a long time. 'Every number is broken,' she says. 'Every record is mine. There's no more room to be faster or bigger or more.' She closes the notebook. 'Except there is more. There's the thing that comes after records. The thing the timer doesn't measure.' She looks up. 'I think I've always been heading there.'`,
+  chapter_hostess:  (s)=>`${s.name} folds the last menu — the one from Wednesday's feast — and sets it on the table beside the others. 'The table is set,' she says. 'The chapter eats well. It will continue to eat well after I'm gone.' She looks at her hands, then at you. 'I've been feeding everyone. I think something is about to feed me.' The air in the room feels different. 'I'm ready.'`,
+  body_positive_greek:(s)=>`${s.name} reads the national organization's updated guidance one more time, then folds it and sets it down. 'The change is in writing now,' she says. 'Official. Permanent. Irreversible.' She's very quiet for a moment. 'I've been building something. I think the goddess has been building something too.' She looks at you. 'They're the same thing, aren't they.'`,
+  metrics_eater:    (s)=>`${s.name} saves the spreadsheet — all four thousand rows of it — and closes the laptop. 'The data is complete,' she says. 'Every metric tracked, every variance documented.' She's quiet. 'But there's a variable I never modeled. The one where the subject exceeds the categories.' She looks at you. 'My data predicts this moment. I just didn't know what to call it.'`,
+  food_scientist:   (s)=>`${s.name} writes 'Study concluded' in the methodology log and sets the pen down. 'The data is in,' she says. 'The subject has been rigorously documented.' She turns to face you. 'But science has an edge. Beyond the edge is the thing that data can describe but cannot explain.' She's very still. 'I think I've reached the edge.' A pause. 'I'd like to go past it.'`,
+  installation_artist:(s)=>`${s.name} stands in front of the last piece in the retrospective — the one that is simply her, present, not photographed or documented or framed, just existing in the gallery space — and looks at herself for a long time. 'The installation and the artist have merged,' she says quietly. 'There's nothing left to separate.' She turns to you. 'The goddess has been making something too. I think I'm it.'`,
+  food_photographer:(s)=>`${s.name} sets the camera down for the first time — not to check a shot, but because she's done. 'I set out to photograph food,' she says. 'The food changed me. I photographed the change. The photographs became the subject. I became the photograph.' She looks at you. 'There's one frame left. It can't be taken with this camera.' A very long pause. 'It has to be lived.'`,
+  anonymous_blogger:(s)=>`${s.name} posts the final entry. You watch her do it — she types the last sentence, reads it twice, and hits publish with the same quiet certainty she brings to everything. Then she closes the laptop. 'The blog is done,' she says. 'The record is complete. Everything I became is written down.' She looks up. 'Now something happens that can't be written.' She's smiling, very slightly. 'I think the goddess has been reading all along.'`,
+  asmr_creator:     (s)=>`${s.name} turns off the microphone — the careful, ceremonial way she always does — and sits in the silence for a long time. Then: 'I've been making space for people to be calm,' she says. 'Feeding them something quiet.' She looks at her hands. 'But something is asking me for the opposite of quiet now. Something big.' She looks up. 'I think it's time to answer.'`,
+  campus_legend:    (s)=>`${s.name} sits in the booth — the one with her name on the plaque — and looks at the dining hall. 'I came here a stranger,' she says. 'And I became the place.' She's quiet for a long time. 'But a campus is still a small thing. The goddess made something bigger.' She looks at you. 'I think she made it out of me.' She touches the plaque once, gently. 'I'm ready.'`,
+  food_tourist:     (s)=>`${s.name} closes the final notebook — the one that started with a map and a list and became something no map could hold — and sets it beside the others. 'I've tasted everything,' she says. 'Every dish, every cuisine, every place I could reach.' She looks at you. 'But there's a flavor I haven't found yet. One that doesn't come from a restaurant.' She's very quiet. 'I think the goddess has been saving it for me.'`,
+};
+
 // ── DINNER EVENT DATA ──────────────────────────────────────────
 const WAITER_DESC = {
   bistro:        (s)=>`A young woman in a bistro apron comes over. She's softly built — the kind of figure that comes from working around good food every day. She smiles warmly at ${s.name}. "Ready for more?"`,
@@ -3580,13 +4565,29 @@ function getOutfit(s){
   if(s.ascensionPath==="celestial") return CELESTIAL_OUTFITS[s.ascensionStage||0];
   if(s.ascensionPath==="umbral")    return UMBRAL_OUTFITS[s.ascensionStage||0];
   if(s.ascensionPath==="convergence") return "She wears what remains — light and shadow stitched together into something that was neither and is now both. The fabric seems to shift as you look at it.";
+  if(s.evolvedForm && getStage(s.lbs).id>=5){
+    const arr=EVOLVED_OUTFITS[s.evolvedForm]; if(arr){ return arr[Math.min(getStage(s.lbs).id-5,arr.length-1)]; }
+  }
   const o=OUTFITS[s.archetype]||OUTFITS.default; return o[Math.min(getStage(s.lbs).id,o.length-1)];
 }
 function getDiary(s){
   if(s.ascensionPath==="celestial") return CELESTIAL_DIARY[s.ascensionStage||0];
   if(s.ascensionPath==="umbral")    return UMBRAL_DIARY[s.ascensionStage||0];
   if(s.ascensionPath==="convergence") return "I am both. I am neither. The hunger and the warmth are the same thing seen from both sides at once. I have become the thing that was always underneath everything. I don't know how to write the rest of this entry. I don't think language reaches this far.";
+  if(s.evolvedForm && getStage(s.lbs).id>=5){
+    const arr=EVOLVED_DIARY[s.evolvedForm]; if(arr){ return arr[Math.min(getStage(s.lbs).id-5,arr.length-1)]; }
+  }
   const id=getStage(s.lbs).id; if(id===0) return SLIGHT_DIARY[s.archetype]||"—"; const d=DIARY_ENTRIES[s.archetype]; return d?d[Math.min(id-1,9)]:"—";
+}
+function getEvolvedReaction(s){
+  if(!s.evolvedForm) return null;
+  const arr=EVOLVED_REACTIONS[s.evolvedForm]; if(!arr) return null;
+  const idx=getStage(s.lbs).id-5; if(idx<0) return null;
+  return arr[Math.min(idx,arr.length-1)];
+}
+function getEvolvedActivityStageIdx(s){
+  const id=getStage(s.lbs).id;
+  return Math.max(0,Math.min(id-5,4));
 }
 function rnd(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
 function generateClassSession(students,week){
@@ -3715,6 +4716,11 @@ export default function ProfessorSim(){
   // religion: {founded, devotees, ritesHeld, worshippedIds:[], weeklyPassiveGain}
   const [religionRiteModal,setReligionRiteModal]=useState(null);
   const [convergenceModal,setConvergenceModal]=useState(null); // {student} secret stage achieved
+  // ── EP2: EVOLUTION STATE ───────────────────────────────────────
+  const [evolutionModal,setEvolutionModal]=useState(null);
+  // evolutionModal: {student, paths:{pathA:{id,label,desc}, pathB:{id,label,desc}}}
+  const [evolvedActivityModal,setEvolvedActivityModal]=useState(null);
+  // evolvedActivityModal: {student, stageIdx, text}
   const logRef=useRef(null);
 
   useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
@@ -3921,6 +4927,12 @@ export default function ProfessorSim(){
         gain+=2+divineAscendedPassive;
         if(divineUmbralVoidPassive>0) gain+=divineUmbralVoidPassive;
       }
+      // Evolved skill passive bonuses
+      if(s.evolvedForm&&(s.evolvedSkills||[]).length>0){
+        const evTree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
+        const evPassive=evTree.filter(sk=>(s.evolvedSkills||[]).includes(sk.id)&&sk.passiveBonus).reduce((a,b)=>a+(b.passiveBonus||0),0);
+        gain+=evPassive;
+      }
       return processStudentGain(s,gain,0);
     });
     // Ascension stage-up checks
@@ -3997,6 +5009,7 @@ export default function ProfessorSim(){
     const devotedCount=updated.filter(s=>getTier(s.relationship).id>=3).length;
     if(devotedCount>0) setAdminScrutiny(prev=>Math.max(0,prev-devotedCount));
     if(skillScrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-skillScrutinyPassiveReduce));
+    if(evolvedScrutinyReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-evolvedScrutinyReduce));
     // Goddess vision: triggers when first student hits Blob (stage 10)
     if(!goddessSeen){
       const firstBlob=updated.find(s=>getStage(s.lbs).id>=10);
@@ -4264,6 +5277,61 @@ export default function ProfessorSim(){
     setAp(a=>a-3);
     push(`✦ ${consumed.name} has been released from ${umbral.name}. She returns at ${recoveryWeight} lbs — changed, but present.`);
     push(`   Something of the void clings to her. She will never be entirely who she was.`);
+  };
+
+  // ── EP2: EVOLUTION HANDLERS ────────────────────────────────────
+  const openEvolutionModal=(s)=>{
+    const offer=EVOLUTION_OFFER[s.archetype]; if(!offer) return;
+    const archPaths=offer.paths;
+    const pathKeys=Object.keys(archPaths);
+    setEvolutionModal({
+      student:s,
+      intro:offer.intro(s),
+      paths: pathKeys.map(k=>({id:k, label:archPaths[k].label, desc:archPaths[k].desc})),
+    });
+  };
+
+  const chooseEvolution=(studentId,formId)=>{
+    setStudents(prev=>prev.map(s=>s.id!==studentId?s:{...s,evolvedForm:formId,evolvedSkills:[]}));
+    const s=students.find(s=>s.id===studentId);
+    const meta=EVOLVED_ACTIVITY_META[formId];
+    push(`✦ ${s?.name||"She"} has found her path: ${meta?.label||formId}.`);
+    setEvolutionModal(null);
+  };
+
+  const doEvolvedActivity=(s)=>{
+    if(!s.evolvedForm) return;
+    const meta=EVOLVED_ACTIVITY_META[s.evolvedForm]; if(!meta) return;
+    if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
+    const stageIdx=getEvolvedActivityStageIdx(s);
+    const actArr=EVOLVED_ACTIVITY_TEXT[s.evolvedForm];
+    const text=actArr?actArr[stageIdx]:"She's in her element.";
+    // Calculate bonuses from evolved skills
+    const skills=(s.evolvedSkills||[]);
+    const tree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
+    const bonusGain=tree.filter(sk=>skills.includes(sk.id)&&sk.activityGainBonus).reduce((a,b)=>a+(b.activityGainBonus||0),0);
+    const bonusRel=tree.filter(sk=>skills.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
+    const doubleCharge=tree.find(sk=>skills.includes(sk.id)&&sk.doubleActivityCharge);
+    const rawGain=rnd(meta.gainRange[0],meta.gainRange[1])+bonusGain;
+    const gain=doubleCharge?rawGain*2:rawGain;
+    const relGain=meta.relBonus+bonusRel;
+    setAp(a=>a-meta.apCost);
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+gain,relationship:Math.min(100,st.relationship+relGain)}));
+    push(`✦ ${s.name} — ${meta.label}: +${gain} lbs · +${relGain} rel`);
+    setEvolvedActivityModal({student:s,stageIdx,text});
+  };
+
+  const purchaseEvolvedSkill=(studentId,skillId)=>{
+    const s=students.find(s=>s.id===studentId); if(!s||!s.evolvedForm) return;
+    const tree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
+    const skill=tree.find(sk=>sk.id===skillId); if(!skill) return;
+    if((s.evolvedSkills||[]).includes(skillId)){push("⚠️ Already unlocked.");return;}
+    const totalGainedByStudent=s.lbs-s.startLbs;
+    const spent=(s.evolvedSkillsSpent||0);
+    const available=totalGainedByStudent-spent;
+    if(available<skill.cost){push(`⚠️ Need ${skill.cost} lbs gained (${available} available for ${s.name}).`);return;}
+    setStudents(prev=>prev.map(st=>st.id!==studentId?st:{...st,evolvedSkills:[...(st.evolvedSkills||[]),skillId],evolvedSkillsSpent:(st.evolvedSkillsSpent||0)+skill.cost}));
+    push(`✦ ${s.name}: unlocked "${skill.label}"`);
   };
 
   const foundReligion=(blobId)=>{
@@ -5038,6 +6106,12 @@ export default function ProfessorSim(){
   const divineUmbralCanConsumeHR=unlockedAll.some(sk=>sk.umbralCanConsumeHR);
   const divineCelestialCanPullHR=unlockedAll.some(sk=>sk.celestialCanPullHR);
   const dinnerUnlocked=unlockedSkills.includes("dinner_basic");
+  // EP2: total weekly scrutiny reduction from evolved skills across all students
+  const evolvedScrutinyReduce=students.reduce((total,s)=>{
+    if(!s.evolvedForm||!(s.evolvedSkills||[]).length) return total;
+    const tree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
+    return total+tree.filter(sk=>(s.evolvedSkills||[]).includes(sk.id)&&sk.weeklyScrutinyReduce).reduce((a,b)=>a+(b.weeklyScrutinyReduce||0),0);
+  },0);
 
   // ── EFFECTIVE ACTIONS (applying unlocked skill effects) ──────
   const effectiveSingleActions=ACTIONS_SINGLE.map(a=>({
@@ -5882,7 +6956,11 @@ export default function ProfessorSim(){
                       <Bar val={s.lbs} max={s.ascensionPath?3000:1100} color={s.ascensionPath==="convergence"?"#ffffff":s.ascensionPath==="celestial"?CELESTIAL_STAGES[s.ascensionStage||0]?.color:s.ascensionPath==="umbral"?UMBRAL_STAGES[s.ascensionStage||0]?.color:st.color}/>
                       <div style={{fontSize:11,color:"#a88050",margin:"2px 0"}}>{s.lbs.toLocaleString()} lbs (+{s.lbs-s.startLbs}) · ❤ {s.relationship}%</div>
                       <div style={{fontSize:10,color:"#504060",fontStyle:"italic",lineHeight:1.4,marginTop:3}}>
-                        {s.ascensionPath?((s.ascensionPath==="celestial"?ASCENSION_STAGE_REACTIONS.celestial:s.ascensionPath==="umbral"?ASCENSION_STAGE_REACTIONS.umbral:[CONVERGENCE_STAGE.desc])[s.ascensionStage||0]||"").slice(0,62):(STAGE_REACTIONS[s.archetype]?.[st.id]||"").slice(0,62)}…
+                        {(()=>{
+                          if(s.ascensionPath) return ((s.ascensionPath==="celestial"?ASCENSION_STAGE_REACTIONS.celestial:s.ascensionPath==="umbral"?ASCENSION_STAGE_REACTIONS.umbral:[CONVERGENCE_STAGE.desc])[s.ascensionStage||0]||"").slice(0,62);
+                          const evR=getEvolvedReaction(s); if(evR) return evR.slice(0,62);
+                          return (STAGE_REACTIONS[s.archetype]?.[st.id]||"").slice(0,62);
+                        })()}…
                       </div>
                     </div>
                   );
@@ -5968,9 +7046,11 @@ export default function ProfessorSim(){
                 <div style={C.infoBox("rgba(40,8,70,0.35)")}>
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>CURRENT ATTITUDE</div>
                   <div style={{fontSize:13,color:"#e8d8a8",fontStyle:"italic",lineHeight:1.75}}>
-                    "{s.ascensionPath&&s.ascensionPath!=="convergence"
-                      ?(ASCENSION_STAGE_REACTIONS[s.ascensionPath]?.[s.ascensionStage||0]||STAGE_REACTIONS[s.archetype]?.[st.id])
-                      :STAGE_REACTIONS[s.archetype]?.[st.id]}"
+                    "{(()=>{
+                      if(s.ascensionPath&&s.ascensionPath!=="convergence") return ASCENSION_STAGE_REACTIONS[s.ascensionPath]?.[s.ascensionStage||0]||STAGE_REACTIONS[s.archetype]?.[st.id];
+                      const evR=getEvolvedReaction(s); if(evR) return evR;
+                      return STAGE_REACTIONS[s.archetype]?.[st.id];
+                    })()}"
                   </div>
                 </div>
 
@@ -5984,6 +7064,11 @@ export default function ProfessorSim(){
                 {goddessSeen&&st.id>=10&&!s.ascensionPath&&(
                   <div style={{background:"rgba(40,5,60,0.7)",border:"1px solid #8030e0",borderRadius:10,padding:14,marginBottom:12}}>
                     <div style={{fontSize:9,letterSpacing:3,color:"#a060ff",marginBottom:6}}>✦ ASCENSION AVAILABLE</div>
+                    {s.evolvedForm&&ASCENSION_BRIDGE[s.evolvedForm]&&(
+                      <div style={{...C.infoBox("rgba(30,5,50,0.5)"),marginBottom:10,fontSize:12,color:"#c8a8f0",fontStyle:"italic",lineHeight:1.85}}>
+                        {ASCENSION_BRIDGE[s.evolvedForm](s)}
+                      </div>
+                    )}
                     <div style={{fontSize:13,color:"#d0b0f0",lineHeight:1.8,marginBottom:12}}>
                       {s.name} has reached the threshold. The goddess watches. Two paths open before her — light and void. Choose.
                     </div>
@@ -6125,6 +7210,65 @@ export default function ProfessorSim(){
                     <div style={{fontSize:11,color:"#b0b0b0",fontStyle:"italic",lineHeight:1.65}}>{CONVERGENCE_STAGE.desc}</div>
                   </div>
                 )}
+
+                {/* ── EP2: EVOLUTION SECTION ── */}
+                {!s.ascensionPath&&(()=>{
+                  const canOffer=!s.evolvedForm&&st.id>=4&&s.relationship>=60&&!!EVOLUTION_OFFER[s.archetype];
+                  const hasEvolved=!!s.evolvedForm;
+                  const meta=hasEvolved?EVOLVED_ACTIVITY_META[s.evolvedForm]:null;
+                  const tree=hasEvolved?EVOLVED_SKILL_TREES[s.evolvedForm]||[]:[];
+                  const skills=s.evolvedSkills||[];
+                  const totalGained=s.lbs-s.startLbs;
+                  const spent=s.evolvedSkillsSpent||0;
+                  const availLbs=totalGained-spent;
+                  if(!canOffer&&!hasEvolved) return null;
+                  return(
+                    <div style={{marginBottom:14}}>
+                      {canOffer&&!hasEvolved&&(
+                        <div style={{background:"rgba(40,10,80,0.5)",border:"1px solid #7030c0",borderRadius:10,padding:12,marginBottom:10}}>
+                          <div style={{fontSize:9,letterSpacing:3,color:"#9040e0",marginBottom:5}}>✦ EVOLUTION AVAILABLE</div>
+                          <div style={{fontSize:12,color:"#c0a0e0",lineHeight:1.7,marginBottom:8}}>
+                            {s.name} has grown into something the original path can't contain. A new direction is possible — and she knows it.
+                          </div>
+                          <button style={{...C.btn("#5a18b0"),width:"100%"}} onClick={()=>openEvolutionModal(s)}>
+                            ✦ Propose a New Direction
+                          </button>
+                        </div>
+                      )}
+                      {hasEvolved&&(
+                        <div style={{background:"rgba(30,8,60,0.5)",border:"1px solid #6030b080",borderRadius:10,padding:12}}>
+                          <div style={{fontSize:9,letterSpacing:3,color:"#9040e0",marginBottom:4}}>✦ EVOLVED PATH</div>
+                          <div style={{fontSize:13,fontWeight:700,color:"#c080ff",marginBottom:4}}>{meta?.label||s.evolvedForm}</div>
+                          <button style={{...C.btn("#401890"),opacity:ap<(meta?.apCost||1)?0.4:1,marginBottom:10,width:"100%"}} onClick={()=>doEvolvedActivity(s)}>
+                            {meta?.label||"Activity"} ({meta?.apCost||1} AP) · +{meta?.gainRange?.[0]}–{meta?.gainRange?.[1]} lbs
+                          </button>
+                          {tree.length>0&&(
+                            <div>
+                              <div style={{fontSize:9,letterSpacing:2,color:"#6030a0",marginBottom:6}}>EVOLVED SKILLS · {availLbs} lbs available</div>
+                              {tree.map(sk=>{
+                                const owned=skills.includes(sk.id);
+                                const canBuy=!owned&&availLbs>=sk.cost;
+                                return(
+                                  <div key={sk.id} style={{background:owned?"rgba(60,20,100,0.5)":"rgba(20,5,40,0.4)",border:`1px solid ${owned?"#7040c080":"#30206030"}`,borderRadius:7,padding:"7px 9px",marginBottom:5,display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}>
+                                    <div style={{flex:1}}>
+                                      <div style={{fontSize:11,fontWeight:700,color:owned?"#c080ff":"#7050a0",marginBottom:1}}>{sk.label} {owned&&"✓"}</div>
+                                      <div style={{fontSize:10,color:owned?"#9060c0":"#503070",lineHeight:1.4}}>{sk.desc}</div>
+                                    </div>
+                                    {!owned&&(
+                                      <button style={{...C.smBtn,opacity:canBuy?1:0.35,fontSize:10,whiteSpace:"nowrap"}} onClick={()=>canBuy&&purchaseEvolvedSkill(s.id,sk.id)}>
+                                        {sk.cost} lbs
+                                      </button>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 {/* Talk */}
                 <div style={{...C.secT,marginBottom:7}}>Talk to {s.name}</div>
@@ -7278,6 +8422,39 @@ export default function ProfessorSim(){
       )}
 
       {/* ── CONVERGENCE MODAL ── */}
+      {/* ── EP2: EVOLUTION OFFER MODAL ── */}
+      {evolutionModal&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0c0520,#180840,#0c0520)",border:"2px solid #7030c060"}}>
+            <div style={{fontSize:9,letterSpacing:4,color:"#9040e0",marginBottom:6}}>✦ A NEW DIRECTION</div>
+            <div style={{fontSize:17,fontWeight:700,color:"#d0a0ff",marginBottom:10}}>{evolutionModal.student?.name}</div>
+            <div style={{fontSize:12,color:"#b090d0",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>{evolutionModal.intro}</div>
+            <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:12}}>
+              {(evolutionModal.paths||[]).map(p=>(
+                <button key={p.id} style={{...C.btn("#40108080"),textAlign:"left",padding:"12px 14px",border:"1px solid #6030a060"}}
+                  onClick={()=>chooseEvolution(evolutionModal.student.id,p.id)}>
+                  <div style={{fontSize:13,fontWeight:700,color:"#c080ff",marginBottom:4}}>{p.label}</div>
+                  <div style={{fontSize:11,color:"#8060a0",lineHeight:1.5}}>{p.desc}</div>
+                </button>
+              ))}
+            </div>
+            <button style={C.btn("#201040")} onClick={()=>setEvolutionModal(null)}>Not yet</button>
+          </div>
+        </div>
+      )}
+
+      {/* ── EP2: EVOLVED ACTIVITY MODAL ── */}
+      {evolvedActivityModal&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#08041a,#140830,#08041a)",border:"1px solid #5020a060"}}>
+            <div style={{fontSize:9,letterSpacing:4,color:"#7030c0",marginBottom:6}}>✦ {(EVOLVED_ACTIVITY_META[evolvedActivityModal.student?.evolvedForm]||{}).label||"Activity"}</div>
+            <div style={{fontSize:14,fontWeight:700,color:"#c080ff",marginBottom:10}}>{evolvedActivityModal.student?.name}</div>
+            <div style={{fontSize:12,color:"#c0b0e0",lineHeight:1.9,marginBottom:16,fontStyle:"italic"}}>{evolvedActivityModal.text}</div>
+            <button style={{...C.btn("#301060"),width:"100%"}} onClick={()=>setEvolvedActivityModal(null)}>Continue</button>
+          </div>
+        </div>
+      )}
+
       {convergenceModal&&(
         <div style={C.overlay}>
           <div style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#05050f,#0a0a20,#05050f)",border:"2px solid #ffffff50"}}>
