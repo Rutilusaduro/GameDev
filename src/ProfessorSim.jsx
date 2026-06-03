@@ -3642,12 +3642,12 @@ const EVOLVED_REACTIONS = {
   ],
   // ── INFLUENCER paths ────────────────────────────────────────────
   feedee_creator:[
-    "First dedicated feedee post went up at midnight. Woke up to more comments than I've ever had. Oh.",
-    "Subscribers keep coming. The algorithm knows what I'm doing. The algorithm approves.",
-    "A clip went viral. Eight million views. Not what I expected. Everything I expected.",
-    "This is my full-time career now. Deliveries every day. Film everything. The brand is the body.",
-    "I am a cultural figure in a space I didn't know existed six months ago. I built this. It built me back.",
-    "The content is endless. So am I. We have become the same thing.",
+    `First collab. I said "we're going to feed each other on camera" and she said yes and we did it and the chat stayed for the whole thing. I've been trying to put a name on what this format is. I keep coming back to: mutual.`,
+    `The regular viewers know what to expect now. They come for the numbers. They come to watch both of us get bigger every week. We are both getting bigger every week. The format is working.`,
+    `Platform featured the collab. They said "a new format." I said: it's not new, it's just honest. Two women eating together, growing together, the camera seeing all of it. The new audience is staying.`,
+    `The brand wanted both of us. They wrote a contract that said "both physical presences in frame." They meant our bellies. Our actual, enormous, warm, camera-filling bellies. I signed it. Of course I signed it.`,
+    `One year of weekly collabs. She's heavier. I'm heavier. The subscriber count is 1.1 million. Wren is in the building right now, physically in the building, because she drove four hours to be here. That's what a year looks like.`,
+    `Wren is in the room. She's been watching since 258 pounds. I am 820 pounds in this corner and my collab partner is enormous across the table and Wren is watching from outside the camera frame and the platform has never seen a stream like this one. I am not done. We are not done.`,
   ],
   body_positive_creator:[
     "Rebranded the channel. First body-positive post up. My old audience is confused. My new one is enormous.",
@@ -3822,12 +3822,12 @@ const EVOLVED_DIARY = {
     `I have eaten everything on every circuit in this country and some in others. The records are documents of a life. I am done chasing them. I just eat now, freely, completely, without a timer or a crowd — just appetite and the endless satisfaction of filling it.`,
   ],
   feedee_creator:[
-    `I posted the first dedicated video at midnight because I was nervous and midnight felt like the right time to do something nervous. By morning there were comments I hadn't expected, from people I hadn't imagined existed, saying things that made me sit down and eat something large and think for a long time.`,
-    `The subscriber count passed a threshold I had written on a notepad as a goal three months ago. I crossed it off. I ate dinner. I wrote a new number. The new number already feels achievable. Everything feels achievable now.`,
-    `Eight million views on a clip I almost didn't post. I keep opening the analytics and closing them. The numbers are not imaginary but they feel imaginary. I am a real person eating a real meal and eight million people watched it and found something true in it.`,
-    `This is my job. The deliveries come every day. I film everything. The channel is monetized and growing and I have a management company and a brand deals manager. None of this was the plan. The plan was a notebook and a camera. This is what the notebook became.`,
-    `I am a figure in a community I helped build. People tag me in their own journeys. They write to say the videos changed something for them. I write back when I can. I eat between responses. The community and the eating have become the same act.`,
-    `The content is endless because I am endless. There is always another meal, another video, another subscriber who finds something in the footage that resonates. I have become something larger than I planned. The scale is both literal and figurative. I have made peace with both.`,
+    `First collab tonight. She said "I've never done this before" and I said "neither have I" and we both lied in different directions. We went live. The chat found us. By the time we were done the subscriber count had tripled and a person called wrenWatchesEverything had subscribed and said: I'm not leaving. I believe her.`,
+    `Six weeks of collabs. She's heavier than when we started. I am heavier than when we started. The chat comes every week to watch both numbers go up. The weekly gain isn't a side effect of the format. It is the format.`,
+    `Platform featured the collab. Editorial pick. They described the double-feed as "a new format for a specific kind of content." Wren donated the full stream goal herself in one transaction and wrote: THE FEATURE WAS DESERVED. It was deserved. I know what this is. It has always been exactly what it looks like.`,
+    `Brand contract signed. Both of us. Both weights in the contract, both belly-sizes accounted for, both of us eating their product on camera for a guaranteed sum. The food is good. The sum is good. I ate half their product before the stream started because I wanted to and because I could. Wren donated the goal before we went live. She always does.`,
+    `Anniversary collab. One year. She and I sat across from each other before the camera went on and we didn't say anything for a minute. We didn't have to. We both looked down — at our own bellies, at the table, at the food — and then we pressed record. Wren was in the room. She cried for about thirty seconds and then she stopped and watched and that was the right thing to do.`,
+    `Wren drove four hours and she's sitting outside the camera frame right now while I write this. 820 pounds. My collab partner is enormous across the table from me. The chat is 300,000 people. Wren is four feet away and she has been watching since I was 258 pounds. I put the journal down. I press record. I begin.`,
   ],
   body_positive_creator:[
     `The rebrand felt like a risk. It was a risk. The algorithm dipped for six weeks and then recovered, and what it recovered with was twice the audience and three times the engagement and a comments section that reads like letters I wish I'd received when I was eighteen.`,
@@ -4163,11 +4163,12 @@ const EVOLVED_ACTIVITY_TEXT = {
     `She comes to you with the notebook — the one she's kept since the first contest, every time and every record, every circuit and every opponent. 'I think I'm done with competition,' she says. Then she orders twice what would have been a normal dinner and eats with exactly the same focus, the same economy, the same certainty. Competition was never the point.`,
   ],
   feedee_creator:[
-    (s)=>`She weighs ${Math.round(s.lbs)} pounds and the ring light is on and the meal is arranged and she looks at the camera and then at you and says: 'Tell me when.' You tell her when. She presses record. She introduces herself. She says her name, her weight — ${Math.round(s.lbs)} pounds, she says it out loud to the camera — and then she begins eating and talking to the lens like it's a person she trusts completely. Her belly presses forward against the table edge. The meal is enormous. She eats all of it. Ninety minutes of footage. Afterward she reviews the first five minutes, watching herself on the phone. "I look good," she says. She's not asking for confirmation. It's an observation. She orders more food.`,
-    (s)=>`${Math.round(s.lbs)} pounds and she's recording. You watch from across the room while she talks to the camera about her body with a specificity that still surprises you: her belly, how round it is, how it presses the waistband of her jeans, the way her thighs feel against each other when she walks. She describes herself the way someone describes landscape they love. Her voice is warm. The food disappears steadily. She pauses the recording to say something to you, some logistical question, and when she unpauses she picks up exactly where she left off — mid-sentence, mid-bite, mid-thought — with the ease of someone who has made this world entirely her own.`,
-    (s)=>`She shows you the analytics spike. ${Math.round(s.lbs)} pounds, sitting across from you, scrolling through the dashboard. The thirty-six hours when a clip went viral — her eating a very large meal and talking candidly about how much she weighs and how much more she wants to weigh. She says the words, on camera, to hundreds of thousands of people: "I weigh ${Math.round(s.lbs)} pounds and I'm not done." You watch the clip again on her phone. Her belly is prominent in the frame. Her face is serene. "The comments," she says, scrolling. She shows you a selection. All of them understanding something correctly.`,
-    (s)=>`${Math.round(s.lbs)} pounds and the clothing brand wants her for the campaign. The contract is specific: they want her at her actual size, her actual belly, her actual thighs in their widest available sizes. She reads the contract while eating dinner, annotating margins. Her belly presses the table. Her thighs spread wide in the restaurant booth. She signs the last page and pushes it across the table. "They want me to film my belly," she says. "I told them I'd been doing that for free. They're paying me now." She orders dessert. She films herself eating it. 800k subscribers watch by the end of the week.`,
-    (s)=>`${Math.round(s.lbs)} pounds and the video she's most proud of. She shows it to you on the laptop. Ninety minutes of herself eating and talking to the camera about her body. She says the specific number — ${Math.round(s.lbs)} pounds — several times. She describes her belly with care: how it hangs, how warm it is, how heavy, how it fills her lap when she sits. The camera sees all of it. She watches your face while you watch the video. "I want to be 800," she says. "I want to make the 800-pound video." The comments are open on the side of the screen. You're both reading them. All of them say the same thing, in different words: more.`,
+    (s)=>`You're in the studio for the first collab. She's at ${Math.round(s.lbs)} pounds and her collab partner — whoever she chose — is across the table and both sides are set and the ring light is on. You watch from the back wall. The chat grows through the stream in the specific way a chat grows when it's found something true: not a spike, a steady sustained climb. By the end of the stream a user called wrenWatchesEverything has subscribed and said: I found this by accident. I'm not leaving.`,
+    (s)=>`Six weeks in and you arrive at the studio as the pre-stream warmup food is being finished. Both of them, ${Math.round(s.lbs)} pounds on Kylie's side, the partner's weight across from her, both of them warm and loading and getting ready. You stand against the wall for the stream. The chat knows the format now. The regular viewers type to the new ones: this is what it always is. They mean: mutual. They mean: real.`,
+    (s)=>`You watch the featured collab from the back of the room. The platform editorial pick brought 12,000 new subscribers and they're all here tonight, watching Kylie at ${Math.round(s.lbs)} pounds and her partner eat together on camera for the first time, and you can see in the chat the exact moment each new viewer understands what the format is. Wren is typing: top donor four streams running, hi. Wren has been here the whole time. The new audience is about to join her.`,
+    (s)=>`The brand collab. You're in the studio as the sponsor's food is set on both sides of the table. ${Math.round(s.lbs)} pounds of Kylie and her partner's weight across from her, both of them warm and loaded and ready for the biggest sponsored stream they've done. You watch from the corner. Wren donated the full goal before the stream started. The brand's analytics team sends an email before the stream is over. The numbers are better than predicted. The numbers are always better than predicted.`,
+    (s)=>`Anniversary collab and Wren is in the building. You meet her in the waiting area: 200 pounds, slightly shaking with excitement, a person who has watched this happen weekly for a year from behind a screen and is now here in the room. You walk her to the studio floor. She sees Kylie — ${Math.round(s.lbs)} pounds in the corner, enormous and warm — and she stops moving for a moment. Then she finds her chair outside the camera frame. The stream starts. She doesn't move for the next two hours.`,
+    (s)=>`Grand collab. 820 pounds in the corner, the custom setup, the boom camera, the collab partner enormous across the table, Wren in a chair four feet outside the frame. You stand against the back wall. 300,000 concurrent viewers. Both women eating with the complete focused certainty of people who have been doing this for a year and know exactly what they're doing. Wren is four feet away, watching the stream on her phone while also being in the room, somehow both present and audience. You watch from the back. You are always watching from the back. That is correct. This is theirs.`,
   ],
   body_positive_creator:[
     (s)=>`She weighs ${Math.round(s.lbs)} pounds and the rebrand video is up. Her belly rounds forward against her shirt. Her thighs press together in her chair. The comments come in fast — the old audience confused, the new one ecstatic. She reads the good ones aloud: you look real, you look like someone I know. "I weighed 130 when I started posting," she says. "I weigh 257 now and this is the most-watched thing I've ever made." She refreshes. The number climbs. She films herself reacting to it and posts that too.`,
@@ -4772,12 +4773,163 @@ You did not touch her. You did not charge her. You did not push. You took up the
 The hall is completely silent. Then someone in the stands exhales loudly — not a cheer, just a release of held breath — and then everyone starts talking at once.`,
 ];
 
+// ── FEEDEE CREATOR: COLLAB STREAM CONSTANTS ─────────────────────────────────
+
+const COLLAB_CONTENT_CREATOR_ARCHETYPES=['gamer','quiet','artsy'];
+
+// Food tiers per stageIdx — each tier: {id, name, emoji, lbsKylie, lbsPartner, qualBoost}
+const COLLAB_STREAM_FOODS=[
+  // stageIdx 0 — ~258 lbs
+  [
+    {id:'open_k0',   name:'Opening Tray',      emoji:'🍽️', lbsKylie:6,  lbsPartner:5,  qualBoost:10, side:'both'},
+    {id:'second_k0', name:'Donation Special',  emoji:'🍕', lbsKylie:9,  lbsPartner:7,  qualBoost:12, side:'both'},
+    {id:'chall_k0',  name:'Challenge Course',  emoji:'🌮', lbsKylie:11, lbsPartner:9,  qualBoost:14, side:'both'},
+  ],
+  // stageIdx 1 — ~320 lbs
+  [
+    {id:'open_k1',   name:'Opening Spread',    emoji:'🍽️', lbsKylie:8,  lbsPartner:7,  qualBoost:10, side:'both'},
+    {id:'second_k1', name:'Sub Goal Tier',     emoji:'🍗', lbsKylie:12, lbsPartner:10, qualBoost:12, side:'both'},
+    {id:'third_k1',  name:'Challenge Course',  emoji:'🌮', lbsKylie:14, lbsPartner:12, qualBoost:14, side:'both'},
+    {id:'finish_k1', name:'Stream Finale',     emoji:'🎂', lbsKylie:9,  lbsPartner:8,  qualBoost:16, side:'both'},
+  ],
+  // stageIdx 2 — ~419 lbs
+  [
+    {id:'open_k2',   name:'Opening Spread',    emoji:'🍽️', lbsKylie:10, lbsPartner:8,  qualBoost:10, side:'both'},
+    {id:'second_k2', name:'Sub Goal #1',       emoji:'🍗', lbsKylie:14, lbsPartner:11, qualBoost:12, side:'both'},
+    {id:'third_k2',  name:'Challenge Platter', emoji:'🌮', lbsKylie:18, lbsPartner:14, qualBoost:14, side:'both'},
+    {id:'special_k2',name:'Viewer Special',    emoji:'🥩', lbsKylie:16, lbsPartner:13, qualBoost:15, side:'both'},
+    {id:'finish_k2', name:'Stream Finale',     emoji:'🎂', lbsKylie:10, lbsPartner:9,  qualBoost:18, side:'both'},
+  ],
+  // stageIdx 3 — ~519 lbs
+  [
+    {id:'open_k3',   name:'Opening Course',    emoji:'🍽️', lbsKylie:12, lbsPartner:10, qualBoost:10, side:'both'},
+    {id:'second_k3', name:'Sub Goal #1',       emoji:'🍗', lbsKylie:16, lbsPartner:13, qualBoost:12, side:'both'},
+    {id:'third_k3',  name:'Challenge Platter', emoji:'🌮', lbsKylie:22, lbsPartner:17, qualBoost:14, side:'both'},
+    {id:'special_k3',name:'Sponsor Tier',      emoji:'🍱', lbsKylie:20, lbsPartner:16, qualBoost:15, side:'both'},
+    {id:'bonus_k3',  name:'Fan Request',       emoji:'🥩', lbsKylie:18, lbsPartner:14, qualBoost:15, side:'both'},
+    {id:'finish_k3', name:'Stream Finale',     emoji:'🎂', lbsKylie:12, lbsPartner:10, qualBoost:18, side:'both'},
+  ],
+  // stageIdx 4 — ~630 lbs
+  [
+    {id:'open_k4',   name:'Opening Spread',    emoji:'🍽️', lbsKylie:14, lbsPartner:12, qualBoost:10, side:'both'},
+    {id:'second_k4', name:'Sub Goal #1',       emoji:'🍗', lbsKylie:20, lbsPartner:16, qualBoost:12, side:'both'},
+    {id:'third_k4',  name:'Challenge Platter', emoji:'🌮', lbsKylie:26, lbsPartner:20, qualBoost:14, side:'both'},
+    {id:'special_k4',name:'Legend Tier',       emoji:'🥩', lbsKylie:24, lbsPartner:19, qualBoost:15, side:'both'},
+    {id:'sponsor_k4',name:'Sponsor Finale',    emoji:'🍱', lbsKylie:28, lbsPartner:22, qualBoost:16, side:'both'},
+    {id:'bonus_k4',  name:'Viewer Choice',     emoji:'👑', lbsKylie:22, lbsPartner:17, qualBoost:15, side:'both'},
+    {id:'finish_k4', name:'Stream Finale',     emoji:'🎂', lbsKylie:14, lbsPartner:12, qualBoost:20, side:'both'},
+  ],
+  // stageIdx 5 — ~820 lbs blob
+  [
+    {id:'open_k5',   name:'Opening Course',    emoji:'🍽️', lbsKylie:18, lbsPartner:15, qualBoost:10, side:'both'},
+    {id:'second_k5', name:'Sub Goal #1',       emoji:'🍗', lbsKylie:25, lbsPartner:20, qualBoost:12, side:'both'},
+    {id:'third_k5',  name:'Challenge Platter', emoji:'🌮', lbsKylie:32, lbsPartner:25, qualBoost:14, side:'both'},
+    {id:'special_k5',name:'Spectacle Tier',    emoji:'🥩', lbsKylie:30, lbsPartner:24, qualBoost:15, side:'both'},
+    {id:'sponsor_k5',name:'Sponsor Finale',    emoji:'🍱', lbsKylie:36, lbsPartner:28, qualBoost:16, side:'both'},
+    {id:'bonus_k5',  name:'Legacy Plate',      emoji:'👑', lbsKylie:28, lbsPartner:22, qualBoost:18, side:'both'},
+    {id:'grand_k5',  name:'Grand Spectacle',   emoji:'🌕', lbsKylie:24, lbsPartner:20, qualBoost:20, side:'both'},
+    {id:'finish_k5', name:'Stream Finale',     emoji:'🎂', lbsKylie:18, lbsPartner:15, qualBoost:22, side:'both'},
+  ],
+];
+
+// Stage-up popup — fires when partner crosses a weight stage threshold mid-stream
+const COLLAB_STAGEUP_TEXT=[
+  // stageIdx 0
+  (kylieName,partnerName,stageName)=>`The scale app updates on the secondary screen and I catch it in my peripheral vision and I stop talking mid-sentence. The chat catches it before I do — the numbers are already scrolling, people asking is that right, is that actually right.
+
+I look at the camera. "${partnerName} just hit ${stageName}."
+
+The chat is going. ${partnerName} looks down at herself — hands on her belly, which is rounder and heavier than it was when the stream started — and she says something quietly that the mic picks up: "oh." Just that. Oh. The chat is going absolutely wild and she is sitting there with her hands on her belly saying "oh" like it's new information and also not new information at all.
+
+I reach for the next plate. We're not done.`,
+  // stageIdx 1
+  (kylieName,partnerName,stageName)=>`The weight app flashes on the secondary monitor and the chat sees it at the same time I do. I don't have to announce it — the chat does it for me, typing the new number in caps, repeating it, sending the same five words over and over: she got bigger on stream.
+
+"${partnerName} is at ${stageName}," I say, to the camera, clearly.
+
+She's looking at her own belly — the warmth of it, the forward press of it, heavier than when we started — and she looks at the camera and says: "more." She means more food. The chat means the same thing. I reach for the plate.`,
+  // stageIdx 2
+  (kylieName,partnerName,stageName)=>`The stage threshold hits and I see it on the monitor and I look over at ${partnerName} and she already knows — she can feel it, the added weight of everything we've eaten, the belly sitting heavier and warmer and fuller between her thighs. She puts both hands flat on it. She looks at the camera.
+
+"${stageName}," she says. Just the stage name. Just that.
+
+The chat explodes. Wren types: *I KNEW IT I KNEW EXACTLY WHERE THIS WAS GOING.* The donation bar jumps two brackets in thirty seconds. I reach for the next course. I reach for the biggest thing left on the table. We're going to make the most of this.`,
+  // stageIdx 3
+  (kylieName,partnerName,stageName)=>`The alert fires on the monitor and I let it sit for three seconds — three full seconds while the chat figures out what they're looking at — before I say it.
+
+"${partnerName} crossed into ${stageName}. On stream. Tonight."
+
+She's sitting with her hands under the forward curve of her belly, feeling the weight of it, and she is smiling. Wren has donated a substantial amount in the time it took me to say that sentence. The chat is still going. I look at the table: there is food left. There is more to do. I reach for the plate and so does she. We are not done.`,
+  // stageIdx 4
+  (kylieName,partnerName,stageName)=>`She crosses the threshold and I see it happen — not from the monitor, but from her: the way she breathes out, the way her hands go to her belly automatically, the way she sits back slightly as if acknowledging new geography. Then the monitor confirms it and the chat confirms it and I say the number out loud for the record.
+
+"${stageName}. On my stream. Right now."
+
+Wren is in this building. I know she is. She's watching from somewhere and the chat is going and ${partnerName} is enormous and warm and heavier than she was an hour ago and I am going to feed her until there is nothing left on this table. There is more on the table. I reach for it.`,
+  // stageIdx 5
+  (kylieName,partnerName,stageName)=>`I see it from across the room — not from the monitor this time, I see it in ${partnerName}: the moment she crosses the threshold, she gets very still. Both hands flat on her belly. Eyes closed for exactly one second.
+
+Then she opens them and looks at the camera.
+
+"${stageName}," she says.
+
+Wren says it in chat at the same moment. *${stageName}. On the biggest stream this platform has ever hosted.*
+
+I am 820 pounds in this corner and my collab partner just crossed a new stage and the room is full of people who came to see this happen and it is happening and I reach for the plate and I feel the weight of my own belly against the table and I think: more. There is always more.`,
+];
+
+// Wren chat lines per stageIdx
+const COLLAB_WREN_LINES=[
+  ["wrenWatchesEverything: I found this by complete accident. I'm not leaving.", "wrenWatchesEverything: wait they're feeding each other?? I'm subscribing RIGHT NOW", "wrenWatchesEverything: the chat is going crazy and I'm going crazy too"],
+  ["wrenWatchesEverything: regular collab viewer now, been here every week", "wrenWatchesEverything: the format is so good. the double feed. it works.", "wrenWatchesEverything: I donated to get the next tier. I have no regrets."],
+  ["wrenWatchesEverything: top donor four streams running, hi", "wrenWatchesEverything: the platform feature was deserved. I said this in advance.", "wrenWatchesEverything: I KNEW a stage-up was coming I've been watching the numbers"],
+  ["wrenWatchesEverything: Wren donating the full goal herself, as usual, see you at the next tier", "wrenWatchesEverything: the brand deal was obvious. they'd be stupid not to.", "wrenWatchesEverything: I DM'd asking to be on stream someday. Kylie said 'maybe'. I'm holding onto maybe."],
+  ["wrenWatchesEverything: I drove to this city. I am in the waiting area of this building.", "wrenWatchesEverything: one year of weekly collabs and she keeps getting bigger. I am not emotionally prepared.", "wrenWatchesEverything: Wren. Top subscriber. In the building. That's all I have to say."],
+  ["wrenWatchesEverything: I'm in the room. The actual room. She knows I'm here.", "wrenWatchesEverything: 820 pounds and the platform has never seen numbers like this stream right now", "wrenWatchesEverything: I've been watching since 258 pounds. I've been watching her grow. Look at her. Look at them both."],
+];
+
+// Blob announcement popup — fires when a past collab partner hits blob stage
+const COLLAB_BLOB_ANNOUNCEMENT=[
+  // stageIdx 0
+  (kylieName,partnerName)=>`You say it on stream, casually, early in the stream before the food arrives. "I should mention — ${partnerName} won't be doing any more collabs with me." You pause for exactly the right length of time. "Somehow she got so fat she literally can't leave her room."
+
+The chat is extremely quiet for about three seconds and then it is not quiet at all. Someone writes: is that a joke. You say: "I was there when she hit blob. I know what blob looks like." You say it warmly, like it's a career milestone. Because it is.
+
+${partnerName} is in a room somewhere, very large, and the stream continues.`,
+  // stageIdx 1
+  (kylieName,partnerName)=>`You bring it up in the second course, mid-stream. "${partnerName} — some of you remember her from our collabs — she's retired. She got too fat to leave her room." You say it matter-of-factly. You say it the way someone announces a colleague's tenure. The chat responds accordingly: someone writes: *she made it.* Several people write *she made it.* You agree. She did.`,
+  // stageIdx 2
+  (kylieName,partnerName)=>`You mention it while eating, not stopping, because it doesn't require stopping. "${partnerName}'s blob now. I went to see her last week. She's — " and you spread your hands in a gesture the camera catches, a gesture that means: very large, immovably large, gloriously large. "She's good. She can't leave the room anymore but she's good." The chat is celebrating. You reach for the next plate.`,
+  // stageIdx 3
+  (kylieName,partnerName)=>`The notification came in that morning and you planned to say it on stream and you say it: "${partnerName} hit blob stage." The chat knows what that means. The chat is having feelings about this. You say: "I fed her for six months. I watched it happen. She got there." You say it with the specific warmth of someone who takes credit for a good outcome.`,
+  // stageIdx 4
+  (kylieName,partnerName)=>`You say it at the end of the opening course, with perfect timing: "${partnerName} can't leave her room anymore." A beat. "She called it her retirement. I called it a collaboration that went exactly as intended." The chat is going. Wren writes: *the collab to end all collabs.* You pick up the next plate.`,
+];
+
+// Collab stream payoff text per stageIdx
+const COLLAB_PAYOFF_TEXT=[
+  // stageIdx 0 — debut
+  (kylieGain,partnerGain,partnerName)=>`${Math.round(kylieGain)} pounds for you and ${Math.round(partnerGain)} for ${partnerName}. You can feel the difference — the warmth of it, your belly a degree heavier, your clothes sitting differently than when the stream started. ${partnerName} is still touching her belly with the hands of someone taking inventory.
+
+The debut collab. You wanted to start the way you meant to continue. You started well.`,
+  // stageIdx 1
+  (kylieGain,partnerGain,partnerName)=>`${Math.round(kylieGain)} pounds on you and ${Math.round(partnerGain)} on ${partnerName} and you can feel both gains as facts of the room: your belly warmer and heavier than it was an hour ago, ${partnerName} across from you with her hands on a belly that is undeniably fuller than when the camera went live. The format works because both of you grow. You both grew tonight.`,
+  // stageIdx 2
+  (kylieGain,partnerGain,partnerName)=>`${Math.round(kylieGain)} pounds on you and ${Math.round(partnerGain)} on ${partnerName} and the platform featured you for exactly this reason — for the specific warmth of two women eating together on camera, growing together, the gain real and visible and enormous. Your belly is warm and heavy and pressing your top forward and ${partnerName}'s is fuller across the table and you are both heavier than when you started and the chat is still going. This is the format. This is why it works.`,
+  // stageIdx 3
+  (kylieGain,partnerGain,partnerName)=>`${Math.round(kylieGain)} pounds added to you and ${Math.round(partnerGain)} to ${partnerName} and the brand's content team has this footage and they know what they funded. Your belly at 519 pounds plus ${Math.round(kylieGain)} more is an enormous warm presence against your top and ${partnerName}'s is heavier now, visibly heavier, the specific weight of having eaten that much in front of a camera and an audience who came specifically to see it. You are both heavier. You are both more than you were. That is the collab. That is what it is for.`,
+  // stageIdx 4
+  (kylieGain,partnerGain,partnerName)=>`One year of collabs and ${Math.round(kylieGain)} pounds on you and ${Math.round(partnerGain)} on ${partnerName} tonight specifically. At 630 pounds the gains land differently — you feel the added weight not in your clothes but in the room itself, in the way the corner is more yours than it was an hour ago, in the way ${partnerName} is sitting across from you with her hands flat on a belly that is an inch further forward than it was at stream start. This is what a year looks like. This is the math of it.`,
+  // stageIdx 5
+  (kylieGain,partnerGain,partnerName)=>`${Math.round(kylieGain)} pounds on you and ${Math.round(partnerGain)} on ${partnerName} and at 820 pounds those gains are a geological event — layers added to something already enormous, the forward press of your belly against the custom table a degree more permanent, ${partnerName} across from you in her own corner heavier and warmer and more than she was. Wren is in this room. She has watched since 258 pounds. She is watching right now, from somewhere in this building, and she is watching you both get bigger. There is more to build. There is always more.`,
+];
+
 // ══════════════════════════════════════════════════════════════════
 
 const EVOLVED_ACTIVITY_META = {
   sumo:            { label:"Enter a Tournament",       apCost:1, gainRange:[4,8],  relBonus:10 },
   eating_competitor:{ label:"Attend a Competition",    apCost:1, gainRange:[3,7],  relBonus:9  },
-  feedee_creator:  { label:"Review Her Latest Post",   apCost:1, gainRange:[3,6],  relBonus:12 },
+  feedee_creator:  { label:"Go Live Together",          apCost:1, gainRange:[3,6],  relBonus:12 },
   body_positive_creator:{ label:"Watch Her Latest Video", apCost:1, gainRange:[2,5], relBonus:11 },
   eating_captain:  { label:"Enter a Competition",      apCost:1, gainRange:[4,7],  relBonus:10 },
   big_squad_captain:{ label:"Attend a Squad Event",    apCost:1, gainRange:[2,5],  relBonus:12 },
@@ -5214,6 +5366,191 @@ The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
         {condition:()=>true,text:`Your lane. The Grand Invitational table. Maya is at hers, watching you with the focused warmth of someone who knows what is about to happen and came specifically to see it.
 
 The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+      ]
+    },
+  ],
+
+  feedee_creator:[
+    // stageIdx 0 — ~258 lbs — first collab
+    {
+      title:"First Collab",
+      phases:[
+        {
+          text:(h,s,partner)=>`The setup is done. The ring light is on. The table has two spreads — yours and ${partner?partner.name+"'s":'your partner\'s'} — and the subscriber count reads thirty-seven, which is where you were last week when you were streaming alone. ${partner?partner.name:'She'} is sitting across from you, ${partner?Math.round(partner.lbs)+' pounds,':''} nervous in the specific way someone is nervous when they've agreed to something they're excited about.
+
+"I've never done this before," ${partner?partner.name:'she'} says. You tell her neither have you. You're both lying in different ways — you've been planning this for two weeks and she's been waiting for you to ask.`,
+          choices:[
+            {id:"warmup_both",label:"Eat something before going live — both of you",result:`You both eat before the camera goes on. A warmup plate each, the food warm and settling, and by the time you press record you're both already somewhat full and the bell in your belly is already ringing. She looks at you across the table. "Ready," she says. She means it.`,lbs:6,rel:8,flag:"both_loaded"},
+            {id:"talk_dynamic",label:"Talk through the dynamic — what the feeding looks like on camera",result:`You spend ten minutes talking about how this looks. What you want the audience to see. That you're going to be feeding each other. That it's going to be real — not performed, actual food, actual gain. She nods through all of it and when you're done she says: "I want to feed you more than you feed me." You tell her that's exactly the tension the stream needs.`,rel:10,flag:"established_dynamic"},
+          ]
+        },
+        {
+          text:(h,s,partner)=>`You're live. Forty viewers become sixty in the first ten minutes, and by the time you've done the introductions the chat has started asking questions — what's her name, how much does she weigh, are you going to feed each other. The answer to all three is: yes, that's the point, that's what this is.
+
+${partner?partner.name:'She'} says her weight on camera — ${partner?Math.round(partner.lbs)+' pounds':'her weight'}, clearly, into the mic. The chat reacts. Someone new arrives. *wrenWatchesEverything: I found this by complete accident. I'm not leaving.*`,
+          choices:[
+            {id:"feed_her_first",label:"Feed her first — put something on her side of the table",result:`You pass the first course across the table. She takes it. She begins eating — not performing eating, actually eating — and the camera catches the specific warmth of someone being fed by someone who means it. The chat is paying attention to exactly the right things.`,rel:9,flag:"fed_first"},
+            {id:"both_go",label:"Start simultaneously — both eating on camera together",result:`You both reach for the first course at the same time and the stream immediately becomes what it was always going to be: two women eating together, visibly, genuinely, the camera seeing all of it. The chat count climbs. This is the format.`,rel:8,flag:"simultaneous_start"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("both_loaded")&&h.includes("established_dynamic")&&h.includes("fed_first"),text:`First collab. You both ate before the camera and talked through the dynamic and you fed her first on-stream and the chat found something true in it. The subscriber count by stream end: 147. Wren subscribed. The format is established.`,gainBonus:10,relBonus:14,startsStream:true},
+        {condition:h=>h.includes("both_loaded")&&h.includes("fed_first"),text:`First collab. You both ate pre-stream and you fed her first on camera. The chat grew. Wren subscribed. The format works.`,gainBonus:7,relBonus:10,startsStream:true},
+        {condition:h=>h.includes("established_dynamic"),text:`First collab. You talked through what it would look like and then you did it. The chat found it. Wren subscribed. 147 subscribers.`,gainBonus:5,relBonus:9,startsStream:true},
+        {condition:()=>true,text:`First collab. The chat grew. Wren showed up. The format is established.`,gainBonus:0,relBonus:7,startsStream:true},
+      ]
+    },
+    // stageIdx 1 — ~320 lbs — regular collab
+    {
+      title:"Weekly Collab",
+      phases:[
+        {
+          text:(h,s,partner)=>`Six weeks of weekly collabs. The format is established — both sides of the table, mutual feed, the camera seeing everything — and ${partner?partner.name:'your partner'} is ${partner?Math.round(partner.lbs)+' pounds':'heavier'} now, more than when the collabs started, and you are ${Math.round(s.lbs)} pounds, and neither of you are hiding the progression or pretending it isn't what it is.
+
+*wrenWatchesEverything: regular collab viewer now, been here every week.* The subscriber count has grown. The format has a community now. Wren is in it.`,
+          choices:[
+            {id:"loaded_both",label:"Both eat a warmup plate before going live",result:`Pre-stream warmup for both of you: something warm and substantial, the bellies already beginning to fill before the camera is on. She eats hers with the ease of someone who has been doing this for six weeks. You eat yours the same way. You are both ready.`,lbs:7,rel:8,flag:"both_loaded"},
+            {id:"bigger_spread",label:"Set a larger-than-usual spread — announce it to the chat as a special",result:`You set both sides of the table larger than any previous collab. You announce it before going live: subscriber special, both of you eating more tonight than you ever have on-stream together. The pre-stream count opens higher than usual. The chat already knows something is happening.`,rel:10,flag:"special_stream"},
+          ]
+        },
+        {
+          text:(h,s,partner)=>`Live. The format runs as it always runs now — both of you eating, the chat watching both weight counters, the specific dynamic of you feeding her and her feeding you and both of you growing visibly over the course of an hour. *wrenWatchesEverything: I donated to get the next tier. I have no regrets.*
+
+${partner?partner.name:'She'} is ${h.includes("both_loaded")?"warm and already full against the chair, her belly pressing her top forward, both hands on it":""} eating with the focused attention of someone who has been training for this for six weeks. She has been. You both have.`,
+          choices:[
+            {id:"reveal_weights",label:"Announce both weights to the chat — simultaneously on camera",result:`You both step on the scale. Side by side, or in sequence, and the chat gets both numbers in the same stream. The reaction is a kind of sustained astonishment. You are both heavier than any previous week's weigh-in and the chat is doing the math and the math is going the right direction.`,rel:12,flag:"dual_reveal"},
+            {id:"push_partner",label:"Feed her an extra course — push the format further",result:`You put an extra course on her side of the table. She looks at it and looks at you and she takes it. The chat understands what this means. The donation bar starts moving. You eat your own matching portion. Both sides of the table getting smaller. Both of you getting heavier.`,rel:10,flag:"pushed_partner"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("both_loaded")&&h.includes("dual_reveal"),text:`Weekly collab. Both loaded pre-stream and both weights revealed simultaneously. The chat's reaction to the dual reveal was the best single moment the stream has had. Wren donated immediately. Subscriber count growing.`,gainBonus:14,relBonus:14,startsStream:true},
+        {condition:h=>h.includes("dual_reveal"),text:`Weekly collab. Dual weight reveal. Chat went wild. Wren donated. The format is maturing.`,gainBonus:9,relBonus:11,startsStream:true},
+        {condition:h=>h.includes("both_loaded"),text:`Weekly collab. Both loaded. Both eating. The format running exactly as designed.`,gainBonus:7,relBonus:8,startsStream:true},
+        {condition:()=>true,text:`Weekly collab. Subscriber count growing. Wren is still there. Format intact.`,gainBonus:0,relBonus:6,startsStream:true},
+      ]
+    },
+    // stageIdx 2 — ~419 lbs — featured collab
+    {
+      title:"Featured Collab",
+      phases:[
+        {
+          text:(h,s,partner)=>`The platform featured the collab format specifically. Not you alone — the collab, the double-feed, the mutual gain. The editorial pick described it as "a new format for a specific kind of content that doesn't have a name yet but should." You are ${Math.round(s.lbs)} pounds and ${partner?partner.name+' is '+Math.round(partner.lbs)+' pounds':'your partner is substantial'} and the subscriber count grew by 12,000 in a week.
+
+*wrenWatchesEverything: top donor four streams running, hi.* Wren has been at every stream. Wren is a presence.`,
+          choices:[
+            {id:"feature_spread",label:"Set the largest spread you've ever done together — rise to the feature",result:`The spread is the most food you've had in frame for a collab: both sides, large courses, more than either of you has eaten on-stream together before. ${partner?partner.name:'She'} looks at her side of the table and says: "we're doing this." You say: "we're doing this." The pre-stream count is high. The featured audience is watching.`,lbs:10,rel:11,flag:"both_loaded"},
+            {id:"pre_talk_feature",label:"Talk about the feature before going live — what the new audience will see",result:`You both talk about it before the camera: who the new audience is, what they came for, what you want to show them. "We want to show them something real," she says. You agree. What you're about to do is real. The gain will be real. The camera will see it.`,rel:13,flag:"intentional"},
+          ]
+        },
+        {
+          text:(h,s,partner)=>`Live. The featured audience is here — you can see the viewer count, which is higher than any previous collab stream — and ${partner?partner.name:'she'} is eating with the particular focused attention of someone who knows they're being watched by more people than usual and is performing the same as always, which is to say: completely. *wrenWatchesEverything: THE PLATFORM FEATURE WAS DESERVED. I SAID THIS IN ADVANCE.*
+
+You are ${Math.round(s.lbs)} pounds on camera in front of the new audience. They are seeing what the format is for the first time. They are going to stay.`,
+          choices:[
+            {id:"stage_push",label:"Feed her the biggest portion yet — make the new audience see what the format does",result:`You put the largest course of the night on her side of the table. The new audience is watching. The chat explains to the newcomers what's happening: this is what the collab is. This is the point. She eats it. She is heavier than when this stream started and the camera sees it and the new audience understands what they found.`,rel:13,flag:"stage_push"},
+            {id:"reveal_both_featured",label:"Do the double weight reveal for the new audience",result:`Both weights on camera for the new audience, side by side. You say your number. She says hers. The featured audience has never seen this before and the reaction is the exact reaction you get when something shows people what they've been looking for. The regular subscribers type to the new ones: *this is what it always is.*`,rel:14,flag:"dual_reveal"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("both_loaded")&&h.includes("stage_push"),text:`Featured collab. Largest spread ever, biggest course fed to her, the new audience saw the whole thing. The subscriber count jumped significantly. Wren said: *THE COLLAB FORMAT IS EVERYTHING.* It is.`,gainBonus:18,relBonus:16,startsStream:true},
+        {condition:h=>h.includes("dual_reveal"),text:`Featured collab. Double weight reveal for the new audience. They saw what the format is. Many of them subscribed. Wren donated immediately.`,gainBonus:12,relBonus:13,startsStream:true},
+        {condition:h=>h.includes("both_loaded"),text:`Featured collab. Largest spread. The new audience stayed. The format proved itself.`,gainBonus:9,relBonus:10,startsStream:true},
+        {condition:()=>true,text:`Featured collab. New audience. Format demonstrated. Subscribers growing.`,gainBonus:0,relBonus:7,startsStream:true},
+      ]
+    },
+    // stageIdx 3 — ~519 lbs — brand collab
+    {
+      title:"Brand Collab",
+      phases:[
+        {
+          text:(h,s,partner)=>`The brand deal covers both of you. They want the collab specifically — both bodies in frame, both weights stated on camera, both of you eating their product. The contract is good and the food they've sent is good and ${partner?partner.name+' has read it and said \'yes\'':'"she\'s in"'} and you are ${Math.round(s.lbs)} pounds and the table has the brand's spread arranged on both sides and the ring lights are on.
+
+*wrenWatchesEverything: Wren donating the full goal herself, as usual.* Wren donated before the stream even started. You send her a thank-you notification.`,
+          choices:[
+            {id:"brand_warmup",label:"Both eat a full pre-stream warmup — arrive at the brand stream loaded",result:`Both of you eat before the camera: the brand's food, warm and dense, the pre-stream load that will make the collab brand stream the most you've eaten together on camera. She finishes hers and says: "the food is good." The brand will be pleased. She is right.`,lbs:10,rel:11,flag:"both_loaded"},
+            {id:"plan_reveals",label:"Plan the double weight reveal — coordinate the timing for maximum impact",result:`You plan it together: both weights revealed in the same moment, at the peak of the stream, with the full audience watching. She has a number she's been waiting to say on camera for three weeks. You have one too. You agree on the moment: third course, before the challenge platter, both weights at once.`,rel:13,flag:"planned_reveal"},
+          ]
+        },
+        {
+          text:(h,s,partner)=>`Live. The brand stream is performing exactly as the analytics predicted and somewhat better than you hoped. The audience is here for the collab and the brand food and the mutual gain that the contract anticipated even if it didn't name it directly. ${partner?partner.name:'She'} is eating with the warmth and focus of a woman who has been doing this for months and knows exactly what she's doing.
+
+The chat is dense: *wrenWatchesEverything: I DM'd asking to be on stream someday. Kylie said 'maybe'. I'm holding onto maybe.* You see it. You smile. You eat.`,
+          choices:[
+            {id:"brand_double_reveal",label:"Execute the double weight reveal — both numbers on camera simultaneously",result:`Third course. You call it: "we're doing the reveal." She's already standing to reach the scale. You say your number — ${Math.round(s.lbs)} pounds — and she says hers and the chat processes both at once and the donation bar jumps and the viewer count spikes and Wren donates the full remaining goal in one transaction.`,rel:15,flag:"dual_reveal"},
+            {id:"max_feed",label:"Feed her the challenge course directly — hand to across-table",result:`You put the challenge course directly on her side. Not sliding it across — actually reaching, the camera catching the full fact of your arm, your belly pressing the table as you lean. She takes it from your hands. The chat is saying the same thing in five different ways. This is the moment. This is why the brand wanted both of you.`,rel:13,flag:"direct_feed"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("both_loaded")&&h.includes("dual_reveal"),text:`Brand collab. Both loaded pre-stream, double weight reveal executed at peak audience. The brand's analytics team sent an email before the stream was over. Wren donated the full remaining goal in one transaction. Subscriber count crossed 200,000. She says "next contract, bigger."`,gainBonus:21,relBonus:17,startsStream:true},
+        {condition:h=>h.includes("dual_reveal"),text:`Brand collab. Double reveal. The brand's team is very happy. 200,000 subscribers. Wren donated everything she had.`,gainBonus:14,relBonus:14,startsStream:true},
+        {condition:h=>h.includes("both_loaded"),text:`Brand collab. Both loaded. The spread was good. The brand has what they need.`,gainBonus:10,relBonus:11,startsStream:true},
+        {condition:()=>true,text:`Brand collab. Stream successful. 200,000 subscribers. Brand happy.`,gainBonus:0,relBonus:8,startsStream:true},
+      ]
+    },
+    // stageIdx 4 — ~630 lbs — anniversary collab
+    {
+      title:"Anniversary Collab",
+      phases:[
+        {
+          text:(h,s,partner)=>`One year of weekly collabs with ${partner?partner.name:'the same partner'}. The anniversary stream has been promoted for two weeks. The subscriber count is 1.1 million. I am ${Math.round(s.lbs)} pounds and ${partner?partner.name+' is '+Math.round(partner.lbs)+' pounds':''} and the table is the largest spread we've ever arranged and Wren is in the building.
+
+She told me in a DM: *I'm in the building. In the waiting area. I drove from four hours away.* I told her to come to the studio floor. She's here. She's standing against the wall right now — 200 pounds, beaming, looking at both of us with the expression of someone who has been watching this happen weekly for a year.`,
+          choices:[
+            {id:"anniversary_load",label:"Both eat the biggest pre-stream warmup you've ever done",result:`The anniversary pre-stream load: more food than any previous warmup, both of you eating together in the quiet before the camera goes on. She finishes and puts her hands on her belly — the full warm weight of a year's worth of weekly collabs, heavier and rounder than the first time she sat in this chair. "Ready," she says. You are both ready. You have been building toward this.`,lbs:14,rel:15,flag:"both_loaded"},
+            {id:"introduce_wren",label:"Introduce Wren to the stream — acknowledge the first fan, live",result:`You bring Wren into frame for sixty seconds. Just her face — she's shaking slightly, trying not to cry, and failing slightly — and you say: "This is Wren. She's been in the chat since week one." You say her subscriber number. You say her total donation amount. The chat explodes. Wren says: "I just wanted to watch." She means something different. The chat understands what she means.`,rel:17,flag:"wren_acknowledged"},
+          ]
+        },
+        {
+          text:(h,s,partner)=>`Live at 45,000 concurrent and climbing. The anniversary stream is running exactly as planned and significantly better than expected. ${partner?partner.name:'She'} is eating with the particular ease of someone who has been doing this every week for a year and it shows in her body, which is warm and round and considerably heavier than when the collabs started, and it shows in the way she moves — the ease, the comfort, the complete absence of self-consciousness about her size.
+
+*wrenWatchesEverything: one year of weekly collabs and she keeps getting bigger. I am not emotionally prepared.* Wren is against the wall behind the camera. You can see her from here. She's watching.`,
+          choices:[
+            {id:"year_scale",label:"Do the year reveal — both start weights versus now, live on camera",result:`The anniversary reveal: you say your debut weight — 258 — and then your current weight — ${Math.round(s.lbs)}. She says her debut weight for the collabs and then her current. The chat does the math in real time. Someone writes: *that's a year of collabs.* Someone else writes: *look at what they built.* You both look at the camera. You both reach for the next plate.`,rel:16,flag:"year_reveal"},
+            {id:"anniversary_challenge",label:"Challenge her — the biggest feed of the anniversary stream, on your side and hers",result:`You tell her: biggest feed of the anniversary stream, right now, both sides of the table, everything. She looks at you — a year of understanding built into that look — and she nods. You both reach for the largest course. The chat is counting. Wren is watching from against the wall. This is what a year looks like.`,rel:15,flag:"challenged"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("both_loaded")&&h.includes("year_reveal"),text:`Anniversary collab. Both loaded, year reveal executed: debut versus now, both weights, for the anniversary audience. Subscriber count crossed 1.5 million by stream end. Wren was in the room and she cried. She was still there when the camera went off. She said: "I'll be here next year too."`,gainBonus:26,relBonus:21,startsStream:true},
+        {condition:h=>h.includes("year_reveal"),text:`Anniversary collab. Year reveal. 1.5 million subscribers. Wren cried. She'll be back.`,gainBonus:17,relBonus:16,startsStream:true},
+        {condition:h=>h.includes("both_loaded"),text:`Anniversary collab. Both loaded. The anniversary spread. The year was real.`,gainBonus:12,relBonus:12,startsStream:true},
+        {condition:()=>true,text:`Anniversary collab. One year. 1.5 million subscribers. Format intact.`,gainBonus:0,relBonus:9,startsStream:true},
+      ]
+    },
+    // stageIdx 5 — ~820 lbs blob — grand collab
+    {
+      title:"The Grand Collab",
+      phases:[
+        {
+          text:(h,s,partner)=>`I am ${Math.round(s.lbs)} pounds in the corner I have permanently claimed in this studio. The custom table is at the right height. The boom-arm camera overhead is at the right angle. ${partner?partner.name+' is '+Math.round(partner.lbs)+' pounds':''} across from me, in her own corner, her own setup mirroring mine, and the food is already arranged on both sides and Wren is in the room.
+
+Not against the wall this time. At a small chair just outside the camera frame, specifically positioned so she doesn't block any shot. She drove four hours. She said: "I've been watching since 258 pounds. I'm not watching this one through a screen." I told her she could come.`,
+          choices:[
+            {id:"grand_load",label:"Both eat the largest pre-stream load you've ever done — start the grand collab fully loaded",result:`Pre-stream load for both of us. The most food either of us has eaten before a stream — course after course, the belly filling to the specific warm heavy weight of truly loaded, the kind of loaded that shows in the first frame of the camera. She finishes and looks at me. "Ready." I am enormous and warm and fully loaded and I press record.`,lbs:20,rel:18,flag:"both_loaded"},
+            {id:"wren_in_frame",label:"Acknowledge Wren on camera — bring her in for the grand collab opening",result:`I bring Wren into frame for the opening. She sits beside me for sixty seconds — this woman who has been watching since 258 pounds sitting beside me at 820 — and she looks at the camera and says: "I've been watching this happen. I've been here the whole time." The chat, which is enormous tonight, goes completely still and then erupts. Wren goes back to her chair. I press record. I begin.`,rel:20,flag:"wren_in_frame"},
+          ]
+        },
+        {
+          text:(h,s,partner)=>`Live at 300,000 concurrent and climbing. This is the biggest collab stream we've ever done and the chat is moving fast enough that I can't read individual messages. ${partner?partner.name:'She'} is eating across from me — enormous, warm, her belly the same landscape of forward-pressing fullness that mine is — and both camera feeds are showing exactly what they're supposed to show.
+
+*wrenWatchesEverything: I'm in the room. The actual room. She knows I'm here.* And: *820 pounds and the platform has never seen numbers like this stream right now.*
+
+She is in the chair just outside the frame. I can see her from here.`,
+          choices:[
+            {id:"grand_scale",label:"Do the grand collab scale reveal — both weights, 300k watching",result:`Both of us on scale. Side by side on the same extended platform — because that's what we use at these sizes — and the numbers appear and I read mine and she reads hers and the chat at 300,000 concurrent processes both numbers at the same time. The reaction is a kind of prolonged collective intake of breath. Wren in the corner has her hands over her mouth. We step off and return to the table and reach for the plate.`,rel:19,flag:"grand_scale"},
+            {id:"grand_challenge",label:"Maximum challenge — both of you, everything left on the table",result:`I say it to the camera: "we're going to eat everything left on this table." Not a question. She looks at me across the setup and she says: "yes." We both reach. The chat goes quiet in the way it does when something is happening that requires full attention. Wren in the corner is completely still. This is what the grand collab is for.`,rel:17,flag:"grand_challenge"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("both_loaded")&&h.includes("grand_scale"),text:`Grand collab. Both fully loaded, grand scale reveal at 300k concurrent — both weights, both gains, for the largest audience we've ever had. Subscriber count hit 4 million by morning. Wren was in the room and she stayed until the lights went down. She said: "I'll be here next year." I said: "I'll be bigger." She said: "I know."`,gainBonus:34,relBonus:25,startsStream:true},
+        {condition:h=>h.includes("grand_scale"),text:`Grand collab. Grand scale reveal. 4 million subscribers. Wren stayed until the lights went down.`,gainBonus:22,relBonus:19,startsStream:true},
+        {condition:h=>h.includes("both_loaded"),text:`Grand collab. Both loaded. The grand spread. The format complete.`,gainBonus:15,relBonus:15,startsStream:true},
+        {condition:()=>true,text:`Grand collab. 4 million subscribers by morning. Wren was in the room.`,gainBonus:0,relBonus:11,startsStream:true},
       ]
     },
   ],
@@ -8241,6 +8578,15 @@ export default function ProfessorSim(){
   // sumoMatchState: {studentId,stageIdx,oppLbs,ringPos,yourBalance,oppBalance,yourBouts,oppBouts,gainAccum,oppMove,telegraph,exchangeLine,phase,popupText,phaseAfterPopup,interBout}
   const [intimacyEventState,setIntimacyEventState]=useState(null);
   // intimacyEventState: {studentId,sceneId,tier,phaseIdx,history:[],logLines:[],gainAccum,relAccum,done,endingText,gainBonus,relBonus}
+  const [collabPartnerPicker, setCollabPartnerPicker] = useState(null);
+  // collabPartnerPicker: { student: kylieStudent } — shows partner selection modal
+  const [collabPartnerId, setCollabPartnerId] = useState(null);
+  // collabPartnerId: number — persists through EVOLVED_EVENT phases + mini-game
+  const [collabStreamState, setCollabStreamState] = useState(null);
+  // collabStreamState: { kylieId, partnerId, stageIdx, qualityBar, kylieGain, partnerGain,
+  //   partnerStageAtStart, stagedUp, foodQueue, tierIdx, chatLines,
+  //   phase:'streaming'|'scoreboard', popupText, phaseAfterPopup,
+  //   actions:{kylieRevealed,partnerRevealed,zoomUses,chatUses,pushUsed} }
   const [intimacySceneSelector,setIntimacySceneSelector]=useState(null);
   // intimacySceneSelector: {student}
   const logRef=useRef(null);
@@ -8947,6 +9293,7 @@ export default function ProfessorSim(){
 
   const doEvolvedActivity=(s)=>{
     if(!s.evolvedForm) return;
+    if(s.evolvedForm==='feedee_creator'){ openCollabPartnerPicker(s); return; }
     const meta=EVOLVED_ACTIVITY_META[s.evolvedForm]; if(!meta) return;
     if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
     const stageIdx=getEvolvedActivityStageIdx(s);
@@ -9011,9 +9358,9 @@ export default function ProfessorSim(){
         const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
         return processStudentGain(st,totalGain,totalRel+bonusRel);
       }));
-      if(!ending.startsContest&&!ending.startsMatch) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
+      if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
       const endText=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
-      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch}));
+      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream}));
     } else {
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }
@@ -9360,6 +9707,212 @@ export default function ProfessorSim(){
     setSumoMatchState(null);
   };
 
+  // ── FEEDEE CREATOR: COLLAB STREAM FUNCTIONS ──────────────────────────────
+
+  const openCollabPartnerPicker=(s)=>{
+    // Check for blob announcements from past collab partners
+    const kylieCollabHistory=s.collabHistory||[];
+    const blobAnnounced=s.blobAnnounced||[];
+    const blobPartners=students.filter(st=>kylieCollabHistory.includes(st.id)&&getStage(st.lbs).id>=10&&!blobAnnounced.includes(st.id));
+    if(blobPartners.length>0){
+      const bp=blobPartners[0];
+      const stageIdx=Math.max(0,Math.min(4,getStage(s.lbs).id-5));
+      const annText=COLLAB_BLOB_ANNOUNCEMENT[stageIdx]?.(s.name,bp.name)||`${bp.name} hit blob stage. She can't leave her room anymore. You announce it on stream.`;
+      // Mark announced
+      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,blobAnnounced:[...(st.blobAnnounced||[]),bp.id]}:st));
+      // Show announcement popup before picker — use existing popup system
+      push(`📢 ${s.name} announces on stream: "${bp.name} has retired — she's too fat to leave her room."`);
+      // Store popup to show, then open picker after
+      setCollabPartnerPicker({student:s,announcementText:annText,announcementPending:true});
+      return;
+    }
+    setCollabPartnerPicker({student:s});
+  };
+
+  const startCollabStream=(kylieId,partnerId,stageIdx,history)=>{
+    const kylie=students.find(st=>st.id===kylieId); if(!kylie) return;
+    const partner=students.find(st=>st.id===partnerId); if(!partner) return;
+    const tierFoods=(COLLAB_STREAM_FOODS[stageIdx]||COLLAB_STREAM_FOODS[0]).map((f,i)=>({...f,consumed:false,key:i,tierUnlocked:i===0}));
+    const partnerStageAtStart=getStage(partner.lbs).id;
+    const initQual=history&&history.includes("both_loaded")?65:50;
+    const initKylieGain=history&&history.includes("both_loaded")?8:0;
+    const initPartnerGain=history&&history.includes("both_loaded")?6:0;
+    if(initKylieGain>0) setStudents(prev=>prev.map(st=>st.id===kylieId?processStudentGain(st,initKylieGain,0):st));
+    if(initPartnerGain>0) setStudents(prev=>prev.map(st=>st.id===partnerId?processStudentGain(st,initPartnerGain,0):st));
+    const initChat=(COLLAB_WREN_LINES[stageIdx]||[]).slice(0,1);
+    setCollabStreamState({kylieId,partnerId,stageIdx,qualityBar:initQual,kylieGain:initKylieGain,partnerGain:initPartnerGain,partnerStageAtStart,stagedUp:false,foodQueue:tierFoods,tierIdx:0,chatLines:initChat,phase:'streaming',popupText:null,phaseAfterPopup:null,actions:{kylieRevealed:false,partnerRevealed:false,zoomUses:3,chatUses:3,pushUsed:false}});
+    setCollabPartnerId(null);
+    setEvolvedEventState(null);
+  };
+
+  const doCollabAction=(action,foodIdx)=>{
+    if(!collabStreamState) return;
+    const{kylieId,partnerId,stageIdx,qualityBar,kylieGain,partnerGain,partnerStageAtStart,stagedUp,foodQueue,tierIdx,chatLines,actions}=collabStreamState;
+    const kylie=students.find(st=>st.id===kylieId);
+    const partner=students.find(st=>st.id===partnerId);
+    if(!kylie||!partner) return;
+    // Quality decay per action
+    const DECAY=4;
+    let newQual=Math.max(0,qualityBar-DECAY);
+    let newKylieGain=kylieGain;
+    let newPartnerGain=partnerGain;
+    let popupText=null;
+    let newActions={...actions};
+    let newChat=[...chatLines];
+    let newFoodQueue=[...foodQueue];
+    let newTierIdx=tierIdx;
+    let kylieGainThisAction=0;
+    let partnerGainThisAction=0;
+
+    const addWren=()=>{
+      const wl=COLLAB_WREN_LINES[stageIdx]||[];
+      if(wl.length>0&&Math.random()<0.35){
+        const l=wl[Math.floor(Math.random()*wl.length)];
+        if(!newChat.includes(l)) newChat=[...newChat.slice(-5),l];
+      }
+    };
+
+    if(action==='feed_kylie'){
+      const food=foodQueue[foodIdx];
+      if(!food||food.consumed||!food.tierUnlocked){push("⚠️ Food not available.");return;}
+      kylieGainThisAction=food.lbsKylie;
+      newQual=Math.min(100,newQual+food.qualBoost);
+      newFoodQueue=foodQueue.map((f,i)=>i===foodIdx?{...f,consumed:true}:f);
+      newKylieGain+=kylieGainThisAction;
+      addWren();
+      popupText=null;
+    } else if(action==='feed_partner'){
+      const food=foodQueue[foodIdx];
+      if(!food||food.consumed||!food.tierUnlocked){push("⚠️ Food not available.");return;}
+      partnerGainThisAction=food.lbsPartner;
+      newQual=Math.min(100,newQual+food.qualBoost);
+      newFoodQueue=foodQueue.map((f,i)=>i===foodIdx?{...f,consumed:true}:f);
+      newPartnerGain+=partnerGainThisAction;
+      addWren();
+    } else if(action==='reveal_kylie'){
+      if(actions.kylieRevealed){push("⚠️ Already revealed Kylie's weight.");return;}
+      newQual=Math.min(100,newQual+20);
+      newActions={...newActions,kylieRevealed:true};
+      popupText=`You announce ${kylie.name}'s weight on camera — ${Math.round(kylie.lbs)} pounds, clearly, into the mic. The chat goes still for one second and then erupts. The number is undeniable and enormous and the new viewers are doing math. ${Math.round(kylie.lbs)} pounds at this stage means the belly, the thighs, the full warm forward presence of her visible in the camera. The chat says: yes. The chat means: more.`;
+      addWren();
+    } else if(action==='reveal_partner'){
+      if(actions.partnerRevealed){push("⚠️ Already revealed partner's weight.");return;}
+      newQual=Math.min(100,newQual+20);
+      newActions={...newActions,partnerRevealed:true};
+      popupText=`${partner.name}'s weight announced on camera: ${Math.round(partner.lbs)} pounds. The chat reacts. Wren reacts — the chat message fires immediately: ${COLLAB_WREN_LINES[stageIdx]?.[Math.floor(Math.random()*(COLLAB_WREN_LINES[stageIdx]?.length||1))]||'wrenWatchesEverything: the numbers'}. The viewer count bumps. ${partner.name} looks at the camera after saying the number and says nothing else and somehow that is more than anything she could have said.`;
+      addWren();
+    } else if(action==='zoom_in'){
+      if(actions.zoomUses<=0){push("⚠️ No zoom uses left.");return;}
+      newQual=Math.min(100,newQual+8);
+      newActions={...newActions,zoomUses:actions.zoomUses-1};
+      popupText=`You zoom in — the camera tightening on both women at the table, the full physical presence of them: ${kylie.name} at ${Math.round(kylie.lbs)} pounds and ${partner.name} at ${Math.round(partner.lbs)} pounds, both bellies forward and warm, both faces with the specific focused pleasure of eating on camera. The chat is saying something. The chat is always saying something. This is what they're saying it about.`;
+    } else if(action==='chat_moment'){
+      if(actions.chatUses<=0){push("⚠️ No chat engagement uses left.");return;}
+      newQual=Math.min(100,newQual+6);
+      newActions={...newActions,chatUses:actions.chatUses-1};
+      addWren();
+      const wl=COLLAB_WREN_LINES[stageIdx]||[];
+      const wLine=wl.length>0?wl[Math.floor(Math.random()*wl.length)]:'wrenWatchesEverything: watching';
+      newChat=[...newChat.slice(-5),wLine];
+      popupText=`Chat engagement. Wren fires a message immediately: *${wLine}* The chat picks it up. Regular viewers explaining to new ones. New ones asking questions the regulars answer faster than either streamer can. The viewer count bumps slightly.`;
+    } else if(action==='push_harder'){
+      if(actions.pushUsed){push("⚠️ Already pushed harder this stream.");return;}
+      const goodPush=Math.random()<0.6;
+      if(goodPush){
+        kylieGainThisAction=Math.floor(8+stageIdx*2);
+        partnerGainThisAction=Math.floor(6+stageIdx*2);
+        newQual=Math.min(100,newQual+15);
+        popupText=`You push both of them harder — more food, more speed, the camera seeing the full fact of both women eating more than they were. Both bellies visibly fuller than five minutes ago. The chat is unanimous: more. More. The viewer count spikes. This is the right call.`;
+      } else {
+        newQual=Math.max(0,newQual-10);
+        popupText=`You push too hard too fast. ${partner.name} slows — she's genuinely full — and there's a moment where the stream loses momentum, the chat noticing the pause. The quality dips. She recovers, eating again, but the push cost something.`;
+      }
+      newKylieGain+=kylieGainThisAction;
+      newPartnerGain+=partnerGainThisAction;
+      newActions={...newActions,pushUsed:true};
+      addWren();
+    }
+
+    // Apply lbs gains
+    if(kylieGainThisAction>0) setStudents(prev=>prev.map(st=>st.id===kylieId?processStudentGain(st,kylieGainThisAction,0):st));
+    if(partnerGainThisAction>0){
+      setStudents(prev=>prev.map(st=>{
+        if(st.id!==partnerId) return st;
+        const updated=processStudentGain(st,partnerGainThisAction,0);
+        // Check for stage-up
+        if(getStage(updated.lbs).id>partnerStageAtStart+(!stagedUp?0:0)){
+          const newStage=getStage(updated.lbs);
+          if(newStage.id>partnerStageAtStart){
+            const stageUpText=COLLAB_STAGEUP_TEXT[stageIdx]?.(kylie.name,partner.name,newStage.label)||`${partner.name} crossed into ${newStage.label} on stream!`;
+            setCollabStreamState(prev=>prev?{...prev,stagedUp:true,popupText:stageUpText,phaseAfterPopup:'stage_up_resolve',qualityBar:Math.min(100,(prev.qualityBar||0)+35)}:prev);
+          }
+        }
+        return updated;
+      }));
+    }
+
+    // Unlock next tier if all current tier foods consumed
+    const allCurrentConsumed=newFoodQueue.filter(f=>f.tierUnlocked).every(f=>f.consumed);
+    if(allCurrentConsumed&&newFoodQueue.some(f=>!f.tierUnlocked)){
+      const nextUnlockIdx=newFoodQueue.findIndex(f=>!f.tierUnlocked);
+      if(nextUnlockIdx>=0){
+        newFoodQueue=newFoodQueue.map((f,i)=>i===nextUnlockIdx?{...f,tierUnlocked:true}:f);
+        newTierIdx=nextUnlockIdx;
+      }
+    }
+
+    // Check stream completion
+    const allEaten=newFoodQueue.every(f=>f.consumed);
+    if(allEaten){
+      const finalKylieGain=newKylieGain;
+      const finalPartnerGain=newPartnerGain;
+      const partnerName=partner.name;
+      const payoff=COLLAB_PAYOFF_TEXT[stageIdx]?.(finalKylieGain,finalPartnerGain,partnerName)||`${Math.round(finalKylieGain)} pounds on Kylie, ${Math.round(finalPartnerGain)} on ${partnerName}. Stream complete.`;
+      setCollabStreamState(prev=>prev?{...prev,kylieGain:finalKylieGain,partnerGain:finalPartnerGain,qualityBar:newQual,foodQueue:newFoodQueue,chatLines:newChat,actions:newActions,phase:'scoreboard',popupText:payoff,phaseAfterPopup:'scoreboard_show'}:prev);
+      // Record on Kylie's history
+      setStudents(prev=>prev.map(st=>st.id===kylieId?{...st,collabHistory:[...(st.collabHistory||[]).filter(id=>id!==partnerId),partnerId],contestCompletions:(st.contestCompletions||0)+1}:st));
+      push(`📹 ${kylie.name} — Collab Stream: +${Math.round(finalKylieGain)} lbs (Kylie) · +${Math.round(finalPartnerGain)} lbs (${partnerName})`);
+      return;
+    }
+
+    // Check quality fail
+    if(newQual<=0){
+      const kylieName=kylie.name;
+      const partnerName=partner.name;
+      const crashText=`The stream crashes. Quality hit zero — the momentum died, the chat thinned out, and the connection dropped while both of you were still at the table. It happens. You gained ${Math.round(newKylieGain)} pounds and ${partnerName} gained ${Math.round(newPartnerGain)} pounds and the stream is just over.`;
+      setCollabStreamState(prev=>prev?{...prev,kylieGain:newKylieGain,partnerGain:newPartnerGain,qualityBar:0,chatLines:newChat,phase:'scoreboard',popupText:crashText,phaseAfterPopup:'scoreboard_crash'}:prev);
+      return;
+    }
+
+    setCollabStreamState(prev=>prev?{...prev,qualityBar:newQual,kylieGain:newKylieGain,partnerGain:newPartnerGain,foodQueue:newFoodQueue,tierIdx:newTierIdx,chatLines:newChat,actions:newActions,popupText:popupText||null,phaseAfterPopup:null}:prev);
+  };
+
+  const dismissCollabPopup=()=>{
+    if(!collabStreamState) return;
+    const{phaseAfterPopup}=collabStreamState;
+    if(phaseAfterPopup==='scoreboard'||phaseAfterPopup==='scoreboard_show'||phaseAfterPopup==='scoreboard_crash'){
+      setCollabStreamState(prev=>prev?{...prev,phase:'scoreboard',popupText:null,phaseAfterPopup:null}:prev);
+    } else if(phaseAfterPopup==='stage_up_resolve'){
+      // After stage-up popup, unlock a bonus food tier
+      setCollabStreamState(prev=>{
+        if(!prev) return prev;
+        const newFoodQueue=prev.foodQueue.map((f,i)=>{
+          if(!f.tierUnlocked&&i===prev.foodQueue.findIndex(fd=>!fd.tierUnlocked)){
+            return {...f,tierUnlocked:true};
+          }
+          return f;
+        });
+        return {...prev,foodQueue:newFoodQueue,popupText:null,phaseAfterPopup:null};
+      });
+    } else {
+      setCollabStreamState(prev=>prev?{...prev,popupText:null,phaseAfterPopup:null}:prev);
+    }
+  };
+
+  const closeCollabStream=()=>{
+    setCollabStreamState(null);
+    setCollabPartnerId(null);
+  };
 
   const openIntimacySelector=(s)=>{setIntimacySceneSelector({student:s});};
 
@@ -14137,12 +14690,13 @@ export default function ProfessorSim(){
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
       {evolvedEventState&&(()=>{
-        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch}=evolvedEventState;
+        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream}=evolvedEventState;
         const s=students.find(st=>st.id===studentId);
         const evDef=EVOLVED_EVENTS[formId]?.[stageIdx];
         if(!s||!evDef) return null;
         const phase=!done?evDef.phases[phaseIdx]:null;
-        const phaseText=phase?(typeof phase.text==="function"?phase.text(history,s):phase.text):null;
+        const collabPartner=collabPartnerId?students.find(st=>st.id===collabPartnerId):null;
+        const phaseText=phase?(typeof phase.text==="function"?phase.text(history,s,collabPartner):phase.text):null;
         const evMeta=EVOLVED_FORM_META[formId];
         const accentColor=evMeta?.color||"#7030c0";
         return(
@@ -14181,9 +14735,10 @@ export default function ProfessorSim(){
                   })}
                 </div>
               )}
-              {done&&!startsContest&&!startsMatch&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
+              {done&&!startsContest&&!startsMatch&&!startsStream&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
               {done&&startsContest&&<button style={{...C.btn("#1a6030"),width:"100%",marginTop:4}} onClick={()=>startEatingContest(studentId,stageIdx,history)}>🍽️ Step to the Table</button>}
               {done&&startsMatch&&<button style={{...C.btn("#7a2018"),width:"100%",marginTop:4}} onClick={()=>startSumoMatch(studentId,stageIdx,history)}>🥋 Step Onto the Dohyo</button>}
+              {done&&startsStream&&<button style={{...C.btn("#6a1878"),width:"100%",marginTop:4}} onClick={()=>{const partner=students.find(st=>st.id===collabPartnerId);if(!partner){push("⚠️ No collab partner selected.");return;}startCollabStream(studentId,collabPartnerId,stageIdx,history);}}>🎥 Go Live Together</button>}
             </div>
           </div>
         );
@@ -14494,6 +15049,186 @@ export default function ProfessorSim(){
                   <div style={{background:"#160606",border:"1px solid #80303050",borderRadius:10,padding:20,maxWidth:460,margin:16}}>
                     <div style={{fontSize:12,color:"#e8b8a8",lineHeight:1.9,fontStyle:"italic",marginBottom:14}}>{popupText}</div>
                     <button style={{...C.btn("#5a1c14"),width:"100%"}} onClick={dismissSumoPopup}>Continue</button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── FEEDEE CREATOR: COLLAB PARTNER PICKER ── */}
+      {collabPartnerPicker&&(()=>{
+        const{student:kylie,announcementText,announcementPending}=collabPartnerPicker;
+        const purple="#8e44ad";
+        const lightPurple="#c490e8";
+        // Find eligible partners: Intimate tier (rel>=70) + content creator archetypes + not blob
+        const eligible=students.filter(st=>
+          st.id!==kylie.id&&
+          (getTier(st.relationship).id>=2)&&
+          COLLAB_CONTENT_CREATOR_ARCHETYPES.includes(st.archetype)&&
+          getStage(st.lbs).id<10
+        );
+        if(announcementPending&&announcementText){
+          return(
+            <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
+              <div style={{background:"#0e0015",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:460,width:"95%"}}>
+                <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:8,textAlign:"center"}}>📢 STREAM ANNOUNCEMENT</div>
+                <div style={{fontSize:12,color:"#d0a8e8",lineHeight:1.9,fontStyle:"italic",marginBottom:16}}>{announcementText}</div>
+                <button style={{...C.btn(purple),width:"100%"}} onClick={()=>setCollabPartnerPicker({student:kylie})}>Continue to Stream →</button>
+              </div>
+            </div>
+          );
+        }
+        return(
+          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
+            <div style={{background:"#0e0015",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:500,width:"95%",maxHeight:"85vh",overflowY:"auto"}}>
+              <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:4,textAlign:"center"}}>🎥 COLLAB STREAM</div>
+              <div style={{fontSize:14,color:lightPurple,fontWeight:"bold",marginBottom:12,textAlign:"center"}}>Choose a Collab Partner</div>
+              <div style={{fontSize:11,color:"#a080c0",marginBottom:14,textAlign:"center"}}>Intimate tier · content-creator archetype</div>
+              {eligible.length===0&&<div style={{color:"#806090",textAlign:"center",padding:20}}>No eligible partners right now — need an Intimate-tier gamer, artsy, or quiet student.</div>}
+              {eligible.map(st=>(
+                <div key={st.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:6,borderRadius:8,background:"#0a0018",border:`1px solid ${purple}40`,cursor:"pointer"}}
+                  onClick={()=>{setCollabPartnerId(st.id);setCollabPartnerPicker(null);const stageIdx=Math.max(0,Math.min(5,getStage(kylie.lbs).id-5));const evDef=EVOLVED_EVENTS['feedee_creator']?.[stageIdx];if(evDef){setEvolvedEventState({studentId:kylie.id,formId:'feedee_creator',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0,startsContest:false,startsMatch:false,startsStream:false});}}}>
+                  <div style={{flex:1}}>
+                    <div style={{color:lightPurple,fontWeight:"bold",fontSize:13}}>{st.name}</div>
+                    <div style={{color:"#907090",fontSize:10}}>{st.archetype} · {Math.round(st.lbs)} lbs · {getTier(st.relationship).label}</div>
+                  </div>
+                  <div style={{color:"#c0a0e0",fontSize:11}}>{getStage(st.lbs).label}</div>
+                </div>
+              ))}
+              <button style={{...C.btn("#2a1040"),width:"100%",marginTop:8,fontSize:11}} onClick={()=>setCollabPartnerPicker(null)}>Cancel</button>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── COLLAB STREAM MINI-GAME MODAL ── */}
+      {collabStreamState&&(()=>{
+        const{kylieId,partnerId,stageIdx,qualityBar,kylieGain,partnerGain,foodQueue,chatLines,phase,popupText,actions}=collabStreamState;
+        const kylie=students.find(st=>st.id===kylieId);
+        const partner=students.find(st=>st.id===partnerId);
+        if(!kylie||!partner) return null;
+        const purple="#8e44ad";
+        const lightPurple="#c490e8";
+        const STREAM_TITLE_LABELS=["First Collab","Weekly Collab","Featured Collab","Brand Collab","Anniversary Collab","The Grand Collab"];
+        const streamTitle=STREAM_TITLE_LABELS[stageIdx]||"Collab Stream";
+        const qualColor=qualityBar>60?"#60e080":qualityBar>30?"#e0c040":"#e04040";
+
+        return(
+          <div style={{position:"fixed",inset:0,background:"rgba(5,0,15,0.94)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
+            <div style={{background:"#0a0016",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:520,width:"95%",maxHeight:"92vh",overflowY:"auto"}}>
+              <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:2,textAlign:"center"}}>🎥 COLLAB STREAM</div>
+              <div style={{fontSize:14,fontWeight:"bold",color:lightPurple,marginBottom:2,textAlign:"center"}}>{kylie.name} × {partner.name}</div>
+              <div style={{fontSize:10,color:"#9060b0",marginBottom:12,textAlign:"center"}}>{streamTitle}</div>
+
+              {phase==='streaming'&&(<>
+                {/* Quality bar */}
+                <div style={{marginBottom:10}}>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"#c0a0e0",marginBottom:3}}>
+                    <span>📺 CONTENT QUALITY</span>
+                    <span style={{color:qualColor,fontWeight:"bold"}}>{Math.round(qualityBar)}/100</span>
+                  </div>
+                  <div style={{background:"#15002a",borderRadius:4,height:12}}>
+                    <div style={{background:`linear-gradient(90deg,${qualityBar>60?"#2a8040,#60e080":qualityBar>30?"#805020,#e0c040":"#802020,#e04040"})`,width:`${Math.max(0,qualityBar)}%`,height:"100%",borderRadius:4,transition:"width 0.3s"}}/>
+                  </div>
+                  {qualityBar<=25&&<div style={{fontSize:9,color:"#e04040",textAlign:"center",marginTop:2}}>⚠️ Low quality — feed them to keep the stream alive!</div>}
+                </div>
+
+                {/* Weights */}
+                <div style={{display:"flex",gap:8,marginBottom:10}}>
+                  <div style={{flex:1,background:"#0d001f",border:`1px solid ${purple}40`,borderRadius:6,padding:8,textAlign:"center"}}>
+                    <div style={{fontSize:9,color:"#a080c0",letterSpacing:1}}>KYLIE</div>
+                    <div style={{fontSize:14,color:lightPurple,fontWeight:"bold"}}>{Math.round(kylie.lbs)} lbs</div>
+                    <div style={{fontSize:9,color:"#7050a0"}}>+{Math.round(kylieGain)} this stream</div>
+                  </div>
+                  <div style={{flex:1,background:"#0d001f",border:`1px solid ${purple}40`,borderRadius:6,padding:8,textAlign:"center"}}>
+                    <div style={{fontSize:9,color:"#a080c0",letterSpacing:1}}>{partner.name.toUpperCase()}</div>
+                    <div style={{fontSize:14,color:lightPurple,fontWeight:"bold"}}>{Math.round(partner.lbs)} lbs</div>
+                    <div style={{fontSize:9,color:"#7050a0"}}>+{Math.round(partnerGain)} this stream</div>
+                  </div>
+                </div>
+
+                {/* Food queue */}
+                <div style={{marginBottom:10}}>
+                  <div style={{fontSize:9,color:"#a070c0",marginBottom:5,letterSpacing:2}}>FOOD ON TABLE</div>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4}}>
+                    {foodQueue.filter(f=>!f.consumed).map((food)=>{
+                      const unlocked=food.tierUnlocked;
+                      return(
+                        <div key={food.key} style={{opacity:unlocked?1:0.35}}>
+                          {unlocked?(
+                            <div style={{display:"flex",gap:4,marginBottom:2}}>
+                              <button style={{...C.btn("#3a0a60"),flex:1,fontSize:10,padding:"4px 6px"}} onClick={()=>doCollabAction('feed_kylie',food.key)}>
+                                {food.emoji} → Kylie +{food.lbsKylie}
+                              </button>
+                              <button style={{...C.btn("#1a1a60"),flex:1,fontSize:10,padding:"4px 6px"}} onClick={()=>doCollabAction('feed_partner',food.key)}>
+                                {food.emoji} → {partner.name.split(' ')[0]} +{food.lbsPartner}
+                              </button>
+                            </div>
+                          ):(
+                            <div style={{background:"#0a0018",border:"1px solid #30104050",borderRadius:4,padding:"4px 6px",fontSize:10,color:"#503060",textAlign:"center"}}>
+                              🔒 {food.name} — unlocks after current tier
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                    {foodQueue.every(f=>f.consumed)&&<div style={{gridColumn:"1/-1",color:"#60a060",textAlign:"center",fontSize:10,padding:8}}>✓ All food eaten — stream complete!</div>}
+                  </div>
+                </div>
+
+                {/* Action buttons */}
+                <div style={{marginBottom:10}}>
+                  <div style={{fontSize:9,color:"#a070c0",marginBottom:5,letterSpacing:2}}>STREAM ACTIONS</div>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:5}}>
+                    <button style={{...C.btn(actions.kylieRevealed?"#1a0030":"#4a1070"),fontSize:10,opacity:actions.kylieRevealed?0.5:1}} disabled={actions.kylieRevealed} onClick={()=>doCollabAction('reveal_kylie')}>⚖️ Kylie's Weight {actions.kylieRevealed?"✓":""}</button>
+                    <button style={{...C.btn(actions.partnerRevealed?"#1a0030":"#1a1060"),fontSize:10,opacity:actions.partnerRevealed?0.5:1}} disabled={actions.partnerRevealed} onClick={()=>doCollabAction('reveal_partner')}>⚖️ {partner.name.split(' ')[0]}'s Weight {actions.partnerRevealed?"✓":""}</button>
+                    <button style={{...C.btn(actions.zoomUses<=0?"#1a0030":"#2a0850"),fontSize:10,opacity:actions.zoomUses<=0?0.5:1}} disabled={actions.zoomUses<=0} onClick={()=>doCollabAction('zoom_in')}>📸 Zoom In ({actions.zoomUses})</button>
+                    <button style={{...C.btn(actions.chatUses<=0?"#1a0030":"#2a0850"),fontSize:10,opacity:actions.chatUses<=0?0.5:1}} disabled={actions.chatUses<=0} onClick={()=>doCollabAction('chat_moment')}>💬 Chat Moment ({actions.chatUses})</button>
+                    <button style={{...C.btn(actions.pushUsed?"#1a0030":"#501060"),fontSize:10,opacity:actions.pushUsed?0.5:1,gridColumn:"1/-1"}} disabled={actions.pushUsed} onClick={()=>doCollabAction('push_harder')}>🔥 Push Harder {actions.pushUsed?"(done)":""}</button>
+                  </div>
+                </div>
+
+                {/* Chat window */}
+                {chatLines.length>0&&(
+                  <div style={{background:"#080014",border:`1px solid ${purple}30`,borderRadius:6,padding:8,marginBottom:10,maxHeight:55,overflowY:"auto"}}>
+                    {chatLines.map((l,i)=><div key={i} style={{fontSize:9,color:"#b090d0",marginBottom:1}}>💬 {l}</div>)}
+                  </div>
+                )}
+
+                <button style={{...C.btn("#150025"),width:"100%",fontSize:10}} onClick={closeCollabStream}>End Stream Early</button>
+              </>)}
+
+              {phase==='scoreboard'&&(<>
+                <div style={{background:"#08001a",border:`1px solid ${purple}40`,borderRadius:8,padding:12,marginBottom:14,fontSize:12}}>
+                  <div style={{color:lightPurple,fontWeight:"bold",marginBottom:8,letterSpacing:2,fontSize:10}}>STREAM RESULTS</div>
+                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                    <span style={{color:"#c0a0e0"}}>Content Quality</span>
+                    <span style={{color:qualColor,fontWeight:"bold"}}>{Math.round(qualityBar)}/100</span>
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                    <span style={{color:"#c0a0e0"}}>Kylie gained</span>
+                    <span style={{color:"#e060c0",fontWeight:"bold"}}>+{Math.round(kylieGain)} lbs</span>
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                    <span style={{color:"#c0a0e0"}}>{partner.name} gained</span>
+                    <span style={{color:"#e060c0",fontWeight:"bold"}}>+{Math.round(partnerGain)} lbs</span>
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between"}}>
+                    <span style={{color:"#c0a0e0"}}>Tiers completed</span>
+                    <span style={{color:"#60e080"}}>{foodQueue.filter(f=>f.consumed).length}/{foodQueue.length}</span>
+                  </div>
+                </div>
+                <button style={{...C.btn(purple),width:"100%"}} onClick={closeCollabStream}>Close Stream ✓</button>
+              </>)}
+
+              {/* POPUP OVERLAY */}
+              {popupText&&(
+                <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
+                  <div style={{background:"#0c0018",border:`1px solid ${purple}50`,borderRadius:10,padding:20,maxWidth:460,margin:16}}>
+                    <div style={{fontSize:12,color:"#d0a8e8",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{popupText}</div>
+                    <button style={{...C.btn(purple),width:"100%"}} onClick={dismissCollabPopup}>Continue</button>
                   </div>
                 </div>
               )}
