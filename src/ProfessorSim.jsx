@@ -3625,12 +3625,12 @@ She finds your eyes. Her expression is patient and warm and the same as it was b
 const EVOLVED_REACTIONS = {
   // ── ATHLETE paths ──────────────────────────────────────────────
   sumo:[
-    "First real match tonight. The ring made a sound I've never heard before. I made that sound. I won.",
-    "Going three-for-three now. People in the circuit are starting to know my name. I love the ring.",
-    "Regional tournament this weekend. I trained all week. The training is mostly eating. I'm okay with this.",
-    "National spotlight. Cameras, crowds, the announcer can barely describe what they're seeing. Neither can I.",
-    "I am the thing opponents have nightmares about. I have not lost in fourteen months. I do not plan to start.",
-    "I've retired from competitive sumo. The ring was too small. I just exist now, and that's enough.",
+    "I stepped onto an official sumo scale for the first time today and it read 258 and the official wrote it down like it was nothing — and across the room Dana 'The Wall' Mercer, six years a veteran, finally looked at me. I lost. I'll be back, and I'll be heavier.",
+    "Dana says good luck to me now. One season in and the Wall says good luck. The gap between her weight and mine used to be eighty pounds. It's getting small. She's noticed. So have I.",
+    "I outweighed Dana Mercer on the board today for the first time. She looked at the numbers and said 'there it is.' Then I pushed her out of the ring with my belly and the crowd chanted my name. My name.",
+    "National qualifier. There were cameras. I'm the heaviest competitor in the field by a wide margin, and Dana told me she can't out-weigh me anymore so she'll have to out-think me. She couldn't. I'm too big now. I love being too big.",
+    "National finalist. They read my weight into the broadcast and the whole arena went quiet before it roared, and Dana was already clapping. She said she came to feel what it's like to lose to the biggest there's ever been. I gave it to her.",
+    "I am the largest sumo competitor this circuit has ever certified. I put my hand on my belly after the match — warm, full, enormous, mine — and thought about the cheerleader who started this. She had no idea. There's more. There's always more.",
   ],
   eating_competitor:[
     "First contest. Timer on the table, crowd watching. I finished three minutes early. Walked out knowing.",
@@ -3806,12 +3806,12 @@ const EVOLVED_REACTIONS = {
 
 const EVOLVED_DIARY = {
   sumo:[
-    `Training is eating and eating is training and the line has dissolved entirely. I win matches I shouldn't win, against opponents who are technically superior, and the margin between us is exactly the weight I've put on since we last met. This is a documented phenomenon. I have become the documentation.`,
-    `I have a handler now — someone who manages my match schedule, my weight class, my meal plan. The meal plan is the most interesting document I've ever been party to. It is more ambition than restriction. I have never been so well fed in the service of a legitimate purpose.`,
-    `Regional tournament. I walked out to the ring and the crowd made a sound I felt in my sternum. Not fear, not quite awe — something in between that I don't have a word for. I know what it means, though. It means they understand what they're seeing. I understand it too.`,
-    `National. My name in brackets on a printed draw sheet. I looked at it for a long time. The name fits differently now than it did before I started. Everything fits differently. I have grown into the sport and the sport has grown into me.`,
-    `I have not lost in so long that the wins have stopped feeling like events and started feeling like weather — inevitable, continuous, the background condition of my life. The opponents are good. I am better. I am heavier. These are the same sentence.`,
-    `I've retired from competition. The ring held me for as long as it could. Now I exist beyond the brackets, beyond the records. The weight is mine. The victories are on record. I am what remains after all of that.`,
+    `Regional qualifier, my first. The warm-up room smelled like liniment and chanko and I was the only former cheerleader in it. Dana 'The Wall' Mercer, 340 pounds, didn't look at me once until the weigh-in. I ate in my corner between bouts — I figured out fast that every pound I add is a pound she has to move — and I pushed her hard. She won. But she put a hand on my shoulder after and said 'you're going to be a problem.' I'm going to be a problem.`,
+    `One season in. Fed myself between every bout — chanko, rice, all of it, my belly filling lower and heavier each break — and it nearly carried me past Dana. Nearly. The gap's down to fifty pounds. She said 'keep eating, keep getting bigger,' and she wasn't being kind, she was being honest about how she loses. I'm going to make her right.`,
+    `Conference meet. The board said I outweigh Dana Mercer now — first time ever — and then I went out and proved the number meant something, drove her belly-first out of the ring twice while the crowd chanted my name. 'You crossed over,' she said after. 'You're the bigger one now.' I am. After two years of being the novelty, I'm the one they measure against.`,
+    `National qualifier, press at the door. I'm the heaviest woman in the field by a margin that makes the others quiet. I ate a full staging meal before, fed in my corner through the whole bracket, and by the final I was bigger than I'd ever been. Dana said she'd out-think me. She couldn't. There's no thinking your way around this much weight. I made sure of it.`,
+    `National final. They read my number into the broadcast and the arena took a breath before it roared. Dana found me first — 520 pounds, the wall I climbed over — and said she didn't come to beat me, nobody beats me now; she came to feel what it's like to lose to the biggest there's ever been. So I fed in my corner and I grew between bouts and I buried her under all of it, and afterward she was smiling. 'Thank you,' she said. I understood.`,
+    `I wrote it down the night I won nationals: I stood in the middle of the dohyo, the largest competitor the sport has ever crowned, my belly vast and warm and full from a whole day of corner feeding, and I felt the noise and thought — more. Every bowl, every weigh-in, every pound. This is the record and the record is my body. There is more to add. I am not done.`,
   ],
   eating_competitor:[
     `The timer is honest. It doesn't negotiate. It runs, and at the end of it either the plate is clear or it isn't, and tonight it was clear four minutes before the buzzer and I sat there with my hands in my lap watching the others finish and felt something I can only call certainty.`,
@@ -4148,11 +4148,11 @@ const EVOLVED_OUTFITS = {
 
 const EVOLVED_ACTIVITY_TEXT = {
   sumo:[
-    (s)=>`She weighs ${Math.round(s.lbs)} pounds at the weigh-in and you watch the official record it with a pencil. Her mawashi is fitted across her belly — the fat there is soft and warm, a real apron below the navel already — and her thighs are thick and pressed together. Her opponent is 225 pounds, a circuit regular. When they collide at the tachi-ai the sound carries to the back row: two big women slamming together hard, their belly fat compressing between them, her rolls pressed flat against the other woman's front. She shoves. All ${Math.round(s.lbs)} pounds behind her hips. Her belly does the work. The other woman's feet leave the clay in seven seconds. "I didn't try very hard," she tells you. "I just walked into her." She eats four portions at the after-match meal and says she wants to be 300 before the next bout.`,
-    (s)=>`${Math.round(s.lbs)} pounds now. She walks to the dohyo and the crowd adjusts to her arrival — the mawashi crammed full of her, the rolls of her sides visible above the canvas, her belly swaying forward with each step. Her opponent is 270 and good. The collision is stunning: her ${Math.round(s.lbs)} pounds of soft, substantial girl hitting the other woman like a warm wall, their fat compressing together, both of them grunting. She grabs the mawashi and drives forward, her belly pressing the other woman back, inch by inch and then foot by foot, until the feet leave the clay. She wins in two moves. Afterward she finds you and she's still warm and flushed and she presses both hands to her belly. "I want to be 400," she says. "I want to feel what 400 does to someone when I hit them."`,
-    (s)=>`${Math.round(s.lbs)} pounds. The tournament weigh-in. She stands on the official scale and the number comes up and the official writes it down carefully and she looks at it with calm pleasure. Her belly hangs past her hips in a full, generous apron when she stands. Her thighs fill the mawashi to its limit. Her opponent today is 285 — skilled, experienced — and she looks at your student the way people look at something much larger than expected. The match is nine seconds. ${Math.round(s.lbs)} pounds walks forward, belly leading by six inches, and the other woman cannot stop that much mass when it is motivated. The crowd says her name. She bows. She turns to find you in the stands. "I barely felt her," she says. "There was some resistance and then there wasn't." She wants dinner immediately. She wants to discuss the match and eat at the same time.`,
-    (s)=>`${Math.round(s.lbs)} pounds. The scale required a certified technician and the reading was witnessed by three officials. She stood on it with total composure, her enormous belly hanging forward in a deep, warm apron that reached past her hips, her thighs the width of small columns, the mawashi straining at the seams. Her opponent today is 340 pounds and comes with a reputation. The match: your student walks forward and her belly arrives first and does not stop. ${Math.round(s.lbs)} pounds does not stop because 340 cannot redirect it. The other woman is flattened into the boundary rope by a wall of soft, relentless mass — your student's belly pressed against her whole torso, both arms pushed aside uselessly. "I felt her," your student says after. "Just barely." She eats in the locker room, still in the mawashi, considering the food more carefully than she considered the match.`,
-    (s)=>`${Math.round(s.lbs)} pounds. The tournament committee issued a special dispensation. The scale was borrowed from an agricultural supplier. She weighed in calmly, her belly a vast apron that hung past her thighs, her body a presence in the room that changed the air pressure. Her opponent in the final is 410 pounds, a former national champion. The match lasts four seconds because there is nothing 410 pounds can do when ${Math.round(s.lbs)} pounds decides to be somewhere specific. She walks forward, unhurried. Her belly arrives. The other woman's feet leave the clay. The crowd makes a sound you feel in your sternum. She bows. She turns to find you. "I want more weight before the next tournament," she says. Her belly sways when she walks toward you. "I want the next opponent to understand what they're dealing with before I even step on the clay."`,
+    (s)=>`She knocks on your office door in her mawashi-bag and warm-ups — ${Math.round(s.lbs)} pounds, belly round and forward, a competitor's calm on her. "Regional qualifier today," she says. "Dana Mercer's there. She's 340. I want you to watch." She doesn't ask. You go. You watch a former cheerleader try to push a six-year veteran out of a ring with her belly, and very nearly do it. She loses by inches and isn't discouraged at all. "She's still bigger than me," she says afterward, eating. "For now."`,
+    (s)=>`She stops by before the circuit tournament — ${Math.round(s.lbs)} pounds, looser and surer than last season. "The gap's down to fifty pounds," she says, meaning her and Dana. "I feed in my corner now. Every bout I get a little bigger, and she has to move all of it." You come watch. Between bouts she eats — bowl after bowl in her corner — and you watch her grow over the course of the afternoon, her belly settling lower each break, until she nearly takes the Wall down with the weight of it.`,
+    (s)=>`Conference meet. She's ${Math.round(s.lbs)} pounds and for the first time she outweighs the rival who used to dwarf her. "Watch the board today," she tells you. "My number goes up top." It does. Dana stares at it and says "there it is," and then your student goes out and makes the number mean something — belly-first, driving Dana out of the ring twice while the crowd, for the first time at this level, chants her name.`,
+    (s)=>`National qualifier, and there's press at the door. She finds you before warm-ups — ${Math.round(s.lbs)} pounds, the heaviest competitor in the building by a mile, her belly an enormous warm apron under the mawashi. "Dana says she'll out-think me," she says, almost amused. "Watch how that goes." You watch. It does not go well for Dana. Size has become an argument that ends discussions, and your student spends the whole bracket eating in her corner to make the argument bigger.`,
+    (s)=>`National final. The arena. She's ${Math.round(s.lbs)} pounds and the credential reads COMPETITOR and she finds you in the crowd beforehand. "Watch the weigh-in," she says. Just that. You watch the official pause a full second before reading her number, watch the arena take a breath before it comes apart, watch the largest competitor the sport has ever certified walk to the center of the dohyo like she was always going to end up there. Dana is already clapping.`,
   ],
   eating_competitor:[
     (s)=>`She weighs ${Math.round(s.lbs)} pounds and she's in the bib and she's sitting at the table and the crowd is filing in and she is already studying the plate with the focused attention of someone who has thought about nothing else for a week. She is the largest competitor at this table. The next biggest is 210. When the timer starts she moves with an economy that looks casual until you realize the plate is more than half empty at the ninety-second mark. She finishes first. She sets her utensil down and waits. The official records her time. She finds you after and says: "I want to weigh more next time. I want to weigh more for every competition from now on." She means it as a training strategy. She eats the entire return-trip meal on the drive home.`,
@@ -4522,9 +4522,144 @@ The announcer reads your name and your number into the national feed. The crowd 
 ];
 
 // ══════════════════════════════════════════════════════════════════
+// SUMO MATCH MINI-GAME — eat-to-win push battle vs Dana "The Wall" Mercer
+// ══════════════════════════════════════════════════════════════════
+
+const SUMO_MOVES = [
+  { id:'charge',   label:'Tachi-ai Charge', emoji:'🐗', desc:'Explosive forward hit. Huge push — but if she braces or steps aside, you pay for it in balance.', balanceCost:25 },
+  { id:'thrust',   label:'Thrust',          emoji:'👊', desc:'Steady belly-and-palm push. Cheap, reliable, moderate ground.',                              balanceCost:10 },
+  { id:'drop',     label:'Belly Drop',      emoji:'🫸', desc:'Drop your full weight forward. Scales hard with how heavy you are. Your signature.',          balanceCost:15 },
+  { id:'brace',    label:'Brace',           emoji:'🛡️', desc:'Plant and root. Negate her push and recover your balance. No ground gained.',                balanceCost:-30 },
+  { id:'sidestep', label:'Sidestep',        emoji:'↪️', desc:'Slip aside. Devastating if she charges. Wasted if she doesn\'t.',                            balanceCost:10 },
+];
+
+const SUMO_RIVAL_NAME = 'Dana "The Wall" Mercer';
+const SUMO_RIVAL_WEIGHTS = [340, 370, 410, 460, 520];
+
+// Opponent move telegraphs — shown so the player can counter
+const SUMO_TELEGRAPH = {
+  charge:[`Dana drops her shoulder and loads her weight back — a charge is coming.`,`Dana's feet shift and set. She's winding up to fire forward.`],
+  thrust:[`Dana raises her palms and squares up. She's going to thrust.`,`Dana sets her hands at your chest. A steady push is coming.`],
+  drop:[`Dana hauls her belly back and up — she's loading a drop.`,`Dana lowers her center of gravity. A belly drop is coming.`],
+  brace:[`Dana plants wide and roots down. She's bracing.`,`Dana sets her feet and sinks her hips. She's going to hold.`],
+  sidestep:[`Dana's weight goes light on one side. She might slip aside.`,`Dana's eyes flick to her left — she's thinking about stepping.`],
+};
+
+// Exchange commentary, keyed by outcome bucket, indexed [stageIdx 0..4]
+const SUMO_EXCHANGE_LINES = {
+  you_drive:[
+    `You get under her and drive forward, belly into belly, and she gives ground — half a step, but it's hers to give and you took it. Dana resets her feet. "Okay," she says. "Okay, then."`,
+    `Belly to belly, you push and she moves. Not far. But she moves, and the crowd sees it, and Dana's jaw sets. "You've been training," she says. You drive again.`,
+    `You drive into her and your weight goes clean through the contact and she has to step back to keep it. You're pressed gut to gut, warm and enormous, and you're the one moving forward now.`,
+    `You put your belly into her and walk her backward a full step. She's strong — always has been — but you're bigger now and the difference shows in her feet. "When did this happen," she breathes.`,
+    `You drive and she folds backward off the contact, all 520 pounds of her giving ground to all of you, belly crushed to belly, the crowd roaring. Dana digs in and it doesn't matter. You are simply larger now.`,
+  ],
+  you_crush:[
+    `You drop your weight into her — full belly, forward and down — and she absorbs it but it costs her. She sinks. "Heavy," she grunts, almost a compliment.`,
+    `The belly drop lands square. Your gut hits hers and keeps going and she has to root hard to stop it. She stops it — barely. You feel her balance wobble.`,
+    `You drop everything you have into the contact, belly first, and Dana takes it across her own enormous middle and staggers. The sound is tremendous — flesh on flesh, the floor complaining. She's off her line.`,
+    `Belly drop. Your weight goes down and forward into her and she buckles around it. She's 460 and you're more, and when you drop it all into her there's nothing she can do but give. She gives.`,
+    `You drop the full weight of yourself into her like a wave going over a wall, and the wall goes under. Dana's stance breaks. The crowd comes up out of their seats. Mass over mass — you are the bigger force and the drop proves it.`,
+  ],
+  attack_fail:[
+    `She read it. Dana plants and your charge bounces off her braced bulk and you rock back, scrambling to keep your feet. "Patience," she says, like a teacher. Annoying.`,
+    `You commit and she isn't there — or she's planted like a post — and your weight goes nowhere good. You stumble, recover, reset. Dana doesn't even press it. She's that confident.`,
+    `Your charge meets her brace and the collision goes backward through you. Two enormous women and you're the one who lurches. You catch yourself on wide feet. Don't waste the next one.`,
+    `She steps and your momentum carries you past, belly leading into empty air, and you fight your own weight to stop. "Careful," she says. "All that weight goes where you point it."`,
+    `Even now she can read you — she plants and your charge dies against her and you rock back, the whole enormous mass of you wobbling on your heels. Dana steadies you with one hand. "Don't get cocky."`,
+  ],
+  she_drives:[
+    `Dana drives into you and you give ground — she's 340 to your lighter frame and right now that's the whole story. Belly into belly, she walks you toward your edge. Dig in.`,
+    `She gets under you and pushes and you slide back toward the rope. She's still bigger and still knows how to use it. Your heels find the line. Stop her here.`,
+    `Dana puts her weight into you and for a moment it's even — gut to gut, neither giving — then she finds an inch and takes it. You're near your edge. This is the fight now.`,
+    `She drives with everything she has and you give a step out of respect for the effort. But it's only a step. She's spending more than she's gaining now and you can both feel it.`,
+    `Dana throws everything into you — all 520 pounds, all the years — and you give half a foot and plant. She's magnificent and she's losing and she knows both. "Come on," she breathes, to herself.`,
+  ],
+  clash:[
+    `You meet in the middle, belly to belly, and nothing moves. Two warm enormous bodies pressed together, both pushing, the contact going nowhere. She breathes. You breathe. Stalemate — for now.`,
+    `Gut against gut, dead even. Neither of you gives an inch. The crowd holds its breath. You can feel her heartbeat through the contact, or maybe that's yours.`,
+    `Locked together, mass against mass, the push perfectly balanced. Dana's face is inches from yours. "Even," she grunts. "For now." You both reset.`,
+    `You collide and hold, belly crushed to belly, neither moving — but you're spending less than she is to hold it. Even on the floor and tilting everywhere else.`,
+    `Two of the largest women the sport has ever seen, pressed together at the center, dead even for one long held moment — then you both break. Even on paper. Not even underneath.`,
+  ],
+  brace:[
+    `You plant and root and gather yourself — feet wide, weight low, belly forward. Whatever she had coming dies against you. You breathe. Better. Now choose your moment.`,
+    `You set your stance and brace and her push goes nowhere. The pause does you good — balance back, feet settled. Dana waits. So do you.`,
+    `You root down into the floor, all your weight settling into a wide planted base. She can't move what won't move. You gather yourself for what's next.`,
+    `You plant and let her spend herself against you. Her push lands and dies. You feel solid, settled, enormous and immovable, balance flooding back.`,
+    `You drop your base and become a mountain — 630 pounds rooted to the floor, belly forward, immovable. Dana hits you and stops. The crowd loves it. You gather and wait.`,
+  ],
+  you_dodge:[
+    `She charges and you aren't there — you slip aside and her own weight carries her stumbling toward her edge. Dana catches herself, furious. "Cute," she snaps. It worked, though.`,
+    `Dana commits to the charge and you step and she sails past, all that weight going exactly where she pointed it — away from you. She scrambles. You've got position now.`,
+    `She loads up and fires and you simply move, and 410 pounds of Dana goes lurching past your hip toward the rope. The crowd gasps. She saves it, barely. Smart beats big sometimes.`,
+    `Dana charges and you sidestep and her momentum nearly carries her out on its own. She fights her own weight to stay in. You didn't even have to touch her. "Okay, that was good," she admits.`,
+    `She charges — pride more than strategy — and you step, and Dana goes thundering past into empty air. She pulls up at the very edge. You could have ended it. You both know it. "Showing off," she pants.`,
+  ],
+  dodge_miss:[
+    `You step but she didn't charge — she was waiting — and you circle to nowhere, giving up ground for nothing. Reset. Don't guess wrong twice.`,
+    `You slip aside but there was nothing to slip from. Dana just watches you waste the movement. "I'm not falling for that every time," she says. Fair.`,
+    `Your sidestep finds only air she didn't commit to. You give a little ground for the trouble. She presses — just enough to remind you it cost something.`,
+    `You step expecting a charge that doesn't come. Dana's too smart for that now. You lose a beat and a little ground. She doesn't make you pay much.`,
+    `You move and she didn't bite — she's been doing this too long. The sidestep wastes itself. You give half a step back and reset. Even legends guess wrong.`,
+  ],
+  stumble:[
+    `Your feet get away from you — too much weight, too little base — and you lurch, and Dana takes the free ground and drives you toward your edge. Plant. Brace. Get it back.`,
+    `You overextend and your own mass betrays you, falling forward with nowhere to put it. Dana pounces. You give ground. Steady up.`,
+    `Your balance goes and your enormous body follows it, lurching, and Dana is right there to press the advantage. You stagger toward the rope. Brace next or this bout is hers.`,
+    `Too much, too fast — your weight runs ahead of your feet and you stumble, and Dana, ever the veteran, makes you pay with a hard shove. Reset your base.`,
+    `Even at your size, balance is balance — yours goes, and 630 pounds is a lot to recover. You lurch, Dana drives, you give ground. Brace. Breathe. Get your feet back.`,
+  ],
+};
+
+// Between-bout corner feeding — real lbs, restores balance, raises weight advantage
+const SUMO_CORNER_FEED = [
+  { lbs:6,  text:`Between bouts your corner has the chanko ready — a deep bowl of it, dense and warm — plus rice and something sweet. You eat all of it fast, the way you've learned to, and feel your belly fill and settle lower. You go back out heavier than you came in. Heavier wins.` },
+  { lbs:9,  text:`Your corner feeds you in the break: chanko, rice, a full second bowl. You eat it down to nothing while Dana watches from across the ring, not eating. Your belly settles warm and full and a little lower than before. Every pound you add now is a pound she has to move later.` },
+  { lbs:12, text:`The corner break, and the food is waiting — you've made this a system. Bowl after bowl of dense warm chanko, eaten with focus, your belly filling and rounding and pressing forward further than it did a bout ago. You stand up heavier. Dana sees it. She knows what it means.` },
+  { lbs:15, text:`Your corner has a feast staged for the interval and you work through it — chanko, rice, the dense fuel that becomes mass that becomes force. Your belly fills enormous and warm and you feel the added weight change how you stand. You go back out bigger than the woman who won the last bout. On purpose.` },
+  { lbs:18, text:`The corner ritual, refined over two years: between bouts you eat, and you eat seriously — bowls of chanko, the works, your belly filling past full and settling into your stance like ballast. You return to center heavier than any human being should be, exactly as planned. Dana watches you grow between bouts. There's nothing she can do about it.` },
+];
+
+const SUMO_BOUT_WON = [
+  `You drive her foot past the straw and the bout is yours. Dana steps back in, re-ties her mawashi, breathing hard. "One," she allows. "You've got one." The crowd is louder than it was. You're not the novelty anymore.`,
+  `You walk her out and the bout is yours. Dana plants her hands on her knees a moment, then straightens. "Where'd you learn to push like that," she says. It isn't really a question. You both know: you got bigger.`,
+  `You press her out and take the bout. The crowd chants something — your name, actually, for the first time at this level. Dana hears it. "Yeah," she says, to herself. "Yeah, I hear them." She sets up anyway.`,
+  `Belly first, you drive Dana out of the ring — decisive, the contact echoing off the back wall. She steps back in. "You're a problem," she says, no bitterness in it. "You're a real problem now." The crowd is enormous.`,
+  `You push 520 pounds of Dana Mercer out of the ring like the tide going out and the bout is yours. The arena erupts. Dana steps to center, hands on her belly, almost smiling. "That's the one I came to feel," she says. "Do it again and I'll believe it."`,
+];
+
+const SUMO_BOUT_LOST = [
+  `She drives you out — Dana's still the bigger woman today and she spends it well. The bout is hers. "That's how it's done," she says, not unkindly. Your turn to answer. Fuel up. Get bigger. Get even.`,
+  `Dana walks you past your line and takes the bout. She's good and still heavier and right now that's enough. "Close," she admits, re-tying her wrap. Closer than last time. Eat in your corner. Come back heavier.`,
+  `She catches you off balance and drives you out. The bout is hers, and it stings because you know you can take her now. Reset. Fuel. The weight is on your side — use it.`,
+  `Dana takes the bout — pride and technique and everything she's got. She earns it. But she spent a lot, and you've got more in the tank and more in the corner. Go eat. Come back bigger than her.`,
+  `Dana wins the bout the way a champion wins — total commitment, nothing held back. She's magnificent. She's also pouring everything out to stay with you, and you've barely begun to spend. Corner. Fuel. Bury her in the next one.`,
+];
+
+// Match aftermath scene — (s, yourGain, won, oppLbs) => string
+const SUMO_MATCH_AFTERMATH = [
+  (s,g,won,opp)=> won
+    ? `The match is yours. Your first real scalp on the circuit, and it came belly-first against a veteran who outweighed you walking in. Dana finds you at the edge of the dohyo, breathing hard, and puts a heavy hand on your shoulder. "You're going to be a problem," she says. "Six years I've done this, and you're going to be a problem." She means it as the highest thing she can say.`
+    : `Dana takes the match. She was bigger today and she fought like the veteran she is and she earned it. "You pushed me harder than anyone has in a year," she says, and it's true. You can already feel the math: more weight, more force, next time. The gap is closing and you both know which way it closes.`,
+  (s,g,won,opp)=> won
+    ? `Match to you. The circuit knows your name now and this was no upset — you walked Dana Mercer out twice, and the second time the crowd was chanting before her foot crossed the line. "Two seasons ago you couldn't have moved me," she says, hands on her knees. "Now look." She nods at your belly, full and forward from the corner. "Keep eating. I mean it. Keep getting bigger."`
+    : `Dana edges it — much closer than last time, and she knows it cost her everything. "I'm running out of room," she admits, re-tying her wrap. "You keep getting bigger and I'm running out of room to win in." Your belly is warm and full from the corner. She's right. A few more pounds. The next one is yours.`,
+  (s,g,won,opp)=> won
+    ? `Match to you, and this time it wasn't close. You're heavier than Dana now — the first time that's ever been true — and the bouts showed exactly what it means: belly over belly, your mass through hers, her veteran craft not quite enough against simple overwhelming size. "You crossed over," she says, almost wondering. "You're the bigger one now. How's it feel?" The crowd chants your name as you leave.`
+    : `Dana steals it — catches you off balance twice and makes the technique count, because she had to. You're bigger than her now and you both know that's the only reason she could still win, and only barely. "I robbed you," she says, not pretending otherwise. "Next time you'll just sit on me and there's nothing I can do." She's right.`,
+  (s,g,won,opp)=> won
+    ? `Match to you, decisive. You outweigh Dana Mercer by a clear margin now and on the dohyo that margin is the whole story — you drove her out belly-first, twice, the press section on its feet. She comes to you after, generous as ever. "I used to be the wall," she says. "Now I'm the thing they measure you against. That's a good way to go out." You carry your enormous warm belly off the dohyo like the asset it is.`
+    : `Dana fights the perfect match — every ounce of two decades poured out — and steals it on pure craft, because size alone says it should've been yours. "That's the last time," she says, honest and tired. "You're too big now. I can win the chess but I can't win the weight." She's right. Next time you let it do the talking.`,
+  (s,g,won,opp)=> won
+    ? `Match to you. National champion. You buried Dana Mercer under all of you and the arena came apart at the second bout. She finds you at the edge of the dohyo, breathing hard, smiling. "I came here to feel it," she says. "To feel what it's like when someone's just... bigger than the sport. I felt it. Thank you." You stand in the noise, the largest competitor the circuit has ever crowned, and you think: more. There's always more.`
+    : `Dana, somehow, steals it — the match of her life, every trick she's ever learned, spent completely against a woman who outweighs her by a hundred pounds. The crowd gives her a standing ovation and she earns it. "One last good one," she says, wrung out, grinning. "But you're the future and we both know it. Go get bigger. Go be the thing they can't beat." You will. You absolutely will.`,
+];
+
+// ══════════════════════════════════════════════════════════════════
 
 const EVOLVED_ACTIVITY_META = {
-  sumo:            { label:"Watch Her Compete",        apCost:1, gainRange:[4,8],  relBonus:10 },
+  sumo:            { label:"Enter a Tournament",       apCost:1, gainRange:[4,8],  relBonus:10 },
   eating_competitor:{ label:"Attend a Competition",    apCost:1, gainRange:[3,7],  relBonus:9  },
   feedee_creator:  { label:"Review Her Latest Post",   apCost:1, gainRange:[3,6],  relBonus:12 },
   body_positive_creator:{ label:"Watch Her Latest Video", apCost:1, gainRange:[2,5], relBonus:11 },
@@ -4552,205 +4687,164 @@ const EVOLVED_ACTIVITY_META = {
 // Structure per entry: { title, phases:[{text(h)=>str, choices:[{id,label,result,lbs?,rel?,flag?,feedOther?}]}], endings:[{condition,text,gainBonus,relBonus}] }
 const EVOLVED_EVENTS = {
   sumo:[
-    // stage 5 — ~258 lbs
+    // stage 5 — ~258 lbs — Regional Qualifier
     {
       title:"Regional Qualifier",
       phases:[
         {
-          text:(h,s)=>`She's at the weigh-in table: ${Math.round(s.lbs)} pounds, recorded by the official. Her opponent is 232. She stands in her mawashi with her belly round and warm below the wrap, her thighs pressing together, looking calm in the way people look calm when they've stopped being nervous and started being certain. You're backstage. She has fifteen minutes.`,
+          text:(h,s)=>`The warm-up room behind the dohyo smells like liniment and chanko. You are the only one here who started as a cheerleader, and most of the other wrestlers have looked at you at least once with open curiosity. Dana "The Wall" Mercer hasn't. She's 340 pounds, six years on the circuit, and she's tying her mawashi like you aren't worth a second glance.
+
+You are ${Math.round(s.lbs)} pounds and you intend to make her look. Before the match there's fuel, and there's footwork.`,
           choices:[
-            {id:"feed_pregame",label:"Slip her food before she enters",result:`You pass a bag through the curtain — dense rice balls, two sweet potatoes, a protein bar. She eats without looking up, methodical, all of it. Her belly is noticeably fuller when she ties the mawashi back.`,lbs:5,rel:5,flag:"fed_pregame"},
-            {id:"encourage_pregame",label:"Tell her she's the biggest person in that ring",result:`You say it plainly: "You're the biggest person in that ring. Make sure they feel that." She looks at you once, then at the curtain, and nods once.`,rel:8},
+            {id:"load_hard",label:"Load up on chanko — weight is force",result:`You go to the chanko and eat — bowl after bowl, dense and warm, your belly filling and settling lower with every one. Weight is force in this sport and you are here to have more force. You feel yourself get heavier, rounder, more dangerous. Dana glances over once. Good.`,lbs:10,rel:4,flag:"loaded"},
+            {id:"warm_up",label:"Drill the footwork — plant, drive, low base",result:`You drill instead — the plant, the drive, the low base — moving ${Math.round(s.lbs)} pounds through the forms until they're automatic, your belly swinging warm and heavy with each rep. You eat lighter, stay sharp, leave room. Technique today.`,lbs:5,rel:6,flag:"paced"},
           ]
         },
         {
-          text:(h,s)=>h.includes("fed_pregame")
-            ?`First tachi-ai. She hits the opponent and the sound carries — two women colliding, ${Math.round(s.lbs)} pounds of warm belly leading, the food sitting heavy and right inside her. Her opponent staggers back. She presses forward. Her belly is a weapon and she's learning to use it.`
-            :`First tachi-ai. She hits the opponent with ${Math.round(s.lbs)} pounds behind it, her belly compressing against the other woman's middle. The opponent holds. She works for it. It's a good match.`,
+          text:(h,s)=>`They call the weigh-in. You step onto the official scale and it settles at ${Math.round(s.lbs)} pounds and the official records it without expression. Dana's number is already up: 340. She's bigger than you today and the board says so.
+
+She finally looks at you — a flick of the eyes, measuring. "Cheerleader," she says. Not a question. Not quite an insult either.`,
           choices:[
-            {id:"cheer_loud",label:"Cheer from the stands — make sure she hears you",result:`She hears you. Her stance shifts. She digs in.`,rel:6},
-            {id:"feed_corner",label:"Get more food to her corner between rounds",result:`Her corner feeds her between bouts — you arranged it. She eats with focus. Her belly is warm and full and she settles into her size like a foundation.`,lbs:8,rel:8,flag:"fed_corner",requires:"fed_pregame"},
-            {id:"study_opponent",label:"Study the opponent, signal her from ringside",result:`You catch her eye and signal twice. She adjusts her grip and her stance. The opponent doesn't know what changed.`,rel:4},
-          ]
-        },
-        {
-          text:(h,s)=>{
-            if(h.includes("fed_pregame")&&h.includes("fed_corner")) return `Final bout. She is heavier and slower and completely in control. The food is in her — warm and real, ${Math.round(s.lbs)} pounds plus everything she's eaten today — and the opponent is running out of ring. She doesn't hurry. She waits. She uses her belly to shove the woman toward the boundary and the boundary comes up fast.`;
-            if(h.includes("fed_pregame")) return `Final bout. She's been fed and she knows it. Her belly is warm and full and forward and she walks the opponent toward the rope with the patience of someone who is simply larger.`;
-            return `Final bout. She wins, clean. The fight was closer than it needed to be but she was the bigger woman throughout.`;
-          },
-          choices:[
-            {id:"meet_at_ramp",label:"Meet her at the exit ramp",result:`You're there when she comes through the curtain. She looks at you and says: "I'm hungry." You both understand this is a different kind of statement than it would have been three months ago.`,rel:10,flag:"celebrated"},
-            {id:"watch_victory",label:"Watch from the stands, let her have her moment",result:`She takes her moment in the ring. You watch. She bows to the crowd and her belly rounds forward in the bow and she looks like what she is.`,rel:4},
+            {id:"own_it",label:'Hold her gaze. "For now."',result:`You hold her look and let your number stand on the board beside hers. "For now," you say. Her eyebrow moves a fraction. You step off.`,rel:6,flag:"confident"},
+            {id:"stay_focused",label:"Say nothing. Get your head right.",result:`You step off without a word and walk back to your corner and put your whole mind on the dohyo. The number is the number. The match is where it gets decided.`,rel:4,flag:"paced"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_corner")&&h.includes("celebrated"),text:`She wins decisively. In the locker room afterward she eats everything her corner prepared plus everything you brought and sits with her belly warm and round on her lap and says: "I want to weigh 300 before the next one. I want to be the heaviest person on the circuit by spring." She means all of it. She is very satisfied with what 258 pounds can do and she intends to find out what 300 can do.`,gainBonus:14,relBonus:12},
-        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_corner"),text:`She wins with authority. Afterward she eats her corner's preparations in full and tells you: "More of that before every match. The food is right." She pats her belly — 258 pounds plus today's intake — with the specific satisfaction of an athlete in correct form.`,gainBonus:9,relBonus:7},
-        {condition:h=>h.includes("fed_pregame"),text:`She wins. The food helped and she knows it. "More of that before the next match," she says, and goes to find dinner.`,gainBonus:5,relBonus:4},
-        {condition:()=>true,text:`She wins. A solid match. She eats alone afterward and you watch from across the room.`,gainBonus:0,relBonus:2},
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`You're fueled and you've looked the Wall in the eye, and the official is calling you both to the dohyo. Your belly is warm and heavy and forward under the mawashi.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+        {condition:()=>true,text:`The warm-up room empties toward the dohyo. Dana goes first; you follow. Your belly is full and your stance is ready.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
       ]
     },
-    // stage 6 — ~320 lbs
+    // stage 6 — ~320 lbs — Circuit Tournament
     {
       title:"Circuit Tournament",
       phases:[
         {
-          text:(h,s)=>`She's ${Math.round(s.lbs)} pounds on the official scale and she's been on the circuit for one season and the other competitors know her name now. Today's bracket has four women, the heaviest at 290. She rolls her shoulders in the warm-up room and her belly rolls with her — soft and round and enormous below the mawashi wrap, warm against her thighs. You have access to the backstage area.`,
+          text:(h,s)=>`One full season in. The warm-up room knows your name now — a couple of the younger wrestlers nod when you come in. Dana Mercer is 370 today and she says "good luck out there" when she sees you, which from her is practically a parade.
+
+You're ${Math.round(s.lbs)} pounds and you are no longer the novelty. Fuel, and footwork.`,
           choices:[
-            {id:"feed_pregame",label:"Bring a full pre-match meal",result:`You arrive with a significant amount of food — rice, dense protein, two large portions of something sweet. She works through all of it in the warm-up room while reviewing her bracket. "Good," she says, when it's gone. Her belly presses the mawashi noticeably tighter.`,lbs:7,rel:6,flag:"fed_pregame"},
-            {id:"warm_up_coach",label:"Coach her through warm-ups",result:`You call her movements in the warm-up: plant, drive, push. She goes through the sequences with full weight behind them. 320 pounds of focused woman is an impressive thing to watch move.`,rel:9},
+            {id:"load_hard",label:"Hit the chanko hard — pounds are power",result:`You hit the chanko hard, eating with the systematic focus of someone who's learned that pounds are power. Bowl after bowl, your belly filling warm and round and low. You stand up heavier and more dangerous than you sat down. Dana watches you eat. She doesn't.`,lbs:11,rel:4,flag:"loaded"},
+            {id:"warm_up",label:"Work the forms — drive, plant, low base",result:`You work the forms — drive, plant, the low base — moving 320 pounds with growing authority, your belly swinging heavy with each rep. You eat enough to stay strong and keep your edge. Sharp today.`,lbs:6,rel:7,flag:"paced"},
           ]
         },
         {
-          text:(h,s)=>h.includes("fed_pregame")
-            ?`Semi-final. She hits her opponent — 275 pounds — and the belly-to-belly contact is significant: two large women compressing against each other, your student's belly soft and full and enormous and hers alone. The opponent isn't small. It doesn't matter. ${Math.round(s.lbs)} pounds of warm fed woman pushes her toward the rope.`
-            :`Semi-final. She hits the 275-pound opponent hard and works for the win. ${Math.round(s.lbs)} pounds driving forward, belly leading, methodical.`,
+          text:(h,s)=>`Weigh-in. The board has Dana at 370 up top. You step on: ${Math.round(s.lbs)} pounds. The gap that used to be eighty-plus pounds is ${Math.max(0,Math.round(370-s.lbs))} now, and Dana's eyes go to the board and do the math.
+
+"Closing fast," she says. She's not wrong.`,
           choices:[
-            {id:"feed_between",label:"Feed her between semi and final",result:`You get to her corner in the break. She eats fast — another good meal, another intake of weight into an already warm belly. The wait between matches passes full.`,lbs:9,rel:8,flag:"fed_between"},
-            {id:"scouting",label:"Scout the finalist while she rests",result:`You watch the second semi-final and report back. She listens. She adjusts.`,rel:7},
-          ]
-        },
-        {
-          text:(h)=>{
-            const wellFed=h.includes("fed_pregame")&&h.includes("fed_between");
-            if(wellFed) return `Final. She is the largest person in this tournament and she's been fed and she knows it and the opponent — 290 pounds, the current circuit record holder — knows it too. The tachi-ai shakes the ring. Her belly, full and warm and real, compresses against the opponent's chest. She wins in two bouts.`;
-            return `Final. 320 versus 290, her the heavier. She wins with technique and size. It's not close by the end.`;
-          },
-          choices:[
-            {id:"celebrate_full",label:"Take her to dinner after",result:`You take her to dinner. She orders twice. Her belly is full and warm and enormous when she sits back from the table. "I want to be 370 before the spring circuit," she says. "I want to walk into the room and be the undeniable one." She finishes her plate.`,lbs:8,rel:12,flag:"celebrated"},
-            {id:"watch_ceremony",label:"Watch the award ceremony",result:`She takes the placing ribbon with both hands. She bows. The crowd is loud. She looks like she belongs on a circuit that doesn't know yet how much bigger she's going to get.`,rel:5},
+            {id:"own_it",label:'"Wait till spring."',result:`"Closing," you agree, holding her look. "Wait till spring." She huffs something that might be respect and turns back to her corner.`,rel:6,flag:"confident"},
+            {id:"stay_focused",label:"Step off and lock in.",result:`You step off and get your head right. The numbers are getting closer every meet. Soon they won't matter — you'll just be bigger. Not yet. Soon.`,rel:5,flag:"paced"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_between")&&h.includes("celebrated"),text:`Tournament win. She was the biggest and the best-fed and you took her to dinner and she said: "370 by spring." You believe her completely. Her belly filled the restaurant chair and was warm and soft and present and she ate every plate.`,gainBonus:16,relBonus:13},
-        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_between"),text:`Tournament win. She was well-fed throughout and it showed. She finds you after the ceremony and says: "Good support today." This is high praise.`,gainBonus:10,relBonus:8},
-        {condition:h=>h.includes("fed_pregame")||h.includes("fed_between"),text:`Tournament win. The food helped. She notes it and plans for more of it.`,gainBonus:5,relBonus:4},
-        {condition:()=>true,text:`Tournament win. Clean bracket. She eats well on her own afterward.`,gainBonus:0,relBonus:3},
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`You're loaded and you've told the Wall what's coming. She's still heavier today. She's still favored today. But you both feel the season turning.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+        {condition:()=>true,text:`The bracket is set and your bout is first. You walk to the dohyo with your belly full and your stance low.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
       ]
     },
-    // stage 7 — ~419 lbs
+    // stage 7 — ~419 lbs — State Championship
     {
       title:"State Championship",
       phases:[
         {
-          text:(h,s)=>`${Math.round(s.lbs)} pounds on the state scale, certified, and she's one of three competitors above 380. The crowd is large — this is a real event with spectators who know the sport and came specifically to see the heavy women compete. She warms up in the hall and her footsteps are present in the floor and her belly, enormous and warm, swings slightly as she plants and drives through her sequences. You're backstage.`,
+          text:(h,s)=>`Conference-level meet, and for the first time the board is going to say you outweigh Dana Mercer. She knows it. She finds you in the warm-up room — 410 pounds, the woman who's been the wall everyone measured against — and says, plainly: "You're bigger than me now. First time. Go easy on an old veteran."
+
+She's joking. Mostly. You're ${Math.round(s.lbs)} pounds. Fuel, and footwork.`,
           choices:[
-            {id:"full_prep_meal",label:"Prepare a full staging meal — everything",result:`You've coordinated with her corner: a full pre-match spread, dense and warm, everything timed right. She eats in the preparation room with the focus of an athlete fueling for performance. Her belly, already massive, fills tighter against the mawashi. "Right," she says.`,lbs:10,rel:7,flag:"fed_pregame"},
-            {id:"media_handling",label:"Handle the media so she can focus",result:`You intercept three reporters and two photographers so she can prepare undisturbed. She notices the absence of interruption and says: "Thank you." She means it.`,rel:10},
+            {id:"load_hard",label:"Eat like you mean it — widen the gap",result:`You eat like you mean it, widening the gap with every bowl — your belly filling enormous and warm and forward, each pound another pound Dana has to try to move. You stand up heavier than the Wall for the first time in your life. It feels like crossing a border.`,lbs:12,rel:4,flag:"loaded"},
+            {id:"warm_up",label:"Drill — let the technique catch up to the body",result:`You drill instead, moving your new size through the forms — and there's a lot of new size, your belly vast and heavy and swinging as you drive through the base work. You eat enough and stay sharp. Today you let the technique catch up to the body.`,lbs:7,rel:9,flag:"paced"},
           ]
         },
         {
-          text:(h,s)=>h.includes("fed_pregame")
-            ?`Quarter-final, then semi. Both opponents are above 350 pounds and both times the collision is dramatic: two enormous women meeting at the tachi-ai, belly fat compressing between them, her ${Math.round(s.lbs)} pounds of warm fed weight driving forward. She wins both. Her belly is a wall.`
-            :`Quarter-final, then semi. Both opponents over 350. She wins both on technique and on being the biggest woman in each bout. ${Math.round(s.lbs)} pounds is a lot to move.`,
+          text:(h,s)=>`Weigh-in, public now, a real crowd for it. Dana steps on: 410. You step on: ${Math.round(s.lbs)}. Your number goes up above hers and the room reacts — the first time the Wall isn't the top number in years.
+
+Dana looks at the board, then at you, and nods slowly. "There it is," she says.`,
           choices:[
-            {id:"corner_feeding",label:"Feed her in every interval",result:`You're at her corner in every break. She eats between bouts — the warm dense food she needs, timed correctly. By the final her belly is full and her stance is planted and she is unmovable.`,lbs:12,rel:9,flag:"fed_intervals"},
-            {id:"tactical_coaching",label:"Coach tactically through the bracket",result:`You read the opponents and tell her what you see. She incorporates the information efficiently. Her wins are clean.`,rel:8},
-          ]
-        },
-        {
-          text:(h,s)=>{
-            const fed=h.includes("fed_pregame")&&h.includes("fed_intervals");
-            if(fed) return `State final. The opponent is 410 pounds and this is the best sumo match you've seen. Two enormous women, belly-to-belly, 419 and 410 pounds pressing together, the sound enormous in the hall. Your student is warm and full and heavier-feeling than her certified weight. She drives. The opponent drives. She wins — her belly pressing the opponent out of the ring by inches, warm and vast and real.`;
-            return `State final. 419 versus 410. She wins on will and size. The crowd is very loud.`;
-          },
-          choices:[
-            {id:"post_match_feast",label:"Organize a post-match feast",result:`You've arranged dinner for after. She arrives and sits down and looks at the table with the expression of someone who intends to eat all of it. She does. Her belly, enormous and warm and full, fills her lap when she sits back. "I want to be 480 before nationals," she says.`,lbs:10,rel:13,flag:"celebrated"},
-            {id:"trophy_moment",label:"Give her the moment — step back",result:`She takes the state title and lifts it with both hands and her belly rounds forward in the lift and the crowd sees 419 pounds of state champion and reacts accordingly.`,rel:6},
+            {id:"own_it",label:'Hold her gaze. "There it is."',result:`You hold her gaze. "There it is," you echo. She almost smiles. "Make it count out there," she says, and means it.`,rel:8,flag:"confident"},
+            {id:"stay_focused",label:"Step off and get to the center.",result:`You step off and lock in. Being the bigger number is new. Proving it on the dohyo is the part that matters. Get to the center.`,rel:5,flag:"paced"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_intervals")&&h.includes("celebrated"),text:`State champion. She ate well throughout the day and she ate enormously after and she said "480 before nationals" with the certainty of a woman describing a plan she has already executed. Her belly was warm and full and she finished the last plate and didn't leave a single thing on the table.`,gainBonus:18,relBonus:14},
-        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_intervals"),text:`State champion. Fed throughout. She says: "The food is the training. Get me the same setup for nationals."`,gainBonus:11,relBonus:9},
-        {condition:h=>h.includes("fed_pregame")||h.includes("fed_intervals"),text:`State champion. The food helped. She's already thinking about nationals.`,gainBonus:6,relBonus:5},
-        {condition:()=>true,text:`State champion. Clean bracket, decisive win. She's enormous and she's only going to get larger.`,gainBonus:0,relBonus:3},
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`You're the bigger woman now and you've owned it at the scale. Dana's waiting at the center, respectful, ready. Time to make the number mean something.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+        {condition:()=>true,text:`The crowd is loud and your name is on a few of their lips. You walk to the dohyo enormous and warm and ready.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
       ]
     },
-    // stage 8 — ~519 lbs
+    // stage 8 — ~519 lbs — National Qualifier
     {
       title:"National Qualifier",
       phases:[
         {
-          text:(h,s)=>`She weighs ${Math.round(s.lbs)} pounds for the national qualifier certification and the official writes it down without expression, which is its own kind of acknowledgement. She is the heaviest woman competing today by 80 pounds. Her belly hangs in a warm, heavy apron below the mawashi — soft and enormous, real weight, real presence — and when she walks the mat the floor communicates her. The other competitors are watching.`,
+          text:(h,s)=>`National qualifier. Press credentials at the door. You're ${Math.round(s.lbs)} pounds and you are the heaviest competitor here by a wide margin.
+
+Dana Mercer — 460 now, the underdog in your rivalry for the first time — comes over before warm-ups. "I can't out-weigh you anymore," she says. "So I'm going to have to out-think you. Fair warning." She means it almost as a gift.`,
           choices:[
-            {id:"pre_event_meal",label:"Full pre-event meal — three courses",result:`You've arranged it properly: three courses, timed to digest correctly before competition. She eats in the private preparation room with focused attention, her enormous belly filling and settling with each course. When she stands to warm up she is warm and heavy and ready.`,lbs:12,rel:8,flag:"fed_pregame"},
-            {id:"presence_strategy",label:"Tell her to let them see her first",result:`You say: walk the mat slowly before warm-ups. Let them calculate. Let them arrive at the number themselves. She does. The watching competitors do their math and several of them look away first.`,rel:11,flag:"psych_advantage"},
+            {id:"load_hard",label:"Eat enormous — out of her reach",result:`You eat enormous, a full staging meal of chanko and rice and more, your belly filling vast and warm and low — every pound a pound further out of Dana's reach. You stand up heavier than anyone in the building by a margin that ends arguments.`,lbs:14,rel:4,flag:"loaded"},
+            {id:"warm_up",label:"Move through the forms — craft to match the mass",result:`You move through the forms — and there is so much of you to move now, your belly an enormous warm presence swinging through the base work, the floor reporting every drive. You eat smart and stay sharp and let the craft match the mass.`,lbs:8,rel:9,flag:"paced"},
           ]
         },
         {
-          text:(h,s)=>{
-            const both=h.includes("fed_pregame")&&h.includes("psych_advantage");
-            if(both) return `First two bouts: the opponents came in with calculations and left with evidence. ${Math.round(s.lbs)} pounds of fed, warm woman pressing belly-first through two competitors. The belly-to-belly contact is significant: she's so much larger than both that her apron alone displaces them.`;
-            if(h.includes("fed_pregame")) return `First two bouts. She's been fed and she uses it. ${Math.round(s.lbs)} pounds driving through opponents who are strong women and are simply smaller.`;
-            return `First two bouts. She dominates. ${Math.round(s.lbs)} pounds, technique, will.`;
-          },
+          text:(h,s)=>`Public weigh-in, big crowd for it. Dana: 460. You step on and the scale reads ${Math.round(s.lbs)} and the official reads it into the microphone and a sound goes through the room — that specific sound a crowd makes at a number it didn't quite believe.
+
+Dana, already off the scale, watches your belly settle on the platform. "Out-think you," she repeats, quietly, to herself. "Right."`,
           choices:[
-            {id:"interval_feeding",label:"Feed her in every break — treat it like a training day",result:`Every break between bouts you're there with food. She eats with the systematic focus she brings to training: intake, fuel, continue. Her belly is warm and full throughout the bracket.`,lbs:14,rel:10,flag:"fed_intervals"},
-            {id:"crowd_management",label:"Work the crowd — get them cheering for her",result:`You work the section near her corner and by the semi-final the crowd knows her name and is using it. She hears it. Her stance broadens.`,rel:9},
-          ]
-        },
-        {
-          text:(h)=>{
-            const fed=h.includes("fed_pregame")&&h.includes("fed_intervals");
-            if(fed) return `National qualifier final. The opponent is 490 pounds, the second-heaviest person in the draw. The tachi-ai is the loudest sound in the building: 519 and 490 meeting, two enormous warm bodies pressing together, the apron fat of both women compressing between them. Your student drives. She has been eating all day. She is heavier than her certified weight by now and she knows it and she uses it.`;
-            return `Qualifier final. 519 versus 490. Enormous women, enormous match. She wins.`;
-          },
-          choices:[
-            {id:"nationals_dinner",label:"Book a restaurant for the qualifying celebration",result:`You've booked a table. She arrives and sits and her belly fills her lap and she looks at the menu with the calm focus of someone planning a serious meal. She orders extensively. She eats all of it. She says: "I want to be 580 for nationals. I want to be the undeniable largest thing in that building." She is already planning the weight.`,lbs:12,rel:14,flag:"celebrated"},
-            {id:"press_statement",label:"Help her with the post-qualifying press",result:`Three journalists want statements. She gives them plainly: her weight, her training, what she plans to weigh at nationals. She says the number clearly. The journalists write it down.`,rel:7},
+            {id:"own_it",label:"Let the number land. Let them look.",result:`You let the number land and let them look — all ${Math.round(s.lbs)} pounds of you, warm and forward and enormous on the platform. You step off slow. Dana exhales.`,rel:9,flag:"confident"},
+            {id:"acknowledge_crowd",label:"Find the crowd and let them see you.",result:`You find the crowd and let them see you fully. Someone starts a chant. Dana hears it become your name. "Out-think that," she mutters, and there's affection in it.`,rel:8,flag:"confident"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_intervals")&&h.includes("celebrated"),text:`National qualifier champion. She ate all day and she said "580 for nationals" and she meant it and you believe her because 519 was already the most impressive thing you'd seen and she has every intention of adding to it.`,gainBonus:20,relBonus:15},
-        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_intervals"),text:`National qualifier champion. Fed throughout. She's planning her intake approach for nationals right now.`,gainBonus:12,relBonus:10},
-        {condition:h=>h.includes("fed_pregame")||h.includes("fed_intervals"),text:`National qualifier champion. The food helped. She knows. She'll plan better for next time.`,gainBonus:7,relBonus:5},
-        {condition:()=>true,text:`National qualifier champion. She qualifies for nationals. She will be the largest person there.`,gainBonus:0,relBonus:4},
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`You're the largest thing in the building by a margin with its own gravity, and the crowd knows your name. Dana's at the center, ready to try the impossible.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+        {condition:()=>true,text:`The qualifier crowd settles into the seats. You walk to the dohyo carrying ${Math.round(s.lbs)} pounds like the asset it is.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
       ]
     },
-    // stage 9 — ~630 lbs
+    // stage 9 — ~630 lbs — National Circuit Finals
     {
       title:"National Circuit Finals",
       phases:[
         {
-          text:(h,s)=>`${Math.round(s.lbs)} pounds on the national circuit scale and the official reads it into the microphone and the room goes quiet the way rooms go quiet when a number is that large and unambiguous. She stands in her mawashi and her belly hangs in a deep warm apron below the wrap — enormous, soft, real — and her thighs are vast and pressing and her arms are thick and her face is calm. The other competitors watch her from across the preparation hall. Three of them weigh between 380 and 450 pounds. She is a different category.`,
+          text:(h,s)=>`The national final. The arena. You're ${Math.round(s.lbs)} pounds and the credential says COMPETITOR and the door staff widened the door without being asked.
+
+Dana Mercer finds you in the warm-up room one last time. 520 pounds, second-ranked in the country, the wall you climbed over two years ago. "I'm not here to beat you," she says, honest. "Nobody beats you now. I'm here to feel what it's like to lose to the biggest there's ever been. Give me a real one."`,
           choices:[
-            {id:"ritual_meal",label:"Pre-match ritual meal — the full protocol",result:`You've been doing this together long enough that it's a ritual now: the specific foods, the timing, the quiet. She eats in the preparation room and you don't talk. Her belly fills and settles under the mawashi and when she stands she is warm and vast and fed and ready.`,lbs:15,rel:9,flag:"fed_pregame"},
-            {id:"presence_walk",label:"Walk the hall with her — let the field see her",result:`She walks the preparation hall at full stride and you walk beside her and the other competitors see 630 pounds moving through the space and the calculations they make don't arrive anywhere reassuring for any of them.`,rel:12,flag:"psych_advantage"},
+            {id:"load_hard",label:"Eat seriously — ballast for your stance",result:`You eat the way two years of this has taught you — seriously, enormously, bowl after bowl of chanko until your belly is past full and settled into your stance like ballast. You stand up the heaviest human being in the building by a margin that has its own gravity. Dana watches you grow. She wanted a real one. She's going to get it.`,lbs:16,rel:5,flag:"loaded"},
+            {id:"warm_up",label:"Move through the forms one last time",result:`You move through the forms one last time before the biggest match of your life — 630 pounds flowing through the base work, your belly vast and warm and swinging, the dohyo itself seeming to lean toward you. You eat enough and stay sharp. Tonight the body and the craft are the same thing.`,lbs:9,rel:10,flag:"paced"},
           ]
         },
         {
-          text:(h,s)=>{
-            const both=h.includes("fed_pregame")&&h.includes("psych_advantage");
-            if(both) return `Opening bracket. She goes through three opponents and the matches are, technically, competitive. In practice: a 630-pound fed woman who has been on this circuit for two years is operating at a different level. The belly-to-belly contacts are overwhelming — her apron compressing against opponents' chests, her weight irreversible once moving. She wins each bout cleanly.`;
-            return `Opening bracket. Three opponents. She wins all three. ${Math.round(s.lbs)} pounds is an argument that ends discussions.`;
-          },
+          text:(h,s)=>`The national-final weigh-in is its own broadcast segment. Dana steps on: 520. The arena cheers a legend. Then you step on, and the official pauses one full second before he reads it into the national feed — ${Math.round(s.lbs)} pounds — and the arena does not cheer right away.
+
+There's a breath first. The breath a room takes before something it's never seen. Then it comes apart. Dana is already clapping.`,
           choices:[
-            {id:"full_day_feeding",label:"Feed her between every bout all day",result:`All day, every interval: food. She eats with the focused efficiency she has developed over two years of this. By the semi-final she is heavier than her certified weight by a meaningful amount and she is aware of this and uses it.`,lbs:18,rel:11,flag:"fed_all_day"},
-            {id:"tactical_breakdown",label:"Break down every opponent she'll face",result:`You've scouted the bracket and you give her a complete tactical breakdown at lunch. She listens. She asks two questions. She wins accordingly.`,rel:10},
-          ]
-        },
-        {
-          text:(h,s)=>{
-            const fed=h.includes("fed_pregame")&&h.includes("fed_all_day");
-            if(fed) return `National final. The opponent is the defending champion at 520 pounds — the best technical competitor on the circuit, fast, strong, a perfect match for anyone except what your student has become. They meet at the tachi-ai and the sound is definitive: 630-plus pounds of warm, full, enormous woman hitting 520 with everything behind it. The belly contact is complete — apron on chest, fat on fat, her weight making the outcome clear from the first collision. She wins in two bouts.`;
-            return `National final. 630 versus 520. The defending champion is the best technical competitor in the draw. Your student is the largest. She wins.`;
-          },
-          choices:[
-            {id:"legend_dinner",label:"Dinner at the best restaurant in the city",result:`You take her somewhere worth taking her. She sits and her belly fills her lap and rounds against the table and she opens the menu with the expression of someone who has earned the right to order everything on it. She orders most of it. She eats all of it. "800 pounds," she says, at the end, looking at you directly. "I want to be 800 pounds on the circuit." She says it like stating her next goal, which it is.`,lbs:14,rel:16,flag:"celebrated"},
-            {id:"press_circuit",label:"Run the post-match press circuit with her",result:`National champion press. She says her weight clearly and calmly. The journalists write the number. The circuit photographers position her and she fills their frames with 630 pounds of national champion and she is completely at ease with the space she takes.`,rel:8},
+            {id:"own_it",label:"Turn into the noise. Let them see all of you.",result:`You turn into the noise and let the whole arena see all of you — ${Math.round(s.lbs)} pounds of national finalist, belly forward and warm and enormous in the lights. Two years. Worth every one.`,rel:10,flag:"confident"},
+            {id:"stay_focused",label:"Step off. One hand on your belly. Ready.",result:`You step off and walk to the dohyo and put one hand flat on your belly for a second — the weight, the warmth, the proof of it — then you let it go and you're ready. The biggest match of your life is one step away.`,rel:6,flag:"paced"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_all_day")&&h.includes("celebrated"),text:`National champion. She was fed all day, she won all day, and at dinner she said "800 pounds" with the certainty of a woman who has already done the harder thing twice. Her belly was warm and enormous and full and she ate everything on the table and was satisfied with all of it.`,gainBonus:22,relBonus:16},
-        {condition:h=>h.includes("fed_pregame")&&h.includes("fed_all_day"),text:`National champion. Fed throughout the day. The combination of her size and the day's intake made the final an inevitability. She's already planning how to be larger for the next circuit.`,gainBonus:14,relBonus:11},
-        {condition:h=>h.includes("fed_pregame")||h.includes("fed_all_day"),text:`National champion. The food helped when it was there. She makes a note of it.`,gainBonus:8,relBonus:6},
-        {condition:()=>true,text:`National champion. 630 pounds, first place, unambiguous. The circuit hasn't seen anything like her.`,gainBonus:0,relBonus:5},
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`The arena is a wall of sound and your number is on the national board and Dana is still clapping. You step to the center of the dohyo, the largest competitor the sport has ever certified.
+
+The national final is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+        {condition:()=>true,text:`National final. The center of the dohyo. The crowd is already roaring. Dana sets her feet across from you, one last time.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
       ]
     },
   ],
@@ -7951,6 +8045,8 @@ export default function ProfessorSim(){
   // evolvedEventState: {studentId,formId,stageIdx,phaseIdx,history:[],logLines:[],gainAccum,relAccum,done,endingText,gainBonus,relBonus,startsContest}
   const [eatingContestState,setEatingContestState]=useState(null);
   // eatingContestState: {studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,popupText,phaseAfterPopup,phase,pantsFactor,actions}
+  const [sumoMatchState,setSumoMatchState]=useState(null);
+  // sumoMatchState: {studentId,stageIdx,oppLbs,ringPos,yourBalance,oppBalance,yourBouts,oppBouts,gainAccum,oppMove,telegraph,exchangeLine,phase,popupText,phaseAfterPopup,interBout}
   const [intimacyEventState,setIntimacyEventState]=useState(null);
   // intimacyEventState: {studentId,sceneId,tier,phaseIdx,history:[],logLines:[],gainAccum,relAccum,done,endingText,gainBonus,relBonus}
   const [intimacySceneSelector,setIntimacySceneSelector]=useState(null);
@@ -8723,9 +8819,9 @@ export default function ProfessorSim(){
         const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
         return processStudentGain(st,totalGain,totalRel+bonusRel);
       }));
-      if(!ending.startsContest) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
+      if(!ending.startsContest&&!ending.startsMatch) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
       const endText=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
-      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,startsContest:!!ending.startsContest}));
+      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch}));
     } else {
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }
@@ -8870,6 +8966,146 @@ export default function ProfessorSim(){
     const won=yourGain>=mayaGain;
     if(s) push(`🏆 ${s.name} — Competition: +${Math.round(yourGain)} lbs · ${won?'Victory':'Loss'} vs Maya (${mayaLbs} lbs)`);
     setEatingContestState(null);
+  };
+
+  // ── SUMO MATCH MINI-GAME ──
+  const SUMO_TAG_BUCKET={you_drive:'you_drive',you_crush:'you_crush',recoil:'attack_fail',whiff:'attack_fail',she_drives:'she_drives',clash:'clash',you_brace:'brace',you_brace_counter:'brace',you_dodge:'you_dodge',dodge_partial:'dodge_miss',dodge_waste:'dodge_miss',dodge_waste_opp:'dodge_miss',stumble:'stumble'};
+
+  const resolveSumoExchange=(ym,om,wf)=>{
+    const big=34,med=21,small=13;
+    const W=v=>Math.round(v*wf);
+    let ring=0,yb=0,ob=0,tag='clash';
+    if(ym==='charge'){
+      yb-=25;
+      if(om==='brace'){ring=-16;yb-=12;ob+=4;tag='recoil';}
+      else if(om==='sidestep'){ring=-24;yb-=18;tag='whiff';}
+      else if(om==='charge'){ring=W(big)-big;yb-=8;ob-=8;tag=ring>=0?'you_drive':'she_drives';}
+      else{ring=W(big);ob-=18;tag='you_drive';}
+    }else if(ym==='thrust'){
+      yb-=10;
+      if(om==='brace'){ring=W(4);tag='clash';}
+      else if(om==='charge'){ring=W(med)-big;yb-=6;tag='she_drives';}
+      else if(om==='drop'){ring=W(med)-big;tag='she_drives';}
+      else if(om==='sidestep'){ring=-8;tag='dodge_waste_opp';}
+      else{ring=W(med)-med+W(small);ob-=8;tag=ring>=0?'you_drive':'clash';}
+    }else if(ym==='drop'){
+      yb-=15;
+      if(om==='brace'){ring=W(Math.round(big*1.15));ob-=14;tag='you_crush';}
+      else if(om==='thrust'){ring=W(big);ob-=12;tag='you_crush';}
+      else if(om==='drop'){ring=W(big)-big;tag=ring>=0?'you_crush':'she_drives';}
+      else if(om==='charge'){ring=W(med)-med+W(small);yb-=6;ob-=8;tag=ring>=0?'you_drive':'clash';}
+      else{ring=-14;tag='whiff';}
+    }else if(ym==='brace'){
+      yb+=30;
+      if(om==='charge'){ring=W(10);ob-=15;tag='you_brace_counter';}
+      else if(om==='drop'){ring=W(2);ob-=4;tag='you_brace';}
+      else if(om==='thrust'){ring=W(3);tag='you_brace';}
+      else{ring=0;tag='you_brace';}
+    }else{ // sidestep
+      yb-=10;
+      if(om==='charge'){ring=Math.round(big*1.25);ob-=20;tag='you_dodge';}
+      else if(om==='thrust'){ring=8;tag='dodge_partial';}
+      else if(om==='brace'){ring=-10;tag='dodge_waste';}
+      else if(om==='drop'){ring=-8;tag='dodge_waste';}
+      else{ring=-6;tag='dodge_waste';}
+    }
+    return {ring,yb,ob,tag};
+  };
+
+  const pickOppMove=(ringPos,oppBalance)=>{
+    let pool;
+    if(oppBalance<25) pool=['brace','brace','thrust'];
+    else if(ringPos>40) pool=['charge','charge','drop','thrust','sidestep'];
+    else if(ringPos<-40) pool=['charge','drop','thrust','thrust','brace'];
+    else pool=['charge','thrust','drop','brace','sidestep','thrust','drop'];
+    const move=pool[Math.floor(Math.random()*pool.length)];
+    const tl=SUMO_TELEGRAPH[move];
+    return {move,telegraph:tl[Math.floor(Math.random()*tl.length)]};
+  };
+
+  const startSumoMatch=(studentId,stageIdx,history)=>{
+    const s=students.find(st=>st.id===studentId); if(!s) return;
+    const oppLbs=SUMO_RIVAL_WEIGHTS[stageIdx]||340;
+    const {move,telegraph}=pickOppMove(0,100);
+    setSumoMatchState({studentId,stageIdx,oppLbs,ringPos:0,yourBalance:100,oppBalance:100,yourBouts:0,oppBouts:0,gainAccum:0,oppMove:move,telegraph,exchangeLine:`The first tachi-ai. You square up against ${SUMO_RIVAL_NAME} — ${oppLbs} pounds of veteran across the line from you. The crowd settles. Choose your opening.`,phase:'match',popupText:null,phaseAfterPopup:null});
+    setEvolvedEventState(null);
+  };
+
+  const sumoPlayMove=(moveId)=>{
+    if(!sumoMatchState) return;
+    const st=sumoMatchState;
+    const s=students.find(x=>x.id===st.studentId); if(!s) return;
+    const wf=Math.max(0.6,Math.min(2.0,s.lbs/st.oppLbs));
+    let ringPos=st.ringPos, yourBalance=st.yourBalance, oppBalance=st.oppBalance;
+    let tag,ringDelta=0,yb=0,ob=0;
+    if(yourBalance<=0&&moveId!=='brace'){
+      tag='stumble'; ringDelta=-25; yourBalance=25;
+    }else{
+      const r=resolveSumoExchange(moveId,st.oppMove,wf);
+      tag=r.tag; ringDelta=r.ring;
+      yourBalance=Math.max(0,Math.min(100,yourBalance+r.yb));
+      oppBalance=Math.max(0,Math.min(100,oppBalance+r.ob));
+    }
+    ringPos+=ringDelta;
+    let oppStumbleNote='';
+    if(oppBalance<=0){ ringPos+=25; oppBalance=30; oppStumbleNote=` Dana's footing goes — she lurches, and you take the free ground.`; }
+    const bucket=SUMO_TAG_BUCKET[tag]||'clash';
+    const line=((SUMO_EXCHANGE_LINES[bucket]||SUMO_EXCHANGE_LINES.clash)[st.stageIdx]||'')+oppStumbleNote;
+    if(ringPos>=100){
+      const yourBouts=st.yourBouts+1;
+      const matchOver=yourBouts>=2;
+      setSumoMatchState({...st,ringPos:100,yourBalance,oppBalance,yourBouts,exchangeLine:line,popupText:SUMO_BOUT_WON[st.stageIdx],phaseAfterPopup:matchOver?'aftermath':'interbout'});
+      return;
+    }
+    if(ringPos<=-100){
+      const oppBouts=st.oppBouts+1;
+      const matchOver=oppBouts>=2;
+      setSumoMatchState({...st,ringPos:-100,yourBalance,oppBalance,oppBouts,exchangeLine:line,popupText:SUMO_BOUT_LOST[st.stageIdx],phaseAfterPopup:matchOver?'aftermath':'interbout'});
+      return;
+    }
+    const {move,telegraph}=pickOppMove(ringPos,oppBalance);
+    setSumoMatchState({...st,ringPos,yourBalance,oppBalance,oppMove:move,telegraph,exchangeLine:line});
+  };
+
+  const sumoCornerFeed=()=>{
+    if(!sumoMatchState) return;
+    const st=sumoMatchState;
+    const feed=SUMO_CORNER_FEED[st.stageIdx]||SUMO_CORNER_FEED[0];
+    setStudents(prev=>prev.map(x=>x.id===st.studentId?processStudentGain(x,feed.lbs,0):x));
+    setSumoMatchState({...st,gainAccum:st.gainAccum+feed.lbs,popupText:feed.text,phaseAfterPopup:'nextbout'});
+  };
+
+  const sumoStartNextBout=()=>{
+    setSumoMatchState(prev=>{
+      if(!prev) return null;
+      const {move,telegraph}=pickOppMove(0,100);
+      const boutNum=prev.yourBouts+prev.oppBouts+1;
+      return {...prev,ringPos:0,yourBalance:100,oppBalance:100,oppMove:move,telegraph,exchangeLine:`Bout ${boutNum}. You square up at the center again. ${SUMO_RIVAL_NAME} sets her feet across from you.`,phase:'match',popupText:null,phaseAfterPopup:null};
+    });
+  };
+
+  const dismissSumoPopup=()=>{
+    setSumoMatchState(prev=>{
+      if(!prev) return null;
+      const next=prev.phaseAfterPopup;
+      if(next==='interbout') return {...prev,popupText:null,phaseAfterPopup:null,phase:'interbout'};
+      if(next==='aftermath') return {...prev,popupText:null,phaseAfterPopup:null,phase:'aftermath'};
+      if(next==='nextbout'){
+        const {move,telegraph}=pickOppMove(0,100);
+        const boutNum=prev.yourBouts+prev.oppBouts+1;
+        return {...prev,popupText:null,phaseAfterPopup:null,phase:'match',ringPos:0,yourBalance:100,oppBalance:100,oppMove:move,telegraph,exchangeLine:`Bout ${boutNum}. You return to center heavier than you left it. Dana sets her feet across from you.`};
+      }
+      return {...prev,popupText:null,phaseAfterPopup:null};
+    });
+  };
+
+  const closeSumoMatch=()=>{
+    if(!sumoMatchState) return;
+    const {studentId,yourBouts,oppBouts,gainAccum,oppLbs}=sumoMatchState;
+    const s=students.find(x=>x.id===studentId);
+    const won=yourBouts>oppBouts;
+    if(s) push(`🥋 ${s.name} — Sumo Match: +${Math.round(gainAccum)} lbs · ${won?'WIN':'Loss'} vs Dana (${oppLbs} lbs), ${yourBouts}–${oppBouts}`);
+    setSumoMatchState(null);
   };
 
 
@@ -13649,7 +13885,7 @@ export default function ProfessorSim(){
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
       {evolvedEventState&&(()=>{
-        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest}=evolvedEventState;
+        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch}=evolvedEventState;
         const s=students.find(st=>st.id===studentId);
         const evDef=EVOLVED_EVENTS[formId]?.[stageIdx];
         if(!s||!evDef) return null;
@@ -13693,8 +13929,9 @@ export default function ProfessorSim(){
                   })}
                 </div>
               )}
-              {done&&!startsContest&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
+              {done&&!startsContest&&!startsMatch&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
               {done&&startsContest&&<button style={{...C.btn("#1a6030"),width:"100%",marginTop:4}} onClick={()=>startEatingContest(studentId,stageIdx,history)}>🍽️ Step to the Table</button>}
+              {done&&startsMatch&&<button style={{...C.btn("#7a2018"),width:"100%",marginTop:4}} onClick={()=>startSumoMatch(studentId,stageIdx,history)}>🥋 Step Onto the Dohyo</button>}
             </div>
           </div>
         );
@@ -13845,6 +14082,133 @@ export default function ProfessorSim(){
                   <div style={{background:"#05120a",border:"1px solid #30804050",borderRadius:10,padding:20,maxWidth:460,margin:16}}>
                     <div style={{fontSize:12,color:"#b0d8a0",lineHeight:1.9,fontStyle:"italic",marginBottom:14}}>{popupText}</div>
                     <button style={{...C.btn("#1a4030"),width:"100%"}} onClick={dismissContestPopup}>Continue</button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── SUMO MATCH MINI-GAME MODAL ── */}
+      {sumoMatchState&&(()=>{
+        const{studentId,stageIdx,oppLbs,ringPos,yourBalance,oppBalance,yourBouts,oppBouts,gainAccum,telegraph,exchangeLine,phase,popupText}=sumoMatchState;
+        const s=students.find(st=>st.id===studentId); if(!s) return null;
+        const won=yourBouts>oppBouts;
+        const markerPct=Math.max(0,Math.min(100,(ringPos+100)/2));
+        const feed=SUMO_CORNER_FEED[stageIdx]||SUMO_CORNER_FEED[0];
+        const payoffText=`You've driven your body past everything it had — bout after bout, belly to belly, fueling in your corner between each one until the weight itself became the weapon. The payoff is real: ${Math.round(gainAccum)} more pounds of fat have settled onto your frame since you stepped onto the dohyo. You can feel it in your stance — lower, heavier, more rooted. Your mawashi sits tighter than it did. Your belly is forward and warm and enormous, and it is the reason you fight the way you do now. There is no separating the wrestler from the size. They are the same thing.`;
+        return(
+          <div style={{...C.overlay,zIndex:1200}}>
+            <div style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#140404,#1f0808,#140404)",border:"1px solid #80303050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
+              <div style={{fontSize:9,letterSpacing:4,color:"#d05040",marginBottom:4}}>THE DOHYO — vs {SUMO_RIVAL_NAME.toUpperCase()}</div>
+              <div style={{fontSize:14,fontWeight:700,color:"#ff8060",marginBottom:12}}>{s.name}</div>
+
+              {/* MATCH PHASE */}
+              {phase==='match'&&(<>
+                {/* Bout counter */}
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:10,marginBottom:10}}>
+                  <span style={{color:"#ff9070"}}>You {Math.round(s.lbs)} lbs · Bouts: {yourBouts}</span>
+                  <span style={{color:"#a07060"}}>Bouts: {oppBouts} · Dana {oppLbs} lbs</span>
+                </div>
+                {/* Ring position bar */}
+                <div style={{fontSize:9,color:"#c06050",letterSpacing:2,marginBottom:3,textAlign:"center"}}>RING POSITION</div>
+                <div style={{position:"relative",height:14,background:"linear-gradient(90deg,#5a1810,#2a1208,#102a10)",borderRadius:7,marginBottom:4,border:"1px solid #40201840"}}>
+                  <div style={{position:"absolute",left:"50%",top:0,bottom:0,width:1,background:"#80604040"}}/>
+                  <div style={{position:"absolute",left:`calc(${markerPct}% - 7px)`,top:-2,width:14,height:18,background:ringPos>=0?"#40c060":"#e05030",borderRadius:4,transition:"left 0.35s",boxShadow:"0 0 6px rgba(0,0,0,0.6)"}}/>
+                </div>
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:8,color:"#705048",marginBottom:12}}>
+                  <span>◄ your edge</span><span>her edge ►</span>
+                </div>
+                {/* Balance bars */}
+                <div style={{display:"flex",gap:12,marginBottom:12}}>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:9,color:"#d07060",letterSpacing:1,marginBottom:3}}>YOUR BALANCE {yourBalance}</div>
+                    <div style={{height:6,background:"#1a0a0a",borderRadius:3,overflow:"hidden"}}>
+                      <div style={{height:"100%",width:`${yourBalance}%`,background:yourBalance<25?"#e03020":yourBalance<50?"#c0a020":"#40b050",transition:"width 0.3s"}}/>
+                    </div>
+                  </div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:9,color:"#906058",letterSpacing:1,marginBottom:3}}>DANA'S BALANCE {oppBalance}</div>
+                    <div style={{height:6,background:"#1a0a0a",borderRadius:3,overflow:"hidden"}}>
+                      <div style={{height:"100%",width:`${oppBalance}%`,background:"#806058",transition:"width 0.3s"}}/>
+                    </div>
+                  </div>
+                </div>
+                {/* Exchange commentary */}
+                <div style={{fontSize:12,color:"#e0b0a0",lineHeight:1.8,marginBottom:10,fontStyle:"italic"}}>{exchangeLine}</div>
+                {/* Telegraph */}
+                <div style={{...C.infoBox("rgba(90,20,10,0.3)"),fontSize:11,color:"#ffb090",marginBottom:12,border:"1px solid #80303040"}}>
+                  ⚠️ {telegraph}
+                </div>
+                {/* Move buttons */}
+                <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                  {SUMO_MOVES.map(mv=>{
+                    const lowBal=yourBalance<=0&&mv.id!=='brace';
+                    return(
+                      <button key={mv.id}
+                        style={{...C.btn(lowBal?"#2a1410":"#5a1c14"),textAlign:"left",padding:"8px 12px",fontSize:12,lineHeight:1.4,opacity:lowBal?0.55:1}}
+                        onClick={()=>sumoPlayMove(mv.id)}>
+                        <span style={{fontSize:15,marginRight:6}}>{mv.emoji}</span>
+                        <span style={{fontWeight:700,color:"#ffc0a0"}}>{mv.label}</span>
+                        {lowBal&&<span style={{color:"#ff6040",marginLeft:8,fontSize:9}}>off balance — you'll stumble</span>}
+                        <div style={{fontSize:10,color:"#b08070",marginTop:2,fontStyle:"italic"}}>{mv.desc}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </>)}
+
+              {/* INTER-BOUT PHASE — corner feed */}
+              {phase==='interbout'&&(<>
+                <div style={{fontSize:11,color:"#c08070",marginBottom:8,textAlign:"center"}}>Bouts: You {yourBouts} — {oppBouts} Dana · first to 2 wins the match</div>
+                <div style={{fontSize:12,color:"#e0b0a0",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>
+                  Your corner is set up between bouts. The chanko is hot and waiting. Every pound you add now is a pound Dana has to move in the next bout — and getting heavier is the whole strategy.
+                </div>
+                <button style={{...C.btn("#7a3010"),width:"100%",marginBottom:8}} onClick={sumoCornerFeed}>
+                  🍲 Fuel in Your Corner <span style={{color:"#ffd080",fontSize:11}}>+{feed.lbs} lbs · restores balance</span>
+                </button>
+                <button style={{...C.btn("#3a1810"),width:"100%"}} onClick={sumoStartNextBout}>
+                  Skip — straight back to center
+                </button>
+              </>)}
+
+              {/* AFTERMATH PHASE */}
+              {phase==='aftermath'&&(<>
+                <div style={{fontSize:12,color:"#e0b8a8",lineHeight:1.9,marginBottom:16,fontStyle:"italic"}}>
+                  {SUMO_MATCH_AFTERMATH[stageIdx]?.(s,gainAccum,won,oppLbs)||''}
+                </div>
+                <button style={{...C.btn("#7a2018"),width:"100%"}} onClick={()=>setSumoMatchState(prev=>({...prev,phase:'scoreboard'}))}>
+                  📊 See the Result
+                </button>
+              </>)}
+
+              {/* SCOREBOARD PHASE */}
+              {phase==='scoreboard'&&(<>
+                <div style={{background:"#1a0808",border:"1px solid #80303040",borderRadius:6,padding:14,marginBottom:12,fontFamily:"monospace"}}>
+                  <div style={{fontSize:10,color:"#d05040",letterSpacing:3,marginBottom:8}}>MATCH RESULT</div>
+                  <div style={{fontSize:14,color:won?"#ff9060":"#a07060",marginBottom:4,display:"flex",justifyContent:"space-between"}}>
+                    <span>You — {yourBouts} bouts</span>
+                    {won&&<span style={{color:"#ffdd60"}}>🏆 WINNER</span>}
+                  </div>
+                  <div style={{fontSize:14,color:!won?"#ff9060":"#806058",display:"flex",justifyContent:"space-between"}}>
+                    <span>Dana — {oppBouts} bouts</span>
+                    {!won&&<span style={{color:"#ffdd60"}}>🏆 WINNER</span>}
+                  </div>
+                  <div style={{marginTop:8,paddingTop:8,borderTop:"1px solid #80303040",fontSize:10,color:"#c07050"}}>
+                    Gained in the corner today: +{Math.round(gainAccum)} lbs · Your weight: {Math.round(s.lbs)} lbs
+                  </div>
+                </div>
+                <div style={{fontSize:12,color:"#e0c0b0",lineHeight:1.9,marginBottom:16,fontStyle:"italic"}}>{payoffText}</div>
+                <button style={{...C.btn("#5a1c14"),width:"100%"}} onClick={closeSumoMatch}>Close</button>
+              </>)}
+
+              {/* POPUP OVERLAY */}
+              {popupText&&(
+                <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
+                  <div style={{background:"#160606",border:"1px solid #80303050",borderRadius:10,padding:20,maxWidth:460,margin:16}}>
+                    <div style={{fontSize:12,color:"#e8b8a8",lineHeight:1.9,fontStyle:"italic",marginBottom:14}}>{popupText}</div>
+                    <button style={{...C.btn("#5a1c14"),width:"100%"}} onClick={dismissSumoPopup}>Continue</button>
                   </div>
                 </div>
               )}
