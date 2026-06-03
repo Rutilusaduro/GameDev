@@ -4697,7 +4697,7 @@ const EVOLVED_EVENTS = {
 You are ${Math.round(s.lbs)} pounds and you intend to make her look. Before the match there's fuel, and there's footwork.`,
           choices:[
             {id:"load_hard",label:"Load up on chanko — weight is force",result:`You go to the chanko and eat — bowl after bowl, dense and warm, your belly filling and settling lower with every one. Weight is force in this sport and you are here to have more force. You feel yourself get heavier, rounder, more dangerous. Dana glances over once. Good.`,lbs:10,rel:4,flag:"loaded"},
-            {id:"warm_up",label:"Drill the footwork — plant, drive, low base",result:`You drill instead — the plant, the drive, the low base — moving ${Math.round(s.lbs)} pounds through the forms until they're automatic, your belly swinging warm and heavy with each rep. You eat lighter, stay sharp, leave room. Technique today.`,lbs:5,rel:6,flag:"paced"},
+            {id:"warm_up",label:"Drill the footwork — plant, drive, low base",result:(s)=>`You drill instead — the plant, the drive, the low base — moving ${Math.round(s.lbs)} pounds through the forms until they're automatic, your belly swinging warm and heavy with each rep. You eat lighter, stay sharp, leave room. Technique today.`,lbs:5,rel:6,flag:"paced"},
           ]
         },
         {
@@ -4801,7 +4801,7 @@ Dana Mercer — 460 now, the underdog in your rivalry for the first time — com
 
 Dana, already off the scale, watches your belly settle on the platform. "Out-think you," she repeats, quietly, to herself. "Right."`,
           choices:[
-            {id:"own_it",label:"Let the number land. Let them look.",result:`You let the number land and let them look — all ${Math.round(s.lbs)} pounds of you, warm and forward and enormous on the platform. You step off slow. Dana exhales.`,rel:9,flag:"confident"},
+            {id:"own_it",label:"Let the number land. Let them look.",result:(s)=>`You let the number land and let them look — all ${Math.round(s.lbs)} pounds of you, warm and forward and enormous on the platform. You step off slow. Dana exhales.`,rel:9,flag:"confident"},
             {id:"acknowledge_crowd",label:"Find the crowd and let them see you.",result:`You find the crowd and let them see you fully. Someone starts a chant. Dana hears it become your name. "Out-think that," she mutters, and there's affection in it.`,rel:8,flag:"confident"},
           ]
         },
@@ -4810,7 +4810,7 @@ Dana, already off the scale, watches your belly settle on the platform. "Out-thi
         {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`You're the largest thing in the building by a margin with its own gravity, and the crowd knows your name. Dana's at the center, ready to try the impossible.
 
 The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
-        {condition:()=>true,text:`The qualifier crowd settles into the seats. You walk to the dohyo carrying ${Math.round(s.lbs)} pounds like the asset it is.
+        {condition:()=>true,text:(h,s)=>`The qualifier crowd settles into the seats. You walk to the dohyo carrying ${Math.round(s.lbs)} pounds like the asset it is.
 
 The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
       ]
@@ -4833,7 +4833,7 @@ Dana Mercer finds you in the warm-up room one last time. 520 pounds, second-rank
 
 There's a breath first. The breath a room takes before something it's never seen. Then it comes apart. Dana is already clapping.`,
           choices:[
-            {id:"own_it",label:"Turn into the noise. Let them see all of you.",result:`You turn into the noise and let the whole arena see all of you — ${Math.round(s.lbs)} pounds of national finalist, belly forward and warm and enormous in the lights. Two years. Worth every one.`,rel:10,flag:"confident"},
+            {id:"own_it",label:"Turn into the noise. Let them see all of you.",result:(s)=>`You turn into the noise and let the whole arena see all of you — ${Math.round(s.lbs)} pounds of national finalist, belly forward and warm and enormous in the lights. Two years. Worth every one.`,rel:10,flag:"confident"},
             {id:"stay_focused",label:"Step off. One hand on your belly. Ready.",result:`You step off and walk to the dohyo and put one hand flat on your belly for a second — the weight, the warmth, the proof of it — then you let it go and you're ready. The biggest match of your life is one step away.`,rel:6,flag:"paced"},
           ]
         },
@@ -4927,7 +4927,7 @@ The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
 
 Maya is 410 lbs now. She's the only one in this room who looks at you directly. "Good luck," she says, and she means it in the way that people who are about to lose still mean it. You respect that.`,
           choices:[
-            {id:"load_hard",label:"Load aggressively — this is the conference, go for everything",result:`You eat until the room feels different than when you walked in. Your belly is enormous and warm and pressing your waistband and you breathe around it and feel, specifically, the weight of yourself — ${Math.round(s.lbs)} lbs of warm ready body — and you feel ready for more.`,lbs:12,rel:4,flag:"loaded"},
+            {id:"load_hard",label:"Load aggressively — this is the conference, go for everything",result:(s)=>`You eat until the room feels different than when you walked in. Your belly is enormous and warm and pressing your waistband and you breathe around it and feel, specifically, the weight of yourself — ${Math.round(s.lbs)} lbs of warm ready body — and you feel ready for more.`,lbs:12,rel:4,flag:"loaded"},
             {id:"eat_smart_and_talk",label:"Eat with discipline — then say something to Maya",result:`You eat your warmup clean and then turn to Maya. "How's Lakewood doing this season?" She tells you. You talk for a few minutes, two large women eating in a warmup room before a conference championship, and it's unexpectedly good. "You're going to win today," she says. "I know," you say.`,lbs:7,rel:9,flag:"paced"},
           ]
         },
@@ -4973,7 +4973,7 @@ You step on. The scale reads ${Math.round(s.lbs)} pounds.
 The head judge reads it into the national feed microphone. The crowd in the staging area makes a sound — not cheering exactly, more like the sound of a room full of people all having the same thought at the same time. Maya, already off the scale at 450, is watching. A woman from the crowd says, clearly: "Oh my god."`,
           choices:[
             {id:"take_it_in",label:"Stand still and let the moment be what it is.",result:`You stand on the scale while the crowd processes the number. Your belly is warm and heavy and forward and visible to everyone in the room and you let them look. The judge marks it. You step off slowly.`,rel:8,flag:"confident"},
-            {id:"acknowledge_crowd",label:"Look at the crowd when you step off.",result:`You step off the scale and you look at the crowd. There are people there who came specifically for this moment. You let them see you — all ${Math.round(s.lbs)} lbs of you, warm and present and enormous. Someone starts clapping. Others follow.`,rel:10,flag:"confident"},
+            {id:"acknowledge_crowd",label:"Look at the crowd when you step off.",result:(s)=>`You step off the scale and you look at the crowd. There are people there who came specifically for this moment. You let them see you — all ${Math.round(s.lbs)} lbs of you, warm and present and enormous. Someone starts clapping. Others follow.`,rel:10,flag:"confident"},
           ]
         },
       ],
@@ -5010,7 +5010,7 @@ The head judge reads the display. He pauses for exactly one second before he rea
 
 The arena does not cheer first. There is a moment of silence — the specific silence of something large enough to require a breath before a response — and then the crowd comes up all at once. The four-time champion in the corner has stopped eating. She is looking at the number. Maya is already clapping.`,
           choices:[
-            {id:"face_the_crowd",label:"Turn and face the crowd.",result:`You turn. You are ${Math.round(s.lbs)} pounds of national championship competitor and the crowd is making the sound it makes when it sees something it has never seen before and you stand in it. Your belly is warm and forward and enormous and visible to everyone in the arena and you let them see it. This took two years. It was worth two years.`,rel:10,flag:"confident"},
+            {id:"face_the_crowd",label:"Turn and face the crowd.",result:(s)=>`You turn. You are ${Math.round(s.lbs)} pounds of national championship competitor and the crowd is making the sound it makes when it sees something it has never seen before and you stand in it. Your belly is warm and forward and enormous and visible to everyone in the arena and you let them see it. This took two years. It was worth two years.`,rel:10,flag:"confident"},
             {id:"stay_in_your_head",label:"Don't acknowledge the crowd. Get to the table.",result:`You step off the scale and walk to your lane. Your belly is warm and enormous and pressing your competition top and you put one hand flat on it for one second — feeling the weight of yourself, the warmth of yourself — and then you drop your hand and you look at the table and you are ready.`,rel:6,flag:"paced"},
           ]
         },
@@ -8791,7 +8791,7 @@ export default function ProfessorSim(){
     const phase=evDef.phases[phaseIdx]; if(!phase) return;
     const choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
-    const newLog=[...logLines,choice.result];
+    const newLog=[...logLines,(typeof choice.result==='function'?choice.result(s):choice.result)];
     const newGain=gainAccum+(choice.lbs||0);
     const newRel=relAccum+(choice.rel||0);
     // Handle feedOther — feed classmates of matching archetype
@@ -9130,7 +9130,7 @@ export default function ProfessorSim(){
     const phase=def.phases[phaseIdx]; if(!phase) return;
     const choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
-    const newLog=[...logLines,choice.result];
+    const newLog=[...logLines,(typeof choice.result==='function'?choice.result(s):choice.result)];
     let newGain=gainAccum+(choice.lbs||0);
     const newRel=relAccum+(choice.rel||0);
     if(choice.feed&&choice.gainRange){
