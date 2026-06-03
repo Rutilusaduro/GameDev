@@ -4322,10 +4322,12 @@ const CONTEST_STAGE_FOODS = [
   { your:['hotdogs','wings','burger','pizza','ribs','pasta','cake','nachos'], maya:['hotdogs','wings','burger','pizza','ribs','pasta','pie','nachos'] },
   { your:['hotdogs','wings','burger','pizza','ribs','pasta','cake','nachos','icecream'], maya:['hotdogs','wings','burger','pizza','ribs','pasta','pie','nachos','icecream'] },
   { your:['hotdogs','wings','burger','pizza','ribs','pasta','cake','nachos','icecream','pie'], maya:['hotdogs','wings','burger','pizza','ribs','pasta','pie','nachos','icecream','cake'] },
+  // stage 10 — ~820 lbs — Grand Invitational (blob)
+  { your:['hotdogs','wings','burger','pizza','ribs','pasta','cake','nachos','icecream','pie'], maya:['hotdogs','wings','burger','pizza','ribs','pasta','pie','nachos','icecream','cake'] },
 ];
 
 // Maya's weight at each stage (starts heavier — she wins early events)
-const CONTEST_MAYA_WEIGHTS = [330, 370, 410, 450, 490];
+const CONTEST_MAYA_WEIGHTS = [330, 370, 410, 450, 490, 530];
 
 const CONTEST_FOOD_POPUPS = {
   hotdogs:[
@@ -4334,6 +4336,7 @@ const CONTEST_FOOD_POPUPS = {
     `They're gone before the crowd registers you've started. Your belly sits heavy and warm and it wants more and you give it more without asking it to wait.`,
     `Gone. Your belly pushes the table and absorbs the hot dogs without a pause. You're not even at capacity yet. This is the warmup of the warmup.`,
     `You eat hot dogs the way most people eat crackers. The crowd barely registers it. You're saving yourself for something that will actually fill you.`,
+    `Hot dogs. They disappear into your belly the way a glass of water disappears into the sea. You are 820 pounds and hot dogs are not even warmup food for you anymore. They are just weight. You add them without ceremony and reach for the next item before the crowd has noticed you started.`,
   ],
   wings:[
     `Messy and fast — you pull the meat off without slowing down, the sauce going everywhere, your belly warm and pushing forward with each piece. The girl from State across the table is watching. You don't look back.`,
@@ -4341,6 +4344,7 @@ const CONTEST_FOOD_POPUPS = {
     `Each wing goes in and your belly takes it and asks for the next one. You eat with a rhythm now, the crowd building noise in the background, Maya working at her side of the table. You don't look at her.`,
     `The pile disappears. You eat wings the way you eat everything at this stage — with the complete focus of a body that was built for this, your belly enormous and pressing forward and wanting more.`,
     `Wings. You eat seventeen in the time it would take someone else to eat five. The table doesn't have enough wings. The table has never had enough.`,
+    `You work through the wings without looking up. Each one goes in and your belly registers it and asks for the next without pausing. You are 820 pounds of competitive eater and wings are a category of food that simply no longer slows you down. The bones pile up. The crowd watches. You keep going.`,
   ],
   burger:[
     `Dense and good. The burger fills real estate in your belly — you feel it land, feel the weight of it settling, the warmth of it spreading. Your belly presses your waistband harder and you take a breath and keep eating.`,
@@ -4348,6 +4352,7 @@ const CONTEST_FOOD_POPUPS = {
     `The burger goes down and your belly registers it properly — a real addition, real weight, your waistband complaining for the first time. You loosen your breath. Keep going.`,
     `You eat the burger and your belly barely acknowledges it. This is the problem with getting to this size: you have to eat more to feel full and more to feel anything. You keep eating.`,
     `The burger. You don't taste it as much as absorb it. At 630 lbs, the sensation of eating has become less about specific flavors and more about the specific expanding warmth of your belly pressing heavier, fuller, more real.`,
+    `You eat the burger. Your belly receives it with the implacable calm of something that has swallowed a great deal more than this and will swallow a great deal more after. It settles into the vast warm mass of you and you reach for the next thing. The burger was one brick in an edifice. You are still building.`,
   ],
   pizza:[
     `Slice by slice. Your belly is getting full now — not done, but aware. You eat through the pizza with the slightly slower pace of someone managing their capacity, the grease warm on your fingers, your belly pressing your competition top forward.`,
@@ -4355,6 +4360,7 @@ const CONTEST_FOOD_POPUPS = {
     `The pizza is good and you eat it fast and your belly makes its fullness very clear. Your competition top has ridden up two inches. You don't pull it down.`,
     `You eat the pizza and feel your belly push the table edge. It's doing that now — pressing into things, occupying more space than the seat was designed for. You push the table back an inch and keep eating.`,
     `Five slices. You eat them like they're nothing, your belly enormous and warm and pressing everything around you, the table creaking against your waist, the crowd watching you eat like it's the most natural thing in the world. It is.`,
+    `You eat the pizza and your belly pushes the table hard to the side and you let it. Your belly is an architectural presence in this room — it dominates the space between you and the competition, it fills the front half of your lane — and five slices of pizza go into it and it fills fractionally more and settles forward fractionally further and you keep going.`,
   ],
   ribs:[
     `Heavy. Your belly really knows about the ribs. You eat through them with the focused attention of someone who can feel the fullness climbing — really climbing now — your waistband pressing, your belly warm and round and present. You eat another rib anyway.`,
@@ -4362,6 +4368,7 @@ const CONTEST_FOOD_POPUPS = {
     `You pull the rack in and work through it with the focus of someone who does not have another gear. This is already the gear. The bones go into the discard pile one by one. Your belly presses forward another increment with each one.`,
     `Ribs. Dense. Real. Your belly is genuinely enormous right now, pressing the table hard, and you eat through the rack with the patient certainty of someone who knows exactly how this ends.`,
     `The rack disappears. You eat ribs with two hands and your belly is warm and vast and forward and you feel, specifically, the weight of yourself growing with each piece. You like the feeling. You keep eating.`,
+    `Ribs. Dense, real, additive. You eat through the rack with both hands and your belly sits enormous and warm and full between your thighs, pressing your thighs further apart with each increment, and you feel each rib go in and become part of you. The crowd can see your belly shift forward as it fills. You eat another rib. The weight of being this full at this size is not discomfort. It is arrival.`,
   ],
   pasta:[
     `The pasta is the hardest thing on the table and you know it. It fills volume fast. You eat it carefully — not slow, but aware, your belly pressing your waistband hard, your competition top tight across your chest. You finish the bowl anyway.`,
@@ -4369,6 +4376,7 @@ const CONTEST_FOOD_POPUPS = {
     `The pasta goes down and your belly expands visibly — not your imagination, not a trick of the light. The fabric across your middle tightens. Someone in the crowd says something. You eat the last of it.`,
     `You eat the pasta and your belly presses the table so hard it shifts. You put a hand on it briefly — the warmth of it, the tightness, the specific insistence of being this full at this size — and then you keep eating.`,
     `Pasta. The thing that would end a normal person's contest. You eat it in three minutes and your belly registers it the way the earth registers weight: completely, without complaint, just more mass settling into what was already an extraordinary amount of mass.`,
+    `Pasta goes in and your belly swells noticeably outward — not your imagination, not a trick of perspective, a real and visible expansion of something that is already the largest fact in this room. You can feel your competition top tighten across the full span of your belly. You push the bowl away empty. Your belly presses the table. The table accepts this. So does the crowd.`,
   ],
   cake:[
     `Sweet relief after everything else. You eat the cake fast — it goes down easy after all the heavier food, your belly grateful for the change, the sweetness of it filling your mouth. You feel better than you have any right to.`,
@@ -4376,6 +4384,7 @@ const CONTEST_FOOD_POPUPS = {
     `Sweet and easy, even now. Your belly is enormous and warm and tight and the cake still tastes good. You eat it with one hand. Your competition top has ridden up and your belly is out, warm and round in the competition lights.`,
     `You eat the cake like a person rewarding themselves. You've earned it. Your belly sits vast and heavy between your thighs and the frosting is cold and sweet and you eat every crumb.`,
     `The cake disappears in seconds. Your belly is beyond full, pushing everything outward — your shirt has completely ridden up, the full warm curve of your gut visible to the entire crowd — and you eat the last piece of cake with the ease of someone who gave up caring about looking full an hour ago.`,
+    `Sweet. Easy. Your belly is an enormous warm full mass between your thighs and the frosting is cold against the heat of everything you've eaten and you eat the cake in four bites and feel it settle into you like punctuation. The crowd has been watching you eat for most of this competition. They will keep watching. You give them something worth watching.`,
   ],
   pie:[
     `Warm and dense. Your belly resists the pie for exactly one second and then accepts it. You eat through the slice with the steady focus you've maintained all competition, the crust crumbling, the filling warm.`,
@@ -4383,6 +4392,7 @@ const CONTEST_FOOD_POPUPS = {
     `Pie. Each slice goes in and your belly tightens another increment. The fabric is very tight. You don't stop. Your belly is warm and enormous and you push your chair back slightly to give it room and you keep eating.`,
     `Your belly is so full it's hard to reach forward properly. You lean in anyway, your enormous belly pressing the table, and you eat the pie with the comfortable confidence of someone who has been this full before and eaten more after.`,
     `The pie goes in and your belly is now genuinely beyond description — vast, warm, pressing everything, the competition top riding high, your gut visible and enormous and you are still eating. The crowd is completely silent.`,
+    `Pie. The slices go in and each one becomes part of the immense full warmth of your belly sitting massive and low between your thighs. You can feel the table pressing back against it. You eat through the filling and the crust with the focused efficiency of someone who has converted the concept of "too full" into something that belongs to other people. The pie ends. You look at what else is there.`,
   ],
   nachos:[
     `The nachos are easy — light and salty and fast. You eat them in handfuls while you breathe, your belly grateful for something that doesn't press it further. You're not managing capacity, you're topping off.`,
@@ -4390,6 +4400,7 @@ const CONTEST_FOOD_POPUPS = {
     `Nachos. Your belly barely notices them individually but the tray adds up. You eat them fast while your belly makes its general fullness very clear. You're past the point where you feel individual items. Everything is just more.`,
     `The nachos disappear. You eat them with the easy confidence of someone who is nowhere near done, your belly warm and pressing and hungry in the specific way of something that has been working very hard and hasn't hit its ceiling.`,
     `Gone in a minute. Your belly is enormous and warm and there is still room in it — there is always still room in it — and the nachos find that room without difficulty.`,
+    `The nachos go in without ceremony. Your belly is 820 pounds of body plus everything you've eaten today and it receives nachos the way an ocean receives a handful of pebbles — completely, without protest, without acknowledgment. You eat through the tray and reach for the next thing before the tray is cold.`,
   ],
   icecream:[
     `Cold. Startling. Good. Your belly, warm and tight and very full, receives the ice cream with something that feels like gratitude. You eat it fast before it melts, the cold sweetness going down, your belly briefly less insistent.`,
@@ -4397,6 +4408,7 @@ const CONTEST_FOOD_POPUPS = {
     `Cold and fast. Your belly is enormous and pressed and the ice cream cuts through the heat of everything else. You eat the whole bowl and your belly settles and you look at what's left on the table.`,
     `Ice cream. Cold against everything warm. Your belly is a furnace right now and the ice cream is the only thing on the table that doesn't make it hotter. You eat it fast and feel, briefly, like you could eat forever.`,
     `The ice cream is cold and you eat it and your belly is vast and warm and forward and the cold spreads through it and you feel, for just a second, like you haven't eaten anything at all. Like you could start again from the beginning. You look at Maya's side.`,
+    `Cold and immediate. Your belly is generating its own enormous heat — 820 pounds of you, full and warm and pressing everything — and the ice cream cuts through it like the only cold thing in a hot room. You eat the bowl and feel briefly, impossibly, like you could eat the whole competition over from scratch. Your belly settles. You look at what's left.`,
   ],
 };
 
@@ -4414,6 +4426,7 @@ const CONTEST_ACTION_POPUPS = {
     `Both hands on the belly. You feel it from outside: the enormous warm sphere of it, tight and full and pressing your palms back. You breathe and rub and your belly lets go of some of the tightness. Just enough. You look at what's left on the table.`,
     `Your belly is enormous under your hands — the size of it, the weight of it, the specific insistent warmth of very full flesh pressing your palms outward. You rub slow. The fullness eases a fraction. You look at Maya. She's rubbing her own belly. Good. Keep going.`,
     `You put both hands on your belly and it is vast and warm and pressing back against your palms with more force than seems possible. You are 630 lbs of competitive eater and your belly is the center of gravity of the room and you rub it slow and deliberate and feel it ease slightly and then you eat more.`,
+    `You press both palms flat against your belly and it presses back, enormous and warm and impossibly full, the skin tight and hot against your hands, the sheer size of it meaning your arms have to reach to get to the full forward curve of it. You breathe and rub slow. The fullness redistributes slightly. Your belly is the largest object in this room and you are going to fill it further. You reach for more food.`,
   ],
   taunt:[
     `You look over at Maya. She's 330 lbs and she's been doing this for two years and she's focused on her side of the table. You catch her eye. She looks away immediately. "You're wasting your time," she says, to her food, not to you. You eat another hot dog.`,
@@ -4421,6 +4434,7 @@ const CONTEST_ACTION_POPUPS = {
     `You make eye contact with Maya. She's 410 lbs and her side is disappearing but yours is disappearing faster. "You want to call it?" you ask. "Not even close," she says, but her voice has something in it. "Looked close from here," you say. You eat a rib.`,
     `Maya is 450 lbs and she is eating with everything she has and it's not enough. You look over at her side of the table — what's left of it — and then at yours. "I'm going to steal your pasta," you say. She says: "No you aren't." You look at the pasta. You look at her. "Watch me," you say.`,
     `You look at Maya. She is 490 lbs and she has been eating competitive food for four years and she is one of the best in the country and she is looking at your side of the table the way someone looks at something that has already beaten them. "You're something else," she says quietly. It doesn't sound like a complaint. You eat another slice.`,
+    `You look at Maya. She is 530 lbs and she came to the Grand Invitational because she was invited and she is eating hard and she is not going to win. She knows this. You both know this. "I'm going to eat your whole side," you tell her. She looks at you — really looks, for one held moment — and says: "I believe you." You do.`,
   ],
   steal:[
     `You reach across the divider — your arm, your enormous warm arm — and take the pasta from Maya's side. The crowd makes a noise. Maya stops eating for exactly two seconds. She watches you pull it to your side. "Oh," she says quietly. "That's how it is." She goes back to what's left. You eat her pasta.`,
@@ -4432,6 +4446,7 @@ const CONTEST_ACTION_POPUPS = {
     `The last item is gone. You sit back. Your belly is enormous and warm and pressing everything within reach, and both sides of the table are empty, and the judges are looking at each other. The head judge says: "Table cleared." He says it to the room, not to you specifically, but it's for you specifically.`,
     `You eat the last thing on your side and look at Maya's side and it is also empty. The table is gone. Both sides. The judges confer for one second. "That's it," the head judge says. "Horn." The horn fires. The crowd — and there is a significant crowd — makes a sound.`,
     `Empty. Both sides. Your belly is vast and warm and past full and pressing everything and the table is completely, entirely gone. Maya sits back and looks at the empty sides and says: "I didn't think that was possible." The judge says: "Neither did I." The horn fires.`,
+    `The table is gone. Entirely, completely, utterly gone — both sides, every item, nothing left. Your belly is an enormous warm full presence pressing everything within two feet of you and the table is empty and the judges are looking at each other with the expressions of people who have never adjudicated this particular outcome before. The head judge says: "Table clear." He says it slowly. The crowd comes apart.`,
   ],
   too_full:[
     `Your belly is done. Full — properly, completely full, the fabric tight and warm and pressed against everything. You can't fit another bite. You sit back and your belly presses the table and the judges see it and the horn fires. That's it. Time to weigh in.`,
@@ -4439,6 +4454,7 @@ const CONTEST_ACTION_POPUPS = {
     `You reach for the next item and your belly says no. Not a suggestion — a full stop. The fullness is total and warm and present and you sit back and your belly presses everything around it and you are done. The judges mark it.`,
     `Done. You couldn't eat another bite if someone offered you everything on Maya's side of the table. Your belly is vast and full and warm and pressing everything and you sit back and breathe around it and wait. The judges call it.`,
     `You are done. Your belly is an enormous warm full mass pressing the table, pressing your thighs, pressing your competition top up past your navel, and there is simply no more room in it. You sit back. The horn fires. You feel, specifically, like the most full you have ever been. You feel great.`,
+    `Even you have limits. Your belly is the dominant physical fact of the Grand Invitational and it has been filled past full and past that and into a fullness that is its own category, warm and vast and pressing the table so hard the table has moved, and you are done. There is no more room. You sit back, your belly enormous and forward and fully out, and the judges mark it, and the horn fires.`,
   ],
 };
 
@@ -4519,6 +4535,54 @@ Maya: ${mayaNew} pounds.
 
 The announcer reads your name and your number into the national feed. The crowd is already going.`;
   },
+  // stageIdx 5 — stage 10, ~820 lbs — Grand Invitational (blob)
+  (s, yourGain, mayaGain, mayaLbs) => {
+    const youNew = Math.round(s.lbs + yourGain);
+    const mayaNew = Math.round(mayaLbs + mayaGain);
+    return `The horn fires. The judges call competitors to the Grand Invitational scale.
+
+You rise from the table. This is not a simple act — you are 820 pounds of competitive eater plus everything you've consumed in this competition, and you rise from the table the way a tide rises, slow and enormous and inevitable, your belly enormous and warm and past full pressing forward and down, your thighs wide under its weight, your competition top ridden up well past your navel. The crowd goes silent in the way crowds go silent at things they did not expect to witness. You walk to the scale. Every step is a statement. Your belly sways heavily with each one — warm and vast and full, the weight of it shifting forward and back, the crowd tracking every movement. This is why they came to the Grand Invitational. You.
+
+Maya walks from her side. 530 pounds, her enormous belly rolling warm and low with each step, her thighs pressing together heavily, her expression the measured dignity of someone who knows she did her best today and also knows exactly where she stands. She looks at you with something that might be awe and something that might be love. She does not try to describe what she's looking at.
+
+You step on the Grand Invitational scale. It settles. ${youNew} pounds.
+
+The judge reads it once. Then reads it into the microphone.
+
+Maya: ${mayaNew} pounds.
+
+The room does not cheer immediately. There is one held breath — the whole room taking it in, the number, the person attached to the number, the fact of you standing on this scale at this weight — and then it breaks.`;
+  },
+];
+
+// Devour mechanic popup text (fires when Devour button used) — indexed by stageIdx
+const CONTEST_DEVOUR_POPUPS = [
+  // stageIdx 0–2: not reachable (devour unlocks at stageIdx ≥ 3)
+  ``,
+  ``,
+  ``,
+  // stageIdx 3 — ~519 lbs
+  `You sweep both selections in front of you — yours and what you've claimed from Maya's side — and you eat all of it, fast and continuous and unstoppable, the fullness cresting and then giving way to a deeper fullness, your belly pressing forward with new insistence. The judges watch. Someone in the crowd makes a sharp sound. You swallow the last piece and your belly is enormous and warm and visibly fuller than it was a moment ago. You feel it: the weight, the warmth, the specific heaviness of taking a great deal of food and making it part of you all at once.`,
+  // stageIdx 4 — ~630 lbs
+  `You pull everything you've selected in front of you and eat it in a continuous sweep — your side, Maya's side, all of it, going down fast and adding to the vast full weight of your belly, which presses forward another increment and settles heavier between your thighs. Maya watches you eat her food from across the divider. She has stopped eating. She is just watching. Your belly is enormous and forward and full and warm and you have just added a meaningful fraction more to all of that. You breathe around it. You look at what's left.`,
+  // stageIdx 5 — ~820 lbs
+  `You gather everything you've selected — your items, Maya's items, all of it pulled to your side of the table — and you eat it all in one sustained act of consumption, item after item going down, your belly expanding visibly forward with each addition, the table groaning as your belly presses it harder, your competition top riding up another inch. You eat the last piece and sit back slightly and your belly is a massive warm full presence pressing everything around it, swollen noticeably larger than it was before the devour, heavy and warm between your thighs. The crowd makes a collective sound. The judges look at each other. Maya says, quietly, to no one: "She just ate everything."`,
+];
+
+// Payoff paragraph at end of eating contest — indexed by stageIdx, escalates in physical detail
+const CONTEST_PAYOFF_TEXT = [
+  // stageIdx 0 — stage 5, ~258 lbs
+  (gain) => `You've eaten more today than you've ever eaten in one sitting. ${Math.round(gain)} pounds worth. You can feel it: your pants are tighter than they were this morning, your shirt has ridden up, your belly is warm and round and pressing forward. You are heavier than when you walked in. That's the whole point.`,
+  // stageIdx 1 — stage 6, ~320 lbs
+  (gain) => `${Math.round(gain)} more pounds have settled into your frame since the horn fired. You feel it clearly now — the waistband pressing your thighs harder, your belly warm and full and pushing forward with more insistence than it had an hour ago. Your shirt is up. Your belly is out. The weight of yourself has increased in a way you can measure in how you sit, how you breathe, how the chair presses back.`,
+  // stageIdx 2 — stage 7, ~419 lbs
+  (gain) => `${Math.round(gain)} pounds of fat added to your frame in the course of one competition. You can feel the difference — your belly is heavier and warmer and further forward than it was when you sat down, pressing your thighs wider apart, pressing the chair down harder, the fullness of it a warm enormous insistent presence you have to breathe around. Your competition top is fully ridden up above your navel. Your belly is out, round and warm and undeniable, and it is larger than it was. You put one hand flat on it. The warmth. The weight. You are not done growing.`,
+  // stageIdx 3 — stage 8, ~519 lbs
+  (gain) => `The payoff is real and it is on your body right now. ${Math.round(gain)} pounds of fat have settled into your frame — into your belly, your thighs, your hips — and you can feel every pound of it. Your belly sits between your thighs like something geological, warm and enormous and pressing your thighs further apart than they were this morning, hanging forward past your knees, the full warm weight of it pressing your competition top up and your pants down and making the chair underneath you creak. You put both hands on it, flat, feeling the heat and the tightness and the sheer size of yourself. This is what you came for. This is what the scale will say when you step on it next week. More.`,
+  // stageIdx 4 — stage 9, ~630 lbs
+  (gain) => `${Math.round(gain)} pounds. That's what this competition added to your body. You feel it everywhere — your belly is visibly larger than when you sat down, enormous and warm and pressing forward past the table edge, your thighs spread wide under its new weight, the full curve of your gut out and visible because your competition top gave up any pretense of covering it an hour ago. You put both hands flat on your belly and feel the heat of it, the immense warmth of a body that has been working very hard and is now very full and very heavy. There is no hiding any of this. There was never any hiding any of this. You are 630-something pounds of competitive eater at the national championship and you just ate everything on the table and then some, and the number on your frame has gone up, and you will be back next year, and you will be bigger.`,
+  // stageIdx 5 — stage 10, ~820 lbs (blob)
+  (gain) => `${Math.round(gain)} pounds added to an already-extraordinary body. You can feel it in everything — the way your belly sits, heavier and further forward than it did when the horn fired, pressing your thighs wide and pressing the chair down and pressing the table away; the way your competition top, already ridden up to your navel before the contest started, is now ridden up further, the full vast warm belly of you on complete display in the Grand Invitational venue. You put both hands on your belly. It is an enormous warm full mass, pressing your palms back, the heat of it seeping into your hands, the sheer scale of it requiring both arms fully extended to reach the forward curve. You are 820 pounds plus everything you've eaten today. The number going up from here is not surprising. It is the whole point. You breathe around the full warm weight of yourself, and you feel great.`,
 ];
 
 // ══════════════════════════════════════════════════════════════════
@@ -4526,15 +4590,16 @@ The announcer reads your name and your number into the national feed. The crowd 
 // ══════════════════════════════════════════════════════════════════
 
 const SUMO_MOVES = [
-  { id:'charge',   label:'Tachi-ai Charge', emoji:'🐗', desc:'Explosive forward hit. Huge push — but if she braces or steps aside, you pay for it in balance.', balanceCost:25 },
-  { id:'thrust',   label:'Thrust',          emoji:'👊', desc:'Steady belly-and-palm push. Cheap, reliable, moderate ground.',                              balanceCost:10 },
-  { id:'drop',     label:'Belly Drop',      emoji:'🫸', desc:'Drop your full weight forward. Scales hard with how heavy you are. Your signature.',          balanceCost:15 },
-  { id:'brace',    label:'Brace',           emoji:'🛡️', desc:'Plant and root. Negate her push and recover your balance. No ground gained.',                balanceCost:-30 },
-  { id:'sidestep', label:'Sidestep',        emoji:'↪️', desc:'Slip aside. Devastating if she charges. Wasted if she doesn\'t.',                            balanceCost:10 },
+  { id:'charge',    label:'Tachi-ai Charge', emoji:'🐗', desc:'Explosive forward hit. Huge push — but if she braces or steps aside, you pay for it in balance.', balanceCost:25 },
+  { id:'thrust',    label:'Thrust',          emoji:'👊', desc:'Steady belly-and-palm push. Cheap, reliable, moderate ground.',                              balanceCost:10 },
+  { id:'drop',      label:'Belly Drop',      emoji:'🫸', desc:'Drop your full weight forward. Scales hard with how heavy you are. Your signature.',          balanceCost:15 },
+  { id:'brace',     label:'Brace',           emoji:'🛡️', desc:'Plant and root. Negate her push and recover your balance. No ground gained.',                balanceCost:-30 },
+  { id:'sidestep',  label:'Sidestep',        emoji:'↪️', desc:'Slip aside. Devastating if she charges. Wasted if she doesn\'t.',                            balanceCost:10 },
+  { id:'fill_ring', label:'Fill the Ring',   emoji:'🌕', desc:'Blob only. You relax completely — belly and ass expanding to claim the dohyo. She bounces out.', balanceCost:0, blobOnly:true },
 ];
 
 const SUMO_RIVAL_NAME = 'Dana "The Wall" Mercer';
-const SUMO_RIVAL_WEIGHTS = [340, 370, 410, 460, 520];
+const SUMO_RIVAL_WEIGHTS = [340, 370, 410, 460, 520, 560];
 
 // Opponent move telegraphs — shown so the player can counter
 const SUMO_TELEGRAPH = {
@@ -4553,6 +4618,7 @@ const SUMO_EXCHANGE_LINES = {
     `You drive into her and your weight goes clean through the contact and she has to step back to keep it. You're pressed gut to gut, warm and enormous, and you're the one moving forward now.`,
     `You put your belly into her and walk her backward a full step. She's strong — always has been — but you're bigger now and the difference shows in her feet. "When did this happen," she breathes.`,
     `You drive and she folds backward off the contact, all 520 pounds of her giving ground to all of you, belly crushed to belly, the crowd roaring. Dana digs in and it doesn't matter. You are simply larger now.`,
+    `You lower your center of gravity and drive forward and Keiko — 560 pounds of determined competitor — gives ground immediately, belly to belly, the contact total and overwhelming. She's the second largest woman to ever stand on this dohyo and she is being walked backward by you without difficulty. The crowd, which came specifically to watch this, is very loud.`,
   ],
   you_crush:[
     `You drop your weight into her — full belly, forward and down — and she absorbs it but it costs her. She sinks. "Heavy," she grunts, almost a compliment.`,
@@ -4560,6 +4626,7 @@ const SUMO_EXCHANGE_LINES = {
     `You drop everything you have into the contact, belly first, and Dana takes it across her own enormous middle and staggers. The sound is tremendous — flesh on flesh, the floor complaining. She's off her line.`,
     `Belly drop. Your weight goes down and forward into her and she buckles around it. She's 460 and you're more, and when you drop it all into her there's nothing she can do but give. She gives.`,
     `You drop the full weight of yourself into her like a wave going over a wall, and the wall goes under. Dana's stance breaks. The crowd comes up out of their seats. Mass over mass — you are the bigger force and the drop proves it.`,
+    `You drop everything you have into the contact. Your belly — 820 pounds of it, plus everything you've eaten — comes down and forward into Keiko's smaller frame and the sound is extraordinary. She buckles completely. The floor registers it. She scrambles to recover and doesn't quite make it in time.`,
   ],
   attack_fail:[
     `She read it. Dana plants and your charge bounces off her braced bulk and you rock back, scrambling to keep your feet. "Patience," she says, like a teacher. Annoying.`,
@@ -4567,6 +4634,7 @@ const SUMO_EXCHANGE_LINES = {
     `Your charge meets her brace and the collision goes backward through you. Two enormous women and you're the one who lurches. You catch yourself on wide feet. Don't waste the next one.`,
     `She steps and your momentum carries you past, belly leading into empty air, and you fight your own weight to stop. "Careful," she says. "All that weight goes where you point it."`,
     `Even now she can read you — she plants and your charge dies against her and you rock back, the whole enormous mass of you wobbling on your heels. Dana steadies you with one hand. "Don't get cocky."`,
+    `She read it. Keiko plants at the right moment and your charge hits her braced bulk and the recoil travels all the way back through 820 pounds of you. You wobble. She presses. You recover. "Good," she says, surprised at herself. "That was good." You reset.`,
   ],
   she_drives:[
     `Dana drives into you and you give ground — she's 340 to your lighter frame and right now that's the whole story. Belly into belly, she walks you toward your edge. Dig in.`,
@@ -4574,6 +4642,7 @@ const SUMO_EXCHANGE_LINES = {
     `Dana puts her weight into you and for a moment it's even — gut to gut, neither giving — then she finds an inch and takes it. You're near your edge. This is the fight now.`,
     `She drives with everything she has and you give a step out of respect for the effort. But it's only a step. She's spending more than she's gaining now and you can both feel it.`,
     `Dana throws everything into you — all 520 pounds, all the years — and you give half a foot and plant. She's magnificent and she's losing and she knows both. "Come on," she breathes, to herself.`,
+    `Keiko drives into you with everything she has — 560 pounds of competitor, pure technique and determination — and moves you half a step and stops. You are 820 pounds and when you plant it takes more than half a step's worth of pressure to keep you going. She strains. You don't move further. She knows.`,
   ],
   clash:[
     `You meet in the middle, belly to belly, and nothing moves. Two warm enormous bodies pressed together, both pushing, the contact going nowhere. She breathes. You breathe. Stalemate — for now.`,
@@ -4581,6 +4650,7 @@ const SUMO_EXCHANGE_LINES = {
     `Locked together, mass against mass, the push perfectly balanced. Dana's face is inches from yours. "Even," she grunts. "For now." You both reset.`,
     `You collide and hold, belly crushed to belly, neither moving — but you're spending less than she is to hold it. Even on the floor and tilting everywhere else.`,
     `Two of the largest women the sport has ever seen, pressed together at the center, dead even for one long held moment — then you both break. Even on paper. Not even underneath.`,
+    `You and Keiko meet in the center and press, belly to belly — your enormous belly covering most of the contact, her smaller one disappearing into the pressure. Neither of you moves. The crowd is very quiet. You can feel her heartbeat through the contact. Then you both step back and reset.`,
   ],
   brace:[
     `You plant and root and gather yourself — feet wide, weight low, belly forward. Whatever she had coming dies against you. You breathe. Better. Now choose your moment.`,
@@ -4588,6 +4658,7 @@ const SUMO_EXCHANGE_LINES = {
     `You root down into the floor, all your weight settling into a wide planted base. She can't move what won't move. You gather yourself for what's next.`,
     `You plant and let her spend herself against you. Her push lands and dies. You feel solid, settled, enormous and immovable, balance flooding back.`,
     `You drop your base and become a mountain — 630 pounds rooted to the floor, belly forward, immovable. Dana hits you and stops. The crowd loves it. You gather and wait.`,
+    `You plant wide and root down and 820 pounds settles into the floor of the dohyo with an authority that is not dramatic, just real. Keiko hits you. Nothing happens. You gather yourself. You breathe. You choose your moment.`,
   ],
   you_dodge:[
     `She charges and you aren't there — you slip aside and her own weight carries her stumbling toward her edge. Dana catches herself, furious. "Cute," she snaps. It worked, though.`,
@@ -4595,6 +4666,7 @@ const SUMO_EXCHANGE_LINES = {
     `She loads up and fires and you simply move, and 410 pounds of Dana goes lurching past your hip toward the rope. The crowd gasps. She saves it, barely. Smart beats big sometimes.`,
     `Dana charges and you sidestep and her momentum nearly carries her out on its own. She fights her own weight to stay in. You didn't even have to touch her. "Okay, that was good," she admits.`,
     `She charges — pride more than strategy — and you step, and Dana goes thundering past into empty air. She pulls up at the very edge. You could have ended it. You both know it. "Showing off," she pants.`,
+    `Keiko charges and you slip aside and 560 pounds of her carries past your hip toward the rope. She scrambles to stop — feet skidding — and catches herself right at the edge. She looks back at you. You look at her. "Go again," she says. You do.`,
   ],
   dodge_miss:[
     `You step but she didn't charge — she was waiting — and you circle to nowhere, giving up ground for nothing. Reset. Don't guess wrong twice.`,
@@ -4602,6 +4674,7 @@ const SUMO_EXCHANGE_LINES = {
     `Your sidestep finds only air she didn't commit to. You give a little ground for the trouble. She presses — just enough to remind you it cost something.`,
     `You step expecting a charge that doesn't come. Dana's too smart for that now. You lose a beat and a little ground. She doesn't make you pay much.`,
     `You move and she didn't bite — she's been doing this too long. The sidestep wastes itself. You give half a step back and reset. Even legends guess wrong.`,
+    `You step but Keiko doesn't commit — she's been watching you all match and she learned your tells. The sidestep goes nowhere. You give a little ground. You reset. She's better than you expected.`,
   ],
   stumble:[
     `Your feet get away from you — too much weight, too little base — and you lurch, and Dana takes the free ground and drives you toward your edge. Plant. Brace. Get it back.`,
@@ -4609,6 +4682,7 @@ const SUMO_EXCHANGE_LINES = {
     `Your balance goes and your enormous body follows it, lurching, and Dana is right there to press the advantage. You stagger toward the rope. Brace next or this bout is hers.`,
     `Too much, too fast — your weight runs ahead of your feet and you stumble, and Dana, ever the veteran, makes you pay with a hard shove. Reset your base.`,
     `Even at your size, balance is balance — yours goes, and 630 pounds is a lot to recover. You lurch, Dana drives, you give ground. Brace. Breathe. Get your feet back.`,
+    `820 pounds going sideways is a notable event. Your balance goes and the floor shudders with the corrective stomp you put down to catch yourself, and Keiko is right there to press the advantage. You give ground. You plant. You breathe. You get your feet back. Your belly sways forward when you stop and settles. Keep going.`,
   ],
 };
 
@@ -4619,6 +4693,7 @@ const SUMO_CORNER_FEED = [
   { lbs:12, text:`The corner break, and the food is waiting — you've made this a system. Bowl after bowl of dense warm chanko, eaten with focus, your belly filling and rounding and pressing forward further than it did a bout ago. You stand up heavier. Dana sees it. She knows what it means.` },
   { lbs:15, text:`Your corner has a feast staged for the interval and you work through it — chanko, rice, the dense fuel that becomes mass that becomes force. Your belly fills enormous and warm and you feel the added weight change how you stand. You go back out bigger than the woman who won the last bout. On purpose.` },
   { lbs:18, text:`The corner ritual, refined over two years: between bouts you eat, and you eat seriously — bowls of chanko, the works, your belly filling past full and settling into your stance like ballast. You return to center heavier than any human being should be, exactly as planned. Dana watches you grow between bouts. There's nothing she can do about it.` },
+  { lbs:22, text:`Your corner doesn't ask how you're doing. They just bring the chanko — enormous bowls of it, the proper Invitational portion — and you eat it down to nothing while your belly sits enormous and warm and between your thighs and receives it. Each bowl goes in and your belly settles further forward and heavier against the mawashi. You stand up. The floor registers the weight shift. You go back to the dohyo bigger than you left it. That is the whole plan.` },
 ];
 
 const SUMO_BOUT_WON = [
@@ -4627,6 +4702,7 @@ const SUMO_BOUT_WON = [
   `You press her out and take the bout. The crowd chants something — your name, actually, for the first time at this level. Dana hears it. "Yeah," she says, to herself. "Yeah, I hear them." She sets up anyway.`,
   `Belly first, you drive Dana out of the ring — decisive, the contact echoing off the back wall. She steps back in. "You're a problem," she says, no bitterness in it. "You're a real problem now." The crowd is enormous.`,
   `You push 520 pounds of Dana Mercer out of the ring like the tide going out and the bout is yours. The arena erupts. Dana steps to center, hands on her belly, almost smiling. "That's the one I came to feel," she says. "Do it again and I'll believe it."`,
+  `You drive Keiko out of the Invitational dohyo — all 560 pounds of her giving way to the full forward mass of you — and the bout is yours. Keiko steps back to the edge of the ring, breathing hard, looking at you with the expression of someone revising everything they thought was possible. "I prepared for this all year," she says. "I'm not disappointed. I just... didn't know." You step to center. Bout won. Continue.`,
 ];
 
 const SUMO_BOUT_LOST = [
@@ -4635,6 +4711,7 @@ const SUMO_BOUT_LOST = [
   `She catches you off balance and drives you out. The bout is hers, and it stings because you know you can take her now. Reset. Fuel. The weight is on your side — use it.`,
   `Dana takes the bout — pride and technique and everything she's got. She earns it. But she spent a lot, and you've got more in the tank and more in the corner. Go eat. Come back bigger than her.`,
   `Dana wins the bout the way a champion wins — total commitment, nothing held back. She's magnificent. She's also pouring everything out to stay with you, and you've barely begun to spend. Corner. Fuel. Bury her in the next one.`,
+  `Keiko takes it — good technique, a read on your timing, pure grit. She earns it completely. She's 560 pounds and she fought the largest competitor in the history of this dohyo and she's still standing. You are genuinely impressed. You go to your corner. You eat. You come back bigger. Grit has a limit. Mass doesn't.`,
 ];
 
 // Match aftermath scene — (s, yourGain, won, oppLbs) => string
@@ -4654,6 +4731,45 @@ const SUMO_MATCH_AFTERMATH = [
   (s,g,won,opp)=> won
     ? `Match to you. National champion. You buried Dana Mercer under all of you and the arena came apart at the second bout. She finds you at the edge of the dohyo, breathing hard, smiling. "I came here to feel it," she says. "To feel what it's like when someone's just... bigger than the sport. I felt it. Thank you." You stand in the noise, the largest competitor the circuit has ever crowned, and you think: more. There's always more.`
     : `Dana, somehow, steals it — the match of her life, every trick she's ever learned, spent completely against a woman who outweighs her by a hundred pounds. The crowd gives her a standing ovation and she earns it. "One last good one," she says, wrung out, grinning. "But you're the future and we both know it. Go get bigger. Go be the thing they can't beat." You will. You absolutely will.`,
+  // stageIdx 5 — stage 10, ~820 lbs — Grand Invitational Exhibition
+  (s,g,won,opp)=> won
+    ? `Match to you. Invitational champion. Keiko — 560 pounds of competitor who trained for a year for this exhibition — finds you at the edge of the dohyo and stands there for a moment, just looking at you. At all of you. At the full enormous warm reality of 820 pounds standing in the competition lights. "I thought I knew what I was stepping onto the dohyo to face," she says. "I didn't." She puts out her hand. You take it. "Thank you," she says. You nod. You both know exactly what was demonstrated here today, and what it means for what comes next. You are the largest the sport has ever seen. You are still getting larger.`
+    : `Keiko takes it — an extraordinary match, fought brilliantly by a competitor who understood exactly what she was up against and chose the perfect strategy to exploit the one gap in your technique. She earned every step of it. "You're still the largest thing the dohyo has ever seen," she tells you after. "I just had a good day. Next time you'll know my timing." She's right. But next time you'll also be bigger, and the gap between your weight and hers will be wider, and that gap has always been the whole story. More. There is always more.`,
+];
+
+// Sumo payoff paragraph — indexed by stageIdx, escalates in physical detail
+const SUMO_PAYOFF_TEXT = [
+  // stageIdx 0 — stage 5, ~258 lbs
+  (gain) => `${Math.round(gain)} pounds added to your frame in the course of this match. You can feel it in your stance — lower and heavier than when you stepped onto the dohyo. Your mawashi sits tighter. Your belly is warm and forward. You are already thinking about next time.`,
+  // stageIdx 1 — stage 6, ~320 lbs
+  (gain) => `${Math.round(gain)} pounds added since the opening bow. Your belly is heavier and warmer than it was, pressing your mawashi outward, and you feel it in every step back to the edge of the ring — the specific density of a body that has been fueling all match and now carries the evidence. Heavier. That's the whole strategy.`,
+  // stageIdx 2 — stage 7, ~419 lbs
+  (gain) => `${Math.round(gain)} pounds gained in a single match — between the corner feed and the eating you did in warmup, your frame has added real mass today and you can feel it. Your belly is enormous and warm and pressing your mawashi and it is larger than when you walked in. Your stance is lower. Your weight is more. Your thighs press together harder with each step. This is the work. You are doing the work.`,
+  // stageIdx 3 — stage 8, ~519 lbs
+  (gain) => `${Math.round(gain)} pounds. Added to a body that was already the heaviest on the circuit. Your belly is an enormous warm full mass pressing your mawashi outward — visibly larger than it was before the match — and your thighs are wider under its increased weight, and you feel every added pound in how you stand and how the floor receives you. You put one hand flat on your belly, feeling the warmth and the weight and the full round pressure of it. Then you think about what you want to weigh at the next tournament.`,
+  // stageIdx 4 — stage 9, ~630 lbs
+  (gain) => `The payoff is real and it is on your body and it is visible. ${Math.round(gain)} pounds have been added to your frame across the course of this match — corner feed, warmup, the sheer caloric intensity of fighting at this weight — and your belly sits between your thighs heavier and further forward than it did when the opening bow happened. You can feel the difference: the mawashi tighter, the floor pressing back harder with each step, your belly warm and vast and swollen with the specific fullness of having eaten seriously and exerted seriously at the same time. Both. At once. Your belly is enormous and you are the national champion and the number is still going up.`,
+  // stageIdx 5 — stage 10, ~820 lbs (blob)
+  (gain) => `${Math.round(gain)} pounds. Added on top of 820. Your belly — already the dominant physical fact of the Invitational, already the thing that reshaped the dohyo's geometry just by standing in it — is now measurably larger than when the match began, sitting enormous and warm and heavy between your thighs, pressing your mawashi forward, pressing your thighs further apart, the full vast warm mass of you increased by another increment that is visible if you know where to look, and several people in this room know where to look. You put both hands flat on your belly. It fills your arms. The warmth of it seeps into your palms. You breathe around it. You feel the weight of yourself in the floor underneath you. You think: more. There is always more room for more.`,
+];
+
+// Fill the Ring move popup text — only fires at blob stage
+const SUMO_FILL_RING_TEXT = [
+  null, null, null, null, null,
+  // stageIdx 5 — blob
+  `You stop moving. This is a choice — not a failure of will, a deliberate decision to stop engaging on their terms and engage entirely on yours.
+
+You exhale. Your belly, already the dominant fact in the room, relaxes forward — fully, completely, without the constant muscular engagement that keeps it from expressing its full extent. It moves outward and downward and sideways and it does not stop at a polite distance. The apron cloth accepts the first three feet of it. The dohyo itself receives the next two. The wood registers the weight shift with a sound that is not a creak but something lower and more final, a compression, the structure adjusting to accommodate something it was not designed for.
+
+Your hips follow — or rather, they were always involved, the architecture of your lower half is not separable from your belly anymore, the whole geography of you lowers and spreads as one continuous event. Your ass, enormous and warm, finds the dohyo floor on both sides of the center line simultaneously. Your thighs press outward to accommodate. The center of the dohyo is no longer empty space. It is you.
+
+Keiko is on your right, trying to think of what to do. You are occupying most of the ring. Not all of it, but most of it. There is a strip of dohyo available at the edge, approximately the width of a doorway, and she is standing in it looking at the full fact of you filling the space that used to be a competition area.
+
+She steps back. The clay beyond the tawara receives her foot. The judges look up. She looks down at her foot. She is outside the ring.
+
+You did not touch her. You did not charge her. You did not push. You took up the space that was available and she had nowhere to be.
+
+The hall is completely silent. Then someone in the stands exhales loudly — not a cheer, just a release of held breath — and then everyone starts talking at once.`,
 ];
 
 // ══════════════════════════════════════════════════════════════════
@@ -4847,6 +4963,42 @@ The national final is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
 The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
       ]
     },
+    // stage 10 — ~820 lbs — Grand Invitational Exhibition (blob)
+    {
+      title:"Grand Invitational Exhibition",
+      phases:[
+        {
+          text:(h,s)=>`The Grand Invitational is a different kind of event. It is not a tournament. It is an exhibition built around you. Your name is on the banner outside the venue. The door staff widened both loading doors. You are ${Math.round(s.lbs)} pounds and the warm-up room contains you and everything else is arranged around that fact.
+
+Keiko Watanabe is here — 560 pounds, the second largest competitor the Invitational has ever registered, brought in specifically to be a credible match. She is standing across the warm-up area looking at you with the focused expression of someone who has been told exactly what they are walking into and has chosen to walk into it anyway. That is respect. You will repay it on the dohyo.
+
+There is a feast staged in your corner. The chanko is deep and warm and the bowls are the large format. This is the warm-up.`,
+          choices:[
+            {id:"load_hard",label:"Fill your belly completely — weight is the weapon",result:`You eat until your belly is past full and settling into your stance with the specific ballast gravity of a very large body that has eaten very seriously. Your belly presses your mawashi forward and settles between your thighs enormous and warm and forward. Keiko watches you eat. You are 820 pounds and you just got heavier. This is the whole strategy.`,lbs:18,rel:5,flag:"loaded"},
+            {id:"warm_up",label:"Move through the forms — plant, root, presence",result:`You move. 820 pounds moving through sumo forms is not a quiet thing — the floor accepts each rep with the considered patience of something that has no choice, your belly swinging vast and warm with each shift, the whole volume of you precise and focused. You eat enough to fuel this and leave room for the corner. Ready.`,lbs:10,rel:10,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`The Invitational weigh-in is broadcast. The venue's PA system reads each competitor's weight as they step off. Keiko steps on. 560 pounds. The crowd gives it proper appreciation — she is enormous, she is real, she is here.
+
+Then you step on. The scale settles. The PA reads it: ${Math.round(s.lbs)} pounds.
+
+The crowd has a moment. Not silence — the kind of held breath that is the physical sensation of a room recalibrating. Then it breaks entirely. Keiko looks at the board. She looks at you. She nods once, formal, the bow of a competitor who knows what she's about to face and respects the fact of it.`,
+          choices:[
+            {id:"own_it",label:"Turn to face the room fully. All of you.",result:(s)=>`You turn to face the arena and let them see all of you — ${Math.round(s.lbs)} pounds, belly enormous and warm and forward in the Invitational lights, filling more of the stage than the stage was designed for. This is what they came to see. You give it to them completely.`,rel:10,flag:"confident"},
+            {id:"stay_focused",label:"Step off. One hand on your belly. Eyes on the dohyo.",result:`You step off and walk toward the dohyo and put one hand flat on your belly — the full warm forward weight of it, enormous under your palm — and you feel what you are right now and what you're about to use it for, and you are ready.`,rel:6,flag:"paced"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`The Invitational arena is very loud and your name is on the banner and Keiko is already on the dohyo, waiting. You are the largest competitor this exhibition has ever seen.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+        {condition:()=>true,text:`The Grand Invitational. The dohyo. The crowd has been waiting for this since the doors opened. Keiko sets her stance across the center line, focused and ready.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+      ]
+    },
   ],
 
   eating_captain:[
@@ -5020,6 +5172,46 @@ The arena does not cheer first. There is a moment of silence — the specific si
 
 The national championship horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
         {condition:()=>true,text:`National championship. Your lane. The table. ${Math.round(4)>2?"The crowd is already making noise.":""}
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+      ]
+    },
+    // stage 10 — ~820 lbs — Grand Invitational (blob)
+    {
+      title:"Grand Invitational",
+      phases:[
+        {
+          text:(h,s)=>`The Grand Invitational is not a normal competition. It is an invite-only showcase event and you are the reason it exists. The venue's promotional image for this event is a silhouette. Your silhouette. They did not need to specify whose.
+
+You are ${Math.round(s.lbs)} pounds and the warmup room has been extended with an anteroom to accommodate you. Maya from Lakewood is here — 530 lbs, five years on the circuit, the only other competitor with a name recognition anywhere near yours. She comes to find you when you arrive, which she has never done before. "I've watched every one of your competitions," she says. "I wanted to say that before today." She says it with the clean directness of someone who has given up competing with you and arrived at something else instead. You are moved. You are also here to eat.
+
+The Invitational catering table is the full format. Everything available. This is the load-up.`,
+          choices:[
+            {id:"load_hard",label:"Eat everything — fill completely, every available item",result:`You eat through the catering table with the total focus of someone who knows what their body is capable of and intends to use every inch of it. Your belly goes from enormous to vastly enormous, warm and heavy and past full and settled low between your thighs, pressing your competition top up past your navel, and you are loaded. You are 820 pounds plus all of this. You are ready.`,lbs:18,rel:5,flag:"loaded"},
+            {id:"eat_smart",label:"Eat to capacity — precise, controlled, leave space for the table",result:`You eat with the focused precision of someone who has done this for years and knows exactly where the ceiling is. Your belly fills warm and full and forward, the specific controlled fullness of a professional who has not lost their technique at any weight. You stop. You breathe. There is room left. For the table.`,lbs:10,rel:8,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`The Grand Invitational weigh-in is the event before the event. The venue streams it separately.
+
+Maya steps on: 530 pounds. The crowd gives it the standing ovation it deserves — she is enormous and remarkable and five years of circuit work have made her what she is. She looks at you while she steps off.
+
+You step on. The official scale at the Grand Invitational has been recalibrated for this event. The number settles: ${Math.round(s.lbs)} pounds.
+
+The streaming audience's comments appear on a sidebar screen visible from the stage. You can see the rate at which they're arriving. It's very fast.
+
+Maya looks at the board. Then at you. "Every time," she says quietly. "Every year it's more." She is not complaining. She is witnessing.`,
+          choices:[
+            {id:"own_it",label:"Face the stream camera directly. Let the whole number land.",result:(s)=>`You find the camera and you face it and you let it see all of you — ${Math.round(s.lbs)} pounds of Grand Invitational competitor, belly enormous and warm and forward in the lights, filling the stage in a way that the camera has to pull back slightly to accommodate. The comments on the sidebar move faster. Good.`,rel:12,flag:"confident"},
+            {id:"look_at_maya",label:'Look at Maya. Say: "You came back."',result:`You find Maya's eyes. She looks back. "I came back," she says, before you can. "I'll always come back." You both know what that means: that this is something beyond competition now, something she comes back to because she needs to be near it. You step off the scale. The table is waiting.`,rel:8,flag:"confident"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`The Grand Invitational. Your lane. The table — every item, both sides, the full Invitational format. The streaming audience is already enormous.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+        {condition:()=>true,text:`Your lane. The Grand Invitational table. Maya is at hers, watching you with the focused warmth of someone who knows what is about to happen and came specifically to see it.
 
 The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
       ]
@@ -8833,12 +9025,14 @@ export default function ProfessorSim(){
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const stageFoods=CONTEST_STAGE_FOODS[stageIdx]||CONTEST_STAGE_FOODS[0];
     const mayaLbs=CONTEST_MAYA_WEIGHTS[stageIdx]||330;
-    const yourFoods=stageFoods.your.map((id,i)=>({...(CONTEST_FOODS.find(f=>f.id===id)||{}),consumed:false,key:i}));
-    const mayaFoods=stageFoods.maya.map((id,i)=>({...(CONTEST_FOODS.find(f=>f.id===id)||{}),consumed:false,key:100+i}));
-    const maxYF=80+Math.floor(s.lbs/8);
+    const yourFoods=stageFoods.your.map((id,i)=>({...(CONTEST_FOODS.find(f=>f.id===id)||{}),consumed:false,selected:false,key:i}));
+    const mayaFoods=stageFoods.maya.map((id,i)=>({...(CONTEST_FOODS.find(f=>f.id===id)||{}),consumed:false,selected:false,key:100+i}));
+    const completions=s.contestCompletions||0;
+    const multiplier=1+0.15*completions;
+    const maxYF=Math.floor((80+Math.floor(s.lbs/8))*multiplier);
     const maxMF=80+Math.floor(mayaLbs/8);
     const initFull=(history||[]).includes('loaded')?25:15;
-    setEatingContestState({studentId,stageIdx,yourFoods,mayaFoods,yourFullness:initFull,mayaFullness:0,maxYourFullness:maxYF,maxMayaFullness:maxMF,yourGain:0,mayaGain:0,popupText:null,phaseAfterPopup:null,phase:'eating',pantsFactor:0,actions:{unbuttoned:false,rubUses:0,taunted:false,stolen:false}});
+    setEatingContestState({studentId,stageIdx,yourFoods,mayaFoods,yourFullness:initFull,mayaFullness:0,maxYourFullness:maxYF,maxMayaFullness:maxMF,yourGain:0,mayaGain:0,popupText:null,phaseAfterPopup:null,phase:'eating',pantsFactor:0,actions:{unbuttoned:false,rubUses:0,taunted:false}});
     setEvolvedEventState(null);
   };
 
@@ -8856,9 +9050,10 @@ export default function ProfessorSim(){
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const food=yourFoods[idx]; if(!food||food.consumed) return;
     const effectiveMax=maxYourFullness-pantsFactor;
-    if(yourFullness+food.fullness>effectiveMax) return;
+    // When devour is NOT available (stageIdx < 3), enforce too-full gate
+    if(stageIdx<3 && yourFullness+food.fullness>effectiveMax) return;
     // Consume food, apply real lbs gain
-    const newYF=yourFoods.map((f,i)=>i===idx?{...f,consumed:true}:f);
+    const newYF=yourFoods.map((f,i)=>i===idx?{...f,consumed:true,selected:false}:f);
     const newYourFull=yourFullness+food.fullness;
     const newYourGain=yourGain+food.lbs;
     setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,food.lbs,0):st));
@@ -8883,14 +9078,67 @@ export default function ProfessorSim(){
       setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tcp,phaseAfterPopup:'weigh_in_2'}));
       return;
     }
-    const newEffMax=maxYourFullness-pantsFactor;
-    const tooFull=newYourFull>=newEffMax&&actions.unbuttoned&&actions.rubUses>=3;
-    if(tooFull){
-      const tfp=CONTEST_ACTION_POPUPS.too_full?.[stageIdx]||popup;
-      setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tfp,phaseAfterPopup:'weigh_in_2'}));
-      return;
+    // Too-full end condition only applies when devour is NOT available
+    if(stageIdx<3){
+      const newEffMax=maxYourFullness-pantsFactor;
+      const tooFull=newYourFull>=newEffMax&&actions.unbuttoned&&actions.rubUses>=3;
+      if(tooFull){
+        const tfp=CONTEST_ACTION_POPUPS.too_full?.[stageIdx]||popup;
+        setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tfp,phaseAfterPopup:'weigh_in_2'}));
+        return;
+      }
     }
     setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:popup}));
+  };
+
+  const toggleFoodSelection=(side,key)=>{
+    if(!eatingContestState) return;
+    const{stageIdx,yourFoods,mayaFoods}=eatingContestState;
+    if(side==='your'){
+      setEatingContestState(prev=>({...prev,yourFoods:prev.yourFoods.map(f=>f.key===key&&!f.consumed?{...f,selected:!f.selected}:f)}));
+    } else if(side==='maya'&&stageIdx>=3){
+      setEatingContestState(prev=>({...prev,mayaFoods:prev.mayaFoods.map(f=>f.key===key&&!f.consumed?{...f,selected:!f.selected}:f)}));
+    }
+  };
+
+  const doDevour=()=>{
+    if(!eatingContestState) return;
+    const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,pantsFactor}=eatingContestState;
+    const s=students.find(st=>st.id===studentId); if(!s) return;
+    const selectedYour=yourFoods.filter(f=>f.selected&&!f.consumed);
+    const selectedMaya=mayaFoods.filter(f=>f.selected&&!f.consumed);
+    const toEat=[...selectedYour,...selectedMaya];
+    if(!toEat.length) return;
+    const totalFullness=toEat.reduce((a,f)=>a+(f.fullness||0),0);
+    const totalLbs=toEat.reduce((a,f)=>a+(f.lbs||0),0);
+    const newYourFull=yourFullness+totalFullness;
+    const newYourGain=yourGain+totalLbs;
+    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,totalLbs,0):st));
+    const selectedYourKeys=new Set(selectedYour.map(f=>f.key));
+    const selectedMayaKeys=new Set(selectedMaya.map(f=>f.key));
+    const newYF=yourFoods.map(f=>selectedYourKeys.has(f.key)?{...f,consumed:true,selected:false}:f);
+    const newMF=mayaFoods.map(f=>selectedMayaKeys.has(f.key)?{...f,consumed:true,selected:false}:f);
+    // Maya eats one item per player action
+    let finalMF=[...newMF];
+    let newMayaFull=mayaFullness;
+    let newMayaGain=mayaGain;
+    if(mayaFullness<maxMayaFullness){
+      const avail=finalMF.filter(f=>!f.consumed);
+      if(avail.length>0){
+        const pick=avail[Math.floor(Math.random()*avail.length)];
+        finalMF=finalMF.map(f=>f===pick?{...f,consumed:true}:f);
+        newMayaFull=mayaFullness+pick.fullness;
+        newMayaGain=mayaGain+pick.lbs;
+      }
+    }
+    const popup=CONTEST_DEVOUR_POPUPS[stageIdx]||'';
+    const tableCleared=newYF.every(f=>f.consumed)&&finalMF.every(f=>f.consumed);
+    if(tableCleared){
+      const tcp=CONTEST_ACTION_POPUPS.table_cleared?.[stageIdx]||popup;
+      setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:finalMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tcp,phaseAfterPopup:'weigh_in_2'}));
+      return;
+    }
+    setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:finalMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:popup}));
   };
 
   const doContestAction=(action)=>{
@@ -8912,18 +9160,6 @@ export default function ProfessorSim(){
       if(actions.taunted) return;
       updates.actions={...actions,taunted:true};
       popup=CONTEST_ACTION_POPUPS.taunt?.[stageIdx]||'';
-    } else if(action==='steal'){
-      if(actions.stolen) return;
-      const avail=mayaFoods.filter(f=>!f.consumed);
-      if(!avail.length) return;
-      const pick=avail[Math.floor(Math.random()*avail.length)];
-      const newMFsteal=mayaFoods.map(f=>f===pick?{...f,consumed:true}:f);
-      const stolenItem={...pick,consumed:false,key:200+yourFoods.length};
-      updates.yourFoods=[...yourFoods,stolenItem];
-      updates.mayaFoods=newMFsteal;
-      updates.actions={...actions,stolen:true};
-      const stealIdx=Math.max(0,Math.min(1,stageIdx-3));
-      popup=(CONTEST_ACTION_POPUPS.steal||[])[stealIdx]||'';
     }
     // Advance Maya after each action
     const curMF=updates.mayaFoods||mayaFoods;
@@ -8944,7 +9180,7 @@ export default function ProfessorSim(){
     updates.mayaGain=newMayaGain;
     updates.popupText=popup;
     updates.phaseAfterPopup=null;
-    // Check too full after rub (fullness decreased; unbutton/taunt/steal don't approach capacity)
+    // Check too full after rub/unbutton — only applicable when devour not yet unlocked
     if(action==='rub'||(action==='unbutton')){
       const newYF2=updates.yourFoods||yourFoods;
       const newFull2=updates.yourFullness!==undefined?updates.yourFullness:yourFullness;
@@ -8953,18 +9189,22 @@ export default function ProfessorSim(){
       const noRoom=newFull2>=newEffMax2&&newActions2.unbuttoned&&newActions2.rubUses>=3;
       const tableCleared2=newYF2.every(f=>f.consumed)&&newMF.every(f=>f.consumed);
       if(tableCleared2){updates.phaseAfterPopup='weigh_in_2';updates.popupText=CONTEST_ACTION_POPUPS.table_cleared?.[stageIdx]||'';}
-      else if(noRoom){updates.phaseAfterPopup='weigh_in_2';updates.popupText=CONTEST_ACTION_POPUPS.too_full?.[stageIdx]||'';}
+      else if(noRoom&&stageIdx<3){updates.phaseAfterPopup='weigh_in_2';updates.popupText=CONTEST_ACTION_POPUPS.too_full?.[stageIdx]||'';}
     }
     setEatingContestState(prev=>({...prev,...updates}));
   };
 
   const closeEatingContest=()=>{
     if(!eatingContestState) return;
-    const{studentId,yourGain,mayaGain,stageIdx}=eatingContestState;
+    const{studentId,yourGain,mayaGain,stageIdx,phase}=eatingContestState;
     const s=students.find(st=>st.id===studentId);
     const mayaLbs=CONTEST_MAYA_WEIGHTS[stageIdx]||330;
     const won=yourGain>=mayaGain;
     if(s) push(`🏆 ${s.name} — Competition: +${Math.round(yourGain)} lbs · ${won?'Victory':'Loss'} vs Maya (${mayaLbs} lbs)`);
+    // Increment completions when player reaches scoreboard (completed the contest)
+    if(phase==='scoreboard'&&s){
+      setStudents(prev=>prev.map(st=>st.id===studentId?{...st,contestCompletions:(st.contestCompletions||0)+1}:st));
+    }
     setEatingContestState(null);
   };
 
@@ -9027,7 +9267,7 @@ export default function ProfessorSim(){
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const oppLbs=SUMO_RIVAL_WEIGHTS[stageIdx]||340;
     const {move,telegraph}=pickOppMove(0,100);
-    setSumoMatchState({studentId,stageIdx,oppLbs,ringPos:0,yourBalance:100,oppBalance:100,yourBouts:0,oppBouts:0,gainAccum:0,oppMove:move,telegraph,exchangeLine:`The first tachi-ai. You square up against ${SUMO_RIVAL_NAME} — ${oppLbs} pounds of veteran across the line from you. The crowd settles. Choose your opening.`,phase:'match',popupText:null,phaseAfterPopup:null});
+    setSumoMatchState({studentId,stageIdx,oppLbs,ringPos:0,yourBalance:100,oppBalance:100,yourBouts:0,oppBouts:0,gainAccum:0,oppMove:move,telegraph,exchangeLine:`The first tachi-ai. You square up against ${SUMO_RIVAL_NAME} — ${oppLbs} pounds of veteran across the line from you. The crowd settles. Choose your opening.`,phase:'match',popupText:null,phaseAfterPopup:null,fillRingUsed:false});
     setEvolvedEventState(null);
   };
 
@@ -9035,6 +9275,15 @@ export default function ProfessorSim(){
     if(!sumoMatchState) return;
     const st=sumoMatchState;
     const s=students.find(x=>x.id===st.studentId); if(!s) return;
+    // Fill the Ring — blob-only instant win move
+    if(moveId==='fill_ring'){
+      if(st.fillRingUsed) return;
+      const yourBouts=st.yourBouts+1;
+      const matchOver=yourBouts>=2;
+      const fillText=SUMO_FILL_RING_TEXT[st.stageIdx]||`You expand completely into the ring. Your opponent steps outside. Bout to you.`;
+      setSumoMatchState({...st,ringPos:100,yourBouts,fillRingUsed:true,popupText:fillText,phaseAfterPopup:matchOver?'aftermath':'interbout'});
+      return;
+    }
     const wf=Math.max(0.6,Math.min(2.0,s.lbs/st.oppLbs));
     let ringPos=st.ringPos, yourBalance=st.yourBalance, oppBalance=st.oppBalance;
     let tag,ringDelta=0,yb=0,ob=0;
@@ -9080,7 +9329,7 @@ export default function ProfessorSim(){
       if(!prev) return null;
       const {move,telegraph}=pickOppMove(0,100);
       const boutNum=prev.yourBouts+prev.oppBouts+1;
-      return {...prev,ringPos:0,yourBalance:100,oppBalance:100,oppMove:move,telegraph,exchangeLine:`Bout ${boutNum}. You square up at the center again. ${SUMO_RIVAL_NAME} sets her feet across from you.`,phase:'match',popupText:null,phaseAfterPopup:null};
+      return {...prev,ringPos:0,yourBalance:100,oppBalance:100,oppMove:move,telegraph,exchangeLine:`Bout ${boutNum}. You square up at the center again. ${SUMO_RIVAL_NAME} sets her feet across from you.`,phase:'match',popupText:null,phaseAfterPopup:null,fillRingUsed:false};
     });
   };
 
@@ -9101,10 +9350,13 @@ export default function ProfessorSim(){
 
   const closeSumoMatch=()=>{
     if(!sumoMatchState) return;
-    const {studentId,yourBouts,oppBouts,gainAccum,oppLbs}=sumoMatchState;
+    const {studentId,yourBouts,oppBouts,gainAccum,oppLbs,phase}=sumoMatchState;
     const s=students.find(x=>x.id===studentId);
     const won=yourBouts>oppBouts;
     if(s) push(`🥋 ${s.name} — Sumo Match: +${Math.round(gainAccum)} lbs · ${won?'WIN':'Loss'} vs Dana (${oppLbs} lbs), ${yourBouts}–${oppBouts}`);
+    if(phase==='aftermath'&&s){
+      setStudents(prev=>prev.map(st=>st.id===studentId?{...st,contestCompletions:(st.contestCompletions||0)+1}:st));
+    }
     setSumoMatchState(null);
   };
 
@@ -13946,14 +14198,20 @@ export default function ProfessorSim(){
         const yourPct=Math.min(100,Math.round((yourFullness/effectiveMax)*100));
         const mayaPct=Math.min(100,Math.round((mayaFullness/maxMayaFullness)*100));
         const won=yourGain>=mayaGain;
-        const TITLE_LABELS=["Regional Open","Circuit Regular","Conference Championship","National Qualifier","National Championship Final"];
+        const devourUnlocked=stageIdx>=3;
+        const TITLE_LABELS=["Regional Open","Circuit Regular","Conference Championship","National Qualifier","National Championship Final","Grand Invitational"];
         const contestTitle=TITLE_LABELS[stageIdx]||"Competition";
-        const payoffText=`You've stuffed yourself full — past full, past comfortable, past the point where your body was pretending this was normal. The payoff is real: ${Math.round(yourGain)} more pounds of fat have settled onto your frame since the horn fired. You can feel it. Your pants press your thighs tighter than they did this morning. Your shirt has completely ridden up. Your belly is out — warm and round and enormous — pressing forward with a gravity you didn't have when you walked in. There is no hiding what you did today. There is no hiding what you are.`;
+        const selectedYourCount=(yourFoods||[]).filter(f=>f.selected&&!f.consumed).length;
+        const selectedMayaCount=(mayaFoods||[]).filter(f=>f.selected&&!f.consumed).length;
+        const selectedCount=selectedYourCount+selectedMayaCount;
+        const payoffText=CONTEST_PAYOFF_TEXT[stageIdx]?.(yourGain)||`${Math.round(yourGain)} pounds added to your frame. You can feel it. You are heavier than when you walked in.`;
+        const completions=s.contestCompletions||0;
         return(
           <div style={{...C.overlay,zIndex:1200}}>
             <div style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#030e04,#061a08,#030e04)",border:"1px solid #20803050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#30a050",marginBottom:4}}>{contestTitle.toUpperCase()} — COMPETITION</div>
-              <div style={{fontSize:14,fontWeight:700,color:"#60dd80",marginBottom:12}}>{s.name}</div>
+              <div style={{fontSize:14,fontWeight:700,color:"#60dd80",marginBottom:4}}>{s.name}</div>
+              {completions>0&&<div style={{fontSize:9,color:"#20804a",marginBottom:8,letterSpacing:1}}>VETERAN ×{completions+1} — capacity ×{(1+0.15*completions).toFixed(2)}</div>}
 
               {/* EATING PHASE */}
               {phase==='eating'&&(
@@ -13974,6 +14232,8 @@ export default function ProfessorSim(){
                     </div>
                   </div>
 
+                  {devourUnlocked&&<div style={{fontSize:9,color:"#a0d060",letterSpacing:1,marginBottom:6,textAlign:"center"}}>DEVOUR MODE — tap food on either side to select, then Devour all at once. Match ends when all food is gone.</div>}
+
                   {/* Food tables */}
                   <div style={{display:"flex",gap:10,marginBottom:12}}>
                     {/* Your table */}
@@ -13981,17 +14241,18 @@ export default function ProfessorSim(){
                       <div style={{fontSize:9,color:"#30a050",letterSpacing:2,marginBottom:6}}>YOUR TABLE</div>
                       <div style={{display:"flex",flexDirection:"column",gap:4}}>
                         {yourFoods.map((food,idx)=>{
-                          const tooFull=yourFullness+(food.fullness||0)>effectiveMax;
-                          const disabled=food.consumed||tooFull;
+                          const tooFull=stageIdx<3&&(yourFullness+(food.fullness||0)>effectiveMax);
+                          const disabled=food.consumed||(stageIdx<3&&tooFull);
+                          const isSelected=food.selected&&!food.consumed;
                           return(
                             <button key={food.key!==undefined?food.key:idx}
-                              style={{...C.btn(disabled?"#0a1a0a":"#103520"),opacity:food.consumed?0.3:tooFull?0.5:1,textAlign:"left",padding:"5px 8px",fontSize:11,display:"flex",alignItems:"center",gap:6,cursor:food.consumed?"not-allowed":tooFull?"not-allowed":"pointer"}}
+                              style={{...C.btn(food.consumed?"#0a1a0a":isSelected?"#1a4800":"#103520"),opacity:food.consumed?0.3:tooFull?0.5:1,textAlign:"left",padding:"5px 8px",fontSize:11,display:"flex",alignItems:"center",gap:6,cursor:food.consumed?"not-allowed":"pointer",border:isSelected?"1px solid #a0e040":"1px solid transparent"}}
                               disabled={disabled}
-                              onClick={()=>eatContestFood(idx)}>
+                              onClick={()=>devourUnlocked?toggleFoodSelection('your',food.key):eatContestFood(idx)}>
                               <span style={{fontSize:14}}>{food.emoji||"🍽️"}</span>
-                              <span style={{color:food.consumed?"#304030":"#80d090"}}>{food.name||food.id}</span>
-                              {food.fromMaya&&<span style={{fontSize:9,color:"#a05030",marginLeft:"auto"}}>stolen</span>}
-                              {!food.consumed&&<span style={{fontSize:9,color:"#40804a",marginLeft:"auto"}}>+{food.lbs}lb</span>}
+                              <span style={{color:food.consumed?"#304030":isSelected?"#c0ff40":"#80d090"}}>{food.name||food.id}</span>
+                              {isSelected&&<span style={{fontSize:9,color:"#a0e040",marginLeft:"auto"}}>✓</span>}
+                              {!food.consumed&&!isSelected&&<span style={{fontSize:9,color:"#40804a",marginLeft:"auto"}}>+{food.lbs}lb</span>}
                             </button>
                           );
                         })}
@@ -14001,14 +14262,27 @@ export default function ProfessorSim(){
                     <div style={{flex:1}}>
                       <div style={{fontSize:9,color:"#508060",letterSpacing:2,marginBottom:6}}>MAYA'S TABLE ({mayaLbs} lbs)</div>
                       <div style={{display:"flex",flexDirection:"column",gap:4}}>
-                        {mayaFoods.map((food,idx)=>(
-                          <div key={food.key!==undefined?food.key:100+idx}
-                            style={{padding:"5px 8px",fontSize:11,display:"flex",alignItems:"center",gap:6,opacity:food.consumed?0.3:1,background:"#050f06",borderRadius:4,border:"1px solid #0a1a0a"}}>
-                            <span style={{fontSize:14}}>{food.emoji||"🍽️"}</span>
-                            <span style={{color:food.consumed?"#304030":"#608070"}}>{food.name||food.id}</span>
-                            {food.consumed&&<span style={{fontSize:9,color:"#305030",marginLeft:"auto"}}>eaten</span>}
-                          </div>
-                        ))}
+                        {mayaFoods.map((food,idx)=>{
+                          const isSelected=food.selected&&!food.consumed;
+                          return devourUnlocked?(
+                            <button key={food.key!==undefined?food.key:100+idx}
+                              style={{...C.btn(food.consumed?"#0a1a0a":isSelected?"#3a1800":"#0f1a0a"),opacity:food.consumed?0.3:1,textAlign:"left",padding:"5px 8px",fontSize:11,display:"flex",alignItems:"center",gap:6,cursor:food.consumed?"not-allowed":"pointer",border:isSelected?"1px solid #e07040":"1px solid transparent"}}
+                              disabled={food.consumed}
+                              onClick={()=>toggleFoodSelection('maya',food.key)}>
+                              <span style={{fontSize:14}}>{food.emoji||"🍽️"}</span>
+                              <span style={{color:food.consumed?"#304030":isSelected?"#ffa060":"#608070"}}>{food.name||food.id}</span>
+                              {isSelected&&<span style={{fontSize:9,color:"#e07040",marginLeft:"auto"}}>✓</span>}
+                              {!food.consumed&&!isSelected&&<span style={{fontSize:9,color:"#407050",marginLeft:"auto"}}>+{food.lbs}lb</span>}
+                            </button>
+                          ):(
+                            <div key={food.key!==undefined?food.key:100+idx}
+                              style={{padding:"5px 8px",fontSize:11,display:"flex",alignItems:"center",gap:6,opacity:food.consumed?0.3:1,background:"#050f06",borderRadius:4,border:"1px solid #0a1a0a"}}>
+                              <span style={{fontSize:14}}>{food.emoji||"🍽️"}</span>
+                              <span style={{color:food.consumed?"#304030":"#608070"}}>{food.name||food.id}</span>
+                              {food.consumed&&<span style={{fontSize:9,color:"#305030",marginLeft:"auto"}}>eaten</span>}
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -14029,9 +14303,9 @@ export default function ProfessorSim(){
                     <button style={{...C.btn(actions.taunted?"#0a1a0a":"#1a2a10"),fontSize:11,padding:"6px 10px",opacity:actions.taunted?0.4:1}} disabled={actions.taunted} onClick={()=>doContestAction('taunt')}>
                       😏 Taunt Maya{actions.taunted?" ✓":""}
                     </button>
-                    {stageIdx>=3&&(
-                      <button style={{...C.btn(actions.stolen?"#0a1a0a":"#2a2010"),fontSize:11,padding:"6px 10px",opacity:actions.stolen?0.4:1}} disabled={actions.stolen} onClick={()=>doContestAction('steal')}>
-                        🍽️ Steal Maya's Food{actions.stolen?" ✓":""}
+                    {devourUnlocked&&(
+                      <button style={{...C.btn(selectedCount>0?"#2a4800":"#1a2a08"),fontSize:12,padding:"6px 14px",fontWeight:700,color:selectedCount>0?"#c0ff40":"#507030",opacity:selectedCount>0?1:0.5,border:selectedCount>0?"1px solid #80c020":"none"}} disabled={selectedCount===0} onClick={doDevour}>
+                        🍽️ DEVOUR{selectedCount>0?` (${selectedCount})`:""}
                       </button>
                     )}
                   </div>
@@ -14092,12 +14366,13 @@ export default function ProfessorSim(){
 
       {/* ── SUMO MATCH MINI-GAME MODAL ── */}
       {sumoMatchState&&(()=>{
-        const{studentId,stageIdx,oppLbs,ringPos,yourBalance,oppBalance,yourBouts,oppBouts,gainAccum,telegraph,exchangeLine,phase,popupText}=sumoMatchState;
+        const{studentId,stageIdx,oppLbs,ringPos,yourBalance,oppBalance,yourBouts,oppBouts,gainAccum,telegraph,exchangeLine,phase,popupText,fillRingUsed}=sumoMatchState;
         const s=students.find(st=>st.id===studentId); if(!s) return null;
         const won=yourBouts>oppBouts;
         const markerPct=Math.max(0,Math.min(100,(ringPos+100)/2));
         const feed=SUMO_CORNER_FEED[stageIdx]||SUMO_CORNER_FEED[0];
-        const payoffText=`You've driven your body past everything it had — bout after bout, belly to belly, fueling in your corner between each one until the weight itself became the weapon. The payoff is real: ${Math.round(gainAccum)} more pounds of fat have settled onto your frame since you stepped onto the dohyo. You can feel it in your stance — lower, heavier, more rooted. Your mawashi sits tighter than it did. Your belly is forward and warm and enormous, and it is the reason you fight the way you do now. There is no separating the wrestler from the size. They are the same thing.`;
+        const isBlob=getStage(s.lbs).id>=10;
+        const payoffText=SUMO_PAYOFF_TEXT[stageIdx]?.(gainAccum)||`${Math.round(gainAccum)} pounds added to your frame since you stepped onto the dohyo. You can feel it. More.`;
         return(
           <div style={{...C.overlay,zIndex:1200}}>
             <div style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#140404,#1f0808,#140404)",border:"1px solid #80303050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
@@ -14143,7 +14418,7 @@ export default function ProfessorSim(){
                 </div>
                 {/* Move buttons */}
                 <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                  {SUMO_MOVES.map(mv=>{
+                  {SUMO_MOVES.filter(mv=>!mv.blobOnly).map(mv=>{
                     const lowBal=yourBalance<=0&&mv.id!=='brace';
                     return(
                       <button key={mv.id}
@@ -14156,6 +14431,16 @@ export default function ProfessorSim(){
                       </button>
                     );
                   })}
+                  {isBlob&&(()=>{const mv=SUMO_MOVES.find(m=>m.id==='fill_ring'); return mv?(
+                    <button key="fill_ring"
+                      style={{...C.btn(fillRingUsed?"#1a0808":"#6a2800"),textAlign:"left",padding:"8px 12px",fontSize:12,lineHeight:1.4,opacity:fillRingUsed?0.4:1,border:fillRingUsed?"none":"1px solid #e0801080"}}
+                      disabled={fillRingUsed}
+                      onClick={()=>sumoPlayMove('fill_ring')}>
+                      <span style={{fontSize:15,marginRight:6}}>{mv.emoji}</span>
+                      <span style={{fontWeight:700,color:fillRingUsed?"#806050":"#ffb060"}}>{mv.label}{fillRingUsed?" (used)":""}</span>
+                      <div style={{fontSize:10,color:"#c09060",marginTop:2,fontStyle:"italic"}}>{mv.desc}</div>
+                    </button>
+                  ):null;})()}
                 </div>
               </>)}
 
