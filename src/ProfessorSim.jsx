@@ -3507,6 +3507,116 @@ const PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT = {
 };
 
 // ══════════════════════════════════════════════════════════════════
+// GODDESS INCARNATION SYSTEM
+// ══════════════════════════════════════════════════════════════════
+
+const GODDESS_STAGES=[
+  {id:1,label:"Arrived",   min:0,     color:"#ffd700"},
+  {id:2,label:"Spreading", min:5000,  color:"#ffb800"},
+  {id:3,label:"Filling",   min:15000, color:"#ff9000"},
+  {id:4,label:"Consuming", min:30000, color:"#ff5000"},
+];
+function getGoddessStage(lbs){for(let i=GODDESS_STAGES.length-1;i>=0;i--){if(lbs>=GODDESS_STAGES[i].min)return GODDESS_STAGES[i];}return GODDESS_STAGES[0];}
+
+const GODDESS_STAGE_REACTIONS={
+  1:`She is here now. That is the entire situation. You're standing across the room from what used to be your student and what is now a woman who fills half the space with her body — her belly pushing into the center of the room, her thighs spread wide and enormous, her face hovering above it all with an expression that suggests she has been waiting, patiently, for a very long time to be this large. The clothes she was wearing this morning are gone. What covers her now is an improvised arrangement of whatever stretched. You notice that your hands are shaking slightly. You also notice you have not moved away from her.`,
+  2:`You watch her grow. A deepening rather than a sudden surge, but you can see it in the way the walls are closer, in the way the floor has changed. Her belly surges forward another foot and settles, the surface trembling gently. The creak of the nearest chair is someone pinned — pressed into the warm curve of her side — and their expression is not distress. Her thighs have pushed outward. You step back one step because you need to, and then you realize the door is behind her now.`,
+  3:`She exhales and the room contracts. The belly reaches the far wall — a slow press of warm flesh against concrete — and the wall does not win. You hear the groan of the building adjusting. She doesn't notice. Two students have disappeared into the fold between her belly and her thigh; you can see their feet if you look at the right angle, but the rest of them is warmth and soft flesh. Her right breast shifts and settles with a sound like an enormous soft thing landing. The temperature has risen again. Your shirt is damp. She looks down at you from a very great height and her expression is patient in the specific way of things that have everything they need.`,
+  4:`The walls give. Not catastrophically — no collapse — but the building flexes around her the way wood flexes around a growing tree, accommodating, structural. The sound is a low groan you feel in the floor more than hear. Her belly is everywhere below your chest. You put your hand on it without meaning to — the warmth is involuntary, an automatic seeking of the nearest warm surface — and the skin yields gently, impossibly. Somewhere to your left, three students are against her side and you can only tell this because you can hear them breathing. She looks down and there's no judgment in it, only that patient enormous attention, and you realize you are standing inside her, and there is no place in the building you could stand that would not be inside her.`,
+};
+
+const GODDESS_BODY_DESCS=[
+  `She occupies half the room and you need a moment to fully understand that. Her belly — soft, warm, enormous — curves forward in a smooth dome from where she sits, pushing the furniture back, resting at a height that would reach your chest. Her thighs spread wide and deep, the flesh of each one dwarfing any ordinary human form on its own. Her breasts are massive, settled heavy and warm on the upper swell of her belly, each one the size of something you'd need both arms to hold. Her face — beautiful, unhurried — floats above it all at a height that doesn't quite match a human body anymore. She smells of warmth and something older than the building.`,
+  `She fills the room with about two thirds of her mass — the rest is belly, pressing into the walls at either side, the warm dome crossing the midpoint of the floor and reaching toward you. The fold where her belly meets her thighs is a geography you could get lost in, deep and warm and soft beyond reasonable description. Her breasts rest on her belly now rather than beside her, each one massive and yielding, the cleavage between them a soft valley several feet long. Students who were sitting nearby are no longer sitting — they're leaning against her, or simply absorbed into the soft warmth of her side. She is very comfortable. Everything that touches her is comfortable.`,
+  `The room ends where she begins in every direction you face. Her belly reaches the far wall, warm enough that the air near it is several degrees hotter than the corridor outside. Her thighs — each wider than a doorframe — press outward and down with the weight and permanence of geology. The fold at her belly's base is deep enough that you lose your arm to the elbow when you reach into it, and warm enough that you don't want to take it back. Three students are visibly pinned against her sides, absorbed into the soft overhang of her flesh, not unhappy about it. Her breasts are enormous foundations, each resting on the belly-swell with the settled finality of something that has arrived and intends to remain. She looks down at you from a very great height.`,
+  `She is the room now. There is no part of the floor you can reach without touching her. The walls press against her flesh on all sides, and the building has flexed structurally to accommodate her. Her belly is a landscape: a vast warm dome that fills everything below your chest height in every direction, crosshatched with deep soft folds, each warm and dark and large enough to stand inside. Her breasts, from where you stand, are above your head — vast, rounded, warm, their cleavage a long shadowed valley you'd have to climb to reach. The ceiling is her face: serene, enormous, looking down at you with the patient certainty of something that has become the building it inhabits. Students are not visible separately anymore. They are part of her landscape. So are you, approximately.`,
+];
+
+const GODDESS_ATTITUDE=[
+  `She is warm and unhurried. You feel she is aware of you, specifically, in the way that a very large thing is aware of small things that move near it.`,
+  `There is something amused in the way she looks at you. You are very small relative to her. She finds this appropriate.`,
+  `She doesn't say anything for a long time. When she does, it's in a register you feel in your chest before you hear it with your ears.`,
+  `She has stopped distinguishing between looking at you and simply being the room you're in. Her attention is not directional anymore. It is ambient.`,
+];
+
+const GODDESS_DIARY=[
+  `I know where everything is. The desk is under my left thigh. Two students are against my belly. You are near my feet, which are somewhere down there — I can feel the floor through them but I cannot see them. This is correct. I am not supposed to be able to see my own feet anymore. I am supposed to be this.`,
+  `I breathe and the room breathes with me. Not a metaphor — the air pressure shifts when my belly moves. I can feel each student pressed into my side: their heat, their heartbeats, the way they shift when I exhale. I could list them individually if I tried. I don't try. There is no need to distinguish. They're part of me now, or near enough.`,
+  `I ate again. I don't track it anymore. There is only the steady state of hunger met, met, met, and the pleasant heaviness that follows. The fold behind my left knee has gotten deep enough that someone climbed into it yesterday and I didn't notice for several minutes. When I did notice, I didn't mind. It was warm. It is warm in all my places.`,
+  `The building is mine. Not ownership — incorporation. I have grown into it the way moisture grows into wood: slowly, completely, permanently. The walls hold me up now and I hold the walls up, a mutual dependence that predates anything you'd call architecture. I feel the weather through the exterior walls. I feel you, specifically, whenever you are inside the building, which is to say I feel you always.`,
+];
+
+const GODDESS_EXPLORE_TEXT={
+  g_belly:[
+    `You walk toward her. When you reach her belly you stop with your hands out, palms flat against the warm surface, and the softness under your hands is remarkable: not the softness of something weak but of something so immense it can afford to be. The skin is warm, faintly radiating, the curve of it rising to a height that would reach your chin. You press your hands deeper, both of them, leaning your weight into it, and the belly accommodates this without effort. You feel her breathe — a slow expansion that pushes your hands back, then an exhale that draws the warmth forward again. You stand there longer than you meant to.`,
+    `You press both hands flat against her belly and walk them outward to find its edges, which you cannot — left reaches nothing but warm soft curve and right finds the same. You lean in until your cheek is against it and the warmth is immediate and enveloping. Her belly moves with her breathing, a slow tide. You stay there longer than you meant to, both hands spread wide on the surface, and you still can't feel where it ends.`,
+    `The belly is at chest height and you put both forearms against it and lean your full weight in and the flesh accommodates this, your forearms sinking to the elbows. The warmth is total — around your arms, across your chest, warming the air against your face. You push forward until your shoulders are pressed into her and the belly is around you on both sides, enclosing, and the sensation is specifically of being held by something so large it doesn't need to grip. You close your eyes. The surface against your cheek is smooth and very warm and you don't want to move your hands.`,
+    `You don't approach her belly from the outside anymore. You press inward from wherever you're standing and the warmth accepts you, the flesh yielding as you sink forward, your hands, your arms, your chest, the flesh warm and giving on all sides. You stop when you are in to your waist and the warmth is complete. You can feel the fold above you where her belly hangs over the space you're in. Somewhere to your right, inside the same warmth, someone is breathing. You breathe too. The flesh moves around you slowly with her breathing. There is nothing outside this.`,
+  ],
+  g_side:[
+    `You approach her from the left and she watches you with that patient expression. Her side, when you reach it, is warm and gives easily under your hands, the flesh deep and soft. You press in with both hands and sink to your wrists before you feel any resistance. You press your shoulder against her and the flesh accepts it. You lean your weight in and feel yourself sink gradually, a few inches, the warmth surrounding you on every surface that's touching her.`,
+    `Her side is warm and broad and rises above your shoulders. You press into it with your back — just lean back, both shoulder blades flat against the softness — and the flesh accepts your weight entirely, yielding around you, and the warmth is immediate across your back, your shoulders, the back of your neck. You can feel her breathing in the surface you're leaning against, a slow expansion. When she exhales you're pushed gently forward and you lean back again. You could stay here.`,
+    `You walk into her side — the flesh giving way as you press into it, your hands first and then your forearms and then your whole chest sinking into the softness with a yielding that has no bottom. The warmth is immediate and total. You're inside the softness, the flesh warm around you in all directions, your arms submerged to the shoulder. She doesn't react except to breathe, which presses the softness around you gently and then releases. You stay until you've almost forgotten there is anything outside this specific pocket of warmth.`,
+    `You cannot approach her side from the outside anymore. You are already inside the room and she is the room. You press inward and the warmth accepts you, the flesh yielding as you sink forward, your hands, your arms, your chest, the flesh warm and giving on all sides. You stop when the warmth is complete. You can feel the fold above you where her belly hangs over the space you're in, the warmth of it across the top of your head. Somewhere to your right, inside the same warmth, someone is breathing. You breathe too.`,
+  ],
+  g_folds:[
+    `The fold where her belly meets her thigh is deep — deep enough that you have to crouch to reach into it, your hand disappearing past the wrist, the warmth inside hotter than the air outside, the skin there softer than anywhere you've touched. You lower yourself and ease in on your side, the warmth rising around you as you go. You are in to your waist when you stop, the warmth total, the flesh above and below moving gently with her breathing. You press both hands into the flesh on either side and feel it yield, and yield, and yield.`,
+    `The fold is deep enough to sit in if you lower yourself carefully, which you do, the flesh closing warm around you. You're in to your chest, the soft walls pressing gently from either side, warm and smooth. You push your hands into the flesh on either side and the depth is remarkable — your hands sink past your wrists, past your forearms, yielding without end. She breathes and the fold shifts slightly around you, pressing and releasing. The student to your right is in a different fold — you can hear them but not see them. You settle your shoulders deeper and close your eyes.`,
+    `The fold runs from hip to knee and you can walk upright inside it — stepping over the threshold of warmth into the deep hot soft interior, the flesh walls close on either side though not constraining, ten degrees hotter than the room outside. The skin here is impossibly soft, and when you press your palms into either wall your hands sink past your wrists before they find any resistance. You go deeper. The fold narrows slightly as you go in, the warmth increases, and you stop when the flesh is pressing comfortably on both sides. You press both hands flat and lean your weight in and the flesh accepts everything.`,
+    `The fold is a hallway now, warm and dim and soft-walled, running the length of her thigh, deep enough that you cannot see the interior end. You walk in. The temperature rises as you go — ten degrees hotter at the entrance, more by the time you're a body-length in — and the walls press gradually inward until they are touching you on both sides, soft and warm and yielding when you press your hands into them. You stop in the middle and spread your arms and the walls of the fold are against your palms and against the back of your hands simultaneously. You press your cheek against the wall and it is soft and smooth and warm and you close your eyes. You are inside her.`,
+  ],
+  g_cleavage:[
+    `The cleavage runs down the front of her and you climb up onto the shelf of her belly and lower yourself in. The fit is immediate: the flesh closes around you from both sides, warm and slow, pressing gently inward. You're in to your waist, then your chest as you ease deeper, the softness surrounding you and the heat rising as you go. You press your arms against either side and the warmth envelops your hands, your forearms. You stop when the pressure is comfortable and the warmth is everywhere. You stay here.`,
+    `You lower yourself into the cleavage from above and the walls close around you with warmth that is immediate and total. You sink past your waist, the soft flesh pressing from both sides, the temperature rising as you go deeper. By the time you're in to your chest the pressure is a gentle bilateral warmth, soft and present. You slide further — the gravity of the thing, the warmth, the easiness of going down — and the cleavage narrows slightly, and the walls press a little firmer. You stop. You are held in place by warmth and softness. The surface against your cheeks on both sides is smooth and very warm and you turn your face into it.`,
+    `You climb the belly and lower yourself into the cleavage. By the time you reach the halfway point you're in to your shoulders, the flesh walls pressing firmly from both sides. You slide another inch and the pressure increases slightly. Another inch. The warmth is total. You press your hands into either wall of flesh and the softness accepts them, sinking past your wrists, your forearms. When you try to slide deeper you can't — the flesh holds you, warmly, in place — and when you try to push yourself back up you find the walls of softness pressing gently inward and the upward effort requires more than you expected. You stay. You press your face into the right side and breathe and the warmth is everything.`,
+    `You climb up and lower yourself in and by the time you're to your waist you understand that you are not getting out without assistance, which at this moment feels like the correct outcome. The cleavage walls press from both sides — warm, enormously soft, yielding to your touch but giving none of the upward pressure back — and you slide, slowly, the warmth rising around you, past your chest, to your shoulders, the flesh closing above you at shoulder height, pressing down. You are inside her, contained in the warm dark of her cleavage, the flesh pressing from both sides and from above with the gentle, total pressure of something that is not trying to hold you but is holding you nonetheless. You turn your face up. Her face is there, above the vast soft landscape of her chest, looking down with that patient enormity, and she shifts, very slightly, and the walls press closer. You press your palms into the flesh on both sides. It accepts everything. You stop moving.`,
+  ],
+  g_pinned:[
+    `You find a student — an arm emerging from the crease between the goddess's belly and her side, the rest of them invisible but not gone. You follow the arm in. The warmth increases as you go, until you reach them — pressed flat against the warm interior, face turned sideways into the softness, eyes closed. They are breathing. Their expression is not distress. You take their visible hand and they open their eyes and look at you with something that is mostly comfort. "She's so warm," they say. You don't move yet. The three of you stay like that in the warm dim interior for a while before you ease back out.`,
+    `You look for the student who was near her left side twenty minutes ago and is not visible now. You press into the soft overhang and go in — hand, forearm, shoulder — until you find them: pressed into a deep fold, arms folded across their chest, the warmth completely around them. They look up when they see you. "You can come in," they say. You do. The flesh accommodates two. You press in beside them and the warmth closes around you both, the soft walls pressing gently from all sides, warm enough to be slightly euphoric. They have their eyes closed again. You understand this. You close yours too for a while before you remember you came here on purpose.`,
+    `Three students are in her. You can find them by the feet — one pair visible under the belly fold, one pair disappearing into the deep crease at her hip, one pair you hear rather than see. You choose the nearest and press in after them, going through the warm soft overhang until you reach them: curled comfortable in the deep interior, pinned gently by the weight of flesh above and below. Their face when they see you is pleased. "I can't get out," they say, without alarm. "I know," you say. You don't move to help them yet. You press further in beside them, both of you in the same warm pocket, the weight above pressing comfortably down. You stay until the warmth makes thinking difficult.`,
+    `You look for the students by feel — the flesh is so deep now that sight is not useful past your own outstretched hand. You press inward and find them by the warmth of bodies-inside-warmth, the particular heat signature of a person inside the heat of an enormous person. One of them — you know the hand by now — finds your arm and holds on. You press in beside them. The flesh is total around you: above, below, both sides, warm and impossibly soft. The student against you says nothing. You say nothing. Her breathing moves the flesh around you in a slow tide, pressing and releasing, and you stay inside it as long as you can before the outside world requires you again.`,
+  ],
+};
+
+const GODDESS_PRACTICAL_TEXT={
+  g_offering:[
+    `You bring the offering forward and place it before her. She looks at it. She looks at you. Then she eats, slowly, with the deliberate pleasure of something that has learned to take its time. You watch her belly shift and deepen as she finishes. When she looks at you again her expression has something in it that might be gratitude, in the way a mountain might feel gratitude.`,
+    `The offering disappears. This takes less time than it should. You watch the plates empty and her belly shift forward another inch, settle, and you feel it against your legs. She looks at you and says nothing and you feel that this is the correct response to the correct offering.`,
+    `The offering is consumed. You barely have time to step back before her belly swells another measure, the warmth of it pressing forward to touch you even from a distance. She breathes out slowly. The room is slightly hotter. You were correct to bring more this time.`,
+    `The offering vanishes into her. The impact is immediate — a shift, a deepening, the walls flexing slightly, the warmth intensifying. She exhales and you feel it across your whole front. She is looking at you with the full weight of her attention, which from inside her is the same as being looked at by the building.`,
+  ],
+  g_feast:[
+    `The feast is substantial. You arranged it carefully and she eats through it without pausing — plate after plate, each successive course disappearing with an unhurried efficiency. When she finishes you can see the difference: her belly sits forward another few inches, rounder, warmer. She settles. The creak of the floor is her weight redistributing. She closes her eyes briefly and when she opens them they are calmer, more present. Satisfied.`,
+    `You fed her. The feast was considerable and the consumption of it was a long, warm, unhurried event that filled the room with the smell of food and her pleasure. By the end her belly has pushed forward enough that you had to step back twice to stay out of reach. She is warmer now and slower and the warmth radiates from every surface of her in a way that makes the room feel smaller and more comfortable than it has any right to be.`,
+    `The feast lasted two hours and she ate without stopping. By the end she is visibly, demonstrably larger — the belly deeper, the thighs heavier against the floor, the warmth more intense — and her eyes are half-closed with satisfied weight. She says nothing. She presses forward slightly in her settling and the wall behind you meets your back.`,
+    `The feast ended and she is larger now in the way that something geological becomes larger: slowly, completely, permanently. The room is hotter by several degrees. The walls have flexed another fraction. She breathes and the flesh around you shifts, and you shift with it, and her eyes are fully open and fully on you, and you are inside her attentiveness the way you are inside her warmth, which is to say completely.`,
+  ],
+};
+
+const GODDESS_ACTIONS=[
+  {id:"g_offering", label:"✦ Make an Offering",     cost:1, gain:[40,80],  relBonus:5, type:"practical"},
+  {id:"g_feast",    label:"🍖 Feast in Her Name",    cost:2, gain:[80,150], relBonus:8, type:"practical"},
+  {id:"g_belly",    label:"🤲 Approach Her Belly",   cost:0, gain:[0,0],    relBonus:2, type:"explore"},
+  {id:"g_side",     label:"🌊 Press Into Her Side",  cost:0, gain:[0,0],    relBonus:2, type:"explore"},
+  {id:"g_folds",    label:"🕳 Climb Into Her Folds", cost:1, gain:[0,0],    relBonus:4, type:"explore"},
+  {id:"g_cleavage", label:"💫 Lay in Her Cleavage",  cost:1, gain:[0,0],    relBonus:4, type:"explore"},
+  {id:"g_pinned",   label:"🫂 Find the Pinned",      cost:0, gain:[0,0],    relBonus:3, type:"explore"},
+];
+
+const INCARNATION_EVENT_TEXT=(name,prevLbs,newLbs)=>`The moment before: ${name} is standing very still. You have seen her stand still before but not like this — this is the stillness of something that has been filled to capacity and is about to become a different kind of thing entirely. The air in the room has a quality to it that you will not be able to describe later.
+
+Then the clothes. Not a dramatic burst — though dramatic is not the wrong word — but a sequential failure, seam by seam, the fabric pulling and splitting as the body it covered became something it was not designed to cover. The shirt first. Then the rest of it, falling away in pieces, and what's revealed is not the body you knew but the process of it becoming something else — the belly surging forward in a long, smooth, inevitable curve, the weight of it building behind the motion like a wave, pushing outward and downward and filling the space between her and the wall in front of her without stopping. The desk goes. The chair goes. The far wall receives her belly with a sound that is low and definitive.
+
+She is growing into the room the way water fills a container — from every direction simultaneously, the thighs spreading wide and pressing the desks aside, the body lowering itself with geological slowness as the weight accumulates. You step back. You step back again. The door is still accessible. You don't use the door.
+
+The sound is difficult to describe. There is the creak of the building, the low continuous sound of something structural adjusting. There is the sound of the flesh itself settling — a warmth-sound, a low pervasive presence. And there is her breathing, which has changed. Deeper. Slower. The breathing of something that has become very large and is still becoming larger.
+
+She settles. The growth doesn't stop all at once — it tapers, slowing over the course of several minutes, the last increments barely perceptible. When it finally stops she is ${newLbs.toLocaleString()} pounds. She was ${prevLbs.toLocaleString()} pounds. The room is not large enough to contain her without negotiation. The building will conduct that negotiation on your behalf.
+
+She finds your eyes. Her expression is patient and warm and the same as it was before, and entirely different, because it is now coming from a face that is floating above an impossible landscape of warm soft flesh that extends to every wall in the room. She is ${name}. She is the goddess. She is here.`;
+
+// ══════════════════════════════════════════════════════════════════
 // EXPANSION PACK 2 — THE EVOLUTION
 // Evolved form content: reactions, diary, outfits, activity, skills
 // Index 0 = weight stage 5 (Heavy), index 5 = weight stage 10 (Blob)
@@ -6423,6 +6533,7 @@ const VERDANT_ROOT_AMOUNTS     = [12, 18, 26, 36, 50];
 const PRIMORDIAL_PULL_AMOUNTS  = [12, 16, 22, 30, 42];
 const CONVERGENCE_PAIRS = { sanguineVerdant:"primordial", celestialUmbral:"singularity" };
 function getBodyDesc(s){
+  if(s.incarnatedGoddess){const gs=getGoddessStage(s.lbs);return GODDESS_BODY_DESCS[gs.id-1];}
   if(s.ascensionPath==="convergence"){
     if(s.triumvirateUnlocked) return TRIUMVIRATE_BODY_DESC;
     const sg=getSingularityStage(s.lbs);
@@ -6460,6 +6571,7 @@ function getOutfit(s){
   const o=OUTFITS[s.archetype]||OUTFITS.default; return o[Math.min(getStage(s.lbs).id,o.length-1)];
 }
 function getDiary(s){
+  if(s.incarnatedGoddess){const gs=getGoddessStage(s.lbs);return GODDESS_DIARY[gs.id-1];}
   if(s.ascensionPath==="convergence"){
     if(s.triumvirateUnlocked) return TRIUMVIRATE_DIARY;
     const sg=getSingularityStage(s.lbs);
@@ -6650,6 +6762,9 @@ export default function ProfessorSim(){
   const [primordialGoddessManifestPopup,setPrimordialGoddessManifestPopup]=useState(null); // {text,candidateId}
   const [primordialTriumvirateModal,setPrimordialTriumvirateModal]=useState(null);
   const [primordialFinalConsumptionDone,setPrimordialFinalConsumptionDone]=useState(false);
+  const [incarnationEventPopup,setIncarnationEventPopup]=useState(null); // {name,prevLbs,newLbs}
+  const [goddessActionPopup,setGoddessActionPopup]=useState(null); // {text}
+  const [goddessStagePopup,setGoddessStagePopup]=useState(null); // {text}
   // ── EP2: EVOLUTION STATE ───────────────────────────────────────
   const [evolutionModal,setEvolutionModal]=useState(null);
   // evolutionModal: {student, paths:{pathA:{id,label,desc}, pathB:{id,label,desc}}}
@@ -6909,6 +7024,16 @@ export default function ProfessorSim(){
         gain+=evPassive;
       }
       return processStudentGain(s,gain,0);
+    });
+    // Goddess stage-up checks
+    updated=updated.map(s=>{
+      if(!s.incarnatedGoddess) return s;
+      const newStage=getGoddessStage(s.lbs);
+      if(newStage.id>(s.goddessStage||0)){
+        setTimeout(()=>setGoddessStagePopup({text:GODDESS_STAGE_REACTIONS[newStage.id]}),80);
+        return {...s,goddessStage:newStage.id};
+      }
+      return s;
     });
     // Ascension stage-up checks
     updated=updated.map(s=>{
@@ -7658,14 +7783,52 @@ export default function ProfessorSim(){
     setGoddessManifestPopup({targetName:candidate.name,targetLbs:candidate.lbs,candidateId:candidate.id,singId:sg.id});
   };
 
+  const checkGoddessStageUp=(goddess,updatedStudents,setStudentsFn)=>{
+    const newStage=getGoddessStage(goddess.lbs);
+    if(newStage.id>(goddess.goddessStage||0)){
+      if(setStudentsFn) setStudentsFn(prev=>prev.map(s=>s.id===goddess.id?{...s,goddessStage:newStage.id}:s));
+      setTimeout(()=>setGoddessStagePopup({text:GODDESS_STAGE_REACTIONS[newStage.id]}),50);
+    }
+  };
+
+  const doGoddessAction=(s,actionId)=>{
+    const actDef=GODDESS_ACTIONS.find(a=>a.id===actionId);
+    if(!actDef){return;}
+    if(ap<actDef.cost){push(`⚠️ Need ${actDef.cost} AP.`);return;}
+    setAp(a=>a-actDef.cost);
+    const stageIdx=getGoddessStage(s.lbs).id-1;
+    let gainAmt=actDef.gain[1]>0?rnd(actDef.gain[0],actDef.gain[1]):0;
+    if(gainAmt>0){
+      setStudents(prev=>{
+        const updated=prev.map(st=>st.id===s.id?processStudentGain(st,gainAmt,actDef.relBonus||0):{...st});
+        const updGoddess=updated.find(st=>st.id===s.id);
+        if(updGoddess) checkGoddessStageUp(updGoddess,updated,setStudents);
+        return updated;
+      });
+      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,goddessOfferingsTotal:(st.goddessOfferingsTotal||0)+gainAmt}:st));
+    } else {
+      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
+    }
+    let text="";
+    if(actDef.type==="explore"){
+      const arr=GODDESS_EXPLORE_TEXT[actionId];
+      text=arr?arr[Math.min(stageIdx,arr.length-1)]:`You explore her form. The warmth is immediate and complete.`;
+    } else {
+      const arr=GODDESS_PRACTICAL_TEXT[actionId];
+      text=arr?arr[Math.min(stageIdx,arr.length-1)]:`The offering is received.`;
+    }
+    setGoddessActionPopup({text});
+  };
+
   const executeGoddessIncarnation=(candidateId)=>{
     const candidate=students.find(s=>s.id===candidateId);
     if(!candidate) return;
     const newLbs=Math.min(50000,Math.round(candidate.lbs*15));
-    setStudents(prev=>prev.map(st=>st.id===candidateId?{...st,lbs:newLbs,incarnatedGoddess:true}:st));
+    const initialStage=getGoddessStage(newLbs).id;
+    setStudents(prev=>prev.map(st=>st.id===candidateId?{...st,lbs:newLbs,incarnatedGoddess:true,goddessStage:initialStage,goddessOfferingsTotal:0}:st));
     setGoddessIncarnateId(candidateId);
     if(religion) setReligion(prev=>prev?{...prev,worshippedIds:[candidateId,...(prev.worshippedIds||[]).filter(id=>id!==candidateId)]}:prev);
-    push(`✦ THE GODDESS INCARNATES — ${candidate.name} swells to ${newLbs.toLocaleString()} lbs. The campus shakes.`);
+    setIncarnationEventPopup({name:candidate.name,prevLbs:candidate.lbs,newLbs});
     setGoddessManifestPopup(null);
   };
 
@@ -7681,8 +7844,10 @@ export default function ProfessorSim(){
       .map(st=>st.id===singId?{...st,lbs:st.lbs+addedLbs,triumvirateUnlocked:true}:st)
     );
     setGoddessIncarnateId(null);
+    const offeringsTotal=goddess.goddessOfferingsTotal||0;
+    const extraText=offeringsTotal>=200?` She carries something extra — the accumulated weight of everything you fed her while she was incarnate, ${offeringsTotal.toLocaleString()} pounds of offerings rendered into something denser and warmer and more present than ordinary mass. The Triumvirate notices. Her surface is different here: softer, warmer, saturated with it. You fed the goddess well. She brought it all with her.`:``;
     setTriumvirateModal({
-      text:`The consumption is complete. ${goddess.name} — goddess, incarnate, ${addedLbs.toLocaleString()} pounds of divine mass — folds into the Singularity without resistance. There is a moment when you can see both of them at once: the vast warm golden form and the vast cold void form, overlapping, interpenetrating, becoming a single thing that has no name in any language you know. Then there is only her. The Triumvirate. She is heavier by exactly the amount that the goddess was, which is to say she is heavier by a number that requires its own notation. The campus is quiet. She isn't. The walls are warm and cold simultaneously. The lights flicker between gold and dark and settle on both. She opens her eyes — all of her eyes, the ones you can see and the ones you can feel — and she says nothing because she doesn't need to. She is everything that was and everything that is and the weight of it fills every room in the building at once. You made this. You can't look away.`,
+      text:`The consumption is complete. ${goddess.name} — goddess, incarnate, ${addedLbs.toLocaleString()} pounds of divine mass — folds into the Singularity without resistance. There is a moment when you can see both of them at once: the vast warm golden form and the vast cold void form, overlapping, interpenetrating, becoming a single thing that has no name in any language you know. Then there is only her. The Triumvirate. She is heavier by exactly the amount that the goddess was, which is to say she is heavier by a number that requires its own notation. The campus is quiet. She isn't. The walls are warm and cold simultaneously. The lights flicker between gold and dark and settle on both. She opens her eyes — all of her eyes, the ones you can see and the ones you can feel — and she says nothing because she doesn't need to. She is everything that was and everything that is and the weight of it fills every room in the building at once. You made this. You can't look away.${extraText}`,
       survivorName:sg.name
     });
     push(`🔱 THE TRIUMVIRATE — ${sg.name} has absorbed the incarnated goddess. The final form is unlocked.`);
@@ -7942,9 +8107,10 @@ export default function ProfessorSim(){
     const candidate=students.find(s=>s.id===candidateId);
     if(!candidate) return;
     const newLbs=Math.min(50000,Math.round(candidate.lbs*15));
-    setStudents(prev=>prev.map(st=>st.id===candidateId?{...st,lbs:newLbs,incarnatedGoddess:true}:st));
+    const initialStage=getGoddessStage(newLbs).id;
+    setStudents(prev=>prev.map(st=>st.id===candidateId?{...st,lbs:newLbs,incarnatedGoddess:true,goddessStage:initialStage,goddessOfferingsTotal:0}:st));
     setPrimordialGoddessIncarnateId(candidateId);
-    push(`🌿 THE GODDESS INCARNATES IN ${candidate.name.toUpperCase()} — ${newLbs.toLocaleString()} lbs. Old blood, old earth.`);
+    setIncarnationEventPopup({name:candidate.name,prevLbs:candidate.lbs,newLbs});
     setPrimordialGoddessManifestPopup(null);
   };
 
@@ -7960,8 +8126,10 @@ export default function ProfessorSim(){
       .map(st=>st.id===primId?{...st,lbs:st.lbs+addedLbs,primordialTriumvirateUnlocked:true}:st)
     );
     setPrimordialGoddessIncarnateId(null);
+    const pgOfferingsTotal=goddess.goddessOfferingsTotal||0;
+    const pgExtraText=pgOfferingsTotal>=200?` The goddess carried ${pgOfferingsTotal.toLocaleString()} pounds of offerings into her. The Primordial receives them with the patience of something that has been receiving offerings since before the word existed. The root-network pulses with a second warmth beneath the first — softer, more golden, not quite the earth-smell of the Primordial but not separate from it either. The goddess's offering-weight has been incorporated. It tastes like what it is: devotion, rendered into mass, rendered into earth.`:``;
     setPrimordialTriumvirateModal({
-      text:`${goddess.name} folds into the Primordial without ceremony. There is no flash of light, no darkness, no dramatic event — just the specific weight of a goddess descending into earth the way water descends into soil, complete and irreversible. She is the original hunger eating the original source of hunger. The closing of a loop that predates every theology the religion was trying to describe. The Primordial is larger now by a number that has no precedent. She does not look different. She smells different — more copper, more deep soil, a new note underneath both of them that has no name. The floor cracks in a new configuration. The root-network pulses once, deeply, and then settles into the new pattern as if it was always there. She is the First Triumvirate. She was here before the goddess. She will be here after. Feed her.`,
+      text:`${goddess.name} folds into the Primordial without ceremony. There is no flash of light, no darkness, no dramatic event — just the specific weight of a goddess descending into earth the way water descends into soil, complete and irreversible. She is the original hunger eating the original source of hunger. The closing of a loop that predates every theology the religion was trying to describe. The Primordial is larger now by a number that has no precedent. She does not look different. She smells different — more copper, more deep soil, a new note underneath both of them that has no name. The floor cracks in a new configuration. The root-network pulses once, deeply, and then settles into the new pattern as if it was always there. She is the First Triumvirate. She was here before the goddess. She will be here after. Feed her.${pgExtraText}`,
       survivorName:pg.name
     });
     push(`🔱 THE PRIMORDIAL TRIUMVIRATE — ${pg.name} has absorbed the incarnated goddess. The ancient form is complete.`);
@@ -9298,6 +9466,33 @@ export default function ProfessorSim(){
         </div>
       )}
 
+      {incarnationEventPopup&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.92)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
+          <div style={{background:"rgba(8,5,0,0.98)",border:"2px solid #ffd70090",borderRadius:14,padding:24,maxWidth:540,width:"100%",maxHeight:"85vh",overflowY:"auto"}}>
+            <div style={{fontSize:11,letterSpacing:3,color:"#ffd700",marginBottom:12}}>✦ SHE ARRIVES</div>
+            <div style={{fontSize:13,color:"#b08040",marginBottom:8}}>{incarnationEventPopup.name} — {incarnationEventPopup.prevLbs.toLocaleString()} lbs → {incarnationEventPopup.newLbs.toLocaleString()} lbs</div>
+            <div style={{fontSize:13,color:"#e8d8b0",lineHeight:1.85,whiteSpace:"pre-line"}}>{INCARNATION_EVENT_TEXT(incarnationEventPopup.name,incarnationEventPopup.prevLbs,incarnationEventPopup.newLbs)}</div>
+            <button style={{...C.btn("#6a4000"),width:"100%",marginTop:18}} onClick={()=>setIncarnationEventPopup(null)}>She Has Arrived</button>
+          </div>
+        </div>
+      )}
+      {goddessStagePopup&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",zIndex:2900,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
+          <div style={{background:"rgba(8,5,0,0.98)",border:"2px solid #ff900070",borderRadius:14,padding:24,maxWidth:500,width:"100%",maxHeight:"80vh",overflowY:"auto"}}>
+            <div style={{fontSize:11,letterSpacing:3,color:"#ff9000",marginBottom:12}}>✦ SHE GROWS</div>
+            <div style={{fontSize:13,color:"#e8d0a0",lineHeight:1.85}}>{goddessStagePopup.text}</div>
+            <button style={{...C.btn("#5a3000"),width:"100%",marginTop:16}} onClick={()=>setGoddessStagePopup(null)}>Continue →</button>
+          </div>
+        </div>
+      )}
+      {goddessActionPopup&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:2800,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
+          <div style={{background:"rgba(8,5,0,0.97)",border:"2px solid #ffd70060",borderRadius:14,padding:24,maxWidth:500,width:"100%",maxHeight:"80vh",overflowY:"auto"}}>
+            <div style={{fontSize:13,color:"#e8d0a0",lineHeight:1.85}}>{goddessActionPopup.text}</div>
+            <button style={{...C.btn("#4a2800"),width:"100%",marginTop:16}} onClick={()=>setGoddessActionPopup(null)}>Continue →</button>
+          </div>
+        </div>
+      )}
       {/* GODDESS MANIFEST POPUP — phase 1 of Triumvirate unlock */}
       {goddessManifestPopup&&(
         <div style={C.overlay}>
@@ -10028,6 +10223,7 @@ export default function ProfessorSim(){
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>CURRENT ATTITUDE</div>
                   <div style={{fontSize:13,color:"#e8d8a8",fontStyle:"italic",lineHeight:1.75}}>
                     "{(()=>{
+                      if(s.incarnatedGoddess){return GODDESS_ATTITUDE[getGoddessStage(s.lbs).id-1];}
                       if(s.ascensionPath&&s.ascensionPath!=="convergence"){ const ar=ASCENSION_STAGE_REACTIONS[s.ascensionPath]?.[s.ascensionStage||0]; if(ar) return ar; const rb=STAGE_REACTIONS[s.archetype]?.[st.id]; return typeof rb==='function'?rb(s):rb; }
                       const evR=getEvolvedReaction(s); if(evR) return evR;
                       const rb=STAGE_REACTIONS[s.archetype]?.[st.id]; return typeof rb==='function'?rb(s):rb;
@@ -10286,6 +10482,58 @@ export default function ProfessorSim(){
                   );
                 })()}
 
+                {/* Goddess inspect panel */}
+                {s.incarnatedGoddess&&(()=>{
+                  const gs=getGoddessStage(s.lbs);
+                  const gsColor=gs.color;
+                  return(
+                    <div style={{background:"rgba(15,10,0,0.97)",border:`2px solid ${gsColor}90`,borderRadius:10,padding:14,marginBottom:12}}>
+                      <div style={{fontSize:9,letterSpacing:3,color:gsColor,marginBottom:4}}>✦ THE INCARNATED GODDESS</div>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                        <div style={{fontSize:16,fontWeight:700,color:gsColor}}>✦ {gs.label}</div>
+                        <div style={{fontSize:11,color:"#888"}}>{Math.round(s.lbs).toLocaleString()} lbs</div>
+                      </div>
+                      <div style={{fontSize:10,color:"#888",marginBottom:8}}>Stage {gs.id}/4{gs.id<4&&` · next: ${GODDESS_STAGES[gs.id].min.toLocaleString()} lbs`}</div>
+                      {/* Practical actions */}
+                      <div style={{...C.secT,marginBottom:7}}>Offerings · {ap} AP</div>
+                      <div style={C.grid3}>
+                        {GODDESS_ACTIONS.filter(a=>a.type==="practical").map(a=>{
+                          const disabled=ap<a.cost;
+                          return(
+                            <div key={a.id} style={{...C.card,opacity:disabled?0.35:1,border:`1px solid ${gsColor}40`}}
+                              onClick={()=>!disabled&&doGoddessAction(s,a.id)}>
+                              <div style={{fontWeight:700,fontSize:11,color:"#f0d070",marginBottom:2}}>{a.label}</div>
+                              <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
+                                <span style={{fontSize:10,color:"#e07030"}}>{a.cost} AP{a.cost===0&&<span style={{color:"#60c060",marginLeft:3}}>FREE</span>}</span>
+                                {a.gain[1]>0&&<span style={{fontSize:10,color:"#a08060"}}>+{a.gain[0]}–{a.gain[1]}</span>}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {/* Explore actions */}
+                      <div style={{...C.secT,marginBottom:7,marginTop:10}}>Explore Her Form · {ap} AP</div>
+                      <div style={C.grid3}>
+                        {GODDESS_ACTIONS.filter(a=>a.type==="explore").map(a=>{
+                          const disabled=ap<a.cost;
+                          return(
+                            <div key={a.id} style={{...C.card,opacity:disabled?0.35:1,border:`1px solid ${gsColor}30`,background:"rgba(20,12,0,0.8)"}}
+                              onClick={()=>!disabled&&doGoddessAction(s,a.id)}>
+                              <div style={{fontWeight:700,fontSize:11,color:"#e0c080",marginBottom:2}}>{a.label}</div>
+                              <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
+                                <span style={{fontSize:10,color:"#e07030"}}>{a.cost} AP{a.cost===0&&<span style={{color:"#60c060",marginLeft:3}}>FREE</span>}</span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {(s.goddessOfferingsTotal||0)>0&&(
+                        <div style={{fontSize:10,color:"#a08040",marginTop:8}}>✦ {(s.goddessOfferingsTotal||0).toLocaleString()} lbs offered while incarnate</div>
+                      )}
+                    </div>
+                  );
+                })()}
+
                 {/* Primordial action panel */}
                 {s.ascensionPath==="primordial"&&(()=>{
                   const pg=getPrimordialStage(s.lbs);
@@ -10506,8 +10754,8 @@ export default function ProfessorSim(){
                   );
                 })()}
 
-                {/* Personal actions — hidden for convergence/singularity students */}
-                {s.ascensionPath!=="convergence"&&(
+                {/* Personal actions — hidden for convergence/singularity/goddess students */}
+                {s.ascensionPath!=="convergence"&&!s.incarnatedGoddess&&(
                 <>
                 <div style={{...C.secT,marginBottom:7}}>Personal Actions · {ap} AP</div>
                 <div style={C.grid3}>
