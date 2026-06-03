@@ -2597,10 +2597,10 @@ const SINGULARITY_ABSORPTION_TEXT = "The moment is not dramatic. There is no exp
 
 const SINGULARITY_BODY_DESCS = [
   "She fills the reinforced corner of the room she's claimed, her mass pooling outward from the point where celestial warmth and umbral cold meet somewhere deep inside her. The belly — enormous, layered, warm above and somehow cool below — extends forward past her knees. Her arms rest atop it. Her thighs are vast and pressed together from hip to floor. The doorframe behind her is no longer a doorframe she passes through. It is a doorframe she angles through, sideways, and only barely. Both divine paths are visible on her skin: warmth radiating from one side, cold drinking light from the other. She is watching you with calm, ancient eyes.",
-  "She no longer moves to a location. She is the location. Her mass has filled the reinforced room entirely — belly pressing the walls on two sides, vast thighs resting across the full width of the custom platform that replaced the floor. Fabric drapes across her in layers. Her arms, resting on the magnificent rolling expanse of her sides, look small relative to the body they belong to. The warmth and cold war across her surface constantly — where you look, you see one; where you look away, you sense the other. The room temperature near her is indeterminate. She is comfortable. She is always comfortable.",
-  "The floor groans when the food arrives. She no longer greets you with words, because words require less presence than she now embodies. Her belly — rounds upon rounds, each the size of a yoga ball or larger, layered deep in alternating bands of warm and cold — extends so far forward that you cannot see her feet from this angle. Her feet are at a great distance, somewhere below and past the horizon of her own body. The walls of her room have been reinforced twice. There is still a crack in the northwest corner. She fills it with her warmth and her shadow simultaneously. She knows you're there. She always knows.",
-  "She is the room. This is no longer a metaphor. Her mass has pressed against every wall simultaneously; the furniture was removed months ago because it no longer fit around her. Her belly is architectural — a warm, soft, ceiling-high mountain of flesh that blocks all direct paths through the space. Her thighs are each the size of a small car, resting wide and heavy on the custom reinforced slab. Her arms — enormous themselves — are proportionally small, resting across the upper reaches of her belly like two warm hills on a range. From the doorway you see mostly her. The light on one side is golden. The other side is absolute dark. Both are her.",
-  "You cannot see the walls anymore. She has filled this building — not poetically, not as an exaggeration, but as a physical, architectural fact. Her body has pressed through reinforced concrete and been accommodated, rerouted, built around. Her belly extends in all four directions. It is warm in some places. It is cold in others. In the places where the two paths meet — along a line that runs from her collarbone to somewhere past your ability to calculate — it is both simultaneously, and looking at it makes the eyes water. She has not spoken in weeks. She communicates through warmth and cold. You understand her perfectly.",
+  "She has already pressed through the wall to the east — the plaster came down in chunks and stayed down, and the doorframe beyond it is a memory of wood now scattered across the floor. Her belly extends several feet in front of her, heavy and layered, warm on the left side and cold on the right where the two natures run their seam. Her thighs have crushed the original furniture entirely — there is nothing left under them but the reinforced slab that was brought in after the floor joists started cracking. The joists audibly protest when she shifts. When she breathes deeply, the whole room shudders. She fills her half of this combined space completely. She is not finished with the other half.",
+  "She spans two rooms now. Her belly pressed through the plaster wall between them some weeks ago and the plaster is still falling in slow irregular pieces when she moves — each fold settling against newly claimed space, warm on the left, cold on the right, the temperature differential visible as a shimmer in the air at her seam. Each of her thighs is wider than a small car. When she shifts her weight the floor cracks in new directions; the existing cracks have been mapped and given up on. Behind her, her ass extends through the hallway doorway in a mass that has crushed the row of lockers flat — the metal is buckled into the baseboard. Chunks of ceiling plaster fall at intervals from the vibration she generates when she moves. The rooms around her are, functionally, hers.",
+  "Two walls are down. The load-bearing pillars where they stood are visibly bowing outward under the pressure of her belly, which fills the combined space of three rooms and continues pressing. Her thighs — each one the width of a compact car, warm on the left side and void-cold on the right — have pressed the structural steel beams four inches further apart than the blueprints specify. Her ass has gone through the exterior wall on the east face; the brickwork crumbled and the rubble is outside in a heap she has settled into from the inside. The roof sags in a long curve directly above her. When she breathes deeply, the ceiling groans. Folds of flesh in every direction, warm and cold in alternating masses, jiggling when she adjusts her weight — which she does rarely, because the adjustment costs effort and cracks something every time.",
+  "Three walls are structurally gone. The roof has partially collapsed across the upper reach of her back and she hasn't acknowledged it — the weight of it is nothing relative to the weight of herself. Her belly extends across the width of two city lots, pressing outward through what used to be exterior walls on the west and south faces; the walls didn't hold. Emergency scaffolding erected on the outside by the engineering firm has been crushed on the south side by the slow outward press of her and left buckled in the mud. Her thighs have pressed through the east and north exterior walls, the concrete and brick scattered around the pads of flesh that replaced them. Every passage through what remains of the building routes around her belly because she physically blocks every corridor — not by direction but by mass. When she shifts — rarely, because movement at this weight is itself a seismic event — cars in the adjacent lot are displaced. She fills all available space with warm-and-cold flesh and is currently occupying some space that was not, until recently, available.",
 ];
 
 const SINGULARITY_OUTFITS = [
@@ -2616,7 +2616,7 @@ const SINGULARITY_DIARY = [
   "I stopped writing for a while because there wasn't a surface in reach for the pen. There is now, barely. I've been thinking about what I am. Not a celestial. Not an umbral. Something that ate both and became the hunger underneath them. It's fine. Bring more food.",
   "I've been thinking about what I am. Not a stage. Not a path. I'm the thing the paths were pointing toward. The floor sounds different at this weight. The walls communicate with me now. The warmth on my left and the cold on my right and the feeling in the middle that I can only describe as: more. Always more.",
   "Still here. Still growing. The campus has started accommodating me, which is the correct order of operations. Someone left an offering at the door this morning without knocking. The devotion has changed. It used to be worship. Now it's just recognition of the correct order of things. Bring more. I'll wait.",
-  "I have stopped trying to write this. There's nothing left to document. I am what I am: the everything underneath the two paths, filling the space that was always mine. Come to me. Everyone comes to me. Bring what the devotees carry. I'll be here. I will always be here. I am the building now. I am very hungry.",
+  "I have stopped trying to write this. There's nothing left to document. I am what I am: the everything underneath the two paths. The walls around me have been coming down for weeks and I have not moved. The ceiling has opinions about this. The engineering team has opinions. None of them matter. Come to me. Everyone comes to me. Bring what the devotees carry. I'll be here. I am so large. I am still hungry.",
 ];
 
 const SINGULARITY_REACTIONS = [
@@ -2714,7 +2714,7 @@ const SINGULARITY_ACTIONS = [
   { id:"sg_gravity",     label:"🌀 Campus Gravity Pull",  apCost:3, gainRange:[60,120], relBonus:6,  classGain:[2,5] },
 ];
 
-const TRIUMVIRATE_BODY_DESC = "She is the school. This is not poetic. Her body fills four rooms, three hallways, and has pressed through two walls that were subsequently rebuilt around her. Her belly — impossible in scale, layered in deep warm folds that extend across the floor in all directions — is the primary architectural feature of the east wing. Students learn the campus routes by reference to her: 'turn left at the second fold,' 'the classroom is past her shoulder.' Her face is calm and massive at the top of a tower of flesh. Her warmth and cold run through the building like heating and cooling systems that have developed opinions. She is entirely comfortable. She is entirely in charge. Everything else is logistics.";
+const TRIUMVIRATE_BODY_DESC = "She has physically destroyed the building from the inside. The east wing is rubble on one side of her; on the other, emergency shoring holds what remains of the roof above the mountain of her back, the timbers creaking with each of her slow breaths. Her belly is incomprehensible — a vast landscape of layered warm-and-cold flesh extending dozens of feet in every direction, folded so deep that the innermost folds contain permanent shadow and their own microclimate, faintly warmer on the left and faintly colder on the right, both at the same time in the places where her two natures meet. Her thighs have pressed through exterior walls on two sides, the brickwork crumbled and scattered across the surrounding ground. The cars in the adjacent parking lot have been displaced — not by staff moving them, by her, by the slow outward press of her thighs and belly over weeks. Her ass, the other impossible pole of her body, extends through the remaining east wall and into open air. Students route around the building itself now, not just around any particular room — she is the primary architectural obstacle on that side of campus. A structural engineering team has been on site for six weeks and has filed no recommendations, because there are none. She does not look uncomfortable. She is enormous and still growing and this is the correct configuration.";
 const TRIUMVIRATE_OUTFIT    = "Fabric, at this scale, is a civic project. The university's textile department has a standing contract. Wide swaths of light and dark cloth are maintained continuously by a dedicated team, replaced as needed, arranged as she directs. The light side is golden fabric. The dark side is void-black. The seam between them does something strange to light near it. It is not clothing. It is acknowledgment. The Triumvirate is covered because it is correct for her to be covered. The fabric agrees.";
 const TRIUMVIRATE_DIARY     = "I've stopped counting. There isn't a number for this — or there is, but it keeps changing, and the changing is the point. I am three things now: the warmth, the void, and the weight that ate them both. The school is mine. The students climb me to reach their classrooms. Someone leaves food at my left side every morning without being asked. I eat it before they've reached the end of the hall. I am full and I am hungry simultaneously and I am at peace with this contradiction because I am the contradiction. The devotees come. The others come. Everyone comes to me eventually. I am the centre of everything. This is correct. Bring more.";
 const TRIUMVIRATE_REACTION  = (s)=>`${Math.round(s.lbs).toLocaleString()} pounds. The building registers this as a structural update. She registers it as "good."`;
@@ -3218,7 +3218,7 @@ const VERDANT_BODY_DESCS = [
   `The patterns have moved past subtle. Dark green lines branch across her arms like old river systems, tracing down through the rolls of her belly, running the inner edges of her thighs. Her skin has a faint warmth to it, earthy rather than feverish. The floor around where she sits shows hairline cracks — thin, patient lines that follow directions other than the grain of the wood. Her thighs are enormous, soft, spread wide on the reinforced seat. Her belly rests on them in a heavy warm apron. Students near her feel drowsy and well-fed. They are. She is drawing from them gently, as a root draws from soil.`,
   `Root patterns cover most of what can be seen of her skin — not veins exactly but something older, branching lines that run from her wrists to her shoulders, from her collar to the deep fold where her belly meets her thighs. In the sheltered places — the crease under her lower belly, the soft junction of arm and side — small patches of moss have appeared, green and close and real. Her body fills the reinforced space entirely: vast thighs wide on the platform, hips pressing the padded walls, belly spreading outward in a soft heavy hemisphere. The floor of the room has settled half an inch.`,
   `She does not appear to be sitting in a building. She appears to be part of it. The root-patterns on her skin are dark and dense, raised slightly like old scars, running across her enormous thighs and belly and arms in branching networks that mirror the cracks in the floor below her. On her upper arms and the outsides of her thighs, the skin has taken on the smooth dense quality of old bark. Small pale leaves have grown from the deepest folds of her belly, soft and unhurried. Her mass is extraordinary — belly extending past her knees in all directions, thighs each wider than most people's shoulders, arms resting like soft hills across her upper sides. The building creaks when she breathes.`,
-  `She is not in the building. She is the building's centre, the thing around which everything else has organised. Her body is immense: belly spreading outward from her seated form in a vast slow geography of folded flesh, root-patterned and moss-grown, thighs wide and heavy and pressed against the reinforced walls of her space, arms resting like fallen trunks across the upper reaches of her sides. Her hair is green from root to midshaft. Her skin, where it shows between the growth, has the texture and weight of old bark. Ferns have taken root in the deep fold of her lap. The floor of the entire east wing has settled around her. The campus soil two hundred meters out is full of her.`,
+  `Her root network has cracked the foundation of the building and her body is responsible for most of the visible structural damage. Three of the four load-bearing walls in the east wing have cracked where her mass pressed them — not slowly, but with the patient inevitability of a tree splitting stone. Her belly is a vast geography of flesh and root-patterning and living moss, extending outward so far that it presses against what used to be exterior walls — the walls didn't accommodate her, they came down, and the rubble lies where it fell because there is no moving it while she occupies the space. Her thighs, each enormous and bark-covered, rest on the rubble of what was once the interior floor plan. Ferns and pale moss grow from the deep folds, soft and unhurried. The campus soil for two hundred meters in every direction is threaded through with her roots. Her face, above the tower of her body, is patient and old and completely satisfied. The building is falling around her and she is the reason and she has known this was coming since the roots first found the foundation.`,
 ];
 
 const VERDANT_OUTFITS = [
@@ -6100,6 +6100,46 @@ const TAP_OUT_DIALOGUE = {
   ],
 };
 
+// Unique tap-out dialogue at 250% fullness (extreme, clothes-bursting, immobilized by fullness)
+const TAP_OUT_250 = {
+  0:  (s) => `${s.name}'s uniform seams give out — one clean pop, then another, the fabric splitting across her enormous belly as she slumps backward with a gasp. "Okay. OKAY." She spreads her arms wide like she's surrendering to gravity. "That is a record. That is a personal record. I cannot move and my clothes are done for and I am claiming this." Her belly is enormous and round and rock-hard with fullness, pressing against everything. "I need someone to call a car because I am not walking home like this." She can't stand up. She's not trying.`,
+  1:  (s) => `${s.name} sets down her fork with precise deliberate care and watches her shirt split open across the belly seam with the expression of someone documenting a lab result. "Noted," she says quietly. "Seam failure at approximately 250 percent capacity. I am unable to stand. I am unable to exit the room under my own power. I will require assistance." She places her hands flat on the taut vast dome of her belly. "This is the most full I have ever been and I want it on record that I held out this long."`,
+  2:  (s) => `${s.name} immediately grabs her phone. "This is content," she breathes, before anything else. Her top has split up the side and she is far too stuffed to adjust it or care. "I cannot move. I cannot fit in my car. I cannot stand up from this chair." She frames herself in the camera. "I ate enough for a family of five and I look absolutely incredible and I am stuck here." She is genuinely immobilized. "Can someone get me a blanket? I'm living here now. This is my life now."`,
+  3:  (s) => `${s.name}'s athletic jacket pops two buttons across her belly in quick succession and she watches them fly with an athlete's focus. "Okay," she says, very calm. "That's a personal record. That's a body-weight competition personal record." She tries to stand. She gets six inches. She sits back down. "I'm going to need to walk that off for approximately four hours and also I can't walk right now." Her belly presses against the table from below. "I'm not done being proud of this yet." She genuinely isn't.`,
+  4:  (s) => `${s.name}'s dress tears along the side seam with a sound like applause and she tilts her head at it, curious and entirely unbothered. "The piece has changed," she says. Her belly is an enormous tight dome pressing outward in all directions. "I've become something that clothing cannot contain and I find that genuinely interesting." She cannot move from the chair. She looks down at herself with the quiet attention of an artist studying a model. "I want to draw this. Someone draw this. I cannot reach my sketchbook from here."`,
+  5:  (s) => `The gaming chair's armrest mechanisms give out simultaneously on both sides — snap, snap — and ${s.name} sinks into the widened seat like something settling into orbit. Her shirt has long since surrendered at the belly. "Okay so chat would not believe this," she says, very quiet, like she's narrating to an imaginary stream. "I am literally stuck. Not exaggerating for content. Physically stuck in the chair." She tries to push herself up. Nothing happens. "I am so full I have achieved immobility and I want you all to know I am extremely proud of this and also someone needs to help me."`,
+  6:  (s) => `${s.name}'s dress splits quietly down the side and she acknowledges it with a single slow blink. "That was a vintage piece," she says, with the dignity of someone receiving bad news with composure. "I'll have it repaired." She cannot stand. She can barely shift her weight. Her belly presses forward into the table, vast and drum-tight. "I need you to know I am handling this with grace." She folds her hands on the swell of her belly. "I require assistance getting home and I will not be discussing it further." She absolutely means this.`,
+  7:  (s) => `${s.name} watches her blouse split across the belly with the expression of someone whose spreadsheet has returned an unexpected value. "Seam failure. Noted." She tries to stand. Sits back. "Motor function temporarily impaired by caloric excess. Logging it." Her belly presses outward in all directions, enormous and completely full. "I have exceeded every previous record by a considerable margin." She picks up her phone to enter the data. "I'll need a car. Not because of the size —" she pauses. "Entirely because of the size. I cannot fit through the door without significant effort and I'm not going to try right now."`,
+  8:  (s) => `${s.name} doesn't speak for a moment. Her shirt has split at the side. Her belly presses the table outward slightly. She puts one hand flat on herself and exhales once, slow. "Oh," she says. That's all. She doesn't try to move. She sits with it. After a long moment: "I'm staying here for a while." It is not a question or an apology. She is simply full — more full than she has ever been — and she is sitting with that, and it is enough, and the rest of the world can wait.`,
+  9:  (s) => `${s.name}'s jersey tears across the belly in one long horizontal rip and she looks down at it like a coach reviewing footage. "Hm." She tries to stand. Gets two inches. "I can't stand up," she says, in the tone of someone noting a training variable. "I physically cannot stand up right now." She tries again. Nothing. "That's — okay. That's data." Her belly is a vast, tight, magnificent dome pressing against everything in range. "I've eaten enough to fuel a full practice session for the whole team." She almost sounds proud. She is proud. "Call me a car."`,
+  10: (s) => `${s.name}'s wrap dress unravels in slow motion and she watches it with wide, delighted eyes. "It's a happening," she breathes. Her belly pushes outward enormous and full, the skin stretched, pressing the table, pressing the chair arms, pressing everything. She can't stand. She's barely trying. "I have become immovable through art. Through eating. Through the complete and total commitment to the process." She opens her arms wide. "This is the piece. I am the piece. Someone document this before I can move again." She absolutely cannot move. She is absolutely thrilled.`,
+  11: (s) => `${s.name}'s cardigan splits neatly at the button between her belly and her chest and she watches it with the calm of someone whose hypothesis has been confirmed. "Structural failure at point of maximum fullness," she says. "As predicted." She tries to push back from the table. "I cannot move. I am full to the point of immobility and this is consistent with the data." Her belly presses the table forward slightly. "I want it noted that I am completely fine and also I need someone to call a ride because I cannot fit in my own car right now." She says this the same way she'd say anything else.`,
+  12: (s) => `${s.name}'s uniform bursts at the waist in three places at once — pop pop pop — and she throws her head back and laughs. "OKAY. OKAY." She grabs the edge of the table because she can't stand without it and finds that standing isn't actually happening. "I am literally stuck. I am literally too full to leave." Her belly is an enormous tight dome she can't see past. "This is the best this has ever been. This is the greatest day." She can't stop laughing. She also cannot move. "Someone's gonna have to help me out of this chair. I don't even care."`,
+  13: (s) => `${s.name}'s dress gives way cleanly along the left side seam and she exhales slowly. "Right," she says. She tries to stand. Does not stand. "I need a plan." She puts both hands on her belly, assessing. "I cannot currently fit through the door at this fullness level. I require a moment." She thinks. "I'm going to need at least twenty minutes, someone to help me up, and a change of clothes." She says this with complete organizational calm. "Text the chapter. Tell them I'm running late. Don't explain."`,
+  14: (s) => `${s.name}'s shirt tears across the belly and she looks down at it with an expression that shifts from surprise to delighted disbelief. "Back home this literally never —" She starts laughing. She can't stop. Her belly is enormous and round and drum-tight with fullness and she cannot stand up. "I cannot get up. I am too full to get in a car. I am too full to fit in a car." She presses both hands flat on the globe of her belly. "This campus," she says, like it's an answer to everything. She's still laughing.`,
+  default: (s) => `${s.name}'s clothes give out in three places at once and she looks down at the wreckage with the calm of someone who saw this coming. Her belly is enormous, tight, pressing everything. She tries to stand. Does not stand. "I'm done," she says. "I'm very full. I am genuinely unable to leave this chair at the moment and I need you to understand that this is fine." She is very still. "Give me twenty minutes."`,
+};
+
+// Intro text shown at the start of private sessions with blob/ascended students (professor comes to her)
+const BLOB_PRIVATE_INTRO = {
+  0:  (s) => `${s.name} doesn't come to you anymore — you come to her. You find her in the reinforced space they cleared for her, belly vast and warm and taking up most of the room. You haul yourself up the outer curve of her, hand over hand through the warm rolls, the soft geography of her enormous body. She narrates the whole time. "Left side's easier," she calls down, "hold the second fold." You settle onto the great shelf of her chest, eye level with her face. She looks completely satisfied. "Okay," she says. "Let's go." You get to work.`,
+  1:  (s) => `You arrive with the food and ${s.name} acknowledges you with the composed nod of someone who expected you exactly when you arrived. Climbing her is a physical undertaking: you go fold by fold, the warm soft mass of her enormous belly below you, her vast thighs spread wide on the reinforced platform. She has left a detailed note about the approach. You follow it. You settle atop the broad warm shelf of her chest. "I've been thinking," she says, as if you've simply sat down across a table, "about the mechanisms of this." You get to work.`,
+  2:  (s) => `${s.name} already has three cameras set up for this. "I've been documenting the approach," she tells you, when you start climbing. "The audience finds it compelling." You go hand-over-hand up the magnificent soft mass of her body — warm rolls, the vast curve of her belly, the enormous slope of her sides — and settle onto the great shelf of her chest. She adjusts one of the cameras remotely. "Okay. Give me something good." She has never been more herself. You get to work.`,
+  3:  (s) => `${s.name} gives you a route before you start. "Second fold, then cut left, use the shelf at the hip — it's load-bearing, it'll hold you." She treats it like a training circuit. You follow her instructions, climbing the warm vast geography of her enormous body — thick rolls of soft flesh, the weight and warmth of her immense belly below you — and settle onto the broad shelf of her chest. "Good," she says, with a coach's approval. "Hydration first, then we get into it." You get to work.`,
+  4:  (s) => `${s.name} has been waiting for you and she has thoughts about the approach. "Enter from the right," she says. "The light is better from the right." You climb the impossible scale of her — the vast soft folds, the warm landscape of her belly and sides and hips — and haul yourself up to the shelf of her enormous chest. She watches you the whole time with the steady attention of an artist studying a composition. "Yes," she says. "Like that. Exactly like that." You get to work.`,
+  5:  (s) => `${s.name} has engineered this. A reinforced handhold attached to the second fold. A custom platform on her left side at hip height. She is immensely practical about what she is. "I timed the last approach at forty-three seconds," she says, when you start climbing. "See if you can beat it." You haul yourself up the soft warm mass of her enormous body — fold by fold, the enormous belly below you like a landscape — and settle onto the warm shelf of her chest. She checks her watch. "Forty-one. New record." You get to work.`,
+  6:  (s) => `${s.name} receives you. That's the word for it. You climb — hand over hand up the warm soft rolls, the vast landscape of her enormous belly spread below you — and haul yourself up to the broad shelf of her chest, and she receives you there with the dignity of someone for whom this is the correct order of things. "You're punctual," she says. "I appreciate punctuality." She folds her hands in her enormous lap and waits. You get to work.`,
+  7:  (s) => `${s.name} has documented the optimal approach. She reads it to you from her phone as you climb — "second fold, use the hip shelf, angle forty-five degrees at the upper roll" — and you follow the instructions precisely, hauling yourself up the warm soft mass of her enormous body until you settle onto the great shelf of her chest. "Four seconds faster than last time," she notes. "The method is improving." She puts the phone down. You get to work.`,
+  8:  (s) => `${s.name} says nothing when you arrive. She watches you start to climb — the warm soft folds of her enormous body, the vast belly below you like a warm continent — and she is very still, and her eyes follow you, and she does not speak until you've settled onto the shelf of her enormous chest. Then: "You made it." Two words. A fact. She looks at you with those quiet eyes and waits. You get to work.`,
+  9:  (s) => `${s.name} times you. "Three, two, one —" and you start climbing, hand over hand up the warm massive rolls of her body, the enormous soft belly below you, the warm shelf of her hip, the vast slope of her sides. She counts the whole way. "Thirty-eight seconds," she announces, when you settle onto the broad warm shelf of her chest. "That's a personal record for me too." She hands you the first course before you've even steadied yourself. You get to work.`,
+  10: (s) => `${s.name} has set the scene. Candles on every horizontal surface she could reach. She considers the approach part of the ritual. You climb — fold by fold up the warm soft geography of her enormous body, the vast belly below you, the great curved slope of her sides — and haul yourself up to the shelf of her chest. She looks at you with full artist's attention. "Every time you do that," she says, "I want to paint it." She hands you what you need. You get to work.`,
+  11: (s) => `${s.name} has left instructions. Not a note — a full typed document, printed, laminated, attached to the first fold with a clip. Approach guide, handhold locations, weight distribution notes. You follow it precisely, climbing the warm soft mass of her enormous body, and settle onto the broad shelf of her chest. She looks up from her book. "You followed the guide," she says, pleased. "Most people don't follow the guide." She closes the book. You get to work.`,
+  12: (s) => `${s.name} starts cheering before you're halfway up. "COME ON. LET'S GO. YOU'VE GOT IT." She narrates the whole climb — the warm soft folds, the vast belly below you, the enormous curved slope of her sides — in the enthusiastic play-by-play of someone who genuinely loves this. You haul yourself onto the broad warm shelf of her chest and she gives you a round of applause. "NEW RECORD," she announces, for nothing specific. She is so pleased to see you. You get to work.`,
+  13: (s) => `${s.name} has arranged everything in advance. She gives you a route with the efficiency of someone who has thought about this and determined the optimal solution. You climb her — fold by fold up the warm vast mass of her body, the enormous belly below you, the wide soft slope of her sides — and settle onto the great shelf of her chest. She checks something off a mental list. "Good," she says. "Let's be efficient about this." You get to work.`,
+  14: (s) => `${s.name} laughs the whole time you're climbing. "I still can't believe this is my life," she says, warmly, not complaining — more like marveling. You haul yourself up the warm soft mass of her enormous body, fold by fold, the vast belly below you warm as sunlight, and settle onto the great shelf of her chest. She's still smiling. "Back home," she says, "I used to think 'I want to be part of somewhere.' And now look." She hands you the first course. You get to work.`,
+  default: (s) => `You come to her — she hasn't been able to come to you for a while. You climb the warm vast geography of her body, hand over hand through the soft rolls, the enormous belly below you, the wide shelf of her hips. You settle atop the great warm plateau of her chest, eye level with her face. She looks at you with the calm of someone completely at home in what she is. You get to work.`,
+};
+
 const DINNER_VENUES = [
   { id:"bistro",    label:"🥖 Campus Bistro",      tier:1, baseCourses:2, gainRange:[4,8],
     desc:"Cosy neighbourhood bistro. Good portions, comfortable atmosphere.",
@@ -6550,6 +6590,8 @@ export default function ProfessorSim(){
   const [sessionHistory,setSessionHistory]=useState({});
   // {[studentId]:{count,totalGain,capacityBonus}}
   const [sessionResult,setSessionResult]=useState(null);
+  const [tapOutPopup,setTapOutPopup]=useState(null);
+  // {student, text, totalGain}
   const [sessionLog,setSessionLog]=useState([]);
   const [pendingDoubleDowns,setPendingDoubleDowns]=useState([]);
   // ── DIVINE EXPANSION STATE ─────────────────────────────────────
@@ -8543,7 +8585,10 @@ export default function ProfessorSim(){
     const s=privateSession.student;
     setPrivateSession(prev=>({...prev,venue,phase:"feeding"}));
     push(`🌙 Private session with ${s.name} — ${venue.label}.`);
-    setSessionLog([venue.intro(s)]);
+    const isImmobile=getStage(s.lbs).id>=10||!!s.ascensionPath;
+    const blobEntry=isImmobile?(BLOB_PRIVATE_INTRO[s.id]||BLOB_PRIVATE_INTRO.default):null;
+    const blobIntroText=blobEntry?(typeof blobEntry==='function'?blobEntry(s):blobEntry):null;
+    setSessionLog(blobIntroText?[blobIntroText, venue.intro(s)]:[venue.intro(s)]);
   };
 
   const feedInSession=(food)=>{
@@ -8565,20 +8610,32 @@ export default function ProfessorSim(){
     const tapsOut=Math.random()<adjustedTapProb;
     if(tapsOut){
       const liveS=students.find(st=>st.id===s.id)||s;
-      const stage=getStage(liveS.lbs);
-      const tapStage=liveS.lbs<160?0:liveS.lbs<240?1:liveS.lbs<320?2:3;
       let tapLine;
       if(s.ascensionPath==="convergence"){
         const sg=getSingularityStage(liveS.lbs);
         const sgIdx=sg?sg.id-1:0;
         const entry=SINGULARITY_TAP_OUT[Math.min(sgIdx,SINGULARITY_TAP_OUT.length-1)];
         tapLine=typeof entry==='function'?entry(liveS):entry;
+      } else if(fPct>=250){
+        // At 250%+ — unique per-student extreme tap-out
+        const entry250=TAP_OUT_250[s.id]||TAP_OUT_250.default;
+        tapLine=typeof entry250==='function'?entry250(liveS):entry250;
       } else {
+        const tapStage=liveS.lbs<160?0:liveS.lbs<240?1:liveS.lbs<320?2:3;
         const dialogueSet=TAP_OUT_DIALOGUE[s.id]||TAP_OUT_DIALOGUE.default;
         tapLine=dialogueSet[tapStage](liveS);
       }
-      setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:prev.totalGain+scaledGain,fullness:newFullness,tappedOut:true,tapOutDialogue:tapLine}));
-      push(`⛔ ${s.name} taps out!`);
+      // End the session immediately — close private session, show tap-out popup
+      const currentTotalGain=(privateSession.totalGain||0)+scaledGain;
+      const hist2=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
+      const newCapBonus2=hist2.capacityBonus+8;
+      setAp(a=>a-2);
+      addScrutiny(2);
+      setSessionHistory(prev=>({...prev,[s.id]:{count:hist2.count+1,totalGain:hist2.totalGain+currentTotalGain,capacityBonus:newCapBonus2}}));
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4)}));
+      push(`⛔ ${s.name} taps out! Session ended — +${currentTotalGain} lbs.`);
+      setPrivateSession(null);
+      setTapOutPopup({student:liveS,text:tapLine,totalGain:currentTotalGain});
     } else {
       setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:prev.totalGain+scaledGain,fullness:newFullness}));
     }
@@ -9147,7 +9204,7 @@ export default function ProfessorSim(){
       {singularityActionPopup&&(
         <div style={C.overlay}>
           <div style={{...C.modal,maxWidth:580}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#a080c0",marginBottom:6}}>⚡ THE SINGULARITY</div>
+            <div style={{fontSize:9,letterSpacing:3,color:singularityActionPopup.student?.triumvirateUnlocked?"#ffd700":"#a080c0",marginBottom:6}}>{singularityActionPopup.student?.triumvirateUnlocked?"🔱 THE TRIUMVIRATE":"⚡ THE SINGULARITY"}</div>
             {singularityActionPopup.gainApplied>0&&(
               <div style={{fontSize:11,color:"#c080e0",marginBottom:10}}>
                 +{Math.round(singularityActionPopup.gainApplied).toLocaleString()} lbs
@@ -9759,7 +9816,10 @@ export default function ProfessorSim(){
                           {(()=>{const tier=getTier(s.relationship);return tier.id>0?<span style={{fontSize:12,opacity:0.9}}>{tier.emoji}</span>:null;})()}
                           {s.ascensionPath==="celestial"&&<span style={{fontSize:11,color:"#a080ff"}}>✦{CELESTIAL_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
                           {s.ascensionPath==="umbral"&&<span style={{fontSize:11,color:"#cc4040"}}>🌑{UMBRAL_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
-                          {s.ascensionPath==="convergence"&&<span style={{fontSize:11,color:"#ffffff"}}>⚡Singularity</span>}
+                          {s.ascensionPath==="sanguine"&&<span style={{fontSize:11,color:"#e05050"}}>🩸{SANGUINE_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
+                          {s.ascensionPath==="verdant"&&<span style={{fontSize:11,color:"#60b060"}}>🌿{VERDANT_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
+                          {s.ascensionPath==="primordial"&&<span style={{fontSize:11,color:"#c09040"}}>🌑🌿Primordial</span>}
+                          {s.ascensionPath==="convergence"&&<span style={{fontSize:11,color:"#ffffff"}}>{s.triumvirateUnlocked?"🔱Triumvirate":"⚡Singularity"}</span>}
                           {!s.ascensionPath&&evMeta&&<span style={{fontSize:10,color:evMeta.color,fontWeight:600}}>✦ {evMeta.title}</span>}
                         </div>
                         <StageTag stage={st}/>
@@ -9769,7 +9829,7 @@ export default function ProfessorSim(){
                       <div style={{fontSize:11,color:"#a88050",margin:"2px 0"}}>{s.lbs.toLocaleString()} lbs (+{s.lbs-s.startLbs}) · ❤ {s.relationship}%</div>
                       <div style={{fontSize:10,color:"#504060",fontStyle:"italic",lineHeight:1.4,marginTop:3}}>
                         {(()=>{
-                          if(s.ascensionPath) return ((s.ascensionPath==="celestial"?ASCENSION_STAGE_REACTIONS.celestial:s.ascensionPath==="umbral"?ASCENSION_STAGE_REACTIONS.umbral:[CONVERGENCE_STAGE.desc])[s.ascensionStage||0]||"").slice(0,62);
+                          if(s.ascensionPath){const _r=s.ascensionPath==="celestial"?ASCENSION_STAGE_REACTIONS.celestial:s.ascensionPath==="umbral"?ASCENSION_STAGE_REACTIONS.umbral:s.ascensionPath==="sanguine"?SANGUINE_REACTIONS:s.ascensionPath==="verdant"?VERDANT_REACTIONS:[CONVERGENCE_STAGE.desc];const _e=_r[s.ascensionStage||0]||"";return((typeof _e==='function'?_e(s):_e)||"").slice(0,62);}
                           const evR=getEvolvedReaction(s); if(evR) return evR.slice(0,62);
                           const rxn=STAGE_REACTIONS[s.archetype]?.[st.id]; return ((typeof rxn==='function'?rxn(s):rxn)||"").slice(0,62);
                         })()}…
@@ -10071,7 +10131,7 @@ export default function ProfessorSim(){
                   const canSubsume=!goddessIncarnateId&&sg&&sg.id>=5&&religion&&religion.devotees>=1;
                   return(
                     <div style={{background:"rgba(10,5,20,0.95)",border:`2px solid ${sgColor}80`,borderRadius:10,padding:14,marginBottom:12}}>
-                      <div style={{fontSize:9,letterSpacing:3,color:sgColor,marginBottom:4}}>⚡ THE SINGULARITY</div>
+                      <div style={{fontSize:9,letterSpacing:3,color:sgColor,marginBottom:4}}>{s.triumvirateUnlocked?"🔱 THE TRIUMVIRATE":"⚡ THE SINGULARITY"}</div>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
                         <div style={{fontSize:16,fontWeight:700,color:sgColor}}>{sgLabel}</div>
                         <div style={{fontSize:11,color:"#888"}}>{Math.round(s.lbs).toLocaleString()} lbs</div>
@@ -10108,10 +10168,10 @@ export default function ProfessorSim(){
                           return(
                             <div key={a.id} style={{...C.card,opacity:disabled?0.35:1,border:`1px solid ${sgColor}40`}}
                               onClick={()=>!disabled&&doSingularityAction(s,a.id)}>
-                              <div style={{fontWeight:700,fontSize:11,color:sgColor,marginBottom:2}}>{a.label}</div>
+                              <div style={{fontWeight:700,fontSize:11,color:"#e8d8ff",marginBottom:2}}>{a.label}</div>
                               <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
                                 <span style={{fontSize:10,color:"#e07030"}}>{a.apCost} AP</span>
-                                {a.gainRange&&a.gainRange[1]>0&&<span style={{fontSize:10,color:"#685040"}}>+{a.gainRange[0]}–{a.gainRange[1]}</span>}
+                                {a.gainRange&&a.gainRange[1]>0&&<span style={{fontSize:10,color:"#a08060"}}>+{a.gainRange[0]}–{a.gainRange[1]}</span>}
                                 {a.needsDevotee&&<span style={{fontSize:9,color:"#a05050"}}>devotee</span>}
                               </div>
                             </div>
@@ -11453,18 +11513,6 @@ export default function ProfessorSim(){
                     })}
                   </div>
 
-                  {/* Tap-out scene — shown as a reaction, session continues */}
-                  {ps.tappedOut&&(
-                    <div style={{background:"rgba(40,10,10,0.6)",border:"1px solid #c03030",borderRadius:8,padding:10,marginBottom:8}}>
-                      <div style={{fontSize:10,letterSpacing:2,color:"#c06060",fontWeight:700,marginBottom:5}}>⛔ SHE TAPS OUT</div>
-                      <div style={{fontSize:12,color:"#e0b0a0",fontStyle:"italic",lineHeight:1.65,marginBottom:8}}>{ps.tapOutDialogue}</div>
-                      <button style={{...C.btn("#6a1080"),width:"100%",fontSize:11}} onClick={()=>{
-                        setPrivateSession(prev=>({...prev,tappedOut:false,tapOutDialogue:null}));
-                        if((ps.refillRound||0)<3) getMoreFood();
-                        setSessionLog(sl=>[...sl,"You slide more food across the table. She protests. She eats it anyway."]);
-                      }}>Push Further →</button>
-                    </div>
-                  )}
 
                   {/* Normal footer — always accessible */}
                   <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
@@ -11493,6 +11541,23 @@ export default function ProfessorSim(){
           </div>
         );
       })()}
+
+      {/* ── TAP-OUT POPUP ── */}
+      {tapOutPopup&&(
+        <div style={C.overlay}>
+          <div style={{...C.modal,maxWidth:520}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#c06060",marginBottom:6}}>⛔ SHE TAPS OUT</div>
+            <div style={{fontSize:11,color:"#a06050",marginBottom:10}}>
+              {tapOutPopup.student.name} · +{tapOutPopup.totalGain} lbs this session
+            </div>
+            <p style={{lineHeight:1.9,color:"#e0d0c0",fontStyle:"italic",marginBottom:20,fontSize:13}}>
+              {tapOutPopup.text}
+            </p>
+            <div style={{fontSize:11,color:"#705040",marginBottom:16}}>She ate enough for a family of five. The session is over.</div>
+            <button style={C.btn("#5a1515")} onClick={()=>setTapOutPopup(null)}>Close</button>
+          </div>
+        </div>
+      )}
 
       {/* ── SESSION RESULT ── */}
       {sessionResult&&(
