@@ -9709,7 +9709,7 @@ export default function ProfessorSim(){
                         {(()=>{
                           if(s.ascensionPath) return ((s.ascensionPath==="celestial"?ASCENSION_STAGE_REACTIONS.celestial:s.ascensionPath==="umbral"?ASCENSION_STAGE_REACTIONS.umbral:[CONVERGENCE_STAGE.desc])[s.ascensionStage||0]||"").slice(0,62);
                           const evR=getEvolvedReaction(s); if(evR) return evR.slice(0,62);
-                          return (STAGE_REACTIONS[s.archetype]?.[st.id]||"").slice(0,62);
+                          const rxn=STAGE_REACTIONS[s.archetype]?.[st.id]; return ((typeof rxn==='function'?rxn(s):rxn)||"").slice(0,62);
                         })()}…
                       </div>
                     </div>
@@ -9802,9 +9802,9 @@ export default function ProfessorSim(){
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>CURRENT ATTITUDE</div>
                   <div style={{fontSize:13,color:"#e8d8a8",fontStyle:"italic",lineHeight:1.75}}>
                     "{(()=>{
-                      if(s.ascensionPath&&s.ascensionPath!=="convergence") return ASCENSION_STAGE_REACTIONS[s.ascensionPath]?.[s.ascensionStage||0]||STAGE_REACTIONS[s.archetype]?.[st.id];
+                      if(s.ascensionPath&&s.ascensionPath!=="convergence"){ const ar=ASCENSION_STAGE_REACTIONS[s.ascensionPath]?.[s.ascensionStage||0]; if(ar) return ar; const rb=STAGE_REACTIONS[s.archetype]?.[st.id]; return typeof rb==='function'?rb(s):rb; }
                       const evR=getEvolvedReaction(s); if(evR) return evR;
-                      return STAGE_REACTIONS[s.archetype]?.[st.id];
+                      const rb=STAGE_REACTIONS[s.archetype]?.[st.id]; return typeof rb==='function'?rb(s):rb;
                     })()}"
                   </div>
                 </div>
