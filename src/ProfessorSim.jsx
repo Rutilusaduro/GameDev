@@ -5479,7 +5479,7 @@ You are ${Math.round(s.lbs)} pounds on camera in front of the new audience. They
 
 The chat is dense: *wrenWatchesEverything: I DM'd asking to be on stream someday. Kylie said 'maybe'. I'm holding onto maybe.* You see it. You smile. You eat.`,
           choices:[
-            {id:"brand_double_reveal",label:"Execute the double weight reveal — both numbers on camera simultaneously",result:`Third course. You call it: "we're doing the reveal." She's already standing to reach the scale. You say your number — ${Math.round(s.lbs)} pounds — and she says hers and the chat processes both at once and the donation bar jumps and the viewer count spikes and Wren donates the full remaining goal in one transaction.`,rel:15,flag:"dual_reveal"},
+            {id:"brand_double_reveal",label:"Execute the double weight reveal — both numbers on camera simultaneously",result:`Third course. You call it: "we're doing the reveal." She's already standing to reach the scale. You say your number — your weight, clearly, into the mic — and she says hers and the chat processes both at once and the donation bar jumps and the viewer count spikes and Wren donates the full remaining goal in one transaction.`,rel:15,flag:"dual_reveal"},
             {id:"max_feed",label:"Feed her the challenge course directly — hand to across-table",result:`You put the challenge course directly on her side. Not sliding it across — actually reaching, the camera catching the full fact of your arm, your belly pressing the table as you lean. She takes it from your hands. The chat is saying the same thing in five different ways. This is the moment. This is why the brand wanted both of you.`,rel:13,flag:"direct_feed"},
           ]
         },
@@ -5509,7 +5509,7 @@ She told me in a DM: *I'm in the building. In the waiting area. I drove from fou
 
 *wrenWatchesEverything: one year of weekly collabs and she keeps getting bigger. I am not emotionally prepared.* Wren is against the wall behind the camera. You can see her from here. She's watching.`,
           choices:[
-            {id:"year_scale",label:"Do the year reveal — both start weights versus now, live on camera",result:`The anniversary reveal: you say your debut weight — 258 — and then your current weight — ${Math.round(s.lbs)}. She says her debut weight for the collabs and then her current. The chat does the math in real time. Someone writes: *that's a year of collabs.* Someone else writes: *look at what they built.* You both look at the camera. You both reach for the next plate.`,rel:16,flag:"year_reveal"},
+            {id:"year_scale",label:"Do the year reveal — both start weights versus now, live on camera",result:`The anniversary reveal: you say your debut weight — 258 — and then your current weight, clearly, into the mic. She says her debut weight for the collabs and then her current. The chat does the math in real time. Someone writes: *that's a year of collabs.* Someone else writes: *look at what they built.* You both look at the camera. You both reach for the next plate.`,rel:16,flag:"year_reveal"},
             {id:"anniversary_challenge",label:"Challenge her — the biggest feed of the anniversary stream, on your side and hers",result:`You tell her: biggest feed of the anniversary stream, right now, both sides of the table, everything. She looks at you — a year of understanding built into that look — and she nods. You both reach for the largest course. The chat is counting. Wren is watching from against the wall. This is what a year looks like.`,rel:15,flag:"challenged"},
           ]
         },
