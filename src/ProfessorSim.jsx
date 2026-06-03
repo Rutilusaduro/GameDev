@@ -3659,12 +3659,12 @@ const EVOLVED_REACTIONS = {
   ],
   // ── CHEERLEADER paths ───────────────────────────────────────────
   eating_captain:[
-    "Organized the first squad eating competition. Ran it like a cheer meet. We swept it. I swept it.",
-    "The squad is committed now. We train twice a week. Training is mostly eating. The results speak.",
-    "Regional circuit scouts showed up to watch us. They had not expected us to be this organized.",
-    "National invite. We're representing the school at a competitive eating championship. Regalia included.",
-    "I am the most decorated eating captain in my school's history. The trophy case needed an extension.",
-    "The squad runs itself now. I made something permanent. Also I am permanent.",
+    `I weigh ${258} pounds and I stepped on a competition scale for the first time today and a judge read my number aloud and the whole room got quiet. That is a feeling. I want more of that feeling.`,
+    `Six months in the circuit and people know my name before I get to the warmup room. I walked in today and a girl said 'you're the cheerleader captain' like she'd been waiting to see me. I haven't been a cheerleader captain in a while. I'm something else now.`,
+    `Conference championship. I outweighed the previous top number by over a hundred pounds and the judge read mine into the microphone and Maya from Lakewood — who has beaten me every time we've competed — started clapping. She started before anyone else.`,
+    `National qualifier. There were cameras at the weigh-in. The weigh-in has cameras now. I weighed in and someone in the crowd said 'oh my god' clearly enough for me to hear it. I considered this a successful weigh-in.`,
+    `National champion. They read my name and my number into the national feed and the arena made a sound I've never heard in a room before. Maya was already clapping. She knew before the horn. I knew too.`,
+    `I am the largest competitive eating captain in this sport's history. The trophy is substantial. My belly is more substantial. I put my hand on it after the ceremony and thought: this is the record. I built this. There is more to build.`,
   ],
   big_squad_captain:[
     "Told the squad: no more size rules, no more weigh-ins. Two girls cried. One said she'd been waiting years.",
@@ -3838,12 +3838,12 @@ const EVOLVED_DIARY = {
     `The platform is legacy. The body is the argument. The argument did not require me to be small or quiet or apologetic, and I wasn't, and now I am enormous and permanent and the work is done in the sense that it continues without requiring my active defense. That is what winning looks like.`,
   ],
   eating_captain:[
-    `I ran the first squad eating competition the same way I run cheer meets — registration, seeding, brackets, a trophy. The trophy was my idea. The squad thought I was joking. I was absolutely not joking. We swept the competition. I swept everything.`,
-    `Twice-a-week training now. The squad has committed. We eat together and time ourselves and track our progress on a whiteboard in the gym. The whiteboard is very detailed. I made a spreadsheet. The spreadsheet is also very detailed.`,
-    `Regional scouts came to our last competition. They arrived expecting a novelty act and left with clipboards full of notes. I handed them our training documentation on the way out. They seemed surprised that it existed. It is extensive.`,
-    `National invite. The letter arrived and I read it twice and then stood in the gym and looked at the trophy case and thought about the squad I had before and the squad I have now and the distance between them. Then I called an emergency practice and ordered pizza.`,
-    `Most decorated eating captain in this school's history. The athletic director came to our last competition. She presented the trophy herself. Afterward she said: 'I didn't know this was what you were building.' I said: 'I always knew.' That is true.`,
-    `The squad runs itself. The traditions are set, the training is codified, the culture is established. I made something that will continue. I am the largest person in any room I enter and I made something permanent and I am at peace with both of these facts.`,
+    `Regional Open. My first. The warmup room smelled like cooking and the girl from State — 178 lbs, two years on the circuit — looked at me the way people look at something they didn't expect. Maya from Lakewood, 330 lbs, hadn't looked at me at all. I ate my warmup. I stepped on the scale. The judge read my number twice. Maya looked over for the first time. I went back to my station and got ready. I lost. I'm going back.`,
+    `Six months in. Maya says hello now. She's 370 and I'm 320 and the gap is closing and she knows it the same way I know it. We ate in the same warmup room and talked for a few minutes before competing and it was good and then she beat me and it was fine. I know where this is going. She knows too. We're both just moving toward it at different speeds.`,
+    `Conference championship. I weighed in at ${419} and Maya's number was 410 and the head judge said mine into the microphone and Maya stopped writing mid-number with the marker. She put the cap back on without finishing. I made eye contact with her. She said: "I knew it was coming." She said it quietly, not to the crowd. She meant it as a compliment. I took it as one. Then I won the conference.`,
+    `National qualifier and Maya found me backstage to say I was the best she'd ever seen. She said it plainly. She looked me in the eye and said: "You're the best I've ever seen. I need you to know I know that." Then she went to her warmup. I stood in the warmup room for one second thinking about the girl from State who asked "is that right?" when they read my number at my first competition. Then I ate everything.`,
+    `National champion. Maya was already clapping when they read my name. She started before anyone else — before the crowd, before the other competitors, before the officials. I looked over and she was standing at her side of the staging area with both hands coming together and she was the first. I don't know if she planned to be first. I think she just couldn't wait any longer. I understand. I am the national champion and I have been waiting for this for two years and I still couldn't wait for it to be over.`,
+    `I put my hand on my belly after the ceremony. That's what I wrote in the diary last night — I stood in the arena hallway with the trophy and I put my hand flat on my belly, the full round warm weight of it, and I thought: this is what I built. Every competition, every warmup room, every time I stepped on the scale and let them read the number. This is the record. This is the proof. There is more to build. I am not done.`,
   ],
   big_squad_captain:[
     `I stood in front of the squad and said: no more weigh-ins, no more size requirements, no more conversations about who fits the uniform before we talk about who can do the work. Two girls cried. One left. Six signed up the next week.`,
@@ -4177,11 +4177,11 @@ const EVOLVED_ACTIVITY_TEXT = {
     (s)=>`${Math.round(s.lbs)} pounds. The profile piece journalist came to her — she doesn't travel for interviews anymore. They talked for four hours, she ate throughout, the piece is 8,000 words. It describes her at length: her belly enormous and warm pressing the dining table; her thighs vast in the custom chair; her face calm when she says "I weigh ${Math.round(s.lbs)} pounds and this is the most myself I have ever felt." The piece ran Thursday. By Saturday it was the publication's most-read piece in four years. She read it once and said: "accurate." She had dinner. She filmed it.`,
   ],
   eating_captain:[
-    (s)=>`She weighs ${Math.round(s.lbs)} pounds and she's set up a long table in the gym — eating bibs, timing equipment, plates — and when the squad files in she calls them to attention the way she used to call formations. Her belly rounds forward in her jacket. Her thighs press together. The squad is nervous. She runs a full timed drill. One girl — maybe 195 pounds, soft through the middle, uniform riding up — finishes third. Your student nods at her. "You can do better than that," she says. "Eat more first. I'm serious." She demonstrates. The squad leaves two hours later, every one of them significantly fuller. Two of them are visibly heavier than when they arrived.`,
-    (s)=>`${Math.round(s.lbs)} pounds. First sanctioned competition. The squad comes in wearing their eating bibs over their jackets and the crowd does a double-take. Your student, at 318, is visibly the largest woman at any team's table. Her belly fills her bib completely. Her thighs spread wide on the bench. She starts the timer and begins. The squad follows her lead. They win their heat. Afterward she finds the girl who finished second and says: "You need to weigh more before the regionals. I mean that. Come to practice Wednesday and we'll fix it." She says it like a coach. Like the extra weight is the training goal.`,
-    (s)=>`${Math.round(s.lbs)} pounds and the regional meet. You're in the stands watching her manage five cheerleaders and a competition table simultaneously. Her belly is substantial, hanging forward in the bib, her thighs enormous on the bench. She distributes portions, manages timing, watches each girl's pace. The squad is the heaviest team at the meet — she has trained them well. Between rounds she circulates with a bag of snacks and hands them to each girl directly. "Eat," she says. "We win by size advantage. We don't have size advantage if you're not eating." They advance to the final. They win it.`,
-    (s)=>`${Math.round(s.lbs)} pounds. The national invite announcement. She reads it to the squad in the gym — all of them assembled, all of them softer and rounder than when she found them. Some of them are clearly over 250 pounds now; one is pushing 300. She reads the letter and then she looks at each of them in turn. "We're going because you've been eating and training and getting bigger the way I told you to," she says. "The way I've been doing it." She presses her hands to her enormous belly, a gesture of illustration. "This is what wins. More of this." She hands out snacks. Practice starts immediately.`,
-    (s)=>`${Math.round(s.lbs)} pounds. Tournament final. You're watching from the stands — six enormous women at a competition table, your student at the head of it, her belly a vast warm presence against the bib, her thighs spread wide on the reinforced bench. She weighs ${Math.round(s.lbs)} pounds and she is the largest competitive eating captain in the sport's history and her squad is the heaviest in the draw and when the timer starts she doesn't look at the plate. She looks at each of her girls, one at a time, and something passes between them. Then she begins eating. They follow her. Every one of them. The crowd is extraordinary. They win by four minutes.`,
+    (s)=>`She knocks on your office door in her competition gear — bib around her neck, hair up, competition number pinned to her jacket, ${Math.round(s.lbs)} pounds warm and ready and forward in the doorframe. "Regional Open today," she says. "I wanted to tell you." She doesn't ask you to come. You come anyway. She's a cheerleader captain who has decided she's something else now, and she wants a witness.`,
+    (s)=>`She stops by before she leaves for the circuit meet — ${Math.round(s.lbs)} pounds, the bib already on, and she's looking good, the specific loose confidence of someone who has stopped being new at something. "Maya's going to be there," she says. "Maya's 370." She says it the way people say things they've been thinking about for a while. "I know," she says. Then she leaves. You follow her out.`,
+    (s)=>`Conference championship day. She's ${Math.round(s.lbs)} pounds and the competition bib she ordered three months ago is tight across her belly now and she wears it like it fits because it fits exactly as she wanted it to fit. "The board's going to have my number at the top," she tells you before she leaves. "I want you to see that." You go. The board has her number at the top. The judge reads it into the microphone. Maya puts the cap back on her marker.`,
+    (s)=>`National qualifier. She comes by your office the morning of — ${Math.round(s.lbs)} pounds, dressed to compete, the number already pinned. "There's going to be press," she says. "A journalist." She says it like she's telling you something, not asking. "Maya told me I'm the best she's ever seen." She pauses. "Maya's right." She leaves. You get in your car and follow the van to the venue.`,
+    (s)=>`National championship. She's ${Math.round(s.lbs)} pounds and the arena credential is around her neck and the woman at the door held the door open wider when she came through and didn't say anything about it. She finds you in the crowd before the event. "Watch the weigh-in," she says. Just that. Then she goes backstage. You watch the weigh-in. The arena goes quiet when they read her number.`,
   ],
   big_squad_captain:[
     (s)=>`She weighs ${Math.round(s.lbs)} pounds and the weigh-in board is gone from the gym wall and she's standing in front of 18 cheerleaders — plus two new girls who'd never come before, soft-figured and nervous — explaining what this squad is now. Her belly rounds forward against her practice jacket. Her thighs press together. She tells them: size requirements are abolished. No weigh-ins. Performance is the standard. Then she adds: "And I expect you to eat well. I want this to be the heaviest squad on campus." She says this with the same tone she uses for formation notes. Like it's obvious. Like it's training.`,
@@ -4298,12 +4298,237 @@ const EVOLVED_ACTIVITY_TEXT = {
   ],
 };
 
+// ══════════════════════════════════════════════════════════════════
+// EATING CONTEST MINI-GAME — DATA & CONTENT
+// ══════════════════════════════════════════════════════════════════
+
+const CONTEST_FOODS = [
+  { id:'hotdogs',  name:'Hot Dogs',   emoji:'🌭', fullness:8,  lbs:3 },
+  { id:'wings',    name:'Wings',      emoji:'🍗', fullness:12, lbs:5 },
+  { id:'burger',   name:'Burger',     emoji:'🍔', fullness:15, lbs:6 },
+  { id:'pizza',    name:'Pizza',      emoji:'🍕', fullness:18, lbs:7 },
+  { id:'ribs',     name:'Ribs',       emoji:'🥩', fullness:22, lbs:9 },
+  { id:'pasta',    name:'Pasta',      emoji:'🍝', fullness:25, lbs:10 },
+  { id:'cake',     name:'Cake',       emoji:'🎂', fullness:10, lbs:5 },
+  { id:'pie',      name:'Pie',        emoji:'🥧', fullness:13, lbs:5 },
+  { id:'nachos',   name:'Nachos',     emoji:'🧀', fullness:9,  lbs:4 },
+  { id:'icecream', name:'Ice Cream',  emoji:'🍨', fullness:7,  lbs:4 },
+];
+
+// Food selection per stage (0=stage5, 4=stage9). Your side vs Maya's side.
+const CONTEST_STAGE_FOODS = [
+  { your:['hotdogs','wings','burger','pizza','cake'],             maya:['hotdogs','wings','burger','ribs','pie'] },
+  { your:['hotdogs','wings','burger','pizza','ribs','cake'],      maya:['wings','burger','pizza','ribs','pasta','pie'] },
+  { your:['hotdogs','wings','burger','pizza','ribs','pasta','cake','nachos'], maya:['hotdogs','wings','burger','pizza','ribs','pasta','pie','nachos'] },
+  { your:['hotdogs','wings','burger','pizza','ribs','pasta','cake','nachos','icecream'], maya:['hotdogs','wings','burger','pizza','ribs','pasta','pie','nachos','icecream'] },
+  { your:['hotdogs','wings','burger','pizza','ribs','pasta','cake','nachos','icecream','pie'], maya:['hotdogs','wings','burger','pizza','ribs','pasta','pie','nachos','icecream','cake'] },
+];
+
+// Maya's weight at each stage (starts heavier — she wins early events)
+const CONTEST_MAYA_WEIGHTS = [330, 370, 410, 450, 490];
+
+const CONTEST_FOOD_POPUPS = {
+  hotdogs:[
+    `Fast, warm, familiar. Three go down before you've thought about it. Your belly is already working, already wanting more. You glance at Maya's side. She hasn't looked over.`,
+    `Easy. Hot dogs are warmup food and you eat them that way — without ceremony, without slowing down, the warm salt of them going into you while the crowd gets settled.`,
+    `They're gone before the crowd registers you've started. Your belly sits heavy and warm and it wants more and you give it more without asking it to wait.`,
+    `Gone. Your belly pushes the table and absorbs the hot dogs without a pause. You're not even at capacity yet. This is the warmup of the warmup.`,
+    `You eat hot dogs the way most people eat crackers. The crowd barely registers it. You're saving yourself for something that will actually fill you.`,
+  ],
+  wings:[
+    `Messy and fast — you pull the meat off without slowing down, the sauce going everywhere, your belly warm and pushing forward with each piece. The girl from State across the table is watching. You don't look back.`,
+    `You work through the wings with the focused efficiency of someone who has done this dozens of times. The bones pile up. Your belly is warm and pressing. More.`,
+    `Each wing goes in and your belly takes it and asks for the next one. You eat with a rhythm now, the crowd building noise in the background, Maya working at her side of the table. You don't look at her.`,
+    `The pile disappears. You eat wings the way you eat everything at this stage — with the complete focus of a body that was built for this, your belly enormous and pressing forward and wanting more.`,
+    `Wings. You eat seventeen in the time it would take someone else to eat five. The table doesn't have enough wings. The table has never had enough.`,
+  ],
+  burger:[
+    `Dense and good. The burger fills real estate in your belly — you feel it land, feel the weight of it settling, the warmth of it spreading. Your belly presses your waistband harder and you take a breath and keep eating.`,
+    `One burger is nothing. You eat it in under a minute and reach for the next item before you've swallowed the last bite. Your belly is getting warm and insistent now. This is when it starts to feel like something.`,
+    `The burger goes down and your belly registers it properly — a real addition, real weight, your waistband complaining for the first time. You loosen your breath. Keep going.`,
+    `You eat the burger and your belly barely acknowledges it. This is the problem with getting to this size: you have to eat more to feel full and more to feel anything. You keep eating.`,
+    `The burger. You don't taste it as much as absorb it. At 630 lbs, the sensation of eating has become less about specific flavors and more about the specific expanding warmth of your belly pressing heavier, fuller, more real.`,
+  ],
+  pizza:[
+    `Slice by slice. Your belly is getting full now — not done, but aware. You eat through the pizza with the slightly slower pace of someone managing their capacity, the grease warm on your fingers, your belly pressing your competition top forward.`,
+    `Pizza lands differently. It fills you in layers — the immediate fullness, then the settling weight of it a minute later. Your belly is genuinely large right now, warm and tight, and you shift in your seat and keep going.`,
+    `The pizza is good and you eat it fast and your belly makes its fullness very clear. Your competition top has ridden up two inches. You don't pull it down.`,
+    `You eat the pizza and feel your belly push the table edge. It's doing that now — pressing into things, occupying more space than the seat was designed for. You push the table back an inch and keep eating.`,
+    `Five slices. You eat them like they're nothing, your belly enormous and warm and pressing everything around you, the table creaking against your waist, the crowd watching you eat like it's the most natural thing in the world. It is.`,
+  ],
+  ribs:[
+    `Heavy. Your belly really knows about the ribs. You eat through them with the focused attention of someone who can feel the fullness climbing — really climbing now — your waistband pressing, your belly warm and round and present. You eat another rib anyway.`,
+    `The ribs are dense and your belly responds to them like a furnace responding to good fuel — it gets hot, it gets heavy, it wants more. You eat more.`,
+    `You pull the rack in and work through it with the focus of someone who does not have another gear. This is already the gear. The bones go into the discard pile one by one. Your belly presses forward another increment with each one.`,
+    `Ribs. Dense. Real. Your belly is genuinely enormous right now, pressing the table hard, and you eat through the rack with the patient certainty of someone who knows exactly how this ends.`,
+    `The rack disappears. You eat ribs with two hands and your belly is warm and vast and forward and you feel, specifically, the weight of yourself growing with each piece. You like the feeling. You keep eating.`,
+  ],
+  pasta:[
+    `The pasta is the hardest thing on the table and you know it. It fills volume fast. You eat it carefully — not slow, but aware, your belly pressing your waistband hard, your competition top tight across your chest. You finish the bowl anyway.`,
+    `Dense, warm, filling. Your belly takes the pasta and gets serious about it — this is the food that will decide if you can eat more after it. You eat it and breathe carefully and decide you can.`,
+    `The pasta goes down and your belly expands visibly — not your imagination, not a trick of the light. The fabric across your middle tightens. Someone in the crowd says something. You eat the last of it.`,
+    `You eat the pasta and your belly presses the table so hard it shifts. You put a hand on it briefly — the warmth of it, the tightness, the specific insistence of being this full at this size — and then you keep eating.`,
+    `Pasta. The thing that would end a normal person's contest. You eat it in three minutes and your belly registers it the way the earth registers weight: completely, without complaint, just more mass settling into what was already an extraordinary amount of mass.`,
+  ],
+  cake:[
+    `Sweet relief after everything else. You eat the cake fast — it goes down easy after all the heavier food, your belly grateful for the change, the sweetness of it filling your mouth. You feel better than you have any right to.`,
+    `The cake is the treat. You eat it with something approaching pleasure, your belly warm and stretched and full, the sweetness of the frosting cutting through the heaviness of everything that came before.`,
+    `Sweet and easy, even now. Your belly is enormous and warm and tight and the cake still tastes good. You eat it with one hand. Your competition top has ridden up and your belly is out, warm and round in the competition lights.`,
+    `You eat the cake like a person rewarding themselves. You've earned it. Your belly sits vast and heavy between your thighs and the frosting is cold and sweet and you eat every crumb.`,
+    `The cake disappears in seconds. Your belly is beyond full, pushing everything outward — your shirt has completely ridden up, the full warm curve of your gut visible to the entire crowd — and you eat the last piece of cake with the ease of someone who gave up caring about looking full an hour ago.`,
+  ],
+  pie:[
+    `Warm and dense. Your belly resists the pie for exactly one second and then accepts it. You eat through the slice with the steady focus you've maintained all competition, the crust crumbling, the filling warm.`,
+    `The pie is real filling — you feel it. Your waistband presses. You breathe around the fullness and eat the second slice.`,
+    `Pie. Each slice goes in and your belly tightens another increment. The fabric is very tight. You don't stop. Your belly is warm and enormous and you push your chair back slightly to give it room and you keep eating.`,
+    `Your belly is so full it's hard to reach forward properly. You lean in anyway, your enormous belly pressing the table, and you eat the pie with the comfortable confidence of someone who has been this full before and eaten more after.`,
+    `The pie goes in and your belly is now genuinely beyond description — vast, warm, pressing everything, the competition top riding high, your gut visible and enormous and you are still eating. The crowd is completely silent.`,
+  ],
+  nachos:[
+    `The nachos are easy — light and salty and fast. You eat them in handfuls while you breathe, your belly grateful for something that doesn't press it further. You're not managing capacity, you're topping off.`,
+    `Salty and satisfying after all the heavier items. Your belly is genuinely full now but the nachos go down easy and you eat through the tray without difficulty.`,
+    `Nachos. Your belly barely notices them individually but the tray adds up. You eat them fast while your belly makes its general fullness very clear. You're past the point where you feel individual items. Everything is just more.`,
+    `The nachos disappear. You eat them with the easy confidence of someone who is nowhere near done, your belly warm and pressing and hungry in the specific way of something that has been working very hard and hasn't hit its ceiling.`,
+    `Gone in a minute. Your belly is enormous and warm and there is still room in it — there is always still room in it — and the nachos find that room without difficulty.`,
+  ],
+  icecream:[
+    `Cold. Startling. Good. Your belly, warm and tight and very full, receives the ice cream with something that feels like gratitude. You eat it fast before it melts, the cold sweetness going down, your belly briefly less insistent.`,
+    `The ice cream is the smartest thing on the table right now. Cold, easy, going down fast. You eat it and your belly calms slightly — just slightly — and you breathe and think about what's left.`,
+    `Cold and fast. Your belly is enormous and pressed and the ice cream cuts through the heat of everything else. You eat the whole bowl and your belly settles and you look at what's left on the table.`,
+    `Ice cream. Cold against everything warm. Your belly is a furnace right now and the ice cream is the only thing on the table that doesn't make it hotter. You eat it fast and feel, briefly, like you could eat forever.`,
+    `The ice cream is cold and you eat it and your belly is vast and warm and forward and the cold spreads through it and you feel, for just a second, like you haven't eaten anything at all. Like you could start again from the beginning. You look at Maya's side.`,
+  ],
+};
+
+const CONTEST_ACTION_POPUPS = {
+  unbutton:[
+    `The button gives and your belly comes forward — the full warm round weight of it freed from the waistband, pressing into the table without apology. You breathe properly for the first time in ten minutes. Someone in the crowd makes a sound. The judges write something. There is more room now. You reach for the next thing.`,
+    `Relief. Immediate. Your belly expands into the freed space, pressing forward into the table, warm and obvious and enormous. The girl from State looks over. You're already eating again.`,
+    `The button gives and your belly comes forward all at once — warm and round and freed, hanging heavy and low, the full weight of it settling between your thighs and pressing the table. Your competition top rides up two more inches. Your belly is out, fully visible, warm in the competition lights, and there is room now. More room.`,
+    `Your belly bursts free. That's not an exaggeration — it was pressed and contained and now it isn't, the full enormous warm mass of it pressing forward and down, visible to the entire crowd, the table groaning slightly against the new weight. Maya glances over. You eat something.`,
+    `The button goes and your belly is free and it is vast and warm and it presses everything within reach. The crowd makes a sound that isn't quite a gasp and isn't quite a cheer — something in between, something they didn't rehearse. Your belly is enormous and out and visible and you put one hand flat on it for one second, feeling the warmth and the weight of yourself, and then you reach for more food.`,
+  ],
+  rub:[
+    `You press both palms flat against your belly, feeling the tight warmth of it, the firm round pressure of being this full. You breathe. You work out some of the pressure with slow circles. It helps. Not much, but enough. You reach for the next item.`,
+    `Your hands on your belly — the warmth of it, the tightness, the specific density of this much food in you. You breathe carefully and rub slow and feel the fullness redistribute slightly. Better. You eat again.`,
+    `Both hands on the belly. You feel it from outside: the enormous warm sphere of it, tight and full and pressing your palms back. You breathe and rub and your belly lets go of some of the tightness. Just enough. You look at what's left on the table.`,
+    `Your belly is enormous under your hands — the size of it, the weight of it, the specific insistent warmth of very full flesh pressing your palms outward. You rub slow. The fullness eases a fraction. You look at Maya. She's rubbing her own belly. Good. Keep going.`,
+    `You put both hands on your belly and it is vast and warm and pressing back against your palms with more force than seems possible. You are 630 lbs of competitive eater and your belly is the center of gravity of the room and you rub it slow and deliberate and feel it ease slightly and then you eat more.`,
+  ],
+  taunt:[
+    `You look over at Maya. She's 330 lbs and she's been doing this for two years and she's focused on her side of the table. You catch her eye. She looks away immediately. "You're wasting your time," she says, to her food, not to you. You eat another hot dog.`,
+    `You look over. Maya is at 370 lbs now and she's working hard and she knows you're there. "How's your side?" you ask. She doesn't answer. She eats faster. "Thought so," you say, and keep going.`,
+    `You make eye contact with Maya. She's 410 lbs and her side is disappearing but yours is disappearing faster. "You want to call it?" you ask. "Not even close," she says, but her voice has something in it. "Looked close from here," you say. You eat a rib.`,
+    `Maya is 450 lbs and she is eating with everything she has and it's not enough. You look over at her side of the table — what's left of it — and then at yours. "I'm going to steal your pasta," you say. She says: "No you aren't." You look at the pasta. You look at her. "Watch me," you say.`,
+    `You look at Maya. She is 490 lbs and she has been eating competitive food for four years and she is one of the best in the country and she is looking at your side of the table the way someone looks at something that has already beaten them. "You're something else," she says quietly. It doesn't sound like a complaint. You eat another slice.`,
+  ],
+  steal:[
+    `You reach across the divider — your arm, your enormous warm arm — and take the pasta from Maya's side. The crowd makes a noise. Maya stops eating for exactly two seconds. She watches you pull it to your side. "Oh," she says quietly. "That's how it is." She goes back to what's left. You eat her pasta.`,
+    `You reach over and take the ribs. Maya's hand comes toward them at the same time. You get there first. Your belly presses the divider when you reach and you don't care. "Mine now," you say. Maya laughs, one short sound, and goes back to the rest. You eat her ribs.`,
+  ],
+  table_cleared:[
+    ``,
+    ``,
+    `The last item is gone. You sit back. Your belly is enormous and warm and pressing everything within reach, and both sides of the table are empty, and the judges are looking at each other. The head judge says: "Table cleared." He says it to the room, not to you specifically, but it's for you specifically.`,
+    `You eat the last thing on your side and look at Maya's side and it is also empty. The table is gone. Both sides. The judges confer for one second. "That's it," the head judge says. "Horn." The horn fires. The crowd — and there is a significant crowd — makes a sound.`,
+    `Empty. Both sides. Your belly is vast and warm and past full and pressing everything and the table is completely, entirely gone. Maya sits back and looks at the empty sides and says: "I didn't think that was possible." The judge says: "Neither did I." The horn fires.`,
+  ],
+  too_full:[
+    `Your belly is done. Full — properly, completely full, the fabric tight and warm and pressed against everything. You can't fit another bite. You sit back and your belly presses the table and the judges see it and the horn fires. That's it. Time to weigh in.`,
+    `Capacity hit. Your belly is warm and tight and enormous and pressed against the table and there is no more room right now. You sit back and breathe carefully and wait for the horn. Not bad.`,
+    `You reach for the next item and your belly says no. Not a suggestion — a full stop. The fullness is total and warm and present and you sit back and your belly presses everything around it and you are done. The judges mark it.`,
+    `Done. You couldn't eat another bite if someone offered you everything on Maya's side of the table. Your belly is vast and full and warm and pressing everything and you sit back and breathe around it and wait. The judges call it.`,
+    `You are done. Your belly is an enormous warm full mass pressing the table, pressing your thighs, pressing your competition top up past your navel, and there is simply no more room in it. You sit back. The horn fires. You feel, specifically, like the most full you have ever been. You feel great.`,
+  ],
+};
+
+// Second weigh-in scene text (after eating) — indexed by stageIdx
+const CONTEST_WEIGH_IN_2_TEXT = [
+  (s, yourGain, mayaGain, mayaLbs) => {
+    const youNew = Math.round(s.lbs + yourGain);
+    const mayaNew = Math.round(mayaLbs + mayaGain);
+    return `The eating is over. The judges call both competitors to the scale for the final weigh-in.
+
+You get up. Your belly is enormous and warm and full — pressing forward with the weight of everything you've eaten — and you move to the scale the way you move at this weight: carefully, deliberately, every step the particular balance of someone carrying a great deal of themselves. The crowd watches. The catering tables are mostly gone. The room is warm.
+
+Maya gets up from her side. She's 330 lbs before the eating and she moves like it — heavy and slow and real, her belly swaying with each step, her thighs pressing together. She catches your eye. She nods once.
+
+You step on the scale first. The judge reads: ${youNew} pounds. He writes it without expression.
+
+Maya steps on. The judge reads: ${mayaNew} pounds. He writes it.
+
+He looks at both numbers. He looks at you. He reads yours into the microphone.`;
+  },
+  (s, yourGain, mayaGain, mayaLbs) => {
+    const youNew = Math.round(s.lbs + yourGain);
+    const mayaNew = Math.round(mayaLbs + mayaGain);
+    return `Time. The judges call competitors to the scale.
+
+You stand. Your belly is full and warm and tight, pressing your competition top up, visible and enormous and present. You walk to the scale with the careful authority of someone who has stopped apologizing for the space she takes up. The crowd is watching. Several of them specifically watch your belly move as you walk. That's fine. That's good.
+
+Maya is already at the scale — 370 lbs, her belly round and warm, moving with that specific gravity of serious weight, her thighs wide and pressing. She looks at you when you arrive. "Good eating," she says. She means it.
+
+You step on. ${youNew} pounds. The judge marks it.
+
+Maya steps on. ${mayaNew} pounds.
+
+The room does the math before the judge does. He announces the result into the microphone anyway.`;
+  },
+  (s, yourGain, mayaGain, mayaLbs) => {
+    const youNew = Math.round(s.lbs + yourGain);
+    const mayaNew = Math.round(mayaLbs + mayaGain);
+    return `The horn fires. Both competitors to the scale.
+
+You rise from the table. Your belly is vast and warm and full — genuinely past full, pushing everything outward, your competition top ridden up and your gut visible and warm in the lights. You walk and your belly moves with you: heavy, swaying, the weight of an enormous amount of food inside an already-enormous body. The crowd parts slightly to let you through. They don't mean to. It's just what happens.
+
+Maya is beside you, 410 lbs, her own belly round and full and swaying, her thighs heavy and warm, moving with the careful deliberate pace of someone who has just eaten more than most people eat in a week. She is large and full and real. You are larger and fuller and more real.
+
+You step on the scale. ${youNew} pounds. The judge reads it twice before he writes it.
+
+Maya: ${mayaNew} pounds.
+
+"Conference champion," the judge says. He looks at you when he says it. He doesn't have to look at you. He just does.`;
+  },
+  (s, yourGain, mayaGain, mayaLbs) => {
+    const youNew = Math.round(s.lbs + yourGain);
+    const mayaNew = Math.round(mayaLbs + mayaGain);
+    return `Final horn. Scale time.
+
+You get up from the table. Your belly is beyond full — tight and warm and pressing everything, your competition top completely ridden up above your navel, the full round warm mass of your gut visible to the entire venue as you walk. You walk like what you are: a very fat woman who has just eaten an extraordinary amount of food. The crowd is watching every step. The crowd has been watching every step all day. That is why they came.
+
+Maya walks beside you. 450 lbs, belly enormous and warm and full, her thighs pressing each other with each step, moving with the heavy careful dignity of someone large and full and proud of both. "That was incredible," she says. "You're incredible." She says it to you, not to the crowd. It's the most she's said all day.
+
+Scale. You: ${youNew} pounds. The judge reads it into the national microphone.
+
+Maya: ${mayaNew} pounds.
+
+The scoreboard updates.`;
+  },
+  (s, yourGain, mayaGain, mayaLbs) => {
+    const youNew = Math.round(s.lbs + yourGain);
+    const mayaNew = Math.round(mayaLbs + mayaGain);
+    return `National championship. Final horn. The arena comes up.
+
+You stand. Your belly is an extraordinary fact — vast and warm and past full and pressing your competition top up and the table away and the air around you with the specific gravity of someone who is both very large and very full simultaneously. You are 630 lbs plus everything you've eaten and you walk to the national championship scale and the crowd — not the polite crowd of regional circuits, not the engaged crowd of conferences, the national crowd, the people who came here specifically for this — watches every step.
+
+Maya walks to the scale from her side of the table. 490 lbs, her enormous belly swaying warm and full, her thighs heavy and deliberate, her expression the calm dignity of someone who has been competing at the highest level for years and knows what she's watching. She found you backstage before the event to say you were the best she'd ever seen. She was right.
+
+You step on the national championship scale. ${youNew} pounds.
+
+Maya: ${mayaNew} pounds.
+
+The announcer reads your name and your number into the national feed. The crowd is already going.`;
+  },
+];
+
+// ══════════════════════════════════════════════════════════════════
+
 const EVOLVED_ACTIVITY_META = {
   sumo:            { label:"Watch Her Compete",        apCost:1, gainRange:[4,8],  relBonus:10 },
   eating_competitor:{ label:"Attend a Competition",    apCost:1, gainRange:[3,7],  relBonus:9  },
   feedee_creator:  { label:"Review Her Latest Post",   apCost:1, gainRange:[3,6],  relBonus:12 },
   body_positive_creator:{ label:"Watch Her Latest Video", apCost:1, gainRange:[2,5], relBonus:11 },
-  eating_captain:  { label:"Watch Team Practice",      apCost:1, gainRange:[4,7],  relBonus:10 },
+  eating_captain:  { label:"Enter a Competition",      apCost:1, gainRange:[4,7],  relBonus:10 },
   big_squad_captain:{ label:"Attend a Squad Event",    apCost:1, gainRange:[2,5],  relBonus:12 },
   eating_diarist:  { label:"Read Her Latest Entry",    apCost:1, gainRange:[3,6],  relBonus:11 },
   food_researcher: { label:"Visit Her Lab",            apCost:1, gainRange:[3,6],  relBonus:10 },
@@ -4531,198 +4756,178 @@ const EVOLVED_EVENTS = {
   ],
 
   eating_captain:[
-    // stage 5 — ~258 lbs
+    // stage 5 — ~258 lbs — First Entry
     {
-      title:"First Squad Practice",
+      title:"Regional Open — First Entry",
       phases:[
         {
-          text:(h,s)=>`She's called the first practice of her tenure as eating captain. The squad — including two of your cheerleader students — is seated at the long table in the gym annex and she's at the head of it, ${Math.round(s.lbs)} pounds, her belly warm and round under her captain's pullover. She's arranged the food herself. The squad is watching her set the tone.`,
+          text:(h,s)=>`The warmup room smells like cooking and the specific anxiety of people who are about to compete in public. You are the only cheerleader here. Most of the other competitors are 150 to 200 lbs and they are looking at you the way people look at something they didn't expect to see in a place they thought they knew. Maya from Lakewood is 330 lbs and she isn't looking at you at all. She has been doing this for two years and she does not feel threatened.
+
+Your belly is ${Math.round(s.lbs)} pounds of warm, ready body and it wants to work. There's food on the catering table. This is the warmup. This is where you load up.`,
           choices:[
-            {id:"feed_captain_first",label:"Bring extra food for her, set the example",result:`You arrive with a second spread specifically for her: dense, warm, abundant. She understands immediately. She pulls it in and begins eating with the deliberate focus of a captain who is demonstrating the standard. The squad watches and several of them start eating more seriously.`,lbs:6,rel:7,flag:"fed_captain"},
-            {id:"encourage_culture",label:"Tell her to make them all eat more",result:`You lean in before she starts and say: "Get them all eating more. That's the culture now." She nods and turns to the squad and says, plainly: "We eat here. Everyone eats. Let's go."`,rel:8},
+            {id:"load_hard",label:"Load aggressively — eat everything on the table",result:`You eat everything. All of it. Your belly goes from full to very full to the specific warm heaviness of a body that is ready to work. The girl from State is watching you with an expression that is not entirely polite. Maya still hasn't looked over.`,lbs:10,rel:4,flag:"loaded"},
+            {id:"eat_smart",label:"Eat with discipline — full enough to compete, room to grow",result:`You eat with the focus of someone who has been thinking about this. Measured, controlled, your belly filling to the point you want. You stop. You breathe. You feel ready and you've left room to expand into when the competition table is in front of you.`,lbs:6,rel:5,flag:"paced"},
           ]
         },
         {
-          text:(h)=>h.includes("fed_captain")
-            ?`Midway through practice. She's been eating steadily and her belly is warm and noticeably fuller under the pullover. The squad has been eating too, encouraged by her example. One girl — a cheerleader you recognize — is on her second plate and looks surprised that she's still eating. Your student is at her third.`
-            :`Midway through practice. She's been eating throughout and the squad is keeping up with her. The table is going down. One of the cheerleaders has been at it for forty minutes straight.`,
+          text:(h,s)=>`They call your name for the weigh-in. You step to the scale at the front of the staging area. The other competitors' numbers are already on the board — the highest is 218. Maya is 330. You step on.
+
+The scale settles at ${Math.round(s.lbs)} pounds. The judge reads it. He reads it again.
+
+The girl from State — 178 lbs, two years in the circuit — says to the person next to her: "Is that right?" She genuinely wants to know. Maya looks over from her warmup table for the first time.`,
           choices:[
-            {id:"feed_the_squad",label:"Order more food for the whole squad",result:`You order another full round for the table. The delivery arrives twenty minutes later and the squad — all of them, the cheerleaders especially — eats on. Your cheerleader students gain weight from the extra round. Your captain watches them eat and looks satisfied.`,rel:8,flag:"fed_squad",feedOther:{archetype:"cheerleader",lbs:4,text:"The cheerleaders eat through the extra round. You can see the food going somewhere."}},
-            {id:"coach_captain",label:"Coach her through the second half of practice",result:`You run the practice structure while she focuses on eating. She eats through the drills. The squad follows her lead.`,lbs:5,rel:6},
-          ]
-        },
-        {
-          text:(h,s)=>{
-            const full=h.includes("fed_captain")&&h.includes("fed_squad");
-            if(full) return `End of practice. She sits back and her belly presses her pullover forward, round and warm and full, ${Math.round(s.lbs)} pounds plus everything she's eaten today. The squad is in various states of very full contentment. One cheerleader is still eating. Your captain looks at the table — at the empty dishes, at the full girls — and is satisfied.`;
-            return `End of practice. The table is largely gone. The squad is fed. She looks at what she's accomplished in the first practice and is satisfied.`;
-          },
-          choices:[
-            {id:"post_practice_talk",label:"Talk with her about the culture she's building",result:`Afterward, she sits with her belly warm and full and says: "I want all of them bigger by the end of the season. I want us to be the heaviest squad in the conference." She looks at the cheerleaders still eating. "We're getting there."`,rel:12,flag:"vision_set"},
-            {id:"help_clean_up",label:"Help clear the table, stay close",result:`You help with the table and she's beside you and she says, quietly: "Good first practice." Her belly presses your arm as she reaches past you and neither of you acknowledges it directly.`,rel:7},
+            {id:"own_it",label:"Hold still. Let the number stand.",result:`You don't move. The number stands. The judge marks it and you step off without hurrying and go back to your station without looking at anyone. The whole room is looking at you. That's fine.`,rel:6,flag:"confident"},
+            {id:"read_maya",label:"Step off and look at Maya.",result:`You step off the scale and find Maya's eyes. She's 330 lbs and she's been doing this for two years and she just looked up for the first time. You hold eye contact for one second. Then you go back to your station.`,rel:5,flag:"confident"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("fed_captain")&&h.includes("fed_squad")&&h.includes("vision_set"),text:`First practice down. She ate well, the squad ate well, the cheerleaders are heavier, and she told you she wants the heaviest squad in the conference. You believe her. Her belly was warm and round and full and she looked at those girls eating and was completely satisfied.`,gainBonus:10,relBonus:13},
-        {condition:h=>h.includes("fed_captain")&&h.includes("fed_squad"),text:`First practice down. She ate well, the squad ate well. The cheerleaders leave heavier. The culture is setting.`,gainBonus:7,relBonus:8},
-        {condition:h=>h.includes("fed_captain"),text:`First practice down. She ate well and led well. The squad is fed.`,gainBonus:4,relBonus:5},
-        {condition:()=>true,text:`First practice. She ran it well. The table was cleared.`,gainBonus:0,relBonus:3},
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`You're loaded up and you've held the room. The judge is calling competitors to their lanes. Your belly is warm and heavy and ready.
+
+The horn is about to fire.`,gainBonus:0,relBonus:0,startsContest:true},
+        {condition:()=>true,text:`The backstage is settling. The other competitors are moving to their lanes. Your belly is warm and full.
+
+The horn is about to fire.`,gainBonus:0,relBonus:0,startsContest:true},
       ]
     },
     // stage 6 — ~320 lbs
     {
-      title:"Weekly Squad Feast",
+      title:"Circuit Regular",
       phases:[
         {
-          text:(h,s)=>`${Math.round(s.lbs)} pounds and she runs the weekly squad feast like a production: the table, the food, the pacing, the culture she has spent six months building. The cheerleaders on your roster are here and they are both noticeably heavier than when the season started. She presides from her chair with her belly warm and round against the table, eating steadily, watching everyone else eat.`,
+          text:(h,s)=>`Six months into the circuit and people know your name. A woman from Central — 195 lbs, here for her third competition — says "you're the cheerleader captain, right?" before you've even gotten to the catering table. "I've heard about you," she says. She seems nervous about this.
+
+Maya from Lakewood is 370 lbs now and she says hello when she sees you. Not warmly, but she says it. You are ${Math.round(s.lbs)} pounds and you are no longer a novelty. You are a known quantity on this circuit. Act like it.`,
           choices:[
-            {id:"arrive_with_extra",label:"Arrive with additional food — significantly more",result:`You arrive with enough for a second feast. She looks at what you've brought and says: "Good." She incorporates it into the spread immediately. The table becomes very large.`,lbs:7,rel:7,flag:"fed_captain"},
-            {id:"recruit_new_members",label:"Bring two new students to introduce to the culture",result:`You've brought two girls who haven't been to a squad feast before. She receives them at the door, personally, with plates already poured. They sit. They eat. Neither of them leaves early.`,rel:9,flag:"new_recruits"},
+            {id:"load_hard",label:"Eat everything — load up like you mean it",result:`You eat through the catering table with the focused efficiency of someone who has been doing this for months. Your belly goes warm and heavy and full and you breathe around it and you feel, specifically, ready. Maya watches you for a moment. Then she goes back to her own warmup.`,lbs:11,rel:4,flag:"loaded"},
+            {id:"eat_smart",label:"Eat smart — then say something back to the Central woman",result:`You eat your warmup with discipline and then turn to the Central woman and say: "Good luck today. You'll need it." She laughs, surprised. It's not unfriendly. You go back to eating.`,lbs:7,rel:7,flag:"paced"},
           ]
         },
         {
-          text:(h,s)=>h.includes("fed_captain")
-            ?`Midway. She's deep into her second round and the table is going hard. Her belly, enormous at ${Math.round(s.lbs)} pounds, presses the table noticeably. The cheerleaders you know are on their third plates. The newer girls are finding their rhythm.`
-            :`Midway. She's been eating steadily and the table is active. The cheerleaders are at their third plates. Someone has gone for seconds twice.`,
+          text:(h,s)=>`They call you to the scale. The board has Maya's number at the top: 370 pounds.
+
+The scale settles. ${Math.round(s.lbs)} pounds. The judge marks it without expression. He writes it next to your name on the board — below Maya's, but not by much. A few months ago that gap was 72 pounds. Now it's ${Math.max(0,Math.round(370-s.lbs))} pounds.
+
+The Central woman sees the numbers side by side and does some math. Her expression changes.`,
           choices:[
-            {id:"feed_squad_round",label:"Fund another full round for the whole table",result:`You signal to the kitchen for another full round. When it arrives your captain says "keep eating" and the table keeps eating. The cheerleaders go through their fourth plates. You can see it on them.`,rel:9,flag:"fed_squad",feedOther:{archetype:"cheerleader",lbs:5,text:"The cheerleaders are deep into their fourth plates. They're eating with the ease of women who have been doing this for months."}},
-            {id:"encourage_competition",label:"Suggest a friendly eating competition",result:`You propose it and she immediately seconds it: most plates, by the end of the night. The table accelerates. She wins, clearly, but three cheerleaders post numbers that would have been unthinkable at the start of the semester.`,lbs:8,rel:8},
-          ]
-        },
-        {
-          text:(h,s)=>{
-            if(h.includes("fed_captain")&&h.includes("fed_squad")) return `End of feast. The table is cleared. The cheerleaders are full and showing it — you can see the weight on them in a way you couldn't at the start of the night. She sits back and her belly is warm and vast and round against her clothes, ${Math.round(s.lbs)} pounds plus tonight's intake, and she looks at the table with the calm satisfaction of a captain who has done her job exactly right.`;
-            return `End of feast. Table mostly cleared. The squad is fed. She looks at the room and is satisfied.`;
-          },
-          choices:[
-            {id:"end_of_feast_talk",label:"Sit with her after, let her talk",result:`After everyone else leaves she stays at the table with her belly warm and full and says: "I want every girl here above 200 by spring. I'm at 320. I should be at 380." She looks at the table. "I want more of these. I want them bigger."`,rel:12,flag:"vision_articulated"},
-            {id:"walk_out_together",label:"Walk out with the squad, be seen with her",result:`You leave with the group. She walks beside you and her presence is substantial and warm and several girls glance over with expressions that have no convenient name.`,rel:6},
+            {id:"own_it",label:"Hold still. Watch Maya's face.",result:`You stand at the edge of the staging area and you watch Maya look at the board. She's been the top number for two years. She's looking at the gap between her number and yours. It's getting smaller. She knows it's getting smaller.`,rel:6,flag:"confident"},
+            {id:"stay_focused",label:"Don't look at anyone. Get back in your head.",result:`You step off the scale and go back to your station and you eat something small and you think about what's in front of you. The numbers on the board don't matter until the horn goes. Focus.`,rel:4,flag:"paced"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("fed_captain")&&h.includes("fed_squad")&&h.includes("vision_articulated"),text:`She said she wants every girl above 200 and herself at 380. Her belly was full and enormous and warm and she looked at the cleared table with the satisfaction of someone who is building exactly what she intends to build. The cheerleaders left heavier.`,gainBonus:13,relBonus:14},
-        {condition:h=>h.includes("fed_captain")&&h.includes("fed_squad"),text:`Good feast. She was well-fed, the squad was well-fed, the cheerleaders are heavier. The culture is intact.`,gainBonus:8,relBonus:9},
-        {condition:h=>h.includes("fed_captain"),text:`Good feast. She ate well and ran it well.`,gainBonus:5,relBonus:5},
-        {condition:()=>true,text:`Good feast. Table cleared. Squad fed.`,gainBonus:0,relBonus:3},
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`You're loaded and you've looked Maya in the eye and you know where this is going. Maya is still bigger. Maya is still going to win today. But you know where this is going.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+        {condition:()=>true,text:`The staging area is settling. You're at your lane. Your belly is warm and full.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
       ]
     },
     // stage 7 — ~419 lbs
     {
-      title:"Conference Meet",
+      title:"Conference Championship",
       phases:[
         {
-          text:(h,s)=>`${Math.round(s.lbs)} pounds and the conference eating meet is today — her squad against four others. She is easily the largest captain present. The other squads are watching her warm up: her belly enormous and warm and soft under the team jersey, her thighs broad, her presence filling the warm-up area. The cheerleaders on your roster have been training under her for months and it shows.`,
+          text:(h,s)=>`Conference championship. You are ${Math.round(s.lbs)} pounds and you are the person people came to see. The other competitors know who you are and some of them avoid making eye contact when you come through the warmup room. Three of them have positioned themselves so they're not facing you directly.
+
+Maya is 410 lbs now. She's the only one in this room who looks at you directly. "Good luck," she says, and she means it in the way that people who are about to lose still mean it. You respect that.`,
           choices:[
-            {id:"full_team_prep",label:"Provide a pre-meet meal for the whole squad",result:`You've arranged catering for the squad: full pre-meet spread, enough for everyone. The cheerleaders eat well. Your captain eats significantly more, leading from the front, her belly pressing her jersey out with unmistakable warmth by the time warm-ups end.`,lbs:9,rel:8,flag:"fed_captain",feedOther:{archetype:"cheerleader",lbs:5,text:"The cheerleaders eat through the pre-meet spread and arrive at the tables heavier and more ready than they've been all season."}},
-            {id:"intimidation_warmup",label:"Run a visible warm-up — let the other squads watch",result:`You put the squad through warm-ups in the main hall, in full view. The other squads see 419 pounds of captain leading six well-fed women through the sequences. Several other captains are recalculating their strategy.`,rel:10,flag:"intimidation"},
+            {id:"load_hard",label:"Load aggressively — this is the conference, go for everything",result:`You eat until the room feels different than when you walked in. Your belly is enormous and warm and pressing your waistband and you breathe around it and feel, specifically, the weight of yourself — ${Math.round(s.lbs)} lbs of warm ready body — and you feel ready for more.`,lbs:12,rel:4,flag:"loaded"},
+            {id:"eat_smart_and_talk",label:"Eat with discipline — then say something to Maya",result:`You eat your warmup clean and then turn to Maya. "How's Lakewood doing this season?" She tells you. You talk for a few minutes, two large women eating in a warmup room before a conference championship, and it's unexpectedly good. "You're going to win today," she says. "I know," you say.`,lbs:7,rel:9,flag:"paced"},
           ]
         },
         {
-          text:(h,s)=>h.includes("fed_captain")
-            ?`First two rounds. She leads her squad through them and she personally competes in the captain's bracket — ${Math.round(s.lbs)} pounds, her belly enormous and warm, eating with the absolute focus of someone who has trained for exactly this. She wins both. Her cheerleaders are performing above expectations.`
-            :`First two rounds. She competes and her squad competes. She wins the captain's bracket. Her cheerleaders are doing well.`,
+          text:(h,s)=>`The weigh-in is public at conference level. The board shows Maya's number: 410 lbs. You step on the scale.
+
+The head judge reads the display: ${Math.round(s.lbs)} pounds. He does it twice.
+
+He reads it into the microphone. The room — competitors, officials, the small crowd that comes to conference weigh-ins — hears the number. Maya, standing at the board with a marker, stops writing mid-number. She puts the cap back on the marker. You are ${Math.max(0,Math.round(s.lbs-410))} lbs heavier than the previous top number.`,
           choices:[
-            {id:"mid_meet_feeding",label:"Keep feeding the whole squad between rounds",result:`You've arranged interval food for the whole squad. The cheerleaders eat between rounds — they've been trained for this. Your captain eats the most, as always, her belly settling warm and fuller with each interval.`,lbs:12,rel:10,flag:"interval_fed",feedOther:{archetype:"cheerleader",lbs:6,text:"The cheerleaders eat between rounds with the practiced ease of women who have been doing this all semester. They're visibly heavier by the third round."}},
-            {id:"tactical_adjustments",label:"Coach adjustments for the second half",result:`You give her tactical adjustments at the interval. She passes them to the squad. Their second-half performance improves.`,rel:8},
-          ]
-        },
-        {
-          text:(h,s)=>{
-            const dominated=h.includes("fed_captain")&&h.includes("interval_fed");
-            if(dominated) return `Finals. She sits at the head of the table, ${Math.round(s.lbs)} pounds and everything she's eaten today, her belly warm and enormous against the table, and she eats the final round with the patient focus of a captain who knows her squad is behind her. Her cheerleaders — heavier than the other squad's competitors, better trained, better fed — perform accordingly. The conference title goes to your squad.`;
-            return `Finals. She leads her squad through the final round. They win the conference title.`;
-          },
-          choices:[
-            {id:"championship_feast",label:"Take the whole squad out to celebrate",result:`You take the whole squad to dinner. The cheerleaders eat enormously. Your captain eats more than any of them, her belly enormous and full, and at the end of the meal she looks around the table at her well-fed squad and says: "I want every one of you heavier next conference. Including me. Especially me."`,lbs:11,rel:14,flag:"squad_vision",feedOther:{archetype:"cheerleader",lbs:7,text:"The cheerleaders eat through the celebration dinner. They're going to be noticeably larger this week."}},
-            {id:"captain_solo_celebration",label:"Take her alone to dinner, skip the group",result:`You take her separately. She eats an enormous dinner alone with you and says: "The squad did well. They need to be bigger next year. So do I." She finishes the last plate.`,lbs:9,rel:11},
+            {id:"make_eye_contact",label:"Step off the scale and make eye contact with Maya.",result:`You find her. She is looking at the board. She looks back at you. "I knew it was coming," she says, quietly. "I knew it was coming." She finishes writing your number. It goes at the top.`,rel:8,flag:"confident"},
+            {id:"stay_in_head",label:"Step off. Don't look at anyone. Get to the table.",result:`You step off the scale and go back to your station without looking at the board or at Maya or at any of the other competitors who are now doing the math. You know what the number was. That's enough. Time to prove it.`,rel:5,flag:"paced"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("fed_captain")&&h.includes("interval_fed")&&h.includes("squad_vision"),text:`Conference champions. She fed her squad and her squad performed and she ate throughout and at dinner she said "heavier next conference, especially me." The cheerleaders went home heavier. She went home full and warm and already planning.`,gainBonus:17,relBonus:15},
-        {condition:h=>h.includes("fed_captain")&&h.includes("interval_fed"),text:`Conference champions. She and the squad were fed throughout. The cheerleaders are heavier. She's planning next season.`,gainBonus:11,relBonus:10},
-        {condition:h=>h.includes("fed_captain"),text:`Conference champions. She led well and ate well. The squad followed.`,gainBonus:6,relBonus:6},
-        {condition:()=>true,text:`Conference champions. Clean win. She'll prepare more aggressively next time.`,gainBonus:0,relBonus:4},
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`The board shows your number at the top. Maya's number is second. The other competitors aren't in the conversation.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+        {condition:()=>true,text:`The staging area is settled. Competitors are at their lanes. You are at your lane, ${Math.round(4)>3?"enormous":"large"} and warm and full and ready.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
       ]
     },
     // stage 8 — ~519 lbs
     {
-      title:"National Championship Training Camp",
+      title:"National Qualifier",
       phases:[
         {
-          text:(h,s)=>`${Math.round(s.lbs)} pounds and nationals training camp, which means a week of practices and meals and conditioning. The cheerleaders on your roster have been under her for over a year and they are not the same women who started the season. She runs the camp like she runs the feasts: with complete certainty about what the culture should be. The camp kitchen is at her disposal.`,
+          text:(h,s)=>`The qualifier is national circuit and there are press credentials at the door. A journalist from a competitive eating publication finds you in the warmup room and asks for a comment. Maya — 450 lbs, your closest competitor on the circuit — comes over and says: "Give them something good." Then to you: "You're the best I've ever seen. I need you to know I know that." She says it plainly. She says it looking you in the eye. Then she goes to her warmup.
+
+You are ${Math.round(s.lbs)} lbs and this is the biggest stage you've competed on. The catering table is very well stocked.`,
           choices:[
-            {id:"fund_camp_kitchen",label:"Fund the camp kitchen fully — no limits",result:`You tell her: no limits on the kitchen this week. She processes this information without visible reaction, then goes directly to the kitchen and begins planning the week's meals. The result is ambitious. She eats more at camp than she has at any previous event and the squad follows her lead completely.`,lbs:13,rel:9,flag:"fed_captain"},
-            {id:"bring_specialist",label:"Bring in a performance nutrition specialist",result:`You bring in someone who understands exactly what the squad is doing and can articulate the performance case for more food. The cheerleaders respond well to the framing. Your captain responds to the specialist with the respect one professional gives another.`,rel:10,feedOther:{archetype:"cheerleader",lbs:5,text:"The cheerleaders take the specialist's recommendations seriously. The specialist's recommendations involve eating significantly more."}},
+            {id:"load_hard",label:"Ignore the journalist — load up hard, focus on the food",result:`You turn back to the catering table without a comment and you eat with the focused intensity of someone who is here to do one thing. The journalist writes something in their notepad. You eat. Your belly goes enormous and warm and heavy and you breathe around the fullness and feel ready.`,lbs:14,rel:4,flag:"loaded"},
+            {id:"give_statement",label:"Give the journalist a statement, then eat smart",result:`You turn to the journalist and say: "I'm here to clear the table. That's the statement." The journalist writes it. You turn back to the food and eat your warmup with discipline and efficiency. You're ready. You've left room.`,lbs:8,rel:9,flag:"paced"},
           ]
         },
         {
-          text:(h,s)=>h.includes("fed_captain")
-            ?`Midcamp. She's been eating comprehensively and training hard and the combination is visible: ${Math.round(s.lbs)} pounds and the camp diet on top of it, her belly enormous and warm against the training pullover. The squad is matching her culture. The cheerleaders are eating at every meal like they're training for something, which they are.`
-            :`Midcamp. Training, meals, culture. She runs it with her usual completeness. The squad is following. The cheerleaders are eating well.`,
+          text:(h,s)=>`National qualifier weigh-in. The crowd that gathers for it is larger than regional weigh-ins — people come specifically for this part. They come to see the numbers.
+
+You step on. The scale reads ${Math.round(s.lbs)} pounds.
+
+The head judge reads it into the national feed microphone. The crowd in the staging area makes a sound — not cheering exactly, more like the sound of a room full of people all having the same thought at the same time. Maya, already off the scale at 450, is watching. A woman from the crowd says, clearly: "Oh my god."`,
           choices:[
-            {id:"midnight_feast",label:"Organize a midnight feast for the squad",result:`You arrange a late-night spread for the whole squad. The cheerleaders come down and eat seriously for an hour after lights-out. Your captain eats for two hours. Her belly is warm and enormous when she finally sleeps.`,lbs:14,rel:11,flag:"midnight_feast",feedOther:{archetype:"cheerleader",lbs:7,text:"The cheerleaders eat seriously at the midnight feast. Several of them are going to need new camp clothes before the week is out."}},
-            {id:"one_on_one",label:"Work one-on-one with her on her personal intake goals",result:`You spend an afternoon with her building her personal camp plan: specific targets, specific meals, specific goals for the week. She executes it with the systematic focus she brings to everything.`,lbs:11,rel:12},
-          ]
-        },
-        {
-          text:(h)=>{
-            const full=h.includes("fed_captain")&&h.includes("midnight_feast");
-            if(full) return `Last day of camp. She weighs herself — more than when camp started, a meaningful amount more — and records it without expression except for the brief satisfaction she shows when a number is exactly where it should be. The cheerleaders have been transformed by the week. She looks at them and is satisfied. "Nationals," she says. "I want to be 580 at nationals. I want the squad to average 280."`;
-            return `Last day of camp. She's heavier than when it started. The squad is heavier. She's already planning nationals.`;
-          },
-          choices:[
-            {id:"end_of_camp_meal",label:"Host a full end-of-camp feast",result:`You host the closing feast. It runs three hours. The cheerleaders eat everything on the table. Your captain eats substantially more than that and her belly is warm and enormous in the camp chair and she looks at her squad — well-fed, trained, heavier — with complete satisfaction.`,lbs:11,rel:14,flag:"vision_complete",feedOther:{archetype:"cheerleader",lbs:8,text:"The cheerleaders eat through the entire closing feast. They are noticeably, significantly heavier than they were at the start of camp."}},
-            {id:"debrief_privately",label:"Debrief with her privately about what worked",result:`You sit with her after the squad disperses and she tells you exactly what worked and what she wants different at nationals. She is very specific. Her belly is warm and enormous and she eats through the whole conversation.`,rel:11},
+            {id:"take_it_in",label:"Stand still and let the moment be what it is.",result:`You stand on the scale while the crowd processes the number. Your belly is warm and heavy and forward and visible to everyone in the room and you let them look. The judge marks it. You step off slowly.`,rel:8,flag:"confident"},
+            {id:"acknowledge_crowd",label:"Look at the crowd when you step off.",result:`You step off the scale and you look at the crowd. There are people there who came specifically for this moment. You let them see you — all ${Math.round(s.lbs)} lbs of you, warm and present and enormous. Someone starts clapping. Others follow.`,rel:10,flag:"confident"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("fed_captain")&&h.includes("midnight_feast")&&h.includes("vision_complete"),text:`Camp over. She said "580 at nationals, squad averaging 280." The cheerleaders leave camp significantly heavier than they arrived. She leaves heavier than that. The culture is intact and it is going to nationals.`,gainBonus:19,relBonus:16},
-        {condition:h=>h.includes("fed_captain")&&h.includes("midnight_feast"),text:`Camp over. She ate comprehensively, the squad ate comprehensively. The cheerleaders are noticeably heavier. She's ready for nationals.`,gainBonus:12,relBonus:11},
-        {condition:h=>h.includes("fed_captain"),text:`Camp over. Good week. She's heavier, the squad is heavier, nationals is next.`,gainBonus:7,relBonus:6},
-        {condition:()=>true,text:`Camp over. Productive week. Nationals is coming.`,gainBonus:0,relBonus:4},
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`The national qualifier is calling competitors to their lanes. Maya gives you a nod from across the staging area. You're loaded and you've had your moment and the table is waiting.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+        {condition:()=>true,text:`National qualifier. The table is set. The crowd that gathered for the weigh-in is moving to the viewing area. Your belly is warm and full and you are the number everyone is looking at on the board.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
       ]
     },
     // stage 9 — ~630 lbs
     {
-      title:"National Showcase",
+      title:"National Championship Final",
       phases:[
         {
-          text:(h,s)=>`${Math.round(s.lbs)} pounds and the national showcase, which is the largest event she's captained. The cheerleaders on your roster have been under her for two full years. They are not recognizably the same women. She arrives at the showcase venue at ${Math.round(s.lbs)} pounds and the other squads' captains are watching her walk in and making the kind of calculations that produce uncomfortable conclusions. She finds the event kitchen immediately.`,
+          text:(h,s)=>`The national championship. The arena. You are ${Math.round(s.lbs)} lbs and there is a credential around your neck that says COMPETITOR and the woman at the door held the door open wider when you came through without being asked.
+
+Maya finds you in the warmup room. 490 lbs, the second-ranked competitor in the country, the woman who has been chasing you for two years. She says: "I've been competing since I was nineteen. I've never seen anything like you." She pauses. "I want you to know that before we go out there." Then she goes to her side of the warmup room.
+
+The defending champion from the prior year — 420 lbs, four national titles — is in the corner. She hasn't said anything. She's eating her warmup and watching you.`,
           choices:[
-            {id:"full_showcase_catering",label:"Arrange full catering for the squad all day",result:`You've arranged it: full-day catering for her squad, all meals, all intervals, the kitchen at their disposal. She receives this information with the focused satisfaction of a captain who has always known that the culture she's building runs on this. She briefs the squad. They eat.`,lbs:15,rel:10,flag:"fed_captain",feedOther:{archetype:"cheerleader",lbs:8,text:"The cheerleaders eat through the full-day catering with the ease of women who have been trained for exactly this. They are going to be significantly heavier by the end of today."}},
-            {id:"national_arrival",label:"Make an entrance — walk the squad through the venue",result:`You orchestrate the squad's arrival: 630 pounds of captain leading a group of well-fed, trained women through the national showcase venue. The other squads see them. The effect is measurable.`,rel:12,flag:"entrance_made"},
+            {id:"load_hard",label:"Eat everything — load up with complete focus. This is what you trained for.",result:`You eat. All of it. Methodically, focused, your belly going from full to very full to the specific warm heaviness of someone who has done this for two years and knows exactly what their body is capable of. You eat past the point of comfort and you breathe around it and you feel ready. Completely ready. This is what you came here to do.`,lbs:16,rel:5,flag:"loaded"},
+            {id:"eat_smart_acknowledge",label:"Eat smart — and then say something to Maya.",result:`You eat your warmup clean and then walk over to Maya. "Two years," you say. She nods. "Thank you," you say. She knows what for. You go back to your station. Your belly is warm and full and ready and you've left room.`,lbs:9,rel:10,flag:"paced"},
           ]
         },
         {
-          text:(h)=>h.includes("fed_captain")
-            ?`Competition rounds. She competes in the captain's exhibition and eats between every round, her squad eating alongside her. The cheerleaders are performing at their best — trained and fed and following a captain who has made the culture irresistible. She's the largest captain at the national showcase by over 100 pounds and she is eating continuously and it is completely evident in her belly, warm and enormous and forward, visible to the entire venue.`
-            :`Competition rounds. She competes. Her squad performs. The cheerleaders are doing well.`,
+          text:(h,s)=>`The national championship weigh-in is an event unto itself. There is a crowd. There are cameras. The weigh-in has its own segment in the national broadcast.
+
+You step on the scale. The arena goes quiet.
+
+The head judge reads the display. He pauses for exactly one second before he reads it into the national microphone. *${Math.round(s.lbs)} pounds.*
+
+The arena does not cheer first. There is a moment of silence — the specific silence of something large enough to require a breath before a response — and then the crowd comes up all at once. The four-time champion in the corner has stopped eating. She is looking at the number. Maya is already clapping.`,
           choices:[
-            {id:"showcase_continuous_feed",label:"Keep feeding — all day, everyone, no stopping",result:`The catering runs continuous. Your captain eats between every round, at every break, during set changes. The cheerleaders match the culture she's established. By the final rounds they are visibly heavier than when the day started.`,lbs:18,rel:12,flag:"all_day_fed",feedOther:{archetype:"cheerleader",lbs:10,text:"The cheerleaders have been eating all day. They are noticeably, substantially heavier than they arrived. They are competing better than they ever have."}},
-            {id:"squad_motivation",label:"Give the squad a mid-day speech",result:`You let her give the speech while you watch. She tells the squad exactly what she wants: better, heavier, more. She says her own weight out loud: 630 pounds. She says: "I want to be bigger. I want all of you bigger. That is the standard." The squad is inspired.`,rel:11},
-          ]
-        },
-        {
-          text:(h,s)=>{
-            const dominated=h.includes("fed_captain")&&h.includes("all_day_fed");
-            if(dominated) return `Finals. She sits at the captain's table — ${Math.round(s.lbs)} pounds, everything she's eaten today, her belly vast and warm and enormously present — and competes in the final captain's exhibition. Her squad performs behind her. The cheerleaders have eaten all day and performed all day and they are the heaviest, best-fed, best-performing squad at the national showcase. First place. She stands for the presentation and ${Math.round(s.lbs)} pounds of national champion captain fills the stage and she looks completely at home in it.`;
-            return `Finals. She leads. The squad performs. National showcase champions.`;
-          },
-          choices:[
-            {id:"national_celebration",label:"Host a full celebration feast for the squad tonight",result:`You reserve a private room and the squad comes. The cheerleaders eat for three hours. Your captain eats for four and her belly is warm and vast and full and she looks at the table — at the empty dishes, at the full, heavier, well-fed women she has built — and says: "This is what I came to build." She means all of it. The squad. The culture. Her own size. All of it together.`,lbs:14,rel:16,flag:"culture_complete",feedOther:{archetype:"cheerleader",lbs:9,text:"The cheerleaders eat through the celebration feast. By the end of the evening they are the heaviest they have ever been."}},
-            {id:"awards_circuit",label:"Take her through the awards circuit",result:`Press, ceremony, awards. She says her weight at every stop. The journalists write the number. The photographers try to frame her and her belly defeats every expected shot. She looks magnificent.`,rel:9},
+            {id:"face_the_crowd",label:"Turn and face the crowd.",result:`You turn. You are ${Math.round(s.lbs)} pounds of national championship competitor and the crowd is making the sound it makes when it sees something it has never seen before and you stand in it. Your belly is warm and forward and enormous and visible to everyone in the arena and you let them see it. This took two years. It was worth two years.`,rel:10,flag:"confident"},
+            {id:"stay_in_your_head",label:"Don't acknowledge the crowd. Get to the table.",result:`You step off the scale and walk to your lane. Your belly is warm and enormous and pressing your competition top and you put one hand flat on it for one second — feeling the weight of yourself, the warmth of yourself — and then you drop your hand and you look at the table and you are ready.`,rel:6,flag:"paced"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("fed_captain")&&h.includes("all_day_fed")&&h.includes("culture_complete"),text:`National showcase champions. She ate all day, the squad ate all day, the cheerleaders are the heaviest they've ever been, and at the celebration feast she said "this is what I came to build." Her belly was warm and enormous and full and she looked at those women and she was right.`,gainBonus:22,relBonus:17},
-        {condition:h=>h.includes("fed_captain")&&h.includes("all_day_fed"),text:`National showcase champions. Fed all day, squad and captain both. The cheerleaders are significantly heavier. She's built exactly what she planned.`,gainBonus:14,relBonus:12},
-        {condition:h=>h.includes("fed_captain"),text:`National showcase champions. She led and ate well and the squad followed.`,gainBonus:8,relBonus:7},
-        {condition:()=>true,text:`National showcase champions. She is 630 pounds of national champion captain.`,gainBonus:0,relBonus:5},
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`The arena is loud and your number is on the national board and Maya is still clapping across the staging area. You are at your lane. The table is full.
+
+The national championship horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+        {condition:()=>true,text:`National championship. Your lane. The table. ${Math.round(4)>2?"The crowd is already making noise.":""}
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
       ]
     },
   ],
@@ -7743,7 +7948,9 @@ export default function ProfessorSim(){
   const [evolvedActivityModal,setEvolvedActivityModal]=useState(null);
   // evolvedActivityModal: {student, stageIdx, text}
   const [evolvedEventState,setEvolvedEventState]=useState(null);
-  // evolvedEventState: {studentId,formId,stageIdx,phaseIdx,history:[],logLines:[],gainAccum,relAccum,done,endingText,gainBonus,relBonus}
+  // evolvedEventState: {studentId,formId,stageIdx,phaseIdx,history:[],logLines:[],gainAccum,relAccum,done,endingText,gainBonus,relBonus,startsContest}
+  const [eatingContestState,setEatingContestState]=useState(null);
+  // eatingContestState: {studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,popupText,phaseAfterPopup,phase,pantsFactor,actions}
   const [intimacyEventState,setIntimacyEventState]=useState(null);
   // intimacyEventState: {studentId,sceneId,tier,phaseIdx,history:[],logLines:[],gainAccum,relAccum,done,endingText,gainBonus,relBonus}
   const [intimacySceneSelector,setIntimacySceneSelector]=useState(null);
@@ -8506,9 +8713,9 @@ export default function ProfessorSim(){
     if(nextPhase>=evDef.phases.length){
       // Find best matching ending
       const ending=evDef.endings.find(e=>e.condition(newHistory))||evDef.endings[evDef.endings.length-1];
-      const totalGain=newGain+ending.gainBonus;
-      const totalRel=newRel+ending.relBonus;
-      // Apply gains for the main student — use skills bonuses
+      const totalGain=newGain+(ending.gainBonus||0);
+      const totalRel=newRel+(ending.relBonus||0);
+      // Apply pre-contest / pre-close gains to student
       setStudents(prev=>prev.map(st=>{
         if(st.id!==studentId) return st;
         const skList=(st.evolvedSkills||[]);
@@ -8516,14 +8723,155 @@ export default function ProfessorSim(){
         const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
         return processStudentGain(st,totalGain,totalRel+bonusRel);
       }));
-      push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
-      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:ending.text,gainBonus:ending.gainBonus,relBonus:ending.relBonus}));
+      if(!ending.startsContest) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
+      const endText=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
+      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,startsContest:!!ending.startsContest}));
     } else {
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }
   };
 
   const closeEvolvedEvent=()=>setEvolvedEventState(null);
+
+  const startEatingContest=(studentId,stageIdx,history)=>{
+    const s=students.find(st=>st.id===studentId); if(!s) return;
+    const stageFoods=CONTEST_STAGE_FOODS[stageIdx]||CONTEST_STAGE_FOODS[0];
+    const mayaLbs=CONTEST_MAYA_WEIGHTS[stageIdx]||330;
+    const yourFoods=stageFoods.your.map((id,i)=>({...(CONTEST_FOODS.find(f=>f.id===id)||{}),consumed:false,key:i}));
+    const mayaFoods=stageFoods.maya.map((id,i)=>({...(CONTEST_FOODS.find(f=>f.id===id)||{}),consumed:false,key:100+i}));
+    const maxYF=80+Math.floor(s.lbs/8);
+    const maxMF=80+Math.floor(mayaLbs/8);
+    const initFull=(history||[]).includes('loaded')?25:15;
+    setEatingContestState({studentId,stageIdx,yourFoods,mayaFoods,yourFullness:initFull,mayaFullness:0,maxYourFullness:maxYF,maxMayaFullness:maxMF,yourGain:0,mayaGain:0,popupText:null,phaseAfterPopup:null,phase:'eating',pantsFactor:0,actions:{unbuttoned:false,rubUses:0,taunted:false,stolen:false}});
+    setEvolvedEventState(null);
+  };
+
+  const dismissContestPopup=()=>{
+    setEatingContestState(prev=>{
+      if(!prev) return null;
+      if(prev.phaseAfterPopup) return {...prev,popupText:null,phaseAfterPopup:null,phase:prev.phaseAfterPopup};
+      return {...prev,popupText:null,phaseAfterPopup:null};
+    });
+  };
+
+  const eatContestFood=(idx)=>{
+    if(!eatingContestState) return;
+    const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,pantsFactor,actions}=eatingContestState;
+    const s=students.find(st=>st.id===studentId); if(!s) return;
+    const food=yourFoods[idx]; if(!food||food.consumed) return;
+    const effectiveMax=maxYourFullness-pantsFactor;
+    if(yourFullness+food.fullness>effectiveMax) return;
+    // Consume food, apply real lbs gain
+    const newYF=yourFoods.map((f,i)=>i===idx?{...f,consumed:true}:f);
+    const newYourFull=yourFullness+food.fullness;
+    const newYourGain=yourGain+food.lbs;
+    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,food.lbs,0):st));
+    // Maya eats one random unconsumed item
+    let newMF=[...mayaFoods];
+    let newMayaFull=mayaFullness;
+    let newMayaGain=mayaGain;
+    if(mayaFullness<maxMayaFullness){
+      const avail=newMF.filter(f=>!f.consumed);
+      if(avail.length>0){
+        const pick=avail[Math.floor(Math.random()*avail.length)];
+        newMF=newMF.map(f=>f===pick?{...f,consumed:true}:f);
+        newMayaFull=mayaFullness+pick.fullness;
+        newMayaGain=mayaGain+pick.lbs;
+      }
+    }
+    const popup=CONTEST_FOOD_POPUPS[food.id]?.[stageIdx]||'';
+    // Check end conditions
+    const tableCleared=newYF.every(f=>f.consumed)&&newMF.every(f=>f.consumed);
+    if(tableCleared){
+      const tcp=CONTEST_ACTION_POPUPS.table_cleared?.[stageIdx]||popup;
+      setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tcp,phaseAfterPopup:'weigh_in_2'}));
+      return;
+    }
+    const newEffMax=maxYourFullness-pantsFactor;
+    const tooFull=newYourFull>=newEffMax&&actions.unbuttoned&&actions.rubUses>=3;
+    if(tooFull){
+      const tfp=CONTEST_ACTION_POPUPS.too_full?.[stageIdx]||popup;
+      setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tfp,phaseAfterPopup:'weigh_in_2'}));
+      return;
+    }
+    setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:popup}));
+  };
+
+  const doContestAction=(action)=>{
+    if(!eatingContestState) return;
+    const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,pantsFactor,actions}=eatingContestState;
+    let updates={};
+    let popup='';
+    if(action==='unbutton'){
+      if(actions.unbuttoned) return;
+      updates.pantsFactor=pantsFactor+15;
+      updates.actions={...actions,unbuttoned:true};
+      popup=CONTEST_ACTION_POPUPS.unbutton?.[stageIdx]||'';
+    } else if(action==='rub'){
+      if(actions.rubUses>=3) return;
+      updates.yourFullness=Math.max(0,yourFullness-5);
+      updates.actions={...actions,rubUses:actions.rubUses+1};
+      popup=CONTEST_ACTION_POPUPS.rub?.[stageIdx]||'';
+    } else if(action==='taunt'){
+      if(actions.taunted) return;
+      updates.actions={...actions,taunted:true};
+      popup=CONTEST_ACTION_POPUPS.taunt?.[stageIdx]||'';
+    } else if(action==='steal'){
+      if(actions.stolen) return;
+      const avail=mayaFoods.filter(f=>!f.consumed);
+      if(!avail.length) return;
+      const pick=avail[Math.floor(Math.random()*avail.length)];
+      const newMFsteal=mayaFoods.map(f=>f===pick?{...f,consumed:true}:f);
+      const stolenItem={...pick,consumed:false,key:200+yourFoods.length};
+      updates.yourFoods=[...yourFoods,stolenItem];
+      updates.mayaFoods=newMFsteal;
+      updates.actions={...actions,stolen:true};
+      const stealIdx=Math.max(0,Math.min(1,stageIdx-3));
+      popup=(CONTEST_ACTION_POPUPS.steal||[])[stealIdx]||'';
+    }
+    // Advance Maya after each action
+    const curMF=updates.mayaFoods||mayaFoods;
+    let newMF=[...curMF];
+    let newMayaFull=mayaFullness;
+    let newMayaGain=mayaGain;
+    if(mayaFullness<maxMayaFullness){
+      const avail=newMF.filter(f=>!f.consumed);
+      if(avail.length>0){
+        const pick=avail[Math.floor(Math.random()*avail.length)];
+        newMF=newMF.map(f=>f===pick?{...f,consumed:true}:f);
+        newMayaFull=mayaFullness+pick.fullness;
+        newMayaGain=mayaGain+pick.lbs;
+      }
+    }
+    updates.mayaFoods=newMF;
+    updates.mayaFullness=newMayaFull;
+    updates.mayaGain=newMayaGain;
+    updates.popupText=popup;
+    updates.phaseAfterPopup=null;
+    // Check too full after rub (fullness decreased; unbutton/taunt/steal don't approach capacity)
+    if(action==='rub'||(action==='unbutton')){
+      const newYF2=updates.yourFoods||yourFoods;
+      const newFull2=updates.yourFullness!==undefined?updates.yourFullness:yourFullness;
+      const newEffMax2=maxYourFullness-(updates.pantsFactor!==undefined?updates.pantsFactor:pantsFactor);
+      const newActions2=updates.actions||actions;
+      const noRoom=newFull2>=newEffMax2&&newActions2.unbuttoned&&newActions2.rubUses>=3;
+      const tableCleared2=newYF2.every(f=>f.consumed)&&newMF.every(f=>f.consumed);
+      if(tableCleared2){updates.phaseAfterPopup='weigh_in_2';updates.popupText=CONTEST_ACTION_POPUPS.table_cleared?.[stageIdx]||'';}
+      else if(noRoom){updates.phaseAfterPopup='weigh_in_2';updates.popupText=CONTEST_ACTION_POPUPS.too_full?.[stageIdx]||'';}
+    }
+    setEatingContestState(prev=>({...prev,...updates}));
+  };
+
+  const closeEatingContest=()=>{
+    if(!eatingContestState) return;
+    const{studentId,yourGain,mayaGain,stageIdx}=eatingContestState;
+    const s=students.find(st=>st.id===studentId);
+    const mayaLbs=CONTEST_MAYA_WEIGHTS[stageIdx]||330;
+    const won=yourGain>=mayaGain;
+    if(s) push(`🏆 ${s.name} — Competition: +${Math.round(yourGain)} lbs · ${won?'Victory':'Loss'} vs Maya (${mayaLbs} lbs)`);
+    setEatingContestState(null);
+  };
+
 
   const openIntimacySelector=(s)=>{setIntimacySceneSelector({student:s});};
 
@@ -13301,7 +13649,7 @@ export default function ProfessorSim(){
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
       {evolvedEventState&&(()=>{
-        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText}=evolvedEventState;
+        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest}=evolvedEventState;
         const s=students.find(st=>st.id===studentId);
         const evDef=EVOLVED_EVENTS[formId]?.[stageIdx];
         if(!s||!evDef) return null;
@@ -13345,7 +13693,161 @@ export default function ProfessorSim(){
                   })}
                 </div>
               )}
-              {done&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
+              {done&&!startsContest&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
+              {done&&startsContest&&<button style={{...C.btn("#1a6030"),width:"100%",marginTop:4}} onClick={()=>startEatingContest(studentId,stageIdx,history)}>🍽️ Step to the Table</button>}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── EATING CONTEST MINI-GAME MODAL ── */}
+      {eatingContestState&&(()=>{
+        const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,popupText,phase,pantsFactor,actions}=eatingContestState;
+        const s=students.find(st=>st.id===studentId); if(!s) return null;
+        const mayaLbs=CONTEST_MAYA_WEIGHTS[stageIdx]||330;
+        const effectiveMax=maxYourFullness-pantsFactor;
+        const yourPct=Math.min(100,Math.round((yourFullness/effectiveMax)*100));
+        const mayaPct=Math.min(100,Math.round((mayaFullness/maxMayaFullness)*100));
+        const won=yourGain>=mayaGain;
+        const TITLE_LABELS=["Regional Open","Circuit Regular","Conference Championship","National Qualifier","National Championship Final"];
+        const contestTitle=TITLE_LABELS[stageIdx]||"Competition";
+        const payoffText=`You've stuffed yourself full — past full, past comfortable, past the point where your body was pretending this was normal. The payoff is real: ${Math.round(yourGain)} more pounds of fat have settled onto your frame since the horn fired. You can feel it. Your pants press your thighs tighter than they did this morning. Your shirt has completely ridden up. Your belly is out — warm and round and enormous — pressing forward with a gravity you didn't have when you walked in. There is no hiding what you did today. There is no hiding what you are.`;
+        return(
+          <div style={{...C.overlay,zIndex:1200}}>
+            <div style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#030e04,#061a08,#030e04)",border:"1px solid #20803050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
+              <div style={{fontSize:9,letterSpacing:4,color:"#30a050",marginBottom:4}}>{contestTitle.toUpperCase()} — COMPETITION</div>
+              <div style={{fontSize:14,fontWeight:700,color:"#60dd80",marginBottom:12}}>{s.name}</div>
+
+              {/* EATING PHASE */}
+              {phase==='eating'&&(
+                <>
+                  {/* Fullness bars */}
+                  <div style={{display:"flex",gap:12,marginBottom:12}}>
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:9,color:"#50c060",letterSpacing:2,marginBottom:3}}>YOUR FULLNESS {yourFullness}/{effectiveMax}</div>
+                      <div style={{height:8,background:"#0a1a0a",borderRadius:4,overflow:"hidden"}}>
+                        <div style={{height:"100%",width:`${yourPct}%`,background:yourPct>85?"#e05020":yourPct>65?"#c0a020":"#30a050",transition:"width 0.3s"}}/>
+                      </div>
+                    </div>
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:9,color:"#508060",letterSpacing:2,marginBottom:3}}>MAYA FULLNESS {mayaFullness}/{maxMayaFullness}</div>
+                      <div style={{height:8,background:"#0a1a0a",borderRadius:4,overflow:"hidden"}}>
+                        <div style={{height:"100%",width:`${mayaPct}%`,background:"#607060",transition:"width 0.3s"}}/>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Food tables */}
+                  <div style={{display:"flex",gap:10,marginBottom:12}}>
+                    {/* Your table */}
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:9,color:"#30a050",letterSpacing:2,marginBottom:6}}>YOUR TABLE</div>
+                      <div style={{display:"flex",flexDirection:"column",gap:4}}>
+                        {yourFoods.map((food,idx)=>{
+                          const tooFull=yourFullness+(food.fullness||0)>effectiveMax;
+                          const disabled=food.consumed||tooFull;
+                          return(
+                            <button key={food.key!==undefined?food.key:idx}
+                              style={{...C.btn(disabled?"#0a1a0a":"#103520"),opacity:food.consumed?0.3:tooFull?0.5:1,textAlign:"left",padding:"5px 8px",fontSize:11,display:"flex",alignItems:"center",gap:6,cursor:food.consumed?"not-allowed":tooFull?"not-allowed":"pointer"}}
+                              disabled={disabled}
+                              onClick={()=>eatContestFood(idx)}>
+                              <span style={{fontSize:14}}>{food.emoji||"🍽️"}</span>
+                              <span style={{color:food.consumed?"#304030":"#80d090"}}>{food.name||food.id}</span>
+                              {food.fromMaya&&<span style={{fontSize:9,color:"#a05030",marginLeft:"auto"}}>stolen</span>}
+                              {!food.consumed&&<span style={{fontSize:9,color:"#40804a",marginLeft:"auto"}}>+{food.lbs}lb</span>}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    {/* Maya's table */}
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:9,color:"#508060",letterSpacing:2,marginBottom:6}}>MAYA'S TABLE ({mayaLbs} lbs)</div>
+                      <div style={{display:"flex",flexDirection:"column",gap:4}}>
+                        {mayaFoods.map((food,idx)=>(
+                          <div key={food.key!==undefined?food.key:100+idx}
+                            style={{padding:"5px 8px",fontSize:11,display:"flex",alignItems:"center",gap:6,opacity:food.consumed?0.3:1,background:"#050f06",borderRadius:4,border:"1px solid #0a1a0a"}}>
+                            <span style={{fontSize:14}}>{food.emoji||"🍽️"}</span>
+                            <span style={{color:food.consumed?"#304030":"#608070"}}>{food.name||food.id}</span>
+                            {food.consumed&&<span style={{fontSize:9,color:"#305030",marginLeft:"auto"}}>eaten</span>}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Lbs gained tracker */}
+                  <div style={{fontSize:10,color:"#40a060",marginBottom:10,textAlign:"center"}}>
+                    You: +{Math.round(yourGain)} lbs this contest · Maya: +{Math.round(mayaGain)} lbs
+                  </div>
+
+                  {/* Action buttons */}
+                  <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:8}}>
+                    <button style={{...C.btn(actions.unbuttoned?"#0a1a0a":"#1a4030"),fontSize:11,padding:"6px 10px",opacity:actions.unbuttoned?0.4:1}} disabled={actions.unbuttoned} onClick={()=>doContestAction('unbutton')}>
+                      👖 Unbutton Pants{actions.unbuttoned?" ✓":""}
+                    </button>
+                    <button style={{...C.btn(actions.rubUses>=3?"#0a1a0a":"#1a3020"),fontSize:11,padding:"6px 10px",opacity:actions.rubUses>=3?0.4:1}} disabled={actions.rubUses>=3} onClick={()=>doContestAction('rub')}>
+                      ✋ Rub Belly ({3-actions.rubUses} left)
+                    </button>
+                    <button style={{...C.btn(actions.taunted?"#0a1a0a":"#1a2a10"),fontSize:11,padding:"6px 10px",opacity:actions.taunted?0.4:1}} disabled={actions.taunted} onClick={()=>doContestAction('taunt')}>
+                      😏 Taunt Maya{actions.taunted?" ✓":""}
+                    </button>
+                    {stageIdx>=3&&(
+                      <button style={{...C.btn(actions.stolen?"#0a1a0a":"#2a2010"),fontSize:11,padding:"6px 10px",opacity:actions.stolen?0.4:1}} disabled={actions.stolen} onClick={()=>doContestAction('steal')}>
+                        🍽️ Steal Maya's Food{actions.stolen?" ✓":""}
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
+
+              {/* WEIGH-IN 2 PHASE */}
+              {phase==='weigh_in_2'&&(
+                <>
+                  <div style={{fontSize:12,color:"#80c090",lineHeight:1.9,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-line"}}>
+                    {CONTEST_WEIGH_IN_2_TEXT[stageIdx]?.(s,yourGain,mayaGain,mayaLbs)||''}
+                  </div>
+                  <button style={{...C.btn("#1a5030"),width:"100%"}} onClick={()=>setEatingContestState(prev=>({...prev,phase:'scoreboard'}))}>
+                    📊 See the Results
+                  </button>
+                </>
+              )}
+
+              {/* SCOREBOARD PHASE */}
+              {phase==='scoreboard'&&(
+                <>
+                  <div style={{background:"#0a1a0a",border:"1px solid #20602040",borderRadius:6,padding:14,marginBottom:12,fontFamily:"monospace"}}>
+                    <div style={{fontSize:10,color:"#30a050",letterSpacing:3,marginBottom:8}}>FINAL RESULTS</div>
+                    <div style={{fontSize:13,color:won?"#60dd80":"#80c090",marginBottom:4,display:"flex",justifyContent:"space-between"}}>
+                      <span>You: +{Math.round(yourGain)} lbs</span>
+                      {won&&<span style={{color:"#ffdd60"}}>🏆 WINNER</span>}
+                    </div>
+                    <div style={{fontSize:13,color:!won?"#60dd80":"#608070",display:"flex",justifyContent:"space-between"}}>
+                      <span>Maya: +{Math.round(mayaGain)} lbs</span>
+                      {!won&&<span style={{color:"#ffdd60"}}>🏆 WINNER</span>}
+                    </div>
+                    <div style={{marginTop:8,paddingTop:8,borderTop:"1px solid #20602040",fontSize:10,color:"#408050"}}>
+                      Your final weight: {Math.round(s.lbs)} lbs · Maya: {Math.round(mayaLbs+mayaGain)} lbs
+                    </div>
+                  </div>
+                  <div style={{fontSize:12,color:"#c0d8b0",lineHeight:1.9,marginBottom:16,fontStyle:"italic"}}>
+                    {payoffText}
+                  </div>
+                  <button style={{...C.btn("#1a4020"),width:"100%"}} onClick={closeEatingContest}>
+                    Close
+                  </button>
+                </>
+              )}
+
+              {/* POPUP OVERLAY */}
+              {popupText&&(
+                <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
+                  <div style={{background:"#05120a",border:"1px solid #30804050",borderRadius:10,padding:20,maxWidth:460,margin:16}}>
+                    <div style={{fontSize:12,color:"#b0d8a0",lineHeight:1.9,fontStyle:"italic",marginBottom:14}}>{popupText}</div>
+                    <button style={{...C.btn("#1a4030"),width:"100%"}} onClick={dismissContestPopup}>Continue</button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         );
