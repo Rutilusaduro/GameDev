@@ -11126,8 +11126,13 @@ export default function ProfessorSim(){
           {view==="class"&&(
             <div>
               <p style={C.secT}>Students — {students.length} enrolled · avg {avgLbs} lbs</p>
-              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(195px,1fr))",gap:8}}>
-                {students.map(s=>{
+              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(195px,1fr))",gridAutoRows:"minmax(140px,auto)",gap:8}}>
+                {[...students].sort((a,b)=>{
+                  const aG=a.incarnatedGoddess?2:0;
+                  const bG=b.incarnatedGoddess?2:0;
+                  if(aG!==bG) return aG-bG;
+                  return a.id-b.id;
+                }).map(s=>{
                   const st=getStage(s.lbs);
                   const evMeta=s.evolvedForm?EVOLVED_FORM_META[s.evolvedForm]:null;
                   const isSingularity=s.ascensionPath==="convergence"&&!s.triumvirateUnlocked;
@@ -11141,6 +11146,58 @@ export default function ProfessorSim(){
                   const nameColor=isTriumvirate?"#ffd700":isPrimTriumvirate?"#c09040":isSingularity?"#e8e8ff":isPrimordial?"#d4a050":s.ascensionPath==="celestial"?"#c8b0ff":s.ascensionPath==="umbral"?"#ff9090":s.ascensionPath==="sanguine"?"#ff7070":s.ascensionPath==="verdant"?"#80d080":evMeta?evMeta.color:"#d8a8ff";
                   const barColor=isTriumvirate?"#ffd700":isPrimTriumvirate?"#b07030":isSingularity?"#c8c8ff":isPrimordial?"#c09040":s.ascensionPath==="celestial"?CELESTIAL_STAGES[s.ascensionStage||0]?.color:s.ascensionPath==="umbral"?UMBRAL_STAGES[s.ascensionStage||0]?.color:s.ascensionPath==="sanguine"?"#e03050":s.ascensionPath==="verdant"?"#50a050":st.color;
                   const barMax=isTriumvirate||isPrimTriumvirate?60000:isSingularity||isPrimordial?20000:s.ascensionPath?3000:1100;
+                  // ── Goddess special card ──
+                  if(s.incarnatedGoddess){
+                    const gs=getGoddessStage(s.lbs);
+                    const nextGs=GODDESS_STAGES[gs.id]||null;
+                    const godAccent=gs.color;
+                    const godQuote=(GODDESS_ATTITUDE[gs.id-1]||"").slice(0,120);
+                    return(
+                      <div key={s.id} style={{
+                        ...C.card,
+                        gridColumn:"span 2",gridRow:"span 2",
+                        background:"linear-gradient(155deg,#0e0700,#1e0e00,#150b05,#0e0700)",
+                        border:`2px solid ${godAccent}70`,
+                        boxShadow:`0 0 24px ${godAccent}20, inset 0 0 30px rgba(0,0,0,0.6)`,
+                        position:"relative",overflow:"hidden",display:"flex",flexDirection:"column",gap:6,
+                      }} onClick={()=>{setSelectedId(s.id);setView("student")}}>
+                        {/* pulsing top strip */}
+                        <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${godAccent},${godAccent}cc,${godAccent},transparent)`,opacity:0.85}}/>
+                        {/* corner sigil */}
+                        <div style={{position:"absolute",top:6,right:8,fontSize:22,opacity:0.18}}>✦</div>
+                        <div style={{position:"absolute",bottom:6,left:8,fontSize:22,opacity:0.18}}>✦</div>
+                        {/* Stage badge */}
+                        <div style={{display:"flex",alignItems:"center",gap:8,marginTop:4}}>
+                          <span style={{fontSize:9,letterSpacing:3,color:godAccent,fontWeight:700}}>THE GODDESS</span>
+                          <span style={{fontSize:9,background:`${godAccent}22`,color:godAccent,borderRadius:6,padding:"1px 7px",border:`1px solid ${godAccent}40`,letterSpacing:1}}>{gs.label.toUpperCase()}</span>
+                        </div>
+                        {/* Name */}
+                        <div style={{fontSize:20,fontWeight:700,color:godAccent,lineHeight:1.1,letterSpacing:1}}>{s.name}</div>
+                        {/* Weight large */}
+                        <div style={{fontSize:14,color:"#e8c870",fontWeight:700}}>{s.lbs.toLocaleString()} lbs</div>
+                        {/* Progress toward next stage */}
+                        {nextGs?(
+                          <div>
+                            <div style={{display:"flex",justifyContent:"space-between",fontSize:9,color:"#806030",marginBottom:2}}>
+                              <span>Stage {gs.id}/4</span>
+                              <span>{nextGs.min.toLocaleString()} lbs → {nextGs.label}</span>
+                            </div>
+                            <Bar val={s.lbs-gs.min} max={nextGs.min-gs.min} color={godAccent}/>
+                          </div>
+                        ):(
+                          <div style={{fontSize:9,color:godAccent,letterSpacing:2}}>STAGE 4 — CONSUMING ✦</div>
+                        )}
+                        {/* Attitude quote */}
+                        <div style={{fontSize:11,color:"#c8a060",fontStyle:"italic",lineHeight:1.65,flex:1,marginTop:2}}>
+                          "{godQuote}…"
+                        </div>
+                        {/* Relationship */}
+                        <div style={{fontSize:10,color:"#806030",marginTop:"auto"}}>
+                          {(()=>{const tier=getTier(s.relationship);return `${tier.emoji} ${tier.label} · ❤ ${s.relationship}%`;})()}
+                        </div>
+                      </div>
+                    );
+                  }
                   return(
                     <div key={s.id} style={{...C.card,border:cardBorder,gridColumn:`span ${colSpan}`,background:cardBg||C.card.background,position:"relative",overflow:"hidden"}} onClick={()=>{setSelectedId(s.id);setView("student")}}>
                       {/* Fused accent glow strip */}
