@@ -5440,7 +5440,7 @@ ${partner?partner.name:'She'} is ${h.includes("both_loaded")?"warm and already f
 
 *wrenWatchesEverything: top donor four streams running, hi.* Wren has been at every stream. Wren is a presence.`,
           choices:[
-            {id:"feature_spread",label:"Set the largest spread you've ever done together — rise to the feature",result:`The spread is the most food you've had in frame for a collab: both sides, large courses, more than either of you has eaten on-stream together before. ${partner?partner.name:'She'} looks at her side of the table and says: "we're doing this." You say: "we're doing this." The pre-stream count is high. The featured audience is watching.`,lbs:10,rel:11,flag:"both_loaded"},
+            {id:"feature_spread",label:"Set the largest spread you've ever done together — rise to the feature",result:`The spread is the most food you've had in frame for a collab: both sides, large courses, more than either of you has eaten on-stream together before. She looks at her side of the table and says: "we're doing this." You say: "we're doing this." The pre-stream count is high. The featured audience is watching.`,lbs:10,rel:11,flag:"both_loaded"},
             {id:"pre_talk_feature",label:"Talk about the feature before going live — what the new audience will see",result:`You both talk about it before the camera: who the new audience is, what they came for, what you want to show them. "We want to show them something real," she says. You agree. What you're about to do is real. The gain will be real. The camera will see it.`,rel:13,flag:"intentional"},
           ]
         },
