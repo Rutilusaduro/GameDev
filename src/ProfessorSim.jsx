@@ -11126,34 +11126,57 @@ export default function ProfessorSim(){
           {view==="class"&&(
             <div>
               <p style={C.secT}>Students — {students.length} enrolled · avg {avgLbs} lbs</p>
-              <div style={C.grid2}>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(195px,1fr))",gap:8}}>
                 {students.map(s=>{
                   const st=getStage(s.lbs);
                   const evMeta=s.evolvedForm?EVOLVED_FORM_META[s.evolvedForm]:null;
-                  const cardBorder=s.ascensionPath==="convergence"?"2px solid #ffffff60":s.ascensionPath==="celestial"?"1px solid #8060c060":s.ascensionPath==="umbral"?"1px solid #80101060":evMeta?`1px solid ${evMeta.color}80`:"1px solid #180830";
-                  const nameColor=s.ascensionPath==="convergence"?"#ffffff":s.ascensionPath==="celestial"?"#c8b0ff":s.ascensionPath==="umbral"?"#ff9090":evMeta?evMeta.color:"#d8a8ff";
+                  const isSingularity=s.ascensionPath==="convergence"&&!s.triumvirateUnlocked;
+                  const isTriumvirate=s.ascensionPath==="convergence"&&!!s.triumvirateUnlocked;
+                  const isPrimordial=s.ascensionPath==="primordial"&&!s.primordialTriumvirateUnlocked;
+                  const isPrimTriumvirate=s.ascensionPath==="primordial"&&!!s.primordialTriumvirateUnlocked;
+                  const colSpan=isTriumvirate||isPrimTriumvirate?3:isSingularity||isPrimordial?2:1;
+                  // Card border/bg
+                  const cardBorder=isTriumvirate?"2px solid #ffd70090":isPrimTriumvirate?"2px solid #c0803090":isSingularity?"2px solid #ffffff60":isPrimordial?"2px solid #c0904060":s.ascensionPath==="celestial"?"1px solid #8060c060":s.ascensionPath==="umbral"?"1px solid #80101060":s.ascensionPath==="sanguine"?"1px solid #c0203060":s.ascensionPath==="verdant"?"1px solid #40802060":evMeta?`1px solid ${evMeta.color}80`:"1px solid #180830";
+                  const cardBg=isTriumvirate?"linear-gradient(135deg,#0a0510,#1a0a30,#100520,#0a0510)":isPrimTriumvirate?"linear-gradient(135deg,#0a0800,#1a0e00,#0f0a00,#0a0800)":isSingularity?"linear-gradient(135deg,#080510,#121020,#0a0818,#080510)":isPrimordial?"linear-gradient(135deg,#080500,#14090000,#100700,#080500)":"";
+                  const nameColor=isTriumvirate?"#ffd700":isPrimTriumvirate?"#c09040":isSingularity?"#e8e8ff":isPrimordial?"#d4a050":s.ascensionPath==="celestial"?"#c8b0ff":s.ascensionPath==="umbral"?"#ff9090":s.ascensionPath==="sanguine"?"#ff7070":s.ascensionPath==="verdant"?"#80d080":evMeta?evMeta.color:"#d8a8ff";
+                  const barColor=isTriumvirate?"#ffd700":isPrimTriumvirate?"#b07030":isSingularity?"#c8c8ff":isPrimordial?"#c09040":s.ascensionPath==="celestial"?CELESTIAL_STAGES[s.ascensionStage||0]?.color:s.ascensionPath==="umbral"?UMBRAL_STAGES[s.ascensionStage||0]?.color:s.ascensionPath==="sanguine"?"#e03050":s.ascensionPath==="verdant"?"#50a050":st.color;
+                  const barMax=isTriumvirate||isPrimTriumvirate?60000:isSingularity||isPrimordial?20000:s.ascensionPath?3000:1100;
                   return(
-                    <div key={s.id} style={{...C.card,border:cardBorder}} onClick={()=>{setSelectedId(s.id);setView("student")}}>
+                    <div key={s.id} style={{...C.card,border:cardBorder,gridColumn:`span ${colSpan}`,background:cardBg||C.card.background,position:"relative",overflow:"hidden"}} onClick={()=>{setSelectedId(s.id);setView("student")}}>
+                      {/* Fused accent glow strip */}
+                      {(isSingularity||isTriumvirate)&&<div style={{position:"absolute",top:0,left:0,right:0,height:2,background:isTriumvirate?"linear-gradient(90deg,#ffd700,#fff,#ffd700)":"linear-gradient(90deg,#8080ff,#ffffff,#8080ff)",opacity:0.7}}/>}
+                      {(isPrimordial||isPrimTriumvirate)&&<div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,#8b4513,#c09040,#8b4513)",opacity:0.7}}/>}
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:3}}>
-                        <div style={{display:"flex",alignItems:"center",gap:5}}>
-                          <span style={{fontWeight:700,fontSize:15,color:nameColor}}>{s.name}</span>
+                        <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
+                          <span style={{fontWeight:700,fontSize:isSingularity||isPrimordial?17:isTriumvirate||isPrimTriumvirate?19:15,color:nameColor}}>{s.name}</span>
                           {(()=>{const tier=getTier(s.relationship);return tier.id>0?<span style={{fontSize:12,opacity:0.9}}>{tier.emoji}</span>:null;})()}
                           {s.ascensionPath==="celestial"&&<span style={{fontSize:11,color:"#a080ff"}}>✦{CELESTIAL_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
                           {s.ascensionPath==="umbral"&&<span style={{fontSize:11,color:"#cc4040"}}>🌑{UMBRAL_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
                           {s.ascensionPath==="sanguine"&&<span style={{fontSize:11,color:"#e05050"}}>🩸{SANGUINE_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
                           {s.ascensionPath==="verdant"&&<span style={{fontSize:11,color:"#60b060"}}>🌿{VERDANT_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
-                          {s.ascensionPath==="primordial"&&<span style={{fontSize:11,color:"#c09040"}}>🌑🌿Primordial</span>}
-                          {s.ascensionPath==="convergence"&&<span style={{fontSize:11,color:"#ffffff"}}>{s.triumvirateUnlocked?"🔱Triumvirate":"⚡Singularity"}</span>}
+                          {isPrimordial&&<span style={{fontSize:12,color:"#c09040",fontWeight:700,letterSpacing:1}}>🌑🌿 Primordial</span>}
+                          {isPrimTriumvirate&&<span style={{fontSize:13,color:"#d4a050",fontWeight:700,letterSpacing:1}}>🌑🌿 First Triumvirate</span>}
+                          {isSingularity&&<span style={{fontSize:12,color:"#c0c0ff",fontWeight:700,letterSpacing:1}}>⚡ Singularity</span>}
+                          {isTriumvirate&&<span style={{fontSize:13,color:"#ffd700",fontWeight:700,letterSpacing:2}}>🔱 TRIUMVIRATE</span>}
                           {!s.ascensionPath&&evMeta&&<span style={{fontSize:10,color:evMeta.color,fontWeight:600}}>✦ {evMeta.title}</span>}
                         </div>
                         <StageTag stage={st}/>
                       </div>
-                      <div style={{fontSize:10,color:"#70508a",marginBottom:3}}>{s.role||s.archetype} · {s.bodyType} · {s.age}y · <MoodBadge mood={s.mood}/></div>
-                      <Bar val={s.lbs} max={s.ascensionPath?3000:1100} color={s.ascensionPath==="convergence"?"#ffffff":s.ascensionPath==="celestial"?CELESTIAL_STAGES[s.ascensionStage||0]?.color:s.ascensionPath==="umbral"?UMBRAL_STAGES[s.ascensionStage||0]?.color:st.color}/>
-                      <div style={{fontSize:11,color:"#a88050",margin:"2px 0"}}>{s.lbs.toLocaleString()} lbs (+{s.lbs-s.startLbs}) · ❤ {s.relationship}%</div>
-                      <div style={{fontSize:10,color:"#504060",fontStyle:"italic",lineHeight:1.4,marginTop:3}}>
+                      {!(isSingularity||isTriumvirate||isPrimordial||isPrimTriumvirate)&&(
+                        <div style={{fontSize:10,color:"#70508a",marginBottom:3}}>{s.role||s.archetype} · {s.bodyType} · {s.age}y · <MoodBadge mood={s.mood}/></div>
+                      )}
+                      {(isSingularity||isTriumvirate||isPrimordial||isPrimTriumvirate)&&(
+                        <div style={{fontSize:10,color:isPrimordial||isPrimTriumvirate?"#907040":"#8080b0",marginBottom:4,fontStyle:"italic"}}>
+                          {isSingularity||isTriumvirate?"One being. Two origins. One convergence.":"The first hunger. The living earth. One origin."}
+                        </div>
+                      )}
+                      <Bar val={s.lbs} max={barMax} color={barColor}/>
+                      <div style={{fontSize:11,color:isTriumvirate?"#ffd700":isPrimTriumvirate?"#c09040":"#a88050",margin:"2px 0",fontWeight:isSingularity||isTriumvirate||isPrimordial||isPrimTriumvirate?700:400}}>
+                        {s.lbs.toLocaleString()} lbs{(isSingularity||isPrimordial||isTriumvirate||isPrimTriumvirate)?"":`  (+${s.lbs-s.startLbs})`} · ❤ {s.relationship}%
+                      </div>
+                      <div style={{fontSize:10,color:isPrimordial||isPrimTriumvirate?"#705030":isSingularity||isTriumvirate?"#6060a0":"#504060",fontStyle:"italic",lineHeight:1.4,marginTop:3}}>
                         {(()=>{
-                          if(s.ascensionPath){const _r=s.ascensionPath==="celestial"?ASCENSION_STAGE_REACTIONS.celestial:s.ascensionPath==="umbral"?ASCENSION_STAGE_REACTIONS.umbral:s.ascensionPath==="sanguine"?SANGUINE_REACTIONS:s.ascensionPath==="verdant"?VERDANT_REACTIONS:[CONVERGENCE_STAGE.desc];const _e=_r[s.ascensionStage||0]||"";return((typeof _e==='function'?_e(s):_e)||"").slice(0,62);}
+                          if(s.ascensionPath){const _r=s.ascensionPath==="celestial"?ASCENSION_STAGE_REACTIONS.celestial:s.ascensionPath==="umbral"?ASCENSION_STAGE_REACTIONS.umbral:s.ascensionPath==="sanguine"?SANGUINE_REACTIONS:s.ascensionPath==="verdant"?VERDANT_REACTIONS:[CONVERGENCE_STAGE.desc];const _e=_r[s.ascensionStage||0]||"";return((typeof _e==='function'?_e(s):_e)||"").slice(0,90);}
                           const evR=getEvolvedReaction(s); if(evR) return evR.slice(0,62);
                           const rxn=STAGE_REACTIONS[s.archetype]?.[st.id]; return ((typeof rxn==='function'?rxn(s):rxn)||"").slice(0,62);
                         })()}…
@@ -11237,11 +11260,32 @@ export default function ProfessorSim(){
                   <div style={{fontSize:13,color:"#e0d0b0",lineHeight:1.8,fontStyle:"italic"}}>{getBodyDesc(s)}</div>
                 </div>
 
-                {/* Outfit */}
-                <div style={C.infoBox("rgba(50,10,90,0.25)")}>
-                  <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>OUTFIT</div>
-                  <div style={{fontSize:12,color:"#c0a8d8",lineHeight:1.7}}>{getOutfit(s)}</div>
-                </div>
+                {/* Outfit / Divinity */}
+                {s.ascensionPath?(()=>{
+                  const pathMeta={
+                    celestial:{label:"CELESTIAL FORM",accent:"#c8b0ff",bg:"rgba(60,30,140,0.3)",border:"#7050c040",glow:"#8060ff20"},
+                    umbral:   {label:"VOID FORM",     accent:"#ff9090",bg:"rgba(80,10,10,0.35)",border:"#801010 40",glow:"#ff202020"},
+                    sanguine: {label:"BLOOD FORM",    accent:"#ff7070",bg:"rgba(80,10,20,0.35)",border:"#c0203040",glow:"#c0102020"},
+                    verdant:  {label:"VERDANT FORM",  accent:"#80d080",bg:"rgba(20,60,20,0.35)",border:"#40803040",glow:"#20802020"},
+                    convergence:s.triumvirateUnlocked
+                              ?{label:"🔱 TRIUMVIRATE FORM",accent:"#ffd700",bg:"rgba(40,30,10,0.4)",border:"#ffd70040",glow:"#ffd70015"}
+                              :{label:"⚡ SINGULARITY FORM",accent:"#d0d0ff",bg:"rgba(20,15,50,0.45)",border:"#8080ff40",glow:"#8080ff10"},
+                    primordial:s.primordialTriumvirateUnlocked
+                              ?{label:"🌑🌿 FIRST TRIUMVIRATE FORM",accent:"#c09040",bg:"rgba(30,20,5,0.5)",border:"#c0904040",glow:"#b0702010"}
+                              :{label:"🌑🌿 PRIMORDIAL FORM",accent:"#c09040",bg:"rgba(25,15,5,0.45)",border:"#a0703040",glow:"#90601010"},
+                  }[s.ascensionPath]||{label:"DIVINITY",accent:"#d8a8ff",bg:"rgba(50,10,90,0.25)",border:"#50109040",glow:"transparent"};
+                  return(
+                    <div style={{background:pathMeta.bg,border:`1px solid ${pathMeta.border}`,borderRadius:10,padding:12,marginBottom:8,boxShadow:`0 0 16px ${pathMeta.glow}`}}>
+                      <div style={{fontSize:9,color:pathMeta.accent,letterSpacing:3,marginBottom:6,fontWeight:700}}>{pathMeta.label}</div>
+                      <div style={{fontSize:12,color:"#e0d0c0",lineHeight:1.85,fontStyle:"italic"}}>{getOutfit(s)}</div>
+                    </div>
+                  );
+                })():(
+                  <div style={C.infoBox("rgba(50,10,90,0.25)")}>
+                    <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>OUTFIT</div>
+                    <div style={{fontSize:12,color:"#c0a8d8",lineHeight:1.7}}>{getOutfit(s)}</div>
+                  </div>
+                )}
 
                 {/* Stage reaction */}
                 <div style={C.infoBox("rgba(40,8,70,0.35)")}>
