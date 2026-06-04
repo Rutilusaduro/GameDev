@@ -1,0 +1,2083 @@
+export const EVOLVED_REACTIONS = {
+  // ── ATHLETE paths ──────────────────────────────────────────────
+  sumo:[
+    "I stepped onto an official sumo scale for the first time today and it read 258 and the official wrote it down like it was nothing — and across the room Dana 'The Wall' Mercer, six years a veteran, finally looked at me. I lost. I'll be back, and I'll be heavier.",
+    "Dana says good luck to me now. One season in and the Wall says good luck. The gap between her weight and mine used to be eighty pounds. It's getting small. She's noticed. So have I.",
+    "I outweighed Dana Mercer on the board today for the first time. She looked at the numbers and said 'there it is.' Then I pushed her out of the ring with my belly and the crowd chanted my name. My name.",
+    "National qualifier. There were cameras. I'm the heaviest competitor in the field by a wide margin, and Dana told me she can't out-weigh me anymore so she'll have to out-think me. She couldn't. I'm too big now. I love being too big.",
+    "National finalist. They read my weight into the broadcast and the whole arena went quiet before it roared, and Dana was already clapping. She said she came to feel what it's like to lose to the biggest there's ever been. I gave it to her.",
+    "I am the largest sumo competitor this circuit has ever certified. I put my hand on my belly after the match — warm, full, enormous, mine — and thought about the cheerleader who started this. She had no idea. There's more. There's always more.",
+  ],
+  eating_competitor:[
+    "First contest. Timer on the table, crowd watching. I finished three minutes early. Walked out knowing.",
+    "Circuit regular now. The other competitors nod when I walk in. The MCs know how to say my name.",
+    "New regional record. The old one stood for four years. It stood for four minutes against me.",
+    "National contender. Sponsorships. My face on a hot sauce bottle. I accept all of this.",
+    "World-record territory. The table can barely hold what I put away. The crowd barely breathes.",
+    "I've eaten everything. I've broken everything. Now I just eat, and that is the entire life.",
+  ],
+  // ── INFLUENCER paths ────────────────────────────────────────────
+  feedee_creator:[
+    `First collab. I said "we're going to feed each other on camera" and she said yes and we did it and the chat stayed for the whole thing. I've been trying to put a name on what this format is. I keep coming back to: mutual.`,
+    `The regular viewers know what to expect now. They come for the numbers. They come to watch both of us get bigger every week. We are both getting bigger every week. The format is working.`,
+    `Platform featured the collab. They said "a new format." I said: it's not new, it's just honest. Two women eating together, growing together, the camera seeing all of it. The new audience is staying.`,
+    `The brand wanted both of us. They wrote a contract that said "both physical presences in frame." They meant our bellies. Our actual, enormous, warm, camera-filling bellies. I signed it. Of course I signed it.`,
+    `One year of weekly collabs. She's heavier. I'm heavier. The subscriber count is 1.1 million. Wren is in the building right now, physically in the building, because she drove four hours to be here. That's what a year looks like.`,
+    `Wren is in the room. She's been watching since 258 pounds. I am 820 pounds in this corner and my collab partner is enormous across the table and Wren is watching from outside the camera frame and the platform has never seen a stream like this one. I am not done. We are not done.`,
+  ],
+  body_positive_creator:[
+    "Rebranded the channel. First body-positive post up. My old audience is confused. My new one is enormous.",
+    "First brand deal. A clothing company that actually means it. The cheque cleared. I bought dinner.",
+    "TEDx talk. Twelve minutes, full house. The standing ovation went on long enough to be uncomfortable. Good.",
+    "My face is on a billboard. I drove past it and cried and then ate a full meal and cried more.",
+    "Cultural touchstone is a phrase people use about me in articles. I eat well and feel enormous and correct.",
+    "The platform is a legacy now. The body is the argument. The argument has been won.",
+  ],
+  // ── CHEERLEADER paths ───────────────────────────────────────────
+  eating_captain:[
+    `I weigh ${258} pounds and I stepped on a competition scale for the first time today and a judge read my number aloud and the whole room got quiet. That is a feeling. I want more of that feeling.`,
+    `Six months in the circuit and people know my name before I get to the warmup room. I walked in today and a girl said 'you're the cheerleader captain' like she'd been waiting to see me. I haven't been a cheerleader captain in a while. I'm something else now.`,
+    `Conference championship. I outweighed the previous top number by over a hundred pounds and the judge read mine into the microphone and Maya from Lakewood — who has beaten me every time we've competed — started clapping. She started before anyone else.`,
+    `National qualifier. There were cameras at the weigh-in. The weigh-in has cameras now. I weighed in and someone in the crowd said 'oh my god' clearly enough for me to hear it. I considered this a successful weigh-in.`,
+    `National champion. They read my name and my number into the national feed and the arena made a sound I've never heard in a room before. Maya was already clapping. She knew before the horn. I knew too.`,
+    `I am the largest competitive eating captain in this sport's history. The trophy is substantial. My belly is more substantial. I put my hand on it after the ceremony and thought: this is the record. I built this. There is more to build.`,
+  ],
+  big_squad_captain:[
+    "Told the squad: no more size rules, no more weigh-ins. Two girls cried. One said she'd been waiting years.",
+    "New pledges are choosing us specifically for the culture. Word has spread. The chapter is full.",
+    "National cheerleading press wrote about us. 'The squad that changed the conversation.' Yes we did.",
+    "Speaking at the national Greek leadership conference. My slides are very good. My presence is better.",
+    "Coaches at other schools have quietly stopped the weigh-ins. I'll take the quiet version too.",
+    "What I built is permanent. The culture outlasts the captain. I am very large and very proud.",
+  ],
+  // ── BOOKWORM paths ──────────────────────────────────────────────
+  eating_diarist:[
+    "First newsletter issue. Thirty subscribers. Thirty is enough to start. I sent it. I ate dinner after.",
+    "Six hundred subscribers. A literary agent emailed. I reread it four times before replying.",
+    "Book deal. Two-book deal, actually. The second one hasn't been written yet. I'm already planning the meals.",
+    "Published. The reviews say 'intimate,' 'unsettling,' 'surprisingly funny.' All correct. I ate at the launch.",
+    "The book is being taught in a food studies course at a university I didn't attend. I sent them a note.",
+    "I wrote the thing. It exists. The writing and the eating were always the same act. I understand that now.",
+  ],
+  food_researcher:[
+    "IRB approved the self-study. Officially a research subject. The data I'm collecting is extraordinary.",
+    "The institution is taking the study seriously. I have a lab. I have a grant application in. I have snacks.",
+    "First publication. A real journal. The reviewers called the methodology 'novel.' The methodology is me.",
+    "Cited in three other papers. One of them is from a program I applied to and didn't get in. Interesting.",
+    "Keynote at a nutrition conference. I arrived to the auditorium. The auditorium was not entirely prepared.",
+    "The researcher and the research subject have fully merged. The experiment is complete. The subject remains.",
+  ],
+  // ── GAMER paths ─────────────────────────────────────────────────
+  eating_streamer:[
+    "First gaming + eating stream. Thirty-two viewers became four hundred in two hours. The chat was chaos.",
+    "Regular mukbang gaming content now. The viewers who came for the games stay for the eating. Both grow.",
+    "Community of dedicated viewers who follow every meal and every match. They send food suggestions. I use them.",
+    "Platform featured me. The algorithm loves this exact combination. I've been doing it natively for months.",
+    "Mukbang gaming legend. My clips get remixed. My food orders are documented by fans.",
+    "The stream is always on. The eating never stops. I am the stream. The stream is me.",
+  ],
+  speed_eater:[
+    "First timed challenge. Beat the record by forty seconds. The chat went silent and then exploded.",
+    "Records are falling in order. I write them down. Then I break them. The list is long now.",
+    "Regional eating championship, plus a speedrun of the new DLC, same weekend. Both won. Efficient.",
+    "National recognition — two records in one week. The gaming community and the eating community overlap more than expected.",
+    "I hold simultaneous records in gaming and competitive eating. I'm told this is unprecedented. Obviously.",
+    "I've transcended both worlds. Speed means nothing when you're this size, this full, this complete.",
+  ],
+  // ── SORORITY paths ──────────────────────────────────────────────
+  chapter_hostess:[
+    "First organized chapter feast. Twelve courses. Nobody left early. Nobody left not full.",
+    "The feasting traditions are established now. Wednesday is feast night. Everyone knows.",
+    "Other chapters are talking about our Wednesday feasts. Three people transferred in specifically for them.",
+    "Greek-wide, our chapter is known for the food. The administration has noticed. They've been very quiet about it.",
+    "Alumni are funding the feasts. A former sister sent a check with 'for the table' in the memo line.",
+    "I am no longer chapter president. I am the feast. The feast continues without me. This is correct.",
+  ],
+  body_positive_greek:[
+    "Proposal: end the weigh-in tradition, end the size requirements. One sister voted against. She later apologized.",
+    "New pledges are choosing us because of what we stand for. The class is the largest we've ever had.",
+    "National Greek press covered us. The article used the word 'radical' twice. We ordered pizza to celebrate.",
+    "Speaking at the national Panhellenic leadership conference. My chapter is in the front row. We fill a row.",
+    "The national organization quietly changed its guidance on member wellness. We were mentioned in the notes.",
+    "What I started is permanent. My chapter grows. My body grows. Everything I built is real.",
+  ],
+  // ── OVERACHIEVER paths ──────────────────────────────────────────
+  metrics_eater:[
+    "Spreadsheet active. Intake, rate, progression, projections. The data is already more interesting than I expected.",
+    "Optimized eating schedule across three meal windows. The efficiency is measurable. The gains are documented.",
+    "Personal record logged and verified. The methodology is rigorous. The results are extraordinary.",
+    "Competing on data quality as much as outcomes. My documentation has been cited by two competitors.",
+    "Legendary for the data alone. Someone made a subreddit dedicated to my methodology. I check it daily.",
+    "The spreadsheet has four thousand rows. I can no longer update the later ones. The early data holds.",
+  ],
+  food_scientist:[
+    "IRB-approved self-study, institutional backing. I am officially a research subject and lead researcher simultaneously.",
+    "Lab access secured. I have a proper methodology. I have documented everything. I have a second breakfast.",
+    "First peer-reviewed publication. The journal sent reviewer notes. Reviewer 2 was, as always, an obstacle.",
+    "Prestigious citations in three major journals. My advisor asked to be on the next paper. I said I'd consider it.",
+    "Keynote at the international food science symposium. The room was not large enough for both the talk and me.",
+    "The experiment is complete. The data is unambiguous. The subject is enormous and entirely at peace.",
+  ],
+  // ── ARTSY paths ─────────────────────────────────────────────────
+  installation_artist:[
+    "First body-positive installation opened. One critic said 'challenging.' I consider that a win.",
+    "Gallery interest from two cities. I will ship the work. I will also ship myself. The logistics are complex.",
+    "Review in a major publication: 'unapologetically confrontational.' I am confronting them right now.",
+    "Major exhibition, three rooms, one of them is me. Critics don't know where the art ends.",
+    "Retrospective. A retrospective of someone who is still in progress. I appreciate the confidence.",
+    "The body IS the final installation. The work and the artist have merged. I am the piece.",
+  ],
+  food_photographer:[
+    "First food photography show: sold out. The prints were expensive. They bought them anyway.",
+    "Gallery show opened. People stood in front of the biggest prints for a long time without speaking.",
+    "A book deal: my images with my text. The publisher said the combination was 'unprecedented.' Good.",
+    "Collector interest. A museum in Helsinki acquired three prints. I ate something extraordinary that night.",
+    "Museum acquisition in three countries. The work is in permanent collections. So is the artist.",
+    "The photographer became the subject. The subject has become the photograph. I've been hanging here for years.",
+  ],
+  // ── QUIET paths ─────────────────────────────────────────────────
+  anonymous_blogger:[
+    "First post went up at 2am. I didn't sleep. By morning, forty-three people had read it. That's forty-three.",
+    "The following is growing. I don't know most of them. They don't know me. That feels exactly right.",
+    "A post went viral. A journalist is trying to find me. I am very findable and also perfectly hidden.",
+    "Journalists and podcasters want interviews. I do them by email only. My words, my body, my rules.",
+    "I am a cultural phenomenon with no face attached. The anonymity is the whole point. Also the food.",
+    "The blog and the body are the same record now. I wrote everything and gained everything. Both are real.",
+  ],
+  asmr_creator:[
+    "First ASMR eating video. I whispered. I chewed slowly. Three hundred people watched in the first hour.",
+    "Dedicated following, small and loyal. They leave very quiet comments. We understand each other.",
+    "The algorithm found me. New viewers every day. They say it helps them sleep. I say I'm honored.",
+    "Mainstream crossover. A content creator I watch cited me as an influence. I watched it four times.",
+    "A therapist used one of my videos in a treatment session. She asked my permission first. I gave it.",
+    "The sound of me eating has become something people find comfort in. I find comfort in the eating. We're even.",
+  ],
+  // ── TRANSFER paths ──────────────────────────────────────────────
+  campus_legend:[
+    "The dining hall staff knows my order before I arrive. A booth has been 'mine' for three months.",
+    "Stories are spreading. A freshman I've never met referenced 'the legend of the dining hall.' That's me.",
+    "The booth now has my name on it. Unofficially. Then officially. The dining director did it herself.",
+    "Future students hear about me before they arrive. A campus tour guide mentioned me by name. She was kind.",
+    "I am campus mythology. Incoming classes are told about me during orientation. I have heard this directly.",
+    "I have become the campus. The campus has grown around me. We are one thing now.",
+  ],
+  food_tourist:[
+    "Systematic expedition through every cuisine available within thirty miles. Documenting everything.",
+    "The blog has readers from three countries. Two of them recognize dishes from their home regions in my posts.",
+    "A publication from my home country ran a feature. My family read it. My grandmother approved of the portions.",
+    "Two book deals — one from here, one from home. Both publishers want the same story. I can give them both.",
+    "Cultural ambassador is the phrase they use. I prefer 'someone who ate everything and wrote it all down.'",
+    "I have tasted everything. I have grown into everything. The journey and the destination are the same.",
+  ],
+  // ── FARM GIRL paths ──────────────────────────────────────────────
+  homestead_queen:[
+    "The spread is set. Cast iron on every surface. I made sweet potato pie from scratch at 2am and I do not regret a single bite.",
+    "Grandma Mae video-called and saw the setup. She said 'baby, you've got a real kitchen.' Coming from her that's everything.",
+    "The recipe box arrived. Six generations of food in one box. I made every dish in four days. I kept notes on all of it.",
+    "Mae calls every Sunday now. I always eat while we talk. She knows. She doesn't say anything about it except 'good girl.'",
+    "She said I'm going to run out of room. She's right. I take up most of my homestead already. I am the homestead now.",
+    "Mae drove up. She walked in and saw me — really saw me — and she started crying and then she started cooking. That's love.",
+  ],
+  state_fair_queen:[
+    "First county fair, first pie table. Darcy from Meadowview looked at me like I was lost. She won. I went home and ate.",
+    "Second year. Darcy said 'you again.' I was 60 pounds heavier. She barely won. She noticed.",
+    "State qualifier. I crossed Darcy on the scoreboard for the first time. She stopped mid-bite. I kept going.",
+    "State finals. Won. Darcy clapped. Full hand-claps, not polite ones — the kind that means she means it. That meant everything.",
+    "Tri-state invitational. They built a bigger scale. I am the draw now. People come to see the numbers, not the pies.",
+    "Grand invitational. I barely fit the tent. Darcy's in the open bracket. The contest is incidental. I am the fair.",
+  ],
+  // ── BOOKWORM alt path ────────────────────────────────────────────
+  ff_author:[
+    "I've been writing. The character is fictional. She happens to be a cheerleader and she happens to gain weight in chapter three. I have genuinely no idea where I got the idea.",
+    "Posting anonymously. Fifteen thousand readers now. The chapter where the bookworm character gets stuck in her study carrel has a four-star average on the reaction tracker. I wrote her very carefully.",
+    "Someone in class quoted a line from the story in passing. They didn't look at me. I ate an entire dinner thinking about whether they knew.",
+    "Three hundred thousand words posted. Some of it is more honest about what I want than anything I've said out loud. The fandom writes their own versions. I read them late at night.",
+    "The most popular character is based on myself. She gets everything she wants. The readership responds very well to this. So do I.",
+    "The fiction and the body are the same project. I've known this for a while. The writing is just the form the knowing takes.",
+  ],
+};
+
+export const EVOLVED_DIARY = {
+  sumo:[
+    `Regional qualifier, my first. The warm-up room smelled like liniment and chanko and I was the only former cheerleader in it. Dana 'The Wall' Mercer, 340 pounds, didn't look at me once until the weigh-in. I ate in my corner between bouts — I figured out fast that every pound I add is a pound she has to move — and I pushed her hard. She won. But she put a hand on my shoulder after and said 'you're going to be a problem.' I'm going to be a problem.`,
+    `One season in. Fed myself between every bout — chanko, rice, all of it, my belly filling lower and heavier each break — and it nearly carried me past Dana. Nearly. The gap's down to fifty pounds. She said 'keep eating, keep getting bigger,' and she wasn't being kind, she was being honest about how she loses. I'm going to make her right.`,
+    `Conference meet. The board said I outweigh Dana Mercer now — first time ever — and then I went out and proved the number meant something, drove her belly-first out of the ring twice while the crowd chanted my name. 'You crossed over,' she said after. 'You're the bigger one now.' I am. After two years of being the novelty, I'm the one they measure against.`,
+    `National qualifier, press at the door. I'm the heaviest woman in the field by a margin that makes the others quiet. I ate a full staging meal before, fed in my corner through the whole bracket, and by the final I was bigger than I'd ever been. Dana said she'd out-think me. She couldn't. There's no thinking your way around this much weight. I made sure of it.`,
+    `National final. They read my number into the broadcast and the arena took a breath before it roared. Dana found me first — 520 pounds, the wall I climbed over — and said she didn't come to beat me, nobody beats me now; she came to feel what it's like to lose to the biggest there's ever been. So I fed in my corner and I grew between bouts and I buried her under all of it, and afterward she was smiling. 'Thank you,' she said. I understood.`,
+    `I wrote it down the night I won nationals: I stood in the middle of the dohyo, the largest competitor the sport has ever crowned, my belly vast and warm and full from a whole day of corner feeding, and I felt the noise and thought — more. Every bowl, every weigh-in, every pound. This is the record and the record is my body. There is more to add. I am not done.`,
+  ],
+  eating_competitor:[
+    `The timer is honest. It doesn't negotiate. It runs, and at the end of it either the plate is clear or it isn't, and tonight it was clear four minutes before the buzzer and I sat there with my hands in my lap watching the others finish and felt something I can only call certainty.`,
+    `Circuit regular. I have a slot on the roster at four regional events. My face is on a flyer. This is surreal and also completely logical — I am very good at this, and the circuit needs people who are very good at this. The flyer has a good photo.`,
+    `The regional record stood for four years. It stood for four minutes against me. I was told this afterward, as if I hadn't been there, as if I hadn't felt the record give way the moment I exceeded it. I felt it. I kept going.`,
+    `Sponsorships now. A hot sauce brand, an energy drink, a restaurant chain doing promotional events. My agent — I have an agent — negotiated all of it. I ate through the signing meeting. Everyone found this appropriate.`,
+    `The world record is a number I keep in my head. I wake up with it. I eat toward it. I am not there yet. I am approaching it with the same steady inevitability I bring to everything else. The number is getting closer. So am I.`,
+    `I have eaten everything on every circuit in this country and some in others. The records are documents of a life. I am done chasing them. I just eat now, freely, completely, without a timer or a crowd — just appetite and the endless satisfaction of filling it.`,
+  ],
+  feedee_creator:[
+    `First collab tonight. She said "I've never done this before" and I said "neither have I" and we both lied in different directions. We went live. The chat found us. By the time we were done the subscriber count had tripled and a person called wrenWatchesEverything had subscribed and said: I'm not leaving. I believe her.`,
+    `Six weeks of collabs. She's heavier than when we started. I am heavier than when we started. The chat comes every week to watch both numbers go up. The weekly gain isn't a side effect of the format. It is the format.`,
+    `Platform featured the collab. Editorial pick. They described the double-feed as "a new format for a specific kind of content." Wren donated the full stream goal herself in one transaction and wrote: THE FEATURE WAS DESERVED. It was deserved. I know what this is. It has always been exactly what it looks like.`,
+    `Brand contract signed. Both of us. Both weights in the contract, both belly-sizes accounted for, both of us eating their product on camera for a guaranteed sum. The food is good. The sum is good. I ate half their product before the stream started because I wanted to and because I could. Wren donated the goal before we went live. She always does.`,
+    `Anniversary collab. One year. She and I sat across from each other before the camera went on and we didn't say anything for a minute. We didn't have to. We both looked down — at our own bellies, at the table, at the food — and then we pressed record. Wren was in the room. She cried for about thirty seconds and then she stopped and watched and that was the right thing to do.`,
+    `Wren drove four hours and she's sitting outside the camera frame right now while I write this. 820 pounds. My collab partner is enormous across the table from me. The chat is 300,000 people. Wren is four feet away and she has been watching since I was 258 pounds. I put the journal down. I press record. I begin.`,
+  ],
+  body_positive_creator:[
+    `The rebrand felt like a risk. It was a risk. The algorithm dipped for six weeks and then recovered, and what it recovered with was twice the audience and three times the engagement and a comments section that reads like letters I wish I'd received when I was eighteen.`,
+    `The brand deal came through. A clothing company that makes things in real sizes and takes real photos of real bodies. I wore the dress on camera and cried slightly and my editor left it in and that clip has more views than anything else I've posted this year.`,
+    `Twelve minutes on a TEDx stage. I wrote and rewrote the talk for three months. I delivered it in twelve minutes and it felt like it lasted thirty seconds. The standing ovation was real and sustained and I stood there accepting it feeling larger than I ever have.`,
+    `My face on a billboard. On a highway I drive regularly. I saw it and had to pull over and sit with it for a moment. Then I drove home and ate a full meal and cried again. I am very large on a billboard on a major highway and I am correct.`,
+    `Cultural touchstone. Journalists use that phrase in profile pieces. Students cite me in thesis papers. I get speaking requests from places I've never been. I eat well and exist largely and apparently that has become something worth studying. I am the study.`,
+    `The platform is legacy. The body is the argument. The argument did not require me to be small or quiet or apologetic, and I wasn't, and now I am enormous and permanent and the work is done in the sense that it continues without requiring my active defense. That is what winning looks like.`,
+  ],
+  eating_captain:[
+    `Regional Open. My first. The warmup room smelled like cooking and the girl from State — 178 lbs, two years on the circuit — looked at me the way people look at something they didn't expect. Maya from Lakewood, 330 lbs, hadn't looked at me at all. I ate my warmup. I stepped on the scale. The judge read my number twice. Maya looked over for the first time. I went back to my station and got ready. I lost. I'm going back.`,
+    `Six months in. Maya says hello now. She's 370 and I'm 320 and the gap is closing and she knows it the same way I know it. We ate in the same warmup room and talked for a few minutes before competing and it was good and then she beat me and it was fine. I know where this is going. She knows too. We're both just moving toward it at different speeds.`,
+    `Conference championship. I weighed in at ${419} and Maya's number was 410 and the head judge said mine into the microphone and Maya stopped writing mid-number with the marker. She put the cap back on without finishing. I made eye contact with her. She said: "I knew it was coming." She said it quietly, not to the crowd. She meant it as a compliment. I took it as one. Then I won the conference.`,
+    `National qualifier and Maya found me backstage to say I was the best she'd ever seen. She said it plainly. She looked me in the eye and said: "You're the best I've ever seen. I need you to know I know that." Then she went to her warmup. I stood in the warmup room for one second thinking about the girl from State who asked "is that right?" when they read my number at my first competition. Then I ate everything.`,
+    `National champion. Maya was already clapping when they read my name. She started before anyone else — before the crowd, before the other competitors, before the officials. I looked over and she was standing at her side of the staging area with both hands coming together and she was the first. I don't know if she planned to be first. I think she just couldn't wait any longer. I understand. I am the national champion and I have been waiting for this for two years and I still couldn't wait for it to be over.`,
+    `I put my hand on my belly after the ceremony. That's what I wrote in the diary last night — I stood in the arena hallway with the trophy and I put my hand flat on my belly, the full round warm weight of it, and I thought: this is what I built. Every competition, every warmup room, every time I stepped on the scale and let them read the number. This is the record. This is the proof. There is more to build. I am not done.`,
+  ],
+  big_squad_captain:[
+    `I stood in front of the squad and said: no more weigh-ins, no more size requirements, no more conversations about who fits the uniform before we talk about who can do the work. Two girls cried. One left. Six signed up the next week.`,
+    `Pledges are choosing us. They say they heard about the culture — that we celebrate what bodies can do rather than what they look like. This is accurate. The chapter is the fullest it has been in years. Some of the fullness is literal. I'm proud of all of it.`,
+    `A journalist called for a quote. Then they asked for a sit-down. The article ran with the headline 'The Squad That Changed the Conversation.' I read it three times and ate something good and thought about what a long way this has come.`,
+    `National Greek leadership conference. I spoke for forty minutes. My chapter was in the front row. At the end there was a long silence and then the room started. I said afterward that the silence was the best part. That's true.`,
+    `The national organization changed its guidance. Quietly. In a footnote of a wellness document. We were mentioned. My name was mentioned. I filed it and made dinner and told the squad and they screamed and we ate together.`,
+    `I built a thing that doesn't need me to sustain it anymore. The culture lives in the chapter, in the pledges, in the alumnae who write back and say it changed how they think about their own bodies. That is permanent. I am permanent. We are the same size in different ways.`,
+  ],
+  eating_diarist:[
+    `The newsletter went out to thirty people. Thirty. I wrote it like an assignment I was grading myself on, which means I rewrote the opening line eleven times and sent it at 11:47pm. Thirty people opened it by morning. Thirty felt like a beginning.`,
+    `An agent emailed. A real literary agent, with a list of authors I've actually read. She said she'd been following the newsletter and had ideas. I reread the email six times. I ate a full breakfast before I replied. The reply took four drafts.`,
+    `Two-book deal. The first is memoir. The second is something she called 'a companion piece' which I am interpreting as permission to write whatever I want. Both advances cleared. I bought myself a dinner I'd been meaning to have for six months.`,
+    `Published. The book is out in the world. Reviews say 'intimate,' 'funny in a way that catches you off guard,' 'a document of a transformation that refuses to apologize.' That last one is accurate. I did not apologize. Not once.`,
+    `The book is being taught. A food studies course assigned it. A gender studies course included it in a unit. I went to one of the classes and sat in the back and listened to students argue about sentences I'd written and felt something I didn't have a word for until later: permanence.`,
+    `The writing and the eating were always the same act — both a form of taking in, of accumulating, of making something mine. I understand that now the way I understand my own body: completely, without effort, as a fact that was always true and simply needed time to become obvious.`,
+  ],
+  food_researcher:[
+    `The IRB paperwork was forty-seven pages. I am the only researcher I know who is also the primary research subject. The committee found this unusual. They approved it. The methodology section is the most honest thing I've ever submitted.`,
+    `I have a lab space. I have a grant. I have a meal plan that is technically research infrastructure. The institutional support for what I'm doing has exceeded my expectations at every stage, which suggests either that my work is good or that the institution doesn't fully understand what I'm studying. Possibly both.`,
+    `Published. Peer-reviewed, actual journal, impact factor above two. Reviewer 2 called the self-study design 'ethically complex.' Reviewer 1 called it 'a methodological innovation.' The editor agreed with Reviewer 1. I agree with the editor.`,
+    `Three citations. A paper at a school I didn't attend cited my methodology. A paper I disagree with cited my findings. A paper I admire cited both. Citation counts are a strange kind of conversation. I've entered it. I'm staying.`,
+    `Keynote. The conference was not prepared for the physical reality of having me at the podium. The podium was adjusted. The microphone was adjusted. The audience adjusted. I gave the talk. The Q&A ran thirty minutes over scheduled time. Nobody left.`,
+    `The experiment has concluded in the sense that the study period has ended. The subject has not concluded. The data is complete. The researcher remains. I am both, simultaneously, at the scale that data set always implied I would reach. This was always the endpoint.`,
+  ],
+  eating_streamer:[
+    `First gaming + eating stream. I was nervous in a way I haven't been nervous about streaming in years. Within two hours the viewer count had done something I'd never seen it do before, and the chat was completely alive, and I understood that I had found the correct format.`,
+    `The viewers who came for the games stay for the eating. The viewers who came for the eating are learning the games. The crossover is larger and more genuine than I expected. The snacks arrive in boxes now. I have a dedicated shelf.`,
+    `My community follows every meal and every match. They know my order at six different restaurants. They track my high scores. They send delivery gifts in amounts that require a second fridge. I have a second fridge. I bought it with stream revenue.`,
+    `The platform featured my channel in a collection titled 'New Formats.' I've been doing this for months. The platform finally noticed. The algorithm turned on like a light. The viewer count doubled in a week. I ate through the entire surge.`,
+    `Mukbang gaming legend. My clips get remixed and cited and reposted. My setups and orders are documented on a fan wiki I did not create. I had a conversation with another creator about this and she said 'you built a genre.' That might be accurate.`,
+    `The stream is always on in some sense. I eat in front of people every day and they watch and something genuine happens in that watching. I don't fully understand what it is. I don't need to. The food is real. The audience is real. The rest is detail.`,
+  ],
+  speed_eater:[
+    `Timer ran. I finished forty seconds early. The crowd didn't know how to react. The MC found words eventually. I sat with my hands folded and waited, because there was nothing else to do — the plate was empty, the record was over, I was done.`,
+    `Records are falling in sequence. I write each one down in a notebook before I break it. The notebook is three-quarters full. The remaining quarter is projections. The projections keep proving accurate.`,
+    `Regional eating championship on Saturday, DLC speedrun on Sunday. Both won. I slept for twelve hours after and woke up hungry and started planning the next one. The two disciplines feel identical to me now: set a target, exceed it, rest, repeat.`,
+    `My name shows up in two different competitive communities now. They've started to overlap — people show up to eating competitions who know my gaming records, and vice versa. I hold simultaneous records. It's unprecedented. Apparently.`,
+    `World-record territory on multiple tables. I've broken things that people thought were unbreakable. The documentation is meticulous. The methodology is reproducible. Nobody has reproduced it. I suspect nobody will.`,
+    `Speed doesn't mean anything at this size and weight and scale of appetite. I've transcended the timed format. I eat until I'm done, and when I'm done I'm done, and the numbers are beside the point. The life is the point. The eating is the point.`,
+  ],
+  chapter_hostess:[
+    `Twelve courses. I planned every one of them, sourced every ingredient, set every table. The chapter arrived uncertain and left full and grateful and different in a way I can't fully quantify but absolutely recognize. We did something real in that dining room.`,
+    `Wednesday feast night is established. The chapter knows it, the schedule reflects it, the kitchen is stocked by Tuesday. I have become the person who feeds everyone, which is a role I did not apply for and have accepted completely.`,
+    `Three people transferred specifically for the Wednesday feasts. I know this because they told me. They found out about the chapter through secondhand accounts of the food. I am building the chapter's reputation through abundance. I'm okay with this.`,
+    `The administration noticed. A wellness coordinator came to speak with me. I served her the Wednesday feast menu and she left with a full tupperware container and has not filed anything. I consider this a diplomatic victory.`,
+    `Alumni are funding the feasts. A check arrived with 'for the table' in the memo line, from a sister who graduated seven years ago. She heard about the chapter from someone who heard about it from someone else. The feast has a legacy.`,
+    `The chapter hosts itself now. The traditions are real, the recipes are documented, the Wednesday ritual continues. I made a culture. I am also a culture. Both will outlast me in one direction or another.`,
+  ],
+  body_positive_greek:[
+    `The proposal passed with one abstention. The one who abstained came to my room three days later and said she'd been thinking about it and changed her mind. The vote is now unanimous. I considered this a signal.`,
+    `Pledges are choosing us because of what we stand for. They say it at rush: 'I heard about your chapter.' They mean the culture, the size acceptance, the fact that we eat dinner together and nobody comments on portions. We fill every slot in the pledge class.`,
+    `National press. The article was sympathetic and got everything right and quoted three of my sisters by name. We printed it. We put it on the chapter bulletin board. We ordered pizza to celebrate. The irony was appreciated.`,
+    `I spoke for forty minutes at the Panhellenic conference. My chapter was in the front row. When it was over and the applause had settled, a chapter president from another school came up and said: 'We've been doing the weigh-ins wrong. We're stopping.' I didn't say anything. I just nodded.`,
+    `The national organization changed the wellness guidance. Three sentences, in a footnote, in the appendix. My name was in one of those sentences. A footnote in a document that governs thousands of chapters. That is not nothing.`,
+    `I built it. The culture lives in the chapter and in the chapters that modeled themselves on ours and in the pledges who become sisters who become alumnae who go out and change other things. I made something that makes things. That is enough.`,
+  ],
+  metrics_eater:[
+    `The spreadsheet started as a joke. Three weeks in it is absolutely not a joke. I have intake data, rate data, projection models, variance analysis. The methodology would satisfy a peer reviewer. The results would concern one.`,
+    `Optimized meal windows: three primary, two supplementary, one extended. The optimization was based on absorption modeling I did myself using secondary sources and primary experience. The gains are measurable. The measurements are precise.`,
+    `Personal record. Verified by three independent measurements and confirmed against prior entries. The methodology is sound. The record stood for eight days before I broke it again. I documented both.`,
+    `Two competitors have cited my tracking methodology in their own documentation. I read their citations. The methodology was accurately represented. I sent each of them a note. I also quietly noted that their numbers are still below mine.`,
+    `My data has been requested by four researchers, two dietitians, and one journalist. I declined the journalist. I am considering the researchers. The data is mine. I collected it in real time, with my own body. I decide what it's for.`,
+    `The spreadsheet has four thousand rows. The most recent rows are blank because I can no longer update them manually. My phone does voice entry. The data continues. I continue. The last entry will be made by someone else, eventually. That is fine.`,
+  ],
+  food_scientist:[
+    `The IRB approval arrived on a Tuesday. I read it three times, ate a late breakfast, and began the study that morning. I am the most motivated research subject I've ever encountered, which is saying something, because I've also been the researcher.`,
+    `Lab access, institutional email, a key to a room with proper scales and proper documentation. I am official. I am also the most interesting thing that has ever happened in this lab, and I know because I've read the prior study files.`,
+    `Published. The journal's editorial board noted 'methodological originality' in the acceptance letter. Reviewer 2 asked whether the self-study design introduced bias. I wrote back four pages explaining that the bias is the methodology. It was published anyway.`,
+    `A researcher at a university I applied to and didn't get in has cited my work in two papers. I emailed to say thank you. She responded with a collaboration invitation. I accepted. The collaboration involves my body. I find this appropriate.`,
+    `Keynote at the international symposium. I arrived. The auditorium adjusted. I gave the talk. Every slide was a data point from my own body. The Q&A lasted an hour. I had a meal during the Q&A. Nobody found this inappropriate. It was, in fact, exactly right.`,
+    `The experiment is complete in the sense that the study period has ended and the papers have been filed and the citations are accumulating. The subject has not ended. I remain — large, documented, at peace. The science and the body are the same record.`,
+  ],
+  installation_artist:[
+    `First installation: a room. Mirrors, photographs of my body at each stage, audio of my voice describing what I saw in the mirror at each weight. The opening was quiet for three minutes. Then someone started talking and the conversation didn't stop.`,
+    `Two galleries made offers for the next show. One is in another city. I am shipping the work and also shipping myself, which required a logistics conversation that I found genuinely funny and also slightly absurd. I am the largest thing in both shipments.`,
+    `The review in the major publication called it 'a confrontation with comfort and with scale.' I read that and ate something and thought: yes. That is precisely what it is. I am confronting you. I am also very comfortable.`,
+    `Major exhibition: three rooms, multiple installations, one of them is entirely me — my body, documented in real time, present and being present. Critics spent long minutes in front of each piece. Several of them did not know where the art ended and I began. That is the work.`,
+    `Retrospective. For someone still in progress. The curator said 'we want to capture the arc while you're still in it.' I said I appreciated the confidence that there was an arc and not just a continuous expansion. She laughed. I think she understood.`,
+    `The body is the final installation. The body is always the final installation. Everything I made was documentation of this body becoming itself. Now it has become itself. I am the piece. The gallery is wherever I am.`,
+  ],
+  food_photographer:[
+    `First show sold out. I was surprised and then I wasn't surprised, because the work is good and the subject is present — I photographed every meal I've eaten this year and the cumulative effect is something that lands differently than any individual image.`,
+    `Gallery show in a proper space with proper lighting and proper people who stand in front of the prints and go quiet. I spent the whole opening eating from the reception table, which I'd argued should serve the foods that appeared in the photographs. The gallerist agreed.`,
+    `Book deal: my photographs, my text. The publisher said the combination was 'unprecedented in the food photography space.' I pointed out that I am precedent. I am setting it. The book is what happens after.`,
+    `Collector interest from people who own real things. A museum in Helsinki acquired three prints for the permanent collection. I flew to see the installation. The prints looked good in natural light. I ate a tremendous amount of Scandinavian food.`,
+    `Permanent collections in three countries. The work will be there after I am not. I don't think about that often but when I do I feel something that isn't quite pride and isn't quite peace but sits between them.`,
+    `I set out to photograph food. The food changed me. I photographed the change. The photographs became the subject. I became the photograph. The gallery has my face on the wall and my body in the chair by the desk and the distance between them is one career.`,
+  ],
+  anonymous_blogger:[
+    `Forty-three readers by morning. I know that's small. It wasn't small to me. Forty-three people found a thing I made in the middle of the night and read it. I ate breakfast and started the next post immediately.`,
+    `The following has grown past what I can track informally. I have spreadsheets now. The posts with the most engagement are never the ones I expected. The ones I wrote quickly, at odd hours, slightly recklessly — those are the ones.`,
+    `A post went viral. A journalist tried to find me. She published a piece about looking for me, which meant that ten times as many people read my work trying to figure out who I was. Nobody found me. This is intentional. The anonymity is load-bearing.`,
+    `Interview requests by email only. Voice notes with my filter active. One podcast published an episode 'about' me that was really about what I represent, which is the correct framing. What I represent is more interesting than what I am.`,
+    `Cultural phenomenon with no face attached. There are fan accounts analyzing my writing style and my food choices and what my identity might be. I follow three of them. One is surprisingly close. I have not said so.`,
+    `The blog and the body are the same record. Everything I wrote happened to the same person who ate everything. The words and the weight are both accumulations. Both are real. Both are mine. That is the entire project.`,
+  ],
+  asmr_creator:[
+    `I whispered into a microphone and chewed slowly and the three hundred people who watched in the first hour left comments that made me sit very quietly for a long time. They said things like 'this is the only thing that helped me sleep this week.' I felt responsible in a good way.`,
+    `The community is small and loyal and understands something that I'm still learning to articulate. They show up for every video. They leave careful comments. We are in some kind of agreement that I didn't formally sign but honor completely.`,
+    `The algorithm found the channel. New viewers arrive daily now — people who don't know the community, who found the video through a recommendation. They become part of the community. The community is patient with newcomers. I'm proud of that.`,
+    `A creator I watch included me in a 'recommended channels' post. The message was generous and accurate. Her audience came over and many of them stayed. The comment section is larger now but the care in it has not diminished.`,
+    `A therapist wrote to say she'd used one of my videos in a session — with client permission, as background for a relaxation exercise. She said it worked. She asked whether she could recommend the channel to other clients. I said yes, obviously.`,
+    `The sound of me eating is something people find comfort in. I find comfort in the eating. The camera is the only thing between us and it's not much of a barrier. We are two sides of the same thing: appetite and the peace that comes from feeding it.`,
+  ],
+  campus_legend:[
+    `The dining staff knows my order. They start preparing it when they see me cross the quad. The booth in the corner has been 'mine' for months in the informal sense that nobody sits in it when I'm coming. I appreciate the courtesy.`,
+    `A freshman I've never spoken to referenced 'the legend of the dining hall' in a group chat I was added to. She meant me. The story she told was accurate in the facts and somehow smaller than the reality. Legends usually are.`,
+    `My name on a booth. The dining director did it herself, with a small brass plaque, and told me about it during a meal I was having. I looked at the plaque for a while. Then I finished eating. The plaque is still there.`,
+    `A campus tour guide mentioned me by name to a group of prospectives. I was eating nearby and overheard. She described me as 'part of the character of this campus.' I considered interrupting. I decided to finish my meal instead.`,
+    `Incoming classes are told about me during orientation. I've confirmed this with four separate first-years who told me independently. The story varies slightly in the telling. The core of it — a person who became part of this place — is consistent.`,
+    `I came here not knowing anyone or anything. Now I am known before I arrive anywhere on this campus. The campus shaped me and I shaped it back. We are the same thing now. I am the place and the place is me.`,
+  ],
+  food_tourist:[
+    `Systematic expedition: I have a map, a list, a notebook. Every cuisine I've identified within thirty miles gets a documented visit. The notebook is filling. The visits are never disappointing. I eat well everywhere.`,
+    `The blog has readers from my home country who write to say 'that restaurant is run by someone from my village.' The world is smaller than I expected and food is the thing that makes it smaller. I am grateful for both.`,
+    `A publication from home ran a feature on the blog. My family read it. My grandmother called to say the portions I was eating were 'respectable.' That is the best review I've received and it required no formal publication.`,
+    `Two book deals. One here, one at home. Both publishers want the same story from two different angles. I can give them that. The story is about distance and food and what you carry across both. I know it very well. I am it.`,
+    `Cultural ambassador. It's on a press release somewhere. I'm someone who ate everything in one city while thinking about everything she left behind in another. The food was always the bridge. I've grown to fill the bridge.`,
+    `I've tasted everything. The list is documented, the notes are extensive, the body is the record of every meal. I came here a stranger and grew into something that belongs here and to home simultaneously. The eating made that possible. It always does.`,
+  ],
+  ff_author:[
+    `The character started as someone else. Or I told myself that. She's a literature student who gains weight over the course of the story — slowly, without apology — and the people around her find it beautiful and bring her food and want her to keep growing. I spent four hours on a single scene where someone notices how soft her belly has become and tells her. I posted the first chapter at 2am and couldn't sleep. There were forty-three comments by morning. Forty-three strangers who understood exactly what I'd written.`,
+    `The readership has opinions. Very specific preferences about the rate and distribution of the characters' gain. One commenter left a two-paragraph analysis of the chapter where the cheerleader's uniform finally splits that was more precise than anything my thesis committee has ever said about my actual academic work. I've been thinking about that a lot. I've also been eating more. I don't think these two things are unrelated.`,
+    `A classmate stood behind me on the library steps and said, very quietly, "I've been reading something." I didn't turn around. "It's very good," she said. "I think I know who wrote it." I went home and wrote four thousand words that night. The character based on her gains ten pounds in the new chapter. I consider this a generous tribute.`,
+    `The author account is anonymous but the fiction is not. Everyone I've written about is in it. The gaining is the point. The love that surrounds it is the point — the way the characters grow into themselves and are seen clearly and wanted for exactly what they are. I've stopped pretending I'm writing about imaginary people. I've stopped pretending I'm not one of the characters.`,
+    `Three hundred thousand words. The fandom writes their own versions of the story, and some of those versions are about me — the anonymous author, imagined as the main character, large and cared for and fed. They're not wrong. The character I write most honestly is the one who eats everything and is loved for exactly that. She has been me for a long time.`,
+    `I don't write as much now. Not because I've run out — I haven't — but because the distance between the fiction and the reality has closed. Everything I wrote was true: the gaining, the care, the body as something beautiful rather than something to manage. I wrote it into being. Then I became it. That's the best thing I've ever made.`,
+  ],
+  homestead_queen:[
+    `I made sweet potato pie from scratch at two in the morning because I couldn't sleep and the kitchen was there. I ate half of it while it was still warm, standing in front of the open oven, in a flannel shirt I've had since high school and jean shorts I can no longer fully close. By the time I finished writing down what I'd used I was full in a way that felt like the word was invented for this exact moment. I weighed myself in the morning. I wrote the number in the recipe book. This is a record. This is a life.`,
+    `Grandma Mae video-called last Sunday and she could see the setup behind me — the jars lined up on the shelf, the cast iron on every surface, the folding table I've covered with oilcloth and claimed as counter space. She said: 'baby girl, you've got yourself a real kitchen.' I cried a little after we hung up. Not sad crying. The kind that happens when someone sees exactly what you are and names it correctly.`,
+    `The recipe box arrived. Six generations of food in one flat-rate box: cards in three different handwritings, some in pencil so faint I had to hold them to the window, measurements in cups and handfuls and 'enough' and 'until it looks right.' I made every dish in four days. I kept notes. My notes look like Mae's notes, which look like her mother's notes. I am in a line of women who knew what to do with food. I am one of them. I have always been one of them.`,
+    `Mae calls every Sunday at 10am. I always eat while we talk — something I made, something I'm testing, something I'm just hungry for. She never comments on the eating. She asks what I made. She asks how it turned out. She asks if I'm happy. I always say yes and I always mean it. This Sunday she said, 'you sound like yourself, baby.' I don't know when I stopped sounding like myself somewhere else, but I know exactly when I found it again.`,
+    `She said: 'baby, you're going to run out of room in that dorm.' She is right. I take up most of it already — me and my jars and my cast iron and the folding table I've turned into a homestead and the smell of whatever I made last night still in the air. I don't feel like I've run out of room. I feel like I've filled it. There's a difference. I think Mae knows the difference too. She just says it like a warning to give me time to decide how I feel about it.`,
+    `Mae drove up. I heard her knock and I knew — I could feel it the way you feel weather coming — and when I opened the door she saw me. Really saw me, not the version I present on the phone, the full physical fact of what I've become in this room with this food and this life. She looked at me for a long time. Then she started crying. Then she reached past me and started looking at what was in the jars. 'Tell me what you've been making,' she said. So I told her. We were there for five hours. She ate with me the whole time.`,
+  ],
+  state_fair_queen:[
+    `First county fair entry. Darcy from Meadowview looked at me when I sat down at the pie table — a look I've seen before, the one that says 'this is not a serious competitor.' She won. I drove home knowing two things: what I did wrong, and that I was going to do this again. I wrote both things down. I also wrote down what I'd eaten during the event because I wanted to know the exact number. The number was not as high as it's going to get.`,
+    `Second year. Darcy said 'you again' when she saw me, and she said it like she'd been thinking about it. I was at least sixty pounds heavier. She adjusted something in how she was sitting at the table after she looked at me. She barely won. That 'barely' matters. She felt it. I felt it. I went home and added it to my records.`,
+    `State qualifier. I crossed Darcy on the scoreboard for the first time. She stopped eating mid-bite. I watched her do it in my peripheral vision — stopped completely, one second, just long enough to register what she was seeing — and then she went back to eating. I kept going. I won. After, she stood near the scale and said, quietly: 'where are you putting all that?' I told her: 'I grew more room.' I don't think she found that funny. I did.`,
+    `State finals. I won. Darcy started clapping — full hand-claps, not the polite kind, the kind that means she's genuinely applauding — and she kept going for a long time after everyone else in the tent had finished. I walked over and she said 'I trained for six months for this. All year.' She said it like she was proud of me. I think she was. I think I might be the best thing that ever happened to her career. I'm definitely the best thing that ever happened to mine.`,
+    `Tri-state invitational. They built a bigger scale. The judge announced this at the weigh-in — 'we have a new scale this year' — and looked at me, and the whole tent understood. I weighed in. The number caused a sound. Not a cheer, something quieter — the specific noise a crowd makes when a fact is too large to simply applaud. Darcy is in the open bracket now. She comes to watch. That means more to me than any trophy.`,
+    `Grand Fair Invitational. I barely fit the tent. I don't say that with distress — I say it the way you say a fact that took a long time to arrive. The contest is incidental. Darcy is competing in the open bracket, 500 pounds, here to watch me win and I know it. When my number goes up, she's going to be the loudest person in the building. I've been eating competitively since I couldn't win. I've kept eating until I can't lose. I don't think there's a more honest biography than that.`,
+  ],
+};
+
+export const EVOLVED_OUTFITS = {
+  sumo:[
+    "Training gear — compression shorts, a thick practice mawashi worn over sweats. Built for the ring, nothing else.",
+    "Practice uniform fits like it was made for her body because it was. Her coach measured everything twice.",
+    "Competition mawashi, ceremonial and precise. The weight of the garment is nothing compared to the weight she carries.",
+    "Championship regalia. Her manager handles the presentation garments now. She receives them without comment.",
+    "Ceremonial attire between bouts — a wide kimono-style wrap, open, relaxed. She fills it completely.",
+    "She wears what's comfortable. Everything is wide, everything is soft, everything accommodates what she's become.",
+  ],
+  eating_competitor:[
+    "Contest shirt — her sponsor's logo, custom-ordered, already tight at the collar. She wears it with pride.",
+    "Circuit gear. Tracksuit in her competition colors, sponsor patches on both sleeves. She's recognizable now.",
+    "Competition day: her lucky shirt, three sizes larger than last year's lucky shirt. The luck transferred.",
+    "Sponsored athlete gear head to toe. The brand sent custom pieces without being asked. They know what fits.",
+    "She travels in her competition colors. Hotels recognize her. The food arrives before she finishes checking in.",
+    "Whatever she can find that accommodates her. Competition gear is custom now. She doesn't mind.",
+  ],
+  feedee_creator:[
+    "Content-ready always — camera-friendly outfit, good lighting angles considered, food accessible on the table.",
+    "Soft-era aesthetic fully embraced. Flowy pieces in warm colors, everything shot-ready, nothing restrictive.",
+    "Her brand has a look: comfortable, abundant, unapologetic. The clothing is part of the content.",
+    "Custom pieces from brands that sponsor her. Wide cuts, premium fabric. She wears them on camera first.",
+    "Everything wide, everything deliberate, everything designed to be seen doing exactly what it's doing.",
+    "The outfit doesn't matter as much as what she's eating. But she looks incredible. Both things are true.",
+  ],
+  body_positive_creator:[
+    "Brand-deal clothing — the good kind, the kind made for her actual body. She wears it on camera first.",
+    "Press-ready always. A wardrobe coordinator helps now. The clothes are extraordinary.",
+    "She dresses for the platform and for herself simultaneously. The overlap is large. So is she.",
+    "Everything she wears becomes merch demand within a week. The stylist has learned to expect this.",
+    "Billboard clothing. Iconic pieces. A wardrobe that says exactly what she wants to say.",
+    "She wears what exists at this scale. It has been made for her. It fits. She has arrived.",
+  ],
+  eating_captain:[
+    "Squad training gear in team colors, eating bib on top. The combination is both absurd and completely correct.",
+    "Team competition uniform, custom-ordered in her specifications. She had input on the design. It shows.",
+    "Full captain regalia at events. The title is on the back of her jacket in block letters.",
+    "Championship gear. The athletic director commissioned a custom set after the national invite.",
+    "Her jacket has more patches than room for patches now. She had an extension panel added.",
+    "She wears the captain's sash everywhere. Nothing else fits the way it used to. The sash always fits.",
+  ],
+  big_squad_captain:[
+    "Squad jacket modified by her own hand — the old size requirements cut out, new ethos written in marker on the lining.",
+    "The uniform that fits the body, not a body built to fit the uniform. She commissioned it herself.",
+    "Chapter captain gear in their colors. Wide, dignified, present. She made the design.",
+    "Her conference presentation outfit. A wide-fit suit she wore on the national stage. Donated to the chapter archives.",
+    "Custom everything now, all of it chosen deliberately. She knows what she's saying with what she wears.",
+    "She dresses like the monument she's become. The chapter follows her lead. The closet is legendary.",
+  ],
+  eating_diarist:[
+    "Cardigan open over a good dress. Writing outfit. She eats while she writes and the outfits accommodate this.",
+    "She dresses for the reading series now — events, talks, bookstore signings. Wide linen, good earrings.",
+    "Book launch outfit: a wide-cut statement piece she chose six months before the book came out.",
+    "Speaking engagement attire. She has a rotation now. Everything wide, everything deliberate, everything documented.",
+    "She dresses the way she writes — with intention, with detail, with nothing apologized for.",
+    "Whatever fits this body. She has a tailor. The tailor is excellent. The clothes are extraordinary.",
+  ],
+  food_researcher:[
+    "Lab coat, custom-ordered. The standard one didn't cover the data. She made a note in the methodology.",
+    "Academic casual with a purpose — she needs pockets, always. The blazer accommodates everything.",
+    "Presentation attire for conferences. Wide-cut, professional, memorable. The slides are also memorable.",
+    "Keynote outfit. Her institution had a photographer there. The photos are impressive.",
+    "Research gear that accommodates field work, office work, and being the field. Practical and extraordinary.",
+    "She dresses like someone whose research has outlasted the original hypothesis. With confidence.",
+  ],
+  eating_streamer:[
+    "Stream outfit — comfortable, camera-ready, no restriction. The snacks are in frame. She is in frame.",
+    "Gaming hoodie, eating bib, both sponsors represented. The aesthetic is cohesive by now.",
+    "Her branded gear from the platform deal. She wore it live. The chat went immediately to 'new merch?'",
+    "She dresses for the camera and for six to eight hours of sitting. Wide, soft, documented.",
+    "Merch she designed herself. The sizing runs large because she asked for that specifically.",
+    "She wears what fits. Everything is wide. The setup is custom. She is the best part of the setup.",
+  ],
+  speed_eater:[
+    "Competition shirt, timer-ready, sponsor logo centered. She pins the bib herself before every contest.",
+    "Her lucky competition tracksuit. It has been let out twice. The luck has not diminished.",
+    "Full competition gear, both sponsors represented, her record count in small text on the sleeve.",
+    "Championship kit. Her coach had it made when the national record fell. She wore it the next day.",
+    "She travels in her competition colors. Everything is custom. The logos are earned.",
+    "She wears what accommodates her. Everything does, because everything is made for her now.",
+  ],
+  chapter_hostess:[
+    "Hosting apron over her chapter formal. The apron has seen more feasts than most dining rooms.",
+    "Full chapter formal for Wednesday feasts. She instituted a dress code. She set the example.",
+    "Event attire that says 'I am in charge of this table and this table is magnificent.'",
+    "Her signature wide-cut blazer and the chapter's formal colors. She has hosted in this outfit at the national level.",
+    "She commissions one new hosting outfit per semester. The tradition is documented in chapter records.",
+    "She dresses like the feast she's hosting — abundant, deliberate, impossible to ignore.",
+  ],
+  body_positive_greek:[
+    "Chapter colors in a wide-cut blazer she had commissioned when the old one stopped working.",
+    "Conference attire. She wore this on a national stage. The outfit has its own legacy.",
+    "Full formal in chapter colors, every detail chosen deliberately, nothing apologized for.",
+    "Her speaking outfit. She could be recognized by it at this point. That's not an accident.",
+    "She dresses for the culture she's building. Intentional. Inclusive. Exactly as large as she is.",
+    "Everything is custom. Everything fits. Everything says exactly what she wants it to say.",
+  ],
+  metrics_eater:[
+    "Tracking gear — comfortable, pockets for devices, nothing that would interfere with measurements.",
+    "Optimized for the data collection session. Every item considered. The spreadsheet has a column for this.",
+    "Competition day gear, logged in advance, photographed for the documentation record.",
+    "Her record-attempt outfit. She decided this would be consistent across all record attempts. It is.",
+    "She dresses for efficiency. The efficiency has a consistent aesthetic that other competitors have noticed.",
+    "Wide, comfortable, documented. She has worn this size for longer than any prior size. She is accurate.",
+  ],
+  food_scientist:[
+    "Lab coat, properly fitted, her name embroidered because she asked for it specifically.",
+    "Conference blazer in the department color. She wore it to her first invited talk. It has an origin story now.",
+    "Keynote attire. Her institution's communications office asked to use the photo. She agreed.",
+    "She dresses like someone whose research has been cited by the people who rejected her. Well.",
+    "Research-formal: dignified, wide, professional, present. The lab coat is underneath.",
+    "Everything is custom at this point. The fit is excellent. The science is also excellent.",
+  ],
+  installation_artist:[
+    "Something she made herself — fabric, found materials, a garment that documents the body wearing it.",
+    "Gallery opening attire that is itself a piece. Visitors aren't always sure where the show starts.",
+    "Her major exhibition outfit. It was photographed by three publications. It's in the catalogue.",
+    "She dresses for the work and the work dresses her. The boundary is genuinely unclear.",
+    "Retrospective attire: something that holds the whole arc of the work. She designed it herself.",
+    "She wears her body the way she makes installations: with intention, with presence, as the piece itself.",
+  ],
+  food_photographer:[
+    "Gallery opening attire — something that photographs well, because someone will always photograph her.",
+    "The outfit she wore when the Helsinki museum acquired the prints. She remembers it exactly.",
+    "Book launch clothes — a wide statement piece that appeared in press photos. Recognizable.",
+    "She dresses for both sides of the lens now. The subject understands the photographer.",
+    "Her studio look: wide linen, room to move, good in the shots her assistant takes behind the scenes.",
+    "Everything is custom, everything is deliberate, everything accommodates the body that makes the work.",
+  ],
+  anonymous_blogger:[
+    "Anonymous-compatible — nothing identifiable, nothing logo'd, nothing that would give her away.",
+    "She dresses for invisibility and comfort simultaneously. Both are achieved.",
+    "Cozy, unremarkable from the outside. The inside is the work. The outside protects it.",
+    "She has a consistent aesthetic that nobody has been able to place online. She maintains it carefully.",
+    "Wide, soft, present in rooms, invisible in photographs. The balance is intentional.",
+    "She dresses for the life she's living, which is enormous and private and exactly as she planned.",
+  ],
+  asmr_creator:[
+    "Soft textures only — the microphone picks up fabric noise, so everything she wears is deliberate.",
+    "ASMR-compatible clothing. She's thought about this more than most people think about anything.",
+    "Recording day attire: soft fabrics, nothing synthetic, nothing that will interrupt the session.",
+    "She dresses for sound now as much as sight. The clothes are very quiet. So is she.",
+    "Wide, soft, silent fabric. She moves slowly and everything moves slowly with her.",
+    "She wears the textures that are kindest to the microphone. Also the ones kindest to her skin.",
+  ],
+  campus_legend:[
+    "Her dining hall regular outfit — the clothes she's worn so often here that they're part of the myth.",
+    "Comfortable campus gear in her colors. Students recognize the outfit before they recognize the face.",
+    "She dresses like someone who belongs here completely, because she does.",
+    "Wide everything. Soft everything. Exactly as present as she is.",
+    "The outfit that appears in the campus tour guide's description. She didn't plan this.",
+    "She wears what fits. Everything fits because everything was eventually made to fit.",
+  ],
+  food_tourist:[
+    "Travel-ready always — practical, wide-cut, pockets for the notebook and the camera.",
+    "Her blog aesthetic: dressed for wherever the food is, which is everywhere.",
+    "The outfit she wore in the home-country magazine feature. Both publishers asked to use it.",
+    "She dresses for the food, not the other way around. The food is everywhere. So is she.",
+    "Cultural bridge attire — something that belongs in two places. She found it. It fits.",
+    "Wide, practical, present. Made for someone who is both places at once.",
+  ],
+  ff_author:[
+    "Cardigan open, something soft underneath, laptop always nearby. She's found the writing uniform and she doesn't deviate from it. She eats while she writes. The snacks appear and disappear without her noticing.",
+    "An enormous pullover, hair up, the desk organized around two monitors. One for the document, one for the comment section. She checks both with equal seriousness.",
+    "Wide linen trousers and a loose top with pockets — the outfit of someone who has committed fully to desk life. She has a look now. It accommodates everything.",
+    "Custom-ordered wide pieces in soft, dark colors. The desk chair has been upgraded twice. Everything in her space has been chosen to accommodate her completely.",
+    "She dresses for the body she has and the life she's built around it. Everything wide, everything deliberate, everything soft. She looks like what she writes about, which is to say: exactly what she wants.",
+    "She wears what fits. Everything fits because everything is made for her now. The room is made for her. The desk is made for her. She writes surrounded by things that understand what she is.",
+  ],
+  // ── FARM GIRL paths ──────────────────────────────────────────────
+  homestead_queen:[
+    "Denim overalls over a flannel shirt that she's had since high school. The overalls are cinched at the sides but her belly rounds out the front bib completely. She's warm and smells like cinnamon and brown sugar.",
+    "The flannel has been traded for a loose linen top — easier to move in, and the overalls have been retired in favor of wide-leg jeans with an elastic waist she doesn't bother to explain. Her chest fills the top completely.",
+    "A wide cotton housedress — she found a seamstress to make it to her measurements — and a full apron tied at the back that does most of the practical work. She looks entirely at home because she is.",
+    "She's given up pretending the apron is for protection — it's load-bearing now, the ties cinched around the widest part of her, her belly testing the front pocket. The dress underneath is the widest she owns.",
+    "A single enormous piece of wide-cut fabric that functions as both dress and apron. She made it herself. The pattern is from Mae's notebook. She fills it entirely and with great comfort.",
+    "The apron is the outfit. It is, structurally, enormous — she had it sewn to fit her — and under it there is a wide cotton shift and nothing else. She is warm and present and the room smells like everything she's made.",
+  ],
+  state_fair_queen:[
+    "Competition tank and stretch shorts — the standard circuit uniform, sized up significantly. Her chest strains the front. She has her entry number pinned to the side because there's no room on the front.",
+    "A competition jersey with her name on the back, her region on the front. It was made for someone smaller and she has not replaced it. The fabric pulls across her chest and rides up over her belly at the bottom.",
+    "Custom-fitted competition jersey, her name printed large enough to read from the stands. It was made to her measurements two months ago and is already getting tight across the front.",
+    "Sponsor logos across the jersey — four of them, which is a measure of how serious this is now. The jersey is wide enough to hold all four and still stretch across the full geography of her chest.",
+    "The jersey has become a document. Every patch and print and logo has had to be repositioned as she's grown. The current version was made last month. The seams are already tested.",
+    "A competition banner-jersey sewn to her exact measurements by a custom sportswear maker who has done this exactly once before. It fits perfectly. She fills it perfectly. It reads less like a uniform than a flag.",
+  ],
+};
+
+export const EVOLVED_ACTIVITY_TEXT = {
+  sumo:[
+    (s)=>`She knocks on your office door in her mawashi-bag and warm-ups — ${Math.round(s.lbs)} pounds, belly round and forward, a competitor's calm on her. "Regional qualifier today," she says. "Dana Mercer's there. She's 340. I want you to watch." She doesn't ask. You go. You watch a former cheerleader try to push a six-year veteran out of a ring with her belly, and very nearly do it. She loses by inches and isn't discouraged at all. "She's still bigger than me," she says afterward, eating. "For now."`,
+    (s)=>`She stops by before the circuit tournament — ${Math.round(s.lbs)} pounds, looser and surer than last season. "The gap's down to fifty pounds," she says, meaning her and Dana. "I feed in my corner now. Every bout I get a little bigger, and she has to move all of it." You come watch. Between bouts she eats — bowl after bowl in her corner — and you watch her grow over the course of the afternoon, her belly settling lower each break, until she nearly takes the Wall down with the weight of it.`,
+    (s)=>`Conference meet. She's ${Math.round(s.lbs)} pounds and for the first time she outweighs the rival who used to dwarf her. "Watch the board today," she tells you. "My number goes up top." It does. Dana stares at it and says "there it is," and then your student goes out and makes the number mean something — belly-first, driving Dana out of the ring twice while the crowd, for the first time at this level, chants her name.`,
+    (s)=>`National qualifier, and there's press at the door. She finds you before warm-ups — ${Math.round(s.lbs)} pounds, the heaviest competitor in the building by a mile, her belly an enormous warm apron under the mawashi. "Dana says she'll out-think me," she says, almost amused. "Watch how that goes." You watch. It does not go well for Dana. Size has become an argument that ends discussions, and your student spends the whole bracket eating in her corner to make the argument bigger.`,
+    (s)=>`National final. The arena. She's ${Math.round(s.lbs)} pounds and the credential reads COMPETITOR and she finds you in the crowd beforehand. "Watch the weigh-in," she says. Just that. You watch the official pause a full second before reading her number, watch the arena take a breath before it comes apart, watch the largest competitor the sport has ever certified walk to the center of the dohyo like she was always going to end up there. Dana is already clapping.`,
+  ],
+  eating_competitor:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and she's in the bib and she's sitting at the table and the crowd is filing in and she is already studying the plate with the focused attention of someone who has thought about nothing else for a week. She is the largest competitor at this table. The next biggest is 210. When the timer starts she moves with an economy that looks casual until you realize the plate is more than half empty at the ninety-second mark. She finishes first. She sets her utensil down and waits. The official records her time. She finds you after and says: "I want to weigh more next time. I want to weigh more for every competition from now on." She means it as a training strategy. She eats the entire return-trip meal on the drive home.`,
+    (s)=>`${Math.round(s.lbs)} pounds at weigh-in. The MC announces competitors by weight and when he says her number the crowd's reaction is different from the others — not louder, but more focused. She is substantially the largest woman at the table. Her belly presses against the bib. Her thighs fill the chair. The plate is designed for a 225-pound person's reasonable limits. She eats it in two minutes and thirty seconds. She exceeds the category record. The official verifier confirms. She sits back and breathes for a moment, belly full and pressing forward, and looks at the results board with the expression of someone who already knows they're going to do this until there are no records left.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The regional record attempt. The target is announced — the current record, two minutes forty — and the crowd goes quiet when she sits down because ${Math.round(s.lbs)} pounds of woman settling into a competition chair is a notable event. The bib barely reaches around her belly. She doesn't look at anyone. She looks at the plate. The timer starts. She eats with the methodical inevitability of tidal motion. She exceeds the target by fifty-three seconds. The official is already writing before she finishes. She asks you afterward: "How much do I need to weigh to be physically disqualifying for a weight class? I want to exceed it." She's asking about the open category. She means she wants to weigh enough that no weight class can contain her.`,
+    (s)=>`${Math.round(s.lbs)} pounds at the national event. She's the largest competitor the event has ever had. They had to custom-fabricate a wider chair and bib. She sits down and the room gets very quiet and then very attentive. Her belly is enormous — it fills her front completely, warm and round, pressing against the bib, her thighs vast on either side of the chair. The plate is the standard plate. She eats it the way you eat something too small for you: methodically, completely, in a time that sets a new national record. She asks you to take a photo of her with the results board and the time visible. "I want to remember being ${Math.round(s.lbs)} pounds at nationals," she says. "Next year I'll be bigger."`,
+    (s)=>`${Math.round(s.lbs)} pounds. The world record attempt. The venue is the largest she's eaten in front of, the crowd is quiet in the way crowds get when something unprecedented is happening, and she sits at the center table with her enormous belly warm against the bib and her thighs spread wide and her face completely still. The plate arrives. She begins. The clock ticks. At one minute she is already past where most competitors finish. At two minutes she is past where the record is. The official stands. The room erupts. She finishes the plate anyway — every last thing — and sets down her fork and looks at you across the room. "I want to come back heavier," she says, when it's quiet enough to hear. "Every time. I want to come back heavier every time until I can't fit in the venue." The crowd is still making noise. You're the only one who heard her.`,
+    `She comes to you with the notebook — the one she's kept since the first contest, every time and every record, every circuit and every opponent. 'I think I'm done with competition,' she says. Then she orders twice what would have been a normal dinner and eats with exactly the same focus, the same economy, the same certainty. Competition was never the point.`,
+  ],
+  feedee_creator:[
+    (s)=>`You're in the studio for the first collab. She's at ${Math.round(s.lbs)} pounds and her collab partner — whoever she chose — is across the table and both sides are set and the ring light is on. You watch from the back wall. The chat grows through the stream in the specific way a chat grows when it's found something true: not a spike, a steady sustained climb. By the end of the stream a user called wrenWatchesEverything has subscribed and said: I found this by accident. I'm not leaving.`,
+    (s)=>`Six weeks in and you arrive at the studio as the pre-stream warmup food is being finished. Both of them, ${Math.round(s.lbs)} pounds on Kylie's side, the partner's weight across from her, both of them warm and loading and getting ready. You stand against the wall for the stream. The chat knows the format now. The regular viewers type to the new ones: this is what it always is. They mean: mutual. They mean: real.`,
+    (s)=>`You watch the featured collab from the back of the room. The platform editorial pick brought 12,000 new subscribers and they're all here tonight, watching Kylie at ${Math.round(s.lbs)} pounds and her partner eat together on camera for the first time, and you can see in the chat the exact moment each new viewer understands what the format is. Wren is typing: top donor four streams running, hi. Wren has been here the whole time. The new audience is about to join her.`,
+    (s)=>`The brand collab. You're in the studio as the sponsor's food is set on both sides of the table. ${Math.round(s.lbs)} pounds of Kylie and her partner's weight across from her, both of them warm and loaded and ready for the biggest sponsored stream they've done. You watch from the corner. Wren donated the full goal before the stream started. The brand's analytics team sends an email before the stream is over. The numbers are better than predicted. The numbers are always better than predicted.`,
+    (s)=>`Anniversary collab and Wren is in the building. You meet her in the waiting area: 200 pounds, slightly shaking with excitement, a person who has watched this happen weekly for a year from behind a screen and is now here in the room. You walk her to the studio floor. She sees Kylie — ${Math.round(s.lbs)} pounds in the corner, enormous and warm — and she stops moving for a moment. Then she finds her chair outside the camera frame. The stream starts. She doesn't move for the next two hours.`,
+    (s)=>`Grand collab. 820 pounds in the corner, the custom setup, the boom camera, the collab partner enormous across the table, Wren in a chair four feet outside the frame. You stand against the back wall. 300,000 concurrent viewers. Both women eating with the complete focused certainty of people who have been doing this for a year and know exactly what they're doing. Wren is four feet away, watching the stream on her phone while also being in the room, somehow both present and audience. You watch from the back. You are always watching from the back. That is correct. This is theirs.`,
+  ],
+  body_positive_creator:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and the rebrand video is up. Her belly rounds forward against her shirt. Her thighs press together in her chair. The comments come in fast — the old audience confused, the new one ecstatic. She reads the good ones aloud: you look real, you look like someone I know. "I weighed 130 when I started posting," she says. "I weigh 257 now and this is the most-watched thing I've ever made." She refreshes. The number climbs. She films herself reacting to it and posts that too.`,
+    (s)=>`${Math.round(s.lbs)} pounds and the clothing campaign shoot. The photographer asks her to stand naturally. She stands naturally — belly forward, thighs wide, ${Math.round(s.lbs)} pounds of warm present woman — and the result is accurate. She studies the shots on the camera back. "That's me," she says. "Finally." She eats lunch between setups, in the campaign outfit, in front of the whole crew, and nobody says a word about it. The afternoon shots are better. She's a little fuller. The brand uses both.`,
+    (s)=>`${Math.round(s.lbs)} pounds and the TEDx talk prep. She rehearses it in her living room, food on the coffee table. The talk is twelve minutes about her body specifically — her belly, her thighs, the 291 pounds she's gained since she started, and what it meant that it meant something to her. She says "I weigh ${Math.round(s.lbs)} pounds" directly to you as practice audience and her voice doesn't waver at all. She eats the rest of the coffee table food between run-throughs. The talk is excellent. You tell her so. She nods once and gets a second plate.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The billboard: 14 feet tall, her belly and face and thighs in wide-fit denim, every part of her at her exact size. You drive past it together at night, lit up. She gets out and stands on the sidewalk looking up at it for three full minutes. You stand beside her. Her belly in the cold air, the billboard above. "I want it to say the number," she says. "I want people to drive past and see ${Math.round(s.lbs)} pounds on a billboard." The brand calls the next morning. They think that's a great idea.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The profile piece journalist came to her — she doesn't travel for interviews anymore. They talked for four hours, she ate throughout, the piece is 8,000 words. It describes her at length: her belly enormous and warm pressing the dining table; her thighs vast in the custom chair; her face calm when she says "I weigh ${Math.round(s.lbs)} pounds and this is the most myself I have ever felt." The piece ran Thursday. By Saturday it was the publication's most-read piece in four years. She read it once and said: "accurate." She had dinner. She filmed it.`,
+  ],
+  eating_captain:[
+    (s)=>`She knocks on your office door in her competition gear — bib around her neck, hair up, competition number pinned to her jacket, ${Math.round(s.lbs)} pounds warm and ready and forward in the doorframe. "Regional Open today," she says. "I wanted to tell you." She doesn't ask you to come. You come anyway. She's a cheerleader captain who has decided she's something else now, and she wants a witness.`,
+    (s)=>`She stops by before she leaves for the circuit meet — ${Math.round(s.lbs)} pounds, the bib already on, and she's looking good, the specific loose confidence of someone who has stopped being new at something. "Maya's going to be there," she says. "Maya's 370." She says it the way people say things they've been thinking about for a while. "I know," she says. Then she leaves. You follow her out.`,
+    (s)=>`Conference championship day. She's ${Math.round(s.lbs)} pounds and the competition bib she ordered three months ago is tight across her belly now and she wears it like it fits because it fits exactly as she wanted it to fit. "The board's going to have my number at the top," she tells you before she leaves. "I want you to see that." You go. The board has her number at the top. The judge reads it into the microphone. Maya puts the cap back on her marker.`,
+    (s)=>`National qualifier. She comes by your office the morning of — ${Math.round(s.lbs)} pounds, dressed to compete, the number already pinned. "There's going to be press," she says. "A journalist." She says it like she's telling you something, not asking. "Maya told me I'm the best she's ever seen." She pauses. "Maya's right." She leaves. You get in your car and follow the van to the venue.`,
+    (s)=>`National championship. She's ${Math.round(s.lbs)} pounds and the arena credential is around her neck and the woman at the door held the door open wider when she came through and didn't say anything about it. She finds you in the crowd before the event. "Watch the weigh-in," she says. Just that. Then she goes backstage. You watch the weigh-in. The arena goes quiet when they read her number.`,
+  ],
+  big_squad_captain:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and the weigh-in board is gone from the gym wall and she's standing in front of 18 cheerleaders — plus two new girls who'd never come before, soft-figured and nervous — explaining what this squad is now. Her belly rounds forward against her practice jacket. Her thighs press together. She tells them: size requirements are abolished. No weigh-ins. Performance is the standard. Then she adds: "And I expect you to eat well. I want this to be the heaviest squad on campus." She says this with the same tone she uses for formation notes. Like it's obvious. Like it's training.`,
+    (s)=>`${Math.round(s.lbs)} pounds and rush week. She runs the information session — her belly forward, her thighs wide, ${Math.round(s.lbs)} pounds of warm, authoritative squad captain — and every girl who comes through the door is evaluated on the same terms: is she committed, can she cheer, does she want to be here. Two girls arrive who are visibly heavy — 220, 230 pounds — and would have been turned away under the old rules. She asks them their names and invites them to the next practice. The chapter gets bigger that day in every sense.`,
+    (s)=>`${Math.round(s.lbs)} pounds and the journalist is at practice. She runs the formation the same way she always does. Her belly, enormous and warm, presses against her practice uniform as she moves through the choreography. Afterward she tells the journalist: "I weigh ${Math.round(s.lbs)} pounds. Two years ago I couldn't have been on this squad. Now I run it. That's the change." She pauses. "Also three of my girls weigh over 250 now and they're the best cheerleaders we've had. You can print that too."`,
+    (s)=>`${Math.round(s.lbs)} pounds. The national conference keynote. She arrives in the chapter's colors — wide and warm, her belly a vast presence in the auditorium — and speaks for forty minutes without notes about what cheerleading can be when it stops requiring particular bodies. She says the specific number: she weighs ${Math.round(s.lbs)} pounds. She says it clearly, without apology, into a microphone in front of 400 people. The room goes quiet. Then it doesn't. You're watching from the fourth row and the person next to you is crying a little and so might you be.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Homecoming. She's in the stands now — she watches the squad perform the halftime show she choreographed, the formations she designed, the culture she built. Her belly fills her stadium seat. She eats from a large bag through the whole performance. The new captain runs it perfectly. In the third formation your student leans forward slightly and nods, once, with the private satisfaction of someone watching something they made work without them. "It held," she says.`,
+  ],
+  eating_diarist:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and she sends you the first newsletter draft at 11:47pm. 1,400 words. She's written about the last three months — specifically, directly — her belly getting rounder, her clothes stopped fitting, the meal she ate that made her understand something. The writing is exact. She says: "I weigh ${Math.round(s.lbs)} pounds and I didn't plan this but I'm not apologizing for it either." You tell her to send it. She does. Forty readers. By morning it's 400.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The agent calls. The agent has read every newsletter. "This is a book," the agent says. "You, eating, your body, what it means. Everything you've been writing." She calls you after the meeting and you can hear her eating while she talks. "She wants me to describe my belly in the book," she says. "I told her I already do that." She does. Her belly at ${Math.round(s.lbs)} pounds is warm and round and she has described it in three newsletters and she'll describe it in six more before the draft is done.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Draft review. She reads you a passage: she's describing her thighs — ${Math.round(s.lbs)} pounds of thigh, pressed together, warm — with the precision of someone who has been paying close attention for two years. "Is this too much?" she asks. You say no. She says: "Good. I want it to be too much. I want whoever reads this to understand exactly how much I weigh and what that looks like and feel it." She eats while you finish reading. She adds a paragraph.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Book launch. A bookstore, an evening, 200 people. She reads for twenty-five minutes from the chapter that describes the morning she weighed 400 pounds for the first time — the scale, the number, the way she stood there and felt what 400 pounds felt like from the inside. She says: "I weigh ${Math.round(s.lbs)} pounds now. The book ends at 400. The second book starts here." Someone in the front row asks how much the second book will end at. She says: "More."`,
+    (s)=>`${Math.round(s.lbs)} pounds. The second book's final draft. She sends it on a Sunday morning. You read it that day — 90,000 words about her body at every stage above 400 pounds, her belly described at each increment, her thighs, her arms, the way chairs feel, the way food tastes when you weigh ${Math.round(s.lbs)} pounds and you've been eating intentionally for three years. You text her that night: it's the best thing she's written. She replies an hour later: "I know. I was at dinner when you texted. My belly was so full I couldn't move and I kept thinking: I need to describe this exactly. I'm adding a chapter."`,
+  ],
+  food_researcher:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and the IRB approval came through — she is both researcher and subject, officially, with institutional backing. She shows you the approval document. Her belly presses against the desk as she leans forward to point to her name in the subject section. "Primary participant," she says. She starts data collection that afternoon: weight, intake, measurements, date. The first entry is ${Math.round(s.lbs)} pounds. She takes it seriously.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Lab visit. She shows you the setup: scale, measurement tape, intake log, weekly protocol. She stands on the scale for you: 315. She measures her waist, her hips, her belly circumference — she writes the numbers down without expression. Then she opens the meal log. She's tracked every meal for eight weeks. The graph goes up. "The data is clean," she says. "The subject is cooperative." She means herself. She records your visit. She makes you sign as a witness.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Pre-publication draft. She shares it over dinner — she eats while you read it, answering questions in the margins you indicate. The methodology section describes her body at each measurement point with academic precision. Her belly at ${Math.round(s.lbs)} pounds is described in centimeters. Her thighs in circumference. Her weight gain graphed by week. The conclusions are unambiguous: "Subject demonstrates continued voluntary intake increase consistent with research objectives." She eats the rest of her dinner. "I want to be fatter when the second paper comes out," she says.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Acceptance email. She forwards it with no message. You call her. She's eating — you can hear it. "They accepted it," she says. "Subject at ${Math.round(s.lbs)} pounds, study ongoing, first paper published." She laughs once, briefly. "I'm the most thoroughly documented fat woman in the academic literature," she says. "I documented myself. I'm very proud of both of those things." She eats.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Keynote. She stands at the podium — ${Math.round(s.lbs)} pounds, enormous, her belly a warm presence against the lectern — and presents for fifty minutes on appetite, voluntary weight gain, and longitudinal self-documentation. She puts her own measurements on the slide. Her waist, her belly, her hips — every number, publicly. The audience is silent. She finishes. The first question is: "How much do you plan to weigh at the end of the study?" She says: "More than this." She says it exactly like a scientist with a hypothesis she has already confirmed.`,
+  ],
+  eating_streamer:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and the stream is live. She's in the middle of a boss fight and the bowl of ramen is already half gone. Her belly presses against the desk edge. Her thighs fill the gaming chair. The chat is going extremely fast — half of it is the game, half of it is her, her body, the food disappearing. She finishes the boss and the ramen at almost the same time. She looks at the camera. "I'm ${Math.round(s.lbs)} pounds," she says. "I gained nine pounds this month." The chat reacts. The viewer count goes up.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Mid-stream. You're watching from across the room. She's been live for two hours, three meals, one dungeon run. Her belly presses forward noticeably. The gaming chair accommodates her thighs with some compression. The chat has a name for her now — a specific nickname that refers to her weight and her size — and she uses it herself without hesitation. She pauses the game and opens a delivery bag while the load screen runs. She says to the camera: "I'm ${Math.round(s.lbs)} pounds now. Look at my belly." She turns slightly toward the camera. The chat erupts.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Viral clip review. She pulls it up: forty-three minutes into a stream, she leaned back in her chair and her belly pushed the controller off the desk. She caught it. The chat went wild. Twelve million views. She watches the clip with you, eating, her current 418-pound belly pressing the desk. "I was 380 in that clip," she says. "I'm bigger now." She says this with satisfaction. "I want to be 500," she says. "I want the 500-pound stream to be the biggest thing I've ever done." She goes back to the game. She orders more food mid-dungeon.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Platform feature. The algorithm has picked her up — her eating streams, her gaming, her body and its specific size on camera. New viewers arrive each week. She shows you the analytics. She's the most-watched eating-gaming hybrid on the platform. She weighs ${Math.round(s.lbs)} pounds and the camera frames her belly in every thumbnail. "They found me because I'm fat," she says. "I'm going to stay fat. I'm going to get fatter." She opens a delivery bag. She puts it in frame deliberately and opens it toward the camera. "Let them watch," she says.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Four-hour stream, full run. You're in the corner watching. She weighs ${Math.round(s.lbs)} pounds and she fills the gaming chair entirely, her thighs pressing the armrests, her belly warm and vast against the desk. The food comes in at regular intervals. She eats without pausing the game. The chat is 40,000 people and they are watching her eat and play and be ${Math.round(s.lbs)} pounds in a gaming chair and she talks to them like friends. At the end of the stream she looks at the camera and says: "I'm ${Math.round(s.lbs)} pounds. I want to be 800 by the end of the year." The chat confirms this unanimously.`,
+  ],
+  speed_eater:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and she's at the table and the timer is in the hand of the official and she's studying the plate with the focus she used to give to game strategies. Her belly rounds softly under her bib. The plate is designed for a 200-pound person's limits. She eats it in ninety-three seconds. Record for the category. She finds you after and says: "I want to weigh more for the next one. I want to be 290 before the regionals. The more I weigh the more I can eat at once." She says this like it's physics.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Record attempt. She's on the scale beforehand — 317, certified — and the crowd reacts to the number because it's much more than the previous record holder, who was 240. She settles at the table. The timer starts. She eats with an economy that looks casual until the crowd realizes the plate is three-quarters gone at the forty-five second mark. She finishes in eighty-nine seconds. New record. She asks you immediately: "Did you see how much easier it was? ${Math.round(s.lbs)} pounds is easier than 285 was. I need to weigh more."`,
+    (s)=>`${Math.round(s.lbs)} pounds. Cross-discipline week. Gaming speedrun on Monday, eating record on Wednesday. She shows you both notebooks — same handwriting, same system, same optimization. On Wednesday she weighs ${Math.round(s.lbs)} pounds and the target plate is very large. She eats it in the time she's projected on paper. She projected it accurately. Her belly is warm and round and substantial and she presses her hands to it after and says: "I want to know what 500 pounds can do at this table." She says it like a hypothesis.`,
+    (s)=>`${Math.round(s.lbs)} pounds. National event. Three thousand people in an auditorium and she walks in and the crowd goes loud when they see her — ${Math.round(s.lbs)} pounds, her belly vast and warm against the bib, her thighs enormous, her presence filling the entrance. She settles at the table. She waits for the signal. She eats. The time she posts is not just a record — it's so far past the record that the official checks it twice. She stands up afterward and the crowd is extremely loud and she finds you in it and says: "I need to weigh more. 600 before the invitational." She is already planning.`,
+    (s)=>`${Math.round(s.lbs)} pounds. She's at the world record table and she weighs ${Math.round(s.lbs)} pounds and the other competitors are watching her arrive with the expression of people running the numbers and arriving at an uncomfortable conclusion. The plate is the standard plate. She eats it in sixty-seven seconds. The room erupts. She sits for a moment, belly warm and full, and looks at you. "I want to be 750," she says. "750 pounds at the table. I want to know what that feels like." You believe her completely.`,
+  ],
+  chapter_hostess:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and she's been in the chapter kitchen for four hours, which is two hours more than the feast requires. Her belly presses the apron forward. Her thighs fill her kitchen clothes. She has cooked 23 separate dishes. The table is extraordinary. When the chapter arrives — fourteen girls, some of them already soft-figured and getting softer, one at 230 pounds who has been to every Wednesday feast for six weeks — she watches them eat with the quiet satisfaction of someone feeding exactly the people she wants to feed. She eats at the end. She eats a very great deal.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Feast night. The table is set. She circulates during the meal — suggesting more of the pasta to one girl, pressing the bread on another, refilling plates before they're empty. She is ${Math.round(s.lbs)} pounds and she is the largest person in the chapter room and she moves through the space like someone who knows exactly what she's doing. One girl — maybe 245 now, soft belly visible under her formal blouse — looks at your student's belly with a particular expression. Your student notices. She puts a third portion of dessert in front of her.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The alumni donor comes to Wednesday feast. She sits at the table and eats with the chapter. Your student serves her personally. Her belly is enormous and warm and she navigates the kitchen and the dining room completely at ease. The alumni donor is 340 pounds, gray-haired, and she watches your student work. At the end she says: "I funded this for eight years without understanding it. I understand it now." Your student puts another plate in front of her.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The new pledge class's first Wednesday feast. She has planned it for three weeks — more ambitious than the regular feasts, more food, more courses. She wants the pledges to understand what they've joined. Her belly is enormous when she moves through the kitchen. Her thighs are vast. She serves everything personally. By the end of the feast the pledge class is in various states of very full contentment, three of them visibly, noticeably heavier than when they arrived. She sits at the head of the table and eats what remains and is satisfied with all of it.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Her last Wednesday feast as chapter hostess. She has cooked the same feast she cooked the first time plus ten additional dishes. The kitchen ran for seven hours. She is ${Math.round(s.lbs)} pounds and she stands at the head of the table to welcome the chapter and her belly is vast and warm and she is the most magnificent person in the room by every measure. The chapter eats. She eats. Afterward she sits among the sisters and doesn't say very much. Her successor will be trained. The feasts will continue. But this one is hers.`,
+  ],
+  body_positive_greek:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and she's standing in the chapter room explaining the new rules: no weigh-ins, no size requirements, commitment and character and wanting to be here. Two girls in the back are 220 and 230 pounds — they've been told by two other sororities that they don't fit. She introduces herself to them specifically. Her belly rounds forward in her chapter jacket. Her thighs press together. She tells everyone: "I weigh ${Math.round(s.lbs)} pounds. I run this chapter. If anyone has a problem with that they are in the wrong room." Nobody is in the wrong room.`,
+    (s)=>`${Math.round(s.lbs)} pounds. First pledge class under the new rules. She reads the modified induction ceremony — she cut every size reference from the traditional script, she wrote new language in its place. The new language says: you belong here because you want to be here. She reads it to 24 women, several of them very large. The room is quiet. Then it isn't. She eats at the induction dinner afterward with her sisters and her thighs spread wide in the chapter seat and she is very content.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Journalist visit. She runs practice the same way she always does. After, the journalist asks her about her weight. She says: "I weigh ${Math.round(s.lbs)} pounds. I gained about 220 pounds since starting this chapter. I think it's the best thing I've ever done, both the chapter and the weight. They happened together." She pauses. "You can print the number. I want people to know the number." The journalist does. The piece runs the following month. The chapter's rush numbers triple.`,
+    (s)=>`${Math.round(s.lbs)} pounds. National Panhellenic conference. She speaks for forty minutes — ${Math.round(s.lbs)} pounds at the podium, her belly warm and enormous, her voice steady. She says the number out loud. She talks about what size requirements cost the sorority system. At the end a representative of the national organization stands and says: "We need to talk about revising some policies." She says: "Yes. We do." She has a draft ready. She pulls it from under the podium and hands it across.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Chapter event, two years after stepping down. The culture is intact. The new captain is 310 pounds and runs things with the same principles. The feast table has women at various large sizes around it. She sits at the corner and watches. Her belly fills her chair. After the meal, in the parking lot: "It held," she says. She means the culture. She means the weight. She means all of it.`,
+  ],
+  metrics_eater:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and the spreadsheet is open and she is showing you the trend analysis: weight by week, intake by day, rate of gain per meal category. It's 847 rows deep. Her belly presses against the desk as she leans toward the monitor. "Current rate: 1.3 pounds per day averaged over the last month," she says. "I want to optimize toward 1.8." She says this the way you'd say: I want to improve my benchmark. She's already planned the meal adjustments. She closes the spreadsheet and immediately opens the meal log for today.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The optimized three-window schedule. She's been testing it for two weeks. You arrive for window two: the meal arranged, the timer set, the laptop open to the logging interface. She weighs herself first — 317, records it — and begins eating with the methodical focus of a competitive runner running a time trial. At 22 minutes she closes the window. She logs: intake, fullness estimate, time. "Variance 4% from projection," she says. "Acceptable." She is pleased with this the way athletes are pleased with near-perfect race times.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Official record attempt. Certified scale (${Math.round(s.lbs)} pounds), timestamp, you as witness, video running. She places the previous personal best card on the table. She eats. She exceeds it by 8.3%. She files the old card, enters the new record. "I want to be 450 before the next record attempt," she says. "The correlation between weight and performance is well-documented in my data." She opens the spreadsheet. She starts planning the dietary adjustments to reach 450. She does this immediately, before the record-attempt food has finished digesting.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The paper. A researcher at another institution has cited her methodology. She pulls up the citation and annotates it carefully — accurate, she says, but missing a key footnote. She sends a correction. The researcher responds in forty minutes. While she waits she is eating and updating the spreadsheet. "4,200 rows," she says. "Three years of daily entries." She shows you the summary tab: total weight gained, averaged rate, projected trajectory. The projection at the top of the chart is 700 pounds. She has highlighted it.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The current record attempt. She weighs ${Math.round(s.lbs)} pounds, certified, witnessed, video running. Her belly is vast and warm against the table. Her thighs are enormous. The previous record was set at 590 pounds; she has gained 101 pounds since then and the table is the same table. She eats. The time she logs is the best she has ever recorded. She enters it in the spreadsheet. She updates the projection chart. The new top of the projection reads: 800 pounds. She highlights it. She says: "Achievable in Q4 based on current rate." She begins planning Q4.`,
+  ],
+  food_scientist:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds. The IRB documentation is complete — she is researcher and primary participant, both names on the same form. She shows you the setup: scale (certified), measurement protocol, intake log, camera for documentation. She stands on the scale: 259, recorded. She begins. "The study requires ongoing documentation of voluntary intake increase under controlled conditions," she says. "The subject is motivated and cooperative." She gestures at herself. You ask who the subject is. "Me," she says. She starts eating. She logs it.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Mid-study check-in. She walks you through the data: weight trajectory (clean upward curve), intake log (meticulous), measurements (waist, belly, hips — all increasing, all recorded in centimeters). Her belly at ${Math.round(s.lbs)} pounds is described in the log as "moderately pronounced, extending approximately 8cm past hip plane." She made this measurement herself and entered it without any expression except scientific interest. "The subject is producing excellent data," she says. She means: she is getting fat and she's logging all of it.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Draft paper review. You read it over dinner while she eats beside you and answers questions. The results section is dense. Table 4 shows her measurements at each monthly interval: weight, belly circumference, thigh circumference. At ${Math.round(s.lbs)} pounds her belly circumference is entered as 142cm. Her thighs at 89cm each. She has graphed all of it. "The subject demonstrates a positive relationship between intake volume and body mass accumulation," she says. You look at her belly, which is pressing the table, warm and round and enormous. "The data is accurate," you say. She nods once.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Acceptance email. She forwards it to you with no subject. You call her. She's at dinner. "The journal accepted it," she says. "Subject at ${Math.round(s.lbs)} pounds, first paper published, ongoing documentation." She pauses. "I want to weigh 600 when the second paper goes in. I want to see what the reviewers say when the subject is 600 pounds." She eats. You hear her fork. "The data is still excellent," she says.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Keynote. She stands at the podium — ${Math.round(s.lbs)} pounds, her belly vast and warm against the lectern, her thighs enormous — and presents for fifty minutes. She puts slide 7 on the screen: her own measurements at every measurement point of the study, graphed. Her belly at ${Math.round(s.lbs)} pounds, described in centimeters. The audience is an academic conference on dietary science. She says: "I weigh ${Math.round(s.lbs)} pounds. I have documented every pound of that on this slide." She lets the room be quiet for a moment. "I intend to document more," she says. "The study is ongoing."`,
+  ],
+  installation_artist:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and the studio smells like plaster and oil and whatever she's been eating, which is a lot. The first installation is spreading across the floor in fragments: photographs of her belly at each weight since she started, sound recordings of eating, a cast of her own hand. She sits cross-legged on the floor between them eating from a takeout container and her belly rounds forward over her thighs, soft and warm, pressing the hem of her shirt. "The work is about the body as a document," she says. "My body specifically. At ${Math.round(s.lbs)} pounds. Getting heavier." She reaches past the plaster and takes another bite.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The gallery walkthrough. She moves through the installation in the linen overshirt she wears when she works — large, well past her hips, draping over the swell of her belly — explaining each piece to the curator, who is writing things down without looking at the page. The centerpiece is a scale casting of her belly at 280 pounds, smooth and round and large, mounted at standing height so visitors interact with it face-to-face. She pats it as she passes. "It's already out of date," she says. She turns to face the curator. "I want to update the cast when I'm 400." The curator nods. She keeps walking.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Review day. She reads the piece from the major publication aloud, making notes in the margins in red. The critic has focused entirely on the concept and almost entirely missed the body, which she considers a failure of nerve. "They couldn't say it," she says. "They described the work without describing what the work is about." She circles the passage. Her belly, enormous and warm, presses the desk as she leans forward. "The work is about being this fat," she says. "${Math.round(s.lbs)} pounds. Getting fatter on purpose. The art is the evidence." She underlines this. She adds it to her artist statement.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Major exhibition, three rooms. The centerpiece of room two is a grid of 42 photographs of her belly taken at each week since she started the project — the first frame slim, the last frame showing 541 pounds of warm, round, heavy belly filling the center of the shot. Visitors stand in front of it a long time. You stand in the doorway and watch them. She comes to stand beside you, eating from a soft pretzel, her belly vast against her dress. "They're counting the photos," she says. "They keep losing their place." She watches. "I want to add frames through 700," she says.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The retrospective opens. She stands near the entrance, enormous and warm, her belly filling the front of her dress, her thighs broad and slow-moving as she walks the room. She eats from a small plate without stopping or sitting. The final room is the largest: it contains only her body cast at each major weight milestone — 200, 280, 360, 450, 540, 630, and the newest, taken last week at 691. They are arranged in a curved line, getting larger, each one warm cream-colored plaster, each one smooth and heavy and real. A group of students stand at the end of the row looking at the largest cast and then looking at her and then back. She lets them. She eats.`,
+  ],
+  food_photographer:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and the shoot takes four hours. She sets up the table — the food, the lighting, the angle — with the care of someone who knows the right position, and she works through it in silence except for the clicking shutter. In the final frame of the session she's in it: one arm reaching toward the dish, her belly visible below the table edge, soft and warm, ${Math.round(s.lbs)} pounds of her present in the shot as naturally as the food. You see it on the camera's screen. "That one," you say. She looks. She doesn't disagree.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Gallery installation day. She hangs the prints herself — the dining director loaned her the ladder — and reviews each one at standing distance, eating an apple while she walks the wall. She makes two adjustments. Then she looks at the full wall for a long time. The largest print is 40 by 60 inches: a meal photographed from above, her own belly visible at the bottom of the frame, round and warm and at ease, ${Math.round(s.lbs)} pounds of her in frame as naturally as any other element. "That's the one that matters," she says. You ask why. "Because it's honest about where the camera was."`,
+    (s)=>`${Math.round(s.lbs)} pounds. The book proof arrives by courier. She opens it at her kitchen table and goes through it page by page while eating, making soft marks in pencil. At page 47 she stops. The spread shows her belly at 340 pounds in one frame, her hand reaching into the dish in the other. "I want to do a second book," she says. "With the new frames." She pats her belly — ${Math.round(s.lbs)} pounds of it, warm and vast and present — without emphasis, just touching something that's hers. "I need to reshoot chapter four. I'm bigger now. The frame is wrong."`,
+    (s)=>`${Math.round(s.lbs)} pounds. The Helsinki email. The museum's letter is formal and very detailed and confirms the purchase of three prints for the permanent collection. She reads it twice, sits still for a moment, then makes dinner — the specific meal she always photographs when she wants to mark something. You watch her set it up: the bowl, the angle, the light. She takes four shots. She puts the camera down and starts eating. Her belly is warm and enormous against the table edge. "I want to go to Helsinki," she says. "I want to eat there and photograph what I eat." She eats. "I want to be fatter when I go."`,
+    (s)=>`${Math.round(s.lbs)} pounds. Helsinki. She sends photographs — the prints hung in the permanent collection, lit correctly, in a quiet room with pale walls. The last image is her at the museum restaurant, ${Math.round(s.lbs)} pounds, her belly warm and vast against the table, a large meal in front of her. Nothing written in the message. You enlarge the photo. The food is beautifully composed in front of her. Her belly fills the lower third of the frame. The image is technically perfect. She photographed herself, you realize, via the restaurant's mirror. She framed it like a self-portrait. You respond: "This is the best thing you've made." She replies two days later: "I know."`,
+  ],
+  anonymous_blogger:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and she messages you at 11:52pm with a link. No context. You click it: an anonymous food blog, the first post, published twenty minutes ago. You read it three times. She has written about eating — specifically, directly, with the precision she brings to everything — about what it feels like to weigh ${Math.round(s.lbs)} pounds and still be hungry and want to be heavier and not apologize for any of it. She has not named herself. She has described herself exactly. You message back: "This is very good." She doesn't respond. In the morning there are 200 readers.`,
+    (s)=>`${Math.round(s.lbs)} pounds. She opens the analytics dashboard and shows you: 8,000 readers, 64 posts, sixteen months of weekly entries. The post about her belly at 285 pounds is the most-read thing on the site. She scrolls to it and reads the first paragraph aloud — she describes her belly at 285 pounds pressing the edge of the desk, the specific warmth of it, the way she pressed her palm against it and felt herself — and her voice is steady and the current version of that belly, at ${Math.round(s.lbs)} pounds, presses the same desk. "I'm going to update the post," she says. "It's out of date."`,
+    (s)=>`${Math.round(s.lbs)} pounds. The viral post. She shows you the traffic spike: a single post, shared by a large body-positive account, then four more, then a journalist. 80,000 readers in a week. The post is about being 380 pounds and wanting to be 500 pounds and not finding that shameful. She reads the comments with you: mostly readers who say they've never read something that described exactly what they feel. "They think I'm anonymous for privacy reasons," she says. She is ${Math.round(s.lbs)} pounds and she is eating a bowl of pasta as she reads this. "I'm anonymous because I like it. Because they meet the writing first." She eats. "They'll figure it out eventually. I'm not worried."`,
+    (s)=>`${Math.round(s.lbs)} pounds. The journalist interview. She shows you the email thread: the journalist found the blog, wants to speak with the author, "for a significant feature." She drafts her response — by email, anonymous, questions answered directly. One question is: "How much do you weigh?" Her answer is: "${Math.round(s.lbs)} pounds as of this morning. I weigh myself weekly. You can print that." She shows you before she sends it. You tell her to send it. She does. The feature runs two weeks later with a photograph she provided: her belly at ${Math.round(s.lbs)} pounds, cropped at shoulder and mid-thigh, no face. No name.`,
+    (s)=>`${Math.round(s.lbs)} pounds. She shows you the full archive — every post, from the first 200-reader entry to today's. She scrolls slowly. There are 118 posts. In the most recent one she weighs ${Math.round(s.lbs)} pounds and she describes her belly in precise detail: the apron below the navel, the way it rests on her thighs when she sits, the warmth of it, the specific weight. She describes wanting to be 800 pounds. She published this six hours ago. She is eating while you read it. "They're looking for me again," she says. Three forum threads are up, trying to identify the blogger from body description alone. They have four candidates. She is not one of them. She looks pleased about this. She eats.`,
+  ],
+  asmr_creator:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and everything in the recording setup is deliberate: the microphone, the lighting, the specific foods in the specific order. She sits down, adjusts the mic two degrees left, and looks at the food for a long moment. Then she begins. The sounds fill the room — soft, careful, completely present. Ninety minutes later she reviews the first five minutes, nods, and begins the careful work of editing. Her belly rounds softly forward against the desk, warm and present, ${Math.round(s.lbs)} pounds of her at home in the chair.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Community session. She opens the comments from the most-watched video and reads each one aloud, slowly, eating while she reads. The viewers describe the videos as calming, grounding, necessary. One says: "I eat along with her every week. I've gained twelve pounds this semester. I think she's made me comfortable with that." Your student reads this one twice. She says: "Good." She means it plainly. Her belly presses the desk at ${Math.round(s.lbs)} pounds and she's very comfortable with that too.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The algorithm finds her. She shows you the analytics — the spike, the jump from 6,000 to 60,000 subscribers in three weeks. She is ${Math.round(s.lbs)} pounds and her recent thumbnails show her seated at the recording setup, her belly a warm rounded presence in frame, her face calm. "The old viewers are managing the new ones," she says. "Teaching them how to behave." She shows you the comment section — the longtime subscribers welcoming newcomers, explaining the ritual. "I'm proud of them," she says. She starts the next recording. Her belly fills the lower half of the frame beautifully.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The mainstream crossover. A large creator — 3 million subscribers — mentioned her channel in a video about comfort content. She watches the mention twice, sitting very still both times. "I don't want it to change," she says. It doesn't. The new subscribers find the ritual and most of them observe it correctly. The videos are exactly as they were: the soft sounds, the careful pace, the food, her belly at ${Math.round(s.lbs)} pounds rounding forward into the frame, warm and enormous. She records the next one that evening and it's the best thing she's made.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The therapist collaboration video. She's been planning it for two months — a licensed therapist explains, briefly and carefully, the clinical basis for the calming effect of ASMR eating content, and then the session proceeds normally. Your student at ${Math.round(s.lbs)} pounds, seated at the recording setup, her belly vast and warm and completely at ease, eating slowly and deliberately for ninety-five minutes. The video has 2.1 million views in a week. The comment section is the same as always: people saying they're fed, they're calm, they feel okay. She reads them with you. "I weigh ${Math.round(s.lbs)} pounds," she says. "I eat on camera. It helps people." She is very satisfied with this. She opens a new delivery order.`,
+  ],
+  campus_legend:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and the dining hall staff has her usual ready before she sits down. The booth is the largest one — corner, good light — and she fills it well at ${Math.round(s.lbs)} pounds, her thighs spreading warmly across the bench, her belly soft against the table's edge. A table of first-years watches her order. One of them leans to another and you can see the question being asked: the second one shrugs and says her name. The first one's eyes widen. You eat across from her. She is working through her third plate.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The booth gets a brass nameplate. The dining director installs it herself, a small ceremony: her name and a date. Your student looks at it for a long time, belly warm and round against her sweater at ${Math.round(s.lbs)} pounds, thighs broad and easy on the bench. "Is this weird?" she says. You say no. She looks at it again. "No," she says, "it's right." She sits back down. The kitchen sends out a complimentary fourth plate. She eats it. The staff watches from the service window with the satisfaction of people who made a good call.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Campus tour. You're beside her at the booth when a guided tour passes — a prospective student group, a campus ambassador pointing out notable spaces. The guide stops, consults their clipboard, and says: "The dining hall is considered one of the best on campus. There's actually a student here who — " and then the guide looks up and sees her and goes briefly still. She lifts a hand from her meal. The prospective students look at ${Math.round(s.lbs)} pounds of her filling the corner booth, warm and enormous and fully at ease. The guide recovers. "— who is something of a campus institution," the guide finishes. She takes another bite.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Orientation week. She sits in the back of the first-year orientation session and watches — ${Math.round(s.lbs)} pounds, enormous in the lecture hall seat, her belly warm and vast, thighs filling the space between armrests. A returning student on the panel says: "The dining hall is great. There's a student, you'll hear about her." Several first-years look around. She doesn't raise her hand. After the session a first-year finds her outside and says: "Are you — " and she says: "Yes." The first-year looks at her for a long moment, at ${Math.round(s.lbs)} pounds of her, and says: "Can I sit with you sometime?" She says yes.`,
+    (s)=>`${Math.round(s.lbs)} pounds. End of year. She sits in the booth — the one with the plaque — and eats for two hours while the dining hall empties around her. Students who know her come by: goodbye, see you next year, have a good summer. The kitchen staff comes out at closing to say goodbye. She shakes hands with the dining director, who holds on for an extra moment. She is ${Math.round(s.lbs)} pounds and she fills the booth completely, her thighs pressing the walls, her belly warm and vast against the table. She finishes what's on the last plate. She sits for a moment in the quiet dining hall. She looks at the nameplate. She touches it once. "I'll be bigger when I come back," she tells the director. "Make sure the booth still fits."`,
+  ],
+  food_tourist:[
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and the notebook is already 60 pages in: every restaurant visited, everything ordered, the specific flavors described in careful language. Today's expedition runs four hours. She orders one of everything on the section she hasn't tried yet and eats with the focused attention of someone conducting research she finds genuinely pleasurable. Her belly is soft and rounded against the restaurant table, warm and present, ${Math.round(s.lbs)} pounds of her entirely at home in the chair. Afterward she writes for an hour in the parking lot. "I want to try all of it," she says, meaning everything.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The home-country blog post. A reader reached out — a restaurant run by someone from their home village, serving dishes from the specific region she described in week three. She goes that week. The meal runs five hours. She writes 4,000 words about it. She sends you a photo of the table: eight dishes, her hands in frame at the edge, ${Math.round(s.lbs)} pounds of her soft and warm and thoroughly fed. The post goes up at midnight. By morning it's been shared by every food account in the diaspora community she wrote about. The restaurant owner calls her. She goes back. She eats everything again.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Publication interview. The food magazine has been following the blog for a year. The journalist arrives, they sit down, and the journalist orders what she orders. The meal is six courses and the interview runs through all of them. She speaks in the language of her home country for twenty minutes when they reach the section of cuisine she's been homesick for; the journalist records it and notes the exact moment she switches. She is ${Math.round(s.lbs)} pounds and she eats throughout without apology and the finished piece notes this specifically, with admiration. "${Math.round(s.lbs)} pounds," she says when they reach the final course. "I came here weighing 147. I am going to be so much larger by the time this is done."`,
+    (s)=>`${Math.round(s.lbs)} pounds. Two book deals, same video call. Both editors on the call simultaneously, which was her agent's idea and which she found presumptuous and then correct. She is eating during the call — a meal from a restaurant she's documenting, phone propped against a glass. Both editors are startled. She says: "This is the book. You are watching me do it." One editor says: "Can you describe what you're eating?" She does: dish name, origin region, flavor, why she ordered it, why it matters, why she is ${Math.round(s.lbs)} pounds and still finding things to eat that are new. The call runs three hours. Both deals close.`,
+    (s)=>`${Math.round(s.lbs)} pounds. The last restaurant on the original list. She goes alone, she has told you — this one she needs to finish alone. She sends a photo from outside: the sign, the street, her hand visible at the edge. Then nothing for four hours. Then: a photograph of the table, cleared, every plate empty, the notebook open to a completed page of dense writing. Then: "Done." She calls you from the cab. "I finished the list," she says. Her voice is very calm. "I'm starting a new list tonight." She is ${Math.round(s.lbs)} pounds and she has eaten every cuisine she set out to eat and she sounds exactly like someone who has just finished something and is already thinking about what comes next.`,
+  ],
+  ff_author:[
+    `She hands you a printed chapter — single-spaced, no cover page, the kind of document someone produces when they haven't decided yet if they're sharing or just showing. The protagonist is round and soft and described with unusual attention. The eating scenes are specific. You read it slowly and hand it back. She watches your face the whole time and says nothing. You tell her it's good. She goes home and opens the document and writes for six hours.`,
+    `She sends you a new chapter by email with no subject line. You read it on your phone before bed. The protagonist's body is described at length in a scene you read twice: the belly spilling over a waistband, the thighs wide and warm, the way she takes up space in a chair that's beginning to accommodate her completely. You recognize the figure. You know this body. You close the phone and lie in the dark for a while thinking about what she's decided to say, and how, and why she sent it to you.`,
+    `She shows you her profile page — a pseudonym, five completed chapters, a kudos count climbing past a thousand. The comment section has noticed something. One reader writes: 'I don't know who these characters are based on but I need to know more about Magdalene.' You look at the character description. You know exactly who that is. She's eating a sandwich while you read this. She's very calm. 'The comments are nice,' she says.`,
+    `The latest chapter is the one she's most satisfied with. She marks the passage she wants you to read first — a dense paragraph where the main character undresses and looks in the mirror and doesn't apologize for a single thing she sees. Every line is specific. Every detail earns its place. She watches your face as you read it. You look up when you're done. 'This is good,' you say, and mean it in a way that covers everything. She nods, once, and goes back to her laptop.`,
+    `She reads a passage aloud. You haven't asked her to — she's decided. She finds the page, clears her throat once, and reads with the unhurried attention of someone who has practiced this. The passage is about a woman who looks exactly like her: the weight and the warmth and the specific softness described with the precision of someone who has been paying very close attention for a long time. When she finishes she sets the manuscript down. 'That one's my favorite,' she says. You don't say anything. There's nothing to add.`,
+    `The latest work is the most explicit yet — not in the sense of reaching for excess, but in the sense of refusing to look away. Every line is deliberate. The characters are unmistakably drawn from life. She knows you know this. You sit across from her in the library while she works on the next chapter, watching her face while she writes, and there is something in the way she pauses to think and then types without hesitation that answers every question you might have had about what she's writing and why.`,
+  ],
+  // ── FARM GIRL paths ──────────────────────────────────────────────
+  homestead_queen:[
+    (s)=>`She texts you the address — the dorm room that no longer looks like one — and when you arrive the door opens on warmth and the smell of something sweet and hours-old. Mary Jane is ${Math.round(s.lbs)} pounds at her counter, flour on one forearm, her chest and belly both pressing against the edge of the folding table she's claimed as prep space. "Sit," she says. "I made six things. You're going to try all six." She doesn't frame it as an invitation. She sets down a plate and looks at you until you pull out the chair.`,
+    (s)=>`You knock and she calls you in without stopping what she's doing — she's at the stove, ${Math.round(s.lbs)} pounds filling the narrow kitchen corridor completely, wide hips and broad back and the loose linen top moving with her as she stirs. The room smells like butter and brown sugar and something faintly caramelized. "Timing's perfect," she says. "I just pulled the cobbler." She ladles something into a bowl for herself as she talks. The bowl is large.`,
+    (s)=>`The homestead operation has expanded. You walk in and see four dishes in various stages of completion and Mary Jane, ${Math.round(s.lbs)} pounds, at the center of it — apron tied behind her, hair back, managing all four burners with the ease of someone who learned to cook before she learned to read. She waves you to the table without looking up. "Mae sent me a new recipe," she says. "I'm testing it three ways. You get to try them in order." This is not optional.`,
+    (s)=>`She barely leaves the room anymore. You come to her — she texts you 'come over' and you come, and she's ${Math.round(s.lbs)} pounds in her wide cotton housedress with the apron tied over it, and the room smells like heaven, and when she sees you come through the door she just nods toward the table and sets another plate. "Mae called this morning," she says. "I told her about you." She goes back to the stove. The plate she sets in front of you is larger than the last one.`,
+    (s)=>`The dorm room is straining to hold her. Mary Jane is ${Math.round(s.lbs)} pounds and she is everywhere — at the counter, at the stove, her mass warm and enormous in the narrow space, and the smell of whatever she's been making for the last four hours fills the building's hallway. She moves with the careful deliberateness of someone who has grown accustomed to knowing exactly where her body is relative to everything else. "Sit down," she says. "I made corn pudding." She sets a bowl in front of you that could serve a family.`,
+    (s)=>`You come when she texts you. The door opens on Grandma Mae standing at the stove and Mary Jane, ${Math.round(s.lbs)} pounds, seated at the table with both hands wrapped around an enormous mug of something warm. Mae turns and nods at you like she was expecting you. "She talks about you," Mae says. Mary Jane doesn't correct her. The table has more food on it than you've ever seen in one place. Mae pulls out the chair across from Mary Jane and says: "Sit down. Both of you. I've been cooking since this morning."`,
+  ],
+  state_fair_queen:[
+    (s)=>`She finds you before she leaves for the county fairgrounds — ${Math.round(s.lbs)} pounds in her competition tank and stretch shorts, her chest filling the front of the shirt completely, her number pinned to the side. "Darcy from Meadowview is going to be there," she says. "She wins. She's been winning for three years." She says this neutrally, the way you name a fact you intend to change. "Come watch anyway." You drive out. You watch Darcy win. You watch Mary Jane eat more than Darcy does and still lose on the scoreboard, and you watch her write the number down in her phone on the drive home.`,
+    (s)=>`She's ${Math.round(s.lbs)} pounds at the county championship and she walks into the fair tent without looking at the scoreboards. Darcy is already at the table. She sees Mary Jane and says 'you again,' and there's something in it that wasn't there last year — a recalibration. Mary Jane sits down, fills two plates from the pre-event warmup spread, and eats both while the judges check credentials. It's a close match. Darcy barely wins. You watch her face after the final tally and she is not surprised. She is already thinking about what comes next.`,
+    (s)=>`State qualifier. Mary Jane is ${Math.round(s.lbs)} pounds and her competition jersey is already getting tight across the front — she commissioned it two months ago — and Darcy watches her walk to the weigh-in with an expression you've seen before on people who've revised something important. The contest starts. You watch from the stands. Midway through the final round, Mary Jane crosses Darcy on the scoreboard, and Darcy stops eating for exactly one second. The crowd makes a sound. You make a sound. Mary Jane keeps eating.`,
+    (s)=>`The state fair finals. She's ${Math.round(s.lbs)} pounds in the new jersey and the press are there — two photographers and a features writer who keeps asking you questions you answer vaguely. Mary Jane at the table is something to see from a distance: the full scale of her at a competition table, her belly rounding against the edge, her chest filling the jersey front, eating with the focused certainty of someone for whom this has stopped being a challenge and become a performance. She wins. Darcy starts clapping and doesn't stop. "I trained all year," Darcy says to no one in particular. She keeps clapping.`,
+    (s)=>`Tri-state invitational. They built a bigger scale. You were there when the fair director said it — addressing the weigh-in queue, trying to be casual — and the whole line understood who the scale was for. Mary Jane is ${Math.round(s.lbs)} pounds and she steps onto the scale with the ease of someone who has made peace with the number before it appears. The crowd that gathers for her weigh-in is larger than the crowd for any other competitor's whole event. Darcy has a seat in the front row. She brought a sign.`,
+    (s)=>`She can't get to the fair herself — they bring the fair to her. The committee set up a satellite table in the largest event room available; you followed the signs down two hallways and found Mary Jane at approximately ${Math.round(s.lbs)} pounds filling the corner of it, the table edge pressing against the full warm circumference of her belly, her chest resting enormous and heavy on top of it, her jersey printed custom and wide enough to read as a banner. Darcy is here — 500 lbs herself now, seated to the right, not competing. The crowd standing at the edges of the room is quiet the way crowds go quiet when the person at the center of the spectacle is the spectacle entirely. The judges exchange a look. The horn sounds.`,
+  ],
+};
+
+export const EVOLVED_ACTIVITY_META = {
+  sumo:            { label:"Enter a Tournament",       apCost:1, gainRange:[4,8],  relBonus:10 },
+  eating_competitor:{ label:"Attend a Competition",    apCost:1, gainRange:[3,7],  relBonus:9  },
+  feedee_creator:  { label:"Go Live Together",          apCost:1, gainRange:[3,6],  relBonus:12 },
+  body_positive_creator:{ label:"Watch Her Latest Video", apCost:1, gainRange:[2,5], relBonus:11 },
+  eating_captain:  { label:"Enter a Competition",      apCost:1, gainRange:[4,7],  relBonus:10 },
+  big_squad_captain:{ label:"Attend a Squad Event",    apCost:1, gainRange:[2,5],  relBonus:12 },
+  eating_diarist:  { label:"Read Her Latest Entry",    apCost:1, gainRange:[3,6],  relBonus:11 },
+  food_researcher: { label:"Visit Her Lab",            apCost:1, gainRange:[3,6],  relBonus:10 },
+  eating_streamer: { label:"Tune In to the Stream",    apCost:1, gainRange:[4,8],  relBonus:10 },
+  speed_eater:     { label:"Watch a Challenge",        apCost:1, gainRange:[4,9],  relBonus:9  },
+  chapter_hostess: { label:"Attend Wednesday Feast",   apCost:1, gainRange:[5,10], relBonus:11 },
+  body_positive_greek:{ label:"Attend Chapter Event",  apCost:1, gainRange:[2,5],  relBonus:12 },
+  metrics_eater:   { label:"Review Her Spreadsheet",   apCost:1, gainRange:[3,7],  relBonus:9  },
+  food_scientist:  { label:"Visit the Lab",            apCost:1, gainRange:[3,6],  relBonus:10 },
+  installation_artist:{ label:"View the Installation", apCost:1, gainRange:[2,5],  relBonus:12 },
+  food_photographer:{ label:"Review the Latest Shoot", apCost:1, gainRange:[2,5],  relBonus:11 },
+  anonymous_blogger:{ label:"Read the Latest Post",    apCost:1, gainRange:[3,6],  relBonus:10 },
+  asmr_creator:    { label:"Watch a Recording Session",apCost:1, gainRange:[3,6],  relBonus:12 },
+  campus_legend:   { label:"Share a Meal at the Booth",apCost:1, gainRange:[5,10], relBonus:11 },
+  food_tourist:    { label:"Join an Expedition",       apCost:1, gainRange:[4,8],  relBonus:10 },
+  ff_author:       { label:"Read Her Latest Chapter",  apCost:1, gainRange:[3,6],  relBonus:12 },
+  homestead_queen: { label:"🏡 Visit the Homestead",    apCost:1, gainRange:[5,10], relBonus:12 },
+  state_fair_queen:{ label:"🎡 Enter the Fair",         apCost:1, gainRange:[4,8],  relBonus:10 },
+};
+
+export const EVOLVED_EVENTS = {
+  sumo:[
+    // stage 5 — ~258 lbs — Regional Qualifier
+    {
+      title:"Regional Qualifier",
+      phases:[
+        {
+          text:(h,s)=>`The warm-up room behind the dohyo smells like liniment and chanko. You are the only one here who started as a cheerleader, and most of the other wrestlers have looked at you at least once with open curiosity. Dana "The Wall" Mercer hasn't. She's 340 pounds, six years on the circuit, and she's tying her mawashi like you aren't worth a second glance.
+
+You are ${Math.round(s.lbs)} pounds and you intend to make her look. Before the match there's fuel, and there's footwork.`,
+          choices:[
+            {id:"load_hard",label:"Load up on chanko — weight is force",result:`You go to the chanko and eat — bowl after bowl, dense and warm, your belly filling and settling lower with every one. Weight is force in this sport and you are here to have more force. You feel yourself get heavier, rounder, more dangerous. Dana glances over once. Good.`,lbs:10,rel:4,flag:"loaded"},
+            {id:"warm_up",label:"Drill the footwork — plant, drive, low base",result:(s)=>`You drill instead — the plant, the drive, the low base — moving ${Math.round(s.lbs)} pounds through the forms until they're automatic, your belly swinging warm and heavy with each rep. You eat lighter, stay sharp, leave room. Technique today.`,lbs:5,rel:6,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`They call the weigh-in. You step onto the official scale and it settles at ${Math.round(s.lbs)} pounds and the official records it without expression. Dana's number is already up: 340. She's bigger than you today and the board says so.
+
+She finally looks at you — a flick of the eyes, measuring. "Cheerleader," she says. Not a question. Not quite an insult either.`,
+          choices:[
+            {id:"own_it",label:'Hold her gaze. "For now."',result:`You hold her look and let your number stand on the board beside hers. "For now," you say. Her eyebrow moves a fraction. You step off.`,rel:6,flag:"confident"},
+            {id:"stay_focused",label:"Say nothing. Get your head right.",result:`You step off without a word and walk back to your corner and put your whole mind on the dohyo. The number is the number. The match is where it gets decided.`,rel:4,flag:"paced"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`You're fueled and you've looked the Wall in the eye, and the official is calling you both to the dohyo. Your belly is warm and heavy and forward under the mawashi.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+        {condition:()=>true,text:`The warm-up room empties toward the dohyo. Dana goes first; you follow. Your belly is full and your stance is ready.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+      ]
+    },
+    // stage 6 — ~320 lbs — Circuit Tournament
+    {
+      title:"Circuit Tournament",
+      phases:[
+        {
+          text:(h,s)=>`One full season in. The warm-up room knows your name now — a couple of the younger wrestlers nod when you come in. Dana Mercer is 370 today and she says "good luck out there" when she sees you, which from her is practically a parade.
+
+You're ${Math.round(s.lbs)} pounds and you are no longer the novelty. Fuel, and footwork.`,
+          choices:[
+            {id:"load_hard",label:"Hit the chanko hard — pounds are power",result:`You hit the chanko hard, eating with the systematic focus of someone who's learned that pounds are power. Bowl after bowl, your belly filling warm and round and low. You stand up heavier and more dangerous than you sat down. Dana watches you eat. She doesn't.`,lbs:11,rel:4,flag:"loaded"},
+            {id:"warm_up",label:"Work the forms — drive, plant, low base",result:`You work the forms — drive, plant, the low base — moving 320 pounds with growing authority, your belly swinging heavy with each rep. You eat enough to stay strong and keep your edge. Sharp today.`,lbs:6,rel:7,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`Weigh-in. The board has Dana at 370 up top. You step on: ${Math.round(s.lbs)} pounds. The gap that used to be eighty-plus pounds is ${Math.max(0,Math.round(370-s.lbs))} now, and Dana's eyes go to the board and do the math.
+
+"Closing fast," she says. She's not wrong.`,
+          choices:[
+            {id:"own_it",label:'"Wait till spring."',result:`"Closing," you agree, holding her look. "Wait till spring." She huffs something that might be respect and turns back to her corner.`,rel:6,flag:"confident"},
+            {id:"stay_focused",label:"Step off and lock in.",result:`You step off and get your head right. The numbers are getting closer every meet. Soon they won't matter — you'll just be bigger. Not yet. Soon.`,rel:5,flag:"paced"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`You're loaded and you've told the Wall what's coming. She's still heavier today. She's still favored today. But you both feel the season turning.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+        {condition:()=>true,text:`The bracket is set and your bout is first. You walk to the dohyo with your belly full and your stance low.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+      ]
+    },
+    // stage 7 — ~419 lbs — State Championship
+    {
+      title:"State Championship",
+      phases:[
+        {
+          text:(h,s)=>`Conference-level meet, and for the first time the board is going to say you outweigh Dana Mercer. She knows it. She finds you in the warm-up room — 410 pounds, the woman who's been the wall everyone measured against — and says, plainly: "You're bigger than me now. First time. Go easy on an old veteran."
+
+She's joking. Mostly. You're ${Math.round(s.lbs)} pounds. Fuel, and footwork.`,
+          choices:[
+            {id:"load_hard",label:"Eat like you mean it — widen the gap",result:`You eat like you mean it, widening the gap with every bowl — your belly filling enormous and warm and forward, each pound another pound Dana has to try to move. You stand up heavier than the Wall for the first time in your life. It feels like crossing a border.`,lbs:12,rel:4,flag:"loaded"},
+            {id:"warm_up",label:"Drill — let the technique catch up to the body",result:`You drill instead, moving your new size through the forms — and there's a lot of new size, your belly vast and heavy and swinging as you drive through the base work. You eat enough and stay sharp. Today you let the technique catch up to the body.`,lbs:7,rel:9,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`Weigh-in, public now, a real crowd for it. Dana steps on: 410. You step on: ${Math.round(s.lbs)}. Your number goes up above hers and the room reacts — the first time the Wall isn't the top number in years.
+
+Dana looks at the board, then at you, and nods slowly. "There it is," she says.`,
+          choices:[
+            {id:"own_it",label:'Hold her gaze. "There it is."',result:`You hold her gaze. "There it is," you echo. She almost smiles. "Make it count out there," she says, and means it.`,rel:8,flag:"confident"},
+            {id:"stay_focused",label:"Step off and get to the center.",result:`You step off and lock in. Being the bigger number is new. Proving it on the dohyo is the part that matters. Get to the center.`,rel:5,flag:"paced"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`You're the bigger woman now and you've owned it at the scale. Dana's waiting at the center, respectful, ready. Time to make the number mean something.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+        {condition:()=>true,text:`The crowd is loud and your name is on a few of their lips. You walk to the dohyo enormous and warm and ready.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+      ]
+    },
+    // stage 8 — ~519 lbs — National Qualifier
+    {
+      title:"National Qualifier",
+      phases:[
+        {
+          text:(h,s)=>`National qualifier. Press credentials at the door. You're ${Math.round(s.lbs)} pounds and you are the heaviest competitor here by a wide margin.
+
+Dana Mercer — 460 now, the underdog in your rivalry for the first time — comes over before warm-ups. "I can't out-weigh you anymore," she says. "So I'm going to have to out-think you. Fair warning." She means it almost as a gift.`,
+          choices:[
+            {id:"load_hard",label:"Eat enormous — out of her reach",result:`You eat enormous, a full staging meal of chanko and rice and more, your belly filling vast and warm and low — every pound a pound further out of Dana's reach. You stand up heavier than anyone in the building by a margin that ends arguments.`,lbs:14,rel:4,flag:"loaded"},
+            {id:"warm_up",label:"Move through the forms — craft to match the mass",result:`You move through the forms — and there is so much of you to move now, your belly an enormous warm presence swinging through the base work, the floor reporting every drive. You eat smart and stay sharp and let the craft match the mass.`,lbs:8,rel:9,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`Public weigh-in, big crowd for it. Dana: 460. You step on and the scale reads ${Math.round(s.lbs)} and the official reads it into the microphone and a sound goes through the room — that specific sound a crowd makes at a number it didn't quite believe.
+
+Dana, already off the scale, watches your belly settle on the platform. "Out-think you," she repeats, quietly, to herself. "Right."`,
+          choices:[
+            {id:"own_it",label:"Let the number land. Let them look.",result:(s)=>`You let the number land and let them look — all ${Math.round(s.lbs)} pounds of you, warm and forward and enormous on the platform. You step off slow. Dana exhales.`,rel:9,flag:"confident"},
+            {id:"acknowledge_crowd",label:"Find the crowd and let them see you.",result:`You find the crowd and let them see you fully. Someone starts a chant. Dana hears it become your name. "Out-think that," she mutters, and there's affection in it.`,rel:8,flag:"confident"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`You're the largest thing in the building by a margin with its own gravity, and the crowd knows your name. Dana's at the center, ready to try the impossible.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+        {condition:()=>true,text:(h,s)=>`The qualifier crowd settles into the seats. You walk to the dohyo carrying ${Math.round(s.lbs)} pounds like the asset it is.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+      ]
+    },
+    // stage 9 — ~630 lbs — National Circuit Finals
+    {
+      title:"National Circuit Finals",
+      phases:[
+        {
+          text:(h,s)=>`The national final. The arena. You're ${Math.round(s.lbs)} pounds and the credential says COMPETITOR and the door staff widened the door without being asked.
+
+Dana Mercer finds you in the warm-up room one last time. 520 pounds, second-ranked in the country, the wall you climbed over two years ago. "I'm not here to beat you," she says, honest. "Nobody beats you now. I'm here to feel what it's like to lose to the biggest there's ever been. Give me a real one."`,
+          choices:[
+            {id:"load_hard",label:"Eat seriously — ballast for your stance",result:`You eat the way two years of this has taught you — seriously, enormously, bowl after bowl of chanko until your belly is past full and settled into your stance like ballast. You stand up the heaviest human being in the building by a margin that has its own gravity. Dana watches you grow. She wanted a real one. She's going to get it.`,lbs:16,rel:5,flag:"loaded"},
+            {id:"warm_up",label:"Move through the forms one last time",result:`You move through the forms one last time before the biggest match of your life — 630 pounds flowing through the base work, your belly vast and warm and swinging, the dohyo itself seeming to lean toward you. You eat enough and stay sharp. Tonight the body and the craft are the same thing.`,lbs:9,rel:10,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`The national-final weigh-in is its own broadcast segment. Dana steps on: 520. The arena cheers a legend. Then you step on, and the official pauses one full second before he reads it into the national feed — ${Math.round(s.lbs)} pounds — and the arena does not cheer right away.
+
+There's a breath first. The breath a room takes before something it's never seen. Then it comes apart. Dana is already clapping.`,
+          choices:[
+            {id:"own_it",label:"Turn into the noise. Let them see all of you.",result:(s)=>`You turn into the noise and let the whole arena see all of you — ${Math.round(s.lbs)} pounds of national finalist, belly forward and warm and enormous in the lights. Two years. Worth every one.`,rel:10,flag:"confident"},
+            {id:"stay_focused",label:"Step off. One hand on your belly. Ready.",result:`You step off and walk to the dohyo and put one hand flat on your belly for a second — the weight, the warmth, the proof of it — then you let it go and you're ready. The biggest match of your life is one step away.`,rel:6,flag:"paced"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`The arena is a wall of sound and your number is on the national board and Dana is still clapping. You step to the center of the dohyo, the largest competitor the sport has ever certified.
+
+The national final is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+        {condition:()=>true,text:`National final. The center of the dohyo. The crowd is already roaring. Dana sets her feet across from you, one last time.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+      ]
+    },
+    // stage 10 — ~820 lbs — Grand Invitational Exhibition (blob)
+    {
+      title:"Grand Invitational Exhibition",
+      phases:[
+        {
+          text:(h,s)=>`The Grand Invitational is a different kind of event. It is not a tournament. It is an exhibition built around you. Your name is on the banner outside the venue. The door staff widened both loading doors. You are ${Math.round(s.lbs)} pounds and the warm-up room contains you and everything else is arranged around that fact.
+
+Keiko Watanabe is here — 560 pounds, the second largest competitor the Invitational has ever registered, brought in specifically to be a credible match. She is standing across the warm-up area looking at you with the focused expression of someone who has been told exactly what they are walking into and has chosen to walk into it anyway. That is respect. You will repay it on the dohyo.
+
+There is a feast staged in your corner. The chanko is deep and warm and the bowls are the large format. This is the warm-up.`,
+          choices:[
+            {id:"load_hard",label:"Fill your belly completely — weight is the weapon",result:(s)=>`You eat until your belly is past full and settling into your stance with the specific ballast gravity of a very large body that has eaten very seriously. Your belly presses your mawashi forward and settles between your thighs enormous and warm and forward. Keiko watches you eat. You are ${Math.round(s.lbs)} pounds and you just got heavier. This is the whole strategy.`,lbs:18,rel:5,flag:"loaded"},
+            {id:"warm_up",label:"Move through the forms — plant, root, presence",result:(s)=>`You move. ${Math.round(s.lbs)} pounds moving through sumo forms is not a quiet thing — the floor accepts each rep with the considered patience of something that has no choice, your belly swinging vast and warm with each shift, the whole volume of you precise and focused. You eat enough to fuel this and leave room for the corner. Ready.`,lbs:10,rel:10,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`The Invitational weigh-in is broadcast. The venue's PA system reads each competitor's weight as they step off. Keiko steps on. 560 pounds. The crowd gives it proper appreciation — she is enormous, she is real, she is here.
+
+Then you step on. The scale settles. The PA reads it: ${Math.round(s.lbs)} pounds.
+
+The crowd has a moment. Not silence — the kind of held breath that is the physical sensation of a room recalibrating. Then it breaks entirely. Keiko looks at the board. She looks at you. She nods once, formal, the bow of a competitor who knows what she's about to face and respects the fact of it.`,
+          choices:[
+            {id:"own_it",label:"Turn to face the room fully. All of you.",result:(s)=>`You turn to face the arena and let them see all of you — ${Math.round(s.lbs)} pounds, belly enormous and warm and forward in the Invitational lights, filling more of the stage than the stage was designed for. This is what they came to see. You give it to them completely.`,rel:10,flag:"confident"},
+            {id:"stay_focused",label:"Step off. One hand on your belly. Eyes on the dohyo.",result:`You step off and walk toward the dohyo and put one hand flat on your belly — the full warm forward weight of it, enormous under your palm — and you feel what you are right now and what you're about to use it for, and you are ready.`,rel:6,flag:"paced"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`The Invitational arena is very loud and your name is on the banner and Keiko is already on the dohyo, waiting. You are the largest competitor this exhibition has ever seen.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+        {condition:()=>true,text:`The Grand Invitational. The dohyo. The crowd has been waiting for this since the doors opened. Keiko sets her stance across the center line, focused and ready.
+
+The match is about to begin.`,gainBonus:0,relBonus:0,startsMatch:true},
+      ]
+    },
+  ],
+
+  eating_captain:[
+    // stage 5 — ~258 lbs — First Entry
+    {
+      title:"Regional Open — First Entry",
+      phases:[
+        {
+          text:(h,s)=>`The warmup room smells like cooking and the specific anxiety of people who are about to compete in public. You are the only cheerleader here. Most of the other competitors are 150 to 200 lbs and they are looking at you the way people look at something they didn't expect to see in a place they thought they knew. Maya from Lakewood is 330 lbs and she isn't looking at you at all. She has been doing this for two years and she does not feel threatened.
+
+Your belly is ${Math.round(s.lbs)} pounds of warm, ready body and it wants to work. There's food on the catering table. This is the warmup. This is where you load up.`,
+          choices:[
+            {id:"load_hard",label:"Load aggressively — eat everything on the table",result:`You eat everything. All of it. Your belly goes from full to very full to the specific warm heaviness of a body that is ready to work. The girl from State is watching you with an expression that is not entirely polite. Maya still hasn't looked over.`,lbs:10,rel:4,flag:"loaded"},
+            {id:"eat_smart",label:"Eat with discipline — full enough to compete, room to grow",result:`You eat with the focus of someone who has been thinking about this. Measured, controlled, your belly filling to the point you want. You stop. You breathe. You feel ready and you've left room to expand into when the competition table is in front of you.`,lbs:6,rel:5,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`They call your name for the weigh-in. You step to the scale at the front of the staging area. The other competitors' numbers are already on the board — the highest is 218. Maya is 330. You step on.
+
+The scale settles at ${Math.round(s.lbs)} pounds. The judge reads it. He reads it again.
+
+The girl from State — 178 lbs, two years in the circuit — says to the person next to her: "Is that right?" She genuinely wants to know. Maya looks over from her warmup table for the first time.`,
+          choices:[
+            {id:"own_it",label:"Hold still. Let the number stand.",result:`You don't move. The number stands. The judge marks it and you step off without hurrying and go back to your station without looking at anyone. The whole room is looking at you. That's fine.`,rel:6,flag:"confident"},
+            {id:"read_maya",label:"Step off and look at Maya.",result:`You step off the scale and find Maya's eyes. She's 330 lbs and she's been doing this for two years and she just looked up for the first time. You hold eye contact for one second. Then you go back to your station.`,rel:5,flag:"confident"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`You're loaded up and you've held the room. The judge is calling competitors to their lanes. Your belly is warm and heavy and ready.
+
+The horn is about to fire.`,gainBonus:0,relBonus:0,startsContest:true},
+        {condition:()=>true,text:`The backstage is settling. The other competitors are moving to their lanes. Your belly is warm and full.
+
+The horn is about to fire.`,gainBonus:0,relBonus:0,startsContest:true},
+      ]
+    },
+    // stage 6 — ~320 lbs
+    {
+      title:"Circuit Regular",
+      phases:[
+        {
+          text:(h,s)=>`Six months into the circuit and people know your name. A woman from Central — 195 lbs, here for her third competition — says "you're the cheerleader captain, right?" before you've even gotten to the catering table. "I've heard about you," she says. She seems nervous about this.
+
+Maya from Lakewood is 370 lbs now and she says hello when she sees you. Not warmly, but she says it. You are ${Math.round(s.lbs)} pounds and you are no longer a novelty. You are a known quantity on this circuit. Act like it.`,
+          choices:[
+            {id:"load_hard",label:"Eat everything — load up like you mean it",result:`You eat through the catering table with the focused efficiency of someone who has been doing this for months. Your belly goes warm and heavy and full and you breathe around it and you feel, specifically, ready. Maya watches you for a moment. Then she goes back to her own warmup.`,lbs:11,rel:4,flag:"loaded"},
+            {id:"eat_smart",label:"Eat smart — then say something back to the Central woman",result:`You eat your warmup with discipline and then turn to the Central woman and say: "Good luck today. You'll need it." She laughs, surprised. It's not unfriendly. You go back to eating.`,lbs:7,rel:7,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`They call you to the scale. The board has Maya's number at the top: 370 pounds.
+
+The scale settles. ${Math.round(s.lbs)} pounds. The judge marks it without expression. He writes it next to your name on the board — below Maya's, but not by much. A few months ago that gap was 72 pounds. Now it's ${Math.max(0,Math.round(370-s.lbs))} pounds.
+
+The Central woman sees the numbers side by side and does some math. Her expression changes.`,
+          choices:[
+            {id:"own_it",label:"Hold still. Watch Maya's face.",result:`You stand at the edge of the staging area and you watch Maya look at the board. She's been the top number for two years. She's looking at the gap between her number and yours. It's getting smaller. She knows it's getting smaller.`,rel:6,flag:"confident"},
+            {id:"stay_focused",label:"Don't look at anyone. Get back in your head.",result:`You step off the scale and go back to your station and you eat something small and you think about what's in front of you. The numbers on the board don't matter until the horn goes. Focus.`,rel:4,flag:"paced"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`You're loaded and you've looked Maya in the eye and you know where this is going. Maya is still bigger. Maya is still going to win today. But you know where this is going.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+        {condition:()=>true,text:`The staging area is settling. You're at your lane. Your belly is warm and full.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+      ]
+    },
+    // stage 7 — ~419 lbs
+    {
+      title:"Conference Championship",
+      phases:[
+        {
+          text:(h,s)=>`Conference championship. You are ${Math.round(s.lbs)} pounds and you are the person people came to see. The other competitors know who you are and some of them avoid making eye contact when you come through the warmup room. Three of them have positioned themselves so they're not facing you directly.
+
+Maya is 410 lbs now. She's the only one in this room who looks at you directly. "Good luck," she says, and she means it in the way that people who are about to lose still mean it. You respect that.`,
+          choices:[
+            {id:"load_hard",label:"Load aggressively — this is the conference, go for everything",result:(s)=>`You eat until the room feels different than when you walked in. Your belly is enormous and warm and pressing your waistband and you breathe around it and feel, specifically, the weight of yourself — ${Math.round(s.lbs)} lbs of warm ready body — and you feel ready for more.`,lbs:12,rel:4,flag:"loaded"},
+            {id:"eat_smart_and_talk",label:"Eat with discipline — then say something to Maya",result:`You eat your warmup clean and then turn to Maya. "How's Lakewood doing this season?" She tells you. You talk for a few minutes, two large women eating in a warmup room before a conference championship, and it's unexpectedly good. "You're going to win today," she says. "I know," you say.`,lbs:7,rel:9,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`The weigh-in is public at conference level. The board shows Maya's number: 410 lbs. You step on the scale.
+
+The head judge reads the display: ${Math.round(s.lbs)} pounds. He does it twice.
+
+He reads it into the microphone. The room — competitors, officials, the small crowd that comes to conference weigh-ins — hears the number. Maya, standing at the board with a marker, stops writing mid-number. She puts the cap back on the marker. You are ${Math.max(0,Math.round(s.lbs-410))} lbs heavier than the previous top number.`,
+          choices:[
+            {id:"make_eye_contact",label:"Step off the scale and make eye contact with Maya.",result:`You find her. She is looking at the board. She looks back at you. "I knew it was coming," she says, quietly. "I knew it was coming." She finishes writing your number. It goes at the top.`,rel:8,flag:"confident"},
+            {id:"stay_in_head",label:"Step off. Don't look at anyone. Get to the table.",result:`You step off the scale and go back to your station without looking at the board or at Maya or at any of the other competitors who are now doing the math. You know what the number was. That's enough. Time to prove it.`,rel:5,flag:"paced"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`The board shows your number at the top. Maya's number is second. The other competitors aren't in the conversation.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+        {condition:()=>true,text:`The staging area is settled. Competitors are at their lanes. You are at your lane, ${Math.round(4)>3?"enormous":"large"} and warm and full and ready.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+      ]
+    },
+    // stage 8 — ~519 lbs
+    {
+      title:"National Qualifier",
+      phases:[
+        {
+          text:(h,s)=>`The qualifier is national circuit and there are press credentials at the door. A journalist from a competitive eating publication finds you in the warmup room and asks for a comment. Maya — 450 lbs, your closest competitor on the circuit — comes over and says: "Give them something good." Then to you: "You're the best I've ever seen. I need you to know I know that." She says it plainly. She says it looking you in the eye. Then she goes to her warmup.
+
+You are ${Math.round(s.lbs)} lbs and this is the biggest stage you've competed on. The catering table is very well stocked.`,
+          choices:[
+            {id:"load_hard",label:"Ignore the journalist — load up hard, focus on the food",result:`You turn back to the catering table without a comment and you eat with the focused intensity of someone who is here to do one thing. The journalist writes something in their notepad. You eat. Your belly goes enormous and warm and heavy and you breathe around the fullness and feel ready.`,lbs:14,rel:4,flag:"loaded"},
+            {id:"give_statement",label:"Give the journalist a statement, then eat smart",result:`You turn to the journalist and say: "I'm here to clear the table. That's the statement." The journalist writes it. You turn back to the food and eat your warmup with discipline and efficiency. You're ready. You've left room.`,lbs:8,rel:9,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`National qualifier weigh-in. The crowd that gathers for it is larger than regional weigh-ins — people come specifically for this part. They come to see the numbers.
+
+You step on. The scale reads ${Math.round(s.lbs)} pounds.
+
+The head judge reads it into the national feed microphone. The crowd in the staging area makes a sound — not cheering exactly, more like the sound of a room full of people all having the same thought at the same time. Maya, already off the scale at 450, is watching. A woman from the crowd says, clearly: "Oh my god."`,
+          choices:[
+            {id:"take_it_in",label:"Stand still and let the moment be what it is.",result:`You stand on the scale while the crowd processes the number. Your belly is warm and heavy and forward and visible to everyone in the room and you let them look. The judge marks it. You step off slowly.`,rel:8,flag:"confident"},
+            {id:"acknowledge_crowd",label:"Look at the crowd when you step off.",result:(s)=>`You step off the scale and you look at the crowd. There are people there who came specifically for this moment. You let them see you — all ${Math.round(s.lbs)} lbs of you, warm and present and enormous. Someone starts clapping. Others follow.`,rel:10,flag:"confident"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`The national qualifier is calling competitors to their lanes. Maya gives you a nod from across the staging area. You're loaded and you've had your moment and the table is waiting.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+        {condition:()=>true,text:`National qualifier. The table is set. The crowd that gathered for the weigh-in is moving to the viewing area. Your belly is warm and full and you are the number everyone is looking at on the board.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+      ]
+    },
+    // stage 9 — ~630 lbs
+    {
+      title:"National Championship Final",
+      phases:[
+        {
+          text:(h,s)=>`The national championship. The arena. You are ${Math.round(s.lbs)} lbs and there is a credential around your neck that says COMPETITOR and the woman at the door held the door open wider when you came through without being asked.
+
+Maya finds you in the warmup room. 490 lbs, the second-ranked competitor in the country, the woman who has been chasing you for two years. She says: "I've been competing since I was nineteen. I've never seen anything like you." She pauses. "I want you to know that before we go out there." Then she goes to her side of the warmup room.
+
+The defending champion from the prior year — 420 lbs, four national titles — is in the corner. She hasn't said anything. She's eating her warmup and watching you.`,
+          choices:[
+            {id:"load_hard",label:"Eat everything — load up with complete focus. This is what you trained for.",result:`You eat. All of it. Methodically, focused, your belly going from full to very full to the specific warm heaviness of someone who has done this for two years and knows exactly what their body is capable of. You eat past the point of comfort and you breathe around it and you feel ready. Completely ready. This is what you came here to do.`,lbs:16,rel:5,flag:"loaded"},
+            {id:"eat_smart_acknowledge",label:"Eat smart — and then say something to Maya.",result:`You eat your warmup clean and then walk over to Maya. "Two years," you say. She nods. "Thank you," you say. She knows what for. You go back to your station. Your belly is warm and full and ready and you've left room.`,lbs:9,rel:10,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`The national championship weigh-in is an event unto itself. There is a crowd. There are cameras. The weigh-in has its own segment in the national broadcast.
+
+You step on the scale. The arena goes quiet.
+
+The head judge reads the display. He pauses for exactly one second before he reads it into the national microphone. *${Math.round(s.lbs)} pounds.*
+
+The arena does not cheer first. There is a moment of silence — the specific silence of something large enough to require a breath before a response — and then the crowd comes up all at once. The four-time champion in the corner has stopped eating. She is looking at the number. Maya is already clapping.`,
+          choices:[
+            {id:"face_the_crowd",label:"Turn and face the crowd.",result:(s)=>`You turn. You are ${Math.round(s.lbs)} pounds of national championship competitor and the crowd is making the sound it makes when it sees something it has never seen before and you stand in it. Your belly is warm and forward and enormous and visible to everyone in the arena and you let them see it. This took two years. It was worth two years.`,rel:10,flag:"confident"},
+            {id:"stay_in_your_head",label:"Don't acknowledge the crowd. Get to the table.",result:`You step off the scale and walk to your lane. Your belly is warm and enormous and pressing your competition top and you put one hand flat on it for one second — feeling the weight of yourself, the warmth of yourself — and then you drop your hand and you look at the table and you are ready.`,rel:6,flag:"paced"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`The arena is loud and your number is on the national board and Maya is still clapping across the staging area. You are at your lane. The table is full.
+
+The national championship horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+        {condition:()=>true,text:`National championship. Your lane. The table. ${Math.round(4)>2?"The crowd is already making noise.":""}
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+      ]
+    },
+    // stage 10 — ~820 lbs — Grand Invitational (blob)
+    {
+      title:"Grand Invitational",
+      phases:[
+        {
+          text:(h,s)=>`The Grand Invitational is not a normal competition. It is an invite-only showcase event and you are the reason it exists. The venue's promotional image for this event is a silhouette. Your silhouette. They did not need to specify whose.
+
+You are ${Math.round(s.lbs)} pounds and the warmup room has been extended with an anteroom to accommodate you. Maya from Lakewood is here — 530 lbs, five years on the circuit, the only other competitor with a name recognition anywhere near yours. She comes to find you when you arrive, which she has never done before. "I've watched every one of your competitions," she says. "I wanted to say that before today." She says it with the clean directness of someone who has given up competing with you and arrived at something else instead. You are moved. You are also here to eat.
+
+The Invitational catering table is the full format. Everything available. This is the load-up.`,
+          choices:[
+            {id:"load_hard",label:"Eat everything — fill completely, every available item",result:(s)=>`You eat through the catering table with the total focus of someone who knows what their body is capable of and intends to use every inch of it. Your belly goes from enormous to vastly enormous, warm and heavy and past full and settled low between your thighs, pressing your competition top up past your navel, and you are loaded. You are ${Math.round(s.lbs)} pounds plus all of this. You are ready.`,lbs:18,rel:5,flag:"loaded"},
+            {id:"eat_smart",label:"Eat to capacity — precise, controlled, leave space for the table",result:`You eat with the focused precision of someone who has done this for years and knows exactly where the ceiling is. Your belly fills warm and full and forward, the specific controlled fullness of a professional who has not lost their technique at any weight. You stop. You breathe. There is room left. For the table.`,lbs:10,rel:8,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`The Grand Invitational weigh-in is the event before the event. The venue streams it separately.
+
+Maya steps on: 530 pounds. The crowd gives it the standing ovation it deserves — she is enormous and remarkable and five years of circuit work have made her what she is. She looks at you while she steps off.
+
+You step on. The official scale at the Grand Invitational has been recalibrated for this event. The number settles: ${Math.round(s.lbs)} pounds.
+
+The streaming audience's comments appear on a sidebar screen visible from the stage. You can see the rate at which they're arriving. It's very fast.
+
+Maya looks at the board. Then at you. "Every time," she says quietly. "Every year it's more." She is not complaining. She is witnessing.`,
+          choices:[
+            {id:"own_it",label:"Face the stream camera directly. Let the whole number land.",result:(s)=>`You find the camera and you face it and you let it see all of you — ${Math.round(s.lbs)} pounds of Grand Invitational competitor, belly enormous and warm and forward in the lights, filling the stage in a way that the camera has to pull back slightly to accommodate. The comments on the sidebar move faster. Good.`,rel:12,flag:"confident"},
+            {id:"look_at_maya",label:'Look at Maya. Say: "You came back."',result:`You find Maya's eyes. She looks back. "I came back," she says, before you can. "I'll always come back." You both know what that means: that this is something beyond competition now, something she comes back to because she needs to be near it. You step off the scale. The table is waiting.`,rel:8,flag:"confident"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`The Grand Invitational. Your lane. The table — every item, both sides, the full Invitational format. The streaming audience is already enormous.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+        {condition:()=>true,text:`Your lane. The Grand Invitational table. Maya is at hers, watching you with the focused warmth of someone who knows what is about to happen and came specifically to see it.
+
+The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+      ]
+    },
+  ],
+
+  feedee_creator:[
+    // stageIdx 0 — ~258 lbs — first collab
+    {
+      title:"First Collab",
+      phases:[
+        {
+          text:(h,s,partner)=>`The setup is done. The ring light is on. The table has two spreads — yours and ${partner?partner.name+"'s":'your partner\'s'} — and the subscriber count reads thirty-seven, which is where you were last week when you were streaming alone. ${partner?partner.name:'She'} is sitting across from you, ${partner?Math.round(partner.lbs)+' pounds,':''} nervous in the specific way someone is nervous when they've agreed to something they're excited about.
+
+"I've never done this before," ${partner?partner.name:'she'} says. You tell her neither have you. You're both lying in different ways — you've been planning this for two weeks and she's been waiting for you to ask.`,
+          choices:[
+            {id:"warmup_both",label:"Eat something before going live — both of you",result:`You both eat before the camera goes on. A warmup plate each, the food warm and settling, and by the time you press record you're both already somewhat full and the bell in your belly is already ringing. She looks at you across the table. "Ready," she says. She means it.`,lbs:6,rel:8,flag:"both_loaded"},
+            {id:"talk_dynamic",label:"Talk through the dynamic — what the feeding looks like on camera",result:`You spend ten minutes talking about how this looks. What you want the audience to see. That you're going to be feeding each other. That it's going to be real — not performed, actual food, actual gain. She nods through all of it and when you're done she says: "I want to feed you more than you feed me." You tell her that's exactly the tension the stream needs.`,rel:10,flag:"established_dynamic"},
+          ]
+        },
+        {
+          text:(h,s,partner)=>`You're live. Forty viewers become sixty in the first ten minutes, and by the time you've done the introductions the chat has started asking questions — what's her name, how much does she weigh, are you going to feed each other. The answer to all three is: yes, that's the point, that's what this is.
+
+${partner?partner.name:'She'} says her weight on camera — ${partner?Math.round(partner.lbs)+' pounds':'her weight'}, clearly, into the mic. The chat reacts. Someone new arrives. *wrenWatchesEverything: I found this by complete accident. I'm not leaving.*`,
+          choices:[
+            {id:"feed_her_first",label:"Feed her first — put something on her side of the table",result:`You pass the first course across the table. She takes it. She begins eating — not performing eating, actually eating — and the camera catches the specific warmth of someone being fed by someone who means it. The chat is paying attention to exactly the right things.`,rel:9,flag:"fed_first"},
+            {id:"both_go",label:"Start simultaneously — both eating on camera together",result:`You both reach for the first course at the same time and the stream immediately becomes what it was always going to be: two women eating together, visibly, genuinely, the camera seeing all of it. The chat count climbs. This is the format.`,rel:8,flag:"simultaneous_start"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("both_loaded")&&h.includes("established_dynamic")&&h.includes("fed_first"),text:`First collab. You both ate before the camera and talked through the dynamic and you fed her first on-stream and the chat found something true in it. The subscriber count by stream end: 147. Wren subscribed. The format is established.`,gainBonus:10,relBonus:14,startsStream:true},
+        {condition:h=>h.includes("both_loaded")&&h.includes("fed_first"),text:`First collab. You both ate pre-stream and you fed her first on camera. The chat grew. Wren subscribed. The format works.`,gainBonus:7,relBonus:10,startsStream:true},
+        {condition:h=>h.includes("established_dynamic"),text:`First collab. You talked through what it would look like and then you did it. The chat found it. Wren subscribed. 147 subscribers.`,gainBonus:5,relBonus:9,startsStream:true},
+        {condition:()=>true,text:`First collab. The chat grew. Wren showed up. The format is established.`,gainBonus:0,relBonus:7,startsStream:true},
+      ]
+    },
+    // stageIdx 1 — ~320 lbs — regular collab
+    {
+      title:"Weekly Collab",
+      phases:[
+        {
+          text:(h,s,partner)=>`Six weeks of weekly collabs. The format is established — both sides of the table, mutual feed, the camera seeing everything — and ${partner?partner.name:'your partner'} is ${partner?Math.round(partner.lbs)+' pounds':'heavier'} now, more than when the collabs started, and you are ${Math.round(s.lbs)} pounds, and neither of you are hiding the progression or pretending it isn't what it is.
+
+*wrenWatchesEverything: regular collab viewer now, been here every week.* The subscriber count has grown. The format has a community now. Wren is in it.`,
+          choices:[
+            {id:"loaded_both",label:"Both eat a warmup plate before going live",result:`Pre-stream warmup for both of you: something warm and substantial, the bellies already beginning to fill before the camera is on. She eats hers with the ease of someone who has been doing this for six weeks. You eat yours the same way. You are both ready.`,lbs:7,rel:8,flag:"both_loaded"},
+            {id:"bigger_spread",label:"Set a larger-than-usual spread — announce it to the chat as a special",result:`You set both sides of the table larger than any previous collab. You announce it before going live: subscriber special, both of you eating more tonight than you ever have on-stream together. The pre-stream count opens higher than usual. The chat already knows something is happening.`,rel:10,flag:"special_stream"},
+          ]
+        },
+        {
+          text:(h,s,partner)=>`Live. The format runs as it always runs now — both of you eating, the chat watching both weight counters, the specific dynamic of you feeding her and her feeding you and both of you growing visibly over the course of an hour. *wrenWatchesEverything: I donated to get the next tier. I have no regrets.*
+
+${partner?partner.name:'She'} is ${h.includes("both_loaded")?"warm and already full against the chair, her belly pressing her top forward, both hands on it":""} eating with the focused attention of someone who has been training for this for six weeks. She has been. You both have.`,
+          choices:[
+            {id:"reveal_weights",label:"Announce both weights to the chat — simultaneously on camera",result:`You both step on the scale. Side by side, or in sequence, and the chat gets both numbers in the same stream. The reaction is a kind of sustained astonishment. You are both heavier than any previous week's weigh-in and the chat is doing the math and the math is going the right direction.`,rel:12,flag:"dual_reveal"},
+            {id:"push_partner",label:"Feed her an extra course — push the format further",result:`You put an extra course on her side of the table. She looks at it and looks at you and she takes it. The chat understands what this means. The donation bar starts moving. You eat your own matching portion. Both sides of the table getting smaller. Both of you getting heavier.`,rel:10,flag:"pushed_partner"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("both_loaded")&&h.includes("dual_reveal"),text:`Weekly collab. Both loaded pre-stream and both weights revealed simultaneously. The chat's reaction to the dual reveal was the best single moment the stream has had. Wren donated immediately. Subscriber count growing.`,gainBonus:14,relBonus:14,startsStream:true},
+        {condition:h=>h.includes("dual_reveal"),text:`Weekly collab. Dual weight reveal. Chat went wild. Wren donated. The format is maturing.`,gainBonus:9,relBonus:11,startsStream:true},
+        {condition:h=>h.includes("both_loaded"),text:`Weekly collab. Both loaded. Both eating. The format running exactly as designed.`,gainBonus:7,relBonus:8,startsStream:true},
+        {condition:()=>true,text:`Weekly collab. Subscriber count growing. Wren is still there. Format intact.`,gainBonus:0,relBonus:6,startsStream:true},
+      ]
+    },
+    // stageIdx 2 — ~419 lbs — featured collab
+    {
+      title:"Featured Collab",
+      phases:[
+        {
+          text:(h,s,partner)=>`The platform featured the collab format specifically. Not you alone — the collab, the double-feed, the mutual gain. The editorial pick described it as "a new format for a specific kind of content that doesn't have a name yet but should." You are ${Math.round(s.lbs)} pounds and ${partner?partner.name+' is '+Math.round(partner.lbs)+' pounds':'your partner is substantial'} and the subscriber count grew by 12,000 in a week.
+
+*wrenWatchesEverything: top donor four streams running, hi.* Wren has been at every stream. Wren is a presence.`,
+          choices:[
+            {id:"feature_spread",label:"Set the largest spread you've ever done together — rise to the feature",result:`The spread is the most food you've had in frame for a collab: both sides, large courses, more than either of you has eaten on-stream together before. She looks at her side of the table and says: "we're doing this." You say: "we're doing this." The pre-stream count is high. The featured audience is watching.`,lbs:10,rel:11,flag:"both_loaded"},
+            {id:"pre_talk_feature",label:"Talk about the feature before going live — what the new audience will see",result:`You both talk about it before the camera: who the new audience is, what they came for, what you want to show them. "We want to show them something real," she says. You agree. What you're about to do is real. The gain will be real. The camera will see it.`,rel:13,flag:"intentional"},
+          ]
+        },
+        {
+          text:(h,s,partner)=>`Live. The featured audience is here — you can see the viewer count, which is higher than any previous collab stream — and ${partner?partner.name:'she'} is eating with the particular focused attention of someone who knows they're being watched by more people than usual and is performing the same as always, which is to say: completely. *wrenWatchesEverything: THE PLATFORM FEATURE WAS DESERVED. I SAID THIS IN ADVANCE.*
+
+You are ${Math.round(s.lbs)} pounds on camera in front of the new audience. They are seeing what the format is for the first time. They are going to stay.`,
+          choices:[
+            {id:"stage_push",label:"Feed her the biggest portion yet — make the new audience see what the format does",result:`You put the largest course of the night on her side of the table. The new audience is watching. The chat explains to the newcomers what's happening: this is what the collab is. This is the point. She eats it. She is heavier than when this stream started and the camera sees it and the new audience understands what they found.`,rel:13,flag:"stage_push"},
+            {id:"reveal_both_featured",label:"Do the double weight reveal for the new audience",result:`Both weights on camera for the new audience, side by side. You say your number. She says hers. The featured audience has never seen this before and the reaction is the exact reaction you get when something shows people what they've been looking for. The regular subscribers type to the new ones: *this is what it always is.*`,rel:14,flag:"dual_reveal"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("both_loaded")&&h.includes("stage_push"),text:`Featured collab. Largest spread ever, biggest course fed to her, the new audience saw the whole thing. The subscriber count jumped significantly. Wren said: *THE COLLAB FORMAT IS EVERYTHING.* It is.`,gainBonus:18,relBonus:16,startsStream:true},
+        {condition:h=>h.includes("dual_reveal"),text:`Featured collab. Double weight reveal for the new audience. They saw what the format is. Many of them subscribed. Wren donated immediately.`,gainBonus:12,relBonus:13,startsStream:true},
+        {condition:h=>h.includes("both_loaded"),text:`Featured collab. Largest spread. The new audience stayed. The format proved itself.`,gainBonus:9,relBonus:10,startsStream:true},
+        {condition:()=>true,text:`Featured collab. New audience. Format demonstrated. Subscribers growing.`,gainBonus:0,relBonus:7,startsStream:true},
+      ]
+    },
+    // stageIdx 3 — ~519 lbs — brand collab
+    {
+      title:"Brand Collab",
+      phases:[
+        {
+          text:(h,s,partner)=>`The brand deal covers both of you. They want the collab specifically — both bodies in frame, both weights stated on camera, both of you eating their product. The contract is good and the food they've sent is good and ${partner?partner.name+' has read it and said \'yes\'':'"she\'s in"'} and you are ${Math.round(s.lbs)} pounds and the table has the brand's spread arranged on both sides and the ring lights are on.
+
+*wrenWatchesEverything: Wren donating the full goal herself, as usual.* Wren donated before the stream even started. You send her a thank-you notification.`,
+          choices:[
+            {id:"brand_warmup",label:"Both eat a full pre-stream warmup — arrive at the brand stream loaded",result:`Both of you eat before the camera: the brand's food, warm and dense, the pre-stream load that will make the collab brand stream the most you've eaten together on camera. She finishes hers and says: "the food is good." The brand will be pleased. She is right.`,lbs:10,rel:11,flag:"both_loaded"},
+            {id:"plan_reveals",label:"Plan the double weight reveal — coordinate the timing for maximum impact",result:`You plan it together: both weights revealed in the same moment, at the peak of the stream, with the full audience watching. She has a number she's been waiting to say on camera for three weeks. You have one too. You agree on the moment: third course, before the challenge platter, both weights at once.`,rel:13,flag:"planned_reveal"},
+          ]
+        },
+        {
+          text:(h,s,partner)=>`Live. The brand stream is performing exactly as the analytics predicted and somewhat better than you hoped. The audience is here for the collab and the brand food and the mutual gain that the contract anticipated even if it didn't name it directly. ${partner?partner.name:'She'} is eating with the warmth and focus of a woman who has been doing this for months and knows exactly what she's doing.
+
+The chat is dense: *wrenWatchesEverything: I DM'd asking to be on stream someday. Kylie said 'maybe'. I'm holding onto maybe.* You see it. You smile. You eat.`,
+          choices:[
+            {id:"brand_double_reveal",label:"Execute the double weight reveal — both numbers on camera simultaneously",result:`Third course. You call it: "we're doing the reveal." She's already standing to reach the scale. You say your number — your weight, clearly, into the mic — and she says hers and the chat processes both at once and the donation bar jumps and the viewer count spikes and Wren donates the full remaining goal in one transaction.`,rel:15,flag:"dual_reveal"},
+            {id:"max_feed",label:"Feed her the challenge course directly — hand to across-table",result:`You put the challenge course directly on her side. Not sliding it across — actually reaching, the camera catching the full fact of your arm, your belly pressing the table as you lean. She takes it from your hands. The chat is saying the same thing in five different ways. This is the moment. This is why the brand wanted both of you.`,rel:13,flag:"direct_feed"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("both_loaded")&&h.includes("dual_reveal"),text:`Brand collab. Both loaded pre-stream, double weight reveal executed at peak audience. The brand's analytics team sent an email before the stream was over. Wren donated the full remaining goal in one transaction. Subscriber count crossed 200,000. She says "next contract, bigger."`,gainBonus:21,relBonus:17,startsStream:true},
+        {condition:h=>h.includes("dual_reveal"),text:`Brand collab. Double reveal. The brand's team is very happy. 200,000 subscribers. Wren donated everything she had.`,gainBonus:14,relBonus:14,startsStream:true},
+        {condition:h=>h.includes("both_loaded"),text:`Brand collab. Both loaded. The spread was good. The brand has what they need.`,gainBonus:10,relBonus:11,startsStream:true},
+        {condition:()=>true,text:`Brand collab. Stream successful. 200,000 subscribers. Brand happy.`,gainBonus:0,relBonus:8,startsStream:true},
+      ]
+    },
+    // stageIdx 4 — ~630 lbs — anniversary collab
+    {
+      title:"Anniversary Collab",
+      phases:[
+        {
+          text:(h,s,partner)=>`One year of weekly collabs with ${partner?partner.name:'the same partner'}. The anniversary stream has been promoted for two weeks. The subscriber count is 1.1 million. I am ${Math.round(s.lbs)} pounds and ${partner?partner.name+' is '+Math.round(partner.lbs)+' pounds':''} and the table is the largest spread we've ever arranged and Wren is in the building.
+
+She told me in a DM: *I'm in the building. In the waiting area. I drove from four hours away.* I told her to come to the studio floor. She's here. She's standing against the wall right now — 200 pounds, beaming, looking at both of us with the expression of someone who has been watching this happen weekly for a year.`,
+          choices:[
+            {id:"anniversary_load",label:"Both eat the biggest pre-stream warmup you've ever done",result:`The anniversary pre-stream load: more food than any previous warmup, both of you eating together in the quiet before the camera goes on. She finishes and puts her hands on her belly — the full warm weight of a year's worth of weekly collabs, heavier and rounder than the first time she sat in this chair. "Ready," she says. You are both ready. You have been building toward this.`,lbs:14,rel:15,flag:"both_loaded"},
+            {id:"introduce_wren",label:"Introduce Wren to the stream — acknowledge the first fan, live",result:`You bring Wren into frame for sixty seconds. Just her face — she's shaking slightly, trying not to cry, and failing slightly — and you say: "This is Wren. She's been in the chat since week one." You say her subscriber number. You say her total donation amount. The chat explodes. Wren says: "I just wanted to watch." She means something different. The chat understands what she means.`,rel:17,flag:"wren_acknowledged"},
+          ]
+        },
+        {
+          text:(h,s,partner)=>`Live at 45,000 concurrent and climbing. The anniversary stream is running exactly as planned and significantly better than expected. ${partner?partner.name:'She'} is eating with the particular ease of someone who has been doing this every week for a year and it shows in her body, which is warm and round and considerably heavier than when the collabs started, and it shows in the way she moves — the ease, the comfort, the complete absence of self-consciousness about her size.
+
+*wrenWatchesEverything: one year of weekly collabs and she keeps getting bigger. I am not emotionally prepared.* Wren is against the wall behind the camera. You can see her from here. She's watching.`,
+          choices:[
+            {id:"year_scale",label:"Do the year reveal — both start weights versus now, live on camera",result:`The anniversary reveal: you say your debut weight — 258 — and then your current weight, clearly, into the mic. She says her debut weight for the collabs and then her current. The chat does the math in real time. Someone writes: *that's a year of collabs.* Someone else writes: *look at what they built.* You both look at the camera. You both reach for the next plate.`,rel:16,flag:"year_reveal"},
+            {id:"anniversary_challenge",label:"Challenge her — the biggest feed of the anniversary stream, on your side and hers",result:`You tell her: biggest feed of the anniversary stream, right now, both sides of the table, everything. She looks at you — a year of understanding built into that look — and she nods. You both reach for the largest course. The chat is counting. Wren is watching from against the wall. This is what a year looks like.`,rel:15,flag:"challenged"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("both_loaded")&&h.includes("year_reveal"),text:`Anniversary collab. Both loaded, year reveal executed: debut versus now, both weights, for the anniversary audience. Subscriber count crossed 1.5 million by stream end. Wren was in the room and she cried. She was still there when the camera went off. She said: "I'll be here next year too."`,gainBonus:26,relBonus:21,startsStream:true},
+        {condition:h=>h.includes("year_reveal"),text:`Anniversary collab. Year reveal. 1.5 million subscribers. Wren cried. She'll be back.`,gainBonus:17,relBonus:16,startsStream:true},
+        {condition:h=>h.includes("both_loaded"),text:`Anniversary collab. Both loaded. The anniversary spread. The year was real.`,gainBonus:12,relBonus:12,startsStream:true},
+        {condition:()=>true,text:`Anniversary collab. One year. 1.5 million subscribers. Format intact.`,gainBonus:0,relBonus:9,startsStream:true},
+      ]
+    },
+    // stageIdx 5 — ~820 lbs blob — grand collab
+    {
+      title:"The Grand Collab",
+      phases:[
+        {
+          text:(h,s,partner)=>`I am ${Math.round(s.lbs)} pounds in the corner I have permanently claimed in this studio. The custom table is at the right height. The boom-arm camera overhead is at the right angle. ${partner?partner.name+' is '+Math.round(partner.lbs)+' pounds':''} across from me, in her own corner, her own setup mirroring mine, and the food is already arranged on both sides and Wren is in the room.
+
+Not against the wall this time. At a small chair just outside the camera frame, specifically positioned so she doesn't block any shot. She drove four hours. She said: "I've been watching since 258 pounds. I'm not watching this one through a screen." I told her she could come.`,
+          choices:[
+            {id:"grand_load",label:"Both eat the largest pre-stream load you've ever done — start the grand collab fully loaded",result:`Pre-stream load for both of us. The most food either of us has eaten before a stream — course after course, the belly filling to the specific warm heavy weight of truly loaded, the kind of loaded that shows in the first frame of the camera. She finishes and looks at me. "Ready." I am enormous and warm and fully loaded and I press record.`,lbs:20,rel:18,flag:"both_loaded"},
+            {id:"wren_in_frame",label:"Acknowledge Wren on camera — bring her in for the grand collab opening",result:`I bring Wren into frame for the opening. She sits beside me for sixty seconds — this woman who has been watching since 258 pounds sitting beside me at 820 — and she looks at the camera and says: "I've been watching this happen. I've been here the whole time." The chat, which is enormous tonight, goes completely still and then erupts. Wren goes back to her chair. I press record. I begin.`,rel:20,flag:"wren_in_frame"},
+          ]
+        },
+        {
+          text:(h,s,partner)=>`Live at 300,000 concurrent and climbing. This is the biggest collab stream we've ever done and the chat is moving fast enough that I can't read individual messages. ${partner?partner.name:'She'} is eating across from me — enormous, warm, her belly the same landscape of forward-pressing fullness that mine is — and both camera feeds are showing exactly what they're supposed to show.
+
+*wrenWatchesEverything: I'm in the room. The actual room. She knows I'm here.* And: *820 pounds and the platform has never seen numbers like this stream right now.*
+
+She is in the chair just outside the frame. I can see her from here.`,
+          choices:[
+            {id:"grand_scale",label:"Do the grand collab scale reveal — both weights, 300k watching",result:`Both of us on scale. Side by side on the same extended platform — because that's what we use at these sizes — and the numbers appear and I read mine and she reads hers and the chat at 300,000 concurrent processes both numbers at the same time. The reaction is a kind of prolonged collective intake of breath. Wren in the corner has her hands over her mouth. We step off and return to the table and reach for the plate.`,rel:19,flag:"grand_scale"},
+            {id:"grand_challenge",label:"Maximum challenge — both of you, everything left on the table",result:`I say it to the camera: "we're going to eat everything left on this table." Not a question. She looks at me across the setup and she says: "yes." We both reach. The chat goes quiet in the way it does when something is happening that requires full attention. Wren in the corner is completely still. This is what the grand collab is for.`,rel:17,flag:"grand_challenge"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("both_loaded")&&h.includes("grand_scale"),text:`Grand collab. Both fully loaded, grand scale reveal at 300k concurrent — both weights, both gains, for the largest audience we've ever had. Subscriber count hit 4 million by morning. Wren was in the room and she stayed until the lights went down. She said: "I'll be here next year." I said: "I'll be bigger." She said: "I know."`,gainBonus:34,relBonus:25,startsStream:true},
+        {condition:h=>h.includes("grand_scale"),text:`Grand collab. Grand scale reveal. 4 million subscribers. Wren stayed until the lights went down.`,gainBonus:22,relBonus:19,startsStream:true},
+        {condition:h=>h.includes("both_loaded"),text:`Grand collab. Both loaded. The grand spread. The format complete.`,gainBonus:15,relBonus:15,startsStream:true},
+        {condition:()=>true,text:`Grand collab. 4 million subscribers by morning. Wren was in the room.`,gainBonus:0,relBonus:11,startsStream:true},
+      ]
+    },
+  ],
+
+  chapter_hostess:[
+    // stage 5 — ~258 lbs
+    {
+      title:"Wednesday Feast",
+      phases:[
+        {
+          text:(h,s)=>`She's been in the chapter kitchen since two in the afternoon and it's now seven and the table is extraordinary. She is ${Math.round(s.lbs)} pounds in her hostess apron, belly warm and rounded against it, moving through the kitchen with the ease of someone who has been planning this for weeks. The sorority sisters are gathering. Your sorority students are here, both of them, and several other chapter members in various stages of arrival.`,
+          choices:[
+            {id:"arrive_with_more",label:"Arrive with additional food — double the dessert course",result:`You arrive with a significant supplemental course: desserts, dense and sweet, more than the table needs. She sees what you've brought and incorporates it without hesitation. The table becomes larger than she planned.`,lbs:5,rel:7,flag:"extra_food"},
+            {id:"help_serve",label:"Help serve — be useful, watch how she runs it",result:`You help carry plates and she runs the service and you learn something about how she does this: with complete authority and genuine pleasure, making sure every plate is full before she sits down.`,rel:9},
+          ]
+        },
+        {
+          text:(h)=>h.includes("extra_food")
+            ?`Midway through the feast. The extra dessert course is visible in the dynamic at the table — sisters eating past the point of full, coming back for more because more is there. Your sorority students are both on generous helpings. Your hostess is eating at the head of the table with the deliberate, pleasured focus of someone who has made something she's proud of.`
+            :`Midway. The table is active, the food is going, your sorority students are both eating well. She presides from the head, eating steadily.`,
+          choices:[
+            {id:"encourage_seconds",label:"Encourage the sisters to go back for more",result:`You circulate and suggest seconds to everyone. Several take you up on it. Your sorority students both return for second plates. She watches this from the head of the table and nods once.`,rel:8,feedOther:{archetype:"sorority",lbs:4,text:"Your sorority students go back for seconds. The food finds them."}},
+            {id:"talk_with_hostess",label:"Talk with her while she eats",result:`You sit near her and she talks while eating — about the table, the recipes, what she wants to add next time. She eats through the whole conversation without slowing.`,lbs:6,rel:10,flag:"personal_moment"},
+          ]
+        },
+        {
+          text:(h,s)=>{
+            if(h.includes("extra_food")&&h.includes("encourage_seconds")) return `End of feast. The table is cleared. The sorority students are full — visibly, warmly full — and several sisters are still eating from the dessert course. She sits at the head of the table with her belly warm and round against her clothes, ${Math.round(s.lbs)} pounds plus tonight's considerable intake, and surveys the room. Everyone she wanted to feed has been fed.`;
+            return `End of feast. Table cleared. The sisters are fed. She's satisfied.`;
+          },
+          choices:[
+            {id:"end_of_feast_talk",label:"Stay after — help her clean up, talk",result:`You stay and help. She talks while cleaning: "I want these tables bigger. I want the girls eating more each time. I want them coming in knowing they're going to leave heavier." She says it plainly. She means it.`,rel:12,flag:"vision_shared"},
+            {id:"leave_with_group",label:"Leave with the sisters, let her have the close",result:`You say goodnight with the departing group. She stands at the door, enormous and warm, saying goodnight to each one personally.`,rel:5},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("extra_food")&&h.includes("encourage_seconds")&&h.includes("vision_shared"),text:`First feast down. She said she wants them "coming in knowing they're going to leave heavier." The sorority students are heavier. The table was extraordinary. Her belly was warm and full and she meant everything she said.`,gainBonus:10,relBonus:13},
+        {condition:h=>h.includes("extra_food")&&h.includes("encourage_seconds"),text:`Good feast. Extra food, seconds encouraged, sorority students are heavier. She's building exactly the culture she described.`,gainBonus:7,relBonus:8},
+        {condition:h=>h.includes("extra_food"),text:`Good feast. The extra food was right. She appreciated it.`,gainBonus:4,relBonus:5},
+        {condition:()=>true,text:`Good feast. Table cleared. Sisters fed. Culture established.`,gainBonus:0,relBonus:3},
+      ]
+    },
+    // stage 6 — ~320 lbs
+    {
+      title:"The Grand Feast",
+      phases:[
+        {
+          text:(h,s)=>`${Math.round(s.lbs)} pounds and the feast has evolved. Six months of Wednesday feasts and the culture is established: the table is always large, the sisters always stay, the food is always more than you'd think anyone could eat. She's outdone herself this week — twelve courses, warm and fragrant, the table extraordinary. She presides at ${Math.round(s.lbs)} pounds, her belly enormous and warm against her hostess clothes.`,
+          choices:[
+            {id:"supplement_feast",label:"Arrive with a thirteenth course — surprise",result:`You arrive with a thirteenth course: something substantial, warm, timed perfectly for after the twelfth. She sees it and says: "Good." She incorporates it immediately. The table becomes the largest she's ever set.`,lbs:7,rel:8,flag:"extra_food"},
+            {id:"bring_new_guests",label:"Bring two guests outside the chapter",result:`You bring two women who haven't been to a chapter feast. She receives them at the door personally, with plates ready. By the second course they have settled in as if they've been here before. By the eighth they haven't left their seats in ninety minutes.`,rel:9,flag:"new_guests"},
+          ]
+        },
+        {
+          text:(h)=>h.includes("extra_food")
+            ?`Midway through the feast. Twelve courses in and a thirteenth on the way and the table is eating with sustained, pleasured focus. Your sorority students are deep in it — both of them, eating with the ease of women who have been doing this for months. Their bellies, noticeably rounder than when the semester started, press their blouses warmly. Your hostess is on her fifth plate and watching everything with warm satisfaction.`
+            :`Midway. The table is deep into the feast. Your sorority students are eating well. She watches from the head and eats steadily.`,
+          choices:[
+            {id:"triple_dessert",label:"Fund triple dessert — for everyone, extra portions",result:`You fund a triple dessert course: three rounds, substantial portions, enough that by the end the table is extremely full. Your sorority students eat through all three. The sisters are in various states of very warm, very full contentment.`,rel:10,flag:"triple_dessert",feedOther:{archetype:"sorority",lbs:6,text:"Your sorority students eat through the triple dessert course. They are going to feel this tomorrow."}},
+            {id:"seat_beside_her",label:"Sit beside her for the second half",result:`You take the seat beside her and she talks while eating — about each course, about what she's been planning, about what she wants the feasts to become. She eats through the conversation. She never stops.`,lbs:8,rel:11,flag:"close_moment"},
+          ]
+        },
+        {
+          text:(h)=>{
+            if(h.includes("extra_food")&&h.includes("triple_dessert")) return `End of feast. The table is cleared. The sorority students are full in a way that will last through tomorrow. Several sisters haven't moved from their seats in forty minutes. She sits at the head of the table and her belly is vast and warm and round against her clothes and she has fed everyone exactly as much as she intended. She looks at the room and is completely satisfied.`;
+            return `End of feast. Table cleared. Everyone is fed. She is satisfied.`;
+          },
+          choices:[
+            {id:"private_close",label:"Stay after — share the last course with her, just you",result:`Everyone else leaves. You sit with her at the cleared table and she finds the last serving of something and puts it between you and you eat together in the quiet kitchen. She says: "I want to do this every week until I can't cook it fast enough." You both understand what that means.`,rel:14,flag:"intimate_close"},
+            {id:"group_send_off",label:"See the sisters out with her",result:`You stand at the door with her as the sisters leave. She is 320 pounds and warm and full and enormous in the doorway and she says goodnight to each one personally.`,rel:6},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("extra_food")&&h.includes("triple_dessert")&&h.includes("intimate_close"),text:`Extraordinary feast. Triple dessert, thirteen courses, the sorority students heavier, and you ate the last course together in the quiet kitchen and she said she wants to do this until she can't cook it fast enough. Her belly was warm and vast and full and she meant all of it.`,gainBonus:13,relBonus:15},
+        {condition:h=>h.includes("extra_food")&&h.includes("triple_dessert"),text:`Extraordinary feast. The sorority students are noticeably heavier. The culture has matured into something significant.`,gainBonus:8,relBonus:10},
+        {condition:h=>h.includes("extra_food"),text:`Very good feast. The extra course was right. She'll plan even larger next time.`,gainBonus:5,relBonus:6},
+        {condition:()=>true,text:`Good feast. The culture is established. She runs it better every time.`,gainBonus:0,relBonus:4},
+      ]
+    },
+    // stage 7 — ~419 lbs
+    {
+      title:"Alumni Dinner",
+      phases:[
+        {
+          text:(h,s)=>`${Math.round(s.lbs)} pounds and the alumni dinner, which is the largest event the chapter has held. A dozen alumni, several of them substantial women in their own right, including one at around 340 pounds who has been funding the feasts for three years without ever attending one. Your sorority students are here. The table is extraordinary — eighteen courses, the kitchen running since morning. She presides at ${Math.round(s.lbs)} pounds, her belly enormous and warm, completely at ease.`,
+          choices:[
+            {id:"coordinate_kitchen",label:"Help coordinate the kitchen — ensure she can host, not cook",result:`You manage the kitchen logistics so she can focus on the hosting. She circulates the table, talking, serving, attending to the alumni personally. Her belly, enormous at 419 pounds, presses past guests as she moves through the room. Nobody minds. Several alumni watch her with complicated expressions.`,lbs:6,rel:10,flag:"coordinated"},
+            {id:"introduce_her",label:"Introduce her to the primary funder as the architect of this culture",result:`You introduce her to the 340-pound alumna specifically, as the woman who built what the alumna has been funding. The alumna looks at your student — 419 pounds, warm, enormous — and says: "I've been funding this for three years and I didn't understand what it was until now." She's smiling when she says it.`,rel:12,flag:"funder_met"},
+          ]
+        },
+        {
+          text:(h)=>h.includes("funder_met")
+            ?`Midway. The 340-pound alumna has been eating since the introduction. She's been eating with the focused attention of a woman who has been missing this for years without knowing what she was missing. Your sorority students are both deep in it. Your hostess is eating at the head of the table and watching the whole room with the warm satisfaction of a person feeding exactly the people she wants to feed.`
+            :`Midway. Eighteen courses and the alumni are responding well. Your sorority students are eating with practiced ease. She presides and eats.`,
+          choices:[
+            {id:"extra_course_alumni",label:"Fund an additional course specifically for the alumni",result:`You supplement with a nineteenth course, timed for the late middle of the dinner. The alumni eat it. The 340-pound alumna eats it twice. Your sorority students are on their fourth plates and showing it.`,rel:9,feedOther:{archetype:"sorority",lbs:6,text:"Your sorority students eat through the extra alumni course. They're well past comfortable and haven't considered stopping."}},
+            {id:"sit_with_hostess",label:"Sit beside her and watch her work the room",result:`You sit beside her and she eats and you watch her watch the table — assessing, adjusting, sending another plate to someone who's slowing, refilling the glass of someone who's still going. She is magnificent at this.`,lbs:8,rel:11},
+          ]
+        },
+        {
+          text:(h,s)=>{
+            if(h.includes("funder_met")&&h.includes("extra_course_alumni")) return `End of dinner. The table is cleared. The alumni are in various states of warm, full contentment — the 340-pound alumna hasn't moved in an hour and looks very pleased about this. Your sorority students are visibly heavier than when they arrived. She sits at the head of the table, ${Math.round(s.lbs)} pounds plus everything she's cooked and eaten, and the alumna across the table says: "I've been funding this without understanding it. I understand it now." Your hostess puts another course in front of her.`;
+            return `End of dinner. Table cleared. Alumni fed. She has demonstrated what she's built.`;
+          },
+          choices:[
+            {id:"after_dinner_planning",label:"Stay for after-dinner planning — the next feast",result:`After the alumni leave she stays at the table with you and the sorority students and talks about the next feast: bigger, more courses, more food. She eats what remains while she talks. The sorority students eat with her. The planning is extensive.`,lbs:8,rel:14,flag:"next_planned",feedOther:{archetype:"sorority",lbs:5,text:"Your sorority students eat through the after-dinner planning session. They go home heavier than they arrived."}},
+            {id:"walk_out_alumna",label:"Walk the primary alumna out — cultivate the relationship",result:`You walk the 340-pound alumna to the door and she says: "I'd like to come back next month." You arrange it. The culture gains a powerful ally.`,rel:9},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("funder_met")&&h.includes("extra_course_alumni")&&h.includes("next_planned"),text:`Alumni dinner success. The funder said "I understand it now" and your hostess put more food in front of her. The sorority students went home heavier. The next feast is already planned. Her belly was warm and enormous and full and she was satisfied with everything she built.`,gainBonus:17,relBonus:15},
+        {condition:h=>h.includes("funder_met")&&h.includes("extra_course_alumni"),text:`Alumni dinner success. The funder converted. The sorority students are heavier. The culture has been demonstrated to its patron.`,gainBonus:11,relBonus:10},
+        {condition:h=>h.includes("funder_met"),text:`Alumni dinner. The funder met the hostess. The relationship is established.`,gainBonus:5,relBonus:7},
+        {condition:()=>true,text:`Alumni dinner. Well-run. The table was extraordinary.`,gainBonus:0,relBonus:4},
+      ]
+    },
+    // stage 8 — ~519 lbs
+    {
+      title:"Rush Season Opening Feast",
+      phases:[
+        {
+          text:(h,s)=>`${Math.round(s.lbs)} pounds and rush season, which means the opening feast is the most important table she will set this year: this is what the incoming pledges will be told they're joining. She has been planning for three weeks. The table is the largest she has ever set. Your sorority students are here as the cultural anchor — both of them, well-established, noticeably heavier than when they started. She stands at the head of the table at ${Math.round(s.lbs)} pounds and her belly is vast and warm and real and she looks exactly like what she is.`,
+          choices:[
+            {id:"full_opening_spread",label:"Fund the opening spread fully — anything she wants",result:`You've told her: anything she wants for the opening feast. She has used this completely. The table is seventeen courses and the kitchen has been running for eight hours and she is 519 pounds of warmth and certainty at the head of it and the pledges who are about to arrive are going to understand something new about what they've joined.`,lbs:12,rel:9,flag:"full_funding"},
+            {id:"brief_pledges",label:"Brief the incoming pledges before they arrive",result:`You meet the pledges at the door and give them context: this feast is the chapter's founding culture. The woman at the head of the table built it. They're being invited to participate in it. Several of them look at each other. None of them leave.`,rel:11,flag:"pledges_prepared"},
+          ]
+        },
+        {
+          text:(h)=>h.includes("full_funding")
+            ?`Midway. The pledges are eating — tentatively at first, then with increasing conviction, as the culture of the table becomes clear. Your sorority students are modeling: eating steadily, warmly, without apology. Several pledges have gone back for seconds. Your hostess is at her fourth plate and her belly, enormous and warm, is a presence at the head of the table that communicates the standard.`
+            :`Midway. The pledges are finding their rhythm. Your sorority students are modeling the culture. She presides and eats.`,
+          choices:[
+            {id:"push_pledges_further",label:"Fund additional courses specifically for the pledges",result:`You fund another two courses for the pledges specifically, timed for the mid-feast energy dip. The pledges eat. Several of them have stopped putting their forks down between bites. Your sorority students eat the extra courses too, with the ease of women who have been doing this for a year.`,rel:10,feedOther:{archetype:"sorority",lbs:7,text:"Your sorority students eat through the extra pledge courses with practiced ease. They are going to need to update their wardrobes."}},
+            {id:"hostess_speech",label:"Ask her to say something to the pledges midway through",result:`You suggest it and she stands — 519 pounds, warm, vast, her belly enormous against her hostess clothes — and tells the pledges exactly what this table is: a culture, a commitment, a choice about what kind of life to build. Several pledges are visibly moved. Several are eating harder.`,lbs:8,rel:12,flag:"speech_given"},
+          ]
+        },
+        {
+          text:(h,s)=>{
+            const full=h.includes("full_funding")&&h.includes("push_pledges_further");
+            if(full) return `End of feast. The pledges are in various states of very full, warm contentment — several of them haven't moved in thirty minutes and look completely comfortable about this. Your sorority students are visibly heavier than when the feast started. She sits at the head of the table at ${Math.round(s.lbs)} pounds plus everything she's eaten tonight and surveys the room: the pledges, the sisters, the empty dishes. She is satisfied.`;
+            return `End of feast. Table cleared. Pledges fed. The culture has been transmitted.`;
+          },
+          choices:[
+            {id:"close_with_pledges",label:"Stay for the pledge close — hear her speak to them",result:`After the main feast clears she speaks to the pledges directly: what the chapter is, what she expects, what they've just participated in. She says her weight out loud — 519 pounds — and says: "I built this at every size. This is the culture." The pledges look at her with the expression of people who have just understood something important.`,rel:14,flag:"pledge_close"},
+            {id:"leave_early_with_senior_sisters",label:"Leave with the senior sisters — let her close alone",result:`You leave with the senior group. She stays behind with the pledges and the sorority students to close the feast.`,rel:5},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("full_funding")&&h.includes("push_pledges_further")&&h.includes("pledge_close"),text:`Rush season opening feast. She said "519 pounds, I built this at every size" and the pledges understood. Your sorority students are heavier. The culture has been transmitted to the incoming class and it will persist.`,gainBonus:19,relBonus:16},
+        {condition:h=>h.includes("full_funding")&&h.includes("push_pledges_further"),text:`Opening feast. Fully funded, pledges fed extra, sorority students heavier. The culture is transmitted.`,gainBonus:12,relBonus:11},
+        {condition:h=>h.includes("full_funding"),text:`Opening feast. Full table. The pledges understand what they've joined.`,gainBonus:7,relBonus:7},
+        {condition:()=>true,text:`Opening feast. Table cleared. Culture transmitted.`,gainBonus:0,relBonus:4},
+      ]
+    },
+    // stage 9 — ~630 lbs
+    {
+      title:"Annual Grand Feast",
+      phases:[
+        {
+          text:(h,s)=>`${Math.round(s.lbs)} pounds and the annual grand feast, which is the event the chapter now plans the entire year around. She has been in the kitchen since six in the morning. It is now six in the evening. The table is the most extraordinary thing she has ever set: twenty-three courses, warm and fragrant and prepared entirely by her. Your sorority students are here — both of them, deeply embedded in the culture, substantially heavier than when this started. The whole chapter is here.`,
+          choices:[
+            {id:"witness_setup",label:"Arrive early — watch her set the table",result:`You arrive at five and watch her work the final hour of preparation: the last courses, the table arrangement, the care she brings to each placement. She is 630 pounds moving through the chapter kitchen with total command. Her belly, vast and warm and apron-hanging, brushes the counter as she passes and she doesn't pause.`,lbs:8,rel:11,flag:"witnessed_setup"},
+            {id:"full_supplemental",label:"Bring a supplemental feast — match her twenty-three with ten more",result:`You arrive with ten additional courses, high quality, warm. She looks at what you've brought and says: "Good." She incorporates all of it. The table becomes the largest any of them have ever seen.`,lbs:10,rel:9,flag:"supplemented"},
+          ]
+        },
+        {
+          text:(h,s)=>h.includes("supplemented")
+            ?`Midway — thirty-three courses in, the chapter is eating with sustained, warm, pleasured focus. Your sorority students are on their seventh plates. Several sisters haven't left the table in two hours. She sits at the head of the table, ${Math.round(s.lbs)} pounds and everything she's eaten today, her belly warm and vast and enormously present, eating with the unhurried pleasure of someone who has built this and is now living in it.`
+            :`Midway. Twenty-three courses, the chapter is eating steadily. Your sorority students are deep in it. She presides and eats.`,
+          choices:[
+            {id:"grand_feast_extra",label:"Fund additional courses for everyone at the midpoint",result:`You fund another round for the whole table at the midpoint. The chapter eats it. Your sorority students eat through it with the ease of women who have been training for this for two years. They are going to be significantly heavier.`,rel:11,feedOther:{archetype:"sorority",lbs:9,text:"Your sorority students eat through the grand feast extra round. They have been doing this for two years and it shows on their bodies and in the ease with which they keep eating."}},
+            {id:"sit_at_head_with_her",label:"Sit beside her at the head of the table",result:`You take the seat beside her for the second half and she eats and you sit together and watch the table — the sisters eating, your sorority students deep in it — and she says: "I want to do this every year until I'm too large to stand at the stove." She means it as a goal.`,lbs:9,rel:13,flag:"together_at_head"},
+          ]
+        },
+        {
+          text:(h,s)=>{
+            const full=h.includes("supplemented")&&h.includes("grand_feast_extra");
+            if(full) return `End of the grand feast. The table is cleared. The chapter is in various states of very full, very warm contentment — several sisters have not moved in an hour and are completely satisfied about this. Your sorority students are the heaviest they have ever been and they are still at the table. She sits at the head — ${Math.round(s.lbs)} pounds, everything she's cooked, everything she's eaten today, her belly vast and warm and enormous against her hostess dress — and looks at the room. This is what she built.`;
+            return `End of the grand feast. Table cleared. Chapter fed. The annual tradition is cemented.`;
+          },
+          choices:[
+            {id:"last_plate_together",label:"Share the last plate with her — just you two",result:`After the chapter disperses you find the last plate she's saved and she puts it between you and you eat together in the empty chapter room and she says: "I'm going to be too large to cook this alone next year. I'll need help." She is asking you something. You understand what it is.`,rel:17,flag:"intimate_close"},
+            {id:"chapter_close",label:"Stand at the door with her as the chapter leaves",result:`You stand beside her as the sisters file out, each one saying goodnight, each one heavier than they arrived, and she is 630 pounds of warmth in the doorway and she says goodnight to all of them personally and stays until the last one is gone.`,rel:8},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("supplemented")&&h.includes("grand_feast_extra")&&h.includes("intimate_close"),text:`Annual grand feast. She said she'll need help next year because she'll be too large to cook alone. Your sorority students are the heaviest they've ever been. The chapter is fed. She is 630 pounds and completely satisfied and she ate the last plate with you in the empty chapter room.`,gainBonus:22,relBonus:18},
+        {condition:h=>h.includes("supplemented")&&h.includes("grand_feast_extra"),text:`Annual grand feast. Thirty-three courses, the whole chapter fed, your sorority students are significantly heavier. The tradition is cemented.`,gainBonus:14,relBonus:13},
+        {condition:h=>h.includes("supplemented"),text:`Grand feast. The supplemental courses were right. The chapter ate extraordinarily.`,gainBonus:8,relBonus:8},
+        {condition:()=>true,text:`Annual grand feast. Twenty-three courses. Table cleared. Culture intact.`,gainBonus:0,relBonus:5},
+      ]
+    },
+  ],
+
+  // ── FARM GIRL: homestead_queen (multi-phase prose, no mini-game) ──────────
+  homestead_queen:[
+    // stageIdx 0 — ~258 lbs — "The First Spread"
+    {
+      title:"The First Spread",
+      phases:[
+        {
+          text:(h,s)=>`You knock. The door opens on warmth and cinnamon and Mary Jane — ${Math.round(s.lbs)} pounds in denim overalls, flour on one arm, her enormous chest testing the bib — grinning like she's been waiting. Behind her: six dishes. She has made six dishes.
+
+"Sit down," she says. "We're going to start from the beginning."`,
+          choices:[
+            {id:"ate_everything",label:"Try everything — all six",result:(s)=>`You work through all six in order. She watches every bite. Her belly presses the folding table's edge with warm certainty. By the fourth dish she's eating alongside you, standing at the counter, directly from the pots. "This one needs more butter," she says, and adds more butter.`,lbs:10,rel:8,flag:"ate_everything"},
+            {id:"paced",label:"Eat carefully — appreciate each one",result:(s)=>`You take your time with each dish. She approves of this — asks about the texture, the salt, what you taste. She eats while you eat, plate for plate, her belly rounding further against the table. "You pay attention," she says. It's a compliment.`,lbs:6,rel:12,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`Grandma Mae calls. Mary Jane answers — her phone propped against a jar of preserves — and Mae's voice fills the room with questions. How's school. What are you making. Is anyone eating with you.
+
+Mary Jane glances at you. "Someone's here," she says. "He's eating my sweet potato pie." A pause on the line. Mae says: "Well, make sure he eats it right."`,
+          choices:[
+            {id:"called_mae_back",label:"Wave at the camera — let Mae see you",result:(s)=>`You wave. Mae studies you for a moment. "He looks like he appreciates food," she says, which is the highest possible endorsement. Mary Jane is smiling. She cuts another piece of pie.`,lbs:5,rel:15,flag:"called_mae_back"},
+            {id:"second_helping",label:"Take a second piece while she talks",result:(s)=>`You take a second piece without asking. Mary Jane sees and doesn't say anything — just reaches over and cuts it properly for you while she's still on the phone. Mae says: "I hear plates. Good." She does.`,lbs:8,rel:9,flag:"second_helping"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("called_mae_back"),text:(h,s,gain)=>`Mae approved. You cleared the full spread. Mary Jane is ${Math.round(s.lbs + gain)} pounds and warm and very satisfied, her belly pressed forward against the table, apron flour-dusted, hands wrapped around a mug of something hot. "You can come back," she says. "Next week I'm making six more." She unlocks the first recipe.`,gainBonus:6,relBonus:12,unlockRecipe:'sweet_potato_pie'},
+        {condition:()=>true,text:(h,s,gain)=>`Good meal. Mary Jane is ${Math.round(s.lbs + gain)} pounds and warm and she's already mentally planning the next spread. You can see it in her face — the next six dishes, the next occasion. "Come back," she says. She unlocks the first recipe.`,gainBonus:2,relBonus:6,unlockRecipe:'sweet_potato_pie'},
+      ]
+    },
+    // stageIdx 1 — ~320 lbs — "The Care Package Arrives"
+    {
+      title:"The Care Package Arrives",
+      phases:[
+        {
+          text:(h,s)=>`The care package from Mae arrived this morning. Mary Jane has it open on the counter when you arrive — six jars of preserves, three packets of heirloom seeds, a tin of seasoned lard, and a handwritten note. She is ${Math.round(s.lbs)} pounds and visibly emotional. Her belly rounds firmly against the counter edge.
+
+"She sent the lard," she says. "The good lard. She only sends the good lard when she means it."`,
+          choices:[
+            {id:"ate_everything",label:"Ask her to cook with it now",result:(s)=>`She cooks with it now. Something fast and heavy — biscuits, straight from the tin, with one of Mae's preserves on top. She eats standing up, directly off the baking sheet, her belly pressed against the counter, warm and enormous and completely present. "Mae would approve," she says.`,lbs:12,rel:9,flag:"ate_everything"},
+            {id:"read_the_note",label:"Ask her to read the note aloud",result:(s)=>`She reads it. Mae's handwriting is large and direct: 'Baby, eat good. Send me a picture of what you made.' She folds the note carefully. Then she starts cooking. "I'm going to send her a picture of everything," she says.`,lbs:7,rel:14,flag:"read_the_note"},
+          ]
+        },
+        {
+          text:(h,s)=>`She's on video call with Mae now, showing her the setup — the jars lined up, the folding table covered in food, the cast iron she's accumulated. Mae is smiling. "Baby girl," Mae says, "you've got yourself a real kitchen."
+
+Mary Jane glances at you. "Tell her what you've been eating," she says. She means it as a gift.`,
+          choices:[
+            {id:"called_mae_back",label:"Tell Mae about the sweet potato pie",result:(s)=>`You tell Mae the pie was the best you've ever had. Mae beams. Mary Jane pretends not to be affected. Her belly rises and settles with one slow breath, enormous and warm. She cuts you another piece.`,lbs:6,rel:14,flag:"called_mae_back"},
+            {id:"second_helping",label:"Take a second helping while they talk",result:(s)=>`You take a second plate while they're talking. Mae sees. "He's eating your food," Mae says. "That means it's good." Mary Jane nods once. She doesn't say anything. She adds more to your plate.`,lbs:10,rel:10,flag:"second_helping"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("called_mae_back"),text:(h,s,gain)=>`Mae is pleased. The care package is being used. Mary Jane is ${Math.round(s.lbs + gain)} pounds and warm and her belly presses the folding table with a weight that has grown noticeably since the last time you were here. She unlocks another recipe.`,gainBonus:8,relBonus:12,unlockRecipe:'biscuits_gravy'},
+        {condition:()=>true,text:(h,s,gain)=>`Good afternoon. The care package is open, the food is in you, Mary Jane is ${Math.round(s.lbs + gain)} pounds and warmer than she was at the start. She unlocks another recipe from Mae's box.`,gainBonus:3,relBonus:7,unlockRecipe:'biscuits_gravy'},
+      ]
+    },
+    // stageIdx 2 — ~419 lbs — "Recipe Box Week"
+    {
+      title:"Recipe Box Week",
+      phases:[
+        {
+          text:(h,s)=>`The recipe box from Mae has been open on the counter all week. Mary Jane has worked through eight recipes and is on number nine when you arrive. She is ${Math.round(s.lbs)} pounds, enormous and warm in the wide cotton housedress she's started wearing, her belly rounding out the front completely, the apron tied behind in a wide knot.
+
+"Peach cobbler," she says, without looking up. "Third version. The first two were wrong. Sit down."`,
+          choices:[
+            {id:"ate_everything",label:"Try all three versions in order",result:(s)=>`She has kept all three. You try them in order — she watches each bite with the attention of someone collecting data. "The third one's right," you confirm. She already knew. She eats version three directly from the pan with a serving spoon, her belly pressing the counter, warm and forward and enormous.`,lbs:13,rel:10,flag:"ate_everything"},
+            {id:"told_her_about_you",label:"Tell her this is the best cobbler you've ever had",result:(s)=>`You tell her. She sets the spoon down and looks at you. "Mae's recipe," she says. "All I did was make it right." But she's pleased. She serves you a larger portion. Her belly presses the counter as she leans to dish it up.`,lbs:8,rel:16,flag:"told_her_about_you"},
+          ]
+        },
+        {
+          text:(h,s)=>`Mae is calling. Sunday call, ten sharp — Mary Jane answers eating, which Mae apparently knows because Mae says immediately: "Good. What is it?" She eats while they talk. You eat while they talk. The room is very warm.`,
+          choices:[
+            {id:"called_mae_back",label:"Stay for the whole call",result:(s)=>`You stay. Mae tells a story about the recipe — its origin, who made it first, what was different then. Mary Jane listens and eats. You listen and eat. Her belly is warm and pressed and enormous and she breathes around it while she listens, adding weight to every slow breath.`,lbs:7,rel:14,flag:"called_mae_back"},
+            {id:"cleaned_the_pot",label:"Finish everything in the pot",result:(s)=>`You clean the pot while they talk. Mary Jane sees and, without breaking the call, fills your bowl again from the backup pan. She planned for this. She planned for you specifically.`,lbs:11,rel:11,flag:"cleaned_the_pot"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("told_her_about_you"),text:(h,s,gain)=>`Three cobbler versions and an entire call and Mary Jane is ${Math.round(s.lbs + gain)} pounds and the cobbler is perfected and Mae knows about you specifically now. She unlocks the third recipe.`,gainBonus:9,relBonus:14,unlockRecipe:'peach_cobbler'},
+        {condition:()=>true,text:(h,s,gain)=>`Recipe tested. Mary Jane is ${Math.round(s.lbs + gain)} pounds and warm and the cobbler is right now. Another recipe unlocked.`,gainBonus:4,relBonus:8,unlockRecipe:'peach_cobbler'},
+      ]
+    },
+    // stageIdx 3 — ~519 lbs — "The Weekly Call"
+    {
+      title:"The Weekly Call",
+      phases:[
+        {
+          text:(h,s)=>`Mary Jane barely leaves the room anymore. This is not distress — it's gravity, the specific gravity of someone who has grown too large for casual outings and settled into the warmth of the homestead instead. She is ${Math.round(s.lbs)} pounds in the wide cotton housedress, the apron load-bearing now, her belly enormous and forward and warm, filling the space between her and the folding table completely.
+
+"I made cornbread," she says. "Sit down." It's not a question.`,
+          choices:[
+            {id:"ate_everything",label:"Eat until it's gone",result:(s)=>`You eat until it's gone. She eats alongside you, directly from the pan — her belly pressed against the counter, the warmth of the food settling into it with each bite. When the pan is empty she looks at it and then looks at you. "I can make more," she says. It's not a question.`,lbs:14,rel:10,flag:"ate_everything"},
+            {id:"second_helping",label:"Have a second bowl and ask her to eat with you properly",result:(s)=>`You ask her to sit with you. She does — a slow, settled lowering into the wide chair she's reinforced for herself, her belly filling the space in front of her, enormous and warm. She eats from her own bowl. This is intimacy, in this room, with this food.`,lbs:9,rel:17,flag:"second_helping"},
+          ]
+        },
+        {
+          text:(h,s)=>`Mae calls at ten. Mary Jane answers already eating — Mae says, predictably: "Good. What is it?" They talk for forty minutes. You eat for forty minutes. The room smells like everything she's made this week and she is ${Math.round(s.lbs)} pounds and warm and absolutely at home.`,
+          choices:[
+            {id:"called_mae_back",label:"Ask Mae about the cream gravy recipe",result:(s)=>`You ask Mae about the cream gravy. Mae lights up. She talks for fifteen minutes. Mary Jane watches you with an expression you can't fully read — something like recognition. "He asks good questions," Mae says. Mary Jane nods. "I know," she says.`,lbs:6,rel:16,flag:"called_mae_back"},
+            {id:"told_her_about_you",label:"Tell Mae you've been coming here every week",result:(s)=>`You tell Mae. She is quiet for one second and then says: "Good." Just that. Mary Jane's belly rises with a slow breath. "Good," she echoes, not talking to Mae. She adds more to your plate.`,lbs:8,rel:14,flag:"told_her_about_you"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("called_mae_back"),text:(h,s,gain)=>`Mae knows about the cream gravy now. Mary Jane is ${Math.round(s.lbs + gain)} pounds and the room is warm and she's already planning next week. She unlocks another recipe from memory.`,gainBonus:10,relBonus:14,unlockRecipe:'cornbread_butter'},
+        {condition:()=>true,text:(h,s,gain)=>`Sunday call, good food, Mary Jane ${Math.round(s.lbs + gain)} pounds and warmer than before. Another recipe added to the list.`,gainBonus:4,relBonus:8,unlockRecipe:'cornbread_butter'},
+      ]
+    },
+    // stageIdx 4 — ~630 lbs — "Running Out of Room"
+    {
+      title:"Running Out of Room",
+      phases:[
+        {
+          text:(h,s)=>`The room is straining to hold her. Mary Jane is ${Math.round(s.lbs)} pounds and the homestead has grown with her — the folding tables are now four, the cast iron collection is floor-level because she can't reach the shelf anymore, the wide chair she sits in has been reinforced twice. She fills the center of the room completely.
+
+"Mae called this morning," she says. "She says I'm going to run out of room." She's not upset about this. "She's right," she adds. She hands you a bowl.`,
+          choices:[
+            {id:"ate_everything",label:"Clear everything on the table",result:(s)=>`You clear the table. She watches. Her belly is enormous and warm and pressed against the table edge, the apron straining across it, and her chest sits on top of it like a shelf. She eats from her own plate while you clear yours. "Mae says to make more when you run out," she says. "She means food." She means several things.`,lbs:16,rel:11,flag:"ate_everything"},
+            {id:"cleaned_the_pot",label:"Get everything — lick the pot",result:(s)=>`You get everything. She approves of this completely — starts cooking more before you've finished, because she always plans for more, because Mae taught her that. "There's always room," she says, stirring. Her belly presses the counter. There is less and less room. There is always more.`,lbs:20,rel:8,flag:"cleaned_the_pot"},
+          ]
+        },
+        {
+          text:(h,s)=>`She cooks the pound cake last. The room smells enormous. Mary Jane is ${Math.round(s.lbs)} pounds and she's breathing carefully around the fullness, her belly warm and very heavy and forward, and she cuts the cake with the ease of someone who has done this ten thousand times.
+
+"Mae's going to drive up," she says. "She wants to see the homestead. She wants to see me." She cuts you a slice. "You should be here," she says.`,
+          choices:[
+            {id:"told_her_about_you",label:`"I'll be here."`,result:(s)=>`"I'll be here," you say. She hands you the slice and cuts her own, larger, and they eat in the quiet warm room. Her belly presses everything around her with the gentle insistence of something that has been growing for a very long time and intends to keep growing.`,lbs:10,rel:18,flag:"told_her_about_you"},
+            {id:"second_helping",label:"Ask for a second piece",result:(s)=>`You ask for a second piece. She cuts it before you finish asking. This is how it works now — you ask, she has already anticipated, the food appears. Her belly presses the edge of the folding table, warm and enormous and present, and she eats alongside you without comment.`,lbs:14,rel:12,flag:"second_helping"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("told_her_about_you"),text:(h,s,gain)=>`You'll be there when Mae visits. Mary Jane is ${Math.round(s.lbs + gain)} pounds and warm and the room is full and she is making plans. She unlocks the pound cake recipe.`,gainBonus:12,relBonus:16,unlockRecipe:'pound_cake'},
+        {condition:()=>true,text:(h,s,gain)=>`Good afternoon. Mary Jane is ${Math.round(s.lbs + gain)} pounds and the room has reached its capacity and she is planning to exceed that capacity as well. Recipe unlocked.`,gainBonus:5,relBonus:9,unlockRecipe:'pound_cake'},
+      ]
+    },
+    // stageIdx 5 — ~820 lbs (blob) — "The Final Harvest Table"
+    {
+      title:"The Final Harvest Table",
+      phases:[
+        {
+          text:(h,s)=>`Mae drove up. She knocked and you answered — she gave you one long look and then looked past you at Mary Jane, who is ${Math.round(s.lbs)} pounds and fills the room and doesn't pretend otherwise. Mae looked at her for a long time. Then she started crying. Then she went to the counter and started cooking.
+
+She's been cooking for four hours. The table has more food on it than you've ever seen in one place. Mae is wiping her eyes with her apron. Mary Jane has both hands flat on her own enormous belly, eyes closed, completely still.`,
+          choices:[
+            {id:"ate_everything",label:"Start eating — this is what the table is for",result:(s)=>`You start eating. Mae watches with an expression you can't name — grief and pride and something beyond both, the specific emotion of someone who raised something and watched it become more than they expected. Mary Jane opens her eyes. She starts eating too. The three of you eat without speaking for a long time.`,lbs:18,rel:12,flag:"ate_everything"},
+            {id:"called_mae_back",label:"Thank Mae for the food",result:(s)=>`You thank Mae. She looks at you for a long moment. "She talks about you," she says. "She talks about you every Sunday." She sets another dish on the table. Mary Jane doesn't say anything. Her belly rises and settles with a slow warm breath.`,lbs:10,rel:20,flag:"called_mae_back"},
+          ]
+        },
+        {
+          text:(h,s)=>`Mae sits across from Mary Jane. They talk — about home, about the recipes, about the farm. Mary Jane eats while they talk. Mae eats while they talk. You eat while they talk. The table goes down plate by plate, dish by dish. Mary Jane is ${Math.round(s.lbs)} pounds and she fills the room and she is completely at home in it, enormous and warm and immovable and entirely herself.
+
+Mae says: "I didn't know it would be this big." A pause. "I'm glad it is." She reaches across and puts her hand on Mary Jane's.`,
+          choices:[
+            {id:"told_her_about_you",label:"Tell Mae what this has meant",result:(s)=>`You tell Mae. You tell her about the weekly visits, the recipes, the food she sent that became other food, the room that became more room as Mary Jane became more Mary Jane. Mae listens. When you finish she nods once. "Good," she says. She adds more food to your plate. You eat it.`,lbs:12,rel:20,flag:"told_her_about_you"},
+            {id:"cleaned_the_pot",label:"Clean the table — eat until it's gone",result:(s)=>`You clean the table. Everything. Mae watches and then starts bringing more from the stove. The table refills. You keep going. Mary Jane keeps going. Mae keeps cooking. The cycle is complete and it is ancient and it is exactly right.`,lbs:22,rel:12,flag:"cleaned_the_pot"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("told_her_about_you"),text:(h,s,gain)=>`Mae drove four hours. She saw the homestead. She saw Mary Jane — ${Math.round(s.lbs + gain)} pounds, warm, enormous, completely herself. She cried and then she cooked and now the table is empty and the room is very warm. "Come again," Mae says, to you. Mary Jane unlocks the last recipe.`,gainBonus:14,relBonus:18,unlockRecipe:'cream_gravy'},
+        {condition:()=>true,text:(h,s,gain)=>`Mae came. She cooked. The table went down. Mary Jane is ${Math.round(s.lbs + gain)} pounds and warm and the room is full and Mae is already planning the next visit. Last recipe unlocked.`,gainBonus:6,relBonus:12,unlockRecipe:'cream_gravy'},
+      ]
+    },
+  ],
+
+  // ── FARM GIRL: state_fair_queen (phases 1-2 prose, startsFairContest) ────────
+  state_fair_queen:[
+    // stageIdx 0 — ~258 lbs — "Tri-County Fair"
+    {
+      title:"Tri-County Fair",
+      phases:[
+        {
+          text:(h,s)=>`Backstage at the Tri-County Fair. The tent smells like sawdust and sugar and summer. You are ${Math.round(s.lbs)} pounds and this is your first competitive entry and Darcy from Meadowview — 310 pounds, three years on the circuit — has not looked at you once.
+
+The warmup table has pies. This is the pre-competition warmup. You eat.`,
+          choices:[
+            {id:"loaded",label:"Load aggressively — fill up early",result:(s)=>`You eat like you came here to eat. Three pies before anyone else has finished their first. Your belly fills and firms and rounds against the waistband. Darcy still hasn't looked at you. You eat a fourth.`,lbs:8,rel:4,flag:"loaded"},
+            {id:"paced",label:"Eat smart — full enough to compete, not so full you slow down",result:(s)=>`You eat with discipline — the warm-up is a tool, not an event. Full enough. Belly warm and ready. Darcy finally glances over. She looks back at her plate. You keep eating, controlled, exactly where you want to be.`,lbs:5,rel:8,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`Public weigh-in. The fair uses a livestock scale — this is not a metaphor, this is a cattle fair and the scale was built for cattle. They put it in the tent for this event. Both competitors step up.
+
+Darcy: 310 lbs. Polite applause.
+
+You: ${Math.round(s.lbs)} lbs. The judge reads it. Darcy doesn't look at the board. She looks at you, once, with an expression that is not dismissive but is something in that direction. She says: "Good luck." She means it as a formality.`,
+          choices:[
+            {id:"confident",label:"Step off the scale and look at her directly",result:(s)=>`You step off and look at her. She looks back. Her expression shifts — not much, but something. She goes back to her stretching. You go back to your lane. The number was honest. The number is always honest.`,rel:8,flag:"confident"},
+            {id:"paced",label:"Step off and get focused",result:(s)=>`You step off and lock in. First contest. First scale. The number is real. Make it mean something.`,rel:4,flag:"paced"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`Loaded and locked in. Darcy's waiting at her lane. The pies are on the table. You are here to eat and you know it.
+
+The horn sounds in three minutes. Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+        {condition:()=>true,text:`Warm. Ready. Darcy's in her lane. The table is set.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+      ]
+    },
+    // stageIdx 1 — ~320 lbs — "County Championship"
+    {
+      title:"County Championship",
+      phases:[
+        {
+          text:(h,s)=>`Darcy says "you again" when she sees you in the backstage area. She says it like she's been thinking about it since last year. She's 350 pounds now — bigger than last season — and she looks at you with a different attention than before.
+
+You're ${Math.round(s.lbs)} pounds. The gap has narrowed.`,
+          choices:[
+            {id:"loaded",label:"Load heavy at the warmup table",result:(s)=>`You load heavy. Your belly fills warm and enormous against the waistband and Darcy watches you eat from across the warmup area. She doesn't say anything. She eats her own warmup — deliberate, paced, experienced. You eat more.`,lbs:10,rel:4,flag:"loaded"},
+            {id:"paced",label:"Eat controlled — tactical",result:(s)=>`You eat controlled. Darcy is pacing too and she nods once at your plate in a way that suggests she's noticed you've gotten smarter about this. The gap is closing on multiple axes. You eat until you're ready and stop.`,lbs:6,rel:10,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`Scale. Darcy: 350. You: ${Math.round(s.lbs)}. The judge reads both numbers. The board puts them side by side. The gap is small enough that someone in the crowd makes a comment.
+
+Darcy looks at the board. "You're closing," she says. Not a question.`,
+          choices:[
+            {id:"confident",label:`"I'm closing." — and hold her gaze`,result:(s)=>`"I'm closing," you say. She nods slowly. "I've been doing this for three years," she says. "It's going to be close today." She says this respectfully. You step off the scale. It is going to be close.`,rel:9,flag:"confident"},
+            {id:"crowd_moment",label:"Look at the crowd when the number is read",result:(s)=>`You look at the crowd when the judge reads the number. Some of them know you now. A few of them are starting to. Someone starts clapping. Darcy hears it and looks at you differently.`,rel:7,flag:"crowd_moment"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`Darcy said it's going to be close. She's right. The table is set. The pies are there.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+        {condition:()=>true,text:`Close match coming. Darcy ready. You ready.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+      ]
+    },
+    // stageIdx 2 — ~419 lbs — "State Qualifier"
+    {
+      title:"State Qualifier",
+      phases:[
+        {
+          text:(h,s)=>`State level. Press credentials at the door, a photographer from the ag section of the regional paper, and Darcy — 390 pounds now, still a veteran but no longer the biggest number in the room.
+
+You're ${Math.round(s.lbs)} pounds. This is the first year you outweigh her at start.
+
+She finds you in the backstage warmup area. "I've been thinking about this," she says. "About what's going to happen today." She starts eating her warmup. So do you.`,
+          choices:[
+            {id:"loaded",label:"Eat like it's a statement",result:(s)=>`You eat like it's a statement. Your belly fills and rounds against the competition jersey and you keep going, each pie a pound in the making, your enormous chest and belly warm and prominent. Darcy watches. She eats her own warmup more quickly. The gap is not closing.`,lbs:12,rel:5,flag:"loaded"},
+            {id:"paced",label:"Eat smart and let the body speak for itself",result:(s)=>`You eat smart. Darcy is watching you eat and she's recalibrating something — you can see it. You stop when you're ready. Your body is the statement. 419 pounds is the statement. You don't need to do anything else.`,lbs:7,rel:11,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`Scale. Darcy: 390. You: ${Math.round(s.lbs)}.
+
+You're 29 pounds heavier. For the first time, your number is higher on the board. Darcy stops mid-stretch when she sees it. Looks at it for a second. Goes back to stretching.
+
+"Where are you putting all that?" she says. Not unkindly. She genuinely wants to know.`,
+          choices:[
+            {id:"confident",label:`"I grew more room."`,result:(s)=>`"I grew more room." Darcy looks at you and then very nearly smiles. "Fair enough," she says. She finishes her stretch. You step off the scale. The photographer takes a picture.`,rel:10,flag:"confident"},
+            {id:"intimidated_them",label:"Look at the scoreboard and then back at Darcy",result:(s)=>`You look at the board — your number at the top — and then back at Darcy. She meets your gaze. She doesn't look away. She does, eventually, look at her plate. You step off the scale.`,rel:7,flag:"intimidated_them"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`Your number is at the top of the board. Darcy's stretching behind you. The table is set.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+        {condition:()=>true,text:`First time your number is highest. The table is ready.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+      ]
+    },
+    // stageIdx 3 — ~519 lbs — "State Fair Finals"
+    {
+      title:"State Fair Finals",
+      phases:[
+        {
+          text:(h,s)=>`State fair finals. The tent is twice the size of last year's. There's a PA system now. Darcy finds you backstage — 430 pounds, serious, present — and she says: "I trained for six months." She says it as information, not complaint. "All year for this."
+
+You're ${Math.round(s.lbs)} pounds. You haven't been not training.`,
+          choices:[
+            {id:"loaded",label:"Eat at the warmup table while she talks",result:(s)=>`You eat while she talks. She watches you eat. She says: "Right." She goes to her own warmup and eats with the focused discipline of someone who trained all year and knows what they're doing. You eat more. You have more to work with.`,lbs:13,rel:6,flag:"loaded"},
+            {id:"paced",label:"Tell her it's going to be a good match",result:(s)=>`"It's going to be a good match," you say. She looks at you for a moment. "Yes," she says, "it is." She goes to her warmup table. You go to yours. This is the cleanest possible pre-competition.`,lbs:8,rel:13,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`Scale. You: ${Math.round(s.lbs)}. The judge reads it into the PA and the tent responds — not polite applause, something louder and more specific, the sound of a number that means something to people.
+
+Darcy claps. Full hand-claps. Not polite. She keeps going after most other people have stopped.`,
+          choices:[
+            {id:"confident",label:"Acknowledge her applause directly",result:(s)=>`You look at her. She's still clapping. "All year," she says, "for this." She means it as a compliment of the highest order. You step off the scale. The PA is saying your name.`,rel:13,flag:"confident"},
+            {id:"crowd_moment",label:"Look at the whole tent",result:(s)=>`You look at the whole tent — the crowd at the entrance, the photographer, Darcy clapping — and you stand there on the scale for one extra second and let the number be the number. Then you step off.`,rel:9,flag:"crowd_moment"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`Darcy is still clapping somewhere behind you. The table is set. The PA has your name on it.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+        {condition:()=>true,text:`The tent is loud. Your name on the PA. Table set.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+      ]
+    },
+    // stageIdx 4 — ~630 lbs — "Tri-State Invitational"
+    {
+      title:"Tri-State Invitational",
+      phases:[
+        {
+          text:(h,s)=>`They built a bigger scale. The fair director mentioned this at registration, trying to be casual about it — "we've upgraded our equipment for this year" — and the whole line understood who the upgrade was for.
+
+You're ${Math.round(s.lbs)} pounds. Darcy is in the stands — 465 pounds, there to watch. She has a sign. It says YOUR NAME in marker on a piece of cardboard.`,
+          choices:[
+            {id:"loaded",label:"Eat at the warmup table until you're ready",result:(s)=>`You eat until you're ready. Your belly fills and presses your jersey and you stop when the warmth is total and you feel the weight of it completely. That's your signal. You stop. You're ready.`,lbs:15,rel:6,flag:"loaded"},
+            {id:"crowd_moment",label:"Find Darcy in the stands and nod",result:(s)=>`You find Darcy in the stands and nod. She raises the sign. Someone nearby sees the sign and then looks at you and their eyes widen. Darcy has been here since the gates opened.`,lbs:8,rel:14,flag:"crowd_moment"},
+          ]
+        },
+        {
+          text:(h,s)=>`Scale. The new scale. You step onto it — ${Math.round(s.lbs)} pounds — and the crowd that has gathered around the weigh-in tent is larger than the crowd for any competitor's event. The number comes up. The judge reads it into the PA.
+
+The midway outside the tent pauses. Everyone turns. Someone out there starts clapping first.`,
+          choices:[
+            {id:"confident",label:"Stand on the scale for an extra moment",result:(s)=>`You stand there. The applause comes in from outside and then from inside. Darcy is on her feet in the stands. The sign is raised. You step off. You are the draw now. The contest is the bonus.`,rel:15,flag:"confident"},
+            {id:"intimidated_them",label:"Make eye contact with the competitors",result:(s)=>`You look at the other competitors. They look back. Some of them look at the board. Some of them look at their plates. You step off the scale.`,rel:8,flag:"intimidated_them"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`Darcy's sign is in the air. The midway has stopped. The table is set.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+        {condition:()=>true,text:`The crowd is gathered. The scale is behind you. The table is ahead.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+      ]
+    },
+    // stageIdx 5 — ~820 lbs (blob) — "Grand Fair Invitational"
+    {
+      title:"Grand Fair Invitational",
+      phases:[
+        {
+          text:(h,s)=>`You barely fit the tent. They extended the backstage area this year — a temporary addition, a wide flap of canvas that gives you the room you need to exist in it. You are ${Math.round(s.lbs)} pounds. Darcy is in the stands, 500 pounds, there to watch you win. She has been here since the gates opened.
+
+The warmup food comes to you. You don't go to the table — the table comes to your area. This is a newer tradition.`,
+          choices:[
+            {id:"ate_everything",label:"Eat everything they bring",result:(s)=>`You eat everything they bring. Your belly is enormous and warm and the warmup food disappears plate by plate. The tent crew exchanges looks. You keep eating. You were not difficult to feed before you became this. You are not difficult to feed now.`,lbs:16,rel:8,flag:"ate_everything"},
+            {id:"loaded",label:"Eat at your pace — you know your body",result:(s)=>`You eat at your pace. This is a body you know completely now — its rhythms, its limits, the specific warmth that means ready. You eat to that warmth and stop. The crew looks at you. You are ready.`,lbs:10,rel:12,flag:"loaded"},
+          ]
+        },
+        {
+          text:(h,s)=>`They move the big scale into your area. The weigh-in comes to you now — this is also a newer tradition, instituted last year, after the previous invitational established that the walk to the central scale was not something the tent was designed for.
+
+The judge reads the number: ${Math.round(s.lbs)}. Outside the tent, through the canvas, you can hear the crowd stop moving. Then you hear Darcy's voice — she is somewhere in the front — starting to clap. The fair starts clapping.`,
+          choices:[
+            {id:"confident",label:"Sit with the number for a moment",result:(s)=>`You sit with it. ${Math.round(s.lbs)} pounds. The tent is applauding. Darcy somewhere in it, loudest. You put both hands on your belly — enormous and warm and completely present — and you feel the weight of yourself and the warmth of yourself and you are ready. The contest is incidental. You have already won.`,rel:18,flag:"confident"},
+            {id:"crowd_moment",label:"Look toward the tent entrance — toward the crowd",result:(s)=>`You look toward the entrance. The crowd outside has pressed in to see. Phones out. Darcy is in the first row of the stands, sign raised. The fair has come to see this. You are the fair.`,rel:12,flag:"crowd_moment"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("confident"),text:`Darcy is clapping. The fair is clapping. The table is coming to you.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+        {condition:()=>true,text:`The number is announced. The tent is full. The table is ready.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+      ]
+    },
+  ],
+};
+
+export const EVOLVED_FORM_META = {
+  sumo:                 { title:"Sumo Wrestler",        color:"#c0392b" },
+  eating_competitor:    { title:"Circuit Competitor",   color:"#e67e22" },
+  feedee_creator:       { title:"Feedee Creator",       color:"#8e44ad" },
+  body_positive_creator:{ title:"Body Positive Creator",color:"#27ae60" },
+  eating_captain:       { title:"Eating Captain",       color:"#2980b9" },
+  big_squad_captain:    { title:"Squad Reformation",    color:"#16a085" },
+  eating_diarist:       { title:"Eating Diarist",       color:"#9b59b6" },
+  food_researcher:      { title:"Food Researcher",      color:"#2c3e50" },
+  eating_streamer:      { title:"Eating Streamer",      color:"#e74c3c" },
+  speed_eater:          { title:"Speed Eater",          color:"#d35400" },
+  chapter_hostess:      { title:"Chapter Hostess",      color:"#6c3483" },
+  body_positive_greek:  { title:"Greek Pioneer",        color:"#1abc9c" },
+  metrics_eater:        { title:"Metrics Obsessive",    color:"#3498db" },
+  food_scientist:       { title:"Food Scientist",       color:"#2471a3" },
+  installation_artist:  { title:"Installation Artist",  color:"#f39c12" },
+  food_photographer:    { title:"Food Photographer",    color:"#ca6f1e" },
+  anonymous_blogger:    { title:"Anonymous Blogger",    color:"#5d6d7e" },
+  asmr_creator:         { title:"ASMR Creator",         color:"#7d3c98" },
+  campus_legend:        { title:"Campus Legend",        color:"#b7950b" },
+  food_tourist:         { title:"Food Tourist",         color:"#148f77" },
+  ff_author:            { title:"FF Author",            color:"#922b21" },
+  homestead_queen:      { title:"Homestead Queen",       color:"#8B5E3C" },
+  state_fair_queen:     { title:"State Fair Queen",      color:"#C8860A" },
+};
+
+export const EVOLUTION_BUTTON_BLURB = {
+  athlete:(s)=>`You see her in the gym doorway on a Tuesday afternoon, not working out — just standing there looking at the equipment that used to be hers. The pull-up bar. The bench press. None of it fits anymore, not really. She has more mass now than the sport knows what to do with. Her jaw is set, the way it gets when she's about to solve something. You watch her and think: she's still competitive. She just needs a new arena.`,
+  influencer:(s)=>`You walk past her on the quad and she doesn't notice you. She's filming herself on her phone — mouth open to say something, then stopping, deleting, starting again. The angle that used to work doesn't work now. She's bigger, softer, undeniable in ways her old content pretended weren't happening. She deletes the clip again. She doesn't look upset. She looks like someone who knows the answer is somewhere and hasn't found the framing yet. You think you might have an idea.`,
+  cheerleader:(s)=>`You stop by the gym during practice. ${s.name} is standing at the edge of the mat in her old uniform — or most of it, the waist seam split, the fabric at her thighs taut past bearing — watching the squad run through a routine she used to lead. She's not sad about it. The crowd at the open practice is still watching her. Some of them more than they're watching the performance. She's still the most present person in the room. You think about where that kind of presence could go.`,
+  bookworm:(s)=>`You find her in the late stacks at the library, long after the undergrads have gone. There's a notebook open on the table beside her laptop and a half-eaten sandwich she's forgotten about. When she hears you she closes the notebook with a firmness that suggests you just missed something. She doesn't look guilty. She looks like someone managing information carefully. You've seen that look before, when she had a thesis draft she wasn't ready to show. You wonder what she's writing.`,
+  gamer:(s)=>`You glance through her open door without meaning to. She's at her setup, the screen glowing, a game paused mid-level. She's eating — slowly, automatically, the bag of chips just there and going down without her noticing — and she's not looking at the game. She's looking at something on the second monitor, reading something. The room is warm and soft with the ambient light and her presence in it, her body filling the chair, comfortable in a way that suggests the chair has been arranged around her. You think about what she could do with this setup.`,
+  sorority:(s)=>`You walk past the chapter room during a meeting. The door is open. ${s.name} is technically not running things — she graduated from the formal role two months ago — but the room is still orienting itself around her. When she speaks, people write things down. When she pauses, people wait. She's larger now than when she held the title and somehow that makes it more true, not less. After the meeting empties you catch her in the hallway. She looks like someone with a plan that doesn't have a name yet.`,
+  overachiever:(s)=>`You find her planner left open on a library table while she's in the bathroom. You don't mean to read it. The weight gain is charted in a color-coded column alongside her GPA, her sleep, her caloric intake. She is tracking this the way she tracks everything. The numbers are precise and the trend is unmistakable and the color she's chosen for that column is gold. Not warning-red. Gold. You close the planner and wait. When she comes back she sees you saw it and just nods, once, like: yes, that's accurate, what are we going to do with it.`,
+  artsy:(s)=>`You stop by her studio during open hours. The new work is on the wall — three large canvases, all featuring generous female figures. They're not abstractions. They're specific. The lines are loving, the weight is warm, the bodies are real and present and unapologetic. She's standing in front of the largest one with her head tilted, deciding something. She doesn't explain the shift in subject matter when you ask. She says: 'It's what I want to look at.' She says this the way someone says something that is also about themselves. You think about what a larger project might look like.`,
+  quiet:(s)=>`You see her at the campus coffee shop on a Thursday morning, alone at a corner table with her laptop. She's typing quickly, absorbed, the kind of focus she reserves for things that matter. When she looks up and sees you she closes the laptop with one smooth motion, not alarmed but deliberate, and smiles. There's something behind the smile that isn't embarrassment — more like being caught in the middle of something private that hasn't been decided as a secret yet. You think about what she might be writing. You think you might have a better idea of what to do with it than she does.`,
+  transfer:(s)=>`You pass through the dining hall mid-afternoon and the staff behind the counter lights up when ${s.name} walks in behind you. They know her name. They have her order started before she reaches the counter. There's a booth in the corner that other students seem to drift away from, not consciously, just leaving it available in the particular way that space gets left for something or someone that belongs in it. She settles into it and the room adjusts slightly. You watch from across the hall and think: she's become part of this place faster than anyone else ever has.`,
+};
+
+
+export const EVOLUTION_OFFER = {
+  athlete:{
+    intro:(s)=>`${s.name} catches you after class. She's been thinking about what comes next — the weight she's carrying is real, undeniable, and the old sport doesn't fit anymore. But she's competitive in a way that doesn't turn off. She wants to do something with this body. She just needs a direction.`,
+    paths:{
+      sumo:    { label:"The Sumo Path",        desc:"Channel her athletic drive into sumo wrestling. The ring awaits. So does the crowd." },
+      eating_competitor:{ label:"The Circuit", desc:"Competitive eating circuits. Timers, records, a legitimate sport for exactly this body." },
+    },
+  },
+  influencer:{
+    intro:(s)=>`${s.name} puts her phone down — which you've never actually seen her do — and looks at you. 'The fitness content isn't landing anymore,' she says. 'My audience can see what's happening. I need a new angle. Two options.' She pulls her phone back out and shows you two draft pitches.`,
+    paths:{
+      feedee_creator:       { label:"Feedee Channel",         desc:"A niche, dedicated content brand built around exactly what's happening to her." },
+      body_positive_creator:{ label:"Body Positive Platform", desc:"Mainstream crossover: brand deals, TEDx, a cultural argument she can win." },
+    },
+  },
+  cheerleader:{
+    intro:(s)=>`${s.name} arrives with her captain's sash still on, slightly breathless. She's been thinking. The squad has a future. She has a body. The two things can be connected, but not in the old way. What's the new way?`,
+    paths:{
+      eating_captain:  { label:"Competitive Eating Captain", desc:"Rebrand the squad around competitive eating. Tournament structure, real competition, glory." },
+      big_squad_captain:{ label:"Body Positive Captain",     desc:"Change the squad's culture from the top. No more weigh-ins. A new kind of power." },
+    },
+  },
+  bookworm:{
+    intro:(s)=>`${s.name} slides a folder across the table. Inside: two things. One is a newsletter outline. The other is a printed manuscript — she printed it, which means she wants you to hold it — and the cover page has a pseudonym on it that is not her name. She doesn't explain either document. She just looks at you and waits.`,
+    paths:{
+      eating_diarist: { label:"The Diarist",  desc:"A newsletter, then a book. Her transformation as literature. Intimate, honest, under her own name — eventually." },
+      ff_author:      { label:"The Author",   desc:"Fanfiction, fat fetish fiction, stories about women who look exactly like the people in her life. Under a pseudonym. For now." },
+    },
+  },
+  gamer:{
+    intro:(s)=>`${s.name} swivels her chair toward you mid-session, something she never does. The game is still running. 'I've been thinking about what to do with this,' she says, indicating herself with one hand while the other keeps moving on the controller. 'And I have two ideas. Both involve this setup.' She gestures at the room.`,
+    paths:{
+      eating_streamer:{ label:"Eating Streamer", desc:"Gaming + mukbang content. The crossover is real and the audience is waiting." },
+      speed_eater:    { label:"Speed Eater",     desc:"Competitive eating with the same optimizer's brain. Records. Timers. That leaderboard mentality applied to food." },
+    },
+  },
+  sorority:{
+    intro:(s)=>`${s.name} closes the chapter meeting early and waits until everyone else has left. Then she turns to you. 'I've been thinking about what this chapter could be,' she says. 'And I think it's one of two things.' She pours two glasses of wine. The conversation is going to take a while.`,
+    paths:{
+      chapter_hostess:     { label:"The Hostess",              desc:"Wednesday feast nights. A culture of abundance. She feeds the chapter and the chapter grows." },
+      body_positive_greek: { label:"Body Positive Greek Life", desc:"End the weigh-ins. Change the culture. A permanent shift in what a sorority can be." },
+    },
+  },
+  overachiever:{
+    intro:(s)=>`${s.name} arrives with a color-coded presentation. Two options, two methodologies, both rigorous. She presents both in six minutes and then sits down and looks at you. 'I've decided this body is a project,' she says. 'The question is which kind.' She waits for your input.`,
+    paths:{
+      metrics_eater:  { label:"Metrics Obsessed", desc:"Data-driven eating as a discipline. Spreadsheets, records, optimization. The overachiever applied to appetite." },
+      food_scientist: { label:"Food Scientist",   desc:"IRB-approved self-study. Academic frame, institutional backing, a career built around the research." },
+    },
+  },
+  artsy:{
+    intro:(s)=>`${s.name} comes in late carrying a portfolio and sits down without speaking for thirty seconds. Then: 'I've been thinking about what the work is about now.' She opens the portfolio: two sets of sketches. Two directions. Both use this body as the primary material.`,
+    paths:{
+      installation_artist:{ label:"Installation Artist",   desc:"Document the transformation as art. Galleries, reviews, a retrospective of a body in progress." },
+      food_photographer:  { label:"Food Photographer",     desc:"Aesthetic eating as visual art. Shoots, gallery shows, museum collections." },
+    },
+  },
+  quiet:{
+    intro:(s)=>`${s.name} leaves a note on your desk. Not a spoken conversation — a note, slipped under the door sometime before anyone else arrived. Inside: two links and a short paragraph. 'I've been thinking,' the paragraph says, 'about what to do with the fact that I'm different now. Here are two ideas. You don't have to respond immediately.'`,
+    paths:{
+      anonymous_blogger:{ label:"Anonymous Blogger", desc:"A secret identity, a public record. Nobody knows who she is. The work speaks for itself." },
+      asmr_creator:     { label:"ASMR Creator",      desc:"Quiet, careful, therapeutic eating content. The perfect format for the person she's always been." },
+    },
+  },
+  transfer:{
+    intro:(s)=>`${s.name} sits across from you with the expression of someone who has figured something out. 'I've been here long enough to know this place,' she says. 'And I've been eating long enough to have something to say about it. Two options.' She slides two napkins across the table, each one with an idea scrawled on it.`,
+    paths:{
+      campus_legend: { label:"Campus Legend",   desc:"Become mythology. The dining hall, the booth, the stories incoming students hear about her before they arrive." },
+      food_tourist:  { label:"Food Tourist",    desc:"Document every cuisine available to her. A blog, a book deal, a cultural bridge between here and home." },
+    },
+  },
+  farm_girl:{
+    intro:(s)=>`${s.name} is sitting at the corner table with a cast-iron skillet, a jar of preserves, and a look on her face that says she's been thinking about this for a while. "You know what I want to be?" she says, not looking up. "I want to be *known* for this." She sets the skillet down. She looks at you. "For the food. For how much of it I can hold. I want people to know my name." She is ${Math.round(s.lbs)} pounds and growing, and she means every word.`,
+    paths:{
+      homestead_queen: { label:"Homestead Queen",  desc:"She builds a reputation around her cooking and her appetite together — the warmth of a real homestead, growing and feeding and being fed, with you at the center of it." },
+      state_fair_queen:{ label:"State Fair Queen", desc:"She takes her eating to the competitive circuit — county fairs, state championships, a recurring rival from the next county, and a crowd that keeps getting louder every time she steps on the scale." },
+    },
+  },
+};
+
+export const ASCENSION_BRIDGE = {
+  sumo:             (s)=>`${s.name} sets the championship belt down on the table — slowly, carefully, the way you set down something that's been held a long time. She looks at her hands. 'The ring gave me a reason,' she says. 'But reasons run out eventually. This doesn't.' She touches her own mass, slowly, the way you touch something that belongs to you completely. 'I think the goddess needs more than a wrestler.'`,
+  eating_competitor:(s)=>`${s.name} closes the record notebook — the one with four years of times and weights and personal bests — and sits with it in her hands for a long moment. 'I've run out of records to break,' she says. 'Every number is gone. There's nothing left to beat. Except the whole concept of a limit.' She looks up. 'I think it's time.'`,
+  feedee_creator:   (s)=>`${s.name} closes her laptop, the analytics still glowing on the screen behind her. 'The channel is done,' she says. Not sad — matter-of-fact. 'I made it. I outgrew it. What I'm becoming now doesn't fit in a format.' She's very still. 'The goddess has been watching for a while. I can feel it.'`,
+  body_positive_creator:(s)=>`${s.name} puts her phone away — the way she does when a conversation matters — and looks at you. 'I've said everything the platform could hold,' she says. 'The argument is won. The body is beyond argument now.' She's quiet for a moment. 'Something else is starting.'`,
+  eating_captain:   (s)=>`${s.name} hangs the captain's sash on the back of the chair with the deliberateness of someone who won't need it again. 'The squad is good,' she says. 'The records stand. The culture is set.' She looks at her hands. 'I was a captain. I think now I'm something else.' She waits for you to understand. You do.`,
+  big_squad_captain:(s)=>`${s.name} sits down slowly, the weight of everything she's built evident in the way she holds herself. 'The culture is permanent,' she says. 'The change is done. The chapter runs itself.' She looks out the window. 'I keep feeling like there's something on the other side of all this. Something bigger than a squad.' She looks at you. 'Is it time?'`,
+  eating_diarist:   (s)=>`${s.name} closes the notebook — the original one, the one from before the newsletter, before the agent, before the book. She holds it in both hands. 'The writing documented me,' she says. 'Now I've grown past what writing can hold.' She's quiet. 'Whatever comes next, I don't think it fits in a sentence.' A long pause. 'I think it fits in a goddess.'`,
+  food_researcher:  (s)=>`${s.name} prints the final page of the dataset — the last measurement, the last data point — and holds it for a moment. 'The study is complete,' she says. 'All variables accounted for except one.' She looks at you. 'The study never accounted for what happens when the subject exceeds the study's capacity to describe her.' A smile. 'I think we're there.'`,
+  eating_streamer:  (s)=>`${s.name} turns the camera off — properly off, not just paused — and sits in the sudden silence. 'I've been streaming for years,' she says. 'I've eaten everything on camera. The audience has watched every pound.' She looks at her hands. 'But there's something that can't be streamed. Something that needs to happen in private.' She looks at you. 'I think this is it.'`,
+  speed_eater:      (s)=>`${s.name} opens the notebook to the last page and looks at the final record for a long time. 'Every number is broken,' she says. 'Every record is mine. There's no more room to be faster or bigger or more.' She closes the notebook. 'Except there is more. There's the thing that comes after records. The thing the timer doesn't measure.' She looks up. 'I think I've always been heading there.'`,
+  chapter_hostess:  (s)=>`${s.name} folds the last menu — the one from Wednesday's feast — and sets it on the table beside the others. 'The table is set,' she says. 'The chapter eats well. It will continue to eat well after I'm gone.' She looks at her hands, then at you. 'I've been feeding everyone. I think something is about to feed me.' The air in the room feels different. 'I'm ready.'`,
+  body_positive_greek:(s)=>`${s.name} reads the national organization's updated guidance one more time, then folds it and sets it down. 'The change is in writing now,' she says. 'Official. Permanent. Irreversible.' She's very quiet for a moment. 'I've been building something. I think the goddess has been building something too.' She looks at you. 'They're the same thing, aren't they.'`,
+  metrics_eater:    (s)=>`${s.name} saves the spreadsheet — all four thousand rows of it — and closes the laptop. 'The data is complete,' she says. 'Every metric tracked, every variance documented.' She's quiet. 'But there's a variable I never modeled. The one where the subject exceeds the categories.' She looks at you. 'My data predicts this moment. I just didn't know what to call it.'`,
+  food_scientist:   (s)=>`${s.name} writes 'Study concluded' in the methodology log and sets the pen down. 'The data is in,' she says. 'The subject has been rigorously documented.' She turns to face you. 'But science has an edge. Beyond the edge is the thing that data can describe but cannot explain.' She's very still. 'I think I've reached the edge.' A pause. 'I'd like to go past it.'`,
+  installation_artist:(s)=>`${s.name} stands in front of the last piece in the retrospective — the one that is simply her, present, not photographed or documented or framed, just existing in the gallery space — and looks at herself for a long time. 'The installation and the artist have merged,' she says quietly. 'There's nothing left to separate.' She turns to you. 'The goddess has been making something too. I think I'm it.'`,
+  food_photographer:(s)=>`${s.name} sets the camera down for the first time — not to check a shot, but because she's done. 'I set out to photograph food,' she says. 'The food changed me. I photographed the change. The photographs became the subject. I became the photograph.' She looks at you. 'There's one frame left. It can't be taken with this camera.' A very long pause. 'It has to be lived.'`,
+  anonymous_blogger:(s)=>`${s.name} posts the final entry. You watch her do it — she types the last sentence, reads it twice, and hits publish with the same quiet certainty she brings to everything. Then she closes the laptop. 'The blog is done,' she says. 'The record is complete. Everything I became is written down.' She looks up. 'Now something happens that can't be written.' She's smiling, very slightly. 'I think the goddess has been reading all along.'`,
+  asmr_creator:     (s)=>`${s.name} turns off the microphone — the careful, ceremonial way she always does — and sits in the silence for a long time. Then: 'I've been making space for people to be calm,' she says. 'Feeding them something quiet.' She looks at her hands. 'But something is asking me for the opposite of quiet now. Something big.' She looks up. 'I think it's time to answer.'`,
+  campus_legend:    (s)=>`${s.name} sits in the booth — the one with her name on the plaque — and looks at the dining hall. 'I came here a stranger,' she says. 'And I became the place.' She's quiet for a long time. 'But a campus is still a small thing. The goddess made something bigger.' She looks at you. 'I think she made it out of me.' She touches the plaque once, gently. 'I'm ready.'`,
+  food_tourist:     (s)=>`${s.name} closes the final notebook — the one that started with a map and a list and became something no map could hold — and sets it beside the others. 'I've tasted everything,' she says. 'Every dish, every cuisine, every place I could reach.' She looks at you. 'But there's a flavor I haven't found yet. One that doesn't come from a restaurant.' She's very quiet. 'I think the goddess has been saving it for me.'`,
+  ff_author:        (s)=>`${s.name} closes the manuscript — the full archive, every chapter, printed and bound, the work of years — and holds it in both hands for a moment before setting it down. 'I wrote about all of them,' she says. 'Everyone in that room. What they became. What they're still becoming.' She's quiet. 'And I wrote about myself more than I let anyone see.' She doesn't look at the manuscript. She looks at you. 'The last character I never figured out how to end — the one who kept getting bigger every chapter, the one who was always about to become something beyond the story.' A long pause. 'I think I'm at that page now.'`,
+  homestead_queen:  (s)=>`${s.name} is in her homestead when it happens — surrounded by jars and cast iron and the smell of something sweet baking. She sets a spoon down slowly. 'Grandma Mae called last night,' she says, very quiet. 'She said she's proud of me. She didn't say why, not exactly. But I think she knows.' She looks at her hands, enormous and warm. 'I've been feeding people my whole life. I think something is about to feed me back.' The oven is still on. The room smells like heaven.`,
+  state_fair_queen: (s)=>`${s.name} is looking at the photo from the last invitational — her at the scale, the number, Darcy starting to clap. She touches the edge of it carefully. 'I've eaten through every bracket,' she says. 'Every category, every division. They stopped being able to contain me in a class.' She's quiet for a long moment. 'I think the circuit is done. The circuit gave me everything it had.' She looks up. 'Now something gives me everything it has.' She sounds certain. She is.`,
+};
