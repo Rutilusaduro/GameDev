@@ -3793,6 +3793,23 @@ const EVOLVED_REACTIONS = {
     "Cultural ambassador is the phrase they use. I prefer 'someone who ate everything and wrote it all down.'",
     "I have tasted everything. I have grown into everything. The journey and the destination are the same.",
   ],
+  // ── FARM GIRL paths ──────────────────────────────────────────────
+  homestead_queen:[
+    "The spread is set. Cast iron on every surface. I made sweet potato pie from scratch at 2am and I do not regret a single bite.",
+    "Grandma Mae video-called and saw the setup. She said 'baby, you've got a real kitchen.' Coming from her that's everything.",
+    "The recipe box arrived. Six generations of food in one box. I made every dish in four days. I kept notes on all of it.",
+    "Mae calls every Sunday now. I always eat while we talk. She knows. She doesn't say anything about it except 'good girl.'",
+    "She said I'm going to run out of room. She's right. I take up most of my homestead already. I am the homestead now.",
+    "Mae drove up. She walked in and saw me — really saw me — and she started crying and then she started cooking. That's love.",
+  ],
+  state_fair_queen:[
+    "First county fair, first pie table. Darcy from Meadowview looked at me like I was lost. She won. I went home and ate.",
+    "Second year. Darcy said 'you again.' I was 60 pounds heavier. She barely won. She noticed.",
+    "State qualifier. I crossed Darcy on the scoreboard for the first time. She stopped mid-bite. I kept going.",
+    "State finals. Won. Darcy clapped. Full hand-claps, not polite ones — the kind that means she means it. That meant everything.",
+    "Tri-state invitational. They built a bigger scale. I am the draw now. People come to see the numbers, not the pies.",
+    "Grand invitational. I barely fit the tent. Darcy's in the open bracket. The contest is incidental. I am the fair.",
+  ],
   // ── BOOKWORM alt path ────────────────────────────────────────────
   ff_author:[
     "I've been writing. The character is fictional. She happens to be a cheerleader and she happens to gain weight in chapter three. I have genuinely no idea where I got the idea.",
@@ -3973,6 +3990,22 @@ const EVOLVED_DIARY = {
     `Three hundred thousand words. The fandom writes their own versions of the story, and some of those versions are about me — the anonymous author, imagined as the main character, large and cared for and fed. They're not wrong. The character I write most honestly is the one who eats everything and is loved for exactly that. She has been me for a long time.`,
     `I don't write as much now. Not because I've run out — I haven't — but because the distance between the fiction and the reality has closed. Everything I wrote was true: the gaining, the care, the body as something beautiful rather than something to manage. I wrote it into being. Then I became it. That's the best thing I've ever made.`,
   ],
+  homestead_queen:[
+    `I made sweet potato pie from scratch at two in the morning because I couldn't sleep and the kitchen was there. I ate half of it while it was still warm, standing in front of the open oven, in a flannel shirt I've had since high school and jean shorts I can no longer fully close. By the time I finished writing down what I'd used I was full in a way that felt like the word was invented for this exact moment. I weighed myself in the morning. I wrote the number in the recipe book. This is a record. This is a life.`,
+    `Grandma Mae video-called last Sunday and she could see the setup behind me — the jars lined up on the shelf, the cast iron on every surface, the folding table I've covered with oilcloth and claimed as counter space. She said: 'baby girl, you've got yourself a real kitchen.' I cried a little after we hung up. Not sad crying. The kind that happens when someone sees exactly what you are and names it correctly.`,
+    `The recipe box arrived. Six generations of food in one flat-rate box: cards in three different handwritings, some in pencil so faint I had to hold them to the window, measurements in cups and handfuls and 'enough' and 'until it looks right.' I made every dish in four days. I kept notes. My notes look like Mae's notes, which look like her mother's notes. I am in a line of women who knew what to do with food. I am one of them. I have always been one of them.`,
+    `Mae calls every Sunday at 10am. I always eat while we talk — something I made, something I'm testing, something I'm just hungry for. She never comments on the eating. She asks what I made. She asks how it turned out. She asks if I'm happy. I always say yes and I always mean it. This Sunday she said, 'you sound like yourself, baby.' I don't know when I stopped sounding like myself somewhere else, but I know exactly when I found it again.`,
+    `She said: 'baby, you're going to run out of room in that dorm.' She is right. I take up most of it already — me and my jars and my cast iron and the folding table I've turned into a homestead and the smell of whatever I made last night still in the air. I don't feel like I've run out of room. I feel like I've filled it. There's a difference. I think Mae knows the difference too. She just says it like a warning to give me time to decide how I feel about it.`,
+    `Mae drove up. I heard her knock and I knew — I could feel it the way you feel weather coming — and when I opened the door she saw me. Really saw me, not the version I present on the phone, the full physical fact of what I've become in this room with this food and this life. She looked at me for a long time. Then she started crying. Then she reached past me and started looking at what was in the jars. 'Tell me what you've been making,' she said. So I told her. We were there for five hours. She ate with me the whole time.`,
+  ],
+  state_fair_queen:[
+    `First county fair entry. Darcy from Meadowview looked at me when I sat down at the pie table — a look I've seen before, the one that says 'this is not a serious competitor.' She won. I drove home knowing two things: what I did wrong, and that I was going to do this again. I wrote both things down. I also wrote down what I'd eaten during the event because I wanted to know the exact number. The number was not as high as it's going to get.`,
+    `Second year. Darcy said 'you again' when she saw me, and she said it like she'd been thinking about it. I was at least sixty pounds heavier. She adjusted something in how she was sitting at the table after she looked at me. She barely won. That 'barely' matters. She felt it. I felt it. I went home and added it to my records.`,
+    `State qualifier. I crossed Darcy on the scoreboard for the first time. She stopped eating mid-bite. I watched her do it in my peripheral vision — stopped completely, one second, just long enough to register what she was seeing — and then she went back to eating. I kept going. I won. After, she stood near the scale and said, quietly: 'where are you putting all that?' I told her: 'I grew more room.' I don't think she found that funny. I did.`,
+    `State finals. I won. Darcy started clapping — full hand-claps, not the polite kind, the kind that means she's genuinely applauding — and she kept going for a long time after everyone else in the tent had finished. I walked over and she said 'I trained for six months for this. All year.' She said it like she was proud of me. I think she was. I think I might be the best thing that ever happened to her career. I'm definitely the best thing that ever happened to mine.`,
+    `Tri-state invitational. They built a bigger scale. The judge announced this at the weigh-in — 'we have a new scale this year' — and looked at me, and the whole tent understood. I weighed in. The number caused a sound. Not a cheer, something quieter — the specific noise a crowd makes when a fact is too large to simply applaud. Darcy is in the open bracket now. She comes to watch. That means more to me than any trophy.`,
+    `Grand Fair Invitational. I barely fit the tent. I don't say that with distress — I say it the way you say a fact that took a long time to arrive. The contest is incidental. Darcy is competing in the open bracket, 500 pounds, here to watch me win and I know it. When my number goes up, she's going to be the loudest person in the building. I've been eating competitively since I couldn't win. I've kept eating until I can't lose. I don't think there's a more honest biography than that.`,
+  ],
 };
 
 const EVOLVED_OUTFITS = {
@@ -4144,6 +4177,23 @@ const EVOLVED_OUTFITS = {
     "She dresses for the body she has and the life she's built around it. Everything wide, everything deliberate, everything soft. She looks like what she writes about, which is to say: exactly what she wants.",
     "She wears what fits. Everything fits because everything is made for her now. The room is made for her. The desk is made for her. She writes surrounded by things that understand what she is.",
   ],
+  // ── FARM GIRL paths ──────────────────────────────────────────────
+  homestead_queen:[
+    "Denim overalls over a flannel shirt that she's had since high school. The overalls are cinched at the sides but her belly rounds out the front bib completely. She's warm and smells like cinnamon and brown sugar.",
+    "The flannel has been traded for a loose linen top — easier to move in, and the overalls have been retired in favor of wide-leg jeans with an elastic waist she doesn't bother to explain. Her chest fills the top completely.",
+    "A wide cotton housedress — she found a seamstress to make it to her measurements — and a full apron tied at the back that does most of the practical work. She looks entirely at home because she is.",
+    "She's given up pretending the apron is for protection — it's load-bearing now, the ties cinched around the widest part of her, her belly testing the front pocket. The dress underneath is the widest she owns.",
+    "A single enormous piece of wide-cut fabric that functions as both dress and apron. She made it herself. The pattern is from Mae's notebook. She fills it entirely and with great comfort.",
+    "The apron is the outfit. It is, structurally, enormous — she had it sewn to fit her — and under it there is a wide cotton shift and nothing else. She is warm and present and the room smells like everything she's made.",
+  ],
+  state_fair_queen:[
+    "Competition tank and stretch shorts — the standard circuit uniform, sized up significantly. Her chest strains the front. She has her entry number pinned to the side because there's no room on the front.",
+    "A competition jersey with her name on the back, her region on the front. It was made for someone smaller and she has not replaced it. The fabric pulls across her chest and rides up over her belly at the bottom.",
+    "Custom-fitted competition jersey, her name printed large enough to read from the stands. It was made to her measurements two months ago and is already getting tight across the front.",
+    "Sponsor logos across the jersey — four of them, which is a measure of how serious this is now. The jersey is wide enough to hold all four and still stretch across the full geography of her chest.",
+    "The jersey has become a document. Every patch and print and logo has had to be repositioned as she's grown. The current version was made last month. The seams are already tested.",
+    "A competition banner-jersey sewn to her exact measurements by a custom sportswear maker who has done this exactly once before. It fits perfectly. She fills it perfectly. It reads less like a uniform than a flag.",
+  ],
 };
 
 const EVOLVED_ACTIVITY_TEXT = {
@@ -4296,6 +4346,22 @@ const EVOLVED_ACTIVITY_TEXT = {
     `The latest chapter is the one she's most satisfied with. She marks the passage she wants you to read first — a dense paragraph where the main character undresses and looks in the mirror and doesn't apologize for a single thing she sees. Every line is specific. Every detail earns its place. She watches your face as you read it. You look up when you're done. 'This is good,' you say, and mean it in a way that covers everything. She nods, once, and goes back to her laptop.`,
     `She reads a passage aloud. You haven't asked her to — she's decided. She finds the page, clears her throat once, and reads with the unhurried attention of someone who has practiced this. The passage is about a woman who looks exactly like her: the weight and the warmth and the specific softness described with the precision of someone who has been paying very close attention for a long time. When she finishes she sets the manuscript down. 'That one's my favorite,' she says. You don't say anything. There's nothing to add.`,
     `The latest work is the most explicit yet — not in the sense of reaching for excess, but in the sense of refusing to look away. Every line is deliberate. The characters are unmistakably drawn from life. She knows you know this. You sit across from her in the library while she works on the next chapter, watching her face while she writes, and there is something in the way she pauses to think and then types without hesitation that answers every question you might have had about what she's writing and why.`,
+  ],
+  // ── FARM GIRL paths ──────────────────────────────────────────────
+  homestead_queen:[
+    (s)=>`She texts you the address — the dorm room that no longer looks like one — and when you arrive the door opens on warmth and the smell of something sweet and hours-old. Mary Jane is ${Math.round(s.lbs)} pounds at her counter, flour on one forearm, her chest and belly both pressing against the edge of the folding table she's claimed as prep space. "Sit," she says. "I made six things. You're going to try all six." She doesn't frame it as an invitation. She sets down a plate and looks at you until you pull out the chair.`,
+    (s)=>`You knock and she calls you in without stopping what she's doing — she's at the stove, ${Math.round(s.lbs)} pounds filling the narrow kitchen corridor completely, wide hips and broad back and the loose linen top moving with her as she stirs. The room smells like butter and brown sugar and something faintly caramelized. "Timing's perfect," she says. "I just pulled the cobbler." She ladles something into a bowl for herself as she talks. The bowl is large.`,
+    (s)=>`The homestead operation has expanded. You walk in and see four dishes in various stages of completion and Mary Jane, ${Math.round(s.lbs)} pounds, at the center of it — apron tied behind her, hair back, managing all four burners with the ease of someone who learned to cook before she learned to read. She waves you to the table without looking up. "Mae sent me a new recipe," she says. "I'm testing it three ways. You get to try them in order." This is not optional.`,
+    (s)=>`She barely leaves the room anymore. You come to her — she texts you 'come over' and you come, and she's ${Math.round(s.lbs)} pounds in her wide cotton housedress with the apron tied over it, and the room smells like heaven, and when she sees you come through the door she just nods toward the table and sets another plate. "Mae called this morning," she says. "I told her about you." She goes back to the stove. The plate she sets in front of you is larger than the last one.`,
+    (s)=>`The dorm room is straining to hold her. Mary Jane is ${Math.round(s.lbs)} pounds and she is everywhere — at the counter, at the stove, her mass warm and enormous in the narrow space, and the smell of whatever she's been making for the last four hours fills the building's hallway. She moves with the careful deliberateness of someone who has grown accustomed to knowing exactly where her body is relative to everything else. "Sit down," she says. "I made corn pudding." She sets a bowl in front of you that could serve a family.`,
+    (s)=>`You come when she texts you. The door opens on Grandma Mae standing at the stove and Mary Jane, ${Math.round(s.lbs)} pounds, seated at the table with both hands wrapped around an enormous mug of something warm. Mae turns and nods at you like she was expecting you. "She talks about you," Mae says. Mary Jane doesn't correct her. The table has more food on it than you've ever seen in one place. Mae pulls out the chair across from Mary Jane and says: "Sit down. Both of you. I've been cooking since this morning."`,
+  ],
+  state_fair_queen:[
+    (s)=>`She finds you before she leaves for the county fairgrounds — ${Math.round(s.lbs)} pounds in her competition tank and stretch shorts, her chest filling the front of the shirt completely, her number pinned to the side. "Darcy from Meadowview is going to be there," she says. "She wins. She's been winning for three years." She says this neutrally, the way you name a fact you intend to change. "Come watch anyway." You drive out. You watch Darcy win. You watch Mary Jane eat more than Darcy does and still lose on the scoreboard, and you watch her write the number down in her phone on the drive home.`,
+    (s)=>`She's ${Math.round(s.lbs)} pounds at the county championship and she walks into the fair tent without looking at the scoreboards. Darcy is already at the table. She sees Mary Jane and says 'you again,' and there's something in it that wasn't there last year — a recalibration. Mary Jane sits down, fills two plates from the pre-event warmup spread, and eats both while the judges check credentials. It's a close match. Darcy barely wins. You watch her face after the final tally and she is not surprised. She is already thinking about what comes next.`,
+    (s)=>`State qualifier. Mary Jane is ${Math.round(s.lbs)} pounds and her competition jersey is already getting tight across the front — she commissioned it two months ago — and Darcy watches her walk to the weigh-in with an expression you've seen before on people who've revised something important. The contest starts. You watch from the stands. Midway through the final round, Mary Jane crosses Darcy on the scoreboard, and Darcy stops eating for exactly one second. The crowd makes a sound. You make a sound. Mary Jane keeps eating.`,
+    (s)=>`The state fair finals. She's ${Math.round(s.lbs)} pounds in the new jersey and the press are there — two photographers and a features writer who keeps asking you questions you answer vaguely. Mary Jane at the table is something to see from a distance: the full scale of her at a competition table, her belly rounding against the edge, her chest filling the jersey front, eating with the focused certainty of someone for whom this has stopped being a challenge and become a performance. She wins. Darcy starts clapping and doesn't stop. "I trained all year," Darcy says to no one in particular. She keeps clapping.`,
+    (s)=>`Tri-state invitational. They built a bigger scale. You were there when the fair director said it — addressing the weigh-in queue, trying to be casual — and the whole line understood who the scale was for. Mary Jane is ${Math.round(s.lbs)} pounds and she steps onto the scale with the ease of someone who has made peace with the number before it appears. The crowd that gathers for her weigh-in is larger than the crowd for any other competitor's whole event. Darcy has a seat in the front row. She brought a sign.`,
   ],
 };
 
@@ -5221,6 +5287,8 @@ const EVOLVED_ACTIVITY_META = {
   campus_legend:   { label:"Share a Meal at the Booth",apCost:1, gainRange:[5,10], relBonus:11 },
   food_tourist:    { label:"Join an Expedition",       apCost:1, gainRange:[4,8],  relBonus:10 },
   ff_author:       { label:"Read Her Latest Chapter",  apCost:1, gainRange:[3,6],  relBonus:12 },
+  homestead_queen: { label:"🏡 Visit the Homestead",    apCost:1, gainRange:[5,10], relBonus:12 },
+  state_fair_queen:{ label:"🎡 Enter the Fair",         apCost:1, gainRange:[4,8],  relBonus:10 },
 };
 
 // ── EP2: INTERACTIVE EVOLVED EVENTS ────────────────────────────────────────
@@ -6282,6 +6350,13 @@ const EVOLUTION_OFFER = {
       food_tourist:  { label:"Food Tourist",    desc:"Document every cuisine available to her. A blog, a book deal, a cultural bridge between here and home." },
     },
   },
+  farm_girl:{
+    intro:(s)=>`${s.name} is sitting at the corner table with a cast-iron skillet, a jar of preserves, and a look on her face that says she's been thinking about this for a while. "You know what I want to be?" she says, not looking up. "I want to be *known* for this." She sets the skillet down. She looks at you. "For the food. For how much of it I can hold. I want people to know my name." She is ${Math.round(s.lbs)} pounds and growing, and she means every word.`,
+    paths:{
+      homestead_queen: { label:"Homestead Queen",  desc:"She builds a reputation around her cooking and her appetite together — the warmth of a real homestead, growing and feeding and being fed, with you at the center of it." },
+      state_fair_queen:{ label:"State Fair Queen", desc:"She takes her eating to the competitive circuit — county fairs, state championships, a recurring rival from the next county, and a crowd that keeps getting louder every time she steps on the scale." },
+    },
+  },
 };
 
 const ASCENSION_BRIDGE = {
@@ -6306,6 +6381,8 @@ const ASCENSION_BRIDGE = {
   campus_legend:    (s)=>`${s.name} sits in the booth — the one with her name on the plaque — and looks at the dining hall. 'I came here a stranger,' she says. 'And I became the place.' She's quiet for a long time. 'But a campus is still a small thing. The goddess made something bigger.' She looks at you. 'I think she made it out of me.' She touches the plaque once, gently. 'I'm ready.'`,
   food_tourist:     (s)=>`${s.name} closes the final notebook — the one that started with a map and a list and became something no map could hold — and sets it beside the others. 'I've tasted everything,' she says. 'Every dish, every cuisine, every place I could reach.' She looks at you. 'But there's a flavor I haven't found yet. One that doesn't come from a restaurant.' She's very quiet. 'I think the goddess has been saving it for me.'`,
   ff_author:        (s)=>`${s.name} closes the manuscript — the full archive, every chapter, printed and bound, the work of years — and holds it in both hands for a moment before setting it down. 'I wrote about all of them,' she says. 'Everyone in that room. What they became. What they're still becoming.' She's quiet. 'And I wrote about myself more than I let anyone see.' She doesn't look at the manuscript. She looks at you. 'The last character I never figured out how to end — the one who kept getting bigger every chapter, the one who was always about to become something beyond the story.' A long pause. 'I think I'm at that page now.'`,
+  homestead_queen:  (s)=>`${s.name} is in her homestead when it happens — surrounded by jars and cast iron and the smell of something sweet baking. She sets a spoon down slowly. 'Grandma Mae called last night,' she says, very quiet. 'She said she's proud of me. She didn't say why, not exactly. But I think she knows.' She looks at her hands, enormous and warm. 'I've been feeding people my whole life. I think something is about to feed me back.' The oven is still on. The room smells like heaven.`,
+  state_fair_queen: (s)=>`${s.name} is looking at the photo from the last invitational — her at the scale, the number, Darcy starting to clap. She touches the edge of it carefully. 'I've eaten through every bracket,' she says. 'Every category, every division. They stopped being able to contain me in a class.' She's quiet for a long moment. 'I think the circuit is done. The circuit gave me everything it had.' She looks up. 'Now something gives me everything it has.' She sounds certain. She is.`,
 };
 
 // ── EP5: INTIMACY SCENES ──────────────────────────────────────
@@ -8702,7 +8779,7 @@ const INIT_STUDENTS = [
   { id:11, name:"Emma",     archetype:"bookworm",     role:"Cultural Studies",     age:22, bodyType:"straight",  lbs:119, startLbs:119, desc:"PhD aspirations, book always open, tea always in hand.",               favFood:"tea cakes",      hobby:"writing",       personality:"gentle",      relationship:20, triggeredEvents:[], mood:"focused" },
   { id:12, name:"Roxanne",  archetype:"artsy",        role:"Music & Visual Art",   age:21, bodyType:"pear",      lbs:138, startLbs:138, desc:"Shaved side of head, band shirts, loud opinions, sketchbook out.",     favFood:"street tacos",   hobby:"music",         personality:"passionate",  relationship:20, triggeredEvents:[], mood:"excited" },
   { id:13, name:"Aaliyah",  archetype:"athlete",      role:"Basketball Star",      age:20, bodyType:"athletic",  lbs:140, startLbs:140, desc:"Basketball player, easy loud laugh, owns every room she enters.",     favFood:"burgers",        hobby:"basketball",    personality:"easygoing",   relationship:20, triggeredEvents:[], mood:"happy" },
-  { id:14, name:"Sophie",   archetype:"sorority",     role:"New Pledge",           age:18, bodyType:"straight",  lbs:113, startLbs:113, desc:"Fresh freshman, just pledged, campus map in one hand, cupcake in the other.", favFood:"cupcakes", hobby:"socialising",   personality:"sweet",       relationship:20, triggeredEvents:[], mood:"nervous" },
+  { id:14, name:"Mary Jane", archetype:"farm_girl",    role:"Agriculture Student",  age:20, bodyType:"hourglass", lbs:125, startLbs:125, desc:"Junior ag major from down south. Big smile, bigger chest, and she brought six kinds of homemade jam to the first day of class.", favFood:"sweet potato pie", hobby:"cooking", personality:"sunny", relationship:20, triggeredEvents:[], mood:"cheerful" },
 ];
 
 // ═══════════════════════════════════════════════════════════════
