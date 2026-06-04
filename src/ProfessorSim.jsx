@@ -7252,7 +7252,8 @@ export default function ProfessorSim(){
         const STAGE_LABELS=["Slight","Slim","Soft","Chubby","Plump","Heavy","Fat","Very Fat","Enormous","Colossal","Blob"];
         const NADIA_LEVEL_LABELS=["Heavy–Very Fat","Enormous–Colossal","Blob"];
         const isIntro=currentPage===-1;
-        const entryText=isIntro?journal.intro:(journal.entries[currentPage]?.[nadiaLevel]||"[no entry]");
+        const introText=Array.isArray(journal.intro)?journal.intro[nadiaLevel]||journal.intro[0]:journal.intro;
+        const entryText=isIntro?introText:(journal.entries[currentPage]?.[nadiaLevel]||"[no entry]");
         const purple="#6b5b95";
         const darkPurple="#2a0a40";
         const canPrev=!isIntro;
