@@ -844,63 +844,64 @@ export const GOSSIP = [
   ],
   },
 
-  // ── ROXANNE (12) ── about Fiona & Aaliyah
-  { speakerId:12, targetId:4, attitude:"warm",
+  // ── NADIA (12) ── about Priya & Chloe
+  { speakerId:12, targetId:7, attitude:"analytical",
     lines:{
       low:[
-        `Roxanne's whole face softens. "Fiona cooks incredible things and acts like feeding people is just normal." She gestures. "She's getting softer lately. Her art is getting richer. I think they're the same thing."`,
-        `"Fiona made this cheese thing last week. I've been thinking about it every day since." She looks at her fuller figure. "I'm not complaining."`,
+        `Nadia opens her notebook without looking up. "Priya tracks everything. GPA, sleep, intake — colour-coded columns." She pauses. "She's one of the most disciplined subjects I've observed. Which makes the deviations interesting." She writes something down. "She's been eating more this week than the previous three. I noted it."`,
+        `"Priya said she added a nutrition column to her planner," Nadia says. She sounds neutral. "She is optimising her intake upward. I'm watching to see whether the method holds or whether appetite overtakes the methodology." She taps her pen. "It's a genuine question."`,
       ],
       mid:[
-        `Roxanne grins. "Fiona's getting big and making the most beautiful work of her career." She says this like these are clearly the same fact. "She painted me. I'm enormous in the painting. It's the most accurate portrait anyone has done of me."`,
-        `"Fiona and I are both getting very large," Roxanne says contentedly. "We cook, eat, make art about it." She shrugs. "I've never felt more creative or more full. Both are high."`,
+        `Nadia looks up from her notes. "Priya is putting on visible weight at a rate that tracks with her performance uptick. She would call it a correlation. She'd be right." A pause. "She's also notably rounder. I've been tracking the body metrics alongside the academic output. Both are increasing." She almost looks impressed.`,
+        `"Priya's thesis is data-driven self-optimisation," Nadia says. "She is also the primary data set." She writes something. "The rate at which someone can generate meaningful insight while also being the subject of that insight is limited. I'm watching for the point where the two start to interfere." She pauses. "She's not there yet. She's gaining more efficiently than I expected."`,
       ],
       high:[
-        `Roxanne looks genuinely moved. "Fiona told me my body is her favourite subject right now." She laughs. "She meant it artistically. I took it every other way." She pats her enormous side. "We've both gotten so big. I love it."`,
-        `"Fiona is one of the great ones," Roxanne says. "Massive, brilliant, generous with food." She raises an eyebrow. "The three qualities I look for in a person."`,
+        `Nadia closes her notebook briefly — unusual for her. "Priya has become a genuinely interesting case. Enormous, still performing, completely unselfconscious about the relationship between both." She re-opens the notebook. "She published a paper this semester about metabolic adaptation and she is the primary research subject. I've read it twice." A long pause. "The methodology is excellent."`,
+        `"I've been observing Priya for long enough that I have longitudinal data," Nadia says. "The weight trajectory and the academic output are positively correlated to a degree I didn't model for." She looks at her notes. "I find this personally significant." She doesn't elaborate on what that means.`,
       ],
       blob:[
-        `Roxanne is quiet for a long moment. "Fiona barely moves now. She creates from where she sits and everything she makes is enormous." She looks moved. "I went to visit her last week. We sat for hours. She fed me the whole time without really noticing she was doing it." She touches her own vast side. "She's the most important person I know."`,
-        `"Fiona and I are both completely immovable now," Roxanne says. "We make art together over video call. She holds things up. I describe. Sometimes the other way." She smiles. "It works perfectly. It's the best collaboration of my career." A pause. "Also she still somehow delivers food to me. I don't know how. I haven't asked."`,
+        `Nadia is quiet for a moment. "Priya barely leaves her workstation now. The data she generates from that position is still exceptional." She writes something carefully. "I think about her research design sometimes. The courage of using yourself as the primary variable when you know the outcomes are going to be extreme." She closes the notebook. "I have notes on this. A lot of them."`,
+        `"Priya and I spoke recently," Nadia says. "She wanted to discuss methodology. The conversation lasted four hours. Neither of us moved." She looks at something in her notebook. "She said she'd achieved everything she set out to achieve. I told her I was still collecting data." A pause. "She said she knew. She'd noticed."`,
       ],
     },
-    offerHelp:`Roxanne leans on the desk. "Fiona eats anything I cook without question. She trusts my palate completely." A slow smile. "If I cooked for her every day — rich, generous, the kind of thing you can't stop eating — the work would change again." She pauses. "I want to see that. Also I love her and I want her to have the best things."`,
-    helpReason:"Muse devotion & love — Roxanne wants to feed Fiona to watch her art transform. Also just loves her.",
-    helpMultiplier:1.4,
+    offerHelp:`Nadia opens a blank page. "Priya responds to efficiency framing. If I present increased caloric intake as a performance variable — which it demonstrably is — she'll incorporate it into her methodology without resistance." She uncaps her pen. "I would like to run that experiment with access. The data would be worth having."`,
+    helpReason:"Research interest — Nadia wants Priya as a controlled study. The framing is clinical but the interest is genuine.",
+    helpMultiplier:1.38,
 
   doubleDown: [
-    {atLbs:200, addMult:0.15, line:"Fiona is two hundred pounds and she is making the most extraordinary work of her career and I am feeding her every single day because I can see the direct relationship between her intake and what she produces and I want both to keep growing. I cook the richest things I know. She eats all of it without asking why. I love her. I'm making her enormous. These are the same thing."},
-    {atLbs:250, addMult:0.20, line:"Two-fifty on Fiona and she is magnificent and she told me last week that she's never felt more like herself and I am taking personal credit for approximately forty percent of that because I have been cooking for her daily for months and everything I make is designed to be impossible to stop eating. I love feeding someone who trusts you completely. I cook more tomorrow."},
-    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Fiona and she is a masterpiece and the work she is making is a masterpiece and I am the one ensuring she has the fuel for both and I intend to continue indefinitely. She feeds me. I feed her. We both keep growing. We both keep making. The studio smells like good food and great work and I would not change a single molecule of it."},
+    {atLbs:200, addMult:0.15, line:"Priya is two hundred pounds and she logged it in her planner as a milestone and sent me a text that just said 'phase two achieved' and I found this so satisfying that I immediately updated my own records and planned the next phase of the experiment. She is optimising her intake without even calling it that. She just calls it data. I'm going to make sure she has very good data to collect."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Priya and she presented me with a graph of it — her weight, her output, her correlation coefficients — and asked me to peer review it. I told her the methodology was sound and that she should continue. She was delighted. I am managing an experiment I officially don't have approval for and it is producing the most interesting results of my career."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Priya, enormous, brilliant, producing peer-reviewed research from a reinforced chair she barely leaves, and she has started citing my observations in her own notes and I find this deeply satisfying in a way I am not going to examine too closely. I am escalating the supply of high-quality inputs. She will continue to optimise. The data will continue to be excellent."},
   ],
   },
-  { speakerId:12, targetId:13, attitude:"warm",
+  { speakerId:12, targetId:9, attitude:"analytical",
     lines:{
       low:[
-        `Roxanne tilts her head. "Aaliyah moves in this incredibly powerful way. All this confidence, all this presence." She pauses. "She's started getting softer. The power doesn't go anywhere. It just gets larger." She sounds fascinated.`,
-        `"Aaliyah shared her food with me completely unprompted at lunch," Roxanne says. "Just — pushed half her plate over. I didn't even know her that well." She looks moved by this. "That's the kind of gesture I want to make art about."`,
+        `Nadia writes something without looking up. "Chloe is adapting. She came in with a campus map and has been systematically replacing it with direct experience." A pause. "She eats with the specific enthusiasm of someone who hasn't found their limits yet. I'm observing the discovery process." She underlines something. "It's instructive."`,
+        `"Chloe tried four new dining spots this week," Nadia says. "I know because she told someone within earshot and I noted it." She taps her pen. "The adaptation of a newcomer to a food-rich environment is a textbook process but it's better observed in real time. She's a good case study."`,
       ],
       mid:[
-        `"Aaliyah is getting really big," Roxanne says, with clear appreciation. "She's still the loudest, most present person in any room. The bigness just adds to it." She gets out her sketchbook. "I want to draw her."`,
-        `Roxanne looks up from her notebook. "Aaliyah sat for a quick sketch for me last week. She was eating the whole time." She shows you something scrawled quickly. "Look at her. She's extraordinary."`,
+        `Nadia tilts her head slightly. "Chloe has settled in. The tentative quality is gone — she moves through campus like someone who belongs here." She glances at her notes. "Her consumption patterns have stabilized at a higher baseline than she arrived with. She doesn't seem to have noticed. Or she has and she doesn't mind." A pause. "Both are interesting."`,
+        `"Chloe knows everyone at the dining hall by name now," Nadia says. "She's become part of the institution faster than any other transfer I've observed." She writes something. "The food is part of it. The weight is part of it. The two are the same process from different angles." She pauses. "She's quite visibly rounder. She seems happy."`,
       ],
       high:[
-        `"Aaliyah is enormous and magnificent," Roxanne says simply. "She takes up so much space and fills it completely." She looks at her own considerable mass. "I've been doing a whole series on her." She opens her sketchbook. "She doesn't mind."`,
-        `Roxanne smiles. "I asked Aaliyah if I could do a portrait. She said 'sure, feed me while you work.'" She nods. "We had a four-hour session. She ate continuously. The painting is the best thing I've done this semester."`,
+        `Nadia looks up. "Chloe has completed the adaptation process and crossed into something more permanent." She considers. "She belongs here now in the way that's hard to reverse. The campus shapes itself around her. She's found her location in this system." A pause. "She's quite large. The two facts are connected."`,
+        `"I've been tracking Chloe since the beginning of term," Nadia says. "The transformation from newcomer to embedded presence is almost complete. She's gained considerably — I've been noting it." She looks at her notes. "The correlation between belonging and appetite is one of the most consistent things I've documented. She's a clean example."`,
       ],
       blob:[
-        `"Aaliyah is immense now," Roxanne says softly. "She barely moves. She has this presence that fills a room even when she's still." She holds up her sketchbook — pages and pages of studies. "I've been drawing her for months. The series is going to be extraordinary." She looks up. "She might be my masterpiece."`,
-        `Roxanne is quiet for a moment. "Aaliyah told me she felt seen in my paintings," she says. "That she'd never felt that way before." She closes the sketchbook gently. "I'm going to do a full show. Just her. The whole arc of this year." A pause. "The transformation as the art."`,
+        `Nadia closes her notebook very briefly. "Chloe barely leaves her space anymore," she says. "The dining hall delivers. The campus comes to her." She opens it again. "She's been here long enough that she is the place. I watched the whole process." She looks at something on the page. "The data is complete. I don't know what to do with complete data." A long pause. "I'll keep watching."`,
+        `"I talked to Chloe recently," Nadia says. "She said she never wants to leave. She said she'd become the campus." She writes something small and careful. "I've been observing her since she arrived with a map. She doesn't have the map anymore." She's quiet for a moment. "She's not a case study anymore. I'm not sure she ever was, exactly."`,
       ],
     },
-    offerHelp:`Roxanne opens her sketchbook. "Aaliyah eats more when I'm drawing her. I think she finds it comfortable, being observed without judgment." She turns a page. "I could do weekly sessions. Long ones. Always with food." She pauses. "The series gets better with every pound she gains. And she deserves to be comfortable."`,
-    helpReason:"Artistic subject & genuine care — Roxanne's best work features Aaliyah. She wants the series to continue.",
-    helpMultiplier:1.35,
-    doubleDown: [
-      {atLbs:200, addMult:0.15, line:"Aaliyah is two hundred pounds and I have three pages of studies and she sat for me again last week and ate the whole time and I have never had a better session in my life. I am cooking for her now — bringing things to our sessions, making sure she always has something good while I work. The art gets better every time she does. I need to keep this going."},
-      {atLbs:250, addMult:0.20, line:"Two-fifty and Aaliyah is glorious and enormous and I have told her I want to do a full show and she said 'yeah, sure' while eating and that single moment is going in the artist's statement. I am bringing full meals to every session now. Rich ones. The kind that get you to reach for more without thinking. The series is going to be extraordinary. She is going to be extraordinary."},
-      {atLbs:300, addMult:0.25, line:"Three hundred pounds of Aaliyah and I have enough work for a full retrospective and she is my finest subject and I am not stopping. Weekly sessions. Full catered spreads. Anything she wants while I work. She told me she felt seen in my paintings and I nearly lost my mind because she is the most seen person I have ever put on canvas and I want to keep seeing her forever."},
-    ],
+    offerHelp:`Nadia looks at her notes. "Chloe trusts recommendations from people she perceives as knowledgeable about the campus." She turns a page. "If I direct her to the best eating spots — the dense ones, the unlimited options — she'll follow without suspicion." She pauses. "I want to see how far the adaptation goes with structured input. The baseline without intervention is already remarkable."`,
+    helpReason:"Research interest — Nadia wants to observe Chloe's adaptation with controlled input. Also mildly fond of her.",
+    helpMultiplier:1.32,
+
+  doubleDown: [
+    {atLbs:200, addMult:0.15, line:"Chloe is two hundred pounds and she texted me a restaurant recommendation — first time she's done that, the subject recommending inputs to the observer — and I went and she was completely right and I updated my notes to reflect that the dynamic has shifted and I am genuinely uncertain which of us is running the experiment now. I sent her three recommendations back. We're going to all of them this week."},
+    {atLbs:250, addMult:0.20, line:"Two-fifty on Chloe and she doesn't have the map anymore and she knows this campus better than I do from a food standpoint, which I have documented carefully. I am continuing to make introductions to high-value eating locations because the data keeps getting better and also I find I genuinely want her to have everything she wants here. Both motivations are present. I've stopped pretending one is more legitimate than the other."},
+    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Chloe, completely transformed, completely at home, and she told me the campus made her and I said I know and she said she knew I was watching and I said I know and we sat with that for a moment and then she recommended a new place and I went and it was excellent. The experiment is ongoing. The experimenter has feelings about the subject. I've noted this. I'm continuing anyway."},
+  ],
   },
 
 ];

@@ -322,6 +322,8 @@ export default function ProfessorSim(){
   // collabPartnerPicker: { student: kylieStudent } — shows partner selection modal
   const [collabPartnerId, setCollabPartnerId] = useState(null);
   // collabPartnerId: number — persists through EVOLVED_EVENT phases + mini-game
+  const [researchSubjectPicker, setResearchSubjectPicker] = useState(null);
+  // researchSubjectPicker: { student: nadiaStudent }
   const [collabStreamState, setCollabStreamState] = useState(null);
   // collabStreamState: { kylieId, partnerId, stageIdx, qualityBar, kylieGain, partnerGain,
   //   partnerStageAtStart, stagedUp, foodQueue, tierIdx, chatLines,
@@ -1046,6 +1048,9 @@ export default function ProfessorSim(){
   const doEvolvedActivity=(s)=>{
     if(!s.evolvedForm) return;
     if(s.evolvedForm==='feedee_creator'){ openCollabPartnerPicker(s); return; }
+    if(s.evolvedForm==='psych_researcher'){
+      if(s.researchSubjectId==null){ openResearchSubjectPicker(s); return; }
+    }
     const meta=EVOLVED_ACTIVITY_META[s.evolvedForm]; if(!meta) return;
     if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
     const stageIdx=getEvolvedActivityStageIdx(s);
@@ -1483,6 +1488,10 @@ export default function ProfessorSim(){
       return;
     }
     setCollabPartnerPicker({student:s});
+  };
+
+  const openResearchSubjectPicker=(s)=>{
+    setResearchSubjectPicker({student:s});
   };
 
   const startCollabStream=(kylieId,partnerId,stageIdx,history)=>{
@@ -5147,6 +5156,31 @@ export default function ProfessorSim(){
                               })}
                             </div>
                           )}
+                          {s.evolvedForm==='psych_researcher'&&s.researchSubjectId!=null&&(()=>{
+                            const subj=students.find(st=>st.id===s.researchSubjectId);
+                            if(!subj) return null;
+                            const sid=getStage(subj.lbs).id;
+                            const tier=sid<=2?0:sid<=4?1:sid<=6?2:sid<=8?3:4;
+                            const W=[36,46,58,72,86][tier];
+                            const H=[60,56,50,44,38][tier];
+                            const BR=[`50% 50% 55% 55%`,`50% 50% 58% 58%`,`50% 50% 65% 65%`,`50% 50% 70% 70%`,`50% 50% 75% 75%`][tier];
+                            return(
+                              <div style={{marginTop:10,padding:"10px 12px",background:"rgba(15,5,30,0.6)",border:"1px solid #4020806a",borderRadius:8}}>
+                                <div style={{fontSize:9,letterSpacing:3,color:"#6b5b95",marginBottom:8}}>RESEARCH SUBJECT</div>
+                                <div style={{display:"flex",alignItems:"center",gap:14}}>
+                                  <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+                                    <div style={{width:14,height:14,borderRadius:"50%",background:"#5030904d"}}/>
+                                    <div style={{width:W,height:H,background:"#5030904d",borderRadius:BR,boxShadow:"0 0 6px #50309050",transition:"all 0.4s ease"}}/>
+                                  </div>
+                                  <div>
+                                    <div style={{color:"#c0a0e0",fontSize:13,fontWeight:700}}>{subj.name}</div>
+                                    <div style={{color:"#7050a0",fontSize:10}}>{getStage(subj.lbs).label} · {Math.round(subj.lbs)} lbs</div>
+                                    <button style={{...C.smBtn,marginTop:6,fontSize:10,opacity:0.7}} onClick={()=>{setStudents(prev=>prev.map(x=>x.id===s.id?{...x,researchSubjectId:null}:x));}}>Change Subject</button>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })()}
                         </div>
                         );
                       })()}
@@ -6700,7 +6734,8 @@ export default function ProfessorSim(){
         if(!s||!evDef) return null;
         const phase=!done?evDef.phases[phaseIdx]:null;
         const collabPartner=collabPartnerId?students.find(st=>st.id===collabPartnerId):null;
-        const phaseText=phase?(typeof phase.text==="function"?phase.text(history,s,collabPartner):phase.text):null;
+        const researchSubject=(formId==='psych_researcher'&&s?.researchSubjectId!=null)?students.find(st=>st.id===s.researchSubjectId):null;
+        const phaseText=phase?(typeof phase.text==="function"?phase.text(history,s,collabPartner||researchSubject):phase.text):null;
         const evMeta=EVOLVED_FORM_META[formId];
         const accentColor=evMeta?.color||"#7030c0";
         return(
@@ -7103,6 +7138,44 @@ export default function ProfessorSim(){
                 </div>
               ))}
               <button style={{...C.btn("#2a1040"),width:"100%",marginTop:8,fontSize:11}} onClick={()=>setCollabPartnerPicker(null)}>Cancel</button>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── PSYCH RESEARCHER: SUBJECT PICKER ── */}
+      {researchSubjectPicker&&(()=>{
+        const{student:nadia}=researchSubjectPicker;
+        const purple="#6b5b95";
+        const eligible=students.filter(st=>st.id!==nadia.id&&getTier(st.relationship).id>=1);
+        return(
+          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
+            <div style={{background:"#0a0010",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:500,width:"95%",maxHeight:"85vh",overflowY:"auto"}}>
+              <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:4,textAlign:"center"}}>📋 RESEARCH SUBJECT</div>
+              <div style={{fontSize:14,color:"#c0a0e0",fontWeight:"bold",marginBottom:12,textAlign:"center"}}>Select a Subject</div>
+              <div style={{fontSize:11,color:"#8070a0",marginBottom:14,textAlign:"center"}}>Close tier or above · any weight stage</div>
+              {eligible.length===0&&<div style={{color:"#806090",textAlign:"center",padding:20}}>No eligible subjects — build a Close relationship first.</div>}
+              {eligible.map(st=>(
+                <div key={st.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:6,borderRadius:8,background:"#080016",border:`1px solid ${purple}40`,cursor:"pointer"}}
+                  onClick={()=>{
+                    setStudents(prev=>prev.map(x=>x.id===nadia.id?{...x,researchSubjectId:st.id}:x));
+                    setResearchSubjectPicker(null);
+                    const stageIdx=Math.max(0,Math.min(5,getStage(nadia.lbs).id-5));
+                    const evDef=EVOLVED_EVENTS['psych_researcher']?.[stageIdx];
+                    const meta=EVOLVED_ACTIVITY_META['psych_researcher'];
+                    if(evDef){
+                      setAp(a=>a-(meta?.apCost||1));
+                      setEvolvedEventState({studentId:nadia.id,formId:'psych_researcher',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});
+                    }
+                  }}>
+                  <div style={{flex:1}}>
+                    <div style={{color:"#c0a0e0",fontWeight:"bold",fontSize:13}}>{st.name}</div>
+                    <div style={{color:"#806090",fontSize:10}}>{st.archetype} · {Math.round(st.lbs)} lbs · {getTier(st.relationship).label}</div>
+                  </div>
+                  <div style={{color:"#a090c0",fontSize:11}}>{getStage(st.lbs).label}</div>
+                </div>
+              ))}
+              <button style={{...C.btn("#2a1040"),width:"100%",marginTop:8,fontSize:11}} onClick={()=>setResearchSubjectPicker(null)}>Cancel</button>
             </div>
           </div>
         );

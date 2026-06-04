@@ -312,6 +312,31 @@ export const STAGE_REACTIONS = {
     // Stage 10 820+ lbs
     (s) => `She is ${Math.round(s.lbs)} pounds and she has been here long enough that she is the place. Her belly, her thighs, her arms — all of it enormous, all of it warm, all of it this campus. The booth is hers. The staff is her family. The menu has her fingerprints on it. She's never going home. She's already there.`,
   ],
+
+  psych: [
+    // Stage 0 ~80 lbs
+    (s) => `Current weight: ${Math.round(s.lbs)} lbs. Significantly underweight. I've noted the physical data but I find I'm more interested in everyone else's numbers right now. The class is full of subjects worth observing. I'm making notes.`,
+    // Stage 1 ~100-135 lbs
+    (s) => `${Math.round(s.lbs)} lbs. Within normal range — barely. I eat at my desk while reading. The food is incidental to the reading. I've started a new column in my observation log for appetite-related behaviors. The data is promising.`,
+    // Stage 2 ~135-162 lbs
+    (s) => `${Math.round(s.lbs)} lbs. Something has shifted — I can feel it in the way my clothes settle, the way I sit in chairs. I'm logging it as a variable. Variables are interesting. My subject observations are richer now. I find myself identifying with certain data points.`,
+    // Stage 3 ~162-195 lbs
+    (s) => `${Math.round(s.lbs)} lbs. My waistband requires daily adjustment and my reflection is noticeably different. I observe this with clinical detachment. Or I'm trying to. I've started noting my own mood data alongside the weight data and the correlation is unmistakable.`,
+    // Stage 4 ~195-238 lbs
+    (s) => `${Math.round(s.lbs)} lbs. My belly presses my notebook against the desk when I lean forward. I catalogued this as a research incident and then sat with it for a moment. My body is providing data I didn't design for. I'm running a supplementary study on myself. Preliminary results suggest I'm enjoying this.`,
+    // Stage 5 ~238-285 lbs
+    (s) => `${Math.round(s.lbs)} lbs. My thighs press together through twelve hours of sitting and I've stopped pretending not to notice. My observations have gotten richer. The subjects feel more knowable to me now — I understand appetite and embodiment from the inside in ways the literature never quite captured.`,
+    // Stage 6 ~285-360 lbs
+    (s) => `${Math.round(s.lbs)} lbs. My belly hangs forward when I stand and I'm in a research institution and I haven't managed to care. I care about the data. The data is very interesting. My own physical presence has become a significant variable in my ongoing study. I've started keeping a separate log.`,
+    // Stage 7 ~360-465 lbs
+    (s) => `${Math.round(s.lbs)} lbs. I've stopped trying to note this neutrally. It isn't neutral anymore — it's real and heavy and warm and mine. My research has benefited. I can observe from the inside in ways I couldn't have imagined at ${Math.round(s.startLbs)} pounds. My notes from this phase will make good reading.`,
+    // Stage 8 ~465-595 lbs
+    (s) => `${Math.round(s.lbs)} lbs. I do most of my work from one spot now. My body has become the primary data set and I am the only researcher with full access. My belly is enormous and my thighs are wide and my notes are the most precise they've ever been. I can verify everything I observe about appetite immediately.`,
+    // Stage 9 ~595-820 lbs
+    (s) => `${Math.round(s.lbs)} lbs. I stopped converting these to clinical notation months ago. The number is ${Math.round(s.lbs)} and it is mine and I find I am completely satisfied with it. My research is exceptional. My body is exceptional. Both are larger than I planned for. I've stopped considering that a problem.`,
+    // Stage 10 820+ lbs
+    (s) => `${Math.round(s.lbs)} lbs. I am the study. I am also the largest research subject I have ever encountered, and I've encountered quite a few. My belly is vast and warm and my notebooks are spread all around me. People come to me now. I observe them and they don't mind. This was always going to be where the research led.`,
+  ],
 };
 
 export const STAGE_DROP_REACTIONS = {
@@ -325,6 +350,7 @@ export const STAGE_DROP_REACTIONS = {
   overachiever:["Underweight. Failing metric. Corrective meal plan active immediately. I don't fail metrics.","Down on the scale. Noted. Unacceptable. Course correction begins today.","Lost a stage. I had optimized everything around that weight. Regression logged.","Dropped. My productivity was peaking at the higher weight. The data supports this.","Lost a real amount. My thesis literally argued for maintaining that stage. Awkward.","Significant loss. I was achieving peak efficiency at that size. This is a setback.","A whole stage gone. My entire schedule was calibrated for that body.","Lost a lot. I had the most productive semester of my life at that weight.","Down from peak performance. I'm documenting everything and correcting immediately.","That was my best stage in every measurable category. The loss is fully documented.","Even from here, the variance is unacceptable. Getting back to target."],
   quiet:["...oh. Less. I didn't want less.","Lighter. Hm.","Lost some. I'd just gotten used to myself.","Down. I was good where I was.","I liked how I felt before. This is different.","Lost more than I wanted to.","Smaller. I don't prefer smaller.","I had gotten used to taking up that much space. This feels wrong.","I was that size for a while. It was mine.","Down from something I'd come to think of as permanent. Weird.","Even at this size, going back feels smaller in every way."],
   transfer:["Lighter than when I got here. That's not the direction I wanted.","Down some. I was just starting to feel settled here.","Lost a bit. The campus was starting to feel mine. This makes it feel newer.","Dropped. My friends here knew me at that size. This is different.","Lost a real amount. I was finding my rhythm. Now everything's slightly off.","Significant drop. I'd finally started to feel like a local here.","A whole stage gone. I was embedded in this place at that size.","Lost a lot. Home feels like this campus and this campus felt right at that weight.","Down from real comfort. I'd made this place mine. Now I feel newer again.","That much lost. I had become part of this place at that size.","Even from here it feels like going backwards. I know what I had here."],
+  psych:["Weight deviation: downward. Noted. Variable shift requires recalibration.","Lower this week. My clothes fit differently. I've added a corrective note.","Down a stage. I had useful data from that size. Frustrating variable.","Lost some mass. My research was running smoothly there. Setback.","Dropped. My observations were sharpest at that weight. Correcting.","Lost a real amount. I had calibrated everything to that data point.","Significant loss. I'd gotten comfortable in that body. That was productive.","That much gone. My observations from that stage were among my best.","Down from a genuinely useful research position. Recalibrating immediately.","I had built a full observational framework around that size. Starting over.","Even from here, the absence is a variable I didn't choose. Getting back."],
 };
 
 export const PROFESSOR_RANKS = [
@@ -471,6 +497,19 @@ export const OUTFITS = {
     "Bespoke wide garments, practical and warm. This place made her, and the clothes show it.",
     "Whatever can be made at her size. She knows the measurements. The delivery schedule. All of it.",
   ],
+  psych:[
+    "Pencil skirt, blouse slightly too large. Severe, professional. Notebook always visible.",
+    "Fitted blazer, slim trousers. Clinical and deliberate. Notebook always out.",
+    "Blazer no longer buttons over the midsection. She hasn't replaced it. Notebooks stacked instead of carried.",
+    "Stretch-blend professional trousers. Blouses untucked. Still the notebook. Always the notebook.",
+    "Wide-cut academic wear. Soft structured blazer, loose trousers. The professional silhouette softening.",
+    "Custom stretch-fabric professional sets. Lab coat over everything — it hides things, which she notes as a variable.",
+    "Wide professional layers. Lab coats in larger sizes. Everything functional and roomy.",
+    "Reinforced stretch professional wear. The blazers are custom now. She has a made-to-measure account.",
+    "Wide academic layers. Flowing tops, structured wide trousers. She dresses like someone optimised for sitting.",
+    "Custom-ordered wide garments, professionally cut. Everything delivered. Measurement evolution logged separately.",
+    "Whatever can be professionally made at her scale. She has specifications. They are met exactly.",
+  ],
   default:[
     "Clothes hang off her angular frame. Everything too large, nothing fits properly.",
     "Whatever she usually wears. Fits fine.",
@@ -497,6 +536,7 @@ export const SLIGHT_DIARY = {
   overachiever:"BMI: 17.1. That's the clinical threshold. I've added a meal schedule to my planner. Optimizing upward. This is correctable.",
   quiet:"—",
   transfer:"I've been here two months and I weigh less than when I left home. The dining hall is good. I've been forgetting to go. I should fix that.",
+  psych:"Arrived underweight — notable. Starting observations immediately. Fifteen subjects in view. I have six notebooks. I'll need more.",
 };
 
 export const DIARY_ENTRIES = {
@@ -619,6 +659,18 @@ export const DIARY_ENTRIES = {
     7:"I never want to leave. I don't think I could, physically. Good. This is home.",
     8:"Some students use me as a campus landmark. I gave someone directions the other day. 'Turn left at me.' It worked.",
     9:"I am part of the campus now. Permanent. Unmovable. Well-fed.",
+  },
+  psych:{
+    0:"New observation log started. Fifteen subjects, daily contact. The data will be good. I can already tell.",
+    1:"Added nutritional timing to my research schedule. Partly professional curiosity. Partly the vending machine was right there.",
+    2:"My clothes feel different. I noted it in column seven. I'm not sure it belongs there but it's data.",
+    3:"I've started cross-referencing my own intake with my mood data. The correlation is not subtle.",
+    4:"My advisor asked if I was okay. I said I was conducting ongoing research. Both things are true.",
+    5:"I've noticed my observations have gotten more accurate at this weight. I think I understand what I'm studying now.",
+    6:"The notebook is fuller than I expected. So am I, honestly.",
+    7:"I used to be the observer. The line between observer and subject is more permeable than I theorized.",
+    8:"Working from my office mostly. The data comes to me. So does everything else.",
+    9:"I am the study and the researcher. The ethics board would have questions. I'm choosing not to submit.",
   },
 };
 
