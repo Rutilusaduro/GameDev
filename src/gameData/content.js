@@ -337,6 +337,10 @@ export const STAGE_REACTIONS = {
     // Stage 10 820+ lbs
     (s) => `${Math.round(s.lbs)} lbs. I am the study. I am also the largest research subject I have ever encountered, and I've encountered quite a few. My belly is vast and warm and my notebooks are spread all around me. People come to me now. I observe them and they don't mind. This was always going to be where the research led.`,
   ],
+  culinary:   Array.from({length:11},(_,i)=>(s)=>`[placeholder: culinary stage ${i} reaction — ${Math.round(s.lbs)} lbs]`),
+  eced:       Array.from({length:11},(_,i)=>(s)=>`[placeholder: eced stage ${i} reaction — ${Math.round(s.lbs)} lbs]`),
+  nursing:    Array.from({length:11},(_,i)=>(s)=>`[placeholder: nursing stage ${i} reaction — ${Math.round(s.lbs)} lbs]`),
+  farm_girl:  Array.from({length:11},(_,i)=>(s)=>`[placeholder: farm_girl stage ${i} reaction — ${Math.round(s.lbs)} lbs]`),
 };
 
 export const STAGE_DROP_REACTIONS = {
@@ -351,6 +355,10 @@ export const STAGE_DROP_REACTIONS = {
   quiet:["...oh. Less. I didn't want less.","Lighter. Hm.","Lost some. I'd just gotten used to myself.","Down. I was good where I was.","I liked how I felt before. This is different.","Lost more than I wanted to.","Smaller. I don't prefer smaller.","I had gotten used to taking up that much space. This feels wrong.","I was that size for a while. It was mine.","Down from something I'd come to think of as permanent. Weird.","Even at this size, going back feels smaller in every way."],
   transfer:["Lighter than when I got here. That's not the direction I wanted.","Down some. I was just starting to feel settled here.","Lost a bit. The campus was starting to feel mine. This makes it feel newer.","Dropped. My friends here knew me at that size. This is different.","Lost a real amount. I was finding my rhythm. Now everything's slightly off.","Significant drop. I'd finally started to feel like a local here.","A whole stage gone. I was embedded in this place at that size.","Lost a lot. Home feels like this campus and this campus felt right at that weight.","Down from real comfort. I'd made this place mine. Now I feel newer again.","That much lost. I had become part of this place at that size.","Even from here it feels like going backwards. I know what I had here."],
   psych:["Weight deviation: downward. Noted. Variable shift requires recalibration.","Lower this week. My clothes fit differently. I've added a corrective note.","Down a stage. I had useful data from that size. Frustrating variable.","Lost some mass. My research was running smoothly there. Setback.","Dropped. My observations were sharpest at that weight. Correcting.","Lost a real amount. I had calibrated everything to that data point.","Significant loss. I'd gotten comfortable in that body. That was productive.","That much gone. My observations from that stage were among my best.","Down from a genuinely useful research position. Recalibrating immediately.","I had built a full observational framework around that size. Starting over.","Even from here, the absence is a variable I didn't choose. Getting back."],
+  culinary:   Array.from({length:11},(_,i)=>`[placeholder: culinary drop reaction stage ${i}]`),
+  eced:       Array.from({length:11},(_,i)=>`[placeholder: eced drop reaction stage ${i}]`),
+  nursing:    Array.from({length:11},(_,i)=>`[placeholder: nursing drop reaction stage ${i}]`),
+  farm_girl:  Array.from({length:11},(_,i)=>`[placeholder: farm_girl drop reaction stage ${i}]`),
 };
 
 export const PROFESSOR_RANKS = [
@@ -510,6 +518,10 @@ export const OUTFITS = {
     "Custom-ordered wide garments, professionally cut. Everything delivered. Measurement evolution logged separately.",
     "Whatever can be professionally made at her scale. She has specifications. They are met exactly.",
   ],
+  culinary:  Array.from({length:11},(_,i)=>`[placeholder: culinary outfit stage ${i}]`),
+  eced:      Array.from({length:11},(_,i)=>`[placeholder: eced outfit stage ${i}]`),
+  nursing:   Array.from({length:11},(_,i)=>`[placeholder: nursing outfit stage ${i}]`),
+  farm_girl: Array.from({length:11},(_,i)=>`[placeholder: farm_girl outfit stage ${i}]`),
   default:[
     "Clothes hang off her angular frame. Everything too large, nothing fits properly.",
     "Whatever she usually wears. Fits fine.",
@@ -537,6 +549,10 @@ export const SLIGHT_DIARY = {
   quiet:"—",
   transfer:"I've been here two months and I weigh less than when I left home. The dining hall is good. I've been forgetting to go. I should fix that.",
   psych:"Arrived underweight — notable. Starting observations immediately. Fifteen subjects in view. I have six notebooks. I'll need more.",
+  culinary:"[placeholder: culinary slight diary entry]",
+  eced:"[placeholder: eced slight diary entry]",
+  nursing:"[placeholder: nursing slight diary entry]",
+  farm_girl:"[placeholder: farm_girl slight diary entry]",
 };
 
 export const DIARY_ENTRIES = {
@@ -660,6 +676,10 @@ export const DIARY_ENTRIES = {
     8:"Some students use me as a campus landmark. I gave someone directions the other day. 'Turn left at me.' It worked.",
     9:"I am part of the campus now. Permanent. Unmovable. Well-fed.",
   },
+  culinary:   Object.fromEntries(Array.from({length:10},(_,i)=>[i,`[placeholder: culinary diary entry ${i}]`])),
+  eced:       Object.fromEntries(Array.from({length:10},(_,i)=>[i,`[placeholder: eced diary entry ${i}]`])),
+  nursing:    Object.fromEntries(Array.from({length:10},(_,i)=>[i,`[placeholder: nursing diary entry ${i}]`])),
+  farm_girl:  Object.fromEntries(Array.from({length:10},(_,i)=>[i,`[placeholder: farm_girl diary entry ${i}]`])),
   psych:{
     0:"New observation log started. Fifteen subjects, daily contact. The data will be good. I can already tell.",
     1:"Added nutritional timing to my research schedule. Partly professional curiosity. Partly the vending machine was right there.",
