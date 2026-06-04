@@ -430,10 +430,10 @@ const IMMOBILE_REDIRECT = {
     celestial: "The room is warm with divine light and Aaliyah's enormous form fills it from wall to wall. Her wings make the ceiling feel low. She doesn't go anywhere now — she receives things instead. Bring enough.",
     umbral:    "Aaliyah doesn't go out. The void that settled into her room has a stillness to it that suits her. The hunger is absolute. You're going to her with food, and you're bringing everything she'll need.",
   },
-  14:{ // Sophie — sorority
-    blob:      "Sophie has been hosting chapter from her bed for two months and nobody has suggested meeting anywhere else because the setup is honestly better at hers. She's warm, she's central, she's not going anywhere. You're bringing dinner. She'll already have a preference.",
-    celestial: "Sophie's room is the warmest place on campus — golden, close, full of her light. She presides from the centre of it, vast and certain and completely settled. You go to her. Everyone does.",
-    umbral:    "The cold that follows Sophie through the house has made her room into something quiet and permanent. She stays in. Things come to her. You are coming to her with dinner, and she'll accept it with that particular smile that hasn't changed.",
+  14:{ // Mary Jane — farm_girl
+    blob:      "Mary Jane hasn't left the homestead in weeks and she doesn't need to. The room comes to her — the deliveries, the cast iron, Grandma Mae's packages, and now you. She'll already know what she wants you to bring. She texted you the list before you even asked.",
+    celestial: "The homestead is warm with divine light and Mary Jane's enormous form fills it like sunshine fills a barn — complete, golden, completely present. She's not going anywhere. The food comes to her, as it always has, as it always will. Bring something worth bringing.",
+    umbral:    "The homestead has gone cold and dim and perfect. Mary Jane stays in it, vast and warm in the center of the cool dark, and things come to her — including dinner, including you. She already has ideas about what you should have brought.",
   },
 };
 
@@ -4362,6 +4362,7 @@ const EVOLVED_ACTIVITY_TEXT = {
     (s)=>`State qualifier. Mary Jane is ${Math.round(s.lbs)} pounds and her competition jersey is already getting tight across the front — she commissioned it two months ago — and Darcy watches her walk to the weigh-in with an expression you've seen before on people who've revised something important. The contest starts. You watch from the stands. Midway through the final round, Mary Jane crosses Darcy on the scoreboard, and Darcy stops eating for exactly one second. The crowd makes a sound. You make a sound. Mary Jane keeps eating.`,
     (s)=>`The state fair finals. She's ${Math.round(s.lbs)} pounds in the new jersey and the press are there — two photographers and a features writer who keeps asking you questions you answer vaguely. Mary Jane at the table is something to see from a distance: the full scale of her at a competition table, her belly rounding against the edge, her chest filling the jersey front, eating with the focused certainty of someone for whom this has stopped being a challenge and become a performance. She wins. Darcy starts clapping and doesn't stop. "I trained all year," Darcy says to no one in particular. She keeps clapping.`,
     (s)=>`Tri-state invitational. They built a bigger scale. You were there when the fair director said it — addressing the weigh-in queue, trying to be casual — and the whole line understood who the scale was for. Mary Jane is ${Math.round(s.lbs)} pounds and she steps onto the scale with the ease of someone who has made peace with the number before it appears. The crowd that gathers for her weigh-in is larger than the crowd for any other competitor's whole event. Darcy has a seat in the front row. She brought a sign.`,
+    (s)=>`She can't get to the fair herself — they bring the fair to her. The committee set up a satellite table in the largest event room available; you followed the signs down two hallways and found Mary Jane at approximately ${Math.round(s.lbs)} pounds filling the corner of it, the table edge pressing against the full warm circumference of her belly, her chest resting enormous and heavy on top of it, her jersey printed custom and wide enough to read as a banner. Darcy is here — 500 lbs herself now, seated to the right, not competing. The crowd standing at the edges of the room is quiet the way crowds go quiet when the person at the center of the spectacle is the spectacle entirely. The judges exchange a look. The horn sounds.`,
   ],
 };
 
@@ -5291,6 +5292,141 @@ const EVOLVED_ACTIVITY_META = {
   state_fair_queen:{ label:"🎡 Enter the Fair",         apCost:1, gainRange:[4,8],  relBonus:10 },
 };
 
+// ── FARM GIRL: MARY JANE RECIPES (unlock via homestead_queen events) ──────────
+const MJ_RECIPES = {
+  sweet_potato_pie: { name:"Sweet Potato Pie", emoji:"🥧", lbs:18, fullness:22 },
+  biscuits_gravy:   { name:"Biscuits & Gravy",  emoji:"🍳", lbs:14, fullness:18 },
+  peach_cobbler:    { name:"Peach Cobbler",      emoji:"🍑", lbs:16, fullness:20 },
+  cornbread_butter: { name:"Buttered Cornbread", emoji:"🌽", lbs:12, fullness:15 },
+  pound_cake:       { name:"Pound Cake",         emoji:"🎂", lbs:20, fullness:25 },
+  cream_gravy:      { name:"Cream Gravy Plate",  emoji:"🥣", lbs:22, fullness:28 },
+};
+
+// ── FAIR CONTEST MINI-GAME — DATA & CONTENT ─────────────────────────────────
+const FAIR_FOODS = [
+  { id:'sweet_potato', name:'Sweet Potato Pie', emoji:'🥧', lbs:5, fullnessAmt:12 },
+  { id:'peach_cobbler',name:'Peach Cobbler',    emoji:'🍑', lbs:6, fullnessAmt:14 },
+  { id:'apple_pie',    name:'Apple Pie',        emoji:'🍎', lbs:5, fullnessAmt:12 },
+  { id:'pecan_pie',    name:'Pecan Pie',        emoji:'🫙', lbs:6, fullnessAmt:13 },
+  { id:'corn_pudding', name:'Corn Pudding',     emoji:'🌽', lbs:5, fullnessAmt:11 },
+  { id:'pound_cake',   name:'Pound Cake',       emoji:'🎂', lbs:4, fullnessAmt:10 },
+  { id:'banana_pudding',name:'Banana Pudding',  emoji:'🍌', lbs:4, fullnessAmt:9  },
+  { id:'fried_chicken',name:'Fried Chicken',    emoji:'🍗', lbs:7, fullnessAmt:15 },
+  { id:'biscuits_gravy',name:'Biscuits & Gravy',emoji:'🍳', lbs:6, fullnessAmt:13 },
+  { id:'hushpuppies',  name:'Hushpuppies',      emoji:'🟡', lbs:4, fullnessAmt:9  },
+];
+
+// Food selection per stage (6 stages: stageIdx 0–5). More items at higher stages.
+const FAIR_STAGE_FOODS = [
+  ['sweet_potato','peach_cobbler','apple_pie','corn_pudding','pound_cake','banana_pudding'],
+  ['sweet_potato','peach_cobbler','apple_pie','pecan_pie','corn_pudding','pound_cake','banana_pudding'],
+  ['sweet_potato','peach_cobbler','apple_pie','pecan_pie','corn_pudding','pound_cake','banana_pudding','biscuits_gravy'],
+  ['sweet_potato','peach_cobbler','apple_pie','pecan_pie','corn_pudding','pound_cake','banana_pudding','fried_chicken','biscuits_gravy'],
+  ['sweet_potato','peach_cobbler','apple_pie','pecan_pie','corn_pudding','pound_cake','banana_pudding','fried_chicken','biscuits_gravy','hushpuppies'],
+  ['sweet_potato','peach_cobbler','apple_pie','pecan_pie','corn_pudding','pound_cake','banana_pudding','fried_chicken','biscuits_gravy','hushpuppies'],
+];
+
+const FAIR_DARCY_WEIGHTS = [310, 350, 390, 430, 465, 500];
+
+// Milestone popup text at 100% / 150% / 200% / 250% fullness, indexed by stageIdx
+const FAIR_FULLNESS_MILESTONES = {
+  100:[
+    `The fullness hits you all at once — that specific moment when you stop being hungry and become full and it's sudden and total and warm. Your belly has expanded against the table edge. The judge writes something on the clipboard. Darcy is still eating. So are you.`,
+    `You hit full. It registers the way it always does — a wave of warmth across your whole abdomen, everything going tight and real and present. Your belly presses the table edge harder now. You take a breath. You keep going.`,
+    `Full. Your belly is enormous against the table and the warmth of the pies has spread through you completely. The crowd can see it — can see the rounding, the heaviness, the way you're breathing differently. You keep going.`,
+    `Full. The table is pressing into you rather than you pressing into it. Your belly has swelled forward and the front of your jersey is straining now. Darcy has not hit her limit yet. Neither have you, not really.`,
+    `Full. You have eaten enough to fill most people twice over and you are technically full but you are 630 pounds and technical fullness and actual limit are two different addresses. You keep eating.`,
+    `Full. You are a blob and you are full and the concept of full has been renegotiated so many times over the years that this number means something different than it used to. You keep going. There is more table.`,
+  ],
+  150:[
+    `You are past full and still eating. Something in your belly has given way — not painfully, just the specific sensation of capacity being redefined downward. The crowd has gotten louder. You can hear individual voices now.`,
+    `One hundred and fifty percent. Your belly is very warm and very heavy and your jersey is being tested in ways the seamstress did not intend. You pause for exactly one breath. Then another pie.`,
+    `Past full, well past, and your body is doing what it does — finding more room, making space, the whole warm geography of your abdomen yielding to accommodate. This is what you've trained for. You eat another piece.`,
+    `One-fifty. Your belly presses forward with a weight that would have stopped you a year ago. It doesn't stop you now. Darcy has slowed. She's watching you. You eat another piece.`,
+    `Past full and into something else — the territory you live in now, the specific fullness of someone who has grown their capacity past any reasonable definition of the word. You eat. The crowd makes noise. You eat another piece.`,
+    `One hundred and fifty percent. You are a blob and the concept of 'overfull' is applied to you the way it's applied to architecture — a technical designation that says nothing about whether the structure still stands. It stands. You eat.`,
+  ],
+  200:[
+    `Two hundred percent. You are twice full. Your belly is enormous and warm and pressed fully against the table and you are breathing around it, working around the weight of it, and eating through all of it. The crowd is yelling.`,
+    `Two hundred. Your belly has taken on a life of its own — a warm, heavy, forward-pressing presence that you are managing rather than containing. You eat another piece. You can feel each one landing now. You eat another.`,
+    `Two hundred percent fullness and you are enormous and warm and completely present in every inch of your belly and you keep going and Darcy has stopped and is watching you and the crowd is very loud and you take another piece.`,
+    `Twice full. The table edge has disappeared into your belly. Your jersey has been pulled up by the sheer forward pressure of your abdomen. Your thighs are hot and pushed apart and there is no lap and there never was and you eat another piece.`,
+    `Two hundred percent. You are enormous and warm and past any threshold that means anything to anyone except you, and what it means to you is: there is still pie. You eat it.`,
+    `Two-hundred. The crowd has gone very quiet and then very loud. The judges are consulting each other. Darcy is crying a little — not sad crying, the kind you do when you see something genuinely beyond what you expected the world to hold. You eat another piece.`,
+  ],
+  250:[
+    `Two hundred and fifty percent. You are pressed against the table from the inside and the warmth is enormous and total and you are past every number you have ever used to describe yourself. There is still pie. You eat it.`,
+    `Two-fifty. This is not something that happens at regional fairs very often. The judges have stopped pretending to take notes and are just watching. Darcy has her hands over her mouth. You take the last piece.`,
+    `Two hundred and fifty percent full and you are an enormous warm fact sitting at a pie table and the whole fair has gathered around the tent entrance and someone is filming on a phone and you eat the last piece on the table and it is the best thing you have ever eaten.`,
+    `Two-fifty. You are past any number this venue has ever seen and your belly is warm and pressing and enormous and every person in the tent is silent. Darcy has been crying for five minutes. You eat the last piece. You are done because the table is done. Not because you are.`,
+    `Two hundred and fifty percent. You are six hundred and thirty pounds and you have eaten two and a half times your body's capacity for food and the tent is completely silent and then completely not silent and Darcy is starting to clap with both hands and not stopping. You sit very still. The warmth is total.`,
+    `Two hundred and fifty percent. The table is empty. You are a blob and you are full beyond any previous record at this fair or any fair in a fifty-mile radius and the crowd outside the tent is larger than the crowd inside the tent and everyone is either crying or cheering or both. You put both hands on your enormous warm belly. "Good pies," you say. No one argues.`,
+  ],
+};
+
+// Post-contest weigh-in text ("prized pig" register), 6 entries by stageIdx
+const FAIR_WEIGH_IN_TEXT = [
+  (yourStart, yourGain, darcyStart, darcyGain) => `The fair has a livestock scale. This is relevant now.
+
+The judge announces a post-contest weigh-in, which is a newer tradition at this fair — something someone added two seasons ago when the numbers started getting interesting. Both competitors step up in order.
+
+Darcy first: ${Math.round(darcyStart + darcyGain)} pounds. Her starting weight was ${Math.round(darcyStart)}. The gain is read aloud, which is also a newer tradition: "+${Math.round(darcyGain)} lbs." Polite applause.
+
+You step on. The scale settles. The judge reads ${Math.round(yourStart + yourGain)} pounds — starting weight ${Math.round(yourStart)}, gain +${Math.round(yourGain)} lbs. Someone in the crowd makes a sound. Someone else starts clapping. Darcy starts clapping. The applause is not polite this time.`,
+
+  (yourStart, yourGain, darcyStart, darcyGain) => `Post-contest weigh-in. The fair has had a livestock scale for thirty years; today it's doing a different job.
+
+Darcy goes first: ${Math.round(darcyStart + darcyGain)} lbs, up ${Math.round(darcyGain)} from the start. She bows a little. The crowd claps.
+
+You step on. The numbers run up and settle at ${Math.round(yourStart + yourGain)}. The judge reads your starting weight — ${Math.round(yourStart)} — and then the gain: +${Math.round(yourGain)} lbs. He pauses between those two numbers the way people pause when the math is correct but still surprising. Darcy's already clapping. She doesn't stop until you step off.`,
+
+  (yourStart, yourGain, darcyStart, darcyGain) => `The weigh-in platform is at the center of the fair tent. Both competitors. Both on the scale, one at a time.
+
+Darcy: ${Math.round(darcyStart + darcyGain)} lbs. Gain of ${Math.round(darcyGain)}. Crowd applauds.
+
+You: ${Math.round(yourStart + yourGain)} lbs. Starting weight ${Math.round(yourStart)}. Gain of +${Math.round(yourGain)} lbs — the judge reads it into the PA system and the crowd outside the tent hears it through the speakers. Someone out there starts cheering before anyone inside does. You stand on the scale while the sound comes in from both directions, your enormous warm belly rounding forward under the jersey, Darcy next to you with her hand on your arm.`,
+
+  (yourStart, yourGain, darcyStart, darcyGain) => `They call it the final weigh-in. Both competitors. The livestock scale. The PA.
+
+Darcy steps on first, takes her number — ${Math.round(darcyStart + darcyGain)} lbs, up ${Math.round(darcyGain)} — and steps back, and she's looking at you. She has been looking at you since the contest ended.
+
+You step on. The scale platform takes your weight slowly, the way a scale does when it's working hard. The number runs up and lands at ${Math.round(yourStart + yourGain)}. You started this contest at ${Math.round(yourStart)} lbs. You gained ${Math.round(yourGain)} lbs. The judge reads that into the microphone. The tent erupts. Outside the tent, the midway crowd stops moving. Your belly presses forward under the jersey, warm and enormous and completely indifferent to any of this. You just stand there and let the number be the number.`,
+
+  (yourStart, yourGain, darcyStart, darcyGain) => `Post-contest weigh-in. The livestock scale. Both of you.
+
+The tent has filled. Everyone wanted to see the number.
+
+Darcy: ${Math.round(darcyStart + darcyGain)} lbs. Up ${Math.round(darcyGain)}. The crowd responds warmly — she's well-liked here, years of competition, known face. She claps once, steps back.
+
+You step on. The scale makes a sound it doesn't usually make — a settling sound, a structural adjustment — and the number climbs to ${Math.round(yourStart + yourGain)}. Your starting weight was ${Math.round(yourStart)}. You gained ${Math.round(yourGain)} lbs during this contest alone. The judge reads it into the PA. Darcy covers her mouth. The tent holds its breath for exactly one second. Then it doesn't hold anything anymore.`,
+
+  (yourStart, yourGain, darcyStart, darcyGain) => `They move the livestock scale for this. They always move the livestock scale now, at this particular fair. It's a larger scale than the one they use for the hogs — they had it built.
+
+Darcy: ${Math.round(darcyStart + darcyGain)} lbs. Gain of ${Math.round(darcyGain)}. She bows to the crowd. The crowd loves her. They should.
+
+You are helped to the scale — you can get there yourself but someone steadies you anyway — and the platform accommodates you the way it was built to accommodate you, and the number climbs and settles at ${Math.round(yourStart + yourGain)}. You started at ${Math.round(yourStart)}. You gained ${Math.round(yourGain)} lbs in this contest, on top of everything you were when you arrived. The judge reads that number into the PA. The fair outside the tent stops moving. Every phone comes out. Darcy is crying. She has been crying for a while. She starts clapping, and she doesn't stop.`,
+];
+
+// End-of-contest payoff text, 6 entries by stageIdx, function of (gain)
+const FAIR_PAYOFF_TEXT = [
+  (gain) => `You are ${Math.round(gain)} pounds heavier than when you walked into this tent. You can feel it — the pants pressing differently, the warmth across your belly that wasn't there at the warmup table. You've gotten heavier. You'll keep getting heavier. That's the deal, and you made it willingly, and it was worth making.`,
+  (gain) => `${Math.round(gain)} pounds heavier. Your belly sits lower now than it did at the start — you can feel the weight of it settled differently than when you sat down, pressing forward and outward with a permanence that the contest only made more concrete. You are bigger. You are going to keep getting bigger. This is not a problem. This is the point.`,
+  (gain) => `${Math.round(gain)} pounds of new fat have settled onto your frame during this contest. You can feel where each pound went — the belly first, pressing against your waistband with a heaviness that wasn't there two hours ago, then the chest, heavier in the jersey, then the thighs, warm and wider on the seat. Your body accepted all of it and turned it into more of you. You stand up slowly. You are larger than you were. You are exactly what you came here to be.`,
+  (gain) => `${Math.round(gain)} pounds. Your belly presses your waistband and your jersey and the edge of the competition table simultaneously and there is no concept of a lap where you sit — just belly, forward, heavy, enormous, warm, real. The ${Math.round(gain)} new pounds are already distributed, already claimed, already you. You put one hand flat on your belly. It gives. It is very warm. You are done eating for today. Everything else is still going.`,
+  (gain) => `${Math.round(gain)} pounds heavier in two hours. That number registers differently when you're 630 pounds than it does when you're smaller — it's not a fraction, it's a visible shift, a measurable change in forward extension of your belly, in the weight of your thighs on the seat, in how far the jersey has been pulled. You are enormous and you have gotten more enormous and your body took all ${Math.round(gain)} of those pounds and made room for them. It always makes room. It will keep making room.`,
+  (gain) => `${Math.round(gain)} pounds. You are a blob and you gained ${Math.round(gain)} pounds in a single contest and your belly has extended forward another fraction of an inch into the available space and that fraction matters when you are the size you are because fractions are visible at this scale, measurable, significant. You are larger. The room you fill is larger. The number they'll read at the next scale is larger. All of it in the same direction. All of it exactly as intended.`,
+];
+
+// Taunt Darcy popup text, 6 entries by stageIdx
+const FAIR_TAUNT_POPUPS = [
+  `You glance at Darcy's plate. She's working through her cobbler with the focus of someone who's done this for years. You make eye contact. She says: "Don't start." You eat another slice.`,
+  `You look over at Darcy — 350 pounds now, bigger than last year, and still losing ground. She feels you looking. "I see you," she says. "I see every pound of you." She goes back to her plate.`,
+  `You make eye contact with Darcy over the table. She's 390 pounds and she's been doing this for years and she's still in it. "You're something else," she says. Her voice has the specific quality of someone paying a compliment they didn't intend to. You eat another piece.`,
+  `You look at Darcy. She looks at you. You are 519 pounds and she is 430 pounds and she says, quietly, genuinely: "I don't know where you put it." You say: "I grew more room." You eat another piece.`,
+  `You catch Darcy's eye. She has stopped eating. She is watching you. "I trained all year," she says. She is not complaining. She is telling you something true. "I know," you say. "You're good." You eat another piece.`,
+  `Darcy is in the stands. She made eye contact with you when you sat down and nodded — the nod of someone who knows the outcome before the contest starts and has made peace with it. You nod back. You eat another piece. She starts clapping.`,
+];
+
 // ── EP2: INTERACTIVE EVOLVED EVENTS ────────────────────────────────────────
 // Forms listed here get a multi-phase interactive modal instead of the simple activity popup.
 // Structure per entry: { title, phases:[{text(h)=>str, choices:[{id,label,result,lbs?,rel?,flag?,feedOther?}]}], endings:[{condition,text,gainBonus,relBonus}] }
@@ -6090,6 +6226,376 @@ She is in the chair just outside the frame. I can see her from here.`,
       ]
     },
   ],
+
+  // ── FARM GIRL: homestead_queen (multi-phase prose, no mini-game) ──────────
+  homestead_queen:[
+    // stageIdx 0 — ~258 lbs — "The First Spread"
+    {
+      title:"The First Spread",
+      phases:[
+        {
+          text:(h,s)=>`You knock. The door opens on warmth and cinnamon and Mary Jane — ${Math.round(s.lbs)} pounds in denim overalls, flour on one arm, her enormous chest testing the bib — grinning like she's been waiting. Behind her: six dishes. She has made six dishes.
+
+"Sit down," she says. "We're going to start from the beginning."`,
+          choices:[
+            {id:"ate_everything",label:"Try everything — all six",result:(s)=>`You work through all six in order. She watches every bite. Her belly presses the folding table's edge with warm certainty. By the fourth dish she's eating alongside you, standing at the counter, directly from the pots. "This one needs more butter," she says, and adds more butter.`,lbs:10,rel:8,flag:"ate_everything"},
+            {id:"paced",label:"Eat carefully — appreciate each one",result:(s)=>`You take your time with each dish. She approves of this — asks about the texture, the salt, what you taste. She eats while you eat, plate for plate, her belly rounding further against the table. "You pay attention," she says. It's a compliment.`,lbs:6,rel:12,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`Grandma Mae calls. Mary Jane answers — her phone propped against a jar of preserves — and Mae's voice fills the room with questions. How's school. What are you making. Is anyone eating with you.
+
+Mary Jane glances at you. "Someone's here," she says. "He's eating my sweet potato pie." A pause on the line. Mae says: "Well, make sure he eats it right."`,
+          choices:[
+            {id:"called_mae_back",label:"Wave at the camera — let Mae see you",result:(s)=>`You wave. Mae studies you for a moment. "He looks like he appreciates food," she says, which is the highest possible endorsement. Mary Jane is smiling. She cuts another piece of pie.`,lbs:5,rel:15,flag:"called_mae_back"},
+            {id:"second_helping",label:"Take a second piece while she talks",result:(s)=>`You take a second piece without asking. Mary Jane sees and doesn't say anything — just reaches over and cuts it properly for you while she's still on the phone. Mae says: "I hear plates. Good." She does.`,lbs:8,rel:9,flag:"second_helping"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("called_mae_back"),text:(h,s,gain)=>`Mae approved. You cleared the full spread. Mary Jane is ${Math.round(s.lbs + gain)} pounds and warm and very satisfied, her belly pressed forward against the table, apron flour-dusted, hands wrapped around a mug of something hot. "You can come back," she says. "Next week I'm making six more." She unlocks the first recipe.`,gainBonus:6,relBonus:12,unlockRecipe:'sweet_potato_pie'},
+        {condition:()=>true,text:(h,s,gain)=>`Good meal. Mary Jane is ${Math.round(s.lbs + gain)} pounds and warm and she's already mentally planning the next spread. You can see it in her face — the next six dishes, the next occasion. "Come back," she says. She unlocks the first recipe.`,gainBonus:2,relBonus:6,unlockRecipe:'sweet_potato_pie'},
+      ]
+    },
+    // stageIdx 1 — ~320 lbs — "The Care Package Arrives"
+    {
+      title:"The Care Package Arrives",
+      phases:[
+        {
+          text:(h,s)=>`The care package from Mae arrived this morning. Mary Jane has it open on the counter when you arrive — six jars of preserves, three packets of heirloom seeds, a tin of seasoned lard, and a handwritten note. She is ${Math.round(s.lbs)} pounds and visibly emotional. Her belly rounds firmly against the counter edge.
+
+"She sent the lard," she says. "The good lard. She only sends the good lard when she means it."`,
+          choices:[
+            {id:"ate_everything",label:"Ask her to cook with it now",result:(s)=>`She cooks with it now. Something fast and heavy — biscuits, straight from the tin, with one of Mae's preserves on top. She eats standing up, directly off the baking sheet, her belly pressed against the counter, warm and enormous and completely present. "Mae would approve," she says.`,lbs:12,rel:9,flag:"ate_everything"},
+            {id:"read_the_note",label:"Ask her to read the note aloud",result:(s)=>`She reads it. Mae's handwriting is large and direct: 'Baby, eat good. Send me a picture of what you made.' She folds the note carefully. Then she starts cooking. "I'm going to send her a picture of everything," she says.`,lbs:7,rel:14,flag:"read_the_note"},
+          ]
+        },
+        {
+          text:(h,s)=>`She's on video call with Mae now, showing her the setup — the jars lined up, the folding table covered in food, the cast iron she's accumulated. Mae is smiling. "Baby girl," Mae says, "you've got yourself a real kitchen."
+
+Mary Jane glances at you. "Tell her what you've been eating," she says. She means it as a gift.`,
+          choices:[
+            {id:"called_mae_back",label:"Tell Mae about the sweet potato pie",result:(s)=>`You tell Mae the pie was the best you've ever had. Mae beams. Mary Jane pretends not to be affected. Her belly rises and settles with one slow breath, enormous and warm. She cuts you another piece.`,lbs:6,rel:14,flag:"called_mae_back"},
+            {id:"second_helping",label:"Take a second helping while they talk",result:(s)=>`You take a second plate while they're talking. Mae sees. "He's eating your food," Mae says. "That means it's good." Mary Jane nods once. She doesn't say anything. She adds more to your plate.`,lbs:10,rel:10,flag:"second_helping"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("called_mae_back"),text:(h,s,gain)=>`Mae is pleased. The care package is being used. Mary Jane is ${Math.round(s.lbs + gain)} pounds and warm and her belly presses the folding table with a weight that has grown noticeably since the last time you were here. She unlocks another recipe.`,gainBonus:8,relBonus:12,unlockRecipe:'biscuits_gravy'},
+        {condition:()=>true,text:(h,s,gain)=>`Good afternoon. The care package is open, the food is in you, Mary Jane is ${Math.round(s.lbs + gain)} pounds and warmer than she was at the start. She unlocks another recipe from Mae's box.`,gainBonus:3,relBonus:7,unlockRecipe:'biscuits_gravy'},
+      ]
+    },
+    // stageIdx 2 — ~419 lbs — "Recipe Box Week"
+    {
+      title:"Recipe Box Week",
+      phases:[
+        {
+          text:(h,s)=>`The recipe box from Mae has been open on the counter all week. Mary Jane has worked through eight recipes and is on number nine when you arrive. She is ${Math.round(s.lbs)} pounds, enormous and warm in the wide cotton housedress she's started wearing, her belly rounding out the front completely, the apron tied behind in a wide knot.
+
+"Peach cobbler," she says, without looking up. "Third version. The first two were wrong. Sit down."`,
+          choices:[
+            {id:"ate_everything",label:"Try all three versions in order",result:(s)=>`She has kept all three. You try them in order — she watches each bite with the attention of someone collecting data. "The third one's right," you confirm. She already knew. She eats version three directly from the pan with a serving spoon, her belly pressing the counter, warm and forward and enormous.`,lbs:13,rel:10,flag:"ate_everything"},
+            {id:"told_her_about_you",label:"Tell her this is the best cobbler you've ever had",result:(s)=>`You tell her. She sets the spoon down and looks at you. "Mae's recipe," she says. "All I did was make it right." But she's pleased. She serves you a larger portion. Her belly presses the counter as she leans to dish it up.`,lbs:8,rel:16,flag:"told_her_about_you"},
+          ]
+        },
+        {
+          text:(h,s)=>`Mae is calling. Sunday call, ten sharp — Mary Jane answers eating, which Mae apparently knows because Mae says immediately: "Good. What is it?" She eats while they talk. You eat while they talk. The room is very warm.`,
+          choices:[
+            {id:"called_mae_back",label:"Stay for the whole call",result:(s)=>`You stay. Mae tells a story about the recipe — its origin, who made it first, what was different then. Mary Jane listens and eats. You listen and eat. Her belly is warm and pressed and enormous and she breathes around it while she listens, adding weight to every slow breath.`,lbs:7,rel:14,flag:"called_mae_back"},
+            {id:"cleaned_the_pot",label:"Finish everything in the pot",result:(s)=>`You clean the pot while they talk. Mary Jane sees and, without breaking the call, fills your bowl again from the backup pan. She planned for this. She planned for you specifically.`,lbs:11,rel:11,flag:"cleaned_the_pot"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("told_her_about_you"),text:(h,s,gain)=>`Three cobbler versions and an entire call and Mary Jane is ${Math.round(s.lbs + gain)} pounds and the cobbler is perfected and Mae knows about you specifically now. She unlocks the third recipe.`,gainBonus:9,relBonus:14,unlockRecipe:'peach_cobbler'},
+        {condition:()=>true,text:(h,s,gain)=>`Recipe tested. Mary Jane is ${Math.round(s.lbs + gain)} pounds and warm and the cobbler is right now. Another recipe unlocked.`,gainBonus:4,relBonus:8,unlockRecipe:'peach_cobbler'},
+      ]
+    },
+    // stageIdx 3 — ~519 lbs — "The Weekly Call"
+    {
+      title:"The Weekly Call",
+      phases:[
+        {
+          text:(h,s)=>`Mary Jane barely leaves the room anymore. This is not distress — it's gravity, the specific gravity of someone who has grown too large for casual outings and settled into the warmth of the homestead instead. She is ${Math.round(s.lbs)} pounds in the wide cotton housedress, the apron load-bearing now, her belly enormous and forward and warm, filling the space between her and the folding table completely.
+
+"I made cornbread," she says. "Sit down." It's not a question.`,
+          choices:[
+            {id:"ate_everything",label:"Eat until it's gone",result:(s)=>`You eat until it's gone. She eats alongside you, directly from the pan — her belly pressed against the counter, the warmth of the food settling into it with each bite. When the pan is empty she looks at it and then looks at you. "I can make more," she says. It's not a question.`,lbs:14,rel:10,flag:"ate_everything"},
+            {id:"second_helping",label:"Have a second bowl and ask her to eat with you properly",result:(s)=>`You ask her to sit with you. She does — a slow, settled lowering into the wide chair she's reinforced for herself, her belly filling the space in front of her, enormous and warm. She eats from her own bowl. This is intimacy, in this room, with this food.`,lbs:9,rel:17,flag:"second_helping"},
+          ]
+        },
+        {
+          text:(h,s)=>`Mae calls at ten. Mary Jane answers already eating — Mae says, predictably: "Good. What is it?" They talk for forty minutes. You eat for forty minutes. The room smells like everything she's made this week and she is ${Math.round(s.lbs)} pounds and warm and absolutely at home.`,
+          choices:[
+            {id:"called_mae_back",label:"Ask Mae about the cream gravy recipe",result:(s)=>`You ask Mae about the cream gravy. Mae lights up. She talks for fifteen minutes. Mary Jane watches you with an expression you can't fully read — something like recognition. "He asks good questions," Mae says. Mary Jane nods. "I know," she says.`,lbs:6,rel:16,flag:"called_mae_back"},
+            {id:"told_her_about_you",label:"Tell Mae you've been coming here every week",result:(s)=>`You tell Mae. She is quiet for one second and then says: "Good." Just that. Mary Jane's belly rises with a slow breath. "Good," she echoes, not talking to Mae. She adds more to your plate.`,lbs:8,rel:14,flag:"told_her_about_you"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("called_mae_back"),text:(h,s,gain)=>`Mae knows about the cream gravy now. Mary Jane is ${Math.round(s.lbs + gain)} pounds and the room is warm and she's already planning next week. She unlocks another recipe from memory.`,gainBonus:10,relBonus:14,unlockRecipe:'cornbread_butter'},
+        {condition:()=>true,text:(h,s,gain)=>`Sunday call, good food, Mary Jane ${Math.round(s.lbs + gain)} pounds and warmer than before. Another recipe added to the list.`,gainBonus:4,relBonus:8,unlockRecipe:'cornbread_butter'},
+      ]
+    },
+    // stageIdx 4 — ~630 lbs — "Running Out of Room"
+    {
+      title:"Running Out of Room",
+      phases:[
+        {
+          text:(h,s)=>`The room is straining to hold her. Mary Jane is ${Math.round(s.lbs)} pounds and the homestead has grown with her — the folding tables are now four, the cast iron collection is floor-level because she can't reach the shelf anymore, the wide chair she sits in has been reinforced twice. She fills the center of the room completely.
+
+"Mae called this morning," she says. "She says I'm going to run out of room." She's not upset about this. "She's right," she adds. She hands you a bowl.`,
+          choices:[
+            {id:"ate_everything",label:"Clear everything on the table",result:(s)=>`You clear the table. She watches. Her belly is enormous and warm and pressed against the table edge, the apron straining across it, and her chest sits on top of it like a shelf. She eats from her own plate while you clear yours. "Mae says to make more when you run out," she says. "She means food." She means several things.`,lbs:16,rel:11,flag:"ate_everything"},
+            {id:"cleaned_the_pot",label:"Get everything — lick the pot",result:(s)=>`You get everything. She approves of this completely — starts cooking more before you've finished, because she always plans for more, because Mae taught her that. "There's always room," she says, stirring. Her belly presses the counter. There is less and less room. There is always more.`,lbs:20,rel:8,flag:"cleaned_the_pot"},
+          ]
+        },
+        {
+          text:(h,s)=>`She cooks the pound cake last. The room smells enormous. Mary Jane is ${Math.round(s.lbs)} pounds and she's breathing carefully around the fullness, her belly warm and very heavy and forward, and she cuts the cake with the ease of someone who has done this ten thousand times.
+
+"Mae's going to drive up," she says. "She wants to see the homestead. She wants to see me." She cuts you a slice. "You should be here," she says.`,
+          choices:[
+            {id:"told_her_about_you",label:`"I'll be here."`,result:(s)=>`"I'll be here," you say. She hands you the slice and cuts her own, larger, and they eat in the quiet warm room. Her belly presses everything around her with the gentle insistence of something that has been growing for a very long time and intends to keep growing.`,lbs:10,rel:18,flag:"told_her_about_you"},
+            {id:"second_helping",label:"Ask for a second piece",result:(s)=>`You ask for a second piece. She cuts it before you finish asking. This is how it works now — you ask, she has already anticipated, the food appears. Her belly presses the edge of the folding table, warm and enormous and present, and she eats alongside you without comment.`,lbs:14,rel:12,flag:"second_helping"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("told_her_about_you"),text:(h,s,gain)=>`You'll be there when Mae visits. Mary Jane is ${Math.round(s.lbs + gain)} pounds and warm and the room is full and she is making plans. She unlocks the pound cake recipe.`,gainBonus:12,relBonus:16,unlockRecipe:'pound_cake'},
+        {condition:()=>true,text:(h,s,gain)=>`Good afternoon. Mary Jane is ${Math.round(s.lbs + gain)} pounds and the room has reached its capacity and she is planning to exceed that capacity as well. Recipe unlocked.`,gainBonus:5,relBonus:9,unlockRecipe:'pound_cake'},
+      ]
+    },
+    // stageIdx 5 — ~820 lbs (blob) — "The Final Harvest Table"
+    {
+      title:"The Final Harvest Table",
+      phases:[
+        {
+          text:(h,s)=>`Mae drove up. She knocked and you answered — she gave you one long look and then looked past you at Mary Jane, who is ${Math.round(s.lbs)} pounds and fills the room and doesn't pretend otherwise. Mae looked at her for a long time. Then she started crying. Then she went to the counter and started cooking.
+
+She's been cooking for four hours. The table has more food on it than you've ever seen in one place. Mae is wiping her eyes with her apron. Mary Jane has both hands flat on her own enormous belly, eyes closed, completely still.`,
+          choices:[
+            {id:"ate_everything",label:"Start eating — this is what the table is for",result:(s)=>`You start eating. Mae watches with an expression you can't name — grief and pride and something beyond both, the specific emotion of someone who raised something and watched it become more than they expected. Mary Jane opens her eyes. She starts eating too. The three of you eat without speaking for a long time.`,lbs:18,rel:12,flag:"ate_everything"},
+            {id:"called_mae_back",label:"Thank Mae for the food",result:(s)=>`You thank Mae. She looks at you for a long moment. "She talks about you," she says. "She talks about you every Sunday." She sets another dish on the table. Mary Jane doesn't say anything. Her belly rises and settles with a slow warm breath.`,lbs:10,rel:20,flag:"called_mae_back"},
+          ]
+        },
+        {
+          text:(h,s)=>`Mae sits across from Mary Jane. They talk — about home, about the recipes, about the farm. Mary Jane eats while they talk. Mae eats while they talk. You eat while they talk. The table goes down plate by plate, dish by dish. Mary Jane is ${Math.round(s.lbs)} pounds and she fills the room and she is completely at home in it, enormous and warm and immovable and entirely herself.
+
+Mae says: "I didn't know it would be this big." A pause. "I'm glad it is." She reaches across and puts her hand on Mary Jane's.`,
+          choices:[
+            {id:"told_her_about_you",label:"Tell Mae what this has meant",result:(s)=>`You tell Mae. You tell her about the weekly visits, the recipes, the food she sent that became other food, the room that became more room as Mary Jane became more Mary Jane. Mae listens. When you finish she nods once. "Good," she says. She adds more food to your plate. You eat it.`,lbs:12,rel:20,flag:"told_her_about_you"},
+            {id:"cleaned_the_pot",label:"Clean the table — eat until it's gone",result:(s)=>`You clean the table. Everything. Mae watches and then starts bringing more from the stove. The table refills. You keep going. Mary Jane keeps going. Mae keeps cooking. The cycle is complete and it is ancient and it is exactly right.`,lbs:22,rel:12,flag:"cleaned_the_pot"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("told_her_about_you"),text:(h,s,gain)=>`Mae drove four hours. She saw the homestead. She saw Mary Jane — ${Math.round(s.lbs + gain)} pounds, warm, enormous, completely herself. She cried and then she cooked and now the table is empty and the room is very warm. "Come again," Mae says, to you. Mary Jane unlocks the last recipe.`,gainBonus:14,relBonus:18,unlockRecipe:'cream_gravy'},
+        {condition:()=>true,text:(h,s,gain)=>`Mae came. She cooked. The table went down. Mary Jane is ${Math.round(s.lbs + gain)} pounds and warm and the room is full and Mae is already planning the next visit. Last recipe unlocked.`,gainBonus:6,relBonus:12,unlockRecipe:'cream_gravy'},
+      ]
+    },
+  ],
+
+  // ── FARM GIRL: state_fair_queen (phases 1-2 prose, startsFairContest) ────────
+  state_fair_queen:[
+    // stageIdx 0 — ~258 lbs — "Tri-County Fair"
+    {
+      title:"Tri-County Fair",
+      phases:[
+        {
+          text:(h,s)=>`Backstage at the Tri-County Fair. The tent smells like sawdust and sugar and summer. You are ${Math.round(s.lbs)} pounds and this is your first competitive entry and Darcy from Meadowview — 310 pounds, three years on the circuit — has not looked at you once.
+
+The warmup table has pies. This is the pre-competition warmup. You eat.`,
+          choices:[
+            {id:"loaded",label:"Load aggressively — fill up early",result:(s)=>`You eat like you came here to eat. Three pies before anyone else has finished their first. Your belly fills and firms and rounds against the waistband. Darcy still hasn't looked at you. You eat a fourth.`,lbs:8,rel:4,flag:"loaded"},
+            {id:"paced",label:"Eat smart — full enough to compete, not so full you slow down",result:(s)=>`You eat with discipline — the warm-up is a tool, not an event. Full enough. Belly warm and ready. Darcy finally glances over. She looks back at her plate. You keep eating, controlled, exactly where you want to be.`,lbs:5,rel:8,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`Public weigh-in. The fair uses a livestock scale — this is not a metaphor, this is a cattle fair and the scale was built for cattle. They put it in the tent for this event. Both competitors step up.
+
+Darcy: 310 lbs. Polite applause.
+
+You: ${Math.round(s.lbs)} lbs. The judge reads it. Darcy doesn't look at the board. She looks at you, once, with an expression that is not dismissive but is something in that direction. She says: "Good luck." She means it as a formality.`,
+          choices:[
+            {id:"confident",label:"Step off the scale and look at her directly",result:(s)=>`You step off and look at her. She looks back. Her expression shifts — not much, but something. She goes back to her stretching. You go back to your lane. The number was honest. The number is always honest.`,rel:8,flag:"confident"},
+            {id:"paced",label:"Step off and get focused",result:(s)=>`You step off and lock in. First contest. First scale. The number is real. Make it mean something.`,rel:4,flag:"paced"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`Loaded and locked in. Darcy's waiting at her lane. The pies are on the table. You are here to eat and you know it.
+
+The horn sounds in three minutes. Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+        {condition:()=>true,text:`Warm. Ready. Darcy's in her lane. The table is set.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+      ]
+    },
+    // stageIdx 1 — ~320 lbs — "County Championship"
+    {
+      title:"County Championship",
+      phases:[
+        {
+          text:(h,s)=>`Darcy says "you again" when she sees you in the backstage area. She says it like she's been thinking about it since last year. She's 350 pounds now — bigger than last season — and she looks at you with a different attention than before.
+
+You're ${Math.round(s.lbs)} pounds. The gap has narrowed.`,
+          choices:[
+            {id:"loaded",label:"Load heavy at the warmup table",result:(s)=>`You load heavy. Your belly fills warm and enormous against the waistband and Darcy watches you eat from across the warmup area. She doesn't say anything. She eats her own warmup — deliberate, paced, experienced. You eat more.`,lbs:10,rel:4,flag:"loaded"},
+            {id:"paced",label:"Eat controlled — tactical",result:(s)=>`You eat controlled. Darcy is pacing too and she nods once at your plate in a way that suggests she's noticed you've gotten smarter about this. The gap is closing on multiple axes. You eat until you're ready and stop.`,lbs:6,rel:10,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`Scale. Darcy: 350. You: ${Math.round(s.lbs)}. The judge reads both numbers. The board puts them side by side. The gap is small enough that someone in the crowd makes a comment.
+
+Darcy looks at the board. "You're closing," she says. Not a question.`,
+          choices:[
+            {id:"confident",label:`"I'm closing." — and hold her gaze`,result:(s)=>`"I'm closing," you say. She nods slowly. "I've been doing this for three years," she says. "It's going to be close today." She says this respectfully. You step off the scale. It is going to be close.`,rel:9,flag:"confident"},
+            {id:"crowd_moment",label:"Look at the crowd when the number is read",result:(s)=>`You look at the crowd when the judge reads the number. Some of them know you now. A few of them are starting to. Someone starts clapping. Darcy hears it and looks at you differently.`,rel:7,flag:"crowd_moment"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`Darcy said it's going to be close. She's right. The table is set. The pies are there.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+        {condition:()=>true,text:`Close match coming. Darcy ready. You ready.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+      ]
+    },
+    // stageIdx 2 — ~419 lbs — "State Qualifier"
+    {
+      title:"State Qualifier",
+      phases:[
+        {
+          text:(h,s)=>`State level. Press credentials at the door, a photographer from the ag section of the regional paper, and Darcy — 390 pounds now, still a veteran but no longer the biggest number in the room.
+
+You're ${Math.round(s.lbs)} pounds. This is the first year you outweigh her at start.
+
+She finds you in the backstage warmup area. "I've been thinking about this," she says. "About what's going to happen today." She starts eating her warmup. So do you.`,
+          choices:[
+            {id:"loaded",label:"Eat like it's a statement",result:(s)=>`You eat like it's a statement. Your belly fills and rounds against the competition jersey and you keep going, each pie a pound in the making, your enormous chest and belly warm and prominent. Darcy watches. She eats her own warmup more quickly. The gap is not closing.`,lbs:12,rel:5,flag:"loaded"},
+            {id:"paced",label:"Eat smart and let the body speak for itself",result:(s)=>`You eat smart. Darcy is watching you eat and she's recalibrating something — you can see it. You stop when you're ready. Your body is the statement. 419 pounds is the statement. You don't need to do anything else.`,lbs:7,rel:11,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`Scale. Darcy: 390. You: ${Math.round(s.lbs)}.
+
+You're 29 pounds heavier. For the first time, your number is higher on the board. Darcy stops mid-stretch when she sees it. Looks at it for a second. Goes back to stretching.
+
+"Where are you putting all that?" she says. Not unkindly. She genuinely wants to know.`,
+          choices:[
+            {id:"confident",label:`"I grew more room."`,result:(s)=>`"I grew more room." Darcy looks at you and then very nearly smiles. "Fair enough," she says. She finishes her stretch. You step off the scale. The photographer takes a picture.`,rel:10,flag:"confident"},
+            {id:"intimidated_them",label:"Look at the scoreboard and then back at Darcy",result:(s)=>`You look at the board — your number at the top — and then back at Darcy. She meets your gaze. She doesn't look away. She does, eventually, look at her plate. You step off the scale.`,rel:7,flag:"intimidated_them"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`Your number is at the top of the board. Darcy's stretching behind you. The table is set.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+        {condition:()=>true,text:`First time your number is highest. The table is ready.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+      ]
+    },
+    // stageIdx 3 — ~519 lbs — "State Fair Finals"
+    {
+      title:"State Fair Finals",
+      phases:[
+        {
+          text:(h,s)=>`State fair finals. The tent is twice the size of last year's. There's a PA system now. Darcy finds you backstage — 430 pounds, serious, present — and she says: "I trained for six months." She says it as information, not complaint. "All year for this."
+
+You're ${Math.round(s.lbs)} pounds. You haven't been not training.`,
+          choices:[
+            {id:"loaded",label:"Eat at the warmup table while she talks",result:(s)=>`You eat while she talks. She watches you eat. She says: "Right." She goes to her own warmup and eats with the focused discipline of someone who trained all year and knows what they're doing. You eat more. You have more to work with.`,lbs:13,rel:6,flag:"loaded"},
+            {id:"paced",label:"Tell her it's going to be a good match",result:(s)=>`"It's going to be a good match," you say. She looks at you for a moment. "Yes," she says, "it is." She goes to her warmup table. You go to yours. This is the cleanest possible pre-competition.`,lbs:8,rel:13,flag:"paced"},
+          ]
+        },
+        {
+          text:(h,s)=>`Scale. You: ${Math.round(s.lbs)}. The judge reads it into the PA and the tent responds — not polite applause, something louder and more specific, the sound of a number that means something to people.
+
+Darcy claps. Full hand-claps. Not polite. She keeps going after most other people have stopped.`,
+          choices:[
+            {id:"confident",label:"Acknowledge her applause directly",result:(s)=>`You look at her. She's still clapping. "All year," she says, "for this." She means it as a compliment of the highest order. You step off the scale. The PA is saying your name.`,rel:13,flag:"confident"},
+            {id:"crowd_moment",label:"Look at the whole tent",result:(s)=>`You look at the whole tent — the crowd at the entrance, the photographer, Darcy clapping — and you stand there on the scale for one extra second and let the number be the number. Then you step off.`,rel:9,flag:"crowd_moment"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`Darcy is still clapping somewhere behind you. The table is set. The PA has your name on it.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+        {condition:()=>true,text:`The tent is loud. Your name on the PA. Table set.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+      ]
+    },
+    // stageIdx 4 — ~630 lbs — "Tri-State Invitational"
+    {
+      title:"Tri-State Invitational",
+      phases:[
+        {
+          text:(h,s)=>`They built a bigger scale. The fair director mentioned this at registration, trying to be casual about it — "we've upgraded our equipment for this year" — and the whole line understood who the upgrade was for.
+
+You're ${Math.round(s.lbs)} pounds. Darcy is in the stands — 465 pounds, there to watch. She has a sign. It says YOUR NAME in marker on a piece of cardboard.`,
+          choices:[
+            {id:"loaded",label:"Eat at the warmup table until you're ready",result:(s)=>`You eat until you're ready. Your belly fills and presses your jersey and you stop when the warmth is total and you feel the weight of it completely. That's your signal. You stop. You're ready.`,lbs:15,rel:6,flag:"loaded"},
+            {id:"crowd_moment",label:"Find Darcy in the stands and nod",result:(s)=>`You find Darcy in the stands and nod. She raises the sign. Someone nearby sees the sign and then looks at you and their eyes widen. Darcy has been here since the gates opened.`,lbs:8,rel:14,flag:"crowd_moment"},
+          ]
+        },
+        {
+          text:(h,s)=>`Scale. The new scale. You step onto it — ${Math.round(s.lbs)} pounds — and the crowd that has gathered around the weigh-in tent is larger than the crowd for any competitor's event. The number comes up. The judge reads it into the PA.
+
+The midway outside the tent pauses. Everyone turns. Someone out there starts clapping first.`,
+          choices:[
+            {id:"confident",label:"Stand on the scale for an extra moment",result:(s)=>`You stand there. The applause comes in from outside and then from inside. Darcy is on her feet in the stands. The sign is raised. You step off. You are the draw now. The contest is the bonus.`,rel:15,flag:"confident"},
+            {id:"intimidated_them",label:"Make eye contact with the competitors",result:(s)=>`You look at the other competitors. They look back. Some of them look at the board. Some of them look at their plates. You step off the scale.`,rel:8,flag:"intimidated_them"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("loaded")&&h.includes("confident"),text:`Darcy's sign is in the air. The midway has stopped. The table is set.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+        {condition:()=>true,text:`The crowd is gathered. The scale is behind you. The table is ahead.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+      ]
+    },
+    // stageIdx 5 — ~820 lbs (blob) — "Grand Fair Invitational"
+    {
+      title:"Grand Fair Invitational",
+      phases:[
+        {
+          text:(h,s)=>`You barely fit the tent. They extended the backstage area this year — a temporary addition, a wide flap of canvas that gives you the room you need to exist in it. You are ${Math.round(s.lbs)} pounds. Darcy is in the stands, 500 pounds, there to watch you win. She has been here since the gates opened.
+
+The warmup food comes to you. You don't go to the table — the table comes to your area. This is a newer tradition.`,
+          choices:[
+            {id:"ate_everything",label:"Eat everything they bring",result:(s)=>`You eat everything they bring. Your belly is enormous and warm and the warmup food disappears plate by plate. The tent crew exchanges looks. You keep eating. You were not difficult to feed before you became this. You are not difficult to feed now.`,lbs:16,rel:8,flag:"ate_everything"},
+            {id:"loaded",label:"Eat at your pace — you know your body",result:(s)=>`You eat at your pace. This is a body you know completely now — its rhythms, its limits, the specific warmth that means ready. You eat to that warmth and stop. The crew looks at you. You are ready.`,lbs:10,rel:12,flag:"loaded"},
+          ]
+        },
+        {
+          text:(h,s)=>`They move the big scale into your area. The weigh-in comes to you now — this is also a newer tradition, instituted last year, after the previous invitational established that the walk to the central scale was not something the tent was designed for.
+
+The judge reads the number: ${Math.round(s.lbs)}. Outside the tent, through the canvas, you can hear the crowd stop moving. Then you hear Darcy's voice — she is somewhere in the front — starting to clap. The fair starts clapping.`,
+          choices:[
+            {id:"confident",label:"Sit with the number for a moment",result:(s)=>`You sit with it. ${Math.round(s.lbs)} pounds. The tent is applauding. Darcy somewhere in it, loudest. You put both hands on your belly — enormous and warm and completely present — and you feel the weight of yourself and the warmth of yourself and you are ready. The contest is incidental. You have already won.`,rel:18,flag:"confident"},
+            {id:"crowd_moment",label:"Look toward the tent entrance — toward the crowd",result:(s)=>`You look toward the entrance. The crowd outside has pressed in to see. Phones out. Darcy is in the first row of the stands, sign raised. The fair has come to see this. You are the fair.`,rel:12,flag:"crowd_moment"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ate_everything")&&h.includes("confident"),text:`Darcy is clapping. The fair is clapping. The table is coming to you.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+        {condition:()=>true,text:`The number is announced. The tent is full. The table is ready.
+
+Step up to the table.`,gainBonus:0,relBonus:0,startsFairContest:true},
+      ]
+    },
+  ],
 };
 
 const EVOLVED_FORM_META = {
@@ -6114,6 +6620,8 @@ const EVOLVED_FORM_META = {
   campus_legend:        { title:"Campus Legend",        color:"#b7950b" },
   food_tourist:         { title:"Food Tourist",         color:"#148f77" },
   ff_author:            { title:"FF Author",            color:"#922b21" },
+  homestead_queen:      { title:"Homestead Queen",       color:"#8B5E3C" },
+  state_fair_queen:     { title:"State Fair Queen",      color:"#C8860A" },
 };
 
 const EVOLUTION_BUTTON_BLURB = {
@@ -6276,6 +6784,20 @@ const EVOLVED_SKILL_TREES = {
     { id:"ffa_pseudonym", tier:3, label:"The Pseudonym",      cost:70, desc:"Scrutiny -3/week. Nobody can prove the blog is hers.",                      weeklyScrutinyReduce:3 },
     { id:"ffa_viral",     tier:4, label:"Viral Chapter",      cost:110, desc:"+2 passive lbs/week. The chapter that went everywhere keeps her writing.", passiveBonus:2 },
     { id:"ffa_canon",     tier:5, label:"Canonical Work",     cost:160, desc:"+3 passive, +6 rel/activity, scrutiny -2/week. Her work defines the genre.",passiveBonus:3, activityRelBonus:6, weeklyScrutinyReduce:2 },
+  ],
+  homestead_queen:[
+    { id:"hq_mae_recipes",  tier:1, label:"Mae's Recipes",      cost:20,  desc:"Unlocked private session dishes give +3 extra lbs each use.",                activityGainBonus:3 },
+    { id:"hq_cast_iron",    tier:2, label:"Cast Iron Collection",cost:40,  desc:"+1 passive lbs/week. The homestead is always producing.",                    passiveBonus:1 },
+    { id:"hq_weekly_call",  tier:3, label:"Weekly Call",        cost:70,  desc:"+4 relationship per activity. Mae vouches for everything.",                   activityRelBonus:4 },
+    { id:"hq_care_package", tier:4, label:"Monthly Care Package",cost:110, desc:"Scrutiny -2/week. Mae's involvement gives the whole situation respectability.", weeklyScrutinyReduce:2 },
+    { id:"hq_harvest",      tier:5, label:"The Harvest",        cost:160, desc:"+2 passive, +6 lbs/activity, +4 rel/activity. The homestead is complete.",   passiveBonus:2, activityGainBonus:6, activityRelBonus:4 },
+  ],
+  state_fair_queen:[
+    { id:"sfq_circuit",     tier:1, label:"On the Circuit",     cost:20,  desc:"Activity gives +3 extra lbs. Competition training keeps her growing.",       activityGainBonus:3 },
+    { id:"sfq_darcy",       tier:2, label:"Darcy's Respect",    cost:40,  desc:"+4 relationship per activity. The circuit knows her name now.",               activityRelBonus:4 },
+    { id:"sfq_scale",       tier:3, label:"The Scale Knows",    cost:70,  desc:"+1 passive lbs/week. The weigh-in schedule keeps her honest.",                passiveBonus:1 },
+    { id:"sfq_press",       tier:4, label:"Press Coverage",     cost:110, desc:"Scrutiny -3/week. State champion status is a shield.",                       weeklyScrutinyReduce:3 },
+    { id:"sfq_legend",      tier:5, label:"Fair Legend",        cost:160, desc:"+2 passive, +5 lbs/activity, scrutiny -2/week. She is the fair.",             passiveBonus:2, activityGainBonus:5, weeklyScrutinyReduce:2 },
   ],
 };
 
@@ -8368,11 +8890,11 @@ const TAP_OUT_DIALOGUE = {
     (s) => `${s.name} straightens — tries to — and the significant mass of her belly makes itself known in a very practical way. She laughs, low and easy. "Alright, alright." She keeps both hands on her stomach, feeling its weight. "I know when a game's over." She settles back. "Called it. I'm done. That was a lot."`,
     (s) => `${s.name} is quiet for a moment, both palms resting on the enormous, round swell of her belly, feeling it the way she'd feel the score at the end of a game — just the clean fact of it. "Done," she says. She doesn't need more words than that. She leans back carefully, slowly, the weight of herself a real and present thing. "Good session."`,
   ],
-  14: [  // Sophie
-    (s) => `${s.name} presses her hands to her stomach and her face goes soft with surprise. "Oh — I think I have to stop." She says it apologetically, like she's letting someone down. "I'm really, really full. Like actually really full." She looks down at herself. "Is it okay if I stop? I have to stop."`,
-    (s) => `${s.name} exhales slowly, hands cradling her bloated, round belly with the gentle care of someone still getting used to it being there. "I'm tapping out," she says. "I tried really hard." She looks at you, earnest. "That's the fullest I've ever been. I think." She smiles weakly. "I can't move. Is that normal? That's probably normal."`,
-    (s) => `${s.name} rests her hands on the firm, round swell of her belly and takes careful stock of things. "Okay," she says. "Okay, that's — I'm done." She sounds settled about it, not distressed — the ease of someone who's been here enough times to know this particular feeling. "I pushed it tonight. I can tell." She leans back slowly. "Worth it."`,
-    (s) => `${s.name} takes a breath that doesn't go all the way in — her stomach's too full for it — and exhales soft and slow. "I'm calling it," she says, with a warmth that has nothing apologetic in it anymore. She spreads both hands over her vast, straining belly. "I'm completely full." She smiles at the ceiling. "I really love this. I can't move, but I love this."`,
+  14: [  // Mary Jane
+    (s) => `${s.name} sets both palms flat on her belly and goes still for a second. "Okay," she says, in the considering voice of someone taking stock. "I think that's it." She presses gently. "That's full. That's real full." She looks at you. "I don't quit, just so you know. But that's full."`,
+    (s) => `${s.name} breathes out slowly through her nose, both hands on the full round of her belly, and nods once the way you nod when you accept something inevitable. "I'm done," she says. "I know my body. That's done." She stays still for a moment, feeling the weight of it. "Good session," she adds. She means it.`,
+    (s) => `${s.name} leans back carefully — a slow, weighted thing — and keeps both hands resting on her enormous belly, feeling the warmth and tightness of it. "I pushed it," she says, almost admiringly. "I really pushed it." She exhales slow. "I'm out. But I'll be back." She sounds completely certain of this.`,
+    (s) => `${s.name} is still for a long moment, both hands pressed into the warm give of her belly, and then she says, quietly, "That's everything I have." She doesn't sound disappointed. She sounds like someone who gave everything and knows it. "I'm tapping out. That was real." She looks at you. "You're going to have to come back and let me beat that."`,
   ],
   vaughan: [  // Dr. Vaughan
     (s) => `${s.name} sets down her fork with controlled precision and reaches for her water glass, mostly to have something professional to do with her hands. "I should — I think I need to stop there." She clears her throat. Her belly is visibly straining against her blazer buttons. "Professionally speaking, this is — I'm stopping. That's my decision."`,
@@ -8942,6 +9464,13 @@ export default function ProfessorSim(){
   //   takeNum, timeLeft, kylieGain, clipRatings, bestClip,
   //   choiceStep, currentChoices:{angle,food,pace}, perfectTakeAchieved,
   //   popupText, done, endingText }
+  const [fairContestState, setFairContestState] = useState(null);
+  // fairContestState: { studentId, stageIdx, darcyStartLbs, yourStartLbs,
+  //   yourFoods:[{...food, consumed:false}], darcyFoodsLeft:number,
+  //   yourFullnessPct:0, overfullCap:100|130|160|250,
+  //   yourGain:0, darcyGain:0, milestonesHit:[],
+  //   tauntUsed:false, pushThroughUsed:false, coolDownUses:0,
+  //   phase:'eating'|'weigh_in'|'done', popupText:null, popupPhase:null }
   const [intimacySceneSelector,setIntimacySceneSelector]=useState(null);
   // intimacySceneSelector: {student}
   const logRef=useRef(null);
@@ -9713,9 +10242,13 @@ export default function ProfessorSim(){
         const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
         return processStudentGain(st,totalGain,totalRel+bonusRel);
       }));
-      if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
+      if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairContest) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
+      // handle recipe unlock (homestead_queen)
+      if(ending.unlockRecipe){
+        setStudents(ss=>ss.map(st=>st.id===s.id?{...st,mjRecipes:[...(st.mjRecipes||[]),ending.unlockRecipe].filter((v,i,a)=>a.indexOf(v)===i)}:st));
+      }
       const endText=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
-      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream}));
+      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairContest:!!ending.startsFairContest}));
     } else {
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }
@@ -10381,6 +10914,111 @@ export default function ProfessorSim(){
   };
 
   const closeRecordingSession=()=>setRecordingSessionState(null);
+
+  // ── Fair Contest (state_fair_queen) ────────────────────────────
+  const startFairContest=(s, stageIdx)=>{
+    const tier=getTier(s.relationship).id;
+    const capMap={0:100,1:130,2:160,3:250};
+    const overfullCap=capMap[tier]||100;
+    const darcyStartLbs=FAIR_DARCY_WEIGHTS[Math.min(stageIdx,5)];
+    const foodIds=FAIR_STAGE_FOODS[Math.min(stageIdx,5)]||FAIR_STAGE_FOODS[0];
+    const yourFoods=foodIds.map(id=>{const f=FAIR_FOODS.find(x=>x.id===id)||FAIR_FOODS[0];return {...f,consumed:false};});
+    setFairContestState({
+      studentId:s.id, stageIdx, yourStartLbs:s.lbs, darcyStartLbs,
+      yourFoods, darcyFoodsLeft:Math.floor(yourFoods.length*0.8),
+      yourFullnessPct:0, overfullCap,
+      yourGain:0, darcyGain:0, milestonesHit:[],
+      tauntUsed:false, pushThroughUsed:false, coolDownUses:0,
+      phase:'eating', popupText:null, popupPhase:null,
+    });
+  };
+
+  const eatFairPie=(foodId)=>{
+    setFairContestState(prev=>{
+      if(!prev||prev.phase!=='eating') return prev;
+      const fi=prev.yourFoods.findIndex(f=>f.id===foodId&&!f.consumed);
+      if(fi<0) return prev;
+      const food=prev.yourFoods[fi];
+      const newFoods=prev.yourFoods.map((f,i)=>i===fi?{...f,consumed:true}:f);
+      const newFullness=prev.yourFullnessPct+food.fullnessAmt;
+      const newGain=prev.yourGain+food.lbs;
+      // darcy auto-eats
+      const newDarcyLeft=Math.max(0,prev.darcyFoodsLeft-1);
+      const darcyFoodLbs=prev.yourFoods[0]?.lbs||5; // rough proxy
+      const newDarcyGain=prev.darcyGain+(newDarcyLeft<prev.darcyFoodsLeft?darcyFoodLbs:0);
+      // check milestones
+      const thresholds=[100,150,200,250];
+      let newMilestones=[...prev.milestonesHit];
+      let popupText=null;
+      const stIdx=prev.stageIdx;
+      for(const t of thresholds){
+        if(!newMilestones.includes(String(t))&&newFullness>=t){
+          newMilestones.push(String(t));
+          const mArr=FAIR_FULLNESS_MILESTONES[t];
+          if(mArr) popupText=mArr[Math.min(stIdx,mArr.length-1)]||null;
+          break; // fire one at a time
+        }
+      }
+      // check end condition
+      const allEaten=newFoods.every(f=>f.consumed);
+      const overCap=newFullness>=prev.overfullCap;
+      if((allEaten||overCap)&&!popupText){
+        // transition to weigh_in after this update
+        return {...prev,yourFoods:newFoods,yourFullnessPct:newFullness,yourGain:newGain,darcyFoodsLeft:newDarcyLeft,darcyGain:newDarcyGain,milestonesHit:newMilestones,phase:'weigh_in'};
+      }
+      if((allEaten||overCap)&&popupText){
+        // show milestone popup first, then weigh_in
+        return {...prev,yourFoods:newFoods,yourFullnessPct:newFullness,yourGain:newGain,darcyFoodsLeft:newDarcyLeft,darcyGain:newDarcyGain,milestonesHit:newMilestones,popupText,popupPhase:'weigh_in'};
+      }
+      return {...prev,yourFoods:newFoods,yourFullnessPct:newFullness,yourGain:newGain,darcyFoodsLeft:newDarcyLeft,darcyGain:newDarcyGain,milestonesHit:newMilestones,popupText:popupText||null};
+    });
+  };
+
+  const doFairAction=(action)=>{
+    setFairContestState(prev=>{
+      if(!prev||prev.phase!=='eating') return prev;
+      let upd={...prev};
+      if(action==='taunt'&&!prev.tauntUsed){
+        upd.tauntUsed=true;
+        const arr=FAIR_TAUNT_POPUPS;
+        upd.popupText=arr[Math.min(prev.stageIdx,arr.length-1)]||null;
+      } else if(action==='push_through'&&!prev.pushThroughUsed){
+        upd.pushThroughUsed=true;
+        upd.overfullCap=prev.overfullCap+15;
+        // small rel cost applied later
+        const s=students.find(st=>st.id===prev.studentId);
+        if(s) setStudents(ss=>ss.map(st=>st.id===prev.studentId?{...st,relationship:Math.max(0,st.relationship-2)}:st));
+        upd.popupText=`You push through. Your body argues. Your body loses. The cap lifts — not by much, but enough to keep eating.`;
+      } else if(action==='cool_down'&&prev.coolDownUses<2){
+        upd.coolDownUses=prev.coolDownUses+1;
+        upd.yourFullnessPct=Math.max(0,prev.yourFullnessPct-5);
+        upd.popupText=`You pause, breathe, let the fullness redistribute. Five percent back. The tent is still hot. You pick up the next plate.`;
+      }
+      return upd;
+    });
+  };
+
+  const dismissFairPopup=()=>{
+    setFairContestState(prev=>{
+      if(!prev) return prev;
+      if(prev.popupPhase){
+        return {...prev,popupText:null,phase:prev.popupPhase,popupPhase:null};
+      }
+      return {...prev,popupText:null};
+    });
+  };
+
+  const closeFairContest=()=>{
+    const fc=fairContestState;
+    if(!fc) return;
+    const s=students.find(st=>st.id===fc.studentId);
+    if(s){
+      processStudentGain(s,fc.yourGain,8);
+      setStudents(ss=>ss.map(st=>st.id===fc.studentId?{...st,contestCompletions:(st.contestCompletions||0)+1}:st));
+    }
+    setFairContestState(null);
+    setEvolvedEventState(null);
+  };
 
   const openIntimacySelector=(s)=>{setIntimacySceneSelector({student:s});};
 
@@ -14842,6 +15480,31 @@ export default function ProfessorSim(){
                     })}
                   </div>
 
+                  {/* Grandma Mae's Recipes — farm_girl only */}
+                  {s.archetype==='farm_girl'&&(s.mjRecipes||[]).length>0&&(
+                    <div style={{marginBottom:10}}>
+                      <div style={{...C.secT,marginBottom:6}}>🏡 Grandma Mae's Recipes</div>
+                      <div style={{display:"flex",flexDirection:"column",gap:2}}>
+                        {(s.mjRecipes||[]).map(recipeId=>{
+                          const r=MJ_RECIPES[recipeId];
+                          if(!r) return null;
+                          const fobj={id:'mj_'+recipeId, label:r.emoji+' '+r.name, gain:[r.lbs-2,r.lbs+2], fullness:r.fullness, desc:"Grandma Mae's recipe. Rich, homemade, the real thing."};
+                          const ordered=ps.foods.includes(fobj.id);
+                          return(
+                            <div key={recipeId}
+                              style={{display:"flex",alignItems:"center",gap:8,padding:"4px 6px",borderRadius:5,
+                                background:ordered?"rgba(140,60,18,0.08)":"transparent",
+                                cursor:ordered?"default":"pointer",opacity:ordered?0.45:1}}
+                              onClick={()=>!ordered&&feedInSession(fobj)}>
+                              <span style={{flex:1,fontSize:12,color:ordered?"#8a5a30":"#d4a070"}}>{ordered?"✓ ":""}{fobj.label}</span>
+                              <span style={{fontSize:10,color:"#9a7040"}}>+{r.lbs-2}–{r.lbs+2} lbs</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Session log */}
                   <div style={{background:"rgba(20,5,35,0.8)",border:"1px solid #2a0848",borderRadius:8,padding:10,marginBottom:10,maxHeight:150,overflowY:"auto",display:"flex",flexDirection:"column",gap:3}}>
                     {sessionLog.length===0
@@ -15163,7 +15826,7 @@ export default function ProfessorSim(){
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
       {evolvedEventState&&(()=>{
-        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream}=evolvedEventState;
+        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairContest}=evolvedEventState;
         const s=students.find(st=>st.id===studentId);
         const evDef=EVOLVED_EVENTS[formId]?.[stageIdx];
         if(!s||!evDef) return null;
@@ -15208,10 +15871,11 @@ export default function ProfessorSim(){
                   })}
                 </div>
               )}
-              {done&&!startsContest&&!startsMatch&&!startsStream&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
+              {done&&!startsContest&&!startsMatch&&!startsStream&&!startsFairContest&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
               {done&&startsContest&&<button style={{...C.btn("#1a6030"),width:"100%",marginTop:4}} onClick={()=>startEatingContest(studentId,stageIdx,history)}>🍽️ Step to the Table</button>}
               {done&&startsMatch&&<button style={{...C.btn("#7a2018"),width:"100%",marginTop:4}} onClick={()=>startSumoMatch(studentId,stageIdx,history)}>🥋 Step Onto the Dohyo</button>}
               {done&&startsStream&&<button style={{...C.btn("#6a1878"),width:"100%",marginTop:4}} onClick={()=>{const partner=students.find(st=>st.id===collabPartnerId);if(!partner){push("⚠️ No collab partner selected.");return;}startCollabStream(studentId,collabPartnerId,stageIdx,history);}}>🎥 Go Live Together</button>}
+              {done&&startsFairContest&&<button style={{...C.btn("#C8860A"),width:"100%",marginTop:4}} onClick={()=>{const s2=students.find(st=>st.id===studentId);if(s2)startFairContest(s2,stageIdx);}}>🥧 Step Up to the Table</button>}
             </div>
           </div>
         );
@@ -15562,7 +16226,7 @@ export default function ProfessorSim(){
               {eligible.length===0&&<div style={{color:"#806090",textAlign:"center",padding:20}}>No eligible partners right now — need an Intimate-tier gamer, artsy, or quiet student.</div>}
               {eligible.map(st=>(
                 <div key={st.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:6,borderRadius:8,background:"#0a0018",border:`1px solid ${purple}40`,cursor:"pointer"}}
-                  onClick={()=>{setCollabPartnerId(st.id);setCollabPartnerPicker(null);const stageIdx=Math.max(0,Math.min(5,getStage(kylie.lbs).id-5));const evDef=EVOLVED_EVENTS['feedee_creator']?.[stageIdx];if(evDef){setEvolvedEventState({studentId:kylie.id,formId:'feedee_creator',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0,startsContest:false,startsMatch:false,startsStream:false});}}}>
+                  onClick={()=>{setCollabPartnerId(st.id);setCollabPartnerPicker(null);const stageIdx=Math.max(0,Math.min(5,getStage(kylie.lbs).id-5));const evDef=EVOLVED_EVENTS['feedee_creator']?.[stageIdx];if(evDef){setEvolvedEventState({studentId:kylie.id,formId:'feedee_creator',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0,startsContest:false,startsMatch:false,startsStream:false,startsFairContest:false});}}}>
                   <div style={{flex:1}}>
                     <div style={{color:lightPurple,fontWeight:"bold",fontSize:13}}>{st.name}</div>
                     <div style={{color:"#907090",fontSize:10}}>{st.archetype} · {Math.round(st.lbs)} lbs · {getTier(st.relationship).label}</div>
@@ -15843,6 +16507,112 @@ export default function ProfessorSim(){
                   <div style={{background:"#100800",border:`1px solid ${amber}50`,borderRadius:10,padding:20,maxWidth:440,margin:16}}>
                     <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{rs.popupText}</div>
                     <button style={{...C.btn(amber),width:"100%"}} onClick={dismissRecordingChoicePopup}>Continue</button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── FAIR CONTEST MINI-GAME MODAL ── */}
+      {fairContestState&&(()=>{
+        const fc=fairContestState;
+        const s=students.find(st=>st.id===fc.studentId);
+        if(!s) return null;
+        const fairOrange='#C8860A';
+        const remaining=fc.yourFoods.filter(f=>!f.consumed);
+        const progressW=Math.min(100,(fc.yourFullnessPct/fc.overfullCap)*100);
+        const progressColor=fc.yourFullnessPct>=fc.overfullCap?'#e05020':fc.yourFullnessPct>=150?'#e08020':fc.yourFullnessPct>=100?'#d0a020':'#40c060';
+        return(
+          <div style={C.overlay}>
+            <div style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
+              <div style={{fontSize:9,letterSpacing:4,color:fairOrange,marginBottom:6}}>🎡 STATE FAIR PIE EATING</div>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:10,fontSize:11,color:"#d0b080"}}>
+                <span>{s.name} — {Math.round(s.lbs)} lbs</span>
+                <span>Darcy — {Math.round(fc.darcyStartLbs)} lbs</span>
+              </div>
+
+              {fc.phase==='eating'&&(
+                <>
+                  {/* Fullness bar */}
+                  <div style={{marginBottom:10}}>
+                    <div style={{fontSize:10,color:"#a08060",marginBottom:4}}>
+                      Fullness: {Math.round(fc.yourFullnessPct)}% / cap {fc.overfullCap}%
+                      {fc.yourFullnessPct>=100&&<span style={{color:'#e08020'}}> — OVERFULL</span>}
+                    </div>
+                    <div style={{height:12,background:"#1a1000",borderRadius:6,overflow:"hidden",border:"1px solid #40300010"}}>
+                      <div style={{height:"100%",width:`${progressW}%`,background:progressColor,borderRadius:6,transition:"width 0.3s"}}/>
+                    </div>
+                  </div>
+
+                  {/* Pie table */}
+                  <div style={{marginBottom:10}}>
+                    <div style={{fontSize:10,color:"#907050",marginBottom:6}}>PIES ({remaining.length} left)</div>
+                    <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6}}>
+                      {fc.yourFoods.map((food,i)=>{
+                        const canEat=!food.consumed&&fc.yourFullnessPct<fc.overfullCap;
+                        return(
+                          <button key={i} disabled={!canEat} onClick={()=>eatFairPie(food.id)}
+                            style={{...C.btn(canEat?fairOrange:"#2a1800"),opacity:food.consumed?0.3:canEat?1:0.5,fontSize:12,padding:"8px 4px",textAlign:"center"}}>
+                            {food.emoji} {food.name}<br/>
+                            <span style={{fontSize:9,color:"#c0a070"}}>+{food.lbs} lbs</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Darcy progress */}
+                  <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:10,fontSize:11,color:"#907050"}}>
+                    Darcy has eaten {fc.yourFoods.length-fc.darcyFoodsLeft} / {fc.yourFoods.length} plates • {Math.round(fc.darcyGain||0)} lbs gained
+                  </div>
+
+                  {/* Action buttons */}
+                  <div style={{display:"flex",gap:6,marginBottom:10}}>
+                    <button disabled={fc.tauntUsed} style={{...C.btn("#3a2000"),flex:1,opacity:fc.tauntUsed?0.4:1,fontSize:11}} onClick={()=>doFairAction('taunt')}>
+                      😏 Taunt Darcy
+                    </button>
+                    <button disabled={fc.pushThroughUsed} style={{...C.btn("#3a0000"),flex:1,opacity:fc.pushThroughUsed?0.4:1,fontSize:11}} onClick={()=>doFairAction('push_through')}>
+                      🔥 Push Through
+                    </button>
+                    <button disabled={fc.coolDownUses>=2} style={{...C.btn("#002a1a"),flex:1,opacity:fc.coolDownUses>=2?0.4:1,fontSize:11}} onClick={()=>doFairAction('cool_down')}>
+                      🌡 Cool Down ({2-fc.coolDownUses})
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {fc.phase==='weigh_in'&&(()=>{
+                const weighFn=FAIR_WEIGH_IN_TEXT[Math.min(fc.stageIdx,FAIR_WEIGH_IN_TEXT.length-1)];
+                const weighText=typeof weighFn==='function'?weighFn(fc.yourStartLbs,fc.yourGain,fc.darcyStartLbs,fc.darcyGain||0):'';
+                const payFn=FAIR_PAYOFF_TEXT[Math.min(fc.stageIdx,FAIR_PAYOFF_TEXT.length-1)];
+                const payText=typeof payFn==='function'?payFn(fc.yourGain):'';
+                return(
+                  <>
+                    <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{weighText}</div>
+                    <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:12,fontSize:11,color:"#c0a060",lineHeight:1.8,fontStyle:"italic"}}>{payText}</div>
+                    <div style={{display:"flex",gap:10,marginBottom:10,fontSize:12,color:"#d0b080"}}>
+                      <div style={{flex:1,textAlign:"center"}}>
+                        <div style={{color:fairOrange,fontWeight:"bold",fontSize:14}}>+{Math.round(fc.yourGain)} lbs</div>
+                        <div style={{fontSize:10,color:"#907050"}}>{s.name}</div>
+                      </div>
+                      <div style={{flex:1,textAlign:"center"}}>
+                        <div style={{color:"#a08060",fontWeight:"bold",fontSize:14}}>+{Math.round(fc.darcyGain||0)} lbs</div>
+                        <div style={{fontSize:10,color:"#907050"}}>Darcy</div>
+                      </div>
+                    </div>
+                    <button style={{...C.btn(fairOrange),width:"100%"}} onClick={closeFairContest}>Leave the Fair ✓</button>
+                  </>
+                );
+              })()}
+
+              {/* POPUP OVERLAY */}
+              {fc.popupText&&(
+                <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
+                  <div style={{background:"#100800",border:`1px solid ${fairOrange}50`,borderRadius:10,padding:20,maxWidth:440,margin:16}}>
+                    <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{fc.popupText}</div>
+                    <button style={{...C.btn(fairOrange),width:"100%"}} onClick={dismissFairPopup}>Continue</button>
                   </div>
                 </div>
               )}
