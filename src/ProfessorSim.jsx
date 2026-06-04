@@ -5027,187 +5027,178 @@ const RECORDING_PACE_LBS = { pace_push:4, pace_settle:1, pace_surge:5 };
 const RECORDING_QUALITY_BONUS = { okay:0, good:1, great:2, perfect:6 };
 
 const RECORDING_OPENING_TEXT = [
-  // stage 0 — ~258 lbs
-  `Her apartment is tidy in the way that content creators' spaces are tidy — everything positioned, the ring light already angled, a spread of food on the coffee table that she's arranged by size. She's in a fitted crop top and high-waisted shorts, and when she sees you come in she smiles and shifts her weight, her belly pressing warm and round against the fabric. "I've been thinking about what I want to do," she says. She's thought about it a lot. You pick up the camera and she settles into position and the room gets quiet in the specific way it does when something is about to be recorded.`,
-  // stage 1 — ~320 lbs
-  `She's rearranged her living room for this — furniture pushed back, her oversized chair centered in the frame, the food spread already laid out on a low table in front of her. She's 320 pounds of settled, warm presence, her belly resting forward in her lap, her thighs wide and comfortable in the chair. She looks at you and then at the camera and back at you. "Same as last time?" she asks, but she's already leaning into it, already performing slightly even before the camera goes on. You pick it up and she stills into position. The room waits.`,
-  // stage 2 — ~419 lbs
-  `She fills the chair the way water fills a container — completely, settling into every inch of it, her belly enormous and warm in her lap, her thighs pressed wide. The food is already there. She's been eating lightly this morning, she says, saving room, and you can tell — there's something anticipatory in how she sits, how she holds her hands folded over the top of her belly. She looks at the camera in your hands. "Ready when you are," she says, and means it more than she's said anything in a while. You raise the camera. The room gets quiet.`,
-  // stage 3 — ~519 lbs
-  `She can't rearrange the furniture herself anymore, so she's described what she wanted and you've moved it — her chair pushed to the center, the food table within arm's reach, the ring light dialed to warm. She fills the chair beyond capacity, her belly sitting full and heavy between her thighs, no lap, just the forward press of her against the world. She watches you set up. She's been patient. She's been thinking about this shoot for days. "I want the lighting a little warmer this time," she says. You adjust. She nods. You pick up the camera and the session begins.`,
-  // stage 4 — ~630 lbs
-  `You do most of the setup now — she directs from her chair, which is reinforced and positioned where the light is best, and her body takes up most of what the camera sees when you step back for a wide. 630 pounds, and she's dressed for the shoot: something that fits her, which is a specific and considered choice at this size. The food is on the table beside her. She has her hands resting on the summit of her belly and she's watching you with the easy patience of someone who has done this many times and knows exactly how good the result will look. You raise the camera. She settles.`,
-  // stage 5 — ~820 lbs
-  `The room has reorganized itself around her. This is simply true. Her chair is gone — the floor is where she lives now, cushioned and reinforced, and she takes up a corner of the room in the way that large furniture takes up a corner: permanently, authoritatively. 820 pounds. You navigate around the outer edge of her to get to the camera position you want. She tracks you with her eyes and a small smile. The food is already in reach — she has a system. "You know what I want," she says, which is true. You do know. You raise the camera and she gets very still, the way something enormous gets still, and the room holds its breath.`,
+  (lbs)=>`You step into Kylie's softly lit dorm room, the glow of ring lights casting a warm halo over her setup. At ${Math.round(lbs)} pounds, she's noticeably fat, heavy, and cute. Her belly starts to dominate her frame, hanging soft and warm over the waistband of her tight pink crop top. Her heavy breasts rest atop the upper curve of her gut, while her plush thighs spread wide as she adjusts the camera tripod. She turns to you with a bright, eager smile, her cheeks full and flushed. "Professor... I'm so ready for this." The air feels intimate, just the two of you. You pick up the camera, and she shifts into position on the bed, belly settling heavily between her spread thighs as she looks straight into the lens.`, // stage 0
+  (lbs)=>`The room is quiet except for the low hum of the lights as you enter. At ${Math.round(lbs)} pounds, Kylie is clearly very fat. Her belly is heavy and forward, soft and jiggly, while her enormous breasts strain against her top, spilling over the top of her gut. Her thick, warm thighs press together, dimpling with fat. She glances up at you lovingly, already flushed with anticipation. "I love when it's just us like this." You feel the complete trust in her eyes. You lift the camera, and she repositions herself, her heavy belly spilling forward as she gets comfortable for the shot.`, // stage 1
+  (lbs)=>`Kylie's room feels smaller with her size now. At ${Math.round(lbs)} pounds, she's very fat. Her belly is large and prominent, swaying and folding as she sets up pillows. Her breasts are huge and heavy, resting on the upper shelf of her gut, while her thighs have thickened into soft, warm pillars. She smiles warmly when she sees you. "This is my favorite part... just you directing me." The intimacy is thick in the air. You take the camera in hand, and she eases back onto the bed, her massive belly spreading heavily across her lap.`, // stage 2
+  (lbs)=>`You find Kylie at ${Math.round(lbs)} pounds. She is enormous. Her belly hangs low between her spread thighs with no lap left to speak of. Her breasts are massive, resting heavily atop the great dome of her gut. Every movement is slow and heavy, fat rippling softly. She looks up at you with deep, devoted affection. "I'm so full already... but I want more for you." The quiet of the room wraps around you both. You pick up the camera, and she settles into position, her immense body shifting with warm, heavy grace.`, // stage 3
+  (lbs)=>`At ${Math.round(lbs)} pounds, Kylie is colossal. She remains in bed as you enter, her vast belly a landscape of soft, warm fat spreading outward and resting between her thick thighs. Her enormous breasts drape heavily over the top of her gut, nipples visible through stretched fabric. She breathes deeply, eyes lighting up with love as she sees you. "I barely moved today... waiting for you." The intimacy is profound. You lift the camera, and she adjusts what little she can, her body quivering softly.`, // stage 4
+  (lbs)=>`Kylie has become an ${Math.round(lbs)}-pound blob. She is fully immobile. Everything is geography. Her breasts are gigantic, resting like heavy pillows atop the immense, sprawling belly that covers her lower body completely. Thick rolls cascade everywhere, warm and yielding. She smiles dreamily when you approach. "I'm all yours, Professor. Film every inch." The air is thick with devotion and sensuality. You take the camera, positioning it perfectly over her enormous, quivering form.`, // stage 5
 ];
 
 const RECORDING_TAKE_INTRO_TEXT = [
-  `Camera rolling. She settles her weight and looks straight into the lens. She's ready.`,
-  `The camera is on. She adjusts her position — a small shift of her heavy thighs — and focuses. This is what she does.`,
-  `You press record. She stills. Her belly sits enormous and forward in the frame. She's fully present.`,
-  `Recording. She doesn't move much now — she doesn't need to. She fills the frame without effort. Her eyes find the lens.`,
-  `You start recording. She's barely moved but somehow she looks more there, more real, more enormous. She meets the camera.`,
-  `Camera on. The room is quiet. She is absolutely motionless and absolutely present, her body filling the corner of the frame in every direction. She blinks once and begins.`,
+  (lbs)=>`The camera is rolling. Kylie sits before you at ${Math.round(lbs)} pounds. She is noticeably fat, heavy, and cute. Her soft belly rests heavily on her thick thighs, breasts full and spilling over. She looks into the lens with hungry eyes, ready to eat for you.`, // stage 0
+  (lbs)=>`Recording now. At ${Math.round(lbs)} pounds, Kylie is clearly very fat. Her heavy belly dominates the frame, warm and jiggly as it presses forward between her plush thighs. Her breasts heave with each breath.`, // stage 1
+  (lbs)=>`The take begins. At ${Math.round(lbs)} pounds, Kylie is very fat. Her large and prominent belly sags warmly, breasts resting heavily on top as her thick thighs spread wide.`, // stage 2
+  (lbs)=>`Camera rolling. At ${Math.round(lbs)} pounds, Kylie is enormous. Her belly fills the space between her thighs completely, soft fat spilling everywhere, breasts massive and heavy.`, // stage 3
+  (lbs)=>`She's ready. At ${Math.round(lbs)} pounds, Kylie is colossal. Her vast belly dominates her body, warm rolls cascading as her enormous breasts drape across it.`, // stage 4
+  (lbs)=>`The shot is live. At ${Math.round(lbs)} pounds, Kylie is a blob. She is fully immobile. Her body is a vast, soft, warm landscape of fat—breasts and belly merging together.`, // stage 5
 ];
 
 const RECORDING_DIRECTION_POPUPS = {
   angle_low: [
-    `You get low — camera below her waist, looking up. From here her belly is the horizon: enormous, warm, pressing forward over the waistband of her shorts. She looks down at the lens and something in her expression changes, becomes more knowing.`,
-    `Floor angle. Her belly from below is a different geography entirely — the soft underside of it, the way it extends forward, the curve of it against her thighs. She looks taller from down here. More imposing.`,
-    `Low angle, looking up into her. Her belly fills the upper half of the frame from here, enormous and soft, the crop top ridden up above the widest point of it. She rests her hands on top and looks down at you through the camera.`,
-    `You get low. From the floor, her belly extends outward into the frame like a landscape — the sheer forward mass of it, the way her thighs spread under its weight, the warmth visible even through the lens. She looks immense. She is immense.`,
-    `Floor angle. Her belly from below is geological: layers of soft warm fat extending forward, the underside of it soft and vast, her thighs pushed wide on either side. She looks down at the camera from a long way up. The scale reads clearly.`,
-    `You get as low as you can. Her belly is the whole frame from here — the full underside of it extending forward, enormous and warm, impossible to contain in one shot. She can't really look down anymore. She knows you're there. She settles lower.`,
+    (lbs)=>`You drop the camera low to the floor, aiming upward. From below, Kylie's ${Math.round(lbs)}-pound belly hangs heavy and round, soft fat spilling forward over her waistband while her thick thighs frame the shot. Her heavy breasts rest on the upper curve of her gut, jiggling gently as she eats. She looks powerful and deliciously fat from this worshipful angle.`, // stage 0
+    (lbs)=>`Low angle captures her perfectly. At ${Math.round(lbs)} pounds her heavy belly dominates the frame from below, warm and pendulous, swaying with each bite. Her plush thighs spread wide on either side while her breasts heave softly above. The view emphasizes just how very fat and full she is for you.`, // stage 1
+    (lbs)=>`You angle the camera low. At ${Math.round(lbs)} pounds, Kylie's large prominent belly fills the upward shot, hanging heavily between her thick thighs. Soft rolls shift and settle as she chews. Her enormous breasts cast gentle shadows across the top of her gut. She looks gloriously very fat.`, // stage 2
+    (lbs)=>`Floor-level shot. At ${Math.round(lbs)} pounds Kylie is enormous—her massive belly completely fills the space between her thighs, soft and heavy, pressing down toward the camera. Her breasts rest like heavy pillows on top as she eats with slow devotion.`, // stage 3
+    (lbs)=>`You get extremely low. At ${Math.round(lbs)} pounds her colossal belly is a vast overhanging dome of warm fat, spreading outward and nearly touching the floor. Her thick thighs are pushed apart while her enormous breasts drape heavily above. The scale is breathtaking.`, // stage 4
+    (lbs)=>`Low angle on your ${Math.round(lbs)}-pound blob. Her immense belly is an endless landscape of soft, quivering fat spilling outward in every direction, completely filling the frame from below. Everything about her is geography—warm, yielding, and utterly yours.`, // stage 5
   ],
   angle_wide: [
-    `You step back for the full frame. She fills the chair and the chair fills the shot and there's room around her but not much. At 258 pounds she reads as very fat in this frame, her belly prominent, her thighs spread.`,
-    `Wide shot. She's centered in the frame and the room frames her and you can see exactly how much space she takes up — the chair, the spread of her thighs, the forward press of her belly. The scale lands.`,
-    `Full body, wide. 419 pounds fills the frame differently than smaller — the chair is secondary now, something she's wearing rather than sitting in. Her belly dominates the center of the shot. The room around her feels smaller.`,
-    `You pull all the way back. She fills the frame even wide — there's room at the edges but not much, and what the camera reads is a very large, very heavy woman sitting in a piece of furniture that she has thoroughly claimed. The food on the table is barely visible beside her.`,
-    `Wide. The room around her reads as deliberately arranged set dressing for the fact of her — 630 pounds, the chair a suggestion rather than a seat, her belly the center of gravity of the entire shot. Everything else is context.`,
-    `As wide as the room allows. She fills her corner and the corner fills the frame. The wide shot doesn't diminish her — it contextualizes her, shows the scale of her against the walls and ceiling, and the scale is enormous. She barely fits in the frame. That's the shot.`,
+    (lbs)=>`You pull the camera back for a wide shot. At ${Math.round(lbs)} pounds Kylie fills a generous portion of the frame, her soft belly and thick thighs dominating the bed while the dorm room feels cozy around her. She looks noticeably fat, cute, and perfectly ready for you to grow.`, // stage 0
+    (lbs)=>`Wide shot. At ${Math.round(lbs)} pounds Kylie looks clearly very fat, her heavy belly protruding forward as she sits. The room seems smaller around her thickening body, her wide hips and plush thighs claiming space. She eats with focused hunger for the camera and for you.`, // stage 1
+    (lbs)=>`You zoom out. At ${Math.round(lbs)} pounds Kylie is very fat and imposing—her large belly and heavy breasts take center stage while she moves with deliberate care. The bed creaks softly beneath her spreading width, emphasizing her beautiful size.`, // stage 2
+    (lbs)=>`Wide angle reveals everything. At ${Math.round(lbs)} pounds enormous Kylie occupies most of the bed, her belly resting heavily between her thighs with no lap left. The scale of her slow, heavy body makes the room feel intimate and full of her presence.`, // stage 3
+    (lbs)=>`Full wide shot. Colossal at ${Math.round(lbs)} pounds, Kylie is near-immobile—her vast body spreads across the reinforced bed, belly dominating everything. She looks breathtakingly huge, a monument of soft warm fat created for your pleasure.`, // stage 4
+    (lbs)=>`You pull way back. Your ${Math.round(lbs)}-pound blob fills the entire frame and more—her immense, immobile form is a sea of warm fat, breasts and belly merging into one enormous landscape. The room barely contains her anymore.`, // stage 5
   ],
   angle_close: [
-    `You move in close — face, chest, the upper register. She's looking directly into the lens and her expression is warm and direct and slightly self-aware. Her chest rises and falls visibly. The close-up catches everything she's thinking.`,
-    `Close-up on face and chest. At 320 pounds her chest is prominent in frame even at this angle, her face above it soft and warm and performing slightly for the camera — the version of herself she puts on. It looks good. It looks like her.`,
-    `Close. Her face fills the upper half of the frame and her chest the lower, and at this size the chest is a significant presence — heavy and warm, visible movement with each breath. Her expression while she eats is what you came for. You're getting it.`,
-    `You move in. Her face and chest and the top of her belly fill the frame entirely at close range, and her expression eating — the focus, the pleasure, the slight heaviness of it — is exactly the content. At this weight her chest rests on the upper shelf of her belly when she leans back. The camera catches it.`,
-    `Close-up. Her face takes the top third of the frame and her chest the rest, enormous and heavy, the fabric of her top stretched tight across it. Her expression eating at this stage is a specific thing: deep, focused, somewhere between pleasure and effort. The camera is very close.`,
-    `As close as you can get and still catch her face. At blob stage the geography of her chest is the geography of a landscape — the close-up gets the upper shelf of her, her face above it warm and slow and present. Her expression is somewhere beyond performance now. It's just her.`,
+    (lbs)=>`You move in close. Kylie's face fills the frame at ${Math.round(lbs)} pounds—cheeks full and flushed as she eats, eyes locked on the lens with devotion. Her heavy breasts rise and fall, soft belly pressing against the bottom edge of the shot with every breath.`, // stage 0
+    (lbs)=>`Tight close-up. At ${Math.round(lbs)} pounds you watch her lips part around each bite, her expression one of pure sensual pleasure. Her enormous breasts heave warmly in the foreground while the upper curve of her heavy belly jiggles below.`, // stage 1
+    (lbs)=>`Close on her upper body. At ${Math.round(lbs)} pounds her face shows deepening bliss as she chews, breasts resting heavily on her large prominent belly. You catch every soft ripple of fat as she swallows for you.`, // stage 2
+    (lbs)=>`Intimate close shot. Enormous at ${Math.round(lbs)} pounds, Kylie's cheeks are round and full while she eats slowly. Her massive breasts dominate the top of the frame, resting on the great dome of her belly that fills everything below.`, // stage 3
+    (lbs)=>`Extreme close-up. At ${Math.round(lbs)} pounds colossal Kylie breathes heavily between bites, her enormous breasts spilling across her vast gut. Every quiver of soft fat is visible as she devotes herself completely to the feeding.`, // stage 4
+    (lbs)=>`You stay close on her face and chest. Your ${Math.round(lbs)}-pound blob's expression is dreamy and adoring as she eats whatever you bring. Her gigantic breasts and the endless upper rolls of her belly create a warm, quivering world just for you.`, // stage 5
   ],
   food_heavy: [
-    `You hand her the heavy food — dense, loaded, exactly what her body wants. She takes it in both hands and the first bite lands with visible weight. Her belly presses a little harder against her waistband by the time the second bite follows.`,
-    `Heavy food. She accepts it with both hands and settles slightly under the weight of what she's about to do. By the third bite you can see the fullness starting — her belly sitting a degree lower, her breathing slightly different.`,
-    `You give her the dense, heavy food and she opens into it. 419 pounds eating something genuinely filling is a particular and beautiful thing to watch through a lens — the focus, the commitment, the belly rising incrementally with each bite.`,
-    `Heavy food, handed over. She takes it with a sound that isn't quite a sigh — anticipatory, warm — and settles her enormous body further back into the chair. The food goes in steadily. Her belly extends forward by the time she's halfway through.`,
-    `You put the heavy food in her reach and she takes it with both hands, slowly. At 630 pounds, eating the heavy food is a deliberate and weighty act — each bite adding to something already enormous. The camera catches her belly pressing further forward.`,
-    `The heavy food. She can't reach easily now — you bring it to her, and she takes it with both hands and eats with the slow certainty of someone who knows exactly what this is doing and wants it to. Her belly shifts forward incrementally with each bite. The camera is very close.`,
+    (lbs)=>`You hand her the heavy, dense food. At ${Math.round(lbs)} pounds Kylie takes it with both hands, her soft belly pressing forward as she lifts it to her mouth. She moans softly around the first big bite, warm fat jiggling as her gut begins to fill.`, // stage 0
+    (lbs)=>`Heavy food in both hands. At ${Math.round(lbs)} pounds her very fat belly rests heavily on her thighs while she eats the calorie-dense meal. You watch her throat work as the weight settles deep into her already massive gut.`, // stage 1
+    (lbs)=>`You give her the heaviest option. At ${Math.round(lbs)} pounds Kylie grips it firmly, her large prominent belly sagging warmly as she devours it. Each swallow makes her thick middle swell and press harder between her thighs.`, // stage 2
+    (lbs)=>`Heavy food for enormous Kylie. At ${Math.round(lbs)} pounds she uses both hands to bring it to her mouth, slow and deliberate. Her belly—already filling the space between her thighs—grows visibly tighter and rounder with every bite.`, // stage 3
+    (lbs)=>`Colossal at ${Math.round(lbs)} pounds, she barely lifts the heavy tray. Her vast belly quivers as she eats, warm rolls deepening while her enormous breasts rise and fall with satisfied breaths.`, // stage 4
+    (lbs)=>`You bring the heaviest food to your immobile ${Math.round(lbs)}-pound blob. She opens wide, eyes half-lidded in pleasure as she eats. New layers of soft fat ripple across her endless belly with every heavy swallow.`, // stage 5
   ],
   food_build: [
-    `You start her light — something small — and watch her work through it before you bring the next thing, larger, and then the next. She understands the build. By the third item her belly is fuller and rounder and the camera reads the difference.`,
-    `Build progression: light, then heavier, then heavier still. She moves through each item with focus, her belly filling in stages, the fullness accumulating visibly. By the end of the progression she's sitting differently than she was.`,
-    `You build her — start with something light, bring in the mid-weight food, end on something dense. She eats each stage clean before the next arrives. Her belly at the end of the progression is fuller, warmer, pressing more definitely forward.`,
-    `Slow build. You start her at the lighter end and work up, each item larger and denser than the last. She eats methodically, her enormous belly filling in measurable increments. The progression is visible in the footage. Her face at the end is different from her face at the beginning.`,
-    `You build the session — light to heavy, incremental, her belly filling in stages that the camera records. At 630 pounds the increments are still visible: the belly pressing forward another inch with each stage, the thighs spreading further to accommodate.`,
-    `Build. You start her with something she can eat easily and work up, each stage heavier, her enormous body accepting the food in layers. By the final stage she's eating the heaviest thing and her belly is extended further than when the take started. The progression is the content.`,
+    (lbs)=>`You start her light then build bigger. At ${Math.round(lbs)} pounds Kylie enjoys the progression, her noticeably fat belly gradually rounding out as the portions grow heavier. She smiles at you between bites, clearly loving the paced indulgence.`, // stage 0
+    (lbs)=>`Light to heavy progression. At ${Math.round(lbs)} pounds her very fat body responds beautifully—her heavy belly swells progressively fuller, warm and soft as the calories stack. Her thick thighs spread wider to accommodate the growing load.`, // stage 1
+    (lbs)=>`You build the meal step by step. At ${Math.round(lbs)} pounds Kylie's large belly fills out noticeably with each escalation, soft fat pressing harder into her lap as she eats with steady, devoted hunger.`, // stage 2
+    (lbs)=>`Progressive feeding on enormous Kylie. At ${Math.round(lbs)} pounds her belly—already between her thighs—grows rounder and heavier with every larger course, rolls softening as she sinks deeper into bliss.`, // stage 3
+    (lbs)=>`You build it up slowly for colossal Kylie. At ${Math.round(lbs)} pounds each bigger portion makes her vast belly spread further, warm fat cascading as her near-immobile body accepts more for you.`, // stage 4
+    (lbs)=>`Light to massive portions for your ${Math.round(lbs)}-pound blob. Every escalation disappears into her endless softness, deepening the warm geography of her belly and breasts as she lies there, utterly devoted.`, // stage 5
   ],
   food_hers: [
-    `You gesture at the spread and let her choose. She considers for a moment — genuinely considers — and picks the thing she wants. There's something different about watching her eat her own choice. More real. The camera catches it.`,
-    `Her choice. She reaches for what she wants without waiting, and what she wants is specific and considered. She eats it differently than she eats the things you hand her — more settled, more personal. The camera notices.`,
-    `You let her choose. She surveys the table and picks something particular, and eats it with the ease of someone eating what they actually want. At 419 pounds her wants are large and specific. This reads as true on camera. It is true.`,
-    `Her food, her choice. She takes her time selecting and then eats with a focus that's different from directed eating — more inward, more satisfied. Her belly accepting the food of her own choosing has a different quality. The camera catches the difference.`,
-    `You put the spread within reach and let her decide. At 630 pounds, choosing and reaching is its own act — deliberate, warm, certain. She picks something heavy and good and eats it with the unhurried certainty of someone who has been wanting this specifically.`,
-    `Her choice, her pace. You set the food in reach and she selects what she wants without hesitation — something dense, something sweet, something that she has been thinking about. She eats it with her eyes half-closed. The camera is very still. This is the truest footage.`,
+    (lbs)=>`You let her choose. At ${Math.round(lbs)} pounds Kylie eagerly reaches for the richest, creamiest option, her soft belly jiggling as she brings it to her mouth. Choosing her own food shows how much she craves this for you.`, // stage 0
+    (lbs)=>`She picks for herself. At ${Math.round(lbs)} pounds Kylie selects the heaviest, densest food, eyes shining with devotion. Her very fat belly rests heavily on her thighs as she devours her choice with sensual focus.`, // stage 1
+    (lbs)=>`Kylie chooses what she wants. At ${Math.round(lbs)} pounds she goes straight for the most filling items, her large prominent belly swelling as she eats. The fact that she's selecting her own growth makes it even more intimate.`, // stage 2
+    (lbs)=>`You let enormous Kylie decide. At ${Math.round(lbs)} pounds she slowly reaches for the richest food, her massive belly shifting between her thighs. Her choices reflect total surrender to the feedee path.`, // stage 3
+    (lbs)=>`Colossal at ${Math.round(lbs)} pounds, she weakly points to what she desires most. You bring it to her, watching her vast body accept the calories, every roll quivering with warm satisfaction.`, // stage 4
+    (lbs)=>`Your ${Math.round(lbs)}-pound blob chooses with a soft whisper. You feed her exactly what she wants, watching it disappear into her immense, immobile form—proof of how completely she has given herself to you.`, // stage 5
   ],
   pace_push: [
-    `You push her — keep going, don't slow down. She responds; she's at Devoted tier and she trusts your direction completely. Her eating accelerates, her belly filling faster, the fullness arriving sooner. The footage has urgency.`,
-    `You direct her to push the pace. She doesn't hesitate — more, faster, the food coming in steady and fast. Her belly presses her waistband harder. Her breathing changes. She doesn't stop.`,
-    `Push pace. You direct her to keep going without pause, and at 419 pounds moving fast through heavy food is a real thing — her belly visibly fuller faster, the urgency of it landing in the footage. She's working.`,
-    `You push her pace. At this size, fast eating means a lot of food arriving quickly, and her belly responds — extending forward, pressing harder, the fullness stacking up in real time. Her expression is focused. She keeps going.`,
-    `You call for push pace. She gathers herself — it takes effort to push at 630 pounds — and moves faster through the food, her enormous belly shifting forward, the warmth of it visible. She doesn't stop. The footage is intense.`,
-    `Push. She hears you and she eats — slowly by any other measure, but for her current body this is committed and fast, each bite deliberate and quick, her belly pressing forward with each one. She keeps going until you call cut.`,
+    (lbs)=>`You push her firmly — more, faster, don't stop. At ${Math.round(lbs)} pounds Kylie obeys with flushed cheeks, eating rapidly as her noticeably fat belly jiggles and swells quicker with each swallow. Her heavy breasts bounce rhythmically while her plush thighs quiver from the effort. She moans around the food, eyes locked on you with eager devotion.`, // stage 0
+    (lbs)=>`You command a relentless pace. At ${Math.round(lbs)} pounds her very fat belly grows visibly tighter and rounder, heavy rolls pressing forward as she keeps eating without pause. Warm fat shifts fast between her thick thighs while she breathes harder, surrendering to your direction.`, // stage 1
+    (lbs)=>`Pushing the tempo hard. At ${Math.round(lbs)} pounds Kylie eats with focused speed, her large prominent belly surging outward and sagging heavier into her lap. Her enormous breasts rise and fall quickly as soft fat ripples across her thickening body.`, // stage 2
+    (lbs)=>`You urge enormous Kylie onward without pause. At ${Math.round(lbs)} pounds her massive belly — already filling the space between her thighs — bloats rounder and tighter with every forced bite, deep rolls quivering as her slow body strains beautifully for you.`, // stage 3
+    (lbs)=>`Relentless pace on colossal Kylie. At ${Math.round(lbs)} pounds she eats as fast as her near-immobile form allows, her vast overhanging belly expanding with warm new fat. Her enormous breasts heave heavily while the rest of her trembles softly under the pressure.`, // stage 4
+    (lbs)=>`You push your ${Math.round(lbs)}-pound blob without mercy. Even fully immobile, her endless soft belly ripples and deepens dramatically as she swallows everything. New layers of warm yielding fat spread across her geography while her adoring eyes stay on you.`, // stage 5
   ],
   pace_settle: [
-    `You tell her to take her time — her pace, her rhythm. She visibly relaxes into it. The footage softens: she eats slowly, comfortably, her belly filling gradually. Her expression is peaceful. This is her natural register.`,
-    `Settle pace. You let her find her own rhythm and she does — slow, considered, each bite followed by a moment of stillness. Her belly fills at its own rate. The footage is warm. She looks very comfortable.`,
-    `Her pace. You call it and she settles into herself, eating slowly and deliberately, the food going in at exactly the rate she wants. Her belly fills in long, unhurried waves. The camera stays still. This is good footage.`,
-    `You call settle and she drops into her natural pace — slow, methodical, very present. At 519 pounds, eating slowly means sitting very still and moving very little and eating with focus. That's what the camera gets. Her belly fills by degrees.`,
-    `Settle pace. She doesn't rush at 630 pounds — this is already her default — but when you explicitly call it she gets even more settled, more herself, more warm and deliberate. The footage is intimate. Her belly rises slowly with each bite.`,
-    `You tell her to settle and the already-still room gets stiller. She eats at the pace of something geological: slow, certain, vast. Each bite is followed by a long moment of being very full. The camera stays completely still. This is the truest footage she makes.`,
+    (lbs)=>`You let Kylie set her own rhythm. At ${Math.round(lbs)} pounds she eats slowly and sensually, savoring every bite as her noticeably fat belly gradually rounds out with warm, soft fullness. Her heavy breasts rest gently atop her gut while she moans quietly, lost in the intimate pleasure.`, // stage 0
+    (lbs)=>`You allow her own pace. At ${Math.round(lbs)} pounds Kylie feeds herself deliberately, her very fat heavy belly swelling softly between thick warm thighs. She takes her time, eyes half-lidded in bliss, letting each swallow settle deep as the sensuality builds naturally.`, // stage 1
+    (lbs)=>`Kylie controls the tempo. At ${Math.round(lbs)} pounds she eats with slow, deliberate enjoyment, her large prominent belly sagging heavier and softer with every unhurried bite. Her enormous breasts rise gently while thick thighs spread wider in relaxed indulgence.`, // stage 2
+    (lbs)=>`You let enormous Kylie find her rhythm. At ${Math.round(lbs)} pounds she eats with heavy, luxurious slowness, her massive belly filling the space between her thighs as it grows rounder and deeper. Every movement is warm, sensual, and completely hers.`, // stage 3
+    (lbs)=>`Colossal Kylie sets the pace. At ${Math.round(lbs)} pounds she eats in long, lazy motions, her vast belly quivering and spreading outward with warm new fat. Her enormous breasts drape heavily as she sinks deeper into devoted, unhurried pleasure.`, // stage 4
+    (lbs)=>`Your ${Math.round(lbs)}-pound blob eats at her own slow rhythm. You watch as calories disappear into her immense, immobile form — endless rolls of soft warm fat deepening gradually. Her dreamy expression shows pure, surrendered contentment.`, // stage 5
   ],
   pace_surge: [
-    `You call for the pause-and-surge: she stops mid-sequence, lets the fullness settle, and then one more push. The pause is visible — she holds, breathes, her belly sitting heavier. Then the surge. The footage has a shape.`,
-    `Pause, then surge. She pauses where you call it and you see the fullness land — her belly a little lower, her breath a little different — and then she surges into the final push. The contrast is visible. It's good footage.`,
-    `The pause-and-surge. She stops when you call it and the camera holds on the pause — her belly at full extension of that moment, her expression processing the fullness — and then she surges, one final push harder than the steady pace before. The two-movement shape reads beautifully.`,
-    `You call the surge structure. She pauses — holds — and her body settles into the pause visibly, her enormous belly dropping slightly, her expression going inward. Then the surge: she pushes through the final portion fast, her belly pressing forward further. The structure lands.`,
-    `Pause and surge. At 630 pounds the pause is dramatic — she is so full and so present and the camera holds on the stillness of her — and then the surge, the final push that adds the last increment to an already enormous belly. The shape of the take is the content.`,
-    `You call the pause. She is already very still — at this size she is always very still — but the directed pause has a different quality, more intentional, more weighted. Her belly sits at its current extension and the camera holds on it. Then you call the surge and she eats the final portion and the take is done.`,
+    (lbs)=>`You direct a long pause, letting the fullness settle. At ${Math.round(lbs)} pounds Kylie's noticeably fat belly looks round and tight as she breathes deeply. Then you surge her forward — she eats faster, her soft gut jiggling heavily while her heavy breasts bounce with renewed energy.`, // stage 0
+    (lbs)=>`Pause to let it land, then surge. At ${Math.round(lbs)} pounds her very fat belly hangs full and heavy between her thighs during the break. When you push again she devours more, warm rolls swelling visibly as fresh calories stack on top of the existing load.`, // stage 1
+    (lbs)=>`You hold her in a deep pause. At ${Math.round(lbs)} pounds Kylie's large prominent belly sits swollen and warm. Then the final surge hits — she eats urgently, her belly pressing harder into her lap while thick thighs tremble softly.`, // stage 2
+    (lbs)=>`Pause on enormous Kylie. At ${Math.round(lbs)} pounds her massive belly rests heavily between her thighs, visibly distended. After the fullness sinks in you command the surge — she eats slower but greedily, rolls deepening as her body accepts even more.`, // stage 3
+    (lbs)=>`You let colossal Kylie feel the weight, pausing as her vast belly strains. Then the final push — she takes more, her near-immobile body quivering while enormous breasts heave and her immense gut spreads wider with warm fat.`, // stage 4
+    (lbs)=>`Long pause on your ${Math.round(lbs)}-pound blob as her endless belly settles. Then the surge — even immobile she opens for more, new layers of soft warm fat rippling across her geography as the final calories disappear into her devoted mass.`, // stage 5
   ],
 };
 
 const RECORDING_TAKE_RESULT = {
-  okay:[
-    `You play back the take. It's fine — she's eating, she looks good, the camera is steady. Nothing special happened. The footage is exactly what you'd expect from the choices you made, no more. You have it; it exists.`,
-    `Take review. It's okay. She was eating and the camera caught it and nothing particularly landed. Some takes are like this. You have the footage and it's serviceable and something else might be better.`,
-    `Playback. Okay take — she's on camera, eating, her belly filling in frame. The angle didn't quite sing and the pace didn't find a rhythm but she looked good because she always looks good. It's fine footage.`,
-    `Take review on the monitor. Okay. She's enormous on screen and eating steadily and the footage captures it without anything particularly clicking. At 519 pounds she reads as impressive regardless, but the take itself didn't have a peak.`,
-    `You review it. Serviceable — she's on camera at 630 pounds and eating and her belly is prominent and all of that is true and captured. But nothing elevated it. The footage exists and is usable and that's where it stops.`,
-    `Playback. Okay footage of the largest person you've filmed — her belly filling the frame, her eating slow and steady. The take didn't have a moment. It's documentation more than artistry. You have it. You could do better.`,
+  okay: [
+    (lbs)=>`You review the take on the monitor. It's okay — serviceable footage of Kylie at ${Math.round(lbs)} pounds eating for the camera. Her noticeably fat belly jiggles softly as she swallows, heavy breasts resting on top, but the energy feels a little flat. The lighting is fine and she looks cute, yet nothing truly sparkles. Usable, but not memorable.`, // stage 0
+    (lbs)=>`The take plays back. It's okay. At ${Math.round(lbs)} pounds Kylie is clearly very fat, her heavy belly pressing forward between thick thighs as she eats. The footage captures her size well enough, but the sensuality doesn't quite hit. Solid documentation of her growing body, nothing more.`, // stage 1
+    (lbs)=>`Reviewing now. It's decent but nothing special. At ${Math.round(lbs)} pounds her large prominent belly sags warmly while she chews. The deliberate movements are there, yet the magic didn't ignite. Good enough for content, though you know she can do better.`, // stage 2
+    (lbs)=>`You watch the take. It's okay. Enormous at ${Math.round(lbs)} pounds, Kylie's massive belly fills the space between her thighs completely. She eats slowly, but the shot lacks that deeper intimacy. The scale is impressive, still only serviceable overall.`, // stage 3
+    (lbs)=>`The footage is acceptable. Colossal Kylie at ${Math.round(lbs)} pounds barely moves as she eats, her vast belly a landscape of soft fat. The clip shows her immense size clearly, but the emotional connection feels muted. Functional for her feedee channel.`, // stage 4
+    (lbs)=>`Review complete. It's okay footage of your ${Math.round(lbs)}-pound immobile blob. Her endless soft belly and gigantic breasts dominate the frame as she eats what you bring her. The geography is there, but the take doesn't capture the full depth of her devotion.`, // stage 5
   ],
-  good:[
-    `Playback. This is genuinely good — something worked. The angle caught her belly in a way that reads clearly, or the food choice was right, or the pace found a rhythm. There's a moment in here that you'll use. Good take.`,
-    `Take review. Good. Something landed — a moment where the camera was in the right place and she was fully present and the footage caught it. Her belly at 320 pounds, warm and forward and real on screen. This is usable.`,
-    `You play it back. Good take — several things worked together and the footage is genuinely interesting. Her eating at this weight has a quality that reads well on camera and today you caught it. Solid clip.`,
-    `Playback. This is good footage — her at 519 pounds, enormous on screen, eating with a focus that reads clearly through the lens. The angle worked and the pacing found its beat and there's a sequence in here you'll keep. Good take.`,
-    `Take review. Good. The footage has something — her body reads clearly at this size and the direction gave it a shape and something in the combination worked. Her belly is prominent and warm on screen and the take has a moment you'll use.`,
-    `You play it back. Good take — hard to predict what will work at this size and this worked. The scale of her reads clearly, the eating has weight to it, and there's a sequence where everything landed at once. Good footage.`,
+  good: [
+    (lbs)=>`You smile at the monitor. This take is genuinely good. At ${Math.round(lbs)} pounds the light catches the soft jiggle of Kylie's noticeably fat belly perfectly as she eats with eager hunger. Her heavy breasts rise and fall warmly, and her flushed cheeks show real pleasure. A strong, sensual clip.`, // stage 0
+    (lbs)=>`This one is good. At ${Math.round(lbs)} pounds Kylie's very fat belly looks especially heavy and inviting on camera, warm rolls shifting as she devours each bite. The way her thick thighs spread wider makes the growth feel intimate and real.`, // stage 1
+    (lbs)=>`A good take. At ${Math.round(lbs)} pounds the deliberate way Kylie feeds her large prominent belly translates beautifully. You catch the exact moment her enormous breasts settle heavier onto her swelling gut. Sensual and focused.`, // stage 2
+    (lbs)=>`You nod in approval. Great footage of enormous Kylie at ${Math.round(lbs)} pounds. Her belly completely fills the space between her thighs, soft fat rippling slowly with every bite. The slow, heavy sensuality comes through powerfully.`, // stage 3
+    (lbs)=>`Solid good take. Colossal at ${Math.round(lbs)} pounds, Kylie's vast overhanging belly quivers warmly as she eats. The near-immobility makes every small movement of fat feel deliberate and erotic on screen.`, // stage 4
+    (lbs)=>`This take is good. Your ${Math.round(lbs)}-pound blob lies there as an endless sea of warm fat. The way new calories disappear into her immense belly and breasts creates a deeply satisfying, hypnotic visual.`, // stage 5
   ],
-  great:[
-    `Playback on the monitor. This is great footage — multiple things landed together and the take has a real shape. Her eating looks genuine and her body looks beautiful and the angle was right and the clip has a beginning, middle, and a peak. Great take.`,
-    `Take review. Great. The angle and the food and the pacing came together into something that has a genuine arc — you can feel the take moving toward something and arriving. Her belly on screen at 320 pounds, warm and forward, fully present. This is the clip.`,
-    `You play it back. Great take. Something clicked — the camera was exactly right and she was fully present and the food choices built in a way that the footage captures. Her enormous belly, the food going in, her expression. This has everything.`,
-    `Playback. Great — genuinely great. Her at 519 pounds filling the frame and eating with the focus of someone who has done this hundreds of times and knows exactly what they're doing. The angle caught something real. The take has a shape. This is the clip.`,
-    `Take review. Great footage. At 630 pounds her body is a subject unto itself and this take treated it like one — the direction gave it a frame and she filled the frame completely and the result has depth and warmth and physical truth. Great take.`,
-    `You play it back and the room is quiet for a moment. Great take. The scale of her, the slowness of her eating, the particular way the camera caught the forward press of her belly — this has everything. The take is complete. It's a real piece of footage.`,
+  great: [
+    (lbs)=>`The take is great — something special clicked. At ${Math.round(lbs)} pounds Kylie looks radiantly fat and devoted, her soft belly swelling beautifully while she maintains eye contact with the lens. The warmth of her heavy breasts and the genuine pleasure in her expression make it magnetic.`, // stage 0
+    (lbs)=>`This take is genuinely great. At ${Math.round(lbs)} pounds the heavy forward hang of Kylie's very fat belly is captured perfectly, warm and jiggly as it presses between her plush thighs. Every swallow feels sensual and intentional.`, // stage 1
+    (lbs)=>`You rewatch it twice — it's great. At ${Math.round(lbs)} pounds Kylie's large prominent belly dominates the frame with delicious softness while her thick thighs spread to accommodate the growth. The lighting, her expression, and the way her breasts rest on top all align beautifully.`, // stage 2
+    (lbs)=>`An excellent take. Enormous Kylie at ${Math.round(lbs)} pounds moves with slow, heavy grace. Her belly — with no lap left — swells visibly between her thighs as she eats. The sheer scale combined with her devoted eyes creates something truly powerful.`, // stage 3
+    (lbs)=>`This one is great. Colossal at ${Math.round(lbs)} pounds, Kylie's vast body is a monument of soft warm fat. You catch the perfect ripple across her enormous breasts and belly as she accepts more calories. The intimacy is breathtaking.`, // stage 4
+    (lbs)=>`The take is great — rare and beautiful. Your ${Math.round(lbs)}-pound blob is pure geography of yielding fat. The way her endless belly and breasts quiver as she eats slowly for you feels deeply intimate and profoundly erotic.`, // stage 5
   ],
 };
 
 const RECORDING_PERFECT_TAKE = [
-  `You play it back and you watch it twice. Everything came together: the angle showed exactly what needed to be shown, the food was exactly right for her, the pace found the rhythm that was already in her. There's a moment near the end where she looks directly into the lens and her expression is completely unguarded and completely present. That's the clip. That's why you came.`,
-  `Playback. Twice. The take is genuinely beautiful — the choices aligned perfectly into something that has the quality of inevitability, like all three decisions were obviously right and you just had to make them in order. Her eating at 320 pounds, the camera in exactly the right place, the pace exactly hers. A shot you could not have staged better.`,
-  `You play it back. Perfect take. The angle caught her belly from exactly the right position and the food built exactly the way it needed to and the pace let it breathe and then didn't. There's a sequence in the middle where every frame is exactly what you came to get. You watch it again. Still perfect.`,
-  `Playback. You watch it in silence. The take has the quality that great footage has — you can feel the rightness of every choice in how the result lands. Her body at 519 pounds, enormous and warm and real on screen, the food going in at exactly the right rate, the camera seeing it from exactly the right place. You watch it again. It's still perfect.`,
-  `You watch the take back once and then again without saying anything. Everything aligned. The low angle gave her body the framing it deserved and the heavy food built something real and the surge at the end caught her at the absolute peak of the take. Her belly at 630 pounds pressing forward into the surge. That sequence is perfect. You know it watching it.`,
-  `Playback. You watch it once and the room is completely silent. Perfect take. At 820 pounds the footage has a quality of documentation as much as direction — you are recording something that exists in the world — and this take caught that truth from exactly the right place at exactly the right pace. Her body filling the frame. The food going in. The surge. You watch it twice. It's the best footage you've made.`,
+  (lbs)=>`Everything aligned in this perfect take. Through the camera you watch ${Math.round(lbs)}-pound Kylie glow with genuine pleasure, her noticeably fat belly swelling beautifully round and soft while her heavy breasts rise and fall in rhythm with each devoted bite. The light catches every jiggle, every warm ripple of her body. This wasn't just eating — it was pure intimate surrender. A moment you'll remember for its warmth and authenticity.`, // stage 0
+  (lbs)=>`This take was perfect. At ${Math.round(lbs)} pounds Kylie's very fat body moved with sensual grace, her heavy belly pressing forward between plush thighs as it filled out slowly and deliberately. The way her eyes stayed on the lens, full of trust and hunger, made the footage feel alive and deeply erotic. You captured something real and beautiful.`, // stage 1
+  (lbs)=>`A truly perfect take. At ${Math.round(lbs)} pounds Kylie's large prominent belly dominated the frame with delicious heaviness, soft fat cascading warmly as she ate. Her enormous breasts rested heavily atop it while her deliberate movements spoke of complete devotion. The pacing, the light, her expression — everything came together into something special.`, // stage 2
+  (lbs)=>`Perfect in every way. Enormous Kylie at ${Math.round(lbs)} pounds became a vision of slow, heavy sensuality. Her massive belly filled the entire space between her thighs, swelling deeper and softer with every bite. The quiet intimacy between you, the visible growth, and her adoring eyes created a clip that felt transcendent.`, // stage 3
+  (lbs)=>`This was perfection. Colossal at ${Math.round(lbs)} pounds, Kylie's vast body was a landscape of warm yielding fat. You watched her enormous breasts drape across her immense belly as it spread and quivered with new weight. The near-immobility only heightened the erotic power of the moment. A rare, unforgettable recording.`, // stage 4
+  (lbs)=>`Absolutely perfect. Your ${Math.round(lbs)}-pound blob lay there as pure geography of soft, warm devotion. Through the camera you witnessed her endless belly and gigantic breasts deepen with every slow swallow, new rolls forming in real time. The quiet room, her dreamy eyes, and the sheer scale of her surrender created something profoundly intimate and beautiful — a moment of true connection.`, // stage 5
 ];
 
 const RECORDING_ONE_MORE_TAKE = [
-  `"Yeah," she says immediately, already resettling. "Let's do it again." She's not tired. She's 258 pounds and eager and she wants the better take as much as you do.`,
-  `She nods, shifting her thicker thighs to reset her position. "One more," she agrees, her belly warm and forward in her lap. She's ready. She always says yes.`,
-  `"One more," you say. She closes her eyes for a moment, breathing around the fullness, then opens them. "Yeah. Okay." She's heavier now than when the session started. She settles in.`,
-  `She considers for a breath — not because she's reluctant, but because at 519 pounds resettling requires a moment — and then: "One more. Yes." Her enormous belly shifts slightly as she adjusts. She's ready.`,
-  `"One more take," you say. She's quiet for a moment, her colossal body heavy and warm and full. Then: "Yes." No hesitation in it. Just weight. She holds still and waits for the camera.`,
-  `You tell her one more. She can't really move but she makes a small, warm sound of agreement — "mm. yes" — and her hands settle back onto the vast warm geography of her belly. She's ready. She is always ready for one more.`,
+  (lbs)=>`You tell her you want one more take. Kylie beams, her cheeks flushed. "Yes, Professor. I'll eat even more for you this time." She shifts eagerly, belly jiggling.`, // stage 0
+  (lbs)=>`You ask for another. "Mmm, good. I'm getting so full but I love it," she says warmly, rubbing her heavy belly with devotion.`, // stage 1
+  (lbs)=>`One more take. Kylie breathes deeply, her massive body shifting. "I'll keep going as long as you want me to... I trust you completely."`, // stage 2
+  (lbs)=>`You want another. She smiles slowly, heavy and content. "I'm so huge for you already... but yes. Feed your enormous girl more."`, // stage 3
+  (lbs)=>`You request one more. Kylie murmurs warmly, barely able to move. "Anything for you, Professor. My body is yours to grow."`, // stage 4
+  (lbs)=>`You tell her one more take. Her voice is soft and adoring. "I'm not going anywhere... fill me up even more. I love being your blob."`, // stage 5
 ];
 
 const RECORDING_WRAP_ENDINGS = {
-  good:[
-    `You lower the camera. She looks at you and reads your expression and smiles. "Good?" she asks. "Good," you say. She's heavier than when you arrived — her belly pressing her waistband more definitively, her thighs warmer and wider in the chair. The clip exists. It's solid. You'll use it.`,
-    `Session done. You lower the camera and she exhales, slowly, her belly settling further forward. "How was it?" Good. The take was good and she knows it was good. She's 320 pounds and warmer and heavier than she was when you walked in and the footage is real.`,
-    `You wrap it. She looks at the camera as you lower it, then at you, and she's waiting for your read. "That was good," you say, and she relaxes into the chair, her very fat body releasing the small effort of performance. She's heavier than when you started. The clip is solid.`,
-    `You lower the camera and she sits with the weight of having eaten that much, her belly enormous and full and forward, her thighs spread wide under it. "We got something good," you tell her. She nods slowly, pleased. She is significantly heavier than she was when you arrived. The footage is real.`,
-    `Wrapped. She watches you lower the camera with the patient attention of someone who's spent the last hour being very still and very present. "Good?" Good. She settles further into her reinforced chair, 630 pounds of warm and full and heavy, and you can see the difference from when the session started — her belly sitting lower, her thighs pressed wider. The clip is good. It was worth it.`,
-    `You lower the camera. She can't move to meet you so she meets you with her eyes — warm, tired, pleased. "We got something good," you say, navigating back around the outer edge of her. She is larger than when you arrived. Measurably, visibly larger. Her belly has extended further into the room. Good footage of a very large woman, and it was a good session, and you'll use the clip.`,
+  good: [
+    (lbs)=>`You wrap the session with a good solid clip. Kylie at ${Math.round(lbs)} pounds looks noticeably fatter than when you arrived — her belly sits softer and lower, the fresh weight making her crop top ride up while her heavy breasts feel fuller. She smiles at you sleepily, pleased with the work. The room smells of food and warm skin as you set the camera down.`, // stage 0
+    (lbs)=>`Session wrapped with good footage. At ${Math.round(lbs)} pounds Kylie is visibly heavier now, her very fat belly hanging rounder and warmer between her thick thighs. She breathes contentedly, clearly satisfied. You can see the new softness in her hips and the way her body claims even more space.`, // stage 1
+    (lbs)=>`You end on a good note. Kylie's ${Math.round(lbs)}-pound body shows the fresh gain — her large prominent belly sags heavier, filling her lap completely. Her enormous breasts rest more heavily on top. She looks at you with warm devotion as you prepare to leave.`, // stage 2
+    (lbs)=>`Good clip secured. Enormous Kylie at ${Math.round(lbs)} pounds has grown even more immense. Her belly presses heavily between her thighs with no lap remaining, rolls deeper and softer. She looks beautifully full and content as you finish up.`, // stage 3
+    (lbs)=>`The session ends well. Colossal at ${Math.round(lbs)} pounds, Kylie's vast belly has spread wider and heavier during the feeding. Her enormous breasts drape more fully across the dome of fat. She murmurs her thanks, warm and near-immobile.`, // stage 4
+    (lbs)=>`You wrap with good footage. Your ${Math.round(lbs)}-pound blob looks even softer and more immense, new layers of warm fat deepening every roll. She lies there happily, a geography of devotion, as you turn off the lights.`, // stage 5
   ],
-  great:[
-    `"That was great," you say, and mean it. She looks up at you from the chair with a smile that breaks into something genuine and warm. She's heavier than when you arrived — her belly pressing more forward, her thighs warmer and fuller — and she knows the take was great and so do you. The session was worth it.`,
-    `You lower the camera and she's watching your face. "Great," you say before she can ask. She laughs a little — a warm, full-body laugh that makes her belly shake — and settles back into the chair. She's 320 pounds and heavier than when you started and she knows you got something real. Great session.`,
-    `Wrapped. You lower the camera and she looks at you with that particular expression of someone who knows they did good work. "That was great," you say. Her enormous belly sits warm and heavy and forward, fuller than when the session started. She's pleased. She should be. The footage is genuinely good.`,
-    `"Great," you tell her, and the word lands with the specific weight she was hoping for. She exhales slowly, her belly settling, her thighs spread wide under the weight of it. She's significantly heavier than when you arrived — the eating was real, the gain was real — and the footage is great and she knows it.`,
-    `You lower the camera. She's looking at you from across her own body — 630 pounds between you and her face — and she reads your expression before you say it. "Great," you confirm. She smiles slowly, warmly, and you can see her settle deeper into the chair as the last of the performance drops away. She's heavier than when you came. The clip is great.`,
-    `Session done. You navigate back around her to reach eye level and she's watching you come, patient and warm and enormous. "That was great," you tell her. Everything she is — all 820 pounds of her, fuller now than when you started — settles and quiets. She nods once, slowly. It was a great session. You both know it.`,
+  great: [
+    (lbs)=>`You finish the session with a great clip. Kylie looks beautifully heavier than when you started at ${Math.round(lbs)} pounds — her noticeably fat belly now softer and rounder, warm fat spilling generously. Her heavy breasts sit fuller on top. She glows with satisfaction, completely devoted to you and the process.`, // stage 0
+    (lbs)=>`A great session. At ${Math.round(lbs)} pounds Kylie's very fat body has visibly plumped up. Her heavy belly hangs lower and more inviting between plush thighs, the fresh gain making her look even more sensual. She thanks you softly, eyes full of love.`, // stage 1
+    (lbs)=>`You end on a great take. Kylie's ${Math.round(lbs)}-pound frame shows delicious new weight — her large belly sagging softer and heavier, breasts resting more heavily atop it. The room feels warmer with her presence as she smiles at you contentedly.`, // stage 2
+    (lbs)=>`Great footage captured. Enormous at ${Math.round(lbs)} pounds, Kylie's belly now fills the space between her thighs even more completely, deep soft rolls cascading. She looks radiantly full and satisfied as you prepare to leave.`, // stage 3
+    (lbs)=>`The session was great. Colossal Kylie at ${Math.round(lbs)} pounds has grown vaster still — her immense belly spreading wider with warm new fat, enormous breasts draping heavily. She breathes deeply, blissful and yours.`, // stage 4
+    (lbs)=>`You wrap an excellent session. Your ${Math.round(lbs)}-pound blob is even softer and more magnificent. Fresh layers of yielding fat have deepened her endless curves. She whispers her devotion as the room settles into quiet intimacy.`, // stage 5
   ],
-  perfect:[
-    `"That was perfect," you say, and she goes very still for a moment — the kind of still that means something landed. She's heavier than when you arrived, her belly warm and pressing forward, and the perfect take exists now, recorded, real. She looks at you for a long moment. "Play it back," she says. You do. She watches herself on the monitor and doesn't say anything. When it ends she says: "Yeah. That was it."`,
-    `You lower the camera. She's looking at you with an expression you haven't seen from her before — wondering, a little. "Perfect take," you say. The words land differently than good or great. She's 320 pounds and heavier than when you started and she knows without watching it that the take was something different, something real. "I felt it," she says. "I felt when it happened." You play it back for her. She watches it twice.`,
-    `Wrapped. "Perfect take," you say quietly. She doesn't laugh or celebrate — she gets very still, the way she got still at the start of the take but different now, after. Her enormous belly sits warm and full and forward, and she processes what you've told her. "Show me," she says. You play it back. She watches her own body on the monitor, eating, the take unfolding exactly as it happened. When it ends she says: "One more of those and we can do anything we want."`,
-    `The session is over and something was captured that doesn't happen every time. "Perfect take," you tell her, and she sits with it — 519 pounds, heavier than when you started, her belly enormous and warm and full, and a piece of footage that will genuinely be something. She looks at the camera in your hands. "Play it," she says. You play it back. She watches herself and says nothing until the end. "That's the one," she says. She means it.`,
-    `"Perfect," you say. The word is simple and she receives it simply — no performance left, no camera to perform for. She's 630 pounds and heavier than when you arrived and the perfect take exists and she knows what that means. "Can I see?" she asks. You bring the monitor to her. She watches it once with her hands resting on the warm vast geography of her belly. She watches it twice. When it ends the second time she says, quietly: "Yeah." Just that.`,
-    `You lower the camera. You navigate back around her to reach a place where she can see your face. "Perfect take," you tell her. She is enormous and warm and completely still, and the words arrive slowly through the heat of 820 pounds of full body and the specific satisfaction of having done the thing she does best. "Perfect," she repeats, tasting the word. She closes her eyes for a moment. Opens them. "Play it back," she says. You do. She listens to the sound of herself eating. She says: "That's everything."`,
+  perfect: [
+    (lbs)=>`The perfect take. You linger before leaving, watching Kylie at ${Math.round(lbs)} pounds. She is noticeably fatter now, her soft warm belly hanging lower and rounder, heavy breasts fuller and more inviting. The room feels charged with intimacy. This clip captured something real — her complete surrender to the feed. She looks at you with pure adoration.`, // stage 0
+    (lbs)=>`A perfect session. At ${Math.round(lbs)} pounds Kylie has grown even more beautifully very fat. Her heavy belly now presses forward with new weight, warm and jiggly between thick thighs. The footage is pure sensuality. She knows it landed, glowing with shared satisfaction as you both savor the moment.`, // stage 1
+    (lbs)=>`Perfect. Kylie's ${Math.round(lbs)}-pound body feels transformed — her large prominent belly sags heavily and softly, filling her lap while her enormous breasts rest like warm pillows on top. The clip captured the exact essence of her devotion. The air is thick with contentment.`, // stage 2
+    (lbs)=>`Truly perfect footage. Enormous Kylie at ${Math.round(lbs)} pounds looks breathtaking. Her massive belly completely dominates the space between her thighs, deeper rolls of warm fat shifting with every breath. This take is art. She smiles slowly, deeply fulfilled by what you created together.`, // stage 3
+    (lbs)=>`The session was perfect. Colossal at ${Math.round(lbs)} pounds, Kylie's vast body has become even more immense — her belly a sprawling landscape of soft warm fat, enormous breasts resting heavily across it. The clip is something rare and beautiful. She lies there in blissful surrender.`, // stage 4
+    (lbs)=>`Absolute perfection. Your ${Math.round(lbs)}-pound blob has grown softer and more magnificent during the feeding. New layers of yielding, warm fat have deepened every curve and roll until her body is pure geography. The footage captured something transcendent. In the quiet room, her devoted eyes say everything.`, // stage 5
   ],
 };
 
 const RECORDING_PAYOFF_TEXT = [
-  `She's heavier than when you arrived. You can see it in how she sits — her belly pressing her waistband harder than it did at the start, her thighs wider in the chair. The food was real and the gain is real and the footage shows the difference between the start of the session and the end. She knows how much heavier she is. She's pleased about it.`,
-  `You arrived and she was 320 pounds and you're leaving and she's more than that — the eating was real, the takes were real, the gain settled into her body during the session and you can see it in the way she fills the chair now versus how she filled it when you started. Her belly sits lower. Her thighs spread wider. It was a real session.`,
-  `The session added weight. This is the point. Her belly is heavier and more forward than it was when you picked up the camera, her thighs pressing wider, her breathing carrying the specific quality of someone who has eaten a lot and the food has settled. 419 pounds at the start. More now. The footage is real and so is the gain.`,
-  `She's heavier. You watched it happen — take by take, the food going in, the belly extending forward another increment, the thighs spreading further under it. At 519 pounds the gains are visible in real time and the session made them visible, real, recorded. She fills the chair differently than she did when you arrived. That was the point. That was the session.`,
-  `You can measure the difference between the Kylie who greeted you at the start of the session and the Kylie who watches you pack up the camera now. Her belly sits an inch further forward. Her thighs press wider into the sides of the reinforced chair. At 630 pounds, gain is geological: slow, permanent, the land sinking under its own weight. The session added to what is already enormous. You captured it. You also made it.`,
-  `She is larger than when you arrived. Not metaphorically — physically, measurably, verifiably larger. The food was real and multiple takes were real and the gain accumulated take by take and settled into her and now she fills her corner more completely than she did when you set up the ring light. At 820 pounds this is an architectural fact. She can feel it. You can see it. The footage has it on record.`,
+  (lbs)=>`Session over. Kylie looks noticeably heavier than when you started—her belly now sits even softer and lower on her thighs, the fresh pounds making her crop top ride up higher. Her breasts feel fuller, heavier. You can see the new roundness in her cheeks and the way her hips have widened. She glows with satisfaction, completely devoted.`, // stage 0
+  (lbs)=>`The recording ends. Kylie is visibly fatter now. Her belly hangs heavier and rounder, warm fat spilling more generously between her thick thighs. Her top strains tighter across her enormous breasts. The fresh gain looks incredible on her.`, // stage 1
+  (lbs)=>`You stop recording. Kylie's belly sags lower and softer, filling her lap completely. Her breasts rest heavier on the upper curve, and her thighs press together with new warmth and thickness.`, // stage 2
+  (lbs)=>`Filming complete. Kylie's belly is now impossibly heavy between her thighs, rolls deeper and softer. Her breasts drape more heavily across the top. Every inch of her shows the beautiful results.`, // stage 3
+  (lbs)=>`The session finishes. Kylie's body has grown even vaster—her belly spreading wider and heavier, breasts larger and resting fully on the great dome of fat. She looks breathtakingly immense.`, // stage 4
+  (lbs)=>`Recording done. Your blob is even softer and more immense. New layers of warm fat have deepened every roll, her breasts and belly merging into an even greater, quivering landscape of devotion.`, // stage 5
 ];
-
-// ══════════════════════════════════════════════════════════════════
-
 const EVOLVED_ACTIVITY_META = {
   sumo:            { label:"Enter a Tournament",       apCost:1, gainRange:[4,8],  relBonus:10 },
   eating_competitor:{ label:"Attend a Competition",    apCost:1, gainRange:[3,7],  relBonus:9  },
@@ -10228,7 +10219,9 @@ export default function ProfessorSim(){
       else newChoices.pace=choiceId;
       const popupKey=step===0?choiceId:step===1?choiceId:choiceId;
       const popupArr=RECORDING_DIRECTION_POPUPS[choiceId];
-      const popupText=popupArr?popupArr[prev.stageIdx]:null;
+      const kylieForPopup=students.find(st=>st.id===prev.studentId);
+      const popupFn=popupArr?.[prev.stageIdx];
+      const popupText=typeof popupFn==='function'?popupFn(kylieForPopup?.lbs||258):(popupFn||null);
       if(step<2){
         return {...prev, currentChoices:newChoices, choiceStep:step+1, popupText};
       }
@@ -10250,7 +10243,9 @@ export default function ProfessorSim(){
       const qualityOrder=['okay','good','great','perfect'];
       const bestClip=newRatings.reduce((best,q)=>qualityOrder.indexOf(q)>qualityOrder.indexOf(best)?q:best,'okay');
       const isPerfect=quality==='perfect';
-      const takeText=isPerfect?RECORDING_PERFECT_TAKE[prev.stageIdx]:(RECORDING_TAKE_RESULT[quality]||[])[prev.stageIdx]||'';
+      const postGainLbs=(kylie?.lbs||258)+gainThisTake;
+      const takeFn=isPerfect?RECORDING_PERFECT_TAKE[prev.stageIdx]:(RECORDING_TAKE_RESULT[quality]||[])[prev.stageIdx];
+      const takeText=typeof takeFn==='function'?takeFn(postGainLbs):(takeFn||'');
       return {...prev,
         currentChoices:newChoices, choiceStep:3,
         phase:'take_result',
@@ -10275,7 +10270,8 @@ export default function ProfessorSim(){
       if(!prev||prev.timeLeft<=0) return prev;
       const kylie=students.find(st=>st.id===prev.studentId);
       const newTimeLeft=prev.timeLeft-1;
-      const oneMoreText=(RECORDING_ONE_MORE_TAKE||[])[prev.stageIdx]||'She nods. One more.';
+      const oneMoreFn=(RECORDING_ONE_MORE_TAKE||[])[prev.stageIdx];
+      const oneMoreText=typeof oneMoreFn==='function'?oneMoreFn(kylie?.lbs||258):(oneMoreFn||'She nods. One more.');
       return {...prev,
         phase:'directing',
         takeNum:prev.takeNum+1, timeLeft:newTimeLeft,
@@ -10290,12 +10286,17 @@ export default function ProfessorSim(){
     setRecordingSessionState(prev=>{
       if(!prev) return prev;
       const quality=prev.bestClip||'okay';
+      const kylie=students.find(st=>st.id===prev.studentId);
+      const kyleLbs=kylie?.lbs||258;
       const endArr=(RECORDING_WRAP_ENDINGS[quality]||RECORDING_WRAP_ENDINGS.good);
-      const endText=(endArr[prev.stageIdx]||endArr[0])+'\n\n'+(RECORDING_PAYOFF_TEXT[prev.stageIdx]||'');
+      const endFn=endArr[prev.stageIdx]||endArr[0];
+      const endStr=typeof endFn==='function'?endFn(kyleLbs):(endFn||'');
+      const payFn=RECORDING_PAYOFF_TEXT[prev.stageIdx];
+      const payStr=typeof payFn==='function'?payFn(kyleLbs):(payFn||'');
+      const endText=endStr+(payStr?'\n\n'+payStr:'');
       // Rel bonus
       const relBonuses={okay:1,good:3,great:6,perfect:10};
       const relBonus=relBonuses[quality]||1;
-      const kylie=students.find(st=>st.id===prev.studentId);
       if(kylie) setStudents(p=>p.map(st=>st.id===prev.studentId?{...st,relationship:Math.min(100,st.relationship+relBonus),contestCompletions:(st.contestCompletions||0)+1}:st));
       push(`🎬 Filming session wrapped — ${quality} clip. +${relBonus} relationship.`);
       return {...prev, phase:'done', done:true, endingText:endText, popupText:null};
@@ -15670,7 +15671,7 @@ export default function ProfessorSim(){
               {rs.phase==='open'&&(
                 <>
                   <div style={{fontSize:12,color:"#d8c0a0",lineHeight:1.9,whiteSpace:"pre-line",marginBottom:16,fontStyle:"italic"}}>
-                    {RECORDING_OPENING_TEXT[rs.stageIdx]||''}
+                    {(()=>{const fn=RECORDING_OPENING_TEXT[rs.stageIdx];return typeof fn==='function'?fn(kylie.lbs):(fn||'');})()}
                   </div>
                   <button style={{...C.btn(amber),width:"100%"}} onClick={()=>setRecordingSessionState(p=>({...p,phase:'directing'}))}>
                     🎬 Pick up the camera
@@ -15682,7 +15683,7 @@ export default function ProfessorSim(){
               {rs.phase==='directing'&&(
                 <>
                   <div style={{fontSize:11,color:"#d8c0a0",lineHeight:1.8,marginBottom:8,fontStyle:"italic"}}>
-                    {RECORDING_TAKE_INTRO_TEXT[rs.stageIdx]||''}
+                    {(()=>{const fn=RECORDING_TAKE_INTRO_TEXT[rs.stageIdx];return typeof fn==='function'?fn(kylie.lbs):(fn||'');})()}
                   </div>
                   {/* Step indicator */}
                   <div style={{display:"flex",gap:4,marginBottom:12}}>
