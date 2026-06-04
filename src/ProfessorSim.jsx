@@ -5,7 +5,7 @@ import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GR
 import { BODY_DESCS, STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, OUTFITS, SLIGHT_DIARY, DIARY_ENTRIES, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
 import { GOSSIP, getGossipLines } from './gameData/gossip.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS, CLASS_SCENES } from './gameData/classEvents.js';
-import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE } from './gameData/evolvedForms.js';
+import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_WEIGH_IN_2_TEXT, CONTEST_DEVOUR_POPUPS, CONTEST_PAYOFF_TEXT, SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_MATCH_AFTERMATH, SUMO_PAYOFF_TEXT, SUMO_FILL_RING_TEXT, COLLAB_CONTENT_CREATOR_ARCHETYPES, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_OPENING_TEXT, RECORDING_TAKE_INTRO_TEXT, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT, MJ_RECIPES, FAIR_FOODS, FAIR_STAGE_FOODS, FAIR_DARCY_WEIGHTS, FAIR_FULLNESS_MILESTONES, FAIR_WEIGH_IN_TEXT, FAIR_PAYOFF_TEXT, FAIR_TAUNT_POPUPS } from './gameData/miniGames.js';
 import { SKILL_TREE, SKILL_CATEGORIES, DIVINE_SKILL_TREE, EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
@@ -324,6 +324,8 @@ export default function ProfessorSim(){
   // collabPartnerId: number — persists through EVOLVED_EVENT phases + mini-game
   const [researchSubjectPicker, setResearchSubjectPicker] = useState(null);
   // researchSubjectPicker: { student: nadiaStudent }
+  const [subjectJournalState, setSubjectJournalState] = useState(null);
+  // subjectJournalState: { subjectId, currentPage (0–10) }
   const [collabStreamState, setCollabStreamState] = useState(null);
   // collabStreamState: { kylieId, partnerId, stageIdx, qualityBar, kylieGain, partnerGain,
   //   partnerStageAtStart, stagedUp, foodQueue, tierIdx, chatLines,
@@ -1100,6 +1102,10 @@ export default function ProfessorSim(){
         return st;
       }));
       push(`🍽️ ${foText}`);
+    }
+    // Persist feeder/feedee focus choice on student object so it survives between sessions
+    if(choice.flag==='feeder_focus'||choice.flag==='feedee_focus'){
+      setStudents(prev=>prev.map(x=>x.id===studentId?{...x,researchFocus:choice.flag}:x));
     }
     const nextPhase=phaseIdx+1;
     if(nextPhase>=evDef.phases.length){
@@ -5175,7 +5181,12 @@ export default function ProfessorSim(){
                                   <div>
                                     <div style={{color:"#c0a0e0",fontSize:13,fontWeight:700}}>{subj.name}</div>
                                     <div style={{color:"#7050a0",fontSize:10}}>{getStage(subj.lbs).label} · {Math.round(subj.lbs)} lbs</div>
-                                    <button style={{...C.smBtn,marginTop:6,fontSize:10,opacity:0.7}} onClick={()=>{setStudents(prev=>prev.map(x=>x.id===s.id?{...x,researchSubjectId:null}:x));}}>Change Subject</button>
+                                    <div style={{display:"flex",gap:5,marginTop:6,flexWrap:"wrap"}}>
+                                      {s.researchFocus==='feeder_focus'&&FEEDER_SUBJECT_JOURNALS[subj.archetype]&&(
+                                        <button style={{...C.smBtn,fontSize:10}} onClick={()=>setSubjectJournalState({subjectId:subj.id,currentPage:getStage(subj.lbs).id})}>📔 Journal</button>
+                                      )}
+                                      <button style={{...C.smBtn,fontSize:10,opacity:0.7}} onClick={()=>{setStudents(prev=>prev.map(x=>x.id===s.id?{...x,researchSubjectId:null}:x));}}>Change</button>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -7176,6 +7187,46 @@ export default function ProfessorSim(){
                 </div>
               ))}
               <button style={{...C.btn("#2a1040"),width:"100%",marginTop:8,fontSize:11}} onClick={()=>setResearchSubjectPicker(null)}>Cancel</button>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── PSYCH RESEARCHER: SUBJECT JOURNAL ── */}
+      {subjectJournalState&&(()=>{
+        const{subjectId,currentPage}=subjectJournalState;
+        const subj=students.find(st=>st.id===subjectId);
+        if(!subj) return null;
+        const maxPage=getStage(subj.lbs).id;
+        const entries=FEEDER_SUBJECT_JOURNALS[subj.archetype]||[];
+        const entry=entries[currentPage]||"No entry for this stage yet.";
+        const STAGE_LABELS=["Slight","Slim","Soft","Chubby","Plump","Heavy","Fat","Very Fat","Enormous","Colossal","Blob"];
+        const canPrev=currentPage>0;
+        const canNext=currentPage<maxPage;
+        const inkColor="#2a1a40";
+        const pageColor="#f0eade";
+        const borderColor="#8b7355";
+        return(
+          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
+            <div style={{background:`linear-gradient(170deg,#1a0a2e,#0d0520)`,border:`2px solid ${borderColor}80`,borderRadius:4,padding:0,maxWidth:520,width:"95%",maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:"0 8px 40px rgba(0,0,0,0.7)"}}>
+              {/* Spine header */}
+              <div style={{background:`linear-gradient(90deg,#120820,#1e0a38,#120820)`,borderBottom:`1px solid ${borderColor}60`,padding:"10px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",borderRadius:"2px 2px 0 0"}}>
+                <div style={{fontSize:9,letterSpacing:3,color:"#a08060"}}>📔 SUBJECT JOURNAL</div>
+                <div style={{fontSize:11,color:"#c0a070",fontWeight:"bold"}}>{subj.name}</div>
+                <button style={{...C.smBtn,fontSize:10,padding:"2px 8px",background:"transparent",border:"1px solid #40206040",color:"#806050"}} onClick={()=>setSubjectJournalState(null)}>✕</button>
+              </div>
+              {/* Page */}
+              <div style={{flex:1,overflowY:"auto",padding:"20px 24px",background:pageColor,margin:12,borderRadius:2,boxShadow:"inset 0 1px 4px rgba(0,0,0,0.4)"}}>
+                <div style={{fontSize:10,letterSpacing:2,color:"#6b5b40",marginBottom:6,textTransform:"uppercase"}}>Entry {currentPage+1} — {STAGE_LABELS[currentPage]}</div>
+                <div style={{width:40,height:1,background:`${borderColor}80`,marginBottom:14}}/>
+                <div style={{fontSize:13,color:inkColor,lineHeight:1.9,fontFamily:"Georgia,serif"}}>{entry}</div>
+              </div>
+              {/* Navigation */}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 16px",borderTop:`1px solid ${borderColor}40`}}>
+                <button style={{...C.smBtn,opacity:canPrev?1:0.25,fontSize:11,minWidth:80}} onClick={()=>canPrev&&setSubjectJournalState(p=>({...p,currentPage:p.currentPage-1}))} disabled={!canPrev}>← Earlier</button>
+                <div style={{fontSize:10,color:"#806050",letterSpacing:1}}>{currentPage+1} / {maxPage+1}</div>
+                <button style={{...C.smBtn,opacity:canNext?1:0.25,fontSize:11,minWidth:80}} onClick={()=>canNext&&setSubjectJournalState(p=>({...p,currentPage:p.currentPage+1}))} disabled={!canNext}>Later →</button>
+              </div>
             </div>
           </div>
         );
