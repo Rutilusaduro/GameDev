@@ -604,88 +604,86 @@ export const GOSSIP = [
   ],
   },
 
-  // ── JASMINE (10) ── about Brittany & Tiffany
+  // ── RENEÉ (10) ── about Brittany & Tiffany
   { speakerId:10, targetId:0, attitude:"warm",
     lines:{
       low:[
-        `Jasmine beams. "Brittany's little belly is coming in and she keeps tugging her jacket over it like I can't see." She laughs. "I told her she looks great and she looked at me like I'd said something weird."`,
-        `"Brittany keeps saying she shouldn't but she always finishes her plate. And mine if I offer." Jasmine looks very pleased about this.`,
+        `[placeholder: Reneé about Brittany — low stage, line 1]`,
+        `[placeholder: Reneé about Brittany — low stage, line 2]`,
       ],
       mid:[
-        `"Brittany is THRIVING," Jasmine announces. "Quit the squad, eats and chills, so much more relaxed." She grins. "I've been a good influence."`,
-        `Jasmine looks delighted. "She texted me a photo of her lunch. It was enormous. She said 'no notes.'" She pats her own significant belly. "We've really grown as people."`,
+        `[placeholder: Reneé about Brittany — mid stage, line 1]`,
+        `[placeholder: Reneé about Brittany — mid stage, line 2]`,
       ],
       high:[
-        `"Brittany and I are basically the same person now," Jasmine says warmly. "Big, soft, happy, not at practice. We have brunch every Sunday." She laughs. "It's been a real friendship milestone."`,
-        `Jasmine smiles. "We used to compete about everything. Now we compete about who finds the best restaurant." A pause. "I'm winning. She's catching up fast."`,
+        `[placeholder: Reneé about Brittany — high stage, line 1]`,
+        `[placeholder: Reneé about Brittany — high stage, line 2]`,
       ],
       blob:[
-        `Jasmine goes soft. "Brittany can barely move now. She's enormous." She laughs, then gets genuinely warm. "We do brunch over video call because neither of us really goes anywhere. She sets her phone up next to her food and we eat together." She pats her vast middle. "I love her. We're the same person now, just very, very large."`,
-        `"Brittany texted me a photo of herself yesterday," Jasmine says. "She looked — you could just tell she was happy. Really happy." She's quiet for a moment. "I remember when she was pulling her jacket over herself." She shakes her head. "Look at us now."`,
+        `[placeholder: Reneé about Brittany — blob stage, line 1]`,
+        `[placeholder: Reneé about Brittany — blob stage, line 2]`,
       ],
     },
-    offerHelp:`Jasmine leans in with a conspiratorial grin. "Brittany always eats more when I'm around. I could have lunch with her every single day. Many courses." She raises an eyebrow. "I want company on this journey and she's perfect for it. Say the word."`,
-    helpReason:"Love & companionship — Jasmine wants Brittany on this journey with her. She doesn't want to be enormous alone.",
+    offerHelp:`[placeholder: Reneé offer help for Brittany]`,
+    helpReason:"[placeholder: Reneé help reason — Brittany]",
     helpMultiplier:1.42,
-
-  doubleDown: [
-    {atLbs:200, addMult:0.15, line:"Brittany hit two hundred and texted me immediately and I said 'come for lunch' and she was there in twenty minutes and we ate for three hours and it was perfect. She's catching up to me and I want her to catch all the way up because being enormously fat is so much better when your best friend is enormously fat with you. I'm planning the best lunches. She's not going to be able to resist."},
-    {atLbs:250, addMult:0.20, line:"Two-fifty on Brittany and I am so genuinely happy I could burst, and I am bursting slightly in other ways, and I want her to reach three hundred because then we're the same and we can be the same enormous ridiculous people together and I have planned the most incredible dinner schedule and she is going to eat everything because she trusts me and I love her and I want this for both of us."},
-    {atLbs:300, addMult:0.25, line:"Three hundred pounds on Brittany and I texted her and said 'we're the same' and she sent back a photo of herself looking absolutely enormous and gorgeous and I screamed. I am sending her everything good I find. Every discovery. Every place. She's my person and we're doing this together and we're both going to be absolutely immovable and I cannot wait."},
+  doubleDown:[
+    {atLbs:200, addMult:0.15, line:"[placeholder: Reneé doubleDown 200 — Brittany]"},
+    {atLbs:250, addMult:0.20, line:"[placeholder: Reneé doubleDown 250 — Brittany]"},
+    {atLbs:300, addMult:0.25, line:"[placeholder: Reneé doubleDown 300 — Brittany]"},
   ],
   },
-  { speakerId:10, targetId:6, attitude:"catty",
+  { speakerId:10, targetId:6, attitude:"warm",
     lines:{
       low:[
-        `Jasmine tilts her head. "Tiffany eats at every single event and she doesn't care at all and everyone loves her for it." She crosses her arms. "Which is fine. Good for her."`,
-        `"Tiffany has this whole effortless big happy person thing," Jasmine says. "She's been getting softer for months." She pauses. "I've been getting softer too. It's not a competition." Beat. "I'm still louder."`,
+        `[placeholder: Reneé about Tiffany — low stage, line 1]`,
+        `[placeholder: Reneé about Tiffany — low stage, line 2]`,
       ],
       mid:[
-        `"Tiffany is getting really big now," Jasmine says. "She's bigger than me at the moment, which—" she pauses "—is just a data point. Not a challenge." She immediately sounds like it is a challenge.`,
-        `"Tiffany held court at the last event from an armchair and didn't get up once," Jasmine says. "Ate continuously. Everyone came to her." She sounds simultaneously admiring and competitive. "I did the same thing but standing up. Which is harder."`,
+        `[placeholder: Reneé about Tiffany — mid stage, line 1]`,
+        `[placeholder: Reneé about Tiffany — mid stage, line 2]`,
       ],
       high:[
-        `Jasmine huffs softly. "Tiffany is enormous and I'm enormous and we're basically tied now." She says 'tied' like this is an ongoing competition. "I think I might be ahead on personality." She pats her belly. "She might be ahead on volume. It's close."`,
-        `"Tiffany and I have become — I want to say rivals. We're not rivals. We're just both very large and very present and the room isn't always big enough for both of us." Jasmine grins. "I find this exciting."`,
+        `[placeholder: Reneé about Tiffany — high stage, line 1]`,
+        `[placeholder: Reneé about Tiffany — high stage, line 2]`,
       ],
       blob:[
-        `Jasmine is quiet, then laughs. "Tiffany is absolutely immense now. She barely leaves her place. She holds chapter from her couch." She pats her own enormous belly. "I'm almost there. Almost." She sounds competitive. "She has a head start. I'm closing the gap."`,
-        `"Tiffany and I texted each other our weights last month," Jasmine says. "She was ahead. I sent her back a very long string of determined emojis." She smooths her vast middle. "I've been eating more since then. I want to catch up." She looks sincere. "The competition is the friendship."`,
+        `[placeholder: Reneé about Tiffany — blob stage, line 1]`,
+        `[placeholder: Reneé about Tiffany — blob stage, line 2]`,
       ],
     },
-    offerHelp:`Jasmine raises her chin. "If Tiffany gets bigger, then when I catch up to her size, I'll look proportionally more impressive for having gotten there faster." She thinks about this. "Also—" she deflates slightly "—I sort of want to do this together. It's more fun. Even if it's a competition." She shrugs. "Especially because it's a competition."`,
-    helpReason:"Competitive companionship — Jasmine wants Tiffany to grow so they can race each other to enormity.",
+    offerHelp:`[placeholder: Reneé offer help for Tiffany]`,
+    helpReason:"[placeholder: Reneé help reason — Tiffany]",
     helpMultiplier:1.38,
-
-  doubleDown: [
-    {atLbs:200, addMult:0.15, line:"Tiffany is two hundred pounds and she's ahead of me right now and I am not accepting that lying down, or I am, actually, I'm lying down while ordering the best food in the city to both of our addresses simultaneously. If I keep feeding her and feeding myself at the same rate I know exactly who gains faster. Me. Obviously. But the competition makes it better."},
-    {atLbs:250, addMult:0.20, line:"Two-fifty on Tiffany and she is enormous and magnificent and I am so competitive about this that I have started a private spreadsheet and she is ahead by EIGHT POUNDS and I am personally coordinating her meal deliveries because if she is bigger I have a further target to chase and the chase is the whole point and I am having the time of my life."},
-    {atLbs:300, addMult:0.25, line:"Three hundred pounds on Tiffany. She's three hundred. I'm so close behind. I texted her: 'I'm coming for you.' She sent back a photo of her dinner. I ordered double. This is the most meaningful competition of my life and we are both going to be absolutely enormously, completely, perfectly huge and it is going to be incredible."},
+  doubleDown:[
+    {atLbs:200, addMult:0.15, line:"[placeholder: Reneé doubleDown 200 — Tiffany]"},
+    {atLbs:250, addMult:0.20, line:"[placeholder: Reneé doubleDown 250 — Tiffany]"},
+    {atLbs:300, addMult:0.25, line:"[placeholder: Reneé doubleDown 300 — Tiffany]"},
   ],
   },
 
-  // ── EMMA (11) ── about Madeline & Sophie
+  // ── KAYLEE (11) ── about Madeline & Mary Jane
   { speakerId:11, targetId:1, attitude:"warm",
     lines:{
       low:[
-        `Emma smiles softly. "Madeline's been eating more at our study sessions. She doesn't comment on it, which is very her." A pause. "I've been bringing better snacks to encourage this. Also I want the snacks."`,
-        `"Madeline has the most analytical approach to everything, including apparently getting rounder," Emma says fondly. "She measured herself and presented it like a research update. Very cute."`,
+        `Kaylee smiles softly. "Madeline's been eating more at our study sessions. She doesn't comment on it, which is very her." A pause. "I've been bringing better snacks to encourage this. Also I want the snacks."`,
+        `"Madeline has the most analytical approach to everything, including apparently getting rounder," Kaylee says fondly. "She measured herself and presented it like a research update. Very cute."`,
       ],
       mid:[
-        `"Madeline is getting quite plump," Emma says warmly. "Her cardigans are strained at the buttons. She calls it 'dressing for comfort.'" She sounds completely approving.`,
-        `Emma looks pleased. "Madeline and I have both gotten quite big this term. She calls it 'convergent research outcomes.'" She sips her tea. "I call it a good semester."`,
+        `"Madeline is getting quite plump," Kaylee says warmly. "Her cardigans are strained at the buttons. She calls it 'dressing for comfort.'" She sounds completely approving.`,
+        `Kaylee looks pleased. "Madeline and I have both gotten quite big this term. She calls it 'convergent research outcomes.'" She sips her tea. "I call it a good semester."`,
       ],
       high:[
-        `"Madeline is enormous and acts like it's a peer-reviewed outcome," Emma says with deep affection. "She showed me a graph. The trend line is very steep. She seemed proud of the R-squared value."`,
-        `Emma laughs quietly. "We've both gotten very, very fat. She calls it 'convergent research outcomes.' I call it a good semester." She sips her tea. "We're basically the same size now. It's nice."`,
+        `"Madeline is enormous and acts like it's a peer-reviewed outcome," Kaylee says with deep affection. "She showed me a graph. The trend line is very steep. She seemed proud of the R-squared value."`,
+        `Kaylee laughs quietly. "We've both gotten very, very fat. She calls it 'convergent research outcomes.' I call it a good semester." She sips her tea. "We're basically the same size now. It's nice."`,
       ],
       blob:[
-        `Emma is quiet for a moment. "Madeline and I are both completely enormous now." She looks at her own vast frame. "We study remotely together most days. Neither of us moves much." A pause. "She messaged me last week just to say the data had reached 'statistically significant' levels and that she was pleased." She smiles. "I sent her some pastries."`,
-        `"Madeline told me she's never been happier or more productive," Emma says softly. "She's enormous, she can barely fit through her flat door, and she has published four papers this year." She nods. "That's her. She would." A pause. "I love her."`,
+        `Kaylee is quiet for a moment. "Madeline and I are both completely enormous now." She looks at her own vast frame. "We study remotely together most days. Neither of us moves much." A pause. "She messaged me last week just to say the data had reached 'statistically significant' levels and that she was pleased." She smiles. "I sent her some pastries."`,
+        `"Madeline told me she's never been happier or more productive," Kaylee says softly. "She's enormous, she can barely fit through her flat door, and she has published four papers this year." She nods. "That's her. She would." A pause. "I love her."`,
       ],
     },
-    offerHelp:`Emma looks thoughtful. "Madeline responds to snack incentives at study sessions. If I brought her favourites every time—" she pauses "—she'd eat more. Substantially more." She sips her tea. "I want her to be comfortable and well-fed. Also the data would be interesting." She smiles. "Mostly the first thing."`,
-    helpReason:"Love & gentle encouragement — Emma just wants Madeline to eat well and be happy. The research interest is secondary.",
+    offerHelp:`Kaylee looks thoughtful. "Madeline responds to snack incentives at study sessions. If I brought her favourites every time—" she pauses "—she'd eat more. Substantially more." She sips her tea. "I want her to be comfortable and well-fed. Also the data would be interesting." She smiles. "Mostly the first thing."`,
+    helpReason:"Love & gentle encouragement — Kaylee just wants Madeline to eat well and be happy. The research interest is secondary.",
     helpMultiplier:1.33,
 
   doubleDown: [
@@ -697,150 +695,146 @@ export const GOSSIP = [
   { speakerId:11, targetId:14, attitude:"warm",
     lines:{
       low:[
-        `Emma looks soft. "Sophie is so sweet. She always looks slightly overwhelmed." She pauses. "I gave her a book recommendation and a bakery recommendation. She looked deeply grateful for both."`,
-        `"Sophie has been getting a bit rounder since term started," Emma says. "She seems less nervous lately." She tilts her head. "I think good food helps with that. I've made sure to recommend things."`,
+        `[placeholder: Kaylee about Mary Jane — low stage, line 1]`,
+        `[placeholder: Kaylee about Mary Jane — low stage, line 2]`,
       ],
       mid:[
-        `"Sophie is getting quite big," Emma says warmly. "She's less nervous. She laughs more. She eats more." She considers. "Those three things feel connected." She sips her tea. "Food does help people settle."`,
-        `Emma smiles. "Sophie came to me for academic advice last week. I gave her snacks and a reading list and she looked like someone had handed her exactly what she needed." She pats her own round middle. "I think she'll be okay."`,
+        `[placeholder: Kaylee about Mary Jane — mid stage, line 1]`,
+        `[placeholder: Kaylee about Mary Jane — mid stage, line 2]`,
       ],
       high:[
-        `"Sophie has gotten so large," Emma says, with quiet delight. "She came in as this tiny nervous freshman and now she's this big comfortable person." She looks moved. "I feel a bit responsible for some of that. In a good way."`,
-        `Emma nods thoughtfully. "Sophie's outgrown everything she came with. She's very settled now." She pauses. "I find it genuinely moving. Watching someone find their size."`,
+        `[placeholder: Kaylee about Mary Jane — high stage, line 1]`,
+        `[placeholder: Kaylee about Mary Jane — high stage, line 2]`,
       ],
       blob:[
-        `Emma is quiet, clearly moved. "Sophie is enormous now. She can barely leave her sorority house." She smiles. "She texts me sometimes — book questions, food questions, just to talk." A pause. "I think she's very happy." Another pause. "I think I had a small part in that. That matters to me."`,
-        `"Sophie sent me a message last week," Emma says. "She said she was the happiest she'd ever been." She adjusts her glasses. "She's huge, she's soft, she barely moves, and she's happy." She sips her tea. "I don't think I could ask for more than that."`,
+        `[placeholder: Kaylee about Mary Jane — blob stage, line 1]`,
+        `[placeholder: Kaylee about Mary Jane — blob stage, line 2]`,
       ],
     },
-    offerHelp:`Emma considers. "Sophie trusts academic figures. If I recommended she visit good bakeries and tea shops—" she pauses "—framed it as cultural research—" she almost smiles "—she'd do it wholeheartedly." She looks at her tea. "I want her to be comfortable here. The food is part of that."`,
-    helpReason:"Mentorship & care — Emma wants Sophie to feel settled and comfortable. Food is part of how she achieves that.",
+    offerHelp:`[placeholder: Kaylee offer help for Mary Jane]`,
+    helpReason:"[placeholder: Kaylee help reason — Mary Jane]",
     helpMultiplier:1.28,
 
   doubleDown: [
-    {atLbs:200, addMult:0.15, line:"Sophie is two hundred pounds and she texted to say she'd been to the tea shop I recommended and she'd had three pastries and it was perfect, and I went home and immediately wrote up a new list for her because she is settling into herself so beautifully and food is a part of that and I want to be a part of that and I am going to make sure she always has a good recommendation waiting."},
-    {atLbs:250, addMult:0.20, line:"Two-fifty and Sophie sent me a photo and she looked enormous and happy and I cried a little bit, which I am choosing not to examine closely. I sent her a care package. Everything from the good bakery. She eats everything I send. She trusts my taste. I want her to be comfortable and well-fed and completely at home here, and she is, and I am going to keep making sure she stays that way."},
-    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Sophie, enormous and settled and happy, and she came here nervous and I gave her a reading list and a bakery recommendation and now she is this magnificent large confident person and I am sending her everything from every place I love because I want her to have all of it and she deserves all of it and I want her to keep growing."},
+    {atLbs:200, addMult:0.15, line:"[placeholder: Kaylee doubleDown 200 — Mary Jane]"},
+    {atLbs:250, addMult:0.20, line:"[placeholder: Kaylee doubleDown 250 — Mary Jane]"},
+    {atLbs:300, addMult:0.25, line:"[placeholder: Kaylee doubleDown 300 — Mary Jane]"},
   ],
   },
 
-  // ── SOPHIE (14) ── about Tiffany & Aaliyah
+  // ── MARY JANE (14) ── about Tiffany & Daisy
   { speakerId:14, targetId:6, attitude:"warm",
     lines:{
       low:[
-        `Sophie fidgets. "Tiffany has been so nice. She keeps taking me to restaurants and insisting I try everything." A small pause. "I've definitely gained weight since I started hanging out with her."`,
-        `"Tiffany is so confident," Sophie says. "She just eats whatever she wants and everyone loves her." She looks at her own slightly softer middle. "I want to be like that."`,
+        `[placeholder: Mary Jane about Tiffany — low stage, line 1]`,
+        `[placeholder: Mary Jane about Tiffany — low stage, line 2]`,
       ],
       mid:[
-        `"Tiffany is getting really big," Sophie says, not critically. "She's so comfortable with herself. It's inspiring." She tugs at her tighter waistband. "I think I've been inspired. Possibly literally."`,
-        `Sophie smiles. "Tiffany told me last week I look great. I've gained like thirty pounds since I pledged." She looks pleased rather than worried. "She said soft is the vibe."`,
+        `[placeholder: Mary Jane about Tiffany — mid stage, line 1]`,
+        `[placeholder: Mary Jane about Tiffany — mid stage, line 2]`,
       ],
       high:[
-        `"Tiffany is my role model," Sophie says earnestly. "Huge and beautiful and everyone does what she says." She smooths her considerably rounder figure. "I've been trying to take notes." A happy pause. "I think the notes are working."`,
-        `Sophie beams. "I want to be Tiffany when I grow up. Or just — as I grow." She laughs. "She's been such a good influence."`,
+        `[placeholder: Mary Jane about Tiffany — high stage, line 1]`,
+        `[placeholder: Mary Jane about Tiffany — high stage, line 2]`,
       ],
       blob:[
-        `Sophie's voice goes very warm. "Tiffany can barely move now," she says. "She texted me that she had everything delivered and she was exactly where she wanted to be." She looks at her own enormous body. "I want that. That level of settled. That level of arrived."`,
-        `"I visited Tiffany yesterday," Sophie says. "I brought everything because she couldn't really get up." She smiles at the memory. "We sat and ate and she told me about when she was nervous and new, just like me." A pause. "I think I'm becoming her."`,
+        `[placeholder: Mary Jane about Tiffany — blob stage, line 1]`,
+        `[placeholder: Mary Jane about Tiffany — blob stage, line 2]`,
       ],
     },
-    offerHelp:`Sophie straightens up with surprising determination. "Tiffany has done so much for me. If there's a way to make sure she keeps being comfortable and well-fed and happy—" she pauses "—I want to do that. I know all her favourites. I can make sure she has them."`,
-    helpReason:"Devotion & gratitude — Sophie wants to give back to Tiffany. She has learned from the best and now wants to provide.",
+    offerHelp:`[placeholder: Mary Jane offer help for Tiffany]`,
+    helpReason:"[placeholder: Mary Jane help reason — Tiffany]",
     helpMultiplier:1.35,
-
-  doubleDown: [
-    {atLbs:200, addMult:0.15, line:"Tiffany is two hundred pounds and she is the most beautiful and powerful person I know and I want to make sure she has everything she wants always. I know every single thing she loves. I have a list. I have started showing up with things from the list on a rotating basis and she always looks so pleased and I feel so good when she's pleased and I want to keep going."},
-    {atLbs:250, addMult:0.20, line:"Two-fifty on Tiffany and she is magnificent and enormous and she has done so much for me and I am repaying it the only way I know how which is to make sure she is continuously, lavishly fed by someone who loves her. I have memorised her entire order at every restaurant she likes. I am executing it. Daily. She doesn't know the full extent. I don't need her to."},
-    {atLbs:300, addMult:0.25, line:"Three hundred pounds and Tiffany told me I was her favourite person and I have not recovered from that and I am channelling all of this feeling into making sure she has the best food every single day for the rest of her time here. She made me. I'm taking care of her. That's what you do for someone who made you. I'm not stopping."},
+  doubleDown:[
+    {atLbs:200, addMult:0.15, line:"[placeholder: Mary Jane doubleDown 200 — Tiffany]"},
+    {atLbs:250, addMult:0.20, line:"[placeholder: Mary Jane doubleDown 250 — Tiffany]"},
+    {atLbs:300, addMult:0.25, line:"[placeholder: Mary Jane doubleDown 300 — Tiffany]"},
   ],
   },
   { speakerId:14, targetId:13, attitude:"warm",
     lines:{
       low:[
-        `Sophie fidgets. "Aaliyah is so comfortable in herself. She's really loud and confident and just—" she gestures "—a lot. In a good way." She looks at her own quiet self. "I admire that."`,
-        `"Aaliyah offered me some of her food at lunch last week," Sophie says. "She just scooped half her plate onto mine like we'd known each other forever." She smiles. "I liked that."`,
+        `[placeholder: Mary Jane about Daisy — low stage, line 1]`,
+        `[placeholder: Mary Jane about Daisy — low stage, line 2]`,
       ],
       mid:[
-        `"Aaliyah's gotten really big," Sophie says. "She's still the most confident person in every room." She prods her own softening middle. "She told me I was 'doing great' last week. I don't know why that meant so much but it did."`,
-        `Sophie looks fond. "Aaliyah has started sitting near me at class events. She always has food and always shares it." She looks at her considerably rounder body. "I think she's been a good influence. Or a fattening one." She pauses. "Same thing maybe."`,
+        `[placeholder: Mary Jane about Daisy — mid stage, line 1]`,
+        `[placeholder: Mary Jane about Daisy — mid stage, line 2]`,
       ],
       high:[
-        `"Aaliyah is enormous and still the most present person in any room," Sophie says with awe. "She noticed I'd been quiet one day and just pulled a chair over and handed me food." She blinks. "I felt completely fine immediately." She touches her very round middle. "She's good."`,
-        `Sophie smiles. "Aaliyah told me I'd 'grown into myself' this semester." She looks at her heavy figure. "She meant it as a compliment. I took it as one." A beat. "I think she was right."`,
+        `[placeholder: Mary Jane about Daisy — high stage, line 1]`,
+        `[placeholder: Mary Jane about Daisy — high stage, line 2]`,
       ],
       blob:[
-        `Sophie looks quiet for a moment. "Aaliyah is absolutely enormous now. She barely gets up." She pauses. "She still texts me though. Just checking in. Recommending things." She smiles. "She was the first person here who was just openly kind to me for no reason." A pause. "I want to be that for someone someday."`,
-        `"Aaliyah can't really move much anymore," Sophie says softly. "I bring her things sometimes. She always acts like it's no big deal." She looks at her own vast, soft body. "I've gained so much here. A lot of it is because of her." She's quiet. "I want her to know that."`,
+        `[placeholder: Mary Jane about Daisy — blob stage, line 1]`,
+        `[placeholder: Mary Jane about Daisy — blob stage, line 2]`,
       ],
     },
-    offerHelp:`Sophie looks earnest. "Aaliyah has been really kind to me. I could start bringing her food — she's always feeding others, maybe no one thinks to do it for her." She thinks. "I know she likes burgers, big portions, good sides." She straightens up. "I could do that. It'd make me feel better and she'd—" she gestures "—get bigger. Which seems fine."`,
-    helpReason:"Reciprocity & admiration — Sophie wants to return kindness. She doesn't overthink the mechanism.",
+    offerHelp:`[placeholder: Mary Jane offer help for Daisy]`,
+    helpReason:"[placeholder: Mary Jane help reason — Daisy]",
     helpMultiplier:1.3,
-
-  doubleDown: [
-    {atLbs:200, addMult:0.15, line:"Aaliyah is two hundred pounds and she was the first person here who was just kind to me for no reason and I think about that a lot and I have started bringing her food because she always feeds everyone else and I don't think anyone thinks to do it for her. She always acts surprised. I want to keep surprising her. I know she likes burgers. I am bringing the best ones."},
-    {atLbs:250, addMult:0.20, line:"Two-fifty and Aaliyah looked at me when I brought her lunch yesterday with this expression I can't quite describe and then she said 'you didn't have to do this' and I said 'I know' and she ate everything and asked for the name of the place and I gave it to her and I felt like I had done something right. I'm coming back tomorrow. And the day after."},
-    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Aaliyah, enormous and warm and the first person who was ever just straightforwardly kind to me, and I am her personal catering service now and I don't want to stop. She feeds people she cares about. I learned that from her. I'm doing it back. I'm doing it as big as I can manage. She deserves everything she ever gave anyone."},
+  doubleDown:[
+    {atLbs:200, addMult:0.15, line:"[placeholder: Mary Jane doubleDown 200 — Daisy]"},
+    {atLbs:250, addMult:0.20, line:"[placeholder: Mary Jane doubleDown 250 — Daisy]"},
+    {atLbs:300, addMult:0.25, line:"[placeholder: Mary Jane doubleDown 300 — Daisy]"},
   ],
   },
 
-  // ── AALIYAH (13) ── about Serena & Sophie
+  // ── DAISY (13) ── about Serena & Mary Jane
   { speakerId:13, targetId:3, attitude:"warm",
     lines:{
       low:[
-        `Aaliyah grins. "Serena is so stressed about her performance. I've been getting her to come to lunch more." She shrugs easily. "She needs to eat more and relax." She says both like they're the same thing.`,
-        `"Serena keeps training even though her times are off," Aaliyah says. "I told her, stop fighting it, eat some pasta." She laughs. "She came to lunch with me though."`,
+        `[placeholder: Daisy about Serena — low stage, line 1]`,
+        `[placeholder: Daisy about Serena — low stage, line 2]`,
       ],
       mid:[
-        `Aaliyah looks pleased. "Serena finally quit the team. She's getting big, which she's still weird about. But she had three portions at dinner and she looked happy." She nods. "Progress."`,
-        `"Serena and I have been having lunch together. She pretends it's about studying. It's about the pasta special." She grins. "She's gotten noticeably softer. I'm supportive."`,
+        `[placeholder: Daisy about Serena — mid stage, line 1]`,
+        `[placeholder: Daisy about Serena — mid stage, line 2]`,
       ],
       high:[
-        `Aaliyah laughs. "Serena is huge now and still acts like she didn't choose this." She shakes her head fondly. "She absolutely chose this. She eats more than me at this point." A pause. "I'm genuinely proud of her."`,
-        `"Serena told me she doesn't miss track," Aaliyah says warmly. "I knew she wouldn't. I always knew." She pats her enormous belly. "We both knew. It just took her longer."`,
+        `[placeholder: Daisy about Serena — high stage, line 1]`,
+        `[placeholder: Daisy about Serena — high stage, line 2]`,
       ],
       blob:[
-        `"Serena is absolutely enormous now," Aaliyah says, with clear delight. "Neither of us competes anymore. We order from the same delivery apps and compare." She laughs. "She finally let go of all of it." A pause. "I'm proud of her in a way I never was watching her run."`,
-        `Aaliyah is quiet, then smiles. "Serena and I were talking last week — video call, both of us just sitting in our spaces, huge, eating — and she said 'I think this is the best I've felt since high school.'" She looks at her hands. "That hit different." She nods. "Good."`,
+        `[placeholder: Daisy about Serena — blob stage, line 1]`,
+        `[placeholder: Daisy about Serena — blob stage, line 2]`,
       ],
     },
-    offerHelp:`Aaliyah raises an eyebrow. "Serena eats more when I'm around. Competition thing. I could make it a daily lunch with the heaviest dishes on the menu — she'll match me without thinking about it." She grins. "I want company in this. She's perfect for it."`,
-    helpReason:"Companionship & wanting a partner — Aaliyah wants someone to go on this journey with her.",
+    offerHelp:`[placeholder: Daisy offer help for Serena]`,
+    helpReason:"[placeholder: Daisy help reason — Serena]",
     helpMultiplier:1.4,
-
-  doubleDown: [
-    {atLbs:200, addMult:0.15, line:"Serena is two hundred pounds and she still tries to frame it competitively and honestly I love that about her. I have started escalating — bigger restaurant orders, longer lunches, places I know she'll clear her plate. She matches everything I order. She cannot help it. The competitive instinct is perfectly redirected. I'm picking the best spots. She's going to keep up."},
-    {atLbs:250, addMult:0.20, line:"Two-fifty on Serena and she showed me a training schedule except it was a meal schedule and she'd done it in the same format as her old athletic programme and I nearly cried laughing and then I told her she needed a coach and I would be that coach and now I am managing her intake like a proper training regimen and she takes it completely seriously. Best athlete I've ever worked with."},
-    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Serena and she looked me dead in the eye and said 'I want to keep going' and I said 'I know' and I ordered for both of us and we ate for three hours and she was the most focused and committed I have ever seen her. She was born to commit to something completely. I just helped her find the right thing. We're not stopping."},
+  doubleDown:[
+    {atLbs:200, addMult:0.15, line:"[placeholder: Daisy doubleDown 200 — Serena]"},
+    {atLbs:250, addMult:0.20, line:"[placeholder: Daisy doubleDown 250 — Serena]"},
+    {atLbs:300, addMult:0.25, line:"[placeholder: Daisy doubleDown 300 — Serena]"},
   ],
   },
   { speakerId:13, targetId:14, attitude:"warm",
     lines:{
       low:[
-        `Aaliyah nods. "Sophie's new. She's been figuring out where everything is. I showed her the good dining hall spots." She shrugs easily. "She got excited about the burger station. I respect that."`,
-        `"Sophie carries a campus map," Aaliyah says. "Which is adorable. I helped her mark the food spots." She grins. "The map is now mostly food spots."`,
+        `[placeholder: Daisy about Mary Jane — low stage, line 1]`,
+        `[placeholder: Daisy about Mary Jane — low stage, line 2]`,
       ],
       mid:[
-        `"Sophie has gotten pretty big since term started," Aaliyah says approvingly. "She found all the good places fast." She nods. "She belongs here now. You can tell."`,
-        `"Sophie ate with me at the dining hall last week. She cleared her plate three times." Aaliyah sounds proud. "She's growing though. Catching up."`,
+        `[placeholder: Daisy about Mary Jane — mid stage, line 1]`,
+        `[placeholder: Daisy about Mary Jane — mid stage, line 2]`,
       ],
       high:[
-        `"Sophie is genuinely big now," Aaliyah says. "She came in lost and now she's this big comfortable campus person." She looks pleased. "I feel like I helped with that a little." She sounds like it's a good feeling.`,
-        `Aaliyah nods slowly. "Sophie doesn't carry the map anymore. She is the map." She laughs. "Specifically the food section of the map."`,
+        `[placeholder: Daisy about Mary Jane — high stage, line 1]`,
+        `[placeholder: Daisy about Mary Jane — high stage, line 2]`,
       ],
       blob:[
-        `"Sophie is enormous," Aaliyah says simply. "She barely leaves but she knows every food spot on campus better than anyone." She shakes her head with a smile. "She came here lost. Look at her now." A long pause. "That's my kind of journey. I didn't expect to be proud of someone I barely know but here we are."`,
-        `Aaliyah laughs. "Sophie can't really get around much now. She sends me delivery recommendations from her room." She pats her own massive belly. "I've been going. They're always good." A beat. "She figured this campus out better than anyone. Just from eating."`,
+        `[placeholder: Daisy about Mary Jane — blob stage, line 1]`,
+        `[placeholder: Daisy about Mary Jane — blob stage, line 2]`,
       ],
     },
-    offerHelp:`Aaliyah shrugs easily. "Sophie trusts me when I say something's good. If I start taking her to the best spots every week — the loaded menus, the biggest portions—" she grins "—she'll just think we're hanging out. Which we are." A beat. "I also want the food."`,
-    helpReason:"Easy generosity — Aaliyah likes Sophie and wants to show her around. The side effect is just fine.",
+    offerHelp:`[placeholder: Daisy offer help for Mary Jane]`,
+    helpReason:"[placeholder: Daisy help reason — Mary Jane]",
     helpMultiplier:1.32,
-
-  doubleDown: [
-    {atLbs:200, addMult:0.15, line:"Sophie is two hundred pounds and she has completely found herself here and half of that is because I showed her where everything was and the other half is because she's wonderful and I want to keep taking her to places. She eats with this whole-body happiness that I find incredibly endearing. I'm expanding the list. Bigger portions. Better spots. She deserves all of it."},
-    {atLbs:250, addMult:0.20, line:"Two-fifty and Sophie texted me a food recommendation back — first time she's done that — and I went and she was absolutely right and I told her so and she was so pleased and I immediately thought of three places I haven't taken her yet. We're going this week. And the week after. She's grown into someone excellent and I want to keep feeding that."},
-    {atLbs:300, addMult:0.25, line:"Three hundred pounds of Sophie, enormous and certain and completely at home, and she came here with a map and now she is the map. I helped with that. I want to keep helping. Daily lunches. Best spots. Biggest portions. She doesn't overthink it and neither do I. We just eat. We just keep going. I wouldn't change a single thing."},
+  doubleDown:[
+    {atLbs:200, addMult:0.15, line:"[placeholder: Daisy doubleDown 200 — Mary Jane]"},
+    {atLbs:250, addMult:0.20, line:"[placeholder: Daisy doubleDown 250 — Mary Jane]"},
+    {atLbs:300, addMult:0.25, line:"[placeholder: Daisy doubleDown 300 — Mary Jane]"},
   ],
   },
 
