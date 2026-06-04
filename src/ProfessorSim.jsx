@@ -7201,7 +7201,8 @@ export default function ProfessorSim(){
         const entries=FEEDER_SUBJECT_JOURNALS[subj.archetype]||[];
         const entry=entries[currentPage]||"No entry for this stage yet.";
         const STAGE_LABELS=["Slight","Slim","Soft","Chubby","Plump","Heavy","Fat","Very Fat","Enormous","Colossal","Blob"];
-        const canPrev=currentPage>0;
+        const minPage=entries.findIndex(e=>e!=null);
+        const canPrev=currentPage>Math.max(0,minPage);
         const canNext=currentPage<maxPage;
         const inkColor="#2a1a40";
         const pageColor="#f0eade";
