@@ -4445,9 +4445,35 @@ const CONTEST_ACTION_POPUPS = {
     ``,
     ``,
     `The last item is gone. You sit back. Your belly is enormous and warm and pressing everything within reach, and both sides of the table are empty, and the judges are looking at each other. The head judge says: "Table cleared." He says it to the room, not to you specifically, but it's for you specifically.`,
-    `You eat the last thing on your side and look at Maya's side and it is also empty. The table is gone. Both sides. The judges confer for one second. "That's it," the head judge says. "Horn." The horn fires. The crowd — and there is a significant crowd — makes a sound.`,
-    `Empty. Both sides. Your belly is vast and warm and past full and pressing everything and the table is completely, entirely gone. Maya sits back and looks at the empty sides and says: "I didn't think that was possible." The judge says: "Neither did I." The horn fires.`,
-    `The table is gone. Entirely, completely, utterly gone — both sides, every item, nothing left. Your belly is an enormous warm full presence pressing everything within two feet of you and the table is empty and the judges are looking at each other with the expressions of people who have never adjudicated this particular outcome before. The head judge says: "Table clear." He says it slowly. The crowd comes apart.`,
+    `You eat the last thing on your side and look at Maya's side and it is also empty. The table is gone. Both sides. The judges confer for one second. "That's it," the head judge says. "Horn." The horn fires. Maya stands at her station, silent, looking at the empty table, then at you.
+
+She says: "You ate my food."
+
+You say: "I did."
+
+She stands very still for a moment. Then she nods once, slowly, like someone filing something away.`,
+    `The table is gone. Both sides, every item, nothing left. Your belly is vast and warm and past full and pressing everything and you sit back slowly and your belly settles onto your thighs — enormous, warm, heavier than when the day started, heavier than when the competition started, heavier than you have ever been. The competition bench creaks under you. Then it says something lower, a structural complaint, and the right leg gives. You come down at an angle and catch yourself with one hand and the leg has snapped outward and the bench is angled and your enormous warm belly is still pressing forward through all of it and you are fine.
+
+The head judge stares at the bench. Then at you. Then at the empty table. He writes: "Table cleared." He writes: "Bench failure — competitor's weight." He does not seem to know what column to put the second note in.
+
+Maya is standing at her station with her hands at her sides and she has not moved in thirty seconds. She is looking at you — at the broken bench, at the empty table, at the full warm magnificent fact of you sitting on the angled remains of the competition seating — and her expression is doing something complicated. She is 410 pounds and she thought she knew what large meant. She is revising this.
+
+"I have to ask you something," she says. Her voice is extremely careful.
+
+"Later," you say. You are very full. You feel extraordinary.`,
+    `The table is gone. Both sides. Entirely. Your belly is the dominant physical fact of the venue — warm and enormous and pressing the table edge and your thighs and your competition top up past the point where it covers anything — and you are done. Done eating. Done. You sit back and your belly settles into the space in front of you like something geological and the competition bench makes one very specific sound: the sound of something that has made a decision.
+
+It gives. Not gradually — all at once. Both supports go and the bench comes down flat and you come with it and your belly absorbs the landing and you are sitting on the venue floor among the remains of the bench, enormous and warm and completely full, and you feel fine. You feel tremendous. You have just eaten everything on the table.
+
+The head judge has stopped writing. He is simply looking at you. The hall is silent except for the sound of your breathing and the faint settling of broken wood.
+
+Maya is at her station, 450 pounds, one of the largest competitors this event has ever hosted, and she is staring at you on the floor amid the bench wreckage with the full table empty behind you and her expression has moved completely past professional. Her hands are at her sides and she is pressing them flat against her thighs and she says, very quietly, to no one in particular: "oh god."
+
+She means it as a compliment. You know this.
+
+"Help me up," you say.
+
+She moves immediately.`,
   ],
   too_full:[
     `Your belly is done. Full — properly, completely full, the fabric tight and warm and pressed against everything. You can't fit another bite. You sit back and your belly presses the table and the judges see it and the horn fires. That's it. Time to weigh in.`,
@@ -4758,19 +4784,13 @@ const SUMO_PAYOFF_TEXT = [
 const SUMO_FILL_RING_TEXT = [
   null, null, null, null, null,
   // stageIdx 5 — blob
-  `You stop moving. This is a choice — not a failure of will, a deliberate decision to stop engaging on their terms and engage entirely on yours.
+  `You stop. You exhale and let go completely — your belly surging forward off the apron without restraint, ass pressing the clay in a wide warm mass that finds both sides of the center line at once. The wood issues a single low sound: not a creak but a settling, the dohyo acknowledging something it was not designed for.
 
-You exhale. Your belly, already the dominant fact in the room, relaxes forward — fully, completely, without the constant muscular engagement that keeps it from expressing its full extent. It moves outward and downward and sideways and it does not stop at a polite distance. The apron cloth accepts the first three feet of it. The dohyo itself receives the next two. The wood registers the weight shift with a sound that is not a creak but something lower and more final, a compression, the structure adjusting to accommodate something it was not designed for.
+Keiko is 560 pounds. She was the largest competitor in this venue's history when she walked in. She is now standing at the ring's edge staring at you the way something large looks at something vastly larger — the way a hill looks at a mountain. You have more belly than she has body. You are not filling the ring. You are the ring.
 
-Your hips follow — or rather, they were always involved, the architecture of your lower half is not separable from your belly anymore, the whole geography of you lowers and spreads as one continuous event. Your ass, enormous and warm, finds the dohyo floor on both sides of the center line simultaneously. Your thighs press outward to accommodate. The center of the dohyo is no longer empty space. It is you.
+She takes one step back. Her heel crosses the tawara. The judges look up, then at each other, then write it down.
 
-Keiko is on your right, trying to think of what to do. You are occupying most of the ring. Not all of it, but most of it. There is a strip of dohyo available at the edge, approximately the width of a doorway, and she is standing in it looking at the full fact of you filling the space that used to be a competition area.
-
-She steps back. The clay beyond the tawara receives her foot. The judges look up. She looks down at her foot. She is outside the ring.
-
-You did not touch her. You did not charge her. You did not push. You took up the space that was available and she had nowhere to be.
-
-The hall is completely silent. Then someone in the stands exhales loudly — not a cheer, just a release of held breath — and then everyone starts talking at once.`,
+The arena makes the sound of several hundred people breathing out simultaneously. Then it comes apart entirely.`,
 ];
 
 // ── FEEDEE CREATOR: COLLAB STREAM CONSTANTS ─────────────────────────────────
@@ -4781,101 +4801,120 @@ const COLLAB_CONTENT_CREATOR_ARCHETYPES=['gamer','quiet','artsy'];
 const COLLAB_STREAM_FOODS=[
   // stageIdx 0 — ~258 lbs
   [
-    {id:'open_k0',   name:'Opening Tray',      emoji:'🍽️', lbsKylie:6,  lbsPartner:5,  qualBoost:10, side:'both'},
-    {id:'second_k0', name:'Donation Special',  emoji:'🍕', lbsKylie:9,  lbsPartner:7,  qualBoost:12, side:'both'},
-    {id:'chall_k0',  name:'Challenge Course',  emoji:'🌮', lbsKylie:11, lbsPartner:9,  qualBoost:14, side:'both'},
+    {id:'open_k0',    name:'Opening Tray',      emoji:'🍽️', lbsKylie:6,  lbsPartner:5,  qualBoost:10, side:'both'},
+    {id:'warmup_k0',  name:'Warm-Up Snacks',    emoji:'🍟', lbsKylie:5,  lbsPartner:4,  qualBoost:9,  side:'both'},
+    {id:'second_k0',  name:'Donation Special',  emoji:'🍕', lbsKylie:9,  lbsPartner:7,  qualBoost:12, side:'both'},
+    {id:'mid_k0',     name:'Main Course',       emoji:'🍝', lbsKylie:10, lbsPartner:8,  qualBoost:12, side:'both'},
+    {id:'chall_k0',   name:'Challenge Course',  emoji:'🌮', lbsKylie:11, lbsPartner:9,  qualBoost:14, side:'both'},
+    {id:'finish_k0',  name:'Stream Finale',     emoji:'🎂', lbsKylie:8,  lbsPartner:6,  qualBoost:14, side:'both'},
   ],
   // stageIdx 1 — ~320 lbs
   [
-    {id:'open_k1',   name:'Opening Spread',    emoji:'🍽️', lbsKylie:8,  lbsPartner:7,  qualBoost:10, side:'both'},
-    {id:'second_k1', name:'Sub Goal Tier',     emoji:'🍗', lbsKylie:12, lbsPartner:10, qualBoost:12, side:'both'},
-    {id:'third_k1',  name:'Challenge Course',  emoji:'🌮', lbsKylie:14, lbsPartner:12, qualBoost:14, side:'both'},
-    {id:'finish_k1', name:'Stream Finale',     emoji:'🎂', lbsKylie:9,  lbsPartner:8,  qualBoost:16, side:'both'},
+    {id:'open_k1',    name:'Opening Spread',    emoji:'🍽️', lbsKylie:8,  lbsPartner:7,  qualBoost:10, side:'both'},
+    {id:'warmup_k1',  name:'Pre-Stream Snacks', emoji:'🍟', lbsKylie:7,  lbsPartner:6,  qualBoost:9,  side:'both'},
+    {id:'second_k1',  name:'Sub Goal Tier',     emoji:'🍗', lbsKylie:12, lbsPartner:10, qualBoost:12, side:'both'},
+    {id:'mid_k1',     name:'Viewer Request',    emoji:'🥗', lbsKylie:10, lbsPartner:9,  qualBoost:12, side:'both'},
+    {id:'third_k1',   name:'Challenge Course',  emoji:'🌮', lbsKylie:14, lbsPartner:12, qualBoost:14, side:'both'},
+    {id:'bonus_k1',   name:'Bonus Round',       emoji:'🥩', lbsKylie:12, lbsPartner:10, qualBoost:13, side:'both'},
+    {id:'finish_k1',  name:'Stream Finale',     emoji:'🎂', lbsKylie:9,  lbsPartner:8,  qualBoost:16, side:'both'},
   ],
   // stageIdx 2 — ~419 lbs
   [
-    {id:'open_k2',   name:'Opening Spread',    emoji:'🍽️', lbsKylie:10, lbsPartner:8,  qualBoost:10, side:'both'},
-    {id:'second_k2', name:'Sub Goal #1',       emoji:'🍗', lbsKylie:14, lbsPartner:11, qualBoost:12, side:'both'},
-    {id:'third_k2',  name:'Challenge Platter', emoji:'🌮', lbsKylie:18, lbsPartner:14, qualBoost:14, side:'both'},
-    {id:'special_k2',name:'Viewer Special',    emoji:'🥩', lbsKylie:16, lbsPartner:13, qualBoost:15, side:'both'},
-    {id:'finish_k2', name:'Stream Finale',     emoji:'🎂', lbsKylie:10, lbsPartner:9,  qualBoost:18, side:'both'},
+    {id:'open_k2',    name:'Opening Spread',    emoji:'🍽️', lbsKylie:10, lbsPartner:8,  qualBoost:10, side:'both'},
+    {id:'warmup_k2',  name:'Pre-Stream Plate',  emoji:'🍟', lbsKylie:8,  lbsPartner:7,  qualBoost:9,  side:'both'},
+    {id:'second_k2',  name:'Sub Goal #1',       emoji:'🍗', lbsKylie:14, lbsPartner:11, qualBoost:12, side:'both'},
+    {id:'mid_k2',     name:'Viewer Special',    emoji:'🥗', lbsKylie:12, lbsPartner:10, qualBoost:12, side:'both'},
+    {id:'third_k2',   name:'Challenge Platter', emoji:'🌮', lbsKylie:18, lbsPartner:14, qualBoost:14, side:'both'},
+    {id:'special_k2', name:'Sponsor Tier',      emoji:'🥩', lbsKylie:16, lbsPartner:13, qualBoost:15, side:'both'},
+    {id:'bonus_k2',   name:'Donation Goal',     emoji:'🍱', lbsKylie:14, lbsPartner:11, qualBoost:14, side:'both'},
+    {id:'finish_k2',  name:'Stream Finale',     emoji:'🎂', lbsKylie:10, lbsPartner:9,  qualBoost:18, side:'both'},
   ],
   // stageIdx 3 — ~519 lbs
   [
-    {id:'open_k3',   name:'Opening Course',    emoji:'🍽️', lbsKylie:12, lbsPartner:10, qualBoost:10, side:'both'},
-    {id:'second_k3', name:'Sub Goal #1',       emoji:'🍗', lbsKylie:16, lbsPartner:13, qualBoost:12, side:'both'},
-    {id:'third_k3',  name:'Challenge Platter', emoji:'🌮', lbsKylie:22, lbsPartner:17, qualBoost:14, side:'both'},
-    {id:'special_k3',name:'Sponsor Tier',      emoji:'🍱', lbsKylie:20, lbsPartner:16, qualBoost:15, side:'both'},
-    {id:'bonus_k3',  name:'Fan Request',       emoji:'🥩', lbsKylie:18, lbsPartner:14, qualBoost:15, side:'both'},
-    {id:'finish_k3', name:'Stream Finale',     emoji:'🎂', lbsKylie:12, lbsPartner:10, qualBoost:18, side:'both'},
+    {id:'open_k3',    name:'Opening Course',    emoji:'🍽️', lbsKylie:12, lbsPartner:10, qualBoost:10, side:'both'},
+    {id:'warmup_k3',  name:'Pre-Stream Feast',  emoji:'🍟', lbsKylie:10, lbsPartner:8,  qualBoost:9,  side:'both'},
+    {id:'second_k3',  name:'Sub Goal #1',       emoji:'🍗', lbsKylie:16, lbsPartner:13, qualBoost:12, side:'both'},
+    {id:'mid_k3',     name:'Viewer Special',    emoji:'🥗', lbsKylie:14, lbsPartner:11, qualBoost:12, side:'both'},
+    {id:'third_k3',   name:'Challenge Platter', emoji:'🌮', lbsKylie:22, lbsPartner:17, qualBoost:14, side:'both'},
+    {id:'special_k3', name:'Sponsor Tier',      emoji:'🍱', lbsKylie:20, lbsPartner:16, qualBoost:15, side:'both'},
+    {id:'bonus_k3',   name:'Fan Request',       emoji:'🥩', lbsKylie:18, lbsPartner:14, qualBoost:15, side:'both'},
+    {id:'goal2_k3',   name:'Sub Goal #2',       emoji:'🍰', lbsKylie:16, lbsPartner:13, qualBoost:14, side:'both'},
+    {id:'finish_k3',  name:'Stream Finale',     emoji:'🎂', lbsKylie:12, lbsPartner:10, qualBoost:18, side:'both'},
   ],
   // stageIdx 4 — ~630 lbs
   [
-    {id:'open_k4',   name:'Opening Spread',    emoji:'🍽️', lbsKylie:14, lbsPartner:12, qualBoost:10, side:'both'},
-    {id:'second_k4', name:'Sub Goal #1',       emoji:'🍗', lbsKylie:20, lbsPartner:16, qualBoost:12, side:'both'},
-    {id:'third_k4',  name:'Challenge Platter', emoji:'🌮', lbsKylie:26, lbsPartner:20, qualBoost:14, side:'both'},
-    {id:'special_k4',name:'Legend Tier',       emoji:'🥩', lbsKylie:24, lbsPartner:19, qualBoost:15, side:'both'},
-    {id:'sponsor_k4',name:'Sponsor Finale',    emoji:'🍱', lbsKylie:28, lbsPartner:22, qualBoost:16, side:'both'},
-    {id:'bonus_k4',  name:'Viewer Choice',     emoji:'👑', lbsKylie:22, lbsPartner:17, qualBoost:15, side:'both'},
-    {id:'finish_k4', name:'Stream Finale',     emoji:'🎂', lbsKylie:14, lbsPartner:12, qualBoost:20, side:'both'},
+    {id:'open_k4',    name:'Opening Spread',    emoji:'🍽️', lbsKylie:14, lbsPartner:12, qualBoost:10, side:'both'},
+    {id:'warmup_k4',  name:'Pre-Stream Course', emoji:'🍟', lbsKylie:11, lbsPartner:9,  qualBoost:9,  side:'both'},
+    {id:'second_k4',  name:'Sub Goal #1',       emoji:'🍗', lbsKylie:20, lbsPartner:16, qualBoost:12, side:'both'},
+    {id:'mid_k4',     name:'Viewer Special',    emoji:'🥗', lbsKylie:17, lbsPartner:14, qualBoost:12, side:'both'},
+    {id:'third_k4',   name:'Challenge Platter', emoji:'🌮', lbsKylie:26, lbsPartner:20, qualBoost:14, side:'both'},
+    {id:'special_k4', name:'Legend Tier',       emoji:'🥩', lbsKylie:24, lbsPartner:19, qualBoost:15, side:'both'},
+    {id:'sponsor_k4', name:'Sponsor Finale',    emoji:'🍱', lbsKylie:28, lbsPartner:22, qualBoost:16, side:'both'},
+    {id:'bonus_k4',   name:'Viewer Choice',     emoji:'👑', lbsKylie:22, lbsPartner:17, qualBoost:15, side:'both'},
+    {id:'goal2_k4',   name:'Sub Goal #2',       emoji:'🍰', lbsKylie:20, lbsPartner:16, qualBoost:15, side:'both'},
+    {id:'finish_k4',  name:'Stream Finale',     emoji:'🎂', lbsKylie:14, lbsPartner:12, qualBoost:20, side:'both'},
   ],
   // stageIdx 5 — ~820 lbs blob
   [
-    {id:'open_k5',   name:'Opening Course',    emoji:'🍽️', lbsKylie:18, lbsPartner:15, qualBoost:10, side:'both'},
-    {id:'second_k5', name:'Sub Goal #1',       emoji:'🍗', lbsKylie:25, lbsPartner:20, qualBoost:12, side:'both'},
-    {id:'third_k5',  name:'Challenge Platter', emoji:'🌮', lbsKylie:32, lbsPartner:25, qualBoost:14, side:'both'},
-    {id:'special_k5',name:'Spectacle Tier',    emoji:'🥩', lbsKylie:30, lbsPartner:24, qualBoost:15, side:'both'},
-    {id:'sponsor_k5',name:'Sponsor Finale',    emoji:'🍱', lbsKylie:36, lbsPartner:28, qualBoost:16, side:'both'},
-    {id:'bonus_k5',  name:'Legacy Plate',      emoji:'👑', lbsKylie:28, lbsPartner:22, qualBoost:18, side:'both'},
-    {id:'grand_k5',  name:'Grand Spectacle',   emoji:'🌕', lbsKylie:24, lbsPartner:20, qualBoost:20, side:'both'},
-    {id:'finish_k5', name:'Stream Finale',     emoji:'🎂', lbsKylie:18, lbsPartner:15, qualBoost:22, side:'both'},
+    {id:'open_k5',    name:'Opening Course',    emoji:'🍽️', lbsKylie:18, lbsPartner:15, qualBoost:10, side:'both'},
+    {id:'warmup_k5',  name:'Pre-Stream Feast',  emoji:'🍟', lbsKylie:14, lbsPartner:12, qualBoost:9,  side:'both'},
+    {id:'second_k5',  name:'Sub Goal #1',       emoji:'🍗', lbsKylie:25, lbsPartner:20, qualBoost:12, side:'both'},
+    {id:'mid_k5',     name:'Viewer Special',    emoji:'🥗', lbsKylie:22, lbsPartner:18, qualBoost:12, side:'both'},
+    {id:'third_k5',   name:'Challenge Platter', emoji:'🌮', lbsKylie:32, lbsPartner:25, qualBoost:14, side:'both'},
+    {id:'special_k5', name:'Spectacle Tier',    emoji:'🥩', lbsKylie:30, lbsPartner:24, qualBoost:15, side:'both'},
+    {id:'sponsor_k5', name:'Sponsor Finale',    emoji:'🍱', lbsKylie:36, lbsPartner:28, qualBoost:16, side:'both'},
+    {id:'bonus_k5',   name:'Legacy Plate',      emoji:'👑', lbsKylie:28, lbsPartner:22, qualBoost:18, side:'both'},
+    {id:'goal2_k5',   name:'Sub Goal #2',       emoji:'🍰', lbsKylie:26, lbsPartner:20, qualBoost:17, side:'both'},
+    {id:'grand_k5',   name:'Grand Spectacle',   emoji:'🌕', lbsKylie:24, lbsPartner:20, qualBoost:20, side:'both'},
+    {id:'finish_k5',  name:'Stream Finale',     emoji:'🎂', lbsKylie:18, lbsPartner:15, qualBoost:22, side:'both'},
   ],
 ];
 
 // Stage-up popup — fires when partner crosses a weight stage threshold mid-stream
+// newLbs = partner's new weight in lbs (number)
 const COLLAB_STAGEUP_TEXT=[
   // stageIdx 0
-  (kylieName,partnerName,stageName)=>`The scale app updates on the secondary screen and I catch it in my peripheral vision and I stop talking mid-sentence. The chat catches it before I do — the numbers are already scrolling, people asking is that right, is that actually right.
+  (kylieName,partnerName,newLbs)=>`The scale app updates on the secondary screen and I catch it in my peripheral vision and I stop talking mid-sentence. The chat catches it before I do — the numbers are already scrolling, people asking is that right, is that actually right.
 
-I look at the camera. "${partnerName} just hit ${stageName}."
+I look at the camera. "${partnerName} just crossed ${Math.round(newLbs)} pounds."
 
 The chat is going. ${partnerName} looks down at herself — hands on her belly, which is rounder and heavier than it was when the stream started — and she says something quietly that the mic picks up: "oh." Just that. Oh. The chat is going absolutely wild and she is sitting there with her hands on her belly saying "oh" like it's new information and also not new information at all.
 
 I reach for the next plate. We're not done.`,
   // stageIdx 1
-  (kylieName,partnerName,stageName)=>`The weight app flashes on the secondary monitor and the chat sees it at the same time I do. I don't have to announce it — the chat does it for me, typing the new number in caps, repeating it, sending the same five words over and over: she got bigger on stream.
+  (kylieName,partnerName,newLbs)=>`The weight app flashes on the secondary monitor and the chat sees it at the same time I do. I don't have to announce it — the chat does it for me, typing the new number in caps, repeating it, sending the same five words over and over: she got bigger on stream.
 
-"${partnerName} is at ${stageName}," I say, to the camera, clearly.
+"${partnerName} just crossed ${Math.round(newLbs)} pounds," I say, to the camera, clearly.
 
 She's looking at her own belly — the warmth of it, the forward press of it, heavier than when we started — and she looks at the camera and says: "more." She means more food. The chat means the same thing. I reach for the plate.`,
   // stageIdx 2
-  (kylieName,partnerName,stageName)=>`The stage threshold hits and I see it on the monitor and I look over at ${partnerName} and she already knows — she can feel it, the added weight of everything we've eaten, the belly sitting heavier and warmer and fuller between her thighs. She puts both hands flat on it. She looks at the camera.
+  (kylieName,partnerName,newLbs)=>`The threshold hits and I see it on the monitor and I look over at ${partnerName} and she already knows — she can feel it, the added weight of everything we've eaten, the belly sitting heavier and warmer and fuller between her thighs. She puts both hands flat on it. She looks at the camera.
 
-"${stageName}," she says. Just the stage name. Just that.
+"${Math.round(newLbs)} pounds," she says. Just the number. Just that.
 
-The chat explodes. Wren types: *I KNEW IT I KNEW EXACTLY WHERE THIS WAS GOING.* The donation bar jumps two brackets in thirty seconds. I reach for the next course. I reach for the biggest thing left on the table. We're going to make the most of this.`,
+The chat explodes. Wren types: *I KNEW IT I KNEW EXACTLY WHERE THIS WAS GOING.* The donation bar jumps two brackets in thirty seconds. I reach for the next course. We're going to make the most of this.`,
   // stageIdx 3
-  (kylieName,partnerName,stageName)=>`The alert fires on the monitor and I let it sit for three seconds — three full seconds while the chat figures out what they're looking at — before I say it.
+  (kylieName,partnerName,newLbs)=>`The alert fires on the monitor and I let it sit for three seconds — three full seconds while the chat figures out what they're looking at — before I say it.
 
-"${partnerName} crossed into ${stageName}. On stream. Tonight."
+"${partnerName} just crossed ${Math.round(newLbs)} pounds. On stream. Tonight."
 
-She's sitting with her hands under the forward curve of her belly, feeling the weight of it, and she is smiling. Wren has donated a substantial amount in the time it took me to say that sentence. The chat is still going. I look at the table: there is food left. There is more to do. I reach for the plate and so does she. We are not done.`,
+She's sitting with her hands under the forward curve of her belly, feeling the weight of it, and she is smiling. Wren has donated a substantial amount in the time it took me to say that sentence. I look at the table: there is food left. I reach for the plate. We are not done.`,
   // stageIdx 4
-  (kylieName,partnerName,stageName)=>`She crosses the threshold and I see it happen — not from the monitor, but from her: the way she breathes out, the way her hands go to her belly automatically, the way she sits back slightly as if acknowledging new geography. Then the monitor confirms it and the chat confirms it and I say the number out loud for the record.
+  (kylieName,partnerName,newLbs)=>`She crosses the threshold and I see it happen — not from the monitor, but from her: the way she breathes out, the way her hands go to her belly automatically, the way she sits back slightly as if acknowledging new geography. Then the monitor confirms it and the chat confirms it and I say it.
 
-"${stageName}. On my stream. Right now."
+"${Math.round(newLbs)} pounds. On my stream. Right now."
 
-Wren is in this building. I know she is. She's watching from somewhere and the chat is going and ${partnerName} is enormous and warm and heavier than she was an hour ago and I am going to feed her until there is nothing left on this table. There is more on the table. I reach for it.`,
+Wren is in this building. She's watching from somewhere and the chat is going and ${partnerName} is enormous and warm and heavier than she was an hour ago and I am going to feed her until there is nothing left on this table. I reach for it.`,
   // stageIdx 5
-  (kylieName,partnerName,stageName)=>`I see it from across the room — not from the monitor this time, I see it in ${partnerName}: the moment she crosses the threshold, she gets very still. Both hands flat on her belly. Eyes closed for exactly one second.
+  (kylieName,partnerName,newLbs)=>`I see it from across the room — not from the monitor this time, I see it in ${partnerName}: the moment she crosses the threshold, she gets very still. Both hands flat on her belly. Eyes closed for exactly one second.
 
 Then she opens them and looks at the camera.
 
-"${stageName}," she says.
+"${Math.round(newLbs)} pounds," she says.
 
-Wren says it in chat at the same moment. *${stageName}. On the biggest stream this platform has ever hosted.*
+Wren says it in chat at the same moment. *${Math.round(newLbs)} pounds. On the biggest stream this platform has ever hosted.*
 
-I am 820 pounds in this corner and my collab partner just crossed a new stage and the room is full of people who came to see this happen and it is happening and I reach for the plate and I feel the weight of my own belly against the table and I think: more. There is always more.`,
+I am in this corner and my collab partner just got heavier and the room is full of people who came to see this happen and it is happening and I reach for the plate and I feel the weight of my own belly against the table and I think: more. There is always more.`,
 ];
 
 // Wren chat lines per stageIdx
@@ -5126,8 +5165,8 @@ Keiko Watanabe is here — 560 pounds, the second largest competitor the Invitat
 
 There is a feast staged in your corner. The chanko is deep and warm and the bowls are the large format. This is the warm-up.`,
           choices:[
-            {id:"load_hard",label:"Fill your belly completely — weight is the weapon",result:`You eat until your belly is past full and settling into your stance with the specific ballast gravity of a very large body that has eaten very seriously. Your belly presses your mawashi forward and settles between your thighs enormous and warm and forward. Keiko watches you eat. You are 820 pounds and you just got heavier. This is the whole strategy.`,lbs:18,rel:5,flag:"loaded"},
-            {id:"warm_up",label:"Move through the forms — plant, root, presence",result:`You move. 820 pounds moving through sumo forms is not a quiet thing — the floor accepts each rep with the considered patience of something that has no choice, your belly swinging vast and warm with each shift, the whole volume of you precise and focused. You eat enough to fuel this and leave room for the corner. Ready.`,lbs:10,rel:10,flag:"paced"},
+            {id:"load_hard",label:"Fill your belly completely — weight is the weapon",result:(s)=>`You eat until your belly is past full and settling into your stance with the specific ballast gravity of a very large body that has eaten very seriously. Your belly presses your mawashi forward and settles between your thighs enormous and warm and forward. Keiko watches you eat. You are ${Math.round(s.lbs)} pounds and you just got heavier. This is the whole strategy.`,lbs:18,rel:5,flag:"loaded"},
+            {id:"warm_up",label:"Move through the forms — plant, root, presence",result:(s)=>`You move. ${Math.round(s.lbs)} pounds moving through sumo forms is not a quiet thing — the floor accepts each rep with the considered patience of something that has no choice, your belly swinging vast and warm with each shift, the whole volume of you precise and focused. You eat enough to fuel this and leave room for the corner. Ready.`,lbs:10,rel:10,flag:"paced"},
           ]
         },
         {
@@ -5339,7 +5378,7 @@ You are ${Math.round(s.lbs)} pounds and the warmup room has been extended with a
 
 The Invitational catering table is the full format. Everything available. This is the load-up.`,
           choices:[
-            {id:"load_hard",label:"Eat everything — fill completely, every available item",result:`You eat through the catering table with the total focus of someone who knows what their body is capable of and intends to use every inch of it. Your belly goes from enormous to vastly enormous, warm and heavy and past full and settled low between your thighs, pressing your competition top up past your navel, and you are loaded. You are 820 pounds plus all of this. You are ready.`,lbs:18,rel:5,flag:"loaded"},
+            {id:"load_hard",label:"Eat everything — fill completely, every available item",result:(s)=>`You eat through the catering table with the total focus of someone who knows what their body is capable of and intends to use every inch of it. Your belly goes from enormous to vastly enormous, warm and heavy and past full and settled low between your thighs, pressing your competition top up past your navel, and you are loaded. You are ${Math.round(s.lbs)} pounds plus all of this. You are ready.`,lbs:18,rel:5,flag:"loaded"},
             {id:"eat_smart",label:"Eat to capacity — precise, controlled, leave space for the table",result:`You eat with the focused precision of someone who has done this for years and knows exactly where the ceiling is. Your belly fills warm and full and forward, the specific controlled fullness of a professional who has not lost their technique at any weight. You stop. You breathe. There is room left. For the table.`,lbs:10,rel:8,flag:"paced"},
           ]
         },
@@ -9740,7 +9779,7 @@ export default function ProfessorSim(){
     if(initKylieGain>0) setStudents(prev=>prev.map(st=>st.id===kylieId?processStudentGain(st,initKylieGain,0):st));
     if(initPartnerGain>0) setStudents(prev=>prev.map(st=>st.id===partnerId?processStudentGain(st,initPartnerGain,0):st));
     const initChat=(COLLAB_WREN_LINES[stageIdx]||[]).slice(0,1);
-    setCollabStreamState({kylieId,partnerId,stageIdx,qualityBar:initQual,kylieGain:initKylieGain,partnerGain:initPartnerGain,partnerStageAtStart,stagedUp:false,foodQueue:tierFoods,tierIdx:0,chatLines:initChat,phase:'streaming',popupText:null,phaseAfterPopup:null,actions:{kylieRevealed:false,partnerRevealed:false,zoomUses:3,chatUses:3,pushUsed:false}});
+    setCollabStreamState({kylieId,partnerId,stageIdx,qualityBar:initQual,kylieGain:0,partnerGain:0,partnerStageAtStart,stagedUp:false,foodQueue:tierFoods,tierIdx:0,chatLines:initChat,phase:'streaming',popupText:null,phaseAfterPopup:null,actions:{kylieRevealed:false,partnerRevealed:false,zoomUses:3,chatUses:3,pushUsed:false}});
     setCollabPartnerId(null);
     setEvolvedEventState(null);
   };
@@ -9843,7 +9882,7 @@ export default function ProfessorSim(){
         if(getStage(updated.lbs).id>partnerStageAtStart+(!stagedUp?0:0)){
           const newStage=getStage(updated.lbs);
           if(newStage.id>partnerStageAtStart){
-            const stageUpText=COLLAB_STAGEUP_TEXT[stageIdx]?.(kylie.name,partner.name,newStage.label)||`${partner.name} crossed into ${newStage.label} on stream!`;
+            const stageUpText=COLLAB_STAGEUP_TEXT[stageIdx]?.(kylie.name,partner.name,Math.round(updated.lbs))||`${partner.name} just crossed ${Math.round(updated.lbs)} pounds on stream!`;
             setCollabStreamState(prev=>prev?{...prev,stagedUp:true,popupText:stageUpText,phaseAfterPopup:'stage_up_resolve',qualityBar:Math.min(100,(prev.qualityBar||0)+35)}:prev);
           }
         }
