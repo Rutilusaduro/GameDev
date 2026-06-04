@@ -5006,6 +5006,207 @@ The debut collab. You wanted to start the way you meant to continue. You started
 ];
 
 // ══════════════════════════════════════════════════════════════════
+// RECORDING SESSION — Activity 2 for feedee_creator (Devoted tier, professor POV)
+// ══════════════════════════════════════════════════════════════════
+
+// Perfect take combos per stageIdx: [angle, food, pace]
+const RECORDING_PERFECT_COMBOS = [
+  ['angle_close','food_hers','pace_settle'],   // 0 — ~258 lbs
+  ['angle_wide','food_build','pace_settle'],   // 1 — ~320 lbs
+  ['angle_wide','food_heavy','pace_push'],     // 2 — ~419 lbs
+  ['angle_wide','food_heavy','pace_push'],     // 3 — ~519 lbs
+  ['angle_low','food_heavy','pace_surge'],     // 4 — ~630 lbs
+  ['angle_wide','food_heavy','pace_surge'],    // 5 — ~820 lbs
+];
+
+// Lbs gained per food choice per take
+const RECORDING_FOOD_LBS = { food_heavy:[10,15], food_build:[6,10], food_hers:[7,12] };
+// Pace modifier to lbs
+const RECORDING_PACE_LBS = { pace_push:4, pace_settle:1, pace_surge:5 };
+// Quality bonus lbs
+const RECORDING_QUALITY_BONUS = { okay:0, good:1, great:2, perfect:6 };
+
+const RECORDING_OPENING_TEXT = [
+  // stage 0 — ~258 lbs
+  `Her apartment is tidy in the way that content creators' spaces are tidy — everything positioned, the ring light already angled, a spread of food on the coffee table that she's arranged by size. She's in a fitted crop top and high-waisted shorts, and when she sees you come in she smiles and shifts her weight, her belly pressing warm and round against the fabric. "I've been thinking about what I want to do," she says. She's thought about it a lot. You pick up the camera and she settles into position and the room gets quiet in the specific way it does when something is about to be recorded.`,
+  // stage 1 — ~320 lbs
+  `She's rearranged her living room for this — furniture pushed back, her oversized chair centered in the frame, the food spread already laid out on a low table in front of her. She's 320 pounds of settled, warm presence, her belly resting forward in her lap, her thighs wide and comfortable in the chair. She looks at you and then at the camera and back at you. "Same as last time?" she asks, but she's already leaning into it, already performing slightly even before the camera goes on. You pick it up and she stills into position. The room waits.`,
+  // stage 2 — ~419 lbs
+  `She fills the chair the way water fills a container — completely, settling into every inch of it, her belly enormous and warm in her lap, her thighs pressed wide. The food is already there. She's been eating lightly this morning, she says, saving room, and you can tell — there's something anticipatory in how she sits, how she holds her hands folded over the top of her belly. She looks at the camera in your hands. "Ready when you are," she says, and means it more than she's said anything in a while. You raise the camera. The room gets quiet.`,
+  // stage 3 — ~519 lbs
+  `She can't rearrange the furniture herself anymore, so she's described what she wanted and you've moved it — her chair pushed to the center, the food table within arm's reach, the ring light dialed to warm. She fills the chair beyond capacity, her belly sitting full and heavy between her thighs, no lap, just the forward press of her against the world. She watches you set up. She's been patient. She's been thinking about this shoot for days. "I want the lighting a little warmer this time," she says. You adjust. She nods. You pick up the camera and the session begins.`,
+  // stage 4 — ~630 lbs
+  `You do most of the setup now — she directs from her chair, which is reinforced and positioned where the light is best, and her body takes up most of what the camera sees when you step back for a wide. 630 pounds, and she's dressed for the shoot: something that fits her, which is a specific and considered choice at this size. The food is on the table beside her. She has her hands resting on the summit of her belly and she's watching you with the easy patience of someone who has done this many times and knows exactly how good the result will look. You raise the camera. She settles.`,
+  // stage 5 — ~820 lbs
+  `The room has reorganized itself around her. This is simply true. Her chair is gone — the floor is where she lives now, cushioned and reinforced, and she takes up a corner of the room in the way that large furniture takes up a corner: permanently, authoritatively. 820 pounds. You navigate around the outer edge of her to get to the camera position you want. She tracks you with her eyes and a small smile. The food is already in reach — she has a system. "You know what I want," she says, which is true. You do know. You raise the camera and she gets very still, the way something enormous gets still, and the room holds its breath.`,
+];
+
+const RECORDING_TAKE_INTRO_TEXT = [
+  `Camera rolling. She settles her weight and looks straight into the lens. She's ready.`,
+  `The camera is on. She adjusts her position — a small shift of her heavy thighs — and focuses. This is what she does.`,
+  `You press record. She stills. Her belly sits enormous and forward in the frame. She's fully present.`,
+  `Recording. She doesn't move much now — she doesn't need to. She fills the frame without effort. Her eyes find the lens.`,
+  `You start recording. She's barely moved but somehow she looks more there, more real, more enormous. She meets the camera.`,
+  `Camera on. The room is quiet. She is absolutely motionless and absolutely present, her body filling the corner of the frame in every direction. She blinks once and begins.`,
+];
+
+const RECORDING_DIRECTION_POPUPS = {
+  angle_low: [
+    `You get low — camera below her waist, looking up. From here her belly is the horizon: enormous, warm, pressing forward over the waistband of her shorts. She looks down at the lens and something in her expression changes, becomes more knowing.`,
+    `Floor angle. Her belly from below is a different geography entirely — the soft underside of it, the way it extends forward, the curve of it against her thighs. She looks taller from down here. More imposing.`,
+    `Low angle, looking up into her. Her belly fills the upper half of the frame from here, enormous and soft, the crop top ridden up above the widest point of it. She rests her hands on top and looks down at you through the camera.`,
+    `You get low. From the floor, her belly extends outward into the frame like a landscape — the sheer forward mass of it, the way her thighs spread under its weight, the warmth visible even through the lens. She looks immense. She is immense.`,
+    `Floor angle. Her belly from below is geological: layers of soft warm fat extending forward, the underside of it soft and vast, her thighs pushed wide on either side. She looks down at the camera from a long way up. The scale reads clearly.`,
+    `You get as low as you can. Her belly is the whole frame from here — the full underside of it extending forward, enormous and warm, impossible to contain in one shot. She can't really look down anymore. She knows you're there. She settles lower.`,
+  ],
+  angle_wide: [
+    `You step back for the full frame. She fills the chair and the chair fills the shot and there's room around her but not much. At 258 pounds she reads as very fat in this frame, her belly prominent, her thighs spread.`,
+    `Wide shot. She's centered in the frame and the room frames her and you can see exactly how much space she takes up — the chair, the spread of her thighs, the forward press of her belly. The scale lands.`,
+    `Full body, wide. 419 pounds fills the frame differently than smaller — the chair is secondary now, something she's wearing rather than sitting in. Her belly dominates the center of the shot. The room around her feels smaller.`,
+    `You pull all the way back. She fills the frame even wide — there's room at the edges but not much, and what the camera reads is a very large, very heavy woman sitting in a piece of furniture that she has thoroughly claimed. The food on the table is barely visible beside her.`,
+    `Wide. The room around her reads as deliberately arranged set dressing for the fact of her — 630 pounds, the chair a suggestion rather than a seat, her belly the center of gravity of the entire shot. Everything else is context.`,
+    `As wide as the room allows. She fills her corner and the corner fills the frame. The wide shot doesn't diminish her — it contextualizes her, shows the scale of her against the walls and ceiling, and the scale is enormous. She barely fits in the frame. That's the shot.`,
+  ],
+  angle_close: [
+    `You move in close — face, chest, the upper register. She's looking directly into the lens and her expression is warm and direct and slightly self-aware. Her chest rises and falls visibly. The close-up catches everything she's thinking.`,
+    `Close-up on face and chest. At 320 pounds her chest is prominent in frame even at this angle, her face above it soft and warm and performing slightly for the camera — the version of herself she puts on. It looks good. It looks like her.`,
+    `Close. Her face fills the upper half of the frame and her chest the lower, and at this size the chest is a significant presence — heavy and warm, visible movement with each breath. Her expression while she eats is what you came for. You're getting it.`,
+    `You move in. Her face and chest and the top of her belly fill the frame entirely at close range, and her expression eating — the focus, the pleasure, the slight heaviness of it — is exactly the content. At this weight her chest rests on the upper shelf of her belly when she leans back. The camera catches it.`,
+    `Close-up. Her face takes the top third of the frame and her chest the rest, enormous and heavy, the fabric of her top stretched tight across it. Her expression eating at this stage is a specific thing: deep, focused, somewhere between pleasure and effort. The camera is very close.`,
+    `As close as you can get and still catch her face. At blob stage the geography of her chest is the geography of a landscape — the close-up gets the upper shelf of her, her face above it warm and slow and present. Her expression is somewhere beyond performance now. It's just her.`,
+  ],
+  food_heavy: [
+    `You hand her the heavy food — dense, loaded, exactly what her body wants. She takes it in both hands and the first bite lands with visible weight. Her belly presses a little harder against her waistband by the time the second bite follows.`,
+    `Heavy food. She accepts it with both hands and settles slightly under the weight of what she's about to do. By the third bite you can see the fullness starting — her belly sitting a degree lower, her breathing slightly different.`,
+    `You give her the dense, heavy food and she opens into it. 419 pounds eating something genuinely filling is a particular and beautiful thing to watch through a lens — the focus, the commitment, the belly rising incrementally with each bite.`,
+    `Heavy food, handed over. She takes it with a sound that isn't quite a sigh — anticipatory, warm — and settles her enormous body further back into the chair. The food goes in steadily. Her belly extends forward by the time she's halfway through.`,
+    `You put the heavy food in her reach and she takes it with both hands, slowly. At 630 pounds, eating the heavy food is a deliberate and weighty act — each bite adding to something already enormous. The camera catches her belly pressing further forward.`,
+    `The heavy food. She can't reach easily now — you bring it to her, and she takes it with both hands and eats with the slow certainty of someone who knows exactly what this is doing and wants it to. Her belly shifts forward incrementally with each bite. The camera is very close.`,
+  ],
+  food_build: [
+    `You start her light — something small — and watch her work through it before you bring the next thing, larger, and then the next. She understands the build. By the third item her belly is fuller and rounder and the camera reads the difference.`,
+    `Build progression: light, then heavier, then heavier still. She moves through each item with focus, her belly filling in stages, the fullness accumulating visibly. By the end of the progression she's sitting differently than she was.`,
+    `You build her — start with something light, bring in the mid-weight food, end on something dense. She eats each stage clean before the next arrives. Her belly at the end of the progression is fuller, warmer, pressing more definitely forward.`,
+    `Slow build. You start her at the lighter end and work up, each item larger and denser than the last. She eats methodically, her enormous belly filling in measurable increments. The progression is visible in the footage. Her face at the end is different from her face at the beginning.`,
+    `You build the session — light to heavy, incremental, her belly filling in stages that the camera records. At 630 pounds the increments are still visible: the belly pressing forward another inch with each stage, the thighs spreading further to accommodate.`,
+    `Build. You start her with something she can eat easily and work up, each stage heavier, her enormous body accepting the food in layers. By the final stage she's eating the heaviest thing and her belly is extended further than when the take started. The progression is the content.`,
+  ],
+  food_hers: [
+    `You gesture at the spread and let her choose. She considers for a moment — genuinely considers — and picks the thing she wants. There's something different about watching her eat her own choice. More real. The camera catches it.`,
+    `Her choice. She reaches for what she wants without waiting, and what she wants is specific and considered. She eats it differently than she eats the things you hand her — more settled, more personal. The camera notices.`,
+    `You let her choose. She surveys the table and picks something particular, and eats it with the ease of someone eating what they actually want. At 419 pounds her wants are large and specific. This reads as true on camera. It is true.`,
+    `Her food, her choice. She takes her time selecting and then eats with a focus that's different from directed eating — more inward, more satisfied. Her belly accepting the food of her own choosing has a different quality. The camera catches the difference.`,
+    `You put the spread within reach and let her decide. At 630 pounds, choosing and reaching is its own act — deliberate, warm, certain. She picks something heavy and good and eats it with the unhurried certainty of someone who has been wanting this specifically.`,
+    `Her choice, her pace. You set the food in reach and she selects what she wants without hesitation — something dense, something sweet, something that she has been thinking about. She eats it with her eyes half-closed. The camera is very still. This is the truest footage.`,
+  ],
+  pace_push: [
+    `You push her — keep going, don't slow down. She responds; she's at Devoted tier and she trusts your direction completely. Her eating accelerates, her belly filling faster, the fullness arriving sooner. The footage has urgency.`,
+    `You direct her to push the pace. She doesn't hesitate — more, faster, the food coming in steady and fast. Her belly presses her waistband harder. Her breathing changes. She doesn't stop.`,
+    `Push pace. You direct her to keep going without pause, and at 419 pounds moving fast through heavy food is a real thing — her belly visibly fuller faster, the urgency of it landing in the footage. She's working.`,
+    `You push her pace. At this size, fast eating means a lot of food arriving quickly, and her belly responds — extending forward, pressing harder, the fullness stacking up in real time. Her expression is focused. She keeps going.`,
+    `You call for push pace. She gathers herself — it takes effort to push at 630 pounds — and moves faster through the food, her enormous belly shifting forward, the warmth of it visible. She doesn't stop. The footage is intense.`,
+    `Push. She hears you and she eats — slowly by any other measure, but for her current body this is committed and fast, each bite deliberate and quick, her belly pressing forward with each one. She keeps going until you call cut.`,
+  ],
+  pace_settle: [
+    `You tell her to take her time — her pace, her rhythm. She visibly relaxes into it. The footage softens: she eats slowly, comfortably, her belly filling gradually. Her expression is peaceful. This is her natural register.`,
+    `Settle pace. You let her find her own rhythm and she does — slow, considered, each bite followed by a moment of stillness. Her belly fills at its own rate. The footage is warm. She looks very comfortable.`,
+    `Her pace. You call it and she settles into herself, eating slowly and deliberately, the food going in at exactly the rate she wants. Her belly fills in long, unhurried waves. The camera stays still. This is good footage.`,
+    `You call settle and she drops into her natural pace — slow, methodical, very present. At 519 pounds, eating slowly means sitting very still and moving very little and eating with focus. That's what the camera gets. Her belly fills by degrees.`,
+    `Settle pace. She doesn't rush at 630 pounds — this is already her default — but when you explicitly call it she gets even more settled, more herself, more warm and deliberate. The footage is intimate. Her belly rises slowly with each bite.`,
+    `You tell her to settle and the already-still room gets stiller. She eats at the pace of something geological: slow, certain, vast. Each bite is followed by a long moment of being very full. The camera stays completely still. This is the truest footage she makes.`,
+  ],
+  pace_surge: [
+    `You call for the pause-and-surge: she stops mid-sequence, lets the fullness settle, and then one more push. The pause is visible — she holds, breathes, her belly sitting heavier. Then the surge. The footage has a shape.`,
+    `Pause, then surge. She pauses where you call it and you see the fullness land — her belly a little lower, her breath a little different — and then she surges into the final push. The contrast is visible. It's good footage.`,
+    `The pause-and-surge. She stops when you call it and the camera holds on the pause — her belly at full extension of that moment, her expression processing the fullness — and then she surges, one final push harder than the steady pace before. The two-movement shape reads beautifully.`,
+    `You call the surge structure. She pauses — holds — and her body settles into the pause visibly, her enormous belly dropping slightly, her expression going inward. Then the surge: she pushes through the final portion fast, her belly pressing forward further. The structure lands.`,
+    `Pause and surge. At 630 pounds the pause is dramatic — she is so full and so present and the camera holds on the stillness of her — and then the surge, the final push that adds the last increment to an already enormous belly. The shape of the take is the content.`,
+    `You call the pause. She is already very still — at this size she is always very still — but the directed pause has a different quality, more intentional, more weighted. Her belly sits at its current extension and the camera holds on it. Then you call the surge and she eats the final portion and the take is done.`,
+  ],
+};
+
+const RECORDING_TAKE_RESULT = {
+  okay:[
+    `You play back the take. It's fine — she's eating, she looks good, the camera is steady. Nothing special happened. The footage is exactly what you'd expect from the choices you made, no more. You have it; it exists.`,
+    `Take review. It's okay. She was eating and the camera caught it and nothing particularly landed. Some takes are like this. You have the footage and it's serviceable and something else might be better.`,
+    `Playback. Okay take — she's on camera, eating, her belly filling in frame. The angle didn't quite sing and the pace didn't find a rhythm but she looked good because she always looks good. It's fine footage.`,
+    `Take review on the monitor. Okay. She's enormous on screen and eating steadily and the footage captures it without anything particularly clicking. At 519 pounds she reads as impressive regardless, but the take itself didn't have a peak.`,
+    `You review it. Serviceable — she's on camera at 630 pounds and eating and her belly is prominent and all of that is true and captured. But nothing elevated it. The footage exists and is usable and that's where it stops.`,
+    `Playback. Okay footage of the largest person you've filmed — her belly filling the frame, her eating slow and steady. The take didn't have a moment. It's documentation more than artistry. You have it. You could do better.`,
+  ],
+  good:[
+    `Playback. This is genuinely good — something worked. The angle caught her belly in a way that reads clearly, or the food choice was right, or the pace found a rhythm. There's a moment in here that you'll use. Good take.`,
+    `Take review. Good. Something landed — a moment where the camera was in the right place and she was fully present and the footage caught it. Her belly at 320 pounds, warm and forward and real on screen. This is usable.`,
+    `You play it back. Good take — several things worked together and the footage is genuinely interesting. Her eating at this weight has a quality that reads well on camera and today you caught it. Solid clip.`,
+    `Playback. This is good footage — her at 519 pounds, enormous on screen, eating with a focus that reads clearly through the lens. The angle worked and the pacing found its beat and there's a sequence in here you'll keep. Good take.`,
+    `Take review. Good. The footage has something — her body reads clearly at this size and the direction gave it a shape and something in the combination worked. Her belly is prominent and warm on screen and the take has a moment you'll use.`,
+    `You play it back. Good take — hard to predict what will work at this size and this worked. The scale of her reads clearly, the eating has weight to it, and there's a sequence where everything landed at once. Good footage.`,
+  ],
+  great:[
+    `Playback on the monitor. This is great footage — multiple things landed together and the take has a real shape. Her eating looks genuine and her body looks beautiful and the angle was right and the clip has a beginning, middle, and a peak. Great take.`,
+    `Take review. Great. The angle and the food and the pacing came together into something that has a genuine arc — you can feel the take moving toward something and arriving. Her belly on screen at 320 pounds, warm and forward, fully present. This is the clip.`,
+    `You play it back. Great take. Something clicked — the camera was exactly right and she was fully present and the food choices built in a way that the footage captures. Her enormous belly, the food going in, her expression. This has everything.`,
+    `Playback. Great — genuinely great. Her at 519 pounds filling the frame and eating with the focus of someone who has done this hundreds of times and knows exactly what they're doing. The angle caught something real. The take has a shape. This is the clip.`,
+    `Take review. Great footage. At 630 pounds her body is a subject unto itself and this take treated it like one — the direction gave it a frame and she filled the frame completely and the result has depth and warmth and physical truth. Great take.`,
+    `You play it back and the room is quiet for a moment. Great take. The scale of her, the slowness of her eating, the particular way the camera caught the forward press of her belly — this has everything. The take is complete. It's a real piece of footage.`,
+  ],
+};
+
+const RECORDING_PERFECT_TAKE = [
+  `You play it back and you watch it twice. Everything came together: the angle showed exactly what needed to be shown, the food was exactly right for her, the pace found the rhythm that was already in her. There's a moment near the end where she looks directly into the lens and her expression is completely unguarded and completely present. That's the clip. That's why you came.`,
+  `Playback. Twice. The take is genuinely beautiful — the choices aligned perfectly into something that has the quality of inevitability, like all three decisions were obviously right and you just had to make them in order. Her eating at 320 pounds, the camera in exactly the right place, the pace exactly hers. A shot you could not have staged better.`,
+  `You play it back. Perfect take. The angle caught her belly from exactly the right position and the food built exactly the way it needed to and the pace let it breathe and then didn't. There's a sequence in the middle where every frame is exactly what you came to get. You watch it again. Still perfect.`,
+  `Playback. You watch it in silence. The take has the quality that great footage has — you can feel the rightness of every choice in how the result lands. Her body at 519 pounds, enormous and warm and real on screen, the food going in at exactly the right rate, the camera seeing it from exactly the right place. You watch it again. It's still perfect.`,
+  `You watch the take back once and then again without saying anything. Everything aligned. The low angle gave her body the framing it deserved and the heavy food built something real and the surge at the end caught her at the absolute peak of the take. Her belly at 630 pounds pressing forward into the surge. That sequence is perfect. You know it watching it.`,
+  `Playback. You watch it once and the room is completely silent. Perfect take. At 820 pounds the footage has a quality of documentation as much as direction — you are recording something that exists in the world — and this take caught that truth from exactly the right place at exactly the right pace. Her body filling the frame. The food going in. The surge. You watch it twice. It's the best footage you've made.`,
+];
+
+const RECORDING_ONE_MORE_TAKE = [
+  `"Yeah," she says immediately, already resettling. "Let's do it again." She's not tired. She's 258 pounds and eager and she wants the better take as much as you do.`,
+  `She nods, shifting her thicker thighs to reset her position. "One more," she agrees, her belly warm and forward in her lap. She's ready. She always says yes.`,
+  `"One more," you say. She closes her eyes for a moment, breathing around the fullness, then opens them. "Yeah. Okay." She's heavier now than when the session started. She settles in.`,
+  `She considers for a breath — not because she's reluctant, but because at 519 pounds resettling requires a moment — and then: "One more. Yes." Her enormous belly shifts slightly as she adjusts. She's ready.`,
+  `"One more take," you say. She's quiet for a moment, her colossal body heavy and warm and full. Then: "Yes." No hesitation in it. Just weight. She holds still and waits for the camera.`,
+  `You tell her one more. She can't really move but she makes a small, warm sound of agreement — "mm. yes" — and her hands settle back onto the vast warm geography of her belly. She's ready. She is always ready for one more.`,
+];
+
+const RECORDING_WRAP_ENDINGS = {
+  good:[
+    `You lower the camera. She looks at you and reads your expression and smiles. "Good?" she asks. "Good," you say. She's heavier than when you arrived — her belly pressing her waistband more definitively, her thighs warmer and wider in the chair. The clip exists. It's solid. You'll use it.`,
+    `Session done. You lower the camera and she exhales, slowly, her belly settling further forward. "How was it?" Good. The take was good and she knows it was good. She's 320 pounds and warmer and heavier than she was when you walked in and the footage is real.`,
+    `You wrap it. She looks at the camera as you lower it, then at you, and she's waiting for your read. "That was good," you say, and she relaxes into the chair, her very fat body releasing the small effort of performance. She's heavier than when you started. The clip is solid.`,
+    `You lower the camera and she sits with the weight of having eaten that much, her belly enormous and full and forward, her thighs spread wide under it. "We got something good," you tell her. She nods slowly, pleased. She is significantly heavier than she was when you arrived. The footage is real.`,
+    `Wrapped. She watches you lower the camera with the patient attention of someone who's spent the last hour being very still and very present. "Good?" Good. She settles further into her reinforced chair, 630 pounds of warm and full and heavy, and you can see the difference from when the session started — her belly sitting lower, her thighs pressed wider. The clip is good. It was worth it.`,
+    `You lower the camera. She can't move to meet you so she meets you with her eyes — warm, tired, pleased. "We got something good," you say, navigating back around the outer edge of her. She is larger than when you arrived. Measurably, visibly larger. Her belly has extended further into the room. Good footage of a very large woman, and it was a good session, and you'll use the clip.`,
+  ],
+  great:[
+    `"That was great," you say, and mean it. She looks up at you from the chair with a smile that breaks into something genuine and warm. She's heavier than when you arrived — her belly pressing more forward, her thighs warmer and fuller — and she knows the take was great and so do you. The session was worth it.`,
+    `You lower the camera and she's watching your face. "Great," you say before she can ask. She laughs a little — a warm, full-body laugh that makes her belly shake — and settles back into the chair. She's 320 pounds and heavier than when you started and she knows you got something real. Great session.`,
+    `Wrapped. You lower the camera and she looks at you with that particular expression of someone who knows they did good work. "That was great," you say. Her enormous belly sits warm and heavy and forward, fuller than when the session started. She's pleased. She should be. The footage is genuinely good.`,
+    `"Great," you tell her, and the word lands with the specific weight she was hoping for. She exhales slowly, her belly settling, her thighs spread wide under the weight of it. She's significantly heavier than when you arrived — the eating was real, the gain was real — and the footage is great and she knows it.`,
+    `You lower the camera. She's looking at you from across her own body — 630 pounds between you and her face — and she reads your expression before you say it. "Great," you confirm. She smiles slowly, warmly, and you can see her settle deeper into the chair as the last of the performance drops away. She's heavier than when you came. The clip is great.`,
+    `Session done. You navigate back around her to reach eye level and she's watching you come, patient and warm and enormous. "That was great," you tell her. Everything she is — all 820 pounds of her, fuller now than when you started — settles and quiets. She nods once, slowly. It was a great session. You both know it.`,
+  ],
+  perfect:[
+    `"That was perfect," you say, and she goes very still for a moment — the kind of still that means something landed. She's heavier than when you arrived, her belly warm and pressing forward, and the perfect take exists now, recorded, real. She looks at you for a long moment. "Play it back," she says. You do. She watches herself on the monitor and doesn't say anything. When it ends she says: "Yeah. That was it."`,
+    `You lower the camera. She's looking at you with an expression you haven't seen from her before — wondering, a little. "Perfect take," you say. The words land differently than good or great. She's 320 pounds and heavier than when you started and she knows without watching it that the take was something different, something real. "I felt it," she says. "I felt when it happened." You play it back for her. She watches it twice.`,
+    `Wrapped. "Perfect take," you say quietly. She doesn't laugh or celebrate — she gets very still, the way she got still at the start of the take but different now, after. Her enormous belly sits warm and full and forward, and she processes what you've told her. "Show me," she says. You play it back. She watches her own body on the monitor, eating, the take unfolding exactly as it happened. When it ends she says: "One more of those and we can do anything we want."`,
+    `The session is over and something was captured that doesn't happen every time. "Perfect take," you tell her, and she sits with it — 519 pounds, heavier than when you started, her belly enormous and warm and full, and a piece of footage that will genuinely be something. She looks at the camera in your hands. "Play it," she says. You play it back. She watches herself and says nothing until the end. "That's the one," she says. She means it.`,
+    `"Perfect," you say. The word is simple and she receives it simply — no performance left, no camera to perform for. She's 630 pounds and heavier than when you arrived and the perfect take exists and she knows what that means. "Can I see?" she asks. You bring the monitor to her. She watches it once with her hands resting on the warm vast geography of her belly. She watches it twice. When it ends the second time she says, quietly: "Yeah." Just that.`,
+    `You lower the camera. You navigate back around her to reach a place where she can see your face. "Perfect take," you tell her. She is enormous and warm and completely still, and the words arrive slowly through the heat of 820 pounds of full body and the specific satisfaction of having done the thing she does best. "Perfect," she repeats, tasting the word. She closes her eyes for a moment. Opens them. "Play it back," she says. You do. She listens to the sound of herself eating. She says: "That's everything."`,
+  ],
+};
+
+const RECORDING_PAYOFF_TEXT = [
+  `She's heavier than when you arrived. You can see it in how she sits — her belly pressing her waistband harder than it did at the start, her thighs wider in the chair. The food was real and the gain is real and the footage shows the difference between the start of the session and the end. She knows how much heavier she is. She's pleased about it.`,
+  `You arrived and she was 320 pounds and you're leaving and she's more than that — the eating was real, the takes were real, the gain settled into her body during the session and you can see it in the way she fills the chair now versus how she filled it when you started. Her belly sits lower. Her thighs spread wider. It was a real session.`,
+  `The session added weight. This is the point. Her belly is heavier and more forward than it was when you picked up the camera, her thighs pressing wider, her breathing carrying the specific quality of someone who has eaten a lot and the food has settled. 419 pounds at the start. More now. The footage is real and so is the gain.`,
+  `She's heavier. You watched it happen — take by take, the food going in, the belly extending forward another increment, the thighs spreading further under it. At 519 pounds the gains are visible in real time and the session made them visible, real, recorded. She fills the chair differently than she did when you arrived. That was the point. That was the session.`,
+  `You can measure the difference between the Kylie who greeted you at the start of the session and the Kylie who watches you pack up the camera now. Her belly sits an inch further forward. Her thighs press wider into the sides of the reinforced chair. At 630 pounds, gain is geological: slow, permanent, the land sinking under its own weight. The session added to what is already enormous. You captured it. You also made it.`,
+  `She is larger than when you arrived. Not metaphorically — physically, measurably, verifiably larger. The food was real and multiple takes were real and the gain accumulated take by take and settled into her and now she fills her corner more completely than she did when you set up the ring light. At 820 pounds this is an architectural fact. She can feel it. You can see it. The footage has it on record.`,
+];
+
+// ══════════════════════════════════════════════════════════════════
 
 const EVOLVED_ACTIVITY_META = {
   sumo:            { label:"Enter a Tournament",       apCost:1, gainRange:[4,8],  relBonus:10 },
@@ -8668,6 +8869,11 @@ export default function ProfessorSim(){
   //   partnerStageAtStart, stagedUp, foodQueue, tierIdx, chatLines,
   //   phase:'streaming'|'scoreboard', popupText, phaseAfterPopup,
   //   actions:{kylieRevealed,partnerRevealed,zoomUses,chatUses,pushUsed} }
+  const [recordingSessionState, setRecordingSessionState] = useState(null);
+  // recordingSessionState: { studentId, stageIdx, phase:'open'|'directing'|'take_result'|'wrap_choice'|'done',
+  //   takeNum, timeLeft, kylieGain, clipRatings, bestClip,
+  //   choiceStep, currentChoices:{angle,food,pace}, perfectTakeAchieved,
+  //   popupText, done, endingText }
   const [intimacySceneSelector,setIntimacySceneSelector]=useState(null);
   // intimacySceneSelector: {student}
   const logRef=useRef(null);
@@ -9994,6 +10200,109 @@ export default function ProfessorSim(){
     setCollabStreamState(null);
     setCollabPartnerId(null);
   };
+
+  // ── Recording Session (feedee_creator Activity 2) ──────────────
+  const startRecordingSession=(s)=>{
+    if(ap<2){push(`⚠️ Need 2 AP.`);return;}
+    setAp(a=>a-2);
+    const stageIdx=Math.max(0,Math.min(5,getStage(s.lbs).id-5));
+    setRecordingSessionState({
+      studentId:s.id, stageIdx,
+      phase:'open',
+      takeNum:1, timeLeft:3,
+      kylieGain:0,
+      clipRatings:[], bestClip:null,
+      choiceStep:0, currentChoices:{angle:null,food:null,pace:null},
+      perfectTakeAchieved:false,
+      popupText:null, done:false, endingText:null,
+    });
+  };
+
+  const makeRecordingChoice=(choiceId)=>{
+    setRecordingSessionState(prev=>{
+      if(!prev||prev.phase!=='directing') return prev;
+      const newChoices={...prev.currentChoices};
+      const step=prev.choiceStep;
+      if(step===0) newChoices.angle=choiceId;
+      else if(step===1) newChoices.food=choiceId;
+      else newChoices.pace=choiceId;
+      const popupKey=step===0?choiceId:step===1?choiceId:choiceId;
+      const popupArr=RECORDING_DIRECTION_POPUPS[choiceId];
+      const popupText=popupArr?popupArr[prev.stageIdx]:null;
+      if(step<2){
+        return {...prev, currentChoices:newChoices, choiceStep:step+1, popupText};
+      }
+      // All 3 choices made — evaluate take
+      const perfect=RECORDING_PERFECT_COMBOS[prev.stageIdx];
+      const matches=[newChoices.angle===perfect[0],newChoices.food===perfect[1],newChoices.pace===perfect[2]];
+      const score=matches.filter(Boolean).length;
+      const quality=score===3?'perfect':score===2?'great':score===1?'good':'okay';
+      const [lbsMin,lbsMax]=RECORDING_FOOD_LBS[newChoices.food]||[5,10];
+      const baseLbs=lbsMin+Math.random()*(lbsMax-lbsMin);
+      const paceLbs=RECORDING_PACE_LBS[newChoices.pace]||0;
+      const qualityLbs=RECORDING_QUALITY_BONUS[quality]||0;
+      const gainThisTake=baseLbs+paceLbs+qualityLbs;
+      const newGain=prev.kylieGain+gainThisTake;
+      // Apply lbs to student
+      const kylie=students.find(st=>st.id===prev.studentId);
+      if(kylie) processStudentGain(kylie,gainThisTake,0);
+      const newRatings=[...prev.clipRatings,quality];
+      const qualityOrder=['okay','good','great','perfect'];
+      const bestClip=newRatings.reduce((best,q)=>qualityOrder.indexOf(q)>qualityOrder.indexOf(best)?q:best,'okay');
+      const isPerfect=quality==='perfect';
+      const takeText=isPerfect?RECORDING_PERFECT_TAKE[prev.stageIdx]:(RECORDING_TAKE_RESULT[quality]||[])[prev.stageIdx]||'';
+      return {...prev,
+        currentChoices:newChoices, choiceStep:3,
+        phase:'take_result',
+        kylieGain:newGain, clipRatings:newRatings, bestClip,
+        perfectTakeAchieved:prev.perfectTakeAchieved||isPerfect,
+        popupText, lastTakeText:takeText, lastTakeQuality:quality,
+      };
+    });
+  };
+
+  const dismissRecordingChoicePopup=()=>{
+    setRecordingSessionState(prev=>{
+      if(!prev||!prev.popupText) return prev;
+      // If all choices made, transition to take_result
+      if(prev.choiceStep===3) return {...prev,popupText:null};
+      return {...prev,popupText:null};
+    });
+  };
+
+  const oneMoreTake=()=>{
+    setRecordingSessionState(prev=>{
+      if(!prev||prev.timeLeft<=0) return prev;
+      const kylie=students.find(st=>st.id===prev.studentId);
+      const newTimeLeft=prev.timeLeft-1;
+      const oneMoreText=(RECORDING_ONE_MORE_TAKE||[])[prev.stageIdx]||'She nods. One more.';
+      return {...prev,
+        phase:'directing',
+        takeNum:prev.takeNum+1, timeLeft:newTimeLeft,
+        choiceStep:0, currentChoices:{angle:null,food:null,pace:null},
+        popupText:oneMoreText,
+        lastTakeText:null, lastTakeQuality:null,
+      };
+    });
+  };
+
+  const wrapRecordingSession=()=>{
+    setRecordingSessionState(prev=>{
+      if(!prev) return prev;
+      const quality=prev.bestClip||'okay';
+      const endArr=(RECORDING_WRAP_ENDINGS[quality]||RECORDING_WRAP_ENDINGS.good);
+      const endText=(endArr[prev.stageIdx]||endArr[0])+'\n\n'+(RECORDING_PAYOFF_TEXT[prev.stageIdx]||'');
+      // Rel bonus
+      const relBonuses={okay:1,good:3,great:6,perfect:10};
+      const relBonus=relBonuses[quality]||1;
+      const kylie=students.find(st=>st.id===prev.studentId);
+      if(kylie) setStudents(p=>p.map(st=>st.id===prev.studentId?{...st,relationship:Math.min(100,st.relationship+relBonus),contestCompletions:(st.contestCompletions||0)+1}:st));
+      push(`🎬 Filming session wrapped — ${quality} clip. +${relBonus} relationship.`);
+      return {...prev, phase:'done', done:true, endingText:endText, popupText:null};
+    });
+  };
+
+  const closeRecordingSession=()=>setRecordingSessionState(null);
 
   const openIntimacySelector=(s)=>{setIntimacySceneSelector({student:s});};
 
@@ -13224,9 +13533,14 @@ export default function ProfessorSim(){
                         <div style={{background:"rgba(30,8,60,0.5)",border:`1px solid ${borderColor}`,borderRadius:10,padding:12}}>
                           <div style={{fontSize:9,letterSpacing:3,color:"#9040e0",marginBottom:4}}>✦ EVOLVED PATH</div>
                           <div style={{fontSize:13,fontWeight:700,color:titleColor,marginBottom:4}}>{evFormMeta?.title||meta?.label||s.evolvedForm}</div>
-                          <button style={{...C.btn("#401890"),opacity:ap<(meta?.apCost||1)?0.4:1,marginBottom:10,width:"100%"}} onClick={()=>doEvolvedActivity(s)}>
+                          <button style={{...C.btn("#401890"),opacity:ap<(meta?.apCost||1)?0.4:1,marginBottom:s.evolvedForm==='feedee_creator'&&getTier(s.relationship).id>=3?4:10,width:"100%"}} onClick={()=>doEvolvedActivity(s)}>
                             {meta?.label||"Activity"} ({meta?.apCost||1} AP) · +{meta?.gainRange?.[0]}–{meta?.gainRange?.[1]} lbs
                           </button>
+                          {s.evolvedForm==='feedee_creator'&&getTier(s.relationship).id>=3&&(
+                            <button style={{...C.btn("#804020"),opacity:ap<2?0.4:1,marginBottom:10,width:"100%"}} onClick={()=>startRecordingSession(s)}>
+                              🎬 Film Her Session (2 AP)
+                            </button>
+                          )}
                           {tree.length>0&&(
                             <div>
                               <div style={{fontSize:9,letterSpacing:2,color:"#6030a0",marginBottom:6}}>EVOLVED SKILLS · {availLbs} lbs available</div>
@@ -15310,6 +15624,147 @@ export default function ProfessorSim(){
                   <div style={{background:"#0c0018",border:`1px solid ${purple}50`,borderRadius:10,padding:20,maxWidth:460,margin:16}}>
                     <div style={{fontSize:12,color:"#d0a8e8",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{popupText}</div>
                     <button style={{...C.btn(purple),width:"100%"}} onClick={dismissCollabPopup}>Continue</button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── RECORDING SESSION MODAL ── */}
+      {recordingSessionState&&(()=>{
+        const rs=recordingSessionState;
+        const kylie=students.find(st=>st.id===rs.studentId);
+        if(!kylie) return null;
+        const amber='#c08040';
+        const amberDim='#80502a';
+        const bg='linear-gradient(160deg,#100800,#1a1000,#100800)';
+        const qualBadge={okay:'#808080',good:'#60a060',great:'#60a0e0',perfect:'#c0a020'};
+        const choiceLabels={
+          angle_low:'📷 Get low — floor angle, looking up',
+          angle_wide:'📷 Go wide — full body, scale of her',
+          angle_close:'📷 Close up — face and chest',
+          food_heavy:'🍖 Heavy food — dense and filling',
+          food_build:'🥗 Start light, build to heavier',
+          food_hers:'💜 Let her choose what she wants',
+          pace_push:'⚡ Push her — more, faster',
+          pace_settle:'🌊 Let her set the pace',
+          pace_surge:'🌀 Pause — let it land — then surge',
+        };
+        const stepLabels=['📷 Camera angle','🍽️ Food','⏱️ Pacing'];
+        const angleChoices=['angle_low','angle_wide','angle_close'];
+        const foodChoices=['food_heavy','food_build','food_hers'];
+        const paceChoices=['pace_push','pace_settle','pace_surge'];
+        const stepChoices=[angleChoices,foodChoices,paceChoices];
+        const timeBar='█'.repeat(rs.timeLeft)+'░'.repeat(3-rs.timeLeft);
+        return(
+          <div style={C.overlay} key="recording-modal">
+            <div style={{...C.modal,maxWidth:520,background:bg,border:`1px solid ${amber}50`}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                <div style={{color:amber,fontWeight:"bold",letterSpacing:2,fontSize:11}}>🎬 FILM HER SESSION — {kylie.name.toUpperCase()}</div>
+                <div style={{color:amberDim,fontSize:11}}>Time {timeBar} | Take {rs.takeNum}</div>
+              </div>
+
+              {/* OPEN PHASE */}
+              {rs.phase==='open'&&(
+                <>
+                  <div style={{fontSize:12,color:"#d8c0a0",lineHeight:1.9,whiteSpace:"pre-line",marginBottom:16,fontStyle:"italic"}}>
+                    {RECORDING_OPENING_TEXT[rs.stageIdx]||''}
+                  </div>
+                  <button style={{...C.btn(amber),width:"100%"}} onClick={()=>setRecordingSessionState(p=>({...p,phase:'directing'}))}>
+                    🎬 Pick up the camera
+                  </button>
+                </>
+              )}
+
+              {/* DIRECTING PHASE */}
+              {rs.phase==='directing'&&(
+                <>
+                  <div style={{fontSize:11,color:"#d8c0a0",lineHeight:1.8,marginBottom:8,fontStyle:"italic"}}>
+                    {RECORDING_TAKE_INTRO_TEXT[rs.stageIdx]||''}
+                  </div>
+                  {/* Step indicator */}
+                  <div style={{display:"flex",gap:4,marginBottom:12}}>
+                    {[0,1,2].map(i=>(
+                      <div key={i} style={{flex:1,padding:"4px 6px",borderRadius:4,fontSize:10,textAlign:"center",
+                        background:i<rs.choiceStep?`${amber}30`:i===rs.choiceStep?`${amber}20`:'#0a0600',
+                        border:`1px solid ${i===rs.choiceStep?amber:i<rs.choiceStep?amberDim:'#302010'}`,
+                        color:i===rs.choiceStep?amber:i<rs.choiceStep?amberDim:'#604020'}}>
+                        {i<rs.choiceStep?'✓ '+stepLabels[i].split(' ').slice(1).join(' '):stepLabels[i]}
+                      </div>
+                    ))}
+                  </div>
+                  {/* Current step choices */}
+                  {rs.choiceStep<3&&(
+                    <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                      {stepChoices[rs.choiceStep].map(cid=>(
+                        <button key={cid} style={{...C.btn(amberDim),textAlign:"left",padding:"8px 12px",fontSize:12}}
+                          onClick={()=>makeRecordingChoice(cid)}>
+                          {choiceLabels[cid]||cid}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
+
+              {/* TAKE RESULT PHASE */}
+              {rs.phase==='take_result'&&(
+                <>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                    <div style={{fontSize:11,color:amberDim,letterSpacing:1}}>TAKE {rs.takeNum} RESULT</div>
+                    <div style={{padding:"2px 8px",borderRadius:4,fontSize:10,fontWeight:"bold",
+                      background:`${qualBadge[rs.lastTakeQuality]||'#808080'}20`,
+                      border:`1px solid ${qualBadge[rs.lastTakeQuality]||'#808080'}`,
+                      color:qualBadge[rs.lastTakeQuality]||'#808080'}}>
+                      {(rs.lastTakeQuality||'').toUpperCase()}
+                    </div>
+                  </div>
+                  <div style={{fontSize:12,color:"#d8c0a0",lineHeight:1.9,whiteSpace:"pre-line",marginBottom:16,fontStyle:"italic"}}>
+                    {rs.lastTakeText||''}
+                  </div>
+                  <div style={{display:"flex",gap:8}}>
+                    <button style={{...C.btn(amber),flex:1}} onClick={wrapRecordingSession}>
+                      ✓ Wrap it
+                    </button>
+                    {rs.timeLeft>0&&(
+                      <button style={{...C.btn(amberDim),flex:1}} onClick={oneMoreTake}>
+                        🔄 One more take ({rs.timeLeft} left)
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
+
+              {/* DONE PHASE */}
+              {rs.phase==='done'&&(
+                <>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                    <div style={{fontSize:11,color:amberDim,letterSpacing:1}}>SESSION WRAPPED</div>
+                    <div style={{padding:"2px 8px",borderRadius:4,fontSize:10,fontWeight:"bold",
+                      background:`${qualBadge[rs.bestClip]||'#808080'}20`,
+                      border:`1px solid ${qualBadge[rs.bestClip]||'#808080'}`,
+                      color:qualBadge[rs.bestClip]||'#808080'}}>
+                      {(rs.bestClip||'').toUpperCase()} CLIP
+                    </div>
+                    {rs.perfectTakeAchieved&&<div style={{padding:"2px 8px",borderRadius:4,fontSize:10,color:"#c0a020",border:"1px solid #c0a020"}}>✨ PERFECT TAKE</div>}
+                  </div>
+                  <div style={{fontSize:12,color:"#d8c0a0",lineHeight:1.9,whiteSpace:"pre-line",marginBottom:16,fontStyle:"italic"}}>
+                    {rs.endingText||''}
+                  </div>
+                  <button style={{...C.btn(amber),width:"100%"}} onClick={closeRecordingSession}>
+                    Close ✓
+                  </button>
+                </>
+              )}
+
+              {/* POPUP OVERLAY — direction choice result */}
+              {rs.popupText&&(
+                <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
+                  <div style={{background:"#100800",border:`1px solid ${amber}50`,borderRadius:10,padding:20,maxWidth:440,margin:16}}>
+                    <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{rs.popupText}</div>
+                    <button style={{...C.btn(amber),width:"100%"}} onClick={dismissRecordingChoicePopup}>Continue</button>
                   </div>
                 </div>
               )}
