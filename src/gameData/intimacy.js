@@ -1,3 +1,5 @@
+import { getStage } from './stages.js';
+
 export const INTIMACY_ASCENSION_FLAVOR={
   celestial:{
     skin:`Her skin carries the faint warmth of something overripe — not sweat, not perfume, but a deeper luminescence, as though the light that lives in her has been seeping outward for weeks. When you touch her it comes into you, slow and very warm.`,
