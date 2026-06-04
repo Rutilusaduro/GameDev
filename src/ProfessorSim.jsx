@@ -5,7 +5,7 @@ import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GR
 import { BODY_DESCS, STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, OUTFITS, SLIGHT_DIARY, DIARY_ENTRIES, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
 import { GOSSIP, getGossipLines } from './gameData/gossip.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS, CLASS_SCENES } from './gameData/classEvents.js';
-import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS } from './gameData/evolvedForms.js';
+import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_WEIGH_IN_2_TEXT, CONTEST_DEVOUR_POPUPS, CONTEST_PAYOFF_TEXT, SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_MATCH_AFTERMATH, SUMO_PAYOFF_TEXT, SUMO_FILL_RING_TEXT, COLLAB_CONTENT_CREATOR_ARCHETYPES, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_OPENING_TEXT, RECORDING_TAKE_INTRO_TEXT, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT, MJ_RECIPES, FAIR_FOODS, FAIR_STAGE_FOODS, FAIR_DARCY_WEIGHTS, FAIR_FULLNESS_MILESTONES, FAIR_WEIGH_IN_TEXT, FAIR_PAYOFF_TEXT, FAIR_TAUNT_POPUPS } from './gameData/miniGames.js';
 import { SKILL_TREE, SKILL_CATEGORIES, DIVINE_SKILL_TREE, EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
@@ -326,6 +326,8 @@ export default function ProfessorSim(){
   // researchSubjectPicker: { student: nadiaStudent }
   const [subjectJournalState, setSubjectJournalState] = useState(null);
   // subjectJournalState: { subjectId, currentPage (0–10) }
+  const [nadiaNotesState, setNadiaNotesState] = useState(null);
+  // nadiaNotesState: { nadiaId, subjectId, currentPage (-1=intro, 0–10=subject stage) }
   const [collabStreamState, setCollabStreamState] = useState(null);
   // collabStreamState: { kylieId, partnerId, stageIdx, qualityBar, kylieGain, partnerGain,
   //   partnerStageAtStart, stagedUp, foodQueue, tierIdx, chatLines,
@@ -5185,6 +5187,9 @@ export default function ProfessorSim(){
                                       {s.researchFocus==='feeder_focus'&&FEEDER_SUBJECT_JOURNALS[subj.archetype]&&(
                                         <button style={{...C.smBtn,fontSize:10}} onClick={()=>setSubjectJournalState({subjectId:subj.id,currentPage:getStage(subj.lbs).id})}>📔 Journal</button>
                                       )}
+                                      {NADIA_SUBJECT_JOURNALS[subj.archetype]&&(
+                                        <button style={{...C.smBtn,fontSize:10,background:"#0a0020",border:"1px solid #5030a040"}} onClick={()=>setNadiaNotesState({nadiaId:s.id,subjectId:subj.id,currentPage:-1})}>📓 Notes</button>
+                                      )}
                                       <button style={{...C.smBtn,fontSize:10,opacity:0.7}} onClick={()=>{setStudents(prev=>prev.map(x=>x.id===s.id?{...x,researchSubjectId:null}:x));}}>Change</button>
                                     </div>
                                   </div>
@@ -7227,6 +7232,62 @@ export default function ProfessorSim(){
                 <button style={{...C.smBtn,opacity:canPrev?1:0.25,fontSize:11,minWidth:80}} onClick={()=>canPrev&&setSubjectJournalState(p=>({...p,currentPage:p.currentPage-1}))} disabled={!canPrev}>← Earlier</button>
                 <div style={{fontSize:10,color:"#806050",letterSpacing:1}}>{currentPage+1} / {maxPage+1}</div>
                 <button style={{...C.smBtn,opacity:canNext?1:0.25,fontSize:11,minWidth:80}} onClick={()=>canNext&&setSubjectJournalState(p=>({...p,currentPage:p.currentPage+1}))} disabled={!canNext}>Later →</button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── NADIA'S SUBJECT NOTES ── */}
+      {nadiaNotesState&&(()=>{
+        const{nadiaId,subjectId,currentPage}=nadiaNotesState;
+        const nadia=students.find(st=>st.id===nadiaId);
+        const subj=students.find(st=>st.id===subjectId);
+        if(!nadia||!subj) return null;
+        const journal=NADIA_SUBJECT_JOURNALS[subj.archetype];
+        if(!journal) return null;
+        const nadiaStageId=getStage(nadia.lbs).id;
+        const nadiaLevel=nadiaStageId>=10?2:nadiaStageId>=8?1:0;
+        const maxPage=getStage(subj.lbs).id;
+        const STAGE_LABELS=["Slight","Slim","Soft","Chubby","Plump","Heavy","Fat","Very Fat","Enormous","Colossal","Blob"];
+        const NADIA_LEVEL_LABELS=["Heavy–Very Fat","Enormous–Colossal","Blob"];
+        const isIntro=currentPage===-1;
+        const entryText=isIntro?journal.intro:(journal.entries[currentPage]?.[nadiaLevel]||"[no entry]");
+        const purple="#6b5b95";
+        const darkPurple="#2a0a40";
+        const canPrev=!isIntro;
+        const canNext=!isIntro&&currentPage<maxPage;
+        return(
+          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.92)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
+            <div style={{background:`linear-gradient(170deg,#080015,#0d0025)`,border:`1px solid ${purple}60`,borderRadius:6,padding:0,maxWidth:520,width:"95%",maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:`0 8px 40px rgba(80,20,120,0.4)`}}>
+              {/* Header */}
+              <div style={{background:`linear-gradient(90deg,#0a0020,#150030,#0a0020)`,borderBottom:`1px solid ${purple}40`,padding:"10px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",borderRadius:"4px 4px 0 0"}}>
+                <div style={{fontSize:9,letterSpacing:3,color:purple}}>📓 RESEARCH NOTES</div>
+                <div style={{fontSize:11,color:"#c0a0e0",fontWeight:"bold"}}>{nadia.name} → {subj.name}</div>
+                <button style={{...C.smBtn,fontSize:10,padding:"2px 8px",background:"transparent",border:`1px solid ${purple}30`,color:"#7050a0"}} onClick={()=>setNadiaNotesState(null)}>✕</button>
+              </div>
+              {/* Stage/level indicator */}
+              <div style={{padding:"6px 16px",background:"#050010",borderBottom:`1px solid ${purple}20`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div style={{fontSize:9,color:"#5040708",letterSpacing:2}}>{isIntro?"INTRODUCTION":`SUBJECT: ${STAGE_LABELS[currentPage]}`}</div>
+                <div style={{fontSize:9,color:"#6b5b95",letterSpacing:2}}>NADIA: {NADIA_LEVEL_LABELS[nadiaLevel]}</div>
+              </div>
+              {/* Entry */}
+              <div style={{flex:1,overflowY:"auto",padding:"20px 22px",background:"#040010"}}>
+                {isIntro&&<div style={{fontSize:9,letterSpacing:3,color:purple,marginBottom:10,textTransform:"uppercase"}}>Why this subject</div>}
+                <div style={{fontSize:13,color:"#c0a8e8",lineHeight:1.9,fontFamily:"Georgia,serif",whiteSpace:"pre-wrap"}}>{entryText}</div>
+              </div>
+              {/* Navigation */}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 16px",borderTop:`1px solid ${purple}30`}}>
+                <button style={{...C.smBtn,opacity:canPrev?1:0.25,fontSize:11,minWidth:80}}
+                  onClick={()=>canPrev&&setNadiaNotesState(p=>({...p,currentPage:p.currentPage===0?-1:p.currentPage-1}))}
+                  disabled={!canPrev}>{isIntro?"":"← Earlier"}</button>
+                <div style={{fontSize:10,color:"#6040a0",letterSpacing:1}}>{isIntro?"Intro":`${currentPage+1} / ${maxPage+1}`}</div>
+                <button style={{...C.smBtn,opacity:(isIntro||canNext)?1:0.25,fontSize:11,minWidth:80}}
+                  onClick={()=>{
+                    if(isIntro) setNadiaNotesState(p=>({...p,currentPage:0}));
+                    else if(canNext) setNadiaNotesState(p=>({...p,currentPage:p.currentPage+1}));
+                  }}
+                  disabled={!isIntro&&!canNext}>{isIntro?"Begin →":"Later →"}</button>
               </div>
             </div>
           </div>

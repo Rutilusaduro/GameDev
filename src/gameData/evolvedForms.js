@@ -2715,3 +2715,38 @@ export const FEEDER_SUBJECT_JOURNALS = {
     `I'm a complete immobile blob and I've never been happier. My body is dominated by one single, gigantic, perfectly spherical belly — an endless, taut, smooth orb of fat that covers my lap and legs entirely, pinning me helplessly. The skin is stretched drum-tight with zero folds, just flawless roundness on an unimaginable scale. My massive breasts rest far up on its curve while every breath makes the sphere quiver. I moan desperately as she feeds me, begging for more calories to swell my perfect ball even larger. This is my masterpiece. Stuff me without end. Make this enormous sphere grow fatter and tighter. I live only for its expansion now.`,
   ],
 };
+
+// ── NADIA'S SUBJECT NOTES ────────────────────────────────────────────────────
+// Nadia's personal researcher journal about each study subject.
+// Structure per archetype: { intro: string, entries: Array(11)[3] }
+//   entries[subjectStageIdx][nadiaLevel]
+//   nadiaLevel 0 = Nadia at Heavy/Fat/Very Fat (stage 5–7)
+//   nadiaLevel 1 = Nadia at Enormous/Colossal   (stage 8–9)
+//   nadiaLevel 2 = Nadia at Blob                (stage 10)
+
+const _STAGE_NAMES = ["Slight","Slim","Soft","Chubby","Plump","Heavy","Fat","Very Fat","Enormous","Colossal","Blob"];
+const _NADIA_LEVELS = ["Heavy/Fat/Very Fat","Enormous/Colossal","Blob"];
+function _np(archetype) {
+  return Array(11).fill(null).map((_,si) =>
+    _NADIA_LEVELS.map(lvl =>
+      `[placeholder: Nadia's notes — ${archetype} subject at ${_STAGE_NAMES[si]} — Nadia at ${lvl}]`
+    )
+  );
+}
+
+export const NADIA_SUBJECT_JOURNALS = {
+  cheerleader:  { intro:`[placeholder: Nadia intro — why she chose the cheerleader as her subject]`,  entries:_np('cheerleader')  },
+  bookworm:     { intro:`[placeholder: Nadia intro — why she chose the bookworm as her subject]`,     entries:_np('bookworm')     },
+  influencer:   { intro:`[placeholder: Nadia intro — why she chose the influencer as her subject]`,   entries:_np('influencer')   },
+  athlete:      { intro:`[placeholder: Nadia intro — why she chose the athlete as her subject]`,      entries:_np('athlete')      },
+  artsy:        { intro:`[placeholder: Nadia intro — why she chose the artsy student as her subject]`,entries:_np('artsy')        },
+  overachiever: { intro:`[placeholder: Nadia intro — why she chose the overachiever as her subject]`, entries:_np('overachiever') },
+  sorority:     { intro:`[placeholder: Nadia intro — why she chose the sorority student]`,            entries:_np('sorority')     },
+  quiet:        { intro:`[placeholder: Nadia intro — why she chose the quiet student]`,               entries:_np('quiet')        },
+  gamer:        { intro:`[placeholder: Nadia intro — why she chose the gamer as her subject]`,        entries:_np('gamer')        },
+  transfer:     { intro:`[placeholder: Nadia intro — why she chose the transfer student]`,            entries:_np('transfer')     },
+  nursing:      { intro:`[placeholder: Nadia intro — why she chose the nursing student]`,             entries:_np('nursing')      },
+  farm_girl:    { intro:`[placeholder: Nadia intro — why she chose the farm girl as her subject]`,    entries:_np('farm_girl')    },
+  eced:         { intro:`[placeholder: Nadia intro — why she chose the ECE student]`,                 entries:_np('eced')         },
+  culinary:     { intro:`[placeholder: Nadia intro — why she chose the culinary student]`,            entries:_np('culinary')     },
+};
