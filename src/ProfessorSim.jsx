@@ -5,7 +5,7 @@ import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GR
 import { BODY_DESCS, STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, OUTFITS, SLIGHT_DIARY, DIARY_ENTRIES, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
 import { GOSSIP, getGossipLines } from './gameData/gossip.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS, CLASS_SCENES } from './gameData/classEvents.js';
-import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS } from './gameData/evolvedForms.js';
+import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS, BATCH_BAKER_NPCS, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_WEIGH_IN_2_TEXT, CONTEST_DEVOUR_POPUPS, CONTEST_PAYOFF_TEXT, SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_MATCH_AFTERMATH, SUMO_PAYOFF_TEXT, SUMO_FILL_RING_TEXT, COLLAB_CONTENT_CREATOR_ARCHETYPES, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_OPENING_TEXT, RECORDING_TAKE_INTRO_TEXT, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT, MJ_RECIPES, FAIR_FOODS, FAIR_STAGE_FOODS, FAIR_DARCY_WEIGHTS, FAIR_FULLNESS_MILESTONES, FAIR_WEIGH_IN_TEXT, FAIR_PAYOFF_TEXT, FAIR_TAUNT_POPUPS } from './gameData/miniGames.js';
 import { SKILL_TREE, SKILL_CATEGORIES, DIVINE_SKILL_TREE, EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
@@ -324,6 +324,8 @@ export default function ProfessorSim(){
   // collabPartnerId: number — persists through EVOLVED_EVENT phases + mini-game
   const [researchSubjectPicker, setResearchSubjectPicker] = useState(null);
   // researchSubjectPicker: { student: nadiaStudent }
+  const [batchBakerState, setBatchBakerState] = useState({classWeight:0, momWeight:0, suspicion:0, stage:0});
+  // batchBakerState: tracks homeroom_queen NPC weight accumulation and suspicion
   const [subjectJournalState, setSubjectJournalState] = useState(null);
   // subjectJournalState: { subjectId, currentPage (0–10) }
   const [nadiaNotesState, setNadiaNotesState] = useState(null);
@@ -1055,6 +1057,17 @@ export default function ProfessorSim(){
     if(s.evolvedForm==='psych_researcher'){
       if(s.researchSubjectId==null){ openResearchSubjectPicker(s); return; }
     }
+    if(s.evolvedForm==='homeroom_queen'){
+      const meta=EVOLVED_ACTIVITY_META['homeroom_queen']; if(!meta) return;
+      if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
+      const hqStage=Math.min(5, batchBakerState.stage);
+      const evDef=EVOLVED_EVENTS['homeroom_queen']?.[hqStage];
+      if(evDef){
+        setAp(a=>a-meta.apCost);
+        setEvolvedEventState({studentId:s.id,formId:'homeroom_queen',stageIdx:hqStage,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0,classGain:0,momGain:0});
+        return;
+      }
+    }
     const meta=EVOLVED_ACTIVITY_META[s.evolvedForm]; if(!meta) return;
     if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
     const stageIdx=getEvolvedActivityStageIdx(s);
@@ -1129,13 +1142,35 @@ export default function ProfessorSim(){
         setStudents(ss=>ss.map(st=>st.id===s.id?{...st,mjRecipes:[...(st.mjRecipes||[]),ending.unlockRecipe].filter((v,i,a)=>a.indexOf(v)===i)}:st));
       }
       const endText=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
-      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairContest:!!ending.startsFairContest}));
+      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:ending.classGain||0,momGain:ending.momGain||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairContest:!!ending.startsFairContest}));
     } else {
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }
   };
 
-  const closeEvolvedEvent=()=>setEvolvedEventState(null);
+  const closeEvolvedEvent=()=>{
+    if(evolvedEventState?.formId==='homeroom_queen'&&evolvedEventState.done){
+      const {history,classGain=0,momGain=0}=evolvedEventState;
+      // Calculate suspicion delta from flags in history
+      const suspDelta=Object.entries(HOMEROOM_SUSPICION_DELTAS).reduce((acc,[flag,delta])=>acc+(history.includes(flag)?delta:0),0);
+      setBatchBakerState(prev=>{
+        const newSusp=Math.max(0,Math.min(10,prev.suspicion+suspDelta));
+        const newClass=prev.classWeight+classGain;
+        const newMom=prev.momWeight+momGain;
+        // Determine new arc stage from NPC weight thresholds
+        const [ct1,ct2,ct3]=HOMEROOM_THRESHOLDS.class;
+        const [mt1,mt2,mt3]=HOMEROOM_THRESHOLDS.mom;
+        let newStage=0;
+        if(newClass>=ct1)newStage=1;
+        if(newMom>=mt1)newStage=2;
+        if(newClass>=ct2)newStage=3;
+        if(newMom>=mt2)newStage=4;
+        if(newClass>=ct3&&newMom>=mt3)newStage=5;
+        return{classWeight:newClass,momWeight:newMom,suspicion:newSusp,stage:Math.max(prev.stage,newStage)};
+      });
+    }
+    setEvolvedEventState(null);
+  };
 
   const startEatingContest=(studentId,stageIdx,history)=>{
     const s=students.find(st=>st.id===studentId); if(!s) return;
@@ -6759,6 +6794,40 @@ export default function ProfessorSim(){
             <div style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#07030f,#120820,#07030f)",border:`1px solid ${accentColor}50`,maxHeight:"85vh",overflowY:"auto"}}>
               <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>{evDef.title.toUpperCase()}</div>
               <div style={{fontSize:15,fontWeight:700,color:evMeta?.color||"#d8a8ff",marginBottom:12}}>{s.name}</div>
+              {/* Homeroom Queen: suspicion + NPC weight bars */}
+              {formId==='homeroom_queen'&&(()=>{
+                const suspDelta=Object.entries(HOMEROOM_SUSPICION_DELTAS).reduce((acc,[flag,delta])=>acc+(history.includes(flag)?delta:0),0);
+                const currentSusp=Math.max(0,Math.min(10,batchBakerState.suspicion+suspDelta));
+                const suspPct=currentSusp*10;
+                const classPct=Math.min(100,Math.round(batchBakerState.classWeight/2));
+                const momPct=Math.min(100,Math.round(batchBakerState.momWeight/1.3));
+                return(
+                  <div style={{marginBottom:12,padding:"8px 10px",background:"rgba(196,122,42,0.08)",border:"1px solid #c47a2a30",borderRadius:6}}>
+                    <div style={{display:"flex",gap:12,marginBottom:6}}>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:9,letterSpacing:2,color:suspPct>70?"#e05030":"#c47a2a",marginBottom:3}}>SUSPICION {currentSusp}/10</div>
+                        <div style={{height:6,background:"#1a0800",borderRadius:3,overflow:"hidden"}}>
+                          <div style={{height:"100%",width:`${suspPct}%`,background:suspPct>70?"#e05030":suspPct>40?"#c47a2a":"#a05020",transition:"width 0.3s"}}/>
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{display:"flex",gap:12}}>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:9,letterSpacing:2,color:"#7db87d",marginBottom:3}}>CLASS {batchBakerState.classWeight} wt</div>
+                        <div style={{height:4,background:"#0a1a0a",borderRadius:2,overflow:"hidden"}}>
+                          <div style={{height:"100%",width:`${classPct}%`,background:"#4a8a4a",transition:"width 0.3s"}}/>
+                        </div>
+                      </div>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:9,letterSpacing:2,color:"#8a7dba",marginBottom:3}}>MOMS {batchBakerState.momWeight} wt</div>
+                        <div style={{height:4,background:"#0a0a1a",borderRadius:2,overflow:"hidden"}}>
+                          <div style={{height:"100%",width:`${momPct}%`,background:"#5a4a8a",transition:"width 0.3s"}}/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
               {/* History of completed phases */}
               {logLines.length>0&&(
                 <div style={{marginBottom:12}}>

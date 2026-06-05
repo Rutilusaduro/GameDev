@@ -214,6 +214,15 @@ export const EVOLVED_REACTIONS = {
     "The observer/participant distinction has dissolved. I eat at my own sessions now. I find I don't mind this at all.",
     "Everyone eats more around me now. I know exactly why and they don't, and I find this situation entirely satisfying from every possible angle.",
   ],
+  // ── ECED path ──────────────────────────────────────────────────
+  homeroom_queen:[
+    "Tuesday went well. Kayla had seconds. I didn't set out to do anything intentional today — I just noticed what they liked and made more of it. I'm noting that distinction.",
+    "I made a richer batch this week. I told myself it was a recipe test. The girls ate everything. Mrs. Calloway's daughter asked to take some home. I said yes. I'm noting that I said yes quickly.",
+    "Mrs. Monroe came inside for the first time. She sat at the table. She had four pieces and talked the whole time and laughed at everything. I didn't want her to leave. I'm noting that I made extra specifically because she was coming.",
+    "I realized this week that I plan the Tuesday recipes around who's coming and what they respond to. Bri likes the heavier things. Kayla likes the sweet things. Mrs. Monroe likes everything. I'm noting that this is not random anymore.",
+    "Mrs. Calloway brought me something in return. I sat with this for a while. The reciprocity feels significant. I'm noting that I feel warmly toward all six of them now and that I'm going to keep making Tuesdays happen for as long as I can.",
+    "End of term. All six of them in the room. Everything I made was gone in an hour. I watched them eat and I felt — I'm not sure I have the language for it. Useful. Purposeful. Like I was exactly where I was supposed to be. I'm noting this.",
+  ],
 };
 
 export const EVOLVED_DIARY = {
@@ -417,6 +426,15 @@ export const EVOLVED_DIARY = {
     "I logged my own intake for the first time today. Not because I planned to — I just noticed I'd been eating more at observation sessions and it seemed worth noting. The data includes me now. I don't think that changes anything.",
     "The observer/participant line is theoretical at this scale. I eat when I'm studying others eating. This is a methodological consideration I've chosen to set aside. The data is better this way.",
     "Everyone eats more around me now. I know exactly why and they don't, and I find this situation entirely satisfying from every possible angle.",
+  ],
+  // ── ECED path ──────────────────────────────────────────────────
+  homeroom_queen:[
+    `The first Tuesday. I'd been up since five making everything from scratch, and by the time the girls arrived the classroom smelled like butter and warm sugar and something that felt like a real home. I ate while I watched them eat — quality control, I told myself — and by the end of the session my apron was dusted with flour and my own belly was noticeably fuller than when I'd arrived. I logged that the banana bread was a success. I didn't log the rest.`,
+    `Mrs. Monroe came inside today instead of waiting at the window. She sat at the table and had four pieces and talked about everything and laughed at all of it. I found myself making more food specifically because I knew she was coming. I'm not sure when I started planning for individual preferences. I notice I have. I ate more than usual this session too. The peach cobbler required a second taste-test. Then a third.`,
+    `The group has grown comfortable. Kayla doesn't arrive early anymore — she arrives on time, which means she was never uncertain, just cautious. Bri has stopped asking what's in things. Mrs. Calloway ate three pieces and then asked about my training. I gave a genuine answer. She nodded. I think we understand each other now. I ate alongside them for the full hour. My clothes feel different after Tuesdays. I've started buying the forgiving fabrics.`,
+    `I realized this week that I taste-test more at school than I do at home, which doesn't make nutritional sense unless you factor in that I'm happy at school. I'm happy on Tuesdays. The session was good — Mrs. Monroe brought wine and I politely declined and then accepted — and everyone was softer and more comfortable and more themselves than when we started this. I am also softer. I think this is fine. I think this is the intended outcome.`,
+    `Sofia wore something different today. Not smaller — more comfortable, more expansive, more herself. Mrs. Reyes has stopped tugging at her jacket and I want to note that this is not a small thing. I am at this point something between a teacher and a caterer and possibly something else I don't have a word for. I ate everything I made extras of. There were a lot of extras. I planned it that way and I'm no longer pretending otherwise.`,
+    `End of term. All six of them in the room at once, which hasn't happened since the formal event was established. I made everything. I ate everything I'd saved for myself and then some of theirs when there were offers. The room was full and warm and loud with laughing and I sat in the middle of it — enormous and full and happy and flour-dusted — and thought: yes. This is exactly what I was supposed to do with all of this. I logged that. It belongs in the record.`,
   ],
 };
 
@@ -623,6 +641,15 @@ export const EVOLVED_OUTFITS = {
     "Wide dark academic wear. She's dressed like someone who controls the room she's in.",
     "Custom dark professional garments at considerable scale. The composed expression has not changed.",
   ],
+  // ── ECED path ──────────────────────────────────────────────────
+  homeroom_queen:[
+    "A wide cotton apron over a soft button-up and practical trousers. She smells like cinnamon and brown sugar from the morning's test batch.",
+    "A loose linen top over stretch trousers, her large apron cinched across the middle. The apron has flour on it before she even arrives.",
+    "A wide jersey dress with a practical apron over it. She has a second apron in her bag. She's learned to have a backup.",
+    "A soft wide-cut housedress and a full apron tied at the back. She moves through the kitchen like she owns it, which at this point she functionally does.",
+    "A roomy printed housedress with deep pockets, her heavy-duty apron layered over the front. The pockets hold the notebook. The apron holds the flour.",
+    "An enormous soft tunic over wide-leg trousers, her apron purely ceremonial at this stage. The kitchen has been arranged around her. She fills it warmly.",
+  ],
 };
 
 export const EVOLVED_ACTIVITY_TEXT = {
@@ -817,6 +844,7 @@ export const EVOLVED_ACTIVITY_META = {
   campus_legend:   { label:"Share a Meal at the Booth",apCost:1, gainRange:[5,10], relBonus:11 },
   food_tourist:    { label:"Join an Expedition",       apCost:1, gainRange:[4,8],  relBonus:10 },
   ff_author:       { label:"Read Her Latest Chapter",  apCost:1, gainRange:[3,6],  relBonus:12 },
+  homeroom_queen:  { label:"🍪 Run a Baking Session",    apCost:1, gainRange:[4,9],  relBonus:11 },
   homestead_queen: { label:"🏡 Visit the Homestead",    apCost:1, gainRange:[5,10], relBonus:12 },
   state_fair_queen:{ label:"🎡 Enter the Fair",         apCost:1, gainRange:[4,8],  relBonus:10 },
   psych_researcher:{ label:"Continue Research Session", apCost:1, gainRange:[4,9],  relBonus:11 },
@@ -2360,6 +2388,259 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
       ]
     },
   ],
+
+  // ── ECED: homeroom_queen ──────────────────────────────────────────────────
+  homeroom_queen:[
+    // stageIdx 0 — "The First Tuesday"
+    {
+      title:"The First Tuesday",
+      phases:[
+        {
+          text:(h,s)=>`${s.name} is in the classroom at ${Math.round(s.lbs)} pounds, apron tied, counter clear. The girls will arrive in twenty minutes. You're here early enough to help decide what gets made.
+
+"I was thinking banana bread," she says. "But I could do more." She opens the cabinet. The cabinet is very well stocked.`,
+          choices:[
+            {id:"recipe_simple",label:"Banana bread — classic, nothing unusual",result:(s)=>`She makes the banana bread. It smells perfect. The classroom fills with warm butter and sugar and the specific comfort of something handmade. Daisy taste-tests a slice and sets the rest out carefully. Her belly presses the counter edge as she works.`,lbs:3,rel:5,flag:"recipe_simple"},
+            {id:"recipe_rich",label:"Banana bread plus cinnamon rolls — go big",result:(s)=>`She makes both. The cinnamon rolls take longer and require a second taste-test round, which Daisy conducts thoroughly. By the time the girls arrive, she's a full piece ahead and the room smells like a bakery.`,lbs:7,rel:7,flag:"recipe_rich"},
+            {id:"recipe_cover",label:"Whole grain muffins — presentable to parents",result:(s)=>`She makes the muffins. They're good — genuinely good, she's good at everything — but she adds cream cheese frosting because "it needed something," and now the plausibly healthy framing has a rich, sweet asterisk.`,lbs:2,rel:6,flag:"recipe_cover"},
+          ]
+        },
+        {
+          text:(h,s)=>`The girls arrive. Kayla comes in first and sees the spread and doesn't ask what it is — just sits down and starts eating. Bri follows her lead. Sofia arrives last and has already spotted the cinnamon rolls from the doorway.
+
+Daisy is behind the counter, warm and purposeful, refilling things before they're empty.`,
+          choices:[
+            {id:"watched",label:"Watch Daisy watch them eat",result:(s)=>`She doesn't look at you. She looks at them. There's something careful and pleased in her expression — the satisfaction of a calculation that came out right. Kayla has had three pieces. Bri hasn't stopped. Sofia is on something like a fourth.`,lbs:5,rel:8,flag:"watched"},
+            {id:"helped_serve",label:"Help serve — pass things around",result:(s)=>`You help pass things around. Daisy gives you a look that might be gratitude, might be you-figured-it-out. The session is easy and warm and loud. By the end, everyone — including Daisy — is noticeably fuller.`,lbs:4,rel:11,flag:"helped_served"},
+          ]
+        },
+        {
+          text:(h,s)=>`Pickup. The moms arrive. Mrs. Calloway stands at the window for a beat longer than necessary, looking at the table, looking at the girls, looking at Daisy.
+
+She doesn't say anything. She takes her daughter home. Mrs. Monroe, at the window behind her, catches Daisy's eye and gives her a small nod.`,
+          choices:[
+            {id:"played_safe",label:"Smile and wave — nothing to see here",result:(s)=>`Daisy waves. Mrs. Calloway moves on. Mrs. Monroe pauses to say "that smells wonderful," and Daisy hands her a wrapped piece for the drive home. Nobody asks any questions.`,lbs:3,rel:7,flag:"played_safe"},
+            {id:"offered_leftovers",label:"Offer the moms the leftovers",result:(s)=>`Daisy offers the container. Mrs. Calloway hesitates one beat and then accepts. Mrs. Monroe accepts immediately and with visible enthusiasm. The leftovers are gone before they reach the parking lot, by Daisy's estimation.`,lbs:4,rel:9,flag:"offered_leftovers"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("recipe_rich")&&h.includes("helped_served"),text:(h,s,gain)=>`The first real Tuesday. Daisy is ${Math.round(s.lbs+gain)} pounds and pleased with herself, her apron dusted with flour, the counter clean. "They ate everything," she says. She sounds like she expected exactly this. She makes a note in the small notebook she keeps in her apron pocket.`,gainBonus:4,relBonus:8,classGain:18,momGain:6},
+        {condition:h=>h.includes("recipe_rich"),text:(h,s,gain)=>`Good session. Daisy is ${Math.round(s.lbs+gain)} pounds and already planning next week's batch. The notebok comes out. The pen moves.`,gainBonus:3,relBonus:6,classGain:15,momGain:4},
+        {condition:()=>true,text:(h,s,gain)=>`The first Tuesday is done. Daisy is ${Math.round(s.lbs+gain)} pounds and warm and she's already thinking about what to make next week.`,gainBonus:2,relBonus:5,classGain:8,momGain:2},
+      ]
+    },
+    // stageIdx 1 — "Something's Different" (classWeight ≥ 50)
+    {
+      title:"Something's Different",
+      phases:[
+        {
+          text:(h,s)=>`Daisy is at the counter when you arrive. ${Math.round(s.lbs)} pounds, apron on, something already in the oven. She looks up and says: "Kayla arrived fifteen minutes early today. Just walked in and sat down." A pause. "That's new."
+
+The recipe book is open to something ambitious.`,
+          choices:[
+            {id:"recipe_simple",label:"Something familiar — they know what they like now",result:(s)=>`She makes what they like. It's efficient — no introductions needed, no hesitation. Kayla is already waiting at the table when the first batch comes out.`,lbs:4,rel:6,flag:"recipe_simple"},
+            {id:"recipe_rich",label:"Something richer — they're ready for more",result:(s)=>`She makes the rich version. Double the butter. The oven fills the classroom with something that smells specifically excellent. She taste-tests twice. The notebook comes out.`,lbs:8,rel:7,flag:"recipe_rich"},
+            {id:"recipe_special",label:"A special recipe — something you haven't tried before",result:(s)=>`She makes something new from the back of the recipe book — caramelized peach upside-down cake, which she's been holding in reserve. "For when they were ready," she says. She's been waiting for this moment.`,lbs:10,rel:9,flag:"recipe_special"},
+            {id:"recipe_cover",label:"Whole grain — something you could explain if asked",result:(s)=>`She makes the defensible version. It's genuinely good. She adds a cream cheese layer anyway because "the base needed something." The explainability is theoretical at this point.`,lbs:3,rel:7,flag:"recipe_cover"},
+          ]
+        },
+        {
+          text:(h,s)=>`The session is different today. Kayla doesn't wait to see what others do — she takes first helpings with the ease of someone who's been here before. Bri's been eating more quickly. Sofia has found her spot at the table and settled into it like it was always hers.
+
+Daisy moves through the room at ${Math.round(s.lbs)} pounds, warm and unhurried.`,
+          choices:[
+            {id:"watched",label:"Notice what's changed about each of them",result:(s)=>`You notice. Kayla's jeans don't fit the same way — there's a gap at the back, her hips wider against the denim. Bri's belly presses against the table edge in a way that's new. Sofia fills the chair differently. Daisy is watching you notice. "Yes," she says. Just that.`,lbs:5,rel:10,flag:"watched"},
+            {id:"fed_more",label:"Help pass things — keep the plates full",result:(s)=>`You keep the plates full. Daisy gives you the look — gratitude, partnership, something warm. Sofia finishes a second serving before anyone else finishes their first. The classroom is very warm.`,lbs:7,rel:9,flag:"fed_more"},
+          ]
+        },
+        {
+          text:(h,s)=>`Pickup. The moms are different too. Mrs. Calloway stands at the window for a beat longer than last week. Mrs. Reyes is already inside before the session is technically over — she says she "was early," and she is eating one of the pieces from the serving plate with a casualness that suggests this wasn't the first time she's helped herself.
+
+Mrs. Monroe arrives last, parks badly, and waves through the window with both hands.`,
+          choices:[
+            {id:"deflected_mom",label:"Redirect Mrs. Calloway — point to Sofia and compliment the class",result:(s)=>`You point out that Sofia has been really engaged this week. Mrs. Calloway's attention shifts to her daughter. Daisy says something warm and specific about the girls' progress. The question Mrs. Calloway was forming dissolves.`,lbs:4,rel:8,flag:"deflected_mom"},
+            {id:"invited_inside",label:"Invite the moms in — lean into it",result:(s)=>`Daisy gestures them in. Mrs. Reyes comes immediately. Mrs. Monroe is already halfway through the door. Mrs. Calloway follows with her arms crossed — then uncrosses them when she smells what's been made. She takes a piece. She eats it standing up.`,lbs:5,rel:6,flag:"invited_inside"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("recipe_special")&&h.includes("watched"),text:(h,s,gain)=>`Tuesday has settled into a ritual. Daisy is ${Math.round(s.lbs+gain)} pounds and the notebook has three more pages of notes — not just recipes, but observations. She doesn't explain the observations. She adds them to the record.`,gainBonus:6,relBonus:10,classGain:22,momGain:9},
+        {condition:h=>h.includes("recipe_rich")||h.includes("recipe_special"),text:(h,s,gain)=>`Good session. The richness registered. Daisy is ${Math.round(s.lbs+gain)} pounds and the notebook fills another page.`,gainBonus:4,relBonus:7,classGain:18,momGain:7},
+        {condition:()=>true,text:(h,s,gain)=>`Another Tuesday. Daisy is ${Math.round(s.lbs+gain)} pounds and the pattern is becoming established.`,gainBonus:2,relBonus:5,classGain:12,momGain:4},
+      ]
+    },
+    // stageIdx 2 — "Mrs. Calloway's Question" (momWeight ≥ 30)
+    {
+      title:"Mrs. Calloway's Question",
+      phases:[
+        {
+          text:(h,s)=>`${s.name} is ${Math.round(s.lbs)} pounds and she looks comfortable at the counter, comfortable in the apron, comfortable in the classroom in a way that suggests she's stopped thinking of it as anyone else's space. She has the recipe book open to something indulgent.
+
+"Mrs. Calloway asked me yesterday about what I'm making," she says. "I told her it was curriculum-aligned." She looks at you. "Is there a curriculum it's aligned with?"`,
+          choices:[
+            {id:"recipe_rich",label:"Make the rich batch regardless — she's not going to stop",result:(s)=>`She makes the rich batch. The classroom fills. She taste-tests once from the pan, then again to be sure. "It's good," she says. She means: I know it is. The notebook confirms it.`,lbs:9,rel:8,flag:"recipe_rich"},
+            {id:"recipe_special",label:"Try the cream-filled brioche — this is the moment",result:(s)=>`She makes the cream-filled brioche, which has been in the recipe book since the second week. It requires forty minutes and two rounds of taste-testing. She eats more during testing than she'd planned. The result is extraordinary.`,lbs:12,rel:10,flag:"recipe_special"},
+            {id:"recipe_cover",label:"Make something genuinely nutritious — cover your tracks",result:(s)=>`She makes the whole grain batch, which is genuinely nutritious, and then adds a cream glaze because "it needed finishing." The nutritious framing is intact. The glaze adds calories faster than the framing removes them.`,lbs:4,rel:8,flag:"recipe_cover"},
+            {id:"recipe_simple",label:"Keep it simple — don't escalate right now",result:(s)=>`She makes the simple batch. It's good — it's always good — and it keeps the profile low. Mrs. Calloway's question hangs in the air but doesn't become a follow-up.`,lbs:5,rel:6,flag:"recipe_simple"},
+          ]
+        },
+        {
+          text:(h,s)=>`The session is warm and easy. Bri's uniform doesn't quite tuck anymore — she's stopped trying. Kayla has started sitting differently, wider, like she's found the right angle for her hips. Sofia moves through the room with the confidence of someone who has decided exactly what kind of person she is and is correct about it.
+
+Daisy watches all of this from the counter, ${Math.round(s.lbs)} pounds and attentive.`,
+          choices:[
+            {id:"noted_changes",label:"Say something about how well the class has been going",result:(s)=>`You say it genuinely. Daisy looks at you with an expression that's briefly and completely unguarded. "I think so too," she says. Then she looks back at the girls and her expression changes to something careful and warm and focused.`,lbs:5,rel:12,flag:"noted_changes"},
+            {id:"pushed_more",label:"Make sure everyone has seconds before the session ends",result:(s)=>`You help make sure the plates don't empty. Sofia doesn't need help — she's been watching the supply — but Bri and Kayla accept second servings with the ease of people who've stopped thinking twice about it.`,lbs:7,rel:9,flag:"pushed_more"},
+          ]
+        },
+        {
+          text:(h,s)=>`Pickup. Mrs. Calloway is inside today — she said she needed to "speak with the student teacher" — and she's standing with her arms crossed at a slight angle that suggests she's trying to look more formal than she feels. Her cardigan pulls slightly at the waist.
+
+"I wanted to ask," she begins, "about the enrichment activities."`,
+          choices:[
+            {id:"deflected_question",label:"Answer warmly and specifically — focus on the academic framing",result:(s)=>`Daisy answers before you can. "Nutritional impact on attention and mood is actually an emerging area in educational research," she says, completely calmly. "The class has been more engaged on Tuesdays than any other day of the week." Mrs. Calloway blinks. "That's... good," she says. She accepts the container Daisy hands her. She eats a piece on the way to her car.`,lbs:4,rel:10,flag:"deflected_question"},
+            {id:"direct_question",label:"Let Daisy handle it honestly — she deserves to own this",result:(s)=>`"I love feeding them," Daisy says. Plainly, warmly, completely unashamed. Mrs. Calloway stares at her for a full three seconds. Then she says: "Kayla does look forward to Tuesdays." It's not an accusation. It's almost a compliment. The cardigan pulls a little more as she breathes.`,lbs:5,rel:7,flag:"direct_question"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("recipe_special")&&h.includes("deflected_question"),text:(h,s,gain)=>`Mrs. Calloway went home with a container and didn't send a follow-up email. Daisy is ${Math.round(s.lbs+gain)} pounds and the notebook records this as a successful navigation. The special recipe worked. The deflection worked. The session goes in the record as optimal.`,gainBonus:8,relBonus:12,classGain:20,momGain:14},
+        {condition:h=>h.includes("deflected_question"),text:(h,s,gain)=>`Mrs. Calloway's question has been answered. Daisy is ${Math.round(s.lbs+gain)} pounds and the Tuesday tradition continues, uninterrupted.`,gainBonus:5,relBonus:9,classGain:16,momGain:10},
+        {condition:()=>true,text:(h,s,gain)=>`Mrs. Calloway went home. Tuesday continues. Daisy is ${Math.round(s.lbs+gain)} pounds and adding notes to the record.`,gainBonus:3,relBonus:6,classGain:12,momGain:7},
+      ]
+    },
+    // stageIdx 3 — "Wide Desks" (classWeight ≥ 120)
+    {
+      title:"Wide Desks",
+      phases:[
+        {
+          text:(h,s)=>`The school sent over the wider writing desks from the science room two weeks ago. Sofia has claimed the largest one and moved it to her preferred spot with the ease of someone who knows her own requirements. She spreads wide into it. It looks correct.
+
+Daisy is ${Math.round(s.lbs)} pounds at the counter, looking satisfied. "Ready?" she says.`,
+          choices:[
+            {id:"recipe_special",label:"Make the peach upside-down cake — Sofia's been hinting",result:(s)=>`She makes the peach upside-down cake. Sofia sees the pan and makes a small sound of recognition. Daisy's expression is briefly, completely, genuinely pleased. She taste-tests three times before serving.`,lbs:11,rel:10,flag:"recipe_special"},
+            {id:"recipe_rich",label:"Double batch this week — there's enough demand",result:(s)=>`She makes double. It disappears at the rate double would. She is not surprised. The notebook records the batch size and the consumption speed and the correlation between them.`,lbs:8,rel:8,flag:"recipe_rich"},
+            {id:"recipe_cover",label:"Something defensible — Mrs. Calloway might stop by again",result:(s)=>`She makes the defensible version plus a cream sauce that is technically a topping and therefore separately categorized. Mrs. Calloway does stop by. She has the topping separately, then the base, then some combination.`,lbs:5,rel:8,flag:"recipe_cover"},
+            {id:"recipe_simple",label:"Standard batch — keep the routine solid",result:(s)=>`The standard batch. They eat it fast now, all three of them, with no waiting period between servings. The routine is established. The consumption is efficient.`,lbs:5,rel:6,flag:"recipe_simple"},
+          ]
+        },
+        {
+          text:(h,s)=>`Bri can't tuck her uniform anymore. She tried earlier in the week, apparently — Kayla told Daisy during the session with the specific detail of someone who found this information useful. Bri herself is currently eating the second piece without any apparent concern about the uniform situation.
+
+"I told her it looked nice," Daisy says. She looks at you. "It did look nice."`,
+          choices:[
+            {id:"agreed",label:"Agree — it does look nice",result:(s)=>`You agree. Daisy's expression resolves into something genuinely warm. "They're all doing so well," she says, and she means something specific by this. The notebook comes out and a note gets added.`,lbs:6,rel:12,flag:"agreed"},
+            {id:"more_food",label:"Put another piece on Bri's side — practical",result:(s)=>`You put another piece in front of Bri. She looks at it and then at you and then eats it with the ease of someone who has stopped asking permission. Daisy sees this and nods once, approvingly.`,lbs:8,rel:9,flag:"more_food"},
+          ]
+        },
+        {
+          text:(h,s)=>`Mrs. Monroe is inside again — she came in early, she says, to help set up, and she did help set up but she has also eaten four pieces in the process and is currently on her fifth. She fills the chair with a warm, settled comfort that makes the room feel like it's been hers for years.
+
+Mrs. Calloway is watching from near the door.`,
+          choices:[
+            {id:"enlisted_monroe",label:"Let Mrs. Monroe handle Mrs. Calloway — she's been doing it naturally",result:(s)=>`Mrs. Monroe says something warm and funny about the session and Mrs. Calloway laughs despite herself. The suspicion evaporates. Mrs. Monroe hands her a container and she takes it with both hands.`,lbs:5,rel:10,flag:"enlisted_monroe"},
+            {id:"deflected_mom",label:"Pull Mrs. Calloway into a conversation about the desk upgrade",result:(s)=>`You bring up the desk situation. Mrs. Calloway has opinions about the desks — she's been meaning to say something about the desk request actually — and while she's explaining them, she's eating, and by the end she's forgotten the question she came in with.`,lbs:4,rel:9,flag:"deflected_mom"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("recipe_special")&&h.includes("enlisted_monroe"),text:(h,s,gain)=>`The peach upside-down cake, Sofia's desk, Mrs. Monroe managing Mrs. Calloway with the ease of someone who has been managing things for years — Daisy is ${Math.round(s.lbs+gain)} pounds and the notebook records this as the best session yet.`,gainBonus:10,relBonus:13,classGain:24,momGain:16},
+        {condition:h=>h.includes("enlisted_monroe"),text:(h,s,gain)=>`Mrs. Monroe is an asset. Daisy is ${Math.round(s.lbs+gain)} pounds and the dynamic has shifted. Tuesday has allies now.`,gainBonus:6,relBonus:10,classGain:18,momGain:12},
+        {condition:()=>true,text:(h,s,gain)=>`Wide desks, fuller girls, Tuesday ongoing. Daisy is ${Math.round(s.lbs+gain)} pounds and adding pages.`,gainBonus:4,relBonus:7,classGain:14,momGain:8},
+      ]
+    },
+    // stageIdx 4 — "The Group Chat" (momWeight ≥ 70)
+    {
+      title:"The Group Chat",
+      phases:[
+        {
+          text:(h,s)=>`Mrs. Monroe told Daisy about the group chat. "We rate your recipes every week," she said, laughing. "The cinnamon rolls are currently tied with the peach upside-down cake." She offered to show Daisy the thread. Daisy said yes.
+
+She's shown you the thread. It is detailed, enthusiastic, and includes a recurring argument between Mrs. Reyes and Mrs. Monroe about the merits of cream cheese versus buttercream frosting that has been ongoing for six weeks.
+
+Daisy is ${Math.round(s.lbs)} pounds at the counter, the recipe book open to a new section.`,
+          choices:[
+            {id:"recipe_special",label:"Make something the chat hasn't seen yet — surprise them",result:(s)=>`She makes the cardamom honey cake, which has been in the recipe book since the beginning and which she's been saving. She taste-tests four times. It's extraordinary. She knows it's extraordinary. The notebook records the specific moment of knowing.`,lbs:13,rel:11,flag:"recipe_special"},
+            {id:"recipe_rich",label:"Make the cinnamon rolls — settle the debate",result:(s)=>`She makes the cinnamon rolls, which were previously tied with the peach upside-down cake. Both items are now represented. The debate will presumably continue on a more informed basis.`,lbs:9,rel:9,flag:"recipe_rich"},
+            {id:"recipe_cover",label:"Make both disputed items — let the chat decide for real",result:(s)=>`She makes both. The classroom smells like an argument about to be resolved. Mrs. Monroe arrives early to vote in person. Mrs. Reyes arrives one minute later. The debate intensifies.`,lbs:7,rel:12,flag:"recipe_cover"},
+            {id:"recipe_simple",label:"Stick to the classics — reliability is also a virtue",result:(s)=>`She makes the banana bread and the standard brownies. Both are received with the enthusiasm of things that have become expected and therefore trusted. The chat rates them highly.`,lbs:6,rel:7,flag:"recipe_simple"},
+          ]
+        },
+        {
+          text:(h,s)=>`The session is full. All three girls, and Mrs. Monroe who has stopped waiting for official pickup and just comes in now. Mrs. Reyes follows her in and sits at the table.
+
+Sofia is enormous and completely comfortable. Bri's belly is in her lap, warm and settled. Kayla's hips fill the wider chair she's claimed. The room is full of people who belong here.`,
+          choices:[
+            {id:"watched",label:"Take it in — this is what Daisy has been building",result:(s)=>`You look at the room. Daisy sees you looking. She's at the counter, ${Math.round(s.lbs)} pounds, warm and present and clearly full from the session's test runs. She doesn't say anything. She smiles. It's a specific kind of smile.`,lbs:6,rel:14,flag:"watched"},
+            {id:"helped_serve",label:"Help Daisy serve — keep everything moving",result:(s)=>`You help. The session flows with the ease of something that has been running long enough to find its own rhythm. Daisy works around you like you've always been part of it.`,lbs:8,rel:11,flag:"helped_serve"},
+          ]
+        },
+        {
+          text:(h,s)=>`Mrs. Calloway brings preserves for the second time. Homemade ones, labeled in her handwriting. She sets them on the counter without ceremony and says: "Kayla mentioned you run out of butter sometimes. I thought you could use these." She is wearing the wide cardigan. She is not hiding anything. Her hips are visible and she seems to have stopped trying to manage their visibility.
+
+"Thank you," Daisy says. "These are perfect."`,
+          choices:[
+            {id:"enlisted_monroe",label:"Let the moment land — this is a truce",result:(s)=>`Nobody says anything important. Mrs. Calloway takes a piece from the serving plate, stands for a moment in the warm room, and then sits down at the table. Mrs. Monroe shifts to make room. Mrs. Calloway says thank you.`,lbs:5,rel:13,flag:"enlisted_monroe"},
+            {id:"deflected_mom",label:"Make conversation — welcome her properly",result:(s)=>`You make conversation. Daisy makes tea. Mrs. Calloway sits down and talks about preserves and about Kayla and about something she saw at the grocery store. She eats two pieces without counting.`,lbs:4,rel:12,flag:"deflected_mom"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("recipe_special")&&h.includes("watched"),text:(h,s,gain)=>`The group chat will have something new to rate. Daisy is ${Math.round(s.lbs+gain)} pounds and the notebook has become something between a recipe record and a room-full-of-people record. She's not sure when this happened. She's not going to stop.`,gainBonus:10,relBonus:14,classGain:26,momGain:18},
+        {condition:h=>h.includes("recipe_special")||h.includes("recipe_rich"),text:(h,s,gain)=>`Good session. The group chat will have strong feelings about this one. Daisy is ${Math.round(s.lbs+gain)} pounds and ready for next week.`,gainBonus:7,relBonus:10,classGain:20,momGain:14},
+        {condition:()=>true,text:(h,s,gain)=>`The group chat has new material. Daisy is ${Math.round(s.lbs+gain)} pounds and Tuesday continues.`,gainBonus:4,relBonus:7,classGain:14,momGain:10},
+      ]
+    },
+    // stageIdx 5 — "End of Term" (classWeight ≥ 200 && momWeight ≥ 130)
+    {
+      title:"End of Term",
+      phases:[
+        {
+          text:(h,s)=>`End of term. The last official Tuesday. Daisy is ${Math.round(s.lbs)} pounds and she has been in the classroom since six in the morning, making everything. The counter is full. The oven is still running. It smells like every Tuesday at once.
+
+"I made everything," she says. "Everything I know how to make." She looks at the counter. "I may have made too much."
+
+She has not made too much.`,
+          choices:[
+            {id:"recipe_special",label:"The cardamom honey cake AND the peach upside-down cake AND the cinnamon rolls",result:(s)=>`She made all three. She taste-tested all three. She made additional portions of the ones that required a second taste test. She is noticeably full before the session even starts and she looks serene about it.`,lbs:14,rel:12,flag:"recipe_special"},
+            {id:"recipe_rich",label:"Double everything — it's the last one",result:(s)=>`Double everything. Twice the cinnamon rolls, twice the banana bread, twice the peach cobbler. She ate while she baked. She is, even at ${Math.round(s.lbs)} pounds, visibly full before anyone else arrives.`,lbs:11,rel:10,flag:"recipe_rich"},
+          ]
+        },
+        {
+          text:(h,s)=>`Everyone arrives. All six of them — Kayla, Bri, Sofia, Mrs. Calloway, Mrs. Reyes, Mrs. Monroe — all in the room at once, which hasn't happened organically since the formal event was established. The room is warm and loud and full.
+
+Sofia fills her wide desk completely, her belly round and heavy and comfortable. Bri's belly rests soft on her thighs. Kayla's hips spread wide in her chair. Mrs. Calloway is in the good cardigan that pulls across the shoulders now and she is not pulling it. Mrs. Reyes has stopped checking her phone. Mrs. Monroe brought wine and two kinds of preserves and is currently the loudest person in the room.
+
+Daisy is behind the counter at ${Math.round(s.lbs)} pounds, warm and enormous and at the center of all of it.`,
+          choices:[
+            {id:"watched_all_six",label:"Watch Daisy in the room she built",result:(s)=>`She doesn't notice you watching. She's busy — refilling, adjusting, handing Mrs. Monroe a fork when she asks for one, telling Kayla that yes, there are more cinnamon rolls, yes, absolutely. She moves through the room with the ease of someone who has been here so many times that it has become part of her. It has become part of her. She has become part of it.`,lbs:8,rel:16,flag:"watched_all_six"},
+            {id:"joined_table",label:"Sit at the table — be part of it",result:(s)=>`You sit at the table. Everyone shifts slightly to make room, not reluctantly. Daisy sees you and her expression does something complicated and warm. She brings you a plate without asking what you want. She knows what you want. You eat everything on it.`,lbs:10,rel:14,flag:"joined_table"},
+          ]
+        },
+        {
+          text:(h,s)=>`An hour later. Everything is gone. The moms are still at the table, talking. The girls are in various stages of comfortable fullness. Daisy is sitting — she does this on Tuesdays, settles into the wide chair at the end of the room — and her belly is full and warm in her lap and she looks like someone who has reached a natural conclusion.
+
+Mrs. Monroe says: "Same time next year." It's not a question.
+
+Daisy looks at you.`,
+          choices:[
+            {id:"committed_to_next_year",label:"Tell her yes — this is happening again",result:(s)=>`"Same time next year," you say. Daisy looks at you with an expression that's briefly and completely unguarded. "Next year," she says, "I'm going to need a bigger classroom." She means it practically. She means it every other way too.`,lbs:6,rel:18,flag:"committed_to_next_year"},
+            {id:"let_daisy_answer",label:"Let Daisy answer for herself",result:(s)=>`Daisy answers. "Yes," she says, without hesitation. She looks at the room — six people, full and warm, all there because of Tuesday mornings and banana bread and her. "Yes," she says again, quieter. "I think next year I'll need more counter space."`,lbs:5,rel:20,flag:"let_daisy_answer"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("recipe_special")&&h.includes("watched_all_six")&&h.includes("committed_to_next_year"),text:(h,s,gain)=>`End of term. Six people in the room. Everything made and eaten. Daisy is ${Math.round(s.lbs+gain)} pounds and enormous and flour-dusted and completely at ease with all of it. The notebook has a final entry: *All six. End of term. Everything eaten. Next year: bigger classroom.*
+
+She adds: *I don't regret any of it. Not one bite.*
+
+The session closes. Next year the classroom will be bigger. Next year she will be bigger. The Tuesday tradition is officially permanent.`,gainBonus:18,relBonus:22,classGain:30,momGain:20},
+        {condition:h=>h.includes("watched_all_six")||h.includes("joined_table"),text:(h,s,gain)=>`End of term. All six in the room. Daisy is ${Math.round(s.lbs+gain)} pounds and the room is warm and the notebook records a successful year. Next year will be bigger in every sense.`,gainBonus:12,relBonus:16,classGain:24,momGain:16},
+        {condition:()=>true,text:(h,s,gain)=>`End of term. Daisy is ${Math.round(s.lbs+gain)} pounds and the first year is complete. Everything was eaten. Everyone came back. The tradition is real.`,gainBonus:8,relBonus:12,classGain:18,momGain:12},
+      ]
+    },
+  ],
 };
 
 export const EVOLVED_FORM_META = {
@@ -2384,6 +2665,7 @@ export const EVOLVED_FORM_META = {
   campus_legend:        { title:"Campus Legend",        color:"#b7950b" },
   food_tourist:         { title:"Food Tourist",         color:"#148f77" },
   ff_author:            { title:"FF Author",            color:"#922b21" },
+  homeroom_queen:       { title:"Homeroom Queen",        color:"#c47a2a" },
   homestead_queen:      { title:"Homestead Queen",       color:"#8B5E3C" },
   state_fair_queen:     { title:"State Fair Queen",      color:"#C8860A" },
   psych_researcher:     { title:"The Researcher",        color:"#6b5b95" },
@@ -2402,6 +2684,7 @@ export const EVOLUTION_BUTTON_BLURB = {
   quiet:(s)=>`You see her at the campus coffee shop on a Thursday morning, alone at a corner table with her laptop. She's typing quickly, absorbed, the kind of focus she reserves for things that matter. When she looks up and sees you she closes the laptop with one smooth motion, not alarmed but deliberate, and smiles. There's something behind the smile that isn't embarrassment — more like being caught in the middle of something private that hasn't been decided as a secret yet. You think about what she might be writing. You think you might have a better idea of what to do with it than she does.`,
   transfer:(s)=>`You pass through the dining hall mid-afternoon and the staff behind the counter lights up when ${s.name} walks in behind you. They know her name. They have her order started before she reaches the counter. There's a booth in the corner that other students seem to drift away from, not consciously, just leaving it available in the particular way that space gets left for something or someone that belongs in it. She settles into it and the room adjusts slightly. You watch from across the hall and think: she's become part of this place faster than anyone else ever has.`,
   psych:(s)=>`You find ${s.name}'s notebook left open on a desk — not hers, a shared seminar table. You don't mean to read it. What's inside is a meticulous, weeks-long study of the people around her: names, dates, behavioral observations, weight-implied measurements, annotated patterns. It's precise. It's methodical. It's deeply unsettling — not because it's wrong, but because it's right. You close it. You wait. When she comes back and sees you by the table she just looks at you steadily, reads your expression, and says: "I need a direction for this."`,
+  eced:(s)=>`You stop by the classroom on a Tuesday afternoon — not for any particular reason, just passing — and the smell hits you before the door fully opens. Butter, sugar, something warm. ${s.name} is at the counter at ${Math.round(s.lbs)} pounds, her apron dusty with flour, and around the table are the girls she teaches and apparently their mothers, and everyone is eating, and the room has the specific quality of a space that has found its purpose. Daisy looks up. She sees you see the room. "I've been doing Tuesdays for a while now," she says. Her voice is carefully normal. "I think it's working."`,
 };
 
 
@@ -2476,6 +2759,12 @@ export const EVOLUTION_OFFER = {
       food_tourist:  { label:"Food Tourist",    desc:"Document every cuisine available to her. A blog, a book deal, a cultural bridge between here and home." },
     },
   },
+  eced:{
+    intro:(s)=>`${s.name} sits across from you with her hands wrapped around a mug and a small notebook on the table beside her. She's been trying to explain this for a moment and not quite finding the words. "I've been doing something on Tuesdays," she finally says. "At the school. With the class." A pause. "And the moms have started coming. And everyone keeps eating. And I think —" she stops. She looks at the notebook. "I think I want to make it into something real. Something intentional." She looks at you. "I need someone to know what I'm doing."`,
+    paths:{
+      homeroom_queen:{ label:"The Homeroom Queen", desc:"Formalize the Tuesday sessions. Bake for the class, bake for the moms, manage the suspicion, grow the tradition. Six named participants and one growing problem she's trying not to call a success." },
+    },
+  },
   farm_girl:{
     intro:(s)=>`${s.name} is sitting at the corner table with a cast-iron skillet, a jar of preserves, and a look on her face that says she's been thinking about this for a while. "You know what I want to be?" she says, not looking up. "I want to be *known* for this." She sets the skillet down. She looks at you. "For the food. For how much of it I can hold. I want people to know my name." She is ${Math.round(s.lbs)} pounds and growing, and she means every word.`,
     paths:{
@@ -2514,10 +2803,65 @@ export const ASCENSION_BRIDGE = {
   campus_legend:    (s)=>`${s.name} sits in the booth — the one with her name on the plaque — and looks at the dining hall. 'I came here a stranger,' she says. 'And I became the place.' She's quiet for a long time. 'But a campus is still a small thing. The goddess made something bigger.' She looks at you. 'I think she made it out of me.' She touches the plaque once, gently. 'I'm ready.'`,
   food_tourist:     (s)=>`${s.name} closes the final notebook — the one that started with a map and a list and became something no map could hold — and sets it beside the others. 'I've tasted everything,' she says. 'Every dish, every cuisine, every place I could reach.' She looks at you. 'But there's a flavor I haven't found yet. One that doesn't come from a restaurant.' She's very quiet. 'I think the goddess has been saving it for me.'`,
   ff_author:        (s)=>`${s.name} closes the manuscript — the full archive, every chapter, printed and bound, the work of years — and holds it in both hands for a moment before setting it down. 'I wrote about all of them,' she says. 'Everyone in that room. What they became. What they're still becoming.' She's quiet. 'And I wrote about myself more than I let anyone see.' She doesn't look at the manuscript. She looks at you. 'The last character I never figured out how to end — the one who kept getting bigger every chapter, the one who was always about to become something beyond the story.' A long pause. 'I think I'm at that page now.'`,
+  homeroom_queen:   (s)=>`${s.name} is in the classroom when it happens. Everything she's made is on the table. Everyone she's been feeding is in the room. The Tuesday tradition is in its last week of the academic year and the room smells like six months of warm Tuesdays all at once. She sets a container down slowly and looks at her hands — flour on the knuckles, warm from the oven — and says very quietly: "I think I've been growing into something." She looks at you. "I think it's time to let it be what it is."`,
   homestead_queen:  (s)=>`${s.name} is in her homestead when it happens — surrounded by jars and cast iron and the smell of something sweet baking. She sets a spoon down slowly. 'Grandma Mae called last night,' she says, very quiet. 'She said she's proud of me. She didn't say why, not exactly. But I think she knows.' She looks at her hands, enormous and warm. 'I've been feeding people my whole life. I think something is about to feed me back.' The oven is still on. The room smells like heaven.`,
   state_fair_queen: (s)=>`${s.name} is looking at the photo from the last invitational — her at the scale, the number, Darcy starting to clap. She touches the edge of it carefully. 'I've eaten through every bracket,' she says. 'Every category, every division. They stopped being able to contain me in a class.' She's quiet for a long moment. 'I think the circuit is done. The circuit gave me everything it had.' She looks up. 'Now something gives me everything it has.' She sounds certain. She is.`,
   psych_researcher: (s)=>`${s.name} closes the research notebook for the last time — the original one, the one with the methodology she wrote on the first day and has been rewriting ever since. She holds it in both hands. 'The study documented what happened to the subject,' she says. 'It also documented what happened to me. The two arcs are inseparable.' She looks at you. 'The notebook ran out of room. The study ran out of categories. The subject exceeded what methodology can contain.' A long pause. 'So did I.' She sets the notebook down. 'I think the goddess has been one of my data points all along.'`,
   psych_manipulator:(s)=>`${s.name} puts the final notebook on the shelf and stands with her hand on the spine for a long time. 'The study has grown past the building,' she says. 'I didn't plan that. I also didn't stop it.' She looks at her hands — enormous, warm, the hands of someone who has been eating as thoroughly as she has been studying. 'I've stopped logging the others. There's nothing left to log that I don't already know.' She turns. 'I'm only logging myself now. Every meal. Every change.' Her voice is very quiet. 'The goddess has been watching the study. I think the study was always about her.'`,
+};
+
+// ── HOMEROOM QUEEN: NPC stage descriptions ──────────────────────────────────
+// Students have 3 stages (0=start, 1=noticeably softer, 2=genuinely fat)
+// Moms have 5 stages (0=start, 1=softening, 2=clearly changed, 3=properly fat, 4=can't dress around it)
+export const BATCH_BAKER_NPCS = {
+  Kayla:{
+    0:"Narrow waist, wide hips, long legs. Always tugging at the waistband of her jeans — upward, a habitual adjustment. She's the watchful one.",
+    1:"Her jeans have started to gap at the waist while her hips push outward. She's stopped tugging at the waistband. She's started sitting differently — wider, more settled.",
+    2:"Genuinely wide now, her hips spreading soft and full into the chair, her thighs pressing together. She wears the comfortable clothes without explanation.",
+  },
+  Bri:{
+    0:"Soft round belly, slim arms and legs — carries everything in her middle. She moves like someone who's always been this way and has no opinion about it.",
+    1:"Her belly has pushed forward noticeably, resting in her lap when she sits. The slim arms and legs are the same. The middle is emphatically more.",
+    2:"Her belly is the center of gravity of everything — large, soft, unmistakable. She rests her hands on it when she's relaxed. She is often relaxed.",
+  },
+  Sofia:{
+    0:"Already full-figured before any of this. Chest, hips, everything — she wears her body like it's exactly the right size, which it is.",
+    1:"Everything has gotten more. The full figure has gone rounder, softer, wider. She is significantly larger than she was and completely unbothered.",
+    2:"Genuinely enormous now — soft and wide, her belly heavy and forward, her chest vast. She fills the new wide desk completely and seems to prefer it.",
+  },
+  Mrs_Calloway:{
+    0:"Manicured, athletic-seeming from the waist up. Wide hips she minimizes with careful, structured clothing. Suspicious of everything, especially you.",
+    1:"The structured clothing is doing less work than it used to. There's a softness at the waist now that the jacket doesn't quite hide. She's still watching everything.",
+    2:"The jacket doesn't button the way it used to. She's switched to cardigans and drape-fronts. She is still, always, watching from the window at pickup.",
+    3:"She's stopped trying to dress around the change and started dressing for comfort. A soft cardigan in a warm color. She brought you preserves this week.",
+    4:"She takes the full portions openly now. She's been on the event committee long enough that Tuesday is as much hers as it is yours. She knows exactly what she's doing.",
+  },
+  Mrs_Reyes:{
+    0:"Trim but carries a soft belly she explains away as stress weight. Always has a coffee in hand. Friendly but distracted.",
+    1:"The belly is less explainable now and she's stopped trying. The coffee is still there. She lingers at pickup a little longer each week.",
+    2:"Her midsection has grown soft and round, clearly visible even under her usual clothes. She's stopped tugging at her jacket and started choosing the loose things.",
+    3:"Properly soft now — her belly rounding the front of her blouse, her hips wider. She sits at the table instead of standing at the window.",
+    4:"She brings coffee for both of you now. She's comfortable. She doesn't comment on her size or yours. She just eats and talks and is present.",
+  },
+  Mrs_Monroe:{
+    0:"Glamorous, confident, comfortable in her body from the start. Brings wine to school events. Daisy's favorite.",
+    1:"Warmer, rounder, and even more comfortable than before. She's started commenting on which recipes she prefers and her preferences are detailed.",
+    2:"Noticeably softer everywhere — her hips generous, her belly rounding out the wrap dress. She laughs about everything. She's your biggest advocate.",
+    3:"Gloriously fat, openly and happily. She has stopped noticing because she stopped caring a long time ago. She brings the good wine now.",
+    4:"She is the reason the other moms stopped worrying. She made abundance look so natural and easy that everyone followed her example. Enormous, warm, essential.",
+  },
+};
+
+// Suspicion delta per flag (used in closeEvolvedEvent to update batchBakerState.suspicion)
+export const HOMEROOM_SUSPICION_DELTAS = {
+  recipe_rich:+2, recipe_special:+1, recipe_cover:-1, recipe_simple:0,
+  deflected_mom:-1, invited_inside:+1, played_safe:-1, enlisted_monroe:-2,
+  direct_question:+2, deflected_question:-1,
+};
+// Arc stage thresholds (classWeight/momWeight accumulation gates)
+export const HOMEROOM_THRESHOLDS = {
+  class:[50,120,200], // Stage 1 needs ≥50, Stage 3 needs ≥120, Stage 5 needs ≥200
+  mom:[30,70,130],    // Stage 2 needs ≥30, Stage 4 needs ≥70, Stage 5 needs ≥130
 };
 
 // Subject journal entries for the psych_researcher feeder_focus path.
