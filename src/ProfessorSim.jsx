@@ -13,7 +13,7 @@ import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { HOSTESS_HANGOUTS, MENU_TIERS, ATMOSPHERE_TIERS, GUEST_TIERS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, SEDUCTION_MOVES, MOVES_BY_STAGE_BAND, getStageBand, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, CLUE_INVESTIGATION, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, HARVEST_VIGNETTES_PLANNED, HARVEST_VIGNETTES_EMERGENCY, getGrowthVignette, RECRUITMENT_SCENE, TESTER_APPEARANCE, DIGEST_VIGNETTES } from './gameData/cultivator.js';
-import { getMadelineTier, THESIS_BOARD, CASE_STUDY_PAIRS } from './gameData/communityResearcher.js';
+import { getMadelineTier, THESIS_BOARD, CASE_STUDY_PAIRS, BOARD_REACTIONS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 
 // ═══════════════════════════════════════════════════════════════
 // DATA LAYER
@@ -343,7 +343,7 @@ export default function ProfessorSim(){
   const [cultivatorState, setCultivatorState] = useState(null);
   // cultivatorState: {testerName,testerStageId,testerLbs,fatBar,suspicion,harvestsCompleted,usedNames,modalPhase,session,pendingStageUp,harvestType,harvestVignetteText,growthGain,growthVignetteText,digestWeeksLeft,digestTotalWeeks}
   const [communityResearcherState, setCommunityResearcherState] = useState(null);
-  // communityResearcherState: {thesisComplete,boardPhase,caseStudyStage,lastPairId,pairsUsed,modalPhase,activePairId,eventText}
+  // communityResearcherState: {thesisComplete,boardPhase,caseStudyStage,lastPairId,pairsUsed,modalPhase,activePairId,eventText,totalSuspicion,boardReactionPairId,chatMemberIdx,chatPhaseIdx,chatHistory,chatWon,thesisApproved,thesisRejected,finalReviewText}
   const [presentationState, setPresentationState] = useState(null);
   // presentationState: {studentId,stageIdx} — placeholder until mini-game implemented
   const [deliveryState, setDeliveryState] = useState(null);
@@ -1104,6 +1104,9 @@ export default function ProfessorSim(){
         thesisComplete:false, boardPhase:0,
         caseStudyStage:0, lastPairId:null, pairsUsed:[],
         modalPhase:null, activePairId:null, eventText:null,
+        totalSuspicion:0, boardReactionPairId:null,
+        chatMemberIdx:0, chatPhaseIdx:0, chatHistory:[], chatWon:[],
+        thesisApproved:false, thesisRejected:false, finalReviewText:null,
       });
     }
   };
@@ -1519,9 +1522,54 @@ export default function ProfessorSim(){
       caseStudyStage:prev.caseStudyStage+1,
       lastPairId:prev.activePairId,
       pairsUsed:[...prev.pairsUsed,prev.activePairId],
-      activePairId:null, eventText:null, modalPhase:null,
+      totalSuspicion:(prev.totalSuspicion||0)+(pair?.suspicion||0),
+      boardReactionPairId:prev.activePairId,
+      activePairId:null, eventText:null, modalPhase:'board_reaction',
     }:null);
     push(`📋 ${s.name} — case study complete: +${gain} lbs.`);
+  };
+  const dismissBoardReaction=()=>{
+    setCommunityResearcherState(prev=>prev?{...prev,boardReactionPairId:null,modalPhase:null}:null);
+  };
+  const openFinalReview=(s)=>{
+    const crs=communityResearcherState; if(!crs) return;
+    if(ap<1){push("⚠️ Need 1 AP for final review.");return;}
+    const text=getFinalReviewText(crs.pairsUsed,crs.totalSuspicion||0);
+    setAp(a=>a-1);
+    setCommunityResearcherState(prev=>prev?{...prev,finalReviewText:text,modalPhase:'final_review'}:null);
+  };
+  const proceedFromFinalReview=()=>{
+    const crs=communityResearcherState; if(!crs) return;
+    const bracket=getSuspicionBracket(crs.totalSuspicion||0);
+    if(bracket==='green'||bracket==='yellow'){
+      setCommunityResearcherState(prev=>prev?{...prev,modalPhase:'thesis_approved'}:null);
+    } else {
+      setCommunityResearcherState(prev=>prev?{...prev,modalPhase:'have_a_chat',chatMemberIdx:0,chatPhaseIdx:0,chatHistory:[],chatWon:[]}:null);
+    }
+  };
+  const makeHaveAChatChoice=(choiceId)=>{
+    const crs=communityResearcherState; if(!crs) return;
+    const scene=HAVE_A_CHAT_SCENES[crs.chatMemberIdx]; if(!scene) return;
+    const newHist=[...crs.chatHistory,choiceId];
+    if(crs.chatPhaseIdx<scene.phases.length-1){
+      setCommunityResearcherState(prev=>prev?{...prev,chatHistory:newHist,chatPhaseIdx:prev.chatPhaseIdx+1}:null);
+      return;
+    }
+    const won=scene.winCondition(newHist);
+    const newWon=won?[...crs.chatWon,crs.chatMemberIdx]:crs.chatWon;
+    if(crs.chatMemberIdx<HAVE_A_CHAT_SCENES.length-1){
+      setCommunityResearcherState(prev=>prev?{...prev,chatHistory:[],chatPhaseIdx:0,chatMemberIdx:prev.chatMemberIdx+1,chatWon:newWon}:null);
+    } else {
+      const bracket=getSuspicionBracket(crs.totalSuspicion||0);
+      const required=bracket==='red'?3:2;
+      const approved=newWon.length>=required;
+      setCommunityResearcherState(prev=>prev?{...prev,chatWon:newWon,modalPhase:approved?'thesis_approved':'thesis_rejected'}:null);
+    }
+  };
+  const closeThesisOutcome=(approved)=>{
+    setCommunityResearcherState(prev=>prev?{...prev,modalPhase:null,thesisApproved:approved,thesisRejected:!approved}:null);
+    if(approved) push("📋 Madeline — thesis approved. The research is complete.");
+    else push("📋 Madeline — thesis rejected. The committee was not persuaded.");
   };
 
   const startRankedSession=(studentId,stageIdx)=>{
@@ -5748,9 +5796,23 @@ export default function ProfessorSim(){
                                   </button>
                                 </div>
                               ):allDone?(
-                                <div style={{color:"#506090",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>
-                                  All four case studies complete. PhD defense pending.
-                                </div>
+                                crs.thesisApproved?(
+                                  <div style={{color:"#6aaa80",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>PhD Approved ✓</div>
+                                ):crs.thesisRejected?(
+                                  <div style={{color:"#a05060",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>Thesis Rejected</div>
+                                ):(
+                                  <div>
+                                    <div style={{fontSize:10,color:"#506090",marginBottom:6,fontStyle:"italic"}}>
+                                      All four case studies complete. The committee is waiting.
+                                    </div>
+                                    <div style={{fontSize:9,color:"#405070",marginBottom:8}}>
+                                      Cumulative suspicion: {crs.totalSuspicion||0} / 28
+                                    </div>
+                                    <button style={{...C.btn(blue),width:"100%",opacity:ap<1?0.4:1}} onClick={()=>openFinalReview(s)}>
+                                      📋 Request Final Review (1 AP)
+                                    </button>
+                                  </div>
+                                )
                               ):(
                                 <div>
                                   <div style={{fontSize:10,color:"#6080b0",marginBottom:4}}>
@@ -9057,6 +9119,96 @@ export default function ProfessorSim(){
           <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{if(madeline)completeCaseStudy(madeline);}}>
             Record Findings ✓ (1 AP)
           </button>
+        </>);
+
+        // ── BOARD REACTION ──
+        if(crs.modalPhase==='board_reaction'){
+          const reactionPair=CASE_STUDY_PAIRS.find(p=>p.id===crs.boardReactionPairId);
+          return wrap(<>
+            <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 COMMITTEE RESPONSE</div>
+            <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:10}}>
+              {reactionPair?.icon||'📋'} {reactionPair?.label||''}
+            </div>
+            <div style={{fontSize:11,color:"#8090b0",lineHeight:1.8,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
+              {BOARD_REACTIONS[crs.boardReactionPairId]||''}
+            </div>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}>
+              <div style={{fontSize:9,color:"#405070"}}>Suspicion total: <span style={{color:crs.totalSuspicion>17?"#c08060":crs.totalSuspicion>13?"#a09050":"#6080a0"}}>{crs.totalSuspicion||0}</span></div>
+              <div style={{fontSize:9,color:"#405070"}}>Study {crs.caseStudyStage}/4 done</div>
+            </div>
+            <button style={{...C.btn(blue),width:"100%"}} onClick={dismissBoardReaction}>Continue →</button>
+          </>);
+        }
+
+        // ── FINAL REVIEW ──
+        if(crs.modalPhase==='final_review') return wrap(<>
+          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 FINAL REVIEW</div>
+          <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:10}}>Committee Hearing</div>
+          <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
+            {crs.finalReviewText||''}
+          </div>
+          <button style={{...C.btn(blue),width:"100%"}} onClick={proceedFromFinalReview}>
+            {(getSuspicionBracket(crs.totalSuspicion||0)==='green'||getSuspicionBracket(crs.totalSuspicion||0)==='yellow')
+              ?'Accept Verdict →':'Have Those Conversations →'}
+          </button>
+        </>);
+
+        // ── HAVE A CHAT ──
+        if(crs.modalPhase==='have_a_chat'){
+          const scene=HAVE_A_CHAT_SCENES[crs.chatMemberIdx];
+          const phase=scene?.phases[crs.chatPhaseIdx];
+          const phaseText=typeof phase?.text==='function'?phase.text(crs.chatHistory):phase?.text;
+          return wrap(<>
+            <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 OFF THE RECORD</div>
+            <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:8}}>{scene?.member||''}</div>
+            <div style={{display:"flex",gap:6,marginBottom:12}}>
+              {HAVE_A_CHAT_SCENES.map((sc,i)=>(
+                <div key={i} style={{fontSize:9,padding:"2px 8px",borderRadius:4,
+                  background:crs.chatWon.includes(i)?'#0a2a18':i===crs.chatMemberIdx?'#0a1a38':'#080810',
+                  color:crs.chatWon.includes(i)?'#5aaa70':i===crs.chatMemberIdx?lblue:'#2a3a5a',
+                  border:`1px solid ${crs.chatWon.includes(i)?'#1a5a30':i===crs.chatMemberIdx?blue+'90':'#151530'}`}}>
+                  {crs.chatWon.includes(i)?'✓ ':''}{sc.member.replace('Dr.','')}
+                </div>
+              ))}
+            </div>
+            <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
+              {phaseText||''}
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {(phase?.choices||[]).map(ch=>(
+                <button key={ch.id} style={{...C.btn("#0e1a30"),textAlign:"left",fontSize:11,padding:"10px 14px",border:`1px solid ${blue}50`}}
+                  onClick={()=>makeHaveAChatChoice(ch.id)}>
+                  {ch.label}
+                </button>
+              ))}
+            </div>
+          </>);
+        }
+
+        // ── THESIS APPROVED ──
+        if(crs.modalPhase==='thesis_approved'){
+          const bracket=getSuspicionBracket(crs.totalSuspicion||0);
+          const outcomeText=bracket==='green'
+            ?`The committee approves without reservation. Madeline walks out of the building into the afternoon light and does not look back.`
+            :bracket==='yellow'
+            ?`Conditional approval. The ethics appendix will need to be written. Madeline has a great deal to say in it.`
+            :`The private meetings were — productive. The thesis is approved. Whatever was said in those rooms stays in those rooms.`;
+          return wrap(<>
+            <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 THESIS</div>
+            <div style={{fontSize:13,fontWeight:700,color:"#6aaa80",marginBottom:12}}>Approved</div>
+            <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>{outcomeText}</div>
+            <button style={{...C.btn(blue),width:"100%"}} onClick={()=>closeThesisOutcome(true)}>Close</button>
+          </>);
+        }
+
+        // ── THESIS REJECTED ──
+        if(crs.modalPhase==='thesis_rejected') return wrap(<>
+          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 THESIS</div>
+          <div style={{fontSize:13,fontWeight:700,color:"#a05060",marginBottom:12}}>Not Approved</div>
+          <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>
+            The committee was not convinced. The file is closed. Madeline keeps the field notes — all of them, the edited and unedited both — and begins, in the margins of the last page, something that isn't a thesis and isn't a journal. Whatever it is, she'll finish it on her own terms.
+          </div>
+          <button style={{...C.btn(blue),width:"100%"}} onClick={()=>closeThesisOutcome(false)}>Close</button>
         </>);
 
         return null;
