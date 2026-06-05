@@ -12,7 +12,7 @@ import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, I
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { HOSTESS_HANGOUTS, MENU_TIERS, ATMOSPHERE_TIERS, GUEST_TIERS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, SEDUCTION_MOVES, MOVES_BY_STAGE_BAND, getStageBand, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, CLUE_INVESTIGATION, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
-import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, RECIPES, getEatingReaction, STAGE_UP_TEXT, HARVEST_VIGNETTES_PLANNED, HARVEST_VIGNETTES_EMERGENCY, getGrowthVignette, RECRUITMENT_SCENE, TESTER_APPEARANCE } from './gameData/cultivator.js';
+import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, HARVEST_VIGNETTES_PLANNED, HARVEST_VIGNETTES_EMERGENCY, getGrowthVignette, RECRUITMENT_SCENE, TESTER_APPEARANCE, DIGEST_VIGNETTES } from './gameData/cultivator.js';
 
 // ═══════════════════════════════════════════════════════════════
 // DATA LAYER
@@ -340,7 +340,7 @@ export default function ProfessorSim(){
   // lilithHuntState: {currentNode,encounter:{manId,movesUsed[],movesNeeded,failed,consumed}|null,log:[],deliveryMode,deliveryDone}
   const [lilithKillCount, setLilithKillCount] = useState(0);
   const [cultivatorState, setCultivatorState] = useState(null);
-  // cultivatorState: {testerName,testerStageId,testerLbs,fatBar,suspicion,harvestsCompleted,usedNames,modalPhase,session,pendingStageUp,harvestType,harvestVignetteText,growthGain,growthVignetteText}
+  // cultivatorState: {testerName,testerStageId,testerLbs,fatBar,suspicion,harvestsCompleted,usedNames,modalPhase,session,pendingStageUp,harvestType,harvestVignetteText,growthGain,growthVignetteText,digestWeeksLeft,digestTotalWeeks}
   const [presentationState, setPresentationState] = useState(null);
   // presentationState: {studentId,stageIdx} — placeholder until mini-game implemented
   const [deliveryState, setDeliveryState] = useState(null);
@@ -600,8 +600,13 @@ export default function ProfessorSim(){
       singularityRandomOverride={student:primStudent,textFn:PRIMORDIAL_RANDOM_EVENTS[Math.min(pgIdx,PRIMORDIAL_RANDOM_EVENTS.length-1)]};
     }
 
+    // Decrement Reneé digestion timer each week
+    if(cultivatorState?.digestWeeksLeft>0){
+      setCultivatorState(prev=>prev?{...prev,digestWeeksLeft:Math.max(0,prev.digestWeeksLeft-1)}:null);
+    }
     let updated=students.map(s=>{
       if(s.id===LILITH_ID) return processStudentGain(s,LILITH_PASSIVE_GAIN,0); // Lilith only gains passively
+      if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       let gain=rnd(1,3)+skillPassiveBonus; // passive + skill bonus
       if(semEv) gain+=rnd(semEv.gain[0],semEv.gain[1]);
       if(randomEv){
@@ -1088,6 +1093,7 @@ export default function ProfessorSim(){
         fatBar:0, suspicion:0, harvestsCompleted:0, usedNames:[],
         modalPhase:null, session:null, pendingStageUp:false,
         harvestType:null, harvestVignetteText:null, growthGain:0, growthVignetteText:null,
+        digestWeeksLeft:0, digestTotalWeeks:0,
       });
     }
   };
@@ -1344,7 +1350,8 @@ export default function ProfessorSim(){
   // ── CULTIVATOR handlers ──────────────────────────────────────────────────
   const openCultivatorRecruit=()=>{
     if(!cultivatorState) return;
-    if(cultivatorState.harvestsCompleted>=3) return;
+    if(cultivatorState.harvestsCompleted>=4) return;
+    if(cultivatorState.digestWeeksLeft>0) return;
     setCultivatorState(prev=>({...prev,modalPhase:'recruit_setup'}));
   };
   const confirmCultivatorRecruit=()=>{
@@ -1363,7 +1370,8 @@ export default function ProfessorSim(){
   };
   const startCultivatorSession=(s)=>{
     if(!cultivatorState||!cultivatorState.testerName) return;
-    if(cultivatorState.harvestsCompleted>=3) return;
+    if(cultivatorState.harvestsCompleted>=4) return;
+    if(cultivatorState.digestWeeksLeft>0){push(`⚠️ Reneé is digesting — ${cultivatorState.digestWeeksLeft} week(s) remaining.`);return;}
     if(ap<1){push("⚠️ Need 1 AP.");return;}
     setAp(a=>a-1);
     setCultivatorState(prev=>({...prev,modalPhase:'session',session:{foodType:null,junctionIdx:-1,choices:[],log:[],sessionFatAccum:0,sessionSuspAccum:0,complete:false,eatingReaction:''}}));
@@ -1394,37 +1402,44 @@ export default function ProfessorSim(){
     const{session}=cs;
     // Apply gains: fat bar and suspicion
     const newFatBar=cs.fatBar+session.sessionFatAccum;
-    const newSusp=Math.min(200,Math.max(0,cs.suspicion+session.sessionSuspAccum));
+    const rawSusp=Math.min(200,Math.max(0,cs.suspicion+session.sessionSuspAccum));
     const stageUp=newFatBar>=FAT_BAR_CAP;
     const nextStageId=Math.min(10,cs.testerStageId+(stageUp?1:0));
-    const finalFatBar=stageUp?newFatBar-FAT_BAR_CAP:newFatBar;
+    // XP-style fat bar reset: carry overflow into next stage
+    const finalFatBar=stageUp?Math.max(0,newFatBar-FAT_BAR_CAP):newFatBar;
     const nextTesterLbs=stageUp?(TESTER_STAGE_LBS[nextStageId]||cs.testerLbs):cs.testerLbs;
-    // Reneé small quality-control gain
-    const reneeGain=Math.round(2+Math.random()*6);
-    setStudents(prev=>prev.map(st=>st.id===s.id?processStudentGain(st,reneeGain,5):st));
-    // Emergency harvest at suspicion 200
-    if(newSusp>=200){
+    // Suspicion resets on stage-up (carry-in fraction if > 75)
+    const finalSusp=stageUp?(rawSusp>75?Math.round(rawSusp*SUSPICION_CARRY_FRACTION):0):rawSusp;
+    // Reneé small quality-control gain (skip if already digesting)
+    if(cs.digestWeeksLeft===0){
+      const reneeGain=Math.round(2+Math.random()*6);
+      setStudents(prev=>prev.map(st=>st.id===s.id?processStudentGain(st,reneeGain,5):st));
+    }
+    // Emergency harvest at suspicion 200 (only if no stage-up — stage-up takes priority with reset)
+    if(rawSusp>=200&&!stageUp){
       const renee=students.find(st=>st.id===s.id)||s;
-      const hGain=HARVEST_GAIN[nextStageId]||HARVEST_GAIN[6];
-      const vignette=HARVEST_VIGNETTES_EMERGENCY[nextStageId]?.(cs.testerName,getStage(renee.lbs).label)||'[emergency harvest]';
+      const hGain=HARVEST_GAIN[cs.testerStageId]||HARVEST_GAIN[6];
+      const digestW=DIGEST_WEEKS[cs.testerStageId]||2;
+      const vignette=HARVEST_VIGNETTES_EMERGENCY[cs.testerStageId]?.(cs.testerName,getStage(renee.lbs).label)||'[emergency harvest]';
       const gVignette=getGrowthVignette(getStage(renee.lbs).id,hGain);
       setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,hGain,8)}:st));
-      setCultivatorState(prev=>({...prev,testerStageId:nextStageId,testerLbs:nextTesterLbs,fatBar:finalFatBar,suspicion:newSusp,session:null,pendingStageUp:false,harvestType:'emergency',harvestVignetteText:vignette,growthGain:hGain,growthVignetteText:gVignette,modalPhase:'emergency'}));
+      setCultivatorState(prev=>({...prev,testerStageId:cs.testerStageId,fatBar:finalFatBar,suspicion:200,session:null,pendingStageUp:false,harvestType:'emergency',harvestVignetteText:vignette,growthGain:hGain,growthVignetteText:gVignette,digestWeeksLeft:digestW,digestTotalWeeks:digestW,modalPhase:'emergency'}));
       push(`🍰 EMERGENCY: ${cs.testerName} got suspicious — harvest triggered (+${hGain} lbs to Reneé)`);
       return;
     }
-    // Normal session close
+    // Normal session close — stage-up or continue
     if(stageUp){
       const stageText=STAGE_UP_TEXT[nextStageId]?.(cs.testerName)||'The subject has grown.';
-      setCultivatorState(prev=>({...prev,testerStageId:nextStageId,testerLbs:nextTesterLbs,fatBar:finalFatBar,suspicion:newSusp,session:null,pendingStageUp:false,stageUpText:stageText,modalPhase:'stage_up'}));
-      push(`🍰 ${cs.testerName} advanced to ${getStage(nextTesterLbs).label} stage.`);
+      setCultivatorState(prev=>({...prev,testerStageId:nextStageId,testerLbs:nextTesterLbs,fatBar:finalFatBar,suspicion:finalSusp,session:null,pendingStageUp:false,stageUpText:stageText,modalPhase:'stage_up'}));
+      push(`🍰 ${cs.testerName} advanced to ${getStage(nextTesterLbs).label} — suspicion reset.`);
     } else {
-      setCultivatorState(prev=>({...prev,fatBar:finalFatBar,suspicion:newSusp,session:null,pendingStageUp:false,modalPhase:null}));
+      setCultivatorState(prev=>({...prev,fatBar:finalFatBar,suspicion:finalSusp,session:null,pendingStageUp:false,modalPhase:null}));
     }
   };
   const openCultivatorHarvest=(s)=>{
     const cs=cultivatorState; if(!cs||!cs.testerName) return;
-    if(cs.harvestsCompleted>=3) return;
+    if(cs.harvestsCompleted>=4) return;
+    if(cs.digestWeeksLeft>0) return;
     if(ap<1){push("⚠️ Need 1 AP for harvest.");return;}
     setAp(a=>a-1);
     const renee=students.find(st=>st.id===s.id)||s;
@@ -1436,9 +1451,10 @@ export default function ProfessorSim(){
   const confirmCultivatorHarvest=(s)=>{
     const cs=cultivatorState; if(!cs) return;
     const hGain=cs.growthGain;
+    const digestW=DIGEST_WEEKS[cs.testerStageId]||2;
     setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,hGain,12)}:st));
-    push(`🍰 Reneé — harvest complete: +${hGain} lbs`);
-    setCultivatorState(prev=>({...prev,testerName:null,testerStageId:6,testerLbs:TESTER_START_LBS,fatBar:0,suspicion:0,session:null,pendingStageUp:false,harvestsCompleted:prev.harvestsCompleted+1,harvestType:null,harvestVignetteText:null,modalPhase:'growth'}));
+    push(`🍰 Reneé — harvest complete: +${hGain} lbs. Digesting for ${digestW} weeks.`);
+    setCultivatorState(prev=>({...prev,testerName:null,testerStageId:6,testerLbs:TESTER_START_LBS,fatBar:0,suspicion:0,session:null,pendingStageUp:false,harvestsCompleted:prev.harvestsCompleted+1,harvestType:null,harvestVignetteText:null,digestWeeksLeft:digestW,digestTotalWeeks:digestW,modalPhase:'growth'}));
   };
   const closeCultivatorGrowth=()=>{
     setCultivatorState(prev=>prev?{...prev,modalPhase:null,growthVignetteText:null,growthGain:0}:null);
@@ -1446,9 +1462,8 @@ export default function ProfessorSim(){
   const dismissCultivatorStageUp=()=>{
     setCultivatorState(prev=>prev?{...prev,modalPhase:null,stageUpText:null}:null);
   };
-  const dismissCultivatorEmergency=()=>{
-    // After emergency: increment harvest count, clear tester, move to growth
-    setCultivatorState(prev=>prev?{...prev,testerName:null,testerStageId:6,testerLbs:TESTER_START_LBS,fatBar:0,suspicion:0,session:null,harvestsCompleted:prev.harvestsCompleted+1,harvestType:null,harvestVignetteText:null,modalPhase:'growth'}:null);
+  const openDigestCheck=()=>{
+    setCultivatorState(prev=>prev?{...prev,modalPhase:'digest_check'}:null);
   };
 
   const startRankedSession=(studentId,stageIdx)=>{
@@ -3556,6 +3571,7 @@ export default function ProfessorSim(){
   const startPrivateSession=(s)=>{
     const tier=getTier(s.relationship);
     if(tier.id<1){push(`⚠️ ${s.name} needs to be at least Close tier for a private session.`);return;}
+    if(s.id===10&&cultivatorState?.digestWeeksLeft>0){push(`⚠️ Reneé is digesting — ${cultivatorState.digestWeeksLeft} week(s) remaining.`);return;}
     if(ap<2){push("⚠️ Need 2 AP.");return;}
     const hist=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
     setSessionLog([]);
@@ -5572,8 +5588,10 @@ export default function ProfessorSim(){
                         if(s.evolvedForm==='cultivator'&&cultivatorState){
                           const cs=cultivatorState;
                           const brown="#8B4513";
-                          const exhausted=cs.harvestsCompleted>=3;
+                          const exhausted=cs.harvestsCompleted>=4;
                           const hasActive=!!cs.testerName&&!exhausted;
+                          const isDigesting=!hasActive&&!exhausted&&cs.digestWeeksLeft>0;
+                          const digestPct=cs.digestTotalWeeks>0?(1-cs.digestWeeksLeft/cs.digestTotalWeeks)*100:0;
                           const testerStageName=cs.testerName?getStage(cs.testerLbs).label:'—';
                           const fatPct=Math.min(100,cs.fatBar);
                           const suspPct=Math.min(100,cs.suspicion/2);
@@ -5583,10 +5601,24 @@ export default function ProfessorSim(){
                               <div style={{fontSize:13,fontWeight:700,color:"#CD853F",marginBottom:8}}>The Cultivator</div>
                               {exhausted?(
                                 <div style={{color:"#7a4020",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>All subjects cultivated. No further yield is possible.</div>
+                              ):isDigesting?(
+                                <div>
+                                  <div style={{background:"rgba(10,4,0,0.5)",borderRadius:7,padding:"8px 10px",marginBottom:8}}>
+                                    <div style={{fontSize:10,color:"#a07040",fontWeight:700,marginBottom:6}}>Reneé — digesting</div>
+                                    <div style={{fontSize:9,color:"#7a5030",marginBottom:2}}>PROCESSING — {cs.digestWeeksLeft} week{cs.digestWeeksLeft!==1?"s":""} remaining</div>
+                                    <div style={{background:"#1a0800",borderRadius:3,height:6,overflow:"hidden",marginBottom:8}}>
+                                      <div style={{width:`${digestPct}%`,height:"100%",background:`linear-gradient(90deg,${brown},#CD853F)`,transition:"width 0.3s"}}/>
+                                    </div>
+                                    <div style={{fontSize:10,color:"#6a4020",fontStyle:"italic",lineHeight:1.5}}>She is unavailable. Passive gain suspended.</div>
+                                  </div>
+                                  <button style={{...C.btn("#2a0e04"),width:"100%"}} onClick={openDigestCheck}>
+                                    👁 Check on Her
+                                  </button>
+                                </div>
                               ):!hasActive?(
                                 <div>
                                   <div style={{color:"#9a6030",fontSize:11,lineHeight:1.6,marginBottom:10,fontStyle:"italic"}}>{RECRUITMENT_SCENE.slice(0,120)}…</div>
-                                  <div style={{color:"#7a5030",fontSize:10,marginBottom:8}}>Cycles remaining: {3-cs.harvestsCompleted}/3</div>
+                                  <div style={{color:"#7a5030",fontSize:10,marginBottom:8}}>Cycles remaining: {4-cs.harvestsCompleted}/4</div>
                                   <button style={{...C.btn(brown),width:"100%"}} onClick={()=>openCultivatorRecruit()}>
                                     Recruit 🐷 <s style={{opacity:0.6}}>'Taste Tester'</s>
                                   </button>
@@ -5620,7 +5652,7 @@ export default function ProfessorSim(){
                                     </button>
                                   </div>
                                   <div style={{textAlign:"center",fontSize:9,color:"#5a3020",marginTop:6}}>
-                                    Cycle {cs.harvestsCompleted+1} of 3 · {TESTER_APPEARANCE[cs.testerStageId]||""}
+                                    Cycle {cs.harvestsCompleted+1} of 4 · {TESTER_APPEARANCE[cs.testerStageId]||""}
                                   </div>
                                 </div>
                               )}
@@ -8841,7 +8873,7 @@ export default function ProfessorSim(){
           <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 CULTIVATOR</div>
           <div style={{fontSize:14,fontWeight:700,color:amber,marginBottom:10}}>Select a Subject</div>
           <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>{RECRUITMENT_SCENE}</div>
-          <div style={{fontSize:11,color:"#8a5030",marginBottom:16}}>A candidate will be selected from your contact list. She will believe she is a paid taste tester. This is technically accurate. Cycle {cs.harvestsCompleted+1} of 3.</div>
+          <div style={{fontSize:11,color:"#8a5030",marginBottom:16}}>A candidate will be selected from your contact list. She will believe she is a paid taste tester. This is technically accurate. Cycle {cs.harvestsCompleted+1} of 4.</div>
           <div style={{display:"flex",gap:8}}>
             <button style={C.btn("#333")} onClick={()=>setCultivatorState(prev=>({...prev,modalPhase:null}))}>Cancel</button>
             <button style={{...C.btn(brown),flex:1}} onClick={confirmCultivatorRecruit}>Recruit Subject →</button>
@@ -8952,13 +8984,28 @@ export default function ProfessorSim(){
           <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 RENEÉ</div>
           <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:10}}>After the Harvest</div>
           <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:12,fontStyle:"italic"}}>{cs.growthVignetteText||''}</div>
-          {cs.harvestsCompleted>=3?(
-            <div style={{fontSize:11,color:"#7a5030",marginBottom:12,textAlign:"center"}}>All three cultivation cycles complete.</div>
+          {cs.harvestsCompleted>=4?(
+            <div style={{fontSize:11,color:"#7a5030",marginBottom:12,textAlign:"center"}}>All four cultivation cycles complete.</div>
           ):(
-            <div style={{fontSize:11,color:"#7a5030",marginBottom:12,textAlign:"center"}}>Cycles remaining: {3-cs.harvestsCompleted}/3</div>
+            <div style={{fontSize:11,color:"#7a5030",marginBottom:12,textAlign:"center"}}>Cycles remaining: {4-cs.harvestsCompleted}/4</div>
           )}
           <button style={{...C.btn(brown),width:"100%"}} onClick={closeCultivatorGrowth}>Continue ✓</button>
         </>);
+
+        // ── DIGEST CHECK ──
+        if(cs.modalPhase==='digest_check'){
+          const isEarly=cs.digestWeeksLeft>cs.digestTotalWeeks/2;
+          const stageKey=cs.digestTotalWeeks<=2?6:cs.digestTotalWeeks<=4?7:cs.digestTotalWeeks<=6?8:cs.digestTotalWeeks<=9?9:10;
+          const vigObj=DIGEST_VIGNETTES[stageKey];
+          const vig=isEarly?vigObj?.early:vigObj?.late;
+          return wrap(<>
+            <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>👁 CHECK ON HER</div>
+            <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:4}}>Reneé</div>
+            <div style={{fontSize:10,color:"#8a6030",marginBottom:10}}>{cs.digestWeeksLeft} week{cs.digestWeeksLeft!==1?"s":""} remaining</div>
+            <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>{vig||'She is unavailable.'}</div>
+            <button style={{...C.btn("#333"),width:"100%"}} onClick={()=>setCultivatorState(prev=>({...prev,modalPhase:null}))}>Leave</button>
+          </>);
+        }
 
         return null;
       })()}
