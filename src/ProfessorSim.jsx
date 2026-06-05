@@ -7401,6 +7401,8 @@ export default function ProfessorSim(){
                 onClick={()=>setGoddessSeen(true)}>Unlock Divine</button>
               <button style={{...C.smBtn,background:"rgba(100,20,100,0.4)"}}
                 onClick={debugForceIncarnation}>Force Incarnation</button>
+              <button style={{...C.smBtn,background:"rgba(80,0,100,0.4)"}}
+                onClick={()=>setLilithUnlocked(true)}>🌑 Unlock Lilith</button>
             </div>
             {/* Per-student rows */}
             <div style={{fontSize:10,color:"#888",marginBottom:6}}>STUDENTS</div>
