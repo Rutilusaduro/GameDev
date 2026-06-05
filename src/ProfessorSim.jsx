@@ -1503,13 +1503,16 @@ export default function ProfessorSim(){
     const crs=communityResearcherState; if(!crs) return;
     const pair=CASE_STUDY_PAIRS.find(p=>p.id===pairId); if(!pair) return;
     const mTier=getMadelineTier(getStage(s.lbs).id);
-    const text=pair.event(crs.caseStudyStage,mTier);
+    const pairStuds=pair.studentIds.map(id=>students.find(st=>st.id===id)).filter(Boolean);
+    const text=pair.event(crs.caseStudyStage,mTier,pairStuds);
     setCommunityResearcherState(prev=>prev?{...prev,activePairId:pairId,eventText:text,modalPhase:'case_study_event'}:null);
   };
   const completeCaseStudy=(s)=>{
     const crs=communityResearcherState; if(!crs) return;
+    const pair=CASE_STUDY_PAIRS.find(p=>p.id===crs.activePairId);
+    const [gMin,gMax]=pair?.gainRange||[3,8];
     setAp(a=>a-1);
-    const gain=rnd(3,8);
+    const gain=rnd(gMin,gMax);
     setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,gain,10)}:st));
     setCommunityResearcherState(prev=>prev?{
       ...prev,
@@ -9028,7 +9031,10 @@ export default function ProfessorSim(){
                     style={{padding:"10px 12px",borderRadius:8,border:`1px solid ${avail?"#4a6fa570":"#2030404a"}`,
                       background:avail?"rgba(10,20,50,0.6)":"rgba(5,8,18,0.4)",
                       cursor:avail?"pointer":"default",opacity:avail?1:0.5,position:"relative"}}>
-                    <div style={{fontSize:14,marginBottom:4}}>{pair.icon}</div>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
+                      <div style={{fontSize:14}}>{pair.icon}</div>
+                      <div style={{fontSize:8,color:avail?`hsl(${Math.round(30+(pair.suspicion-1)*15)},70%,55%)`:"#405060"}}>⚠ {pair.suspicion}/7</div>
+                    </div>
                     <div style={{fontSize:11,fontWeight:700,color:avail?lblue:"#405060",textDecoration:used?"line-through":"none"}}>{pair.label}</div>
                     <div style={{fontSize:9,color:"#405875",marginTop:2}}>{pair.subtitle}</div>
                     {used&&<div style={{fontSize:8,color:"#3a5060",marginTop:2}}>✓ studied</div>}

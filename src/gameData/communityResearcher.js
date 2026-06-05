@@ -1,12 +1,11 @@
 // src/gameData/communityResearcher.js
-// Madeline (id:1) — bookworm archetype
-// Evolution: community_researcher
-// Present a thesis, then conduct 4 case studies on classmates.
-// PhD defense is deferred to a future session.
+// Madeline (id:1) — bookworm archetype → community_researcher evolution
+// Present thesis, then 4 case studies (choose from 7 pairs).
+// Each pair has a suspicion rating 1–7 (7 = most suspicious to the committee).
+// gainRange gives Madeline's lbs gain when the case study is completed.
 
 // ── WEIGHT TIER HELPER ────────────────────────────────────────────────────────
-// Used to select Madeline's weight-dependent lines in event text.
-// 0=slim(stages 0-3), 1=heavy(4-6), 2=enormous(7-8), 3=blob(9+)
+// 0=slim(0-3), 1=heavy(4-6), 2=enormous(7-8), 3=blob(9+)
 export function getMadelineTier(stageId) {
   if (stageId <= 3) return 0;
   if (stageId <= 6) return 1;
@@ -14,8 +13,6 @@ export function getMadelineTier(stageId) {
   return 3;
 }
 
-// ── STAGE OPENERS ─────────────────────────────────────────────────────────────
-// Used inside event functions as STAGE_OPENERS[stageNum].
 const STAGE_OPENERS = [
   "At the start of her study",
   "For her second case study",
@@ -27,10 +24,9 @@ const STAGE_OPENERS = [
 
 export const THESIS_BOARD = {
   phases: [
-    // Phase 0 — Presentation
     (name) => `PhD Proposal Defense — Room 204, Department of Sociology.
 
-Dr. Patricia Chen (senior faculty, the kind of dry that becomes warm in proportion to how much she respects you) sits opposite Dr. James Harmon (middle faculty, long career of reviewing proposals with visible skepticism). On the left is Dr. Olivia Ward — junior faculty, three colored tabs on her copy of the proposal.
+Dr. Patricia Chen (senior faculty, dry in the way that signals respect earned) sits across from Dr. James Harmon (long career, visible skepticism). Dr. Olivia Ward — junior faculty, three color-coded tabs on her copy of the proposal — is on the left.
 
 ${name} looks at all three of them and begins.
 
@@ -42,7 +38,6 @@ She clicks to the next slide.
 
 Nobody speaks for a moment.`,
 
-    // Phase 1 — Questions
     (name) => `Dr. Chen sets her pen down.
 
 "The data on isolation as an amplifier — you're drawing on Festinger's social comparison theory?"
@@ -55,188 +50,143 @@ Dr. Harmon leans forward. "You're describing a closed feedback system. How do yo
 
 ${name} had been waiting for this one.
 
-"That's the centerpiece. Six months of supervised case-study contact with identified community participants — participant observation with ethical oversight at each stage. IRB-approved, structured, field notes reviewed monthly by a faculty liaison." She clicks to the methodology slide. "The research position is embedded by design. The documentation accounts for observer effect explicitly."
+"That's the centerpiece. Six months of supervised case-study contact — participant observation with ethical oversight at each stage. IRB-approved, structured, field notes reviewed monthly by a faculty liaison." She clicks to the methodology slide. "The research position is embedded by design. The documentation accounts for observer effect explicitly."
 
 Dr. Harmon looks at Dr. Ward. Dr. Ward looks at her notes. Dr. Harmon nods, slowly.`,
 
-    // Phase 2 — Dr. Ward's comment + approval
     (name) => `Dr. Ward — who has color-coded tabs on the methodology section — looks up.
 
-"This is genuinely interesting work, ${name}. Brave, even." She says it like someone who means it. "The framing is airtight and the theoretical basis is solid." A pause that is the comfortable kind, not the uncomfortable one. "Just — make sure you don't get too close to your research. I remember how hard those long writing sessions can be on the waistline."
+"This is genuinely interesting work, ${name}. Brave, even." She says it like someone who means it. "The framing is airtight and the theoretical basis is solid." A pause — the comfortable kind, not the uncomfortable one. "Just — make sure you don't get too close to your research. I remember how hard those long writing sessions can be on the waistline."
 
 She smiles when she says it. Warmly, not cruelly.
 
 ${name} thanks her. She writes it in her field notes the moment she's outside the door.
 
-The panel approves the proposal unanimously. Dr. Chen calls the framing "theoretically rigorous." Dr. Harmon says the methodology is "defensible if you stick to it." Dr. Ward tells her the writing is good and to trust it.
+The panel approves the proposal unanimously. Dr. Chen calls the framing "theoretically rigorous." Dr. Harmon says the methodology is "defensible if you stick to it." Dr. Ward tells her the writing is good.
 
 ${name} takes the stairs instead of the elevator and fills three pages before she gets home.`,
   ],
 };
 
 // ── CASE STUDY PAIRS ─────────────────────────────────────────────────────────
-// event(stageNum, mTier) → string
-//   stageNum 0-3: which case study this is (for framing)
+// event(stageNum, mTier, studs) → string
+//   stageNum 0-3: which case study (for framing)
 //   mTier 0-3: Madeline's weight tier
+//   studs: array of student objects for this pair (from students state)
+// suspicion 1-7: 1=low committee risk, 7=highest
+// gainRange: [min, max] lbs Madeline gains on completion
 
 export const CASE_STUDY_PAIRS = [
+  // ── 1. KYLIE & TIFFANY — Suspicion 1 ──────────────────────────
   {
     id: 'social_pressure',
     label: 'Kylie & Tiffany',
-    subtitle: 'Social Pressure',
+    subtitle: 'Event Taste-Testing',
     icon: '📱',
+    suspicion: 1,
+    gainRange: [4, 8],
     studentIds: [2, 6],
     unlockImmediate: false,
     event: (stageNum, mTier) => {
       const opener = STAGE_OPENERS[stageNum];
-      const mEat = [
-        "sat with a single mimosa and her notebook and watched everything.",
-        "found herself eating more than she'd planned — refilling her plate twice without consciously deciding to.",
-        "was eating steadily, her notebook open but the pen mostly still, writing only when something genuinely surprised her.",
-        "was eating as much as either of them, which was not a small amount. Her notepad was closed. This was fieldwork.",
+      const mRole = [
+        "ate through the courses with the care of someone noting flavor profiles.",
+        "had stopped taking notes after the fourth course and was just eating, which Kylie had started filming.",
+        `was, by the ninth course, Kylie's "most-viewed test eater ever" — the engagement on someone her size working through a tasting menu was, Kylie explained, "insane."`,
+        "was the main event. Kylie had stopped filming the food entirely. Tiffany had stopped pretending to take vendor notes.",
       ][mTier];
-      const mObserve = [
-        "She recorded the mechanisms carefully from a safe distance.",
-        "She was starting to understand the mechanisms from the inside.",
-        "She had been inside the mechanism for a while now.",
-        "She was part of the mechanism. She noted this.",
+      const kylieReact = [
+        `"You're doing us a genuine favor," Kylie said, refilling her glass. "We need actual feedback. Your opinions are data."`,
+        `"Okay but the way she just finished that entire thing—" Kylie said, to Tiffany, at normal volume, in front of Madeline.`,
+        `Kylie turned the camera on Madeline without announcing it. "This is my test-eater," she said into the lens. "She has eaten everything. Everything." A pause. "She's incredible."`,
+        `"I need you at the actual event," Kylie said. "No notes, just you, as a guest, eating. The camera will handle the rest." Tiffany nodded without hesitation.`,
       ][mTier];
-      return `${opener}, Madeline arrived at Kylie's apartment to find Tiffany already there with a charcuterie board and a competitive expression.
+      return `${opener}, Kylie met Madeline at the door with a clipboard and a look of genuine relief.
 
-Kylie had described it as a "collab brunch." Tiffany had heard "brunch" and shown up forty minutes early. By the time Madeline arrived, both of them had the look of people who had already committed to something.
+"Thank god. Okay — we ordered double of everything for the event next month and we have to make sure all of it is actually good before I commit to the vendor. Literally everything. You are doing me a massive favor."
 
-"Kylie does the Instagram thing," Tiffany said, refilling a mimosa without being asked. "I do actual hosting."
+Tiffany was already at the table with a vendor spreadsheet and a fork. "We have seventeen courses," she said. "Two of each. Eat both versions of everything and tell us which one is better."
 
-"I do actual reach," Kylie said. She was already filming. "Tiff, sit so the light hits the prosciutto."
+"It's a lot," Kylie agreed. "That's why we needed a third person."
 
-"I am not a lighting adjustment."
+The spread was — it was genuinely a lot. Two styles of each appetizer, two proteins, two sides, two desserts, all laid across the kitchen island in labeled rows. The task was clear: work through all of it, give opinions, compare.
 
-Between them, the table was covered: brioche, smoked salmon, three kinds of cheese, a waffle station Tiffany had apparently rented. The competition had no official rules, which meant it was total. Each new dish raised the stakes; each refill was a response; each offer a counter-move in a game neither of them named.
+Madeline ${mRole}
 
-Madeline ${mEat}
+${kylieReact}
 
-The two of them fed off each other's momentum — growing the spread, growing each other — without once acknowledging that this was what they were doing. ${mObserve}`;
+The session lasted four hours. Tiffany's vendor notes became increasingly illegible. Kylie's filming became increasingly focused on Madeline. The food kept coming until it was gone, which took longer than either of them had planned for and not as long as Madeline might have expected.`;
     },
   },
+
+  // ── 2. BRITTANY & SERENA — Suspicion 2 ───────────────────────
   {
     id: 'competitive',
     label: 'Brittany & Serena',
-    subtitle: 'Competitive Eating',
+    subtitle: 'Two-Method Showdown',
     icon: '🏆',
+    suspicion: 2,
+    gainRange: [6, 11],
     studentIds: [0, 3],
     unlockImmediate: false,
     event: (stageNum, mTier) => {
       const opener = STAGE_OPENERS[stageNum];
-      const mEat = [
-        "had a single plate and mostly watched, writing notes about the competitive framework.",
-        "had been handed a plate and eaten it, because the room's energy made stopping feel like an interruption.",
-        "was eating in earnest by the second hour. She would figure out why later.",
-        "was outpacing both of them on bread alone. Nobody said anything. It felt like the natural order.",
+      // Night 1: Eating contest style (Brittany)
+      const bReact = [
+        `"C'mon, you barely took anything! The point is to eat FAST. Fill the plate and go." Brittany demonstrated. Madeline filled her plate.`,
+        `Brittany pointed. "Okay, she's getting it. That's the form. See how she's just — she's committing." She was visibly pleased.`,
+        `Brittany stopped mid-bite. "Hold on. How much has she — Serena. Serena, look." Serena looked. Both of them looked.`,
+        `Brittany put her fork down slowly. "Hey. Hey, big gal. You don't have to — I mean, you can — we're not — maybe — " She glanced at Serena. Serena gave a very small shrug.`,
       ][mTier];
-      const mNote = [
-        "She noted the competitive dynamic with the focus of someone who is definitely just here professionally.",
-        "She had stopped noting and started eating. She would reconstruct from memory.",
-        "Her notebook was balanced on her knee but the pen wasn't moving.",
-        "The notebook was closed. This had been research, and now it was also dinner.",
+      // Night 2: Sumo grazing (Serena)
+      const sReact = [
+        `"Don't think about how much," Serena said. "Just eat until the table is empty. That's all. Take your time." Madeline took her time.`,
+        `"Good. You're learning the pace." Serena watched Madeline work through the third plate with something approaching professional approval. "This is how you build capacity."`,
+        `Serena sat back and looked at what Madeline had consumed over the past three hours. Her expression was one of quiet recalibration. "You have done this before," she said. "Not necessarily this, but — something like this."`,
+        `Serena watched Madeline in silence for a long moment. Then, very carefully: "I think you might not need the training." A pause. "I think you might be past the training."`,
       ][mTier];
-      return `${opener}, Madeline found Brittany and Serena at a table covered in takeout cartons.
+      const mNight1 = [
+        "ate fast and a lot, which surprised her, because the room made slowing down feel wrong.",
+        "was doing well, genuinely, in a way that she would examine later.",
+        "was keeping pace with Brittany, which was not a small thing, and had stopped thinking about it.",
+        "was, by the end of it, ahead. This was not where the evening was supposed to end.",
+      ][mTier];
+      const mNight2 = [
+        "ate slowly and more than she planned, because Serena's method made stopping feel like quitting.",
+        "was two hours in and still eating, which she noted with the portion of her brain still taking notes.",
+        "had cleared everything in front of her and accepted a third plate without being asked.",
+        "had been eating continuously for three hours. The table was mostly empty and she had contributed significantly to that fact.",
+      ][mTier];
+      return `${opener}, the case study ran across two evenings — because Brittany and Serena could not agree on a single method.
 
-"It started as a bet," Brittany said, not looking up from the noodles. "She said she could eat more lo mein than me."
+**Night One — Eating Contest (Brittany's Method)**
 
-"I said I'd had three servings to her two," Serena corrected. "She made it a bet."
+"The principle is simple," Brittany explained, arranging the table like a competition setup. "Plate up. Go. Stop when it's gone or you're done. Speed is part of the test." She looked at Madeline with the encouraging expression of a coach. "You're going to eat with us."
 
-"I clarified the terms."
+${bReact}
 
-They had been going for an hour before Madeline arrived. Seven empty cartons, two half-finished, a box of spring rolls neither had touched yet — they were saving the spring rolls. Madeline wrote this down. She understood already why.
+Madeline ${mNight1}
 
-Brittany ate fast, with the energy of someone used to an audience. Serena ate methodically, with the focus of someone who had trained for this without telling anyone. The competition had no end condition, which meant it would end when one of them decided it had, which meant it might not.
+**Night Two — Sumo Grazing (Serena's Method)**
 
-Madeline ${mEat}
+Serena's setup was different: the same amount of food, spread across low dishes, no clock. "This isn't about speed," she said. "This is about duration. You eat until the table is clear. You just — graze. Consistently. For as long as it takes." She looked at Madeline. "You're eating with us."
 
-${mNote}`;
+${sReact}
+
+Madeline ${mNight2}
+
+At the end of night two, Brittany and Serena sat across the empty table and did not immediately speak. Then Brittany said: "So her method is both." Serena considered this. "I think that's accurate," she said.`;
     },
   },
-  {
-    id: 'vore',
-    label: 'Reneé & Raven',
-    subtitle: 'Consumption as Ritual',
-    icon: '🕯️',
-    studentIds: [10, 15],
-    unlockImmediate: false,
-    event: (stageNum, mTier) => {
-      const opener = STAGE_OPENERS[stageNum];
-      const mEat = [
-        "ate carefully, taking small portions and smaller notes.",
-        "ate more than she'd intended. She noted this as relevant.",
-        "had finished everything in front of her and was reaching for more without deciding to.",
-        "ate with the quiet thoroughness of someone who had resolved the question of restraint at some earlier point in the evening.",
-      ][mTier];
-      const ravenObserve = [
-        "Raven watched her with the attention of someone cataloguing a variable.",
-        "Raven said, quietly: 'You're relaxing into it.' This was accurate.",
-        "Raven made a note — in Raven's own notebook, not Madeline's.",
-        "Raven smiled, which she did rarely and which was specific. 'You understand it now,' she said. Madeline did not fully disagree.",
-      ][mTier];
-      return `${opener}, Reneé had been cooking since noon.
 
-She didn't explain what she was making. The apartment smelled like braised meat and wine reduction and something else Madeline couldn't identify. Raven was at the counter watching, which she apparently did regularly.
-
-"I find the process philosophically interesting," Raven said, when Madeline asked. "Total incorporation. The act of consuming something completely — there's a ritual dimension that culinary culture refuses to name directly."
-
-Reneé did not comment on this. She was adjusting seasoning.
-
-"You study feederism," Raven said to Madeline. "You've thought about the ritual component."
-
-"I've thought about it as a social phenomenon."
-
-"Those aren't different things. The community has developed a liturgy: the offer, the acceptance, the witness. You've watched it in controlled conditions. Here you're watching it in its native form."
-
-The food, when it came, was extraordinary. Reneé set plates down without ceremony and let people decide. Raven ate with deliberate slowness. Madeline ${mEat}
-
-${ravenObserve}`;
-    },
-  },
-  {
-    id: 'metrics',
-    label: 'Priya & Kaylee',
-    subtitle: 'Metrics-Driven',
-    icon: '📊',
-    studentIds: [5, 11],
-    unlockImmediate: false,
-    event: (stageNum, mTier) => {
-      const opener = STAGE_OPENERS[stageNum];
-      const mResist = [
-        `"I'm just observing," Madeline said. "I'm not a subject." Kaylee looked at Priya. Priya looked at the spreadsheet. Kaylee brought Madeline a plate.`,
-        `"I don't need to be in the data set," Madeline said, but Kaylee was already writing something.`,
-        `Madeline had stopped objecting. Kaylee's warmth made objection feel ungracious; Priya's precision made it feel unscientific.`,
-        `Madeline had her own column in the spreadsheet. She wasn't sure when that had happened.`,
-      ][mTier];
-      const mEat = [
-        "ate what was brought, recorded the quantity, and maintained professional distance.",
-        "ate more than she'd budgeted for, which the spreadsheet apparently reflected.",
-        "had stopped tracking her own intake because Kaylee was tracking it for her. She found this restful.",
-        "was eating and being measured and eating and being measured. The data was, she supposed, good data.",
-      ][mTier];
-      return `${opener}, Madeline found Priya at her desk and Kaylee standing beside it with a tape measure.
-
-"Third measurement session this week," Priya said, without looking up. "I'm tracking intake-to-output ratio at three-day intervals. Kaylee handles collection."
-
-Kaylee smiled at Madeline with the genuine warmth of someone in a vocation. "You can stay," she said. "I'll bring you something." She brought something before Madeline had answered.
-
-The session had a structure: Priya would eat, Kaylee would measure and record and offer more, and Priya would look at the numbers and calculate and demand more. She approached her own transformation with the precision of someone optimizing a system. "The intake rate correlates with absorption efficiency up to a point," she said between bites. "I'm trying to locate the ceiling."
-
-"She's very close," Kaylee said, with pride.
-
-${mResist}
-
-Madeline ${mEat} When she glanced at Kaylee's clipboard on the way out, there was a row for her. There had been from the beginning.`;
-    },
-  },
+  // ── 3. DESTINY & MAYA — Suspicion 3 ──────────────────────────
   {
     id: 'night_in',
     label: 'Destiny & Maya',
     subtitle: 'Night In',
     icon: '🎮',
+    suspicion: 3,
+    gainRange: [4, 8],
     studentIds: [9, 8],
     unlockImmediate: false,
     event: (stageNum, mTier) => {
@@ -270,49 +220,15 @@ Madeline ${mEat}
 ${mLeave}`;
     },
   },
-  {
-    id: 'manipulation',
-    label: 'Daisy & Nadia',
-    subtitle: 'Active vs. Silent Influence',
-    icon: '📋',
-    studentIds: [13, 12],
-    unlockImmediate: false,
-    event: (stageNum, mTier) => {
-      const opener = STAGE_OPENERS[stageNum];
-      const mEat = [
-        "ate two things she had been genuinely offered and noted both.",
-        "ate four things. She had been about to stop when Daisy said 'just try this one too' with such warmth that stopping felt rude.",
-        "had lost track of how many things she'd eaten. The distinction between observer and participant had fully dissolved.",
-        "had eaten continuously for two hours. She was going to write a very honest methodology section.",
-      ][mTier];
-      const nadiaLine = [
-        `Nadia made a note about Madeline's intake that Madeline could see being made but not read.`,
-        `"You're more susceptible to direct warmth than you predicted," Nadia said, not unkindly. "That's genuinely useful data."`,
-        `Nadia had stopped observing Daisy entirely. She was watching Madeline with the focus of someone who had found the more interesting variable.`,
-        `"You know what you are?" Nadia said, at some point. Madeline said she didn't. "A control group that stopped controlling. That's not a failure. That's a finding." She wrote something.`,
-      ][mTier];
-      return `${opener}, Daisy had been baking since eight in the morning.
 
-"I made too much," she said, with the tone of someone who had made exactly the right amount. "You have to take some. I made way too much."
-
-Nadia was already there, in the corner with her notebook, watching Daisy with the expression of someone observing a particularly clean experiment.
-
-"She does this every time," Nadia said quietly to Madeline. "Note the framing: 'I made too much' positions the offer as a favor to her. The recipient eats not from appetite but from social obligation." A pause. "It's effective. She's never not effective."
-
-Daisy, who had heard this, brought Nadia another cookie. Nadia ate it without comment.
-
-Daisy moved through the room with the warmth of someone who genuinely wanted everyone fed — learned names quickly, remembered preferences, brought things to specific people specifically. The mechanism was Festinger in reverse: not comparison downward, but inclusion upward.
-
-Madeline ${mEat}
-
-${nadiaLine}`;
-    },
-  },
+  // ── 4. MARY JANE, FIONA & YUKI — Suspicion 4 ─────────────────
   {
     id: 'culture_shock',
-    label: 'Mary Jane, Fiona & Yuki',
+    label: 'MJ, Fiona & Yuki',
     subtitle: 'Southern Hospitality',
     icon: '🌾',
+    suspicion: 4,
+    gainRange: [5, 9],
     studentIds: [14, 4],
     unlockImmediate: true,
     event: (stageNum, mTier) => {
@@ -331,7 +247,7 @@ ${nadiaLine}`;
       ][mTier];
       return `${opener}, Mary Jane had been cooking before anyone arrived.
 
-Her off-campus house had the kitchen of someone raised to cook for fifteen. Fiona had been told it was "just a small thing." Yuki — an exchange student from Osaka who lived two floors above Fiona, who had come because Fiona seemed nervous about going alone — had not been briefed at all.
+Her off-campus house had the kitchen of someone raised to cook for fifteen. Fiona had been told it was "just a small thing." Yuki — an exchange student from Osaka, who lived two floors above Fiona and had come because Fiona seemed nervous about going alone — had not been briefed at all.
 
 "There's more in the kitchen," Mary Jane said, the first time a dish was finished. There was more in the kitchen. There always was.
 
@@ -342,6 +258,163 @@ ${yukiLine}
 Madeline ${mEat}
 
 Mary Jane, toward the end of the afternoon, looked around the table with the satisfaction of a completed project. "I love cooking for people," she said. She meant it entirely.`;
+    },
+  },
+
+  // ── 5. PRIYA & KAYLEE — Suspicion 5 ──────────────────────────
+  {
+    id: 'metrics',
+    label: 'Priya & Kaylee',
+    subtitle: 'Metrics-Driven',
+    icon: '📊',
+    suspicion: 5,
+    gainRange: [5, 10],
+    studentIds: [5, 11],
+    unlockImmediate: false,
+    event: (stageNum, mTier, studs) => {
+      const opener = STAGE_OPENERS[stageNum];
+      const priya = studs?.[0];
+      // Priya reacts based on Madeline's tier relative to her
+      const priyaReact = [
+        // slim — Priya is ahead, stays smug and competes harder
+        `Priya glanced at Madeline's column on the spreadsheet, then at Madeline, then back. "Still ahead of you," she said, with the satisfaction of someone who had been hoping to say exactly that. She ordered more.`,
+        // heavy — Priya is surprised, recalibrates, redoubles
+        `Priya looked at the numbers for longer than usual. "Wait." She looked at Madeline. "When did she — how much has she—" She looked back at the spreadsheet. "I need to recalibrate my baseline." She started eating faster.`,
+        // enormous — Priya is getting agitated, competitive panic
+        `Priya went quiet, which was unusual. She looked at her spreadsheet, then at Madeline, then at her spreadsheet. "This is a controlled environment," she said, to herself more than anyone. "I have a methodology." She added a new column. She started eating with visible urgency.`,
+        // blob — Priya is looking at the data with complicated feelings
+        `Priya stared at her laptop for a long time. Then she looked at Madeline. Then she looked at Kaylee. "My projections," she said slowly, "did not account for this variable." She opened a new tab. "I'm going to need more data points."`,
+      ][mTier];
+      const kayleeReact = [
+        // slim — gentle, nurturing
+        `Kaylee came over with a plate and set it in front of Madeline without asking. "You should eat more," she said warmly. "You're here, you might as well be in the data."`,
+        // heavy — more attentive, starting to focus on Madeline
+        `Kaylee measured Madeline's waist with the quiet efficiency of someone in her element, then wrote something down. "You're doing really well," she said. She brought another plate.`,
+        // enormous — fully focused on Madeline, feeding aggressively
+        `Kaylee had, at some point, redirected her full attention to Madeline. She set food in front of her continuously — not intrusively, just present, just available, just there when the plate was empty. "You're so good at this," she said. "I love data like this."`,
+        // blob — in complete overdrive, Madeline is the main subject now
+        `Kaylee was barely looking at Priya anymore. She stood beside Madeline with the focused energy of someone who had found their life's work. She refilled things before they were empty. She brought things Madeline hadn't asked for. She was almost glowing. "This," she said, to no one in particular, "is the best session I have ever run."`,
+      ][mTier];
+      const mEat = [
+        "ate what was brought, recorded the quantity, and maintained professional distance.",
+        "ate more than she'd projected for an observer. The irony was not lost on her.",
+        "had stopped tracking her own intake because Kaylee was tracking it for her, and found this restful.",
+        "was eating and being measured and eating and being measured, and had made peace with all of it.",
+      ][mTier];
+      return `${opener}, Madeline found Priya at her desk and Kaylee beside it with a tape measure.
+
+"Third measurement session this week," Priya said, without looking up. "Tracking intake-to-output ratio at three-day intervals. Kaylee handles collection."
+
+Kaylee smiled at Madeline with the genuine warmth of someone in a vocation. "You can stay," she said. "I'll bring you something." She brought something before Madeline had answered.
+
+The session had a structure: Priya would eat, Kaylee would measure and record and offer more, and Priya would look at the numbers and calculate and demand more. She approached her own transformation with the precision of someone optimizing a system.
+
+${priyaReact}
+
+${kayleeReact}
+
+Madeline ${mEat} When she glanced at Kaylee's clipboard on the way out, there was a row with her name on it. There had been from the beginning.`;
+    },
+  },
+
+  // ── 6. DAISY & NADIA — Suspicion 6 ───────────────────────────
+  {
+    id: 'manipulation',
+    label: 'Daisy & Nadia',
+    subtitle: 'Warmth vs. Method',
+    icon: '📋',
+    suspicion: 6,
+    gainRange: [8, 14],
+    studentIds: [13, 12],
+    unlockImmediate: false,
+    event: (stageNum, mTier) => {
+      const opener = STAGE_OPENERS[stageNum];
+      // How much Madeline eats — scales significantly with tier
+      const mEat = [
+        "ate three things she'd been offered before she thought to decline, and noted this.",
+        "had eaten steadily for an hour and was on her sixth plate before she did the accounting.",
+        "had been eating for two hours, was on her ninth plate, and had stopped accounting entirely.",
+        "was the center of the operation. There was no pretense otherwise. She had been eating for three hours and both of them were still actively feeding her.",
+      ][mTier];
+      // Daisy's reaction to Madeline's size — warm, scaling to outright adoration
+      const daisyReact = [
+        `Daisy appeared at Madeline's elbow. "You barely touched the second batch! Here, this one has brown butter in it, it's different, you have to try the difference—" She had already put it on the plate.`,
+        `"Look at her go," Daisy said to Nadia, not quietly, watching Madeline work through the plate. "I love this. I LOVE this." She turned back to the kitchen. "I'm making more."`,
+        `Daisy set down a full tray and looked at Madeline with an expression that could only be described as reverent. "You are," she said, "the best person I have ever baked for." She paused. "I'm making everything again."`,
+        `Daisy was crying a little. Not distressed — the opposite. "This is the greatest thing I have ever witnessed," she said, bringing a fourth tray. "This is why I bake."`,
+      ][mTier];
+      // Nadia's reaction — clinical and manipulative, scaling to open acknowledgment
+      const nadiaReact = [
+        `Nadia said, to no one in particular: "Daisy already had four. That sets a contextual baseline. The social pressure to match is significant." She watched Madeline pick up another one.`,
+        `"You respond well to warmth," Nadia said, to Madeline directly. "Most people do. Daisy is unusually effective because she means it. The manipulation works better when it isn't." She handed Madeline something else. "Here."`,
+        `Nadia had moved her chair closer. "At this size, the appetite is self-sustaining," she said, clinically. "The psychological intervention is secondary now. You'd keep eating without us." She looked at Madeline's plate. "Nevertheless." She refilled it.`,
+        `Nadia watched in silence for a long moment. Then: "I designed this session around Daisy's warmth as the primary vector. I included myself as a secondary pressure mechanism." A pause. "I am not the secondary mechanism anymore." She studied Madeline with undisguised interest. "You've outgrown the study design."`,
+      ][mTier];
+      return `${opener}, Daisy had been baking since eight in the morning.
+
+"I made too much," she said, in the tone of someone who had made exactly the right amount. "You have to take some. Seriously, I made way too much."
+
+Nadia was already in the corner with her notebook, watching Daisy with the expression of someone observing a particularly clean experiment.
+
+"She does this every time," Nadia said quietly to Madeline. "Note the framing: 'I made too much' positions the offer as a favor to her. The recipient eats not from appetite but from social obligation." A pause. "It's effective. She's never not effective."
+
+Daisy, who had heard this, brought Nadia another cookie. Nadia ate it without comment.
+
+${daisyReact}
+
+${nadiaReact}
+
+Madeline ${mEat}`;
+    },
+  },
+
+  // ── 7. RENEÉ & RAVEN — Suspicion 7 ───────────────────────────
+  {
+    id: 'vore',
+    label: 'Reneé & Raven',
+    subtitle: 'The Hunt',
+    icon: '🕯️',
+    suspicion: 7,
+    gainRange: [15, 25],
+    studentIds: [10, 15],
+    unlockImmediate: false,
+    event: (stageNum, mTier) => {
+      const opener = STAGE_OPENERS[stageNum];
+      // How Madeline observes and participates
+      const mWatch = [
+        "Madeline stood at the edge of the room and took notes. Her handwriting got smaller as the evening went on.",
+        "Madeline sat at the table and ate with the others. She told herself she was observing from within the dynamic. She ate a great deal.",
+        "Madeline had stopped pretending she was observing. She was eating. Raven watched her eat with specific interest.",
+        "Madeline was the largest person at the table, eating openly, and Raven had stopped watching the others entirely. 'You,' Raven said at one point, 'are the most interesting variable in this room.' Madeline kept eating.",
+      ][mTier];
+      // Madeline's internal state, scaling from horror to complicity
+      const mState = [
+        "She wrote, in the margin of her notes: 'The methodology has a gap. I need to think about what to do with this data.'",
+        "She wrote: 'I participated more than planned. The environment makes participation feel correct. This is the mechanism I described in my proposal. I understand it better now.'",
+        "She didn't write anything. She would reconstruct later. The food was extraordinary.",
+        "She wrote, much later, from memory: 'The committee will ask about this session. I will need to decide what to include.' A long gap in the text. Then: 'Everything.'",
+      ][mTier];
+      return `${opener}, Raven called Madeline at 7pm and said, simply: "I found three tonight. Come over."
+
+Madeline came over.
+
+Reneé had been cooking for eight hours. The apartment smelled like something extraordinary — braised, layered, rich, the smell of a meal made with intent. Raven was at the door when Madeline arrived, watching the street with the calm of someone who has already done the difficult part.
+
+"Three of them," Raven said. "A corporate type, a grad student, and someone visiting for a conference. I found them separately. They don't know each other." She tilted her head toward the apartment. "They think this is a dinner party."
+
+It was a dinner party. Reneé had set the table for seven: herself, Raven, Madeline, and the three guests. The guests — Morgan, who worked downtown; Theo, who was doing a second PhD; Francesca, who was presenting at the conference and had mentioned offhand that she'd never had good food in this city — arrived over twenty minutes, introduced themselves, and sat.
+
+Reneé served without ceremony. The food was staggering. Course after course, each one better than the last, and nobody stopped because nobody wanted to stop, and at some point stopping would have meant choosing to leave something extraordinary on the table.
+
+The three guests ate until they were very full. Then they ate more, because Raven refilled things with the calm of a host who expects it, and refusing a refill would have meant drawing attention to themselves, and none of them wanted to draw attention to themselves. Raven watched all three of them with the quiet satisfaction of someone completing a project.
+
+${mWatch}
+
+The guests left two hours after they'd finished eating, moving slowly, warm, confused in the specific way of people who have eaten more than they planned and are still not sure how. Reneé cleared the table. Raven sat with her wine and looked at the empty chairs.
+
+"The ritual requires witnesses," she said, to Madeline. "That's why I called you."
+
+${mState}`;
     },
   },
 ];
