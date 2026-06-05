@@ -8159,47 +8159,22 @@ export default function ProfessorSim(){
         const availableMoves=MOVES_BY_STAGE_BAND[stageBand]||MOVES_BY_STAGE_BAND[0];
         const accent="#7010a0";
 
-        // Pixel art silhouette — 12×32 grid, 2px per logical pixel
-        // Stage 0 base form: slim but dramatically top-heavy (big_titty body type)
-        const LILITH_PIX=[
-          [0,0,0,0,1,1,1,1,0,0,0,0],  // head top / hair
-          [0,0,0,1,1,1,1,1,1,0,0,0],  // hair
-          [0,0,1,1,1,1,1,1,1,1,0,0],  // head
-          [0,0,1,1,1,1,1,1,1,1,0,0],  // head
-          [0,0,1,1,1,1,1,1,1,1,0,0],  // head
-          [0,0,0,1,1,1,1,1,1,0,0,0],  // chin
-          [0,0,0,0,1,1,1,1,0,0,0,0],  // neck
-          [0,0,0,0,1,1,1,1,0,0,0,0],  // neck
-          [0,0,1,1,1,1,1,1,1,1,1,0],  // shoulders
-          [0,1,1,1,1,1,1,1,1,1,1,1],  // bust begins
-          [1,1,1,1,1,1,1,1,1,1,1,1],  // bust (full width — the defining feature)
-          [1,1,1,1,1,1,1,1,1,1,1,1],  // bust
-          [0,1,1,1,1,1,1,1,1,1,1,0],  // underbust
-          [0,0,0,1,1,1,1,1,1,0,0,0],  // waist
-          [0,0,0,1,1,1,1,1,1,0,0,0],  // waist
-          [0,0,0,1,1,1,1,1,1,0,0,0],  // waist
-          [0,0,0,1,1,1,1,1,1,0,0,0],  // waist
-          [0,0,1,1,1,1,1,1,1,1,0,0],  // hips
-          [0,0,1,1,1,1,1,1,1,1,0,0],  // hips
-          [0,0,1,1,1,1,1,1,1,1,0,0],  // hips
-          [0,0,1,1,1,1,1,1,1,1,0,0],  // upper thigh
-          [0,0,0,1,1,0,0,1,1,0,0,0],  // legs split
-          [0,0,0,1,1,0,0,1,1,0,0,0],
-          [0,0,0,1,1,0,0,1,1,0,0,0],
-          [0,0,0,1,1,0,0,1,1,0,0,0],
-          [0,0,0,1,1,0,0,1,1,0,0,0],
-          [0,0,0,1,1,0,0,1,1,0,0,0],
-          [0,0,0,1,1,0,0,1,1,0,0,0],
-          [0,0,0,1,1,0,0,1,1,0,0,0],
-          [0,0,0,1,1,0,0,1,1,0,0,0],
-          [0,0,0,1,1,0,0,1,1,0,0,0],
-          [0,0,1,1,1,0,0,1,1,1,0,0],  // feet
+        // Pixel art silhouette — profile view (facing right), 10×28 grid, 2px/pixel
+        // Colors: 1=skin, 2=hair (black), 3=dress (black), 4=boots (black)
+        const LILITH_PROFILES=[
+          // Stage 0 — Slim. Notable bust, flat belly, slight butt.
+          [[0,2,2,2,2,0,0,0,0,0],[2,2,2,2,2,2,0,0,0,0],[2,2,1,1,1,1,1,0,0,0],[2,2,1,1,1,1,1,0,0,0],[2,1,1,1,1,1,0,0,0,0],[2,0,1,1,1,0,0,0,0,0],[2,0,0,1,1,0,0,0,0,0],[2,0,3,3,3,3,0,0,0,0],[2,3,3,3,3,3,3,3,0,0],[0,3,3,3,3,3,3,3,3,0],[0,3,3,3,3,3,3,3,0,0],[0,3,3,3,3,3,3,0,0,0],[2,0,3,3,3,3,3,0,0,0],[2,0,3,3,3,3,3,0,0,0],[2,0,3,3,3,3,3,0,0,0],[2,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,0,0,0,0],[0,3,3,3,3,3,0,0,0,0],[0,3,3,3,3,0,0,0,0,0],[0,0,1,1,1,0,0,0,0,0],[0,0,1,1,1,0,0,0,0,0],[0,0,1,1,1,0,0,0,0,0],[0,0,1,1,1,0,0,0,0,0],[0,0,4,4,4,0,0,0,0,0],[0,4,4,4,4,0,0,0,0,0],[0,4,4,4,4,0,0,0,0,0],[4,4,4,4,4,0,0,0,0,0]],
+          // Stage 1 — Soft. Tiny belly starts, butt a little fuller, thighs slightly wider.
+          [[0,2,2,2,2,0,0,0,0,0],[2,2,2,2,2,2,0,0,0,0],[2,2,1,1,1,1,1,0,0,0],[2,2,1,1,1,1,1,0,0,0],[2,1,1,1,1,1,0,0,0,0],[2,0,1,1,1,0,0,0,0,0],[2,0,0,1,1,0,0,0,0,0],[2,0,3,3,3,3,0,0,0,0],[2,3,3,3,3,3,3,3,0,0],[0,3,3,3,3,3,3,3,3,0],[0,3,3,3,3,3,3,3,0,0],[0,3,3,3,3,3,3,0,0,0],[2,0,3,3,3,3,3,3,0,0],[2,0,3,3,3,3,3,3,0,0],[2,0,3,3,3,3,3,0,0,0],[2,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,0,0,0,0],[0,3,3,3,3,3,0,0,0,0],[0,3,3,3,3,0,0,0,0,0],[0,0,1,1,1,1,0,0,0,0],[0,0,1,1,1,1,0,0,0,0],[0,0,1,1,1,1,0,0,0,0],[0,0,4,4,4,4,0,0,0,0],[0,4,4,4,4,4,0,0,0,0],[0,4,4,4,4,4,0,0,0,0],[4,4,4,4,4,4,0,0,0,0]],
+          // Stage 2 — Plump. Visible belly protrudes right, rounder butt, thicker legs.
+          [[0,2,2,2,2,0,0,0,0,0],[2,2,2,2,2,2,0,0,0,0],[2,2,1,1,1,1,1,0,0,0],[2,2,1,1,1,1,1,0,0,0],[2,1,1,1,1,1,0,0,0,0],[2,0,1,1,1,0,0,0,0,0],[2,0,0,1,1,0,0,0,0,0],[2,0,3,3,3,3,3,0,0,0],[2,3,3,3,3,3,3,3,3,0],[0,3,3,3,3,3,3,3,3,0],[0,3,3,3,3,3,3,3,3,0],[0,3,3,3,3,3,3,3,0,0],[3,3,3,3,3,3,3,3,3,0],[3,3,3,3,3,3,3,3,3,0],[3,3,3,3,3,3,3,3,0,0],[3,3,3,3,3,3,3,3,0,0],[3,3,3,3,3,3,3,3,0,0],[3,3,3,3,3,3,3,3,0,0],[3,3,3,3,3,3,3,0,0,0],[0,3,3,3,3,3,3,0,0,0],[0,3,3,3,3,3,0,0,0,0],[0,0,1,1,1,1,1,0,0,0],[0,0,1,1,1,1,1,0,0,0],[0,0,1,1,1,1,1,0,0,0],[0,0,4,4,4,4,4,0,0,0],[0,4,4,4,4,4,4,0,0,0],[0,4,4,4,4,4,4,0,0,0],[4,4,4,4,4,4,4,0,0,0]],
         ];
-        const PIX=2; // px per logical pixel
-        const PIX_COLS=12,PIX_ROWS=32;
-        // Scale grows with weight; X widens faster than Y so she fills out
-        const silScaleX=[1.0,1.15,1.3,1.5,1.7,2.0,2.35,2.75,3.2,3.7,4.3][Math.min(10,stageId)];
-        const silScaleY=[1.0,1.02,1.04,1.06,1.08,1.1,1.09,1.07,1.04,1.0,0.95][Math.min(10,stageId)];
+        const PIX=2,PIX_COLS=10,PIX_ROWS=28;
+        const PIX_C={1:'#f2eeff',2:'#0a000e',3:'#1c0030',4:'#070010'};
+        const currentPix=LILITH_PROFILES[Math.min(2,stageId)];
+        // Stages 3+ scale the stage-2 map wider (belly+butt keep expanding)
+        const silScaleX=[1.0,1.0,1.0,1.2,1.4,1.6,1.85,2.1,2.4,2.75,3.1][Math.min(10,stageId)];
+        const silScaleY=[1.0,1.0,1.0,1.0,1.01,1.02,1.03,1.04,1.04,1.04,1.03][Math.min(10,stageId)];
 
         // Build choice list
         const choices=[];
@@ -8268,12 +8243,13 @@ export default function ProfessorSim(){
               <div style={{position:"absolute",left:0,bottom:0,width:"28%",height:44,background:"#040010",clipPath:"polygon(0 100%,0 45%,8% 45%,8% 22%,14% 22%,14% 45%,22% 45%,22% 65%,28% 65%,28% 5%,34% 5%,34% 60%,42% 60%,42% 100%)"}}/>
               {/* Right building */}
               <div style={{position:"absolute",right:0,bottom:0,width:"32%",height:52,background:"#040010",clipPath:"polygon(0 100%,0 60%,6% 60%,6% 32%,12% 32%,12% 52%,20% 52%,20% 12%,26% 12%,26% 52%,36% 52%,36% 38%,42% 38%,42% 4%,48% 4%,48% 38%,62% 38%,62% 62%,72% 62%,72% 100%)"}}/>
-              {/* Lilith pixel art silhouette */}
+              {/* Lilith pixel art silhouette — profile */}
               <div style={{position:"absolute",bottom:0,left:"50%",transform:"translateX(-50%)"}}>
-                <svg width={PIX_COLS*PIX*silScaleX} height={PIX_ROWS*PIX*silScaleY} viewBox={`0 0 ${PIX_COLS*PIX} ${PIX_ROWS*PIX}`} style={{display:"block",filter:"drop-shadow(0 0 6px #7010a060)",transition:"width 0.4s,height 0.4s"}}>
-                  {LILITH_PIX.flatMap((row,y)=>row.map((on,x)=>on?(
-                    <rect key={`${x}-${y}`} x={x*PIX} y={y*PIX} width={PIX} height={PIX} fill="#4a0088" opacity="0.9"/>
-                  ):null))}
+                <svg width={Math.round(PIX_COLS*PIX*silScaleX)} height={Math.round(PIX_ROWS*PIX*silScaleY)} viewBox={`0 0 ${PIX_COLS*PIX} ${PIX_ROWS*PIX}`} style={{display:"block",filter:"drop-shadow(0 0 5px #5010a040)",transition:"width 0.4s,height 0.4s"}}>
+                  {currentPix.flatMap((row,y)=>row.map((c,x)=>{
+                    if(!c) return null;
+                    return <rect key={`${x}-${y}`} x={x*PIX} y={y*PIX} width={PIX} height={PIX} fill={PIX_C[c]}/>;
+                  }))}
                 </svg>
               </div>
               {/* Top bar */}
