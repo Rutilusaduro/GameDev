@@ -1435,7 +1435,8 @@ export default function ProfessorSim(){
       const hGain=HARVEST_GAIN[cs.testerStageId]||HARVEST_GAIN[6];
       const digestW=DIGEST_WEEKS[cs.testerStageId]||2;
       const vignette=HARVEST_VIGNETTES_EMERGENCY[cs.testerStageId]?.(cs.testerName,getStage(renee.lbs).label)||'[emergency harvest]';
-      const gVignette=getGrowthVignette(getStage(renee.lbs).id,hGain);
+      const _bSid=getStage(renee.lbs).id;
+      const gVignette=getGrowthVignette(_bSid,hGain,Math.max(1,getStage(renee.lbs+hGain).id-_bSid));
       setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,hGain,8)}:st));
       setCultivatorState(prev=>({...prev,testerStageId:cs.testerStageId,fatBar:finalFatBar,suspicion:200,session:null,pendingStageUp:false,harvestType:'emergency',harvestVignetteText:vignette,growthGain:hGain,growthVignetteText:gVignette,digestWeeksLeft:digestW,digestTotalWeeks:digestW,modalPhase:'emergency'}));
       push(`🍰 EMERGENCY: ${cs.testerName} got suspicious — harvest triggered (+${hGain} lbs to Reneé)`);
@@ -1459,7 +1460,8 @@ export default function ProfessorSim(){
     const renee=students.find(st=>st.id===s.id)||s;
     const hGain=HARVEST_GAIN[cs.testerStageId]||HARVEST_GAIN[6];
     const vignette=HARVEST_VIGNETTES_PLANNED[cs.testerStageId]?.(cs.testerName,getStage(renee.lbs).label)||'[planned harvest]';
-    const gVignette=getGrowthVignette(getStage(renee.lbs).id,hGain);
+    const _bSid=getStage(renee.lbs).id;
+    const gVignette=getGrowthVignette(_bSid,hGain,Math.max(1,getStage(renee.lbs+hGain).id-_bSid));
     setCultivatorState(prev=>({...prev,harvestType:'planned',harvestVignetteText:vignette,growthGain:hGain,growthVignetteText:gVignette,modalPhase:'harvest'}));
   };
   const confirmCultivatorHarvest=(s)=>{

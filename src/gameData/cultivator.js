@@ -181,8 +181,44 @@ export const HARVEST_VIGNETTES_EMERGENCY = {
 // ── GROWTH VIGNETTE ──────────────────────────────────────────────────────────
 // Shown to Reneé after harvest — her personal reaction to the gain
 
-export function getGrowthVignette(reneeStageId, gain){
-  return `[placeholder — Reneé's growth vignette. She was at stage ${reneeStageId} and gained ${gain} lbs from the harvest. Something shifted in her — not just weight but understanding. The kitchen smells different after. She has notes to write.]`;
+// stagesJumped: how many weight stages Reneé advanced from this harvest (1, 2, or 3)
+export function getGrowthVignette(beforeStageId, gain, stagesJumped) {
+  const j = Math.max(1, stagesJumped || 1);
+  const afterStageId = Math.min(10, beforeStageId + j);
+
+  const BLOB_SPECIAL = `Reneé becomes something more. The final harvest swells her into true immobility, her body expanding to fill a significant portion of the living space. Her vast, warm belly spreads across her lap and beyond, rolls cascading everywhere, limbs almost lost in the soft mountain of flesh. The room has been completely rearranged — furniture moved, pathways eliminated — to accommodate her breathtaking presence. She breathes slowly, deeply satisfied, feeling every new inch of herself as the perfect outcome of the cycles. When you visit she regards you with calm, clinical eyes from within her enormous softness. She is exactly where she belongs, processing and complete. The kitchen still functions around her. Everything is as intended.`;
+
+  // Reaching blob from a dramatic jump (enormous or lower) — the more overwhelming text
+  if (afterStageId >= 10 && beforeStageId <= 8) return BLOB_SPECIAL;
+
+  const REACTIONS = {
+    5: {
+      1: `Reneé stands in the kitchen after the harvest, feeling the new weight settle immediately. Her belly, already prominent, pushes forward another noticeable inch, hanging heavier and rounder over the waistband of her stretched pants. Her arms thicken further, soft flesh pressing against her sides as she reaches for her notebook. The chair creaks louder when she sits to log the data. She notes the exact increase without emotion, simply recording how the added mass distributes evenly across her frame. The kitchen feels slightly smaller around her softer hips. She tests her range of motion with clinical detachment and finds it acceptable. This is correct data. The professional satisfaction is intact.`,
+      2: `The shift is more significant this time. Reneé does not move to the kitchen right away. She lowers herself carefully onto the couch, feeling her thighs spread wider and her belly cascade further as the new pounds integrate. Over the next hours the weight settles deeper into her hips and chest, making her rounder and softer all over. When she finally writes in her log, her handwriting shows a subtle change from the added pressure on her wrist. She runs her hands over the expanded curve of her middle and reflects that the work has produced precisely the expected result. The apartment's furniture presses back against her in new places. Everything feels metabolically right.`,
+      3: `Reneé remains in the apartment for the full processing. The gain is substantial and she feels it in waves — her belly swelling forward and downward, arms and legs growing thicker and jigglier, her overall silhouette rounding out dramatically. She sits very still in the warm kitchen, the reinforced chair now a necessity, as the mass distributes and softens every part of her. When you check on her she is considerably larger, a heavy, warm presence filling more of the space. Her expression is calm, eyes focused inward on the integration. She is fine. If pressed, she is better than fine — the cycle complete and correct.`,
+    },
+    6: {
+      1: `Reneé feels the immediate addition after harvest. Her waddle becomes more pronounced as her belly passes further beyond her hips, the soft roll swaying with each deliberate step toward the counter. Her arms jiggle more noticeably when she lifts her notebook, and the chair armrests dig in tighter against her widened hips. She logs everything with precision, noting how the new layer of fat smooths out her contours evenly. The kitchen counters feel a little closer. She adjusts her stance, registers the tighter clothes as data, and continues her notes without distress. The outcome aligns with the process.`,
+      2: `This time the change runs deeper. Reneé eases herself down and spends time simply sitting with the added mass as it settles into her already fat frame. Her belly grows heavier and lower, thighs thickening until they rub constantly, and her back gains new rolls that press against the chair. The apartment seems to contract slightly around her increased girth. When she writes the log entry later, the pen feels smaller in her softer hand. She observes the measurable expansion with quiet approval — the harvest has produced the correct, larger result. Everything integrates as it should.`,
+      3: `The enormous addition keeps Reneé in place. She feels her body swell in real time: belly cascading more toward her knees, hips widening dramatically, every limb growing chunkier and heavier. The reinforced furniture groans softly as she becomes a much larger presence in the room. You find her sitting very still in the warm kitchen, now very fat and deeply engaged in processing. Her breathing is slow and satisfied. She looks at you with calm eyes, entirely within the completion of the cycle. She is fine. Better than fine.`,
+    },
+    7: {
+      1: `Reneé absorbs the gain and immediately notes the difference in mobility. Her belly now hangs closer to her knees, swaying heavily as she moves with slow deliberation. Her thighs have thickened further, creating a pronounced waddle, and her arms press constantly against her sides. She requires leverage to rise from the chair. The kitchen pathways feel narrower. She logs the changes methodically, touching the new softness with clinical interest. This is the expected progression. The data is accurate.`,
+      2: `The addition is significant enough that Reneé pauses all activity. She sits as the weight integrates — her colossal belly growing heavier and lower, back and sides expanding into new rolls, the sheer volume of her making the couch dip noticeably. Furniture creaks in adjustment around her. Later, when writing her notes, she observes how the larger body changes her perspective on the room. Upon reflection, it is entirely correct. The harvest has done its work properly.`,
+      3: `Reneé does not leave the apartment. The gain overwhelms her physically at first. Her body expands dramatically: belly cascading heavily, limbs thick and heavy, overall mass making her very slow and deliberate. She sits motionless in the warm kitchen for hours, processing the profound addition. When you visit she is vastly larger, a soft, warm mountain filling the space. Her expression remains calm and focused inward. She is deep inside the successful completion. She is better than fine.`,
+    },
+    8: {
+      1: `Reneé feels the new layer settle across her enormous frame. Her belly rests heavier on her thighs, arms and legs thicker, making every movement require more effort and leverage. The couch sinks deeper under her. She carefully updates her logs, noting the added width that brushes doorframes more firmly. The apartment continues to adapt around her. She registers it all as correct data from a successful cycle.`,
+      2: `This harvest produces a larger shift. Reneé remains seated as the mass distributes — her belly growing even more pendulous, hips and rear spreading wider across the reinforced seating, the sheer volume making the room feel smaller. She breathes through the integration, hands resting on the vast expanse of herself. When she finally writes, the change in her handwriting reflects the new reality. It is exactly as it should be. The work continues to succeed.`,
+    },
+    9: {
+      1: `The addition pushes Reneé to the absolute limit of the space. She feels herself swell further, belly resting heavily on her thighs, body filling more of the reinforced furniture and brushing against walls. Movement is nearly impossible. She sits very still, processing the final integration with deep calm. The apartment has been fully reorganized around her colossal form. She logs the data mentally first, then with great care. This is the correct culmination.`,
+    },
+  };
+
+  const row = REACTIONS[Math.min(beforeStageId, 9)] || REACTIONS[5];
+  const maxJ = Math.max(...Object.keys(row).map(Number));
+  return row[Math.min(j, maxJ)] || row[1];
 }
 
 // ── RECRUITMENT SCENE ────────────────────────────────────────────────────────
