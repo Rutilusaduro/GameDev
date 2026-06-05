@@ -11,6 +11,7 @@ import { SKILL_TREE, SKILL_CATEGORIES, DIVINE_SKILL_TREE, EVOLVED_SKILL_TREES } 
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { HOSTESS_HANGOUTS, MENU_TIERS, ATMOSPHERE_TIERS, GUEST_TIERS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
+import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, SEDUCTION_MOVES, MOVES_BY_STAGE_BAND, getStageBand, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, CLUE_INVESTIGATION, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 
 // ═══════════════════════════════════════════════════════════════
 // DATA LAYER
@@ -331,6 +332,11 @@ export default function ProfessorSim(){
   // rankedFeedeeState: {studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log:[],done,endReason,raeDelivered}
   const [chapterHostessState, setChapterHostessState] = useState(null);
   // chapterHostessState: {stageIdx,prepDaysLeft,menuUnlocks,atmosphereUnlocks,guestUnlocks,sisters:[],camille:{lbs},hangoutOpen,hangoutStudentId,hangoutPhaseIdx,hangoutHistory,feastPrepOpen,feastLogOpen,feastLog:[],feastGainTotal,feastRelTotal,feastDone}
+  const [lilithUnlocked, setLilithUnlocked] = useState(false);
+  const [lilithClueFound, setLilithClueFound] = useState(false);
+  const [lilithClueModal, setLilithClueModal] = useState(null); // null | 'feast_clue' | 'investigating' | 'result'
+  const [lilithHuntState, setLilithHuntState] = useState(null);
+  // lilithHuntState: {currentNode,encounter:{manId,movesUsed[],movesNeeded,failed,consumed}|null,log:[],deliveryMode,deliveryDone}
   const [presentationState, setPresentationState] = useState(null);
   // presentationState: {studentId,stageIdx} — placeholder until mini-game implemented
   const [deliveryState, setDeliveryState] = useState(null);
@@ -591,6 +597,7 @@ export default function ProfessorSim(){
     }
 
     let updated=students.map(s=>{
+      if(s.id===LILITH_ID) return processStudentGain(s,LILITH_PASSIVE_GAIN,0); // Lilith only gains passively
       let gain=rnd(1,3)+skillPassiveBonus; // passive + skill bonus
       if(semEv) gain+=rnd(semEv.gain[0],semEv.gain[1]);
       if(randomEv){
@@ -733,8 +740,8 @@ export default function ProfessorSim(){
 
     const evs=collectEvents(updated);
     setStudents(updated);
-    // Admin notices visibly large students
-    const visibleCount=updated.filter(s=>getStage(s.lbs).id>=5).length;
+    // Admin notices visibly large students (hidden students like Lilith don't trigger scrutiny)
+    const visibleCount=updated.filter(s=>!s.hidden&&getStage(s.lbs).id>=5).length;
     if(visibleCount>0) addScrutiny(visibleCount);
     // Observer settles in week by week
     if(hrObserver){
@@ -1235,7 +1242,8 @@ export default function ProfessorSim(){
     if(!chapterHostessState) return;
     const{stageIdx,menuUnlocks,atmosphereUnlocks,guestUnlocks,sisters,camille}=chapterHostessState;
     const{log,tiffanyGain,sisterGainMap,camilleGain,relGain}=generateFeastLog(stageIdx,menuUnlocks,atmosphereUnlocks,guestUnlocks,sisters,camille);
-    setChapterHostessState(prev=>({...prev,feastPrepOpen:false,feastLogOpen:true,feastLog:log,feastGainTotal:tiffanyGain,feastRelTotal:relGain,feastDone:false,pendingSisterGains:sisterGainMap,pendingCamilleGain:camilleGain}));
+    const finalLog=(stageIdx>=1&&!lilithClueFound)?[...log,{text:CLUE_FEAST_LINE,type:'scene'}]:log;
+    setChapterHostessState(prev=>({...prev,feastPrepOpen:false,feastLogOpen:true,feastLog:finalLog,feastGainTotal:tiffanyGain,feastRelTotal:relGain,feastDone:false,pendingSisterGains:sisterGainMap,pendingCamilleGain:camilleGain}));
   };
   const completeFeast=()=>{
     if(!chapterHostessState) return;
@@ -1250,6 +1258,72 @@ export default function ProfessorSim(){
     const newSisters=sisters.map(sis=>({...sis,lbs:sis.lbs+(pendingSisterGains?.[sis.name]||0)}));
     const newCamilleLbs=camille.lbs+(pendingCamilleGain||0);
     setChapterHostessState(prev=>({...prev,stageIdx:newStageIdx,prepDaysLeft:newPrepDays,sisters:newSisters,camille:{lbs:newCamilleLbs},feastLogOpen:false,feastLog:[],feastGainTotal:0,feastRelTotal:0,feastDone:false,pendingSisterGains:null,pendingCamilleGain:0}));
+    if(stageIdx>=1&&!lilithClueFound){ setLilithClueFound(true); setLilithClueModal('feast_clue'); }
+  };
+
+  // ── LILITH / FEASTING BEAUTY handlers ─────────────────────────────
+  const openLilithHunt=()=>{
+    const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
+    const stageId=getStage(lilith.lbs).id;
+    if(stageId>=9){ setLilithHuntState({deliveryMode:true,encounter:null,log:[],deliveryDone:false}); return; }
+    setLilithHuntState({currentNode:null,encounter:null,log:[],deliveryMode:false,deliveryDone:false});
+  };
+  const navigateHunt=(nodeId)=>{
+    setLilithHuntState(prev=>({...prev,currentNode:nodeId,encounter:null,log:[]}));
+  };
+  const approachMan=(manId)=>{
+    const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
+    const man=HUNT_MEN.find(m=>m.id===manId); if(!man) return;
+    const stageId=getStage(lilith.lbs).id;
+    const diff=getEffectiveDifficulty(man.difficulty,stageId);
+    setLilithHuntState(prev=>({...prev,encounter:{manId,movesUsed:[],movesNeeded:Math.max(1,diff),failed:false,consumed:false},log:[man.desc(stageId)]}));
+  };
+  const makeSeduceMove=(moveId)=>{
+    if(!lilithHuntState?.encounter) return;
+    const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
+    const stageId=getStage(lilith.lbs).id;
+    const stageBand=getStageBand(stageId);
+    const move=SEDUCTION_MOVES[moveId]; if(!move) return;
+    const {encounter}=lilithHuntState;
+    if(encounter.consumed||encounter.failed) return;
+    if(move.risky&&stageBand===0&&Math.random()<0.5){
+      setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,failed:true},log:[...prev.log,move.riskyFailText]}));
+      return;
+    }
+    const moveText=move.text[Math.min(stageBand,move.text.length-1)]||'';
+    const newMovesUsed=[...encounter.movesUsed,moveId];
+    const isDone=newMovesUsed.length>=encounter.movesNeeded;
+    setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,movesUsed:newMovesUsed,done:isDone},log:[...prev.log,moveText]}));
+  };
+  const consumeMan=()=>{
+    const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
+    const stageId=getStage(lilith.lbs).id;
+    const nextStage=WEIGHT_STAGES[Math.min(10,stageId+1)];
+    const gain=nextStage&&nextStage.id>stageId?Math.max(1,nextStage.min-Math.round(lilith.lbs)+5):20;
+    setStudents(prev=>prev.map(s=>s.id===LILITH_ID?{...s,lbs:s.lbs+gain}:s));
+    push(`🌑 Lilith — hunt complete: +${gain} lbs`);
+    const consumeText=getConsumeText(stageId);
+    setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,consumed:true},log:[...prev.log,consumeText]}));
+  };
+  const deliveryScene=()=>{
+    const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
+    const stageId=getStage(lilith.lbs).id;
+    const nextStage=WEIGHT_STAGES[Math.min(10,stageId+1)];
+    const gain=nextStage&&nextStage.id>stageId?Math.max(1,nextStage.min-Math.round(lilith.lbs)+5):25;
+    setStudents(prev=>prev.map(s=>s.id===LILITH_ID?{...s,lbs:s.lbs+gain}:s));
+    push(`🌑 Lilith — delivery: +${gain} lbs`);
+    setLilithHuntState(prev=>({...prev,deliveryDone:true}));
+  };
+  const closeHunt=()=>setLilithHuntState(null);
+  const investigateClue=()=>{
+    if(ap<1){push("⚠️ Need 1 AP to investigate.");return;}
+    setAp(prev=>prev-1);
+    setLilithClueModal('result');
+  };
+  const confirmInvestigation=()=>{
+    setLilithClueModal(null);
+    setLilithUnlocked(true);
+    push("🌑 She's on your roster now. Room 312.");
   };
 
   const startRankedSession=(studentId,stageIdx)=>{
@@ -3511,7 +3585,8 @@ export default function ProfessorSim(){
 
   const sel=selectedId!==null?students.find(s=>s.id===selectedId):null;
   const totalGained=students.reduce((a,s)=>a+(s.lbs-s.startLbs),0);
-  const avgLbs=Math.round(students.reduce((a,s)=>a+s.lbs,0)/students.length);
+  const visibleStudents=students.filter(s=>!s.hidden||lilithUnlocked);
+  const avgLbs=Math.round(visibleStudents.reduce((a,s)=>a+s.lbs,0)/Math.max(1,visibleStudents.length));
   // ── PROFESSOR SUBJECT / TRAIT EFFECTS ───────────────────────
   const hasTrait=(id)=>professorProfile?.traits?.includes(id)||false;
   const hasSubj=(id)=>professorProfile?.subject===id;
@@ -4677,9 +4752,9 @@ export default function ProfessorSim(){
           {/* ── CLASS ROSTER ── */}
           {view==="class"&&(
             <div>
-              <p style={C.secT}>Students — {students.length} enrolled · avg {avgLbs} lbs</p>
+              <p style={C.secT}>Students — {students.filter(s=>!s.hidden||lilithUnlocked).length} enrolled · avg {avgLbs} lbs</p>
               <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(195px,1fr))",gridAutoRows:"minmax(140px,auto)",gap:8}}>
-                {[...students].sort((a,b)=>{
+                {[...students].filter(s=>!s.hidden||lilithUnlocked).sort((a,b)=>{
                   const aG=a.incarnatedGoddess?2:0;
                   const bG=b.incarnatedGoddess?2:0;
                   if(aG!==bG) return aG-bG;
@@ -4801,6 +4876,70 @@ export default function ProfessorSim(){
           {view==="student"&&sel&&(()=>{
             const s=sel;
             const st=getStage(s.lbs);
+
+            // ── LILITH — custom detail panel ──────────────────────────────────
+            if(s.id===LILITH_ID){
+              const stageId=st.id;
+              const isBlob=stageId>=9;
+              const menConsumed=Math.max(0,stageId); // roughly 1 man per stage
+              const dark="#1a001a";
+              const accent="#8020a0";
+              const nextSt=WEIGHT_STAGES[Math.min(10,stageId+1)];
+              const lbsToNext=nextSt&&nextSt.id>stageId?Math.max(0,nextSt.min-Math.round(s.lbs)):0;
+              return(
+                <div>
+                  <div style={{...C.card,cursor:"default",marginBottom:10,background:`linear-gradient(160deg,${dark},#100015)`,border:`1px solid ${accent}50`}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                      <div style={{display:"flex",alignItems:"center",gap:8}}>
+                        <h2 style={{margin:0,color:accent,fontSize:22}}>{s.name}</h2>
+                        <span style={{fontSize:10,fontWeight:700,color:accent,background:`${accent}22`,borderRadius:6,padding:"2px 8px"}}>🌑 Feasting Beauty</span>
+                      </div>
+                      <StageTag stage={st}/>
+                    </div>
+                    <div style={{fontSize:11,color:"#604070",marginBottom:8}}>{s.role} · age {s.age} · {s.desc}</div>
+                    <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:6}}>
+                      <div style={{flex:1,minWidth:150}}>
+                        <div style={{fontSize:9,color:"#500050",letterSpacing:2,marginBottom:1}}>WEIGHT</div>
+                        <Bar val={s.lbs} color={accent}/>
+                        <div style={{fontSize:11,color:"#906090"}}>{Math.round(s.lbs)} lbs{lbsToNext>0?` · ${lbsToNext} lbs to ${nextSt.label}`:""}</div>
+                      </div>
+                      <div style={{flex:1,minWidth:150}}>
+                        <div style={{fontSize:9,color:"#500050",letterSpacing:2,marginBottom:1}}>HUNTS</div>
+                        <div style={{fontSize:14,color:accent,fontWeight:700}}>{menConsumed}</div>
+                        <div style={{fontSize:10,color:"#604070"}}>
+                          {isBlob?"No longer leaves the room.":stageId>=7?"Range severely limited.":stageId>=5?"Range narrowing.":"Campus is open."}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={C.infoBox("rgba(20,0,30,0.6)")}>
+                    <div style={{fontSize:9,color:"#500050",letterSpacing:2,marginBottom:4}}>CURRENT APPEARANCE</div>
+                    <div style={{fontSize:13,color:"#e0c0e0",lineHeight:1.8,fontStyle:"italic"}}>{getBodyDesc(s)}</div>
+                  </div>
+                  <div style={{background:"rgba(15,0,25,0.7)",border:`1px solid ${accent}40`,borderRadius:10,padding:14,marginBottom:10}}>
+                    <div style={{fontSize:9,letterSpacing:3,color:accent,marginBottom:6}}>🌑 FEASTING BEAUTY</div>
+                    <div style={{fontSize:12,color:"#c0a0c0",lineHeight:1.75,marginBottom:10,fontStyle:"italic"}}>
+                      {isBlob
+                        ?"She doesn't go anywhere anymore. The hunger hasn't gone anywhere either. Things come to her now."
+                        :stageId>=7?"She moves through the campus slowly. Deliberately. There's no need to hurry — they're not going anywhere."
+                        :stageId>=4?"She's larger than she was. It shows. It also helps."
+                        :"She moves through the campus like she owns it. Nobody knows what she is. That's her favorite part."}
+                    </div>
+                    {isBlob?(
+                      <button style={{...C.btn("#500060"),width:"100%",fontSize:13}} onClick={openLilithHunt}>
+                        📱 Call for Delivery
+                      </button>
+                    ):(
+                      <button style={{...C.btn("#400050"),width:"100%",fontSize:13}} onClick={openLilithHunt}>
+                        🌑 Go Hunting (free)
+                      </button>
+                    )}
+                  </div>
+                  <button style={{...C.smBtn,width:"100%",marginTop:4}} onClick={()=>setView("class")}>← Back to Class</button>
+                </div>
+              );
+            }
+
             return(
               <div>
                 {/* Header card */}
@@ -7528,6 +7667,258 @@ export default function ProfessorSim(){
                 {ch.sisters&&<div style={{fontSize:10,color:"#806090",marginTop:4}}>{ch.sisters.map(sis=>`${sis.name} +${ch.pendingSisterGains?.[sis.name]||0} lbs`).join(" · ")}{ch.stageIdx>=1?` · Camille +${ch.pendingCamilleGain||0} lbs`:""}</div>}
               </div>
               <button style={{...C.btn("#5a18b0"),width:"100%",fontSize:13}} onClick={completeFeast}>The Feast is Done ✓</button>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── LILITH — CLUE / INVESTIGATION MODAL ── */}
+      {lilithClueModal&&(()=>{
+        const accent="#8020a0";
+        return(
+          <div style={{...C.overlay,zIndex:1300}}>
+            <div style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#0a000f,#14001a,#0a000f)",border:`1px solid ${accent}50`,maxHeight:"88vh",overflowY:"auto",padding:22}}>
+              {lilithClueModal==='feast_clue'&&(<>
+                <div style={{fontSize:9,letterSpacing:4,color:accent,marginBottom:6}}>SOMETHING'S OFF</div>
+                <div style={{fontSize:15,fontWeight:700,color:"#d080e0",marginBottom:12}}>{CLUE_INVESTIGATION.title}</div>
+                <div style={{fontSize:12,color:"#a070b0",lineHeight:1.8,marginBottom:16,whiteSpace:"pre-line"}}>{CLUE_INVESTIGATION.text}</div>
+                <button style={{...C.btn("#500060"),width:"100%",fontSize:13,marginBottom:8}} onClick={investigateClue}>
+                  {CLUE_INVESTIGATION.action}
+                </button>
+                <button style={{...C.btn("#200030"),width:"100%",fontSize:11}} onClick={()=>setLilithClueModal(null)}>
+                  Ignore for now
+                </button>
+              </>)}
+              {lilithClueModal==='result'&&(<>
+                <div style={{fontSize:9,letterSpacing:4,color:accent,marginBottom:6}}>ROOM 312</div>
+                <div style={{fontSize:15,fontWeight:700,color:"#d080e0",marginBottom:12}}>You knocked.</div>
+                <div style={{fontSize:12,color:"#c0a0d0",lineHeight:1.85,marginBottom:16,whiteSpace:"pre-line",fontStyle:"italic"}}>
+                  {CLUE_INVESTIGATION.resultText}
+                </div>
+                <button style={{...C.btn("#500060"),width:"100%",fontSize:13}} onClick={confirmInvestigation}>
+                  She's on the roster now. ✓
+                </button>
+              </>)}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── LILITH — FEASTING BEAUTY HUNT MODAL ── */}
+      {lilithHuntState&&!lilithHuntState.deliveryMode&&(()=>{
+        const{currentNode,encounter,log}=lilithHuntState;
+        const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return null;
+        const stageId=getStage(lilith.lbs).id;
+        const stageBand=getStageBand(stageId);
+        const accessibleNodes=HUNT_NODE_ACCESS[stageId]||[];
+        const accent="#7010a0";
+        const availableMoves=MOVES_BY_STAGE_BAND[stageBand]||MOVES_BY_STAGE_BAND[0];
+
+        return(
+          <div style={{...C.overlay,zIndex:1300}}>
+            <div style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#080010,#100018,#080010)",border:`1px solid ${accent}50`,maxHeight:"90vh",overflowY:"auto",padding:20}}>
+              <div style={{fontSize:9,letterSpacing:4,color:accent,marginBottom:4}}>🌑 FEASTING BEAUTY</div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+                <div style={{fontSize:14,fontWeight:700,color:"#d060e0"}}>Lilith · {Math.round(lilith.lbs)} lbs · {getStage(lilith.lbs).label}</div>
+                <button style={{...C.smBtn,fontSize:10}} onClick={closeHunt}>✕ Leave</button>
+              </div>
+
+              {/* No node selected — show accessible map */}
+              {!currentNode&&!encounter&&(
+                <div>
+                  <div style={{fontSize:11,color:"#705080",marginBottom:12,fontStyle:"italic"}}>Where do you want to go tonight?</div>
+                  <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                    {accessibleNodes.filter(nid=>nid!=='dorm').map(nid=>{
+                      const node=HUNT_NODES[nid]; if(!node) return null;
+                      const menHere=HUNT_MEN.filter(m=>m.location===nid&&m.difficulty>0);
+                      return(
+                        <div key={nid} style={{background:"rgba(20,0,35,0.7)",border:`1px solid ${accent}40`,borderRadius:8,padding:"10px 12px",cursor:"pointer"}}
+                          onClick={()=>navigateHunt(nid)}>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                            <div style={{fontSize:13,fontWeight:700,color:"#c060d0"}}>{node.label}</div>
+                            <div style={{fontSize:10,color:"#604070"}}>{menHere.length} {menHere.length===1?"target":"targets"}</div>
+                          </div>
+                          <div style={{fontSize:10,color:"#805090",marginTop:3,lineHeight:1.45,fontStyle:"italic"}}>{node.desc}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* At a node, no encounter yet */}
+              {currentNode&&!encounter&&(()=>{
+                const node=HUNT_NODES[currentNode]; if(!node) return null;
+                const menHere=HUNT_MEN.filter(m=>m.location===currentNode&&m.difficulty>0);
+                const connectedNodes=HUNT_MAP[currentNode]||[];
+                const reachable=connectedNodes.filter(nid=>accessibleNodes.includes(nid)&&nid!=='dorm');
+                return(
+                  <div>
+                    <div style={{background:"rgba(20,0,35,0.6)",border:`1px solid ${accent}30`,borderRadius:8,padding:"10px 12px",marginBottom:12}}>
+                      <div style={{fontSize:13,fontWeight:700,color:"#c060d0",marginBottom:3}}>{node.label}</div>
+                      <div style={{fontSize:11,color:"#806090",lineHeight:1.55,fontStyle:"italic"}}>{node.desc}</div>
+                    </div>
+                    {menHere.length>0?(
+                      <div style={{marginBottom:12}}>
+                        <div style={{fontSize:10,color:"#604070",letterSpacing:2,marginBottom:6}}>TARGETS</div>
+                        {menHere.map(man=>{
+                          const eff=getEffectiveDifficulty(man.difficulty,stageId);
+                          const diffLabel=eff<=1?"Easy":eff===2?"Medium":"Hard";
+                          const diffColor=eff<=1?"#40c060":eff===2?"#c0a030":"#c04030";
+                          return(
+                            <div key={man.id} style={{background:"rgba(15,0,25,0.8)",border:`1px solid ${accent}30`,borderRadius:7,padding:"10px 12px",marginBottom:7,display:"flex",justifyContent:"space-between",alignItems:"center",gap:10}}>
+                              <div style={{flex:1}}>
+                                <div style={{fontSize:12,fontWeight:700,color:"#c060d0"}}>{man.name}</div>
+                                <div style={{fontSize:10,color:"#705080"}}>{man.tag}</div>
+                                <div style={{fontSize:10,color:"#7050a0",marginTop:3,lineHeight:1.4,fontStyle:"italic"}}>{man.desc(stageId)}</div>
+                              </div>
+                              <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6}}>
+                                <span style={{fontSize:9,color:diffColor,background:`${diffColor}22`,borderRadius:5,padding:"2px 6px"}}>{diffLabel}</span>
+                                <button style={{...C.smBtn,fontSize:10,background:"#2a0040",border:`1px solid ${accent}60`}} onClick={()=>approachMan(man.id)}>
+                                  Approach
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ):(
+                      <div style={{fontSize:11,color:"#504060",fontStyle:"italic",marginBottom:12,textAlign:"center",padding:"16px 0"}}>
+                        Nobody here tonight.
+                      </div>
+                    )}
+                    {reachable.length>0&&(
+                      <div>
+                        <div style={{fontSize:10,color:"#503060",letterSpacing:2,marginBottom:6}}>MOVE TO</div>
+                        <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                          {reachable.map(nid=>(
+                            <button key={nid} style={{...C.smBtn,fontSize:11}} onClick={()=>navigateHunt(nid)}>
+                              {HUNT_NODES[nid]?.label}
+                            </button>
+                          ))}
+                          <button style={{...C.smBtn,fontSize:11,background:"#180028",border:`1px solid ${accent}30`}} onClick={()=>navigateHunt(null)}>
+                            ↩ Map
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* Active encounter */}
+              {encounter&&(()=>{
+                const man=HUNT_MEN.find(m=>m.id===encounter.manId); if(!man) return null;
+                const successCount=encounter.movesUsed.length;
+                const isDone=encounter.done||successCount>=encounter.movesNeeded;
+                return(
+                  <div>
+                    <div style={{background:"rgba(20,0,35,0.7)",border:`1px solid ${accent}40`,borderRadius:8,padding:12,marginBottom:12}}>
+                      <div style={{fontSize:12,fontWeight:700,color:"#c060d0",marginBottom:2}}>{man.name} — {man.tag}</div>
+                      <div style={{display:"flex",gap:4,marginBottom:6}}>
+                        {Array.from({length:encounter.movesNeeded}).map((_,i)=>(
+                          <div key={i} style={{width:12,height:12,borderRadius:"50%",background:i<successCount?"#c060d0":"rgba(80,0,120,0.3)",border:`1px solid ${accent}50`}}/>
+                        ))}
+                        <span style={{fontSize:9,color:"#604070",marginLeft:4}}>{successCount}/{encounter.movesNeeded}</span>
+                      </div>
+                    </div>
+                    {log.length>0&&(
+                      <div style={{maxHeight:180,overflowY:"auto",marginBottom:12,display:"flex",flexDirection:"column",gap:6}}>
+                        {log.map((line,i)=>(
+                          <div key={i} style={{fontSize:12,color:i===0?"#806090":i===log.length-1?"#e0b0ff":"#c090d0",lineHeight:1.7,fontStyle:"italic"}}>{line}</div>
+                        ))}
+                      </div>
+                    )}
+                    {encounter.failed&&(
+                      <div style={{background:"rgba(60,0,0,0.4)",border:"1px solid #60202030",borderRadius:7,padding:"8px 12px",marginBottom:12}}>
+                        <div style={{fontSize:11,color:"#c04040",fontStyle:"italic"}}>He slipped away. Back to the hunt.</div>
+                      </div>
+                    )}
+                    {!encounter.failed&&!encounter.consumed&&!isDone&&(
+                      <div>
+                        <div style={{fontSize:10,color:"#503060",letterSpacing:2,marginBottom:8}}>SEDUCTION MOVES</div>
+                        <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+                          {availableMoves.map(moveId=>{
+                            const move=SEDUCTION_MOVES[moveId]; if(!move) return null;
+                            if(move.minStageBand&&stageBand<move.minStageBand) return null;
+                            return(
+                              <button key={moveId} style={{...C.smBtn,fontSize:11,background:move.risky?"#200030":"#150020",border:`1px solid ${move.risky?"#c03060":"#6020a0"}50`}}
+                                onClick={()=>makeSeduceMove(moveId)}>
+                                {move.label}{move.risky&&" ⚠️"}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                    {!encounter.failed&&!encounter.consumed&&isDone&&(
+                      <button style={{...C.btn("#5a0080"),width:"100%",fontSize:13,marginTop:8}} onClick={consumeMan}>
+                        🌑 Take him home →
+                      </button>
+                    )}
+                    {encounter.consumed&&(
+                      <div style={{marginTop:8}}>
+                        <div style={{fontSize:13,color:accent,fontWeight:700,marginBottom:8,textAlign:"center"}}>
+                          +{Math.max(1,(WEIGHT_STAGES[Math.min(10,stageId+1)]?.min||820)-Math.round(lilith.lbs)+5)} lbs
+                        </div>
+                        <button style={{...C.btn("#300040"),width:"100%",fontSize:12,marginBottom:6}} onClick={()=>setLilithHuntState(prev=>({...prev,currentNode:null,encounter:null,log:[]}))}>
+                          Hunt again ↩
+                        </button>
+                        <button style={{...C.btn("#180020"),width:"100%",fontSize:11}} onClick={closeHunt}>
+                          Return to campus
+                        </button>
+                      </div>
+                    )}
+                    {(encounter.failed)&&(
+                      <div style={{marginTop:8,display:"flex",gap:6}}>
+                        <button style={{...C.smBtn,flex:1,fontSize:11}} onClick={()=>setLilithHuntState(prev=>({...prev,encounter:null,log:[]}))}>
+                          Try another
+                        </button>
+                        <button style={{...C.smBtn,flex:1,fontSize:11}} onClick={()=>setLilithHuntState(prev=>({...prev,currentNode:null,encounter:null,log:[]}))}>
+                          ↩ Map
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── LILITH — DELIVERY MODAL (blob mode) ── */}
+      {lilithHuntState?.deliveryMode&&(()=>{
+        const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return null;
+        const accent="#7010a0";
+        const stageId=getStage(lilith.lbs).id;
+        const nextSt=WEIGHT_STAGES[Math.min(10,stageId+1)];
+        const gain=nextSt&&nextSt.id>stageId?Math.max(1,nextSt.min-Math.round(lilith.lbs)+5):25;
+        return(
+          <div style={{...C.overlay,zIndex:1300}}>
+            <div style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#060008,#0e0012,#060008)",border:`1px solid ${accent}50`,maxHeight:"88vh",overflowY:"auto",padding:22}}>
+              <div style={{fontSize:9,letterSpacing:4,color:accent,marginBottom:6}}>🌑 FEASTING BEAUTY</div>
+              <div style={{fontSize:14,fontWeight:700,color:"#c060d0",marginBottom:12}}>Room 312 — Delivery</div>
+              {!lilithHuntState.deliveryDone?(
+                <>
+                  <div style={{fontSize:12,color:"#b080c0",lineHeight:1.85,marginBottom:16,whiteSpace:"pre-line",fontStyle:"italic"}}>
+                    {DELIVERY_SCENE}
+                  </div>
+                  <button style={{...C.btn("#5a0080"),width:"100%",fontSize:13}} onClick={deliveryScene}>
+                    📱 He knocks. You call him in. (+{gain} lbs)
+                  </button>
+                </>
+              ):(
+                <>
+                  <div style={{fontSize:13,color:accent,fontWeight:700,textAlign:"center",marginBottom:6}}>+{gain} lbs</div>
+                  <div style={{fontSize:12,color:"#a070b0",lineHeight:1.7,marginBottom:16,fontStyle:"italic",textAlign:"center"}}>
+                    You pick up your phone. You order again.
+                  </div>
+                  <button style={{...C.btn("#300040"),width:"100%",fontSize:12}} onClick={closeHunt}>
+                    Close ✓
+                  </button>
+                </>
+              )}
             </div>
           </div>
         );
