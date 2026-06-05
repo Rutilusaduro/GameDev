@@ -8157,17 +8157,53 @@ export default function ProfessorSim(){
         const availableMoves=MOVES_BY_STAGE_BAND[stageBand]||MOVES_BY_STAGE_BAND[0];
         const accent="#7010a0";
 
-        // Silhouette scale by weight stage
-        const silW=[18,20,24,30,38,48,60,74,90,108,130][Math.min(10,stageId)];
-        const silH=[60,58,55,52,47,42,36,30,24,18,14][Math.min(10,stageId)];
-        const silBR=["50% 50% 40% 40%","50% 50% 42% 42%","50% 50% 45% 45%","50% 50% 50% 50%","48% 48% 53% 53%","45% 45% 56% 56%","42% 42% 60% 60%","38% 38% 64% 64%","34% 34% 68% 68%","28% 28% 72% 72%","24% 24% 76% 76%"][Math.min(10,stageId)];
-        const headW=Math.max(8,Math.round(silW*0.3));
+        // Pixel art silhouette — 12×32 grid, 2px per logical pixel
+        // Stage 0 base form: slim but dramatically top-heavy (big_titty body type)
+        const LILITH_PIX=[
+          [0,0,0,0,1,1,1,1,0,0,0,0],  // head top / hair
+          [0,0,0,1,1,1,1,1,1,0,0,0],  // hair
+          [0,0,1,1,1,1,1,1,1,1,0,0],  // head
+          [0,0,1,1,1,1,1,1,1,1,0,0],  // head
+          [0,0,1,1,1,1,1,1,1,1,0,0],  // head
+          [0,0,0,1,1,1,1,1,1,0,0,0],  // chin
+          [0,0,0,0,1,1,1,1,0,0,0,0],  // neck
+          [0,0,0,0,1,1,1,1,0,0,0,0],  // neck
+          [0,0,1,1,1,1,1,1,1,1,1,0],  // shoulders
+          [0,1,1,1,1,1,1,1,1,1,1,1],  // bust begins
+          [1,1,1,1,1,1,1,1,1,1,1,1],  // bust (full width — the defining feature)
+          [1,1,1,1,1,1,1,1,1,1,1,1],  // bust
+          [0,1,1,1,1,1,1,1,1,1,1,0],  // underbust
+          [0,0,0,1,1,1,1,1,1,0,0,0],  // waist
+          [0,0,0,1,1,1,1,1,1,0,0,0],  // waist
+          [0,0,0,1,1,1,1,1,1,0,0,0],  // waist
+          [0,0,0,1,1,1,1,1,1,0,0,0],  // waist
+          [0,0,1,1,1,1,1,1,1,1,0,0],  // hips
+          [0,0,1,1,1,1,1,1,1,1,0,0],  // hips
+          [0,0,1,1,1,1,1,1,1,1,0,0],  // hips
+          [0,0,1,1,1,1,1,1,1,1,0,0],  // upper thigh
+          [0,0,0,1,1,0,0,1,1,0,0,0],  // legs split
+          [0,0,0,1,1,0,0,1,1,0,0,0],
+          [0,0,0,1,1,0,0,1,1,0,0,0],
+          [0,0,0,1,1,0,0,1,1,0,0,0],
+          [0,0,0,1,1,0,0,1,1,0,0,0],
+          [0,0,0,1,1,0,0,1,1,0,0,0],
+          [0,0,0,1,1,0,0,1,1,0,0,0],
+          [0,0,0,1,1,0,0,1,1,0,0,0],
+          [0,0,0,1,1,0,0,1,1,0,0,0],
+          [0,0,0,1,1,0,0,1,1,0,0,0],
+          [0,0,1,1,1,0,0,1,1,1,0,0],  // feet
+        ];
+        const PIX=2; // px per logical pixel
+        const PIX_COLS=12,PIX_ROWS=32;
+        // Scale grows with weight; X widens faster than Y so she fills out
+        const silScaleX=[1.0,1.15,1.3,1.5,1.7,2.0,2.35,2.75,3.2,3.7,4.3][Math.min(10,stageId)];
+        const silScaleY=[1.0,1.02,1.04,1.06,1.08,1.1,1.09,1.07,1.04,1.0,0.95][Math.min(10,stageId)];
 
         // Build choice list
         const choices=[];
         const addNavChoices=(nodeId)=>{
           const connected=(HUNT_MAP[nodeId]||[]).filter(nid=>accessibleNodes.includes(nid)&&nid!=='dorm');
-          connected.forEach(nid=>choices.push({id:`go_${nid}`,label:`→ ${HUNT_NODES[nid]?.label}`,action:()=>navigateHunt(nid),dim:true}));
+          connected.forEach(nid=>choices.push({id:`go_${nid}`,label:`→ ${HUNT_NODES[nid]?.label}`,action:()=>navigateHunt(nid),nav:true}));
         };
         const returnToLoc=()=>{
           const nd=HUNT_NODES[currentNode];
@@ -8192,10 +8228,10 @@ export default function ProfessorSim(){
             choices.push({id:'leave',label:'Leave the hunt',action:closeHunt,dim:true,small:true});
           }
         } else if(encounter.consumed){
-          choices.push({id:'again',label:'Hunt again ↩',action:returnToLoc});
+          choices.push({id:'again',label:'Hunt again ↩',action:returnToLoc,nav:true});
           choices.push({id:'close',label:'Return to campus',action:closeHunt,dim:true});
         } else if(encounter.failed){
-          choices.push({id:'back',label:'↩ Back to the hunt',action:returnToLoc});
+          choices.push({id:'back',label:'↩ Back to the hunt',action:returnToLoc,nav:true});
           addNavChoices(currentNode);
           choices.push({id:'leave',label:'Leave the hunt',action:closeHunt,dim:true,small:true});
         } else {
@@ -8230,10 +8266,13 @@ export default function ProfessorSim(){
               <div style={{position:"absolute",left:0,bottom:0,width:"28%",height:44,background:"#040010",clipPath:"polygon(0 100%,0 45%,8% 45%,8% 22%,14% 22%,14% 45%,22% 45%,22% 65%,28% 65%,28% 5%,34% 5%,34% 60%,42% 60%,42% 100%)"}}/>
               {/* Right building */}
               <div style={{position:"absolute",right:0,bottom:0,width:"32%",height:52,background:"#040010",clipPath:"polygon(0 100%,0 60%,6% 60%,6% 32%,12% 32%,12% 52%,20% 52%,20% 12%,26% 12%,26% 52%,36% 52%,36% 38%,42% 38%,42% 4%,48% 4%,48% 38%,62% 38%,62% 62%,72% 62%,72% 100%)"}}/>
-              {/* Lilith silhouette */}
-              <div style={{position:"absolute",bottom:0,left:"50%",transform:"translateX(-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:2,paddingBottom:0}}>
-                <div style={{width:headW,height:headW,borderRadius:"50%",background:"#28005580",boxShadow:"0 0 5px #6010a030"}}/>
-                <div style={{width:silW,height:silH,background:"#28005580",borderRadius:silBR,boxShadow:`0 0 14px #6010a030`,transition:"width 0.5s,height 0.5s,border-radius 0.5s"}}/>
+              {/* Lilith pixel art silhouette */}
+              <div style={{position:"absolute",bottom:0,left:"50%",transform:"translateX(-50%)"}}>
+                <svg width={PIX_COLS*PIX*silScaleX} height={PIX_ROWS*PIX*silScaleY} viewBox={`0 0 ${PIX_COLS*PIX} ${PIX_ROWS*PIX}`} style={{display:"block",filter:"drop-shadow(0 0 6px #7010a060)",transition:"width 0.4s,height 0.4s"}}>
+                  {LILITH_PIX.flatMap((row,y)=>row.map((on,x)=>on?(
+                    <rect key={`${x}-${y}`} x={x*PIX} y={y*PIX} width={PIX} height={PIX} fill="#4a0088" opacity="0.9"/>
+                  ):null))}
+                </svg>
               </div>
               {/* Top bar */}
               <div style={{position:"absolute",top:0,left:0,right:0,display:"flex",justifyContent:"space-between",padding:"5px 12px"}}>
@@ -8278,9 +8317,9 @@ export default function ProfessorSim(){
               <div style={{display:"flex",flexDirection:"column",gap:5,padding:"8px 14px 12px",maxHeight:"42vh",overflowY:"auto"}}>
                 {choices.map(ch=>(
                   <button key={ch.id} onClick={ch.action} style={{
-                    background:ch.big?"#3a0060":ch.approach?"#260042":ch.risky?"#1c001e":"#130020",
-                    border:`1px solid ${ch.risky?"#a0204040":ch.approach?accent+"60":accent+"30"}`,
-                    color:ch.dim?"#50305060":ch.risky?"#e07878":ch.approach?"#d070f0":"#b080d0",
+                    background:ch.big?"#3a0060":ch.approach?"#260042":ch.risky?"#1c001e":ch.nav?"#1a0030":"#130020",
+                    border:`1px solid ${ch.risky?"#a0204040":ch.approach?accent+"60":ch.nav?accent+"50":accent+"30"}`,
+                    color:ch.dim?"#5a3860":ch.risky?"#e07878":ch.approach?"#d070f0":ch.nav?"#9860b8":"#b080d0",
                     borderRadius:5,padding:ch.big?"11px 16px":"8px 14px",
                     fontSize:ch.small?10:ch.big?13:12,
                     fontWeight:ch.big?700:"normal",
