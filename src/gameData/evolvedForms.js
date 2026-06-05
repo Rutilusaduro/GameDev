@@ -86,6 +86,14 @@ export const EVOLVED_REACTIONS = {
     "I hold simultaneous records in gaming and competitive eating. I'm told this is unprecedented. Obviously.",
     "I've transcended both worlds. Speed means nothing when you're this size, this full, this complete.",
   ],
+  ranked_feedee:[
+    "Session log complete. I ate through two ranked matches, gained a rank, and finished everything Rae brought. I'm not thinking about any of this.",
+    "The extras Rae keeps adding are not mistakes. I have accepted this. I have also accepted the extras. I am heavier than last week.",
+    "Rae knows my schedule now. She knows my order. I'm not sure when this became a thing that was happening. It is currently a thing that is happening.",
+    "Diamond. Also the desk area has been rearranged and I eat significantly more per session than I used to and Rae's delivery radius apparently includes my couch. These things are unrelated. Probably.",
+    "I asked Rae how she knew what I was going to order before I ordered it. She said 'I pay attention.' This is the only answer I got. I've been thinking about it a lot. The food was excellent.",
+    "Working as intended. The session runs. The food appears. Rae is here. I am very fat and very good at this game and that's the whole situation, filed under complete.",
+  ],
   // ── SORORITY paths ──────────────────────────────────────────────
   chapter_hostess:[
     "First organized chapter feast. Twelve courses. Nobody left early. Nobody left not full.",
@@ -306,6 +314,14 @@ export const EVOLVED_DIARY = {
     `World-record territory on multiple tables. I've broken things that people thought were unbreakable. The documentation is meticulous. The methodology is reproducible. Nobody has reproduced it. I suspect nobody will.`,
     `Speed doesn't mean anything at this size and weight and scale of appetite. I've transcended the timed format. I eat until I'm done, and when I'm done I'm done, and the numbers are beside the point. The life is the point. The eating is the point.`,
   ],
+  ranked_feedee:[
+    `Session log — Week 1: Started around two. New delivery driver named Rae got here in eleven minutes. Didn't say much, confirmed the order, left. Stayed up until four. Lost two ranked games, won one. Ate everything. The session felt good in a way I don't feel like analyzing.`,
+    `Session log — Week 5: Rae added something to the order. I didn't ask for it. The receipt said 'complimentary' in the notes. It was a dessert thing I'd been thinking about ordering for three weeks. I ate it. I went on tilt and ate through the whole session and won three games in a row. I'm not drawing conclusions from this.`,
+    `Session log — Week 9: She was at my door when I placed the order. She said she was 'in the area.' The building requires a code for the lobby. I let this go. Food was warm. Session went five hours. I went from bronze to silver in one sitting. The correlation is clear and I am choosing to ignore it.`,
+    `Session log — Week 13: I didn't place an order. Rae showed up anyway. She said she had 'a feeling.' She brought the exact thing I had been thinking about ordering. I ate it. It took forty minutes. During those forty minutes I won four ranked games straight and my team played like a different team because I was not tilting for the first time in two weeks. I have decided not to think carefully about any of this.`,
+    `Session log — Week 18: Rae rearranged the desk area to fit more food trays. She didn't ask. The setup is better now. My belly rests on the edge of the desk differently. She said 'there' when she finished, like a complete sentence. I have been thinking about that word all week. I won my first Diamond game. I am significantly heavier than I was four months ago. These things happened in the same week.`,
+    `Session log — Week 23: Rae is here most days now. She doesn't always bring food. Sometimes she's just here. I asked once if she was still technically on shift. She said 'not technically' and that was the whole answer. I think she knows what she's doing. I think I know what she's doing. We're both choosing not to say it, which is fine. Working as intended.`,
+  ],
   chapter_hostess:[
     `Twelve courses. I planned every one of them, sourced every ingredient, set every table. The chapter arrived uncertain and left full and grateful and different in a way I can't fully quantify but absolutely recognize. We did something real in that dining room.`,
     `Wednesday feast night is established. The chapter knows it, the schedule reflects it, the kitchen is stocked by Tuesday. I have become the person who feeds everyone, which is a role I did not apply for and have accepted completely.`,
@@ -518,6 +534,14 @@ export const EVOLVED_OUTFITS = {
     "Championship kit. Her coach had it made when the national record fell. She wore it the next day.",
     "She travels in her competition colors. Everything is custom. The logos are earned.",
     "She wears what accommodates her. Everything does, because everything is made for her now.",
+  ],
+  ranked_feedee:[
+    "Gaming hoodie and worn-in joggers. Slightly short in the hem now. The setup is what matters, not the outfit.",
+    "Oversized gaming tee from a sponsorship she forgot applying to. Fits for now. For now.",
+    "Wide soft hoodie and stretched-out joggers. She stopped checking if things match. The food matches. That's enough.",
+    "Custom wide-cut gaming hoodie that appeared in the delivery pile one day. Fits perfectly. Destiny hasn't asked how.",
+    "Soft wide everything. She stopped buying clothes. Things appear and they fit. She's stopped asking questions about this.",
+    "She wears what's comfortable, which is now a very specific kind of enormous and soft. The chair was built around her. The clothes followed.",
   ],
   chapter_hostess:[
     "Hosting apron over her chapter formal. The apron has seen more feasts than most dining rooms.",
@@ -833,6 +857,7 @@ export const EVOLVED_ACTIVITY_META = {
   food_researcher: { label:"Visit Her Lab",            apCost:1, gainRange:[3,6],  relBonus:10 },
   eating_streamer: { label:"Tune In to the Stream",    apCost:1, gainRange:[4,8],  relBonus:10 },
   speed_eater:     { label:"Watch a Challenge",        apCost:1, gainRange:[4,9],  relBonus:9  },
+  ranked_feedee:   { label:"🎮 Run a Session",          apCost:1, gainRange:[8,22], relBonus:12 },
   chapter_hostess: { label:"Attend Wednesday Feast",   apCost:1, gainRange:[5,10], relBonus:11 },
   body_positive_greek:{ label:"Attend Chapter Event",  apCost:1, gainRange:[2,5],  relBonus:12 },
   metrics_eater:   { label:"Review Her Spreadsheet",   apCost:1, gainRange:[3,7],  relBonus:9  },
@@ -2641,6 +2666,154 @@ The session closes. Next year the classroom will be bigger. Next year she will b
       ]
     },
   ],
+
+  // ── GAMER: ranked_feedee ──────────────────────────────────────────────────
+  ranked_feedee:[
+    // Stage 0 — ~258 lbs — "First Order"
+    {
+      title:"First Order",
+      phases:[
+        {
+          text:(h,s)=>`The queue timer ticks down. ${s.name} is ${Math.round(s.lbs)} pounds in her chair, headset on, watching the loading screen. There's an order placed — she did it automatically, ten seconds after logging in. The session is starting. The only question is what kind of session it's going to be.`,
+          choices:[
+            {id:"go_big",label:"Go big — full order, everything",result:`The order is sent. A lot of food. More than she'd normally justify. She's already in queue so she's already committed, and this is fine, this is normal, this is just what happens when the sessions run long.`,lbs:4,rel:3,flag:"big_order"},
+            {id:"keep_light",label:"Keep it simple — something quick",result:`Chips, energy drink, the basics. She doesn't want anything that'll slow her down. There's a game to play and she wants her hands free.`,lbs:2,rel:2,flag:"light_order"},
+          ]
+        },
+        {
+          text:(h,s)=>`The food arrives. New driver — the receipt says Rae. She's quick and doesn't say much, just confirms the order and leaves. The match starts. ${s.name} eats automatically, controller in hand, the food disappearing between death timers and cooldown waits. ${h.includes('big_order')?'The big order is getting worked through faster than expected.':'The lighter spread is almost gone already.'}`,
+          choices:[
+            {id:"stay_focused",label:"Eat between timers — stay locked in",result:`She manages it — eating precisely, strategically, only when the game allows. She plays better fed. She always plays better fed. She's noting this.`,lbs:5,rel:4,flag:"focused_session"},
+            {id:"eat_through",label:"Just eat through it — worry about the game later",result:`The food comes first. She tilts through two games while full and then something clicks and she plays clean and wins the next two. It worked. Somehow.`,lbs:8,rel:3,flag:"eat_through"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("focused_session"),text:(h,s,gain)=>`The session closes. ${s.name} is ${Math.round(s.lbs+gain)} pounds in the chair and the tally is: one rank gained, everything ordered consumed, and a delivery receipt with 'have a good game' written on it in pen. She reads that last part twice.`,gainBonus:5,relBonus:8,startsSession:true},
+        {condition:()=>true,text:(h,s,gain)=>`Session over. Food gone. ${s.name} is ${Math.round(s.lbs+gain)} pounds and more than a little full. She's going to order from that place again. She doesn't need to decide this. She already knows.`,gainBonus:3,relBonus:6,startsSession:true},
+      ]
+    },
+    // Stage 1 — ~340 lbs — "She Added Extras"
+    {
+      title:"She Added Extras",
+      phases:[
+        {
+          text:(h,s)=>`The order arrives. Rae sets it down — and then sets a second thing down beside it, unprompted. "Got the order wrong on a previous delivery," she says. "These are on us." She does not explain further. She leaves. ${s.name}, ${Math.round(s.lbs)} pounds in her chair, looks at the extras. They're exactly the dessert thing she's been eyeing on the menu for three weeks.`,
+          choices:[
+            {id:"eat_extras_first",label:"Eat the extras while they're warm",result:`She eats them immediately. They're good. Really good. The kind of good that explains why she's been eyeing them. She starts the session properly fed and the match queue feels lighter somehow.`,lbs:6,rel:4,flag:"ate_extras"},
+            {id:"save_extras",label:"Save them for mid-session",result:`She saves them for the tilt point — that moment around hour three when everything goes wrong and the game is unkind. When she finally eats them they're barely warm and still excellent. She wins the next two games.`,lbs:4,rel:3,flag:"saved_extras"},
+          ]
+        },
+        {
+          text:(h,s)=>`Mid-session. The extras are long gone. ${h.includes('ate_extras')?'She played unusually well in the first two hours.':'The saves paid off — she played clean through the rough stretch.'} The session has that good momentum now, the kind where the next game feels possible. She's also significantly more full than she expected to be.`,
+          choices:[
+            {id:"order_more",label:"Order more — the session is running",result:`She places another order without really deciding to. The session is running. The food should match the session. This is reasonable.`,lbs:8,rel:5,flag:"ordered_more"},
+            {id:"push_through",label:"Push through without more food",result:`She doesn't order more. She pushes through on what's left — energy drink, some chips from earlier, willpower. She wins three straight on momentum alone.`,lbs:3,rel:4,flag:"pushed_through"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("ordered_more"),text:(h,s,gain)=>`Session complete. ${s.name} is ${Math.round(s.lbs+gain)} pounds. The extras Rae brought were an accident, she said. Everything since then has not been an accident. She's not examining this distinction very hard right now.`,gainBonus:6,relBonus:9,startsSession:true},
+        {condition:()=>true,text:(h,s,gain)=>`Session ends. ${s.name} is ${Math.round(s.lbs+gain)} pounds, slightly fuller than expected. The receipt from the extras is still on the desk. 'Complimentary,' it says. She thinks she'll see Rae again.`,gainBonus:4,relBonus:7,startsSession:true},
+      ]
+    },
+    // Stage 2 — ~432 lbs — "Knows the Schedule"
+    {
+      title:"Knows the Schedule",
+      phases:[
+        {
+          text:(h,s)=>`${s.name} logs in. Five minutes later, before she's placed an order, Rae knocks on the door. She's carrying the food — the correct food, the right amounts, everything. "I was in the area," she says. The building has a lobby code. ${s.name} is ${Math.round(s.lbs)} pounds and she looks at Rae for a long moment.`,
+          choices:[
+            {id:"ask_how",label:"Ask how she knew",result:`"I pay attention," Rae says. That's the whole answer. She starts setting up the trays and ${s.name} decides this is a complete response and starts the match queue.`,lbs:4,rel:6,flag:"asked_how"},
+            {id:"just_take_it",label:"Just take the food — whatever, it's warm",result:`${s.name} steps aside and lets her in without comment. The food is warm. The session is starting. Questions can wait.`,lbs:3,rel:4,flag:"took_it"},
+          ]
+        },
+        {
+          text:(h,s)=>`The session has the best setup it's ever had. Food ready before the match started, sorted by what she wants when. ${h.includes('asked_how')?'Rae answered one question and deflected three others and ${s.name} decided she was fine with that.':'Everything just worked, no friction, no wait time, just game and food from the first moment.'} She's playing the best stretch of her life.`,
+          choices:[
+            {id:"let_her_handle",label:"Let Rae manage the food situation — she clearly knows",result:`She doesn't place any orders during the session. Things appear when she needs them. This is unprecedented and also extremely effective. She ranks up twice.`,lbs:10,rel:6,flag:"delegated"},
+            {id:"stay_in_control",label:"Order the next round herself anyway",result:`She places the order herself, out of habit or principle, she's not sure which. Rae is already there when it arrives and takes it at the door and sets it up. This is somehow smooth.`,lbs:7,rel:4,flag:"ordered_self"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("delegated"),text:(h,s,gain)=>`The session ends. ${s.name} is ${Math.round(s.lbs+gain)} pounds and she ate through everything that appeared without placing a single additional order. Rae said 'good session' on the way out. She doesn't know how Rae evaluated this. She's going to log back in tomorrow.`,gainBonus:8,relBonus:10,startsSession:true},
+        {condition:()=>true,text:(h,s,gain)=>`Session closed. ${s.name} is ${Math.round(s.lbs+gain)} pounds. Rae knew the schedule. Rae had the code. ${s.name} is not going to make this into a thing. The session was excellent.`,gainBonus:5,relBonus:8,startsSession:true},
+      ]
+    },
+    // Stage 3 — ~524 lbs — "Door Code"
+    {
+      title:"Door Code",
+      phases:[
+        {
+          text:(h,s)=>`Rae knocks on the apartment door. Not the lobby intercom — the actual apartment door. She has the lobby code. ${s.name} is ${Math.round(s.lbs)} pounds and she opens the door and looks at Rae and then at the tray of food Rae is already carrying, perfectly selected, warm, and correct.`,
+          choices:[
+            {id:"ask_code",label:"When did you get the code",result:`"You gave it to me," Rae says, which is technically true — ${s.name} mentioned it once in passing when there was a delivery delay. Rae has not forgotten it since. ${s.name} lets her in.`,lbs:4,rel:5,flag:"asked_code"},
+            {id:"just_let_in",label:"Let her in — the food is warm, questions later",result:`${s.name} steps aside. This is fine. This is happening. The food is excellent.`,lbs:3,rel:4,flag:"let_in"},
+          ]
+        },
+        {
+          text:(h,s)=>`Rae has rearranged the desk area. Not much — just slightly, to fit the trays better. ${s.name}'s setup works better now. The controller is in the same place but the angle is different and it's easier. She doesn't ask when this happened.`,
+          choices:[
+            {id:"lets_rae_stay",label:"She can stay while the session runs",result:`Rae stays. She's quiet, does small things, refills drinks at natural pause points. She doesn't watch the screen so much as watch ${s.name}. ${s.name} notices and decides not to make anything of it.`,lbs:10,rel:8,flag:"rae_stayed"},
+            {id:"sends_rae_out",label:"Out after setup — she needs to focus",result:`${s.name} says she works better alone. Rae nods and leaves. The food is all there. The session runs long anyway.`,lbs:7,rel:5,flag:"rae_left"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("rae_stayed"),text:(h,s,gain)=>`Session ends. ${s.name} is ${Math.round(s.lbs+gain)} pounds and Rae said 'that was a good one' and cleaned up and left and it's quiet now and the session was, genuinely, a good one. She's not ready to say what's happening here. She's also not going to change anything.`,gainBonus:10,relBonus:12,startsSession:true},
+        {condition:()=>true,text:(h,s,gain)=>`Session closed. ${s.name} is ${Math.round(s.lbs+gain)} pounds. Rae had the code. Rae arranged the desk. The session was excellent. ${s.name} is going to think about all of this later when she hasn't just spent eight hours eating and playing.`,gainBonus:7,relBonus:9,startsSession:true},
+      ]
+    },
+    // Stage 4 — ~626 lbs — "Before You Order"
+    {
+      title:"Before You Order",
+      phases:[
+        {
+          text:(h,s)=>`Rae knocks before ${s.name} has placed an order. Not shortly after — before. The food is exactly what she was going to order. ${s.name} is ${Math.round(s.lbs)} pounds and she looks at the tray and then at Rae.`,
+          choices:[
+            {id:"confronted_rae",label:"'How did you know what I was going to order'",result:`"I've been paying attention for a long time," Rae says. She says it simply, without apology. ${s.name} looks at her for a long moment. Then she picks up a thing from the tray and takes a bite. It's exactly right. It was always going to be exactly right.`,lbs:5,rel:7,flag:"confronted_rae"},
+            {id:"just_eat",label:"Just start eating — the session won't wait",result:`${s.name} reaches for the food without comment. Rae sets up the rest of the tray. The game loads. Some things don't need a conversation.`,lbs:4,rel:5,flag:"skipped_question"},
+          ]
+        },
+        {
+          text:(h,s)=>`The setup is perfect. Rae is in the room, quiet and efficient, and the session has everything it needs before it needed it. ${h.includes('confronted_rae')?'The conversation from earlier sits between them unresolved, and that seems fine. Some things don\'t close neatly.':'Nothing was said and nothing needed to be said and the session is running perfectly.'} ${s.name} is playing the best stretch she's ever played.`,
+          choices:[
+            {id:"accepted_arrangement",label:"Acknowledge — out loud — that this arrangement works",result:`"This works," she says, not looking up from the screen. Rae says "I know" and that's the end of it. It's a complete conversation. ${s.name} wins the next three games.`,lbs:9,rel:8,flag:"accepted_arrangement"},
+            {id:"pretend_normal",label:"Pretend everything is completely normal",result:`She pretends. It's not really pretending anymore. This is the normal. She plays clean and doesn't think about it.`,lbs:7,rel:5,flag:"pretended"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("accepted_arrangement"),text:(h,s,gain)=>`Session closed. ${s.name} is ${Math.round(s.lbs+gain)} pounds. She said 'this works' and Rae said 'I know' and this is apparently what it looks like when something is decided. She logs off satisfied, which is a thing she's started doing.`,gainBonus:12,relBonus:13,startsSession:true},
+        {condition:()=>true,text:(h,s,gain)=>`Session over. ${s.name} is ${Math.round(s.lbs+gain)} pounds. Rae knew the order before it was placed. The session was the best one yet. ${s.name} has decided not to file any of this in a category that requires further thought.`,gainBonus:8,relBonus:10,startsSession:true},
+      ]
+    },
+    // Stage 5 — ~820 lbs — "She's Just Here"
+    {
+      title:"She's Just Here",
+      phases:[
+        {
+          text:(h,s)=>`Rae is already in the room when ${s.name} starts logging in. Not delivering — just here, having let herself in earlier, doing quiet things. There's food staged. The setup is prepared. Rae looks up and says "hey."`,
+          choices:[
+            {id:"said_something",label:"'You're always here now'",result:`"Yeah," Rae says. Not 'I know' or 'sorry' — just yeah. Like a confirmation. ${s.name}, ${Math.round(s.lbs)} pounds in her chair, looks at her for a moment and then turns to the screen.`,lbs:4,rel:8,flag:"said_something"},
+            {id:"opened_game",label:"Open the game without comment",result:`${s.name} puts on the headset and logs in without saying anything. Rae hands her the first thing to eat without being asked. This is how it goes now.`,lbs:3,rel:6,flag:"no_comment"},
+          ]
+        },
+        {
+          text:(h,s)=>`The session is running. It's the longest one they've done — hours deep, the food situation infinite and well-managed, the rank climbing past levels that used to feel unreachable. Rae says, from somewhere in the room, "working as intended."`,
+          choices:[
+            {id:"working_as_intended",label:"Say it back — 'working as intended'",result:`${s.name} says it without looking up. "Working as intended." Rae smiles. The game continues. Something is said in that exchange that neither of them needs to name.`,lbs:12,rel:10,flag:"said_it_back"},
+            {id:"just_nod",label:"Nod and keep playing",result:`${s.name} nods, controller in hand, eyes on screen, her enormous self completely at home in this setup that has grown around her. It's working. Obviously it's working.`,lbs:9,rel:7,flag:"nodded"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("said_it_back"),text:(h,s,gain)=>`Session ends when Rae says it's ending. ${s.name} is ${Math.round(s.lbs+gain)} pounds and Grandmaster and very well-fed. She said 'working as intended.' Rae said 'exactly.' There's nothing left to add. The game saves automatically.`,gainBonus:15,relBonus:16,startsSession:true},
+        {condition:()=>true,text:(h,s,gain)=>`Session log complete. ${s.name} is ${Math.round(s.lbs+gain)} pounds. Rae is here. The food is handled. The rank is climbing. This is the entire situation and it is, in every measurable sense, working.`,gainBonus:10,relBonus:13,startsSession:true},
+      ]
+    },
+  ],
 };
 
 export const EVOLVED_FORM_META = {
@@ -2670,6 +2843,7 @@ export const EVOLVED_FORM_META = {
   state_fair_queen:     { title:"State Fair Queen",      color:"#C8860A" },
   psych_researcher:     { title:"The Researcher",        color:"#6b5b95" },
   psych_manipulator:    { title:"The Architect",         color:"#4a235a" },
+  ranked_feedee:        { title:"Ranked Feedee",          color:"#1a6a9a" },
 };
 
 export const EVOLUTION_BUTTON_BLURB = {
@@ -2718,10 +2892,9 @@ export const EVOLUTION_OFFER = {
     },
   },
   gamer:{
-    intro:(s)=>`${s.name} swivels her chair toward you mid-session, something she never does. The game is still running. 'I've been thinking about what to do with this,' she says, indicating herself with one hand while the other keeps moving on the controller. 'And I have two ideas. Both involve this setup.' She gestures at the room.`,
+    intro:(s)=>`${s.name} swivels her chair toward you mid-session, something she never does. The game is still running. 'I've been thinking,' she says, not looking up. 'About what this is now.' She indicates herself with one hand while the other keeps the controller. 'The sessions. The eating. The way they work together.' She pauses. 'I want to lean into it. Properly.'`,
     paths:{
-      eating_streamer:{ label:"Eating Streamer", desc:"Gaming + mukbang content. The crossover is real and the audience is waiting." },
-      speed_eater:    { label:"Speed Eater",     desc:"Competitive eating with the same optimizer's brain. Records. Timers. That leaderboard mentality applied to food." },
+      ranked_feedee:{ label:"Ranked Feedee", desc:"Sessions optimized for both. Focus bar, food queue, delivery driver who knows the schedule better than she does. The game never stops. Neither does the eating." },
     },
   },
   sorority:{
@@ -2808,6 +2981,7 @@ export const ASCENSION_BRIDGE = {
   state_fair_queen: (s)=>`${s.name} is looking at the photo from the last invitational — her at the scale, the number, Darcy starting to clap. She touches the edge of it carefully. 'I've eaten through every bracket,' she says. 'Every category, every division. They stopped being able to contain me in a class.' She's quiet for a long moment. 'I think the circuit is done. The circuit gave me everything it had.' She looks up. 'Now something gives me everything it has.' She sounds certain. She is.`,
   psych_researcher: (s)=>`${s.name} closes the research notebook for the last time — the original one, the one with the methodology she wrote on the first day and has been rewriting ever since. She holds it in both hands. 'The study documented what happened to the subject,' she says. 'It also documented what happened to me. The two arcs are inseparable.' She looks at you. 'The notebook ran out of room. The study ran out of categories. The subject exceeded what methodology can contain.' A long pause. 'So did I.' She sets the notebook down. 'I think the goddess has been one of my data points all along.'`,
   psych_manipulator:(s)=>`${s.name} puts the final notebook on the shelf and stands with her hand on the spine for a long time. 'The study has grown past the building,' she says. 'I didn't plan that. I also didn't stop it.' She looks at her hands — enormous, warm, the hands of someone who has been eating as thoroughly as she has been studying. 'I've stopped logging the others. There's nothing left to log that I don't already know.' She turns. 'I'm only logging myself now. Every meal. Every change.' Her voice is very quiet. 'The goddess has been watching the study. I think the study was always about her.'`,
+  ranked_feedee: (s)=>`${s.name} doesn't look up from the screen when she says it. 'Rae said something to me.' She pauses the game — which you've never seen her do without the session being over. 'She said she's been watching what's happening to me and that she's proud.' Her voice is carefully flat. 'I've been thinking about what that means.' She looks at her hands on the controller. She's enormous. She's been enormous for a while. 'I think I've run out of sessions,' she says. 'Or sessions have run out of what they can hold. Something like that.' A long silence. 'Rae said: you've leveled past the game.' She puts the controller down. 'Yeah,' she says. 'I think that's right.'`,
 };
 
 // ── HOMEROOM QUEEN: NPC stage descriptions ──────────────────────────────────
@@ -3617,3 +3791,39 @@ export const NADIA_SUBJECT_JOURNALS = {
   },
   culinary:     { intro:`[placeholder: Nadia intro — why she chose the culinary student]`,            entries:_np('culinary')     },
 };
+
+// ── RANKED FEEDEE SESSION MINI-GAME DATA ─────────────────────────────────────
+export const SESSION_FOOD_ITEMS = [
+  { id:"energy_drink", label:"Energy Drink",   icon:"⚡", gain:2,  focusRestore:28, fullnessCost:8  },
+  { id:"chips",        label:"Bag of Chips",   icon:"🥔", gain:5,  focusRestore:12, fullnessCost:18 },
+  { id:"ramen",        label:"Instant Ramen",  icon:"🍜", gain:9,  focusRestore:16, fullnessCost:28 },
+  { id:"pizza",        label:"Pizza Slice",    icon:"🍕", gain:14, focusRestore:5,  fullnessCost:42 },
+  { id:"full_order",   label:"Full Delivery",  icon:"📦", gain:24, focusRestore:22, fullnessCost:65 },
+];
+
+export const SESSION_NPC_LINES = {
+  0:{ arrival:"Delivery.", exit:"Have a good session.", extra:null,
+      desc:"New driver. Professional, quick, by the book." },
+  1:{ arrival:"Order's here — got the item count wrong on a previous delivery, so these extras are on us.",
+      exit:"Good luck with the game.", extra:"She leaves a dessert item. Unprompted.",
+      desc:"She adds extras. Calls them mistakes. They are not." },
+  2:{ arrival:"You were about to order, right? I was already heading over.",
+      exit:"I'll be back when the queue runs.", extra:"She has the right snacks pre-staged.",
+      desc:"She knows the schedule. She was already on her way." },
+  3:{ arrival:"Hey. Lobby code still works.", exit:"I'll set up and get out of your way.", extra:null,
+      desc:"She has the building code. She did not ask for it." },
+  4:{ arrival:"Had a feeling you'd want this tonight.", exit:"I've got more in the car if the session runs.",
+      extra:"She has the exact order Destiny was going to place.",
+      desc:"She arrives before the order is placed." },
+  5:{ arrival:"Hey.", exit:"I'm around.", extra:"She rearranges the desk slightly. Better now.",
+      desc:"She's just here now. Sometimes with food. Always correct." },
+};
+
+export const SESSION_PAYOFF_TEXT = [
+  (gain,reason)=>`Session complete. ${Math.round(gain)} pounds worth of food consumed. ${reason==='food_coma'?'Full stop — literally, food coma, done.':'Focus ran out before the food did. That\'s a new one.'} The Rae receipt is still on the desk. You\'re ordering from that place again.`,
+  (gain,reason)=>`Session log: ${Math.round(gain)} lbs. ${reason==='food_coma'?'The extras she brought are all gone, every one of them, and you\'re too full to move.':'Ran out of focus. Which means you sat here eating and gaming until your eyes gave out.'} The rank went up anyway. You\'re not analyzing this.`,
+  (gain,reason)=>`Game over — session, not match. You won the match. You also ate ${Math.round(gain)} pounds worth of food and you\'re very full and Rae said 'you\'re getting good at this' on the way out and you\'re not sure which part she meant. The setup was good. You feel, against all evidence, completely fine.`,
+  (gain,reason)=>`Session log: ${Math.round(gain)} lbs, rank climbed. ${reason==='food_coma'?'The food ran out before the focus did — first time that\'s happened.':'Focus ran low and you kept going anyway and honestly that tracks.'} You feel different tonight — heavier, more settled. Rae texted to ask if she should bring more next time. You said yes before you finished reading it.`,
+  (gain,reason)=>`${reason==='food_coma'?'Food coma.':'Focus out.'} ${Math.round(gain)} lbs. Diamond rank. You're very fat and very well-fed and Rae is somewhere in the room doing something quiet and efficient. You won four of the last five. You are choosing to focus on the wins and not whatever else is happening here. Working as intended.`,
+  (gain,reason)=>`The session ended when Rae said it was ending. You were going to argue. You looked at the situation — ${Math.round(gain)} lbs worth of food consumed, rank at Grandmaster, every surface clear, your belly enormous and warm — and decided she was right. She said 'that\'s enough for today' the way someone says something they\'re also proud of. You think she might be right about that too.`,
+];

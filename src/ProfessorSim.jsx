@@ -5,7 +5,7 @@ import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GR
 import { BODY_DESCS, STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, OUTFITS, SLIGHT_DIARY, DIARY_ENTRIES, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
 import { GOSSIP, getGossipLines } from './gameData/gossip.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS, CLASS_SCENES } from './gameData/classEvents.js';
-import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS, BATCH_BAKER_NPCS, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS } from './gameData/evolvedForms.js';
+import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS, BATCH_BAKER_NPCS, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_WEIGH_IN_2_TEXT, CONTEST_DEVOUR_POPUPS, CONTEST_PAYOFF_TEXT, SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_MATCH_AFTERMATH, SUMO_PAYOFF_TEXT, SUMO_FILL_RING_TEXT, COLLAB_CONTENT_CREATOR_ARCHETYPES, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_OPENING_TEXT, RECORDING_TAKE_INTRO_TEXT, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT, MJ_RECIPES, FAIR_FOODS, FAIR_STAGE_FOODS, FAIR_DARCY_WEIGHTS, FAIR_FULLNESS_MILESTONES, FAIR_WEIGH_IN_TEXT, FAIR_PAYOFF_TEXT, FAIR_TAUNT_POPUPS } from './gameData/miniGames.js';
 import { SKILL_TREE, SKILL_CATEGORIES, DIVINE_SKILL_TREE, EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
@@ -326,6 +326,8 @@ export default function ProfessorSim(){
   // researchSubjectPicker: { student: nadiaStudent }
   const [batchBakerState, setBatchBakerState] = useState({classWeight:0, momWeight:0, suspicion:0, stage:0});
   // batchBakerState: tracks homeroom_queen NPC weight accumulation and suspicion
+  const [rankedFeedeeState, setRankedFeedeeState] = useState(null);
+  // rankedFeedeeState: {studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log:[],done,endReason,raeDelivered}
   const [subjectJournalState, setSubjectJournalState] = useState(null);
   // subjectJournalState: { subjectId, currentPage (0–10) }
   const [nadiaNotesState, setNadiaNotesState] = useState(null);
@@ -1136,13 +1138,13 @@ export default function ProfessorSim(){
         const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
         return processStudentGain(st,totalGain,totalRel+bonusRel);
       }));
-      if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairContest) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
+      if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairContest&&!ending.startsSession) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
       // handle recipe unlock (homestead_queen)
       if(ending.unlockRecipe){
         setStudents(ss=>ss.map(st=>st.id===s.id?{...st,mjRecipes:[...(st.mjRecipes||[]),ending.unlockRecipe].filter((v,i,a)=>a.indexOf(v)===i)}:st));
       }
       const endText=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
-      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:ending.classGain||0,momGain:ending.momGain||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairContest:!!ending.startsFairContest}));
+      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:ending.classGain||0,momGain:ending.momGain||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairContest:!!ending.startsFairContest,startsSession:!!ending.startsSession}));
     } else {
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }
@@ -1171,6 +1173,63 @@ export default function ProfessorSim(){
     }
     setEvolvedEventState(null);
   };
+
+  const startRankedSession=(studentId,stageIdx)=>{
+    const s=students.find(st=>st.id===studentId); if(!s) return;
+    // maxFullness scales with weight — heavier = more capacity = longer sessions
+    const maxFullnessByStage=[100,125,155,185,215,255];
+    const maxFocusByStage=[90,85,80,75,70,65];
+    const maxFullness=maxFullnessByStage[stageIdx]||100;
+    const maxFocus=maxFocusByStage[stageIdx]||90;
+    const raeStage=Math.min(5,stageIdx);
+    setRankedFeedeeState({studentId,stageIdx,focus:maxFocus,maxFocus,fullness:0,maxFullness,gain:0,turn:0,log:[SESSION_NPC_LINES[raeStage].arrival+` ${SESSION_NPC_LINES[raeStage].extra||''}`],done:false,endReason:null,raeDelivered:raeStage<=1});
+    setEvolvedEventState(null);
+  };
+
+  const pickSessionFood=(foodId)=>{
+    if(!rankedFeedeeState||rankedFeedeeState.done) return;
+    const food=SESSION_FOOD_ITEMS.find(f=>f.id===foodId); if(!food) return;
+    const{studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log,raeDelivered}=rankedFeedeeState;
+    const s=students.find(st=>st.id===studentId); if(!s) return;
+    // Decay focus first, then apply food
+    const newFocus=Math.max(0,Math.min(maxFocus,focus-15+food.focusRestore));
+    const newFullness=fullness+food.fullnessCost;
+    const newGain=gain+food.gain;
+    const newTurn=turn+1;
+    const newLog=[...log,`${food.icon} ${food.label} — +${food.gain} lbs, focus ${newFocus>focus?'+':''}${Math.round(food.focusRestore-15)}`];
+    // Apply gain to student
+    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,food.gain,0):st));
+    // Check Rae delivery event at turn 3 if not yet delivered and stage >= 2
+    let updatedLog=newLog;
+    let newRaeDelivered=raeDelivered;
+    if(!raeDelivered&&newTurn===3&&stageIdx>=2){
+      const raeNpc=SESSION_NPC_LINES[Math.min(5,stageIdx)];
+      updatedLog=[...newLog,`📦 RAE: ${raeNpc.extra||'She appears with extra supplies.'}`];
+      newRaeDelivered=true;
+    }
+    // Check end conditions
+    if(newFullness>=maxFullness){
+      setRankedFeedeeState(prev=>({...prev,focus:newFocus,fullness:newFullness,gain:newGain,turn:newTurn,log:updatedLog,raeDelivered:newRaeDelivered,done:true,endReason:'food_coma'}));
+      push(`🎮 ${s.name} — Ranked session: +${Math.round(newGain)} lbs (food coma)`);
+      return;
+    }
+    if(newFocus<=0){
+      setRankedFeedeeState(prev=>({...prev,focus:0,fullness:newFullness,gain:newGain,turn:newTurn,log:updatedLog,raeDelivered:newRaeDelivered,done:true,endReason:'focus_out'}));
+      push(`🎮 ${s.name} — Ranked session: +${Math.round(newGain)} lbs (focus out)`);
+      return;
+    }
+    setRankedFeedeeState(prev=>({...prev,focus:newFocus,fullness:newFullness,gain:newGain,turn:newTurn,log:updatedLog,raeDelivered:newRaeDelivered}));
+  };
+
+  const quitRankedSession=()=>{
+    if(!rankedFeedeeState||rankedFeedeeState.done) return;
+    const{studentId,gain}=rankedFeedeeState;
+    const s=students.find(st=>st.id===studentId);
+    if(s) push(`🎮 ${s.name} — session ended early: +${Math.round(gain)} lbs`);
+    setRankedFeedeeState(prev=>prev?({...prev,done:true,endReason:'quit'}):null);
+  };
+
+  const closeRankedSession=()=>setRankedFeedeeState(null);
 
   const startEatingContest=(studentId,stageIdx,history)=>{
     const s=students.find(st=>st.id===studentId); if(!s) return;
@@ -6779,7 +6838,7 @@ export default function ProfessorSim(){
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
       {evolvedEventState&&(()=>{
-        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairContest}=evolvedEventState;
+        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairContest,startsSession}=evolvedEventState;
         const s=students.find(st=>st.id===studentId);
         const evDef=EVOLVED_EVENTS[formId]?.[stageIdx];
         if(!s||!evDef) return null;
@@ -6859,11 +6918,12 @@ export default function ProfessorSim(){
                   })}
                 </div>
               )}
-              {done&&!startsContest&&!startsMatch&&!startsStream&&!startsFairContest&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
+              {done&&!startsContest&&!startsMatch&&!startsStream&&!startsFairContest&&!startsSession&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
               {done&&startsContest&&<button style={{...C.btn("#1a6030"),width:"100%",marginTop:4}} onClick={()=>startEatingContest(studentId,stageIdx,history)}>🍽️ Step to the Table</button>}
               {done&&startsMatch&&<button style={{...C.btn("#7a2018"),width:"100%",marginTop:4}} onClick={()=>startSumoMatch(studentId,stageIdx,history)}>🥋 Step Onto the Dohyo</button>}
               {done&&startsStream&&<button style={{...C.btn("#6a1878"),width:"100%",marginTop:4}} onClick={()=>{const partner=students.find(st=>st.id===collabPartnerId);if(!partner){push("⚠️ No collab partner selected.");return;}startCollabStream(studentId,collabPartnerId,stageIdx,history);}}>🎥 Go Live Together</button>}
               {done&&startsFairContest&&<button style={{...C.btn("#C8860A"),width:"100%",marginTop:4}} onClick={()=>{const s2=students.find(st=>st.id===studentId);if(s2)startFairContest(s2,stageIdx);}}>🥧 Step Up to the Table</button>}
+              {done&&startsSession&&<button style={{...C.btn("#1a5a7a"),width:"100%",marginTop:4}} onClick={()=>startRankedSession(studentId,stageIdx)}>🎮 Start the Session</button>}
             </div>
           </div>
         );
@@ -7038,6 +7098,92 @@ export default function ProfessorSim(){
                     <button style={{...C.btn("#1a4030"),width:"100%"}} onClick={dismissContestPopup}>Continue</button>
                   </div>
                 </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── RANKED FEEDEE SESSION MINI-GAME MODAL ── */}
+      {rankedFeedeeState&&(()=>{
+        const{studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,log,done,endReason}=rankedFeedeeState;
+        const s=students.find(st=>st.id===studentId); if(!s) return null;
+        const focusPct=Math.min(100,Math.round((focus/maxFocus)*100));
+        const fullnessPct=Math.min(100,Math.round((fullness/maxFullness)*100));
+        const STAGE_LABELS=["Bronze Session","Silver Grind","Gold Streak","Platinum Marathon","Diamond Run","Grandmaster Session"];
+        const stageTitle=STAGE_LABELS[stageIdx]||"Ranked Session";
+        const canQuit=stageIdx<2;
+        const payoffFn=SESSION_PAYOFF_TEXT[stageIdx];
+        const payoffText=done&&payoffFn?payoffFn(gain,endReason):`Session closed with ${Math.round(gain)} lbs gained.`;
+        return(
+          <div style={{...C.overlay,zIndex:1200}}>
+            <div style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#040810,#080e1a,#040810)",border:"1px solid #1a5a9050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
+              <div style={{fontSize:9,letterSpacing:4,color:"#3080c0",marginBottom:4}}>{stageTitle.toUpperCase()}</div>
+              <div style={{fontSize:14,fontWeight:700,color:"#60a0e0",marginBottom:8}}>{s.name}</div>
+
+              {/* BARS */}
+              <div style={{display:"flex",gap:12,marginBottom:12}}>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:9,color:focusPct<30?"#e05030":focusPct<60?"#c0a020":"#4090d0",letterSpacing:2,marginBottom:3}}>FOCUS {Math.round(focus)}/{maxFocus}</div>
+                  <div style={{height:8,background:"#04080f",borderRadius:4,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:`${focusPct}%`,background:focusPct<30?"#e05030":focusPct<60?"#c0a020":"#3070c0",transition:"width 0.3s"}}/>
+                  </div>
+                </div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:9,color:fullnessPct>85?"#e04020":fullnessPct>65?"#c07020":"#40a060",letterSpacing:2,marginBottom:3}}>FULLNESS {Math.round(fullness)}/{maxFullness}</div>
+                  <div style={{height:8,background:"#04080f",borderRadius:4,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:`${fullnessPct}%`,background:fullnessPct>85?"#e04020":fullnessPct>65?"#c07020":"#306050",transition:"width 0.3s"}}/>
+                  </div>
+                </div>
+              </div>
+
+              {!done&&(
+                <>
+                  <div style={{fontSize:10,color:"#506080",marginBottom:10,fontStyle:"italic"}}>
+                    {focusPct<30?"Focus dropping — eat something to stay in the game.":fullnessPct>80?"Pushing capacity — careful what you pick next.":"Session running. Pick your food."}
+                  </div>
+                  {/* Food menu */}
+                  <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:12}}>
+                    {SESSION_FOOD_ITEMS.map(food=>{
+                      const wouldOverfill=fullness+food.fullnessCost>maxFullness;
+                      const netFocus=food.focusRestore-15;
+                      return(
+                        <button key={food.id}
+                          style={{...C.btn(wouldOverfill?"#1a0a04":"#04101c"),opacity:wouldOverfill?0.5:1,display:"flex",alignItems:"center",gap:10,padding:"8px 12px",textAlign:"left"}}
+                          onClick={()=>pickSessionFood(food.id)}>
+                          <span style={{fontSize:18}}>{food.icon}</span>
+                          <span style={{flex:1,color:"#80b0e0",fontSize:12,fontWeight:600}}>{food.label}</span>
+                          <span style={{color:"#ffcc60",fontSize:11}}>+{food.gain} lbs</span>
+                          <span style={{color:netFocus>=0?"#60c080":"#e06040",fontSize:11}}>{netFocus>=0?"+":""}{netFocus} focus</span>
+                          <span style={{color:wouldOverfill?"#e05020":"#806040",fontSize:11}}>+{food.fullnessCost} full</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {canQuit&&<button style={{...C.btn("#1a0808"),width:"100%",fontSize:11,color:"#604040"}} onClick={quitRankedSession}>Log off for the night</button>}
+                  {!canQuit&&<div style={{fontSize:9,color:"#2a3040",textAlign:"center",marginTop:4}}>Logging off isn't really an option anymore.</div>}
+                </>
+              )}
+
+              {/* Session log */}
+              {log.length>0&&(
+                <div style={{marginTop:10,maxHeight:120,overflowY:"auto"}}>
+                  {log.map((line,i)=>(
+                    <div key={i} style={{fontSize:10,color:"#304a60",padding:"2px 0",borderBottom:"1px solid #0a1520"}}>{line}</div>
+                  ))}
+                </div>
+              )}
+
+              {/* Done state */}
+              {done&&(
+                <>
+                  <div style={{marginTop:12,padding:12,background:"rgba(4,16,30,0.8)",borderRadius:8,border:"1px solid #1a4a7040"}}>
+                    <div style={{fontSize:10,color:"#2a6080",letterSpacing:2,marginBottom:6}}>{endReason==='food_coma'?'FOOD COMA':'FOCUS OUT'}</div>
+                    <div style={{fontSize:12,color:"#80b0d0",lineHeight:1.5}}>{payoffText}</div>
+                    <div style={{fontSize:13,color:"#60c080",marginTop:8,fontWeight:700}}>+{Math.round(gain)} lbs</div>
+                  </div>
+                  <button style={{...C.btn("#1a5a7a"),width:"100%",marginTop:10}} onClick={closeRankedSession}>Session Saved ✓</button>
+                </>
               )}
             </div>
           </div>
