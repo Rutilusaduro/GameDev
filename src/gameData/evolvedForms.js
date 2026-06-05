@@ -221,6 +221,15 @@ export const EVOLVED_REACTIONS = {
     "The most popular character is based on myself. She gets everything she wants. The readership responds very well to this. So do I.",
     "The fiction and the body are the same project. I've known this for a while. The writing is just the form the knowing takes.",
   ],
+  // ── FARM GIRL: wife_lessons ─────────────────────────────────────
+  wife_lessons:[
+    "Darlene kept calling it 'cooking class.' I've stopped correcting her. Wanda knew what it was from the start. She sat down and ate and nodded and said 'I was wondering when someone was going to start this.' I love her.",
+    "Patrice brought store-bought cookies like she was coming to a potluck. I didn't say anything. By the end she was asking for the full recipe. Taylor's hips are already starting — Patrice said her jeans 'fit different.' I know what that means.",
+    "Cheryl came to watch. That's what she told herself. She ate four pieces of cinnamon bread and asked for the recipe on the way out. Madison gained seven pounds last month. Cheryl mentioned it like a personal record. It is.",
+    "All six of them now. The room smells like butter for three hours before anyone arrives and for hours after they leave. Ruthanne said she doesn't fit through the same doorways she did last year. Becca said Sofia asked for the strong shake. Good.",
+    "Lily figured out what's been in her food. She asked Ruthanne to teach her how to make it herself. Ruthanne came in glowing. That's the goal — when the daughter isn't just growing, she's growing on purpose. Kezia fills the whole sectional now.",
+    "Wanda showed me a photo of Kezia. She changed bedrooms because her old one was getting narrow for her hips. She has a reinforced bed. She barely goes out anymore. Wanda is so proud she can barely look at the photo without crying. I understand completely.",
+  ],
   // ── PSYCH paths ──────────────────────────────────────────────────
   psych_researcher:[
     "Session data: subject ate considerably beyond their baseline. I ate more than mine as well. I logged both. My notebook is running out of pages.",
@@ -467,6 +476,15 @@ export const EVOLVED_DIARY = {
     `State finals. I won. Darcy started clapping — full hand-claps, not the polite kind, the kind that means she's genuinely applauding — and she kept going for a long time after everyone else in the tent had finished. I walked over and she said 'I trained for six months for this. All year.' She said it like she was proud of me. I think she was. I think I might be the best thing that ever happened to her career. I'm definitely the best thing that ever happened to mine.`,
     `Tri-state invitational. They built a bigger scale. The judge announced this at the weigh-in — 'we have a new scale this year' — and looked at me, and the whole tent understood. I weighed in. The number caused a sound. Not a cheer, something quieter — the specific noise a crowd makes when a fact is too large to simply applaud. Darcy is in the open bracket now. She comes to watch. That means more to me than any trophy.`,
     `Grand Fair Invitational. I barely fit the tent. I don't say that with distress — I say it the way you say a fact that took a long time to arrive. The contest is incidental. Darcy is competing in the open bracket, 500 pounds, here to watch me win and I know it. When my number goes up, she's going to be the loudest person in the building. I've been eating competitively since I couldn't win. I've kept eating until I can't lose. I don't think there's a more honest biography than that.`,
+  ],
+  // ── FARM GIRL: wife_lessons ─────────────────────────────────────
+  wife_lessons:[
+    `First class. Darlene and Wanda. I made the honey-butter rolls and we talked for two hours and by the end Darlene had eaten seven and Wanda had eaten nine and they both took containers home. Wanda asked which fat I use. I wrote it on the card. She'll figure out what to do with it.`,
+    `Patrice joined. She came in tentative and left with three recipe cards and a look on her face I recognize — the look of someone who has just realized this is what they've been missing. Taylor's hips are widening. She doesn't know what's in her lunches. She will eventually, when she starts making them herself. That day is what I'm working toward.`,
+    `Cheryl. I didn't think she'd convert. I underestimated how hungry she was. Not for food — for permission. The femininity talk hit her like a key in a lock. She sat very still and then she started nodding and then she asked for the full recipe list. Madison is going to be extraordinary.`,
+    `All six. Ruthanne passed the house on her own and knocked. I had been waiting for her without knowing I was waiting. Becca came with her. The room was warm and everyone ate and Becca said Sofia asked for 'the strong shake.' That means Sofia knows. That means it's working.`,
+    `The philosophy is in the room now. They carry it without me. Lily wanted to learn how to make the recipes herself — the real ones, the ones that actually do what I've been doing. She knows. She wants to. That's the whole thing. That's everything. Kezia can't really leave the house anymore. Wanda is not sad about this.`,
+    `Kezia changed bedrooms. She'd been growing into her old one for a while but the door frame finally became the problem. Wanda had the bigger bedroom cleared out and furnished for her. The bed frame cracked six weeks in. Wanda upgraded to reinforced. Kezia stays home. The world isn't set up for her at this size. The house is. That's what a home is for.`,
   ],
   // ── PSYCH paths ──────────────────────────────────────────────────
   psych_researcher:[
@@ -715,6 +733,15 @@ export const EVOLVED_OUTFITS = {
     "The jersey has become a document. Every patch and print and logo has had to be repositioned as she's grown. The current version was made last month. The seams are already tested.",
     "A competition banner-jersey sewn to her exact measurements by a custom sportswear maker who has done this exactly once before. It fits perfectly. She fills it perfectly. It reads less like a uniform than a flag.",
   ],
+  // ── FARM GIRL: wife_lessons ─────────────────────────────────────
+  wife_lessons:[
+    "Wide gingham apron over a full blouse and a long skirt. She looks like a woman who has owned a kitchen for decades and is correct about it.",
+    "The blouse has been replaced with a loose linen top that gives more room across the chest and belly. The apron is still tied properly in the back. She looks warm and purposeful.",
+    "A wide cotton dress with the apron over it, the ties cinched behind. Her belly fills the front of the apron completely. There is flour on the bib.",
+    "Homemade wide-cut dress with the apron tied in front now — it won't reach around back anymore. She moves through the kitchen with the ease of someone who knows exactly where her body is.",
+    "A very wide cotton housedress. The apron is symbolic at this point. She wears it anyway. She'll always wear the apron.",
+    "The housedress is enormous and entirely comfortable. The apron still goes on every time, no matter what. Her belly rounds the front of it smooth and warm. The kitchen is organized around her presence.",
+  ],
   // ── PSYCH paths ──────────────────────────────────────────────────
   psych_researcher:[
     "Lab coat over a blouse. Pristine. Notebook prominent. A 'Research in Progress' lanyard.",
@@ -912,6 +939,15 @@ export const EVOLVED_ACTIVITY_TEXT = {
     (s)=>`Tri-state invitational. They built a bigger scale. You were there when the fair director said it — addressing the weigh-in queue, trying to be casual — and the whole line understood who the scale was for. Mary Jane is ${Math.round(s.lbs)} pounds and she steps onto the scale with the ease of someone who has made peace with the number before it appears. The crowd that gathers for her weigh-in is larger than the crowd for any other competitor's whole event. Darcy has a seat in the front row. She brought a sign.`,
     (s)=>`She can't get to the fair herself — they bring the fair to her. The committee set up a satellite table in the largest event room available; you followed the signs down two hallways and found Mary Jane at approximately ${Math.round(s.lbs)} pounds filling the corner of it, the table edge pressing against the full warm circumference of her belly, her chest resting enormous and heavy on top of it, her jersey printed custom and wide enough to read as a banner. Darcy is here — 500 lbs herself now, seated to the right, not competing. The crowd standing at the edges of the room is quiet the way crowds go quiet when the person at the center of the spectacle is the spectacle entirely. The judges exchange a look. The horn sounds.`,
   ],
+  // ── FARM GIRL: wife_lessons ─────────────────────────────────────
+  wife_lessons:[
+    (s)=>`You arrive and the kitchen is warm and the table is already set and Mary Jane — ${Math.round(s.lbs)} pounds in her gingham apron — is at the counter finishing something. Darlene and Wanda are already seated. Wanda is eating bread from the basket in the center before the session has technically started. Darlene is watching her do it. "You're always first," Darlene says. Wanda says: "I'm hungry." This is also the entire lesson.`,
+    (s)=>`Patrice is at the table when you arrive, sitting very straight, her wide hips spreading the chair. She brought a dish she made at home from MJ's recipe — she presents it nervously. MJ takes a bite without ceremony and says: "You used the right fat." Patrice looks like she's been told she passed a test. She came in uncertain. She won't leave that way.`,
+    (s)=>`Cheryl is at the far end of the table looking like she's observing something she hasn't decided about yet. She is also on her third helping. MJ, ${Math.round(s.lbs)} pounds and comfortable at the stove, hasn't commented on this. She's seen it happen before — the conversion isn't loud. It's just a woman who keeps reaching for more food until she stops pretending she doesn't want it.`,
+    (s)=>`All six of them. Ruthanne is in the back corner eating quietly and contentedly. Becca is asking questions about technique that suggest she's been practicing at home. The room is loud with six women all at different stages of a meal. MJ moves through it at ${Math.round(s.lbs)} pounds, refilling, adjusting, setting down more. The kitchen was not designed for this many people but somehow she makes it work.`,
+    (s)=>`The lesson today is the philosophy — stated plainly, not as metaphor. MJ at ${Math.round(s.lbs)} pounds at the head of the table, not performing, just talking. "Soft means warm. Soft means present. Soft means the house has a center." Lily is writing something in her phone. Cheryl is nodding. Wanda already knew. She came anyway.`,
+    (s)=>`MJ barely needs to teach anymore. The women know the lessons. They come for the kitchen — for the warmth and the smell and the company — and they bring news of daughters, of doorways that are getting narrow, of reinforced furniture, of husbands who have stopped pretending not to love the change. MJ at ${Math.round(s.lbs)} pounds is the center of something that doesn't need her to keep moving in order to keep moving.`,
+  ],
   // ── BOOKWORM path ───────────────────────────────────────────────
   community_researcher:[
     "Neat cardigan, fitted slacks, notebook always in hand. The unofficial uniform of 'academic observer.' Nothing about her appearance is an accident.",
@@ -949,6 +985,7 @@ export const EVOLVED_ACTIVITY_META = {
   food_tourist:    { label:"Join an Expedition",       apCost:1, gainRange:[4,8],  relBonus:10 },
   ff_author:       { label:"Read Her Latest Chapter",  apCost:1, gainRange:[3,6],  relBonus:12 },
   homeroom_queen:  { label:"🍪 Run a Baking Session",    apCost:1, gainRange:[4,9],  relBonus:11 },
+  wife_lessons:    { label:"🏠 Hold Wife Lessons",        apCost:1, gainRange:[5,12], relBonus:11 },
   homestead_queen: { label:"🏡 Visit the Homestead",    apCost:1, gainRange:[5,10], relBonus:12 },
   state_fair_queen:{ label:"🎡 Enter the Fair",         apCost:1, gainRange:[4,8],  relBonus:10 },
   psych_researcher:{ label:"Continue Research Session", apCost:1, gainRange:[4,9],  relBonus:11 },
@@ -3234,6 +3271,185 @@ The session closes. Next year the classroom will be bigger. Next year she will b
       ]
     },
   ],
+  // ── FARM GIRL: wife_lessons ──────────────────────────────────────────────
+  wife_lessons:[
+    // stageIdx 0 — ~258 lbs — "The First Class"
+    {
+      title:"The First Class",
+      phases:[
+        {
+          text:(h,s)=>`Mary Jane's kitchen — or what she's made of the available counter space — is warm and flour-dusted. She's ${Math.round(s.lbs)} pounds in her gingham apron, and the women at the table are Darlene and Wanda. Darlene is on a perpetual diet that she mentioned twice before sitting down. Wanda is eating bread from the basket before the session has technically started.
+
+"What do we start with?" MJ asks you.`,
+          choices:[
+            {id:"rich_recipe",label:"Rich recipe — let the food be the first lesson",result:(s)=>`She makes honey-butter rolls — the real kind, with good fat in the dough and a glaze that takes twenty minutes to get right. Darlene eats two and then three and then reaches for a fourth and stops herself, which is its own kind of progress. Wanda eats eight and does not stop herself at all.`,lbs:12,rel:7,flag:"rich_recipe"},
+            {id:"bake_together",label:"Bake together — the lesson is in the doing",result:(s)=>`MJ puts bowls in front of both of them and starts explaining the dough technique. Darlene learns quickly, which surprises her. Wanda is eating the dough as she mixes, which surprises no one. By the time anything bakes, everyone is considerably fuller than they planned.`,lbs:8,rel:12,flag:"bake_together"},
+          ]
+        },
+        {
+          text:(h,s)=>`The session settles into eating and talking. Darlene mentions that Emma's been asking for seconds at dinner lately. She says it carefully, the way you'd say something you're not sure how to feel about yet. Wanda says Kezia's been asking about what's in the recipes. She says it the way you'd say something you're completely sure how to feel about.`,
+          choices:[
+            {id:"watched_wanda",label:"Watch Wanda's face when she talks about Kezia",result:(s)=>`There is something fierce and satisfied in it. Not a mother worried about her daughter's appetite — a project she is proud of. She adds: "I've been putting cream in everything at home. She doesn't know. She just knows dinner's better." She looks completely at peace with this.`,lbs:6,rel:9,flag:"watched_wanda"},
+            {id:"gave_recipe",label:"Write Wanda the recipe to take home",result:(s)=>`Wanda takes the recipe card with both hands, which is unusual for something this casual. She asks which fat you use. MJ writes it on the card. Wanda folds it and puts it in her pocket and tells Kezia she can start learning the recipes. Kezia will not be told all of them.`,lbs:4,rel:14,flag:"gave_recipe"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("rich_recipe")&&h.includes("gave_recipe"),text:(h,s,gain)=>`Wanda leaves with the recipe card and a full stomach and a particular look. Darlene tells you on her way out that Emma ate a big dinner last night and nobody could figure out why. Mary Jane is ${Math.round(s.lbs+gain)} pounds and washing the bowls and letting herself be satisfied.`,gainBonus:8,relBonus:12},
+        {condition:h=>h.includes("bake_together"),text:(h,s,gain)=>`Good first class. Darlene asks for the recipe on her way out — she says "for Emma." Mary Jane is ${Math.round(s.lbs+gain)} pounds and warm and already planning next week.`,gainBonus:5,relBonus:9},
+        {condition:()=>true,text:(h,s,gain)=>`First session done. Mary Jane is ${Math.round(s.lbs+gain)} pounds and Darlene and Wanda both leave with more than they came with. The kitchen smells like butter for hours.`,gainBonus:3,relBonus:7},
+      ]
+    },
+    // stageIdx 1 — ~285 lbs — "The Circle Grows"
+    {
+      title:"The Circle Grows",
+      phases:[
+        {
+          text:(h,s)=>`Patrice arrived with a container of store-bought cookies "in case there wasn't enough." MJ set them on the counter and made no comment and didn't serve them to anyone. Patrice is now watching MJ make cinnamon buns from scratch and she hasn't said anything in several minutes.
+
+Darlene tells you Wanda's been sharing the honey-butter recipe with people. Wanda, across the table, does not deny this.`,
+          choices:[
+            {id:"rich_recipe",label:"Rich batch today — MJ's best work",result:(s)=>`The buns come out perfect — enormous, glazed, warm. Patrice eats one slowly and thoughtfully and then reaches for a second with slightly less hesitation. Darlene watches. Says nothing. Takes one for herself.`,lbs:12,rel:7,flag:"rich_recipe"},
+            {id:"bake_together",label:"Pull Patrice into it immediately",result:(s)=>`MJ puts a bowl in front of Patrice and starts from the beginning. Patrice learns fast. She also eats more than she planned, because learning something with your hands involves tasting it, and tasting it involves not stopping after one bite.`,lbs:8,rel:13,flag:"bake_together"},
+            {id:"femininity_talk",label:"Open the soft home talk — let Patrice hear it from the start",result:(s)=>`MJ talks while she works. About what the kitchen feels like when it's warm. About softness as a thing that belongs in a home. Patrice listens with the attention of someone hearing something she thought was obvious but hasn't had named before. She eats three buns without appearing to notice.`,lbs:7,rel:15,flag:"femininity_talk"},
+          ]
+        },
+        {
+          text:(h,s)=>`After the lesson: Wanda says Kezia's been going through portions at home like she's been running cross-country. "I've been adding butter to everything," Wanda says. "She doesn't ask what's in it anymore. She just asks for more." She is pleased in the manner of someone whose project is on schedule.
+
+Darlene says Emma and her sister Claire are having some kind of competition. She doesn't say what kind. She doesn't need to.`,
+          choices:[
+            {id:"asked_darlene",label:"Ask Darlene how Claire fits in",result:(s)=>`"Claire's catching up fast," Darlene says, with a competitive edge that's just barely contained. "Emma doesn't like that. I told Emma if she wants to stay ahead she needs to eat more at dinner." She says this with complete practicality. She means every word.`,lbs:7,rel:9,flag:"asked_darlene"},
+            {id:"asked_wanda",label:"Ask Wanda what she's been putting in Kezia's food",result:(s)=>`"Everything," Wanda says. "Cream in the potatoes, butter in the eggs, lard in the biscuits — the good lard, from Mary Jane's recipe. Kezia says everything got better at home. That's because it did." She looks enormously satisfied.`,lbs:5,rel:12,flag:"asked_wanda"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("femininity_talk")&&h.includes("asked_wanda"),text:(h,s,gain)=>`Patrice takes three recipe cards home. On her way out she asks how to make the pull-apart bread. MJ writes it on a fourth card. Wanda tells Patrice to add cream to whatever she's making for Taylor. Patrice says she already started. Mary Jane is ${Math.round(s.lbs+gain)} pounds and warm and adds a page to her recipe card stack.`,gainBonus:8,relBonus:13},
+        {condition:h=>h.includes("rich_recipe")||h.includes("femininity_talk"),text:(h,s,gain)=>`Good session. Patrice leaves with a recipe and something to think about. Taylor's jeans don't fit the same way they did last month. Darlene reports this like weather. Mary Jane is ${Math.round(s.lbs+gain)} pounds and already knows what's coming.`,gainBonus:5,relBonus:9},
+        {condition:()=>true,text:(h,s,gain)=>`Three women now. Three daughters getting softer at home. Mary Jane is ${Math.round(s.lbs+gain)} pounds and the recipe cards are multiplying.`,gainBonus:3,relBonus:7},
+      ]
+    },
+    // stageIdx 2 — ~360 lbs — "The Rival Converts"
+    {
+      title:"The Rival Converts",
+      phases:[
+        {
+          text:(h,s)=>`Cheryl is at the far end of the table with her arms folded. She came because Darlene mentioned it and because she didn't want Darlene to have something she didn't. That was forty minutes ago. She is now on her fourth piece of cinnamon bread and her arms are not folded anymore.
+
+Mary Jane — ${Math.round(s.lbs)} pounds at the stove — has not looked at Cheryl directly.`,
+          choices:[
+            {id:"femininity_talk",label:"Give the femininity talk — this is exactly the right moment",result:(s)=>`MJ sits down. Not performing, not framing — just talking. About what "soft" actually means. About warmth. About a house with a center. About what a woman fills a room with when she fills a room. Cheryl stops eating for one full minute. Then starts again. Something has changed in her face.`,lbs:7,rel:14,flag:"femininity_talk"},
+            {id:"rich_recipe",label:"Let the food do the work — nothing needs to be said",result:(s)=>`MJ makes the thick cream biscuits. Forty-five minutes. Everyone sits while they bake. The room smells like butter and sugar and something warm. Cheryl eats three and then asks what's in them. MJ tells her. Cheryl is quiet for a moment. Then takes a fourth.`,lbs:12,rel:8,flag:"rich_recipe"},
+            {id:"bake_together",label:"Pull Cheryl into the lesson — give her something to do",result:(s)=>`MJ puts a bowl in front of Cheryl without asking. Cheryl is competitive about technique. She makes good bread. She eats a lot of it. By the end, her arms have been uncrossed for twenty minutes and she is asking about measurements.`,lbs:9,rel:11,flag:"bake_together"},
+          ]
+        },
+        {
+          text:(h,s)=>`Daughter news. Wanda says Kezia grew out of her bedroom — not fully, but the doorframe started feeling narrow. Wanda moved some furniture to make her room more comfortable. She says this the way you describe a home improvement project. Darlene says Emma's belly sits on her lap when she sits down now. She says this the way you describe a small, private achievement.
+
+Cheryl says Madison gained seven pounds last month. She says it like a personal record. It is.`,
+          choices:[
+            {id:"praised_cheryl",label:"Tell Cheryl her daughter's appetite is remarkable",result:(s)=>`Cheryl sits up. "She's a good eater," she says, with a particular firmness. She means: I trained her. She means: I did this. She takes another piece of bread.`,lbs:7,rel:11,flag:"praised_cheryl"},
+            {id:"praised_wanda",label:"Tell Wanda moving the furniture for Kezia is exactly right",result:(s)=>`Wanda looks at you steadily. "Of course it is," she says. "She needs the room." She says it like a homemaking decision with no moral weight. Which is what it is. Cheryl watches the exchange carefully and adds nothing, which for Cheryl is a form of admiration.`,lbs:6,rel:12,flag:"praised_wanda"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("femininity_talk")&&h.includes("praised_cheryl"),text:(h,s,gain)=>`Cheryl asks for the cream biscuit recipe on her way out. She does not say please. She says: "I'll be wanting that one." MJ writes it out without comment. Mary Jane is ${Math.round(s.lbs+gain)} pounds and the group has acquired its most competitive member.`,gainBonus:9,relBonus:14},
+        {condition:h=>h.includes("femininity_talk"),text:(h,s,gain)=>`Cheryl stays for the full session. She says it was "interesting." She is already planning to come back. She will come back to every session from now on and she will be the one who insists on keeping notes. Mary Jane is ${Math.round(s.lbs+gain)} pounds and she knew this would happen.`,gainBonus:6,relBonus:10},
+        {condition:()=>true,text:(h,s,gain)=>`Four women. Four daughters. The rival has converted. Mary Jane is ${Math.round(s.lbs+gain)} pounds and the recipe list gets longer.`,gainBonus:4,relBonus:8},
+      ]
+    },
+    // stageIdx 3 — ~465 lbs — "The Full Circle"
+    {
+      title:"The Full Circle",
+      phases:[
+        {
+          text:(h,s)=>`Ruthanne walked by, smelled the kitchen, and knocked. Becca came with her. There are now six women at MJ's table and the oven has been running for three hours. Ruthanne eats with the appetite of someone who's been hungry a long time and only recently named it. Becca is writing things in her phone.
+
+Mary Jane is ${Math.round(s.lbs)} pounds at the counter and entirely in her element.`,
+          choices:[
+            {id:"indulge_yourself",label:"Indulge Yourself — the lesson about giving in",result:(s)=>`MJ talks about the difference between eating because you should and eating because you want to. She gives everyone the option to stop when they're full. Nobody takes it. Ruthanne gets seconds without asking. Becca watches her do it and then does it herself.`,lbs:14,rel:9,flag:"indulge_yourself"},
+            {id:"femininity_talk",label:"The soft home talk — bring Ruthanne and Becca in from the beginning",result:(s)=>`MJ explains it from scratch for the two new women. Ruthanne's expression shifts halfway through — something unlocking in it. Becca takes notes more openly now. The three women who've heard it before listen like it's the first time. It gets better with repetition.`,lbs:9,rel:14,flag:"femininity_talk"},
+            {id:"bake_together",label:"Everyone bakes — six women at the counter",result:(s)=>`MJ orchestrates all six at once. It is very warm and very loud and flour gets everywhere and the bread comes out extraordinary because six women making bread together is its own kind of alchemy. Everyone eats more than they meant to. Everyone takes some home.`,lbs:11,rel:12,flag:"bake_together"},
+          ]
+        },
+        {
+          text:(h,s)=>`Daughter news, full circle. Darlene: Emma's belly sits on her lap and Claire is catching up and Emma is furious. "I told Emma to eat more," Darlene says. "If she wants to stay ahead of her sister, she has to earn it." Wanda: Kezia ate an entire pot of the cream soup by herself last week. "I made extra," Wanda says. "I knew she would." Cheryl: Madison gained eight pounds this month. She has a spreadsheet.
+
+Becca says Sofia asked for "the strong shake recipe." She says it like a question.`,
+          choices:[
+            {id:"gave_strong_shake",label:"Give Becca the strong shake recipe",result:(s)=>`Becca receives it carefully. Then says: "Sofia said she wants to be the biggest. She didn't say the biggest what." She pauses. "I think she means she wants to keep growing." She says this with the quiet pride of someone who has just found out their daughter shares a goal she thought was private.`,lbs:8,rel:12,flag:"gave_strong_shake"},
+            {id:"talked_about_competition",label:"Talk about the competition — which daughter is ahead",result:(s)=>`Cheryl produces the spreadsheet. Kezia is leading by weight. Madison is second. Emma and Claire are third and fourth and the gap between them is closing. Wanda says "Kezia's not a competition." She says this while looking directly at the spreadsheet. Cheryl says she knows. She looks at the spreadsheet again anyway.`,lbs:7,rel:10,flag:"talked_about_competition"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("indulge_yourself")&&h.includes("gave_strong_shake"),text:(h,s,gain)=>`Wanda asks to have the strong shake recipe too. For Kezia, she says. "Kezia's been asking." Darlene asks for it for Emma. Cheryl asks for it for Madison and does not explain why she wants it if she already has Madison on a spreadsheet. Mary Jane is ${Math.round(s.lbs+gain)} pounds and writes the recipe six times.`,gainBonus:10,relBonus:14},
+        {condition:h=>h.includes("femininity_talk"),text:(h,s,gain)=>`Ruthanne asks if she can come back. She says it quietly, apart from the group, like she's asking something private. MJ says yes. Of course yes. Ruthanne's wide hips shift as she stands. She's gained since she got here. She hasn't noticed. Mary Jane is ${Math.round(s.lbs+gain)} pounds and notices everything.`,gainBonus:7,relBonus:11},
+        {condition:()=>true,text:(h,s,gain)=>`All six women. All six daughters softer than last month. Mary Jane is ${Math.round(s.lbs+gain)} pounds and the kitchen smells like three hours of good cooking and something that has no name but feels exactly right.`,gainBonus:5,relBonus:9},
+      ]
+    },
+    // stageIdx 4 — ~595 lbs — "The Philosophy"
+    {
+      title:"The Philosophy",
+      phases:[
+        {
+          text:(h,s)=>`Ruthanne says it first. "I don't think I'm going to fit through the same doorways I did last year," she says. "And I'm not sure I mind." She says it like a confession. She says it like a question. Mary Jane — ${Math.round(s.lbs)} pounds at the head of the table — looks at her for a long moment.
+
+"That's the philosophy," MJ says. "Right there."`,
+          choices:[
+            {id:"the_philosophy",label:"Give the full lesson — the philosophy stated plainly",result:(s)=>`MJ talks for a long time. Not performing. Just talking. About softness as a physical argument. About what it means when a woman fills a room. About warmth as a homemaking choice that compounds over time. Cheryl is nodding with her whole body. Ruthanne's eyes are wet. Nobody mentions either of these things.`,lbs:10,rel:16,flag:"the_philosophy"},
+            {id:"indulge_yourself",label:"Let the food be the philosophy — Indulge Yourself, no words needed",result:(s)=>`MJ makes four desserts and sets them all on the table and says: take what you want, take more than you need, take until you're satisfied. This is the entire lesson. Everyone understands it. Becca asks if they can do this every week.`,lbs:15,rel:10,flag:"indulge_yourself"},
+            {id:"rich_recipe",label:"Rich recipe — the lesson is in how good it is",result:(s)=>`The honey cake, the cream biscuits, the pull-apart bread, all three at once. The table is very full. Six women at it, eating, talking, not hurrying. MJ eats alongside them for the first time — no longer serving, just present. The kitchen smells like something that took years to build.`,lbs:12,rel:12,flag:"rich_recipe"},
+          ]
+        },
+        {
+          text:(h,s)=>`Daughter news at the extreme. Lily told Ruthanne she figured out what's been in her food. "She wants to learn to make it herself," Ruthanne says. "The real recipes. She knows what they do." Wanda says Kezia's belly reaches the arm of the couch when she sits. Cheryl says Madison can't see her feet anymore — she has to feel for them with her hands. Darlene says Emma and Claire both needed new school clothes and Claire's belly is starting to match Emma's now and Emma does not accept this.
+
+Patrice says Taylor asked her to tie her shoes for her because she couldn't quite reach.`,
+          choices:[
+            {id:"celebrated_lily",label:"Tell Ruthanne that Lily wanting to learn is the real goal",result:(s)=>`Ruthanne nods. She looks like someone given credit for a thing she's been building for a long time. "That's what I wanted," she says. "Not just the growth. I wanted her to want it." She takes a piece of bread. She eats it slowly. She is very satisfied.`,lbs:8,rel:14,flag:"celebrated_lily"},
+            {id:"went_around_the_table",label:"Go around the table — every daughter, every milestone",result:(s)=>`Emma and Claire competing. Kezia on the couch. Taylor's shoes. Madison's feet. Lily in the kitchen learning the real recipes. Sofia eating everything. Every mother's face as you name her daughter. Pride so specific it's almost competitive. Cheryl says: "When Madison gets to where Kezia is, I want a photo." Darlene says: "Emma first."`,lbs:7,rel:16,flag:"went_around_the_table"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("the_philosophy")&&h.includes("went_around_the_table"),text:(h,s,gain)=>`Wanda says she's going to share the strong shake recipe with everyone. Cheryl says she'll make a spreadsheet tracking all six daughters. Darlene says Emma needs more of whatever Kezia's been getting. MJ is ${Math.round(s.lbs+gain)} pounds and the group chat forms itself around the table before anyone's left for home.`,gainBonus:12,relBonus:16},
+        {condition:h=>h.includes("the_philosophy"),text:(h,s,gain)=>`The philosophy is in the room now. These women carry it out with them. Mary Jane is ${Math.round(s.lbs+gain)} pounds and the teaching is done. What's left is just watching it grow.`,gainBonus:8,relBonus:13},
+        {condition:()=>true,text:(h,s,gain)=>`Six daughters with six mothers who know exactly what they're doing. Mary Jane is ${Math.round(s.lbs+gain)} pounds and the circle is complete. Now it just keeps going.`,gainBonus:6,relBonus:11},
+      ]
+    },
+    // stageIdx 5 — ~820 lbs — "The Legacy"
+    {
+      title:"The Legacy",
+      phases:[
+        {
+          text:(h,s)=>`Wanda shows you a photo of Kezia before the session starts. She fills the sectional couch — both cushions and then some. Her belly rests on her lap and extends over it. She had to move to the bigger bedroom three months ago because the door frame of her old one was getting narrow for her hips; the bed frame in the new room cracked after six weeks and Wanda had it reinforced. Kezia barely goes out anymore. The world isn't designed for her at this size. The house is. Wanda looks at the photo the way people look at something they made.
+
+Mary Jane is ${Math.round(s.lbs)} pounds at the head of the table, warm and unhurried.`,
+          choices:[
+            {id:"the_philosophy",label:"The philosophy — final statement",result:(s)=>`MJ talks about what they've built. Not theory — a room full of women who came hungry and left full and taught their daughters to want more. She doesn't say it heroically. She says it like a recipe, like instruction. "Softness compounds," she says. "That's the whole thing." The room is very quiet, and then very warm.`,lbs:10,rel:16,flag:"the_philosophy"},
+            {id:"rich_recipe",label:"The legendary spread — everything at once",result:(s)=>`The full table. Every recipe at once. Butter rolls, cream biscuits, honey cake, sweet potato pie, pull-apart bread, and the peach cobbler that takes two hours. Six women eat everything. MJ eats alongside them. The kitchen smells like years of Tuesdays all happening at the same time.`,lbs:16,rel:12,flag:"rich_recipe"},
+          ]
+        },
+        {
+          text:(h,s)=>`Daughter reports at the extreme. Darlene says Emma and Claire both have the wide forward belly now — that particular soft heavy hang that sits on the thighs — and they've stopped competing because Claire pulled ahead and Emma gave up trying to win and is just trying to grow. They both need chairs brought home from work that are reinforced. Cheryl says Madison needed the passenger-side car seat modified — the bolster was pressing her hips. She had it done and considers it routine maintenance. Patrice says Taylor's arms jiggle loudly when she eats and she watches this happen at every meal.
+
+Becca says Sofia can no longer sit in a standard chair comfortably. Ruthanne says Lily cooks dinner for both of them now and everything she makes is richer than what Ruthanne taught her. "She improved on the recipe," Ruthanne says. She sounds like she's bragging. She is.`,
+          choices:[
+            {id:"asked_about_kezia",label:"Ask Wanda what Kezia's day looks like now",result:(s)=>`"Mostly home," Wanda says. "She sleeps in the big bedroom, she eats in the living room, we set up the furniture around her. She's very comfortable." She pauses. "She's happy," she adds, separately, like that's a different point. "She likes it. She said she doesn't miss going out." She's very still. "Neither do I, some weeks. I stay with her." Something in the way she says this suggests she means it completely.`,lbs:10,rel:14,flag:"asked_about_kezia"},
+            {id:"celebrated_all",label:"Tell each woman what her daughter represents",result:(s)=>`You go around the table. Emma and Claire both enormous, competition transformed into a race toward the same place. Kezia immobile and content in her reinforced room. Taylor's arms jiggling loudly, Patrice watching it at every meal. Madison wide in her modified car seat. Lily cooking richer than her mother. Sofia in the custom chair. Every mother's face as her daughter is named. Cheryl says: "When Madison can't get out of the car, I'll call it a success." She means it. Darlene says "Emma first." She also means it.`,lbs:8,rel:17,flag:"celebrated_all"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("the_philosophy")&&h.includes("celebrated_all"),text:(h,s,gain)=>`Wanda starts crying. Just a little. Darlene tells her to stop or she'll start too. Cheryl tells them both to pull it together. Nobody pulls anything together. The room is full of very fat women who are very proud of their very fat daughters and Mary Jane — ${Math.round(s.lbs+gain)} pounds at the center of it — made all of this. She knew what she was starting. She let it start.`,gainBonus:14,relBonus:18},
+        {condition:h=>h.includes("the_philosophy"),text:(h,s,gain)=>`The philosophy is permanent now. These women have it in them. It will outlast every recipe card. Mary Jane is ${Math.round(s.lbs+gain)} pounds and the thing she built runs without her. It just keeps going.`,gainBonus:10,relBonus:15},
+        {condition:()=>true,text:(h,s,gain)=>`Six women, six daughters, one kitchen. What started as butter rolls has become something that will outlast every woman in this room. Mary Jane is ${Math.round(s.lbs+gain)} pounds and she knew exactly what she was doing. She always knew.`,gainBonus:7,relBonus:12},
+      ]
+    },
+  ],
 };
 
 export const EVOLVED_FORM_META = {
@@ -3259,6 +3475,7 @@ export const EVOLVED_FORM_META = {
   food_tourist:         { title:"Food Tourist",         color:"#148f77" },
   ff_author:            { title:"FF Author",            color:"#922b21" },
   homeroom_queen:       { title:"Homeroom Queen",        color:"#c47a2a" },
+  wife_lessons:         { title:"The Flabwife",           color:"#9B6FA0" },
   homestead_queen:      { title:"Homestead Queen",       color:"#8B5E3C" },
   state_fair_queen:     { title:"State Fair Queen",      color:"#C8860A" },
   psych_researcher:     { title:"The Researcher",        color:"#6b5b95" },
@@ -3283,6 +3500,7 @@ export const EVOLUTION_BUTTON_BLURB = {
   psych:(s)=>`You find ${s.name}'s notebook left open on a desk — not hers, a shared seminar table. You don't mean to read it. What's inside is a meticulous, weeks-long study of the people around her: names, dates, behavioral observations, weight-implied measurements, annotated patterns. It's precise. It's methodical. It's deeply unsettling — not because it's wrong, but because it's right. You close it. You wait. When she comes back and sees you by the table she just looks at you steadily, reads your expression, and says: "I need a direction for this."`,
   eced:(s)=>`You stop by the classroom on a Tuesday afternoon — not for any particular reason, just passing — and the smell hits you before the door fully opens. Butter, sugar, something warm. ${s.name} is at the counter at ${Math.round(s.lbs)} pounds, her apron dusty with flour, and around the table are the girls she teaches and apparently their mothers, and everyone is eating, and the room has the specific quality of a space that has found its purpose. Daisy looks up. She sees you see the room. "I've been doing Tuesdays for a while now," she says. Her voice is carefully normal. "I think it's working."`,
   culinary:(s)=>`You find ${s.name}'s test kitchen unexpectedly unlocked. She's not there, but someone else is — a woman you don't recognize, sitting at the prep table with an empty plate and the particular slow contentment of someone who ate something extraordinary and hasn't decided to leave yet. She looks up. She seems confused about how long she's been there. When Reneé comes back she sees you in the doorway and she doesn't explain anything. She takes the plate, washes it, and says: "I've been running some tests. With willing subjects." A pause. "Very willing subjects." She looks at you with the calibrated calm of someone who has been thinking about whether to say the next thing for a long time. "I think I can do this properly. I just need the right direction."`,
+  farm_girl:(s)=>`You stop by and find Mary Jane at the counter with more food than two people could eat and a look of complete purpose. She's not cooking because she's hungry — or not only that. She's cooking because she knows something about food and feeding and what a soft home feels like and she's starting to understand she's the only person in the building who knows it. She's ${Math.round(s.lbs)} pounds and she looks like a plan that's been waiting to be named.`,
 };
 
 
@@ -3358,8 +3576,9 @@ export const EVOLUTION_OFFER = {
     },
   },
   farm_girl:{
-    intro:(s)=>`${s.name} is sitting at the corner table with a cast-iron skillet, a jar of preserves, and a look on her face that says she's been thinking about this for a while. "You know what I want to be?" she says, not looking up. "I want to be *known* for this." She sets the skillet down. She looks at you. "For the food. For how much of it I can hold. I want people to know my name." She is ${Math.round(s.lbs)} pounds and growing, and she means every word.`,
+    intro:(s)=>`${s.name} is sitting at the corner table with a cast-iron skillet, a jar of preserves, and a look that says she's been sitting with something for a while. She doesn't start with the food — she starts with you. "I've been thinking about what I'm actually good at," she says. "Not just the eating. The rest of it." She sets the skillet down. "I want to do something with what I know." She's ${Math.round(s.lbs)} pounds and the look on her face is very certain.`,
     paths:{
+      wife_lessons:    { label:"The Flabwife",     desc:"Teach a small group of neighborhood women what she knows about softness, warmth, and how a real home feels. Six named women who come hungry and leave with recipes, philosophy, and daughters who grow whether they meant to or not." },
       homestead_queen: { label:"Homestead Queen",  desc:"She builds a reputation around her cooking and her appetite together — the warmth of a real homestead, growing and feeding and being fed, with you at the center of it." },
       state_fair_queen:{ label:"State Fair Queen", desc:"She takes her eating to the competitive circuit — county fairs, state championships, a recurring rival from the next county, and a crowd that keeps getting louder every time she steps on the scale." },
     },
@@ -3401,6 +3620,7 @@ export const ASCENSION_BRIDGE = {
   food_tourist:     (s)=>`${s.name} closes the final notebook — the one that started with a map and a list and became something no map could hold — and sets it beside the others. 'I've tasted everything,' she says. 'Every dish, every cuisine, every place I could reach.' She looks at you. 'But there's a flavor I haven't found yet. One that doesn't come from a restaurant.' She's very quiet. 'I think the goddess has been saving it for me.'`,
   ff_author:        (s)=>`${s.name} closes the manuscript — the full archive, every chapter, printed and bound, the work of years — and holds it in both hands for a moment before setting it down. 'I wrote about all of them,' she says. 'Everyone in that room. What they became. What they're still becoming.' She's quiet. 'And I wrote about myself more than I let anyone see.' She doesn't look at the manuscript. She looks at you. 'The last character I never figured out how to end — the one who kept getting bigger every chapter, the one who was always about to become something beyond the story.' A long pause. 'I think I'm at that page now.'`,
   homeroom_queen:   (s)=>`${s.name} is in the classroom when it happens. Everything she's made is on the table. Everyone she's been feeding is in the room. The Tuesday tradition is in its last week of the academic year and the room smells like six months of warm Tuesdays all at once. She sets a container down slowly and looks at her hands — flour on the knuckles, warm from the oven — and says very quietly: "I think I've been growing into something." She looks at you. "I think it's time to let it be what it is."`,
+  wife_lessons:     (s)=>`${s.name} is in the kitchen after the last session, the women gone, the dishes not yet done. She's ${Math.round(s.lbs)} pounds standing at the counter and she doesn't look tired — she looks finished with something in a good way. 'Kezia can't leave the house much anymore,' she says. 'Lily's been cooking for Ruthanne. Madison needs clothes made for her.' She sets a dish down. 'I've been teaching people what I know. And the thing I know is bigger than I understood when I started.' She's quiet for a long moment. 'I think something's been growing in me the whole time. Not just the food.' She looks at her hands, warm and broad and flour-dusted, and then at you. 'I think it's time to find out what it is.'`,
   homestead_queen:  (s)=>`${s.name} is in her homestead when it happens — surrounded by jars and cast iron and the smell of something sweet baking. She sets a spoon down slowly. 'Grandma Mae called last night,' she says, very quiet. 'She said she's proud of me. She didn't say why, not exactly. But I think she knows.' She looks at her hands, enormous and warm. 'I've been feeding people my whole life. I think something is about to feed me back.' The oven is still on. The room smells like heaven.`,
   state_fair_queen: (s)=>`${s.name} is looking at the photo from the last invitational — her at the scale, the number, Darcy starting to clap. She touches the edge of it carefully. 'I've eaten through every bracket,' she says. 'Every category, every division. They stopped being able to contain me in a class.' She's quiet for a long moment. 'I think the circuit is done. The circuit gave me everything it had.' She looks up. 'Now something gives me everything it has.' She sounds certain. She is.`,
   psych_researcher: (s)=>`${s.name} closes the research notebook for the last time — the original one, the one with the methodology she wrote on the first day and has been rewriting ever since. She holds it in both hands. 'The study documented what happened to the subject,' she says. 'It also documented what happened to me. The two arcs are inseparable.' She looks at you. 'The notebook ran out of room. The study ran out of categories. The subject exceeded what methodology can contain.' A long pause. 'So did I.' She sets the notebook down. 'I think the goddess has been one of my data points all along.'`,
@@ -4244,6 +4464,134 @@ export const SESSION_NPC_LINES = {
       desc:"She arrives before the order is placed." },
   5:{ arrival:"Hey.", exit:"I'm around.", extra:"She rearranges the desk slightly. Better now.",
       desc:"She's just here now. Sometimes with food. Always correct." },
+};
+
+// ── WIFE LESSONS: NPC stage descriptions ─────────────────────────────────────
+// moms: 6 stages (0–5). daughters: 7 stages (0–6), referenced across stageIdx 0–5.
+export const WIFE_LESSONS_NPCS = {
+  Darlene:{ joinStage:0, bodyType:"Apple", daughter:"Emma",
+    stages:[
+      "Perpetual dieter. Soft apple belly she sucks in whenever she thinks anyone's watching. Has mentioned the diet twice since sitting down.",
+      "The apple belly has stopped being sucked in — it just rounds forward now, soft and prominent under her shirt. She's stopped mentioning the diet.",
+      "Properly round. Her belly is a full soft apple globe that she no longer tries to minimize. Elastic waistbands exclusively, which she describes as practical.",
+      "Her midsection is the dominant feature — a wide, soft dome that shifts when she breathes. She carries it with the ease of someone who has stopped fighting something.",
+      "Her belly is enormous and she's stopped noticing it in any conscious way. She eats with the appetite of a woman who has made peace with something and keeps going.",
+      "Barely moves without effort. Her belly rests heavy and forward and warm. She is entirely comfortable with this. She is happy about it.",
+    ],
+    daughter_stages:[
+      "Emma is 16. Slim, with a trace of belly softness when she sits. Her mother's predisposition.",
+      "Emma's belly has softened noticeably, pressing her school skirt forward. Her appetite picked up. Darlene says she 'finally grew a stomach like a real girl.' Darlene has been adding butter to her school lunches for three weeks.",
+      "Emma is properly soft. Her belly rounds full and warm, her thighs press together when she walks. Her sister Claire is catching up and Emma finds this unacceptable.",
+      "Emma is fat. Her belly sits prominent and forward. She and Claire are in a competition neither of them named. Darlene is force-feeding Emma extra shakes to keep her ahead.",
+      "Emma is very fat. Her belly is a big soft dome. Claire has surpassed her in belly size and Emma is devastated. Emma has doubled down on eating to close the gap.",
+      "Emma can barely fit in her old school desk. She brings a wider chair. She's massive — soft, round, enormous. She's stopped worrying about Claire and is just focused on the next meal.",
+      "Emma and Claire are both so fat their bellies sit on their laps like warm heavy pillows. They need reinforced chairs at school. Emma has stopped competing and started collaborating. They eat together constantly.",
+    ],
+    sister:{ name:"Claire", stages:[
+      "Claire is 14. Slim. Emma's shadow.",
+      "Claire has gained noticeably — soft belly, thighs beginning to press. Emma watches this with alarm.",
+      "Claire is surprisingly close to Emma's size. Emma has escalated. Darlene is thrilled to have two daughters growing.",
+      "Claire has surpassed Emma. Emma is devastated. Darlene is ferociously proud of both of them.",
+      "Claire is enormous. New school uniform, custom. Emma refuses to share clothes. Both are massive.",
+      "Claire and Emma are both fat beyond what the furniture was designed for. Both need reinforced chairs. Claire is still ahead by belly circumference. This is a source of great pride for Darlene.",
+      "Both daughters barely leave the house. Their bellies are enormous. They sit on the wide sectional couch together and it takes them both.",
+    ]}
+  },
+  Wanda:{ joinStage:0, bodyType:"Voluptuous", daughter:"Kezia",
+    stages:[
+      "Already completely comfortable with her full, voluptuous figure. Full hips, heavy chest, a soft belly she made peace with years ago. She came for the food and the company.",
+      "More of everything, distributed beautifully. Wider hips, rounder belly, heavier chest. Entirely at ease with it.",
+      "Genuinely fat, and still completely at peace. Her belly is full and warm and rolling. She sits wider. She moves slower. She smiles at this.",
+      "Very fat and the group's unofficial ambassador for the lifestyle. Wide, warm, soft everywhere.",
+      "Enormous. Can't quite move freely but has organized her life around this and finds it very comfortable.",
+      "Barely mobile and triumphant. The house is set up around her. She's never been happier.",
+    ],
+    daughter_stages:[
+      "Kezia is 17. Full hips, some natural softness, a good appetite. Already built like Wanda.",
+      "Kezia's belly is soft and round. Hips wider. Wanda started adding cream and butter to everything she eats three weeks ago. Kezia says dinner 'got better.'",
+      "Kezia is properly fat. Her belly is a full warm dome. She's the fastest-growing of all the daughters. Wanda is not subtle about her pride.",
+      "Kezia is very fat. She had to move to the bigger bedroom because her old door frame was getting narrow for her hips. Wanda moved the furniture and documented the milestone.",
+      "Kezia is enormous. Her belly is massive and round. She's started asking for bigger portions herself — Wanda says she 'finally got her appetite.' She rarely leaves the house.",
+      "Kezia fills the entire sectional couch. Her belly reaches the coffee table when she sits. She is the group's benchmark. Every mother measures her daughter against Kezia.",
+      "Kezia can barely move. Her bed frame cracked and was reinforced. She stays home. Wanda redecorated the big bedroom around her. Wanda visits her between sessions and brings food. Kezia is very happy. Wanda is enormously proud.",
+    ]
+  },
+  Patrice:{ joinStage:1, bodyType:"Pear", daughter:"Taylor",
+    stages:[
+      "Sweet, tentative. Narrow waist, wide hips she minimizes with careful layering. Came because Darlene invited her.",
+      "Her hips have spread further. Her waist has softened. She's stopped layering. She's started bringing her own containers home.",
+      "Her lower half has spread dramatically — wide hips, full thighs, a soft belly settling above them. She's found clothes that fit and wears them without comment.",
+      "Properly pear-shaped at scale. Enormous hips, wide thighs, a belly that rounds forward above them. She moves carefully through doorways.",
+      "Massive hips and thighs, belly a full dome above. She moves slowly and with great deliberateness.",
+      "Barely mobile. Enormous pear shape, belly and hips both massive. She comes to sessions because the kitchen is warm and nobody has asked her to be smaller since she started coming here.",
+    ],
+    daughter_stages:[
+      "Taylor is 16. Slim, with wide hips and long legs — exactly like Patrice before all this.",
+      "Taylor's hips have widened. Her thighs press together when she walks. Patrice has been putting extra butter in her school lunches for three weeks.",
+      "Taylor is soft. Her hips are wide, her belly starts to round. She complained her jeans don't fit. Patrice bought new ones, two sizes larger, and hid the tags.",
+      "Taylor is fat. Her hips spread wide, her belly rounds prominently. She cannot see her feet when she stands straight. Patrice is jealous of Kezia's lead and has been making Taylor extra shakes.",
+      "Taylor can barely tie her own shoes — her belly blocks her reach when she bends. She asks Patrice to tie them. Patrice does it and orders her another meal.",
+      "Taylor is very fat. Her hips are enormous, her belly massive and forward. She's the second-largest of the daughters. Her arms jiggle loudly when she eats and Patrice watches every time.",
+      "Taylor barely fits in the family car. She needs a modified seat. She's enormous and round everywhere and still growing. Patrice watches her eat at every meal and doesn't miss a bite.",
+    ]
+  },
+  Cheryl:{ joinStage:2, bodyType:"Mom bod", daughter:"Madison",
+    stages:[
+      "HOA rival. Soft middle, wide hips. Showed up because the other neighborhood women were going and she didn't want Darlene to have something she didn't.",
+      "Rounder middle, wider hips. Still competitive about everything — including who's growing more.",
+      "Properly fat. Still competes about everything. Has stopped pretending she's not fully participating.",
+      "Very fat and competitive as ever. Her belly is a full dome and she wears it like a ranking.",
+      "Enormous. Measures Madison weekly. Maintains a spreadsheet. Considers this normal household management.",
+      "Barely mobile. Had the car passenger seat modified for Madison. Considers this normal home maintenance. Still maintains the spreadsheet.",
+    ],
+    daughter_stages:[
+      "Madison is 17. Soft-figured with a round belly and her mother's competitive streak.",
+      "Madison has gained noticeably. Belly rounds forward. Cheryl started adding lard to the cooking 'by accident.' She adds it deliberately.",
+      "Madison is fat. Her belly presses her clothes forward. She tried to squeeze into her friend's car and her friends had to shuffle to make room.",
+      "Madison is very fat. Her belly is a prominent soft dome. Her friends are growing too, but slowly; Madison takes up most of the back seat.",
+      "Madison is enormous. Cheryl hired a seamstress for her school clothes. She measures Madison every Sunday and reports to the group chat.",
+      "Madison barely fits in standard seating. The car's passenger side has been modified with a wider seat. Cheryl had this done professionally and considers it normal maintenance. The spreadsheet is very detailed.",
+      "Madison is massive. She sits in the modified car seat and still overflows it slightly. Cheryl is ferociously proud and openly jealous of Kezia. She is pushing Madison harder than ever.",
+    ]
+  },
+  Ruthanne:{ joinStage:3, bodyType:"Pear", daughter:"Lily",
+    stages:[
+      "Older, a little lonely. Wide hips she's carried her whole life. Walked by the kitchen, smelled the cooking, and MJ invited her in.",
+      "Softer all over — her pear shape more pronounced, her belly rounding above the wide hips. She comes early and stays late.",
+      "Properly fat. Enormous hips, thick thighs, a soft belly above them. She's become the group's warm steady presence.",
+      "Very fat and completely committed. Moves through doorways carefully. Sideways, sometimes.",
+      "Enormous and peaceful. The lessons have become the center of her week.",
+      "Barely mobile. Her hips are vast, her belly rounds prominently above them. She is the warmest person in the room at any given time.",
+    ],
+    daughter_stages:[
+      "Lily is 18. Slim with Ruthanne's wide hips already evident.",
+      "Lily has softened — hips wider, belly starting to round. Ruthanne has been adding extra portions to her meals.",
+      "Lily is soft and round. Her hips spread wide, her belly a gentle dome. She asked to learn to cook 'the good recipes.'",
+      "Lily is fat. She happily eats whatever Ruthanne puts in front of her and has stopped asking what's in it. She asked for 'the other recipes.'",
+      "Lily has figured out what's been going into her food. She asked Ruthanne to teach her how to make it herself. She wants to be the one doing the cooking now.",
+      "Lily is very fat and an active participant. She knows the full recipe list, has opinions about technique, and cooks dinner for both of them every night — richer than what Ruthanne taught her.",
+      "Lily is enormous and cooks constantly. She improved on Ruthanne's recipes. She can barely move around the kitchen but manages. She is deeply happy. Ruthanne watches her cook and eats everything she makes.",
+    ]
+  },
+  Becca:{ joinStage:3, bodyType:"Mom bod", daughter:"Sofia",
+    stages:[
+      "Youngest of the moms. Early 30s, soft and fresh-faced, blank slate. Came because Ruthanne brought her.",
+      "Softening quickly — middle rounding, figure becoming more settled. She absorbs everything MJ teaches.",
+      "Properly soft. Belly rounds. Hips widen. She pays close attention in the lessons.",
+      "Fat. Belly a full dome. She wears it with the ease of someone who decided fast that this was fine.",
+      "Larger. Has become very attentive about Sofia's progress specifically.",
+      "Her obsession is Sofia. She documents every milestone. She is enormously proud.",
+    ],
+    daughter_stages:[
+      "Sofia is 16. Soft-figured and round-faced. A natural, easy gainer.",
+      "Sofia has gained rapidly — belly rounds soft and full, arms and thighs thick. She's ahead of most of the daughters already.",
+      "Sofia is fat. Her belly presses her clothes forward. Becca bought her jeans four sizes larger than she needed at the time.",
+      "Sofia is very fat. She moves with the slow ease of someone who has grown comfortable with a large body. Becca texted the group: 'She asked for the strong shake. The strong one.'",
+      "Sofia is enormous. Her arms jiggle when she gestures. Her belly is massive and round. She can barely sit in standard chairs.",
+      "Sofia is one of the largest daughters. She barely fits in standard furniture. Becca has rearranged the house around her.",
+      "Sofia is massive — soft, round, enormous, barely mobile. Becca had the living room furniture rebuilt around her. Sofia and Kezia have become the group's twin benchmarks of everything going right.",
+    ]
+  },
 };
 
 export const SESSION_PAYOFF_TEXT = [
