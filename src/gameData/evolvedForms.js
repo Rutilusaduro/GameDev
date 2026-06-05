@@ -256,6 +256,15 @@ export const EVOLVED_REACTIONS = {
     "I ate the leftovers after the session today. There were a lot of leftovers. I stayed in the kitchen for a long time. I'm noting that I find this work deeply satisfying in a way that extends well past professional interest.",
     "Last session before harvest. She sits across from me very large, very full, and entirely unaware of how this concludes. I ate alongside her — quality control, always quality control — and I felt full and satisfied and exactly right. My own numbers are considerably higher than when I started. I've stopped being surprised by this.",
   ],
+  // ── BOOKWORM path ───────────────────────────────────────────────
+  community_researcher:[
+    "First observation session. I went in as a researcher. I ate what was offered because refusing felt like contaminating the sample. I'm noting my own intake separately from the field notes.",
+    "The case study is developing. I'm present at more sessions than the methodology technically requires. The subjects haven't noticed I'm eating alongside them. I've noticed.",
+    "I stopped pretending the notebook is what I'm there for. I'm still writing, but the writing is increasingly personal. The distinction between observer and participant is becoming difficult to maintain in good faith.",
+    "I've had to add a second methodology section. The first covers the subjects. The second covers the researcher. Both sections have been growing at a similar rate.",
+    "The paper is going to be honest. It was going to be analytical and dispassionate. It's going to be all of that and also honest. The researcher is a variable. I'm writing myself in.",
+    "I'm the largest person in every room I enter for research purposes. I've been in a lot of rooms. The data on participant immersion is extensive. The dissertation will be original.",
+  ],
 };
 
 export const EVOLVED_DIARY = {
@@ -500,6 +509,15 @@ export const EVOLVED_DIARY = {
     `Harvest window is open. The subject is at Very Fat stage. I could proceed now. I'm not proceeding now. I want to see the next stage. This is a professional judgment, not an excuse. I ate the full quality-control portion today and did not note this as unusual.`,
     `The subject is enormous. She takes up the chair completely and eats with the complete appetite of someone past self-consciousness. I fed her the richest version of everything. I ate alongside her. I am considerably larger than I was at the start of this study. I find this entirely appropriate.`,
     `Session before harvest. She is very large. I am very large. The kitchen is warm and full and the recipe is perfect and I ate everything I made and she ate everything I served and we sat across from each other both large and full and satisfied and I felt — exactly right. The harvest will proceed tomorrow. The log is complete.`,
+  ],
+  // ── BOOKWORM path ───────────────────────────────────────────────
+  community_researcher:[
+    `First case study. I told myself I was observing. I observed, and I ate, and I noted the correlation between being welcomed into these spaces and feeling an obligation to participate in what the space was for. I ate more than I planned. The sociology of that is documented.`,
+    `Midway through the study. I look different than when I started. I note this the way I note everything — in clinical language that fits neatly into the methodology. The clinical language is accurate. What it doesn't convey is that I looked in the mirror this week and didn't look away.`,
+    `My advisor asked about my "level of personal engagement" with the research. I said the engagement was "appropriate." I believe this. I'm writing a paper about how immersion in these communities is both unavoidable and clarifying. I am clarified.`,
+    `I've stopped wearing the cardigans to the case studies. The cardigans stopped fitting somewhere between the third and fourth session. I've documented this transition. I've moved on to stretch fabrics. Also documented.`,
+    `The paper is 60,000 words. It's going to be good — I know when something is good because the writing comes faster than the thinking, and this came faster than anything I've written before. There's a section on researcher positionality I wrote at 3am. It's the best part.`,
+    `I submitted today. My advisor sent one note: "This is either career-defining or a scandal, and I suspect it's both." She means the honesty. I documented my own transformation as methodology. She approved it. I ate an entire box of something celebratory before bed. I note this approvingly.`,
   ],
 };
 
@@ -918,6 +936,15 @@ export const EVOLVED_ACTIVITY_TEXT = {
     (s)=>`Tri-state invitational. They built a bigger scale. You were there when the fair director said it — addressing the weigh-in queue, trying to be casual — and the whole line understood who the scale was for. Mary Jane is ${Math.round(s.lbs)} pounds and she steps onto the scale with the ease of someone who has made peace with the number before it appears. The crowd that gathers for her weigh-in is larger than the crowd for any other competitor's whole event. Darcy has a seat in the front row. She brought a sign.`,
     (s)=>`She can't get to the fair herself — they bring the fair to her. The committee set up a satellite table in the largest event room available; you followed the signs down two hallways and found Mary Jane at approximately ${Math.round(s.lbs)} pounds filling the corner of it, the table edge pressing against the full warm circumference of her belly, her chest resting enormous and heavy on top of it, her jersey printed custom and wide enough to read as a banner. Darcy is here — 500 lbs herself now, seated to the right, not competing. The crowd standing at the edges of the room is quiet the way crowds go quiet when the person at the center of the spectacle is the spectacle entirely. The judges exchange a look. The horn sounds.`,
   ],
+  // ── BOOKWORM path ───────────────────────────────────────────────
+  community_researcher:[
+    "Neat cardigan, fitted slacks, notebook always in hand. The unofficial uniform of 'academic observer.' Nothing about her appearance is an accident.",
+    "The cardigans are baggier now — chosen with room in mind. The slacks have been replaced with dark jeans that accommodate more. She still carries the notebook.",
+    "Button-down with the top two open, cardigan over it that she no longer buttons. Her figure is noticeably fuller under the layers. She's stopped arranging herself for the cardigans.",
+    "Knit dress, looser fit, tights that hold everything together. Her glasses slide; she pushes them up without thinking. The notebook is in a bigger bag now, next to a thermos.",
+    "Oversized pullover sweater, stretch trousers, comfortable shoes. She carries herself with the ease of someone who has found the outfit that works and has several of it.",
+    "She moves slowly, deliberately, the way academics who have become their subject eventually move. A wide cardigan open over a soft dress, everything forgiving and full. The notebook is still there. It always will be.",
+  ],
 };
 
 export const EVOLVED_ACTIVITY_META = {
@@ -950,7 +977,8 @@ export const EVOLVED_ACTIVITY_META = {
   state_fair_queen:{ label:"🎡 Enter the Fair",         apCost:1, gainRange:[4,8],  relBonus:10 },
   psych_researcher:{ label:"Continue Research Session", apCost:1, gainRange:[4,9],  relBonus:11 },
   psych_manipulator:{label:"Run Conditioning Session",  apCost:1, gainRange:[3,7],  relBonus:9  },
-  cultivator:        { label:"🍰 Run Taste-Test Session", apCost:1, gainRange:[2,8],  relBonus:12 },
+  cultivator:          { label:"🍰 Run Taste-Test Session", apCost:1, gainRange:[2,8],  relBonus:12 },
+  community_researcher:{ label:"📋 Conduct Case Study",     apCost:1, gainRange:[3,8],  relBonus:10 },
 };
 
 export const EVOLVED_EVENTS = {
@@ -3412,6 +3440,7 @@ export const EVOLVED_FORM_META = {
   academic_subject:     { title:"Academic Subject",       color:"#2c5f8a" },
   home_nest:            { title:"Home Nest",              color:"#4a6a4a" },
   cultivator:           { title:"The Cultivator",         color:"#8B4513" },
+  community_researcher: { title:"Community Researcher",    color:"#4a6fa5" },
 };
 
 export const EVOLUTION_BUTTON_BLURB = {
@@ -3454,10 +3483,9 @@ export const EVOLUTION_OFFER = {
     },
   },
   bookworm:{
-    intro:(s)=>`${s.name} slides a folder across the table. Inside: two things. One is a newsletter outline. The other is a printed manuscript — she printed it, which means she wants you to hold it — and the cover page has a pseudonym on it that is not her name. She doesn't explain either document. She just looks at you and waits.`,
+    intro:(s)=>`${s.name} brings you a draft proposal — stapled, tabbed, annotated. The title page reads "Feederism in the Contemporary University: A Phenomenological Case Study" and bears her actual name, which means she's past the point of pseudonyms. "The IRB approved it last week," she says. "I need a faculty liaison." She opens to the methodology section. "And I need access to the people I've already been observing." She looks at you carefully. "You know exactly which people I mean."`,
     paths:{
-      eating_diarist: { label:"The Diarist",  desc:"A newsletter, then a book. Her transformation as literature. Intimate, honest, under her own name — eventually." },
-      ff_author:      { label:"The Author",   desc:"Fanfiction, fat fetish fiction, stories about women who look exactly like the people in her life. Under a pseudonym. For now." },
+      community_researcher:{ label:"Community Researcher", desc:"Present the thesis. Conduct case studies. Embed herself in the subculture she's been watching from the outside — and see what the research does to the researcher." },
     },
   },
   gamer:{
@@ -3556,6 +3584,7 @@ export const ASCENSION_BRIDGE = {
   home_nest:(s)=>`${s.name} doesn't call — she texts, which is how she communicates now. The message says: 'can you come here.' No question mark. You come. She's in her chair, in her room, and she looks as settled as anyone you've seen — rooted, warm, comfortable in a way that's grown into the space around her. 'I've been thinking,' she says, 'about where here goes.' She looks at the window she doesn't open anymore. 'I think the goddess has been in this room. I think she's been in the walls.' She looks back at you. 'I think it's time to let her in properly.'`,
   ranked_feedee: (s)=>`${s.name} doesn't look up from the screen when she says it. 'Rae said something to me.' She pauses the game — which you've never seen her do without the session being over. 'She said she's been watching what's happening to me and that she's proud.' Her voice is carefully flat. 'I've been thinking about what that means.' She looks at her hands on the controller. She's enormous. She's been enormous for a while. 'I think I've run out of sessions,' she says. 'Or sessions have run out of what they can hold. Something like that.' A long silence. 'Rae said: you've leveled past the game.' She puts the controller down. 'Yeah,' she says. 'I think that's right.'`,
   cultivator: (s)=>`${s.name} closes the last session log — the one from the third cycle, the final harvest, the end of the process — and sits with it for a long moment. 'Three subjects,' she says. 'All completed. The data is done.' She looks at her hands, which are large now, considerably larger than when this started. She looks at the empty kitchen. 'I've been eating the quality-control portions this whole time,' she says, as if telling you something you don't already know. 'Every session. I told myself it was methodology.' A long pause. 'It wasn't methodology.' She sets the log down. 'The goddess has been watching the sessions, I think. I think she's been in the kitchen every time.' She looks up. 'I think she wants to be fed something final. Something significant.' She doesn't look afraid. She looks entirely ready.`,
+  community_researcher:(s)=>`${s.name} closes the dissertation binder — final print, the one going to the committee — and holds it for a moment. 'Six months,' she says. 'Four case studies. Sixty thousand words on the sociology of it, and twenty thousand on what happened to me in the process.' She looks at her hands. 'My committee said the methodology was unorthodox. I told them it was immersive.' She sets the binder down. 'I think there's a level deeper than the dissertation. I think the goddess has been a participant in my study all along.' A long, quiet pause. 'I'd like to document what happens next.'`,
 };
 
 // ── HOMEROOM QUEEN: NPC stage descriptions ──────────────────────────────────

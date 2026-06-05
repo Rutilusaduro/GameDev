@@ -13,6 +13,7 @@ import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { HOSTESS_HANGOUTS, MENU_TIERS, ATMOSPHERE_TIERS, GUEST_TIERS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, SEDUCTION_MOVES, MOVES_BY_STAGE_BAND, getStageBand, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, CLUE_INVESTIGATION, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, HARVEST_VIGNETTES_PLANNED, HARVEST_VIGNETTES_EMERGENCY, getGrowthVignette, RECRUITMENT_SCENE, TESTER_APPEARANCE, DIGEST_VIGNETTES } from './gameData/cultivator.js';
+import { getMadelineTier, THESIS_BOARD, CASE_STUDY_PAIRS } from './gameData/communityResearcher.js';
 
 // ═══════════════════════════════════════════════════════════════
 // DATA LAYER
@@ -341,6 +342,8 @@ export default function ProfessorSim(){
   const [lilithKillCount, setLilithKillCount] = useState(0);
   const [cultivatorState, setCultivatorState] = useState(null);
   // cultivatorState: {testerName,testerStageId,testerLbs,fatBar,suspicion,harvestsCompleted,usedNames,modalPhase,session,pendingStageUp,harvestType,harvestVignetteText,growthGain,growthVignetteText,digestWeeksLeft,digestTotalWeeks}
+  const [communityResearcherState, setCommunityResearcherState] = useState(null);
+  // communityResearcherState: {thesisComplete,boardPhase,caseStudyStage,lastPairId,pairsUsed,modalPhase,activePairId,eventText}
   const [presentationState, setPresentationState] = useState(null);
   // presentationState: {studentId,stageIdx} — placeholder until mini-game implemented
   const [deliveryState, setDeliveryState] = useState(null);
@@ -1096,12 +1099,20 @@ export default function ProfessorSim(){
         digestWeeksLeft:0, digestTotalWeeks:0,
       });
     }
+    if(formId==='community_researcher'){
+      setCommunityResearcherState({
+        thesisComplete:false, boardPhase:0,
+        caseStudyStage:0, lastPairId:null, pairsUsed:[],
+        modalPhase:null, activePairId:null, eventText:null,
+      });
+    }
   };
 
   const doEvolvedActivity=(s)=>{
     if(!s.evolvedForm) return;
     if(s.evolvedForm==='chapter_hostess') return; // handled by custom panel UI
     if(s.evolvedForm==='cultivator') return; // handled by custom panel UI
+    if(s.evolvedForm==='community_researcher') return; // handled by custom panel UI
     if(s.evolvedForm==='feedee_creator'){ openCollabPartnerPicker(s); return; }
     if(s.evolvedForm==='psych_researcher'){
       if(s.researchSubjectId==null){ openResearchSubjectPicker(s); return; }
@@ -1464,6 +1475,50 @@ export default function ProfessorSim(){
   };
   const openDigestCheck=()=>{
     setCultivatorState(prev=>prev?{...prev,modalPhase:'digest_check'}:null);
+  };
+
+  // ── COMMUNITY RESEARCHER handlers ─────────────────────────────
+  const openThesisBoard=(s)=>{
+    if(ap<1){push("⚠️ Need 1 AP for thesis defense.");return;}
+    setCommunityResearcherState(prev=>prev?{...prev,modalPhase:'thesis_board',boardPhase:0}:null);
+  };
+  const advanceThesisBoard=()=>{
+    setCommunityResearcherState(prev=>{
+      if(!prev) return null;
+      if(prev.boardPhase>=2) return {...prev,modalPhase:'thesis_success'};
+      return {...prev,boardPhase:prev.boardPhase+1};
+    });
+  };
+  const completeThesisDefense=(s)=>{
+    setAp(a=>a-1);
+    setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,5,8)}:st));
+    setCommunityResearcherState(prev=>prev?{...prev,thesisComplete:true,modalPhase:null,boardPhase:0}:null);
+    push(`📋 ${s.name} — PhD proposal approved. Case studies unlocked.`);
+  };
+  const openCaseStudyGrid=(s)=>{
+    if(ap<1){push("⚠️ Need 1 AP.");return;}
+    setCommunityResearcherState(prev=>prev?{...prev,modalPhase:'case_study_grid'}:null);
+  };
+  const selectCasePair=(s,pairId)=>{
+    const crs=communityResearcherState; if(!crs) return;
+    const pair=CASE_STUDY_PAIRS.find(p=>p.id===pairId); if(!pair) return;
+    const mTier=getMadelineTier(getStage(s.lbs).id);
+    const text=pair.event(crs.caseStudyStage,mTier);
+    setCommunityResearcherState(prev=>prev?{...prev,activePairId:pairId,eventText:text,modalPhase:'case_study_event'}:null);
+  };
+  const completeCaseStudy=(s)=>{
+    const crs=communityResearcherState; if(!crs) return;
+    setAp(a=>a-1);
+    const gain=rnd(3,8);
+    setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,gain,10)}:st));
+    setCommunityResearcherState(prev=>prev?{
+      ...prev,
+      caseStudyStage:prev.caseStudyStage+1,
+      lastPairId:prev.activePairId,
+      pairsUsed:[...prev.pairsUsed,prev.activePairId],
+      activePairId:null, eventText:null, modalPhase:null,
+    }:null);
+    push(`📋 ${s.name} — case study complete: +${gain} lbs.`);
   };
 
   const startRankedSession=(studentId,stageIdx)=>{
@@ -5659,6 +5714,57 @@ export default function ProfessorSim(){
                             </div>
                           );
                         }
+                        // ── COMMUNITY RESEARCHER — custom panel ──
+                        if(s.evolvedForm==='community_researcher'&&communityResearcherState){
+                          const crs=communityResearcherState;
+                          const blue="#4a6fa5"; const lblue="#8fa8e0";
+                          const allDone=crs.caseStudyStage>=4;
+                          const isCRPairAvailable=(pair)=>{
+                            if(crs.pairsUsed.includes(pair.id)) return false;
+                            if(pair.unlockImmediate) return true;
+                            return pair.studentIds.every(id=>{
+                              const st=students.find(x=>x.id===id);
+                              if(!st) return false;
+                              const ok=getStage(st.lbs).id>=4&&st.relationship>=60;
+                              if(id===10) return ok&&lilithUnlocked&&lilithKillCount>=1;
+                              return ok;
+                            });
+                          };
+                          const availCount=CASE_STUDY_PAIRS.filter(p=>isCRPairAvailable(p)).length;
+                          return(
+                            <div style={{background:"rgba(5,10,30,0.6)",border:`1px solid ${blue}80`,borderRadius:10,padding:12}}>
+                              <div style={{fontSize:9,letterSpacing:3,color:blue,marginBottom:4}}>📋 EVOLVED PATH</div>
+                              <div style={{fontSize:13,fontWeight:700,color:lblue,marginBottom:8}}>Community Researcher</div>
+                              {!crs.thesisComplete?(
+                                <div>
+                                  <div style={{color:"#6080a0",fontSize:11,lineHeight:1.6,marginBottom:10,fontStyle:"italic"}}>
+                                    The proposal is approved. You need only walk through the door and say the words.
+                                  </div>
+                                  <button style={{...C.btn(blue),width:"100%",opacity:ap<1?0.4:1}} onClick={()=>openThesisBoard(s)}>
+                                    📜 Present Thesis (1 AP)
+                                  </button>
+                                </div>
+                              ):allDone?(
+                                <div style={{color:"#506090",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>
+                                  All four case studies complete. PhD defense pending.
+                                </div>
+                              ):(
+                                <div>
+                                  <div style={{fontSize:10,color:"#6080b0",marginBottom:4}}>
+                                    Case Study {crs.caseStudyStage+1} of 4
+                                  </div>
+                                  <div style={{fontSize:10,color:"#5070a0",marginBottom:10}}>
+                                    {availCount} pair{availCount!==1?"s":""} available
+                                    {crs.lastPairId?` · ${CASE_STUDY_PAIRS.find(p=>p.id===crs.lastPairId)?.label||''} recently studied`:''}
+                                  </div>
+                                  <button style={{...C.btn(blue),width:"100%",opacity:ap<1?0.4:1}} onClick={()=>openCaseStudyGrid(s)}>
+                                    📋 Conduct Case Study (1 AP)
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        }
                         // ── CHAPTER HOSTESS — custom two-button layout ──
                         if(s.evolvedForm==='chapter_hostess'&&chapterHostessState){
                           const ch=chapterHostessState;
@@ -8854,6 +8960,101 @@ export default function ProfessorSim(){
           </div>
         </div>
       )}
+
+      {/* ── COMMUNITY RESEARCHER MODAL ── */}
+      {communityResearcherState?.modalPhase&&(()=>{
+        const crs=communityResearcherState;
+        const blue="#4a6fa5"; const lblue="#8fa8e0";
+        const madeline=students.find(s=>s.id===1);
+        const mName=madeline?.name||"Madeline";
+        const wrap=(children)=>(
+          <div style={C.overlay}>
+            <div style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#010510,#020818,#010510)",border:`1px solid ${blue}60`,maxHeight:"88vh",overflowY:"auto"}}>
+              {children}
+            </div>
+          </div>
+        );
+
+        // ── THESIS BOARD ──
+        if(crs.modalPhase==='thesis_board') return wrap(<>
+          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 COMMUNITY RESEARCHER</div>
+          <div style={{fontSize:13,fontWeight:700,color:lblue,marginBottom:10}}>PhD Proposal Defense</div>
+          <div style={{fontSize:12,color:"#a0b8d0",lineHeight:1.9,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
+            {THESIS_BOARD.phases[crs.boardPhase]?.(mName)||''}
+          </div>
+          {crs.boardPhase<2?(
+            <button style={{...C.btn(blue),width:"100%"}} onClick={advanceThesisBoard}>Continue →</button>
+          ):(
+            <button style={{...C.btn(blue),width:"100%"}} onClick={()=>completeThesisDefense(madeline)}>
+              ✓ Defense Complete — Approved
+            </button>
+          )}
+        </>);
+
+        // ── THESIS SUCCESS ──
+        if(crs.modalPhase==='thesis_success') return wrap(<>
+          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 APPROVED</div>
+          <div style={{fontSize:14,fontWeight:700,color:lblue,marginBottom:10}}>Thesis Accepted</div>
+          <div style={{fontSize:12,color:"#a0b8d0",lineHeight:1.85,marginBottom:14}}>
+            The panel approves unanimously. Dr. Ward's note about the waistline is already in the field journal. Case studies may now begin.
+          </div>
+          <button style={{...C.btn(blue),width:"100%"}} onClick={()=>completeThesisDefense(madeline)}>Begin Case Studies →</button>
+        </>);
+
+        // ── CASE STUDY GRID ──
+        if(crs.modalPhase==='case_study_grid'){
+          const isCRPairAvailable=(pair)=>{
+            if(crs.pairsUsed.includes(pair.id)) return false;
+            if(pair.unlockImmediate) return true;
+            return pair.studentIds.every(id=>{
+              const st=students.find(x=>x.id===id);
+              if(!st) return false;
+              const ok=getStage(st.lbs).id>=4&&st.relationship>=60;
+              if(id===10) return ok&&lilithUnlocked&&lilithKillCount>=1;
+              return ok;
+            });
+          };
+          return wrap(<>
+            <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 CASE STUDY {crs.caseStudyStage+1} OF 4</div>
+            <div style={{fontSize:13,fontWeight:700,color:lblue,marginBottom:4}}>Select a Case Study</div>
+            <div style={{fontSize:10,color:"#5070a0",marginBottom:12}}>Pairs unlock when both participants reach Heavy stage + Close relationship. Used pairs are crossed out.</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:12}}>
+              {CASE_STUDY_PAIRS.map(pair=>{
+                const avail=isCRPairAvailable(pair);
+                const used=crs.pairsUsed.includes(pair.id);
+                return(
+                  <div key={pair.id}
+                    onClick={()=>{if(avail&&madeline)selectCasePair(madeline,pair.id);}}
+                    style={{padding:"10px 12px",borderRadius:8,border:`1px solid ${avail?"#4a6fa570":"#2030404a"}`,
+                      background:avail?"rgba(10,20,50,0.6)":"rgba(5,8,18,0.4)",
+                      cursor:avail?"pointer":"default",opacity:avail?1:0.5,position:"relative"}}>
+                    <div style={{fontSize:14,marginBottom:4}}>{pair.icon}</div>
+                    <div style={{fontSize:11,fontWeight:700,color:avail?lblue:"#405060",textDecoration:used?"line-through":"none"}}>{pair.label}</div>
+                    <div style={{fontSize:9,color:"#405875",marginTop:2}}>{pair.subtitle}</div>
+                    {used&&<div style={{fontSize:8,color:"#3a5060",marginTop:2}}>✓ studied</div>}
+                    {!avail&&!used&&<div style={{fontSize:8,color:"#304050",marginTop:2}}>🔒 locked</div>}
+                  </div>
+                );
+              })}
+            </div>
+            <button style={{...C.btn("#1a2030"),width:"100%",fontSize:11}} onClick={()=>setCommunityResearcherState(prev=>({...prev,modalPhase:null}))}>Cancel</button>
+          </>);
+        }
+
+        // ── CASE STUDY EVENT ──
+        if(crs.modalPhase==='case_study_event') return wrap(<>
+          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 CASE STUDY {crs.caseStudyStage+1} OF 4</div>
+          <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:10}}>{CASE_STUDY_PAIRS.find(p=>p.id===crs.activePairId)?.label||''}</div>
+          <div style={{fontSize:12,color:"#a0b8cc",lineHeight:1.9,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
+            {crs.eventText||''}
+          </div>
+          <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{if(madeline)completeCaseStudy(madeline);}}>
+            Record Findings ✓ (1 AP)
+          </button>
+        </>);
+
+        return null;
+      })()}
 
       {/* ── CULTIVATOR MODAL ── */}
       {cultivatorState?.modalPhase&&(()=>{
