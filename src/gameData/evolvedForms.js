@@ -247,6 +247,15 @@ export const EVOLVED_REACTIONS = {
     "Mrs. Calloway brought me something in return. I sat with this for a while. The reciprocity feels significant. I'm noting that I feel warmly toward all six of them now and that I'm going to keep making Tuesdays happen for as long as I can.",
     "End of term. All six of them in the room. Everything I made was gone in an hour. I watched them eat and I felt — I'm not sure I have the language for it. Useful. Purposeful. Like I was exactly where I was supposed to be. I'm noting this.",
   ],
+  // ── CULINARY path ──────────────────────────────────────────────
+  cultivator:[
+    "First session with the subject. She ate everything without asking what was in it. I made notes on her appetite, her pace, her stopping point. She has no stopping point. This is going to be methodical.",
+    "The subject is visibly larger. I didn't note surprise in my log because I'm not surprised. The process is working. I ate the quality-control portions carefully. I gained three pounds this week. I'm logging that.",
+    "She fills the chair differently now. I adjusted the portions upward accordingly. Richer base on the milkshake. Ganache on the cake. She asked what changed. I said 'recipe refinement.' She accepted this and finished everything.",
+    "The subject is at a size that requires some recalibration — the chair, the portions, the approach. I've recalibrated. My own appetite is increasing. I've started keeping a second log for personal data. It seems relevant.",
+    "I ate the leftovers after the session today. There were a lot of leftovers. I stayed in the kitchen for a long time. I'm noting that I find this work deeply satisfying in a way that extends well past professional interest.",
+    "Last session before harvest. She sits across from me very large, very full, and entirely unaware of how this concludes. I ate alongside her — quality control, always quality control — and I felt full and satisfied and exactly right. My own numbers are considerably higher than when I started. I've stopped being surprised by this.",
+  ],
 };
 
 export const EVOLVED_DIARY = {
@@ -483,6 +492,14 @@ export const EVOLVED_DIARY = {
     `I realized this week that I taste-test more at school than I do at home, which doesn't make nutritional sense unless you factor in that I'm happy at school. I'm happy on Tuesdays. The session was good — Mrs. Monroe brought wine and I politely declined and then accepted — and everyone was softer and more comfortable and more themselves than when we started this. I am also softer. I think this is fine. I think this is the intended outcome.`,
     `Sofia wore something different today. Not smaller — more comfortable, more expansive, more herself. Mrs. Reyes has stopped tugging at her jacket and I want to note that this is not a small thing. I am at this point something between a teacher and a caterer and possibly something else I don't have a word for. I ate everything I made extras of. There were a lot of extras. I planned it that way and I'm no longer pretending otherwise.`,
     `End of term. All six of them in the room at once, which hasn't happened since the formal event was established. I made everything. I ate everything I'd saved for myself and then some of theirs when there were offers. The room was full and warm and loud with laughing and I sat in the middle of it — enormous and full and happy and flour-dusted — and thought: yes. This is exactly what I was supposed to do with all of this. I logged that. It belongs in the record.`,
+  ],
+  cultivator:[
+    `First subject session. I built the recipe specifically around her palate — not a concession, a technique. She ate everything without questioning. I ate the test portions and noted the results in both logs. The professional satisfaction is real.`,
+    `The subject is growing on schedule. I adjusted the recipe upward this week — heavier base, extra portion — and she accepted the change as if it had always been this way. Quality control required more attention than usual. I'm eating more at sessions than I expected. I logged it.`,
+    `I've started noting my own weight in the session log. It's relevant data. I'm considerably heavier than when this started, which is also relevant data. The subject is on pace. The kitchen is running exactly as intended.`,
+    `Harvest window is open. The subject is at Very Fat stage. I could proceed now. I'm not proceeding now. I want to see the next stage. This is a professional judgment, not an excuse. I ate the full quality-control portion today and did not note this as unusual.`,
+    `The subject is enormous. She takes up the chair completely and eats with the complete appetite of someone past self-consciousness. I fed her the richest version of everything. I ate alongside her. I am considerably larger than I was at the start of this study. I find this entirely appropriate.`,
+    `Session before harvest. She is very large. I am very large. The kitchen is warm and full and the recipe is perfect and I ate everything I made and she ate everything I served and we sat across from each other both large and full and satisfied and I felt — exactly right. The harvest will proceed tomorrow. The log is complete.`,
   ],
 };
 
@@ -722,6 +739,15 @@ export const EVOLVED_OUTFITS = {
     "A roomy printed housedress with deep pockets, her heavy-duty apron layered over the front. The pockets hold the notebook. The apron holds the flour.",
     "An enormous soft tunic over wide-leg trousers, her apron purely ceremonial at this stage. The kitchen has been arranged around her. She fills it warmly.",
   ],
+  // ── CULINARY path ──────────────────────────────────────────────
+  cultivator:[
+    "Chef's coat, well-fitted, a utility apron tied over. Clean knife roll at her hip. She looks entirely professional.",
+    "Chef's coat, slightly wider cut. The apron still fits. She's added a second front pocket for the session notebook.",
+    "A stretch-panel chef's coat. She had it custom-tailored and doesn't mention this. The apron is a generous cut.",
+    "A wide-format chef's jacket, minimal fuss, purely functional. The coat is very large and moves well. She bakes in it.",
+    "A custom chef's coat at considerable scale, apron tied at the front with effort. She moves through the kitchen with full authority.",
+    "An enormous chef's coat, apron decorative at this point. The kitchen was rearranged around her reach and she approves of the arrangement.",
+  ],
 };
 
 export const EVOLVED_ACTIVITY_TEXT = {
@@ -924,6 +950,7 @@ export const EVOLVED_ACTIVITY_META = {
   state_fair_queen:{ label:"🎡 Enter the Fair",         apCost:1, gainRange:[4,8],  relBonus:10 },
   psych_researcher:{ label:"Continue Research Session", apCost:1, gainRange:[4,9],  relBonus:11 },
   psych_manipulator:{label:"Run Conditioning Session",  apCost:1, gainRange:[3,7],  relBonus:9  },
+  cultivator:        { label:"🍰 Run Taste-Test Session", apCost:1, gainRange:[2,8],  relBonus:12 },
 };
 
 export const EVOLVED_EVENTS = {
@@ -3384,6 +3411,7 @@ export const EVOLVED_FORM_META = {
   ranked_feedee:        { title:"Ranked Feedee",          color:"#1a6a9a" },
   academic_subject:     { title:"Academic Subject",       color:"#2c5f8a" },
   home_nest:            { title:"Home Nest",              color:"#4a6a4a" },
+  cultivator:           { title:"The Cultivator",         color:"#8B4513" },
 };
 
 export const EVOLUTION_BUTTON_BLURB = {
@@ -3399,6 +3427,7 @@ export const EVOLUTION_BUTTON_BLURB = {
   transfer:(s)=>`You pass through the dining hall mid-afternoon and the staff behind the counter lights up when ${s.name} walks in behind you. They know her name. They have her order started before she reaches the counter. There's a booth in the corner that other students seem to drift away from, not consciously, just leaving it available in the particular way that space gets left for something or someone that belongs in it. She settles into it and the room adjusts slightly. You watch from across the hall and think: she's become part of this place faster than anyone else ever has.`,
   psych:(s)=>`You find ${s.name}'s notebook left open on a desk — not hers, a shared seminar table. You don't mean to read it. What's inside is a meticulous, weeks-long study of the people around her: names, dates, behavioral observations, weight-implied measurements, annotated patterns. It's precise. It's methodical. It's deeply unsettling — not because it's wrong, but because it's right. You close it. You wait. When she comes back and sees you by the table she just looks at you steadily, reads your expression, and says: "I need a direction for this."`,
   eced:(s)=>`You stop by the classroom on a Tuesday afternoon — not for any particular reason, just passing — and the smell hits you before the door fully opens. Butter, sugar, something warm. ${s.name} is at the counter at ${Math.round(s.lbs)} pounds, her apron dusty with flour, and around the table are the girls she teaches and apparently their mothers, and everyone is eating, and the room has the specific quality of a space that has found its purpose. Daisy looks up. She sees you see the room. "I've been doing Tuesdays for a while now," she says. Her voice is carefully normal. "I think it's working."`,
+  culinary:(s)=>`You find ${s.name}'s test kitchen unexpectedly unlocked. She's not there, but someone else is — a woman you don't recognize, sitting at the prep table with an empty plate and the particular slow contentment of someone who ate something extraordinary and hasn't decided to leave yet. She looks up. She seems confused about how long she's been there. When Reneé comes back she sees you in the doorway and she doesn't explain anything. She takes the plate, washes it, and says: "I've been running some tests. With willing subjects." A pause. "Very willing subjects." She looks at you with the calibrated calm of someone who has been thinking about whether to say the next thing for a long time. "I think I can do this properly. I just need the right direction."`,
 };
 
 
@@ -3488,6 +3517,12 @@ export const EVOLUTION_OFFER = {
       psych_manipulator:{ label:"The Architect",  desc:"No single subject. Real psych techniques — anchoring, social proof, classical conditioning — applied covertly. The pleasure is in their confusion." },
     },
   },
+  culinary:{
+    intro:(s)=>`${s.name} sets two things on the table between you: a recipe notebook and a short list of names. No explanation. She waits. When you ask, she says: "I've been running informal trials. Voluntary subjects, controlled portions, careful observation." She pauses. "The subjects gained weight. I gained weight. The data is consistent across six sessions." She taps the list. "I want to do it properly. One subject at a time, managed correctly, from selection through — completion." She says 'completion' the way someone says a word they've chosen very carefully. "I need someone who understands what they're authorizing."`,
+    paths:{
+      cultivator:{ label:"The Cultivator", desc:"Recruit a taste tester. Run feeding sessions using carefully constructed recipes. Grow the subject through stages and harvest when the yield is right. Three full cycles. Precise, personal, and deeply satisfying." },
+    },
+  },
 };
 
 export const ASCENSION_BRIDGE = {
@@ -3520,6 +3555,7 @@ export const ASCENSION_BRIDGE = {
   academic_subject:(s)=>`${s.name} closes the final research notebook. The last entry is today's date, her weight, and one word: 'complete.' She holds it for a moment. 'The study is done,' she says. 'The subject isn't.' She sets it on the desk. 'I've been thinking about what the data can't hold. What the methodology can't frame.' She looks at you. 'There's something happening that no committee can evaluate. I think you know what I mean.' A long pause. 'I think the goddess has been a confounding variable this whole time. I think I need to stop controlling for her.'`,
   home_nest:(s)=>`${s.name} doesn't call — she texts, which is how she communicates now. The message says: 'can you come here.' No question mark. You come. She's in her chair, in her room, and she looks as settled as anyone you've seen — rooted, warm, comfortable in a way that's grown into the space around her. 'I've been thinking,' she says, 'about where here goes.' She looks at the window she doesn't open anymore. 'I think the goddess has been in this room. I think she's been in the walls.' She looks back at you. 'I think it's time to let her in properly.'`,
   ranked_feedee: (s)=>`${s.name} doesn't look up from the screen when she says it. 'Rae said something to me.' She pauses the game — which you've never seen her do without the session being over. 'She said she's been watching what's happening to me and that she's proud.' Her voice is carefully flat. 'I've been thinking about what that means.' She looks at her hands on the controller. She's enormous. She's been enormous for a while. 'I think I've run out of sessions,' she says. 'Or sessions have run out of what they can hold. Something like that.' A long silence. 'Rae said: you've leveled past the game.' She puts the controller down. 'Yeah,' she says. 'I think that's right.'`,
+  cultivator: (s)=>`${s.name} closes the last session log — the one from the third cycle, the final harvest, the end of the process — and sits with it for a long moment. 'Three subjects,' she says. 'All completed. The data is done.' She looks at her hands, which are large now, considerably larger than when this started. She looks at the empty kitchen. 'I've been eating the quality-control portions this whole time,' she says, as if telling you something you don't already know. 'Every session. I told myself it was methodology.' A long pause. 'It wasn't methodology.' She sets the log down. 'The goddess has been watching the sessions, I think. I think she's been in the kitchen every time.' She looks up. 'I think she wants to be fed something final. Something significant.' She doesn't look afraid. She looks entirely ready.`,
 };
 
 // ── HOMEROOM QUEEN: NPC stage descriptions ──────────────────────────────────

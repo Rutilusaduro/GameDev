@@ -12,6 +12,7 @@ import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, I
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { HOSTESS_HANGOUTS, MENU_TIERS, ATMOSPHERE_TIERS, GUEST_TIERS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, SEDUCTION_MOVES, MOVES_BY_STAGE_BAND, getStageBand, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, CLUE_INVESTIGATION, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
+import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, RECIPES, getEatingReaction, STAGE_UP_TEXT, HARVEST_VIGNETTES_PLANNED, HARVEST_VIGNETTES_EMERGENCY, getGrowthVignette, RECRUITMENT_SCENE, TESTER_APPEARANCE } from './gameData/cultivator.js';
 
 // ═══════════════════════════════════════════════════════════════
 // DATA LAYER
@@ -337,6 +338,9 @@ export default function ProfessorSim(){
   const [lilithClueModal, setLilithClueModal] = useState(null); // null | 'feast_clue' | 'investigating' | 'result'
   const [lilithHuntState, setLilithHuntState] = useState(null);
   // lilithHuntState: {currentNode,encounter:{manId,movesUsed[],movesNeeded,failed,consumed}|null,log:[],deliveryMode,deliveryDone}
+  const [lilithKillCount, setLilithKillCount] = useState(0);
+  const [cultivatorState, setCultivatorState] = useState(null);
+  // cultivatorState: {testerName,testerStageId,testerLbs,fatBar,suspicion,harvestsCompleted,usedNames,modalPhase,session,pendingStageUp,harvestType,harvestVignetteText,growthGain,growthVignetteText}
   const [presentationState, setPresentationState] = useState(null);
   // presentationState: {studentId,stageIdx} — placeholder until mini-game implemented
   const [deliveryState, setDeliveryState] = useState(null);
@@ -1078,11 +1082,20 @@ export default function ProfessorSim(){
         feastLogOpen:false, feastLog:[], feastGainTotal:0, feastRelTotal:0, feastDone:false,
       });
     }
+    if(formId==='cultivator'){
+      setCultivatorState({
+        testerName:null, testerStageId:6, testerLbs:TESTER_START_LBS,
+        fatBar:0, suspicion:0, harvestsCompleted:0, usedNames:[],
+        modalPhase:null, session:null, pendingStageUp:false,
+        harvestType:null, harvestVignetteText:null, growthGain:0, growthVignetteText:null,
+      });
+    }
   };
 
   const doEvolvedActivity=(s)=>{
     if(!s.evolvedForm) return;
     if(s.evolvedForm==='chapter_hostess') return; // handled by custom panel UI
+    if(s.evolvedForm==='cultivator') return; // handled by custom panel UI
     if(s.evolvedForm==='feedee_creator'){ openCollabPartnerPicker(s); return; }
     if(s.evolvedForm==='psych_researcher'){
       if(s.researchSubjectId==null){ openResearchSubjectPicker(s); return; }
@@ -1301,6 +1314,7 @@ export default function ProfessorSim(){
     const nextStage=WEIGHT_STAGES[Math.min(10,stageId+1)];
     const gain=nextStage&&nextStage.id>stageId?Math.max(1,nextStage.min-Math.round(lilith.lbs)+5):20;
     setStudents(prev=>prev.map(s=>s.id===LILITH_ID?{...s,lbs:s.lbs+gain}:s));
+    setLilithKillCount(k=>k+1);
     push(`🌑 Lilith — hunt complete: +${gain} lbs`);
     const consumeText=getConsumeText(stageId);
     setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,consumed:true},log:[...prev.log,consumeText]}));
@@ -1311,6 +1325,7 @@ export default function ProfessorSim(){
     const nextStage=WEIGHT_STAGES[Math.min(10,stageId+1)];
     const gain=nextStage&&nextStage.id>stageId?Math.max(1,nextStage.min-Math.round(lilith.lbs)+5):25;
     setStudents(prev=>prev.map(s=>s.id===LILITH_ID?{...s,lbs:s.lbs+gain}:s));
+    setLilithKillCount(k=>k+1);
     push(`🌑 Lilith — delivery: +${gain} lbs`);
     setLilithHuntState(prev=>({...prev,deliveryDone:true}));
   };
@@ -1324,6 +1339,116 @@ export default function ProfessorSim(){
     setLilithClueModal(null);
     setLilithUnlocked(true);
     push("🌑 She's on your roster now. Room 312.");
+  };
+
+  // ── CULTIVATOR handlers ──────────────────────────────────────────────────
+  const openCultivatorRecruit=()=>{
+    if(!cultivatorState) return;
+    if(cultivatorState.harvestsCompleted>=3) return;
+    setCultivatorState(prev=>({...prev,modalPhase:'recruit_setup'}));
+  };
+  const confirmCultivatorRecruit=()=>{
+    const cs=cultivatorState; if(!cs) return;
+    const available=TESTER_NAMES.filter(n=>!cs.usedNames.includes(n));
+    if(available.length===0) return;
+    const name=available[Math.floor(Math.random()*available.length)];
+    setCultivatorState(prev=>({
+      ...prev,
+      testerName:name, testerStageId:6, testerLbs:TESTER_START_LBS,
+      fatBar:0, suspicion:0, session:null, pendingStageUp:false,
+      usedNames:[...prev.usedNames,name],
+      modalPhase:null,
+    }));
+    push(`🍰 Reneé has selected a taste tester: ${name}.`);
+  };
+  const startCultivatorSession=(s)=>{
+    if(!cultivatorState||!cultivatorState.testerName) return;
+    if(cultivatorState.harvestsCompleted>=3) return;
+    if(ap<1){push("⚠️ Need 1 AP.");return;}
+    setAp(a=>a-1);
+    setCultivatorState(prev=>({...prev,modalPhase:'session',session:{foodType:null,junctionIdx:-1,choices:[],log:[],sessionFatAccum:0,sessionSuspAccum:0,complete:false,eatingReaction:''}}));
+  };
+  const pickCultivatorFood=(foodType)=>{
+    setCultivatorState(prev=>({...prev,session:{...prev.session,foodType,junctionIdx:0}}));
+  };
+  const makeCultivatorChoice=(choice)=>{
+    const cs=cultivatorState; if(!cs||!cs.session) return;
+    const{session}=cs;
+    const recipe=RECIPES[session.foodType]; if(!recipe) return;
+    const junction=recipe.junctions[session.junctionIdx]; if(!junction) return;
+    const newFat=session.sessionFatAccum+choice.fatGain;
+    const newSusp=session.sessionSuspAccum+choice.suspChange;
+    const newChoices=[...session.choices,choice.id];
+    const newLog=[...session.log,choice.desc];
+    const nextIdx=session.junctionIdx+1;
+    const isDone=nextIdx>=recipe.junctions.length;
+    if(isDone){
+      const reaction=getEatingReaction(Math.max(0,cs.suspicion+newSusp));
+      setCultivatorState(prev=>({...prev,session:{...prev.session,choices:newChoices,log:newLog,sessionFatAccum:newFat,sessionSuspAccum:newSusp,complete:true,eatingReaction:reaction}}));
+    } else {
+      setCultivatorState(prev=>({...prev,session:{...prev.session,choices:newChoices,log:newLog,sessionFatAccum:newFat,sessionSuspAccum:newSusp,junctionIdx:nextIdx}}));
+    }
+  };
+  const confirmCultivatorSession=(s)=>{
+    const cs=cultivatorState; if(!cs||!cs.session||!cs.session.complete) return;
+    const{session}=cs;
+    // Apply gains: fat bar and suspicion
+    const newFatBar=cs.fatBar+session.sessionFatAccum;
+    const newSusp=Math.min(200,Math.max(0,cs.suspicion+session.sessionSuspAccum));
+    const stageUp=newFatBar>=FAT_BAR_CAP;
+    const nextStageId=Math.min(10,cs.testerStageId+(stageUp?1:0));
+    const finalFatBar=stageUp?newFatBar-FAT_BAR_CAP:newFatBar;
+    const nextTesterLbs=stageUp?(TESTER_STAGE_LBS[nextStageId]||cs.testerLbs):cs.testerLbs;
+    // Reneé small quality-control gain
+    const reneeGain=Math.round(2+Math.random()*6);
+    setStudents(prev=>prev.map(st=>st.id===s.id?processStudentGain(st,reneeGain,5):st));
+    // Emergency harvest at suspicion 200
+    if(newSusp>=200){
+      const renee=students.find(st=>st.id===s.id)||s;
+      const hGain=HARVEST_GAIN[nextStageId]||HARVEST_GAIN[6];
+      const vignette=HARVEST_VIGNETTES_EMERGENCY[nextStageId]?.(cs.testerName,getStage(renee.lbs).label)||'[emergency harvest]';
+      const gVignette=getGrowthVignette(getStage(renee.lbs).id,hGain);
+      setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,hGain,8)}:st));
+      setCultivatorState(prev=>({...prev,testerStageId:nextStageId,testerLbs:nextTesterLbs,fatBar:finalFatBar,suspicion:newSusp,session:null,pendingStageUp:false,harvestType:'emergency',harvestVignetteText:vignette,growthGain:hGain,growthVignetteText:gVignette,modalPhase:'emergency'}));
+      push(`🍰 EMERGENCY: ${cs.testerName} got suspicious — harvest triggered (+${hGain} lbs to Reneé)`);
+      return;
+    }
+    // Normal session close
+    if(stageUp){
+      const stageText=STAGE_UP_TEXT[nextStageId]?.(cs.testerName)||'The subject has grown.';
+      setCultivatorState(prev=>({...prev,testerStageId:nextStageId,testerLbs:nextTesterLbs,fatBar:finalFatBar,suspicion:newSusp,session:null,pendingStageUp:false,stageUpText:stageText,modalPhase:'stage_up'}));
+      push(`🍰 ${cs.testerName} advanced to ${getStage(nextTesterLbs).label} stage.`);
+    } else {
+      setCultivatorState(prev=>({...prev,fatBar:finalFatBar,suspicion:newSusp,session:null,pendingStageUp:false,modalPhase:null}));
+    }
+  };
+  const openCultivatorHarvest=(s)=>{
+    const cs=cultivatorState; if(!cs||!cs.testerName) return;
+    if(cs.harvestsCompleted>=3) return;
+    if(ap<1){push("⚠️ Need 1 AP for harvest.");return;}
+    setAp(a=>a-1);
+    const renee=students.find(st=>st.id===s.id)||s;
+    const hGain=HARVEST_GAIN[cs.testerStageId]||HARVEST_GAIN[6];
+    const vignette=HARVEST_VIGNETTES_PLANNED[cs.testerStageId]?.(cs.testerName,getStage(renee.lbs).label)||'[planned harvest]';
+    const gVignette=getGrowthVignette(getStage(renee.lbs).id,hGain);
+    setCultivatorState(prev=>({...prev,harvestType:'planned',harvestVignetteText:vignette,growthGain:hGain,growthVignetteText:gVignette,modalPhase:'harvest'}));
+  };
+  const confirmCultivatorHarvest=(s)=>{
+    const cs=cultivatorState; if(!cs) return;
+    const hGain=cs.growthGain;
+    setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,hGain,12)}:st));
+    push(`🍰 Reneé — harvest complete: +${hGain} lbs`);
+    setCultivatorState(prev=>({...prev,testerName:null,testerStageId:6,testerLbs:TESTER_START_LBS,fatBar:0,suspicion:0,session:null,pendingStageUp:false,harvestsCompleted:prev.harvestsCompleted+1,harvestType:null,harvestVignetteText:null,modalPhase:'growth'}));
+  };
+  const closeCultivatorGrowth=()=>{
+    setCultivatorState(prev=>prev?{...prev,modalPhase:null,growthVignetteText:null,growthGain:0}:null);
+  };
+  const dismissCultivatorStageUp=()=>{
+    setCultivatorState(prev=>prev?{...prev,modalPhase:null,stageUpText:null}:null);
+  };
+  const dismissCultivatorEmergency=()=>{
+    // After emergency: increment harvest count, clear tester, move to growth
+    setCultivatorState(prev=>prev?{...prev,testerName:null,testerStageId:6,testerLbs:TESTER_START_LBS,fatBar:0,suspicion:0,session:null,harvestsCompleted:prev.harvestsCompleted+1,harvestType:null,harvestVignetteText:null,modalPhase:'growth'}:null);
   };
 
   const startRankedSession=(studentId,stageIdx)=>{
@@ -5412,7 +5537,9 @@ export default function ProfessorSim(){
 
                 {/* ── EP2: EVOLUTION SECTION ── */}
                 {!s.ascensionPath&&(()=>{
-                  const canOffer=!s.evolvedForm&&st.id>=4&&s.relationship>=60&&!!EVOLUTION_OFFER[s.archetype];
+                  const canOffer=s.archetype==='culinary'
+                    ?!s.evolvedForm&&lilithUnlocked&&lilithKillCount>=1&&s.relationship>=60&&!!EVOLUTION_OFFER[s.archetype]
+                    :!s.evolvedForm&&st.id>=4&&s.relationship>=60&&!!EVOLUTION_OFFER[s.archetype];
                   const hasEvolved=!!s.evolvedForm;
                   const meta=hasEvolved?EVOLVED_ACTIVITY_META[s.evolvedForm]:null;
                   const tree=hasEvolved?EVOLVED_SKILL_TREES[s.evolvedForm]||[]:[];
@@ -5441,6 +5568,65 @@ export default function ProfessorSim(){
                         const evFormMeta=EVOLVED_FORM_META[s.evolvedForm];
                         const borderColor=evFormMeta?`${evFormMeta.color}80`:"#6030b080";
                         const titleColor=evFormMeta?evFormMeta.color:"#c080ff";
+                        // ── CULTIVATOR — custom panel ──
+                        if(s.evolvedForm==='cultivator'&&cultivatorState){
+                          const cs=cultivatorState;
+                          const brown="#8B4513";
+                          const exhausted=cs.harvestsCompleted>=3;
+                          const hasActive=!!cs.testerName&&!exhausted;
+                          const testerStageName=cs.testerName?getStage(cs.testerLbs).label:'—';
+                          const fatPct=Math.min(100,cs.fatBar);
+                          const suspPct=Math.min(100,cs.suspicion/2);
+                          return(
+                            <div style={{background:"rgba(30,12,5,0.6)",border:`1px solid ${brown}80`,borderRadius:10,padding:12}}>
+                              <div style={{fontSize:9,letterSpacing:3,color:brown,marginBottom:4}}>🍰 EVOLVED PATH</div>
+                              <div style={{fontSize:13,fontWeight:700,color:"#CD853F",marginBottom:8}}>The Cultivator</div>
+                              {exhausted?(
+                                <div style={{color:"#7a4020",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>All subjects cultivated. No further yield is possible.</div>
+                              ):!hasActive?(
+                                <div>
+                                  <div style={{color:"#9a6030",fontSize:11,lineHeight:1.6,marginBottom:10,fontStyle:"italic"}}>{RECRUITMENT_SCENE.slice(0,120)}…</div>
+                                  <div style={{color:"#7a5030",fontSize:10,marginBottom:8}}>Cycles remaining: {3-cs.harvestsCompleted}/3</div>
+                                  <button style={{...C.btn(brown),width:"100%"}} onClick={()=>openCultivatorRecruit()}>
+                                    Recruit 🐷 <s style={{opacity:0.6}}>'Taste Tester'</s>
+                                  </button>
+                                </div>
+                              ):(
+                                <div>
+                                  <div style={{background:"rgba(10,4,0,0.5)",borderRadius:7,padding:"8px 10px",marginBottom:8}}>
+                                    <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                                      <span style={{color:"#a07040",fontSize:11,fontWeight:700}}>{cs.testerName}</span>
+                                      <span style={{color:"#906030",fontSize:10}}>{testerStageName} · {Math.round(cs.testerLbs)} lbs</span>
+                                    </div>
+                                    <div style={{marginBottom:3}}>
+                                      <div style={{fontSize:9,color:"#7a5030",marginBottom:2}}>CULTIVATION {Math.round(fatPct)}%</div>
+                                      <div style={{background:"#1a0800",borderRadius:3,height:6,overflow:"hidden"}}>
+                                        <div style={{width:`${fatPct}%`,height:"100%",background:`linear-gradient(90deg,${brown},#CD853F)`,transition:"width 0.3s"}}/>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div style={{fontSize:9,color:cs.suspicion>150?"#e05030":cs.suspicion>100?"#c07030":"#7a5030",marginBottom:2}}>SUSPICION {cs.suspicion}/200{cs.suspicion>150?" ⚠️":""}</div>
+                                      <div style={{background:"#1a0800",borderRadius:3,height:6,overflow:"hidden"}}>
+                                        <div style={{width:`${suspPct}%`,height:"100%",background:cs.suspicion>150?"#e05030":cs.suspicion>100?"#c07030":"#5a3020",transition:"width 0.3s"}}/>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div style={{display:"flex",gap:6}}>
+                                    <button style={{...C.btn("#3a1808"),flex:1,opacity:ap<1?0.4:1,fontSize:10}} onClick={()=>startCultivatorSession(s)}>
+                                      🍰 Taste Test (1 AP)
+                                    </button>
+                                    <button style={{...C.btn("#5a2010"),flex:1,opacity:ap<1?0.4:1,fontSize:10}} onClick={()=>openCultivatorHarvest(s)}>
+                                      ✓ Harvest (1 AP)
+                                    </button>
+                                  </div>
+                                  <div style={{textAlign:"center",fontSize:9,color:"#5a3020",marginTop:6}}>
+                                    Cycle {cs.harvestsCompleted+1} of 3 · {TESTER_APPEARANCE[cs.testerStageId]||""}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        }
                         // ── CHAPTER HOSTESS — custom two-button layout ──
                         if(s.evolvedForm==='chapter_hostess'&&chapterHostessState){
                           const ch=chapterHostessState;
@@ -8636,6 +8822,146 @@ export default function ProfessorSim(){
           </div>
         </div>
       )}
+
+      {/* ── CULTIVATOR MODAL ── */}
+      {cultivatorState?.modalPhase&&(()=>{
+        const cs=cultivatorState;
+        const brown="#8B4513"; const amber="#CD853F";
+        const renee=students.find(s=>s.id===10);
+        const wrap=(children)=>(
+          <div style={C.overlay}>
+            <div style={{...C.modal,maxWidth:500,background:"linear-gradient(160deg,#0a0400,#1a0800,#0a0400)",border:`1px solid ${brown}60`,maxHeight:"88vh",overflowY:"auto"}}>
+              {children}
+            </div>
+          </div>
+        );
+
+        // ── RECRUIT SETUP ──
+        if(cs.modalPhase==='recruit_setup') return wrap(<>
+          <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 CULTIVATOR</div>
+          <div style={{fontSize:14,fontWeight:700,color:amber,marginBottom:10}}>Select a Subject</div>
+          <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>{RECRUITMENT_SCENE}</div>
+          <div style={{fontSize:11,color:"#8a5030",marginBottom:16}}>A candidate will be selected from your contact list. She will believe she is a paid taste tester. This is technically accurate. Cycle {cs.harvestsCompleted+1} of 3.</div>
+          <div style={{display:"flex",gap:8}}>
+            <button style={C.btn("#333")} onClick={()=>setCultivatorState(prev=>({...prev,modalPhase:null}))}>Cancel</button>
+            <button style={{...C.btn(brown),flex:1}} onClick={confirmCultivatorRecruit}>Recruit Subject →</button>
+          </div>
+        </>);
+
+        // ── SESSION ──
+        if(cs.modalPhase==='session'&&cs.session){
+          const{session}=cs;
+          // Food picker
+          if(!session.foodType) return wrap(<>
+            <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 TASTE-TEST SESSION</div>
+            <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:6}}>Subject: {cs.testerName}</div>
+            <div style={{fontSize:11,color:"#8a6030",marginBottom:14}}>{getStage(cs.testerLbs).label} · {Math.round(cs.testerLbs)} lbs</div>
+            <div style={{fontSize:12,color:"#b08050",marginBottom:10,fontStyle:"italic"}}>What's on the menu today?</div>
+            {Object.entries(RECIPES).map(([key,r])=>(
+              <button key={key} style={{...C.btn("#2a0e04"),width:"100%",marginBottom:8,textAlign:"left",padding:"10px 14px"}} onClick={()=>pickCultivatorFood(key)}>
+                <span style={{fontSize:16,marginRight:8}}>{r.icon}</span>
+                <span style={{color:amber,fontWeight:700}}>{r.label}</span>
+                <span style={{color:"#7a5030",fontSize:10,marginLeft:8}}>{r.junctions.length} decisions</span>
+              </button>
+            ))}
+            <button style={{...C.btn("#333"),width:"100%",marginTop:4,fontSize:11}} onClick={()=>setCultivatorState(prev=>({...prev,modalPhase:null,session:null}))}>Cancel session</button>
+          </>);
+          // Junction phase
+          if(!session.complete){
+            const recipe=RECIPES[session.foodType];
+            const junction=recipe?.junctions[session.junctionIdx];
+            if(!junction) return null;
+            const recipeIcon=recipe.icon;
+            return wrap(<>
+              <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>{recipeIcon} {recipe.label.toUpperCase()} — Decision {session.junctionIdx+1}/{recipe.junctions.length}</div>
+              <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:4}}>{cs.testerName}</div>
+              <div style={{fontSize:11,color:"#8a6030",marginBottom:10,fontStyle:"italic"}}>{session.junctionIdx===0?recipe.intro(cs.testerName):session.log[session.log.length-1]}</div>
+              <div style={{fontSize:12,color:"#b08050",marginBottom:12,fontWeight:600}}>{junction.prompt}</div>
+              {junction.choices.map(ch=>(
+                <button key={ch.id} style={{...C.btn("#2a0e04"),width:"100%",marginBottom:8,textAlign:"left",padding:"10px 14px"}} onClick={()=>makeCultivatorChoice(ch)}>
+                  <div style={{color:amber,fontWeight:700,fontSize:12,marginBottom:3}}>{ch.label}</div>
+                  <div style={{color:"#8a5030",fontSize:10,lineHeight:1.4}}>{ch.desc}</div>
+                  <div style={{color:"#5a3020",fontSize:9,marginTop:4}}>
+                    +{ch.fatGain} fat · {ch.suspChange>=0?"+":""}{ch.suspChange} suspicion
+                  </div>
+                </button>
+              ))}
+            </>);
+          }
+          // Session summary
+          return wrap(<>
+            <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 SESSION COMPLETE</div>
+            <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:8}}>{cs.testerName} — {getStage(cs.testerLbs).label}</div>
+            <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:12,fontStyle:"italic"}}>{session.eatingReaction}</div>
+            <div style={{background:"rgba(10,4,0,0.5)",borderRadius:7,padding:"8px 12px",marginBottom:14,fontSize:11}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                <span style={{color:"#7a5030"}}>Cultivation gained</span><span style={{color:amber}}>+{session.sessionFatAccum}</span>
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                <span style={{color:"#7a5030"}}>Suspicion change</span>
+                <span style={{color:session.sessionSuspAccum>0?"#e05030":"#60a030"}}>
+                  {session.sessionSuspAccum>=0?"+":""}{session.sessionSuspAccum}
+                </span>
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between"}}>
+                <span style={{color:"#7a5030"}}>Suspicion total</span>
+                <span style={{color:cs.suspicion+session.sessionSuspAccum>150?"#e05030":"#9a6030"}}>{Math.max(0,cs.suspicion+session.sessionSuspAccum)}/200</span>
+              </div>
+            </div>
+            <button style={{...C.btn(brown),width:"100%"}} onClick={()=>confirmCultivatorSession(renee)}>Conclude Session ✓</button>
+          </>);
+        }
+
+        // ── STAGE UP ──
+        if(cs.modalPhase==='stage_up') return wrap(<>
+          <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 SUBJECT PROGRESS</div>
+          <div style={{fontSize:14,fontWeight:700,color:amber,marginBottom:4}}>{cs.testerName}</div>
+          <div style={{fontSize:11,color:"#a07040",marginBottom:10}}>Advanced to {getStage(cs.testerLbs).label} — {Math.round(cs.testerLbs)} lbs</div>
+          <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>{cs.stageUpText||''}</div>
+          <div style={{fontSize:10,color:"#5a3020",marginBottom:14}}>Harvest is now available. Continuing will grow the subject further.</div>
+          <button style={{...C.btn(brown),width:"100%"}} onClick={dismissCultivatorStageUp}>Continue →</button>
+        </>);
+
+        // ── PLANNED HARVEST ──
+        if(cs.modalPhase==='harvest') return wrap(<>
+          <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 HARVEST</div>
+          <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:4}}>{cs.testerName} — {getStage(cs.testerLbs).label}</div>
+          <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:12,fontStyle:"italic"}}>{cs.harvestVignetteText||''}</div>
+          <div style={{background:"rgba(10,4,0,0.5)",borderRadius:7,padding:"8px 12px",marginBottom:14,fontSize:11,color:amber,textAlign:"center"}}>
+            Yield: +{cs.growthGain} lbs to Reneé
+          </div>
+          <div style={{display:"flex",gap:8}}>
+            <button style={C.btn("#333")} onClick={()=>setCultivatorState(prev=>({...prev,modalPhase:null,harvestType:null,harvestVignetteText:null}))}>Wait</button>
+            <button style={{...C.btn(brown),flex:1}} onClick={()=>confirmCultivatorHarvest(renee)}>Complete Harvest →</button>
+          </div>
+        </>);
+
+        // ── EMERGENCY HARVEST ──
+        if(cs.modalPhase==='emergency') return wrap(<>
+          <div style={{fontSize:9,letterSpacing:4,color:"#e05030",marginBottom:4}}>⚠️ EMERGENCY HARVEST</div>
+          <div style={{fontSize:13,fontWeight:700,color:"#ff8060",marginBottom:4}}>{cs.testerName} — Suspicion maxed</div>
+          <div style={{fontSize:12,color:"#c08060",lineHeight:1.85,marginBottom:12,fontStyle:"italic"}}>{cs.harvestVignetteText||''}</div>
+          <div style={{background:"rgba(20,4,0,0.6)",borderRadius:7,padding:"8px 12px",marginBottom:14,fontSize:11,color:"#ff8060",textAlign:"center"}}>
+            Yield: +{cs.growthGain} lbs to Reneé (same as planned)
+          </div>
+          <button style={{...C.btn("#8B2000"),width:"100%"}} onClick={()=>confirmCultivatorHarvest(renee)}>Proceed →</button>
+        </>);
+
+        // ── GROWTH VIGNETTE ──
+        if(cs.modalPhase==='growth') return wrap(<>
+          <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 RENEÉ</div>
+          <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:10}}>After the Harvest</div>
+          <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:12,fontStyle:"italic"}}>{cs.growthVignetteText||''}</div>
+          {cs.harvestsCompleted>=3?(
+            <div style={{fontSize:11,color:"#7a5030",marginBottom:12,textAlign:"center"}}>All three cultivation cycles complete.</div>
+          ):(
+            <div style={{fontSize:11,color:"#7a5030",marginBottom:12,textAlign:"center"}}>Cycles remaining: {3-cs.harvestsCompleted}/3</div>
+          )}
+          <button style={{...C.btn(brown),width:"100%"}} onClick={closeCultivatorGrowth}>Continue ✓</button>
+        </>);
+
+        return null;
+      })()}
 
       {convergenceModal&&(
         <div style={C.overlay}>
