@@ -312,27 +312,69 @@ export const TESTER_APPEARANCE = {
 
 // ── DIGEST VIGNETTES ─────────────────────────────────────────────────────────
 // What you see when you check on Reneé during her digestion period.
-// early: first half of digestion weeks; late: second half.
+// Keyed by Reneé's current stage (heavy/fat/veryFat/enormous/colossal/blob).
+// Inner keys: earlyPlus1/2/3 + latePlus1/2/3; blob uses earlySpecial/lateSpecial.
+// stagesJumped = how many stages Reneé advanced at harvest (selects Plus variant).
 
 export const DIGEST_VIGNETTES = {
-  6:{
-    early:`[placeholder — Reneé, 2 weeks post-harvest, Fat tester. She's home. Not answering messages. Kitchen's dark. She sounds fine when you call — warm, deliberate, vague about what she's doing. Says she'll be back soon. Her voice sounds like someone digesting something that requires their full attention.]`,
-    late:`[placeholder — Reneé nearing end of digestion, Fat tester. She sent a message — just 'soon.' She sounds like someone waking up from a long sleep: slow, deeply satisfied, not entirely back yet.]`,
+  heavy: {
+    earlyPlus1: (name) => `Shortly after devouring ${name}, Reneé rests heavily in her apartment. Her belly hangs fuller and her ass has widened noticeably, straining the seams of her pants until a few stitches pop during a slow shift toward the kitchen. She moves with deliberate care, the added softness making her thighs rub and her chair creak louder. Hands rest on her middle as she processes the integration clinically. The warm space feels more intimate around her rounder frame. She offers brief notes on the mass distribution with quiet satisfaction.`,
+    earlyPlus2: (name) => `After consuming the greatly fattened ${name}, Reneé stays mostly seated as the significant yield settles. Her ass spreads softer and heavier across the chair, causing it to groan under the new weight while her belly pushes forward more prominently. The apartment seems smaller around her expanded hips. She breathes steadily in the warm kitchen, logging entries with slightly altered handwriting from the pressure on her wrist. Everything feels metabolically correct.`,
+    earlyPlus3: (name) => `In the days after fully devouring the massive ${name}, Reneé barely rises. Her body has swollen considerably, ass thickening dramatically and pressing into the reinforced seating until faint cracks appear in the wood. The warm kitchen holds her as a heavy, soft presence while she focuses inward on the profound integration. She is calm and deeply engaged in the completion.`,
+    latePlus1: (name) => `Over recent weeks Reneé's body has finished processing much of the feast from ${name}. Her ass remains wider and softer, clothes now permanently tighter with fresh tears at the seams, but her movements have regained some precision. She adjusts items in the kitchen with clinical detachment, noting the permanent changes in her logs. The apartment feels adapted and warmer around her heavier frame.`,
+    latePlus2: (name) => `After weeks of integration following the large feast on ${name}, Reneé's expanded ass and rounded belly have settled into their new proportions. A chair leg once cracked under her but holds now. She reviews her notes steadily, satisfied that the gluttony produced the exact expected result. The space continues to accommodate her softer, heavier presence.`,
+    latePlus3: (name) => `Reneé's body has largely completed processing the enormous yield from devouring ${name}. Her vast ass spreads wide across the reinforced furniture, floorboards still occasionally creaking as she shifts. She sits calmly in the warm kitchen, vastly softer and content. The cycle feels perfectly concluded.`,
   },
-  7:{
-    early:`[placeholder — Reneé, 4 weeks post-harvest, Very Fat tester. She's completely offline. You stop by her apartment; the lights are low, there's something cooking that you couldn't identify, and she answers the door looking warm and considerably larger and not at all surprised to see you. She says she's fine. She clearly is. She closes the door.]`,
-    late:`[placeholder — Reneé, 2 weeks left, Very Fat tester. She's starting to come back. A text: 'I've been thinking about the next batch.' Nothing else. You take this as a good sign.]`,
+  fat: {
+    earlyPlus1: (name) => `Shortly after her feast on ${name}, Reneé's softened body shows the fresh gain. Her ass has grown thicker, splitting a seam audibly as she lowers herself into the reinforced chair, while her belly sways heavier with each step. She processes quietly, hands on her middle, noting metabolic details with professional focus. The kitchen feels fuller around her wider hips.`,
+    earlyPlus2: (name) => `After devouring the richly fattened ${name}, Reneé remains seated for long stretches. Her ass spreads heavily, causing the couch to dip and protest, as new rolls form along her back and sides. The apartment contracts around her increased volume. She logs observations with a softer grip on the pen, entirely accepting of the correct outcome.`,
+    earlyPlus3: (name) => `Following the substantial consumption of ${name}, Reneé becomes a much larger presence. Her ass thickens dramatically, cracking a floor tile when she first shifted, while her belly cascades lower. She sits very still in the warm kitchen, focused on the deep integration with calm satisfaction.`,
+    latePlus1: (name) => `Over the past weeks Reneé has finished processing most of the mass from ${name}. Her ass stays markedly wider, clothes torn at the hips, but she moves with returning clinical grace. She bakes a small test batch and logs refinements, the apartment now fully adjusted to her softer frame.`,
+    latePlus2: (name) => `Reneé's body has integrated the large feast from ${name} over recent weeks. Her heavy ass and thickened thighs no longer cause furniture to groan as loudly. She reviews the full data with quiet approval, satisfied the gluttony aligned with the intended result.`,
+    latePlus3: (name) => `After weeks absorbing the enormous yield of ${name}, Reneé rests content. Her vast ass fills the reinforced seating completely, floorboards worn from her weight. She is deeply satisfied, better than fine, the cycle complete.`,
   },
-  8:{
-    early:`[placeholder — Reneé, 6 weeks post-harvest, Enormous tester. Her apartment is occupied and she is deeply present in it. She's cooking — slow, methodical, for herself alone. She lets you in. She doesn't explain anything. She looks considerably heavier and entirely content. You sit in her kitchen for an hour and she doesn't say much and doesn't need to.]`,
-    late:`[placeholder — Reneé, 3 weeks left, Enormous tester. She's written three pages of notes in her session log. She emails them to you without explanation. The notes are clinical at the top and get less clinical toward the end.]`,
+  veryFat: {
+    earlyPlus1: (name) => `Shortly after devouring ${name}, Reneé moves with heavy deliberation. Her ass has swelled substantially, tearing through the back of her pants as she settles, belly cascading while the reinforced chair groans loudly. She processes the addition with focused calm, the warm apartment organized around her substantial softness.`,
+    earlyPlus2: (name) => `After consuming the well-fattened ${name}, Reneé stays anchored in place. Her ass spreads wider and heavier, deepening cracks in the floor beneath the couch as her belly grows more pendulous. She breathes steadily, hands resting on her vast middle during the integration.`,
+    earlyPlus3: (name) => `In the time after fully eating the immense ${name}, Reneé dominates the room. Her colossal ass and thickened limbs make every shift monumental, furniture protesting constantly. She remains very still in the warm kitchen, deep inside the metabolic completion.`,
+    latePlus1: (name) => `Over recent weeks Reneé has processed much of her gluttony on ${name}. Her ass remains enormously wide, clothes long since abandoned for looser coverings, but her posture has stabilized. She offers precise observations about the permanent changes.`,
+    latePlus2: (name) => `Reneé's body has settled after weeks integrating the large feast from ${name}. Her heavy ass no longer cracks the floor with every movement. She logs final notes with satisfaction, the apartment adapted to her vast, soft form.`,
+    latePlus3: (name) => `After extended processing of the yield from devouring ${name}, Reneé sits as a soft, warm mountain. Her immense ass fills the space, floor reinforced beneath her. She is calm, complete, and better than fine.`,
   },
-  9:{
-    early:`[placeholder — Reneé, 9 weeks post-harvest, Colossal tester. She doesn't answer the door the first time. The second time she does. She's enormous and warm and moving slowly through her apartment like someone who has fully inhabited their own mass. She makes you coffee. She eats continuously while you sit there. She doesn't discuss the subject. She doesn't need to.]`,
-    late:`[placeholder — Reneé, 4 weeks left, Colossal tester. She asked when you're planning to find the next candidate. She phrased it as 'when you're ready' but her tone was 'I'm ready.' She is very large and very settled and clearly thinking forward again.]`,
+  enormous: {
+    earlyPlus1: (name) => `Shortly after her feast on ${name}, Reneé fills the reinforced couch more completely. Her ass has grown vastly heavier, causing supports to creak and strain as her belly rests lower on her thighs. She processes with low, measured words when visited, satisfied with the integration.`,
+    earlyPlus2: (name) => `After devouring the enormous ${name}, Reneé remains deeply seated. Her ass spreads across the full width of the furniture, floorboards groaning under the added mass while new rolls cascade around her. The apartment feels smaller and warmer around her.`,
+    earlyPlus3: (name) => `Following consumption of the massive ${name}, Reneé becomes an even greater presence. Her colossal ass and belly dominate the room, cracking a nearby tile on one shift. She focuses inward on the profound processing with calm professionalism.`,
+    latePlus1: (name) => `Over the past weeks Reneé has integrated much of the gluttony from ${name}. Her immense ass still fills the seating completely but movements require less effort now. She reviews data with clinical precision.`,
+    latePlus2: (name) => `Reneé's body has largely finished processing the large yield of ${name}. Her vast ass and softened frame have settled, furniture holding steady beneath her. She rests content with the correct outcome.`,
   },
-  10:{
-    early:`[placeholder — Reneé, 14 weeks post-harvest, Blob tester. She is barely reachable. You go to her apartment and she is there and vast and very still and warm and she looks at you from across the room and nods once, slowly. She's not distressed. She is the opposite of distressed. She is somewhere very far inside herself and apparently comfortable there. You leave quietly.]`,
-    late:`[placeholder — Reneé, 6 weeks left, Blob tester. She's moving again — slowly, deliberately, but moving. She sent a recipe. New concept. No explanation of where the inspiration came from. It's very rich and very precise and clearly the work of someone who has been doing a great deal of internal research.]`,
+  colossal: {
+    earlyPlus1: (name) => `Shortly after devouring ${name}, Reneé swells even larger in her anchored position. Her colossal ass spreads wider, pressing heavily into the reinforced supports and making the floor shift noticeably. She processes the addition with slow, deep breaths and calm focus.`,
+    earlyPlus2: (name) => `After consuming the immense ${name}, Reneé's body requires full attention. Her vast ass and cascading rolls fill more of the space, causing subtle structural sounds from the floor as she integrates the yield.`,
+    earlyPlus3: (name) => `Following the enormous feast on ${name}, Reneé is a breathtaking mountain. Her immense ass dominates the reorganized room, every subtle shift testing the reinforced foundations while she remains profoundly still.`,
+    latePlus1: (name) => `Over recent weeks Reneé has processed the gluttony from ${name}. Her colossal ass remains a permanent fixture, but awareness has sharpened. She offers steady observations from within her vast softness.`,
+    latePlus2: (name) => `Reneé's body has settled after extended integration of ${name}. Her enormous frame fills the apartment as intended, floor and furniture fully adapted. She is deeply satisfied and ready for what comes next.`,
+  },
+  blob: {
+    earlySpecial: (name) => `Shortly after her final feast on ${name}, Reneé has become an immense, immobile mountain of warm flesh filling much of the living space. Her vast ass spreads broadly, causing the reinforced floor to settle with deep groans as the digestion begins in earnest. The apartment is fully organized around her. She breathes slowly, focused entirely on the profound metabolic work.`,
+    lateSpecial: (name) => `Over the long weeks processing the gluttony of devouring ${name}, Reneé remains an enormous, warm centerpiece. Her breathtaking ass and cascading softness have fully integrated, the floor and supports now permanently strengthened beneath her. She regards visitors with calm, clinical eyes, deeply satisfied and complete. The kitchen functions quietly around her permanent presence.`,
   },
 };
+
+const _RENEE_DIGEST_KEY = { 5:'heavy', 6:'fat', 7:'veryFat', 8:'enormous', 9:'colossal', 10:'blob' };
+
+export function getDigestVignette(reneeStageId, testerName, stagesJumped, isLate) {
+  const key = _RENEE_DIGEST_KEY[reneeStageId] || 'heavy';
+  const section = DIGEST_VIGNETTES[key];
+  if (!section) return '';
+  if (key === 'blob') {
+    return isLate ? section.lateSpecial?.(testerName) || '' : section.earlySpecial?.(testerName) || '';
+  }
+  const j = Math.max(1, stagesJumped || 1);
+  const prefix = isLate ? 'latePlus' : 'earlyPlus';
+  for (let attempt = j; attempt >= 1; attempt--) {
+    const fn = section[`${prefix}${attempt}`];
+    if (fn) return fn(testerName);
+  }
+  return '';
+}

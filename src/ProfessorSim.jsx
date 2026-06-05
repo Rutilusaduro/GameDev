@@ -12,7 +12,7 @@ import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, I
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { HOSTESS_HANGOUTS, MENU_TIERS, ATMOSPHERE_TIERS, GUEST_TIERS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, SEDUCTION_MOVES, MOVES_BY_STAGE_BAND, getStageBand, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, CLUE_INVESTIGATION, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
-import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette, RECRUITMENT_SCENE, TESTER_APPEARANCE, DIGEST_VIGNETTES } from './gameData/cultivator.js';
+import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette, RECRUITMENT_SCENE, TESTER_APPEARANCE, getDigestVignette } from './gameData/cultivator.js';
 import { getMadelineTier, THESIS_BOARD, CASE_STUDY_PAIRS, BOARD_REACTIONS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 
 // ═══════════════════════════════════════════════════════════════
@@ -1436,9 +1436,10 @@ export default function ProfessorSim(){
       const digestW=DIGEST_WEEKS[cs.testerStageId]||2;
       const vignette=getEmergencyVignette(getStage(renee.lbs).id,cs.testerStageId,cs.testerName)||'[emergency harvest]';
       const _bSid=getStage(renee.lbs).id;
-      const gVignette=getGrowthVignette(_bSid,hGain,Math.max(1,getStage(renee.lbs+hGain).id-_bSid));
+      const _stagesJumped=Math.max(1,getStage(renee.lbs+hGain).id-_bSid);
+      const gVignette=getGrowthVignette(_bSid,hGain,_stagesJumped);
       setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,hGain,8)}:st));
-      setCultivatorState(prev=>({...prev,testerStageId:cs.testerStageId,fatBar:finalFatBar,suspicion:200,session:null,pendingStageUp:false,harvestType:'emergency',harvestVignetteText:vignette,growthGain:hGain,growthVignetteText:gVignette,digestWeeksLeft:digestW,digestTotalWeeks:digestW,modalPhase:'emergency'}));
+      setCultivatorState(prev=>({...prev,testerStageId:cs.testerStageId,fatBar:finalFatBar,suspicion:200,session:null,pendingStageUp:false,harvestType:'emergency',harvestVignetteText:vignette,growthGain:hGain,growthVignetteText:gVignette,harvestStagesJumped:_stagesJumped,digestWeeksLeft:digestW,digestTotalWeeks:digestW,modalPhase:'emergency'}));
       push(`🍰 EMERGENCY: ${cs.testerName} got suspicious — harvest triggered (+${hGain} lbs to Reneé)`);
       return;
     }
@@ -1461,8 +1462,9 @@ export default function ProfessorSim(){
     const hGain=HARVEST_GAIN[cs.testerStageId]||HARVEST_GAIN[6];
     const vignette=getPlannedVignette(getStage(renee.lbs).id,cs.testerStageId,cs.testerName)||'[planned harvest]';
     const _bSid=getStage(renee.lbs).id;
-    const gVignette=getGrowthVignette(_bSid,hGain,Math.max(1,getStage(renee.lbs+hGain).id-_bSid));
-    setCultivatorState(prev=>({...prev,harvestType:'planned',harvestVignetteText:vignette,growthGain:hGain,growthVignetteText:gVignette,modalPhase:'harvest'}));
+    const _stagesJumped=Math.max(1,getStage(renee.lbs+hGain).id-_bSid);
+    const gVignette=getGrowthVignette(_bSid,hGain,_stagesJumped);
+    setCultivatorState(prev=>({...prev,harvestType:'planned',harvestVignetteText:vignette,growthGain:hGain,growthVignetteText:gVignette,harvestStagesJumped:_stagesJumped,modalPhase:'harvest'}));
   };
   const confirmCultivatorHarvest=(s)=>{
     const cs=cultivatorState; if(!cs) return;
@@ -9356,9 +9358,7 @@ export default function ProfessorSim(){
         // ── DIGEST CHECK ──
         if(cs.modalPhase==='digest_check'){
           const isEarly=cs.digestWeeksLeft>cs.digestTotalWeeks/2;
-          const stageKey=cs.digestTotalWeeks<=2?6:cs.digestTotalWeeks<=4?7:cs.digestTotalWeeks<=6?8:cs.digestTotalWeeks<=9?9:10;
-          const vigObj=DIGEST_VIGNETTES[stageKey];
-          const vig=isEarly?vigObj?.early:vigObj?.late;
+          const vig=getDigestVignette(getStage(renee?.lbs||100).id,cs.testerName,cs.harvestStagesJumped||1,!isEarly);
           return wrap(<>
             <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>👁 CHECK ON HER</div>
             <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:4}}>Reneé</div>
