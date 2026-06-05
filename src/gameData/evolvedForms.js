@@ -3181,8 +3181,8 @@ The session closes. Next year the classroom will be bigger. Next year she will b
         {
           text:(h,s)=>`${s.name} logs in. Five minutes later, before she's placed an order, Rae knocks on the door. She's carrying the food — the correct food, the right amounts, everything. "I was in the area," she says. The building has a lobby code. ${s.name} is ${Math.round(s.lbs)} pounds and she looks at Rae for a long moment.`,
           choices:[
-            {id:"ask_how",label:"Ask how she knew",result:`"I pay attention," Rae says. That's the whole answer. She starts setting up the trays and ${s.name} decides this is a complete response and starts the match queue.`,lbs:4,rel:6,flag:"asked_how"},
-            {id:"just_take_it",label:"Just take the food — whatever, it's warm",result:`${s.name} steps aside and lets her in without comment. The food is warm. The session is starting. Questions can wait.`,lbs:3,rel:4,flag:"took_it"},
+            {id:"ask_how",label:"Ask how she knew",result:(s)=>`"I pay attention," Rae says. That's the whole answer. She starts setting up the trays and ${s.name} decides this is a complete response and starts the match queue.`,lbs:4,rel:6,flag:"asked_how"},
+            {id:"just_take_it",label:"Just take the food — whatever, it's warm",result:(s)=>`${s.name} steps aside and lets her in without comment. The food is warm. The session is starting. Questions can wait.`,lbs:3,rel:4,flag:"took_it"},
           ]
         },
         {
@@ -3205,15 +3205,15 @@ The session closes. Next year the classroom will be bigger. Next year she will b
         {
           text:(h,s)=>`Rae knocks on the apartment door. Not the lobby intercom — the actual apartment door. She has the lobby code. ${s.name} is ${Math.round(s.lbs)} pounds and she opens the door and looks at Rae and then at the tray of food Rae is already carrying, perfectly selected, warm, and correct.`,
           choices:[
-            {id:"ask_code",label:"When did you get the code",result:`"You gave it to me," Rae says, which is technically true — ${s.name} mentioned it once in passing when there was a delivery delay. Rae has not forgotten it since. ${s.name} lets her in.`,lbs:4,rel:5,flag:"asked_code"},
-            {id:"just_let_in",label:"Let her in — the food is warm, questions later",result:`${s.name} steps aside. This is fine. This is happening. The food is excellent.`,lbs:3,rel:4,flag:"let_in"},
+            {id:"ask_code",label:"When did you get the code",result:(s)=>`"You gave it to me," Rae says, which is technically true — ${s.name} mentioned it once in passing when there was a delivery delay. Rae has not forgotten it since. ${s.name} lets her in.`,lbs:4,rel:5,flag:"asked_code"},
+            {id:"just_let_in",label:"Let her in — the food is warm, questions later",result:(s)=>`${s.name} steps aside. This is fine. This is happening. The food is excellent.`,lbs:3,rel:4,flag:"let_in"},
           ]
         },
         {
           text:(h,s)=>`Rae has rearranged the desk area. Not much — just slightly, to fit the trays better. ${s.name}'s setup works better now. The controller is in the same place but the angle is different and it's easier. She doesn't ask when this happened.`,
           choices:[
-            {id:"lets_rae_stay",label:"She can stay while the session runs",result:`Rae stays. She's quiet, does small things, refills drinks at natural pause points. She doesn't watch the screen so much as watch ${s.name}. ${s.name} notices and decides not to make anything of it.`,lbs:10,rel:8,flag:"rae_stayed"},
-            {id:"sends_rae_out",label:"Out after setup — she needs to focus",result:`${s.name} says she works better alone. Rae nods and leaves. The food is all there. The session runs long anyway.`,lbs:7,rel:5,flag:"rae_left"},
+            {id:"lets_rae_stay",label:"She can stay while the session runs",result:(s)=>`Rae stays. She's quiet, does small things, refills drinks at natural pause points. She doesn't watch the screen so much as watch ${s.name}. ${s.name} notices and decides not to make anything of it.`,lbs:10,rel:8,flag:"rae_stayed"},
+            {id:"sends_rae_out",label:"Out after setup — she needs to focus",result:(s)=>`${s.name} says she works better alone. Rae nods and leaves. The food is all there. The session runs long anyway.`,lbs:7,rel:5,flag:"rae_left"},
           ]
         },
       ],
@@ -3229,14 +3229,14 @@ The session closes. Next year the classroom will be bigger. Next year she will b
         {
           text:(h,s)=>`Rae knocks before ${s.name} has placed an order. Not shortly after — before. The food is exactly what she was going to order. ${s.name} is ${Math.round(s.lbs)} pounds and she looks at the tray and then at Rae.`,
           choices:[
-            {id:"confronted_rae",label:"'How did you know what I was going to order'",result:`"I've been paying attention for a long time," Rae says. She says it simply, without apology. ${s.name} looks at her for a long moment. Then she picks up a thing from the tray and takes a bite. It's exactly right. It was always going to be exactly right.`,lbs:5,rel:7,flag:"confronted_rae"},
-            {id:"just_eat",label:"Just start eating — the session won't wait",result:`${s.name} reaches for the food without comment. Rae sets up the rest of the tray. The game loads. Some things don't need a conversation.`,lbs:4,rel:5,flag:"skipped_question"},
+            {id:"confronted_rae",label:"'How did you know what I was going to order'",result:(s)=>`"I've been paying attention for a long time," Rae says. She says it simply, without apology. ${s.name} looks at her for a long moment. Then she picks up a thing from the tray and takes a bite. It's exactly right. It was always going to be exactly right.`,lbs:5,rel:7,flag:"confronted_rae"},
+            {id:"just_eat",label:"Just start eating — the session won't wait",result:(s)=>`${s.name} reaches for the food without comment. Rae sets up the rest of the tray. The game loads. Some things don't need a conversation.`,lbs:4,rel:5,flag:"skipped_question"},
           ]
         },
         {
           text:(h,s)=>`The setup is perfect. Rae is in the room, quiet and efficient, and the session has everything it needs before it needed it. ${h.includes('confronted_rae')?'The conversation from earlier sits between them unresolved, and that seems fine. Some things don\'t close neatly.':'Nothing was said and nothing needed to be said and the session is running perfectly.'} ${s.name} is playing the best stretch she's ever played.`,
           choices:[
-            {id:"accepted_arrangement",label:"Acknowledge — out loud — that this arrangement works",result:`"This works," she says, not looking up from the screen. Rae says "I know" and that's the end of it. It's a complete conversation. ${s.name} wins the next three games.`,lbs:9,rel:8,flag:"accepted_arrangement"},
+            {id:"accepted_arrangement",label:"Acknowledge — out loud — that this arrangement works",result:(s)=>`"This works," she says, not looking up from the screen. Rae says "I know" and that's the end of it. It's a complete conversation. ${s.name} wins the next three games.`,lbs:9,rel:8,flag:"accepted_arrangement"},
             {id:"pretend_normal",label:"Pretend everything is completely normal",result:`She pretends. It's not really pretending anymore. This is the normal. She plays clean and doesn't think about it.`,lbs:7,rel:5,flag:"pretended"},
           ]
         },
@@ -3253,15 +3253,15 @@ The session closes. Next year the classroom will be bigger. Next year she will b
         {
           text:(h,s)=>`Rae is already in the room when ${s.name} starts logging in. Not delivering — just here, having let herself in earlier, doing quiet things. There's food staged. The setup is prepared. Rae looks up and says "hey."`,
           choices:[
-            {id:"said_something",label:"'You're always here now'",result:`"Yeah," Rae says. Not 'I know' or 'sorry' — just yeah. Like a confirmation. ${s.name}, ${Math.round(s.lbs)} pounds in her chair, looks at her for a moment and then turns to the screen.`,lbs:4,rel:8,flag:"said_something"},
-            {id:"opened_game",label:"Open the game without comment",result:`${s.name} puts on the headset and logs in without saying anything. Rae hands her the first thing to eat without being asked. This is how it goes now.`,lbs:3,rel:6,flag:"no_comment"},
+            {id:"said_something",label:"'You're always here now'",result:(s)=>`"Yeah," Rae says. Not 'I know' or 'sorry' — just yeah. Like a confirmation. ${s.name}, ${Math.round(s.lbs)} pounds in her chair, looks at her for a moment and then turns to the screen.`,lbs:4,rel:8,flag:"said_something"},
+            {id:"opened_game",label:"Open the game without comment",result:(s)=>`${s.name} puts on the headset and logs in without saying anything. Rae hands her the first thing to eat without being asked. This is how it goes now.`,lbs:3,rel:6,flag:"no_comment"},
           ]
         },
         {
           text:(h,s)=>`The session is running. It's the longest one they've done — hours deep, the food situation infinite and well-managed, the rank climbing past levels that used to feel unreachable. Rae says, from somewhere in the room, "working as intended."`,
           choices:[
-            {id:"working_as_intended",label:"Say it back — 'working as intended'",result:`${s.name} says it without looking up. "Working as intended." Rae smiles. The game continues. Something is said in that exchange that neither of them needs to name.`,lbs:12,rel:10,flag:"said_it_back"},
-            {id:"just_nod",label:"Nod and keep playing",result:`${s.name} nods, controller in hand, eyes on screen, her enormous self completely at home in this setup that has grown around her. It's working. Obviously it's working.`,lbs:9,rel:7,flag:"nodded"},
+            {id:"working_as_intended",label:"Say it back — 'working as intended'",result:(s)=>`${s.name} says it without looking up. "Working as intended." Rae smiles. The game continues. Something is said in that exchange that neither of them needs to name.`,lbs:12,rel:10,flag:"said_it_back"},
+            {id:"just_nod",label:"Nod and keep playing",result:(s)=>`${s.name} nods, controller in hand, eyes on screen, her enormous self completely at home in this setup that has grown around her. It's working. Obviously it's working.`,lbs:9,rel:7,flag:"nodded"},
           ]
         },
       ],
