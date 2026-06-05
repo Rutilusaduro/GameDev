@@ -12,7 +12,7 @@ import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, I
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { HOSTESS_HANGOUTS, MENU_TIERS, ATMOSPHERE_TIERS, GUEST_TIERS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, SEDUCTION_MOVES, MOVES_BY_STAGE_BAND, getStageBand, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, CLUE_INVESTIGATION, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
-import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, HARVEST_VIGNETTES_PLANNED, HARVEST_VIGNETTES_EMERGENCY, getGrowthVignette, RECRUITMENT_SCENE, TESTER_APPEARANCE, DIGEST_VIGNETTES } from './gameData/cultivator.js';
+import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, HARVEST_VIGNETTES_EMERGENCY, getGrowthVignette, RECRUITMENT_SCENE, TESTER_APPEARANCE, DIGEST_VIGNETTES } from './gameData/cultivator.js';
 import { getMadelineTier, THESIS_BOARD, CASE_STUDY_PAIRS, BOARD_REACTIONS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 
 // ═══════════════════════════════════════════════════════════════
@@ -1459,7 +1459,7 @@ export default function ProfessorSim(){
     setAp(a=>a-1);
     const renee=students.find(st=>st.id===s.id)||s;
     const hGain=HARVEST_GAIN[cs.testerStageId]||HARVEST_GAIN[6];
-    const vignette=HARVEST_VIGNETTES_PLANNED[cs.testerStageId]?.(cs.testerName,getStage(renee.lbs).label)||'[planned harvest]';
+    const vignette=getPlannedVignette(getStage(renee.lbs).id,cs.testerStageId,cs.testerName)||'[planned harvest]';
     const _bSid=getStage(renee.lbs).id;
     const gVignette=getGrowthVignette(_bSid,hGain,Math.max(1,getStage(renee.lbs+hGain).id-_bSid));
     setCultivatorState(prev=>({...prev,harvestType:'planned',harvestVignetteText:vignette,growthGain:hGain,growthVignetteText:gVignette,modalPhase:'harvest'}));

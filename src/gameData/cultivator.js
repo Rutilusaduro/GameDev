@@ -160,15 +160,53 @@ export const STAGE_UP_TEXT = {
 };
 
 // ── HARVEST VIGNETTES ────────────────────────────────────────────────────────
-// Shown when player harvests the tester. Placeholder prose — fill in later.
+// 2D lookup: Reneé's stage key × tester's stage id.
+// Use getPlannedVignette(reneeStageId, testerStageId, testerName) — do not call directly.
 
 export const HARVEST_VIGNETTES_PLANNED = {
-  6:(name,rl)=>`[placeholder — ${name} at Fat, Reneé at ${rl}. Planned harvest. She arrives for what she thinks is another session. She leaves changed. Reneé is precise, controlled, satisfied.]`,
-  7:(name,rl)=>`[placeholder — ${name} at Very Fat, Reneé at ${rl}. Planned harvest. The subject is noticeably larger than the first time. The harvest is cleanly executed. Reneé's notes are meticulous.]`,
-  8:(name,rl)=>`[placeholder — ${name} at Enormous, Reneé at ${rl}. Planned harvest. The subject barely fits the chair. The process takes longer at this size. Reneé considers it the best result so far.]`,
-  9:(name,rl)=>`[placeholder — ${name} at Colossal, Reneé at ${rl}. Planned harvest. A subject this size is exceptional. Reneé had not expected to get one this far. She writes down everything.]`,
-  10:(name,rl)=>`[placeholder — ${name} at Blob, Reneé at ${rl}. Planned harvest. Maximum yield. Reneé spends a long time in the kitchen afterward. She doesn't go home until late.]`,
+  heavy: {
+    6: (name) => `You watch from the doorway as ${name} arrives at Reneé's apartment for the scheduled tasting. Reneé, round and soft with her belly hanging forward, greets her with clinical precision from her reinforced chair. The months of careful fattening were the only preparation required. When the moment arrives Reneé consumes the softened tester with methodical focus, savoring the accumulated yield as it integrates into her own frame. ${name} is fully taken, leaving only satisfied stillness. Reneé sits noticeably fuller afterward, logging the exact transfer with flour-dusted hands while the warm kitchen feels slightly more crowded around her.`,
+    7: (name) => `The apartment is warm and orderly when ${name} steps inside, expecting another session. Reneé, carrying her added weight evenly, moves with deliberate care to guide events to their planned conclusion. She consumes the well-fattened ${name} with satisfied precision, feeling the dense mass settle into her belly and thighs. Afterward she leans back in her chair, rounder and warmer, and records the data as the air carries the quiet scent of completion.`,
+    8: (name) => `${name} arrives trusting and already vast. Reneé conducts the final interaction from her seat with calm expertise. No extra recipes were needed — only the harvest of months of precise feeding. She consumes the enormously softened tester slowly and completely, her own body accepting the yield with professional pleasure. Reneé's belly rests heavier on her lap as she logs the success, the apartment organized perfectly around the ritual.`,
+    9: (name) => `You observe ${name} enter, moving with great effort. Reneé waits in her softened, rounded form, the kitchen ready. The planned harvest proceeds without deviation; she consumes the immense, yielding mass of her tester with calm expertise. The transfer makes Reneé visibly larger and warmer. She rests a hand on her expanded middle and notes every detail, deeply satisfied with the outcome.`,
+    10: (name) => `${name} arrives as an immense, immobile figure of soft flesh. Reneé has arranged everything in advance. The harvest is the culmination she planned — she consumes the entire mountain of her tester with focused, sensory appreciation. Afterward Reneé sits fuller and rounder, the apartment quieter, logging the maximum yield while feeling the correct weight of success.`,
+  },
+  fat: {
+    6: (name) => `${name} knocks and enters Reneé's apartment. Reneé, wider and softer with pronounced sway in her step, greets her clinically from the reinforced seating. The fattening itself was all the preparation needed. At the scheduled moment Reneé consumes her tester completely, integrating the soft pounds into her own thickening frame. ${name} is gone. Reneé adjusts her tighter clothes with detached interest and updates her logs, the kitchen warm and orderly.`,
+    7: (name) => `The tester ${name} arrives for the expected session. Reneé guides the interaction to its planned end with steady movements. She consumes the richly fattened yield with precise satisfaction, her own belly growing heavier as the mass settles. Afterward she sits wider in her chair, noting the exact changes, satisfied that the cycle performed correctly.`,
+    8: (name) => `${name} settles heavily into the prepared chair. Reneé requires only the harvest she has cultivated. She consumes the vast tester methodically, feeling the rich integration across her body. Reneé becomes noticeably larger, her movements more deliberate as she returns to her notes, the apartment adapted to her increased size.`,
+    9: (name) => `${name} shuffles in with considerable effort. Reneé waits ready. The planned consumption unfolds smoothly — she takes every pound of the cultivated mass, her own frame expanding with quiet fulfillment. Reneé rests afterward, hand on her vast belly, logging the data with clinical precision in the warm, scented air.`,
+    10: (name) => `The apartment feels smaller when the immense ${name} arrives. Reneé executes the final harvest exactly as intended. She consumes the entire vast tester, absorbing the full yield into her softening body. She rests immobile with satisfaction, logging the result while the space organizes itself around her larger presence.`,
+  },
+  veryFat: {
+    6: (name) => `${name} enters expecting routine tasting. Reneé moves with slow deliberation to begin the planned harvest. The preparation was complete long ago. She consumes the fattened tester with focused expertise, the added mass integrating into her own heavy rolls. Reneé settles deeper into the reinforced furniture afterward, logging everything with satisfied calm.`,
+    7: (name) => `Reneé waits warm and substantial in her apartment as ${name} arrives. She conducts the session with clinical grace despite her size. The harvest is the goal — she consumes the well-fattened tester completely, feeling the yield distribute across her vast softness. Her own body grows heavier, needing more leverage to adjust as she records the precise results.`,
+    8: (name) => `${name} is already vast when she comes over. Reneé has prepared the space. She consumes her tester with methodical pleasure, the transfer making her even larger and more pendulous. The apartment creaks softly around her expanded form as she logs the successful cycle.`,
+    9: (name) => `The immense ${name} barely fits through the doorway. Reneé executes the planned harvest with absolute control. She absorbs the colossal mass, her belly growing heavier as she integrates the yield. Deeply content, Reneé remains seated, noting every sensory detail of the completion.`,
+    10: (name) => `${name} arrives fully ripened and immobile. Reneé completes the harvest precisely. She consumes the entire mountain of soft flesh, swelling larger and warmer. The room feels fuller around her as she processes the maximum yield with professional satisfaction.`,
+  },
+  enormous: {
+    6: (name) => `${name} steps inside Reneé's apartment. Reneé, filling the reinforced couch, greets her with calm authority. No extra preparation is required beyond the fattening already done. She consumes the fattened tester with deliberate focus, the mass adding to her own vast frame. Reneé logs the data afterward, barely able to reach her notebook without leverage.`,
+    7: (name) => `Reneé waits substantial as ${name} arrives. The planned moment comes and she consumes the richly fattened tester completely, integrating the dense softness into her belly and sides. Her own body presses more firmly against the furniture as she records the yield, satisfied with the controlled result.`,
+    8: (name) => `The vast ${name} enters with difficulty. Reneé conducts the harvest from her seated position. She consumes every cultivated pound with sensory appreciation, growing even larger and softer. The apartment has been fully adapted around her as she notes the success.`,
+    9: (name) => `${name} arrives immense and slow. Reneé executes the planned consumption flawlessly. The immense transfer settles heavily into her. She rests with quiet fulfillment, hand resting on the expanded mountain of herself, logging the precise data.`,
+    10: (name) => `The immense ${name} dominates the room when she arrives. Reneé completes the final harvest exactly on schedule. She absorbs the breathtaking yield, becoming vastly larger herself. Immobile and content, Reneé processes the success in the reorganized apartment.`,
+  },
+  colossal: {
+    6: (name) => `${name} arrives at the apartment now arranged entirely around Reneé's immense form. Reneé greets her with clinical precision. The harvest proceeds as planned — she consumes the fattened tester, adding the mass to her already vast body. Reneé logs the data mentally at first, deeply satisfied with the ritual's completion.`,
+    7: (name) => `Reneé remains mostly immobile in her expanded state as ${name} enters. She consumes the well-fattened tester with methodical expertise, the yield integrating into her vast rolls and belly. The apartment feels warmer and more complete around her expanded presence as she records the results.`,
+    8: (name) => `The vast ${name} comes over for the final session. Reneé executes the planned harvest without hurry. She absorbs the mass completely, growing even more immense. Her calm expression shows professional fulfillment as the kitchen continues its quiet function nearby.`,
+    9: (name) => `${name} shuffles in with great difficulty. Reneé conducts the harvest with absolute control. She consumes the immense tester, her body swelling further to accommodate it. The room is organized perfectly around her as she rests in satisfied stillness.`,
+    10: (name) => `${name} arrives as an immobile mountain of flesh. Reneé completes the ultimate planned harvest. She consumes the entire cultivated yield, becoming vastly larger and warmer. The apartment has been fully rearranged for her new scale. She is exactly where she belongs, the cycle perfect.`,
+  },
 };
+
+// Maps Reneé's weight stage id to the harvest vignette key
+const _RENEE_HARVEST_KEY = { 5:'heavy', 6:'fat', 7:'veryFat', 8:'enormous', 9:'colossal', 10:'colossal' };
+export function getPlannedVignette(reneeStageId, testerStageId, testerName) {
+  const key = _RENEE_HARVEST_KEY[reneeStageId] || 'heavy';
+  return HARVEST_VIGNETTES_PLANNED[key]?.[testerStageId]?.(testerName) || '';
+}
 
 export const HARVEST_VIGNETTES_EMERGENCY = {
   6:(name,rl)=>`[placeholder — ${name} at Fat, Reneé at ${rl}. EMERGENCY harvest — suspicion maxed. Something tipped too far. ${name} asked a question Reneé couldn't answer cleanly. The harvest is rushed. Reneé curses herself for three choices she made in session four. The yield is the same. The cleanup is not.]`,
