@@ -338,7 +338,7 @@ export default function ProfessorSim(){
   const [lilithClueFound, setLilithClueFound] = useState(false);
   const [lilithClueModal, setLilithClueModal] = useState(null); // null | 'feast_clue' | 'investigating' | 'result'
   const [lilithHuntState, setLilithHuntState] = useState(null);
-  // lilithHuntState: {currentNode,encounter:{manId,movesUsed[],movesNeeded,failed,consumed}|null,log:[],deliveryMode,deliveryDone}
+  // lilithHuntState: {textLog:[{text,type}],currentNode,encounter:{manId,movesUsed[],movesNeeded,failed,consumed}|null,deliveryMode,deliveryDone}
   const [lilithKillCount, setLilithKillCount] = useState(0);
   const [cultivatorState, setCultivatorState] = useState(null);
   // cultivatorState: {testerName,testerStageId,testerLbs,fatBar,suspicion,harvestsCompleted,usedNames,modalPhase,session,pendingStageUp,harvestType,harvestVignetteText,growthGain,growthVignetteText,digestWeeksLeft,digestTotalWeeks}
@@ -1306,21 +1306,60 @@ export default function ProfessorSim(){
   };
 
   // ── LILITH / FEASTING BEAUTY handlers ─────────────────────────────
+  const LILITH_DORM_TEXT=(stageId)=>{
+    if(stageId>=7) return "Getting out of the room takes a moment. Then the night air finds you, all of you — your chest leading, the cold biting exposed skin first, the rest of you following into the dark. The campus is quiet. You are hungry enough to go anyway.";
+    if(stageId>=3) return "You turn the door handle and step out into the corridor. The cool air hits your skin all at once — there's a great deal of skin now — your cleavage catching the breeze first, then the rest of you following into the night. You are hungry. You decide to go somewhere the hunger can find what it needs.";
+    return "The door clicks shut behind you. You step out into the corridor and the cold air hits — every exposed inch of you, and there is a great deal exposed tonight. Your cleavage catches the chill first. The campus spreads out ahead, mostly dark, mostly quiet. You are hungry. You are always hungry.";
+  };
+  const LILITH_TRAVEL={
+    'dorm→quad':"You follow the main path out to the open quad. Lampposts at intervals, pools of orange light between stretches of dark.",
+    'quad→dorm':"The familiar corridor. Room 312. The scent of incense and something you won't name.",
+    'quad→dining_hall':"The fluorescent glow of the dining hall bleeds through its windows. You push through the double doors into the smell of institutional food and distracted people.",
+    'quad→campus_park':"The campus park loop is mostly dark at this hour. The pond reflects the sky. A few shapes moving along the path.",
+    'quad→admin':"The admin building's lobby is still half-lit. Men with ambition and nowhere useful to put it.",
+    'quad→crossroads':"The south path slopes down to where it splits. The bench with the broken slat. The particular energy of people deciding which way to go.",
+    'dining_hall→quad':"Back out through the double doors. The night air again.",
+    'dining_hall→dorm_row':"The back exit leads to the long corridor of residence halls. Music from three directions. Doors propped open.",
+    'dorm_row→dining_hall':"Back toward the warm fluorescent glow of the dining hall.",
+    'crossroads→quad':"Back up the south path toward the quad.",
+    'crossroads→gym':"Glass walls ahead, the gym lights still burning. You push through the door into the warmth and effort.",
+    'crossroads→library':"The library's pale glow is steady and calm. You pass through the entrance, into the quiet.",
+    'crossroads→frat_row':"Three houses ahead, music from two of them. You approach.",
+    'crossroads→coffee_shop':"String lights still on. The playlist is too loud. You step inside into espresso and pretension.",
+    'gym→crossroads':"Back out through the glass doors. The night air cold after the gym's warmth.",
+    'library→crossroads':"Back through the entrance, out into the quiet of the night.",
+    'frat_row→crossroads':"You leave the houses behind. Back toward the crossroads.",
+    'coffee_shop→crossroads':"Out from the string lights, back into the dark.",
+    'campus_park→quad':"The loop brings you back around toward the quad.",
+    'admin→quad':"Back out through the lobby doors.",
+  };
   const openLilithHunt=()=>{
     const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
     const stageId=getStage(lilith.lbs).id;
-    if(stageId>=9){ setLilithHuntState({deliveryMode:true,encounter:null,log:[],deliveryDone:false}); return; }
-    setLilithHuntState({currentNode:null,encounter:null,log:[],deliveryMode:false,deliveryDone:false});
+    if(stageId>=9){
+      setLilithHuntState({textLog:[{text:"ROOM 312 — DELIVERY",type:'location'},{text:DELIVERY_SCENE,type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:true,deliveryDone:false});
+      return;
+    }
+    setLilithHuntState({textLog:[{text:"HER DORM · ROOM 312",type:'location'},{text:LILITH_DORM_TEXT(stageId),type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:false,deliveryDone:false});
   };
   const navigateHunt=(nodeId)=>{
-    setLilithHuntState(prev=>({...prev,currentNode:nodeId,encounter:null,log:[]}));
+    const node=HUNT_NODES[nodeId]; if(!node) return;
+    const fromNode=lilithHuntState?.currentNode||'dorm';
+    const travelKey=`${fromNode}→${nodeId}`;
+    const travelText=LILITH_TRAVEL[travelKey]||null;
+    const entries=[];
+    if(travelText) entries.push({text:travelText,type:'action'});
+    entries.push({text:node.label.toUpperCase(),type:'location'});
+    entries.push({text:node.desc,type:'narrative'});
+    setLilithHuntState(prev=>({...prev,currentNode:nodeId,encounter:null,textLog:[...prev.textLog,...entries]}));
   };
   const approachMan=(manId)=>{
     const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
     const man=HUNT_MEN.find(m=>m.id===manId); if(!man) return;
     const stageId=getStage(lilith.lbs).id;
     const diff=getEffectiveDifficulty(man.difficulty,stageId);
-    setLilithHuntState(prev=>({...prev,encounter:{manId,movesUsed:[],movesNeeded:Math.max(1,diff),failed:false,consumed:false},log:[man.desc(stageId)]}));
+    const entries=[{text:`${man.name.toUpperCase()} — ${man.tag}`,type:'location'},{text:man.desc(stageId),type:'narrative'}];
+    setLilithHuntState(prev=>({...prev,encounter:{manId,movesUsed:[],movesNeeded:Math.max(1,diff),failed:false,consumed:false},textLog:[...prev.textLog,...entries]}));
   };
   const makeSeduceMove=(moveId)=>{
     if(!lilithHuntState?.encounter) return;
@@ -1331,13 +1370,13 @@ export default function ProfessorSim(){
     const {encounter}=lilithHuntState;
     if(encounter.consumed||encounter.failed) return;
     if(move.risky&&stageBand===0&&Math.random()<0.5){
-      setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,failed:true},log:[...prev.log,move.riskyFailText]}));
+      setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,failed:true},textLog:[...prev.textLog,{text:move.riskyFailText,type:'narrative'},{text:"He slipped away.",type:'system'}]}));
       return;
     }
     const moveText=move.text[Math.min(stageBand,move.text.length-1)]||'';
     const newMovesUsed=[...encounter.movesUsed,moveId];
     const isDone=newMovesUsed.length>=encounter.movesNeeded;
-    setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,movesUsed:newMovesUsed,done:isDone},log:[...prev.log,moveText]}));
+    setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,movesUsed:newMovesUsed,done:isDone},textLog:[...prev.textLog,{text:moveText,type:'action'},...(isDone?[{text:"He's yours.",type:'system'}]:[])]}));
   };
   const consumeMan=()=>{
     const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
@@ -1348,7 +1387,7 @@ export default function ProfessorSim(){
     setLilithKillCount(k=>k+1);
     push(`🌑 Lilith — hunt complete: +${gain} lbs`);
     const consumeText=getConsumeText(stageId);
-    setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,consumed:true},log:[...prev.log,consumeText]}));
+    setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,consumed:true},textLog:[...prev.textLog,{text:consumeText,type:'narrative'},{text:`✦ +${gain} lbs`,type:'system'}]}));
   };
   const deliveryScene=()=>{
     const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
@@ -1358,7 +1397,7 @@ export default function ProfessorSim(){
     setStudents(prev=>prev.map(s=>s.id===LILITH_ID?{...s,lbs:s.lbs+gain}:s));
     setLilithKillCount(k=>k+1);
     push(`🌑 Lilith — delivery: +${gain} lbs`);
-    setLilithHuntState(prev=>({...prev,deliveryDone:true}));
+    setLilithHuntState(prev=>({...prev,deliveryDone:true,textLog:[...prev.textLog,{text:`✦ +${gain} lbs`,type:'system'},{text:"You pick up your phone. You order again.",type:'narrative'}]}));
   };
   const closeHunt=()=>setLilithHuntState(null);
   const investigateClue=()=>{
@@ -8108,222 +8147,154 @@ export default function ProfessorSim(){
         );
       })()}
 
-      {/* ── LILITH — FEASTING BEAUTY HUNT MODAL ── */}
-      {lilithHuntState&&!lilithHuntState.deliveryMode&&(()=>{
-        const{currentNode,encounter,log}=lilithHuntState;
+      {/* ── LILITH — FEASTING BEAUTY (TEXT ADVENTURE) ── */}
+      {lilithHuntState&&(()=>{
+        const{textLog,currentNode,encounter,deliveryMode,deliveryDone}=lilithHuntState;
         const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return null;
         const stageId=getStage(lilith.lbs).id;
         const stageBand=getStageBand(stageId);
         const accessibleNodes=HUNT_NODE_ACCESS[stageId]||[];
-        const accent="#7010a0";
         const availableMoves=MOVES_BY_STAGE_BAND[stageBand]||MOVES_BY_STAGE_BAND[0];
+        const accent="#7010a0";
+
+        // Silhouette scale by weight stage
+        const silW=[18,20,24,30,38,48,60,74,90,108,130][Math.min(10,stageId)];
+        const silH=[60,58,55,52,47,42,36,30,24,18,14][Math.min(10,stageId)];
+        const silBR=["50% 50% 40% 40%","50% 50% 42% 42%","50% 50% 45% 45%","50% 50% 50% 50%","48% 48% 53% 53%","45% 45% 56% 56%","42% 42% 60% 60%","38% 38% 64% 64%","34% 34% 68% 68%","28% 28% 72% 72%","24% 24% 76% 76%"][Math.min(10,stageId)];
+        const headW=Math.max(8,Math.round(silW*0.3));
+
+        // Build choice list
+        const choices=[];
+        const addNavChoices=(nodeId)=>{
+          const connected=(HUNT_MAP[nodeId]||[]).filter(nid=>accessibleNodes.includes(nid)&&nid!=='dorm');
+          connected.forEach(nid=>choices.push({id:`go_${nid}`,label:`→ ${HUNT_NODES[nid]?.label}`,action:()=>navigateHunt(nid),dim:true}));
+        };
+        const returnToLoc=()=>{
+          const nd=HUNT_NODES[currentNode];
+          setLilithHuntState(prev=>({...prev,encounter:null,textLog:[...prev.textLog,{text:nd?.label.toUpperCase()||'',type:'location'}]}));
+        };
+
+        if(deliveryMode){
+          if(!deliveryDone) choices.push({id:'deliver',label:'📱 He knocks. You call him in.',action:deliveryScene,big:true});
+          else choices.push({id:'close',label:'Close ✓',action:closeHunt,dim:true});
+        } else if(!encounter){
+          if(currentNode==='dorm'){
+            choices.push({id:'go_quad',label:'→ Step out into the night',action:()=>navigateHunt('quad'),big:true});
+            choices.push({id:'close',label:'← Stay in',action:closeHunt,dim:true});
+          } else {
+            const menHere=HUNT_MEN.filter(m=>m.location===currentNode&&m.difficulty>0);
+            menHere.forEach(man=>{
+              const eff=getEffectiveDifficulty(man.difficulty,stageId);
+              const diffColor=eff<=1?"#40c060":eff===2?"#c0a030":"#c04030";
+              choices.push({id:`approach_${man.id}`,label:`APPROACH  ${man.name}`,sublabel:`${man.tag} · ${eff<=1?"Easy":eff===2?"Medium":"Hard"}`,sublabelColor:diffColor,action:()=>approachMan(man.id),approach:true});
+            });
+            addNavChoices(currentNode);
+            choices.push({id:'leave',label:'Leave the hunt',action:closeHunt,dim:true,small:true});
+          }
+        } else if(encounter.consumed){
+          choices.push({id:'again',label:'Hunt again ↩',action:returnToLoc});
+          choices.push({id:'close',label:'Return to campus',action:closeHunt,dim:true});
+        } else if(encounter.failed){
+          choices.push({id:'back',label:'↩ Back to the hunt',action:returnToLoc});
+          addNavChoices(currentNode);
+          choices.push({id:'leave',label:'Leave the hunt',action:closeHunt,dim:true,small:true});
+        } else {
+          const isDone=encounter.done||encounter.movesUsed.length>=encounter.movesNeeded;
+          if(isDone){
+            choices.push({id:'consume',label:'🌑 Take him home →',action:consumeMan,big:true});
+          } else {
+            availableMoves.forEach(moveId=>{
+              const move=SEDUCTION_MOVES[moveId]; if(!move) return;
+              if(move.minStageBand&&stageBand<move.minStageBand) return;
+              choices.push({id:moveId,label:move.label,action:()=>makeSeduceMove(moveId),risky:move.risky});
+            });
+          }
+        }
+
+        // Progress dots (during active seduction)
+        const showProgress=encounter&&!encounter.failed&&!encounter.consumed;
+        const progressDots=showProgress?Array.from({length:encounter.movesNeeded}).map((_,i)=>i<encounter.movesUsed.length):null;
 
         return(
-          <div style={{...C.overlay,zIndex:1300}}>
-            <div style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#080010,#100018,#080010)",border:`1px solid ${accent}50`,maxHeight:"90vh",overflowY:"auto",padding:20}}>
-              <div style={{fontSize:9,letterSpacing:4,color:accent,marginBottom:4}}>🌑 FEASTING BEAUTY</div>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-                <div style={{fontSize:14,fontWeight:700,color:"#d060e0"}}>Lilith · {Math.round(lilith.lbs)} lbs · {getStage(lilith.lbs).label}</div>
-                <button style={{...C.smBtn,fontSize:10}} onClick={closeHunt}>✕ Leave</button>
-              </div>
+          <div style={{position:"fixed",inset:0,background:"#000",zIndex:1300,display:"flex",flexDirection:"column",fontFamily:"inherit"}}>
 
-              {/* No node selected — show accessible map */}
-              {!currentNode&&!encounter&&(
-                <div>
-                  <div style={{fontSize:11,color:"#705080",marginBottom:12,fontStyle:"italic"}}>Where do you want to go tonight?</div>
-                  <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                    {accessibleNodes.filter(nid=>nid!=='dorm').map(nid=>{
-                      const node=HUNT_NODES[nid]; if(!node) return null;
-                      const menHere=HUNT_MEN.filter(m=>m.location===nid&&m.difficulty>0);
-                      return(
-                        <div key={nid} style={{background:"rgba(20,0,35,0.7)",border:`1px solid ${accent}40`,borderRadius:8,padding:"10px 12px",cursor:"pointer"}}
-                          onClick={()=>navigateHunt(nid)}>
-                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                            <div style={{fontSize:13,fontWeight:700,color:"#c060d0"}}>{node.label}</div>
-                            <div style={{fontSize:10,color:"#604070"}}>{menHere.length} {menHere.length===1?"target":"targets"}</div>
-                          </div>
-                          <div style={{fontSize:10,color:"#805090",marginTop:3,lineHeight:1.45,fontStyle:"italic"}}>{node.desc}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
+            {/* ── NIGHT SCENE HEADER ── */}
+            <div style={{position:"relative",height:82,overflow:"hidden",flexShrink:0,background:"linear-gradient(180deg,#010008 0%,#060018 55%,#0d0026 100%)"}}>
+              {/* Stars */}
+              {[[7,22],[14,9],[23,16],[33,5],[41,19],[50,8],[58,13],[66,5],[74,21],[81,10],[88,7],[94,17],[4,32],[47,26],[71,29]].map(([x,y],i)=>(
+                <div key={i} style={{position:"absolute",left:`${x}%`,top:`${y}%`,width:i%3===0?2:1,height:i%3===0?2:1,borderRadius:"50%",background:"#fff",opacity:0.4+i%3*0.15,boxShadow:`0 0 ${i%4===0?4:2}px #ffffff60`}}/>
+              ))}
+              {/* Moon */}
+              <div style={{position:"absolute",right:"9%",top:"10%",width:20,height:20,borderRadius:"50%",background:"#ccc8e0",boxShadow:"inset 5px -2px 0 #0a001c, 0 0 12px #9080c040"}}/>
+              {/* Left building */}
+              <div style={{position:"absolute",left:0,bottom:0,width:"28%",height:44,background:"#040010",clipPath:"polygon(0 100%,0 45%,8% 45%,8% 22%,14% 22%,14% 45%,22% 45%,22% 65%,28% 65%,28% 5%,34% 5%,34% 60%,42% 60%,42% 100%)"}}/>
+              {/* Right building */}
+              <div style={{position:"absolute",right:0,bottom:0,width:"32%",height:52,background:"#040010",clipPath:"polygon(0 100%,0 60%,6% 60%,6% 32%,12% 32%,12% 52%,20% 52%,20% 12%,26% 12%,26% 52%,36% 52%,36% 38%,42% 38%,42% 4%,48% 4%,48% 38%,62% 38%,62% 62%,72% 62%,72% 100%)"}}/>
+              {/* Lilith silhouette */}
+              <div style={{position:"absolute",bottom:0,left:"50%",transform:"translateX(-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:2,paddingBottom:0}}>
+                <div style={{width:headW,height:headW,borderRadius:"50%",background:"#28005580",boxShadow:"0 0 5px #6010a030"}}/>
+                <div style={{width:silW,height:silH,background:"#28005580",borderRadius:silBR,boxShadow:`0 0 14px #6010a030`,transition:"width 0.5s,height 0.5s,border-radius 0.5s"}}/>
+              </div>
+              {/* Top bar */}
+              <div style={{position:"absolute",top:0,left:0,right:0,display:"flex",justifyContent:"space-between",padding:"5px 12px"}}>
+                <div style={{fontSize:8,letterSpacing:4,color:"#6010a0",textShadow:"0 0 8px #7010a0"}}>🌑 FEASTING BEAUTY</div>
+                <div style={{display:"flex",gap:10,alignItems:"center"}}>
+                  <span style={{fontSize:10,color:"#9030b0"}}>{Math.round(lilith.lbs)} lbs · {getStage(lilith.lbs).label}</span>
+                  <button onClick={closeHunt} style={{background:"none",border:"1px solid #40104050",color:"#604060",fontSize:10,borderRadius:4,padding:"1px 7px",cursor:"pointer",lineHeight:"16px"}}>✕</button>
+                </div>
+              </div>
+            </div>
+
+            {/* ── TEXT LOG ── */}
+            <div ref={el=>{if(el)el.scrollTop=el.scrollHeight}} style={{flex:1,overflowY:"auto",padding:"14px 16px 8px",display:"flex",flexDirection:"column",gap:7,background:"#03000e"}}>
+              {textLog.map((entry,i)=>{
+                const isLast=i===textLog.length-1;
+                if(entry.type==='location') return(
+                  <div key={i} style={{fontSize:9,letterSpacing:3,color:"#6010a0",textAlign:"center",padding:"8px 0 2px",opacity:0.9}}>〔 {entry.text} 〕</div>
+                );
+                if(entry.type==='system') return(
+                  <div key={i} style={{fontSize:12,color:"#c060e0",fontWeight:700,textAlign:"center",letterSpacing:1,padding:"2px 0"}}>{entry.text}</div>
+                );
+                if(entry.type==='action') return(
+                  <div key={i} style={{fontSize:12,color:isLast?"#ddb0ff":"#a070c0",lineHeight:1.8,fontStyle:"italic",opacity:isLast?1:0.75}}>{entry.text}</div>
+                );
+                return(
+                  <div key={i} style={{fontSize:12,color:isLast?"#c898e8":"#7d5090",lineHeight:1.9,fontStyle:"italic",opacity:isLast?1:0.65,whiteSpace:"pre-line"}}>{entry.text}</div>
+                );
+              })}
+            </div>
+
+            {/* ── CHOICES PANEL ── */}
+            <div style={{flexShrink:0,background:"#050010",borderTop:"1px solid #30104050"}}>
+              {/* Progress dots */}
+              {progressDots&&(
+                <div style={{display:"flex",gap:5,padding:"8px 16px 0",alignItems:"center"}}>
+                  {progressDots.map((filled,i)=>(
+                    <div key={i} style={{width:10,height:10,borderRadius:"50%",background:filled?"#c060d0":"rgba(80,0,120,0.3)",border:`1px solid ${accent}50`,transition:"background 0.2s"}}/>
+                  ))}
+                  <span style={{fontSize:9,color:"#50305a",marginLeft:4}}>{encounter.movesUsed.length}/{encounter.movesNeeded}</span>
                 </div>
               )}
-
-              {/* At a node, no encounter yet */}
-              {currentNode&&!encounter&&(()=>{
-                const node=HUNT_NODES[currentNode]; if(!node) return null;
-                const menHere=HUNT_MEN.filter(m=>m.location===currentNode&&m.difficulty>0);
-                const connectedNodes=HUNT_MAP[currentNode]||[];
-                const reachable=connectedNodes.filter(nid=>accessibleNodes.includes(nid)&&nid!=='dorm');
-                return(
-                  <div>
-                    <div style={{background:"rgba(20,0,35,0.6)",border:`1px solid ${accent}30`,borderRadius:8,padding:"10px 12px",marginBottom:12}}>
-                      <div style={{fontSize:13,fontWeight:700,color:"#c060d0",marginBottom:3}}>{node.label}</div>
-                      <div style={{fontSize:11,color:"#806090",lineHeight:1.55,fontStyle:"italic"}}>{node.desc}</div>
-                    </div>
-                    {menHere.length>0?(
-                      <div style={{marginBottom:12}}>
-                        <div style={{fontSize:10,color:"#604070",letterSpacing:2,marginBottom:6}}>TARGETS</div>
-                        {menHere.map(man=>{
-                          const eff=getEffectiveDifficulty(man.difficulty,stageId);
-                          const diffLabel=eff<=1?"Easy":eff===2?"Medium":"Hard";
-                          const diffColor=eff<=1?"#40c060":eff===2?"#c0a030":"#c04030";
-                          return(
-                            <div key={man.id} style={{background:"rgba(15,0,25,0.8)",border:`1px solid ${accent}30`,borderRadius:7,padding:"10px 12px",marginBottom:7,display:"flex",justifyContent:"space-between",alignItems:"center",gap:10}}>
-                              <div style={{flex:1}}>
-                                <div style={{fontSize:12,fontWeight:700,color:"#c060d0"}}>{man.name}</div>
-                                <div style={{fontSize:10,color:"#705080"}}>{man.tag}</div>
-                                <div style={{fontSize:10,color:"#7050a0",marginTop:3,lineHeight:1.4,fontStyle:"italic"}}>{man.desc(stageId)}</div>
-                              </div>
-                              <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6}}>
-                                <span style={{fontSize:9,color:diffColor,background:`${diffColor}22`,borderRadius:5,padding:"2px 6px"}}>{diffLabel}</span>
-                                <button style={{...C.smBtn,fontSize:10,background:"#2a0040",border:`1px solid ${accent}60`}} onClick={()=>approachMan(man.id)}>
-                                  Approach
-                                </button>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    ):(
-                      <div style={{fontSize:11,color:"#504060",fontStyle:"italic",marginBottom:12,textAlign:"center",padding:"16px 0"}}>
-                        Nobody here tonight.
-                      </div>
-                    )}
-                    {reachable.length>0&&(
-                      <div>
-                        <div style={{fontSize:10,color:"#503060",letterSpacing:2,marginBottom:6}}>MOVE TO</div>
-                        <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                          {reachable.map(nid=>(
-                            <button key={nid} style={{...C.smBtn,fontSize:11}} onClick={()=>navigateHunt(nid)}>
-                              {HUNT_NODES[nid]?.label}
-                            </button>
-                          ))}
-                          <button style={{...C.smBtn,fontSize:11,background:"#180028",border:`1px solid ${accent}30`}} onClick={()=>navigateHunt(null)}>
-                            ↩ Map
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })()}
-
-              {/* Active encounter */}
-              {encounter&&(()=>{
-                const man=HUNT_MEN.find(m=>m.id===encounter.manId); if(!man) return null;
-                const successCount=encounter.movesUsed.length;
-                const isDone=encounter.done||successCount>=encounter.movesNeeded;
-                return(
-                  <div>
-                    <div style={{background:"rgba(20,0,35,0.7)",border:`1px solid ${accent}40`,borderRadius:8,padding:12,marginBottom:12}}>
-                      <div style={{fontSize:12,fontWeight:700,color:"#c060d0",marginBottom:2}}>{man.name} — {man.tag}</div>
-                      <div style={{display:"flex",gap:4,marginBottom:6}}>
-                        {Array.from({length:encounter.movesNeeded}).map((_,i)=>(
-                          <div key={i} style={{width:12,height:12,borderRadius:"50%",background:i<successCount?"#c060d0":"rgba(80,0,120,0.3)",border:`1px solid ${accent}50`}}/>
-                        ))}
-                        <span style={{fontSize:9,color:"#604070",marginLeft:4}}>{successCount}/{encounter.movesNeeded}</span>
-                      </div>
-                    </div>
-                    {log.length>0&&(
-                      <div style={{maxHeight:180,overflowY:"auto",marginBottom:12,display:"flex",flexDirection:"column",gap:6}}>
-                        {log.map((line,i)=>(
-                          <div key={i} style={{fontSize:12,color:i===0?"#806090":i===log.length-1?"#e0b0ff":"#c090d0",lineHeight:1.7,fontStyle:"italic"}}>{line}</div>
-                        ))}
-                      </div>
-                    )}
-                    {encounter.failed&&(
-                      <div style={{background:"rgba(60,0,0,0.4)",border:"1px solid #60202030",borderRadius:7,padding:"8px 12px",marginBottom:12}}>
-                        <div style={{fontSize:11,color:"#c04040",fontStyle:"italic"}}>He slipped away. Back to the hunt.</div>
-                      </div>
-                    )}
-                    {!encounter.failed&&!encounter.consumed&&!isDone&&(
-                      <div>
-                        <div style={{fontSize:10,color:"#503060",letterSpacing:2,marginBottom:8}}>SEDUCTION MOVES</div>
-                        <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-                          {availableMoves.map(moveId=>{
-                            const move=SEDUCTION_MOVES[moveId]; if(!move) return null;
-                            if(move.minStageBand&&stageBand<move.minStageBand) return null;
-                            return(
-                              <button key={moveId} style={{...C.smBtn,fontSize:11,background:move.risky?"#200030":"#150020",border:`1px solid ${move.risky?"#c03060":"#6020a0"}50`}}
-                                onClick={()=>makeSeduceMove(moveId)}>
-                                {move.label}{move.risky&&" ⚠️"}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                    {!encounter.failed&&!encounter.consumed&&isDone&&(
-                      <button style={{...C.btn("#5a0080"),width:"100%",fontSize:13,marginTop:8}} onClick={consumeMan}>
-                        🌑 Take him home →
-                      </button>
-                    )}
-                    {encounter.consumed&&(
-                      <div style={{marginTop:8}}>
-                        <div style={{fontSize:13,color:accent,fontWeight:700,marginBottom:8,textAlign:"center"}}>
-                          +{Math.max(1,(WEIGHT_STAGES[Math.min(10,stageId+1)]?.min||820)-Math.round(lilith.lbs)+5)} lbs
-                        </div>
-                        <button style={{...C.btn("#300040"),width:"100%",fontSize:12,marginBottom:6}} onClick={()=>setLilithHuntState(prev=>({...prev,currentNode:null,encounter:null,log:[]}))}>
-                          Hunt again ↩
-                        </button>
-                        <button style={{...C.btn("#180020"),width:"100%",fontSize:11}} onClick={closeHunt}>
-                          Return to campus
-                        </button>
-                      </div>
-                    )}
-                    {(encounter.failed)&&(
-                      <div style={{marginTop:8,display:"flex",gap:6}}>
-                        <button style={{...C.smBtn,flex:1,fontSize:11}} onClick={()=>setLilithHuntState(prev=>({...prev,encounter:null,log:[]}))}>
-                          Try another
-                        </button>
-                        <button style={{...C.smBtn,flex:1,fontSize:11}} onClick={()=>setLilithHuntState(prev=>({...prev,currentNode:null,encounter:null,log:[]}))}>
-                          ↩ Map
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                );
-              })()}
-            </div>
-          </div>
-        );
-      })()}
-
-      {/* ── LILITH — DELIVERY MODAL (blob mode) ── */}
-      {lilithHuntState?.deliveryMode&&(()=>{
-        const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return null;
-        const accent="#7010a0";
-        const stageId=getStage(lilith.lbs).id;
-        const nextSt=WEIGHT_STAGES[Math.min(10,stageId+1)];
-        const gain=nextSt&&nextSt.id>stageId?Math.max(1,nextSt.min-Math.round(lilith.lbs)+5):25;
-        return(
-          <div style={{...C.overlay,zIndex:1300}}>
-            <div style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#060008,#0e0012,#060008)",border:`1px solid ${accent}50`,maxHeight:"88vh",overflowY:"auto",padding:22}}>
-              <div style={{fontSize:9,letterSpacing:4,color:accent,marginBottom:6}}>🌑 FEASTING BEAUTY</div>
-              <div style={{fontSize:14,fontWeight:700,color:"#c060d0",marginBottom:12}}>Room 312 — Delivery</div>
-              {!lilithHuntState.deliveryDone?(
-                <>
-                  <div style={{fontSize:12,color:"#b080c0",lineHeight:1.85,marginBottom:16,whiteSpace:"pre-line",fontStyle:"italic"}}>
-                    {DELIVERY_SCENE}
-                  </div>
-                  <button style={{...C.btn("#5a0080"),width:"100%",fontSize:13}} onClick={deliveryScene}>
-                    📱 He knocks. You call him in. (+{gain} lbs)
+              <div style={{display:"flex",flexDirection:"column",gap:5,padding:"8px 14px 12px",maxHeight:"42vh",overflowY:"auto"}}>
+                {choices.map(ch=>(
+                  <button key={ch.id} onClick={ch.action} style={{
+                    background:ch.big?"#3a0060":ch.approach?"#260042":ch.risky?"#1c001e":"#130020",
+                    border:`1px solid ${ch.risky?"#a0204040":ch.approach?accent+"60":accent+"30"}`,
+                    color:ch.dim?"#50305060":ch.risky?"#e07878":ch.approach?"#d070f0":"#b080d0",
+                    borderRadius:5,padding:ch.big?"11px 16px":"8px 14px",
+                    fontSize:ch.small?10:ch.big?13:12,
+                    fontWeight:ch.big?700:"normal",
+                    cursor:"pointer",textAlign:"left",lineHeight:1.4,fontFamily:"inherit",
+                    width:"100%",
+                  }}>
+                    {ch.label}
+                    {ch.sublabel&&<span style={{fontSize:10,color:ch.sublabelColor||"#705080",marginLeft:8}}>{ch.sublabel}</span>}
+                    {ch.risky&&<span style={{fontSize:9,color:"#b02030",marginLeft:6}}>⚠ risky</span>}
                   </button>
-                </>
-              ):(
-                <>
-                  <div style={{fontSize:13,color:accent,fontWeight:700,textAlign:"center",marginBottom:6}}>+{gain} lbs</div>
-                  <div style={{fontSize:12,color:"#a070b0",lineHeight:1.7,marginBottom:16,fontStyle:"italic",textAlign:"center"}}>
-                    You pick up your phone. You order again.
-                  </div>
-                  <button style={{...C.btn("#300040"),width:"100%",fontSize:12}} onClick={closeHunt}>
-                    Close ✓
-                  </button>
-                </>
-              )}
+                ))}
+              </div>
             </div>
+
           </div>
         );
       })()}
