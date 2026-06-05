@@ -2,7 +2,9 @@
 // Reneé (id:10) — culinary archetype
 // Unlock: Lilith unlocked + lilithKillCount >= 1 + relationship >= 60
 // A "taste tester" is recruited, fed across sessions, and harvested.
-// Up to 3 complete cycles. Tester starts at Fat (stage 6) and can reach Blob.
+// Up to 4 complete cycles. Tester starts at Fat (stage 6) and can reach Blob.
+// Fat bar = XP bar: fills to 100, stage-up, resets. Suspicion resets at stage-up (with carry-in).
+// After harvest: Reneé digests for X weeks — no gain, no sessions.
 
 export const TESTER_NAMES = [
   "Petra","Hazel","Grace","Victoria","Lauren","Brielle","Shelby","Erin","Gabriella","Allison"
@@ -14,10 +16,16 @@ export const TESTER_START_LBS = 295; // just above Fat minimum (285)
 export const TESTER_STAGE_LBS = { 6:295, 7:370, 8:480, 9:610, 10:830 };
 
 // Reneé's actual lbs gain from harvest at each tester stage
-export const HARVEST_GAIN = { 6:32, 7:52, 8:78, 9:110, 10:148 };
+export const HARVEST_GAIN = { 6:65, 7:130, 8:220, 9:330, 10:470 };
 
-// Fat bar fills toward 100 to advance tester one stage
+// Fat bar fills toward 100 to advance tester one stage (XP-style: resets, not zeroes)
 export const FAT_BAR_CAP = 100;
+
+// Weeks Reneé spends digesting after a harvest (no gain, no sessions)
+export const DIGEST_WEEKS = { 6:2, 7:4, 8:6, 9:9, 10:14 };
+
+// Suspicion carry-in fraction when tester stages up (only if suspicion > 75)
+export const SUSPICION_CARRY_FRACTION = 0.075;
 
 // ── RECIPES ─────────────────────────────────────────────────────────────────
 
@@ -190,4 +198,31 @@ export const TESTER_APPEARANCE = {
   8:"Enormous — fills any seat, moves carefully around doorways, belly rests forward at all times. She is undeniable.",
   9:"Colossal — significant mass requiring deliberate management. She shuffles rather than walks. The chair takes her weight with effort.",
   10:"Blob-stage — immobile, vast, entirely present. She fills the space and cannot leave without help.",
+};
+
+// ── DIGEST VIGNETTES ─────────────────────────────────────────────────────────
+// What you see when you check on Reneé during her digestion period.
+// early: first half of digestion weeks; late: second half.
+
+export const DIGEST_VIGNETTES = {
+  6:{
+    early:`[placeholder — Reneé, 2 weeks post-harvest, Fat tester. She's home. Not answering messages. Kitchen's dark. She sounds fine when you call — warm, deliberate, vague about what she's doing. Says she'll be back soon. Her voice sounds like someone digesting something that requires their full attention.]`,
+    late:`[placeholder — Reneé nearing end of digestion, Fat tester. She sent a message — just 'soon.' She sounds like someone waking up from a long sleep: slow, deeply satisfied, not entirely back yet.]`,
+  },
+  7:{
+    early:`[placeholder — Reneé, 4 weeks post-harvest, Very Fat tester. She's completely offline. You stop by her apartment; the lights are low, there's something cooking that you couldn't identify, and she answers the door looking warm and considerably larger and not at all surprised to see you. She says she's fine. She clearly is. She closes the door.]`,
+    late:`[placeholder — Reneé, 2 weeks left, Very Fat tester. She's starting to come back. A text: 'I've been thinking about the next batch.' Nothing else. You take this as a good sign.]`,
+  },
+  8:{
+    early:`[placeholder — Reneé, 6 weeks post-harvest, Enormous tester. Her apartment is occupied and she is deeply present in it. She's cooking — slow, methodical, for herself alone. She lets you in. She doesn't explain anything. She looks considerably heavier and entirely content. You sit in her kitchen for an hour and she doesn't say much and doesn't need to.]`,
+    late:`[placeholder — Reneé, 3 weeks left, Enormous tester. She's written three pages of notes in her session log. She emails them to you without explanation. The notes are clinical at the top and get less clinical toward the end.]`,
+  },
+  9:{
+    early:`[placeholder — Reneé, 9 weeks post-harvest, Colossal tester. She doesn't answer the door the first time. The second time she does. She's enormous and warm and moving slowly through her apartment like someone who has fully inhabited their own mass. She makes you coffee. She eats continuously while you sit there. She doesn't discuss the subject. She doesn't need to.]`,
+    late:`[placeholder — Reneé, 4 weeks left, Colossal tester. She asked when you're planning to find the next candidate. She phrased it as 'when you're ready' but her tone was 'I'm ready.' She is very large and very settled and clearly thinking forward again.]`,
+  },
+  10:{
+    early:`[placeholder — Reneé, 14 weeks post-harvest, Blob tester. She is barely reachable. You go to her apartment and she is there and vast and very still and warm and she looks at you from across the room and nods once, slowly. She's not distressed. She is the opposite of distressed. She is somewhere very far inside herself and apparently comfortable there. You leave quietly.]`,
+    late:`[placeholder — Reneé, 6 weeks left, Blob tester. She's moving again — slowly, deliberately, but moving. She sent a recipe. New concept. No explanation of where the inspiration came from. It's very rich and very precise and clearly the work of someone who has been doing a great deal of internal research.]`,
+  },
 };
