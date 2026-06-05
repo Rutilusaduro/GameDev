@@ -230,14 +230,6 @@ export const EVOLVED_REACTIONS = {
     "My research chair requires leverage to exit. I logged that. I also logged how I feel about the session data, which is something I never did in year one of this study.",
     "Final session notes: I am very large, the subject is very large, the data is extraordinary, and I stopped pretending it's neutral sometime around stage three. The research is complete. The methodology got personal. Both are fine.",
   ],
-  psych_manipulator:[
-    "First covert session: one subject, one nudge, astonishing data. They ordered dessert without knowing why. I noted this with considerable satisfaction.",
-    "Three subjects simultaneously. Each one unaware of the others. Six variables at once. The data is beautiful. I started a second notebook just for this.",
-    "One of them suspects something is happening. Not what. Not who. She's just more careful around food now, which means she's thinking about food more than before. Interesting.",
-    "I've started logging my own intake. Not formally. Just noting things. For completeness. I've been eating more at observation sessions. I'm leaving that in.",
-    "The observer/participant distinction has dissolved. I eat at my own sessions now. I find I don't mind this at all.",
-    "Everyone eats more around me now. I know exactly why and they don't, and I find this situation entirely satisfying from every possible angle.",
-  ],
   // ── ECED path ──────────────────────────────────────────────────
   homeroom_queen:[
     "Tuesday went well. Kayla had seconds. I didn't set out to do anything intentional today — I just noticed what they liked and made more of it. I'm noting that distinction.",
@@ -484,14 +476,6 @@ export const EVOLVED_DIARY = {
     "My subject told me today that they look forward to our sessions. I wrote it down. Then I sat with it for a while. Then I ate the rest of what was on the table. Variable noted: I found this information pleasing.",
     "I have generated more data on appetite, embodiment, and the feeder/feedee dynamic than I will likely be able to publish in full. My own data is extensive. The subject's data is extraordinary. I've decided to count my weight gain as a finding.",
     "Final entry for this volume. I am very large and my subject is very large and the research produced by this relationship will be the most honest work of my career. I stopped being the observer sometime around session forty. I am in the study. I always was.",
-  ],
-  psych_manipulator:[
-    "First deliberate nudge. One subject, one moment of anchoring — I described a dish as 'what everyone orders here' and watched them order it without considering otherwise. They ate all of it. The result was so clean it was almost alarming. I'm going to do it again.",
-    "Three subjects now. I keep them separate. Each one is a clean variable. The data is beautiful — they're eating more without any awareness that something has changed. I started a second notebook just for this.",
-    "One of them suspects something. Not what. Just that things feel different around food lately. She's right. I find her suspicion more interesting than her compliance.",
-    "I logged my own intake for the first time today. Not because I planned to — I just noticed I'd been eating more at observation sessions and it seemed worth noting. The data includes me now. I don't think that changes anything.",
-    "The observer/participant line is theoretical at this scale. I eat when I'm studying others eating. This is a methodological consideration I've chosen to set aside. The data is better this way.",
-    "Everyone eats more around me now. I know exactly why and they don't, and I find this situation entirely satisfying from every possible angle.",
   ],
   // ── ECED path ──────────────────────────────────────────────────
   homeroom_queen:[
@@ -740,14 +724,6 @@ export const EVOLVED_OUTFITS = {
     "Lab coat barely buttons. She wears it open. The blouse beneath is custom-ordered.",
     "Lab coat enormous and custom-made. She wears it like a robe. It suits her.",
   ],
-  psych_manipulator:[
-    "Dark blazer, pristine. Nothing out of place. She looks like someone about to give a presentation.",
-    "Dark blazer, slightly wider cut. Exactly as composed. Always watching.",
-    "Custom dark blazer. She has stopped wearing light colors entirely.",
-    "Dark wide-cut professional layers. Everything deliberate. The deliberateness has gotten larger.",
-    "Wide dark academic wear. She's dressed like someone who controls the room she's in.",
-    "Custom dark professional garments at considerable scale. The composed expression has not changed.",
-  ],
   // ── ECED path ──────────────────────────────────────────────────
   homeroom_queen:[
     "A wide cotton apron over a soft button-up and practical trousers. She smells like cinnamon and brown sugar from the morning's test batch.",
@@ -976,7 +952,6 @@ export const EVOLVED_ACTIVITY_META = {
   homestead_queen: { label:"🏡 Visit the Homestead",    apCost:1, gainRange:[5,10], relBonus:12 },
   state_fair_queen:{ label:"🎡 Enter the Fair",         apCost:1, gainRange:[4,8],  relBonus:10 },
   psych_researcher:{ label:"Continue Research Session", apCost:1, gainRange:[4,9],  relBonus:11 },
-  psych_manipulator:{label:"Run Conditioning Session",  apCost:1, gainRange:[3,7],  relBonus:9  },
   cultivator:          { label:"🍰 Run Taste-Test Session", apCost:1, gainRange:[2,8],  relBonus:12 },
   community_researcher:{ label:"📋 Conduct Case Study",     apCost:1, gainRange:[3,8],  relBonus:10 },
 };
@@ -2859,154 +2834,6 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
       ]
     },
   ],
-  psych_manipulator:[
-    // stageIdx 0 — ~258 lbs — "First Nudge" [stub]
-    {
-      title:"First Nudge",
-      phases:[
-        {
-          text:(h,s,subject)=>`${s.name} has begun. One subject, one nudge, controlled conditions. The results are — she pauses to find the word — astonishing.\n\n[placeholder: stage 0 phase 0 — first deliberate nudge, one subject, astonishing result]`,
-          choices:[
-            {id:"clinical_nudge",label:"Keep it subtle — a light push only",result:`Barely a push. A reframed choice, a portion larger than expected, an offhand remark about the meal. The subject ordered dessert without knowing why. She notes this with considerable satisfaction.`,lbs:4,rel:5,flag:"subtle"},
-            {id:"bold_nudge",label:"Push harder — see what the data shows",result:`A harder push. The subject ate well past their usual intake. They look slightly confused by their own appetite. She writes this down immediately. [placeholder]`,lbs:7,rel:4,flag:"bold"},
-          ]
-        },
-        {
-          text:(h,s,subject)=>`The notebook entry from the first session: *Subject responded at 2.4x baseline. No awareness of external influence. Effect: clean.*\n\n${s.name} is ${Math.round(s.lbs)} lbs. She is very satisfied with this data.\n\n[placeholder: stage 0 phase 1 — first session aftermath, planning the next]`,
-          choices:[
-            {id:"expand",label:"Identify a second subject immediately",result:`She already has a second subject in mind. She's had them in mind since before the first session ended. The selection criteria are precise. [placeholder]`,lbs:5,rel:6,flag:"expanded"},
-            {id:"deepen",label:"Run a second session with the same subject first",result:`One subject, deeper study. More data from a single clean source before expanding. The methodology is sound. [placeholder]`,lbs:4,rel:7,flag:"deepened"},
-          ]
-        },
-      ],
-      endings:[
-        {condition:h=>h.includes("bold")&&h.includes("expanded"),text:`The study has two subjects now. Neither of them knows this.\n\nShe closes the notebook. She is very, very satisfied.\n\n[placeholder: stage 0 bold/expanded ending]`,gainBonus:7,relBonus:6},
-        {condition:()=>true,text:`First session complete. The data is clean. The methodology works.\n\nShe dates the page.\n\n[placeholder: stage 0 default ending]`,gainBonus:4,relBonus:5},
-      ]
-    },
-    // stageIdx 1 — ~320 lbs — "Three Subjects" [stub]
-    {
-      title:"Three Subjects",
-      phases:[
-        {
-          text:(h,s,subject)=>`Three subjects now, kept rigorously separate. The data from each is clean. She is running three separate conditioning protocols simultaneously and has not once let the variables cross.\n\nThe data is beautiful.\n\n[placeholder: stage 1 phase 0 — three simultaneous subjects, separation of variables]`,
-          choices:[
-            {id:"systematic",label:"Run each session with identical protocol",result:`Identical protocol, three separate subjects. The data is pristine. She can already see the pattern. [placeholder]`,lbs:6,rel:6,flag:"systematic"},
-            {id:"tailored",label:"Tailor each session to the subject's specific psychology",result:`Each session customized. Anchoring for one, social proof for another, portion distortion for the third. More complex to manage. More interesting. [placeholder]`,lbs:5,rel:9,flag:"tailored"},
-          ]
-        },
-        {
-          text:(h,s,subject)=>`${s.name} is ${Math.round(s.lbs)} lbs. She has noted, in the margin, that her own appetite has been — not elevated. Responsive. Professionally responsive.\n\n[placeholder: stage 1 phase 1 — researcher's own appetite entering the record]`,
-          choices:[
-            {id:"log_self",label:"Log her own responses as secondary data",result:`She adds a column to the notebook. 'Researcher parallel responses.' The entries are brief and clinical. She tells herself this is just completeness. [placeholder]`,lbs:7,rel:8,flag:"self_logged"},
-            {id:"ignore_self",label:"Ignore it — the study is about the subjects",result:`She keeps the researcher data out of the notebook. The methodology is clean. The study is about the subjects. She repeats this while ordering a second portion. [placeholder]`,lbs:5,rel:6,flag:"self_ignored"},
-          ]
-        },
-      ],
-      endings:[
-        {condition:h=>h.includes("tailored")&&h.includes("self_logged"),text:`Three subjects. Three beautiful data arcs. Her own arc, quietly noted in the margins.\n\nThe study is getting bigger than she planned.\n\n[placeholder: stage 1 tailored/self_logged ending]`,gainBonus:9,relBonus:9},
-        {condition:()=>true,text:`Three subjects. Clean data. The methodology is working.\n\nShe updates all three files.\n\n[placeholder: stage 1 default ending]`,gainBonus:6,relBonus:7},
-      ]
-    },
-    // stageIdx 2 — ~400 lbs — "One Suspects" [stub]
-    {
-      title:"One Suspects",
-      phases:[
-        {
-          text:(h,s,subject)=>`One of the subjects has begun to suspect that something is happening. Not what — not yet. But they've started noticing their appetite, asking themselves why they're eating so much, looking around the dining hall as though the answer is there.\n\nThis is, objectively, the most interesting data point in the study. ${s.name} enjoys this with an intensity that surprises her.\n\n[placeholder: stage 2 phase 0 — subject suspects, researcher's reaction]`,
-          choices:[
-            {id:"increase_pressure",label:"Increase the conditioning — the awareness is a variable, not an obstacle",result:`She increases the pressure. The subject's growing awareness is now a variable to be worked with. The techniques adapt. [placeholder]`,lbs:8,rel:7,flag:"pressure_increased"},
-            {id:"back_off",label:"Back off with this subject — preserve the study",result:`She backs off with the suspicious subject. Clean data requires willing subjects. The other two are clean. [placeholder]`,lbs:5,rel:9,flag:"backed_off"},
-          ]
-        },
-        {
-          text:(h,s,subject)=>`${s.name} is ${Math.round(s.lbs)} lbs. She has been eating considerably more since the study began, and she has noted this with the clinical precision she applies to everything. The notation reads: *Researcher weight: [current]. Hypothesis: sympathy appetite, or methodological contamination. Unable to determine causality from inside the study.*\n\n[placeholder: stage 2 phase 1 — researcher processing her own change inside the framework]`,
-          choices:[
-            {id:"own_arc",label:"Acknowledge she's now part of the data",result:`'I am in the study,' she says. Not distressed. Intrigued. She opens a new section: 'Self-Study Appendix.' The first entry is thorough. [placeholder]`,lbs:9,rel:11,flag:"in_the_study"},
-            {id:"clinical_frame",label:"Maintain the clinical frame — the study is the study",result:`She maintains the frame. She is a researcher. This is a study. Whatever is happening to her appetite is a separate matter that she is handling clinically. The handling is: eating. [placeholder]`,lbs:7,rel:7,flag:"clinical_maintained"},
-          ]
-        },
-      ],
-      endings:[
-        {condition:h=>h.includes("in_the_study"),text:`The study now has a self-study appendix. It is already longer than the appendix for any of the three subjects.\n\nShe finds this funny. She notes that she finds it funny.\n\n[placeholder: stage 2 self-study ending]`,gainBonus:11,relBonus:11},
-        {condition:()=>true,text:`One subject suspects. The study continues. The data remains clean where it counts.\n\nShe updates the file.\n\n[placeholder: stage 2 default ending]`,gainBonus:7,relBonus:8},
-      ]
-    },
-    // stageIdx 3 — ~510 lbs — "The Margins" [stub]
-    {
-      title:"The Margins",
-      phases:[
-        {
-          text:(h,s,subject)=>`The notebook. Formally: three subject arcs, methodology, conditioning protocols. Informally: the margins. The margins are where she has been logging herself — not formally, not in the structured columns, but in the small script that fills the white space around the official data.\n\n${s.name} is ${Math.round(s.lbs)} lbs. She has been a study subject in all but name for months.\n\n[placeholder: stage 3 phase 0 — margins becoming as important as the main text]`,
-          choices:[
-            {id:"formalize",label:"Formalize the self-study — it's the most interesting data anyway",result:`She moves the margin notes into the main record. They fill thirty new pages. She is not embarrassed by this. She is a very good subject. [placeholder]`,lbs:11,rel:13,flag:"self_formalized"},
-            {id:"keep_margins",label:"Keep it in the margins — some data is better informal",result:`The margins stay margins. But the margins are getting bigger. [placeholder]`,lbs:8,rel:10,flag:"stays_marginal"},
-          ]
-        },
-        {
-          text:(h,s,subject)=>`The three subjects have been gaining steadily. ${s.name} has been gaining steadily. The conditioning sessions have produced consistent, replicable results in all four study participants — she has started mentally counting herself as the fourth participant, and she finds this satisfying rather than alarming.\n\n[placeholder: stage 3 phase 1 — four-participant frame, researcher's satisfaction]`,
-          choices:[
-            {id:"embrace_it",label:"Embrace the role — researcher and subject both",result:`'I am the most knowledgeable participant in the study,' she says. 'That makes me the ideal self-subject.' She says this with complete conviction. [placeholder]`,lbs:12,rel:14,flag:"embraced"},
-            {id:"redirect",label:"Redirect focus to the external subjects",result:`She redirects. The external subjects are the study. She is the researcher. This has always been the correct framing. She writes this in the margin. [placeholder]`,lbs:9,rel:10,flag:"redirected"},
-          ]
-        },
-      ],
-      endings:[
-        {condition:h=>h.includes("self_formalized")&&h.includes("embraced"),text:`The study is, at this point, about all four of them equally. Three subjects and their researcher — or four subjects, depending on how you read the methodology section, which she has rewritten four times.\n\nShe is very satisfied.\n\n[placeholder: stage 3 embraced ending]`,gainBonus:13,relBonus:14},
-        {condition:()=>true,text:`The margins are full. The main text is full. She starts a new notebook.\n\n[placeholder: stage 3 default ending]`,gainBonus:9,relBonus:10},
-      ]
-    },
-    // stageIdx 4 — ~630 lbs — "Most Satisfied Person in the Building" [stub]
-    {
-      title:"Most Satisfied Person in the Building",
-      phases:[
-        {
-          text:(h,s,subject)=>`The observer/participant distinction has dissolved. This happened gradually and then all at once, the way most irreversible things do. ${s.name} is ${Math.round(s.lbs)} lbs. She is the most satisfied person in the building. She knows this because she has measured it.\n\n[placeholder: stage 4 phase 0 — observer/participant dissolution, satisfaction metric]`,
-          choices:[
-            {id:"measure_satisfaction",label:"Document the satisfaction — it's a valid outcome variable",result:`She adds 'researcher satisfaction: elevated, sustained' to the outcome variables. She runs a calibration check to make sure the metric is valid. It is. [placeholder]`,lbs:12,rel:14,flag:"satisfaction_documented"},
-            {id:"enjoy_it",label:"Stop measuring it and just enjoy it",result:`She puts the pen down. She eats. She stops measuring the eating. This is, she decides, also a kind of data: what happens when the researcher stops measuring. [placeholder]`,lbs:14,rel:12,flag:"untracked"},
-          ]
-        },
-        {
-          text:(h,s,subject)=>`The study has produced consistent, measurable outcomes in all participants. The conditioning methodologies are proven. The researcher is conclusively changed. The methodology section has been rewritten seven times and is now, arguably, one of the most sophisticated accounts of applied psychological influence in the context of appetite and weight gain ever produced.\n\nShe is very proud of it.\n\n[placeholder: stage 4 phase 1 — approaching culmination, pride in the work]`,
-          choices:[
-            {id:"crowning_session",label:"Arrange the culminating session — the capstone data point",result:`She arranges the final formal session. The capstone. The data point that completes the arc. She has been planning this for months. [placeholder]`,lbs:13,rel:14,flag:"culminating"},
-            {id:"continue_indefinitely",label:"The study doesn't end — it expands",result:`'It doesn't end,' she says. 'A study like this expands.' She is already thinking about the next wave of participants. [placeholder]`,lbs:11,rel:16,flag:"expanding"},
-          ]
-        },
-      ],
-      endings:[
-        {condition:h=>h.includes("satisfaction_documented")&&h.includes("culminating"),text:`The capstone data is in. The outcome variables are all positive. The study is complete — technically. She keeps the file open.\n\n[placeholder: stage 4 capstone ending]`,gainBonus:15,relBonus:16},
-        {condition:()=>true,text:`The study is at its peak. She is at her peak. The building is full of her data.\n\n[placeholder: stage 4 default ending]`,gainBonus:11,relBonus:13},
-      ]
-    },
-    // stageIdx 5 — ~820 lbs — "The Whole Class" [stub]
-    {
-      title:"The Whole Class",
-      phases:[
-        {
-          text:(h,s,subject)=>`The whole class is in the study now. She didn't plan this. She also didn't stop it.\n\n${s.name} is ${Math.round(s.lbs)} lbs. She looks around the room at the class she has watched and fed and studied and shaped — all of them changed, all of them eating, all of them part of the most ambitious study she has ever designed or accidentally allowed to become this large — and she feels something she has no clinical vocabulary for.\n\nShe writes 'profound' in the margin, then 'inadequate,' then leaves it blank.\n\n[placeholder: stage 5 phase 0 — the whole class, the accidental scope, the feeling without words]`,
-          choices:[
-            {id:"acknowledge_scope",label:"Acknowledge what this is — a study without precedent",result:`She writes the acknowledgment at the front of the notebook. *This study exceeded its original parameters. The researcher acknowledges this without apology.* She signs it. [placeholder]`,lbs:14,rel:17,flag:"scope_acknowledged"},
-            {id:"just_continue",label:"Don't name it — just keep going",result:`She doesn't name it. She just keeps going. The study grows. She grows with it. [placeholder]`,lbs:12,rel:14,flag:"unnamed"},
-          ]
-        },
-        {
-          text:(h,s,subject)=>`${s.name} sits with the final volume in her hands. Every person in the room contributed to this. Most of them don't know.\n\nShe is the largest person in the building, possibly on the block. The study made her this. She made the study this. These facts are, she has concluded, the same fact.\n\n[placeholder: stage 5 phase 1 — final reflection, researcher and the study as the same thing]`,
-          choices:[
-            {id:"close_it",label:"Close the study — formally, ceremonially",result:`She closes the study. She dates the last page. She puts the final volume on the shelf beside the others. She does not stop eating. The study is closed. She is not. [placeholder]`,lbs:12,rel:18,flag:"formally_closed"},
-            {id:"never_close",label:"The study is her. It never closes.",result:`'The study is me,' she says. 'A study like this never closes.' She opens a new volume and writes the date. She will be writing in it tomorrow. And the day after. [placeholder]`,lbs:10,rel:22,flag:"never_closed"},
-          ]
-        },
-      ],
-      endings:[
-        {condition:h=>h.includes("scope_acknowledged")&&h.includes("never_closed"),text:`The acknowledgment is at the front of the notebook. The new volume is on the desk, already open.\n\nThe study never closes. Neither does she.\n\n[placeholder: stage 5 scope/never-closed ending]`,gainBonus:20,relBonus:22},
-        {condition:h=>h.includes("formally_closed"),text:`The final volume is on the shelf. The study is closed.\n\nShe is not closed. The class is not closed. The building is full of her data.\n\n[placeholder: stage 5 formally-closed ending]`,gainBonus:17,relBonus:18},
-        {condition:()=>true,text:`The whole class. She didn't plan this. She also didn't stop it.\n\nThe study is what it is. She is what she is.\n\n[placeholder: stage 5 default ending]`,gainBonus:14,relBonus:16},
-      ]
-    },
-  ],
-
   // ── ECED: homeroom_queen ──────────────────────────────────────────────────
   homeroom_queen:[
     // stageIdx 0 — "The First Tuesday"
@@ -3435,7 +3262,6 @@ export const EVOLVED_FORM_META = {
   homestead_queen:      { title:"Homestead Queen",       color:"#8B5E3C" },
   state_fair_queen:     { title:"State Fair Queen",      color:"#C8860A" },
   psych_researcher:     { title:"The Researcher",        color:"#6b5b95" },
-  psych_manipulator:    { title:"The Architect",         color:"#4a235a" },
   ranked_feedee:        { title:"Ranked Feedee",          color:"#1a6a9a" },
   academic_subject:     { title:"Academic Subject",       color:"#2c5f8a" },
   home_nest:            { title:"Home Nest",              color:"#4a6a4a" },
@@ -3539,10 +3365,9 @@ export const EVOLUTION_OFFER = {
     },
   },
   psych:{
-    intro:(s)=>`${s.name} doesn't explain the notebook. She opens it to a page of columned data — names, dates, observations, weights-implied — and sets it on the table between you. 'I've been doing this informally,' she says. 'I'd like to do it properly. Two directions.' She taps the notebook. 'Both involve a subject.'`,
+    intro:(s)=>`${s.name} doesn't explain the notebook. She opens it to a page of columned data — names, dates, observations, weights-implied — and sets it on the table between you. 'I've been doing this informally,' she says. 'I'd like to do it properly.' She taps the notebook. 'It involves a subject.'`,
     paths:{
       psych_researcher: { label:"The Researcher", desc:"Pick a classmate as a formal subject. Feederism or feedeeism — she'll study both sides of the dynamic with the rigour of a clinical trial." },
-      psych_manipulator:{ label:"The Architect",  desc:"No single subject. Real psych techniques — anchoring, social proof, classical conditioning — applied covertly. The pleasure is in their confusion." },
     },
   },
   culinary:{
@@ -3579,7 +3404,6 @@ export const ASCENSION_BRIDGE = {
   homestead_queen:  (s)=>`${s.name} is in her homestead when it happens — surrounded by jars and cast iron and the smell of something sweet baking. She sets a spoon down slowly. 'Grandma Mae called last night,' she says, very quiet. 'She said she's proud of me. She didn't say why, not exactly. But I think she knows.' She looks at her hands, enormous and warm. 'I've been feeding people my whole life. I think something is about to feed me back.' The oven is still on. The room smells like heaven.`,
   state_fair_queen: (s)=>`${s.name} is looking at the photo from the last invitational — her at the scale, the number, Darcy starting to clap. She touches the edge of it carefully. 'I've eaten through every bracket,' she says. 'Every category, every division. They stopped being able to contain me in a class.' She's quiet for a long moment. 'I think the circuit is done. The circuit gave me everything it had.' She looks up. 'Now something gives me everything it has.' She sounds certain. She is.`,
   psych_researcher: (s)=>`${s.name} closes the research notebook for the last time — the original one, the one with the methodology she wrote on the first day and has been rewriting ever since. She holds it in both hands. 'The study documented what happened to the subject,' she says. 'It also documented what happened to me. The two arcs are inseparable.' She looks at you. 'The notebook ran out of room. The study ran out of categories. The subject exceeded what methodology can contain.' A long pause. 'So did I.' She sets the notebook down. 'I think the goddess has been one of my data points all along.'`,
-  psych_manipulator:(s)=>`${s.name} puts the final notebook on the shelf and stands with her hand on the spine for a long time. 'The study has grown past the building,' she says. 'I didn't plan that. I also didn't stop it.' She looks at her hands — enormous, warm, the hands of someone who has been eating as thoroughly as she has been studying. 'I've stopped logging the others. There's nothing left to log that I don't already know.' She turns. 'I'm only logging myself now. Every meal. Every change.' Her voice is very quiet. 'The goddess has been watching the study. I think the study was always about her.'`,
   academic_subject:(s)=>`${s.name} closes the final research notebook. The last entry is today's date, her weight, and one word: 'complete.' She holds it for a moment. 'The study is done,' she says. 'The subject isn't.' She sets it on the desk. 'I've been thinking about what the data can't hold. What the methodology can't frame.' She looks at you. 'There's something happening that no committee can evaluate. I think you know what I mean.' A long pause. 'I think the goddess has been a confounding variable this whole time. I think I need to stop controlling for her.'`,
   home_nest:(s)=>`${s.name} doesn't call — she texts, which is how she communicates now. The message says: 'can you come here.' No question mark. You come. She's in her chair, in her room, and she looks as settled as anyone you've seen — rooted, warm, comfortable in a way that's grown into the space around her. 'I've been thinking,' she says, 'about where here goes.' She looks at the window she doesn't open anymore. 'I think the goddess has been in this room. I think she's been in the walls.' She looks back at you. 'I think it's time to let her in properly.'`,
   ranked_feedee: (s)=>`${s.name} doesn't look up from the screen when she says it. 'Rae said something to me.' She pauses the game — which you've never seen her do without the session being over. 'She said she's been watching what's happening to me and that she's proud.' Her voice is carefully flat. 'I've been thinking about what that means.' She looks at her hands on the controller. She's enormous. She's been enormous for a while. 'I think I've run out of sessions,' she says. 'Or sessions have run out of what they can hold. Something like that.' A long silence. 'Rae said: you've leveled past the game.' She puts the controller down. 'Yeah,' she says. 'I think that's right.'`,
