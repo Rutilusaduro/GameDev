@@ -128,6 +128,14 @@ export const EVOLVED_REACTIONS = {
     "Keynote at the international food science symposium. The room was not large enough for both the talk and me.",
     "The experiment is complete. The data is unambiguous. The subject is enormous and entirely at peace.",
   ],
+  academic_subject:[
+    "Week 3 results: consistent with baseline projection. Methodology holding. I remain objective. The committee found the initial data 'compelling.' I presented it with confidence and left before the follow-up questions.",
+    "Quarter review. The numbers are outside the initial projection range. I explained the variance as within statistically acceptable deviation. Dr. Mehta looked at me for a long time. I maintained eye contact and cited three sources.",
+    "Chapter 4 submitted. The rate of acceleration is documented. It is a finding. I have written 'it is a finding' in the margin of my own draft, twice, which I recognize is behavior.",
+    "Full committee. Five people. The data is the data. I defended every figure with precision and went home and ate dinner twice and did not log this in the research record.",
+    "External examiner. Someone with no social familiarity with the subject, reading the data cold. I was in the room. The subject was also in the room. This was a notable experience.",
+    "The dissertation passed. The committee voted yes. The subject weighs what she weighs and the committee was looking at her when they voted and she was looking at the data and the data is accurate and it passed.",
+  ],
   // ── ARTSY paths ─────────────────────────────────────────────────
   installation_artist:[
     "First body-positive installation opened. One critic said 'challenging.' I consider that a win.",
@@ -161,6 +169,14 @@ export const EVOLVED_REACTIONS = {
     "Mainstream crossover. A content creator I watch cited me as an influence. I watched it four times.",
     "A therapist used one of my videos in a treatment session. She asked my permission first. I gave it.",
     "The sound of me eating has become something people find comfort in. I find comfort in the eating. We're even.",
+  ],
+  home_nest:[
+    "Didn't go out today. Didn't need to. The food came. This is fine. This is better than fine, actually.",
+    "I've been noting that I've developed something like a routine. Not on purpose. Things arrive. I eat them. It's comfortable. I haven't minded.",
+    "Third delivery today. I usually stop at two. Ordered a third because it seemed like the right next thing. I like knowing what the right next thing is.",
+    "Someone from class texted asking if I was okay. Said I was fine, just busy. This is accurate. I am busy. There's more to track than you'd think.",
+    "The soup place messages me before I order now, to ask if I want the usual. I said yes. I like that the usual is a thing that exists. I like that they know.",
+    "I've been here a long time. The room is the same. I'm different — softer, slower, more settled. The chair has accommodated me. I haven't wanted to be anywhere else.",
   ],
   // ── TRANSFER paths ──────────────────────────────────────────────
   campus_legend:[
@@ -354,6 +370,14 @@ export const EVOLVED_DIARY = {
     `Keynote at the international symposium. I arrived. The auditorium adjusted. I gave the talk. Every slide was a data point from my own body. The Q&A lasted an hour. I had a meal during the Q&A. Nobody found this inappropriate. It was, in fact, exactly right.`,
     `The experiment is complete in the sense that the study period has ended and the papers have been filed and the citations are accumulating. The subject has not ended. I remain — large, documented, at peace. The science and the body are the same record.`,
   ],
+  academic_subject:[
+    `Week 3 Research Log:\n\nSubject weight: ${268}. Gain rate: 4.2 lbs/week. All metrics nominal. Note on data collection: I moved the scale to the bathroom. This is for methodological convenience — morning measurements, before meals, more accurate. I weigh myself each morning. Sometimes more than once. I want accurate data.`,
+    `Week 7 Research Log:\n\nSubject weight: 294 lbs. Gain rate now 4.8 lbs/week, outside initial projection range but within statistically acceptable deviation. Presented to Dr. Mehta. He asked how I was managing 'the physical toll on the subject.' I said the subject was managing well. The subject is managing well. Objectively.`,
+    `Week 14 Research Log:\n\nSubject weight: 328 lbs. Cumulative gain: 70 lbs over 14 weeks, 5 lbs/week. The acceleration is documented. It is a finding, not a cause for concern. Note: I've been stress-eating during the dissertation write-up. This has also been documented, because I document everything. This too is data.`,
+    `Week 18 Research Log:\n\nSubject weight: 349 lbs. Presented Chapter 4 to the full committee yesterday. Professor Iyer asked why the subject's appetite has 'increased nonlinearly in the latter half of the study period.' I cited stress, ambient caloric increase, environmental variables. He wrote something down. I don't know what. I went home and ate dinner twice.`,
+    `Week 23 Research Log:\n\nSubject weight: 381 lbs. The dissertation is in final draft. All findings are real, documented, accurate, and I stand behind every word. Note: I have been thinking about what comes next — after the dissertation. The subject continues to exist after the study period ends. I have started a new notebook.`,
+    `Week 27 Research Log — Post-Defense:\n\nThe committee passed. All five members. The subject weighs 410 lbs and the committee was looking at her when they voted yes and she was looking at the data and the data is accurate and it passed. The subject continues. The new notebook is filling faster than the first one.`,
+  ],
   installation_artist:[
     `First installation: a room. Mirrors, photographs of my body at each stage, audio of my voice describing what I saw in the mirror at each weight. The opening was quiet for three minutes. Then someone started talking and the conversation didn't stop.`,
     `Two galleries made offers for the next show. One is in another city. I am shipping the work and also shipping myself, which required a logistics conversation that I found genuinely funny and also slightly absurd. I am the largest thing in both shipments.`,
@@ -385,6 +409,14 @@ export const EVOLVED_DIARY = {
     `A creator I watch included me in a 'recommended channels' post. The message was generous and accurate. Her audience came over and many of them stayed. The comment section is larger now but the care in it has not diminished.`,
     `A therapist wrote to say she'd used one of my videos in a session — with client permission, as background for a relaxation exercise. She said it worked. She asked whether she could recommend the channel to other clients. I said yes, obviously.`,
     `The sound of me eating is something people find comfort in. I find comfort in the eating. The camera is the only thing between us and it's not much of a barrier. We are two sides of the same thing: appetite and the peace that comes from feeding it.`,
+  ],
+  home_nest:[
+    `Didn't go out today. There was no reason to. The food came — two orders, one midday, one evening. I ate both. Read something. Watched something. Slept when I was full. Woke up and thought about the next order. This seems like a good system.`,
+    `I've been noting that I've developed routines. Not on purpose — things just happen in the same order, at the same times. The delivery apps know my preferences. I keep refining them. There's more to this than I expected when I started.`,
+    `Third delivery today. I usually stop at two. Ordered a third because it seemed like the next thing to do, and it was good, and I finished it, and that was a good decision. I've been making more good decisions lately. They all involve food.`,
+    `Someone from class texted asking if I was okay. Said fine, just busy. This is accurate. I am busy. The apartment is its own project — figuring out what I need, what I want, which places are best for which things. It takes time to get right. I'm getting it right.`,
+    `The soup place messages me before I order to ask if I want the usual. The usual is: the soup, the bread, the thing with the rice that I'd forgotten existed until I tried it. I said yes. I like that the usual exists. I like that they know it.`,
+    `I've been here a long time, by my standards. The room is familiar. I'm different — softer, heavier, more settled into this particular chair than I've ever been into anything. I haven't wanted to be anywhere else. I've stopped asking if that's something to fix.`,
   ],
   campus_legend:[
     `The dining staff knows my order. They start preparing it when they see me cross the quad. The booth in the corner has been 'mine' for months in the informal sense that nobody sits in it when I'm coming. I appreciate the courtesy.`,
@@ -575,6 +607,14 @@ export const EVOLVED_OUTFITS = {
     "Research-formal: dignified, wide, professional, present. The lab coat is underneath.",
     "Everything is custom at this point. The fit is excellent. The science is also excellent.",
   ],
+  academic_subject:[
+    "Blazer and dark trousers — the presentation uniform. Fits correctly. She checks that it fits correctly.",
+    "Wide-cut academic blazer, taken out once since the committee application. Still professional. Very professional.",
+    "Conference attire: a wide structured jacket over a soft blouse. The jacket is new. She is not discussing the jacket.",
+    "She dresses for the data presentation. Contained, composed, deliberate. The blazer is doing significant work.",
+    "Tailored wide blazer, worn for every major presentation. She owns three now. Different colors. Consistent strategy.",
+    "Academic attire that accommodates the subject at current scale. The subject is being accommodated. The presentations continue.",
+  ],
   installation_artist:[
     "Something she made herself — fabric, found materials, a garment that documents the body wearing it.",
     "Gallery opening attire that is itself a piece. Visitors aren't always sure where the show starts.",
@@ -606,6 +646,14 @@ export const EVOLVED_OUTFITS = {
     "She dresses for sound now as much as sight. The clothes are very quiet. So is she.",
     "Wide, soft, silent fabric. She moves slowly and everything moves slowly with her.",
     "She wears the textures that are kindest to the microphone. Also the ones kindest to her skin.",
+  ],
+  home_nest:[
+    "Soft oversized tee and wide comfortable shorts. She's home. This is what home looks like.",
+    "A very large soft hoodie and wide comfortable pants — both ordered online when the previous comfortable things stopped being comfortable.",
+    "Soft wide everything. She's been in this outfit for two days. It's still the right outfit.",
+    "Her warmest, widest set. She's stopped owning clothes that are for going out. They all look like this.",
+    "The hoodie is enormous and warm and the pants don't require any decisions. This is the right system.",
+    "She wears what's soft and accommodating and doesn't require thought. That's all. It fits perfectly.",
   ],
   campus_legend:[
     "Her dining hall regular outfit — the clothes she's worn so often here that they're part of the myth.",
@@ -858,6 +906,8 @@ export const EVOLVED_ACTIVITY_META = {
   eating_streamer: { label:"Tune In to the Stream",    apCost:1, gainRange:[4,8],  relBonus:10 },
   speed_eater:     { label:"Watch a Challenge",        apCost:1, gainRange:[4,9],  relBonus:9  },
   ranked_feedee:   { label:"🎮 Run a Session",          apCost:1, gainRange:[8,22], relBonus:12 },
+  academic_subject:{ label:"📊 Run a Research Session", apCost:1, gainRange:[5,12], relBonus:10 },
+  home_nest:       { label:"🍜 Order In",                apCost:1, gainRange:[6,15], relBonus:9  },
   chapter_hostess: { label:"Attend Wednesday Feast",   apCost:1, gainRange:[5,10], relBonus:11 },
   body_positive_greek:{ label:"Attend Chapter Event",  apCost:1, gainRange:[2,5],  relBonus:12 },
   metrics_eater:   { label:"Review Her Spreadsheet",   apCost:1, gainRange:[3,7],  relBonus:9  },
@@ -1669,6 +1719,494 @@ She is in the chair just outside the frame. I can see her from here.`,
         {condition:h=>h.includes("supplemented")&&h.includes("grand_feast_extra"),text:`Annual grand feast. Thirty-three courses, the whole chapter fed, your sorority students are significantly heavier. The tradition is cemented.`,gainBonus:14,relBonus:13},
         {condition:h=>h.includes("supplemented"),text:`Grand feast. The supplemental courses were right. The chapter ate extraordinarily.`,gainBonus:8,relBonus:8},
         {condition:()=>true,text:`Annual grand feast. Twenty-three courses. Table cleared. Culture intact.`,gainBonus:0,relBonus:5},
+      ]
+    },
+    // stage 10 — ~820 lbs — "The Last Feast" (blob stage)
+    {
+      title:"The Last Feast",
+      phases:[
+        {
+          text:(h,s)=>`${s.name} is ${Math.round(s.lbs)} pounds and she has not left the chapter house in three days. She cooked from a chair, which she admits to in a tone that does not suggest it was a problem. The chapter kitchen is staffed now — three sisters rotate in shifts — and the result is on the table: a feast larger than anything she's attempted before. She presides from the head in a wide chair that the chapter had custom-made, her belly enormous and warm and resting on the table's edge, and she looks at it all with complete satisfaction.
+
+Camille arrives at six — the alumni donor, in a car that has picked her up from the airport. She's larger than last time. She always is.`,
+          choices:[
+            {id:"greet_camille",label:"Welcome Camille properly — seat her beside Tiffany",result:`Camille takes the seat beside her. They greet each other with the warmth of two people who have been building something together for a long time. Camille surveys the table. "She's outdone herself," Camille says, not to you. She says it to the feast. She starts eating.`,lbs:6,rel:9,flag:"camille_seated"},
+            {id:"witness_the_table",label:"Stand at the door and take in the whole room",result:`You stand in the doorway. The table is extraordinary. The chapter is assembled. Camille has arrived. The largest woman in the room is in the largest chair, which was made for her, presiding over a table that would feed sixty. You take it in. Then you join it.`,lbs:3,rel:7,flag:"witnessed_the_table"},
+          ]
+        },
+        {
+          text:(h,s)=>`Midway through the feast. The chapter is deeply, warmly, pleasurably full. Camille is on her fourth plate, eating with the ease of someone who has spent years at this table. She's put on weight — substantially, across the arc of her involvement — and wears it with the unselfconscious satisfaction of someone who stopped deciding it was a problem a long time ago.
+
+${s.name} is eating steadily, her belly vast and warm and present against the table's edge, and she is watching the whole room with the expression of someone who built this.`,
+          choices:[
+            {id:"camille_toast",label:"Offer a toast — to what they've built together",result:`You raise a glass. The chapter quiets. "To the table," you say, which is also what the check Camille writes says in the memo line. The chapter echoes it. Camille nods once, slowly, and drinks.`,rel:11,flag:"toast_offered"},
+            {id:"ask_camille",label:"Ask Camille what she remembers of her first feast",result:`Camille puts her fork down and thinks about it. "The bread," she says. "And feeling like someone had made space for me at a table I hadn't known existed." She picks up her fork. "I've been making space at tables ever since." She says this to you. She says it to Tiffany. Both are true.`,rel:12,flag:"camille_reminisced"},
+          ]
+        },
+        {
+          text:(h,s)=>`End of feast. The table is cleared. The chapter is fed — every one of them, every sister, every guest — and the room has the warm, full, specific quiet of a space where something real happened. Camille is the last guest to leave. She always is.
+
+She stands at the door with her coat in her arms and looks at ${s.name} — ${Math.round(s.lbs)} pounds in the wide chair at the head of the table — and says: "I found this when I was young and hungry and didn't know what I needed. I'm glad it found me." She puts on her coat. "Same time next year," she says.`,
+          choices:[
+            {id:"final_feast_moment",label:"Stay with her after Camille leaves",result:`She doesn't get up. She's not going to get up for a while. You sit at the table's edge and the room is warm and quiet and she says: "I want to do this forever." She means the table. She means all of it. "I want this to outlast me." You tell her it will.`,lbs:12,rel:16,flag:"final_moment_shared"},
+            {id:"chapter_close",label:"Help the chapter clean up — let her rest",result:`The chapter cleans. She stays at the head of the table, enormous and warm and satisfied, thanking each sister as they pass. This is the close.`,lbs:5,rel:8},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("camille_seated")&&h.includes("toast_offered")&&h.includes("final_moment_shared"),text:(h,s,gain)=>`The Last Feast. Camille said she found this when she was young and hungry. ${s.name} built it. She's ${Math.round(s.lbs+gain)} pounds in the wide chair at the head of the table she set. The chapter is fed. The tradition will outlast her. Everything she made is real.`,gainBonus:18,relBonus:22},
+        {condition:h=>h.includes("camille_seated")&&h.includes("final_moment_shared"),text:(h,s,gain)=>`The Last Feast. ${s.name} is ${Math.round(s.lbs+gain)} pounds and Camille said the right things and the chapter is fed and she wants this to outlast her. It will.`,gainBonus:12,relBonus:15},
+        {condition:()=>true,text:(h,s,gain)=>`The Last Feast. The chapter ate. Camille came. ${s.name} is ${Math.round(s.lbs+gain)} pounds and satisfied. The table was set. The culture is permanent.`,gainBonus:6,relBonus:9},
+      ]
+    },
+  ],
+
+  // ── OVERACHIEVER: academic_subject (presentation defense mini-game) ──────
+  academic_subject:[
+    // stageIdx 0 — ~258 lbs — Week 3: First Committee Presentation
+    {
+      title:"Week 3: Initial Data",
+      phases:[
+        {
+          text:(h,s)=>`${s.name} is ${Math.round(s.lbs)} pounds and has submitted the first quarterly data summary to her thesis committee. The presentation is tomorrow. She's prepared fourteen slides. The data is accurate. She reviewed it three times tonight and has eaten through the review process.`,
+          choices:[
+            {id:"coached_on_framing",label:"Help her frame the preliminary findings",result:`You review the framing together. She's precise about the numbers; you help her decide what narrative goes around them. By the end you've helped her build a presentation that is technically accurate and contextually... manageable. She writes notes in the margin. She eats while she writes.`,lbs:5,rel:7,flag:"coached_framing"},
+            {id:"let_her_prepare",label:"Leave her to it — she knows the material",result:`She knows the material. She's been the material. The presentation will be fine. You tell her this and she nods once and goes back to her laptop.`,lbs:3,rel:5,flag:"self_prepared"},
+          ]
+        },
+        {
+          text:(h,s)=>`The presentation is in two hours. She's run through it three times and eaten twice. The data is solid. The numbers trend in one direction and the direction is up. She's prepared to explain the variance.`,
+          choices:[
+            {id:"pre_presentation_meal",label:"Take her to eat beforehand — one more meal",result:`You take her somewhere good. She eats thoroughly. "Baseline," she says, meaning she's established a caloric baseline before presenting data about caloric baselines. She finds this funny in a very specific way that suggests she's thought about it before.`,lbs:7,rel:8,flag:"ate_before"},
+            {id:"just_coffee",label:"Just coffee — keep it clean",result:`Coffee only. She's methodical. She wants to present cleanly, on the data's merits. The data's merits are substantial and climbing.`,lbs:2,rel:5,flag:"coffee_only"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("coached_framing")&&h.includes("ate_before"),text:(h,s,gain)=>`${s.name} goes into her first committee presentation at ${Math.round(s.lbs+gain)} pounds, well-framed and well-fed. The data is solid. The framing is careful. The committee has been prepped to receive the findings as findings. Time to present.`,gainBonus:4,relBonus:7,startsPresentation:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} goes into her first committee presentation at ${Math.round(s.lbs+gain)} pounds with her data and her methodology and her composure. The committee is going to find this very interesting. Time to present.`,gainBonus:2,relBonus:5,startsPresentation:true},
+      ]
+    },
+    // stageIdx 1 — ~340 lbs — Quarter Review
+    {
+      title:"Quarter Review",
+      phases:[
+        {
+          text:(h,s)=>`Quarter two. ${s.name} is ${Math.round(s.lbs)} pounds and the data has accelerated past the initial projection range. She's presented a note explaining the variance as within acceptable deviation. The committee has accepted this explanation. She's been eating through the write-up process, which she has also documented, because she documents everything.`,
+          choices:[
+            {id:"help_explain_variance",label:"Help her build the variance explanation",result:`You work through it together. The explanation is: dietary variables, stress-response eating, ambient caloric increase in the research environment. All true. All technically sufficient. She recites it like someone who's recited it to herself many times.`,lbs:5,rel:7,flag:"variance_prepared"},
+            {id:"ask_how_she_is",label:"Ask how she's actually doing with all of this",result:`She looks at you for a long moment. 'I'm eating three thousand calories a day and logging every one of them and the committee chair said the methodology is 'compelling.' So.' She eats something. 'I'm doing fine.'`,lbs:4,rel:10,flag:"personal_check"},
+          ]
+        },
+        {
+          text:(h,s)=>`The quarter review is tomorrow. The rate of gain has accelerated. The committee is going to notice. ${h.includes('variance_prepared')?'She has a solid variance explanation prepared. She\'s also had a solid dinner.':'She\'s been quiet about how she\'s doing. She\'s also been eating steadily.'}`,
+          choices:[
+            {id:"big_dinner",label:"Take her to dinner tonight — she deserves it",result:`You take her somewhere substantial. She orders thoroughly and eats carefully and the bill is significant. On the way out she says: 'This will be in the dietary log.' She sounds like someone who finds this funny. She is someone who finds this funny.`,lbs:9,rel:8,flag:"pre_review_dinner"},
+            {id:"final_prep",label:"One more run-through of the data presentation",result:`She runs the deck one more time. The data is what it is. She presents it the way she presents everything: with precision and composure. The committee will receive what they receive.`,lbs:3,rel:6,flag:"final_prepped"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("personal_check")&&h.includes("pre_review_dinner"),text:(h,s,gain)=>`${s.name} goes into the quarter review at ${Math.round(s.lbs+gain)} pounds, having eaten well and told you she's fine. The committee is going to have questions. She's going to have answers. Time to present.`,gainBonus:5,relBonus:9,startsPresentation:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} goes into the quarter review at ${Math.round(s.lbs+gain)} pounds prepared to defend every data point. The committee is paying attention now. Time to present.`,gainBonus:3,relBonus:6,startsPresentation:true},
+      ]
+    },
+    // stageIdx 2 — ~432 lbs — Chapter 4 Defense
+    {
+      title:"Chapter 4 Defense",
+      phases:[
+        {
+          text:(h,s)=>`Chapter 4 is the hardest chapter. It covers the acceleration of gain across the study period, the nonlinear increase in appetite, and what ${s.name} refers to in her own draft as 'confounding variables.' The committee is going to read between the lines. She is ${Math.round(s.lbs)} pounds and she knows this.`,
+          choices:[
+            {id:"reviewed_chapter4",label:"Review Chapter 4 with her before submission",result:`You read it together. She's written it precisely. Every sentence is defensible. Some sentences are defensible because they are technically accurate while being contextually overwhelming. You help her keep the ones that are clearest. She keeps all of them.`,lbs:6,rel:9,flag:"reviewed_ch4"},
+            {id:"trust_the_data",label:"Trust the data — it speaks for itself",result:`She's confident in the data because the data is accurate. 'If they ask,' she says, 'I'll answer. The data isn't the problem.' She eats something from her desk. 'The data is the data.'`,lbs:4,rel:6,flag:"trusted_data"},
+          ]
+        },
+        {
+          text:(h,s)=>`The defense is this afternoon. Professor Iyer sent a preliminary response to Chapter 4 this morning: 'compelling, though the rate of acceleration in the study's latter half warrants discussion.' She printed this email and is holding it. She is ${Math.round(s.lbs)} pounds.`,
+          choices:[
+            {id:"prepare_iyer_response",label:"Prepare a response to Iyer's specific question",result:`You prepare it together: the acceleration is documented, it is a finding, the methodology accounts for it by design. The answer is complete and specific and does not require the word 'because' to be followed by anything personal.`,lbs:6,rel:10,flag:"prepared_iyer"},
+            {id:"just_eat",label:"Put the email down and eat first",result:`She puts the email down. She eats. By the end of the meal the email is still there and she's better equipped to deal with it. 'Iyer asks good questions,' she says. 'I have good answers.'`,lbs:9,rel:7,flag:"ate_first"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("reviewed_ch4")&&h.includes("prepared_iyer"),text:(h,s,gain)=>`${s.name} goes into Chapter 4 defense at ${Math.round(s.lbs+gain)} pounds with a response prepared for every anticipated question. The committee is going to ask the questions. She's going to answer them. Time to present.`,gainBonus:7,relBonus:11,startsPresentation:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} goes into Chapter 4 defense at ${Math.round(s.lbs+gain)} pounds. The data is accurate. The defense will be thorough. Time to present.`,gainBonus:4,relBonus:7,startsPresentation:true},
+      ]
+    },
+    // stageIdx 3 — ~524 lbs — Full Committee Review
+    {
+      title:"Full Committee Review",
+      phases:[
+        {
+          text:(h,s)=>`Full committee. Five members. External eyes on the data for the first time. ${s.name} is ${Math.round(s.lbs)} pounds and the data reflects this and the committee is going to be in the same room with both.`,
+          choices:[
+            {id:"full_committee_prep",label:"Run a full mock defense — all five perspectives",result:`You run it. She presents to an imagined panel of five and you interrupt from five different angles. She handles all of them with precision and composure and a steady appetite. By the end she's ready. She's also, by any measure, considerably larger than when the study began.`,lbs:6,rel:10,flag:"mock_defended"},
+            {id:"confidence_talk",label:"Talk through her confidence — she knows this material better than anyone",result:`She knows the material because she is the material. You remind her of this. She looks at you for a long moment. 'The committee is going to see the numbers,' she says. 'And then they're going to see me.' A pause. 'I'm prepared for both.'`,lbs:4,rel:11,flag:"confidence_built"},
+          ]
+        },
+        {
+          text:(h,s)=>`The full committee review is tomorrow. Five people who have been reading her work and will now see her in person. The data and the subject have not been in the same room together yet. Tomorrow they will be.`,
+          choices:[
+            {id:"substantial_meal",label:"A substantial meal tonight — she's earned it",result:`A proper dinner. She eats fully, the way she's learned to eat over the course of the study, which is to say thoroughly and without apology. The meal will be in the log. Everything is in the log.`,lbs:10,rel:9,flag:"committee_eve_dinner"},
+            {id:"early_night",label:"Early night — she needs to be sharp",result:`She goes home early. She eats something before bed — logged, noted, filed — and sleeps and tomorrow she presents what she is to the people who have been reading about what she is.`,lbs:4,rel:6,flag:"early_night"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("mock_defended")&&h.includes("committee_eve_dinner"),text:(h,s,gain)=>`${s.name} goes into full committee review at ${Math.round(s.lbs+gain)} pounds, prepared from every angle, well-fed, and ready to be the subject in the room with her own data. This is the moment. Time to present.`,gainBonus:10,relBonus:13,startsPresentation:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} goes into full committee review at ${Math.round(s.lbs+gain)} pounds. The data and the subject are about to share a room. Time to present.`,gainBonus:5,relBonus:8,startsPresentation:true},
+      ]
+    },
+    // stageIdx 4 — ~626 lbs — External Examiner
+    {
+      title:"External Examiner",
+      phases:[
+        {
+          text:(h,s)=>`An external examiner from another institution. No social familiarity, no context, no relationship with the subject. They have the dissertation, the data, and a flight in. ${s.name} is ${Math.round(s.lbs)} pounds and has reviewed the examiner's previous work and knows they ask precise questions.`,
+          choices:[
+            {id:"prep_external",label:"Prepare specifically for an outside perspective",result:`You help her prepare for someone who has no investment in the study's continuation — someone who will read the data as data, not as someone they've watched across a semester. She prepares with unusual thoroughness. She eats while preparing.`,lbs:6,rel:9,flag:"external_prepped"},
+            {id:"she_knows_her_work",label:"She knows her work — the examiner will see that",result:`The work is solid. The examiner will see a rigorous self-study with documented methodology, significant data, and a researcher who has seen it through completely. That is accurate. She nods. She eats something.`,lbs:4,rel:7,flag:"confident_external"},
+          ]
+        },
+        {
+          text:(h,s)=>`The examiner arrives tomorrow morning. Tonight is the last night before the most foreign pair of eyes reads the dissertation. ${s.name} is ${Math.round(s.lbs)} pounds and she has prepared everything she can prepare. She's been eating through the final review and the dietary log is complete through today.`,
+          choices:[
+            {id:"examiner_eve_dinner",label:"A real dinner tonight — the last one before the examination",result:`She chooses the restaurant. She eats well — unhurried, deliberate, the way she's learned to eat. This too will be in the log. She's made peace with the log. The log is accurate. She is accurate.`,lbs:10,rel:10,flag:"last_dinner"},
+            {id:"final_notes",label:"Work through the final notes together",result:`You go through the notes. The data is what it is. The examiner will see it. She will explain it. The notes are thorough. So is she.`,lbs:5,rel:8,flag:"final_notes"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("external_prepped")&&h.includes("last_dinner"),text:(h,s,gain)=>`${s.name} faces the external examiner tomorrow at ${Math.round(s.lbs+gain)} pounds, prepared for a stranger reading the data cold. The data is accurate. She is the data. Time to present.`,gainBonus:12,relBonus:13,startsPresentation:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} faces the external examiner at ${Math.round(s.lbs+gain)} pounds. The work is complete. The examination begins. Time to present.`,gainBonus:7,relBonus:9,startsPresentation:true},
+      ]
+    },
+    // stageIdx 5 — ~820 lbs — Final Defense
+    {
+      title:"Final Defense",
+      phases:[
+        {
+          text:(h,s)=>`${s.name} is ${Math.round(s.lbs)} pounds and submitting the completed dissertation next week. The final defense is in four days. The committee has read the full document. She has eaten through the writing of every chapter and the dietary log is the most complete document she's ever produced and it ends today.`,
+          choices:[
+            {id:"read_last_chapter",label:"Read the last chapter with her",result:`She reads it aloud. The final chapter is careful and precise and documents the study's conclusion with academic rigor. The study is complete. The subject is 820 pounds. Both sentences are in the document. Both are accurate.`,lbs:7,rel:13,flag:"read_final"},
+            {id:"talk_about_what_next",label:"Talk about what comes after the dissertation",result:`She's been thinking about it. 'I'll start a new notebook,' she says. 'The study period ends. The subject doesn't.' She eats something. 'The data keeps accumulating. That's what data does.'`,lbs:5,rel:12,flag:"after_talk"},
+          ]
+        },
+        {
+          text:(h,s)=>`Day of the final defense. ${s.name} is ${Math.round(s.lbs)} pounds and the committee is assembled and she's about to defend a dissertation that is about herself and that she has lived for the entirety of its writing. She is the most rigorous subject this committee has ever examined.`,
+          choices:[
+            {id:"final_meal_before",label:"One last meal before the defense",result:`She chooses something specific — a place she's been going since the second month of the study, logged every visit. She eats thoroughly and precisely. 'For the record,' she says, meaning the dietary log. Also meaning: I've thought about this and I'm doing it intentionally and I want a witness.`,lbs:12,rel:12,flag:"final_meal"},
+            {id:"walk_in_with_her",label:"Walk into the defense with her",result:`You walk in with her. The committee is there. She's there. The data is projected on a screen behind her. The subject and the data are in the same room. She stands at the front and looks at the numbers. 'Good data,' she says, mostly to herself. Then she presents.`,lbs:5,rel:14,flag:"walked_in"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("read_final")&&h.includes("final_meal"),text:(h,s,gain)=>`${s.name} enters her final defense at ${Math.round(s.lbs+gain)} pounds having read the last chapter aloud and eaten the last meal before the committee vote. The dissertation is accurate. She is the dissertation. Time to present.`,gainBonus:16,relBonus:17,startsPresentation:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} enters her final defense at ${Math.round(s.lbs+gain)} pounds. The study is complete. The subject is here. The committee will vote. Time to present.`,gainBonus:9,relBonus:12,startsPresentation:true},
+      ]
+    },
+  ],
+
+  // ── QUIET: home_nest (delivery session mini-game) ──────────────────────────
+  home_nest:[
+    // stageIdx 0 — ~258 lbs — "First Day In"
+    {
+      title:"First Day In",
+      phases:[
+        {
+          text:(h,s)=>`${s.name} is ${Math.round(s.lbs)} pounds and she stayed in today. All day. She didn't plan to — it just kept not being necessary to leave. The food came. There was no reason to go out. She's noting this in the way she notes things: carefully, without alarm.`,
+          choices:[
+            {id:"brought_something",label:"Bring her something yourself — stop by",result:`You stop by with something good. She lets you in without surprise — she was expecting the deliveries anyway, and you're close enough to that. The room is quiet. She eats while you sit there. She's comfortable in a way that suggests the comfort has been building for a while.`,lbs:5,rel:8,flag:"you_visited"},
+            {id:"check_in_by_text",label:"Text to check in — give her her space",result:`She texts back quickly. Fine. Eating. She includes a photo of what she ordered, which is significant. She doesn't send food photos to most people.`,lbs:3,rel:7,flag:"text_check"},
+          ]
+        },
+        {
+          text:(h,s)=>`She's been in since morning. It's evening now. The delivery history shows three orders — the app keeps a history, she checks it sometimes. She's not tracking it intentionally. She's just noting what's happening.`,
+          choices:[
+            {id:"order_for_her",label:"Place an order for her — something you know she likes",result:`You order something you know she likes, to her door. She texts back 'oh' and then 'thank you' and then 'this is good.' She eats it. The evening continues. She stays in.`,lbs:8,rel:10,flag:"ordered_for_her"},
+            {id:"let_her_be",label:"Let her be — she's got it sorted",result:`She's sorted. The food comes. The room is quiet. This is fine. This is, she's noting, quite fine.`,lbs:4,rel:5,flag:"let_her_be"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("you_visited")&&h.includes("ordered_for_her"),text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds at the end of her first full day in. You visited. You ordered. She stayed. This seems like something that might happen again. She's not calling it anything yet.`,gainBonus:5,relBonus:9,startsDelivery:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds at the end of her first full day in. The food came. Everything was fine. She'll see how tomorrow goes.`,gainBonus:3,relBonus:6,startsDelivery:true},
+      ]
+    },
+    // stageIdx 1 — ~340 lbs — "Getting the Hang of It"
+    {
+      title:"Getting the Hang of It",
+      phases:[
+        {
+          text:(h,s)=>`It's been five days. ${s.name} is ${Math.round(s.lbs)} pounds and she's developed what she would describe, carefully, as a system. She knows which apps are reliable. She knows which places have the best timing. She's started noting preferences she didn't know she had.`,
+          choices:[
+            {id:"discuss_system",label:"Ask about the system — she seems to enjoy it",result:`She tells you about it. The three places she rotates through. The order she prefers for meals — which thing earlier, which later. The way she's figured out which orders are worth the wait. She talks about this with the focused pleasure of someone optimizing something that matters.`,lbs:4,rel:9,flag:"system_shared"},
+            {id:"observe_delivery",label:"Be there when a delivery arrives — see the setup",result:`You time it right. The delivery arrives and she answers the door in her wide soft hoodie and takes the bag and sits back down in the chair and opens it with an efficiency that suggests this is very practiced. 'I've been figuring out the timing,' she says.`,lbs:6,rel:7,flag:"delivery_observed"},
+          ]
+        },
+        {
+          text:(h,s)=>`Day six. She's hit something of a rhythm — not consciously, just empirically. The food comes at the right times. She eats it. The room accommodates this. She accommodates this. Everyone is getting along.`,
+          choices:[
+            {id:"big_order",label:"Suggest a bigger order tonight — try something new",result:`She agrees. You suggest a place she hasn't tried. The order is larger than her usual. She eats through it over two hours, returning to it between other things, and finishes everything. 'That was a good call,' she says. It was.`,lbs:10,rel:9,flag:"big_order_tried"},
+            {id:"usual_routine",label:"Keep to her routine — she's built something good",result:`The routine runs. Everything comes on time. Everything is what she wanted. She eats and is satisfied and the routine was, as she'd found, a good routine.`,lbs:6,rel:6,flag:"routine_kept"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("system_shared")&&h.includes("big_order_tried"),text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and finding her system. She shared it with you and tried something new and both things worked. The nest is getting more specific. More hers.`,gainBonus:6,relBonus:10,startsDelivery:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and the system is working. The food comes. She eats. The room is hers.`,gainBonus:4,relBonus:6,startsDelivery:true},
+      ]
+    },
+    // stageIdx 2 — ~432 lbs — "The Regular"
+    {
+      title:"The Regular",
+      phases:[
+        {
+          text:(h,s)=>`Two weeks in. ${s.name} is ${Math.round(s.lbs)} pounds and the places she orders from regularly know her preferences. One of them messages before she orders to confirm the usual. She found this noteworthy enough to mention to you.`,
+          choices:[
+            {id:"discuss_regulars",label:"Ask which places and what she gets",result:`She lists them. Three primary, two alternates. Each with a primary order and variations for moods. She knows the delivery windows, the best items, the one thing at each place that she'd order if she could only order one thing. This is a well-developed system.`,lbs:5,rel:9,flag:"regulars_discussed"},
+            {id:"place_a_standing_order",label:"Help her set up a standing order at her favorite",result:`You help her set up a standing order — same time every day, her preferred items. The app confirms it. She looks at the confirmation with the expression of someone who has made something official. 'Good,' she says.`,lbs:7,rel:11,flag:"standing_order"},
+          ]
+        },
+        {
+          text:(h,s)=>`${h.includes('standing_order')?'The standing order came in for the first time today. She texted you to say it worked.':'She\'s been refining the rotation. Things have gotten more dialed in.'} She's ${Math.round(s.lbs)} pounds and the chair she sits in has been repositioned slightly since the last time you visited. Better for the desk, she says.`,
+          choices:[
+            {id:"knock_visit",label:"Stop by again — bring something she didn't order",result:`You bring something from a place she mentioned once and hasn't ordered since. She opens the door and takes the bag and goes back to the chair and you sit nearby while she eats. It's quiet and comfortable and she says 'this is the good one' and she means the item and also something else.`,lbs:9,rel:12,flag:"unannounced_visit"},
+            {id:"order_together",label:"Order together remotely — you from your place, her from hers",result:`You both order at the same time and eat simultaneously on video. She looks comfortable in her chair. Comfortable in the way that things that are shaped by long use are comfortable. You eat. The food is good.`,lbs:6,rel:9,flag:"ordered_together"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("standing_order")&&h.includes("unannounced_visit"),text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and the standing order is running and you brought something unexpected and both things were right. The nest is becoming itself.`,gainBonus:8,relBonus:13,startsDelivery:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and the regulars know her and the room is settled and the food comes on time. This is working.`,gainBonus:5,relBonus:8,startsDelivery:true},
+      ]
+    },
+    // stageIdx 3 — ~524 lbs — "Someone Knocks"
+    {
+      title:"Someone Knocks",
+      phases:[
+        {
+          text:(h,s)=>`Someone from class stopped by. ${s.name} is ${Math.round(s.lbs)} pounds and she didn't answer. The knock came and she looked at the door and looked at the food and looked at the door again and decided the food was the more pressing concern. She texted the person afterward to say she'd been asleep.`,
+          choices:[
+            {id:"validated_choice",label:"Validate the choice — it was fine",result:`You tell her it's fine. The person texted back. Everything is fine. 'Yeah,' she says. 'I know.' She says it the way someone says something they'd already decided. 'I just thought you'd want to know I'm noting it.' She's noting it.`,lbs:4,rel:9,flag:"choice_validated"},
+            {id:"gently_asked",label:"Ask gently if she wants to talk about it",result:`She thinks about it for a moment. 'Not particularly,' she says. 'I was eating and I didn't want to stop.' A pause. 'That's the whole thing.' She eats something. 'Is that a problem?' You say no. She nods. 'Okay.'`,lbs:6,rel:12,flag:"talked_about_it"},
+          ]
+        },
+        {
+          text:(h,s)=>`The delivery arrived ten minutes ago. She's been eating since. The room is warm and comfortable and the knock from earlier has been absorbed into the afternoon without residue. She looks, if anything, more settled.`,
+          choices:[
+            {id:"extra_order",label:"Order something for her now — round two",result:`You order. It arrives. She eats through it with the comfortable ease of someone who has learned how much she can hold and has found she can hold more than she thought. 'Good call,' she says. It was.`,lbs:12,rel:10,flag:"extra_ordered"},
+            {id:"stay_in_quiet",label:"Stay in the quiet with her — no agenda",result:`You sit nearby. She eats. It's quiet. The afternoon passes in the way afternoons pass in a room that has become what it's supposed to be.`,lbs:6,rel:11,flag:"stayed_quiet"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("talked_about_it")&&h.includes("extra_ordered"),text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and she told you the whole thing — eating, not stopping, noting it — and you ordered more and she ate it. The room is what it is. She's what she is. Both are fine.`,gainBonus:10,relBonus:14,startsDelivery:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and the knock is handled and the food is here and the afternoon continues. This is fine. She's fine.`,gainBonus:6,relBonus:9,startsDelivery:true},
+      ]
+    },
+    // stageIdx 4 — ~626 lbs — "They Know Her Name"
+    {
+      title:"They Know Her Name",
+      phases:[
+        {
+          text:(h,s)=>`The soup place started sending her a message before her daily order: 'usual?' She says yes every time. The driver knows which door now. Doesn't knock anymore — just leaves it and messages her. ${s.name} is ${Math.round(s.lbs)} pounds and she mentioned this to you with the tone of someone filing a pleasant observation.`,
+          choices:[
+            {id:"celebrated_it",label:"Celebrate it with her — this is a good thing",result:`You say: that's actually great. She looks at you for a moment. 'Yeah,' she says. 'It is.' She seems to have needed someone else to confirm this before she fully believed it. She eats something. 'The soup is good too,' she adds.`,lbs:5,rel:12,flag:"celebrated"},
+            {id:"asked_about_driver",label:"Ask about the driver — has she ever talked to them",result:`She has. Brief exchanges through the door. The driver's name is Lee. Lee has good timing and doesn't linger. She appreciates both of these things. 'I tipped extra on the last three orders,' she says, with the air of someone who has identified a correct behavior and implemented it.`,lbs:4,rel:10,flag:"knows_driver"},
+          ]
+        },
+        {
+          text:(h,s)=>`She's ${Math.round(s.lbs)} pounds and the room has organized itself around her, gradually, in the way rooms do when one person is in them consistently enough. The chair is the right chair. The desk is the right position. The lighting is figured out. The food situation is running smoothly.`,
+          choices:[
+            {id:"comprehensive_order",label:"Place a comprehensive order tonight — everything good from every place",result:`You order from three places at once. The deliveries arrive within twenty minutes of each other. She spreads them across the desk and eats through all three in sequence, unhurried and complete. 'This is a lot,' she says, meaning: this is exactly right.`,lbs:14,rel:11,flag:"triple_order"},
+            {id:"ask_how_long",label:"Ask how long she's been mostly here — does she know?",result:`She thinks about it. 'A few months,' she says. 'I stopped keeping close track.' A pause. 'It stopped mattering when I stopped wanting to be anywhere else.' She seems okay with this. She is okay with this.`,lbs:6,rel:13,flag:"asked_duration"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("knows_driver")&&h.includes("triple_order"),text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and knows the driver's name and ordered from three places at once and ate everything. The nest is fully operational.`,gainBonus:12,relBonus:13,startsDelivery:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and the places know her and the room is right and the food comes and this is just what it is now.`,gainBonus:7,relBonus:9,startsDelivery:true},
+      ]
+    },
+    // stageIdx 5 — ~820 lbs — "Always Here"
+    {
+      title:"Always Here",
+      phases:[
+        {
+          text:(h,s)=>`${s.name} is ${Math.round(s.lbs)} pounds and she hasn't been outside in a while. She's not sure exactly how long. The room is the same room it's always been except that it has arranged itself completely around her now — the chair, the desk, the delivery setup, the temperature, the specific quiet of a space that has found its use.`,
+          choices:[
+            {id:"visit_the_room",label:"Come by — see the room as it is now",result:`You come by. The room is different in the way rooms get different when they've been lived in fully — worn, specific, warm. She's in the chair. She waves you toward the other chair. The food is on the desk. This is her life and it fits her.`,lbs:5,rel:13,flag:"saw_the_room"},
+            {id:"ask_what_she_needs",label:"Ask what she needs — is there anything",result:`She thinks about it. 'More of the ramen from the place on Fifth,' she says. 'The regular order doesn't come until Thursday.' She says this without irony. It is a sincere answer to the question. You order the ramen.`,lbs:7,rel:12,flag:"got_what_she_needed"},
+          ]
+        },
+        {
+          text:(h,s)=>`She's ${Math.round(s.lbs)} pounds and the delivery is arriving and the room is warm and she looks at you with the expression of someone who has found the thing that works for them and knows it. 'I'm good,' she says, which is not nothing.`,
+          choices:[
+            {id:"stay_for_the_meal",label:"Stay and eat with her — share the delivery",result:`You stay. The food arrives. She shares it — naturally, without ceremony, in the way people share things in rooms where they're both comfortable. It's quiet. It's warm. It's the entire thing.`,lbs:12,rel:16,flag:"shared_delivery"},
+            {id:"let_her_eat_in_peace",label:"Give her the room — let her have her meal",result:`You leave after a while. She's eating when you go. She's still eating when she texts you twenty minutes later to say the thing from the second order was the best one. You say good. She says yeah.`,lbs:9,rel:10,flag:"ate_alone"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("saw_the_room")&&h.includes("shared_delivery"),text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and you saw the room and stayed for the meal and everything was warm and quiet and exactly right. This is where she lives. This is what she's built.`,gainBonus:15,relBonus:18,startsDelivery:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds. The room is right. The food comes. She's good. This is the whole thing.`,gainBonus:9,relBonus:12,startsDelivery:true},
+      ]
+    },
+  ],
+
+  // ── TRANSFER: campus_legend (food challenge tour mini-game) ──────────────
+  campus_legend:[
+    // stageIdx 0 — ~258 lbs — "The First Challenge"
+    {
+      title:"The First Challenge",
+      phases:[
+        {
+          text:(h,s)=>`${s.name} is ${Math.round(s.lbs)} pounds and three months into an exchange she intended to spend doing architecture work and instead has been spending in the dining hall. She didn't mean to clear the dining hall's challenge item. She was hungry. It was there. It seemed manageable and then it was gone.
+
+Someone took a photo. The dining staff started doing something with their hands that she later understood was applause.`,
+          choices:[
+            {id:"encouraged_next",label:"Encourage her to do the next one — see what happens",result:`She thinks about it. 'There's a place near the library,' she says, 'with a thing. Someone told me.' She has looked it up. She has looked up three places. She went in to ask and check the proportions and leave. She has notes.`,lbs:5,rel:8,flag:"encouraged_next"},
+            {id:"asked_how",label:"Ask how she felt after — was it overwhelming",result:`'No,' she says. 'It was...' She considers. 'Satisfying is the word.' She nods once. 'Like correctly estimating something. You think you can and then you do.' She pulls out her phone. 'There's another one. Near the library.'`,lbs:3,rel:10,flag:"talked_about_feeling"},
+          ]
+        },
+        {
+          text:(h,s)=>`She's found three challenges within walking distance. She has notes. She has preferences. The first one happened by accident; the rest are going to happen on purpose. She is ${Math.round(s.lbs)} pounds and she is considering this systematically.`,
+          choices:[
+            {id:"help_plan",label:"Help her plan the route — which one first",result:`You plan it together. She has opinions about ordering. 'This one is the benchmark,' she says, pointing at her list. 'We do this first. Then we know what we're working with.' She means 'we' inclusively. You are apparently part of this now.`,lbs:6,rel:10,flag:"planned_route"},
+            {id:"suggest_journalist",label:"Mention that someone might want to write about this",result:`She looks at you. 'Write about what?' 'Someone eating through the campus food challenges.' 'That's a piece?' She seems genuinely uncertain. 'I'm just eating.' You say yes, that's a piece. She thinks about it. 'Alright,' she says.`,lbs:3,rel:8,flag:"journalist_mentioned"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("planned_route")&&h.includes("journalist_mentioned"),text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds with a route planned and a journalist potentially on the way. She's cleared one challenge by accident. Time to do it on purpose.`,gainBonus:4,relBonus:9,startsChallenge:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and the first challenge is behind her and three more are in her notes. Time to see what she can do.`,gainBonus:2,relBonus:6,startsChallenge:true},
+      ]
+    },
+    // stageIdx 1 — ~340 lbs — "The Journalist Finds Her"
+    {
+      title:"The Journalist Finds Her",
+      phases:[
+        {
+          text:(h,s)=>`A writer from the campus paper found her. Not aggressively — just a 'hey, I heard about the dining hall thing, can I ask you some questions?' ${s.name} is ${Math.round(s.lbs)} pounds and she looked at the journalist for a moment and said yes in the way you say yes when you've already decided.`,
+          choices:[
+            {id:"helped_prep_interview",label:"Help her prepare for the interview — what to say",result:`You run through it. She's naturally quotable — dry, precise, undefended. 'I was hungry and it was there and I ate it' is, she insists, the actual thing that happened. You convince her to add a sentence about what's next. She agrees. 'There's more to eat,' she says. 'That's the sentence.'`,lbs:4,rel:9,flag:"interview_prepped"},
+            {id:"let_her_handle",label:"Let her handle it — she's fine at this",result:`She's fine at this. The interview goes well. She says exactly what happened and the journalist writes it down and the piece is coming out Thursday.`,lbs:3,rel:7,flag:"handled_interview"},
+          ]
+        },
+        {
+          text:(h,s)=>`The piece is out. It's accurate and shorter than she expected and calls her 'a first-year exchange student who is, apparently, working her way through every food challenge on campus.' This is accurate. She's read it twice. She is ${Math.round(s.lbs)} pounds and there are more challenges on the list.`,
+          choices:[
+            {id:"celebrate_piece",label:"Celebrate the piece — this is the beginning",result:`You take her out. To one of the places on the list, which is also a celebration and a continuation. She clears the thing she ordered. The journalist happens to be there. This was not planned. The journalist takes a photo.`,lbs:10,rel:10,flag:"piece_celebrated"},
+            {id:"just_keep_going",label:"Keep going — the list doesn't care about the article",result:`She shrugs at the article and opens the list. 'Second one Thursday,' she says. She goes to the second one Thursday. She clears it. Nobody writes about this one. She doesn't mind.`,lbs:7,rel:7,flag:"kept_going"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("interview_prepped")&&h.includes("piece_celebrated"),text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and the piece ran and the journalist was there for the next one and the list is still going. She's got a following now, technically. She's mostly thinking about the list.`,gainBonus:6,relBonus:10,startsChallenge:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and the article exists and she's still clearing challenges and the list is still going. Time for the next one.`,gainBonus:3,relBonus:7,startsChallenge:true},
+      ]
+    },
+    // stageIdx 2 — ~432 lbs — "The Crowd Forms"
+    {
+      title:"The Crowd Forms",
+      phases:[
+        {
+          text:(h,s)=>`Something has shifted. ${s.name} is ${Math.round(s.lbs)} pounds and when she walks into venues people look up now — not all of them, but some of them, and some of those know who she is. The journalist has written two more pieces. A third is pending. The crowd at challenges has grown.`,
+          choices:[
+            {id:"watch_the_room",label:"Watch how the room reacts when she arrives",result:`You hang back. She walks in and the staff greets her by name and two students at the nearest table recognize her and one of them says something to the other and she doesn't notice or doesn't show it. She sits down and studies the menu. She already knows the menu.`,lbs:4,rel:11,flag:"watched_arrival"},
+            {id:"talk_to_the_crowd",label:"Talk to someone in the crowd — find out why they came",result:`You ask a student nearby why they're here. 'I heard she was doing the challenge today,' the student says. 'I wanted to see.' She says this with complete sincerity. She came specifically to watch. This has become a thing people do.`,lbs:3,rel:9,flag:"crowd_talked"},
+          ]
+        },
+        {
+          text:(h,s)=>`The challenge clears. The crowd that's formed responds. Someone cheers. Someone else takes a photo. The journalist has her phone out. ${s.name} looks at all of this with the expression of someone who is slightly bemused and fundamentally okay with it. She's ${Math.round(s.lbs)} pounds and she wipes her hands on a napkin and says something to the journalist that becomes the headline of the next piece.`,
+          choices:[
+            {id:"post_challenge_chat",label:"Stay after — eat more with her while the crowd clears",result:`You both stay. She orders something small off the regular menu. The crowd filters out. The journalist asks her three more questions while she eats. By the time the room is clear she's had three more plates and seems, if anything, more comfortable than when she arrived.`,lbs:11,rel:12,flag:"stayed_after"},
+            {id:"leave_with_crowd",label:"Leave with the crowd — let her have the solo exit",result:`You leave with the others. Through the window you see her stay a while longer, eating something additional, alone with the journalist and the empty tables. This feels correct.`,lbs:5,rel:8,flag:"left_with_crowd"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("watched_arrival")&&h.includes("stayed_after"),text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and the crowd came to watch and she cleared the challenge and stayed to eat more and the journalist is writing the third piece. The legend is forming.`,gainBonus:8,relBonus:12,startsChallenge:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and the crowd is forming and the challenges are going down and the journalist keeps showing up. The list continues.`,gainBonus:5,relBonus:8,startsChallenge:true},
+      ]
+    },
+    // stageIdx 3 — ~524 lbs — "The Fourth Venue"
+    {
+      title:"The Fourth Venue",
+      phases:[
+        {
+          text:(h,s)=>`The fourth venue. The journalist's third piece ran yesterday and included a sidebar: 'every venue she's cleared.' The list has seven items on it now, four crossed off. ${s.name} is ${Math.round(s.lbs)} pounds and she read the piece carefully and said: 'The sidebar is accurate.'`,
+          choices:[
+            {id:"fourth_venue_together",label:"Go to the fourth venue together — be there for it",result:`You go together. She studies the challenge item when it arrives. 'Proportions are reasonable,' she says, which is her version of 'this is doable.' She eats. The crowd watches. The journalist is there, of course. She clears it in forty minutes.`,lbs:6,rel:10,flag:"went_together"},
+            {id:"let_her_go_alone",label:"Let her go alone — it's her thing, not yours",result:`She goes alone. She texts you: 'Done. The soup was too salty but the rest was fine.' She attaches a photo someone took of her at the finish. She looks satisfied. She always looks satisfied at the finish.`,lbs:4,rel:8,flag:"went_alone"},
+          ]
+        },
+        {
+          text:(h,s)=>`Four down. The journalist has her number now and texts when she knows about a new challenge. ${s.name} sometimes finds out from the journalist before she finds out herself. The relationship has become, in a specific way, useful.`,
+          choices:[
+            {id:"suggest_next_venue",label:"Suggest the fifth venue — you've been scouting",result:`You suggest a place she hasn't found yet. She looks it up. Studies the menu. 'The portion is genuinely impressive,' she says, which is high praise. She schedules it. 'Thursday,' she says. 'Bring the journalist.'`,lbs:9,rel:13,flag:"suggested_venue"},
+            {id:"journalist_interview_together",label:"Join her journalist interview — be part of the story",result:`The journalist wants both of you. She agrees with the same direct nod she uses for everything. The interview is a good interview. The journalist asks her what she thinks will happen by the end of the year. She says: 'I'll have eaten everything.'`,lbs:5,rel:11,flag:"joint_interview"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("went_together")&&h.includes("suggested_venue"),text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds with four cleared and a fifth venue scouted and the journalist texting. The campus legend is building.`,gainBonus:10,relBonus:13,startsChallenge:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds. Four cleared. Three more on the list. The journalist is there for all of it.`,gainBonus:6,relBonus:9,startsChallenge:true},
+      ]
+    },
+    // stageIdx 4 — ~626 lbs — "People Come to Watch"
+    {
+      title:"People Come to Watch",
+      phases:[
+        {
+          text:(h,s)=>`Something is different about this one. ${s.name} is ${Math.round(s.lbs)} pounds and when she walks into the venue she sees: the journalist, three students from class, two people she doesn't recognize, a staff member who has clearly been told who's coming. They've put her in the center table.`,
+          choices:[
+            {id:"acknowledge_crowd",label:"Help her acknowledge the crowd — this is real now",result:`You lean over and say: 'You should say something.' She looks at the room. She says: 'Thank you for coming. I'm going to eat now.' The room laughs. She eats. The room stays.`,lbs:5,rel:11,flag:"acknowledged_crowd"},
+            {id:"just_do_the_thing",label:"She doesn't need to acknowledge it — just watch",result:`She sits down and the challenge arrives and she eats it with the same focused efficiency she always brings and the crowd watches and nobody needs to say anything because the thing is happening and that's what everyone came for.`,lbs:4,rel:9,flag:"just_ate"},
+          ]
+        },
+        {
+          text:(h,s)=>`She clears it. The crowd is larger than expected — word has spread beyond the journalist's readership. A student she's never met records the finish on a phone. Someone behind you says: 'she always does it.' Like they've seen this many times. Like this is a known fact.`,
+          choices:[
+            {id:"big_post_challenge",label:"Order more after — give them a proper close",result:`She orders two more things from the regular menu. The crowd starts to thin but several people stay specifically to watch her keep eating. She eats with complete unselfconsciousness. The journalist is writing something down. This is going to be a very good piece.`,lbs:15,rel:12,flag:"big_post"},
+            {id:"talk_to_the_crowd",label:"Introduce her to the crowd — make a proper moment",result:`You introduce her around — not formally, just naturally, bringing her into conversations with the people who came to see her. She's surprisingly good at this. Dry, precise, disarming. By the end everyone has her contact. She doesn't mind.`,lbs:6,rel:14,flag:"introduced"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("acknowledged_crowd")&&h.includes("big_post"),text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and thanked the crowd and kept eating after and people stayed to watch. The legend is no longer a rumor. It's a fact.`,gainBonus:13,relBonus:14,startsChallenge:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and the crowd came and she ate and the journalist has everything she needs for the next piece. The legend continues.`,gainBonus:8,relBonus:10,startsChallenge:true},
+      ]
+    },
+    // stageIdx 5 — ~820 lbs — "The Last Challenge"
+    {
+      title:"The Last Challenge",
+      phases:[
+        {
+          text:(h,s)=>`Last one on the list. ${s.name} is ${Math.round(s.lbs)} pounds and the journalist told her about this one before she found it herself. It's the largest challenge available within reach — something purpose-made, extreme by design, at a place that's been tracking her progress and has put together an item specifically because she exists.
+
+The journalist says the piece is already written. She's just waiting for the ending.`,
+          choices:[
+            {id:"read_the_menu",label:"Review the challenge item together — assess it",result:`She reads it. You read it. There is a moment. 'Proportions are extreme,' she says. 'But within range.' She says 'within range' the way someone says something they've measured carefully. 'Thursday,' she says.`,lbs:5,rel:11,flag:"assessed_challenge"},
+            {id:"just_trust_her",label:"Trust her — she's done everything else",result:`She's done everything else. You say so. She looks at you. 'I know,' she says, with the particular confidence of someone who has done six of these and has never looked uncertain at a table. 'Thursday,' she says.`,lbs:3,rel:12,flag:"trusted"},
+          ]
+        },
+        {
+          text:(h,s)=>`The venue has a crowd unlike anything that's come before. The journalist is there. The campus paper sent two photographers. There are students who transferred in this semester who have been told about her since before they arrived. ${s.name} is ${Math.round(s.lbs)} pounds and she sits at the table and looks at the challenge item.
+
+She says: 'That's a lot of food.' A pause. 'Right.' She picks up the fork.`,
+          choices:[
+            {id:"stay_for_all_of_it",label:"Stay for the whole thing — every minute",result:`You stay. The room stays. She eats. It takes a while — longer than any of the others, a sustained, focused, extraordinary effort that the room watches in near-silence for significant stretches. She finishes. She sets down the fork. The room responds.`,lbs:18,rel:16,flag:"stayed_all"},
+            {id:"watch_from_nearby",label:"Watch from nearby without crowding her — give her room",result:`You find a spot with a view and stay out of it. She doesn't need you in the moment — the focus is complete, the room is quiet, the challenge is happening. You watch a person become a legend, finishing. The room responds.`,lbs:12,rel:13,flag:"watched_nearby"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("assessed_challenge")&&h.includes("stayed_all"),text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and the last challenge is done. The list is complete. The journalist already filed the piece. The campus will be telling stories about this for years. She wipes her hands and looks at you and says: 'That was the last one.' A pause. 'For now.'`,gainBonus:18,relBonus:18,startsChallenge:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} is ${Math.round(s.lbs+gain)} pounds and the list is done. The campus legend is complete. The journalist has the ending she's been waiting for.`,gainBonus:11,relBonus:14,startsChallenge:true},
       ]
     },
   ],
@@ -2844,6 +3382,8 @@ export const EVOLVED_FORM_META = {
   psych_researcher:     { title:"The Researcher",        color:"#6b5b95" },
   psych_manipulator:    { title:"The Architect",         color:"#4a235a" },
   ranked_feedee:        { title:"Ranked Feedee",          color:"#1a6a9a" },
+  academic_subject:     { title:"Academic Subject",       color:"#2c5f8a" },
+  home_nest:            { title:"Home Nest",              color:"#4a6a4a" },
 };
 
 export const EVOLUTION_BUTTON_BLURB = {
@@ -2898,17 +3438,15 @@ export const EVOLUTION_OFFER = {
     },
   },
   sorority:{
-    intro:(s)=>`${s.name} closes the chapter meeting early and waits until everyone else has left. Then she turns to you. 'I've been thinking about what this chapter could be,' she says. 'And I think it's one of two things.' She pours two glasses of wine. The conversation is going to take a while.`,
+    intro:(s)=>`${s.name} closes the chapter meeting early and waits until everyone else has left. Then she turns to you. 'I've been thinking about what this chapter could be,' she says. She pours one glass of wine and sits with it and looks at you. 'I think it's a table. I think it's the table I set and what happens around it.' She pauses. 'I want to build that properly.'`,
     paths:{
-      chapter_hostess:     { label:"The Hostess",              desc:"Wednesday feast nights. A culture of abundance. She feeds the chapter and the chapter grows." },
-      body_positive_greek: { label:"Body Positive Greek Life", desc:"End the weigh-ins. Change the culture. A permanent shift in what a sorority can be." },
+      chapter_hostess: { label:"The Hostess", desc:"Wednesday feast nights formalized. She manages the menu, the guest list, the atmosphere — and watches the chapter transform around her table." },
     },
   },
   overachiever:{
-    intro:(s)=>`${s.name} arrives with a color-coded presentation. Two options, two methodologies, both rigorous. She presents both in six minutes and then sits down and looks at you. 'I've decided this body is a project,' she says. 'The question is which kind.' She waits for your input.`,
+    intro:(s)=>`${s.name} arrives and doesn't sit down immediately. She stands at the whiteboard — there's a whiteboard, she brought it — and draws a single graph: her weight over time, clean and precise, trending firmly upward. She puts the marker down. 'I submitted this as a thesis proposal,' she says. 'They approved it.' She sits. 'I need a faculty advisor. That's you.'`,
     paths:{
-      metrics_eater:  { label:"Metrics Obsessed", desc:"Data-driven eating as a discipline. Spreadsheets, records, optimization. The overachiever applied to appetite." },
-      food_scientist: { label:"Food Scientist",   desc:"IRB-approved self-study. Academic frame, institutional backing, a career built around the research." },
+      academic_subject: { label:"Academic Subject", desc:"IRB-approved self-study. She is the researcher and the subject simultaneously. The data is rigorously collected. The data is also her body. The committee has questions." },
     },
   },
   artsy:{
@@ -2919,17 +3457,15 @@ export const EVOLUTION_OFFER = {
     },
   },
   quiet:{
-    intro:(s)=>`${s.name} leaves a note on your desk. Not a spoken conversation — a note, slipped under the door sometime before anyone else arrived. Inside: two links and a short paragraph. 'I've been thinking,' the paragraph says, 'about what to do with the fact that I'm different now. Here are two ideas. You don't have to respond immediately.'`,
+    intro:(s)=>`${s.name} doesn't leave a note. She's just there when you arrive — in your office, in the chair, very still. She doesn't explain how she got in. 'I've been mostly at home,' she says. 'I've stopped going out. The food comes.' She looks at her hands. 'I think I want someone to know that's a choice. I think I want someone to help me make it properly.'`,
     paths:{
-      anonymous_blogger:{ label:"Anonymous Blogger", desc:"A secret identity, a public record. Nobody knows who she is. The work speaks for itself." },
-      asmr_creator:     { label:"ASMR Creator",      desc:"Quiet, careful, therapeutic eating content. The perfect format for the person she's always been." },
+      home_nest: { label:"Home Nest", desc:"She's building something warm and self-contained. Delivery orders, refined preferences, a room arranged around exactly what she needs. The outside world is optional now." },
     },
   },
   transfer:{
-    intro:(s)=>`${s.name} sits across from you with the expression of someone who has figured something out. 'I've been here long enough to know this place,' she says. 'And I've been eating long enough to have something to say about it. Two options.' She slides two napkins across the table, each one with an idea scrawled on it.`,
+    intro:(s)=>`${s.name} is already eating when you sit down across from her — something from a place near campus she found in her second week. She doesn't offer an explanation or a pitch. She just looks at you steadily and says: 'I want to go through everything. Every food challenge, every dining hall, every place that does something absurd. I want to document it. I want to be the one who did it.' She takes another bite. 'I want someone to write that down.'`,
     paths:{
-      campus_legend: { label:"Campus Legend",   desc:"Become mythology. The dining hall, the booth, the stories incoming students hear about her before they arrive." },
-      food_tourist:  { label:"Food Tourist",    desc:"Document every cuisine available to her. A blog, a book deal, a cultural bridge between here and home." },
+      campus_legend: { label:"Campus Legend", desc:"She works through the campus food challenge circuit — every venue, every ridiculous item, every crowd that gathers to watch. A food journalist keeps finding her. The legend grows with every table she clears." },
     },
   },
   eced:{
@@ -2981,6 +3517,8 @@ export const ASCENSION_BRIDGE = {
   state_fair_queen: (s)=>`${s.name} is looking at the photo from the last invitational — her at the scale, the number, Darcy starting to clap. She touches the edge of it carefully. 'I've eaten through every bracket,' she says. 'Every category, every division. They stopped being able to contain me in a class.' She's quiet for a long moment. 'I think the circuit is done. The circuit gave me everything it had.' She looks up. 'Now something gives me everything it has.' She sounds certain. She is.`,
   psych_researcher: (s)=>`${s.name} closes the research notebook for the last time — the original one, the one with the methodology she wrote on the first day and has been rewriting ever since. She holds it in both hands. 'The study documented what happened to the subject,' she says. 'It also documented what happened to me. The two arcs are inseparable.' She looks at you. 'The notebook ran out of room. The study ran out of categories. The subject exceeded what methodology can contain.' A long pause. 'So did I.' She sets the notebook down. 'I think the goddess has been one of my data points all along.'`,
   psych_manipulator:(s)=>`${s.name} puts the final notebook on the shelf and stands with her hand on the spine for a long time. 'The study has grown past the building,' she says. 'I didn't plan that. I also didn't stop it.' She looks at her hands — enormous, warm, the hands of someone who has been eating as thoroughly as she has been studying. 'I've stopped logging the others. There's nothing left to log that I don't already know.' She turns. 'I'm only logging myself now. Every meal. Every change.' Her voice is very quiet. 'The goddess has been watching the study. I think the study was always about her.'`,
+  academic_subject:(s)=>`${s.name} closes the final research notebook. The last entry is today's date, her weight, and one word: 'complete.' She holds it for a moment. 'The study is done,' she says. 'The subject isn't.' She sets it on the desk. 'I've been thinking about what the data can't hold. What the methodology can't frame.' She looks at you. 'There's something happening that no committee can evaluate. I think you know what I mean.' A long pause. 'I think the goddess has been a confounding variable this whole time. I think I need to stop controlling for her.'`,
+  home_nest:(s)=>`${s.name} doesn't call — she texts, which is how she communicates now. The message says: 'can you come here.' No question mark. You come. She's in her chair, in her room, and she looks as settled as anyone you've seen — rooted, warm, comfortable in a way that's grown into the space around her. 'I've been thinking,' she says, 'about where here goes.' She looks at the window she doesn't open anymore. 'I think the goddess has been in this room. I think she's been in the walls.' She looks back at you. 'I think it's time to let her in properly.'`,
   ranked_feedee: (s)=>`${s.name} doesn't look up from the screen when she says it. 'Rae said something to me.' She pauses the game — which you've never seen her do without the session being over. 'She said she's been watching what's happening to me and that she's proud.' Her voice is carefully flat. 'I've been thinking about what that means.' She looks at her hands on the controller. She's enormous. She's been enormous for a while. 'I think I've run out of sessions,' she says. 'Or sessions have run out of what they can hold. Something like that.' A long silence. 'Rae said: you've leveled past the game.' She puts the controller down. 'Yeah,' she says. 'I think that's right.'`,
 };
 

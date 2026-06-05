@@ -328,6 +328,12 @@ export default function ProfessorSim(){
   // batchBakerState: tracks homeroom_queen NPC weight accumulation and suspicion
   const [rankedFeedeeState, setRankedFeedeeState] = useState(null);
   // rankedFeedeeState: {studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log:[],done,endReason,raeDelivered}
+  const [presentationState, setPresentationState] = useState(null);
+  // presentationState: {studentId,stageIdx} — placeholder until mini-game implemented
+  const [deliveryState, setDeliveryState] = useState(null);
+  // deliveryState: {studentId,stageIdx} — placeholder until mini-game implemented
+  const [challengeState, setChallengeState] = useState(null);
+  // challengeState: {studentId,stageIdx} — placeholder until mini-game implemented
   const [subjectJournalState, setSubjectJournalState] = useState(null);
   // subjectJournalState: { subjectId, currentPage (0–10) }
   const [nadiaNotesState, setNadiaNotesState] = useState(null);
@@ -1138,13 +1144,13 @@ export default function ProfessorSim(){
         const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
         return processStudentGain(st,totalGain,totalRel+bonusRel);
       }));
-      if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairContest&&!ending.startsSession) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
+      if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairContest&&!ending.startsSession&&!ending.startsPresentation&&!ending.startsDelivery&&!ending.startsChallenge) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
       // handle recipe unlock (homestead_queen)
       if(ending.unlockRecipe){
         setStudents(ss=>ss.map(st=>st.id===s.id?{...st,mjRecipes:[...(st.mjRecipes||[]),ending.unlockRecipe].filter((v,i,a)=>a.indexOf(v)===i)}:st));
       }
       const endText=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
-      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:ending.classGain||0,momGain:ending.momGain||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairContest:!!ending.startsFairContest,startsSession:!!ending.startsSession}));
+      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:ending.classGain||0,momGain:ending.momGain||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairContest:!!ending.startsFairContest,startsSession:!!ending.startsSession,startsPresentation:!!ending.startsPresentation,startsDelivery:!!ending.startsDelivery,startsChallenge:!!ending.startsChallenge}));
     } else {
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }
@@ -6838,7 +6844,7 @@ export default function ProfessorSim(){
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
       {evolvedEventState&&(()=>{
-        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairContest,startsSession}=evolvedEventState;
+        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairContest,startsSession,startsPresentation,startsDelivery,startsChallenge}=evolvedEventState;
         const s=students.find(st=>st.id===studentId);
         const evDef=EVOLVED_EVENTS[formId]?.[stageIdx];
         if(!s||!evDef) return null;
@@ -6918,12 +6924,15 @@ export default function ProfessorSim(){
                   })}
                 </div>
               )}
-              {done&&!startsContest&&!startsMatch&&!startsStream&&!startsFairContest&&!startsSession&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
+              {done&&!startsContest&&!startsMatch&&!startsStream&&!startsFairContest&&!startsSession&&!startsPresentation&&!startsDelivery&&!startsChallenge&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
               {done&&startsContest&&<button style={{...C.btn("#1a6030"),width:"100%",marginTop:4}} onClick={()=>startEatingContest(studentId,stageIdx,history)}>🍽️ Step to the Table</button>}
               {done&&startsMatch&&<button style={{...C.btn("#7a2018"),width:"100%",marginTop:4}} onClick={()=>startSumoMatch(studentId,stageIdx,history)}>🥋 Step Onto the Dohyo</button>}
               {done&&startsStream&&<button style={{...C.btn("#6a1878"),width:"100%",marginTop:4}} onClick={()=>{const partner=students.find(st=>st.id===collabPartnerId);if(!partner){push("⚠️ No collab partner selected.");return;}startCollabStream(studentId,collabPartnerId,stageIdx,history);}}>🎥 Go Live Together</button>}
               {done&&startsFairContest&&<button style={{...C.btn("#C8860A"),width:"100%",marginTop:4}} onClick={()=>{const s2=students.find(st=>st.id===studentId);if(s2)startFairContest(s2,stageIdx);}}>🥧 Step Up to the Table</button>}
               {done&&startsSession&&<button style={{...C.btn("#1a5a7a"),width:"100%",marginTop:4}} onClick={()=>startRankedSession(studentId,stageIdx)}>🎮 Start the Session</button>}
+              {done&&startsPresentation&&<button style={{...C.btn("#2c5f8a"),width:"100%",marginTop:4}} onClick={()=>{setPresentationState({studentId,stageIdx});setEvolvedEventState(null);}}>📊 Begin the Defense</button>}
+              {done&&startsDelivery&&<button style={{...C.btn("#4a6a4a"),width:"100%",marginTop:4}} onClick={()=>{setDeliveryState({studentId,stageIdx});setEvolvedEventState(null);}}>🍜 Place the Order</button>}
+              {done&&startsChallenge&&<button style={{...C.btn("#7a4a1a"),width:"100%",marginTop:4}} onClick={()=>{setChallengeState({studentId,stageIdx});setEvolvedEventState(null);}}>🍺 Take the Challenge</button>}
             </div>
           </div>
         );
@@ -7185,6 +7194,84 @@ export default function ProfessorSim(){
                   <button style={{...C.btn("#1a5a7a"),width:"100%",marginTop:10}} onClick={closeRankedSession}>Session Saved ✓</button>
                 </>
               )}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── PRESENTATION DEFENSE MINI-GAME MODAL (placeholder) ── */}
+      {presentationState&&(()=>{
+        const{studentId,stageIdx}=presentationState;
+        const s=students.find(st=>st.id===studentId); if(!s) return null;
+        const accentColor="#2c5f8a";
+        return(
+          <div style={C.overlay}>
+            <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#030b14,#071424,#030b14)",border:`1px solid ${accentColor}50`,maxHeight:"85vh",overflowY:"auto"}}>
+              <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>ACADEMIC SUBJECT</div>
+              <div style={{fontSize:15,color:"#a0c0e0",fontWeight:"bold",marginBottom:10}}>Committee Defense — Stage {stageIdx+1}</div>
+              <div style={{color:"#8090a0",fontSize:12,lineHeight:1.6,marginBottom:16}}>
+                {s.name} stands at the front of the room. The committee has questions. The data is... irregular.
+                <br/><br/>
+                <em style={{color:"#5070a0"}}>(Mini-game coming in Phase 3)</em>
+              </div>
+              <button style={{...C.btn(accentColor),width:"100%"}} onClick={()=>{
+                const gain=Math.round(6+Math.random()*8);
+                setStudents(ss=>ss.map(st=>st.id===studentId?processStudentGain(st,gain,8):st));
+                push(`✦ ${s.name} — Academic Subject Defense: +${gain} lbs · +8 rel`);
+                setPresentationState(null);
+              }}>Conclude Defense ✓</button>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── DELIVERY ORDER MINI-GAME MODAL (placeholder) ── */}
+      {deliveryState&&(()=>{
+        const{studentId,stageIdx}=deliveryState;
+        const s=students.find(st=>st.id===studentId); if(!s) return null;
+        const accentColor="#4a6a4a";
+        return(
+          <div style={C.overlay}>
+            <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#030e03,#071407,#030e03)",border:`1px solid ${accentColor}50`,maxHeight:"85vh",overflowY:"auto"}}>
+              <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>HOME NEST</div>
+              <div style={{fontSize:15,color:"#a0c0a0",fontWeight:"bold",marginBottom:10}}>Order In — Stage {stageIdx+1}</div>
+              <div style={{color:"#708070",fontSize:12,lineHeight:1.6,marginBottom:16}}>
+                {s.name} opens her phone. The apartment is quiet. Three apps, twelve menus, and nowhere else to be.
+                <br/><br/>
+                <em style={{color:"#507050"}}>(Mini-game coming in Phase 3)</em>
+              </div>
+              <button style={{...C.btn(accentColor),width:"100%"}} onClick={()=>{
+                const gain=Math.round(7+Math.random()*10);
+                setStudents(ss=>ss.map(st=>st.id===studentId?processStudentGain(st,gain,7):st));
+                push(`✦ ${s.name} — Home Nest Delivery: +${gain} lbs · +7 rel`);
+                setDeliveryState(null);
+              }}>Close the Apps ✓</button>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── CAMPUS CHALLENGE MINI-GAME MODAL (placeholder) ── */}
+      {challengeState&&(()=>{
+        const{studentId,stageIdx}=challengeState;
+        const s=students.find(st=>st.id===studentId); if(!s) return null;
+        const accentColor="#7a4a1a";
+        return(
+          <div style={C.overlay}>
+            <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#100800,#1a1000,#100800)",border:`1px solid ${accentColor}50`,maxHeight:"85vh",overflowY:"auto"}}>
+              <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>CAMPUS LEGEND</div>
+              <div style={{fontSize:15,color:"#e0b080",fontWeight:"bold",marginBottom:10}}>Food Challenge — Stage {stageIdx+1}</div>
+              <div style={{color:"#907050",fontSize:12,lineHeight:1.6,marginBottom:16}}>
+                {s.name} steps up to the counter. The menu is in front of her. There's a small crowd already forming.
+                <br/><br/>
+                <em style={{color:"#705030"}}>(Mini-game coming in Phase 3)</em>
+              </div>
+              <button style={{...C.btn(accentColor),width:"100%"}} onClick={()=>{
+                const gain=Math.round(8+Math.random()*12);
+                setStudents(ss=>ss.map(st=>st.id===studentId?processStudentGain(st,gain,9):st));
+                push(`✦ ${s.name} — Campus Challenge: +${gain} lbs · +9 rel`);
+                setChallengeState(null);
+              }}>Challenge Complete ✓</button>
             </div>
           </div>
         );
