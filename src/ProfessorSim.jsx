@@ -7403,6 +7403,8 @@ export default function ProfessorSim(){
                 onClick={debugForceIncarnation}>Force Incarnation</button>
               <button style={{...C.smBtn,background:"rgba(80,0,100,0.4)"}}
                 onClick={()=>setLilithUnlocked(true)}>🌑 Unlock Lilith</button>
+              <button style={{...C.smBtn,background:"rgba(60,30,0,0.5)"}}
+                onClick={()=>setStudents(prev=>prev.map(s=>s.id===LILITH_ID?s:{...s,lbs:300}))}>⚖️ All 300 lbs</button>
             </div>
             {/* Per-student rows */}
             <div style={{fontSize:10,color:"#888",marginBottom:6}}>STUDENTS</div>
