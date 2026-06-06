@@ -5,7 +5,7 @@ import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GR
 import { BODY_DESCS, STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, OUTFITS, SLIGHT_DIARY, DIARY_ENTRIES, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
 import { GOSSIP, getGossipLines } from './gameData/gossip.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS, CLASS_SCENES } from './gameData/classEvents.js';
-import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS, BATCH_BAKER_NPCS, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WIFE_LESSONS_NPCS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES } from './gameData/evolvedForms.js';
+import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS, BATCH_BAKER_NPCS, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WIFE_LESSONS_NPCS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_WEIGH_IN_2_TEXT, CONTEST_DEVOUR_POPUPS, CONTEST_PAYOFF_TEXT, SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_MATCH_AFTERMATH, SUMO_PAYOFF_TEXT, SUMO_FILL_RING_TEXT, COLLAB_CONTENT_CREATOR_ARCHETYPES, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_OPENING_TEXT, RECORDING_TAKE_INTRO_TEXT, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT, MJ_RECIPES, FAIR_FOODS, FAIR_STAGE_FOODS, FAIR_DARCY_WEIGHTS, FAIR_FULLNESS_MILESTONES, FAIR_WEIGH_IN_TEXT, FAIR_PAYOFF_TEXT, FAIR_TAUNT_POPUPS } from './gameData/miniGames.js';
 import { SKILL_TREE, SKILL_CATEGORIES, DIVINE_SKILL_TREE, EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
@@ -335,6 +335,11 @@ export default function ProfessorSim(){
   const [wifeLessonsState, setWifeLessonsState] = useState(null);
   // wifeLessonsState: persistent {mjStudentId,stage,daughters:{Emma,Chloe,Kezia,Lila},moms:{Darlene,Wanda,Patrice},session:null|{lessonChosen,conversationState,log}}
   // session.conversationState: null|{person,stageEntry,optionIdx,subIdx,done,resultText}
+  const [competitiveGainerState, setCompetitiveGainerState] = useState(null);
+  // competitiveGainerState: persistent {priyaStudentId,spirit,chatLog:[{text,isProf,wk}],measuredStudentIds:[],lastChatWeek,corkboardVisitCount,open,view,subState}
+  // view: null|'corkboard'|'measurement_picker'|'measurement_result'|'self_review'|'binge'
+  // subState: result/scene data for the current view
+  const [cgChatOpen, setCgChatOpen] = useState(false);
   const [rankedFeedeeState, setRankedFeedeeState] = useState(null);
   // rankedFeedeeState: {studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log:[],done,endReason,raeDelivered}
   const [chapterHostessState, setChapterHostessState] = useState(null);
@@ -846,6 +851,16 @@ export default function ProfessorSim(){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
     }
+    // Competitive Gainer: auto-post to group chat each new week
+    const priyaCG=updated.find(s=>s.evolvedForm==='competitive_gainer');
+    if(priyaCG){
+      setCompetitiveGainerState(prev=>{
+        if(!prev) return prev;
+        const msgs=generateCGChatMessages(priyaCG,updated,prev,newWeek);
+        if(!msgs.length) return prev;
+        return{...prev,chatLog:[...prev.chatLog,...msgs],lastChatWeek:newWeek};
+      });
+    }
   };
 
   // ── DIVINE ACTION FUNCTIONS ─────────────────────────────────────
@@ -1139,6 +1154,13 @@ export default function ProfessorSim(){
       openWifeLessonsSession(s);
       return;
     }
+    if(s.evolvedForm==='competitive_gainer'){
+      const meta=EVOLVED_ACTIVITY_META['competitive_gainer']; if(!meta) return;
+      if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
+      setAp(a=>a-meta.apCost);
+      openCompetitiveGainerModal(s);
+      return;
+    }
     const meta=EVOLVED_ACTIVITY_META[s.evolvedForm]; if(!meta) return;
     if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
     const stageIdx=getEvolvedActivityStageIdx(s);
@@ -1318,6 +1340,63 @@ export default function ProfessorSim(){
     setHomeroomSessionState(null);
   };
 
+  // ── MEASUREMENT FORMULA ───────────────────────────────────────────
+  const getMeasurements=(lbs,bodyType)=>{
+    const ex=Math.max(0,lbs-120);
+    const pw=(x,e)=>x<=0?0:Math.pow(x,e);
+    let waist=33+0.305*pw(ex,0.85);
+    let thigh=20+0.227*pw(ex,0.777);
+    let arm  =11+0.064*pw(ex,0.932);
+    const hgM=Math.max(0.03,0.22-ex*0.0009);
+    let bust=waist*(1+hgM);
+    let hip =waist*(1+hgM);
+    switch(bodyType){
+      case'apple':
+        waist=37+0.305*pw(ex,0.85);
+        bust=waist;
+        hip=waist*(1+Math.max(0.03,0.10-ex*0.0004));
+        break;
+      case'pear':
+        bust=waist;
+        hip=waist*1.40;
+        thigh=thigh*1.15;
+        break;
+      case'mom_bod':
+        waist=37+0.305*pw(ex,0.85);
+        bust=waist*(1+hgM);
+        hip=waist*1.25;
+        thigh=thigh*1.25;
+        arm=arm*1.15;
+        break;
+      case'straight':{
+        const sm=Math.min(0.15,ex*0.001);
+        bust=waist*(1+sm);
+        hip=waist*(1+sm);
+        thigh=18+0.227*pw(ex,0.777);
+        break;}
+      case'voluptuous':
+        waist=37+0.305*pw(ex,0.85);
+        bust=waist*1.25;
+        hip=waist*1.25;
+        thigh=thigh*1.25;
+        arm=arm*1.15;
+        break;
+      case'athletic':
+        waist=30+0.305*pw(ex,0.85);
+        bust=waist;
+        hip=waist*1.10;
+        arm=14+0.064*pw(ex,0.932);
+        break;
+      default: break;
+    }
+    const r=v=>Math.round(v*10)/10;
+    return{waist:r(waist),bust:r(bust),hip:r(hip),thigh:r(thigh),arm:r(arm)};
+  };
+
+  const getCGSpiritTier=(spirit)=>{
+    return CG_CONFIG.spiritTiers.find(t=>spirit>=t.min&&spirit<=t.max)||CG_CONFIG.spiritTiers[0];
+  };
+
   // ── WIFE LESSONS handlers ─────────────────────────────────────────
 
   const _wlCheckStageAdvance=(state)=>{
@@ -1450,6 +1529,175 @@ export default function ProfessorSim(){
         push(`✦ Wife Lessons Session — Stage ${stage}: you +${mjGainAccum} lbs · +${relAccum} rel`);
       }
       return{...prev,session:null};
+    });
+  };
+
+  // ── COMPETITIVE GAINER handlers ──────────────────────────────────
+
+  // Chat message generator — called on week advance and on manual chat check
+  const generateCGChatMessages=(priya,allStudents,cgState,currentWeek)=>{
+    const tier=getCGSpiritTier(cgState.spirit);
+    const msgs=[];
+    const priyaM=getMeasurements(priya.lbs,priya.bodyType);
+    // Priya's opening post
+    const postTemplate=CG_CHAT_TEMPLATES.priyaPost[tier.label]||CG_CHAT_TEMPLATES.priyaPost.Invested;
+    msgs.push({text:`[Priya] ${postTemplate} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isProf:false,wk:currentWeek});
+    // Select 2-4 visible students (not Priya) weighted by proximity + measured status
+    const visible=allStudents.filter(s=>s.id!==priya.id&&(!s.hidden||s.id===15));
+    const candidates=visible.slice().sort(()=>Math.random()-0.5).slice(0,4);
+    let threatDetected=false;
+    candidates.forEach(s=>{
+      const templates=CG_CHAT_TEMPLATES.girls[s.name]||CG_CHAT_TEMPLATES.girls.Brittany;
+      const measured=cgState.measuredStudentIds.includes(s.id);
+      const sLbs=s.lbs;
+      let replyType;
+      if(!measured) replyType='unmeasured';
+      else if(sLbs>priya.lbs*1.05) { replyType='ahead'; threatDetected=true; }
+      else if(sLbs>priya.lbs*0.95) { replyType='close'; threatDetected=true; }
+      else if(sLbs>priya.lbs*0.80)  replyType='proud';
+      else replyType='behind';
+      const replyText=templates[replyType]||templates.behind||'...';
+      msgs.push({text:`[${s.name}] ${replyText}`,isProf:false,wk:currentWeek});
+    });
+    // Priya follow-up
+    const followupKey=threatDetected?'threatened':'leading';
+    msgs.push({text:`[Priya] ${CG_CHAT_TEMPLATES.priyaFollowup[followupKey]}`,isProf:false,wk:currentWeek});
+    return msgs;
+  };
+
+  const openCompetitiveGainerModal=(s)=>{
+    setCompetitiveGainerState(prev=>{
+      const base=prev||{
+        priyaStudentId:s.id,
+        spirit:0,
+        chatLog:[],
+        measuredStudentIds:[],
+        lastChatWeek:week,
+        corkboardVisitCount:0,
+      };
+      return{...base,priyaStudentId:s.id,open:true,view:null,subState:null};
+    });
+  };
+
+  const closeCGModal=()=>{
+    setCompetitiveGainerState(prev=>prev?{...prev,open:false,view:null,subState:null}:prev);
+  };
+
+  const cgAddSpirit=(delta)=>{
+    setCompetitiveGainerState(prev=>{
+      if(!prev) return prev;
+      return{...prev,spirit:prev.spirit+delta};
+    });
+  };
+
+  const doCGCorkboard=()=>{
+    setCompetitiveGainerState(prev=>{
+      if(!prev) return prev;
+      const tier=getCGSpiritTier(prev.spirit);
+      const scenes=CG_CORKBOARD_SCENES[tier.label]||CG_CORKBOARD_SCENES.Invested;
+      const idx=(prev.corkboardVisitCount||0)%scenes.length;
+      const sceneText=scenes[idx];
+      // Spirit gain: check if any visible student is within threat range
+      const priya=students.find(st=>st.id===prev.priyaStudentId);
+      let spiritGain=rnd(CG_CONFIG.spiritGainNeutral[0],CG_CONFIG.spiritGainNeutral[1]);
+      if(priya){
+        const priyaM=getMeasurements(priya.lbs,priya.bodyType);
+        const visible=students.filter(s=>s.id!==priya.id&&(!s.hidden||lilithUnlocked));
+        visible.forEach(s=>{
+          const sM=getMeasurements(s.lbs,s.bodyType);
+          CG_CONFIG.categories.forEach(cat=>{
+            if(sM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)){
+              spiritGain+=rnd(CG_CONFIG.spiritGainThreat[0],CG_CONFIG.spiritGainThreat[1]);
+            }
+          });
+        });
+      }
+      return{...prev,spirit:prev.spirit+spiritGain,corkboardVisitCount:(prev.corkboardVisitCount||0)+1,view:'corkboard',subState:{sceneText,spiritGain}};
+    });
+  };
+
+  const doCGSelfReview=()=>{
+    setCompetitiveGainerState(prev=>{
+      if(!prev) return prev;
+      const tier=getCGSpiritTier(prev.spirit);
+      const sceneText=CG_MEASUREMENT_SCENES.selfReview[tier.label]||CG_MEASUREMENT_SCENES.selfReview.Invested;
+      const spiritGain=rnd(2,5);
+      return{...prev,spirit:prev.spirit+spiritGain,view:'self_review',subState:{sceneText,spiritGain}};
+    });
+  };
+
+  const openCGMeasurementPicker=()=>{
+    setCompetitiveGainerState(prev=>prev?{...prev,view:'measurement_picker',subState:null}:prev);
+  };
+
+  const doCGMeasurement=(targetStudentId)=>{
+    setCompetitiveGainerState(prev=>{
+      if(!prev) return prev;
+      const priya=students.find(s=>s.id===prev.priyaStudentId);
+      const target=students.find(s=>s.id===targetStudentId);
+      if(!priya||!target) return prev;
+      const priyaM=getMeasurements(priya.lbs,priya.bodyType);
+      const targetM=getMeasurements(target.lbs,target.bodyType);
+      // Determine threats by category
+      const threats=[];
+      const reactions={};
+      CG_CONFIG.categories.forEach(cat=>{
+        let rel='priya_larger';
+        if(targetM[cat]>priyaM[cat]*(1+CG_CONFIG.threatFraction)){rel='priya_smaller';threats.push(cat);}
+        else if(targetM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)){rel='priya_equal';threats.push(cat);}
+        const tKey=`[MeasureReaction_${rel==='priya_larger'?'PriyaLarger':rel==='priya_smaller'?'PriyaSmaller':'PriyaEqual'}_${cat}]`;
+        reactions[cat]={rel,text:tKey};
+      });
+      const spiritGain=threats.length>0
+        ? threats.length*rnd(CG_CONFIG.spiritGainThreat[0],CG_CONFIG.spiritGainThreat[1])
+        : rnd(CG_CONFIG.spiritGainNeutral[0],CG_CONFIG.spiritGainNeutral[1]);
+      const sceneText=`[MeasurementScene_${target.name}_S${getStage(target.lbs).id}]`;
+      const newMeasured=prev.measuredStudentIds.includes(targetStudentId)
+        ? prev.measuredStudentIds
+        : [...prev.measuredStudentIds,targetStudentId];
+      return{...prev,spirit:prev.spirit+spiritGain,measuredStudentIds:newMeasured,
+        view:'measurement_result',
+        subState:{targetStudentId,priyaM,targetM,sceneText,reactions,threats,spiritGain}};
+    });
+  };
+
+  const doCGBinge=()=>{
+    // 1 AP cost already deducted from the modal's "Push Priya's Gains" button
+    setCompetitiveGainerState(prev=>{
+      if(!prev) return prev;
+      const priya=students.find(s=>s.id===prev.priyaStudentId);
+      if(!priya) return prev;
+      const tier=getCGSpiritTier(prev.spirit);
+      const tierIdx=CG_CONFIG.spiritTiers.indexOf(tier);
+      const stageId=Math.min(7,getStage(priya.lbs).id);
+      const baseGain=CG_CONFIG.minBinge+(CG_CONFIG.maxBinge-CG_CONFIG.minBinge)*Math.min(1,(stageId-1)/6);
+      const mult=CG_CONFIG.bingeSpiritMults[Math.max(0,tierIdx)];
+      const gain=Math.round(baseGain*mult*(0.85+Math.random()*0.30));
+      const sceneText=CG_BINGE_SCENES[tier.label]||CG_BINGE_SCENES.Invested;
+      return{...prev,view:'binge',subState:{gain,sceneText,done:false}};
+    });
+  };
+
+  const applyAndCloseCGBinge=()=>{
+    setCompetitiveGainerState(prev=>{
+      if(!prev?.subState?.gain) return prev?{...prev,view:null,subState:null}:prev;
+      const{gain}=prev.subState;
+      setStudents(sp=>sp.map(s=>{
+        if(s.id!==prev.priyaStudentId) return s;
+        return processStudentGain(s,gain,0);
+      }));
+      push(`📊 Priya — Competitive Binge: +${gain} lbs`);
+      return{...prev,view:null,subState:null};
+    });
+  };
+
+  const cgProfessorReply=(optId)=>{
+    const opt=CG_CHAT_TEMPLATES.professorReplies.find(r=>r.id===optId);
+    if(!opt) return;
+    setCompetitiveGainerState(prev=>{
+      if(!prev) return prev;
+      const msg={text:`[You] ${opt.text}`,isProf:true,wk:week};
+      return{...prev,spirit:prev.spirit+opt.spiritDelta,chatLog:[...prev.chatLog,msg]};
     });
   };
 
@@ -5207,6 +5455,9 @@ export default function ProfessorSim(){
             </div>
           )}
           <button onClick={startClass} style={C.btn("#186028")}>⏩ Next Week (+5 AP)</button>
+          {students.some(s=>s.evolvedForm==='competitive_gainer')&&(
+            <button onClick={()=>setCgChatOpen(true)} style={{...C.btn("#7a1530"),fontSize:10,border:"1px solid #e8294a40"}}>💬 Softening Stats</button>
+          )}
           <button onClick={()=>setDebugOpen(d=>!d)} style={{...C.btn("#222244"),fontSize:10,opacity:0.7}}>🐛 Debug</button>
         </div>
       </div>
@@ -8272,6 +8523,252 @@ export default function ProfessorSim(){
                 onClick={closeWifeLessonsSession}>
                 End Session{mjGainAccum>0?` · +${mjGainAccum} lbs to Mary Jane`:""}
               </button>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── COMPETITIVE GAINER — GROUP CHAT MODAL (always accessible when evolved) ── */}
+      {cgChatOpen&&(()=>{
+        const cgS=competitiveGainerState;
+        const priya=students.find(s=>s.evolvedForm==='competitive_gainer');
+        if(!priya||!cgS) return null;
+        const tier=getCGSpiritTier(cgS.spirit);
+        const CG_BG="#0a0306"; const CG_ACC="#e8294a"; const CG_DIM="#7a1530";
+        const CG_TEXT="#f0d0d8"; const CG_SUBTLE="#c08090";
+        return(
+          <div style={{...C.overlay,zIndex:370}}>
+            <div style={{...C.modal,maxWidth:580,background:CG_BG,border:`1px solid ${CG_ACC}40`,maxHeight:"88vh",overflowY:"auto"}}>
+              <div style={{display:"flex",alignItems:"center",marginBottom:12}}>
+                <div style={{fontSize:9,letterSpacing:4,color:CG_ACC}}>💬 SOFTENING STATS</div>
+                <div style={{marginLeft:"auto",fontSize:9,color:CG_DIM}}>Spirit {cgS.spirit} · {tier.label}</div>
+              </div>
+              {/* Chat log */}
+              <div style={{maxHeight:320,overflowY:"auto",marginBottom:12,padding:"8px 10px",background:"rgba(232,41,74,0.04)",border:`1px solid ${CG_DIM}40`,borderRadius:5}}>
+                {cgS.chatLog.length===0&&<div style={{fontSize:11,color:CG_SUBTLE,fontStyle:"italic"}}>No posts yet. Visit the corkboard to trigger the first post.</div>}
+                {cgS.chatLog.map((msg,i)=>(
+                  <div key={i} style={{marginBottom:8,paddingLeft:8,borderLeft:`2px solid ${msg.isProf?CG_ACC:CG_DIM}40`}}>
+                    <div style={{fontSize:10,color:msg.isProf?CG_ACC:CG_TEXT,lineHeight:1.65}}>{msg.text}</div>
+                    <div style={{fontSize:8,color:CG_SUBTLE,marginTop:2}}>Week {msg.wk}</div>
+                  </div>
+                ))}
+              </div>
+              {/* Professor reply */}
+              <div style={{marginBottom:12}}>
+                <div style={{fontSize:9,letterSpacing:3,color:CG_DIM,marginBottom:6}}>REPLY AS PROFESSOR</div>
+                <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+                  {CG_CHAT_TEMPLATES.professorReplies.map(opt=>(
+                    <button key={opt.id} style={{...C.btn(CG_DIM),fontSize:10,padding:"5px 10px"}}
+                      onClick={()=>cgProfessorReply(opt.id)}>
+                      {opt.label} <span style={{color:CG_ACC,marginLeft:4}}>+{opt.spiritDelta} spirit</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <button style={{...C.btn(CG_BG),width:"100%",border:`1px solid ${CG_DIM}30`}} onClick={()=>setCgChatOpen(false)}>Leave Chat</button>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── COMPETITIVE GAINER — MAIN EVOLVED MODAL ── */}
+      {competitiveGainerState?.open&&(()=>{
+        const cgS=competitiveGainerState;
+        const priya=students.find(s=>s.id===cgS.priyaStudentId);
+        if(!priya) return null;
+        const tier=getCGSpiritTier(cgS.spirit);
+        const CG_BG="#0a0306"; const CG_ACC="#e8294a"; const CG_DIM="#7a1530";
+        const CG_TEXT="#f0d0d8"; const CG_SUBTLE="#c08090";
+        const priyaM=getMeasurements(priya.lbs,priya.bodyType);
+        const tierBarPct=Math.min(100,cgS.spirit/60*100);
+        const isBlob=getStage(priya.lbs).id>=10;
+
+        // ── Corkboard view ──
+        if(cgS.view==='corkboard'){
+          const{sceneText,spiritGain}=cgS.subState||{};
+          return(
+            <div style={{...C.overlay,zIndex:365}}>
+              <div style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
+                <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📌 CORKBOARD</div>
+                <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
+                <div style={{fontSize:10,color:CG_ACC,marginBottom:12}}>Spirit +{spiritGain} · Now {tier.label} ({cgS.spirit})</div>
+                <button style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
+              </div>
+            </div>
+          );
+        }
+
+        // ── Self-review view ──
+        if(cgS.view==='self_review'){
+          const{sceneText,spiritGain}=cgS.subState||{};
+          return(
+            <div style={{...C.overlay,zIndex:365}}>
+              <div style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
+                <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📏 SELF-REVIEW</div>
+                <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:12,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:12}}>
+                  {CG_CONFIG.categories.map(cat=>(
+                    <div key={cat} style={{background:"rgba(232,41,74,0.05)",border:`1px solid ${CG_DIM}40`,borderRadius:4,padding:"6px 8px",textAlign:"center"}}>
+                      <div style={{fontSize:8,letterSpacing:2,color:CG_DIM}}>{cat.toUpperCase()}</div>
+                      <div style={{fontSize:14,fontWeight:700,color:CG_ACC}}>{priyaM[cat]}"</div>
+                    </div>
+                  ))}
+                  <div style={{background:"rgba(232,41,74,0.05)",border:`1px solid ${CG_DIM}40`,borderRadius:4,padding:"6px 8px",textAlign:"center"}}>
+                    <div style={{fontSize:8,letterSpacing:2,color:CG_DIM}}>WEIGHT</div>
+                    <div style={{fontSize:14,fontWeight:700,color:CG_ACC}}>{Math.round(priya.lbs)} lbs</div>
+                  </div>
+                  {isBlob&&(
+                    <div style={{background:"rgba(232,41,74,0.05)",border:`1px solid ${CG_ACC}40`,borderRadius:4,padding:"6px 8px",textAlign:"center",gridColumn:"span 2"}}>
+                      <div style={{fontSize:8,letterSpacing:2,color:CG_DIM}}>BREAST WEIGHT (EST.)</div>
+                      <div style={{fontSize:12,fontWeight:700,color:CG_ACC}}>{Math.round(0.08*Math.pow(Math.max(0,priyaM.bust-28),1.6))} lbs ea.</div>
+                    </div>
+                  )}
+                </div>
+                <div style={{fontSize:10,color:CG_ACC,marginBottom:12}}>Spirit +{spiritGain}</div>
+                <button style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
+              </div>
+            </div>
+          );
+        }
+
+        // ── Measurement picker ──
+        if(cgS.view==='measurement_picker'){
+          const measurableStudents=students.filter(s=>s.id!==priya.id&&(!s.hidden||lilithUnlocked));
+          return(
+            <div style={{...C.overlay,zIndex:365}}>
+              <div style={{...C.modal,maxWidth:560,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
+                <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📐 SELECT WHO TO MEASURE</div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:14}}>
+                  {measurableStudents.map(s=>{
+                    const measured=cgS.measuredStudentIds.includes(s.id);
+                    return(
+                      <button key={s.id}
+                        style={{...C.btn(measured?CG_DIM:"#1a0308"),padding:"8px 10px",textAlign:"left",border:`1px solid ${measured?CG_ACC:CG_DIM}40`}}
+                        onClick={()=>doCGMeasurement(s.id)}>
+                        <div style={{fontSize:11,fontWeight:700,color:CG_TEXT}}>{s.name}</div>
+                        <div style={{fontSize:9,color:CG_SUBTLE}}>{Math.round(s.lbs)} lbs{measured?" ✓":""}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+                <button style={{...C.btn(CG_BG),width:"100%",border:`1px solid ${CG_DIM}30`}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
+              </div>
+            </div>
+          );
+        }
+
+        // ── Measurement result ──
+        if(cgS.view==='measurement_result'){
+          const{targetStudentId,priyaM:pM,targetM:tM,sceneText,reactions,threats,spiritGain}=cgS.subState||{};
+          const target=students.find(s=>s.id===targetStudentId);
+          if(!target) return null;
+          return(
+            <div style={{...C.overlay,zIndex:365}}>
+              <div style={{...C.modal,maxWidth:560,background:CG_BG,border:`1px solid ${CG_ACC}40`,maxHeight:"88vh",overflowY:"auto"}}>
+                <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📐 MEASURING {target.name.toUpperCase()}</div>
+                <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
+                {/* Comparison table */}
+                <div style={{marginBottom:12}}>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:4,marginBottom:4}}>
+                    <div style={{fontSize:9,letterSpacing:2,color:CG_DIM}}></div>
+                    <div style={{fontSize:9,letterSpacing:2,color:CG_ACC,textAlign:"center"}}>PRIYA</div>
+                    <div style={{fontSize:9,letterSpacing:2,color:CG_SUBTLE,textAlign:"center"}}>{target.name.toUpperCase()}</div>
+                  </div>
+                  {CG_CONFIG.categories.map(cat=>{
+                    const priyaWins=pM[cat]>tM[cat];
+                    const reaction=reactions?.[cat];
+                    return(
+                      <div key={cat}>
+                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:4,padding:"4px 0",borderBottom:`1px solid ${CG_DIM}20`}}>
+                          <div style={{fontSize:10,color:CG_SUBTLE,textTransform:"capitalize"}}>{cat}</div>
+                          <div style={{fontSize:11,fontWeight:700,color:priyaWins?CG_ACC:CG_TEXT,textAlign:"center"}}>{pM[cat]}"</div>
+                          <div style={{fontSize:11,fontWeight:700,color:priyaWins?CG_SUBTLE:CG_TEXT,textAlign:"center"}}>{tM[cat]}"</div>
+                        </div>
+                        {reaction&&<div style={{fontSize:9,color:CG_SUBTLE,fontStyle:"italic",padding:"2px 0 4px 8px"}}>{reaction.text}</div>}
+                      </div>
+                    );
+                  })}
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:4,padding:"4px 0"}}>
+                    <div style={{fontSize:10,color:CG_SUBTLE}}>weight</div>
+                    <div style={{fontSize:11,fontWeight:700,color:priya.lbs>target.lbs?CG_ACC:CG_TEXT,textAlign:"center"}}>{Math.round(priya.lbs)} lbs</div>
+                    <div style={{fontSize:11,fontWeight:700,color:priya.lbs>target.lbs?CG_SUBTLE:CG_TEXT,textAlign:"center"}}>{Math.round(target.lbs)} lbs</div>
+                  </div>
+                </div>
+                {threats.length>0&&<div style={{fontSize:10,color:"#e07040",marginBottom:8}}>⚠ Threat detected: {threats.join(", ")} · Spirit +{spiritGain}</div>}
+                {!threats.length&&<div style={{fontSize:10,color:CG_ACC,marginBottom:8}}>✓ Priya leads all categories · Spirit +{spiritGain}</div>}
+                <button style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:'measurement_picker',subState:null}))}>← Measure Another</button>
+                <button style={{...C.btn(CG_BG),width:"100%",marginTop:6,border:`1px solid ${CG_DIM}30`}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back to Priya</button>
+              </div>
+            </div>
+          );
+        }
+
+        // ── Binge view ──
+        if(cgS.view==='binge'){
+          const{gain,sceneText,done}=cgS.subState||{};
+          return(
+            <div style={{...C.overlay,zIndex:365}}>
+              <div style={{...C.modal,maxWidth:520,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
+                <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>🔴 {tier.label.toUpperCase()} BINGE</div>
+                <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
+                <div style={{fontSize:13,fontWeight:700,color:CG_ACC,textAlign:"center",marginBottom:14}}>+{gain} lbs</div>
+                <button style={{...C.btn(CG_ACC),width:"100%"}} onClick={applyAndCloseCGBinge}>Apply Gains</button>
+              </div>
+            </div>
+          );
+        }
+
+        // ── Main modal ──
+        return(
+          <div style={{...C.overlay,zIndex:365}}>
+            <div style={{...C.modal,maxWidth:500,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
+              {/* Header */}
+              <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
+                <div style={{fontSize:9,letterSpacing:4,color:CG_ACC}}>📊 COMPETITIVE GAINER</div>
+                <div style={{marginLeft:"auto",fontSize:10,fontWeight:700,color:CG_TEXT}}>{Math.round(priya.lbs)} lbs</div>
+              </div>
+              {/* Spirit bar */}
+              <div style={{marginBottom:14,padding:"8px 10px",background:"rgba(232,41,74,0.05)",border:`1px solid ${CG_DIM}30`,borderRadius:5}}>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                  <span style={{fontSize:9,letterSpacing:2,color:tier.color}}>COMPETITIVE SPIRIT · {tier.label.toUpperCase()}</span>
+                  <span style={{fontSize:9,color:CG_SUBTLE}}>{cgS.spirit}</span>
+                </div>
+                <div style={{height:5,background:"#1a0308",borderRadius:3,overflow:"hidden"}}>
+                  <div style={{height:"100%",width:`${tierBarPct}%`,background:tier.color,transition:"width 0.3s"}}/>
+                </div>
+              </div>
+              {/* Measurements */}
+              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:14}}>
+                {CG_CONFIG.categories.map(cat=>(
+                  <div key={cat} style={{background:"rgba(232,41,74,0.04)",border:`1px solid ${CG_DIM}30`,borderRadius:4,padding:"5px 8px",textAlign:"center"}}>
+                    <div style={{fontSize:8,letterSpacing:2,color:CG_DIM}}>{cat.toUpperCase()}</div>
+                    <div style={{fontSize:13,fontWeight:700,color:CG_ACC}}>{priyaM[cat]}"</div>
+                  </div>
+                ))}
+              </div>
+              {/* Action buttons */}
+              <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                <button style={{...C.btn(CG_DIM),textAlign:"left",padding:"10px 14px"}} onClick={doCGCorkboard}>
+                  <span style={{fontWeight:700}}>📌 Observe at Corkboard</span>
+                  <span style={{fontSize:9,color:CG_SUBTLE,marginLeft:8}}>Spirit gain · triggers chat post</span>
+                </button>
+                <button style={{...C.btn(CG_DIM),textAlign:"left",padding:"10px 14px"}} onClick={openCGMeasurementPicker}>
+                  <span style={{fontWeight:700}}>📐 Private Measurement Session</span>
+                  <span style={{fontSize:9,color:CG_SUBTLE,marginLeft:8}}>Measure a classmate · Spirit gain on threats</span>
+                </button>
+                <button style={{...C.btn(CG_DIM),textAlign:"left",padding:"10px 14px"}} onClick={doCGSelfReview}>
+                  <span style={{fontWeight:700}}>🪞 Self-Review</span>
+                  <span style={{fontSize:9,color:CG_SUBTLE,marginLeft:8}}>High Spirit payoff</span>
+                </button>
+                <button
+                  style={{...C.btn(ap>=CG_CONFIG.bingeApCost?CG_ACC:CG_DIM),textAlign:"left",padding:"10px 14px",opacity:ap>=CG_CONFIG.bingeApCost?1:0.45}}
+                  disabled={ap<CG_CONFIG.bingeApCost}
+                  onClick={()=>{setAp(a=>a-CG_CONFIG.bingeApCost);doCGBinge();}}>
+                  <span style={{fontWeight:700}}>🔴 Push Priya's Gains</span>
+                  <span style={{fontSize:9,color:CG_SUBTLE,marginLeft:8}}>{CG_CONFIG.bingeApCost} AP · {tier.label} intensity</span>
+                </button>
+              </div>
+              <button style={{...C.btn(CG_BG),width:"100%",marginTop:12,border:`1px solid ${CG_DIM}30`}} onClick={closeCGModal}>Close</button>
             </div>
           </div>
         );

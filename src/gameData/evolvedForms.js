@@ -112,29 +112,13 @@ export const EVOLVED_REACTIONS = {
     "What I started is permanent. My chapter grows. My body grows. Everything I built is real.",
   ],
   // ── OVERACHIEVER paths ──────────────────────────────────────────
-  metrics_eater:[
-    "Spreadsheet active. Intake, rate, progression, projections. The data is already more interesting than I expected.",
-    "Optimized eating schedule across three meal windows. The efficiency is measurable. The gains are documented.",
-    "Personal record logged and verified. The methodology is rigorous. The results are extraordinary.",
-    "Competing on data quality as much as outcomes. My documentation has been cited by two competitors.",
-    "Legendary for the data alone. Someone made a subreddit dedicated to my methodology. I check it daily.",
-    "The spreadsheet has four thousand rows. I can no longer update the later ones. The early data holds.",
-  ],
-  food_scientist:[
-    "IRB-approved self-study, institutional backing. I am officially a research subject and lead researcher simultaneously.",
-    "Lab access secured. I have a proper methodology. I have documented everything. I have a second breakfast.",
-    "First peer-reviewed publication. The journal sent reviewer notes. Reviewer 2 was, as always, an obstacle.",
-    "Prestigious citations in three major journals. My advisor asked to be on the next paper. I said I'd consider it.",
-    "Keynote at the international food science symposium. The room was not large enough for both the talk and me.",
-    "The experiment is complete. The data is unambiguous. The subject is enormous and entirely at peace.",
-  ],
-  academic_subject:[
-    "Week 3 results: consistent with baseline projection. Methodology holding. I remain objective. The committee found the initial data 'compelling.' I presented it with confidence and left before the follow-up questions.",
-    "Quarter review. The numbers are outside the initial projection range. I explained the variance as within statistically acceptable deviation. Dr. Mehta looked at me for a long time. I maintained eye contact and cited three sources.",
-    "Chapter 4 submitted. The rate of acceleration is documented. It is a finding. I have written 'it is a finding' in the margin of my own draft, twice, which I recognize is behavior.",
-    "Full committee. Five people. The data is the data. I defended every figure with precision and went home and ate dinner twice and did not log this in the research record.",
-    "External examiner. Someone with no social familiarity with the subject, reading the data cold. I was in the room. The subject was also in the room. This was a notable experience.",
-    "The dissertation passed. The committee voted yes. The subject weighs what she weighs and the committee was looking at her when they voted and she was looking at the data and the data is accurate and it passed.",
+  competitive_gainer:[
+    "[CGReaction_S1]",
+    "[CGReaction_S2]",
+    "[CGReaction_S3]",
+    "[CGReaction_S4]",
+    "[CGReaction_S5]",
+    "[CGReaction_S6]",
   ],
   // ── ARTSY paths ─────────────────────────────────────────────────
   installation_artist:[
@@ -373,29 +357,13 @@ export const EVOLVED_DIARY = {
     `The national organization changed the wellness guidance. Three sentences, in a footnote, in the appendix. My name was in one of those sentences. A footnote in a document that governs thousands of chapters. That is not nothing.`,
     `I built it. The culture lives in the chapter and in the chapters that modeled themselves on ours and in the pledges who become sisters who become alumnae who go out and change other things. I made something that makes things. That is enough.`,
   ],
-  metrics_eater:[
-    `The spreadsheet started as a joke. Three weeks in it is absolutely not a joke. I have intake data, rate data, projection models, variance analysis. The methodology would satisfy a peer reviewer. The results would concern one.`,
-    `Optimized meal windows: three primary, two supplementary, one extended. The optimization was based on absorption modeling I did myself using secondary sources and primary experience. The gains are measurable. The measurements are precise.`,
-    `Personal record. Verified by three independent measurements and confirmed against prior entries. The methodology is sound. The record stood for eight days before I broke it again. I documented both.`,
-    `Two competitors have cited my tracking methodology in their own documentation. I read their citations. The methodology was accurately represented. I sent each of them a note. I also quietly noted that their numbers are still below mine.`,
-    `My data has been requested by four researchers, two dietitians, and one journalist. I declined the journalist. I am considering the researchers. The data is mine. I collected it in real time, with my own body. I decide what it's for.`,
-    `The spreadsheet has four thousand rows. The most recent rows are blank because I can no longer update them manually. My phone does voice entry. The data continues. I continue. The last entry will be made by someone else, eventually. That is fine.`,
-  ],
-  food_scientist:[
-    `The IRB approval arrived on a Tuesday. I read it three times, ate a late breakfast, and began the study that morning. I am the most motivated research subject I've ever encountered, which is saying something, because I've also been the researcher.`,
-    `Lab access, institutional email, a key to a room with proper scales and proper documentation. I am official. I am also the most interesting thing that has ever happened in this lab, and I know because I've read the prior study files.`,
-    `Published. The journal's editorial board noted 'methodological originality' in the acceptance letter. Reviewer 2 asked whether the self-study design introduced bias. I wrote back four pages explaining that the bias is the methodology. It was published anyway.`,
-    `A researcher at a university I applied to and didn't get in has cited my work in two papers. I emailed to say thank you. She responded with a collaboration invitation. I accepted. The collaboration involves my body. I find this appropriate.`,
-    `Keynote at the international symposium. I arrived. The auditorium adjusted. I gave the talk. Every slide was a data point from my own body. The Q&A lasted an hour. I had a meal during the Q&A. Nobody found this inappropriate. It was, in fact, exactly right.`,
-    `The experiment is complete in the sense that the study period has ended and the papers have been filed and the citations are accumulating. The subject has not ended. I remain — large, documented, at peace. The science and the body are the same record.`,
-  ],
-  academic_subject:[
-    `Week 3 Research Log:\n\nSubject weight: ${268}. Gain rate: 4.2 lbs/week. All metrics nominal. Note on data collection: I moved the scale to the bathroom. This is for methodological convenience — morning measurements, before meals, more accurate. I weigh myself each morning. Sometimes more than once. I want accurate data.`,
-    `Week 7 Research Log:\n\nSubject weight: 294 lbs. Gain rate now 4.8 lbs/week, outside initial projection range but within statistically acceptable deviation. Presented to Dr. Mehta. He asked how I was managing 'the physical toll on the subject.' I said the subject was managing well. The subject is managing well. Objectively.`,
-    `Week 14 Research Log:\n\nSubject weight: 328 lbs. Cumulative gain: 70 lbs over 14 weeks, 5 lbs/week. The acceleration is documented. It is a finding, not a cause for concern. Note: I've been stress-eating during the dissertation write-up. This has also been documented, because I document everything. This too is data.`,
-    `Week 18 Research Log:\n\nSubject weight: 349 lbs. Presented Chapter 4 to the full committee yesterday. Professor Iyer asked why the subject's appetite has 'increased nonlinearly in the latter half of the study period.' I cited stress, ambient caloric increase, environmental variables. He wrote something down. I don't know what. I went home and ate dinner twice.`,
-    `Week 23 Research Log:\n\nSubject weight: 381 lbs. The dissertation is in final draft. All findings are real, documented, accurate, and I stand behind every word. Note: I have been thinking about what comes next — after the dissertation. The subject continues to exist after the study period ends. I have started a new notebook.`,
-    `Week 27 Research Log — Post-Defense:\n\nThe committee passed. All five members. The subject weighs 410 lbs and the committee was looking at her when they voted yes and she was looking at the data and the data is accurate and it passed. The subject continues. The new notebook is filling faster than the first one.`,
+  competitive_gainer:[
+    `[CGDiary_S1]`,
+    `[CGDiary_S2]`,
+    `[CGDiary_S3]`,
+    `[CGDiary_S4]`,
+    `[CGDiary_S5]`,
+    `[CGDiary_S6]`,
   ],
   installation_artist:[
     `First installation: a room. Mirrors, photographs of my body at each stage, audio of my voice describing what I saw in the mirror at each weight. The opening was quiet for three minutes. Then someone started talking and the conversation didn't stop.`,
@@ -628,29 +596,13 @@ export const EVOLVED_OUTFITS = {
     "She dresses for the culture she's building. Intentional. Inclusive. Exactly as large as she is.",
     "Everything is custom. Everything fits. Everything says exactly what she wants it to say.",
   ],
-  metrics_eater:[
-    "Tracking gear — comfortable, pockets for devices, nothing that would interfere with measurements.",
-    "Optimized for the data collection session. Every item considered. The spreadsheet has a column for this.",
-    "Competition day gear, logged in advance, photographed for the documentation record.",
-    "Her record-attempt outfit. She decided this would be consistent across all record attempts. It is.",
-    "She dresses for efficiency. The efficiency has a consistent aesthetic that other competitors have noticed.",
-    "Wide, comfortable, documented. She has worn this size for longer than any prior size. She is accurate.",
-  ],
-  food_scientist:[
-    "Lab coat, properly fitted, her name embroidered because she asked for it specifically.",
-    "Conference blazer in the department color. She wore it to her first invited talk. It has an origin story now.",
-    "Keynote attire. Her institution's communications office asked to use the photo. She agreed.",
-    "She dresses like someone whose research has been cited by the people who rejected her. Well.",
-    "Research-formal: dignified, wide, professional, present. The lab coat is underneath.",
-    "Everything is custom at this point. The fit is excellent. The science is also excellent.",
-  ],
-  academic_subject:[
-    "Blazer and dark trousers — the presentation uniform. Fits correctly. She checks that it fits correctly.",
-    "Wide-cut academic blazer, taken out once since the committee application. Still professional. Very professional.",
-    "Conference attire: a wide structured jacket over a soft blouse. The jacket is new. She is not discussing the jacket.",
-    "She dresses for the data presentation. Contained, composed, deliberate. The blazer is doing significant work.",
-    "Tailored wide blazer, worn for every major presentation. She owns three now. Different colors. Consistent strategy.",
-    "Academic attire that accommodates the subject at current scale. The subject is being accommodated. The presentations continue.",
+  competitive_gainer:[
+    "[CGOutfit_S1]",
+    "[CGOutfit_S2]",
+    "[CGOutfit_S3]",
+    "[CGOutfit_S4]",
+    "[CGOutfit_S5]",
+    "[CGOutfit_S6]",
   ],
   installation_artist:[
     "Something she made herself — fabric, found materials, a garment that documents the body wearing it.",
@@ -858,20 +810,6 @@ export const EVOLVED_ACTIVITY_TEXT = {
     (s)=>`${Math.round(s.lbs)} pounds. National Panhellenic conference. She speaks for forty minutes — ${Math.round(s.lbs)} pounds at the podium, her belly warm and enormous, her voice steady. She says the number out loud. She talks about what size requirements cost the sorority system. At the end a representative of the national organization stands and says: "We need to talk about revising some policies." She says: "Yes. We do." She has a draft ready. She pulls it from under the podium and hands it across.`,
     (s)=>`${Math.round(s.lbs)} pounds. Chapter event, two years after stepping down. The culture is intact. The new captain is 310 pounds and runs things with the same principles. The feast table has women at various large sizes around it. She sits at the corner and watches. Her belly fills her chair. After the meal, in the parking lot: "It held," she says. She means the culture. She means the weight. She means all of it.`,
   ],
-  metrics_eater:[
-    (s)=>`She weighs ${Math.round(s.lbs)} pounds and the spreadsheet is open and she is showing you the trend analysis: weight by week, intake by day, rate of gain per meal category. It's 847 rows deep. Her belly presses against the desk as she leans toward the monitor. "Current rate: 1.3 pounds per day averaged over the last month," she says. "I want to optimize toward 1.8." She says this the way you'd say: I want to improve my benchmark. She's already planned the meal adjustments. She closes the spreadsheet and immediately opens the meal log for today.`,
-    (s)=>`${Math.round(s.lbs)} pounds. The optimized three-window schedule. She's been testing it for two weeks. You arrive for window two: the meal arranged, the timer set, the laptop open to the logging interface. She weighs herself first — 317, records it — and begins eating with the methodical focus of a competitive runner running a time trial. At 22 minutes she closes the window. She logs: intake, fullness estimate, time. "Variance 4% from projection," she says. "Acceptable." She is pleased with this the way athletes are pleased with near-perfect race times.`,
-    (s)=>`${Math.round(s.lbs)} pounds. Official record attempt. Certified scale (${Math.round(s.lbs)} pounds), timestamp, you as witness, video running. She places the previous personal best card on the table. She eats. She exceeds it by 8.3%. She files the old card, enters the new record. "I want to be 450 before the next record attempt," she says. "The correlation between weight and performance is well-documented in my data." She opens the spreadsheet. She starts planning the dietary adjustments to reach 450. She does this immediately, before the record-attempt food has finished digesting.`,
-    (s)=>`${Math.round(s.lbs)} pounds. The paper. A researcher at another institution has cited her methodology. She pulls up the citation and annotates it carefully — accurate, she says, but missing a key footnote. She sends a correction. The researcher responds in forty minutes. While she waits she is eating and updating the spreadsheet. "4,200 rows," she says. "Three years of daily entries." She shows you the summary tab: total weight gained, averaged rate, projected trajectory. The projection at the top of the chart is 700 pounds. She has highlighted it.`,
-    (s)=>`${Math.round(s.lbs)} pounds. The current record attempt. She weighs ${Math.round(s.lbs)} pounds, certified, witnessed, video running. Her belly is vast and warm against the table. Her thighs are enormous. The previous record was set at 590 pounds; she has gained 101 pounds since then and the table is the same table. She eats. The time she logs is the best she has ever recorded. She enters it in the spreadsheet. She updates the projection chart. The new top of the projection reads: 800 pounds. She highlights it. She says: "Achievable in Q4 based on current rate." She begins planning Q4.`,
-  ],
-  food_scientist:[
-    (s)=>`She weighs ${Math.round(s.lbs)} pounds. The IRB documentation is complete — she is researcher and primary participant, both names on the same form. She shows you the setup: scale (certified), measurement protocol, intake log, camera for documentation. She stands on the scale: 259, recorded. She begins. "The study requires ongoing documentation of voluntary intake increase under controlled conditions," she says. "The subject is motivated and cooperative." She gestures at herself. You ask who the subject is. "Me," she says. She starts eating. She logs it.`,
-    (s)=>`${Math.round(s.lbs)} pounds. Mid-study check-in. She walks you through the data: weight trajectory (clean upward curve), intake log (meticulous), measurements (waist, belly, hips — all increasing, all recorded in centimeters). Her belly at ${Math.round(s.lbs)} pounds is described in the log as "moderately pronounced, extending approximately 8cm past hip plane." She made this measurement herself and entered it without any expression except scientific interest. "The subject is producing excellent data," she says. She means: she is getting fat and she's logging all of it.`,
-    (s)=>`${Math.round(s.lbs)} pounds. Draft paper review. You read it over dinner while she eats beside you and answers questions. The results section is dense. Table 4 shows her measurements at each monthly interval: weight, belly circumference, thigh circumference. At ${Math.round(s.lbs)} pounds her belly circumference is entered as 142cm. Her thighs at 89cm each. She has graphed all of it. "The subject demonstrates a positive relationship between intake volume and body mass accumulation," she says. You look at her belly, which is pressing the table, warm and round and enormous. "The data is accurate," you say. She nods once.`,
-    (s)=>`${Math.round(s.lbs)} pounds. Acceptance email. She forwards it to you with no subject. You call her. She's at dinner. "The journal accepted it," she says. "Subject at ${Math.round(s.lbs)} pounds, first paper published, ongoing documentation." She pauses. "I want to weigh 600 when the second paper goes in. I want to see what the reviewers say when the subject is 600 pounds." She eats. You hear her fork. "The data is still excellent," she says.`,
-    (s)=>`${Math.round(s.lbs)} pounds. Keynote. She stands at the podium — ${Math.round(s.lbs)} pounds, her belly vast and warm against the lectern, her thighs enormous — and presents for fifty minutes. She puts slide 7 on the screen: her own measurements at every measurement point of the study, graphed. Her belly at ${Math.round(s.lbs)} pounds, described in centimeters. The audience is an academic conference on dietary science. She says: "I weigh ${Math.round(s.lbs)} pounds. I have documented every pound of that on this slide." She lets the room be quiet for a moment. "I intend to document more," she says. "The study is ongoing."`,
-  ],
   installation_artist:[
     (s)=>`She weighs ${Math.round(s.lbs)} pounds and the studio smells like plaster and oil and whatever she's been eating, which is a lot. The first installation is spreading across the floor in fragments: photographs of her belly at each weight since she started, sound recordings of eating, a cast of her own hand. She sits cross-legged on the floor between them eating from a takeout container and her belly rounds forward over her thighs, soft and warm, pressing the hem of her shirt. "The work is about the body as a document," she says. "My body specifically. At ${Math.round(s.lbs)} pounds. Getting heavier." She reaches past the plaster and takes another bite.`,
     (s)=>`${Math.round(s.lbs)} pounds. The gallery walkthrough. She moves through the installation in the linen overshirt she wears when she works — large, well past her hips, draping over the swell of her belly — explaining each piece to the curator, who is writing things down without looking at the page. The centerpiece is a scale casting of her belly at 280 pounds, smooth and round and large, mounted at standing height so visitors interact with it face-to-face. She pats it as she passes. "It's already out of date," she says. She turns to face the curator. "I want to update the cast when I'm 400." The curator nods. She keeps walking.`,
@@ -971,12 +909,10 @@ export const EVOLVED_ACTIVITY_META = {
   eating_streamer: { label:"Tune In to the Stream",    apCost:1, gainRange:[4,8],  relBonus:10 },
   speed_eater:     { label:"Watch a Challenge",        apCost:1, gainRange:[4,9],  relBonus:9  },
   ranked_feedee:   { label:"🎮 Run a Session",          apCost:1, gainRange:[8,22], relBonus:12 },
-  academic_subject:{ label:"📊 Run a Research Session", apCost:1, gainRange:[5,12], relBonus:10 },
+  competitive_gainer:{ label:"📊 Check Her Progress",    apCost:1, gainRange:[10,50], relBonus:8 },
   home_nest:       { label:"🍜 Order In",                apCost:1, gainRange:[6,15], relBonus:9  },
   chapter_hostess: { label:"Attend Wednesday Feast",   apCost:1, gainRange:[5,10], relBonus:11 },
   body_positive_greek:{ label:"Attend Chapter Event",  apCost:1, gainRange:[2,5],  relBonus:12 },
-  metrics_eater:   { label:"Review Her Spreadsheet",   apCost:1, gainRange:[3,7],  relBonus:9  },
-  food_scientist:  { label:"Visit the Lab",            apCost:1, gainRange:[3,6],  relBonus:10 },
   installation_artist:{ label:"View the Installation", apCost:1, gainRange:[2,5],  relBonus:12 },
   food_photographer:{ label:"Review the Latest Shoot", apCost:1, gainRange:[2,5],  relBonus:11 },
   anonymous_blogger:{ label:"Read the Latest Post",    apCost:1, gainRange:[3,6],  relBonus:10 },
@@ -1828,8 +1764,9 @@ She stands at the door with her coat in her arms and looks at ${s.name} — ${Ma
     },
   ],
 
-  // ── OVERACHIEVER: academic_subject (presentation defense mini-game) ──────
-  academic_subject:[
+  // ── OVERACHIEVER: competitive_gainer — handled by custom modal ──────────
+  // (no EVOLVED_EVENTS entry — doEvolvedActivity opens competitiveGainerState directly)
+  _deprecated_academic_subject:[
     // stageIdx 0 — ~258 lbs — Week 3: First Committee Presentation
     {
       title:"Week 3: Initial Data",
@@ -3465,8 +3402,7 @@ export const EVOLVED_FORM_META = {
   speed_eater:          { title:"Speed Eater",          color:"#d35400" },
   chapter_hostess:      { title:"Chapter Hostess",      color:"#6c3483" },
   body_positive_greek:  { title:"Greek Pioneer",        color:"#1abc9c" },
-  metrics_eater:        { title:"Metrics Obsessive",    color:"#3498db" },
-  food_scientist:       { title:"Food Scientist",       color:"#2471a3" },
+  competitive_gainer:   { title:"Competitive Gainer",   color:"#e8294a" },
   installation_artist:  { title:"Installation Artist",  color:"#f39c12" },
   food_photographer:    { title:"Food Photographer",    color:"#ca6f1e" },
   anonymous_blogger:    { title:"Anonymous Blogger",    color:"#5d6d7e" },
@@ -3480,7 +3416,6 @@ export const EVOLVED_FORM_META = {
   state_fair_queen:     { title:"State Fair Queen",      color:"#C8860A" },
   psych_researcher:     { title:"The Researcher",        color:"#6b5b95" },
   ranked_feedee:        { title:"Ranked Feedee",          color:"#1a6a9a" },
-  academic_subject:     { title:"Academic Subject",       color:"#2c5f8a" },
   home_nest:            { title:"Home Nest",              color:"#4a6a4a" },
   cultivator:           { title:"The Cultivator",         color:"#8B4513" },
   community_researcher: { title:"Community Researcher",    color:"#4a6fa5" },
@@ -3545,9 +3480,9 @@ export const EVOLUTION_OFFER = {
     },
   },
   overachiever:{
-    intro:(s)=>`${s.name} arrives and doesn't sit down immediately. She stands at the whiteboard — there's a whiteboard, she brought it — and draws a single graph: her weight over time, clean and precise, trending firmly upward. She puts the marker down. 'I submitted this as a thesis proposal,' she says. 'They approved it.' She sits. 'I need a faculty advisor. That's you.'`,
+    intro:(s)=>`${s.name} shows up with a tape measure and a corkboard she has clearly just bought. She tacks up a blank sheet, picks up a marker, and writes two columns: her current measurements, and blank space next to every girl's name in the class. She steps back. 'I've been the smartest person in every room I've been in,' she says. 'I want to be the biggest one too.' She looks at the corkboard. 'I want data. I want comparisons. I want to win.' She turns around. 'Help me.'`,
     paths:{
-      academic_subject: { label:"Academic Subject", desc:"IRB-approved self-study. She is the researcher and the subject simultaneously. The data is rigorously collected. The data is also her body. The committee has questions." },
+      competitive_gainer: { label:"The Competitive Gainer", desc:"The corkboard is the scoreboard. Every measurement is a data point. Every girl in the class is a benchmark — and Priya intends to exceed all of them, in every category, and know it precisely." },
     },
   },
   artsy:{
@@ -3610,8 +3545,7 @@ export const ASCENSION_BRIDGE = {
   speed_eater:      (s)=>`${s.name} opens the notebook to the last page and looks at the final record for a long time. 'Every number is broken,' she says. 'Every record is mine. There's no more room to be faster or bigger or more.' She closes the notebook. 'Except there is more. There's the thing that comes after records. The thing the timer doesn't measure.' She looks up. 'I think I've always been heading there.'`,
   chapter_hostess:  (s)=>`${s.name} folds the last menu — the one from Wednesday's feast — and sets it on the table beside the others. 'The table is set,' she says. 'The chapter eats well. It will continue to eat well after I'm gone.' She looks at her hands, then at you. 'I've been feeding everyone. I think something is about to feed me.' The air in the room feels different. 'I'm ready.'`,
   body_positive_greek:(s)=>`${s.name} reads the national organization's updated guidance one more time, then folds it and sets it down. 'The change is in writing now,' she says. 'Official. Permanent. Irreversible.' She's very quiet for a moment. 'I've been building something. I think the goddess has been building something too.' She looks at you. 'They're the same thing, aren't they.'`,
-  metrics_eater:    (s)=>`${s.name} saves the spreadsheet — all four thousand rows of it — and closes the laptop. 'The data is complete,' she says. 'Every metric tracked, every variance documented.' She's quiet. 'But there's a variable I never modeled. The one where the subject exceeds the categories.' She looks at you. 'My data predicts this moment. I just didn't know what to call it.'`,
-  food_scientist:   (s)=>`${s.name} writes 'Study concluded' in the methodology log and sets the pen down. 'The data is in,' she says. 'The subject has been rigorously documented.' She turns to face you. 'But science has an edge. Beyond the edge is the thing that data can describe but cannot explain.' She's very still. 'I think I've reached the edge.' A pause. 'I'd like to go past it.'`,
+  competitive_gainer:(s)=>`[CGAscensionBridge]`,
   installation_artist:(s)=>`${s.name} stands in front of the last piece in the retrospective — the one that is simply her, present, not photographed or documented or framed, just existing in the gallery space — and looks at herself for a long time. 'The installation and the artist have merged,' she says quietly. 'There's nothing left to separate.' She turns to you. 'The goddess has been making something too. I think I'm it.'`,
   food_photographer:(s)=>`${s.name} sets the camera down for the first time — not to check a shot, but because she's done. 'I set out to photograph food,' she says. 'The food changed me. I photographed the change. The photographs became the subject. I became the photograph.' She looks at you. 'There's one frame left. It can't be taken with this camera.' A very long pause. 'It has to be lived.'`,
   anonymous_blogger:(s)=>`${s.name} posts the final entry. You watch her do it — she types the last sentence, reads it twice, and hits publish with the same quiet certainty she brings to everything. Then she closes the laptop. 'The blog is done,' she says. 'The record is complete. Everything I became is written down.' She looks up. 'Now something happens that can't be written.' She's smiling, very slightly. 'I think the goddess has been reading all along.'`,
@@ -3624,7 +3558,6 @@ export const ASCENSION_BRIDGE = {
   homestead_queen:  (s)=>`${s.name} is in her homestead when it happens — surrounded by jars and cast iron and the smell of something sweet baking. She sets a spoon down slowly. 'Grandma Mae called last night,' she says, very quiet. 'She said she's proud of me. She didn't say why, not exactly. But I think she knows.' She looks at her hands, enormous and warm. 'I've been feeding people my whole life. I think something is about to feed me back.' The oven is still on. The room smells like heaven.`,
   state_fair_queen: (s)=>`${s.name} is looking at the photo from the last invitational — her at the scale, the number, Darcy starting to clap. She touches the edge of it carefully. 'I've eaten through every bracket,' she says. 'Every category, every division. They stopped being able to contain me in a class.' She's quiet for a long moment. 'I think the circuit is done. The circuit gave me everything it had.' She looks up. 'Now something gives me everything it has.' She sounds certain. She is.`,
   psych_researcher: (s)=>`${s.name} closes the research notebook for the last time — the original one, the one with the methodology she wrote on the first day and has been rewriting ever since. She holds it in both hands. 'The study documented what happened to the subject,' she says. 'It also documented what happened to me. The two arcs are inseparable.' She looks at you. 'The notebook ran out of room. The study ran out of categories. The subject exceeded what methodology can contain.' A long pause. 'So did I.' She sets the notebook down. 'I think the goddess has been one of my data points all along.'`,
-  academic_subject:(s)=>`${s.name} closes the final research notebook. The last entry is today's date, her weight, and one word: 'complete.' She holds it for a moment. 'The study is done,' she says. 'The subject isn't.' She sets it on the desk. 'I've been thinking about what the data can't hold. What the methodology can't frame.' She looks at you. 'There's something happening that no committee can evaluate. I think you know what I mean.' A long pause. 'I think the goddess has been a confounding variable this whole time. I think I need to stop controlling for her.'`,
   home_nest:(s)=>`${s.name} doesn't call — she texts, which is how she communicates now. The message says: 'can you come here.' No question mark. You come. She's in her chair, in her room, and she looks as settled as anyone you've seen — rooted, warm, comfortable in a way that's grown into the space around her. 'I've been thinking,' she says, 'about where here goes.' She looks at the window she doesn't open anymore. 'I think the goddess has been in this room. I think she's been in the walls.' She looks back at you. 'I think it's time to let her in properly.'`,
   ranked_feedee: (s)=>`${s.name} doesn't look up from the screen when she says it. 'Rae said something to me.' She pauses the game — which you've never seen her do without the session being over. 'She said she's been watching what's happening to me and that she's proud.' Her voice is carefully flat. 'I've been thinking about what that means.' She looks at her hands on the controller. She's enormous. She's been enormous for a while. 'I think I've run out of sessions,' she says. 'Or sessions have run out of what they can hold. Something like that.' A long silence. 'Rae said: you've leveled past the game.' She puts the controller down. 'Yeah,' she says. 'I think that's right.'`,
   cultivator: (s)=>`${s.name} closes the last session log — the one from the third cycle, the final harvest, the end of the process — and sits with it for a long moment. 'Three subjects,' she says. 'All completed. The data is done.' She looks at her hands, which are large now, considerably larger than when this started. She looks at the empty kitchen. 'I've been eating the quality-control portions this whole time,' she says, as if telling you something you don't already know. 'Every session. I told myself it was methodology.' A long pause. 'It wasn't methodology.' She sets the log down. 'The goddess has been watching the sessions, I think. I think she's been in the kitchen every time.' She looks up. 'I think she wants to be fed something final. Something significant.' She doesn't look afraid. She looks entirely ready.`,
@@ -5399,5 +5332,109 @@ export const WL_DIALOGUES = {
         ]},
       ],
     },
+  ],
+};
+
+// ─── COMPETITIVE GAINER DATA ──────────────────────────────────────────────────
+
+export const CG_CONFIG = {
+  spiritTiers:[
+    { min:0,  max:10, label:"Invested", color:"#5b9bd5" },
+    { min:11, max:25, label:"Driven",   color:"#e8a020" },
+    { min:26, max:45, label:"Frenzied", color:"#e05830" },
+    { min:46, max:Infinity, label:"Ruthless", color:"#c00000" },
+  ],
+  // Spirit gain ranges
+  spiritGainNeutral:   [0,1],   // Priya leads in all categories
+  spiritGainThreat:    [1,3],   // per category where any girl is ahead or within 10%
+  // Binge payoff: 1 AP. Base gain interpolated from minBinge→maxBinge by Priya's weight stage (1-7+).
+  bingeApCost:    1,
+  minBinge:       10,  // lbs at stage 1
+  maxBinge:       50,  // lbs at stage 7+
+  // Per-spirit-tier multiplier on binge gain: Invested/Driven/Frenzied/Ruthless
+  bingeSpiritMults: [1, 1.25, 1.5625, 1.953],
+  // "Threat" threshold: girl is within this fraction of Priya's value
+  threatFraction: 0.10,
+  // Measurement categories tracked
+  categories: ["waist","bust","hip","thigh","arm"],
+};
+
+// Placeholder corkboard scenes — Grok fills in prose
+// Each tier has 2 variant scenes (cycled round-robin)
+export const CG_CORKBOARD_SCENES = {
+  Invested:  ["[CorkboardScene_Invested_A]",  "[CorkboardScene_Invested_B]"  ],
+  Driven:    ["[CorkboardScene_Driven_A]",    "[CorkboardScene_Driven_B]"    ],
+  Frenzied:  ["[CorkboardScene_Frenzied_A]",  "[CorkboardScene_Frenzied_B]"  ],
+  Ruthless:  ["[CorkboardScene_Ruthless_A]",  "[CorkboardScene_Ruthless_B]"  ],
+};
+
+// Placeholder measurement-session scenes — Grok fills in prose
+// Indexed as: MeasurementScenes[targetWeightStageName][priyaRelation] where
+//   priyaRelation = "priya_larger" | "priya_smaller" | "priya_equal"
+export const CG_MEASUREMENT_SCENES = {
+  // scene prose for each girl being measured
+  scene:"[MeasurementScene_{name}_S{stage}]",
+  // Per-measurement-category reaction snippets
+  reactions:{
+    priya_larger: "[MeasureReaction_PriyaLarger_{category}]",
+    priya_smaller:"[MeasureReaction_PriyaSmaller_{category}]",
+    priya_equal:  "[MeasureReaction_PriyaEqual_{category}]",
+  },
+  // Self-review scene per spirit tier
+  selfReview:{
+    Invested: "[SelfReview_Invested]",
+    Driven:   "[SelfReview_Driven]",
+    Frenzied: "[SelfReview_Frenzied]",
+    Ruthless: "[SelfReview_Ruthless]",
+  },
+};
+
+// Binge scenes — Grok fills in prose
+export const CG_BINGE_SCENES = {
+  Invested: "[BingeScene_Invested]",
+  Driven:   "[BingeScene_Driven]",
+  Frenzied: "[BingeScene_Frenzied]",
+  Ruthless: "[BingeScene_Ruthless]",
+};
+
+// Group chat templates — Grok fills in prose
+// Template strings may contain {priyaWeight}, {priyaWaist}, {priyaBust}, etc.
+export const CG_CHAT_TEMPLATES = {
+  // Priya's opening post per spirit tier
+  priyaPost:{
+    Invested:  "[PriyaChatPost_Invested]",
+    Driven:    "[PriyaChatPost_Driven]",
+    Frenzied:  "[PriyaChatPost_Frenzied]",
+    Ruthless:  "[PriyaChatPost_Ruthless]",
+  },
+  // Priya's follow-up after seeing replies
+  priyaFollowup:{
+    leading:    "[PriyaFollowup_Leading]",
+    threatened: "[PriyaFollowup_Threatened]",
+  },
+  // Per-girl reply templates. Each girl has 5 reply types.
+  // reply type selected by: girl's lbs vs Priya's lbs + whether measured
+  girls:{
+    Brittany:  { ahead:"[Brit_Ahead]",   behind:"[Brit_Behind]",   close:"[Brit_ThighsClose]", proud:"[Brit_Proud]",   unmeasured:"[Brit_Unmeasured]"   },
+    Madeline:  { ahead:"[Mad_Ahead]",    behind:"[Mad_Behind]",    close:"[Mad_Close]",         proud:"[Mad_Proud]",    unmeasured:"[Mad_Unmeasured]"    },
+    Kylie:     { ahead:"[Kyl_Ahead]",    behind:"[Kyl_Behind]",    close:"[Kyl_BreastsClose]",  proud:"[Kyl_Proud]",    unmeasured:"[Kyl_Unmeasured]"    },
+    Serena:    { ahead:"[Ser_Ahead]",    behind:"[Ser_Behind]",    close:"[Ser_Close]",          proud:"[Ser_Proud]",    unmeasured:"[Ser_Unmeasured]"    },
+    Fiona:     { ahead:"[Fio_Ahead]",    behind:"[Fio_Behind]",    close:"[Fio_Close]",          proud:"[Fio_Proud]",    unmeasured:"[Fio_Unmeasured]"    },
+    Destiny:   { ahead:"[Des_Ahead]",    behind:"[Des_Behind]",    close:"[Des_Close]",          proud:"[Des_Proud]",    unmeasured:"[Des_Unmeasured]"    },
+    Tiffany:   { ahead:"[Tif_Ahead]",    behind:"[Tif_Behind]",    close:"[Tif_Close]",          proud:"[Tif_Proud]",    unmeasured:"[Tif_Unmeasured]"    },
+    Maya:      { ahead:"[May_Ahead]",    behind:"[May_Behind]",    close:"[May_Close]",          proud:"[May_Proud]",    unmeasured:"[May_Unmeasured]"    },
+    Nadia:     { ahead:"[Nad_Ahead]",    behind:"[Nad_Behind]",    close:"[Nad_Close]",          proud:"[Nad_Proud]",    unmeasured:"[Nad_Unmeasured]"    },
+    Kaylee:    { ahead:"[Kay_Ahead]",    behind:"[Kay_Behind]",    close:"[Kay_Close]",          proud:"[Kay_Proud]",    unmeasured:"[Kay_Unmeasured]"    },
+    Renee:     { ahead:"[Ren_Ahead]",    behind:"[Ren_Behind]",    close:"[Ren_Close]",          proud:"[Ren_Proud]",    unmeasured:"[Ren_Unmeasured]"    },
+    Daisy:     { ahead:"[Dai_Ahead]",    behind:"[Dai_Behind]",    close:"[Dai_Close]",          proud:"[Dai_Proud]",    unmeasured:"[Dai_Unmeasured]"    },
+    MaryJane:  { ahead:"[MJ_Ahead]",     behind:"[MJ_Behind]",     close:"[MJ_Close]",           proud:"[MJ_Proud]",     unmeasured:"[MJ_Unmeasured]"     },
+    Lilith:    { ahead:"[Lil_Ahead]",    behind:"[Lil_Behind]",    close:"[Lil_Close]",          proud:"[Lil_Proud]",    unmeasured:"[Lil_Unmeasured]"    },
+  },
+  // Professor reply choices (4 options, each nudges spirit)
+  professorReplies:[
+    { id:"encourage",  label:"You're clearly in the lead",   text:"[ProfReply_Encourage]",  spiritDelta:2 },
+    { id:"taunt",      label:"Point out a rival",            text:"[ProfReply_Taunt]",       spiritDelta:3 },
+    { id:"observe",    label:"Just observe the numbers",     text:"[ProfReply_Observe]",     spiritDelta:1 },
+    { id:"challenge",  label:"Challenge her to close a gap", text:"[ProfReply_Challenge]",   spiritDelta:2 },
   ],
 };
