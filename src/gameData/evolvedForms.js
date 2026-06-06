@@ -3474,7 +3474,7 @@ export const EVOLVED_FORM_META = {
   campus_legend:        { title:"Campus Legend",        color:"#b7950b" },
   food_tourist:         { title:"Food Tourist",         color:"#148f77" },
   ff_author:            { title:"FF Author",            color:"#922b21" },
-  homeroom_queen:       { title:"Homeroom Queen",        color:"#c47a2a" },
+  homeroom_queen:       { title:"Apprentice",             color:"#c47a2a" },
   wife_lessons:         { title:"The Flabwife",           color:"#9B6FA0" },
   homestead_queen:      { title:"Homestead Queen",       color:"#8B5E3C" },
   state_fair_queen:     { title:"State Fair Queen",      color:"#C8860A" },
@@ -3572,7 +3572,7 @@ export const EVOLUTION_OFFER = {
   eced:{
     intro:(s)=>`${s.name} sits across from you with her hands wrapped around a mug and a small notebook on the table beside her. She's been trying to explain this for a moment and not quite finding the words. "I've been doing something on Tuesdays," she finally says. "At the school. With the class." A pause. "And the moms have started coming. And everyone keeps eating. And I think —" she stops. She looks at the notebook. "I think I want to make it into something real. Something intentional." She looks at you. "I need someone to know what I'm doing."`,
     paths:{
-      homeroom_queen:{ label:"The Homeroom Queen", desc:"Formalize the Tuesday sessions. Bake for the class, bake for the moms, manage the suspicion, grow the tradition. Six named participants and one growing problem she's trying not to call a success." },
+      homeroom_queen:{ label:"The Apprentice", desc:"Formalize the Tuesday sessions. Bake for the class, bake for the moms, manage the suspicion, grow the tradition. Six named participants and one growing problem she's trying not to call a success." },
     },
   },
   farm_girl:{
