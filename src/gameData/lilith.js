@@ -145,108 +145,141 @@ export const HUNT_MEN = [
   },
 ];
 
-// ── SEDUCTION MOVES ────────────────────────────────────────────────
+// ── TURN-BASED ENCOUNTER SYSTEM ────────────────────────────────────
 
-// movePool[stageBand] = array of available moves
-// stageBand: 0 = thin (stage 0-2), 1 = curvy (stage 3-6), 2 = enormous (stage 7+)
+export const WILLPOWER_START = { 0: 5, 1: 45, 2: 65, 3: 90 };
+export const MAX_APPREHENSION = { 0: 99, 1: 4, 2: 5, 3: 6 };
 
-export const SEDUCTION_MOVES = {
-  // ── Always available ──
-  hold_gaze: {
-    label: "Hold his gaze",
-    text: [
-      // thin
-      "You hold his gaze a half-second past comfortable. He breaks first. They always break first.",
-      // curvy
-      "You look at him the way you look at something you've already decided to have. He feels it.",
-      // enormous
-      "You simply look at him. The weight of your attention is physical. He doesn't move.",
+// Guy lines per [difficulty][willpower band]
+// band 0 = willpower > 65 (confident), band 1 = 30-65 (wavering), band 2 = < 30 (nearly done)
+export const GUY_LINES = {
+  1: [
+    [
+      "\"You're kind of hard to ignore.\"",
+      "\"Buy you a drink?\" He doesn't wait for an answer before signaling.",
+      "\"I was about to leave. Glad I didn't.\"",
     ],
-    risky: false,
+    [
+      "He starts saying something, then loses the thread of it mid-sentence.",
+      "\"Sorry — I — \" He tries again. Fails again.",
+      "\"I keep looking over here,\" he says, like it's news to both of them.",
+    ],
+    [
+      "He just looks at you. Words don't seem to be happening for him right now.",
+      "\"I'm not usually like this.\" He can't explain what 'like this' means.",
+      "He's stopped pretending to be doing anything else.",
+    ],
+  ],
+  2: [
+    [
+      "He takes his time before responding. Evaluating.",
+      "\"I don't usually talk to strangers.\" He's still standing there.",
+      "\"You've been watching me.\" It's not quite an accusation.",
+    ],
+    [
+      "\"This is — \" He doesn't finish it. He knows how the sentence would sound.",
+      "He shifts his weight toward you. Probably doesn't notice.",
+      "\"Are you always like this?\" He asks it like he's not sure he wants the answer.",
+    ],
+    [
+      "\"I should probably — \" He doesn't move.",
+      "He's very still. The kind of still that's the body overriding the brain.",
+      "\"Tell me your name again,\" he says, quieter this time.",
+    ],
+  ],
+  3: [
+    [
+      "He meets your gaze evenly. Gives you nothing.",
+      "\"Can I help you with something?\" Professional. Careful.",
+      "He turns back to what he was doing. Unhurriedly.",
+    ],
+    [
+      "\"I know what you're doing.\" He says it. He's still here.",
+      "He opens his mouth, closes it. Opens it again. \"You're — interesting.\"",
+      "Something shifts in his expression. He doesn't like that it did.",
+    ],
+    [
+      "He closes his eyes for a moment. Opens them. You're still there.",
+      "\"This is a bad idea,\" he says, and he doesn't disagree with himself.",
+      "He looks at you for a long moment. Whatever professional composure he had has gone very quiet.",
+    ],
+  ],
+};
+
+// Reply pool — effects hidden from player
+// effect: 'good' = willpower drops, 'bad' = apprehension +1, 'neutral' = minor willpower drop
+export const REPLY_POOL = [
+  { id:'r_watching',  label:"\"I've been watching you.\"",              effect:'good',    wpDelta:-18 },
+  { id:'r_hoping',    label:"\"I was hoping you'd be here tonight.\"",  effect:'good',    wpDelta:-16 },
+  { id:'r_silence',   label:"Lean in slightly. Let the silence work.",  effect:'good',    wpDelta:-20 },
+  { id:'r_hair',      label:"Tuck your hair back slowly while he talks.", effect:'good',  wpDelta:-15 },
+  { id:'r_smile',     label:"Give him the slow smile. Don't break it.", effect:'good',    wpDelta:-17 },
+  { id:'r_myplace',   label:"\"My place is two minutes away.\"",        effect:'bad',     appDelta:1  },
+  { id:'r_decided',   label:"Fix him with a look that says you've already decided.", effect:'bad', appDelta:1 },
+  { id:'r_possess',   label:"\"You'll want to remember this evening.\"",effect:'bad',     appDelta:1  },
+  { id:'r_cold',      label:"Give a slow, unreadable smile. Say nothing.", effect:'bad',  appDelta:1  },
+  { id:'r_ask',       label:"Ask him something about himself.",         effect:'neutral',  wpDelta:-5  },
+  { id:'r_laugh',     label:"Laugh at whatever he just said.",          effect:'neutral',  wpDelta:-6  },
+  { id:'r_name',      label:"Say his name when you answer.",            effect:'neutral',  wpDelta:-5  },
+  { id:'r_story',     label:"Tell him something harmless about your evening.", effect:'neutral', wpDelta:-4 },
+];
+
+// Physical seduction moves — unlocked by Lilith's weight
+export const PHYSICAL_MOVES = {
+  hip_sway: {
+    label: "Hip Sway & Brush",
+    unlockLbs: 150,
+    power: 0.0,
+    vignette: (_stageBand) => "[Vignette: coming soon]",
   },
-  dark_smile: {
-    label: "Let him see you smile",
-    text: [
-      "You smile — slow, like you know something he doesn't. You do know something he doesn't.",
-      "The smile is the whole argument. He's already lost it before he understands what the argument was.",
-      "You smile at him and something shifts in the room. He takes a half-step forward without meaning to.",
-    ],
-    risky: false,
+  belly_press: {
+    label: "Belly Press",
+    unlockLbs: 240,
+    power: 0.1,
+    vignette: (_stageBand) => "[Vignette: coming soon]",
   },
-  lean_forward: {
-    label: "Lean forward, let the neckline work",
-    text: [
-      // thin
-      "You lean across the table, letting the geometry of your neckline arrange itself. His gaze drops. Returns. Too late.",
-      // curvy
-      "You lean forward, and your chest does what it's been doing since September. He doesn't have a word for this expression on his face. There isn't one.",
-      // enormous
-      "You lean forward and the sheer mass of you, the warmth of you, fills his field of vision. He makes a sound.",
-    ],
-    minStageBand: 0, risky: false,
+  cleavage_smother: {
+    label: "Cleavage Smother",
+    unlockLbs: 340,
+    power: 0.15,
+    vignette: (_stageBand) => "[Vignette: coming soon]",
   },
-  hair_touch: {
-    label: "Tuck your hair back slowly",
-    text: [
-      "You tuck a dark strand behind your ear with one finger and watch his sentence stop mid-word.",
-      "You touch your hair and he watches your hand the entire time, forgetting himself entirely.",
-      "A small gesture. Enormous effect. You've stopped needing to try.",
-    ],
-    risky: false,
-  },
-  // ── Curvy+ moves ──
-  press_together: {
-    label: "Press your arms together",
-    text: [
-      null, // not available thin
-      "You press your arms inward deliberately, framing yourself. His eyes go exactly where you want them.",
-      // enormous — belly interference gag
-      "You try to press your arms in the way you used to. Your belly is firmly in the way. The attempt itself — the visible effort of navigating your own body — somehow makes it worse for him. He swallows.",
-    ],
-    minStageBand: 1, risky: false,
-  },
-  touch_arm: {
-    label: "Let your fingers brush his arm",
-    text: [
-      null,
-      "You let your fingers graze his arm — light, incidental, utterly deliberate. He goes very still.",
-      "You touch his arm and feel him flinch not from recoil but from something else. He doesn't move away.",
-    ],
-    minStageBand: 1, risky: false,
-  },
-  // ── Enormous moves ──
-  presence: {
-    label: "Step closer. Let him feel the weight of the room change.",
-    text: [
-      null, null,
-      "You step toward him. The air rearranges itself around your mass. Something animal in him understands what's happening.",
-    ],
-    minStageBand: 2, risky: false,
-  },
-  // ── Hard-target gambit (risky at thin, reliable at curvy+) ──
-  direct_offer: {
-    label: "Ask him directly to come with you",
-    text: [
-      "You ask him directly. No preamble. He blinks. Then, despite himself, he nods.",
-      "You tell him to come with you. He starts to say something reasonable and stops. He's coming.",
-      "You ask. It's barely even a question at this point. He follows.",
-    ],
-    risky: true,
-    riskyFailText: "He hesitates. Looks at you. Something in his instincts — dormant, probably — tells him no. He excuses himself. You watch him go. Next time.",
+  gut_press: {
+    label: "Gut Press",
+    unlockLbs: 540,
+    power: 0.2,
+    vignette: (_stageBand) => "[Vignette: coming soon]",
   },
 };
 
-// Available moves per stage band (indexes into SEDUCTION_MOVES)
-export const MOVES_BY_STAGE_BAND = [
-  ['hold_gaze','dark_smile','lean_forward','hair_touch','direct_offer'],           // thin
-  ['hold_gaze','dark_smile','lean_forward','press_together','touch_arm','direct_offer'], // curvy
-  ['hold_gaze','presence','lean_forward','press_together','direct_offer'],         // enormous
-];
+// Draw 3 reply options: 1 good + 1 bad + 1 neutral, shuffled
+export function drawReplies(usedIds = []) {
+  const pick = (type) => {
+    const pool = REPLY_POOL.filter(r => r.effect === type);
+    const avail = pool.filter(r => !usedIds.includes(r.id));
+    const src = avail.length ? avail : pool;
+    return src[Math.floor(Math.random() * src.length)];
+  };
+  const three = [pick('good'), pick('bad'), pick('neutral')];
+  for (let i = 2; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [three[i], three[j]] = [three[j], three[i]];
+  }
+  return three;
+}
 
-export function getStageBand(stageId) {
-  if (stageId >= 7) return 2;
-  if (stageId >= 3) return 1;
-  return 0;
+// Probability of seduction success based on current willpower + move power bonus
+export function seduceSuccessChance(willpower, movePower = 0) {
+  return Math.max(0.05, Math.min(0.90, (100 - willpower) / 100 + movePower));
+}
+
+// Get a guy line for the current willpower state
+export function getGuyLine(difficulty, willpower) {
+  const lines = GUY_LINES[difficulty];
+  if (!lines) return "He looks at you.";
+  const band = willpower > 65 ? 0 : willpower >= 30 ? 1 : 2;
+  const arr = lines[band];
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
 export function getEffectiveDifficulty(baseDifficulty, stageId) {

@@ -11,7 +11,7 @@ import { SKILL_TREE, SKILL_CATEGORIES, DIVINE_SKILL_TREE, EVOLVED_SKILL_TREES } 
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { HOSTESS_HANGOUTS, MENU_TIERS, ATMOSPHERE_TIERS, GUEST_TIERS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
-import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, SEDUCTION_MOVES, MOVES_BY_STAGE_BAND, getStageBand, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, CLUE_INVESTIGATION, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
+import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, GUY_LINES, REPLY_POOL, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, CLUE_INVESTIGATION, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette, RECRUITMENT_SCENE, TESTER_APPEARANCE, getDigestVignette } from './gameData/cultivator.js';
 import { getMadelineTier, THESIS_BOARD, CASE_STUDY_PAIRS, BOARD_REACTIONS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 
@@ -338,7 +338,7 @@ export default function ProfessorSim(){
   const [lilithClueFound, setLilithClueFound] = useState(false);
   const [lilithClueModal, setLilithClueModal] = useState(null); // null | 'feast_clue' | 'investigating' | 'result'
   const [lilithHuntState, setLilithHuntState] = useState(null);
-  // lilithHuntState: {textLog:[{text,type}],currentNode,encounter:{manId,movesUsed[],movesNeeded,failed,consumed}|null,deliveryMode,deliveryDone}
+  // lilithHuntState: {textLog:[{text,type}],currentNode,encounter:{manId,diff,willpower,apprehension,maxApprehension,failed,consumed,won,mode,replyOptions,usedReplyIds,turnIdx,currentLine}|null,deliveryMode,deliveryDone}
   const [lilithKillCount, setLilithKillCount] = useState(0);
   const [cultivatorState, setCultivatorState] = useState(null);
   // cultivatorState: {testerName,testerStageId,testerLbs,fatBar,suspicion,harvestsCompleted,usedNames,modalPhase,session,pendingStageUp,harvestType,harvestVignetteText,growthGain,growthVignetteText,digestWeeksLeft,digestTotalWeeks}
@@ -1358,25 +1358,76 @@ export default function ProfessorSim(){
     const man=HUNT_MEN.find(m=>m.id===manId); if(!man) return;
     const stageId=getStage(lilith.lbs).id;
     const diff=getEffectiveDifficulty(man.difficulty,stageId);
-    const entries=[{text:`${man.name.toUpperCase()} — ${man.tag}`,type:'location'},{text:man.desc(stageId),type:'narrative'}];
-    setLilithHuntState(prev=>({...prev,encounter:{manId,movesUsed:[],movesNeeded:Math.max(1,diff),failed:false,consumed:false},textLog:[...prev.textLog,...entries]}));
+    const willpower=WILLPOWER_START[diff]??45;
+    const maxApprehension=MAX_APPREHENSION[diff]??5;
+    const firstLine=getGuyLine(diff,willpower);
+    const replies=drawReplies([]);
+    const entries=[
+      {text:`${man.name.toUpperCase()} — ${man.tag}`,type:'location'},
+      {text:man.desc(stageId),type:'narrative'},
+      {text:firstLine,type:'guy'},
+    ];
+    setLilithHuntState(prev=>({...prev,
+      encounter:{manId,diff,willpower,apprehension:0,maxApprehension,
+        failed:false,consumed:false,won:false,
+        mode:'idle',replyOptions:replies,usedReplyIds:[],
+        turnIdx:0,currentLine:firstLine},
+      textLog:[...prev.textLog,...entries]
+    }));
   };
-  const makeSeduceMove=(moveId)=>{
+  const encounterSetMode=(mode)=>{
+    setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,mode}}));
+  };
+  const makeReply=(option)=>{
+    if(!lilithHuntState?.encounter) return;
+    const{encounter}=lilithHuntState;
+    if(encounter.won||encounter.failed||encounter.consumed) return;
+    const logs=[{text:option.label,type:'action'}];
+    let{willpower,apprehension}=encounter;
+    if(option.effect==='bad') apprehension=apprehension+1;
+    else willpower=Math.max(0,willpower+(option.wpDelta||0));
+    const won=willpower<=0;
+    const failed=apprehension>=encounter.maxApprehension;
+    if(won) logs.push({text:"His resistance is gone.",type:'system'});
+    else if(failed) logs.push({text:"He pulls away. Something felt wrong.",type:'system'});
+    else{
+      const nextLine=getGuyLine(encounter.diff,willpower);
+      logs.push({text:nextLine,type:'guy'});
+    }
+    const newUsedIds=[...encounter.usedReplyIds,option.id];
+    const newReplies=drawReplies(newUsedIds);
+    setLilithHuntState(prev=>({...prev,
+      encounter:{...prev.encounter,willpower,apprehension,won,failed,
+        mode:'idle',replyOptions:newReplies,usedReplyIds:newUsedIds,
+        turnIdx:prev.encounter.turnIdx+1},
+      textLog:[...prev.textLog,...logs]
+    }));
+  };
+  const makeSeduction=(moveId)=>{
     if(!lilithHuntState?.encounter) return;
     const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
+    const move=PHYSICAL_MOVES[moveId]; if(!move) return;
+    const{encounter}=lilithHuntState;
+    if(encounter.won||encounter.failed||encounter.consumed) return;
     const stageId=getStage(lilith.lbs).id;
-    const stageBand=getStageBand(stageId);
-    const move=SEDUCTION_MOVES[moveId]; if(!move) return;
-    const {encounter}=lilithHuntState;
-    if(encounter.consumed||encounter.failed) return;
-    if(move.risky&&stageBand===0&&Math.random()<0.5){
-      setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,failed:true},textLog:[...prev.textLog,{text:move.riskyFailText,type:'narrative'},{text:"He slipped away.",type:'system'}]}));
-      return;
-    }
-    const moveText=move.text[Math.min(stageBand,move.text.length-1)]||'';
-    const newMovesUsed=[...encounter.movesUsed,moveId];
-    const isDone=newMovesUsed.length>=encounter.movesNeeded;
-    setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,movesUsed:newMovesUsed,done:isDone},textLog:[...prev.textLog,{text:moveText,type:'action'},...(isDone?[{text:"He's yours.",type:'system'}]:[])]}));
+    const stageBand=stageId>=7?2:stageId>=3?1:0;
+    const success=Math.random()<seduceSuccessChance(encounter.willpower,move.power||0);
+    const logs=[{text:move.vignette(stageBand),type:'action'}];
+    let{willpower,apprehension}=encounter;
+    if(success){const wpDrop=Math.round(25+Math.random()*10);willpower=Math.max(0,willpower-wpDrop);}
+    const won=willpower<=0;
+    let newApp=apprehension;
+    if(!success&&Math.random()<0.5) newApp=Math.min(encounter.maxApprehension,apprehension+1);
+    const failed=newApp>=encounter.maxApprehension;
+    if(won) logs.push({text:"He has no resistance left.",type:'system'});
+    else if(failed) logs.push({text:"He pulls away. Something felt too strange.",type:'system'});
+    else{const nextLine=getGuyLine(encounter.diff,willpower);logs.push({text:nextLine,type:'guy'});}
+    const newReplies=drawReplies(encounter.usedReplyIds);
+    setLilithHuntState(prev=>({...prev,
+      encounter:{...prev.encounter,willpower,apprehension:newApp,won,failed,mode:'idle',
+        replyOptions:newReplies,turnIdx:prev.encounter.turnIdx+1},
+      textLog:[...prev.textLog,...logs]
+    }));
   };
   const consumeMan=()=>{
     const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
@@ -8156,9 +8207,7 @@ export default function ProfessorSim(){
         const{textLog,currentNode,encounter,deliveryMode,deliveryDone}=lilithHuntState;
         const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return null;
         const stageId=getStage(lilith.lbs).id;
-        const stageBand=getStageBand(stageId);
         const accessibleNodes=HUNT_NODE_ACCESS[stageId]||[];
-        const availableMoves=MOVES_BY_STAGE_BAND[stageBand]||MOVES_BY_STAGE_BAND[0];
         const accent="#7010a0";
 
         // Pixel art silhouette — profile view (facing right), 2px/pixel
@@ -8176,24 +8225,14 @@ export default function ProfessorSim(){
           [[0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0],[0,0,0,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0],[0,0,0,2,2,1,1,1,1,1,0,0,0,0,0,0,0,0],[0,0,0,2,2,1,1,1,1,1,0,0,0,0,0,0,0,0],[0,0,0,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0],[0,0,0,2,0,1,1,1,0,0,0,0,0,0,0,0,0,0],[0,0,0,2,0,1,1,1,1,1,1,0,0,0,0,0,0,0],[0,0,0,2,1,1,1,1,1,1,1,1,1,1,0,0,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,1,0,0,0,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],[0,0,0,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0],[0,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0]],
           // ── Stage 5 — Very Fat (~365 lbs). Bust fully overflowing top (2px past dress), gut past bust, booty to col 0. 20×39 ──
           [[0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,0,2,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0],[0,0,0,0,3,3,3,3,3,3,3,3,3,3,1,1,0,0,0,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],[0,0,0,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0],[0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0]],
-          // ── Stage 6 — Very Heavy (~430 lbs). Round oval, bust protrudes forward, belly starting to show. 28×44 ──
-          [[0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,2,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,2,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,2,2,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,0,0,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0]],
-          // ── Stage 7 — Super Heavy (~500 lbs). Wider, more belly exposed below dress, bust larger. 33×44 ──
-          [[0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,2,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,2,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,2,2,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,0,0,0,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
-          // ── Stage 8 — Extremely Heavy (~600 lbs). Very wide, top rides up significantly. 38×44 ──
-          [[0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,2,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,2,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,2,2,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,1],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],[0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
-          // ── Stage 9 — Massive (~720 lbs). Enormous body, belly hanging below dress. 43×44 ──
-          [[0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,2,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,2,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,2,2,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,0,0,0,0,0],[0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,1],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0],[0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
-          // ── Stage 10 — BLOB (~820 lbs). Seated, rotund gut on ground, feet splayed to right. 52×46 ──
-          [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,2,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,2,2,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,2,2,2,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,2,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,2,0,0,1,0,0,0,0,0,0,3,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,2,0,1,1,1,1,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
         ];
         const PIX=2;
         const PIX_C={1:'#f2eeff',2:'#0a000e',3:'#1c0030',4:'#070010'};
-        const currentPix=LILITH_PROFILES[Math.min(10,stageId)];
+        const currentPix=LILITH_PROFILES[Math.min(5,stageId)];
         const pCols=currentPix[0]?.length||10, pRows=currentPix.length;
         const silScaleX=1.0, silScaleY=1.0;
 
-        // Build choice list
+        // Build choice list (nav/delivery/approach states only)
         const choices=[];
         const addNavChoices=(nodeId)=>{
           const connected=(HUNT_MAP[nodeId]||[]).filter(nid=>accessibleNodes.includes(nid)&&nid!=='dorm');
@@ -8221,29 +8260,19 @@ export default function ProfessorSim(){
             addNavChoices(currentNode);
             choices.push({id:'leave',label:'Leave the hunt',action:closeHunt,dim:true,small:true});
           }
-        } else if(encounter.consumed){
-          choices.push({id:'again',label:'Hunt again ↩',action:returnToLoc,nav:true});
-          choices.push({id:'close',label:'Return to campus',action:closeHunt,dim:true});
-        } else if(encounter.failed){
-          choices.push({id:'back',label:'↩ Back to the hunt',action:returnToLoc,nav:true});
-          addNavChoices(currentNode);
-          choices.push({id:'leave',label:'Leave the hunt',action:closeHunt,dim:true,small:true});
-        } else {
-          const isDone=encounter.done||encounter.movesUsed.length>=encounter.movesNeeded;
-          if(isDone){
-            choices.push({id:'consume',label:'🌑 Take him home →',action:consumeMan,big:true});
+        } else if(encounter.consumed||encounter.failed){
+          if(encounter.consumed){
+            choices.push({id:'again',label:'Hunt again ↩',action:returnToLoc,nav:true});
+            choices.push({id:'close',label:'Return to campus',action:closeHunt,dim:true});
           } else {
-            availableMoves.forEach(moveId=>{
-              const move=SEDUCTION_MOVES[moveId]; if(!move) return;
-              if(move.minStageBand&&stageBand<move.minStageBand) return;
-              choices.push({id:moveId,label:move.label,action:()=>makeSeduceMove(moveId),risky:move.risky});
-            });
+            choices.push({id:'back',label:'↩ Back to the hunt',action:returnToLoc,nav:true});
+            addNavChoices(currentNode);
+            choices.push({id:'leave',label:'Leave the hunt',action:closeHunt,dim:true,small:true});
           }
         }
 
-        // Progress dots (during active seduction)
-        const showProgress=encounter&&!encounter.failed&&!encounter.consumed;
-        const progressDots=showProgress?Array.from({length:encounter.movesNeeded}).map((_,i)=>i<encounter.movesUsed.length):null;
+        const hasSeduce=Object.values(PHYSICAL_MOVES).some(m=>lilith.lbs>=m.unlockLbs);
+        const btnBase={borderRadius:5,cursor:"pointer",textAlign:"left",lineHeight:1.4,fontFamily:"inherit",width:"100%",fontSize:12};
 
         return(
           <div style={{position:"fixed",inset:0,background:"#000",zIndex:1300,display:"flex",flexDirection:"column",fontFamily:"inherit"}}>
@@ -8292,6 +8321,9 @@ export default function ProfessorSim(){
                 if(entry.type==='action') return(
                   <div key={i} style={{fontSize:12,color:isLast?"#ddb0ff":"#a070c0",lineHeight:1.8,fontStyle:"italic",opacity:isLast?1:0.75}}>{entry.text}</div>
                 );
+                if(entry.type==='guy') return(
+                  <div key={i} style={{fontSize:12,color:isLast?"#90b8d8":"#4a6080",lineHeight:1.8,opacity:isLast?1:0.7}}>{entry.text}</div>
+                );
                 return(
                   <div key={i} style={{fontSize:12,color:isLast?"#c898e8":"#7d5090",lineHeight:1.9,fontStyle:"italic",opacity:isLast?1:0.65,whiteSpace:"pre-line"}}>{entry.text}</div>
                 );
@@ -8300,32 +8332,79 @@ export default function ProfessorSim(){
 
             {/* ── CHOICES PANEL ── */}
             <div style={{flexShrink:0,background:"#050010",borderTop:"1px solid #30104050"}}>
-              {/* Progress dots */}
-              {progressDots&&(
-                <div style={{display:"flex",gap:5,padding:"8px 16px 0",alignItems:"center"}}>
-                  {progressDots.map((filled,i)=>(
-                    <div key={i} style={{width:10,height:10,borderRadius:"50%",background:filled?"#c060d0":"rgba(80,0,120,0.3)",border:`1px solid ${accent}50`,transition:"background 0.2s"}}/>
-                  ))}
-                  <span style={{fontSize:9,color:"#50305a",marginLeft:4}}>{encounter.movesUsed.length}/{encounter.movesNeeded}</span>
+              {/* Encounter status bars */}
+              {encounter&&!encounter.consumed&&!encounter.failed&&(
+                <div style={{padding:"10px 16px 4px"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
+                    <span style={{fontSize:9,color:"#7010a0",letterSpacing:2,minWidth:72}}>WILLPOWER</span>
+                    <div style={{flex:1,height:6,background:"#1a0030",borderRadius:3,overflow:"hidden"}}>
+                      <div style={{height:"100%",background:"linear-gradient(90deg,#c060d0,#7010a0)",width:`${encounter.willpower}%`,transition:"width 0.3s"}}/>
+                    </div>
+                  </div>
+                  <div style={{display:"flex",alignItems:"center",gap:6}}>
+                    <span style={{fontSize:9,color:"#601030",letterSpacing:2,minWidth:72}}>WARINESS</span>
+                    <div style={{display:"flex",gap:4}}>
+                      {Array.from({length:encounter.maxApprehension}).map((_,i)=>(
+                        <div key={i} style={{width:8,height:8,borderRadius:"50%",background:i<encounter.apprehension?"#c03050":"#1a0020",border:"1px solid #500030",transition:"background 0.2s"}}/>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
               <div style={{display:"flex",flexDirection:"column",gap:5,padding:"8px 14px 12px",maxHeight:"42vh",overflowY:"auto"}}>
-                {choices.map(ch=>(
+                {/* Nav / delivery / approach states */}
+                {(!encounter||encounter.consumed||encounter.failed)&&choices.map(ch=>(
                   <button key={ch.id} onClick={ch.action} style={{
-                    background:ch.big?"#3a0060":ch.approach?"#260042":ch.risky?"#1c001e":ch.nav?"#1a0030":"#130020",
-                    border:`1px solid ${ch.risky?"#a0204040":ch.approach?accent+"60":ch.nav?accent+"50":accent+"30"}`,
-                    color:ch.dim?"#5a3860":ch.risky?"#e07878":ch.approach?"#d070f0":ch.nav?"#9860b8":"#b080d0",
-                    borderRadius:5,padding:ch.big?"11px 16px":"8px 14px",
-                    fontSize:ch.small?10:ch.big?13:12,
-                    fontWeight:ch.big?700:"normal",
-                    cursor:"pointer",textAlign:"left",lineHeight:1.4,fontFamily:"inherit",
-                    width:"100%",
+                    ...btnBase,
+                    background:ch.big?"#3a0060":ch.approach?"#260042":ch.nav?"#1a0030":"#130020",
+                    border:`1px solid ${ch.approach?accent+"60":ch.nav?accent+"50":accent+"30"}`,
+                    color:ch.dim?"#5a3860":ch.approach?"#d070f0":ch.nav?"#9860b8":"#b080d0",
+                    padding:ch.big?"11px 16px":"8px 14px",
+                    fontSize:ch.small?10:ch.big?13:12,fontWeight:ch.big?700:"normal",
                   }}>
                     {ch.label}
                     {ch.sublabel&&<span style={{fontSize:10,color:ch.sublabelColor||"#705080",marginLeft:8}}>{ch.sublabel}</span>}
-                    {ch.risky&&<span style={{fontSize:9,color:"#b02030",marginLeft:6}}>⚠ risky</span>}
                   </button>
                 ))}
+                {/* Won — take home */}
+                {encounter&&encounter.won&&!encounter.consumed&&(
+                  <button onClick={consumeMan} style={{...btnBase,background:"#3a0060",border:`1px solid ${accent}70`,color:"#d070f0",padding:"11px 16px",fontSize:13,fontWeight:700}}>
+                    🌑 Take him home →
+                  </button>
+                )}
+                {/* Idle — Reply / Seduce */}
+                {encounter&&!encounter.won&&!encounter.failed&&!encounter.consumed&&encounter.mode==='idle'&&(<>
+                  <button onClick={()=>encounterSetMode('replying')} style={{...btnBase,background:"#1a0040",border:`1px solid ${accent}60`,color:"#c080e0",padding:"10px 14px"}}>
+                    💬 Reply…
+                  </button>
+                  {hasSeduce&&(
+                    <button onClick={()=>encounterSetMode('seducing')} style={{...btnBase,background:"#250050",border:`1px solid ${accent}70`,color:"#d060e0",padding:"10px 14px"}}>
+                      ✦ Seduce…
+                    </button>
+                  )}
+                </>)}
+                {/* Replying — 3 options */}
+                {encounter&&encounter.mode==='replying'&&(<>
+                  {(encounter.replyOptions||[]).map(opt=>(
+                    <button key={opt.id} onClick={()=>makeReply(opt)} style={{...btnBase,background:"#150030",border:`1px solid ${accent}50`,color:"#c090d8",padding:"9px 14px"}}>
+                      {opt.label}
+                    </button>
+                  ))}
+                  <button onClick={()=>encounterSetMode('idle')} style={{...btnBase,background:"#0a0018",border:`1px solid ${accent}20`,color:"#604070",padding:"7px 14px",fontSize:10,marginTop:2}}>
+                    ← Back
+                  </button>
+                </>)}
+                {/* Seducing — physical moves (unlocked only) */}
+                {encounter&&encounter.mode==='seducing'&&(<>
+                  {Object.entries(PHYSICAL_MOVES).filter(([,m])=>lilith.lbs>=m.unlockLbs).map(([id,m])=>(
+                    <button key={id} onClick={()=>makeSeduction(id)} style={{...btnBase,background:"#200040",border:`1px solid ${accent}60`,color:"#e080e0",padding:"9px 14px",fontWeight:600}}>
+                      {m.label}
+                    </button>
+                  ))}
+                  <button onClick={()=>encounterSetMode('idle')} style={{...btnBase,background:"#0a0018",border:`1px solid ${accent}20`,color:"#604070",padding:"7px 14px",fontSize:10,marginTop:2}}>
+                    ← Back
+                  </button>
+                </>)}
               </div>
             </div>
 
