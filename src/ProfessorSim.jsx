@@ -5,7 +5,7 @@ import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GR
 import { BODY_DESCS, STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, OUTFITS, SLIGHT_DIARY, DIARY_ENTRIES, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
 import { GOSSIP, getGossipLines } from './gameData/gossip.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS, CLASS_SCENES } from './gameData/classEvents.js';
-import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS, BATCH_BAKER_NPCS, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WIFE_LESSONS_NPCS } from './gameData/evolvedForms.js';
+import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS, BATCH_BAKER_NPCS, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WIFE_LESSONS_NPCS } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_WEIGH_IN_2_TEXT, CONTEST_DEVOUR_POPUPS, CONTEST_PAYOFF_TEXT, SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_MATCH_AFTERMATH, SUMO_PAYOFF_TEXT, SUMO_FILL_RING_TEXT, COLLAB_CONTENT_CREATOR_ARCHETYPES, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_OPENING_TEXT, RECORDING_TAKE_INTRO_TEXT, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT, MJ_RECIPES, FAIR_FOODS, FAIR_STAGE_FOODS, FAIR_DARCY_WEIGHTS, FAIR_FULLNESS_MILESTONES, FAIR_WEIGH_IN_TEXT, FAIR_PAYOFF_TEXT, FAIR_TAUNT_POPUPS } from './gameData/miniGames.js';
 import { SKILL_TREE, SKILL_CATEGORIES, DIVINE_SKILL_TREE, EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
@@ -330,6 +330,8 @@ export default function ProfessorSim(){
   // researchSubjectPicker: { student: nadiaStudent }
   const [batchBakerState, setBatchBakerState] = useState({classWeight:0, momWeight:0, suspicion:0, stage:0});
   // batchBakerState: tracks homeroom_queen NPC weight accumulation and suspicion
+  const [homeroomSessionState, setHomeroomSessionState] = useState(null);
+  // homeroomSessionState: {daisyStudentId,ap,log,daisyGain,relAccum,classGainAccum,momGainAccum,suspDeltaAccum,activeActivity}
   const [rankedFeedeeState, setRankedFeedeeState] = useState(null);
   // rankedFeedeeState: {studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log:[],done,endReason,raeDelivered}
   const [chapterHostessState, setChapterHostessState] = useState(null);
@@ -1123,13 +1125,9 @@ export default function ProfessorSim(){
     if(s.evolvedForm==='homeroom_queen'){
       const meta=EVOLVED_ACTIVITY_META['homeroom_queen']; if(!meta) return;
       if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
-      const hqStage=Math.min(5, batchBakerState.stage);
-      const evDef=EVOLVED_EVENTS['homeroom_queen']?.[hqStage];
-      if(evDef){
-        setAp(a=>a-meta.apCost);
-        setEvolvedEventState({studentId:s.id,formId:'homeroom_queen',stageIdx:hqStage,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0,classGain:0,momGain:0});
-        return;
-      }
+      setAp(a=>a-meta.apCost);
+      setHomeroomSessionState({daisyStudentId:s.id,ap:3,log:[],daisyGain:0,relAccum:0,classGainAccum:0,momGainAccum:0,suspDeltaAccum:0,activeActivity:null});
+      return;
     }
     if(s.evolvedForm==='wife_lessons'){
       const meta=EVOLVED_ACTIVITY_META['wife_lessons']; if(!meta) return;
@@ -1244,6 +1242,81 @@ export default function ProfessorSim(){
       });
     }
     setEvolvedEventState(null);
+  };
+
+  // ── HOMEROOM QUEEN handlers ───────────────────────────────────────
+  const openHomeroomConference=(studentKey)=>{
+    if(!homeroomSessionState||homeroomSessionState.ap<1||homeroomSessionState.activeActivity) return;
+    setHomeroomSessionState(prev=>({...prev,ap:prev.ap-1,activeActivity:{type:'conference',key:studentKey,phaseIdx:0,history:[],done:false,resultText:null,revealsWeights:false,revealsParentWeights:false}}));
+  };
+  const startHomeroomGroupActivity=(actKey)=>{
+    if(!homeroomSessionState||homeroomSessionState.activeActivity) return;
+    const actDef=HOMEROOM_GROUP_ACTIVITIES[actKey]; if(!actDef) return;
+    if(homeroomSessionState.ap<actDef.apCost) return;
+    setHomeroomSessionState(prev=>({...prev,ap:prev.ap-actDef.apCost,activeActivity:{type:actKey,key:actKey,phaseIdx:0,history:[],done:false,resultText:null,revealsWeights:false,revealsParentWeights:false}}));
+  };
+  const makeHomeroomActivityChoice=(choiceId)=>{
+    if(!homeroomSessionState?.activeActivity) return;
+    const{type,key,phaseIdx,revealsWeights:prevRevW,revealsParentWeights:prevRevPW}=homeroomSessionState.activeActivity;
+    let choice,hasNextPhase=false;
+    if(type==='conference'){
+      const evDef=HOMEROOM_CONFERENCE_EVENTS[key]; if(!evDef) return;
+      choice=evDef.choices.find(c=>c.id===choiceId); if(!choice) return;
+    } else {
+      const actDef=HOMEROOM_GROUP_ACTIVITIES[type]; if(!actDef) return;
+      const phases=actDef.phases||[{text:actDef.text,choices:actDef.choices||[]}];
+      const phase=phases[phaseIdx]; if(!phase) return;
+      choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
+      hasNextPhase=phaseIdx+1<phases.length;
+    }
+    const resultText=typeof choice.result==='function'?choice.result():choice.result;
+    setHomeroomSessionState(prev=>({
+      ...prev,
+      daisyGain:prev.daisyGain+(choice.lbs||0),
+      relAccum:prev.relAccum+(choice.rel||0),
+      classGainAccum:prev.classGainAccum+(choice.classGain||0),
+      momGainAccum:prev.momGainAccum+(choice.momGain||0),
+      suspDeltaAccum:prev.suspDeltaAccum+(choice.suspDelta||0),
+      activeActivity:{...prev.activeActivity,phaseIdx:hasNextPhase?phaseIdx+1:phaseIdx,history:[...prev.activeActivity.history,choiceId],resultText,done:!hasNextPhase,revealsWeights:prevRevW||!!choice.revealsWeights,revealsParentWeights:prevRevPW||!!choice.revealsParentWeights},
+    }));
+  };
+  const advanceHomeroomActivityPhase=()=>{
+    if(!homeroomSessionState?.activeActivity) return;
+    setHomeroomSessionState(prev=>({...prev,activeActivity:{...prev.activeActivity,resultText:null}}));
+  };
+  const dismissHomeroomActivity=()=>{
+    if(!homeroomSessionState?.activeActivity?.done) return;
+    const{activeActivity}=homeroomSessionState;
+    const logLine=activeActivity.type==='conference'?`✦ Conference — ${activeActivity.key}`:activeActivity.type==='parent_meeting'?`✦ Parent Group Meeting`:activeActivity.type==='health_unit'?`✦ Health Unit — Measurements`:`✦ Activity`;
+    setHomeroomSessionState(prev=>({...prev,log:[...prev.log,logLine],activeActivity:null}));
+  };
+  const closeHomeroomSession=()=>{
+    if(!homeroomSessionState) return;
+    const{daisyStudentId,daisyGain,relAccum,classGainAccum,momGainAccum,suspDeltaAccum}=homeroomSessionState;
+    if(daisyGain>0||relAccum>0){
+      setStudents(prev=>prev.map(st=>{
+        if(st.id!==daisyStudentId) return st;
+        return processStudentGain(st,daisyGain,relAccum);
+      }));
+      if(daisyGain>0) push(`✦ Daisy — Classroom Session: +${daisyGain} lbs · +${relAccum} rel`);
+    }
+    if(classGainAccum>0||momGainAccum>0||suspDeltaAccum!==0){
+      setBatchBakerState(prev=>{
+        const newSusp=Math.max(0,Math.min(10,prev.suspicion+suspDeltaAccum));
+        const newClass=prev.classWeight+classGainAccum;
+        const newMom=prev.momWeight+momGainAccum;
+        const[ct1,ct2,ct3]=HOMEROOM_THRESHOLDS.class;
+        const[mt1,mt2,mt3]=HOMEROOM_THRESHOLDS.mom;
+        let newStage=0;
+        if(newClass>=ct1)newStage=1;
+        if(newMom>=mt1)newStage=2;
+        if(newClass>=ct2)newStage=3;
+        if(newMom>=mt2)newStage=4;
+        if(newClass>=ct3&&newMom>=mt3)newStage=5;
+        return{classWeight:newClass,momWeight:newMom,suspicion:newSusp,stage:Math.max(prev.stage,newStage)};
+      });
+    }
+    setHomeroomSessionState(null);
   };
 
   // ── CHAPTER HOSTESS handlers ──────────────────────────────────────
@@ -7693,6 +7766,208 @@ export default function ProfessorSim(){
               {done&&startsPresentation&&<button style={{...C.btn("#2c5f8a"),width:"100%",marginTop:4}} onClick={()=>{setPresentationState({studentId,stageIdx});setEvolvedEventState(null);}}>📊 Begin the Defense</button>}
               {done&&startsDelivery&&<button style={{...C.btn("#4a6a4a"),width:"100%",marginTop:4}} onClick={()=>{setDeliveryState({studentId,stageIdx});setEvolvedEventState(null);}}>🍜 Place the Order</button>}
               {done&&startsChallenge&&<button style={{...C.btn("#7a4a1a"),width:"100%",marginTop:4}} onClick={()=>{setChallengeState({studentId,stageIdx});setEvolvedEventState(null);}}>🍺 Take the Challenge</button>}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── HOMEROOM QUEEN: CLASSROOM MINI-INTERFACE ── */}
+      {homeroomSessionState&&(()=>{
+        const{daisyStudentId,ap:classAp,log,activeActivity,daisyGain,classGainAccum,momGainAccum,suspDeltaAccum}=homeroomSessionState;
+        const daisy=students.find(st=>st.id===daisyStudentId);
+        if(!daisy) return null;
+        const warmAccent="#c47a2a";
+        const warmDim="#7a4a18";
+        const warmText="#d4a060";
+        const warmSubtle="#806040";
+        const WARM_BG="linear-gradient(160deg,#0f0803,#1a0f06,#0f0803)";
+        const currentSusp=Math.max(0,Math.min(10,batchBakerState.suspicion+suspDeltaAccum));
+        const suspPct=currentSusp*10;
+        const npcDescIdx=Math.min(2,Math.floor((batchBakerState.classWeight+classGainAccum)/100));
+        const momDescIdx=Math.min(4,Math.floor((batchBakerState.momWeight+momGainAccum)/30));
+        const apDots=Array.from({length:3},(_,i)=>i<classAp);
+
+        if(activeActivity){
+          const{type,key,phaseIdx,done,resultText,revealsWeights,revealsParentWeights}=activeActivity;
+          let phaseText,choices,actTitle;
+          if(type==='conference'){
+            const evDef=HOMEROOM_CONFERENCE_EVENTS[key];
+            phaseText=evDef?.text; choices=evDef?.choices||[]; actTitle=`Conference — ${key}`;
+          } else {
+            const actDef=HOMEROOM_GROUP_ACTIVITIES[type];
+            const phases=actDef?.phases||[{text:actDef?.text,choices:actDef?.choices||[]}];
+            const phase=phases[phaseIdx];
+            phaseText=phase?.text; choices=phase?.choices||[]; actTitle=actDef?.label||type;
+          }
+          return(
+            <div style={{...C.overlay,zIndex:350}}>
+              <div style={{...C.modal,maxWidth:560,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"85vh",overflowY:"auto"}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
+                  <div style={{fontSize:9,letterSpacing:3,color:warmDim}}>🍪 DAISY'S CLASSROOM</div>
+                  <div style={{display:"flex",gap:4,marginLeft:"auto",alignItems:"center"}}>
+                    <div style={{fontSize:9,color:warmDim,marginRight:3}}>AP</div>
+                    {apDots.map((filled,i)=>(
+                      <div key={i} style={{width:8,height:8,borderRadius:"50%",background:filled?warmAccent:"#2a1808",border:`1px solid ${filled?warmAccent:warmDim}`}}/>
+                    ))}
+                  </div>
+                </div>
+                <div style={{fontSize:9,letterSpacing:3,color:warmAccent,marginBottom:8}}>{actTitle.toUpperCase()}</div>
+                <div style={{fontSize:12,color:"#d4b898",lineHeight:1.9,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-line"}}>
+                  {resultText||phaseText}
+                </div>
+                {revealsWeights&&(
+                  <div style={{marginBottom:12,padding:"8px 10px",background:"rgba(196,122,42,0.08)",border:`1px solid ${warmAccent}30`,borderRadius:6}}>
+                    <div style={{fontSize:9,letterSpacing:2,color:warmAccent,marginBottom:6}}>MEASUREMENTS RECORDED</div>
+                    <div style={{display:"flex",gap:10}}>
+                      {["Kayla","Bri","Sofia"].map(name=>{
+                        const desc=BATCH_BAKER_NPCS[name]?.[npcDescIdx]||"";
+                        return(
+                          <div key={name} style={{flex:1}}>
+                            <div style={{fontSize:10,fontWeight:700,color:warmText,marginBottom:2}}>{name}</div>
+                            <div style={{fontSize:9,color:warmSubtle,lineHeight:1.5}}>{desc?desc.split(".")[0]+".":""}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+                {revealsParentWeights&&(
+                  <div style={{marginBottom:12,padding:"8px 10px",background:"rgba(90,60,20,0.12)",border:`1px solid ${warmDim}40`,borderRadius:6}}>
+                    <div style={{fontSize:9,letterSpacing:2,color:warmAccent,marginBottom:6}}>PARENT MEASUREMENTS</div>
+                    <div style={{display:"flex",gap:10}}>
+                      {["Mrs_Calloway","Mrs_Reyes","Mrs_Monroe"].map(name=>{
+                        const desc=BATCH_BAKER_NPCS[name]?.[momDescIdx]||"";
+                        return(
+                          <div key={name} style={{flex:1}}>
+                            <div style={{fontSize:10,fontWeight:700,color:warmText,marginBottom:2}}>{name.replace("_"," ")}</div>
+                            <div style={{fontSize:9,color:warmSubtle,lineHeight:1.5}}>{desc?desc.split(".")[0]+".":""}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+                {!resultText&&!done&&choices.length>0&&(
+                  <div style={{display:"flex",flexDirection:"column",gap:7}}>
+                    {choices.map(ch=>(
+                      <button key={ch.id}
+                        style={{...C.btn(warmAccent),textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5}}
+                        onClick={()=>makeHomeroomActivityChoice(ch.id)}>
+                        <span style={{fontWeight:700}}>{ch.label}</span>
+                        {ch.classGain&&<span style={{color:"#ffdd80",marginLeft:8,fontSize:10}}>+{ch.classGain} class</span>}
+                        {ch.momGain&&<span style={{color:"#a0c8ff",marginLeft:4,fontSize:10}}>+{ch.momGain} moms</span>}
+                        {ch.lbs&&<span style={{color:"#ffa060",marginLeft:4,fontSize:10}}>+{ch.lbs} lbs</span>}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {resultText&&!done&&(
+                  <button style={{...C.btn(warmAccent),width:"100%",marginTop:4}} onClick={advanceHomeroomActivityPhase}>Continue →</button>
+                )}
+                {done&&(
+                  <button style={{...C.btn(warmAccent),width:"100%",marginTop:4}} onClick={dismissHomeroomActivity}>← Back to Classroom</button>
+                )}
+              </div>
+            </div>
+          );
+        }
+
+        return(
+          <div style={{...C.overlay,zIndex:350}}>
+            <div style={{...C.modal,maxWidth:640,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"90vh",overflowY:"auto"}}>
+              {/* Header */}
+              <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
+                <div style={{fontSize:9,letterSpacing:4,color:warmAccent}}>🍪 DAISY'S CLASSROOM</div>
+                <div style={{display:"flex",gap:5,marginLeft:"auto",alignItems:"center"}}>
+                  <div style={{fontSize:9,color:warmDim,marginRight:3}}>AP</div>
+                  {apDots.map((filled,i)=>(
+                    <div key={i} style={{width:10,height:10,borderRadius:"50%",background:filled?warmAccent:"#2a1808",border:`1px solid ${filled?warmAccent:warmDim}`}}/>
+                  ))}
+                </div>
+              </div>
+              {/* Status bars */}
+              <div style={{marginBottom:14,padding:"8px 10px",background:"rgba(196,122,42,0.06)",border:`1px solid ${warmAccent}20`,borderRadius:6}}>
+                <div style={{display:"flex",gap:12}}>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:9,letterSpacing:2,color:suspPct>70?"#e05030":warmAccent,marginBottom:3}}>SUSPICION {currentSusp}/10</div>
+                    <div style={{height:4,background:"#1a0800",borderRadius:2,overflow:"hidden"}}>
+                      <div style={{height:"100%",width:`${suspPct}%`,background:suspPct>70?"#e05030":suspPct>40?warmAccent:warmDim,transition:"width 0.3s"}}/>
+                    </div>
+                  </div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:9,letterSpacing:2,color:"#7db87d",marginBottom:3}}>CLASS {batchBakerState.classWeight+classGainAccum} wt</div>
+                    <div style={{height:4,background:"#0a1a0a",borderRadius:2,overflow:"hidden"}}>
+                      <div style={{height:"100%",width:`${Math.min(100,Math.round((batchBakerState.classWeight+classGainAccum)/2))}%`,background:"#4a8a4a",transition:"width 0.3s"}}/>
+                    </div>
+                  </div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:9,letterSpacing:2,color:"#8a7dba",marginBottom:3}}>MOMS {batchBakerState.momWeight+momGainAccum} wt</div>
+                    <div style={{height:4,background:"#0a0a1a",borderRadius:2,overflow:"hidden"}}>
+                      <div style={{height:"100%",width:`${Math.min(100,Math.round((batchBakerState.momWeight+momGainAccum)/1.3))}%`,background:"#5a4a8a",transition:"width 0.3s"}}/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Students */}
+              <div style={{fontSize:9,letterSpacing:3,color:warmDim,marginBottom:10}}>STUDENTS</div>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12,marginBottom:16}}>
+                {["Kayla","Bri","Sofia"].map(name=>{
+                  const desc=BATCH_BAKER_NPCS[name]?.[npcDescIdx]||"";
+                  const snippet=desc?desc.split(".")[0]:"";
+                  return(
+                    <div key={name} style={{display:"flex",flexDirection:"column",alignItems:"stretch",gap:5}}>
+                      <button
+                        style={{...C.btn(classAp>=1?warmDim:"#1a0f06"),fontSize:10,padding:"5px 8px",opacity:classAp>=1?1:0.38,textAlign:"center"}}
+                        disabled={classAp<1}
+                        onClick={()=>openHomeroomConference(name)}>
+                        Conference ↓
+                      </button>
+                      <div style={{
+                        background:"#120a04",
+                        border:`1px solid ${warmAccent}35`,
+                        borderTop:`3px solid ${warmAccent}70`,
+                        borderRadius:"2px 2px 5px 5px",
+                        padding:"10px 10px 12px",
+                        textAlign:"center",
+                        flex:1,
+                      }}>
+                        <div style={{fontSize:11,fontWeight:700,color:warmText,letterSpacing:2,marginBottom:5}}>{name.toUpperCase()}</div>
+                        <div style={{fontSize:9,color:warmSubtle,lineHeight:1.55}}>{snippet}.</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              {/* Group activities */}
+              <div style={{fontSize:9,letterSpacing:3,color:warmDim,marginBottom:8}}>GROUP ACTIVITIES</div>
+              <div style={{display:"flex",gap:8,marginBottom:16}}>
+                {Object.entries(HOMEROOM_GROUP_ACTIVITIES).map(([key,actDef])=>{
+                  const canAfford=classAp>=actDef.apCost;
+                  return(
+                    <button key={key}
+                      style={{...C.btn(canAfford?warmDim:"#1a0f06"),flex:1,opacity:canAfford?1:0.38,padding:"9px 12px",lineHeight:1.4,textAlign:"left"}}
+                      disabled={!canAfford}
+                      onClick={()=>startHomeroomGroupActivity(key)}>
+                      <div style={{fontWeight:700,fontSize:11}}>{actDef.label}</div>
+                      <div style={{fontSize:9,color:"#a08050",marginTop:2}}>· {actDef.apCost} AP ·</div>
+                    </button>
+                  );
+                })}
+              </div>
+              {/* Session log */}
+              {log.length>0&&(
+                <div style={{marginBottom:14}}>
+                  <div style={{fontSize:9,letterSpacing:3,color:warmDim,marginBottom:6}}>SESSION LOG</div>
+                  {log.map((line,i)=>(
+                    <div key={i} style={{fontSize:10,color:warmSubtle,lineHeight:1.75,paddingLeft:8,borderLeft:`2px solid ${warmAccent}30`}}>{line}</div>
+                  ))}
+                </div>
+              )}
+              {/* End session */}
+              <button style={{...C.btn("#1a0c04"),width:"100%",marginTop:4,border:`1px solid ${warmAccent}30`,fontSize:12}}
+                onClick={closeHomeroomSession}>
+                End Session{daisyGain>0?` · +${daisyGain} lbs to Daisy`:""}
+              </button>
             </div>
           </div>
         );
