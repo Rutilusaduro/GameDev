@@ -4697,3 +4697,707 @@ export const SESSION_PAYOFF_TEXT = [
   (gain,reason)=>`${reason==='food_coma'?'Food coma.':'Focus out.'} ${Math.round(gain)} lbs. Diamond rank. You're very fat and very well-fed and Rae is somewhere in the room doing something quiet and efficient. You won four of the last five. You are choosing to focus on the wins and not whatever else is happening here. Working as intended.`,
   (gain,reason)=>`The session ended when Rae said it was ending. You were going to argue. You looked at the situation — ${Math.round(gain)} lbs worth of food consumed, rank at Grandmaster, every surface clear, your belly enormous and warm — and decided she was right. She said 'that\'s enough for today' the way someone says something they\'re also proud of. You think she might be right about that too.`,
 ];
+
+// ─── WIFE LESSONS MINI-GAME DATA ──────────────────────────────────────────────
+
+export const WL_CONFIG = {
+  // Starting weights (lbs)
+  daughterStart: { Emma: 118, Chloe: 122, Kezia: 126, Lila: 114 },
+  momStart:      { Darlene: 148, Wanda: 155, Patrice: 142 },
+  mjStart:       132,
+  // stageCaps[n] = weight all daughters must reach to leave stage n (index 0 unused)
+  stageCaps:     [0, 145, 175, 215, 265, 325, 400, 490, Infinity],
+  // Daughters attend sessions starting at this stage
+  daughtersFrom: 6,
+  // Chloe gets a multiplier on lesson gains starting at this stage
+  chloeRivalFrom: 3,
+  chloeRivalMult: 1.15,
+  // Rel cap per 1-on-1 leaf
+  relCap: 100,
+};
+
+// 3 lessons per stage (stages 1-8). daughterLbs applied to ALL daughters (Chloe × 1.15 from stage 3).
+export const WL_LESSONS = {
+  1: [
+    { id:"honey_butter",   label:"Honey Butter Rolls",       text:"[WL_S1_L1_text]", daughterLbs:4, momLbs:1, mjLbs:2, rel:3 },
+    { id:"cream_biscuits", label:"Cream Drop Biscuits",       text:"[WL_S1_L2_text]", daughterLbs:5, momLbs:2, mjLbs:3, rel:4 },
+    { id:"cinnamon_pull",  label:"Cinnamon Pull-Apart Bread", text:"[WL_S1_L3_text]", daughterLbs:6, momLbs:2, mjLbs:3, rel:4 },
+  ],
+  2: [
+    { id:"butter_cake",    label:"Butter Pound Cake",         text:"[WL_S2_L1_text]", daughterLbs:5, momLbs:2, mjLbs:3, rel:4 },
+    { id:"cream_rolls",    label:"Cream-Filled Rolls",        text:"[WL_S2_L2_text]", daughterLbs:6, momLbs:2, mjLbs:3, rel:4 },
+    { id:"pot_pie",        label:"Double-Crust Pot Pie",      text:"[WL_S2_L3_text]", daughterLbs:8, momLbs:3, mjLbs:4, rel:5 },
+  ],
+  3: [
+    { id:"peach_cobbler",  label:"Peach Cobbler",             text:"[WL_S3_L1_text]", daughterLbs:8, momLbs:3, mjLbs:4, rel:5 },
+    { id:"bread_pudding",  label:"Bread Pudding",             text:"[WL_S3_L2_text]", daughterLbs:9, momLbs:3, mjLbs:5, rel:5 },
+    { id:"french_toast",   label:"Stuffed French Toast",      text:"[WL_S3_L3_text]", daughterLbs:10, momLbs:4, mjLbs:5, rel:6 },
+  ],
+  4: [
+    { id:"cream_pie",      label:"Cream Pie",                 text:"[WL_S4_L1_text]", daughterLbs:10, momLbs:4, mjLbs:5, rel:6 },
+    { id:"lasagna",        label:"Deep-Dish Lasagna",         text:"[WL_S4_L2_text]", daughterLbs:11, momLbs:4, mjLbs:6, rel:6 },
+    { id:"shortcake",      label:"Strawberry Shortcake Stack",text:"[WL_S4_L3_text]", daughterLbs:12, momLbs:5, mjLbs:7, rel:7 },
+  ],
+  5: [
+    { id:"chicken_pot",    label:"Chicken Pot Casserole",     text:"[WL_S5_L1_text]", daughterLbs:12, momLbs:5, mjLbs:7, rel:7 },
+    { id:"mac_cheese",     label:"Four-Cheese Mac",           text:"[WL_S5_L2_text]", daughterLbs:13, momLbs:6, mjLbs:8, rel:7 },
+    { id:"choc_cake",      label:"Chocolate Layer Cake",      text:"[WL_S5_L3_text]", daughterLbs:14, momLbs:6, mjLbs:9, rel:8 },
+  ],
+  6: [
+    { id:"feast_spread",   label:"Feast Spread",              text:"[WL_S6_L1_text]", daughterLbs:14, momLbs:7, mjLbs:9,  rel:8 },
+    { id:"daughters_bake", label:"Daughters Bake",            text:"[WL_S6_L2_text]", daughterLbs:15, momLbs:7, mjLbs:10, rel:8 },
+    { id:"old_recipe",     label:"Old Family Recipe",         text:"[WL_S6_L3_text]", daughterLbs:16, momLbs:8, mjLbs:11, rel:9 },
+  ],
+  7: [
+    { id:"daughters_run",  label:"Daughters Run the Table",   text:"[WL_S7_L1_text]", daughterLbs:17, momLbs:8,  mjLbs:12, rel:9 },
+    { id:"overnight_feast",label:"Overnight Feast",           text:"[WL_S7_L2_text]", daughterLbs:19, momLbs:9,  mjLbs:13, rel:10 },
+    { id:"recipe_book",    label:"Recipe Book Night",         text:"[WL_S7_L3_text]", daughterLbs:20, momLbs:10, mjLbs:13, rel:10 },
+  ],
+  8: [
+    { id:"final_spread",   label:"The Final Spread",          text:"[WL_S8_L1_text]", daughterLbs:20, momLbs:11, mjLbs:15, rel:10 },
+    { id:"handoff",        label:"The Handoff",               text:"[WL_S8_L2_text]", daughterLbs:22, momLbs:12, mjLbs:16, rel:11 },
+    { id:"legacy_recipe",  label:"Legacy Recipe",             text:"[WL_S8_L3_text]", daughterLbs:24, momLbs:14, mjLbs:18, rel:12 },
+  ],
+};
+
+// Helper to build a compact 1-on-1 dialogue entry.
+// outcome shape: { momKey?, momLbs?, daughterKey?, daughterLbs?, mjLbs, rel }
+// Each entry: { greeting, cappedGreeting, overtookGreeting?, options:[{label,text,subs:[{label,text,outcome}]}] }
+
+export const WL_DIALOGUES = {
+  // ── MOMS ──────────────────────────────────────────────────────────────────
+  Darlene: [
+    // Stage 1
+    {
+      greeting: "[Darlene_S1_greeting]",
+      cappedGreeting: "[Darlene_S1_capped]",
+      options: [
+        { label:"How is Emma settling in?", text:"[Darlene_S1_O1]", subs:[
+          { label:"She looks happy", text:"[Darlene_S1_O1a]", outcome:{ momKey:"Darlene", momLbs:2, mjLbs:1, rel:3 } },
+          { label:"She's a natural cook",  text:"[Darlene_S1_O1b]", outcome:{ momKey:"Darlene", momLbs:3, mjLbs:1, rel:4 } },
+        ]},
+        { label:"Tell me about your recipes", text:"[Darlene_S1_O2]", subs:[
+          { label:"That sounds wonderful",    text:"[Darlene_S1_O2a]", outcome:{ momKey:"Darlene", momLbs:2, mjLbs:1, rel:3 } },
+          { label:"I'd love to try that",     text:"[Darlene_S1_O2b]", outcome:{ momKey:"Darlene", momLbs:3, mjLbs:2, rel:4 } },
+        ]},
+        { label:"You seem comfortable here",  text:"[Darlene_S1_O3]", subs:[
+          { label:"We love having you",       text:"[Darlene_S1_O3a]", outcome:{ momKey:"Darlene", momLbs:2, mjLbs:1, rel:4 } },
+          { label:"You fit right in",         text:"[Darlene_S1_O3b]", outcome:{ momKey:"Darlene", momLbs:3, mjLbs:2, rel:5 } },
+        ]},
+      ],
+    },
+    // Stage 2
+    {
+      greeting: "[Darlene_S2_greeting]",
+      cappedGreeting: "[Darlene_S2_capped]",
+      options: [
+        { label:"Emma seems to love the food", text:"[Darlene_S2_O1]", subs:[
+          { label:"She's been eating so well",  text:"[Darlene_S2_O1a]", outcome:{ momKey:"Darlene", momLbs:3, mjLbs:1, rel:4 } },
+          { label:"She cleans her plate",       text:"[Darlene_S2_O1b]", outcome:{ momKey:"Darlene", momLbs:3, mjLbs:2, rel:4 } },
+        ]},
+        { label:"How are you adjusting?",      text:"[Darlene_S2_O2]", subs:[
+          { label:"It suits you",              text:"[Darlene_S2_O2a]", outcome:{ momKey:"Darlene", momLbs:2, mjLbs:1, rel:3 } },
+          { label:"You look well",             text:"[Darlene_S2_O2b]", outcome:{ momKey:"Darlene", momLbs:3, mjLbs:2, rel:4 } },
+        ]},
+        { label:"Chloe is catching up",        text:"[Darlene_S2_O3]", subs:[
+          { label:"They make a good pair",     text:"[Darlene_S2_O3a]", outcome:{ momKey:"Darlene", momLbs:3, mjLbs:2, rel:5 } },
+          { label:"A little competition helps",text:"[Darlene_S2_O3b]", outcome:{ momKey:"Darlene", momLbs:4, mjLbs:2, rel:5 } },
+        ]},
+      ],
+    },
+    // Stage 3
+    {
+      greeting: "[Darlene_S3_greeting]",
+      cappedGreeting: "[Darlene_S3_capped]",
+      overtookGreeting: "[Darlene_S3_overtook]",
+      options: [
+        { label:"Chloe is really thriving",    text:"[Darlene_S3_O1]", subs:[
+          { label:"Emma will catch up",        text:"[Darlene_S3_O1a]", outcome:{ momKey:"Darlene", momLbs:4, mjLbs:2, rel:5 } },
+          { label:"They push each other",      text:"[Darlene_S3_O1b]", outcome:{ momKey:"Darlene", momLbs:5, mjLbs:3, rel:6 } },
+        ]},
+        { label:"You seem proud of them",      text:"[Darlene_S3_O2]", subs:[
+          { label:"You should be",             text:"[Darlene_S3_O2a]", outcome:{ momKey:"Darlene", momLbs:4, mjLbs:2, rel:5 } },
+          { label:"They're both doing so well",text:"[Darlene_S3_O2b]", outcome:{ momKey:"Darlene", momLbs:5, mjLbs:3, rel:6 } },
+        ]},
+        { label:"How do you feel about this?", text:"[Darlene_S3_O3]", subs:[
+          { label:"That's beautiful",          text:"[Darlene_S3_O3a]", outcome:{ momKey:"Darlene", momLbs:4, mjLbs:3, rel:6 } },
+          { label:"We're building something",  text:"[Darlene_S3_O3b]", outcome:{ momKey:"Darlene", momLbs:5, mjLbs:3, rel:7 } },
+        ]},
+      ],
+    },
+    // Stage 4
+    {
+      greeting: "[Darlene_S4_greeting]",
+      cappedGreeting: "[Darlene_S4_capped]",
+      overtookGreeting: "[Darlene_S4_overtook]",
+      options: [
+        { label:"The girls are really eating",   text:"[Darlene_S4_O1]", subs:[
+          { label:"They have good appetites",    text:"[Darlene_S4_O1a]", outcome:{ momKey:"Darlene", momLbs:5, mjLbs:2, rel:6 } },
+          { label:"You've raised them right",    text:"[Darlene_S4_O1b]", outcome:{ momKey:"Darlene", momLbs:5, mjLbs:3, rel:6 } },
+        ]},
+        { label:"You're looking well yourself",  text:"[Darlene_S4_O2]", subs:[
+          { label:"It shows",                    text:"[Darlene_S4_O2a]", outcome:{ momKey:"Darlene", momLbs:4, mjLbs:2, rel:5 } },
+          { label:"You've filled out nicely",    text:"[Darlene_S4_O2b]", outcome:{ momKey:"Darlene", momLbs:5, mjLbs:3, rel:6 } },
+        ]},
+        { label:"Any favorites so far?",         text:"[Darlene_S4_O3]", subs:[
+          { label:"We'll make that again",       text:"[Darlene_S4_O3a]", outcome:{ momKey:"Darlene", momLbs:5, mjLbs:3, rel:7 } },
+          { label:"Good taste runs in the family",text:"[Darlene_S4_O3b]",outcome:{ momKey:"Darlene", momLbs:6, mjLbs:3, rel:7 } },
+        ]},
+      ],
+    },
+    // Stage 5
+    {
+      greeting: "[Darlene_S5_greeting]",
+      cappedGreeting: "[Darlene_S5_capped]",
+      overtookGreeting: "[Darlene_S5_overtook]",
+      options: [
+        { label:"Everyone's grown so much",      text:"[Darlene_S5_O1]", subs:[
+          { label:"In the best way",             text:"[Darlene_S5_O1a]", outcome:{ momKey:"Darlene", momLbs:5, mjLbs:3, rel:7 } },
+          { label:"You all look wonderful",      text:"[Darlene_S5_O1b]", outcome:{ momKey:"Darlene", momLbs:6, mjLbs:3, rel:7 } },
+        ]},
+        { label:"Do Emma and Chloe compare notes?", text:"[Darlene_S5_O2]", subs:[
+          { label:"That's sweet",                text:"[Darlene_S5_O2a]", outcome:{ momKey:"Darlene", momLbs:5, mjLbs:3, rel:6 } },
+          { label:"Healthy competition",         text:"[Darlene_S5_O2b]", outcome:{ momKey:"Darlene", momLbs:6, mjLbs:3, rel:7 } },
+        ]},
+        { label:"Are you happy here?",           text:"[Darlene_S5_O3]", subs:[
+          { label:"We're glad",                  text:"[Darlene_S5_O3a]", outcome:{ momKey:"Darlene", momLbs:5, mjLbs:3, rel:7 } },
+          { label:"You're family now",           text:"[Darlene_S5_O3b]", outcome:{ momKey:"Darlene", momLbs:6, mjLbs:4, rel:8 } },
+        ]},
+      ],
+    },
+    // Stage 6
+    {
+      greeting: "[Darlene_S6_greeting]",
+      cappedGreeting: "[Darlene_S6_capped]",
+      overtookGreeting: "[Darlene_S6_overtook]",
+      options: [
+        { label:"Emma and Chloe both look amazing", text:"[Darlene_S6_O1]", subs:[
+          { label:"They've become themselves",       text:"[Darlene_S6_O1a]", outcome:{ momKey:"Darlene", momLbs:6, mjLbs:3, rel:7 } },
+          { label:"You must be so proud",            text:"[Darlene_S6_O1b]", outcome:{ momKey:"Darlene", momLbs:7, mjLbs:4, rel:8 } },
+        ]},
+        { label:"How does it feel watching them?",   text:"[Darlene_S6_O2]", subs:[
+          { label:"That makes sense",                text:"[Darlene_S6_O2a]", outcome:{ momKey:"Darlene", momLbs:6, mjLbs:3, rel:7 } },
+          { label:"You've guided them beautifully",  text:"[Darlene_S6_O2b]", outcome:{ momKey:"Darlene", momLbs:7, mjLbs:4, rel:8 } },
+        ]},
+        { label:"You've changed too",                text:"[Darlene_S6_O3]", subs:[
+          { label:"It looks good on you",            text:"[Darlene_S6_O3a]", outcome:{ momKey:"Darlene", momLbs:6, mjLbs:4, rel:8 } },
+          { label:"We all have",                     text:"[Darlene_S6_O3b]", outcome:{ momKey:"Darlene", momLbs:7, mjLbs:4, rel:9 } },
+        ]},
+      ],
+    },
+    // Stage 7
+    {
+      greeting: "[Darlene_S7_greeting]",
+      cappedGreeting: "[Darlene_S7_capped]",
+      overtookGreeting: "[Darlene_S7_overtook]",
+      options: [
+        { label:"The girls run the kitchen now",   text:"[Darlene_S7_O1]", subs:[
+          { label:"You taught them well",          text:"[Darlene_S7_O1a]", outcome:{ momKey:"Darlene", momLbs:7, mjLbs:4, rel:8 } },
+          { label:"They've surpassed us",          text:"[Darlene_S7_O1b]", outcome:{ momKey:"Darlene", momLbs:8, mjLbs:4, rel:9 } },
+        ]},
+        { label:"Do you ever worry about them?",   text:"[Darlene_S7_O2]", subs:[
+          { label:"They're thriving",              text:"[Darlene_S7_O2a]", outcome:{ momKey:"Darlene", momLbs:7, mjLbs:4, rel:8 } },
+          { label:"That's a mother's love",        text:"[Darlene_S7_O2b]", outcome:{ momKey:"Darlene", momLbs:7, mjLbs:4, rel:9 } },
+        ]},
+        { label:"What do you think comes next?",   text:"[Darlene_S7_O3]", subs:[
+          { label:"I think you're right",          text:"[Darlene_S7_O3a]", outcome:{ momKey:"Darlene", momLbs:8, mjLbs:4, rel:9 } },
+          { label:"There's always more",           text:"[Darlene_S7_O3b]", outcome:{ momKey:"Darlene", momLbs:8, mjLbs:5, rel:10 } },
+        ]},
+      ],
+    },
+    // Stage 8
+    {
+      greeting: "[Darlene_S8_greeting]",
+      cappedGreeting: "[Darlene_S8_capped]",
+      overtookGreeting: "[Darlene_S8_overtook]",
+      options: [
+        { label:"This is everything I hoped for",  text:"[Darlene_S8_O1]", subs:[
+          { label:"Me too",                        text:"[Darlene_S8_O1a]", outcome:{ momKey:"Darlene", momLbs:8, mjLbs:4, rel:9 } },
+          { label:"We built this together",        text:"[Darlene_S8_O1b]", outcome:{ momKey:"Darlene", momLbs:8, mjLbs:5, rel:10 } },
+        ]},
+        { label:"Emma and Chloe will carry this",  text:"[Darlene_S8_O2]", subs:[
+          { label:"The legacy continues",          text:"[Darlene_S8_O2a]", outcome:{ momKey:"Darlene", momLbs:8, mjLbs:4, rel:10 } },
+          { label:"It's in their hands now",       text:"[Darlene_S8_O2b]", outcome:{ momKey:"Darlene", momLbs:8, mjLbs:5, rel:10 } },
+        ]},
+        { label:"Thank you for trusting me",       text:"[Darlene_S8_O3]", subs:[
+          { label:"It was never a question",       text:"[Darlene_S8_O3a]", outcome:{ momKey:"Darlene", momLbs:8, mjLbs:5, rel:10 } },
+          { label:"You earned every bit of this",  text:"[Darlene_S8_O3b]", outcome:{ momKey:"Darlene", momLbs:8, mjLbs:5, rel:10 } },
+        ]},
+      ],
+    },
+  ],
+
+  Wanda: [
+    { greeting:"[Wanda_S1_greeting]", cappedGreeting:"[Wanda_S1_capped]", options:[
+      { label:"How is Kezia finding it?", text:"[Wanda_S1_O1]", subs:[
+        { label:"She has talent",          text:"[Wanda_S1_O1a]", outcome:{ momKey:"Wanda", momLbs:2, mjLbs:1, rel:3 } },
+        { label:"You should be proud",     text:"[Wanda_S1_O1b]", outcome:{ momKey:"Wanda", momLbs:3, mjLbs:1, rel:4 } },
+      ]},
+      { label:"You look comfortable here", text:"[Wanda_S1_O2]", subs:[
+        { label:"We're glad",              text:"[Wanda_S1_O2a]", outcome:{ momKey:"Wanda", momLbs:2, mjLbs:1, rel:3 } },
+        { label:"You fit naturally",       text:"[Wanda_S1_O2b]", outcome:{ momKey:"Wanda", momLbs:3, mjLbs:2, rel:4 } },
+      ]},
+      { label:"Tell me about your kitchen", text:"[Wanda_S1_O3]", subs:[
+        { label:"That's a wonderful setup", text:"[Wanda_S1_O3a]", outcome:{ momKey:"Wanda", momLbs:2, mjLbs:1, rel:4 } },
+        { label:"We think alike",           text:"[Wanda_S1_O3b]", outcome:{ momKey:"Wanda", momLbs:3, mjLbs:2, rel:5 } },
+      ]},
+    ]},
+    { greeting:"[Wanda_S2_greeting]", cappedGreeting:"[Wanda_S2_capped]", options:[
+      { label:"Kezia is excelling",       text:"[Wanda_S2_O1]", subs:[
+        { label:"She's a quick learner",  text:"[Wanda_S2_O1a]", outcome:{ momKey:"Wanda", momLbs:3, mjLbs:1, rel:4 } },
+        { label:"Talent shows",           text:"[Wanda_S2_O1b]", outcome:{ momKey:"Wanda", momLbs:3, mjLbs:2, rel:4 } },
+      ]},
+      { label:"You seem at home",         text:"[Wanda_S2_O2]", subs:[
+        { label:"I can tell",             text:"[Wanda_S2_O2a]", outcome:{ momKey:"Wanda", momLbs:2, mjLbs:1, rel:3 } },
+        { label:"You've settled in well", text:"[Wanda_S2_O2b]", outcome:{ momKey:"Wanda", momLbs:3, mjLbs:2, rel:4 } },
+      ]},
+      { label:"Any thoughts on the food?", text:"[Wanda_S2_O3]", subs:[
+        { label:"I'm glad you're enjoying it", text:"[Wanda_S2_O3a]", outcome:{ momKey:"Wanda", momLbs:3, mjLbs:2, rel:5 } },
+        { label:"We'll keep making it",        text:"[Wanda_S2_O3b]", outcome:{ momKey:"Wanda", momLbs:4, mjLbs:2, rel:5 } },
+      ]},
+    ]},
+    { greeting:"[Wanda_S3_greeting]", cappedGreeting:"[Wanda_S3_capped]", options:[
+      { label:"Kezia is becoming someone", text:"[Wanda_S3_O1]", subs:[
+        { label:"You can see it",          text:"[Wanda_S3_O1a]", outcome:{ momKey:"Wanda", momLbs:4, mjLbs:2, rel:5 } },
+        { label:"She's growing into herself",text:"[Wanda_S3_O1b]", outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:6 } },
+      ]},
+      { label:"How have you changed?",     text:"[Wanda_S3_O2]", subs:[
+        { label:"Change is good",          text:"[Wanda_S3_O2a]", outcome:{ momKey:"Wanda", momLbs:4, mjLbs:2, rel:5 } },
+        { label:"You carry it well",       text:"[Wanda_S3_O2b]", outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:6 } },
+      ]},
+      { label:"What does your family think?", text:"[Wanda_S3_O3]", subs:[
+        { label:"That's something",           text:"[Wanda_S3_O3a]", outcome:{ momKey:"Wanda", momLbs:4, mjLbs:3, rel:6 } },
+        { label:"Word gets around",           text:"[Wanda_S3_O3b]", outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:7 } },
+      ]},
+    ]},
+    { greeting:"[Wanda_S4_greeting]", cappedGreeting:"[Wanda_S4_capped]", options:[
+      { label:"Kezia looks wonderful",        text:"[Wanda_S4_O1]", subs:[
+        { label:"She really does",            text:"[Wanda_S4_O1a]", outcome:{ momKey:"Wanda", momLbs:5, mjLbs:2, rel:6 } },
+        { label:"It suits her",               text:"[Wanda_S4_O1b]", outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:6 } },
+      ]},
+      { label:"You've filled out beautifully",text:"[Wanda_S4_O2]", subs:[
+        { label:"It really suits you",        text:"[Wanda_S4_O2a]", outcome:{ momKey:"Wanda", momLbs:4, mjLbs:2, rel:5 } },
+        { label:"You look wonderful",         text:"[Wanda_S4_O2b]", outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:6 } },
+      ]},
+      { label:"Do you have a favorite dish?", text:"[Wanda_S4_O3]", subs:[
+        { label:"We'll make more of that",    text:"[Wanda_S4_O3a]", outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:7 } },
+        { label:"I'll add it to the list",    text:"[Wanda_S4_O3b]", outcome:{ momKey:"Wanda", momLbs:6, mjLbs:3, rel:7 } },
+      ]},
+    ]},
+    { greeting:"[Wanda_S5_greeting]", cappedGreeting:"[Wanda_S5_capped]", options:[
+      { label:"Kezia is a natural",         text:"[Wanda_S5_O1]", subs:[
+        { label:"She was born for this",    text:"[Wanda_S5_O1a]", outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:7 } },
+        { label:"She takes after you",      text:"[Wanda_S5_O1b]", outcome:{ momKey:"Wanda", momLbs:6, mjLbs:3, rel:7 } },
+      ]},
+      { label:"Are you content?",           text:"[Wanda_S5_O2]", subs:[
+        { label:"I'm glad",                 text:"[Wanda_S5_O2a]", outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:6 } },
+        { label:"You deserve this",         text:"[Wanda_S5_O2b]", outcome:{ momKey:"Wanda", momLbs:6, mjLbs:3, rel:7 } },
+      ]},
+      { label:"What would you change?",     text:"[Wanda_S5_O3]", subs:[
+        { label:"I'll remember that",       text:"[Wanda_S5_O3a]", outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:7 } },
+        { label:"We can do that",           text:"[Wanda_S5_O3b]", outcome:{ momKey:"Wanda", momLbs:6, mjLbs:4, rel:8 } },
+      ]},
+    ]},
+    { greeting:"[Wanda_S6_greeting]", cappedGreeting:"[Wanda_S6_capped]", options:[
+      { label:"Kezia is magnificent",        text:"[Wanda_S6_O1]", subs:[
+        { label:"She's outgrown us both",    text:"[Wanda_S6_O1a]", outcome:{ momKey:"Wanda", momLbs:6, mjLbs:3, rel:7 } },
+        { label:"She's extraordinary",       text:"[Wanda_S6_O1b]", outcome:{ momKey:"Wanda", momLbs:7, mjLbs:4, rel:8 } },
+      ]},
+      { label:"You've been so patient",      text:"[Wanda_S6_O2]", subs:[
+        { label:"It was never patience",     text:"[Wanda_S6_O2a]", outcome:{ momKey:"Wanda", momLbs:6, mjLbs:3, rel:7 } },
+        { label:"You're a wonderful mother", text:"[Wanda_S6_O2b]", outcome:{ momKey:"Wanda", momLbs:7, mjLbs:4, rel:8 } },
+      ]},
+      { label:"The circle is getting bigger", text:"[Wanda_S6_O3]", subs:[
+        { label:"That's the idea",            text:"[Wanda_S6_O3a]", outcome:{ momKey:"Wanda", momLbs:6, mjLbs:4, rel:8 } },
+        { label:"And fuller",                 text:"[Wanda_S6_O3b]", outcome:{ momKey:"Wanda", momLbs:7, mjLbs:4, rel:9 } },
+      ]},
+    ]},
+    { greeting:"[Wanda_S7_greeting]", cappedGreeting:"[Wanda_S7_capped]", options:[
+      { label:"Kezia leads by example now",   text:"[Wanda_S7_O1]", subs:[
+        { label:"She always did",             text:"[Wanda_S7_O1a]", outcome:{ momKey:"Wanda", momLbs:7, mjLbs:4, rel:8 } },
+        { label:"She sets the pace",          text:"[Wanda_S7_O1b]", outcome:{ momKey:"Wanda", momLbs:8, mjLbs:4, rel:9 } },
+      ]},
+      { label:"Are you proud?",               text:"[Wanda_S7_O2]", subs:[
+        { label:"You should be",              text:"[Wanda_S7_O2a]", outcome:{ momKey:"Wanda", momLbs:7, mjLbs:4, rel:8 } },
+        { label:"I see it in your face",      text:"[Wanda_S7_O2b]", outcome:{ momKey:"Wanda", momLbs:7, mjLbs:4, rel:9 } },
+      ]},
+      { label:"What's left to learn?",        text:"[Wanda_S7_O3]", subs:[
+        { label:"Then we keep going",         text:"[Wanda_S7_O3a]", outcome:{ momKey:"Wanda", momLbs:8, mjLbs:4, rel:9 } },
+        { label:"There's always something",   text:"[Wanda_S7_O3b]", outcome:{ momKey:"Wanda", momLbs:8, mjLbs:5, rel:10 } },
+      ]},
+    ]},
+    { greeting:"[Wanda_S8_greeting]", cappedGreeting:"[Wanda_S8_capped]", options:[
+      { label:"Kezia is everything",          text:"[Wanda_S8_O1]", subs:[
+        { label:"She is",                     text:"[Wanda_S8_O1a]", outcome:{ momKey:"Wanda", momLbs:8, mjLbs:4, rel:9 } },
+        { label:"You made her that way",      text:"[Wanda_S8_O1b]", outcome:{ momKey:"Wanda", momLbs:8, mjLbs:5, rel:10 } },
+      ]},
+      { label:"I'm glad you came to us",      text:"[Wanda_S8_O2]", subs:[
+        { label:"We were meant to meet",      text:"[Wanda_S8_O2a]", outcome:{ momKey:"Wanda", momLbs:8, mjLbs:4, rel:10 } },
+        { label:"This was always home",       text:"[Wanda_S8_O2b]", outcome:{ momKey:"Wanda", momLbs:8, mjLbs:5, rel:10 } },
+      ]},
+      { label:"What does the future look like?",text:"[Wanda_S8_O3]", subs:[
+        { label:"That sounds right",            text:"[Wanda_S8_O3a]", outcome:{ momKey:"Wanda", momLbs:8, mjLbs:5, rel:10 } },
+        { label:"We'll be here",                text:"[Wanda_S8_O3b]", outcome:{ momKey:"Wanda", momLbs:8, mjLbs:5, rel:10 } },
+      ]},
+    ]},
+  ],
+
+  Patrice: [
+    { greeting:"[Patrice_S1_greeting]", cappedGreeting:"[Patrice_S1_capped]", options:[
+      { label:"How is Lila adjusting?",      text:"[Patrice_S1_O1]", subs:[
+        { label:"She'll find her footing",   text:"[Patrice_S1_O1a]", outcome:{ momKey:"Patrice", momLbs:2, mjLbs:1, rel:3 } },
+        { label:"That takes time",           text:"[Patrice_S1_O1b]", outcome:{ momKey:"Patrice", momLbs:3, mjLbs:1, rel:4 } },
+      ]},
+      { label:"You seem thoughtful",         text:"[Patrice_S1_O2]", subs:[
+        { label:"That's a good quality",     text:"[Patrice_S1_O2a]", outcome:{ momKey:"Patrice", momLbs:2, mjLbs:1, rel:3 } },
+        { label:"I appreciate that",         text:"[Patrice_S1_O2b]", outcome:{ momKey:"Patrice", momLbs:3, mjLbs:2, rel:4 } },
+      ]},
+      { label:"Tell me about home",          text:"[Patrice_S1_O3]", subs:[
+        { label:"That sounds like Lila",     text:"[Patrice_S1_O3a]", outcome:{ momKey:"Patrice", momLbs:2, mjLbs:1, rel:4 } },
+        { label:"She gets that from you",    text:"[Patrice_S1_O3b]", outcome:{ momKey:"Patrice", momLbs:3, mjLbs:2, rel:5 } },
+      ]},
+    ]},
+    { greeting:"[Patrice_S2_greeting]", cappedGreeting:"[Patrice_S2_capped]", options:[
+      { label:"Lila is finding her rhythm",    text:"[Patrice_S2_O1]", subs:[
+        { label:"It suits her",               text:"[Patrice_S2_O1a]", outcome:{ momKey:"Patrice", momLbs:3, mjLbs:1, rel:4 } },
+        { label:"She's a natural",            text:"[Patrice_S2_O1b]", outcome:{ momKey:"Patrice", momLbs:3, mjLbs:2, rel:4 } },
+      ]},
+      { label:"Are you enjoying the food?",    text:"[Patrice_S2_O2]", subs:[
+        { label:"Good",                       text:"[Patrice_S2_O2a]", outcome:{ momKey:"Patrice", momLbs:2, mjLbs:1, rel:3 } },
+        { label:"We'll make more",            text:"[Patrice_S2_O2b]", outcome:{ momKey:"Patrice", momLbs:3, mjLbs:2, rel:4 } },
+      ]},
+      { label:"What surprised you most?",      text:"[Patrice_S2_O3]", subs:[
+        { label:"That means a lot",           text:"[Patrice_S2_O3a]", outcome:{ momKey:"Patrice", momLbs:3, mjLbs:2, rel:5 } },
+        { label:"I hoped you'd feel that",    text:"[Patrice_S2_O3b]", outcome:{ momKey:"Patrice", momLbs:4, mjLbs:2, rel:5 } },
+      ]},
+    ]},
+    { greeting:"[Patrice_S3_greeting]", cappedGreeting:"[Patrice_S3_capped]", options:[
+      { label:"Lila is really eating well",   text:"[Patrice_S3_O1]", subs:[
+        { label:"She has an appetite now",    text:"[Patrice_S3_O1a]", outcome:{ momKey:"Patrice", momLbs:4, mjLbs:2, rel:5 } },
+        { label:"She's made for this",        text:"[Patrice_S3_O1b]", outcome:{ momKey:"Patrice", momLbs:5, mjLbs:3, rel:6 } },
+      ]},
+      { label:"You seem to have settled",     text:"[Patrice_S3_O2]", subs:[
+        { label:"It's noticeable",            text:"[Patrice_S3_O2a]", outcome:{ momKey:"Patrice", momLbs:4, mjLbs:2, rel:5 } },
+        { label:"That's a good sign",         text:"[Patrice_S3_O2b]", outcome:{ momKey:"Patrice", momLbs:5, mjLbs:3, rel:6 } },
+      ]},
+      { label:"What does Lila say at home?",  text:"[Patrice_S3_O3]", subs:[
+        { label:"That's good to hear",        text:"[Patrice_S3_O3a]", outcome:{ momKey:"Patrice", momLbs:4, mjLbs:3, rel:6 } },
+        { label:"We're building something",   text:"[Patrice_S3_O3b]", outcome:{ momKey:"Patrice", momLbs:5, mjLbs:3, rel:7 } },
+      ]},
+    ]},
+    { greeting:"[Patrice_S4_greeting]", cappedGreeting:"[Patrice_S4_capped]", options:[
+      { label:"Lila has come so far",         text:"[Patrice_S4_O1]", subs:[
+        { label:"She really has",             text:"[Patrice_S4_O1a]", outcome:{ momKey:"Patrice", momLbs:5, mjLbs:2, rel:6 } },
+        { label:"The change is remarkable",   text:"[Patrice_S4_O1b]", outcome:{ momKey:"Patrice", momLbs:5, mjLbs:3, rel:6 } },
+      ]},
+      { label:"You look well yourself",       text:"[Patrice_S4_O2]", subs:[
+        { label:"The food agrees with you",   text:"[Patrice_S4_O2a]", outcome:{ momKey:"Patrice", momLbs:4, mjLbs:2, rel:5 } },
+        { label:"It shows",                   text:"[Patrice_S4_O2b]", outcome:{ momKey:"Patrice", momLbs:5, mjLbs:3, rel:6 } },
+      ]},
+      { label:"What's Lila's favorite?",      text:"[Patrice_S4_O3]", subs:[
+        { label:"We'll double it",            text:"[Patrice_S4_O3a]", outcome:{ momKey:"Patrice", momLbs:5, mjLbs:3, rel:7 } },
+        { label:"Good choice",                text:"[Patrice_S4_O3b]", outcome:{ momKey:"Patrice", momLbs:6, mjLbs:3, rel:7 } },
+      ]},
+    ]},
+    { greeting:"[Patrice_S5_greeting]", cappedGreeting:"[Patrice_S5_capped]", options:[
+      { label:"Lila is remarkable",           text:"[Patrice_S5_O1]", subs:[
+        { label:"She always was",             text:"[Patrice_S5_O1a]", outcome:{ momKey:"Patrice", momLbs:5, mjLbs:3, rel:7 } },
+        { label:"You can see it now",         text:"[Patrice_S5_O1b]", outcome:{ momKey:"Patrice", momLbs:6, mjLbs:3, rel:7 } },
+      ]},
+      { label:"Do you feel different?",       text:"[Patrice_S5_O2]", subs:[
+        { label:"That makes sense",           text:"[Patrice_S5_O2a]", outcome:{ momKey:"Patrice", momLbs:5, mjLbs:3, rel:6 } },
+        { label:"Change is good",             text:"[Patrice_S5_O2b]", outcome:{ momKey:"Patrice", momLbs:6, mjLbs:3, rel:7 } },
+      ]},
+      { label:"What would you tell other moms?",text:"[Patrice_S5_O3]", subs:[
+        { label:"Word of mouth is how we grow", text:"[Patrice_S5_O3a]", outcome:{ momKey:"Patrice", momLbs:5, mjLbs:3, rel:7 } },
+        { label:"Let them come see for themselves",text:"[Patrice_S5_O3b]",outcome:{ momKey:"Patrice", momLbs:6, mjLbs:4, rel:8 } },
+      ]},
+    ]},
+    { greeting:"[Patrice_S6_greeting]", cappedGreeting:"[Patrice_S6_capped]", options:[
+      { label:"Lila is glowing",              text:"[Patrice_S6_O1]", subs:[
+        { label:"She was always beautiful",   text:"[Patrice_S6_O1a]", outcome:{ momKey:"Patrice", momLbs:6, mjLbs:3, rel:7 } },
+        { label:"She's become herself",       text:"[Patrice_S6_O1b]", outcome:{ momKey:"Patrice", momLbs:7, mjLbs:4, rel:8 } },
+      ]},
+      { label:"You've given her so much",     text:"[Patrice_S6_O2]", subs:[
+        { label:"It goes both ways",          text:"[Patrice_S6_O2a]", outcome:{ momKey:"Patrice", momLbs:6, mjLbs:3, rel:7 } },
+        { label:"You're a wonderful mother",  text:"[Patrice_S6_O2b]", outcome:{ momKey:"Patrice", momLbs:7, mjLbs:4, rel:8 } },
+      ]},
+      { label:"How do you see the future?",   text:"[Patrice_S6_O3]", subs:[
+        { label:"I see the same",             text:"[Patrice_S6_O3a]", outcome:{ momKey:"Patrice", momLbs:6, mjLbs:4, rel:8 } },
+        { label:"We'll make it happen",       text:"[Patrice_S6_O3b]", outcome:{ momKey:"Patrice", momLbs:7, mjLbs:4, rel:9 } },
+      ]},
+    ]},
+    { greeting:"[Patrice_S7_greeting]", cappedGreeting:"[Patrice_S7_capped]", options:[
+      { label:"Lila has surpassed everyone",  text:"[Patrice_S7_O1]", subs:[
+        { label:"She set her own standard",   text:"[Patrice_S7_O1a]", outcome:{ momKey:"Patrice", momLbs:7, mjLbs:4, rel:8 } },
+        { label:"No one can touch her",       text:"[Patrice_S7_O1b]", outcome:{ momKey:"Patrice", momLbs:8, mjLbs:4, rel:9 } },
+      ]},
+      { label:"Are you satisfied?",           text:"[Patrice_S7_O2]", subs:[
+        { label:"That's all I ask",           text:"[Patrice_S7_O2a]", outcome:{ momKey:"Patrice", momLbs:7, mjLbs:4, rel:8 } },
+        { label:"You've earned that",         text:"[Patrice_S7_O2b]", outcome:{ momKey:"Patrice", momLbs:7, mjLbs:4, rel:9 } },
+      ]},
+      { label:"What do you want for Lila?",   text:"[Patrice_S7_O3]", subs:[
+        { label:"Then that's what we'll give her",text:"[Patrice_S7_O3a]",outcome:{ momKey:"Patrice", momLbs:8, mjLbs:4, rel:9 } },
+        { label:"She's on that path",         text:"[Patrice_S7_O3b]", outcome:{ momKey:"Patrice", momLbs:8, mjLbs:5, rel:10 } },
+      ]},
+    ]},
+    { greeting:"[Patrice_S8_greeting]", cappedGreeting:"[Patrice_S8_capped]", options:[
+      { label:"This is a legacy now",         text:"[Patrice_S8_O1]", subs:[
+        { label:"It always was",              text:"[Patrice_S8_O1a]", outcome:{ momKey:"Patrice", momLbs:8, mjLbs:4, rel:9 } },
+        { label:"You helped build it",        text:"[Patrice_S8_O1b]", outcome:{ momKey:"Patrice", momLbs:8, mjLbs:5, rel:10 } },
+      ]},
+      { label:"Lila will carry this forward", text:"[Patrice_S8_O2]", subs:[
+        { label:"In more ways than one",      text:"[Patrice_S8_O2a]", outcome:{ momKey:"Patrice", momLbs:8, mjLbs:4, rel:10 } },
+        { label:"She was made for it",        text:"[Patrice_S8_O2b]", outcome:{ momKey:"Patrice", momLbs:8, mjLbs:5, rel:10 } },
+      ]},
+      { label:"Thank you, Patrice",           text:"[Patrice_S8_O3]", subs:[
+        { label:"It was my pleasure",         text:"[Patrice_S8_O3a]", outcome:{ momKey:"Patrice", momLbs:8, mjLbs:5, rel:10 } },
+        { label:"We did this together",       text:"[Patrice_S8_O3b]", outcome:{ momKey:"Patrice", momLbs:8, mjLbs:5, rel:10 } },
+      ]},
+    ]},
+  ],
+
+  // ── DAUGHTERS (stages 6-8 only) ───────────────────────────────────────────
+  Emma: [
+    // Stage 6
+    {
+      greeting: "[Emma_S6_greeting]",
+      cappedGreeting: "[Emma_S6_capped]",
+      overtookGreeting: "[Emma_S6_overtook]",
+      options: [
+        { label:"You've grown so much",        text:"[Emma_S6_O1]", subs:[
+          { label:"You should be proud",        text:"[Emma_S6_O1a]", outcome:{ daughterKey:"Emma", daughterLbs:4, mjLbs:2, rel:6 } },
+          { label:"Look how far you've come",   text:"[Emma_S6_O1b]", outcome:{ daughterKey:"Emma", daughterLbs:5, mjLbs:2, rel:7 } },
+        ]},
+        { label:"How do you feel?",             text:"[Emma_S6_O2]", subs:[
+          { label:"That's the goal",            text:"[Emma_S6_O2a]", outcome:{ daughterKey:"Emma", daughterLbs:4, mjLbs:2, rel:6 } },
+          { label:"You deserve to feel that way",text:"[Emma_S6_O2b]", outcome:{ daughterKey:"Emma", daughterLbs:5, mjLbs:3, rel:7 } },
+        ]},
+        { label:"Are you and Chloe competing?", text:"[Emma_S6_O3]", subs:[
+          { label:"A little competition is good",text:"[Emma_S6_O3a]", outcome:{ daughterKey:"Emma", daughterLbs:5, mjLbs:2, rel:7 } },
+          { label:"You're both winning",         text:"[Emma_S6_O3b]", outcome:{ daughterKey:"Emma", daughterLbs:5, mjLbs:3, rel:8 } },
+        ]},
+      ],
+    },
+    // Stage 7
+    {
+      greeting: "[Emma_S7_greeting]",
+      cappedGreeting: "[Emma_S7_capped]",
+      overtookGreeting: "[Emma_S7_overtook]",
+      options: [
+        { label:"You're a leader here now",     text:"[Emma_S7_O1]", subs:[
+          { label:"Own it",                     text:"[Emma_S7_O1a]", outcome:{ daughterKey:"Emma", daughterLbs:6, mjLbs:3, rel:7 } },
+          { label:"It suits you",               text:"[Emma_S7_O1b]", outcome:{ daughterKey:"Emma", daughterLbs:7, mjLbs:3, rel:8 } },
+        ]},
+        { label:"What's your favorite part?",   text:"[Emma_S7_O2]", subs:[
+          { label:"Then we lean into that",     text:"[Emma_S7_O2a]", outcome:{ daughterKey:"Emma", daughterLbs:6, mjLbs:3, rel:7 } },
+          { label:"I thought you might say that",text:"[Emma_S7_O2b]",outcome:{ daughterKey:"Emma", daughterLbs:7, mjLbs:3, rel:8 } },
+        ]},
+        { label:"How does Chloe make you feel?", text:"[Emma_S7_O3]", subs:[
+          { label:"That's the right attitude",  text:"[Emma_S7_O3a]", outcome:{ daughterKey:"Emma", daughterLbs:7, mjLbs:3, rel:8 } },
+          { label:"I believe you",              text:"[Emma_S7_O3b]", outcome:{ daughterKey:"Emma", daughterLbs:7, mjLbs:4, rel:9 } },
+        ]},
+      ],
+    },
+    // Stage 8
+    {
+      greeting: "[Emma_S8_greeting]",
+      cappedGreeting: "[Emma_S8_capped]",
+      overtookGreeting: "[Emma_S8_overtook]",
+      options: [
+        { label:"You've become extraordinary",  text:"[Emma_S8_O1]", subs:[
+          { label:"It's all you",               text:"[Emma_S8_O1a]", outcome:{ daughterKey:"Emma", daughterLbs:8, mjLbs:4, rel:9 } },
+          { label:"We're all better for knowing you",text:"[Emma_S8_O1b]",outcome:{ daughterKey:"Emma", daughterLbs:9, mjLbs:4, rel:10 } },
+        ]},
+        { label:"Are you proud of yourself?",   text:"[Emma_S8_O2]", subs:[
+          { label:"You should be",              text:"[Emma_S8_O2a]", outcome:{ daughterKey:"Emma", daughterLbs:8, mjLbs:4, rel:9 } },
+          { label:"That's everything",          text:"[Emma_S8_O2b]", outcome:{ daughterKey:"Emma", daughterLbs:9, mjLbs:5, rel:10 } },
+        ]},
+        { label:"What comes next for you?",     text:"[Emma_S8_O3]", subs:[
+          { label:"I believe you",              text:"[Emma_S8_O3a]", outcome:{ daughterKey:"Emma", daughterLbs:9, mjLbs:4, rel:10 } },
+          { label:"The world isn't ready",      text:"[Emma_S8_O3b]", outcome:{ daughterKey:"Emma", daughterLbs:10, mjLbs:5, rel:10 } },
+        ]},
+      ],
+    },
+  ],
+
+  Chloe: [
+    // Stage 6
+    {
+      greeting: "[Chloe_S6_greeting]",
+      cappedGreeting: "[Chloe_S6_capped]",
+      options: [
+        { label:"Chloe, you're incredible",    text:"[Chloe_S6_O1]", subs:[
+          { label:"You've outpaced everyone",   text:"[Chloe_S6_O1a]", outcome:{ daughterKey:"Chloe", daughterLbs:5, mjLbs:2, rel:7 } },
+          { label:"You knew you would",         text:"[Chloe_S6_O1b]", outcome:{ daughterKey:"Chloe", daughterLbs:5, mjLbs:3, rel:8 } },
+        ]},
+        { label:"How does it feel to lead?",   text:"[Chloe_S6_O2]", subs:[
+          { label:"Then keep going",            text:"[Chloe_S6_O2a]", outcome:{ daughterKey:"Chloe", daughterLbs:4, mjLbs:2, rel:6 } },
+          { label:"Natural",                    text:"[Chloe_S6_O2b]", outcome:{ daughterKey:"Chloe", daughterLbs:5, mjLbs:3, rel:7 } },
+        ]},
+        { label:"Emma is watching you",        text:"[Chloe_S6_O3]", subs:[
+          { label:"Good",                       text:"[Chloe_S6_O3a]", outcome:{ daughterKey:"Chloe", daughterLbs:5, mjLbs:2, rel:7 } },
+          { label:"She should be",              text:"[Chloe_S6_O3b]", outcome:{ daughterKey:"Chloe", daughterLbs:5, mjLbs:3, rel:8 } },
+        ]},
+      ],
+    },
+    // Stage 7
+    {
+      greeting: "[Chloe_S7_greeting]",
+      cappedGreeting: "[Chloe_S7_capped]",
+      options: [
+        { label:"You set the pace for everyone", text:"[Chloe_S7_O1]", subs:[
+          { label:"That's your gift",            text:"[Chloe_S7_O1a]", outcome:{ daughterKey:"Chloe", daughterLbs:7, mjLbs:3, rel:8 } },
+          { label:"Own it",                      text:"[Chloe_S7_O1b]", outcome:{ daughterKey:"Chloe", daughterLbs:7, mjLbs:4, rel:9 } },
+        ]},
+        { label:"What drives you?",              text:"[Chloe_S7_O2]", subs:[
+          { label:"That's powerful",             text:"[Chloe_S7_O2a]", outcome:{ daughterKey:"Chloe", daughterLbs:6, mjLbs:3, rel:7 } },
+          { label:"Use it",                      text:"[Chloe_S7_O2b]", outcome:{ daughterKey:"Chloe", daughterLbs:7, mjLbs:3, rel:8 } },
+        ]},
+        { label:"Are you happy here?",           text:"[Chloe_S7_O3]", subs:[
+          { label:"That means everything",       text:"[Chloe_S7_O3a]", outcome:{ daughterKey:"Chloe", daughterLbs:7, mjLbs:4, rel:9 } },
+          { label:"Good",                        text:"[Chloe_S7_O3b]", outcome:{ daughterKey:"Chloe", daughterLbs:7, mjLbs:4, rel:9 } },
+        ]},
+      ],
+    },
+    // Stage 8
+    {
+      greeting: "[Chloe_S8_greeting]",
+      cappedGreeting: "[Chloe_S8_capped]",
+      options: [
+        { label:"You're what this whole thing was for", text:"[Chloe_S8_O1]", subs:[
+          { label:"We made you that way",          text:"[Chloe_S8_O1a]", outcome:{ daughterKey:"Chloe", daughterLbs:9, mjLbs:4, rel:9 } },
+          { label:"You made yourself",             text:"[Chloe_S8_O1b]", outcome:{ daughterKey:"Chloe", daughterLbs:10, mjLbs:5, rel:10 } },
+        ]},
+        { label:"Emma respects you",               text:"[Chloe_S8_O2]", subs:[
+          { label:"That's all she had to do",      text:"[Chloe_S8_O2a]", outcome:{ daughterKey:"Chloe", daughterLbs:8, mjLbs:4, rel:9 } },
+          { label:"You earned that",               text:"[Chloe_S8_O2b]", outcome:{ daughterKey:"Chloe", daughterLbs:9, mjLbs:5, rel:10 } },
+        ]},
+        { label:"What's left for you to do?",      text:"[Chloe_S8_O3]", subs:[
+          { label:"Then do it",                    text:"[Chloe_S8_O3a]", outcome:{ daughterKey:"Chloe", daughterLbs:9, mjLbs:4, rel:10 } },
+          { label:"Nothing can stop you",          text:"[Chloe_S8_O3b]", outcome:{ daughterKey:"Chloe", daughterLbs:10, mjLbs:5, rel:10 } },
+        ]},
+      ],
+    },
+  ],
+
+  Kezia: [
+    // Stage 6
+    {
+      greeting: "[Kezia_S6_greeting]",
+      cappedGreeting: "[Kezia_S6_capped]",
+      options: [
+        { label:"Kezia, you've arrived",        text:"[Kezia_S6_O1]", subs:[
+          { label:"You've earned your place",   text:"[Kezia_S6_O1a]", outcome:{ daughterKey:"Kezia", daughterLbs:4, mjLbs:2, rel:6 } },
+          { label:"Look at you",                text:"[Kezia_S6_O1b]", outcome:{ daughterKey:"Kezia", daughterLbs:5, mjLbs:2, rel:7 } },
+        ]},
+        { label:"How does it feel to be here?", text:"[Kezia_S6_O2]", subs:[
+          { label:"Good",                       text:"[Kezia_S6_O2a]", outcome:{ daughterKey:"Kezia", daughterLbs:4, mjLbs:2, rel:6 } },
+          { label:"It suits you",               text:"[Kezia_S6_O2b]", outcome:{ daughterKey:"Kezia", daughterLbs:5, mjLbs:3, rel:7 } },
+        ]},
+        { label:"Your mother is so proud",      text:"[Kezia_S6_O3]", subs:[
+          { label:"You make it easy to be proud",text:"[Kezia_S6_O3a]",outcome:{ daughterKey:"Kezia", daughterLbs:5, mjLbs:2, rel:7 } },
+          { label:"You're everything she hoped",text:"[Kezia_S6_O3b]", outcome:{ daughterKey:"Kezia", daughterLbs:5, mjLbs:3, rel:8 } },
+        ]},
+      ],
+    },
+    // Stage 7
+    {
+      greeting: "[Kezia_S7_greeting]",
+      cappedGreeting: "[Kezia_S7_capped]",
+      options: [
+        { label:"You're a benchmark now",       text:"[Kezia_S7_O1]", subs:[
+          { label:"Others look up to you",      text:"[Kezia_S7_O1a]", outcome:{ daughterKey:"Kezia", daughterLbs:6, mjLbs:3, rel:7 } },
+          { label:"That's a real thing",        text:"[Kezia_S7_O1b]", outcome:{ daughterKey:"Kezia", daughterLbs:7, mjLbs:3, rel:8 } },
+        ]},
+        { label:"What do you want?",            text:"[Kezia_S7_O2]", subs:[
+          { label:"Then you'll have it",        text:"[Kezia_S7_O2a]", outcome:{ daughterKey:"Kezia", daughterLbs:6, mjLbs:3, rel:7 } },
+          { label:"Let's make it happen",       text:"[Kezia_S7_O2b]", outcome:{ daughterKey:"Kezia", daughterLbs:7, mjLbs:3, rel:8 } },
+        ]},
+        { label:"Sofia and you are neck and neck",text:"[Kezia_S7_O3]", subs:[
+          { label:"May the best woman win",     text:"[Kezia_S7_O3a]", outcome:{ daughterKey:"Kezia", daughterLbs:7, mjLbs:4, rel:8 } },
+          { label:"You're both winning",        text:"[Kezia_S7_O3b]", outcome:{ daughterKey:"Kezia", daughterLbs:7, mjLbs:4, rel:9 } },
+        ]},
+      ],
+    },
+    // Stage 8
+    {
+      greeting: "[Kezia_S8_greeting]",
+      cappedGreeting: "[Kezia_S8_capped]",
+      options: [
+        { label:"Kezia, you're magnificent",    text:"[Kezia_S8_O1]", subs:[
+          { label:"I mean every word",          text:"[Kezia_S8_O1a]", outcome:{ daughterKey:"Kezia", daughterLbs:8, mjLbs:4, rel:9 } },
+          { label:"There's nothing else to say",text:"[Kezia_S8_O1b]", outcome:{ daughterKey:"Kezia", daughterLbs:9, mjLbs:4, rel:10 } },
+        ]},
+        { label:"Are you satisfied?",           text:"[Kezia_S8_O2]", subs:[
+          { label:"That's the only answer",     text:"[Kezia_S8_O2a]", outcome:{ daughterKey:"Kezia", daughterLbs:8, mjLbs:4, rel:9 } },
+          { label:"Good",                       text:"[Kezia_S8_O2b]", outcome:{ daughterKey:"Kezia", daughterLbs:9, mjLbs:5, rel:10 } },
+        ]},
+        { label:"Where do you go from here?",   text:"[Kezia_S8_O3]", subs:[
+          { label:"I'll be here",               text:"[Kezia_S8_O3a]", outcome:{ daughterKey:"Kezia", daughterLbs:9, mjLbs:4, rel:10 } },
+          { label:"Wherever you go, go full",   text:"[Kezia_S8_O3b]", outcome:{ daughterKey:"Kezia", daughterLbs:10, mjLbs:5, rel:10 } },
+        ]},
+      ],
+    },
+  ],
+
+  Lila: [
+    // Stage 6
+    {
+      greeting: "[Lila_S6_greeting]",
+      cappedGreeting: "[Lila_S6_capped]",
+      options: [
+        { label:"Lila, you've grown into this", text:"[Lila_S6_O1]", subs:[
+          { label:"It was always in you",       text:"[Lila_S6_O1a]", outcome:{ daughterKey:"Lila", daughterLbs:4, mjLbs:2, rel:6 } },
+          { label:"You couldn't have known",    text:"[Lila_S6_O1b]", outcome:{ daughterKey:"Lila", daughterLbs:5, mjLbs:2, rel:7 } },
+        ]},
+        { label:"How does it feel?",            text:"[Lila_S6_O2]", subs:[
+          { label:"You deserve that",           text:"[Lila_S6_O2a]", outcome:{ daughterKey:"Lila", daughterLbs:4, mjLbs:2, rel:6 } },
+          { label:"Hold onto that",             text:"[Lila_S6_O2b]", outcome:{ daughterKey:"Lila", daughterLbs:5, mjLbs:3, rel:7 } },
+        ]},
+        { label:"Your mom sees it too",         text:"[Lila_S6_O3]", subs:[
+          { label:"That means everything",      text:"[Lila_S6_O3a]", outcome:{ daughterKey:"Lila", daughterLbs:5, mjLbs:2, rel:7 } },
+          { label:"She's proud of you",         text:"[Lila_S6_O3b]", outcome:{ daughterKey:"Lila", daughterLbs:5, mjLbs:3, rel:8 } },
+        ]},
+      ],
+    },
+    // Stage 7
+    {
+      greeting: "[Lila_S7_greeting]",
+      cappedGreeting: "[Lila_S7_capped]",
+      options: [
+        { label:"You've surpassed what I hoped",text:"[Lila_S7_O1]", subs:[
+          { label:"You set your own ceiling",   text:"[Lila_S7_O1a]", outcome:{ daughterKey:"Lila", daughterLbs:6, mjLbs:3, rel:7 } },
+          { label:"You never had a ceiling",    text:"[Lila_S7_O1b]", outcome:{ daughterKey:"Lila", daughterLbs:7, mjLbs:3, rel:8 } },
+        ]},
+        { label:"What keeps you going?",        text:"[Lila_S7_O2]", subs:[
+          { label:"Then it's working",          text:"[Lila_S7_O2a]", outcome:{ daughterKey:"Lila", daughterLbs:6, mjLbs:3, rel:7 } },
+          { label:"Good reasons",               text:"[Lila_S7_O2b]", outcome:{ daughterKey:"Lila", daughterLbs:7, mjLbs:3, rel:8 } },
+        ]},
+        { label:"Do you feel ready for what's next?",text:"[Lila_S7_O3]", subs:[
+          { label:"That's the spirit",          text:"[Lila_S7_O3a]", outcome:{ daughterKey:"Lila", daughterLbs:7, mjLbs:4, rel:8 } },
+          { label:"We'll build that together",  text:"[Lila_S7_O3b]", outcome:{ daughterKey:"Lila", daughterLbs:7, mjLbs:4, rel:9 } },
+        ]},
+      ],
+    },
+    // Stage 8
+    {
+      greeting: "[Lila_S8_greeting]",
+      cappedGreeting: "[Lila_S8_capped]",
+      options: [
+        { label:"Lila, you're a triumph",       text:"[Lila_S8_O1]", subs:[
+          { label:"Every word is true",         text:"[Lila_S8_O1a]", outcome:{ daughterKey:"Lila", daughterLbs:8, mjLbs:4, rel:9 } },
+          { label:"I'm proud of you",           text:"[Lila_S8_O1b]", outcome:{ daughterKey:"Lila", daughterLbs:9, mjLbs:4, rel:10 } },
+        ]},
+        { label:"What does Patrice say?",       text:"[Lila_S8_O2]", subs:[
+          { label:"She's right",                text:"[Lila_S8_O2a]", outcome:{ daughterKey:"Lila", daughterLbs:8, mjLbs:4, rel:9 } },
+          { label:"Mothers know",               text:"[Lila_S8_O2b]", outcome:{ daughterKey:"Lila", daughterLbs:9, mjLbs:5, rel:10 } },
+        ]},
+        { label:"Where does this go from here?",text:"[Lila_S8_O3]", subs:[
+          { label:"Then let's get there",       text:"[Lila_S8_O3a]", outcome:{ daughterKey:"Lila", daughterLbs:9, mjLbs:4, rel:10 } },
+          { label:"There's only forward",       text:"[Lila_S8_O3b]", outcome:{ daughterKey:"Lila", daughterLbs:10, mjLbs:5, rel:10 } },
+        ]},
+      ],
+    },
+  ],
+};
