@@ -7,7 +7,8 @@
     "build": "vite build",
     "build:pages": "vite build --base=/GameDev/",
     "preview": "vite preview",
-    "cap:sync": "npx cap sync"
+    "cap:sync": "npx cap sync",
+    "lint": "eslint src/"
   },
   "dependencies": {
     "@capacitor/android": "^6.0.0",
