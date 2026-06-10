@@ -5,8 +5,8 @@ import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GR
 import { BODY_DESCS, STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, OUTFITS, SLIGHT_DIARY, DIARY_ENTRIES, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
 import { GOSSIP, getGossipLines } from './gameData/gossip.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS, CLASS_SCENES } from './gameData/classEvents.js';
-import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS, BATCH_BAKER_NPCS, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WIFE_LESSONS_NPCS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES } from './gameData/evolvedForms.js';
-import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_WEIGH_IN_2_TEXT, CONTEST_DEVOUR_POPUPS, CONTEST_PAYOFF_TEXT, SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_MATCH_AFTERMATH, SUMO_PAYOFF_TEXT, SUMO_FILL_RING_TEXT, COLLAB_CONTENT_CREATOR_ARCHETYPES, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_OPENING_TEXT, RECORDING_TAKE_INTRO_TEXT, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT, MJ_RECIPES, FAIR_FOODS, FAIR_STAGE_FOODS, FAIR_DARCY_WEIGHTS, FAIR_FULLNESS_MILESTONES, FAIR_WEIGH_IN_TEXT, FAIR_PAYOFF_TEXT, FAIR_TAUNT_POPUPS } from './gameData/miniGames.js';
+import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS, BATCH_BAKER_NPCS, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WIFE_LESSONS_NPCS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
+import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_WEIGH_IN_2_TEXT, CONTEST_DEVOUR_POPUPS, CONTEST_PAYOFF_TEXT, SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_MATCH_AFTERMATH, SUMO_PAYOFF_TEXT, SUMO_FILL_RING_TEXT, COLLAB_CONTENT_CREATOR_ARCHETYPES, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_OPENING_TEXT, RECORDING_TAKE_INTRO_TEXT, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT, MJ_RECIPES } from './gameData/miniGames.js';
 import { SKILL_TREE, SKILL_CATEGORIES, DIVINE_SKILL_TREE, EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
@@ -374,13 +374,18 @@ export default function ProfessorSim(){
   //   takeNum, timeLeft, kylieGain, clipRatings, bestClip,
   //   choiceStep, currentChoices:{angle,food,pace}, perfectTakeAchieved,
   //   popupText, done, endingText }
-  const [fairContestState, setFairContestState] = useState(null);
-  // fairContestState: { studentId, stageIdx, darcyStartLbs, yourStartLbs,
-  //   yourFoods:[{...food, consumed:false}], darcyFoodsLeft:number,
-  //   yourFullnessPct:0, overfullCap:100|130|160|250,
-  //   yourGain:0, darcyGain:0, milestonesHit:[],
-  //   tauntUsed:false, pushThroughUsed:false, coolDownUses:0,
-  //   phase:'eating'|'weigh_in'|'done', popupText:null, popupPhase:null }
+  const [fairTrainingState, setFairTrainingState] = useState({
+    cycleNum:0, sessionsThisCycle:0, fairPride:0,
+    lastCollaborator:null, recentCollaborators:[], influenceFlags:[],
+    trophyPhotos:[], lilithRecruitRange:[0,2],
+    pendingCollab:null, pendingRecruits:null,
+    view:'main', open:false, mjStudentId:null,
+    sessionSceneTag:null, sessionPhotoTag:null, sessionBoostSummary:null, sessionLog:null,
+  });
+  const [fairDayState, setFairDayState] = useState(null);
+  // fairDayState: { studentId, stageIdx, phase:'weighin'|'judging'|'afterparty'|'done',
+  //   influenceKey, weighInChoice:null, weighInResultText:null, weighInGain:0,
+  //   afterpartyChoice:null, afterpartyResultText:null, totalGain:0, relBonus:0 }
   const [intimacySceneSelector,setIntimacySceneSelector]=useState(null);
   // intimacySceneSelector: {student}
   const logRef=useRef(null);
@@ -1161,6 +1166,11 @@ export default function ProfessorSim(){
       openCompetitiveGainerModal(s);
       return;
     }
+    if(s.evolvedForm==='state_fair_queen'){
+      // Training collaborations hub — AP is deducted when a session is confirmed inside the modal
+      setFairTrainingState(prev=>({...prev, open:true, view:'main', mjStudentId:s.id, pendingCollab:null, pendingRecruits:null}));
+      return;
+    }
     const meta=EVOLVED_ACTIVITY_META[s.evolvedForm]; if(!meta) return;
     if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
     const stageIdx=getEvolvedActivityStageIdx(s);
@@ -1229,13 +1239,13 @@ export default function ProfessorSim(){
         const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
         return processStudentGain(st,totalGain,totalRel+bonusRel);
       }));
-      if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairContest&&!ending.startsSession&&!ending.startsPresentation&&!ending.startsDelivery&&!ending.startsChallenge) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
+      if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairDay&&!ending.startsSession&&!ending.startsPresentation&&!ending.startsDelivery&&!ending.startsChallenge) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
       // handle recipe unlock (homestead_queen)
       if(ending.unlockRecipe){
         setStudents(ss=>ss.map(st=>st.id===s.id?{...st,mjRecipes:[...(st.mjRecipes||[]),ending.unlockRecipe].filter((v,i,a)=>a.indexOf(v)===i)}:st));
       }
       const endText=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
-      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:ending.classGain||0,momGain:ending.momGain||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairContest:!!ending.startsFairContest,startsSession:!!ending.startsSession,startsPresentation:!!ending.startsPresentation,startsDelivery:!!ending.startsDelivery,startsChallenge:!!ending.startsChallenge}));
+      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:ending.classGain||0,momGain:ending.momGain||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairDay:!!ending.startsFairDay,startsSession:!!ending.startsSession,startsPresentation:!!ending.startsPresentation,startsDelivery:!!ending.startsDelivery,startsChallenge:!!ending.startsChallenge}));
     } else {
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }
@@ -2852,109 +2862,149 @@ export default function ProfessorSim(){
 
   const closeRecordingSession=()=>setRecordingSessionState(null);
 
-  // ── Fair Contest (state_fair_queen) ────────────────────────────
-  const startFairContest=(s, stageIdx)=>{
-    const tier=getTier(s.relationship).id;
-    const capMap={0:100,1:130,2:160,3:250};
-    const overfullCap=capMap[tier]||100;
-    const darcyStartLbs=FAIR_DARCY_WEIGHTS[Math.min(stageIdx,5)];
-    const foodIds=FAIR_STAGE_FOODS[Math.min(stageIdx,5)]||FAIR_STAGE_FOODS[0];
-    const yourFoods=foodIds.map(id=>{const f=FAIR_FOODS.find(x=>x.id===id)||FAIR_FOODS[0];return {...f,consumed:false};});
-    setFairContestState({
-      studentId:s.id, stageIdx, yourStartLbs:s.lbs, darcyStartLbs,
-      yourFoods, darcyFoodsLeft:Math.floor(yourFoods.length*0.8),
-      yourFullnessPct:0, overfullCap,
-      yourGain:0, darcyGain:0, milestonesHit:[],
-      tauntUsed:false, pushThroughUsed:false, coolDownUses:0,
-      phase:'eating', popupText:null, popupPhase:null,
-    });
-  };
+  // ── Fair Training Collaborations + Fair Day (state_fair_queen) ─────────
+  const clampFairStage=(lbs)=>Math.max(4,Math.min(10,getStage(lbs).id));
+  const getFairPrideTier=(pride)=>FAIR_TRAINING_CONFIG.fairPrideTiers.find(t=>pride>=t.min&&pride<=t.max)||FAIR_TRAINING_CONFIG.fairPrideTiers[0];
 
-  const eatFairPie=(foodId)=>{
-    setFairContestState(prev=>{
-      if(!prev||prev.phase!=='eating') return prev;
-      const fi=prev.yourFoods.findIndex(f=>f.id===foodId&&!f.consumed);
-      if(fi<0) return prev;
-      const food=prev.yourFoods[fi];
-      const newFoods=prev.yourFoods.map((f,i)=>i===fi?{...f,consumed:true}:f);
-      const newFullness=prev.yourFullnessPct+food.fullnessAmt;
-      const newGain=prev.yourGain+food.lbs;
-      // darcy auto-eats
-      const newDarcyLeft=Math.max(0,prev.darcyFoodsLeft-1);
-      const darcyFoodLbs=prev.yourFoods[0]?.lbs||5; // rough proxy
-      const newDarcyGain=prev.darcyGain+(newDarcyLeft<prev.darcyFoodsLeft?darcyFoodLbs:0);
-      // check milestones
-      const thresholds=[100,150,200,250];
-      let newMilestones=[...prev.milestonesHit];
-      let popupText=null;
-      const stIdx=prev.stageIdx;
-      for(const t of thresholds){
-        if(!newMilestones.includes(String(t))&&newFullness>=t){
-          newMilestones.push(String(t));
-          const mArr=FAIR_FULLNESS_MILESTONES[t];
-          if(mArr) popupText=mArr[Math.min(stIdx,mArr.length-1)]||null;
-          break; // fire one at a time
-        }
-      }
-      // check end condition
-      const allEaten=newFoods.every(f=>f.consumed);
-      const overCap=newFullness>=prev.overfullCap;
-      if((allEaten||overCap)&&!popupText){
-        // transition to weigh_in after this update
-        return {...prev,yourFoods:newFoods,yourFullnessPct:newFullness,yourGain:newGain,darcyFoodsLeft:newDarcyLeft,darcyGain:newDarcyGain,milestonesHit:newMilestones,phase:'weigh_in'};
-      }
-      if((allEaten||overCap)&&popupText){
-        // show milestone popup first, then weigh_in
-        return {...prev,yourFoods:newFoods,yourFullnessPct:newFullness,yourGain:newGain,darcyFoodsLeft:newDarcyLeft,darcyGain:newDarcyGain,milestonesHit:newMilestones,popupText,popupPhase:'weigh_in'};
-      }
-      return {...prev,yourFoods:newFoods,yourFullnessPct:newFullness,yourGain:newGain,darcyFoodsLeft:newDarcyLeft,darcyGain:newDarcyGain,milestonesHit:newMilestones,popupText:popupText||null};
-    });
-  };
-
-  const doFairAction=(action)=>{
-    setFairContestState(prev=>{
-      if(!prev||prev.phase!=='eating') return prev;
-      let upd={...prev};
-      if(action==='taunt'&&!prev.tauntUsed){
-        upd.tauntUsed=true;
-        const arr=FAIR_TAUNT_POPUPS;
-        upd.popupText=arr[Math.min(prev.stageIdx,arr.length-1)]||null;
-      } else if(action==='push_through'&&!prev.pushThroughUsed){
-        upd.pushThroughUsed=true;
-        upd.overfullCap=prev.overfullCap+15;
-        // small rel cost applied later
-        const s=students.find(st=>st.id===prev.studentId);
-        if(s) setStudents(ss=>ss.map(st=>st.id===prev.studentId?{...st,relationship:Math.max(0,st.relationship-2)}:st));
-        upd.popupText=`You push through. Your body argues. Your body loses. The cap lifts — not by much, but enough to keep eating.`;
-      } else if(action==='cool_down'&&prev.coolDownUses<2){
-        upd.coolDownUses=prev.coolDownUses+1;
-        upd.yourFullnessPct=Math.max(0,prev.yourFullnessPct-5);
-        upd.popupText=`You pause, breathe, let the fullness redistribute. Five percent back. The tent is still hot. You pick up the next plate.`;
-      }
-      return upd;
-    });
-  };
-
-  const dismissFairPopup=()=>{
-    setFairContestState(prev=>{
-      if(!prev) return prev;
-      if(prev.popupPhase){
-        return {...prev,popupText:null,phase:prev.popupPhase,popupPhase:null};
-      }
-      return {...prev,popupText:null};
-    });
-  };
-
-  const closeFairContest=()=>{
-    const fc=fairContestState;
-    if(!fc) return;
-    const s=students.find(st=>st.id===fc.studentId);
-    if(s){
-      processStudentGain(s,fc.yourGain,8);
-      setStudents(ss=>ss.map(st=>st.id===fc.studentId?{...st,contestCompletions:(st.contestCompletions||0)+1}:st));
+  const startFairTrainingSession=(collabKey)=>{
+    const ft=fairTrainingState;
+    const mj=students.find(st=>st.id===ft.mjStudentId);
+    if(!mj) return;
+    if(ap<FAIR_TRAINING_CONFIG.apCost){push(`⚠️ Need ${FAIR_TRAINING_CONFIG.apCost} AP.`);return;}
+    if(ft.sessionsThisCycle>=FAIR_TRAINING_CONFIG.maxSessionsPerCycle){push(`⚠️ Mary Jane is trained out — it's Fair Day.`);return;}
+    const cfg=FAIR_TRAINING_CONFIG.collaborators[collabKey];
+    const collab=students.find(st=>st.evolvedForm===cfg.evolvedForm);
+    if(!collab){push(`⚠️ No evolved ${collabKey} available.`);return;}
+    setAp(a=>a-FAIR_TRAINING_CONFIG.apCost);
+    const mjStage=clampFairStage(mj.lbs);
+    const cStage=clampFairStage(collab.lbs);
+    let sceneTag, photoTag, recruits=null;
+    if(collabKey==='Lilith'){
+      const [lo,hi]=ft.lilithRecruitRange;
+      recruits=[0,1,2].map(()=>({
+        bodyType:FAIR_TRAINING_CONFIG.recruitBodyTypes[rnd(0,FAIR_TRAINING_CONFIG.recruitBodyTypes.length-1)],
+        stage:rnd(lo,hi),
+      }));
+      const avg=recruits.reduce((a,r)=>a+r.stage,0)/3;
+      const group=avg<=2?'Early':avg<=4?'Mid':'Late';
+      sceneTag=FAIR_TRAINING_SCENES.Lilith[`MJ${mjStage}_L${cStage}_${group}`];
+      photoTag=FAIR_TRAINING_PHOTOS.Lilith[`MJ${mjStage}_L${cStage}`];
+    } else {
+      sceneTag=FAIR_TRAINING_SCENES[collabKey][`MJ${mjStage}_C${cStage}`];
+      photoTag=FAIR_TRAINING_PHOTOS[collabKey][`MJ${mjStage}_C${cStage}`];
     }
-    setFairContestState(null);
+    // pride boost — halved if she keeps leaning on the same collaborator
+    const boostCfg=FAIR_TRAINING_CONFIG.fairPrideBoosts[collabKey];
+    let prideBoost=boostCfg.base+boostCfg.perStageBonus*cStage+(boostCfg.perRecruit?boostCfg.perRecruit*3:0);
+    if(ft.lastCollaborator===collabKey) prideBoost=Math.round(prideBoost*0.5);
+    prideBoost=Math.round(prideBoost);
+    const boostTier=cStage<=5?'Low':cStage<=8?'Mid':'High';
+    // gains
+    const [mjLo,mjHi]=FAIR_TRAINING_CONFIG.gainRanges.MJ;
+    const [cLo,cHi]=FAIR_TRAINING_CONFIG.gainRanges.collaborator;
+    const mjGain=rnd(mjLo,mjHi), cGain=rnd(cLo,cHi);
+    processStudentGain(mj,mjGain,3);
+    if(collab.id!==mj.id) processStudentGain(collab,cGain,2);
+    push(`🎡 Fair training — ${mj.name} × ${collabKey}: MJ +${mjGain} lbs, ${collabKey} +${cGain} lbs, Fair Pride +${prideBoost}`);
+    setFairTrainingState(prev=>({...prev,
+      sessionsThisCycle:prev.sessionsThisCycle+1,
+      fairPride:prev.fairPride+prideBoost,
+      lastCollaborator:collabKey,
+      recentCollaborators:[...prev.recentCollaborators,collabKey].slice(-6),
+      influenceFlags:[...prev.influenceFlags,collabKey],
+      trophyPhotos:[...prev.trophyPhotos,{tag:photoTag,collab:collabKey,cycle:prev.cycleNum}],
+      pendingCollab:collabKey, pendingRecruits:recruits,
+      sessionSceneTag:sceneTag, sessionPhotoTag:photoTag,
+      sessionBoostSummary:FAIR_BOOST_SUMMARIES[collabKey][boostTier],
+      sessionLog:{mjGain,cGain,prideBoost,collabName:collab.name},
+      view:'session',
+    }));
+  };
+
+  const closeFairTraining=()=>setFairTrainingState(prev=>({...prev,open:false,view:'main',pendingCollab:null,pendingRecruits:null,sessionSceneTag:null,sessionPhotoTag:null,sessionBoostSummary:null,sessionLog:null}));
+
+  const launchFairDayEvent=()=>{
+    const ft=fairTrainingState;
+    const mj=students.find(st=>st.id===ft.mjStudentId);
+    if(!mj) return;
+    const meta=EVOLVED_ACTIVITY_META['state_fair_queen']||{apCost:1};
+    if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
+    const stageIdx=getEvolvedActivityStageIdx(mj);
+    const evDef=EVOLVED_EVENTS['state_fair_queen']?.[stageIdx];
+    if(!evDef){push(`⚠️ No fair event available at this stage.`);return;}
+    setAp(a=>a-meta.apCost);
+    setFairTrainingState(prev=>({...prev,open:false}));
+    setEvolvedEventState({studentId:mj.id,formId:'state_fair_queen',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});
+  };
+
+  const startFairDay=(s,stageIdx)=>{
+    const flags=fairTrainingState.influenceFlags;
+    let influenceKey='None';
+    if(flags.length){
+      const counts={};
+      for(const f of flags) counts[f]=(counts[f]||0)+1;
+      influenceKey=Object.entries(counts).sort((a,b)=>b[1]-a[1]||flags.lastIndexOf(b[0])-flags.lastIndexOf(a[0]))[0][0];
+    }
     setEvolvedEventState(null);
+    setFairDayState({
+      studentId:s.id, stageIdx:Math.min(stageIdx,5), influenceKey,
+      phase:'weighin', weighInChoice:null, weighInResultText:null, weighInGain:0, weighInRel:0,
+      afterpartyChoice:null, afterpartyResultText:null, totalGain:0, relBonus:0,
+    });
+  };
+
+  const chooseFairWeighIn=(choice)=>{
+    setFairDayState(prev=>{
+      if(!prev||prev.phase!=='weighin'||prev.weighInChoice) return prev;
+      const sc=FAIR_DAY_SCENES.weighIn[`${prev.stageIdx}_${prev.influenceKey}`];
+      const prideTier=getFairPrideTier(fairTrainingState.fairPride).label;
+      const bonus=FAIR_TRAINING_CONFIG.weighInBonus[prideTier]||0;
+      const baseGain=choice===1?sc.gainA:sc.gainB;
+      const gain=Math.round(baseGain*(1+bonus));
+      const rel=choice===1?sc.relA:sc.relB;
+      return {...prev,weighInChoice:choice,
+        weighInResultText:`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${choice===1?sc.endingA:sc.endingB}`,
+        weighInGain:gain,weighInRel:rel,totalGain:prev.totalGain+gain,relBonus:prev.relBonus+rel};
+    });
+  };
+
+  const advanceFairDayPhase=()=>{
+    setFairDayState(prev=>{
+      if(!prev) return prev;
+      if(prev.phase==='weighin') return {...prev,phase:'judging'};
+      if(prev.phase==='judging') return {...prev,phase:'afterparty'};
+      return prev;
+    });
+  };
+
+  const chooseFairAfterparty=(choice)=>{
+    setFairDayState(prev=>{
+      if(!prev||prev.phase!=='afterparty'||prev.afterpartyChoice) return prev;
+      const sc=FAIR_DAY_SCENES.afterparty[`${prev.stageIdx}_${prev.influenceKey}`];
+      const gain=choice===1?sc.gainA:sc.gainB;
+      const rel=choice===1?sc.relA:sc.relB;
+      return {...prev,afterpartyChoice:choice,
+        afterpartyResultText:`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${sc.ending}`,
+        totalGain:prev.totalGain+gain,relBonus:prev.relBonus+rel};
+    });
+  };
+
+  const closeFairDay=()=>{
+    const fd=fairDayState;
+    if(!fd) return;
+    const s=students.find(st=>st.id===fd.studentId);
+    if(s){
+      processStudentGain(s,fd.totalGain,fd.relBonus);
+      setStudents(ss=>ss.map(st=>st.id===fd.studentId?{...st,contestCompletions:(st.contestCompletions||0)+1}:st));
+      push(`🏆 Fair Day complete — ${s.name} +${Math.round(fd.totalGain)} lbs, +${fd.relBonus} rel`);
+    }
+    // new cycle: pride and sessions reset, recruit stage range drifts up every 2 fairs
+    setFairTrainingState(prev=>{
+      const nextCycle=prev.cycleNum+1;
+      const rangeIdx=Math.min(FAIR_TRAINING_CONFIG.recruitStageRanges.length-1,Math.floor(nextCycle/2));
+      return {...prev,cycleNum:nextCycle,sessionsThisCycle:0,fairPride:0,influenceFlags:[],lastCollaborator:null,lilithRecruitRange:FAIR_TRAINING_CONFIG.recruitStageRanges[rangeIdx]};
+    });
+    setFairDayState(null);
   };
 
   const openIntimacySelector=(s)=>{setIntimacySceneSelector({student:s});};
@@ -8062,7 +8112,7 @@ export default function ProfessorSim(){
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
       {evolvedEventState&&(()=>{
-        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairContest,startsSession,startsPresentation,startsDelivery,startsChallenge}=evolvedEventState;
+        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairDay,startsSession,startsPresentation,startsDelivery,startsChallenge}=evolvedEventState;
         const s=students.find(st=>st.id===studentId);
         const evDef=EVOLVED_EVENTS[formId]?.[stageIdx];
         if(!s||!evDef) return null;
@@ -8142,11 +8192,11 @@ export default function ProfessorSim(){
                   })}
                 </div>
               )}
-              {done&&!startsContest&&!startsMatch&&!startsStream&&!startsFairContest&&!startsSession&&!startsPresentation&&!startsDelivery&&!startsChallenge&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
+              {done&&!startsContest&&!startsMatch&&!startsStream&&!startsFairDay&&!startsSession&&!startsPresentation&&!startsDelivery&&!startsChallenge&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
               {done&&startsContest&&<button style={{...C.btn("#1a6030"),width:"100%",marginTop:4}} onClick={()=>startEatingContest(studentId,stageIdx,history)}>🍽️ Step to the Table</button>}
               {done&&startsMatch&&<button style={{...C.btn("#7a2018"),width:"100%",marginTop:4}} onClick={()=>startSumoMatch(studentId,stageIdx,history)}>🥋 Step Onto the Dohyo</button>}
               {done&&startsStream&&<button style={{...C.btn("#6a1878"),width:"100%",marginTop:4}} onClick={()=>{const partner=students.find(st=>st.id===collabPartnerId);if(!partner){push("⚠️ No collab partner selected.");return;}startCollabStream(studentId,collabPartnerId,stageIdx,history);}}>🎥 Go Live Together</button>}
-              {done&&startsFairContest&&<button style={{...C.btn("#C8860A"),width:"100%",marginTop:4}} onClick={()=>{const s2=students.find(st=>st.id===studentId);if(s2)startFairContest(s2,stageIdx);}}>🥧 Step Up to the Table</button>}
+              {done&&startsFairDay&&<button style={{...C.btn("#C8860A"),width:"100%",marginTop:4}} onClick={()=>{const s2=students.find(st=>st.id===studentId);if(s2)startFairDay(s2,stageIdx);}}>🎡 Step Onto the Scale</button>}
               {done&&startsSession&&<button style={{...C.btn("#1a5a7a"),width:"100%",marginTop:4}} onClick={()=>startRankedSession(studentId,stageIdx)}>🎮 Start the Session</button>}
               {done&&startsPresentation&&<button style={{...C.btn("#2c5f8a"),width:"100%",marginTop:4}} onClick={()=>{setPresentationState({studentId,stageIdx});setEvolvedEventState(null);}}>📊 Begin the Defense</button>}
               {done&&startsDelivery&&<button style={{...C.btn("#4a6a4a"),width:"100%",marginTop:4}} onClick={()=>{setDeliveryState({studentId,stageIdx});setEvolvedEventState(null);}}>🍜 Place the Order</button>}
@@ -9658,7 +9708,7 @@ export default function ProfessorSim(){
               {eligible.length===0&&<div style={{color:"#806090",textAlign:"center",padding:20}}>No eligible partners right now — need an Intimate-tier gamer, artsy, or quiet student.</div>}
               {eligible.map(st=>(
                 <div key={st.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:6,borderRadius:8,background:"#0a0018",border:`1px solid ${purple}40`,cursor:"pointer"}}
-                  onClick={()=>{setCollabPartnerId(st.id);setCollabPartnerPicker(null);const stageIdx=Math.max(0,Math.min(5,getStage(kylie.lbs).id-5));const evDef=EVOLVED_EVENTS['feedee_creator']?.[stageIdx];if(evDef){setEvolvedEventState({studentId:kylie.id,formId:'feedee_creator',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0,startsContest:false,startsMatch:false,startsStream:false,startsFairContest:false});}}}>
+                  onClick={()=>{setCollabPartnerId(st.id);setCollabPartnerPicker(null);const stageIdx=Math.max(0,Math.min(5,getStage(kylie.lbs).id-5));const evDef=EVOLVED_EVENTS['feedee_creator']?.[stageIdx];if(evDef){setEvolvedEventState({studentId:kylie.id,formId:'feedee_creator',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0,startsContest:false,startsMatch:false,startsStream:false,startsFairDay:false});}}}>
                   <div style={{flex:1}}>
                     <div style={{color:lightPurple,fontWeight:"bold",fontSize:13}}>{st.name}</div>
                     <div style={{color:"#907090",fontSize:10}}>{st.archetype} · {Math.round(st.lbs)} lbs · {getTier(st.relationship).label}</div>
@@ -10083,107 +10133,172 @@ export default function ProfessorSim(){
         );
       })()}
 
-      {/* ── FAIR CONTEST MINI-GAME MODAL ── */}
-      {fairContestState&&(()=>{
-        const fc=fairContestState;
-        const s=students.find(st=>st.id===fc.studentId);
-        if(!s) return null;
+      {/* ── FAIR TRAINING COLLABORATIONS HUB ── */}
+      {fairTrainingState.open&&(()=>{
+        const ft=fairTrainingState;
+        const mj=students.find(st=>st.id===ft.mjStudentId);
+        if(!mj) return null;
         const fairOrange='#C8860A';
-        const remaining=fc.yourFoods.filter(f=>!f.consumed);
-        const progressW=Math.min(100,(fc.yourFullnessPct/fc.overfullCap)*100);
-        const progressColor=fc.yourFullnessPct>=fc.overfullCap?'#e05020':fc.yourFullnessPct>=150?'#e08020':fc.yourFullnessPct>=100?'#d0a020':'#40c060';
+        const tier=getFairPrideTier(ft.fairPride);
+        const fairReady=ft.sessionsThisCycle>=FAIR_TRAINING_CONFIG.maxSessionsPerCycle;
         return(
           <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
-              <div style={{fontSize:9,letterSpacing:4,color:fairOrange,marginBottom:6}}>🎡 STATE FAIR PIE EATING</div>
-              <div style={{display:"flex",justifyContent:"space-between",marginBottom:10,fontSize:11,color:"#d0b080"}}>
-                <span>{s.name} — {Math.round(s.lbs)} lbs</span>
-                <span>Darcy — {Math.round(fc.darcyStartLbs)} lbs</span>
+            <div style={{...C.modal,maxWidth:560,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
+              <div style={{fontSize:9,letterSpacing:4,color:fairOrange,marginBottom:6}}>🎡 PRE-FAIR TRAINING — CYCLE {ft.cycleNum+1}</div>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:8,fontSize:11,color:"#d0b080"}}>
+                <span>{mj.name} — {Math.round(mj.lbs)} lbs</span>
+                <span>Sessions: {ft.sessionsThisCycle}/{FAIR_TRAINING_CONFIG.maxSessionsPerCycle}</span>
               </div>
 
-              {fc.phase==='eating'&&(
+              {/* Fair Pride meter */}
+              <div style={{marginBottom:12}}>
+                <div style={{fontSize:10,color:"#a08060",marginBottom:4}}>
+                  Fair Pride: {ft.fairPride} — <span style={{color:tier.color,fontWeight:"bold"}}>{tier.label}</span>
+                </div>
+                <div style={{height:10,background:"#1a1000",borderRadius:5,overflow:"hidden",border:"1px solid #40300040"}}>
+                  <div style={{height:"100%",width:`${Math.min(100,(ft.fairPride/40)*100)}%`,background:tier.color,borderRadius:5,transition:"width 0.3s"}}/>
+                </div>
+              </div>
+
+              {ft.view==='main'&&(
                 <>
-                  {/* Fullness bar */}
-                  <div style={{marginBottom:10}}>
-                    <div style={{fontSize:10,color:"#a08060",marginBottom:4}}>
-                      Fullness: {Math.round(fc.yourFullnessPct)}% / cap {fc.overfullCap}%
-                      {fc.yourFullnessPct>=100&&<span style={{color:'#e08020'}}> — OVERFULL</span>}
-                    </div>
-                    <div style={{height:12,background:"#1a1000",borderRadius:6,overflow:"hidden",border:"1px solid #40300010"}}>
-                      <div style={{height:"100%",width:`${progressW}%`,background:progressColor,borderRadius:6,transition:"width 0.3s"}}/>
-                    </div>
+                  <div style={{fontSize:10,color:"#907050",marginBottom:6}}>TRAINING PARTNERS {ft.lastCollaborator&&<span style={{color:"#705030"}}>(repeating {ft.lastCollaborator} halves the pride boost)</span>}</div>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:6,marginBottom:10}}>
+                    {Object.entries(FAIR_TRAINING_CONFIG.collaborators).map(([key,cfg])=>{
+                      const partner=students.find(st=>st.evolvedForm===cfg.evolvedForm);
+                      const avail=!!partner&&!fairReady&&ap>=FAIR_TRAINING_CONFIG.apCost;
+                      return(
+                        <button key={key} disabled={!avail} onClick={()=>startFairTrainingSession(key)}
+                          style={{...C.btn(avail?fairOrange:"#2a1800"),opacity:avail?1:0.4,fontSize:12,padding:"8px 6px",textAlign:"left"}}>
+                          {cfg.label}{cfg.special?' ✦':''}<br/>
+                          <span style={{fontSize:9,color:"#c0a070"}}>{partner?`${partner.name} — ${Math.round(partner.lbs)} lbs`:'not evolved'}</span>
+                        </button>
+                      );
+                    })}
                   </div>
-
-                  {/* Pie table */}
-                  <div style={{marginBottom:10}}>
-                    <div style={{fontSize:10,color:"#907050",marginBottom:6}}>PIES ({remaining.length} left)</div>
-                    <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6}}>
-                      {fc.yourFoods.map((food,i)=>{
-                        const canEat=!food.consumed&&fc.yourFullnessPct<fc.overfullCap;
-                        return(
-                          <button key={i} disabled={!canEat} onClick={()=>eatFairPie(food.id)}
-                            style={{...C.btn(canEat?fairOrange:"#2a1800"),opacity:food.consumed?0.3:canEat?1:0.5,fontSize:12,padding:"8px 4px",textAlign:"center"}}>
-                            {food.emoji} {food.name}<br/>
-                            <span style={{fontSize:9,color:"#c0a070"}}>+{food.lbs} lbs</span>
-                          </button>
-                        );
-                      })}
-                    </div>
+                  <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:10,fontSize:10,color:"#907050"}}>
+                    Each session: 1 AP • Mary Jane and her partner both gain • Fair Pride builds toward the Weigh-In bonus ({Math.round((FAIR_TRAINING_CONFIG.weighInBonus[tier.label]||0)*100)}% at current tier)
                   </div>
-
-                  {/* Darcy progress */}
-                  <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:10,fontSize:11,color:"#907050"}}>
-                    Darcy has eaten {fc.yourFoods.length-fc.darcyFoodsLeft} / {fc.yourFoods.length} plates • {Math.round(fc.darcyGain||0)} lbs gained
-                  </div>
-
-                  {/* Action buttons */}
-                  <div style={{display:"flex",gap:6,marginBottom:10}}>
-                    <button disabled={fc.tauntUsed} style={{...C.btn("#3a2000"),flex:1,opacity:fc.tauntUsed?0.4:1,fontSize:11}} onClick={()=>doFairAction('taunt')}>
-                      😏 Taunt Darcy
-                    </button>
-                    <button disabled={fc.pushThroughUsed} style={{...C.btn("#3a0000"),flex:1,opacity:fc.pushThroughUsed?0.4:1,fontSize:11}} onClick={()=>doFairAction('push_through')}>
-                      🔥 Push Through
-                    </button>
-                    <button disabled={fc.coolDownUses>=2} style={{...C.btn("#002a1a"),flex:1,opacity:fc.coolDownUses>=2?0.4:1,fontSize:11}} onClick={()=>doFairAction('cool_down')}>
-                      🌡 Cool Down ({2-fc.coolDownUses})
-                    </button>
+                  <div style={{display:"flex",gap:6}}>
+                    {fairReady&&<button style={{...C.btn("#1a6030"),flex:1}} onClick={launchFairDayEvent}>🎡 Fair Day</button>}
+                    {ft.trophyPhotos.length>0&&<button style={{...C.btn("#3a2a00"),flex:1}} onClick={()=>setFairTrainingState(p=>({...p,view:'trophies'}))}>🏆 Trophy Wall ({ft.trophyPhotos.length})</button>}
+                    <button style={{...C.btn("#2a1800"),flex:1}} onClick={closeFairTraining}>Close</button>
                   </div>
                 </>
               )}
 
-              {fc.phase==='weigh_in'&&(()=>{
-                const weighFn=FAIR_WEIGH_IN_TEXT[Math.min(fc.stageIdx,FAIR_WEIGH_IN_TEXT.length-1)];
-                const weighText=typeof weighFn==='function'?weighFn(fc.yourStartLbs,fc.yourGain,fc.darcyStartLbs,fc.darcyGain||0):'';
-                const payFn=FAIR_PAYOFF_TEXT[Math.min(fc.stageIdx,FAIR_PAYOFF_TEXT.length-1)];
-                const payText=typeof payFn==='function'?payFn(fc.yourGain):'';
+              {ft.view==='session'&&(
+                <>
+                  <div style={{fontSize:9,letterSpacing:3,color:fairOrange,marginBottom:6}}>TRAINING SESSION — {ft.pendingCollab}</div>
+                  <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:10,whiteSpace:"pre-line"}}>{ft.sessionSceneTag}</div>
+                  {ft.pendingRecruits&&(
+                    <div style={{...C.infoBox("rgba(20,0,20,0.5)"),marginBottom:10,fontSize:10,color:"#b080b0"}}>
+                      Lilith's recruits: {ft.pendingRecruits.map((r,i)=>`a stage-${r.stage} ${r.bodyType.replace('_',' ')} woman`).join(', ')}
+                    </div>
+                  )}
+                  <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:10,fontSize:11,color:"#c0a060",fontStyle:"italic"}}>{ft.sessionBoostSummary}</div>
+                  <div style={{...C.infoBox("rgba(10,8,0,0.6)"),marginBottom:10,fontSize:10,color:"#907050"}}>
+                    📸 Vignette pinned to the Trophy Wall: <span style={{fontStyle:"italic",color:"#c0a070"}}>{ft.sessionPhotoTag}</span>
+                  </div>
+                  {ft.sessionLog&&(
+                    <div style={{display:"flex",gap:10,marginBottom:10,fontSize:12,color:"#d0b080",textAlign:"center"}}>
+                      <div style={{flex:1}}><div style={{color:fairOrange,fontWeight:"bold"}}>+{ft.sessionLog.mjGain} lbs</div><div style={{fontSize:10,color:"#907050"}}>{mj.name}</div></div>
+                      <div style={{flex:1}}><div style={{color:"#a08060",fontWeight:"bold"}}>+{ft.sessionLog.cGain} lbs</div><div style={{fontSize:10,color:"#907050"}}>{ft.sessionLog.collabName}</div></div>
+                      <div style={{flex:1}}><div style={{color:tier.color,fontWeight:"bold"}}>+{ft.sessionLog.prideBoost}</div><div style={{fontSize:10,color:"#907050"}}>Fair Pride</div></div>
+                    </div>
+                  )}
+                  <button style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>setFairTrainingState(p=>({...p,view:'main',pendingCollab:null,pendingRecruits:null}))}>Continue ✓</button>
+                </>
+              )}
+
+              {ft.view==='trophies'&&(
+                <>
+                  <div style={{fontSize:9,letterSpacing:3,color:fairOrange,marginBottom:8}}>🏆 TROPHY WALL</div>
+                  <div style={{maxHeight:300,overflowY:"auto",marginBottom:10}}>
+                    {ft.trophyPhotos.map((p,i)=>(
+                      <div key={i} style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:6,fontSize:10,color:"#c0a070"}}>
+                        <span style={{color:"#907050"}}>Cycle {p.cycle+1} — {p.collab}:</span> <span style={{fontStyle:"italic"}}>{p.tag}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <button style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>setFairTrainingState(p=>({...p,view:'main'}))}>Back</button>
+                </>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── FAIR DAY MODAL (Weigh-In → Judging → Afterparty) ── */}
+      {fairDayState&&(()=>{
+        const fd=fairDayState;
+        const s=students.find(st=>st.id===fd.studentId);
+        if(!s) return null;
+        const fairOrange='#C8860A';
+        const key=`${fd.stageIdx}_${fd.influenceKey}`;
+        const tier=getFairPrideTier(fairTrainingState.fairPride);
+        return(
+          <div style={C.overlay}>
+            <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
+              <div style={{fontSize:9,letterSpacing:4,color:fairOrange,marginBottom:6}}>
+                🎡 FAIR DAY — {fd.phase==='weighin'?'THE WEIGH-IN':fd.phase==='judging'?'THE JUDGING':'THE AFTERPARTY'}
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:10,fontSize:11,color:"#d0b080"}}>
+                <span>{s.name} — {Math.round(s.lbs)} lbs</span>
+                <span style={{color:tier.color}}>Fair Pride: {tier.label}{fd.influenceKey!=='None'&&` • ${fd.influenceKey}'s influence`}</span>
+              </div>
+
+              {fd.phase==='weighin'&&(()=>{
+                const sc=FAIR_DAY_SCENES.weighIn[key];
                 return(
                   <>
-                    <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{weighText}</div>
-                    <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:12,fontSize:11,color:"#c0a060",lineHeight:1.8,fontStyle:"italic"}}>{payText}</div>
-                    <div style={{display:"flex",gap:10,marginBottom:10,fontSize:12,color:"#d0b080"}}>
-                      <div style={{flex:1,textAlign:"center"}}>
-                        <div style={{color:fairOrange,fontWeight:"bold",fontSize:14}}>+{Math.round(fc.yourGain)} lbs</div>
-                        <div style={{fontSize:10,color:"#907050"}}>{s.name}</div>
+                    {!fd.weighInChoice&&<>
+                      <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{sc.open}</div>
+                      <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                        <button style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairWeighIn(1)}>⚖️ {sc.choice1.label}</button>
+                        <button style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairWeighIn(2)}>🎪 {sc.choice2.label}</button>
                       </div>
-                      <div style={{flex:1,textAlign:"center"}}>
-                        <div style={{color:"#a08060",fontWeight:"bold",fontSize:14}}>+{Math.round(fc.darcyGain||0)} lbs</div>
-                        <div style={{fontSize:10,color:"#907050"}}>Darcy</div>
+                    </>}
+                    {fd.weighInChoice&&<>
+                      <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:10,whiteSpace:"pre-line"}}>{fd.weighInResultText}</div>
+                      <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:10,fontSize:11,color:"#c0a060"}}>
+                        The scale reads <b style={{color:fairOrange}}>+{fd.weighInGain} lbs</b>{(FAIR_TRAINING_CONFIG.weighInBonus[tier.label]||0)>0&&<span> (Fair Pride bonus +{Math.round((FAIR_TRAINING_CONFIG.weighInBonus[tier.label])*100)}%)</span>} · +{fd.weighInRel} rel
                       </div>
-                    </div>
-                    <button style={{...C.btn(fairOrange),width:"100%"}} onClick={closeFairContest}>Leave the Fair ✓</button>
+                      <button style={{...C.btn(fairOrange),width:"100%"}} onClick={advanceFairDayPhase}>Continue to Judging →</button>
+                    </>}
                   </>
                 );
               })()}
 
-              {/* POPUP OVERLAY */}
-              {fc.popupText&&(
-                <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
-                  <div style={{background:"#100800",border:`1px solid ${fairOrange}50`,borderRadius:10,padding:20,maxWidth:440,margin:16}}>
-                    <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{fc.popupText}</div>
-                    <button style={{...C.btn(fairOrange),width:"100%"}} onClick={dismissFairPopup}>Continue</button>
-                  </div>
-                </div>
+              {fd.phase==='judging'&&(
+                <>
+                  <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{FAIR_DAY_SCENES.judging[key]}</div>
+                  <button style={{...C.btn(fairOrange),width:"100%"}} onClick={advanceFairDayPhase}>To the Afterparty →</button>
+                </>
               )}
+
+              {fd.phase==='afterparty'&&(()=>{
+                const sc=FAIR_DAY_SCENES.afterparty[key];
+                return(
+                  <>
+                    {!fd.afterpartyChoice&&<>
+                      <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{sc.open}</div>
+                      <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                        <button style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairAfterparty(1)}>🥂 {sc.choice1.label}</button>
+                        <button style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairAfterparty(2)}>🎡 {sc.choice2.label}</button>
+                      </div>
+                    </>}
+                    {fd.afterpartyChoice&&<>
+                      <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:10,whiteSpace:"pre-line"}}>{fd.afterpartyResultText}</div>
+                      <div style={{display:"flex",gap:10,marginBottom:10,fontSize:12,color:"#d0b080",textAlign:"center"}}>
+                        <div style={{flex:1}}><div style={{color:fairOrange,fontWeight:"bold",fontSize:14}}>+{Math.round(fd.totalGain)} lbs</div><div style={{fontSize:10,color:"#907050"}}>total gained</div></div>
+                        <div style={{flex:1}}><div style={{color:"#a08060",fontWeight:"bold",fontSize:14}}>+{fd.relBonus}</div><div style={{fontSize:10,color:"#907050"}}>relationship</div></div>
+                      </div>
+                      <button style={{...C.btn(fairOrange),width:"100%"}} onClick={closeFairDay}>Leave the Fair ✓</button>
+                    </>}
+                  </>
+                );
+              })()}
             </div>
           </div>
         );
