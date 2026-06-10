@@ -2679,7 +2679,7 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
           },
           choices:[
             {id:"confront",label:"Ask the subject directly if they've noticed changes",result:(s)=>`The subject pauses. 'Yes,' they say. 'Is that what you wanted to know?' ${s.name} writes: 'Subject aware of changes. My emotional response: [also variable].'`,lbs:7,rel:11,flag:"confronted"},
-            {id:"avoid",label:"Don't raise it — let the study proceed naturally",result:(s)=>`She doesn't raise it. The study is cleaner without it. She feeds ${h.includes("feeder_focus")?'the subject':'the situation'} and takes her notes and doesn't comment.`,lbs:9,rel:6,flag:"avoided"},
+            {id:"avoid",label:"Don't raise it — let the study proceed naturally",result:(s)=>`She doesn't raise it. The study is cleaner without it. She feeds the subject and takes her notes and doesn't comment.`,lbs:9,rel:6,flag:"avoided"},
           ]
         },
         {
