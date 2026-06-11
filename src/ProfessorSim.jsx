@@ -129,6 +129,9 @@ export default function ProfessorSim(){
   const [tapOutPopup,setTapOutPopup]=useState(null);
   // {student, text, totalGain}
   const [weighInState,setWeighInState]=useState(null);
+  // {student, phase:"scene"|"analog"|"break"|"purchase"|"swap"|"digital"}
+  const [bigScaleUnlocked,setBigScaleUnlocked]=useState(false);
+  const [brokeScaleIds,setBrokeScaleIds]=useState([]);
   // {student, phase:"scene"|"scale"}
   const [sessionLog,setSessionLog]=useState([]);
   const [pendingDoubleDowns,setPendingDoubleDowns]=useState([]);
@@ -5358,6 +5361,14 @@ export default function ProfessorSim(){
       {tapOutPopup&&<TapOutPopup setTapOutPopup={setTapOutPopup} tapOutPopup={tapOutPopup}/>}
 
       {/* ── WEIGH-IN MODAL ── */}
+      {weighInState&&<WeighInModal
+        weighInState={weighInState}
+        setWeighInState={setWeighInState}
+        bigScaleUnlocked={bigScaleUnlocked}
+        brokeScaleIds={brokeScaleIds}
+        onBreakScale={(sid)=>setBrokeScaleIds(arr=>arr.includes(sid)?arr:[...arr,sid])}
+        onUnlockBigScale={()=>{ setBigScaleUnlocked(true); push("⚖ Ordered a heavy-duty 1000 lb scale."); }}
+      />}
       {weighInState&&<WeighInModal weighInState={weighInState} setWeighInState={setWeighInState}/>}
 
       {/* ── SESSION RESULT ── */}
