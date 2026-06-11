@@ -11,8 +11,8 @@ Any constant, dialogue, description, or reaction that relates to weight must hav
 - Evolving identity, self-concept shifts → all 11 base stages
 
 **The full stage ladder:**
-| Stage | Label | Min lbs |
-|-------|-------|---------|
+| Stage | Label | Min lbs | Description         |
+|-------|-------|---------| --------------------|
 | 0 | Slight | 80 |She’s noticeably delicate, almost fragile. Her frame is slender and narrow, with visible collarbones, slim wrists, and long, lean legs. Clothes hang loosely on her, and there’s a certain lightness to her movements. She feels small in your hands, easy to pick up or pull close.|
 | 1 | Slim | 120 |Still slender and toned, but with a touch more softness starting to appear. Her waist is narrow, hips beginning to curve gently. She moves with a natural, effortless grace. Her body still feels light and easy to handle, but there’s the first hint of plushness in her thighs and ass when she sits or bends.|
 | 2 | Soft | 135 |A gentle layer of softness has settled in. Her belly has the slightest pooch, her thighs press together a little more when she walks, and her cheeks are fuller. She’s no longer “skinny” — there’s a pleasant give to her body when you touch her. Clothes are starting to fit more snugly across her hips and chest.|
