@@ -829,7 +829,8 @@ export default function ProfessorSim(){
   const dismissHomeroomActivity=()=>{
     if(!homeroomSessionState?.activeActivity?.done) return;
     const{activeActivity}=homeroomSessionState;
-    const logLine=activeActivity.type==='conference'?`✦ Conference — ${activeActivity.key}`:activeActivity.type==='parent_meeting'?`✦ Parent Group Meeting`:activeActivity.type==='health_unit'?`✦ Health Unit — Measurements`:`✦ Activity`;
+    const confLabel=activeActivity.key?.replace(/_/g," ")||activeActivity.key;
+    const logLine=activeActivity.type==='conference'?`✦ Conference — ${confLabel}`:activeActivity.type==='parent_meeting'?`✦ Parent Group Meeting`:activeActivity.type==='health_unit'?`✦ Health Unit — Measurements`:`✦ Activity`;
     setHomeroomSessionState(prev=>({...prev,log:[...prev.log,logLine],activeActivity:null}));
   };
   const closeHomeroomSession=()=>{

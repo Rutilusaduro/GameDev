@@ -4,6 +4,63 @@
 import { C } from '../styles.js';
 import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../gameData/evolvedForms.js';
 
+const STUDENT_KEYS = ["Kayla", "Bri", "Sofia"];
+const MOM_KEYS = ["Mrs_Calloway", "Mrs_Reyes", "Mrs_Monroe"];
+
+function displayName(key) {
+  return key.replace(/_/g, " ");
+}
+
+function ParticipantCard({ name, descIdx, npcKey, canAfford, onSelect, accent, dim }) {
+  const desc = BATCH_BAKER_NPCS[npcKey]?.[descIdx] || "";
+  const snippet = desc ? desc.split(".")[0] : "";
+  const hasEvent = !!HOMEROOM_CONFERENCE_EVENTS[npcKey];
+  const enabled = canAfford && hasEvent;
+  return (
+    <button
+      type="button"
+      disabled={!enabled}
+      onClick={() => enabled && onSelect(npcKey)}
+      style={{
+        ...C.btn(enabled ? dim : "#1a0f06"),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "stretch",
+        gap: 0,
+        padding: 0,
+        opacity: enabled ? 1 : 0.38,
+        textAlign: "left",
+        overflow: "hidden",
+        cursor: enabled ? "pointer" : "not-allowed",
+      }}
+    >
+      <div style={{
+        fontSize: 9,
+        letterSpacing: 2,
+        color: enabled ? accent : "#5a4030",
+        padding: "5px 8px",
+        textAlign: "center",
+        borderBottom: `1px solid ${accent}35`,
+        background: enabled ? `${accent}12` : "transparent",
+      }}>
+        Conference ↓
+      </div>
+      <div style={{
+        background: "#120a04",
+        borderTop: `3px solid ${enabled ? accent : "#3a2818"}70`,
+        padding: "10px 10px 12px",
+        textAlign: "center",
+        flex: 1,
+      }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: enabled ? "#d4a060" : "#6a5040", letterSpacing: 1, marginBottom: 5 }}>
+          {name.toUpperCase()}
+        </div>
+        <div style={{ fontSize: 9, color: "#806040", lineHeight: 1.55 }}>{snippet}{snippet ? "." : ""}</div>
+      </div>
+    </button>
+  );
+}
+
 export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerState, makeHomeroomActivityChoice, advanceHomeroomActivityPhase, dismissHomeroomActivity, openHomeroomConference, startHomeroomGroupActivity, closeHomeroomSession }){
         const{daisyStudentId,ap:classAp,log,activeActivity,daisyGain,classGainAccum,momGainAccum,suspDeltaAccum}=homeroomSessionState;
         const daisy=students.find(st=>st.id===daisyStudentId);
@@ -24,7 +81,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
           let phaseText,choices,actTitle;
           if(type==='conference'){
             const evDef=HOMEROOM_CONFERENCE_EVENTS[key];
-            phaseText=evDef?.text; choices=evDef?.choices||[]; actTitle=`Conference — ${key}`;
+            phaseText=evDef?.text; choices=evDef?.choices||[]; actTitle=`Conference — ${displayName(key)}`;
           } else {
             const actDef=HOMEROOM_GROUP_ACTIVITIES[type];
             const phases=actDef?.phases||[{text:actDef?.text,choices:actDef?.choices||[]}];
@@ -141,34 +198,36 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                 </div>
               </div>
               {/* Students */}
-              <div style={{fontSize:9,letterSpacing:3,color:warmDim,marginBottom:10}}>STUDENTS</div>
+              <div style={{fontSize:9,letterSpacing:3,color:warmDim,marginBottom:10}}>STUDENTS · tap to conference</div>
               <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12,marginBottom:16}}>
-                {["Kayla","Bri","Sofia"].map(name=>{
-                  const desc=BATCH_BAKER_NPCS[name]?.[npcDescIdx]||"";
-                  const snippet=desc?desc.split(".")[0]:"";
-                  return(
-                    <div key={name} style={{display:"flex",flexDirection:"column",alignItems:"stretch",gap:5}}>
-                      <button
-                        style={{...C.btn(classAp>=1?warmDim:"#1a0f06"),fontSize:10,padding:"5px 8px",opacity:classAp>=1?1:0.38,textAlign:"center"}}
-                        disabled={classAp<1}
-                        onClick={()=>openHomeroomConference(name)}>
-                        Conference ↓
-                      </button>
-                      <div style={{
-                        background:"#120a04",
-                        border:`1px solid ${warmAccent}35`,
-                        borderTop:`3px solid ${warmAccent}70`,
-                        borderRadius:"2px 2px 5px 5px",
-                        padding:"10px 10px 12px",
-                        textAlign:"center",
-                        flex:1,
-                      }}>
-                        <div style={{fontSize:11,fontWeight:700,color:warmText,letterSpacing:2,marginBottom:5}}>{name.toUpperCase()}</div>
-                        <div style={{fontSize:9,color:warmSubtle,lineHeight:1.55}}>{snippet}.</div>
-                      </div>
-                    </div>
-                  );
-                })}
+                {STUDENT_KEYS.map(name=>(
+                  <ParticipantCard
+                    key={name}
+                    name={name}
+                    npcKey={name}
+                    descIdx={npcDescIdx}
+                    canAfford={classAp>=1}
+                    onSelect={openHomeroomConference}
+                    accent={warmAccent}
+                    dim={warmDim}
+                  />
+                ))}
+              </div>
+              {/* Moms */}
+              <div style={{fontSize:9,letterSpacing:3,color:warmDim,marginBottom:10}}>MOMS · tap to conference</div>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12,marginBottom:16}}>
+                {MOM_KEYS.map(key=>(
+                  <ParticipantCard
+                    key={key}
+                    name={displayName(key)}
+                    npcKey={key}
+                    descIdx={momDescIdx}
+                    canAfford={classAp>=1}
+                    onSelect={openHomeroomConference}
+                    accent="#8a7dba"
+                    dim="#5a4a7a"
+                  />
+                ))}
               </div>
               {/* Group activities */}
               <div style={{fontSize:9,letterSpacing:3,color:warmDim,marginBottom:8}}>GROUP ACTIVITIES</div>
