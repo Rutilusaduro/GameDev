@@ -36,10 +36,10 @@ export function relSize(subject, ref) {
 
 // Canonical weight-stage keys — one per WEIGHT_STAGES id (see stages.js).
 // Slight(0) Slim(1) Soft(2) Chubby(3) Plump(4) Heavy(5) Fat(6)
-// Very Fat(7) Enormous(8) Colossal(9) Blob(10)
+// Very Fat(7) Enormous(8) Colossal(9) Blob(10) Leviathan(11)
 export const STAGE_KEYS = [
   "slight", "slim", "soft", "chubby", "plump", "heavy",
-  "fat", "veryFat", "enormous", "colossal", "blob",
+  "fat", "veryFat", "enormous", "colossal", "blob", "leviathan",
 ];
 
 export function stageBucket(stageId) {

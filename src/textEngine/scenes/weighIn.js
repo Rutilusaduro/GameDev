@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SCENE: WEIGH-IN — weekly check-in arrival and post-scale reaction
 // Subject = the student being weighed.
-// Stage keys match WEIGHT_STAGES in stages.js (Slight→Blob).
+// Stage keys match WEIGHT_STAGES in stages.js (Slight→Leviathan).
 // Composed: arrival (bodyType × stage) + entrance (stage × corruption)
 //           + scale approach + reaction.
 // ═══════════════════════════════════════════════════════════════
@@ -58,15 +58,22 @@ registerModule("weighIn.arrival", [
     text: [
       (ctx) => `${ctx.subject.name} enters enormous at the hips — the doorway is a negotiation.`,
       (ctx) => `${ctx.subject.name} comes in and her lower body fills the frame before her face does.`,
-      (ctx) => `${ctx.subject.name} walks in colossal and pear-shaped, thighs a vast rolling presence.`,
+      (ctx) => `${ctx.subject.name} walks in monumentally vast and pear-shaped, thighs a rolling presence.`,
       (ctx) => `${ctx.subject.name} arrives with hip-heavy mass that makes the floorboards register.`,
     ] },
   { when: {"bodyType":"pear","stage":[10]},
     text: [
       (ctx) => `${ctx.subject.name}'s lower body fills the doorway before the rest of her follows.`,
-      (ctx) => `${ctx.subject.name} comes in as immobile pear-shaped geography — hips and thighs the room organizes around.`,
-      (ctx) => `${ctx.subject.name} arrives blob-vast at the hips, movement more shift than walk.`,
+      (ctx) => `${ctx.subject.name} comes in immobile at the hips — thighs and bottom merged into warm mass the room organizes around.`,
+      (ctx) => `${ctx.subject.name} arrives too vast at the hips to walk; movement is more a slow shift of endless soft flesh.`,
       (ctx) => `${ctx.subject.name} enters and the office rearranges itself around her lower half.`,
+    ] },
+  { when: {"bodyType":"pear","stage":[11]},
+    text: [
+      (ctx) => `${ctx.subject.name}'s lower body arrives before the rest of her — hips and thighs so heavy the room seems to tilt toward her warmth.`,
+      (ctx) => `${ctx.subject.name} comes in pear-shaped and barely mobile, thighs pressing together their whole vast length, flesh settling in slow heavy rolls.`,
+      (ctx) => `${ctx.subject.name} settles at the doorway — lower half spread wide and plush, hips anchoring her like poured warmth.`,
+      (ctx) => `${ctx.subject.name} enters and the floor registers every inch; her pear curves jiggle once, then go still.`,
     ] },
   // apple
   { when: {"bodyType":"apple","stageMax":1},
@@ -115,15 +122,22 @@ registerModule("weighIn.arrival", [
     text: [
       (ctx) => `${ctx.subject.name} enters enormous — belly arriving long before she finishes coming through.`,
       (ctx) => `${ctx.subject.name} comes in and her forward mass makes the doorway feel narrow.`,
-      (ctx) => `${ctx.subject.name} walks in colossal, belly swaying with its own momentum.`,
+      (ctx) => `${ctx.subject.name} walks in with belly swaying on its own momentum, flesh lagging behind each step.`,
       (ctx) => `${ctx.subject.name} arrives with a gut vast enough to be the first thing you see.`,
     ] },
   { when: {"bodyType":"apple","stage":[10]},
     text: [
       (ctx) => `${ctx.subject.name}'s belly fills the doorway — the rest of her follows slowly.`,
       (ctx) => `${ctx.subject.name} comes in as forward mass become immobile architecture.`,
-      (ctx) => `${ctx.subject.name} arrives blob-vast and apple-shaped, belly the room organizes around.`,
+      (ctx) => `${ctx.subject.name} arrives immobile and apple-shaped, belly the warm center the room organizes around.`,
       (ctx) => `${ctx.subject.name} enters and the office is organized around her middle.`,
+    ] },
+  { when: {"bodyType":"apple","stage":[11]},
+    text: [
+      (ctx) => `${ctx.subject.name}'s belly arrives first — forward mass warm and endless, soft rolls cascading, the room's center of gravity.`,
+      (ctx) => `${ctx.subject.name} comes in apple-shaped and barely mobile, gut spreading heavy and plush before she finishes settling.`,
+      (ctx) => `${ctx.subject.name} exists at the doorway as warm abundance — middle a monument of yielding softness.`,
+      (ctx) => `${ctx.subject.name} enters and the office seems to bend around her belly's slow, sinking weight.`,
     ] },
   // hourglass
   { when: {"bodyType":"hourglass","stageMax":1},
@@ -171,16 +185,23 @@ registerModule("weighIn.arrival", [
   { when: {"bodyType":"hourglass","stageMin":8,"stageMax":9},
     text: [
       (ctx) => `${ctx.subject.name} enters enormous, curves stacked on curves.`,
-      (ctx) => `${ctx.subject.name} comes in colossal, bust and hips both staggering.`,
+      (ctx) => `${ctx.subject.name} comes in overwhelmingly vast, bust and hips both staggering.`,
       (ctx) => `${ctx.subject.name} walks in slow, hourglass shape overwhelming every dimension.`,
       (ctx) => `${ctx.subject.name} arrives and the air shifts around her abundance.`,
     ] },
   { when: {"bodyType":"hourglass","stage":[10]},
     text: [
-      (ctx) => `${ctx.subject.name} enters as immobile hourglass geography — curves merged into warm mass.`,
-      (ctx) => `${ctx.subject.name} comes in blob-vast, figure beyond ordinary proportion.`,
+      (ctx) => `${ctx.subject.name} enters immobile — curves merged into one warm heavy mass.`,
+      (ctx) => `${ctx.subject.name} comes in too vast to walk, figure beyond ordinary proportion.`,
       (ctx) => `${ctx.subject.name} arrives and the room organizes around her curves.`,
       (ctx) => `${ctx.subject.name} fills the doorway with abundance before she reaches the desk.`,
+    ] },
+  { when: {"bodyType":"hourglass","stage":[11]},
+    text: [
+      (ctx) => `${ctx.subject.name} arrives immobile — curves stacked impossibly high and soft, bust and hips merged into endless warm rolls.`,
+      (ctx) => `${ctx.subject.name} comes in hourglass-shaped and barely able to shift, abundance above and below spreading heavy and plush.`,
+      (ctx) => `${ctx.subject.name} exists at the doorway like a living warmth of endless soft curves.`,
+      (ctx) => `${ctx.subject.name} enters and the office reorganizes around her weight, her heat, her impossible softness.`,
     ] },
   // athletic
   { when: {"bodyType":"athletic","stageMax":1},
@@ -228,16 +249,23 @@ registerModule("weighIn.arrival", [
   { when: {"bodyType":"athletic","stageMin":8,"stageMax":9},
     text: [
       (ctx) => `${ctx.subject.name} enters enormous, sheer mass where the athlete used to be.`,
-      (ctx) => `${ctx.subject.name} comes in colossal, filling doorways with trained breadth gone vast.`,
+      (ctx) => `${ctx.subject.name} comes in filling doorways with trained breadth gone vast.`,
       (ctx) => `${ctx.subject.name} walks in with ponderous steps, power remembered in immensity.`,
       (ctx) => `${ctx.subject.name} arrives and the floor registers every inch.`,
     ] },
   { when: {"bodyType":"athletic","stage":[10]},
     text: [
-      (ctx) => `${ctx.subject.name} enters as immobile athletic mass — strength become geography.`,
-      (ctx) => `${ctx.subject.name} comes in blob-vast, trained frame buried in warm flesh.`,
+      (ctx) => `${ctx.subject.name} enters as immobile athletic mass — strength buried in warm flesh.`,
+      (ctx) => `${ctx.subject.name} comes in too vast to walk, trained frame lost under heavy yielding softness.`,
       (ctx) => `${ctx.subject.name} arrives and movement is more shift than walk.`,
       (ctx) => `${ctx.subject.name} fills the room with the mass of a former athlete grown vast.`,
+    ] },
+  { when: {"bodyType":"athletic","stage":[11]},
+    text: [
+      (ctx) => `${ctx.subject.name} arrives barely mobile — power remembered under endless warm softness, athletic breadth gone plush and heavy.`,
+      (ctx) => `${ctx.subject.name} comes in as strength entombed in yielding flesh, broad shoulders buried in slow cascading rolls.`,
+      (ctx) => `${ctx.subject.name} exists at the doorway like a warm monument — trained frame lost under impossible softness.`,
+      (ctx) => `${ctx.subject.name} enters and the room's center of gravity shifts to her vast, sinking weight.`,
     ] },
   // straight
   { when: {"bodyType":"straight","stageMax":1},
@@ -285,16 +313,23 @@ registerModule("weighIn.arrival", [
   { when: {"bodyType":"straight","stageMin":8,"stageMax":9},
     text: [
       (ctx) => `${ctx.subject.name} enters enormous, uniform enormity from shoulder to knee.`,
-      (ctx) => `${ctx.subject.name} comes in colossal and even, vast in every measurement.`,
+      (ctx) => `${ctx.subject.name} comes in monumentally vast and even, heavy in every measurement.`,
       (ctx) => `${ctx.subject.name} walks in with ponderous even steps.`,
       (ctx) => `${ctx.subject.name} arrives and the office feels smaller.`,
     ] },
   { when: {"bodyType":"straight","stage":[10]},
     text: [
-      (ctx) => `${ctx.subject.name} enters as immobile even mass — a blob of uniform abundance.`,
-      (ctx) => `${ctx.subject.name} comes in blob-vast, the room organized around her.`,
+      (ctx) => `${ctx.subject.name} enters as immobile even mass — uniform abundance, warm and spreading.`,
+      (ctx) => `${ctx.subject.name} comes in too vast to walk, the room organized around her.`,
       (ctx) => `${ctx.subject.name} arrives and movement is barely a shift.`,
       (ctx) => `${ctx.subject.name} fills the space with warm continuous flesh.`,
+    ] },
+  { when: {"bodyType":"straight","stage":[11]},
+    text: [
+      (ctx) => `${ctx.subject.name} arrives as even abundance impossibly vast — softness spreading warm and heavy in every direction.`,
+      (ctx) => `${ctx.subject.name} comes in columnar and barely mobile, flesh filling the doorway with plush yielding weight.`,
+      (ctx) => `${ctx.subject.name} exists at the doorway like warm endless softness pressed outward on all sides.`,
+      (ctx) => `${ctx.subject.name} enters and the office becomes organized around her sinking, overwhelming mass.`,
     ] },
   // rotund
   { when: {"bodyType":"rotund","stageMax":1},
@@ -341,17 +376,24 @@ registerModule("weighIn.arrival", [
     ] },
   { when: {"bodyType":"rotund","stageMin":8,"stageMax":9},
     text: [
-      (ctx) => `${ctx.subject.name} enters enormous and round, colossal soft mass.`,
-      (ctx) => `${ctx.subject.name} comes in colossal, spherical abundance.`,
+      (ctx) => `${ctx.subject.name} enters overwhelmingly round, soft mass spilling in every direction.`,
+      (ctx) => `${ctx.subject.name} comes in spherical abundance, flesh wobbling as she settles.`,
       (ctx) => `${ctx.subject.name} walks in with ponderous rolling steps.`,
       (ctx) => `${ctx.subject.name} arrives vast and warm.`,
     ] },
   { when: {"bodyType":"rotund","stage":[10]},
     text: [
-      (ctx) => `${ctx.subject.name} enters as immobile round geography.`,
-      (ctx) => `${ctx.subject.name} comes in blob-vast, shape remembered only as a circle.`,
+      (ctx) => `${ctx.subject.name} enters as immobile round warmth — shape remembered only as a circle.`,
+      (ctx) => `${ctx.subject.name} comes in too vast to walk, soft globe of flesh filling the frame.`,
       (ctx) => `${ctx.subject.name} arrives and the room holds still around her.`,
-      (ctx) => `${ctx.subject.name} fills the doorway with colossal roundness.`,
+      (ctx) => `${ctx.subject.name} fills the doorway with vast round softness.`,
+    ] },
+  { when: {"bodyType":"rotund","stage":[11]},
+    text: [
+      (ctx) => `${ctx.subject.name} arrives as spherical warmth — roundness so soft the room holds still around her.`,
+      (ctx) => `${ctx.subject.name} comes in rotund and barely mobile, a vast plush globe anchoring the space.`,
+      (ctx) => `${ctx.subject.name} exists at the doorway like endless round abundance — belly and flanks merging in heavy rolls.`,
+      (ctx) => `${ctx.subject.name} enters and the office settles around her warm, sinking circumference.`,
     ] },
   // voluptuous
   { when: {"bodyType":"voluptuous","stageMax":1},
@@ -399,16 +441,23 @@ registerModule("weighIn.arrival", [
   { when: {"bodyType":"voluptuous","stageMin":8,"stageMax":9},
     text: [
       (ctx) => `${ctx.subject.name} enters enormous, voluptuous abundance staggering.`,
-      (ctx) => `${ctx.subject.name} comes in colossal, curves beyond ordinary description.`,
+      (ctx) => `${ctx.subject.name} comes in overwhelmingly curved, flesh beyond ordinary description.`,
       (ctx) => `${ctx.subject.name} walks in with ponderous sway.`,
       (ctx) => `${ctx.subject.name} arrives and doorways feel narrow.`,
     ] },
   { when: {"bodyType":"voluptuous","stage":[10]},
     text: [
       (ctx) => `${ctx.subject.name} enters as immobile voluptuous abundance.`,
-      (ctx) => `${ctx.subject.name} comes in blob-vast, curves merged into warm mass.`,
+      (ctx) => `${ctx.subject.name} comes in too vast to walk, curves merged into warm mass.`,
       (ctx) => `${ctx.subject.name} arrives and the room organizes around her.`,
-      (ctx) => `${ctx.subject.name} fills the space with soft curved geography.`,
+      (ctx) => `${ctx.subject.name} fills the space with soft curved abundance.`,
+    ] },
+  { when: {"bodyType":"voluptuous","stage":[11]},
+    text: [
+      (ctx) => `${ctx.subject.name} arrives voluptuous and impossibly vast — curves endless, warm, pressing outward in heavy rolls.`,
+      (ctx) => `${ctx.subject.name} comes in as breasts and belly merged into yielding abundance, flesh wobbling once as she settles.`,
+      (ctx) => `${ctx.subject.name} exists at the doorway like a monument of plush excess — soft, heavy, desirable.`,
+      (ctx) => `${ctx.subject.name} enters and the room's center of gravity becomes her cascading warmth.`,
     ] },
   // mom_bod
   { when: {"bodyType":"mom_bod","stageMax":1},
@@ -456,16 +505,23 @@ registerModule("weighIn.arrival", [
   { when: {"bodyType":"mom_bod","stageMin":8,"stageMax":9},
     text: [
       (ctx) => `${ctx.subject.name} enters enormous, mom-bod dominating furniture.`,
-      (ctx) => `${ctx.subject.name} comes in colossal and pillowy.`,
+      (ctx) => `${ctx.subject.name} comes in monumentally vast and pillowy.`,
       (ctx) => `${ctx.subject.name} walks in with audible effort.`,
       (ctx) => `${ctx.subject.name} arrives vast and warm.`,
     ] },
   { when: {"bodyType":"mom_bod","stage":[10]},
     text: [
       (ctx) => `${ctx.subject.name} enters as immobile maternal abundance.`,
-      (ctx) => `${ctx.subject.name} comes in blob-vast, the room organized around her comfort.`,
+      (ctx) => `${ctx.subject.name} comes in too vast to walk, the room organized around her comfort.`,
       (ctx) => `${ctx.subject.name} arrives and movement is a slow shift.`,
       (ctx) => `${ctx.subject.name} fills the office with warm permanent softness.`,
+    ] },
+  { when: {"bodyType":"mom_bod","stage":[11]},
+    text: [
+      (ctx) => `${ctx.subject.name} arrives as maternal softness — the room's warm center, pillowy abundance spilling in heavy rolls.`,
+      (ctx) => `${ctx.subject.name} comes in nurturing and barely mobile, waist and hips past any couch, past any ordinary room.`,
+      (ctx) => `${ctx.subject.name} exists at the doorway like endless warm comfort made flesh.`,
+      (ctx) => `${ctx.subject.name} enters and the office reorganizes around her yielding, indulgent abundance.`,
     ] },
   // fertility_goddess
   { when: {"bodyType":"fertility_goddess","stageMax":1},
@@ -506,23 +562,30 @@ registerModule("weighIn.arrival", [
   { when: {"bodyType":"fertility_goddess","stageMin":6,"stageMax":7},
     text: [
       (ctx) => `${ctx.subject.name} enters fat, fertility made flesh at vast scale.`,
-      (ctx) => `${ctx.subject.name} comes in very fat, curves mythic in proportion.`,
+      (ctx) => `${ctx.subject.name} comes in impossibly heavy, curves overwhelming in proportion.`,
       (ctx) => `${ctx.subject.name} walks in slow, abundant and deliberate.`,
       (ctx) => `${ctx.subject.name} arrives needing wide paths.`,
     ] },
   { when: {"bodyType":"fertility_goddess","stageMin":8,"stageMax":9},
     text: [
       (ctx) => `${ctx.subject.name} enters enormous, a monument to abundance.`,
-      (ctx) => `${ctx.subject.name} comes in colossal and ripe.`,
+      (ctx) => `${ctx.subject.name} comes in overwhelmingly ripe and warm.`,
       (ctx) => `${ctx.subject.name} walks in with ponderous goddess steps.`,
       (ctx) => `${ctx.subject.name} arrives and the air feels warmer.`,
     ] },
   { when: {"bodyType":"fertility_goddess","stage":[10]},
     text: [
-      (ctx) => `${ctx.subject.name} enters as immobile fertile geography.`,
-      (ctx) => `${ctx.subject.name} comes in blob-vast, curves become permanent landscape.`,
+      (ctx) => `${ctx.subject.name} enters as immobile fertile warmth — curves become permanent landscape.`,
+      (ctx) => `${ctx.subject.name} comes in too vast to walk, curves spreading heavy and plush.`,
       (ctx) => `${ctx.subject.name} arrives and movement is barely a shift.`,
-      (ctx) => `${ctx.subject.name} fills the room with mythic soft mass.`,
+      (ctx) => `${ctx.subject.name} fills the room with soft warm mass.`,
+    ] },
+  { when: {"bodyType":"fertility_goddess","stage":[11]},
+    text: [
+      (ctx) => `${ctx.subject.name} arrives ripe and impossibly vast — breasts, belly, and hips in endless soft rolls, barely mobile.`,
+      (ctx) => `${ctx.subject.name} comes in abundant and warm, curves spreading heavy and indulgent past human measure.`,
+      (ctx) => `${ctx.subject.name} exists at the doorway like fertility made flesh — plush, overwhelming, desirable.`,
+      (ctx) => `${ctx.subject.name} enters and warmth cascades through the office around her sinking curves.`,
     ] },
   // topHeavy
   { when: {"bodyType":"topHeavy","stageMax":1},
@@ -570,16 +633,23 @@ registerModule("weighIn.arrival", [
   { when: {"bodyType":"topHeavy","stageMin":8,"stageMax":9},
     text: [
       (ctx) => `${ctx.subject.name} enters enormous, breasts vast enough to dominate her silhouette.`,
-      (ctx) => `${ctx.subject.name} comes in colossal and top-heavy.`,
+      (ctx) => `${ctx.subject.name} comes in monumentally vast and top-heavy.`,
       (ctx) => `${ctx.subject.name} walks in with ponderous care.`,
       (ctx) => `${ctx.subject.name} arrives and doorways feel low.`,
     ] },
   { when: {"bodyType":"topHeavy","stage":[10]},
     text: [
       (ctx) => `${ctx.subject.name} enters as immobile top-heavy abundance.`,
-      (ctx) => `${ctx.subject.name} comes in blob-vast, upper body outgrowing everything.`,
+      (ctx) => `${ctx.subject.name} comes in too vast to walk, upper body outgrowing everything.`,
       (ctx) => `${ctx.subject.name} arrives and movement is a slow settle.`,
       (ctx) => `${ctx.subject.name} fills the room with vast chest and soft mass.`,
+    ] },
+  { when: {"bodyType":"topHeavy","stage":[11]},
+    text: [
+      (ctx) => `${ctx.subject.name} arrives top-heavy and impossibly vast — chest merged into endless soft mass, heavy and yielding.`,
+      (ctx) => `${ctx.subject.name} comes in with upper body outgrowing everything below, breasts resting on cascading belly rolls.`,
+      (ctx) => `${ctx.subject.name} exists at the doorway like plush abundance above the waist — warm, wobbling, overwhelming.`,
+      (ctx) => `${ctx.subject.name} enters and the office's center of gravity tips toward her sinking upper softness.`,
     ] },
   // fallbacks by stage band
   { when: { stageMax: 1 }, text: [(ctx) => `${ctx.subject.name} appears at the office door, slim and unhurried.`, (ctx) => `${ctx.subject.name} slips in quietly, a narrow figure against the doorframe.`, (ctx) => `${ctx.subject.name} arrives slight, taking up very little space.`] },
@@ -588,8 +658,14 @@ registerModule("weighIn.arrival", [
   { when: { stage: [4] }, text: [(ctx) => `${ctx.subject.name} enters plump, belly rounding forward, thighs rubbing together.`, (ctx) => `${ctx.subject.name} comes in plump and unhurried, breathing a little heavier on the stairs.`, (ctx) => `${ctx.subject.name} arrives with a real belly now, shirts riding up.`] },
   { when: { stage: [5] }, text: [(ctx) => `${ctx.subject.name} enters heavy, belly hanging forward, chairs creaking in advance.`, (ctx) => `${ctx.subject.name} comes in heavy and deliberate, floorboards registering her.`, (ctx) => `${ctx.subject.name} arrives with a slight waddle now.`] },
   { when: { stageMin: 6, stageMax: 7 }, text: [(ctx) => `${ctx.subject.name} enters fat, movement slow and rolling.`, (ctx) => `${ctx.subject.name} comes in very fat, the office feeling smaller.`, (ctx) => `${ctx.subject.name} arrives needing space and time to cross the room.`] },
-  { when: { stageMin: 8, stageMax: 9 }, text: [(ctx) => `${ctx.subject.name} enters enormous, the doorway a negotiation.`, (ctx) => `${ctx.subject.name} comes in colossal and unhurried.`, (ctx) => `${ctx.subject.name} arrives and the air shifts around her mass.`] },
-  { when: { stage: [10] }, text: [(ctx) => `${ctx.subject.name} enters as immobile abundance — the room organizes around her.`, (ctx) => `${ctx.subject.name} comes in blob-vast, movement more shift than walk.`, (ctx) => `${ctx.subject.name} arrives and fills the space before reaching the desk.`] },
+  { when: { stageMin: 8, stageMax: 9 }, text: [(ctx) => `${ctx.subject.name} enters vast enough that the doorway is a negotiation.`, (ctx) => `${ctx.subject.name} comes in unhurried, flesh settling heavy with each inch.`, (ctx) => `${ctx.subject.name} arrives and the air shifts around her mass.`] },
+  { when: { stage: [10] }, text: [(ctx) => `${ctx.subject.name} enters as immobile abundance — the room organizes around her.`, (ctx) => `${ctx.subject.name} comes in too vast to walk, movement more shift than step.`, (ctx) => `${ctx.subject.name} arrives and fills the space before reaching the desk.`] },
+  { when: { stage: [11] }, text: [
+    (ctx) => `${ctx.subject.name} arrives impossibly vast — the room's center of gravity shifts before she finishes settling.`,
+    (ctx) => `${ctx.subject.name} comes in warm and heavy; movement is nearly impossible, more a slow rearrangement of endless soft flesh.`,
+    (ctx) => `${ctx.subject.name} enters and the office becomes organized around her warmth, her weight, her overwhelming softness.`,
+    (ctx) => `${ctx.subject.name} exists at the doorway like a living monument of fat — ancient, powerful, indulgent in sheer size.`,
+  ] },
   { when: {}, text: [(ctx) => `${ctx.subject.name} appears at the office door for her weekly check-in.`] },
 ]);
 
@@ -774,7 +850,7 @@ registerModule("weighIn.entrance", [
       (ctx) => `"Okay," she says, looking at the scale. "Let's do it."`,
       (ctx) => `She catches her breath from the hall and does not apologize.`,
       (ctx) => `She moves with care. Every step placed.`,
-      (ctx) => `Very fat, very familiar with the routine.`,
+      (ctx) => `Vast, very familiar with the routine.`,
     ] },
   { when: { stage: [7], corruption: [2] },
     text: [
@@ -791,7 +867,7 @@ registerModule("weighIn.entrance", [
       (ctx) => `She fills the doorway before she finishes entering.`,
       (ctx) => `She comes in enormous and winded, the hall a journey she survived.`,
       (ctx) => `She does not look at the scale right away.`,
-      (ctx) => `She says hello and waits, colossal and still.`,
+      (ctx) => `She says hello and waits, monumental and still.`,
       (ctx) => `She shuffles a few steps, then stops to breathe.`,
       (ctx) => `The office rearranges itself around her without discussion.`,
     ] },
@@ -802,7 +878,7 @@ registerModule("weighIn.entrance", [
       (ctx) => `"Same as last week," she says, enormous and matter-of-fact.`,
       (ctx) => `She moves inches at a time toward the scale.`,
       (ctx) => `She does not apologize for the time it takes.`,
-      (ctx) => `Colossal, unhurried, unsurprised.`,
+      (ctx) => `Monumental, unhurried, unsurprised.`,
     ] },
   { when: { stageMin: 8, stageMax: 9, corruption: [2] },
     text: [
@@ -811,21 +887,21 @@ registerModule("weighIn.entrance", [
       (ctx) => `"Good morning," she says warmly. "Let's see where I'm at."`,
       (ctx) => `She shuffles toward the platform like it is a reunion.`,
       (ctx) => `She owns the space she requires.`,
-      (ctx) => `Enormous, colossal, entirely comfortable.`,
+      (ctx) => `Vast, unhurried, entirely comfortable.`,
     ] },
   // Blob + uncorrupted
   { when: { stage: [10], corruption: [0] },
     text: [
       (ctx) => `She arrives as immobile abundance — movement more shift than walk.`,
       (ctx) => `The room is organized around her before she reaches the desk.`,
-      (ctx) => `She says hello and waits, blob-vast and still.`,
+      (ctx) => `She says hello and waits, immobile and still.`,
       (ctx) => `She does not hurry. Hurrying is not the vocabulary anymore.`,
       (ctx) => `She regards the scale with the practicality of someone who knows what it will say.`,
       (ctx) => `Warm, vast, permanent.`,
     ] },
   { when: { stage: [10], corruption: [1] },
     text: [
-      (ctx) => `She settles rather than walks, blob-vast and familiar with the routine.`,
+      (ctx) => `She settles rather than walks, too vast to hurry and familiar with the routine.`,
       (ctx) => `She nods once. The scale can wait.`,
       (ctx) => `"Okay," she says, comfortable in her immensity.`,
       (ctx) => `She does not apologize for the time or the space.`,
@@ -836,10 +912,38 @@ registerModule("weighIn.entrance", [
     text: [
       (ctx) => `She arrives warm and vast, smiling like the scale is an old friend.`,
       (ctx) => `The room reorganizes itself around her without anyone asking.`,
-      (ctx) => `"Let's see it," she says, blob-immense and pleased.`,
-      (ctx) => `She owns every pound and the geography it requires.`,
+      (ctx) => `"Let's see it," she says, immobile and pleased.`,
+      (ctx) => `She owns every pound and the space it requires.`,
       (ctx) => `Immobility is not a problem. It is where she lives now.`,
       (ctx) => `She is entirely comfortable with what she has become.`,
+    ] },
+  // Stage 11 + uncorrupted — impossibly vast, center of gravity, nearly immobile
+  { when: { stage: [11], corruption: [0] },
+    text: [
+      (ctx) => `She settles into the room warm and still — flesh spreading in heavy rolls, the scale can wait.`,
+      (ctx) => `She does not hurry. Hurrying is not part of her vocabulary anymore.`,
+      (ctx) => `She regards the heavy-duty platform with practical familiarity.`,
+      (ctx) => `The office has learned to accommodate her. She has learned to accommodate the office.`,
+      (ctx) => `She is quietly aware of her own immensity — warm, heavy, impossible to ignore.`,
+      (ctx) => `Movement is nearly impossible; presence is not.`,
+    ] },
+  { when: { stage: [11], corruption: [1] },
+    text: [
+      (ctx) => `She arrives matter-of-fact — the room's center of gravity, unapologetic.`,
+      (ctx) => `She nods once. The number will be what it will be.`,
+      (ctx) => `"Okay," she says, warm and patient. "Let's see it."`,
+      (ctx) => `She does not apologize for the time her body requires.`,
+      (ctx) => `Endless soft flesh shifts once, then stills.`,
+      (ctx) => `She is beyond surprise at her own size. That is its own peace.`,
+    ] },
+  { when: { stage: [11], corruption: [2] },
+    text: [
+      (ctx) => `She arrives pleased — warm in indulgence, flesh sinking heavy into itself.`,
+      (ctx) => `She smiles at the industrial platform like an old friend.`,
+      (ctx) => `"Let's see how vast I've become," she says, and means it.`,
+      (ctx) => `The room reorganizes around her without anyone asking.`,
+      (ctx) => `She owns every endless roll and fold.`,
+      (ctx) => `She is a living monument of softness, and she knows it.`,
     ] },
   // wildcard
   { when: {}, text: [(ctx) => `She sets her things down and waits for you to begin.`] },
@@ -886,7 +990,7 @@ registerModule("weighIn.scaleApproach", [
       "She steps onto the scale without ceremony. The needle barely moves before it finds its answer.",
       "She steps up lightly. The dial ticks once, twice, and settles.",
       "The platform doesn't shift. The needle drifts to its answer like it has all day.",
-      "She steps on slight and slim; the scale barely notices.",
+      "She steps on lightly; the scale barely notices.",
     ] },
   // Soft: some shift now, just noticeable
   { when: { stage: [2] },
@@ -906,7 +1010,7 @@ registerModule("weighIn.scaleApproach", [
       "She mounts the scale and the dial shudders before climbing.",
       "The platform settles more than last month. She notices.",
       "She steps on and the red needle swings with purpose.",
-      "Chubby weight, no longer deniable on the dial.",
+      "New roundness, no longer deniable on the dial.",
     ] },
   // Plump: belly rounding, thighs rubbing
   { when: { stage: [4] },
@@ -916,7 +1020,7 @@ registerModule("weighIn.scaleApproach", [
       "She steps up plump. The old white scale protests, the platform flexing.",
       "The platform dips. The dial shudders. The needle climbs like it is late for something.",
       "She steps on and the scale makes a sound you have started to recognize.",
-      "Plump weight, shirts riding up, scale complaining politely.",
+      "Belly rounding forward, shirts riding up, scale complaining politely.",
     ] },
   // Heavy: chairs creak territory
   { when: { stage: [5] },
@@ -936,7 +1040,7 @@ registerModule("weighIn.scaleApproach", [
       "She steps onto the scale and the old platform flexes beneath her, the dial lurching hard.",
       "The platform bows. The needle doesn't hesitate — it runs for the high numbers.",
       "She steps on and the scale complains loudly. She waits.",
-      "Fat weight, rolling and real on the dial.",
+      "Heavy flesh, rolling and real on the dial.",
     ] },
   // Very Fat: belly cascades, dial working overtime
   { when: { stage: [7] },
@@ -946,7 +1050,7 @@ registerModule("weighIn.scaleApproach", [
       "She mounts the scale and the platform flexes visibly beneath her.",
       "The needle slams right and keeps hunting for numbers the dial was not built to show this quickly.",
       "She steps on and the scale makes a noise you will remember.",
-      "Very fat, very patient, dial working overtime.",
+      "Vast and patient, dial working overtime.",
     ] },
   // Enormous/Colossal: this analog scale is not designed for this
   { when: { stageMin: 8, stageMax: 9 },
@@ -955,18 +1059,28 @@ registerModule("weighIn.scaleApproach", [
       "She steps up enormous. The scale accepts her the way old furniture accepts an overload: with sound, and reluctance, and a dial that has run out of numbers.",
       "She steps onto the scale. The platform bends. The needle swings hard to the right and does not stop where it should.",
       "The scale makes a noise you will remember. The needle pins itself to the far edge and keeps trying.",
-      "She steps up colossal and the platform visibly flexes. This scale was not built for this. It tries anyway.",
-      "Enormous weight — the dial gives up pretending.",
+      "She steps up and the platform visibly flexes under overwhelming weight. This scale was not built for this. It tries anyway.",
+      "The weight is staggering — the dial gives up pretending.",
     ] },
-  // Blob: analog scale essentially decorative
+  // Stage 10: analog scale essentially decorative
   { when: { stage: [10] },
     text: [
       "She shifts onto the scale — immobile abundance settling. The platform screams. The needle pins itself instantly.",
-      "She steps on blob-vast. The scale was not built for this. It makes its opinion known anyway.",
+      "She settles onto the platform. The scale was not built for this. It makes its opinion known anyway.",
       "The platform bends. The dial has nothing useful to say. She waits anyway.",
       "She mounts the scale and the old white platform flexes like a warning.",
-      "Blob weight. The needle has no room left to travel.",
+      "The needle has no room left to travel.",
       "The scale complains once, then gives up numerically.",
+    ] },
+  // Stage 11: analog scale is not a meaningful instrument
+  { when: { stage: [11] },
+    text: [
+      "She settles toward the scale — endless soft flesh shifting like slow weather. The platform gives up immediately.",
+      "The analog dial has nothing left to say to a body this vast. She waits anyway, warm and heavy.",
+      "The scale was not built for this much weight. It tries once, then surrenders.",
+      "Plush flesh yields onto the platform; the needle pins itself and stays.",
+      "Immobility and warmth — beyond the dial's vocabulary.",
+      "The platform groans like something remembering its limits.",
     ] },
   // wildcard
   { when: {}, text: ["She steps onto the scale. The red needle begins to spin."] },
@@ -975,6 +1089,16 @@ registerModule("weighIn.scaleApproach", [
 // ── weighIn.bigScaleApproach — going to the heavy-duty scale ───
 
 registerModule("weighIn.bigScaleApproach", [
+  // Stage 11 — industrial scale, long patient climb
+  { when: { stage: [11] },
+    text: [
+      "She goes to the heavy-duty platform — the only scale that still pretends to understand her. The LCD wakes and begins its long, patient climb.",
+      "She settles onto the industrial platform. The steel holds. The display builds the number digit by digit, unhurried as she is.",
+      "Impossible weight on steel that does not flinch. The green numbers rise one digit at a time.",
+      "She knows where to stand. The platform takes her mass without comment. The display climbs.",
+      "The industrial scale hums and counts upward — warm, vast, patient with her size.",
+      "She exists on the platform while the number builds. Time is not the constraint. Weight is.",
+    ] },
   // She knows the routine, has been on this scale before
   { when: { stageMin: 6 },
     text: [
@@ -1243,7 +1367,7 @@ registerModule("weighIn.reaction", [
       (ctx) => `${ctx.subject.name} checks the dial and is quiet for a moment. "You know," she says, "I've stopped being surprised." She sounds like that is its own kind of answer.`,
       (ctx) => `${ctx.subject.name} "At least it's consistent," she says, and laughs once, without humor.`,
       (ctx) => `${ctx.subject.name} shrugs, which is an impressive gesture at her size. "What are you gonna do," she says.`,
-      (ctx) => `${ctx.subject.name} nods at the colossal reading like checking weather.`,
+      (ctx) => `${ctx.subject.name} nods at the staggering reading like checking weather.`,
     ] },
   // Enormous/Colossal + broken: triumphant pride
   { when: { stageMin: 8, stageMax: 9, corruption: [2] },
@@ -1253,7 +1377,7 @@ registerModule("weighIn.reaction", [
       (ctx) => `${ctx.subject.name} looks at the number like something she built. She exhales slowly, pleased. "Good," she says.`,
       (ctx) => `${ctx.subject.name} "More," she says softly, to the dial, to the week ahead.`,
       (ctx) => `${ctx.subject.name} smiles at the enormous number. She has earned it.`,
-      (ctx) => `${ctx.subject.name} steps off colossal and satisfied.`,
+      (ctx) => `${ctx.subject.name} steps off vast and satisfied.`,
     ] },
   // Blob + hesitant: the number is beyond ordinary, she has no words
   { when: { stage: [10], corruption: [0] },
@@ -1263,13 +1387,13 @@ registerModule("weighIn.reaction", [
       (ctx) => `${ctx.subject.name} steps off and goes very still. The number is beyond language.`,
       (ctx) => `${ctx.subject.name} shifts rather than steps. The reading hangs in the air.`,
       (ctx) => `${ctx.subject.name} breathes once, heavily. She says nothing for a long moment.`,
-      (ctx) => `${ctx.subject.name} regards the blob-scale number with practical silence.`,
+      (ctx) => `${ctx.subject.name} regards the extraordinary number with practical silence.`,
     ] },
   { when: { stage: [10], corruption: [1] },
     text: [
       (ctx) => `${ctx.subject.name} looks at the reading. The number is extraordinary. She nods once.`,
       (ctx) => `${ctx.subject.name} checks the reading and breathes out slowly.`,
-      (ctx) => `${ctx.subject.name} "Okay," she says, blob-vast and matter-of-fact.`,
+      (ctx) => `${ctx.subject.name} "Okay," she says, immobile and matter-of-fact.`,
       (ctx) => `${ctx.subject.name} does not apologize for the number or the time it took to get it.`,
       (ctx) => `${ctx.subject.name} settles back from the scale, immobile and informed.`,
       (ctx) => `${ctx.subject.name} has made her peace with extraordinary.`,
@@ -1282,7 +1406,35 @@ registerModule("weighIn.reaction", [
       (ctx) => `${ctx.subject.name} nods at the extraordinary number.`,
       (ctx) => `${ctx.subject.name} "Still growing," she says, and it sounds like a status report and a boast.`,
       (ctx) => `${ctx.subject.name} pats what she can reach of her own vastness, affectionately.`,
-      (ctx) => `${ctx.subject.name} smiles at the blob-scale number like an old friend.`,
+      (ctx) => `${ctx.subject.name} smiles at the extraordinary number like an old friend.`,
+    ] },
+  // Stage 11 + hesitant
+  { when: { stage: [11], corruption: [0] },
+    text: [
+      (ctx) => `${ctx.subject.name} stares at the reading. The number is beyond ordinary language.`,
+      (ctx) => `${ctx.subject.name} goes very still. The display says what it says.`,
+      (ctx) => `${ctx.subject.name} breathes once, heavily. She does not look away.`,
+      (ctx) => `${ctx.subject.name} "That's..." She trails off. There is no sentence big enough.`,
+      (ctx) => `${ctx.subject.name} shifts rather than steps back. The number hangs in the air.`,
+      (ctx) => `${ctx.subject.name} regards the impossible reading with practical silence.`,
+    ] },
+  { when: { stage: [11], corruption: [1] },
+    text: [
+      (ctx) => `${ctx.subject.name} looks at the number and nods once. Matter-of-fact.`,
+      (ctx) => `${ctx.subject.name} "Okay," she says. Warm. Unsurprised.`,
+      (ctx) => `${ctx.subject.name} checks the reading like checking the weather.`,
+      (ctx) => `${ctx.subject.name} does not apologize for what the scale reports.`,
+      (ctx) => `${ctx.subject.name} settles back from the platform, vast and informed.`,
+      (ctx) => `${ctx.subject.name} has made her peace with impossible size.`,
+    ] },
+  { when: { stage: [11], corruption: [2] },
+    text: [
+      (ctx) => `${ctx.subject.name} looks at the reading and smiles — pleased, warm, vast.`,
+      (ctx) => `${ctx.subject.name} "Beautiful," she breathes. She means the number and herself.`,
+      (ctx) => `${ctx.subject.name} pats what she can reach of her endless softness, affectionately.`,
+      (ctx) => `${ctx.subject.name} "Still growing," she says, and it sounds like a promise.`,
+      (ctx) => `${ctx.subject.name} owns the number and the body that earned it.`,
+      (ctx) => `${ctx.subject.name} exhales slowly, satisfied. The scale has said it plainly.`,
     ] },
   // wildcard fallback
   { when: {}, text: [(ctx) => `${ctx.subject.name} steps off the scale and takes in the reading.`] },

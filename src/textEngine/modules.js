@@ -109,8 +109,9 @@ registerModule("group.desc", [
       fat: "broad newcomers who test the doorway",
       veryFat: "vast newcomers filing in with care",
       enormous: "enormous newcomers who need the wide path",
-      colossal: "colossal newcomers who file in one at a time because the doorway insists",
+      colossal: "overwhelming newcomers who file in one at a time because the doorway insists",
       blob: "newcomers vast beyond the room's design",
+      leviathan: "newcomers so impossibly vast the room reorganizes before they arrive",
     }[bucket] || "newcomers of uncertain scale";
     return `${sizeWord} of ${flavor}`;
   } },

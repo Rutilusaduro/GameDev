@@ -6,30 +6,38 @@
 
 Any constant, dialogue, description, or reaction that relates to weight must have an entry for **every applicable weight stage** — no gaps, no fallback blur. Use "contextually relevant" as the only filter:
 
-- Immobility, doorframe descriptions, floor-pooling mass → Blob (stage 10) and ascension stages only
-- Clothing strain, chair complaints → stage 3+ (Heavy and up)
-- Evolving identity, self-concept shifts → all 11 base stages
+- Immobility, doorframe descriptions, floor-pooling mass → Blob (stage 10), Leviathan (stage 11), and ascension stages
+- Clothing strain, chair complaints → stage 3+ (Chubby and up)
+- Evolving identity, self-concept shifts → all 12 base stages
 - Ascension-path content → all 5 stages of that path + convergence where applicable
 
 **The full stage ladder** (canonical — see `src/gameData/stages.js`):
-| Stage | Label | Min lbs |
-|-------|-------|---------|
-| 0 | Slight | 80 |
-| 1 | Slim | 100 |
-| 2 | Soft | 135 |
-| 3 | Chubby | 162 |
-| 4 | Plump | 195 |
-| 5 | Heavy | 238 |
-| 6 | Fat | 285 |
-| 7 | Very Fat | 360 |
-| 8 | Enormous | 465 |
-| 9 | Colossal | 595 |
-| 10 | Blob | 820 |
-| Celestial 0–4 | Seed → Apex | 820+ |
-| Umbral 0–4 | Seed → Sovereign | 820+ |
-| Convergence | — | secret |
+
+| Stage | Label | Min lbs | Body at this stage |
+|-------|-------|---------|-------------------|
+| 0 | Slight | 80 | Noticeably delicate, almost fragile. Slender and narrow — visible collarbones, slim wrists, long lean legs. Clothes hang loose; she moves lightly, feels small and easy to pull close. |
+| 1 | Slim | 120 | Still slender and toned, with softness starting to appear. Narrow waist, hips beginning to curve. Effortless grace; light in your hands, first hint of plushness in thighs and ass when she sits or bends. |
+| 2 | Soft | 135 | A gentle layer of softness has settled in. Slight belly pooch, thighs press together a little more, cheeks fuller. Pleasant give when touched; clothes snugger at hips and chest. |
+| 3 | Chubby | 162 | Visibly rounded. Soft belly curve pushes at waistbands; face fuller, arms softer, thighs rub when she walks. Real weight on your lap; clothes tight at middle and hips. |
+| 4 | Plump | 195 | Thick and juicy. Clear rounded belly rests on her lap when she sits; heavier breasts, thick plush ass and thighs. Soft jiggly movement; abundance — substantial in your hands. |
+| 5 | Heavy | 238 | Undeniably fat. Belly hangs forward and sways; thick soft arms, heavy thighs rubbing constantly. Pronounced waddle, heavier breathing. Spreads and settles when she sits — warm, heavy, overwhelming. |
+| 6 | Fat | 285 | Large and heavy. Belly rests on thighs when sitting, hangs when standing; large soft breasts, massively thick ass and thighs. Slow deliberate movement; everything jiggles and sways — a lot to handle. |
+| 7 | Very Fat | 360 | Massively fat. Belly cascades over thighs, sways with every step; thick heavy arms, very round soft face. Wide doorways, struggles with normal furniture. Spreads and sinks when she sits — a mountain of warm plush flesh. |
+| 8 | Enormous | 465 | Enormous. Belly rests on thighs standing, hangs toward knees sitting; huge soft breasts on the belly's slope. Very slow movement with effort; dominates any space — living embodiment of excess. |
+| 9 | Colossal | 595 | Colossal. Barely moves under her own power; belly spreads wide across lap. Massively thick thighs, enormous ass. Reinforced furniture, wide spaces — monumental softness. |
+| 10 | Blob | 820 | Completely immobile. Enormous soft spreading mass fills whatever space she's in. Belly, breasts, thighs merged into one warm heavy landscape. Can't stand or walk — a presence the world works around. |
+| 11 | Leviathan | 1000 | Transcended normal human scale — impossibly vast, almost mythic. She doesn't just fill a room; she becomes its center of gravity. Flesh in heavy endless rolls; movement nearly impossible. A living monument of fat, warmth, and indulgence — ancient, powerful, almost divine. |
+| Celestial 0–4 | Seed → Apex | 820+ | Ascension path |
+| Umbral 0–4 | Seed → Sovereign | 820+ | Ascension path |
+| Convergence | — | secret | — |
 
 When writing a new constant: count the entries before committing. If the count doesn't match the applicable range, add the missing ones.
+
+**Stage names are internal, not prose.** Canonical labels (Slight, Slim, Soft, Chubby, Plump, Heavy, Fat, Very Fat, Enormous, Colossal, Blob, Leviathan) are for buckets, selectors, and docs — not player-facing copy. Do not treat them as concepts (`"she is a Leviathan"`, `"blob-vast"`, `"Colossal, unhurried"`). Describe bodies sensorially instead. Everyday adjectives (`fat`, `heavy`, `thick`, `round`) are fine when they read naturally in a sentence.
+
+**Utilize this prompt for all writing:**
+
+> Write in a sensual, appreciative, and immersive style. Focus heavily on sensory details: the weight, softness, warmth, and movement of fat bodies. Describe how flesh feels in the hands, how it jiggles and sways, how it spreads and sinks when sitting or lying down. Emphasize the eroticism of size, heaviness, and growth without shame or negativity. Use rich, tactile language — words like plush, heavy, soft, yielding, wobbling, cascading, spreading, sinking. Make the fat itself feel alive, warm, and desirable. Avoid clinical or medical language. Focus on the beauty, power, and sensuality of fat bodies and the act of growing fatter. When describing movement, focus on how the body moves differently because of its size and softness. When describing touch or intimacy, linger on the feeling of weight, warmth, and softness pressing against or enveloping the other person.
 
 ---
 

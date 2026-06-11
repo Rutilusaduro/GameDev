@@ -6,7 +6,7 @@
 //
 // Stage keys match WEIGHT_STAGES ids in stages.js — one bucket per stage:
 // slight(0) slim(1) soft(2) chubby(3) plump(4) heavy(5) fat(6)
-// veryFat(7) enormous(8) colossal(9) blob(10)
+// veryFat(7) enormous(8) colossal(9) blob(10) leviathan(11)
 // ═══════════════════════════════════════════════════════════════
 import { registerModule, stageBucket, pick } from './engine.js';
 
@@ -22,8 +22,9 @@ export const SIZE_WORDS = {
   fat:      ["fat", "very fat", "rolling", "waddling"],
   veryFat:  ["very fat", "vast", "immense", "overflowing"],
   enormous: ["enormous", "staggering", "room-filling", "mountainous"],
-  colossal: ["colossal", "architectural", "immobile", "geographic"],
-  blob:     ["blob", "immobile", "mountainous", "room-organizing"],
+  colossal: ["monumental", "barely mobile", "overwhelming", "spreadingly vast"],
+  blob:     ["immobile", "mountainous", "room-filling", "warmly spreading"],
+  leviathan: ["impossibly vast", "overwhelming", "warm and endless", "barely mobile"],
 };
 
 // ── body phrases — bodyType × stage ───────────────────────────
@@ -45,7 +46,7 @@ export const BODY_WORDS = {
     ["hips that require wide doorways", "thighs of extraordinary circumference", "a vast pear silhouette from waist down"],
     ["hips wider than a doorway", "an avalanche of hip and thigh", "a lower body that fills hallways"],
     ["a pear shape scaled past ordinary measure", "thighs individually enormous", "hips that dominate any room"],
-    ["a lower body that has become geography", "pear curves merged into immobile mass", "hips and thighs the room organizes around"],
+    ["a lower body that fills the room", "pear curves merged into immobile mass", "hips and thighs the room organizes around"],
   ),
   apple: bodyRow(
     ["a trim, straight middle", "a flat torso with the faintest forward tendency", "a slim frame, belly not yet visible"],
@@ -70,7 +71,7 @@ export const BODY_WORDS = {
     ["curves stacked and heavy", "bust resting on a round belly, hips vast below", "an hourglass amplified to extreme scale"],
     ["curves vast enough to need custom clothes", "bust and hips both overwhelming", "waist a soft memory between enormous curves"],
     ["curves stacked on curves, all of them enormous", "an hourglass shape overwhelming in every dimension"],
-    ["curves grown mythic in scale", "bust, belly, and hips a continuous landscape"],
+    ["curves grown impossibly vast", "bust, belly, and hips a continuous landscape"],
     ["an hourglass shape remembered only in outline", "curves merged into immobile abundance", "a figure beyond ordinary proportion"],
   ),
   athletic: bodyRow(
@@ -96,8 +97,8 @@ export const BODY_WORDS = {
     ["a vast even roundness", "weight everywhere at significant scale", "a columnar body grown fat uniformly"],
     ["uniform enormity from shoulder to knee", "a straight figure scaled past ordinary furniture", "even mass overwhelming in every direction"],
     ["uniform enormity from shoulder to knee", "a body round and vast in every measurement"],
-    ["a single continuous expanse of body", "even mass grown colossal", "uniform abundance beyond standard scale"],
-    ["a single continuous expanse of body", "even mass become immobile geography", "a straight figure amplified to blob scale"],
+    ["a single continuous expanse of body", "even mass grown overwhelming", "uniform abundance beyond standard scale"],
+    ["a single continuous expanse of body", "even mass become immobile warmth", "a straight figure amplified past ordinary scale"],
   ),
   rotund: bodyRow(
     ["a trim frame with a hint of roundness", "slight roundness at the edges", "a slim figure with soft potential"],
@@ -109,8 +110,8 @@ export const BODY_WORDS = {
     ["a vast round body, belly leading", "soft spherical mass in motion", "roundness overwhelming her silhouette"],
     ["a ballooning roundness", "a body mostly belly and soft flank", "rotund mass needing wide paths"],
     ["a vast, ballooning roundness", "a body that has become mostly belly and soft flank"],
-    ["colossal roundness", "a spherical abundance of soft flesh"],
-    ["a colossal round mass, shape remembered only as a circle", "rotund immensity filling the room"],
+    ["overwhelming roundness", "a spherical abundance of soft flesh"],
+    ["a vast round mass, shape remembered only as a circle", "rotund immensity filling the room"],
   ),
   voluptuous: bodyRow(
     ["curves already present, even when slim", "a voluptuous line on a slight frame", "breasts and hips hinted even now"],
@@ -122,7 +123,7 @@ export const BODY_WORDS = {
     ["breasts and belly grown vast", "a voluptuous body overwhelming furniture", "curves leading every movement"],
     ["breasts and belly grown past any ordinary scale", "curves so heavy they dominate her silhouette"],
     ["voluptuous excess at staggering scale", "breasts, belly, and hips all enormous"],
-    ["voluptuous abundance grown colossal", "curves beyond ordinary description"],
+    ["voluptuous abundance grown overwhelming", "curves beyond ordinary description"],
     ["voluptuous excess become immobile abundance", "curves merged into warm immobile mass"],
   ),
   mom_bod: bodyRow(
@@ -135,7 +136,7 @@ export const BODY_WORDS = {
     ["a vast maternal softness", "a mom-bod grown fat and pillowy", "warm abundance from chest to thigh"],
     ["a pillowy mom-bod dominating furniture", "maternal softness scaled up past ordinary chairs"],
     ["a vast, pillowy mom-bod that dominates the couch", "soft abundance in every familiar place"],
-    ["maternal softness grown colossal", "a mom-bod that fills and overflows seating"],
+    ["maternal softness grown overwhelming", "a mom-bod that fills and overflows seating"],
     ["maternal softness scaled up past any couch", "warm immobile abundance", "a mom-bod the room organizes around"],
   ),
   fertility_goddess: bodyRow(
@@ -146,10 +147,10 @@ export const BODY_WORDS = {
     ["heavy breasts and thunder thighs grown plush", "a goddess-soft body swelling with abundance", "fertile curves commanding"],
     ["breasts and hips grown heavy and commanding", "a fertile, overflowing figure", "goddess abundance with a rolling gait"],
     ["breasts, belly, and hips grown vast", "a fertility goddess scaled up dramatically", "ripe curves overwhelming"],
-    ["breasts, belly, and hips grown mythic in scale", "a fertile body needing wide doorways"],
+    ["breasts, belly, and hips grown impossibly vast", "a fertile body needing wide doorways"],
     ["fertility made flesh at enormous scale", "breasts and hips grown staggering"],
-    ["a fertile body grown colossal", "abundance beyond ordinary measure"],
-    ["fertility made flesh, immobile and vast", "goddess curves become permanent geography"],
+    ["a fertile body grown overwhelming", "abundance beyond ordinary measure"],
+    ["fertility made flesh, immobile and vast", "goddess curves become permanent warmth"],
   ),
   topHeavy: bodyRow(
     ["a narrow lower half under a fuller chest", "breasts slightly ahead of the rest", "top-heavy tendency on a slight frame"],
@@ -161,7 +162,7 @@ export const BODY_WORDS = {
     ["breasts vast and heavy on a softer torso", "top-heavy mass she balances carefully", "chest overwhelming the rest of her frame"],
     ["breasts so heavy they dominate her silhouette", "a vast upper body outgrowing everything below"],
     ["an enormous chest on an enormous body", "top-heavy excess at staggering scale"],
-    ["a colossal upper body", "breasts and belly vast above narrower hips"],
+    ["a vast upper body", "breasts and belly heavy above narrower hips"],
     ["a vast upper body that has outgrown the rest", "chest merged into immobile abundance"],
   ),
   default: bodyRow(
@@ -174,7 +175,7 @@ export const BODY_WORDS = {
     ["a fat, soft body", "abundance in every direction"],
     ["a very fat, vast body", "mass needing space and care"],
     ["a body of staggering size", "enormity in every measurement"],
-    ["a colossal body", "size beyond ordinary furniture"],
+    ["an overwhelming body", "size beyond ordinary furniture"],
     ["a body beyond ordinary scale", "immobile warm abundance", "a presence the room organizes around"],
   ),
 };
@@ -193,12 +194,13 @@ export const MOVEMENT_WORDS = {
   enormous: ["lumbers", "advances like weather", "moves one ponderous step at a time"],
   colossal: ["shuffles", "moves inches at a time", "shifts her mass with audible effort"],
   blob:     ["barely moves", "shifts like a slow tide", "settles rather than walks"],
+  leviathan: ["barely shifts", "settles rather than walks", "exists more than arrives"],
 };
 
 // ── clothing fit — season × stage ─────────────────────────────
 
-const seasonRow = (slight, slim, soft, chubby, plump, heavy, fat, veryFat, enormous, colossal, blob) =>
-  ({ slight, slim, soft, chubby, plump, heavy, fat, veryFat, enormous, colossal, blob });
+const seasonRow = (slight, slim, soft, chubby, plump, heavy, fat, veryFat, enormous, colossal, blob, leviathan) =>
+  ({ slight, slim, soft, chubby, plump, heavy, fat, veryFat, enormous, colossal, blob, leviathan: leviathan || blob });
 
 export const CLOTHING_FIT = {
   fall: seasonRow(
@@ -213,6 +215,7 @@ export const CLOTHING_FIT = {
     ["a custom wrap of fabric more tarp than outfit", "clothing more suggestion than coverage", "panels joined where buttons used to be"],
     ["fabric panels joined by hope", "draped layers over mass no rack was built for", "clothes in name only"],
     ["draped cloth that covers what clothing no longer can", "fabric organized around her rather than on her", "blankets and drape where outfits failed"],
+    ["no garment made for this — warmth arranged around her like landscape", "draped cloth that is more architecture than outfit", "the room provides what clothing cannot"],
   ),
   winter: seasonRow(
     ["a winter coat swallowing her whole", "thick layers hanging off narrow shoulders", "a coat with room enough for two of her"],
@@ -226,6 +229,7 @@ export const CLOTHING_FIT = {
     ["two coats worn like one, neither closing", "winter gear remade and failing again", "outerwear more tarp than coat"],
     ["blankets layered where coats failed", "winter fabric organized around her mass", "draped warmth because zippers are history"],
     ["blankets, because no coat was ever made for this", "warmth by arrangement not tailoring", "the room provides what clothing cannot"],
+    ["winter warmth arranged around impossible mass — fabric as draped heat", "no coat; only blankets and endless soft bulk", "clothing surrendered entirely to her size"],
   ),
   spring: seasonRow(
     ["light spring clothes fluttering on a slight frame", "a spring dress hanging straight", "layers light enough to forget she's wearing them"],
@@ -239,6 +243,7 @@ export const CLOTHING_FIT = {
     ["a dress remade twice and outgrown twice", "spring fabric organized around abundance", "clothing more architecture than outfit"],
     ["fabric panels joined by hope", "a spring wrap more banner than dress", "clothes that exist beside her body"],
     ["fabric panels joined by hope", "draped spring cloth", "the concept of a dress, applied loosely"],
+    ["spring fabric cannot — only draped abundance and warm endless folds", "clothes beside her rather than on her", "the concept of an outfit long abandoned"],
   ),
   summer: seasonRow(
     ["summer clothes hanging loosely on her narrow frame", "a tank top with room to spare", "light clothes on a slight body"],
@@ -252,8 +257,27 @@ export const CLOTHING_FIT = {
     ["summer clothes in name only — straps, panels, and surrender", "fabric that lost every negotiation"],
     ["draped summer cloth", "a wrap more flag than outfit", "clothing beside her rather than on her"],
     ["the concept of an outfit, applied loosely", "draped cloth and shade", "summer by arrangement not tailoring"],
+    ["summer by arrangement only — endless warmth, no garment sufficient", "draped shade over endless soft bulk", "fabric organized around her like weather"],
   ),
 };
+
+// Stage 11 body phrases (appended — impossibly vast, center of gravity, endless rolls)
+const LEVIATHAN_BODY = {
+  pear: ["hips so heavy they anchor the room", "lower-body warmth spreading in endless soft rolls", "pear curves that make the floorboards register"],
+  apple: ["a belly that is the room's warm center of gravity", "forward mass immobile, plush, and impossibly heavy", "gut cascading in heavy yielding folds"],
+  hourglass: ["curves stacked impossibly high and soft", "bust and hips merged into one warm endless landscape", "abundance above and below, barely mobile"],
+  athletic: ["power remembered under endless warm softness", "athletic breadth buried in heavy yielding flesh", "strength entombed in plush immobile mass"],
+  straight: ["even abundance in every direction, impossibly vast", "uniform softness spreading warm and heavy", "columnar mass that fills the room's attention"],
+  rotund: ["spherical warmth at a scale beyond furniture", "roundness so soft the room holds still around her", "a vast soft globe of yielding flesh"],
+  voluptuous: ["curves endless, warm, and pressing outward", "breasts and belly merged into one plush landscape", "voluptuous excess that jiggles when she breathes"],
+  mom_bod: ["maternal softness — the room's warm center", "pillowy abundance spilling in heavy rolls", "warm hips and belly past any ordinary chair"],
+  fertility_goddess: ["ripe curves vast, warm, and barely mobile", "breasts, belly, and hips in endless soft abundance", "fertility made flesh — heavy, spreading, indulgent"],
+  topHeavy: ["an upper body that outgrows everything below", "vast chest merged into endless soft warmth", "top-heavy plushness that tips her forward when she shifts"],
+  default: ["a body warm, endless, and impossibly heavy", "flesh at a scale that reorganizes the room", "immobile abundance — soft rolls, deep warmth, total presence"],
+};
+for (const [key, phrases] of Object.entries(LEVIATHAN_BODY)) {
+  if (BODY_WORDS[key]) BODY_WORDS[key].leviathan = phrases;
+}
 
 // ── fullness phrases by fullness/capacity ratio ───────────────
 
