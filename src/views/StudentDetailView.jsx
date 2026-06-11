@@ -120,6 +120,14 @@ export function StudentDetailView({ openWeighIn, addBlobToReligion, ap, ascendSt
                               {full}/{cap} fullness{(s.consumedCalories||0)>0&&<span> · {(s.consumedCalories||0).toLocaleString()} cal digesting (≈+{Math.round((s.consumedCalories||0)/3500)} lbs at week's end)</span>}
                               {(s.stuffedStreak||0)>0&&<span style={{color:"#e07030"}}> · {s.stuffedStreak}w stuffed streak</span>}
                             </div>
+                            {s.relationship>=CORRUPTION_CONFIG.revealRelationship&&(()=>{
+                              const ct=getCorruptionTier(s.corruption||0);
+                              return(
+                                <div style={{fontSize:10,marginTop:4,color:ct.color}}>
+                                  🕯️ Psyche: <b>{ct.label}</b> <span style={{color:"#705050"}}>— {ct.desc}</span>
+                                </div>
+                              );
+                            })()}
                           </div>
                         );
                       })()}

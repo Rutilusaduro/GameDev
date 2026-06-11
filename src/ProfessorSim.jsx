@@ -11,7 +11,8 @@ import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveContro
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
-import { GAIN_CONFIG, initGainStats, getWeeklyBurn, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
+import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
+import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_FEED_LINES, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
@@ -59,7 +60,7 @@ const INHABITED_PROFESSOR_PROFILE={name:"The Professor",subject:null,traits:[],o
 const SPIRIT_XP_PER_LEVEL=40;
 
 export default function ProfessorSim(){
-  const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({...st,...initGainStats(st)})));
+  const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({...st,...initGainStats(st),corruption:0})));
   const [ap,setAp]=useState(5);
   const [week,setWeek]=useState(1);
   const [view,setView]=useState("class");
@@ -313,6 +314,17 @@ export default function ProfessorSim(){
     return { newLbs:newLbs+bonusInfluence, oldStageId:oldSt, newStageId:newSt, narrativeEvents:triggered };
   };
 
+  // ── CORRUPTION: hidden psyche progression (general actions only) ──
+  const addCorruption=(s,amount)=>{
+    const before=getCorruptionTier(s.corruption||0).id;
+    const newC=Math.min(CORRUPTION_CONFIG.max,(s.corruption||0)+amount);
+    const after=getCorruptionTier(newC).id;
+    if(after>before&&CORRUPTION_TIER_UP_LINES[after]){
+      setTimeout(()=>push(`🕯️ ${CORRUPTION_TIER_UP_LINES[after](s)}`),200);
+    }
+    return newC;
+  };
+
   // ── STOMACH MODEL: feed calories + fullness instead of direct lbs ──
   // Returns the updated student, or null if she refused (over capacity).
   const feedStudentCalories=(s,calories,fullnessCost,extraRel=0,label="")=>{
@@ -320,7 +332,8 @@ export default function ProfessorSim(){
     const wouldExceed=(s.fullness||0)+fullnessCost>cap;
     let forced=false;
     if(wouldExceed){
-      const chance=forceFeedChance(s,fullnessCost,spiritLevel);
+      const corruptionBonus=Math.min(0.30,(s.corruption||0)*CORRUPTION_CONFIG.resistancePerPoint);
+      const chance=forceFeedChance(s,fullnessCost,spiritLevel)+corruptionBonus;
       if(Math.random()>=chance){
         const line=REFUSAL_LINES[rnd(0,REFUSAL_LINES.length-1)](s);
         push(`🚫 ${line}`);
@@ -332,10 +345,16 @@ export default function ProfessorSim(){
     }
     const scaledCals=Math.round(calories*(s.gainMultiplier||1)*skillGainMult);
     if(label) push(`🍽️ ${label} — ${s.name}: +${scaledCals.toLocaleString()} cal (fullness ${Math.min(999,(s.fullness||0)+fullnessCost)}/${cap})`);
+    if(Math.random()<CORRUPTION_CONFIG.dialogueChance){
+      const tier=getCorruptionTier(s.corruption||0);
+      const lines=CORRUPTION_FEED_LINES[tier.id];
+      setTimeout(()=>push(`💭 ${lines[rnd(0,lines.length-1)](s)}`),120);
+    }
     return {
       ...s,
       consumedCalories:(s.consumedCalories||0)+scaledCals,
       fullness:(s.fullness||0)+fullnessCost,
+      corruption:forced?addCorruption(s,CORRUPTION_CONFIG.perForceFeed):(s.corruption||0),
       relationship:Math.min(100,s.relationship+extraRel+(forced?1:0)),
     };
   };
@@ -426,6 +445,10 @@ export default function ProfessorSim(){
       if(s.id===LILITH_ID) return processStudentGain(s,LILITH_PASSIVE_GAIN,0); // Lilith only gains passively
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       let gain=rnd(1,3)+skillPassiveBonus; // passive + skill bonus
+      // Corruption-driven autonomous eating (willingness made flesh)
+      const cTier=getCorruptionTier(s.corruption||0).id;
+      if(cTier===1) gain+=rnd(CORRUPTION_CONFIG.tier2AutoLbs[0],CORRUPTION_CONFIG.tier2AutoLbs[1]);
+      if(cTier===2) gain+=rnd(CORRUPTION_CONFIG.tier3AutoLbs[0],CORRUPTION_CONFIG.tier3AutoLbs[1]);
       if(semEv) gain+=rnd(semEv.gain[0],semEv.gain[1]);
       if(randomEv){
         if(randomEv.target==="class") gain+=rnd(randomEv.gain[0],randomEv.gain[1]);
@@ -461,11 +484,22 @@ export default function ProfessorSim(){
       if(d.lbsGained>0||capacityGained>0){
         digestLines.push(`${ns.name} +${d.lbsGained} lbs${d.stuffed?" · stuffed all week":""}${capacityGained>0?` · capacity +${capacityGained}`:""}`);
       }
+      let corruption=ns.corruption||0;
+      if(d.stuffed) corruption=addCorruption({...ns,corruption},CORRUPTION_CONFIG.perStuffedWeek);
+      if(stagedUp) corruption=addCorruption({...ns,corruption},CORRUPTION_CONFIG.perStageUp);
+      let carriedFullness=0;
+      if(getCorruptionTier(corruption).id===2&&Math.random()<CORRUPTION_CONFIG.tier3SelfStuffChance){
+        carriedFullness=Math.round((growth.stomachCapacity+d.capacityGained)*1.15);
+        const autoLine=CORRUPTION_AUTO_LINES[rnd(0,CORRUPTION_AUTO_LINES.length-1)](ns);
+        setTimeout(()=>push(`💭 ${autoLine}`),250);
+      }
       return {...ns,
         stomachCapacity:growth.stomachCapacity+d.capacityGained,
         capacityChunkProgress:growth.capacityChunkProgress,
         stuffedStreak:d.stuffedStreak,
+        corruption,
         ...d.reset,
+        fullness:carriedFullness,
       };
     });
     if(digestLines.length) setTimeout(()=>push(`🧬 Digestion — ${digestLines.join(" · ")}`),150);
