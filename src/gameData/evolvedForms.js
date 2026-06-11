@@ -1,4 +1,15 @@
 import { getStage } from './stages.js';
+import {
+  CG_FILLED_REACTIONS,
+  CG_FILLED_DIARY,
+  CG_FILLED_OUTFITS,
+  CG_FILLED_CORKBOARD_SCENES,
+  CG_FILLED_SELF_REVIEW,
+  CG_FILLED_BINGE_SCENES,
+  CG_FILLED_CHAT_TEMPLATES,
+  CG_FILLED_MEASUREMENT_REACTIONS,
+  CG_PROFESSOR_REPLY_TEXT,
+} from './competitiveGainerText.js';
 
 export const EVOLVED_REACTIONS = {
   // ── ATHLETE paths ──────────────────────────────────────────────
@@ -112,14 +123,7 @@ export const EVOLVED_REACTIONS = {
     "What I started is permanent. My chapter grows. My body grows. Everything I built is real.",
   ],
   // ── OVERACHIEVER paths ──────────────────────────────────────────
-  competitive_gainer:[
-    "[CGReaction_S1]",
-    "[CGReaction_S2]",
-    "[CGReaction_S3]",
-    "[CGReaction_S4]",
-    "[CGReaction_S5]",
-    "[CGReaction_S6]",
-  ],
+  competitive_gainer: CG_FILLED_REACTIONS,
   // ── ARTSY paths ─────────────────────────────────────────────────
   installation_artist:[
     "First body-positive installation opened. One critic said 'challenging.' I consider that a win.",
@@ -161,6 +165,14 @@ export const EVOLVED_REACTIONS = {
     "Someone from class texted asking if I was okay. Said I was fine, just busy. This is accurate. I am busy. There's more to track than you'd think.",
     "The soup place messages me before I order now, to ask if I want the usual. I said yes. I like that the usual is a thing that exists. I like that they know.",
     "I've been here a long time. The room is the same. I'm different — softer, slower, more settled. The chair has accommodated me. I haven't wanted to be anywhere else.",
+  ],
+  delivery_hive:[
+    "[MayaHive_Reaction_MayaHeavy_CentralNest]",
+    "[MayaHive_Reaction_MayaFat_FirstRooms]",
+    "[MayaHive_Reaction_MayaVeryFat_HalfDorm]",
+    "[MayaHive_Reaction_MayaEnormous_QueenStillness]",
+    "[MayaHive_Reaction_MayaColossal_DormPulse]",
+    "[MayaHive_Reaction_MayaBlob_WholeHive]",
   ],
   // ── TRANSFER paths ──────────────────────────────────────────────
   campus_legend:[
@@ -357,14 +369,7 @@ export const EVOLVED_DIARY = {
     `The national organization changed the wellness guidance. Three sentences, in a footnote, in the appendix. My name was in one of those sentences. A footnote in a document that governs thousands of chapters. That is not nothing.`,
     `I built it. The culture lives in the chapter and in the chapters that modeled themselves on ours and in the pledges who become sisters who become alumnae who go out and change other things. I made something that makes things. That is enough.`,
   ],
-  competitive_gainer:[
-    `[CGDiary_S1]`,
-    `[CGDiary_S2]`,
-    `[CGDiary_S3]`,
-    `[CGDiary_S4]`,
-    `[CGDiary_S5]`,
-    `[CGDiary_S6]`,
-  ],
+  competitive_gainer: CG_FILLED_DIARY,
   installation_artist:[
     `First installation: a room. Mirrors, photographs of my body at each stage, audio of my voice describing what I saw in the mirror at each weight. The opening was quiet for three minutes. Then someone started talking and the conversation didn't stop.`,
     `Two galleries made offers for the next show. One is in another city. I am shipping the work and also shipping myself, which required a logistics conversation that I found genuinely funny and also slightly absurd. I am the largest thing in both shipments.`,
@@ -404,6 +409,14 @@ export const EVOLVED_DIARY = {
     `Someone from class texted asking if I was okay. Said fine, just busy. This is accurate. I am busy. The apartment is its own project — figuring out what I need, what I want, which places are best for which things. It takes time to get right. I'm getting it right.`,
     `The soup place messages me before I order to ask if I want the usual. The usual is: the soup, the bread, the thing with the rice that I'd forgotten existed until I tried it. I said yes. I like that the usual exists. I like that they know it.`,
     `I've been here a long time, by my standards. The room is familiar. I'm different — softer, heavier, more settled into this particular chair than I've ever been into anything. I haven't wanted to be anywhere else. I've stopped asking if that's something to fix.`,
+  ],
+  delivery_hive:[
+    "[MayaHive_Diary_MayaHeavy_CentralNest]",
+    "[MayaHive_Diary_MayaFat_VPChoice]",
+    "[MayaHive_Diary_MayaVeryFat_SofteningRooms]",
+    "[MayaHive_Diary_MayaEnormous_RoomGrid]",
+    "[MayaHive_Diary_MayaColossal_DormControl]",
+    "[MayaHive_Diary_MayaBlob_WholeBuilding]",
   ],
   campus_legend:[
     `The dining staff knows my order. They start preparing it when they see me cross the quad. The booth in the corner has been 'mine' for months in the informal sense that nobody sits in it when I'm coming. I appreciate the courtesy.`,
@@ -596,14 +609,7 @@ export const EVOLVED_OUTFITS = {
     "She dresses for the culture she's building. Intentional. Inclusive. Exactly as large as she is.",
     "Everything is custom. Everything fits. Everything says exactly what she wants it to say.",
   ],
-  competitive_gainer:[
-    "[CGOutfit_S1]",
-    "[CGOutfit_S2]",
-    "[CGOutfit_S3]",
-    "[CGOutfit_S4]",
-    "[CGOutfit_S5]",
-    "[CGOutfit_S6]",
-  ],
+  competitive_gainer: CG_FILLED_OUTFITS,
   installation_artist:[
     "Something she made herself — fabric, found materials, a garment that documents the body wearing it.",
     "Gallery opening attire that is itself a piece. Visitors aren't always sure where the show starts.",
@@ -643,6 +649,14 @@ export const EVOLVED_OUTFITS = {
     "Her warmest, widest set. She's stopped owning clothes that are for going out. They all look like this.",
     "The hoodie is enormous and warm and the pants don't require any decisions. This is the right system.",
     "She wears what's soft and accommodating and doesn't require thought. That's all. It fits perfectly.",
+  ],
+  delivery_hive:[
+    "Lavender lounge clothes, soft enough to vanish into the blankets while the first delivery bags gather around the desk.",
+    "A wide hoodie in pear-lavender tones, stretched comfortably over her lower-heavy body as the room grows warmer and more organized.",
+    "Layered blankets and custom lounge pieces arranged around the mass of her hips and thighs, less outfit than Central Nest uniform.",
+    "Soft draped fabric, wide enough to accommodate her stationary shape, threaded with little delivery pins and warm violet light.",
+    "An enormous lavender wrap and reinforced cushions; the clothes no longer suggest she will be leaving, only receiving.",
+    "What she wears is part blanket, part throne, part room. The Hive dresses around Maya now.",
   ],
   campus_legend:[
     "Her dining hall regular outfit — the clothes she's worn so often here that they're part of the myth.",
@@ -911,6 +925,7 @@ export const EVOLVED_ACTIVITY_META = {
   ranked_feedee:   { label:"🎮 Run a Session",          apCost:1, gainRange:[8,22], relBonus:12 },
   competitive_gainer:{ label:"📊 Check Her Progress",    apCost:1, gainRange:[10,50], relBonus:8 },
   home_nest:       { label:"🍜 Order In",                apCost:1, gainRange:[6,15], relBonus:9  },
+  delivery_hive:   { label:"🕸️ Manage Delivery Hive",    apCost:1, gainRange:[8,20], relBonus:10 },
   chapter_hostess: { label:"Attend Wednesday Feast",   apCost:1, gainRange:[5,10], relBonus:11 },
   body_positive_greek:{ label:"Attend Chapter Event",  apCost:1, gainRange:[2,5],  relBonus:12 },
   installation_artist:{ label:"View the Installation", apCost:1, gainRange:[2,5],  relBonus:12 },
@@ -3417,6 +3432,7 @@ export const EVOLVED_FORM_META = {
   psych_researcher:     { title:"The Researcher",        color:"#6b5b95" },
   ranked_feedee:        { title:"Ranked Feedee",          color:"#1a6a9a" },
   home_nest:            { title:"Home Nest",              color:"#4a6a4a" },
+  delivery_hive:         { title:"Delivery Hive Queen",    color:"#d98cff" },
   cultivator:           { title:"The Cultivator",         color:"#8B4513" },
   community_researcher: { title:"Community Researcher",    color:"#4a6fa5" },
 };
@@ -3496,6 +3512,7 @@ export const EVOLUTION_OFFER = {
     intro:(s)=>`${s.name} doesn't leave a note. She's just there when you arrive — in your office, in the chair, very still. She doesn't explain how she got in. 'I've been mostly at home,' she says. 'I've stopped going out. The food comes.' She looks at her hands. 'I think I want someone to know that's a choice. I think I want someone to help me make it properly.'`,
     paths:{
       home_nest: { label:"Home Nest", desc:"She's building something warm and self-contained. Delivery orders, refined preferences, a room arranged around exactly what she needs. The outside world is optional now." },
+      delivery_hive: { label:"Delivery Hive Queen", desc:"Her room becomes the Central Nest: a soft lavender territory-control system where delivery recruits, conquered dorm rooms, Vice Queens, and your gluttony-spirit pressure turn the whole building toward Maya." },
     },
   },
   transfer:{
@@ -3559,6 +3576,7 @@ export const ASCENSION_BRIDGE = {
   state_fair_queen: (s)=>`${s.name} is looking at the photo from the last invitational — her at the scale, the number, Darcy starting to clap. She touches the edge of it carefully. 'I've eaten through every bracket,' she says. 'Every category, every division. They stopped being able to contain me in a class.' She's quiet for a long moment. 'I think the circuit is done. The circuit gave me everything it had.' She looks up. 'Now something gives me everything it has.' She sounds certain. She is.`,
   psych_researcher: (s)=>`${s.name} closes the research notebook for the last time — the original one, the one with the methodology she wrote on the first day and has been rewriting ever since. She holds it in both hands. 'The study documented what happened to the subject,' she says. 'It also documented what happened to me. The two arcs are inseparable.' She looks at you. 'The notebook ran out of room. The study ran out of categories. The subject exceeded what methodology can contain.' A long pause. 'So did I.' She sets the notebook down. 'I think the goddess has been one of my data points all along.'`,
   home_nest:(s)=>`${s.name} doesn't call — she texts, which is how she communicates now. The message says: 'can you come here.' No question mark. You come. She's in her chair, in her room, and she looks as settled as anyone you've seen — rooted, warm, comfortable in a way that's grown into the space around her. 'I've been thinking,' she says, 'about where here goes.' She looks at the window she doesn't open anymore. 'I think the goddess has been in this room. I think she's been in the walls.' She looks back at you. 'I think it's time to let her in properly.'`,
+  delivery_hive:(s)=>`${s.name} does not ask you to come to the Central Nest. The Hive arranges it: a delivery notification, a hallway that smells warm and sweet, a door already open. She is at the center of the room and the rooms beyond it, quiet and immense and certain. 'It spreads when I stop trying to move,' she says. 'I think the goddess taught me that.' The walls feel lavender-warm. The building feels hungry. Maya looks at you and waits for permission to stop being only herself.`,
   ranked_feedee: (s)=>`${s.name} doesn't look up from the screen when she says it. 'Rae said something to me.' She pauses the game — which you've never seen her do without the session being over. 'She said she's been watching what's happening to me and that she's proud.' Her voice is carefully flat. 'I've been thinking about what that means.' She looks at her hands on the controller. She's enormous. She's been enormous for a while. 'I think I've run out of sessions,' she says. 'Or sessions have run out of what they can hold. Something like that.' A long silence. 'Rae said: you've leveled past the game.' She puts the controller down. 'Yeah,' she says. 'I think that's right.'`,
   cultivator: (s)=>`${s.name} closes the last session log — the one from the third cycle, the final harvest, the end of the process — and sits with it for a long moment. 'Three subjects,' she says. 'All completed. The data is done.' She looks at her hands, which are large now, considerably larger than when this started. She looks at the empty kitchen. 'I've been eating the quality-control portions this whole time,' she says, as if telling you something you don't already know. 'Every session. I told myself it was methodology.' A long pause. 'It wasn't methodology.' She sets the log down. 'The goddess has been watching the sessions, I think. I think she's been in the kitchen every time.' She looks up. 'I think she wants to be fed something final. Something significant.' She doesn't look afraid. She looks entirely ready.`,
   community_researcher:(s)=>`${s.name} closes the dissertation binder — final print, the one going to the committee — and holds it for a moment. 'Six months,' she says. 'Four case studies. Sixty thousand words on the sociology of it, and twenty thousand on what happened to me in the process.' She looks at her hands. 'My committee said the methodology was unorthodox. I told them it was immersive.' She sets the binder down. 'I think there's a level deeper than the dissertation. I think the goddess has been a participant in my study all along.' A long, quiet pause. 'I'd like to document what happens next.'`,
@@ -5359,14 +5377,7 @@ export const CG_CONFIG = {
   categories: ["waist","bust","hip","thigh","arm"],
 };
 
-// Placeholder corkboard scenes — Grok fills in prose
-// Each tier has 2 variant scenes (cycled round-robin)
-export const CG_CORKBOARD_SCENES = {
-  Invested:  ["[CorkboardScene_Invested_A]",  "[CorkboardScene_Invested_B]"  ],
-  Driven:    ["[CorkboardScene_Driven_A]",    "[CorkboardScene_Driven_B]"    ],
-  Frenzied:  ["[CorkboardScene_Frenzied_A]",  "[CorkboardScene_Frenzied_B]"  ],
-  Ruthless:  ["[CorkboardScene_Ruthless_A]",  "[CorkboardScene_Ruthless_B]"  ],
-};
+export const CG_CORKBOARD_SCENES = CG_FILLED_CORKBOARD_SCENES;
 
 // Placeholder measurement-session scenes — Grok fills in prose
 // Indexed as: MeasurementScenes[targetWeightStageName][priyaRelation] where
@@ -5374,68 +5385,43 @@ export const CG_CORKBOARD_SCENES = {
 export const CG_MEASUREMENT_SCENES = {
   // scene prose for each girl being measured
   scene:"[MeasurementScene_{name}_S{stage}]",
-  // Per-measurement-category reaction snippets
-  reactions:{
-    priya_larger: "[MeasureReaction_PriyaLarger_{category}]",
-    priya_smaller:"[MeasureReaction_PriyaSmaller_{category}]",
-    priya_equal:  "[MeasureReaction_PriyaEqual_{category}]",
-  },
-  // Self-review scene per spirit tier
-  selfReview:{
-    Invested: "[SelfReview_Invested]",
-    Driven:   "[SelfReview_Driven]",
-    Frenzied: "[SelfReview_Frenzied]",
-    Ruthless: "[SelfReview_Ruthless]",
-  },
+  reactions: CG_FILLED_MEASUREMENT_REACTIONS,
+  selfReview: CG_FILLED_SELF_REVIEW,
 };
 
-// Binge scenes — Grok fills in prose
-export const CG_BINGE_SCENES = {
-  Invested: "[BingeScene_Invested]",
-  Driven:   "[BingeScene_Driven]",
-  Frenzied: "[BingeScene_Frenzied]",
-  Ruthless: "[BingeScene_Ruthless]",
-};
+export const CG_BINGE_SCENES = CG_FILLED_BINGE_SCENES;
 
 // Group chat templates — Grok fills in prose
 // Template strings may contain {priyaWeight}, {priyaWaist}, {priyaBust}, etc.
 export const CG_CHAT_TEMPLATES = {
   // Priya's opening post per spirit tier
-  priyaPost:{
-    Invested:  "[PriyaChatPost_Invested]",
-    Driven:    "[PriyaChatPost_Driven]",
-    Frenzied:  "[PriyaChatPost_Frenzied]",
-    Ruthless:  "[PriyaChatPost_Ruthless]",
-  },
+  priyaPost: CG_FILLED_CHAT_TEMPLATES.priyaPost,
   // Priya's follow-up after seeing replies
-  priyaFollowup:{
-    leading:    "[PriyaFollowup_Leading]",
-    threatened: "[PriyaFollowup_Threatened]",
-  },
+  priyaFollowup: CG_FILLED_CHAT_TEMPLATES.priyaFollowup,
   // Per-girl reply templates. Each girl has 5 reply types.
   // reply type selected by: girl's lbs vs Priya's lbs + whether measured
   girls:{
-    Brittany:  { ahead:"[Brit_Ahead]",   behind:"[Brit_Behind]",   close:"[Brit_ThighsClose]", proud:"[Brit_Proud]",   unmeasured:"[Brit_Unmeasured]"   },
-    Madeline:  { ahead:"[Mad_Ahead]",    behind:"[Mad_Behind]",    close:"[Mad_Close]",         proud:"[Mad_Proud]",    unmeasured:"[Mad_Unmeasured]"    },
-    Kylie:     { ahead:"[Kyl_Ahead]",    behind:"[Kyl_Behind]",    close:"[Kyl_BreastsClose]",  proud:"[Kyl_Proud]",    unmeasured:"[Kyl_Unmeasured]"    },
-    Serena:    { ahead:"[Ser_Ahead]",    behind:"[Ser_Behind]",    close:"[Ser_Close]",          proud:"[Ser_Proud]",    unmeasured:"[Ser_Unmeasured]"    },
-    Fiona:     { ahead:"[Fio_Ahead]",    behind:"[Fio_Behind]",    close:"[Fio_Close]",          proud:"[Fio_Proud]",    unmeasured:"[Fio_Unmeasured]"    },
-    Destiny:   { ahead:"[Des_Ahead]",    behind:"[Des_Behind]",    close:"[Des_Close]",          proud:"[Des_Proud]",    unmeasured:"[Des_Unmeasured]"    },
-    Tiffany:   { ahead:"[Tif_Ahead]",    behind:"[Tif_Behind]",    close:"[Tif_Close]",          proud:"[Tif_Proud]",    unmeasured:"[Tif_Unmeasured]"    },
-    Maya:      { ahead:"[May_Ahead]",    behind:"[May_Behind]",    close:"[May_Close]",          proud:"[May_Proud]",    unmeasured:"[May_Unmeasured]"    },
-    Nadia:     { ahead:"[Nad_Ahead]",    behind:"[Nad_Behind]",    close:"[Nad_Close]",          proud:"[Nad_Proud]",    unmeasured:"[Nad_Unmeasured]"    },
-    Kaylee:    { ahead:"[Kay_Ahead]",    behind:"[Kay_Behind]",    close:"[Kay_Close]",          proud:"[Kay_Proud]",    unmeasured:"[Kay_Unmeasured]"    },
-    Renee:     { ahead:"[Ren_Ahead]",    behind:"[Ren_Behind]",    close:"[Ren_Close]",          proud:"[Ren_Proud]",    unmeasured:"[Ren_Unmeasured]"    },
-    Daisy:     { ahead:"[Dai_Ahead]",    behind:"[Dai_Behind]",    close:"[Dai_Close]",          proud:"[Dai_Proud]",    unmeasured:"[Dai_Unmeasured]"    },
-    MaryJane:  { ahead:"[MJ_Ahead]",     behind:"[MJ_Behind]",     close:"[MJ_Close]",           proud:"[MJ_Proud]",     unmeasured:"[MJ_Unmeasured]"     },
-    Lilith:    { ahead:"[Lil_Ahead]",    behind:"[Lil_Behind]",    close:"[Lil_Close]",          proud:"[Lil_Proud]",    unmeasured:"[Lil_Unmeasured]"    },
+    Brittany:  { ahead:"Thigh column says you still have work to do, Priya. I am not apologizing for winning there.", behind:"Fine, your numbers are bigger this week. I am saving this message for later.", close:"My thighs are close enough that you should probably underline them in red.", proud:"Solid gains on my end. The board can acknowledge that.", unmeasured:"Measure me properly before you start celebrating too hard." },
+    Madeline:  { ahead:"For accuracy: at least one of my figures currently exceeds yours. I recommend updating the board.", behind:"Your lead is statistically meaningful. Annoying, but meaningful.", close:"The margin is narrow enough to be interesting. I would not call that comfortable.", proud:"My trend line remains positive. That is the part I care about.", unmeasured:"Unmeasured data should not be treated as absence of data." },
+    Kylie:     { ahead:"Bust numbers say hi. Cute board though.", behind:"Okay, your whole scoreboard thing is getting kind of scary.", close:"Some of us are still close in the categories that photograph best.", proud:"Posted a progress pic and the comments noticed. Just saying.", unmeasured:"If you want my numbers, book a session. I need good lighting." },
+    Serena:    { ahead:"Category lead is category lead. I will take the win.", behind:"You are ahead. I see it. I train better with a target.", close:"Close enough to make this competitive, which is the only interesting version.", proud:"My gains are efficient. That still counts.", unmeasured:"No official measurement, no official bragging rights." },
+    Fiona:     { ahead:"The body is making its own argument today. Apparently mine has a footnote over yours.", behind:"Your scale is becoming the dominant shape of the composition.", close:"The numbers are nearly touching. That tension is visually useful.", proud:"I am changing in a way the board does not fully capture.", unmeasured:"You cannot compare what you have not observed." },
+    Destiny:   { ahead:"Leaderboard says I am up in at least one stat. Screenshotting.", behind:"Your build is overtuned right now. Respectfully, nerf incoming never.", close:"Gap is small. I am calling that contested territory.", proud:"Slow grind, visible results. Patch notes look good.", unmeasured:"Unranked until measured. I know how ladders work." },
+    Tiffany:   { ahead:"How interesting. One of my columns is still above yours.", behind:"Your presentation of the data is very persuasive, Priya. Irritating, but persuasive.", close:"That margin is too narrow for you to sound that confident.", proud:"My progress is elegant and measurable. Both matter.", unmeasured:"Invite me to the measurement session and I will consider the board official." },
+    Maya:      { ahead:"Mine is bigger there.", behind:"You are ahead.", close:"Close.", proud:"Growing.", unmeasured:"You can measure if you want." },
+    Nadia:     { ahead:"Threat response noted. I am curious what you do with it.", behind:"Your dominance language is increasing alongside the measurements. Useful correlation.", close:"Near parity produces excellent behavior from you.", proud:"My numbers are moving in a predictable direction.", unmeasured:"Unmeasured subjects often reveal the most when finally measured." },
+    Kaylee:    { ahead:"Looks like I am ahead in one place. Do not skip dinner over it - add dessert.", behind:"You are doing beautifully, Priya. The board shows it.", close:"Close numbers can be motivating if you use them kindly. Or intensely. Your choice.", proud:"Steady progress here. Healthy appetite, steady gains.", unmeasured:"Happy to help with a proper measurement session when you want one." },
+    Reneé:     { ahead:"One category ahead? That calls for a recipe adjustment.", behind:"Your numbers are rich, Priya. Very full-bodied results.", close:"Close margins need better ingredients. I can help with that.", proud:"My test batches are showing up on the board, as they should.", unmeasured:"Measure after dessert. Before dessert would be bad methodology." },
+    Daisy:     { ahead:"Looks like I am still ahead there, honey. You can catch up with a proper meal plan.", behind:"You are growing so well. I hope you are eating enough to support that lead.", close:"A close number just means we should make sure everyone is fed.", proud:"My numbers are coming along. Warm food works.", unmeasured:"I do not mind being measured, but eat first." },
+    "Mary Jane": { ahead:"Well, would you look at that. One of mine is still bigger.", behind:"You are outgrowing the board, Priya. That is a compliment.", close:"Close enough that I would add another helping if I were you.", proud:"Been eating well. Numbers usually follow.", unmeasured:"Measure me after supper if you want the honest version." },
+    Lilith:    { ahead:"A larger number is such a small kind of hunger. Still, mine is larger.", behind:"Enjoy your lead. I enjoy watching what it makes you do.", close:"So close. I can feel how much that bothers you.", proud:"Growth is a useful appetite. Yours is loud.", unmeasured:"Some measurements are safer not taken until you are ready." },
   },
   // Professor reply choices (4 options, each nudges spirit)
   professorReplies:[
-    { id:"encourage",  label:"You're clearly in the lead",   text:"[ProfReply_Encourage]",  spiritDelta:2 },
-    { id:"taunt",      label:"Point out a rival",            text:"[ProfReply_Taunt]",       spiritDelta:3 },
-    { id:"observe",    label:"Just observe the numbers",     text:"[ProfReply_Observe]",     spiritDelta:1 },
-    { id:"challenge",  label:"Challenge her to close a gap", text:"[ProfReply_Challenge]",   spiritDelta:2 },
+    { id:"encourage", ...CG_PROFESSOR_REPLY_TEXT.encourage },
+    { id:"taunt", ...CG_PROFESSOR_REPLY_TEXT.taunt },
+    { id:"observe", ...CG_PROFESSOR_REPLY_TEXT.observe },
+    { id:"challenge", ...CG_PROFESSOR_REPLY_TEXT.challenge },
   ],
 };
 

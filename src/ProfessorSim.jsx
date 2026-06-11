@@ -7,6 +7,8 @@ import { GOSSIP } from './gameData/gossip.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS } from './gameData/classEvents.js';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
+import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
+import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
@@ -19,6 +21,7 @@ import { MoodBadge } from './components/ui.jsx';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
 import { CompetitiveGainerChatModal, CompetitiveGainerMainModal } from './components/CompetitiveGainerModals.jsx';
+import { MayaHiveModal } from './components/MayaHiveModal.jsx';
 import { EatingContestModal } from './components/EatingContestModal.jsx';
 import { SumoMatchModal } from './components/SumoMatchModal.jsx';
 import { CollabStreamModal } from './components/CollabStreamModal.jsx';
@@ -187,10 +190,12 @@ export default function ProfessorSim(){
   // wifeLessonsState: persistent {mjStudentId,stage,daughters:{Emma,Chloe,Kezia,Lila},moms:{Darlene,Wanda,Patrice},session:null|{lessonChosen,conversationState,log}}
   // session.conversationState: null|{person,stageEntry,optionIdx,subIdx,done,resultText}
   const [competitiveGainerState, setCompetitiveGainerState] = useState(null);
-  // competitiveGainerState: persistent {priyaStudentId,spirit,chatLog:[{text,isProf,wk}],measuredStudentIds:[],lastChatWeek,corkboardVisitCount,open,view,subState}
+  // competitiveGainerState: persistent {priyaStudentId,spirit,chatLog:[{text,isProf,wk}],measuredStudentIds:[],measuredComparisons:{},lastChatWeek,corkboardVisitCount,open,view,subState}
   // view: null|'corkboard'|'measurement_picker'|'measurement_result'|'self_review'|'binge'
   // subState: result/scene data for the current view
   const [cgChatOpen, setCgChatOpen] = useState(false);
+  const [mayaHiveState, setMayaHiveState] = useState(null);
+  // mayaHiveState: persistent Delivery Hive grid/task state for Maya's delivery_hive evolved form
   const [rankedFeedeeState, setRankedFeedeeState] = useState(null);
   // rankedFeedeeState: {studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log:[],done,endReason,raeDelivered}
   const [chapterHostessState, setChapterHostessState] = useState(null);
@@ -721,6 +726,20 @@ export default function ProfessorSim(){
         return{...prev,chatLog:[...prev.chatLog,...msgs],lastChatWeek:newWeek};
       });
     }
+    const mayaHive=updated.find(s=>s.evolvedForm==='delivery_hive');
+    if(mayaHive){
+      setMayaHiveState(prev=>{
+        if(!prev) return createInitialHiveState(mayaHive.id);
+        const rooms=getHiveControl(prev.rooms);
+        const trickle=Math.max(1,Math.round(rooms*0.55));
+        return {
+          ...prev,
+          hiveBiomass:prev.hiveBiomass+trickle,
+          spiritResonance:prev.spiritResonance+Math.max(1,Math.floor(rooms/6)),
+          log:[{tag:"[MayaHive_WeeklyTrickle]",text:`The conquered rooms feed the Central Nest between classes. +${trickle} Biomass.`,type:"system"},...prev.log].slice(0,40),
+        };
+      });
+    }
   };
 
   // ── DIVINE ACTION FUNCTIONS ─────────────────────────────────────
@@ -988,6 +1007,12 @@ export default function ProfessorSim(){
         thesisApproved:false, thesisRejected:false, finalReviewText:null,
       });
     }
+    if(formId==='competitive_gainer'&&s){
+      setCompetitiveGainerState(prev=>prev||initCompetitiveGainerState(s));
+    }
+    if(formId==='delivery_hive'&&s){
+      setMayaHiveState(prev=>prev||createInitialHiveState(s.id));
+    }
   };
 
   const doEvolvedActivity=(s)=>{
@@ -1018,6 +1043,13 @@ export default function ProfessorSim(){
       if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
       setAp(a=>a-meta.apCost);
       openCompetitiveGainerModal(s);
+      return;
+    }
+    if(s.evolvedForm==='delivery_hive'){
+      const meta=EVOLVED_ACTIVITY_META['delivery_hive']; if(!meta) return;
+      if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
+      setAp(a=>a-meta.apCost);
+      openMayaHive(s);
       return;
     }
     if(s.evolvedForm==='state_fair_queen'){
@@ -1261,6 +1293,59 @@ export default function ProfessorSim(){
     return CG_CONFIG.spiritTiers.find(t=>spirit>=t.min&&spirit<=t.max)||CG_CONFIG.spiritTiers[0];
   };
 
+  const getCGStageKey=(lbs)=>{
+    const idx=Math.max(0,Math.min(CG_STAGE_KEYS.length-1,getStage(lbs).id-5));
+    return CG_STAGE_KEYS[idx];
+  };
+
+  const formatCGText=(text,vars={})=>{
+    if(!text) return "";
+    return String(text).replace(/\{(\w+)\}/g,(_,key)=>vars[key]??`{${key}}`);
+  };
+
+  const initCompetitiveGainerState=(s)=>({
+    priyaStudentId:s.id,
+    spirit:0,
+    chatLog:[],
+    measuredStudentIds:[],
+    measuredComparisons:{},
+    lastChatWeek:week,
+    corkboardVisitCount:0,
+  });
+
+  const bodypartLabel=(cat)=>cat==="hip"?"hips":cat==="bust"?"bust":cat==="thigh"?"thighs":cat==="arm"?"arms":cat;
+
+  const buildCGComparisonPools=(cgState,allStudents=students)=>{
+    const priya=allStudents.find(s=>s.id===cgState?.priyaStudentId);
+    if(!priya) return {larger:[],close:[],smaller:[]};
+    const priyaM={...getMeasurements(priya.lbs,priya.bodyType),weight:Math.round(priya.lbs)};
+    const ids=(cgState?.measuredStudentIds||[]).length?cgState.measuredStudentIds:allStudents.filter(s=>s.id!==priya.id&&!s.hidden).map(s=>s.id);
+    const pools={larger:[],close:[],smaller:[]};
+    ids.forEach(id=>{
+      const target=allStudents.find(s=>s.id===id);
+      if(!target||target.id===priya.id||(target.hidden&&!lilithUnlocked)) return;
+      const targetM={...getMeasurements(target.lbs,target.bodyType),weight:Math.round(target.lbs)};
+      [...CG_CONFIG.categories,"weight"].forEach(cat=>{
+        const pVal=priyaM[cat];
+        const tVal=targetM[cat];
+        if(!pVal||!tVal) return;
+        const item={studentId:target.id,girlName:target.name,bodypart:bodypartLabel(cat),category:cat,priyaValue:pVal,targetValue:tVal};
+        if(tVal>pVal*(1+CG_CONFIG.threatFraction)) pools.larger.push(item);
+        else if(tVal>=pVal*(1-CG_CONFIG.threatFraction)) pools.close.push(item);
+        else pools.smaller.push(item);
+      });
+    });
+    return pools;
+  };
+
+  const pickCGComparison=(cgState,optId)=>{
+    const pools=buildCGComparisonPools(cgState);
+    const threatPool=[...pools.larger,...pools.close];
+    const source=(optId==="taunt"||optId==="challenge")?threatPool:pools.smaller;
+    if(source.length===0) return null;
+    return source[Math.floor(Math.random()*source.length)];
+  };
+
   // ── WIFE LESSONS handlers ─────────────────────────────────────────
 
   const _wlCheckStageAdvance=(state)=>{
@@ -1400,44 +1485,48 @@ export default function ProfessorSim(){
   // Chat message generator — called on week advance and on manual chat check
   const generateCGChatMessages=(priya,allStudents,cgState,currentWeek)=>{
     const tier=getCGSpiritTier(cgState.spirit);
+    const stageKey=getCGStageKey(priya.lbs);
     const msgs=[];
     const priyaM=getMeasurements(priya.lbs,priya.bodyType);
     // Priya's opening post
-    const postTemplate=CG_CHAT_TEMPLATES.priyaPost[tier.label]||CG_CHAT_TEMPLATES.priyaPost.Invested;
+    const postTemplate=CG_CHAT_TEMPLATES.priyaPost[stageKey]?.[tier.label]||CG_CHAT_TEMPLATES.priyaPost.Heavy?.Invested;
     msgs.push({text:`[Priya] ${postTemplate} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isProf:false,wk:currentWeek});
-    // Select 2-4 visible students (not Priya) weighted by proximity + measured status
+    // Select 3-5 visible students weighted by measurement history and threat proximity.
     const visible=allStudents.filter(s=>s.id!==priya.id&&(!s.hidden||s.id===15));
-    const candidates=visible.slice().sort(()=>Math.random()-0.5).slice(0,4);
+    const candidates=visible
+      .map(s=>{
+        const measured=cgState.measuredStudentIds.includes(s.id);
+        const m=getMeasurements(s.lbs,s.bodyType);
+        const threatScore=CG_CONFIG.categories.reduce((acc,cat)=>acc+(m[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)?2:0),0);
+        return {s,score:(measured?4:0)+threatScore+Math.random()};
+      })
+      .sort((a,b)=>b.score-a.score)
+      .slice(0,Math.min(5,Math.max(3,visible.length)))
+      .map(x=>x.s);
     let threatDetected=false;
     candidates.forEach(s=>{
       const templates=CG_CHAT_TEMPLATES.girls[s.name]||CG_CHAT_TEMPLATES.girls.Brittany;
       const measured=cgState.measuredStudentIds.includes(s.id);
-      const sLbs=s.lbs;
+      const sM=getMeasurements(s.lbs,s.bodyType);
       let replyType;
       if(!measured) replyType='unmeasured';
-      else if(sLbs>priya.lbs*1.05) { replyType='ahead'; threatDetected=true; }
-      else if(sLbs>priya.lbs*0.95) { replyType='close'; threatDetected=true; }
-      else if(sLbs>priya.lbs*0.80)  replyType='proud';
+      else if(CG_CONFIG.categories.some(cat=>sM[cat]>priyaM[cat]*(1+CG_CONFIG.threatFraction))||s.lbs>priya.lbs*1.05) { replyType='ahead'; threatDetected=true; }
+      else if(CG_CONFIG.categories.some(cat=>sM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction))||s.lbs>priya.lbs*0.95) { replyType='close'; threatDetected=true; }
+      else if(s.lbs>priya.lbs*0.80)  replyType='proud';
       else replyType='behind';
       const replyText=templates[replyType]||templates.behind||'...';
       msgs.push({text:`[${s.name}] ${replyText}`,isProf:false,wk:currentWeek});
     });
     // Priya follow-up
     const followupKey=threatDetected?'threatened':'leading';
-    msgs.push({text:`[Priya] ${CG_CHAT_TEMPLATES.priyaFollowup[followupKey]}`,isProf:false,wk:currentWeek});
+    const followup=CG_CHAT_TEMPLATES.priyaFollowup[followupKey]?.[tier.label]||"The board is updated.";
+    msgs.push({text:`[Priya] ${followup}`,isProf:false,wk:currentWeek});
     return msgs;
   };
 
   const openCompetitiveGainerModal=(s)=>{
     setCompetitiveGainerState(prev=>{
-      const base=prev||{
-        priyaStudentId:s.id,
-        spirit:0,
-        chatLog:[],
-        measuredStudentIds:[],
-        lastChatWeek:week,
-        corkboardVisitCount:0,
-      };
+      const base=prev||initCompetitiveGainerState(s);
       return{...base,priyaStudentId:s.id,open:true,view:null,subState:null};
     });
   };
@@ -1468,15 +1557,24 @@ export default function ProfessorSim(){
           });
         });
       }
-      return{...prev,spirit:prev.spirit+spiritGain,corkboardVisitCount:(prev.corkboardVisitCount||0)+1,view:'corkboard',subState:{sceneText,spiritGain}};
+      const nextSpirit=prev.spirit+spiritGain;
+      const priyaNow=students.find(st=>st.id===prev.priyaStudentId);
+      const chatMsgs=priyaNow?generateCGChatMessages(priyaNow,students,{...prev,spirit:nextSpirit},week):[];
+      return{...prev,spirit:nextSpirit,corkboardVisitCount:(prev.corkboardVisitCount||0)+1,chatLog:[...prev.chatLog,...chatMsgs],lastChatWeek:week,view:'corkboard',subState:{sceneText,spiritGain}};
     });
   };
 
   const doCGSelfReview=()=>{
     setCompetitiveGainerState(prev=>{
       if(!prev) return prev;
+      const priya=students.find(s=>s.id===prev.priyaStudentId);
+      if(!priya) return prev;
       const tier=getCGSpiritTier(prev.spirit);
-      const sceneText=CG_MEASUREMENT_SCENES.selfReview[tier.label]||CG_MEASUREMENT_SCENES.selfReview.Invested;
+      const stageKey=getCGStageKey(priya.lbs);
+      const entry=CG_MEASUREMENT_SCENES.selfReview[stageKey]?.[tier.label]||CG_MEASUREMENT_SCENES.selfReview.Heavy.Invested;
+      const priyaM=getMeasurements(priya.lbs,priya.bodyType);
+      const focus=entry.focus||"waist";
+      const sceneText=formatCGText(entry.text||entry,{measurement:priyaM[focus]??Math.round(priya.lbs), measurementCategory:bodypartLabel(focus), priyaWeight:Math.round(priya.lbs)});
       const spiritGain=rnd(2,5);
       return{...prev,spirit:prev.spirit+spiritGain,view:'self_review',subState:{sceneText,spiritGain}};
     });
@@ -1497,12 +1595,13 @@ export default function ProfessorSim(){
       // Determine threats by category
       const threats=[];
       const reactions={};
+      const tier=getCGSpiritTier(prev.spirit);
       CG_CONFIG.categories.forEach(cat=>{
         let rel='priya_larger';
         if(targetM[cat]>priyaM[cat]*(1+CG_CONFIG.threatFraction)){rel='priya_smaller';threats.push(cat);}
         else if(targetM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)){rel='priya_equal';threats.push(cat);}
-        const tKey=`[MeasureReaction_${rel==='priya_larger'?'PriyaLarger':rel==='priya_smaller'?'PriyaSmaller':'PriyaEqual'}_${cat}]`;
-        reactions[cat]={rel,text:tKey};
+        const template=CG_MEASUREMENT_SCENES.reactions?.[rel]?.[tier.label]?.[cat]||`[MeasureReaction_${rel}_${cat}_${tier.label}]`;
+        reactions[cat]={rel,text:formatCGText(template,{targetName:target.name, girlName:target.name, bodypart:bodypartLabel(cat)})};
       });
       const spiritGain=threats.length>0
         ? threats.length*rnd(CG_CONFIG.spiritGainThreat[0],CG_CONFIG.spiritGainThreat[1])
@@ -1511,7 +1610,8 @@ export default function ProfessorSim(){
       const newMeasured=prev.measuredStudentIds.includes(targetStudentId)
         ? prev.measuredStudentIds
         : [...prev.measuredStudentIds,targetStudentId];
-      return{...prev,spirit:prev.spirit+spiritGain,measuredStudentIds:newMeasured,
+      const measuredComparisons={...(prev.measuredComparisons||{}),[targetStudentId]:{week,priyaM,targetM,reactions,threats}};
+      return{...prev,spirit:prev.spirit+spiritGain,measuredStudentIds:newMeasured,measuredComparisons,
         view:'measurement_result',
         subState:{targetStudentId,priyaM,targetM,sceneText,reactions,threats,spiritGain}};
     });
@@ -1529,7 +1629,8 @@ export default function ProfessorSim(){
       const baseGain=CG_CONFIG.minBinge+(CG_CONFIG.maxBinge-CG_CONFIG.minBinge)*Math.min(1,(stageId-1)/6);
       const mult=CG_CONFIG.bingeSpiritMults[Math.max(0,tierIdx)];
       const gain=Math.round(baseGain*mult*(0.85+Math.random()*0.30));
-      const sceneText=CG_BINGE_SCENES[tier.label]||CG_BINGE_SCENES.Invested;
+      const stageKey=getCGStageKey(priya.lbs);
+      const sceneText=CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
       return{...prev,view:'binge',subState:{gain,sceneText,done:false}};
     });
   };
@@ -1552,8 +1653,145 @@ export default function ProfessorSim(){
     if(!opt) return;
     setCompetitiveGainerState(prev=>{
       if(!prev) return prev;
-      const msg={text:`[You] ${opt.text}`,isProf:true,wk:week};
+      const priya=students.find(s=>s.id===prev.priyaStudentId);
+      const stageKey=priya?getCGStageKey(priya.lbs):"Heavy";
+      const comparison=pickCGComparison(prev,optId);
+      const template=comparison?(opt.byStage?.[stageKey]||opt.fallback):opt.fallback;
+      const text=formatCGText(template,{
+        girlName:comparison?.girlName||"the class",
+        bodypart:comparison?.bodypart||"measurements",
+        priyaValue:comparison?.priyaValue,
+        targetValue:comparison?.targetValue,
+      });
+      const msg={text:`[You] ${text}`,isProf:true,wk:week};
       return{...prev,spirit:prev.spirit+opt.spiritDelta,chatLog:[...prev.chatLog,msg]};
+    });
+  };
+
+  // ── MAYA DELIVERY HIVE handlers ─────────────────────────────────
+  const openMayaHive=(s)=>{
+    setMayaHiveState(prev=>{
+      const base=prev||createInitialHiveState(s.id);
+      return {...base,mayaStudentId:s.id,open:true,view:"main",subState:null};
+    });
+  };
+
+  const closeMayaHive=()=>{
+    setMayaHiveState(prev=>prev?{...prev,open:false,view:"main",subState:null}:prev);
+  };
+
+  const chooseHiveVP=(vpId)=>{
+    const opt=HIVE_VPS[vpId];
+    if(!opt) return;
+    if(opt.studentId===15&&!lilithUnlocked){push("⚠️ Lilith is not available yet.");return;}
+    setMayaHiveState(prev=>{
+      if(!prev) return prev;
+      if(prev.vpId===vpId) return {...prev,view:"main"};
+      const switching=!!prev.vpId;
+      const cost=switching?25:0;
+      if(prev.hiveBiomass<cost){
+        push(`⚠️ Need ${cost} Hive Biomass to change VP.`);
+        return prev;
+      }
+      const tag=makeHiveTag("VPChoice",{mayaStage:"Any",vpId,rooms:getHiveControl(prev.rooms),bmiTier:getHiveBmiTier(prev.avgBmi),task:"vp",roomId:prev.selectedRoomId});
+      push(`🕸️ Maya names ${opt.name} Vice Queen.`);
+      return {
+        ...prev,
+        vpId,
+        hiveBiomass:prev.hiveBiomass-cost,
+        view:"main",
+        log:[{tag,text:`${opt.name} moves into the Central Nest as Vice Queen. ${opt.passive}`,type:"vp"},...prev.log].slice(0,40),
+      };
+    });
+  };
+
+  const adjustHiveAssignment=(taskId,delta)=>{
+    setMayaHiveState(prev=>{
+      if(!prev) return prev;
+      const current=prev.assignments[taskId]||0;
+      const assigned=Object.values(prev.assignments).reduce((a,b)=>a+b,0);
+      if(delta>0&&assigned>=prev.members) return prev;
+      const nextValue=Math.max(0,current+delta);
+      return {...prev,assignments:{...prev.assignments,[taskId]:nextValue}};
+    });
+  };
+
+  const executeMayaHiveShift=()=>{
+    setMayaHiveState(prev=>{
+      if(!prev) return prev;
+      const maya=students.find(s=>s.id===prev.mayaStudentId);
+      if(!maya) return prev;
+      const assigned=Object.values(prev.assignments).reduce((a,b)=>a+b,0);
+      if(assigned>prev.members){push("⚠️ Too many Hive members assigned.");return prev;}
+      const next=executeHiveShift(prev,{mayaStageId:getStage(maya.lbs).id});
+      const mayaGain=Math.max(2,Math.round((next.lastShift?.biomassGain||0)*0.32+getHiveControl(next.rooms)*0.2));
+      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,mayaGain,4):s));
+      push(`🕸️ Maya — Delivery Hive Shift: +${mayaGain} lbs · Dorm Control ${Math.round((getHiveControl(next.rooms)/24)*100)}%`);
+      return {...next,lastShift:{...next.lastShift,mayaGain}};
+    });
+  };
+
+  const doMayaHiveVisit=()=>{
+    setMayaHiveState(prev=>{
+      if(!prev) return prev;
+      const maya=students.find(s=>s.id===prev.mayaStudentId);
+      if(!maya) return prev;
+      const mayaStage=getStage(maya.lbs).label.replace(/\s+/g,"");
+      const bmiTier=getHiveBmiTier(prev.avgBmi);
+      const rooms=getHiveControl(prev.rooms);
+      const tag=makeHiveTag("CentralNestVisit",{mayaStage,vpId:prev.vpId||"none",bmiTier,rooms,task:"professor",roomId:prev.selectedRoomId});
+      const gain=Math.round(8+getStage(maya.lbs).id*1.5+prev.hiveBiomass/35);
+      const biomass=Math.round(gain*0.8);
+      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,gain,6):s));
+      push(`🕸️ Maya — Central Nest Visit: +${gain} lbs`);
+      return {
+        ...prev,
+        hiveBiomass:prev.hiveBiomass+biomass,
+        spiritResonance:prev.spiritResonance+3,
+        view:"visit",
+        subState:{tag,gain,biomass,text:`${tag} The professor brings tribute directly to the Central Nest. Maya's quiet gravity accepts it, and the Hive records the warmth.`},
+        log:[{tag,text:"Professor-directed feeding at the Central Nest.",type:"scene"},...prev.log].slice(0,40),
+      };
+    });
+  };
+
+  const doMayaHivePhoto=()=>{
+    setMayaHiveState(prev=>{
+      if(!prev) return prev;
+      const maya=students.find(s=>s.id===prev.mayaStudentId);
+      const mayaStage=maya?getStage(maya.lbs).label.replace(/\s+/g,""):"Unknown";
+      const bmiTier=getHiveBmiTier(prev.avgBmi);
+      const rooms=getHiveControl(prev.rooms);
+      const tag=makeHiveTag("HiveStatePhoto",{mayaStage,vpId:prev.vpId||"none",bmiTier,rooms,task:"observation",roomId:prev.selectedRoomId});
+      return {
+        ...prev,
+        spiritResonance:prev.spiritResonance+1,
+        view:"photo",
+        subState:{tag,text:`${tag} Maya documents the Hive: conquered rooms, delivery routes, soft bodies, and the faint gluttony-spirit pressure visible in every lavender-lit corner.`},
+        log:[{tag,text:"Hive State observation archived.",type:"photo"},...prev.log].slice(0,40),
+      };
+    });
+  };
+
+  const doMayaHiveAbsorb=()=>{
+    setMayaHiveState(prev=>{
+      if(!prev||prev.vpId!=="lilith"||prev.members<=1) return prev;
+      const maya=students.find(s=>s.id===prev.mayaStudentId);
+      if(!maya) return prev;
+      const rooms=getHiveControl(prev.rooms);
+      const mayaStage=getStage(maya.lbs).label.replace(/\s+/g,"");
+      const bmiTier=getHiveBmiTier(prev.avgBmi);
+      const gain=Math.round(22+getStage(maya.lbs).id*4+rooms*1.5);
+      const tag=makeHiveTag("LilithAbsorption",{mayaStage,vpId:"lilith",bmiTier,rooms,task:"absorb",roomId:prev.selectedRoomId});
+      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,gain,3):s));
+      push(`🌑 Maya's Hive absorbs a devotee: +${gain} lbs`);
+      return {
+        ...prev,
+        members:prev.members-1,
+        hiveBiomass:prev.hiveBiomass+gain,
+        spiritResonance:prev.spiritResonance+6,
+        log:[{tag,text:"Lilith guides one devotee into Maya's stored biomass.",type:"absorb"},...prev.log].slice(0,40),
+      };
     });
   };
 
@@ -5395,6 +5633,9 @@ export default function ProfessorSim(){
 
       {/* ── COMPETITIVE GAINER — MAIN EVOLVED MODAL ── */}
       {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal}/>}
+
+      {/* ── MAYA DELIVERY HIVE — TERRITORY MANAGEMENT MODAL ── */}
+      {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive}/>}
 
       {/* ── EATING CONTEST MINI-GAME MODAL ── */}
       {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup}/>}
