@@ -4,6 +4,7 @@ import { COMPOUNDS } from '../gameData/pharmacist.js';
 export function CompoundFeedModal({
   student,
   unlockedCompoundIds = [],
+  compoundInventory = {},
   feedLabel,
   onConfirm,
   onCancel,
@@ -31,7 +32,10 @@ export function CompoundFeedModal({
               style={{ ...C.btn('#1a3848'), width: '100%', textAlign: 'left' }}
               onClick={() => onConfirm(c.id)}
             >
-              <div style={{ fontWeight: 700, color: '#90d8c8', marginBottom: 4 }}>{c.label}</div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 4 }}>
+                <span style={{ fontWeight: 700, color: '#90d8c8' }}>{c.label}</span>
+                <span style={{ fontSize: 10, color: '#68a888' }}>×{compoundInventory[c.id] ?? 0} doses</span>
+              </div>
               <div style={{ fontSize: 11, color: '#88a0a0', lineHeight: 1.5, fontStyle: 'italic' }}>{c.flavor}</div>
             </button>
           ))}

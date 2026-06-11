@@ -82,6 +82,51 @@ export function compoundsForStage(stage) {
   return Object.values(COMPOUNDS).filter(c => c.stage <= stage);
 }
 
+export const SYNTHESIS_YIELD_BY_STAGE = {
+  1: { doses: 2, pickFromStage: 1 },
+  2: { doses: 3, pickFromStage: 2 },
+  3: { doses: 4, pickFromStage: 3 },
+  4: { doses: 5, pickFromStage: 4 },
+};
+
+export const PHARMACIST_EXPOSURE_EVENTS = [
+  {
+    id: 'wellness_audit',
+    minExposure: 28,
+    scrutiny: 2,
+    exposureDelta: -5,
+    text: () => `Corporate wellness flags an irregular batch in Sophia's division. She talks her way through a polite audit — formulas adjusted, logs rewritten. Exposure simmers down, but someone is watching now.`,
+  },
+  {
+    id: 'curious_colleague',
+    minExposure: 45,
+    scrutiny: 3,
+    exposureDelta: -8,
+    text: () => `A lab colleague asks why Sophia's appetite compounds keep disappearing from inventory. She blames "pilot trials." He nods slowly. The nod is not entirely convinced.`,
+  },
+  {
+    id: 'near_miss',
+    minExposure: 62,
+    scrutiny: 5,
+    exposureDelta: -12,
+    text: () => `Security almost opens Sophia's after-hours synthesis locker. She is one badge swipe away from catastrophe — then a fire drill scatters everyone. She exhales for a full minute in the stairwell.`,
+  },
+  {
+    id: 'corporate_review',
+    minExposure: 78,
+    scrutiny: 7,
+    exposureDelta: -18,
+    text: () => `HR schedules a "wellness ethics" review. Sophia wears her most innocent cardigan and brings homemade cookies. The review ends inconclusively. Her hands shake in the parking garage afterward.`,
+  },
+  {
+    id: 'crisis_averted',
+    minExposure: 92,
+    scrutiny: 4,
+    exposureDelta: -30,
+    text: () => `A near-disclosure forces Sophia to torch a batch and blame equipment failure. Corporate is furious; campus distribution pauses one week. She survives — barely — and the compounds that remain feel infinitely more precious.`,
+  },
+];
+
 export function defaultPharmacistState() {
   return {
     stage: 1,
@@ -90,6 +135,75 @@ export function defaultPharmacistState() {
     campusFattening: false,
     cultActive: false,
     unlockedCompounds: compoundsForStage(1).map(c => c.id),
+    compoundInventory: { appetite_stimulant: 2, mild_pleasure: 1 },
+    exposureEventsTriggered: [],
+    synthesisPausedWeeks: 0,
+  };
+}
+
+export function getCompoundStock(state, compoundId) {
+  return state?.compoundInventory?.[compoundId] ?? 0;
+}
+
+export function getStockedCompoundIds(state) {
+  if (!state?.compoundInventory) return [];
+  return Object.entries(state.compoundInventory)
+    .filter(([, qty]) => qty > 0)
+    .map(([id]) => id)
+    .filter(id => (state.unlockedCompounds || []).includes(id));
+}
+
+export function consumeCompoundDose(state, compoundId) {
+  const qty = getCompoundStock(state, compoundId);
+  if (qty <= 0) return state;
+  return {
+    ...state,
+    compoundInventory: {
+      ...state.compoundInventory,
+      [compoundId]: qty - 1,
+    },
+  };
+}
+
+/** Home synthesis: each session brews doses into the player's compound stash. */
+export function grantSynthesisYield(state, stageId) {
+  const cfg = SYNTHESIS_YIELD_BY_STAGE[stageId] || SYNTHESIS_YIELD_BY_STAGE[1];
+  const pool = compoundsForStage(cfg.pickFromStage).map(c => c.id);
+  const inv = { ...state.compoundInventory };
+  const granted = [];
+  for (let i = 0; i < cfg.doses; i++) {
+    const id = pool[Math.floor(Math.random() * pool.length)];
+    inv[id] = (inv[id] || 0) + 1;
+    granted.push(id);
+  }
+  return { compoundInventory: inv, lastSynthesisGrant: granted };
+}
+
+export function rollExposureEvent(prevState, nextState) {
+  const prev = prevState.exposureRisk ?? 0;
+  const next = nextState.exposureRisk ?? 0;
+  const triggered = new Set(prevState.exposureEventsTriggered || []);
+  for (const ev of PHARMACIST_EXPOSURE_EVENTS) {
+    if (triggered.has(ev.id)) continue;
+    if (prev < ev.minExposure && next >= ev.minExposure) {
+      return ev;
+    }
+  }
+  if (next >= 40 && Math.random() < 0.12) {
+    return PHARMACIST_EXPOSURE_EVENTS.find(e => e.id === 'curious_colleague' && !triggered.has(e.id))
+      || PHARMACIST_EXPOSURE_EVENTS.find(e => e.id === 'wellness_audit' && !triggered.has(e.id))
+      || null;
+  }
+  return null;
+}
+
+export function applyExposureEvent(state, event) {
+  if (!event) return state;
+  return {
+    ...state,
+    exposureRisk: Math.max(0, Math.min(100, (state.exposureRisk ?? 0) + (event.exposureDelta ?? 0))),
+    exposureEventsTriggered: [...(state.exposureEventsTriggered || []), event.id],
+    synthesisPausedWeeks: event.id === 'crisis_averted' ? 1 : (state.synthesisPausedWeeks ?? 0),
   };
 }
 
@@ -188,8 +302,28 @@ export function runPharmacistActivity(state, stageId) {
   next.exposureRisk = Math.min(100, (next.exposureRisk ?? 0) + act.exposure);
   if (act.unlockCampusFattening) next.campusFattening = true;
   if (act.unlockCult) next.cultActive = true;
+  const yieldResult = grantSynthesisYield(next, stageId);
+  next = { ...next, ...yieldResult };
   next = maybeAdvancePharmacistStage(next);
   return next;
+}
+
+export function tickPharmacistWeek(state) {
+  if (!state) return state;
+  let next = { ...state };
+  if ((next.synthesisPausedWeeks ?? 0) > 0) {
+    next.synthesisPausedWeeks = next.synthesisPausedWeeks - 1;
+  }
+  return next;
+}
+
+export function formatSynthesisGrant(grantedIds = []) {
+  if (!grantedIds.length) return '';
+  const counts = {};
+  grantedIds.forEach(id => { counts[id] = (counts[id] || 0) + 1; });
+  return Object.entries(counts)
+    .map(([id, n]) => `${COMPOUNDS[id]?.label || id}${n > 1 ? ` ×${n}` : ''}`)
+    .join(', ');
 }
 
 export const PHARMACIST_EVOLUTION_INTRO = (s) =>

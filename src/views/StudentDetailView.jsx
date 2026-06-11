@@ -9,7 +9,7 @@ import { INNER_CIRCLE_TIERS, getTier } from '../gameData/sessions.js';
 import { LILITH_ID } from '../gameData/lilith.js';
 import { RECRUITMENT_SCENE, TESTER_APPEARANCE } from '../gameData/cultivator.js';
 import { getAttitude, getBodyDesc, getDiary, getOutfit } from '../utils/gameHelpers.js';
-import { COMPOUNDS, PHARMACIST_STAGES } from '../gameData/pharmacist.js';
+import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
 import { getAddictionLevel, getHungerTier, HUNGER_TIERS, ADDICTION_LEVELS } from '../gameData/hungerAddiction.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
@@ -315,7 +315,9 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                           const ps=pharmacistState;
                           const green="#2e6b5a";
                           const stageMeta=PHARMACIST_STAGES.find(x=>x.id===ps.stage);
+                          const act=PHARMACIST_ACTIVITIES[ps.stage]||PHARMACIST_ACTIVITIES[1];
                           const actLabel=stageMeta?.label||'Chemist';
+                          const stocked=(ps.unlockedCompounds||[]).filter(id=>(ps.compoundInventory?.[id]??0)>0);
                           return(
                             <div style={{background:"rgba(8,30,22,0.6)",border:`1px solid ${green}80`,borderRadius:10,padding:12}}>
                               <div style={{fontSize:9,letterSpacing:3,color:green,marginBottom:4}}>🧪 EVOLVED PATH</div>
@@ -324,12 +326,29 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                                 Exposure {ps.exposureRisk}% · Sessions {ps.sessionsRun||0}
                                 {ps.campusFattening?" · Campus effect active":""}
                                 {ps.cultActive?" · Cult supply active":""}
+                                {(ps.synthesisPausedWeeks||0)>0?` · Synthesis paused ${ps.synthesisPausedWeeks}w`:""}
                               </div>
-                              <div style={{fontSize:9,color:"#406858",marginBottom:8}}>
-                                Compounds: {(ps.unlockedCompounds||[]).map(id=>COMPOUNDS[id]?.label||id).join(", ")}
+                              <div style={{fontSize:9,color:"#406858",marginBottom:6}}>Home lab stash:</div>
+                              <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:8}}>
+                                {(ps.unlockedCompounds||[]).map(id=>{
+                                  const qty=ps.compoundInventory?.[id]??0;
+                                  return(
+                                    <span key={id} style={{...C.tag(qty>0?"rgba(46,107,90,0.25)":"rgba(40,40,40,0.4)",qty>0?"#8ad4b0":"#666"),fontSize:8}}>
+                                      {COMPOUNDS[id]?.label||id} ×{qty}
+                                    </span>
+                                  );
+                                })}
                               </div>
-                              <button style={{...C.btn(green),width:"100%",opacity:ap<1?0.4:1}} onClick={()=>runPharmacistSynthesis(s)}>
-                                🧪 Run Synthesis Session (1 AP)
+                              {stocked.length===0&&(
+                                <div style={{fontSize:9,color:"#a07050",fontStyle:"italic",marginBottom:8}}>
+                                  Stash empty — brew a batch to lace feeds.
+                                </div>
+                              )}
+                              <div style={{fontSize:9,color:"#406858",marginBottom:8,lineHeight:1.5}}>
+                                {act.desc}
+                              </div>
+                              <button style={{...C.btn(green),width:"100%",opacity:ap<(act.apCost||1)?0.4:1}} onClick={()=>runPharmacistSynthesis(s)}>
+                                {act.label||"🧪 Run Synthesis Session"} ({act.apCost||1} AP)
                               </button>
                             </div>
                           );
