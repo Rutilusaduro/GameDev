@@ -132,7 +132,6 @@ export default function ProfessorSim(){
   // {student, phase:"scene"|"analog"|"break"|"purchase"|"swap"|"digital"}
   const [bigScaleUnlocked,setBigScaleUnlocked]=useState(false);
   const [brokeScaleIds,setBrokeScaleIds]=useState([]);
-  // {student, phase:"scene"|"scale"}
   const [sessionLog,setSessionLog]=useState([]);
   const [pendingDoubleDowns,setPendingDoubleDowns]=useState([]);
   // ── DIVINE EXPANSION STATE ─────────────────────────────────────
@@ -5369,7 +5368,6 @@ export default function ProfessorSim(){
         onBreakScale={(sid)=>setBrokeScaleIds(arr=>arr.includes(sid)?arr:[...arr,sid])}
         onUnlockBigScale={()=>{ setBigScaleUnlocked(true); push("⚖ Ordered a heavy-duty 1000 lb scale."); }}
       />}
-      {weighInState&&<WeighInModal weighInState={weighInState} setWeighInState={setWeighInState}/>}
 
       {/* ── SESSION RESULT ── */}
       {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}
