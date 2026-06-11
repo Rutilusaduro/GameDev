@@ -24,7 +24,7 @@ export function AchievementsView({ achievements }){
   );
 }
 
-export function DivinePanel({ addBlobToReligion, ap, ascendStudent, celestialMassBless, celestialMassPull, celestialMassPush, consumedStudents, divineCelestialCanPullHR, divineRiteBlobMult, divineUmbralCanConsumeHR, doPrimordialRite, doSanguineAction, doSingularityRite, doVerdantAction, foundReligion, holdRite, hrObserver, recoverConsumedStudent, religion, sanguineMarks, students, umbralConsumeHR, umbralConsumeStudent, umbralVoidPull, vaughan, verdantCultivations }){
+export function DivinePanel({ addBlobToReligion, ap, ascendStudent, celestialMassBless, celestialMassPull, celestialMassPush, consumedStudents, divineRiteBlobMult, doPrimordialRite, doSanguineAction, doSingularityRite, doVerdantAction, foundReligion, holdRite, recoverConsumedStudent, religion, sanguineMarks, students, umbralConsumeStudent, umbralVoidPull, verdantCultivations }){
             const ascended=students.filter(s=>s.ascensionPath&&s.ascensionPath!=="convergence"&&s.ascensionPath!=="primordial");
             const celestials=ascended.filter(s=>s.ascensionPath==="celestial");
             const umbrals=ascended.filter(s=>s.ascensionPath==="umbral");
@@ -96,19 +96,6 @@ export function DivinePanel({ addBlobToReligion, ap, ascendStudent, celestialMas
                                 <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,80,0.4)"}} onClick={()=>celestialMassBless(s.id,t.id)}>✦Bless {t.name.split(" ")[0]}</button>
                               </span>
                             ))}
-                            {divineCelestialCanPullHR&&hrObserver&&(
-                              <span style={{display:"flex",gap:2}}>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(30,60,100,0.5)"}} onClick={()=>celestialMassPull(s.id,"hr")}>↓Pull {hrObserver.name.split(" ")[1]||hrObserver.name}</button>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"hr")}>↑Push {hrObserver.name.split(" ")[1]||hrObserver.name}</button>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"hr")}>✦Bless {hrObserver.name.split(" ")[1]||hrObserver.name}</button>
-                              </span>
-                            )}
-                            {divineCelestialCanPullHR&&vaughan&&(
-                              <span style={{display:"flex",gap:2}}>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"vaughan")}>↑Push Vaughan</button>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"vaughan")}>✦Bless Vaughan</button>
-                              </span>
-                            )}
                           </div>
                         </div>
                       );
@@ -151,9 +138,6 @@ export function DivinePanel({ addBlobToReligion, ap, ascendStudent, celestialMas
                                 <button style={{...C.smBtn,fontSize:9,background:"rgba(80,0,0,0.5)"}} onClick={()=>umbralConsumeStudent(s.id,t.id)}>🌑Consume {t.name.split(" ")[0]}</button>
                               </span>
                             ))}
-                            {divineUmbralCanConsumeHR&&(hrObserver||vaughan)&&(
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(90,0,0,0.7)"}} onClick={()=>umbralConsumeHR(s.id)}>🌑Consume HR</button>
-                            )}
                           </div>
                         </div>
                       );

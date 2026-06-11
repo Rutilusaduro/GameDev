@@ -394,8 +394,8 @@ export const DIVINE_SKILL_TREE = [
     desc:"Each rite reduces admin scrutiny by 2.",
     cost:2, requires:["divine_presence"], passiveBonus:0, apBonus:0, gainMult:0, riteScrutinyReduce:2 },
   { id:"mass_transfer_mastery", tier:3, category:"divine", label:"Mass Transfer Mastery",
-    desc:"Celestial transfer amounts +50%. Can now pull mass from HR Observer.",
-    cost:3, requires:["celestial_favour"], passiveBonus:0, apBonus:0, gainMult:0, celestialTransferBonus:0.50, celestialCanPullHR:true },
+    desc:"Celestial transfer amounts +50%.",
+    cost:3, requires:["celestial_favour"], passiveBonus:0, apBonus:0, gainMult:0, celestialTransferBonus:0.50 },
   { id:"void_appetite",         tier:3, category:"divine", label:"Void Appetite",
     desc:"Umbral blobs gain +3 lbs/week from the void. Consumed students begin to merge.",
     cost:3, requires:["umbral_hunger"], passiveBonus:0, apBonus:0, gainMult:0, umbralVoidPassive:3 },
@@ -405,12 +405,9 @@ export const DIVINE_SKILL_TREE = [
   { id:"celestial_halo",        tier:4, category:"divine", label:"Celestial Halo",
     desc:"Celestial Apex students reduce scrutiny by 5/week through divine radiance.",
     cost:3, requires:["mass_transfer_mastery"], passiveBonus:0, apBonus:0, gainMult:0, celestialApexHeal:5 },
-  { id:"umbral_maw",            tier:4, category:"divine", label:"Umbral Maw",
-    desc:"Umbral blobs can now consume HR Observer and Vaughan (+35% scrutiny, full absorption).",
-    cost:3, requires:["void_appetite"], passiveBonus:0, apBonus:0, gainMult:0, umbralCanConsumeHR:true },
   { id:"the_great_work",        tier:5, category:"divine", label:"The Great Work",
     desc:"All divine mechanics fully amplified. +2 passive lbs/all. +1 AP/week. The goddess approves.",
-    cost:5, requires:["celestial_halo","congregation","umbral_maw"], passiveBonus:2, apBonus:1, gainMult:0.08 },
+    cost:5, requires:["celestial_halo","congregation","void_appetite"], passiveBonus:2, apBonus:1, gainMult:0.08 },
 ];
 
 export const EVOLVED_SKILL_TREES = {

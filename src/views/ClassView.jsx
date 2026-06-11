@@ -1,103 +1,17 @@
 // ═══════════════════════════════════════════════════════════════
-// CLASS VIEW — HR observer card, Vaughan card, class roster
+// CLASS VIEW — class roster
 // ═══════════════════════════════════════════════════════════════
 import { C } from '../styles.js';
 import { getStage } from '../gameData/stages.js';
-import { getHrDispLevel, getHrDispDesc, getTier } from '../gameData/sessions.js';
+import { getTier } from '../gameData/sessions.js';
 import { EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
 import { CELESTIAL_STAGES, UMBRAL_STAGES, SANGUINE_STAGES, VERDANT_STAGES, GODDESS_STAGES, GODDESS_ATTITUDE, getGoddessStage, ASCENSION_STAGE_REACTIONS, SANGUINE_REACTIONS, VERDANT_REACTIONS, CONVERGENCE_STAGE } from '../gameData/ascension.js';
 import { STAGE_REACTIONS } from '../gameData/content.js';
-import { rnd, getEvolvedReaction } from '../utils/gameHelpers.js';
+import { getEvolvedReaction } from '../utils/gameHelpers.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function ClassView({ view, hrObserver, vaughan, vaughanAlly, ap, feedObserver, talkToObserver, students, lilithUnlocked, avgLbs, setSelectedId, setView }){
+export function ClassView({ view, students, lilithUnlocked, avgLbs, setSelectedId, setView }){
   return(<>
-          {/* ── HR OBSERVER CARD ── */}
-          {hrObserver&&view==="class"&&(()=>{
-            const dl=getHrDispLevel(hrObserver.disposition);
-            const st=getStage(hrObserver.lbs);
-            return(
-              <div style={{background:"rgba(60,10,10,0.35)",border:`1px solid ${dl.color}40`,borderRadius:10,padding:12,marginBottom:14}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                  <div>
-                    <span style={{fontSize:13,fontWeight:700,color:dl.color}}>{hrObserver.name}</span>
-                    <span style={{fontSize:10,color:"#805060",marginLeft:8,letterSpacing:1}}>HR OBSERVER · {hrObserver.lbs} lbs · {st.label}</span>
-                  </div>
-                  <span style={{fontSize:10,fontWeight:700,color:dl.color,background:`${dl.color}25`,borderRadius:8,padding:"2px 8px"}}>{dl.label}</span>
-                </div>
-                <div style={{position:"relative",height:5,background:"rgba(255,255,255,0.07)",borderRadius:3,marginBottom:8}}>
-                  <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:3,background:dl.color,width:`${hrObserver.disposition}%`,transition:"width 0.4s"}}/>
-                  <div style={{position:"absolute",left:"65%",top:-1,height:7,width:2,background:"rgba(255,255,255,0.3)",borderRadius:1}}/>
-                </div>
-                <div style={{fontSize:11,color:"#907090",lineHeight:1.6,marginBottom:8,fontStyle:"italic"}}>{getHrDispDesc(hrObserver)}</div>
-                <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                  <button style={C.btn("#5a1030")} onClick={()=>feedObserver(rnd(2,5),8)}>🍽️ Offer her something (free)</button>
-                  <button style={{...C.btn("#3a1060"),opacity:ap<1?0.4:1}} onClick={talkToObserver}>💬 Discuss pedagogy (1 AP, +12 disp)</button>
-                  {hrObserver.disposition>=65&&<span style={{fontSize:11,color:"#40c060",alignSelf:"center"}}>✓ Will intervene at termination</span>}
-                </div>
-              </div>
-            );
-          })()}
-
-          {/* ── VAUGHAN CARD ── */}
-          {vaughan&&view==="class"&&(()=>{
-            const vSt=getStage(vaughan.lbs);
-            return(
-              <div style={{background:"rgba(10,30,50,0.45)",border:`1px solid ${vaughanAlly?"#30905050":"#20405060"}`,borderRadius:10,padding:12,marginBottom:14}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                  <div>
-                    <span style={{fontSize:13,fontWeight:700,color:vaughanAlly?"#50c080":"#4080a0"}}>{vaughan.name}</span>
-                    <span style={{fontSize:10,color:"#3a5060",marginLeft:8,letterSpacing:1}}>{vaughan.dept} · {vaughan.lbs} lbs · {vSt.label}</span>
-                  </div>
-                  <span style={{fontSize:10,fontWeight:700,color:vaughanAlly?"#50c080":"#c05040",background:vaughanAlly?"rgba(30,80,30,0.35)":"rgba(70,15,15,0.35)",borderRadius:8,padding:"2px 8px"}}>
-                    {vaughanAlly?"ALLY":"RIVAL"}
-                  </span>
-                </div>
-                {!vaughanAlly&&(
-                  <div>
-                    <div style={{display:"flex",gap:10,marginBottom:6}}>
-                      <div style={{flex:1}}>
-                        <div style={{fontSize:9,color:"#405060",letterSpacing:1,marginBottom:2}}>SUSPICION</div>
-                        <div style={{position:"relative",height:4,background:"rgba(255,255,255,0.07)",borderRadius:2}}>
-                          <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:2,transition:"width 0.4s",
-                            background:vaughan.suspicion>=80?"#c03030":vaughan.suspicion>=50?"#c06020":"#406080",
-                            width:`${vaughan.suspicion}%`}}/>
-                        </div>
-                        <div style={{fontSize:9,color:"#506070",marginTop:1}}>{vaughan.suspicion}/100</div>
-                      </div>
-                      <div style={{flex:1}}>
-                        <div style={{fontSize:9,color:"#405060",letterSpacing:1,marginBottom:2}}>DISPOSITION</div>
-                        <div style={{position:"relative",height:4,background:"rgba(255,255,255,0.07)",borderRadius:2}}>
-                          <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:2,transition:"width 0.4s",
-                            background:vaughan.disposition>=40?"#40c070":"#607090",
-                            width:`${vaughan.disposition}%`}}/>
-                          <div style={{position:"absolute",left:"40%",top:-1,height:6,width:2,background:"rgba(255,255,255,0.25)",borderRadius:1}}/>
-                        </div>
-                        <div style={{fontSize:9,color:"#506070",marginTop:1}}>{vaughan.disposition}/40 needed</div>
-                      </div>
-                    </div>
-                    <div style={{fontSize:10,color:"#4a6070",lineHeight:1.55,fontStyle:"italic"}}>
-                      {vaughan.disposition>=40&&vaughan.lbs>=162?"She is close to letting this go entirely."
-                      :vaughan.suspicion>=80?"She knows. One confrontation away from a crisis — or an alliance."
-                      :vaughan.suspicion>=50?"She's been asking questions. Feed her at social events to shift her perspective."
-                      :"She's noticed something. Not sure what yet."}
-                    </div>
-                    {vaughan.disposition>=40&&vaughan.lbs<162&&(
-                      <div style={{fontSize:9,color:"#40806050",marginTop:3}}>
-                        Ally trigger: {162-vaughan.lbs} lbs to go — host events she attends to help her gain.
-                      </div>
-                    )}
-                  </div>
-                )}
-                {vaughanAlly&&(
-                  <div style={{fontSize:11,color:"#4a9060",lineHeight:1.65,fontStyle:"italic"}}>
-                    She files favorable reports and covers for you with HR. Scrutiny reduced by 3/week.
-                  </div>
-                )}
-              </div>
-            );
-          })()}
-
           {/* ── CLASS ROSTER ── */}
           {view==="class"&&(
             <div>

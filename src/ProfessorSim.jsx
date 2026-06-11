@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { CELESTIAL_STAGES, UMBRAL_STAGES, CONVERGENCE_STAGE, SINGULARITY_ABSORPTION_TEXT, SINGULARITY_REACTIONS, SINGULARITY_TAP_OUT, SINGULARITY_RANDOM_EVENTS, SINGULARITY_ACTION_TEXT, SINGULARITY_ACTIONS, TRIUMVIRATE_REACTION, TRIUMVIRATE_ACTIONS, TRIUMVIRATE_ACTION_TEXT, CELESTIAL_PULL_AMOUNTS, CELESTIAL_PUSH_AMOUNTS, CELESTIAL_BLESS_AMOUNTS, UMBRAL_CONSUME_CHANCE, UMBRAL_ABSORB_RATE, UMBRAL_VOID_PULL_AMOUNTS, UMBRAL_ABSORB_TEXT, CELESTIAL_ACTION_TEXT, UMBRAL_ACTION_TEXT, RELIGION_RITE_TEXT, SINGULARITY_RITE_TEXT, SANGUINE_STAGES, SANGUINE_REACTIONS, SANGUINE_ACTIONS, SANGUINE_ACTION_TEXT, VERDANT_STAGES, VERDANT_REACTIONS, VERDANT_ACTIONS, VERDANT_ACTION_TEXT, PRIMORDIAL_ABSORPTION_TEXT, PRIMORDIAL_REACTIONS, PRIMORDIAL_RANDOM_EVENTS, PRIMORDIAL_ACTIONS, PRIMORDIAL_ACTION_TEXT, PRIMORDIAL_TRIUMVIRATE_REACTION, PRIMORDIAL_TRIUMVIRATE_ACTIONS, PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT, getGoddessStage, GODDESS_STAGE_REACTIONS, GODDESS_EXPLORE_TEXT, GODDESS_PRACTICAL_TEXT, GODDESS_ACTIONS, INCARNATION_EVENT_TEXT } from './gameData/ascension.js';
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL } from './gameData/intimacy.js';
-import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, DIVINE_PAIR_REACTIONS, UNBUTTON_LINES, PROF_SUBJECTS, PROF_TRAITS, ADMIN_EVENTS, STUDY_SCENES, STUDY_SCENE_DEFAULT, HR_FEED_LINES, HR_TALK_LINES, getTier, TIER_SCENES, VAUGHAN_BASE, VAUGHAN_EVENTS, VAUGHAN_WEIGHT_SCENES, VAUGHAN_ALLY_SCENE, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
+import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, DIVINE_PAIR_REACTIONS, UNBUTTON_LINES, PROF_SUBJECTS, PROF_TRAITS, STUDY_SCENES, STUDY_SCENE_DEFAULT, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS } from './gameData/classEvents.js';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
@@ -36,7 +36,7 @@ import { AchievementsView, DivinePanel } from './views/AchievementsView.jsx';
 import { PrivateSessionModal } from './components/PrivateSessionModal.jsx';
 import { EvolvedEventModal } from './components/EvolvedEventModal.jsx';
 import { DebugPanel } from './components/DebugPanel.jsx';
-import { EvolutionOfferModal, GoddessVisionModal, SessionResultModal, TapOutPopup, SocialEventResult, SocialEventPicker, VaughanEventModal, TierUpModal, StudyCheckInModal, AdminEventModal } from './components/MiscModals.jsx';
+import { EvolutionOfferModal, GoddessVisionModal, SessionResultModal, TapOutPopup, SocialEventResult, SocialEventPicker, TierUpModal, StudyCheckInModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
 import { C } from './styles.js';
 
@@ -88,24 +88,15 @@ export default function ProfessorSim(){
   const [professorProfile,setProfessorProfile]=useState(null);
   // professorProfile: {name, subject, traits:[]}
   const [adminScrutiny,setAdminScrutiny]=useState(0);
-  const [adminEvent,setAdminEvent]=useState(null);
-  const [adminFiredIds,setAdminFiredIds]=useState([]);
   const [researchStudy,setResearchStudy]=useState({participants:{}});
   // participants: {[studentId]:{enrolled,checkInCount:0}}
   const [studyCheckIn,setStudyCheckIn]=useState(null);
   // studyCheckIn: {student, scene, index}
-  const [hrObserver,setHrObserver]=useState(null);
-  // hrObserver: {name,lbs,startLbs,bodyType,disposition,weeksPresent}
   const [charCreation,setCharCreation]=useState({name:"",subject:null,traits:[]});
   // DLC: Inner Circle
   const seenTiersRef=useRef(new Set());
   const prevRelsRef=useRef(Object.fromEntries(INIT_STUDENTS.map(s=>[s.id,s.relationship])));
   const [tierUpModal,setTierUpModal]=useState(null);
-  // DLC: Vaughan
-  const [vaughan,setVaughan]=useState(null);
-  const [vaughanModal,setVaughanModal]=useState(null);
-  const [vaughanFiredIds,setVaughanFiredIds]=useState([]);
-  const [vaughanAlly,setVaughanAlly]=useState(false);
   // DLC: Social Events
   const [socialPicker,setSocialPicker]=useState(null);
   const [socialResult,setSocialResult]=useState(null);
@@ -253,26 +244,6 @@ export default function ProfessorSim(){
     }
   },[students,professorProfile]);
 
-  // Spawn Vaughan when scrutiny becomes notable
-  useEffect(()=>{
-    if(!professorProfile||vaughan) return;
-    if(adminScrutiny>=15){
-      setVaughan({...VAUGHAN_BASE,lbs:VAUGHAN_BASE.startLbs,suspicion:0,disposition:0,weightScenesSeen:[]});
-      push(`👓 ${VAUGHAN_BASE.name} of ${VAUGHAN_BASE.dept} has taken notice.`);
-      push(`   ${VAUGHAN_BASE.intro}`);
-    }
-  },[adminScrutiny,professorProfile]);
-
-  // Fire Vaughan confrontation events
-  useEffect(()=>{
-    if(!vaughan||vaughanAlly) return;
-    const next=VAUGHAN_EVENTS.find(ev=>vaughan.suspicion>=ev.suspicion&&!vaughanFiredIds.includes(ev.id));
-    if(next&&!vaughanModal){
-      setVaughanModal(next);
-      setVaughanFiredIds(prev=>[...prev,next.id]);
-    }
-  },[vaughan,vaughanFiredIds,vaughanModal,vaughanAlly]);
-
   // Check achievements
   useEffect(()=>{
     const newAch=ACHIEVEMENT_LIST.filter(a=>!achievements.includes(a.id)&&a.check(students,globalStats));
@@ -291,17 +262,6 @@ export default function ProfessorSim(){
   },[eventQueue,activeEvent,classSession]);
 
   // (auto-end dinner removed — endings now handled by overfill check or manual "End Evening")
-
-  // Fire admin events at scrutiny thresholds
-  useEffect(()=>{
-    if(!professorProfile) return;
-    const next=ADMIN_EVENTS.slice().sort((a,b)=>b.threshold-a.threshold)
-      .find(ev=>adminScrutiny>=ev.threshold&&!adminFiredIds.includes(ev.id));
-    if(next&&!adminEvent){
-      setAdminEvent(next);
-      setAdminFiredIds(prev=>[...prev,next.id]);
-    }
-  },[adminScrutiny,adminFiredIds,adminEvent,professorProfile]);
 
   const push=useCallback((msg)=>setLog(prev=>[...prev,msg]),[]);
 
@@ -336,21 +296,6 @@ export default function ProfessorSim(){
     setResearchStudy(prev=>({...prev,participants:{...prev.participants,[s.id]:{...pData,checkInCount:pData.checkInCount+1}}}));
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+3)}));
     addScrutiny(professorProfile?.traits?.includes("discreet")?1:2);
-  };
-
-  const feedObserver=(gain,dispGain)=>{
-    if(!hrObserver) return;
-    const line=HR_FEED_LINES[rnd(0,HR_FEED_LINES.length-1)](hrObserver);
-    push(`👤 ${line}`);
-    setHrObserver(prev=>({...prev,lbs:Math.round(prev.lbs+gain),disposition:Math.min(100,prev.disposition+dispGain)}));
-  };
-
-  const talkToObserver=()=>{
-    if(!hrObserver||ap<1){push("⚠️ Need 1 AP.");return;}
-    setAp(a=>a-1);
-    const line=HR_TALK_LINES[rnd(0,HR_TALK_LINES.length-1)](hrObserver);
-    push(`💬 ${line}`);
-    setHrObserver(prev=>({...prev,disposition:Math.min(100,prev.disposition+12)}));
   };
 
   const applyGainToStudent=(s,gain)=>{
@@ -584,12 +529,7 @@ export default function ProfessorSim(){
     // Admin notices visibly large students (hidden students like Lilith don't trigger scrutiny)
     const visibleCount=updated.filter(s=>!s.hidden&&getStage(s.lbs).id>=5).length;
     if(visibleCount>0) addScrutiny(visibleCount);
-    // Observer settles in week by week
-    if(hrObserver){
-      const obsGain=rnd(1,2);
-      setHrObserver(prev=>({...prev,lbs:Math.round(prev.lbs+obsGain),weeksPresent:(prev.weeksPresent||0)+1}));
-    }
-    // Devoted students passively cover scrutiny and buffer Vaughan
+    // Devoted students passively cover scrutiny
     const devotedCount=updated.filter(s=>getTier(s.relationship).id>=3).length;
     if(devotedCount>0) setAdminScrutiny(prev=>Math.max(0,prev-devotedCount));
     if(skillScrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-skillScrutinyPassiveReduce));
@@ -630,28 +570,6 @@ export default function ProfessorSim(){
         setTimeout(()=>push(`⛪ Devotee count: ${religion.devotees} (${worshipped.length} blobs worshipped)`),300);
       }
     }
-    // Vaughan weekly tick
-    if(vaughan&&!vaughanAlly){
-      const suspBase=Math.max(0,1+Math.floor(visibleCount*0.3)-devotedCount*2);
-      const vLbsGain=rnd(0,1);
-      const newSusp=Math.min(100,vaughan.suspicion+suspBase);
-      const newLbs=vaughan.lbs+vLbsGain;
-      const unseenScene=VAUGHAN_WEIGHT_SCENES.filter(ws=>newLbs>=ws.minLbs&&!(vaughan.weightScenesSeen||[]).includes(ws.minLbs))[0];
-      if(unseenScene) setTimeout(()=>push(`👓 ${unseenScene.scene({...vaughan,lbs:newLbs})}`),200);
-      const willAlly=newLbs>=162&&vaughan.disposition>=40;
-      setVaughan({...vaughan,suspicion:newSusp,lbs:newLbs,
-        weightScenesSeen:[...(vaughan.weightScenesSeen||[]),...(unseenScene?[unseenScene.minLbs]:[])]
-      });
-      if(willAlly){
-        setTimeout(()=>{
-          push(`🤝 Dr. Vaughan has become your ally.`);
-          push(`   ${VAUGHAN_ALLY_SCENE({...vaughan,lbs:newLbs})}`);
-          setVaughanAlly(true);
-          setAdminScrutiny(p=>Math.max(0,p-20));
-        },500);
-      }
-    }
-    if(vaughanAlly) setAdminScrutiny(prev=>Math.max(0,prev-3));
     push(`📅 Week ${newWeek} begins. ${newAp} AP available.`);
     if(semEv) setTimeout(()=>push(`🎉 Semester Event: ${semEv.title} — ${semEv.text}`),100);
     if(randomEv){
@@ -706,16 +624,6 @@ export default function ProfessorSim(){
     const baseAmount=CELESTIAL_PULL_AMOUNTS[stage];
     const finalAmount=Math.round(baseAmount*divineCelestialTransferMult);
     const celestialGain=Math.round(finalAmount*1.3);
-    // Handle HR target
-    if(targetId==="hr"){
-      if(!hrObserver){push("⚠️ No HR observer present.");return;}
-      const actualLoss=Math.min(finalAmount,Math.max(0,hrObserver.lbs-100));
-      setHrObserver(prev=>prev?{...prev,lbs:Math.max(100,prev.lbs-actualLoss)}:prev);
-      setStudents(prev=>prev.map(s=>s.id===celestialId?{...s,lbs:s.lbs+celestialGain}:s));
-      setAp(a=>a-2);
-      push(`✦ ${celestial.name} pulls ${actualLoss} lbs from ${hrObserver.name} — absorbs ${celestialGain} lbs.`);
-      return;
-    }
     const target=students.find(s=>s.id===targetId);
     if(!target){push("⚠️ Invalid target.");return;}
     const actualLoss=Math.min(finalAmount,Math.max(0,target.lbs-80));
@@ -737,19 +645,7 @@ export default function ProfessorSim(){
     const stage=celestial.ascensionStage||0;
     const pushAmt=Math.round(CELESTIAL_PUSH_AMOUNTS[stage]*divineCelestialTransferMult);
     const celestialLoss=Math.min(pushAmt,Math.max(0,celestial.lbs-820));
-    if(targetId==="hr"&&hrObserver){
-      const newHrLbs=Math.round(hrObserver.lbs+celestialLoss*1.2);
-      setStudents(prev=>prev.map(s=>s.id===celestialId?{...s,lbs:Math.max(820,s.lbs-celestialLoss)}:s));
-      setHrObserver(prev=>({...prev,lbs:newHrLbs,disposition:Math.min(100,prev.disposition+4)}));
-      setAp(a=>a-1);
-      push(`✦ ${celestial.name} pushes divine mass toward ${hrObserver.name} — she gains ${Math.round(celestialLoss*1.2)} lbs. (+4 disposition)`);
-    } else if(targetId==="vaughan"&&vaughan){
-      const newVLbs=Math.round(vaughan.lbs+celestialLoss*1.2);
-      setStudents(prev=>prev.map(s=>s.id===celestialId?{...s,lbs:Math.max(820,s.lbs-celestialLoss)}:s));
-      setVaughan(prev=>({...prev,lbs:newVLbs}));
-      setAp(a=>a-1);
-      push(`✦ ${celestial.name} pushes divine mass into Dr. Vaughan — she gains ${Math.round(celestialLoss*1.2)} lbs.`);
-    } else {
+    {
       const target=students.find(s=>s.id===targetId);
       if(!target){push("⚠️ Invalid target.");return;}
       setStudents(prev=>prev.map(s=>{
@@ -769,15 +665,7 @@ export default function ProfessorSim(){
     if(!celestial) return;
     const stage=celestial.ascensionStage||0;
     const blessAmt=Math.round(CELESTIAL_BLESS_AMOUNTS[stage]*divineCelestialTransferMult);
-    if(targetId==="hr"&&hrObserver){
-      setHrObserver(prev=>({...prev,lbs:prev.lbs+blessAmt,disposition:Math.min(100,prev.disposition+10)}));
-      setAp(a=>a-2);
-      push(`✦ ${celestial.name} bestows a sacred blessing upon ${hrObserver.name} — she gains ${blessAmt} lbs. (+10 disposition)`);
-    } else if(targetId==="vaughan"&&vaughan){
-      setVaughan(prev=>({...prev,lbs:prev.lbs+blessAmt,disposition:Math.min(100,(prev.disposition||0)+6)}));
-      setAp(a=>a-2);
-      push(`✦ ${celestial.name} bestows a sacred blessing upon Dr. Vaughan — she gains ${blessAmt} lbs. (+6 disposition)`);
-    } else {
+    {
       const target=students.find(s=>s.id===targetId);
       if(!target) return;
       setStudents(prev=>prev.map(s=>{
@@ -850,30 +738,6 @@ export default function ProfessorSim(){
     } else {
       push(`🌑 ${umbral.name} attempts to consume ${target.name} — but she slips the grasp. ${target.name} is shaken. (+18 scrutiny)`);
       setStudents(prev=>prev.map(s=>s.id===targetId?{...s,relationship:Math.max(0,s.relationship-15),mood:"scared"}:s));
-    }
-  };
-
-  const umbralConsumeHR=(umbralId)=>{
-    if(!divineUmbralCanConsumeHR){push("⚠️ Requires Umbral Maw skill.");return;}
-    if(!hrObserver&&!vaughan){push("⚠️ No HR target available.");return;}
-    if(ap<4){push("⚠️ Need 4 AP.");return;}
-    const umbral=students.find(s=>s.id===umbralId);
-    if(!umbral||umbral.ascensionPath!=="umbral") return;
-    setAp(a=>a-4);
-    addScrutiny(35);
-    if(hrObserver){
-      const absorbed=Math.round(hrObserver.lbs*0.9);
-      setStudents(prev=>prev.map(s=>s.id===umbralId?{...s,lbs:s.lbs+absorbed}:s));
-      setHrObserver(null);
-      push(`🌑 ${umbral.name} consumes ${hrObserver.name}. +${absorbed} lbs. The HR threat is gone — and enormous. (+35 scrutiny)`);
-      setUmbralActionPopup({text:UMBRAL_ACTION_TEXT.consume_hr});
-    } else if(vaughan){
-      const absorbed=Math.round(vaughan.lbs*0.9);
-      setStudents(prev=>prev.map(s=>s.id===umbralId?{...s,lbs:s.lbs+absorbed}:s));
-      setVaughan(null);
-      setVaughanAlly(false);
-      push(`🌑 ${umbral.name} consumes Dr. Vaughan. +${absorbed} lbs. (+35 scrutiny)`);
-      setUmbralActionPopup({text:UMBRAL_ACTION_TEXT.consume_vaughan});
     }
   };
 
@@ -3565,12 +3429,6 @@ export default function ProfessorSim(){
     }
     const evs=collectEvents(updated);
     setStudents(updated);
-    // Observer passively eats alongside class food events
-    if(hrObserver&&["snacks","bake","feast","on_demand_feast","study_break"].includes(action.id)){
-      const obsGain=rnd(1,3);
-      const dispGain=(action.id==="feast"||action.id==="on_demand_feast")?4:2;
-      setHrObserver(prev=>({...prev,lbs:Math.round(prev.lbs+obsGain),disposition:Math.min(100,prev.disposition+dispGain)}));
-    }
     if(evs.length){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
@@ -4000,14 +3858,6 @@ export default function ProfessorSim(){
     setActiveEvent(null);
   };
 
-  const resolveVaughanEvent=(ev,choice)=>{
-    push(`👓 ${ev.title}: ${choice.text}`);
-    if(choice.delta&&choice.delta>0) addScrutiny(choice.delta);
-    else if(choice.delta&&choice.delta<0) setAdminScrutiny(prev=>Math.max(0,prev+choice.delta));
-    if(choice.vDelta) setVaughan(prev=>prev?{...prev,disposition:Math.min(100,prev.disposition+choice.vDelta)}:prev);
-    setVaughanModal(null);
-  };
-
   const startSocialEvent=(evt)=>{
     if(ap<evt.apCost){push(`⚠️ Need ${evt.apCost} AP.`);return;}
     if(socialWeeks.includes(week)){push("⚠️ You've already hosted a social event this week.");return;}
@@ -4029,22 +3879,6 @@ export default function ProfessorSim(){
       return processStudentGain(s,gain,event.relBonus);
     });
     setStudents(updatedStudents);
-    if(vaughan&&!vaughanAlly){
-      if(event.vaughanAttends){
-        const vGain=rnd(1,3);
-        const vSuspDelta=event.vaughanEffect;
-        const vDispGain=vSuspDelta<0?Math.round(Math.abs(vSuspDelta)*0.6):0;
-        setVaughan(prev=>prev?{...prev,lbs:prev.lbs+vGain,suspicion:Math.max(0,prev.suspicion+vSuspDelta),disposition:Math.min(100,prev.disposition+vDispGain)}:prev);
-        push(`👓 Dr. Vaughan attended ${event.label} — +${vGain} lbs, suspicion ${vSuspDelta}`);
-      } else if(event.vaughanEffect!==0){
-        setVaughan(prev=>prev?{...prev,suspicion:Math.max(0,prev.suspicion+event.vaughanEffect)}:prev);
-      }
-    }
-    if(hrObserver&&event.observerGain){
-      const oGain=rnd(event.observerGain[0],event.observerGain[1]);
-      setHrObserver(prev=>prev?{...prev,lbs:prev.lbs+oGain,disposition:Math.min(100,prev.disposition+event.observerDisp)}:prev);
-      push(`👤 ${hrObserver.name} attended — +${oGain} lbs, +${event.observerDisp} disposition`);
-    }
     const names=selected.map(id=>students.find(s=>s.id===id)?.name).filter(Boolean).join(", ");
     const perGain=Math.round(totalGain/Math.max(1,selected.length));
     push(`🎉 ${event.label}: ${names} attended. +${totalGain} lbs total.`);
@@ -4241,8 +4075,6 @@ export default function ProfessorSim(){
   const divineRiteScrutinyReduce=unlockedAll.reduce((a,sk)=>a+(sk.riteScrutinyReduce||0),0);
   const divineUmbralVoidPassive=unlockedAll.reduce((a,sk)=>a+(sk.umbralVoidPassive||0),0);
   const divineCelestialApexHeal=unlockedAll.reduce((a,sk)=>a+(sk.celestialApexHeal||0),0);
-  const divineUmbralCanConsumeHR=unlockedAll.some(sk=>sk.umbralCanConsumeHR);
-  const divineCelestialCanPullHR=unlockedAll.some(sk=>sk.celestialCanPullHR);
   const dinnerUnlocked=unlockedSkills.includes("dinner_basic");
   // EP2: total weekly scrutiny reduction from evolved skills across all students
   const evolvedScrutinyReduce=students.reduce((total,s)=>{
@@ -5271,11 +5103,11 @@ export default function ProfessorSim(){
       <div style={C.body}>
         <div style={C.main}>
 
-          {/* ── CLASS VIEW (HR observer card · Vaughan card · roster) ── */}
-          {view==="class"&&<ClassView view={view} hrObserver={hrObserver} vaughan={vaughan} vaughanAlly={vaughanAlly} ap={ap} feedObserver={feedObserver} talkToObserver={talkToObserver} students={students} lilithUnlocked={lilithUnlocked} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView}/>}
+          {/* ── CLASS VIEW ── */}
+          {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} consumeIncarnatedGoddess={consumeIncarnatedGoddess} consumePrimordialIncarnatedGoddess={consumePrimordialIncarnatedGoddess} consumedStudents={consumedStudents} cultivatorState={cultivatorState} divineCelestialCanPullHR={divineCelestialCanPullHR} divineUmbralCanConsumeHR={divineUmbralCanConsumeHR} doEvolvedActivity={doEvolvedActivity} doGoddessAction={doGoddessAction} doPrimordialAction={doPrimordialAction} doSanguineAction={doSanguineAction} doSingle={doSingle} doSingularityAction={doSingularityAction} doTalk={doTalk} doVerdantAction={doVerdantAction} effectiveSingleActions={effectiveSingleActions} finalConsumptionDone={finalConsumptionDone} foundReligion={foundReligion} goddessIncarnateId={goddessIncarnateId} goddessSeen={goddessSeen} hrObserver={hrObserver} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} primordialFinalConsumptionDone={primordialFinalConsumptionDone} primordialGoddessIncarnateId={primordialGoddessIncarnateId} proposeStudy={proposeStudy} purchaseEvolvedSkill={purchaseEvolvedSkill} recoverConsumedStudent={recoverConsumedStudent} religion={religion} researchStudy={researchStudy} runCheckIn={runCheckIn} sanguineMarks={sanguineMarks} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} triggerGoddessIncarnation={triggerGoddessIncarnation} triggerPrimordialGoddessIncarnation={triggerPrimordialGoddessIncarnation} umbralConsumeHR={umbralConsumeHR} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} vaughan={vaughan} verdantCultivations={verdantCultivations}/>}
+          {view==="student"&&sel&&<StudentDetailView addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} consumeIncarnatedGoddess={consumeIncarnatedGoddess} consumePrimordialIncarnatedGoddess={consumePrimordialIncarnatedGoddess} consumedStudents={consumedStudents} cultivatorState={cultivatorState} doEvolvedActivity={doEvolvedActivity} doGoddessAction={doGoddessAction} doPrimordialAction={doPrimordialAction} doSanguineAction={doSanguineAction} doSingle={doSingle} doSingularityAction={doSingularityAction} doTalk={doTalk} doVerdantAction={doVerdantAction} effectiveSingleActions={effectiveSingleActions} finalConsumptionDone={finalConsumptionDone} foundReligion={foundReligion} goddessIncarnateId={goddessIncarnateId} goddessSeen={goddessSeen} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} primordialFinalConsumptionDone={primordialFinalConsumptionDone} primordialGoddessIncarnateId={primordialGoddessIncarnateId} proposeStudy={proposeStudy} purchaseEvolvedSkill={purchaseEvolvedSkill} recoverConsumedStudent={recoverConsumedStudent} religion={religion} researchStudy={researchStudy} runCheckIn={runCheckIn} sanguineMarks={sanguineMarks} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} triggerGoddessIncarnation={triggerGoddessIncarnation} triggerPrimordialGoddessIncarnation={triggerPrimordialGoddessIncarnation} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} verdantCultivations={verdantCultivations}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
@@ -5283,11 +5115,11 @@ export default function ProfessorSim(){
 {/* ── SKILL TREE ── */}
           {view==="skills"&&<SkillTreeView canUnlock={canUnlock} dinnerUnlocked={dinnerUnlocked} goddessSeen={goddessSeen} hasSkill={hasSkill} hovered={hovered} setHovered={setHovered} setSkillCat={setSkillCat} skillApBonus={skillApBonus} skillCat={skillCat} skillGainMult={skillGainMult} skillPassiveBonus={skillPassiveBonus} skillScrutinyPassiveReduce={skillScrutinyPassiveReduce} skillScrutinyReduce={skillScrutinyReduce} skillSessionCapBonus={skillSessionCapBonus} startSkillPurchase={startSkillPurchase} totalGained={totalGained} unlockedSkills={unlockedSkills}/>}
           {/* ── SOCIAL EVENTS ── */}
-          {view==="social"&&<SocialEventsView ap={ap} socialWeeks={socialWeeks} startSocialEvent={startSocialEvent} vaughan={vaughan} vaughanAlly={vaughanAlly} week={week}/>}
+          {view==="social"&&<SocialEventsView ap={ap} socialWeeks={socialWeeks} startSocialEvent={startSocialEvent} week={week}/>}
 
           {/* ── ACHIEVEMENTS ── */}
           {/* ── DIVINE PANEL ── */}
-          {view==="divine"&&goddessSeen&&<DivinePanel addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} consumedStudents={consumedStudents} divineCelestialCanPullHR={divineCelestialCanPullHR} divineRiteBlobMult={divineRiteBlobMult} divineUmbralCanConsumeHR={divineUmbralCanConsumeHR} doPrimordialRite={doPrimordialRite} doSanguineAction={doSanguineAction} doSingularityRite={doSingularityRite} doVerdantAction={doVerdantAction} foundReligion={foundReligion} holdRite={holdRite} hrObserver={hrObserver} recoverConsumedStudent={recoverConsumedStudent} religion={religion} sanguineMarks={sanguineMarks} students={students} umbralConsumeHR={umbralConsumeHR} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} vaughan={vaughan} verdantCultivations={verdantCultivations}/>}
+          {view==="divine"&&goddessSeen&&<DivinePanel addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} consumedStudents={consumedStudents} divineRiteBlobMult={divineRiteBlobMult} doPrimordialRite={doPrimordialRite} doSanguineAction={doSanguineAction} doSingularityRite={doSingularityRite} doVerdantAction={doVerdantAction} foundReligion={foundReligion} holdRite={holdRite} recoverConsumedStudent={recoverConsumedStudent} religion={religion} sanguineMarks={sanguineMarks} students={students} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} verdantCultivations={verdantCultivations}/>}
 
           {view==="achievements"&&<AchievementsView achievements={achievements}/>}
 
@@ -5302,17 +5134,11 @@ export default function ProfessorSim(){
         </div>
       </div>
 
-      {/* ── ADMIN EVENT MODAL ── */}
-      {adminEvent&&<AdminEventModal addScrutiny={addScrutiny} adminEvent={adminEvent} adminScrutiny={adminScrutiny} hrObserver={hrObserver} push={push} setAdminEvent={setAdminEvent} setAdminScrutiny={setAdminScrutiny} setHrObserver={setHrObserver}/>}
-
       {/* ── STUDY CHECK-IN MODAL ── */}
       {studyCheckIn&&<StudyCheckInModal setStudyCheckIn={setStudyCheckIn} studyCheckIn={studyCheckIn}/>}
 
       {/* ── TIER-UP MODAL ── */}
       {tierUpModal&&<TierUpModal setStudents={setStudents} setTierUpModal={setTierUpModal} tierUpModal={tierUpModal}/>}
-
-      {/* ── VAUGHAN EVENT MODAL ── */}
-      {vaughanModal&&<VaughanEventModal resolveVaughanEvent={resolveVaughanEvent} vaughan={vaughan} vaughanModal={vaughanModal}/>}
 
       {/* ── SOCIAL EVENT PICKER ── */}
       {socialPicker&&<SocialEventPicker confirmSocialEvent={confirmSocialEvent} setSocialPicker={setSocialPicker} socialPicker={socialPicker} students={students}/>}

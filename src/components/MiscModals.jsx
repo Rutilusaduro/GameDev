@@ -1,6 +1,6 @@
 import { C } from '../styles.js';
 import { GODDESS_VISION } from '../gameData/ascension.js';
-import { HR_OBSERVER_POOL, getFullnessStage, getTier } from '../gameData/sessions.js';
+import { getFullnessStage, getTier } from '../gameData/sessions.js';
 import { getStage } from '../gameData/stages.js';
 import { rnd } from '../utils/gameHelpers.js';
 
@@ -167,31 +167,6 @@ export function SocialEventPicker({ confirmSocialEvent, setSocialPicker, socialP
   );
 }
 
-export function VaughanEventModal({ resolveVaughanEvent, vaughan, vaughanModal }){
-  return(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:520}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#408090",marginBottom:6}}>DR. VAUGHAN — WELLNESS & KINESIOLOGY</div>
-            <h2 style={{margin:"0 0 14px",color:"#70c0d8",fontSize:17,fontWeight:400}}>{vaughanModal.title}</h2>
-            <div style={{...C.infoBox("rgba(5,25,40,0.5)"),lineHeight:1.8,fontSize:13,color:"#d0c8b8",fontStyle:"italic",marginBottom:16}}>
-              {vaughanModal.scene()}
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:7}}>
-              {vaughanModal.choices.map((ch,i)=>(
-                <button key={i}
-                  style={{...C.btn(ch.vDelta&&ch.vDelta>10?"#204060":ch.delta&&ch.delta>5?"#601010":"#2a2a40"),textAlign:"left",padding:"9px 13px"}}
-                  onClick={()=>resolveVaughanEvent(vaughanModal,ch)}>
-                  {ch.label}
-                </button>
-              ))}
-            </div>
-            <div style={{fontSize:10,color:"#304050",marginTop:10}}>
-              Suspicion: {vaughan?.suspicion||0}/100 · Disposition: {vaughan?.disposition||0}/100 · {vaughan?.lbs||0} lbs
-            </div>
-          </div>
-        </div>
-  );
-}
 
 export function TierUpModal({ setStudents, setTierUpModal, tierUpModal }){
   return(
@@ -249,55 +224,3 @@ export function StudyCheckInModal({ setStudyCheckIn, studyCheckIn }){
   );
 }
 
-export function AdminEventModal({ addScrutiny, adminEvent, adminScrutiny, hrObserver, push, setAdminEvent, setAdminScrutiny, setHrObserver }){
-  return(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:520}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#c04030",marginBottom:6}}>ADMINISTRATION</div>
-            <h2 style={{margin:"0 0 14px",color:"#ff8070",fontSize:17,fontWeight:400}}>{adminEvent.title}</h2>
-            <div style={{...C.infoBox("rgba(80,10,10,0.3)"),lineHeight:1.8,fontSize:13,color:"#d0b0a0",marginBottom:16,fontStyle:"italic"}}>
-              {adminEvent.scene()}
-            </div>
-            {/* Termination: show observer intervention status */}
-            {adminEvent.isGameOver&&(
-              <div style={{...C.infoBox(hrObserver&&hrObserver.disposition>=65?"rgba(20,70,20,0.4)":"rgba(60,20,0,0.3)"),fontSize:12,marginBottom:12,color:hrObserver&&hrObserver.disposition>=65?"#70d080":"#906040"}}>
-                {hrObserver
-                  ? hrObserver.disposition>=65
-                    ? `✅ ${hrObserver.name} has become sympathetic (${hrObserver.disposition} disposition). She will intervene on your behalf.`
-                    : `⚠️ ${hrObserver.name} is observing (${hrObserver.disposition}/65 needed to save you). If she were more sympathetic, she could file a favorable report.`
-                  : `No one is in your corner right now.`}
-              </div>
-            )}
-            <div style={{display:"flex",flexDirection:"column",gap:7}}>
-              {adminEvent.choices.map((ch,i)=>(
-                <button key={i} style={{...C.btn(ch.delta<0?"#184020":ch.delta>5?"#601010":"#2a1040"),textAlign:"left",padding:"9px 13px"}}
-                  onClick={()=>{
-                    push(`🏛️ ${adminEvent.title}: ${ch.text}`);
-                    if(ch.delta>0) addScrutiny(ch.delta);
-                    else if(ch.delta<0) setAdminScrutiny(prev=>Math.max(0,prev+ch.delta));
-                    if(adminEvent.spawnsObserver){
-                      const obs=HR_OBSERVER_POOL[rnd(0,HR_OBSERVER_POOL.length-1)];
-                      setHrObserver({...obs,lbs:obs.startLbs,disposition:0,weeksPresent:0});
-                      push(`👤 ${obs.intro}`);
-                    }
-                    if(adminEvent.isGameOver){
-                      if(hrObserver&&hrObserver.disposition>=65){
-                        push(`✅ ${hrObserver.name} files her report. "I cannot support the findings of the initial review. The pedagogy is excellent, the students are thriving, and I am closing the file."`);
-                        push(`📧 Dean Holloway replies within the hour: "Thank you for your thorough assessment." The semester continues.`);
-                        setAdminScrutiny(30);
-                        setHrObserver(prev=>({...prev,saved:true}));
-                      } else {
-                        push("💀 Your contract has not been renewed. The semester ends here.");
-                      }
-                    }
-                    setAdminEvent(null);
-                  }}>
-                  {ch.label}
-                </button>
-              ))}
-            </div>
-            <div style={{fontSize:10,color:"#502030",marginTop:10}}>Scrutiny: {adminScrutiny}/100</div>
-          </div>
-        </div>
-  );
-}

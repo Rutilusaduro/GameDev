@@ -12,7 +12,7 @@ import { STAGE_REACTIONS } from '../gameData/content.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ addBlobToReligion, ap, ascendStudent, celestialMassBless, celestialMassPull, celestialMassPush, chapterHostessState, communityResearcherState, consumeIncarnatedGoddess, consumePrimordialIncarnatedGoddess, consumedStudents, cultivatorState, divineCelestialCanPullHR, divineUmbralCanConsumeHR, doEvolvedActivity, doGoddessAction, doPrimordialAction, doSanguineAction, doSingle, doSingularityAction, doTalk, doVerdantAction, effectiveSingleActions, finalConsumptionDone, foundReligion, goddessIncarnateId, goddessSeen, hrObserver, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, primordialFinalConsumptionDone, primordialGoddessIncarnateId, proposeStudy, purchaseEvolvedSkill, recoverConsumedStudent, religion, researchStudy, runCheckIn, sanguineMarks, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, triggerGoddessIncarnation, triggerPrimordialGoddessIncarnation, umbralConsumeHR, umbralConsumeStudent, umbralVoidPull, vaughan, verdantCultivations }){
+export function StudentDetailView({ addBlobToReligion, ap, ascendStudent, celestialMassBless, celestialMassPull, celestialMassPush, chapterHostessState, communityResearcherState, consumeIncarnatedGoddess, consumePrimordialIncarnatedGoddess, consumedStudents, cultivatorState, doEvolvedActivity, doGoddessAction, doPrimordialAction, doSanguineAction, doSingle, doSingularityAction, doTalk, doVerdantAction, effectiveSingleActions, finalConsumptionDone, foundReligion, goddessIncarnateId, goddessSeen, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, primordialFinalConsumptionDone, primordialGoddessIncarnateId, proposeStudy, purchaseEvolvedSkill, recoverConsumedStudent, religion, researchStudy, runCheckIn, sanguineMarks, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, triggerGoddessIncarnation, triggerPrimordialGoddessIncarnation, umbralConsumeStudent, umbralVoidPull, verdantCultivations }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -311,19 +311,6 @@ export function StudentDetailView({ addBlobToReligion, ap, ascendStudent, celest
                               <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.4)"}} onClick={()=>celestialMassBless(s.id,t.id)}>✦ Bless {t.name.split(" ")[0]} (2AP)</button>
                             </div>
                           ))}
-                          {divineCelestialCanPullHR&&hrObserver&&(
-                            <div style={{display:"flex",gap:3,flexWrap:"wrap"}}>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(30,60,100,0.5)"}} onClick={()=>celestialMassPull(s.id,"hr")}>↓ Pull {hrObserver.name} (2AP)</button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"hr")}>↑ Push {hrObserver.name} (1AP)</button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"hr")}>✦ Bless {hrObserver.name} (2AP)</button>
-                            </div>
-                          )}
-                          {divineCelestialCanPullHR&&vaughan&&(
-                            <div style={{display:"flex",gap:3,flexWrap:"wrap"}}>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"vaughan")}>↑ Push Vaughan (1AP)</button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"vaughan")}>✦ Bless Vaughan (2AP)</button>
-                            </div>
-                          )}
                         </div>
                       )}
                       {isUmbral&&(
@@ -334,9 +321,6 @@ export function StudentDetailView({ addBlobToReligion, ap, ascendStudent, celest
                               <button style={{...C.smBtn,fontSize:9,background:"rgba(80,0,0,0.5)"}} onClick={()=>umbralConsumeStudent(s.id,t.id)}>🌑 Consume {t.name.split(" ")[0]} (3AP)</button>
                             </div>
                           ))}
-                          {divineUmbralCanConsumeHR&&(hrObserver||vaughan)&&(
-                            <button style={{...C.smBtn,fontSize:9,background:"rgba(80,0,0,0.6)"}} onClick={()=>umbralConsumeHR(s.id)}>🌑 Consume HR Target (4AP, +35 scrutiny)</button>
-                          )}
                         </div>
                       )}
                       {isSanguine&&(

@@ -409,56 +409,6 @@ export const PROF_TRAITS=[
 // ADMIN EVENTS
 // ═══════════════════════════════════════════════════════════════
 
-export const ADMIN_EVENTS=[
-  {
-    id:"lounge_talk",threshold:25,title:"Faculty Lounge",
-    scene:()=>`Dr. Pembrook catches you at the coffee machine. "Good semester?" She fills her mug, not really watching you. "I've been hearing nice things about engagement in your class. Students seem very invested." A pause while she stirs. "Though someone mentioned a few of them have been looking a bit different lately. Dr. Haynes said it's probably just the dining hall." She takes her coffee and goes.`,
-    choices:[
-      {label:"Agree warmly",delta:0,text:`"It's been a wonderful group," you say. "Very engaged."`},
-      {label:"Blame the dining hall",delta:-5,text:`"Campus food does its work," you say. She laughs. Something settles slightly.`},
-    ]
-  },
-  {
-    id:"dept_chair",threshold:50,title:"Dean's Office",
-    scene:()=>`Dean Holloway's assistant — a crisp young woman who makes appointments feel like verdicts — leaves a note in your mailbox: a brief check-in, Thursday, 2pm. You go. The Dean is warm and precise. She compliments your evaluations — genuinely, it seems. Then: "A few students have mentioned — not complaints exactly. More observations. About how often they socialize with you outside class." She folds her hands. "I want to make sure everyone feels comfortable." She's giving you room to speak.`,
-    choices:[
-      {label:"Reassure professionally",delta:0,text:`"Mentorship," you say. "These students are genuinely invested in their development." The Dean nods. Something settles.`},
-      {label:"Walk her through specifics",delta:-12,text:`Two or three clean, plausible mentorship examples. She seems satisfied. The scrutiny drops noticeably.`},
-      {label:"Keep it brief",delta:10,text:`"Everything is fine," you say. Short. She notes it. The scrutiny ticks up.`},
-    ]
-  },
-  {
-    id:"irb_inquiry",threshold:65,title:"IRB Inquiry",
-    scene:()=>`An email from Dr. Mercer in Compliance at 7am. "It has come to our attention that you may be conducting informal research with students." The language is careful, bureaucratic. "Proper documentation would need to be submitted for review." You look her up: sharp photo, short hair, the smile of someone who files things. They've been talking.`,
-    choices:[
-      {label:"File paperwork",delta:-8,text:`You spend an afternoon generating plausible documentation. The inquiry quiets.`},
-      {label:"Pause the study",delta:-15,text:`You put the formal check-ins on hold. Dr. Mercer stops asking.`},
-      {label:"Ignore it",delta:20,text:`You don't respond. The scrutiny builds.`},
-    ]
-  },
-  {
-    id:"observer_assigned",threshold:70,title:"Class Observer",
-    scene:()=>`An email from HR arrives Tuesday morning: "As part of our ongoing review process, a member of our team will be sitting in on several of your classes over the coming weeks. This is standard procedure." It is not standard. The follow-up arrives within the hour — a name, a start date. Next Monday.`,
-    choices:[
-      {label:"Accept it",delta:0,text:`"Of course," you reply. You begin to think about Monday.`},
-    ],
-    spawnsObserver:true,
-  },
-  {
-    id:"formal_review",threshold:80,title:"Formal Review",
-    scene:()=>`HR schedules a review. Two of them — a senior analyst in a blazer and her colleague, quieter and watchful — plus a union rep, a compact woman with reading glasses who takes notes but doesn't look at you. They have a folder. The questions are procedural: "Can you describe the nature of your extracurricular contact with students?" The senior analyst watches you with the patience of someone who has done this many times.`,
-    choices:[
-      {label:"Cooperate fully",delta:-10,text:`You answer every question carefully. The review concludes inconclusively. The scrutiny drops, but the record exists.`},
-      {label:"Request representation",delta:5,text:`They postpone. Procedurally correct. But it registers. Scrutiny holds.`},
-    ]
-  },
-  {
-    id:"termination",threshold:95,title:"End of Semester",
-    scene:()=>`The letter arrives on a Tuesday. "Following a thorough review…" You read it standing in the hallway. Through the window you can see the quad. Three of your students are walking together. One of them is much, much larger than she was in September. She moves carefully through the cold, filling her coat beautifully. She laughs at something, and the laugh travels through her whole body. She has no idea you're watching.`,
-    choices:[{label:"Accept it",delta:0,text:`You put the letter in your bag. You'll clear your office this week.`}],
-    isGameOver:true,
-  },
-];
 
 // ═══════════════════════════════════════════════════════════════
 // RESEARCH STUDY CHECK-IN SCENES
@@ -548,52 +498,6 @@ export const STUDY_SCENE_DEFAULT=[
 // HR OBSERVER
 // ═══════════════════════════════════════════════════════════════
 
-export const HR_OBSERVER_POOL=[
-  {name:"Ms. Hargrove",startLbs:149,bodyType:"straight",
-   intro:`Ms. Hargrove arrives with a leather portfolio and the manner of someone who has sat in on many classes and found all of them wanting. She takes the chair at the back, uncaps her pen, and begins to write.`},
-  {name:"Dr. Ashworth",startLbs:164,bodyType:"hourglass",
-   intro:`Dr. Ashworth occupies the back row with the practiced stillness of someone paid to watch. She has a coffee, a folder, and hasn't smiled yet.`},
-  {name:"Ms. Pellegrini",startLbs:156,bodyType:"pear",
-   intro:`Ms. Pellegrini is younger than you expected — composed, careful, with the slightly too-neutral posture of someone taking this very seriously. She writes down things you wish she wouldn't.`},
-];
-
-export const HR_DISP_LEVELS=[
-  {min:0, label:"Watchful",     color:"#c04040"},
-  {min:20,label:"Settling In",  color:"#c07020"},
-  {min:40,label:"Comfortable",  color:"#b0a020"},
-  {min:65,label:"Sympathetic",  color:"#40a060"},
-  {min:80,label:"Your Advocate",color:"#30c070"},
-];
-export const getHrDispLevel=(d)=>[...HR_DISP_LEVELS].reverse().find(l=>d>=l.min)||HR_DISP_LEVELS[0];
-
-export const HR_DISP_DESC={
-  0: hr=>`${hr.name} is watching the room with professional attention, pen moving steadily. She has accepted nothing from the refreshments.`,
-  20:hr=>`${hr.name} accepted a coffee at the start of class. Her notes have gotten less frequent. She looked out the window twice.`,
-  40:hr=>`${hr.name} smiled at a student who gave a good answer. She has visited the refreshments. Her jacket is over the back of her chair.`,
-  65:hr=>`${hr.name} laughed at something from the front row today. She has eaten considerably. Her portfolio sits unopened. She seems, against her original intentions, to be enjoying herself.`,
-  80:hr=>`${hr.name} stayed after the last session to tell you she finds the pedagogy "genuinely innovative." Her skirt was doing interesting things when she stood. You made a note.`,
-};
-export const getHrDispDesc=(hr)=>{
-  const key=[80,65,40,20,0].find(k=>hr.disposition>=k);
-  return (HR_DISP_DESC[key]||HR_DISP_DESC[0])(hr);
-};
-
-export const HR_FEED_LINES=[
-  hr=>`You set something near ${hr.name}'s end of the table — nothing obvious. She eats it without looking up from her folder. Her pen moves less after that.`,
-  hr=>`The spread arrives and you gesture toward ${hr.name}'s side of the room. She hesitates, then takes a plate. Then a second. "I skipped lunch," she says, to no one in particular.`,
-  hr=>`${hr.name} drifts toward the refreshments and you catch the moment she decides on the second pastry. She notices you noticing. Neither of you says anything.`,
-  hr=>`You pass ${hr.name} a small plate on your way to the board. "Thank you," she says, and she means it. Something shifts fractionally.`,
-  hr=>`${hr.name} reaches for the tray you've placed within her reach. You watch the decision happen — the brief pause, the rationalization, the reaching. She eats comfortably, like someone who has stopped resisting something minor.`,
-  hr=>`${hr.name} accepts the coffee and the pastry without breaking eye contact with her notes. By the end of class her folder is closed and she has finished everything.`,
-];
-
-export const HR_TALK_LINES=[
-  hr=>`You stop by ${hr.name}'s chair between sections. She's guarded at first — professional, correct. But she relaxes when you ask a genuine question about the process. "It's usually more adversarial than this," she says. A small thing.`,
-  hr=>`You sit at the corner of her desk during the break. She closes her folder — she doesn't have to. You talk about the class, the students. She's been doing this eleven years. "It gets predictable," she says. "This isn't."`,
-  hr=>`${hr.name} initiates conversation today — a question about one of your students, professionally framed. But it's the first time she's come to you. You answer warmly. Her pen doesn't move.`,
-  hr=>`She stays after class, ostensibly finishing notes. You make coffee. She stays for it. The conversation goes somewhere you didn't expect. She's perceptive, interesting, and increasingly comfortable in the chair she's sitting in.`,
-  hr=>`${hr.name} mentions, unprompted, a review she ran three years ago where the complaint turned out to be entirely correct. "You're not that," she says. She has eaten considerably this session. Her jacket is on the back of her chair.`,
-];
 
 // ── INNER CIRCLE ────────────────────────────────────────────────
 export const INNER_CIRCLE_TIERS=[
@@ -657,95 +561,37 @@ export const TIER_SCENES={
   ],
 };
 
-// ── PROFESSOR VAUGHAN ───────────────────────────────────────────
-export const VAUGHAN_BASE={
-  name:"Dr. Elaine Vaughan",
-  dept:"Wellness & Kinesiology",
-  startLbs:134,
-  bodyType:"athletic",
-  intro:`Dr. Vaughan passes you in the corridor — compact, purposeful, the kind of person who still runs at 6am. Her eyes move to your classroom door as she passes. She says nothing. But she looked.`,
-};
-
-export const VAUGHAN_EVENTS=[
-  {id:"first_glance",suspicion:20,title:"A Colleague Takes Notice",
-   scene:()=>`Dr. Vaughan catches you in the faculty corridor. "Professor," she says — just the word, with a tone you can't quite read. She continues walking. But she looked first, at your classroom door.`,
-   choices:[
-     {label:"Nod professionally",delta:0,text:"You nod. Nothing to see here."},
-     {label:"Strike up conversation",vDelta:-8,text:"Easy, collegial. She relaxes. Slightly."},
-   ]},
-  {id:"direct_question",suspicion:40,title:"Direct Question",
-   scene:()=>`Dr. Vaughan appears at your office door. "Student health metrics from my department are showing anomalies," she says. "I've been hearing things about your classroom environment." She watches you closely.`,
-   choices:[
-     {label:"Deflect professionally",delta:3,text:"You redirect. She writes something down."},
-     {label:"Invite her to observe",vDelta:-15,delta:-8,text:"Openness disarms her — for now."},
-     {label:"Challenge her data",delta:8,vDelta:10,text:"Her expression hardens."},
-   ]},
-  {id:"formal_concern",suspicion:60,title:"Formal Concern",
-   scene:()=>`Dr. Vaughan has submitted a written memo to the faculty council. "I have a professional responsibility," she says when you confront her. "What's happening in your classroom is not normal. Not physically."`,
-   choices:[
-     {label:"Call it coincidence",delta:5,text:"She doesn't believe you. She can't prove otherwise. Yet."},
-     {label:"Thank her sincerely",delta:-8,vDelta:-12,text:"Graciousness confounds her. She retreats for now."},
-   ]},
-  {id:"turning_point",suspicion:80,title:"She Knows",
-   scene:()=>`Dr. Vaughan corners you privately. "I know what you're doing," she says. But she looks different — her blazer fits differently. She's been spending time at your students' table in the dining hall. "I should report you," she says. She hasn't.`,
-   choices:[
-     {label:"Tell her the truth",vDelta:20,text:"You speak plainly. She listens. Something in her goes very still."},
-     {label:"Offer her dinner",vDelta:25,text:"The same invitation you extend your students. She hesitates. Then: yes."},
-     {label:"Call her bluff",delta:15,text:"She blinks. Doesn't move. You both know she won't."},
-   ]},
-];
-
-export const VAUGHAN_WEIGHT_SCENES=[
-  {minLbs:145,scene:v=>`Dr. Vaughan's blazer doesn't button all the way today. She doesn't mention it. You don't mention it. But you both notice.`},
-  {minLbs:162,scene:v=>`${v.name} has stopped eating salads at faculty events. Today she had the pasta. Twice. She caught your eye across the room and looked away first.`},
-  {minLbs:180,scene:v=>`${v.name} has gained visibly — enough that colleagues are talking. The athletic frame is still there under a generous new softness. In her wellness curriculum, she now mentions "metabolism" with less certainty than before.`},
-  {minLbs:200,scene:v=>`${v.name} submitted a modified wellness curriculum this semester — less emphasis on weight metrics. "Bodies are more complex than the data suggests," she wrote. She has begun sitting with your students at lunch. They like her.`},
-  {minLbs:230,scene:v=>`${v.name} has stopped wearing her department polo. She favours loose blouses now, the kind that flow over her belly and hips without commenting on them. In the faculty meeting she takes a wider chair without looking around first. Her students have noticed she's "more chill" this semester. Her approval ratings are the highest they've ever been.`},
-  {minLbs:265,scene:v=>`${v.name} runs into you in the corridor and you both stop. She looks different — genuinely, substantially different. Her face is rounder, her middle a real presence beneath her cardigan, her hips wide and unhurried. She notices you noticing. "I know," she says, before you can say anything. "I really don't mind," she adds, and the remarkable thing is that she's telling the truth.`},
-  {minLbs:310,scene:v=>`${v.name}'s Wellness & Kinesiology course has a new unit this semester: Body Autonomy and Nutritional Joy. The course description emphasises "movement as celebration rather than correction" and "abundance-positive approaches to nutrition." Half the faculty think she's had a breakdown. The students are enrolling in record numbers.`},
-  {minLbs:360,scene:v=>`Dr. Vaughan finds you after a faculty meeting. She has become — there is no other word — enormous. Round and soft and enormous, filling her chair with real authority, walking with the deliberate ease of someone who has made peace with every inch of themselves. "I've been thinking," she says, settling heavily into the seat across from you, "that I owe you an apology. And possibly a thank you." She opens her bag and produces a container of something homemade. "I've been cooking more," she adds. "Try it."`,},
-  {minLbs:400,scene:v=>`${v.name} announces she's writing a book. The working title, she mentions at the department social — from the largest chair, which she has quietly begun reserving in advance — is "Against Metrics: A Wellness Practitioner's Reconsideration." She looks extraordinary: vast and unhurried and completely at home in her body. She pours herself a second glass of wine and settles deeper into her chair. "You should write the foreword," she tells you. "You started this."`,},
-];
-
-export const VAUGHAN_ALLY_SCENE=v=>`${v.name} appears at your door with a bottle of wine and a slightly defensive expression. "This is not an endorsement of your methods," she says, setting it down. "It's a professional reconciliation." She has changed enormously. The uniform is gone, replaced by something looser. She fills the chair completely. "What you've built here," she says finally, "is something I can't call wrong." She pours two glasses without asking. "So I've stopped trying."`;
 
 // ── SOCIAL EVENTS ───────────────────────────────────────────────
 export const SOCIAL_EVENTS=[
   {id:"study_hall",    label:"📚 Study Hall",        apCost:1,minStudents:2,maxStudents:6,
    baseGain:[2,5],relBonus:4,scrutinyAdd:1,
    desc:"Host a study session. Snacks are mandatory. The work is the pretext.",
-   scene:(names,gain)=>`The study hall fills slowly. Books open, but the food comes out first. ${names} spread out across the table, comfortable and unhurried. By the end, about ${gain} lbs each — and the notes are surprisingly good.`,
-   vaughanEffect:-3,observerGain:[1,1],observerDisp:3},
+   scene:(names,gain)=>`The study hall fills slowly. Books open, but the food comes out first. ${names} spread out across the table, comfortable and unhurried. By the end, about ${gain} lbs each — and the notes are surprisingly good.`},
   {id:"dept_social",   label:"🥂 Department Social", apCost:2,minStudents:3,maxStudents:8,
    baseGain:[3,7],relBonus:6,scrutinyAdd:3,
    desc:"Faculty mixer. Your students attend. The platters empty. The atmosphere warms.",
-   scene:(names,gain)=>`The social is exactly as these things always are — too much food, too much wine. ${names} cluster together and call you over. The platters near your group empty first. No one else seems to notice.`,
-   vaughanEffect:-5,observerGain:[1,2],observerDisp:6,vaughanAttends:true},
+   scene:(names,gain)=>`The social is exactly as these things always are — too much food, too much wine. ${names} cluster together and call you over. The platters near your group empty first. No one else seems to notice.`},
   {id:"field_trip",    label:"🚌 Field Trip",         apCost:2,minStudents:2,maxStudents:6,
    baseGain:[4,8],relBonus:5,scrutinyAdd:2,
    desc:"Campus excursion. Officially about education. Unofficially about the three-hour lunch.",
-   scene:(names,gain)=>`The field trip is officially about the museum. Unofficially, it's about the restaurant two blocks away. ${names} occupy an entire table. Nobody stops at one course. The museum is viewed briefly, on the way back, with full contentment.`,
-   vaughanEffect:0,observerGain:[1,2],observerDisp:5},
+   scene:(names,gain)=>`The field trip is officially about the museum. Unofficially, it's about the restaurant two blocks away. ${names} occupy an entire table. Nobody stops at one course. The museum is viewed briefly, on the way back, with full contentment.`},
   {id:"game_night",    label:"🎲 Game Night",         apCost:1,minStudents:2,maxStudents:5,
    baseGain:[3,6],relBonus:7,scrutinyAdd:1,
    desc:"Games, snacks, no pressure. The most natural feeding context there is.",
-   scene:(names,gain)=>`Nobody remembers what games they played. They remember the food — the enormous spread that appeared and disappeared over four hours while ${names} laughed and argued. The scores are meaningless. The calories are not.`,
-   vaughanEffect:-2,observerGain:[1,2],observerDisp:4},
+   scene:(names,gain)=>`Nobody remembers what games they played. They remember the food — the enormous spread that appeared and disappeared over four hours while ${names} laughed and argued. The scores are meaningless. The calories are not.`},
   {id:"symposium",     label:"🎓 Symposium",          apCost:2,minStudents:3,maxStudents:10,
    baseGain:[5,9],relBonus:5,scrutinyAdd:4,
    desc:"Academic event with catering that is decidedly informal. Everyone overeats at symposiums.",
-   scene:(names,gain)=>`The symposium is notionally about pedagogy. In practice, a three-hour catered event with an open bar and a chef who overestimated attendance. ${names} benefit enormously from this miscalculation. The talks are good. The food is better.`,
-   vaughanEffect:-8,observerGain:[2,3],observerDisp:8,vaughanAttends:true},
+   scene:(names,gain)=>`The symposium is notionally about pedagogy. In practice, a three-hour catered event with an open bar and a chef who overestimated attendance. ${names} benefit enormously from this miscalculation. The talks are good. The food is better.`},
   {id:"house_dinner",  label:"🏡 House Dinner",       apCost:3,minStudents:2,maxStudents:5,
    baseGain:[8,14],relBonus:9,scrutinyAdd:2,
    desc:"An evening at yours. You cook. There is no restraint built into this format.",
-   scene:(names,gain)=>`Your home is warm and smells like cooking before they arrive. ${names} fill your kitchen and your evening completely. The food comes in waves — you keep bringing it. Nobody declines anything. By the end the conversation is slow and easy, the way it gets when everyone is genuinely full.`,
-   vaughanEffect:0,observerGain:[3,4],observerDisp:10},
+   scene:(names,gain)=>`Your home is warm and smells like cooking before they arrive. ${names} fill your kitchen and your evening completely. The food comes in waves — you keep bringing it. Nobody declines anything. By the end the conversation is slow and easy, the way it gets when everyone is genuinely full.`},
   {id:"banquet",       label:"🍾 End-of-Term Banquet",apCost:4,minStudents:4,maxStudents:15,
    baseGain:[10,18],relBonus:10,scrutinyAdd:6,
    desc:"The whole class. Maximum scale, maximum impact.",
-   scene:(names,gain)=>`The banquet hall is yours for the evening. All your students arrive dressed for the occasion. The courses are formal, the portions architectural. By the final course the room is notably different: louder, looser, rounder, happier. You refill every glass and call for more food twice.`,
-   vaughanEffect:-12,observerGain:[4,5],observerDisp:15,vaughanAttends:true},
+   scene:(names,gain)=>`The banquet hall is yours for the evening. All your students arrive dressed for the occasion. The courses are formal, the portions architectural. By the final course the room is notably different: louder, looser, rounder, happier. You refill every glass and call for more food twice.`},
 ];
 
 // ── PRIVATE SESSIONS ─────────────────────────────────────────────
