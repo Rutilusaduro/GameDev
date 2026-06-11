@@ -142,6 +142,10 @@ function evalWhen(when, ctx) {
       case "devourMax": ok = (d.devourCount ?? 0) <= v; break;
       case "fullnessMin": ok = (d.fullnessRatio ?? 0) >= v; break;
       case "fullnessMax": ok = (d.fullnessRatio ?? 0) <= v; break;
+      case "hungerTierMin": ok = (d.hungerTier ?? 0) >= v; break;
+      case "hungerTierMax": ok = (d.hungerTier ?? 0) <= v; break;
+      case "addictionLevelMin": ok = (d.addictionLevel ?? 0) >= v; break;
+      case "addictionLevelMax": ok = (d.addictionLevel ?? 0) <= v; break;
       default: {
         // dimension on ctx.d: corruption, stage, relationship, relSize,
         // bodyType, archetype, mood, evolvedForm, refStage...

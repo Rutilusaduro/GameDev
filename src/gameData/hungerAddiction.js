@@ -33,6 +33,9 @@ export const HUNGER_CONFIG = {
   talkHungerDrop: 1,
   interruptChance: { craving: 0.45, starving: 0.7, withdrawal: 0.55 },
   passiveHungerRise: { 0: 0, 1: 0.15, 2: 0.25, 3: 0.4, 4: 0.55 },
+  withdrawalGainMult: 0.55,
+  withdrawalRelPenalty: 3,
+  denyRelLoss: { default: 5, craving: 8, starving: 14, withdrawal: 12 },
 };
 
 /** Per-student hunger modifiers from owned skills, weekly arms, and physical traits. */
@@ -151,6 +154,51 @@ export function denyHunger(student) {
   return s;
 }
 
+export function isWithdrawalAggressive(student) {
+  return isInWithdrawal(student) && getAddictionLevel(student) >= 2;
+}
+
+/** Relationship, mood, and aggression fallout when turning a hungry girl away. */
+export function applyDenialConsequences(student) {
+  let s = denyHunger(student);
+  const tier = getHungerTier(s);
+  const withdrawal = isInWithdrawal(s);
+  const losses = HUNGER_CONFIG.denyRelLoss;
+
+  let relLoss = losses.default;
+  if (withdrawal) relLoss = losses.withdrawal;
+  else if (tier >= 4) relLoss = losses.starving;
+  else if (tier >= 3) relLoss = losses.craving;
+
+  s = {
+    ...s,
+    relationship: Math.max(0, (s.relationship || 0) - relLoss),
+    mood: withdrawal || tier >= 3 ? 'stressed' : 'sad',
+    withdrawalAggroWeeks: withdrawal ? (s.withdrawalAggroWeeks || 0) + 2 : (s.withdrawalAggroWeeks || 0),
+  };
+  return s;
+}
+
+/** Passive gain penalty while in withdrawal. */
+export function withdrawalGainMultiplier(student) {
+  return isInWithdrawal(student) ? HUNGER_CONFIG.withdrawalGainMult : 1;
+}
+
+export function tickWithdrawalAggression(student) {
+  let s = { ...student };
+  if (!isInWithdrawal(s)) {
+    if ((s.withdrawalAggroWeeks || 0) > 0) {
+      s.withdrawalAggroWeeks = Math.max(0, s.withdrawalAggroWeeks - 1);
+    }
+    return s;
+  }
+  if (Math.random() < 0.4) s.mood = 'stressed';
+  if (Math.random() < 0.2) {
+    s.relationship = Math.max(0, (s.relationship || 0) - HUNGER_CONFIG.withdrawalRelPenalty);
+  }
+  return s;
+}
+
 export function talkCalmsHunger(student, skillEffects = {}, weeklyArms = {}) {
   const mod = getHungerModifiers(student, skillEffects, weeklyArms);
   let drop = HUNGER_CONFIG.talkHungerDrop + mod.talkDropBonus;
@@ -189,10 +237,7 @@ export function tickHungerAddiction(student, playerFedThisWeek = false, skillEff
     s = addAddiction(s, 1);
   }
 
-  if (isInWithdrawal(s) && Math.random() < 0.35) {
-    s.mood = "stressed";
-  }
-
+  s = tickWithdrawalAggression(s);
   s = applyTraitHungerWeekly(s);
   return s;
 }

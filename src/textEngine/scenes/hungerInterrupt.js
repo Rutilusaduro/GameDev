@@ -152,7 +152,7 @@ registerModule("scene.hunger.response.talk", [
 
 export const HUNGER_INTERRUPT_TEMPLATE =
   "{scene.hungerInterrupt.starter} You open the door and find {subject.name}. " +
-  "{scene.hungerInterrupt.appearance|prefix: }{scene.hungerInterrupt.behavior|prefix: }" +
+  "{scene.hungerInterrupt.personal|prefix: }{scene.hungerInterrupt.appearance|prefix: }{scene.hungerInterrupt.behavior|prefix: }" +
   "{scene.hungerInterrupt.request} {scene.hungerInterrupt.tone}";
 
 export function renderHungerInterrupt(student, week = 1) {
@@ -164,5 +164,10 @@ export function renderHungerOutcome(student, action, week = 1) {
   const key = { feed: "scene.hunger.response.feed", compound: "scene.hunger.response.compound", deny: "scene.hunger.response.deny", talk: "scene.hunger.response.talk" }[action];
   if (!key) return "";
   const ctx = createContext({ subject: student, week });
-  return render(`{${key}}`, ctx).trim();
+  let text = render(`{${key}}`, ctx).trim();
+  if (action === "feed" || action === "compound") {
+    const style = render("{eating.style}", ctx).trim();
+    if (style) text = `${text} ${style}`;
+  }
+  return text;
 }
