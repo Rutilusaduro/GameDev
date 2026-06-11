@@ -13,6 +13,7 @@ import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, I
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
 import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_FEED_LINES, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
+import { ITEMS, INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES } from './gameData/items.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
@@ -35,6 +36,7 @@ import { ChapterHostessHangoutModal, ChapterHostessFeastPrepModal, ChapterHostes
 import { ClassView } from './views/ClassView.jsx';
 import { StudentDetailView } from './views/StudentDetailView.jsx';
 import { ActionsView } from './views/ActionsView.jsx';
+import { InventoryView, ItemTargetPicker } from './views/InventoryView.jsx';
 import { SkillTreeView } from './views/SkillTreeView.jsx';
 import { AchievementsView, DivinePanel } from './views/AchievementsView.jsx';
 import { PrivateSessionModal } from './components/PrivateSessionModal.jsx';
@@ -114,6 +116,10 @@ export default function ProfessorSim(){
   const [tapOutPopup,setTapOutPopup]=useState(null);
   // {student, text, totalGain}
   const [weighInState,setWeighInState]=useState(null);
+  const [inventory,setInventory]=useState({...INVENTORY_CONFIG.startingItems});
+  // inventory: {[itemId]: qty}
+  const [itemTargetPicker,setItemTargetPicker]=useState(null);
+  // itemTargetPicker: {item}
   // {student, phase:"scene"|"analog"|"break"|"purchase"|"swap"|"digital"}
   const [bigScaleUnlocked,setBigScaleUnlocked]=useState(false);
   const [brokeScaleIds,setBrokeScaleIds]=useState([]);
@@ -314,6 +320,20 @@ export default function ProfessorSim(){
     return { newLbs:newLbs+bonusInfluence, oldStageId:oldSt, newStageId:newSt, narrativeEvents:triggered };
   };
 
+  // ── INVENTORY ──────────────────────────────────────────────────
+  const useItemOn=(item,studentId)=>{
+    if((inventory[item.id]||0)<=0) return;
+    const target=students.find(st=>st.id===studentId);
+    if(!target) return;
+    const fed=feedStudentCalories(target,item.cal,item.full,1,`${item.emoji} ${item.label}`);
+    setItemTargetPicker(null);
+    if(!fed) return; // she refused — item is not consumed
+    setInventory(prev=>({...prev,[item.id]:prev[item.id]-1}));
+    setStudents(prev=>prev.map(st=>st.id===studentId?fed:st));
+    const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](target,item);
+    setTimeout(()=>push(`🎒 ${line}`),80);
+  };
+
   // ── CORRUPTION: hidden psyche progression (general actions only) ──
   const addCorruption=(s,amount)=>{
     const before=getCorruptionTier(s.corruption||0).id;
@@ -470,6 +490,20 @@ export default function ProfessorSim(){
       }
       return processStudentGain(s,gain,0);
     });
+    // ── PANTRY RESTOCK ──
+    {
+      const drops=rnd(INVENTORY_CONFIG.weeklyDrops[0],INVENTORY_CONFIG.weeklyDrops[1]);
+      const found=[];
+      setInventory(prev=>{
+        const next={...prev};
+        for(let i=0;i<drops;i++){
+          const item=rollWeeklyItem();
+          if((next[item.id]||0)<INVENTORY_CONFIG.maxStack){next[item.id]=(next[item.id]||0)+1;found.push(item);}
+        }
+        return next;
+      });
+      if(found.length) setTimeout(()=>push(`🎒 Pantry restocked: ${found.map(i=>`${i.emoji} ${i.label}`).join(", ")}`),100);
+    }
     // ── WEEKLY DIGESTION: convert this week's fed calories into weight ──
     const digestLines=[];
     updated=updated.map(s=>{
@@ -5272,7 +5306,7 @@ export default function ProfessorSim(){
 
       {/* NAV */}
       <div style={C.nav}>
-        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],...(goddessSeen?[["divine","✦ Divine"]]:[])].map(([v,l])=>(
+        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],...(goddessSeen?[["divine","✦ Divine"]]:[])].map(([v,l])=>(
           v==="student"&&!sel?null:
           <button key={v} style={C.navB(view===v)} onClick={()=>setView(v)}>{l}</button>
         ))}
@@ -5289,6 +5323,9 @@ export default function ProfessorSim(){
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
+
+          {/* ── PANTRY / INVENTORY ── */}
+          {view==="inventory"&&<InventoryView inventory={inventory} setItemTargetPicker={setItemTargetPicker}/>}
 
 {/* ── SKILL TREE ── */}
           {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} canUnlock={canUnlock} goddessSeen={goddessSeen} skillApBonus={skillApBonus} skillGainMult={skillGainMult} skillPassiveBonus={skillPassiveBonus} skillScrutinyPassiveReduce={skillScrutinyPassiveReduce} skillScrutinyReduce={skillScrutinyReduce} skillSessionCapBonus={skillSessionCapBonus} spentSkillPoints={spentSkillPoints} spiritLevel={spiritLevel} spiritXp={spiritXp} spiritXpForNextLevel={SPIRIT_XP_PER_LEVEL} startSkillPurchase={startSkillPurchase} totalSkillPoints={totalSkillPoints} unlockedSkills={unlockedSkills}/>}
@@ -5312,6 +5349,9 @@ export default function ProfessorSim(){
       </div>
 
       {/* ── STUDY CHECK-IN MODAL ── */}
+
+      {/* ── ITEM TARGET PICKER ── */}
+      {itemTargetPicker&&<ItemTargetPicker itemTargetPicker={itemTargetPicker} setItemTargetPicker={setItemTargetPicker} students={students} lilithUnlocked={lilithUnlocked} useItemOn={useItemOn}/>}
 
       {/* ── TIER-UP MODAL ── */}
       {tierUpModal&&<TierUpModal setStudents={setStudents} setTierUpModal={setTierUpModal} tierUpModal={tierUpModal}/>}
