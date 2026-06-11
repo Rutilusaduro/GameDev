@@ -54,6 +54,7 @@ const SPIRIT_INTRO_PARAGRAPHS=[
 ];
 
 const INHABITED_PROFESSOR_PROFILE={name:"The Professor",subject:null,traits:[],origin:"gluttony_spirit"};
+const SPIRIT_XP_PER_LEVEL=40;
 
 export default function ProfessorSim(){
   const [students,setStudents]=useState(INIT_STUDENTS);
@@ -88,11 +89,9 @@ export default function ProfessorSim(){
   const [triumvirateModal,setTriumvirateModal]=useState(null);
   // { text } — fires when Triumvirate unlocks
   const [finalConsumptionDone,setFinalConsumptionDone]=useState(false);
-  const [hovered,setHovered]=useState(null);
   const [debugOpen,setDebugOpen]=useState(false);
   const [debugInputs,setDebugInputs]=useState({});
   // debugInputs: { [studentId]: { lbs:string, path:string, stage:number, rel:number } }
-  const [skillCat,setSkillCat]=useState("environment");
   const [classSession,setClassSession]=useState(null);
   const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
@@ -3681,7 +3680,7 @@ export default function ProfessorSim(){
 
   const startSkillPurchase=(sk)=>{
     if(!canUnlock(sk)) return;
-    setSkillPurchase({skill:sk,allocation:{}});
+    unlockSkill(sk,true);
   };
 
   const adjustAllocation=(studentId,delta)=>{
@@ -3756,7 +3755,6 @@ export default function ProfessorSim(){
         return;
       }
     }
-    if(!dinnerUnlocked){push("⚠️ Unlock 'Dining Connections' in the Skill Tree first.");return;}
     if(ap<2){push("⚠️ Need 2 AP for a dinner.");return;}
     const maxFullness=60+getStage(s.lbs).id*14;
     if(opts.skipImmobileCheck){
@@ -3871,7 +3869,6 @@ export default function ProfessorSim(){
 
   // ── GROUP DINNER ─────────────────────────────────────────────
   const startGroupDinner=(studentList)=>{
-    if(!dinnerUnlocked){push("⚠️ Unlock 'Dining Connections' first.");return;}
     const immobile=studentList.find(s=>getStage(s.lbs).id>=10||!!s.ascensionPath);
     if(immobile){push(`⚠️ ${immobile.name} can't leave her location. Visit her individually to bring food.`);return;}
     const apCost=studentList.length>=3?3:3;
@@ -4285,6 +4282,10 @@ export default function ProfessorSim(){
 
   const sel=selectedId!==null?students.find(s=>s.id===selectedId):null;
   const totalGained=students.reduce((a,s)=>a+(s.lbs-s.startLbs),0);
+  const spiritXp=Math.max(0,Math.round(totalGained));
+  const spiritLevel=1+Math.floor(spiritXp/SPIRIT_XP_PER_LEVEL);
+  const spiritRankProgress=Math.max(0,spiritLevel-1);
+  const totalSkillPoints=Math.max(0,spiritLevel-1);
   const visibleStudents=students.filter(s=>!s.hidden||lilithUnlocked);
   const avgLbs=Math.round(visibleStudents.reduce((a,s)=>a+s.lbs,0)/Math.max(1,visibleStudents.length));
   // ── PROFESSOR SUBJECT / TRAIT EFFECTS ───────────────────────
@@ -4295,8 +4296,10 @@ export default function ProfessorSim(){
   const observeFree=hasSubj("art_history")||hasTrait("observant");
   const talkRelBonus=hasTrait("charismatic")?4:hasSubj("psychology")?2:0;
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
-  const hasSkill=(id)=>unlockedSkills.includes(id);
   const unlockedAll=ALL_SKILLS.filter(sk=>unlockedSkills.includes(sk.id));
+  const hasSkill=(id)=>unlockedAll.some(sk=>sk.id===id);
+  const spentSkillPoints=unlockedAll.reduce((a,sk)=>a+(sk.cost||0),0);
+  const availableSkillPoints=Math.max(0,totalSkillPoints-spentSkillPoints);
   const skillPassiveBonus=unlockedAll.reduce((a,sk)=>a+sk.passiveBonus,0)+profPassiveBonus;
   const skillApBonus=unlockedAll.reduce((a,sk)=>a+sk.apBonus,0);
   const skillGainMult=(1+unlockedAll.reduce((a,sk)=>a+sk.gainMult,0))*profGainMult;
@@ -4315,7 +4318,6 @@ export default function ProfessorSim(){
   const divineCelestialApexHeal=unlockedAll.reduce((a,sk)=>a+(sk.celestialApexHeal||0),0);
   const divineUmbralCanConsumeHR=unlockedAll.some(sk=>sk.umbralCanConsumeHR);
   const divineCelestialCanPullHR=unlockedAll.some(sk=>sk.celestialCanPullHR);
-  const dinnerUnlocked=unlockedSkills.includes("dinner_basic");
   // EP2: total weekly scrutiny reduction from evolved skills across all students
   const evolvedScrutinyReduce=students.reduce((total,s)=>{
     if(!s.evolvedForm||!(s.evolvedSkills||[]).length) return total;
@@ -4351,19 +4353,15 @@ export default function ProfessorSim(){
   ];
 
   const availableVenues=DINNER_VENUES.filter(v=>{
-    if(v.id==="home_dinner") return unlockedSkills.includes("dinner_residence");
-    if(v.id==="brunch_hall") return unlockedSkills.includes("dinner_casual");
+    if(v.id==="home_dinner") return false;
     if(v.id==="atelier") return false; // filtered per-student inside dinner modal
-    if(v.tier===1) return unlockedSkills.includes("dinner_basic");
-    if(v.tier===2) return unlockedSkills.includes("dinner_upscale");
-    if(v.tier===3) return unlockedSkills.includes("dinner_private");
-    if(v.tier===4) return unlockedSkills.includes("dinner_residence");
-    return false;
+    return true;
   });
   const canUnlock=(sk)=>{
     if(unlockedSkills.includes(sk.id)) return false;
-    if(sk.category==="divine"&&!goddessSeen) return false;
-    if(totalGained<sk.cost) return false;
+    if(sk.category!=="divine") return false;
+    if(!goddessSeen) return false;
+    if(availableSkillPoints<sk.cost) return false;
     if(sk.requires) return sk.requires.every(r=>unlockedSkills.includes(r));
     return true;
   };
@@ -5253,14 +5251,16 @@ export default function ProfessorSim(){
           <div style={{fontSize:10,color:"#60389a",letterSpacing:3}}>A WEIGHT MANAGEMENT SIMULATION</div>
         </div>
         <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
-          {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Skills",unlockedSkills.length,"#a0e0b0"]].map(([l,v,c])=>(
+          {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Spirit",`Lv ${spiritLevel}`,"#a0e0b0"],["Pts",availableSkillPoints,"#f0c060"]].map(([l,v,c])=>(
             <div key={l} style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px"}}>
               <span style={{fontSize:17,fontWeight:700,color:c,display:"block"}}>{l==="Wk"?`Wk ${v}`:v}</span>
-              <span style={{fontSize:9,color:"#60389a",letterSpacing:2}}>{l==="Wk"?"WEEK":l==="AP"?"ACTION PTS":"SKILLS"}</span>
+              <span style={{fontSize:9,color:"#60389a",letterSpacing:2}}>
+                {l==="Wk"?"WEEK":l==="AP"?"ACTION PTS":l==="Spirit"?"SPIRIT":"SKILL PTS"}
+              </span>
             </div>
           ))}
           {(()=>{
-            const rank=([...PROFESSOR_RANKS].reverse().find(r=>unlockedSkills.length>=r.min)||PROFESSOR_RANKS[0]);
+            const rank=([...PROFESSOR_RANKS].reverse().find(r=>spiritRankProgress>=r.min)||PROFESSOR_RANKS[0]);
             return(
               <div style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:90}}>
                 <span style={{fontSize:13,fontWeight:700,color:"#f0c060",display:"block",letterSpacing:0.5}}>{rank.label}</span>
@@ -5287,7 +5287,7 @@ export default function ProfessorSim(){
 
       {/* NAV */}
       <div style={C.nav}>
-        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["social","🎉 Events"],["skills","🌳 Skills"],["achievements","🏆 Achievements"],...(goddessSeen?[["divine","✦ Divine"]]:[])].map(([v,l])=>(
+        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["social","🎉 Events"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],...(goddessSeen?[["divine","✦ Divine"]]:[])].map(([v,l])=>(
           v==="student"&&!sel?null:
           <button key={v} style={C.navB(view===v)} onClick={()=>setView(v)}>{l}</button>
         ))}
@@ -5306,7 +5306,7 @@ export default function ProfessorSim(){
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
 
 {/* ── SKILL TREE ── */}
-          {view==="skills"&&<SkillTreeView canUnlock={canUnlock} dinnerUnlocked={dinnerUnlocked} goddessSeen={goddessSeen} hasSkill={hasSkill} hovered={hovered} setHovered={setHovered} setSkillCat={setSkillCat} skillApBonus={skillApBonus} skillCat={skillCat} skillGainMult={skillGainMult} skillPassiveBonus={skillPassiveBonus} skillScrutinyPassiveReduce={skillScrutinyPassiveReduce} skillScrutinyReduce={skillScrutinyReduce} skillSessionCapBonus={skillSessionCapBonus} startSkillPurchase={startSkillPurchase} totalGained={totalGained} unlockedSkills={unlockedSkills}/>}
+          {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} canUnlock={canUnlock} goddessSeen={goddessSeen} skillApBonus={skillApBonus} skillGainMult={skillGainMult} skillPassiveBonus={skillPassiveBonus} skillScrutinyPassiveReduce={skillScrutinyPassiveReduce} skillScrutinyReduce={skillScrutinyReduce} skillSessionCapBonus={skillSessionCapBonus} spentSkillPoints={spentSkillPoints} spiritLevel={spiritLevel} spiritXp={spiritXp} spiritXpForNextLevel={SPIRIT_XP_PER_LEVEL} startSkillPurchase={startSkillPurchase} totalSkillPoints={totalSkillPoints} unlockedSkills={unlockedSkills}/>}
           {/* ── SOCIAL EVENTS ── */}
           {view==="social"&&<SocialEventsView ap={ap} socialWeeks={socialWeeks} startSocialEvent={startSocialEvent} vaughan={vaughan} vaughanAlly={vaughanAlly} week={week}/>}
 
