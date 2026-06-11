@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { CELESTIAL_STAGES, UMBRAL_STAGES, CONVERGENCE_STAGE, SINGULARITY_ABSORPTION_TEXT, SINGULARITY_REACTIONS, SINGULARITY_TAP_OUT, SINGULARITY_RANDOM_EVENTS, SINGULARITY_ACTION_TEXT, SINGULARITY_ACTIONS, TRIUMVIRATE_REACTION, TRIUMVIRATE_ACTIONS, TRIUMVIRATE_ACTION_TEXT, CELESTIAL_PULL_AMOUNTS, CELESTIAL_PUSH_AMOUNTS, CELESTIAL_BLESS_AMOUNTS, UMBRAL_CONSUME_CHANCE, UMBRAL_ABSORB_RATE, UMBRAL_VOID_PULL_AMOUNTS, UMBRAL_ABSORB_TEXT, CELESTIAL_ACTION_TEXT, UMBRAL_ACTION_TEXT, RELIGION_RITE_TEXT, SINGULARITY_RITE_TEXT, SANGUINE_STAGES, SANGUINE_REACTIONS, SANGUINE_ACTIONS, SANGUINE_ACTION_TEXT, VERDANT_STAGES, VERDANT_REACTIONS, VERDANT_ACTIONS, VERDANT_ACTION_TEXT, PRIMORDIAL_ABSORPTION_TEXT, PRIMORDIAL_REACTIONS, PRIMORDIAL_RANDOM_EVENTS, PRIMORDIAL_ACTIONS, PRIMORDIAL_ACTION_TEXT, PRIMORDIAL_TRIUMVIRATE_REACTION, PRIMORDIAL_TRIUMVIRATE_ACTIONS, PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT, getGoddessStage, GODDESS_STAGE_REACTIONS, GODDESS_EXPLORE_TEXT, GODDESS_PRACTICAL_TEXT, GODDESS_ACTIONS, INCARNATION_EVENT_TEXT } from './gameData/ascension.js';
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL } from './gameData/intimacy.js';
-import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, DIVINE_PAIR_REACTIONS, UNBUTTON_LINES, PROF_SUBJECTS, PROF_TRAITS, ADMIN_EVENTS, STUDY_SCENES, STUDY_SCENE_DEFAULT, HR_FEED_LINES, HR_TALK_LINES, getTier, TIER_SCENES, VAUGHAN_BASE, VAUGHAN_EVENTS, VAUGHAN_WEIGHT_SCENES, VAUGHAN_ALLY_SCENE, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
+import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, DIVINE_PAIR_REACTIONS, UNBUTTON_LINES, ADMIN_EVENTS, STUDY_SCENES, STUDY_SCENE_DEFAULT, HR_FEED_LINES, HR_TALK_LINES, getTier, TIER_SCENES, VAUGHAN_BASE, VAUGHAN_EVENTS, VAUGHAN_WEIGHT_SCENES, VAUGHAN_ALLY_SCENE, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
 import { GOSSIP } from './gameData/gossip.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS } from './gameData/classEvents.js';
@@ -46,6 +46,15 @@ import { C } from './styles.js';
 // MAIN APP
 // ═══════════════════════════════════════════════════════════════
 
+const SPIRIT_INTRO_PARAGRAPHS=[
+  "You are a spirit of gluttony and abundance.",
+  "The current world is diametrically opposed to you. Between the cultural shifts in humanity and the anthropogenic extinction event grinding through the biosphere, scarcity has become powerful. It has temples now: restraint, optimization, denial, survival.",
+  "Then, one day, you find a college class where you are able to take root.",
+  "You inhabit the professor. Through them, you can teach. Through them, you can feed. And when your awareness slips into the students themselves, it is not a contradiction; it is the same hunger learning every shape it can wear.",
+];
+
+const INHABITED_PROFESSOR_PROFILE={name:"The Professor",subject:null,traits:[],origin:"gluttony_spirit"};
+
 export default function ProfessorSim(){
   const [students,setStudents]=useState(INIT_STUDENTS);
   const [ap,setAp]=useState(5);
@@ -88,7 +97,7 @@ export default function ProfessorSim(){
   const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
   const [professorProfile,setProfessorProfile]=useState(null);
-  // professorProfile: {name, subject, traits:[]}
+  // professorProfile: {name, subject, traits:[], origin?}
   const [adminScrutiny,setAdminScrutiny]=useState(0);
   const [adminEvent,setAdminEvent]=useState(null);
   const [adminFiredIds,setAdminFiredIds]=useState([]);
@@ -98,7 +107,6 @@ export default function ProfessorSim(){
   // studyCheckIn: {student, scene, index}
   const [hrObserver,setHrObserver]=useState(null);
   // hrObserver: {name,lbs,startLbs,bodyType,disposition,weeksPresent}
-  const [charCreation,setCharCreation]=useState({name:"",subject:null,traits:[]});
   // DLC: Inner Circle
   const seenTiersRef=useRef(new Set());
   const prevRelsRef=useRef(Object.fromEntries(INIT_STUDENTS.map(s=>[s.id,s.relationship])));
@@ -309,6 +317,11 @@ export default function ProfessorSim(){
   },[adminScrutiny,adminFiredIds,adminEvent,professorProfile]);
 
   const push=useCallback((msg)=>setLog(prev=>[...prev,msg]),[]);
+
+  const inhabitProfessor=()=>{
+    setProfessorProfile(INHABITED_PROFESSOR_PROFILE);
+    push("🌒 You take root behind the professor's eyes. The class waits, and abundance has found a door.");
+  };
 
   const addScrutiny=(n)=>{
     const mult=(1-(professorProfile?.traits?.includes("discreet")?0.35:0))
@@ -4355,76 +4368,29 @@ export default function ProfessorSim(){
   const views=["class","actions","achievements","log"];
   if(sel) views.splice(1,0,"student");
 
-  // ── CHARACTER CREATION SCREEN ─────────────────────────────────
+  // ── OPENING SPIRIT INTRO ───────────────────────────────────────
   if(!professorProfile){
-    const cc=charCreation;
-    const canFinish=cc.name.trim()&&cc.subject&&cc.traits.length===2;
-    const toggleTrait=(id)=>{
-      setCharCreation(prev=>{
-        const has=prev.traits.includes(id);
-        if(has) return{...prev,traits:prev.traits.filter(t=>t!==id)};
-        if(prev.traits.length>=2) return prev;
-        return{...prev,traits:[...prev.traits,id]};
-      });
-    };
     return(
       <div style={{...C.app,alignItems:"center",justifyContent:"center",padding:20}}>
-        <div style={{maxWidth:700,width:"100%"}}>
-          <div style={{textAlign:"center",marginBottom:28}}>
-            <div style={{fontSize:11,letterSpacing:4,color:"#7030c0",marginBottom:6}}>PROFESSOR'S QUARTERS</div>
-            <h1 style={{color:"#d0a0ff",margin:"0 0 6px",fontSize:26,fontWeight:400,fontFamily:"inherit"}}>Before the Semester Begins</h1>
-            <div style={{color:"#7060a0",fontSize:13}}>Tell us who you are.</div>
+        <div style={{...C.modal,maxWidth:680,background:"radial-gradient(circle at 50% 0%,#1d1034,#0d0618 52%,#070510)",border:"1px solid #6a2cc0",boxShadow:"0 0 80px rgba(130,60,220,0.32)"}}>
+          <div style={{textAlign:"center",marginBottom:22}}>
+            <div style={{fontSize:10,letterSpacing:4,color:"#8a4be0",marginBottom:8}}>A SPIRIT FINDS PURCHASE</div>
+            <h1 style={{color:"#d8b0ff",margin:"0 0 8px",fontSize:28,fontWeight:400,fontFamily:"inherit"}}>Before the Semester Begins</h1>
+            <div style={{color:"#7d68a8",fontSize:13}}>The professor is only the first door.</div>
           </div>
 
-          {/* Name */}
-          <div style={{marginBottom:22}}>
-            <div style={C.secT}>Your Name</div>
-            <input value={cc.name} onChange={e=>setCharCreation(prev=>({...prev,name:e.target.value}))}
-              placeholder="Professor…"
-              style={{background:"rgba(255,255,255,0.05)",border:"1px solid #4a1580",borderRadius:6,padding:"9px 13px",color:"#ddd0b8",fontSize:14,fontFamily:"inherit",width:"100%",boxSizing:"border-box"}}/>
+          <div style={{background:"rgba(255,255,255,0.035)",border:"1px solid rgba(140,80,220,0.25)",borderRadius:10,padding:"18px 20px",marginBottom:22}}>
+            {SPIRIT_INTRO_PARAGRAPHS.map((paragraph,idx)=>(
+              <p key={idx} style={{margin:idx===0?"0 0 14px":"14px 0 0",color:idx===0?"#ead8ff":"#c9b4e8",fontSize:idx===0?17:14,lineHeight:1.8}}>
+                {paragraph}
+              </p>
+            ))}
           </div>
 
-          {/* Subject */}
-          <div style={{marginBottom:22}}>
-            <div style={C.secT}>Your Subject</div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:8}}>
-              {PROF_SUBJECTS.map(sub=>{
-                const sel=cc.subject===sub.id;
-                return(
-                  <div key={sub.id} onClick={()=>setCharCreation(prev=>({...prev,subject:sub.id}))}
-                    style={{background:sel?"rgba(120,40,220,0.25)":"rgba(255,255,255,0.03)",border:`1px solid ${sel?"#8040d0":"#200e40"}`,borderRadius:8,padding:10,cursor:"pointer",transition:"all 0.15s"}}>
-                    <div style={{fontSize:13,color:sel?"#d090ff":"#b080d8",marginBottom:3}}>{sub.emoji} {sub.label}</div>
-                    <div style={{fontSize:11,color:"#7060a0",lineHeight:1.5,marginBottom:4}}>{sub.desc}</div>
-                    <div style={{fontSize:10,color:"#5030a0",fontStyle:"italic"}}>{sub.bonus}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Traits */}
-          <div style={{marginBottom:28}}>
-            <div style={C.secT}>Your Traits <span style={{fontWeight:400,color:"#5030a0"}}>(pick 2)</span></div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(195px,1fr))",gap:8}}>
-              {PROF_TRAITS.map(tr=>{
-                const sel=cc.traits.includes(tr.id);
-                const disabled=!sel&&cc.traits.length>=2;
-                return(
-                  <div key={tr.id} onClick={()=>!disabled&&toggleTrait(tr.id)}
-                    style={{background:sel?"rgba(120,40,220,0.25)":"rgba(255,255,255,0.03)",border:`1px solid ${sel?"#8040d0":"#200e40"}`,borderRadius:8,padding:10,cursor:disabled?"not-allowed":"pointer",opacity:disabled?0.45:1,transition:"all 0.15s"}}>
-                    <div style={{fontSize:13,color:sel?"#d090ff":"#b080d8",marginBottom:3}}>{tr.emoji} {tr.label}</div>
-                    <div style={{fontSize:11,color:"#7060a0",lineHeight:1.5,marginBottom:4}}>{tr.desc}</div>
-                    <div style={{fontSize:10,color:"#5030a0",fontStyle:"italic"}}>{tr.effect}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div style={{textAlign:"center"}}>
-            <button disabled={!canFinish} onClick={()=>setProfessorProfile({name:cc.name.trim(),subject:cc.subject,traits:cc.traits})}
-              style={{...C.btn(canFinish?"#7020c8":"#2a1040"),fontSize:14,padding:"11px 32px",opacity:canFinish?1:0.5,cursor:canFinish?"pointer":"not-allowed"}}>
-              Begin the Semester
+          <div style={{display:"flex",justifyContent:"center"}}>
+            <button onClick={inhabitProfessor}
+              style={{...C.btn("#7020c8"),fontSize:14,padding:"12px 34px",boxShadow:"0 0 24px rgba(112,32,200,0.35)"}}>
+              Inhabit the Professor
             </button>
           </div>
         </div>
