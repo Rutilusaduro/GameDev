@@ -367,11 +367,6 @@ export default function ProfessorSim(){
   // ── INVENTORY ──────────────────────────────────────────────────
   const getStockedCompounds=()=>pharmacistState?getStockedCompoundIds(pharmacistState):[];
 
-  const useCompoundDose=(compoundId)=>{
-    if(!compoundId||!pharmacistState) return;
-    setPharmacistState(prev=>consumeCompoundDose(prev,compoundId));
-  };
-
   const guardHungerInterrupt=(onProceed)=>{
     if(skipHungerCheckRef.current){
       skipHungerCheckRef.current=false;
