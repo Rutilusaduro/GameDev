@@ -13,33 +13,38 @@ import './lexicon.js'; // ensure word.* modules are registered
 // Demonstrates recursion: variants embed {word.*} slots.
 
 registerModule("char.desc", [
-  // thin + low corruption
+  // Slight/Slim + low corruption
   { when: { stageMax: 1, corruption: [0] },
     text: [
       (ctx) => `${ctx.subject.name}'s small frame moves quickly, almost apologetically`,
       (ctx) => `${ctx.subject.name} is {word.size} and light on her feet, glancing back as she goes`,
+      (ctx) => `${ctx.subject.name} {word.movement}, slight and unhurried`,
     ] },
-  // thin + corrupted: eager despite the small frame
+  // Slight/Slim + corrupted: eager despite the small frame
   { when: { stageMax: 1, corruption: [1, 2] },
     text: [
       (ctx) => `${ctx.subject.name}'s slight frame nearly disappears among the bodies around her, but she moves with hungry certainty`,
+      (ctx) => `${ctx.subject.name} is {word.size} but eager — she {word.movement} like she has somewhere to grow into`,
     ] },
-  // mid sizes
+  // Soft through Heavy
   { when: { stageMin: 2, stageMax: 5 },
     text: [
       (ctx) => `${ctx.subject.name} is {word.size} now, and she {word.movement} with quiet confidence`,
       (ctx) => `${ctx.subject.name} carries her new softness easily as she {word.movement}`,
+      (ctx) => `${ctx.subject.name}'s {word.size} body {word.movement} — the gain is visible and she knows it`,
     ] },
-  // big + low corruption: self-conscious mass
+  // Fat+ + low corruption: self-conscious mass
   { when: { stageMin: 6, corruption: [0] },
     text: [
       (ctx) => `${ctx.subject.name}'s {word.size} form moves carefully, still not quite at peace with its own scale`,
+      (ctx) => `${ctx.subject.name} {word.movement}, {word.size} and self-conscious in the doorway`,
     ] },
-  // big + corrupted: owning it
+  // Fat+ + corrupted: owning it
   { when: { stageMin: 6, corruption: [1, 2] },
     text: [
       (ctx) => `${ctx.subject.name}'s {word.size} form {word.movement} with slow, deliberate weight, utterly unbothered`,
       (ctx) => `${ctx.subject.name} leads with her {word.size} body like a banner — she {word.movement} and the space yields`,
+      (ctx) => `${ctx.subject.name} {word.movement}, {word.size} and entirely at home in her own mass`,
     ] },
   // wildcard fallback
   { when: {},
@@ -95,13 +100,19 @@ registerModule("group.desc", [
     const sizeWord = n <= 2 ? "a small group" : n <= 4 ? "a handful" : "a long line";
     const bucket = groupStageBucket(ctx.group);
     const flavor = {
-      thin: "light-stepping, nervous newcomers",
+      slight: "light-stepping, nervous newcomers",
+      slim: "slender newcomers still moving easily",
       soft: "softened, curious newcomers",
-      plush: "well-fed, unhurried newcomers",
+      chubby: "rounded newcomers, clothes a little tighter",
+      plump: "well-fed, unhurried newcomers",
       heavy: "heavy-footed newcomers who announce themselves through the floor",
-      massive: "enormous newcomers who file in one at a time because the doorway insists",
-      giant: "newcomers vast beyond the room's design",
-    }[bucket];
+      fat: "broad newcomers who test the doorway",
+      veryFat: "vast newcomers filing in with care",
+      enormous: "enormous newcomers who need the wide path",
+      colossal: "overwhelming newcomers who file in one at a time because the doorway insists",
+      blob: "newcomers vast beyond the room's design",
+      leviathan: "newcomers so impossibly vast the room reorganizes before they arrive",
+    }[bucket] || "newcomers of uncertain scale";
     return `${sizeWord} of ${flavor}`;
   } },
 ]);
