@@ -83,7 +83,7 @@ function FocusBar({ barParams, onHit, onMiss, active, paused }) {
     const tick = (now) => {
       const dt = now - last;
       last = now;
-      tRef.current += dt * 0.001 * (barParams?.speed || 1.15);
+      tRef.current += dt * 0.00085 * (barParams?.speed || 0.42);
       const p = (Math.sin(tRef.current * Math.PI * 2) + 1) / 2;
       setPos(p);
       rafRef.current = requestAnimationFrame(tick);
@@ -308,7 +308,7 @@ export function StreamSessionModal({
                     </div>
                   )}
                   {chosen && ss.preStreamVignettes?.[action.id] && (
-                    <div style={{ fontSize: 10, color: '#c09090', fontStyle: 'italic', lineHeight: 1.6 }}>
+                    <div style={{ fontSize: 11, color: '#d8b0b0', lineHeight: 1.85, whiteSpace: 'pre-line', marginTop: 4 }}>
                       {ss.preStreamVignettes[action.id]}
                     </div>
                   )}

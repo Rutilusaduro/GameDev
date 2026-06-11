@@ -2,9 +2,7 @@
 // DESTINY STREAMING — text modules (stream.*)
 // ═══════════════════════════════════════════════════════════════
 import { registerModule } from '../engine.js';
-import { BRANDS } from '../../gameData/streaming.js';
-
-const brandName = (ctx) => BRANDS[ctx.d.brand]?.name || 'the brand';
+import './streamPreStream.js';
 
 // ── Between-round dialogue ─────────────────────────────────────
 
@@ -415,99 +413,4 @@ registerModule('stream.endStream.verypoor', [
     'I need to delete the VOD. I\'m not even joking.',
     'Please don\'t clip that. Please.',
   ] },
-]);
-
-// ── Pre-stream vignettes (sample lines per action/style) ─────────
-
-registerModule('stream.pre.outfit.casual', [
-  { when: { stageMin: 5, stageMax: 6 },
-    text: ['Destiny stands in front of the camera in her usual black tee and shorts. The fabric is starting to strain. "I\'m just wearing what I normally wear. Nothing special."'] },
-  { when: { stageMin: 7 },
-    text: ['Her usual outfit clings and rides up. A strip of soft belly shows above her waistband. "Same outfit as usual. It\'s getting a little tighter, but whatever."'] },
-  { when: {},
-    text: ['She adjusts her hoodie and shrugs at the camera. "Same as always. Let\'s go."'] },
-]);
-
-registerModule('stream.pre.outfit.revealing', [
-  { when: { stageMin: 5 },
-    text: ['A tight crop top and short shorts. Her belly sits above the low waistband. "I went with something a little more… eye-catching today."'] },
-  { when: {},
-    text: ['Something bold and barely containing her. "Chat wanted a show. Here\'s a show."'] },
-]);
-
-registerModule('stream.pre.outfit.branded', [
-  { when: { brand: 'crunchforge' },
-    text: [(ctx) => `A ${brandName(ctx)} promo tee stretched across her chest. "Gotta rep the brand, right?"`] },
-  { when: { brand: 'fizzpeak' },
-    text: [(ctx) => `Neon ${brandName(ctx)} gear that somehow makes her look even more chaotic. "Energy check!"`] },
-  { when: { brand: 'velvetmelt' },
-    text: [(ctx) => `Soft ${brandName(ctx)} loungewear that drapes over every curve. "Comfort is content."`] },
-  { when: { brand: 'glazeco' },
-    text: [(ctx) => `A glossy ${brandName(ctx)} set that catches the light. "Do I look expensive yet?"`] },
-  { when: {},
-    text: ['She throws on a sponsor hoodie. "Brand fit check. Good enough."'] },
-]);
-
-registerModule('stream.pre.setup.minimal', [
-  { when: { stageMin: 8 },
-    text: ['She shifts heavily to fix the angle, breathing hard. "Okay… that\'s as good as it\'s gonna get. Let\'s just start already."'] },
-  { when: {},
-    text: ['A quick camera wiggle. "Good enough. Let\'s get into it."'] },
-]);
-
-registerModule('stream.pre.setup.comfort', [
-  { when: { stageMin: 7 },
-    text: ['She arranges pillows and shifts her belly into a supported position. "I\'ve gotten too big to just wing it anymore."'] },
-  { when: {},
-    text: ['She takes a minute to get comfortable, snacks within reach. "Trust me, if I don\'t do this now I\'ll regret it later."'] },
-]);
-
-registerModule('stream.pre.setup.production', [
-  { when: {},
-    text: ['Lights, overlays, mic check. She fusses with details until everything gleams. "If we\'re doing this, we\'re doing it right."'] },
-]);
-
-registerModule('stream.pre.bodyCheck.quick', [
-  { when: {},
-    text: ['A fast glance in the monitor. "Still me. Still streaming. Let\'s eat."'] },
-]);
-
-registerModule('stream.pre.bodyCheck.thorough', [
-  { when: { stageMin: 6 },
-    text: [(ctx) => `She turns side to side, studying herself on camera. "${brandName(ctx)} wanted a honest check-in. Here it is."`] },
-  { when: {},
-    text: ['She runs her hands along her sides, checking the fit. "Okay. I know what I\'m working with today."'] },
-]);
-
-registerModule('stream.pre.bodyCheck.showoff', [
-  { when: { stageMin: 7 },
-    text: ['She angles the camera low and pats her belly. "Chat asked for the full tour. Don\'t say I never give you anything."'] },
-  { when: {},
-    text: ['She poses deliberately. "Like what you see? Good. Stay tuned."'] },
-]);
-
-registerModule('stream.pre.snack.skip', [
-  { when: {}, text: ['"Saving room for the real thing. Smart, right?"'] },
-]);
-
-registerModule('stream.pre.snack.light', [
-  { when: {}, text: ['She nibbles something small. "Just waking up the stomach. That\'s all."'] },
-]);
-
-registerModule('stream.pre.snack.heavy', [
-  { when: {}, text: ['She\'s already chewing when the stream starts. "What? I got hungry waiting for you people."'] },
-]);
-
-registerModule('stream.pre.warmup.skip', [
-  { when: {}, text: ['"No warm-up today. We\'re going straight in."'] },
-]);
-
-registerModule('stream.pre.warmup.stretch', [
-  { when: { stageMin: 7 },
-    text: ['She stretches carefully, belly shifting with each movement. "Gotta loosen up or I\'ll pay for it later."'] },
-  { when: {}, text: ['Quick stretches, rolling her shoulders. "Okay. Body\'s awake."'] },
-]);
-
-registerModule('stream.pre.warmup.eat', [
-  { when: {}, text: ['A few practice bites off-camera. "Gotta get into the zone. This counts as warm-up, right?"'] },
 ]);
