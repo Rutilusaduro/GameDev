@@ -30,7 +30,8 @@ Any constant, dialogue, description, or reaction that relates to weight must hav
 | Convergence | — | secret |
 
 When writing a new constant: count the entries before committing. If the count doesn't match the applicable range, add the missing ones.
-
+When writing, refer to this prompt: 
+"Write in a sensual, appreciative, and immersive style. Focus heavily on sensory details: the weight, softness, warmth, and movement of fat bodies. Describe how flesh feels in the hands, how it jiggles and sways, how it spreads and sinks when sitting or lying down. Emphasize the eroticism of size, heaviness, and growth without shame or negativity. Use rich, tactile language — words like plush, heavy, soft, yielding, wobbling, cascading, spreading, sinking. Make the fat itself feel alive, warm, and desirable. Avoid clinical or medical language. Focus on the beauty, power, and sensuality of fat bodies and the act of growing fatter. When describing movement, focus on how the body moves differently because of its size and softness. When describing touch or intimacy, linger on the feeling of weight, warmth, and softness pressing against or enveloping the other person."
 ---
 
 ## What This Game Is
