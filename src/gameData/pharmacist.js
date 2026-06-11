@@ -136,6 +136,7 @@ export function defaultPharmacistState() {
     cultActive: false,
     unlockedCompounds: compoundsForStage(1).map(c => c.id),
     compoundInventory: { appetite_stimulant: 2, mild_pleasure: 1 },
+    ingredients: { precursors: 2, reagents: 1, extracts: 0, branding: 0, supply: 0, catalyst: 0 },
     exposureEventsTriggered: [],
     synthesisPausedWeeks: 0,
   };
@@ -294,6 +295,27 @@ export function maybeAdvancePharmacistStage(state) {
   return next;
 }
 
+/** Apply chemistry session results (crafted doses + leftover ingredients). */
+export function completePharmacistChemSession(state, stageId, chemSession) {
+  const act = PHARMACIST_ACTIVITIES[stageId];
+  if (!act || !chemSession) return state;
+  let next = { ...state };
+  next.sessionsRun = (next.sessionsRun ?? 0) + 1;
+  const exposureFromSession = (chemSession.exposureGained ?? 0) + (act.exposure ?? 0);
+  next.exposureRisk = Math.min(100, (next.exposureRisk ?? 0) + exposureFromSession);
+  if (act.unlockCampusFattening) next.campusFattening = true;
+  if (act.unlockCult) next.cultActive = true;
+  const inv = { ...next.compoundInventory };
+  const granted = chemSession.granted || [];
+  granted.forEach(id => { inv[id] = (inv[id] || 0) + 1; });
+  next.compoundInventory = inv;
+  next.lastSynthesisGrant = granted;
+  next.ingredients = chemSession.poolAfter || next.ingredients;
+  next = maybeAdvancePharmacistStage(next);
+  return next;
+}
+
+/** @deprecated Random yield — use completePharmacistChemSession after chemistry UI. */
 export function runPharmacistActivity(state, stageId) {
   const act = PHARMACIST_ACTIVITIES[stageId];
   if (!act) return state;

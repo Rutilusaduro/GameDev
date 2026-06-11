@@ -5,12 +5,12 @@ import { C } from '../styles.js';
 import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
 import { EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
-import { getAttitude } from '../utils/gameHelpers.js';
+import { getAttitude, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { addictionTint } from '../gameData/hungerAddiction.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
 export function ClassView({ view, students, lilithUnlocked, avgLbs, setSelectedId, setView, week = 1, pharmacistState = null }){
-  const textOpts = { campusFattening: !!pharmacistState?.campusFattening, week };
+  const textOpts = pharmacistTextOpts(pharmacistState, week);
   return(<>
           {/* ── CLASS ROSTER ── */}
           {view==="class"&&(

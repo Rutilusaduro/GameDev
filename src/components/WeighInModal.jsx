@@ -198,8 +198,8 @@ function UhOhButton({onClick}){
   );
 }
 
-export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,week,campusFattening=false}){
-  const weighInOpts = { campusFattening: !!campusFattening, week: week || 1 };
+export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,week,campusFattening=false,campusTier=0}){
+  const weighInOpts = { campusFattening: !!campusFattening, campusTier: campusTier || (campusFattening ? 1 : 0), week: week || 1 };
   if(!weighInState) return null;
   const {student,phase,reactionText}=weighInState;
   if(!student) return null;

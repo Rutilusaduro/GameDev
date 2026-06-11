@@ -19,7 +19,7 @@ import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFe
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
-import { getAttitude, getEvolvedActivityStageIdx, rnd, generateClassSession } from './utils/gameHelpers.js';
+import { getAttitude, getEvolvedActivityStageIdx, rnd, generateClassSession, pharmacistTextOpts } from './utils/gameHelpers.js';
 import {
   pickInterruptStudent, feedResolvesHunger, talkCalmsHunger,
   tickHungerAddiction, adjustHunger, applyDenialConsequences,
@@ -27,13 +27,18 @@ import {
 } from './gameData/hungerAddiction.js';
 import {
   defaultPharmacistState, PHARMACIST_ACTIVITIES, PHARMACIST_STAGES, applyCompoundToFeed, COMPOUNDS,
-  runPharmacistActivity, getStockedCompoundIds, consumeCompoundDose, rollExposureEvent,
+  completePharmacistChemSession, getStockedCompoundIds, consumeCompoundDose, rollExposureEvent,
   applyExposureEvent, formatSynthesisGrant, tickPharmacistWeek,
 } from './gameData/pharmacist.js';
 import {
+  startChemSession, applyAcquisitionChoice, skipAcquisition, finalizeBrewPlan,
+} from './gameData/pharmacistIngredients.js';
+import {
   rollCampusPassiveLbs, pickPharmacistCampusEvent, CAMPUS_SOFT_FLAVOR,
   PHARMACIST_CAMPUS_ENCOUNTERS, getCampusTesterStartLbs, getCampusHiveRecruitLbsBonus,
+  getCampusWeeklyEventChance, scaleCampusEventGain, CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier,
 } from './gameData/pharmacistCampus.js';
+import { PharmacistChemModal } from './components/PharmacistChemModal.jsx';
 import { HungerInterruptModal } from './components/HungerInterruptModal.jsx';
 import { CompoundFeedModal } from './components/CompoundFeedModal.jsx';
 import { renderHungerOutcome } from './textEngine/scenes/hungerInterrupt.js';
@@ -190,6 +195,8 @@ export default function ProfessorSim(){
   const [cultivatorState, setCultivatorState] = useState(null);
   // cultivatorState: {testerName,testerStageId,testerLbs,fatBar,suspicion,harvestsCompleted,usedNames,modalPhase,session,pendingStageUp,harvestType,harvestVignetteText,growthGain,growthVignetteText,digestWeeksLeft,digestTotalWeeks}
   const [pharmacistState, setPharmacistState] = useState(null);
+  const [pharmacistChemSession, setPharmacistChemSession] = useState(null);
+  const [pharmacistChemStudentId, setPharmacistChemStudentId] = useState(null);
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
   const [weeklyArms, setWeeklyArms] = useState({ devouringStudentId: null, mesmerizingStudentId: null, devouringConsumed: false });
   const skipHungerCheckRef = useRef(false);
@@ -514,7 +521,7 @@ export default function ProfessorSim(){
     const scaledGain=Math.round(gain*(s.gainMultiplier||1)*skillGainMult);
     const {newLbs,oldStageId,newStageId,narrativeEvents}=applyGainToStudent(s,scaledGain);
     if(newStageId>oldStageId){
-      setTimeout(()=>push(`📣 ${s.name} reaches ${WEIGHT_STAGES[newStageId].label}! "${getAttitude({...s,lbs:newLbs}, week, { campusFattening: !!pharmacistState?.campusFattening })}"`) ,50);
+      setTimeout(()=>push(`📣 ${s.name} reaches ${WEIGHT_STAGES[newStageId].label}! "${getAttitude({...s,lbs:newLbs}, week, pharmacistTextOpts(pharmacistState, week))}"`) ,50);
     }
     return {
       ...s,
@@ -611,7 +618,7 @@ export default function ProfessorSim(){
     if(pharmacistState){
       setPharmacistState(prev=>tickPharmacistWeek(prev));
     }
-    if(pharmacistState?.campusFattening&&Math.random()<0.28){
+    if(pharmacistState?.campusFattening&&Math.random()<getCampusWeeklyEventChance(pharmacistState)){
       const campusEv=pickPharmacistCampusEvent(updated,{
         hasMayaHive:!!students.find(s=>s.evolvedForm==='delivery_hive'),
       });
@@ -619,12 +626,12 @@ export default function ProfessorSim(){
         setTimeout(()=>{
           if(campusEv.target==='class'){
             push(`🌿 ${campusEv.text()}`);
-            setStudents(prev=>prev.map(s=>s.hidden?s:processStudentGain(s,rnd(...campusEv.gain),0)));
+            setStudents(prev=>prev.map(s=>s.hidden?s:processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd),0)));
           }else{
             const target=updated[rnd(0,updated.length-1)];
             if(target&&!target.hidden){
               push(`🌿 ${campusEv.text(target)}`);
-              setStudents(prev=>prev.map(s=>s.id===target.id?processStudentGain(s,rnd(...campusEv.gain),0):s));
+              setStudents(prev=>prev.map(s=>s.id===target.id?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd),0):s));
             }
           }
         },180);
@@ -1951,31 +1958,50 @@ export default function ProfessorSim(){
     }
     if(ap<act.apCost){push(`⚠️ Need ${act.apCost} AP.`);return;}
     guardHungerInterrupt(()=>{
-      setAp(a=>a-act.apCost);
-      const gain=rnd(...act.sophiaGain);
-      const ns=processStudentGain(s,gain,10);
-      setStudents(prev=>prev.map(st=>st.id===s.id?ns:st));
-      const prevState=pharmacistState;
-      let next=runPharmacistActivity(pharmacistState,pharmacistState.stage);
-      const exposureEv=rollExposureEvent(prevState,next);
-      if(exposureEv){
-        next=applyExposureEvent(next,exposureEv);
-        setTimeout(()=>{
-          push(`⚠️ ${exposureEv.text()}`);
-          if(exposureEv.scrutiny) addScrutiny(exposureEv.scrutiny);
-        },140);
-      }
-      setPharmacistState(next);
-      const stageMeta=PHARMACIST_STAGES.find(x=>x.id===next.stage);
-      const brewed=formatSynthesisGrant(next.lastSynthesisGrant);
-      push(`🧪 ${s.name} — synthesis complete. ${stageMeta?.label||'Stage'} · exposure ${next.exposureRisk}%${brewed?` · brewed ${brewed}`:''}`);
-      if(next.stage>(pharmacistState.stage)){
-        setTimeout(()=>push(`✦ Sophia advances: ${stageMeta?.label}. New compounds unlocked.`),120);
-      }
-      if(act.unlockCampusFattening&&!prevState.campusFattening){
-        setTimeout(()=>push(`🌿 Campus effect active — the student body starts softening.`),160);
-      }
+      setPharmacistChemStudentId(s.id);
+      setPharmacistChemSession(startChemSession(pharmacistState));
     });
+  };
+
+  const cancelPharmacistChem=()=>{
+    setPharmacistChemSession(null);
+    setPharmacistChemStudentId(null);
+  };
+
+  const confirmPharmacistChem=()=>{
+    const s=students.find(st=>st.id===pharmacistChemStudentId);
+    if(!s||!pharmacistChemSession||pharmacistChemSession.phase!=='summary') return;
+    const act=PHARMACIST_ACTIVITIES[pharmacistChemSession.stageId||pharmacistState.stage]||PHARMACIST_ACTIVITIES[1];
+    if(ap<act.apCost){push(`⚠️ Need ${act.apCost} AP.`);return;}
+    setAp(a=>a-act.apCost);
+    const gain=rnd(...act.sophiaGain);
+    const ns=processStudentGain(s,gain,10);
+    setStudents(prev=>prev.map(st=>st.id===s.id?ns:st));
+    const prevState=pharmacistState;
+    const stageId=pharmacistChemSession.stageId||pharmacistState.stage;
+    let next=completePharmacistChemSession(pharmacistState,stageId,pharmacistChemSession);
+    const exposureEv=rollExposureEvent(prevState,next);
+    if(exposureEv){
+      next=applyExposureEvent(next,exposureEv);
+      setTimeout(()=>{
+        push(`⚠️ ${exposureEv.text()}`);
+        if(exposureEv.scrutiny) addScrutiny(exposureEv.scrutiny);
+      },140);
+    }
+    setPharmacistState(next);
+    const stageMeta=PHARMACIST_STAGES.find(x=>x.id===next.stage);
+    const brewed=formatSynthesisGrant(next.lastSynthesisGrant);
+    const narrative=CAMPUS_NARRATIVE_LABELS[getCampusNarrativeTier(next)];
+    push(`🧪 ${s.name} — synthesis complete. ${stageMeta?.label||'Stage'} · exposure ${next.exposureRisk}%${brewed?` · brewed ${brewed}`:''}`);
+    if(next.stage>(pharmacistState.stage)){
+      setTimeout(()=>push(`✦ Sophia advances: ${stageMeta?.label}. New compounds unlocked.`),120);
+    }
+    if(!prevState.campusFattening&&next.campusFattening){
+      setTimeout(()=>push(`🌿 ${narrative||'Campus Softening'} — the student body starts rounding out.`),160);
+    }else if(narrative&&narrative!==CAMPUS_NARRATIVE_LABELS[getCampusNarrativeTier(prevState)]){
+      setTimeout(()=>push(`🌿 Campus influence intensifies: ${narrative}.`),160);
+    }
+    cancelPharmacistChem();
   };
 
   // ── HUNGER INTERRUPT handlers ─────────────────────────────────
@@ -4504,6 +4530,7 @@ export default function ProfessorSim(){
         onUnlockBigScale={()=>{ setBigScaleUnlocked(true); push("⚖ Ordered a heavy-duty 1000 lb scale."); }}
         week={week}
         campusFattening={!!pharmacistState?.campusFattening}
+        campusTier={getCampusNarrativeTier(pharmacistState)}
       />}
 
       {/* ── SESSION RESULT ── */}
@@ -4641,7 +4668,24 @@ export default function ProfessorSim(){
       {chapterHostessState?.feastLogOpen&&<ChapterHostessFeastLogModal chapterHostessState={chapterHostessState} completeFeast={completeFeast}/>}
 
       {/* ── LILITH — CLUE / INVESTIGATION MODAL ── */}
-      {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} weeklyArms={weeklyArms} onArmDevouring={()=>armDevouringPresence(talkStudent.id)} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect} campusFattening={!!pharmacistState?.campusFattening}/>}
+      {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} weeklyArms={weeklyArms} onArmDevouring={()=>armDevouringPresence(talkStudent.id)} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect} campusFattening={!!pharmacistState?.campusFattening} campusTier={getCampusNarrativeTier(pharmacistState)}/>}
+
+      {pharmacistChemSession&&pharmacistChemStudentId!=null&&(()=>{
+        const chemStudent=students.find(st=>st.id===pharmacistChemStudentId);
+        if(!chemStudent) return null;
+        return(
+          <PharmacistChemModal
+            student={chemStudent}
+            chemSession={pharmacistChemSession}
+            setChemSession={setPharmacistChemSession}
+            onConfirm={confirmPharmacistChem}
+            onCancel={cancelPharmacistChem}
+            finalizeBrewPlan={finalizeBrewPlan}
+            applyAcquisitionChoice={applyAcquisitionChoice}
+            skipAcquisition={skipAcquisition}
+          />
+        );
+      })()}
       {lilithClueModal&&<LilithClueModal lilithClueModal={lilithClueModal} investigateClue={investigateClue} setLilithClueModal={setLilithClueModal} confirmInvestigation={confirmInvestigation}/>}
 
       {/* ── LILITH — FEASTING BEAUTY (TEXT ADVENTURE) ── */}

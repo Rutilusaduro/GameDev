@@ -350,7 +350,10 @@ export function renderAttitude(student, week = 1, opts = {}) {
   const ctx = createContext({
     subject: student,
     week,
-    globals: { campusFattening: !!opts.campusFattening },
+    globals: {
+      campusFattening: !!opts.campusFattening,
+      campusTier: opts.campusTier ?? (opts.campusFattening ? 1 : 0),
+    },
   });
   return render(ATTITUDE_TEMPLATE, ctx).trim() || "—";
 }
