@@ -14,6 +14,7 @@ import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
 import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_FEED_LINES, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
 import { ITEMS, INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES } from './gameData/items.js';
+import { CAMPUS_NODES, CAMPUS_CONFIG, CAMPUS_ENCOUNTERS, stageDescriptor } from './gameData/campus.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
@@ -37,6 +38,7 @@ import { ClassView } from './views/ClassView.jsx';
 import { StudentDetailView } from './views/StudentDetailView.jsx';
 import { ActionsView } from './views/ActionsView.jsx';
 import { InventoryView, ItemTargetPicker } from './views/InventoryView.jsx';
+import { CampusView } from './views/CampusView.jsx';
 import { SkillTreeView } from './views/SkillTreeView.jsx';
 import { AchievementsView, DivinePanel } from './views/AchievementsView.jsx';
 import { PrivateSessionModal } from './components/PrivateSessionModal.jsx';
@@ -120,6 +122,7 @@ export default function ProfessorSim(){
   // inventory: {[itemId]: qty}
   const [itemTargetPicker,setItemTargetPicker]=useState(null);
   // itemTargetPicker: {item}
+  const [campusState,setCampusState]=useState({at:CAMPUS_CONFIG.startNode,log:[CAMPUS_NODES[CAMPUS_CONFIG.startNode].desc]});
   // {student, phase:"scene"|"analog"|"break"|"purchase"|"swap"|"digital"}
   const [bigScaleUnlocked,setBigScaleUnlocked]=useState(false);
   const [brokeScaleIds,setBrokeScaleIds]=useState([]);
@@ -318,6 +321,42 @@ export default function ProfessorSim(){
       }
     });
     return { newLbs:newLbs+bonusInfluence, oldStageId:oldSt, newStageId:newSt, narrativeEvents:triggered };
+  };
+
+  // ── CAMPUS EXPLORATION ─────────────────────────────────────────
+  const campusLog=(lines)=>setCampusState(prev=>({...prev,log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit)}));
+
+  const rollCampusEvent=(nodeId)=>{
+    const lines=[];
+    if(Math.random()<CAMPUS_CONFIG.encounterChance){
+      const visible=students.filter(st=>!st.hidden||lilithUnlocked);
+      if(visible.length){
+        const who=visible[rnd(0,visible.length-1)];
+        const sd=stageDescriptor(getStage(who.lbs).id);
+        const enc=CAMPUS_ENCOUNTERS[rnd(0,CAMPUS_ENCOUNTERS.length-1)](who,sd);
+        lines.push(`👁 ${enc}`);
+      }
+    }
+    if(Math.random()<CAMPUS_CONFIG.itemFindChance){
+      const item=rollWeeklyItem();
+      setInventory(prev=>({...prev,[item.id]:Math.min(INVENTORY_CONFIG.maxStack,(prev[item.id]||0)+1)}));
+      lines.push(`🎒 You come across ${item.emoji} ${item.label.toLowerCase()} — into the pantry it goes.`);
+    }
+    return lines;
+  };
+
+  const moveToCampusNode=(nodeId)=>{
+    const from=CAMPUS_NODES[campusState.at];
+    if(!from.exits.includes(nodeId)) return;
+    const node=CAMPUS_NODES[nodeId];
+    const lines=[`→ You walk to ${node.emoji} ${node.label}.`,node.desc,...rollCampusEvent(nodeId)];
+    setCampusState(prev=>({...prev,at:nodeId,log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit)}));
+  };
+
+  const lookAround=()=>{
+    const node=CAMPUS_NODES[campusState.at];
+    const flavor=node.flavor[rnd(0,node.flavor.length-1)];
+    campusLog([flavor,...rollCampusEvent(campusState.at)]);
   };
 
   // ── INVENTORY ──────────────────────────────────────────────────
@@ -5306,7 +5345,7 @@ export default function ProfessorSim(){
 
       {/* NAV */}
       <div style={C.nav}>
-        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],...(goddessSeen?[["divine","✦ Divine"]]:[])].map(([v,l])=>(
+        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],...(goddessSeen?[["divine","✦ Divine"]]:[])].map(([v,l])=>(
           v==="student"&&!sel?null:
           <button key={v} style={C.navB(view===v)} onClick={()=>setView(v)}>{l}</button>
         ))}
@@ -5326,6 +5365,9 @@ export default function ProfessorSim(){
 
           {/* ── PANTRY / INVENTORY ── */}
           {view==="inventory"&&<InventoryView inventory={inventory} setItemTargetPicker={setItemTargetPicker}/>}
+
+          {/* ── CAMPUS EXPLORATION ── */}
+          {view==="campus"&&<CampusView campusState={campusState} moveToCampusNode={moveToCampusNode} lookAround={lookAround}/>}
 
 {/* ── SKILL TREE ── */}
           {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} canUnlock={canUnlock} goddessSeen={goddessSeen} skillApBonus={skillApBonus} skillGainMult={skillGainMult} skillPassiveBonus={skillPassiveBonus} skillScrutinyPassiveReduce={skillScrutinyPassiveReduce} skillScrutinyReduce={skillScrutinyReduce} skillSessionCapBonus={skillSessionCapBonus} spentSkillPoints={spentSkillPoints} spiritLevel={spiritLevel} spiritXp={spiritXp} spiritXpForNextLevel={SPIRIT_XP_PER_LEVEL} startSkillPurchase={startSkillPurchase} totalSkillPoints={totalSkillPoints} unlockedSkills={unlockedSkills}/>}
