@@ -7,9 +7,10 @@ import { BODY_DESCS, OUTFITS } from '../gameData/content.js';
 import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS } from '../gameData/evolvedForms.js';
 import { getStage } from '../gameData/stages.js';
 import { CLASS_SCENES } from '../gameData/classEvents.js';
-import { createContext, render } from '../textEngine/engine.js';
+import { createContext, render, hasModule } from '../textEngine/engine.js';
 import '../textEngine/lexicon.js'; // registers word.* modules
 import { renderDiary } from '../textEngine/scenes/diary.js';
+import { renderEvolvedDiary } from '../textEngine/scenes/evolvedDiary.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { appendCampusDiary, appendCampusAttitude } from '../textEngine/scenes/campusSoftening.js';
 import { getCampusNarrativeTier } from '../gameData/pharmacistIngredients.js';
@@ -37,6 +38,10 @@ export function getOutfit(s){
 }
 export function getDiary(s, week = 1, opts = {}){
   if(s.evolvedForm && getStage(s.lbs).id>=5){
+    // Modular evolved diary takes priority when a module is registered
+    if(hasModule(`diary.${s.evolvedForm}`)){
+      return renderEvolvedDiary(s, week);
+    }
     const arr=EVOLVED_DIARY[s.evolvedForm];
     if(arr){
       const base=arr[Math.min(getStage(s.lbs).id-5,arr.length-1)];
