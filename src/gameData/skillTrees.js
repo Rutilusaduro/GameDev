@@ -1,3 +1,5 @@
+import { getStage } from './stages.js';
+
 // ═══════════════════════════════════════════════════════════════
 // SKILL TREES — Influence · Gluttony · Corruption
 // The power of the spirit riding the professor. Numerical skills have
@@ -286,4 +288,21 @@ export function capacityBonusFromSkills(owned = {}) {
 export function softStartBonus(owned = {}, stageId) {
   if (stageId > 1) return 0;
   return aggregateSkillEffects(owned).softStart || 0;
+}
+
+/** Grant physical traits when Body's Surrender is owned; runs once per week per student. */
+export function tickPhysicalTraits(student, owned = {}) {
+  if (!aggregateSkillEffects(owned).bodysSurrender) return student;
+  const stage = getStage(student.lbs);
+  let traits = [...(student.physicalTraits || [])];
+  let changed = false;
+  for (const trait of PHYSICAL_TRAITS) {
+    if (trait.once && traits.includes(trait.id)) continue;
+    if (!trait.cond(student, stage)) continue;
+    if (!traits.includes(trait.id)) {
+      traits.push(trait.id);
+      changed = true;
+    }
+  }
+  return changed ? { ...student, physicalTraits: traits } : student;
 }

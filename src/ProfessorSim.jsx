@@ -20,12 +20,15 @@ import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLin
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateClassSession } from './utils/gameHelpers.js';
-import { pickInterruptStudent, feedResolvesHunger, denyHunger, talkCalmsHunger, tickHungerAddiction } from './gameData/hungerAddiction.js';
+import {
+  pickInterruptStudent, feedResolvesHunger, denyHunger, talkCalmsHunger,
+  tickHungerAddiction, adjustHunger,
+} from './gameData/hungerAddiction.js';
 import { defaultPharmacistState, PHARMACIST_ACTIVITIES, PHARMACIST_STAGES, applyCompoundToFeed, COMPOUNDS, runPharmacistActivity } from './gameData/pharmacist.js';
 import { HungerInterruptModal } from './components/HungerInterruptModal.jsx';
 import './textEngine/scenes/hungerInterrupt.js';
 import {
-  aggregateSkillEffects, computeSpentSkillPoints, isTreeTierUnlocked,
+  aggregateSkillEffects, computeSpentSkillPoints, isTreeTierUnlocked, tickPhysicalTraits,
   RANK_COSTS, softStartBonus,
 } from './gameData/skillTrees.js';
 import { renderHiveIntake } from './textEngine/scenes/hiveIntake.js';
@@ -175,6 +178,7 @@ export default function ProfessorSim(){
   // cultivatorState: {testerName,testerStageId,testerLbs,fatBar,suspicion,harvestsCompleted,usedNames,modalPhase,session,pendingStageUp,harvestType,harvestVignetteText,growthGain,growthVignetteText,digestWeeksLeft,digestTotalWeeks}
   const [pharmacistState, setPharmacistState] = useState(null);
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
+  const [weeklyArms, setWeeklyArms] = useState({ devouringStudentId: null, mesmerizingStudentId: null, devouringConsumed: false });
   const skipHungerCheckRef = useRef(false);
   const [communityResearcherState, setCommunityResearcherState] = useState(null);
   // communityResearcherState: {thesisComplete,boardPhase,caseStudyStage,lastPairId,pairsUsed,modalPhase,activePairId,eventText,totalSuspicion,boardReactionPairId,chatMemberIdx,chatPhaseIdx,chatHistory,chatWon,thesisApproved,thesisRejected,finalReviewText}
@@ -432,7 +436,8 @@ export default function ProfessorSim(){
       if(applied.feedResult.relGain) result.relationship=Math.min(100,result.relationship+(applied.feedResult.relGain||0));
       if(applied.flavor) setTimeout(()=>push(`💊 ${applied.flavor}`),90);
     }
-    return feedResolvesHunger(result,Boolean(opts.compoundId));
+    const hungerEff=aggregateSkillEffects(ownedSkills);
+    return feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
   };
 
   const processStudentGain=(s,gain,extraRel=0)=>{
@@ -465,14 +470,20 @@ export default function ProfessorSim(){
   };
 
   const advanceWeek=()=>{
+    const hungerEff=aggregateSkillEffects(ownedSkills);
     if(!skipHungerCheckRef.current){
-      const inter=pickInterruptStudent(students);
+      const inter=pickInterruptStudent(students,hungerEff,weeklyArms);
       if(inter){
+        if(weeklyArms.devouringStudentId===inter.id&&!weeklyArms.devouringConsumed){
+          setWeeklyArms(prev=>({...prev,devouringConsumed:true}));
+        }
+        setStudents(prev=>prev.map(s=>s.id===inter.id?inter:s));
         setHungerInterrupt({studentId:inter.id,after:"week"});
         return;
       }
     }
     skipHungerCheckRef.current=false;
+    setWeeklyArms({devouringStudentId:null,mesmerizingStudentId:null,devouringConsumed:false});
     const newWeek=week+1;
     setWeek(newWeek);
     const newAp=Math.min(ap+5+skillApBonus,20);
@@ -508,7 +519,12 @@ export default function ProfessorSim(){
         gain+=evPassive;
       }
       let ns=processStudentGain(s,gain,0);
-      ns=tickHungerAddiction(ns,!!ns.playerFedThisWeek);
+      ns=tickPhysicalTraits(ns,ownedSkills);
+      ns=tickHungerAddiction(ns,!!ns.playerFedThisWeek,hungerEff,weeklyArms);
+      if(hungerEff.gluttonsInstinct){
+        const cap=ns.stomachCapacity||GAIN_CONFIG.baseCapacity;
+        if((ns.fullness||0)/cap>=0.7&&Math.random()<0.45) ns=adjustHunger(ns,1);
+      }
       return {...ns,playerFedThisWeek:false};
     });
     if(pharmacistState?.campusFattening){
@@ -546,7 +562,9 @@ export default function ProfessorSim(){
       if(d.stuffed) corruption=addCorruption({...ns,corruption},CORRUPTION_CONFIG.perStuffedWeek);
       if(stagedUp) corruption=addCorruption({...ns,corruption},CORRUPTION_CONFIG.perStageUp);
       let carriedFullness=0;
-      if(getCorruptionTier(corruption).id===2&&Math.random()<CORRUPTION_CONFIG.tier3SelfStuffChance){
+      let selfStuffChance=CORRUPTION_CONFIG.tier3SelfStuffChance;
+      if(hungerEff.willingVessel&&getCorruptionTier(corruption).id===2) selfStuffChance=Math.min(1,selfStuffChance*2);
+      if(getCorruptionTier(corruption).id===2&&Math.random()<selfStuffChance){
         carriedFullness=Math.round((growth.stomachCapacity+d.capacityGained)*1.15);
         const autoLine=CORRUPTION_AUTO_LINES[rnd(0,CORRUPTION_AUTO_LINES.length-1)](ns);
         setTimeout(()=>push(`💭 ${autoLine}`),250);
@@ -1856,7 +1874,8 @@ export default function ProfessorSim(){
       ns=denyHunger(ns);
       ns={...ns,relationship:Math.max(0,ns.relationship-8)};
     }else if(action==='talk'){
-      ns=talkCalmsHunger(ns);
+      const hungerEff=aggregateSkillEffects(ownedSkills);
+      ns=talkCalmsHunger(ns,hungerEff,weeklyArms);
       ns={...ns,relationship:Math.min(100,ns.relationship+3)};
     }
     setStudents(prev=>prev.map(st=>st.id===studentId?ns:st));
@@ -2991,6 +3010,20 @@ export default function ProfessorSim(){
     if(ap<TALK_CONFIG.apCost){ push(`⚠️ Need ${TALK_CONFIG.apCost} AP to talk.`); return; }
     setAp(a=>a-TALK_CONFIG.apCost);
     setTalkStudentId(s.id);
+  };
+
+  const armDevouringPresence=(studentId)=>{
+    const name=students.find(s=>s.id===studentId)?.name||"her";
+    setWeeklyArms(prev=>{
+      const togglingOff=prev.devouringStudentId===studentId;
+      return{
+        devouringStudentId:togglingOff?null:studentId,
+        mesmerizingStudentId:prev.mesmerizingStudentId,
+        devouringConsumed:false,
+      };
+    });
+    const togglingOff=weeklyArms.devouringStudentId===studentId;
+    push(togglingOff?`😈 Devouring Presence disarmed on ${name}.`:`😈 Devouring Presence armed on ${name} — her hunger will surface this week.`);
   };
 
   const applyTalkEffect=(effect)=>{
@@ -4452,7 +4485,7 @@ export default function ProfessorSim(){
       {chapterHostessState?.feastLogOpen&&<ChapterHostessFeastLogModal chapterHostessState={chapterHostessState} completeFeast={completeFeast}/>}
 
       {/* ── LILITH — CLUE / INVESTIGATION MODAL ── */}
-      {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect}/>}
+      {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} weeklyArms={weeklyArms} onArmDevouring={()=>armDevouringPresence(talkStudent.id)} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect}/>}
       {lilithClueModal&&<LilithClueModal lilithClueModal={lilithClueModal} investigateClue={investigateClue} setLilithClueModal={setLilithClueModal} confirmInvestigation={confirmInvestigation}/>}
 
       {/* ── LILITH — FEASTING BEAUTY (TEXT ADVENTURE) ── */}

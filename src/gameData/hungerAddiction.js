@@ -1,7 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
 // HUNGER & ADDICTION — player-specific craving system (Sophia path)
+// Modifiers from skill trees + physical traits (Body's Surrender).
 // See docs/Pharmacist/Hunger And Addiction.txt
 // ═══════════════════════════════════════════════════════════════
+
+import { getCorruptionTier } from './corruption.js';
+import { PHYSICAL_TRAITS } from './skillTrees.js';
+import { getStage } from './stages.js';
+import { TALK_CONFIG } from './talkSystem.js';
 
 export const ADDICTION_LEVELS = [
   { id: 0, label: "None",       color: null },
@@ -28,6 +34,56 @@ export const HUNGER_CONFIG = {
   interruptChance: { craving: 0.45, starving: 0.7, withdrawal: 0.55 },
   passiveHungerRise: { 0: 0, 1: 0.15, 2: 0.25, 3: 0.4, 4: 0.55 },
 };
+
+/** Per-student hunger modifiers from owned skills, weekly arms, and physical traits. */
+export function getHungerModifiers(student, skillEffects = {}, weeklyArms = {}) {
+  const eff = skillEffects || {};
+  const traits = student?.physicalTraits || [];
+  const mod = {
+    passiveRiseMult: 1,
+    interruptBonus: 0,
+    feedDropMult: 1,
+    talkDropBonus: 0,
+    addictionDriftChance: 0,
+    addictionFloorForCraving: 2,
+    forceInterrupt: false,
+    feedAddictionChance: 0,
+  };
+
+  if (eff.devouringPresence && weeklyArms.devouringStudentId === student?.id && !weeklyArms.devouringConsumed) {
+    mod.forceInterrupt = true;
+    mod.interruptBonus = 1;
+    mod.talkDropBonus += 1;
+  }
+
+  if (eff.willingVessel && getCorruptionTier(student?.corruption || 0).id >= 2) {
+    mod.passiveRiseMult *= 1.55;
+    mod.interruptBonus += 0.18;
+    mod.addictionFloorForCraving = 1;
+  }
+
+  if (eff.cravingSubmission) mod.passiveRiseMult *= 1.12;
+  if (eff.corruptionRate) mod.addictionDriftChance += 0.06 * eff.corruptionRate;
+
+  if (eff.gluttonsInstinct) {
+    const cap = student?.stomachCapacity || 100;
+    if ((student?.fullness || 0) / cap >= 0.7) mod.passiveRiseMult *= 1.4;
+  }
+
+  if (eff.lingeringFullness) {
+    mod.feedDropMult *= Math.max(0.55, 1 - eff.lingeringFullness * 0.45);
+  }
+
+  if (eff.appetiteBoost && getAddictionLevel(student) >= 1) {
+    mod.feedAddictionChance += 0.08 * eff.appetiteBoost;
+  }
+
+  if (traits.includes('growth_addiction')) mod.passiveRiseMult *= 1.28;
+  if (traits.includes('feeding_aura')) mod.passiveRiseMult *= 1.22;
+  if (traits.includes('hungry_awakening')) mod.addictionDriftChance += 0.14;
+
+  return mod;
+}
 
 export function getAddictionLevel(student) {
   return Math.min(4, Math.max(0, student?.addictionLevel ?? 0));
@@ -66,13 +122,26 @@ export function adjustHunger(student, delta) {
   return setHungerTier(student, getHungerTier(student) + delta);
 }
 
-export function feedResolvesHunger(student, usedCompound = false) {
-  const drop = usedCompound
+/** Prime an armed devouring target so her hunger can surface as an event. */
+export function primeDevouringHunger(student) {
+  let s = { ...student };
+  if (getAddictionLevel(s) < 1) s = addAddiction(s, 1);
+  if (getHungerTier(s) < 2) s = adjustHunger(s, 1);
+  return s;
+}
+
+export function feedResolvesHunger(student, usedCompound = false, skillEffects = {}, weeklyArms = {}) {
+  const mod = getHungerModifiers(student, skillEffects, weeklyArms);
+  const baseDrop = usedCompound
     ? HUNGER_CONFIG.compoundHungerDrop[getHungerTier(student)]
     : HUNGER_CONFIG.feedHungerDrop[getHungerTier(student)];
+  const drop = Math.max(0, Math.round(baseDrop * mod.feedDropMult));
   let s = adjustHunger(student, -drop);
   s = { ...s, weeksWithoutPlayerFeed: 0 };
   if (getAddictionLevel(s) >= 2 && !usedCompound) s = addAddiction(s, 0);
+  if (!usedCompound && mod.feedAddictionChance > 0 && Math.random() < mod.feedAddictionChance) {
+    s = addAddiction(s, 1);
+  }
   return s;
 }
 
@@ -82,46 +151,85 @@ export function denyHunger(student) {
   return s;
 }
 
-export function talkCalmsHunger(student) {
-  return adjustHunger(student, -HUNGER_CONFIG.talkHungerDrop);
+export function talkCalmsHunger(student, skillEffects = {}, weeklyArms = {}) {
+  const mod = getHungerModifiers(student, skillEffects, weeklyArms);
+  let drop = HUNGER_CONFIG.talkHungerDrop + mod.talkDropBonus;
+  if (weeklyArms.devouringStudentId === student?.id && skillEffects?.devouringPresence) {
+    drop += Math.ceil(TALK_CONFIG.devouringBonus * 3);
+  }
+  return adjustHunger(student, -drop);
 }
 
-export function tickHungerAddiction(student, playerFedThisWeek = false) {
+export function applyTraitHungerWeekly(student) {
   let s = { ...student };
-  if (!playerFedThisWeek && getAddictionLevel(s) >= 1) {
-    s.weeksWithoutPlayerFeed = (s.weeksWithoutPlayerFeed ?? 0) + 1;
-  }
-  const addiction = getAddictionLevel(s);
-  const rise = HUNGER_CONFIG.passiveHungerRise[addiction] ?? 0;
-  if (rise > 0 && Math.random() < rise) {
-    s = adjustHunger(s, 1);
-  }
-  if (isInWithdrawal(s) && Math.random() < 0.35) {
-    s.mood = "stressed";
+  const traits = s.physicalTraits || [];
+  for (const tid of traits) {
+    const trait = PHYSICAL_TRAITS.find(t => t.id === tid);
+    if (!trait?.weekly?.selfFeedCals) continue;
+    if (Math.random() < 0.42) s = adjustHunger(s, 1);
   }
   return s;
 }
 
-export function needsHungerInterrupt(student) {
+export function tickHungerAddiction(student, playerFedThisWeek = false, skillEffects = {}, weeklyArms = {}) {
+  let s = { ...student };
+  const mod = getHungerModifiers(s, skillEffects, weeklyArms);
+
+  if (!playerFedThisWeek && getAddictionLevel(s) >= 1) {
+    s.weeksWithoutPlayerFeed = (s.weeksWithoutPlayerFeed ?? 0) + 1;
+  }
+
+  const addiction = getAddictionLevel(s);
+  const rise = (HUNGER_CONFIG.passiveHungerRise[addiction] ?? 0) * mod.passiveRiseMult;
+  if (rise > 0 && Math.random() < rise) {
+    s = adjustHunger(s, 1);
+  }
+
+  if (mod.addictionDriftChance > 0 && addiction < 4 && Math.random() < mod.addictionDriftChance) {
+    s = addAddiction(s, 1);
+  }
+
+  if (isInWithdrawal(s) && Math.random() < 0.35) {
+    s.mood = "stressed";
+  }
+
+  s = applyTraitHungerWeekly(s);
+  return s;
+}
+
+export function needsHungerInterrupt(student, skillEffects = {}, weeklyArms = {}) {
+  const mod = getHungerModifiers(student, skillEffects, weeklyArms);
+  if (mod.forceInterrupt) return true;
+
   const tier = getHungerTier(student);
   const addiction = getAddictionLevel(student);
+  const floor = mod.addictionFloorForCraving;
   const withdrawal = isInWithdrawal(student);
-  if (withdrawal) return Math.random() < HUNGER_CONFIG.interruptChance.withdrawal;
-  if (tier >= 4 && addiction >= 2) return Math.random() < HUNGER_CONFIG.interruptChance.starving;
-  if (tier >= 3 && addiction >= 2) return Math.random() < HUNGER_CONFIG.interruptChance.craving;
+  const chanceBonus = mod.interruptBonus;
+
+  if (withdrawal) return Math.random() < Math.min(1, HUNGER_CONFIG.interruptChance.withdrawal + chanceBonus);
+  if (tier >= 4 && addiction >= floor) return Math.random() < Math.min(1, HUNGER_CONFIG.interruptChance.starving + chanceBonus);
+  if (tier >= 3 && addiction >= floor) return Math.random() < Math.min(1, HUNGER_CONFIG.interruptChance.craving + chanceBonus);
   return false;
 }
 
-export function pickInterruptStudent(students) {
+export function pickInterruptStudent(students, skillEffects = {}, weeklyArms = {}) {
   const candidates = students.filter(s => !s.hidden);
+
+  if (skillEffects?.devouringPresence && weeklyArms.devouringStudentId != null && !weeklyArms.devouringConsumed) {
+    const armed = candidates.find(s => s.id === weeklyArms.devouringStudentId);
+    if (armed) return primeDevouringHunger(armed);
+  }
+
   const urgent = candidates.filter(s => {
+    const mod = getHungerModifiers(s, skillEffects, weeklyArms);
     const t = getHungerTier(s);
     const a = getAddictionLevel(s);
-    return isInWithdrawal(s) || (t >= 3 && a >= 2);
+    return isInWithdrawal(s) || (t >= 3 && a >= mod.addictionFloorForCraving);
   });
-  const pool = urgent.length ? urgent : [];
-  if (!pool.length) return null;
-  const triggered = pool.filter(needsHungerInterrupt);
+  if (!urgent.length) return null;
+
+  const triggered = urgent.filter(s => needsHungerInterrupt(s, skillEffects, weeklyArms));
   if (!triggered.length) return null;
   return triggered[Math.floor(Math.random() * triggered.length)];
 }

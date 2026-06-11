@@ -117,7 +117,7 @@ function ResponseDisplay({ topic, text, student, week, onClose }){
 
 // ── main modal ────────────────────────────────────────────────
 
-export function TalkModal({ student, skillEffects, week, onClose, onApplyEffect }){
+export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevouring, onClose, onApplyEffect }){
   const [activeResponse, setActiveResponse] = useState(null); // {topic, text}
   const corTier = getCorruptionTier(student.corruption || 0);
   const eff     = skillEffects || {};
@@ -188,6 +188,26 @@ export function TalkModal({ student, skillEffects, week, onClose, onApplyEffect 
         <div style={{fontSize:10,color:"#5a3870",marginBottom:12}}>
           Talking costs {TALK_CONFIG.apCost} AP.
         </div>
+
+        {eff.devouringPresence && !activeResponse && onArmDevouring && (
+          <button
+            type="button"
+            style={{
+              ...C.btn(weeklyArms?.devouringStudentId === student.id ? "#802818" : "#401018"),
+              width: "100%",
+              marginBottom: 12,
+              opacity: weeklyArms?.devouringConsumed ? 0.45 : 1,
+            }}
+            disabled={weeklyArms?.devouringConsumed}
+            onClick={onArmDevouring}
+          >
+            {weeklyArms?.devouringConsumed
+              ? "😈 Devouring Presence — hunger event spent this week"
+              : weeklyArms?.devouringStudentId === student.id
+                ? "😈 Devouring Presence armed (click to disarm)"
+                : "😈 Arm Devouring Presence — her hunger becomes an event this week"}
+          </button>
+        )}
 
         {activeResponse ? (
           <ResponseDisplay
