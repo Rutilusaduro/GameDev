@@ -1,8 +1,5 @@
 import { C } from '../styles.js';
 import { GODDESS_VISION } from '../gameData/ascension.js';
-import { getFullnessStage, getTier } from '../gameData/sessions.js';
-import { getStage } from '../gameData/stages.js';
-import { rnd } from '../utils/gameHelpers.js';
 
 
 export function EvolutionOfferModal({ chooseEvolution, evolutionModal, setEvolutionModal }){
@@ -97,75 +94,7 @@ export function TapOutPopup({ setTapOutPopup, tapOutPopup }){
   );
 }
 
-export function SocialEventResult({ setSocialResult, socialResult }){
-  return(
-        <div style={C.overlay}>
-          <div style={C.modal}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>EVENT COMPLETE</div>
-            <h2 style={{margin:"0 0 10px",color:"#c898ff",fontSize:18}}>{socialResult.event.label}</h2>
-            <div style={{...C.infoBox("rgba(60,20,100,0.2)"),lineHeight:1.85,fontSize:13,color:"#e0d0b0",fontStyle:"italic",marginBottom:14}}>
-              {socialResult.scene}
-            </div>
-            <div style={{fontSize:12,color:"#a080c0",marginBottom:16}}>
-              {socialResult.attendees} students · +{socialResult.totalGain} lbs total gained
-            </div>
-            <button style={C.btn("#5020a0")} onClick={()=>setSocialResult(null)}>Continue →</button>
-          </div>
-        </div>
-  );
-}
 
-export function SocialEventPicker({ confirmSocialEvent, setSocialPicker, socialPicker, students }){
-  return(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:520}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>SOCIAL EVENT</div>
-            <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:18}}>{socialPicker.event.label}</h2>
-            <div style={{fontSize:12,color:"#7060a0",lineHeight:1.6,marginBottom:12}}>{socialPicker.event.desc}</div>
-            <div style={{...C.secT,marginBottom:8}}>
-              Invite students
-              <span style={{fontWeight:400,color:"#5030a0",marginLeft:6}}>
-                {socialPicker.selected.length} selected · need {socialPicker.event.minStudents}–{socialPicker.event.maxStudents}
-              </span>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:4,marginBottom:14,maxHeight:290,overflowY:"auto"}}>
-              {students.map(s=>{
-                const tier=getTier(s.relationship);
-                const isSel=socialPicker.selected.includes(s.id);
-                const atMax=!isSel&&socialPicker.selected.length>=socialPicker.event.maxStudents;
-                return(
-                  <div key={s.id}
-                    style={{...C.card,padding:"7px 10px",cursor:atMax?"not-allowed":"pointer",opacity:atMax?0.4:1,
-                      background:isSel?"rgba(80,20,140,0.35)":"rgba(255,255,255,0.03)",
-                      border:isSel?"1px solid #8040c8":"1px solid #180830"}}
-                    onClick={()=>!atMax&&setSocialPicker(prev=>({
-                      ...prev,
-                      selected:isSel?prev.selected.filter(id=>id!==s.id):[...prev.selected,s.id]
-                    }))}>
-                    <div style={{display:"flex",alignItems:"center",gap:8}}>
-                      <span style={{fontSize:13}}>{isSel?"☑":"☐"}</span>
-                      <span style={{fontWeight:700,fontSize:12,color:"#d8a8ff"}}>{s.name}</span>
-                      <span style={{fontSize:10,color:tier.color}}>{tier.emoji} {tier.label}</span>
-                      <span style={{fontSize:10,color:"#6a4880",marginLeft:"auto"}}>{getStage(s.lbs).label} · {s.lbs} lbs</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <div style={{display:"flex",gap:8}}>
-              <button style={C.btn("#444")} onClick={()=>setSocialPicker(null)}>Cancel</button>
-              <button
-                style={{...C.btn("#5020a0"),flex:1,opacity:socialPicker.selected.length>=socialPicker.event.minStudents?1:0.5}}
-                onClick={confirmSocialEvent}>
-                {socialPicker.selected.length>=socialPicker.event.minStudents
-                  ?`Host — ${socialPicker.event.apCost} AP →`
-                  :`Need ${socialPicker.event.minStudents-socialPicker.selected.length} more`}
-              </button>
-            </div>
-          </div>
-        </div>
-  );
-}
 
 
 export function TierUpModal({ setStudents, setTierUpModal, tierUpModal }){
@@ -209,18 +138,4 @@ export function TierUpModal({ setStudents, setTierUpModal, tierUpModal }){
   );
 }
 
-export function StudyCheckInModal({ setStudyCheckIn, studyCheckIn }){
-  return(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:520}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>RESEARCH CHECK-IN — SESSION {studyCheckIn.index+1}</div>
-            <div style={{fontSize:12,color:"#9070b0",marginBottom:10}}>{studyCheckIn.student.name} · {studyCheckIn.student.lbs} lbs · {getStage(studyCheckIn.student.lbs).label}</div>
-            <div style={{...C.infoBox("rgba(60,20,100,0.2)"),lineHeight:1.85,fontSize:13,color:"#d0c0e0",fontStyle:"italic",marginBottom:16}}>
-              {studyCheckIn.scene}
-            </div>
-            <button style={C.btn("#5020a0")} onClick={()=>setStudyCheckIn(null)}>Close</button>
-          </div>
-        </div>
-  );
-}
 

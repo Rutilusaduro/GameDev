@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { CELESTIAL_STAGES, UMBRAL_STAGES, CONVERGENCE_STAGE, SINGULARITY_ABSORPTION_TEXT, SINGULARITY_REACTIONS, SINGULARITY_TAP_OUT, SINGULARITY_RANDOM_EVENTS, SINGULARITY_ACTION_TEXT, SINGULARITY_ACTIONS, TRIUMVIRATE_REACTION, TRIUMVIRATE_ACTIONS, TRIUMVIRATE_ACTION_TEXT, CELESTIAL_PULL_AMOUNTS, CELESTIAL_PUSH_AMOUNTS, CELESTIAL_BLESS_AMOUNTS, UMBRAL_CONSUME_CHANCE, UMBRAL_ABSORB_RATE, UMBRAL_VOID_PULL_AMOUNTS, UMBRAL_ABSORB_TEXT, CELESTIAL_ACTION_TEXT, UMBRAL_ACTION_TEXT, RELIGION_RITE_TEXT, SINGULARITY_RITE_TEXT, SANGUINE_STAGES, SANGUINE_REACTIONS, SANGUINE_ACTIONS, SANGUINE_ACTION_TEXT, VERDANT_STAGES, VERDANT_REACTIONS, VERDANT_ACTIONS, VERDANT_ACTION_TEXT, PRIMORDIAL_ABSORPTION_TEXT, PRIMORDIAL_REACTIONS, PRIMORDIAL_RANDOM_EVENTS, PRIMORDIAL_ACTIONS, PRIMORDIAL_ACTION_TEXT, PRIMORDIAL_TRIUMVIRATE_REACTION, PRIMORDIAL_TRIUMVIRATE_ACTIONS, PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT, getGoddessStage, GODDESS_STAGE_REACTIONS, GODDESS_EXPLORE_TEXT, GODDESS_PRACTICAL_TEXT, GODDESS_ACTIONS, INCARNATION_EVENT_TEXT } from './gameData/ascension.js';
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL } from './gameData/intimacy.js';
-import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, DIVINE_PAIR_REACTIONS, UNBUTTON_LINES, STUDY_SCENES, STUDY_SCENE_DEFAULT, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
-import { STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
+import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, DIVINE_PAIR_REACTIONS, UNBUTTON_LINES, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
+import { STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS } from './gameData/classEvents.js';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
@@ -34,13 +34,12 @@ import { ClassView } from './views/ClassView.jsx';
 import { StudentDetailView } from './views/StudentDetailView.jsx';
 import { ActionsView } from './views/ActionsView.jsx';
 import { SkillTreeView } from './views/SkillTreeView.jsx';
-import { SocialEventsView } from './views/SocialEventsView.jsx';
 import { AchievementsView, DivinePanel } from './views/AchievementsView.jsx';
 import { PrivateSessionModal } from './components/PrivateSessionModal.jsx';
 import { EvolvedEventModal } from './components/EvolvedEventModal.jsx';
 import { WeighInModal } from './components/WeighInModal.jsx';
 import { DebugPanel } from './components/DebugPanel.jsx';
-import { EvolutionOfferModal, GoddessVisionModal, SessionResultModal, TapOutPopup, SocialEventResult, SocialEventPicker, TierUpModal, StudyCheckInModal } from './components/MiscModals.jsx';
+import { EvolutionOfferModal, GoddessVisionModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
 import { C } from './styles.js';
 
@@ -68,7 +67,6 @@ export default function ProfessorSim(){
   const [activeEvent,setActiveEvent]=useState(null);
   const [achievements,setAchievements]=useState([]);
   const [globalStats,setGlobalStats]=useState({ narrativeCount:0 });
-  const [observeText,setObserveText]=useState(null);
   const [eventQueue,setEventQueue]=useState([]);
   const [unlockedSkills,setUnlockedSkills]=useState([]);
   const [dinnerEvent,setDinnerEvent]=useState(null);
@@ -100,18 +98,11 @@ export default function ProfessorSim(){
   const [professorProfile,setProfessorProfile]=useState(null);
   // professorProfile: {name, subject, traits:[], origin?}
   const [adminScrutiny,setAdminScrutiny]=useState(0);
-  const [researchStudy,setResearchStudy]=useState({participants:{}});
-  // participants: {[studentId]:{enrolled,checkInCount:0}}
-  const [studyCheckIn,setStudyCheckIn]=useState(null);
-  // studyCheckIn: {student, scene, index}
   // DLC: Inner Circle
   const seenTiersRef=useRef(new Set());
   const prevRelsRef=useRef(Object.fromEntries(INIT_STUDENTS.map(s=>[s.id,s.relationship])));
   const [tierUpModal,setTierUpModal]=useState(null);
   // DLC: Social Events
-  const [socialPicker,setSocialPicker]=useState(null);
-  const [socialResult,setSocialResult]=useState(null);
-  const [socialWeeks,setSocialWeeks]=useState([]);
   // DLC: Private Sessions
   const [privateSession,setPrivateSession]=useState(null);
   // {student,venue,phase,foods:[],totalGain,fullness,maxFullness,encouragementsUsed:[],toleranceBuffer,sessionNum}
@@ -296,30 +287,7 @@ export default function ProfessorSim(){
     if(actual>0) setAdminScrutiny(prev=>Math.min(100,prev+actual));
   };
 
-  const proposeStudy=(s)=>{
-    if(ap<1){push("⚠️ Need 1 AP.");return;}
-    if(s.relationship<55){push("⚠️ Need 55 relationship to enroll a student in the study.");return;}
-    if(researchStudy.participants[s.id]){push(`${s.name} is already enrolled.`);return;}
-    setAp(a=>a-1);
-    setResearchStudy(prev=>({...prev,participants:{...prev.participants,[s.id]:{enrolled:true,checkInCount:0}}}));
-    push(`📋 ${s.name} agrees to participate in your dietary habits study.`);
-    addScrutiny(3);
-  };
 
-  const runCheckIn=(s)=>{
-    if(ap<1){push("⚠️ Need 1 AP.");return;}
-    const pData=researchStudy.participants[s.id];
-    if(!pData){return;}
-    if(pData.checkInCount>=5){push(`${s.name}'s study arc is complete.`);return;}
-    setAp(a=>a-1);
-    const scenes=STUDY_SCENES[s.archetype]||STUDY_SCENE_DEFAULT;
-    const sceneFn=scenes[Math.min(pData.checkInCount,scenes.length-1)];
-    const scene=sceneFn?sceneFn(s):"Session complete.";
-    setStudyCheckIn({student:s,scene,index:pData.checkInCount});
-    setResearchStudy(prev=>({...prev,participants:{...prev.participants,[s.id]:{...pData,checkInCount:pData.checkInCount+1}}}));
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+3)}));
-    addScrutiny(professorProfile?.traits?.includes("discreet")?1:2);
-  };
 
   const applyGainToStudent=(s,gain)=>{
     const oldSt=getStage(s.lbs).id;
@@ -3646,14 +3614,6 @@ export default function ProfessorSim(){
   const doSingle=(action,s)=>{
     if(ap<action.cost){push("⚠️ Not enough AP!");return;}
     if(action.id==="restaurant"){ startDinner(s); return; }
-    if(action.id==="observe"){
-      const stId=getStage(s.lbs).id;
-      const lines=[
-        `You spend the day quietly observing ${s.name}.\n\nMorning: ${stId<=3?"She arrives to class on time, finding a seat easily.":"She arrives a little breathless, taking her time settling into her reinforced seat."}\n\nLunch: ${stId<=2?"A modest meal at the dining hall.":stId<=5?"Two full plates and dessert at the dining hall.":"An enormous spread — she's clearly a dining hall regular. Staff greet her by name."}\n\nAfternoon: ${stId<=4?"She moves through campus normally.":"She moves slowly, deliberately, each step carrying real weight."}\n\nEvening: ${stId<=3?"A quiet night, some snacking.":"Delivery arrives at her dorm. Multiple bags. She tips well."}\n\nCurrent weight: ${s.lbs} lbs. Stage: ${getStage(s.lbs).label}.`,
-      ];
-      setObserveText(lines[0]);
-      return;
-    }
     setAp(a=>a-action.cost);
     const gain=rnd(action.gain[0],action.gain[1]);
     const ns=processStudentGain(s,gain,4);
@@ -3670,13 +3630,8 @@ export default function ProfessorSim(){
     if(ap<action.cost){push("⚠️ Not enough AP!");return;}
     setAp(a=>a-action.cost);
     let updated;
-    if(action.id==="on_demand_feast"){
-      const scaledGain=Math.round((8+avgLbs/100)*(0.8+Math.random()*0.6));
-      updated=students.map(s=>processStudentGain(s,scaledGain,7));
-      push(`🍾 On-Demand Feast: catering arrives immediately! Each student gains ~${scaledGain} lbs.`);
-    } else if(action.id==="group_dinner"||action.id==="dinner_party"){
-      if(ap<3){push("⚠️ Need 3 AP for a group dinner.");return;}
-      setGroupDinnerPicker({count:action.id==="dinner_party"?3:2,selected:[]});
+    if(action.id==="group_dinner"){
+      setGroupDinnerPicker({count:2,selected:[]});
       return;
     } else {
       updated=students.map(s=>{
@@ -3691,19 +3646,6 @@ export default function ProfessorSim(){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
     }
-  };
-
-  const doTalk=(topicId,s)=>{
-    const stId=getStage(s.lbs).id;
-    const charTopic=CHAR_TALK[s.id]?.[topicId];
-    const archTopic=TALK_RESPONSES[topicId];
-    const handler=charTopic||archTopic;
-    if(!handler){push(`💬 ${s.name} smiles politely.`);return;}
-    const resp=handler(s,stId);
-    const tLabel={"how_are_you":"How are you doing?","compliment_figure":"Compliment her figure","food_talk":"Talk about food","class_talk":"Discuss class","encourage_eating":"Encourage her to eat more","ask_lifestyle":"Ask about her lifestyle","ask_weight":"Ask about her weight","about_gaining":"Ask about her gaining","future_plans":"Ask about future plans"}[topicId]||topicId;
-    push(`💬 You: "${tLabel}"`);
-    push(`   ${resp}`);
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+2+talkRelBonus)}));
   };
 
 
@@ -4114,35 +4056,6 @@ export default function ProfessorSim(){
     setActiveEvent(null);
   };
 
-  const startSocialEvent=(evt)=>{
-    if(ap<evt.apCost){push(`⚠️ Need ${evt.apCost} AP.`);return;}
-    if(socialWeeks.includes(week)){push("⚠️ You've already hosted a social event this week.");return;}
-    setSocialPicker({event:evt,selected:[]});
-  };
-
-  const confirmSocialEvent=()=>{
-    if(!socialPicker) return;
-    const{event,selected}=socialPicker;
-    if(selected.length<event.minStudents){push(`⚠️ Need at least ${event.minStudents} students.`);return;}
-    setAp(a=>a-event.apCost);
-    setSocialWeeks(prev=>[...prev,week]);
-    addScrutiny(event.scrutinyAdd);
-    let totalGain=0;
-    const updatedStudents=students.map(s=>{
-      if(!selected.includes(s.id)) return s;
-      const gain=rnd(event.baseGain[0],event.baseGain[1]);
-      totalGain+=gain;
-      return processStudentGain(s,gain,event.relBonus);
-    });
-    setStudents(updatedStudents);
-    const names=selected.map(id=>students.find(s=>s.id===id)?.name).filter(Boolean).join(", ");
-    const perGain=Math.round(totalGain/Math.max(1,selected.length));
-    push(`🎉 ${event.label}: ${names} attended. +${totalGain} lbs total.`);
-    setSocialResult({event,names,totalGain,scene:event.scene(names,perGain),attendees:selected.length});
-    setSocialPicker(null);
-    const evs=collectEvents(updatedStudents);
-    if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
-  };
 
   // ── PRIVATE SESSION FUNCTIONS ──────────────────────────────────
   const startPrivateSession=(s)=>{
@@ -4314,8 +4227,6 @@ export default function ProfessorSim(){
   const hasSubj=(id)=>professorProfile?.subject===id;
   const profGainMult=1+(hasSubj("nutrition")?0.1:0)+(hasSubj("philosophy")?0.05:0)+(hasTrait("generous")?0.15:0);
   const profPassiveBonus=hasTrait("patient")?1:0;
-  const observeFree=hasSubj("art_history")||hasTrait("observant");
-  const talkRelBonus=hasTrait("charismatic")?4:hasSubj("psychology")?2:0;
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
   const unlockedAll=ALL_SKILLS.filter(sk=>unlockedSkills.includes(sk.id));
   const hasSkill=(id)=>unlockedAll.some(sk=>sk.id===id);
@@ -4345,31 +4256,8 @@ export default function ProfessorSim(){
   },0);
 
   // ── EFFECTIVE ACTIONS (applying unlocked skill effects) ──────
-  const effectiveSingleActions=ACTIONS_SINGLE.map(a=>({
-    ...a,
-    cost:Math.max(0,(a.id==="observe"&&observeFree)?0:a.cost-(hasSkill("ap_mastery")?1:0)),
-    gain:hasSkill("private_kitchen")&&a.id==="homecooked"?[a.gain[0]+4,a.gain[1]+4]
-        :hasSkill("private_kitchen")&&a.id==="bake"?[a.gain[0]+3,a.gain[1]+3]
-        :a.gain,
-  }));
-  const effectiveClassActions=[
-    ...ACTIONS_CLASS.map(a=>({
-      ...a,
-      cost:a.id==="snacks"&&hasSkill("snack_station")?0
-          :a.id==="feast"&&hasSkill("catering_contact")?Math.max(0,a.cost-1)
-          :a.cost,
-      gain:a.id==="feast"&&hasSkill("catering_contact")?[a.gain[0]+4,a.gain[1]+4]:a.gain,
-    })),
-    ...(hasSkill("full_catering")?[{
-      id:"on_demand_feast",label:"🍾 On-Demand Feast",cost:3,
-      gain:[Math.round(8+avgLbs/100),Math.round(14+avgLbs/80)],
-      desc:"Call the catering team now. Portions scale with your class's average weight.",
-    }]:[]),
-    ...(hasSkill("group_dynamics")?[{
-      id:"group_dinner",label:"👥 Arrange Group Dinner",cost:3,gain:[4,9],
-      desc:"Arrange a dinner for two students from an influence pair. Their bond amplifies the result for both.",
-    }]:[]),
-  ];
+  const effectiveSingleActions=ACTIONS_SINGLE;
+  const effectiveClassActions=ACTIONS_CLASS;
 
   const availableVenues=DINNER_VENUES.filter(v=>{
     if(v.id==="home_dinner") return false;
@@ -5253,15 +5141,6 @@ export default function ProfessorSim(){
       )}
 
       {/* OBSERVE MODAL */}
-      {observeText&&(
-        <div style={C.overlay}>
-          <div style={C.modal}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:12}}>OBSERVATION REPORT</div>
-            <p style={{lineHeight:1.85,color:"#e0d0b0",whiteSpace:"pre-line",fontStyle:"italic"}}>{observeText}</p>
-            <button style={{...C.btn(),marginTop:16}} onClick={()=>setObserveText(null)}>Close</button>
-          </div>
-        </div>
-      )}
 
       {/* HEADER */}
       <div style={C.hdr}>
@@ -5306,7 +5185,7 @@ export default function ProfessorSim(){
 
       {/* NAV */}
       <div style={C.nav}>
-        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["social","🎉 Events"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],...(goddessSeen?[["divine","✦ Divine"]]:[])].map(([v,l])=>(
+        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],...(goddessSeen?[["divine","✦ Divine"]]:[])].map(([v,l])=>(
           v==="student"&&!sel?null:
           <button key={v} style={C.navB(view===v)} onClick={()=>setView(v)}>{l}</button>
         ))}
@@ -5319,7 +5198,7 @@ export default function ProfessorSim(){
           {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} consumeIncarnatedGoddess={consumeIncarnatedGoddess} consumePrimordialIncarnatedGoddess={consumePrimordialIncarnatedGoddess} consumedStudents={consumedStudents} cultivatorState={cultivatorState} doEvolvedActivity={doEvolvedActivity} doGoddessAction={doGoddessAction} doPrimordialAction={doPrimordialAction} doSanguineAction={doSanguineAction} doSingle={doSingle} doSingularityAction={doSingularityAction} doTalk={doTalk} doVerdantAction={doVerdantAction} effectiveSingleActions={effectiveSingleActions} finalConsumptionDone={finalConsumptionDone} foundReligion={foundReligion} goddessIncarnateId={goddessIncarnateId} goddessSeen={goddessSeen} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} primordialFinalConsumptionDone={primordialFinalConsumptionDone} primordialGoddessIncarnateId={primordialGoddessIncarnateId} proposeStudy={proposeStudy} purchaseEvolvedSkill={purchaseEvolvedSkill} recoverConsumedStudent={recoverConsumedStudent} religion={religion} researchStudy={researchStudy} runCheckIn={runCheckIn} sanguineMarks={sanguineMarks} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} triggerGoddessIncarnation={triggerGoddessIncarnation} triggerPrimordialGoddessIncarnation={triggerPrimordialGoddessIncarnation} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} verdantCultivations={verdantCultivations}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} consumeIncarnatedGoddess={consumeIncarnatedGoddess} consumePrimordialIncarnatedGoddess={consumePrimordialIncarnatedGoddess} consumedStudents={consumedStudents} cultivatorState={cultivatorState} doEvolvedActivity={doEvolvedActivity} doGoddessAction={doGoddessAction} doPrimordialAction={doPrimordialAction} doSanguineAction={doSanguineAction} doSingle={doSingle} doSingularityAction={doSingularityAction} doVerdantAction={doVerdantAction} effectiveSingleActions={effectiveSingleActions} finalConsumptionDone={finalConsumptionDone} foundReligion={foundReligion} goddessIncarnateId={goddessIncarnateId} goddessSeen={goddessSeen} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} primordialFinalConsumptionDone={primordialFinalConsumptionDone} primordialGoddessIncarnateId={primordialGoddessIncarnateId} purchaseEvolvedSkill={purchaseEvolvedSkill} recoverConsumedStudent={recoverConsumedStudent} religion={religion} sanguineMarks={sanguineMarks} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} triggerGoddessIncarnation={triggerGoddessIncarnation} triggerPrimordialGoddessIncarnation={triggerPrimordialGoddessIncarnation} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} verdantCultivations={verdantCultivations}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
@@ -5327,7 +5206,6 @@ export default function ProfessorSim(){
 {/* ── SKILL TREE ── */}
           {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} canUnlock={canUnlock} goddessSeen={goddessSeen} skillApBonus={skillApBonus} skillGainMult={skillGainMult} skillPassiveBonus={skillPassiveBonus} skillScrutinyPassiveReduce={skillScrutinyPassiveReduce} skillScrutinyReduce={skillScrutinyReduce} skillSessionCapBonus={skillSessionCapBonus} spentSkillPoints={spentSkillPoints} spiritLevel={spiritLevel} spiritXp={spiritXp} spiritXpForNextLevel={SPIRIT_XP_PER_LEVEL} startSkillPurchase={startSkillPurchase} totalSkillPoints={totalSkillPoints} unlockedSkills={unlockedSkills}/>}
           {/* ── SOCIAL EVENTS ── */}
-          {view==="social"&&<SocialEventsView ap={ap} socialWeeks={socialWeeks} startSocialEvent={startSocialEvent} week={week}/>}
 
           {/* ── ACHIEVEMENTS ── */}
           {/* ── DIVINE PANEL ── */}
@@ -5347,16 +5225,13 @@ export default function ProfessorSim(){
       </div>
 
       {/* ── STUDY CHECK-IN MODAL ── */}
-      {studyCheckIn&&<StudyCheckInModal setStudyCheckIn={setStudyCheckIn} studyCheckIn={studyCheckIn}/>}
 
       {/* ── TIER-UP MODAL ── */}
       {tierUpModal&&<TierUpModal setStudents={setStudents} setTierUpModal={setTierUpModal} tierUpModal={tierUpModal}/>}
 
       {/* ── SOCIAL EVENT PICKER ── */}
-      {socialPicker&&<SocialEventPicker confirmSocialEvent={confirmSocialEvent} setSocialPicker={setSocialPicker} socialPicker={socialPicker} students={students}/>}
 
       {/* ── SOCIAL EVENT RESULT ── */}
-      {socialResult&&<SocialEventResult setSocialResult={setSocialResult} socialResult={socialResult}/>}
 
       {/* ── PRIVATE SESSION MODAL ── */}
       {privateSession&&<PrivateSessionModal chooseSessionVenue={chooseSessionVenue} endPrivateSession={endPrivateSession} feedInSession={feedInSession} getMoreFood={getMoreFood} privateSession={privateSession} sessionLog={sessionLog} setAp={setAp} setPrivateSession={setPrivateSession} skillTapOutResistance={skillTapOutResistance} startIntimacyScene={startIntimacyScene} useSessionEncouragement={useSessionEncouragement}/>}

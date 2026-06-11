@@ -12,7 +12,7 @@ import { STAGE_REACTIONS } from '../gameData/content.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, addBlobToReligion, ap, ascendStudent, celestialMassBless, celestialMassPull, celestialMassPush, chapterHostessState, communityResearcherState, consumeIncarnatedGoddess, consumePrimordialIncarnatedGoddess, consumedStudents, cultivatorState, doEvolvedActivity, doGoddessAction, doPrimordialAction, doSanguineAction, doSingle, doSingularityAction, doTalk, doVerdantAction, effectiveSingleActions, finalConsumptionDone, foundReligion, goddessIncarnateId, goddessSeen, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, primordialFinalConsumptionDone, primordialGoddessIncarnateId, proposeStudy, purchaseEvolvedSkill, recoverConsumedStudent, religion, researchStudy, runCheckIn, sanguineMarks, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, triggerGoddessIncarnation, triggerPrimordialGoddessIncarnation, umbralConsumeStudent, umbralVoidPull, verdantCultivations }){
+export function StudentDetailView({ openWeighIn, addBlobToReligion, ap, ascendStudent, celestialMassBless, celestialMassPull, celestialMassPush, chapterHostessState, communityResearcherState, consumeIncarnatedGoddess, consumePrimordialIncarnatedGoddess, consumedStudents, cultivatorState, doEvolvedActivity, doGoddessAction, doPrimordialAction, doSanguineAction, doSingle, doSingularityAction, doVerdantAction, effectiveSingleActions, finalConsumptionDone, foundReligion, goddessIncarnateId, goddessSeen, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, primordialFinalConsumptionDone, primordialGoddessIncarnateId, purchaseEvolvedSkill, recoverConsumedStudent, religion, sanguineMarks, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, triggerGoddessIncarnation, triggerPrimordialGoddessIncarnation, umbralConsumeStudent, umbralVoidPull, verdantCultivations }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -837,13 +837,6 @@ export function StudentDetailView({ openWeighIn, addBlobToReligion, ap, ascendSt
                   );
                 })()}
 
-                {/* Talk */}
-                <div style={{...C.secT,marginBottom:7}}>Talk to {s.name}</div>
-                <div style={{marginBottom:14,display:"flex",flexWrap:"wrap",gap:2}}>
-                  {[["how_are_you","How are you?"],["compliment_figure","Compliment figure"],["food_talk","Talk food"],["class_talk","Talk class"],["encourage_eating","Encourage eating"],["ask_lifestyle","Ask lifestyle"],["ask_weight","Ask weight"],["about_gaining","Ask about gaining"],["future_plans","Future plans"]].map(([tid,label])=>(
-                    <button key={tid} style={C.smBtn} onClick={()=>doTalk(tid,s)}>{label}</button>
-                  ))}
-                </div>
 
           
 
@@ -915,40 +908,6 @@ export function StudentDetailView({ openWeighIn, addBlobToReligion, ap, ascendSt
                     </div>
                   );
                 })()}
-
-                {/* Research Study */}
-                <div style={{marginTop:14}}>
-                  <div style={C.secT}>Research Study</div>
-                  {(()=>{
-                    const pData=researchStudy.participants[s.id];
-                    if(!pData){
-                      return(
-                        <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
-                          <div style={{fontSize:11,color:"#5a3888",flex:1}}>
-                            {s.relationship<55
-                              ?`Need 55 relationship to enroll ${s.name} (${s.relationship}/55).`
-                              :`${s.name} is eligible for your dietary habits study.`}
-                          </div>
-                          {s.relationship>=55&&<button style={C.btn("#3a1070")} onClick={()=>proposeStudy(s)}>Propose Study (1 AP)</button>}
-                        </div>
-                      );
-                    }
-                    const sessions=pData.checkInCount;
-                    return(
-                      <div>
-                        <div style={{display:"flex",gap:5,marginBottom:7,alignItems:"center"}}>
-                          {[0,1,2,3,4].map(i=>(
-                            <div key={i} style={{width:11,height:11,borderRadius:"50%",background:i<sessions?"#a060e0":"rgba(80,18,140,0.2)",border:"1px solid #4a1280"}}/>
-                          ))}
-                          <span style={{fontSize:11,color:"#8060b0",marginLeft:4}}>{sessions}/5 sessions</span>
-                        </div>
-                        {sessions<5
-                          ?<button style={{...C.btn("#5020a0"),opacity:ap<1?0.4:1}} onClick={()=>runCheckIn(s)}>Schedule Check-in (1 AP)</button>
-                          :<div style={{fontSize:11,color:"#5a3888",fontStyle:"italic"}}>Study arc complete.</div>}
-                      </div>
-                    );
-                  })()}
-                </div>
 
               </div>
             );

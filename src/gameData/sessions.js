@@ -405,94 +405,6 @@ export const PROF_TRAITS=[
   {id:"discreet",label:"Discreet",emoji:"🔇",desc:"You're good at making the unusual seem unremarkable. Keeping things quiet is a skill you've honed.",effect:"Admin scrutiny rises 35% more slowly. Research study risk halved."},
 ];
 
-// ═══════════════════════════════════════════════════════════════
-// ADMIN EVENTS
-// ═══════════════════════════════════════════════════════════════
-
-
-// ═══════════════════════════════════════════════════════════════
-// RESEARCH STUDY CHECK-IN SCENES
-// ═══════════════════════════════════════════════════════════════
-
-export const STUDY_SCENES={
-  cheerleader:[
-    (s)=>`${s.name} comes in after practice, warm-up jacket still on. She steps on the scale with the mild curiosity of someone being weighed for a physical. ${s.lbs} lbs. She watches you write it down. "So is this for a real paper?" You explain the framework. She nods. You take measurements. When you're done she pulls her jacket down over her waist — a gesture that's new.`,
-    (s)=>`The jacket is tighter today. She answers the dietary recall with more detail than before — the late-night orders, the team dinners, the habit of finishing other people's plates because it feels rude not to. When you mention she's up significantly from baseline, she says, "That can't be right." You show her the chart. She stares at it. "Huh," she says finally, in a voice that's somewhere between surprised and not very surprised at all.`,
-    (s)=>`She doesn't bother with the jacket today. "I've been thinking about what you said." You didn't say anything — you recorded and listened. Something has been working on her. You note that her squad has shifted her to the back formation; she tells you this without self-pity, and then: "I don't hate how I look, though. Is that weird?" You write it down.`,
-    (s)=>`${s.name} arrives slightly breathless from the stairs. She drops into the chair and your notes update themselves: the roundness of her cheeks, the way the desk arm presses into her side. ${s.lbs} lbs. "I tried calorie counting," she says. "For three days. It felt worse than not knowing." She picks up your pen and turns it over. "Can I see the graph again?" She studies it. "That's wild," she says softly.`,
-    (s)=>`Final check-in. You go through the protocol. She answers, but she's looking at the window. At the end she asks: "Do you think about us outside this?" You say the data is anonymized. She looks at you. "That's not what I asked." You close your notebook. The study, technically, is complete.`,
-  ],
-  scholar:[
-    (s)=>`${s.name} arrives with a request: can she see the methodology? You explain the longitudinal framework. She listens with focused skepticism. ${s.lbs} lbs — she watches the number with an expression like she's being tested on it. "That's higher than I expected," she says. You ask when she last weighed herself. "Freshman year," she says.`,
-    (s)=>`She's done research. She arrives with printed papers — metabolism studies, adipogenesis. "I've been thinking about the mechanisms," she says. You let her talk. It's impressive and slightly defensive and it circles the fact that her clothes are getting tight without quite landing there. ${s.lbs} lbs. "That's consistent with the trend," she says carefully.`,
-    (s)=>`"You're not a nutrition researcher," she says today. "Are you." Not quite a question. You hold the silence. She looks at the chart — ${s.lbs} lbs — and then at you. "I'm still participating," she says, after a long moment. "For now."`,
-    (s)=>`She's stopped asking methodological questions. She sits, you weigh her — ${s.lbs} lbs — and she watches the pen move. "My advisor says I look different," she says. "I told her I'm in a dietary study. She seemed satisfied with that." The word 'satisfied' sits between you.`,
-    (s)=>`Final check-in. She brings coffee for both of you. At the end: "What happens to the data?" Private, you tell her. She nods. "I want a copy of my chart," she says. "For my own reference." You print it. She folds it carefully and puts it in her bag.`,
-  ],
-  athlete:[
-    (s)=>`${s.name} comes straight from the weight room. There's a brief irony in watching her step on the scale. ${s.lbs} lbs. She stares at the number with the look of someone whose relationship with that number was once very tactical. "Okay," she says, to herself. You note: the weight room isn't doing the same work it used to.`,
-    (s)=>`She mentions her coach casually, mid-recall: "He said I'm carrying extra. I told him I'm in a study." She looks at you steadily. "He seemed annoyed." You record this. Does any of this go anywhere? she asks. Confidential, you say. She finds this satisfying in a way you don't entirely understand.`,
-    (s)=>`${s.name} isn't in athletic wear today — jeans and a soft shirt, and the shirt is doing interesting things. "I dropped the morning run," she says. "I'm sleeping better." ${s.lbs} lbs. She looks at the number. "Huh," she says, and her tone carries something that isn't quite regret.`,
-    (s)=>`She's stopped talking about her coach. ${s.lbs} lbs. Equanimity now, where there used to be tactical distance. The posture has changed — she takes up more space without apologizing for it. "I feel better," she says, unprompted. "I know that doesn't make sense." It makes perfect sense. You write it down.`,
-    (s)=>`Final check-in, answered from memory, almost rote. At the end: "So what did you find?" You say something truthful and vague. She looks at the window. "I used to weigh myself every day," she says. "Every single day." She doesn't say what she does now. She doesn't have to.`,
-  ],
-  quiet:[
-    (s)=>`${s.name} closes your door behind her without making eye contact with anyone in the hallway. The weigh-in is quiet. ${s.lbs} lbs. She looks at the number for a long moment. Your recall questions get short, accurate answers. "Thank you," she says at the end, and leaves. You look at your notes. There's more there than in any other session you've run.`,
-    (s)=>`She notices the chart on the wall. She looks at her line — climbing — for a full minute before you start the paperwork. "Is that a lot?" she asks. You say it's significant. She nods, once. Gets on the scale. ${s.lbs} lbs. Gets off. Sits down. "Okay," she says. You begin the recall.`,
-    (s)=>`She arrives today with food — a bag from the bakery, two things. She puts one on your desk without comment and eats hers while you take measurements. ${s.lbs} lbs. She finishes her pastry, brushes crumbs from the front of her shirt — a new shirt, larger than last month's — and says: "Same time next week?"`,
-    (s)=>`The chart needs a new scale. She notices and tilts her head. "You need a bigger chart." You agree. ${s.lbs} lbs. Near the end of the recall she says, quietly: "I feel like myself." You look up. She meets your eyes for a moment, then looks away. You write it down verbatim.`,
-    (s)=>`Last session. Bakery bag again. Final protocol. When you say it's the last formal check-in, she's quiet. Then: "You can still observe, right? Informally?" You say you can. She nods and goes. The chair is glad to see her — it's been a tight fit for a while now.`,
-  ],
-  party:[
-    (s)=>`${s.name} arrives eleven minutes late, apologetic and slightly breathless. She gets on the scale and says, "Okay, that's a lot," and laughs. A real laugh. "Do I get a gold star?" ${s.lbs} lbs. The recall is thorough and unfazed.`,
-    (s)=>`"I weighed myself before I came," she says. She shows you the number on her phone — it matches yours to the pound. "Cool." She has to angle herself slightly to sit with the chair arms, and does this without self-consciousness. She answers the recall like someone who has arranged her feelings about the situation into something close to delight.`,
-    (s)=>`She arrives with a café drink and asks if you want anything. Gets on the scale without being asked — "${s.lbs}, write it down" — and sits. "My friends think I'm in a weight loss study," she says. She grins. "I haven't corrected them."`,
-    (s)=>`She's wearing a dress that fits her very well right now and won't in another month, and she knows this, and she's wearing it anyway. ${s.lbs} lbs. "The dining hall staff know me by name," she says. "They have my usual ready. I feel great, by the way." You write that down too.`,
-    (s)=>`Final check-in. She's brought snacks for both of you. "I don't know, it felt right." At the end: "So what's next?" Formal part is done, you tell her. "Informal still works for me," she says. You hear her greet someone in the hallway, warm and loud and very much herself.`,
-  ],
-  sorority:[
-    (s)=>`${s.name} arrives with the posture of someone treating this like a board meeting. ${s.lbs} lbs. "What does that represent as a trajectory?" You show her the chart. She studies it. "I see," she says. The recall is complete and gives you more context than you asked for, as if she's briefing a committee.`,
-    (s)=>`She's made a spreadsheet. Thorough, cross-referenced. You compare it against your recall questions — it matches almost perfectly. "I find it's better to understand a thing than to be surprised by it." Her weight has increased substantially. She is not surprised.`,
-    (s)=>`The chapter has apparently had conversations. "Some of the girls have asked about how I look. I told them I'm in a study and everything is fine." Things are, by certain metrics, fine: ${s.lbs} lbs, and something easier about her than there used to be. "I want to see the chart."`,
-    (s)=>`Spreadsheet updated through last night. "I've been cross-referencing." ${s.lbs} lbs. She looks at the figures with the satisfaction of someone watching a plan go well. "I've updated the chapter records accordingly." You don't ask what that means.`,
-    (s)=>`Final check-in with a formal agenda, three items. Item three: "Discussion of study conclusion and ongoing relationship." "I'd like to continue providing data. Voluntarily. Without the formal structure." You tell her you can discuss that. "Good," she says, and uncrosses her ankles.`,
-  ],
-  honors:[
-    (s)=>`${s.name} arrives five minutes early and waits in the hallway until you open the door. Polite and thorough. ${s.lbs} lbs. At the end: "Is there anything you need me to do differently?" You say no. She seems faintly disappointed, as if she could be performing better.`,
-    (s)=>`She has prepared questions. From her phone, in order: "Is the weight gain intentional? Is this related to the dinners? Should I be managing this?" You are somewhat vague. She notes this. ${s.lbs} lbs. She writes the number herself.`,
-    (s)=>`She arrives in different clothes — softer, less structured. ${s.lbs} lbs. "I've told my family I'm in a study. My mother said I look healthy." She says this carefully. "She used to say I looked thin."`,
-    (s)=>`She brings tea — for both of you. The blazer is gone permanently now. At the end: "I was doing a lot of things because I thought I should. I'm doing fewer of them. I weigh ${s.lbs} lbs and things seem…" She looks for the word. "Fine," she says. "Actually fine."`,
-    (s)=>`Final check-in. Tea again. At the end: "Thank you for including me." A pause. "I know what this is." Another pause. "I don't mind." She stands — considerably more than September — and moves with a careful, settled grace, and leaves.`,
-  ],
-  influencer:[
-    (s)=>`${s.name} photographs the scale — "${s.lbs}, okay" — before you've recorded anything. "I've been posting a wellness study series. Very vague. Very aspirational." She has the recall questions memorized. She answers like someone who always knows she's being documented and has decided to be authentic anyway.`,
-    (s)=>`Her study diary posts are getting engagement. Comments want to know: is she gaining on purpose? She's saying nothing. "The mystery is the content." ${s.lbs} lbs. She photographs the chart. "It's cropped, don't worry." She describes her eating with the half-awareness of someone who knows she's always being watched.`,
-    (s)=>`She turns her phone face-down when she enters. Recall proceeds. At the weigh-in — ${s.lbs} — she looks at the chart and then at you. "Is this what you expected? The rate?" You say the data has been interesting. "Me too," she says.`,
-    (s)=>`She shows you a post: herself, before the study and now, overlaid. No captions. The difference is clear and significant, framed in warm, beautiful light. "I've disabled comments. I just wanted to make something honest." ${s.lbs} lbs. You write it down. She watches your face.`,
-    (s)=>`Final check-in. She arrives without her phone. At the end: "I want to keep going. Just for me. Not for the account." She leaves the phone on your desk when she goes. A minute later she comes back for it.`,
-  ],
-  artsy:[
-    (s)=>`${s.name} steps on the scale with the air of someone witnessing an art installation — curious, slightly removed. "${s.lbs}," she says, reading it herself. "That's a number." The recall is vivid: flavors, textures, the hour, the quality of the light.`,
-    (s)=>`She brings her sketchbook today. While you take measurements she opens it — not to show you, just to have it present. You catch a glimpse: studies. Forms you recognize. "I've been thinking about documentation," she says. "How a thing recorded is different from a thing just experienced."`,
-    (s)=>`"I want to see the chart," before you've started. You turn the screen toward her. She looks at the line for a long time. "That's actually beautiful." She means the shape of it, the arc. ${s.lbs} lbs. She traces it with one finger. "What does that feel like, from the inside?" She's asking herself.`,
-    (s)=>`She arrives with a canvas bag and a paint smock she's forgotten to remove. The chair makes a quiet sound. ${s.lbs} lbs. "I've been making work about this. About accumulation. The evidence building." She watches your face. "Does that concern you?" You shake your head. "Good," she says, and opens the recall form herself.`,
-    (s)=>`Final check-in. She gives you a small print at the end — rolled in a rubber band. You unroll it after she leaves. It's the chart. Her weight gain, traced in charcoal, specific and beautiful. At the bottom: "For the record."`,
-  ],
-  foodie:[
-    (s)=>`${s.name} has a lot to say about her dietary recall. Each item comes with provenance and commentary. You record more than you need to. She weighs ${s.lbs} lbs and accepts the number with the satisfaction of someone watching an investment mature.`,
-    (s)=>`She's keeping a narrative journal — not nutritional, but descriptive. She reads you excerpts. It's extraordinary. ${s.lbs} lbs. "This is the most interesting thing I've ever participated in," she says. You agree, though you phrase it differently.`,
-    (s)=>`The chair is noticeably snug today, and she notes it with academic interest. "The physical consequences are becoming part of the experience." ${s.lbs} lbs. "My palate is sharper and my frame is considerably less sharp, and I find I don't mind." She pulls out the journal. "Can I read you something?"`,
-    (s)=>`She reads you the entry about the first time she noticed the change — week four, the specific dinner where she realized she was past the point of turning back, and found herself, unexpectedly, delighted. ${s.lbs} lbs. "I've been thinking about writing it up properly," she says. "Not for anyone. Just to have."`,
-    (s)=>`Final check-in. She brings food — three things, beautifully packed. "I made them. I needed to close the loop." You eat together. At the end: "The study is over." Then, precisely: "My research continues."`,
-  ],
-};
-export const STUDY_SCENE_DEFAULT=[
-  (s)=>`${s.name} sits across from you. The scale reads ${s.lbs} lbs — you note the number without comment, and she watches the pen move with an expression you're learning to read. The recall is brief and complete.`,
-  (s)=>`${s.lbs} lbs. She looks at the chart and then at her own hands on the desk. "It's going somewhere," she says. You ask what she means. She looks at you. "It's going somewhere," she says again, as if the sentence is self-explanatory.`,
-  (s)=>`She's wearing different clothes today — larger, softer. ${s.lbs} lbs. She answers the recall fully, without the hesitation of the first session, like someone who has stopped pretending.`,
-  (s)=>`${s.lbs} lbs. "Does it ever stop?" she asks. That's one of the things the study is trying to understand, you tell her. She finds this funny. "Right," she says. "The study."`,
-  (s)=>`Final session. Gets on the scale — ${s.lbs} lbs — sits, does the recall. At the end: "What happens now?" Formal part is done, you say. She nods. She doesn't ask about the informal part. She already knows.`,
-];
 
 // ═══════════════════════════════════════════════════════════════
 // HR OBSERVER
@@ -563,36 +475,6 @@ export const TIER_SCENES={
 
 
 // ── SOCIAL EVENTS ───────────────────────────────────────────────
-export const SOCIAL_EVENTS=[
-  {id:"study_hall",    label:"📚 Study Hall",        apCost:1,minStudents:2,maxStudents:6,
-   baseGain:[2,5],relBonus:4,scrutinyAdd:1,
-   desc:"Host a study session. Snacks are mandatory. The work is the pretext.",
-   scene:(names,gain)=>`The study hall fills slowly. Books open, but the food comes out first. ${names} spread out across the table, comfortable and unhurried. By the end, about ${gain} lbs each — and the notes are surprisingly good.`},
-  {id:"dept_social",   label:"🥂 Department Social", apCost:2,minStudents:3,maxStudents:8,
-   baseGain:[3,7],relBonus:6,scrutinyAdd:3,
-   desc:"Faculty mixer. Your students attend. The platters empty. The atmosphere warms.",
-   scene:(names,gain)=>`The social is exactly as these things always are — too much food, too much wine. ${names} cluster together and call you over. The platters near your group empty first. No one else seems to notice.`},
-  {id:"field_trip",    label:"🚌 Field Trip",         apCost:2,minStudents:2,maxStudents:6,
-   baseGain:[4,8],relBonus:5,scrutinyAdd:2,
-   desc:"Campus excursion. Officially about education. Unofficially about the three-hour lunch.",
-   scene:(names,gain)=>`The field trip is officially about the museum. Unofficially, it's about the restaurant two blocks away. ${names} occupy an entire table. Nobody stops at one course. The museum is viewed briefly, on the way back, with full contentment.`},
-  {id:"game_night",    label:"🎲 Game Night",         apCost:1,minStudents:2,maxStudents:5,
-   baseGain:[3,6],relBonus:7,scrutinyAdd:1,
-   desc:"Games, snacks, no pressure. The most natural feeding context there is.",
-   scene:(names,gain)=>`Nobody remembers what games they played. They remember the food — the enormous spread that appeared and disappeared over four hours while ${names} laughed and argued. The scores are meaningless. The calories are not.`},
-  {id:"symposium",     label:"🎓 Symposium",          apCost:2,minStudents:3,maxStudents:10,
-   baseGain:[5,9],relBonus:5,scrutinyAdd:4,
-   desc:"Academic event with catering that is decidedly informal. Everyone overeats at symposiums.",
-   scene:(names,gain)=>`The symposium is notionally about pedagogy. In practice, a three-hour catered event with an open bar and a chef who overestimated attendance. ${names} benefit enormously from this miscalculation. The talks are good. The food is better.`},
-  {id:"house_dinner",  label:"🏡 House Dinner",       apCost:3,minStudents:2,maxStudents:5,
-   baseGain:[8,14],relBonus:9,scrutinyAdd:2,
-   desc:"An evening at yours. You cook. There is no restraint built into this format.",
-   scene:(names,gain)=>`Your home is warm and smells like cooking before they arrive. ${names} fill your kitchen and your evening completely. The food comes in waves — you keep bringing it. Nobody declines anything. By the end the conversation is slow and easy, the way it gets when everyone is genuinely full.`},
-  {id:"banquet",       label:"🍾 End-of-Term Banquet",apCost:4,minStudents:4,maxStudents:15,
-   baseGain:[10,18],relBonus:10,scrutinyAdd:6,
-   desc:"The whole class. Maximum scale, maximum impact.",
-   scene:(names,gain)=>`The banquet hall is yours for the evening. All your students arrive dressed for the occasion. The courses are formal, the portions architectural. By the final course the room is notably different: louder, looser, rounder, happier. You refill every glass and call for more food twice.`},
-];
 
 // ── PRIVATE SESSIONS ─────────────────────────────────────────────
 export const PRIVATE_VENUES=[
