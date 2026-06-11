@@ -107,6 +107,22 @@ export function StudentDetailView({ openWeighIn, addBlobToReligion, ap, ascendSt
                       </div>
                       <Bar val={s.lbs} color={st.color}/>
                       <div style={{fontSize:11,color:"#b08840"}}>{s.lbs} lbs · started {s.startLbs} · gained {s.lbs-s.startLbs} lbs</div>
+                      {(()=>{
+                        const cap=s.stomachCapacity||100;
+                        const full=s.fullness||0;
+                        const pct=Math.round((full/cap)*100);
+                        const stuffed=full>cap;
+                        return(
+                          <div style={{marginTop:7}}>
+                            <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:1}}>STOMACH {stuffed&&<span style={{color:"#e07030"}}>· STUFFED</span>}</div>
+                            <Bar val={Math.min(full,cap*1.5)} max={cap*1.5} color={stuffed?"#e07030":pct>=70?"#d0a020":"#40a060"}/>
+                            <div style={{fontSize:10,color:"#907050"}}>
+                              {full}/{cap} fullness{(s.consumedCalories||0)>0&&<span> · {(s.consumedCalories||0).toLocaleString()} cal digesting (≈+{Math.round((s.consumedCalories||0)/3500)} lbs at week's end)</span>}
+                              {(s.stuffedStreak||0)>0&&<span style={{color:"#e07030"}}> · {s.stuffedStreak}w stuffed streak</span>}
+                            </div>
+                          </div>
+                        );
+                      })()}
                     </div>
                     <div style={{flex:1,minWidth:150}}>
                       <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:1}}>RELATIONSHIP</div>
@@ -851,7 +867,7 @@ export function StudentDetailView({ openWeighIn, addBlobToReligion, ap, ascendSt
                       <div style={{fontSize:10,color:"#5a3888",lineHeight:1.4,marginBottom:4}}>{a.desc}</div>
                       <div style={{display:"flex",justifyContent:"space-between"}}>
                         <span style={{fontSize:10,color:"#e07030"}}>{a.cost} AP{a.cost===0?<span style={{color:"#60c060",marginLeft:3}}>FREE</span>:null}</span>
-                        {a.gain[1]>0&&<span style={{fontSize:10,color:"#685040"}}>+{a.gain[0]}–{a.gain[1]} lbs</span>}
+                        <span style={{fontSize:10,color:"#685040"}}>interactive evening</span>
                       </div>
                     </div>
                   ))}

@@ -11,6 +11,7 @@ import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveContro
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
+import { GAIN_CONFIG, initGainStats, getWeeklyBurn, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
@@ -58,7 +59,7 @@ const INHABITED_PROFESSOR_PROFILE={name:"The Professor",subject:null,traits:[],o
 const SPIRIT_XP_PER_LEVEL=40;
 
 export default function ProfessorSim(){
-  const [students,setStudents]=useState(INIT_STUDENTS);
+  const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({...st,...initGainStats(st)})));
   const [ap,setAp]=useState(5);
   const [week,setWeek]=useState(1);
   const [view,setView]=useState("class");
@@ -312,6 +313,33 @@ export default function ProfessorSim(){
     return { newLbs:newLbs+bonusInfluence, oldStageId:oldSt, newStageId:newSt, narrativeEvents:triggered };
   };
 
+  // ── STOMACH MODEL: feed calories + fullness instead of direct lbs ──
+  // Returns the updated student, or null if she refused (over capacity).
+  const feedStudentCalories=(s,calories,fullnessCost,extraRel=0,label="")=>{
+    const cap=s.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const wouldExceed=(s.fullness||0)+fullnessCost>cap;
+    let forced=false;
+    if(wouldExceed){
+      const chance=forceFeedChance(s,fullnessCost,spiritLevel);
+      if(Math.random()>=chance){
+        const line=REFUSAL_LINES[rnd(0,REFUSAL_LINES.length-1)](s);
+        push(`🚫 ${line}`);
+        return null;
+      }
+      forced=true;
+      const line=FORCE_SUCCESS_LINES[rnd(0,FORCE_SUCCESS_LINES.length-1)](s);
+      setTimeout(()=>push(`🔥 ${line}`),60);
+    }
+    const scaledCals=Math.round(calories*(s.gainMultiplier||1)*skillGainMult);
+    if(label) push(`🍽️ ${label} — ${s.name}: +${scaledCals.toLocaleString()} cal (fullness ${Math.min(999,(s.fullness||0)+fullnessCost)}/${cap})`);
+    return {
+      ...s,
+      consumedCalories:(s.consumedCalories||0)+scaledCals,
+      fullness:(s.fullness||0)+fullnessCost,
+      relationship:Math.min(100,s.relationship+extraRel+(forced?1:0)),
+    };
+  };
+
   const processStudentGain=(s,gain,extraRel=0)=>{
     const scaledGain=Math.round(gain*(s.gainMultiplier||1)*skillGainMult);
     const {newLbs,oldStageId,newStageId,narrativeEvents}=applyGainToStudent(s,scaledGain);
@@ -419,6 +447,28 @@ export default function ProfessorSim(){
       }
       return processStudentGain(s,gain,0);
     });
+    // ── WEEKLY DIGESTION: convert this week's fed calories into weight ──
+    const digestLines=[];
+    updated=updated.map(s=>{
+      if((s.consumedCalories||0)<=0&&(s.fullness||0)<=0&&!s.stuffedStreak) return s;
+      const d=digestStudent(s);
+      const oldStageId=getStage(s.lbs).id;
+      let ns=s;
+      if(d.lbsGained>0) ns=processStudentGain(s,d.lbsGained,0);
+      const stagedUp=getStage(ns.lbs).id>oldStageId;
+      const growth=applyCapacityGrowth(ns,d.lbsGained,stagedUp);
+      const capacityGained=d.capacityGained+(growth.stomachCapacity-(ns.stomachCapacity||GAIN_CONFIG.baseCapacity));
+      if(d.lbsGained>0||capacityGained>0){
+        digestLines.push(`${ns.name} +${d.lbsGained} lbs${d.stuffed?" · stuffed all week":""}${capacityGained>0?` · capacity +${capacityGained}`:""}`);
+      }
+      return {...ns,
+        stomachCapacity:growth.stomachCapacity+d.capacityGained,
+        capacityChunkProgress:growth.capacityChunkProgress,
+        stuffedStreak:d.stuffedStreak,
+        ...d.reset,
+      };
+    });
+    if(digestLines.length) setTimeout(()=>push(`🧬 Digestion — ${digestLines.join(" · ")}`),150);
     // Goddess stage-up checks
     updated=updated.map(s=>{
       if(!s.incarnatedGoddess) return s;
@@ -3628,18 +3678,21 @@ export default function ProfessorSim(){
 
   const doClass=(action)=>{
     if(ap<action.cost){push("⚠️ Not enough AP!");return;}
-    setAp(a=>a-action.cost);
-    let updated;
     if(action.id==="group_dinner"){
       setGroupDinnerPicker({count:2,selected:[]});
       return;
-    } else {
-      updated=students.map(s=>{
-        const gain=rnd(action.gain[0],action.gain[1]);
-        return processStudentGain(s,gain,1);
-      });
-      push(`🎉 ${action.label}: The whole class participated!`);
     }
+    setAp(a=>a-action.cost);
+    let refusals=0,fedCount=0,totalCals=0;
+    const updated=students.map(s=>{
+      if(s.hidden) return s;
+      const cals=rnd(action.cal[0],action.cal[1]);
+      const fed=feedStudentCalories(s,cals,action.full,1);
+      if(!fed){refusals++;return s;}
+      fedCount++;totalCals+=cals;
+      return fed;
+    });
+    push(`🎉 ${action.label}: ${fedCount} students dug in (~${Math.round(totalCals/Math.max(1,fedCount)).toLocaleString()} cal each)${refusals?` · ${refusals} too full to join`:""}.`);
     const evs=collectEvents(updated);
     setStudents(updated);
     if(evs.length){
@@ -3719,7 +3772,7 @@ export default function ProfessorSim(){
     const fullGrp=ratio<=1.0?0:ratio<=1.3?1:ratio<=1.6?2:3;
     const narrative=DINNER_ENDING_TEXT[stGrp][fullGrp](s);
     setAp(a=>a-2);
-    push(`✅ Dinner with ${s.name} complete. +${totalGain} lbs · +${relBonus} relationship.`);
+    push(`✅ Dinner with ${s.name} complete. +${totalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(totalGain))} lbs once digested) · +${relBonus} relationship.`);
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+relBonus)}));
     const evs=collectEvents([s]);
     if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
@@ -3787,23 +3840,23 @@ export default function ProfessorSim(){
   const orderDish=(dish)=>{
     if((dinnerEvent.dishes||[]).includes(dish.id)) return;
     const gain=rnd(dish.gain[0],dish.gain[1]);
-    const scaledGain=Math.round(gain*skillGainMult*(dinnerEvent.student.gainMultiplier||1));
+    const scaledGain=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(dinnerEvent.student.gainMultiplier||1));
     const prevFullness=dinnerEvent.fullness||0;
     const newFullness=prevFullness+(dish.fullness||15);
     const maxFull=dinnerEvent.maxFullness||80;
     const newTotalGain=dinnerEvent.totalGain+scaledGain;
     const newDishes=[...(dinnerEvent.dishes||[]),dish.id];
-    setStudents(prev=>prev.map(s=>s.id!==dinnerEvent.student.id?s:{...s,lbs:s.lbs+scaledGain}));
-    push(`🍴 ${dinnerEvent.student.name}: ${dish.label} (+${scaledGain} lbs)`);
+    setStudents(prev=>prev.map(s=>s.id!==dinnerEvent.student.id?s:{...s,consumedCalories:(s.consumedCalories||0)+scaledGain,fullness:(s.fullness||0)+Math.round((dish.fullness||15)*0.5)}));
+    push(`🍴 ${dinnerEvent.student.name}: ${dish.label} (+${scaledGain.toLocaleString()} cal)`);
     // Overfill probabilistic ending
     if(newFullness>maxFull){
       const overfillRatio=(newFullness-maxFull)/maxFull;
       const endChance=Math.min(0.8,overfillRatio);
       if(Math.random()<endChance){
         const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
-        const sUpdated={...s,lbs:s.lbs+scaledGain};
+        const sUpdated=s;
         const endMsg=getOverfillEndMsg(sUpdated,getStage(sUpdated.lbs).id);
-        setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain} lbs)`,`😵 ${endMsg}`]);
+        setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain.toLocaleString()} cal)`,`😵 ${endMsg}`]);
         setTimeout(()=>triggerDinnerEnd(sUpdated,newFullness,maxFull,newTotalGain,6),1000);
         return;
       }
@@ -3814,7 +3867,7 @@ export default function ProfessorSim(){
       :newFullness>=maxFull*0.8?" — getting full..."
       :"";
     setDinnerEvent(prev=>({...prev,dishes:newDishes,totalGain:newTotalGain,fullness:newFullness}));
-    setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain} lbs)${fullMsg}`]);
+    setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain.toLocaleString()} cal)${fullMsg}`]);
   };
 
   const callWaiter=()=>{
@@ -3830,15 +3883,15 @@ export default function ProfessorSim(){
     const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
     const stId=getStage(s.lbs).id;
     const gainBonus=rnd(conv.gainBonus[0],conv.gainBonus[1]);
-    const scaledBonus=Math.round(gainBonus*skillGainMult*(s.gainMultiplier||1));
+    const scaledBonus=Math.round(gainBonus*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
     const convText=conv.text(s,stId);
     const fullnessChange=conv.fullnessEffect||0;
     const newFullness=Math.max(0,(dinnerEvent.fullness||0)+fullnessChange);
     const newOffense=(dinnerEvent.offenseLevel||0)+(conv.offenseRisk||0);
-    setDinnerLog(dl=>[...dl,`💬 ${convText}${scaledBonus>0?` (+${scaledBonus} lbs)`:""}`]);
+    setDinnerLog(dl=>[...dl,`💬 ${convText}${scaledBonus>0?` (+${scaledBonus.toLocaleString()} cal)`:""}`]);
     push(`💬 Dinner conversation: ${conv.label}`);
     setDinnerEvent(prev=>({...prev,conversationUsed:[...prev.conversationUsed,conv.id],totalGain:prev.totalGain+scaledBonus,fullness:newFullness,offenseLevel:newOffense}));
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+scaledBonus,relationship:Math.min(100,st.relationship+(conv.relBonus||0))}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,consumedCalories:(st.consumedCalories||0)+scaledBonus,relationship:Math.min(100,st.relationship+(conv.relBonus||0))}));
     if(newOffense>=6){
       setTimeout(()=>{
         setDinnerLog(dl=>[...dl,`😤 ${s.name} sets her napkin down. "I think I should head home." She leaves.`]);
@@ -3879,13 +3932,13 @@ export default function ProfessorSim(){
     const target=groupDinnerEvent.students.find(s=>s.id===targetId);
     if(!target||target.dishes.includes(dish.id)) return;
     const gain=rnd(dish.gain[0],dish.gain[1]);
-    const scaledGain=Math.round(gain*skillGainMult*(target.gainMultiplier||1));
+    const scaledGain=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(target.gainMultiplier||1));
     const newFullness=target.fullness+(dish.fullness||15);
     const maxFull=target.maxFullness;
     const newTotalGain=target.totalGain+scaledGain;
     const newDishes=[...target.dishes,dish.id];
-    setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,lbs:s.lbs+scaledGain}));
-    push(`🍴 ${target.name}: ${dish.label} (+${scaledGain} lbs)`);
+    setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,consumedCalories:(s.consumedCalories||0)+scaledGain,fullness:(s.fullness||0)+Math.round((dish.fullness||15)*0.5)}));
+    push(`🍴 ${target.name}: ${dish.label} (+${scaledGain.toLocaleString()} cal)`);
 
     // Build reaction log entries before state updates
     const reactionLines=[];
@@ -4035,7 +4088,7 @@ export default function ProfessorSim(){
   const endGroupDinner=()=>{
     const totalG=groupDinnerEvent.students.reduce((a,s)=>a+s.totalGain,0);
     setAp(a=>a-3);
-    push(`✅ Group dinner complete. +${totalG} lbs total across ${groupDinnerEvent.students.length} girls.`);
+    push(`✅ Group dinner complete. ${totalG.toLocaleString()} cal total across ${groupDinnerEvent.students.length} girls (≈${Math.round(calsToLbs(totalG))} lbs once digested).`);
     setStudents(prev=>prev.map(s=>{
       const inGroup=groupDinnerEvent.students.some(gs=>gs.id===s.id);
       if(!inGroup) return s;
@@ -4086,16 +4139,16 @@ export default function ProfessorSim(){
   const feedInSession=(food)=>{
     const s=privateSession.student;
     const gain=rnd(food.gain[0],food.gain[1]);
-    const scaledGain=Math.round(gain*skillGainMult*(s.gainMultiplier||1));
+    const scaledGain=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
     const newFullness=privateSession.fullness+food.fullness;
     const effectiveMax=privateSession.maxFullness+privateSession.toleranceBuffer;
     const fPct=Math.round((newFullness/effectiveMax)*100);
     const fsStage=getFullnessStage(fPct);
     const descFns=SESSION_FULLNESS_DESCS[s.archetype]||SESSION_FULLNESS_DESCS.default;
     const desc=descFns[Math.min(fsStage.id,descFns.length-1)](s);
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+scaledGain}));
-    push(`🍽️ ${food.label}: +${scaledGain} lbs`);
-    setSessionLog(sl=>[...sl,`🍽️ ${food.label} (+${scaledGain} lbs) — ${food.desc}`,`   ${desc}`]);
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,consumedCalories:(st.consumedCalories||0)+scaledGain}));
+    push(`🍽️ ${food.label}: +${scaledGain.toLocaleString()} cal`);
+    setSessionLog(sl=>[...sl,`🍽️ ${food.label} (+${scaledGain.toLocaleString()} cal) — ${food.desc}`,`   ${desc}`]);
     // Check for tap-out
     const tapProb=fPct<150?0:fPct>=250?Infinity:((fPct-150)/100)*0.90;
     const adjustedTapProb=tapProb===Infinity?1:Math.max(0,tapProb-skillTapOutResistance);
@@ -4124,8 +4177,8 @@ export default function ProfessorSim(){
       setAp(a=>a-2);
       addScrutiny(2);
       setSessionHistory(prev=>({...prev,[s.id]:{count:hist2.count+1,totalGain:hist2.totalGain+currentTotalGain,capacityBonus:newCapBonus2}}));
-      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4)}));
-      push(`⛔ ${s.name} taps out! Session ended — +${currentTotalGain} lbs.`);
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4),fullness:Math.max(st.fullness||0,Math.round((st.stomachCapacity||GAIN_CONFIG.baseCapacity)*Math.min(2.5,fPct/100)))}));
+      push(`⛔ ${s.name} taps out! Session ended — ${currentTotalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(currentTotalGain))} lbs once digested).`);
       setPrivateSession(null);
       setTapOutPopup({student:liveS,text:tapLine,totalGain:currentTotalGain});
     } else {
@@ -4186,14 +4239,14 @@ export default function ProfessorSim(){
     push(`💬 ${encLine}`);
     setSessionLog(sl=>[...sl,`💬 ${encLine}`]);
     if(lbsBonus>0){
-      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+lbsBonus}));
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,consumedCalories:(st.consumedCalories||0)+lbsBonus*GAIN_CONFIG.calsPerLb}));
     }
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+enc.relBonus)}));
     setPrivateSession(prev=>({
       ...prev,
       encouragementsUsed:[...prev.encouragementsUsed,enc.id],
       toleranceBuffer:prev.toleranceBuffer+enc.toleranceBoost,
-      totalGain:prev.totalGain+lbsBonus,
+      totalGain:prev.totalGain+lbsBonus*GAIN_CONFIG.calsPerLb,
     }));
   };
 
@@ -4206,10 +4259,10 @@ export default function ProfessorSim(){
     const hist=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
     const newCapBonus=hist.capacityBonus+8;
     setSessionHistory(prev=>({...prev,[s.id]:{count:hist.count+1,totalGain:hist.totalGain+privateSession.totalGain,capacityBonus:newCapBonus}}));
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4)}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4),fullness:Math.max(st.fullness||0,Math.round((st.stomachCapacity||GAIN_CONFIG.baseCapacity)*Math.min(2.5,fPct/100)))}));
     const aftermath=getAftermath(fPct);
     const liveStudent=students.find(st=>st.id===s.id)||s;
-    push(`✅ Session with ${s.name} complete. +${privateSession.totalGain} lbs · capacity expanded (+8).`);
+    push(`✅ Session with ${s.name} complete. ${privateSession.totalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(privateSession.totalGain))} lbs once digested) · session capacity expanded (+8).`);
     setSessionResult({student:liveStudent,totalGain:privateSession.totalGain,fullnessPct:fPct,scene:aftermath.scene(liveStudent),sessionCount:hist.count+1,capacityBonus:newCapBonus});
     setPrivateSession(null);
   };
@@ -4978,7 +5031,7 @@ export default function ProfessorSim(){
             <div style={{fontSize:11,color:"#7a5090",marginBottom:14}}>
               {dinnerEndPopup.student.name} · {getStage(dinnerEndPopup.student.lbs).label} · {dinnerEndPopup.student.lbs} lbs
               {" · "}{Math.round((dinnerEndPopup.finalFullness/dinnerEndPopup.maxFullness)*100)}% full
-              {" · "}+{dinnerEndPopup.totalGain} lbs tonight
+              {" · "}{dinnerEndPopup.totalGain.toLocaleString()} cal tonight (≈+{Math.round(dinnerEndPopup.totalGain/3500)} lbs digesting)
             </div>
             <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20,whiteSpace:"pre-line"}}>
               {dinnerEndPopup.narrative}
@@ -5111,7 +5164,7 @@ export default function ProfessorSim(){
 
                   <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
                     <div style={{fontSize:11,color:"#f0a060",fontWeight:700,flex:1}}>
-                      +{gev.students.reduce((a,s)=>a+s.totalGain,0)} lbs total
+                      {gev.students.reduce((a,s)=>a+s.totalGain,0).toLocaleString()} cal total
                     </div>
                     <button style={C.btn("#2a6830")} onClick={endGroupDinner}>End Evening ✓</button>
                     <button style={C.btn("#333")} onClick={()=>{setAp(a=>a-3);setGroupDinnerEvent(null);}}>Leave Early</button>

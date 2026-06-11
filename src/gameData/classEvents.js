@@ -5,10 +5,10 @@ export const ACTIONS_SINGLE = [
 ];
 
 export const ACTIONS_CLASS = [
-  { id:"pizza",        label:"🍕 Class Pizza Party",         cost:3, gain:[4,9],   desc:"An excessive whole-class pizza order. Everyone indulges." },
-  { id:"potluck",      label:"🥘 Class Potluck",             cost:2, gain:[3,7],   desc:"Everyone brings a dish. Everyone is expected to try everything." },
-  { id:"feast",        label:"🦃 Holiday Class Feast",       cost:5, gain:[9,18],  desc:"A full holiday spread. This one really goes far." },
-  { id:"group_dinner", label:"👥 Arrange Group Dinner",      cost:3, gain:[4,9],   desc:"Take two students to dinner together. Their bond amplifies the result for both." },
+  { id:"pizza",        label:"🍕 Class Pizza Party",         cost:3, cal:[12000,24000], full:40, desc:"An excessive whole-class pizza order. Everyone indulges." },
+  { id:"potluck",      label:"🥘 Class Potluck",             cost:2, cal:[9000,18000],  full:30, desc:"Everyone brings a dish. Everyone is expected to try everything." },
+  { id:"feast",        label:"🦃 Holiday Class Feast",       cost:5, cal:[28000,52000], full:70, desc:"A full holiday spread. This one really goes far." },
+  { id:"group_dinner", label:"👥 Arrange Group Dinner",      cost:3, cal:[14000,30000], full:45, desc:"Take two students to dinner together. Their bond amplifies the result for both." },
 ];
 
 export const SEMESTER_EVENTS = [

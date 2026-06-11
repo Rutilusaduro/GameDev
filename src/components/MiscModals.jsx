@@ -1,4 +1,5 @@
 import { C } from '../styles.js';
+import { getFullnessStage } from '../gameData/sessions.js';
 import { GODDESS_VISION } from '../gameData/ascension.js';
 
 
@@ -65,7 +66,7 @@ export function SessionResultModal({ sessionResult, setSessionResult }){
               {sessionResult.scene}
             </div>
             <div style={{...C.infoBox("rgba(40,5,70,0.3)"),fontSize:11,color:"#9060c0",marginBottom:14}}>
-              +{sessionResult.totalGain} lbs this session · Appetite capacity expanded by +8 (total bonus: +{sessionResult.capacityBonus})
+              {sessionResult.totalGain.toLocaleString()} cal this session (≈+{Math.round(sessionResult.totalGain/3500)} lbs digesting) · Appetite capacity expanded by +8 (total bonus: +{sessionResult.capacityBonus})
               <div style={{fontSize:10,color:"#604080",marginTop:3}}>
                 She can now comfortably eat {sessionResult.capacityBonus}% more than when you first started feeding her privately.
               </div>
@@ -82,7 +83,7 @@ export function TapOutPopup({ setTapOutPopup, tapOutPopup }){
           <div style={{...C.modal,maxWidth:520}}>
             <div style={{fontSize:9,letterSpacing:3,color:"#c06060",marginBottom:6}}>⛔ SHE TAPS OUT</div>
             <div style={{fontSize:11,color:"#a06050",marginBottom:10}}>
-              {tapOutPopup.student.name} · +{tapOutPopup.totalGain} lbs this session
+              {tapOutPopup.student.name} · {tapOutPopup.totalGain.toLocaleString()} cal this session (≈+{Math.round(tapOutPopup.totalGain/3500)} lbs digesting)
             </div>
             <p style={{lineHeight:1.9,color:"#e0d0c0",fontStyle:"italic",marginBottom:20,fontSize:13}}>
               {tapOutPopup.text}
