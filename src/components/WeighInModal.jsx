@@ -1,14 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { C } from '../styles.js';
 import { getStage } from '../gameData/stages.js';
-
-function getScenePlaceholder(student,{goesDirectlyToBig=false}={}){
-  const lbs=Math.round(student.lbs);
-  if(goesDirectlyToBig){
-    return `[Placeholder scene] ${student.name} returns for her weekly check-in and goes straight to the heavy-duty platform you installed after the old scale gave out. The LCD blinks awake and starts climbing toward her ${lbs} lbs.`;
-  }
-  return `[Placeholder scene] ${student.name} steps into the office for her weekly check-in, sets her things down, and steps onto the old white analog scale. The platform creaks under her ${lbs} lbs and the red needle begins to spin.`;
-}
+import { renderWeighInIntro, renderWeighInReaction } from '../textEngine/scenes/weighIn.js';
 
 const BREAK_SCENES={
   0:(s)=>`Brittany hops off like she's dismounting a routine, hands on her hips, completely unbothered. "Okay, that one is on the scale, not me."`,
@@ -205,9 +198,9 @@ function UhOhButton({onClick}){
   );
 }
 
-export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale}){
+export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,week}){
   if(!weighInState) return null;
-  const {student,phase}=weighInState;
+  const {student,phase,reactionText}=weighInState;
   if(!student) return null;
   const st=getStage(student.lbs);
   const lbs=Math.round(student.lbs);
@@ -218,6 +211,11 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
   const setPhase=(nextPhase)=>setWeighInState({...weighInState,phase:nextPhase});
   const close=()=>setWeighInState(null);
   const stepOntoScale=()=>setPhase(goesDirectlyToBig?"digital":"analog");
+  const introText=renderWeighInIntro(student,week||1,goesDirectlyToBig);
+  const goToReaction=()=>{
+    const text=renderWeighInReaction(student,week||1);
+    setWeighInState({...weighInState,phase:"reaction",reactionText:text});
+  };
   const handleAfterBreak=()=>{
     if(!bigScaleUnlocked){
       onUnlockBigScale&&onUnlockBigScale();
@@ -231,12 +229,11 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
     <div style={C.overlay}>
       <div style={{...C.modal,maxWidth:560}}>
         <div style={{fontSize:9,letterSpacing:4,color:"#a060ff",marginBottom:4}}>⚖ WEIGH-IN · {student.name?.toUpperCase()}</div>
-        <div style={{fontSize:14,color:"#d8a8ff",fontWeight:700,marginBottom:14}}>{student.name} — currently {st.label}</div>
 
         {phase==="scene"&&(
           <>
             <div style={{...C.infoBox("rgba(50,10,90,.25)"),fontSize:13,color:"#e0d0b0",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>
-              {getScenePlaceholder(student,{goesDirectlyToBig})}
+              {introText}
             </div>
             <button style={{...C.btn("#5818a8"),width:"100%"}} onClick={showScaleAfter?stepOntoScale:close}>
               {showScaleAfter?(goesDirectlyToBig?"Step onto the heavy-duty scale →":"Step onto the scale →"):"Close ✓"}
@@ -249,7 +246,7 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
             <div style={{...C.infoBox("rgba(20,15,40,.55)"),padding:14,marginBottom:14,display:"flex",justifyContent:"center"}}>
               <AnalogScale lbs={student.lbs} willBreak={willBreakNow} onBroken={()=>onBreakScale&&onBreakScale(student.id)}/>
             </div>
-            {willBreakNow?<UhOhButton onClick={()=>setPhase("break")}/>:<button style={{...C.btn("#5818a8"),width:"100%"}} onClick={close}>Close ✓</button>}
+            {willBreakNow?<UhOhButton onClick={()=>setPhase("break")}/>:<button style={{...C.btn("#5818a8"),width:"100%"}} onClick={goToReaction}>Continue →</button>}
           </>
         )}
 
@@ -279,6 +276,15 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
           <>
             <div style={{...C.infoBox("rgba(10,15,25,.7)"),padding:16,marginBottom:14,display:"flex",justifyContent:"center"}}>
               <DigitalScale lbs={student.lbs}/>
+            </div>
+            <button style={{...C.btn("#5818a8"),width:"100%"}} onClick={goToReaction}>Continue →</button>
+          </>
+        )}
+
+        {phase==="reaction"&&(
+          <>
+            <div style={{...C.infoBox("rgba(30,15,50,.35)"),fontSize:13,color:"#e8d8f8",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>
+              {reactionText}
             </div>
             <button style={{...C.btn("#5818a8"),width:"100%"}} onClick={close}>Close ✓</button>
           </>

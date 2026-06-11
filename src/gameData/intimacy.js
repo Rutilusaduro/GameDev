@@ -1,28 +1,5 @@
 import { getStage } from './stages.js';
 
-export const INTIMACY_ASCENSION_FLAVOR={
-  celestial:{
-    skin:`Her skin carries the faint warmth of something overripe — not sweat, not perfume, but a deeper luminescence, as though the light that lives in her has been seeping outward for weeks. When you touch her it comes into you, slow and very warm.`,
-    touch:`Each press of your hand finds depth that shouldn't exist — she seems to have added layers you can't account for, each one warmer and softer than the last, gravity pulling her into you with a celestial patience.`,
-    ambient:`The air around her has thickened. You notice it a moment before contact — a warmth that precedes her body, announcing the weight and softness before you've even reached her.`,
-  },
-  umbral:{
-    skin:`Her skin is cool at the surface, then shockingly warm an inch beneath — like pressing into deep water. The darkness that has gathered around her makes her feel somehow larger than her actual dimensions, a presence that extends past the edges of her body.`,
-    touch:`The resistance is minimal and the depth is disorienting — your hand sinks, finds no floor, travels further than geography should allow. She is very dense and very cold at the edges and burning at the center.`,
-    ambient:`She carries quiet the way she carries weight — absolutely, without apology. The room feels different around her: dimmer, heavier, closer. Her mass is a gravitational fact that reorganizes the furniture.`,
-  },
-  sanguine:{
-    skin:`Her skin burns. Not uncomfortably — it's the warmth of something alive and extremely well-fed, a deep metabolic heat that radiates outward from her belly and her thighs and her soft, heavy arms. Being near her is like being near a fire.`,
-    touch:`Everything gives. Everything yields to exactly the degree you apply pressure and a degree more beyond that. Her flesh has the quality of something that has been slowly softening for months, finally arrived at a perfect, yielding density.`,
-    ambient:`The appetite that has made her belongs to the room too. Food smells linger in her hair. There's an exuberance in the air around her, something warm and excessive, the ambient pleasure of a body that has been fed extremely well.`,
-  },
-  verdant:{
-    skin:`Her skin is impossibly smooth, with the kind of tension that comes from growth — stretched, warm, alive. She smells faintly of earth and sweetness. There's a patience in her body that feels botanical: she has grown this slowly and completely.`,
-    touch:`Pressure blooms outward from contact. The flesh redistributes with the unhurried generosity of something deeply rooted, finding its new shape around your hand as though your touch is simply a new condition she accommodates without effort.`,
-    ambient:`There's a vitality around her that has nothing to do with motion — she can barely move now, but the air around her feels exceptionally alive, green-warm, the specific atmosphere of abundance and patient growth arrived at its fullness.`,
-  },
-};
-
 export const INTIMACY_ARCHETYPE_LINES={
   athlete:{
     reaction:[`"You have no idea how strong I actually am."`,`She watches your hands with the focused attention she used to give to game tape.`,`Her breath catches — then she resets, the way she always resets. Controlled. Deliberate.`],

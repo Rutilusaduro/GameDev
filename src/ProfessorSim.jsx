@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { CELESTIAL_STAGES, UMBRAL_STAGES, CONVERGENCE_STAGE, SINGULARITY_ABSORPTION_TEXT, SINGULARITY_REACTIONS, SINGULARITY_TAP_OUT, SINGULARITY_RANDOM_EVENTS, SINGULARITY_ACTION_TEXT, SINGULARITY_ACTIONS, TRIUMVIRATE_REACTION, TRIUMVIRATE_ACTIONS, TRIUMVIRATE_ACTION_TEXT, CELESTIAL_PULL_AMOUNTS, CELESTIAL_PUSH_AMOUNTS, CELESTIAL_BLESS_AMOUNTS, UMBRAL_CONSUME_CHANCE, UMBRAL_ABSORB_RATE, UMBRAL_VOID_PULL_AMOUNTS, UMBRAL_ABSORB_TEXT, CELESTIAL_ACTION_TEXT, UMBRAL_ACTION_TEXT, RELIGION_RITE_TEXT, SINGULARITY_RITE_TEXT, SANGUINE_STAGES, SANGUINE_REACTIONS, SANGUINE_ACTIONS, SANGUINE_ACTION_TEXT, VERDANT_STAGES, VERDANT_REACTIONS, VERDANT_ACTIONS, VERDANT_ACTION_TEXT, PRIMORDIAL_ABSORPTION_TEXT, PRIMORDIAL_REACTIONS, PRIMORDIAL_RANDOM_EVENTS, PRIMORDIAL_ACTIONS, PRIMORDIAL_ACTION_TEXT, PRIMORDIAL_TRIUMVIRATE_REACTION, PRIMORDIAL_TRIUMVIRATE_ACTIONS, PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT, getGoddessStage, GODDESS_STAGE_REACTIONS, GODDESS_EXPLORE_TEXT, GODDESS_PRACTICAL_TEXT, GODDESS_ACTIONS, INCARNATION_EVENT_TEXT } from './gameData/ascension.js';
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL } from './gameData/intimacy.js';
-import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, DIVINE_PAIR_REACTIONS, UNBUTTON_LINES, ADMIN_EVENTS, STUDY_SCENES, STUDY_SCENE_DEFAULT, HR_FEED_LINES, HR_TALK_LINES, getTier, TIER_SCENES, VAUGHAN_BASE, VAUGHAN_EVENTS, VAUGHAN_WEIGHT_SCENES, VAUGHAN_ALLY_SCENE, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
-import { STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
+import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, UNBUTTON_LINES, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
+import { STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS } from './gameData/classEvents.js';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
@@ -11,11 +10,16 @@ import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveContro
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
+import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
+import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_FEED_LINES, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
+import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES } from './gameData/items.js';
+import { CAMPUS_NODES, CAMPUS_CONFIG, CAMPUS_ENCOUNTERS, stageDescriptor } from './gameData/campus.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
-import { ALL_SKILLS, getSingularityStage, getPrimordialStage, SANGUINE_MARK_DRAIN_BY_STAGE, VERDANT_CULTIVATE_GAIN_BY_STAGE, getEvolvedActivityStageIdx, rnd, generateClassSession } from './utils/gameHelpers.js';
+import { ALL_SKILLS, getEvolvedActivityStageIdx, rnd, generateClassSession } from './utils/gameHelpers.js';
+import { renderHiveIntake } from './textEngine/scenes/hiveIntake.js';
 import { MoodBadge } from './components/ui.jsx';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
@@ -33,14 +37,15 @@ import { ChapterHostessHangoutModal, ChapterHostessFeastPrepModal, ChapterHostes
 import { ClassView } from './views/ClassView.jsx';
 import { StudentDetailView } from './views/StudentDetailView.jsx';
 import { ActionsView } from './views/ActionsView.jsx';
+import { InventoryView, ItemTargetPicker } from './views/InventoryView.jsx';
+import { CampusView } from './views/CampusView.jsx';
 import { SkillTreeView } from './views/SkillTreeView.jsx';
-import { SocialEventsView } from './views/SocialEventsView.jsx';
-import { AchievementsView, DivinePanel } from './views/AchievementsView.jsx';
+import { AchievementsView } from './views/AchievementsView.jsx';
 import { PrivateSessionModal } from './components/PrivateSessionModal.jsx';
 import { EvolvedEventModal } from './components/EvolvedEventModal.jsx';
 import { WeighInModal } from './components/WeighInModal.jsx';
 import { DebugPanel } from './components/DebugPanel.jsx';
-import { EvolutionOfferModal, GoddessVisionModal, SessionResultModal, TapOutPopup, SocialEventResult, SocialEventPicker, VaughanEventModal, TierUpModal, StudyCheckInModal, AdminEventModal } from './components/MiscModals.jsx';
+import { EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
 import { C } from './styles.js';
 
@@ -59,7 +64,7 @@ const INHABITED_PROFESSOR_PROFILE={name:"The Professor",subject:null,traits:[],o
 const SPIRIT_XP_PER_LEVEL=40;
 
 export default function ProfessorSim(){
-  const [students,setStudents]=useState(INIT_STUDENTS);
+  const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({...st,...initGainStats(st),corruption:0})));
   const [ap,setAp]=useState(5);
   const [week,setWeek]=useState(1);
   const [view,setView]=useState("class");
@@ -68,7 +73,6 @@ export default function ProfessorSim(){
   const [activeEvent,setActiveEvent]=useState(null);
   const [achievements,setAchievements]=useState([]);
   const [globalStats,setGlobalStats]=useState({ narrativeCount:0 });
-  const [observeText,setObserveText]=useState(null);
   const [eventQueue,setEventQueue]=useState([]);
   const [unlockedSkills,setUnlockedSkills]=useState([]);
   const [dinnerEvent,setDinnerEvent]=useState(null);
@@ -80,17 +84,6 @@ export default function ProfessorSim(){
   // groupDinnerPicker: { count:2|3, selected:[] }
   const [immobileRedirect,setImmobileRedirect]=useState(null);
   // immobileRedirect: { student, text } | null
-  const [absorptionPopup,setAbsorptionPopup]=useState(null);
-  // absorptionPopup: { text } | null — fires when convergence merges
-  const [singularityActionPopup,setSingularityActionPopup]=useState(null);
-  // singularityActionPopup: { student, actionId, text, gainApplied } | null
-  const [goddessIncarnateId,setGoddessIncarnateId]=useState(null);
-  // id of student currently incarnated as goddess (Triumvirate phase 2)
-  const [goddessManifestPopup,setGoddessManifestPopup]=useState(null);
-  // { targetName, targetLbs } — popup before incarnation
-  const [triumvirateModal,setTriumvirateModal]=useState(null);
-  // { text } — fires when Triumvirate unlocks
-  const [finalConsumptionDone,setFinalConsumptionDone]=useState(false);
   const [debugOpen,setDebugOpen]=useState(false);
   const [debugInputs,setDebugInputs]=useState({});
   // debugInputs: { [studentId]: { lbs:string, path:string, stage:number, rel:number } }
@@ -100,27 +93,11 @@ export default function ProfessorSim(){
   const [professorProfile,setProfessorProfile]=useState(null);
   // professorProfile: {name, subject, traits:[], origin?}
   const [adminScrutiny,setAdminScrutiny]=useState(0);
-  const [adminEvent,setAdminEvent]=useState(null);
-  const [adminFiredIds,setAdminFiredIds]=useState([]);
-  const [researchStudy,setResearchStudy]=useState({participants:{}});
-  // participants: {[studentId]:{enrolled,checkInCount:0}}
-  const [studyCheckIn,setStudyCheckIn]=useState(null);
-  // studyCheckIn: {student, scene, index}
-  const [hrObserver,setHrObserver]=useState(null);
-  // hrObserver: {name,lbs,startLbs,bodyType,disposition,weeksPresent}
   // DLC: Inner Circle
   const seenTiersRef=useRef(new Set());
   const prevRelsRef=useRef(Object.fromEntries(INIT_STUDENTS.map(s=>[s.id,s.relationship])));
   const [tierUpModal,setTierUpModal]=useState(null);
-  // DLC: Vaughan
-  const [vaughan,setVaughan]=useState(null);
-  const [vaughanModal,setVaughanModal]=useState(null);
-  const [vaughanFiredIds,setVaughanFiredIds]=useState([]);
-  const [vaughanAlly,setVaughanAlly]=useState(false);
   // DLC: Social Events
-  const [socialPicker,setSocialPicker]=useState(null);
-  const [socialResult,setSocialResult]=useState(null);
-  const [socialWeeks,setSocialWeeks]=useState([]);
   // DLC: Private Sessions
   const [privateSession,setPrivateSession]=useState(null);
   // {student,venue,phase,foods:[],totalGain,fullness,maxFullness,encouragementsUsed:[],toleranceBuffer,sessionNum}
@@ -130,37 +107,16 @@ export default function ProfessorSim(){
   const [tapOutPopup,setTapOutPopup]=useState(null);
   // {student, text, totalGain}
   const [weighInState,setWeighInState]=useState(null);
+  const [inventory,setInventory]=useState({...INVENTORY_CONFIG.startingItems});
+  // inventory: {[itemId]: qty}
+  const [itemTargetPicker,setItemTargetPicker]=useState(null);
+  // itemTargetPicker: {item}
+  const [campusState,setCampusState]=useState({at:CAMPUS_CONFIG.startNode,log:[CAMPUS_NODES[CAMPUS_CONFIG.startNode].desc]});
   // {student, phase:"scene"|"analog"|"break"|"purchase"|"swap"|"digital"}
   const [bigScaleUnlocked,setBigScaleUnlocked]=useState(false);
   const [brokeScaleIds,setBrokeScaleIds]=useState([]);
   // {student, phase:"scene"|"scale"}
   const [sessionLog,setSessionLog]=useState([]);
-  // ── DIVINE EXPANSION STATE ─────────────────────────────────────
-  const [goddessSeen,setGoddessSeen]=useState(false);
-  const [goddessModal,setGoddessModal]=useState(null);
-  const [consumedStudents,setConsumedStudents]=useState([]); // full student objects consumed by Umbral
-  const [religion,setReligion]=useState(null);
-  // religion: {founded, devotees, ritesHeld, worshippedIds:[], weeklyPassiveGain}
-  const [convergenceModal,setConvergenceModal]=useState(null); // {student} secret stage achieved
-  // ── EP4: SANGUINE / VERDANT / PRIMORDIAL STATE ────────────────
-  const [sanguineMarks,setSanguineMarks]=useState([]);       // student IDs marked for weekly drain
-  const [verdantCultivations,setVerdantCultivations]=useState([]); // student IDs cultivated by roots
-  const [umbralAbsorbPopup,setUmbralAbsorbPopup]=useState(null); // {text,absorbedName,umbralName,gained}
-  const [ritePopup,setRitePopup]=useState(null); // {rite,text}
-  const [celestialActionPopup,setCelestialActionPopup]=useState(null); // {text}
-  const [umbralActionPopup,setUmbralActionPopup]=useState(null); // {text}
-  const [sanguineActionPopup,setSanguineActionPopup]=useState(null); // {student,actionId,text}
-  const [verdantActionPopup,setVerdantActionPopup]=useState(null);   // {student,actionId,text}
-  const [primordialConvergenceModal,setPrimordialConvergenceModal]=useState(null); // {student,opponent}
-  const [primordialAbsorptionPopup,setPrimordialAbsorptionPopup]=useState(null);   // {text,absorbedName,survivorName}
-  const [primordialActionPopup,setPrimordialActionPopup]=useState(null);           // {student,actionId,text,gainApplied}
-  const [primordialGoddessIncarnateId,setPrimordialGoddessIncarnateId]=useState(null);
-  const [primordialGoddessManifestPopup,setPrimordialGoddessManifestPopup]=useState(null); // {text,candidateId}
-  const [primordialTriumvirateModal,setPrimordialTriumvirateModal]=useState(null);
-  const [primordialFinalConsumptionDone,setPrimordialFinalConsumptionDone]=useState(false);
-  const [incarnationEventPopup,setIncarnationEventPopup]=useState(null); // {name,prevLbs,newLbs}
-  const [goddessActionPopup,setGoddessActionPopup]=useState(null); // {text}
-  const [goddessStagePopup,setGoddessStagePopup]=useState(null); // {text}
   // ── EP2: EVOLUTION STATE ───────────────────────────────────────
   const [evolutionModal,setEvolutionModal]=useState(null);
   // evolutionModal: {student, paths:{pathA:{id,label,desc}, pathB:{id,label,desc}}}
@@ -271,26 +227,6 @@ export default function ProfessorSim(){
     }
   },[students,professorProfile]);
 
-  // Spawn Vaughan when scrutiny becomes notable
-  useEffect(()=>{
-    if(!professorProfile||vaughan) return;
-    if(adminScrutiny>=15){
-      setVaughan({...VAUGHAN_BASE,lbs:VAUGHAN_BASE.startLbs,suspicion:0,disposition:0,weightScenesSeen:[]});
-      push(`👓 ${VAUGHAN_BASE.name} of ${VAUGHAN_BASE.dept} has taken notice.`);
-      push(`   ${VAUGHAN_BASE.intro}`);
-    }
-  },[adminScrutiny,professorProfile]);
-
-  // Fire Vaughan confrontation events
-  useEffect(()=>{
-    if(!vaughan||vaughanAlly) return;
-    const next=VAUGHAN_EVENTS.find(ev=>vaughan.suspicion>=ev.suspicion&&!vaughanFiredIds.includes(ev.id));
-    if(next&&!vaughanModal){
-      setVaughanModal(next);
-      setVaughanFiredIds(prev=>[...prev,next.id]);
-    }
-  },[vaughan,vaughanFiredIds,vaughanModal,vaughanAlly]);
-
   // Check achievements
   useEffect(()=>{
     const newAch=ACHIEVEMENT_LIST.filter(a=>!achievements.includes(a.id)&&a.check(students,globalStats));
@@ -310,17 +246,6 @@ export default function ProfessorSim(){
 
   // (auto-end dinner removed — endings now handled by overfill check or manual "End Evening")
 
-  // Fire admin events at scrutiny thresholds
-  useEffect(()=>{
-    if(!professorProfile) return;
-    const next=ADMIN_EVENTS.slice().sort((a,b)=>b.threshold-a.threshold)
-      .find(ev=>adminScrutiny>=ev.threshold&&!adminFiredIds.includes(ev.id));
-    if(next&&!adminEvent){
-      setAdminEvent(next);
-      setAdminFiredIds(prev=>[...prev,next.id]);
-    }
-  },[adminScrutiny,adminFiredIds,adminEvent,professorProfile]);
-
   const push=useCallback((msg)=>setLog(prev=>[...prev,msg]),[]);
 
   const inhabitProfessor=()=>{
@@ -336,45 +261,7 @@ export default function ProfessorSim(){
     if(actual>0) setAdminScrutiny(prev=>Math.min(100,prev+actual));
   };
 
-  const proposeStudy=(s)=>{
-    if(ap<1){push("⚠️ Need 1 AP.");return;}
-    if(s.relationship<55){push("⚠️ Need 55 relationship to enroll a student in the study.");return;}
-    if(researchStudy.participants[s.id]){push(`${s.name} is already enrolled.`);return;}
-    setAp(a=>a-1);
-    setResearchStudy(prev=>({...prev,participants:{...prev.participants,[s.id]:{enrolled:true,checkInCount:0}}}));
-    push(`📋 ${s.name} agrees to participate in your dietary habits study.`);
-    addScrutiny(3);
-  };
 
-  const runCheckIn=(s)=>{
-    if(ap<1){push("⚠️ Need 1 AP.");return;}
-    const pData=researchStudy.participants[s.id];
-    if(!pData){return;}
-    if(pData.checkInCount>=5){push(`${s.name}'s study arc is complete.`);return;}
-    setAp(a=>a-1);
-    const scenes=STUDY_SCENES[s.archetype]||STUDY_SCENE_DEFAULT;
-    const sceneFn=scenes[Math.min(pData.checkInCount,scenes.length-1)];
-    const scene=sceneFn?sceneFn(s):"Session complete.";
-    setStudyCheckIn({student:s,scene,index:pData.checkInCount});
-    setResearchStudy(prev=>({...prev,participants:{...prev.participants,[s.id]:{...pData,checkInCount:pData.checkInCount+1}}}));
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+3)}));
-    addScrutiny(professorProfile?.traits?.includes("discreet")?1:2);
-  };
-
-  const feedObserver=(gain,dispGain)=>{
-    if(!hrObserver) return;
-    const line=HR_FEED_LINES[rnd(0,HR_FEED_LINES.length-1)](hrObserver);
-    push(`👤 ${line}`);
-    setHrObserver(prev=>({...prev,lbs:Math.round(prev.lbs+gain),disposition:Math.min(100,prev.disposition+dispGain)}));
-  };
-
-  const talkToObserver=()=>{
-    if(!hrObserver||ap<1){push("⚠️ Need 1 AP.");return;}
-    setAp(a=>a-1);
-    const line=HR_TALK_LINES[rnd(0,HR_TALK_LINES.length-1)](hrObserver);
-    push(`💬 ${line}`);
-    setHrObserver(prev=>({...prev,disposition:Math.min(100,prev.disposition+12)}));
-  };
 
   const applyGainToStudent=(s,gain)=>{
     const oldSt=getStage(s.lbs).id;
@@ -399,34 +286,105 @@ export default function ProfessorSim(){
     return { newLbs:newLbs+bonusInfluence, oldStageId:oldSt, newStageId:newSt, narrativeEvents:triggered };
   };
 
+  // ── CAMPUS EXPLORATION ─────────────────────────────────────────
+  const campusLog=(lines)=>setCampusState(prev=>({...prev,log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit)}));
+
+  const rollCampusEvent=(nodeId)=>{
+    const lines=[];
+    if(Math.random()<CAMPUS_CONFIG.encounterChance){
+      const visible=students.filter(st=>!st.hidden||lilithUnlocked);
+      if(visible.length){
+        const who=visible[rnd(0,visible.length-1)];
+        const sd=stageDescriptor(getStage(who.lbs).id);
+        const enc=CAMPUS_ENCOUNTERS[rnd(0,CAMPUS_ENCOUNTERS.length-1)](who,sd);
+        lines.push(`👁 ${enc}`);
+      }
+    }
+    if(Math.random()<CAMPUS_CONFIG.itemFindChance){
+      const item=rollWeeklyItem();
+      setInventory(prev=>({...prev,[item.id]:Math.min(INVENTORY_CONFIG.maxStack,(prev[item.id]||0)+1)}));
+      lines.push(`🎒 You come across ${item.emoji} ${item.label.toLowerCase()} — into the pantry it goes.`);
+    }
+    return lines;
+  };
+
+  const moveToCampusNode=(nodeId)=>{
+    const from=CAMPUS_NODES[campusState.at];
+    if(!from.exits.includes(nodeId)) return;
+    const node=CAMPUS_NODES[nodeId];
+    const lines=[`→ You walk to ${node.emoji} ${node.label}.`,node.desc,...rollCampusEvent(nodeId)];
+    setCampusState(prev=>({...prev,at:nodeId,log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit)}));
+  };
+
+  const lookAround=()=>{
+    const node=CAMPUS_NODES[campusState.at];
+    const flavor=node.flavor[rnd(0,node.flavor.length-1)];
+    campusLog([flavor,...rollCampusEvent(campusState.at)]);
+  };
+
+  // ── INVENTORY ──────────────────────────────────────────────────
+  const useItemOn=(item,studentId)=>{
+    if((inventory[item.id]||0)<=0) return;
+    const target=students.find(st=>st.id===studentId);
+    if(!target) return;
+    const fed=feedStudentCalories(target,item.cal,item.full,1,`${item.emoji} ${item.label}`);
+    setItemTargetPicker(null);
+    if(!fed) return; // she refused — item is not consumed
+    setInventory(prev=>({...prev,[item.id]:prev[item.id]-1}));
+    setStudents(prev=>prev.map(st=>st.id===studentId?fed:st));
+    const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](target,item);
+    setTimeout(()=>push(`🎒 ${line}`),80);
+  };
+
+  // ── CORRUPTION: hidden psyche progression (general actions only) ──
+  const addCorruption=(s,amount)=>{
+    const before=getCorruptionTier(s.corruption||0).id;
+    const newC=Math.min(CORRUPTION_CONFIG.max,(s.corruption||0)+amount);
+    const after=getCorruptionTier(newC).id;
+    if(after>before&&CORRUPTION_TIER_UP_LINES[after]){
+      setTimeout(()=>push(`🕯️ ${CORRUPTION_TIER_UP_LINES[after](s)}`),200);
+    }
+    return newC;
+  };
+
+  // ── STOMACH MODEL: feed calories + fullness instead of direct lbs ──
+  // Returns the updated student, or null if she refused (over capacity).
+  const feedStudentCalories=(s,calories,fullnessCost,extraRel=0,label="")=>{
+    const cap=s.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const wouldExceed=(s.fullness||0)+fullnessCost>cap;
+    let forced=false;
+    if(wouldExceed){
+      const corruptionBonus=Math.min(0.30,(s.corruption||0)*CORRUPTION_CONFIG.resistancePerPoint);
+      const chance=forceFeedChance(s,fullnessCost,spiritLevel)+corruptionBonus;
+      if(Math.random()>=chance){
+        const line=REFUSAL_LINES[rnd(0,REFUSAL_LINES.length-1)](s);
+        push(`🚫 ${line}`);
+        return null;
+      }
+      forced=true;
+      const line=FORCE_SUCCESS_LINES[rnd(0,FORCE_SUCCESS_LINES.length-1)](s);
+      setTimeout(()=>push(`🔥 ${line}`),60);
+    }
+    const scaledCals=Math.round(calories*(s.gainMultiplier||1)*skillGainMult);
+    if(label) push(`🍽️ ${label} — ${s.name}: +${scaledCals.toLocaleString()} cal (fullness ${Math.min(999,(s.fullness||0)+fullnessCost)}/${cap})`);
+    if(Math.random()<CORRUPTION_CONFIG.dialogueChance){
+      const tier=getCorruptionTier(s.corruption||0);
+      const lines=CORRUPTION_FEED_LINES[tier.id];
+      setTimeout(()=>push(`💭 ${lines[rnd(0,lines.length-1)](s)}`),120);
+    }
+    return {
+      ...s,
+      consumedCalories:(s.consumedCalories||0)+scaledCals,
+      fullness:(s.fullness||0)+fullnessCost,
+      corruption:forced?addCorruption(s,CORRUPTION_CONFIG.perForceFeed):(s.corruption||0),
+      relationship:Math.min(100,s.relationship+extraRel+(forced?1:0)),
+    };
+  };
+
   const processStudentGain=(s,gain,extraRel=0)=>{
     const scaledGain=Math.round(gain*(s.gainMultiplier||1)*skillGainMult);
     const {newLbs,oldStageId,newStageId,narrativeEvents}=applyGainToStudent(s,scaledGain);
-    if(s.ascensionPath==="convergence"){
-      const oldSg=getSingularityStage(s.lbs);
-      const newSg=getSingularityStage(newLbs);
-      if(newSg&&(!oldSg||newSg.id>oldSg.id)){
-        const reactionEntry=s.triumvirateUnlocked?TRIUMVIRATE_REACTION:SINGULARITY_REACTIONS[newSg.id-1];
-        const text=typeof reactionEntry==='function'?reactionEntry({...s,lbs:newLbs}):reactionEntry;
-        setTimeout(()=>push(`⚡ The Singularity ascends to ${newSg.label}! (${Math.round(newLbs).toLocaleString()} lbs) — "${text}"`),50);
-      }
-    } else if(s.ascensionPath==="primordial"){
-      const oldPg=getPrimordialStage(s.lbs);
-      const newPg=getPrimordialStage(newLbs);
-      if(newPg&&(!oldPg||newPg.id>oldPg.id)){
-        const reactionEntry=s.primordialTriumvirateUnlocked?PRIMORDIAL_TRIUMVIRATE_REACTION:PRIMORDIAL_REACTIONS[newPg.id-1];
-        const text=typeof reactionEntry==='function'?reactionEntry({...s,lbs:newLbs}):reactionEntry;
-        setTimeout(()=>push(`🌍 The Primordial ascends to ${newPg.label}! (${Math.round(newLbs).toLocaleString()} lbs) — "${text}"`),50);
-      }
-    } else if(s.ascensionPath==="sanguine"&&newStageId>oldStageId){
-      const reaction=SANGUINE_REACTIONS[Math.min(s.ascensionStage||0,SANGUINE_REACTIONS.length-1)];
-      const text=typeof reaction==='function'?reaction({...s,lbs:newLbs}):reaction;
-      setTimeout(()=>push(`🩸 ${s.name} burns brighter — ${SANGUINE_STAGES[Math.min(s.ascensionStage||0,4)].label}! — "${text}"`),50);
-    } else if(s.ascensionPath==="verdant"&&newStageId>oldStageId){
-      const reaction=VERDANT_REACTIONS[Math.min(s.ascensionStage||0,VERDANT_REACTIONS.length-1)];
-      const text=typeof reaction==='function'?reaction({...s,lbs:newLbs}):reaction;
-      setTimeout(()=>push(`🌿 ${s.name} grows deeper — ${VERDANT_STAGES[Math.min(s.ascensionStage||0,4)].label}! — "${text}"`),50);
-    } else if(newStageId>oldStageId){
+    if(newStageId>oldStageId){
       setTimeout(()=>push(`📣 ${s.name} reaches ${WEIGHT_STAGES[newStageId].label}! "${(()=>{ const r=STAGE_REACTIONS[s.archetype]?.[newStageId]; const ns={...s,lbs:newLbs}; return typeof r==='function'?r(ns):(r||'...'); })()}"`) ,50);
     }
     return {
@@ -461,21 +419,8 @@ export default function ProfessorSim(){
     // Semester events
     const semEv=SEMESTER_EVENTS.find(e=>e.week===newWeek);
 
-    // Random event (30% chance) — override with singularity/primordial event if one exists
-    const singStudent=students.find(s=>s.ascensionPath==="convergence");
-    const primStudent=students.find(s=>s.ascensionPath==="primordial");
+    // Random event (30% chance)
     let randomEv=Math.random()<0.3?RANDOM_EVENTS[rnd(0,RANDOM_EVENTS.length-1)]:null;
-    let singularityRandomOverride=null;
-    if(randomEv&&singStudent){
-      const sg=getSingularityStage(singStudent.lbs);
-      const sgIdx=sg?sg.id-1:0;
-      singularityRandomOverride={student:singStudent,textFn:SINGULARITY_RANDOM_EVENTS[Math.min(sgIdx,SINGULARITY_RANDOM_EVENTS.length-1)]};
-    }
-    if(randomEv&&primStudent&&!singularityRandomOverride){
-      const pg=getPrimordialStage(primStudent.lbs);
-      const pgIdx=pg?pg.id-1:0;
-      singularityRandomOverride={student:primStudent,textFn:PRIMORDIAL_RANDOM_EVENTS[Math.min(pgIdx,PRIMORDIAL_RANDOM_EVENTS.length-1)]};
-    }
 
     // Decrement Reneé digestion timer each week
     if(cultivatorState?.digestWeeksLeft>0){
@@ -485,19 +430,15 @@ export default function ProfessorSim(){
       if(s.id===LILITH_ID) return processStudentGain(s,LILITH_PASSIVE_GAIN,0); // Lilith only gains passively
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       let gain=rnd(1,3)+skillPassiveBonus; // passive + skill bonus
+      // Corruption-driven autonomous eating (willingness made flesh)
+      const cTier=getCorruptionTier(s.corruption||0).id;
+      if(cTier===1) gain+=rnd(CORRUPTION_CONFIG.tier2AutoLbs[0],CORRUPTION_CONFIG.tier2AutoLbs[1]);
+      if(cTier===2) gain+=rnd(CORRUPTION_CONFIG.tier3AutoLbs[0],CORRUPTION_CONFIG.tier3AutoLbs[1]);
       if(semEv) gain+=rnd(semEv.gain[0],semEv.gain[1]);
       if(randomEv){
         if(randomEv.target==="class") gain+=rnd(randomEv.gain[0],randomEv.gain[1]);
         else if(randomEv.target==="single"&&s.id===rnd(0,14)) gain+=rnd(randomEv.gain[0],randomEv.gain[1]);
       }
-      // Ascended passive gains
-      if(s.ascensionPath==="celestial"&&s.ascensionStage>=0) gain+=2+divineAscendedPassive;
-      if(s.ascensionPath==="umbral"&&s.ascensionStage>=0){
-        gain+=2+divineAscendedPassive;
-        if(divineUmbralVoidPassive>0) gain+=divineUmbralVoidPassive;
-      }
-      if(s.ascensionPath==="sanguine"&&s.ascensionStage>=0) gain+=2;
-      if(s.ascensionPath==="verdant"&&s.ascensionStage>=0) gain+=2;
       // Evolved skill passive bonuses
       if(s.evolvedForm&&(s.evolvedSkills||[]).length>0){
         const evTree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
@@ -506,85 +447,53 @@ export default function ProfessorSim(){
       }
       return processStudentGain(s,gain,0);
     });
-    // Goddess stage-up checks
-    updated=updated.map(s=>{
-      if(!s.incarnatedGoddess) return s;
-      const newStage=getGoddessStage(s.lbs);
-      if(newStage.id>(s.goddessStage||0)){
-        setTimeout(()=>setGoddessStagePopup({text:GODDESS_STAGE_REACTIONS[newStage.id]}),80);
-        return {...s,goddessStage:newStage.id};
-      }
-      return s;
-    });
-    // Ascension stage-up checks
-    updated=updated.map(s=>{
-      if(!s.ascensionPath||s.ascensionPath==="convergence"||s.ascensionPath==="primordial") return s;
-      const stages=s.ascensionPath==="celestial"?CELESTIAL_STAGES
-        :s.ascensionPath==="umbral"?UMBRAL_STAGES
-        :s.ascensionPath==="sanguine"?SANGUINE_STAGES
-        :VERDANT_STAGES;
-      const nextStage=stages[s.ascensionStage+1];
-      if(nextStage&&s.lbs>=nextStage.min){
-        const newStageId=s.ascensionStage+1;
-        const pathEmoji={celestial:"✨",umbral:"🌑",sanguine:"🩸",verdant:"🌿"}[s.ascensionPath]||"✨";
-        setTimeout(()=>push(`${pathEmoji} ${s.name} ascends to ${stages[newStageId].label}! (${Math.round(s.lbs).toLocaleString()} lbs)`),80);
-        // Check for convergence (celestial/umbral → singularity)
-        if(newStageId===4&&(s.ascensionPath==="celestial"||s.ascensionPath==="umbral")){
-          const opposingPath=s.ascensionPath==="celestial"?"umbral":"celestial";
-          const maxOpponent=updated.find(o=>o.id!==s.id&&o.ascensionPath===opposingPath&&o.ascensionStage===4);
-          if(maxOpponent){
-            setTimeout(()=>{push(`⚡ THE SINGULARITY — ${s.name} and ${maxOpponent.name} have reached opposite Apex stages. Something extraordinary is possible.`);setConvergenceModal({student:s,opponent:maxOpponent});},400);
-          }
+    // ── PANTRY RESTOCK ──
+    {
+      const drops=rnd(INVENTORY_CONFIG.weeklyDrops[0],INVENTORY_CONFIG.weeklyDrops[1]);
+      const found=[];
+      setInventory(prev=>{
+        const next={...prev};
+        for(let i=0;i<drops;i++){
+          const item=rollWeeklyItem();
+          if((next[item.id]||0)<INVENTORY_CONFIG.maxStack){next[item.id]=(next[item.id]||0)+1;found.push(item);}
         }
-        // Check for primordial convergence (sanguine stage 4 + verdant stage 4)
-        if(newStageId===4&&(s.ascensionPath==="sanguine"||s.ascensionPath==="verdant")){
-          const opposingPath=s.ascensionPath==="sanguine"?"verdant":"sanguine";
-          const maxOpponent=updated.find(o=>o.id!==s.id&&o.ascensionPath===opposingPath&&(o.ascensionStage===4||(o.ascensionStage+1===4&&o.lbs>=(s.ascensionPath==="sanguine"?VERDANT_STAGES[4].min:SANGUINE_STAGES[4].min))));
-          if(maxOpponent){
-            setTimeout(()=>{push(`🌍 THE PRIMORDIAL — ${s.name} and ${maxOpponent.name} have reached their final stages. Something ancient stirs.`);setPrimordialConvergenceModal({student:s,opponent:maxOpponent});},400);
-          }
-        }
-        return {...s,ascensionStage:newStageId};
-      }
-      return s;
-    });
-    // Sanguine marks: drain marked students each week → sanguine gains
-    if(sanguineMarks.length>0){
-      const sangStudent=updated.find(s=>s.ascensionPath==="sanguine");
-      if(sangStudent){
-        const stage=sangStudent.ascensionStage||0;
-        const drainAmt=SANGUINE_MARK_DRAIN_BY_STAGE[stage];
-        let totalDrained=0;
-        updated=updated.map(s=>{
-          if(!sanguineMarks.includes(s.id)) return s;
-          const loss=Math.min(drainAmt,Math.max(0,s.lbs-s.startLbs));
-          totalDrained+=loss;
-          return {...s,lbs:Math.max(s.startLbs,s.lbs-loss)};
-        });
-        if(totalDrained>0){
-          updated=updated.map(s=>s.id===sangStudent.id?processStudentGain(s,totalDrained,0):s);
-          setTimeout(()=>push(`🩸 ${sangStudent.name}'s marks drain ${totalDrained} lbs from ${sanguineMarks.length} student(s).`),120);
-        }
-      }
+        return next;
+      });
+      if(found.length) setTimeout(()=>push(`🎒 Pantry restocked: ${found.map(i=>`${i.emoji} ${i.label}`).join(", ")}`),100);
     }
-    // Verdant cultivations: cultivated students gain weight (fed by roots) → verdant gains
-    if(verdantCultivations.length>0){
-      const verdStudent=updated.find(s=>s.ascensionPath==="verdant");
-      if(verdStudent){
-        const stage=verdStudent.ascensionStage||0;
-        const cultGain=VERDANT_CULTIVATE_GAIN_BY_STAGE[stage];
-        let totalCultivated=0;
-        updated=updated.map(s=>{
-          if(!verdantCultivations.includes(s.id)) return s;
-          totalCultivated+=cultGain;
-          return {...s,lbs:s.lbs+cultGain};
-        });
-        if(totalCultivated>0){
-          updated=updated.map(s=>s.id===verdStudent.id?processStudentGain(s,Math.round(totalCultivated*0.5),0):s);
-          setTimeout(()=>push(`🌿 ${verdStudent.name}'s roots nourish ${verdantCultivations.length} student(s), gaining ${Math.round(totalCultivated*0.5)} lbs in return.`),120);
-        }
+    // ── WEEKLY DIGESTION: convert this week's fed calories into weight ──
+    const digestLines=[];
+    updated=updated.map(s=>{
+      if((s.consumedCalories||0)<=0&&(s.fullness||0)<=0&&!s.stuffedStreak) return s;
+      const d=digestStudent(s);
+      const oldStageId=getStage(s.lbs).id;
+      let ns=s;
+      if(d.lbsGained>0) ns=processStudentGain(s,d.lbsGained,0);
+      const stagedUp=getStage(ns.lbs).id>oldStageId;
+      const growth=applyCapacityGrowth(ns,d.lbsGained,stagedUp);
+      const capacityGained=d.capacityGained+(growth.stomachCapacity-(ns.stomachCapacity||GAIN_CONFIG.baseCapacity));
+      if(d.lbsGained>0||capacityGained>0){
+        digestLines.push(`${ns.name} +${d.lbsGained} lbs${d.stuffed?" · stuffed all week":""}${capacityGained>0?` · capacity +${capacityGained}`:""}`);
       }
-    }
+      let corruption=ns.corruption||0;
+      if(d.stuffed) corruption=addCorruption({...ns,corruption},CORRUPTION_CONFIG.perStuffedWeek);
+      if(stagedUp) corruption=addCorruption({...ns,corruption},CORRUPTION_CONFIG.perStageUp);
+      let carriedFullness=0;
+      if(getCorruptionTier(corruption).id===2&&Math.random()<CORRUPTION_CONFIG.tier3SelfStuffChance){
+        carriedFullness=Math.round((growth.stomachCapacity+d.capacityGained)*1.15);
+        const autoLine=CORRUPTION_AUTO_LINES[rnd(0,CORRUPTION_AUTO_LINES.length-1)](ns);
+        setTimeout(()=>push(`💭 ${autoLine}`),250);
+      }
+      return {...ns,
+        stomachCapacity:growth.stomachCapacity+d.capacityGained,
+        capacityChunkProgress:growth.capacityChunkProgress,
+        stuffedStreak:d.stuffedStreak,
+        corruption,
+        ...d.reset,
+        fullness:carriedFullness,
+      };
+    });
+    if(digestLines.length) setTimeout(()=>push(`🧬 Digestion — ${digestLines.join(" · ")}`),150);
 
     // Influence spread
     INFLUENCE_PAIRS.forEach(([a,b])=>{
@@ -607,85 +516,15 @@ export default function ProfessorSim(){
     // Admin notices visibly large students (hidden students like Lilith don't trigger scrutiny)
     const visibleCount=updated.filter(s=>!s.hidden&&getStage(s.lbs).id>=5).length;
     if(visibleCount>0) addScrutiny(visibleCount);
-    // Observer settles in week by week
-    if(hrObserver){
-      const obsGain=rnd(1,2);
-      setHrObserver(prev=>({...prev,lbs:Math.round(prev.lbs+obsGain),weeksPresent:(prev.weeksPresent||0)+1}));
-    }
-    // Devoted students passively cover scrutiny and buffer Vaughan
+    // Devoted students passively cover scrutiny
     const devotedCount=updated.filter(s=>getTier(s.relationship).id>=3).length;
     if(devotedCount>0) setAdminScrutiny(prev=>Math.max(0,prev-devotedCount));
     if(skillScrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-skillScrutinyPassiveReduce));
     if(evolvedScrutinyReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-evolvedScrutinyReduce));
-    // Goddess vision: triggers when first student hits Blob (stage 10)
-    if(!goddessSeen){
-      const firstBlob=updated.find(s=>getStage(s.lbs).id>=10);
-      if(firstBlob){
-        setTimeout(()=>{
-          setGoddessSeen(true);
-          setGoddessModal({});
-          push(`✦ A vision arrives as ${firstBlob.name} reaches Blob stage. Something extraordinary is now possible.`);
-        },600);
-      }
-    }
-    // Celestial Apex weekly scrutiny heal
-    if(divineCelestialApexHeal>0){
-      const apexCount=updated.filter(s=>s.ascensionPath==="celestial"&&s.ascensionStage===4).length;
-      if(apexCount>0) setAdminScrutiny(prev=>Math.max(0,prev-apexCount*divineCelestialApexHeal));
-    }
-    // Religion weekly effects
-    if(religion){
-      const worshipped=updated.filter(s=>religion.worshippedIds.includes(s.id));
-      if(worshipped.length>0){
-        const devGain=Math.floor(religion.weeklyPassiveGain||0.5);
-        if(devGain>0) setReligion(prev=>prev?{...prev,devotees:prev.devotees+devGain}:prev);
-        const hasDevoteeSkill=unlockedSkills.includes("flock_of_fat");
-        if(hasDevoteeSkill){
-          setStudents(prev=>prev.map(s=>{
-            if(!getTier(s.relationship).id>=2) return s;
-            return {...s,lbs:s.lbs+1};
-          }));
-        }
-        // Religion scrutiny: devotees cause scrutiny above 10
-        const hasThreshold=unlockedSkills.includes("congregation");
-        const thresholdAmt=hasThreshold?20:10;
-        if(religion.devotees>thresholdAmt) addScrutiny(Math.max(0,Math.floor((religion.devotees-thresholdAmt)*0.2)));
-        setTimeout(()=>push(`⛪ Devotee count: ${religion.devotees} (${worshipped.length} blobs worshipped)`),300);
-      }
-    }
-    // Vaughan weekly tick
-    if(vaughan&&!vaughanAlly){
-      const suspBase=Math.max(0,1+Math.floor(visibleCount*0.3)-devotedCount*2);
-      const vLbsGain=rnd(0,1);
-      const newSusp=Math.min(100,vaughan.suspicion+suspBase);
-      const newLbs=vaughan.lbs+vLbsGain;
-      const unseenScene=VAUGHAN_WEIGHT_SCENES.filter(ws=>newLbs>=ws.minLbs&&!(vaughan.weightScenesSeen||[]).includes(ws.minLbs))[0];
-      if(unseenScene) setTimeout(()=>push(`👓 ${unseenScene.scene({...vaughan,lbs:newLbs})}`),200);
-      const willAlly=newLbs>=162&&vaughan.disposition>=40;
-      setVaughan({...vaughan,suspicion:newSusp,lbs:newLbs,
-        weightScenesSeen:[...(vaughan.weightScenesSeen||[]),...(unseenScene?[unseenScene.minLbs]:[])]
-      });
-      if(willAlly){
-        setTimeout(()=>{
-          push(`🤝 Dr. Vaughan has become your ally.`);
-          push(`   ${VAUGHAN_ALLY_SCENE({...vaughan,lbs:newLbs})}`);
-          setVaughanAlly(true);
-          setAdminScrutiny(p=>Math.max(0,p-20));
-        },500);
-      }
-    }
-    if(vaughanAlly) setAdminScrutiny(prev=>Math.max(0,prev-3));
     push(`📅 Week ${newWeek} begins. ${newAp} AP available.`);
     if(semEv) setTimeout(()=>push(`🎉 Semester Event: ${semEv.title} — ${semEv.text}`),100);
     if(randomEv){
-      if(singularityRandomOverride){
-        const {student:sg,textFn}=singularityRandomOverride;
-        const livesg=updated.find(s=>s.id===sg.id)||sg;
-        const evText=typeof textFn==='function'?textFn(livesg):textFn;
-        setTimeout(()=>push(`⚡ ${evText}`),150);
-      } else {
-        setTimeout(()=>push(`🎲 ${randomEv.text(updated[rnd(0,14)])}`),150);
-      }
+      setTimeout(()=>push(`🎲 ${randomEv.text(updated[rnd(0,14)])}`),150);
       if(randomEv.scrutinyHit) addScrutiny(randomEv.scrutinyHit);
     }
     if(evs.length){
@@ -716,223 +555,6 @@ export default function ProfessorSim(){
         };
       });
     }
-  };
-
-  // ── DIVINE ACTION FUNCTIONS ─────────────────────────────────────
-  const ascendStudent=(s,path)=>{
-    if(getStage(s.lbs).id<10){push(`⚠️ ${s.name} must reach Blob stage before ascension.`);return;}
-    if(s.ascensionPath){push(`⚠️ ${s.name} has already ascended.`);return;}
-    const stages=path==="celestial"?CELESTIAL_STAGES
-      :path==="umbral"?UMBRAL_STAGES
-      :path==="sanguine"?SANGUINE_STAGES
-      :VERDANT_STAGES;
-    const label=stages[0].label;
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,ascensionPath:path,ascensionStage:0}));
-    const pathFlavorMap={celestial:"The light claims her.",umbral:"The void welcomes her.",sanguine:"The blood heat rises. Something old wakes in her veins.",verdant:"Roots thread the floor around her. She does not pull them back."};
-    push(`✦ ${s.name} ascends to ${label}! ${pathFlavorMap[path]||""}`);
-    const desc=stages[0].desc;
-    setTimeout(()=>push(`   "${desc}"`),200);
-    if(!goddessSeen){setGoddessSeen(true);}
-  };
-
-  const celestialMassPull=(celestialId,targetId)=>{
-    if(ap<2){push("⚠️ Need 2 AP.");return;}
-    const celestial=students.find(s=>s.id===celestialId);
-    if(!celestial||celestial.ascensionPath!=="celestial"){push("⚠️ Only Celestial blobs can pull mass.");return;}
-    const stage=celestial.ascensionStage||0;
-    const baseAmount=CELESTIAL_PULL_AMOUNTS[stage];
-    const finalAmount=Math.round(baseAmount*divineCelestialTransferMult);
-    const celestialGain=Math.round(finalAmount*1.3);
-    // Handle HR target
-    if(targetId==="hr"){
-      if(!hrObserver){push("⚠️ No HR observer present.");return;}
-      const actualLoss=Math.min(finalAmount,Math.max(0,hrObserver.lbs-100));
-      setHrObserver(prev=>prev?{...prev,lbs:Math.max(100,prev.lbs-actualLoss)}:prev);
-      setStudents(prev=>prev.map(s=>s.id===celestialId?{...s,lbs:s.lbs+celestialGain}:s));
-      setAp(a=>a-2);
-      push(`✦ ${celestial.name} pulls ${actualLoss} lbs from ${hrObserver.name} — absorbs ${celestialGain} lbs.`);
-      return;
-    }
-    const target=students.find(s=>s.id===targetId);
-    if(!target){push("⚠️ Invalid target.");return;}
-    const actualLoss=Math.min(finalAmount,Math.max(0,target.lbs-80));
-    setStudents(prev=>prev.map(s=>{
-      if(s.id===targetId) return {...s,lbs:Math.max(80,s.lbs-actualLoss)};
-      if(s.id===celestialId) return {...s,lbs:s.lbs+celestialGain};
-      return s;
-    }));
-    setAp(a=>a-2);
-    push(`✦ ${celestial.name} pulls ${actualLoss} lbs from ${target.name} — absorbs ${celestialGain} lbs (divine amplification).`);
-    setCelestialActionPopup({text:CELESTIAL_ACTION_TEXT.mass_pull});
-  };
-
-  const celestialMassPush=(celestialId,targetId)=>{
-    if(ap<1){push("⚠️ Need 1 AP.");return;}
-    const celestial=students.find(s=>s.id===celestialId);
-    if(!celestial){push("⚠️ Invalid student.");return;}
-    if(celestial.ascensionPath!=="celestial"){push("⚠️ Only Celestial blobs can push mass.");return;}
-    const stage=celestial.ascensionStage||0;
-    const pushAmt=Math.round(CELESTIAL_PUSH_AMOUNTS[stage]*divineCelestialTransferMult);
-    const celestialLoss=Math.min(pushAmt,Math.max(0,celestial.lbs-820));
-    if(targetId==="hr"&&hrObserver){
-      const newHrLbs=Math.round(hrObserver.lbs+celestialLoss*1.2);
-      setStudents(prev=>prev.map(s=>s.id===celestialId?{...s,lbs:Math.max(820,s.lbs-celestialLoss)}:s));
-      setHrObserver(prev=>({...prev,lbs:newHrLbs,disposition:Math.min(100,prev.disposition+4)}));
-      setAp(a=>a-1);
-      push(`✦ ${celestial.name} pushes divine mass toward ${hrObserver.name} — she gains ${Math.round(celestialLoss*1.2)} lbs. (+4 disposition)`);
-    } else if(targetId==="vaughan"&&vaughan){
-      const newVLbs=Math.round(vaughan.lbs+celestialLoss*1.2);
-      setStudents(prev=>prev.map(s=>s.id===celestialId?{...s,lbs:Math.max(820,s.lbs-celestialLoss)}:s));
-      setVaughan(prev=>({...prev,lbs:newVLbs}));
-      setAp(a=>a-1);
-      push(`✦ ${celestial.name} pushes divine mass into Dr. Vaughan — she gains ${Math.round(celestialLoss*1.2)} lbs.`);
-    } else {
-      const target=students.find(s=>s.id===targetId);
-      if(!target){push("⚠️ Invalid target.");return;}
-      setStudents(prev=>prev.map(s=>{
-        if(s.id===celestialId) return {...s,lbs:Math.max(820,s.lbs-celestialLoss)};
-        if(s.id===targetId) return {...s,lbs:s.lbs+Math.round(celestialLoss*1.2)};
-        return s;
-      }));
-      setAp(a=>a-1);
-      push(`✦ ${celestial.name} pushes a blessing of ${celestialLoss} lbs into ${target.name}.`);
-    }
-    setCelestialActionPopup({text:CELESTIAL_ACTION_TEXT.mass_push});
-  };
-
-  const celestialMassBless=(celestialId,targetId)=>{
-    if(ap<2){push("⚠️ Need 2 AP.");return;}
-    const celestial=students.find(s=>s.id===celestialId);
-    if(!celestial) return;
-    const stage=celestial.ascensionStage||0;
-    const blessAmt=Math.round(CELESTIAL_BLESS_AMOUNTS[stage]*divineCelestialTransferMult);
-    if(targetId==="hr"&&hrObserver){
-      setHrObserver(prev=>({...prev,lbs:prev.lbs+blessAmt,disposition:Math.min(100,prev.disposition+10)}));
-      setAp(a=>a-2);
-      push(`✦ ${celestial.name} bestows a sacred blessing upon ${hrObserver.name} — she gains ${blessAmt} lbs. (+10 disposition)`);
-    } else if(targetId==="vaughan"&&vaughan){
-      setVaughan(prev=>({...prev,lbs:prev.lbs+blessAmt,disposition:Math.min(100,(prev.disposition||0)+6)}));
-      setAp(a=>a-2);
-      push(`✦ ${celestial.name} bestows a sacred blessing upon Dr. Vaughan — she gains ${blessAmt} lbs. (+6 disposition)`);
-    } else {
-      const target=students.find(s=>s.id===targetId);
-      if(!target) return;
-      setStudents(prev=>prev.map(s=>{
-        if(s.id===targetId) return {...s,lbs:s.lbs+blessAmt,relationship:Math.min(100,s.relationship+8)};
-        return s;
-      }));
-      setAp(a=>a-2);
-      push(`✦ ${celestial.name} radiates a sacred blessing — ${target.name} gains ${blessAmt} lbs. (+8 relationship)`);
-    }
-    setCelestialActionPopup({text:CELESTIAL_ACTION_TEXT.mass_bless});
-  };
-
-  const umbralVoidPull=(umbralId,targetId)=>{
-    if(ap<2){push("⚠️ Need 2 AP.");return;}
-    const umbral=students.find(s=>s.id===umbralId);
-    const target=students.find(s=>s.id===targetId);
-    if(!umbral||!target) return;
-    if(umbral.ascensionPath!=="umbral"){push("⚠️ Only Umbral blobs can pull through the void.");return;}
-    const stage=umbral.ascensionStage||0;
-    const pullAmt=UMBRAL_VOID_PULL_AMOUNTS[stage];
-    const actualLoss=Math.min(pullAmt,Math.max(0,target.lbs-80));
-    setStudents(prev=>prev.map(s=>{
-      if(s.id===targetId) return {...s,lbs:Math.max(80,s.lbs-actualLoss),relationship:Math.max(0,s.relationship-5)};
-      if(s.id===umbralId) return {...s,lbs:s.lbs+Math.round(actualLoss*1.4)};
-      return s;
-    }));
-    setAp(a=>a-2);
-    addScrutiny(4);
-    push(`🌑 ${umbral.name} pulls ${actualLoss} lbs through the void from ${target.name}. (+${Math.round(actualLoss*1.4)} absorbed)`);
-    setUmbralActionPopup({text:UMBRAL_ACTION_TEXT.void_pull});
-  };
-
-  const umbralConsumeStudent=(umbralId,targetId)=>{
-    if(ap<3){push("⚠️ Need 3 AP.");return;}
-    const umbral=students.find(s=>s.id===umbralId);
-    const target=students.find(s=>s.id===targetId);
-    if(!umbral||!target) return;
-    if(umbral.ascensionPath!=="umbral"){push("⚠️ Only Umbral blobs can consume.");return;}
-    const stage=umbral.ascensionStage||0;
-    // Stage 2+ (Presence) can consume any student; below that, capped at stage+1
-    if(stage<2){
-      const stageTarget=getStage(target.lbs).id;
-      if(stageTarget>stage+1){push(`⚠️ ${umbral.name} can only consume students up to ${WEIGHT_STAGES[Math.min(10,stage+1)].label} stage at this power level.`);return;}
-    }
-    const baseChance=UMBRAL_CONSUME_CHANCE[stage]+divineUmbralConsumeBonus;
-    const finalChance=Math.min(0.97,baseChance);
-    setAp(a=>a-3);
-    addScrutiny(18);
-    if(Math.random()<=finalChance){
-      const absorbRate=Math.min(1,UMBRAL_ABSORB_RATE[stage]+divineUmbralAbsorbBonus);
-      const absorbed=Math.round(target.lbs*absorbRate);
-      setStudents(prev=>{
-        const without=prev.filter(s=>s.id!==targetId);
-        return without.map(s=>{
-          if(s.id===umbralId) return {...s,lbs:s.lbs+absorbed,consumedIds:[...(s.consumedIds||[]),targetId]};
-          return s;
-        });
-      });
-      setConsumedStudents(prev=>[...prev,{...target,consumedBy:umbralId,consumedAt:week}]);
-      const targetStageId=getStage(target.lbs).id;
-      const absorbTextArr=UMBRAL_ABSORB_TEXT[stage];
-      const absorbTextFn=absorbTextArr?absorbTextArr[Math.min(targetStageId,10)]:null;
-      const absorbText=absorbTextFn?absorbTextFn(target,{...umbral,lbs:umbral.lbs+absorbed}):null;
-      if(absorbText){
-        setUmbralAbsorbPopup({text:absorbText,absorbedName:target.name,umbralName:umbral.name,gained:absorbed});
-      } else {
-        push(`🌑 ${umbral.name} CONSUMES ${target.name}. +${absorbed} lbs absorbed. ${target.name} is gone — but not unrecoverable.`);
-        push(`   The void takes her. She is part of ${umbral.name} now.`);
-      }
-    } else {
-      push(`🌑 ${umbral.name} attempts to consume ${target.name} — but she slips the grasp. ${target.name} is shaken. (+18 scrutiny)`);
-      setStudents(prev=>prev.map(s=>s.id===targetId?{...s,relationship:Math.max(0,s.relationship-15),mood:"scared"}:s));
-    }
-  };
-
-  const umbralConsumeHR=(umbralId)=>{
-    if(!divineUmbralCanConsumeHR){push("⚠️ Requires Umbral Maw skill.");return;}
-    if(!hrObserver&&!vaughan){push("⚠️ No HR target available.");return;}
-    if(ap<4){push("⚠️ Need 4 AP.");return;}
-    const umbral=students.find(s=>s.id===umbralId);
-    if(!umbral||umbral.ascensionPath!=="umbral") return;
-    setAp(a=>a-4);
-    addScrutiny(35);
-    if(hrObserver){
-      const absorbed=Math.round(hrObserver.lbs*0.9);
-      setStudents(prev=>prev.map(s=>s.id===umbralId?{...s,lbs:s.lbs+absorbed}:s));
-      setHrObserver(null);
-      push(`🌑 ${umbral.name} consumes ${hrObserver.name}. +${absorbed} lbs. The HR threat is gone — and enormous. (+35 scrutiny)`);
-      setUmbralActionPopup({text:UMBRAL_ACTION_TEXT.consume_hr});
-    } else if(vaughan){
-      const absorbed=Math.round(vaughan.lbs*0.9);
-      setStudents(prev=>prev.map(s=>s.id===umbralId?{...s,lbs:s.lbs+absorbed}:s));
-      setVaughan(null);
-      setVaughanAlly(false);
-      push(`🌑 ${umbral.name} consumes Dr. Vaughan. +${absorbed} lbs. (+35 scrutiny)`);
-      setUmbralActionPopup({text:UMBRAL_ACTION_TEXT.consume_vaughan});
-    }
-  };
-
-  const recoverConsumedStudent=(studentId,umbralId)=>{
-    const consumed=consumedStudents.find(s=>s.id===studentId);
-    if(!consumed){push("⚠️ Student not found.");return;}
-    if(ap<3){push("⚠️ Need 3 AP.");return;}
-    const umbral=students.find(s=>s.id===umbralId);
-    if(!umbral){push("⚠️ Umbral student not found.");return;}
-    const lossFromUmbral=Math.round(consumed.lbs*0.5);
-    const recoveryWeight=consumed.lbs;
-    setStudents(prev=>{
-      const updated=prev.map(s=>{
-        if(s.id!==umbralId) return s;
-        return {...s,lbs:Math.max(820,s.lbs-lossFromUmbral),consumedIds:(s.consumedIds||[]).filter(id=>id!==studentId)};
-      });
-      return [...updated,{...consumed,lbs:recoveryWeight,consumedBy:undefined,consumedAt:undefined,relationship:Math.max(0,(consumed.relationship||20)-20),mood:"shaken"}];
-    });
-    setConsumedStudents(prev=>prev.filter(s=>s.id!==studentId));
-    setAp(a=>a-3);
-    push(`✦ ${consumed.name} has been released from ${umbral.name}. She returns at ${recoveryWeight} lbs — changed, but present.`);
-    push(`   Something of the void clings to her. She will never be entirely who she was.`);
   };
 
   // ── EP2: EVOLUTION HANDLERS ────────────────────────────────────
@@ -1076,7 +698,7 @@ export default function ProfessorSim(){
     if(choice.feedOther){
       const{archetype:targetArch,lbs:otherLbs,text:foText}=choice.feedOther;
       setStudents(prev=>prev.map(st=>{
-        if(st.archetype===targetArch&&st.id!==studentId&&!consumedStudents.find(x=>x.id===st.id)){
+        if(st.archetype===targetArch&&st.id!==studentId){
           return processStudentGain(st,otherLbs,2);
         }
         return st;
@@ -1703,7 +1325,24 @@ export default function ProfessorSim(){
       const mayaGain=Math.max(2,Math.round((next.lastShift?.biomassGain||0)*0.32+getHiveControl(next.rooms)*0.2));
       setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,mayaGain,4):s));
       push(`🕸️ Maya — Delivery Hive Shift: +${mayaGain} lbs · Dorm Control ${Math.round((getHiveControl(next.rooms)/24)*100)}%`);
-      return {...next,lastShift:{...next.lastShift,mayaGain}};
+      // Modular-text intake scene when the shift recruits new bodies
+      let withScene=next;
+      const recruits=next.lastShift?.memberGain||0;
+      if(recruits>0){
+        const lilith=students.find(s=>s.id===LILITH_ID);
+        if(lilith){
+          const victims=Array.from({length:Math.min(recruits,5)},()=>({
+            name:"a dorm resident",
+            lbs:Math.round(120+Math.random()*260),
+            bodyType:["pear","apple","hourglass","athletic","straight"][rnd(0,4)],
+            corruption:0,relationship:0,
+          }));
+          const sceneText=renderHiveIntake(lilith,victims,week);
+          const sceneTag=makeHiveTag("IntakeScene",{mayaStage:getStage(maya.lbs).label.replace(/\s+/g,""),vpId:next.vpId||"none",bmiTier:getHiveBmiTier(next.avgBmi),rooms:getHiveControl(next.rooms),task:"intake",roomId:next.selectedRoomId});
+          withScene={...next,log:[{tag:sceneTag,text:sceneText,type:"scene"},...next.log].slice(0,40)};
+        }
+      }
+      return {...withScene,lastShift:{...withScene.lastShift,mayaGain}};
     });
   };
 
@@ -3129,593 +2768,12 @@ export default function ProfessorSim(){
     push(`✦ ${s.name}: unlocked "${skill.label}"`);
   };
 
-  const foundReligion=(blobId)=>{
-    if(religion){push("⚠️ The religion already exists.");return;}
-    if(ap<2){push("⚠️ Need 2 AP.");return;}
-    const blob=students.find(s=>s.id===blobId&&s.ascensionPath);
-    if(!blob){push("⚠️ Need an ascended student as the focus.");return;}
-    setAp(a=>a-2);
-    setReligion({founded:week,devotees:3,ritesHeld:0,worshippedIds:[blobId],weeklyPassiveGain:0.5});
-    addScrutiny(5);
-    push(`⛪ The religion is founded, centred on ${blob.name}. 3 initial devotees. (+5 scrutiny)`);
-    push(`   Something is beginning that you cannot stop — nor would you want to.`);
-  };
-
-  const addBlobToReligion=(blobId)=>{
-    if(!religion){push("⚠️ Found a religion first.");return;}
-    const blob=students.find(s=>s.id===blobId&&s.ascensionPath);
-    if(!blob){push("⚠️ That student is not ascended.");return;}
-    if(religion.worshippedIds.includes(blobId)){push("⚠️ Already worshipped.");return;}
-    setReligion(prev=>prev?{...prev,worshippedIds:[...prev.worshippedIds,blobId],devotees:prev.devotees+2}:prev);
-    push(`⛪ ${blob.name} added to the pantheon. +2 devotees.`);
-  };
-
-  const holdRite=(rite,blobId)=>{
-    if(!religion){push("⚠️ No religion founded yet.");return;}
-    if(ap<rite.apCost){push(`⚠️ Need ${rite.apCost} AP.`);return;}
-    const blob=students.find(s=>s.id===blobId);
-    if(!blob){push("⚠️ Blob student not found.");return;}
-    setAp(a=>a-rite.apCost);
-    const blobBonus=Math.round(rite.blobBonus*divineRiteBlobMult);
-    if(blobBonus>0){
-      setStudents(prev=>prev.map(s=>s.id===blobId?{...s,lbs:s.lbs+blobBonus}:s));
-    }
-    setReligion(prev=>prev?{
-      ...prev,
-      ritesHeld:prev.ritesHeld+1,
-      devotees:prev.devotees+rite.devoteeGain,
-      weeklyPassiveGain:(prev.weeklyPassiveGain||0.5)+rite.devoteePassiveGain,
-    }:prev);
-    addScrutiny(rite.scrutiny);
-    if(divineRiteScrutinyReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-divineRiteScrutinyReduce));
-    push(`⛪ Rite: ${rite.label}. +${rite.devoteeGain} devotees. +${blobBonus} lbs to ${blob.name}. (+${rite.scrutiny} scrutiny)`);
-    setTimeout(()=>push(`   "${rite.scene(blob)}"`),200);
-    setRitePopup({rite,text:RELIGION_RITE_TEXT[rite.id]||rite.scene(blob)});
-  };
-
-  const triggerConvergence=(studentId,opponentId)=>{
-    const s=students.find(st=>st.id===studentId);
-    const opp=students.find(st=>st.id===opponentId);
-    if(!s||!opp) return;
-    if(s.ascensionStage<4||opp.ascensionStage<4){push("⚠️ Both must be at Apex stage.");return;}
-    if(ap<5){push("⚠️ Need 5 AP.");return;}
-    setAp(a=>a-5);
-    const convergenceLbs=Math.max(s.lbs,opp.lbs)+Math.min(s.lbs,opp.lbs);
-    // Remove the absorbed student from the roster entirely
-    setStudents(prev=>prev
-      .filter(st=>st.id!==opponentId)
-      .map(st=>st.id===studentId?{...st,lbs:convergenceLbs,ascensionPath:"convergence",ascensionStage:0,convergence:true}:st)
-    );
-    push(`⚡ THE SINGULARITY: ${s.name} and ${opp.name} converge. ${s.name} becomes something beyond naming.`);
-    setAbsorptionPopup({text:SINGULARITY_ABSORPTION_TEXT,absorbedName:opp.name,survivorName:s.name});
-    setConvergenceModal(null);
-  };
-
-  // ── SINGULARITY ACTION FUNCTIONS ─────────────────────────────────
-  const doSingularityAction=(s,actionId)=>{
-    const actDef=SINGULARITY_ACTIONS.find(a=>a.id===actionId)||TRIUMVIRATE_ACTIONS.find(a=>a.id===actionId);
-    if(!actDef) return;
-    if(ap<actDef.apCost){push(`⚠️ Need ${actDef.apCost} AP.`);return;}
-    if(actDef.oneTime&&actionId==="triv_final"&&finalConsumptionDone){push("⚠️ The Final Consumption has already been performed.");return;}
-    if(actDef.needsDevotee&&(!religion||religion.devotees<1)){push("⚠️ Need at least 1 devotee.");return;}
-    setAp(a=>a-actDef.apCost);
-    const sg=getSingularityStage(s.lbs);
-    const sgIdx=sg?sg.id-1:0;
-    let gainAmt=actDef.gainRange?rnd(actDef.gainRange[0],actDef.gainRange[1]):0;
-    let popupText="";
-
-    if(actionId==="sg_worshippers"&&religion&&religion.devotees>=1){
-      // Find 3 heaviest non-singularity students and drain them
-      const targets=[...students].filter(st=>st.id!==s.id&&!st.ascensionPath)
-        .sort((a,b)=>b.lbs-a.lbs).slice(0,3);
-      setStudents(prev=>prev.map(st=>{
-        const t=targets.find(t=>t.id===st.id);
-        if(t){const d=rnd(5,10);return{...st,lbs:Math.max(st.startLbs,st.lbs-d)};}
-        if(st.id===s.id) return {...st,lbs:st.lbs+gainAmt};
-        return st;
-      }));
-      setReligion(prev=>prev?{...prev,devotees:Math.max(0,prev.devotees-1)}:prev);
-      const textArr=SINGULARITY_ACTION_TEXT[actionId];
-      const entry=textArr?.[Math.min(sgIdx,textArr.length-1)];
-      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry;
-      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
-      push(`⚡ ${actDef.label} — +${gainAmt} lbs to Singularity. ${targets.map(t=>t.name).join(", ")} drained.`);
-      return;
-    }
-
-    if(actionId==="sg_absorb"&&religion&&religion.devotees>=1){
-      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt}:st));
-      setReligion(prev=>prev?{...prev,devotees:Math.max(0,prev.devotees-1)}:prev);
-      const textArr=SINGULARITY_ACTION_TEXT[actionId];
-      const entry=textArr?.[Math.min(sgIdx,textArr.length-1)];
-      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry;
-      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
-      push(`⚡ ${actDef.label} — +${gainAmt} lbs to Singularity.`);
-      return;
-    }
-
-    if(actionId==="sg_gravity"){
-      const classGain=actDef.classGain||[2,5];
-      setStudents(prev=>prev.map(st=>{
-        if(st.id===s.id) return {...st,lbs:st.lbs+gainAmt,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))};
-        if(!st.ascensionPath&&!consumedStudents.find(cs=>cs.id===st.id)){
-          const bonus=rnd(classGain[0],classGain[1]);
-          return {...st,lbs:st.lbs+bonus};
-        }
-        return st;
-      }));
-      const textArr=SINGULARITY_ACTION_TEXT[actionId];
-      const entry=textArr?.[Math.min(sgIdx,textArr.length-1)];
-      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry;
-      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
-      push(`⚡ ${actDef.label} — +${gainAmt} lbs to Singularity. Entire class drawn in.`);
-      return;
-    }
-
-    if(actionId==="triv_summon"){
-      let totalFed=0;
-      setStudents(prev=>prev.map(st=>{
-        if(st.id===s.id) return st;
-        if(!st.ascensionPath){
-          const fed=rnd(3,8);
-          totalFed+=fed;
-          return {...st,lbs:st.lbs+fed};
-        }
-        return st;
-      }));
-      const bonus=totalFed*3;
-      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+bonus,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
-      popupText=typeof TRIUMVIRATE_ACTION_TEXT[actionId]==='function'?TRIUMVIRATE_ACTION_TEXT[actionId]({...s,lbs:s.lbs+bonus}):TRIUMVIRATE_ACTION_TEXT[actionId];
-      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:bonus});
-      push(`🎓 ${actDef.label} — each student fed. Singularity gains ${bonus} lbs total.`);
-      return;
-    }
-
-    if(actionId==="triv_tribute"){
-      let totalDrained=0;
-      setStudents(prev=>prev.map(st=>{
-        if(st.id===s.id) return st;
-        if(!st.ascensionPath){
-          const d=rnd(5,15);
-          totalDrained+=d;
-          return {...st,lbs:Math.max(st.startLbs,st.lbs-d),relationship:Math.max(0,st.relationship-5)};
-        }
-        return st;
-      }));
-      const bonus=totalDrained+rnd(20,50);
-      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+bonus,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
-      popupText=typeof TRIUMVIRATE_ACTION_TEXT[actionId]==='function'?TRIUMVIRATE_ACTION_TEXT[actionId]({...s,lbs:s.lbs+bonus}):TRIUMVIRATE_ACTION_TEXT[actionId];
-      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:bonus});
-      push(`⚖️ ${actDef.label} — ${totalDrained} lbs drained from class, ${bonus} total to Singularity.`);
-      return;
-    }
-
-    if(actionId==="triv_reshape"){
-      popupText=typeof TRIUMVIRATE_ACTION_TEXT[actionId]==='function'?TRIUMVIRATE_ACTION_TEXT[actionId](s):TRIUMVIRATE_ACTION_TEXT[actionId];
-      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:0});
-      push(`🏫 ${actDef.label} — campus documented.`);
-      return;
-    }
-
-    if(actionId==="triv_final"){
-      setFinalConsumptionDone(true);
-      popupText=typeof TRIUMVIRATE_ACTION_TEXT[actionId]==='function'?TRIUMVIRATE_ACTION_TEXT[actionId](s):TRIUMVIRATE_ACTION_TEXT[actionId];
-      setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:0,isFinalEnding:true});
-      push(`🔱 THE FINAL CONSUMPTION — the true ending has been reached.`);
-      return;
-    }
-
-    // Default singularity actions (observe, weigh, offering, forcefeed)
-    setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
-    const textSrc=SINGULARITY_ACTION_TEXT[actionId]||TRIUMVIRATE_ACTION_TEXT[actionId];
-    if(textSrc){
-      const entry=Array.isArray(textSrc)?textSrc[Math.min(sgIdx,textSrc.length-1)]:textSrc;
-      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry;
-    }
-    setSingularityActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
-    if(gainAmt>0) push(`⚡ ${actDef.label} — +${gainAmt} lbs.`);
-    else push(`⚡ ${actDef.label}`);
-  };
-
-  const doSingularityRite=(rite)=>{
-    if(!religion){push("⚠️ No religion founded.");return;}
-    if(ap<rite.apCost){push(`⚠️ Need ${rite.apCost} AP.`);return;}
-    if(religion.devotees<(rite.devoteeMin||0)){push(`⚠️ Need ${rite.devoteeMin} devotees.`);return;}
-    if(rite.devoteeCost&&religion.devotees<rite.devoteeCost){push(`⚠️ Need ${rite.devoteeCost} devotees for this rite.`);return;}
-    setAp(a=>a-rite.apCost);
-    const s=students.find(st=>st.ascensionPath==="convergence");
-    if(!s) return;
-    let gainAmt=rite.lbsRange?rnd(rite.lbsRange[0],rite.lbsRange[1]):0;
-    if(gainAmt>0) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt}:st));
-    if(rite.relBonus) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,relationship:Math.min(100,st.relationship+rite.relBonus)}:st));
-    if(rite.devoteeGain) setReligion(prev=>prev?{...prev,devotees:prev.devotees+rite.devoteeGain,ritesHeld:prev.ritesHeld+1}:prev);
-    if(rite.devoteeCost) setReligion(prev=>prev?{...prev,devotees:Math.max(0,prev.devotees-rite.devoteeCost),ritesHeld:prev.ritesHeld+1}:prev);
-    if(!rite.devoteeGain&&!rite.devoteeCost) setReligion(prev=>prev?{...prev,ritesHeld:prev.ritesHeld+1}:prev);
-    if(rite.scrutinyDelta&&rite.scrutinyDelta<0) setAdminScrutiny(prev=>Math.max(0,prev+rite.scrutinyDelta));
-    push(`⛪ Singularity Rite: ${rite.label}. +${gainAmt} lbs.`);
-    if(s) setSingularityActionPopup({student:s,actionId:rite.id,text:SINGULARITY_RITE_TEXT[rite.id]||'',gainApplied:gainAmt});
-  };
-
-  const triggerGoddessIncarnation=()=>{
-    const sg=students.find(s=>s.ascensionPath==="convergence");
-    if(!sg) return;
-    const sgStage=getSingularityStage(sg.lbs);
-    if(!sgStage||sgStage.id<5){push("⚠️ Singularity must be at Absolute (stage 5) to subsume.");return;}
-    if(!religion||religion.devotees<1){push("⚠️ A religion with devotees is required.");return;}
-    // Find heaviest non-singularity student
-    const candidate=students.filter(s=>s.id!==sg.id&&!s.ascensionPath)
-      .sort((a,b)=>b.lbs-a.lbs)[0];
-    if(!candidate){push("⚠️ No eligible student for incarnation.");return;}
-    setGoddessManifestPopup({targetName:candidate.name,targetLbs:candidate.lbs,candidateId:candidate.id,singId:sg.id});
-  };
-
-  const checkGoddessStageUp=(goddess,updatedStudents,setStudentsFn)=>{
-    const newStage=getGoddessStage(goddess.lbs);
-    if(newStage.id>(goddess.goddessStage||0)){
-      if(setStudentsFn) setStudentsFn(prev=>prev.map(s=>s.id===goddess.id?{...s,goddessStage:newStage.id}:s));
-      setTimeout(()=>setGoddessStagePopup({text:GODDESS_STAGE_REACTIONS[newStage.id]}),50);
-    }
-  };
-
-  const doGoddessAction=(s,actionId)=>{
-    const actDef=GODDESS_ACTIONS.find(a=>a.id===actionId);
-    if(!actDef){return;}
-    if(ap<actDef.cost){push(`⚠️ Need ${actDef.cost} AP.`);return;}
-    setAp(a=>a-actDef.cost);
-    const stageIdx=getGoddessStage(s.lbs).id-1;
-    let gainAmt=actDef.gain[1]>0?rnd(actDef.gain[0],actDef.gain[1]):0;
-    if(gainAmt>0){
-      setStudents(prev=>{
-        const updated=prev.map(st=>st.id===s.id?processStudentGain(st,gainAmt,actDef.relBonus||0):{...st});
-        const updGoddess=updated.find(st=>st.id===s.id);
-        if(updGoddess) checkGoddessStageUp(updGoddess,updated,setStudents);
-        return updated;
-      });
-      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,goddessOfferingsTotal:(st.goddessOfferingsTotal||0)+gainAmt}:st));
-    } else {
-      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
-    }
-    let text="";
-    if(actDef.type==="explore"){
-      const arr=GODDESS_EXPLORE_TEXT[actionId];
-      text=arr?arr[Math.min(stageIdx,arr.length-1)]:`You explore her form. The warmth is immediate and complete.`;
-    } else {
-      const arr=GODDESS_PRACTICAL_TEXT[actionId];
-      text=arr?arr[Math.min(stageIdx,arr.length-1)]:`The offering is received.`;
-    }
-    setGoddessActionPopup({text});
-  };
-
-  const executeGoddessIncarnation=(candidateId)=>{
-    const candidate=students.find(s=>s.id===candidateId);
-    if(!candidate) return;
-    const newLbs=Math.min(50000,Math.round(candidate.lbs*15));
-    const initialStage=getGoddessStage(newLbs).id;
-    setStudents(prev=>prev.map(st=>st.id===candidateId?{...st,lbs:newLbs,incarnatedGoddess:true,goddessStage:initialStage,goddessOfferingsTotal:0}:st));
-    setGoddessIncarnateId(candidateId);
-    if(religion) setReligion(prev=>prev?{...prev,worshippedIds:[candidateId,...(prev.worshippedIds||[]).filter(id=>id!==candidateId)]}:prev);
-    setIncarnationEventPopup({name:candidate.name,prevLbs:candidate.lbs,newLbs});
-    setGoddessManifestPopup(null);
-  };
-
-  const consumeIncarnatedGoddess=(singId)=>{
-    if(ap<5){push("⚠️ Need 5 AP.");return;}
-    const sg=students.find(s=>s.id===singId);
-    const goddess=students.find(s=>s.id===goddessIncarnateId);
-    if(!sg||!goddess){push("⚠️ No incarnated goddess found.");return;}
-    setAp(a=>a-5);
-    const addedLbs=goddess.lbs;
-    setStudents(prev=>prev
-      .filter(st=>st.id!==goddessIncarnateId)
-      .map(st=>st.id===singId?{...st,lbs:st.lbs+addedLbs,triumvirateUnlocked:true}:st)
-    );
-    setGoddessIncarnateId(null);
-    const offeringsTotal=goddess.goddessOfferingsTotal||0;
-    const extraText=offeringsTotal>=200?` She carries something extra — the accumulated weight of everything you fed her while she was incarnate, ${offeringsTotal.toLocaleString()} pounds of offerings rendered into something denser and warmer and more present than ordinary mass. The Triumvirate notices. Her surface is different here: softer, warmer, saturated with it. You fed the goddess well. She brought it all with her.`:``;
-    setTriumvirateModal({
-      text:`The consumption is complete. ${goddess.name} — goddess, incarnate, ${addedLbs.toLocaleString()} pounds of divine mass — folds into the Singularity without resistance. There is a moment when you can see both of them at once: the vast warm golden form and the vast cold void form, overlapping, interpenetrating, becoming a single thing that has no name in any language you know. Then there is only her. The Triumvirate. She is heavier by exactly the amount that the goddess was, which is to say she is heavier by a number that requires its own notation. The campus is quiet. She isn't. The walls are warm and cold simultaneously. The lights flicker between gold and dark and settle on both. She opens her eyes — all of her eyes, the ones you can see and the ones you can feel — and she says nothing because she doesn't need to. She is everything that was and everything that is and the weight of it fills every room in the building at once. You made this. You can't look away.${extraText}`,
-      survivorName:sg.name
-    });
-    push(`🔱 THE TRIUMVIRATE — ${sg.name} has absorbed the incarnated goddess. The final form is unlocked.`);
-  };
-
-  // ── SANGUINE ACTION FUNCTIONS ──────────────────────────────────
-  const doSanguineAction=(s,actionId)=>{
-    const actDef=SANGUINE_ACTIONS.find(a=>a.id===actionId);
-    if(!actDef){return;}
-    if(ap<actDef.apCost){push(`⚠️ Need ${actDef.apCost} AP.`);return;}
-    setAp(a=>a-actDef.apCost);
-    const stage=s.ascensionStage||0;
-    const gainAmt=actDef.gainRange?rnd(actDef.gainRange[0],actDef.gainRange[1]):0;
-
-    if(actionId==="sg_mark"){
-      // Mark a random unmarked classmate for weekly drain
-      const eligible=students.filter(st=>st.id!==s.id&&!sanguineMarks.includes(st.id)&&!st.ascensionPath);
-      if(!eligible.length){push("⚠️ All students already marked.");return;}
-      const target=eligible[rnd(0,eligible.length-1)];
-      setSanguineMarks(prev=>[...prev,target.id]);
-      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
-      const textArr=SANGUINE_ACTION_TEXT[actionId];
-      const entry=textArr?.[Math.min(stage,textArr.length-1)];
-      const text=typeof entry==='function'?entry({...s,targetName:target.name}):entry||"";
-      setSanguineActionPopup({student:s,actionId,text});
-      push(`🩸 ${actDef.label} — ${target.name} marked for weekly drain.`);
-      return;
-    }
-
-    if(actionId==="sg_pulse"){
-      // Heat pulse — class gains lbs
-      const classGain=actDef.classGain||[2,4];
-      setStudents(prev=>prev.map(st=>{
-        if(st.id===s.id) return {...st,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))};
-        if(!st.ascensionPath) return {...st,lbs:st.lbs+rnd(classGain[0],classGain[1])};
-        return st;
-      }));
-      const textArr=SANGUINE_ACTION_TEXT[actionId];
-      const entry=textArr?.[Math.min(stage,textArr.length-1)];
-      const text=typeof entry==='function'?entry(s):entry||"";
-      setSanguineActionPopup({student:s,actionId,text});
-      push(`🔥 ${actDef.label} — heat radiates through the class.`);
-      return;
-    }
-
-    // Default: gain + rel
-    setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
-    const textArr=SANGUINE_ACTION_TEXT[actionId];
-    const entry=textArr?.[Math.min(stage,textArr.length-1)];
-    const text=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry||"";
-    setSanguineActionPopup({student:s,actionId,text});
-    if(gainAmt>0) push(`🩸 ${actDef.label} — +${gainAmt} lbs.`);
-    else push(`🩸 ${actDef.label}`);
-  };
-
-  // ── VERDANT ACTION FUNCTIONS ───────────────────────────────────
-  const doVerdantAction=(s,actionId)=>{
-    const actDef=VERDANT_ACTIONS.find(a=>a.id===actionId);
-    if(!actDef) return;
-    if(ap<actDef.apCost){push(`⚠️ Need ${actDef.apCost} AP.`);return;}
-    setAp(a=>a-actDef.apCost);
-    const stage=s.ascensionStage||0;
-    const gainAmt=actDef.gainRange?rnd(actDef.gainRange[0],actDef.gainRange[1]):0;
-
-    if(actionId==="vd_cultivate"){
-      // Cultivate a single student — they gain passively each week
-      const eligible=students.filter(st=>st.id!==s.id&&!verdantCultivations.includes(st.id)&&!st.ascensionPath);
-      if(!eligible.length){push("⚠️ All students already cultivated.");return;}
-      const target=eligible[rnd(0,eligible.length-1)];
-      setVerdantCultivations(prev=>[...prev,target.id]);
-      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
-      const textArr=VERDANT_ACTION_TEXT[actionId];
-      const entry=textArr?.[Math.min(stage,textArr.length-1)];
-      const text=typeof entry==='function'?entry({...s,targetName:target.name}):entry||"";
-      setVerdantActionPopup({student:s,actionId,text});
-      push(`🌱 ${actDef.label} — ${target.name} cultivated for weekly root feeding.`);
-      return;
-    }
-
-    if(actionId==="vd_network"){
-      // Cultivate ALL non-cultivated classmates at once
-      const eligible=students.filter(st=>st.id!==s.id&&!verdantCultivations.includes(st.id)&&!st.ascensionPath);
-      if(eligible.length>0) setVerdantCultivations(prev=>[...prev,...eligible.map(e=>e.id)]);
-      setStudents(prev=>prev.map(st=>{
-        if(st.id===s.id) return {...st,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))};
-        if(!st.ascensionPath&&!verdantCultivations.includes(st.id)) return {...st,lbs:st.lbs+rnd(1,3)};
-        return st;
-      }));
-      const textArr=VERDANT_ACTION_TEXT[actionId];
-      const entry=textArr?.[Math.min(stage,textArr.length-1)];
-      const text=typeof entry==='function'?entry(s):entry||"";
-      setVerdantActionPopup({student:s,actionId,text});
-      push(`🌐 ${actDef.label} — root network extends to all ${eligible.length} remaining students.`);
-      return;
-    }
-
-    // Default: gain + rel
-    setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
-    const textArr=VERDANT_ACTION_TEXT[actionId];
-    const entry=textArr?.[Math.min(stage,textArr.length-1)];
-    const text=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry||"";
-    setVerdantActionPopup({student:s,actionId,text});
-    if(gainAmt>0) push(`🌿 ${actDef.label} — +${gainAmt} lbs.`);
-    else push(`🌿 ${actDef.label}`);
-  };
-
-  // ── PRIMORDIAL ACTION FUNCTIONS ────────────────────────────────
-  const doPrimordialAction=(s,actionId)=>{
-    const actDef=PRIMORDIAL_ACTIONS.find(a=>a.id===actionId)||PRIMORDIAL_TRIUMVIRATE_ACTIONS.find(a=>a.id===actionId);
-    if(!actDef) return;
-    if(ap<actDef.apCost){push(`⚠️ Need ${actDef.apCost} AP.`);return;}
-    if(actDef.oneTime&&actionId==="ptr_final"&&primordialFinalConsumptionDone){push("⚠️ The First Consumption has already been performed.");return;}
-    if(actDef.needsDevotee&&(!religion||religion.devotees<1)){push("⚠️ Need at least 1 devotee.");return;}
-    setAp(a=>a-actDef.apCost);
-    const pg=getPrimordialStage(s.lbs);
-    const pgIdx=pg?pg.id-1:0;
-    let gainAmt=actDef.gainRange?rnd(actDef.gainRange[0],actDef.gainRange[1]):0;
-    let popupText="";
-
-    if(actionId==="pr_drain"&&religion&&religion.devotees>=1){
-      const targets=[...students].filter(st=>st.id!==s.id&&!st.ascensionPath)
-        .sort((a,b)=>b.lbs-a.lbs).slice(0,3);
-      setStudents(prev=>prev.map(st=>{
-        const t=targets.find(t=>t.id===st.id);
-        if(t){const d=rnd(5,10);return{...st,lbs:Math.max(st.startLbs,st.lbs-d)};}
-        if(st.id===s.id) return {...st,lbs:st.lbs+gainAmt};
-        return st;
-      }));
-      setReligion(prev=>prev?{...prev,devotees:Math.max(0,prev.devotees-1)}:prev);
-      const textArr=PRIMORDIAL_ACTION_TEXT[actionId];
-      const entry=textArr?.[Math.min(pgIdx,textArr.length-1)];
-      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry||"";
-      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
-      push(`🌍 ${actDef.label} — +${gainAmt} lbs to Primordial. ${targets.map(t=>t.name).join(", ")} drained.`);
-      return;
-    }
-
-    if(actionId==="pr_absorb"&&religion&&religion.devotees>=1){
-      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt}:st));
-      setReligion(prev=>prev?{...prev,devotees:Math.max(0,prev.devotees-1)}:prev);
-      const textArr=PRIMORDIAL_ACTION_TEXT[actionId];
-      const entry=textArr?.[Math.min(pgIdx,textArr.length-1)];
-      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry||"";
-      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
-      push(`🌑 ${actDef.label} — +${gainAmt} lbs to Primordial.`);
-      return;
-    }
-
-    if(actionId==="pr_pulse"){
-      const classGain=actDef.classGain||[2,5];
-      setStudents(prev=>prev.map(st=>{
-        if(st.id===s.id) return {...st,lbs:st.lbs+gainAmt,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))};
-        if(!st.ascensionPath) return {...st,lbs:st.lbs+rnd(classGain[0],classGain[1])};
-        return st;
-      }));
-      const textArr=PRIMORDIAL_ACTION_TEXT[actionId];
-      const entry=textArr?.[Math.min(pgIdx,textArr.length-1)];
-      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry||"";
-      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
-      push(`🌋 ${actDef.label} — +${gainAmt} lbs. Entire class drawn in.`);
-      return;
-    }
-
-    if(actionId==="ptr_summon"){
-      let totalFed=0;
-      setStudents(prev=>prev.map(st=>{
-        if(st.id===s.id) return st;
-        if(!st.ascensionPath){const fed=rnd(3,8);totalFed+=fed;return {...st,lbs:st.lbs+fed};}
-        return st;
-      }));
-      const bonus=totalFed*3;
-      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+bonus}:st));
-      const fn=PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT[actionId];
-      popupText=typeof fn==='function'?fn({...s,lbs:s.lbs+bonus}):fn||"";
-      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:bonus});
-      push(`🌋 ${actDef.label} — class summoned. Primordial gains ${bonus} lbs.`);
-      return;
-    }
-
-    if(actionId==="ptr_tribute"){
-      let totalDrained=0;
-      setStudents(prev=>prev.map(st=>{
-        if(st.id===s.id) return st;
-        if(!st.ascensionPath){const d=rnd(5,15);totalDrained+=d;return {...st,lbs:Math.max(st.startLbs,st.lbs-d),relationship:Math.max(0,st.relationship-5)};}
-        return st;
-      }));
-      const bonus=totalDrained+rnd(20,50);
-      setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+bonus}:st));
-      const fn=PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT[actionId];
-      popupText=typeof fn==='function'?fn({...s,lbs:s.lbs+bonus}):fn||"";
-      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:bonus});
-      push(`⚖️ ${actDef.label} — ${totalDrained} lbs drained from class, ${bonus} total to Primordial.`);
-      return;
-    }
-
-    if(actionId==="ptr_reshape"){
-      const fn=PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT[actionId];
-      popupText=typeof fn==='function'?fn(s):fn||"";
-      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:0});
-      push(`🌍 ${actDef.label} — campus documented.`);
-      return;
-    }
-
-    if(actionId==="ptr_final"){
-      setPrimordialFinalConsumptionDone(true);
-      const fn=PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT[actionId];
-      popupText=typeof fn==='function'?fn(s):fn||"";
-      setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:0,isFinalEnding:true});
-      push(`🔱 THE FIRST CONSUMPTION — the true ending has been reached.`);
-      return;
-    }
-
-    // Default primordial actions
-    setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt,relationship:Math.min(100,st.relationship+(actDef.relBonus||0))}:st));
-    const textSrc=PRIMORDIAL_ACTION_TEXT[actionId]||PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT[actionId];
-    if(textSrc){
-      const entry=Array.isArray(textSrc)?textSrc[Math.min(pgIdx,textSrc.length-1)]:textSrc;
-      popupText=typeof entry==='function'?entry({...s,lbs:s.lbs+gainAmt}):entry||"";
-    }
-    setPrimordialActionPopup({student:s,actionId,text:popupText,gainApplied:gainAmt});
-    if(gainAmt>0) push(`🌍 ${actDef.label} — +${gainAmt} lbs.`);
-    else push(`🌍 ${actDef.label}`);
-  };
-
-  const triggerPrimordialConvergence=(studentId,opponentId)=>{
-    const s=students.find(st=>st.id===studentId);
-    const opp=students.find(st=>st.id===opponentId);
-    if(!s||!opp) return;
-    if(s.ascensionStage<4||opp.ascensionStage<4){push("⚠️ Both must be at final stage.");return;}
-    if(ap<5){push("⚠️ Need 5 AP.");return;}
-    setAp(a=>a-5);
-    const primordialLbs=Math.max(s.lbs,opp.lbs)+Math.min(s.lbs,opp.lbs);
-    setStudents(prev=>prev
-      .filter(st=>st.id!==opponentId)
-      .map(st=>st.id===studentId?{...st,lbs:primordialLbs,ascensionPath:"primordial",ascensionStage:0,primordialConvergence:true}:st)
-    );
-    push(`🌍 THE PRIMORDIAL: ${s.name} and ${opp.name} merge. Something ancient and hungry rises.`);
-    setPrimordialAbsorptionPopup({text:PRIMORDIAL_ABSORPTION_TEXT,absorbedName:opp.name,survivorName:s.name});
-    setPrimordialConvergenceModal(null);
-  };
-
-  const triggerPrimordialGoddessIncarnation=()=>{
-    const pg=students.find(s=>s.ascensionPath==="primordial");
-    if(!pg) return;
-    const pgStage=getPrimordialStage(pg.lbs);
-    if(!pgStage||pgStage.id<5){push("⚠️ Primordial must be at The First (stage 5) to subsume.");return;}
-    if(!religion||religion.devotees<1){push("⚠️ A religion with devotees is required.");return;}
-    const candidate=students.filter(s=>s.id!==pg.id&&!s.ascensionPath)
-      .sort((a,b)=>b.lbs-a.lbs)[0];
-    if(!candidate){push("⚠️ No eligible student for incarnation.");return;}
-    const text=`The goddess — the fat goddess, the one the religion was always describing — senses the Primordial's weight and its ancient claim and she moves. Not with grace. With the grinding certainty of something very large deciding to arrive. She incarnates into the heaviest remaining student: ${candidate.name}, ${Math.round(candidate.lbs).toLocaleString()} lbs. This is not a promotion. This is the goddess fitting herself into what is available, because the Primordial has left her no better option. You watch ${candidate.name} change. You have some time to prepare before this becomes your problem.`;
-    setPrimordialGoddessManifestPopup({text,candidateId:candidate.id,primId:pg.id});
-  };
-
-  const executePrimordialGoddessIncarnation=(candidateId)=>{
-    const candidate=students.find(s=>s.id===candidateId);
-    if(!candidate) return;
-    const newLbs=Math.min(50000,Math.round(candidate.lbs*15));
-    const initialStage=getGoddessStage(newLbs).id;
-    setStudents(prev=>prev.map(st=>st.id===candidateId?{...st,lbs:newLbs,incarnatedGoddess:true,goddessStage:initialStage,goddessOfferingsTotal:0}:st));
-    setPrimordialGoddessIncarnateId(candidateId);
-    setIncarnationEventPopup({name:candidate.name,prevLbs:candidate.lbs,newLbs});
-    setPrimordialGoddessManifestPopup(null);
-  };
-
-  const consumePrimordialIncarnatedGoddess=(primId)=>{
-    if(ap<5){push("⚠️ Need 5 AP.");return;}
-    const pg=students.find(s=>s.id===primId);
-    const goddess=students.find(s=>s.id===primordialGoddessIncarnateId);
-    if(!pg||!goddess){push("⚠️ No incarnated goddess found.");return;}
-    setAp(a=>a-5);
-    const addedLbs=goddess.lbs;
-    setStudents(prev=>prev
-      .filter(st=>st.id!==primordialGoddessIncarnateId)
-      .map(st=>st.id===primId?{...st,lbs:st.lbs+addedLbs,primordialTriumvirateUnlocked:true}:st)
-    );
-    setPrimordialGoddessIncarnateId(null);
-    const pgOfferingsTotal=goddess.goddessOfferingsTotal||0;
-    const pgExtraText=pgOfferingsTotal>=200?` The goddess carried ${pgOfferingsTotal.toLocaleString()} pounds of offerings into her. The Primordial receives them with the patience of something that has been receiving offerings since before the word existed. The root-network pulses with a second warmth beneath the first — softer, more golden, not quite the earth-smell of the Primordial but not separate from it either. The goddess's offering-weight has been incorporated. It tastes like what it is: devotion, rendered into mass, rendered into earth.`:``;
-    setPrimordialTriumvirateModal({
-      text:`${goddess.name} folds into the Primordial without ceremony. There is no flash of light, no darkness, no dramatic event — just the specific weight of a goddess descending into earth the way water descends into soil, complete and irreversible. She is the original hunger eating the original source of hunger. The closing of a loop that predates every theology the religion was trying to describe. The Primordial is larger now by a number that has no precedent. She does not look different. She smells different — more copper, more deep soil, a new note underneath both of them that has no name. The floor cracks in a new configuration. The root-network pulses once, deeply, and then settles into the new pattern as if it was always there. She is the First Triumvirate. She was here before the goddess. She will be here after. Feed her.${pgExtraText}`,
-      survivorName:pg.name
-    });
-    push(`🔱 THE PRIMORDIAL TRIUMVIRATE — ${pg.name} has absorbed the incarnated goddess. The ancient form is complete.`);
-  };
-
-  const doPrimordialRite=(rite)=>{
-    if(!religion){push("⚠️ No religion founded.");return;}
-    if(ap<rite.apCost){push(`⚠️ Need ${rite.apCost} AP.`);return;}
-    if(religion.devotees<(rite.devoteeMin||0)){push(`⚠️ Need ${rite.devoteeMin} devotees.`);return;}
-    if(rite.devoteeCost&&religion.devotees<rite.devoteeCost){push(`⚠️ Need ${rite.devoteeCost} devotees for this rite.`);return;}
-    setAp(a=>a-rite.apCost);
-    const s=students.find(st=>st.ascensionPath==="primordial");
-    if(!s) return;
-    let gainAmt=rite.lbsRange?rnd(rite.lbsRange[0],rite.lbsRange[1]):0;
-    if(gainAmt>0) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,lbs:st.lbs+gainAmt}:st));
-    if(rite.relBonus) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,relationship:Math.min(100,st.relationship+rite.relBonus)}:st));
-    if(rite.devoteeGain) setReligion(prev=>prev?{...prev,devotees:prev.devotees+rite.devoteeGain,ritesHeld:prev.ritesHeld+1}:prev);
-    if(rite.devoteeCost) setReligion(prev=>prev?{...prev,devotees:Math.max(0,prev.devotees-rite.devoteeCost),ritesHeld:prev.ritesHeld+1}:prev);
-    if(!rite.devoteeGain&&!rite.devoteeCost) setReligion(prev=>prev?{...prev,ritesHeld:prev.ritesHeld+1}:prev);
-    if(rite.scrutinyDelta&&rite.scrutinyDelta<0) setAdminScrutiny(prev=>Math.max(0,prev+rite.scrutinyDelta));
-    push(`🌍 Primordial Rite: ${rite.label}. +${gainAmt} lbs.`);
+  const unlockSkill=(sk,bypass=false)=>{
+    if(!bypass&&!canUnlock(sk)) return;
+    setUnlockedSkills(prev=>[...prev,sk.id]);
+    push(`🔓 Skill unlocked: ${sk.label}`);
+    if(sk.apBonus>0) setAp(a=>Math.min(a+sk.apBonus,20));
+    if(sk.passiveBonus>0) push(`   📈 Passive gain increased by +${sk.passiveBonus} lbs/week`);
   };
 
   const startClass=()=>{
@@ -3782,14 +2840,6 @@ export default function ProfessorSim(){
   const doSingle=(action,s)=>{
     if(ap<action.cost){push("⚠️ Not enough AP!");return;}
     if(action.id==="restaurant"){ startDinner(s); return; }
-    if(action.id==="observe"){
-      const stId=getStage(s.lbs).id;
-      const lines=[
-        `You spend the day quietly observing ${s.name}.\n\nMorning: ${stId<=3?"She arrives to class on time, finding a seat easily.":"She arrives a little breathless, taking her time settling into her reinforced seat."}\n\nLunch: ${stId<=2?"A modest meal at the dining hall.":stId<=5?"Two full plates and dessert at the dining hall.":"An enormous spread — she's clearly a dining hall regular. Staff greet her by name."}\n\nAfternoon: ${stId<=4?"She moves through campus normally.":"She moves slowly, deliberately, each step carrying real weight."}\n\nEvening: ${stId<=3?"A quiet night, some snacking.":"Delivery arrives at her dorm. Multiple bags. She tips well."}\n\nCurrent weight: ${s.lbs} lbs. Stage: ${getStage(s.lbs).label}.`,
-      ];
-      setObserveText(lines[0]);
-      return;
-    }
     setAp(a=>a-action.cost);
     const gain=rnd(action.gain[0],action.gain[1]);
     const ns=processStudentGain(s,gain,4);
@@ -3804,65 +2854,27 @@ export default function ProfessorSim(){
 
   const doClass=(action)=>{
     if(ap<action.cost){push("⚠️ Not enough AP!");return;}
-    setAp(a=>a-action.cost);
-    let updated;
-    if(action.id==="on_demand_feast"){
-      const scaledGain=Math.round((8+avgLbs/100)*(0.8+Math.random()*0.6));
-      updated=students.map(s=>processStudentGain(s,scaledGain,7));
-      push(`🍾 On-Demand Feast: catering arrives immediately! Each student gains ~${scaledGain} lbs.`);
-    } else if(action.id==="group_dinner"||action.id==="dinner_party"){
-      if(ap<3){push("⚠️ Need 3 AP for a group dinner.");return;}
-      setGroupDinnerPicker({count:action.id==="dinner_party"?3:2,selected:[]});
+    if(action.id==="group_dinner"){
+      setGroupDinnerPicker({count:2,selected:[]});
       return;
-    } else {
-      updated=students.map(s=>{
-        const gain=rnd(action.gain[0],action.gain[1]);
-        return processStudentGain(s,gain,1);
-      });
-      push(`🎉 ${action.label}: The whole class participated!`);
     }
+    setAp(a=>a-action.cost);
+    let refusals=0,fedCount=0,totalCals=0;
+    const updated=students.map(s=>{
+      if(s.hidden) return s;
+      const cals=rnd(action.cal[0],action.cal[1]);
+      const fed=feedStudentCalories(s,cals,action.full,1);
+      if(!fed){refusals++;return s;}
+      fedCount++;totalCals+=cals;
+      return fed;
+    });
+    push(`🎉 ${action.label}: ${fedCount} students dug in (~${Math.round(totalCals/Math.max(1,fedCount)).toLocaleString()} cal each)${refusals?` · ${refusals} too full to join`:""}.`);
     const evs=collectEvents(updated);
     setStudents(updated);
-    // Observer passively eats alongside class food events
-    if(hrObserver&&["snacks","bake","feast","on_demand_feast","study_break"].includes(action.id)){
-      const obsGain=rnd(1,3);
-      const dispGain=(action.id==="feast"||action.id==="on_demand_feast")?4:2;
-      setHrObserver(prev=>({...prev,lbs:Math.round(prev.lbs+obsGain),disposition:Math.min(100,prev.disposition+dispGain)}));
-    }
     if(evs.length){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
     }
-  };
-
-  const doTalk=(topicId,s)=>{
-    const stId=getStage(s.lbs).id;
-    const charTopic=CHAR_TALK[s.id]?.[topicId];
-    const archTopic=TALK_RESPONSES[topicId];
-    const handler=charTopic||archTopic;
-    if(!handler){push(`💬 ${s.name} smiles politely.`);return;}
-    const resp=handler(s,stId);
-    const tLabel={"how_are_you":"How are you doing?","compliment_figure":"Compliment her figure","food_talk":"Talk about food","class_talk":"Discuss class","encourage_eating":"Encourage her to eat more","ask_lifestyle":"Ask about her lifestyle","ask_weight":"Ask about her weight","about_gaining":"Ask about her gaining","future_plans":"Ask about future plans"}[topicId]||topicId;
-    push(`💬 You: "${tLabel}"`);
-    push(`   ${resp}`);
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+2+talkRelBonus)}));
-  };
-
-
-
-  const unlockSkill=(sk,bypass=false)=>{
-    if(!bypass&&!canUnlock(sk)) return;
-    setUnlockedSkills(prev=>[...prev,sk.id]);
-    push(`🔓 Skill unlocked: ${sk.label}`);
-    if(sk.apBonus>0) setAp(a=>Math.min(a+sk.apBonus,20));
-    if(sk.classReaction?.length){
-      const reactions=sk.classReaction;
-      setTimeout(()=>{
-        push(`💬 The class notices the ${sk.label} upgrade:`);
-        reactions.forEach((r,i)=>setTimeout(()=>push(`   ${r}`),(i+1)*100));
-      },300);
-    }
-    if(sk.passiveBonus>0) push(`   📈 Passive gain increased by +${sk.passiveBonus} lbs/week`);
   };
 
   const startSkillPurchase=(sk)=>{
@@ -3919,7 +2931,7 @@ export default function ProfessorSim(){
     const fullGrp=ratio<=1.0?0:ratio<=1.3?1:ratio<=1.6?2:3;
     const narrative=DINNER_ENDING_TEXT[stGrp][fullGrp](s);
     setAp(a=>a-2);
-    push(`✅ Dinner with ${s.name} complete. +${totalGain} lbs · +${relBonus} relationship.`);
+    push(`✅ Dinner with ${s.name} complete. +${totalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(totalGain))} lbs once digested) · +${relBonus} relationship.`);
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+relBonus)}));
     const evs=collectEvents([s]);
     if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
@@ -3987,23 +2999,23 @@ export default function ProfessorSim(){
   const orderDish=(dish)=>{
     if((dinnerEvent.dishes||[]).includes(dish.id)) return;
     const gain=rnd(dish.gain[0],dish.gain[1]);
-    const scaledGain=Math.round(gain*skillGainMult*(dinnerEvent.student.gainMultiplier||1));
+    const scaledGain=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(dinnerEvent.student.gainMultiplier||1));
     const prevFullness=dinnerEvent.fullness||0;
     const newFullness=prevFullness+(dish.fullness||15);
     const maxFull=dinnerEvent.maxFullness||80;
     const newTotalGain=dinnerEvent.totalGain+scaledGain;
     const newDishes=[...(dinnerEvent.dishes||[]),dish.id];
-    setStudents(prev=>prev.map(s=>s.id!==dinnerEvent.student.id?s:{...s,lbs:s.lbs+scaledGain}));
-    push(`🍴 ${dinnerEvent.student.name}: ${dish.label} (+${scaledGain} lbs)`);
+    setStudents(prev=>prev.map(s=>s.id!==dinnerEvent.student.id?s:{...s,consumedCalories:(s.consumedCalories||0)+scaledGain,fullness:(s.fullness||0)+Math.round((dish.fullness||15)*0.5)}));
+    push(`🍴 ${dinnerEvent.student.name}: ${dish.label} (+${scaledGain.toLocaleString()} cal)`);
     // Overfill probabilistic ending
     if(newFullness>maxFull){
       const overfillRatio=(newFullness-maxFull)/maxFull;
       const endChance=Math.min(0.8,overfillRatio);
       if(Math.random()<endChance){
         const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
-        const sUpdated={...s,lbs:s.lbs+scaledGain};
+        const sUpdated=s;
         const endMsg=getOverfillEndMsg(sUpdated,getStage(sUpdated.lbs).id);
-        setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain} lbs)`,`😵 ${endMsg}`]);
+        setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain.toLocaleString()} cal)`,`😵 ${endMsg}`]);
         setTimeout(()=>triggerDinnerEnd(sUpdated,newFullness,maxFull,newTotalGain,6),1000);
         return;
       }
@@ -4014,7 +3026,7 @@ export default function ProfessorSim(){
       :newFullness>=maxFull*0.8?" — getting full..."
       :"";
     setDinnerEvent(prev=>({...prev,dishes:newDishes,totalGain:newTotalGain,fullness:newFullness}));
-    setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain} lbs)${fullMsg}`]);
+    setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain.toLocaleString()} cal)${fullMsg}`]);
   };
 
   const callWaiter=()=>{
@@ -4030,15 +3042,15 @@ export default function ProfessorSim(){
     const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
     const stId=getStage(s.lbs).id;
     const gainBonus=rnd(conv.gainBonus[0],conv.gainBonus[1]);
-    const scaledBonus=Math.round(gainBonus*skillGainMult*(s.gainMultiplier||1));
+    const scaledBonus=Math.round(gainBonus*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
     const convText=conv.text(s,stId);
     const fullnessChange=conv.fullnessEffect||0;
     const newFullness=Math.max(0,(dinnerEvent.fullness||0)+fullnessChange);
     const newOffense=(dinnerEvent.offenseLevel||0)+(conv.offenseRisk||0);
-    setDinnerLog(dl=>[...dl,`💬 ${convText}${scaledBonus>0?` (+${scaledBonus} lbs)`:""}`]);
+    setDinnerLog(dl=>[...dl,`💬 ${convText}${scaledBonus>0?` (+${scaledBonus.toLocaleString()} cal)`:""}`]);
     push(`💬 Dinner conversation: ${conv.label}`);
     setDinnerEvent(prev=>({...prev,conversationUsed:[...prev.conversationUsed,conv.id],totalGain:prev.totalGain+scaledBonus,fullness:newFullness,offenseLevel:newOffense}));
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+scaledBonus,relationship:Math.min(100,st.relationship+(conv.relBonus||0))}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,consumedCalories:(st.consumedCalories||0)+scaledBonus,relationship:Math.min(100,st.relationship+(conv.relBonus||0))}));
     if(newOffense>=6){
       setTimeout(()=>{
         setDinnerLog(dl=>[...dl,`😤 ${s.name} sets her napkin down. "I think I should head home." She leaves.`]);
@@ -4079,13 +3091,13 @@ export default function ProfessorSim(){
     const target=groupDinnerEvent.students.find(s=>s.id===targetId);
     if(!target||target.dishes.includes(dish.id)) return;
     const gain=rnd(dish.gain[0],dish.gain[1]);
-    const scaledGain=Math.round(gain*skillGainMult*(target.gainMultiplier||1));
+    const scaledGain=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(target.gainMultiplier||1));
     const newFullness=target.fullness+(dish.fullness||15);
     const maxFull=target.maxFullness;
     const newTotalGain=target.totalGain+scaledGain;
     const newDishes=[...target.dishes,dish.id];
-    setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,lbs:s.lbs+scaledGain}));
-    push(`🍴 ${target.name}: ${dish.label} (+${scaledGain} lbs)`);
+    setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,consumedCalories:(s.consumedCalories||0)+scaledGain,fullness:(s.fullness||0)+Math.round((dish.fullness||15)*0.5)}));
+    push(`🍴 ${target.name}: ${dish.label} (+${scaledGain.toLocaleString()} cal)`);
 
     // Build reaction log entries before state updates
     const reactionLines=[];
@@ -4130,30 +3142,6 @@ export default function ProfessorSim(){
       }
     });
 
-    // Divine pair reaction (~20% chance when ascended students share the table)
-    if(Math.random()<0.20&&groupDinnerEvent.students.length>=2){
-      const ascended=groupDinnerEvent.students.filter(s=>s.ascensionPath&&s.ascensionPath!=="convergence");
-      if(ascended.length>=2){
-        const [da,db]=ascended;
-        const pairKey=da.ascensionPath===db.ascensionPath
-          ?`${da.ascensionPath}_${db.ascensionPath}`
-          :"celestial_umbral";
-        const pool=DIVINE_PAIR_REACTIONS[pairKey];
-        if(pool){
-          const line=pool[rnd(0,pool.length-1)](da,db);
-          reactionLines.push(line);
-        }
-      } else if(ascended.length===1){
-        const asc=ascended[0];
-        const other=groupDinnerEvent.students.find(s=>s.id!==asc.id&&!s.ascensionPath);
-        if(other&&Math.random()<0.15){
-          const mortalReaction=asc.ascensionPath==="celestial"
-            ?`${other.name} watches ${asc.name} eat — the light, the warmth, the impossible ease of it. She says nothing, but her hand moves slightly toward ${asc.name}'s side before she catches herself.`
-            :`${other.name} keeps glancing at ${asc.name} across the table. The cold that radiates from her is constant. Unsettling. ${other.name} eats faster, as if motion provides protection.`;
-          reactionLines.push(mortalReaction);
-        }
-      }
-    }
 
     // Unbutton line when first crossing capacity
     if(newFullness>maxFull&&target.fullness<=maxFull){
@@ -4235,7 +3223,7 @@ export default function ProfessorSim(){
   const endGroupDinner=()=>{
     const totalG=groupDinnerEvent.students.reduce((a,s)=>a+s.totalGain,0);
     setAp(a=>a-3);
-    push(`✅ Group dinner complete. +${totalG} lbs total across ${groupDinnerEvent.students.length} girls.`);
+    push(`✅ Group dinner complete. ${totalG.toLocaleString()} cal total across ${groupDinnerEvent.students.length} girls (≈${Math.round(calsToLbs(totalG))} lbs once digested).`);
     setStudents(prev=>prev.map(s=>{
       const inGroup=groupDinnerEvent.students.some(gs=>gs.id===s.id);
       if(!inGroup) return s;
@@ -4256,59 +3244,6 @@ export default function ProfessorSim(){
     setActiveEvent(null);
   };
 
-  const resolveVaughanEvent=(ev,choice)=>{
-    push(`👓 ${ev.title}: ${choice.text}`);
-    if(choice.delta&&choice.delta>0) addScrutiny(choice.delta);
-    else if(choice.delta&&choice.delta<0) setAdminScrutiny(prev=>Math.max(0,prev+choice.delta));
-    if(choice.vDelta) setVaughan(prev=>prev?{...prev,disposition:Math.min(100,prev.disposition+choice.vDelta)}:prev);
-    setVaughanModal(null);
-  };
-
-  const startSocialEvent=(evt)=>{
-    if(ap<evt.apCost){push(`⚠️ Need ${evt.apCost} AP.`);return;}
-    if(socialWeeks.includes(week)){push("⚠️ You've already hosted a social event this week.");return;}
-    setSocialPicker({event:evt,selected:[]});
-  };
-
-  const confirmSocialEvent=()=>{
-    if(!socialPicker) return;
-    const{event,selected}=socialPicker;
-    if(selected.length<event.minStudents){push(`⚠️ Need at least ${event.minStudents} students.`);return;}
-    setAp(a=>a-event.apCost);
-    setSocialWeeks(prev=>[...prev,week]);
-    addScrutiny(event.scrutinyAdd);
-    let totalGain=0;
-    const updatedStudents=students.map(s=>{
-      if(!selected.includes(s.id)) return s;
-      const gain=rnd(event.baseGain[0],event.baseGain[1]);
-      totalGain+=gain;
-      return processStudentGain(s,gain,event.relBonus);
-    });
-    setStudents(updatedStudents);
-    if(vaughan&&!vaughanAlly){
-      if(event.vaughanAttends){
-        const vGain=rnd(1,3);
-        const vSuspDelta=event.vaughanEffect;
-        const vDispGain=vSuspDelta<0?Math.round(Math.abs(vSuspDelta)*0.6):0;
-        setVaughan(prev=>prev?{...prev,lbs:prev.lbs+vGain,suspicion:Math.max(0,prev.suspicion+vSuspDelta),disposition:Math.min(100,prev.disposition+vDispGain)}:prev);
-        push(`👓 Dr. Vaughan attended ${event.label} — +${vGain} lbs, suspicion ${vSuspDelta}`);
-      } else if(event.vaughanEffect!==0){
-        setVaughan(prev=>prev?{...prev,suspicion:Math.max(0,prev.suspicion+event.vaughanEffect)}:prev);
-      }
-    }
-    if(hrObserver&&event.observerGain){
-      const oGain=rnd(event.observerGain[0],event.observerGain[1]);
-      setHrObserver(prev=>prev?{...prev,lbs:prev.lbs+oGain,disposition:Math.min(100,prev.disposition+event.observerDisp)}:prev);
-      push(`👤 ${hrObserver.name} attended — +${oGain} lbs, +${event.observerDisp} disposition`);
-    }
-    const names=selected.map(id=>students.find(s=>s.id===id)?.name).filter(Boolean).join(", ");
-    const perGain=Math.round(totalGain/Math.max(1,selected.length));
-    push(`🎉 ${event.label}: ${names} attended. +${totalGain} lbs total.`);
-    setSocialResult({event,names,totalGain,scene:event.scene(names,perGain),attendees:selected.length});
-    setSocialPicker(null);
-    const evs=collectEvents(updatedStudents);
-    if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
-  };
 
   // ── PRIVATE SESSION FUNCTIONS ──────────────────────────────────
   const startPrivateSession=(s)=>{
@@ -4339,16 +3274,16 @@ export default function ProfessorSim(){
   const feedInSession=(food)=>{
     const s=privateSession.student;
     const gain=rnd(food.gain[0],food.gain[1]);
-    const scaledGain=Math.round(gain*skillGainMult*(s.gainMultiplier||1));
+    const scaledGain=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
     const newFullness=privateSession.fullness+food.fullness;
     const effectiveMax=privateSession.maxFullness+privateSession.toleranceBuffer;
     const fPct=Math.round((newFullness/effectiveMax)*100);
     const fsStage=getFullnessStage(fPct);
     const descFns=SESSION_FULLNESS_DESCS[s.archetype]||SESSION_FULLNESS_DESCS.default;
     const desc=descFns[Math.min(fsStage.id,descFns.length-1)](s);
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+scaledGain}));
-    push(`🍽️ ${food.label}: +${scaledGain} lbs`);
-    setSessionLog(sl=>[...sl,`🍽️ ${food.label} (+${scaledGain} lbs) — ${food.desc}`,`   ${desc}`]);
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,consumedCalories:(st.consumedCalories||0)+scaledGain}));
+    push(`🍽️ ${food.label}: +${scaledGain.toLocaleString()} cal`);
+    setSessionLog(sl=>[...sl,`🍽️ ${food.label} (+${scaledGain.toLocaleString()} cal) — ${food.desc}`,`   ${desc}`]);
     // Check for tap-out
     const tapProb=fPct<150?0:fPct>=250?Infinity:((fPct-150)/100)*0.90;
     const adjustedTapProb=tapProb===Infinity?1:Math.max(0,tapProb-skillTapOutResistance);
@@ -4356,12 +3291,7 @@ export default function ProfessorSim(){
     if(tapsOut){
       const liveS=students.find(st=>st.id===s.id)||s;
       let tapLine;
-      if(s.ascensionPath==="convergence"){
-        const sg=getSingularityStage(liveS.lbs);
-        const sgIdx=sg?sg.id-1:0;
-        const entry=SINGULARITY_TAP_OUT[Math.min(sgIdx,SINGULARITY_TAP_OUT.length-1)];
-        tapLine=typeof entry==='function'?entry(liveS):entry;
-      } else if(fPct>=250){
+      if(fPct>=250){
         // At 250%+ — unique per-student extreme tap-out
         const entry250=TAP_OUT_250[s.id]||TAP_OUT_250.default;
         tapLine=typeof entry250==='function'?entry250(liveS):entry250;
@@ -4377,8 +3307,8 @@ export default function ProfessorSim(){
       setAp(a=>a-2);
       addScrutiny(2);
       setSessionHistory(prev=>({...prev,[s.id]:{count:hist2.count+1,totalGain:hist2.totalGain+currentTotalGain,capacityBonus:newCapBonus2}}));
-      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4)}));
-      push(`⛔ ${s.name} taps out! Session ended — +${currentTotalGain} lbs.`);
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4),fullness:Math.max(st.fullness||0,Math.round((st.stomachCapacity||GAIN_CONFIG.baseCapacity)*Math.min(2.5,fPct/100)))}));
+      push(`⛔ ${s.name} taps out! Session ended — ${currentTotalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(currentTotalGain))} lbs once digested).`);
       setPrivateSession(null);
       setTapOutPopup({student:liveS,text:tapLine,totalGain:currentTotalGain});
     } else {
@@ -4397,35 +3327,16 @@ export default function ProfessorSim(){
   };
 
   // ── DEBUG ─────────────────────────────────────────────────────
-  const debugForceIncarnation=()=>{
-    // Bypass all stage/religion checks — for testing only
-    const sg=students.find(s=>s.ascensionPath==="convergence");
-    const candidate=students.filter(s=>!s.ascensionPath&&(!sg||s.id!==sg.id))
-      .sort((a,b)=>b.lbs-a.lbs)[0];
-    if(!candidate){push("⚠️ Debug: no eligible student for incarnation.");return;}
-    // Ensure religion exists with at least 1 devotee
-    if(!religion) setReligion({founded:true,devotees:1,ritesHeld:0,worshippedIds:[],weeklyPassiveGain:0});
-    else if(religion.devotees<1) setReligion(r=>({...r,devotees:1}));
-    const sgStudent=sg||{id:-1,name:"Singularity"};
-    setGoddessManifestPopup({targetName:candidate.name,targetLbs:candidate.lbs,candidateId:candidate.id,singId:sgStudent.id});
-    push(`🐛 Debug: forcing goddess incarnation on ${candidate.name}.`);
-  };
-
   const debugApply=(sid)=>{
     const inp=debugInputs[sid]||{};
     const newLbs=Math.max(80,parseInt(inp.lbs)||0);
-    const newPath=inp.path||null;
-    const newStage=parseInt(inp.stage)||0;
     const newRel=inp.rel!==undefined?Math.min(100,Math.max(0,parseInt(inp.rel))):undefined;
     setStudents(prev=>prev.map(s=>{
       if(s.id!==sid) return s;
       const patch={...s,lbs:newLbs||s.lbs};
-      if(newPath!==undefined) patch.ascensionPath=newPath||null;
-      if(newPath) patch.ascensionStage=newStage;
       if(newRel!==undefined) patch.relationship=newRel;
       return patch;
     }));
-    if(newPath&&!goddessSeen) setGoddessSeen(true);
     push(`🐛 Debug: student #${sid} updated.`);
   };
 
@@ -4439,14 +3350,14 @@ export default function ProfessorSim(){
     push(`💬 ${encLine}`);
     setSessionLog(sl=>[...sl,`💬 ${encLine}`]);
     if(lbsBonus>0){
-      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+lbsBonus}));
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,consumedCalories:(st.consumedCalories||0)+lbsBonus*GAIN_CONFIG.calsPerLb}));
     }
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+enc.relBonus)}));
     setPrivateSession(prev=>({
       ...prev,
       encouragementsUsed:[...prev.encouragementsUsed,enc.id],
       toleranceBuffer:prev.toleranceBuffer+enc.toleranceBoost,
-      totalGain:prev.totalGain+lbsBonus,
+      totalGain:prev.totalGain+lbsBonus*GAIN_CONFIG.calsPerLb,
     }));
   };
 
@@ -4459,10 +3370,10 @@ export default function ProfessorSim(){
     const hist=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
     const newCapBonus=hist.capacityBonus+8;
     setSessionHistory(prev=>({...prev,[s.id]:{count:hist.count+1,totalGain:hist.totalGain+privateSession.totalGain,capacityBonus:newCapBonus}}));
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4)}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4),fullness:Math.max(st.fullness||0,Math.round((st.stomachCapacity||GAIN_CONFIG.baseCapacity)*Math.min(2.5,fPct/100)))}));
     const aftermath=getAftermath(fPct);
     const liveStudent=students.find(st=>st.id===s.id)||s;
-    push(`✅ Session with ${s.name} complete. +${privateSession.totalGain} lbs · capacity expanded (+8).`);
+    push(`✅ Session with ${s.name} complete. ${privateSession.totalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(privateSession.totalGain))} lbs once digested) · session capacity expanded (+8).`);
     setSessionResult({student:liveStudent,totalGain:privateSession.totalGain,fullnessPct:fPct,scene:aftermath.scene(liveStudent),sessionCount:hist.count+1,capacityBonus:newCapBonus});
     setPrivateSession(null);
   };
@@ -4480,8 +3391,6 @@ export default function ProfessorSim(){
   const hasSubj=(id)=>professorProfile?.subject===id;
   const profGainMult=1+(hasSubj("nutrition")?0.1:0)+(hasSubj("philosophy")?0.05:0)+(hasTrait("generous")?0.15:0);
   const profPassiveBonus=hasTrait("patient")?1:0;
-  const observeFree=hasSubj("art_history")||hasTrait("observant");
-  const talkRelBonus=hasTrait("charismatic")?4:hasSubj("psychology")?2:0;
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
   const unlockedAll=ALL_SKILLS.filter(sk=>unlockedSkills.includes(sk.id));
   const hasSkill=(id)=>unlockedAll.some(sk=>sk.id===id);
@@ -4494,17 +3403,6 @@ export default function ProfessorSim(){
   const skillScrutinyPassiveReduce=unlockedAll.reduce((a,sk)=>a+(sk.scrutinyPassiveReduce||0),0);
   const skillSessionCapBonus=unlockedAll.reduce((a,sk)=>a+(sk.sessionCapBonus||0),0);
   const skillTapOutResistance=Math.min(0.60,unlockedAll.reduce((a,sk)=>a+(sk.tapOutResistance||0),0));
-  // Divine derived values
-  const divineAscendedPassive=unlockedAll.reduce((a,sk)=>a+(sk.ascendedPassiveBonus||0),0);
-  const divineCelestialTransferMult=1+unlockedAll.reduce((a,sk)=>a+(sk.celestialTransferBonus||0),0);
-  const divineUmbralConsumeBonus=unlockedAll.reduce((a,sk)=>a+(sk.umbralConsumeBonus||0),0);
-  const divineUmbralAbsorbBonus=unlockedAll.reduce((a,sk)=>a+(sk.umbralAbsorbBonus||0),0);
-  const divineRiteBlobMult=1+unlockedAll.reduce((a,sk)=>a+(sk.riteBlobBonus||0),0);
-  const divineRiteScrutinyReduce=unlockedAll.reduce((a,sk)=>a+(sk.riteScrutinyReduce||0),0);
-  const divineUmbralVoidPassive=unlockedAll.reduce((a,sk)=>a+(sk.umbralVoidPassive||0),0);
-  const divineCelestialApexHeal=unlockedAll.reduce((a,sk)=>a+(sk.celestialApexHeal||0),0);
-  const divineUmbralCanConsumeHR=unlockedAll.some(sk=>sk.umbralCanConsumeHR);
-  const divineCelestialCanPullHR=unlockedAll.some(sk=>sk.celestialCanPullHR);
   // EP2: total weekly scrutiny reduction from evolved skills across all students
   const evolvedScrutinyReduce=students.reduce((total,s)=>{
     if(!s.evolvedForm||!(s.evolvedSkills||[]).length) return total;
@@ -4513,31 +3411,8 @@ export default function ProfessorSim(){
   },0);
 
   // ── EFFECTIVE ACTIONS (applying unlocked skill effects) ──────
-  const effectiveSingleActions=ACTIONS_SINGLE.map(a=>({
-    ...a,
-    cost:Math.max(0,(a.id==="observe"&&observeFree)?0:a.cost-(hasSkill("ap_mastery")?1:0)),
-    gain:hasSkill("private_kitchen")&&a.id==="homecooked"?[a.gain[0]+4,a.gain[1]+4]
-        :hasSkill("private_kitchen")&&a.id==="bake"?[a.gain[0]+3,a.gain[1]+3]
-        :a.gain,
-  }));
-  const effectiveClassActions=[
-    ...ACTIONS_CLASS.map(a=>({
-      ...a,
-      cost:a.id==="snacks"&&hasSkill("snack_station")?0
-          :a.id==="feast"&&hasSkill("catering_contact")?Math.max(0,a.cost-1)
-          :a.cost,
-      gain:a.id==="feast"&&hasSkill("catering_contact")?[a.gain[0]+4,a.gain[1]+4]:a.gain,
-    })),
-    ...(hasSkill("full_catering")?[{
-      id:"on_demand_feast",label:"🍾 On-Demand Feast",cost:3,
-      gain:[Math.round(8+avgLbs/100),Math.round(14+avgLbs/80)],
-      desc:"Call the catering team now. Portions scale with your class's average weight.",
-    }]:[]),
-    ...(hasSkill("group_dynamics")?[{
-      id:"group_dinner",label:"👥 Arrange Group Dinner",cost:3,gain:[4,9],
-      desc:"Arrange a dinner for two students from an influence pair. Their bond amplifies the result for both.",
-    }]:[]),
-  ];
+  const effectiveSingleActions=ACTIONS_SINGLE;
+  const effectiveClassActions=ACTIONS_CLASS;
 
   const availableVenues=DINNER_VENUES.filter(v=>{
     if(v.id==="home_dinner") return false;
@@ -4547,7 +3422,6 @@ export default function ProfessorSim(){
   const canUnlock=(sk)=>{
     if(unlockedSkills.includes(sk.id)) return false;
     if(sk.category!=="divine") return false;
-    if(!goddessSeen) return false;
     if(availableSkillPoints<sk.cost) return false;
     if(sk.requires) return sk.requires.every(r=>unlockedSkills.includes(r));
     return true;
@@ -4894,286 +3768,6 @@ export default function ProfessorSim(){
         );
       })()}
 
-      {/* ABSORPTION POPUP — fires when convergence absorbs the merged student */}
-      {absorptionPopup&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:580}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#a080c0",marginBottom:6}}>THE SINGULARITY FORMS</div>
-            <div style={{fontSize:11,color:"#8070a0",marginBottom:14}}>
-              {absorptionPopup.absorbedName} has been absorbed. {absorptionPopup.survivorName} is what remains.
-            </div>
-            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
-              {absorptionPopup.text}
-            </p>
-            <button style={C.btn("#2a0050")} onClick={()=>setAbsorptionPopup(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
-
-      {/* SINGULARITY ACTION POPUP */}
-      {singularityActionPopup&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:580}}>
-            <div style={{fontSize:9,letterSpacing:3,color:singularityActionPopup.student?.triumvirateUnlocked?"#ffd700":"#a080c0",marginBottom:6}}>{singularityActionPopup.student?.triumvirateUnlocked?"🔱 THE TRIUMVIRATE":"⚡ THE SINGULARITY"}</div>
-            {singularityActionPopup.gainApplied>0&&(
-              <div style={{fontSize:11,color:"#c080e0",marginBottom:10}}>
-                +{Math.round(singularityActionPopup.gainApplied).toLocaleString()} lbs
-              </div>
-            )}
-            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
-              {singularityActionPopup.text}
-            </p>
-            {singularityActionPopup.isFinalEnding&&(
-              <div style={{fontSize:10,color:"#ffd700",fontWeight:700,marginBottom:14,letterSpacing:1}}>
-                ✦ THE TRUE ENDING HAS BEEN REACHED ✦
-              </div>
-            )}
-            <button style={C.btn("#2a0050")} onClick={()=>setSingularityActionPopup(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
-
-      {incarnationEventPopup&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.92)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-          <div style={{background:"rgba(8,5,0,0.98)",border:"2px solid #ffd70090",borderRadius:14,padding:24,maxWidth:540,width:"100%",maxHeight:"85vh",overflowY:"auto"}}>
-            <div style={{fontSize:11,letterSpacing:3,color:"#ffd700",marginBottom:12}}>✦ SHE ARRIVES</div>
-            <div style={{fontSize:13,color:"#b08040",marginBottom:8}}>{incarnationEventPopup.name} — {incarnationEventPopup.prevLbs.toLocaleString()} lbs → {incarnationEventPopup.newLbs.toLocaleString()} lbs</div>
-            <div style={{fontSize:13,color:"#e8d8b0",lineHeight:1.85,whiteSpace:"pre-line"}}>{INCARNATION_EVENT_TEXT(incarnationEventPopup.name,incarnationEventPopup.prevLbs,incarnationEventPopup.newLbs)}</div>
-            <button style={{...C.btn("#6a4000"),width:"100%",marginTop:18}} onClick={()=>setIncarnationEventPopup(null)}>She Has Arrived</button>
-          </div>
-        </div>
-      )}
-      {goddessStagePopup&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",zIndex:2900,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-          <div style={{background:"rgba(8,5,0,0.98)",border:"2px solid #ff900070",borderRadius:14,padding:24,maxWidth:500,width:"100%",maxHeight:"80vh",overflowY:"auto"}}>
-            <div style={{fontSize:11,letterSpacing:3,color:"#ff9000",marginBottom:12}}>✦ SHE GROWS</div>
-            <div style={{fontSize:13,color:"#e8d0a0",lineHeight:1.85}}>{goddessStagePopup.text}</div>
-            <button style={{...C.btn("#5a3000"),width:"100%",marginTop:16}} onClick={()=>setGoddessStagePopup(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
-      {goddessActionPopup&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:2800,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-          <div style={{background:"rgba(8,5,0,0.97)",border:"2px solid #ffd70060",borderRadius:14,padding:24,maxWidth:500,width:"100%",maxHeight:"80vh",overflowY:"auto"}}>
-            <div style={{fontSize:13,color:"#e8d0a0",lineHeight:1.85}}>{goddessActionPopup.text}</div>
-            <button style={{...C.btn("#4a2800"),width:"100%",marginTop:16}} onClick={()=>setGoddessActionPopup(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
-      {/* GODDESS MANIFEST POPUP — phase 1 of Triumvirate unlock */}
-      {goddessManifestPopup&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:580}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#ffd700",marginBottom:6}}>✦ THE GODDESS MANIFESTS</div>
-            <div style={{fontSize:11,color:"#e0c060",marginBottom:14}}>
-              The fat goddess senses the Singularity's dominance and reaches for a vessel.
-            </div>
-            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:16}}>
-              Something ancient stirs. The devotees feel it before you do — a sudden stillness, a collective intake of breath. The religion you founded is older than you knew: beneath the rites and the worship was a goddess who has been waiting for something large enough to contain her. She has found it. Not in the Singularity — the Singularity is beyond her reach — but in {goddessManifestPopup.targetName}, the heaviest of those who remain. She will pour herself into that body. She will be vast and divine and terrible and real. And then she will have to face what you've made.
-            </p>
-            <div style={{fontSize:11,color:"#c09030",marginBottom:16}}>
-              {goddessManifestPopup.targetName} ({Math.round(goddessManifestPopup.targetLbs).toLocaleString()} lbs) will become the incarnated goddess — weight ×15.
-            </div>
-            <div style={{display:"flex",gap:8}}>
-              <button style={{...C.btn("#6a4000"),flex:1}} onClick={()=>executeGoddessIncarnation(goddessManifestPopup.candidateId)}>
-                ✦ Let the Goddess Incarnate
-              </button>
-              <button style={{...C.btn("#333"),flex:1}} onClick={()=>setGoddessManifestPopup(null)}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* TRIUMVIRATE UNLOCK MODAL */}
-      {triumvirateModal&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:600}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#ffd700",marginBottom:6}}>🔱 THE TRIUMVIRATE</div>
-            <div style={{fontSize:11,color:"#e0c060",marginBottom:14}}>
-              {triumvirateModal.survivorName} has absorbed the incarnated goddess. The final form is unlocked.
-            </div>
-            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
-              {triumvirateModal.text}
-            </p>
-            <button style={{...C.btn("#4a3000"),border:"1px solid #ffd70060"}} onClick={()=>setTriumvirateModal(null)}>
-              🔱 The Triumvirate Awakens →
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* UMBRAL ABSORB POPUP */}
-      {umbralAbsorbPopup&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:580}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#cc3030",marginBottom:6}}>🌑 CONSUMED</div>
-            <div style={{fontSize:11,color:"#e08080",marginBottom:10}}>
-              {umbralAbsorbPopup.absorbedName} is gone. {umbralAbsorbPopup.umbralName} absorbs {Math.round(umbralAbsorbPopup.gained).toLocaleString()} lbs.
-            </div>
-            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
-              {umbralAbsorbPopup.text}
-            </p>
-            <button style={C.btn("#300010")} onClick={()=>setUmbralAbsorbPopup(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
-
-      {/* SANGUINE ACTION POPUP */}
-      {ritePopup&&(
-        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={()=>setRitePopup(null)}>
-          <div style={{background:'#0d0820',border:'1px solid #4a2080',padding:'28px 32px',maxWidth:520,borderRadius:8,color:'#e8d8ff'}} onClick={e=>e.stopPropagation()}>
-            <div style={{fontSize:9,letterSpacing:3,color:'#a060ff',marginBottom:6}}>⛪ HOLY RITE</div>
-            <div style={{fontWeight:'bold',fontSize:15,marginBottom:12,color:'#c090ff'}}>{ritePopup.rite?.label}</div>
-            <div style={{fontSize:12,lineHeight:1.7,marginBottom:18}}>{ritePopup.text}</div>
-            <button style={C.btn("#2a0050")} onClick={()=>setRitePopup(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
-      {celestialActionPopup&&(
-        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={()=>setCelestialActionPopup(null)}>
-          <div style={{background:'#1a1000',border:'1px solid #c0a030',padding:'28px 32px',maxWidth:520,borderRadius:8,color:'#fff8e0'}} onClick={e=>e.stopPropagation()}>
-            <div style={{fontSize:9,letterSpacing:3,color:'#c0a030',marginBottom:6}}>✦ CELESTIAL ACTION</div>
-            <div style={{fontSize:12,lineHeight:1.7,marginBottom:18}}>{celestialActionPopup.text}</div>
-            <button style={C.btn("#3a2000")} onClick={()=>setCelestialActionPopup(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
-      {umbralActionPopup&&(
-        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={()=>setUmbralActionPopup(null)}>
-          <div style={{background:'#080010',border:'1px solid #5020a0',padding:'28px 32px',maxWidth:520,borderRadius:8,color:'#d0b0ff'}} onClick={e=>e.stopPropagation()}>
-            <div style={{fontSize:9,letterSpacing:3,color:'#8040c0',marginBottom:6}}>🌑 UMBRAL ACTION</div>
-            <div style={{fontSize:12,lineHeight:1.7,marginBottom:18}}>{umbralActionPopup.text}</div>
-            <button style={C.btn("#1a0030")} onClick={()=>setUmbralActionPopup(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
-      {sanguineActionPopup&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:580}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#cc3030",marginBottom:6}}>🩸 SANGUINE</div>
-            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
-              {sanguineActionPopup.text}
-            </p>
-            <button style={C.btn("#6b1010")} onClick={()=>setSanguineActionPopup(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
-
-      {/* VERDANT ACTION POPUP */}
-      {verdantActionPopup&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:580}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#336633",marginBottom:6}}>🌿 VERDANT</div>
-            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
-              {verdantActionPopup.text}
-            </p>
-            <button style={C.btn("#0a3a0a")} onClick={()=>setVerdantActionPopup(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
-
-      {/* PRIMORDIAL ABSORPTION POPUP */}
-      {primordialAbsorptionPopup&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:580}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#a06030",marginBottom:6}}>🌍 THE PRIMORDIAL FORMS</div>
-            <div style={{fontSize:11,color:"#c08060",marginBottom:14}}>
-              {primordialAbsorptionPopup.absorbedName} has merged into {primordialAbsorptionPopup.survivorName}.
-            </div>
-            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
-              {primordialAbsorptionPopup.text}
-            </p>
-            <button style={C.btn("#3d1a0a")} onClick={()=>setPrimordialAbsorptionPopup(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
-
-      {/* PRIMORDIAL ACTION POPUP */}
-      {primordialActionPopup&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:580}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#a06030",marginBottom:6}}>🌍 THE PRIMORDIAL</div>
-            {primordialActionPopup.gainApplied>0&&(
-              <div style={{fontSize:11,color:"#c08040",marginBottom:10}}>
-                +{Math.round(primordialActionPopup.gainApplied).toLocaleString()} lbs
-              </div>
-            )}
-            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
-              {primordialActionPopup.text}
-            </p>
-            {primordialActionPopup.isFinalEnding&&(
-              <div style={{fontSize:10,color:"#c8a060",fontWeight:700,marginBottom:14,letterSpacing:1}}>
-                🔱 THE TRUE ENDING HAS BEEN REACHED 🔱
-              </div>
-            )}
-            <button style={C.btn("#3d1a0a")} onClick={()=>setPrimordialActionPopup(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
-
-      {/* PRIMORDIAL GODDESS MANIFEST POPUP */}
-      {primordialGoddessManifestPopup&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:580}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#c08040",marginBottom:6}}>🌿 THE GODDESS STIRS</div>
-            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:16}}>
-              {primordialGoddessManifestPopup.text}
-            </p>
-            <div style={{display:"flex",gap:8}}>
-              <button style={{...C.btn("#5a3a00"),flex:1}} onClick={()=>executePrimordialGoddessIncarnation(primordialGoddessManifestPopup.candidateId)}>
-                🌿 Let the Goddess Incarnate
-              </button>
-              <button style={{...C.btn("#333"),flex:1}} onClick={()=>setPrimordialGoddessManifestPopup(null)}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* PRIMORDIAL TRIUMVIRATE MODAL */}
-      {primordialTriumvirateModal&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:600}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#c8a060",marginBottom:6}}>🔱 THE PRIMORDIAL TRIUMVIRATE</div>
-            <div style={{fontSize:11,color:"#c09050",marginBottom:14}}>
-              {primordialTriumvirateModal.survivorName} has absorbed the incarnated goddess. The First is complete.
-            </div>
-            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
-              {primordialTriumvirateModal.text}
-            </p>
-            <button style={{...C.btn("#4a2800"),border:"1px solid #c8a06060"}} onClick={()=>setPrimordialTriumvirateModal(null)}>
-              🔱 The First Awakens →
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* PRIMORDIAL CONVERGENCE MODAL */}
-      {primordialConvergenceModal&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:500}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#a06030",marginBottom:10}}>🌍 THE PRIMORDIAL CONVERGENCE</div>
-            <p style={{lineHeight:1.8,color:"#e0d0b0",marginBottom:14}}>
-              {primordialConvergenceModal.student?.name} (Sanguine) and {primordialConvergenceModal.opponent?.name} (Verdant) have each reached the peak of their path. Their natures are opposite expressions of the same ancient hunger — blood and root, heat and patience. They can merge.
-            </p>
-            <p style={{lineHeight:1.8,color:"#c0a080",fontStyle:"italic",marginBottom:16}}>
-              Choose who survives as the Primordial. The other is absorbed. Combined weight carries forward.
-            </p>
-            <div style={{display:"flex",gap:8,marginBottom:8}}>
-              <button style={{...C.btn("#6b1010"),flex:1}} onClick={()=>triggerPrimordialConvergence(primordialConvergenceModal.student?.id,primordialConvergenceModal.opponent?.id)}>
-                🩸 {primordialConvergenceModal.student?.name} consumes {primordialConvergenceModal.opponent?.name}
-              </button>
-              <button style={{...C.btn("#0a3a0a"),flex:1}} onClick={()=>triggerPrimordialConvergence(primordialConvergenceModal.opponent?.id,primordialConvergenceModal.student?.id)}>
-                🌿 {primordialConvergenceModal.opponent?.name} consumes {primordialConvergenceModal.student?.name}
-              </button>
-            </div>
-            <button style={{...C.btn("#333"),width:"100%"}} onClick={()=>setPrimordialConvergenceModal(null)}>Not yet</button>
-          </div>
-        </div>
-      )}
 
       {/* GIRL PICKER */}
       {/* IMMOBILE REDIRECT POPUP */}
@@ -5258,7 +3852,7 @@ export default function ProfessorSim(){
             <div style={{fontSize:11,color:"#7a5090",marginBottom:14}}>
               {dinnerEndPopup.student.name} · {getStage(dinnerEndPopup.student.lbs).label} · {dinnerEndPopup.student.lbs} lbs
               {" · "}{Math.round((dinnerEndPopup.finalFullness/dinnerEndPopup.maxFullness)*100)}% full
-              {" · "}+{dinnerEndPopup.totalGain} lbs tonight
+              {" · "}{dinnerEndPopup.totalGain.toLocaleString()} cal tonight (≈+{Math.round(dinnerEndPopup.totalGain/3500)} lbs digesting)
             </div>
             <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20,whiteSpace:"pre-line"}}>
               {dinnerEndPopup.narrative}
@@ -5391,7 +3985,7 @@ export default function ProfessorSim(){
 
                   <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
                     <div style={{fontSize:11,color:"#f0a060",fontWeight:700,flex:1}}>
-                      +{gev.students.reduce((a,s)=>a+s.totalGain,0)} lbs total
+                      {gev.students.reduce((a,s)=>a+s.totalGain,0).toLocaleString()} cal total
                     </div>
                     <button style={C.btn("#2a6830")} onClick={endGroupDinner}>End Evening ✓</button>
                     <button style={C.btn("#333")} onClick={()=>{setAp(a=>a-3);setGroupDinnerEvent(null);}}>Leave Early</button>
@@ -5421,15 +4015,6 @@ export default function ProfessorSim(){
       )}
 
       {/* OBSERVE MODAL */}
-      {observeText&&(
-        <div style={C.overlay}>
-          <div style={C.modal}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:12}}>OBSERVATION REPORT</div>
-            <p style={{lineHeight:1.85,color:"#e0d0b0",whiteSpace:"pre-line",fontStyle:"italic"}}>{observeText}</p>
-            <button style={{...C.btn(),marginTop:16}} onClick={()=>setObserveText(null)}>Close</button>
-          </div>
-        </div>
-      )}
 
       {/* HEADER */}
       <div style={C.hdr}>
@@ -5474,7 +4059,7 @@ export default function ProfessorSim(){
 
       {/* NAV */}
       <div style={C.nav}>
-        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["social","🎉 Events"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],...(goddessSeen?[["divine","✦ Divine"]]:[])].map(([v,l])=>(
+        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"]].map(([v,l])=>(
           v==="student"&&!sel?null:
           <button key={v} style={C.navB(view===v)} onClick={()=>setView(v)}>{l}</button>
         ))}
@@ -5483,23 +4068,23 @@ export default function ProfessorSim(){
       <div style={C.body}>
         <div style={C.main}>
 
-          {/* ── CLASS VIEW (HR observer card · Vaughan card · roster) ── */}
-          {view==="class"&&<ClassView view={view} hrObserver={hrObserver} vaughan={vaughan} vaughanAlly={vaughanAlly} ap={ap} feedObserver={feedObserver} talkToObserver={talkToObserver} students={students} lilithUnlocked={lilithUnlocked} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView}/>}
+          {/* ── CLASS VIEW ── */}
+          {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} consumeIncarnatedGoddess={consumeIncarnatedGoddess} consumePrimordialIncarnatedGoddess={consumePrimordialIncarnatedGoddess} consumedStudents={consumedStudents} cultivatorState={cultivatorState} divineCelestialCanPullHR={divineCelestialCanPullHR} divineUmbralCanConsumeHR={divineUmbralCanConsumeHR} doEvolvedActivity={doEvolvedActivity} doGoddessAction={doGoddessAction} doPrimordialAction={doPrimordialAction} doSanguineAction={doSanguineAction} doSingle={doSingle} doSingularityAction={doSingularityAction} doTalk={doTalk} doVerdantAction={doVerdantAction} effectiveSingleActions={effectiveSingleActions} finalConsumptionDone={finalConsumptionDone} foundReligion={foundReligion} goddessIncarnateId={goddessIncarnateId} goddessSeen={goddessSeen} hrObserver={hrObserver} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} primordialFinalConsumptionDone={primordialFinalConsumptionDone} primordialGoddessIncarnateId={primordialGoddessIncarnateId} proposeStudy={proposeStudy} purchaseEvolvedSkill={purchaseEvolvedSkill} recoverConsumedStudent={recoverConsumedStudent} religion={religion} researchStudy={researchStudy} runCheckIn={runCheckIn} sanguineMarks={sanguineMarks} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} triggerGoddessIncarnation={triggerGoddessIncarnation} triggerPrimordialGoddessIncarnation={triggerPrimordialGoddessIncarnation} umbralConsumeHR={umbralConsumeHR} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} vaughan={vaughan} verdantCultivations={verdantCultivations}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
 
-{/* ── SKILL TREE ── */}
-          {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} canUnlock={canUnlock} goddessSeen={goddessSeen} skillApBonus={skillApBonus} skillGainMult={skillGainMult} skillPassiveBonus={skillPassiveBonus} skillScrutinyPassiveReduce={skillScrutinyPassiveReduce} skillScrutinyReduce={skillScrutinyReduce} skillSessionCapBonus={skillSessionCapBonus} spentSkillPoints={spentSkillPoints} spiritLevel={spiritLevel} spiritXp={spiritXp} spiritXpForNextLevel={SPIRIT_XP_PER_LEVEL} startSkillPurchase={startSkillPurchase} totalSkillPoints={totalSkillPoints} unlockedSkills={unlockedSkills}/>}
-          {/* ── SOCIAL EVENTS ── */}
-          {view==="social"&&<SocialEventsView ap={ap} socialWeeks={socialWeeks} startSocialEvent={startSocialEvent} vaughan={vaughan} vaughanAlly={vaughanAlly} week={week}/>}
+          {/* ── PANTRY / INVENTORY ── */}
+          {view==="inventory"&&<InventoryView inventory={inventory} setItemTargetPicker={setItemTargetPicker}/>}
 
-          {/* ── ACHIEVEMENTS ── */}
-          {/* ── DIVINE PANEL ── */}
-          {view==="divine"&&goddessSeen&&<DivinePanel addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} consumedStudents={consumedStudents} divineCelestialCanPullHR={divineCelestialCanPullHR} divineRiteBlobMult={divineRiteBlobMult} divineUmbralCanConsumeHR={divineUmbralCanConsumeHR} doPrimordialRite={doPrimordialRite} doSanguineAction={doSanguineAction} doSingularityRite={doSingularityRite} doVerdantAction={doVerdantAction} foundReligion={foundReligion} holdRite={holdRite} hrObserver={hrObserver} recoverConsumedStudent={recoverConsumedStudent} religion={religion} sanguineMarks={sanguineMarks} students={students} umbralConsumeHR={umbralConsumeHR} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} vaughan={vaughan} verdantCultivations={verdantCultivations}/>}
+          {/* ── CAMPUS EXPLORATION ── */}
+          {view==="campus"&&<CampusView campusState={campusState} moveToCampusNode={moveToCampusNode} lookAround={lookAround}/>}
+
+{/* ── SKILL TREE ── */}
+          {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} canUnlock={canUnlock} skillApBonus={skillApBonus} skillGainMult={skillGainMult} skillPassiveBonus={skillPassiveBonus} skillScrutinyPassiveReduce={skillScrutinyPassiveReduce} skillScrutinyReduce={skillScrutinyReduce} skillSessionCapBonus={skillSessionCapBonus} spentSkillPoints={spentSkillPoints} spiritLevel={spiritLevel} spiritXp={spiritXp} spiritXpForNextLevel={SPIRIT_XP_PER_LEVEL} startSkillPurchase={startSkillPurchase} totalSkillPoints={totalSkillPoints} unlockedSkills={unlockedSkills}/>}
 
           {view==="achievements"&&<AchievementsView achievements={achievements}/>}
 
@@ -5514,23 +4099,17 @@ export default function ProfessorSim(){
         </div>
       </div>
 
-      {/* ── ADMIN EVENT MODAL ── */}
-      {adminEvent&&<AdminEventModal addScrutiny={addScrutiny} adminEvent={adminEvent} adminScrutiny={adminScrutiny} hrObserver={hrObserver} push={push} setAdminEvent={setAdminEvent} setAdminScrutiny={setAdminScrutiny} setHrObserver={setHrObserver}/>}
-
       {/* ── STUDY CHECK-IN MODAL ── */}
-      {studyCheckIn&&<StudyCheckInModal setStudyCheckIn={setStudyCheckIn} studyCheckIn={studyCheckIn}/>}
+
+      {/* ── ITEM TARGET PICKER ── */}
+      {itemTargetPicker&&<ItemTargetPicker itemTargetPicker={itemTargetPicker} setItemTargetPicker={setItemTargetPicker} students={students} lilithUnlocked={lilithUnlocked} useItemOn={useItemOn}/>}
 
       {/* ── TIER-UP MODAL ── */}
       {tierUpModal&&<TierUpModal setStudents={setStudents} setTierUpModal={setTierUpModal} tierUpModal={tierUpModal}/>}
 
-      {/* ── VAUGHAN EVENT MODAL ── */}
-      {vaughanModal&&<VaughanEventModal resolveVaughanEvent={resolveVaughanEvent} vaughan={vaughan} vaughanModal={vaughanModal}/>}
-
       {/* ── SOCIAL EVENT PICKER ── */}
-      {socialPicker&&<SocialEventPicker confirmSocialEvent={confirmSocialEvent} setSocialPicker={setSocialPicker} socialPicker={socialPicker} students={students}/>}
 
       {/* ── SOCIAL EVENT RESULT ── */}
-      {socialResult&&<SocialEventResult setSocialResult={setSocialResult} socialResult={socialResult}/>}
 
       {/* ── PRIVATE SESSION MODAL ── */}
       {privateSession&&<PrivateSessionModal chooseSessionVenue={chooseSessionVenue} endPrivateSession={endPrivateSession} feedInSession={feedInSession} getMoreFood={getMoreFood} privateSession={privateSession} sessionLog={sessionLog} setAp={setAp} setPrivateSession={setPrivateSession} skillTapOutResistance={skillTapOutResistance} startIntimacyScene={startIntimacyScene} useSessionEncouragement={useSessionEncouragement}/>}
@@ -5542,7 +4121,7 @@ export default function ProfessorSim(){
       {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students}/>}
 
       {/* ── DEBUG PANEL ── */}
-      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} consumedStudents={consumedStudents} debugApply={debugApply} debugForceIncarnation={debugForceIncarnation} debugInputs={debugInputs} religion={religion} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setGoddessSeen={setGoddessSeen} setLilithUnlocked={setLilithUnlocked} setReligion={setReligion} setStudents={setStudents} students={students}/>}
+      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students}/>}
 
       {/* ── TAP-OUT POPUP ── */}
       {tapOutPopup&&<TapOutPopup setTapOutPopup={setTapOutPopup} tapOutPopup={tapOutPopup}/>}
@@ -5555,14 +4134,13 @@ export default function ProfessorSim(){
         brokeScaleIds={brokeScaleIds}
         onBreakScale={(sid)=>setBrokeScaleIds(arr=>arr.includes(sid)?arr:[...arr,sid])}
         onUnlockBigScale={()=>{ setBigScaleUnlocked(true); push("⚖ Ordered a heavy-duty 1000 lb scale."); }}
+        week={week}
       />}
-      {weighInState&&<WeighInModal weighInState={weighInState} setWeighInState={setWeighInState}/>}
 
       {/* ── SESSION RESULT ── */}
       {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}
 
       {/* ── GODDESS VISION MODAL ── */}
-      {goddessModal&&<GoddessVisionModal push={push} setGoddessModal={setGoddessModal} setView={setView}/>}
 
       {/* ── CONVERGENCE MODAL ── */}
       {/* ── EP2: EVOLUTION OFFER MODAL ── */}
@@ -5743,34 +4321,6 @@ export default function ProfessorSim(){
 
       {/* ── CULTIVATOR MODAL ── */}
       {cultivatorState?.modalPhase&&<CultivatorModal cultivatorState={cultivatorState} students={students} setCultivatorState={setCultivatorState} confirmCultivatorRecruit={confirmCultivatorRecruit} pickCultivatorFood={pickCultivatorFood} makeCultivatorChoice={makeCultivatorChoice} confirmCultivatorSession={confirmCultivatorSession} dismissCultivatorStageUp={dismissCultivatorStageUp} confirmCultivatorHarvest={confirmCultivatorHarvest} closeCultivatorGrowth={closeCultivatorGrowth}/>}
-
-      {convergenceModal&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#05050f,#0a0a20,#05050f)",border:"2px solid #ffffff50"}}>
-            <div style={{fontSize:9,letterSpacing:4,color:"#ffffff",marginBottom:8}}>⚡ THE SINGULARITY BECKONS</div>
-            <div style={{fontSize:13,color:"#d0d0ff",lineHeight:1.9,marginBottom:14,fontStyle:"italic"}}>
-              <strong style={{color:"#e0b0ff"}}>{convergenceModal.student?.name}</strong> (Celestial Apex, {convergenceModal.student?.lbs} lbs) and{" "}
-              <strong style={{color:"#ff8080"}}>{convergenceModal.opponent?.name}</strong> (Umbral Sovereign, {convergenceModal.opponent?.lbs} lbs) stand at opposing ends of the divine spectrum.
-              <br/><br/>
-              The Singularity is possible. One will consume the other — and become something that has no name in any existing theology.
-              <br/><br/>
-              <em>The result will be one student at {((convergenceModal.student?.lbs||0)+(convergenceModal.opponent?.lbs||0)).toLocaleString()} lbs. The other ceases to exist as a separate entity. This cannot be undone.</em>
-            </div>
-            <div style={{...C.infoBox("rgba(20,20,20,0.6)"),marginBottom:14,fontSize:11,color:"#a0a0c0",fontStyle:"italic",lineHeight:1.7}}>
-              "{CONVERGENCE_STAGE.desc}"
-            </div>
-            <div style={{display:"flex",gap:8}}>
-              <button style={C.btn("#333")} onClick={()=>setConvergenceModal(null)}>Not yet</button>
-              <button style={{...C.btn("#202060"),flex:1}} onClick={()=>triggerConvergence(convergenceModal.student?.id,convergenceModal.opponent?.id)}>
-                ✦ Trigger Convergence — {convergenceModal.student?.name} ascends (5 AP)
-              </button>
-              <button style={{...C.btn("#600010"),flex:1}} onClick={()=>triggerConvergence(convergenceModal.opponent?.id,convergenceModal.student?.id)}>
-                🌑 Trigger Convergence — {convergenceModal.opponent?.name} ascends (5 AP)
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );

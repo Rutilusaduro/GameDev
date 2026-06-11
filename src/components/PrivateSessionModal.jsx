@@ -26,7 +26,7 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
                   <div style={{fontSize:10,color:"#6a4880"}}>{s.lbs} lbs · {getStage(s.lbs).label} · {tier.emoji} {tier.label}</div>
                 </div>
                 <div style={{textAlign:"right"}}>
-                  <div style={{fontSize:10,color:"#806090",marginBottom:2}}>+{ps.totalGain} lbs this session</div>
+                  <div style={{fontSize:10,color:"#806090",marginBottom:2}}>{ps.totalGain.toLocaleString()} cal this session</div>
                   <div style={{fontSize:10,color:"#504060"}}>Capacity: {effectiveMax} ({ps.toleranceBuffer>0?`+${ps.toleranceBuffer} buffer`:"base"})</div>
                 </div>
               </div>
