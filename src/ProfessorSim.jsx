@@ -1,205 +1,45 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { CELESTIAL_STAGES, UMBRAL_STAGES, CONVERGENCE_STAGE, SINGULARITY_STAGES, SINGULARITY_ABSORPTION_TEXT, SINGULARITY_BODY_DESCS, SINGULARITY_OUTFITS, SINGULARITY_DIARY, SINGULARITY_REACTIONS, SINGULARITY_TAP_OUT, SINGULARITY_RANDOM_EVENTS, SINGULARITY_ACTION_TEXT, SINGULARITY_RITES, SINGULARITY_ACTIONS, TRIUMVIRATE_BODY_DESC, TRIUMVIRATE_OUTFIT, TRIUMVIRATE_DIARY, TRIUMVIRATE_REACTION, TRIUMVIRATE_ACTIONS, TRIUMVIRATE_ACTION_TEXT, CELESTIAL_PULL_AMOUNTS, CELESTIAL_PUSH_AMOUNTS, CELESTIAL_BLESS_AMOUNTS, UMBRAL_CONSUME_CHANCE, UMBRAL_ABSORB_RATE, UMBRAL_VOID_PULL_AMOUNTS, UMBRAL_ABSORB_TEXT, GODDESS_VISION, RELIGION_RITES, CELESTIAL_BODY_DESCS, UMBRAL_BODY_DESCS, CELESTIAL_OUTFITS, UMBRAL_OUTFITS, CELESTIAL_ACTION_TEXT, UMBRAL_ACTION_TEXT, RELIGION_RITE_TEXT, SINGULARITY_RITE_TEXT, CELESTIAL_DIARY, UMBRAL_DIARY, ASCENSION_STAGE_REACTIONS, SANGUINE_STAGES, SANGUINE_BODY_DESCS, SANGUINE_OUTFITS, SANGUINE_DIARY, SANGUINE_REACTIONS, SANGUINE_TAP_OUT, SANGUINE_RANDOM_EVENTS, SANGUINE_ACTIONS, SANGUINE_ACTION_TEXT, VERDANT_STAGES, VERDANT_BODY_DESCS, VERDANT_OUTFITS, VERDANT_DIARY, VERDANT_REACTIONS, VERDANT_TAP_OUT, VERDANT_RANDOM_EVENTS, VERDANT_ACTIONS, VERDANT_ACTION_TEXT, PRIMORDIAL_STAGES, PRIMORDIAL_ABSORPTION_TEXT, PRIMORDIAL_BODY_DESCS, PRIMORDIAL_OUTFITS, PRIMORDIAL_DIARY, PRIMORDIAL_REACTIONS, PRIMORDIAL_TAP_OUT, PRIMORDIAL_RANDOM_EVENTS, PRIMORDIAL_ACTIONS, PRIMORDIAL_ACTION_TEXT, PRIMORDIAL_RITES, PRIMORDIAL_TRIUMVIRATE_BODY_DESC, PRIMORDIAL_TRIUMVIRATE_OUTFIT, PRIMORDIAL_TRIUMVIRATE_DIARY, PRIMORDIAL_TRIUMVIRATE_REACTION, PRIMORDIAL_TRIUMVIRATE_ACTIONS, PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT, GODDESS_STAGES, getGoddessStage, GODDESS_STAGE_REACTIONS, GODDESS_BODY_DESCS, GODDESS_ATTITUDE, GODDESS_DIARY, GODDESS_EXPLORE_TEXT, GODDESS_PRACTICAL_TEXT, GODDESS_ACTIONS, INCARNATION_EVENT_TEXT } from './gameData/ascension.js';
-import { INTIMACY_ASCENSION_FLAVOR, INTIMACY_ARCHETYPE_LINES, INTIMACY_STUDENT_LINES, INTIMACY_SCENES, INTIMACY_CONTEXTUAL } from './gameData/intimacy.js';
-import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, DIVINE_PAIR_REACTIONS, UNBUTTON_LINES, PROF_SUBJECTS, PROF_TRAITS, ADMIN_EVENTS, STUDY_SCENES, STUDY_SCENE_DEFAULT, HR_OBSERVER_POOL, HR_DISP_LEVELS, getHrDispLevel, HR_DISP_DESC, getHrDispDesc, HR_FEED_LINES, HR_TALK_LINES, INNER_CIRCLE_TIERS, getTier, TIER_SCENES, VAUGHAN_BASE, VAUGHAN_EVENTS, VAUGHAN_WEIGHT_SCENES, VAUGHAN_ALLY_SCENE, SOCIAL_EVENTS, PRIVATE_VENUES, PRIVATE_FOODS, SESSION_FULLNESS_STAGES, getFullnessStage, SESSION_FULLNESS_DESCS, ENCOURAGEMENT_ACTIONS, SESSION_AFTERMATH, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
-import { BODY_DESCS, STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, OUTFITS, SLIGHT_DIARY, DIARY_ENTRIES, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
-import { GOSSIP, getGossipLines } from './gameData/gossip.js';
-import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS, CLASS_SCENES } from './gameData/classEvents.js';
-import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS, EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLVED_FORM_META, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, ASCENSION_BRIDGE, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS, BATCH_BAKER_NPCS, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WIFE_LESSONS_NPCS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES } from './gameData/evolvedForms.js';
-import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_WEIGH_IN_2_TEXT, CONTEST_DEVOUR_POPUPS, CONTEST_PAYOFF_TEXT, SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_MATCH_AFTERMATH, SUMO_PAYOFF_TEXT, SUMO_FILL_RING_TEXT, COLLAB_CONTENT_CREATOR_ARCHETYPES, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_OPENING_TEXT, RECORDING_TAKE_INTRO_TEXT, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT, MJ_RECIPES, FAIR_FOODS, FAIR_STAGE_FOODS, FAIR_DARCY_WEIGHTS, FAIR_FULLNESS_MILESTONES, FAIR_WEIGH_IN_TEXT, FAIR_PAYOFF_TEXT, FAIR_TAUNT_POPUPS } from './gameData/miniGames.js';
-import { SKILL_TREE, SKILL_CATEGORIES, DIVINE_SKILL_TREE, EVOLVED_SKILL_TREES } from './gameData/skills.js';
+import { CELESTIAL_STAGES, UMBRAL_STAGES, CONVERGENCE_STAGE, SINGULARITY_ABSORPTION_TEXT, SINGULARITY_REACTIONS, SINGULARITY_TAP_OUT, SINGULARITY_RANDOM_EVENTS, SINGULARITY_ACTION_TEXT, SINGULARITY_ACTIONS, TRIUMVIRATE_REACTION, TRIUMVIRATE_ACTIONS, TRIUMVIRATE_ACTION_TEXT, CELESTIAL_PULL_AMOUNTS, CELESTIAL_PUSH_AMOUNTS, CELESTIAL_BLESS_AMOUNTS, UMBRAL_CONSUME_CHANCE, UMBRAL_ABSORB_RATE, UMBRAL_VOID_PULL_AMOUNTS, UMBRAL_ABSORB_TEXT, CELESTIAL_ACTION_TEXT, UMBRAL_ACTION_TEXT, RELIGION_RITE_TEXT, SINGULARITY_RITE_TEXT, SANGUINE_STAGES, SANGUINE_REACTIONS, SANGUINE_ACTIONS, SANGUINE_ACTION_TEXT, VERDANT_STAGES, VERDANT_REACTIONS, VERDANT_ACTIONS, VERDANT_ACTION_TEXT, PRIMORDIAL_ABSORPTION_TEXT, PRIMORDIAL_REACTIONS, PRIMORDIAL_RANDOM_EVENTS, PRIMORDIAL_ACTIONS, PRIMORDIAL_ACTION_TEXT, PRIMORDIAL_TRIUMVIRATE_REACTION, PRIMORDIAL_TRIUMVIRATE_ACTIONS, PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT, getGoddessStage, GODDESS_STAGE_REACTIONS, GODDESS_EXPLORE_TEXT, GODDESS_PRACTICAL_TEXT, GODDESS_ACTIONS, INCARNATION_EVENT_TEXT } from './gameData/ascension.js';
+import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL } from './gameData/intimacy.js';
+import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, DIVINE_PAIR_REACTIONS, UNBUTTON_LINES, PROF_SUBJECTS, PROF_TRAITS, ADMIN_EVENTS, STUDY_SCENES, STUDY_SCENE_DEFAULT, HR_FEED_LINES, HR_TALK_LINES, getTier, TIER_SCENES, VAUGHAN_BASE, VAUGHAN_EVENTS, VAUGHAN_WEIGHT_SCENES, VAUGHAN_ALLY_SCENE, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
+import { STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
+import { GOSSIP } from './gameData/gossip.js';
+import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS } from './gameData/classEvents.js';
+import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
+import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
+import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
-import { HOSTESS_HANGOUTS, MENU_TIERS, ATMOSPHERE_TIERS, GUEST_TIERS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
-import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, GUY_LINES, REPLY_POOL, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, CLUE_INVESTIGATION, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
-import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette, RECRUITMENT_SCENE, TESTER_APPEARANCE, getDigestVignette } from './gameData/cultivator.js';
-import { getMadelineTier, THESIS_BOARD, CASE_STUDY_PAIRS, BOARD_REACTIONS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
-
-// ═══════════════════════════════════════════════════════════════
-// DATA LAYER
-// ═══════════════════════════════════════════════════════════════
-
-
-
-
-// ─── ACTIONS ────────────────────────────────────────────────────────────────
-
-
-// ═══════════════════════════════════════════════════════════════
-// SKILL TREE
-// ═══════════════════════════════════════════════════════════════
-
-
-
-// ── ASCENSION PATHS ─────────────────────────────────────────────
-
-
-const ALL_SKILLS = [...SKILL_TREE, ...DIVINE_SKILL_TREE];
-
-// ══════════════════════════════════════════════════════════════════
-// EXPANSION PACK 2 — THE EVOLUTION
-// Evolved form content: reactions, diary, outfits, activity, skills
-// Index 0 = weight stage 5 (Heavy), index 5 = weight stage 10 (Blob)
-// ══════════════════════════════════════════════════════════════════
-
-
-
-
-
-// ══════════════════════════════════════════════════════════════════
-// EATING CONTEST MINI-GAME — DATA & CONTENT
-// ══════════════════════════════════════════════════════════════════
-
-
-// ── FARM GIRL: MARY JANE RECIPES (unlock via homestead_queen events) ──────────
-// Structure per entry: { title, phases:[{text(h)=>str, choices:[{id,label,result,lbs?,rel?,flag?,feedOther?}]}], endings:[{condition,text,gainBonus,relBonus}] }
-
-
-
-
-
-// ── EP5: INTIMACY SCENES ──────────────────────────────────────
-
-// ── DINNER EVENT DATA ──────────────────────────────────────────
-
-// ═══════════════════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════════════════
-
-function getSingularityStage(lbs){
-  for(let i=SINGULARITY_STAGES.length-1;i>=0;i--)
-    if(lbs>=SINGULARITY_STAGES[i].min) return SINGULARITY_STAGES[i];
-  return null;
-}
-function getSanguineStage(lbs){
-  for(let i=SANGUINE_STAGES.length-1;i>=0;i--)
-    if(lbs>=SANGUINE_STAGES[i].min) return SANGUINE_STAGES[i];
-  return null;
-}
-function getVerdantStage(lbs){
-  for(let i=VERDANT_STAGES.length-1;i>=0;i--)
-    if(lbs>=VERDANT_STAGES[i].min) return VERDANT_STAGES[i];
-  return null;
-}
-function getPrimordialStage(lbs){
-  for(let i=PRIMORDIAL_STAGES.length-1;i>=0;i--)
-    if(lbs>=PRIMORDIAL_STAGES[i].min) return PRIMORDIAL_STAGES[i];
-  return null;
-}
-// Passive drain/cultivation amounts by ascension stage
-const SANGUINE_MARK_DRAIN_BY_STAGE   = [3, 5, 8, 12, 18];
-const VERDANT_CULTIVATE_GAIN_BY_STAGE = [3, 5, 8, 12, 18];
-const SANGUINE_DRAIN_AMOUNTS   = [15, 22, 32, 44, 58];
-const VERDANT_ROOT_AMOUNTS     = [12, 18, 26, 36, 50];
-const PRIMORDIAL_PULL_AMOUNTS  = [12, 16, 22, 30, 42];
-const CONVERGENCE_PAIRS = { sanguineVerdant:"primordial", celestialUmbral:"singularity" };
-function getBodyDesc(s){
-  if(s.incarnatedGoddess){const gs=getGoddessStage(s.lbs);return GODDESS_BODY_DESCS[gs.id-1];}
-  if(s.ascensionPath==="convergence"){
-    if(s.triumvirateUnlocked) return TRIUMVIRATE_BODY_DESC;
-    const sg=getSingularityStage(s.lbs);
-    return sg ? SINGULARITY_BODY_DESCS[sg.id-1] : SINGULARITY_BODY_DESCS[0];
-  }
-  if(s.ascensionPath==="primordial"){
-    if(s.primordialTriumvirateUnlocked) return PRIMORDIAL_TRIUMVIRATE_BODY_DESC;
-    const pg=getPrimordialStage(s.lbs);
-    return pg ? PRIMORDIAL_BODY_DESCS[pg.id-1] : PRIMORDIAL_BODY_DESCS[0];
-  }
-  if(s.ascensionPath==="celestial") return CELESTIAL_BODY_DESCS[s.ascensionStage||0];
-  if(s.ascensionPath==="umbral")    return UMBRAL_BODY_DESCS[s.ascensionStage||0];
-  if(s.ascensionPath==="sanguine")  return SANGUINE_BODY_DESCS[s.ascensionStage||0];
-  if(s.ascensionPath==="verdant")   return VERDANT_BODY_DESCS[s.ascensionStage||0];
-  const bd=BODY_DESCS[s.bodyType]||BODY_DESCS.straight; return bd[Math.min(getStage(s.lbs).id,bd.length-1)];
-}
-function getOutfit(s){
-  if(s.ascensionPath==="convergence"){
-    if(s.triumvirateUnlocked) return TRIUMVIRATE_OUTFIT;
-    const sg=getSingularityStage(s.lbs);
-    return sg ? SINGULARITY_OUTFITS[sg.id-1] : SINGULARITY_OUTFITS[0];
-  }
-  if(s.ascensionPath==="primordial"){
-    if(s.primordialTriumvirateUnlocked) return PRIMORDIAL_TRIUMVIRATE_OUTFIT;
-    const pg=getPrimordialStage(s.lbs);
-    return pg ? PRIMORDIAL_OUTFITS[pg.id-1] : PRIMORDIAL_OUTFITS[0];
-  }
-  if(s.ascensionPath==="celestial") return CELESTIAL_OUTFITS[s.ascensionStage||0];
-  if(s.ascensionPath==="umbral")    return UMBRAL_OUTFITS[s.ascensionStage||0];
-  if(s.ascensionPath==="sanguine")  return SANGUINE_OUTFITS[s.ascensionStage||0];
-  if(s.ascensionPath==="verdant")   return VERDANT_OUTFITS[s.ascensionStage||0];
-  if(s.evolvedForm && getStage(s.lbs).id>=5){
-    const arr=EVOLVED_OUTFITS[s.evolvedForm]; if(arr){ return arr[Math.min(getStage(s.lbs).id-5,arr.length-1)]; }
-  }
-  const o=OUTFITS[s.archetype]||OUTFITS.default; return o[Math.min(getStage(s.lbs).id,o.length-1)];
-}
-function getDiary(s){
-  if(s.incarnatedGoddess){const gs=getGoddessStage(s.lbs);return GODDESS_DIARY[gs.id-1];}
-  if(s.ascensionPath==="convergence"){
-    if(s.triumvirateUnlocked) return TRIUMVIRATE_DIARY;
-    const sg=getSingularityStage(s.lbs);
-    return sg ? SINGULARITY_DIARY[sg.id-1] : SINGULARITY_DIARY[0];
-  }
-  if(s.ascensionPath==="primordial"){
-    if(s.primordialTriumvirateUnlocked) return PRIMORDIAL_TRIUMVIRATE_DIARY;
-    const pg=getPrimordialStage(s.lbs);
-    return pg ? PRIMORDIAL_DIARY[pg.id-1] : PRIMORDIAL_DIARY[0];
-  }
-  if(s.ascensionPath==="celestial") return CELESTIAL_DIARY[s.ascensionStage||0];
-  if(s.ascensionPath==="umbral")    return UMBRAL_DIARY[s.ascensionStage||0];
-  if(s.ascensionPath==="sanguine")  return SANGUINE_DIARY[s.ascensionStage||0];
-  if(s.ascensionPath==="verdant")   return VERDANT_DIARY[s.ascensionStage||0];
-  if(s.evolvedForm && getStage(s.lbs).id>=5){
-    const arr=EVOLVED_DIARY[s.evolvedForm]; if(arr){ return arr[Math.min(getStage(s.lbs).id-5,arr.length-1)]; }
-  }
-  const id=getStage(s.lbs).id; if(id===0) return SLIGHT_DIARY[s.archetype]||"—"; const d=DIARY_ENTRIES[s.archetype]; return d?d[Math.min(id-1,9)]:"—";
-}
-function getEvolvedReaction(s){
-  if(!s.evolvedForm) return null;
-  const arr=EVOLVED_REACTIONS[s.evolvedForm]; if(!arr) return null;
-  const idx=getStage(s.lbs).id-5; if(idx<0) return null;
-  return arr[Math.min(idx,arr.length-1)];
-}
-function getEvolvedActivityStageIdx(s){
-  const id=getStage(s.lbs).id;
-  return Math.max(0,Math.min(id-5,4));
-}
-function rnd(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
-function generateClassSession(students,week){
-  const scenes=[];
-  const shuffled=[...students].sort(()=>Math.random()-0.5);
-  for(const s of shuffled){
-    const matching=CLASS_SCENES.filter(sc=>sc.target==="student"&&sc.filter&&sc.filter(s));
-    if(matching.length){ scenes.push({type:"student",scene:matching[rnd(0,matching.length-1)],student:{...s}}); break; }
-  }
-  const classWide=CLASS_SCENES.filter(sc=>sc.target==="class");
-  if(classWide.length) scenes.push({type:"class",scene:classWide[rnd(0,classWide.length-1)],student:null});
-  return scenes;
-}
-
-
-// ═══════════════════════════════════════════════════════════════
-// UI COMPONENTS
-// ═══════════════════════════════════════════════════════════════
-
-function Bar({ val, max=1100, color="#8030d0", height=8 }){
-  return (
-    <div style={{background:"#0d0816",borderRadius:4,height,overflow:"hidden",margin:"3px 0"}}>
-      <div style={{width:`${Math.min(100,(val/max)*100)}%`,height:"100%",background:color,borderRadius:4,transition:"width 0.5s ease"}}/>
-    </div>
-  );
-}
-
-function StageTag({ stage }){
-  return (
-    <span style={{background:stage.color,color:"#fff",borderRadius:10,padding:"2px 9px",fontSize:10,fontWeight:700,letterSpacing:1,whiteSpace:"nowrap"}}>
-      {stage.label.toUpperCase()}
-    </span>
-  );
-}
-
-function MoodBadge({ mood }){
-  const m={happy:"😊",focused:"📖",excited:"⚡",competitive:"🏆",dreamy:"🌙",dry:"😑",social:"🥂",driven:"📊",observant:"👁",curious:"🔍",content:"☁️",tired:"😴",stressed:"😰",nervous:"😬"};
-  return <span style={{fontSize:12}}>{m[mood]||"😐"} {mood}</span>;
-}
+import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
+import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
+import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
+import { getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
+import { ALL_SKILLS, getSingularityStage, getPrimordialStage, SANGUINE_MARK_DRAIN_BY_STAGE, VERDANT_CULTIVATE_GAIN_BY_STAGE, getEvolvedActivityStageIdx, rnd, generateClassSession } from './utils/gameHelpers.js';
+import { MoodBadge } from './components/ui.jsx';
+import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
+import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
+import { CompetitiveGainerChatModal, CompetitiveGainerMainModal } from './components/CompetitiveGainerModals.jsx';
+import { EatingContestModal } from './components/EatingContestModal.jsx';
+import { SumoMatchModal } from './components/SumoMatchModal.jsx';
+import { CollabStreamModal } from './components/CollabStreamModal.jsx';
+import { RecordingSessionModal } from './components/RecordingSessionModal.jsx';
+import { CommunityResearcherModal } from './components/CommunityResearcherModal.jsx';
+import { CultivatorModal } from './components/CultivatorModal.jsx';
+import { HomeroomQueenModal } from './components/HomeroomQueenModal.jsx';
+import { LilithClueModal, LilithHuntModal } from './components/LilithModals.jsx';
+import { ChapterHostessHangoutModal, ChapterHostessFeastPrepModal, ChapterHostessFeastLogModal } from './components/ChapterHostessModals.jsx';
+import { ClassView } from './views/ClassView.jsx';
+import { StudentDetailView } from './views/StudentDetailView.jsx';
+import { ActionsView } from './views/ActionsView.jsx';
+import { SkillTreeView } from './views/SkillTreeView.jsx';
+import { SocialEventsView } from './views/SocialEventsView.jsx';
+import { AchievementsView, DivinePanel } from './views/AchievementsView.jsx';
+import { PrivateSessionModal } from './components/PrivateSessionModal.jsx';
+import { EvolvedEventModal } from './components/EvolvedEventModal.jsx';
+import { DebugPanel } from './components/DebugPanel.jsx';
+import { EvolutionOfferModal, GoddessVisionModal, SessionResultModal, TapOutPopup, SocialEventResult, SocialEventPicker, VaughanEventModal, TierUpModal, StudyCheckInModal, AdminEventModal } from './components/MiscModals.jsx';
+import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
+import { C } from './styles.js';
 
 // ═══════════════════════════════════════════════════════════════
 // MAIN APP
@@ -244,7 +84,7 @@ export default function ProfessorSim(){
   // debugInputs: { [studentId]: { lbs:string, path:string, stage:number, rel:number } }
   const [skillCat,setSkillCat]=useState("environment");
   const [classSession,setClassSession]=useState(null);
-  const [semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
+  const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
   const [professorProfile,setProfessorProfile]=useState(null);
   // professorProfile: {name, subject, traits:[]}
@@ -284,11 +124,9 @@ export default function ProfessorSim(){
   // ── DIVINE EXPANSION STATE ─────────────────────────────────────
   const [goddessSeen,setGoddessSeen]=useState(false);
   const [goddessModal,setGoddessModal]=useState(null);
-  const [ascensionModal,setAscensionModal]=useState(null); // {student} → choose Celestial/Umbral
   const [consumedStudents,setConsumedStudents]=useState([]); // full student objects consumed by Umbral
   const [religion,setReligion]=useState(null);
   // religion: {founded, devotees, ritesHeld, worshippedIds:[], weeklyPassiveGain}
-  const [religionRiteModal,setReligionRiteModal]=useState(null);
   const [convergenceModal,setConvergenceModal]=useState(null); // {student} secret stage achieved
   // ── EP4: SANGUINE / VERDANT / PRIMORDIAL STATE ────────────────
   const [sanguineMarks,setSanguineMarks]=useState([]);       // student IDs marked for weekly drain
@@ -335,6 +173,11 @@ export default function ProfessorSim(){
   const [wifeLessonsState, setWifeLessonsState] = useState(null);
   // wifeLessonsState: persistent {mjStudentId,stage,daughters:{Emma,Chloe,Kezia,Lila},moms:{Darlene,Wanda,Patrice},session:null|{lessonChosen,conversationState,log}}
   // session.conversationState: null|{person,stageEntry,optionIdx,subIdx,done,resultText}
+  const [competitiveGainerState, setCompetitiveGainerState] = useState(null);
+  // competitiveGainerState: persistent {priyaStudentId,spirit,chatLog:[{text,isProf,wk}],measuredStudentIds:[],lastChatWeek,corkboardVisitCount,open,view,subState}
+  // view: null|'corkboard'|'measurement_picker'|'measurement_result'|'self_review'|'binge'
+  // subState: result/scene data for the current view
+  const [cgChatOpen, setCgChatOpen] = useState(false);
   const [rankedFeedeeState, setRankedFeedeeState] = useState(null);
   // rankedFeedeeState: {studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log:[],done,endReason,raeDelivered}
   const [chapterHostessState, setChapterHostessState] = useState(null);
@@ -369,13 +212,18 @@ export default function ProfessorSim(){
   //   takeNum, timeLeft, kylieGain, clipRatings, bestClip,
   //   choiceStep, currentChoices:{angle,food,pace}, perfectTakeAchieved,
   //   popupText, done, endingText }
-  const [fairContestState, setFairContestState] = useState(null);
-  // fairContestState: { studentId, stageIdx, darcyStartLbs, yourStartLbs,
-  //   yourFoods:[{...food, consumed:false}], darcyFoodsLeft:number,
-  //   yourFullnessPct:0, overfullCap:100|130|160|250,
-  //   yourGain:0, darcyGain:0, milestonesHit:[],
-  //   tauntUsed:false, pushThroughUsed:false, coolDownUses:0,
-  //   phase:'eating'|'weigh_in'|'done', popupText:null, popupPhase:null }
+  const [fairTrainingState, setFairTrainingState] = useState({
+    cycleNum:0, sessionsThisCycle:0, fairPride:0,
+    lastCollaborator:null, recentCollaborators:[], influenceFlags:[],
+    trophyPhotos:[], lilithRecruitRange:[0,2],
+    pendingCollab:null, pendingRecruits:null,
+    view:'main', open:false, mjStudentId:null,
+    sessionSceneTag:null, sessionPhotoTag:null, sessionBoostSummary:null, sessionLog:null,
+  });
+  const [fairDayState, setFairDayState] = useState(null);
+  // fairDayState: { studentId, stageIdx, phase:'weighin'|'judging'|'afterparty'|'done',
+  //   influenceKey, weighInChoice:null, weighInResultText:null, weighInGain:0,
+  //   afterpartyChoice:null, afterpartyResultText:null, totalGain:0, relBonus:0 }
   const [intimacySceneSelector,setIntimacySceneSelector]=useState(null);
   // intimacySceneSelector: {student}
   const logRef=useRef(null);
@@ -800,7 +648,6 @@ export default function ProfessorSim(){
           }));
         }
         // Religion scrutiny: devotees cause scrutiny above 10
-        const devoteeScrutiny=Math.max(0,Math.floor((religion.devotees-10)*0.3));
         const hasThreshold=unlockedSkills.includes("congregation");
         const thresholdAmt=hasThreshold?20:10;
         if(religion.devotees>thresholdAmt) addScrutiny(Math.max(0,Math.floor((religion.devotees-thresholdAmt)*0.2)));
@@ -846,6 +693,16 @@ export default function ProfessorSim(){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
     }
+    // Competitive Gainer: auto-post to group chat each new week
+    const priyaCG=updated.find(s=>s.evolvedForm==='competitive_gainer');
+    if(priyaCG){
+      setCompetitiveGainerState(prev=>{
+        if(!prev) return prev;
+        const msgs=generateCGChatMessages(priyaCG,updated,prev,newWeek);
+        if(!msgs.length) return prev;
+        return{...prev,chatLog:[...prev.chatLog,...msgs],lastChatWeek:newWeek};
+      });
+    }
   };
 
   // ── DIVINE ACTION FUNCTIONS ─────────────────────────────────────
@@ -862,7 +719,6 @@ export default function ProfessorSim(){
     push(`✦ ${s.name} ascends to ${label}! ${pathFlavorMap[path]||""}`);
     const desc=stages[0].desc;
     setTimeout(()=>push(`   "${desc}"`),200);
-    setAscensionModal(null);
     if(!goddessSeen){setGoddessSeen(true);}
   };
 
@@ -1139,6 +995,18 @@ export default function ProfessorSim(){
       openWifeLessonsSession(s);
       return;
     }
+    if(s.evolvedForm==='competitive_gainer'){
+      const meta=EVOLVED_ACTIVITY_META['competitive_gainer']; if(!meta) return;
+      if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
+      setAp(a=>a-meta.apCost);
+      openCompetitiveGainerModal(s);
+      return;
+    }
+    if(s.evolvedForm==='state_fair_queen'){
+      // Training collaborations hub — AP is deducted when a session is confirmed inside the modal
+      setFairTrainingState(prev=>({...prev, open:true, view:'main', mjStudentId:s.id, pendingCollab:null, pendingRecruits:null}));
+      return;
+    }
     const meta=EVOLVED_ACTIVITY_META[s.evolvedForm]; if(!meta) return;
     if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
     const stageIdx=getEvolvedActivityStageIdx(s);
@@ -1207,13 +1075,13 @@ export default function ProfessorSim(){
         const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
         return processStudentGain(st,totalGain,totalRel+bonusRel);
       }));
-      if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairContest&&!ending.startsSession&&!ending.startsPresentation&&!ending.startsDelivery&&!ending.startsChallenge) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
+      if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairDay&&!ending.startsSession&&!ending.startsPresentation&&!ending.startsDelivery&&!ending.startsChallenge) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
       // handle recipe unlock (homestead_queen)
       if(ending.unlockRecipe){
         setStudents(ss=>ss.map(st=>st.id===s.id?{...st,mjRecipes:[...(st.mjRecipes||[]),ending.unlockRecipe].filter((v,i,a)=>a.indexOf(v)===i)}:st));
       }
       const endText=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
-      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:ending.classGain||0,momGain:ending.momGain||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairContest:!!ending.startsFairContest,startsSession:!!ending.startsSession,startsPresentation:!!ending.startsPresentation,startsDelivery:!!ending.startsDelivery,startsChallenge:!!ending.startsChallenge}));
+      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:ending.classGain||0,momGain:ending.momGain||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairDay:!!ending.startsFairDay,startsSession:!!ending.startsSession,startsPresentation:!!ending.startsPresentation,startsDelivery:!!ending.startsDelivery,startsChallenge:!!ending.startsChallenge}));
     } else {
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }
@@ -1318,6 +1186,63 @@ export default function ProfessorSim(){
     setHomeroomSessionState(null);
   };
 
+  // ── MEASUREMENT FORMULA ───────────────────────────────────────────
+  const getMeasurements=(lbs,bodyType)=>{
+    const ex=Math.max(0,lbs-120);
+    const pw=(x,e)=>x<=0?0:Math.pow(x,e);
+    let waist=33+0.305*pw(ex,0.85);
+    let thigh=20+0.227*pw(ex,0.777);
+    let arm  =11+0.064*pw(ex,0.932);
+    const hgM=Math.max(0.03,0.22-ex*0.0009);
+    let bust=waist*(1+hgM);
+    let hip =waist*(1+hgM);
+    switch(bodyType){
+      case'apple':
+        waist=37+0.305*pw(ex,0.85);
+        bust=waist;
+        hip=waist*(1+Math.max(0.03,0.10-ex*0.0004));
+        break;
+      case'pear':
+        bust=waist;
+        hip=waist*1.40;
+        thigh=thigh*1.15;
+        break;
+      case'mom_bod':
+        waist=37+0.305*pw(ex,0.85);
+        bust=waist*(1+hgM);
+        hip=waist*1.25;
+        thigh=thigh*1.25;
+        arm=arm*1.15;
+        break;
+      case'straight':{
+        const sm=Math.min(0.15,ex*0.001);
+        bust=waist*(1+sm);
+        hip=waist*(1+sm);
+        thigh=18+0.227*pw(ex,0.777);
+        break;}
+      case'voluptuous':
+        waist=37+0.305*pw(ex,0.85);
+        bust=waist*1.25;
+        hip=waist*1.25;
+        thigh=thigh*1.25;
+        arm=arm*1.15;
+        break;
+      case'athletic':
+        waist=30+0.305*pw(ex,0.85);
+        bust=waist;
+        hip=waist*1.10;
+        arm=14+0.064*pw(ex,0.932);
+        break;
+      default: break;
+    }
+    const r=v=>Math.round(v*10)/10;
+    return{waist:r(waist),bust:r(bust),hip:r(hip),thigh:r(thigh),arm:r(arm)};
+  };
+
+  const getCGSpiritTier=(spirit)=>{
+    return CG_CONFIG.spiritTiers.find(t=>spirit>=t.min&&spirit<=t.max)||CG_CONFIG.spiritTiers[0];
+  };
+
   // ── WIFE LESSONS handlers ─────────────────────────────────────────
 
   const _wlCheckStageAdvance=(state)=>{
@@ -1410,7 +1335,6 @@ export default function ProfessorSim(){
       const{outcome}=sub;
       let newDaughters={...prev.daughters};
       let newMoms={...prev.moms};
-      let newMjWeight=prev.mjWeight;
       let logLine='';
       if(outcome.daughterKey&&outcome.daughterLbs){
         newDaughters[outcome.daughterKey]=(newDaughters[outcome.daughterKey]||0)+outcome.daughterLbs;
@@ -1453,6 +1377,168 @@ export default function ProfessorSim(){
     });
   };
 
+  // ── COMPETITIVE GAINER handlers ──────────────────────────────────
+
+  // Chat message generator — called on week advance and on manual chat check
+  const generateCGChatMessages=(priya,allStudents,cgState,currentWeek)=>{
+    const tier=getCGSpiritTier(cgState.spirit);
+    const msgs=[];
+    const priyaM=getMeasurements(priya.lbs,priya.bodyType);
+    // Priya's opening post
+    const postTemplate=CG_CHAT_TEMPLATES.priyaPost[tier.label]||CG_CHAT_TEMPLATES.priyaPost.Invested;
+    msgs.push({text:`[Priya] ${postTemplate} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isProf:false,wk:currentWeek});
+    // Select 2-4 visible students (not Priya) weighted by proximity + measured status
+    const visible=allStudents.filter(s=>s.id!==priya.id&&(!s.hidden||s.id===15));
+    const candidates=visible.slice().sort(()=>Math.random()-0.5).slice(0,4);
+    let threatDetected=false;
+    candidates.forEach(s=>{
+      const templates=CG_CHAT_TEMPLATES.girls[s.name]||CG_CHAT_TEMPLATES.girls.Brittany;
+      const measured=cgState.measuredStudentIds.includes(s.id);
+      const sLbs=s.lbs;
+      let replyType;
+      if(!measured) replyType='unmeasured';
+      else if(sLbs>priya.lbs*1.05) { replyType='ahead'; threatDetected=true; }
+      else if(sLbs>priya.lbs*0.95) { replyType='close'; threatDetected=true; }
+      else if(sLbs>priya.lbs*0.80)  replyType='proud';
+      else replyType='behind';
+      const replyText=templates[replyType]||templates.behind||'...';
+      msgs.push({text:`[${s.name}] ${replyText}`,isProf:false,wk:currentWeek});
+    });
+    // Priya follow-up
+    const followupKey=threatDetected?'threatened':'leading';
+    msgs.push({text:`[Priya] ${CG_CHAT_TEMPLATES.priyaFollowup[followupKey]}`,isProf:false,wk:currentWeek});
+    return msgs;
+  };
+
+  const openCompetitiveGainerModal=(s)=>{
+    setCompetitiveGainerState(prev=>{
+      const base=prev||{
+        priyaStudentId:s.id,
+        spirit:0,
+        chatLog:[],
+        measuredStudentIds:[],
+        lastChatWeek:week,
+        corkboardVisitCount:0,
+      };
+      return{...base,priyaStudentId:s.id,open:true,view:null,subState:null};
+    });
+  };
+
+  const closeCGModal=()=>{
+    setCompetitiveGainerState(prev=>prev?{...prev,open:false,view:null,subState:null}:prev);
+  };
+
+  const doCGCorkboard=()=>{
+    setCompetitiveGainerState(prev=>{
+      if(!prev) return prev;
+      const tier=getCGSpiritTier(prev.spirit);
+      const scenes=CG_CORKBOARD_SCENES[tier.label]||CG_CORKBOARD_SCENES.Invested;
+      const idx=(prev.corkboardVisitCount||0)%scenes.length;
+      const sceneText=scenes[idx];
+      // Spirit gain: check if any visible student is within threat range
+      const priya=students.find(st=>st.id===prev.priyaStudentId);
+      let spiritGain=rnd(CG_CONFIG.spiritGainNeutral[0],CG_CONFIG.spiritGainNeutral[1]);
+      if(priya){
+        const priyaM=getMeasurements(priya.lbs,priya.bodyType);
+        const visible=students.filter(s=>s.id!==priya.id&&(!s.hidden||lilithUnlocked));
+        visible.forEach(s=>{
+          const sM=getMeasurements(s.lbs,s.bodyType);
+          CG_CONFIG.categories.forEach(cat=>{
+            if(sM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)){
+              spiritGain+=rnd(CG_CONFIG.spiritGainThreat[0],CG_CONFIG.spiritGainThreat[1]);
+            }
+          });
+        });
+      }
+      return{...prev,spirit:prev.spirit+spiritGain,corkboardVisitCount:(prev.corkboardVisitCount||0)+1,view:'corkboard',subState:{sceneText,spiritGain}};
+    });
+  };
+
+  const doCGSelfReview=()=>{
+    setCompetitiveGainerState(prev=>{
+      if(!prev) return prev;
+      const tier=getCGSpiritTier(prev.spirit);
+      const sceneText=CG_MEASUREMENT_SCENES.selfReview[tier.label]||CG_MEASUREMENT_SCENES.selfReview.Invested;
+      const spiritGain=rnd(2,5);
+      return{...prev,spirit:prev.spirit+spiritGain,view:'self_review',subState:{sceneText,spiritGain}};
+    });
+  };
+
+  const openCGMeasurementPicker=()=>{
+    setCompetitiveGainerState(prev=>prev?{...prev,view:'measurement_picker',subState:null}:prev);
+  };
+
+  const doCGMeasurement=(targetStudentId)=>{
+    setCompetitiveGainerState(prev=>{
+      if(!prev) return prev;
+      const priya=students.find(s=>s.id===prev.priyaStudentId);
+      const target=students.find(s=>s.id===targetStudentId);
+      if(!priya||!target) return prev;
+      const priyaM=getMeasurements(priya.lbs,priya.bodyType);
+      const targetM=getMeasurements(target.lbs,target.bodyType);
+      // Determine threats by category
+      const threats=[];
+      const reactions={};
+      CG_CONFIG.categories.forEach(cat=>{
+        let rel='priya_larger';
+        if(targetM[cat]>priyaM[cat]*(1+CG_CONFIG.threatFraction)){rel='priya_smaller';threats.push(cat);}
+        else if(targetM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)){rel='priya_equal';threats.push(cat);}
+        const tKey=`[MeasureReaction_${rel==='priya_larger'?'PriyaLarger':rel==='priya_smaller'?'PriyaSmaller':'PriyaEqual'}_${cat}]`;
+        reactions[cat]={rel,text:tKey};
+      });
+      const spiritGain=threats.length>0
+        ? threats.length*rnd(CG_CONFIG.spiritGainThreat[0],CG_CONFIG.spiritGainThreat[1])
+        : rnd(CG_CONFIG.spiritGainNeutral[0],CG_CONFIG.spiritGainNeutral[1]);
+      const sceneText=`[MeasurementScene_${target.name}_S${getStage(target.lbs).id}]`;
+      const newMeasured=prev.measuredStudentIds.includes(targetStudentId)
+        ? prev.measuredStudentIds
+        : [...prev.measuredStudentIds,targetStudentId];
+      return{...prev,spirit:prev.spirit+spiritGain,measuredStudentIds:newMeasured,
+        view:'measurement_result',
+        subState:{targetStudentId,priyaM,targetM,sceneText,reactions,threats,spiritGain}};
+    });
+  };
+
+  const doCGBinge=()=>{
+    // 1 AP cost already deducted from the modal's "Push Priya's Gains" button
+    setCompetitiveGainerState(prev=>{
+      if(!prev) return prev;
+      const priya=students.find(s=>s.id===prev.priyaStudentId);
+      if(!priya) return prev;
+      const tier=getCGSpiritTier(prev.spirit);
+      const tierIdx=CG_CONFIG.spiritTiers.indexOf(tier);
+      const stageId=Math.min(7,getStage(priya.lbs).id);
+      const baseGain=CG_CONFIG.minBinge+(CG_CONFIG.maxBinge-CG_CONFIG.minBinge)*Math.min(1,(stageId-1)/6);
+      const mult=CG_CONFIG.bingeSpiritMults[Math.max(0,tierIdx)];
+      const gain=Math.round(baseGain*mult*(0.85+Math.random()*0.30));
+      const sceneText=CG_BINGE_SCENES[tier.label]||CG_BINGE_SCENES.Invested;
+      return{...prev,view:'binge',subState:{gain,sceneText,done:false}};
+    });
+  };
+
+  const applyAndCloseCGBinge=()=>{
+    setCompetitiveGainerState(prev=>{
+      if(!prev?.subState?.gain) return prev?{...prev,view:null,subState:null}:prev;
+      const{gain}=prev.subState;
+      setStudents(sp=>sp.map(s=>{
+        if(s.id!==prev.priyaStudentId) return s;
+        return processStudentGain(s,gain,0);
+      }));
+      push(`📊 Priya — Competitive Binge: +${gain} lbs`);
+      return{...prev,view:null,subState:null};
+    });
+  };
+
+  const cgProfessorReply=(optId)=>{
+    const opt=CG_CHAT_TEMPLATES.professorReplies.find(r=>r.id===optId);
+    if(!opt) return;
+    setCompetitiveGainerState(prev=>{
+      if(!prev) return prev;
+      const msg={text:`[You] ${opt.text}`,isProf:true,wk:week};
+      return{...prev,spirit:prev.spirit+opt.spiritDelta,chatLog:[...prev.chatLog,msg]};
+    });
+  };
+
   // ── CHAPTER HOSTESS handlers ──────────────────────────────────────
   const openHostessHangout=(studentId)=>{
     if(!chapterHostessState||chapterHostessState.prepDaysLeft<=0) return;
@@ -1460,7 +1546,7 @@ export default function ProfessorSim(){
   };
   const makeHostessHangoutChoice=(choiceId)=>{
     if(!chapterHostessState) return;
-    const{hangoutStudentId,hangoutPhaseIdx,hangoutHistory}=chapterHostessState;
+    const{hangoutStudentId,hangoutPhaseIdx}=chapterHostessState;
     const keyMap={2:'kylie',4:'fiona',10:'renee'};
     const key=keyMap[hangoutStudentId]; if(!key) return;
     const unlockIdx=key==='kylie'?chapterHostessState.guestUnlocks:key==='renee'?chapterHostessState.menuUnlocks:chapterHostessState.atmosphereUnlocks;
@@ -2013,7 +2099,7 @@ export default function ProfessorSim(){
 
   const toggleFoodSelection=(side,key)=>{
     if(!eatingContestState) return;
-    const{stageIdx,yourFoods,mayaFoods}=eatingContestState;
+    const{stageIdx}=eatingContestState;
     if(side==='your'){
       setEatingContestState(prev=>({...prev,yourFoods:prev.yourFoods.map(f=>f.key===key&&!f.consumed?{...f,selected:!f.selected}:f)}));
     } else if(side==='maya'&&stageIdx>=3){
@@ -2023,7 +2109,7 @@ export default function ProfessorSim(){
 
   const doDevour=()=>{
     if(!eatingContestState) return;
-    const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,pantsFactor}=eatingContestState;
+    const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxMayaFullness,yourGain,mayaGain}=eatingContestState;
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const selectedYour=yourFoods.filter(f=>f.selected&&!f.consumed);
     const selectedMaya=mayaFoods.filter(f=>f.selected&&!f.consumed);
@@ -2063,7 +2149,7 @@ export default function ProfessorSim(){
 
   const doContestAction=(action)=>{
     if(!eatingContestState) return;
-    const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,pantsFactor,actions}=eatingContestState;
+    const{stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,mayaGain,pantsFactor,actions}=eatingContestState;
     let updates={};
     let popup='';
     if(action==='unbutton'){
@@ -2206,7 +2292,7 @@ export default function ProfessorSim(){
     }
     const wf=Math.max(0.6,Math.min(2.0,s.lbs/st.oppLbs));
     let ringPos=st.ringPos, yourBalance=st.yourBalance, oppBalance=st.oppBalance;
-    let tag,ringDelta=0,yb=0,ob=0;
+    let tag,ringDelta=0;
     if(yourBalance<=0&&moveId!=='brace'){
       tag='stumble'; ringDelta=-25; yourBalance=25;
     }else{
@@ -2454,7 +2540,6 @@ export default function ProfessorSim(){
 
     // Check quality fail
     if(newQual<=0){
-      const kylieName=kylie.name;
       const partnerName=partner.name;
       const crashText=`The stream crashes. Quality hit zero — the momentum died, the chat thinned out, and the connection dropped while both of you were still at the table. It happens. You gained ${Math.round(newKylieGain)} pounds and ${partnerName} gained ${Math.round(newPartnerGain)} pounds and the stream is just over.`;
       setCollabStreamState(prev=>prev?{...prev,kylieGain:newKylieGain,partnerGain:newPartnerGain,qualityBar:0,chatLines:newChat,phase:'scoreboard',popupText:crashText,phaseAfterPopup:'scoreboard_crash'}:prev);
@@ -2516,7 +2601,6 @@ export default function ProfessorSim(){
       if(step===0) newChoices.angle=choiceId;
       else if(step===1) newChoices.food=choiceId;
       else newChoices.pace=choiceId;
-      const popupKey=step===0?choiceId:step===1?choiceId:choiceId;
       const popupArr=RECORDING_DIRECTION_POPUPS[choiceId];
       const kylieForPopup=students.find(st=>st.id===prev.studentId);
       const popupFn=popupArr?.[prev.stageIdx];
@@ -2604,109 +2688,149 @@ export default function ProfessorSim(){
 
   const closeRecordingSession=()=>setRecordingSessionState(null);
 
-  // ── Fair Contest (state_fair_queen) ────────────────────────────
-  const startFairContest=(s, stageIdx)=>{
-    const tier=getTier(s.relationship).id;
-    const capMap={0:100,1:130,2:160,3:250};
-    const overfullCap=capMap[tier]||100;
-    const darcyStartLbs=FAIR_DARCY_WEIGHTS[Math.min(stageIdx,5)];
-    const foodIds=FAIR_STAGE_FOODS[Math.min(stageIdx,5)]||FAIR_STAGE_FOODS[0];
-    const yourFoods=foodIds.map(id=>{const f=FAIR_FOODS.find(x=>x.id===id)||FAIR_FOODS[0];return {...f,consumed:false};});
-    setFairContestState({
-      studentId:s.id, stageIdx, yourStartLbs:s.lbs, darcyStartLbs,
-      yourFoods, darcyFoodsLeft:Math.floor(yourFoods.length*0.8),
-      yourFullnessPct:0, overfullCap,
-      yourGain:0, darcyGain:0, milestonesHit:[],
-      tauntUsed:false, pushThroughUsed:false, coolDownUses:0,
-      phase:'eating', popupText:null, popupPhase:null,
-    });
-  };
+  // ── Fair Training Collaborations + Fair Day (state_fair_queen) ─────────
+  const clampFairStage=(lbs)=>Math.max(4,Math.min(10,getStage(lbs).id));
+  const getFairPrideTier=(pride)=>FAIR_TRAINING_CONFIG.fairPrideTiers.find(t=>pride>=t.min&&pride<=t.max)||FAIR_TRAINING_CONFIG.fairPrideTiers[0];
 
-  const eatFairPie=(foodId)=>{
-    setFairContestState(prev=>{
-      if(!prev||prev.phase!=='eating') return prev;
-      const fi=prev.yourFoods.findIndex(f=>f.id===foodId&&!f.consumed);
-      if(fi<0) return prev;
-      const food=prev.yourFoods[fi];
-      const newFoods=prev.yourFoods.map((f,i)=>i===fi?{...f,consumed:true}:f);
-      const newFullness=prev.yourFullnessPct+food.fullnessAmt;
-      const newGain=prev.yourGain+food.lbs;
-      // darcy auto-eats
-      const newDarcyLeft=Math.max(0,prev.darcyFoodsLeft-1);
-      const darcyFoodLbs=prev.yourFoods[0]?.lbs||5; // rough proxy
-      const newDarcyGain=prev.darcyGain+(newDarcyLeft<prev.darcyFoodsLeft?darcyFoodLbs:0);
-      // check milestones
-      const thresholds=[100,150,200,250];
-      let newMilestones=[...prev.milestonesHit];
-      let popupText=null;
-      const stIdx=prev.stageIdx;
-      for(const t of thresholds){
-        if(!newMilestones.includes(String(t))&&newFullness>=t){
-          newMilestones.push(String(t));
-          const mArr=FAIR_FULLNESS_MILESTONES[t];
-          if(mArr) popupText=mArr[Math.min(stIdx,mArr.length-1)]||null;
-          break; // fire one at a time
-        }
-      }
-      // check end condition
-      const allEaten=newFoods.every(f=>f.consumed);
-      const overCap=newFullness>=prev.overfullCap;
-      if((allEaten||overCap)&&!popupText){
-        // transition to weigh_in after this update
-        return {...prev,yourFoods:newFoods,yourFullnessPct:newFullness,yourGain:newGain,darcyFoodsLeft:newDarcyLeft,darcyGain:newDarcyGain,milestonesHit:newMilestones,phase:'weigh_in'};
-      }
-      if((allEaten||overCap)&&popupText){
-        // show milestone popup first, then weigh_in
-        return {...prev,yourFoods:newFoods,yourFullnessPct:newFullness,yourGain:newGain,darcyFoodsLeft:newDarcyLeft,darcyGain:newDarcyGain,milestonesHit:newMilestones,popupText,popupPhase:'weigh_in'};
-      }
-      return {...prev,yourFoods:newFoods,yourFullnessPct:newFullness,yourGain:newGain,darcyFoodsLeft:newDarcyLeft,darcyGain:newDarcyGain,milestonesHit:newMilestones,popupText:popupText||null};
-    });
-  };
-
-  const doFairAction=(action)=>{
-    setFairContestState(prev=>{
-      if(!prev||prev.phase!=='eating') return prev;
-      let upd={...prev};
-      if(action==='taunt'&&!prev.tauntUsed){
-        upd.tauntUsed=true;
-        const arr=FAIR_TAUNT_POPUPS;
-        upd.popupText=arr[Math.min(prev.stageIdx,arr.length-1)]||null;
-      } else if(action==='push_through'&&!prev.pushThroughUsed){
-        upd.pushThroughUsed=true;
-        upd.overfullCap=prev.overfullCap+15;
-        // small rel cost applied later
-        const s=students.find(st=>st.id===prev.studentId);
-        if(s) setStudents(ss=>ss.map(st=>st.id===prev.studentId?{...st,relationship:Math.max(0,st.relationship-2)}:st));
-        upd.popupText=`You push through. Your body argues. Your body loses. The cap lifts — not by much, but enough to keep eating.`;
-      } else if(action==='cool_down'&&prev.coolDownUses<2){
-        upd.coolDownUses=prev.coolDownUses+1;
-        upd.yourFullnessPct=Math.max(0,prev.yourFullnessPct-5);
-        upd.popupText=`You pause, breathe, let the fullness redistribute. Five percent back. The tent is still hot. You pick up the next plate.`;
-      }
-      return upd;
-    });
-  };
-
-  const dismissFairPopup=()=>{
-    setFairContestState(prev=>{
-      if(!prev) return prev;
-      if(prev.popupPhase){
-        return {...prev,popupText:null,phase:prev.popupPhase,popupPhase:null};
-      }
-      return {...prev,popupText:null};
-    });
-  };
-
-  const closeFairContest=()=>{
-    const fc=fairContestState;
-    if(!fc) return;
-    const s=students.find(st=>st.id===fc.studentId);
-    if(s){
-      processStudentGain(s,fc.yourGain,8);
-      setStudents(ss=>ss.map(st=>st.id===fc.studentId?{...st,contestCompletions:(st.contestCompletions||0)+1}:st));
+  const startFairTrainingSession=(collabKey)=>{
+    const ft=fairTrainingState;
+    const mj=students.find(st=>st.id===ft.mjStudentId);
+    if(!mj) return;
+    if(ap<FAIR_TRAINING_CONFIG.apCost){push(`⚠️ Need ${FAIR_TRAINING_CONFIG.apCost} AP.`);return;}
+    if(ft.sessionsThisCycle>=FAIR_TRAINING_CONFIG.maxSessionsPerCycle){push(`⚠️ Mary Jane is trained out — it's Fair Day.`);return;}
+    const cfg=FAIR_TRAINING_CONFIG.collaborators[collabKey];
+    const collab=students.find(st=>st.evolvedForm===cfg.evolvedForm);
+    if(!collab){push(`⚠️ No evolved ${collabKey} available.`);return;}
+    setAp(a=>a-FAIR_TRAINING_CONFIG.apCost);
+    const mjStage=clampFairStage(mj.lbs);
+    const cStage=clampFairStage(collab.lbs);
+    let sceneTag, photoTag, recruits=null;
+    if(collabKey==='Lilith'){
+      const [lo,hi]=ft.lilithRecruitRange;
+      recruits=[0,1,2].map(()=>({
+        bodyType:FAIR_TRAINING_CONFIG.recruitBodyTypes[rnd(0,FAIR_TRAINING_CONFIG.recruitBodyTypes.length-1)],
+        stage:rnd(lo,hi),
+      }));
+      const avg=recruits.reduce((a,r)=>a+r.stage,0)/3;
+      const group=avg<=2?'Early':avg<=4?'Mid':'Late';
+      sceneTag=FAIR_TRAINING_SCENES.Lilith[`MJ${mjStage}_L${cStage}_${group}`];
+      photoTag=FAIR_TRAINING_PHOTOS.Lilith[`MJ${mjStage}_L${cStage}`];
+    } else {
+      sceneTag=FAIR_TRAINING_SCENES[collabKey][`MJ${mjStage}_C${cStage}`];
+      photoTag=FAIR_TRAINING_PHOTOS[collabKey][`MJ${mjStage}_C${cStage}`];
     }
-    setFairContestState(null);
+    // pride boost — halved if she keeps leaning on the same collaborator
+    const boostCfg=FAIR_TRAINING_CONFIG.fairPrideBoosts[collabKey];
+    let prideBoost=boostCfg.base+boostCfg.perStageBonus*cStage+(boostCfg.perRecruit?boostCfg.perRecruit*3:0);
+    if(ft.lastCollaborator===collabKey) prideBoost=Math.round(prideBoost*0.5);
+    prideBoost=Math.round(prideBoost);
+    const boostTier=cStage<=5?'Low':cStage<=8?'Mid':'High';
+    // gains
+    const [mjLo,mjHi]=FAIR_TRAINING_CONFIG.gainRanges.MJ;
+    const [cLo,cHi]=FAIR_TRAINING_CONFIG.gainRanges.collaborator;
+    const mjGain=rnd(mjLo,mjHi), cGain=rnd(cLo,cHi);
+    processStudentGain(mj,mjGain,3);
+    if(collab.id!==mj.id) processStudentGain(collab,cGain,2);
+    push(`🎡 Fair training — ${mj.name} × ${collabKey}: MJ +${mjGain} lbs, ${collabKey} +${cGain} lbs, Fair Pride +${prideBoost}`);
+    setFairTrainingState(prev=>({...prev,
+      sessionsThisCycle:prev.sessionsThisCycle+1,
+      fairPride:prev.fairPride+prideBoost,
+      lastCollaborator:collabKey,
+      recentCollaborators:[...prev.recentCollaborators,collabKey].slice(-6),
+      influenceFlags:[...prev.influenceFlags,collabKey],
+      trophyPhotos:[...prev.trophyPhotos,{tag:photoTag,collab:collabKey,cycle:prev.cycleNum}],
+      pendingCollab:collabKey, pendingRecruits:recruits,
+      sessionSceneTag:sceneTag, sessionPhotoTag:photoTag,
+      sessionBoostSummary:FAIR_BOOST_SUMMARIES[collabKey][boostTier],
+      sessionLog:{mjGain,cGain,prideBoost,collabName:collab.name},
+      view:'session',
+    }));
+  };
+
+  const closeFairTraining=()=>setFairTrainingState(prev=>({...prev,open:false,view:'main',pendingCollab:null,pendingRecruits:null,sessionSceneTag:null,sessionPhotoTag:null,sessionBoostSummary:null,sessionLog:null}));
+
+  const launchFairDayEvent=()=>{
+    const ft=fairTrainingState;
+    const mj=students.find(st=>st.id===ft.mjStudentId);
+    if(!mj) return;
+    const meta=EVOLVED_ACTIVITY_META['state_fair_queen']||{apCost:1};
+    if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
+    const stageIdx=getEvolvedActivityStageIdx(mj);
+    const evDef=EVOLVED_EVENTS['state_fair_queen']?.[stageIdx];
+    if(!evDef){push(`⚠️ No fair event available at this stage.`);return;}
+    setAp(a=>a-meta.apCost);
+    setFairTrainingState(prev=>({...prev,open:false}));
+    setEvolvedEventState({studentId:mj.id,formId:'state_fair_queen',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});
+  };
+
+  const startFairDay=(s,stageIdx)=>{
+    const flags=fairTrainingState.influenceFlags;
+    let influenceKey='None';
+    if(flags.length){
+      const counts={};
+      for(const f of flags) counts[f]=(counts[f]||0)+1;
+      influenceKey=Object.entries(counts).sort((a,b)=>b[1]-a[1]||flags.lastIndexOf(b[0])-flags.lastIndexOf(a[0]))[0][0];
+    }
     setEvolvedEventState(null);
+    setFairDayState({
+      studentId:s.id, stageIdx:Math.min(stageIdx,5), influenceKey,
+      phase:'weighin', weighInChoice:null, weighInResultText:null, weighInGain:0, weighInRel:0,
+      afterpartyChoice:null, afterpartyResultText:null, totalGain:0, relBonus:0,
+    });
+  };
+
+  const chooseFairWeighIn=(choice)=>{
+    setFairDayState(prev=>{
+      if(!prev||prev.phase!=='weighin'||prev.weighInChoice) return prev;
+      const sc=FAIR_DAY_SCENES.weighIn[`${prev.stageIdx}_${prev.influenceKey}`];
+      const prideTier=getFairPrideTier(fairTrainingState.fairPride).label;
+      const bonus=FAIR_TRAINING_CONFIG.weighInBonus[prideTier]||0;
+      const baseGain=choice===1?sc.gainA:sc.gainB;
+      const gain=Math.round(baseGain*(1+bonus));
+      const rel=choice===1?sc.relA:sc.relB;
+      return {...prev,weighInChoice:choice,
+        weighInResultText:`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${choice===1?sc.endingA:sc.endingB}`,
+        weighInGain:gain,weighInRel:rel,totalGain:prev.totalGain+gain,relBonus:prev.relBonus+rel};
+    });
+  };
+
+  const advanceFairDayPhase=()=>{
+    setFairDayState(prev=>{
+      if(!prev) return prev;
+      if(prev.phase==='weighin') return {...prev,phase:'judging'};
+      if(prev.phase==='judging') return {...prev,phase:'afterparty'};
+      return prev;
+    });
+  };
+
+  const chooseFairAfterparty=(choice)=>{
+    setFairDayState(prev=>{
+      if(!prev||prev.phase!=='afterparty'||prev.afterpartyChoice) return prev;
+      const sc=FAIR_DAY_SCENES.afterparty[`${prev.stageIdx}_${prev.influenceKey}`];
+      const gain=choice===1?sc.gainA:sc.gainB;
+      const rel=choice===1?sc.relA:sc.relB;
+      return {...prev,afterpartyChoice:choice,
+        afterpartyResultText:`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${sc.ending}`,
+        totalGain:prev.totalGain+gain,relBonus:prev.relBonus+rel};
+    });
+  };
+
+  const closeFairDay=()=>{
+    const fd=fairDayState;
+    if(!fd) return;
+    const s=students.find(st=>st.id===fd.studentId);
+    if(s){
+      processStudentGain(s,fd.totalGain,fd.relBonus);
+      setStudents(ss=>ss.map(st=>st.id===fd.studentId?{...st,contestCompletions:(st.contestCompletions||0)+1}:st));
+      push(`🏆 Fair Day complete — ${s.name} +${Math.round(fd.totalGain)} lbs, +${fd.relBonus} rel`);
+    }
+    // new cycle: pride and sessions reset, recruit stage range drifts up every 2 fairs
+    setFairTrainingState(prev=>{
+      const nextCycle=prev.cycleNum+1;
+      const rangeIdx=Math.min(FAIR_TRAINING_CONFIG.recruitStageRanges.length-1,Math.floor(nextCycle/2));
+      return {...prev,cycleNum:nextCycle,sessionsThisCycle:0,fairPride:0,influenceFlags:[],lastCollaborator:null,lilithRecruitRange:FAIR_TRAINING_CONFIG.recruitStageRanges[rangeIdx]};
+    });
+    setFairDayState(null);
   };
 
   const openIntimacySelector=(s)=>{setIntimacySceneSelector({student:s});};
@@ -2724,7 +2848,7 @@ export default function ProfessorSim(){
 
   const makeIntimacyChoice=(choiceId)=>{
     if(!intimacyEventState) return;
-    const {studentId,sceneId,phaseIdx,history,logLines,gainAccum,relAccum,tier}=intimacyEventState;
+    const {studentId,sceneId,phaseIdx,history,logLines,gainAccum,relAccum}=intimacyEventState;
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId]; if(!def) return;
     const phase=def.phases[phaseIdx]; if(!phase) return;
@@ -2850,10 +2974,9 @@ export default function ProfessorSim(){
       // Find 3 heaviest non-singularity students and drain them
       const targets=[...students].filter(st=>st.id!==s.id&&!st.ascensionPath)
         .sort((a,b)=>b.lbs-a.lbs).slice(0,3);
-      let drainTotal=0;
       setStudents(prev=>prev.map(st=>{
         const t=targets.find(t=>t.id===st.id);
-        if(t){const d=rnd(5,10);drainTotal+=d;return{...st,lbs:Math.max(st.startLbs,st.lbs-d)};}
+        if(t){const d=rnd(5,10);return{...st,lbs:Math.max(st.startLbs,st.lbs-d)};}
         if(st.id===s.id) return {...st,lbs:st.lbs+gainAmt};
         return st;
       }));
@@ -3179,10 +3302,9 @@ export default function ProfessorSim(){
     if(actionId==="pr_drain"&&religion&&religion.devotees>=1){
       const targets=[...students].filter(st=>st.id!==s.id&&!st.ascensionPath)
         .sort((a,b)=>b.lbs-a.lbs).slice(0,3);
-      let drainTotal=0;
       setStudents(prev=>prev.map(st=>{
         const t=targets.find(t=>t.id===st.id);
-        if(t){const d=rnd(5,10);drainTotal+=d;return{...st,lbs:Math.max(st.startLbs,st.lbs-d)};}
+        if(t){const d=rnd(5,10);return{...st,lbs:Math.max(st.startLbs,st.lbs-d)};}
         if(st.id===s.id) return {...st,lbs:st.lbs+gainAmt};
         return st;
       }));
@@ -3510,8 +3632,6 @@ export default function ProfessorSim(){
       return s;
     }));
   };
-
-
 
   const activateDoubleDown=(dd)=>{
     setStudents(prev=>prev.map(s=>{
@@ -4152,7 +4272,6 @@ export default function ProfessorSim(){
   const profGainMult=1+(hasSubj("nutrition")?0.1:0)+(hasSubj("philosophy")?0.05:0)+(hasTrait("generous")?0.15:0);
   const profPassiveBonus=hasTrait("patient")?1:0;
   const observeFree=hasSubj("art_history")||hasTrait("observant");
-  const alwaysShowWeight=hasSubj("physical_ed")||hasTrait("observant");
   const talkRelBonus=hasTrait("charismatic")?4:hasSubj("psychology")?2:0;
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
   const hasSkill=(id)=>unlockedSkills.includes(id);
@@ -4226,28 +4345,6 @@ export default function ProfessorSim(){
     if(totalGained<sk.cost) return false;
     if(sk.requires) return sk.requires.every(r=>unlockedSkills.includes(r));
     return true;
-  };
-
-  // ── STYLES ──────────────────────────────────────────────────────────────
-  const C={
-    app:{fontFamily:"'Palatino Linotype',Palatino,Georgia,serif",background:"#070510",minHeight:"100vh",color:"#ddd0b8",display:"flex",flexDirection:"column",fontSize:14},
-    hdr:{background:"linear-gradient(135deg,#0f0620,#1c0838,#0f0620)",borderBottom:"2px solid #4a1590",padding:"10px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"},
-    nav:{display:"flex",background:"#0c0718",borderBottom:"1px solid #200e40",flexWrap:"wrap"},
-    navB:(a)=>({background:a?"#180c30":"transparent",border:"none",borderBottom:a?"2px solid #7a24d8":"2px solid transparent",color:a?"#c090ff":"#60409a",padding:"8px 16px",cursor:"pointer",fontSize:12,fontFamily:"inherit",letterSpacing:0.5,transition:"all 0.15s"}),
-    body:{display:"flex",flex:1,overflow:"hidden",maxHeight:"calc(100vh - 90px)"},
-    main:{flex:1,overflow:"auto",padding:14},
-    side:{width:320,background:"#070410",borderLeft:"1px solid #180830",overflow:"hidden",padding:9,flexShrink:0,display:"flex",flexDirection:"column"},
-    card:{background:"rgba(255,255,255,0.03)",border:"1px solid #180830",borderRadius:8,padding:10,marginBottom:7,cursor:"pointer",transition:"border-color 0.15s"},
-    secT:{fontSize:10,letterSpacing:3,color:"#6028b8",textTransform:"uppercase",marginBottom:8,borderBottom:"1px solid #180830",paddingBottom:3},
-    btn:(bg="#5818a8")=>({background:bg,border:"none",color:"#fff",borderRadius:6,padding:"7px 13px",cursor:"pointer",fontSize:12,fontFamily:"inherit",fontWeight:600,transition:"opacity 0.15s"}),
-    smBtn:{background:"rgba(80,18,140,0.35)",border:"1px solid #4a1280",color:"#b080e8",borderRadius:5,padding:"4px 9px",cursor:"pointer",fontSize:11,fontFamily:"inherit",margin:"2px 2px",transition:"background 0.15s"},
-    grid2:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(185px,1fr))",gap:8},
-    grid3:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(155px,1fr))",gap:7},
-    logE:{fontSize:12,padding:"3px 0",borderBottom:"1px solid rgba(80,18,140,0.12)",lineHeight:1.65,color:"#c0a888"},
-    overlay:{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.85)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:300},
-    modal:{background:"#0e0820",border:"1px solid #5a18c8",borderRadius:12,padding:24,maxWidth:540,width:"93%",maxHeight:"88vh",overflow:"auto",boxShadow:"0 0 60px rgba(100,30,200,0.3)"},
-    tag:(bg,color="#fff")=>({background:bg,color,borderRadius:10,padding:"2px 8px",fontSize:10,fontWeight:700,letterSpacing:1,whiteSpace:"nowrap"}),
-    infoBox:(bg)=>({background:bg,border:"1px solid rgba(255,255,255,0.07)",borderRadius:8,padding:10,marginBottom:9,lineHeight:1.75}),
   };
 
   const views=["class","actions","achievements","log"];
@@ -5207,6 +5304,9 @@ export default function ProfessorSim(){
             </div>
           )}
           <button onClick={startClass} style={C.btn("#186028")}>⏩ Next Week (+5 AP)</button>
+          {students.some(s=>s.evolvedForm==='competitive_gainer')&&(
+            <button onClick={()=>setCgChatOpen(true)} style={{...C.btn("#7a1530"),fontSize:10,border:"1px solid #e8294a40"}}>💬 Softening Stats</button>
+          )}
           <button onClick={()=>setDebugOpen(d=>!d)} style={{...C.btn("#222244"),fontSize:10,opacity:0.7}}>🐛 Debug</button>
         </div>
       </div>
@@ -5222,1931 +5322,25 @@ export default function ProfessorSim(){
       <div style={C.body}>
         <div style={C.main}>
 
-          {/* ── HR OBSERVER CARD ── */}
-          {hrObserver&&view==="class"&&(()=>{
-            const dl=getHrDispLevel(hrObserver.disposition);
-            const st=getStage(hrObserver.lbs);
-            return(
-              <div style={{background:"rgba(60,10,10,0.35)",border:`1px solid ${dl.color}40`,borderRadius:10,padding:12,marginBottom:14}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                  <div>
-                    <span style={{fontSize:13,fontWeight:700,color:dl.color}}>{hrObserver.name}</span>
-                    <span style={{fontSize:10,color:"#805060",marginLeft:8,letterSpacing:1}}>HR OBSERVER · {hrObserver.lbs} lbs · {st.label}</span>
-                  </div>
-                  <span style={{fontSize:10,fontWeight:700,color:dl.color,background:`${dl.color}25`,borderRadius:8,padding:"2px 8px"}}>{dl.label}</span>
-                </div>
-                <div style={{position:"relative",height:5,background:"rgba(255,255,255,0.07)",borderRadius:3,marginBottom:8}}>
-                  <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:3,background:dl.color,width:`${hrObserver.disposition}%`,transition:"width 0.4s"}}/>
-                  <div style={{position:"absolute",left:"65%",top:-1,height:7,width:2,background:"rgba(255,255,255,0.3)",borderRadius:1}}/>
-                </div>
-                <div style={{fontSize:11,color:"#907090",lineHeight:1.6,marginBottom:8,fontStyle:"italic"}}>{getHrDispDesc(hrObserver)}</div>
-                <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                  <button style={C.btn("#5a1030")} onClick={()=>feedObserver(rnd(2,5),8)}>🍽️ Offer her something (free)</button>
-                  <button style={{...C.btn("#3a1060"),opacity:ap<1?0.4:1}} onClick={talkToObserver}>💬 Discuss pedagogy (1 AP, +12 disp)</button>
-                  {hrObserver.disposition>=65&&<span style={{fontSize:11,color:"#40c060",alignSelf:"center"}}>✓ Will intervene at termination</span>}
-                </div>
-              </div>
-            );
-          })()}
-
-          {/* ── VAUGHAN CARD ── */}
-          {vaughan&&view==="class"&&(()=>{
-            const vSt=getStage(vaughan.lbs);
-            return(
-              <div style={{background:"rgba(10,30,50,0.45)",border:`1px solid ${vaughanAlly?"#30905050":"#20405060"}`,borderRadius:10,padding:12,marginBottom:14}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                  <div>
-                    <span style={{fontSize:13,fontWeight:700,color:vaughanAlly?"#50c080":"#4080a0"}}>{vaughan.name}</span>
-                    <span style={{fontSize:10,color:"#3a5060",marginLeft:8,letterSpacing:1}}>{vaughan.dept} · {vaughan.lbs} lbs · {vSt.label}</span>
-                  </div>
-                  <span style={{fontSize:10,fontWeight:700,color:vaughanAlly?"#50c080":"#c05040",background:vaughanAlly?"rgba(30,80,30,0.35)":"rgba(70,15,15,0.35)",borderRadius:8,padding:"2px 8px"}}>
-                    {vaughanAlly?"ALLY":"RIVAL"}
-                  </span>
-                </div>
-                {!vaughanAlly&&(
-                  <div>
-                    <div style={{display:"flex",gap:10,marginBottom:6}}>
-                      <div style={{flex:1}}>
-                        <div style={{fontSize:9,color:"#405060",letterSpacing:1,marginBottom:2}}>SUSPICION</div>
-                        <div style={{position:"relative",height:4,background:"rgba(255,255,255,0.07)",borderRadius:2}}>
-                          <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:2,transition:"width 0.4s",
-                            background:vaughan.suspicion>=80?"#c03030":vaughan.suspicion>=50?"#c06020":"#406080",
-                            width:`${vaughan.suspicion}%`}}/>
-                        </div>
-                        <div style={{fontSize:9,color:"#506070",marginTop:1}}>{vaughan.suspicion}/100</div>
-                      </div>
-                      <div style={{flex:1}}>
-                        <div style={{fontSize:9,color:"#405060",letterSpacing:1,marginBottom:2}}>DISPOSITION</div>
-                        <div style={{position:"relative",height:4,background:"rgba(255,255,255,0.07)",borderRadius:2}}>
-                          <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:2,transition:"width 0.4s",
-                            background:vaughan.disposition>=40?"#40c070":"#607090",
-                            width:`${vaughan.disposition}%`}}/>
-                          <div style={{position:"absolute",left:"40%",top:-1,height:6,width:2,background:"rgba(255,255,255,0.25)",borderRadius:1}}/>
-                        </div>
-                        <div style={{fontSize:9,color:"#506070",marginTop:1}}>{vaughan.disposition}/40 needed</div>
-                      </div>
-                    </div>
-                    <div style={{fontSize:10,color:"#4a6070",lineHeight:1.55,fontStyle:"italic"}}>
-                      {vaughan.disposition>=40&&vaughan.lbs>=162?"She is close to letting this go entirely."
-                      :vaughan.suspicion>=80?"She knows. One confrontation away from a crisis — or an alliance."
-                      :vaughan.suspicion>=50?"She's been asking questions. Feed her at social events to shift her perspective."
-                      :"She's noticed something. Not sure what yet."}
-                    </div>
-                    {vaughan.disposition>=40&&vaughan.lbs<162&&(
-                      <div style={{fontSize:9,color:"#40806050",marginTop:3}}>
-                        Ally trigger: {162-vaughan.lbs} lbs to go — host events she attends to help her gain.
-                      </div>
-                    )}
-                  </div>
-                )}
-                {vaughanAlly&&(
-                  <div style={{fontSize:11,color:"#4a9060",lineHeight:1.65,fontStyle:"italic"}}>
-                    She files favorable reports and covers for you with HR. Scrutiny reduced by 3/week.
-                  </div>
-                )}
-              </div>
-            );
-          })()}
-
-          {/* ── CLASS ROSTER ── */}
-          {view==="class"&&(
-            <div>
-              <p style={C.secT}>Students — {students.filter(s=>!s.hidden||lilithUnlocked).length} enrolled · avg {avgLbs} lbs</p>
-              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(195px,1fr))",gridAutoRows:"minmax(140px,auto)",gap:8}}>
-                {[...students].filter(s=>!s.hidden||lilithUnlocked).sort((a,b)=>{
-                  const aG=a.incarnatedGoddess?2:0;
-                  const bG=b.incarnatedGoddess?2:0;
-                  if(aG!==bG) return aG-bG;
-                  return a.id-b.id;
-                }).map(s=>{
-                  const st=getStage(s.lbs);
-                  const evMeta=s.evolvedForm?EVOLVED_FORM_META[s.evolvedForm]:null;
-                  const isSingularity=s.ascensionPath==="convergence"&&!s.triumvirateUnlocked;
-                  const isTriumvirate=s.ascensionPath==="convergence"&&!!s.triumvirateUnlocked;
-                  const isPrimordial=s.ascensionPath==="primordial"&&!s.primordialTriumvirateUnlocked;
-                  const isPrimTriumvirate=s.ascensionPath==="primordial"&&!!s.primordialTriumvirateUnlocked;
-                  const colSpan=isTriumvirate||isPrimTriumvirate?3:isSingularity||isPrimordial?2:1;
-                  // Card border/bg
-                  const cardBorder=isTriumvirate?"2px solid #ffd70090":isPrimTriumvirate?"2px solid #c0803090":isSingularity?"2px solid #ffffff60":isPrimordial?"2px solid #c0904060":s.ascensionPath==="celestial"?"1px solid #8060c060":s.ascensionPath==="umbral"?"1px solid #80101060":s.ascensionPath==="sanguine"?"1px solid #c0203060":s.ascensionPath==="verdant"?"1px solid #40802060":evMeta?`1px solid ${evMeta.color}80`:"1px solid #180830";
-                  const cardBg=isTriumvirate?"linear-gradient(135deg,#0a0510,#1a0a30,#100520,#0a0510)":isPrimTriumvirate?"linear-gradient(135deg,#0a0800,#1a0e00,#0f0a00,#0a0800)":isSingularity?"linear-gradient(135deg,#080510,#121020,#0a0818,#080510)":isPrimordial?"linear-gradient(135deg,#080500,#14090000,#100700,#080500)":"";
-                  const nameColor=isTriumvirate?"#ffd700":isPrimTriumvirate?"#c09040":isSingularity?"#e8e8ff":isPrimordial?"#d4a050":s.ascensionPath==="celestial"?"#c8b0ff":s.ascensionPath==="umbral"?"#ff9090":s.ascensionPath==="sanguine"?"#ff7070":s.ascensionPath==="verdant"?"#80d080":evMeta?evMeta.color:"#d8a8ff";
-                  const barColor=isTriumvirate?"#ffd700":isPrimTriumvirate?"#b07030":isSingularity?"#c8c8ff":isPrimordial?"#c09040":s.ascensionPath==="celestial"?CELESTIAL_STAGES[s.ascensionStage||0]?.color:s.ascensionPath==="umbral"?UMBRAL_STAGES[s.ascensionStage||0]?.color:s.ascensionPath==="sanguine"?"#e03050":s.ascensionPath==="verdant"?"#50a050":st.color;
-                  const barMax=isTriumvirate||isPrimTriumvirate?60000:isSingularity||isPrimordial?20000:s.ascensionPath?3000:1100;
-                  // ── Goddess special card ──
-                  if(s.incarnatedGoddess){
-                    const gs=getGoddessStage(s.lbs);
-                    const nextGs=GODDESS_STAGES[gs.id]||null;
-                    const godAccent=gs.color;
-                    const godQuote=(GODDESS_ATTITUDE[gs.id-1]||"").slice(0,120);
-                    return(
-                      <div key={s.id} style={{
-                        ...C.card,
-                        gridColumn:"span 2",gridRow:"span 2",
-                        background:"linear-gradient(155deg,#0e0700,#1e0e00,#150b05,#0e0700)",
-                        border:`2px solid ${godAccent}70`,
-                        boxShadow:`0 0 24px ${godAccent}20, inset 0 0 30px rgba(0,0,0,0.6)`,
-                        position:"relative",overflow:"hidden",display:"flex",flexDirection:"column",gap:6,
-                      }} onClick={()=>{setSelectedId(s.id);setView("student")}}>
-                        {/* pulsing top strip */}
-                        <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,transparent,${godAccent},${godAccent}cc,${godAccent},transparent)`,opacity:0.85}}/>
-                        {/* corner sigil */}
-                        <div style={{position:"absolute",top:6,right:8,fontSize:22,opacity:0.18}}>✦</div>
-                        <div style={{position:"absolute",bottom:6,left:8,fontSize:22,opacity:0.18}}>✦</div>
-                        {/* Stage badge */}
-                        <div style={{display:"flex",alignItems:"center",gap:8,marginTop:4}}>
-                          <span style={{fontSize:9,letterSpacing:3,color:godAccent,fontWeight:700}}>THE GODDESS</span>
-                          <span style={{fontSize:9,background:`${godAccent}22`,color:godAccent,borderRadius:6,padding:"1px 7px",border:`1px solid ${godAccent}40`,letterSpacing:1}}>{gs.label.toUpperCase()}</span>
-                        </div>
-                        {/* Name */}
-                        <div style={{fontSize:20,fontWeight:700,color:godAccent,lineHeight:1.1,letterSpacing:1}}>{s.name}</div>
-                        {/* Weight large */}
-                        <div style={{fontSize:14,color:"#e8c870",fontWeight:700}}>{s.lbs.toLocaleString()} lbs</div>
-                        {/* Progress toward next stage */}
-                        {nextGs?(
-                          <div>
-                            <div style={{display:"flex",justifyContent:"space-between",fontSize:9,color:"#806030",marginBottom:2}}>
-                              <span>Stage {gs.id}/4</span>
-                              <span>{nextGs.min.toLocaleString()} lbs → {nextGs.label}</span>
-                            </div>
-                            <Bar val={s.lbs-gs.min} max={nextGs.min-gs.min} color={godAccent}/>
-                          </div>
-                        ):(
-                          <div style={{fontSize:9,color:godAccent,letterSpacing:2}}>STAGE 4 — CONSUMING ✦</div>
-                        )}
-                        {/* Attitude quote */}
-                        <div style={{fontSize:11,color:"#c8a060",fontStyle:"italic",lineHeight:1.65,flex:1,marginTop:2}}>
-                          "{godQuote}…"
-                        </div>
-                        {/* Relationship */}
-                        <div style={{fontSize:10,color:"#806030",marginTop:"auto"}}>
-                          {(()=>{const tier=getTier(s.relationship);return `${tier.emoji} ${tier.label} · ❤ ${s.relationship}%`;})()}
-                        </div>
-                      </div>
-                    );
-                  }
-                  return(
-                    <div key={s.id} style={{...C.card,border:cardBorder,gridColumn:`span ${colSpan}`,background:cardBg||C.card.background,position:"relative",overflow:"hidden"}} onClick={()=>{setSelectedId(s.id);setView("student")}}>
-                      {/* Fused accent glow strip */}
-                      {(isSingularity||isTriumvirate)&&<div style={{position:"absolute",top:0,left:0,right:0,height:2,background:isTriumvirate?"linear-gradient(90deg,#ffd700,#fff,#ffd700)":"linear-gradient(90deg,#8080ff,#ffffff,#8080ff)",opacity:0.7}}/>}
-                      {(isPrimordial||isPrimTriumvirate)&&<div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,#8b4513,#c09040,#8b4513)",opacity:0.7}}/>}
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:3}}>
-                        <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
-                          <span style={{fontWeight:700,fontSize:isSingularity||isPrimordial?17:isTriumvirate||isPrimTriumvirate?19:15,color:nameColor}}>{s.name}</span>
-                          {(()=>{const tier=getTier(s.relationship);return tier.id>0?<span style={{fontSize:12,opacity:0.9}}>{tier.emoji}</span>:null;})()}
-                          {s.ascensionPath==="celestial"&&<span style={{fontSize:11,color:"#a080ff"}}>✦{CELESTIAL_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
-                          {s.ascensionPath==="umbral"&&<span style={{fontSize:11,color:"#cc4040"}}>🌑{UMBRAL_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
-                          {s.ascensionPath==="sanguine"&&<span style={{fontSize:11,color:"#e05050"}}>🩸{SANGUINE_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
-                          {s.ascensionPath==="verdant"&&<span style={{fontSize:11,color:"#60b060"}}>🌿{VERDANT_STAGES[s.ascensionStage||0]?.label.split(" ")[1]}</span>}
-                          {isPrimordial&&<span style={{fontSize:12,color:"#c09040",fontWeight:700,letterSpacing:1}}>🌑🌿 Primordial</span>}
-                          {isPrimTriumvirate&&<span style={{fontSize:13,color:"#d4a050",fontWeight:700,letterSpacing:1}}>🌑🌿 First Triumvirate</span>}
-                          {isSingularity&&<span style={{fontSize:12,color:"#c0c0ff",fontWeight:700,letterSpacing:1}}>⚡ Singularity</span>}
-                          {isTriumvirate&&<span style={{fontSize:13,color:"#ffd700",fontWeight:700,letterSpacing:2}}>🔱 TRIUMVIRATE</span>}
-                          {!s.ascensionPath&&evMeta&&<span style={{fontSize:10,color:evMeta.color,fontWeight:600}}>✦ {evMeta.title}</span>}
-                        </div>
-                        <StageTag stage={st}/>
-                      </div>
-                      {!(isSingularity||isTriumvirate||isPrimordial||isPrimTriumvirate)&&(
-                        <div style={{fontSize:10,color:"#70508a",marginBottom:3}}>{s.role||s.archetype} · {s.bodyType} · {s.age}y · <MoodBadge mood={s.mood}/></div>
-                      )}
-                      {(isSingularity||isTriumvirate||isPrimordial||isPrimTriumvirate)&&(
-                        <div style={{fontSize:10,color:isPrimordial||isPrimTriumvirate?"#907040":"#8080b0",marginBottom:4,fontStyle:"italic"}}>
-                          {isSingularity||isTriumvirate?"One being. Two origins. One convergence.":"The first hunger. The living earth. One origin."}
-                        </div>
-                      )}
-                      <Bar val={s.lbs} max={barMax} color={barColor}/>
-                      <div style={{fontSize:11,color:isTriumvirate?"#ffd700":isPrimTriumvirate?"#c09040":"#a88050",margin:"2px 0",fontWeight:isSingularity||isTriumvirate||isPrimordial||isPrimTriumvirate?700:400}}>
-                        {s.lbs.toLocaleString()} lbs{(isSingularity||isPrimordial||isTriumvirate||isPrimTriumvirate)?"":`  (+${s.lbs-s.startLbs})`} · ❤ {s.relationship}%
-                      </div>
-                      <div style={{fontSize:10,color:isPrimordial||isPrimTriumvirate?"#705030":isSingularity||isTriumvirate?"#6060a0":"#504060",fontStyle:"italic",lineHeight:1.4,marginTop:3}}>
-                        {(()=>{
-                          if(s.ascensionPath){const _r=s.ascensionPath==="celestial"?ASCENSION_STAGE_REACTIONS.celestial:s.ascensionPath==="umbral"?ASCENSION_STAGE_REACTIONS.umbral:s.ascensionPath==="sanguine"?SANGUINE_REACTIONS:s.ascensionPath==="verdant"?VERDANT_REACTIONS:[CONVERGENCE_STAGE.desc];const _e=_r[s.ascensionStage||0]||"";return((typeof _e==='function'?_e(s):_e)||"").slice(0,90);}
-                          const evR=getEvolvedReaction(s); if(evR) return evR.slice(0,62);
-                          const rxn=STAGE_REACTIONS[s.archetype]?.[st.id]; return ((typeof rxn==='function'?rxn(s):rxn)||"").slice(0,62);
-                        })()}…
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          {/* ── CLASS VIEW (HR observer card · Vaughan card · roster) ── */}
+          {view==="class"&&<ClassView view={view} hrObserver={hrObserver} vaughan={vaughan} vaughanAlly={vaughanAlly} ap={ap} feedObserver={feedObserver} talkToObserver={talkToObserver} students={students} lilithUnlocked={lilithUnlocked} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&(()=>{
-            const s=sel;
-            const st=getStage(s.lbs);
-
-            // ── LILITH — custom detail panel ──────────────────────────────────
-            if(s.id===LILITH_ID){
-              const stageId=st.id;
-              const isBlob=stageId>=9;
-              const menConsumed=Math.max(0,stageId); // roughly 1 man per stage
-              const dark="#1a001a";
-              const accent="#8020a0";
-              const nextSt=WEIGHT_STAGES[Math.min(10,stageId+1)];
-              const lbsToNext=nextSt&&nextSt.id>stageId?Math.max(0,nextSt.min-Math.round(s.lbs)):0;
-              return(
-                <div>
-                  <div style={{...C.card,cursor:"default",marginBottom:10,background:`linear-gradient(160deg,${dark},#100015)`,border:`1px solid ${accent}50`}}>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                      <div style={{display:"flex",alignItems:"center",gap:8}}>
-                        <h2 style={{margin:0,color:accent,fontSize:22}}>{s.name}</h2>
-                        <span style={{fontSize:10,fontWeight:700,color:accent,background:`${accent}22`,borderRadius:6,padding:"2px 8px"}}>🌑 Feasting Beauty</span>
-                      </div>
-                      <StageTag stage={st}/>
-                    </div>
-                    <div style={{fontSize:11,color:"#604070",marginBottom:8}}>{s.role} · age {s.age} · {s.desc}</div>
-                    <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:6}}>
-                      <div style={{flex:1,minWidth:150}}>
-                        <div style={{fontSize:9,color:"#500050",letterSpacing:2,marginBottom:1}}>WEIGHT</div>
-                        <Bar val={s.lbs} color={accent}/>
-                        <div style={{fontSize:11,color:"#906090"}}>{Math.round(s.lbs)} lbs{lbsToNext>0?` · ${lbsToNext} lbs to ${nextSt.label}`:""}</div>
-                      </div>
-                      <div style={{flex:1,minWidth:150}}>
-                        <div style={{fontSize:9,color:"#500050",letterSpacing:2,marginBottom:1}}>HUNTS</div>
-                        <div style={{fontSize:14,color:accent,fontWeight:700}}>{menConsumed}</div>
-                        <div style={{fontSize:10,color:"#604070"}}>
-                          {isBlob?"No longer leaves the room.":stageId>=7?"Range severely limited.":stageId>=5?"Range narrowing.":"Campus is open."}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div style={C.infoBox("rgba(20,0,30,0.6)")}>
-                    <div style={{fontSize:9,color:"#500050",letterSpacing:2,marginBottom:4}}>CURRENT APPEARANCE</div>
-                    <div style={{fontSize:13,color:"#e0c0e0",lineHeight:1.8,fontStyle:"italic"}}>{getBodyDesc(s)}</div>
-                  </div>
-                  <div style={{background:"rgba(15,0,25,0.7)",border:`1px solid ${accent}40`,borderRadius:10,padding:14,marginBottom:10}}>
-                    <div style={{fontSize:9,letterSpacing:3,color:accent,marginBottom:6}}>🌑 FEASTING BEAUTY</div>
-                    <div style={{fontSize:12,color:"#c0a0c0",lineHeight:1.75,marginBottom:10,fontStyle:"italic"}}>
-                      {isBlob
-                        ?"She doesn't go anywhere anymore. The hunger hasn't gone anywhere either. Things come to her now."
-                        :stageId>=7?"She moves through the campus slowly. Deliberately. There's no need to hurry — they're not going anywhere."
-                        :stageId>=4?"She's larger than she was. It shows. It also helps."
-                        :"She moves through the campus like she owns it. Nobody knows what she is. That's her favorite part."}
-                    </div>
-                    {isBlob?(
-                      <button style={{...C.btn("#500060"),width:"100%",fontSize:13}} onClick={openLilithHunt}>
-                        📱 Call for Delivery
-                      </button>
-                    ):(
-                      <button style={{...C.btn("#400050"),width:"100%",fontSize:13}} onClick={openLilithHunt}>
-                        🌑 Go Hunting (free)
-                      </button>
-                    )}
-                  </div>
-                  <button style={{...C.smBtn,width:"100%",marginTop:4}} onClick={()=>setView("class")}>← Back to Class</button>
-                </div>
-              );
-            }
-
-            return(
-              <div>
-                {/* Header card */}
-                {(()=>{const detailEvMeta=s.evolvedForm?EVOLVED_FORM_META[s.evolvedForm]:null; return(
-                <div style={{...C.card,cursor:"default",marginBottom:10,borderColor:detailEvMeta&&!s.ascensionPath?`${detailEvMeta.color}60`:""}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                    <div style={{display:"flex",alignItems:"center",gap:8}}>
-                      <h2 style={{margin:0,color:detailEvMeta&&!s.ascensionPath?detailEvMeta.color:"#d8a8ff",fontSize:22}}>{s.name}</h2>
-                      {detailEvMeta&&!s.ascensionPath&&<span style={{fontSize:11,fontWeight:700,color:detailEvMeta.color,background:`${detailEvMeta.color}22`,borderRadius:6,padding:"2px 8px"}}>✦ {detailEvMeta.title}</span>}
-                    </div>
-                    <div style={{display:"flex",gap:6,alignItems:"center"}}>
-                      <StageTag stage={st}/>
-                      <span style={C.tag("#2a1050","#b080e0")}>{s.personality}</span>
-                    </div>
-                  </div>
-                  <div style={{fontSize:11,color:"#70509a",marginBottom:8}}>{s.role||s.archetype} · {s.archetype} · age {s.age} · {s.bodyType} body · fav: {s.favFood} · hobby: {s.hobby}</div>
-
-                  <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:8}}>
-                    <div style={{flex:1,minWidth:150}}>
-                      <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:1}}>WEIGHT</div>
-                      <Bar val={s.lbs} color={st.color}/>
-                      <div style={{fontSize:11,color:"#b08840"}}>{s.lbs} lbs · started {s.startLbs} · gained {s.lbs-s.startLbs} lbs</div>
-                    </div>
-                    <div style={{flex:1,minWidth:150}}>
-                      <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:1}}>RELATIONSHIP</div>
-                      <Bar val={s.relationship} max={100} color="#c040e0"/>
-                      <div style={{fontSize:11,color:"#b08840"}}>{s.relationship}% · <MoodBadge mood={s.mood}/></div>
-                      {(()=>{
-                        const tier=getTier(s.relationship);
-                        const next=INNER_CIRCLE_TIERS[tier.id+1];
-                        return(
-                          <div style={{fontSize:10,color:tier.color,marginTop:3,display:"flex",alignItems:"center",gap:5}}>
-                            <span>{tier.emoji} {tier.label}</span>
-                            {next&&<span style={{color:"#40304060"}}>· {next.relMin-s.relationship}% to {next.emoji} {next.label}</span>}
-                            {tier.id===3&&<span style={{fontSize:9,color:"#a050e0"}}>· +10% gain bonus active</span>}
-                          </div>
-                        );
-                      })()}
-                    </div>
-                  </div>
-
-                  <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                    {WEIGHT_STAGES.map(ws=>(
-                      <span key={ws.id} style={{background:ws.id<=st.id?ws.color:"#130920",color:ws.id<=st.id?"#fff":"#302040",borderRadius:8,padding:"2px 7px",fontSize:9,border:ws.id===st.id?"1px solid #c060ff":"1px solid transparent",fontWeight:ws.id===st.id?700:400}}>
-                        {ws.label}
-                      </span>
-                    ))}
-                    {s.ascensionPath==="celestial"&&CELESTIAL_STAGES.map((cs,i)=>(
-                      <span key={`c${i}`} style={{background:i<=(s.ascensionStage||0)?cs.color:"#100820",color:i<=(s.ascensionStage||0)?"#fff":"#302040",borderRadius:8,padding:"2px 7px",fontSize:9,border:i===(s.ascensionStage||0)?"1px solid #c0b0ff":"1px solid transparent",fontWeight:i===(s.ascensionStage||0)?700:400}}>
-                        ✦{cs.label.split(" ")[1]}
-                      </span>
-                    ))}
-                    {s.ascensionPath==="umbral"&&UMBRAL_STAGES.map((us,i)=>(
-                      <span key={`u${i}`} style={{background:i<=(s.ascensionStage||0)?us.color:"#100008",color:i<=(s.ascensionStage||0)?"#fff":"#302040",borderRadius:8,padding:"2px 7px",fontSize:9,border:i===(s.ascensionStage||0)?"1px solid #ff6060":"1px solid transparent",fontWeight:i===(s.ascensionStage||0)?700:400}}>
-                        🌑{us.label.split(" ")[1]}
-                      </span>
-                    ))}
-                    {s.ascensionPath==="convergence"&&<span style={{background:"#222",color:"#fff",borderRadius:8,padding:"2px 7px",fontSize:9,border:"1px solid #fff",fontWeight:700}}>⚡Singularity</span>}
-                  </div>
-                </div>
-                );})()}
-
-                {/* Appearance */}
-                <div style={C.infoBox("rgba(70,15,110,0.25)")}>
-                  <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:5}}>CURRENT APPEARANCE</div>
-                  <div style={{fontSize:13,color:"#e0d0b0",lineHeight:1.8,fontStyle:"italic"}}>{getBodyDesc(s)}</div>
-                </div>
-
-                {/* Outfit / Divinity */}
-                {s.ascensionPath?(()=>{
-                  const pathMeta={
-                    celestial:{label:"CELESTIAL FORM",accent:"#c8b0ff",bg:"rgba(60,30,140,0.3)",border:"#7050c040",glow:"#8060ff20"},
-                    umbral:   {label:"VOID FORM",     accent:"#ff9090",bg:"rgba(80,10,10,0.35)",border:"#801010 40",glow:"#ff202020"},
-                    sanguine: {label:"BLOOD FORM",    accent:"#ff7070",bg:"rgba(80,10,20,0.35)",border:"#c0203040",glow:"#c0102020"},
-                    verdant:  {label:"VERDANT FORM",  accent:"#80d080",bg:"rgba(20,60,20,0.35)",border:"#40803040",glow:"#20802020"},
-                    convergence:s.triumvirateUnlocked
-                              ?{label:"🔱 TRIUMVIRATE FORM",accent:"#ffd700",bg:"rgba(40,30,10,0.4)",border:"#ffd70040",glow:"#ffd70015"}
-                              :{label:"⚡ SINGULARITY FORM",accent:"#d0d0ff",bg:"rgba(20,15,50,0.45)",border:"#8080ff40",glow:"#8080ff10"},
-                    primordial:s.primordialTriumvirateUnlocked
-                              ?{label:"🌑🌿 FIRST TRIUMVIRATE FORM",accent:"#c09040",bg:"rgba(30,20,5,0.5)",border:"#c0904040",glow:"#b0702010"}
-                              :{label:"🌑🌿 PRIMORDIAL FORM",accent:"#c09040",bg:"rgba(25,15,5,0.45)",border:"#a0703040",glow:"#90601010"},
-                  }[s.ascensionPath]||{label:"DIVINITY",accent:"#d8a8ff",bg:"rgba(50,10,90,0.25)",border:"#50109040",glow:"transparent"};
-                  return(
-                    <div style={{background:pathMeta.bg,border:`1px solid ${pathMeta.border}`,borderRadius:10,padding:12,marginBottom:8,boxShadow:`0 0 16px ${pathMeta.glow}`}}>
-                      <div style={{fontSize:9,color:pathMeta.accent,letterSpacing:3,marginBottom:6,fontWeight:700}}>{pathMeta.label}</div>
-                      <div style={{fontSize:12,color:"#e0d0c0",lineHeight:1.85,fontStyle:"italic"}}>{getOutfit(s)}</div>
-                    </div>
-                  );
-                })():(
-                  <div style={C.infoBox("rgba(50,10,90,0.25)")}>
-                    <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>OUTFIT</div>
-                    <div style={{fontSize:12,color:"#c0a8d8",lineHeight:1.7}}>{getOutfit(s)}</div>
-                  </div>
-                )}
-
-                {/* Stage reaction */}
-                <div style={C.infoBox("rgba(40,8,70,0.35)")}>
-                  <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>CURRENT ATTITUDE</div>
-                  <div style={{fontSize:13,color:"#e8d8a8",fontStyle:"italic",lineHeight:1.75}}>
-                    "{(()=>{
-                      if(s.incarnatedGoddess){return GODDESS_ATTITUDE[getGoddessStage(s.lbs).id-1];}
-                      if(s.ascensionPath&&s.ascensionPath!=="convergence"){ const ar=ASCENSION_STAGE_REACTIONS[s.ascensionPath]?.[s.ascensionStage||0]; if(ar) return ar; const rb=STAGE_REACTIONS[s.archetype]?.[st.id]; return typeof rb==='function'?rb(s):rb; }
-                      const evR=getEvolvedReaction(s); if(evR) return evR;
-                      const rb=STAGE_REACTIONS[s.archetype]?.[st.id]; return typeof rb==='function'?rb(s):rb;
-                    })()}"
-                  </div>
-                </div>
-
-                {/* Diary */}
-                <div style={C.infoBox("rgba(30,5,60,0.4)")}>
-                  <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>DIARY ENTRY</div>
-                  <div style={{fontSize:12,color:"#c8b898",fontStyle:"italic",lineHeight:1.8}}>{getDiary(s)}</div>
-                </div>
-
-                {/* ── ASCENSION SECTION ── */}
-                {goddessSeen&&st.id>=10&&!s.ascensionPath&&(
-                  <div style={{background:"rgba(40,5,60,0.7)",border:"1px solid #8030e0",borderRadius:10,padding:14,marginBottom:12}}>
-                    <div style={{fontSize:9,letterSpacing:3,color:"#a060ff",marginBottom:6}}>✦ ASCENSION AVAILABLE</div>
-                    {s.evolvedForm&&ASCENSION_BRIDGE[s.evolvedForm]&&(
-                      <div style={{...C.infoBox("rgba(30,5,50,0.5)"),marginBottom:10,fontSize:12,color:"#c8a8f0",fontStyle:"italic",lineHeight:1.85}}>
-                        {ASCENSION_BRIDGE[s.evolvedForm](s)}
-                      </div>
-                    )}
-                    <div style={{fontSize:13,color:"#d0b0f0",lineHeight:1.8,marginBottom:12}}>
-                      {s.name} has reached the threshold. Four paths open before her. Choose.
-                    </div>
-                    <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                      <button style={{...C.btn("#3020a0"),flex:1,padding:"10px 8px",minWidth:"45%"}} onClick={()=>ascendStudent(s,"celestial")}>
-                        <div style={{fontSize:13,fontWeight:700,color:"#d0b8ff",marginBottom:3}}>✦ Celestial Path</div>
-                        <div style={{fontSize:10,color:"#9070d0"}}>Angel features · Mass transfer · Sacred warmth</div>
-                      </button>
-                      <button style={{...C.btn("#800010"),flex:1,padding:"10px 8px",minWidth:"45%"}} onClick={()=>ascendStudent(s,"umbral")}>
-                        <div style={{fontSize:13,fontWeight:700,color:"#ff9090",marginBottom:3}}>🌑 Umbral Path</div>
-                        <div style={{fontSize:10,color:"#a06060"}}>Demon features · Consumption · Void power</div>
-                      </button>
-                      <button style={{...C.btn("#6b1010"),flex:1,padding:"10px 8px",minWidth:"45%"}} onClick={()=>ascendStudent(s,"sanguine")}>
-                        <div style={{fontSize:13,fontWeight:700,color:"#ff8888",marginBottom:3}}>🩸 Sanguine Path</div>
-                        <div style={{fontSize:10,color:"#a05050"}}>Blood heat · Life drain · Fever marks</div>
-                      </button>
-                      <button style={{...C.btn("#0a3a0a"),flex:1,padding:"10px 8px",minWidth:"45%"}} onClick={()=>ascendStudent(s,"verdant")}>
-                        <div style={{fontSize:13,fontWeight:700,color:"#88cc88",marginBottom:3}}>🌿 Verdant Path</div>
-                        <div style={{fontSize:10,color:"#507050"}}>Root system · Patient cultivation · Earth draw</div>
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Ascension status card */}
-                {s.ascensionPath&&s.ascensionPath!=="convergence"&&s.ascensionPath!=="primordial"&&(()=>{
-                  const path=s.ascensionPath;
-                  const isCelestial=path==="celestial";
-                  const isUmbral=path==="umbral";
-                  const isSanguine=path==="sanguine";
-                  const isVerdant=path==="verdant";
-                  const stages=isCelestial?CELESTIAL_STAGES:isUmbral?UMBRAL_STAGES:isSanguine?SANGUINE_STAGES:VERDANT_STAGES;
-                  const stage=stages[s.ascensionStage||0];
-                  const nextStage=stages[(s.ascensionStage||0)+1];
-                  const pathColor=isCelestial?"#b898ff":isUmbral?"#cc3030":isSanguine?"#ff6666":"#66cc66";
-                  const pathBg=isCelestial?"rgba(60,20,150,0.35)":isUmbral?"rgba(80,5,5,0.5)":isSanguine?"rgba(80,10,10,0.45)":"rgba(10,50,10,0.45)";
-                  const pathLabel=isCelestial?"✦ CELESTIAL":isUmbral?"🌑 UMBRAL":isSanguine?"🩸 SANGUINE":"🌿 VERDANT";
-                  const otherStudents=students.filter(st=>st.id!==s.id);
-                  return(
-                    <div style={{background:pathBg,border:`1px solid ${pathColor}60`,borderRadius:10,padding:14,marginBottom:12}}>
-                      <div style={{fontSize:9,letterSpacing:3,color:pathColor,marginBottom:4}}>{pathLabel} · STAGE {(s.ascensionStage||0)+1}/5</div>
-                      <div style={{fontSize:16,fontWeight:700,color:pathColor,marginBottom:4}}>{stage.label}</div>
-                      <div style={{fontSize:11,color:pathColor,marginBottom:6,fontStyle:"italic",opacity:0.8}}>{stage.aura||stage.shadow||""}</div>
-                      <div style={{fontSize:12,color:"#d0c0b0",lineHeight:1.7,marginBottom:8}}>{stage.features}</div>
-                      <div style={{fontSize:11,color:"#8060a0",fontStyle:"italic",lineHeight:1.65,marginBottom:10}}>{stage.desc}</div>
-                      {/* Attitude */}
-                      <div style={{...C.infoBox(isCelestial?"rgba(50,20,120,0.3)":isUmbral?"rgba(40,5,5,0.5)":isSanguine?"rgba(50,5,5,0.4)":"rgba(5,30,5,0.4)"),marginBottom:10}}>
-                        <div style={{fontSize:9,color:"#5030a0",letterSpacing:2,marginBottom:4}}>ATTITUDE</div>
-                        <div style={{fontSize:12,color:pathColor,fontStyle:"italic",lineHeight:1.7,opacity:0.9}}>
-                          "{ASCENSION_STAGE_REACTIONS[path]?.[s.ascensionStage||0]||""}"
-                        </div>
-                      </div>
-                      {nextStage&&<div style={{fontSize:10,color:"#503060",marginBottom:8}}>Next stage at {nextStage.min.toLocaleString()} lbs — {nextStage.min-s.lbs} lbs to go</div>}
-                      {/* Consumed students (Umbral only) */}
-                      {isUmbral&&(s.consumedIds||[]).length>0&&(
-                        <div style={{marginBottom:8}}>
-                          <div style={{fontSize:9,letterSpacing:2,color:"#903030",marginBottom:4}}>CONSUMED WITHIN</div>
-                          {(s.consumedIds||[]).map(cid=>{
-                            const cs=consumedStudents.find(x=>x.id===cid);
-                            return cs?(
-                              <div key={cid} style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:"rgba(40,0,0,0.4)",borderRadius:6,padding:"4px 8px",marginBottom:3}}>
-                                <span style={{fontSize:11,color:"#c07070"}}>{cs.name} ({cs.lbs} lbs)</span>
-                                <button style={{...C.smBtn,fontSize:9}} onClick={()=>recoverConsumedStudent(cid,s.id)}>↑ Release (3 AP)</button>
-                              </div>
-                            ):null;
-                          })}
-                        </div>
-                      )}
-                      {/* Sanguine marks */}
-                      {isSanguine&&sanguineMarks.length>0&&(
-                        <div style={{marginBottom:8}}>
-                          <div style={{fontSize:9,letterSpacing:2,color:"#cc3030",marginBottom:4}}>MARKED FOR DRAIN ({sanguineMarks.length})</div>
-                          {sanguineMarks.map(mid=>{
-                            const ms=students.find(x=>x.id===mid);
-                            return ms?(
-                              <div key={mid} style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:"rgba(40,0,0,0.4)",borderRadius:6,padding:"4px 8px",marginBottom:3}}>
-                                <span style={{fontSize:11,color:"#cc7070"}}>{ms.name}</span>
-                                <span style={{fontSize:10,color:"#805050"}}>drains {SANGUINE_MARK_DRAIN_BY_STAGE[s.ascensionStage||0]} lbs/wk</span>
-                              </div>
-                            ):null;
-                          })}
-                        </div>
-                      )}
-                      {/* Verdant cultivations */}
-                      {isVerdant&&verdantCultivations.length>0&&(
-                        <div style={{marginBottom:8}}>
-                          <div style={{fontSize:9,letterSpacing:2,color:"#336633",marginBottom:4}}>CULTIVATED ({verdantCultivations.length})</div>
-                          {verdantCultivations.map(cid=>{
-                            const cs=students.find(x=>x.id===cid);
-                            return cs?(
-                              <div key={cid} style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:"rgba(0,30,0,0.4)",borderRadius:6,padding:"4px 8px",marginBottom:3}}>
-                                <span style={{fontSize:11,color:"#70cc70"}}>{cs.name}</span>
-                                <span style={{fontSize:10,color:"#508050"}}>gains {VERDANT_CULTIVATE_GAIN_BY_STAGE[s.ascensionStage||0]} lbs/wk</span>
-                              </div>
-                            ):null;
-                          })}
-                        </div>
-                      )}
-                      {/* Actions */}
-                      <div style={{...C.secT,marginBottom:6}}>{isSanguine?"Sanguine":isVerdant?"Verdant":"Divine"} Actions</div>
-                      {isCelestial&&(
-                        <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:8}}>
-                          {otherStudents.map(t=>(
-                            <div key={t.id} style={{display:"flex",gap:3}}>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(60,20,130,0.4)"}} onClick={()=>celestialMassPull(s.id,t.id)}>↓ Pull {t.name.split(" ")[0]} (2AP)</button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.4)"}} onClick={()=>celestialMassPush(s.id,t.id)}>↑ Push {t.name.split(" ")[0]} (1AP)</button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.4)"}} onClick={()=>celestialMassBless(s.id,t.id)}>✦ Bless {t.name.split(" ")[0]} (2AP)</button>
-                            </div>
-                          ))}
-                          {divineCelestialCanPullHR&&hrObserver&&(
-                            <div style={{display:"flex",gap:3,flexWrap:"wrap"}}>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(30,60,100,0.5)"}} onClick={()=>celestialMassPull(s.id,"hr")}>↓ Pull {hrObserver.name} (2AP)</button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"hr")}>↑ Push {hrObserver.name} (1AP)</button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"hr")}>✦ Bless {hrObserver.name} (2AP)</button>
-                            </div>
-                          )}
-                          {divineCelestialCanPullHR&&vaughan&&(
-                            <div style={{display:"flex",gap:3,flexWrap:"wrap"}}>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"vaughan")}>↑ Push Vaughan (1AP)</button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"vaughan")}>✦ Bless Vaughan (2AP)</button>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                      {isUmbral&&(
-                        <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:8}}>
-                          {otherStudents.map(t=>(
-                            <div key={t.id} style={{display:"flex",gap:3,flexWrap:"wrap"}}>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(60,0,0,0.5)"}} onClick={()=>umbralVoidPull(s.id,t.id)}>🌑 Void Pull {t.name.split(" ")[0]} (2AP)</button>
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(80,0,0,0.5)"}} onClick={()=>umbralConsumeStudent(s.id,t.id)}>🌑 Consume {t.name.split(" ")[0]} (3AP)</button>
-                            </div>
-                          ))}
-                          {divineUmbralCanConsumeHR&&(hrObserver||vaughan)&&(
-                            <button style={{...C.smBtn,fontSize:9,background:"rgba(80,0,0,0.6)"}} onClick={()=>umbralConsumeHR(s.id)}>🌑 Consume HR Target (4AP, +35 scrutiny)</button>
-                          )}
-                        </div>
-                      )}
-                      {isSanguine&&(
-                        <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:8}}>
-                          {SANGUINE_ACTIONS.map(a=>{
-                            const disabled=ap<a.apCost;
-                            return(
-                              <button key={a.id} style={{...C.smBtn,fontSize:10,background:"rgba(80,10,10,0.5)",opacity:disabled?0.4:1}}
-                                onClick={()=>!disabled&&doSanguineAction(s,a.id)}>
-                                {a.label} ({a.apCost}AP){a.gainRange&&a.gainRange[1]>0?` +${a.gainRange[0]}–${a.gainRange[1]}`:""}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-                      {isVerdant&&(
-                        <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:8}}>
-                          {VERDANT_ACTIONS.map(a=>{
-                            const disabled=ap<a.apCost;
-                            return(
-                              <button key={a.id} style={{...C.smBtn,fontSize:10,background:"rgba(10,50,10,0.5)",opacity:disabled?0.4:1}}
-                                onClick={()=>!disabled&&doVerdantAction(s,a.id)}>
-                                {a.label} ({a.apCost}AP){a.gainRange&&a.gainRange[1]>0?` +${a.gainRange[0]}–${a.gainRange[1]}`:""}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-                      {/* Religion */}
-                      {!religion&&(
-                        <button style={{...C.btn("#401020"),width:"100%"}} onClick={()=>foundReligion(s.id)}>⛪ Found Religion (2AP)</button>
-                      )}
-                      {religion&&!religion.worshippedIds.includes(s.id)&&(
-                        <button style={{...C.btn("#301040"),width:"100%"}} onClick={()=>addBlobToReligion(s.id)}>⛪ Add to Religion Pantheon</button>
-                      )}
-                    </div>
-                  );
-                })()}
-
-                {/* Singularity action panel */}
-                {s.ascensionPath==="convergence"&&(()=>{
-                  const sg=getSingularityStage(s.lbs);
-                  const sgLabel=s.triumvirateUnlocked?"🔱 The Triumvirate":sg?`⚡ ${sg.label}`:"⚡ Convergent";
-                  const sgColor=s.triumvirateUnlocked?"#ffd700":sg?sg.color:"#2a0045";
-                  const sgDesc=s.triumvirateUnlocked?CONVERGENCE_STAGE.desc:sg?sg.desc:CONVERGENCE_STAGE.desc;
-                  const actions=[...SINGULARITY_ACTIONS,...(s.triumvirateUnlocked?TRIUMVIRATE_ACTIONS:[])];
-                  const goddessStudent=goddessIncarnateId?students.find(st=>st.id===goddessIncarnateId):null;
-                  const canSubsume=!goddessIncarnateId&&sg&&sg.id>=5&&religion&&religion.devotees>=1;
-                  return(
-                    <div style={{background:"rgba(10,5,20,0.95)",border:`2px solid ${sgColor}80`,borderRadius:10,padding:14,marginBottom:12}}>
-                      <div style={{fontSize:9,letterSpacing:3,color:sgColor,marginBottom:4}}>{s.triumvirateUnlocked?"🔱 THE TRIUMVIRATE":"⚡ THE SINGULARITY"}</div>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                        <div style={{fontSize:16,fontWeight:700,color:sgColor}}>{sgLabel}</div>
-                        <div style={{fontSize:11,color:"#888"}}>{Math.round(s.lbs).toLocaleString()} lbs</div>
-                      </div>
-                      {sg&&!s.triumvirateUnlocked&&(
-                        <div style={{fontSize:10,color:"#888",marginBottom:6}}>
-                          Stage {sg.id}/5 {sg.id<5&&`· next: ${SINGULARITY_STAGES[sg.id].min.toLocaleString()} lbs`}
-                        </div>
-                      )}
-                      <div style={{fontSize:11,color:"#b0b0b0",fontStyle:"italic",lineHeight:1.65,marginBottom:10}}>{sgDesc}</div>
-                      {/* Goddess incarnate status */}
-                      {goddessStudent&&(
-                        <div style={{background:"rgba(60,40,0,0.5)",border:"1px solid #ffd70080",borderRadius:7,padding:8,marginBottom:10}}>
-                          <div style={{fontSize:10,color:"#ffd700",marginBottom:4}}>✦ THE INCARNATED GODDESS</div>
-                          <div style={{fontSize:11,color:"#e0c060"}}>{goddessStudent.name} — {Math.round(goddessStudent.lbs).toLocaleString()} lbs</div>
-                          <button style={{...C.btn("#6a4000"),marginTop:6,width:"100%",fontSize:11,opacity:ap>=5?1:0.4}}
-                            onClick={()=>ap>=5&&consumeIncarnatedGoddess(s.id)}>
-                            🌟 Consume the Incarnated Goddess (5 AP)
-                          </button>
-                        </div>
-                      )}
-                      {/* Subsume religion option */}
-                      {canSubsume&&!s.triumvirateUnlocked&&(
-                        <button style={{...C.btn("#3a0060"),width:"100%",marginBottom:10,fontSize:11}}
-                          onClick={triggerGoddessIncarnation}>
-                          ⚡ Subsume the Other Religion
-                        </button>
-                      )}
-                      {/* Action grid */}
-                      <div style={{...C.secT,marginBottom:7}}>Singularity Actions · {ap} AP</div>
-                      <div style={C.grid3}>
-                        {actions.map(a=>{
-                          const disabled=ap<a.apCost||(a.needsDevotee&&(!religion||religion.devotees<1))||(a.oneTime&&a.id==="triv_final"&&finalConsumptionDone);
-                          return(
-                            <div key={a.id} style={{...C.card,opacity:disabled?0.35:1,border:`1px solid ${sgColor}40`}}
-                              onClick={()=>!disabled&&doSingularityAction(s,a.id)}>
-                              <div style={{fontWeight:700,fontSize:11,color:"#e8d8ff",marginBottom:2}}>{a.label}</div>
-                              <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
-                                <span style={{fontSize:10,color:"#e07030"}}>{a.apCost} AP</span>
-                                {a.gainRange&&a.gainRange[1]>0&&<span style={{fontSize:10,color:"#a08060"}}>+{a.gainRange[0]}–{a.gainRange[1]}</span>}
-                                {a.needsDevotee&&<span style={{fontSize:9,color:"#a05050"}}>devotee</span>}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })()}
-
-                {/* Goddess inspect panel */}
-                {s.incarnatedGoddess&&(()=>{
-                  const gs=getGoddessStage(s.lbs);
-                  const gsColor=gs.color;
-                  return(
-                    <div style={{background:"rgba(15,10,0,0.97)",border:`2px solid ${gsColor}90`,borderRadius:10,padding:14,marginBottom:12}}>
-                      <div style={{fontSize:9,letterSpacing:3,color:gsColor,marginBottom:4}}>✦ THE INCARNATED GODDESS</div>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                        <div style={{fontSize:16,fontWeight:700,color:gsColor}}>✦ {gs.label}</div>
-                        <div style={{fontSize:11,color:"#888"}}>{Math.round(s.lbs).toLocaleString()} lbs</div>
-                      </div>
-                      <div style={{fontSize:10,color:"#888",marginBottom:8}}>Stage {gs.id}/4{gs.id<4&&` · next: ${GODDESS_STAGES[gs.id].min.toLocaleString()} lbs`}</div>
-                      {/* Practical actions */}
-                      <div style={{...C.secT,marginBottom:7}}>Offerings · {ap} AP</div>
-                      <div style={C.grid3}>
-                        {GODDESS_ACTIONS.filter(a=>a.type==="practical").map(a=>{
-                          const disabled=ap<a.cost;
-                          return(
-                            <div key={a.id} style={{...C.card,opacity:disabled?0.35:1,border:`1px solid ${gsColor}40`}}
-                              onClick={()=>!disabled&&doGoddessAction(s,a.id)}>
-                              <div style={{fontWeight:700,fontSize:11,color:"#f0d070",marginBottom:2}}>{a.label}</div>
-                              <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
-                                <span style={{fontSize:10,color:"#e07030"}}>{a.cost} AP{a.cost===0&&<span style={{color:"#60c060",marginLeft:3}}>FREE</span>}</span>
-                                {a.gain[1]>0&&<span style={{fontSize:10,color:"#a08060"}}>+{a.gain[0]}–{a.gain[1]}</span>}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      {/* Explore actions */}
-                      <div style={{...C.secT,marginBottom:7,marginTop:10}}>Explore Her Form · {ap} AP</div>
-                      <div style={C.grid3}>
-                        {GODDESS_ACTIONS.filter(a=>a.type==="explore").map(a=>{
-                          const disabled=ap<a.cost;
-                          return(
-                            <div key={a.id} style={{...C.card,opacity:disabled?0.35:1,border:`1px solid ${gsColor}30`,background:"rgba(20,12,0,0.8)"}}
-                              onClick={()=>!disabled&&doGoddessAction(s,a.id)}>
-                              <div style={{fontWeight:700,fontSize:11,color:"#e0c080",marginBottom:2}}>{a.label}</div>
-                              <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
-                                <span style={{fontSize:10,color:"#e07030"}}>{a.cost} AP{a.cost===0&&<span style={{color:"#60c060",marginLeft:3}}>FREE</span>}</span>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      {(s.goddessOfferingsTotal||0)>0&&(
-                        <div style={{fontSize:10,color:"#a08040",marginTop:8}}>✦ {(s.goddessOfferingsTotal||0).toLocaleString()} lbs offered while incarnate</div>
-                      )}
-                    </div>
-                  );
-                })()}
-
-                {/* Primordial action panel */}
-                {s.ascensionPath==="primordial"&&(()=>{
-                  const pg=getPrimordialStage(s.lbs);
-                  const pgLabel=s.primordialTriumvirateUnlocked?"🔱 Primordial Triumvirate":pg?`🌍 ${pg.label}`:"🌍 Bloodroot";
-                  const pgColor=s.primordialTriumvirateUnlocked?"#c8a060":pg?pg.color:"#3d1a0a";
-                  const pgDesc=s.primordialTriumvirateUnlocked?PRIMORDIAL_TRIUMVIRATE_BODY_DESC:pg?pg.desc:"...";
-                  const actions=[...PRIMORDIAL_ACTIONS,...(s.primordialTriumvirateUnlocked?PRIMORDIAL_TRIUMVIRATE_ACTIONS:[])];
-                  const incarnateStudent=primordialGoddessIncarnateId?students.find(st=>st.id===primordialGoddessIncarnateId):null;
-                  const canSubsume=!incarnateStudent&&pg&&pg.id>=5&&religion&&religion.devotees>=1;
-                  return(
-                    <div style={{background:"rgba(8,4,2,0.95)",border:`2px solid ${pgColor}80`,borderRadius:10,padding:14,marginBottom:12}}>
-                      <div style={{fontSize:9,letterSpacing:3,color:pgColor,marginBottom:4}}>🌍 THE PRIMORDIAL</div>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                        <div style={{fontSize:16,fontWeight:700,color:pgColor}}>{pgLabel}</div>
-                        <div style={{fontSize:11,color:"#888"}}>{Math.round(s.lbs).toLocaleString()} lbs</div>
-                      </div>
-                      {pg&&!s.primordialTriumvirateUnlocked&&(
-                        <div style={{fontSize:10,color:"#888",marginBottom:6}}>Stage {pg.id}/5{pg.id<5&&` · next: ${PRIMORDIAL_STAGES[pg.id].min.toLocaleString()} lbs`}</div>
-                      )}
-                      <div style={{fontSize:11,color:"#b0a090",fontStyle:"italic",lineHeight:1.65,marginBottom:10}}>{pgDesc.substring(0,200)}…</div>
-                      {/* Goddess incarnate */}
-                      {incarnateStudent&&(
-                        <div style={{background:"rgba(40,20,0,0.5)",border:"1px solid #a0704080",borderRadius:7,padding:8,marginBottom:10}}>
-                          <div style={{fontSize:10,color:"#c08040",marginBottom:4}}>🌿 THE INCARNATED GODDESS</div>
-                          <div style={{fontSize:11,color:"#c09050"}}>{incarnateStudent.name} — {Math.round(incarnateStudent.lbs).toLocaleString()} lbs</div>
-                          <button style={{...C.btn("#5a3a00"),marginTop:6,width:"100%",fontSize:11,opacity:ap>=5?1:0.4}}
-                            onClick={()=>ap>=5&&consumePrimordialIncarnatedGoddess(s.id)}>
-                            🌿 Consume the Incarnated Goddess (5 AP)
-                          </button>
-                        </div>
-                      )}
-                      {canSubsume&&!s.primordialTriumvirateUnlocked&&(
-                        <button style={{...C.btn("#2a1800"),width:"100%",marginBottom:10,fontSize:11}}
-                          onClick={triggerPrimordialGoddessIncarnation}>
-                          🌍 Subsume the Other Religion
-                        </button>
-                      )}
-                      {/* Action grid */}
-                      <div style={{...C.secT,marginBottom:7}}>Primordial Actions · {ap} AP</div>
-                      <div style={C.grid3}>
-                        {actions.map(a=>{
-                          const disabled=ap<a.apCost||(a.needsDevotee&&(!religion||religion.devotees<1))||(a.oneTime&&a.id==="ptr_final"&&primordialFinalConsumptionDone);
-                          return(
-                            <div key={a.id} style={{...C.card,opacity:disabled?0.35:1,border:`1px solid ${pgColor}40`}}
-                              onClick={()=>!disabled&&doPrimordialAction(s,a.id)}>
-                              <div style={{fontWeight:700,fontSize:11,color:pgColor,marginBottom:2}}>{a.label}</div>
-                              <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
-                                <span style={{fontSize:10,color:"#e07030"}}>{a.apCost} AP</span>
-                                {a.gainRange&&a.gainRange[1]>0&&<span style={{fontSize:10,color:"#685040"}}>+{a.gainRange[0]}–{a.gainRange[1]}</span>}
-                                {a.needsDevotee&&<span style={{fontSize:9,color:"#a05050"}}>devotee</span>}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })()}
-
-                {/* ── EP2: EVOLUTION SECTION ── */}
-                {!s.ascensionPath&&(()=>{
-                  const canOffer=s.archetype==='culinary'
-                    ?!s.evolvedForm&&lilithUnlocked&&lilithKillCount>=1&&s.relationship>=60&&!!EVOLUTION_OFFER[s.archetype]
-                    :!s.evolvedForm&&st.id>=4&&s.relationship>=60&&!!EVOLUTION_OFFER[s.archetype];
-                  const hasEvolved=!!s.evolvedForm;
-                  const meta=hasEvolved?EVOLVED_ACTIVITY_META[s.evolvedForm]:null;
-                  const tree=hasEvolved?EVOLVED_SKILL_TREES[s.evolvedForm]||[]:[];
-                  const skills=s.evolvedSkills||[];
-                  const totalGained=s.lbs-s.startLbs;
-                  const spent=s.evolvedSkillsSpent||0;
-                  const availLbs=totalGained-spent;
-                  if(!canOffer&&!hasEvolved) return null;
-                  return(
-                    <div style={{marginBottom:14}}>
-                      {canOffer&&!hasEvolved&&(()=>{
-                        const blurb=EVOLUTION_BUTTON_BLURB[s.archetype];
-                        return(
-                          <div style={{background:"rgba(40,10,80,0.5)",border:"1px solid #7030c0",borderRadius:10,padding:12,marginBottom:10}}>
-                            <div style={{fontSize:9,letterSpacing:3,color:"#9040e0",marginBottom:5}}>✦ EVOLUTION AVAILABLE</div>
-                            <div style={{fontSize:12,color:"#c0a0e0",lineHeight:1.75,marginBottom:8,fontStyle:"italic"}}>
-                              {blurb?blurb(s):`${s.name} has grown into something the original path can't contain. A new direction is possible.`}
-                            </div>
-                            <button style={{...C.btn("#5a18b0"),width:"100%"}} onClick={()=>openEvolutionModal(s)}>
-                              ✦ Propose a New Direction
-                            </button>
-                          </div>
-                        );
-                      })()}
-                      {hasEvolved&&(()=>{
-                        const evFormMeta=EVOLVED_FORM_META[s.evolvedForm];
-                        const borderColor=evFormMeta?`${evFormMeta.color}80`:"#6030b080";
-                        const titleColor=evFormMeta?evFormMeta.color:"#c080ff";
-                        // ── CULTIVATOR — custom panel ──
-                        if(s.evolvedForm==='cultivator'&&cultivatorState){
-                          const cs=cultivatorState;
-                          const brown="#8B4513";
-                          const exhausted=cs.harvestsCompleted>=4;
-                          const hasActive=!!cs.testerName&&!exhausted;
-                          const isDigesting=!hasActive&&!exhausted&&cs.digestWeeksLeft>0;
-                          const digestPct=cs.digestTotalWeeks>0?(1-cs.digestWeeksLeft/cs.digestTotalWeeks)*100:0;
-                          const testerStageName=cs.testerName?getStage(cs.testerLbs).label:'—';
-                          const fatPct=Math.min(100,cs.fatBar);
-                          const suspPct=Math.min(100,cs.suspicion/2);
-                          return(
-                            <div style={{background:"rgba(30,12,5,0.6)",border:`1px solid ${brown}80`,borderRadius:10,padding:12}}>
-                              <div style={{fontSize:9,letterSpacing:3,color:brown,marginBottom:4}}>🍰 EVOLVED PATH</div>
-                              <div style={{fontSize:13,fontWeight:700,color:"#CD853F",marginBottom:8}}>The Cultivator</div>
-                              {exhausted?(
-                                <div style={{color:"#7a4020",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>All subjects cultivated. No further yield is possible.</div>
-                              ):isDigesting?(
-                                <div>
-                                  <div style={{background:"rgba(10,4,0,0.5)",borderRadius:7,padding:"8px 10px",marginBottom:8}}>
-                                    <div style={{fontSize:10,color:"#a07040",fontWeight:700,marginBottom:6}}>Reneé — digesting</div>
-                                    <div style={{fontSize:9,color:"#7a5030",marginBottom:2}}>PROCESSING — {cs.digestWeeksLeft} week{cs.digestWeeksLeft!==1?"s":""} remaining</div>
-                                    <div style={{background:"#1a0800",borderRadius:3,height:6,overflow:"hidden",marginBottom:8}}>
-                                      <div style={{width:`${digestPct}%`,height:"100%",background:`linear-gradient(90deg,${brown},#CD853F)`,transition:"width 0.3s"}}/>
-                                    </div>
-                                    <div style={{fontSize:10,color:"#6a4020",fontStyle:"italic",lineHeight:1.5}}>She is unavailable. Passive gain suspended.</div>
-                                  </div>
-                                  <button style={{...C.btn("#2a0e04"),width:"100%"}} onClick={openDigestCheck}>
-                                    👁 Check on Her
-                                  </button>
-                                </div>
-                              ):!hasActive?(
-                                <div>
-                                  <div style={{color:"#9a6030",fontSize:11,lineHeight:1.6,marginBottom:10,fontStyle:"italic"}}>{RECRUITMENT_SCENE.slice(0,120)}…</div>
-                                  <div style={{color:"#7a5030",fontSize:10,marginBottom:8}}>Cycles remaining: {4-cs.harvestsCompleted}/4</div>
-                                  <button style={{...C.btn(brown),width:"100%"}} onClick={()=>openCultivatorRecruit()}>
-                                    Recruit 🐷 <s style={{opacity:0.6}}>'Taste Tester'</s>
-                                  </button>
-                                </div>
-                              ):(
-                                <div>
-                                  <div style={{background:"rgba(10,4,0,0.5)",borderRadius:7,padding:"8px 10px",marginBottom:8}}>
-                                    <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                                      <span style={{color:"#a07040",fontSize:11,fontWeight:700}}>{cs.testerName}</span>
-                                      <span style={{color:"#906030",fontSize:10}}>{testerStageName} · {Math.round(cs.testerLbs)} lbs</span>
-                                    </div>
-                                    <div style={{marginBottom:3}}>
-                                      <div style={{fontSize:9,color:"#7a5030",marginBottom:2}}>CULTIVATION {Math.round(fatPct)}%</div>
-                                      <div style={{background:"#1a0800",borderRadius:3,height:6,overflow:"hidden"}}>
-                                        <div style={{width:`${fatPct}%`,height:"100%",background:`linear-gradient(90deg,${brown},#CD853F)`,transition:"width 0.3s"}}/>
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <div style={{fontSize:9,color:cs.suspicion>150?"#e05030":cs.suspicion>100?"#c07030":"#7a5030",marginBottom:2}}>SUSPICION {cs.suspicion}/200{cs.suspicion>150?" ⚠️":""}</div>
-                                      <div style={{background:"#1a0800",borderRadius:3,height:6,overflow:"hidden"}}>
-                                        <div style={{width:`${suspPct}%`,height:"100%",background:cs.suspicion>150?"#e05030":cs.suspicion>100?"#c07030":"#5a3020",transition:"width 0.3s"}}/>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div style={{display:"flex",gap:6}}>
-                                    <button style={{...C.btn("#3a1808"),flex:1,opacity:ap<1?0.4:1,fontSize:10}} onClick={()=>startCultivatorSession(s)}>
-                                      🍰 Taste Test (1 AP)
-                                    </button>
-                                    <button style={{...C.btn("#5a2010"),flex:1,opacity:ap<1?0.4:1,fontSize:10}} onClick={()=>openCultivatorHarvest(s)}>
-                                      ✓ Harvest (1 AP)
-                                    </button>
-                                  </div>
-                                  <div style={{textAlign:"center",fontSize:9,color:"#5a3020",marginTop:6}}>
-                                    Cycle {cs.harvestsCompleted+1} of 4 · {TESTER_APPEARANCE[cs.testerStageId]||""}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        }
-                        // ── COMMUNITY RESEARCHER — custom panel ──
-                        if(s.evolvedForm==='community_researcher'&&communityResearcherState){
-                          const crs=communityResearcherState;
-                          const blue="#4a6fa5"; const lblue="#8fa8e0";
-                          const allDone=crs.caseStudyStage>=4;
-                          const isCRPairAvailable=(pair)=>{
-                            if(crs.pairsUsed.includes(pair.id)) return false;
-                            if(pair.unlockImmediate) return true;
-                            return pair.studentIds.every(id=>{
-                              const st=students.find(x=>x.id===id);
-                              if(!st) return false;
-                              const ok=getStage(st.lbs).id>=4&&st.relationship>=60;
-                              if(id===10) return ok&&lilithUnlocked&&lilithKillCount>=1;
-                              return ok;
-                            });
-                          };
-                          const availCount=CASE_STUDY_PAIRS.filter(p=>isCRPairAvailable(p)).length;
-                          return(
-                            <div style={{background:"rgba(5,10,30,0.6)",border:`1px solid ${blue}80`,borderRadius:10,padding:12}}>
-                              <div style={{fontSize:9,letterSpacing:3,color:blue,marginBottom:4}}>📋 EVOLVED PATH</div>
-                              <div style={{fontSize:13,fontWeight:700,color:lblue,marginBottom:8}}>Community Researcher</div>
-                              {!crs.thesisComplete?(
-                                <div>
-                                  <div style={{color:"#6080a0",fontSize:11,lineHeight:1.6,marginBottom:10,fontStyle:"italic"}}>
-                                    The proposal is approved. You need only walk through the door and say the words.
-                                  </div>
-                                  <button style={{...C.btn(blue),width:"100%",opacity:ap<1?0.4:1}} onClick={()=>openThesisBoard(s)}>
-                                    📜 Present Thesis (1 AP)
-                                  </button>
-                                </div>
-                              ):allDone?(
-                                crs.thesisApproved?(
-                                  <div style={{color:"#6aaa80",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>PhD Approved ✓</div>
-                                ):crs.thesisRejected?(
-                                  <div style={{color:"#a05060",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>Thesis Rejected</div>
-                                ):(
-                                  <div>
-                                    <div style={{fontSize:10,color:"#506090",marginBottom:6,fontStyle:"italic"}}>
-                                      All four case studies complete. The committee is waiting.
-                                    </div>
-                                    <div style={{fontSize:9,color:"#405070",marginBottom:8}}>
-                                      Cumulative suspicion: {crs.totalSuspicion||0} / 28
-                                    </div>
-                                    <button style={{...C.btn(blue),width:"100%",opacity:ap<1?0.4:1}} onClick={()=>openFinalReview(s)}>
-                                      📋 Request Final Review (1 AP)
-                                    </button>
-                                  </div>
-                                )
-                              ):(
-                                <div>
-                                  <div style={{fontSize:10,color:"#6080b0",marginBottom:4}}>
-                                    Case Study {crs.caseStudyStage+1} of 4
-                                  </div>
-                                  <div style={{fontSize:10,color:"#5070a0",marginBottom:10}}>
-                                    {availCount} pair{availCount!==1?"s":""} available
-                                    {crs.lastPairId?` · ${CASE_STUDY_PAIRS.find(p=>p.id===crs.lastPairId)?.label||''} recently studied`:''}
-                                  </div>
-                                  <button style={{...C.btn(blue),width:"100%",opacity:ap<1?0.4:1}} onClick={()=>openCaseStudyGrid(s)}>
-                                    📋 Conduct Case Study (1 AP)
-                                  </button>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        }
-                        // ── CHAPTER HOSTESS — custom two-button layout ──
-                        if(s.evolvedForm==='chapter_hostess'&&chapterHostessState){
-                          const ch=chapterHostessState;
-                          const isLastStage=ch.stageIdx>=5&&ch.feastDone;
-                          const canHangOut=ch.prepDaysLeft>0;
-                          const feastReady=!ch.feastLogOpen&&!ch.feastPrepOpen;
-                          return(
-                            <div style={{background:"rgba(30,8,60,0.5)",border:`1px solid ${borderColor}`,borderRadius:10,padding:12}}>
-                              <div style={{fontSize:9,letterSpacing:3,color:"#9040e0",marginBottom:4}}>✦ EVOLVED PATH</div>
-                              <div style={{fontSize:13,fontWeight:700,color:titleColor,marginBottom:6}}>Chapter Hostess</div>
-                              <div style={{fontSize:10,color:"#9060c0",marginBottom:2}}>Feast Stage {ch.stageIdx+1} of 6</div>
-                              <div style={{fontSize:11,color:canHangOut?"#b080e0":"#5040702",marginBottom:8,fontWeight:600}}>
-                                {canHangOut?`Days until feast: ${ch.prepDaysLeft}`:"Feast day — ready when you are."}
-                              </div>
-                              <div style={{display:"flex",gap:6,marginBottom:8}}>
-                                <button
-                                  style={{...C.btn("#2a1060"),flex:1,opacity:canHangOut?1:0.3,fontSize:10}}
-                                  onClick={()=>{if(canHangOut)setChapterHostessState(prev=>({...prev,hangoutOpen:true,hangoutStudentId:null,hangoutPhaseIdx:0,hangoutHistory:[]}))}}>
-                                  🧑‍🤝‍🧑 Hang Out
-                                </button>
-                                <button
-                                  style={{...C.btn("#401060"),flex:1,opacity:feastReady?1:0.3,fontSize:10}}
-                                  onClick={()=>{if(feastReady)openFeastPrep()}}>
-                                  🍽️ Begin Feast Prep
-                                </button>
-                              </div>
-                              {/* Upgrade status */}
-                              <div style={{background:"rgba(20,5,40,0.5)",borderRadius:7,padding:"7px 10px",fontSize:10,color:"#7050a0"}}>
-                                <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
-                                  <span>Menu</span><span style={{color:"#a070d0"}}>{MENU_TIERS[ch.menuUnlocks]?.label}</span>
-                                </div>
-                                <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
-                                  <span>Atmosphere</span><span style={{color:"#a070d0"}}>{ATMOSPHERE_TIERS[ch.atmosphereUnlocks]?.label}</span>
-                                </div>
-                                <div style={{display:"flex",justifyContent:"space-between"}}>
-                                  <span>Guest List</span><span style={{color:"#a070d0"}}>{GUEST_TIERS[ch.guestUnlocks]?.label}</span>
-                                </div>
-                              </div>
-                              {ch.sisters&&(
-                                <div style={{marginTop:8,fontSize:10,color:"#907080"}}>
-                                  {ch.sisters.map(sis=>(
-                                    <div key={sis.name} style={{display:"flex",justifyContent:"space-between"}}>
-                                      <span>{sis.name}</span><span>{Math.round(sis.lbs)} lbs</span>
-                                    </div>
-                                  ))}
-                                  {ch.stageIdx>=1&&(<div style={{display:"flex",justifyContent:"space-between"}}><span>Camille</span><span>{Math.round(ch.camille.lbs)} lbs</span></div>)}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        }
-                        return(
-                        <div style={{background:"rgba(30,8,60,0.5)",border:`1px solid ${borderColor}`,borderRadius:10,padding:12}}>
-                          <div style={{fontSize:9,letterSpacing:3,color:"#9040e0",marginBottom:4}}>✦ EVOLVED PATH</div>
-                          <div style={{fontSize:13,fontWeight:700,color:titleColor,marginBottom:4}}>{evFormMeta?.title||meta?.label||s.evolvedForm}</div>
-                          <button style={{...C.btn("#401890"),opacity:ap<(meta?.apCost||1)?0.4:1,marginBottom:s.evolvedForm==='feedee_creator'&&getTier(s.relationship).id>=3?4:10,width:"100%"}} onClick={()=>doEvolvedActivity(s)}>
-                            {meta?.label||"Activity"} ({meta?.apCost||1} AP) · +{meta?.gainRange?.[0]}–{meta?.gainRange?.[1]} lbs
-                          </button>
-                          {s.evolvedForm==='feedee_creator'&&getTier(s.relationship).id>=3&&(
-                            <button style={{...C.btn("#804020"),opacity:ap<2?0.4:1,marginBottom:10,width:"100%"}} onClick={()=>startRecordingSession(s)}>
-                              🎬 Film Her Session (2 AP)
-                            </button>
-                          )}
-                          {tree.length>0&&(
-                            <div>
-                              <div style={{fontSize:9,letterSpacing:2,color:"#6030a0",marginBottom:6}}>EVOLVED SKILLS · {availLbs} lbs available</div>
-                              {tree.map(sk=>{
-                                const owned=skills.includes(sk.id);
-                                const canBuy=!owned&&availLbs>=sk.cost;
-                                return(
-                                  <div key={sk.id} style={{background:owned?"rgba(60,20,100,0.5)":"rgba(20,5,40,0.4)",border:`1px solid ${owned?"#7040c080":"#30206030"}`,borderRadius:7,padding:"7px 9px",marginBottom:5,display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}>
-                                    <div style={{flex:1}}>
-                                      <div style={{fontSize:11,fontWeight:700,color:owned?"#c080ff":"#7050a0",marginBottom:1}}>{sk.label} {owned&&"✓"}</div>
-                                      <div style={{fontSize:10,color:owned?"#9060c0":"#503070",lineHeight:1.4}}>{sk.desc}</div>
-                                    </div>
-                                    {!owned&&(
-                                      <button style={{...C.smBtn,opacity:canBuy?1:0.35,fontSize:10,whiteSpace:"nowrap"}} onClick={()=>canBuy&&purchaseEvolvedSkill(s.id,sk.id)}>
-                                        {sk.cost} lbs
-                                      </button>
-                                    )}
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          )}
-                          {s.evolvedForm==='psych_researcher'&&s.researchSubjectId!=null&&(()=>{
-                            const subj=students.find(st=>st.id===s.researchSubjectId);
-                            if(!subj) return null;
-                            const sid=getStage(subj.lbs).id;
-                            const tier=sid<=2?0:sid<=4?1:sid<=6?2:sid<=8?3:4;
-                            const W=[36,46,58,72,86][tier];
-                            const H=[60,56,50,44,38][tier];
-                            const BR=[`50% 50% 55% 55%`,`50% 50% 58% 58%`,`50% 50% 65% 65%`,`50% 50% 70% 70%`,`50% 50% 75% 75%`][tier];
-                            return(
-                              <div style={{marginTop:10,padding:"10px 12px",background:"rgba(15,5,30,0.6)",border:"1px solid #4020806a",borderRadius:8}}>
-                                <div style={{fontSize:9,letterSpacing:3,color:"#6b5b95",marginBottom:8}}>RESEARCH SUBJECT</div>
-                                <div style={{display:"flex",alignItems:"center",gap:14}}>
-                                  <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
-                                    <div style={{width:14,height:14,borderRadius:"50%",background:"#5030904d"}}/>
-                                    <div style={{width:W,height:H,background:"#5030904d",borderRadius:BR,boxShadow:"0 0 6px #50309050",transition:"all 0.4s ease"}}/>
-                                  </div>
-                                  <div>
-                                    <div style={{color:"#c0a0e0",fontSize:13,fontWeight:700}}>{subj.name}</div>
-                                    <div style={{color:"#7050a0",fontSize:10}}>{getStage(subj.lbs).label} · {Math.round(subj.lbs)} lbs</div>
-                                    <div style={{display:"flex",gap:5,marginTop:6,flexWrap:"wrap"}}>
-                                      {s.researchFocus==='feeder_focus'&&FEEDER_SUBJECT_JOURNALS[subj.archetype]&&(
-                                        <button style={{...C.smBtn,fontSize:10}} onClick={()=>setSubjectJournalState({subjectId:subj.id,currentPage:getStage(subj.lbs).id})}>📔 Journal</button>
-                                      )}
-                                      {NADIA_SUBJECT_JOURNALS[subj.archetype]&&(
-                                        <button style={{...C.smBtn,fontSize:10,background:"#0a0020",border:"1px solid #5030a040"}} onClick={()=>setNadiaNotesState({nadiaId:s.id,subjectId:subj.id,currentPage:-1})}>📓 Notes</button>
-                                      )}
-                                      <button style={{...C.smBtn,fontSize:10,opacity:0.7}} onClick={()=>{setStudents(prev=>prev.map(x=>x.id===s.id?{...x,researchSubjectId:null}:x));}}>Change</button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })()}
-                        </div>
-                        );
-                      })()}
-                    </div>
-                  );
-                })()}
-
-                {/* Talk */}
-                <div style={{...C.secT,marginBottom:7}}>Talk to {s.name}</div>
-                <div style={{marginBottom:14,display:"flex",flexWrap:"wrap",gap:2}}>
-                  {[["how_are_you","How are you?"],["compliment_figure","Compliment figure"],["food_talk","Talk food"],["class_talk","Talk class"],["encourage_eating","Encourage eating"],["ask_lifestyle","Ask lifestyle"],["ask_weight","Ask weight"],["about_gaining","Ask about gaining"],["future_plans","Future plans"]].map(([tid,label])=>(
-                    <button key={tid} style={C.smBtn} onClick={()=>doTalk(tid,s)}>{label}</button>
-                  ))}
-                </div>
-
-                {/* Gossip — ask about classmates */}
-                {(()=>{
-                  const gossipEntries=GOSSIP.filter(g=>g.speakerId===s.id);
-                  if(!gossipEntries.length) return null;
-                  return (
-                    <div style={{marginBottom:14}}>
-                      <div style={{...C.secT,marginBottom:7}}>Ask About Classmates</div>
-                      {gossipEntries.map(g=>{
-                        const target=students.find(st=>st.id===g.targetId);
-                        if(!target) return null;
-                        const targetStageId=getStage(target.lbs).id;
-                        const lines=getGossipLines(g,targetStageId);
-                        const attColor={catty:"#802020",warm:"#205040",curious:"#203860",conspiratorial:"#402060"}[g.attitude]||"#333";
-                        const attEmoji={catty:"😒",warm:"🥰",curious:"🤔",conspiratorial:"😏"}[g.attitude]||"💬";
-                        const hasMultiplier=(target.gainMultiplier||1)>1;
-                        const thisStudentHelping=(target.gainHelpers||[]).includes(s.id);
-                        const canHelp=g.offerHelp && s.relationship>=65 && !thisStudentHelping;
-                        const almostUnlocked=g.offerHelp && s.relationship>=50 && s.relationship<65 && !thisStudentHelping;
-                        return (
-                          <div key={g.targetId} style={{...C.card,cursor:"default",marginBottom:8,border:`1px solid ${attColor}88`}}>
-                            {/* Header */}
-                            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-                              <span style={{fontWeight:700,fontSize:12,color:"#d8a8ff"}}>About {target.name}</span>
-                              <div style={{display:"flex",gap:5,alignItems:"center"}}>
-                                <span style={{background:attColor,color:"#fff",borderRadius:8,padding:"1px 7px",fontSize:9,fontWeight:700}}>{attEmoji} {g.attitude}</span>
-                                <StageTag stage={getStage(target.lbs)}/>
-                              </div>
-                            </div>
-                            {/* Target quick stats */}
-                            <div style={{fontSize:10,color:"#5a4070",marginBottom:6}}>
-                              {target.lbs} lbs · {target.lbs-target.startLbs > 0 ? `+${target.lbs-target.startLbs} gained` : "no gain yet"}{hasMultiplier?` · 🔥 ×${(target.gainMultiplier).toFixed(1)} multiplier active`:""}
-                            </div>
-                            {/* Talk buttons */}
-                            <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:8}}>
-                              {lines.map((line,i)=>(
-                                <button key={i} style={{...C.smBtn,fontSize:10}} onClick={()=>doGossip(g,s,line)}>
-                                  {i===0?"What do you think of her?":"Another take"}
-                                </button>
-                              ))}
-                            </div>
-                            {/* Already helping */}
-                            {thisStudentHelping&&(
-                              <div style={{background:"rgba(30,80,30,0.3)",border:"1px solid #305030",borderRadius:6,padding:"6px 8px"}}>
-                                <div style={{fontSize:10,color:"#80d080",fontWeight:700,marginBottom:2}}>✓ Active — helping fatten {target.name}</div>
-                                <div style={{fontSize:10,color:"#508050",fontStyle:"italic"}}>{g.helpReason}</div>
-                              </div>
-                            )}
-                            {/* Pending double-down activations */}
-                            {thisStudentHelping&&pendingDoubleDowns.filter(dd=>dd.speakerId===g.speakerId&&dd.targetId===g.targetId).map((dd,i)=>(
-                              <div key={i} style={{background:"rgba(120,40,0,0.35)",border:"1px solid #c06020",borderRadius:6,padding:"8px",marginTop:6}}>
-                                <div style={{fontSize:10,color:"#ffb060",fontWeight:700,marginBottom:3}}>🔥 Double Down Available — {target.name} reached {dd.atLbs} lbs!</div>
-                                <div style={{fontSize:10,color:"#c08040",fontStyle:"italic",marginBottom:6,lineHeight:1.5}}>{dd.line.length>120?dd.line.slice(0,120)+"…":dd.line}</div>
-                                <button style={{...C.btn("#a03000"),fontSize:11,width:"100%"}} onClick={()=>activateDoubleDown(dd)}>
-                                  🔥 Activate — ×{(1+dd.addMult).toFixed(2)} multiplier on {target.name}
-                                </button>
-                              </div>
-                            ))}
-                            {/* Unlock offer */}
-                            {canHelp&&(
-                              <div style={{background:"rgba(60,20,100,0.35)",border:"1px solid #5a20a0",borderRadius:6,padding:"8px"}}>
-                                <div style={{fontSize:10,color:"#b070f0",fontWeight:700,marginBottom:3}}>🔓 {s.name} trusts you — a special offer is available</div>
-                                <div style={{fontSize:10,color:"#7a50a0",fontStyle:"italic",marginBottom:7,lineHeight:1.5}}>{g.helpReason}</div>
-                                <button style={{...C.btn("#5a20a0"),fontSize:11,width:"100%"}} onClick={()=>doHelpFatten(g,s)}>
-                                  🤝 Ask {s.name} to help fatten {target.name} (×{g.helpMultiplier} multiplier)
-                                </button>
-                              </div>
-                            )}
-                            {/* Almost unlocked hint */}
-                            {almostUnlocked&&(
-                              <div style={{fontSize:10,color:"#5a3878",fontStyle:"italic",marginTop:4}}>
-                                🔒 {65-s.relationship}% more relationship needed to unlock {s.name}'s offer about {target.name}…
-                              </div>
-                            )}
-                            {/* Far from unlock — just show lock */}
-                            {g.offerHelp && s.relationship<50 && !thisStudentHelping&&(
-                              <div style={{fontSize:10,color:"#3a2050",fontStyle:"italic",marginTop:4}}>
-                                🔒 Build more trust with {s.name} to unlock a special offer…
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })()}
-
-                {/* Personal actions — hidden for convergence/singularity/goddess students */}
-                {s.ascensionPath!=="convergence"&&!s.incarnatedGoddess&&(
-                <>
-                <div style={{...C.secT,marginBottom:7}}>Personal Actions · {ap} AP</div>
-                <div style={C.grid3}>
-                  {effectiveSingleActions.map(a=>(
-                    <div key={a.id} style={{...C.card,opacity:ap<a.cost?0.35:1}} onClick={()=>doSingle(a,s)}>
-                      <div style={{fontWeight:700,fontSize:12,color:"#c090e8",marginBottom:2}}>{a.label}</div>
-                      <div style={{fontSize:10,color:"#5a3888",lineHeight:1.4,marginBottom:4}}>{a.desc}</div>
-                      <div style={{display:"flex",justifyContent:"space-between"}}>
-                        <span style={{fontSize:10,color:"#e07030"}}>{a.cost} AP{a.cost===0?<span style={{color:"#60c060",marginLeft:3}}>FREE</span>:null}</span>
-                        {a.gain[1]>0&&<span style={{fontSize:10,color:"#685040"}}>+{a.gain[0]}–{a.gain[1]} lbs</span>}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                </>
-                )}
-
-                {/* Private Session */}
-                {(()=>{
-                  const tier=getTier(s.relationship);
-                  const hist=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
-                  const eligible=tier.id>=1;
-                  return(
-                    <div style={{marginTop:14}}>
-                      <div style={{...C.secT,marginBottom:7,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                        <span>Private Feeding Session</span>
-                        {hist.count>0&&<span style={{fontSize:9,color:"#7040c0",fontWeight:400}}>{hist.count} sessions · +{hist.totalGain} lbs · capacity +{hist.capacityBonus}</span>}
-                      </div>
-                      {!eligible?(
-                        <div style={{fontSize:11,color:"#5a3888"}}>
-                          Reach <span style={{color:"#7040a0",fontWeight:700}}>🤝 Close</span> tier to unlock private sessions with {s.name}.
-                          <span style={{color:"#5030a0",marginLeft:6}}>{45-s.relationship > 0 ? `(${45-s.relationship}% to go)`:""}</span>
-                        </div>
-                      ):(
-                        <div>
-                          {hist.count>0&&(
-                            <div style={{...C.infoBox("rgba(60,10,100,0.2)"),fontSize:11,color:"#8050b0",marginBottom:8,lineHeight:1.6}}>
-                              {hist.count} session{hist.count!==1?"s":""} completed.
-                              Her appetite has expanded — she can now comfortably eat {hist.capacityBonus}% more than when you started.
-                            </div>
-                          )}
-                          <button style={{...C.btn("#5818a8"),opacity:ap<2?0.4:1}} onClick={()=>startPrivateSession(s)}>
-                            🌙 Private Session (2 AP)
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })()}
-
-                {/* EP5: Intimacy */}
-                {(()=>{
-                  const tier=getTier(s.relationship);
-                  if(tier.id<2||s.ascensionPath) return null;
-                  return(
-                    <div style={{marginTop:14}}>
-                      <div style={C.secT}>Intimacy</div>
-                      <div style={{fontSize:11,color:"#7050a0",marginBottom:8,fontStyle:"italic"}}>
-                        She trusts you completely. The space between you has changed.
-                      </div>
-                      <button style={{...C.btn("#6020a0"),opacity:ap<1?0.4:1}} onClick={()=>openIntimacySelector(s)}>
-                        💜 Get Close (1–2 AP)
-                      </button>
-                    </div>
-                  );
-                })()}
-
-                {/* Research Study */}
-                <div style={{marginTop:14}}>
-                  <div style={C.secT}>Research Study</div>
-                  {(()=>{
-                    const pData=researchStudy.participants[s.id];
-                    if(!pData){
-                      return(
-                        <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
-                          <div style={{fontSize:11,color:"#5a3888",flex:1}}>
-                            {s.relationship<55
-                              ?`Need 55 relationship to enroll ${s.name} (${s.relationship}/55).`
-                              :`${s.name} is eligible for your dietary habits study.`}
-                          </div>
-                          {s.relationship>=55&&<button style={C.btn("#3a1070")} onClick={()=>proposeStudy(s)}>Propose Study (1 AP)</button>}
-                        </div>
-                      );
-                    }
-                    const sessions=pData.checkInCount;
-                    return(
-                      <div>
-                        <div style={{display:"flex",gap:5,marginBottom:7,alignItems:"center"}}>
-                          {[0,1,2,3,4].map(i=>(
-                            <div key={i} style={{width:11,height:11,borderRadius:"50%",background:i<sessions?"#a060e0":"rgba(80,18,140,0.2)",border:"1px solid #4a1280"}}/>
-                          ))}
-                          <span style={{fontSize:11,color:"#8060b0",marginLeft:4}}>{sessions}/5 sessions</span>
-                        </div>
-                        {sessions<5
-                          ?<button style={{...C.btn("#5020a0"),opacity:ap<1?0.4:1}} onClick={()=>runCheckIn(s)}>Schedule Check-in (1 AP)</button>
-                          :<div style={{fontSize:11,color:"#5a3888",fontStyle:"italic"}}>Study arc complete.</div>}
-                      </div>
-                    );
-                  })()}
-                </div>
-
-              </div>
-            );
-          })()}
+          {view==="student"&&sel&&<StudentDetailView activateDoubleDown={activateDoubleDown} addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} consumeIncarnatedGoddess={consumeIncarnatedGoddess} consumePrimordialIncarnatedGoddess={consumePrimordialIncarnatedGoddess} consumedStudents={consumedStudents} cultivatorState={cultivatorState} divineCelestialCanPullHR={divineCelestialCanPullHR} divineUmbralCanConsumeHR={divineUmbralCanConsumeHR} doEvolvedActivity={doEvolvedActivity} doGoddessAction={doGoddessAction} doGossip={doGossip} doHelpFatten={doHelpFatten} doPrimordialAction={doPrimordialAction} doSanguineAction={doSanguineAction} doSingle={doSingle} doSingularityAction={doSingularityAction} doTalk={doTalk} doVerdantAction={doVerdantAction} effectiveSingleActions={effectiveSingleActions} finalConsumptionDone={finalConsumptionDone} foundReligion={foundReligion} goddessIncarnateId={goddessIncarnateId} goddessSeen={goddessSeen} hrObserver={hrObserver} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} pendingDoubleDowns={pendingDoubleDowns} primordialFinalConsumptionDone={primordialFinalConsumptionDone} primordialGoddessIncarnateId={primordialGoddessIncarnateId} proposeStudy={proposeStudy} purchaseEvolvedSkill={purchaseEvolvedSkill} recoverConsumedStudent={recoverConsumedStudent} religion={religion} researchStudy={researchStudy} runCheckIn={runCheckIn} sanguineMarks={sanguineMarks} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} triggerGoddessIncarnation={triggerGoddessIncarnation} triggerPrimordialGoddessIncarnation={triggerPrimordialGoddessIncarnation} umbralConsumeHR={umbralConsumeHR} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} vaughan={vaughan} verdantCultivations={verdantCultivations}/>}
 
           {/* ── CLASS ACTIONS ── */}
-          {view==="actions"&&(
-            <div>
-              <p style={C.secT}>Class-Wide Actions · {ap} AP remaining</p>
-              <div style={C.grid2}>
-                {effectiveClassActions.map(a=>(
-                  <div key={a.id} style={{...C.card,opacity:ap<a.cost?0.35:1}}>
-                    <div style={{fontWeight:700,color:"#c090e8",marginBottom:3}}>{a.label}</div>
-                    <div style={{fontSize:11,color:"#5a3888",marginBottom:8,lineHeight:1.4}}>{a.desc}</div>
-                    <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
-                      <span style={{fontSize:11,color:a.cost===0?"#60c060":"#e07030"}}>{a.cost===0?"FREE":a.cost+" AP"}</span>
-                      <span style={{fontSize:10,color:"#604030"}}>+{a.gain[0]}–{a.gain[1]} lbs ea</span>
-                    </div>
-                    <button style={{...C.btn(),width:"100%",opacity:ap<a.cost?0.4:1}} disabled={ap<a.cost} onClick={()=>doClass(a)}>Use Action</button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
 
 {/* ── SKILL TREE ── */}
-          {view==="skills"&&(()=>{
-            // Node layout: 4 columns (categories), 5 rows (tiers)
-            // Each cell: col index, row index -> pixel position
-            const COL_W=240, ROW_H=170, PAD_X=30, PAD_Y=50;
-            const CATS=["environment","feeding","efficiency","social","psychology","prestige",...(goddessSeen?["divine"]:[])];
-            const CAT_COLORS={"environment":"#3a8060","feeding":"#804020","efficiency":"#304080","social":"#802040","psychology":"#206050","prestige":"#806010","divine":"#702030"};
-            const TIERS=[1,2,3,4,5,6];
-            const TIER_COSTS=[50,150,350,700,1200,2000];
-            // Build node positions — group by tier, lay out horizontally per tier
-            const filteredSkills=ALL_SKILLS.filter(sk=>sk.category===skillCat);
-            const byTier={};
-            filteredSkills.forEach(sk=>{if(!byTier[sk.tier])byTier[sk.tier]=[];byTier[sk.tier].push(sk);});
-            const NODE_W=120,NODE_H=52,NODE_GAP=14;
-            const maxPerTier=Math.max(1,...Object.values(byTier).map(g=>g.length));
-            const svgContentW=maxPerTier*(NODE_W+NODE_GAP)-NODE_GAP;
-            const svgW=PAD_X*2+svgContentW;
-            const svgH=PAD_Y*2+TIERS.length*ROW_H;
-            const nodes=filteredSkills.map(sk=>{
-              const tierNodes=byTier[sk.tier]||[sk];
-              const idx=tierNodes.indexOf(sk);
-              const count=tierNodes.length;
-              const groupW=count*NODE_W+(count-1)*NODE_GAP;
-              const startX=PAD_X+(svgContentW-groupW)/2+NODE_W/2;
-              const x=startX+idx*(NODE_W+NODE_GAP);
-              const y=PAD_Y+(sk.tier-1)*ROW_H+ROW_H/2;
-              return {...sk,x,y};
-            });
-            const hoveredNode=hovered?nodes.find(n=>n.id===hovered):null;
-            // Build edges: each node's requires -> parent nodes
-            const edges=[];
-            nodes.forEach(n=>{
-              if(n.requires) n.requires.forEach(reqId=>{
-                const parent=nodes.find(p=>p.id===reqId);
-                if(parent) edges.push({from:parent,to:n});
-              });
-            });
-            return(
-              <div>
-                <div style={{marginBottom:10}}>
-                  <div style={{display:"flex",alignItems:"baseline",gap:10,marginBottom:10}}>
-                    <p style={{...C.secT,margin:0}}>Classroom Upgrades</p>
-                    <span style={{fontSize:22,fontWeight:700,color:"#f0c060",letterSpacing:-0.5,lineHeight:1}}>{totalGained}</span>
-                    <span style={{fontSize:11,color:"#8050a0",letterSpacing:1}}>lbs gained</span>
-                  </div>
-                  <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                    {CATS.map(cat=>{
-                      const active=cat===skillCat;
-                      return(
-                        <button key={cat}
-                          style={{background:active?CAT_COLORS[cat]+"99":"transparent",border:`1px solid ${CAT_COLORS[cat]}${active?"":"55"}`,borderRadius:6,padding:"5px 13px",fontSize:11,color:active?"#fff":"#7060a0",cursor:"pointer",fontFamily:"inherit",fontWeight:active?700:400,transition:"all 0.15s"}}
-                          onClick={()=>{setSkillCat(cat);setHovered(null);}}>
-                          {SKILL_CATEGORIES[cat]?.label||cat}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-                <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
-                  {/* SVG Tree */}
-                  <div style={{overflowX:"auto",overflowY:"visible",flex:"0 0 auto"}}>
-                    <svg width={svgW} height={svgH} style={{display:"block"}}>
-                      {/* Tier labels */}
-                      {TIERS.map((t,i)=>(
-                        <text key={t} x={8} y={PAD_Y+i*ROW_H+ROW_H/2+5} fill="#3a2050" fontSize={9} letterSpacing={2}
-                          fontFamily="'Palatino Linotype',serif">T{t} · {TIER_COSTS[i]}</text>
-                      ))}
-                      {/* Active category label */}
-                      <text x={PAD_X+COL_W/2} y={22} fill={CAT_COLORS[skillCat]} fontSize={11}
-                        textAnchor="middle" fontFamily="'Palatino Linotype',serif" fontWeight="bold">
-                        {SKILL_CATEGORIES[skillCat]?.label||skillCat}
-                      </text>
-                      {/* Tier dividers */}
-                      {TIERS.map((t,i)=>(
-                        <line key={t} x1={PAD_X-10} y1={PAD_Y+i*ROW_H} x2={svgW-10} y2={PAD_Y+i*ROW_H}
-                          stroke="#1a0830" strokeWidth={1}/>
-                      ))}
-                      {/* Edges */}
-                      {edges.map((e,i)=>{
-                        const fromUnlocked=unlockedSkills.includes(e.from.id);
-                        const toUnlocked=unlockedSkills.includes(e.to.id);
-                        const active=fromUnlocked&&toUnlocked;
-                        const reachable=fromUnlocked&&!toUnlocked;
-                        return(
-                          <line key={i}
-                            x1={e.from.x} y1={e.from.y+28}
-                            x2={e.to.x} y2={e.to.y-28}
-                            stroke={active?"#60a060":reachable?"#6030a0":"#200830"}
-                            strokeWidth={active?2.5:reachable?1.5:1}
-                            strokeDasharray={active?"none":"4,4"}
-                            opacity={active?0.9:reachable?0.7:0.3}
-                          />
-                        );
-                      })}
-                      {/* Nodes */}
-                      {nodes.map(sk=>{
-                        const unlocked=unlockedSkills.includes(sk.id);
-                        const available=canUnlock(sk);
-                        const isHovered=hovered===sk.id;
-                        const baseColor=CAT_COLORS[sk.category];
-                        const fillColor=unlocked?"#1a4020":available?"#2a1048":"#0e0618";
-                        const borderColor=unlocked?"#50c050":available?"#8030d0":isHovered?"#3a1060":"#200830";
-                        const textColor=unlocked?"#80e080":available?"#c080f0":"#4a3060";
-                        const nodeW=120, nodeH=52;
-                        return(
-                          <g key={sk.id}
-                            onMouseEnter={()=>setHovered(sk.id)}
-                            onMouseLeave={()=>setHovered(null)}
-                            onClick={()=>available&&startSkillPurchase(sk)}
-                            style={{cursor:available?"pointer":"default"}}>
-                            <rect
-                              x={sk.x-nodeW/2} y={sk.y-nodeH/2}
-                              width={nodeW} height={nodeH} rx={8}
-                              fill={fillColor}
-                              stroke={borderColor}
-                              strokeWidth={unlocked?2:isHovered?1.5:1}
-                              opacity={unlocked||available?1:0.45}
-                            />
-                            {/* Glow for available */}
-                            {available&&!unlocked&&(
-                              <rect x={sk.x-nodeW/2} y={sk.y-nodeH/2} width={nodeW} height={nodeH} rx={8}
-                                fill="none" stroke="#9040e0" strokeWidth={3} opacity={0.25}
-                                style={{filter:"blur(3px)"}}/>
-                            )}
-                            {/* Unlock cost badge */}
-                            {!unlocked&&(
-                              <rect x={sk.x+nodeW/2-32} y={sk.y-nodeH/2-10} width={32} height={14} rx={5}
-                                fill={totalGained>=sk.cost?"#4a2080":"#2a0830"}/>
-                            )}
-                            {!unlocked&&(
-                              <text x={sk.x+nodeW/2-16} y={sk.y-nodeH/2-1} fill={totalGained>=sk.cost?"#d0a0ff":"#603050"}
-                                fontSize={8} textAnchor="middle" fontFamily="serif">{sk.cost}</text>
-                            )}
-                            {/* Checkmark if unlocked */}
-                            {unlocked&&(
-                              <text x={sk.x+nodeW/2-10} y={sk.y-nodeH/2+12} fill="#60c060" fontSize={12} textAnchor="middle">✓</text>
-                            )}
-                            {/* Label */}
-                            <text x={sk.x} y={sk.y-6} fill={textColor} fontSize={10}
-                              textAnchor="middle" fontFamily="'Palatino Linotype',serif" fontWeight="bold">
-                              {sk.label.length>18?sk.label.slice(0,17)+"…":sk.label}
-                            </text>
-                            {/* Category color bar at bottom of node */}
-                            <rect x={sk.x-nodeW/2+4} y={sk.y+nodeH/2-8} width={nodeW-8} height={4} rx={2}
-                              fill={baseColor} opacity={unlocked?0.8:0.3}/>
-                            {/* Click hint */}
-                            {available&&(
-                              <text x={sk.x} y={sk.y+10} fill="#9060c0" fontSize={8}
-                                textAnchor="middle" fontFamily="serif">click to unlock</text>
-                            )}
-                          </g>
-                        );
-                      })}
-                    </svg>
-                  </div>
-                  {/* Detail panel — shows hovered/active node info */}
-                  <div style={{flex:"1 1 220px",minWidth:200,maxWidth:280,position:"sticky",top:0}}>
-                    {hoveredNode?(()=>{
-                      const sk=hoveredNode;
-                      const unlocked=unlockedSkills.includes(sk.id);
-                      const available=canUnlock(sk);
-                      const affordable=totalGained>=sk.cost;
-                      const reqsMet=!sk.requires||sk.requires.every(r=>unlockedSkills.includes(r));
-                      const cat=SKILL_CATEGORIES[sk.category];
-                      return(
-                        <div style={{background:"rgba(20,8,40,0.95)",border:`1px solid ${CAT_COLORS[sk.category]}88`,borderRadius:10,padding:14}}>
-                          <div style={{fontSize:9,letterSpacing:2,color:CAT_COLORS[sk.category],marginBottom:4}}>{cat?.label} · TIER {sk.tier}</div>
-                          <div style={{fontWeight:700,fontSize:14,color:unlocked?"#80e080":available?"#c090f0":"#7a5090",marginBottom:6}}>{sk.label}</div>
-                          <div style={{fontSize:11,color:"#9070b0",lineHeight:1.6,marginBottom:8}}>{sk.desc}</div>
-                          <div style={{fontSize:11,color:"#c090d0",lineHeight:1.5,fontStyle:"italic",marginBottom:10}}>{sk.effect}</div>
-                          {sk.requires&&(
-                            <div style={{fontSize:10,color:"#5a3070",marginBottom:8}}>
-                              Requires: {sk.requires.map(r=>{
-                                const rsk=ALL_SKILLS.find(s=>s.id===r);
-                                return <span key={r} style={{color:unlockedSkills.includes(r)?"#60a060":"#7a3060",marginRight:4}}>
-                                  {unlockedSkills.includes(r)?"✓ ":""}{rsk?.label||r}
-                                </span>;
-                              })}
-                            </div>
-                          )}
-                          {unlocked
-                            ? <div style={{background:"rgba(30,60,30,0.5)",border:"1px solid #306030",borderRadius:6,padding:"6px 10px",fontSize:11,color:"#70c070"}}>✓ Unlocked</div>
-                            : available
-                            ? <button style={{...C.btn("#5020a0"),width:"100%"}} onClick={()=>startSkillPurchase(sk)}>Unlock — spend {sk.cost} lbs</button>
-                            : !reqsMet
-                            ? <div style={{fontSize:10,color:"#4a2050"}}>Unlock prerequisites first.</div>
-                            : <div style={{fontSize:10,color:"#4a2050"}}>Need {sk.cost-totalGained} more lbs on the class total.</div>
-                          }
-                        </div>
-                      );
-                    })()
-                    :<div style={{background:"rgba(10,5,20,0.6)",border:"1px solid #1a0830",borderRadius:10,padding:14,fontSize:11,color:"#3a2050",fontStyle:"italic"}}>
-                      Hover a node to see details. Click an available node to unlock it.
-                    </div>}
-                    {/* Active bonuses */}
-                    <div style={{marginTop:10,background:"rgba(20,8,40,0.8)",border:"1px solid #200838",borderRadius:10,padding:12}}>
-                      <div style={{fontSize:9,letterSpacing:2,color:"#5028a0",marginBottom:8}}>ACTIVE BONUSES</div>
-                      {unlockedSkills.length===0
-                        ?<div style={{fontSize:10,color:"#3a2050"}}>None yet. Fatten the class to unlock Tier 1 ({Math.max(0,50-totalGained)} lbs away).</div>
-                        :<div style={{display:"flex",flexDirection:"column",gap:5}}>
-                          {skillPassiveBonus>0&&<div style={{fontSize:11,color:"#80e080"}}>+{skillPassiveBonus} passive lbs/week</div>}
-                          {skillApBonus>0&&<div style={{fontSize:11,color:"#80a0e0"}}>+{skillApBonus} AP/week (max 20)</div>}
-                          {skillGainMult>1&&<div style={{fontSize:11,color:"#e0a060"}}>×{skillGainMult.toFixed(2)} all gain multiplier</div>}
-                          {dinnerUnlocked&&<div style={{fontSize:11,color:"#c080f0"}}>🍽️ Dinner events active</div>}
-                          {hasSkill("snack_station")&&<div style={{fontSize:11,color:"#60d090"}}>🍪 Desk Snacks FREE</div>}
-                          {hasSkill("catering_contact")&&<div style={{fontSize:11,color:"#60d090"}}>🤝 Feast: -1 AP, +4 lbs</div>}
-                          {hasSkill("private_kitchen")&&<div style={{fontSize:11,color:"#60d090"}}>🍳 Home-Cooked +4 lbs, Bake +3 lbs</div>}
-                          {hasSkill("ap_mastery")&&<div style={{fontSize:11,color:"#60d090"}}>⚡ All single actions -1 AP</div>}
-                          {hasSkill("full_catering")&&<div style={{fontSize:11,color:"#60d090"}}>🍾 On-Demand Feast unlocked</div>}
-                          {hasSkill("group_dynamics")&&<div style={{fontSize:11,color:"#60d090"}}>👥 Group Dinner unlocked</div>}
-                          {hasSkill("dinner_accessible")&&<div style={{fontSize:11,color:"#d0a030"}}>🌟 The Atelier unlocked</div>}
-                          {skillScrutinyReduce<1&&<div style={{fontSize:11,color:"#a0d0e0"}}>🔇 -{Math.round((1-skillScrutinyReduce)*100)}% scrutiny gain</div>}
-                          {skillScrutinyPassiveReduce>0&&<div style={{fontSize:11,color:"#a0d0e0"}}>🛡️ -{skillScrutinyPassiveReduce} scrutiny/week</div>}
-                          {skillSessionCapBonus>0&&<div style={{fontSize:11,color:"#d0a0e0"}}>🌙 +{skillSessionCapBonus} session capacity</div>}
-                          <div style={{fontSize:10,color:"#5a3070",marginTop:3}}>{unlockedSkills.length} / {ALL_SKILLS.length} skills</div>
-                        </div>
-                      }
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })()}
-
+          {view==="skills"&&<SkillTreeView canUnlock={canUnlock} dinnerUnlocked={dinnerUnlocked} goddessSeen={goddessSeen} hasSkill={hasSkill} hovered={hovered} setHovered={setHovered} setSkillCat={setSkillCat} skillApBonus={skillApBonus} skillCat={skillCat} skillGainMult={skillGainMult} skillPassiveBonus={skillPassiveBonus} skillScrutinyPassiveReduce={skillScrutinyPassiveReduce} skillScrutinyReduce={skillScrutinyReduce} skillSessionCapBonus={skillSessionCapBonus} startSkillPurchase={startSkillPurchase} totalGained={totalGained} unlockedSkills={unlockedSkills}/>}
           {/* ── SOCIAL EVENTS ── */}
-          {view==="social"&&(
-            <div>
-              <p style={C.secT}>Social Events</p>
-              <div style={{fontSize:11,color:"#6050a0",marginBottom:12,lineHeight:1.7}}>
-                Host events to feed multiple students at once, build relationships, and manage Dr. Vaughan's suspicion.
-                One event per week.
-                {socialWeeks.includes(week)&&<span style={{color:"#f0a040",marginLeft:8}}>✓ Event held this week</span>}
-              </div>
-              {vaughan&&!vaughanAlly&&(
-                <div style={{...C.infoBox("rgba(10,30,50,0.4)"),fontSize:11,color:"#4080a0",marginBottom:12}}>
-                  👓 Vaughan attends department socials, symposiums, and the end-of-term banquet. When she attends events, she gains weight and her suspicion drops.
-                  Events that don't require her attendance still reduce suspicion passively.
-                </div>
-              )}
-              <div style={C.grid2}>
-                {SOCIAL_EVENTS.map(ev=>{
-                  const canAfford=ap>=ev.apCost;
-                  const heldThisWeek=socialWeeks.includes(week);
-                  const locked=!canAfford||heldThisWeek;
-                  return(
-                    <div key={ev.id}
-                      style={{...C.card,opacity:locked?0.5:1,cursor:locked?"not-allowed":"pointer",transition:"border-color 0.15s"}}
-                      onClick={()=>!locked&&startSocialEvent(ev)}>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
-                        <span style={{fontWeight:700,fontSize:13,color:"#d8a8ff"}}>{ev.label}</span>
-                        <span style={{fontSize:10,color:"#a080c0",background:"rgba(80,20,120,0.3)",borderRadius:8,padding:"1px 7px"}}>{ev.apCost} AP</span>
-                      </div>
-                      <div style={{fontSize:11,color:"#6a4870",lineHeight:1.5,marginBottom:6}}>{ev.desc}</div>
-                      <div style={{display:"flex",gap:8,flexWrap:"wrap",fontSize:10,color:"#5a3860"}}>
-                        <span>+{ev.baseGain[0]}–{ev.baseGain[1]} lbs</span>
-                        <span>+{ev.relBonus} rel</span>
-                        <span>{ev.minStudents}–{ev.maxStudents} students</span>
-                      </div>
-                      {ev.vaughanAttends&&vaughan&&!vaughanAlly&&(
-                        <div style={{fontSize:9,color:"#306070",marginTop:4}}>
-                          👓 Vaughan attends · suspicion {ev.vaughanEffect}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          {view==="social"&&<SocialEventsView ap={ap} socialWeeks={socialWeeks} startSocialEvent={startSocialEvent} vaughan={vaughan} vaughanAlly={vaughanAlly} week={week}/>}
 
           {/* ── ACHIEVEMENTS ── */}
           {/* ── DIVINE PANEL ── */}
-          {view==="divine"&&goddessSeen&&(()=>{
-            const ascended=students.filter(s=>s.ascensionPath&&s.ascensionPath!=="convergence"&&s.ascensionPath!=="primordial");
-            const celestials=ascended.filter(s=>s.ascensionPath==="celestial");
-            const umbrals=ascended.filter(s=>s.ascensionPath==="umbral");
-            const sanguines=ascended.filter(s=>s.ascensionPath==="sanguine");
-            const verdants=ascended.filter(s=>s.ascensionPath==="verdant");
-            const singularities=students.filter(s=>s.ascensionPath==="convergence");
-            const primordials=students.filter(s=>s.ascensionPath==="primordial");
-            const blobsEligible=students.filter(s=>getStage(s.lbs).id>=10&&!s.ascensionPath);
-            return(
-              <div>
-                <p style={C.secT}>✦ Divine Realm</p>
+          {view==="divine"&&goddessSeen&&<DivinePanel addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} consumedStudents={consumedStudents} divineCelestialCanPullHR={divineCelestialCanPullHR} divineRiteBlobMult={divineRiteBlobMult} divineUmbralCanConsumeHR={divineUmbralCanConsumeHR} doPrimordialRite={doPrimordialRite} doSanguineAction={doSanguineAction} doSingularityRite={doSingularityRite} doVerdantAction={doVerdantAction} foundReligion={foundReligion} holdRite={holdRite} hrObserver={hrObserver} recoverConsumedStudent={recoverConsumedStudent} religion={religion} sanguineMarks={sanguineMarks} students={students} umbralConsumeHR={umbralConsumeHR} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} vaughan={vaughan} verdantCultivations={verdantCultivations}/>}
 
-                {/* Goddess message */}
-                <div style={{background:"rgba(20,5,40,0.8)",border:"1px solid #6030c080",borderRadius:10,padding:14,marginBottom:14}}>
-                  <div style={{fontSize:9,letterSpacing:3,color:"#8050c0",marginBottom:6}}>THE GODDESS SPEAKS</div>
-                  <div style={{fontSize:13,color:"#d0b0f0",fontStyle:"italic",lineHeight:1.85}}>
-                    {singularities.length>0
-                      ? "The Singularity has been achieved. The goddess is silent, because she is pleased beyond words."
-                      : umbrals.some(u=>u.ascensionStage>=4)&&celestials.some(c=>c.ascensionStage>=4)
-                      ? "An Umbral Sovereign and a Celestial Apex exist simultaneously. The convergence is possible. The choice is yours."
-                      : ascended.length===0
-                      ? "The vision has been received. You may now ascend any Blob-stage student along the Celestial or Umbral path. Find them in the class roster."
-                      : "The paths are open. She watches your class with great interest. Make them vast."}
-                  </div>
-                </div>
-
-                {/* Blob-eligible students */}
-                {blobsEligible.length>0&&(
-                  <div style={{marginBottom:14}}>
-                    <div style={{...C.secT,marginBottom:8}}>Eligible for Ascension</div>
-                    <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                      {blobsEligible.map(s=>(
-                        <div key={s.id} style={{...C.card,cursor:"default"}}>
-                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                            <span style={{fontWeight:700,fontSize:14,color:"#d8a8ff"}}>{s.name}</span>
-                            <span style={{fontSize:11,color:"#806090"}}>{s.lbs} lbs · {getStage(s.lbs).label}</span>
-                          </div>
-                          <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                            <button style={{...C.btn("#3020a0"),flex:1,minWidth:"45%"}} onClick={()=>ascendStudent(s,"celestial")}>✦ Celestial</button>
-                            <button style={{...C.btn("#800010"),flex:1,minWidth:"45%"}} onClick={()=>ascendStudent(s,"umbral")}>🌑 Umbral</button>
-                            <button style={{...C.btn("#6b1010"),flex:1,minWidth:"45%"}} onClick={()=>ascendStudent(s,"sanguine")}>🩸 Sanguine</button>
-                            <button style={{...C.btn("#0a3a0a"),flex:1,minWidth:"45%"}} onClick={()=>ascendStudent(s,"verdant")}>🌿 Verdant</button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Celestial roster */}
-                {celestials.length>0&&(
-                  <div style={{marginBottom:14}}>
-                    <div style={{...C.secT,marginBottom:8}}>✦ Celestial ({celestials.length})</div>
-                    {celestials.map(s=>{
-                      const stage=CELESTIAL_STAGES[s.ascensionStage||0];
-                      return(
-                        <div key={s.id} style={{background:"rgba(40,10,100,0.35)",border:"1px solid #6040c060",borderRadius:8,padding:10,marginBottom:6}}>
-                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-                            <span style={{fontWeight:700,color:"#c0a8ff",fontSize:13}}>{s.name}</span>
-                            <span style={{fontSize:10,color:"#9070d0",background:"rgba(80,30,160,0.3)",borderRadius:8,padding:"1px 8px"}}>{stage.label}</span>
-                          </div>
-                          <div style={{fontSize:11,color:"#8060a0"}}>{s.lbs} lbs · Stage {(s.ascensionStage||0)+1}/5</div>
-                          {(s.ascensionStage||0)<4&&<div style={{fontSize:10,color:"#503080",marginTop:2}}>Next: {CELESTIAL_STAGES[(s.ascensionStage||0)+1].min.toLocaleString()} lbs</div>}
-                          <div style={{display:"flex",gap:5,marginTop:6,flexWrap:"wrap"}}>
-                            {students.filter(t=>t.id!==s.id).map(t=>(
-                              <span key={t.id} style={{display:"flex",gap:2}}>
-                                <button style={{...C.smBtn,fontSize:9}} onClick={()=>celestialMassPull(s.id,t.id)}>↓Pull {t.name.split(" ")[0]}</button>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,80,0.4)"}} onClick={()=>celestialMassPush(s.id,t.id)}>↑Push {t.name.split(" ")[0]}</button>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,80,0.4)"}} onClick={()=>celestialMassBless(s.id,t.id)}>✦Bless {t.name.split(" ")[0]}</button>
-                              </span>
-                            ))}
-                            {divineCelestialCanPullHR&&hrObserver&&(
-                              <span style={{display:"flex",gap:2}}>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(30,60,100,0.5)"}} onClick={()=>celestialMassPull(s.id,"hr")}>↓Pull {hrObserver.name.split(" ")[1]||hrObserver.name}</button>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"hr")}>↑Push {hrObserver.name.split(" ")[1]||hrObserver.name}</button>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"hr")}>✦Bless {hrObserver.name.split(" ")[1]||hrObserver.name}</button>
-                              </span>
-                            )}
-                            {divineCelestialCanPullHR&&vaughan&&(
-                              <span style={{display:"flex",gap:2}}>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(40,10,100,0.5)"}} onClick={()=>celestialMassPush(s.id,"vaughan")}>↑Push Vaughan</button>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(80,30,150,0.5)"}} onClick={()=>celestialMassBless(s.id,"vaughan")}>✦Bless Vaughan</button>
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Umbral roster */}
-                {umbrals.length>0&&(
-                  <div style={{marginBottom:14}}>
-                    <div style={{...C.secT,marginBottom:8}}>🌑 Umbral ({umbrals.length})</div>
-                    {umbrals.map(s=>{
-                      const stage=UMBRAL_STAGES[s.ascensionStage||0];
-                      return(
-                        <div key={s.id} style={{background:"rgba(50,5,5,0.55)",border:"1px solid #80101060",borderRadius:8,padding:10,marginBottom:6}}>
-                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-                            <span style={{fontWeight:700,color:"#ff8080",fontSize:13}}>{s.name}</span>
-                            <span style={{fontSize:10,color:"#cc5050",background:"rgba(80,5,5,0.4)",borderRadius:8,padding:"1px 8px"}}>{stage.label}</span>
-                          </div>
-                          <div style={{fontSize:11,color:"#a06060"}}>{s.lbs} lbs · Stage {(s.ascensionStage||0)+1}/5 · {(s.consumedIds||[]).length} consumed</div>
-                          {(s.ascensionStage||0)<4&&<div style={{fontSize:10,color:"#703030",marginTop:2}}>Next: {UMBRAL_STAGES[(s.ascensionStage||0)+1].min.toLocaleString()} lbs</div>}
-                          {(s.consumedIds||[]).length>0&&(
-                            <div style={{marginTop:5}}>
-                              <div style={{fontSize:9,color:"#903030",letterSpacing:1,marginBottom:3}}>CONSUMED:</div>
-                              {(s.consumedIds||[]).map(cid=>{
-                                const cs=consumedStudents.find(x=>x.id===cid);
-                                return cs?(
-                                  <div key={cid} style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"#c07070",padding:"2px 0"}}>
-                                    <span>{cs.name} ({cs.lbs} lbs)</span>
-                                    <button style={{...C.smBtn,fontSize:9}} onClick={()=>recoverConsumedStudent(cid,s.id)}>Release (3AP)</button>
-                                  </div>
-                                ):null;
-                              })}
-                            </div>
-                          )}
-                          <div style={{display:"flex",gap:5,marginTop:6,flexWrap:"wrap"}}>
-                            {students.filter(t=>t.id!==s.id).map(t=>(
-                              <span key={t.id} style={{display:"flex",gap:2}}>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(60,0,0,0.5)"}} onClick={()=>umbralVoidPull(s.id,t.id)}>🌑Pull {t.name.split(" ")[0]}</button>
-                                <button style={{...C.smBtn,fontSize:9,background:"rgba(80,0,0,0.5)"}} onClick={()=>umbralConsumeStudent(s.id,t.id)}>🌑Consume {t.name.split(" ")[0]}</button>
-                              </span>
-                            ))}
-                            {divineUmbralCanConsumeHR&&(hrObserver||vaughan)&&(
-                              <button style={{...C.smBtn,fontSize:9,background:"rgba(90,0,0,0.7)"}} onClick={()=>umbralConsumeHR(s.id)}>🌑Consume HR</button>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Sanguine roster */}
-                {sanguines.length>0&&(
-                  <div style={{marginBottom:14}}>
-                    <div style={{...C.secT,marginBottom:8}}>🩸 Sanguine ({sanguines.length})</div>
-                    {sanguines.map(s=>{
-                      const stage=SANGUINE_STAGES[s.ascensionStage||0];
-                      return(
-                        <div key={s.id} style={{background:"rgba(50,5,5,0.55)",border:"1px solid #cc303060",borderRadius:8,padding:10,marginBottom:6}}>
-                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-                            <span style={{fontWeight:700,color:"#ff8888",fontSize:13}}>{s.name}</span>
-                            <span style={{fontSize:10,color:"#cc5050",background:"rgba(80,5,5,0.4)",borderRadius:8,padding:"1px 8px"}}>{stage.label}</span>
-                          </div>
-                          <div style={{fontSize:11,color:"#a06060"}}>{Math.round(s.lbs).toLocaleString()} lbs · Stage {(s.ascensionStage||0)+1}/5 · {sanguineMarks.filter(id=>students.find(st=>st.id===id)).length} marked</div>
-                          {(s.ascensionStage||0)<4&&<div style={{fontSize:10,color:"#703030",marginTop:2}}>Next: {SANGUINE_STAGES[(s.ascensionStage||0)+1].min.toLocaleString()} lbs</div>}
-                          <div style={{display:"flex",gap:5,marginTop:6,flexWrap:"wrap"}}>
-                            {SANGUINE_ACTIONS.map(a=>(
-                              <button key={a.id} style={{...C.smBtn,fontSize:9,background:"rgba(80,10,10,0.5)",opacity:ap<a.apCost?0.4:1}}
-                                onClick={()=>ap>=a.apCost&&doSanguineAction(s,a.id)}>
-                                {a.label} ({a.apCost}AP)
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Verdant roster */}
-                {verdants.length>0&&(
-                  <div style={{marginBottom:14}}>
-                    <div style={{...C.secT,marginBottom:8}}>🌿 Verdant ({verdants.length})</div>
-                    {verdants.map(s=>{
-                      const stage=VERDANT_STAGES[s.ascensionStage||0];
-                      return(
-                        <div key={s.id} style={{background:"rgba(5,30,5,0.55)",border:"1px solid #33663360",borderRadius:8,padding:10,marginBottom:6}}>
-                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-                            <span style={{fontWeight:700,color:"#88cc88",fontSize:13}}>{s.name}</span>
-                            <span style={{fontSize:10,color:"#55aa55",background:"rgba(5,40,5,0.4)",borderRadius:8,padding:"1px 8px"}}>{stage.label}</span>
-                          </div>
-                          <div style={{fontSize:11,color:"#70a070"}}>{Math.round(s.lbs).toLocaleString()} lbs · Stage {(s.ascensionStage||0)+1}/5 · {verdantCultivations.filter(id=>students.find(st=>st.id===id)).length} cultivated</div>
-                          {(s.ascensionStage||0)<4&&<div style={{fontSize:10,color:"#305030",marginTop:2}}>Next: {VERDANT_STAGES[(s.ascensionStage||0)+1].min.toLocaleString()} lbs</div>}
-                          <div style={{display:"flex",gap:5,marginTop:6,flexWrap:"wrap"}}>
-                            {VERDANT_ACTIONS.map(a=>(
-                              <button key={a.id} style={{...C.smBtn,fontSize:9,background:"rgba(10,50,10,0.5)",opacity:ap<a.apCost?0.4:1}}
-                                onClick={()=>ap>=a.apCost&&doVerdantAction(s,a.id)}>
-                                {a.label} ({a.apCost}AP)
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Singularity */}
-                {singularities.length>0&&(
-                  <div style={{marginBottom:14}}>
-                    <div style={{...C.secT,marginBottom:8}}>⚡ The Singularity</div>
-                    {singularities.map(s=>{
-                      const sg=getSingularityStage(s.lbs);
-                      const sgLabel=s.triumvirateUnlocked?"🔱 The Triumvirate":sg?sg.label:CONVERGENCE_STAGE.label;
-                      const sgColor=s.triumvirateUnlocked?"#ffd700":sg?sg.color:"#ffffff";
-                      return(
-                        <div key={s.id} style={{background:"rgba(20,20,20,0.9)",border:`2px solid ${sgColor}60`,borderRadius:8,padding:12}}>
-                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-                            <div style={{fontWeight:700,color:sgColor,fontSize:14}}>{s.name}</div>
-                            <div style={{fontSize:11,color:sgColor,background:"rgba(0,0,0,0.4)",borderRadius:8,padding:"1px 8px"}}>{sgLabel}</div>
-                          </div>
-                          <div style={{fontSize:11,color:"#e0e0e0",marginBottom:4}}>{Math.round(s.lbs).toLocaleString()} lbs{sg&&sg.id<5?` · next: ${SINGULARITY_STAGES[sg.id].min.toLocaleString()}`:" · MAX"}</div>
-                          <div style={{fontSize:11,color:"#b0b0b0",fontStyle:"italic",lineHeight:1.65}}>{sg?sg.desc:CONVERGENCE_STAGE.aura}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Primordial roster */}
-                {primordials.length>0&&(
-                  <div style={{marginBottom:14}}>
-                    <div style={{...C.secT,marginBottom:8}}>🌍 The Primordial</div>
-                    {primordials.map(s=>{
-                      const pg=getPrimordialStage(s.lbs);
-                      const pgLabel=s.primordialTriumvirateUnlocked?"🔱 Primordial Triumvirate":pg?pg.label:"Bloodroot";
-                      const pgColor=s.primordialTriumvirateUnlocked?"#c8a060":pg?pg.color:"#3d1a0a";
-                      return(
-                        <div key={s.id} style={{background:"rgba(8,4,2,0.9)",border:`2px solid ${pgColor}60`,borderRadius:8,padding:12}}>
-                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-                            <div style={{fontWeight:700,color:pgColor,fontSize:14}}>{s.name}</div>
-                            <div style={{fontSize:11,color:pgColor,background:"rgba(0,0,0,0.4)",borderRadius:8,padding:"1px 8px"}}>{pgLabel}</div>
-                          </div>
-                          <div style={{fontSize:11,color:"#c0a080",marginBottom:4}}>{Math.round(s.lbs).toLocaleString()} lbs{pg&&pg.id<5?` · next: ${PRIMORDIAL_STAGES[pg.id].min.toLocaleString()}`:" · MAX"}</div>
-                          <div style={{fontSize:11,color:"#a08060",fontStyle:"italic",lineHeight:1.65}}>{pg?pg.desc:"Ancient hunger, ancient patience."}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Religion panel */}
-                <div style={{background:"rgba(30,5,20,0.6)",border:"1px solid #80204060",borderRadius:10,padding:14,marginBottom:14}}>
-                  <div style={{fontSize:9,letterSpacing:3,color:"#b04060",marginBottom:8}}>⛪ RELIGION</div>
-                  {!religion?(
-                    <div>
-                      <div style={{fontSize:12,color:"#906070",lineHeight:1.7,marginBottom:10}}>
-                        Found a religion centred on an ascended blob. Devotees gather. The student body grows heavier in proximity to the sacred.
-                      </div>
-                      {[...ascended,...sanguines,...verdants,...singularities,...primordials].length>0?(
-                        <div style={{display:"flex",flexDirection:"column",gap:5}}>
-                          {[...ascended,...sanguines,...verdants,...singularities,...primordials].map(s=>(
-                            <button key={s.id} style={C.btn("#401020")} onClick={()=>foundReligion(s.id)}>
-                              ⛪ Found religion around {s.name} (2AP)
-                            </button>
-                          ))}
-                        </div>
-                      ):(
-                        <div style={{fontSize:11,color:"#604050"}}>Ascend a student first to found a religion.</div>
-                      )}
-                    </div>
-                  ):(
-                    <div>
-                      <div style={{display:"flex",gap:14,marginBottom:10,flexWrap:"wrap"}}>
-                        <div style={{textAlign:"center"}}>
-                          <div style={{fontSize:22,fontWeight:700,color:"#e08090"}}>{religion.devotees}</div>
-                          <div style={{fontSize:9,color:"#904050",letterSpacing:1}}>DEVOTEES</div>
-                        </div>
-                        <div style={{textAlign:"center"}}>
-                          <div style={{fontSize:22,fontWeight:700,color:"#d06070"}}>{religion.ritesHeld}</div>
-                          <div style={{fontSize:9,color:"#904050",letterSpacing:1}}>RITES HELD</div>
-                        </div>
-                        <div style={{textAlign:"center"}}>
-                          <div style={{fontSize:22,fontWeight:700,color:"#c05060"}}>{religion.worshippedIds.length}</div>
-                          <div style={{fontSize:9,color:"#904050",letterSpacing:1}}>BLOBS WORSHIPPED</div>
-                        </div>
-                        <div style={{textAlign:"center"}}>
-                          <div style={{fontSize:22,fontWeight:700,color:"#b04050"}}>{(religion.weeklyPassiveGain||0).toFixed(1)}</div>
-                          <div style={{fontSize:9,color:"#904050",letterSpacing:1}}>DEVOTEES/WEEK</div>
-                        </div>
-                      </div>
-                      <div style={{fontSize:10,color:"#704050",marginBottom:8}}>
-                        Founded week {religion.founded} · {religion.worshippedIds.map(id=>students.find(s=>s.id===id)?.name||"?").join(", ")}
-                      </div>
-                      {/* Add more blobs to religion */}
-                      {ascended.filter(s=>!religion.worshippedIds.includes(s.id)).length>0&&(
-                        <div style={{marginBottom:10}}>
-                          <div style={{fontSize:10,color:"#805060",marginBottom:4}}>Add to pantheon:</div>
-                          {ascended.filter(s=>!religion.worshippedIds.includes(s.id)).map(s=>(
-                            <button key={s.id} style={{...C.smBtn,marginBottom:3,display:"block"}} onClick={()=>addBlobToReligion(s.id)}>
-                              ⛪ {s.name} (+2 devotees)
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                      {/* Hold Rites */}
-                      <div style={{fontSize:10,color:"#904050",marginBottom:6}}>Hold a Rite:</div>
-                      <div style={{display:"flex",flexDirection:"column",gap:5}}>
-                        {RELIGION_RITES.map(rite=>(
-                          <div key={rite.id} style={{background:"rgba(40,0,20,0.5)",border:"1px solid #80204040",borderRadius:7,padding:9}}>
-                            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-                              <span style={{fontSize:12,fontWeight:700,color:"#e08090"}}>{rite.label}</span>
-                              <span style={{fontSize:10,color:"#704050"}}>{rite.apCost} AP · +{rite.devoteeGain} devotees · +{rite.scrutiny} scrutiny</span>
-                            </div>
-                            <div style={{fontSize:10,color:"#905060",marginBottom:6}}>Blob gains +{Math.round(rite.blobBonus*divineRiteBlobMult)} lbs</div>
-                            <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
-                              {religion.worshippedIds.map(bid=>{
-                                const blob=students.find(s=>s.id===bid);
-                                return blob?(
-                                  <button key={bid} style={{...C.btn("#50102030"),fontSize:10}} onClick={()=>holdRite(rite,bid)}>
-                                    {rite.label} for {blob.name}
-                                  </button>
-                                ):null;
-                              })}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      {/* Singularity rites (shown when a singularity student exists) */}
-                      {singularities.length>0&&(
-                        <div style={{marginTop:12}}>
-                          <div style={{fontSize:10,color:"#a080c0",marginBottom:6}}>⚡ Singularity Rites:</div>
-                          <div style={{display:"flex",flexDirection:"column",gap:5}}>
-                            {SINGULARITY_RITES.map(rite=>{
-                              const sgStudent=singularities[0];
-                              const canAfford=ap>=rite.apCost&&religion.devotees>=(rite.devoteeMin||0)&&religion.devotees>=(rite.devoteeCost||0);
-                              return(
-                                <div key={rite.id} style={{background:"rgba(20,5,40,0.6)",border:"1px solid #6020a040",borderRadius:7,padding:9,opacity:canAfford?1:0.45}}>
-                                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
-                                    <span style={{fontSize:11,fontWeight:700,color:"#c090e0"}}>{rite.label}</span>
-                                    <span style={{fontSize:10,color:"#806090"}}>{rite.apCost} AP{rite.devoteeMin?` · ${rite.devoteeMin} dev min`:""}</span>
-                                  </div>
-                                  <div style={{fontSize:10,color:"#806070",marginBottom:5,fontStyle:"italic"}}>{rite.desc}</div>
-                                  <button style={{...C.btn("#301050"),fontSize:10,width:"100%"}} onClick={()=>doSingularityRite(rite)}>
-                                    {rite.label} ({sgStudent.name})
-                                  </button>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-                      {/* Primordial rites */}
-                      {primordials.length>0&&(
-                        <div style={{marginTop:12}}>
-                          <div style={{fontSize:10,color:"#a06030",marginBottom:6}}>🌍 Primordial Rites:</div>
-                          <div style={{display:"flex",flexDirection:"column",gap:5}}>
-                            {PRIMORDIAL_RITES.map(rite=>{
-                              const pgStudent=primordials[0];
-                              const canAfford=ap>=rite.apCost&&religion.devotees>=(rite.devoteeMin||0)&&religion.devotees>=(rite.devoteeCost||0);
-                              return(
-                                <div key={rite.id} style={{background:"rgba(20,8,2,0.6)",border:"1px solid #a0603040",borderRadius:7,padding:9,opacity:canAfford?1:0.45}}>
-                                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
-                                    <span style={{fontSize:11,fontWeight:700,color:"#c08040"}}>{rite.label}</span>
-                                    <span style={{fontSize:10,color:"#806040"}}>{rite.apCost} AP{rite.devoteeMin?` · ${rite.devoteeMin} dev min`:""}</span>
-                                  </div>
-                                  <div style={{fontSize:10,color:"#806050",marginBottom:5,fontStyle:"italic"}}>{rite.desc}</div>
-                                  <button style={{...C.btn("#3a1800"),fontSize:10,width:"100%"}} onClick={()=>doPrimordialRite(rite)}>
-                                    {rite.label} ({pgStudent.name})
-                                  </button>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-              </div>
-            );
-          })()}
-
-          {view==="achievements"&&(
-            <div>
-              <p style={C.secT}>Achievements — {achievements.length}/{ACHIEVEMENT_LIST.length} unlocked</p>
-              <div style={C.grid2}>
-                {ACHIEVEMENT_LIST.map(a=>{
-                  const unlocked=achievements.includes(a.id);
-                  return(
-                    <div key={a.id} style={{...C.card,cursor:"default",opacity:unlocked?1:0.4,border:unlocked?"1px solid #4a18a0":"1px solid #180830"}}>
-                      <div style={{fontSize:16,marginBottom:4}}>{a.label}</div>
-                      <div style={{fontSize:11,color:unlocked?"#c0a0e8":"#5a4070"}}>{a.desc}</div>
-                      {unlocked&&<div style={{fontSize:10,color:"#7040c0",marginTop:4}}>✓ Unlocked</div>}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          {view==="achievements"&&<AchievementsView achievements={achievements}/>}
 
         </div>
 
@@ -7160,1297 +5354,65 @@ export default function ProfessorSim(){
       </div>
 
       {/* ── ADMIN EVENT MODAL ── */}
-      {adminEvent&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:520}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#c04030",marginBottom:6}}>ADMINISTRATION</div>
-            <h2 style={{margin:"0 0 14px",color:"#ff8070",fontSize:17,fontWeight:400}}>{adminEvent.title}</h2>
-            <div style={{...C.infoBox("rgba(80,10,10,0.3)"),lineHeight:1.8,fontSize:13,color:"#d0b0a0",marginBottom:16,fontStyle:"italic"}}>
-              {adminEvent.scene()}
-            </div>
-            {/* Termination: show observer intervention status */}
-            {adminEvent.isGameOver&&(
-              <div style={{...C.infoBox(hrObserver&&hrObserver.disposition>=65?"rgba(20,70,20,0.4)":"rgba(60,20,0,0.3)"),fontSize:12,marginBottom:12,color:hrObserver&&hrObserver.disposition>=65?"#70d080":"#906040"}}>
-                {hrObserver
-                  ? hrObserver.disposition>=65
-                    ? `✅ ${hrObserver.name} has become sympathetic (${hrObserver.disposition} disposition). She will intervene on your behalf.`
-                    : `⚠️ ${hrObserver.name} is observing (${hrObserver.disposition}/65 needed to save you). If she were more sympathetic, she could file a favorable report.`
-                  : `No one is in your corner right now.`}
-              </div>
-            )}
-            <div style={{display:"flex",flexDirection:"column",gap:7}}>
-              {adminEvent.choices.map((ch,i)=>(
-                <button key={i} style={{...C.btn(ch.delta<0?"#184020":ch.delta>5?"#601010":"#2a1040"),textAlign:"left",padding:"9px 13px"}}
-                  onClick={()=>{
-                    push(`🏛️ ${adminEvent.title}: ${ch.text}`);
-                    if(ch.delta>0) addScrutiny(ch.delta);
-                    else if(ch.delta<0) setAdminScrutiny(prev=>Math.max(0,prev+ch.delta));
-                    if(adminEvent.spawnsObserver){
-                      const obs=HR_OBSERVER_POOL[rnd(0,HR_OBSERVER_POOL.length-1)];
-                      setHrObserver({...obs,lbs:obs.startLbs,disposition:0,weeksPresent:0});
-                      push(`👤 ${obs.intro}`);
-                    }
-                    if(adminEvent.isGameOver){
-                      if(hrObserver&&hrObserver.disposition>=65){
-                        push(`✅ ${hrObserver.name} files her report. "I cannot support the findings of the initial review. The pedagogy is excellent, the students are thriving, and I am closing the file."`);
-                        push(`📧 Dean Holloway replies within the hour: "Thank you for your thorough assessment." The semester continues.`);
-                        setAdminScrutiny(30);
-                        setHrObserver(prev=>({...prev,saved:true}));
-                      } else {
-                        push("💀 Your contract has not been renewed. The semester ends here.");
-                      }
-                    }
-                    setAdminEvent(null);
-                  }}>
-                  {ch.label}
-                </button>
-              ))}
-            </div>
-            <div style={{fontSize:10,color:"#502030",marginTop:10}}>Scrutiny: {adminScrutiny}/100</div>
-          </div>
-        </div>
-      )}
+      {adminEvent&&<AdminEventModal addScrutiny={addScrutiny} adminEvent={adminEvent} adminScrutiny={adminScrutiny} hrObserver={hrObserver} push={push} setAdminEvent={setAdminEvent} setAdminScrutiny={setAdminScrutiny} setHrObserver={setHrObserver}/>}
 
       {/* ── STUDY CHECK-IN MODAL ── */}
-      {studyCheckIn&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:520}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>RESEARCH CHECK-IN — SESSION {studyCheckIn.index+1}</div>
-            <div style={{fontSize:12,color:"#9070b0",marginBottom:10}}>{studyCheckIn.student.name} · {studyCheckIn.student.lbs} lbs · {getStage(studyCheckIn.student.lbs).label}</div>
-            <div style={{...C.infoBox("rgba(60,20,100,0.2)"),lineHeight:1.85,fontSize:13,color:"#d0c0e0",fontStyle:"italic",marginBottom:16}}>
-              {studyCheckIn.scene}
-            </div>
-            <button style={C.btn("#5020a0")} onClick={()=>setStudyCheckIn(null)}>Close</button>
-          </div>
-        </div>
-      )}
+      {studyCheckIn&&<StudyCheckInModal setStudyCheckIn={setStudyCheckIn} studyCheckIn={studyCheckIn}/>}
 
       {/* ── TIER-UP MODAL ── */}
-      {tierUpModal&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:500}}>
-            <div style={{fontSize:9,letterSpacing:3,color:tierUpModal.newTier.color,marginBottom:8}}>RELATIONSHIP MILESTONE</div>
-            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
-              <span style={{fontSize:26}}>{tierUpModal.newTier.emoji}</span>
-              <div>
-                <div style={{fontSize:17,fontWeight:700,color:tierUpModal.newTier.color}}>{tierUpModal.student.name}</div>
-                <div style={{fontSize:12,color:"#7060a0",marginTop:2}}>
-                  {tierUpModal.oldTier.emoji} {tierUpModal.oldTier.label}
-                  <span style={{margin:"0 6px",color:"#4030608a"}}>→</span>
-                  <span style={{color:tierUpModal.newTier.color,fontWeight:700}}>{tierUpModal.newTier.emoji} {tierUpModal.newTier.label}</span>
-                </div>
-              </div>
-            </div>
-            <div style={{...C.infoBox("rgba(60,20,100,0.2)"),lineHeight:1.85,fontSize:13,color:"#e0d0b0",fontStyle:"italic",marginBottom:14}}>
-              {tierUpModal.scene}
-            </div>
-            {tierUpModal.newTier.id===3&&(
-              <div style={{...C.infoBox("rgba(80,10,130,0.3)"),fontSize:11,color:"#c060ff",marginBottom:12,lineHeight:1.6}}>
-                🖤 <strong>Devoted.</strong> She accepts her situation completely.
-                +10% gain multiplier applied. She passively covers 1 scrutiny point per week through glowing feedback.
-              </div>
-            )}
-            {tierUpModal.newTier.id===2&&(
-              <div style={{...C.infoBox("rgba(60,10,100,0.25)"),fontSize:11,color:"#9050c8",marginBottom:12}}>
-                💜 <strong>Intimate.</strong> She trusts you implicitly. Talk actions give bonus relationship.
-              </div>
-            )}
-            <button style={{...C.btn("#5020a0"),background:tierUpModal.newTier.color+"99"}} onClick={()=>{
-              if(tierUpModal.newTier.id===3){
-                setStudents(prev=>prev.map(s=>s.id!==tierUpModal.student.id?s:{...s,gainMultiplier:(s.gainMultiplier||1)*1.1}));
-              }
-              setTierUpModal(null);
-            }}>Continue →</button>
-          </div>
-        </div>
-      )}
+      {tierUpModal&&<TierUpModal setStudents={setStudents} setTierUpModal={setTierUpModal} tierUpModal={tierUpModal}/>}
 
       {/* ── VAUGHAN EVENT MODAL ── */}
-      {vaughanModal&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:520}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#408090",marginBottom:6}}>DR. VAUGHAN — WELLNESS & KINESIOLOGY</div>
-            <h2 style={{margin:"0 0 14px",color:"#70c0d8",fontSize:17,fontWeight:400}}>{vaughanModal.title}</h2>
-            <div style={{...C.infoBox("rgba(5,25,40,0.5)"),lineHeight:1.8,fontSize:13,color:"#d0c8b8",fontStyle:"italic",marginBottom:16}}>
-              {vaughanModal.scene()}
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:7}}>
-              {vaughanModal.choices.map((ch,i)=>(
-                <button key={i}
-                  style={{...C.btn(ch.vDelta&&ch.vDelta>10?"#204060":ch.delta&&ch.delta>5?"#601010":"#2a2a40"),textAlign:"left",padding:"9px 13px"}}
-                  onClick={()=>resolveVaughanEvent(vaughanModal,ch)}>
-                  {ch.label}
-                </button>
-              ))}
-            </div>
-            <div style={{fontSize:10,color:"#304050",marginTop:10}}>
-              Suspicion: {vaughan?.suspicion||0}/100 · Disposition: {vaughan?.disposition||0}/100 · {vaughan?.lbs||0} lbs
-            </div>
-          </div>
-        </div>
-      )}
+      {vaughanModal&&<VaughanEventModal resolveVaughanEvent={resolveVaughanEvent} vaughan={vaughan} vaughanModal={vaughanModal}/>}
 
       {/* ── SOCIAL EVENT PICKER ── */}
-      {socialPicker&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:520}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>SOCIAL EVENT</div>
-            <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:18}}>{socialPicker.event.label}</h2>
-            <div style={{fontSize:12,color:"#7060a0",lineHeight:1.6,marginBottom:12}}>{socialPicker.event.desc}</div>
-            <div style={{...C.secT,marginBottom:8}}>
-              Invite students
-              <span style={{fontWeight:400,color:"#5030a0",marginLeft:6}}>
-                {socialPicker.selected.length} selected · need {socialPicker.event.minStudents}–{socialPicker.event.maxStudents}
-              </span>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:4,marginBottom:14,maxHeight:290,overflowY:"auto"}}>
-              {students.map(s=>{
-                const tier=getTier(s.relationship);
-                const isSel=socialPicker.selected.includes(s.id);
-                const atMax=!isSel&&socialPicker.selected.length>=socialPicker.event.maxStudents;
-                return(
-                  <div key={s.id}
-                    style={{...C.card,padding:"7px 10px",cursor:atMax?"not-allowed":"pointer",opacity:atMax?0.4:1,
-                      background:isSel?"rgba(80,20,140,0.35)":"rgba(255,255,255,0.03)",
-                      border:isSel?"1px solid #8040c8":"1px solid #180830"}}
-                    onClick={()=>!atMax&&setSocialPicker(prev=>({
-                      ...prev,
-                      selected:isSel?prev.selected.filter(id=>id!==s.id):[...prev.selected,s.id]
-                    }))}>
-                    <div style={{display:"flex",alignItems:"center",gap:8}}>
-                      <span style={{fontSize:13}}>{isSel?"☑":"☐"}</span>
-                      <span style={{fontWeight:700,fontSize:12,color:"#d8a8ff"}}>{s.name}</span>
-                      <span style={{fontSize:10,color:tier.color}}>{tier.emoji} {tier.label}</span>
-                      <span style={{fontSize:10,color:"#6a4880",marginLeft:"auto"}}>{getStage(s.lbs).label} · {s.lbs} lbs</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <div style={{display:"flex",gap:8}}>
-              <button style={C.btn("#444")} onClick={()=>setSocialPicker(null)}>Cancel</button>
-              <button
-                style={{...C.btn("#5020a0"),flex:1,opacity:socialPicker.selected.length>=socialPicker.event.minStudents?1:0.5}}
-                onClick={confirmSocialEvent}>
-                {socialPicker.selected.length>=socialPicker.event.minStudents
-                  ?`Host — ${socialPicker.event.apCost} AP →`
-                  :`Need ${socialPicker.event.minStudents-socialPicker.selected.length} more`}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {socialPicker&&<SocialEventPicker confirmSocialEvent={confirmSocialEvent} setSocialPicker={setSocialPicker} socialPicker={socialPicker} students={students}/>}
 
       {/* ── SOCIAL EVENT RESULT ── */}
-      {socialResult&&(
-        <div style={C.overlay}>
-          <div style={C.modal}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>EVENT COMPLETE</div>
-            <h2 style={{margin:"0 0 10px",color:"#c898ff",fontSize:18}}>{socialResult.event.label}</h2>
-            <div style={{...C.infoBox("rgba(60,20,100,0.2)"),lineHeight:1.85,fontSize:13,color:"#e0d0b0",fontStyle:"italic",marginBottom:14}}>
-              {socialResult.scene}
-            </div>
-            <div style={{fontSize:12,color:"#a080c0",marginBottom:16}}>
-              {socialResult.attendees} students · +{socialResult.totalGain} lbs total gained
-            </div>
-            <button style={C.btn("#5020a0")} onClick={()=>setSocialResult(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
+      {socialResult&&<SocialEventResult setSocialResult={setSocialResult} socialResult={socialResult}/>}
 
       {/* ── PRIVATE SESSION MODAL ── */}
-      {privateSession&&(()=>{
-        const ps=privateSession;
-        const s=ps.student;
-        const effectiveMax=ps.maxFullness+ps.toleranceBuffer;
-        const fPct=ps.fullness>0?Math.round((ps.fullness/effectiveMax)*100):0;
-        const fsStage=getFullnessStage(fPct);
-        const descFns=SESSION_FULLNESS_DESCS[s.archetype]||SESSION_FULLNESS_DESCS.default;
-        const currentDesc=ps.fullness>0?descFns[Math.min(fsStage.id,descFns.length-1)](s):null;
-        const courseOrder=["opener","main","more","dessert","extra"];
-        const tier=getTier(s.relationship);
-        const availableVenueList=PRIVATE_VENUES.filter(v=>tier.id>=v.minTier);
-        return(
-          <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:640,padding:20}}>
-
-              {/* Header */}
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
-                <div>
-                  <div style={{fontSize:9,letterSpacing:3,color:"#9050c8",marginBottom:3}}>PRIVATE SESSION #{ps.sessionNum}</div>
-                  <div style={{fontSize:16,fontWeight:700,color:"#d8a8ff"}}>{s.name}</div>
-                  <div style={{fontSize:10,color:"#6a4880"}}>{s.lbs} lbs · {getStage(s.lbs).label} · {tier.emoji} {tier.label}</div>
-                </div>
-                <div style={{textAlign:"right"}}>
-                  <div style={{fontSize:10,color:"#806090",marginBottom:2}}>+{ps.totalGain} lbs this session</div>
-                  <div style={{fontSize:10,color:"#504060"}}>Capacity: {effectiveMax} ({ps.toleranceBuffer>0?`+${ps.toleranceBuffer} buffer`:"base"})</div>
-                </div>
-              </div>
-
-              {/* Venue selection */}
-              {ps.phase==="venue"&&(
-                <div>
-                  <div style={{fontSize:12,color:"#7060a0",marginBottom:10,fontStyle:"italic"}}>
-                    Where are you taking {s.name} tonight?
-                  </div>
-                  <div style={{display:"flex",flexDirection:"column",gap:7,marginBottom:14}}>
-                    {availableVenueList.map(v=>(
-                      <div key={v.id} style={{...C.card,cursor:"pointer"}} onClick={()=>chooseSessionVenue(v)}>
-                        <div style={{fontWeight:700,fontSize:13,color:"#d8a8ff",marginBottom:2}}>{v.label}</div>
-                        <div style={{fontSize:11,color:"#6a4870"}}>{v.desc}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <button style={C.btn("#444")} onClick={()=>setPrivateSession(null)}>Cancel</button>
-                </div>
-              )}
-
-              {/* Feeding phase */}
-              {ps.phase==="feeding"&&(
-                <div>
-                  {/* Fullness bar */}
-                  <div style={{marginBottom:12}}>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-                      <span style={{fontSize:11,fontWeight:700,color:fsStage.color}}>{fsStage.label}</span>
-                      <span style={{fontSize:11,color:fPct>=100?"#e04040":"#a080c0"}}>{fPct}% full</span>
-                    </div>
-                    <div style={{position:"relative",height:10,background:"rgba(255,255,255,0.07)",borderRadius:5,overflow:"hidden"}}>
-                      <div style={{
-                        position:"absolute",left:0,top:0,height:"100%",borderRadius:5,
-                        background:`linear-gradient(90deg,#30a060,${fsStage.color})`,
-                        width:`${Math.min(100,fPct)}%`,transition:"width 0.5s ease"
-                      }}/>
-                      {fPct>100&&(
-                        <div style={{position:"absolute",left:`${Math.min(100,fPct-100)/2}%`,top:0,height:"100%",width:`${Math.min(50,fPct-100)/2}%`,background:"rgba(200,20,20,0.5)"}}/>
-                      )}
-                    </div>
-                    {currentDesc&&(
-                      <div style={{fontSize:12,color:"#c0a8d0",fontStyle:"italic",marginTop:6,lineHeight:1.65}}>
-                        {currentDesc}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Food menu */}
-                  <div style={{...C.secT,marginBottom:6}}>Food</div>
-                  <div style={{maxHeight:220,overflowY:"auto",display:"flex",flexDirection:"column",gap:3,marginBottom:10}}>
-                    {courseOrder.map(course=>{
-                      const items=PRIVATE_FOODS.filter(f=>f.course===course);
-                      const courseLabel={opener:"Starters",main:"Main Course",more:"Second Helpings",dessert:"Dessert",extra:"More"}[course];
-                      return(
-                        <div key={course}>
-                          <div style={{fontSize:9,color:"#4a2060",letterSpacing:2,padding:"4px 0 2px",borderTop:"1px solid rgba(80,18,140,0.15)"}}>{courseLabel.toUpperCase()}</div>
-                          <div style={{display:"flex",flexDirection:"column",gap:2}}>
-                            {items.map(food=>{
-                              const ordered=ps.foods.includes(food.id);
-                              return(
-                                <div key={food.id}
-                                  style={{display:"flex",alignItems:"center",gap:8,padding:"4px 6px",borderRadius:5,
-                                    background:ordered?"rgba(80,18,140,0.08)":"transparent",
-                                    cursor:ordered?"default":"pointer",opacity:ordered?0.45:1}}
-                                  onClick={()=>!ordered&&feedInSession(food)}>
-                                  <span style={{flex:1,fontSize:12,color:ordered?"#5a3888":"#c8a8f0"}}>{ordered?"✓ ":""}{food.label}</span>
-                                  <span style={{fontSize:10,color:"#8060a0"}}>+{food.gain[0]}–{food.gain[1]} lbs</span>
-                                  {!ordered&&<div style={{fontSize:9,color:"#6a4880",maxWidth:140,textAlign:"right"}}>{food.desc.slice(0,45)}…</div>}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Grandma Mae's Recipes — farm_girl only */}
-                  {s.archetype==='farm_girl'&&(s.mjRecipes||[]).length>0&&(
-                    <div style={{marginBottom:10}}>
-                      <div style={{...C.secT,marginBottom:6}}>🏡 Grandma Mae's Recipes</div>
-                      <div style={{display:"flex",flexDirection:"column",gap:2}}>
-                        {(s.mjRecipes||[]).map(recipeId=>{
-                          const r=MJ_RECIPES[recipeId];
-                          if(!r) return null;
-                          const fobj={id:'mj_'+recipeId, label:r.emoji+' '+r.name, gain:[r.lbs-2,r.lbs+2], fullness:r.fullness, desc:"Grandma Mae's recipe. Rich, homemade, the real thing."};
-                          const ordered=ps.foods.includes(fobj.id);
-                          return(
-                            <div key={recipeId}
-                              style={{display:"flex",alignItems:"center",gap:8,padding:"4px 6px",borderRadius:5,
-                                background:ordered?"rgba(140,60,18,0.08)":"transparent",
-                                cursor:ordered?"default":"pointer",opacity:ordered?0.45:1}}
-                              onClick={()=>!ordered&&feedInSession(fobj)}>
-                              <span style={{flex:1,fontSize:12,color:ordered?"#8a5a30":"#d4a070"}}>{ordered?"✓ ":""}{fobj.label}</span>
-                              <span style={{fontSize:10,color:"#9a7040"}}>+{r.lbs-2}–{r.lbs+2} lbs</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Session log */}
-                  <div style={{background:"rgba(20,5,35,0.8)",border:"1px solid #2a0848",borderRadius:8,padding:10,marginBottom:10,maxHeight:150,overflowY:"auto",display:"flex",flexDirection:"column",gap:3}}>
-                    {sessionLog.length===0
-                      ?<div style={{fontSize:12,color:"#5a3070",fontStyle:"italic"}}>{s.name} settles in. The evening begins.</div>
-                      :sessionLog.map((line,i)=>(
-                        <div key={i} style={{fontSize:12,lineHeight:1.6,color:line.startsWith("💬")?"#e8d0a8":line.startsWith("🍽️")?"#d0a860":line.startsWith("   ")?"#c0a8d0":"#b090c8",borderBottom:i<sessionLog.length-1?"1px solid rgba(80,20,120,0.1)":"none",paddingBottom:i<sessionLog.length-1?3:0}}>
-                          {line}
-                        </div>
-                      ))
-                    }
-                  </div>
-
-                  {/* Encouragement */}
-                  <div style={{...C.secT,marginBottom:6}}>Encouragement</div>
-                  <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:10}}>
-                    {ENCOURAGEMENT_ACTIONS.map(enc=>{
-                      const used=ps.encouragementsUsed.includes(enc.id);
-                      return(
-                        <button key={enc.id}
-                          style={{...C.smBtn,opacity:used?0.35:1,textDecoration:used?"line-through":"none",
-                            background:used?"rgba(40,10,60,0.2)":"rgba(80,18,140,0.35)"}}
-                          onClick={()=>!used&&useSessionEncouragement(enc)}>
-                          {enc.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-
-                  {/* Normal footer — always accessible */}
-                  <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
-                    <div style={{fontSize:11,color:fPct>=100?"#f07050":"#f0a060",fontWeight:700,flex:1}}>
-                      {fPct>=200?"Well past limits 🔴"
-                      :fPct>=155?"Absolutely packed 🔴"
-                      :fPct>=120?"Overfull 🔴"
-                      :fPct>=95?"Stuffed 🟠"
-                      :fPct>=70?"Full 🟡"
-                      :fPct>=40?"Getting warm 🟢"
-                      :"Still hungry 🟢"}
-                      {fPct>=150&&<span style={{fontSize:9,color:"#ff7050",marginLeft:6}}>
-                        {fPct>=250?"WILL tap out":"tap-out risk"}
-                        {skillTapOutResistance>0?` (−${Math.round(skillTapOutResistance*100)}% from skills)`:""}
-                      </span>}
-                    </div>
-                    {ps.foods.length>0&&(ps.refillRound||0)<3&&(
-                      <button style={{...C.btn("#304060"),fontSize:10}} onClick={getMoreFood}>🛒 Get More</button>
-                    )}
-                    {fPct>=80&&getTier(s.relationship).id>=2&&(
-                      <button style={{...C.btn("#601080"),fontSize:10}} onClick={()=>{setPrivateSession(null);startIntimacyScene(s,"session_high_fullness");}}>💜 Get Close</button>
-                    )}
-                    <button style={C.btn("#2a6830")} onClick={endPrivateSession}>End Session ✓</button>
-                    <button style={C.btn("#333")} onClick={()=>{setAp(a=>a-2);setPrivateSession(null);}}>Leave Early</button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      })()}
+      {privateSession&&<PrivateSessionModal chooseSessionVenue={chooseSessionVenue} endPrivateSession={endPrivateSession} feedInSession={feedInSession} getMoreFood={getMoreFood} privateSession={privateSession} sessionLog={sessionLog} setAp={setAp} setPrivateSession={setPrivateSession} skillTapOutResistance={skillTapOutResistance} startIntimacyScene={startIntimacyScene} useSessionEncouragement={useSessionEncouragement}/>}
 
       {/* ── EP5: INTIMACY SCENE SELECTOR ── */}
-      {intimacySceneSelector&&(()=>{
-        const s=intimacySceneSelector.student;
-        const tier=getTier(s.relationship);
-        const availScenes=INTIMACY_SCENES.filter(sc=>tier.id>=sc.minTier);
-        return(
-          <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:600,background:"linear-gradient(160deg,#0a0318,#160528,#0a0318)",border:"1px solid #8030c050",maxHeight:"85vh",overflowY:"auto"}}>
-              <div style={{fontSize:9,letterSpacing:4,color:"#c050a0",marginBottom:4}}>INTIMACY</div>
-              <div style={{fontSize:15,fontWeight:700,color:"#e8a8d0",marginBottom:4}}>{s.name}</div>
-              <div style={{fontSize:11,color:"#7050a0",marginBottom:16,fontStyle:"italic"}}>
-                {getStage(s.lbs).label} · {s.lbs} lbs · {tier.emoji} {tier.label}
-              </div>
-              <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
-                {availScenes.map(sc=>(
-                  <button key={sc.id}
-                    style={{...C.btn("#3a0860"),textAlign:"left",padding:"10px 14px",opacity:ap<sc.apCost?0.4:1,border:"1px solid #7030a030"}}
-                    onClick={()=>startIntimacyScene(s,sc.id)}>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-                      <span style={{fontWeight:700,fontSize:13,color:"#e8a8d0"}}>{sc.icon} {sc.label}</span>
-                      <span style={{fontSize:10,color:"#c050a0"}}>{sc.apCost} AP{tier.id>=3?<span style={{color:"#ff80c0",marginLeft:6}}>✦ Devoted</span>:""}</span>
-                    </div>
-                    <div style={{fontSize:11,color:"#8050a0",lineHeight:1.5}}>{sc.desc}</div>
-                  </button>
-                ))}
-              </div>
-              <button style={C.btn("#333")} onClick={()=>setIntimacySceneSelector(null)}>Not now</button>
-            </div>
-          </div>
-        );
-      })()}
+      {intimacySceneSelector&&<IntimacySceneSelector ap={ap} intimacySceneSelector={intimacySceneSelector} setIntimacySceneSelector={setIntimacySceneSelector} startIntimacyScene={startIntimacyScene}/>}
 
       {/* ── EP5: ACTIVE INTIMACY SCENE ── */}
-      {intimacyEventState&&(()=>{
-        const {studentId,sceneId,tier,phaseIdx,history,logLines,done,endingText,gainAccum}=intimacyEventState;
-        const s=students.find(st=>st.id===studentId);
-        const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId];
-        if(!s||!def) return null;
-        const phase=!done?def.phases[phaseIdx]:null;
-        const phaseText=phase?(typeof phase.text==="function"?phase.text(history,s,tier):phase.text):null;
-        const accentColor="#c050a0";
-        return(
-          <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#0a0318,#160424,#0a0318)",border:`1px solid ${accentColor}40`,maxHeight:"85vh",overflowY:"auto"}}>
-              <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>{(def.label||sceneId).toUpperCase()}</div>
-              <div style={{fontSize:15,fontWeight:700,color:"#e8a8d0",marginBottom:4}}>{s.name}</div>
-              <div style={{fontSize:10,color:"#7050a0",marginBottom:12}}>{s.lbs} lbs · {getStage(s.lbs).label}{gainAccum>0?` · +${gainAccum} lbs this scene`:""}
-              </div>
-              {logLines.length>0&&(
-                <div style={{marginBottom:12}}>
-                  {logLines.map((line,i)=>(
-                    <div key={i} style={{fontSize:11,color:"#6040a0",lineHeight:1.75,marginBottom:6,fontStyle:"italic",paddingLeft:10,borderLeft:`2px solid ${accentColor}25`}}>{line}</div>
-                  ))}
-                </div>
-              )}
-              <div style={{fontSize:12,color:"#d0a8c0",lineHeight:1.9,marginBottom:14,fontStyle:"italic"}}>{done?endingText:phaseText}</div>
-              {!done&&phase&&(
-                <div style={{display:"flex",flexDirection:"column",gap:7}}>
-                  {phase.choices.map(ch=>{
-                    const locked=ch.requires&&!history.includes(ch.requires);
-                    const excluded=ch.requiresNot&&history.includes(ch.requiresNot);
-                    if(excluded) return null;
-                    return(
-                      <button key={ch.id}
-                        style={{...C.btn(locked?"#1a1a2a":"#5010a0"),opacity:locked?0.3:1,textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5,border:`1px solid ${accentColor}30`}}
-                        disabled={!!locked}
-                        onClick={()=>makeIntimacyChoice(ch.id)}>
-                        <span style={{fontWeight:700,color:"#e8a8d0"}}>{ch.label}</span>
-                        {ch.lbs&&<span style={{color:"#ffdd80",marginLeft:8,fontSize:10}}>+{ch.lbs} lbs</span>}
-                        {ch.feed&&<span style={{color:"#ff80c0",marginLeft:4,fontSize:10}}>+lbs</span>}
-                        {ch.rel&&<span style={{color:"#80ddff",marginLeft:4,fontSize:10}}>+{ch.rel} rel</span>}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-              {done&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeIntimacyEvent}>Continue ✓</button>}
-            </div>
-          </div>
-        );
-      })()}
+      {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students}/>}
 
       {/* ── DEBUG PANEL ── */}
-      {debugOpen&&(
-        <div style={{...C.overlay,alignItems:"flex-start",paddingTop:16,overflowY:"auto"}}>
-          <div style={{...C.modal,maxWidth:700,width:"95%",maxHeight:"90vh",overflowY:"auto"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-              <div style={{fontSize:11,letterSpacing:3,color:"#60b060"}}>🐛 DEBUG PANEL</div>
-              <button style={C.btn("#333")} onClick={()=>setDebugOpen(false)}>✕ Close</button>
-            </div>
-            {/* Global controls */}
-            <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:14,padding:10,background:"rgba(255,255,255,0.04)",borderRadius:8}}>
-              <div style={{fontSize:10,color:"#888",width:"100%",marginBottom:4}}>GLOBAL</div>
-              <label style={{fontSize:11,color:"#aaa",display:"flex",gap:6,alignItems:"center"}}>
-                AP:
-                <input type="number" defaultValue={ap} min={0} max={999} step={5}
-                  style={{width:60,background:"#181820",color:"#e0e0e0",border:"1px solid #444",borderRadius:4,padding:"2px 4px",fontSize:11}}
-                  onChange={e=>setAp(parseInt(e.target.value)||0)}/>
-              </label>
-              <label style={{fontSize:11,color:"#aaa",display:"flex",gap:6,alignItems:"center"}}>
-                Scrutiny:
-                <input type="number" defaultValue={adminScrutiny} min={0} max={100} step={5}
-                  style={{width:55,background:"#181820",color:"#e0e0e0",border:"1px solid #444",borderRadius:4,padding:"2px 4px",fontSize:11}}
-                  onChange={e=>setAdminScrutiny(parseInt(e.target.value)||0)}/>
-              </label>
-              <button style={{...C.smBtn,background:"rgba(60,100,60,0.4)"}}
-                onClick={()=>setStudents(prev=>prev.map(s=>({...s,relationship:100})))}>Max All Rel</button>
-              <button style={{...C.smBtn,background:"rgba(100,60,20,0.4)"}}
-                onClick={()=>{if(!religion)setReligion({founded:true,devotees:10,ritesHeld:0,worshippedIds:[],weeklyPassiveGain:0});else setReligion(r=>({...r,devotees:r.devotees+10}));}}>+10 Devotees</button>
-              <button style={{...C.smBtn,background:"rgba(20,20,80,0.4)"}}
-                onClick={()=>setGoddessSeen(true)}>Unlock Divine</button>
-              <button style={{...C.smBtn,background:"rgba(100,20,100,0.4)"}}
-                onClick={debugForceIncarnation}>Force Incarnation</button>
-              <button style={{...C.smBtn,background:"rgba(80,0,100,0.4)"}}
-                onClick={()=>setLilithUnlocked(true)}>🌑 Unlock Lilith</button>
-              <button style={{...C.smBtn,background:"rgba(60,30,0,0.5)"}}
-                onClick={()=>setStudents(prev=>prev.map(s=>s.id===LILITH_ID?s:{...s,lbs:300}))}>⚖️ All 300 lbs</button>
-            </div>
-            {/* Per-student rows */}
-            <div style={{fontSize:10,color:"#888",marginBottom:6}}>STUDENTS</div>
-            {students.filter(s=>!(consumedStudents||[]).find(c=>c.id===s.id)).map(s=>{
-              const inp=debugInputs[s.id]||{lbs:String(Math.round(s.lbs)),path:s.ascensionPath||"",stage:s.ascensionStage||0,rel:s.relationship};
-              const set=(k,v)=>setDebugInputs(prev=>({...prev,[s.id]:{...inp,[k]:v}}));
-              return(
-                <div key={s.id} style={{display:"flex",gap:6,alignItems:"center",flexWrap:"wrap",padding:"7px 8px",borderRadius:6,marginBottom:4,background:"rgba(255,255,255,0.03)"}}>
-                  <div style={{fontSize:11,color:"#c0a0e0",minWidth:90,fontWeight:700}}>{s.name}</div>
-                  <label style={{fontSize:10,color:"#888",display:"flex",gap:4,alignItems:"center"}}>
-                    lbs:
-                    <input type="number" value={inp.lbs} min={80} step={100}
-                      style={{width:70,background:"#181820",color:"#e0e0e0",border:"1px solid #444",borderRadius:4,padding:"2px 4px",fontSize:10}}
-                      onChange={e=>set("lbs",e.target.value)}/>
-                  </label>
-                  <label style={{fontSize:10,color:"#888",display:"flex",gap:4,alignItems:"center"}}>
-                    rel:
-                    <input type="number" value={inp.rel} min={0} max={100} step={10}
-                      style={{width:48,background:"#181820",color:"#e0e0e0",border:"1px solid #444",borderRadius:4,padding:"2px 4px",fontSize:10}}
-                      onChange={e=>set("rel",e.target.value)}/>
-                  </label>
-                  <label style={{fontSize:10,color:"#888",display:"flex",gap:4,alignItems:"center"}}>
-                    path:
-                    <select value={inp.path} style={{background:"#181820",color:"#e0e0e0",border:"1px solid #444",borderRadius:4,padding:"2px 4px",fontSize:10}}
-                      onChange={e=>set("path",e.target.value)}>
-                      <option value="">— none —</option>
-                      <option value="celestial">✨ Celestial</option>
-                      <option value="umbral">🌑 Umbral</option>
-                      <option value="sanguine">🩸 Sanguine</option>
-                      <option value="verdant">🌿 Verdant</option>
-                      <option value="convergence">⚡ Singularity</option>
-                      <option value="primordial">🌑🌿 Primordial</option>
-                    </select>
-                  </label>
-                  {inp.path&&inp.path!=="convergence"&&inp.path!=="primordial"&&(
-                    <label style={{fontSize:10,color:"#888",display:"flex",gap:4,alignItems:"center"}}>
-                      stage:
-                      <select value={inp.stage} style={{background:"#181820",color:"#e0e0e0",border:"1px solid #444",borderRadius:4,padding:"2px 4px",fontSize:10}}
-                        onChange={e=>set("stage",parseInt(e.target.value))}>
-                        {[0,1,2,3,4].map(i=><option key={i} value={i}>{i}</option>)}
-                      </select>
-                    </label>
-                  )}
-                  <div style={{display:"flex",gap:4}}>
-                    <button style={{...C.smBtn,background:"rgba(40,80,40,0.5)",fontSize:10}} onClick={()=>debugApply(s.id)}>Apply ✓</button>
-                    <button style={{...C.smBtn,fontSize:10,background:"rgba(60,20,80,0.4)"}}
-                      onClick={()=>{set("lbs","820");set("rel","100");}}>→ Blob</button>
-                    <button style={{...C.smBtn,fontSize:10,background:"rgba(80,40,100,0.4)"}}
-                      onClick={()=>{set("lbs","2300");set("rel","100");set("path",inp.path||"celestial");set("stage",4);}}>→ Apex</button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} consumedStudents={consumedStudents} debugApply={debugApply} debugForceIncarnation={debugForceIncarnation} debugInputs={debugInputs} religion={religion} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setGoddessSeen={setGoddessSeen} setLilithUnlocked={setLilithUnlocked} setReligion={setReligion} setStudents={setStudents} students={students}/>}
 
       {/* ── TAP-OUT POPUP ── */}
-      {tapOutPopup&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:520}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#c06060",marginBottom:6}}>⛔ SHE TAPS OUT</div>
-            <div style={{fontSize:11,color:"#a06050",marginBottom:10}}>
-              {tapOutPopup.student.name} · +{tapOutPopup.totalGain} lbs this session
-            </div>
-            <p style={{lineHeight:1.9,color:"#e0d0c0",fontStyle:"italic",marginBottom:20,fontSize:13}}>
-              {tapOutPopup.text}
-            </p>
-            <div style={{fontSize:11,color:"#705040",marginBottom:16}}>She ate enough for a family of five. The session is over.</div>
-            <button style={C.btn("#5a1515")} onClick={()=>setTapOutPopup(null)}>Close</button>
-          </div>
-        </div>
-      )}
+      {tapOutPopup&&<TapOutPopup setTapOutPopup={setTapOutPopup} tapOutPopup={tapOutPopup}/>}
 
       {/* ── SESSION RESULT ── */}
-      {sessionResult&&(
-        <div style={C.overlay}>
-          <div style={C.modal}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#9050c8",marginBottom:6}}>SESSION COMPLETE — #{sessionResult.sessionCount}</div>
-            <div style={{fontSize:12,color:"#7a50a0",marginBottom:12}}>
-              {sessionResult.student.name} · {sessionResult.student.lbs} lbs · {getFullnessStage(sessionResult.fullnessPct).label} ({sessionResult.fullnessPct}%)
-            </div>
-            <div style={{...C.infoBox("rgba(60,10,100,0.25)"),lineHeight:1.9,fontSize:13,color:"#e0d0b0",fontStyle:"italic",marginBottom:16}}>
-              {sessionResult.scene}
-            </div>
-            <div style={{...C.infoBox("rgba(40,5,70,0.3)"),fontSize:11,color:"#9060c0",marginBottom:14}}>
-              +{sessionResult.totalGain} lbs this session · Appetite capacity expanded by +8 (total bonus: +{sessionResult.capacityBonus})
-              <div style={{fontSize:10,color:"#604080",marginTop:3}}>
-                She can now comfortably eat {sessionResult.capacityBonus}% more than when you first started feeding her privately.
-              </div>
-            </div>
-            <button style={C.btn("#5818a8")} onClick={()=>setSessionResult(null)}>Continue →</button>
-          </div>
-        </div>
-      )}
+      {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}
 
       {/* ── GODDESS VISION MODAL ── */}
-      {goddessModal&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:560,background:"linear-gradient(160deg,#0a0520,#12082a,#0a0520)",border:"2px solid #8040ff80"}}>
-            <div style={{fontSize:9,letterSpacing:4,color:"#a060ff",marginBottom:8}}>✦ VISION</div>
-            <h2 style={{margin:"0 0 16px",color:"#d4aaff",fontSize:19,fontWeight:400,letterSpacing:1}}>{GODDESS_VISION.title}</h2>
-            <div style={{...C.infoBox("rgba(60,10,120,0.25)"),lineHeight:2,fontSize:13,color:"#e8d8ff",fontStyle:"italic",marginBottom:16,maxHeight:380,overflowY:"auto",whiteSpace:"pre-line"}}>
-              {GODDESS_VISION.scene}
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:7}}>
-              {GODDESS_VISION.choices.map((ch,i)=>(
-                <button key={i}
-                  style={{...C.btn("#401080"),textAlign:"left",padding:"10px 14px",lineHeight:1.5}}
-                  onClick={()=>{
-                    push(`✦ ${ch.label} — ${ch.text}`);
-                    push(`✦ The Divine skill tree is now unlocked. Visit Skills → Divine.`);
-                    setGoddessModal(null);
-                    setView("divine");
-                  }}>
-                  <div style={{fontSize:12,fontWeight:700,color:"#c8a8ff",marginBottom:2}}>{ch.label}</div>
-                  <div style={{fontSize:11,color:"#907090",fontStyle:"italic"}}>{ch.text}</div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      {goddessModal&&<GoddessVisionModal push={push} setGoddessModal={setGoddessModal} setView={setView}/>}
 
       {/* ── CONVERGENCE MODAL ── */}
       {/* ── EP2: EVOLUTION OFFER MODAL ── */}
-      {evolutionModal&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0c0520,#180840,#0c0520)",border:"2px solid #7030c060"}}>
-            <div style={{fontSize:9,letterSpacing:4,color:"#9040e0",marginBottom:6}}>✦ A NEW DIRECTION</div>
-            <div style={{fontSize:17,fontWeight:700,color:"#d0a0ff",marginBottom:10}}>{evolutionModal.student?.name}</div>
-            <div style={{fontSize:12,color:"#b090d0",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>{evolutionModal.intro}</div>
-            <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:12}}>
-              {(evolutionModal.paths||[]).map(p=>(
-                <button key={p.id} style={{...C.btn("#40108080"),textAlign:"left",padding:"12px 14px",border:"1px solid #6030a060"}}
-                  onClick={()=>chooseEvolution(evolutionModal.student.id,p.id)}>
-                  <div style={{fontSize:13,fontWeight:700,color:"#c080ff",marginBottom:4}}>{p.label}</div>
-                  <div style={{fontSize:11,color:"#8060a0",lineHeight:1.5}}>{p.desc}</div>
-                </button>
-              ))}
-            </div>
-            <button style={C.btn("#201040")} onClick={()=>setEvolutionModal(null)}>Not yet</button>
-          </div>
-        </div>
-      )}
+      {evolutionModal&&<EvolutionOfferModal chooseEvolution={chooseEvolution} evolutionModal={evolutionModal} setEvolutionModal={setEvolutionModal}/>}
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
-      {evolvedEventState&&(()=>{
-        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairContest,startsSession,startsPresentation,startsDelivery,startsChallenge}=evolvedEventState;
-        const s=students.find(st=>st.id===studentId);
-        const evDef=EVOLVED_EVENTS[formId]?.[stageIdx];
-        if(!s||!evDef) return null;
-        const phase=!done?evDef.phases[phaseIdx]:null;
-        const collabPartner=collabPartnerId?students.find(st=>st.id===collabPartnerId):null;
-        const researchSubject=(formId==='psych_researcher'&&s?.researchSubjectId!=null)?students.find(st=>st.id===s.researchSubjectId):null;
-        const phaseText=phase?(typeof phase.text==="function"?phase.text(history,s,collabPartner||researchSubject):phase.text):null;
-        const evMeta=EVOLVED_FORM_META[formId];
-        const accentColor=evMeta?.color||"#7030c0";
-        return(
-          <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#07030f,#120820,#07030f)",border:`1px solid ${accentColor}50`,maxHeight:"85vh",overflowY:"auto"}}>
-              <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>{evDef.title.toUpperCase()}</div>
-              <div style={{fontSize:15,fontWeight:700,color:evMeta?.color||"#d8a8ff",marginBottom:12}}>{s.name}</div>
-              {/* Homeroom Queen: suspicion + NPC weight bars */}
-              {formId==='homeroom_queen'&&(()=>{
-                const suspDelta=Object.entries(HOMEROOM_SUSPICION_DELTAS).reduce((acc,[flag,delta])=>acc+(history.includes(flag)?delta:0),0);
-                const currentSusp=Math.max(0,Math.min(10,batchBakerState.suspicion+suspDelta));
-                const suspPct=currentSusp*10;
-                const classPct=Math.min(100,Math.round(batchBakerState.classWeight/2));
-                const momPct=Math.min(100,Math.round(batchBakerState.momWeight/1.3));
-                return(
-                  <div style={{marginBottom:12,padding:"8px 10px",background:"rgba(196,122,42,0.08)",border:"1px solid #c47a2a30",borderRadius:6}}>
-                    <div style={{display:"flex",gap:12,marginBottom:6}}>
-                      <div style={{flex:1}}>
-                        <div style={{fontSize:9,letterSpacing:2,color:suspPct>70?"#e05030":"#c47a2a",marginBottom:3}}>SUSPICION {currentSusp}/10</div>
-                        <div style={{height:6,background:"#1a0800",borderRadius:3,overflow:"hidden"}}>
-                          <div style={{height:"100%",width:`${suspPct}%`,background:suspPct>70?"#e05030":suspPct>40?"#c47a2a":"#a05020",transition:"width 0.3s"}}/>
-                        </div>
-                      </div>
-                    </div>
-                    <div style={{display:"flex",gap:12}}>
-                      <div style={{flex:1}}>
-                        <div style={{fontSize:9,letterSpacing:2,color:"#7db87d",marginBottom:3}}>CLASS {batchBakerState.classWeight} wt</div>
-                        <div style={{height:4,background:"#0a1a0a",borderRadius:2,overflow:"hidden"}}>
-                          <div style={{height:"100%",width:`${classPct}%`,background:"#4a8a4a",transition:"width 0.3s"}}/>
-                        </div>
-                      </div>
-                      <div style={{flex:1}}>
-                        <div style={{fontSize:9,letterSpacing:2,color:"#8a7dba",marginBottom:3}}>MOMS {batchBakerState.momWeight} wt</div>
-                        <div style={{height:4,background:"#0a0a1a",borderRadius:2,overflow:"hidden"}}>
-                          <div style={{height:"100%",width:`${momPct}%`,background:"#5a4a8a",transition:"width 0.3s"}}/>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })()}
-              {/* History of completed phases */}
-              {logLines.length>0&&(
-                <div style={{marginBottom:12}}>
-                  {logLines.map((line,i)=>(
-                    <div key={i} style={{fontSize:11,color:"#7060a0",lineHeight:1.75,marginBottom:6,fontStyle:"italic",paddingLeft:10,borderLeft:`2px solid ${accentColor}30`}}>{line}</div>
-                  ))}
-                </div>
-              )}
-              {/* Current phase or ending */}
-              <div style={{fontSize:12,color:"#c0b0e0",lineHeight:1.9,marginBottom:14,fontStyle:"italic"}}>{done?endingText:phaseText}</div>
-              {/* Choices or close button */}
-              {!done&&phase&&(
-                <div style={{display:"flex",flexDirection:"column",gap:7}}>
-                  {phase.choices.map(ch=>{
-                    const locked=ch.requires&&!history.includes(ch.requires);
-                    const excluded=ch.requiresNot&&history.includes(ch.requiresNot);
-                    if(excluded) return null;
-                    return(
-                      <button key={ch.id}
-                        style={{...C.btn(locked?"#1a1a2a":accentColor),opacity:locked?0.35:1,textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5}}
-                        disabled={!!locked}
-                        onClick={()=>makeEvolvedEventChoice(ch.id)}>
-                        <span style={{fontWeight:700}}>{ch.label}</span>
-                        {ch.lbs&&<span style={{color:"#ffdd80",marginLeft:8,fontSize:10}}>+{ch.lbs} lbs</span>}
-                        {ch.rel&&<span style={{color:"#80ddff",marginLeft:4,fontSize:10}}>+{ch.rel} rel</span>}
-                        {ch.feedOther&&<span style={{color:"#ff9060",marginLeft:4,fontSize:10}}>feeds squad</span>}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-              {done&&!startsContest&&!startsMatch&&!startsStream&&!startsFairContest&&!startsSession&&!startsPresentation&&!startsDelivery&&!startsChallenge&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
-              {done&&startsContest&&<button style={{...C.btn("#1a6030"),width:"100%",marginTop:4}} onClick={()=>startEatingContest(studentId,stageIdx,history)}>🍽️ Step to the Table</button>}
-              {done&&startsMatch&&<button style={{...C.btn("#7a2018"),width:"100%",marginTop:4}} onClick={()=>startSumoMatch(studentId,stageIdx,history)}>🥋 Step Onto the Dohyo</button>}
-              {done&&startsStream&&<button style={{...C.btn("#6a1878"),width:"100%",marginTop:4}} onClick={()=>{const partner=students.find(st=>st.id===collabPartnerId);if(!partner){push("⚠️ No collab partner selected.");return;}startCollabStream(studentId,collabPartnerId,stageIdx,history);}}>🎥 Go Live Together</button>}
-              {done&&startsFairContest&&<button style={{...C.btn("#C8860A"),width:"100%",marginTop:4}} onClick={()=>{const s2=students.find(st=>st.id===studentId);if(s2)startFairContest(s2,stageIdx);}}>🥧 Step Up to the Table</button>}
-              {done&&startsSession&&<button style={{...C.btn("#1a5a7a"),width:"100%",marginTop:4}} onClick={()=>startRankedSession(studentId,stageIdx)}>🎮 Start the Session</button>}
-              {done&&startsPresentation&&<button style={{...C.btn("#2c5f8a"),width:"100%",marginTop:4}} onClick={()=>{setPresentationState({studentId,stageIdx});setEvolvedEventState(null);}}>📊 Begin the Defense</button>}
-              {done&&startsDelivery&&<button style={{...C.btn("#4a6a4a"),width:"100%",marginTop:4}} onClick={()=>{setDeliveryState({studentId,stageIdx});setEvolvedEventState(null);}}>🍜 Place the Order</button>}
-              {done&&startsChallenge&&<button style={{...C.btn("#7a4a1a"),width:"100%",marginTop:4}} onClick={()=>{setChallengeState({studentId,stageIdx});setEvolvedEventState(null);}}>🍺 Take the Challenge</button>}
-            </div>
-          </div>
-        );
-      })()}
+      {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} students={students}/>}
 
       {/* ── HOMEROOM QUEEN: CLASSROOM MINI-INTERFACE ── */}
-      {homeroomSessionState&&(()=>{
-        const{daisyStudentId,ap:classAp,log,activeActivity,daisyGain,classGainAccum,momGainAccum,suspDeltaAccum}=homeroomSessionState;
-        const daisy=students.find(st=>st.id===daisyStudentId);
-        if(!daisy) return null;
-        const warmAccent="#c47a2a";
-        const warmDim="#7a4a18";
-        const warmText="#d4a060";
-        const warmSubtle="#806040";
-        const WARM_BG="linear-gradient(160deg,#0f0803,#1a0f06,#0f0803)";
-        const currentSusp=Math.max(0,Math.min(10,batchBakerState.suspicion+suspDeltaAccum));
-        const suspPct=currentSusp*10;
-        const npcDescIdx=Math.min(2,Math.floor((batchBakerState.classWeight+classGainAccum)/100));
-        const momDescIdx=Math.min(4,Math.floor((batchBakerState.momWeight+momGainAccum)/30));
-        const apDots=Array.from({length:3},(_,i)=>i<classAp);
-
-        if(activeActivity){
-          const{type,key,phaseIdx,done,resultText,revealsWeights,revealsParentWeights}=activeActivity;
-          let phaseText,choices,actTitle;
-          if(type==='conference'){
-            const evDef=HOMEROOM_CONFERENCE_EVENTS[key];
-            phaseText=evDef?.text; choices=evDef?.choices||[]; actTitle=`Conference — ${key}`;
-          } else {
-            const actDef=HOMEROOM_GROUP_ACTIVITIES[type];
-            const phases=actDef?.phases||[{text:actDef?.text,choices:actDef?.choices||[]}];
-            const phase=phases[phaseIdx];
-            phaseText=phase?.text; choices=phase?.choices||[]; actTitle=actDef?.label||type;
-          }
-          return(
-            <div style={{...C.overlay,zIndex:350}}>
-              <div style={{...C.modal,maxWidth:560,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"85vh",overflowY:"auto"}}>
-                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
-                  <div style={{fontSize:9,letterSpacing:3,color:warmDim}}>🍪 DAISY'S CLASSROOM</div>
-                  <div style={{display:"flex",gap:4,marginLeft:"auto",alignItems:"center"}}>
-                    <div style={{fontSize:9,color:warmDim,marginRight:3}}>AP</div>
-                    {apDots.map((filled,i)=>(
-                      <div key={i} style={{width:8,height:8,borderRadius:"50%",background:filled?warmAccent:"#2a1808",border:`1px solid ${filled?warmAccent:warmDim}`}}/>
-                    ))}
-                  </div>
-                </div>
-                <div style={{fontSize:9,letterSpacing:3,color:warmAccent,marginBottom:8}}>{actTitle.toUpperCase()}</div>
-                <div style={{fontSize:12,color:"#d4b898",lineHeight:1.9,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-line"}}>
-                  {resultText||phaseText}
-                </div>
-                {revealsWeights&&(
-                  <div style={{marginBottom:12,padding:"8px 10px",background:"rgba(196,122,42,0.08)",border:`1px solid ${warmAccent}30`,borderRadius:6}}>
-                    <div style={{fontSize:9,letterSpacing:2,color:warmAccent,marginBottom:6}}>MEASUREMENTS RECORDED</div>
-                    <div style={{display:"flex",gap:10}}>
-                      {["Kayla","Bri","Sofia"].map(name=>{
-                        const desc=BATCH_BAKER_NPCS[name]?.[npcDescIdx]||"";
-                        return(
-                          <div key={name} style={{flex:1}}>
-                            <div style={{fontSize:10,fontWeight:700,color:warmText,marginBottom:2}}>{name}</div>
-                            <div style={{fontSize:9,color:warmSubtle,lineHeight:1.5}}>{desc?desc.split(".")[0]+".":""}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-                {revealsParentWeights&&(
-                  <div style={{marginBottom:12,padding:"8px 10px",background:"rgba(90,60,20,0.12)",border:`1px solid ${warmDim}40`,borderRadius:6}}>
-                    <div style={{fontSize:9,letterSpacing:2,color:warmAccent,marginBottom:6}}>PARENT MEASUREMENTS</div>
-                    <div style={{display:"flex",gap:10}}>
-                      {["Mrs_Calloway","Mrs_Reyes","Mrs_Monroe"].map(name=>{
-                        const desc=BATCH_BAKER_NPCS[name]?.[momDescIdx]||"";
-                        return(
-                          <div key={name} style={{flex:1}}>
-                            <div style={{fontSize:10,fontWeight:700,color:warmText,marginBottom:2}}>{name.replace("_"," ")}</div>
-                            <div style={{fontSize:9,color:warmSubtle,lineHeight:1.5}}>{desc?desc.split(".")[0]+".":""}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-                {!resultText&&!done&&choices.length>0&&(
-                  <div style={{display:"flex",flexDirection:"column",gap:7}}>
-                    {choices.map(ch=>(
-                      <button key={ch.id}
-                        style={{...C.btn(warmAccent),textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5}}
-                        onClick={()=>makeHomeroomActivityChoice(ch.id)}>
-                        <span style={{fontWeight:700}}>{ch.label}</span>
-                        {ch.classGain&&<span style={{color:"#ffdd80",marginLeft:8,fontSize:10}}>+{ch.classGain} class</span>}
-                        {ch.momGain&&<span style={{color:"#a0c8ff",marginLeft:4,fontSize:10}}>+{ch.momGain} moms</span>}
-                        {ch.lbs&&<span style={{color:"#ffa060",marginLeft:4,fontSize:10}}>+{ch.lbs} lbs</span>}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                {resultText&&!done&&(
-                  <button style={{...C.btn(warmAccent),width:"100%",marginTop:4}} onClick={advanceHomeroomActivityPhase}>Continue →</button>
-                )}
-                {done&&(
-                  <button style={{...C.btn(warmAccent),width:"100%",marginTop:4}} onClick={dismissHomeroomActivity}>← Back to Classroom</button>
-                )}
-              </div>
-            </div>
-          );
-        }
-
-        return(
-          <div style={{...C.overlay,zIndex:350}}>
-            <div style={{...C.modal,maxWidth:640,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"90vh",overflowY:"auto"}}>
-              {/* Header */}
-              <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
-                <div style={{fontSize:9,letterSpacing:4,color:warmAccent}}>🍪 DAISY'S CLASSROOM</div>
-                <div style={{display:"flex",gap:5,marginLeft:"auto",alignItems:"center"}}>
-                  <div style={{fontSize:9,color:warmDim,marginRight:3}}>AP</div>
-                  {apDots.map((filled,i)=>(
-                    <div key={i} style={{width:10,height:10,borderRadius:"50%",background:filled?warmAccent:"#2a1808",border:`1px solid ${filled?warmAccent:warmDim}`}}/>
-                  ))}
-                </div>
-              </div>
-              {/* Status bars */}
-              <div style={{marginBottom:14,padding:"8px 10px",background:"rgba(196,122,42,0.06)",border:`1px solid ${warmAccent}20`,borderRadius:6}}>
-                <div style={{display:"flex",gap:12}}>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:9,letterSpacing:2,color:suspPct>70?"#e05030":warmAccent,marginBottom:3}}>SUSPICION {currentSusp}/10</div>
-                    <div style={{height:4,background:"#1a0800",borderRadius:2,overflow:"hidden"}}>
-                      <div style={{height:"100%",width:`${suspPct}%`,background:suspPct>70?"#e05030":suspPct>40?warmAccent:warmDim,transition:"width 0.3s"}}/>
-                    </div>
-                  </div>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:9,letterSpacing:2,color:"#7db87d",marginBottom:3}}>CLASS {batchBakerState.classWeight+classGainAccum} wt</div>
-                    <div style={{height:4,background:"#0a1a0a",borderRadius:2,overflow:"hidden"}}>
-                      <div style={{height:"100%",width:`${Math.min(100,Math.round((batchBakerState.classWeight+classGainAccum)/2))}%`,background:"#4a8a4a",transition:"width 0.3s"}}/>
-                    </div>
-                  </div>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:9,letterSpacing:2,color:"#8a7dba",marginBottom:3}}>MOMS {batchBakerState.momWeight+momGainAccum} wt</div>
-                    <div style={{height:4,background:"#0a0a1a",borderRadius:2,overflow:"hidden"}}>
-                      <div style={{height:"100%",width:`${Math.min(100,Math.round((batchBakerState.momWeight+momGainAccum)/1.3))}%`,background:"#5a4a8a",transition:"width 0.3s"}}/>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* Students */}
-              <div style={{fontSize:9,letterSpacing:3,color:warmDim,marginBottom:10}}>STUDENTS</div>
-              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12,marginBottom:16}}>
-                {["Kayla","Bri","Sofia"].map(name=>{
-                  const desc=BATCH_BAKER_NPCS[name]?.[npcDescIdx]||"";
-                  const snippet=desc?desc.split(".")[0]:"";
-                  return(
-                    <div key={name} style={{display:"flex",flexDirection:"column",alignItems:"stretch",gap:5}}>
-                      <button
-                        style={{...C.btn(classAp>=1?warmDim:"#1a0f06"),fontSize:10,padding:"5px 8px",opacity:classAp>=1?1:0.38,textAlign:"center"}}
-                        disabled={classAp<1}
-                        onClick={()=>openHomeroomConference(name)}>
-                        Conference ↓
-                      </button>
-                      <div style={{
-                        background:"#120a04",
-                        border:`1px solid ${warmAccent}35`,
-                        borderTop:`3px solid ${warmAccent}70`,
-                        borderRadius:"2px 2px 5px 5px",
-                        padding:"10px 10px 12px",
-                        textAlign:"center",
-                        flex:1,
-                      }}>
-                        <div style={{fontSize:11,fontWeight:700,color:warmText,letterSpacing:2,marginBottom:5}}>{name.toUpperCase()}</div>
-                        <div style={{fontSize:9,color:warmSubtle,lineHeight:1.55}}>{snippet}.</div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              {/* Group activities */}
-              <div style={{fontSize:9,letterSpacing:3,color:warmDim,marginBottom:8}}>GROUP ACTIVITIES</div>
-              <div style={{display:"flex",gap:8,marginBottom:16}}>
-                {Object.entries(HOMEROOM_GROUP_ACTIVITIES).map(([key,actDef])=>{
-                  const canAfford=classAp>=actDef.apCost;
-                  return(
-                    <button key={key}
-                      style={{...C.btn(canAfford?warmDim:"#1a0f06"),flex:1,opacity:canAfford?1:0.38,padding:"9px 12px",lineHeight:1.4,textAlign:"left"}}
-                      disabled={!canAfford}
-                      onClick={()=>startHomeroomGroupActivity(key)}>
-                      <div style={{fontWeight:700,fontSize:11}}>{actDef.label}</div>
-                      <div style={{fontSize:9,color:"#a08050",marginTop:2}}>· {actDef.apCost} AP ·</div>
-                    </button>
-                  );
-                })}
-              </div>
-              {/* Session log */}
-              {log.length>0&&(
-                <div style={{marginBottom:14}}>
-                  <div style={{fontSize:9,letterSpacing:3,color:warmDim,marginBottom:6}}>SESSION LOG</div>
-                  {log.map((line,i)=>(
-                    <div key={i} style={{fontSize:10,color:warmSubtle,lineHeight:1.75,paddingLeft:8,borderLeft:`2px solid ${warmAccent}30`}}>{line}</div>
-                  ))}
-                </div>
-              )}
-              {/* End session */}
-              <button style={{...C.btn("#1a0c04"),width:"100%",marginTop:4,border:`1px solid ${warmAccent}30`,fontSize:12}}
-                onClick={closeHomeroomSession}>
-                End Session{daisyGain>0?` · +${daisyGain} lbs to Daisy`:""}
-              </button>
-            </div>
-          </div>
-        );
-      })()}
+      {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession}/>}
 
       {/* ── WIFE LESSONS MINI-GAME ── */}
-      {wifeLessonsState?.session&&(()=>{
-        const{stage,daughters,moms,session}=wifeLessonsState;
-        const{lessonChosen,mjGainAccum,relAccum,conversationState,log}=session;
-        const WINE="#8b2252";
-        const WINE_BG="#0e0508";
-        const WINE_DIM="#5a2040";
-        const WINE_TEXT="#e8c8d8";
-        const WINE_SUBTLE="#b890a8";
-        const WINE_ACCENT="#c03070";
-        const cap=WL_CONFIG.stageCaps[stage];
-        const isDaughterStage=stage>=WL_CONFIG.daughtersFrom;
-        const lessons=WL_LESSONS[stage]||[];
+      {wifeLessonsState?.session&&<WifeLessonsModal wifeLessonsState={wifeLessonsState} makeWifeLessonsConversationChoice={makeWifeLessonsConversationChoice} makeWifeLessonsSubChoice={makeWifeLessonsSubChoice} dismissWifeLessonsConversation={dismissWifeLessonsConversation} chooseWifeLessonsLesson={chooseWifeLessonsLesson} startWifeLessonsConversation={startWifeLessonsConversation} closeWifeLessonsSession={closeWifeLessonsSession}/>}
 
-        // ── Conversation panel ──
-        if(conversationState){
-          const{person,stageEntry,optionIdx,atGreeting,done,resultText}=conversationState;
-          const isDaughter=['Emma','Chloe','Kezia','Lila'].includes(person);
-          const personWeight=isDaughter?daughters[person]:moms[person];
-          return(
-            <div style={{...C.overlay,zIndex:360}}>
-              <div style={{...C.modal,maxWidth:560,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"88vh",overflowY:"auto"}}>
-                <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
-                  <div style={{fontSize:9,letterSpacing:4,color:WINE_ACCENT}}>💬 {person.toUpperCase()}</div>
-                  <div style={{marginLeft:"auto",fontSize:9,color:WINE_DIM}}>{Math.round(personWeight)} lbs · Stage {stage}</div>
-                </div>
-                {resultText&&(
-                  <div style={{fontSize:12,color:WINE_TEXT,lineHeight:1.75,marginBottom:14,padding:"10px 12px",background:"rgba(139,34,82,0.08)",border:`1px solid ${WINE_DIM}40`,borderRadius:5}}>
-                    {resultText}
-                  </div>
-                )}
-                {atGreeting&&!done&&(
-                  <button style={{...C.btn(WINE_ACCENT),width:"100%"}} onClick={()=>makeWifeLessonsConversationChoice(0)}>Continue →</button>
-                )}
-                {!atGreeting&&optionIdx==null&&!done&&(
-                  <div style={{display:"flex",flexDirection:"column",gap:7}}>
-                    {stageEntry.options.map((opt,i)=>(
-                      <button key={i} style={{...C.btn(WINE_DIM),textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5}}
-                        onClick={()=>makeWifeLessonsConversationChoice(i)}>
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                {!atGreeting&&optionIdx!=null&&!done&&(
-                  <div style={{display:"flex",flexDirection:"column",gap:7}}>
-                    {stageEntry.options[optionIdx].subs.map((sub,i)=>(
-                      <button key={i} style={{...C.btn(WINE_DIM),textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5}}
-                        onClick={()=>makeWifeLessonsSubChoice(i)}>
-                        {sub.label}
-                        {sub.outcome?.daughterLbs&&<span style={{color:"#ffaacc",marginLeft:8,fontSize:10}}>+{sub.outcome.daughterLbs} lbs</span>}
-                        {sub.outcome?.momLbs&&<span style={{color:"#ffaacc",marginLeft:8,fontSize:10}}>+{sub.outcome.momLbs} lbs</span>}
-                        {sub.outcome?.mjLbs&&<span style={{color:"#ffd0e8",marginLeft:4,fontSize:10}}>you +{sub.outcome.mjLbs}</span>}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                {done&&(
-                  <button style={{...C.btn(WINE_ACCENT),width:"100%",marginTop:4}} onClick={dismissWifeLessonsConversation}>← Back</button>
-                )}
-              </div>
-            </div>
-          );
-        }
+      {/* ── COMPETITIVE GAINER — GROUP CHAT MODAL (always accessible when evolved) ── */}
+      {cgChatOpen&&<CompetitiveGainerChatModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} cgProfessorReply={cgProfessorReply} setCgChatOpen={setCgChatOpen}/>}
 
-        // ── Main session view ──
-        return(
-          <div style={{...C.overlay,zIndex:360}}>
-            <div style={{...C.modal,maxWidth:640,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"90vh",overflowY:"auto"}}>
-              {/* Header */}
-              <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
-                <div style={{fontSize:9,letterSpacing:4,color:WINE_ACCENT}}>🍷 WIFE LESSONS</div>
-                <div style={{marginLeft:"auto",display:"flex",gap:10,alignItems:"center"}}>
-                  <div style={{fontSize:9,color:WINE_DIM}}>STAGE {stage}</div>
-                  <div style={{fontSize:9,color:WINE_SUBTLE}}>Next cap: {cap===Infinity?"—":cap+" lbs"}</div>
-                </div>
-              </div>
-
-              {/* Lesson selection */}
-              {!lessonChosen?(
-                <div style={{marginBottom:16}}>
-                  <div style={{fontSize:9,letterSpacing:3,color:WINE_DIM,marginBottom:8}}>CHOOSE TODAY'S LESSON</div>
-                  <div style={{display:"flex",flexDirection:"column",gap:7}}>
-                    {lessons.map(l=>(
-                      <button key={l.id}
-                        style={{...C.btn(WINE_DIM),textAlign:"left",padding:"10px 14px",lineHeight:1.5}}
-                        onClick={()=>chooseWifeLessonsLesson(l.id)}>
-                        <span style={{fontWeight:700,fontSize:12,color:WINE_TEXT}}>{l.label}</span>
-                        <span style={{color:"#ffaacc",marginLeft:10,fontSize:10}}>+{l.daughterLbs} daughters</span>
-                        <span style={{color:"#c898b8",marginLeft:6,fontSize:10}}>+{l.momLbs} moms</span>
-                        <span style={{color:"#ffd0e8",marginLeft:6,fontSize:10}}>you +{l.mjLbs}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ):(
-                <div style={{marginBottom:14,padding:"8px 12px",background:"rgba(139,34,82,0.08)",border:`1px solid ${WINE_DIM}30`,borderRadius:5}}>
-                  <div style={{fontSize:9,color:WINE_SUBTLE}}>Lesson done · You +{mjGainAccum} lbs this session · +{relAccum} rel</div>
-                </div>
-              )}
-
-              {/* Daughters (from stage 6) */}
-              {isDaughterStage&&(
-                <div style={{marginBottom:16}}>
-                  <div style={{fontSize:9,letterSpacing:3,color:WINE_DIM,marginBottom:8}}>DAUGHTERS</div>
-                  <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8}}>
-                    {Object.entries(daughters).map(([name,wt])=>{
-                      const isCapped=wt>=cap;
-                      const isLeader=name==='Chloe'&&stage>=WL_CONFIG.chloeRivalFrom&&wt>daughters.Emma;
-                      return(
-                        <div key={name} style={{background:"#130610",border:`1px solid ${isCapped?WINE_ACCENT:WINE_DIM}40`,borderRadius:5,padding:"8px 10px"}}>
-                          <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
-                            <span style={{fontSize:11,fontWeight:700,color:WINE_TEXT}}>{name}{isLeader?" ★":""}</span>
-                            <span style={{fontSize:10,color:isCapped?WINE_ACCENT:WINE_SUBTLE}}>{Math.round(wt)} lbs{isCapped?" ✓":""}</span>
-                          </div>
-                          <button
-                            style={{...C.btn(WINE_DIM),width:"100%",fontSize:10,padding:"4px 8px"}}
-                            onClick={()=>startWifeLessonsConversation(name)}>
-                            Talk
-                          </button>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Moms */}
-              <div style={{marginBottom:16}}>
-                <div style={{fontSize:9,letterSpacing:3,color:WINE_DIM,marginBottom:8}}>MOMS</div>
-                <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>
-                  {Object.entries(moms).map(([name,wt])=>{
-                    const isCapped=wt>=cap;
-                    return(
-                      <div key={name} style={{background:"#130610",border:`1px solid ${isCapped?WINE_ACCENT:WINE_DIM}40`,borderRadius:5,padding:"8px 10px"}}>
-                        <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
-                          <span style={{fontSize:11,fontWeight:700,color:WINE_TEXT}}>{name}</span>
-                          <span style={{fontSize:10,color:isCapped?WINE_ACCENT:WINE_SUBTLE}}>{Math.round(wt)} lbs</span>
-                        </div>
-                        <button
-                          style={{...C.btn(WINE_DIM),width:"100%",fontSize:10,padding:"4px 8px"}}
-                          onClick={()=>startWifeLessonsConversation(name)}>
-                          Talk
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Session log */}
-              {log.length>0&&(
-                <div style={{marginBottom:14}}>
-                  <div style={{fontSize:9,letterSpacing:3,color:WINE_DIM,marginBottom:6}}>SESSION LOG</div>
-                  {log.map((line,i)=>(
-                    <div key={i} style={{fontSize:10,color:WINE_SUBTLE,lineHeight:1.75,paddingLeft:8,borderLeft:`2px solid ${WINE_ACCENT}30`}}>{line}</div>
-                  ))}
-                </div>
-              )}
-
-              <button
-                style={{...C.btn("#0e0508"),width:"100%",marginTop:4,border:`1px solid ${WINE_ACCENT}30`,fontSize:12}}
-                onClick={closeWifeLessonsSession}>
-                End Session{mjGainAccum>0?` · +${mjGainAccum} lbs to Mary Jane`:""}
-              </button>
-            </div>
-          </div>
-        );
-      })()}
+      {/* ── COMPETITIVE GAINER — MAIN EVOLVED MODAL ── */}
+      {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal}/>}
 
       {/* ── EATING CONTEST MINI-GAME MODAL ── */}
-      {eatingContestState&&(()=>{
-        const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,popupText,phase,pantsFactor,actions}=eatingContestState;
-        const s=students.find(st=>st.id===studentId); if(!s) return null;
-        const mayaLbs=CONTEST_MAYA_WEIGHTS[stageIdx]||330;
-        const effectiveMax=maxYourFullness-pantsFactor;
-        const yourPct=Math.min(100,Math.round((yourFullness/effectiveMax)*100));
-        const mayaPct=Math.min(100,Math.round((mayaFullness/maxMayaFullness)*100));
-        const won=yourGain>=mayaGain;
-        const devourUnlocked=stageIdx>=3;
-        const TITLE_LABELS=["Regional Open","Circuit Regular","Conference Championship","National Qualifier","National Championship Final","Grand Invitational"];
-        const contestTitle=TITLE_LABELS[stageIdx]||"Competition";
-        const selectedYourCount=(yourFoods||[]).filter(f=>f.selected&&!f.consumed).length;
-        const selectedMayaCount=(mayaFoods||[]).filter(f=>f.selected&&!f.consumed).length;
-        const selectedCount=selectedYourCount+selectedMayaCount;
-        const payoffText=CONTEST_PAYOFF_TEXT[stageIdx]?.(yourGain)||`${Math.round(yourGain)} pounds added to your frame. You can feel it. You are heavier than when you walked in.`;
-        const completions=s.contestCompletions||0;
-        return(
-          <div style={{...C.overlay,zIndex:1200}}>
-            <div style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#030e04,#061a08,#030e04)",border:"1px solid #20803050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
-              <div style={{fontSize:9,letterSpacing:4,color:"#30a050",marginBottom:4}}>{contestTitle.toUpperCase()} — COMPETITION</div>
-              <div style={{fontSize:14,fontWeight:700,color:"#60dd80",marginBottom:4}}>{s.name}</div>
-              {completions>0&&<div style={{fontSize:9,color:"#20804a",marginBottom:8,letterSpacing:1}}>VETERAN ×{completions+1} — capacity ×{(1+0.15*completions).toFixed(2)}</div>}
-
-              {/* EATING PHASE */}
-              {phase==='eating'&&(
-                <>
-                  {/* Fullness bars */}
-                  <div style={{display:"flex",gap:12,marginBottom:12}}>
-                    <div style={{flex:1}}>
-                      <div style={{fontSize:9,color:"#50c060",letterSpacing:2,marginBottom:3}}>YOUR FULLNESS {yourFullness}/{effectiveMax}</div>
-                      <div style={{height:8,background:"#0a1a0a",borderRadius:4,overflow:"hidden"}}>
-                        <div style={{height:"100%",width:`${yourPct}%`,background:yourPct>85?"#e05020":yourPct>65?"#c0a020":"#30a050",transition:"width 0.3s"}}/>
-                      </div>
-                    </div>
-                    <div style={{flex:1}}>
-                      <div style={{fontSize:9,color:"#508060",letterSpacing:2,marginBottom:3}}>MAYA FULLNESS {mayaFullness}/{maxMayaFullness}</div>
-                      <div style={{height:8,background:"#0a1a0a",borderRadius:4,overflow:"hidden"}}>
-                        <div style={{height:"100%",width:`${mayaPct}%`,background:"#607060",transition:"width 0.3s"}}/>
-                      </div>
-                    </div>
-                  </div>
-
-                  {devourUnlocked&&<div style={{fontSize:9,color:"#a0d060",letterSpacing:1,marginBottom:6,textAlign:"center"}}>DEVOUR MODE — tap food on either side to select, then Devour all at once. Match ends when all food is gone.</div>}
-
-                  {/* Food tables */}
-                  <div style={{display:"flex",gap:10,marginBottom:12}}>
-                    {/* Your table */}
-                    <div style={{flex:1}}>
-                      <div style={{fontSize:9,color:"#30a050",letterSpacing:2,marginBottom:6}}>YOUR TABLE</div>
-                      <div style={{display:"flex",flexDirection:"column",gap:4}}>
-                        {yourFoods.map((food,idx)=>{
-                          const tooFull=stageIdx<3&&(yourFullness+(food.fullness||0)>effectiveMax);
-                          const disabled=food.consumed||(stageIdx<3&&tooFull);
-                          const isSelected=food.selected&&!food.consumed;
-                          return(
-                            <button key={food.key!==undefined?food.key:idx}
-                              style={{...C.btn(food.consumed?"#0a1a0a":isSelected?"#1a4800":"#103520"),opacity:food.consumed?0.3:tooFull?0.5:1,textAlign:"left",padding:"5px 8px",fontSize:11,display:"flex",alignItems:"center",gap:6,cursor:food.consumed?"not-allowed":"pointer",border:isSelected?"1px solid #a0e040":"1px solid transparent"}}
-                              disabled={disabled}
-                              onClick={()=>devourUnlocked?toggleFoodSelection('your',food.key):eatContestFood(idx)}>
-                              <span style={{fontSize:14}}>{food.emoji||"🍽️"}</span>
-                              <span style={{color:food.consumed?"#304030":isSelected?"#c0ff40":"#80d090"}}>{food.name||food.id}</span>
-                              {isSelected&&<span style={{fontSize:9,color:"#a0e040",marginLeft:"auto"}}>✓</span>}
-                              {!food.consumed&&!isSelected&&<span style={{fontSize:9,color:"#40804a",marginLeft:"auto"}}>+{food.lbs}lb</span>}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                    {/* Maya's table */}
-                    <div style={{flex:1}}>
-                      <div style={{fontSize:9,color:"#508060",letterSpacing:2,marginBottom:6}}>MAYA'S TABLE ({mayaLbs} lbs)</div>
-                      <div style={{display:"flex",flexDirection:"column",gap:4}}>
-                        {mayaFoods.map((food,idx)=>{
-                          const isSelected=food.selected&&!food.consumed;
-                          return devourUnlocked?(
-                            <button key={food.key!==undefined?food.key:100+idx}
-                              style={{...C.btn(food.consumed?"#0a1a0a":isSelected?"#3a1800":"#0f1a0a"),opacity:food.consumed?0.3:1,textAlign:"left",padding:"5px 8px",fontSize:11,display:"flex",alignItems:"center",gap:6,cursor:food.consumed?"not-allowed":"pointer",border:isSelected?"1px solid #e07040":"1px solid transparent"}}
-                              disabled={food.consumed}
-                              onClick={()=>toggleFoodSelection('maya',food.key)}>
-                              <span style={{fontSize:14}}>{food.emoji||"🍽️"}</span>
-                              <span style={{color:food.consumed?"#304030":isSelected?"#ffa060":"#608070"}}>{food.name||food.id}</span>
-                              {isSelected&&<span style={{fontSize:9,color:"#e07040",marginLeft:"auto"}}>✓</span>}
-                              {!food.consumed&&!isSelected&&<span style={{fontSize:9,color:"#407050",marginLeft:"auto"}}>+{food.lbs}lb</span>}
-                            </button>
-                          ):(
-                            <div key={food.key!==undefined?food.key:100+idx}
-                              style={{padding:"5px 8px",fontSize:11,display:"flex",alignItems:"center",gap:6,opacity:food.consumed?0.3:1,background:"#050f06",borderRadius:4,border:"1px solid #0a1a0a"}}>
-                              <span style={{fontSize:14}}>{food.emoji||"🍽️"}</span>
-                              <span style={{color:food.consumed?"#304030":"#608070"}}>{food.name||food.id}</span>
-                              {food.consumed&&<span style={{fontSize:9,color:"#305030",marginLeft:"auto"}}>eaten</span>}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Lbs gained tracker */}
-                  <div style={{fontSize:10,color:"#40a060",marginBottom:10,textAlign:"center"}}>
-                    You: +{Math.round(yourGain)} lbs this contest · Maya: +{Math.round(mayaGain)} lbs
-                  </div>
-
-                  {/* Action buttons */}
-                  <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:8}}>
-                    <button style={{...C.btn(actions.unbuttoned?"#0a1a0a":"#1a4030"),fontSize:11,padding:"6px 10px",opacity:actions.unbuttoned?0.4:1}} disabled={actions.unbuttoned} onClick={()=>doContestAction('unbutton')}>
-                      👖 Unbutton Pants{actions.unbuttoned?" ✓":""}
-                    </button>
-                    <button style={{...C.btn(actions.rubUses>=3?"#0a1a0a":"#1a3020"),fontSize:11,padding:"6px 10px",opacity:actions.rubUses>=3?0.4:1}} disabled={actions.rubUses>=3} onClick={()=>doContestAction('rub')}>
-                      ✋ Rub Belly ({3-actions.rubUses} left)
-                    </button>
-                    <button style={{...C.btn(actions.taunted?"#0a1a0a":"#1a2a10"),fontSize:11,padding:"6px 10px",opacity:actions.taunted?0.4:1}} disabled={actions.taunted} onClick={()=>doContestAction('taunt')}>
-                      😏 Taunt Maya{actions.taunted?" ✓":""}
-                    </button>
-                    {devourUnlocked&&(
-                      <button style={{...C.btn(selectedCount>0?"#2a4800":"#1a2a08"),fontSize:12,padding:"6px 14px",fontWeight:700,color:selectedCount>0?"#c0ff40":"#507030",opacity:selectedCount>0?1:0.5,border:selectedCount>0?"1px solid #80c020":"none"}} disabled={selectedCount===0} onClick={doDevour}>
-                        🍽️ DEVOUR{selectedCount>0?` (${selectedCount})`:""}
-                      </button>
-                    )}
-                  </div>
-                </>
-              )}
-
-              {/* WEIGH-IN 2 PHASE */}
-              {phase==='weigh_in_2'&&(
-                <>
-                  <div style={{fontSize:12,color:"#80c090",lineHeight:1.9,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-line"}}>
-                    {CONTEST_WEIGH_IN_2_TEXT[stageIdx]?.(s,yourGain,mayaGain,mayaLbs)||''}
-                  </div>
-                  <button style={{...C.btn("#1a5030"),width:"100%"}} onClick={()=>setEatingContestState(prev=>({...prev,phase:'scoreboard'}))}>
-                    📊 See the Results
-                  </button>
-                </>
-              )}
-
-              {/* SCOREBOARD PHASE */}
-              {phase==='scoreboard'&&(
-                <>
-                  <div style={{background:"#0a1a0a",border:"1px solid #20602040",borderRadius:6,padding:14,marginBottom:12,fontFamily:"monospace"}}>
-                    <div style={{fontSize:10,color:"#30a050",letterSpacing:3,marginBottom:8}}>FINAL RESULTS</div>
-                    <div style={{fontSize:13,color:won?"#60dd80":"#80c090",marginBottom:4,display:"flex",justifyContent:"space-between"}}>
-                      <span>You: +{Math.round(yourGain)} lbs</span>
-                      {won&&<span style={{color:"#ffdd60"}}>🏆 WINNER</span>}
-                    </div>
-                    <div style={{fontSize:13,color:!won?"#60dd80":"#608070",display:"flex",justifyContent:"space-between"}}>
-                      <span>Maya: +{Math.round(mayaGain)} lbs</span>
-                      {!won&&<span style={{color:"#ffdd60"}}>🏆 WINNER</span>}
-                    </div>
-                    <div style={{marginTop:8,paddingTop:8,borderTop:"1px solid #20602040",fontSize:10,color:"#408050"}}>
-                      Your final weight: {Math.round(s.lbs)} lbs · Maya: {Math.round(mayaLbs+mayaGain)} lbs
-                    </div>
-                  </div>
-                  <div style={{fontSize:12,color:"#c0d8b0",lineHeight:1.9,marginBottom:16,fontStyle:"italic"}}>
-                    {payoffText}
-                  </div>
-                  <button style={{...C.btn("#1a4020"),width:"100%"}} onClick={closeEatingContest}>
-                    Close
-                  </button>
-                </>
-              )}
-
-              {/* POPUP OVERLAY */}
-              {popupText&&(
-                <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
-                  <div style={{background:"#05120a",border:"1px solid #30804050",borderRadius:10,padding:20,maxWidth:460,margin:16}}>
-                    <div style={{fontSize:12,color:"#b0d8a0",lineHeight:1.9,fontStyle:"italic",marginBottom:14}}>{popupText}</div>
-                    <button style={{...C.btn("#1a4030"),width:"100%"}} onClick={dismissContestPopup}>Continue</button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      })()}
+      {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup}/>}
 
       {/* ── RANKED FEEDEE SESSION MINI-GAME MODAL ── */}
       {rankedFeedeeState&&(()=>{
@@ -8539,1158 +5501,55 @@ export default function ProfessorSim(){
       })()}
 
       {/* ── PRESENTATION DEFENSE MINI-GAME MODAL (placeholder) ── */}
-      {presentationState&&(()=>{
-        const{studentId,stageIdx}=presentationState;
-        const s=students.find(st=>st.id===studentId); if(!s) return null;
-        const accentColor="#2c5f8a";
-        return(
-          <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#030b14,#071424,#030b14)",border:`1px solid ${accentColor}50`,maxHeight:"85vh",overflowY:"auto"}}>
-              <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>ACADEMIC SUBJECT</div>
-              <div style={{fontSize:15,color:"#a0c0e0",fontWeight:"bold",marginBottom:10}}>Committee Defense — Stage {stageIdx+1}</div>
-              <div style={{color:"#8090a0",fontSize:12,lineHeight:1.6,marginBottom:16}}>
-                {s.name} stands at the front of the room. The committee has questions. The data is... irregular.
-                <br/><br/>
-                <em style={{color:"#5070a0"}}>(Mini-game coming in Phase 3)</em>
-              </div>
-              <button style={{...C.btn(accentColor),width:"100%"}} onClick={()=>{
-                const gain=Math.round(6+Math.random()*8);
-                setStudents(ss=>ss.map(st=>st.id===studentId?processStudentGain(st,gain,8):st));
-                push(`✦ ${s.name} — Academic Subject Defense: +${gain} lbs · +8 rel`);
-                setPresentationState(null);
-              }}>Conclude Defense ✓</button>
-            </div>
-          </div>
-        );
-      })()}
+      {presentationState&&<PresentationDefenseModal presentationState={presentationState} processStudentGain={processStudentGain} push={push} setPresentationState={setPresentationState} setStudents={setStudents} students={students}/>}
 
       {/* ── DELIVERY ORDER MINI-GAME MODAL (placeholder) ── */}
-      {deliveryState&&(()=>{
-        const{studentId,stageIdx}=deliveryState;
-        const s=students.find(st=>st.id===studentId); if(!s) return null;
-        const accentColor="#4a6a4a";
-        return(
-          <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#030e03,#071407,#030e03)",border:`1px solid ${accentColor}50`,maxHeight:"85vh",overflowY:"auto"}}>
-              <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>HOME NEST</div>
-              <div style={{fontSize:15,color:"#a0c0a0",fontWeight:"bold",marginBottom:10}}>Order In — Stage {stageIdx+1}</div>
-              <div style={{color:"#708070",fontSize:12,lineHeight:1.6,marginBottom:16}}>
-                {s.name} opens her phone. The apartment is quiet. Three apps, twelve menus, and nowhere else to be.
-                <br/><br/>
-                <em style={{color:"#507050"}}>(Mini-game coming in Phase 3)</em>
-              </div>
-              <button style={{...C.btn(accentColor),width:"100%"}} onClick={()=>{
-                const gain=Math.round(7+Math.random()*10);
-                setStudents(ss=>ss.map(st=>st.id===studentId?processStudentGain(st,gain,7):st));
-                push(`✦ ${s.name} — Home Nest Delivery: +${gain} lbs · +7 rel`);
-                setDeliveryState(null);
-              }}>Close the Apps ✓</button>
-            </div>
-          </div>
-        );
-      })()}
+      {deliveryState&&<DeliveryOrderModal deliveryState={deliveryState} processStudentGain={processStudentGain} push={push} setDeliveryState={setDeliveryState} setStudents={setStudents} students={students}/>}
 
       {/* ── CAMPUS CHALLENGE MINI-GAME MODAL (placeholder) ── */}
-      {challengeState&&(()=>{
-        const{studentId,stageIdx}=challengeState;
-        const s=students.find(st=>st.id===studentId); if(!s) return null;
-        const accentColor="#7a4a1a";
-        return(
-          <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#100800,#1a1000,#100800)",border:`1px solid ${accentColor}50`,maxHeight:"85vh",overflowY:"auto"}}>
-              <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>CAMPUS LEGEND</div>
-              <div style={{fontSize:15,color:"#e0b080",fontWeight:"bold",marginBottom:10}}>Food Challenge — Stage {stageIdx+1}</div>
-              <div style={{color:"#907050",fontSize:12,lineHeight:1.6,marginBottom:16}}>
-                {s.name} steps up to the counter. The menu is in front of her. There's a small crowd already forming.
-                <br/><br/>
-                <em style={{color:"#705030"}}>(Mini-game coming in Phase 3)</em>
-              </div>
-              <button style={{...C.btn(accentColor),width:"100%"}} onClick={()=>{
-                const gain=Math.round(8+Math.random()*12);
-                setStudents(ss=>ss.map(st=>st.id===studentId?processStudentGain(st,gain,9):st));
-                push(`✦ ${s.name} — Campus Challenge: +${gain} lbs · +9 rel`);
-                setChallengeState(null);
-              }}>Challenge Complete ✓</button>
-            </div>
-          </div>
-        );
-      })()}
+      {challengeState&&<CampusChallengeModal challengeState={challengeState} processStudentGain={processStudentGain} push={push} setChallengeState={setChallengeState} setStudents={setStudents} students={students}/>}
 
       {/* ── CHAPTER HOSTESS — STUDENT PICKER / HANGOUT MODAL ── */}
-      {chapterHostessState?.hangoutOpen&&(()=>{
-        const ch=chapterHostessState;
-        const keyMap={2:'kylie',4:'fiona',10:'renee'};
-        const nameMap={2:'Kylie',4:'Fiona',10:'Reneé'};
-        const categoryMap={2:'Guest List',4:'Atmosphere',10:'Menu'};
-        // If no student selected yet — show picker
-        if(!ch.hangoutStudentId){
-          return(
-            <div style={{...C.overlay,zIndex:1200}}>
-              <div style={{...C.modal,maxWidth:440,background:"linear-gradient(160deg,#0e0520,#180830,#0e0520)",border:"1px solid #6c348340"}}>
-                <div style={{fontSize:9,letterSpacing:4,color:"#9040e0",marginBottom:6}}>HANG OUT · {ch.prepDaysLeft} DAY{ch.prepDaysLeft!==1?"S":""} LEFT</div>
-                <div style={{fontSize:14,fontWeight:700,color:"#c080ff",marginBottom:4}}>Who do you spend the day with?</div>
-                <div style={{fontSize:11,color:"#604080",marginBottom:14,fontStyle:"italic"}}>Each hangout unlocks the next tier of their category.</div>
-                {[{id:10,key:'renee',unlocks:ch.menuUnlocks},{id:4,key:'fiona',unlocks:ch.atmosphereUnlocks},{id:2,key:'kylie',unlocks:ch.guestUnlocks}].map(({id,key,unlocks})=>{
-                  const maxed=unlocks>=6;
-                  const tierName=[MENU_TIERS,ATMOSPHERE_TIERS,GUEST_TIERS][['renee','fiona','kylie'].indexOf(key)];
-                  const nextTier=tierName?.[Math.min(unlocks+1,5)];
-                  return(
-                    <button key={id}
-                      style={{...C.btn(maxed?"#30205040":"#401060"),width:"100%",marginBottom:8,opacity:maxed?0.4:1,textAlign:"left",padding:"10px 14px"}}
-                      onClick={()=>!maxed&&openHostessHangout(id)}>
-                      <div style={{fontWeight:700,fontSize:12}}>{nameMap[id]} — {categoryMap[id]}</div>
-                      <div style={{fontSize:10,color:"#9060b0",marginTop:2}}>{maxed?"Fully upgraded":nextTier?`Unlocks: ${nextTier.label}`:"—"}</div>
-                    </button>
-                  );
-                })}
-                <button style={{...C.btn("#28184060"),width:"100%",marginTop:4}} onClick={()=>setChapterHostessState(prev=>({...prev,hangoutOpen:false,hangoutStudentId:null}))}>Cancel</button>
-              </div>
-            </div>
-          );
-        }
-        // Vignette is open
-        const key=keyMap[ch.hangoutStudentId];
-        const unlockIdx=key==='kylie'?ch.guestUnlocks:key==='renee'?ch.menuUnlocks:ch.atmosphereUnlocks;
-        const vignette=HOSTESS_HANGOUTS[key]?.[unlockIdx];
-        if(!vignette) return null;
-        const tiffany=students.find(s=>s.evolvedForm==='chapter_hostess');
-        const chosenId=ch.hangoutHistory?.[0];
-        const chosenChoice=chosenId?vignette.choices.find(c=>c.id===chosenId):null;
-        return(
-          <div style={{...C.overlay,zIndex:1200}}>
-            <div style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#0e0520,#180830,#0e0520)",border:"1px solid #6c348340",maxHeight:"85vh",overflowY:"auto"}}>
-              <div style={{fontSize:9,letterSpacing:4,color:"#9040e0",marginBottom:6}}>HANG OUT — {nameMap[ch.hangoutStudentId]?.toUpperCase()}</div>
-              <div style={{fontSize:14,fontWeight:700,color:"#c080ff",marginBottom:10}}>{vignette.title}</div>
-              {ch.hangoutPhaseIdx===0&&(
-                <>
-                  <div style={{fontSize:12,color:"#a080c0",lineHeight:1.75,marginBottom:16,whiteSpace:"pre-line"}}>{typeof vignette.intro==='function'?vignette.intro(tiffany):vignette.intro}</div>
-                  <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                    {vignette.choices.map(c=>(
-                      <button key={c.id} style={{...C.btn("#401060"),width:"100%",textAlign:"left",padding:"10px 14px",fontSize:11}} onClick={()=>makeHostessHangoutChoice(c.id)}>
-                        {c.label}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-              {ch.hangoutPhaseIdx===1&&chosenChoice&&(
-                <>
-                  <div style={{fontSize:12,color:"#a080c0",lineHeight:1.75,marginBottom:6,whiteSpace:"pre-line"}}>{typeof vignette.intro==='function'?vignette.intro(tiffany):vignette.intro}</div>
-                  <div style={{background:"rgba(60,20,90,0.5)",border:"1px solid #6040a050",borderRadius:8,padding:12,marginBottom:14}}>
-                    <div style={{fontSize:11,color:"#d0a0ff",lineHeight:1.65}}>{chosenChoice.result}</div>
-                  </div>
-                  <div style={{fontSize:10,color:"#70508090",marginBottom:12,fontStyle:"italic"}}>+{vignette.gainBonus} lbs · +{vignette.relBonus} rel · upgrade unlocked</div>
-                  <button style={{...C.btn("#5a18b0"),width:"100%"}} onClick={()=>makeHostessHangoutChoice('confirm')}>Continue ✓</button>
-                </>
-              )}
-            </div>
-          </div>
-        );
-      })()}
+      {chapterHostessState?.hangoutOpen&&<ChapterHostessHangoutModal chapterHostessState={chapterHostessState} students={students} openHostessHangout={openHostessHangout} setChapterHostessState={setChapterHostessState} makeHostessHangoutChoice={makeHostessHangoutChoice}/>}
 
       {/* ── CHAPTER HOSTESS — FEAST PREP MODAL ── */}
-      {chapterHostessState?.feastPrepOpen&&(()=>{
-        const ch=chapterHostessState;
-        return(
-          <div style={{...C.overlay,zIndex:1200}}>
-            <div style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#100520,#1e0a38,#100520)",border:"1px solid #7034a040",maxHeight:"88vh",overflowY:"auto",padding:22}}>
-              <div style={{fontSize:9,letterSpacing:4,color:"#9040e0",marginBottom:6}}>FEAST PREP — STAGE {ch.stageIdx+1}</div>
-              <div style={{fontSize:15,fontWeight:700,color:"#c080ff",marginBottom:14}}>Wednesday Feast</div>
-              {ch.prepDaysLeft>0&&(
-                <div style={{background:"rgba(80,20,20,0.3)",border:"1px solid #80303030",borderRadius:7,padding:"8px 12px",marginBottom:12,fontSize:10,color:"#c06060"}}>
-                  You still have {ch.prepDaysLeft} prep {ch.prepDaysLeft===1?"day":"days"} left. Starting now forfeits them.
-                </div>
-              )}
-              <div style={{fontSize:11,color:"#8060a0",marginBottom:16}}>Here's what you've prepared. Lock it in and begin the feast.</div>
-              {[
-                {label:"Menu",       tier:ch.menuUnlocks,       tiers:MENU_TIERS,       icon:"🍽️"},
-                {label:"Atmosphere", tier:ch.atmosphereUnlocks,  tiers:ATMOSPHERE_TIERS, icon:"✨"},
-                {label:"Guest List", tier:ch.guestUnlocks,       tiers:GUEST_TIERS,      icon:"👥"},
-              ].map(({label,tier,tiers,icon})=>(
-                <div key={label} style={{background:"rgba(30,10,60,0.6)",border:"1px solid #5030806a",borderRadius:8,padding:"10px 14px",marginBottom:10}}>
-                  <div style={{fontSize:10,color:"#7050a0",marginBottom:3,letterSpacing:1}}>{icon} {label.toUpperCase()}</div>
-                  <div style={{fontSize:13,fontWeight:700,color:"#b080e0"}}>{tiers[tier]?.label||"—"}</div>
-                  <div style={{fontSize:10,color:"#60408070",marginTop:2,fontStyle:"italic"}}>{tiers[tier]?.desc||""}</div>
-                </div>
-              ))}
-              <button style={{...C.btn("#5a18b0"),width:"100%",marginTop:6,fontSize:13}} onClick={beginFeast}>Begin the Feast ✦</button>
-              <button style={{...C.btn("#28104060"),width:"100%",marginTop:8,fontSize:11}} onClick={()=>setChapterHostessState(prev=>({...prev,feastPrepOpen:false}))}>Go Back</button>
-            </div>
-          </div>
-        );
-      })()}
+      {chapterHostessState?.feastPrepOpen&&<ChapterHostessFeastPrepModal chapterHostessState={chapterHostessState} beginFeast={beginFeast} setChapterHostessState={setChapterHostessState}/>}
 
       {/* ── CHAPTER HOSTESS — FEAST LOG MODAL ── */}
-      {chapterHostessState?.feastLogOpen&&(()=>{
-        const ch=chapterHostessState;
-        return(
-          <div style={{...C.overlay,zIndex:1200}}>
-            <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0c0418,#160828,#0c0418)",border:"1px solid #6c348340",maxHeight:"90vh",overflowY:"auto",padding:22}}>
-              <div style={{fontSize:9,letterSpacing:4,color:"#9040e0",marginBottom:6}}>WEDNESDAY FEAST — STAGE {ch.stageIdx+1}</div>
-              <div style={{fontSize:15,fontWeight:700,color:"#c080ff",marginBottom:14}}>The Table</div>
-              <div style={{maxHeight:440,overflowY:"auto",marginBottom:14,display:"flex",flexDirection:"column",gap:8}}>
-                {ch.feastLog.map((entry,i)=>{
-                  if(entry.type==="header") return <div key={i} style={{textAlign:"center",fontSize:10,letterSpacing:3,color:"#8050b0",padding:"6px 0",borderTop:"1px solid #40208030",borderBottom:"1px solid #40208030"}}>{entry.text}</div>;
-                  if(entry.type==="gain")   return <div key={i} style={{textAlign:"center",fontSize:12,fontWeight:700,color:"#d090ff",padding:"2px 0"}}>{entry.text}</div>;
-                  if(entry.type==="food")   return <div key={i} style={{fontSize:12,color:"#c0a0d0",lineHeight:1.6,fontStyle:"italic"}}>{entry.text}</div>;
-                  if(entry.type==="sister") return <div key={i} style={{fontSize:11,color:"#9070b0",lineHeight:1.55}}>{entry.text}</div>;
-                  if(entry.type==="camille")return <div key={i} style={{fontSize:11,color:"#b080c0",lineHeight:1.55,fontStyle:"italic"}}>{entry.text}</div>;
-                  return <div key={i} style={{fontSize:11,color:"#8060a0",lineHeight:1.65}}>{entry.text}</div>;
-                })}
-              </div>
-              <div style={{background:"rgba(50,15,80,0.5)",border:"1px solid #60309050",borderRadius:8,padding:"10px 14px",marginBottom:14}}>
-                <div style={{fontSize:10,color:"#7050a0",marginBottom:4,letterSpacing:1}}>TOTALS</div>
-                <div style={{fontSize:13,color:"#d090ff",fontWeight:700}}>Tiffany +{ch.feastGainTotal} lbs · +{ch.feastRelTotal} rel</div>
-                {ch.sisters&&<div style={{fontSize:10,color:"#806090",marginTop:4}}>{ch.sisters.map(sis=>`${sis.name} +${ch.pendingSisterGains?.[sis.name]||0} lbs`).join(" · ")}{ch.stageIdx>=1?` · Camille +${ch.pendingCamilleGain||0} lbs`:""}</div>}
-              </div>
-              <button style={{...C.btn("#5a18b0"),width:"100%",fontSize:13}} onClick={completeFeast}>The Feast is Done ✓</button>
-            </div>
-          </div>
-        );
-      })()}
+      {chapterHostessState?.feastLogOpen&&<ChapterHostessFeastLogModal chapterHostessState={chapterHostessState} completeFeast={completeFeast}/>}
 
       {/* ── LILITH — CLUE / INVESTIGATION MODAL ── */}
-      {lilithClueModal&&(()=>{
-        const accent="#8020a0";
-        return(
-          <div style={{...C.overlay,zIndex:1300}}>
-            <div style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#0a000f,#14001a,#0a000f)",border:`1px solid ${accent}50`,maxHeight:"88vh",overflowY:"auto",padding:22}}>
-              {lilithClueModal==='feast_clue'&&(<>
-                <div style={{fontSize:9,letterSpacing:4,color:accent,marginBottom:6}}>SOMETHING'S OFF</div>
-                <div style={{fontSize:15,fontWeight:700,color:"#d080e0",marginBottom:12}}>{CLUE_INVESTIGATION.title}</div>
-                <div style={{fontSize:12,color:"#a070b0",lineHeight:1.8,marginBottom:16,whiteSpace:"pre-line"}}>{CLUE_INVESTIGATION.text}</div>
-                <button style={{...C.btn("#500060"),width:"100%",fontSize:13,marginBottom:8}} onClick={investigateClue}>
-                  {CLUE_INVESTIGATION.action}
-                </button>
-                <button style={{...C.btn("#200030"),width:"100%",fontSize:11}} onClick={()=>setLilithClueModal(null)}>
-                  Ignore for now
-                </button>
-              </>)}
-              {lilithClueModal==='result'&&(<>
-                <div style={{fontSize:9,letterSpacing:4,color:accent,marginBottom:6}}>ROOM 312</div>
-                <div style={{fontSize:15,fontWeight:700,color:"#d080e0",marginBottom:12}}>You knocked.</div>
-                <div style={{fontSize:12,color:"#c0a0d0",lineHeight:1.85,marginBottom:16,whiteSpace:"pre-line",fontStyle:"italic"}}>
-                  {CLUE_INVESTIGATION.resultText}
-                </div>
-                <button style={{...C.btn("#500060"),width:"100%",fontSize:13}} onClick={confirmInvestigation}>
-                  She's on the roster now. ✓
-                </button>
-              </>)}
-            </div>
-          </div>
-        );
-      })()}
+      {lilithClueModal&&<LilithClueModal lilithClueModal={lilithClueModal} investigateClue={investigateClue} setLilithClueModal={setLilithClueModal} confirmInvestigation={confirmInvestigation}/>}
 
       {/* ── LILITH — FEASTING BEAUTY (TEXT ADVENTURE) ── */}
-      {lilithHuntState&&(()=>{
-        const{textLog,currentNode,encounter,deliveryMode,deliveryDone}=lilithHuntState;
-        const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return null;
-        const stageId=getStage(lilith.lbs).id;
-        const accessibleNodes=HUNT_NODE_ACCESS[stageId]||[];
-        const accent="#7010a0";
-
-        // Pixel art silhouette — profile view (facing right), 2px/pixel
-        // Colors: 1=skin(#f2eeff), 2=hair(#0a000e), 3=dress(#1c0030), 4=boots(#070010)
-        const LILITH_PROFILES=[
-          // ── Stage 0 — Slim (128 lbs). Moderate bust, flat belly, slight butt. 10×32 ──
-          [[0,2,2,2,2,0,0,0,0,0],[2,2,2,2,2,2,0,0,0,0],[2,2,1,1,1,1,1,0,0,0],[2,2,1,1,1,1,1,0,0,0],[2,1,1,1,1,1,0,0,0,0],[2,0,1,1,1,0,0,0,0,0],[2,0,0,1,1,0,0,0,0,0],[2,0,3,3,3,3,0,0,0,0],[2,3,3,3,3,3,3,3,0,0],[0,3,3,3,3,3,3,3,3,0],[0,3,3,3,3,3,3,3,0,0],[0,3,3,3,3,3,3,0,0,0],[2,0,3,3,3,3,3,0,0,0],[2,0,3,3,3,3,3,0,0,0],[2,0,3,3,3,3,3,0,0,0],[2,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,0,0,0,0],[0,3,3,3,3,3,0,0,0,0],[0,3,3,3,3,0,0,0,0,0],[0,0,1,1,1,0,0,0,0,0],[0,0,1,1,1,0,0,0,0,0],[0,0,1,1,1,0,0,0,0,0],[0,0,1,1,1,0,0,0,0,0],[0,0,1,1,1,0,0,0,0,0],[0,0,1,1,1,0,0,0,0,0],[0,0,4,4,4,0,0,0,0,0],[0,4,4,4,4,0,0,0,0,0],[0,4,4,4,4,0,0,0,0,0],[0,4,4,4,4,0,0,0,0,0],[0,4,4,4,4,0,0,0,0,0],[4,4,4,4,4,0,0,0,0,0]],
-          // ── Stage 1 — Soft (~155 lbs). Tiny belly, butt fills out, thighs +1px. 10×32 ──
-          [[0,2,2,2,2,0,0,0,0,0],[2,2,2,2,2,2,0,0,0,0],[2,2,1,1,1,1,1,0,0,0],[2,2,1,1,1,1,1,0,0,0],[2,1,1,1,1,1,0,0,0,0],[2,0,1,1,1,0,0,0,0,0],[2,0,0,1,1,0,0,0,0,0],[2,0,3,3,3,3,0,0,0,0],[2,3,3,3,3,3,3,3,0,0],[0,3,3,3,3,3,3,3,3,0],[0,3,3,3,3,3,3,3,0,0],[0,3,3,3,3,3,3,0,0,0],[2,0,3,3,3,3,3,3,0,0],[2,0,3,3,3,3,3,3,0,0],[2,0,3,3,3,3,3,0,0,0],[2,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,0,0,0,0],[0,3,3,3,3,3,0,0,0,0],[0,3,3,3,3,0,0,0,0,0],[0,0,1,1,1,1,0,0,0,0],[0,0,1,1,1,1,0,0,0,0],[0,0,1,1,1,1,0,0,0,0],[0,0,1,1,1,1,0,0,0,0],[0,0,1,1,1,1,0,0,0,0],[0,0,4,4,4,4,0,0,0,0],[0,4,4,4,4,4,0,0,0,0],[0,4,4,4,4,4,0,0,0,0],[0,4,4,4,4,4,0,0,0,0],[0,4,4,4,4,4,0,0,0,0],[4,4,4,4,4,4,0,0,0,0]],
-          // ── Stage 2 — Plump (~195 lbs). Clear belly, no waist, thicker legs. 10×32 ──
-          [[0,2,2,2,2,0,0,0,0,0],[2,2,2,2,2,2,0,0,0,0],[2,2,1,1,1,1,1,0,0,0],[2,2,1,1,1,1,1,0,0,0],[2,1,1,1,1,1,0,0,0,0],[2,0,1,1,1,0,0,0,0,0],[2,0,0,1,1,0,0,0,0,0],[2,0,3,3,3,3,3,0,0,0],[2,3,3,3,3,3,3,3,3,0],[0,3,3,3,3,3,3,3,3,0],[0,3,3,3,3,3,3,3,3,0],[0,3,3,3,3,3,3,3,0,0],[3,3,3,3,3,3,3,3,3,0],[3,3,3,3,3,3,3,3,3,0],[3,3,3,3,3,3,3,3,0,0],[3,3,3,3,3,3,3,3,0,0],[3,3,3,3,3,3,3,3,0,0],[3,3,3,3,3,3,3,3,0,0],[3,3,3,3,3,3,3,0,0,0],[0,3,3,3,3,3,3,0,0,0],[0,3,3,3,3,3,0,0,0,0],[0,0,1,1,1,1,1,0,0,0],[0,0,1,1,1,1,1,0,0,0],[0,0,1,1,1,1,1,0,0,0],[0,0,1,1,1,1,1,0,0,0],[0,0,1,1,1,1,1,0,0,0],[0,0,4,4,4,4,4,0,0,0],[0,4,4,4,4,4,4,0,0,0],[0,4,4,4,4,4,4,0,0,0],[0,4,4,4,4,4,4,0,0,0],[0,4,4,4,4,4,4,0,0,0],[4,4,4,4,4,4,4,0,0,0]],
-          // ── Stage 3 — Heavy (~240 lbs). Round bust+gut+booty, legs centered. 14×36 ──
-          [[0,0,0,0,2,2,2,2,0,0,0,0,0,0],[0,0,0,2,2,2,2,2,2,0,0,0,0,0],[0,0,0,2,2,1,1,1,1,1,0,0,0,0],[0,0,0,2,2,1,1,1,1,1,0,0,0,0],[0,0,0,2,1,1,1,1,1,0,0,0,0,0],[0,0,0,2,0,1,1,1,0,0,0,0,0,0],[0,0,0,2,0,1,1,0,0,0,0,0,0,0],[0,0,0,2,0,3,3,3,3,0,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,0,0],[0,0,3,3,3,3,3,3,3,3,3,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,0],[3,3,3,3,3,3,3,3,3,3,3,3,0,0],[3,3,3,3,3,3,3,3,3,3,3,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,0,0,0],[0,3,3,3,3,3,3,3,3,3,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,0,0,0,0],[0,0,3,3,3,3,3,3,3,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,0,0,0,0],[0,0,0,1,1,1,1,1,1,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,0,0,0,0,0],[0,0,0,4,4,4,4,4,4,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,0,0,0,0]],
-          // ── Stage 4 — Fat (~295 lbs). Big round bust w/ 1px overflow, massive gut, very pronounced booty to col 0. 18×37 ──
-          [[0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0],[0,0,0,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0],[0,0,0,2,2,1,1,1,1,1,0,0,0,0,0,0,0,0],[0,0,0,2,2,1,1,1,1,1,0,0,0,0,0,0,0,0],[0,0,0,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0],[0,0,0,2,0,1,1,1,0,0,0,0,0,0,0,0,0,0],[0,0,0,2,0,1,1,1,1,1,1,0,0,0,0,0,0,0],[0,0,0,2,1,1,1,1,1,1,1,1,1,1,0,0,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,1,0,0,0,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],[0,0,0,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0],[0,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0]],
-          // ── Stage 5 — Very Fat (~365 lbs). Bust fully overflowing top (2px past dress), gut past bust, booty to col 0. 20×39 ──
-          [[0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,2,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,0,2,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0],[0,0,0,0,3,3,3,3,3,3,3,3,3,3,1,1,0,0,0,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0],[0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0],[0,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0],[0,0,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],[0,0,0,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0],[0,0,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0],[0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0]],
-        ];
-        const PIX=2;
-        const PIX_C={1:'#f2eeff',2:'#0a000e',3:'#1c0030',4:'#070010'};
-        const currentPix=LILITH_PROFILES[Math.min(5,stageId)];
-        const pCols=currentPix[0]?.length||10, pRows=currentPix.length;
-        const silScaleX=1.0, silScaleY=1.0;
-
-        // Build choice list (nav/delivery/approach states only)
-        const choices=[];
-        const addNavChoices=(nodeId)=>{
-          const connected=(HUNT_MAP[nodeId]||[]).filter(nid=>accessibleNodes.includes(nid)&&nid!=='dorm');
-          connected.forEach(nid=>choices.push({id:`go_${nid}`,label:`→ ${HUNT_NODES[nid]?.label}`,action:()=>navigateHunt(nid),nav:true}));
-        };
-        const returnToLoc=()=>{
-          const nd=HUNT_NODES[currentNode];
-          setLilithHuntState(prev=>({...prev,encounter:null,textLog:[...prev.textLog,{text:nd?.label.toUpperCase()||'',type:'location'}]}));
-        };
-
-        if(deliveryMode){
-          if(!deliveryDone) choices.push({id:'deliver',label:'📱 He knocks. You call him in.',action:deliveryScene,big:true});
-          else choices.push({id:'close',label:'Close ✓',action:closeHunt,dim:true});
-        } else if(!encounter){
-          if(currentNode==='dorm'){
-            choices.push({id:'go_quad',label:'→ Step out into the night',action:()=>navigateHunt('quad'),big:true});
-            choices.push({id:'close',label:'← Stay in',action:closeHunt,dim:true});
-          } else {
-            const menHere=HUNT_MEN.filter(m=>m.location===currentNode&&m.difficulty>0);
-            menHere.forEach(man=>{
-              const eff=getEffectiveDifficulty(man.difficulty,stageId);
-              const diffColor=eff<=1?"#40c060":eff===2?"#c0a030":"#c04030";
-              choices.push({id:`approach_${man.id}`,label:`APPROACH  ${man.name}`,sublabel:`${man.tag} · ${eff<=1?"Easy":eff===2?"Medium":"Hard"}`,sublabelColor:diffColor,action:()=>approachMan(man.id),approach:true});
-            });
-            addNavChoices(currentNode);
-            choices.push({id:'leave',label:'Leave the hunt',action:closeHunt,dim:true,small:true});
-          }
-        } else if(encounter.consumed||encounter.failed){
-          if(encounter.consumed){
-            choices.push({id:'again',label:'Hunt again ↩',action:returnToLoc,nav:true});
-            choices.push({id:'close',label:'Return to campus',action:closeHunt,dim:true});
-          } else {
-            choices.push({id:'back',label:'↩ Back to the hunt',action:returnToLoc,nav:true});
-            addNavChoices(currentNode);
-            choices.push({id:'leave',label:'Leave the hunt',action:closeHunt,dim:true,small:true});
-          }
-        }
-
-        const hasSeduce=Object.values(PHYSICAL_MOVES).some(m=>lilith.lbs>=m.unlockLbs);
-        const btnBase={borderRadius:5,cursor:"pointer",textAlign:"left",lineHeight:1.4,fontFamily:"inherit",width:"100%",fontSize:12};
-
-        return(
-          <div style={{position:"fixed",inset:0,background:"#000",zIndex:1300,display:"flex",flexDirection:"column",fontFamily:"inherit"}}>
-
-            {/* ── NIGHT SCENE HEADER ── */}
-            <div style={{position:"relative",height:123,overflow:"hidden",flexShrink:0,background:"linear-gradient(180deg,#010008 0%,#060018 55%,#0d0026 100%)"}}>
-              {/* Stars */}
-              {[[7,22],[14,9],[23,16],[33,5],[41,19],[50,8],[58,13],[66,5],[74,21],[81,10],[88,7],[94,17],[4,32],[47,26],[71,29]].map(([x,y],i)=>(
-                <div key={i} style={{position:"absolute",left:`${x}%`,top:`${y}%`,width:i%3===0?2:1,height:i%3===0?2:1,borderRadius:"50%",background:"#fff",opacity:0.4+i%3*0.15,boxShadow:`0 0 ${i%4===0?4:2}px #ffffff60`}}/>
-              ))}
-              {/* Moon */}
-              <div style={{position:"absolute",right:"9%",top:"10%",width:20,height:20,borderRadius:"50%",background:"#ccc8e0",boxShadow:"inset 5px -2px 0 #0a001c, 0 0 12px #9080c040"}}/>
-              {/* Left building */}
-              <div style={{position:"absolute",left:0,bottom:0,width:"28%",height:44,background:"#040010",clipPath:"polygon(0 100%,0 45%,8% 45%,8% 22%,14% 22%,14% 45%,22% 45%,22% 65%,28% 65%,28% 5%,34% 5%,34% 60%,42% 60%,42% 100%)"}}/>
-              {/* Right building */}
-              <div style={{position:"absolute",right:0,bottom:0,width:"32%",height:52,background:"#040010",clipPath:"polygon(0 100%,0 60%,6% 60%,6% 32%,12% 32%,12% 52%,20% 52%,20% 12%,26% 12%,26% 52%,36% 52%,36% 38%,42% 38%,42% 4%,48% 4%,48% 38%,62% 38%,62% 62%,72% 62%,72% 100%)"}}/>
-              {/* Lilith pixel art silhouette — profile */}
-              <div style={{position:"absolute",bottom:0,left:"50%",transform:"translateX(-50%)"}}>
-                <svg width={Math.round(pCols*PIX*silScaleX)} height={Math.round(pRows*PIX*silScaleY)} viewBox={`0 0 ${pCols*PIX} ${pRows*PIX}`} style={{display:"block",filter:"drop-shadow(1px 0 0 rgba(255,255,255,0.4)) drop-shadow(-1px 0 0 rgba(255,255,255,0.4)) drop-shadow(0 1px 0 rgba(255,255,255,0.4)) drop-shadow(0 -1px 0 rgba(255,255,255,0.4)) drop-shadow(0 0 3px rgba(180,100,255,0.25))",transition:"width 0.4s,height 0.4s"}}>
-                  {currentPix.flatMap((row,y)=>row.map((c,x)=>{
-                    if(!c) return null;
-                    return <rect key={`${x}-${y}`} x={x*PIX} y={y*PIX} width={PIX} height={PIX} fill={PIX_C[c]}/>;
-                  }))}
-                </svg>
-              </div>
-              {/* Top bar */}
-              <div style={{position:"absolute",top:0,left:0,right:0,display:"flex",justifyContent:"space-between",padding:"5px 12px"}}>
-                <div style={{fontSize:8,letterSpacing:4,color:"#6010a0",textShadow:"0 0 8px #7010a0"}}>🌑 FEASTING BEAUTY</div>
-                <div style={{display:"flex",gap:10,alignItems:"center"}}>
-                  <span style={{fontSize:10,color:"#9030b0"}}>{Math.round(lilith.lbs)} lbs · {getStage(lilith.lbs).label}</span>
-                  <button onClick={closeHunt} style={{background:"none",border:"1px solid #40104050",color:"#604060",fontSize:10,borderRadius:4,padding:"1px 7px",cursor:"pointer",lineHeight:"16px"}}>✕</button>
-                </div>
-              </div>
-            </div>
-
-            {/* ── TEXT LOG ── */}
-            <div ref={el=>{if(el)el.scrollTop=el.scrollHeight}} style={{flex:1,overflowY:"auto",padding:"14px 16px 8px",display:"flex",flexDirection:"column",gap:7,background:"#03000e"}}>
-              {textLog.map((entry,i)=>{
-                const isLast=i===textLog.length-1;
-                if(entry.type==='location') return(
-                  <div key={i} style={{fontSize:9,letterSpacing:3,color:"#6010a0",textAlign:"center",padding:"8px 0 2px",opacity:0.9}}>〔 {entry.text} 〕</div>
-                );
-                if(entry.type==='system') return(
-                  <div key={i} style={{fontSize:12,color:"#c060e0",fontWeight:700,textAlign:"center",letterSpacing:1,padding:"2px 0"}}>{entry.text}</div>
-                );
-                if(entry.type==='action') return(
-                  <div key={i} style={{fontSize:12,color:isLast?"#ddb0ff":"#a070c0",lineHeight:1.8,fontStyle:"italic",opacity:isLast?1:0.75}}>{entry.text}</div>
-                );
-                if(entry.type==='guy') return(
-                  <div key={i} style={{fontSize:12,color:isLast?"#90b8d8":"#4a6080",lineHeight:1.8,opacity:isLast?1:0.7}}>{entry.text}</div>
-                );
-                return(
-                  <div key={i} style={{fontSize:12,color:isLast?"#c898e8":"#7d5090",lineHeight:1.9,fontStyle:"italic",opacity:isLast?1:0.65,whiteSpace:"pre-line"}}>{entry.text}</div>
-                );
-              })}
-            </div>
-
-            {/* ── CHOICES PANEL ── */}
-            <div style={{flexShrink:0,background:"#050010",borderTop:"1px solid #30104050"}}>
-              {/* Encounter status bars */}
-              {encounter&&!encounter.consumed&&!encounter.failed&&(
-                <div style={{padding:"10px 16px 4px"}}>
-                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
-                    <span style={{fontSize:9,color:"#7010a0",letterSpacing:2,minWidth:72}}>WILLPOWER</span>
-                    <div style={{flex:1,height:6,background:"#1a0030",borderRadius:3,overflow:"hidden"}}>
-                      <div style={{height:"100%",background:"linear-gradient(90deg,#c060d0,#7010a0)",width:`${encounter.willpower}%`,transition:"width 0.3s"}}/>
-                    </div>
-                  </div>
-                  <div style={{display:"flex",alignItems:"center",gap:6}}>
-                    <span style={{fontSize:9,color:"#601030",letterSpacing:2,minWidth:72}}>WARINESS</span>
-                    <div style={{display:"flex",gap:4}}>
-                      {Array.from({length:encounter.maxApprehension}).map((_,i)=>(
-                        <div key={i} style={{width:8,height:8,borderRadius:"50%",background:i<encounter.apprehension?"#c03050":"#1a0020",border:"1px solid #500030",transition:"background 0.2s"}}/>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div style={{display:"flex",flexDirection:"column",gap:5,padding:"8px 14px 12px",maxHeight:"42vh",overflowY:"auto"}}>
-                {/* Nav / delivery / approach states */}
-                {(!encounter||encounter.consumed||encounter.failed)&&choices.map(ch=>(
-                  <button key={ch.id} onClick={ch.action} style={{
-                    ...btnBase,
-                    background:ch.big?"#3a0060":ch.approach?"#260042":ch.nav?"#1a0030":"#130020",
-                    border:`1px solid ${ch.approach?accent+"60":ch.nav?accent+"50":accent+"30"}`,
-                    color:ch.dim?"#5a3860":ch.approach?"#d070f0":ch.nav?"#9860b8":"#b080d0",
-                    padding:ch.big?"11px 16px":"8px 14px",
-                    fontSize:ch.small?10:ch.big?13:12,fontWeight:ch.big?700:"normal",
-                  }}>
-                    {ch.label}
-                    {ch.sublabel&&<span style={{fontSize:10,color:ch.sublabelColor||"#705080",marginLeft:8}}>{ch.sublabel}</span>}
-                  </button>
-                ))}
-                {/* Won — take home */}
-                {encounter&&encounter.won&&!encounter.consumed&&(
-                  <button onClick={consumeMan} style={{...btnBase,background:"#3a0060",border:`1px solid ${accent}70`,color:"#d070f0",padding:"11px 16px",fontSize:13,fontWeight:700}}>
-                    🌑 Take him home →
-                  </button>
-                )}
-                {/* Idle — Reply / Seduce */}
-                {encounter&&!encounter.won&&!encounter.failed&&!encounter.consumed&&encounter.mode==='idle'&&(<>
-                  <button onClick={()=>encounterSetMode('replying')} style={{...btnBase,background:"#1a0040",border:`1px solid ${accent}60`,color:"#c080e0",padding:"10px 14px"}}>
-                    💬 Reply…
-                  </button>
-                  {hasSeduce&&(
-                    <button onClick={()=>encounterSetMode('seducing')} style={{...btnBase,background:"#250050",border:`1px solid ${accent}70`,color:"#d060e0",padding:"10px 14px"}}>
-                      ✦ Seduce…
-                    </button>
-                  )}
-                </>)}
-                {/* Replying — 3 options */}
-                {encounter&&encounter.mode==='replying'&&(<>
-                  {(encounter.replyOptions||[]).map(opt=>(
-                    <button key={opt.id} onClick={()=>makeReply(opt)} style={{...btnBase,background:"#150030",border:`1px solid ${accent}50`,color:"#c090d8",padding:"9px 14px"}}>
-                      {opt.label}
-                    </button>
-                  ))}
-                  <button onClick={()=>encounterSetMode('idle')} style={{...btnBase,background:"#0a0018",border:`1px solid ${accent}20`,color:"#604070",padding:"7px 14px",fontSize:10,marginTop:2}}>
-                    ← Back
-                  </button>
-                </>)}
-                {/* Seducing — physical moves (unlocked only) */}
-                {encounter&&encounter.mode==='seducing'&&(<>
-                  {Object.entries(PHYSICAL_MOVES).filter(([,m])=>lilith.lbs>=m.unlockLbs).map(([id,m])=>(
-                    <button key={id} onClick={()=>makeSeduction(id)} style={{...btnBase,background:"#200040",border:`1px solid ${accent}60`,color:"#e080e0",padding:"9px 14px",fontWeight:600}}>
-                      {m.label}
-                    </button>
-                  ))}
-                  <button onClick={()=>encounterSetMode('idle')} style={{...btnBase,background:"#0a0018",border:`1px solid ${accent}20`,color:"#604070",padding:"7px 14px",fontSize:10,marginTop:2}}>
-                    ← Back
-                  </button>
-                </>)}
-              </div>
-            </div>
-
-          </div>
-        );
-      })()}
+      {lilithHuntState&&<LilithHuntModal lilithHuntState={lilithHuntState} students={students} setLilithHuntState={setLilithHuntState} navigateHunt={navigateHunt} deliveryScene={deliveryScene} closeHunt={closeHunt} approachMan={approachMan} consumeMan={consumeMan} encounterSetMode={encounterSetMode} makeReply={makeReply} makeSeduction={makeSeduction}/>}
 
       {/* ── SUMO MATCH MINI-GAME MODAL ── */}
-      {sumoMatchState&&(()=>{
-        const{studentId,stageIdx,oppLbs,ringPos,yourBalance,oppBalance,yourBouts,oppBouts,gainAccum,telegraph,exchangeLine,phase,popupText,fillRingUsed}=sumoMatchState;
-        const s=students.find(st=>st.id===studentId); if(!s) return null;
-        const won=yourBouts>oppBouts;
-        const markerPct=Math.max(0,Math.min(100,(ringPos+100)/2));
-        const feed=SUMO_CORNER_FEED[stageIdx]||SUMO_CORNER_FEED[0];
-        const isBlob=getStage(s.lbs).id>=10;
-        const payoffText=SUMO_PAYOFF_TEXT[stageIdx]?.(gainAccum)||`${Math.round(gainAccum)} pounds added to your frame since you stepped onto the dohyo. You can feel it. More.`;
-        return(
-          <div style={{...C.overlay,zIndex:1200}}>
-            <div style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#140404,#1f0808,#140404)",border:"1px solid #80303050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
-              <div style={{fontSize:9,letterSpacing:4,color:"#d05040",marginBottom:4}}>THE DOHYO — vs {SUMO_RIVAL_NAME.toUpperCase()}</div>
-              <div style={{fontSize:14,fontWeight:700,color:"#ff8060",marginBottom:12}}>{s.name}</div>
-
-              {/* MATCH PHASE */}
-              {phase==='match'&&(<>
-                {/* Bout counter */}
-                <div style={{display:"flex",justifyContent:"space-between",fontSize:10,marginBottom:10}}>
-                  <span style={{color:"#ff9070"}}>You {Math.round(s.lbs)} lbs · Bouts: {yourBouts}</span>
-                  <span style={{color:"#a07060"}}>Bouts: {oppBouts} · Dana {oppLbs} lbs</span>
-                </div>
-                {/* Ring position bar */}
-                <div style={{fontSize:9,color:"#c06050",letterSpacing:2,marginBottom:3,textAlign:"center"}}>RING POSITION</div>
-                <div style={{position:"relative",height:14,background:"linear-gradient(90deg,#5a1810,#2a1208,#102a10)",borderRadius:7,marginBottom:4,border:"1px solid #40201840"}}>
-                  <div style={{position:"absolute",left:"50%",top:0,bottom:0,width:1,background:"#80604040"}}/>
-                  <div style={{position:"absolute",left:`calc(${markerPct}% - 7px)`,top:-2,width:14,height:18,background:ringPos>=0?"#40c060":"#e05030",borderRadius:4,transition:"left 0.35s",boxShadow:"0 0 6px rgba(0,0,0,0.6)"}}/>
-                </div>
-                <div style={{display:"flex",justifyContent:"space-between",fontSize:8,color:"#705048",marginBottom:12}}>
-                  <span>◄ your edge</span><span>her edge ►</span>
-                </div>
-                {/* Balance bars */}
-                <div style={{display:"flex",gap:12,marginBottom:12}}>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:9,color:"#d07060",letterSpacing:1,marginBottom:3}}>YOUR BALANCE {yourBalance}</div>
-                    <div style={{height:6,background:"#1a0a0a",borderRadius:3,overflow:"hidden"}}>
-                      <div style={{height:"100%",width:`${yourBalance}%`,background:yourBalance<25?"#e03020":yourBalance<50?"#c0a020":"#40b050",transition:"width 0.3s"}}/>
-                    </div>
-                  </div>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:9,color:"#906058",letterSpacing:1,marginBottom:3}}>DANA'S BALANCE {oppBalance}</div>
-                    <div style={{height:6,background:"#1a0a0a",borderRadius:3,overflow:"hidden"}}>
-                      <div style={{height:"100%",width:`${oppBalance}%`,background:"#806058",transition:"width 0.3s"}}/>
-                    </div>
-                  </div>
-                </div>
-                {/* Exchange commentary */}
-                <div style={{fontSize:12,color:"#e0b0a0",lineHeight:1.8,marginBottom:10,fontStyle:"italic"}}>{exchangeLine}</div>
-                {/* Telegraph */}
-                <div style={{...C.infoBox("rgba(90,20,10,0.3)"),fontSize:11,color:"#ffb090",marginBottom:12,border:"1px solid #80303040"}}>
-                  ⚠️ {telegraph}
-                </div>
-                {/* Move buttons */}
-                <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                  {SUMO_MOVES.filter(mv=>!mv.blobOnly).map(mv=>{
-                    const lowBal=yourBalance<=0&&mv.id!=='brace';
-                    return(
-                      <button key={mv.id}
-                        style={{...C.btn(lowBal?"#2a1410":"#5a1c14"),textAlign:"left",padding:"8px 12px",fontSize:12,lineHeight:1.4,opacity:lowBal?0.55:1}}
-                        onClick={()=>sumoPlayMove(mv.id)}>
-                        <span style={{fontSize:15,marginRight:6}}>{mv.emoji}</span>
-                        <span style={{fontWeight:700,color:"#ffc0a0"}}>{mv.label}</span>
-                        {lowBal&&<span style={{color:"#ff6040",marginLeft:8,fontSize:9}}>off balance — you'll stumble</span>}
-                        <div style={{fontSize:10,color:"#b08070",marginTop:2,fontStyle:"italic"}}>{mv.desc}</div>
-                      </button>
-                    );
-                  })}
-                  {isBlob&&(()=>{const mv=SUMO_MOVES.find(m=>m.id==='fill_ring'); return mv?(
-                    <button key="fill_ring"
-                      style={{...C.btn(fillRingUsed?"#1a0808":"#6a2800"),textAlign:"left",padding:"8px 12px",fontSize:12,lineHeight:1.4,opacity:fillRingUsed?0.4:1,border:fillRingUsed?"none":"1px solid #e0801080"}}
-                      disabled={fillRingUsed}
-                      onClick={()=>sumoPlayMove('fill_ring')}>
-                      <span style={{fontSize:15,marginRight:6}}>{mv.emoji}</span>
-                      <span style={{fontWeight:700,color:fillRingUsed?"#806050":"#ffb060"}}>{mv.label}{fillRingUsed?" (used)":""}</span>
-                      <div style={{fontSize:10,color:"#c09060",marginTop:2,fontStyle:"italic"}}>{mv.desc}</div>
-                    </button>
-                  ):null;})()}
-                </div>
-              </>)}
-
-              {/* INTER-BOUT PHASE — corner feed */}
-              {phase==='interbout'&&(<>
-                <div style={{fontSize:11,color:"#c08070",marginBottom:8,textAlign:"center"}}>Bouts: You {yourBouts} — {oppBouts} Dana · first to 2 wins the match</div>
-                <div style={{fontSize:12,color:"#e0b0a0",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>
-                  Your corner is set up between bouts. The chanko is hot and waiting. Every pound you add now is a pound Dana has to move in the next bout — and getting heavier is the whole strategy.
-                </div>
-                <button style={{...C.btn("#7a3010"),width:"100%",marginBottom:8}} onClick={sumoCornerFeed}>
-                  🍲 Fuel in Your Corner <span style={{color:"#ffd080",fontSize:11}}>+{feed.lbs} lbs · restores balance</span>
-                </button>
-                <button style={{...C.btn("#3a1810"),width:"100%"}} onClick={sumoStartNextBout}>
-                  Skip — straight back to center
-                </button>
-              </>)}
-
-              {/* AFTERMATH PHASE */}
-              {phase==='aftermath'&&(<>
-                <div style={{fontSize:12,color:"#e0b8a8",lineHeight:1.9,marginBottom:16,fontStyle:"italic"}}>
-                  {SUMO_MATCH_AFTERMATH[stageIdx]?.(s,gainAccum,won,oppLbs)||''}
-                </div>
-                <button style={{...C.btn("#7a2018"),width:"100%"}} onClick={()=>setSumoMatchState(prev=>({...prev,phase:'scoreboard'}))}>
-                  📊 See the Result
-                </button>
-              </>)}
-
-              {/* SCOREBOARD PHASE */}
-              {phase==='scoreboard'&&(<>
-                <div style={{background:"#1a0808",border:"1px solid #80303040",borderRadius:6,padding:14,marginBottom:12,fontFamily:"monospace"}}>
-                  <div style={{fontSize:10,color:"#d05040",letterSpacing:3,marginBottom:8}}>MATCH RESULT</div>
-                  <div style={{fontSize:14,color:won?"#ff9060":"#a07060",marginBottom:4,display:"flex",justifyContent:"space-between"}}>
-                    <span>You — {yourBouts} bouts</span>
-                    {won&&<span style={{color:"#ffdd60"}}>🏆 WINNER</span>}
-                  </div>
-                  <div style={{fontSize:14,color:!won?"#ff9060":"#806058",display:"flex",justifyContent:"space-between"}}>
-                    <span>Dana — {oppBouts} bouts</span>
-                    {!won&&<span style={{color:"#ffdd60"}}>🏆 WINNER</span>}
-                  </div>
-                  <div style={{marginTop:8,paddingTop:8,borderTop:"1px solid #80303040",fontSize:10,color:"#c07050"}}>
-                    Gained in the corner today: +{Math.round(gainAccum)} lbs · Your weight: {Math.round(s.lbs)} lbs
-                  </div>
-                </div>
-                <div style={{fontSize:12,color:"#e0c0b0",lineHeight:1.9,marginBottom:16,fontStyle:"italic"}}>{payoffText}</div>
-                <button style={{...C.btn("#5a1c14"),width:"100%"}} onClick={closeSumoMatch}>Close</button>
-              </>)}
-
-              {/* POPUP OVERLAY */}
-              {popupText&&(
-                <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
-                  <div style={{background:"#160606",border:"1px solid #80303050",borderRadius:10,padding:20,maxWidth:460,margin:16}}>
-                    <div style={{fontSize:12,color:"#e8b8a8",lineHeight:1.9,fontStyle:"italic",marginBottom:14}}>{popupText}</div>
-                    <button style={{...C.btn("#5a1c14"),width:"100%"}} onClick={dismissSumoPopup}>Continue</button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      })()}
+      {sumoMatchState&&<SumoMatchModal sumoMatchState={sumoMatchState} students={students} sumoPlayMove={sumoPlayMove} sumoCornerFeed={sumoCornerFeed} sumoStartNextBout={sumoStartNextBout} setSumoMatchState={setSumoMatchState} closeSumoMatch={closeSumoMatch} dismissSumoPopup={dismissSumoPopup}/>}
 
       {/* ── FEEDEE CREATOR: COLLAB PARTNER PICKER ── */}
-      {collabPartnerPicker&&(()=>{
-        const{student:kylie,announcementText,announcementPending}=collabPartnerPicker;
-        const purple="#8e44ad";
-        const lightPurple="#c490e8";
-        // Find eligible partners: Intimate tier (rel>=70) + content creator archetypes + not blob
-        const eligible=students.filter(st=>
-          st.id!==kylie.id&&
-          (getTier(st.relationship).id>=2)&&
-          COLLAB_CONTENT_CREATOR_ARCHETYPES.includes(st.archetype)&&
-          getStage(st.lbs).id<10
-        );
-        if(announcementPending&&announcementText){
-          return(
-            <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
-              <div style={{background:"#0e0015",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:460,width:"95%"}}>
-                <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:8,textAlign:"center"}}>📢 STREAM ANNOUNCEMENT</div>
-                <div style={{fontSize:12,color:"#d0a8e8",lineHeight:1.9,fontStyle:"italic",marginBottom:16}}>{announcementText}</div>
-                <button style={{...C.btn(purple),width:"100%"}} onClick={()=>setCollabPartnerPicker({student:kylie})}>Continue to Stream →</button>
-              </div>
-            </div>
-          );
-        }
-        return(
-          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
-            <div style={{background:"#0e0015",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:500,width:"95%",maxHeight:"85vh",overflowY:"auto"}}>
-              <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:4,textAlign:"center"}}>🎥 COLLAB STREAM</div>
-              <div style={{fontSize:14,color:lightPurple,fontWeight:"bold",marginBottom:12,textAlign:"center"}}>Choose a Collab Partner</div>
-              <div style={{fontSize:11,color:"#a080c0",marginBottom:14,textAlign:"center"}}>Intimate tier · content-creator archetype</div>
-              {eligible.length===0&&<div style={{color:"#806090",textAlign:"center",padding:20}}>No eligible partners right now — need an Intimate-tier gamer, artsy, or quiet student.</div>}
-              {eligible.map(st=>(
-                <div key={st.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:6,borderRadius:8,background:"#0a0018",border:`1px solid ${purple}40`,cursor:"pointer"}}
-                  onClick={()=>{setCollabPartnerId(st.id);setCollabPartnerPicker(null);const stageIdx=Math.max(0,Math.min(5,getStage(kylie.lbs).id-5));const evDef=EVOLVED_EVENTS['feedee_creator']?.[stageIdx];if(evDef){setEvolvedEventState({studentId:kylie.id,formId:'feedee_creator',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0,startsContest:false,startsMatch:false,startsStream:false,startsFairContest:false});}}}>
-                  <div style={{flex:1}}>
-                    <div style={{color:lightPurple,fontWeight:"bold",fontSize:13}}>{st.name}</div>
-                    <div style={{color:"#907090",fontSize:10}}>{st.archetype} · {Math.round(st.lbs)} lbs · {getTier(st.relationship).label}</div>
-                  </div>
-                  <div style={{color:"#c0a0e0",fontSize:11}}>{getStage(st.lbs).label}</div>
-                </div>
-              ))}
-              <button style={{...C.btn("#2a1040"),width:"100%",marginTop:8,fontSize:11}} onClick={()=>setCollabPartnerPicker(null)}>Cancel</button>
-            </div>
-          </div>
-        );
-      })()}
+      {collabPartnerPicker&&<CollabPartnerPicker collabPartnerPicker={collabPartnerPicker} setCollabPartnerId={setCollabPartnerId} setCollabPartnerPicker={setCollabPartnerPicker} setEvolvedEventState={setEvolvedEventState} students={students}/>}
 
       {/* ── PSYCH RESEARCHER: SUBJECT PICKER ── */}
-      {researchSubjectPicker&&(()=>{
-        const{student:nadia}=researchSubjectPicker;
-        const purple="#6b5b95";
-        const eligible=students.filter(st=>st.id!==nadia.id&&getTier(st.relationship).id>=1);
-        return(
-          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
-            <div style={{background:"#0a0010",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:500,width:"95%",maxHeight:"85vh",overflowY:"auto"}}>
-              <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:4,textAlign:"center"}}>📋 RESEARCH SUBJECT</div>
-              <div style={{fontSize:14,color:"#c0a0e0",fontWeight:"bold",marginBottom:12,textAlign:"center"}}>Select a Subject</div>
-              <div style={{fontSize:11,color:"#8070a0",marginBottom:14,textAlign:"center"}}>Close tier or above · any weight stage</div>
-              {eligible.length===0&&<div style={{color:"#806090",textAlign:"center",padding:20}}>No eligible subjects — build a Close relationship first.</div>}
-              {eligible.map(st=>(
-                <div key={st.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:6,borderRadius:8,background:"#080016",border:`1px solid ${purple}40`,cursor:"pointer"}}
-                  onClick={()=>{
-                    setStudents(prev=>prev.map(x=>x.id===nadia.id?{...x,researchSubjectId:st.id}:x));
-                    setResearchSubjectPicker(null);
-                    const stageIdx=Math.max(0,Math.min(5,getStage(nadia.lbs).id-5));
-                    const evDef=EVOLVED_EVENTS['psych_researcher']?.[stageIdx];
-                    const meta=EVOLVED_ACTIVITY_META['psych_researcher'];
-                    if(evDef){
-                      setAp(a=>a-(meta?.apCost||1));
-                      setEvolvedEventState({studentId:nadia.id,formId:'psych_researcher',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});
-                    }
-                  }}>
-                  <div style={{flex:1}}>
-                    <div style={{color:"#c0a0e0",fontWeight:"bold",fontSize:13}}>{st.name}</div>
-                    <div style={{color:"#806090",fontSize:10}}>{st.archetype} · {Math.round(st.lbs)} lbs · {getTier(st.relationship).label}</div>
-                  </div>
-                  <div style={{color:"#a090c0",fontSize:11}}>{getStage(st.lbs).label}</div>
-                </div>
-              ))}
-              <button style={{...C.btn("#2a1040"),width:"100%",marginTop:8,fontSize:11}} onClick={()=>setResearchSubjectPicker(null)}>Cancel</button>
-            </div>
-          </div>
-        );
-      })()}
+      {researchSubjectPicker&&<ResearchSubjectPicker researchSubjectPicker={researchSubjectPicker} setAp={setAp} setEvolvedEventState={setEvolvedEventState} setResearchSubjectPicker={setResearchSubjectPicker} setStudents={setStudents} students={students}/>}
 
       {/* ── PSYCH RESEARCHER: SUBJECT JOURNAL ── */}
-      {subjectJournalState&&(()=>{
-        const{subjectId,currentPage}=subjectJournalState;
-        const subj=students.find(st=>st.id===subjectId);
-        if(!subj) return null;
-        const maxPage=getStage(subj.lbs).id;
-        const entries=FEEDER_SUBJECT_JOURNALS[subj.archetype]||[];
-        const entry=entries[currentPage]||"No entry for this stage yet.";
-        const STAGE_LABELS=["Slight","Slim","Soft","Chubby","Plump","Heavy","Fat","Very Fat","Enormous","Colossal","Blob"];
-        const minPage=entries.findIndex(e=>e!=null);
-        const canPrev=currentPage>Math.max(0,minPage);
-        const canNext=currentPage<maxPage;
-        const inkColor="#2a1a40";
-        const pageColor="#f0eade";
-        const borderColor="#8b7355";
-        return(
-          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
-            <div style={{background:`linear-gradient(170deg,#1a0a2e,#0d0520)`,border:`2px solid ${borderColor}80`,borderRadius:4,padding:0,maxWidth:520,width:"95%",maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:"0 8px 40px rgba(0,0,0,0.7)"}}>
-              {/* Spine header */}
-              <div style={{background:`linear-gradient(90deg,#120820,#1e0a38,#120820)`,borderBottom:`1px solid ${borderColor}60`,padding:"10px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",borderRadius:"2px 2px 0 0"}}>
-                <div style={{fontSize:9,letterSpacing:3,color:"#a08060"}}>📔 SUBJECT JOURNAL</div>
-                <div style={{fontSize:11,color:"#c0a070",fontWeight:"bold"}}>{subj.name}</div>
-                <button style={{...C.smBtn,fontSize:10,padding:"2px 8px",background:"transparent",border:"1px solid #40206040",color:"#806050"}} onClick={()=>setSubjectJournalState(null)}>✕</button>
-              </div>
-              {/* Page */}
-              <div style={{flex:1,overflowY:"auto",padding:"20px 24px",background:pageColor,margin:12,borderRadius:2,boxShadow:"inset 0 1px 4px rgba(0,0,0,0.4)"}}>
-                <div style={{fontSize:10,letterSpacing:2,color:"#6b5b40",marginBottom:6,textTransform:"uppercase"}}>Entry {currentPage+1} — {STAGE_LABELS[currentPage]}</div>
-                <div style={{width:40,height:1,background:`${borderColor}80`,marginBottom:14}}/>
-                <div style={{fontSize:13,color:inkColor,lineHeight:1.9,fontFamily:"Georgia,serif"}}>{entry}</div>
-              </div>
-              {/* Navigation */}
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 16px",borderTop:`1px solid ${borderColor}40`}}>
-                <button style={{...C.smBtn,opacity:canPrev?1:0.25,fontSize:11,minWidth:80}} onClick={()=>canPrev&&setSubjectJournalState(p=>({...p,currentPage:p.currentPage-1}))} disabled={!canPrev}>← Earlier</button>
-                <div style={{fontSize:10,color:"#806050",letterSpacing:1}}>{currentPage+1} / {maxPage+1}</div>
-                <button style={{...C.smBtn,opacity:canNext?1:0.25,fontSize:11,minWidth:80}} onClick={()=>canNext&&setSubjectJournalState(p=>({...p,currentPage:p.currentPage+1}))} disabled={!canNext}>Later →</button>
-              </div>
-            </div>
-          </div>
-        );
-      })()}
+      {subjectJournalState&&<SubjectJournalModal setSubjectJournalState={setSubjectJournalState} students={students} subjectJournalState={subjectJournalState}/>}
 
       {/* ── NADIA'S SUBJECT NOTES ── */}
-      {nadiaNotesState&&(()=>{
-        const{nadiaId,subjectId,currentPage}=nadiaNotesState;
-        const nadia=students.find(st=>st.id===nadiaId);
-        const subj=students.find(st=>st.id===subjectId);
-        if(!nadia||!subj) return null;
-        const journal=NADIA_SUBJECT_JOURNALS[subj.archetype];
-        if(!journal) return null;
-        const nadiaStageId=getStage(nadia.lbs).id;
-        const nadiaLevel=nadiaStageId>=10?2:nadiaStageId>=8?1:0;
-        const maxPage=getStage(subj.lbs).id;
-        const STAGE_LABELS=["Slight","Slim","Soft","Chubby","Plump","Heavy","Fat","Very Fat","Enormous","Colossal","Blob"];
-        const NADIA_LEVEL_LABELS=["Heavy–Very Fat","Enormous–Colossal","Blob"];
-        const isIntro=currentPage===-1;
-        const introText=Array.isArray(journal.intro)?journal.intro[nadiaLevel]||journal.intro[0]:journal.intro;
-        const entryText=isIntro?introText:(journal.entries[currentPage]?.[nadiaLevel]||"[no entry]");
-        const purple="#6b5b95";
-        const darkPurple="#2a0a40";
-        const canPrev=!isIntro;
-        const canNext=!isIntro&&currentPage<maxPage;
-        return(
-          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.92)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
-            <div style={{background:`linear-gradient(170deg,#080015,#0d0025)`,border:`1px solid ${purple}60`,borderRadius:6,padding:0,maxWidth:520,width:"95%",maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:`0 8px 40px rgba(80,20,120,0.4)`}}>
-              {/* Header */}
-              <div style={{background:`linear-gradient(90deg,#0a0020,#150030,#0a0020)`,borderBottom:`1px solid ${purple}40`,padding:"10px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",borderRadius:"4px 4px 0 0"}}>
-                <div style={{fontSize:9,letterSpacing:3,color:purple}}>📓 RESEARCH NOTES</div>
-                <div style={{fontSize:11,color:"#c0a0e0",fontWeight:"bold"}}>{nadia.name} → {subj.name}</div>
-                <button style={{...C.smBtn,fontSize:10,padding:"2px 8px",background:"transparent",border:`1px solid ${purple}30`,color:"#7050a0"}} onClick={()=>setNadiaNotesState(null)}>✕</button>
-              </div>
-              {/* Stage/level indicator */}
-              <div style={{padding:"6px 16px",background:"#050010",borderBottom:`1px solid ${purple}20`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                <div style={{fontSize:9,color:"#5040708",letterSpacing:2}}>{isIntro?"INTRODUCTION":`SUBJECT: ${STAGE_LABELS[currentPage]}`}</div>
-                <div style={{fontSize:9,color:"#6b5b95",letterSpacing:2}}>NADIA: {NADIA_LEVEL_LABELS[nadiaLevel]}</div>
-              </div>
-              {/* Entry */}
-              <div style={{flex:1,overflowY:"auto",padding:"20px 22px",background:"#040010"}}>
-                {isIntro&&<div style={{fontSize:9,letterSpacing:3,color:purple,marginBottom:10,textTransform:"uppercase"}}>Why this subject</div>}
-                <div style={{fontSize:13,color:"#c0a8e8",lineHeight:1.9,fontFamily:"Georgia,serif",whiteSpace:"pre-wrap"}}>{entryText}</div>
-              </div>
-              {/* Navigation */}
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 16px",borderTop:`1px solid ${purple}30`}}>
-                <button style={{...C.smBtn,opacity:canPrev?1:0.25,fontSize:11,minWidth:80}}
-                  onClick={()=>canPrev&&setNadiaNotesState(p=>({...p,currentPage:p.currentPage===0?-1:p.currentPage-1}))}
-                  disabled={!canPrev}>{isIntro?"":"← Earlier"}</button>
-                <div style={{fontSize:10,color:"#6040a0",letterSpacing:1}}>{isIntro?"Intro":`${currentPage+1} / ${maxPage+1}`}</div>
-                <button style={{...C.smBtn,opacity:(isIntro||canNext)?1:0.25,fontSize:11,minWidth:80}}
-                  onClick={()=>{
-                    if(isIntro) setNadiaNotesState(p=>({...p,currentPage:0}));
-                    else if(canNext) setNadiaNotesState(p=>({...p,currentPage:p.currentPage+1}));
-                  }}
-                  disabled={!isIntro&&!canNext}>{isIntro?"Begin →":"Later →"}</button>
-              </div>
-            </div>
-          </div>
-        );
-      })()}
+      {nadiaNotesState&&<NadiaSubjectNotesModal nadiaNotesState={nadiaNotesState} setNadiaNotesState={setNadiaNotesState} students={students}/>}
 
       {/* ── COLLAB STREAM MINI-GAME MODAL ── */}
-      {collabStreamState&&(()=>{
-        const{kylieId,partnerId,stageIdx,qualityBar,kylieGain,partnerGain,foodQueue,chatLines,phase,popupText,actions}=collabStreamState;
-        const kylie=students.find(st=>st.id===kylieId);
-        const partner=students.find(st=>st.id===partnerId);
-        if(!kylie||!partner) return null;
-        const purple="#8e44ad";
-        const lightPurple="#c490e8";
-        const STREAM_TITLE_LABELS=["First Collab","Weekly Collab","Featured Collab","Brand Collab","Anniversary Collab","The Grand Collab"];
-        const streamTitle=STREAM_TITLE_LABELS[stageIdx]||"Collab Stream";
-        const qualColor=qualityBar>60?"#60e080":qualityBar>30?"#e0c040":"#e04040";
-
-        return(
-          <div style={{position:"fixed",inset:0,background:"rgba(5,0,15,0.94)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
-            <div style={{background:"#0a0016",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:520,width:"95%",maxHeight:"92vh",overflowY:"auto"}}>
-              <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:2,textAlign:"center"}}>🎥 COLLAB STREAM</div>
-              <div style={{fontSize:14,fontWeight:"bold",color:lightPurple,marginBottom:2,textAlign:"center"}}>{kylie.name} × {partner.name}</div>
-              <div style={{fontSize:10,color:"#9060b0",marginBottom:12,textAlign:"center"}}>{streamTitle}</div>
-
-              {phase==='streaming'&&(<>
-                {/* Quality bar */}
-                <div style={{marginBottom:10}}>
-                  <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"#c0a0e0",marginBottom:3}}>
-                    <span>📺 CONTENT QUALITY</span>
-                    <span style={{color:qualColor,fontWeight:"bold"}}>{Math.round(qualityBar)}/100</span>
-                  </div>
-                  <div style={{background:"#15002a",borderRadius:4,height:12}}>
-                    <div style={{background:`linear-gradient(90deg,${qualityBar>60?"#2a8040,#60e080":qualityBar>30?"#805020,#e0c040":"#802020,#e04040"})`,width:`${Math.max(0,qualityBar)}%`,height:"100%",borderRadius:4,transition:"width 0.3s"}}/>
-                  </div>
-                  {qualityBar<=25&&<div style={{fontSize:9,color:"#e04040",textAlign:"center",marginTop:2}}>⚠️ Low quality — feed them to keep the stream alive!</div>}
-                </div>
-
-                {/* Weights */}
-                <div style={{display:"flex",gap:8,marginBottom:10}}>
-                  <div style={{flex:1,background:"#0d001f",border:`1px solid ${purple}40`,borderRadius:6,padding:8,textAlign:"center"}}>
-                    <div style={{fontSize:9,color:"#a080c0",letterSpacing:1}}>KYLIE</div>
-                    <div style={{fontSize:14,color:lightPurple,fontWeight:"bold"}}>{Math.round(kylie.lbs)} lbs</div>
-                    <div style={{fontSize:9,color:"#7050a0"}}>+{Math.round(kylieGain)} this stream</div>
-                  </div>
-                  <div style={{flex:1,background:"#0d001f",border:`1px solid ${purple}40`,borderRadius:6,padding:8,textAlign:"center"}}>
-                    <div style={{fontSize:9,color:"#a080c0",letterSpacing:1}}>{partner.name.toUpperCase()}</div>
-                    <div style={{fontSize:14,color:lightPurple,fontWeight:"bold"}}>{Math.round(partner.lbs)} lbs</div>
-                    <div style={{fontSize:9,color:"#7050a0"}}>+{Math.round(partnerGain)} this stream</div>
-                  </div>
-                </div>
-
-                {/* Food queue */}
-                <div style={{marginBottom:10}}>
-                  <div style={{fontSize:9,color:"#a070c0",marginBottom:5,letterSpacing:2}}>FOOD ON TABLE</div>
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4}}>
-                    {foodQueue.filter(f=>!f.consumed).map((food)=>{
-                      const unlocked=food.tierUnlocked;
-                      return(
-                        <div key={food.key} style={{opacity:unlocked?1:0.35}}>
-                          {unlocked?(
-                            <div style={{display:"flex",gap:4,marginBottom:2}}>
-                              <button style={{...C.btn("#3a0a60"),flex:1,fontSize:10,padding:"4px 6px"}} onClick={()=>doCollabAction('feed_kylie',food.key)}>
-                                {food.emoji} → Kylie +{food.lbsKylie}
-                              </button>
-                              <button style={{...C.btn("#1a1a60"),flex:1,fontSize:10,padding:"4px 6px"}} onClick={()=>doCollabAction('feed_partner',food.key)}>
-                                {food.emoji} → {partner.name.split(' ')[0]} +{food.lbsPartner}
-                              </button>
-                            </div>
-                          ):(
-                            <div style={{background:"#0a0018",border:"1px solid #30104050",borderRadius:4,padding:"4px 6px",fontSize:10,color:"#503060",textAlign:"center"}}>
-                              🔒 {food.name} — unlocks after current tier
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                    {foodQueue.every(f=>f.consumed)&&<div style={{gridColumn:"1/-1",color:"#60a060",textAlign:"center",fontSize:10,padding:8}}>✓ All food eaten — stream complete!</div>}
-                  </div>
-                </div>
-
-                {/* Action buttons */}
-                <div style={{marginBottom:10}}>
-                  <div style={{fontSize:9,color:"#a070c0",marginBottom:5,letterSpacing:2}}>STREAM ACTIONS</div>
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:5}}>
-                    <button style={{...C.btn(actions.kylieRevealed?"#1a0030":"#4a1070"),fontSize:10,opacity:actions.kylieRevealed?0.5:1}} disabled={actions.kylieRevealed} onClick={()=>doCollabAction('reveal_kylie')}>⚖️ Kylie's Weight {actions.kylieRevealed?"✓":""}</button>
-                    <button style={{...C.btn(actions.partnerRevealed?"#1a0030":"#1a1060"),fontSize:10,opacity:actions.partnerRevealed?0.5:1}} disabled={actions.partnerRevealed} onClick={()=>doCollabAction('reveal_partner')}>⚖️ {partner.name.split(' ')[0]}'s Weight {actions.partnerRevealed?"✓":""}</button>
-                    <button style={{...C.btn(actions.zoomUses<=0?"#1a0030":"#2a0850"),fontSize:10,opacity:actions.zoomUses<=0?0.5:1}} disabled={actions.zoomUses<=0} onClick={()=>doCollabAction('zoom_in')}>📸 Zoom In ({actions.zoomUses})</button>
-                    <button style={{...C.btn(actions.chatUses<=0?"#1a0030":"#2a0850"),fontSize:10,opacity:actions.chatUses<=0?0.5:1}} disabled={actions.chatUses<=0} onClick={()=>doCollabAction('chat_moment')}>💬 Chat Moment ({actions.chatUses})</button>
-                    <button style={{...C.btn(actions.pushUsed?"#1a0030":"#501060"),fontSize:10,opacity:actions.pushUsed?0.5:1,gridColumn:"1/-1"}} disabled={actions.pushUsed} onClick={()=>doCollabAction('push_harder')}>🔥 Push Harder {actions.pushUsed?"(done)":""}</button>
-                  </div>
-                </div>
-
-                {/* Chat window */}
-                {chatLines.length>0&&(
-                  <div style={{background:"#080014",border:`1px solid ${purple}30`,borderRadius:6,padding:8,marginBottom:10,maxHeight:55,overflowY:"auto"}}>
-                    {chatLines.map((l,i)=><div key={i} style={{fontSize:9,color:"#b090d0",marginBottom:1}}>💬 {l}</div>)}
-                  </div>
-                )}
-
-                <button style={{...C.btn("#150025"),width:"100%",fontSize:10}} onClick={closeCollabStream}>End Stream Early</button>
-              </>)}
-
-              {phase==='scoreboard'&&(<>
-                <div style={{background:"#08001a",border:`1px solid ${purple}40`,borderRadius:8,padding:12,marginBottom:14,fontSize:12}}>
-                  <div style={{color:lightPurple,fontWeight:"bold",marginBottom:8,letterSpacing:2,fontSize:10}}>STREAM RESULTS</div>
-                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                    <span style={{color:"#c0a0e0"}}>Content Quality</span>
-                    <span style={{color:qualColor,fontWeight:"bold"}}>{Math.round(qualityBar)}/100</span>
-                  </div>
-                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                    <span style={{color:"#c0a0e0"}}>Kylie gained</span>
-                    <span style={{color:"#e060c0",fontWeight:"bold"}}>+{Math.round(kylieGain)} lbs</span>
-                  </div>
-                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                    <span style={{color:"#c0a0e0"}}>{partner.name} gained</span>
-                    <span style={{color:"#e060c0",fontWeight:"bold"}}>+{Math.round(partnerGain)} lbs</span>
-                  </div>
-                  <div style={{display:"flex",justifyContent:"space-between"}}>
-                    <span style={{color:"#c0a0e0"}}>Tiers completed</span>
-                    <span style={{color:"#60e080"}}>{foodQueue.filter(f=>f.consumed).length}/{foodQueue.length}</span>
-                  </div>
-                </div>
-                <button style={{...C.btn(purple),width:"100%"}} onClick={closeCollabStream}>Close Stream ✓</button>
-              </>)}
-
-              {/* POPUP OVERLAY */}
-              {popupText&&(
-                <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
-                  <div style={{background:"#0c0018",border:`1px solid ${purple}50`,borderRadius:10,padding:20,maxWidth:460,margin:16}}>
-                    <div style={{fontSize:12,color:"#d0a8e8",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{popupText}</div>
-                    <button style={{...C.btn(purple),width:"100%"}} onClick={dismissCollabPopup}>Continue</button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      })()}
+      {collabStreamState&&<CollabStreamModal collabStreamState={collabStreamState} students={students} doCollabAction={doCollabAction} closeCollabStream={closeCollabStream} dismissCollabPopup={dismissCollabPopup}/>}
 
       {/* ── RECORDING SESSION MODAL ── */}
-      {recordingSessionState&&(()=>{
-        const rs=recordingSessionState;
-        const kylie=students.find(st=>st.id===rs.studentId);
-        if(!kylie) return null;
-        const amber='#c08040';
-        const amberDim='#80502a';
-        const bg='linear-gradient(160deg,#100800,#1a1000,#100800)';
-        const qualBadge={okay:'#808080',good:'#60a060',great:'#60a0e0',perfect:'#c0a020'};
-        const choiceLabels={
-          angle_low:'📷 Get low — floor angle, looking up',
-          angle_wide:'📷 Go wide — full body, scale of her',
-          angle_close:'📷 Close up — face and chest',
-          food_heavy:'🍖 Heavy food — dense and filling',
-          food_build:'🥗 Start light, build to heavier',
-          food_hers:'💜 Let her choose what she wants',
-          pace_push:'⚡ Push her — more, faster',
-          pace_settle:'🌊 Let her set the pace',
-          pace_surge:'🌀 Pause — let it land — then surge',
-        };
-        const stepLabels=['📷 Camera angle','🍽️ Food','⏱️ Pacing'];
-        const angleChoices=['angle_low','angle_wide','angle_close'];
-        const foodChoices=['food_heavy','food_build','food_hers'];
-        const paceChoices=['pace_push','pace_settle','pace_surge'];
-        const stepChoices=[angleChoices,foodChoices,paceChoices];
-        const timeBar='█'.repeat(rs.timeLeft)+'░'.repeat(3-rs.timeLeft);
-        return(
-          <div style={C.overlay} key="recording-modal">
-            <div style={{...C.modal,maxWidth:520,background:bg,border:`1px solid ${amber}50`}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-                <div style={{color:amber,fontWeight:"bold",letterSpacing:2,fontSize:11}}>🎬 FILM HER SESSION — {kylie.name.toUpperCase()}</div>
-                <div style={{color:amberDim,fontSize:11}}>Time {timeBar} | Take {rs.takeNum}</div>
-              </div>
+      {recordingSessionState&&<RecordingSessionModal recordingSessionState={recordingSessionState} students={students} setRecordingSessionState={setRecordingSessionState} makeRecordingChoice={makeRecordingChoice} wrapRecordingSession={wrapRecordingSession} oneMoreTake={oneMoreTake} closeRecordingSession={closeRecordingSession} dismissRecordingChoicePopup={dismissRecordingChoicePopup}/>}
 
-              {/* OPEN PHASE */}
-              {rs.phase==='open'&&(
-                <>
-                  <div style={{fontSize:12,color:"#d8c0a0",lineHeight:1.9,whiteSpace:"pre-line",marginBottom:16,fontStyle:"italic"}}>
-                    {(()=>{const fn=RECORDING_OPENING_TEXT[rs.stageIdx];return typeof fn==='function'?fn(kylie.lbs):(fn||'');})()}
-                  </div>
-                  <button style={{...C.btn(amber),width:"100%"}} onClick={()=>setRecordingSessionState(p=>({...p,phase:'directing'}))}>
-                    🎬 Pick up the camera
-                  </button>
-                </>
-              )}
+      {/* ── FAIR TRAINING COLLABORATIONS HUB ── */}
+      {fairTrainingState.open&&<FairTrainingHub ft={fairTrainingState} students={students} ap={ap} getFairPrideTier={getFairPrideTier} startFairTrainingSession={startFairTrainingSession} launchFairDayEvent={launchFairDayEvent} closeFairTraining={closeFairTraining} setFairTrainingState={setFairTrainingState}/>}
 
-              {/* DIRECTING PHASE */}
-              {rs.phase==='directing'&&(
-                <>
-                  <div style={{fontSize:11,color:"#d8c0a0",lineHeight:1.8,marginBottom:8,fontStyle:"italic"}}>
-                    {(()=>{const fn=RECORDING_TAKE_INTRO_TEXT[rs.stageIdx];return typeof fn==='function'?fn(kylie.lbs):(fn||'');})()}
-                  </div>
-                  {/* Step indicator */}
-                  <div style={{display:"flex",gap:4,marginBottom:12}}>
-                    {[0,1,2].map(i=>(
-                      <div key={i} style={{flex:1,padding:"4px 6px",borderRadius:4,fontSize:10,textAlign:"center",
-                        background:i<rs.choiceStep?`${amber}30`:i===rs.choiceStep?`${amber}20`:'#0a0600',
-                        border:`1px solid ${i===rs.choiceStep?amber:i<rs.choiceStep?amberDim:'#302010'}`,
-                        color:i===rs.choiceStep?amber:i<rs.choiceStep?amberDim:'#604020'}}>
-                        {i<rs.choiceStep?'✓ '+stepLabels[i].split(' ').slice(1).join(' '):stepLabels[i]}
-                      </div>
-                    ))}
-                  </div>
-                  {/* Current step choices */}
-                  {rs.choiceStep<3&&(
-                    <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                      {stepChoices[rs.choiceStep].map(cid=>(
-                        <button key={cid} style={{...C.btn(amberDim),textAlign:"left",padding:"8px 12px",fontSize:12}}
-                          onClick={()=>makeRecordingChoice(cid)}>
-                          {choiceLabels[cid]||cid}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </>
-              )}
-
-              {/* TAKE RESULT PHASE */}
-              {rs.phase==='take_result'&&(
-                <>
-                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-                    <div style={{fontSize:11,color:amberDim,letterSpacing:1}}>TAKE {rs.takeNum} RESULT</div>
-                    <div style={{padding:"2px 8px",borderRadius:4,fontSize:10,fontWeight:"bold",
-                      background:`${qualBadge[rs.lastTakeQuality]||'#808080'}20`,
-                      border:`1px solid ${qualBadge[rs.lastTakeQuality]||'#808080'}`,
-                      color:qualBadge[rs.lastTakeQuality]||'#808080'}}>
-                      {(rs.lastTakeQuality||'').toUpperCase()}
-                    </div>
-                  </div>
-                  <div style={{fontSize:12,color:"#d8c0a0",lineHeight:1.9,whiteSpace:"pre-line",marginBottom:16,fontStyle:"italic"}}>
-                    {rs.lastTakeText||''}
-                  </div>
-                  <div style={{display:"flex",gap:8}}>
-                    <button style={{...C.btn(amber),flex:1}} onClick={wrapRecordingSession}>
-                      ✓ Wrap it
-                    </button>
-                    {rs.timeLeft>0&&(
-                      <button style={{...C.btn(amberDim),flex:1}} onClick={oneMoreTake}>
-                        🔄 One more take ({rs.timeLeft} left)
-                      </button>
-                    )}
-                  </div>
-                </>
-              )}
-
-              {/* DONE PHASE */}
-              {rs.phase==='done'&&(
-                <>
-                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-                    <div style={{fontSize:11,color:amberDim,letterSpacing:1}}>SESSION WRAPPED</div>
-                    <div style={{padding:"2px 8px",borderRadius:4,fontSize:10,fontWeight:"bold",
-                      background:`${qualBadge[rs.bestClip]||'#808080'}20`,
-                      border:`1px solid ${qualBadge[rs.bestClip]||'#808080'}`,
-                      color:qualBadge[rs.bestClip]||'#808080'}}>
-                      {(rs.bestClip||'').toUpperCase()} CLIP
-                    </div>
-                    {rs.perfectTakeAchieved&&<div style={{padding:"2px 8px",borderRadius:4,fontSize:10,color:"#c0a020",border:"1px solid #c0a020"}}>✨ PERFECT TAKE</div>}
-                  </div>
-                  <div style={{fontSize:12,color:"#d8c0a0",lineHeight:1.9,whiteSpace:"pre-line",marginBottom:16,fontStyle:"italic"}}>
-                    {rs.endingText||''}
-                  </div>
-                  <button style={{...C.btn(amber),width:"100%"}} onClick={closeRecordingSession}>
-                    Close ✓
-                  </button>
-                </>
-              )}
-
-              {/* POPUP OVERLAY — direction choice result */}
-              {rs.popupText&&(
-                <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
-                  <div style={{background:"#100800",border:`1px solid ${amber}50`,borderRadius:10,padding:20,maxWidth:440,margin:16}}>
-                    <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{rs.popupText}</div>
-                    <button style={{...C.btn(amber),width:"100%"}} onClick={dismissRecordingChoicePopup}>Continue</button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      })()}
-
-      {/* ── FAIR CONTEST MINI-GAME MODAL ── */}
-      {fairContestState&&(()=>{
-        const fc=fairContestState;
-        const s=students.find(st=>st.id===fc.studentId);
-        if(!s) return null;
-        const fairOrange='#C8860A';
-        const remaining=fc.yourFoods.filter(f=>!f.consumed);
-        const progressW=Math.min(100,(fc.yourFullnessPct/fc.overfullCap)*100);
-        const progressColor=fc.yourFullnessPct>=fc.overfullCap?'#e05020':fc.yourFullnessPct>=150?'#e08020':fc.yourFullnessPct>=100?'#d0a020':'#40c060';
-        return(
-          <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
-              <div style={{fontSize:9,letterSpacing:4,color:fairOrange,marginBottom:6}}>🎡 STATE FAIR PIE EATING</div>
-              <div style={{display:"flex",justifyContent:"space-between",marginBottom:10,fontSize:11,color:"#d0b080"}}>
-                <span>{s.name} — {Math.round(s.lbs)} lbs</span>
-                <span>Darcy — {Math.round(fc.darcyStartLbs)} lbs</span>
-              </div>
-
-              {fc.phase==='eating'&&(
-                <>
-                  {/* Fullness bar */}
-                  <div style={{marginBottom:10}}>
-                    <div style={{fontSize:10,color:"#a08060",marginBottom:4}}>
-                      Fullness: {Math.round(fc.yourFullnessPct)}% / cap {fc.overfullCap}%
-                      {fc.yourFullnessPct>=100&&<span style={{color:'#e08020'}}> — OVERFULL</span>}
-                    </div>
-                    <div style={{height:12,background:"#1a1000",borderRadius:6,overflow:"hidden",border:"1px solid #40300010"}}>
-                      <div style={{height:"100%",width:`${progressW}%`,background:progressColor,borderRadius:6,transition:"width 0.3s"}}/>
-                    </div>
-                  </div>
-
-                  {/* Pie table */}
-                  <div style={{marginBottom:10}}>
-                    <div style={{fontSize:10,color:"#907050",marginBottom:6}}>PIES ({remaining.length} left)</div>
-                    <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6}}>
-                      {fc.yourFoods.map((food,i)=>{
-                        const canEat=!food.consumed&&fc.yourFullnessPct<fc.overfullCap;
-                        return(
-                          <button key={i} disabled={!canEat} onClick={()=>eatFairPie(food.id)}
-                            style={{...C.btn(canEat?fairOrange:"#2a1800"),opacity:food.consumed?0.3:canEat?1:0.5,fontSize:12,padding:"8px 4px",textAlign:"center"}}>
-                            {food.emoji} {food.name}<br/>
-                            <span style={{fontSize:9,color:"#c0a070"}}>+{food.lbs} lbs</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Darcy progress */}
-                  <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:10,fontSize:11,color:"#907050"}}>
-                    Darcy has eaten {fc.yourFoods.length-fc.darcyFoodsLeft} / {fc.yourFoods.length} plates • {Math.round(fc.darcyGain||0)} lbs gained
-                  </div>
-
-                  {/* Action buttons */}
-                  <div style={{display:"flex",gap:6,marginBottom:10}}>
-                    <button disabled={fc.tauntUsed} style={{...C.btn("#3a2000"),flex:1,opacity:fc.tauntUsed?0.4:1,fontSize:11}} onClick={()=>doFairAction('taunt')}>
-                      😏 Taunt Darcy
-                    </button>
-                    <button disabled={fc.pushThroughUsed} style={{...C.btn("#3a0000"),flex:1,opacity:fc.pushThroughUsed?0.4:1,fontSize:11}} onClick={()=>doFairAction('push_through')}>
-                      🔥 Push Through
-                    </button>
-                    <button disabled={fc.coolDownUses>=2} style={{...C.btn("#002a1a"),flex:1,opacity:fc.coolDownUses>=2?0.4:1,fontSize:11}} onClick={()=>doFairAction('cool_down')}>
-                      🌡 Cool Down ({2-fc.coolDownUses})
-                    </button>
-                  </div>
-                </>
-              )}
-
-              {fc.phase==='weigh_in'&&(()=>{
-                const weighFn=FAIR_WEIGH_IN_TEXT[Math.min(fc.stageIdx,FAIR_WEIGH_IN_TEXT.length-1)];
-                const weighText=typeof weighFn==='function'?weighFn(fc.yourStartLbs,fc.yourGain,fc.darcyStartLbs,fc.darcyGain||0):'';
-                const payFn=FAIR_PAYOFF_TEXT[Math.min(fc.stageIdx,FAIR_PAYOFF_TEXT.length-1)];
-                const payText=typeof payFn==='function'?payFn(fc.yourGain):'';
-                return(
-                  <>
-                    <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{weighText}</div>
-                    <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:12,fontSize:11,color:"#c0a060",lineHeight:1.8,fontStyle:"italic"}}>{payText}</div>
-                    <div style={{display:"flex",gap:10,marginBottom:10,fontSize:12,color:"#d0b080"}}>
-                      <div style={{flex:1,textAlign:"center"}}>
-                        <div style={{color:fairOrange,fontWeight:"bold",fontSize:14}}>+{Math.round(fc.yourGain)} lbs</div>
-                        <div style={{fontSize:10,color:"#907050"}}>{s.name}</div>
-                      </div>
-                      <div style={{flex:1,textAlign:"center"}}>
-                        <div style={{color:"#a08060",fontWeight:"bold",fontSize:14}}>+{Math.round(fc.darcyGain||0)} lbs</div>
-                        <div style={{fontSize:10,color:"#907050"}}>Darcy</div>
-                      </div>
-                    </div>
-                    <button style={{...C.btn(fairOrange),width:"100%"}} onClick={closeFairContest}>Leave the Fair ✓</button>
-                  </>
-                );
-              })()}
-
-              {/* POPUP OVERLAY */}
-              {fc.popupText&&(
-                <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
-                  <div style={{background:"#100800",border:`1px solid ${fairOrange}50`,borderRadius:10,padding:20,maxWidth:440,margin:16}}>
-                    <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{fc.popupText}</div>
-                    <button style={{...C.btn(fairOrange),width:"100%"}} onClick={dismissFairPopup}>Continue</button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      })()}
+      {/* ── FAIR DAY MODAL (Weigh-In → Judging → Afterparty) ── */}
+      {fairDayState&&<FairDayModal fd={fairDayState} students={students} fairPride={fairTrainingState.fairPride} getFairPrideTier={getFairPrideTier} chooseFairWeighIn={chooseFairWeighIn} advanceFairDayPhase={advanceFairDayPhase} chooseFairAfterparty={chooseFairAfterparty} closeFairDay={closeFairDay}/>}
 
       {/* ── EP2: EVOLVED ACTIVITY MODAL ── */}
       {evolvedActivityModal&&(
@@ -9705,345 +5564,10 @@ export default function ProfessorSim(){
       )}
 
       {/* ── COMMUNITY RESEARCHER MODAL ── */}
-      {communityResearcherState?.modalPhase&&(()=>{
-        const crs=communityResearcherState;
-        const blue="#4a6fa5"; const lblue="#8fa8e0";
-        const madeline=students.find(s=>s.id===1);
-        const mName=madeline?.name||"Madeline";
-        const wrap=(children)=>(
-          <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#010510,#020818,#010510)",border:`1px solid ${blue}60`,maxHeight:"88vh",overflowY:"auto"}}>
-              {children}
-            </div>
-          </div>
-        );
-
-        // ── THESIS BOARD ──
-        if(crs.modalPhase==='thesis_board') return wrap(<>
-          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 COMMUNITY RESEARCHER</div>
-          <div style={{fontSize:13,fontWeight:700,color:lblue,marginBottom:10}}>PhD Proposal Defense</div>
-          <div style={{fontSize:12,color:"#a0b8d0",lineHeight:1.9,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
-            {THESIS_BOARD.phases[crs.boardPhase]?.(mName)||''}
-          </div>
-          {crs.boardPhase<2?(
-            <button style={{...C.btn(blue),width:"100%"}} onClick={advanceThesisBoard}>Continue →</button>
-          ):(
-            <button style={{...C.btn(blue),width:"100%"}} onClick={()=>completeThesisDefense(madeline)}>
-              ✓ Defense Complete — Approved
-            </button>
-          )}
-        </>);
-
-        // ── THESIS SUCCESS ──
-        if(crs.modalPhase==='thesis_success') return wrap(<>
-          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 APPROVED</div>
-          <div style={{fontSize:14,fontWeight:700,color:lblue,marginBottom:10}}>Thesis Accepted</div>
-          <div style={{fontSize:12,color:"#a0b8d0",lineHeight:1.85,marginBottom:14}}>
-            The panel approves unanimously. Dr. Ward's note about the waistline is already in the field journal. Case studies may now begin.
-          </div>
-          <button style={{...C.btn(blue),width:"100%"}} onClick={()=>completeThesisDefense(madeline)}>Begin Case Studies →</button>
-        </>);
-
-        // ── CASE STUDY GRID ──
-        if(crs.modalPhase==='case_study_grid'){
-          const isCRPairAvailable=(pair)=>{
-            if(crs.pairsUsed.includes(pair.id)) return false;
-            if(pair.unlockImmediate) return true;
-            return pair.studentIds.every(id=>{
-              const st=students.find(x=>x.id===id);
-              if(!st) return false;
-              const ok=getStage(st.lbs).id>=4&&st.relationship>=60;
-              if(id===10) return ok&&lilithUnlocked&&lilithKillCount>=1;
-              return ok;
-            });
-          };
-          return wrap(<>
-            <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 CASE STUDY {crs.caseStudyStage+1} OF 4</div>
-            <div style={{fontSize:13,fontWeight:700,color:lblue,marginBottom:4}}>Select a Case Study</div>
-            <div style={{fontSize:10,color:"#5070a0",marginBottom:12}}>Pairs unlock when both participants reach Heavy stage + Close relationship. Used pairs are crossed out.</div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:12}}>
-              {CASE_STUDY_PAIRS.map(pair=>{
-                const avail=isCRPairAvailable(pair);
-                const used=crs.pairsUsed.includes(pair.id);
-                return(
-                  <div key={pair.id}
-                    onClick={()=>{if(avail&&madeline)selectCasePair(madeline,pair.id);}}
-                    style={{padding:"10px 12px",borderRadius:8,border:`1px solid ${avail?"#4a6fa570":"#2030404a"}`,
-                      background:avail?"rgba(10,20,50,0.6)":"rgba(5,8,18,0.4)",
-                      cursor:avail?"pointer":"default",opacity:avail?1:0.5,position:"relative"}}>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
-                      <div style={{fontSize:14}}>{pair.icon}</div>
-                      <div style={{fontSize:8,color:avail?`hsl(${Math.round(30+(pair.suspicion-1)*15)},70%,55%)`:"#405060"}}>⚠ {pair.suspicion}/7</div>
-                    </div>
-                    <div style={{fontSize:11,fontWeight:700,color:avail?lblue:"#405060",textDecoration:used?"line-through":"none"}}>{pair.label}</div>
-                    <div style={{fontSize:9,color:"#405875",marginTop:2}}>{pair.subtitle}</div>
-                    {used&&<div style={{fontSize:8,color:"#3a5060",marginTop:2}}>✓ studied</div>}
-                    {!avail&&!used&&<div style={{fontSize:8,color:"#304050",marginTop:2}}>🔒 locked</div>}
-                  </div>
-                );
-              })}
-            </div>
-            <button style={{...C.btn("#1a2030"),width:"100%",fontSize:11}} onClick={()=>setCommunityResearcherState(prev=>({...prev,modalPhase:null}))}>Cancel</button>
-          </>);
-        }
-
-        // ── CASE STUDY EVENT ──
-        if(crs.modalPhase==='case_study_event') return wrap(<>
-          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 CASE STUDY {crs.caseStudyStage+1} OF 4</div>
-          <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:10}}>{CASE_STUDY_PAIRS.find(p=>p.id===crs.activePairId)?.label||''}</div>
-          <div style={{fontSize:12,color:"#a0b8cc",lineHeight:1.9,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
-            {crs.eventText||''}
-          </div>
-          <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{if(madeline)completeCaseStudy(madeline);}}>
-            Record Findings ✓ (1 AP)
-          </button>
-        </>);
-
-        // ── BOARD REACTION ──
-        if(crs.modalPhase==='board_reaction'){
-          const reactionPair=CASE_STUDY_PAIRS.find(p=>p.id===crs.boardReactionPairId);
-          return wrap(<>
-            <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 COMMITTEE RESPONSE</div>
-            <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:10}}>
-              {reactionPair?.icon||'📋'} {reactionPair?.label||''}
-            </div>
-            <div style={{fontSize:11,color:"#8090b0",lineHeight:1.8,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
-              {BOARD_REACTIONS[crs.boardReactionPairId]||''}
-            </div>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}>
-              <div style={{fontSize:9,color:"#405070"}}>Suspicion total: <span style={{color:crs.totalSuspicion>17?"#c08060":crs.totalSuspicion>13?"#a09050":"#6080a0"}}>{crs.totalSuspicion||0}</span></div>
-              <div style={{fontSize:9,color:"#405070"}}>Study {crs.caseStudyStage}/4 done</div>
-            </div>
-            <button style={{...C.btn(blue),width:"100%"}} onClick={dismissBoardReaction}>Continue →</button>
-          </>);
-        }
-
-        // ── FINAL REVIEW ──
-        if(crs.modalPhase==='final_review') return wrap(<>
-          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 FINAL REVIEW</div>
-          <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:10}}>Committee Hearing</div>
-          <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
-            {crs.finalReviewText||''}
-          </div>
-          <button style={{...C.btn(blue),width:"100%"}} onClick={proceedFromFinalReview}>
-            {(getSuspicionBracket(crs.totalSuspicion||0)==='green'||getSuspicionBracket(crs.totalSuspicion||0)==='yellow')
-              ?'Accept Verdict →':'Have Those Conversations →'}
-          </button>
-        </>);
-
-        // ── HAVE A CHAT ──
-        if(crs.modalPhase==='have_a_chat'){
-          const scene=HAVE_A_CHAT_SCENES[crs.chatMemberIdx];
-          const phase=scene?.phases[crs.chatPhaseIdx];
-          const phaseText=typeof phase?.text==='function'?phase.text(crs.chatHistory):phase?.text;
-          return wrap(<>
-            <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 OFF THE RECORD</div>
-            <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:8}}>{scene?.member||''}</div>
-            <div style={{display:"flex",gap:6,marginBottom:12}}>
-              {HAVE_A_CHAT_SCENES.map((sc,i)=>(
-                <div key={i} style={{fontSize:9,padding:"2px 8px",borderRadius:4,
-                  background:crs.chatWon.includes(i)?'#0a2a18':i===crs.chatMemberIdx?'#0a1a38':'#080810',
-                  color:crs.chatWon.includes(i)?'#5aaa70':i===crs.chatMemberIdx?lblue:'#2a3a5a',
-                  border:`1px solid ${crs.chatWon.includes(i)?'#1a5a30':i===crs.chatMemberIdx?blue+'90':'#151530'}`}}>
-                  {crs.chatWon.includes(i)?'✓ ':''}{sc.member.replace('Dr.','')}
-                </div>
-              ))}
-            </div>
-            <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
-              {phaseText||''}
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {(phase?.choices||[]).map(ch=>(
-                <button key={ch.id} style={{...C.btn("#0e1a30"),textAlign:"left",fontSize:11,padding:"10px 14px",border:`1px solid ${blue}50`}}
-                  onClick={()=>makeHaveAChatChoice(ch.id)}>
-                  {ch.label}
-                </button>
-              ))}
-            </div>
-          </>);
-        }
-
-        // ── THESIS APPROVED ──
-        if(crs.modalPhase==='thesis_approved'){
-          const bracket=getSuspicionBracket(crs.totalSuspicion||0);
-          const outcomeText=bracket==='green'
-            ?`The committee approves without reservation. Madeline walks out of the building into the afternoon light and does not look back.`
-            :bracket==='yellow'
-            ?`Conditional approval. The ethics appendix will need to be written. Madeline has a great deal to say in it.`
-            :`The private meetings were — productive. The thesis is approved. Whatever was said in those rooms stays in those rooms.`;
-          return wrap(<>
-            <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 THESIS</div>
-            <div style={{fontSize:13,fontWeight:700,color:"#6aaa80",marginBottom:12}}>Approved</div>
-            <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>{outcomeText}</div>
-            <button style={{...C.btn(blue),width:"100%"}} onClick={()=>closeThesisOutcome(true)}>Close</button>
-          </>);
-        }
-
-        // ── THESIS REJECTED ──
-        if(crs.modalPhase==='thesis_rejected') return wrap(<>
-          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 THESIS</div>
-          <div style={{fontSize:13,fontWeight:700,color:"#a05060",marginBottom:12}}>Not Approved</div>
-          <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>
-            The committee was not convinced. The file is closed. Madeline keeps the field notes — all of them, the edited and unedited both — and begins, in the margins of the last page, something that isn't a thesis and isn't a journal. Whatever it is, she'll finish it on her own terms.
-          </div>
-          <button style={{...C.btn(blue),width:"100%"}} onClick={()=>closeThesisOutcome(false)}>Close</button>
-        </>);
-
-        return null;
-      })()}
+      {communityResearcherState?.modalPhase&&<CommunityResearcherModal communityResearcherState={communityResearcherState} students={students} lilithUnlocked={lilithUnlocked} lilithKillCount={lilithKillCount} advanceThesisBoard={advanceThesisBoard} completeThesisDefense={completeThesisDefense} selectCasePair={selectCasePair} setCommunityResearcherState={setCommunityResearcherState} completeCaseStudy={completeCaseStudy} dismissBoardReaction={dismissBoardReaction} proceedFromFinalReview={proceedFromFinalReview} makeHaveAChatChoice={makeHaveAChatChoice} closeThesisOutcome={closeThesisOutcome}/>}
 
       {/* ── CULTIVATOR MODAL ── */}
-      {cultivatorState?.modalPhase&&(()=>{
-        const cs=cultivatorState;
-        const brown="#8B4513"; const amber="#CD853F";
-        const renee=students.find(s=>s.id===10);
-        const wrap=(children)=>(
-          <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:500,background:"linear-gradient(160deg,#0a0400,#1a0800,#0a0400)",border:`1px solid ${brown}60`,maxHeight:"88vh",overflowY:"auto"}}>
-              {children}
-            </div>
-          </div>
-        );
-
-        // ── RECRUIT SETUP ──
-        if(cs.modalPhase==='recruit_setup') return wrap(<>
-          <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 CULTIVATOR</div>
-          <div style={{fontSize:14,fontWeight:700,color:amber,marginBottom:10}}>Select a Subject</div>
-          <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>{RECRUITMENT_SCENE}</div>
-          <div style={{fontSize:11,color:"#8a5030",marginBottom:16}}>A candidate will be selected from your contact list. She will believe she is a paid taste tester. This is technically accurate. Cycle {cs.harvestsCompleted+1} of 4.</div>
-          <div style={{display:"flex",gap:8}}>
-            <button style={C.btn("#333")} onClick={()=>setCultivatorState(prev=>({...prev,modalPhase:null}))}>Cancel</button>
-            <button style={{...C.btn(brown),flex:1}} onClick={confirmCultivatorRecruit}>Recruit Subject →</button>
-          </div>
-        </>);
-
-        // ── SESSION ──
-        if(cs.modalPhase==='session'&&cs.session){
-          const{session}=cs;
-          // Food picker
-          if(!session.foodType) return wrap(<>
-            <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 TASTE-TEST SESSION</div>
-            <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:6}}>Subject: {cs.testerName}</div>
-            <div style={{fontSize:11,color:"#8a6030",marginBottom:14}}>{getStage(cs.testerLbs).label} · {Math.round(cs.testerLbs)} lbs</div>
-            <div style={{fontSize:12,color:"#b08050",marginBottom:10,fontStyle:"italic"}}>What's on the menu today?</div>
-            {Object.entries(RECIPES).map(([key,r])=>(
-              <button key={key} style={{...C.btn("#2a0e04"),width:"100%",marginBottom:8,textAlign:"left",padding:"10px 14px"}} onClick={()=>pickCultivatorFood(key)}>
-                <span style={{fontSize:16,marginRight:8}}>{r.icon}</span>
-                <span style={{color:amber,fontWeight:700}}>{r.label}</span>
-                <span style={{color:"#7a5030",fontSize:10,marginLeft:8}}>{r.junctions.length} decisions</span>
-              </button>
-            ))}
-            <button style={{...C.btn("#333"),width:"100%",marginTop:4,fontSize:11}} onClick={()=>setCultivatorState(prev=>({...prev,modalPhase:null,session:null}))}>Cancel session</button>
-          </>);
-          // Junction phase
-          if(!session.complete){
-            const recipe=RECIPES[session.foodType];
-            const junction=recipe?.junctions[session.junctionIdx];
-            if(!junction) return null;
-            const recipeIcon=recipe.icon;
-            return wrap(<>
-              <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>{recipeIcon} {recipe.label.toUpperCase()} — Decision {session.junctionIdx+1}/{recipe.junctions.length}</div>
-              <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:4}}>{cs.testerName}</div>
-              <div style={{fontSize:11,color:"#8a6030",marginBottom:10,fontStyle:"italic"}}>{session.junctionIdx===0?recipe.intro(cs.testerName):session.log[session.log.length-1]}</div>
-              <div style={{fontSize:12,color:"#b08050",marginBottom:12,fontWeight:600}}>{junction.prompt}</div>
-              {junction.choices.map(ch=>(
-                <button key={ch.id} style={{...C.btn("#2a0e04"),width:"100%",marginBottom:8,textAlign:"left",padding:"10px 14px"}} onClick={()=>makeCultivatorChoice(ch)}>
-                  <div style={{color:amber,fontWeight:700,fontSize:12,marginBottom:3}}>{ch.label}</div>
-                  <div style={{color:"#8a5030",fontSize:10,lineHeight:1.4}}>{ch.desc}</div>
-                  <div style={{color:"#5a3020",fontSize:9,marginTop:4}}>
-                    +{ch.fatGain} fat · {ch.suspChange>=0?"+":""}{ch.suspChange} suspicion
-                  </div>
-                </button>
-              ))}
-            </>);
-          }
-          // Session summary
-          return wrap(<>
-            <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 SESSION COMPLETE</div>
-            <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:8}}>{cs.testerName} — {getStage(cs.testerLbs).label}</div>
-            <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:12,fontStyle:"italic"}}>{session.eatingReaction}</div>
-            <div style={{background:"rgba(10,4,0,0.5)",borderRadius:7,padding:"8px 12px",marginBottom:14,fontSize:11}}>
-              <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                <span style={{color:"#7a5030"}}>Cultivation gained</span><span style={{color:amber}}>+{session.sessionFatAccum}</span>
-              </div>
-              <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                <span style={{color:"#7a5030"}}>Suspicion change</span>
-                <span style={{color:session.sessionSuspAccum>0?"#e05030":"#60a030"}}>
-                  {session.sessionSuspAccum>=0?"+":""}{session.sessionSuspAccum}
-                </span>
-              </div>
-              <div style={{display:"flex",justifyContent:"space-between"}}>
-                <span style={{color:"#7a5030"}}>Suspicion total</span>
-                <span style={{color:cs.suspicion+session.sessionSuspAccum>150?"#e05030":"#9a6030"}}>{Math.max(0,cs.suspicion+session.sessionSuspAccum)}/200</span>
-              </div>
-            </div>
-            <button style={{...C.btn(brown),width:"100%"}} onClick={()=>confirmCultivatorSession(renee)}>Conclude Session ✓</button>
-          </>);
-        }
-
-        // ── STAGE UP ──
-        if(cs.modalPhase==='stage_up') return wrap(<>
-          <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 SUBJECT PROGRESS</div>
-          <div style={{fontSize:14,fontWeight:700,color:amber,marginBottom:4}}>{cs.testerName}</div>
-          <div style={{fontSize:11,color:"#a07040",marginBottom:10}}>Advanced to {getStage(cs.testerLbs).label} — {Math.round(cs.testerLbs)} lbs</div>
-          <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>{cs.stageUpText||''}</div>
-          <div style={{fontSize:10,color:"#5a3020",marginBottom:14}}>Harvest is now available. Continuing will grow the subject further.</div>
-          <button style={{...C.btn(brown),width:"100%"}} onClick={dismissCultivatorStageUp}>Continue →</button>
-        </>);
-
-        // ── PLANNED HARVEST ──
-        if(cs.modalPhase==='harvest') return wrap(<>
-          <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 HARVEST</div>
-          <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:4}}>{cs.testerName} — {getStage(cs.testerLbs).label}</div>
-          <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:12,fontStyle:"italic"}}>{cs.harvestVignetteText||''}</div>
-          <div style={{background:"rgba(10,4,0,0.5)",borderRadius:7,padding:"8px 12px",marginBottom:14,fontSize:11,color:amber,textAlign:"center"}}>
-            Yield: +{cs.growthGain} lbs to Reneé
-          </div>
-          <div style={{display:"flex",gap:8}}>
-            <button style={C.btn("#333")} onClick={()=>setCultivatorState(prev=>({...prev,modalPhase:null,harvestType:null,harvestVignetteText:null}))}>Wait</button>
-            <button style={{...C.btn(brown),flex:1}} onClick={()=>confirmCultivatorHarvest(renee)}>Complete Harvest →</button>
-          </div>
-        </>);
-
-        // ── EMERGENCY HARVEST ──
-        if(cs.modalPhase==='emergency') return wrap(<>
-          <div style={{fontSize:9,letterSpacing:4,color:"#e05030",marginBottom:4}}>⚠️ EMERGENCY HARVEST</div>
-          <div style={{fontSize:13,fontWeight:700,color:"#ff8060",marginBottom:4}}>{cs.testerName} — Suspicion maxed</div>
-          <div style={{fontSize:12,color:"#c08060",lineHeight:1.85,marginBottom:12,fontStyle:"italic"}}>{cs.harvestVignetteText||''}</div>
-          <div style={{background:"rgba(20,4,0,0.6)",borderRadius:7,padding:"8px 12px",marginBottom:14,fontSize:11,color:"#ff8060",textAlign:"center"}}>
-            Yield: +{cs.growthGain} lbs to Reneé (same as planned)
-          </div>
-          <button style={{...C.btn("#8B2000"),width:"100%"}} onClick={()=>confirmCultivatorHarvest(renee)}>Proceed →</button>
-        </>);
-
-        // ── GROWTH VIGNETTE ──
-        if(cs.modalPhase==='growth') return wrap(<>
-          <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 RENEÉ</div>
-          <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:10}}>After the Harvest</div>
-          <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:12,fontStyle:"italic"}}>{cs.growthVignetteText||''}</div>
-          {cs.harvestsCompleted>=4?(
-            <div style={{fontSize:11,color:"#7a5030",marginBottom:12,textAlign:"center"}}>All four cultivation cycles complete.</div>
-          ):(
-            <div style={{fontSize:11,color:"#7a5030",marginBottom:12,textAlign:"center"}}>Cycles remaining: {4-cs.harvestsCompleted}/4</div>
-          )}
-          <button style={{...C.btn(brown),width:"100%"}} onClick={closeCultivatorGrowth}>Continue ✓</button>
-        </>);
-
-        // ── DIGEST CHECK ──
-        if(cs.modalPhase==='digest_check'){
-          const isEarly=cs.digestWeeksLeft>cs.digestTotalWeeks/2;
-          const vig=getDigestVignette(getStage(renee?.lbs||100).id,cs.testerName,cs.harvestStagesJumped||1,!isEarly);
-          return wrap(<>
-            <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>👁 CHECK ON HER</div>
-            <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:4}}>Reneé</div>
-            <div style={{fontSize:10,color:"#8a6030",marginBottom:10}}>{cs.digestWeeksLeft} week{cs.digestWeeksLeft!==1?"s":""} remaining</div>
-            <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>{vig||'She is unavailable.'}</div>
-            <button style={{...C.btn("#333"),width:"100%"}} onClick={()=>setCultivatorState(prev=>({...prev,modalPhase:null}))}>Leave</button>
-          </>);
-        }
-
-        return null;
-      })()}
+      {cultivatorState?.modalPhase&&<CultivatorModal cultivatorState={cultivatorState} students={students} setCultivatorState={setCultivatorState} confirmCultivatorRecruit={confirmCultivatorRecruit} pickCultivatorFood={pickCultivatorFood} makeCultivatorChoice={makeCultivatorChoice} confirmCultivatorSession={confirmCultivatorSession} dismissCultivatorStageUp={dismissCultivatorStageUp} confirmCultivatorHarvest={confirmCultivatorHarvest} closeCultivatorGrowth={closeCultivatorGrowth}/>}
 
       {convergenceModal&&(
         <div style={C.overlay}>

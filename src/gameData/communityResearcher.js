@@ -273,7 +273,7 @@ Mary Jane, toward the end of the afternoon, looked around the table with the sat
     unlockImmediate: false,
     event: (stageNum, mTier, studs) => {
       const opener = STAGE_OPENERS[stageNum];
-      const priya = studs?.[0];
+
       // Priya reacts based on Madeline's tier relative to her
       const priyaReact = [
         // slim — Priya is ahead, stays smug and competes harder
