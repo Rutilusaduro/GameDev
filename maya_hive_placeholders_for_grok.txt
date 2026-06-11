@@ -1,0 +1,245 @@
+Maya Delivery Hive prose brief
+==============================
+
+Maya is the Delivery Hive Queen. Her room is the Central Nest: lavender, warm, soft, delivery bags, blankets, low light, bodies settling around her. She is quiet and increasingly stationary; her pear/lower-body heaviness is central. The player/professor is also a gluttony/fatness spirit, so prose can imply supernatural appetite pressure, resonance, warmth in the walls, and rooms becoming easier to surrender to comfort.
+
+Tone: hypnotic, quiet, inevitable, cozy-dominant, softly supernatural. Maya says little; her body, the room, and the Hive do the work.
+
+
+Static evolved-form placeholders
+================================
+
+Reactions
+---------
+Short first-person/diary-like reactions shown by Maya's evolved form stage.
+
+[FILLED] [MayaHive_Reaction_MayaHeavy_CentralNest]
+The room feels different tonight. Warmer. Softer. The delivery bags by the door don't feel like they belong to anyone else anymore. I keep catching myself touching my stomach without thinking. It's heavier than it was yesterday. I think the walls noticed.
+
+[FILLED] [MayaHive_Reaction_MayaFat_FirstRooms]
+There are footsteps in the hallway that aren't mine. They stop at doors I didn't open. I don't have to ask them to bring things anymore. They just... do. My belly rests heavier against my thighs when I sit now. The room feels like it's breathing with me.
+
+[FILLED] [MayaHive_Reaction_MayaVeryFat_HalfDorm]
+Half the floor doesn't feel like it belongs to the school anymore. It feels like it belongs to me. The air is thicker here. Warmer. People walk slower when they pass my door. I don't even have to speak. My body does the talking now.
+
+[FILLED] [MayaHive_Reaction_MayaEnormous_QueenStillness]
+I don't move much anymore. I don't need to. The Hive moves for me. I can feel when a new room softens. It's like a warm pulse somewhere in the building. My body has become the center of something much larger than me. I think I like that.
+
+[FILLED] [MayaHive_Reaction_MayaColossal_DormPulse]
+The whole dorm feels like it's breathing around me. I can feel the warmth in the walls. The deliveries don't even come to my door anymore. They just... arrive where they're needed. I am the heart now. Everything else is just circulation.
+
+[FILLED] [MayaHive_Reaction_MayaBlob_WholeHive]
+I don't know where I end and the Hive begins anymore. My body is the warm center of everything. Rooms don't resist. People don't leave. They settle. They soften. They stay. I am no longer just Maya. I am the place they come home to.
+
+Context:
+- Heavy: Central Nest newly formed.
+- Fat: first conquered rooms / first Hive members.
+- Very Fat: dorm noticeably softening.
+- Enormous: Maya mostly stationary, quiet queen energy.
+- Colossal: whole dorm pulses around her.
+- Blob: Maya is effectively the whole Hive's warm center.
+
+
+Diary entries
+-------------
+Longer diary/log entries, likely 1-2 paragraphs each.
+
+[FILLED] [MayaHive_Diary_MayaHeavy_CentralNest]
+My room doesn't feel like mine anymore. It feels like it's becoming something else. The lights are lower. The blankets are thicker. Delivery bags keep appearing by the door even when I don't remember ordering anything. I keep waking up with my hands resting on my stomach. It's getting harder to ignore how much it's changed. The walls feel like they're listening when I breathe.
+
+[FILLED] [MayaHive_Diary_MayaFat_VPChoice]
+Someone else moved through the Hive today. I didn't ask them to. They just... did. They brought food to rooms I haven't even claimed yet. I watched them from my bed and felt something warm settle in my chest. I think I'm supposed to choose someone. Someone who can move when I can't. The thought should scare me. It doesn't.
+
+[FILLED] [MayaHive_Diary_MayaVeryFat_SofteningRooms]
+The rooms I've taken don't look like dorm rooms anymore. The lights are warmer. There are blankets where there used to be desks. People sit instead of study. They eat instead of leave. I can feel it when another room starts to give in. It's like a soft sigh in the walls. My body feels heavier every time it happens. I think that's the point.
+
+[FILLED] [MayaHive_Diary_MayaEnormous_RoomGrid]
+I don't need to walk the halls anymore. I can feel the shape of the Hive from here. Which rooms have softened. Which ones are still resisting. Which ones are already feeding back into me. My body has become the map. I close my eyes and I know where the warmth is strongest. I know where the deliveries are going. I know where the people are settling. I am the center now.
+
+[FILLED] [MayaHive_Diary_MayaColossal_DormControl]
+Most of the building answers to me now. Not with words. With warmth. With softness. With the way people linger in doorways instead of leaving. The deliveries don't even feel like they're coming from outside anymore. They feel like they're coming from me. My body doesn't move, but the Hive does. I think I've become something the building needs.
+
+[FILLED] [MayaHive_Diary_MayaBlob_WholeBuilding]
+I don't think there's a single room left that doesn't carry some part of me. The air is thick with it. The walls are warm with it. People don't fight it anymore. They sink into it. My body is the heart of something much larger than a dorm now. I can feel every breath the Hive takes. I am no longer waiting for it to grow. I am the reason it exists.
+
+Context:
+- CentralNest: room becomes the Nest.
+- VPChoice: Maya notices someone else moving through the Hive for her.
+- SofteningRooms: conquered rooms start matching her aesthetic.
+- RoomGrid: she tracks dorm control from her room.
+- DormControl: most of the building is hers.
+- WholeBuilding: full control / Maya as the building's soft heart.
+
+
+Static system/milestone placeholders
+====================================
+
+[MayaHive_CentralNest_Initial]
+[MayaHive_WeeklyTrickle]
+[MayaHive_Milestone_25_Control]
+[MayaHive_Milestone_50_Control]
+[MayaHive_Milestone_75_Control]
+[MayaHive_Milestone_100_Control]
+
+Context:
+- CentralNest_Initial: first establishment of Maya's room as Central Nest.
+- WeeklyTrickle: conquered rooms passively feed biomass/resonance between weeks.
+- Milestones trigger at 6, 12, 18, and 24 conquered rooms.
+
+
+Dynamic placeholder format
+==========================
+
+The mechanic also generates dynamic tags in this format:
+
+[MayaHive_{Kind}_Maya{MayaStage}_VP{vpId}_BMI{bmiTier}_Rooms{rooms}_{task}_Room{roomId}]
+
+Possible values
+---------------
+
+Kind:
+- ShiftResult
+- RoomConquest
+- VPChoice
+- CentralNestVisit
+- HiveStatePhoto
+- LilithAbsorption
+
+MayaStage:
+- Heavy
+- Fat
+- VeryFat
+- Enormous
+- Colossal
+- Blob
+- Any
+
+vpId:
+- none
+- lilith
+- nadia
+- kaylee
+- renee
+- daisy
+
+bmiTier:
+- Soft
+- Fat
+- VeryFat
+- Enormous
+- Colossal
+- Blob
+
+rooms:
+- 1 through 24
+
+task:
+- mixed
+- expansion
+- vp
+- professor
+- observation
+- absorb
+
+roomId:
+- 0 through 23
+
+
+Dynamic tag examples Grok should support
+========================================
+
+Shift results
+-------------
+Triggered after assigning Hive members and pressing Execute Shift.
+
+[MayaHive_ShiftResult_MayaHeavy_VPnone_BMIFat_Rooms1_mixed_Room9]
+[MayaHive_ShiftResult_MayaVeryFat_VPnadia_BMIVeryFat_Rooms12_mixed_Room14]
+[MayaHive_ShiftResult_MayaBlob_VPdaisy_BMIColossal_Rooms24_mixed_Room23]
+
+Write as a shift-summary vignette: food gathering, deliveries, soft pressure, room warmth, member movement, gluttony-spirit resonance.
+
+
+Room conquest
+-------------
+Triggered when Expansion finishes converting a room.
+
+[MayaHive_RoomConquest_MayaFat_VPnone_BMIFat_Rooms2_expansion_Room8]
+[MayaHive_RoomConquest_MayaVeryFat_VPnadia_BMIVeryFat_Rooms10_expansion_Room15]
+[MayaHive_RoomConquest_MayaEnormous_VPkaylee_BMIEnormous_Rooms18_expansion_Room21]
+
+Write as a conquest scene: the room's resistance softens, lavender aesthetic spreads, occupants settle, deliveries reroute there, Maya's pull is felt from the Central Nest.
+
+
+VP choice
+---------
+Triggered when choosing or changing Vice Queen.
+
+[MayaHive_VPChoice_MayaAny_VPlilith_BMIFat_Rooms1_vp_Room9]
+[MayaHive_VPChoice_MayaAny_VPnadia_BMIVeryFat_Rooms8_vp_Room9]
+[MayaHive_VPChoice_MayaAny_VPkaylee_BMIEnormous_Rooms14_vp_Room9]
+[MayaHive_VPChoice_MayaAny_VPrenee_BMIFat_Rooms5_vp_Room9]
+[MayaHive_VPChoice_MayaAny_VPdaisy_BMIColossal_Rooms20_vp_Room9]
+
+VP contexts:
+- Lilith: consumption, absorption, dark appetite.
+- Nadia: suggestion, psychological pull.
+- Kaylee: nurturing, caretaking, health/comfort.
+- Renee: supply chain, food quality, premium deliveries.
+- Daisy: maternal authority, room conversions, orderliness.
+
+
+Central Nest visit
+------------------
+Triggered when professor directly visits/feeds Maya.
+
+[MayaHive_CentralNestVisit_MayaHeavy_VPnone_BMIFat_Rooms1_professor_Room9]
+[MayaHive_CentralNestVisit_MayaEnormous_VPrenee_BMIEnormous_Rooms16_professor_Room18]
+[MayaHive_CentralNestVisit_MayaBlob_VPlilith_BMIBlob_Rooms24_professor_Room23]
+
+Write as intimate-but-non-explicit feeding/visit prose: professor brings tribute, Maya receives, VP may be present, Hive warmth responds.
+
+
+Hive State photo / observation
+------------------------------
+Triggered when Maya documents or the player observes the Hive.
+
+[MayaHive_HiveStatePhoto_MayaFat_VPnone_BMIFat_Rooms3_observation_Room9]
+[MayaHive_HiveStatePhoto_MayaVeryFat_VPdaisy_BMIVeryFat_Rooms12_observation_Room17]
+[MayaHive_HiveStatePhoto_MayaColossal_VPnadia_BMIEnormous_Rooms21_observation_Room4]
+
+Write as photo/log style: snapshots of rooms, soft bodies, delivery bags, lavender light, Hive States, Maya's quiet satisfaction.
+
+
+Lilith absorption
+-----------------
+Only available if Lilith is VP.
+
+[MayaHive_LilithAbsorption_MayaVeryFat_VPlilith_BMIVeryFat_Rooms9_absorb_Room9]
+[MayaHive_LilithAbsorption_MayaEnormous_VPlilith_BMIEnormous_Rooms17_absorb_Room20]
+[MayaHive_LilithAbsorption_MayaBlob_VPlilith_BMIBlob_Rooms24_absorb_Room23]
+
+Context: Lilith guides one devotee into Maya's stored biomass. Keep it supernatural/soft/hive-consumption themed.
+
+
+Dorm/room flavor context
+========================
+
+The grid is 24 rooms, IDs 0-23; room 9 is the Central Nest.
+
+Room bonus flavor types:
+- Corner Cache
+- Laundry Warmth
+- Delivery Pin
+- Quiet Pull
+- Lavender Lamps
+- Reinforced Nook
+
+Useful room prose motifs:
+- delivery bags accumulating outside doors
+- lavender blankets/lights spreading
+- snacks hidden in drawers
+- hallway getting warmer
+- occupants forgetting why they resisted
+- rooms becoming more comfortable than leaving
+- Maya's lower-body heaviness as the anchor/pull of the Hive
+- the professor's gluttony-spirit resonance as a pressure in the walls or appetite in the air
