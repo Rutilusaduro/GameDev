@@ -1,285 +1,291 @@
 // ═══════════════════════════════════════════════════════════════
 // SCENE: DIARY — non-evolved student diary entries
-// Composed: core (archetype × stage) + psych + body + season + devour
+// Voice: private, dated, event-based — NOT current attitude copy.
+// Composed: core + optional devour aside (only if student has devoured).
 // ═══════════════════════════════════════════════════════════════
 import { registerModule, createContext, render } from '../engine.js';
-import { SLIGHT_DIARY, DIARY_ENTRIES } from '../../gameData/content.js';
 
-// Placeholder replacements + stage-11 extensions where legacy stops at 10
-const DIARY_OVERRIDES = {
-  culinary: {
-    0: "Taste-tested three batches before class. Flour on my apron, butter on my wrists. The girls will smell it before they see it. Good.",
-    1: "Recipe notebook is getting sauce stains in the margins. My waistband is getting tight in a way I keep pretending is the apron strings.",
-    2: "I brought cardamom buns. Mrs. Reyes lingered at pickup with coffee and didn't leave until the tray was empty.",
-    3: "Formalized the baking hour. Administration signed off. My hips have outgrown my practicum skirt. I ordered a bigger one without shame.",
-    4: "The moms have opinions now. Detailed opinions. I write them all down and bake accordingly.",
-    5: "Tuesday is official. I am official. So is the softness settling around my middle — warm, constant, earned.",
-    6: "Measured myself for a new apron. The numbers went in the recipe book next to the cinnamon ratios. Both feel correct.",
-    7: "Mrs. Monroe rated this week's batch a ten. I ate two while cleaning up. Quality control.",
-    8: "The classroom smells like me now — vanilla, yeast, comfort. I take up more of the kitchen than I used to. The kitchen doesn't mind.",
-    9: "End of term. Six faces I know by appetite. My body has grown into the work. I would not trade a single pound.",
-    10: "I have become the Tuesday tradition. The tradition has become my shape. Both are rising.",
-    11: "Immense and warm at the center of it all. They come to me. I feed them. I feed myself. The oven never cools.",
-  },
-  nursing: {
-    0: "Clinical rotation notes: hydration, rest, nutrition. Applied all three to myself after shift. The cafeteria soup was good.",
-    1: "Started bringing extra snacks for the floor. Ended up eating half on the walk back. Stress eating is still eating.",
-    2: "My scrubs fit differently. The nurse beside me said I look 'well.' I think she meant soft. I am soft.",
-    3: "Comfort food after doubles hits different when comfort is the point. I am studying caregiving by practicing on myself.",
-    4: "Patients ask if I'm pregnant. I am not. I am well-fed and warm and taking up a chair properly for once.",
-    5: "Brought a casserole to study group. Ate a third before anyone arrived. No regrets — leftovers were the point.",
-    6: "Night shift delivery habits are a lifestyle now. My thighs press together when I walk the hall. Steadier, somehow.",
-    7: "I recommend rest. I recommend nourishment. I am a walking example of both, round and present.",
-    8: "The break room chair knows me. My belly rests in my lap when I chart. I chart slower. I eat more. Care continues.",
-    9: "I have nursed others into softness all semester. Turned the same attention inward. It worked.",
-    10: "Vast, warm, immobile between shifts. They bring trays to me now. I accept. That is also care.",
-    11: "A monument of comfort. The unit works around me. I am not sorry. Healing is heavy work.",
-  },
-  farm_girl: {
-    0: "Homesick for Grandma's kitchen. Made jam bars from memory. Ate four testing the recipe. Close enough.",
-    1: "Campus portions are generous. So am I becoming. Thighs filling out my jeans like they always wanted to.",
-    2: "Brought six kinds of preserves to class. They disappeared. I disappeared half a loaf of cornbread after.",
-    3: "Someone called me sunshine with hips. Accurate. I laughed and went back for seconds.",
-    4: "Cooking for the dorm again. They call it 'Mary Jane's night.' My belly leads me into the kitchen now.",
-    5: "Picked up weight like summer humidity — everywhere, soft, inevitable. I miss the farm and I love the table.",
-    6: "Chair creaked. I kept eating. The creak is part of the furniture now. So am I.",
-    7: "Made sweet potato pie for twelve. Ate for thirteen. The thirteenth was me and I was hungry.",
-    8: "They deliver groceries to my door. I deliver warmth from my oven. Fair trade.",
-    9: "I am homestead-sized. This room is my porch. Food comes to me. I stay. Good.",
-    10: "Rooted. Round. The building settles when I shift. Like the old farmhouse did.",
-    11: "Country big. Mythic big. The kind of big you feed a county from. I am still smiling.",
-  },
-  predator: {
-    0: "Observation continues. Appetite is a language. I am learning to speak it without moving my mouth.",
-    1: "They eat in front of me. I count calories the way others count sheep. The numbers add up to interest.",
-    2: "Something is changing in the way they look at food. In the way I look at them. Symmetry.",
-    3: "Hunger has a sound. I hear it in hallways now. I answer without words.",
-    4: "The professor brings snacks. I take them. I take more than snacks, eventually, in other ways.",
-    5: "Mass accumulates. Patience accumulates. Both are weapons if you hold them right.",
-    6: "I do not chase. I wait. Things come to me — meals, people, weight. I devour what arrives.",
-    7: "The devour command was not new. It was a name for something I already practiced in the dark.",
-    8: "Bodies disappear into me. I grow. The math is simple. The morality is not my problem.",
-    9: "I am appetite with a face. The face is softer than last month. The appetite is not.",
-    10: "Immobility is not weakness. It is a trap with excellent bait.",
-    11: "Leviathan is a word for what happens when hunger wins often enough. I have won.",
-  },
+/**
+ * Twelve entries per archetype, indexed by weight stage id (0–11).
+ * Slight → Leviathan. Event diary, not weight boasts.
+ */
+const DIARY_CORE = {
+  cheerleader: [
+    "Practice today. Had to pin my skirt twice. Coach asked if I was eating enough. I said yes. I ate a protein bar in the locker room after and it wasn't enough.",
+    "New routine is clicking. I told the squad I was 'eating clean.' I had pizza alone in my car after practice. It was really good. I don't know why I'm writing that down.",
+    "Let out my uniform twice. Coach gave me a look. I blamed the dryer. Went to Marco's four times this week — the guy at the counter knows my order. I should be embarrassed. I'm not, quite.",
+    "They cut me from the squad on Tuesday. I cried in the parking lot for maybe ten minutes. Then I drove home and ate a whole lasagna standing at the counter. Mom wasn't home. Good.",
+    "Ashley from the squad texted to 'check in.' I sent a photo of my brunch. She left me on read. I had seconds anyway. The booth at the diner wobbled when I slid in. New detail.",
+    "Tried on my old competition leotard for nostalgia. Couldn't get it past my hips. Stood in the mirror a long time. Ordered DoorDash instead of dealing with it. Driver was nice.",
+    "Couldn't fit behind the wheel of my Civic. Sat there in the dealership lot for twenty minutes before going in. Bought something wider. The salesman kept saying 'plenty of room.' I tipped him.",
+    "Went to the mall with Megan. Three people stared. Megan said they were jealous. I don't think that's true but I appreciated the lie. We got cinnamon pretzels. I got my own.",
+    "Mostly stay home now. Brittany — not me, the other Brittany — drops off food sometimes. I haven't seen the squad in weeks. Sun through the window. Cat on my belly. Fine day.",
+    "Hard to hold the pen. Wrist gets tired. Someone feeds me. I eat. That's the entry.",
+    "The room is the world. Doorframe is a story I tell visitors about. Food arrives. I don't go anywhere. I don't need to.",
+    "They rearranged the furniture again so I fit. I heard them measuring in the hall. I didn't ask what for. I know. Heavy and warm and still Tuesday somehow.",
+  ],
+  bookworm: [
+    "Thesis chapter three. Granola bars and coffee. Weighed myself for the log. Number lower than I budgeted. Added a meal column to the spreadsheet.",
+    "Interesting paper on foodways in the stacks. Vending machine restocked on the third floor. Conducted a thorough survey. Found two new favorites.",
+    "Library chair cracked under me. I said it was always broken. Moved to the wide study carrel by the window. Nobody commented. I brought snacks in a tote now.",
+    "Four thousand words before lunch. Lost count of the crackers. Advisor emailed about 'self-care.' I sent my food log. Very detailed. She meant something else.",
+    "Grocery delivery because carrying bags up three flights seemed inefficient. They left six boxes. I have nowhere to put the extras. Ate one box standing in the kitchen.",
+    "Working from home. No commute. More reading hours. Also more hours near the fridge. Both feel like productivity.",
+    "New chair rated for five hundred pounds. Arrived Tuesday. Sat in it six hours with a novel and a rotisserie chicken. Best Tuesday in months.",
+    "Published two papers this semester. Gained weight steadily the whole time. Correlation noted in private. Not in the acknowledgments.",
+    "Enormous and reading. The universe contains me and also this chapter on ritual feasting. Both true.",
+    "Pen heavy. Books propped on my belly. Works fine.",
+    "Don't leave the room. Delivery drivers know the knock pattern. Reading in bed. Crumbs in the sheets. Acceptable.",
+    "The stacks would not hold me now. I made peace with that. My own library is the bed, the tray, the lamp. Enough.",
+  ],
+  influencer: [
+    "Morning routine video. Collarbones very visible in the ring light. Fifty thousand likes. Gym after. Felt weird in the locker room mirror.",
+    "Posted a day-in-my-life. Dinner plate was huge. Comments loved it. Manager called confused. Engagement up. Jeans tight Thursday.",
+    "Soft era content going viral. Manager still confused. Numbers don't lie. Filmed myself trying on old jeans. Couldn't zip. Posted anyway.",
+    "New agency handles 'plus creators.' Their word: trajectory. Mine: terrified and eating cake in the Uber home.",
+    "Weighed on camera for a bit. Scale said a number. Comments exploded. I cried after filming. Then ate the prop cake. It wasn't a prop.",
+    "Book deal. Working title 'More.' On brand. Photographer had to adjust lighting because my stomach caught glare. We laughed. Sort of.",
+    "Production team comes to me now. Easier. Doorways are a conversation. They brought a wider lens. I brought snacks for the crew.",
+    "Documentary people want access. I said yes if they cater. They said yes. Ate during the contract signing. On camera. Of course.",
+    "Movement. Also not moving much. Both in the caption. Both true.",
+    "Phone too far to reach some days. Assistant reads comments aloud. I eat. That's content too.",
+    "Livestream from bed. Chat sends food. I accept. The algorithm approves.",
+    "They film the ceiling fan now. I'm the landscape. Comments say comforting. I agree.",
+  ],
+  athlete: [
+    "Five a.m. run. Eight miles. Coach pleased. Ate salad after. Looked at my legs in the shower. Too many angles.",
+    "Times slipping. Coach said I look 'different.' Pasta four nights. 'For glycogen.' That's what I told my roommate.",
+    "Cut from varsity. Sat in the car forty minutes. Drove to the Italian place. Breadsticks first. Felt better than any medal.",
+    "Tried one pull-up for old times. Failed. Burger immediately after. Recovery, I said. Nobody was there to argue.",
+    "Saw my old training partner at the gym. She stared. I was at the shake bar, not the equipment. Waved. She looked away.",
+    "Don't go to the gym. Body doesn't fit the machines. Weights section is a memory. Shake bar delivers.",
+    "Coach texted 'you okay?' Sent a photo of lunch. No reply since. Fine by me.",
+    "Watched a marathon on TV. Ate through the whole thing. Slowest I've moved all week was fridge to couch. Still counts.",
+    "My records still on the university wall. Different records now. Private ones. No plaque.",
+    "Stairs are theoretical. Track is TV. Food is here. Okay.",
+    "Someone timed me to the kitchen. Personal worst. I laughed. Ate anyway.",
+    "The trophy case wouldn't hold me. I don't need it. The couch does.",
+  ],
+  artsy: [
+    "New series on fragility. Crackers in the studio. Paint on my shirt. Forgot lunch until nine.",
+    "Series pivoted to abundance. Don't know why. Bowls, fruit, folds of fabric. My arms look softer in the north light.",
+    "Work getting lush. Critic hasn't seen it yet. I have. Ate a whole cheese board 'for color reference.'",
+    "Critic called the new work 'carnally excessive.' Framed the email. Large dinner. Alone. Celebratory.",
+    "Self-portraits now. Body changed enough to be interesting. Canvas is bigger. So is the subject.",
+    "Opening night. Silk drape instead of a dress. Didn't fit — looked better for it. Sold two pieces. Ate the gallery cheese.",
+    "Can't carry canvases. Assistant does. I point. Like sculpture always worked. First time it's me.",
+    "Wider studio door installed. Invoice on the fridge. Muse and artist same person. inconvenient and perfect.",
+    "Make things from the chair. Gallery visits me. Literally. Truck at the curb. I sign from here.",
+    "Art is a body in space. Mine takes a lot of space. Winning is the wrong word. Accurate is closer.",
+    "Brush far. Reach short. Paint what I can see without moving.",
+    "Ceiling is a canvas I haven't earned yet. Everything else is in progress.",
+  ],
+  gamer: [
+    "Twenty-eight and oh. Energy drinks. Chat said I looked tired. They sent pizza. I ate all of it on stream.",
+    "Sponsor sent snack boxes. Reviewed six bags live. 'Research.' Chat donated for more. I obliged.",
+    "More viewers when I eat on camera. Don't understand. Accepting it. Chair squeaks now. Ordered a rated one.",
+    "Broke the good chair. New one extremely comfortable. Sixteen-hour stream. Optimal.",
+    "Viewers voted 'comfort streamer.' Personality or presence — poll was split. I ate during the results reveal.",
+    "Desk reorganized. Everything arm's reach. Fridge behind me. Chef's kiss emoji in chat.",
+    "New apartment. Wider doors. Bigger fridge. Closer to desk. Moved once. Worth it.",
+    "Don't stand between games. Meals delivered to headset range. Efficiency meta.",
+    "Record stream hours. Record snack consumption. Both achievements. Mod pinned the stat.",
+    "Merged with setup. Setup evolved around me. We are one entity. Chat agrees.",
+    "Keyboard slightly buried. Belly as wrist rest. K/D fine. Comfort excellent.",
+    "Final form is a room. Stream never off. Snacks never empty. Good patch notes.",
+  ],
+  sorority: [
+    "Retreat weekend. Salads. Face masks. Perfect on Instagram. Ate someone's fries in the van home.",
+    "Brunch four times. New pastry place. Calories 'don't count' — I know that's not true. Went back Friday anyway.",
+    "Sisters side-eyeing my second plate. Suggested dinner out. Nobody mentioned it again. I brought dessert.",
+    "Formal dress custom order. Seamstress kind. I cried a little in the fitting room. Not sad. Relieved.",
+    "Snacks in my room now. Popular for it. Social chair unofficial. Events involve food. Nobody complains.",
+    "Chapter meetings at my place. Couch sags. I provide trays. Logistics of being the fun one.",
+    "Everything delivered. Clothes custom. Food constant. Being big and liked has paperwork.",
+    "Fixture status. House spiritually partly mine. Take up more of it monthly. Plaque would be funny.",
+    "House is me. Me is house. They voted on a plaque. I abstained. They passed anyway.",
+    "Formal in my living room. Catering around me. Best night chapter had. I didn't leave the couch.",
+    "Pledges learn rules in a circle. I pass snacks. Leadership looks like this now.",
+    "Plaque installed. I can reach it if I stretch. Don't need to. Everyone reads it to me.",
+  ],
+  overachiever: [
+    "Five a.m. gym. Seven class. Nine internship. Planner full. BMI noted. Added meal blocks. Corrective.",
+    "Nutritional research on the schedule. Rigorous tasting. Documented. Graph updated. Happiness axis improved.",
+    "Dropped one club. Added two meals. Net happiness positive. Graphed it for myself. Looked good.",
+    "Thesis retitled: adaptive caloric strategy. Advisor approved. Celebratory dinner. Logged every bite.",
+    "More achieved this semester than last year. Also more weight. Efficient use of time.",
+    "Body is a dataset. Large dataset. Paper submitted. Peer review passed. N equals me.",
+    "Remote work. Forty-five commute minutes repurposed for eating. More efficient. Obvious.",
+    "Personal records: academic and otherwise. Timestamped. Both categories improving.",
+    "PhD coursework done. Weigh more than committee combined. Peak performance. Slide deck ready.",
+    "Everything achieved. Enormous. Wrote the paper connecting both. Not published. Private.",
+    "Planner full. Belly fuller. Both organized.",
+    "Dissertation bound. Body unbound. Filed under success. No further entries scheduled. Ignored that rule.",
+  ],
+  quiet: [
+    "—",
+    "Food here is good. Ate more than usual. Professor left snacks. I took several. Nobody noticed.",
+    "New jeans. Two sizes up. Felt right. Pastry after. Don't know why I'm writing that.",
+    "Someone said I look different. Not mean. I didn't answer. Ate my lunch. Easier.",
+    "Caught my reflection. Stood a while. Got seconds. Didn't tell anyone.",
+    "Love this? Weird word. Present in my body. Heavy. Okay.",
+    "Don't hide. Take up space. A lot of space. Also okay.",
+    "People know my name. I fill the room. Same week. Related maybe.",
+    "Still quiet. Content. Fine.",
+    "Pen tired. Words short. Fine.",
+    "Room arranges around me. I like it. Didn't ask.",
+    "Wanted this. Got this. Enough.",
+  ],
+  transfer: [
+    "Campus huge. Still lost sometimes. Dining hall excellent. Went twice yesterday.",
+    "Mapped every good food spot. Been to all twice. Homework secondary.",
+    "Friend from Dublin visited. Didn't mention my body until the taxi. 'You seem happy.' I am.",
+    "This place feeds me. Heavier than home. More myself. Both surprise me.",
+    "Mom called. Said I sound different. I am. She asked if I'm eating okay. Very yes.",
+    "Dining staff know my name. Orders memorized. Local now.",
+    "Never want to leave. Couldn't if I tried. Good. Home.",
+    "Gave directions: turn left at me. It worked. They laughed. I did too.",
+    "Part of campus. Permanent. Well-fed. Landmark status unofficial.",
+    "Rain on the window. Food on the tray. Dublin feels far. Fine.",
+    "Visitors take photos with me like architecture. I don't mind.",
+    "Rooted. The building knows my weight. Settles when I shift.",
+  ],
+  psych: [
+    "Observation log day one. Fifteen subjects. Six notebooks. I'll need more.",
+    "Added nutritional timing to the protocol. Vending machine proximity noted. Professional curiosity. Obviously.",
+    "Clothes different. Logged column seven. Maybe wrong column. Data anyway.",
+    "Cross-referencing intake and mood. Correlation not subtle. P value would annoy me.",
+    "Advisor asked if I'm okay. Said ongoing research. True. Both kinds.",
+    "Observations more accurate at this weight. Embodied cognition. Or hunger. Field notes either way.",
+    "Notebook fuller than expected. So am I. Honest footnote.",
+    "Observer and subject blurring. Ethics board would fuss. Not submitting this page.",
+    "Office mostly. Data comes to me. So does lunch.",
+    "Study and researcher same person. Methodology questionable. Results delicious.",
+    "Can't reach the high shelf of journals. Ordered duplicates. Problem solved.",
+    "The sample size is one. The sample is vast. Acceptable n.",
+  ],
+  culinary: [
+    "Taste-tested three batches before class. Flour on my apron. Butter on my wrists. Girls will smell it before they see it.",
+    "Recipe notebook getting sauce stains. Waistband tight — blaming apron strings. Not working anymore.",
+    "Cardamom buns for pickup. Mrs. Reyes lingered with coffee until the tray was empty. I pretended not to count.",
+    "Baking hour approved. Practicum skirt too small. Ordered larger. Administration signed. No comment on hips.",
+    "Moms have opinions. Detailed. I write them down. Bake accordingly. Mrs. Calloway wants less nutmeg. Noted.",
+    "Tuesday official. I am official. Softness around my middle constant now. Warm. From standing at the oven.",
+    "Measured for new apron. Numbers in the recipe book next to cinnamon ratios. Both feel correct.",
+    "Mrs. Monroe rated this week a ten. Ate two while cleaning. Quality control.",
+    "Classroom smells like vanilla and yeast. I take more kitchen than before. Nobody complained.",
+    "End of term. Six faces I know by appetite. Body grown into the work. Wouldn't trade a pound.",
+    "Tuesday tradition. Tradition has a shape. Both still rising.",
+    "Oven never cools. They come to me. I feed them. I feed myself. Immense and warm at the center of it.",
+  ],
+  eced: [
+    "Brownies for class. All three girls ate past lunch portions. Sofia eats like it was always fine. Kayla had four. Baking practicum. Technically true.",
+    "Kayla arrives early now. Jeans gap at the waist. Mrs. Reyes texted about my food. School said curriculum. Technically true.",
+    "Mrs. Calloway asked about enrichment. I said nutritional research. She looked at her hips in the window. Took my banana bread. Ate two in the parking lot.",
+    "Sofia barely fits her desk. Wider desks approved. Bri's belly on her thighs. Kayla wanted the recipe. I omitted two ingredients. A little bad. A little.",
+    "Mrs. Reyes brought coffee. Lingers now. Mrs. Calloway suspicious of her reflection. Kayla asked for chocolate tomorrow. I said yes.",
+    "Mrs. Monroe in a larger dress. Took four treats openly. Best banana bread ever. I'm happy. Doing something wrong. Happy.",
+    "Baking hour official. Mrs. Calloway on the committee. Eats everything. Gives feedback. Bri can't tuck uniform. I said it looked nice.",
+    "Moms have a group chat rating recipes. Mrs. Monroe told me. Cinnamon rolls tie with peach cake. She's round now. Generous. No apology.",
+    "Mrs. Calloway brought preserves. Homemade labels. 'Girls look forward to Tuesdays.' 'So do the moms.' Strawberry muffins next week. Three for her.",
+    "End-of-term celebration. All six in one room. Kayla's hips, Bri's belly, Sofia comfortable. Moms in cardigans that pull. I don't regret a bite.",
+    "Tuesday mornings are the calendar. My body is the oven timer. Both loud.",
+    "They fit around me in the classroom. I fit around the work. Neither finished rising.",
+  ],
+  nursing: [
+    "Clinical notes: hydration, rest, nutrition. Applied all three after shift. Cafeteria soup good. Charted anyway.",
+    "Extra snacks for the floor. Ate half walking back. Stress eating is still eating. Logged it.",
+    "Scrubs fit different. Nurse beside me said I look 'well.' Soft. Chart says stable.",
+    "Comfort food after doubles. Caregiving includes self. Obvious. Took years to write down.",
+    "Patient asked if I'm pregnant. Not. Well-fed. Chair taken properly. First time in months.",
+    "Casserole to study group. Ate a third before they arrived. Leftovers intentional.",
+    "Night shift delivery habits. Thighs press in the hall. Steadier on my feet. Irony noted.",
+    "Recommend rest. Recommend nourishment. Walking example. Round. Present. Break room knows me.",
+    "Break room chair knows me. Belly in lap while charting. Slower charts. More snacks. Care continues.",
+    "Nursed others into softness. Turned same attention inward. Worked.",
+    "Trays between shifts. Immobile between them. Accept. Also care.",
+    "Unit works around me. Monument of comfort. Healing is heavy. I am heavy. Fine.",
+  ],
+  farm_girl: [
+    "Homesick for Grandma's kitchen. Jam bars from memory. Four testing the recipe. Close enough.",
+    "Campus portions generous. Thighs filling jeans. Grandma would say eat.",
+    "Six preserves to class. Gone. Half a cornbread loaf after. Sunshine comment accurate.",
+    "Dorm cooking night. 'Mary Jane's night.' Belly leads into kitchen first now.",
+    "Weight like summer humidity. Miss the farm. Love the table. Both true.",
+    "Chair creaked. Kept eating. Creak is furniture now. So am I.",
+    "Sweet potato pie for twelve. Ate for thirteen. Thirteenth was me.",
+    "Groceries to my door. Warmth from my oven out. Fair trade.",
+    "Homestead-sized. Room is my porch. Food comes. I stay.",
+    "Rooted. Round. Building settles when I shift. Like the farmhouse.",
+    "County could eat from my kitchen. Room is the county now.",
+    "Country big. Mythic big. Still smiling. Jam on the counter. Always.",
+  ],
+  predator: [
+    "Sat in the back. Counted who ate. Who didn't. Interesting ratio. I didn't eat. Not hungry. Not yet.",
+    "They eat in front of me. I watch portions. Patterns. Symmetry forming. My plate stayed empty until midnight.",
+    "Hallway smells different after lunch. I hear chewing from three doors down. Wrote the time down. Don't know why.",
+    "Professor left food on the desk. I took it. Took more than food later. Can't write that plainly. Ripped the page.",
+    "Waited in the stairwell. Someone passed with takeout. They don't pass anymore. I gained weight. They didn't.",
+    "Patience and mass both accumulate. Sat still four hours. Ate what arrived. Arrived plenty.",
+    "Dark corner of the union. Stranger talked too long. I stopped listening. They stopped talking. I was heavier walking home.",
+    "Can't write what happened in the parking garage. Ate after. Slept well. Shouldn't have.",
+    "Memory like a meal I can't digest. Belly heavier than the fridge. Names optional.",
+    "Stillness is a trap. Bait is excellent. I don't chase. Things come.",
+    "Room is a mouth. I am inside it. Visitors rare. Outcomes final.",
+    "Hunger won often enough. Words fail. Scale irrelevant. I am what ate.",
+  ],
 };
 
-function buildCoreVariants() {
+function registerCoreVariants() {
   const variants = [];
-
-  Object.entries(SLIGHT_DIARY).forEach(([archetype, text]) => {
-    const override = DIARY_OVERRIDES[archetype]?.[0];
-    const entry = override || text;
-    if (!entry || entry === "—") return;
-    variants.push({
-      when: { archetype, stageMax: 0 },
-      priority: 2,
-      text: [entry],
-    });
-  });
-
-  Object.entries(DIARY_ENTRIES).forEach(([archetype, stages]) => {
-    Object.entries(stages).forEach(([idx, text]) => {
-      const stageId = parseInt(idx, 10) + 1;
-      const override = DIARY_OVERRIDES[archetype]?.[stageId] ?? DIARY_OVERRIDES[archetype]?.[parseInt(idx, 10)];
-      let entry = override || text;
-      if (!entry || entry === "—" || String(entry).startsWith("[placeholder")) return;
+  for (const [archetype, stages] of Object.entries(DIARY_CORE)) {
+    stages.forEach((text, stageId) => {
+      if (!text || text === "—") return;
       variants.push({
         when: { archetype, stage: [stageId] },
         priority: 2,
-        text: [entry],
+        text: [text],
       });
     });
-    // Leviathan (stage 11) — override or reuse highest stage entry
-    const leviathan = DIARY_OVERRIDES[archetype]?.[11];
-    if (leviathan) {
-      variants.push({ when: { archetype, stage: [11] }, priority: 3, text: [leviathan] });
-    } else {
-      const top = stages[9] || stages[8];
-      if (top && top !== "—" && !String(top).startsWith("[placeholder")) {
-        variants.push({
-          when: { archetype, stage: [11] },
-          priority: 1,
-          text: [(ctx) => `${top} The number on the scale has passed into something else now — ${Math.round(ctx.subject.lbs).toLocaleString()} lbs and still climbing.`],
-        });
-      }
-    }
-  });
-
-  // Quiet archetype — minimal core, flavors carry more weight
-  variants.push(
-    { when: { archetype: "quiet", stageMax: 0 }, priority: 2, text: ["—"] },
-    { when: { archetype: "quiet", stage: [9, 10, 11] }, priority: 2, text: ["—"] },
-  );
-
+  }
   variants.push({
     when: {},
     priority: 0,
-    text: [(ctx) => `${ctx.subject.name} wrote something, then thought better of it.`],
+    text: [(ctx) => `${ctx.subject?.name || "She"} wrote something, then thought better of it.`],
   });
-
-  return variants;
+  registerModule("diary.core", variants);
 }
 
-registerModule("diary.core", buildCoreVariants());
+registerCoreVariants();
 
-// ── diary.psych — corruption, relationship, mood ─────────────
-
-registerModule("diary.psych", [
-  { when: { corruption: [2], relationship: [3] }, priority: 3,
-    text: [
-      (ctx) => `I don't pretend anymore. When the Professor looks at me I feel it in my belly — warm, obedient, hungry for whatever comes next.`,
-      (ctx) => `Whatever he wants, I want. The wanting has eaten the rest of me. I am soft with it. Heavy with it. Grateful.`,
-    ] },
-  { when: { corruption: [2] }, priority: 2,
-    text: [
-      (ctx) => `I used to have rules. I can't remember what they were for.`,
-      (ctx) => `Hunger isn't a problem now. It's the language I think in.`,
-      (ctx) => `The shame left. What stayed is appetite — honest, vast, mine.`,
-    ] },
-  { when: { corruption: [1], relationship: [2, 3] }, priority: 2,
-    text: [
-      (ctx) => `I know what I'm becoming. I lean into it when he's around.`,
-      (ctx) => `Conflicted is the wrong word. I'm committed and still surprised by how good it feels.`,
-    ] },
-  { when: { corruption: [1] }, priority: 1,
-    text: [
-      (ctx) => `Part of me still flinches at the scale. The rest of me is already eating.`,
-      (ctx) => `I argue with myself and then I lose, and losing tastes good.`,
-    ] },
-  { when: { corruption: [0], relationship: [0, 1] }, priority: 1,
-    text: [
-      (ctx) => `I tell myself it's temporary. My body doesn't seem to believe me.`,
-      (ctx) => `Still negotiating. Still losing negotiations. Still finishing my plate.`,
-    ] },
-  { when: { mood: "stressed" }, priority: 1,
-    text: [
-      (ctx) => `Stress week. Appetite doesn't care about deadlines. Neither do I, apparently.`,
-      (ctx) => `Everything is due and I am eating through the panic. It helps. That worries me less than it should.`,
-    ] },
-  { when: { mood: "happy" }, priority: 1,
-    text: [
-      (ctx) => `Good mood, good food, good weight. Everything feels connected today.`,
-    ] },
-  { when: { mood: "content" }, priority: 1,
-    text: [
-      (ctx) => `Quiet satisfaction. My body is warm and full and I don't want to be anywhere else.`,
-    ] },
-  { when: {},
-    text: "" },
-]);
-
-// ── diary.body — body type × stage flavor ─────────────────────
-
-registerModule("diary.body", [
-  { when: { bodyType: "pear", stageMin: 3 }, priority: 1,
-    text: [
-      (ctx) => `My hips spread wider in the mirror — soft, heavy, impossible to ignore.`,
-      (ctx) => `Waistband fights a battle it keeps losing. My thighs win by default.`,
-    ] },
-  { when: { bodyType: "apple", stageMin: 3 }, priority: 1,
-    text: [
-      (ctx) => `My belly leads now. Rounds forward, rests on my lap when I sit. I pat it without thinking.`,
-      (ctx) => `Everything gathers at my middle — warm, round, present.`,
-    ] },
-  { when: { bodyType: "hourglass", stageMin: 3 }, priority: 1,
-    text: [
-      (ctx) => `Curves on curves. Breasts heavier, hips wider, waist still trying to make an argument.`,
-      (ctx) => `The silhouette has become extravagant. I catch myself admiring it.`,
-    ] },
-  { when: { bodyType: "athletic", stageMin: 2 }, priority: 1,
-    text: [
-      (ctx) => `Muscle buried under softness. I flex and everything jiggles anyway.`,
-      (ctx) => `The athlete is still in here. She's just padded now — thick, warm, slower.`,
-    ] },
-  { when: { bodyType: "rotund", stageMin: 2 }, priority: 1,
-    text: [
-      (ctx) => `Round everywhere. Belly, hips, arms — one continuous soft curve.`,
-    ] },
-  { when: { bodyType: "voluptuous", stageMin: 2 }, priority: 1,
-    text: [
-      (ctx) => `Abundance is the word. Flesh everywhere, warm and lavish.`,
-    ] },
-  { when: { bodyType: "fertility_goddess", stageMin: 2 }, priority: 1,
-    text: [
-      (ctx) => `Wide hips, heavy breasts, belly rounding like ripeness. I feel fertile with food and fat.`,
-    ] },
-  { when: { bodyType: "mom_bod", stageMin: 2 }, priority: 1,
-    text: [
-      (ctx) => `Soft middle, soft arms — the body of someone who feeds people. Including myself.`,
-    ] },
-  { when: { bodyType: "straight", stageMin: 4 }, priority: 1,
-    text: [
-      (ctx) => `Even my straight frame has surrendered to a belly. It pushes at everything I wear.`,
-    ] },
-  { when: {},
-    text: "" },
-]);
-
-// ── diary.season — campus season flavor ───────────────────────
-
-registerModule("diary.season", [
-  { when: { season: "fall", stageMin: 1 },
-    text: [
-      `Fall air makes everything taste like cinnamon and permission.`,
-      `The dining hall switched to stews. I've been loyal to the cause.`,
-      `Sweaters hide nothing anymore. I wear them anyway — soft layers on soft flesh.`,
-    ] },
-  { when: { season: "winter", stageMin: 1 },
-    text: [
-      `Winter is an excuse and I am using it thoroughly.`,
-      `Cold outside, warm inside, warmer in my middle. Good season for gaining.`,
-      `Holiday trays everywhere. I am a conscientious participant.`,
-    ] },
-  { when: { season: "spring", stageMin: 1 },
-    text: [
-      `Spring dresses don't lie. Neither do I, anymore. I just eat.`,
-      `Something blooming in the quad. Something blooming in my appetite.`,
-      `Lighter clothes, heavier body. The contrast is interesting.`,
-    ] },
-  { when: { season: "summer", stageMin: 1 },
-    text: [
-      `Heat makes everything slow — including me. Sweat and fullness.`,
-      `Summer fruit, summer laziness, summer softness settling in.`,
-      `Too warm to move much. Perfect excuse to sit and eat.`,
-    ] },
-  { when: {},
-    text: "" },
-]);
-
-// ── diary.devour — devour command aftermath ─────────────────
+// ── diary.devour — private aftermath, not attitude ───────────
+// Appends only when student has devoured; diary voice: shame, fragments.
 
 registerModule("diary.devour", [
   { when: { devourMin: 3 }, priority: 4,
     text: [
-      (ctx) => `The devours blur together now — strangers swallowed into my weight, their fear sweet, their mass permanent on my hips. I don't flinch. I don't forget. I don't stop.`,
-      (ctx) => `Three times the Professor said devour. Three times I obeyed. The hunger that lives in me isn't metaphor anymore. It's appetite with a body count.`,
+      `There are pages I tore out. Names I won't write. I eat after and sleep heavy. The math is simple. I don't show my work.`,
+      `Three times now. I stop remembering faces faster than I remember the weight. That should frighten me. I ate instead of being frightened.`,
     ] },
   { when: { devourMin: 2 }, priority: 3,
     text: [
-      (ctx) => `I've done it again. The memory sits in my belly heavier than food — someone else's life converted into mine. I sleep better after. That should scare me.`,
-      (ctx) => `Second devour. Easier this time. The shame lasted shorter. The gain lasted longer.`,
+      `Second time. Easier to not describe. Harder to pretend I don't know what I am.`,
+      `I crossed something out so hard the paper tore. Ate dinner watching TV like a normal person. I'm not.`,
     ] },
   { when: { devourMin: 1 }, priority: 3,
     text: [
-      (ctx) => `I still taste the command sometimes — devour — and my body answers before my mind catches up. What I took wasn't food. I grew anyway.`,
-      (ctx) => `After the first devour I wrote nothing for an hour. Then I ate more. Something in me has shifted permanently.`,
-      (ctx) => `She's gone. I'm heavier. The connection between those facts is unbearably clear and unbearably arousing.`,
+      `There's a blank hour I can't account for. I was heavier after. I didn't ask questions.`,
+      `I wrote what happened, then deleted it. Ate more. Hands shook. Not from hunger.`,
+      `She's gone. I'm not. I won't say how I know. I know.`,
     ] },
   { when: {},
     text: "" },
 ]);
 
-// ── template & export ─────────────────────────────────────────
-
-export const DIARY_TEMPLATE =
-  "{diary.core}{diary.psych|prefix: }{diary.body|prefix: }{diary.season|prefix: }{diary.devour|prefix: }";
+export const DIARY_TEMPLATE = "{diary.core}{diary.devour|prefix: }";
 
 export function renderDiary(student, week = 1) {
   const ctx = createContext({ subject: student, week });
-  let text = render(DIARY_TEMPLATE, ctx, { noSmooth: true }).trim();
-  // Quiet archetype uses "—" as core; strip it when flavor modules added prose
-  if (text.startsWith("— ")) text = text.slice(2).trim();
+  const text = render(DIARY_TEMPLATE, ctx, { noSmooth: true }).trim();
   return text || "—";
 }
