@@ -240,3 +240,50 @@ export const PHYSICAL_TRAITS = [
     desc:"At this scale she shapes the room around her. Campus has begun to accommodate her like weather.",
     weekly:{ passiveLbs:3, relationship:1 } },
 ];
+
+// ── helpers — point spend, tier gates, effect aggregation ─────
+
+const skillMap = Object.fromEntries(SKILLS.map(sk => [sk.id, sk]));
+
+export function treeSpentPoints(owned = {}, treeId) {
+  return SKILLS.filter(sk => sk.tree === treeId).reduce((sum, sk) => {
+    const rank = owned[sk.id] || 0;
+    return sum + rank * RANK_COSTS[sk.tier];
+  }, 0);
+}
+
+export function isTreeTierUnlocked(owned = {}, treeId, tierIdx) {
+  if (tierIdx <= 0) return true;
+  return treeSpentPoints(owned, treeId) >= TIER_THRESHOLDS[tierIdx];
+}
+
+export function computeSpentSkillPoints(owned = {}) {
+  return SKILLS.reduce((sum, sk) => sum + (owned[sk.id] || 0) * RANK_COSTS[sk.tier], 0);
+}
+
+/** Sum owned ranks into effect totals consumed by feed, talk, and week ticks. */
+export function aggregateSkillEffects(owned = {}) {
+  const out = {};
+  for (const sk of SKILLS) {
+    const rank = owned[sk.id] || 0;
+    if (!rank) continue;
+    for (const [key, val] of Object.entries(sk.effects || {})) {
+      if (sk.maxRanks === 1 && val === 1) {
+        out[key] = 1;
+      } else {
+        out[key] = (out[key] || 0) + val * rank;
+      }
+    }
+  }
+  return out;
+}
+
+export function capacityBonusFromSkills(owned = {}) {
+  return aggregateSkillEffects(owned).capacityBonus || 0;
+}
+
+/** Capacity granted by soft_start for girls at stage 0–1 only. */
+export function softStartBonus(owned = {}, stageId) {
+  if (stageId > 1) return 0;
+  return aggregateSkillEffects(owned).softStart || 0;
+}
