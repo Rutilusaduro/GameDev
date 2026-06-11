@@ -5,8 +5,9 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { C } from '../styles.js';
 import { createContext, render } from '../textEngine/engine.js';
 import {
-  PRE_STREAM_ACTIONS, PRE_STREAM_CHOICES, BRANDS, deriveBarParams, roundDurationFor,
+  BRANDS, deriveBarParams, roundDurationFor,
 } from '../gameData/streaming.js';
+import { StreamPreStreamPanel } from './StreamPreStreamPanel.jsx';
 
 const RED = '#e74c3c';
 const RED_DIM = '#a03030';
@@ -266,7 +267,6 @@ export function StreamSessionModal({
   if (!student) return null;
 
   const staminaColor = ss.stamina > 50 ? '#60c080' : ss.stamina > 20 ? '#e0c040' : '#e04040';
-  const preDone = Object.keys(ss.preStreamChoices || {}).length;
   const ctx = buildStreamContext(ss, student, week);
 
   return (
@@ -285,42 +285,11 @@ export function StreamSessionModal({
 
         {/* PRE-STREAM */}
         {ss.phase === 'preStream' && (
-          <>
-            <div style={{ fontSize: 11, color: '#d8a0a0', marginBottom: 12, lineHeight: 1.7 }}>
-              Pre-stream ritual — choose how Destiny prepares ({preDone}/5 done).
-            </div>
-            {PRE_STREAM_ACTIONS.map((action) => {
-              const chosen = ss.preStreamChoices?.[action.id];
-              const choices = PRE_STREAM_CHOICES[action.id] || [];
-              return (
-                <div key={action.id} style={{ marginBottom: 10, padding: 10, background: '#0a0408', borderRadius: 8, border: `1px solid ${chosen ? `${RED}40` : '#301018'}` }}>
-                  <div style={{ fontSize: 11, color: chosen ? RED : '#a06060', marginBottom: 6 }}>
-                    {action.emoji} {action.label} {chosen ? '✓' : ''}
-                  </div>
-                  {!chosen && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                      {choices.map((c) => (
-                        <button key={c.id} style={{ ...C.btn(RED_DIM), textAlign: 'left', fontSize: 11, padding: '6px 10px' }}
-                          onClick={() => preStreamAction(action.id, c.id)}>
-                          {c.label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                  {chosen && ss.preStreamVignettes?.[action.id] && (
-                    <div style={{ fontSize: 11, color: '#d8b0b0', lineHeight: 1.85, whiteSpace: 'pre-line', marginTop: 4 }}>
-                      {ss.preStreamVignettes[action.id]}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-            {preDone >= 5 && (
-              <button style={{ ...C.btn(RED), width: '100%', marginTop: 8 }} onClick={() => preStreamAction('__done__')}>
-                Pick a Challenge →
-              </button>
-            )}
-          </>
+          <StreamPreStreamPanel
+            streamSession={ss}
+            student={student}
+            preStreamAction={preStreamAction}
+          />
         )}
 
         {/* CHALLENGE SELECT */}
