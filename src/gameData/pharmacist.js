@@ -30,8 +30,9 @@ export const COMPOUNDS = {
   },
   weight_gain_potion: {
     id: "weight_gain_potion", label: "Weight Gain Potion", stage: 1,
-    flavor: "The scale moves faster. She might start looking forward to it.",
-    addictionGain: 1, hungerDelta: 1, corruptionGain: 2, calMult: 1.35, fullMult: 1.2,
+    flavor: "The scale moves the moment she swallows it — immediate, visible, stomach unchanged.",
+    addictionGain: 1, hungerDelta: 1, corruptionGain: 2, calMult: 1, fullMult: 1,
+    immediateLbsGain: [8, 14],
   },
   strong_appetite: {
     id: "strong_appetite", label: "Strong Appetite Stimulant", stage: 2,

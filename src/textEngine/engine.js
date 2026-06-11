@@ -149,6 +149,9 @@ function evalWhen(when, ctx) {
       case "campusFattening": ok = !!ctx.globals?.campusFattening === !!v; break;
       case "campusTierMin": ok = (ctx.globals?.campusTier ?? 0) >= v; break;
       case "campusTierMax": ok = (ctx.globals?.campusTier ?? 0) <= v; break;
+      case "weightBand": ok = ctx.globals?.weightBand === v; break;
+      case "nodeId": ok = ctx.globals?.nodeId === v; break;
+      case "studentId": ok = ctx.globals?.studentId === v; break;
       default: {
         // dimension on ctx.d: corruption, stage, relationship, relSize,
         // bodyType, archetype, mood, evolvedForm, refStage...

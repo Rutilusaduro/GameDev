@@ -14,7 +14,14 @@ import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, 
 import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_FEED_LINES, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
 import { TALK_CONFIG } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES } from './gameData/items.js';
-import { CAMPUS_NODES, CAMPUS_CONFIG, CAMPUS_ENCOUNTERS, stageDescriptor } from './gameData/campus.js';
+import { CAMPUS_NODES, CAMPUS_CONFIG } from './gameData/campus.js';
+import {
+  defaultCampusExplorationState, buildExplorationContext, rollTravelExploration,
+  searchCampusLocation, applySecretSolve,
+} from './gameData/campusExploration.js';
+import { ELARA_ID, availableElaraQuests, startElaraQuest, advanceElaraQuestAtNode, takePendingQuestReward } from './gameData/relicHunter.js';
+import { getExplorationFind } from './gameData/campusIngredients.js';
+import { availableSecretsAtNode } from './gameData/campusSecrets.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
@@ -31,11 +38,11 @@ import {
   applyExposureEvent, formatSynthesisGrant, tickPharmacistWeek,
 } from './gameData/pharmacist.js';
 import {
-  startChemSession, applyAcquisitionChoice, skipAcquisition, finalizeBrewPlan,
+  startChemSession, applyAcquisitionChoice, skipAcquisition, finalizeBrewPlan, mergeIngredients,
 } from './gameData/pharmacistIngredients.js';
 import {
-  rollCampusPassiveLbs, pickPharmacistCampusEvent, CAMPUS_SOFT_FLAVOR,
-  PHARMACIST_CAMPUS_ENCOUNTERS, getCampusTesterStartLbs, getCampusHiveRecruitLbsBonus,
+  rollCampusPassiveLbs, pickPharmacistCampusEvent,
+  getCampusTesterStartLbs, getCampusHiveRecruitLbsBonus,
   getCampusWeeklyEventChance, scaleCampusEventGain, CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier,
 } from './gameData/pharmacistCampus.js';
 import { PharmacistChemModal } from './components/PharmacistChemModal.jsx';
@@ -147,7 +154,11 @@ export default function ProfessorSim(){
   // inventory: {[itemId]: qty}
   const [itemTargetPicker,setItemTargetPicker]=useState(null);
   // itemTargetPicker: {item}
-  const [campusState,setCampusState]=useState({at:CAMPUS_CONFIG.startNode,log:[CAMPUS_NODES[CAMPUS_CONFIG.startNode].desc]});
+  const [campusState,setCampusState]=useState({
+    at:CAMPUS_CONFIG.startNode,
+    log:[CAMPUS_NODES[CAMPUS_CONFIG.startNode].desc],
+    exploration:defaultCampusExplorationState(),
+  });
   // {student, phase:"scene"|"analog"|"break"|"purchase"|"swap"|"digital"}
   const [bigScaleUnlocked,setBigScaleUnlocked]=useState(false);
   const [brokeScaleIds,setBrokeScaleIds]=useState([]);
@@ -334,46 +345,168 @@ export default function ProfessorSim(){
   // ── CAMPUS EXPLORATION ─────────────────────────────────────────
   const campusLog=(lines)=>setCampusState(prev=>({...prev,log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit)}));
 
-  const rollCampusEvent=(nodeId)=>{
-    const lines=[];
-    if(pharmacistState?.campusFattening&&Math.random()<0.4){
-      lines.push(`🌿 ${CAMPUS_SOFT_FLAVOR[rnd(0,CAMPUS_SOFT_FLAVOR.length-1)]}`);
+  const elaraDiscovered=!!campusState.exploration?.elaraDiscovered;
+  const elaraMet=!!campusState.exploration?.elaraMet;
+  const studentVisibleOnCampus=(st)=>
+    !st.hidden
+    ||(st.id===LILITH_ID&&lilithUnlocked)
+    ||(st.id===ELARA_ID&&elaraDiscovered);
+
+  const getCampusExplorationCtx=()=>buildExplorationContext({
+    students, pharmacistState, week, lilithUnlocked,
+    exploration:campusState.exploration||defaultCampusExplorationState(),
+  });
+
+  const grantExplorationReward=(grants)=>{
+    if(!grants||!Object.keys(grants).length) return;
+    if(grants.foodId){
+      setInventory(prev=>({...prev,[grants.foodId]:Math.min(INVENTORY_CONFIG.maxStack,(prev[grants.foodId]||0)+1)}));
     }
-    if(Math.random()<CAMPUS_CONFIG.encounterChance){
-      const visible=students.filter(st=>!st.hidden||lilithUnlocked);
-      if(visible.length){
-        const who=visible[rnd(0,visible.length-1)];
-        let stageId=getStage(who.lbs).id;
-        if(pharmacistState?.campusFattening) stageId=Math.min(11,stageId+1);
-        const sd=stageDescriptor(stageId);
-        const encPool=pharmacistState?.campusFattening
-          ?[...CAMPUS_ENCOUNTERS,...PHARMACIST_CAMPUS_ENCOUNTERS]
-          :CAMPUS_ENCOUNTERS;
-        const encFn=encPool[rnd(0,encPool.length-1)];
-        const enc=encFn.length===0?encFn():encFn.length===1?encFn(who):encFn(who,sd);
-        lines.push(`👁 ${enc}`);
-      }
+    const ing={...grants};
+    delete ing.foodId;
+    if(!Object.keys(ing).length) return;
+    if(pharmacistState){
+      setPharmacistState(prev=>prev?{...prev,ingredients:mergeIngredients(prev.ingredients,ing)}:prev);
+      return;
     }
-    if(Math.random()<CAMPUS_CONFIG.itemFindChance){
+    if(!grants.foodId){
       const item=rollWeeklyItem();
       setInventory(prev=>({...prev,[item.id]:Math.min(INVENTORY_CONFIG.maxStack,(prev[item.id]||0)+1)}));
-      lines.push(`🎒 You come across ${item.emoji} ${item.label.toLowerCase()} — into the pantry it goes.`);
     }
-    return lines;
+  };
+
+  const markElaraMet=()=>{
+    setCampusState(prev=>{
+      const ex=prev.exploration||defaultCampusExplorationState();
+      if(ex.elaraMet) return prev;
+      return {...prev,exploration:{...ex,elaraMet:true}};
+    });
+  };
+
+  useEffect(()=>{
+    if(selectedId===ELARA_ID&&elaraDiscovered) markElaraMet();
+  },[selectedId,elaraDiscovered]);
+
+  const applyExplorationQuestReward=(exploration)=>{
+    const { exploration: nextExp, reward }=takePendingQuestReward(exploration);
+    if(!reward) return exploration;
+    if(reward.findId){
+      const find=getExplorationFind(reward.findId);
+      if(find) grantExplorationReward(find.grants);
+    }
+    if(reward.relationship){
+      setStudents(prev=>prev.map(s=>s.id===ELARA_ID?{...s,relationship:Math.min(100,s.relationship+(reward.relationship||0))}:s));
+    }
+    return nextExp;
+  };
+
+  const commitCampusExploration=(explorationPatch,lines)=>{
+    let exploration={...(campusState.exploration||defaultCampusExplorationState()),...explorationPatch};
+    exploration=applyExplorationQuestReward(exploration);
+    setCampusState(prev=>({
+      ...prev,
+      exploration,
+      log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit),
+    }));
+    if(explorationPatch.elaraDiscovered){
+      setStudents(prev=>prev.map(s=>s.id===ELARA_ID?{...s,relationship:Math.max(s.relationship,25)}:s));
+    }
+  };
+
+  const rollCampusEvent=(nodeId,isTravel=true)=>{
+    const ctx=getCampusExplorationCtx();
+    const { lines, effects }=rollTravelExploration(nodeId,ctx);
+    const extra=[];
+    if(effects.ingredientGrant||effects.foodGrant) grantExplorationReward({...effects.ingredientGrant,...(effects.foodGrant?{foodId:effects.foodGrant}:{})});
+    if(Math.random()<CAMPUS_CONFIG.itemFindChance*0.5){
+      const item=rollWeeklyItem();
+      setInventory(prev=>({...prev,[item.id]:Math.min(INVENTORY_CONFIG.maxStack,(prev[item.id]||0)+1)}));
+      extra.push(`🎒 You come across ${item.emoji} ${item.label.toLowerCase()} — into the pantry it goes.`);
+    }
+    let exploration=campusState.exploration||defaultCampusExplorationState();
+    if(isTravel&&exploration.elaraMet){
+      const quest=advanceElaraQuestAtNode(exploration,nodeId,ctx);
+      exploration=applyExplorationQuestReward(quest.exploration);
+      if(quest.lines?.length) extra.push(...quest.lines);
+      if(quest.completed&&quest.reward?.findId){
+        const find=getExplorationFind(quest.reward.findId);
+        if(find) grantExplorationReward(find.grants);
+      }
+      if(quest.completed&&quest.reward?.relationship){
+        setStudents(prev=>prev.map(s=>s.id===ELARA_ID?{...s,relationship:Math.min(100,s.relationship+(quest.reward.relationship||0))}:s));
+      }
+    }
+    return { lines:[...lines,...extra], exploration };
   };
 
   const moveToCampusNode=(nodeId)=>{
     const from=CAMPUS_NODES[campusState.at];
     if(!from.exits.includes(nodeId)) return;
     const node=CAMPUS_NODES[nodeId];
-    const lines=[`→ You walk to ${node.emoji} ${node.label}.`,node.desc,...rollCampusEvent(nodeId)];
-    setCampusState(prev=>({...prev,at:nodeId,log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit)}));
+    const { lines:eventLines, exploration }=rollCampusEvent(nodeId,true);
+    const lines=[`→ You walk to ${node.emoji} ${node.label}.`,node.desc,...eventLines];
+    setCampusState(prev=>({
+      ...prev,
+      at:nodeId,
+      exploration,
+      log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit),
+    }));
   };
 
   const lookAround=()=>{
     const node=CAMPUS_NODES[campusState.at];
     const flavor=node.flavor[rnd(0,node.flavor.length-1)];
-    campusLog([flavor,...rollCampusEvent(campusState.at)]);
+    const { lines:eventLines, exploration:eventExploration }=rollCampusEvent(campusState.at,false);
+    const ctx=getCampusExplorationCtx();
+    let exploration=eventExploration;
+    const lines=[flavor,...eventLines];
+    const observeSecrets=availableSecretsAtNode(campusState.at,exploration,ctx).filter(s=>s.solve==='observe');
+    if(observeSecrets.length){
+      const secret=observeSecrets[0];
+      const count=(exploration.observeCounts?.[campusState.at]||0)+1;
+      exploration={...exploration,observeCounts:{...exploration.observeCounts,[campusState.at]:count}};
+      if(count>=(secret.observeCount||2)){
+        exploration=applySecretSolve(exploration,secret.id);
+        lines.push(`🔓 ${secret.discover}`);
+        if(secret.reward?.findId){
+          const find=getExplorationFind(secret.reward.findId);
+          if(find){
+            grantExplorationReward(find.grants);
+            lines.push(`   + ${find.label}`);
+          }
+        }
+      } else {
+        lines.push(`…${secret.hint} (${count}/${secret.observeCount||2} observations)`);
+      }
+    }
+    setCampusState(prev=>({
+      ...prev,
+      exploration,
+      log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit),
+    }));
+  };
+
+  const searchCampus=()=>{
+    const nodeId=campusState.at;
+    const ctx=getCampusExplorationCtx();
+    const exploration=campusState.exploration||defaultCampusExplorationState();
+    const { lines, effects, exploration: searched }=searchCampusLocation(nodeId,exploration,ctx);
+    let next=searched;
+    if(effects.solvedSecret) next=applySecretSolve(next,effects.solvedSecret);
+    if(effects.ingredientGrant||effects.foodGrant) grantExplorationReward({...effects.ingredientGrant,...(effects.foodGrant?{foodId:effects.foodGrant}:{})});
+    if(effects.discoverElara) next={...next,elaraDiscovered:true};
+    commitCampusExploration(next,lines);
+  };
+
+  const beginElaraQuest=(questId)=>{
+    const exploration=campusState.exploration||defaultCampusExplorationState();
+    if(!exploration.elaraDiscovered){ campusLog(['⚠️ You have not found Elara yet.']); return; }
+    if(!exploration.elaraMet){ campusLog(['⚠️ Talk to Elara or open her profile before taking her quests.']); return; }
+    if(exploration.questId){ campusLog(['⚠️ Finish your current exploration quest first.']); return; }
+    const quest=availableElaraQuests(exploration,getCampusExplorationCtx()).find(q=>q.id===questId);
+    if(!quest){ campusLog(['⚠️ That quest is not available yet.']); return; }
+    const next=startElaraQuest(exploration,questId);
+    commitCampusExploration(next,[`🗺️ Elara nods. "${quest.desc}"`, `→ First stop: ${quest.steps[0].nodeId.replace(/_/g,' ')}.`]);
   };
 
   // ── INVENTORY ──────────────────────────────────────────────────
@@ -519,6 +652,15 @@ export default function ProfessorSim(){
     }
     if(opts.compoundId&&pharmacistState){
       setPharmacistState(prev=>consumeCompoundDose(prev,opts.compoundId));
+    }
+    if(opts.compoundId){
+      const compound=COMPOUNDS[opts.compoundId];
+      if(compound?.immediateLbsGain){
+        const [lo,hi]=compound.immediateLbsGain;
+        const lbsGain=rnd(lo,hi);
+        result=processStudentGain(result,lbsGain,0);
+        setTimeout(()=>push(`💊 ${compound.label} — ${s.name} gains ${lbsGain} lbs immediately. Fullness unchanged.`),75);
+      }
     }
     const hungerEff=aggregateSkillEffects(ownedSkills);
     return feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
@@ -3244,7 +3386,9 @@ export default function ProfessorSim(){
   };
 
   const openTalk=(s)=>{
-    if(!s||s.hidden) return;
+    if(!s) return;
+    if(s.hidden&&!(s.id===LILITH_ID&&lilithUnlocked)&&!(s.id===ELARA_ID&&elaraDiscovered)) return;
+    if(s.id===ELARA_ID&&elaraDiscovered) markElaraMet();
     if(isWithdrawalAggressive(s)&&(s.withdrawalAggroWeeks||0)>0){
       push(`⚠️ ${s.name} is in withdrawal — irritable and snapping at anyone who isn't feeding her.`);
       return;
@@ -3854,7 +3998,7 @@ export default function ProfessorSim(){
   const spiritLevel=1+Math.floor(spiritXp/SPIRIT_XP_PER_LEVEL);
   const spiritRankProgress=Math.max(0,spiritLevel-1);
   const totalSkillPoints=Math.max(0,spiritLevel-1);
-  const visibleStudents=students.filter(s=>!s.hidden||lilithUnlocked);
+  const visibleStudents=students.filter(studentVisibleOnCampus);
   const avgLbs=Math.round(visibleStudents.reduce((a,s)=>a+s.lbs,0)/Math.max(1,visibleStudents.length));
   // ── PROFESSOR SUBJECT / TRAIT EFFECTS ───────────────────────
   const hasTrait=(id)=>professorProfile?.traits?.includes(id)||false;
@@ -4532,7 +4676,7 @@ export default function ProfessorSim(){
         <div style={C.main}>
 
           {/* ── CLASS VIEW ── */}
-          {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
+          {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
 
           {/* ── STUDENT DETAIL ── */}
           {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} week={week}/>}
@@ -4544,7 +4688,16 @@ export default function ProfessorSim(){
           {view==="inventory"&&<InventoryView inventory={inventory} setItemTargetPicker={setItemTargetPicker}/>}
 
           {/* ── CAMPUS EXPLORATION ── */}
-          {view==="campus"&&<CampusView campusState={campusState} moveToCampusNode={moveToCampusNode} lookAround={lookAround}/>}
+          {view==="campus"&&<CampusView
+            campusState={campusState}
+            moveToCampusNode={moveToCampusNode}
+            lookAround={lookAround}
+            searchCampus={searchCampus}
+            beginElaraQuest={beginElaraQuest}
+            explorationCtx={getCampusExplorationCtx()}
+            campusTier={getCampusNarrativeTier(pharmacistState)}
+            elaraMet={elaraMet}
+          />}
 
 {/* ── SKILL TREE ── */}
           {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} ownedSkills={ownedSkills} skillEffects={skillEffects} students={students} onBuy={buySkillRank} onMax={maxSkillRank} spiritLevel={spiritLevel} spiritXp={spiritXp%SPIRIT_XP_PER_LEVEL} spiritXpForNextLevel={SPIRIT_XP_PER_LEVEL}/>}
