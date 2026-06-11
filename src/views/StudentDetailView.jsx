@@ -2,6 +2,7 @@ import { ASCENSION_BRIDGE, EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, EVOLVED_ACTI
 import { ASCENSION_STAGE_REACTIONS, CELESTIAL_STAGES, CONVERGENCE_STAGE, GODDESS_ACTIONS, GODDESS_ATTITUDE, GODDESS_STAGES, PRIMORDIAL_ACTIONS, PRIMORDIAL_STAGES, PRIMORDIAL_TRIUMVIRATE_ACTIONS, PRIMORDIAL_TRIUMVIRATE_BODY_DESC, SANGUINE_ACTIONS, SANGUINE_STAGES, SINGULARITY_ACTIONS, SINGULARITY_STAGES, TRIUMVIRATE_ACTIONS, UMBRAL_STAGES, VERDANT_ACTIONS, VERDANT_STAGES, getGoddessStage } from '../gameData/ascension.js';
 import { ATMOSPHERE_TIERS, GUEST_TIERS, MENU_TIERS } from '../gameData/chapterHostess.js';
 import { C } from '../styles.js';
+import { LilithPixelArt } from '../components/LilithPixelArt.jsx';
 import { getCorruptionTier, CORRUPTION_CONFIG } from '../gameData/corruption.js';
 import { CASE_STUDY_PAIRS } from '../gameData/communityResearcher.js';
 import { EVOLVED_SKILL_TREES } from '../gameData/skills.js';
@@ -37,6 +38,9 @@ export function StudentDetailView({ openWeighIn, addBlobToReligion, ap, ascendSt
                       <StageTag stage={st}/>
                     </div>
                     <div style={{fontSize:11,color:"#604070",marginBottom:8}}>{s.role} · age {s.age} · {s.desc}</div>
+                    <div style={{display:"flex",justifyContent:"center",marginBottom:10}}>
+                      <LilithPixelArt stageId={stageId} size={170}/>
+                    </div>
                     <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:6}}>
                       <div style={{flex:1,minWidth:150}}>
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:1}}>
