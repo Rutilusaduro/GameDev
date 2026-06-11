@@ -11,19 +11,19 @@ Any constant, dialogue, description, or reaction that relates to weight must hav
 - Evolving identity, self-concept shifts → all 11 base stages
 - Ascension-path content → all 5 stages of that path + convergence where applicable
 
-**The full stage ladder:**
+**The full stage ladder** (canonical — see `src/gameData/stages.js`):
 | Stage | Label | Min lbs |
 |-------|-------|---------|
 | 0 | Slight | 80 |
-| 1 | Plump | 120 |
-| 2 | Chubby | 160 |
-| 3 | Heavy | 210 |
-| 4 | Full | 265 |
-| 5 | Hefty | 330 |
-| 6 | Large | 400 |
-| 7 | Massive | 490 |
-| 8 | Enormous | 595 |
-| 9 | Colossal | 695 |
+| 1 | Slim | 100 |
+| 2 | Soft | 135 |
+| 3 | Chubby | 162 |
+| 4 | Plump | 195 |
+| 5 | Heavy | 238 |
+| 6 | Fat | 285 |
+| 7 | Very Fat | 360 |
+| 8 | Enormous | 465 |
+| 9 | Colossal | 595 |
 | 10 | Blob | 820 |
 | Celestial 0–4 | Seed → Apex | 820+ |
 | Umbral 0–4 | Seed → Sovereign | 820+ |
