@@ -942,6 +942,7 @@ export const EVOLVED_ACTIVITY_META = {
   psych_researcher:{ label:"Continue Research Session", apCost:1, gainRange:[4,9],  relBonus:11 },
   cultivator:          { label:"🍰 Run Taste-Test Session", apCost:1, gainRange:[2,8],  relBonus:12 },
   community_researcher:{ label:"📋 Conduct Case Study",     apCost:1, gainRange:[3,8],  relBonus:10 },
+  pharmacist:          { label:"🧪 Run Synthesis Session",  apCost:1, gainRange:[2,6],  relBonus:10 },
 };
 
 export const EVOLVED_EVENTS = {
@@ -3435,6 +3436,7 @@ export const EVOLVED_FORM_META = {
   delivery_hive:         { title:"Delivery Hive Queen",    color:"#d98cff" },
   cultivator:           { title:"The Cultivator",         color:"#8B4513" },
   community_researcher: { title:"Community Researcher",    color:"#4a6fa5" },
+  pharmacist:           { title:"The Chemist",            color:"#2e6b5a" },
 };
 
 export const EVOLUTION_BUTTON_BLURB = {
@@ -3452,6 +3454,7 @@ export const EVOLUTION_BUTTON_BLURB = {
   eced:(s)=>`You stop by the classroom on a Tuesday afternoon — not for any particular reason, just passing — and the smell hits you before the door fully opens. Butter, sugar, something warm. ${s.name} is at the counter at ${Math.round(s.lbs)} pounds, her apron dusty with flour, and around the table are the girls she teaches and apparently their mothers, and everyone is eating, and the room has the specific quality of a space that has found its purpose. Daisy looks up. She sees you see the room. "I've been doing Tuesdays for a while now," she says. Her voice is carefully normal. "I think it's working."`,
   culinary:(s)=>`You find ${s.name}'s test kitchen unexpectedly unlocked. She's not there, but someone else is — a woman you don't recognize, sitting at the prep table with an empty plate and the particular slow contentment of someone who ate something extraordinary and hasn't decided to leave yet. She looks up. She seems confused about how long she's been there. When Reneé comes back she sees you in the doorway and she doesn't explain anything. She takes the plate, washes it, and says: "I've been running some tests. With willing subjects." A pause. "Very willing subjects." She looks at you with the calibrated calm of someone who has been thinking about whether to say the next thing for a long time. "I think I can do this properly. I just need the right direction."`,
   farm_girl:(s)=>`You stop by and find Mary Jane at the counter with more food than two people could eat and a look of complete purpose. She's not cooking because she's hungry — or not only that. She's cooking because she knows something about food and feeding and what a soft home feels like and she's starting to understand she's the only person in the building who knows it. She's ${Math.round(s.lbs)} pounds and she looks like a plan that's been waiting to be named.`,
+  pharmacy_grad:(s)=>`You find ${s.name} in the pharmacy lab after hours, gloves on, hair tied back, a corporate ID badge still clipped to her coat. The notebook open on the bench isn't her assigned research — it's dosage tables with appetite curves crossed out and rewritten. She doesn't pretend otherwise when she sees you. "I've been adjusting compounds," she says, very carefully. "Wellness adjacents. Metabolic support." She taps the page. "I can make things for you. Food delivery only — that's the safe route." She looks anxious and absolutely certain in the same breath. "I need someone who knows what they're authorizing."`,
 };
 
 
@@ -3545,6 +3548,12 @@ export const EVOLUTION_OFFER = {
     intro:(s)=>`${s.name} sets two things on the table between you: a recipe notebook and a short list of names. No explanation. She waits. When you ask, she says: "I've been running informal trials. Voluntary subjects, controlled portions, careful observation." She pauses. "The subjects gained weight. I gained weight. The data is consistent across six sessions." She taps the list. "I want to do it properly. One subject at a time, managed correctly, from selection through — completion." She says 'completion' the way someone says a word they've chosen very carefully. "I need someone who understands what they're authorizing."`,
     paths:{
       cultivator:{ label:"The Cultivator", desc:"Recruit a taste tester. Run feeding sessions using carefully constructed recipes. Grow the subject through stages and harvest when the yield is right. Three full cycles. Precise, personal, and deeply satisfying." },
+    },
+  },
+  pharmacy_grad:{
+    intro:(s)=>`${s.name} meets you after hours in a pharmacy lab that smells like ethanol and vanilla. Her corporate badge is still on — she hasn't gone home yet, maybe won't. "I don't want to cure cancer," she says, too quietly, then corrects herself: "I mean — I want to work on appetite. Metabolic wellness. Support compounds." She slides a vial across the bench. "Delivered through food. Always through food." Her hands are steady. Her eyes aren't. "I can build you tools. I need a partner who won't pretend this is innocent."`,
+    paths:{
+      pharmacist:{ label:"The Chemist", desc:"Sophia synthesizes appetite stimulants, pleasure enhancers, and metabolic compounds — a slow descent from corporate researcher to campus-scale transformation architect." },
     },
   },
 };
