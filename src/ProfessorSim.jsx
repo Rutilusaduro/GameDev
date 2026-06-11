@@ -12,6 +12,7 @@ import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, I
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
 import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_FEED_LINES, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
+import { TALK_CONFIG } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES } from './gameData/items.js';
 import { CAMPUS_NODES, CAMPUS_CONFIG, CAMPUS_ENCOUNTERS, stageDescriptor } from './gameData/campus.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
@@ -48,6 +49,7 @@ import { AchievementsView } from './views/AchievementsView.jsx';
 import { PrivateSessionModal } from './components/PrivateSessionModal.jsx';
 import { EvolvedEventModal } from './components/EvolvedEventModal.jsx';
 import { WeighInModal } from './components/WeighInModal.jsx';
+import { TalkModal } from './components/TalkModal.jsx';
 import { DebugPanel } from './components/DebugPanel.jsx';
 import { EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
@@ -94,6 +96,7 @@ export default function ProfessorSim(){
   const [classSession,setClassSession]=useState(null);
   const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
+  const [talkStudentId,setTalkStudentId]=useState(null);
   const [professorProfile,setProfessorProfile]=useState(null);
   // professorProfile: {name, subject, traits:[], origin?}
   const [adminScrutiny,setAdminScrutiny]=useState(0);
@@ -2894,6 +2897,34 @@ export default function ProfessorSim(){
     }
   };
 
+  const openTalk=(s)=>{
+    if(!s||s.hidden) return;
+    if(ap<TALK_CONFIG.apCost){ push(`⚠️ Need ${TALK_CONFIG.apCost} AP to talk.`); return; }
+    setAp(a=>a-TALK_CONFIG.apCost);
+    setTalkStudentId(s.id);
+  };
+
+  const applyTalkEffect=(effect)=>{
+    if(!talkStudentId||!effect) return;
+    if(effect.cals){
+      setStudents(prev=>{
+        const st=prev.find(x=>x.id===talkStudentId);
+        if(!st) return prev;
+        const fed=feedStudentCalories(st,effect.cals,effect.full||0,effect.rel||0,"Talk");
+        if(!fed) return prev;
+        return prev.map(x=>x.id===fed.id?fed:x);
+      });
+      return;
+    }
+    setStudents(prev=>prev.map(x=>{
+      if(x.id!==talkStudentId) return x;
+      let ns={...x};
+      if(effect.rel) ns.relationship=Math.min(100,ns.relationship+(effect.rel||0));
+      if(effect.corruption) ns={...ns,corruption:addCorruption(ns,effect.corruption)};
+      return ns;
+    }));
+  };
+
   const buySkillRank=(sk)=>{
     const rank=ownedSkills[sk.id]||0;
     if(rank>=sk.maxRanks) return;
@@ -3429,6 +3460,7 @@ export default function ProfessorSim(){
   };
 
   const sel=selectedId!==null?students.find(s=>s.id===selectedId):null;
+  const talkStudent=talkStudentId!=null?students.find(s=>s.id===talkStudentId):null;
   const totalGained=students.reduce((a,s)=>a+(s.lbs-s.startLbs),0);
   const spiritXp=Math.max(0,Math.round(totalGained));
   const spiritLevel=1+Math.floor(spiritXp/SPIRIT_XP_PER_LEVEL);
@@ -4115,7 +4147,7 @@ export default function ProfessorSim(){
           {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
@@ -4315,6 +4347,7 @@ export default function ProfessorSim(){
       {chapterHostessState?.feastLogOpen&&<ChapterHostessFeastLogModal chapterHostessState={chapterHostessState} completeFeast={completeFeast}/>}
 
       {/* ── LILITH — CLUE / INVESTIGATION MODAL ── */}
+      {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect}/>}
       {lilithClueModal&&<LilithClueModal lilithClueModal={lilithClueModal} investigateClue={investigateClue} setLilithClueModal={setLilithClueModal} confirmInvestigation={confirmInvestigation}/>}
 
       {/* ── LILITH — FEASTING BEAUTY (TEXT ADVENTURE) ── */}
