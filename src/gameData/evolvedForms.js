@@ -3490,6 +3490,7 @@ export const EVOLUTION_OFFER = {
     intro:(s)=>`${s.name} swivels her chair toward you mid-session, something she never does. The game is still running. 'I've been thinking,' she says, not looking up. 'About what this is now.' She indicates herself with one hand while the other keeps the controller. 'The sessions. The eating. The way they work together.' She pauses. 'I want to lean into it. Properly.'`,
     paths:{
       ranked_feedee:{ label:"Ranked Feedee", desc:"Sessions optimized for both. Focus bar, food queue, delivery driver who knows the schedule better than she does. The game never stops. Neither does the eating." },
+      eating_streamer:{ label:"Eating Streamer", desc:"Turn the camera on and make the appetite the content. Sponsors, chat, and a focus bar that never lets her coast. The stream doesn't end until she does." },
     },
   },
   sorority:{
