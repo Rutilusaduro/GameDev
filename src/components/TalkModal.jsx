@@ -11,6 +11,8 @@ import { getCorruptionTier } from '../gameData/corruption.js';
 import { getStage } from '../gameData/stages.js';
 import { createContext, render } from '../textEngine/engine.js';
 import '../textEngine/scenes/talkCodas.js'; // registers talk.coda
+import '../textEngine/scenes/hungerLexicon.js';
+import { getHungerTier, getAddictionLevel } from '../gameData/hungerAddiction.js';
 import { getBodyDescRich } from '../utils/gameHelpers.js';
 import { C } from '../styles.js';
 
@@ -26,6 +28,9 @@ function buildResponse(topic, student, skillEffects, week){
     text = buildTalkResponse(topic.id, student, corTier);
     const ctx = createContext({ subject: student, skillEffects });
     text += render("{talk.coda|prefix: }", ctx, { noSmooth: true });
+    if (getHungerTier(student) >= 2 || getAddictionLevel(student) >= 1) {
+      text += render("{talk.hungryCoda}", ctx, { noSmooth: true });
+    }
   }
 
   return text;
