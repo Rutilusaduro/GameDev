@@ -829,7 +829,8 @@ export default function ProfessorSim(){
   const dismissHomeroomActivity=()=>{
     if(!homeroomSessionState?.activeActivity?.done) return;
     const{activeActivity}=homeroomSessionState;
-    const logLine=activeActivity.type==='conference'?`✦ Conference — ${activeActivity.key}`:activeActivity.type==='parent_meeting'?`✦ Parent Group Meeting`:activeActivity.type==='health_unit'?`✦ Health Unit — Measurements`:`✦ Activity`;
+    const confLabel=activeActivity.key?.replace(/_/g," ")||activeActivity.key;
+    const logLine=activeActivity.type==='conference'?`✦ Conference — ${confLabel}`:activeActivity.type==='parent_meeting'?`✦ Parent Group Meeting`:activeActivity.type==='health_unit'?`✦ Health Unit — Measurements`:`✦ Activity`;
     setHomeroomSessionState(prev=>({...prev,log:[...prev.log,logLine],activeActivity:null}));
   };
   const closeHomeroomSession=()=>{
@@ -2910,9 +2911,25 @@ export default function ProfessorSim(){
       setStudents(prev=>{
         const st=prev.find(x=>x.id===talkStudentId);
         if(!st) return prev;
-        const fed=feedStudentCalories(st,effect.cals,effect.full||0,effect.rel||0,"Talk");
+        const fed=feedStudentCalories(st,effect.cals,effect.full||0,effect.rel||0,effect.devourShift?"Devour":"Talk");
         if(!fed) return prev;
-        return prev.map(x=>x.id===fed.id?fed:x);
+        let ns=fed;
+        if(effect.devourShift){
+          const cor=getCorruptionTier(ns.corruption||0).id;
+          ns={
+            ...ns,
+            devourCount:(ns.devourCount||0)+1,
+            mood:cor>=2?"content":cor>=1?"nervous":"stressed",
+            corruption:addCorruption(ns,effect.corruption||0),
+          };
+          setTimeout(()=>push(`🩸 ${ns.name} has changed. Something in her eyes is different now.`),200);
+        } else if(effect.corruption){
+          ns={...ns,corruption:addCorruption(ns,effect.corruption)};
+        }
+        if(effect.rel && !effect.devourShift){
+          ns={...ns,relationship:Math.min(100,ns.relationship+(effect.rel||0))};
+        }
+        return prev.map(x=>x.id===ns.id?ns:x);
       });
       return;
     }
