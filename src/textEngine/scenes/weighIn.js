@@ -7,6 +7,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerModule, createContext, render } from '../engine.js';
 import '../modules.js';
+import { getWeighInPersonalReply } from '../../gameData/weighInReplies.js';
 
 // ── weighIn.arrival — physical entrance, body-type flavored ───
 
@@ -1119,9 +1120,45 @@ registerModule("weighIn.bigScaleApproach", [
     ] },
 ]);
 
-// ── weighIn.reaction — seeing the scale reading ────────────────
-// Called after the scale animation settles. Varies by stage × corruption,
-// with body-type-specific gestures where they add flavor.
+// ── weighIn.stepOff — short beat after the reading settles ─────
+// Universal physical moment: leaving the platform before she speaks.
+
+registerModule("weighIn.stepOff", [
+  { when: { stageMax: 1 },
+    text: [
+      (ctx) => `The dial holds at ${Math.round(ctx.subject.lbs)}. ${ctx.subject.name} steps off lightly — one foot, then the other. The platform rocks once beneath her and goes still.`,
+      (ctx) => `${ctx.subject.name} reads the number, then hops down. The scale trembles and settles. She brushes imaginary dust from her sleeve like the moment is already behind her.`,
+      (ctx) => `The reading steadies. ${ctx.subject.name} steps off without hurry, slim ankles flexing, the platform returning to level behind her.`,
+    ] },
+  { when: { stage: [2, 3] },
+    text: [
+      (ctx) => `The dial settles. ${ctx.subject.name} steps off carefully — her softened thighs brush together, her belly gives a little when she shifts her weight, and the platform dips before rocking upright.`,
+      (ctx) => `${ctx.subject.name} reads ${Math.round(ctx.subject.lbs)} lbs, then steps down. The scale creaks once. She steadies herself with a hand on your desk, warm and slightly breathless.`,
+      (ctx) => `The number holds. ${ctx.subject.name} steps off and the platform takes a moment to recover — her hips and belly sway with the motion, soft flesh settling as she finds her balance.`,
+    ] },
+  { when: { stage: [4, 5] },
+    text: [
+      (ctx) => `The reading locks in. ${ctx.subject.name} steps off slowly — her thick belly swings forward with the motion, her heavy thighs rubbing as she shifts, and the platform groans before going still.`,
+      (ctx) => `${ctx.subject.name} reads ${Math.round(ctx.subject.lbs)} lbs and eases herself down. The scale dips visibly under her weight before she clears it. She exhales, plump and warm, and rolls her shoulders.`,
+      (ctx) => `The dial stops. ${ctx.subject.name} steps off with a soft jiggle through her middle and hips — flesh wobbling, settling, finding its new resting place as the platform steadies.`,
+    ] },
+  { when: { stage: [6, 7, 8] },
+    text: [
+      (ctx) => `The reading holds at ${Math.round(ctx.subject.lbs)}. ${ctx.subject.name} steps off in stages — one foot, then the other, belly hanging heavy and swaying, thighs thick and pressing, the platform complaining before she clears it entirely.`,
+      (ctx) => `${ctx.subject.name} eases herself off the platform. The motion sends slow ripples through her fat body; her belly lags behind her turn and settles with a soft, audible exhale. The scale rocks twice before stilling.`,
+      (ctx) => `The number settles. ${ctx.subject.name} steps down carefully, breathing through her nose. Her vast soft weight shifts off the platform inch by inch — belly, hips, thighs — until the scale can finally rest.`,
+    ] },
+  { when: { stageMin: 9 },
+    text: [
+      (ctx) => `The display stabilizes at ${Math.round(ctx.subject.lbs)}. ${ctx.subject.name} does not so much step off as redistribute — vast soft mass shifting off the platform in a slow, seismic motion, flesh pooling and settling as the scale trembles and stills beneath what remains.`,
+      (ctx) => `${ctx.subject.name} reads the impossible number. Leaving the platform takes time: belly and thighs and hips sliding forward by degrees, warm weight transferring off the metal until the display finally rests at zero.`,
+      (ctx) => `The reading holds. ${ctx.subject.name} shifts her enormous body off the platform — slow, heavy, deliberate — and the office seems to exhale around her as the scale recovers.`,
+    ] },
+  { when: {},
+    text: [(ctx) => `${ctx.subject.name} steps off the platform. The scale settles behind her.`] },
+]);
+
+// ── weighIn.reaction — legacy generic reaction pool (unused in template) ──
 
 registerModule("weighIn.reaction", [
   // body-type gestures — tie on stage + corruption, priority wins over generic
@@ -1456,8 +1493,10 @@ export function renderWeighInIntro(student, week, goesDirectlyToBig = false) {
   return render(goesDirectlyToBig ? WEIGH_IN_INTRO_BIG : WEIGH_IN_INTRO_NORMAL, ctx);
 }
 
-// renderWeighInReaction(student, week) → post-scale reaction string
+// renderWeighInReaction(student, week) → step-off beat + per-student reply
 export function renderWeighInReaction(student, week) {
   const ctx = createContext({ subject: student, week });
-  return render("{weighIn.reaction}", ctx);
+  const stepOff = render("{weighIn.stepOff}", ctx);
+  const personal = getWeighInPersonalReply(student);
+  return `${stepOff}\n\n${personal}`;
 }
