@@ -6,32 +6,28 @@
 
 Any constant, dialogue, description, or reaction that relates to weight must have an entry for **every applicable weight stage** — no gaps, no fallback blur. Use "contextually relevant" as the only filter:
 
-- Immobility, doorframe descriptions, floor-pooling mass → Blob (stage 10), Leviathan (stage 11), and ascension stages
-- Clothing strain, chair complaints → stage 3+ (Chubby and up)
-- Evolving identity, self-concept shifts → all 12 base stages
-- Ascension-path content → all 5 stages of that path + convergence where applicable
+- Immobility, doorframe descriptions, floor-pooling mass → Blob (stage 10) and ascension stages only
+- Clothing strain, chair complaints → stage 3+ (Heavy and up)
+- Evolving identity, self-concept shifts → all 11 base stages
 
-**The full stage ladder** (canonical — see `src/gameData/stages.js`):
-
-| Stage | Label | Min lbs | Body at this stage |
-|-------|-------|---------|-------------------|
-| 0 | Slight | 80 | Noticeably delicate, almost fragile. Slender and narrow — visible collarbones, slim wrists, long lean legs. Clothes hang loose; she moves lightly, feels small and easy to pull close. |
-| 1 | Slim | 120 | Still slender and toned, with softness starting to appear. Narrow waist, hips beginning to curve. Effortless grace; light in your hands, first hint of plushness in thighs and ass when she sits or bends. |
-| 2 | Soft | 135 | A gentle layer of softness has settled in. Slight belly pooch, thighs press together a little more, cheeks fuller. Pleasant give when touched; clothes snugger at hips and chest. |
-| 3 | Chubby | 162 | Visibly rounded. Soft belly curve pushes at waistbands; face fuller, arms softer, thighs rub when she walks. Real weight on your lap; clothes tight at middle and hips. |
-| 4 | Plump | 195 | Thick and juicy. Clear rounded belly rests on her lap when she sits; heavier breasts, thick plush ass and thighs. Soft jiggly movement; abundance — substantial in your hands. |
-| 5 | Heavy | 238 | Undeniably fat. Belly hangs forward and sways; thick soft arms, heavy thighs rubbing constantly. Pronounced waddle, heavier breathing. Spreads and settles when she sits — warm, heavy, overwhelming. |
-| 6 | Fat | 285 | Large and heavy. Belly rests on thighs when sitting, hangs when standing; large soft breasts, massively thick ass and thighs. Slow deliberate movement; everything jiggles and sways — a lot to handle. |
-| 7 | Very Fat | 360 | Massively fat. Belly cascades over thighs, sways with every step; thick heavy arms, very round soft face. Wide doorways, struggles with normal furniture. Spreads and sinks when she sits — a mountain of warm plush flesh. |
-| 8 | Enormous | 465 | Enormous. Belly rests on thighs standing, hangs toward knees sitting; huge soft breasts on the belly's slope. Very slow movement with effort; dominates any space — living embodiment of excess. |
-| 9 | Colossal | 595 | Colossal. Barely moves under her own power; belly spreads wide across lap. Massively thick thighs, enormous ass. Reinforced furniture, wide spaces — monumental softness. |
-| 10 | Blob | 820 | Completely immobile. Enormous soft spreading mass fills whatever space she's in. Belly, breasts, thighs merged into one warm heavy landscape. Can't stand or walk — a presence the world works around. |
-| 11 | Leviathan | 1000 | Transcended normal human scale — impossibly vast, almost mythic. She doesn't just fill a room; she becomes its center of gravity. Flesh in heavy endless rolls; movement nearly impossible. A living monument of fat, warmth, and indulgence — ancient, powerful, almost divine. |
-| Celestial 0–4 | Seed → Apex | 820+ | Ascension path |
-| Umbral 0–4 | Seed → Sovereign | 820+ | Ascension path |
-| Convergence | — | secret | — |
-
-When writing a new constant: count the entries before committing. If the count doesn't match the applicable range, add the missing ones.
+**The full stage ladder:**
+| Stage | Label | Min lbs | Description         |
+|-------|-------|---------| --------------------|
+| 0 | Slight | 80 |She’s noticeably delicate, almost fragile. Her frame is slender and narrow, with visible collarbones, slim wrists, and long, lean legs. Clothes hang loosely on her, and there’s a certain lightness to her movements. She feels small in your hands, easy to pick up or pull close.|
+| 1 | Slim | 120 |Still slender and toned, but with a touch more softness starting to appear. Her waist is narrow, hips beginning to curve gently. She moves with a natural, effortless grace. Her body still feels light and easy to handle, but there’s the first hint of plushness in her thighs and ass when she sits or bends.|
+| 2 | Soft | 135 |A gentle layer of softness has settled in. Her belly has the slightest pooch, her thighs press together a little more when she walks, and her cheeks are fuller. She’s no longer “skinny” — there’s a pleasant give to her body when you touch her. Clothes are starting to fit more snugly across her hips and chest.|
+| 3 | Chubby | 162 |She’s visibly rounded now. Her belly has a soft, noticeable curve that pushes against her waistband. Her face is fuller, arms softer, and her thighs rub together when she walks. There’s a real weight to her when she sits on your lap or leans against you. Clothes are getting tighter, especially around the middle and hips.|
+| 4 | Plump | 195 |She’s thick and juicy. Her belly has a clear, rounded shape that rests on her lap when she sits. Her breasts are heavier, her ass and thighs are thick and plush. She has a soft, jiggly quality when she moves. There’s a real sense of abundance to her body now — she takes up more space and feels substantial in your hands.|
+| 5 | Heavy | 238 |She’s undeniably fat. Her belly hangs forward noticeably and sways when she walks. Her arms are thick and soft, her thighs are heavy and rub together constantly. She has a pronounced waddle and her breathing gets heavier with exertion. Sitting down causes her whole body to spread and settle. She feels heavy, warm, and overwhelming in the best way.|
+| 6 | Fat | 285 |Her body is large and heavy. Her belly is big enough to rest heavily on her thighs when sitting and hangs noticeably when standing. Her breasts are large and soft, her ass and thighs are massively thick. She moves slowly and deliberately, and every part of her jiggles and sways with motion. She’s become a lot to handle — in the most erotic sense.|
+| 7 | Very Fat | 360 |She’s massively fat. Her belly cascades down over her thighs and sways heavily with every step. Her arms are thick and heavy, her face is very round and soft. She needs wide doorways and struggles with normal furniture. Her body is so soft and heavy that it spreads and sinks when she sits or lies down. She’s become a true mountain of warm, plush flesh.|
+| 8 | Enormous | 465 |She’s enormous. Her belly is so large it rests heavily on her thighs even when standing and hangs down toward her knees when sitting. Her breasts are huge and soft, resting on the upper slope of her belly. She moves very slowly and with great effort. Her body is so vast and heavy that it dominates any space she’s in. She feels like a living, breathing embodiment of excess.|
+| 9 | Colossal | 595 |She’s colossal. Her body is so large that she can barely move under her own power for long. Her belly spreads wide across her lap and hangs heavily, often resting on whatever surface is in front of her. Her thighs are massively thick, her ass is enormous. She requires reinforced furniture and wide spaces. Her sheer size and softness are overwhelming — she’s become something monumental.|
+| 10 | Blob | 820 | She’s completely immobile — a true blob. Her body is an enormous, soft, spreading mass that fills whatever space she’s in. Her belly, breasts, and thighs have merged into one continuous landscape of warm, heavy flesh. She can’t stand or walk. She exists as a vast, quivering, living pile of fat that radiates warmth and softness. She’s less a person moving through the world and more a presence the world has to work around.|
+| 11 | Leviathan | 1,1000 |She has transcended normal human scale. Her body is so impossibly vast and soft that it feels almost mythic. She doesn’t just fill a room — she becomes the room’s center of gravity. Her flesh spreads in heavy, endless rolls and folds. Movement is nearly impossible. She exists as a living monument of fat, warmth, and indulgence. She feels ancient, powerful, and almost divine in her sheer size and softness.|
+When writing a new constant: count the entries before committing. If the count doesn't match the applicable range, add the missing ones.|
+Utilize this prompt for all writing: 
+"Write in a sensual, appreciative, and immersive style. Focus heavily on sensory details: the weight, softness, warmth, and movement of fat bodies. Describe how flesh feels in the hands, how it jiggles and sways, how it spreads and sinks when sitting or lying down. Emphasize the eroticism of size, heaviness, and growth without shame or negativity. Use rich, tactile language — words like plush, heavy, soft, yielding, wobbling, cascading, spreading, sinking. Make the fat itself feel alive, warm, and desirable. Avoid clinical or medical language. Focus on the beauty, power, and sensuality of fat bodies and the act of growing fatter. When describing movement, focus on how the body moves differently because of its size and softness. When describing touch or intimacy, linger on the feeling of weight, warmth, and softness pressing against or enveloping the other person."
 
 **Stage names are internal, not prose.** Canonical labels (Slight, Slim, Soft, Chubby, Plump, Heavy, Fat, Very Fat, Enormous, Colossal, Blob, Leviathan) are for buckets, selectors, and docs — not player-facing copy. Do not treat them as concepts (`"she is a Leviathan"`, `"blob-vast"`, `"Colossal, unhurried"`). Describe bodies sensorially instead. Everyday adjectives (`fat`, `heavy`, `thick`, `round`) are fine when they read naturally in a sentence.
 
@@ -77,7 +73,7 @@ The gaining is not something happening to them against their will. By the point 
 
 ## The Evolved Forms
 
-At mid-game, each student finds a path that integrates her size into a new identity. These aren't consolation prizes for having gotten fat — they are the culmination of who she's always been, brought into focus by the body she now has.
+At mid-game, each student finds a path that integrates her size into a new identity. These aren't consolation prizes for having gotten fat — they are the culmination of who she's always been, brought into focus by the body she now has, or a new fixation bestowed upon them by the expeirence of eating, growing and being obese.
 
 The sumo wrestler was always competitive; the body found the sport. The feedee creator was always comfortable being seen; the body gave the content. The anonymous blogger was always observant and private; the body gave her something private and worth observing.
 
@@ -86,21 +82,7 @@ The evolved paths should feel inevitable. The player should be able to see, look
 Each evolved path has an ongoing narrative — five stages of an activity the player can witness, reactions that evolve with her weight, diary entries that document how she thinks about herself and her new identity. The player has a relationship with this specific woman's transformation, not just a before/after.
 
 ## The Professor
-
-The player character facilitates but also witnesses. They create conditions — meals, study sessions, private dinners, opportunities — but the women make choices. The professor's role is intimate: they see the transformation up close, they're invested in it, they find it beautiful.
-
-This is not framed as exploitation. The relationship is one of genuine investment. The professor wants to see these women grow, and they find the growing beautiful, and the women — eventually, each in their own time — feel that regard and understand what it means.
-
-## Ascension
-
-The divine progression is the game's late content and its most explicitly fantastical layer. Bodies that exceed mundane categories entirely: wings, horns, void-dark skin, halos. The women who ascend have become something else — not less human, but more. Their size is divine in the literal sense. Their presence has weight that isn't just physical.
-
-The celestial and umbral paths represent two kinds of overflow: warmth and hunger, light and void, abundance given and abundance consumed. Both are beautiful. Both are beyond ordinary description.
-
-## EP3: Supernatural
-
-The planned supernatural expansion adds four forms that sit between "college student" and "goddess": werewolf, vampire, half-ghost, djinn. These forms unlock at the Devoted tier and stack on top of an existing evolved identity. They are genuinely monstrous in the classical sense — beautiful and terrible and beyond the ordinary, in ways that are explicitly erotic. The body is no longer entirely human. That is the point.
-
+An unremarkable man, taken over by a remarkable force - a manifestation of the desire of life to grow and spread, a manifestation of consumption and abundance, has taken root in him and to a lesser degree, his students. It is this spirit, this force, which guides his actions, and bestows unto him supernatural powers 
 ---
 
 ## Reference Style Notes — Source Texts
@@ -135,7 +117,7 @@ Stay in the middle register — neither clinical nor cartoonishly crude. The goa
 
 ### Tone and Register
 
-**Affectionate grotesque.** The body is funny, inconvenient, physically real, and sympathetic, all at once. Neither pure cringe nor pure celebration. The reader should feel affection for the body being described even when the description is comedic.
+**Affectionate.** The body is funny, inconvenient, physically real, and sympathetic, all at once. Neither pure cringe nor pure celebration. The reader should feel affection for the body being described even when the description is comedic.
 
 **Bathos.** Big emotional moments get punctured by physical reality. Someone makes a declaration of self-acceptance — the bartender delivers her onion rings. Someone achieves a philosophical breakthrough — she's still sitting on her ass unable to get up. This is not mockery; it's honesty about how the body and the spirit coexist.
 
@@ -156,13 +138,11 @@ At blob stage and above, the descriptions should shift toward the architectural.
 
 ### The Professor/Feeder POV — Story_w Notes
 
-This story is written in second-person, directly addressing the feeder/professor. It's the single best model for the professor character's inner voice in this game.
+This story is written in second-person, directly addressing the feeder/professor. It's the single best model for the professor character's inner voice in this game. There will be scenes and events from the girls' perspectives, these are done in the 3rd person 
 
 **The escalation of desire is documented as accumulation, not explosion.** "You thought 150 would be enough. But once she got there, you wanted 160. And then 170. Eventually, you realized you'd never be satisfied." The desire grows by increment. Each milestone creates the next one. Write the professor's investment this way: always a little further, always a little more, never arriving at a fixed ceiling.
 
 **Investment and love are not distinguished.** The professor doesn't separate "I want her bigger" from "I love her." They're the same impulse. The food is an expression of care. The weight gain is an expression of intimacy. This is the emotional logic of the game and it should be present in the professor's voice throughout — not analyzed, just lived.
-
-**The subject's consent is tacit, not declared.** "She knew what you were doing to her, and she accepted it." She didn't say yes explicitly. She stopped saying no. She noticed your reaction and chose to keep getting what caused it. This is how the relationship works in the game — the students don't need to announce their consent; they demonstrate it by eating, by coming back, by leaning in. When she says "I want to be heavier," that's the culmination, not the premise.
 
 **The outside world's reading matters.** The story uses friends and family as a mirror — they see what's happening and it tells us something about the professor's power and investment. In the game, Vaughan, the HR observer, and the jealous students serve this function. Their reactions are evidence of what the professor has done.
 
