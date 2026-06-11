@@ -8,6 +8,7 @@
 import { registerModule, createContext, render } from '../engine.js';
 import '../modules.js';
 import { getWeighInPersonalReply } from '../../gameData/weighInReplies.js';
+import { appendCampusWeighIn } from './campusSoftening.js';
 
 // ── weighIn.arrival — physical entrance, body-type flavored ───
 
@@ -1488,15 +1489,27 @@ export const WEIGH_IN_INTRO_BIG =
   "{weighIn.arrival} {weighIn.entrance} {weighIn.bigScaleApproach}";
 
 // renderWeighInIntro(student, week, goesDirectlyToBig) → intro scene string
-export function renderWeighInIntro(student, week, goesDirectlyToBig = false) {
-  const ctx = createContext({ subject: student, week });
+export function renderWeighInIntro(student, week, goesDirectlyToBig = false, opts = {}) {
+  const ctx = createContext({
+    subject: student,
+    week,
+    globals: { campusFattening: !!opts.campusFattening },
+  });
   return render(goesDirectlyToBig ? WEIGH_IN_INTRO_BIG : WEIGH_IN_INTRO_NORMAL, ctx);
 }
 
 // renderWeighInReaction(student, week) → step-off beat + per-student reply
-export function renderWeighInReaction(student, week) {
-  const ctx = createContext({ subject: student, week });
+export function renderWeighInReaction(student, week, opts = {}) {
+  const ctx = createContext({
+    subject: student,
+    week,
+    globals: { campusFattening: !!opts.campusFattening },
+  });
   const stepOff = render("{weighIn.stepOff}", ctx);
-  const personal = getWeighInPersonalReply(student);
+  const personal = appendCampusWeighIn(
+    getWeighInPersonalReply(student, opts),
+    student,
+    { ...opts, week },
+  );
   return `${stepOff}\n\n${personal}`;
 }

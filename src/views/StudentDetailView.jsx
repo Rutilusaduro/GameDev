@@ -182,7 +182,7 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                 <div style={C.infoBox("rgba(40,8,70,0.35)")}>
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>CURRENT ATTITUDE</div>
                   <div style={{fontSize:13,color:"#e8d8a8",fontStyle:"italic",lineHeight:1.75}}>
-                    "{getAttitude(s, week)}"
+                    "{getAttitude(s, week, { campusFattening: !!pharmacistState?.campusFattening })}"
                   </div>
                 </div>
 
@@ -199,7 +199,7 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                 {/* Diary */}
                 <div style={C.infoBox("rgba(30,5,60,0.4)")}>
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>DIARY ENTRY</div>
-                  <div style={{fontSize:12,color:"#c8b898",fontStyle:"italic",lineHeight:1.8}}>{getDiary(s, week)}</div>
+                  <div style={{fontSize:12,color:"#c8b898",fontStyle:"italic",lineHeight:1.8}}>{getDiary(s, week, { campusFattening: !!pharmacistState?.campusFattening })}</div>
                 </div>
 
                 {/* ── EP2: EVOLUTION SECTION ── */}
