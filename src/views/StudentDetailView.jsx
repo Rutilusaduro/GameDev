@@ -9,11 +9,13 @@ import { INNER_CIRCLE_TIERS, getTier } from '../gameData/sessions.js';
 import { LILITH_ID } from '../gameData/lilith.js';
 import { RECRUITMENT_SCENE, TESTER_APPEARANCE } from '../gameData/cultivator.js';
 import { getAttitude, getBodyDesc, getDiary, getOutfit } from '../utils/gameHelpers.js';
+import { COMPOUNDS, PHARMACIST_STAGES } from '../gameData/pharmacist.js';
+import { getAddictionLevel, getHungerTier, HUNGER_TIERS, ADDICTION_LEVELS } from '../gameData/hungerAddiction.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, week }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, runPharmacistSynthesis, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, week }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -184,6 +186,16 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                   </div>
                 </div>
 
+                {/* Hunger / addiction (subtle) */}
+                {(getAddictionLevel(s)>0||getHungerTier(s)>0)&&(
+                  <div style={C.infoBox("rgba(50,20,10,0.25)")}>
+                    <div style={{fontSize:9,color:"#804030",letterSpacing:2,marginBottom:4}}>CRAVING STATE</div>
+                    <div style={{fontSize:12,color:"#c8a090",lineHeight:1.7}}>
+                      Hunger: {HUNGER_TIERS[getHungerTier(s)]?.label} · Addiction: {ADDICTION_LEVELS[getAddictionLevel(s)]?.label}
+                    </div>
+                  </div>
+                )}
+
                 {/* Diary */}
                 <div style={C.infoBox("rgba(30,5,60,0.4)")}>
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>DIARY ENTRY</div>
@@ -295,6 +307,30 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                                   </div>
                                 </div>
                               )}
+                            </div>
+                          );
+                        }
+                        // ── PHARMACIST (Sophia) — custom panel ──
+                        if(s.evolvedForm==='pharmacist'&&pharmacistState){
+                          const ps=pharmacistState;
+                          const green="#2e6b5a";
+                          const stageMeta=PHARMACIST_STAGES.find(x=>x.id===ps.stage);
+                          const actLabel=stageMeta?.label||'Chemist';
+                          return(
+                            <div style={{background:"rgba(8,30,22,0.6)",border:`1px solid ${green}80`,borderRadius:10,padding:12}}>
+                              <div style={{fontSize:9,letterSpacing:3,color:green,marginBottom:4}}>🧪 EVOLVED PATH</div>
+                              <div style={{fontSize:13,fontWeight:700,color:"#6ab89a",marginBottom:6}}>The Chemist — {actLabel}</div>
+                              <div style={{fontSize:10,color:"#508070",marginBottom:8,lineHeight:1.6}}>
+                                Exposure {ps.exposureRisk}% · Sessions {ps.sessionsRun||0}
+                                {ps.campusFattening?" · Campus effect active":""}
+                                {ps.cultActive?" · Cult supply active":""}
+                              </div>
+                              <div style={{fontSize:9,color:"#406858",marginBottom:8}}>
+                                Compounds: {(ps.unlockedCompounds||[]).map(id=>COMPOUNDS[id]?.label||id).join(", ")}
+                              </div>
+                              <button style={{...C.btn(green),width:"100%",opacity:ap<1?0.4:1}} onClick={()=>runPharmacistSynthesis(s)}>
+                                🧪 Run Synthesis Session (1 AP)
+                              </button>
                             </div>
                           );
                         }

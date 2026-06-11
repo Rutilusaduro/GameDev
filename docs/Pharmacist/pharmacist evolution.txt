@@ -1,0 +1,171 @@
+Here's a clean, comprehensive **Design Document** for Sophia’s evolution path:
+
+---
+
+# Sophia Lang — Evolution Design Document
+
+**Character:** Sophia Lang (Pharmacy Grad Student)  
+**Path Title:** *“I Don’t Want to Cure Cancer, I Want to Turn People into Fat Blobs”*  
+**Type:** Hidden Multi-Stage Corruption Path  
+**Core Fantasy:** A brilliant, anxious pharmacy student slowly descends from professional researcher into someone who uses her knowledge to create appetite stimulants, pleasure enhancers, and weight gain compounds — eventually working toward large-scale transformation of herself and others.
+
+---
+
+## 1. Overview
+
+Sophia maintains her corporate pharmaceutical job for most of the path. This job serves as both **cover** and **resource access** (lab time, chemicals, funding). The path is mostly secret until the final stage.
+
+The progression is divided into **four stages**:
+
+| Stage | Name                    | Focus                              | Campus Effect          | Addiction Role                     | Player Benefit                  |
+|-------|-------------------------|------------------------------------|------------------------|------------------------------------|---------------------------------|
+| 1     | Corporate Chemist       | Secret sabotage at day job         | Minimal                | Light addictive properties         | Early tools for the player      |
+| 2     | Wellness to Excess      | Wellness branding + research       | School gets fatter     | Stronger addiction                 | Home-use compounds              |
+| 3     | Cult Chemist            | Build and supply a devoted group   | Area gets fatter       | Intentional addiction tools + cure | Strong specialized tools        |
+| 4     | Goddess of Excess       | Ascension + mass distribution      | Major / endgame scale  | Extreme and deranged addiction     | God-like power (late game)      |
+
+---
+
+## 2. Stage Breakdown
+
+### Stage 1: Corporate Chemist (Sabotage Phase)
+
+**Flavor**  
+Sophia is still working her normal corporate job. She begins subtly altering formulas — turning appetite-related drugs into things that encourage weight gain and pleasure. She justifies it to herself as “testing” or “data collection.”
+
+**Key Effects**
+- Unlocks early compounds the player can use.
+- All compounds must be delivered through food or drink.
+- Low but present risk of exposure at her job.
+
+**Compounds Unlocked:**
+- **Appetite Stimulant** — Mild increase to eating willingness.
+- **Mild Pleasure Enhancer** — Makes eating feel better. Slightly addictive.
+- **Metabolic Slowdown Compound** — **Permanent** decrease in calorie burn + increased fat gain from calories.
+- **Weight Gain Potion** — Faster visible weight gain over a short period. Mildly addictive.
+
+---
+
+### Stage 2: Wellness to Excess (Transition Phase)
+
+**Flavor**  
+Sophia realizes that branding her work as “wellness” and “metabolic support” is safer and more effective. She begins developing stronger compounds while maintaining plausible deniability. Her influence starts affecting the wider campus.
+
+**Key Effects**
+- Stronger compounds become available.
+- **Campus-wide fattening** begins:
+  - Renee’s feedee victims start at higher weights.
+  - Maya receives fatter victims from Lilith.
+  - Random campus events and ambient descriptions reflect a softer student body.
+  - Non-student girls gain weight faster or start heavier.
+- The Wellness track unlocks **new compounds the player can make and use at home**.
+
+**Compounds Unlocked:**
+- **Strong Appetite Stimulant**
+- **High-Grade Pleasure Enhancer** (more addictive)
+- **Advanced Metabolic Slowdown**
+- **Digestion Supplement** — Rapidly converts stomach contents into body fat.
+- **Craving Inducer** — Strong but short-term hunger spike.
+- **Sensitivity Serum** — Greatly increases physical sensitivity.
+
+---
+
+### Stage 3: Cult Chemist (Expansion Phase)
+
+**Flavor**  
+Sophia now has a growing circle of people taking her compounds. She presents herself as a knowledgeable provider of “exclusive wellness solutions.” The group rapidly gains weight and becomes dependent on her.
+
+**Key Effects**
+- Unlocks stronger “cult-strength” versions of previous compounds.
+- The cult begins making **the surrounding area noticeably fatter**.
+- Unlocks a drug that can reduce a girl’s addiction level back down to **Mild**.
+
+**Compounds Unlocked:**
+- Cult-strength versions of previous compounds
+- **Intentional Addiction Compound** — Designed to create strong dependency
+- **Bulk Production Formula**
+- **Loyalty Enhancer**
+- **Rapid Expansion Serum**
+- **Dependency Maintenance Dose**
+
+---
+
+### Stage 4: Goddess of Excess (Endgame)
+
+**Flavor**  
+Sophia has fully embraced mass transformation. She wants to push both herself and as many people as possible to extreme levels of fat and pleasure.
+
+**Key Effects**
+- Unlocks the **Ascension Protocol** (high-stakes personal transformation system)
+- Unlocks large-scale distribution options (including water supply concept)
+- Major narrative and mechanical consequences
+
+**Compounds Unlocked:**
+- Extremely powerful personal ascension compounds
+- Mass-effect formulas for wide distribution
+- God-tier pleasure and growth enhancers
+
+---
+
+## 3. Addiction & Hunger System Integration
+
+### Core Rules
+- Addiction is **player-specific** (girls crave food from *you*).
+- Compounds must be delivered through food.
+- Higher addiction unlocks more **deranged and desperate** hunger behaviors.
+- Withdrawal causes **aggression**.
+this can be found in design docs
+
+### Hunger Tiers
+- Normal → Increased → High → **Craving Hunger** → **Starving Hunger**
+- Tiers 3 and 4 (Craving & Starving Hunger) are **only available** at Moderate+ addiction.
+this can be found in design docs
+### Interruption Mechanic
+When advancing the week or spending an action point, if any girl is in **Craving Hunger**, **Starving Hunger**, or deep in **Withdrawal**, there is a chance of an interrupting scene (“There’s a knock at your door…”). - further documentation for this can be found in design docs
+
+These scenes are **personalized** by:
+- The girl’s name
+- Her current hunger tier and addiction level
+- Her weight stage (especially Enormous and Leviathan)
+
+### Stage 3 Cure
+A drug becomes available that can reduce a girl’s addiction level back down to **Mild**.
+
+---
+
+## 4. Compounds Summary (Player Tools)
+
+| Stage | Compound                        | Key Effect                              | Addiction Strength | Notes |
+|-------|----------------------------------|-----------------------------------------|--------------------|-------|
+| 1     | Appetite Stimulant              | Increases eating willingness            | Low                | Basic tool |
+| 1     | Mild Pleasure Enhancer          | Makes eating feel better                | Low–Moderate       | Slightly addictive |
+| 1     | Metabolic Slowdown              | Permanent slower metabolism             | None               | Long-term effect |
+| 1     | Weight Gain Potion              | Faster visible gains                    | Moderate           | Mildly addictive |
+| 2     | Strong Appetite Stimulant       | Much higher eating capacity             | Moderate           | Upgraded |
+| 2     | High-Grade Pleasure Enhancer    | Very strong pleasure response           | High               | More addictive |
+| 2     | Digestion Supplement            | Instant conversion of food to fat       | Moderate           | Strong short-term growth |
+| 2     | Craving Inducer                 | Strong but short-term hunger spike      | Moderate (short)   | Pushes higher hunger tiers |
+| 3     | Intentional Addiction Compound  | Creates strong dependency               | Very High          | Designed for addiction |
+| 3     | Loyalty Enhancer                | Increases obedience and attachment      | Moderate           | Psychological effect |
+| 3     | Rapid Expansion Serum           | Very fast dramatic growth               | High               | Risky but powerful |
+
+---
+
+
+---
+
+
+
+## 7. Design Notes & Intent
+
+- Sophia’s path is meant to feel like a **slow, seductive descent** from professional to hedonistic.
+- Her compounds should feel like **real tools** the player can use, while also carrying long-term consequences (addiction).
+- The campus-wide fattening effect in Stage 2 is meant to make her influence feel **world-changing**, not just personal.
+- Addiction is designed to create **ongoing friction** through interrupting scenes rather than just being a hidden stat.
+- Stage 4 is deliberately high-risk and high-reward, meant to feel like a true endgame transformation.
+
+---
+
+**End of Document**
+
+---

@@ -1,0 +1,137 @@
+Here's a clean, detailed breakdown of all the compounds Sophia can create for the player, organized by stage. Each one includes flavor text and mechanical impact.
+
+---
+
+### **Stage 1: Corporate Chemist Compounds**
+
+These are her early, somewhat crude creations while she’s still working her normal job.
+
+**Appetite Stimulant**  
+*“It’s nothing too strong… just something to take the edge off. She might find herself reaching for seconds without really thinking about it.”*
+
+- Increases how much a girl is willing to eat in one session.
+- Low risk and low addiction.
+- Good early-game tool for pushing resistant girls.
+
+**Mild Pleasure Enhancer**  
+*“It just makes everything feel… nicer. The food tastes better. The fullness feels warmer. It’s subtle, but she’ll notice.”*
+
+- Makes eating feel noticeably more pleasurable.
+- Small corruption gain per use.
+- Mildly addictive with repeated use.
+
+**Metabolic Slowdown Compound**  
+*“This one’s a little more permanent. It slows down how fast her body burns calories… and makes her gain more from what she does eat. Once it’s in her system, it doesn’t really go away.”*
+
+- **Permanent** decrease in natural calorie burn.
+- **Permanent** increase in fat gained from calories.
+- No direct addiction, but encourages long-term weight gain.
+
+**Weight Gain Potion**  
+*“It’ll make the scale move faster. She might even start looking forward to the feeling of getting heavier. Just… don’t let her have too much too quickly.”*
+
+- Causes faster visible weight gain over a short period.
+- Mildly addictive — repeated use makes her crave the sensation of rapid growth.
+
+---
+
+### **Stage 2: Wellness to Excess Compounds**
+
+Stronger versions and new tools as she leans harder into “wellness” branding.
+
+**Strong Appetite Stimulant**  
+*“This one’s a lot more aggressive. She’ll eat significantly more before she even thinks about stopping.”*
+
+- Much stronger increase to eating capacity and willingness.
+- Moderate addiction risk.
+
+**High-Grade Pleasure Enhancer**  
+*“It doesn’t just make eating feel good anymore. It makes it feel *really* good. She might start getting a little desperate for that feeling.”*
+
+- Significantly stronger pleasure response while eating.
+- Higher corruption gain.
+- More addictive than the mild version.
+
+**Advanced Metabolic Slowdown**  
+*“Stronger version of the first one. Once this is in her system, her body is basically working *for* the weight gain.”*
+
+- Stronger permanent version of the Stage 1 Metabolic Slowdown.
+
+**Digestion Supplement**  
+*“She takes this after a big meal and… it all just goes straight to her. Fast. It’s almost like watching it happen in real time.”*
+
+- Causes rapid digestion of stomach contents and near-instant conversion into body fat.
+- Excellent for turning a heavy feeding session into immediate, visible growth.
+- Moderate addiction risk.
+
+**Craving Inducer**  
+*“This one’s mean. It doesn’t just increase her appetite — it makes her *feel* hungry. Like, actually hungry. She’ll start thinking about food even when she’s not supposed to.”*
+
+- Strong but **short-term** spike in hunger.
+- Can push a girl into higher hunger tiers (Craving Hunger / Starving Hunger) even at lower addiction levels.
+- Best used when you want aggressive, proactive feeding behavior.
+
+**Sensitivity Serum**  
+*“Everything just feels more. Touch, pressure, movement, fullness… it all hits harder. She might get a little overwhelmed in a very good way.”*
+
+- Greatly increases physical sensitivity (especially belly, thighs, and breasts).
+- Makes touch, movement, and being fed feel much more intense.
+- Mild to moderate addiction.
+
+---
+
+### **Stage 3: Cult Chemist Compounds**
+
+These are stronger, more specialized, and often carry cult/dependency flavor.
+
+**Cult-Strength Compounds**  
+Stronger versions of the Appetite Stimulant, Pleasure Enhancer, Metabolic Slowdown, etc. They usually include added psychological effects (increased attachment to the player, stronger submission, etc.).
+
+**Intentional Addiction Compound**  
+*“This one’s not subtle. It’s made to make her need it. The food. The feeling. You.”*
+
+- Specifically designed to create strong physical and psychological addiction.
+- High addiction gain per use.
+- Unlocks more deranged higher-tier hunger behaviors faster.
+
+**Bulk Production Formula**  
+*“You can make a lot more at once now. Useful if you want to keep multiple girls on something.”*
+
+- Allows production of larger quantities of mid-tier compounds.
+- Reduces resource cost when affecting multiple girls.
+
+**Loyalty Enhancer**  
+*“She’ll start feeling very… attached. Not just to the food, but to who’s giving it to her.”*
+
+- Increases how obedient and emotionally attached a girl becomes toward the player.
+- Works especially well on girls already in Sophia’s cult.
+
+**Rapid Expansion Serum**  
+*“This one’s aggressive. Big gains in a very short time. It’s not subtle, and it’s not safe to use too often.”*
+
+- Very fast, dramatic weight gain over a short period.
+- Higher risk of side effects or scrutiny.
+- Strong addictive qualities.
+
+**Dependency Maintenance Dose**  
+*“Keep her on this regularly and she stays in that sweet spot — always a little hungry, always a little needy, always thinking about you feeding her.”*
+
+- Meant to be taken regularly.
+- Keeps a girl in a consistent state of heightened hunger and attachment.
+- Excellent for long-term control of multiple girls.
+
+---
+
+### Quick Reference: Addiction Strength by Compound
+
+| Compound                        | Addiction Strength | Notes |
+|--------------------------------|--------------------|-------|
+| Appetite Stimulant             | Low                | Mostly functional |
+| Mild Pleasure Enhancer         | Low–Moderate       | Gets stronger with repeated use |
+| Weight Gain Potion             | Moderate           | Addictive craving for growth |
+| High-Grade Pleasure Enhancer   | High               | Strong pleasure + addiction |
+| Craving Inducer                | Moderate (short)   | Strong hunger spike, shorter addiction buildup |
+| Intentional Addiction Compound | Very High          | Designed to create strong dependency |
+| Rapid Expansion Serum          | High               | Aggressive gains + addiction |
+
+---

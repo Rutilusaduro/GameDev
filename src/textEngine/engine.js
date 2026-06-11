@@ -8,6 +8,7 @@
 import { getStage } from '../gameData/stages.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
 import { getTier } from '../gameData/sessions.js';
+import { getAddictionLevel, getHungerTier, isInWithdrawal } from '../gameData/hungerAddiction.js';
 
 const DEV = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV;
 const warn = (...args) => { if (DEV) console.warn('[textEngine]', ...args); };
@@ -72,6 +73,9 @@ function deriveFor(student, ref, skillEffects) {
       : 0,
     devourCount: student.devourCount || 0,
     hasDevoured: (student.devourCount || 0) > 0,
+    addictionLevel: getAddictionLevel(student),
+    hungerTier: getHungerTier(student),
+    inWithdrawal: isInWithdrawal(student),
     skillEffects: skillEffects || {},
   };
 }
