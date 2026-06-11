@@ -136,6 +136,8 @@ function evalWhen(when, ctx) {
       case "weekMax": ok = ctx.week <= v; break;
       case "devourMin": ok = (d.devourCount ?? 0) >= v; break;
       case "devourMax": ok = (d.devourCount ?? 0) <= v; break;
+      case "fullnessMin": ok = (d.fullnessRatio ?? 0) >= v; break;
+      case "fullnessMax": ok = (d.fullnessRatio ?? 0) <= v; break;
       default: {
         // dimension on ctx.d: corruption, stage, relationship, relSize,
         // bodyType, archetype, mood, evolvedForm, refStage...

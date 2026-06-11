@@ -10,6 +10,7 @@ import { CLASS_SCENES } from '../gameData/classEvents.js';
 import { createContext, render } from '../textEngine/engine.js';
 import '../textEngine/lexicon.js'; // registers word.* modules
 import { renderDiary } from '../textEngine/scenes/diary.js';
+import { renderAttitude } from '../textEngine/scenes/attitude.js';
 
 export const ALL_SKILLS = [];
 
@@ -38,6 +39,11 @@ export function getEvolvedReaction(s){
   const arr=EVOLVED_REACTIONS[s.evolvedForm]; if(!arr) return null;
   const idx=getStage(s.lbs).id-5; if(idx<0) return null;
   return arr[Math.min(idx,arr.length-1)];
+}
+export function getAttitude(s, week = 1){
+  const evR=getEvolvedReaction(s);
+  if(evR) return evR;
+  return renderAttitude(s, week);
 }
 export function getEvolvedActivityStageIdx(s){
   const id=getStage(s.lbs).id;
