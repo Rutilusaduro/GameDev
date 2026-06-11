@@ -39,6 +39,10 @@ import {
   getCampusWeeklyEventChance, scaleCampusEventGain, CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier,
 } from './gameData/pharmacistCampus.js';
 import { PharmacistChemModal } from './components/PharmacistChemModal.jsx';
+import { PharmacistCultModal } from './components/PharmacistCultModal.jsx';
+import {
+  applyCultDistribution, tickCultWeek, pickInterruptCompound, CULT_DISTRIBUTION_ROUTES,
+} from './gameData/pharmacistCult.js';
 import { HungerInterruptModal } from './components/HungerInterruptModal.jsx';
 import { CompoundFeedModal } from './components/CompoundFeedModal.jsx';
 import { renderHungerOutcome } from './textEngine/scenes/hungerInterrupt.js';
@@ -197,6 +201,7 @@ export default function ProfessorSim(){
   const [pharmacistState, setPharmacistState] = useState(null);
   const [pharmacistChemSession, setPharmacistChemSession] = useState(null);
   const [pharmacistChemStudentId, setPharmacistChemStudentId] = useState(null);
+  const [pharmacistCultSession, setPharmacistCultSession] = useState(null);
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
   const [weeklyArms, setWeeklyArms] = useState({ devouringStudentId: null, mesmerizingStudentId: null, devouringConsumed: false });
   const skipHungerCheckRef = useRef(false);
@@ -447,7 +452,7 @@ export default function ProfessorSim(){
     const cap=(s.stomachCapacity||GAIN_CONFIG.baseCapacity)+softStartBonus(ownedSkills,stageId);
     let fullMult=1;
     if(opts.compoundId){
-      const preview=applyCompoundToFeed(s,opts.compoundId,{});
+      const preview=applyCompoundToFeed(s,opts.compoundId,{},pharmacistState);
       fullMult=preview.feedResult.fullMult??1;
     }
     const scaledFullEarly=Math.round(fullnessCost*fullMult);
@@ -473,7 +478,7 @@ export default function ProfessorSim(){
     }
     let calMult=1+(eff.calorieBonus||0)+(eff.conversionBonus||0);
     if(opts.compoundId){
-      const preview=applyCompoundToFeed(s,opts.compoundId,{});
+      const preview=applyCompoundToFeed(s,opts.compoundId,{},pharmacistState);
       calMult*=(preview.feedResult.calMult??1);
     }
     const scaledCals=Math.round(calories*(s.gainMultiplier||1)*profGainMult*calMult);
@@ -504,10 +509,12 @@ export default function ProfessorSim(){
       playerFedThisWeek:true,
     };
     if(opts.compoundId){
-      const applied=applyCompoundToFeed(result,opts.compoundId,{});
+      const applied=applyCompoundToFeed(result,opts.compoundId,{},pharmacistState);
       result=applied.student;
       if(applied.feedResult.corruptionGain) result.corruption=addCorruption(result,applied.feedResult.corruptionGain);
       if(applied.feedResult.relGain) result.relationship=Math.min(100,result.relationship+(applied.feedResult.relGain||0));
+      const dm=applied.feedResult.digestMult??1;
+      if(dm>1) result.weeklyDigestMult=Math.max(result.weeklyDigestMult||1,dm);
       if(applied.flavor) setTimeout(()=>push(`💊 ${applied.flavor}`),90);
     }
     if(opts.compoundId&&pharmacistState){
@@ -615,9 +622,20 @@ export default function ProfessorSim(){
         return extra>0?processStudentGain(s,extra,0):s;
       });
     }
-    if(pharmacistState){
-      setPharmacistState(prev=>tickPharmacistWeek(prev));
+    let nextPharmacistState=pharmacistState?tickPharmacistWeek(pharmacistState):null;
+    if(nextPharmacistState?.cultActive){
+      nextPharmacistState=tickCultWeek(nextPharmacistState,updated,rnd);
+      const cultTick=nextPharmacistState._cultWeekly;
+      if(cultTick?.passiveAddictedGain>0){
+        updated=updated.map(s=>{
+          if(s.hidden||(s.addictionLevel??0)<1) return s;
+          return processStudentGain(s,cultTick.passiveAddictedGain,0);
+        });
+      }
+      const { _cultWeekly, ...cleanPs }=nextPharmacistState;
+      nextPharmacistState=cleanPs;
     }
+    if(pharmacistState) setPharmacistState(nextPharmacistState);
     if(pharmacistState?.campusFattening&&Math.random()<getCampusWeeklyEventChance(pharmacistState)){
       const campusEv=pickPharmacistCampusEvent(updated,{
         hasMayaHive:!!students.find(s=>s.evolvedForm==='delivery_hive'),
@@ -681,6 +699,7 @@ export default function ProfessorSim(){
         capacityChunkProgress:growth.capacityChunkProgress,
         stuffedStreak:d.stuffedStreak,
         corruption,
+        weeklyDigestMult:undefined,
         ...d.reset,
         fullness:carriedFullness,
       };
@@ -2001,7 +2020,57 @@ export default function ProfessorSim(){
     }else if(narrative&&narrative!==CAMPUS_NARRATIVE_LABELS[getCampusNarrativeTier(prevState)]){
       setTimeout(()=>push(`🌿 Campus influence intensifies: ${narrative}.`),160);
     }
+    if(!prevState.cultActive&&next.cultActive){
+      setTimeout(()=>push(`🕯️ The circle is live — ${next.cult?.circleSize||4} devotees under Sophia's wellness supply.`),180);
+    }
     cancelPharmacistChem();
+  };
+
+  const runPharmacistCultDistribution=(s)=>{
+    if(!pharmacistState?.cultActive||s.evolvedForm!=='pharmacist') return;
+    setPharmacistChemStudentId(s.id);
+    setPharmacistCultSession({ phase: 'route' });
+  };
+
+  const cancelPharmacistCult=()=>{
+    setPharmacistCultSession(null);
+    setPharmacistChemStudentId(null);
+  };
+
+  const selectCultRoute=(routeId)=>{
+    if(!pharmacistState) return;
+    const route=CULT_DISTRIBUTION_ROUTES.find(r=>r.id===routeId);
+    if(!route||ap<route.apCost){push(`⚠️ Need ${route?.apCost||1} AP.`);return;}
+    setAp(a=>a-route.apCost);
+    const { state: nextPs, outcome }=applyCultDistribution(pharmacistState,routeId,rnd);
+    if(!outcome) return;
+    let classGainApplied=0;
+    let addictedGainApplied=0;
+    if(outcome.classGainRange[1]>0){
+      const g=rnd(...outcome.classGainRange);
+      classGainApplied=g;
+      setStudents(prev=>prev.map(st=>st.hidden?st:processStudentGain(st,g,0)));
+    }
+    if(outcome.addictedGainRange[1]>0){
+      const g=rnd(...outcome.addictedGainRange);
+      addictedGainApplied=g;
+      setStudents(prev=>prev.map(st=>{
+        if(st.hidden||(st.addictionLevel??0)<1) return st;
+        return processStudentGain(st,g,0);
+      }));
+    }
+    if(outcome.scrutiny) addScrutiny(outcome.scrutiny);
+    setPharmacistState(nextPs);
+    setPharmacistCultSession({
+      phase: 'summary',
+      outcome: { ...outcome, classGainApplied, addictedGainApplied },
+    });
+  };
+
+  const confirmPharmacistCult=()=>{
+    const o=pharmacistCultSession?.outcome;
+    if(o) push(`🕯️ Distribution routed — circle at ${pharmacistState?.cult?.circleSize??0}, supply stock ${pharmacistState?.cult?.supplyReservoir??0}.`);
+    cancelPharmacistCult();
   };
 
   // ── HUNGER INTERRUPT handlers ─────────────────────────────────
@@ -4466,7 +4535,7 @@ export default function ProfessorSim(){
           {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} runPharmacistSynthesis={runPharmacistSynthesis} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} week={week}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} week={week}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
@@ -4678,11 +4747,28 @@ export default function ProfessorSim(){
             student={chemStudent}
             chemSession={pharmacistChemSession}
             setChemSession={setPharmacistChemSession}
+            pharmacistState={pharmacistState}
             onConfirm={confirmPharmacistChem}
             onCancel={cancelPharmacistChem}
             finalizeBrewPlan={finalizeBrewPlan}
             applyAcquisitionChoice={applyAcquisitionChoice}
             skipAcquisition={skipAcquisition}
+          />
+        );
+      })()}
+
+      {pharmacistCultSession&&pharmacistChemStudentId!=null&&(()=>{
+        const cultStudent=students.find(st=>st.id===pharmacistChemStudentId);
+        if(!cultStudent) return null;
+        return(
+          <PharmacistCultModal
+            student={cultStudent}
+            cultSession={pharmacistCultSession}
+            pharmacistState={pharmacistState}
+            ap={ap}
+            onSelectRoute={selectCultRoute}
+            onConfirm={confirmPharmacistCult}
+            onCancel={cancelPharmacistCult}
           />
         );
       })()}
@@ -4750,7 +4836,7 @@ export default function ProfessorSim(){
               if(compounds.length>1){
                 setCompoundFeedPicker({kind:'interrupt',studentId:hs.id});
               }else{
-                finishHungerInterrupt(hs.id,'compound',compounds[0]||'appetite_stimulant');
+                finishHungerInterrupt(hs.id,'compound',pickInterruptCompound(compounds,hs)||compounds[0]||'appetite_stimulant');
               }
             }}
             onDeny={()=>finishHungerInterrupt(hs.id,'deny')}
@@ -4781,6 +4867,7 @@ export default function ProfessorSim(){
             unlockedCompoundIds={compounds}
             compoundInventory={pharmacistState?.compoundInventory}
             feedLabel={feedLabel}
+            studentAddiction={student?.addictionLevel??0}
             onConfirm={(compoundId)=>{
               setCompoundFeedPicker(null);
               if(picker.kind==='item') executeItemFeed(picker.item,picker.studentId,compoundId);

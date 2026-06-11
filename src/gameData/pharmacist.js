@@ -2,6 +2,7 @@
 // SOPHIA LANG — Pharmacist evolution path & compounds
 // See docs/Pharmacist/
 // ═══════════════════════════════════════════════════════════════
+import { defaultCultState, initCultOnUnlock, cultLoyaltyRelBonus, consumeCultSupplyReservoir } from './pharmacistCult.js';
 
 export const PHARMACIST_STAGES = [
   { id: 1, key: "corporate_chemist",  label: "Corporate Chemist",   desc: "Secret sabotage at her day job. Early compounds for the player." },
@@ -54,6 +55,12 @@ export const COMPOUNDS = {
     addictionGain: 1, hungerDelta: 3, corruptionGain: 3, calMult: 1, fullMult: 1,
     bypassAddictionGate: true,
   },
+  sensitivity_serum: {
+    id: "sensitivity_serum", label: "Sensitivity Serum", stage: 2,
+    flavor: "Touch, pressure, fullness — everything hits harder. Overwhelming in a good way.",
+    addictionGain: 1, hungerDelta: 0, corruptionGain: 3, calMult: 1.05, fullMult: 1.2,
+    relGain: 6,
+  },
   intentional_addiction: {
     id: "intentional_addiction", label: "Intentional Addiction Compound", stage: 3,
     flavor: "Made to make her need it. The food. The feeling. You.",
@@ -75,8 +82,47 @@ export const COMPOUNDS = {
     flavor: "Pulls addiction back down to Mild. Doesn't remove it entirely.",
     addictionGain: 0, hungerDelta: -2, corruptionGain: 0, calMult: 1, fullMult: 1,
     resetAddictionTo: 1,
+    category: "control",
+  },
+  cult_appetite: {
+    id: "cult_appetite", label: "Cult-Strength Appetite", stage: 3,
+    flavor: "She'll eat for you until obedience feels like relief. Aggressive and attached.",
+    addictionGain: 2, hungerDelta: 2, corruptionGain: 3, calMult: 1.45, fullMult: 1.3,
+    relGain: 8,
+    category: "cult",
+  },
+  cult_pleasure: {
+    id: "cult_pleasure", label: "Cult-Strength Pleasure", stage: 3,
+    flavor: "Pleasure and loyalty merge. She associates fullness with belonging to your circle.",
+    addictionGain: 2, hungerDelta: 1, corruptionGain: 5, calMult: 1.25, fullMult: 1.2,
+    relGain: 10,
+    category: "cult",
+  },
+  dependency_maintenance: {
+    id: "dependency_maintenance", label: "Dependency Maintenance", stage: 3,
+    flavor: "Keeps her needy — always a little hungry, always thinking about your food.",
+    addictionGain: 0, hungerDelta: 1, corruptionGain: 1, calMult: 1.08, fullMult: 1.05,
+    relGain: 6,
+    maintainAddiction: true,
+    category: "control",
   },
 };
+
+export const COMPOUND_CATEGORIES = {
+  growth: { label: 'Growth & appetite', ids: [] },
+  control: { label: 'Dependency control', ids: ['addiction_cure', 'dependency_maintenance'] },
+  cult: { label: 'Cult supply', ids: ['intentional_addiction', 'loyalty_enhancer', 'rapid_expansion', 'cult_appetite', 'cult_pleasure'] },
+};
+
+// Populate growth with everything not in control/cult
+const _special = new Set([...COMPOUND_CATEGORIES.control.ids, ...COMPOUND_CATEGORIES.cult.ids]);
+COMPOUND_CATEGORIES.growth.ids = Object.keys(COMPOUNDS).filter(id => !_special.has(id));
+
+export function getCompoundCategory(compoundId) {
+  if (COMPOUND_CATEGORIES.control.ids.includes(compoundId)) return 'control';
+  if (COMPOUND_CATEGORIES.cult.ids.includes(compoundId)) return 'cult';
+  return 'growth';
+}
 
 export function compoundsForStage(stage) {
   return Object.values(COMPOUNDS).filter(c => c.stage <= stage);
@@ -137,6 +183,7 @@ export function defaultPharmacistState() {
     unlockedCompounds: compoundsForStage(1).map(c => c.id),
     compoundInventory: { appetite_stimulant: 2, mild_pleasure: 1 },
     ingredients: { precursors: 2, reagents: 1, extracts: 0, branding: 0, supply: 0, catalyst: 0 },
+    cult: defaultCultState(),
     exposureEventsTriggered: [],
     synthesisPausedWeeks: 0,
   };
@@ -208,13 +255,16 @@ export function applyExposureEvent(state, event) {
   };
 }
 
-export function applyCompoundToFeed(student, compoundId, feedResult = {}) {
+export function applyCompoundToFeed(student, compoundId, feedResult = {}, pharmacistState = null) {
   const compound = COMPOUNDS[compoundId];
   if (!compound) return { student, feedResult };
   let s = { ...student };
-  if (compound.addictionGain) {
+  if (compound.addictionGain && !compound.maintainAddiction) {
     const next = Math.min(4, getAddictionLevel(s) + compound.addictionGain);
     s.addictionLevel = next;
+  }
+  if (compound.maintainAddiction && getAddictionLevel(s) < 2) {
+    s.addictionLevel = 2;
   }
   if (compound.resetAddictionTo != null) {
     s.addictionLevel = Math.min(getAddictionLevel(s), compound.resetAddictionTo);
@@ -233,7 +283,7 @@ export function applyCompoundToFeed(student, compoundId, feedResult = {}) {
   fr.calMult = (fr.calMult ?? 1) * (compound.calMult ?? 1);
   fr.fullMult = (fr.fullMult ?? 1) * (compound.fullMult ?? 1);
   fr.corruptionGain = (fr.corruptionGain ?? 0) + (compound.corruptionGain ?? 0);
-  fr.relGain = (fr.relGain ?? 0) + (compound.relGain ?? 0);
+  fr.relGain = (fr.relGain ?? 0) + (compound.relGain ?? 0) + cultLoyaltyRelBonus(pharmacistState, compoundId);
   fr.digestMult = (fr.digestMult ?? 1) * (compound.digestMult ?? 1);
   return { student: s, feedResult: fr, flavor: compound.flavor };
 }
@@ -291,7 +341,10 @@ export function maybeAdvancePharmacistStage(state) {
     unlockedCompounds: compoundsForStage(stage).map(c => c.id),
   };
   if (stage >= 2) next.campusFattening = true;
-  if (stage >= 3) next.cultActive = true;
+  if (stage >= 3) {
+    next.cultActive = true;
+    next.cult = initCultOnUnlock(next.cult);
+  }
   return next;
 }
 
@@ -304,13 +357,19 @@ export function completePharmacistChemSession(state, stageId, chemSession) {
   const exposureFromSession = (chemSession.exposureGained ?? 0) + (act.exposure ?? 0);
   next.exposureRisk = Math.min(100, (next.exposureRisk ?? 0) + exposureFromSession);
   if (act.unlockCampusFattening) next.campusFattening = true;
-  if (act.unlockCult) next.cultActive = true;
+  if (act.unlockCult) {
+    next.cultActive = true;
+    next.cult = initCultOnUnlock(next.cult);
+  }
   const inv = { ...next.compoundInventory };
   const granted = chemSession.granted || [];
   granted.forEach(id => { inv[id] = (inv[id] || 0) + 1; });
   next.compoundInventory = inv;
   next.lastSynthesisGrant = granted;
   next.ingredients = chemSession.poolAfter || next.ingredients;
+  if (chemSession.cultSupplyMerged > 0) {
+    next = consumeCultSupplyReservoir(next, chemSession.cultSupplyMerged);
+  }
   next = maybeAdvancePharmacistStage(next);
   return next;
 }

@@ -17,7 +17,7 @@ import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, runPharmacistSynthesis, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, week }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, runPharmacistSynthesis, runPharmacistCultDistribution, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, week }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -322,6 +322,8 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                           const stocked=(ps.unlockedCompounds||[]).filter(id=>(ps.compoundInventory?.[id]??0)>0);
                           const campusLabel=CAMPUS_NARRATIVE_LABELS[getCampusNarrativeTier(ps)];
                           const ingredients=formatIngredientBag(ps.ingredients||{});
+                          const cult=ps.cult||{};
+                          const purple="#6b4a8a";
                           return(
                             <div style={{background:"rgba(8,30,22,0.6)",border:`1px solid ${green}80`,borderRadius:10,padding:12}}>
                               <div style={{fontSize:9,letterSpacing:3,color:green,marginBottom:4}}>🧪 EVOLVED PATH</div>
@@ -329,9 +331,20 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                               <div style={{fontSize:10,color:"#508070",marginBottom:8,lineHeight:1.6}}>
                                 Exposure {ps.exposureRisk}% · Sessions {ps.sessionsRun||0}
                                 {campusLabel?` · ${campusLabel}`:""}
-                                {ps.cultActive?" · Cult supply active":""}
                                 {(ps.synthesisPausedWeeks||0)>0?` · Synthesis paused ${ps.synthesisPausedWeeks}w`:""}
                               </div>
+                              {ps.cultActive&&(
+                                <div style={{background:"rgba(40,20,60,0.35)",border:`1px solid ${purple}50`,borderRadius:8,padding:8,marginBottom:8}}>
+                                  <div style={{fontSize:9,letterSpacing:2,color:purple,marginBottom:4}}>🕯️ THE CIRCLE</div>
+                                  <div style={{fontSize:10,color:"#9070b0",lineHeight:1.55,marginBottom:8}}>
+                                    {cult.circleSize??0} devotees · Devotion {cult.devotion??0}% · Supply {cult.supplyReservoir??0}
+                                    {cult.bulkProductionUnlocked?" · Bulk brew unlocked":""}
+                                  </div>
+                                  <button style={{...C.btn(purple),width:"100%",fontSize:11}} onClick={()=>runPharmacistCultDistribution(s)}>
+                                    🕯️ Route Distribution (1–2 AP)
+                                  </button>
+                                </div>
+                              )}
                               {ingredients.length>0&&(
                                 <>
                                   <div style={{fontSize:9,color:"#406858",marginBottom:6}}>Saved ingredients:</div>

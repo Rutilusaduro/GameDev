@@ -36,11 +36,11 @@ function IngredientRow({ bag }) {
   );
 }
 
-function BrewPicker({ session, setSession }) {
+function BrewPicker({ session, setSession, pharmacistState }) {
   const pool = session.pool || {};
   const plan = session.brewPlan || [];
   let displayPool = { ...pool };
-  for (const id of plan) displayPool = spendRecipe(displayPool, id);
+  for (const id of plan) displayPool = spendRecipe(displayPool, id, pharmacistState);
   const unlocked = compoundsForStage(session.stageId).map(c => c.id);
 
   return (
@@ -56,8 +56,8 @@ function BrewPicker({ session, setSession }) {
         {unlocked.map(id => {
           const c = COMPOUNDS[id];
           const inPlan = plan.includes(id);
-          const canAdd = !inPlan && plan.length < session.maxBrews && canAffordRecipe(displayPool, id);
-          const affordNow = canAffordRecipe(pool, id);
+          const canAdd = !inPlan && plan.length < session.maxBrews && canAffordRecipe(displayPool, id, pharmacistState);
+          const affordNow = canAffordRecipe(pool, id, pharmacistState);
           return (
             <button
               key={id}
@@ -70,11 +70,11 @@ function BrewPicker({ session, setSession }) {
                 opacity: affordNow || inPlan ? 1 : 0.45,
                 border: inPlan ? '1px solid #6ab89a' : '1px solid transparent',
               }}
-              onClick={() => setSession(prev => toggleBrewInPlan(prev, id))}
+              onClick={() => setSession(prev => toggleBrewInPlan(prev, id, pharmacistState))}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
                 <span style={{ color: '#8ad4b0', fontWeight: 700, fontSize: 12 }}>{c.label}</span>
-                <span style={{ fontSize: 9, color: '#608878' }}>{recipeCostLabel(id)}</span>
+                <span style={{ fontSize: 9, color: '#608878' }}>{recipeCostLabel(id, pharmacistState)}</span>
               </div>
               <div style={{ fontSize: 9, color: '#507060', marginTop: 4, lineHeight: 1.4 }}>
                 {inPlan ? '✓ Queued for brewing' : canAdd ? 'Click to queue' : plan.length >= session.maxBrews ? 'Brew limit reached' : 'Insufficient ingredients'}
@@ -91,6 +91,7 @@ export function PharmacistChemModal({
   student,
   chemSession,
   setChemSession,
+  pharmacistState,
   onConfirm,
   onCancel,
   finalizeBrewPlan,
@@ -157,13 +158,13 @@ export function PharmacistChemModal({
         {(chemSession.acquisitionLog || []).map((line, i) => (
           <div key={i} style={{ fontSize: 11, color: '#709888', fontStyle: 'italic', lineHeight: 1.65, marginBottom: 8 }}>{line}</div>
         ))}
-        <BrewPicker session={chemSession} setSession={setChemSession} />
+        <BrewPicker session={chemSession} setSession={setChemSession} pharmacistState={pharmacistState} />
         <div style={{ display: 'flex', gap: 8 }}>
           <button type="button" style={C.btn('#333')} onClick={() => setChemSession({ ...chemSession, phase: 'acquire', brewPlan: [] })}>← Resources</button>
           <button
             type="button"
             style={{ ...C.btn(chrome.accent), flex: 1 }}
-            onClick={() => setChemSession(finalizeBrewPlan(chemSession))}
+            onClick={() => setChemSession(finalizeBrewPlan(chemSession, pharmacistState))}
           >
             Finish brewing →
           </button>
