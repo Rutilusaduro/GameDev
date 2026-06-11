@@ -4,6 +4,7 @@
 // Composed: core + optional devour aside (only if student has devoured).
 // ═══════════════════════════════════════════════════════════════
 import { registerModule, createContext, render } from '../engine.js';
+import './campusSoftening.js';
 
 /**
  * Twelve entries per archetype, indexed by weight stage id (0–11).
@@ -296,10 +297,14 @@ registerModule("diary.devour", [
     text: "" },
 ]);
 
-export const DIARY_TEMPLATE = "{diary.core}{diary.devour|prefix: }";
+export const DIARY_TEMPLATE = "{diary.core}{diary.campus|prefix: }{diary.devour|prefix: }";
 
-export function renderDiary(student, week = 1) {
-  const ctx = createContext({ subject: student, week });
+export function renderDiary(student, week = 1, opts = {}) {
+  const ctx = createContext({
+    subject: student,
+    week,
+    globals: { campusFattening: !!opts.campusFattening },
+  });
   const text = render(DIARY_TEMPLATE, ctx, { noSmooth: true }).trim();
   return text || "—";
 }

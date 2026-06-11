@@ -73,7 +73,7 @@ const BUILDERS = {
     return `${s.name} reads ${lbs} and smiles with quiet academic triumph. "The experiment," she says, hands spread over endless soft warmth, "is a success." ${moodTag(s)}`;
   },
 
-  2: (s) => { // Kylie — influencer
+  2: (s, opts = {}) => { // Kylie — influencer
     const lbs = Math.round(s.lbs), band = weighInStageBand(getStage(s.lbs).id), cor = getCorruptionTier(s.corruption || 0).id;
     if (band === 'light') {
       if (cor === 0) return `${s.name} angles herself toward the window light before looking at the dial. "${lbs}?" She laughs, too bright. "The camera adds ten, the dining hall adds—" She stops. Pokes her softening hip. "Okay. Content idea: honest weigh-in. Vulnerable. Relatable." She's already framing it. ${moodTag(s)}`;
@@ -81,7 +81,12 @@ const BUILDERS = {
       return `${s.name} grins at ${lbs} lbs. "My audience is going to lose their minds. Good way." She runs her hands over the plush new weight settling into her hourglass frame. "This is the content. This is the brand now." ${moodTag(s)}`;
     }
     if (band === 'rounded') {
-      if (cor === 0) return `${s.name} films the scale before she films herself. ${lbs} lbs. Her rounded belly pushes at her crop top; her thick thighs shimmer in the office light. "Okay so like—it's fine. It's college. Everyone gains." She doesn't sound sure. She sounds like someone reading a script she didn't write. ${moodTag(s)}`;
+      if (cor === 0) {
+        const campusLine = opts?.campusFattening
+          ? `"Okay so like—it's fine. It's college. Everyone's gaining — campus-wide, not just me." She sounds like someone reading a script she didn't write, except the script is true.`
+          : `"Okay so like—it's fine. It's college. Everyone gains." She doesn't sound sure. She sounds like someone reading a script she didn't write.`;
+        return `${s.name} films the scale before she films herself. ${lbs} lbs. Her rounded belly pushes at her crop top; her thick thighs shimmer in the office light. ${campusLine} ${moodTag(s)}`;
+      }
       if (cor === 1) return `"${lbs}!" ${s.name} spins slowly, letting you see all of it — the heavy sway of her belly, the plush width of her hips. "The comments section would eat this up. 'She's so real.'" She pats her stomach. "I am real. Really soft, really full, really—" She smiles. "Really into it." ${moodTag(s)}`;
       return `At ${lbs}, ${s.name} doesn't perform shock. She performs appetite. Her plump body moves with deliberate sensuality — belly jiggling, thighs rubbing, everything on display. "Watch this number climb," she says to the room, to you, to her future feed. "Watch me." ${moodTag(s)}`;
     }
@@ -375,7 +380,7 @@ const DEFAULT_REPLY = (s) => {
   return `${s.name} reads ${lbs} and smiles — warm, unhurried, sure. "Good," she says, hands settling on the soft weight of herself. "More."`;
 };
 
-export function getWeighInPersonalReply(student) {
+export function getWeighInPersonalReply(student, opts = {}) {
   const fn = BUILDERS[student.id] || DEFAULT_REPLY;
-  return fn(student);
+  return fn(student, opts);
 }

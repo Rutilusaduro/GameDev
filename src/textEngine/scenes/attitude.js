@@ -3,6 +3,7 @@
 // One first-person sentence from mood, corruption, hunger, devour.
 // ═══════════════════════════════════════════════════════════════
 import { registerModule, createContext, render } from '../engine.js';
+import './campusSoftening.js';
 
 // ── attitude.line — primary emotional sentence ────────────────
 
@@ -343,9 +344,13 @@ registerModule("attitude.line", [
     ] },
 ]);
 
-export const ATTITUDE_TEMPLATE = "{attitude.line}";
+export const ATTITUDE_TEMPLATE = "{attitude.line}{attitude.campus|prefix: }";
 
-export function renderAttitude(student, week = 1) {
-  const ctx = createContext({ subject: student, week });
+export function renderAttitude(student, week = 1, opts = {}) {
+  const ctx = createContext({
+    subject: student,
+    week,
+    globals: { campusFattening: !!opts.campusFattening },
+  });
   return render(ATTITUDE_TEMPLATE, ctx).trim() || "—";
 }

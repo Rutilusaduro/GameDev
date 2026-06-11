@@ -11,7 +11,9 @@ export function HungerInterruptModal({
   onTalk,
 }) {
   const s = student;
-  const hasCompounds = pharmacistState?.unlockedCompounds?.length > 0;
+  const hasCompounds = (pharmacistState?.unlockedCompounds || []).some(
+    id => (pharmacistState?.compoundInventory?.[id] ?? 0) > 0
+  );
 
   return (
     <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.72)", zIndex: 9000, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>

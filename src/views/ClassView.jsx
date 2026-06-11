@@ -9,7 +9,8 @@ import { getAttitude } from '../utils/gameHelpers.js';
 import { addictionTint } from '../gameData/hungerAddiction.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function ClassView({ view, students, lilithUnlocked, avgLbs, setSelectedId, setView, week = 1 }){
+export function ClassView({ view, students, lilithUnlocked, avgLbs, setSelectedId, setView, week = 1, pharmacistState = null }){
+  const textOpts = { campusFattening: !!pharmacistState?.campusFattening, week };
   return(<>
           {/* ── CLASS ROSTER ── */}
           {view==="class"&&(
@@ -40,7 +41,7 @@ export function ClassView({ view, students, lilithUnlocked, avgLbs, setSelectedI
                         {s.lbs.toLocaleString()} lbs  (+{s.lbs-s.startLbs}) · ❤ {s.relationship}%
                       </div>
                       <div style={{fontSize:10,color:"#504060",fontStyle:"italic",lineHeight:1.4,marginTop:3}}>
-                        {getAttitude(s, week).slice(0, 62)}…
+                        {getAttitude(s, week, textOpts).slice(0, 62)}…
                       </div>
                     </div>
                   );

@@ -11,6 +11,7 @@ import { getCorruptionTier } from '../gameData/corruption.js';
 import { getStage } from '../gameData/stages.js';
 import { createContext, render } from '../textEngine/engine.js';
 import '../textEngine/scenes/talkCodas.js'; // registers talk.coda
+import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';
 import { getHungerTier, getAddictionLevel } from '../gameData/hungerAddiction.js';
 import { getBodyDescRich } from '../utils/gameHelpers.js';
@@ -18,7 +19,7 @@ import { C } from '../styles.js';
 
 // ── response builder ──────────────────────────────────────────
 
-function buildResponse(topic, student, skillEffects, week){
+function buildResponse(topic, student, skillEffects, week, campusFattening = false){
   const corTier = getCorruptionTier(student.corruption || 0).id;
 
   let text;
@@ -26,8 +27,16 @@ function buildResponse(topic, student, skillEffects, week){
     text = buildDevourScene(student, corTier, week);
   } else {
     text = buildTalkResponse(topic.id, student, corTier);
-    const ctx = createContext({ subject: student, skillEffects });
+    const ctx = createContext({
+      subject: student,
+      skillEffects,
+      week,
+      globals: { campusFattening: !!campusFattening },
+    });
     text += render("{talk.coda|prefix: }", ctx, { noSmooth: true });
+    if (campusFattening) {
+      text += render("{talk.campusCoda|prefix: }", ctx, { noSmooth: true });
+    }
     if (getHungerTier(student) >= 2 || getAddictionLevel(student) >= 1) {
       text += render("{talk.hungryCoda}", ctx, { noSmooth: true });
     }
@@ -122,7 +131,7 @@ function ResponseDisplay({ topic, text, student, week, onClose }){
 
 // ── main modal ────────────────────────────────────────────────
 
-export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevouring, onClose, onApplyEffect }){
+export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevouring, onClose, onApplyEffect, campusFattening = false }){
   const [activeResponse, setActiveResponse] = useState(null); // {topic, text}
   const corTier = getCorruptionTier(student.corruption || 0);
   const eff     = skillEffects || {};
@@ -144,7 +153,7 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
       }
     }
 
-    const text = buildResponse(topic, student, eff, week);
+    const text = buildResponse(topic, student, eff, week, campusFattening);
     setActiveResponse({topic, text, refused:false});
   };
 
