@@ -2,6 +2,7 @@
 // PHARMACIST INGREDIENTS — resources, recipes, stage acquisition
 // ═══════════════════════════════════════════════════════════════
 import { COMPOUNDS, compoundsForStage } from './pharmacist.js';
+import { cultSupplyToIngredients, applyBulkProductionDiscount } from './pharmacistCult.js';
 
 export const INGREDIENTS = {
   precursors: { id: 'precursors', label: 'Lab Precursors', icon: '⚗️', desc: 'Corporate-grade chemical stock.' },
@@ -26,6 +27,10 @@ export const COMPOUND_RECIPES = {
   loyalty_enhancer:      { precursors: 1, reagents: 2, supply: 2, branding: 1 },
   rapid_expansion:       { precursors: 3, reagents: 3, extracts: 2, supply: 1 },
   addiction_cure:        { precursors: 4, reagents: 3, extracts: 1 },
+  sensitivity_serum:     { precursors: 2, reagents: 2, extracts: 2, branding: 1 },
+  cult_appetite:         { precursors: 3, reagents: 2, extracts: 2, supply: 2 },
+  cult_pleasure:         { precursors: 2, reagents: 3, extracts: 3, supply: 2, branding: 1 },
+  dependency_maintenance:  { precursors: 3, reagents: 3, extracts: 2, supply: 1 },
 };
 
 export const MAX_BREWS_BY_STAGE = { 1: 2, 2: 3, 3: 4, 4: 5 };
@@ -209,15 +214,21 @@ export function mergeIngredients(base, delta = {}) {
   return out;
 }
 
-export function canAffordRecipe(pool, compoundId) {
-  const recipe = COMPOUND_RECIPES[compoundId];
+export function getRecipeForCompound(compoundId, pharmacistState = null) {
+  const base = COMPOUND_RECIPES[compoundId];
+  if (!base) return null;
+  return pharmacistState ? applyBulkProductionDiscount(base, pharmacistState) : base;
+}
+
+export function canAffordRecipe(pool, compoundId, pharmacistState = null) {
+  const recipe = getRecipeForCompound(compoundId, pharmacistState);
   if (!recipe) return false;
   return Object.entries(recipe).every(([k, n]) => (pool[k] || 0) >= n);
 }
 
-export function spendRecipe(pool, compoundId) {
-  const recipe = COMPOUND_RECIPES[compoundId];
-  if (!recipe || !canAffordRecipe(pool, compoundId)) return pool;
+export function spendRecipe(pool, compoundId, pharmacistState = null) {
+  const recipe = getRecipeForCompound(compoundId, pharmacistState);
+  if (!recipe || !canAffordRecipe(pool, compoundId, pharmacistState)) return pool;
   const next = { ...pool };
   for (const [k, n] of Object.entries(recipe)) {
     next[k] = (next[k] || 0) - n;
@@ -225,25 +236,28 @@ export function spendRecipe(pool, compoundId) {
   return next;
 }
 
-export function recipeCostLabel(compoundId) {
-  const recipe = COMPOUND_RECIPES[compoundId];
+export function recipeCostLabel(compoundId, pharmacistState = null) {
+  const recipe = getRecipeForCompound(compoundId, pharmacistState);
   if (!recipe) return '';
   return Object.entries(recipe)
     .map(([k, n]) => `${INGREDIENTS[k]?.icon || ''}${n}`)
     .join(' ');
 }
 
-export function compoundsCraftableNow(pool, stageId) {
+export function compoundsCraftableNow(pool, stageId, pharmacistState = null) {
   const poolIds = compoundsForStage(stageId).map(c => c.id);
-  return poolIds.filter(id => canAffordRecipe(pool, id));
+  return poolIds.filter(id => canAffordRecipe(pool, id, pharmacistState));
 }
 
 export function startChemSession(pharmacistState) {
   const stageId = pharmacistState?.stage ?? 1;
+  const cultReservoir = pharmacistState?.cult?.supplyReservoir ?? 0;
+  const cultBonus = pharmacistState?.cultActive ? cultSupplyToIngredients(pharmacistState) : {};
   return {
     stageId,
     phase: 'acquire',
-    pool: mergeIngredients(sessionIngredientBudget(stageId), pharmacistState?.ingredients),
+    cultSupplyMerged: cultReservoir,
+    pool: mergeIngredients(sessionIngredientBudget(stageId), pharmacistState?.ingredients, cultBonus),
     exposureGained: 0,
     acquisitionLog: [],
     brewPlan: [],
@@ -269,7 +283,7 @@ export function skipAcquisition(session) {
   return { ...session, phase: 'craft' };
 }
 
-export function toggleBrewInPlan(session, compoundId) {
+export function toggleBrewInPlan(session, compoundId, pharmacistState = null) {
   const plan = [...(session.brewPlan || [])];
   const idx = plan.indexOf(compoundId);
   if (idx >= 0) {
@@ -277,19 +291,19 @@ export function toggleBrewInPlan(session, compoundId) {
     return { ...session, brewPlan: plan };
   }
   if (plan.length >= session.maxBrews) return session;
-  if (!canAffordRecipe(session.pool, compoundId)) return session;
+  if (!canAffordRecipe(session.pool, compoundId, pharmacistState)) return session;
   let pool = session.pool;
-  for (const id of plan) pool = spendRecipe(pool, id);
-  if (!canAffordRecipe(pool, compoundId)) return session;
+  for (const id of plan) pool = spendRecipe(pool, id, pharmacistState);
+  if (!canAffordRecipe(pool, compoundId, pharmacistState)) return session;
   return { ...session, brewPlan: [...plan, compoundId] };
 }
 
-export function finalizeBrewPlan(session) {
+export function finalizeBrewPlan(session, pharmacistState = null) {
   let pool = { ...session.pool };
   const granted = [];
   for (const id of session.brewPlan || []) {
-    if (!canAffordRecipe(pool, id)) continue;
-    pool = spendRecipe(pool, id);
+    if (!canAffordRecipe(pool, id, pharmacistState)) continue;
+    pool = spendRecipe(pool, id, pharmacistState);
     granted.push(id);
   }
   return {

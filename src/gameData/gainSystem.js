@@ -78,7 +78,8 @@ export const digestStudent = (s, rng = Math.random) => {
   const cap = s.stomachCapacity || GAIN_CONFIG.baseCapacity;
   const surplus = s.consumedCalories || 0;
   const metabolicMult = 1 + (s.metabolicSlowdown || 0);
-  const lbsGained = surplus > 0 ? Math.max(0, Math.round(calsToLbs(surplus) * metabolicMult)) : 0;
+  const digestMult = s.weeklyDigestMult ?? 1;
+  const lbsGained = surplus > 0 ? Math.max(0, Math.round(calsToLbs(surplus) * metabolicMult * digestMult)) : 0;
   // stuffed check happens against the fullness she's carrying into the night
   const stuffed = (s.fullness || 0) > cap;
   let stuffedStreak = stuffed ? (s.stuffedStreak || 0) + 1 : 0;

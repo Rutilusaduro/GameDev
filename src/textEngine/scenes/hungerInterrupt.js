@@ -3,6 +3,7 @@
 // See docs/Pharmacist/Hunger Event Lexicon.txt
 // ═══════════════════════════════════════════════════════════════
 import { registerModule, createContext, render } from '../engine.js';
+import './hungerArchetypeBehavior.js';
 
 registerModule("scene.hungerInterrupt.starter", [
   { when: { addictionLevel: [4], hungerTier: [4] }, priority: 2,
@@ -152,8 +153,8 @@ registerModule("scene.hunger.response.talk", [
 
 export const HUNGER_INTERRUPT_TEMPLATE =
   "{scene.hungerInterrupt.starter} You open the door and find {subject.name}. " +
-  "{scene.hungerInterrupt.personal|prefix: }{scene.hungerInterrupt.appearance|prefix: }{scene.hungerInterrupt.behavior|prefix: }" +
-  "{scene.hungerInterrupt.request} {scene.hungerInterrupt.tone}";
+  "{scene.hungerInterrupt.personal|prefix: }{scene.hungerInterrupt.appearance|prefix: }{scene.hungerInterrupt.archetypeBehavior|prefix: }{scene.hungerInterrupt.behavior|prefix: }" +
+  "{scene.hungerInterrupt.archetypeRequest|prefix: }{scene.hungerInterrupt.request} {scene.hungerInterrupt.tone}";
 
 export function renderHungerInterrupt(student, week = 1) {
   const ctx = createContext({ subject: student, week });
