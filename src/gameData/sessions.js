@@ -358,24 +358,6 @@ export const THIN_CONTEXTUAL={
   transfer: (t,f)=>`"When you first got here you were asking where everything was," ${t.name} says. "That map. The confused look." She watches ${f.name} eat with total comfort and ownership. "You figured out the campus." She pauses. "And the dining hall. Especially the dining hall."`,
 };
 
-export const DIVINE_PAIR_REACTIONS={
-  celestial_celestial:[
-    (a,b)=>`${a.name} and ${b.name} reach for the same dish at the same moment. The light from both of them intensifies briefly — competing warmths, harmonizing. The food seems to multiply; the server is confused to find the plates fuller than expected. Both of them eat with the ease of beings who expect the world to accommodate them. It does.`,
-    (a,b)=>`A warmth fills the table — not metaphorical, actual — as ${a.name} and ${b.name} eat. Students at nearby tables keep glancing over. The air between the two of them has a quality that's hard to look at directly. They share a dish without speaking. Both of them seem, fractionally, to grow.`,
-    (a,b)=>`${a.name}'s halo brightens when ${b.name} laughs. ${b.name}'s wings flutter slightly when ${a.name} pushes another course toward her. "You felt that," ${a.name} says. It isn't a question. The divine resonance between them is audible, barely, at the edge of hearing — a warmth that amplifies itself.`,
-  ],
-  umbral_umbral:[
-    (a,b)=>`The temperature at the table drops sharply. ${a.name} and ${b.name} eat in silence, but the silence has a quality — layered, charged, two voids resonating against each other. The dishes empty faster than they should. Both of them seem heavier by the end of each course in a way that the food alone doesn't account for.`,
-    (a,b)=>`${a.name}'s shadow reaches toward ${b.name}'s across the tablecloth. Neither acknowledges it. Both of them eat with an intensity that makes the other tables unconsciously quieter. "We're the same," ${b.name} says eventually, without looking up. "We want the same thing." A pause. "More."`,
-    (a,b)=>`The lights near the table flicker. ${a.name} notices. ${b.name} notices. Neither says anything. Their void-wings are open slightly, taking up more room than the restaurant accounts for, and both of them are feeding with the focus of creatures that don't have a stopping point and don't want one. The hunger doubles in the presence of its mirror.`,
-  ],
-  celestial_umbral:[
-    (a,b)=>`The air between ${a.name} and ${b.name} is uncomfortable in a specific way — light and cold pulling at each other, warmth and darkness finding edges. Both of them are eating with unusual intensity, as if to fill the tension. The food disappears faster than it should. Neither speaks. Both of them are watching the other from the corners of their eyes.`,
-    (a,b)=>`${a.name}'s light flares slightly in the presence of ${b.name}'s void. ${b.name}'s shadow extends toward the warmth without meaning to. They eat in charged parallel — not hostile, not friendly. The waiter approaches and then decides to come back. Something about the table says: not yet.`,
-    (a,b)=>`"You feel it too," ${a.name} says. It isn't clear whether she means the food, the warmth, the void, or the weight of being what they are at the same table. ${b.name} eats another bite and doesn't answer. The fact that she doesn't answer is itself an answer. The meal continues. Everything about it is charged.`,
-  ],
-};
-
 export const UNBUTTON_LINES=[
   (s)=>`${s.name} shifts in her seat. There's a small, deliberate movement under the table — a button giving way, the waistband releasing. She exhales. Continues eating.`,
   (s)=>`${s.name} reaches down, adjusts something quietly, and settles deeper into her chair. She looks fractionally more comfortable. She doesn't mention it.`,

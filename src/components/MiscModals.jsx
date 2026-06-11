@@ -1,6 +1,5 @@
 import { C } from '../styles.js';
 import { getFullnessStage } from '../gameData/sessions.js';
-import { GODDESS_VISION } from '../gameData/ascension.js';
 
 
 export function EvolutionOfferModal({ chooseEvolution, evolutionModal, setEvolutionModal }){
@@ -20,35 +19,6 @@ export function EvolutionOfferModal({ chooseEvolution, evolutionModal, setEvolut
               ))}
             </div>
             <button style={C.btn("#201040")} onClick={()=>setEvolutionModal(null)}>Not yet</button>
-          </div>
-        </div>
-  );
-}
-
-export function GoddessVisionModal({ push, setGoddessModal, setView }){
-  return(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:560,background:"linear-gradient(160deg,#0a0520,#12082a,#0a0520)",border:"2px solid #8040ff80"}}>
-            <div style={{fontSize:9,letterSpacing:4,color:"#a060ff",marginBottom:8}}>✦ VISION</div>
-            <h2 style={{margin:"0 0 16px",color:"#d4aaff",fontSize:19,fontWeight:400,letterSpacing:1}}>{GODDESS_VISION.title}</h2>
-            <div style={{...C.infoBox("rgba(60,10,120,0.25)"),lineHeight:2,fontSize:13,color:"#e8d8ff",fontStyle:"italic",marginBottom:16,maxHeight:380,overflowY:"auto",whiteSpace:"pre-line"}}>
-              {GODDESS_VISION.scene}
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:7}}>
-              {GODDESS_VISION.choices.map((ch,i)=>(
-                <button key={i}
-                  style={{...C.btn("#401080"),textAlign:"left",padding:"10px 14px",lineHeight:1.5}}
-                  onClick={()=>{
-                    push(`✦ ${ch.label} — ${ch.text}`);
-                    push(`✦ The Divine skill tree is now unlocked. Visit Skills → Divine.`);
-                    setGoddessModal(null);
-                    setView("divine");
-                  }}>
-                  <div style={{fontSize:12,fontWeight:700,color:"#c8a8ff",marginBottom:2}}>{ch.label}</div>
-                  <div style={{fontSize:11,color:"#907090",fontStyle:"italic"}}>{ch.text}</div>
-                </button>
-              ))}
-            </div>
           </div>
         </div>
   );

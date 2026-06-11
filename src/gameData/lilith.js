@@ -356,3 +356,28 @@ export const CLUE_INVESTIGATION = {
 // ── WEEKLY PASSIVE ─────────────────────────────────────────────────
 // Lilith gets 1 lbs/week (not the normal 1-3). Applied in advanceWeek.
 export const LILITH_PASSIVE_GAIN = 1;
+
+// ── DIGESTION PHASE ────────────────────────────────────────────
+// After consuming, Lilith enters a digestion phase. Hunting is
+// blocked. She gains passive weight from the "prey" each week.
+// Weeks and gain scale with her current weight stage.
+
+export const LILITH_DIGEST_WEEKS = { 0:1, 1:1, 2:2, 3:2, 4:3, 5:3, 6:4, 7:5, 8:6, 9:8, 10:10 };
+export const LILITH_DIGEST_LBS = { 0:8, 1:10, 2:12, 3:14, 4:16, 5:18, 6:20, 7:22, 8:25, 9:28, 10:30 };
+
+export const LILITH_DIGEST_LINES = [
+  (name, weeksLeft, total) =>
+    `Lilith is still. She has been still since ${name}. Not lazy-still — processing-still. Her body is warm and busy and deeply focused on the work. She breathes slowly when you check in. "Give me time," she says, eyes half-closed. "${total - weeksLeft + 1} week. More to go."`,
+  (name, weeksLeft, total) =>
+    `She is sitting differently than she did last week — heavier into the couch, settling with the certainty of something that has found its final arrangement. The digestion is visible now. She eats when she needs to, but not with urgency. The hunger has quieted to a murmur. "Still going," she says. "${weeksLeft} more." She does not seem bothered by this at all.`,
+  (name, _weeksLeft, total) =>
+    `Halfway through. You can tell she has grown — her clothes show it, the way she moves shows it. ${name} is becoming her, slowly and completely. She watches you notice. "This is the part I like," she says. "Where it becomes permanent."`,
+  (_name, weeksLeft, _total) =>
+    `She is near the end of it. The digestion has been quiet and complete, and she is — visibly, substantively — larger than she was before. She moves with the deliberateness of someone who has learned to enjoy her own scale. "${weeksLeft > 0 ? `A little longer` : "Done soon"}," she says. "Thank you for not interrupting."`,
+];
+
+export const LILITH_DIGEST_COMPLETE = (name, lbsGained) =>
+  `Lilith stretches for the first time in days, a slow, magnificent arc that acknowledges every new pound of her. The digestion of ${name} is complete. She has gained ${lbsGained} lbs since the hunt — all of it solid, all of it permanent, all of it hers. "I am hungry again," she says. "When is the next one?"`;
+
+export const LILITH_DIGEST_BLOCKED = (weeksLeft) =>
+  `Lilith holds up one hand without opening her eyes. "Not yet. ${weeksLeft} ${weeksLeft === 1 ? "week" : "weeks"}." The mass of her shifts as she breathes. "I am busy."`;
