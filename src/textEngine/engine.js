@@ -70,6 +70,8 @@ function deriveFor(student, ref, skillEffects) {
     fullnessRatio: student.stomachCapacity
       ? (student.fullness || 0) / student.stomachCapacity
       : 0,
+    devourCount: student.devourCount || 0,
+    hasDevoured: (student.devourCount || 0) > 0,
     skillEffects: skillEffects || {},
   };
 }
@@ -132,6 +134,8 @@ function evalWhen(when, ctx) {
       case "skill": ok = !!(ctx.skillEffects && ctx.skillEffects[v]); break;
       case "weekMin": ok = ctx.week >= v; break;
       case "weekMax": ok = ctx.week <= v; break;
+      case "devourMin": ok = (d.devourCount ?? 0) >= v; break;
+      case "devourMax": ok = (d.devourCount ?? 0) <= v; break;
       default: {
         // dimension on ctx.d: corruption, stage, relationship, relSize,
         // bodyType, archetype, mood, evolvedForm, refStage...
