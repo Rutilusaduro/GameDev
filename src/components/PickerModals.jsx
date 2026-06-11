@@ -22,7 +22,7 @@ export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, st
         const introText=Array.isArray(journal.intro)?journal.intro[nadiaLevel]||journal.intro[0]:journal.intro;
         const entryText=isIntro?introText:(journal.entries[currentPage]?.[nadiaLevel]||"[no entry]");
         const purple="#6b5b95";
-        const darkPurple="#2a0a40";
+
         const canPrev=!isIntro;
         const canNext=!isIntro&&currentPage<maxPage;
         return(

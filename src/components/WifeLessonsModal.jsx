@@ -7,7 +7,7 @@ import { WL_CONFIG, WL_LESSONS } from '../gameData/evolvedForms.js';
 export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversationChoice, makeWifeLessonsSubChoice, dismissWifeLessonsConversation, chooseWifeLessonsLesson, startWifeLessonsConversation, closeWifeLessonsSession }){
         const{stage,daughters,moms,session}=wifeLessonsState;
         const{lessonChosen,mjGainAccum,relAccum,conversationState,log}=session;
-        const WINE="#8b2252";
+
         const WINE_BG="#0e0508";
         const WINE_DIM="#5a2040";
         const WINE_TEXT="#e8c8d8";

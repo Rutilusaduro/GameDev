@@ -14,7 +14,7 @@ export function SkillTreeView({ canUnlock, dinnerUnlocked, goddessSeen, hasSkill
             const filteredSkills=ALL_SKILLS.filter(sk=>sk.category===skillCat);
             const byTier={};
             filteredSkills.forEach(sk=>{if(!byTier[sk.tier])byTier[sk.tier]=[];byTier[sk.tier].push(sk);});
-            const NODE_W=120,NODE_H=52,NODE_GAP=14;
+            const NODE_W=120,NODE_GAP=14;
             const maxPerTier=Math.max(1,...Object.values(byTier).map(g=>g.length));
             const svgContentW=maxPerTier*(NODE_W+NODE_GAP)-NODE_GAP;
             const svgW=PAD_X*2+svgContentW;
@@ -162,7 +162,7 @@ export function SkillTreeView({ canUnlock, dinnerUnlocked, goddessSeen, hasSkill
                       const sk=hoveredNode;
                       const unlocked=unlockedSkills.includes(sk.id);
                       const available=canUnlock(sk);
-                      const affordable=totalGained>=sk.cost;
+
                       const reqsMet=!sk.requires||sk.requires.every(r=>unlockedSkills.includes(r));
                       const cat=SKILL_CATEGORIES[sk.category];
                       return(

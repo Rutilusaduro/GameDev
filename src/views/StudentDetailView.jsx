@@ -726,7 +726,7 @@ export function StudentDetailView({ activateDoubleDown, addBlobToReligion, ap, a
                         // ── CHAPTER HOSTESS — custom two-button layout ──
                         if(s.evolvedForm==='chapter_hostess'&&chapterHostessState){
                           const ch=chapterHostessState;
-                          const isLastStage=ch.stageIdx>=5&&ch.feastDone;
+
                           const canHangOut=ch.prepDaysLeft>0;
                           const feastReady=!ch.feastLogOpen&&!ch.feastPrepOpen;
                           return(

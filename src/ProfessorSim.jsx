@@ -84,7 +84,7 @@ export default function ProfessorSim(){
   // debugInputs: { [studentId]: { lbs:string, path:string, stage:number, rel:number } }
   const [skillCat,setSkillCat]=useState("environment");
   const [classSession,setClassSession]=useState(null);
-  const [semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
+  const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
   const [professorProfile,setProfessorProfile]=useState(null);
   // professorProfile: {name, subject, traits:[]}
@@ -124,11 +124,9 @@ export default function ProfessorSim(){
   // ── DIVINE EXPANSION STATE ─────────────────────────────────────
   const [goddessSeen,setGoddessSeen]=useState(false);
   const [goddessModal,setGoddessModal]=useState(null);
-  const [ascensionModal,setAscensionModal]=useState(null); // {student} → choose Celestial/Umbral
   const [consumedStudents,setConsumedStudents]=useState([]); // full student objects consumed by Umbral
   const [religion,setReligion]=useState(null);
   // religion: {founded, devotees, ritesHeld, worshippedIds:[], weeklyPassiveGain}
-  const [religionRiteModal,setReligionRiteModal]=useState(null);
   const [convergenceModal,setConvergenceModal]=useState(null); // {student} secret stage achieved
   // ── EP4: SANGUINE / VERDANT / PRIMORDIAL STATE ────────────────
   const [sanguineMarks,setSanguineMarks]=useState([]);       // student IDs marked for weekly drain
@@ -650,7 +648,6 @@ export default function ProfessorSim(){
           }));
         }
         // Religion scrutiny: devotees cause scrutiny above 10
-        const devoteeScrutiny=Math.max(0,Math.floor((religion.devotees-10)*0.3));
         const hasThreshold=unlockedSkills.includes("congregation");
         const thresholdAmt=hasThreshold?20:10;
         if(religion.devotees>thresholdAmt) addScrutiny(Math.max(0,Math.floor((religion.devotees-thresholdAmt)*0.2)));
@@ -722,7 +719,6 @@ export default function ProfessorSim(){
     push(`✦ ${s.name} ascends to ${label}! ${pathFlavorMap[path]||""}`);
     const desc=stages[0].desc;
     setTimeout(()=>push(`   "${desc}"`),200);
-    setAscensionModal(null);
     if(!goddessSeen){setGoddessSeen(true);}
   };
 
@@ -1339,7 +1335,6 @@ export default function ProfessorSim(){
       const{outcome}=sub;
       let newDaughters={...prev.daughters};
       let newMoms={...prev.moms};
-      let newMjWeight=prev.mjWeight;
       let logLine='';
       if(outcome.daughterKey&&outcome.daughterLbs){
         newDaughters[outcome.daughterKey]=(newDaughters[outcome.daughterKey]||0)+outcome.daughterLbs;
@@ -1431,13 +1426,6 @@ export default function ProfessorSim(){
 
   const closeCGModal=()=>{
     setCompetitiveGainerState(prev=>prev?{...prev,open:false,view:null,subState:null}:prev);
-  };
-
-  const cgAddSpirit=(delta)=>{
-    setCompetitiveGainerState(prev=>{
-      if(!prev) return prev;
-      return{...prev,spirit:prev.spirit+delta};
-    });
   };
 
   const doCGCorkboard=()=>{
@@ -1558,7 +1546,7 @@ export default function ProfessorSim(){
   };
   const makeHostessHangoutChoice=(choiceId)=>{
     if(!chapterHostessState) return;
-    const{hangoutStudentId,hangoutPhaseIdx,hangoutHistory}=chapterHostessState;
+    const{hangoutStudentId,hangoutPhaseIdx}=chapterHostessState;
     const keyMap={2:'kylie',4:'fiona',10:'renee'};
     const key=keyMap[hangoutStudentId]; if(!key) return;
     const unlockIdx=key==='kylie'?chapterHostessState.guestUnlocks:key==='renee'?chapterHostessState.menuUnlocks:chapterHostessState.atmosphereUnlocks;
@@ -2111,7 +2099,7 @@ export default function ProfessorSim(){
 
   const toggleFoodSelection=(side,key)=>{
     if(!eatingContestState) return;
-    const{stageIdx,yourFoods,mayaFoods}=eatingContestState;
+    const{stageIdx}=eatingContestState;
     if(side==='your'){
       setEatingContestState(prev=>({...prev,yourFoods:prev.yourFoods.map(f=>f.key===key&&!f.consumed?{...f,selected:!f.selected}:f)}));
     } else if(side==='maya'&&stageIdx>=3){
@@ -2121,7 +2109,7 @@ export default function ProfessorSim(){
 
   const doDevour=()=>{
     if(!eatingContestState) return;
-    const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,pantsFactor}=eatingContestState;
+    const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxMayaFullness,yourGain,mayaGain}=eatingContestState;
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const selectedYour=yourFoods.filter(f=>f.selected&&!f.consumed);
     const selectedMaya=mayaFoods.filter(f=>f.selected&&!f.consumed);
@@ -2161,7 +2149,7 @@ export default function ProfessorSim(){
 
   const doContestAction=(action)=>{
     if(!eatingContestState) return;
-    const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,pantsFactor,actions}=eatingContestState;
+    const{stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,mayaGain,pantsFactor,actions}=eatingContestState;
     let updates={};
     let popup='';
     if(action==='unbutton'){
@@ -2304,7 +2292,7 @@ export default function ProfessorSim(){
     }
     const wf=Math.max(0.6,Math.min(2.0,s.lbs/st.oppLbs));
     let ringPos=st.ringPos, yourBalance=st.yourBalance, oppBalance=st.oppBalance;
-    let tag,ringDelta=0,yb=0,ob=0;
+    let tag,ringDelta=0;
     if(yourBalance<=0&&moveId!=='brace'){
       tag='stumble'; ringDelta=-25; yourBalance=25;
     }else{
@@ -2552,7 +2540,6 @@ export default function ProfessorSim(){
 
     // Check quality fail
     if(newQual<=0){
-      const kylieName=kylie.name;
       const partnerName=partner.name;
       const crashText=`The stream crashes. Quality hit zero — the momentum died, the chat thinned out, and the connection dropped while both of you were still at the table. It happens. You gained ${Math.round(newKylieGain)} pounds and ${partnerName} gained ${Math.round(newPartnerGain)} pounds and the stream is just over.`;
       setCollabStreamState(prev=>prev?{...prev,kylieGain:newKylieGain,partnerGain:newPartnerGain,qualityBar:0,chatLines:newChat,phase:'scoreboard',popupText:crashText,phaseAfterPopup:'scoreboard_crash'}:prev);
@@ -2614,7 +2601,6 @@ export default function ProfessorSim(){
       if(step===0) newChoices.angle=choiceId;
       else if(step===1) newChoices.food=choiceId;
       else newChoices.pace=choiceId;
-      const popupKey=step===0?choiceId:step===1?choiceId:choiceId;
       const popupArr=RECORDING_DIRECTION_POPUPS[choiceId];
       const kylieForPopup=students.find(st=>st.id===prev.studentId);
       const popupFn=popupArr?.[prev.stageIdx];
@@ -2862,7 +2848,7 @@ export default function ProfessorSim(){
 
   const makeIntimacyChoice=(choiceId)=>{
     if(!intimacyEventState) return;
-    const {studentId,sceneId,phaseIdx,history,logLines,gainAccum,relAccum,tier}=intimacyEventState;
+    const {studentId,sceneId,phaseIdx,history,logLines,gainAccum,relAccum}=intimacyEventState;
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId]; if(!def) return;
     const phase=def.phases[phaseIdx]; if(!phase) return;
@@ -2988,10 +2974,9 @@ export default function ProfessorSim(){
       // Find 3 heaviest non-singularity students and drain them
       const targets=[...students].filter(st=>st.id!==s.id&&!st.ascensionPath)
         .sort((a,b)=>b.lbs-a.lbs).slice(0,3);
-      let drainTotal=0;
       setStudents(prev=>prev.map(st=>{
         const t=targets.find(t=>t.id===st.id);
-        if(t){const d=rnd(5,10);drainTotal+=d;return{...st,lbs:Math.max(st.startLbs,st.lbs-d)};}
+        if(t){const d=rnd(5,10);return{...st,lbs:Math.max(st.startLbs,st.lbs-d)};}
         if(st.id===s.id) return {...st,lbs:st.lbs+gainAmt};
         return st;
       }));
@@ -3317,10 +3302,9 @@ export default function ProfessorSim(){
     if(actionId==="pr_drain"&&religion&&religion.devotees>=1){
       const targets=[...students].filter(st=>st.id!==s.id&&!st.ascensionPath)
         .sort((a,b)=>b.lbs-a.lbs).slice(0,3);
-      let drainTotal=0;
       setStudents(prev=>prev.map(st=>{
         const t=targets.find(t=>t.id===st.id);
-        if(t){const d=rnd(5,10);drainTotal+=d;return{...st,lbs:Math.max(st.startLbs,st.lbs-d)};}
+        if(t){const d=rnd(5,10);return{...st,lbs:Math.max(st.startLbs,st.lbs-d)};}
         if(st.id===s.id) return {...st,lbs:st.lbs+gainAmt};
         return st;
       }));
@@ -3648,8 +3632,6 @@ export default function ProfessorSim(){
       return s;
     }));
   };
-
-
 
   const activateDoubleDown=(dd)=>{
     setStudents(prev=>prev.map(s=>{
@@ -4290,7 +4272,6 @@ export default function ProfessorSim(){
   const profGainMult=1+(hasSubj("nutrition")?0.1:0)+(hasSubj("philosophy")?0.05:0)+(hasTrait("generous")?0.15:0);
   const profPassiveBonus=hasTrait("patient")?1:0;
   const observeFree=hasSubj("art_history")||hasTrait("observant");
-  const alwaysShowWeight=hasSubj("physical_ed")||hasTrait("observant");
   const talkRelBonus=hasTrait("charismatic")?4:hasSubj("psychology")?2:0;
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
   const hasSkill=(id)=>unlockedSkills.includes(id);

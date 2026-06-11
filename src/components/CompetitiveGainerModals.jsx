@@ -180,7 +180,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
 
         // ── Binge view ──
         if(cgS.view==='binge'){
-          const{gain,sceneText,done}=cgS.subState||{};
+          const{gain,sceneText}=cgS.subState||{};
           return(
             <div style={{...C.overlay,zIndex:365}}>
               <div style={{...C.modal,maxWidth:520,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
