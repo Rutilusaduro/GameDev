@@ -9,7 +9,6 @@ Any constant, dialogue, description, or reaction that relates to weight must hav
 - Immobility, doorframe descriptions, floor-pooling mass → Blob (stage 10) and ascension stages only
 - Clothing strain, chair complaints → stage 3+ (Heavy and up)
 - Evolving identity, self-concept shifts → all 11 base stages
-- Ascension-path content → all 5 stages of that path + convergence where applicable
 
 **The full stage ladder:**
 | Stage | Label | Min lbs |
