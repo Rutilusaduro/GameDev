@@ -134,11 +134,6 @@ export function TalkModal({ student, skillEffects, week, onClose, onApplyEffect 
 
     const text = buildResponse(topic, student, eff);
     setActiveResponse({topic, text, refused:false});
-
-    // Apply effects (will be passed up to parent)
-    if(!activeResponse && !topic.refusal){
-      onApplyEffect(topic.effect || {});
-    }
   };
 
   const handleBack = () => {
