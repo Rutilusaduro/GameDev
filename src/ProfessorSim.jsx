@@ -4134,8 +4134,8 @@ export default function ProfessorSim(){
         brokeScaleIds={brokeScaleIds}
         onBreakScale={(sid)=>setBrokeScaleIds(arr=>arr.includes(sid)?arr:[...arr,sid])}
         onUnlockBigScale={()=>{ setBigScaleUnlocked(true); push("⚖ Ordered a heavy-duty 1000 lb scale."); }}
+        week={week}
       />}
-      {weighInState&&<WeighInModal weighInState={weighInState} setWeighInState={setWeighInState}/>}
 
       {/* ── SESSION RESULT ── */}
       {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}
