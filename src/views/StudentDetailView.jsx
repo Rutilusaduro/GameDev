@@ -8,13 +8,12 @@ import { EVOLVED_SKILL_TREES } from '../gameData/skills.js';
 import { INNER_CIRCLE_TIERS, getTier } from '../gameData/sessions.js';
 import { LILITH_ID } from '../gameData/lilith.js';
 import { RECRUITMENT_SCENE, TESTER_APPEARANCE } from '../gameData/cultivator.js';
-import { getBodyDesc, getDiary, getEvolvedReaction, getOutfit } from '../utils/gameHelpers.js';
-import { STAGE_REACTIONS } from '../gameData/content.js';
+import { getAttitude, getBodyDesc, getDiary, getOutfit } from '../utils/gameHelpers.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, week }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -181,17 +180,14 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                 <div style={C.infoBox("rgba(40,8,70,0.35)")}>
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>CURRENT ATTITUDE</div>
                   <div style={{fontSize:13,color:"#e8d8a8",fontStyle:"italic",lineHeight:1.75}}>
-                    "{(()=>{
-                      const evR=getEvolvedReaction(s); if(evR) return evR;
-                      const rb=STAGE_REACTIONS[s.archetype]?.[st.id]; return typeof rb==='function'?rb(s):rb;
-                    })()}"
+                    "{getAttitude(s, week)}"
                   </div>
                 </div>
 
                 {/* Diary */}
                 <div style={C.infoBox("rgba(30,5,60,0.4)")}>
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>DIARY ENTRY</div>
-                  <div style={{fontSize:12,color:"#c8b898",fontStyle:"italic",lineHeight:1.8}}>{getDiary(s)}</div>
+                  <div style={{fontSize:12,color:"#c8b898",fontStyle:"italic",lineHeight:1.8}}>{getDiary(s, week)}</div>
                 </div>
 
                 {/* ── EP2: EVOLUTION SECTION ── */}

@@ -3,12 +3,14 @@
 // Pure functions + balance constants used across the app.
 // Index 0 = weight stage 5 (Heavy), index 5 = weight stage 10 (Blob)
 // ═══════════════════════════════════════════════════════════════
-import { BODY_DESCS, OUTFITS, SLIGHT_DIARY, DIARY_ENTRIES } from '../gameData/content.js';
+import { BODY_DESCS, OUTFITS } from '../gameData/content.js';
 import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS } from '../gameData/evolvedForms.js';
 import { getStage } from '../gameData/stages.js';
 import { CLASS_SCENES } from '../gameData/classEvents.js';
 import { createContext, render } from '../textEngine/engine.js';
 import '../textEngine/lexicon.js'; // registers word.* modules
+import { renderDiary } from '../textEngine/scenes/diary.js';
+import { renderAttitude } from '../textEngine/scenes/attitude.js';
 
 export const ALL_SKILLS = [];
 
@@ -26,17 +28,22 @@ export function getOutfit(s){
   }
   const o=OUTFITS[s.archetype]||OUTFITS.default; return o[Math.min(getStage(s.lbs).id,o.length-1)];
 }
-export function getDiary(s){
+export function getDiary(s, week = 1){
   if(s.evolvedForm && getStage(s.lbs).id>=5){
     const arr=EVOLVED_DIARY[s.evolvedForm]; if(arr){ return arr[Math.min(getStage(s.lbs).id-5,arr.length-1)]; }
   }
-  const id=getStage(s.lbs).id; if(id===0) return SLIGHT_DIARY[s.archetype]||"—"; const d=DIARY_ENTRIES[s.archetype]; return d?d[Math.min(id-1,9)]:"—";
+  return renderDiary(s, week);
 }
 export function getEvolvedReaction(s){
   if(!s.evolvedForm) return null;
   const arr=EVOLVED_REACTIONS[s.evolvedForm]; if(!arr) return null;
   const idx=getStage(s.lbs).id-5; if(idx<0) return null;
   return arr[Math.min(idx,arr.length-1)];
+}
+export function getAttitude(s, week = 1){
+  const evR=getEvolvedReaction(s);
+  if(evR) return evR;
+  return renderAttitude(s, week);
 }
 export function getEvolvedActivityStageIdx(s){
   const id=getStage(s.lbs).id;
