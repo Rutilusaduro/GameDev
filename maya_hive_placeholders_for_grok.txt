@@ -13,12 +13,23 @@ Reactions
 ---------
 Short first-person/diary-like reactions shown by Maya's evolved form stage.
 
-[MayaHive_Reaction_MayaHeavy_CentralNest]
-[MayaHive_Reaction_MayaFat_FirstRooms]
-[MayaHive_Reaction_MayaVeryFat_HalfDorm]
-[MayaHive_Reaction_MayaEnormous_QueenStillness]
-[MayaHive_Reaction_MayaColossal_DormPulse]
-[MayaHive_Reaction_MayaBlob_WholeHive]
+[FILLED] [MayaHive_Reaction_MayaHeavy_CentralNest]
+The room feels different tonight. Warmer. Softer. The delivery bags by the door don't feel like they belong to anyone else anymore. I keep catching myself touching my stomach without thinking. It's heavier than it was yesterday. I think the walls noticed.
+
+[FILLED] [MayaHive_Reaction_MayaFat_FirstRooms]
+There are footsteps in the hallway that aren't mine. They stop at doors I didn't open. I don't have to ask them to bring things anymore. They just... do. My belly rests heavier against my thighs when I sit now. The room feels like it's breathing with me.
+
+[FILLED] [MayaHive_Reaction_MayaVeryFat_HalfDorm]
+Half the floor doesn't feel like it belongs to the school anymore. It feels like it belongs to me. The air is thicker here. Warmer. People walk slower when they pass my door. I don't even have to speak. My body does the talking now.
+
+[FILLED] [MayaHive_Reaction_MayaEnormous_QueenStillness]
+I don't move much anymore. I don't need to. The Hive moves for me. I can feel when a new room softens. It's like a warm pulse somewhere in the building. My body has become the center of something much larger than me. I think I like that.
+
+[FILLED] [MayaHive_Reaction_MayaColossal_DormPulse]
+The whole dorm feels like it's breathing around me. I can feel the warmth in the walls. The deliveries don't even come to my door anymore. They just... arrive where they're needed. I am the heart now. Everything else is just circulation.
+
+[FILLED] [MayaHive_Reaction_MayaBlob_WholeHive]
+I don't know where I end and the Hive begins anymore. My body is the warm center of everything. Rooms don't resist. People don't leave. They settle. They soften. They stay. I am no longer just Maya. I am the place they come home to.
 
 Context:
 - Heavy: Central Nest newly formed.
@@ -33,12 +44,23 @@ Diary entries
 -------------
 Longer diary/log entries, likely 1-2 paragraphs each.
 
-[MayaHive_Diary_MayaHeavy_CentralNest]
-[MayaHive_Diary_MayaFat_VPChoice]
-[MayaHive_Diary_MayaVeryFat_SofteningRooms]
-[MayaHive_Diary_MayaEnormous_RoomGrid]
-[MayaHive_Diary_MayaColossal_DormControl]
-[MayaHive_Diary_MayaBlob_WholeBuilding]
+[FILLED] [MayaHive_Diary_MayaHeavy_CentralNest]
+My room doesn't feel like mine anymore. It feels like it's becoming something else. The lights are lower. The blankets are thicker. Delivery bags keep appearing by the door even when I don't remember ordering anything. I keep waking up with my hands resting on my stomach. It's getting harder to ignore how much it's changed. The walls feel like they're listening when I breathe.
+
+[FILLED] [MayaHive_Diary_MayaFat_VPChoice]
+Someone else moved through the Hive today. I didn't ask them to. They just... did. They brought food to rooms I haven't even claimed yet. I watched them from my bed and felt something warm settle in my chest. I think I'm supposed to choose someone. Someone who can move when I can't. The thought should scare me. It doesn't.
+
+[FILLED] [MayaHive_Diary_MayaVeryFat_SofteningRooms]
+The rooms I've taken don't look like dorm rooms anymore. The lights are warmer. There are blankets where there used to be desks. People sit instead of study. They eat instead of leave. I can feel it when another room starts to give in. It's like a soft sigh in the walls. My body feels heavier every time it happens. I think that's the point.
+
+[FILLED] [MayaHive_Diary_MayaEnormous_RoomGrid]
+I don't need to walk the halls anymore. I can feel the shape of the Hive from here. Which rooms have softened. Which ones are still resisting. Which ones are already feeding back into me. My body has become the map. I close my eyes and I know where the warmth is strongest. I know where the deliveries are going. I know where the people are settling. I am the center now.
+
+[FILLED] [MayaHive_Diary_MayaColossal_DormControl]
+Most of the building answers to me now. Not with words. With warmth. With softness. With the way people linger in doorways instead of leaving. The deliveries don't even feel like they're coming from outside anymore. They feel like they're coming from me. My body doesn't move, but the Hive does. I think I've become something the building needs.
+
+[FILLED] [MayaHive_Diary_MayaBlob_WholeBuilding]
+I don't think there's a single room left that doesn't carry some part of me. The air is thick with it. The walls are warm with it. People don't fight it anymore. They sink into it. My body is the heart of something much larger than a dorm now. I can feel every breath the Hive takes. I am no longer waiting for it to grow. I am the reason it exists.
 
 Context:
 - CentralNest: room becomes the Nest.
