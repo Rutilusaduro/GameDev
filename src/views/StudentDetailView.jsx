@@ -4,7 +4,6 @@ import { ATMOSPHERE_TIERS, GUEST_TIERS, MENU_TIERS } from '../gameData/chapterHo
 import { C } from '../styles.js';
 import { CASE_STUDY_PAIRS } from '../gameData/communityResearcher.js';
 import { EVOLVED_SKILL_TREES } from '../gameData/skills.js';
-import { GOSSIP, getGossipLines } from '../gameData/gossip.js';
 import { INNER_CIRCLE_TIERS, getTier } from '../gameData/sessions.js';
 import { LILITH_ID } from '../gameData/lilith.js';
 import { RECRUITMENT_SCENE, TESTER_APPEARANCE } from '../gameData/cultivator.js';
@@ -13,7 +12,7 @@ import { STAGE_REACTIONS } from '../gameData/content.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ activateDoubleDown, addBlobToReligion, ap, ascendStudent, celestialMassBless, celestialMassPull, celestialMassPush, chapterHostessState, communityResearcherState, consumeIncarnatedGoddess, consumePrimordialIncarnatedGoddess, consumedStudents, cultivatorState, divineCelestialCanPullHR, divineUmbralCanConsumeHR, doEvolvedActivity, doGoddessAction, doGossip, doHelpFatten, doPrimordialAction, doSanguineAction, doSingle, doSingularityAction, doTalk, doVerdantAction, effectiveSingleActions, finalConsumptionDone, foundReligion, goddessIncarnateId, goddessSeen, hrObserver, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, pendingDoubleDowns, primordialFinalConsumptionDone, primordialGoddessIncarnateId, proposeStudy, purchaseEvolvedSkill, recoverConsumedStudent, religion, researchStudy, runCheckIn, sanguineMarks, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, triggerGoddessIncarnation, triggerPrimordialGoddessIncarnation, umbralConsumeHR, umbralConsumeStudent, umbralVoidPull, vaughan, verdantCultivations }){
+export function StudentDetailView({ addBlobToReligion, ap, ascendStudent, celestialMassBless, celestialMassPull, celestialMassPush, chapterHostessState, communityResearcherState, consumeIncarnatedGoddess, consumePrimordialIncarnatedGoddess, consumedStudents, cultivatorState, divineCelestialCanPullHR, divineUmbralCanConsumeHR, doEvolvedActivity, doGoddessAction, doPrimordialAction, doSanguineAction, doSingle, doSingularityAction, doTalk, doVerdantAction, effectiveSingleActions, finalConsumptionDone, foundReligion, goddessIncarnateId, goddessSeen, hrObserver, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, primordialFinalConsumptionDone, primordialGoddessIncarnateId, proposeStudy, purchaseEvolvedSkill, recoverConsumedStudent, religion, researchStudy, runCheckIn, sanguineMarks, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, triggerGoddessIncarnation, triggerPrimordialGoddessIncarnation, umbralConsumeHR, umbralConsumeStudent, umbralVoidPull, vaughan, verdantCultivations }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -856,91 +855,7 @@ export function StudentDetailView({ activateDoubleDown, addBlobToReligion, ap, a
                   ))}
                 </div>
 
-                {/* Gossip — ask about classmates */}
-                {(()=>{
-                  const gossipEntries=GOSSIP.filter(g=>g.speakerId===s.id);
-                  if(!gossipEntries.length) return null;
-                  return (
-                    <div style={{marginBottom:14}}>
-                      <div style={{...C.secT,marginBottom:7}}>Ask About Classmates</div>
-                      {gossipEntries.map(g=>{
-                        const target=students.find(st=>st.id===g.targetId);
-                        if(!target) return null;
-                        const targetStageId=getStage(target.lbs).id;
-                        const lines=getGossipLines(g,targetStageId);
-                        const attColor={catty:"#802020",warm:"#205040",curious:"#203860",conspiratorial:"#402060"}[g.attitude]||"#333";
-                        const attEmoji={catty:"😒",warm:"🥰",curious:"🤔",conspiratorial:"😏"}[g.attitude]||"💬";
-                        const hasMultiplier=(target.gainMultiplier||1)>1;
-                        const thisStudentHelping=(target.gainHelpers||[]).includes(s.id);
-                        const canHelp=g.offerHelp && s.relationship>=65 && !thisStudentHelping;
-                        const almostUnlocked=g.offerHelp && s.relationship>=50 && s.relationship<65 && !thisStudentHelping;
-                        return (
-                          <div key={g.targetId} style={{...C.card,cursor:"default",marginBottom:8,border:`1px solid ${attColor}88`}}>
-                            {/* Header */}
-                            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-                              <span style={{fontWeight:700,fontSize:12,color:"#d8a8ff"}}>About {target.name}</span>
-                              <div style={{display:"flex",gap:5,alignItems:"center"}}>
-                                <span style={{background:attColor,color:"#fff",borderRadius:8,padding:"1px 7px",fontSize:9,fontWeight:700}}>{attEmoji} {g.attitude}</span>
-                                <StageTag stage={getStage(target.lbs)}/>
-                              </div>
-                            </div>
-                            {/* Target quick stats */}
-                            <div style={{fontSize:10,color:"#5a4070",marginBottom:6}}>
-                              {target.lbs} lbs · {target.lbs-target.startLbs > 0 ? `+${target.lbs-target.startLbs} gained` : "no gain yet"}{hasMultiplier?` · 🔥 ×${(target.gainMultiplier).toFixed(1)} multiplier active`:""}
-                            </div>
-                            {/* Talk buttons */}
-                            <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:8}}>
-                              {lines.map((line,i)=>(
-                                <button key={i} style={{...C.smBtn,fontSize:10}} onClick={()=>doGossip(g,s,line)}>
-                                  {i===0?"What do you think of her?":"Another take"}
-                                </button>
-                              ))}
-                            </div>
-                            {/* Already helping */}
-                            {thisStudentHelping&&(
-                              <div style={{background:"rgba(30,80,30,0.3)",border:"1px solid #305030",borderRadius:6,padding:"6px 8px"}}>
-                                <div style={{fontSize:10,color:"#80d080",fontWeight:700,marginBottom:2}}>✓ Active — helping fatten {target.name}</div>
-                                <div style={{fontSize:10,color:"#508050",fontStyle:"italic"}}>{g.helpReason}</div>
-                              </div>
-                            )}
-                            {/* Pending double-down activations */}
-                            {thisStudentHelping&&pendingDoubleDowns.filter(dd=>dd.speakerId===g.speakerId&&dd.targetId===g.targetId).map((dd,i)=>(
-                              <div key={i} style={{background:"rgba(120,40,0,0.35)",border:"1px solid #c06020",borderRadius:6,padding:"8px",marginTop:6}}>
-                                <div style={{fontSize:10,color:"#ffb060",fontWeight:700,marginBottom:3}}>🔥 Double Down Available — {target.name} reached {dd.atLbs} lbs!</div>
-                                <div style={{fontSize:10,color:"#c08040",fontStyle:"italic",marginBottom:6,lineHeight:1.5}}>{dd.line.length>120?dd.line.slice(0,120)+"…":dd.line}</div>
-                                <button style={{...C.btn("#a03000"),fontSize:11,width:"100%"}} onClick={()=>activateDoubleDown(dd)}>
-                                  🔥 Activate — ×{(1+dd.addMult).toFixed(2)} multiplier on {target.name}
-                                </button>
-                              </div>
-                            ))}
-                            {/* Unlock offer */}
-                            {canHelp&&(
-                              <div style={{background:"rgba(60,20,100,0.35)",border:"1px solid #5a20a0",borderRadius:6,padding:"8px"}}>
-                                <div style={{fontSize:10,color:"#b070f0",fontWeight:700,marginBottom:3}}>🔓 {s.name} trusts you — a special offer is available</div>
-                                <div style={{fontSize:10,color:"#7a50a0",fontStyle:"italic",marginBottom:7,lineHeight:1.5}}>{g.helpReason}</div>
-                                <button style={{...C.btn("#5a20a0"),fontSize:11,width:"100%"}} onClick={()=>doHelpFatten(g,s)}>
-                                  🤝 Ask {s.name} to help fatten {target.name} (×{g.helpMultiplier} multiplier)
-                                </button>
-                              </div>
-                            )}
-                            {/* Almost unlocked hint */}
-                            {almostUnlocked&&(
-                              <div style={{fontSize:10,color:"#5a3878",fontStyle:"italic",marginTop:4}}>
-                                🔒 {65-s.relationship}% more relationship needed to unlock {s.name}'s offer about {target.name}…
-                              </div>
-                            )}
-                            {/* Far from unlock — just show lock */}
-                            {g.offerHelp && s.relationship<50 && !thisStudentHelping&&(
-                              <div style={{fontSize:10,color:"#3a2050",fontStyle:"italic",marginTop:4}}>
-                                🔒 Build more trust with {s.name} to unlock a special offer…
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })()}
+          
 
                 {/* Personal actions — hidden for convergence/singularity/goddess students */}
                 {s.ascensionPath!=="convergence"&&!s.incarnatedGoddess&&(

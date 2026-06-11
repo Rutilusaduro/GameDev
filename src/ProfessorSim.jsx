@@ -3,7 +3,6 @@ import { CELESTIAL_STAGES, UMBRAL_STAGES, CONVERGENCE_STAGE, SINGULARITY_ABSORPT
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL } from './gameData/intimacy.js';
 import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, DIVINE_PAIR_REACTIONS, UNBUTTON_LINES, PROF_SUBJECTS, PROF_TRAITS, ADMIN_EVENTS, STUDY_SCENES, STUDY_SCENE_DEFAULT, HR_FEED_LINES, HR_TALK_LINES, getTier, TIER_SCENES, VAUGHAN_BASE, VAUGHAN_EVENTS, VAUGHAN_WEIGHT_SCENES, VAUGHAN_ALLY_SCENE, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
-import { GOSSIP } from './gameData/gossip.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS } from './gameData/classEvents.js';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
@@ -120,7 +119,6 @@ export default function ProfessorSim(){
   const [tapOutPopup,setTapOutPopup]=useState(null);
   // {student, text, totalGain}
   const [sessionLog,setSessionLog]=useState([]);
-  const [pendingDoubleDowns,setPendingDoubleDowns]=useState([]);
   // ── DIVINE EXPANSION STATE ─────────────────────────────────────
   const [goddessSeen,setGoddessSeen]=useState(false);
   const [goddessModal,setGoddessModal]=useState(null);
@@ -580,28 +578,6 @@ export default function ProfessorSim(){
       }
     });
 
-    // ── doubleDown: check milestones, queue for player to activate ─────
-    const newPending=[];
-    updated=updated.map(s=>{
-      const helpers=s.gainHelpers||[];
-      if(!helpers.length) return s;
-      let newS={...s};
-      GOSSIP.forEach(g=>{
-        if(g.targetId!==s.id||!helpers.includes(g.speakerId)) return;
-        if(!g.doubleDown) return;
-        const speakerName=updated.find(st=>st.id===g.speakerId)?.name||`Student ${g.speakerId}`;
-        g.doubleDown.forEach(dd=>{
-          const key=`${g.speakerId}_at${dd.atLbs}`;
-          if(s.lbs>=dd.atLbs&&!(s.doubleDownFired||[]).includes(key)){
-            newS={...newS,doubleDownFired:[...(newS.doubleDownFired||[]),key]};
-            newPending.push({speakerId:g.speakerId,targetId:g.targetId,atLbs:dd.atLbs,addMult:dd.addMult,line:dd.line,targetName:s.name,speakerName});
-            setTimeout(()=>push(`🔥 ${speakerName} is ready to go harder on ${s.name} — activate in Gossip tab!`),120);
-          }
-        });
-      });
-      return newS;
-    });
-    if(newPending.length) setPendingDoubleDowns(prev=>[...prev,...newPending]);
 
     const evs=collectEvents(updated);
     setStudents(updated);
@@ -3614,34 +3590,7 @@ export default function ProfessorSim(){
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+2+talkRelBonus)}));
   };
 
-  const doGossip=(gossip, speaker, line)=>{
-    const target=students.find(s=>s.id===gossip.targetId);
-    push(`💬 You ask ${speaker.name} about ${target?.name||"her classmate"}…`);
-    push(`   ${line}`);
-    setStudents(prev=>prev.map(s=>s.id!==speaker.id?s:{...s,relationship:Math.min(100,s.relationship+2)}));
-  };
 
-  const doHelpFatten=(gossip, speaker)=>{
-    const target=students.find(s=>s.id===gossip.targetId);
-    if(!target) return;
-    push(`🤝 ${speaker.name} agrees to help fatten up ${target.name}. A multiplier is now active!`);
-    push(`   "${gossip.offerHelp}"`);
-    setStudents(prev=>prev.map(s=>{
-      if(s.id===gossip.targetId) return {...s, gainMultiplier:(s.gainMultiplier||1)*gossip.helpMultiplier, gainHelpers:[...(s.gainHelpers||[]),gossip.speakerId]};
-      if(s.id===gossip.speakerId) return {...s, relationship:Math.min(100,s.relationship+4)};
-      return s;
-    }));
-  };
-
-  const activateDoubleDown=(dd)=>{
-    setStudents(prev=>prev.map(s=>{
-      if(s.id!==dd.targetId) return s;
-      return {...s,gainMultiplier:(s.gainMultiplier||1)*(1+dd.addMult)};
-    }));
-    push(`🔥 ${dd.speakerName} doubles down on ${dd.targetName}! (×${(1+dd.addMult).toFixed(2)} multiplier applied)`);
-    push(`   "${dd.line}"`);
-    setPendingDoubleDowns(prev=>prev.filter(p=>!(p.speakerId===dd.speakerId&&p.targetId===dd.targetId&&p.atLbs===dd.atLbs)));
-  };
 
   const unlockSkill=(sk,bypass=false)=>{
     if(!bypass&&!canUnlock(sk)) return;
@@ -5326,7 +5275,7 @@ export default function ProfessorSim(){
           {view==="class"&&<ClassView view={view} hrObserver={hrObserver} vaughan={vaughan} vaughanAlly={vaughanAlly} ap={ap} feedObserver={feedObserver} talkToObserver={talkToObserver} students={students} lilithUnlocked={lilithUnlocked} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView activateDoubleDown={activateDoubleDown} addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} consumeIncarnatedGoddess={consumeIncarnatedGoddess} consumePrimordialIncarnatedGoddess={consumePrimordialIncarnatedGoddess} consumedStudents={consumedStudents} cultivatorState={cultivatorState} divineCelestialCanPullHR={divineCelestialCanPullHR} divineUmbralCanConsumeHR={divineUmbralCanConsumeHR} doEvolvedActivity={doEvolvedActivity} doGoddessAction={doGoddessAction} doGossip={doGossip} doHelpFatten={doHelpFatten} doPrimordialAction={doPrimordialAction} doSanguineAction={doSanguineAction} doSingle={doSingle} doSingularityAction={doSingularityAction} doTalk={doTalk} doVerdantAction={doVerdantAction} effectiveSingleActions={effectiveSingleActions} finalConsumptionDone={finalConsumptionDone} foundReligion={foundReligion} goddessIncarnateId={goddessIncarnateId} goddessSeen={goddessSeen} hrObserver={hrObserver} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} pendingDoubleDowns={pendingDoubleDowns} primordialFinalConsumptionDone={primordialFinalConsumptionDone} primordialGoddessIncarnateId={primordialGoddessIncarnateId} proposeStudy={proposeStudy} purchaseEvolvedSkill={purchaseEvolvedSkill} recoverConsumedStudent={recoverConsumedStudent} religion={religion} researchStudy={researchStudy} runCheckIn={runCheckIn} sanguineMarks={sanguineMarks} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} triggerGoddessIncarnation={triggerGoddessIncarnation} triggerPrimordialGoddessIncarnation={triggerPrimordialGoddessIncarnation} umbralConsumeHR={umbralConsumeHR} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} vaughan={vaughan} verdantCultivations={verdantCultivations}/>}
+          {view==="student"&&sel&&<StudentDetailView addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} consumeIncarnatedGoddess={consumeIncarnatedGoddess} consumePrimordialIncarnatedGoddess={consumePrimordialIncarnatedGoddess} consumedStudents={consumedStudents} cultivatorState={cultivatorState} divineCelestialCanPullHR={divineCelestialCanPullHR} divineUmbralCanConsumeHR={divineUmbralCanConsumeHR} doEvolvedActivity={doEvolvedActivity} doGoddessAction={doGoddessAction} doPrimordialAction={doPrimordialAction} doSanguineAction={doSanguineAction} doSingle={doSingle} doSingularityAction={doSingularityAction} doTalk={doTalk} doVerdantAction={doVerdantAction} effectiveSingleActions={effectiveSingleActions} finalConsumptionDone={finalConsumptionDone} foundReligion={foundReligion} goddessIncarnateId={goddessIncarnateId} goddessSeen={goddessSeen} hrObserver={hrObserver} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} primordialFinalConsumptionDone={primordialFinalConsumptionDone} primordialGoddessIncarnateId={primordialGoddessIncarnateId} proposeStudy={proposeStudy} purchaseEvolvedSkill={purchaseEvolvedSkill} recoverConsumedStudent={recoverConsumedStudent} religion={religion} researchStudy={researchStudy} runCheckIn={runCheckIn} sanguineMarks={sanguineMarks} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} triggerGoddessIncarnation={triggerGoddessIncarnation} triggerPrimordialGoddessIncarnation={triggerPrimordialGoddessIncarnation} umbralConsumeHR={umbralConsumeHR} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} vaughan={vaughan} verdantCultivations={verdantCultivations}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}

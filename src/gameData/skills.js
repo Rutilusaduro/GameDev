@@ -110,7 +110,7 @@ export const SKILL_TREE = [
 
   { id:"relationship_class", tier:2, cost:150, category:"social", label:"❤️ Personal Investment",
     desc:"Genuine attention. Remembered names, preferred foods, small details brought up at the right moment. Students open up when they feel seen. They eat more when they're comfortable. Both of these things are happening.",
-    effect:"All talk actions give +2 bonus relationship. Gossip multiplier threshold reduced to 50%.",
+    effect:"All talk actions give +2 bonus relationship.",
     passiveBonus:0, apBonus:0, gainMult:0 },
 
   { id:"mood_lighting", tier:2, cost:150, category:"environment", label:"🕯️ Mood Lighting",
