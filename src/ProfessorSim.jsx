@@ -12,13 +12,18 @@ import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, I
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
 import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_FEED_LINES, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
+import { TALK_CONFIG } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES } from './gameData/items.js';
 import { CAMPUS_NODES, CAMPUS_CONFIG, CAMPUS_ENCOUNTERS, stageDescriptor } from './gameData/campus.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
-import { ALL_SKILLS, getEvolvedActivityStageIdx, rnd, generateClassSession } from './utils/gameHelpers.js';
+import { getEvolvedActivityStageIdx, rnd, generateClassSession } from './utils/gameHelpers.js';
+import {
+  aggregateSkillEffects, computeSpentSkillPoints, isTreeTierUnlocked,
+  RANK_COSTS, softStartBonus,
+} from './gameData/skillTrees.js';
 import { renderHiveIntake } from './textEngine/scenes/hiveIntake.js';
 import { MoodBadge } from './components/ui.jsx';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
@@ -44,6 +49,7 @@ import { AchievementsView } from './views/AchievementsView.jsx';
 import { PrivateSessionModal } from './components/PrivateSessionModal.jsx';
 import { EvolvedEventModal } from './components/EvolvedEventModal.jsx';
 import { WeighInModal } from './components/WeighInModal.jsx';
+import { TalkModal } from './components/TalkModal.jsx';
 import { DebugPanel } from './components/DebugPanel.jsx';
 import { EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
@@ -74,7 +80,7 @@ export default function ProfessorSim(){
   const [achievements,setAchievements]=useState([]);
   const [globalStats,setGlobalStats]=useState({ narrativeCount:0 });
   const [eventQueue,setEventQueue]=useState([]);
-  const [unlockedSkills,setUnlockedSkills]=useState([]);
+  const [ownedSkills,setOwnedSkills]=useState({}); // { skillId: rank }
   const [dinnerEvent,setDinnerEvent]=useState(null);
   const [dinnerLog,setDinnerLog]=useState([]);
   const [groupDinnerEvent,setGroupDinnerEvent]=useState(null);
@@ -90,6 +96,7 @@ export default function ProfessorSim(){
   const [classSession,setClassSession]=useState(null);
   const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
+  const [talkStudentId,setTalkStudentId]=useState(null);
   const [professorProfile,setProfessorProfile]=useState(null);
   // professorProfile: {name, subject, traits:[], origin?}
   const [adminScrutiny,setAdminScrutiny]=useState(0);
@@ -350,34 +357,54 @@ export default function ProfessorSim(){
   // ── STOMACH MODEL: feed calories + fullness instead of direct lbs ──
   // Returns the updated student, or null if she refused (over capacity).
   const feedStudentCalories=(s,calories,fullnessCost,extraRel=0,label="")=>{
-    const cap=s.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const eff=aggregateSkillEffects(ownedSkills);
+    const stageId=getStage(s.lbs).id;
+    const cap=(s.stomachCapacity||GAIN_CONFIG.baseCapacity)+softStartBonus(ownedSkills,stageId);
     const wouldExceed=(s.fullness||0)+fullnessCost>cap;
     let forced=false;
     if(wouldExceed){
-      const corruptionBonus=Math.min(0.30,(s.corruption||0)*CORRUPTION_CONFIG.resistancePerPoint);
-      const chance=forceFeedChance(s,fullnessCost,spiritLevel)+corruptionBonus;
-      if(Math.random()>=chance){
-        const line=REFUSAL_LINES[rnd(0,REFUSAL_LINES.length-1)](s);
-        push(`🚫 ${line}`);
-        return null;
+      if(eff.totalSurrender&&(s.corruption||0)>=90){
+        forced=true;
+      } else {
+        const corruptionBonus=Math.min(0.30,(s.corruption||0)*CORRUPTION_CONFIG.resistancePerPoint);
+        let chance=forceFeedChance(s,fullnessCost,spiritLevel)+corruptionBonus;
+        chance+=eff.forceFeedBonus||0;
+        chance+=eff.extremeBonus||0;
+        if(Math.random()>=chance){
+          const line=REFUSAL_LINES[rnd(0,REFUSAL_LINES.length-1)](s);
+          push(`🚫 ${line}`);
+          return null;
+        }
+        forced=true;
       }
-      forced=true;
       const line=FORCE_SUCCESS_LINES[rnd(0,FORCE_SUCCESS_LINES.length-1)](s);
       setTimeout(()=>push(`🔥 ${line}`),60);
     }
-    const scaledCals=Math.round(calories*(s.gainMultiplier||1)*skillGainMult);
+    const calMult=1+(eff.calorieBonus||0)+(eff.conversionBonus||0);
+    const scaledCals=Math.round(calories*(s.gainMultiplier||1)*profGainMult*calMult);
     if(label) push(`🍽️ ${label} — ${s.name}: +${scaledCals.toLocaleString()} cal (fullness ${Math.min(999,(s.fullness||0)+fullnessCost)}/${cap})`);
     if(Math.random()<CORRUPTION_CONFIG.dialogueChance){
       const tier=getCorruptionTier(s.corruption||0);
       const lines=CORRUPTION_FEED_LINES[tier.id];
       setTimeout(()=>push(`💭 ${lines[rnd(0,lines.length-1)](s)}`),120);
     }
+    let corruption=s.corruption||0;
+    let relGain=extraRel+(forced?1:0);
+    if(forced){
+      const priorForceCount=s.timesForceFed||0;
+      let corruptGain=CORRUPTION_CONFIG.perForceFeed;
+      if(eff.corruptionRate) corruptGain=Math.round(corruptGain*(1+eff.corruptionRate));
+      if(eff.cravingSubmission){ corruptGain+=1; relGain+=2; }
+      if(eff.firstCrack&&priorForceCount===0) corruptGain+=eff.firstCrack;
+      corruption=addCorruption(s,corruptGain);
+    }
     return {
       ...s,
       consumedCalories:(s.consumedCalories||0)+scaledCals,
       fullness:(s.fullness||0)+fullnessCost,
-      corruption:forced?addCorruption(s,CORRUPTION_CONFIG.perForceFeed):(s.corruption||0),
-      relationship:Math.min(100,s.relationship+extraRel+(forced?1:0)),
+      corruption,
+      timesForceFed:forced?(s.timesForceFed||0)+1:(s.timesForceFed||0),
+      relationship:Math.min(100,s.relationship+relGain),
     };
   };
 
@@ -802,7 +829,8 @@ export default function ProfessorSim(){
   const dismissHomeroomActivity=()=>{
     if(!homeroomSessionState?.activeActivity?.done) return;
     const{activeActivity}=homeroomSessionState;
-    const logLine=activeActivity.type==='conference'?`✦ Conference — ${activeActivity.key}`:activeActivity.type==='parent_meeting'?`✦ Parent Group Meeting`:activeActivity.type==='health_unit'?`✦ Health Unit — Measurements`:`✦ Activity`;
+    const confLabel=activeActivity.key?.replace(/_/g," ")||activeActivity.key;
+    const logLine=activeActivity.type==='conference'?`✦ Conference — ${confLabel}`:activeActivity.type==='parent_meeting'?`✦ Parent Group Meeting`:activeActivity.type==='health_unit'?`✦ Health Unit — Measurements`:`✦ Activity`;
     setHomeroomSessionState(prev=>({...prev,log:[...prev.log,logLine],activeActivity:null}));
   };
   const closeHomeroomSession=()=>{
@@ -2768,13 +2796,6 @@ export default function ProfessorSim(){
     push(`✦ ${s.name}: unlocked "${skill.label}"`);
   };
 
-  const unlockSkill=(sk,bypass=false)=>{
-    if(!bypass&&!canUnlock(sk)) return;
-    setUnlockedSkills(prev=>[...prev,sk.id]);
-    push(`🔓 Skill unlocked: ${sk.label}`);
-    if(sk.apBonus>0) setAp(a=>Math.min(a+sk.apBonus,20));
-    if(sk.passiveBonus>0) push(`   📈 Passive gain increased by +${sk.passiveBonus} lbs/week`);
-  };
 
   const startClass=()=>{
     const scenes=generateClassSession(students,week);
@@ -2877,9 +2898,87 @@ export default function ProfessorSim(){
     }
   };
 
-  const startSkillPurchase=(sk)=>{
-    if(!canUnlock(sk)) return;
-    unlockSkill(sk,true);
+  const openTalk=(s)=>{
+    if(!s||s.hidden) return;
+    if(ap<TALK_CONFIG.apCost){ push(`⚠️ Need ${TALK_CONFIG.apCost} AP to talk.`); return; }
+    setAp(a=>a-TALK_CONFIG.apCost);
+    setTalkStudentId(s.id);
+  };
+
+  const applyTalkEffect=(effect)=>{
+    if(!talkStudentId||!effect) return;
+    if(effect.cals){
+      setStudents(prev=>{
+        const st=prev.find(x=>x.id===talkStudentId);
+        if(!st) return prev;
+        const fed=feedStudentCalories(st,effect.cals,effect.full||0,effect.rel||0,effect.devourShift?"Devour":"Talk");
+        if(!fed) return prev;
+        let ns=fed;
+        if(effect.devourShift){
+          const cor=getCorruptionTier(ns.corruption||0).id;
+          ns={
+            ...ns,
+            devourCount:(ns.devourCount||0)+1,
+            mood:cor>=2?"content":cor>=1?"nervous":"stressed",
+            corruption:addCorruption(ns,effect.corruption||0),
+          };
+          setTimeout(()=>push(`🩸 ${ns.name} has changed. Something in her eyes is different now.`),200);
+        } else if(effect.corruption){
+          ns={...ns,corruption:addCorruption(ns,effect.corruption)};
+        }
+        if(effect.rel && !effect.devourShift){
+          ns={...ns,relationship:Math.min(100,ns.relationship+(effect.rel||0))};
+        }
+        return prev.map(x=>x.id===ns.id?ns:x);
+      });
+      return;
+    }
+    setStudents(prev=>prev.map(x=>{
+      if(x.id!==talkStudentId) return x;
+      let ns={...x};
+      if(effect.rel) ns.relationship=Math.min(100,ns.relationship+(effect.rel||0));
+      if(effect.corruption) ns={...ns,corruption:addCorruption(ns,effect.corruption)};
+      return ns;
+    }));
+  };
+
+  const buySkillRank=(sk)=>{
+    const rank=ownedSkills[sk.id]||0;
+    if(rank>=sk.maxRanks) return;
+    if(!isTreeTierUnlocked(ownedSkills,sk.tree,sk.tier)) return;
+    if(availableSkillPoints<RANK_COSTS[sk.tier]) return;
+    const capKey=sk.effects?.capacityBonus;
+    const capDelta=capKey?sk.effects.capacityBonus:0;
+    setOwnedSkills(prev=>({...prev,[sk.id]:rank+1}));
+    if(capDelta){
+      setStudents(prev=>prev.map(st=>({
+        ...st,
+        stomachCapacity:(st.stomachCapacity||GAIN_CONFIG.baseCapacity)+capDelta,
+      })));
+    }
+    push(`✦ ${sk.name}${sk.maxRanks>1?` — rank ${rank+1}`:" unlocked"}`);
+  };
+
+  const maxSkillRank=(sk)=>{
+    let sim={...ownedSkills};
+    let avail=availableSkillPoints;
+    let bought=0;
+    let capDelta=0;
+    while((sim[sk.id]||0)<sk.maxRanks&&avail>=RANK_COSTS[sk.tier]&&isTreeTierUnlocked(sim,sk.tree,sk.tier)){
+      sim[sk.id]=(sim[sk.id]||0)+1;
+      avail-=RANK_COSTS[sk.tier];
+      bought++;
+      if(sk.effects?.capacityBonus) capDelta+=sk.effects.capacityBonus;
+    }
+    if(!bought) return;
+    setOwnedSkills(sim);
+    if(capDelta){
+      setStudents(prev=>prev.map(st=>({
+        ...st,
+        stomachCapacity:(st.stomachCapacity||GAIN_CONFIG.baseCapacity)+capDelta,
+      })));
+    }
+    push(`✦ ${sk.name}: +${bought} rank${bought>1?"s":""}${(sim[sk.id]||0)>=sk.maxRanks?" (maxed)":""}`);
   };
 
   const adjustAllocation=(studentId,delta)=>{
@@ -2920,7 +3019,6 @@ export default function ProfessorSim(){
     });
     setStudents(updated);
     setSkillPurchase(null);
-    unlockSkill(skill,true);
   };
 
   // ── DINNER END (single) ──────────────────────────────────────
@@ -3379,6 +3477,7 @@ export default function ProfessorSim(){
   };
 
   const sel=selectedId!==null?students.find(s=>s.id===selectedId):null;
+  const talkStudent=talkStudentId!=null?students.find(s=>s.id===talkStudentId):null;
   const totalGained=students.reduce((a,s)=>a+(s.lbs-s.startLbs),0);
   const spiritXp=Math.max(0,Math.round(totalGained));
   const spiritLevel=1+Math.floor(spiritXp/SPIRIT_XP_PER_LEVEL);
@@ -3392,17 +3491,17 @@ export default function ProfessorSim(){
   const profGainMult=1+(hasSubj("nutrition")?0.1:0)+(hasSubj("philosophy")?0.05:0)+(hasTrait("generous")?0.15:0);
   const profPassiveBonus=hasTrait("patient")?1:0;
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
-  const unlockedAll=ALL_SKILLS.filter(sk=>unlockedSkills.includes(sk.id));
-  const hasSkill=(id)=>unlockedAll.some(sk=>sk.id===id);
-  const spentSkillPoints=unlockedAll.reduce((a,sk)=>a+(sk.cost||0),0);
+  const skillEffects=aggregateSkillEffects(ownedSkills);
+  const spentSkillPoints=computeSpentSkillPoints(ownedSkills);
   const availableSkillPoints=Math.max(0,totalSkillPoints-spentSkillPoints);
-  const skillPassiveBonus=unlockedAll.reduce((a,sk)=>a+sk.passiveBonus,0)+profPassiveBonus;
-  const skillApBonus=unlockedAll.reduce((a,sk)=>a+sk.apBonus,0);
-  const skillGainMult=(1+unlockedAll.reduce((a,sk)=>a+sk.gainMult,0))*profGainMult;
-  const skillScrutinyReduce=1-Math.min(0.90,unlockedAll.reduce((a,sk)=>a+(sk.scrutinyReduce||0),0));
-  const skillScrutinyPassiveReduce=unlockedAll.reduce((a,sk)=>a+(sk.scrutinyPassiveReduce||0),0);
-  const skillSessionCapBonus=unlockedAll.reduce((a,sk)=>a+(sk.sessionCapBonus||0),0);
-  const skillTapOutResistance=Math.min(0.60,unlockedAll.reduce((a,sk)=>a+(sk.tapOutResistance||0),0));
+  const hasSkill=(id)=>(ownedSkills[id]||0)>0;
+  const skillPassiveBonus=(skillEffects.passiveLbs||0)+profPassiveBonus;
+  const skillApBonus=0;
+  const skillGainMult=profGainMult;
+  const skillScrutinyReduce=1;
+  const skillScrutinyPassiveReduce=0;
+  const skillSessionCapBonus=0;
+  const skillTapOutResistance=0;
   // EP2: total weekly scrutiny reduction from evolved skills across all students
   const evolvedScrutinyReduce=students.reduce((total,s)=>{
     if(!s.evolvedForm||!(s.evolvedSkills||[]).length) return total;
@@ -3419,13 +3518,6 @@ export default function ProfessorSim(){
     if(v.id==="atelier") return false; // filtered per-student inside dinner modal
     return true;
   });
-  const canUnlock=(sk)=>{
-    if(unlockedSkills.includes(sk.id)) return false;
-    if(sk.category!=="divine") return false;
-    if(availableSkillPoints<sk.cost) return false;
-    if(sk.requires) return sk.requires.every(r=>unlockedSkills.includes(r));
-    return true;
-  };
 
   const views=["class","actions","achievements","log"];
   if(sel) views.splice(1,0,"student");
@@ -4072,7 +4164,7 @@ export default function ProfessorSim(){
           {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
@@ -4084,7 +4176,7 @@ export default function ProfessorSim(){
           {view==="campus"&&<CampusView campusState={campusState} moveToCampusNode={moveToCampusNode} lookAround={lookAround}/>}
 
 {/* ── SKILL TREE ── */}
-          {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} canUnlock={canUnlock} skillApBonus={skillApBonus} skillGainMult={skillGainMult} skillPassiveBonus={skillPassiveBonus} skillScrutinyPassiveReduce={skillScrutinyPassiveReduce} skillScrutinyReduce={skillScrutinyReduce} skillSessionCapBonus={skillSessionCapBonus} spentSkillPoints={spentSkillPoints} spiritLevel={spiritLevel} spiritXp={spiritXp} spiritXpForNextLevel={SPIRIT_XP_PER_LEVEL} startSkillPurchase={startSkillPurchase} totalSkillPoints={totalSkillPoints} unlockedSkills={unlockedSkills}/>}
+          {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} ownedSkills={ownedSkills} skillEffects={skillEffects} students={students} onBuy={buySkillRank} onMax={maxSkillRank} spiritLevel={spiritLevel} spiritXp={spiritXp%SPIRIT_XP_PER_LEVEL} spiritXpForNextLevel={SPIRIT_XP_PER_LEVEL}/>}
 
           {view==="achievements"&&<AchievementsView achievements={achievements}/>}
 
@@ -4272,6 +4364,7 @@ export default function ProfessorSim(){
       {chapterHostessState?.feastLogOpen&&<ChapterHostessFeastLogModal chapterHostessState={chapterHostessState} completeFeast={completeFeast}/>}
 
       {/* ── LILITH — CLUE / INVESTIGATION MODAL ── */}
+      {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect}/>}
       {lilithClueModal&&<LilithClueModal lilithClueModal={lilithClueModal} investigateClue={investigateClue} setLilithClueModal={setLilithClueModal} confirmInvestigation={confirmInvestigation}/>}
 
       {/* ── LILITH — FEASTING BEAUTY (TEXT ADVENTURE) ── */}

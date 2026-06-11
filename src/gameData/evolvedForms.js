@@ -3642,6 +3642,45 @@ export const HOMEROOM_CONFERENCE_EVENTS = {
        lbs:4,classGain:8,rel:11,suspDelta:1},
     ],
   },
+  Mrs_Calloway:{
+    text:`Mrs. Calloway comes in with her jacket still buttoned and her eyes already cataloguing the room — the counter, the snack drawer, the notebook on the desk. She sits with the careful posture of someone who has not yet decided whether this is a problem.
+
+"I wanted to ask about Tuesdays," she says. "Kayla talks about them constantly."`,
+    choices:[
+      {id:"curriculum_frame",label:"Walk her through the curriculum framing — keep it professional",
+       result:`Daisy goes through the enrichment rationale with specific, accurate detail. Mrs. Calloway listens with her arms crossed, then uncrosses them by the third point. "She's been happier," she admits. "I noticed." She leaves without further questions. Daisy exhales.`,
+       lbs:2,momGain:6,rel:5,suspDelta:-2},
+      {id:"offer_tasting",label:"Offer a tasting — redirect with warmth",
+       result:`"Before you go—" Daisy sets a wrapped slice on the desk. Mrs. Calloway looks at it. Looks at Daisy. Takes it. "For the drive," she says, which is not a refusal. She eats it in the parking lot. Daisy watches from the window and makes a note.`,
+       lbs:3,momGain:10,rel:7,suspDelta:0},
+    ],
+  },
+  Mrs_Reyes:{
+    text:`Mrs. Reyes arrives with coffee for both of you — she does this now, it's become a habit — and sits down before you've finished saying hello. Her belly presses softly at her blouse; she's stopped explaining it away.
+
+"Okay," she says. "I need to be honest about something." She pauses. "I keep showing up early on Tuesdays."`,
+    choices:[
+      {id:"honest_talk",label:"Talk honestly — acknowledge what's happening",
+       result:`Daisy listens without flinching. Mrs. Reyes talks about stress, comfort, the smell from the classroom, how she stopped pretending she wasn't interested. "I'm not mad," Daisy says. "I'm glad you're here." Mrs. Reyes exhales like she's been holding her breath for weeks. She stays forty minutes.`,
+       lbs:2,momGain:8,rel:9,suspDelta:-1},
+      {id:"recipe_preview",label:"Show her next week's recipes — make her part of it",
+       result:`Daisy opens the recipe book to the marked pages. Mrs. Reyes leans in immediately — cardamom, peach upside-down, something with too much cream. "Can I—" she starts. "Yes," Daisy says. Mrs. Reyes laughs, surprised at herself. She leaves with a container and a date circled on the calendar.`,
+       lbs:4,momGain:14,rel:8,suspDelta:1},
+    ],
+  },
+  Mrs_Monroe:{
+    text:`Mrs. Monroe doesn't knock. She never knocks anymore. She comes in like the room has been waiting for her, drops into the good chair, and smiles at Daisy with the easy confidence of someone who decided long ago that abundance was a virtue.
+
+"So," she says. "What's on the menu?"`,
+    choices:[
+      {id:"full_preview",label:"Walk her through everything — she wants the full picture",
+       result:`Daisy lays out the whole plan: this week, next week, the special recipe she's been holding. Mrs. Monroe listens with genuine delight, asking follow-up questions, offering opinions that are somehow both helpful and self-serving. "I'll talk to the other moms," she says at the end. "You're doing something wonderful here."`,
+       lbs:3,momGain:12,rel:10,suspDelta:-1},
+      {id:"taste_now",label:"Skip the meeting — feed her now",
+       result:`Daisy doesn't bother with the agenda. She brings out the good container — the one she was saving — and Mrs. Monroe has it open before Daisy sits down. "This is why I come," Mrs. Monroe says, mouth full, completely sincere. She stays until the last piece is gone and asks what's for next Tuesday.`,
+       lbs:5,momGain:18,rel:12,suspDelta:0},
+    ],
+  },
 };
 
 // ── HOMEROOM QUEEN: Group Activity Events ────────────────────────────────────

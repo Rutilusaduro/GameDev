@@ -34,15 +34,17 @@ export function relSize(subject, ref) {
   return "much_larger";
 }
 
-// Stage buckets used across the lexicon: 0-1 thin, 2-3 soft, 4-5 plush,
-// 6-7 heavy, 8-9 massive, 10 giant.
+// Canonical weight-stage keys — one per WEIGHT_STAGES id (see stages.js).
+// Slight(0) Slim(1) Soft(2) Chubby(3) Plump(4) Heavy(5) Fat(6)
+// Very Fat(7) Enormous(8) Colossal(9) Blob(10) Leviathan(11)
+export const STAGE_KEYS = [
+  "slight", "slim", "soft", "chubby", "plump", "heavy",
+  "fat", "veryFat", "enormous", "colossal", "blob", "leviathan",
+];
+
 export function stageBucket(stageId) {
-  if (stageId <= 1) return "thin";
-  if (stageId <= 3) return "soft";
-  if (stageId <= 5) return "plush";
-  if (stageId <= 7) return "heavy";
-  if (stageId <= 9) return "massive";
-  return "giant";
+  const id = Math.min(Math.max(0, stageId ?? 0), STAGE_KEYS.length - 1);
+  return STAGE_KEYS[id];
 }
 
 export function groupStageBucket(group) {

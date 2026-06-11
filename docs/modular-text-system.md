@@ -14,7 +14,7 @@ Granularity is a dial, not a choice:
 
 - **Scene level** — a whole multi-sentence narration (`HIVE_INTAKE_TEMPLATE`)
 - **Phrase level** — a clause or sentence (`{sizeCompare}`, `{char.desc}`)
-- **Word level** — a single descriptor (`{word.size}` → `thin` → `soft` → `plush` → `heavy` → `massive` → `giant`)
+- **Word level** — a single descriptor (`{word.size}` → `slight` → `slim` → `soft` → `chubby` → `plump` → `heavy` → `fat` → `veryFat` → `enormous` → `colossal` → `blob`)
 
 One template can react along every axis at once. That is the entire system.
 
@@ -155,7 +155,7 @@ Any unlisted key is looked up on `ctx.d` directly, so new derived dimensions wor
 
 ### Stage buckets (lexicon granularity)
 
-`stageBucket(stageId)`: `thin` (0–1) · `soft` (2–3) · `plush` (4–5) · `heavy` (6–7) · `massive` (8–9) · `giant` (10).
+`stageBucket(stageId)` returns one key per `WEIGHT_STAGES` id in `stages.js`: `slight` (0) · `slim` (1) · `soft` (2) · `chubby` (3) · `plump` (4) · `heavy` (5) · `fat` (6) · `veryFat` (7) · `enormous` (8) · `colossal` (9) · `blob` (10).
 
 ---
 
@@ -217,9 +217,9 @@ import { registerModule, stageBucket, pick } from '../engine.js';
 
 const SWIM_FIT = {
   summer: {
-    thin:  ["a bikini with room to spare"],
-    plush: ["a one-piece negotiating with every curve"],
-    heavy: ["a custom suit, straining anyway"],
+    slight: ["a bikini with room to spare"],
+    plump:  ["a one-piece negotiating with every curve"],
+    fat:    ["a custom suit, straining anyway"],
     // ...
   },
 };

@@ -5,26 +5,28 @@
 // ═══════════════════════════════════════════════════════════════
 import { useState } from 'react';
 import { TALK_TOPICS, TALK_CONFIG } from '../gameData/talkSystem.js';
+import { buildTalkResponse } from '../gameData/talkDialogue.js';
+import { buildDevourScene } from '../gameData/devourScene.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
 import { getStage } from '../gameData/stages.js';
-import { createContext, render, pick } from '../textEngine/engine.js';
+import { createContext, render } from '../textEngine/engine.js';
 import '../textEngine/scenes/talkCodas.js'; // registers talk.coda
 import { getBodyDescRich } from '../utils/gameHelpers.js';
 import { C } from '../styles.js';
 
 // ── response builder ──────────────────────────────────────────
 
-function buildResponse(topic, student, skillEffects){
+function buildResponse(topic, student, skillEffects, week){
   const corTier = getCorruptionTier(student.corruption || 0).id;
-  const regIdx  = Math.min(corTier, topic.responses.length - 1);
-  const pool    = topic.responses[regIdx] || topic.responses[0];
-  const baseFn  = pick(pool);
-  let text = typeof baseFn === "function" ? baseFn(student) : baseFn;
 
-  // Register coda via the modular text engine — variant selection
-  // (corruption tier × skill flags) lives in scenes/talkCodas.js.
-  const ctx = createContext({ subject: student, skillEffects });
-  text += render("{talk.coda|prefix: }", ctx, { noSmooth: true });
+  let text;
+  if (topic.sceneType === 'devour') {
+    text = buildDevourScene(student, corTier, week);
+  } else {
+    text = buildTalkResponse(topic.id, student, corTier);
+    const ctx = createContext({ subject: student, skillEffects });
+    text += render("{talk.coda|prefix: }", ctx, { noSmooth: true });
+  }
 
   return text;
 }
@@ -75,11 +77,13 @@ function TopicCard({ topic, student, skillEffects, onSelect, disabled }){
 function ResponseDisplay({ topic, text, student, week, onClose }){
   const col = GROUP_COLORS[topic.group] || "#8040c0";
   const st  = getStage(student.lbs);
+  const isLong = topic.sceneType === 'devour' || (text && text.length > 600);
   return(
     <div style={{display:"flex",flexDirection:"column",gap:12}}>
       <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
         <span style={{fontSize:20}}>{topic.icon}</span>
         <div style={{fontSize:13,fontWeight:700,color:col}}>{topic.label}</div>
+        {topic.extreme&&<span style={{...C.tag(`${col}22`,col),fontSize:8,marginLeft:4}}>EXTREME</span>}
       </div>
 
       <div style={{
@@ -87,10 +91,13 @@ function ResponseDisplay({ topic, text, student, week, onClose }){
         border:`1px solid ${col}30`,
         borderRadius:10,
         padding:"14px 16px",
-        fontSize:13,
+        fontSize:isLong?12:13,
         color:"#ddd0b8",
-        lineHeight:1.8,
+        lineHeight:1.85,
         fontStyle:"italic",
+        maxHeight:isLong?340:"none",
+        overflowY:isLong?"auto":"visible",
+        whiteSpace:"pre-wrap",
       }}>
         {text}
       </div>
@@ -132,13 +139,8 @@ export function TalkModal({ student, skillEffects, week, onClose, onApplyEffect 
       }
     }
 
-    const text = buildResponse(topic, student, eff);
+    const text = buildResponse(topic, student, eff, week);
     setActiveResponse({topic, text, refused:false});
-
-    // Apply effects (will be passed up to parent)
-    if(!activeResponse && !topic.refusal){
-      onApplyEffect(topic.effect || {});
-    }
   };
 
   const handleBack = () => {
@@ -166,8 +168,8 @@ export function TalkModal({ student, skillEffects, week, onClose, onApplyEffect 
     <div style={C.overlay} onClick={(e)=>{ if(e.target===e.currentTarget) handleCloseFromResponse(); }}>
       <div style={{
         ...C.modal,
-        maxWidth:500,
-        borderColor:"#5a1890",
+        maxWidth: activeResponse?.topic?.sceneType === 'devour' ? 620 : 500,
+        borderColor: activeResponse?.topic?.sceneType === 'devour' ? "#802030" : "#5a1890",
       }}>
         {/* header */}
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>

@@ -11,9 +11,10 @@ import { RECRUITMENT_SCENE, TESTER_APPEARANCE } from '../gameData/cultivator.js'
 import { getBodyDesc, getDiary, getEvolvedReaction, getOutfit } from '../utils/gameHelpers.js';
 import { STAGE_REACTIONS } from '../gameData/content.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
+import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, ap, chapterHostessState, communityResearcherState, cultivatorState, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -494,6 +495,21 @@ export function StudentDetailView({ openWeighIn, ap, chapterHostessState, commun
                     </div>
                   );
                 })()}
+
+                {/* Talk */}
+                <div style={{marginBottom:14}}>
+                  <div style={{...C.secT,marginBottom:7}}>Conversation</div>
+                  <button
+                    style={{...C.btn("#6a28b0"),width:"100%",opacity:ap<TALK_CONFIG.apCost?0.45:1}}
+                    disabled={ap<TALK_CONFIG.apCost}
+                    onClick={()=>openTalk&&openTalk(s)}
+                  >
+                    💬 Talk with {s.name} ({TALK_CONFIG.apCost} AP)
+                  </button>
+                  <div style={{fontSize:10,color:"#6a4a88",marginTop:6,lineHeight:1.5}}>
+                    Office-hours conversation — relationship, corruption, and topics unlocked by Spirit skills.
+                  </div>
+                </div>
 
                 {/* Personal actions */}
                 <div style={{...C.secT,marginBottom:7}}>Personal Actions · {ap} AP</div>
