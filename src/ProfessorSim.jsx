@@ -19,6 +19,7 @@ import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLin
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 import { ALL_SKILLS, getEvolvedActivityStageIdx, rnd, generateClassSession } from './utils/gameHelpers.js';
+import { renderHiveIntake } from './textEngine/scenes/hiveIntake.js';
 import { MoodBadge } from './components/ui.jsx';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
@@ -1324,7 +1325,24 @@ export default function ProfessorSim(){
       const mayaGain=Math.max(2,Math.round((next.lastShift?.biomassGain||0)*0.32+getHiveControl(next.rooms)*0.2));
       setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,mayaGain,4):s));
       push(`🕸️ Maya — Delivery Hive Shift: +${mayaGain} lbs · Dorm Control ${Math.round((getHiveControl(next.rooms)/24)*100)}%`);
-      return {...next,lastShift:{...next.lastShift,mayaGain}};
+      // Modular-text intake scene when the shift recruits new bodies
+      let withScene=next;
+      const recruits=next.lastShift?.memberGain||0;
+      if(recruits>0){
+        const lilith=students.find(s=>s.id===LILITH_ID);
+        if(lilith){
+          const victims=Array.from({length:Math.min(recruits,5)},()=>({
+            name:"a dorm resident",
+            lbs:Math.round(120+Math.random()*260),
+            bodyType:["pear","apple","hourglass","athletic","straight"][rnd(0,4)],
+            corruption:0,relationship:0,
+          }));
+          const sceneText=renderHiveIntake(lilith,victims,week);
+          const sceneTag=makeHiveTag("IntakeScene",{mayaStage:getStage(maya.lbs).label.replace(/\s+/g,""),vpId:next.vpId||"none",bmiTier:getHiveBmiTier(next.avgBmi),rooms:getHiveControl(next.rooms),task:"intake",roomId:next.selectedRoomId});
+          withScene={...next,log:[{tag:sceneTag,text:sceneText,type:"scene"},...next.log].slice(0,40)};
+        }
+      }
+      return {...withScene,lastShift:{...withScene.lastShift,mayaGain}};
     });
   };
 

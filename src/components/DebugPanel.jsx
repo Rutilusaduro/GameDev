@@ -1,7 +1,38 @@
+import { useState } from 'react';
 import { C } from '../styles.js';
 import { LILITH_ID } from '../gameData/lilith.js';
+import { render, createContext, getSeason, relSize } from '../textEngine/engine.js';
+import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
+
+if (typeof window !== 'undefined' && import.meta.env.DEV) {
+  window.__textEngine = { render, createContext, getSeason, relSize };
+}
+
+// Sweep the hive-intake scene across size/corruption/season combos
+// to eyeball variant coverage and catch unresolved slots.
+function sampleTextEngine(){
+  const out=[];
+  const combos=[
+    { lilithLbs:110, victimLbs:380, corruption:0, week:6,  label:"tiny Lilith / huge victims / winter" },
+    { lilithLbs:820, victimLbs:150, corruption:90, week:14, label:"colossal Lilith / thin victims / summer" },
+    { lilithLbs:200, victimLbs:210, corruption:40, week:2,  label:"average Lilith / similar victims / fall" },
+    { lilithLbs:340, victimLbs:340, corruption:90, week:10, label:"heavy Lilith / heavy victims / spring" },
+    { lilithLbs:140, victimLbs:90,  corruption:0,  week:7,  label:"small Lilith / tiny victims / winter" },
+    { lilithLbs:520, victimLbs:600, corruption:40, week:15, label:"massive both / summer" },
+  ];
+  for(const c of combos){
+    const lilith={ name:"Lilith", lbs:c.lilithLbs, corruption:c.corruption, bodyType:"hourglass", relationship:50 };
+    const victims=[
+      { name:"a dorm resident", lbs:c.victimLbs, bodyType:"pear", corruption:0, relationship:0 },
+      { name:"a dorm resident", lbs:c.victimLbs, bodyType:"apple", corruption:0, relationship:0 },
+    ];
+    out.push(`── ${c.label} (season: ${getSeason(c.week)}) ──\n${renderHiveIntake(lilith,victims,c.week)}`);
+  }
+  return out.join("\n\n");
+}
 
 export function DebugPanel({ adminScrutiny, ap, debugApply, debugInputs, setAdminScrutiny, setAp, setDebugInputs, setDebugOpen, setLilithUnlocked, setStudents, students }){
+  const [textSample,setTextSample]=useState(null);
   return(
         <div style={{...C.overlay,alignItems:"flex-start",paddingTop:16,overflowY:"auto"}}>
           <div style={{...C.modal,maxWidth:700,width:"95%",maxHeight:"90vh",overflowY:"auto"}}>
@@ -30,6 +61,17 @@ export function DebugPanel({ adminScrutiny, ap, debugApply, debugInputs, setAdmi
                 onClick={()=>setLilithUnlocked(true)}>🌑 Unlock Lilith</button>
               <button style={{...C.smBtn,background:"rgba(60,30,0,0.5)"}}
                 onClick={()=>setStudents(prev=>prev.map(s=>s.id===LILITH_ID?s:{...s,lbs:300}))}>⚖️ All 300 lbs</button>
+            </div>
+            {/* Text engine harness */}
+            <div style={{marginBottom:14,padding:10,background:"rgba(255,255,255,0.04)",borderRadius:8}}>
+              <div style={{fontSize:10,color:"#888",marginBottom:6}}>TEXT ENGINE</div>
+              <button style={{...C.smBtn,background:"rgba(100,60,140,0.4)"}}
+                onClick={()=>setTextSample(sampleTextEngine())}>📜 Sample hive intake (6 combos)</button>
+              {textSample&&(
+                <pre style={{fontSize:10,color:"#c8b8e0",whiteSpace:"pre-wrap",lineHeight:1.6,marginTop:8,maxHeight:240,overflowY:"auto",background:"rgba(0,0,0,0.3)",padding:8,borderRadius:6}}>
+                  {textSample}
+                </pre>
+              )}
             </div>
             {/* Per-student rows */}
             <div style={{fontSize:10,color:"#888",marginBottom:6}}>STUDENTS</div>

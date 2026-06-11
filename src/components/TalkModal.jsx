@@ -4,12 +4,13 @@
 // Register codas appended when corruption tier + skills qualify.
 // ═══════════════════════════════════════════════════════════════
 import { useState } from 'react';
-import { TALK_TOPICS, REGISTER_CODAS, TALK_CONFIG } from '../gameData/talkSystem.js';
+import { TALK_TOPICS, TALK_CONFIG } from '../gameData/talkSystem.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
 import { getStage } from '../gameData/stages.js';
+import { createContext, render, pick } from '../textEngine/engine.js';
+import '../textEngine/scenes/talkCodas.js'; // registers talk.coda
+import { getBodyDescRich } from '../utils/gameHelpers.js';
 import { C } from '../styles.js';
-
-function rnd(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
 // ── response builder ──────────────────────────────────────────
 
@@ -17,17 +18,13 @@ function buildResponse(topic, student, skillEffects){
   const corTier = getCorruptionTier(student.corruption || 0).id;
   const regIdx  = Math.min(corTier, topic.responses.length - 1);
   const pool    = topic.responses[regIdx] || topic.responses[0];
-  const baseFn  = rnd(pool);
+  const baseFn  = pick(pool);
   let text = typeof baseFn === "function" ? baseFn(student) : baseFn;
 
-  // Append register coda if unlocked
-  if(corTier >= 1 && skillEffects.internalizedRole){
-    const codaFn = rnd(REGISTER_CODAS.submissive);
-    text += " " + (typeof codaFn === "function" ? codaFn(student) : codaFn);
-  } else if(corTier >= 2 && skillEffects.brokenMind){
-    const codaFn = rnd(REGISTER_CODAS.broken);
-    text += " " + (typeof codaFn === "function" ? codaFn(student) : codaFn);
-  }
+  // Register coda via the modular text engine — variant selection
+  // (corruption tier × skill flags) lives in scenes/talkCodas.js.
+  const ctx = createContext({ subject: student, skillEffects });
+  text += render("{talk.coda|prefix: }", ctx, { noSmooth: true });
 
   return text;
 }
@@ -75,7 +72,7 @@ function TopicCard({ topic, student, skillEffects, onSelect, disabled }){
 
 // ── response display ──────────────────────────────────────────
 
-function ResponseDisplay({ topic, text, student, onClose }){
+function ResponseDisplay({ topic, text, student, week, onClose }){
   const col = GROUP_COLORS[topic.group] || "#8040c0";
   const st  = getStage(student.lbs);
   return(
@@ -98,7 +95,10 @@ function ResponseDisplay({ topic, text, student, onClose }){
         {text}
       </div>
 
-      {/* stage context line */}
+      {/* stage context — season-aware body flavor via the text engine */}
+      <div style={{fontSize:10,color:"#8a6a98",textAlign:"right",fontStyle:"italic"}}>
+        {getBodyDescRich(student, week)}
+      </div>
       <div style={{fontSize:10,color:"#6a4a78",textAlign:"right"}}>
         {student.name} · {st.label} · {student.lbs.toLocaleString()} lbs
       </div>
@@ -110,7 +110,7 @@ function ResponseDisplay({ topic, text, student, onClose }){
 
 // ── main modal ────────────────────────────────────────────────
 
-export function TalkModal({ student, skillEffects, onClose, onApplyEffect }){
+export function TalkModal({ student, skillEffects, week, onClose, onApplyEffect }){
   const [activeResponse, setActiveResponse] = useState(null); // {topic, text}
   const corTier = getCorruptionTier(student.corruption || 0);
   const eff     = skillEffects || {};
@@ -192,6 +192,7 @@ export function TalkModal({ student, skillEffects, onClose, onApplyEffect }){
             topic={activeResponse.topic}
             text={activeResponse.text}
             student={student}
+            week={week}
             onClose={handleBack}
           />
         ) : (

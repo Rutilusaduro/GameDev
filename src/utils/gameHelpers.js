@@ -7,11 +7,18 @@ import { BODY_DESCS, OUTFITS, SLIGHT_DIARY, DIARY_ENTRIES } from '../gameData/co
 import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS } from '../gameData/evolvedForms.js';
 import { getStage } from '../gameData/stages.js';
 import { CLASS_SCENES } from '../gameData/classEvents.js';
+import { createContext, render } from '../textEngine/engine.js';
+import '../textEngine/lexicon.js'; // registers word.* modules
 
 export const ALL_SKILLS = [];
 
 export function getBodyDesc(s){
   const bd=BODY_DESCS[s.bodyType]||BODY_DESCS.straight; return bd[Math.min(getStage(s.lbs).id,bd.length-1)];
+}
+// Season-aware body flavor line via the modular text engine.
+export function getBodyDescRich(s,week){
+  const ctx=createContext({subject:s,week});
+  return render("{word.body|cap}, {word.clothingFit}.",ctx);
 }
 export function getOutfit(s){
   if(s.evolvedForm && getStage(s.lbs).id>=5){
