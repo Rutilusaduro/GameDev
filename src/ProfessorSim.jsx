@@ -36,6 +36,7 @@ import { SocialEventsView } from './views/SocialEventsView.jsx';
 import { AchievementsView, DivinePanel } from './views/AchievementsView.jsx';
 import { PrivateSessionModal } from './components/PrivateSessionModal.jsx';
 import { EvolvedEventModal } from './components/EvolvedEventModal.jsx';
+import { WeighInModal } from './components/WeighInModal.jsx';
 import { DebugPanel } from './components/DebugPanel.jsx';
 import { EvolutionOfferModal, GoddessVisionModal, SessionResultModal, TapOutPopup, SocialEventResult, SocialEventPicker, VaughanEventModal, TierUpModal, StudyCheckInModal, AdminEventModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
@@ -119,6 +120,8 @@ export default function ProfessorSim(){
   const [sessionResult,setSessionResult]=useState(null);
   const [tapOutPopup,setTapOutPopup]=useState(null);
   // {student, text, totalGain}
+  const [weighInState,setWeighInState]=useState(null);
+  // {student, phase:"scene"|"scale"}
   const [sessionLog,setSessionLog]=useState([]);
   const [pendingDoubleDowns,setPendingDoubleDowns]=useState([]);
   // ── DIVINE EXPANSION STATE ─────────────────────────────────────
@@ -2835,6 +2838,8 @@ export default function ProfessorSim(){
 
   const openIntimacySelector=(s)=>{setIntimacySceneSelector({student:s});};
 
+  const openWeighIn=(s)=>{ if(!s) return; setWeighInState({student:s,phase:"scene"}); };
+
   const startIntimacyScene=(s,sceneId)=>{
     const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId];
     if(!def) return;
@@ -5326,7 +5331,7 @@ export default function ProfessorSim(){
           {view==="class"&&<ClassView view={view} hrObserver={hrObserver} vaughan={vaughan} vaughanAlly={vaughanAlly} ap={ap} feedObserver={feedObserver} talkToObserver={talkToObserver} students={students} lilithUnlocked={lilithUnlocked} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView activateDoubleDown={activateDoubleDown} addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} consumeIncarnatedGoddess={consumeIncarnatedGoddess} consumePrimordialIncarnatedGoddess={consumePrimordialIncarnatedGoddess} consumedStudents={consumedStudents} cultivatorState={cultivatorState} divineCelestialCanPullHR={divineCelestialCanPullHR} divineUmbralCanConsumeHR={divineUmbralCanConsumeHR} doEvolvedActivity={doEvolvedActivity} doGoddessAction={doGoddessAction} doGossip={doGossip} doHelpFatten={doHelpFatten} doPrimordialAction={doPrimordialAction} doSanguineAction={doSanguineAction} doSingle={doSingle} doSingularityAction={doSingularityAction} doTalk={doTalk} doVerdantAction={doVerdantAction} effectiveSingleActions={effectiveSingleActions} finalConsumptionDone={finalConsumptionDone} foundReligion={foundReligion} goddessIncarnateId={goddessIncarnateId} goddessSeen={goddessSeen} hrObserver={hrObserver} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} pendingDoubleDowns={pendingDoubleDowns} primordialFinalConsumptionDone={primordialFinalConsumptionDone} primordialGoddessIncarnateId={primordialGoddessIncarnateId} proposeStudy={proposeStudy} purchaseEvolvedSkill={purchaseEvolvedSkill} recoverConsumedStudent={recoverConsumedStudent} religion={religion} researchStudy={researchStudy} runCheckIn={runCheckIn} sanguineMarks={sanguineMarks} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} triggerGoddessIncarnation={triggerGoddessIncarnation} triggerPrimordialGoddessIncarnation={triggerPrimordialGoddessIncarnation} umbralConsumeHR={umbralConsumeHR} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} vaughan={vaughan} verdantCultivations={verdantCultivations}/>}
+          {view==="student"&&sel&&<StudentDetailView activateDoubleDown={activateDoubleDown} addBlobToReligion={addBlobToReligion} ap={ap} ascendStudent={ascendStudent} celestialMassBless={celestialMassBless} celestialMassPull={celestialMassPull} celestialMassPush={celestialMassPush} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} consumeIncarnatedGoddess={consumeIncarnatedGoddess} consumePrimordialIncarnatedGoddess={consumePrimordialIncarnatedGoddess} consumedStudents={consumedStudents} cultivatorState={cultivatorState} divineCelestialCanPullHR={divineCelestialCanPullHR} divineUmbralCanConsumeHR={divineUmbralCanConsumeHR} doEvolvedActivity={doEvolvedActivity} doGoddessAction={doGoddessAction} doGossip={doGossip} doHelpFatten={doHelpFatten} doPrimordialAction={doPrimordialAction} doSanguineAction={doSanguineAction} doSingle={doSingle} doSingularityAction={doSingularityAction} doTalk={doTalk} doVerdantAction={doVerdantAction} effectiveSingleActions={effectiveSingleActions} finalConsumptionDone={finalConsumptionDone} foundReligion={foundReligion} goddessIncarnateId={goddessIncarnateId} goddessSeen={goddessSeen} hrObserver={hrObserver} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openWeighIn={openWeighIn} openThesisBoard={openThesisBoard} pendingDoubleDowns={pendingDoubleDowns} primordialFinalConsumptionDone={primordialFinalConsumptionDone} primordialGoddessIncarnateId={primordialGoddessIncarnateId} proposeStudy={proposeStudy} purchaseEvolvedSkill={purchaseEvolvedSkill} recoverConsumedStudent={recoverConsumedStudent} religion={religion} researchStudy={researchStudy} runCheckIn={runCheckIn} sanguineMarks={sanguineMarks} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} triggerGoddessIncarnation={triggerGoddessIncarnation} triggerPrimordialGoddessIncarnation={triggerPrimordialGoddessIncarnation} umbralConsumeHR={umbralConsumeHR} umbralConsumeStudent={umbralConsumeStudent} umbralVoidPull={umbralVoidPull} vaughan={vaughan} verdantCultivations={verdantCultivations}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
@@ -5385,6 +5390,9 @@ export default function ProfessorSim(){
 
       {/* ── TAP-OUT POPUP ── */}
       {tapOutPopup&&<TapOutPopup setTapOutPopup={setTapOutPopup} tapOutPopup={tapOutPopup}/>}
+
+      {/* ── WEIGH-IN MODAL ── */}
+      {weighInState&&<WeighInModal weighInState={weighInState} setWeighInState={setWeighInState}/>}
 
       {/* ── SESSION RESULT ── */}
       {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}

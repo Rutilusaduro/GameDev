@@ -13,7 +13,7 @@ import { STAGE_REACTIONS } from '../gameData/content.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ activateDoubleDown, addBlobToReligion, ap, ascendStudent, celestialMassBless, celestialMassPull, celestialMassPush, chapterHostessState, communityResearcherState, consumeIncarnatedGoddess, consumePrimordialIncarnatedGoddess, consumedStudents, cultivatorState, divineCelestialCanPullHR, divineUmbralCanConsumeHR, doEvolvedActivity, doGoddessAction, doGossip, doHelpFatten, doPrimordialAction, doSanguineAction, doSingle, doSingularityAction, doTalk, doVerdantAction, effectiveSingleActions, finalConsumptionDone, foundReligion, goddessIncarnateId, goddessSeen, hrObserver, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, pendingDoubleDowns, primordialFinalConsumptionDone, primordialGoddessIncarnateId, proposeStudy, purchaseEvolvedSkill, recoverConsumedStudent, religion, researchStudy, runCheckIn, sanguineMarks, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, triggerGoddessIncarnation, triggerPrimordialGoddessIncarnation, umbralConsumeHR, umbralConsumeStudent, umbralVoidPull, vaughan, verdantCultivations }){
+export function StudentDetailView({ activateDoubleDown, addBlobToReligion, ap, ascendStudent, celestialMassBless, celestialMassPull, celestialMassPush, chapterHostessState, communityResearcherState, consumeIncarnatedGoddess, consumePrimordialIncarnatedGoddess, consumedStudents, cultivatorState, divineCelestialCanPullHR, divineUmbralCanConsumeHR, doEvolvedActivity, doGoddessAction, doGossip, doHelpFatten, doPrimordialAction, doSanguineAction, doSingle, doSingularityAction, doTalk, doVerdantAction, effectiveSingleActions, finalConsumptionDone, foundReligion, goddessIncarnateId, goddessSeen, hrObserver, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openWeighIn, openThesisBoard, pendingDoubleDowns, primordialFinalConsumptionDone, primordialGoddessIncarnateId, proposeStudy, purchaseEvolvedSkill, recoverConsumedStudent, religion, researchStudy, runCheckIn, sanguineMarks, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, triggerGoddessIncarnation, triggerPrimordialGoddessIncarnation, umbralConsumeHR, umbralConsumeStudent, umbralVoidPull, vaughan, verdantCultivations }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -39,7 +39,10 @@ export function StudentDetailView({ activateDoubleDown, addBlobToReligion, ap, a
                     <div style={{fontSize:11,color:"#604070",marginBottom:8}}>{s.role} · age {s.age} · {s.desc}</div>
                     <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:6}}>
                       <div style={{flex:1,minWidth:150}}>
-                        <div style={{fontSize:9,color:"#500050",letterSpacing:2,marginBottom:1}}>WEIGHT</div>
+                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:1}}>
+                          <div style={{fontSize:9,color:"#500050",letterSpacing:2}}>WEIGHT</div>
+                          <button style={{...C.smBtn,fontSize:9,padding:"2px 7px",margin:0,background:"rgba(80,0,80,0.4)",borderColor:`${accent}60`,color:accent}} onClick={()=>openWeighIn&&openWeighIn(s)}>⚖ Weigh In</button>
+                        </div>
                         <Bar val={s.lbs} color={accent}/>
                         <div style={{fontSize:11,color:"#906090"}}>{Math.round(s.lbs)} lbs{lbsToNext>0?` · ${lbsToNext} lbs to ${nextSt.label}`:""}</div>
                       </div>
@@ -99,7 +102,10 @@ export function StudentDetailView({ activateDoubleDown, addBlobToReligion, ap, a
 
                   <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:8}}>
                     <div style={{flex:1,minWidth:150}}>
-                      <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:1}}>WEIGHT</div>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:1}}>
+                        <div style={{fontSize:9,color:"#5028a0",letterSpacing:2}}>WEIGHT</div>
+                        <button style={{...C.smBtn,fontSize:9,padding:"2px 7px",margin:0}} onClick={()=>openWeighIn&&openWeighIn(s)}>⚖ Weigh In</button>
+                      </div>
                       <Bar val={s.lbs} color={st.color}/>
                       <div style={{fontSize:11,color:"#b08840"}}>{s.lbs} lbs · started {s.startLbs} · gained {s.lbs-s.startLbs} lbs</div>
                     </div>
