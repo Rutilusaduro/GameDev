@@ -8,8 +8,10 @@ import { EVOLVED_SKILL_TREES } from '../gameData/skills.js';
 import { INNER_CIRCLE_TIERS, getTier } from '../gameData/sessions.js';
 import { LILITH_ID } from '../gameData/lilith.js';
 import { RECRUITMENT_SCENE, TESTER_APPEARANCE } from '../gameData/cultivator.js';
-import { getAttitude, getBodyDesc, getDiary, getOutfit } from '../utils/gameHelpers.js';
+import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
+import { formatIngredientBag } from '../gameData/pharmacistIngredients.js';
+import { CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier } from '../gameData/pharmacistCampus.js';
 import { getAddictionLevel, getHungerTier, HUNGER_TIERS, ADDICTION_LEVELS } from '../gameData/hungerAddiction.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
@@ -182,7 +184,7 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                 <div style={C.infoBox("rgba(40,8,70,0.35)")}>
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>CURRENT ATTITUDE</div>
                   <div style={{fontSize:13,color:"#e8d8a8",fontStyle:"italic",lineHeight:1.75}}>
-                    "{getAttitude(s, week, { campusFattening: !!pharmacistState?.campusFattening })}"
+                    "{getAttitude(s, week, pharmacistTextOpts(pharmacistState, week))}"
                   </div>
                 </div>
 
@@ -199,7 +201,7 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                 {/* Diary */}
                 <div style={C.infoBox("rgba(30,5,60,0.4)")}>
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>DIARY ENTRY</div>
-                  <div style={{fontSize:12,color:"#c8b898",fontStyle:"italic",lineHeight:1.8}}>{getDiary(s, week, { campusFattening: !!pharmacistState?.campusFattening })}</div>
+                  <div style={{fontSize:12,color:"#c8b898",fontStyle:"italic",lineHeight:1.8}}>{getDiary(s, week, pharmacistTextOpts(pharmacistState, week))}</div>
                 </div>
 
                 {/* ── EP2: EVOLUTION SECTION ── */}
@@ -318,16 +320,30 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                           const act=PHARMACIST_ACTIVITIES[ps.stage]||PHARMACIST_ACTIVITIES[1];
                           const actLabel=stageMeta?.label||'Chemist';
                           const stocked=(ps.unlockedCompounds||[]).filter(id=>(ps.compoundInventory?.[id]??0)>0);
+                          const campusLabel=CAMPUS_NARRATIVE_LABELS[getCampusNarrativeTier(ps)];
+                          const ingredients=formatIngredientBag(ps.ingredients||{});
                           return(
                             <div style={{background:"rgba(8,30,22,0.6)",border:`1px solid ${green}80`,borderRadius:10,padding:12}}>
                               <div style={{fontSize:9,letterSpacing:3,color:green,marginBottom:4}}>🧪 EVOLVED PATH</div>
                               <div style={{fontSize:13,fontWeight:700,color:"#6ab89a",marginBottom:6}}>The Chemist — {actLabel}</div>
                               <div style={{fontSize:10,color:"#508070",marginBottom:8,lineHeight:1.6}}>
                                 Exposure {ps.exposureRisk}% · Sessions {ps.sessionsRun||0}
-                                {ps.campusFattening?" · Campus effect active":""}
+                                {campusLabel?` · ${campusLabel}`:""}
                                 {ps.cultActive?" · Cult supply active":""}
                                 {(ps.synthesisPausedWeeks||0)>0?` · Synthesis paused ${ps.synthesisPausedWeeks}w`:""}
                               </div>
+                              {ingredients.length>0&&(
+                                <>
+                                  <div style={{fontSize:9,color:"#406858",marginBottom:6}}>Saved ingredients:</div>
+                                  <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:8}}>
+                                    {ingredients.map(item=>(
+                                      <span key={item.id} style={{...C.tag("rgba(46,107,90,0.2)","#8ad4b0"),fontSize:8}}>
+                                        {item.icon} {item.label} ×{item.qty}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </>
+                              )}
                               <div style={{fontSize:9,color:"#406858",marginBottom:6}}>Home lab stash:</div>
                               <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:8}}>
                                 {(ps.unlockedCompounds||[]).map(id=>{

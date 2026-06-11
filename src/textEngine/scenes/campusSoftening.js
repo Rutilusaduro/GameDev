@@ -12,10 +12,11 @@ export function proseAlreadyCampusAware(text) {
 }
 
 function campusCtx(student, opts = {}) {
+  const tier = opts.campusTier ?? (opts.campusFattening ? 1 : 0);
   return createContext({
     subject: student,
     week: opts.week ?? 1,
-    globals: { campusFattening: true },
+    globals: { campusFattening: tier > 0, campusTier: tier },
   });
 }
 
@@ -142,6 +143,18 @@ registerModule("diary.campus", [
       "Hallway census: more chewing, less fleeing. Good week for observation.",
       "The ones who still pass look softer than last month. The ratio improves.",
     ] },
+  { when: { campusFattening: true, campusTierMin: 2 }, priority: 3,
+    text: [
+      "Dorms I don't live in look the same as mine now — snack piles, softer faces, slower stairs.",
+      "Even the gym regulars have migrated to the union. The whole campus is eating like it's policy.",
+      "Strangers recognize each other's waistbands. Campus-wide. Unmistakable.",
+    ] },
+  { when: { campusFattening: true, campusTierMin: 3 }, priority: 4,
+    text: [
+      "Prospective students on tour look at us, not the buildings. The campus is the exhibit.",
+      "Delivery drivers know this zip code by heart. Everyone is heavier. Everyone is fed.",
+      "The town past the quad is softer too. Sophia's work doesn't stop at enrollment.",
+    ] },
   { when: { campusFattening: true }, priority: 0,
     text: [
       "Classmates look softer in passing. Not just my section — everywhere.",
@@ -188,6 +201,16 @@ registerModule("attitude.campus", [
     text: [
       "The moms were first. Now the whole pickup line looks padded. I notice. I'm not sorry.",
       "Tuesday energy leaked campus-wide and I'm equal parts guilty and thrilled.",
+    ] },
+  { when: { campusFattening: true, campusTierMin: 2 }, priority: 3,
+    text: [
+      "The whole campus eats like my section does now — I'm not ahead, I'm in the middle of something bigger.",
+      "Everyone's softer in the halls. The saturation feels normal. Good.",
+    ] },
+  { when: { campusFattening: true, campusTierMin: 3 }, priority: 4,
+    text: [
+      "Regional softness — town, campus, dorms. I belong to the weather now.",
+      "Everyone is rounding out together. I feel like part of a landscape.",
     ] },
   { when: { campusFattening: true }, priority: 0,
     text: [

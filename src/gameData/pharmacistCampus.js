@@ -4,6 +4,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { TESTER_START_LBS } from './cultivator.js';
+import { getCampusNarrativeTier, CAMPUS_NARRATIVE_LABELS } from './pharmacistIngredients.js';
+
+export { CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier };
 
 export const CAMPUS_FATTENING_BY_STAGE = {
   1: { passiveLbs: [0, 1], testerBonus: 0, hiveRecruitBonus: 0 },
@@ -31,7 +34,22 @@ export function rollCampusPassiveLbs(pharmacistState, rndFn) {
   const tier = getCampusFatteningTier(pharmacistState);
   if (!tier) return 0;
   const [lo, hi] = tier.passiveLbs;
-  return rndFn(lo, hi);
+  const narrative = getCampusNarrativeTier(pharmacistState);
+  const bonus = narrative >= 3 ? 1 : narrative >= 2 ? 0 : 0;
+  return rndFn(lo + bonus, hi + bonus);
+}
+
+/** Weekly campus event roll chance scales with narrative tier. */
+export function getCampusWeeklyEventChance(pharmacistState) {
+  const narrative = getCampusNarrativeTier(pharmacistState);
+  return { 1: 0.22, 2: 0.3, 3: 0.38 }[narrative] || 0;
+}
+
+export function scaleCampusEventGain(gainRange, pharmacistState, rndFn) {
+  const narrative = getCampusNarrativeTier(pharmacistState);
+  const mult = narrative >= 3 ? 1.35 : narrative >= 2 ? 1.15 : 1;
+  const [lo, hi] = gainRange;
+  return rndFn(Math.round(lo * mult), Math.round(hi * mult));
 }
 
 /** Ambient lines when walking campus under Sophia's wellness influence. */

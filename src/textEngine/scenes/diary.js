@@ -303,7 +303,10 @@ export function renderDiary(student, week = 1, opts = {}) {
   const ctx = createContext({
     subject: student,
     week,
-    globals: { campusFattening: !!opts.campusFattening },
+    globals: {
+      campusFattening: !!opts.campusFattening,
+      campusTier: opts.campusTier ?? (opts.campusFattening ? 1 : 0),
+    },
   });
   const text = render(DIARY_TEMPLATE, ctx, { noSmooth: true }).trim();
   return text || "—";

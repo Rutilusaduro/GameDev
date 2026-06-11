@@ -19,7 +19,7 @@ import { C } from '../styles.js';
 
 // ── response builder ──────────────────────────────────────────
 
-function buildResponse(topic, student, skillEffects, week, campusFattening = false){
+function buildResponse(topic, student, skillEffects, week, campusFattening = false, campusTier = 0){
   const corTier = getCorruptionTier(student.corruption || 0).id;
 
   let text;
@@ -31,7 +31,10 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
       subject: student,
       skillEffects,
       week,
-      globals: { campusFattening: !!campusFattening },
+      globals: {
+        campusFattening: !!campusFattening,
+        campusTier: campusTier || (campusFattening ? 1 : 0),
+      },
     });
     text += render("{talk.coda|prefix: }", ctx, { noSmooth: true });
     if (campusFattening) {
@@ -131,7 +134,7 @@ function ResponseDisplay({ topic, text, student, week, onClose }){
 
 // ── main modal ────────────────────────────────────────────────
 
-export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevouring, onClose, onApplyEffect, campusFattening = false }){
+export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevouring, onClose, onApplyEffect, campusFattening = false, campusTier = 0 }){
   const [activeResponse, setActiveResponse] = useState(null); // {topic, text}
   const corTier = getCorruptionTier(student.corruption || 0);
   const eff     = skillEffects || {};
@@ -153,7 +156,7 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
       }
     }
 
-    const text = buildResponse(topic, student, eff, week, campusFattening);
+    const text = buildResponse(topic, student, eff, week, campusFattening, campusTier);
     setActiveResponse({topic, text, refused:false});
   };
 

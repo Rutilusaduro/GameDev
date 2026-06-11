@@ -12,6 +12,12 @@ import '../textEngine/lexicon.js'; // registers word.* modules
 import { renderDiary } from '../textEngine/scenes/diary.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { appendCampusDiary, appendCampusAttitude } from '../textEngine/scenes/campusSoftening.js';
+import { getCampusNarrativeTier } from '../gameData/pharmacistIngredients.js';
+
+export function pharmacistTextOpts(pharmacistState, week = 1) {
+  const campusTier = getCampusNarrativeTier(pharmacistState);
+  return { campusFattening: campusTier > 0, campusTier, week };
+}
 
 export const ALL_SKILLS = [];
 

@@ -147,6 +147,8 @@ function evalWhen(when, ctx) {
       case "addictionLevelMin": ok = (d.addictionLevel ?? 0) >= v; break;
       case "addictionLevelMax": ok = (d.addictionLevel ?? 0) <= v; break;
       case "campusFattening": ok = !!ctx.globals?.campusFattening === !!v; break;
+      case "campusTierMin": ok = (ctx.globals?.campusTier ?? 0) >= v; break;
+      case "campusTierMax": ok = (ctx.globals?.campusTier ?? 0) <= v; break;
       default: {
         // dimension on ctx.d: corruption, stage, relationship, relSize,
         // bodyType, archetype, mood, evolvedForm, refStage...
