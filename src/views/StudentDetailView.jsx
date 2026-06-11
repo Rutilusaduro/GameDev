@@ -38,7 +38,10 @@ export function StudentDetailView({ addBlobToReligion, ap, ascendStudent, celest
                     <div style={{fontSize:11,color:"#604070",marginBottom:8}}>{s.role} · age {s.age} · {s.desc}</div>
                     <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:6}}>
                       <div style={{flex:1,minWidth:150}}>
-                        <div style={{fontSize:9,color:"#500050",letterSpacing:2,marginBottom:1}}>WEIGHT</div>
+                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:1}}>
+                          <div style={{fontSize:9,color:"#500050",letterSpacing:2}}>WEIGHT</div>
+                          <button style={{...C.smBtn,fontSize:9,padding:"2px 7px",margin:0,background:"rgba(80,0,80,0.4)",borderColor:`${accent}60`,color:accent}} onClick={()=>openWeighIn&&openWeighIn(s)}>⚖ Weigh In</button>
+                        </div>
                         <Bar val={s.lbs} color={accent}/>
                         <div style={{fontSize:11,color:"#906090"}}>{Math.round(s.lbs)} lbs{lbsToNext>0?` · ${lbsToNext} lbs to ${nextSt.label}`:""}</div>
                       </div>
@@ -98,7 +101,10 @@ export function StudentDetailView({ addBlobToReligion, ap, ascendStudent, celest
 
                   <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:8}}>
                     <div style={{flex:1,minWidth:150}}>
-                      <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:1}}>WEIGHT</div>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:1}}>
+                        <div style={{fontSize:9,color:"#5028a0",letterSpacing:2}}>WEIGHT</div>
+                        <button style={{...C.smBtn,fontSize:9,padding:"2px 7px",margin:0}} onClick={()=>openWeighIn&&openWeighIn(s)}>⚖ Weigh In</button>
+                      </div>
                       <Bar val={s.lbs} color={st.color}/>
                       <div style={{fontSize:11,color:"#b08840"}}>{s.lbs} lbs · started {s.startLbs} · gained {s.lbs-s.startLbs} lbs</div>
                     </div>

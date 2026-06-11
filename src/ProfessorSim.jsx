@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { CELESTIAL_STAGES, UMBRAL_STAGES, CONVERGENCE_STAGE, SINGULARITY_ABSORPTION_TEXT, SINGULARITY_REACTIONS, SINGULARITY_TAP_OUT, SINGULARITY_RANDOM_EVENTS, SINGULARITY_ACTION_TEXT, SINGULARITY_ACTIONS, TRIUMVIRATE_REACTION, TRIUMVIRATE_ACTIONS, TRIUMVIRATE_ACTION_TEXT, CELESTIAL_PULL_AMOUNTS, CELESTIAL_PUSH_AMOUNTS, CELESTIAL_BLESS_AMOUNTS, UMBRAL_CONSUME_CHANCE, UMBRAL_ABSORB_RATE, UMBRAL_VOID_PULL_AMOUNTS, UMBRAL_ABSORB_TEXT, CELESTIAL_ACTION_TEXT, UMBRAL_ACTION_TEXT, RELIGION_RITE_TEXT, SINGULARITY_RITE_TEXT, SANGUINE_STAGES, SANGUINE_REACTIONS, SANGUINE_ACTIONS, SANGUINE_ACTION_TEXT, VERDANT_STAGES, VERDANT_REACTIONS, VERDANT_ACTIONS, VERDANT_ACTION_TEXT, PRIMORDIAL_ABSORPTION_TEXT, PRIMORDIAL_REACTIONS, PRIMORDIAL_RANDOM_EVENTS, PRIMORDIAL_ACTIONS, PRIMORDIAL_ACTION_TEXT, PRIMORDIAL_TRIUMVIRATE_REACTION, PRIMORDIAL_TRIUMVIRATE_ACTIONS, PRIMORDIAL_TRIUMVIRATE_ACTION_TEXT, getGoddessStage, GODDESS_STAGE_REACTIONS, GODDESS_EXPLORE_TEXT, GODDESS_PRACTICAL_TEXT, GODDESS_ACTIONS, INCARNATION_EVENT_TEXT } from './gameData/ascension.js';
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL } from './gameData/intimacy.js';
-import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, DIVINE_PAIR_REACTIONS, UNBUTTON_LINES, PROF_SUBJECTS, PROF_TRAITS, ADMIN_EVENTS, STUDY_SCENES, STUDY_SCENE_DEFAULT, HR_FEED_LINES, HR_TALK_LINES, getTier, TIER_SCENES, VAUGHAN_BASE, VAUGHAN_EVENTS, VAUGHAN_WEIGHT_SCENES, VAUGHAN_ALLY_SCENE, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
+import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, DIVINE_PAIR_REACTIONS, UNBUTTON_LINES, ADMIN_EVENTS, STUDY_SCENES, STUDY_SCENE_DEFAULT, HR_FEED_LINES, HR_TALK_LINES, getTier, TIER_SCENES, VAUGHAN_BASE, VAUGHAN_EVENTS, VAUGHAN_WEIGHT_SCENES, VAUGHAN_ALLY_SCENE, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_REACTIONS, STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS, TALK_RESPONSES, CHAR_TALK } from './gameData/content.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS } from './gameData/classEvents.js';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
+import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
+import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
@@ -18,6 +20,7 @@ import { MoodBadge } from './components/ui.jsx';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
 import { CompetitiveGainerChatModal, CompetitiveGainerMainModal } from './components/CompetitiveGainerModals.jsx';
+import { MayaHiveModal } from './components/MayaHiveModal.jsx';
 import { EatingContestModal } from './components/EatingContestModal.jsx';
 import { SumoMatchModal } from './components/SumoMatchModal.jsx';
 import { CollabStreamModal } from './components/CollabStreamModal.jsx';
@@ -35,6 +38,7 @@ import { SocialEventsView } from './views/SocialEventsView.jsx';
 import { AchievementsView, DivinePanel } from './views/AchievementsView.jsx';
 import { PrivateSessionModal } from './components/PrivateSessionModal.jsx';
 import { EvolvedEventModal } from './components/EvolvedEventModal.jsx';
+import { WeighInModal } from './components/WeighInModal.jsx';
 import { DebugPanel } from './components/DebugPanel.jsx';
 import { EvolutionOfferModal, GoddessVisionModal, SessionResultModal, TapOutPopup, SocialEventResult, SocialEventPicker, VaughanEventModal, TierUpModal, StudyCheckInModal, AdminEventModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
@@ -43,6 +47,16 @@ import { C } from './styles.js';
 // ═══════════════════════════════════════════════════════════════
 // MAIN APP
 // ═══════════════════════════════════════════════════════════════
+
+const SPIRIT_INTRO_PARAGRAPHS=[
+  "You are a spirit of gluttony and abundance.",
+  "The current world is diametrically opposed to you. Between the cultural shifts in humanity and the anthropogenic extinction event grinding through the biosphere, scarcity has become powerful. It has temples now: restraint, optimization, denial, survival.",
+  "Then, one day, you find a college class where you are able to take root.",
+  "You inhabit the professor. Through them, you can teach. Through them, you can feed. And when your awareness slips into the students themselves, it is not a contradiction; it is the same hunger learning every shape it can wear.",
+];
+
+const INHABITED_PROFESSOR_PROFILE={name:"The Professor",subject:null,traits:[],origin:"gluttony_spirit"};
+const SPIRIT_XP_PER_LEVEL=40;
 
 export default function ProfessorSim(){
   const [students,setStudents]=useState(INIT_STUDENTS);
@@ -77,16 +91,14 @@ export default function ProfessorSim(){
   const [triumvirateModal,setTriumvirateModal]=useState(null);
   // { text } — fires when Triumvirate unlocks
   const [finalConsumptionDone,setFinalConsumptionDone]=useState(false);
-  const [hovered,setHovered]=useState(null);
   const [debugOpen,setDebugOpen]=useState(false);
   const [debugInputs,setDebugInputs]=useState({});
   // debugInputs: { [studentId]: { lbs:string, path:string, stage:number, rel:number } }
-  const [skillCat,setSkillCat]=useState("environment");
   const [classSession,setClassSession]=useState(null);
   const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
   const [professorProfile,setProfessorProfile]=useState(null);
-  // professorProfile: {name, subject, traits:[]}
+  // professorProfile: {name, subject, traits:[], origin?}
   const [adminScrutiny,setAdminScrutiny]=useState(0);
   const [adminEvent,setAdminEvent]=useState(null);
   const [adminFiredIds,setAdminFiredIds]=useState([]);
@@ -96,7 +108,6 @@ export default function ProfessorSim(){
   // studyCheckIn: {student, scene, index}
   const [hrObserver,setHrObserver]=useState(null);
   // hrObserver: {name,lbs,startLbs,bodyType,disposition,weeksPresent}
-  const [charCreation,setCharCreation]=useState({name:"",subject:null,traits:[]});
   // DLC: Inner Circle
   const seenTiersRef=useRef(new Set());
   const prevRelsRef=useRef(Object.fromEntries(INIT_STUDENTS.map(s=>[s.id,s.relationship])));
@@ -118,6 +129,11 @@ export default function ProfessorSim(){
   const [sessionResult,setSessionResult]=useState(null);
   const [tapOutPopup,setTapOutPopup]=useState(null);
   // {student, text, totalGain}
+  const [weighInState,setWeighInState]=useState(null);
+  // {student, phase:"scene"|"analog"|"break"|"purchase"|"swap"|"digital"}
+  const [bigScaleUnlocked,setBigScaleUnlocked]=useState(false);
+  const [brokeScaleIds,setBrokeScaleIds]=useState([]);
+  // {student, phase:"scene"|"scale"}
   const [sessionLog,setSessionLog]=useState([]);
   // ── DIVINE EXPANSION STATE ─────────────────────────────────────
   const [goddessSeen,setGoddessSeen]=useState(false);
@@ -172,10 +188,12 @@ export default function ProfessorSim(){
   // wifeLessonsState: persistent {mjStudentId,stage,daughters:{Emma,Chloe,Kezia,Lila},moms:{Darlene,Wanda,Patrice},session:null|{lessonChosen,conversationState,log}}
   // session.conversationState: null|{person,stageEntry,optionIdx,subIdx,done,resultText}
   const [competitiveGainerState, setCompetitiveGainerState] = useState(null);
-  // competitiveGainerState: persistent {priyaStudentId,spirit,chatLog:[{text,isProf,wk}],measuredStudentIds:[],lastChatWeek,corkboardVisitCount,open,view,subState}
+  // competitiveGainerState: persistent {priyaStudentId,spirit,chatLog:[{text,isProf,wk}],measuredStudentIds:[],measuredComparisons:{},lastChatWeek,corkboardVisitCount,open,view,subState}
   // view: null|'corkboard'|'measurement_picker'|'measurement_result'|'self_review'|'binge'
   // subState: result/scene data for the current view
   const [cgChatOpen, setCgChatOpen] = useState(false);
+  const [mayaHiveState, setMayaHiveState] = useState(null);
+  // mayaHiveState: persistent Delivery Hive grid/task state for Maya's delivery_hive evolved form
   const [rankedFeedeeState, setRankedFeedeeState] = useState(null);
   // rankedFeedeeState: {studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log:[],done,endReason,raeDelivered}
   const [chapterHostessState, setChapterHostessState] = useState(null);
@@ -304,6 +322,11 @@ export default function ProfessorSim(){
   },[adminScrutiny,adminFiredIds,adminEvent,professorProfile]);
 
   const push=useCallback((msg)=>setLog(prev=>[...prev,msg]),[]);
+
+  const inhabitProfessor=()=>{
+    setProfessorProfile(INHABITED_PROFESSOR_PROFILE);
+    push("🌒 You take root behind the professor's eyes. The class waits, and abundance has found a door.");
+  };
 
   const addScrutiny=(n)=>{
     const mult=(1-(professorProfile?.traits?.includes("discreet")?0.35:0))
@@ -679,6 +702,20 @@ export default function ProfessorSim(){
         return{...prev,chatLog:[...prev.chatLog,...msgs],lastChatWeek:newWeek};
       });
     }
+    const mayaHive=updated.find(s=>s.evolvedForm==='delivery_hive');
+    if(mayaHive){
+      setMayaHiveState(prev=>{
+        if(!prev) return createInitialHiveState(mayaHive.id);
+        const rooms=getHiveControl(prev.rooms);
+        const trickle=Math.max(1,Math.round(rooms*0.55));
+        return {
+          ...prev,
+          hiveBiomass:prev.hiveBiomass+trickle,
+          spiritResonance:prev.spiritResonance+Math.max(1,Math.floor(rooms/6)),
+          log:[{tag:"[MayaHive_WeeklyTrickle]",text:`The conquered rooms feed the Central Nest between classes. +${trickle} Biomass.`,type:"system"},...prev.log].slice(0,40),
+        };
+      });
+    }
   };
 
   // ── DIVINE ACTION FUNCTIONS ─────────────────────────────────────
@@ -946,6 +983,12 @@ export default function ProfessorSim(){
         thesisApproved:false, thesisRejected:false, finalReviewText:null,
       });
     }
+    if(formId==='competitive_gainer'&&s){
+      setCompetitiveGainerState(prev=>prev||initCompetitiveGainerState(s));
+    }
+    if(formId==='delivery_hive'&&s){
+      setMayaHiveState(prev=>prev||createInitialHiveState(s.id));
+    }
   };
 
   const doEvolvedActivity=(s)=>{
@@ -976,6 +1019,13 @@ export default function ProfessorSim(){
       if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
       setAp(a=>a-meta.apCost);
       openCompetitiveGainerModal(s);
+      return;
+    }
+    if(s.evolvedForm==='delivery_hive'){
+      const meta=EVOLVED_ACTIVITY_META['delivery_hive']; if(!meta) return;
+      if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
+      setAp(a=>a-meta.apCost);
+      openMayaHive(s);
       return;
     }
     if(s.evolvedForm==='state_fair_queen'){
@@ -1219,6 +1269,59 @@ export default function ProfessorSim(){
     return CG_CONFIG.spiritTiers.find(t=>spirit>=t.min&&spirit<=t.max)||CG_CONFIG.spiritTiers[0];
   };
 
+  const getCGStageKey=(lbs)=>{
+    const idx=Math.max(0,Math.min(CG_STAGE_KEYS.length-1,getStage(lbs).id-5));
+    return CG_STAGE_KEYS[idx];
+  };
+
+  const formatCGText=(text,vars={})=>{
+    if(!text) return "";
+    return String(text).replace(/\{(\w+)\}/g,(_,key)=>vars[key]??`{${key}}`);
+  };
+
+  const initCompetitiveGainerState=(s)=>({
+    priyaStudentId:s.id,
+    spirit:0,
+    chatLog:[],
+    measuredStudentIds:[],
+    measuredComparisons:{},
+    lastChatWeek:week,
+    corkboardVisitCount:0,
+  });
+
+  const bodypartLabel=(cat)=>cat==="hip"?"hips":cat==="bust"?"bust":cat==="thigh"?"thighs":cat==="arm"?"arms":cat;
+
+  const buildCGComparisonPools=(cgState,allStudents=students)=>{
+    const priya=allStudents.find(s=>s.id===cgState?.priyaStudentId);
+    if(!priya) return {larger:[],close:[],smaller:[]};
+    const priyaM={...getMeasurements(priya.lbs,priya.bodyType),weight:Math.round(priya.lbs)};
+    const ids=(cgState?.measuredStudentIds||[]).length?cgState.measuredStudentIds:allStudents.filter(s=>s.id!==priya.id&&!s.hidden).map(s=>s.id);
+    const pools={larger:[],close:[],smaller:[]};
+    ids.forEach(id=>{
+      const target=allStudents.find(s=>s.id===id);
+      if(!target||target.id===priya.id||(target.hidden&&!lilithUnlocked)) return;
+      const targetM={...getMeasurements(target.lbs,target.bodyType),weight:Math.round(target.lbs)};
+      [...CG_CONFIG.categories,"weight"].forEach(cat=>{
+        const pVal=priyaM[cat];
+        const tVal=targetM[cat];
+        if(!pVal||!tVal) return;
+        const item={studentId:target.id,girlName:target.name,bodypart:bodypartLabel(cat),category:cat,priyaValue:pVal,targetValue:tVal};
+        if(tVal>pVal*(1+CG_CONFIG.threatFraction)) pools.larger.push(item);
+        else if(tVal>=pVal*(1-CG_CONFIG.threatFraction)) pools.close.push(item);
+        else pools.smaller.push(item);
+      });
+    });
+    return pools;
+  };
+
+  const pickCGComparison=(cgState,optId)=>{
+    const pools=buildCGComparisonPools(cgState);
+    const threatPool=[...pools.larger,...pools.close];
+    const source=(optId==="taunt"||optId==="challenge")?threatPool:pools.smaller;
+    if(source.length===0) return null;
+    return source[Math.floor(Math.random()*source.length)];
+  };
+
   // ── WIFE LESSONS handlers ─────────────────────────────────────────
 
   const _wlCheckStageAdvance=(state)=>{
@@ -1358,44 +1461,48 @@ export default function ProfessorSim(){
   // Chat message generator — called on week advance and on manual chat check
   const generateCGChatMessages=(priya,allStudents,cgState,currentWeek)=>{
     const tier=getCGSpiritTier(cgState.spirit);
+    const stageKey=getCGStageKey(priya.lbs);
     const msgs=[];
     const priyaM=getMeasurements(priya.lbs,priya.bodyType);
     // Priya's opening post
-    const postTemplate=CG_CHAT_TEMPLATES.priyaPost[tier.label]||CG_CHAT_TEMPLATES.priyaPost.Invested;
+    const postTemplate=CG_CHAT_TEMPLATES.priyaPost[stageKey]?.[tier.label]||CG_CHAT_TEMPLATES.priyaPost.Heavy?.Invested;
     msgs.push({text:`[Priya] ${postTemplate} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isProf:false,wk:currentWeek});
-    // Select 2-4 visible students (not Priya) weighted by proximity + measured status
+    // Select 3-5 visible students weighted by measurement history and threat proximity.
     const visible=allStudents.filter(s=>s.id!==priya.id&&(!s.hidden||s.id===15));
-    const candidates=visible.slice().sort(()=>Math.random()-0.5).slice(0,4);
+    const candidates=visible
+      .map(s=>{
+        const measured=cgState.measuredStudentIds.includes(s.id);
+        const m=getMeasurements(s.lbs,s.bodyType);
+        const threatScore=CG_CONFIG.categories.reduce((acc,cat)=>acc+(m[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)?2:0),0);
+        return {s,score:(measured?4:0)+threatScore+Math.random()};
+      })
+      .sort((a,b)=>b.score-a.score)
+      .slice(0,Math.min(5,Math.max(3,visible.length)))
+      .map(x=>x.s);
     let threatDetected=false;
     candidates.forEach(s=>{
       const templates=CG_CHAT_TEMPLATES.girls[s.name]||CG_CHAT_TEMPLATES.girls.Brittany;
       const measured=cgState.measuredStudentIds.includes(s.id);
-      const sLbs=s.lbs;
+      const sM=getMeasurements(s.lbs,s.bodyType);
       let replyType;
       if(!measured) replyType='unmeasured';
-      else if(sLbs>priya.lbs*1.05) { replyType='ahead'; threatDetected=true; }
-      else if(sLbs>priya.lbs*0.95) { replyType='close'; threatDetected=true; }
-      else if(sLbs>priya.lbs*0.80)  replyType='proud';
+      else if(CG_CONFIG.categories.some(cat=>sM[cat]>priyaM[cat]*(1+CG_CONFIG.threatFraction))||s.lbs>priya.lbs*1.05) { replyType='ahead'; threatDetected=true; }
+      else if(CG_CONFIG.categories.some(cat=>sM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction))||s.lbs>priya.lbs*0.95) { replyType='close'; threatDetected=true; }
+      else if(s.lbs>priya.lbs*0.80)  replyType='proud';
       else replyType='behind';
       const replyText=templates[replyType]||templates.behind||'...';
       msgs.push({text:`[${s.name}] ${replyText}`,isProf:false,wk:currentWeek});
     });
     // Priya follow-up
     const followupKey=threatDetected?'threatened':'leading';
-    msgs.push({text:`[Priya] ${CG_CHAT_TEMPLATES.priyaFollowup[followupKey]}`,isProf:false,wk:currentWeek});
+    const followup=CG_CHAT_TEMPLATES.priyaFollowup[followupKey]?.[tier.label]||"The board is updated.";
+    msgs.push({text:`[Priya] ${followup}`,isProf:false,wk:currentWeek});
     return msgs;
   };
 
   const openCompetitiveGainerModal=(s)=>{
     setCompetitiveGainerState(prev=>{
-      const base=prev||{
-        priyaStudentId:s.id,
-        spirit:0,
-        chatLog:[],
-        measuredStudentIds:[],
-        lastChatWeek:week,
-        corkboardVisitCount:0,
-      };
+      const base=prev||initCompetitiveGainerState(s);
       return{...base,priyaStudentId:s.id,open:true,view:null,subState:null};
     });
   };
@@ -1426,15 +1533,24 @@ export default function ProfessorSim(){
           });
         });
       }
-      return{...prev,spirit:prev.spirit+spiritGain,corkboardVisitCount:(prev.corkboardVisitCount||0)+1,view:'corkboard',subState:{sceneText,spiritGain}};
+      const nextSpirit=prev.spirit+spiritGain;
+      const priyaNow=students.find(st=>st.id===prev.priyaStudentId);
+      const chatMsgs=priyaNow?generateCGChatMessages(priyaNow,students,{...prev,spirit:nextSpirit},week):[];
+      return{...prev,spirit:nextSpirit,corkboardVisitCount:(prev.corkboardVisitCount||0)+1,chatLog:[...prev.chatLog,...chatMsgs],lastChatWeek:week,view:'corkboard',subState:{sceneText,spiritGain}};
     });
   };
 
   const doCGSelfReview=()=>{
     setCompetitiveGainerState(prev=>{
       if(!prev) return prev;
+      const priya=students.find(s=>s.id===prev.priyaStudentId);
+      if(!priya) return prev;
       const tier=getCGSpiritTier(prev.spirit);
-      const sceneText=CG_MEASUREMENT_SCENES.selfReview[tier.label]||CG_MEASUREMENT_SCENES.selfReview.Invested;
+      const stageKey=getCGStageKey(priya.lbs);
+      const entry=CG_MEASUREMENT_SCENES.selfReview[stageKey]?.[tier.label]||CG_MEASUREMENT_SCENES.selfReview.Heavy.Invested;
+      const priyaM=getMeasurements(priya.lbs,priya.bodyType);
+      const focus=entry.focus||"waist";
+      const sceneText=formatCGText(entry.text||entry,{measurement:priyaM[focus]??Math.round(priya.lbs), measurementCategory:bodypartLabel(focus), priyaWeight:Math.round(priya.lbs)});
       const spiritGain=rnd(2,5);
       return{...prev,spirit:prev.spirit+spiritGain,view:'self_review',subState:{sceneText,spiritGain}};
     });
@@ -1455,12 +1571,13 @@ export default function ProfessorSim(){
       // Determine threats by category
       const threats=[];
       const reactions={};
+      const tier=getCGSpiritTier(prev.spirit);
       CG_CONFIG.categories.forEach(cat=>{
         let rel='priya_larger';
         if(targetM[cat]>priyaM[cat]*(1+CG_CONFIG.threatFraction)){rel='priya_smaller';threats.push(cat);}
         else if(targetM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)){rel='priya_equal';threats.push(cat);}
-        const tKey=`[MeasureReaction_${rel==='priya_larger'?'PriyaLarger':rel==='priya_smaller'?'PriyaSmaller':'PriyaEqual'}_${cat}]`;
-        reactions[cat]={rel,text:tKey};
+        const template=CG_MEASUREMENT_SCENES.reactions?.[rel]?.[tier.label]?.[cat]||`[MeasureReaction_${rel}_${cat}_${tier.label}]`;
+        reactions[cat]={rel,text:formatCGText(template,{targetName:target.name, girlName:target.name, bodypart:bodypartLabel(cat)})};
       });
       const spiritGain=threats.length>0
         ? threats.length*rnd(CG_CONFIG.spiritGainThreat[0],CG_CONFIG.spiritGainThreat[1])
@@ -1469,7 +1586,8 @@ export default function ProfessorSim(){
       const newMeasured=prev.measuredStudentIds.includes(targetStudentId)
         ? prev.measuredStudentIds
         : [...prev.measuredStudentIds,targetStudentId];
-      return{...prev,spirit:prev.spirit+spiritGain,measuredStudentIds:newMeasured,
+      const measuredComparisons={...(prev.measuredComparisons||{}),[targetStudentId]:{week,priyaM,targetM,reactions,threats}};
+      return{...prev,spirit:prev.spirit+spiritGain,measuredStudentIds:newMeasured,measuredComparisons,
         view:'measurement_result',
         subState:{targetStudentId,priyaM,targetM,sceneText,reactions,threats,spiritGain}};
     });
@@ -1487,7 +1605,8 @@ export default function ProfessorSim(){
       const baseGain=CG_CONFIG.minBinge+(CG_CONFIG.maxBinge-CG_CONFIG.minBinge)*Math.min(1,(stageId-1)/6);
       const mult=CG_CONFIG.bingeSpiritMults[Math.max(0,tierIdx)];
       const gain=Math.round(baseGain*mult*(0.85+Math.random()*0.30));
-      const sceneText=CG_BINGE_SCENES[tier.label]||CG_BINGE_SCENES.Invested;
+      const stageKey=getCGStageKey(priya.lbs);
+      const sceneText=CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
       return{...prev,view:'binge',subState:{gain,sceneText,done:false}};
     });
   };
@@ -1510,8 +1629,145 @@ export default function ProfessorSim(){
     if(!opt) return;
     setCompetitiveGainerState(prev=>{
       if(!prev) return prev;
-      const msg={text:`[You] ${opt.text}`,isProf:true,wk:week};
+      const priya=students.find(s=>s.id===prev.priyaStudentId);
+      const stageKey=priya?getCGStageKey(priya.lbs):"Heavy";
+      const comparison=pickCGComparison(prev,optId);
+      const template=comparison?(opt.byStage?.[stageKey]||opt.fallback):opt.fallback;
+      const text=formatCGText(template,{
+        girlName:comparison?.girlName||"the class",
+        bodypart:comparison?.bodypart||"measurements",
+        priyaValue:comparison?.priyaValue,
+        targetValue:comparison?.targetValue,
+      });
+      const msg={text:`[You] ${text}`,isProf:true,wk:week};
       return{...prev,spirit:prev.spirit+opt.spiritDelta,chatLog:[...prev.chatLog,msg]};
+    });
+  };
+
+  // ── MAYA DELIVERY HIVE handlers ─────────────────────────────────
+  const openMayaHive=(s)=>{
+    setMayaHiveState(prev=>{
+      const base=prev||createInitialHiveState(s.id);
+      return {...base,mayaStudentId:s.id,open:true,view:"main",subState:null};
+    });
+  };
+
+  const closeMayaHive=()=>{
+    setMayaHiveState(prev=>prev?{...prev,open:false,view:"main",subState:null}:prev);
+  };
+
+  const chooseHiveVP=(vpId)=>{
+    const opt=HIVE_VPS[vpId];
+    if(!opt) return;
+    if(opt.studentId===15&&!lilithUnlocked){push("⚠️ Lilith is not available yet.");return;}
+    setMayaHiveState(prev=>{
+      if(!prev) return prev;
+      if(prev.vpId===vpId) return {...prev,view:"main"};
+      const switching=!!prev.vpId;
+      const cost=switching?25:0;
+      if(prev.hiveBiomass<cost){
+        push(`⚠️ Need ${cost} Hive Biomass to change VP.`);
+        return prev;
+      }
+      const tag=makeHiveTag("VPChoice",{mayaStage:"Any",vpId,rooms:getHiveControl(prev.rooms),bmiTier:getHiveBmiTier(prev.avgBmi),task:"vp",roomId:prev.selectedRoomId});
+      push(`🕸️ Maya names ${opt.name} Vice Queen.`);
+      return {
+        ...prev,
+        vpId,
+        hiveBiomass:prev.hiveBiomass-cost,
+        view:"main",
+        log:[{tag,text:`${opt.name} moves into the Central Nest as Vice Queen. ${opt.passive}`,type:"vp"},...prev.log].slice(0,40),
+      };
+    });
+  };
+
+  const adjustHiveAssignment=(taskId,delta)=>{
+    setMayaHiveState(prev=>{
+      if(!prev) return prev;
+      const current=prev.assignments[taskId]||0;
+      const assigned=Object.values(prev.assignments).reduce((a,b)=>a+b,0);
+      if(delta>0&&assigned>=prev.members) return prev;
+      const nextValue=Math.max(0,current+delta);
+      return {...prev,assignments:{...prev.assignments,[taskId]:nextValue}};
+    });
+  };
+
+  const executeMayaHiveShift=()=>{
+    setMayaHiveState(prev=>{
+      if(!prev) return prev;
+      const maya=students.find(s=>s.id===prev.mayaStudentId);
+      if(!maya) return prev;
+      const assigned=Object.values(prev.assignments).reduce((a,b)=>a+b,0);
+      if(assigned>prev.members){push("⚠️ Too many Hive members assigned.");return prev;}
+      const next=executeHiveShift(prev,{mayaStageId:getStage(maya.lbs).id});
+      const mayaGain=Math.max(2,Math.round((next.lastShift?.biomassGain||0)*0.32+getHiveControl(next.rooms)*0.2));
+      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,mayaGain,4):s));
+      push(`🕸️ Maya — Delivery Hive Shift: +${mayaGain} lbs · Dorm Control ${Math.round((getHiveControl(next.rooms)/24)*100)}%`);
+      return {...next,lastShift:{...next.lastShift,mayaGain}};
+    });
+  };
+
+  const doMayaHiveVisit=()=>{
+    setMayaHiveState(prev=>{
+      if(!prev) return prev;
+      const maya=students.find(s=>s.id===prev.mayaStudentId);
+      if(!maya) return prev;
+      const mayaStage=getStage(maya.lbs).label.replace(/\s+/g,"");
+      const bmiTier=getHiveBmiTier(prev.avgBmi);
+      const rooms=getHiveControl(prev.rooms);
+      const tag=makeHiveTag("CentralNestVisit",{mayaStage,vpId:prev.vpId||"none",bmiTier,rooms,task:"professor",roomId:prev.selectedRoomId});
+      const gain=Math.round(8+getStage(maya.lbs).id*1.5+prev.hiveBiomass/35);
+      const biomass=Math.round(gain*0.8);
+      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,gain,6):s));
+      push(`🕸️ Maya — Central Nest Visit: +${gain} lbs`);
+      return {
+        ...prev,
+        hiveBiomass:prev.hiveBiomass+biomass,
+        spiritResonance:prev.spiritResonance+3,
+        view:"visit",
+        subState:{tag,gain,biomass,text:`${tag} The professor brings tribute directly to the Central Nest. Maya's quiet gravity accepts it, and the Hive records the warmth.`},
+        log:[{tag,text:"Professor-directed feeding at the Central Nest.",type:"scene"},...prev.log].slice(0,40),
+      };
+    });
+  };
+
+  const doMayaHivePhoto=()=>{
+    setMayaHiveState(prev=>{
+      if(!prev) return prev;
+      const maya=students.find(s=>s.id===prev.mayaStudentId);
+      const mayaStage=maya?getStage(maya.lbs).label.replace(/\s+/g,""):"Unknown";
+      const bmiTier=getHiveBmiTier(prev.avgBmi);
+      const rooms=getHiveControl(prev.rooms);
+      const tag=makeHiveTag("HiveStatePhoto",{mayaStage,vpId:prev.vpId||"none",bmiTier,rooms,task:"observation",roomId:prev.selectedRoomId});
+      return {
+        ...prev,
+        spiritResonance:prev.spiritResonance+1,
+        view:"photo",
+        subState:{tag,text:`${tag} Maya documents the Hive: conquered rooms, delivery routes, soft bodies, and the faint gluttony-spirit pressure visible in every lavender-lit corner.`},
+        log:[{tag,text:"Hive State observation archived.",type:"photo"},...prev.log].slice(0,40),
+      };
+    });
+  };
+
+  const doMayaHiveAbsorb=()=>{
+    setMayaHiveState(prev=>{
+      if(!prev||prev.vpId!=="lilith"||prev.members<=1) return prev;
+      const maya=students.find(s=>s.id===prev.mayaStudentId);
+      if(!maya) return prev;
+      const rooms=getHiveControl(prev.rooms);
+      const mayaStage=getStage(maya.lbs).label.replace(/\s+/g,"");
+      const bmiTier=getHiveBmiTier(prev.avgBmi);
+      const gain=Math.round(22+getStage(maya.lbs).id*4+rooms*1.5);
+      const tag=makeHiveTag("LilithAbsorption",{mayaStage,vpId:"lilith",bmiTier,rooms,task:"absorb",roomId:prev.selectedRoomId});
+      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,gain,3):s));
+      push(`🌑 Maya's Hive absorbs a devotee: +${gain} lbs`);
+      return {
+        ...prev,
+        members:prev.members-1,
+        hiveBiomass:prev.hiveBiomass+gain,
+        spiritResonance:prev.spiritResonance+6,
+        log:[{tag,text:"Lilith guides one devotee into Maya's stored biomass.",type:"absorb"},...prev.log].slice(0,40),
+      };
     });
   };
 
@@ -2811,6 +3067,8 @@ export default function ProfessorSim(){
 
   const openIntimacySelector=(s)=>{setIntimacySceneSelector({student:s});};
 
+  const openWeighIn=(s)=>{ if(!s) return; setWeighInState({student:s,phase:"scene"}); };
+
   const startIntimacyScene=(s,sceneId)=>{
     const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId];
     if(!def) return;
@@ -3609,7 +3867,7 @@ export default function ProfessorSim(){
 
   const startSkillPurchase=(sk)=>{
     if(!canUnlock(sk)) return;
-    setSkillPurchase({skill:sk,allocation:{}});
+    unlockSkill(sk,true);
   };
 
   const adjustAllocation=(studentId,delta)=>{
@@ -3684,7 +3942,6 @@ export default function ProfessorSim(){
         return;
       }
     }
-    if(!dinnerUnlocked){push("⚠️ Unlock 'Dining Connections' in the Skill Tree first.");return;}
     if(ap<2){push("⚠️ Need 2 AP for a dinner.");return;}
     const maxFullness=60+getStage(s.lbs).id*14;
     if(opts.skipImmobileCheck){
@@ -3799,7 +4056,6 @@ export default function ProfessorSim(){
 
   // ── GROUP DINNER ─────────────────────────────────────────────
   const startGroupDinner=(studentList)=>{
-    if(!dinnerUnlocked){push("⚠️ Unlock 'Dining Connections' first.");return;}
     const immobile=studentList.find(s=>getStage(s.lbs).id>=10||!!s.ascensionPath);
     if(immobile){push(`⚠️ ${immobile.name} can't leave her location. Visit her individually to bring food.`);return;}
     const apCost=studentList.length>=3?3:3;
@@ -4213,6 +4469,10 @@ export default function ProfessorSim(){
 
   const sel=selectedId!==null?students.find(s=>s.id===selectedId):null;
   const totalGained=students.reduce((a,s)=>a+(s.lbs-s.startLbs),0);
+  const spiritXp=Math.max(0,Math.round(totalGained));
+  const spiritLevel=1+Math.floor(spiritXp/SPIRIT_XP_PER_LEVEL);
+  const spiritRankProgress=Math.max(0,spiritLevel-1);
+  const totalSkillPoints=Math.max(0,spiritLevel-1);
   const visibleStudents=students.filter(s=>!s.hidden||lilithUnlocked);
   const avgLbs=Math.round(visibleStudents.reduce((a,s)=>a+s.lbs,0)/Math.max(1,visibleStudents.length));
   // ── PROFESSOR SUBJECT / TRAIT EFFECTS ───────────────────────
@@ -4223,8 +4483,10 @@ export default function ProfessorSim(){
   const observeFree=hasSubj("art_history")||hasTrait("observant");
   const talkRelBonus=hasTrait("charismatic")?4:hasSubj("psychology")?2:0;
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
-  const hasSkill=(id)=>unlockedSkills.includes(id);
   const unlockedAll=ALL_SKILLS.filter(sk=>unlockedSkills.includes(sk.id));
+  const hasSkill=(id)=>unlockedAll.some(sk=>sk.id===id);
+  const spentSkillPoints=unlockedAll.reduce((a,sk)=>a+(sk.cost||0),0);
+  const availableSkillPoints=Math.max(0,totalSkillPoints-spentSkillPoints);
   const skillPassiveBonus=unlockedAll.reduce((a,sk)=>a+sk.passiveBonus,0)+profPassiveBonus;
   const skillApBonus=unlockedAll.reduce((a,sk)=>a+sk.apBonus,0);
   const skillGainMult=(1+unlockedAll.reduce((a,sk)=>a+sk.gainMult,0))*profGainMult;
@@ -4243,7 +4505,6 @@ export default function ProfessorSim(){
   const divineCelestialApexHeal=unlockedAll.reduce((a,sk)=>a+(sk.celestialApexHeal||0),0);
   const divineUmbralCanConsumeHR=unlockedAll.some(sk=>sk.umbralCanConsumeHR);
   const divineCelestialCanPullHR=unlockedAll.some(sk=>sk.celestialCanPullHR);
-  const dinnerUnlocked=unlockedSkills.includes("dinner_basic");
   // EP2: total weekly scrutiny reduction from evolved skills across all students
   const evolvedScrutinyReduce=students.reduce((total,s)=>{
     if(!s.evolvedForm||!(s.evolvedSkills||[]).length) return total;
@@ -4279,19 +4540,15 @@ export default function ProfessorSim(){
   ];
 
   const availableVenues=DINNER_VENUES.filter(v=>{
-    if(v.id==="home_dinner") return unlockedSkills.includes("dinner_residence");
-    if(v.id==="brunch_hall") return unlockedSkills.includes("dinner_casual");
+    if(v.id==="home_dinner") return false;
     if(v.id==="atelier") return false; // filtered per-student inside dinner modal
-    if(v.tier===1) return unlockedSkills.includes("dinner_basic");
-    if(v.tier===2) return unlockedSkills.includes("dinner_upscale");
-    if(v.tier===3) return unlockedSkills.includes("dinner_private");
-    if(v.tier===4) return unlockedSkills.includes("dinner_residence");
-    return false;
+    return true;
   });
   const canUnlock=(sk)=>{
     if(unlockedSkills.includes(sk.id)) return false;
-    if(sk.category==="divine"&&!goddessSeen) return false;
-    if(totalGained<sk.cost) return false;
+    if(sk.category!=="divine") return false;
+    if(!goddessSeen) return false;
+    if(availableSkillPoints<sk.cost) return false;
     if(sk.requires) return sk.requires.every(r=>unlockedSkills.includes(r));
     return true;
   };
@@ -4299,76 +4556,29 @@ export default function ProfessorSim(){
   const views=["class","actions","achievements","log"];
   if(sel) views.splice(1,0,"student");
 
-  // ── CHARACTER CREATION SCREEN ─────────────────────────────────
+  // ── OPENING SPIRIT INTRO ───────────────────────────────────────
   if(!professorProfile){
-    const cc=charCreation;
-    const canFinish=cc.name.trim()&&cc.subject&&cc.traits.length===2;
-    const toggleTrait=(id)=>{
-      setCharCreation(prev=>{
-        const has=prev.traits.includes(id);
-        if(has) return{...prev,traits:prev.traits.filter(t=>t!==id)};
-        if(prev.traits.length>=2) return prev;
-        return{...prev,traits:[...prev.traits,id]};
-      });
-    };
     return(
       <div style={{...C.app,alignItems:"center",justifyContent:"center",padding:20}}>
-        <div style={{maxWidth:700,width:"100%"}}>
-          <div style={{textAlign:"center",marginBottom:28}}>
-            <div style={{fontSize:11,letterSpacing:4,color:"#7030c0",marginBottom:6}}>PROFESSOR'S QUARTERS</div>
-            <h1 style={{color:"#d0a0ff",margin:"0 0 6px",fontSize:26,fontWeight:400,fontFamily:"inherit"}}>Before the Semester Begins</h1>
-            <div style={{color:"#7060a0",fontSize:13}}>Tell us who you are.</div>
+        <div style={{...C.modal,maxWidth:680,background:"radial-gradient(circle at 50% 0%,#1d1034,#0d0618 52%,#070510)",border:"1px solid #6a2cc0",boxShadow:"0 0 80px rgba(130,60,220,0.32)"}}>
+          <div style={{textAlign:"center",marginBottom:22}}>
+            <div style={{fontSize:10,letterSpacing:4,color:"#8a4be0",marginBottom:8}}>A SPIRIT FINDS PURCHASE</div>
+            <h1 style={{color:"#d8b0ff",margin:"0 0 8px",fontSize:28,fontWeight:400,fontFamily:"inherit"}}>Before the Semester Begins</h1>
+            <div style={{color:"#7d68a8",fontSize:13}}>The professor is only the first door.</div>
           </div>
 
-          {/* Name */}
-          <div style={{marginBottom:22}}>
-            <div style={C.secT}>Your Name</div>
-            <input value={cc.name} onChange={e=>setCharCreation(prev=>({...prev,name:e.target.value}))}
-              placeholder="Professor…"
-              style={{background:"rgba(255,255,255,0.05)",border:"1px solid #4a1580",borderRadius:6,padding:"9px 13px",color:"#ddd0b8",fontSize:14,fontFamily:"inherit",width:"100%",boxSizing:"border-box"}}/>
+          <div style={{background:"rgba(255,255,255,0.035)",border:"1px solid rgba(140,80,220,0.25)",borderRadius:10,padding:"18px 20px",marginBottom:22}}>
+            {SPIRIT_INTRO_PARAGRAPHS.map((paragraph,idx)=>(
+              <p key={idx} style={{margin:idx===0?"0 0 14px":"14px 0 0",color:idx===0?"#ead8ff":"#c9b4e8",fontSize:idx===0?17:14,lineHeight:1.8}}>
+                {paragraph}
+              </p>
+            ))}
           </div>
 
-          {/* Subject */}
-          <div style={{marginBottom:22}}>
-            <div style={C.secT}>Your Subject</div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:8}}>
-              {PROF_SUBJECTS.map(sub=>{
-                const sel=cc.subject===sub.id;
-                return(
-                  <div key={sub.id} onClick={()=>setCharCreation(prev=>({...prev,subject:sub.id}))}
-                    style={{background:sel?"rgba(120,40,220,0.25)":"rgba(255,255,255,0.03)",border:`1px solid ${sel?"#8040d0":"#200e40"}`,borderRadius:8,padding:10,cursor:"pointer",transition:"all 0.15s"}}>
-                    <div style={{fontSize:13,color:sel?"#d090ff":"#b080d8",marginBottom:3}}>{sub.emoji} {sub.label}</div>
-                    <div style={{fontSize:11,color:"#7060a0",lineHeight:1.5,marginBottom:4}}>{sub.desc}</div>
-                    <div style={{fontSize:10,color:"#5030a0",fontStyle:"italic"}}>{sub.bonus}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Traits */}
-          <div style={{marginBottom:28}}>
-            <div style={C.secT}>Your Traits <span style={{fontWeight:400,color:"#5030a0"}}>(pick 2)</span></div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(195px,1fr))",gap:8}}>
-              {PROF_TRAITS.map(tr=>{
-                const sel=cc.traits.includes(tr.id);
-                const disabled=!sel&&cc.traits.length>=2;
-                return(
-                  <div key={tr.id} onClick={()=>!disabled&&toggleTrait(tr.id)}
-                    style={{background:sel?"rgba(120,40,220,0.25)":"rgba(255,255,255,0.03)",border:`1px solid ${sel?"#8040d0":"#200e40"}`,borderRadius:8,padding:10,cursor:disabled?"not-allowed":"pointer",opacity:disabled?0.45:1,transition:"all 0.15s"}}>
-                    <div style={{fontSize:13,color:sel?"#d090ff":"#b080d8",marginBottom:3}}>{tr.emoji} {tr.label}</div>
-                    <div style={{fontSize:11,color:"#7060a0",lineHeight:1.5,marginBottom:4}}>{tr.desc}</div>
-                    <div style={{fontSize:10,color:"#5030a0",fontStyle:"italic"}}>{tr.effect}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div style={{textAlign:"center"}}>
-            <button disabled={!canFinish} onClick={()=>setProfessorProfile({name:cc.name.trim(),subject:cc.subject,traits:cc.traits})}
-              style={{...C.btn(canFinish?"#7020c8":"#2a1040"),fontSize:14,padding:"11px 32px",opacity:canFinish?1:0.5,cursor:canFinish?"pointer":"not-allowed"}}>
-              Begin the Semester
+          <div style={{display:"flex",justifyContent:"center"}}>
+            <button onClick={inhabitProfessor}
+              style={{...C.btn("#7020c8"),fontSize:14,padding:"12px 34px",boxShadow:"0 0 24px rgba(112,32,200,0.35)"}}>
+              Inhabit the Professor
             </button>
           </div>
         </div>
@@ -5228,14 +5438,16 @@ export default function ProfessorSim(){
           <div style={{fontSize:10,color:"#60389a",letterSpacing:3}}>A WEIGHT MANAGEMENT SIMULATION</div>
         </div>
         <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
-          {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Skills",unlockedSkills.length,"#a0e0b0"]].map(([l,v,c])=>(
+          {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Spirit",`Lv ${spiritLevel}`,"#a0e0b0"],["Pts",availableSkillPoints,"#f0c060"]].map(([l,v,c])=>(
             <div key={l} style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px"}}>
               <span style={{fontSize:17,fontWeight:700,color:c,display:"block"}}>{l==="Wk"?`Wk ${v}`:v}</span>
-              <span style={{fontSize:9,color:"#60389a",letterSpacing:2}}>{l==="Wk"?"WEEK":l==="AP"?"ACTION PTS":"SKILLS"}</span>
+              <span style={{fontSize:9,color:"#60389a",letterSpacing:2}}>
+                {l==="Wk"?"WEEK":l==="AP"?"ACTION PTS":l==="Spirit"?"SPIRIT":"SKILL PTS"}
+              </span>
             </div>
           ))}
           {(()=>{
-            const rank=([...PROFESSOR_RANKS].reverse().find(r=>unlockedSkills.length>=r.min)||PROFESSOR_RANKS[0]);
+            const rank=([...PROFESSOR_RANKS].reverse().find(r=>spiritRankProgress>=r.min)||PROFESSOR_RANKS[0]);
             return(
               <div style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:90}}>
                 <span style={{fontSize:13,fontWeight:700,color:"#f0c060",display:"block",letterSpacing:0.5}}>{rank.label}</span>
@@ -5262,7 +5474,7 @@ export default function ProfessorSim(){
 
       {/* NAV */}
       <div style={C.nav}>
-        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["social","🎉 Events"],["skills","🌳 Skills"],["achievements","🏆 Achievements"],...(goddessSeen?[["divine","✦ Divine"]]:[])].map(([v,l])=>(
+        {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["social","🎉 Events"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],...(goddessSeen?[["divine","✦ Divine"]]:[])].map(([v,l])=>(
           v==="student"&&!sel?null:
           <button key={v} style={C.navB(view===v)} onClick={()=>setView(v)}>{l}</button>
         ))}
@@ -5281,7 +5493,7 @@ export default function ProfessorSim(){
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
 
 {/* ── SKILL TREE ── */}
-          {view==="skills"&&<SkillTreeView canUnlock={canUnlock} dinnerUnlocked={dinnerUnlocked} goddessSeen={goddessSeen} hasSkill={hasSkill} hovered={hovered} setHovered={setHovered} setSkillCat={setSkillCat} skillApBonus={skillApBonus} skillCat={skillCat} skillGainMult={skillGainMult} skillPassiveBonus={skillPassiveBonus} skillScrutinyPassiveReduce={skillScrutinyPassiveReduce} skillScrutinyReduce={skillScrutinyReduce} skillSessionCapBonus={skillSessionCapBonus} startSkillPurchase={startSkillPurchase} totalGained={totalGained} unlockedSkills={unlockedSkills}/>}
+          {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} canUnlock={canUnlock} goddessSeen={goddessSeen} skillApBonus={skillApBonus} skillGainMult={skillGainMult} skillPassiveBonus={skillPassiveBonus} skillScrutinyPassiveReduce={skillScrutinyPassiveReduce} skillScrutinyReduce={skillScrutinyReduce} skillSessionCapBonus={skillSessionCapBonus} spentSkillPoints={spentSkillPoints} spiritLevel={spiritLevel} spiritXp={spiritXp} spiritXpForNextLevel={SPIRIT_XP_PER_LEVEL} startSkillPurchase={startSkillPurchase} totalSkillPoints={totalSkillPoints} unlockedSkills={unlockedSkills}/>}
           {/* ── SOCIAL EVENTS ── */}
           {view==="social"&&<SocialEventsView ap={ap} socialWeeks={socialWeeks} startSocialEvent={startSocialEvent} vaughan={vaughan} vaughanAlly={vaughanAlly} week={week}/>}
 
@@ -5335,6 +5547,17 @@ export default function ProfessorSim(){
       {/* ── TAP-OUT POPUP ── */}
       {tapOutPopup&&<TapOutPopup setTapOutPopup={setTapOutPopup} tapOutPopup={tapOutPopup}/>}
 
+      {/* ── WEIGH-IN MODAL ── */}
+      {weighInState&&<WeighInModal
+        weighInState={weighInState}
+        setWeighInState={setWeighInState}
+        bigScaleUnlocked={bigScaleUnlocked}
+        brokeScaleIds={brokeScaleIds}
+        onBreakScale={(sid)=>setBrokeScaleIds(arr=>arr.includes(sid)?arr:[...arr,sid])}
+        onUnlockBigScale={()=>{ setBigScaleUnlocked(true); push("⚖ Ordered a heavy-duty 1000 lb scale."); }}
+      />}
+      {weighInState&&<WeighInModal weighInState={weighInState} setWeighInState={setWeighInState}/>}
+
       {/* ── SESSION RESULT ── */}
       {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}
 
@@ -5359,6 +5582,9 @@ export default function ProfessorSim(){
 
       {/* ── COMPETITIVE GAINER — MAIN EVOLVED MODAL ── */}
       {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal}/>}
+
+      {/* ── MAYA DELIVERY HIVE — TERRITORY MANAGEMENT MODAL ── */}
+      {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive}/>}
 
       {/* ── EATING CONTEST MINI-GAME MODAL ── */}
       {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup}/>}
