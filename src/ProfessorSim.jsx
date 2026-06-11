@@ -14,6 +14,8 @@ import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, 
 import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_FEED_LINES, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
 import { TALK_CONFIG } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES } from './gameData/items.js';
+import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
+import { WalletBadge } from './components/WalletBadge.jsx';
 import { CAMPUS_NODES, CAMPUS_CONFIG } from './gameData/campus.js';
 import {
   defaultCampusExplorationState, buildExplorationContext, rollTravelExploration,
@@ -109,6 +111,7 @@ export default function ProfessorSim(){
   const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({...st,...initGainStats(st),corruption:0})));
   const [ap,setAp]=useState(5);
   const [week,setWeek]=useState(1);
+  const [money,setMoney]=useState(WALLET_CONFIG.startingBalance);
   const [view,setView]=useState("class");
   const [selectedId,setSelectedId]=useState(null);
   const [log,setLog]=useState(["📋 Welcome, Professor. Your class of 15 students awaits."]);
@@ -303,6 +306,25 @@ export default function ProfessorSim(){
   // (auto-end dinner removed — endings now handled by overfill check or manual "End Evening")
 
   const push=useCallback((msg)=>setLog(prev=>[...prev,msg]),[]);
+
+  /** Spend player funds. Returns false if insufficient (logs a warning). */
+  const spendMoney=(cost,label="")=>{
+    const result=trySpend(money,cost);
+    if(!result.ok){
+      push(`⚠️ Need ${formatMoney(cost)} — you have ${formatMoney(money)}.`);
+      return false;
+    }
+    setMoney(result.balance);
+    if(label) push(`💸 ${label}: −${formatMoney(cost)}`);
+    return true;
+  };
+
+  /** Credit player funds (optional log line). */
+  const earnMoney=(amount,label="")=>{
+    if(!amount) return;
+    setMoney(prev=>addFunds(prev,amount));
+    if(label) push(`💰 ${label}: +${formatMoney(amount)}`);
+  };
 
   const inhabitProfessor=()=>{
     setProfessorProfile(INHABITED_PROFESSOR_PROFILE);
@@ -4657,6 +4679,7 @@ export default function ProfessorSim(){
             </div>
           )}
           <button onClick={startClass} style={C.btn("#186028")}>⏩ Next Week (+5 AP)</button>
+          <WalletBadge balance={money} />
           {students.some(s=>s.evolvedForm==='competitive_gainer')&&(
             <button onClick={()=>setCgChatOpen(true)} style={{...C.btn("#7a1530"),fontSize:10,border:"1px solid #e8294a40"}}>💬 Softening Stats</button>
           )}
