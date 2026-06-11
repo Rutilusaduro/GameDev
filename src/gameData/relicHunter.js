@@ -56,7 +56,7 @@ export function getElaraQuest(questId) {
 }
 
 export function availableElaraQuests(exploration, ctx) {
-  if (!exploration?.elaraDiscovered) return [];
+  if (!exploration?.elaraDiscovered || !exploration?.elaraMet) return [];
   const done = exploration.questsCompleted || [];
   return ELARA_QUESTS.filter(q => {
     if (done.includes(q.id)) return false;

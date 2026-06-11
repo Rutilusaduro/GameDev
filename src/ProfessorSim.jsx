@@ -346,6 +346,7 @@ export default function ProfessorSim(){
   const campusLog=(lines)=>setCampusState(prev=>({...prev,log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit)}));
 
   const elaraDiscovered=!!campusState.exploration?.elaraDiscovered;
+  const elaraMet=!!campusState.exploration?.elaraMet;
   const studentVisibleOnCampus=(st)=>
     !st.hidden
     ||(st.id===LILITH_ID&&lilithUnlocked)
@@ -356,22 +357,42 @@ export default function ProfessorSim(){
     exploration:campusState.exploration||defaultCampusExplorationState(),
   });
 
-  const grantExplorationIngredients=(grants)=>{
+  const grantExplorationReward=(grants)=>{
     if(!grants||!Object.keys(grants).length) return;
+    if(grants.foodId){
+      setInventory(prev=>({...prev,[grants.foodId]:Math.min(INVENTORY_CONFIG.maxStack,(prev[grants.foodId]||0)+1)}));
+    }
+    const ing={...grants};
+    delete ing.foodId;
+    if(!Object.keys(ing).length) return;
     if(pharmacistState){
-      setPharmacistState(prev=>prev?{...prev,ingredients:mergeIngredients(prev.ingredients,grants)}:prev);
+      setPharmacistState(prev=>prev?{...prev,ingredients:mergeIngredients(prev.ingredients,ing)}:prev);
       return;
     }
-    const item=rollWeeklyItem();
-    setInventory(prev=>({...prev,[item.id]:Math.min(INVENTORY_CONFIG.maxStack,(prev[item.id]||0)+1)}));
+    if(!grants.foodId){
+      const item=rollWeeklyItem();
+      setInventory(prev=>({...prev,[item.id]:Math.min(INVENTORY_CONFIG.maxStack,(prev[item.id]||0)+1)}));
+    }
   };
+
+  const markElaraMet=()=>{
+    setCampusState(prev=>{
+      const ex=prev.exploration||defaultCampusExplorationState();
+      if(ex.elaraMet) return prev;
+      return {...prev,exploration:{...ex,elaraMet:true}};
+    });
+  };
+
+  useEffect(()=>{
+    if(selectedId===ELARA_ID&&elaraDiscovered) markElaraMet();
+  },[selectedId,elaraDiscovered]);
 
   const applyExplorationQuestReward=(exploration)=>{
     const { exploration: nextExp, reward }=takePendingQuestReward(exploration);
     if(!reward) return exploration;
     if(reward.findId){
       const find=getExplorationFind(reward.findId);
-      if(find) grantExplorationIngredients(find.grants);
+      if(find) grantExplorationReward(find.grants);
     }
     if(reward.relationship){
       setStudents(prev=>prev.map(s=>s.id===ELARA_ID?{...s,relationship:Math.min(100,s.relationship+(reward.relationship||0))}:s));
@@ -396,20 +417,20 @@ export default function ProfessorSim(){
     const ctx=getCampusExplorationCtx();
     const { lines, effects }=rollTravelExploration(nodeId,ctx);
     const extra=[];
-    if(effects.ingredientGrant) grantExplorationIngredients(effects.ingredientGrant);
+    if(effects.ingredientGrant||effects.foodGrant) grantExplorationReward({...effects.ingredientGrant,...(effects.foodGrant?{foodId:effects.foodGrant}:{})});
     if(Math.random()<CAMPUS_CONFIG.itemFindChance*0.5){
       const item=rollWeeklyItem();
       setInventory(prev=>({...prev,[item.id]:Math.min(INVENTORY_CONFIG.maxStack,(prev[item.id]||0)+1)}));
       extra.push(`🎒 You come across ${item.emoji} ${item.label.toLowerCase()} — into the pantry it goes.`);
     }
     let exploration=campusState.exploration||defaultCampusExplorationState();
-    if(isTravel){
+    if(isTravel&&exploration.elaraMet){
       const quest=advanceElaraQuestAtNode(exploration,nodeId,ctx);
       exploration=applyExplorationQuestReward(quest.exploration);
       if(quest.lines?.length) extra.push(...quest.lines);
       if(quest.completed&&quest.reward?.findId){
         const find=getExplorationFind(quest.reward.findId);
-        if(find) grantExplorationIngredients(find.grants);
+        if(find) grantExplorationReward(find.grants);
       }
       if(quest.completed&&quest.reward?.relationship){
         setStudents(prev=>prev.map(s=>s.id===ELARA_ID?{...s,relationship:Math.min(100,s.relationship+(quest.reward.relationship||0))}:s));
@@ -450,7 +471,7 @@ export default function ProfessorSim(){
         if(secret.reward?.findId){
           const find=getExplorationFind(secret.reward.findId);
           if(find){
-            grantExplorationIngredients(find.grants);
+            grantExplorationReward(find.grants);
             lines.push(`   + ${find.label}`);
           }
         }
@@ -472,14 +493,15 @@ export default function ProfessorSim(){
     const { lines, effects, exploration: searched }=searchCampusLocation(nodeId,exploration,ctx);
     let next=searched;
     if(effects.solvedSecret) next=applySecretSolve(next,effects.solvedSecret);
-    if(effects.ingredientGrant) grantExplorationIngredients(effects.ingredientGrant);
+    if(effects.ingredientGrant||effects.foodGrant) grantExplorationReward({...effects.ingredientGrant,...(effects.foodGrant?{foodId:effects.foodGrant}:{})});
     if(effects.discoverElara) next={...next,elaraDiscovered:true};
     commitCampusExploration(next,lines);
   };
 
   const beginElaraQuest=(questId)=>{
     const exploration=campusState.exploration||defaultCampusExplorationState();
-    if(!exploration.elaraDiscovered){ campusLog(['⚠️ You have not met Elara yet.']); return; }
+    if(!exploration.elaraDiscovered){ campusLog(['⚠️ You have not found Elara yet.']); return; }
+    if(!exploration.elaraMet){ campusLog(['⚠️ Talk to Elara or open her profile before taking her quests.']); return; }
     if(exploration.questId){ campusLog(['⚠️ Finish your current exploration quest first.']); return; }
     const quest=availableElaraQuests(exploration,getCampusExplorationCtx()).find(q=>q.id===questId);
     if(!quest){ campusLog(['⚠️ That quest is not available yet.']); return; }
@@ -630,6 +652,15 @@ export default function ProfessorSim(){
     }
     if(opts.compoundId&&pharmacistState){
       setPharmacistState(prev=>consumeCompoundDose(prev,opts.compoundId));
+    }
+    if(opts.compoundId){
+      const compound=COMPOUNDS[opts.compoundId];
+      if(compound?.immediateLbsGain){
+        const [lo,hi]=compound.immediateLbsGain;
+        const lbsGain=rnd(lo,hi);
+        result=processStudentGain(result,lbsGain,0);
+        setTimeout(()=>push(`💊 ${compound.label} — ${s.name} gains ${lbsGain} lbs immediately. Fullness unchanged.`),75);
+      }
     }
     const hungerEff=aggregateSkillEffects(ownedSkills);
     return feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
@@ -3355,7 +3386,9 @@ export default function ProfessorSim(){
   };
 
   const openTalk=(s)=>{
-    if(!s||s.hidden) return;
+    if(!s) return;
+    if(s.hidden&&!(s.id===LILITH_ID&&lilithUnlocked)&&!(s.id===ELARA_ID&&elaraDiscovered)) return;
+    if(s.id===ELARA_ID&&elaraDiscovered) markElaraMet();
     if(isWithdrawalAggressive(s)&&(s.withdrawalAggroWeeks||0)>0){
       push(`⚠️ ${s.name} is in withdrawal — irritable and snapping at anyone who isn't feeding her.`);
       return;
@@ -4663,6 +4696,7 @@ export default function ProfessorSim(){
             beginElaraQuest={beginElaraQuest}
             explorationCtx={getCampusExplorationCtx()}
             campusTier={getCampusNarrativeTier(pharmacistState)}
+            elaraMet={elaraMet}
           />}
 
 {/* ── SKILL TREE ── */}

@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // CAMPUS — reactive exploration with secrets, quests, sightings
 // ═══════════════════════════════════════════════════════════════
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { C } from '../styles.js';
 import { CAMPUS_NODES } from '../gameData/campus.js';
 import { explorationSummary } from '../gameData/campusExploration.js';
@@ -13,7 +13,7 @@ const MAP_W = 420, MAP_H = 300;
 const px = (x) => (x / 100) * MAP_W;
 const py = (y) => (y / 100) * MAP_H;
 
-function CampusMap({ at, moveTo, secretNodes }){
+function CampusMap({ at, moveTo, secretNodes, showSecretMarkers }){
   const nodes = Object.values(CAMPUS_NODES);
   const edges = [];
   const seen = new Set();
@@ -44,7 +44,7 @@ function CampusMap({ at, moveTo, secretNodes }){
       {nodes.map(n=>{
         const isAt = n.id===at;
         const reachable = current && current.exits.includes(n.id);
-        const hasSecret = secretSet.has(n.id);
+        const hasSecret = showSecretMarkers && secretSet.has(n.id);
         return(
           <g key={n.id}
             style={{cursor:reachable?"pointer":"default"}}
@@ -89,25 +89,31 @@ export function CampusView({
   beginElaraQuest,
   explorationCtx,
   campusTier = 0,
+  elaraMet = false,
 }){
   const node = CAMPUS_NODES[campusState.at] || CAMPUS_NODES["office"];
   const exploration = campusState.exploration || {};
   const summary = explorationSummary(exploration);
+  const [logMinimized, setLogMinimized] = useState(false);
   const logRef = useRef(null);
-  const secretsHere = availableSecretsAtNode(campusState.at, exploration, explorationCtx || {});
-  const quests = exploration.elaraDiscovered
-    ? availableElaraQuests(exploration, explorationCtx || {})
-    : [];
+  const secretsHere = elaraMet ? availableSecretsAtNode(campusState.at, exploration, explorationCtx || {}) : [];
+  const quests = elaraMet ? availableElaraQuests(exploration, explorationCtx || {}) : [];
   const secretNodeIds = secretsHere.map(s => s.nodeId);
+  const lastLine = campusState.log[campusState.log.length - 1];
 
-  useEffect(()=>{ if(logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight; },[campusState.log]);
+  useEffect(()=>{ if(!logMinimized && logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight; },[campusState.log, logMinimized]);
 
   return(
     <div>
       <p style={C.secT}>Campus — {node.emoji} {node.label}</p>
       <div style={{display:"flex",gap:14,flexWrap:"wrap",alignItems:"flex-start"}}>
         <div style={{flex:"0 0 auto"}}>
-          <CampusMap at={campusState.at} moveTo={moveToCampusNode} secretNodes={secretNodeIds}/>
+          <CampusMap
+            at={campusState.at}
+            moveTo={moveToCampusNode}
+            secretNodes={secretNodeIds}
+            showSecretMarkers={elaraMet}
+          />
           <div style={{fontSize:9,color:"#3a5a2a",marginTop:5,letterSpacing:0.5,lineHeight:1.5}}>
             Walk between locations for travel events. Search for hidden areas.
             {campusTier > 0 && (
@@ -116,23 +122,24 @@ export function CampusView({
               </span>
             )}
           </div>
-          <div style={{...C.card,marginTop:8,padding:"8px 10px",borderColor:"#2a3a1a"}}>
-            <div style={{fontSize:9,color:"#5a7a4a",letterSpacing:0.5,marginBottom:4}}>EXPLORATION</div>
-            <div style={{fontSize:11,color:"#90b080"}}>
-              Secrets: {summary.secretsSolved}/{summary.secretsTotal}
-              {summary.elaraDiscovered ? " · Elara found" : " · Relic Hunter unknown"}
+          {elaraMet && (
+            <div style={{...C.card,marginTop:8,padding:"8px 10px",borderColor:"#2a3a1a"}}>
+              <div style={{fontSize:9,color:"#5a7a4a",letterSpacing:0.5,marginBottom:4}}>EXPLORATION</div>
+              <div style={{fontSize:11,color:"#90b080"}}>
+                Secrets: {summary.secretsSolved}/{summary.secretsTotal}
+              </div>
+              {summary.questLabel && (
+                <div style={{fontSize:10,color:"#b0c090",marginTop:4}}>
+                  Quest: {summary.questLabel} ({summary.questStep}/{summary.questSteps})
+                </div>
+              )}
+              {secretsHere.length > 0 && (
+                <div style={{fontSize:10,color:"#d0c080",marginTop:6,lineHeight:1.4}}>
+                  {secretsHere[0].emoji} {secretsHere[0].hint}
+                </div>
+              )}
             </div>
-            {summary.questLabel && (
-              <div style={{fontSize:10,color:"#b0c090",marginTop:4}}>
-                Quest: {summary.questLabel} ({summary.questStep}/{summary.questSteps})
-              </div>
-            )}
-            {secretsHere.length > 0 && (
-              <div style={{fontSize:10,color:"#d0c080",marginTop:6,lineHeight:1.4}}>
-                {secretsHere[0].emoji} {secretsHere[0].hint}
-              </div>
-            )}
-          </div>
+          )}
         </div>
         <div style={{flex:"1 1 320px",minWidth:280}}>
           <div style={{...C.card,borderColor:"#1a2a14",padding:0,overflow:"hidden",marginBottom:8}}>
@@ -140,24 +147,44 @@ export function CampusView({
               background:"linear-gradient(135deg,#0c1808,#131e0c)",
               borderBottom:"1px solid #1e2e14",
               padding:"10px 14px",
+              display:"flex",
+              justifyContent:"space-between",
+              alignItems:"flex-start",
+              gap:8,
             }}>
-              <div style={{fontSize:13,fontWeight:700,color:"#a0d080"}}>{node.emoji} {node.label}</div>
-              <div style={{fontSize:11,color:"#5a7a4a",marginTop:3,lineHeight:1.5}}>{node.desc}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:13,fontWeight:700,color:"#a0d080"}}>{node.emoji} {node.label}</div>
+                <div style={{fontSize:11,color:"#5a7a4a",marginTop:3,lineHeight:1.5}}>{node.desc}</div>
+              </div>
+              <button
+                type="button"
+                style={{...C.smBtn,flexShrink:0,fontSize:9,padding:"4px 8px"}}
+                onClick={()=>setLogMinimized(v=>!v)}
+                title={logMinimized ? "Expand exploration log" : "Minimize exploration log"}
+              >
+                {logMinimized ? "▸ Log" : "▾ Minimize"}
+              </button>
             </div>
-            <div ref={logRef} style={{height:200,overflowY:"auto",padding:"10px 14px"}}>
-              {campusState.log.length === 0 && (
-                <div style={{fontSize:11,color:"#3a5a2a",fontStyle:"italic"}}>You have just arrived. Look around or search for secrets.</div>
-              )}
-              {campusState.log.map((line,i)=>(
-                <div key={i} style={{
-                  fontSize:12,lineHeight:1.7,marginBottom:5,
-                  color: logLineColor(line),
-                  fontStyle:line.startsWith("→")?"normal":"italic",
-                }}>
-                  {line}
-                </div>
-              ))}
-            </div>
+            {logMinimized ? (
+              <div style={{padding:"8px 14px",fontSize:11,color:"#7a9a6a",fontStyle:"italic",lineHeight:1.5,borderTop:"1px solid #1a2a14"}}>
+                {lastLine || "Log minimized."}
+              </div>
+            ) : (
+              <div ref={logRef} style={{height:200,overflowY:"auto",padding:"10px 14px"}}>
+                {campusState.log.length === 0 && (
+                  <div style={{fontSize:11,color:"#3a5a2a",fontStyle:"italic"}}>You have just arrived. Look around or search for secrets.</div>
+                )}
+                {campusState.log.map((line,i)=>(
+                  <div key={i} style={{
+                    fontSize:12,lineHeight:1.7,marginBottom:5,
+                    color: logLineColor(line),
+                    fontStyle:line.startsWith("→")?"normal":"italic",
+                  }}>
+                    {line}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:8}}>
             <button style={C.btn("#1e3a12")} onClick={lookAround}>👁 Look around</button>
@@ -172,7 +199,7 @@ export function CampusView({
               );
             })}
           </div>
-          {exploration.elaraDiscovered && quests.length > 0 && (
+          {elaraMet && quests.length > 0 && (
             <div style={{...C.card,borderColor:"#3a3520",padding:"10px 12px"}}>
               <div style={{fontSize:9,color:"#8a7a50",letterSpacing:0.5,marginBottom:6}}>ELARA'S QUESTS</div>
               {quests.map(q=>(

@@ -27,7 +27,7 @@ export function InventoryView({ inventory, setItemTargetPicker }){
             <div style={{display:"flex",justifyContent:"space-between",marginBottom:8,fontSize:10,color:"#604030"}}>
               <span>{item.cal.toLocaleString()} cal</span>
               <span>{item.full} fullness</span>
-              <span style={{color:RARITY_COLORS[item.rarity]}}>{item.rarity}</span>
+              <span style={{color:RARITY_COLORS[item.rarity]}}>{item.exploration?"exploration":item.rarity}</span>
             </div>
             <button style={{...C.btn(),width:"100%"}} onClick={()=>setItemTargetPicker({item})}>Use on…</button>
           </div>

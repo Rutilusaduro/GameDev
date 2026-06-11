@@ -25,7 +25,7 @@ export const CAMPUS_SECRETS = [
     campusTierMin: 0,
     solve: 'search',
     discover: 'A shed door yields to a loose hasp. Inside: specimen jars, field notes, and boot prints in potting soil.',
-    reward: { findId: 'greenhouse_resin' },
+    reward: { findId: 'find_honey_tart' },
   },
   {
     id: 'theater_trap',
@@ -110,7 +110,7 @@ export const CAMPUS_SECRETS = [
     campusTierMin: 1,
     solve: 'search',
     discover: 'A service stair behind dry storage descends to a brick cellar — older serving lines, newer snack stashes hidden in the dark.',
-    reward: { findId: 'cult_tithe_jar' },
+    reward: { findId: 'find_comfort_loaf' },
   },
   {
     id: 'library_basement',
