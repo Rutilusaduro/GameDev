@@ -1,6 +1,8 @@
 # Text Engine Authoring Guide
 
 > **Audience: you, the LLM (or human) about to write game prose.** Read this whole file before writing or editing ANY narrative text. The engine reference is `docs/modular-text-system.md`; this file is the content contract. The canonical exemplar files to copy are `src/textEngine/scenes/weighIn/` and `src/textEngine/scenes/talkEncourage.js`.
+>
+> Companions: `MIGRATION.md` (process for converting legacy prose into this form) · `TUNING.md` (the flag-batch editing loop + the **Style Ledger** of banned constructions — new prose must respect the ledger too).
 
 ## 0. Prime directive
 
@@ -142,3 +144,4 @@ All keys combine (AND within a variant; value arrays are OR). Unlisted keys are 
 - **Re-registering a key** — overwrites silently in prod (dev warns). Check the namespace before naming.
 - **Paraphrasing mined dialogue** — kills the character voice that playtesters already know.
 - **`gameHelpers.rnd` vs `pick`** — `rnd(a,b)` is an int range, `pick(arr)` picks from an array. Never mix.
+- **Anything in the TUNING.md Style Ledger** — banned constructions discovered through live tuning ("Statement. That is X.", knowing-narrator winks, gain-excuse lines below stage 2, double-described phenomena, pace/verb contradictions…). The ledger grows; check it before writing.
