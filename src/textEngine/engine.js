@@ -19,6 +19,19 @@ export function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+// weightedPick([{item, w}, ...]) — picks an item with probability ∝ w.
+export function weightedPick(entries) {
+  let total = 0;
+  for (const e of entries) total += e.w;
+  if (total <= 0) return entries.length ? entries[0].item : undefined;
+  let roll = Math.random() * total;
+  for (const e of entries) {
+    roll -= e.w;
+    if (roll <= 0) return e.item;
+  }
+  return entries[entries.length - 1].item;
+}
+
 const SEASONS = ["fall", "winter", "spring", "summer"];
 export function getSeason(week) {
   return SEASONS[Math.floor((Math.max(1, week || 1) - 1) / 4) % 4];
@@ -66,6 +79,8 @@ function deriveFor(student, ref, skillEffects) {
     archetype: student.archetype || null,
     mood: student.mood || null,
     evolvedForm: student.evolvedForm || null,
+    studentId: student.id ?? null,
+    lastCompound: student.lastCompound || null,
     relSize: ref ? relSize(student, ref) : null,
     refStage: ref ? getStage(ref.lbs).id : null,
     fullnessRatio: student.stomachCapacity
@@ -110,12 +125,26 @@ function retarget(ctx, who) {
 // ── module registry ───────────────────────────────────────────
 
 const REGISTRY = new Map();
+const MODULE_OPTS = new Map();
 
-// registerModule(key, variants)
-// variant: { when:{...}, priority?:int, text: string | fn(ctx) | array of those }
-export function registerModule(key, variants) {
+// registerModule(key, variants, opts)
+// variant: { when:{...}, priority?:int, weight?:number, text: string | fn(ctx) | array of those }
+// opts.select: 'best' (default — most specific match wins, ties pool) or
+//              'pool' (every matching variant is RNG-eligible, weighted by
+//              specificity: w = (variant.weight ?? 1) * poolBase**score).
+// opts.poolBase: steepness of the specificity weighting in pool mode (default 3).
+export function registerModule(key, variants, opts = {}) {
+  if (key === "join") { warn(`"join" is a reserved meta-slot and cannot be a module key`); return; }
   if (REGISTRY.has(key)) warn(`module "${key}" re-registered (overwriting)`);
   REGISTRY.set(key, Array.isArray(variants) ? variants : [variants]);
+  MODULE_OPTS.set(key, opts);
+}
+
+// registerPool — registerModule in 'pool' selection mode.
+// This is the default for all new content (see src/textEngine/AUTHORING.md):
+// generic and specific variants stay co-eligible, with specific weighted heavier.
+export function registerPool(key, variants, opts = {}) {
+  registerModule(key, variants, { select: 'pool', ...opts });
 }
 
 /** Prepend higher-priority variants without replacing the base module pool. */
@@ -126,6 +155,10 @@ export function registerModuleVariants(key, variants) {
 }
 
 export function hasModule(key) { return REGISTRY.has(key); }
+
+// Introspection for the lint harness / DebugPanel only — not for game code.
+export function _registryEntries() { return [...REGISTRY.entries()]; }
+export function _moduleOpts(key) { return MODULE_OPTS.get(key) || {}; }
 
 // ── selector resolution ───────────────────────────────────────
 
@@ -158,7 +191,12 @@ function evalWhen(when, ctx) {
       case "campusTierMax": ok = (ctx.globals?.campusTier ?? 0) <= v; break;
       case "weightBand": ok = ctx.globals?.weightBand === v; break;
       case "nodeId": ok = ctx.globals?.nodeId === v; break;
-      case "studentId": ok = ctx.globals?.studentId === v; break;
+      case "studentId": {
+        const actual = d.studentId ?? ctx.globals?.studentId;
+        ok = Array.isArray(v) ? v.includes(actual) : actual === v;
+        break;
+      }
+      case "bigScale": ok = !!ctx.globals?.bigScale === !!v; break;
       default: {
         // dimension on ctx.d: corruption, stage, relationship, relSize,
         // bodyType, archetype, mood, evolvedForm, refStage...
@@ -176,10 +214,43 @@ function evalWhen(when, ctx) {
   return { match: true, score };
 }
 
+function resolveChosen(variant, ctx) {
+  const t = variant.text;
+  const chosen = Array.isArray(t) ? pick(t) : t;
+  return typeof chosen === "function" ? (chosen(ctx) ?? "") : (chosen ?? "");
+}
+
 function selectVariant(key, ctx) {
   const variants = REGISTRY.get(key);
   if (!variants) { warn(`unknown module "${key}"`); return ""; }
+  const opts = MODULE_OPTS.get(key) || {};
 
+  if (opts.select === 'pool') {
+    // Pool mode: every matching variant is RNG-eligible, weighted toward
+    // specificity. Priority is a hard gate here (the escape hatch for
+    // deliberately suppressing everything below).
+    const matches = [];
+    let maxPriority = -Infinity;
+    for (const variant of variants) {
+      const { match, score } = evalWhen(variant.when, ctx);
+      if (!match) continue;
+      const priority = variant.priority || 0;
+      if (priority > maxPriority) maxPriority = priority;
+      matches.push({ variant, score, priority });
+    }
+    const eligible = matches.filter((m) => m.priority === maxPriority);
+    if (!eligible.length) return "";
+    const base = opts.poolBase ?? 3;
+    const entries = eligible
+      .map((m) => ({ item: m.variant, w: (m.variant.weight ?? 1) * Math.pow(base, m.score) }))
+      .filter((e) => e.w > 0);
+    if (!entries.length) return "";
+    return resolveChosen(weightedPick(entries), ctx);
+  }
+
+  // 'best' mode (default): most specific match wins; priority breaks score
+  // ties; texts of the surviving tied variants pool flat (weighted only if
+  // an author sets variant.weight — otherwise identical to a uniform pick).
   let best = [], bestScore = -1, bestPriority = -Infinity;
   for (const variant of variants) {
     const { match, score } = evalWhen(variant.when, ctx);
@@ -193,13 +264,16 @@ function selectVariant(key, ctx) {
   }
   if (!best.length) return "";
 
-  // Pool all texts across tied variants, then pick one.
-  const pool = [];
+  const entries = [];
   for (const variant of best) {
+    const w = variant.weight ?? 1;
+    if (w <= 0) continue;
     const t = variant.text;
-    if (Array.isArray(t)) pool.push(...t); else pool.push(t);
+    if (Array.isArray(t)) for (const text of t) entries.push({ item: text, w });
+    else entries.push({ item: t, w });
   }
-  const chosen = pick(pool);
+  if (!entries.length) return "";
+  const chosen = weightedPick(entries);
   return typeof chosen === "function" ? (chosen(ctx) ?? "") : (chosen ?? "");
 }
 
@@ -229,7 +303,27 @@ const MAX_DEPTH = 5;
 // Per-slot recursive resolution: nested slots inside a module's output
 // resolve with the SLOT's context, so {char.desc:ref} keeps describing
 // the ref all the way down into its {word.*} slots.
-function resolveText(text, ctx, depth) {
+// Resolve one slot: pick the variant, recurse into its slots, and
+// (when tracing) record { key, text, leaf, depth }. A "leaf" is a
+// fragment whose raw variant text contained no further slots —
+// the granularity the Dialogue Lab annotates at.
+function resolveSlot(name, slotCtx, depth, trace) {
+  const raw = String(selectVariant(name, slotCtx));
+  // Leaf = no nested content slots. subject.* identity slots ({subject.lbs}
+  // inside a sentence) don't make a fragment composite — the sentence is
+  // still the natural annotation unit.
+  let leaf = true;
+  SLOT_RE.lastIndex = 0;
+  let m;
+  while ((m = SLOT_RE.exec(raw))) {
+    if (!m[1].startsWith("subject.")) { leaf = false; break; }
+  }
+  const out = resolveText(raw, slotCtx, depth + 1, trace);
+  if (trace && out.trim()) trace.push({ key: name, text: out.trim(), leaf, depth });
+  return out;
+}
+
+function resolveText(text, ctx, depth, trace) {
   if (depth >= MAX_DEPTH) {
     SLOT_RE.lastIndex = 0;
     if (SLOT_RE.test(text)) {
@@ -241,13 +335,27 @@ function resolveText(text, ctx, depth) {
   }
   SLOT_RE.lastIndex = 0;
   return text.replace(SLOT_RE, (_, name, arg, filterStr) => {
+    const filters = filterStr ? filterStr.split("|").filter(Boolean) : [];
+
+    // {join:a,b,c|...} — reserved meta-slot: resolve each listed module,
+    // drop empties, and glue the survivors with commas + a final "and".
+    // Pair with |prefix:/|suffix: to make the whole clause group optional.
+    // (The arg slot carries the key list, so no :ref retargeting inside.)
+    if (name === "join") {
+      const parts = (arg || "")
+        .split(",").map((k) => k.trim()).filter(Boolean)
+        .map((k) => resolveSlot(k, ctx, depth, trace).trim())
+        .filter(Boolean);
+      const out = parts.length <= 1 ? (parts[0] || "")
+        : parts.length === 2 ? `${parts[0]} and ${parts[1]}`
+        : `${parts.slice(0, -1).join(", ")}, and ${parts[parts.length - 1]}`;
+      return applyFilters(out, filters);
+    }
+
     let slotCtx = ctx;
     if (arg === "ref" || arg === "group") slotCtx = retarget(ctx, arg);
     else if (arg) slotCtx = { ...ctx, arg }; // pass-through arg for module fns
-    let out = selectVariant(name, slotCtx);
-    out = resolveText(String(out), slotCtx, depth + 1);
-    const filters = filterStr ? filterStr.split("|").filter(Boolean) : [];
-    return applyFilters(out, filters);
+    return applyFilters(resolveSlot(name, slotCtx, depth, trace), filters);
   });
 }
 
@@ -262,9 +370,11 @@ function smooth(text) {
 
 // render(template, ctx, opts) — the single public entry point.
 // Never throws: unknown modules emit "" with a dev warning.
+// opts.trace: pass an array to collect { key, text, leaf, depth }
+// for every slot resolved (dev tooling — see DialogueLab).
 export function render(template, ctx, opts = {}) {
   let text = String(template).replace(/\{\{/g, ESCAPE_TOKEN);
-  text = resolveText(text, ctx, 0);
+  text = resolveText(text, ctx, 0, opts.trace || null);
   text = text.replace(new RegExp(ESCAPE_TOKEN, "g"), "{");
   return opts.noSmooth ? text : smooth(text);
 }

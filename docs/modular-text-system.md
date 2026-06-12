@@ -126,16 +126,33 @@ registerModule("talk.coda", [
 | `season` | `ctx.season` | value or array |
 | `skill` | `ctx.skillEffects[v]` truthy | single flag name |
 | `weekMin` / `weekMax` | `ctx.week` | range (counts as one condition) |
+| `studentId` | `d.studentId` (falls back to `ctx.globals.studentId`) | value or array — per-girl variants |
+| `lastCompound` | `d.lastCompound` | pharmacist compound id active on the subject |
+| `bigScale` | `ctx.globals.bigScale` | boolean — industrial scale in play |
 
 Any unlisted key is looked up on `ctx.d` directly, so new derived dimensions work without engine changes.
 
-### Resolution algorithm
+### Resolution algorithm — `'best'` mode (default, `registerModule`)
 
 1. **Filter:** keep variants whose *every* condition matches. Missing key = wildcard.
 2. **Score:** +1 per satisfied condition key (a min/max range pair counts once). More conditions = more specific = wins.
 3. **Tie-break:** higher `priority` (integer, default 0) wins among equal scores. **This is the escape hatch** when flat scoring picks the "wrong" equally-specific variant — e.g. the broken register beating the submissive register at corruption tier 2 when the character qualifies for both.
-4. **Randomize:** all texts from the surviving tied variants are pooled and one is `pick()`ed.
+4. **Randomize:** all texts from the surviving tied variants are pooled and one is picked (weighted by `variant.weight`, default 1 — so without weights this is a uniform pick).
 5. **Fallback:** zero matches → empty-`when` variant if present → else `""` (never a crash).
+
+### Resolution algorithm — `'pool'` mode (`registerPool`, **default for new content**)
+
+`registerPool(key, variants)` (or `registerModule(key, variants, { select: 'pool' })`) makes **every** matching variant RNG-eligible instead of only the most specific:
+
+1. **Filter** as above, then **priority-gate**: only variants at the max `priority` among matches survive (priority is a hard suppressor here, not a tie-break).
+2. **Weighted pick at the variant level:** `w = (variant.weight ?? 1) * poolBase**score` with `poolBase = 3` (override via `opts.poolBase`). A two-condition variant outweighs a wildcard 9:1 — specific flavor usually wins, generic lines surface as spice. `weight: 0` parks a variant without deleting it.
+3. One text is then picked uniformly from the chosen variant's array.
+
+Because generic variants can fire in any context, pool-mode generic fragments must be **tone-neutral** (see `src/textEngine/AUTHORING.md`).
+
+### The `{join:...}` meta-slot
+
+`{join:wi.bodyClause,wi.faceClause|prefix:, }` resolves each comma-listed module, drops empty results, and glues the survivors with commas plus a final "and" ("X", "X and Y", "X, Y, and Z"). Filters apply to the joined result, so the `|prefix:, ` idiom makes an entire clause group optional with correct punctuation. `join` is reserved — it cannot be registered as a module, and `:ref` retargeting is not available inside it.
 
 ### `text` forms
 

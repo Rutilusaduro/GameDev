@@ -1,5 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // CORE PHRASE MODULES — sentence-fragment building blocks
+// subject.name   — the subject's full name (subject.first / subject.lbs too)
 // char.desc      — how a character looks & moves (size + corruption)
 // sizeCompare    — subject's size relative to ctx.ref
 // bodyType.desc  — body shape phrase
@@ -8,6 +9,20 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerModule, groupStageBucket } from './engine.js';
 import './lexicon.js'; // ensure word.* modules are registered
+
+// ── subject.* — identity helpers usable in any template ───────
+
+registerModule('subject.name', [
+  { when: {}, text: [(ctx) => ctx.subject?.name || 'Someone'] },
+]);
+
+registerModule('subject.first', [
+  { when: {}, text: [(ctx) => (ctx.subject?.name || 'Someone').split(' ')[0]] },
+]);
+
+registerModule('subject.lbs', [
+  { when: {}, text: [(ctx) => String(Math.round(ctx.subject?.lbs || 0))] },
+]);
 
 // ── char.desc — composite of size, movement and corruption ────
 // Demonstrates recursion: variants embed {word.*} slots.

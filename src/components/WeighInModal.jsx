@@ -1,38 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { C } from '../styles.js';
 import { getStage } from '../gameData/stages.js';
-import { renderWeighInIntro, renderWeighInReaction } from '../textEngine/scenes/weighIn.js';
-
-const BREAK_SCENES={
-  0:(s)=>`Brittany hops off like she's dismounting a routine, hands on her hips, completely unbothered. "Okay, that one is on the scale, not me."`,
-  1:(s)=>`Madeline tilts her head at the fractured window with quiet, academic interest. "Material failure under sustained load. Predictable, actually."`,
-  2:(s)=>`Kylie is already filming. "Babe, look at this. The scale literally couldn't."`,
-  3:(s)=>`Serena steps off and laughs once, sharp and pleased. "Yeah, I felt that one go. Get one that can keep up."`,
-  4:(s)=>`Fiona studies the crack pattern. "It's actually beautiful, the way it spidered out."`,
-  5:(s)=>`Destiny sighs through her nose. "Low durability item. Should've upgraded ages ago."`,
-  6:(s)=>`Tiffany shrieks with delight. "GIRLS. I broke the scale. No, like, broke broke."`,
-  7:(s)=>`Priya is already pulling up procurement options. "Industrial-rated, weight-rated to four-fifty minimum, ideally five."`,
-  8:(s)=>`Maya steps off without a word, looks at the cracks, then looks at you. She nods once.`,
-  9:(s)=>`Chloe lets out a dry laugh. "Right. So your American scales are exactly as overbuilt as your portions, then."`,
-  10:(s)=>`Reneé claps once, delighted. "That is the best review my cooking has ever gotten."`,
-  11:(s)=>`Kaylee covers her mouth. "Oh no, professor, I am so sorry. We'll get you something sturdier."`,
-  12:(s)=>`Nadia watches your reaction more than the scale. "Interesting. You looked at the scale first, then at me."`,
-  13:(s)=>`Daisy laughs warmly. "Bless its little heart. You go on and get a bigger one, sugar."`,
-  14:(s)=>`Mary Jane bursts out laughing. "Back home we'd've put me on the hay scale weeks ago."`,
-  15:(s)=>`Lilith regards the cracked dial with quiet amusement. "Fragile little thing."`,
-};
-
-function getBreakScene(student){
-  return (BREAK_SCENES[student.id]||((s)=>`${s.name} steps off and looks down at the fractured dial, then at you. "You're going to need a bigger scale."`))(student);
-}
-
-function getSwapScene(student){
-  return `"Hey - it's fine." You wave ${student.name.split(" ")[0]} off the cracked white scale. "I figured this would happen again. Got us a proper one after the first time." You drag the heavy industrial platform out from beside the desk and thump it down.`;
-}
-
-function getPurchaseScene(student){
-  return `You stare at the cracked dial for a second, then exhale a laugh. "Okay. That's on me, not on ${student.name.split(" ")[0]}." You make a real note to order a proper heavy-duty scale before the next check-in.`;
-}
+import {
+  renderWeighInIntro, renderWeighInReaction,
+  renderWeighInBreak, renderWeighInSwap, renderWeighInPurchase,
+} from '../textEngine/scenes/weighIn/index.js';
 
 function AnalogScale({lbs,willBreak,onBroken}){
   const safeLbs=Math.max(0,Math.round(lbs));
@@ -212,9 +184,25 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
   const setPhase=(nextPhase)=>setWeighInState({...weighInState,phase:nextPhase});
   const close=()=>setWeighInState(null);
   const stepOntoScale=()=>setPhase(goesDirectlyToBig?"digital":"analog");
-  const introText=renderWeighInIntro(student,week||1,goesDirectlyToBig,weighInOpts);
+  // useMemo: phase texts are RNG-composed — keep them stable across re-renders
+  const introText=useMemo(
+    ()=>renderWeighInIntro(student,week||1,goesDirectlyToBig,weighInOpts),
+    [student.id,goesDirectlyToBig]
+  );
+  const breakText=useMemo(
+    ()=>phase==="break"?renderWeighInBreak(student,week||1,weighInOpts):"",
+    [phase,student.id]
+  );
+  const purchaseText=useMemo(
+    ()=>phase==="purchase"?renderWeighInPurchase(student,week||1,weighInOpts):"",
+    [phase,student.id]
+  );
+  const swapText=useMemo(
+    ()=>phase==="swap"?renderWeighInSwap(student,week||1,weighInOpts):"",
+    [phase,student.id]
+  );
   const goToReaction=()=>{
-    const text=renderWeighInReaction(student,week||1,weighInOpts);
+    const text=renderWeighInReaction(student,week||1,{...weighInOpts,bigScale:phase==="digital"});
     setWeighInState({...weighInState,phase:"reaction",reactionText:text});
   };
   const handleAfterBreak=()=>{
@@ -253,14 +241,14 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
 
         {phase==="break"&&(
           <>
-            <div style={{...C.infoBox("rgba(60,5,15,.5)"),border:"1px solid #80202040",fontSize:13,color:"#f0c0a0",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>{getBreakScene(student)}</div>
+            <div style={{...C.infoBox("rgba(60,5,15,.5)"),border:"1px solid #80202040",fontSize:13,color:"#f0c0a0",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>{breakText}</div>
             <button style={{...C.btn(bigScaleUnlocked?"#5818a8":"#7a2030"),width:"100%"}} onClick={handleAfterBreak}>{bigScaleUnlocked?"Let me grab the big one. →":"I'll get her a real scale. →"}</button>
           </>
         )}
 
         {phase==="purchase"&&(
           <>
-            <div style={{...C.infoBox("rgba(40,20,60,.45)"),border:"1px solid #5028a040",fontSize:13,color:"#e0d0b0",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>{getPurchaseScene(student)}</div>
+            <div style={{...C.infoBox("rgba(40,20,60,.45)"),border:"1px solid #5028a040",fontSize:13,color:"#e0d0b0",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>{purchaseText}</div>
             <div style={{fontSize:11,color:"#a070d0",letterSpacing:1,marginBottom:12,textAlign:"center"}}>🛠 Heavy-duty scale unlocked · used automatically next time.</div>
             <button style={{...C.btn("#5818a8"),width:"100%"}} onClick={close}>Close ✓</button>
           </>
@@ -268,7 +256,7 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
 
         {phase==="swap"&&(
           <>
-            <div style={{...C.infoBox("rgba(35,40,55,.55)"),border:"1px solid #6a708040",fontSize:13,color:"#d0d8e0",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>{getSwapScene(student)}</div>
+            <div style={{...C.infoBox("rgba(35,40,55,.55)"),border:"1px solid #6a708040",fontSize:13,color:"#d0d8e0",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>{swapText}</div>
             <button style={{...C.btn("#3a4250"),width:"100%"}} onClick={()=>setPhase("digital")}>Step onto the heavy-duty scale →</button>
           </>
         )}

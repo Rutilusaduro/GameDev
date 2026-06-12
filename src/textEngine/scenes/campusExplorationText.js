@@ -3,10 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerModule, createContext, render } from '../engine.js';
 import { getStage } from '../../gameData/stages.js';
-
-registerModule('subject.name', [
-  { when: {}, text: [(ctx) => ctx.subject?.name || 'Someone'] },
-]);
+import '../modules.js'; // subject.name etc.
 
 // ── student sightings (weight-band × archetype) ───────────────
 
