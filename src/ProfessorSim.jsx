@@ -71,6 +71,9 @@ import {
   computeRoundScore, computeRoundLbs, staminaPenaltyFor, stageStaminaTax,
   addictionDrainMod, MISS_STAMINA_PENALTY, STAMINA_EXCELLENT_GAIN,
   checkTapOutConditions, computeRewards, deriveTrend, DESTINY_MONEY_FLAVOR,
+  getBrandControlTier, detectNewStreamMilestones, detectSpecialOutcomes,
+  applySpecialOutcomeBonuses, STAMINA_DRAIN_PER_SEC, STAMINA_DRAIN_CONTROL_MULT,
+  getStreamMilestoneLabel, SPECIAL_OUTCOME_DEFS,
 } from './gameData/streaming.js';
 import { MoodBadge } from './components/ui.jsx';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
@@ -3113,12 +3116,14 @@ export default function ProfessorSim(){
   const buildStreamCtx=(session,student,extra={})=>{
     const ctx=createContext({subject:student,week});
     ctx.d.brand=session.brand;
-    ctx.d.perf=extra.perf??session.lastRoundTier??'average';
+    ctx.d.perf=extra.perf??session.lastRoundTier??session.currentRoundTierSoFar??'average';
     ctx.d.challengeType=session.challenge?.category;
     ctx.d.intensity=session.challenge?.intensity;
     ctx.d.addiction=session.addiction;
     ctx.d.audienceTier=session.audienceTier;
     ctx.d.trend=extra.trend??session.trend;
+    ctx.d.brandStreak=session.brandStreak??0;
+    ctx.d.brandControl=session.brandControlTier??getBrandControlTier(session.brandStreak??0);
     return ctx;
   };
 
@@ -3157,6 +3162,7 @@ export default function ProfessorSim(){
       audienceTier:audTier,
       brand:dest.brand,
       brandStreak:dest.brandStreaks?.[dest.brand]||0,
+      brandControlTier:getBrandControlTier(dest.brandStreaks?.[dest.brand]||0),
       capacityMult:1, gainMult:1, audienceMult:1,
       preStreamChoices:{}, preStreamVignettes:{},
       offeredChallenges:[], challenge:null,
@@ -3178,7 +3184,7 @@ export default function ProfessorSim(){
       if(!prev) return prev;
       if(actionId==='__done__'){
         if(Object.keys(prev.preStreamChoices).length<5) return prev;
-        return {...prev,phase:'challengeSelect',offeredChallenges:selectChallenges(prev.brand,3)};
+        return {...prev,phase:'challengeSelect',offeredChallenges:selectChallenges(prev.brand,3,prev.brandStreak)};
       }
       const student=students.find(st=>st.id===prev.studentId);
       const newChoices={...prev.preStreamChoices,[actionId]:choiceId};
@@ -3225,6 +3231,28 @@ export default function ProfessorSim(){
   const appendStreamChat=useCallback((line)=>{
     if(!line) return;
     setStreamSessionState(prev=>(prev?{...prev,chatLines:[...prev.chatLines,line].slice(-40)}:prev));
+  },[]);
+
+  const updateRoundPerf=useCallback((hits,misses,centerQualities=[])=>{
+    setStreamSessionState(prev=>{
+      if(!prev||prev.phase!=='round') return prev;
+      const{tier}=computeRoundScore(hits,misses,centerQualities);
+      if(prev.currentRoundTierSoFar===tier) return prev;
+      return {...prev,currentRoundTierSoFar:tier};
+    });
+  },[]);
+
+  const tickRoundStamina=useCallback((dtMs)=>{
+    setStreamSessionState(prev=>{
+      if(!prev||prev.phase!=='round') return prev;
+      const control=prev.brandControlTier||getBrandControlTier(prev.brandStreak);
+      const mult=STAMINA_DRAIN_CONTROL_MULT[control]||1;
+      const drainMod=addictionDrainMod(prev.addiction,prev.roundIndex,prev.totalRounds);
+      const drain=STAMINA_DRAIN_PER_SEC*mult*drainMod*(dtMs/1000);
+      const newStamina=Math.max(0,prev.stamina-drain);
+      if(Math.abs(newStamina-prev.stamina)<0.01) return prev;
+      return {...prev,stamina:newStamina};
+    });
   },[]);
 
   const finishActiveRound=useCallback((liveStats)=>{
@@ -3281,16 +3309,19 @@ export default function ProfessorSim(){
       if(!prev) return prev;
       const done=prev.tapOutCause||prev.roundIndex+1>=prev.totalRounds;
       if(done){
-        const rewardsPreview=computeRewards({
+        const student=students.find(st=>st.id===prev.studentId);
+        let rewardsPreview=computeRewards({
           sessionGain:prev.sessionGain,
           tierHistory:prev.tierHistory,
           challenge:prev.challenge,
           brandId:prev.brand,
-          audience:students.find(st=>st.id===prev.studentId)?.audience??120,
-          sponsorFavor:students.find(st=>st.id===prev.studentId)?.sponsorFavor??{},
+          audience:student?.audience??120,
+          sponsorFavor:student?.sponsorFavor??{},
           tapOutCause:prev.tapOutCause,
         });
-        return {...prev,phase:'resolution',rewardsPreview};
+        const specialOutcomes=detectSpecialOutcomes(prev,rewardsPreview,student||{});
+        rewardsPreview=applySpecialOutcomeBonuses(rewardsPreview,specialOutcomes);
+        return {...prev,phase:'resolution',rewardsPreview,specialOutcomes};
       }
       const student=students.find(st=>st.id===prev.studentId);
       const nextIdx=prev.roundIndex+1;
@@ -3315,7 +3346,13 @@ export default function ProfessorSim(){
       const student=students.find(st=>st.id===prev.studentId);
       const ctx=buildStreamCtx(prev,student);
       const line=render(`{stream.tapOut.${cause}}`,ctx);
-      return {...prev,tapOutCause:cause,betweenRoundLine:line||prev.betweenRoundLine};
+      const tapChat=render(`{stream.chat.tapOut.${cause}}`,ctx);
+      const chatBurst=tapChat?[tapChat]:[];
+      return {
+        ...prev,tapOutCause:cause,
+        betweenRoundLine:line||prev.betweenRoundLine,
+        chatLines:[...prev.chatLines,...chatBurst].slice(-40),
+      };
     });
   };
 
@@ -3325,7 +3362,8 @@ export default function ProfessorSim(){
       const r=prev.rewardsPreview;
       const student=students.find(st=>st.id===prev.studentId);
       if(!student) return prev;
-      let updated=student;
+      const before=ensureStreamFields(student);
+      let updated=before;
       if(r.weightGain>0){
         updated=processStudentGain(updated,Math.round(r.weightGain),0);
         if(r.corruptionGain) updated={...updated,corruption:addCorruption(updated,r.corruptionGain)};
@@ -3344,21 +3382,29 @@ export default function ProfessorSim(){
         totalStreams:(updated.totalStreams||0)+1,
         fullness:prev.sessionFullness,
       };
+      const{fired,milestones}=detectNewStreamMilestones(before,updated,prev.brand);
+      updated={...updated,streamMilestones:milestones};
       setStudents(p=>p.map(st=>st.id===prev.studentId?updated:st));
       if(r.playerShare>0) setMoney(m=>addFunds(m,r.playerShare));
       const ctx=buildStreamCtx(prev,updated,{perf:r.overallTier});
       const endLine=render(`{stream.endStream.${r.overallTier}}`,ctx);
       const tapLine=prev.tapOutCause?render(`{stream.tapOut.${prev.tapOutCause}}`,ctx):'';
-      const endingText=[tapLine,endLine].filter(Boolean).join('\n\n');
+      const specialLines=(prev.specialOutcomes||[]).map(id=>render(`{stream.special.${id}}`,ctx)).filter(Boolean);
+      const milestoneLines=fired.map(key=>{
+        const mod=key.startsWith('stage_')?'stream.milestone.stage':`stream.milestone.${key}`;
+        return render(`{${mod}}`,ctx);
+      }).filter(Boolean);
+      const endingText=[tapLine,...specialLines,...milestoneLines,endLine].filter(Boolean).join('\n\n');
       const flavor=DESTINY_MONEY_FLAVOR[Math.floor(Math.random()*DESTINY_MONEY_FLAVOR.length)];
-      const afterStage=getStage(updated.lbs).id;
-      if(afterStage>prev.startStageId&&!updated.streamMilestones?.[`stage_${afterStage}`]){
-        updated={...updated,streamMilestones:{...(updated.streamMilestones||{}),[`stage_${afterStage}`]:true}};
-        setStudents(p=>p.map(st=>st.id===prev.studentId?updated:st));
-        setTimeout(()=>push(`📡 ${student.name} hits ${WEIGHT_STAGES[afterStage].label} on stream!`),80);
-      }
+      fired.forEach((key,i)=>{
+        const{label,emoji}=getStreamMilestoneLabel(key);
+        setTimeout(()=>push(`📡 ${emoji} Milestone: ${label}`),80+i*120);
+      });
       push(`📡 Stream wrapped — ${r.overallTier}. +${Math.round(r.weightGain)} lbs, +${r.audienceGain} audience, ${formatMoney(r.playerShare)} earned.`);
-      return {...prev,phase:'done',endingText,destinyMoneyFlavor:flavor};
+      return {
+        ...prev,phase:'done',endingText,destinyMoneyFlavor:flavor,
+        milestoneFired:fired,specialOutcomes:prev.specialOutcomes||[],
+      };
     });
   };
 
@@ -5255,7 +5301,7 @@ export default function ProfessorSim(){
 
       {/* ── RECORDING SESSION MODAL ── */}
       {recordingSessionState&&<RecordingSessionModal recordingSessionState={recordingSessionState} students={students} setRecordingSessionState={setRecordingSessionState} makeRecordingChoice={makeRecordingChoice} wrapRecordingSession={wrapRecordingSession} oneMoreTake={oneMoreTake} closeRecordingSession={closeRecordingSession} dismissRecordingChoicePopup={dismissRecordingChoicePopup}/>}
-      {streamSessionState&&<StreamSessionModal streamSessionState={streamSessionState} students={students} week={week} preStreamAction={preStreamAction} selectChallenge={selectStreamChallenge} beginActiveRound={beginActiveRound} finishActiveRound={finishActiveRound} continueAfterBetweenRound={continueAfterBetweenRound} tapOutStream={tapOutStream} wrapStream={wrapStream} closeStream={closeStream} appendStreamChat={appendStreamChat}/>}
+      {streamSessionState&&<StreamSessionModal streamSessionState={streamSessionState} students={students} week={week} preStreamAction={preStreamAction} selectChallenge={selectStreamChallenge} beginActiveRound={beginActiveRound} finishActiveRound={finishActiveRound} continueAfterBetweenRound={continueAfterBetweenRound} tapOutStream={tapOutStream} wrapStream={wrapStream} closeStream={closeStream} appendStreamChat={appendStreamChat} updateRoundPerf={updateRoundPerf} tickRoundStamina={tickRoundStamina}/>}
       {streamBrandPickState&&<StreamBrandSelectModal student={students.find(st=>st.id===streamBrandPickState.studentId)} required={streamBrandPickState.required} onSelect={selectStreamBrand} onClose={streamBrandPickState.required?null:()=>setStreamBrandPickState(null)}/>}
 
       {/* ── FAIR TRAINING COLLABORATIONS HUB ── */}

@@ -6,6 +6,8 @@ import { C } from '../styles.js';
 import { createContext, render } from '../textEngine/engine.js';
 import {
   BRANDS, deriveBarParams, roundDurationFor, STREAM_DEFAULT_ROUNDS, STREAM_ROUND_SECONDS,
+  getBrandControlLabel, getBrandControlTier,
+  getStreamMilestoneLabel, SPECIAL_OUTCOME_DEFS,
 } from '../gameData/streaming.js';
 import { StreamPreStreamPanel } from './StreamPreStreamPanel.jsx';
 
@@ -32,6 +34,8 @@ function buildStreamContext(session, student, week, extra = {}) {
   ctx.d.addiction = session.addiction;
   ctx.d.audienceTier = session.audienceTier;
   ctx.d.trend = extra.trend ?? session.trend;
+  ctx.d.brandStreak = session.brandStreak ?? 0;
+  ctx.d.brandControl = session.brandControlTier ?? getBrandControlTier(session.brandStreak ?? 0);
   return ctx;
 }
 
@@ -45,9 +49,21 @@ function pickChatLine(session, student, week, recentLines = []) {
     weights.push({ key: `stream.chat.brand.${session.brand}`, w: 15 + (session.brandStreak || 0) * 0.5 });
   }
   weights.push({ key: 'stream.chat.perf.average', w: 10 });
+  if (session.audienceTier === 'early') {
+    weights.push({ key: 'stream.chat.parasocial.early', w: 12 });
+  }
   if (session.audienceTier === 'mid' || session.audienceTier === 'late' || session.audienceTier === 'veryLate') {
     const parasocialW = session.audienceTier === 'veryLate' ? 25 : session.audienceTier === 'late' ? 15 : 8;
     weights.push({ key: `stream.chat.parasocial.${session.audienceTier}`, w: parasocialW });
+  }
+  if (session.trend === 'improving' || session.trend === 'declining') {
+    weights.push({ key: `stream.chat.trend.${session.trend}`, w: 10 });
+  }
+  const control = session.brandControlTier || getBrandControlTier(session.brandStreak);
+  if (control === 'soldOut') {
+    weights.push({ key: 'stream.chat.brandControl.soldOut', w: 18 });
+  } else if (control === 'late') {
+    weights.push({ key: 'stream.chat.brandControl.late', w: 10 });
   }
   if (session.challenge?.intensity === 'extreme') {
     weights.push({ key: 'stream.chat.rare', w: 3 });
@@ -68,12 +84,25 @@ function pickChatLine(session, student, week, recentLines = []) {
   return null;
 }
 
-function FocusBar({ barParams, onHit, onMiss, active, paused }) {
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduced(mq.matches);
+    const onChange = () => setReduced(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+  return reduced;
+}
+
+function FocusBar({ barParams, onHit, onMiss, active, paused, reducedMotion }) {
   const [pos, setPos] = useState(0.5);
   const [flash, setFlash] = useState(null);
   const rafRef = useRef(null);
   const tRef = useRef(0);
   const zoneCenter = 0.5;
+  const speedMult = reducedMotion ? 0.55 : 1;
 
   useEffect(() => {
     if (!active || paused) {
@@ -84,14 +113,14 @@ function FocusBar({ barParams, onHit, onMiss, active, paused }) {
     const tick = (now) => {
       const dt = now - last;
       last = now;
-      tRef.current += dt * 0.001 * (barParams?.speed || 0.78);
+      tRef.current += dt * 0.001 * (barParams?.speed || 0.78) * speedMult;
       const p = (Math.sin(tRef.current * Math.PI * 2) + 1) / 2;
       setPos(p);
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
-  }, [active, paused, barParams?.speed]);
+  }, [active, paused, barParams?.speed, speedMult]);
 
   const handleClick = () => {
     if (!active || paused) return;
@@ -162,9 +191,12 @@ export function StreamSessionModal({
   wrapStream,
   closeStream,
   appendStreamChat,
+  updateRoundPerf,
+  tickRoundStamina,
 }) {
   const student = students.find((st) => st.id === ss.studentId);
   const chatRef = useRef(null);
+  const reducedMotion = usePrefersReducedMotion();
   const [paused, setPaused] = useState(false);
   const [roundStats, setRoundStats] = useState({ hits: 0, misses: 0, centerQualities: [] });
   const [roundTimeLeft, setRoundTimeLeft] = useState(0);
@@ -238,7 +270,26 @@ export function StreamSessionModal({
     };
     const id = setInterval(tick, 1400 + Math.random() * 800);
     return () => clearInterval(id);
-  }, [ss.phase, ss.currentRoundTierSoFar, student, week, ss, appendStreamChat]);
+  }, [ss.phase, ss.currentRoundTierSoFar, ss.trend, student, week, ss, appendStreamChat]);
+
+  // In-round stamina drain
+  useEffect(() => {
+    if (ss.phase !== 'round' || !tickRoundStamina) return undefined;
+    let last = performance.now();
+    const id = setInterval(() => {
+      const now = performance.now();
+      const dt = now - last;
+      last = now;
+      tickRoundStamina(dt);
+    }, 250);
+    return () => clearInterval(id);
+  }, [ss.phase, tickRoundStamina]);
+
+  const syncLivePerf = useCallback((next) => {
+    if (updateRoundPerf) {
+      updateRoundPerf(next.hits, next.misses, next.centerQualities);
+    }
+  }, [updateRoundPerf]);
 
   const onHit = useCallback((centerQuality) => {
     setRoundStats((prev) => {
@@ -248,9 +299,10 @@ export function StreamSessionModal({
         centerQualities: [...prev.centerQualities, centerQuality],
       };
       statsRef.current = next;
+      syncLivePerf(next);
       return next;
     });
-  }, []);
+  }, [syncLivePerf]);
 
   const onMiss = useCallback(() => {
     setRoundStats((prev) => {
@@ -260,9 +312,10 @@ export function StreamSessionModal({
         centerQualities: prev.centerQualities,
       };
       statsRef.current = next;
+      syncLivePerf(next);
       return next;
     });
-  }, []);
+  }, [syncLivePerf]);
 
   if (!student) return null;
 
@@ -301,9 +354,20 @@ export function StreamSessionModal({
             <div style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 6, lineHeight: 1.2 }}>
               What&apos;s on the menu tonight?
             </div>
-            <div style={{ fontSize: 11, color: '#c0a0a8', marginBottom: 14 }}>
+            <div style={{ fontSize: 11, color: '#c0a0a8', marginBottom: 8 }}>
               {STREAM_DEFAULT_ROUNDS} rounds · {STREAM_ROUND_SECONDS}s each · brand-weighted offers
             </div>
+            {ss.brandStreak > 0 && (
+              <div style={{
+                fontSize: 10, color: '#ff90a0', marginBottom: 14, padding: '6px 10px',
+                background: 'rgba(80,10,20,0.4)', borderRadius: 6, border: '1px solid #e74c3c33',
+              }}>
+                🏷️ {getBrandControlLabel(ss.brandStreak)} · streak {ss.brandStreak}
+                {(ss.brandControlTier === 'soldOut' || getBrandControlTier(ss.brandStreak) === 'soldOut') && (
+                  <span style={{ color: '#ff6080' }}> · selling out hard</span>
+                )}
+              </div>
+            )}
             {(ss.offeredChallenges || []).map((ch) => (
               <button key={ch.id} style={{ ...C.btn(RED_DIM), width: '100%', marginBottom: 6, textAlign: 'left', padding: '10px 12px' }}
                 onClick={() => selectChallenge(ch.id)}>
@@ -336,6 +400,9 @@ export function StreamSessionModal({
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: '#c0a0a0', marginBottom: 6 }}>
                 <span>Round {ss.roundIndex + 1}/{ss.totalRounds}</span>
                 <span style={{ color: staminaColor }}>⚡ {Math.round(ss.stamina)}%</span>
+                <span style={{ color: tierColor(ss.currentRoundTierSoFar || 'average') }}>
+                  {(ss.currentRoundTierSoFar || 'average').toUpperCase()}
+                </span>
                 <span>⏱ {roundTimeLeft}s</span>
               </div>
               <div style={{ background: '#0a0608', borderRadius: 4, height: 8, marginBottom: 8 }}>
@@ -347,6 +414,7 @@ export function StreamSessionModal({
                 onMiss={onMiss}
                 active={!paused}
                 paused={paused}
+                reducedMotion={reducedMotion}
               />
               <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 10, fontSize: 10, color: '#a08080' }}>
                 <span style={{ color: '#60c080' }}>✓ {roundStats.hits}</span>
@@ -425,8 +493,27 @@ export function StreamSessionModal({
         {ss.phase === 'resolution' && ss.rewardsPreview && (
           <>
             <div style={{ fontSize: 11, color: RED_DIM, letterSpacing: 2, marginBottom: 10 }}>STREAM RESULTS</div>
+            {(ss.specialOutcomes?.length > 0) && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 }}>
+                {ss.specialOutcomes.map((id) => {
+                  const def = SPECIAL_OUTCOME_DEFS[id];
+                  if (!def) return null;
+                  return (
+                    <div key={id} style={{
+                      padding: '4px 10px', borderRadius: 6, fontSize: 10, fontWeight: 700,
+                      background: 'rgba(255,200,60,0.15)', border: '1px solid #e0c04080', color: '#ffe080',
+                    }}>
+                      {def.emoji} {def.label}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
             <div style={{ fontSize: 12, color: '#d8b0b0', lineHeight: 2, marginBottom: 16 }}>
               <div>Overall: <span style={{ color: tierColor(ss.rewardsPreview.overallTier) }}>{ss.rewardsPreview.overallTier.toUpperCase()}</span></div>
+              {ss.trend && ss.trend !== 'steady' && (
+                <div>Trend: <span style={{ color: ss.trend === 'improving' ? '#60c080' : '#e08060' }}>{ss.trend}</span></div>
+              )}
               <div>Weight gain: <span style={{ color: '#80c080' }}>+{Math.round(ss.rewardsPreview.weightGain * 10) / 10} lbs</span></div>
               <div>Audience: +{ss.rewardsPreview.audienceGain}</div>
               {ss.brand && <div>Sponsor favor: +{ss.rewardsPreview.favorGain}</div>}
@@ -442,6 +529,33 @@ export function StreamSessionModal({
         {ss.phase === 'done' && (
           <>
             <div style={{ fontSize: 11, color: RED_DIM, letterSpacing: 2, marginBottom: 10 }}>STREAM WRAPPED</div>
+            {((ss.milestoneFired?.length > 0) || (ss.specialOutcomes?.length > 0)) && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 }}>
+                {(ss.specialOutcomes || []).map((id) => {
+                  const def = SPECIAL_OUTCOME_DEFS[id];
+                  if (!def) return null;
+                  return (
+                    <div key={id} style={{
+                      padding: '4px 10px', borderRadius: 6, fontSize: 10, fontWeight: 700,
+                      background: 'rgba(255,200,60,0.15)', border: '1px solid #e0c04080', color: '#ffe080',
+                    }}>
+                      {def.emoji} {def.label}
+                    </div>
+                  );
+                })}
+                {(ss.milestoneFired || []).map((key) => {
+                  const def = getStreamMilestoneLabel(key);
+                  return (
+                    <div key={key} style={{
+                      padding: '4px 10px', borderRadius: 6, fontSize: 10, fontWeight: 700,
+                      background: 'rgba(100,180,255,0.12)', border: '1px solid #60a0e080', color: '#a0d0ff',
+                    }}>
+                      {def.emoji} {def.label}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
             <div style={{ fontSize: 12, color: '#e8c0c0', fontStyle: 'italic', lineHeight: 1.9, whiteSpace: 'pre-line', marginBottom: 12 }}>
               {ss.endingText}
             </div>

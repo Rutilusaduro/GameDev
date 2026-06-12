@@ -2,6 +2,7 @@
 // DESTINY STREAMING MINI-GAME — static config + pure helpers
 // ═══════════════════════════════════════════════════════════════
 import { CORRUPTION_CONFIG } from './corruption.js';
+import { getStage } from './stages.js';
 
 export const STREAM_AP_COST = 2;
 
@@ -291,32 +292,6 @@ export function pickRoundCount() {
   return STREAM_DEFAULT_ROUNDS;
 }
 
-export function selectChallenges(brandId, count = 3, rng = Math.random) {
-  const pool = [...CHALLENGES];
-  const brand = brandId ? BRANDS[brandId] : null;
-  const weighted = pool.map((c) => {
-    let w = 1;
-    if (brand?.favStyles.includes(c.category)) w += 2;
-    if (c.intensity === 'extreme' && brand) w += 0.5;
-    return { c, w };
-  });
-  const picks = [];
-  const avail = [...weighted];
-  while (picks.length < count && avail.length) {
-    const total = avail.reduce((s, x) => s + x.w, 0);
-    let roll = rng() * total;
-    for (let i = 0; i < avail.length; i++) {
-      roll -= avail[i].w;
-      if (roll <= 0) {
-        picks.push(avail[i].c);
-        avail.splice(i, 1);
-        break;
-      }
-    }
-  }
-  return picks;
-}
-
 export function mergePreStreamMultipliers(choices = {}) {
   let capacityMult = 1;
   let gainMult = 1;
@@ -414,4 +389,173 @@ export function ensureStreamFields(student) {
 
 export function roundDurationFor() {
   return STREAM_ROUND_SECONDS;
+}
+
+// ── Brand loyalty / selling out ─────────────────────────────────
+
+export const BRAND_CONTROL_TIERS = [
+  { id: 'early', min: 0, label: 'Fresh Signing' },
+  { id: 'mid', min: 3, label: 'On the Roster' },
+  { id: 'late', min: 8, label: 'Brand Darling' },
+  { id: 'soldOut', min: 15, label: 'Sold Out' },
+];
+
+export function getBrandControlTier(brandStreak = 0) {
+  let tier = BRAND_CONTROL_TIERS[0].id;
+  for (const t of BRAND_CONTROL_TIERS) {
+    if (brandStreak >= t.min) tier = t.id;
+  }
+  return tier;
+}
+
+export function getBrandControlLabel(brandStreak = 0) {
+  return BRAND_CONTROL_TIERS.find((t) => t.id === getBrandControlTier(brandStreak))?.label || 'Fresh Signing';
+}
+
+export const STAMINA_DRAIN_PER_SEC = 0.45;
+export const STAMINA_DRAIN_CONTROL_MULT = { early: 1, mid: 1.05, late: 1.12, soldOut: 1.2 };
+
+// ── Stream milestones (fire once) ───────────────────────────────
+
+export const STREAM_MILESTONE_DEFS = [
+  { key: 'first_stream', label: 'First Stream', emoji: '🎬' },
+  { key: 'streams_5', label: 'Regular', emoji: '📺' },
+  { key: 'streams_15', label: 'Veteran Streamer', emoji: '⭐' },
+  { key: 'streams_30', label: 'Icon', emoji: '👑' },
+  { key: 'audience_500', label: '500 Followers', emoji: '📈' },
+  { key: 'audience_2500', label: '2.5K Followers', emoji: '🔥' },
+  { key: 'audience_10000', label: '10K Followers', emoji: '💥' },
+  { key: 'favor_max', label: 'Sponsor Favorite', emoji: '💎' },
+  { key: 'brand_sold_out', label: 'Sold Out', emoji: '🏷️' },
+];
+
+export function getStreamMilestoneLabel(key) {
+  const def = STREAM_MILESTONE_DEFS.find((m) => m.key === key);
+  if (def) return def;
+  const stageMatch = key.match(/^stage_(\d+)$/);
+  if (stageMatch) {
+    return { key, label: `Stage ${stageMatch[1]} On Stream`, emoji: '⚖️' };
+  }
+  return { key, label: key.replace(/_/g, ' '), emoji: '✨' };
+}
+
+export function detectNewStreamMilestones(before, after, brandId) {
+  const fired = [];
+  const bm = before.streamMilestones || {};
+  const milestones = { ...bm };
+  const add = (key) => {
+    if (!bm[key] && !milestones[key]) {
+      milestones[key] = true;
+      fired.push(key);
+    }
+  };
+  if ((after.totalStreams || 0) >= 1 && (before.totalStreams || 0) < 1) add('first_stream');
+  if ((after.totalStreams || 0) >= 5 && (before.totalStreams || 0) < 5) add('streams_5');
+  if ((after.totalStreams || 0) >= 15 && (before.totalStreams || 0) < 15) add('streams_15');
+  if ((after.totalStreams || 0) >= 30 && (before.totalStreams || 0) < 30) add('streams_30');
+  if ((after.audience || 0) >= 500 && (before.audience || 0) < 500) add('audience_500');
+  if ((after.audience || 0) >= 2500 && (before.audience || 0) < 2500) add('audience_2500');
+  if ((after.audience || 0) >= 10000 && (before.audience || 0) < 10000) add('audience_10000');
+  if (brandId && (after.sponsorFavor?.[brandId] || 0) >= 100 && (before.sponsorFavor?.[brandId] || 0) < 100) add('favor_max');
+  const streak = after.brandStreaks?.[brandId] || 0;
+  if (brandId && streak >= 15 && (before.brandStreaks?.[brandId] || 0) < 15) add('brand_sold_out');
+  const weightCross = before.lbs != null && after.lbs != null && getStage(after.lbs).id > getStage(before.lbs).id;
+  if (weightCross) {
+    const sid = getStage(after.lbs).id;
+    add(`stage_${sid}`);
+  }
+  return { fired, milestones };
+}
+
+// ── Special stream outcomes ───────────────────────────────────────
+
+export const SPECIAL_OUTCOME_DEFS = {
+  perfect_stream: { label: 'Perfect Stream', emoji: '🌟', moneyMult: 1.35, audienceMult: 1.4 },
+  viral_moment: { label: 'Viral Moment', emoji: '🚀', moneyMult: 1.25, audienceMult: 1.55 },
+  brand_gift: { label: 'Brand Gift', emoji: '🎁', moneyMult: 1.2, audienceMult: 1.1, favorBonus: 12 },
+  feast_god: { label: 'Feast God Run', emoji: '🍕', moneyMult: 1.15, audienceMult: 1.2 },
+  comeback_queen: { label: 'Comeback Queen', emoji: '👑', moneyMult: 1.1, audienceMult: 1.25 },
+  chat_legend: { label: 'Chat Legend', emoji: '💬', moneyMult: 1.1, audienceMult: 1.35 },
+};
+
+export function detectSpecialOutcomes(session, rewards, student) {
+  const out = [];
+  const th = session.tierHistory || [];
+  if (!session.tapOutCause && th.length >= 3 && th.every((t) => t === 'excellent')) out.push('perfect_stream');
+  if (!session.tapOutCause && rewards.overallTier === 'excellent' && session.challenge?.intensity === 'extreme') {
+    out.push('viral_moment');
+  }
+  if (session.brand && (student.brandStreaks?.[session.brand] || 0) >= 4 && rewards.favorGain >= 8) {
+    out.push('brand_gift');
+  }
+  if ((session.sessionGain || 0) >= 22) out.push('feast_god');
+  if (session.trend === 'improving' && rewards.overallTier === 'good') out.push('comeback_queen');
+  if ((student.audience || 0) >= 2500 && rewards.audienceGain >= 40) out.push('chat_legend');
+  return [...new Set(out)];
+}
+
+export function applySpecialOutcomeBonuses(rewards, specialOutcomes = []) {
+  if (!specialOutcomes.length) return rewards;
+  let moneyMult = 1;
+  let audienceMult = 1;
+  let favorBonus = 0;
+  for (const id of specialOutcomes) {
+    const d = SPECIAL_OUTCOME_DEFS[id];
+    if (!d) continue;
+    moneyMult *= d.moneyMult || 1;
+    audienceMult *= d.audienceMult || 1;
+    favorBonus += d.favorBonus || 0;
+  }
+  return {
+    ...rewards,
+    audienceGain: Math.round(rewards.audienceGain * audienceMult),
+    moneyGenerated: Math.round(rewards.moneyGenerated * moneyMult),
+    playerShare: Math.round(rewards.moneyGenerated * moneyMult * 0.5),
+    favorGain: rewards.favorGain + favorBonus,
+    specialOutcomes,
+  };
+}
+
+export function selectChallenges(brandId, count = 3, brandStreak = 0, rng = Math.random) {
+  const pool = [...CHALLENGES];
+  const brand = brandId ? BRANDS[brandId] : null;
+  const control = getBrandControlTier(brandStreak);
+  const weighted = pool.map((c) => {
+    let w = 1;
+    if (brand?.favStyles.includes(c.category)) w += 2;
+    if (c.intensity === 'extreme' && brand) w += 0.5;
+    if (control === 'mid' && brand?.favStyles.includes(c.category)) w += 0.75;
+    if (control === 'late') {
+      if (c.intensity === 'extreme') w += 2.5;
+      if (brand?.favStyles.includes(c.category)) w += 1.25;
+    }
+    if (control === 'soldOut') {
+      if (c.intensity === 'extreme') w += 4;
+      if (brand?.favStyles.includes(c.category)) w += 2;
+      if (c.intensity === 'normal') w *= 0.65;
+    }
+    return { c, w };
+  });
+  const picks = [];
+  const avail = [...weighted];
+  while (picks.length < count && avail.length) {
+    const total = avail.reduce((s, x) => s + x.w, 0);
+    let roll = rng() * total;
+    for (let i = 0; i < avail.length; i++) {
+      roll -= avail[i].w;
+      if (roll <= 0) {
+        picks.push(avail[i].c);
+        avail.splice(i, 1);
+        break;
+      }
+    }
+  }
+  if (control === 'soldOut' && brand && !picks.some((p) => p.intensity === 'extreme')) {
+    const extreme = pool.find((c) => c.intensity === 'extreme' && brand.favStyles.includes(c.category))
+      || pool.find((c) => c.intensity === 'extreme');
+    if (extreme && !picks.find((p) => p.id === extreme.id)) {
+      picks[picks.length - 1] = extreme;
+    }
+  }
+  return picks;
 }

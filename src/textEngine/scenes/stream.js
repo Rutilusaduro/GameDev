@@ -414,3 +414,5 @@ registerModule('stream.endStream.verypoor', [
     'Please don\'t clip that. Please.',
   ] },
 ]);
+
+import './streamExtended.js';
