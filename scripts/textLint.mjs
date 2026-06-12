@@ -91,6 +91,7 @@ const SWEEPS = [
   { name: 'WI_REACTION', root: 'wi.reply', tpl: '{wi.stepOff}\n\n{wi.reply}' },
   { name: 'WI_BREAK', root: 'wi.breakLine', tpl: '{wi.breakBeat} {wi.breakLine}' },
   { name: 'talk.encourage', root: 'talk.encourage', tpl: '{talk.encourage}' },
+  { name: 'talk.compliment', root: 'talk.compliment', tpl: '{talk.compliment}' },
 ];
 
 const STAGE_PROBES = [0, 2, 4, 6, 8, 10, 11];

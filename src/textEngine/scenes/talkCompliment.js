@@ -23,13 +23,13 @@ registerPool("talk.compliment", [
   ]},
   // Tier 1 — practicing confidence, wants to hear more
   { when: { corruption: [1] }, priority: 1, text: [
-    "{talk.moodOpener|suffix:\n\n}{comp.line1}\n\n{comp.react1}{fig.bodyGesture|prefix:, }. {comp.invite|prefix: }\n\n{comp.bodyAside|prefix: }",
-    "{talk.moodOpener|suffix:\n\n}{comp.line1} {comp.invite|prefix: }\n\n{comp.react1}{fig.bodyGesture|prefix:, }.\n\n{comp.bodyAside|prefix: }",
+    "{talk.moodOpener|suffix:\n\n}{comp.line1}\n\n{comp.react1}{fig.bodyGesture|prefix:, } {comp.invite|prefix: }\n\n{comp.bodyAside|prefix: }",
+    "{talk.moodOpener|suffix:\n\n}{comp.line1} {comp.invite|prefix: }\n\n{comp.react1}{fig.bodyGesture|prefix:, }\n\n{comp.bodyAside|prefix: }",
   ]},
   // Tier 2 — owns it, displays, demands the words again
   { when: { corruption: [2] }, priority: 1, text: [
-    "{talk.moodOpener|suffix:\n\n}{comp.line2}\n\n{comp.showcase}{fig.bodyGesture|prefix:, }.\n\n{comp.closer2}",
-    "{talk.moodOpener|suffix:\n\n}{comp.line2}{fig.bodyGesture|prefix:, }.\n\n{comp.showcase}\n\n{comp.closer2}",
+    "{talk.moodOpener|suffix:\n\n}{comp.line2}\n\n{comp.showcase}{fig.bodyGesture|prefix:, }\n\n{comp.closer2}",
+    "{talk.moodOpener|suffix:\n\n}{comp.line2}{fig.bodyGesture|prefix:, }\n\n{comp.showcase}\n\n{comp.closer2}",
   ]},
   { when: {}, text: [
     "{talk.moodOpener|suffix:\n\n}{comp.line0}\n\n{comp.bodyAside}",
