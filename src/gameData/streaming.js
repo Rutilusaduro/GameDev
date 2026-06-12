@@ -57,8 +57,8 @@ export const STAMINA_DEPLETED_PENALTY = 0.35;
 export const ZONE_MIN = 0.10;
 export const SPEED_MAX = 1.55;
 export const BAR_BASE_ZONE = 0.26;
-/** Indicator cycles per second at base (~0.78 ≈ 1.3s full sweep). */
-export const BAR_BASE_SPEED = 0.78;
+/** Indicator cycles per second at base (~0.68 ≈ 1.5s full sweep). */
+export const BAR_BASE_SPEED = 0.68;
 
 export const STREAM_ROUND_SECONDS = 15;
 export const STREAM_DEFAULT_ROUNDS = 4;
