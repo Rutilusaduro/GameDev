@@ -63,6 +63,15 @@ import {
   RANK_COSTS, softStartBonus,
 } from './gameData/skillTrees.js';
 import { renderHiveIntake } from './textEngine/scenes/hiveIntake.js';
+import { createContext, render } from './textEngine/engine.js';
+import './textEngine/scenes/stream.js';
+import {
+  STREAM_AP_COST, CHALLENGES, BRANDS, ensureStreamFields, needsStreamBrand, audienceTier as streamAudienceTier,
+  deriveResistance, mergePreStreamMultipliers, selectChallenges, pickRoundCount,
+  computeRoundScore, computeRoundLbs, staminaPenaltyFor, stageStaminaTax,
+  addictionDrainMod, MISS_STAMINA_PENALTY, STAMINA_EXCELLENT_GAIN,
+  checkTapOutConditions, computeRewards, deriveTrend, DESTINY_MONEY_FLAVOR,
+} from './gameData/streaming.js';
 import { MoodBadge } from './components/ui.jsx';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
@@ -72,6 +81,8 @@ import { EatingContestModal } from './components/EatingContestModal.jsx';
 import { SumoMatchModal } from './components/SumoMatchModal.jsx';
 import { CollabStreamModal } from './components/CollabStreamModal.jsx';
 import { RecordingSessionModal } from './components/RecordingSessionModal.jsx';
+import { StreamSessionModal } from './components/StreamSessionModal.jsx';
+import { StreamBrandSelectModal } from './components/StreamBrandSelectModal.jsx';
 import { CommunityResearcherModal } from './components/CommunityResearcherModal.jsx';
 import { CultivatorModal } from './components/CultivatorModal.jsx';
 import { HomeroomQueenModal } from './components/HomeroomQueenModal.jsx';
@@ -243,6 +254,11 @@ export default function ProfessorSim(){
   //   takeNum, timeLeft, kylieGain, clipRatings, bestClip,
   //   choiceStep, currentChoices:{angle,food,pace}, perfectTakeAchieved,
   //   popupText, done, endingText }
+  const [streamSessionState, setStreamSessionState] = useState(null);
+  // streamSessionState: Destiny streaming mini-game — phase preStream|challengeSelect|roundStart|round|
+  //   betweenRound|resolution|done; snapshot + challenge + round/stamina/gain/chat fields
+  const [streamBrandPickState, setStreamBrandPickState] = useState(null);
+  // streamBrandPickState: { studentId, required? }
   const [fairTrainingState, setFairTrainingState] = useState({
     cycleNum:0, sessionsThisCycle:0, fairPride:0,
     lastCollaborator:null, recentCollaborators:[], influenceFlags:[],
@@ -946,8 +962,19 @@ export default function ProfessorSim(){
   };
 
   const chooseEvolution=(studentId,formId)=>{
-    setStudents(prev=>prev.map(s=>s.id!==studentId?s:{...s,evolvedForm:formId,evolvedSkills:[]}));
-    const s=students.find(s=>s.id===studentId);
+    const s=students.find(st=>st.id===studentId);
+    if(formId==='eating_streamer'){
+      setStudents(prev=>prev.map(st=>{
+        if(st.id!==studentId) return st;
+        return {...ensureStreamFields(st),evolvedForm:formId,evolvedSkills:[],brand:null};
+      }));
+      const meta=EVOLVED_ACTIVITY_META[formId];
+      push(`✦ ${s?.name||"She"} has found her path: ${meta?.label||formId}.`);
+      setEvolutionModal(null);
+      setStreamBrandPickState({studentId,required:true});
+      return;
+    }
+    setStudents(prev=>prev.map(st=>st.id!==studentId?st:{...st,evolvedForm:formId,evolvedSkills:[]}));
     const meta=EVOLVED_ACTIVITY_META[formId];
     push(`✦ ${s?.name||"She"} has found her path: ${meta?.label||formId}.`);
     setEvolutionModal(null);
@@ -3082,6 +3109,261 @@ export default function ProfessorSim(){
 
   const closeRecordingSession=()=>setRecordingSessionState(null);
 
+  // ── Destiny Streaming Mini-Game (eating_streamer) ─────────────────────
+  const buildStreamCtx=(session,student,extra={})=>{
+    const ctx=createContext({subject:student,week});
+    ctx.d.brand=session.brand;
+    ctx.d.perf=extra.perf??session.lastRoundTier??'average';
+    ctx.d.challengeType=session.challenge?.category;
+    ctx.d.intensity=session.challenge?.intensity;
+    ctx.d.addiction=session.addiction;
+    ctx.d.audienceTier=session.audienceTier;
+    ctx.d.trend=extra.trend??session.trend;
+    return ctx;
+  };
+
+  const selectStreamBrand=(studentId,brandId)=>{
+    const brand=BRANDS[brandId];
+    if(!brand) return;
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==studentId) return st;
+      const favor={...(st.sponsorFavor||{})};
+      favor[brandId]=Math.min(100,(favor[brandId]||0)+20);
+      return {...ensureStreamFields(st),brand:brandId,sponsorFavor:favor};
+    }));
+    const s=students.find(st=>st.id===studentId);
+    push(`📡 ${s?.name||'Destiny'} signs with ${brand.name} — sponsor locked in.`);
+    setStreamBrandPickState(null);
+  };
+
+  const startStream=(s)=>{
+    if(s.evolvedForm!=='eating_streamer') return;
+    if(needsStreamBrand(s)){
+      setStreamBrandPickState({studentId:s.id,required:true});
+      push(`⚠️ ${s.name} needs a sponsor contract before going live.`);
+      return;
+    }
+    if(ap<STREAM_AP_COST){push(`⚠️ Need ${STREAM_AP_COST} AP.`);return;}
+    setAp(a=>a-STREAM_AP_COST);
+    const dest=ensureStreamFields(s);
+    const weightStageId=getStage(dest.lbs).id;
+    const addiction=getCorruptionTier(dest.corruption||0).id;
+    const audTier=streamAudienceTier(dest.audience);
+    const resistance=deriveResistance({corruption:dest.corruption,_weightStageId:weightStageId},0);
+    setStreamSessionState({
+      studentId:s.id,
+      phase:'preStream',
+      weightStageId, addiction, resistance,
+      audienceTier:audTier,
+      brand:dest.brand,
+      brandStreak:dest.brandStreaks?.[dest.brand]||0,
+      capacityMult:1, gainMult:1, audienceMult:1,
+      preStreamChoices:{}, preStreamVignettes:{},
+      offeredChallenges:[], challenge:null,
+      totalRounds:0, roundIndex:0,
+      stamina:100, sessionGain:0,
+      sessionFullness:dest.fullness||0,
+      stomachCapacity:dest.stomachCapacity||GAIN_CONFIG.baseCapacity,
+      tierHistory:[], tapOutCause:null,
+      chatLines:[], lastRoundTier:null, lastRoundLbs:0,
+      betweenRoundLine:'', roundStartLine:'',
+      rewardsPreview:null, endingText:'', destinyMoneyFlavor:'',
+      startLbs:dest.lbs, startStageId:weightStageId,
+      trend:'steady',
+    });
+  };
+
+  const preStreamAction=(actionId,choiceId)=>{
+    setStreamSessionState(prev=>{
+      if(!prev) return prev;
+      if(actionId==='__done__'){
+        if(Object.keys(prev.preStreamChoices).length<5) return prev;
+        return {...prev,phase:'challengeSelect',offeredChallenges:selectChallenges(prev.brand,3)};
+      }
+      const student=students.find(st=>st.id===prev.studentId);
+      const newChoices={...prev.preStreamChoices,[actionId]:choiceId};
+      const mults=mergePreStreamMultipliers(newChoices);
+      const ctx=buildStreamCtx(prev,student);
+      const vignette=render(`{stream.pre.${actionId}.${choiceId}}`,ctx);
+      return {
+        ...prev,
+        preStreamChoices:newChoices,
+        preStreamVignettes:{...prev.preStreamVignettes,[actionId]:vignette},
+        capacityMult:mults.capacityMult,
+        gainMult:mults.gainMult,
+        audienceMult:mults.audienceMult,
+        resistance:deriveResistance(
+          {corruption:student?.corruption,_weightStageId:prev.weightStageId},
+          mults.resistanceDelta,
+        ),
+      };
+    });
+  };
+
+  const selectStreamChallenge=(challengeId)=>{
+    setStreamSessionState(prev=>{
+      const challenge=CHALLENGES.find(c=>c.id===challengeId);
+      if(!challenge||!prev) return prev;
+      const student=students.find(st=>st.id===prev.studentId);
+      const totalRounds=pickRoundCount(challenge);
+      const ctx=buildStreamCtx({...prev,challenge},student);
+      const roundStartLine=render('{stream.roundStart}',ctx);
+      return {
+        ...prev,
+        phase:'roundStart',
+        challenge, totalRounds, roundIndex:0,
+        roundStartLine,
+        chatLines:[...prev.chatLines,`📡 ${challenge.label} — let's go!`].slice(-40),
+      };
+    });
+  };
+
+  const beginActiveRound=useCallback(()=>{
+    setStreamSessionState(prev=>(prev&&prev.phase==='roundStart'?{...prev,phase:'round',currentRoundTierSoFar:'average'}:prev));
+  },[]);
+
+  const appendStreamChat=useCallback((line)=>{
+    if(!line) return;
+    setStreamSessionState(prev=>(prev?{...prev,chatLines:[...prev.chatLines,line].slice(-40)}:prev));
+  },[]);
+
+  const finishActiveRound=useCallback((liveStats)=>{
+    setStreamSessionState(prev=>{
+      if(!prev||prev.phase!=='round') return prev;
+      const{hits=0,misses=0,centerQualities=[]}=liveStats||{};
+      const{tier}=computeRoundScore(hits,misses,centerQualities);
+      const stamPen=staminaPenaltyFor(prev.stamina);
+      const roundLbs=computeRoundLbs({
+        challenge:prev.challenge, tier,
+        capacityMult:prev.capacityMult, gainMult:prev.gainMult,
+        weightStageId:prev.weightStageId, stamina:prev.stamina, staminaPenalty:stamPen,
+      });
+      const drain=(prev.challenge?.staminaDrain||10)
+        +misses*MISS_STAMINA_PENALTY
+        +stageStaminaTax(prev.weightStageId);
+      const drainMod=addictionDrainMod(prev.addiction,prev.roundIndex,prev.totalRounds);
+      let newStamina=prev.stamina-drain*drainMod;
+      if(tier==='excellent') newStamina+=STAMINA_EXCELLENT_GAIN;
+      newStamina=Math.max(0,Math.min(100,newStamina));
+      const newFullness=prev.sessionFullness+roundLbs;
+      const tierHistory=[...prev.tierHistory,tier];
+      const student=students.find(st=>st.id===prev.studentId);
+      const ctx=buildStreamCtx(prev,student,{perf:tier,trend:deriveTrend(tierHistory)});
+      const betweenRoundLine=render('{stream.betweenRound}',ctx);
+      let tapOutCause=prev.tapOutCause;
+      if(!tapOutCause){
+        tapOutCause=checkTapOutConditions({
+          stamina:newStamina, tierHistory, resistance:prev.resistance,
+          addiction:prev.addiction, fullness:newFullness, stomachCapacity:prev.stomachCapacity,
+        });
+      }
+      const burst=[];
+      for(let i=0;i<2;i++){
+        const l=render(`{stream.chat.perf.${tier}}`,ctx);
+        if(l) burst.push(l);
+      }
+      return {
+        ...prev,
+        phase:'betweenRound',
+        stamina:newStamina,
+        sessionGain:prev.sessionGain+roundLbs,
+        sessionFullness:newFullness,
+        tierHistory, lastRoundTier:tier, lastRoundLbs:roundLbs,
+        betweenRoundLine, tapOutCause,
+        chatLines:[...prev.chatLines,...burst].slice(-40),
+        trend:deriveTrend(tierHistory),
+      };
+    });
+  },[students, week]);
+
+  const continueAfterBetweenRound=()=>{
+    setStreamSessionState(prev=>{
+      if(!prev) return prev;
+      const done=prev.tapOutCause||prev.roundIndex+1>=prev.totalRounds;
+      if(done){
+        const rewardsPreview=computeRewards({
+          sessionGain:prev.sessionGain,
+          tierHistory:prev.tierHistory,
+          challenge:prev.challenge,
+          brandId:prev.brand,
+          audience:students.find(st=>st.id===prev.studentId)?.audience??120,
+          sponsorFavor:students.find(st=>st.id===prev.studentId)?.sponsorFavor??{},
+          tapOutCause:prev.tapOutCause,
+        });
+        return {...prev,phase:'resolution',rewardsPreview};
+      }
+      const student=students.find(st=>st.id===prev.studentId);
+      const nextIdx=prev.roundIndex+1;
+      const ctx=buildStreamCtx({...prev,roundIndex:nextIdx},student);
+      return {
+        ...prev,
+        phase:'roundStart',
+        roundIndex:nextIdx,
+        roundStartLine:render('{stream.roundStart}',ctx),
+      };
+    });
+  };
+
+  const tapOutStream=()=>{
+    setStreamSessionState(prev=>{
+      if(!prev) return prev;
+      const cause=checkTapOutConditions({
+        stamina:prev.stamina, tierHistory:prev.tierHistory,
+        resistance:prev.resistance, addiction:prev.addiction,
+        fullness:prev.sessionFullness, stomachCapacity:prev.stomachCapacity,
+      })||'performance';
+      const student=students.find(st=>st.id===prev.studentId);
+      const ctx=buildStreamCtx(prev,student);
+      const line=render(`{stream.tapOut.${cause}}`,ctx);
+      return {...prev,tapOutCause:cause,betweenRoundLine:line||prev.betweenRoundLine};
+    });
+  };
+
+  const wrapStream=()=>{
+    setStreamSessionState(prev=>{
+      if(!prev||!prev.rewardsPreview) return prev;
+      const r=prev.rewardsPreview;
+      const student=students.find(st=>st.id===prev.studentId);
+      if(!student) return prev;
+      let updated=student;
+      if(r.weightGain>0){
+        updated=processStudentGain(updated,Math.round(r.weightGain),0);
+        if(r.corruptionGain) updated={...updated,corruption:addCorruption(updated,r.corruptionGain)};
+      }
+      const brandKey=prev.brand||'none';
+      const newFavor={...(updated.sponsorFavor||{})};
+      newFavor[brandKey]=Math.min(100,(newFavor[brandKey]||0)+r.favorGain);
+      const newStreaks={...(updated.brandStreaks||{})};
+      if(prev.brand) newStreaks[prev.brand]=(newStreaks[prev.brand]||0)+1;
+      const newAudience=Math.round((updated.audience||120)+r.audienceGain*prev.audienceMult);
+      updated={
+        ...updated,
+        audience:newAudience,
+        sponsorFavor:newFavor,
+        brandStreaks:newStreaks,
+        totalStreams:(updated.totalStreams||0)+1,
+        fullness:prev.sessionFullness,
+      };
+      setStudents(p=>p.map(st=>st.id===prev.studentId?updated:st));
+      if(r.playerShare>0) setMoney(m=>addFunds(m,r.playerShare));
+      const ctx=buildStreamCtx(prev,updated,{perf:r.overallTier});
+      const endLine=render(`{stream.endStream.${r.overallTier}}`,ctx);
+      const tapLine=prev.tapOutCause?render(`{stream.tapOut.${prev.tapOutCause}}`,ctx):'';
+      const endingText=[tapLine,endLine].filter(Boolean).join('\n\n');
+      const flavor=DESTINY_MONEY_FLAVOR[Math.floor(Math.random()*DESTINY_MONEY_FLAVOR.length)];
+      const afterStage=getStage(updated.lbs).id;
+      if(afterStage>prev.startStageId&&!updated.streamMilestones?.[`stage_${afterStage}`]){
+        updated={...updated,streamMilestones:{...(updated.streamMilestones||{}),[`stage_${afterStage}`]:true}};
+        setStudents(p=>p.map(st=>st.id===prev.studentId?updated:st));
+        setTimeout(()=>push(`📡 ${student.name} hits ${WEIGHT_STAGES[afterStage].label} on stream!`),80);
+      }
+      push(`📡 Stream wrapped — ${r.overallTier}. +${Math.round(r.weightGain)} lbs, +${r.audienceGain} audience, ${formatMoney(r.playerShare)} earned.`);
+      return {...prev,phase:'done',endingText,destinyMoneyFlavor:flavor};
+    });
+  };
+
+  const closeStream=()=>setStreamSessionState(null);
+
   // ── Fair Training Collaborations + Fair Day (state_fair_queen) ─────────
   const clampFairStage=(lbs)=>Math.max(4,Math.min(10,getStage(lbs).id));
   const getFairPrideTier=(pride)=>FAIR_TRAINING_CONFIG.fairPrideTiers.find(t=>pride>=t.min&&pride<=t.max)||FAIR_TRAINING_CONFIG.fairPrideTiers[0];
@@ -4702,7 +4984,7 @@ export default function ProfessorSim(){
           {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} week={week}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
@@ -4973,6 +5255,8 @@ export default function ProfessorSim(){
 
       {/* ── RECORDING SESSION MODAL ── */}
       {recordingSessionState&&<RecordingSessionModal recordingSessionState={recordingSessionState} students={students} setRecordingSessionState={setRecordingSessionState} makeRecordingChoice={makeRecordingChoice} wrapRecordingSession={wrapRecordingSession} oneMoreTake={oneMoreTake} closeRecordingSession={closeRecordingSession} dismissRecordingChoicePopup={dismissRecordingChoicePopup}/>}
+      {streamSessionState&&<StreamSessionModal streamSessionState={streamSessionState} students={students} week={week} preStreamAction={preStreamAction} selectChallenge={selectStreamChallenge} beginActiveRound={beginActiveRound} finishActiveRound={finishActiveRound} continueAfterBetweenRound={continueAfterBetweenRound} tapOutStream={tapOutStream} wrapStream={wrapStream} closeStream={closeStream} appendStreamChat={appendStreamChat}/>}
+      {streamBrandPickState&&<StreamBrandSelectModal student={students.find(st=>st.id===streamBrandPickState.studentId)} required={streamBrandPickState.required} onSelect={selectStreamBrand} onClose={streamBrandPickState.required?null:()=>setStreamBrandPickState(null)}/>}
 
       {/* ── FAIR TRAINING COLLABORATIONS HUB ── */}
       {fairTrainingState.open&&<FairTrainingHub ft={fairTrainingState} students={students} ap={ap} getFairPrideTier={getFairPrideTier} startFairTrainingSession={startFairTrainingSession} launchFairDayEvent={launchFairDayEvent} closeFairTraining={closeFairTraining} setFairTrainingState={setFairTrainingState}/>}

@@ -2,6 +2,7 @@ import { EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, EVOLVED_ACTIVITY_META, EVOLVED
 import { ATMOSPHERE_TIERS, GUEST_TIERS, MENU_TIERS } from '../gameData/chapterHostess.js';
 import { C } from '../styles.js';
 import { LilithPixelArt } from '../components/LilithPixelArt.jsx';
+import { BRANDS } from '../gameData/streaming.js';
 import { getCorruptionTier, CORRUPTION_CONFIG } from '../gameData/corruption.js';
 import { CASE_STUDY_PAIRS } from '../gameData/communityResearcher.js';
 import { EVOLVED_SKILL_TREES } from '../gameData/skills.js';
@@ -17,7 +18,7 @@ import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, runPharmacistSynthesis, runPharmacistCultDistribution, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, week }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, runPharmacistSynthesis, runPharmacistCultDistribution, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -512,6 +513,17 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                           {s.evolvedForm==='feedee_creator'&&getTier(s.relationship).id>=3&&(
                             <button style={{...C.btn("#804020"),opacity:ap<2?0.4:1,marginBottom:10,width:"100%"}} onClick={()=>startRecordingSession(s)}>
                               🎬 Film Her Session (2 AP)
+                            </button>
+                          )}
+                          {s.evolvedForm==='eating_streamer'&&s.brand&&(
+                            <div style={{fontSize:10,color:"#e08090",marginBottom:6,padding:"6px 10px",background:"rgba(80,10,20,0.35)",borderRadius:6,border:"1px solid #e74c3c33"}}>
+                              📡 Sponsor: <span style={{color:"#ff8090",fontWeight:700}}>{BRANDS[s.brand]?.name||s.brand}</span>
+                              {s.audience!=null&&<span style={{color:"#a06070"}}> · {Math.round(s.audience)} followers</span>}
+                            </div>
+                          )}
+                          {s.evolvedForm==='eating_streamer'&&(
+                            <button style={{...C.btn("#a02030"),opacity:ap<2?0.4:1,marginBottom:10,width:"100%"}} onClick={()=>startStream(s)}>
+                              {s.brand?'📡 Go Live (2 AP)':'📡 Sign Sponsor & Go Live'}
                             </button>
                           )}
                           {tree.length>0&&(
