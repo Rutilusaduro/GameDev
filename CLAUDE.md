@@ -21,4 +21,8 @@ Weight-gain themed college sim (React + Vite, plain JS, no test framework).
 
 **Before writing or editing ANY narrative text, read `src/textEngine/AUTHORING.md`.** It is the binding content contract: skeleton/fragment composition, `registerPool` semantics, grammar-shape rules, the selector cookbook, per-girl voice conventions, and anti-patterns. The canonical exemplar scenes to copy are `src/textEngine/scenes/weighIn/` and `src/textEngine/scenes/talkEncourage.js`.
 
+Two companion playbooks cover the processes around it:
+- `src/textEngine/MIGRATION.md` — converting a legacy feature's monolithic prose into slot-composed form (inventory → beat/slot design → mining protocol → wire-up → retirement → verification).
+- `src/textEngine/TUNING.md` — the flag-batch editing loop (Dialogue Lab → annotated flags → triage taxonomy → fix patterns), including the **Style Ledger** of banned constructions that ALL new prose must also respect.
+
 The one-sentence version: never write a monolithic paragraph as a variant — write a skeleton with fragment slots, give every pool a wildcard fallback, key fragments on game state (stage, bodyType, mood, corruption, hunger, studentId…), and run `npm run text:lint` until clean.
