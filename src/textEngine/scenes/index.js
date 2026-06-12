@@ -1,0 +1,20 @@
+// Barrel — import every scene file so modules register at load time.
+import './attitude.js';
+import './campusExplorationText.js';
+import './campusSoftening.js';
+import './destinyOffstream.js';
+import './diary.js';
+import './evolvedDiary.js';
+import './hiveIntake.js';
+import './hungerArchetypeBehavior.js';
+import './hungerInterrupt.js';
+import './hungerInterruptPersonal.js';
+import './hungerLexicon.js';
+import './stream.js';
+import './streamChatIngest.js';
+import './streamExtended.js';
+import './streamPreStream.js';
+import './streamPreStreamBrand.js';
+import './talkCodas.js';
+import './talkEncourage.js';
+import './weighIn/index.js';

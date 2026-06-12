@@ -3,6 +3,8 @@ import { C } from '../styles.js';
 import { LILITH_ID } from '../gameData/lilith.js';
 import { render, createContext, getSeason, relSize } from '../textEngine/engine.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
+import { renderWeighInIntro, renderWeighInReaction, renderWeighInBreak } from '../textEngine/scenes/weighIn/index.js';
+import { WEIGHT_STAGES } from '../gameData/stages.js';
 
 if (typeof window !== 'undefined' && import.meta.env.DEV) {
   window.__textEngine = { render, createContext, getSeason, relSize };
@@ -27,6 +29,30 @@ function sampleTextEngine(){
       { name:"a dorm resident", lbs:c.victimLbs, bodyType:"apple", corruption:0, relationship:0 },
     ];
     out.push(`── ${c.label} (season: ${getSeason(c.week)}) ──\n${renderHiveIntake(lilith,victims,c.week)}`);
+  }
+  return out.join("\n\n");
+}
+
+function stageMidLbs(stageId) {
+  const s = WEIGHT_STAGES[stageId];
+  const next = WEIGHT_STAGES[stageId + 1];
+  if (!next) return s.min + 100;
+  return Math.round((s.min + next.min) / 2);
+}
+
+function sampleWeighIn(students) {
+  const out = [];
+  const probes = [0, 2, 4, 6, 8, 10, 11];
+  const sample = (students || []).filter((s) => !s.hidden).slice(0, 4);
+  for (const s of sample) {
+    for (const stageId of probes) {
+      const student = { ...s, lbs: stageMidLbs(stageId), corruption: stageId >= 6 ? 90 : 20 };
+      const opts = { week: 8, campusFattening: false, bigScale: stageId >= 6 };
+      out.push(`── ${student.name} · stage ${stageId} (${Math.round(student.lbs)} lbs) ──`);
+      out.push(`INTRO: ${renderWeighInIntro(student, 8, stageId >= 6, opts)}`);
+      out.push(`REACTION: ${renderWeighInReaction(student, 8, { ...opts, bigScale: stageId >= 6 })}`);
+      if (stageId >= 5) out.push(`BREAK: ${renderWeighInBreak(student, 8, opts)}`);
+    }
   }
   return out.join("\n\n");
 }
@@ -67,6 +93,8 @@ export function DebugPanel({ adminScrutiny, ap, debugApply, debugInputs, setAdmi
               <div style={{fontSize:10,color:"#888",marginBottom:6}}>TEXT ENGINE</div>
               <button style={{...C.smBtn,background:"rgba(100,60,140,0.4)"}}
                 onClick={()=>setTextSample(sampleTextEngine())}>📜 Sample hive intake (6 combos)</button>
+              <button style={{...C.smBtn,background:"rgba(80,50,120,0.45)",marginLeft:6}}
+                onClick={()=>setTextSample(sampleWeighIn(students))}>⚖ Weigh-in sweep</button>
               {textSample&&(
                 <pre style={{fontSize:10,color:"#c8b8e0",whiteSpace:"pre-wrap",lineHeight:1.6,marginTop:8,maxHeight:240,overflowY:"auto",background:"rgba(0,0,0,0.3)",padding:8,borderRadius:6}}>
                   {textSample}

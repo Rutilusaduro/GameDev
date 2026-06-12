@@ -19,6 +19,19 @@ export function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+/** Weighted random choice. entries: [{ item, weight }] */
+export function weightedPick(entries) {
+  if (!entries.length) return undefined;
+  const total = entries.reduce((s, e) => s + (e.weight ?? 1), 0);
+  if (total <= 0) return entries[0].item;
+  let r = Math.random() * total;
+  for (const e of entries) {
+    r -= e.weight ?? 1;
+    if (r <= 0) return e.item;
+  }
+  return entries[entries.length - 1].item;
+}
+
 const SEASONS = ["fall", "winter", "spring", "summer"];
 export function getSeason(week) {
   return SEASONS[Math.floor((Math.max(1, week || 1) - 1) / 4) % 4];
@@ -76,6 +89,8 @@ function deriveFor(student, ref, skillEffects) {
     addictionLevel: getAddictionLevel(student),
     hungerTier: getHungerTier(student),
     inWithdrawal: isInWithdrawal(student),
+    studentId: student.id ?? null,
+    lastCompound: student.lastCompound || null,
     skillEffects: skillEffects || {},
   };
 }
@@ -110,12 +125,23 @@ function retarget(ctx, who) {
 // ── module registry ───────────────────────────────────────────
 
 const REGISTRY = new Map();
+const MODULE_OPTS = new Map();
 
-// registerModule(key, variants)
-// variant: { when:{...}, priority?:int, text: string | fn(ctx) | array of those }
-export function registerModule(key, variants) {
+// registerModule(key, variants, opts?)
+// variant: { when:{...}, priority?:int, weight?:number, text: string | fn(ctx) | array of those }
+// opts.select: 'best' | 'pool' (default 'best'); opts.poolBase: number (default 3)
+export function registerModule(key, variants, opts = {}) {
+  if (key === "join") warn('module key "join" is reserved for {join:...} meta-slots');
   if (REGISTRY.has(key)) warn(`module "${key}" re-registered (overwriting)`);
   REGISTRY.set(key, Array.isArray(variants) ? variants : [variants]);
+  if (opts && Object.keys(opts).length) {
+    MODULE_OPTS.set(key, { select: opts.select || "best", poolBase: opts.poolBase ?? 3 });
+  }
+}
+
+/** Pool-mode registration — weighted variant pick, then uniform text pick within variant. */
+export function registerPool(key, variants, opts = {}) {
+  registerModule(key, variants, { ...opts, select: "pool" });
 }
 
 /** Prepend higher-priority variants without replacing the base module pool. */
@@ -126,6 +152,14 @@ export function registerModuleVariants(key, variants) {
 }
 
 export function hasModule(key) { return REGISTRY.has(key); }
+
+/** @internal — lint harness / DebugPanel */
+export function _registryEntries() {
+  return [...REGISTRY.entries()].map(([key, variants]) => ({ key, variants, opts: MODULE_OPTS.get(key) }));
+}
+
+/** @internal */
+export function _moduleOpts(key) { return MODULE_OPTS.get(key) || { select: "best", poolBase: 3 }; }
 
 // ── selector resolution ───────────────────────────────────────
 
@@ -158,7 +192,12 @@ function evalWhen(when, ctx) {
       case "campusTierMax": ok = (ctx.globals?.campusTier ?? 0) <= v; break;
       case "weightBand": ok = ctx.globals?.weightBand === v; break;
       case "nodeId": ok = ctx.globals?.nodeId === v; break;
-      case "studentId": ok = ctx.globals?.studentId === v; break;
+      case "studentId": {
+        const actual = d.studentId ?? ctx.globals?.studentId;
+        ok = Array.isArray(v) ? v.includes(actual) : actual === v;
+        break;
+      }
+      case "bigScale": ok = !!ctx.globals?.bigScale === !!v; break;
       default: {
         // dimension on ctx.d: corruption, stage, relationship, relSize,
         // bodyType, archetype, mood, evolvedForm, refStage...
@@ -176,31 +215,55 @@ function evalWhen(when, ctx) {
   return { match: true, score };
 }
 
+function resolveTextEntry(entry, ctx) {
+  return typeof entry === "function" ? (entry(ctx) ?? "") : (entry ?? "");
+}
+
 function selectVariant(key, ctx) {
   const variants = REGISTRY.get(key);
   if (!variants) { warn(`unknown module "${key}"`); return ""; }
 
-  let best = [], bestScore = -1, bestPriority = -Infinity;
+  const matches = [];
   for (const variant of variants) {
     const { match, score } = evalWhen(variant.when, ctx);
-    if (!match) continue;
-    const priority = variant.priority || 0;
-    if (score > bestScore || (score === bestScore && priority > bestPriority)) {
-      best = [variant]; bestScore = score; bestPriority = priority;
-    } else if (score === bestScore && priority === bestPriority) {
-      best.push(variant);
-    }
+    if (match) matches.push({ variant, score });
   }
-  if (!best.length) return "";
+  if (!matches.length) return "";
 
-  // Pool all texts across tied variants, then pick one.
+  // Priority is a hard gate — keep only variants at max priority.
+  const maxPriority = Math.max(...matches.map((m) => m.variant.priority || 0));
+  const gated = matches.filter((m) => (m.variant.priority || 0) === maxPriority);
+
+  const opts = MODULE_OPTS.get(key) || { select: "best", poolBase: 3 };
+
+  if (opts.select === "pool") {
+    const variantEntries = gated.map(({ variant, score }) => ({
+      item: variant,
+      weight: (variant.weight ?? 1) * Math.pow(opts.poolBase, score),
+    }));
+    const chosenVariant = weightedPick(variantEntries);
+    const texts = Array.isArray(chosenVariant.text) ? chosenVariant.text : [chosenVariant.text];
+    const chosen = pick(texts);
+    return resolveTextEntry(chosen, ctx);
+  }
+
+  // 'best' — max-score variants among priority-gated set, legacy behavior.
+  const maxScore = Math.max(...gated.map((m) => m.score));
+  const best = gated.filter((m) => m.score === maxScore).map((m) => m.variant);
+
   const pool = [];
   for (const variant of best) {
+    const w = variant.weight ?? 1;
     const t = variant.text;
-    if (Array.isArray(t)) pool.push(...t); else pool.push(t);
+    const texts = Array.isArray(t) ? t : [t];
+    for (const entry of texts) {
+      if (w <= 0) continue;
+      for (let i = 0; i < w; i++) pool.push(entry);
+    }
   }
+  if (!pool.length) return "";
   const chosen = pick(pool);
-  return typeof chosen === "function" ? (chosen(ctx) ?? "") : (chosen ?? "");
+  return resolveTextEntry(chosen, ctx);
 }
 
 // ── filters ───────────────────────────────────────────────────
@@ -241,12 +304,28 @@ function resolveText(text, ctx, depth) {
   }
   SLOT_RE.lastIndex = 0;
   return text.replace(SLOT_RE, (_, name, arg, filterStr) => {
+    const filters = filterStr ? filterStr.split("|").filter(Boolean) : [];
+
+    // {join:key1,key2,...|prefix:, } — comma/"and" clause joiner (no :ref inside join keys).
+    if (name === "join" && arg) {
+      const keys = arg.split(",").map((k) => k.trim()).filter(Boolean);
+      const parts = [];
+      for (const key of keys) {
+        const resolved = resolveText(`{${key}}`, ctx, depth + 1);
+        if (resolved && resolved.trim()) parts.push(resolved.trim());
+      }
+      let out = "";
+      if (parts.length === 1) out = parts[0];
+      else if (parts.length === 2) out = `${parts[0]} and ${parts[1]}`;
+      else if (parts.length > 2) out = `${parts.slice(0, -1).join(", ")} and ${parts[parts.length - 1]}`;
+      return applyFilters(out, filters);
+    }
+
     let slotCtx = ctx;
     if (arg === "ref" || arg === "group") slotCtx = retarget(ctx, arg);
     else if (arg) slotCtx = { ...ctx, arg }; // pass-through arg for module fns
     let out = selectVariant(name, slotCtx);
     out = resolveText(String(out), slotCtx, depth + 1);
-    const filters = filterStr ? filterStr.split("|").filter(Boolean) : [];
     return applyFilters(out, filters);
   });
 }

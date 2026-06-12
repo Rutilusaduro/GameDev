@@ -11,6 +11,7 @@ import { getCorruptionTier } from '../gameData/corruption.js';
 import { getStage } from '../gameData/stages.js';
 import { createContext, render } from '../textEngine/engine.js';
 import '../textEngine/scenes/talkCodas.js'; // registers talk.coda
+import '../textEngine/scenes/talkEncourage.js';
 import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';
 import '../textEngine/scenes/destinyOffstream.js';
@@ -24,20 +25,26 @@ import { C } from '../styles.js';
 function buildResponse(topic, student, skillEffects, week, campusFattening = false, campusTier = 0){
   const corTier = getCorruptionTier(student.corruption || 0).id;
 
+  const ctx = createContext({
+    subject: student,
+    skillEffects,
+    week,
+    globals: {
+      campusFattening: !!campusFattening,
+      campusTier: campusTier || (campusFattening ? 1 : 0),
+    },
+  });
+
   let text;
   if (topic.sceneType === 'devour') {
     text = buildDevourScene(student, corTier, week);
+  } else if (topic.engineTemplate) {
+    text = render(topic.engineTemplate, ctx);
   } else {
     text = buildTalkResponse(topic.id, student, corTier);
-    const ctx = createContext({
-      subject: student,
-      skillEffects,
-      week,
-      globals: {
-        campusFattening: !!campusFattening,
-        campusTier: campusTier || (campusFattening ? 1 : 0),
-      },
-    });
+  }
+
+  if (topic.sceneType !== 'devour') {
     text += render("{talk.coda|prefix: }", ctx, { noSmooth: true });
     if (campusFattening) {
       text += render("{talk.campusCoda|prefix: }", ctx, { noSmooth: true });

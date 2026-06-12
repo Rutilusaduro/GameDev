@@ -6,8 +6,22 @@
 // clothing.desc  — clothing + fit (season × stage)
 // group.desc     — short descriptor for ctx.group
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, groupStageBucket } from './engine.js';
+import { registerModule, registerPool, groupStageBucket } from './engine.js';
 import './lexicon.js'; // ensure word.* modules are registered
+
+// ── subject.* — focal character shorthand for scene skeletons ──
+
+registerPool("subject.name", [
+  { when: {}, text: [(ctx) => ctx.subject?.name || "She"] },
+]);
+
+registerPool("subject.first", [
+  { when: {}, text: [(ctx) => (ctx.subject?.name || "She").split(" ")[0]] },
+]);
+
+registerPool("subject.lbs", [
+  { when: {}, text: [(ctx) => String(Math.round(ctx.subject?.lbs ?? 0))] },
+]);
 
 // ── char.desc — composite of size, movement and corruption ────
 // Demonstrates recursion: variants embed {word.*} slots.

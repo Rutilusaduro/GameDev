@@ -126,16 +126,34 @@ registerModule("talk.coda", [
 | `season` | `ctx.season` | value or array |
 | `skill` | `ctx.skillEffects[v]` truthy | single flag name |
 | `weekMin` / `weekMax` | `ctx.week` | range (counts as one condition) |
+| `studentId` | `d.studentId` or `ctx.globals.studentId` | value or array |
+| `bigScale` | `ctx.globals.bigScale` | boolean |
+| `hungerTierMin` / `addictionLevelMin` / `inWithdrawal` | `ctx.d` | hunger / pharmacist axes |
+| `lastCompound` | `d.lastCompound` | pharmacist compound id |
 
 Any unlisted key is looked up on `ctx.d` directly, so new derived dimensions work without engine changes.
 
 ### Resolution algorithm
 
-1. **Filter:** keep variants whose *every* condition matches. Missing key = wildcard.
-2. **Score:** +1 per satisfied condition key (a min/max range pair counts once). More conditions = more specific = wins.
-3. **Tie-break:** higher `priority` (integer, default 0) wins among equal scores. **This is the escape hatch** when flat scoring picks the "wrong" equally-specific variant — e.g. the broken register beating the submissive register at corruption tier 2 when the character qualifies for both.
-4. **Randomize:** all texts from the surviving tied variants are pooled and one is `pick()`ed.
-5. **Fallback:** zero matches → empty-`when` variant if present → else `""` (never a crash).
+Two selection modes (per-module via `registerModule(key, variants, { select, poolBase })`):
+
+| Mode | Registration | Behavior |
+|---|---|---|
+| `'best'` (default) | `registerModule` | Among priority-gated matches, keep max-score variants; flatten texts; weighted pick by `variant.weight ?? 1`. Legacy scenes unchanged when weights are default. |
+| `'pool'` | `registerPool` | Among priority-gated matches, weighted pick a **variant** (`weight × poolBase^score`), then uniform `pick()` among that variant's texts. |
+
+Shared steps:
+
+1. **Filter:** keep variants whose *every* condition matches.
+2. **Priority gate:** keep only variants at max `priority` among matches (hard gate — preserves talk.coda "broken beats submissive").
+3. **Score** (pool weighting / best tie-break): +1 per satisfied condition key (min/max pair counts once).
+4. **Fallback:** zero matches → empty-`when` variant if present → else `""`.
+
+`weight: 0` parks a draft variant. `poolBase` defaults to 3 (a 2-condition variant beats wildcard ~9:1).
+
+### Clause joiner
+
+`{join:wi.bodyClause,wi.faceClause|prefix:, }` — resolve each comma-separated module, drop empties, join with `", "` + final `"and"`. Apply `prefix:`/`suffix:` filters after join. No `:ref` inside join keys. Module key `join` is reserved.
 
 ### `text` forms
 
@@ -300,8 +318,10 @@ Migrate opportunistically: when touching a feature, move its text into a scene f
 
 ## 10. Dev Harness
 
-- **DebugPanel → TEXT ENGINE section:** renders the hive intake scene across a sweep of (Lilith stage × victim stage × corruption × season) synthetic inputs — eyeball variant coverage and check no `{unresolved}` slots leak.
+- **`npm run text:lint`:** static checks (wildcard fallbacks, monolith length, slot refs) + dynamic sweep across students × stages × corruption × mood × hunger × campus; renders weigh-in + talk.encourage templates.
+- **DebugPanel → TEXT ENGINE:** hive intake sweep (6 combos) and **⚖ Weigh-in sweep** (intro / reaction / break across stage bands).
 - **Console:** `window.__textEngine` exposes `{ render, createContext, getSeason, relSize }` in dev builds for live experimentation.
+- **Authoring:** see `src/textEngine/AUTHORING.md` before editing prose; `CLAUDE.md` at repo root for agent onboarding.
 
 ---
 

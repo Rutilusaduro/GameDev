@@ -14,6 +14,7 @@ export const TALK_TOPICS = [
   },
   { id:"encourage", label:"Encourage her appetite", icon:"🍽", group:"talk",
     effect:{ rel:1, corruption:1 },
+    engineTemplate: "{talk.encourage}",
   },
 
   // ── Quiet Suggestion (Influence T1) ───────────────────────
