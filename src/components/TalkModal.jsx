@@ -12,6 +12,7 @@ import { getStage } from '../gameData/stages.js';
 import { createContext, render } from '../textEngine/engine.js';
 import '../textEngine/scenes/talkCodas.js'; // registers talk.coda
 import '../textEngine/scenes/talkEncourage.js'; // registers talk.encourage
+import '../textEngine/scenes/talkComplimentPersonas.js'; // registers talk.compliment
 import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';
 import '../textEngine/scenes/destinyOffstream.js';

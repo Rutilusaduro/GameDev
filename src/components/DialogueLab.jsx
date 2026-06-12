@@ -19,6 +19,7 @@ import {
   renderWeighInBreak, renderWeighInSwap, renderWeighInPurchase,
 } from '../textEngine/scenes/weighIn/index.js';
 import '../textEngine/scenes/talkEncourage.js';
+import '../textEngine/scenes/talkComplimentPersonas.js';
 import '../textEngine/scenes/talkCodas.js';
 import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';
@@ -47,6 +48,11 @@ const SECTIONS = {
     fn: (s, opts) => renderWeighInPurchase(s, 6, opts) },
   "talk.encourage": { params: STATE_PARAMS,
     fn: (s, opts) => render("{talk.encourage}", createContext({
+      subject: s, week: 6,
+      globals: { campusFattening: (opts.campusTier || 0) > 0, campusTier: opts.campusTier || 0 },
+    }), { trace: opts.trace }) },
+  "talk.compliment": { params: STATE_PARAMS,
+    fn: (s, opts) => render("{talk.compliment}", createContext({
       subject: s, week: 6,
       globals: { campusFattening: (opts.campusTier || 0) > 0, campusTier: opts.campusTier || 0 },
     }), { trace: opts.trace }) },
