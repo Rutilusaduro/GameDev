@@ -2,6 +2,7 @@
 // DEVICE EFFECT RESOLUTION — engine-free logic
 // ═══════════════════════════════════════════════════════════════
 import { renderDeviceTickLine } from '../textEngine/scenes/deviceTick/index.js';
+import { renderSuddenGrowthLine } from '../textEngine/scenes/suddenGrowth/index.js';
 import { getDevice, DEVICE_SLOTS } from './devices.js';
 import { applyPsychDelta } from './psychState.js';
 import {
@@ -114,6 +115,15 @@ function attachmentIdsFromEntry(entry) {
   if (!entry?.attachments) return [];
   return Object.values(entry.attachments).map(a => a?.defId).filter(Boolean);
 }
+
+function growthLineForStudent(student, gainLbs) {
+  return renderSuddenGrowthLine(student, {
+    gainLbs,
+    bodyState: student?.bodyOverride?.stateType || null,
+  });
+}
+
+export { growthLineForStudent };
 
 function buildTickEvent(student, slot, entry, week, rng, resultStudent, gainLbs, malf) {
   const def = getDevice(entry.defId);
@@ -345,6 +355,10 @@ export function useConsumableDevice(student, defId, week = 1, rng = Math.random)
     lines.push(`⚠️ ${malf.text}`);
   }
 
+  const gainLbs = next._pendingGainLbs || 0;
+  const growthLine = growthLineForStudent(next, gainLbs);
+  if (growthLine) lines.push(growthLine);
+
   return { student: next, ok: true, lines, malfunction: malf };
 }
 
@@ -365,6 +379,9 @@ export function triggerBeltBloatNow(student, week, rng = Math.random) {
   } else {
     result.lines = ['Belt cycles to aggressive bloat mode.'];
   }
+  const gainLbs = result.student._pendingGainLbs || 0;
+  const growthLine = growthLineForStudent(result.student, gainLbs);
+  if (growthLine) result.lines.push(growthLine);
   return { ...result, ok: true, malfunction: malf };
 }
 
@@ -390,6 +407,9 @@ export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng =
     result = { student: mApplied.student, lines: [...result.lines, malf.text] };
   }
   result.student = bumpCampusDeviceDependence(result.student, def.id);
+  const gainLbs = result.student._pendingGainLbs || 0;
+  const growthLine = growthLineForStudent(result.student, gainLbs);
+  if (growthLine) result.lines = [...(result.lines || []), growthLine];
   const discoveryRisk = mode?.discoveryRisk ?? 0.15;
   const discovered = rng() < discoveryRisk;
   return {

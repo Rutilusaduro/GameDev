@@ -228,6 +228,7 @@ function evalWhen(when, ctx) {
       case "deviceDependenceTierMin": ok = (ctx.globals?.deviceDependenceTier ?? 0) >= v; break;
       case "deviceDependenceTier": ok = (ctx.globals?.deviceDependenceTier ?? 0) === v; break;
       case "deviceDependenceMin": ok = (ctx.globals?.deviceDependence ?? 0) >= v; break;
+      case "growthZone": ok = ctx.globals?.growthZone === v; break;
       case "studentId": {
         const actual = d.studentId ?? ctx.globals?.studentId;
         ok = Array.isArray(v) ? v.includes(actual) : actual === v;

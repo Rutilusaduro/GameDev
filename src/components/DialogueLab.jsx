@@ -19,6 +19,8 @@ import {
   renderWeighInBreak, renderWeighInSwap, renderWeighInPurchase,
 } from '../textEngine/scenes/weighIn/index.js';
 import { renderDeviceTickLine } from '../textEngine/scenes/deviceTick/index.js';
+import { renderSuddenGrowthLine } from '../textEngine/scenes/suddenGrowth/index.js';
+import { resolveGrowthZone } from '../textEngine/growthLexicon.js';
 import { renderCampusDeviceEncounter, renderCampusDeviceResult } from '../textEngine/scenes/campusDevice/index.js';
 import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes/hungerInterrupt.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
@@ -36,6 +38,7 @@ const MOODS = ["happy", "focused", "excited", "content", "tired", "stressed", "w
 const COR_POINTS = { 0: 10, 1: 50, 2: 90 };
 const RANDOM = "random";
 const DEVICE_IDS = Object.keys(DEVICES).filter(id => DEVICES[id].form === 'worn' || DEVICES[id].form === 'campus_tool');
+const GROWTH_ZONES = ['belly', 'lower_body', 'curves', 'full', 'bust'];
 
 const MOCK_EXPLORATION = { week: 6, campusTier: 1 };
 const MOCK_ENCOUNTER = {
@@ -67,6 +70,13 @@ const SECTIONS = {
       subject: s, week: 6,
       globals: { campusFattening: (opts.campusTier || 0) > 0, campusTier: opts.campusTier || 0 },
     }), { trace: opts.trace }) },
+  "grow.sudden": { params: [...STATE_PARAMS, "growthZone"],
+    fn: (s, opts) => {
+      const zone = opts.growthZone && opts.growthZone !== 'random'
+        ? opts.growthZone
+        : resolveGrowthZone(s);
+      return renderSuddenGrowthLine(s, { gainLbs: 6, growthZone: zone, week: 6 });
+    } },
   "device.tick": { params: [...STATE_PARAMS, "device", "deviceDep"],
     fn: (s, opts) => {
       const deviceId = opts.device || 'auto_feeder_arm';
@@ -130,6 +140,7 @@ const PARAM_DEFS = [
   { key: "campus", label: "Campus tier", options: ["0", "1", "2", "3"] },
   { key: "device", label: "Device", options: DEVICE_IDS, optionLabel: (v) => DEVICES[v]?.label || v },
   { key: "deviceDep", label: "Device dep", options: ["0", "15", "30", "55", "80"], optionLabel: (v) => `${v} (${({ 0: 'Low', 15: 'Low+', 30: 'Elevated', 55: 'High', 80: 'Extreme' })[v]})` },
+  { key: "growthZone", label: "Growth zone", options: [...GROWTH_ZONES, "random"], optionLabel: (v) => v === 'random' ? 'auto (body type)' : v },
 ];
 
 // Resolve one sample's state: locked params stay, Random rolls fresh.
@@ -179,6 +190,7 @@ function rollSample(params) {
     trace,
     device: v.device,
     deviceDep: v.deviceDep,
+    growthZone: v.growthZone,
   };
   const text = SECTIONS[v.section].fn(student, opts);
   // annotation units: leaf fragments, minus bare identity helpers

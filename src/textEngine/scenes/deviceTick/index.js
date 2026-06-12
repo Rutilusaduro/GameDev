@@ -5,13 +5,22 @@ import { registerPool, createContext, render } from '../../engine.js';
 import { getStage } from '../../../gameData/stages.js';
 import { getEquippedDeviceIds } from '../../../gameData/deviceEquip.js';
 import { getDeviceDependence, getDeviceDependenceTier } from '../../../gameData/deviceDependence.js';
+import { resolveGrowthZone, SUDDEN_GROWTH_LBS_MIN } from '../../growthLexicon.js';
+import '../../growthLexicon.js';
 import './fragments.js';
 import '../../modules.js';
 
 registerPool('device.tick.beat', [
+  { when: { isMalfunction: true, gainLbsMin: SUDDEN_GROWTH_LBS_MIN }, text: [
+    '{device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }{join:device.tick.malfClause|prefix: — }; {grow.sudden}',
+    '⚠️ {device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }{join:device.tick.malfClause|prefix: — }; {grow.sudden}',
+  ] },
   { when: { isMalfunction: true }, text: [
     '{device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }{join:device.tick.malfClause|prefix: — }; {device.tick.growth}{join:device.tick.sensation|prefix: — }.',
-    '⚠️ {device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }{join:device.tick.malfClause|prefix: — }; {device.tick.growth}.',
+  ] },
+  { when: { gainLbsMin: SUDDEN_GROWTH_LBS_MIN }, text: [
+    '{device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }; {grow.sudden}{join:device.tick.synergy|prefix: }.',
+    '{device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }; {grow.sudden}',
   ] },
   { when: {}, text: [
     '{device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }; {device.tick.growth}{join:device.tick.sensation|prefix: — }{join:device.tick.synergy|prefix: }.',
@@ -71,6 +80,7 @@ export function renderDeviceTickLine({
       furnitureComfortLow: deviceId === 'living_furniture_rig' && comfort < 40,
       deviceDependence: depLevel,
       deviceDependenceTier: depTier,
+      growthZone: resolveGrowthZone(student),
     },
   });
   return render('{device.tick.beat}', ctx);

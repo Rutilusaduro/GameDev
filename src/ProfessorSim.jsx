@@ -112,6 +112,7 @@ import { DEVICES } from './gameData/devices.js';
 import {
   equipDevice, unequipDevice, attachToDevice, findAttachmentHostSlot, useConsumableDevice,
   tickEquippedDevices, clearExpiredOverrides, triggerBeltBloatNow, applyDeviceEffect,
+  growthLineForStudent,
 } from './gameData/deviceEffects.js';
 import { applyPsychDelta } from './gameData/psychState.js';
 import { applyCampusDeviceEncounter } from './gameData/campusDeviceEncounters.js';
@@ -2648,14 +2649,17 @@ export default function ProfessorSim(){
       const result=triggerBeltBloatNow(s,week,Math.random);
       if(!result.ok){ push('⚠️ Belt not active.'); return; }
       applyStudentDeviceResult(studentId,result,DEVICES.auto_bloating_belt);
-      push(`⭕ Belt bloat triggered on ${s.name}.`);
+      const extra=result.lines?.filter(l=>!l.startsWith('⚠️')&&l!=='Belt cycles to aggressive bloat mode.').join(' ');
+      push(`⭕ Belt bloat triggered on ${s.name}.${extra?` ${extra}`:''}`);
       return;
     }
     if(actionId==='run_feeder_session'){
       const effect={ gainLbs:[4,8], psychDelta:{ dependence:2 } };
       const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'auto_feeder_arm', rng:Math.random });
-      applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.auto_feeder_arm);
-      push(`🦾 Feeder session run on ${s.name}.`);
+      const gain=applied.student._pendingGainLbs||0;
+      const gl=growthLineForStudent(applied.student,gain);
+      applyStudentDeviceResult(studentId,{ ok:true, ...applied, lines:[...applied.lines,...(gl?[gl]:[])] },DEVICES.auto_feeder_arm);
+      push(`🦾 Feeder session run on ${s.name}.${gl?` ${gl}`:''}`);
       return;
     }
     if(actionId==='inject_serum'){
@@ -2674,8 +2678,10 @@ export default function ProfessorSim(){
     if(actionId==='run_mask_session'){
       const effect=DEVICES.feeding_mask.useEffect||{};
       const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'feeding_mask', rng:Math.random });
-      applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.feeding_mask);
-      push(`🎭 Mask session on ${s.name}.`);
+      const gain=applied.student._pendingGainLbs||0;
+      const gl=growthLineForStudent(applied.student,gain);
+      applyStudentDeviceResult(studentId,{ ok:true, ...applied, lines:[...applied.lines,...(gl?[gl]:[])] },DEVICES.feeding_mask);
+      push(`🎭 Mask session on ${s.name}.${gl?` ${gl}`:''}`);
       return;
     }
     if(actionId==='sleep_feed_gentle'){
@@ -2688,8 +2694,10 @@ export default function ProfessorSim(){
     if(actionId==='sleep_feed_aggressive'){
       const effect={ gainLbs:[5,9], bodyOverride:{ stateType:'bloated', stageBump:2, durationWeeks:1 }, psychDelta:{ dependence:4 } };
       const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'sleep_feeding_system', rng:Math.random });
-      applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.sleep_feeding_system);
-      push(`🌙 Aggressive sleep-feed cycle on ${s.name}.`);
+      const gain=applied.student._pendingGainLbs||0;
+      const gl=growthLineForStudent(applied.student,gain);
+      applyStudentDeviceResult(studentId,{ ok:true, ...applied, lines:[...applied.lines,...(gl?[gl]:[])] },DEVICES.sleep_feeding_system);
+      push(`🌙 Aggressive sleep-feed cycle on ${s.name}.${gl?` ${gl}`:''}`);
       return;
     }
     if(actionId==='infuser_water_mode'){
