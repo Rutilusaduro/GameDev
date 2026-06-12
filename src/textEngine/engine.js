@@ -12,7 +12,7 @@ import { getAddictionLevel, getHungerTier, isInWithdrawal } from '../gameData/hu
 import {
   getFixationTier, getObsessionTier, getDependenceTier, getShameTier,
 } from '../gameData/psychState.js';
-import { getEquippedDeviceIds } from '../gameData/deviceEffects.js';
+import { getEquippedDeviceIds } from '../gameData/deviceEquip.js';
 
 const DEV = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV;
 const warn = (...args) => { if (DEV) console.warn('[textEngine]', ...args); };
@@ -218,6 +218,13 @@ function evalWhen(when, ctx) {
       case "role": ok = ctx.globals?.role === v; break;
       case "deviceId": ok = ctx.globals?.deviceId === v; break;
       case "modeId": ok = ctx.globals?.modeId === v; break;
+      case "isMalfunction": ok = !!ctx.globals?.isMalfunction === !!v; break;
+      case "malfunctionTier": ok = ctx.globals?.malfunctionTier === v; break;
+      case "hasAttachment": ok = ctx.globals?.hasAttachment === v; break;
+      case "furnitureComfortLow": ok = !!ctx.globals?.furnitureComfortLow === !!v; break;
+      case "equippedHead": ok = d.equippedHead === v || ctx.globals?.equippedHead === v; break;
+      case "gainLbsMin": ok = (ctx.globals?.gainLbs ?? 0) >= v; break;
+      case "equippedCountMin": ok = (ctx.globals?.equippedCountMin ?? 0) >= v; break;
       case "studentId": {
         const actual = d.studentId ?? ctx.globals?.studentId;
         ok = Array.isArray(v) ? v.includes(actual) : actual === v;

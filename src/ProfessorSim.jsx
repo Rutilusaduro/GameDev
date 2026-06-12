@@ -124,6 +124,7 @@ import { LabBuildModal } from './components/LabBuildModal.jsx';
 import { DeviceTargetPicker } from './components/DeviceTargetPicker.jsx';
 import { EquipPicker, AttachPicker } from './components/EquipPicker.jsx';
 import { MalfunctionPopup } from './components/MalfunctionPopup.jsx';
+import { DeviceTickPopup } from './components/DeviceTickPopup.jsx';
 import { CampusView } from './views/CampusView.jsx';
 import { SkillTreeView } from './views/SkillTreeView.jsx';
 import { AchievementsView } from './views/AchievementsView.jsx';
@@ -269,6 +270,7 @@ export default function ProfessorSim(){
   const [equipPicker, setEquipPicker] = useState(null);
   const [attachPicker, setAttachPicker] = useState(null);
   const [malfunctionPopup, setMalfunctionPopup] = useState(null);
+  const [deviceTickQueue, setDeviceTickQueue] = useState(null);
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
   const [weeklyArms, setWeeklyArms] = useState({ devouringStudentId: null, mesmerizingStudentId: null, devouringConsumed: false });
   const skipHungerCheckRef = useRef(false);
@@ -915,18 +917,13 @@ export default function ProfessorSim(){
       nextPharmacistState=cleanPs;
     }
     if(pharmacistState) setPharmacistState(nextPharmacistState);
+    const deviceTickEvents=[];
     updated=updated.map(s=>{
       let ns=clearExpiredOverrides(s,newWeek);
       const tick=tickEquippedDevices(ns,newWeek,Math.random);
       ns=tick.student;
-      tick.lines.forEach((line,idx)=>{
-        setTimeout(()=>push(`⚙️ ${ns.name}: ${line}`),60+idx*40);
-      });
-      const major=tick.malfunctions.find(m=>m.tier==='major'||m.tier==='critical');
-      if(major){
-        setTimeout(()=>setMalfunctionPopup({
-          studentName:ns.name,tier:major.tier,text:major.text,deviceLabel:'Device',
-        }),120);
+      if(tick.tickEvents?.length){
+        deviceTickEvents.push(...tick.tickEvents);
       }
       if(ns._pendingGainLbs){
         const g=ns._pendingGainLbs;
@@ -935,6 +932,9 @@ export default function ProfessorSim(){
       }
       return ns;
     });
+    if(deviceTickEvents.length){
+      setDeviceTickQueue({ events: deviceTickEvents, index: 0 });
+    }
     if(labState){
       let nextLab=tickLabWeek(ensureNetwork(labState));
       if((nextLab.stage??1)>=2&&nextLab.network){
@@ -5629,6 +5629,13 @@ export default function ProfessorSim(){
       {equipPicker&&<EquipPicker equipPicker={equipPicker} setEquipPicker={setEquipPicker} students={students} lilithUnlocked={lilithUnlocked} equipDeviceOn={equipDeviceOn}/>}
       {attachPicker&&<AttachPicker attachPicker={attachPicker} setAttachPicker={setAttachPicker} students={students} lilithUnlocked={lilithUnlocked} attachDeviceOn={attachDeviceOn}/>}
       {malfunctionPopup&&<MalfunctionPopup malfunctionPopup={malfunctionPopup} setMalfunctionPopup={setMalfunctionPopup}/>}
+      {deviceTickQueue&&(
+        <DeviceTickPopup
+          queue={deviceTickQueue}
+          onAdvance={()=>setDeviceTickQueue(q=>(q?{...q,index:q.index+1}:null))}
+          onDismissAll={()=>setDeviceTickQueue(null)}
+        />
+      )}
       {labSession&&labStudentId!=null&&(()=>{
         const labStudent=students.find(st=>st.id===labStudentId);
         if(!labStudent) return null;

@@ -1,8 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // DEVICE EFFECT RESOLUTION — engine-free logic
 // ═══════════════════════════════════════════════════════════════
+import { renderDeviceTickLine } from '../textEngine/scenes/deviceTick/index.js';
 import { getDevice, DEVICE_SLOTS } from './devices.js';
 import { applyPsychDelta } from './psychState.js';
+
+export { getEquippedDeviceIds, hasPredatorCapture } from './deviceEquip.js';
 
 let _instanceCounter = 0;
 export function nextDeviceInstanceId() {
@@ -100,6 +103,41 @@ function rollRange(range, rng) {
   return lo + Math.floor(rng() * (hi - lo + 1));
 }
 
+function attachmentIdsFromEntry(entry) {
+  if (!entry?.attachments) return [];
+  return Object.values(entry.attachments).map(a => a?.defId).filter(Boolean);
+}
+
+function buildTickEvent(student, slot, entry, week, rng, resultStudent, gainLbs, malf) {
+  const def = getDevice(entry.defId);
+  if (!def) return null;
+  const attachmentIds = attachmentIdsFromEntry(entry);
+  const prose = renderDeviceTickLine({
+    student: resultStudent,
+    deviceId: def.id,
+    deviceLabel: def.label,
+    slot,
+    gainLbs,
+    malfunctionTier: malf?.tier || null,
+    attachmentIds,
+    isMalfunction: !!malf,
+    week,
+  });
+  return {
+    studentId: student.id,
+    studentName: student.name,
+    deviceId: def.id,
+    deviceLabel: def.label,
+    deviceIcon: def.icon,
+    slot,
+    gainLbs,
+    malfunction: malf,
+    attachmentIds,
+    prose,
+    isMalfunction: !!malf,
+  };
+}
+
 function mergeBodyOverride(student, overrideSpec, week, sourceDeviceId) {
   if (!overrideSpec) return student.bodyOverride || null;
   const expiresWeek = overrideSpec.durationWeeks
@@ -181,23 +219,11 @@ export function rollMalfunction(def, student, rng = Math.random) {
   };
 }
 
-function tickFurnitureComfort(student, week, rng) {
-  if (student?.equip?.fullBody?.defId !== 'living_furniture_rig') return student;
-  const comfort = student.deviceState?.furnitureComfort ?? 100;
-  if (comfort >= 40) return student;
-  const extra = comfort < 20 ? [2, 4] : [1, 2];
-  const applied = applyDeviceEffect(student, {
-    gainLbs: extra,
-    psychDelta: { shame: comfort < 20 ? 3 : 1, dependence: 1 },
-  }, { week, sourceDeviceId: 'living_furniture_rig', rng });
-  return applied.student;
-}
-
 function resolveWeeklyDevice(student, slot, entry, week, rng) {
   const def = getDevice(entry.defId);
-  if (!def) return { student, lines: [], malfunctions: [] };
+  if (!def) return { student, tickEvents: [], malfunctions: [] };
   let next = student;
-  const lines = [];
+  const tickEvents = [];
   const malfunctions = [];
 
   let weekly = { ...(def.weeklyEffect || {}) };
@@ -225,25 +251,45 @@ function resolveWeeklyDevice(student, slot, entry, week, rng) {
 
   const applied = applyDeviceEffect(next, weekly, { week, sourceDeviceId: def.id, rng });
   next = applied.student;
-  if (applied.lines.length) {
-    lines.push(`${def.icon} ${def.label} (${slot}): ${applied.lines.join(', ')}`);
-  }
+  const gainBeforeMalf = next._pendingGainLbs || 0;
 
   const malf = rollMalfunction(def, next, rng);
   if (malf) {
     malfunctions.push(malf);
     const mApplied = applyDeviceEffect(next, malf.effect, { week, sourceDeviceId: def.id, rng });
     next = mApplied.student;
-    lines.push(`⚠️ ${def.label} malfunction (${malf.tier}): ${malf.text}`);
+    const totalGain = next._pendingGainLbs || 0;
+    const ev = buildTickEvent(student, slot, entry, week, rng, next, totalGain, malf);
+    if (ev) tickEvents.push(ev);
+  } else {
+    const ev = buildTickEvent(student, slot, entry, week, rng, next, gainBeforeMalf, null);
+    if (ev) tickEvents.push(ev);
   }
 
-  return { student: next, lines, malfunctions };
+  return { student: next, tickEvents, malfunctions };
+}
+
+function tickFurnitureComfortBonus(student, week, rng) {
+  if (student?.equip?.fullBody?.defId !== 'living_furniture_rig') return null;
+  const comfort = student.deviceState?.furnitureComfort ?? 100;
+  if (comfort >= 40) return null;
+  const extra = comfort < 20 ? [2, 4] : [1, 2];
+  const applied = applyDeviceEffect(student, {
+    gainLbs: extra,
+    psychDelta: { shame: comfort < 20 ? 3 : 1, dependence: 1 },
+  }, { week, sourceDeviceId: 'living_furniture_rig', rng });
+  const gainLbs = applied.student._pendingGainLbs || rollRange(extra, rng);
+  const event = buildTickEvent(
+    student, 'fullBody', student.equip.fullBody, week, rng,
+    applied.student, gainLbs, null,
+  );
+  return event ? { student: applied.student, event } : null;
 }
 
 export function tickEquippedDevices(student, week, rng = Math.random) {
-  if (!student?.equip) return { student, lines: [], malfunctions: [] };
+  if (!student?.equip) return { student, tickEvents: [], malfunctions: [] };
   let next = { ...student };
-  const allLines = [];
+  const tickEvents = [];
   const allMalfs = [];
 
   for (const slot of DEVICE_SLOTS) {
@@ -251,13 +297,17 @@ export function tickEquippedDevices(student, week, rng = Math.random) {
     if (!entry) continue;
     const res = resolveWeeklyDevice(next, slot, entry, week, rng);
     next = res.student;
-    allLines.push(...res.lines);
-    allMalfs.push(...res.malfs);
+    tickEvents.push(...res.tickEvents);
+    allMalfs.push(...res.malfunctions);
   }
 
-  next = tickFurnitureComfort(next, week, rng);
+  const comfortBonus = tickFurnitureComfortBonus(next, week, rng);
+  if (comfortBonus) {
+    tickEvents.push(comfortBonus.event);
+    next = comfortBonus.student;
+  }
 
-  return { student: next, lines: allLines, malfunctions: allMalfs };
+  return { student: next, tickEvents, malfunctions: allMalfs };
 }
 
 export function clearExpiredOverrides(student, week) {
@@ -308,27 +358,6 @@ export function triggerBeltBloatNow(student, week, rng = Math.random) {
     result.lines = ['Belt cycles to aggressive bloat mode.'];
   }
   return { ...result, ok: true, malfunction: malf };
-}
-
-export function getEquippedDeviceIds(student) {
-  const ids = [];
-  if (!student?.equip) return ids;
-  for (const slot of DEVICE_SLOTS) {
-    const e = student.equip[slot];
-    if (e?.defId) ids.push(e.defId);
-    if (e?.attachments) {
-      for (const a of Object.values(e.attachments)) {
-        if (a?.defId) ids.push(a.defId);
-      }
-    }
-  }
-  return ids;
-}
-
-export function hasPredatorCapture(student) {
-  const mask = student?.equip?.head;
-  if (!mask || mask.defId !== 'feeding_mask') return false;
-  return mask.attachments?.captureUpgrade?.defId === 'predator_capture_module';
 }
 
 export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng = Math.random) {

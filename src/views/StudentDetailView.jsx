@@ -15,7 +15,7 @@ import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData
 import { INVENTOR_PATH_STAGES, INVENTOR_ACTIVITIES } from '../gameData/talia.js';
 import { networkSummary } from '../gameData/networkState.js';
 import { getAvailableDeviceActions, getBodyOverrideBadge } from '../gameData/deviceActions.js';
-import { formatEquipSlots } from '../gameData/deviceEffects.js';
+import { StudentEquipPanel } from '../components/StudentEquipPanel.jsx';
 import { formatIngredientBag } from '../gameData/pharmacistIngredients.js';
 import { CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier } from '../gameData/pharmacistCampus.js';
 import { getAddictionLevel, getHungerTier, HUNGER_TIERS, ADDICTION_LEVELS } from '../gameData/hungerAddiction.js';
@@ -188,19 +188,7 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                   <div style={{fontSize:13,color:"#e0d0b0",lineHeight:1.8,fontStyle:"italic"}}>{getBodyDesc(s, week)}</div>
                 </div>
 
-                {formatEquipSlots(s).length>0&&(
-                  <div style={C.infoBox("rgba(40,50,70,0.35)")}>
-                    <div style={{fontSize:9,color:"#506080",letterSpacing:2,marginBottom:6}}>EQUIPPED DEVICES</div>
-                    <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:6}}>
-                      {formatEquipSlots(s).map(eq=>(
-                        <span key={eq.slot} style={{...C.tag("rgba(74,96,128,0.25)","#90a8c8"),fontSize:9}}>
-                          {eq.icon} {eq.slot}: {eq.label}
-                          <button style={{...C.smBtn,marginLeft:6,padding:"1px 5px",fontSize:8}} onClick={()=>unequipDeviceSlot(s.id,eq.slot)}>×</button>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <StudentEquipPanel student={s} onUnequip={unequipDeviceSlot} />
 
                 {getAvailableDeviceActions(s,{deviceInventory}).length>0&&(
                   <div style={C.infoBox("rgba(30,40,55,0.4)")}>

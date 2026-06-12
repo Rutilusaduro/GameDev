@@ -25,5 +25,6 @@ import './talkCodas.js';
 import './talkEncourage.js';
 import './weighIn/index.js';
 import './deviceBody.js';
+import './deviceTick/index.js';
 import './talia/index.js';
 import '../modules.js';
