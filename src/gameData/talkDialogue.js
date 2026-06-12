@@ -69,33 +69,6 @@ She says it without performance. Without asking if it's okay. Her thighs spread 
     ],
   ],
 
-  compliment: [
-    [
-      (s) => `${s.name} flushes scarlet. "I— you noticed? I mean. Of course you noticed. It's… a lot to notice." She hugs her arms over her middle and fails to hide either the soft curve she's grown or the smile pulling at her mouth.
-
-At ${lbs(s)} lbs she's still new enough to this that praise feels dangerous — like admitting something out loud makes it real. It is real. Her hips are wider. Her thighs press together when she walks. Her face is fuller. She doesn't sound entirely unhappy about any of it.`,
-      (s) => `"You can't just say that," ${s.name} mutters, but she doesn't move away. Her hands hover at her waist, fingers pressing into the new softness there. "People aren't supposed to—" She stops. Swallows. "Nobody's ever said it like they meant it before."
-
-The compliment sits in the air between you. Her breathing changes — slower, deeper, belly rising against her top. She looks at you like she's waiting for the other shoe. It doesn't drop.`,
-    ],
-    [
-      (s) => `${s.name} does a slow half-turn, letting you appreciate the work in progress. At ${lbs(s)} lbs her body moves differently — belly swaying, hips rolling, ass and thighs plush with each step. "It's coming along," she says, mock-modest. "I've been diligent."
-
-She isn't performing confidence. She's practicing it. Her hands trace the heavy curve of her hips; her smile is warm and a little surprised at herself. "Keep talking," she says, settling into the chair. The chair groans. She doesn't care. "No, really. Keep talking."`,
-      (s) => `"Say it again," ${s.name} murmurs, and this time she means it. Her ${lbs(s)}-lb body is thick and soft and impossible to ignore — breasts heavier, belly rounding forward, thighs spreading warm against the chair arms.
-
-"You see it," she says. Not a question. "All of it." She runs both palms down the great curve of herself, feeling the weight settle. "I used to want to be invisible. Now I want—" She exhales. "This. I want this."`,
-    ],
-    [
-      (s) => `${s.name} takes the compliment the way she takes everything now — as her due. At ${lbs(s)} lbs she is abundant and warm and completely at home in the body you've helped her build. "I know," she says warmly. "And there's more of me every week. You're welcome."
-
-She smooths both hands down the vast soft geography of her belly, hips, thighs — slow, savoring, showing you without shame. "Say it again," she says. "Slower. I like hearing you mean it."`,
-      (s) => `"Again," ${s.name} says, eyes never leaving yours. Her enormous soft body fills the office with heat and presence — flesh pressing at every seam, jiggling when she shifts, settling heavy and warm when she stills.
-
-"You wanted this," she murmurs. "So did I. Look what we made." She takes your hand and places it on the warm crest of her belly. "Feel that? Still growing. Still yours to watch."`,
-    ],
-  ],
-
   suggest_indulgence: [
     [
       (s) => `You let the idea drift into the conversation, soft as smoke — food, warmth, the pleasure of filling herself. ${s.name} blinks. Her pupils dilate slightly.
