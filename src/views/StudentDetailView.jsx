@@ -2,7 +2,7 @@ import { EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, EVOLVED_ACTIVITY_META, EVOLVED
 import { ATMOSPHERE_TIERS, GUEST_TIERS, MENU_TIERS } from '../gameData/chapterHostess.js';
 import { C } from '../styles.js';
 import { LilithPixelArt } from '../components/LilithPixelArt.jsx';
-import { BRANDS } from '../gameData/streaming.js';
+import { BRANDS, getBrandControlLabel } from '../gameData/streaming.js';
 import { getCorruptionTier, CORRUPTION_CONFIG } from '../gameData/corruption.js';
 import { CASE_STUDY_PAIRS } from '../gameData/communityResearcher.js';
 import { EVOLVED_SKILL_TREES } from '../gameData/skills.js';
@@ -519,6 +519,13 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                             <div style={{fontSize:10,color:"#e08090",marginBottom:6,padding:"6px 10px",background:"rgba(80,10,20,0.35)",borderRadius:6,border:"1px solid #e74c3c33"}}>
                               📡 Sponsor: <span style={{color:"#ff8090",fontWeight:700}}>{BRANDS[s.brand]?.name||s.brand}</span>
                               {s.audience!=null&&<span style={{color:"#a06070"}}> · {Math.round(s.audience)} followers</span>}
+                              {(s.totalStreams||0)>0&&<span style={{color:"#a06070"}}> · {s.totalStreams} streams</span>}
+                              {(s.brandStreaks?.[s.brand]||0)>0&&(
+                                <span style={{color:"#ff6080"}}> · {getBrandControlLabel(s.brandStreaks[s.brand])} ({s.brandStreaks[s.brand]} streak)</span>
+                              )}
+                              {s.sponsorFavor?.[s.brand]!=null&&(
+                                <span style={{color:"#c08090"}}> · favor {Math.round(s.sponsorFavor[s.brand])}%</span>
+                              )}
                             </div>
                           )}
                           {s.evolvedForm==='eating_streamer'&&(
