@@ -70,10 +70,10 @@ import {
   deriveResistance, mergePreStreamMultipliers, selectChallenges, pickRoundCount,
   computeRoundScore, computeRoundLbs, staminaPenaltyFor, stageStaminaTax,
   addictionDrainMod, MISS_STAMINA_PENALTY, STAMINA_EXCELLENT_GAIN,
-  checkTapOutConditions, computeRewards, deriveTrend, DESTINY_MONEY_FLAVOR,
+  checkTapOutConditions, computeRewards, deriveTrend, deriveRecentPerf, DESTINY_MONEY_FLAVOR,
   getBrandControlTier, detectNewStreamMilestones, detectSpecialOutcomes,
   applySpecialOutcomeBonuses, STAMINA_DRAIN_PER_SEC, STAMINA_DRAIN_CONTROL_MULT,
-  getStreamMilestoneLabel, SPECIAL_OUTCOME_DEFS,
+  getStreamMilestoneLabel,
 } from './gameData/streaming.js';
 import { MoodBadge } from './components/ui.jsx';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
@@ -3124,6 +3124,7 @@ export default function ProfessorSim(){
     ctx.d.trend=extra.trend??session.trend;
     ctx.d.brandStreak=session.brandStreak??0;
     ctx.d.brandControl=session.brandControlTier??getBrandControlTier(session.brandStreak??0);
+    ctx.d.recentPerf=extra.recentPerf??deriveRecentPerf(session.tierHistory);
     return ctx;
   };
 
@@ -3276,7 +3277,7 @@ export default function ProfessorSim(){
       const newFullness=prev.sessionFullness+roundLbs;
       const tierHistory=[...prev.tierHistory,tier];
       const student=students.find(st=>st.id===prev.studentId);
-      const ctx=buildStreamCtx(prev,student,{perf:tier,trend:deriveTrend(tierHistory)});
+      const ctx=buildStreamCtx(prev,student,{perf:tier,trend:deriveTrend(tierHistory),recentPerf:deriveRecentPerf(tierHistory)});
       const betweenRoundLine=render('{stream.betweenRound}',ctx);
       let tapOutCause=prev.tapOutCause;
       if(!tapOutCause){
@@ -3300,6 +3301,7 @@ export default function ProfessorSim(){
         betweenRoundLine, tapOutCause,
         chatLines:[...prev.chatLines,...burst].slice(-40),
         trend:deriveTrend(tierHistory),
+        recentPerf:deriveRecentPerf(tierHistory),
       };
     });
   },[students, week]);
@@ -5116,7 +5118,7 @@ export default function ProfessorSim(){
       {evolutionModal&&<EvolutionOfferModal chooseEvolution={chooseEvolution} evolutionModal={evolutionModal} setEvolutionModal={setEvolutionModal}/>}
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
-      {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} students={students}/>}
+      {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students}/>}
 
       {/* ── HOMEROOM QUEEN: CLASSROOM MINI-INTERFACE ── */}
       {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession}/>}

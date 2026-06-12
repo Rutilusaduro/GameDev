@@ -3,7 +3,7 @@
 // brand control, trend matrix, expanded chat)
 // Loaded after stream.js — overwrites key modules with richer pools.
 // ═══════════════════════════════════════════════════════════════
-import { registerModule } from '../engine.js';
+import { registerModule, registerModuleVariants } from '../engine.js';
 
 // ── Between-round: perf × brand × challenge × trend × brandControl ─
 
@@ -639,4 +639,94 @@ registerModule('stream.tapOut.performance', [
     'I\'m tapping out. I\'m sorry. I\'m just… not good enough right now.',
     'Performance tanked. Self-preservation activated.',
   ] },
+]);
+
+// ── Multi-round context (last 2–3 rounds) ─────────────────────
+
+registerModuleVariants('stream.betweenRound', [
+  { when: { recentPerf: 'hot', perf: 'good' }, priority: 7,
+    text: [
+      'Last few rounds were actually insane — I\'m riding a high.',
+      'Chat, I\'m on a streak. Don\'t jinx me.',
+      'Momentum is REAL. I can feel it in my hits.',
+    ] },
+  { when: { recentPerf: 'hot' }, priority: 6,
+    text: [
+      'I\'ve been cooking for multiple rounds straight.',
+      'This whole stream I\'ve been locked in. Scary.',
+      'They\'re gonna clip the whole VOD at this rate.',
+    ] },
+  { when: { recentPerf: 'cold', perf: 'poor' }, priority: 7,
+    text: [
+      'It\'s been bad for a while now… I\'m not recovering.',
+      'Three rounds of struggling. I feel it.',
+      'Chat stop saying "you got this" — I clearly don\'t.',
+    ] },
+  { when: { recentPerf: 'cold' }, priority: 6,
+    text: [
+      'The last few rounds have been rough. I\'m tired.',
+      'I keep hoping the next round fixes it. It hasn\'t.',
+      'Decline arc is real and I\'m living in it.',
+    ] },
+  { when: { recentPerf: 'mixed' }, priority: 5,
+    text: [
+      'Up and down all stream. Chaotic performance.',
+      'I can\'t tell if I\'m getting better or worse.',
+      'Mixed bag tonight. Story of my career.',
+    ] },
+]);
+
+// ── Brand persona drift (long streak = stronger voice) ───────────
+
+const personaBetween = {
+  crunchforge: {
+    early: ['That was brutal. Good.', 'Messy. Loud. Correct.'],
+    mid: ['I ate that like I meant it. CrunchForge approves.', 'Feral round. No apologies.'],
+    late: ['I\'m their monster and I\'m performing.', 'Violence eating. Sponsor loves it.'],
+    soldOut: ['I don\'t have a personality anymore — just appetite and a logo.', 'Sold out and savage. Peak CrunchForge.'],
+  },
+  fizzpeak: {
+    early: ['THAT WAS INSANE!!', 'Chat we\'re POPPING OFF!!'],
+    mid: ['Energy STILL UP!!', 'This stream is UNHINGED and I\'m HERE for it!!'],
+    late: ['I\'M VIBRATING!! THIS IS PEAK!!', 'FizzPeak chaos stream — NEVER CALM!!'],
+    soldOut: ['MAXIMUM CHAOS!! NO BRAKES!! SPONSOR SCREAMING!!', 'I AM THE ALGORITHM NOW!!'],
+  },
+  velvetmelt: {
+    early: ['Mmm… that felt so good…', 'Slow, soft, sinful…'],
+    mid: ['Every bite was for you…', 'I\'m getting so full… and so happy…'],
+    late: ['Use me for content… I don\'t mind anymore…', 'Soft and stuffed and yours…'],
+    soldOut: ['I\'m their plush toy… feed me more…', 'VelvetMelt owns my softness now…'],
+  },
+  glazeco: {
+    early: ['I was so good just now~', 'Did you like watching me struggle?'],
+    mid: ['Brat mode activated. Tips or I slow down.', 'I know you\'re staring. Good.'],
+    late: ['I\'m spoiled and stuffed and you paid for this.', 'GlazeCo princess energy. Bow.'],
+    soldOut: ['I\'m a brand mascot with attitude. Deal with it.', 'Sold out brat. No refunds.'],
+  },
+};
+
+for (const [brand, tiers] of Object.entries(personaBetween)) {
+  for (const [control, lines] of Object.entries(tiers)) {
+    registerModuleVariants('stream.betweenRound', [
+      { when: { brand, brandControl: control }, priority: control === 'soldOut' ? 8 : 6, text: lines },
+    ]);
+  }
+}
+
+registerModuleVariants('stream.chat.perf.good', [
+  { when: { brand: 'crunchforge', brandControl: 'soldOut' }, priority: 6,
+    text: ['she\'s feral again', 'crunchforge propaganda stream', 'violence eating live'] },
+  { when: { brand: 'fizzpeak', brandControl: 'late' }, priority: 6,
+    text: ['INSANE ENERGY', 'she\'s POPPING OFF', 'fizzpeak coded chaos'] },
+  { when: { brand: 'velvetmelt', brandControl: 'late' }, priority: 6,
+    text: ['soft queen hours', 'she\'s so sensual rn', 'velvetmelt heaven'] },
+  { when: { brand: 'glazeco', brandControl: 'late' }, priority: 6,
+    text: ['brat streamer wins', 'she\'s teasing so hard', 'glazeco princess'] },
+]);
+
+registerModuleVariants('stream.roundStart', [
+  { when: { recentPerf: 'hot' }, priority: 6,
+    text: ['Still hot from last round — let\'s keep cooking.', 'Momentum round. Don\'t blink.'] },
+  { when: { recentPerf: 'cold' }, priority: 6,
+    text: ['Reset round. I need a miracle.', 'Last rounds sucked. This one has to land.'] },
 ]);
