@@ -53,6 +53,7 @@ export const DEVICES = {
     attachmentBonus: {
       feedSource: {
         calorie_paste_printer: { gainLbsBonus: [2, 4], psychDelta: { fixation: 2 } },
+        liquid_fat_infuser: { gainLbsBonus: [3, 6], psychDelta: { fixation: 3, dependence: 2 } },
       },
     },
     malfunctions: [
@@ -131,6 +132,179 @@ export const DEVICES = {
       { tier: 'major', weight: 2, text: 'Lock-in mode sticks. The new shape holds longer than planned.', effect: { permanentConvert: { bodyTypeOverride: 'pear' } } },
     ],
   },
+  remote_feeding_system: {
+    id: 'remote_feeding_system',
+    label: 'Remote Feeding System',
+    icon: '📡',
+    form: 'campus_tool',
+    tier: 2,
+    stability: 0.55,
+    risk: 0.45,
+    effectStrength: 0.75,
+    maintenanceCost: 3,
+    rarity: 'rare',
+    desc: 'Drones, wireless tubes, and hidden pumps — feed a target from anywhere on campus without standing beside them.',
+    campusModes: [
+      { id: 'stealth', label: 'Stealth drip', gainLbs: [1, 3], psychDelta: { dependence: 1 }, discoveryRisk: 0.08 },
+      { id: 'tease', label: 'Tease mode', gainLbs: [2, 4], psychDelta: { dependence: 2, fixation: 1 }, discoveryRisk: 0.12 },
+      { id: 'force', label: 'Force pulse', gainLbs: [4, 7], bodyOverride: { stateType: 'bloated', stageBump: 1, durationWeeks: 1 }, psychDelta: { dependence: 3, shame: 1 }, discoveryRisk: 0.22 },
+      { id: 'punishment', label: 'Punishment burst', gainLbs: [6, 10], bodyOverride: { stateType: 'bloated', stageBump: 2, durationWeeks: 1 }, psychDelta: { dependence: 4, shame: 3 }, discoveryRisk: 0.35 },
+    ],
+    malfunctions: [
+      { tier: 'minor', weight: 4, text: 'The drone misses — delivery splashes the wrong bench.', effect: {} },
+      { tier: 'moderate', weight: 3, text: 'Lag hits mid-pulse. Food lands on clothes in plain sight.', effect: { psychDelta: { shame: 4 } } },
+      { tier: 'major', weight: 2, text: 'The system feeds the wrong person nearby.', effect: { gainLbs: [3, 6] } },
+    ],
+  },
+  sleep_feeding_system: {
+    id: 'sleep_feeding_system',
+    label: 'Sleep-Feeding System',
+    icon: '🌙',
+    form: 'worn',
+    slot: 'head',
+    attachmentSlots: ['feedSource'],
+    tier: 2,
+    stability: 0.7,
+    risk: 0.4,
+    effectStrength: 0.85,
+    maintenanceCost: 3,
+    rarity: 'rare',
+    desc: 'Soft mask, drip tubes, and sleep sensors — steady overnight calories while the target is helpless and unconscious.',
+    weeklyEffect: {
+      gainLbs: [4, 8],
+      bodyOverride: { stateType: 'bloated', stageBump: 1, durationWeeks: 1 },
+      psychDelta: { dependence: 4, fixation: 2 },
+    },
+    attachmentBonus: {
+      feedSource: {
+        liquid_fat_infuser: { gainLbsBonus: [3, 6], psychDelta: { fixation: 3, dependence: 2 } },
+        calorie_paste_printer: { gainLbsBonus: [2, 4], psychDelta: { fixation: 1 } },
+      },
+    },
+    malfunctions: [
+      { tier: 'minor', weight: 4, text: 'The drip runs too slow — modest gains, restless sleep.', effect: { gainLbs: [1, 2] } },
+      { tier: 'moderate', weight: 3, text: 'Deep-sleep overfeed — she wakes bloated and gurgling.', effect: { bodyOverride: { stateType: 'bloated', stageBump: 3, durationWeeks: 1 }, gainLbs: [3, 6] } },
+      { tier: 'major', weight: 2, text: 'Feeding continues after she wakes. Panic before the shutoff.', effect: { gainLbs: [6, 10], psychDelta: { shame: 5, dependence: 4 } } },
+      { tier: 'critical', weight: 1, text: 'Runaway overnight pump — she cannot stop swallowing until empty.', effect: { gainLbs: [10, 16], psychDelta: { dependence: 8, obsession: 4 } } },
+    ],
+  },
+  feeding_mask: {
+    id: 'feeding_mask',
+    label: 'Feeding Mask',
+    icon: '🎭',
+    form: 'worn',
+    slot: 'head',
+    attachmentSlots: ['feedSource', 'captureUpgrade'],
+    tier: 2,
+    stability: 0.6,
+    risk: 0.55,
+    effectStrength: 0.9,
+    maintenanceCost: 3,
+    rarity: 'rare',
+    desc: 'A locking lower-face mask that forces consumption through an integrated tube — you will eat.',
+    weeklyEffect: {
+      gainLbs: [3, 7],
+      psychDelta: { dependence: 3, shame: 2 },
+    },
+    useEffect: {
+      gainLbs: [5, 9],
+      bodyOverride: { stateType: 'bloated', stageBump: 2, durationWeeks: 1 },
+      psychDelta: { dependence: 4, shame: 3 },
+    },
+    campusModes: [
+      { id: 'steady', label: 'Steady force-feed', gainLbs: [5, 9], psychDelta: { dependence: 3, shame: 2 }, discoveryRisk: 0.18 },
+      { id: 'capture', label: 'Predator capture + feed', gainLbs: [6, 11], bodyOverride: { stateType: 'bloated', stageBump: 2, durationWeeks: 1 }, psychDelta: { dependence: 5, shame: 4 }, discoveryRisk: 0.32 },
+    ],
+    attachmentBonus: {
+      feedSource: {
+        liquid_fat_infuser: { gainLbsBonus: [4, 8], psychDelta: { fixation: 4 } },
+      },
+    },
+    malfunctions: [
+      { tier: 'minor', weight: 4, text: 'A seal leaks — paste smears her chin.', effect: { psychDelta: { shame: 2 } } },
+      { tier: 'moderate', weight: 3, text: 'Flow spikes. She chokes, swallows, and keeps swelling.', effect: { gainLbs: [4, 7], bodyOverride: { stateType: 'bloated', stageBump: 2, durationWeeks: 1 } } },
+      { tier: 'major', weight: 2, text: 'The mask locks until a quota is met.', effect: { gainLbs: [8, 12], psychDelta: { dependence: 6 } } },
+    ],
+  },
+  predator_capture_module: {
+    id: 'predator_capture_module',
+    label: 'Predator Capture Module',
+    icon: '🕷️',
+    form: 'attachment',
+    attachesTo: ['feeding_mask'],
+    attachSlot: 'captureUpgrade',
+    tier: 3,
+    stability: 0.65,
+    risk: 0.7,
+    effectStrength: 0.95,
+    maintenanceCost: 2,
+    rarity: 'rare',
+    desc: 'Launch-and-lock arms plus mild sedative gas — grab unwilling targets on campus and mask them before they can flee.',
+    weeklyEffect: {},
+    campusCapture: true,
+  },
+  liquid_fat_infuser: {
+    id: 'liquid_fat_infuser',
+    label: 'Liquid Fat Infuser',
+    icon: '💧',
+    form: 'attachment',
+    attachesTo: ['auto_feeder_arm', 'sleep_feeding_system', 'feeding_mask'],
+    attachSlot: 'feedSource',
+    tier: 2,
+    stability: 0.55,
+    risk: 0.6,
+    effectStrength: 0.95,
+    maintenanceCost: 3,
+    rarity: 'rare',
+    desc: 'Turns ordinary liquids into dense fattening slurry — devastating in Water Fattening mode.',
+    weeklyEffect: {},
+    useEffect: {
+      gainLbs: [6, 12],
+      bodyOverride: { stateType: 'bloated', stageBump: 3, durationWeeks: 1 },
+      psychDelta: { fixation: 4, dependence: 3 },
+    },
+    campusModes: [
+      { id: 'water_subtle', label: 'Subtle water fattening', gainLbs: [2, 4], psychDelta: { fixation: 2 }, discoveryRisk: 0.1 },
+      { id: 'water_aggressive', label: 'Aggressive infusion', gainLbs: [5, 9], bodyOverride: { stateType: 'bloated', stageBump: 2, durationWeeks: 1 }, psychDelta: { fixation: 4, dependence: 2 }, discoveryRisk: 0.25 },
+    ],
+    malfunctions: [
+      { tier: 'minor', weight: 4, text: 'Uneven flow — pockets of heavy slurry and air.', effect: { gainLbs: [2, 4] } },
+      { tier: 'moderate', weight: 3, text: 'Sudden heavy infusion — belly balloons in minutes.', effect: { gainLbs: [6, 10], bodyOverride: { stateType: 'bloated', stageBump: 3, durationWeeks: 1 } } },
+      { tier: 'major', weight: 2, text: 'Compound overload — temporary immobility from sheer fullness.', effect: { gainLbs: [10, 15], psychDelta: { shame: 5 } } },
+      { tier: 'critical', weight: 1, text: 'The compound lingers — every drink hits harder for days.', effect: { gainLbs: [8, 12], psychDelta: { fixation: 8, dependence: 5 } } },
+    ],
+  },
+  living_furniture_rig: {
+    id: 'living_furniture_rig',
+    label: 'Living Furniture Rig',
+    icon: '🪑',
+    form: 'worn',
+    slot: 'fullBody',
+    tier: 3,
+    stability: 0.5,
+    risk: 0.65,
+    effectStrength: 0.9,
+    maintenanceCost: 5,
+    rarity: 'rare',
+    desc: 'Restraints and reshaping frames that turn a person into functional furniture — chair, couch, ottoman — fed to stay comfortable.',
+    weeklyEffect: {
+      gainLbs: [2, 5],
+      bodyOverride: { stateType: 'furniture', stageBump: 1, durationWeeks: 2 },
+      psychDelta: { dependence: 3, shame: 4, obsession: 2 },
+      furnitureComfortDelta: -12,
+    },
+    useEffect: {
+      furnitureComfortDelta: 35,
+      gainLbs: [1, 3],
+      psychDelta: { dependence: 2 },
+    },
+    malfunctions: [
+      { tier: 'minor', weight: 4, text: 'The frame creaks — uncomfortably sensitive padding.', effect: { psychDelta: { shame: 3 } } },
+      { tier: 'moderate', weight: 3, text: 'She moans when someone sits. Hard to pretend it is normal furniture.', effect: { psychDelta: { shame: 5, dependence: 2 } } },
+      { tier: 'major', weight: 2, text: 'Lock-in extends — furniture form holds another week.', effect: { bodyOverride: { stateType: 'furniture', stageBump: 2, durationWeeks: 3 } } },
+      { tier: 'critical', weight: 1, text: 'She starts answering to the furniture name Talia gave her.', effect: { psychDelta: { obsession: 8, dependence: 6 } } },
+    ],
+  },
 };
 
 export function getDevice(defId) {
@@ -143,4 +317,8 @@ export function devicesForStage(stage) {
 
 export function isPortableDevice(def) {
   return def && def.form !== 'installed';
+}
+
+export function isCampusTool(def) {
+  return def?.form === 'campus_tool' || (def?.campusModes?.length > 0);
 }

@@ -23,7 +23,9 @@ export function isSlotFree(student, slot) {
 
 export function equipDevice(student, defId, week = 1) {
   const def = getDevice(defId);
-  if (!def || def.form === 'consumable' || def.form === 'attachment') return { student, ok: false, reason: 'invalid' };
+  if (!def || def.form === 'consumable' || def.form === 'attachment' || def.form === 'campus_tool') {
+    return { student, ok: false, reason: 'invalid' };
+  }
   const slot = slotFor(def);
   if (!slot || !isSlotFree(student, slot)) return { student, ok: false, reason: 'slot_occupied' };
   const equip = { ...(student.equip || {}) };
@@ -45,8 +47,25 @@ export function unequipDevice(student, slot) {
   return { student: next, cleared: true };
 }
 
+export function findAttachmentHostSlot(student, attachDefId) {
+  const attachDef = getDevice(attachDefId);
+  if (!attachDef || attachDef.form !== 'attachment') return null;
+  for (const slot of DEVICE_SLOTS) {
+    const host = student?.equip?.[slot];
+    if (!host) continue;
+    const hostDef = getDevice(host.defId);
+    if (!hostDef?.attachmentSlots?.includes(attachDef.attachSlot)) continue;
+    if (!attachDef.attachesTo?.includes(hostDef.id)) continue;
+    if (host.attachments?.[attachDef.attachSlot]) continue;
+    return slot;
+  }
+  return null;
+}
+
 export function attachToDevice(student, hostSlot, attachDefId) {
-  const host = student?.equip?.[hostSlot];
+  const resolvedSlot = hostSlot || findAttachmentHostSlot(student, attachDefId);
+  if (!resolvedSlot) return { student, ok: false, reason: 'no_host' };
+  const host = student?.equip?.[resolvedSlot];
   if (!host) return { student, ok: false, reason: 'no_host' };
   const attachDef = getDevice(attachDefId);
   if (!attachDef || attachDef.form !== 'attachment') return { student, ok: false, reason: 'invalid_attach' };
@@ -55,14 +74,24 @@ export function attachToDevice(student, hostSlot, attachDefId) {
   if (!attachDef.attachesTo?.includes(hostDef.id)) return { student, ok: false, reason: 'incompatible' };
   if (host.attachments?.[attachDef.attachSlot]) return { student, ok: false, reason: 'slot_full' };
   const equip = { ...student.equip };
-  equip[hostSlot] = {
+  equip[resolvedSlot] = {
     ...host,
     attachments: {
       ...(host.attachments || {}),
       [attachDef.attachSlot]: { defId: attachDefId, instanceId: nextDeviceInstanceId() },
     },
   };
-  return { student: { ...student, equip }, ok: true };
+  return { student: { ...student, equip }, ok: true, slot: resolvedSlot };
+}
+
+function applyFurnitureComfortDelta(student, delta) {
+  if (delta == null) return student;
+  const prev = student.deviceState?.furnitureComfort ?? 100;
+  const nextComfort = Math.max(0, Math.min(100, prev + delta));
+  return {
+    ...student,
+    deviceState: { ...(student.deviceState || {}), furnitureComfort: nextComfort },
+  };
 }
 
 function rollRange(range, rng) {
@@ -123,6 +152,11 @@ export function applyDeviceEffect(student, effectSpec, ctx = {}) {
     next.psych = applyPsychDelta(next.psych || {}, effectSpec.psychDelta);
   }
 
+  if (effectSpec?.furnitureComfortDelta != null) {
+    next = applyFurnitureComfortDelta(next, effectSpec.furnitureComfortDelta);
+    lines.push(`furniture comfort ${effectSpec.furnitureComfortDelta > 0 ? '+' : ''}${effectSpec.furnitureComfortDelta}`);
+  }
+
   return { student: next, lines };
 }
 
@@ -147,6 +181,18 @@ export function rollMalfunction(def, student, rng = Math.random) {
   };
 }
 
+function tickFurnitureComfort(student, week, rng) {
+  if (student?.equip?.fullBody?.defId !== 'living_furniture_rig') return student;
+  const comfort = student.deviceState?.furnitureComfort ?? 100;
+  if (comfort >= 40) return student;
+  const extra = comfort < 20 ? [2, 4] : [1, 2];
+  const applied = applyDeviceEffect(student, {
+    gainLbs: extra,
+    psychDelta: { shame: comfort < 20 ? 3 : 1, dependence: 1 },
+  }, { week, sourceDeviceId: 'living_furniture_rig', rng });
+  return applied.student;
+}
+
 function resolveWeeklyDevice(student, slot, entry, week, rng) {
   const def = getDevice(entry.defId);
   if (!def) return { student, lines: [], malfunctions: [] };
@@ -155,6 +201,12 @@ function resolveWeeklyDevice(student, slot, entry, week, rng) {
   const malfunctions = [];
 
   let weekly = { ...(def.weeklyEffect || {}) };
+  if (def.id === 'living_furniture_rig') {
+    const comfort = student.deviceState?.furnitureComfort ?? 100;
+    if (comfort < 30) {
+      weekly.psychDelta = { ...(weekly.psychDelta || {}), shame: (weekly.psychDelta?.shame || 0) + 2 };
+    }
+  }
   if (def.attachmentBonus && entry.attachments) {
     for (const [attachSlot, attachEntry] of Object.entries(entry.attachments)) {
       const bonusMap = def.attachmentBonus[attachSlot];
@@ -202,6 +254,8 @@ export function tickEquippedDevices(student, week, rng = Math.random) {
     allLines.push(...res.lines);
     allMalfs.push(...res.malfs);
   }
+
+  next = tickFurnitureComfort(next, week, rng);
 
   return { student: next, lines: allLines, malfunctions: allMalfs };
 }
@@ -269,6 +323,54 @@ export function getEquippedDeviceIds(student) {
     }
   }
   return ids;
+}
+
+export function hasPredatorCapture(student) {
+  const mask = student?.equip?.head;
+  if (!mask || mask.defId !== 'feeding_mask') return false;
+  return mask.attachments?.captureUpgrade?.defId === 'predator_capture_module';
+}
+
+export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng = Math.random) {
+  const def = getDevice(defId);
+  if (!def) return { ok: false, reason: 'unknown_device' };
+  const mode = def.campusModes?.find(m => m.id === modeId) || def.campusModes?.[0];
+  if (!mode && def.form !== 'campus_tool' && !def.useEffect) {
+    return { ok: false, reason: 'no_mode' };
+  }
+  const effect = {
+    gainLbs: mode?.gainLbs,
+    bodyOverride: mode?.bodyOverride,
+    psychDelta: mode?.psychDelta,
+  };
+  if (!effect.gainLbs && def.useEffect) {
+    Object.assign(effect, def.useEffect);
+  }
+  let result = applyDeviceEffect(targetStudent, effect, { week, sourceDeviceId: def.id, rng });
+  const malf = rollMalfunction(def, result.student, rng);
+  if (malf) {
+    const mApplied = applyDeviceEffect(result.student, malf.effect, { week, sourceDeviceId: def.id, rng });
+    result = { student: mApplied.student, lines: [...result.lines, malf.text] };
+  }
+  const discoveryRisk = mode?.discoveryRisk ?? 0.15;
+  const discovered = rng() < discoveryRisk;
+  return {
+    ok: true,
+    student: result.student,
+    lines: result.lines,
+    malfunction: malf,
+    discovered,
+    discoveryRisk,
+    modeId: mode?.id || modeId,
+  };
+}
+
+export function furnitureComfortLabel(student) {
+  const comfort = student?.deviceState?.furnitureComfort;
+  if (comfort == null) return null;
+  if (comfort >= 70) return { label: 'Comfortable furniture', color: '#4a9a5a' };
+  if (comfort >= 40) return { label: 'Restless furniture', color: '#c8860a' };
+  return { label: 'Unstable furniture', color: '#c04040' };
 }
 
 export function formatEquipSlots(student) {

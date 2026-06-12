@@ -1,6 +1,6 @@
 import { C } from '../styles.js';
-import { slotFor } from '../gameData/deviceEffects.js';
-import { getDevice } from '../gameData/devices.js';
+import { slotFor, findAttachmentHostSlot } from '../gameData/deviceEffects.js';
+import { DEVICES, getDevice } from '../gameData/devices.js';
 
 export function EquipPicker({ equipPicker, setEquipPicker, students, lilithUnlocked, equipDeviceOn }) {
   const { def } = equipPicker;
@@ -45,12 +45,14 @@ export function AttachPicker({ attachPicker, setAttachPicker, students, lilithUn
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#6080a0', marginBottom: 6 }}>ATTACH MODULE</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#90b0d0', marginBottom: 4 }}>{def.icon} {def.label}</div>
         <div style={{ fontSize: 11, color: '#5a6080', marginBottom: 12 }}>
-          Requires a host with {def.attachSlot} slot — select student with feeder arm installed
+          Requires a compatible host with an open {def.attachSlot} slot
         </div>
         <div style={{ maxHeight: 320, overflowY: 'auto', marginBottom: 10 }}>
           {students.filter(s => !s.hidden || lilithUnlocked).map(s => {
-            const host = s.equip?.back;
-            const canAttach = host && def.attachesTo?.includes(host.defId);
+            const hostSlot = findAttachmentHostSlot(s, def.id);
+            const host = hostSlot ? s.equip?.[hostSlot] : null;
+            const hostDef = host ? DEVICES[host.defId] : null;
+            const canAttach = !!hostSlot;
             return (
               <button
                 key={s.id}
@@ -60,7 +62,7 @@ export function AttachPicker({ attachPicker, setAttachPicker, students, lilithUn
               >
                 <span>{s.name}</span>
                 <span style={{ fontSize: 10, color: canAttach ? '#60a060' : '#888' }}>
-                  {canAttach ? 'compatible host' : 'no host'}
+                  {canAttach ? `${hostDef?.label || 'host'} (${hostSlot})` : 'no host'}
                 </span>
               </button>
             );

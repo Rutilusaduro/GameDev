@@ -109,9 +109,10 @@ import {
 } from './gameData/labParts.js';
 import { DEVICES } from './gameData/devices.js';
 import {
-  equipDevice, unequipDevice, attachToDevice, useConsumableDevice,
+  equipDevice, unequipDevice, attachToDevice, findAttachmentHostSlot, useConsumableDevice,
   tickEquippedDevices, clearExpiredOverrides, triggerBeltBloatNow, applyDeviceEffect,
 } from './gameData/deviceEffects.js';
+import { applyCampusDeviceEncounter } from './gameData/campusDeviceEncounters.js';
 import { LabBuildModal } from './components/LabBuildModal.jsx';
 import { DeviceTargetPicker } from './components/DeviceTargetPicker.jsx';
 import { EquipPicker, AttachPicker } from './components/EquipPicker.jsx';
@@ -434,6 +435,7 @@ export default function ProfessorSim(){
   const getCampusExplorationCtx=()=>buildExplorationContext({
     students, pharmacistState, week, lilithUnlocked,
     exploration:campusState.exploration||defaultCampusExplorationState(),
+    labState, deviceInventory,
   });
 
   const grantExplorationReward=(grants)=>{
@@ -515,19 +517,66 @@ export default function ProfessorSim(){
         setStudents(prev=>prev.map(s=>s.id===ELARA_ID?{...s,relationship:Math.min(100,s.relationship+(quest.reward.relationship||0))}:s));
       }
     }
-    return { lines:[...lines,...extra], exploration };
+    return { lines:[...lines,...extra], exploration, deviceEncounter:effects.deviceEncounter||null };
+  };
+
+  const useCampusDevice=(encounter,deviceId,modeId)=>{
+    if(!encounter) return;
+    const exploration=campusState.exploration||defaultCampusExplorationState();
+    let student=null;
+    if(encounter.target.type==='student'){
+      student=students.find(st=>st.id===encounter.target.studentId);
+      if(!student){ campusLog(['⚠️ Target not found.']); return; }
+    } else {
+      student={
+        name:encounter.target.name,
+        archetype:encounter.target.archetype,
+        lbs:encounter.target.lbs,
+        psych:{},
+      };
+    }
+    const result=applyCampusDeviceEncounter({
+      encounter, deviceId, modeId, student, week, exploration, rng:Math.random,
+    });
+    if(!result.ok){ campusLog(['⚠️ Device use failed.']); return; }
+    const def=DEVICES[deviceId];
+    if(encounter.target.type==='student'&&result.student){
+      applyStudentDeviceResult(encounter.target.studentId,{ ok:true, ...result, student:result.student },def,false);
+    }
+    if(result.scrutinyDelta) addScrutiny(result.scrutinyDelta);
+    if(result.malfunction&&(result.malfunction.tier==='major'||result.malfunction.tier==='critical')){
+      setMalfunctionPopup({
+        studentName:encounter.target.name,tier:result.malfunction.tier,
+        text:result.malfunction.text,deviceLabel:def?.label,
+      });
+    }
+    setCampusState(prev=>({
+      ...prev,
+      activeEncounter:null,
+      exploration:result.exploration||prev.exploration,
+      log:[...prev.log,...(result.logLines||[])].slice(-CAMPUS_CONFIG.logLimit),
+    }));
+  };
+
+  const dismissCampusEncounter=()=>{
+    setCampusState(prev=>({
+      ...prev,
+      activeEncounter:null,
+      log:[...prev.log,'…You let the opportunity pass.'].slice(-CAMPUS_CONFIG.logLimit),
+    }));
   };
 
   const moveToCampusNode=(nodeId)=>{
     const from=CAMPUS_NODES[campusState.at];
     if(!from.exits.includes(nodeId)) return;
     const node=CAMPUS_NODES[nodeId];
-    const { lines:eventLines, exploration }=rollCampusEvent(nodeId,true);
+    const { lines:eventLines, exploration, deviceEncounter }=rollCampusEvent(nodeId,true);
     const lines=[`→ You walk to ${node.emoji} ${node.label}.`,node.desc,...eventLines];
     setCampusState(prev=>({
       ...prev,
       at:nodeId,
       exploration,
+      activeEncounter:deviceEncounter||null,
       log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit),
     }));
   };
@@ -535,7 +584,7 @@ export default function ProfessorSim(){
   const lookAround=()=>{
     const node=CAMPUS_NODES[campusState.at];
     const flavor=node.flavor[rnd(0,node.flavor.length-1)];
-    const { lines:eventLines, exploration:eventExploration }=rollCampusEvent(campusState.at,false);
+    const { lines:eventLines, exploration:eventExploration, deviceEncounter }=rollCampusEvent(campusState.at,false);
     const ctx=getCampusExplorationCtx();
     let exploration=eventExploration;
     const lines=[flavor,...eventLines];
@@ -561,6 +610,7 @@ export default function ProfessorSim(){
     setCampusState(prev=>({
       ...prev,
       exploration,
+      activeEncounter:deviceEncounter||prev.activeEncounter,
       log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit),
     }));
   };
@@ -2449,7 +2499,9 @@ export default function ProfessorSim(){
     setAttachPicker(null);
     const s=students.find(st=>st.id===studentId);
     if(!s) return;
-    const result=attachToDevice(s,'back',def.id);
+    const hostSlot=findAttachmentHostSlot(s,def.id);
+    if(!hostSlot){ push('⚠️ No compatible host equipped.'); return; }
+    const result=attachToDevice(s,hostSlot,def.id);
     if(!result.ok){ push('⚠️ Could not attach module.'); return; }
     setStudents(prev=>prev.map(st=>st.id===studentId?result.student:st));
     setDeviceInventory(prev=>{
@@ -2458,7 +2510,8 @@ export default function ProfessorSim(){
       if(q<=0) delete next[def.id]; else next[def.id]=q;
       return next;
     });
-    push(`🛠 Attached ${def.label} to ${s.name}'s feeder arm.`);
+    const hostLabel=DEVICES[s.equip[hostSlot]?.defId]?.label||'device';
+    push(`🛠 Attached ${def.label} to ${s.name}'s ${hostLabel}.`);
   };
 
   const unequipDeviceSlot=(studentId,slot)=>{
@@ -2499,6 +2552,46 @@ export default function ProfessorSim(){
       const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'weight_redistribution_rig', rng:Math.random });
       applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.weight_redistribution_rig);
       push(`⚖️ Sculpt cycle complete on ${s.name}.`);
+      return;
+    }
+    if(actionId==='run_mask_session'){
+      const effect=DEVICES.feeding_mask.useEffect||{};
+      const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'feeding_mask', rng:Math.random });
+      applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.feeding_mask);
+      push(`🎭 Mask session on ${s.name}.`);
+      return;
+    }
+    if(actionId==='sleep_feed_gentle'){
+      const effect={ gainLbs:[2,4], psychDelta:{ dependence:2 } };
+      const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'sleep_feeding_system', rng:Math.random });
+      applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.sleep_feeding_system);
+      push(`🌙 Gentle overnight prep on ${s.name}.`);
+      return;
+    }
+    if(actionId==='sleep_feed_aggressive'){
+      const effect={ gainLbs:[5,9], bodyOverride:{ stateType:'bloated', stageBump:2, durationWeeks:1 }, psychDelta:{ dependence:4 } };
+      const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'sleep_feeding_system', rng:Math.random });
+      applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.sleep_feeding_system);
+      push(`🌙 Aggressive sleep-feed cycle on ${s.name}.`);
+      return;
+    }
+    if(actionId==='infuser_water_mode'){
+      const def=DEVICES.liquid_fat_infuser;
+      if((deviceInventory[def.id]||0)<1){ push('⚠️ No liquid fat infusers in inventory.'); return; }
+      useDeviceOn(def,studentId);
+      return;
+    }
+    if(actionId==='feed_furniture'){
+      const effect=DEVICES.living_furniture_rig.useEffect||{};
+      const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'living_furniture_rig', rng:Math.random });
+      applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.living_furniture_rig);
+      const comfort=applied.student?.deviceState?.furnitureComfort;
+      push(`🪑 Fed the furniture (${s.name}) — comfort ${comfort ?? '?'}/100.`);
+      return;
+    }
+    if(actionId==='furniture_comfort_check'){
+      const comfort=s.deviceState?.furnitureComfort??100;
+      push(`🪑 ${s.name} furniture comfort: ${comfort}/100${comfort<40?' — unstable, needs feeding':''}.`);
     }
   };
 
@@ -5391,6 +5484,9 @@ export default function ProfessorSim(){
             explorationCtx={getCampusExplorationCtx()}
             campusTier={getCampusNarrativeTier(pharmacistState)}
             elaraMet={elaraMet}
+            deviceInventory={deviceInventory}
+            useCampusDevice={useCampusDevice}
+            dismissCampusEncounter={dismissCampusEncounter}
           />}
 
 {/* ── SKILL TREE ── */}

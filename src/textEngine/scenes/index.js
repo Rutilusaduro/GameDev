@@ -6,6 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 import './attitude.js';
 import './campusExplorationText.js';
+import './campusDeviceText.js';
 import './campusSoftening.js';
 import './destinyOffstream.js';
 import './diary.js';

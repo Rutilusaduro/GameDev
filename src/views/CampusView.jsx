@@ -8,6 +8,7 @@ import { explorationSummary } from '../gameData/campusExploration.js';
 import { availableSecretsAtNode } from '../gameData/campusSecrets.js';
 import { availableElaraQuests } from '../gameData/relicHunter.js';
 import { CAMPUS_NARRATIVE_LABELS } from '../gameData/pharmacistCampus.js';
+import { CampusDeviceEncounterPanel } from '../components/CampusDeviceEncounterPanel.jsx';
 
 const MAP_W = 420, MAP_H = 300;
 const px = (x) => (x / 100) * MAP_W;
@@ -78,6 +79,8 @@ function logLineColor(line) {
   if (line.startsWith("🕯️") || line.startsWith("⚠️")) return "#c09070";
   if (line.startsWith("→")) return "#6a8a5a";
   if (line.startsWith("✨")) return "#a0e080";
+  if (line.startsWith("🎯") || line.startsWith("📡") || line.startsWith("🎭") || line.startsWith("💧")) return "#c0a0e0";
+  if (line.startsWith("🌙") || line.startsWith("🪑")) return "#a09070";
   return "#a8b898";
 }
 
@@ -90,6 +93,9 @@ export function CampusView({
   explorationCtx,
   campusTier = 0,
   elaraMet = false,
+  deviceInventory,
+  useCampusDevice,
+  dismissCampusEncounter,
 }){
   const node = CAMPUS_NODES[campusState.at] || CAMPUS_NODES["office"];
   const exploration = campusState.exploration || {};
@@ -186,6 +192,14 @@ export function CampusView({
               </div>
             )}
           </div>
+          {campusState.activeEncounter && useCampusDevice && (
+            <CampusDeviceEncounterPanel
+              encounter={campusState.activeEncounter}
+              deviceInventory={deviceInventory}
+              onUseDevice={useCampusDevice}
+              onDismiss={dismissCampusEncounter}
+            />
+          )}
           <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:8}}>
             <button style={C.btn("#1e3a12")} onClick={lookAround}>👁 Look around</button>
             <button style={C.btn("#2a3018")} onClick={searchCampus}>🔍 Search area</button>

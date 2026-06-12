@@ -76,7 +76,7 @@ export function defaultLabState() {
     stage: 1,
     instability: 0,
     sessionsRun: 0,
-    researchedBlueprints: ['bp_bloating_belt', 'bp_feeder_arm'],
+    researchedBlueprints: ['bp_bloating_belt', 'bp_feeder_arm', 'bp_sleep_feeding', 'bp_feeding_mask'],
     parts: partsAcquisitionByStage(1),
     maintenanceDebt: 0,
     builtThisSession: [],
@@ -99,6 +99,9 @@ export function initDeviceState() {
       fullBody: null,
     },
     bodyOverride: null,
+    deviceState: {
+      furnitureComfort: 100,
+    },
   };
 }
 
@@ -116,6 +119,10 @@ export function maybeAdvanceInventorStage(state) {
   if (stage >= 2 && !researched.includes('bp_serum_injector')) researched.push('bp_serum_injector');
   if (stage >= 2 && !researched.includes('bp_redistribution_rig')) researched.push('bp_redistribution_rig');
   if (stage >= 2 && !researched.includes('bp_paste_printer')) researched.push('bp_paste_printer');
+  if (stage >= 2 && !researched.includes('bp_remote_feeding')) researched.push('bp_remote_feeding');
+  if (stage >= 2 && !researched.includes('bp_liquid_infuser')) researched.push('bp_liquid_infuser');
+  if (stage >= 3 && !researched.includes('bp_predator_capture')) researched.push('bp_predator_capture');
+  if (stage >= 3 && !researched.includes('bp_furniture_rig')) researched.push('bp_furniture_rig');
   return { ...state, stage, researchedBlueprints: researched };
 }
 

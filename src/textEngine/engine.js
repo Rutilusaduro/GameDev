@@ -214,6 +214,10 @@ function evalWhen(when, ctx) {
       case "campusTierMax": ok = (ctx.globals?.campusTier ?? 0) <= v; break;
       case "weightBand": ok = ctx.globals?.weightBand === v; break;
       case "nodeId": ok = ctx.globals?.nodeId === v; break;
+      case "targetType": ok = ctx.globals?.targetType === v; break;
+      case "role": ok = ctx.globals?.role === v; break;
+      case "deviceId": ok = ctx.globals?.deviceId === v; break;
+      case "modeId": ok = ctx.globals?.modeId === v; break;
       case "studentId": {
         const actual = d.studentId ?? ctx.globals?.studentId;
         ok = Array.isArray(v) ? v.includes(actual) : actual === v;

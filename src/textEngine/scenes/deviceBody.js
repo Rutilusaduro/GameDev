@@ -26,7 +26,35 @@ function bloatedLine(ctx) {
   return line[Math.floor(Math.random() * line.length)];
 }
 
+const FURNITURE_BODY = {
+  slight: ['her body is folded into a rigid chair-frame — knees locked, belly presented as a cushioned seat'],
+  slim: ['she is rigged into living furniture, posture sculpted until her softening middle becomes the only cushion'],
+  soft: ['her plush body fills a furniture harness — every curve arranged to be sat on'],
+  chubby: ['she serves as a padded chair, belly and thighs ballooned into upholstery by the rig'],
+  plump: ['her frame is locked in furniture pose — a wide, yielding seat of flesh and straps'],
+  heavy: ['she is immobilized furniture now, belly spread broad and warm beneath the rig\'s braces'],
+  fat: ['her enormous body is shaped into a couch — rolls stacked and secured for multiple occupants'],
+  veryFat: ['she is a vast living seat, flesh poured into the rig until comfort depends on constant feeding'],
+  enormous: ['her colossal body is furniture first and person second — a monument of cushioned obedience'],
+  colossal: ['she sprawls as living architecture, the rig holding tons of her in place for anyone to use'],
+  blob: ['she is less person than furnishing — a blob of flesh locked into something you could nap on'],
+  leviathan: ['she is monumental living furniture, every pound arranged for weight-bearing humiliation'],
+};
+
+function furnitureLine(ctx) {
+  const bucket = stageBucket((ctx.d.stage ?? 0) + (ctx.d.bodyStageBump ?? 0));
+  const rows = FURNITURE_BODY;
+  const line = rows[bucket] || rows.fat || rows.plump;
+  return line[Math.floor(Math.random() * line.length)];
+}
+
 registerModuleVariants('word.body', [
+  {
+    when: { bodyState: 'furniture' },
+    priority: 1,
+    weight: 5,
+    text: [(ctx) => furnitureLine(ctx)],
+  },
   {
     when: { bodyState: 'bloated' },
     priority: 1,
