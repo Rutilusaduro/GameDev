@@ -3,8 +3,7 @@ import { C } from '../styles.js';
 import { LILITH_ID } from '../gameData/lilith.js';
 import { render, createContext, getSeason, relSize } from '../textEngine/engine.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
-import { renderWeighInIntro, renderWeighInReaction, renderWeighInBreak } from '../textEngine/scenes/weighIn/index.js';
-import '../textEngine/scenes/talkEncourage.js';
+import { DialogueLab } from './DialogueLab.jsx';
 
 if (typeof window !== 'undefined' && import.meta.env.DEV) {
   window.__textEngine = { render, createContext, getSeason, relSize };
@@ -33,32 +32,9 @@ function sampleTextEngine(){
   return out.join("\n\n");
 }
 
-// Sweep the slot-composed weigh-in + encourage scenes across synthetic
-// students — eyeball pool variety and catch unresolved slots / artifacts.
-function sampleWeighIn(){
-  const out=[];
-  const combos=[
-    { id:0,  name:"Brittany", bodyType:"pear",      lbs:150, corruption:10, mood:"happy",    label:"Brittany · soft · hesitant" },
-    { id:1,  name:"Madeline", bodyType:"straight",  lbs:250, corruption:50, mood:"stressed", label:"Madeline · heavy · conflicted" },
-    { id:5,  name:"Destiny",  bodyType:"apple",     lbs:400, corruption:90, mood:"tired",    label:"Destiny · very fat · broken in" },
-    { id:6,  name:"Tiffany",  bodyType:"hourglass", lbs:870, corruption:90, mood:"content",  label:"Tiffany · blob · broken in · big scale", big:true },
-  ];
-  for(const c of combos){
-    const s={ ...c, archetype:"debug", relationship:50, fullness:10, stomachCapacity:100 };
-    const ctx=createContext({ subject:s, week:6, globals:{} });
-    out.push(
-      `── ${c.label} ──\n`+
-      `${renderWeighInIntro(s,6,!!c.big)}\n\n`+
-      `${renderWeighInReaction(s,6,{ bigScale:!!c.big })}\n\n`+
-      `[break] ${renderWeighInBreak(s,6)}\n\n`+
-      `[encourage] ${render("{talk.encourage}",ctx)}`
-    );
-  }
-  return out.join("\n\n");
-}
-
 export function DebugPanel({ adminScrutiny, ap, debugApply, debugInputs, setAdminScrutiny, setAp, setDebugInputs, setDebugOpen, setLilithUnlocked, setStudents, students }){
   const [textSample,setTextSample]=useState(null);
+  const [labOpen,setLabOpen]=useState(false);
   return(
         <div style={{...C.overlay,alignItems:"flex-start",paddingTop:16,overflowY:"auto"}}>
           <div style={{...C.modal,maxWidth:700,width:"95%",maxHeight:"90vh",overflowY:"auto"}}>
@@ -94,7 +70,8 @@ export function DebugPanel({ adminScrutiny, ap, debugApply, debugInputs, setAdmi
               <button style={{...C.smBtn,background:"rgba(100,60,140,0.4)"}}
                 onClick={()=>setTextSample(sampleTextEngine())}>📜 Sample hive intake (6 combos)</button>
               <button style={{...C.smBtn,background:"rgba(60,100,140,0.4)",marginLeft:6}}
-                onClick={()=>setTextSample(sampleWeighIn())}>⚖ Weigh-in + encourage sweep</button>
+                onClick={()=>setLabOpen(true)}>🎲 Dialogue Lab</button>
+              {labOpen&&<DialogueLab onClose={()=>setLabOpen(false)}/>}
               {textSample&&(
                 <pre style={{fontSize:10,color:"#c8b8e0",whiteSpace:"pre-wrap",lineHeight:1.6,marginTop:8,maxHeight:240,overflowY:"auto",background:"rgba(0,0,0,0.3)",padding:8,borderRadius:6}}>
                   {textSample}
