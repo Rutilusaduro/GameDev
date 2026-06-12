@@ -9,6 +9,10 @@ import { getStage } from '../gameData/stages.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
 import { getTier } from '../gameData/sessions.js';
 import { getAddictionLevel, getHungerTier, isInWithdrawal } from '../gameData/hungerAddiction.js';
+import {
+  getFixationTier, getObsessionTier, getDependenceTier, getShameTier,
+} from '../gameData/psychState.js';
+import { getEquippedDeviceIds } from '../gameData/deviceEffects.js';
 
 const DEV = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV;
 const warn = (...args) => { if (DEV) console.warn('[textEngine]', ...args); };
@@ -75,7 +79,7 @@ function deriveFor(student, ref, skillEffects) {
     stage: getStage(student.lbs).id,
     corruption: getCorruptionTier(student.corruption || 0).id,
     relationship: getTier(student.relationship || 0).id,
-    bodyType: student.bodyType || null,
+    bodyType: student.bodyOverride?.bodyTypeOverride || student.bodyType || null,
     archetype: student.archetype || null,
     mood: student.mood || null,
     evolvedForm: student.evolvedForm || null,
@@ -92,6 +96,15 @@ function deriveFor(student, ref, skillEffects) {
     hungerTier: getHungerTier(student),
     inWithdrawal: isInWithdrawal(student),
     skillEffects: skillEffects || {},
+    bodyState: student.bodyOverride?.stateType || null,
+    bodyTypeEff: student.bodyOverride?.bodyTypeOverride || student.bodyType || null,
+    bodyStageBump: student.bodyOverride?.stageBump ?? 0,
+    equippedWaist: student.equip?.waist?.defId || null,
+    fixationTier: getFixationTier(student.psych?.fixation ?? 0).id,
+    obsessionTier: getObsessionTier(student.psych?.obsession ?? 0).id,
+    dependenceTier: getDependenceTier(student.psych?.dependence ?? 0).id,
+    shameTier: getShameTier(student.psych?.shame ?? 0).id,
+    hasDeviceEquipped: getEquippedDeviceIds(student).length > 0,
   };
 }
 
@@ -186,6 +199,16 @@ function evalWhen(when, ctx) {
       case "hungerTierMax": ok = (d.hungerTier ?? 0) <= v; break;
       case "addictionLevelMin": ok = (d.addictionLevel ?? 0) >= v; break;
       case "addictionLevelMax": ok = (d.addictionLevel ?? 0) <= v; break;
+      case "fixationTierMin": ok = (d.fixationTier ?? 0) >= v; break;
+      case "fixationTierMax": ok = (d.fixationTier ?? 0) <= v; break;
+      case "obsessionTierMin": ok = (d.obsessionTier ?? 0) >= v; break;
+      case "obsessionTierMax": ok = (d.obsessionTier ?? 0) <= v; break;
+      case "dependenceTierMin": ok = (d.dependenceTier ?? 0) >= v; break;
+      case "dependenceTierMax": ok = (d.dependenceTier ?? 0) <= v; break;
+      case "shameTierMin": ok = (d.shameTier ?? 0) >= v; break;
+      case "shameTierMax": ok = (d.shameTier ?? 0) <= v; break;
+      case "equippedWaist": ok = d.equippedWaist === v; break;
+      case "bodyState": ok = d.bodyState === v; break;
       case "campusFattening": ok = !!ctx.globals?.campusFattening === !!v; break;
       case "campusTierMin": ok = (ctx.globals?.campusTier ?? 0) >= v; break;
       case "campusTierMax": ok = (ctx.globals?.campusTier ?? 0) <= v; break;

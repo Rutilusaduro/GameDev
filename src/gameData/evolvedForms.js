@@ -254,6 +254,14 @@ export const EVOLVED_REACTIONS = {
     "Last session before harvest. She sits across from me very large, very full, and entirely unaware of how this concludes. I ate alongside her — quality control, always quality control — and I felt full and satisfied and exactly right. My own numbers are considerably higher than when I started. I've stopped being surprised by this.",
   ],
   // ── BOOKWORM path ───────────────────────────────────────────────
+  machine_goddess:[
+    "First device deployed on a willing test subject. The readouts matched prediction within eight percent. I logged the variance anyway. I also logged how my pulse changed when the belt cycled on.",
+    "The workshop smells like solder and vanilla paste now. Three prototypes running concurrently. I keep calibrating my own intake as 'material cost.' The scale agrees with the metaphor more than it should.",
+    "A malfunction last week should have been alarming. Instead I stayed up rerunning the failure curve until 3am. The subject's belly was enormous afterward. So was mine, from stress-eating beside the bench.",
+    "I stopped describing the devices as experiments. They're infrastructure. My body is infrastructure too — raw polymer, heat-formed, repurposed into better machines.",
+    "Campus whispers about the engineering girl with the harnesses. I don't correct them. Correction is inefficient. Installation is the point.",
+    "I am the network now — devices on bodies, bodies in my logs, my own mass feeding the builds that feed everyone else. The workshop hums whether I'm in it or not. I find that correct.",
+  ],
   community_researcher:[
     "First observation session. I went in as a researcher. I ate what was offered because refusing felt like contaminating the sample. I'm noting my own intake separately from the field notes.",
     "The case study is developing. I'm present at more sessions than the methodology technically requires. The subjects haven't noticed I'm eating alongside them. I've noticed.",
@@ -492,6 +500,14 @@ export const EVOLVED_DIARY = {
     `Harvest window is open. The subject is at Very Fat stage. I could proceed now. I'm not proceeding now. I want to see the next stage. This is a professional judgment, not an excuse. I ate the full quality-control portion today and did not note this as unusual.`,
     `The subject is enormous. She takes up the chair completely and eats with the complete appetite of someone past self-consciousness. I fed her the richest version of everything. I ate alongside her. I am considerably larger than I was at the start of this study. I find this entirely appropriate.`,
     `Session before harvest. She is very large. I am very large. The kitchen is warm and full and the recipe is perfect and I ate everything I made and she ate everything I served and we sat across from each other both large and full and satisfied and I felt — exactly right. The harvest will proceed tomorrow. The log is complete.`,
+  ],
+  machine_goddess:[
+    `Workshop log — week one after evolution. I built the bloating belt first because the feedback loop is elegant: pressure in, volume out, shame optional. Self test-run: successful. I wrote "successful" three times in the margin.`,
+    `The feeder arm works. I ate while it fed me and called it calibration. The paste printer slots in clean — calories per cubic centimeter are obscene. I am not ashamed of the obscene part.`,
+    `Subject wore the belt through a lecture. She texted circumference readings hourly. I replied with duty-cycle adjustments. We are both getting better at this.`,
+    `Instability hit thirty percent after the serum injector trial. The subject gained fourteen pounds in an afternoon. I gained six from celebratory paste. Variance within acceptable chaos parameters.`,
+    `Redistribution rig online. I sculpted a pear silhouette onto a volunteer and watched her discover the new center of gravity. I ran the same program on myself afterward. Data should be symmetrical.`,
+    `Endgame note: the lab never sleeps. Devices tick on bodies across campus. My belly is soft against the workbench when I lean in to solder. I am the network the machines were always pointing at.`,
   ],
   // ── BOOKWORM path ───────────────────────────────────────────────
   community_researcher:[
@@ -735,6 +751,14 @@ export const EVOLVED_OUTFITS = {
     "A custom chef's coat at considerable scale, apron tied at the front with effort. She moves through the kitchen with full authority.",
     "An enormous chef's coat, apron decorative at this point. The kitchen was rearranged around her reach and she approves of the arrangement.",
   ],
+  machine_goddess:[
+    "Lab coat over a hoodie, cargo pants, fingerless gloves. Solder burns on the cuffs. She smells like flux.",
+    "Reinforced work coveralls, pockets full of hex keys and calipers. The coat buttons strain when she leans over the bench.",
+    "Custom harness-friendly layers — wide belt loops, stretch panels at the waist. Built for wearing her own prototypes.",
+    "Industrial coveralls with tool rigging across the chest. Paste stains on the collar. She doesn't notice anymore.",
+    "Oversized tech-wear in matte black, LED status pins along the sleeves. Her body fills it like another machine casing.",
+    "The workshop clothes are half armor, half uniform — wide, soft, engineered around a body that feeds the builds. She belongs to the lab now.",
+  ],
 };
 
 export const EVOLVED_ACTIVITY_TEXT = {
@@ -943,6 +967,7 @@ export const EVOLVED_ACTIVITY_META = {
   cultivator:          { label:"🍰 Run Taste-Test Session", apCost:1, gainRange:[2,8],  relBonus:12 },
   community_researcher:{ label:"📋 Conduct Case Study",     apCost:1, gainRange:[3,8],  relBonus:10 },
   pharmacist:          { label:"🧪 Run Synthesis Session",  apCost:1, gainRange:[2,6],  relBonus:10 },
+  machine_goddess:     { label:"🔧 Open The Lab",           apCost:1, gainRange:[2,6],  relBonus:10 },
 };
 
 export const EVOLVED_EVENTS = {
@@ -3571,6 +3596,86 @@ Becca says Sofia can no longer sit in a standard chair comfortably. Ruthanne say
       ]
     },
   ],
+  machine_goddess:[
+    {
+      title:"First Prototype",
+      phases:[{
+        text:(h,s)=>`Talia locks the workshop door and wheels out a harness that looks too deliberate to be innocent. "Bloating belt, revision C," she says. "I need a subject with documented consent." She taps her own waist. "Or I run it on myself. Data is data."`,
+        choices:[
+          {id:"self_test",label:"Let her self-test first",result:`She straps in, hits the cycle button, and watches her own midsection swell over twenty minutes with clinical fascination that keeps slipping into something else. "Variance within tolerance," she breathes.`,lbs:6,rel:6,flag:"self_test"},
+          {id:"assign_subject",label:"Authorize a class test subject",result:`She exhales like you've upgraded her clearance level. "Excellent. I'll log everything." The first volunteer whimpers when the belt engages — Talia takes notes without looking away.`,lbs:4,rel:8,flag:"assigned"},
+        ],
+      }],
+      endings:[
+        {condition:()=>true,text:(h,s,gain)=>`Prototype validated. Talia is ${Math.round(s.lbs+gain)} pounds and already sketching revision D. The workshop smells like warm polymer and ambition.`,gainBonus:6,relBonus:8},
+      ],
+    },
+    {
+      title:"Feeder Calibration",
+      phases:[{
+        text:(h,s)=>`The auto-feeder arm whirs through its first full session — mechanical, patient, relentless. Talia monitors throughput on a tablet. "Calories per minute are obscene," she says, pleased.`,
+        choices:[
+          {id:"boost_paste",label:"Slot in the paste printer upgrade",result:`The paste printer locks into the arm with a satisfying click. Output density doubles. Talia drinks a celebratory cup of slurry and calls it "QC."`,lbs:8,rel:5},
+          {id:"slow_tease",label:"Run tease mode for precision data",result:`The arm slows to maddening intervals. The subject squirms; Talia graphs it. "Psychological coupling confirmed."`,lbs:5,rel:7},
+        ],
+      }],
+      endings:[
+        {condition:()=>true,text:(h,s,gain)=>`Calibration complete. Talia files the session as ${Math.round(s.lbs+gain)} pounds heavier and entirely justified.`,gainBonus:5,relBonus:6},
+      ],
+    },
+    {
+      title:"Serum Variance",
+      phases:[{
+        text:(h,s)=>`The injector hisses. Results are immediate and uneven — fat rushes to places the formula didn't specify. Talia stares at the readout like it's beautiful. "Chaos within parameters," she whispers.`,
+        choices:[
+          {id:"document",label:"Document everything clinically",result:`She photographs, measures, logs. The subject shakes; Talia does not.`,lbs:10,rel:4},
+          {id:"celebrate",label:"Celebrate the extremity",result:`She laughs — sharp, delighted. "This is why we build."`,lbs:12,rel:6},
+        ],
+      }],
+      endings:[
+        {condition:()=>true,text:(h,s,gain)=>`Serum trial archived. Campus whispers start that night. Talia is ${Math.round(s.lbs+gain)} pounds and already mixing batch two.`,gainBonus:8,relBonus:5},
+      ],
+    },
+    {
+      title:"Redistribution Study",
+      phases:[{
+        text:(h,s)=>`The rig hums. Fat migrates visibly — pear-heavy, deliberate, intimate. Talia adjusts sliders with the focus of a sculptor. "Hold still," she says. "I'm almost done redesigning you."`,
+        choices:[
+          {id:"pear",label:"Push toward lower-body concentration",result:`Hips and thighs swell while the waist stays comparatively narrow. Talia nods approval.`,lbs:6,rel:7},
+          {id:"belly",label:"Bank mass forward instead",result:`The belly dominates the new silhouette. Talia tags the file "alternate aesthetic."`,lbs:7,rel:5},
+        ],
+      }],
+      endings:[
+        {condition:()=>true,text:(h,s,gain)=>`Sculpt cycle saved. Talia runs a mirror pass on herself afterward — symmetry matters.`,gainBonus:6,relBonus:7},
+      ],
+    },
+    {
+      title:"Malfunction Night",
+      phases:[{
+        text:(h,s)=>`An alarm chirps at 2am. A belt over-inflates; an arm won't stop feeding. Talia doesn't panic — she reroutes power and keeps eating paste beside the bench "for stability."`,
+        choices:[
+          {id:"shutdown",label:"Hard shutdown all devices",result:`Everything stops. The subject gasps relief; Talia looks annoyed at the lost data.`,lbs:4,rel:6},
+          {id:"ride_it",label:"Let it run for max data",result:`The logs are extraordinary. So is the damage. Talia calls it worth it.`,lbs:9,rel:4},
+        ],
+      }],
+      endings:[
+        {condition:()=>true,text:(h,s,gain)=>`Incident report filed. Instability drops; Talia's appetite does not.`,gainBonus:5,relBonus:5},
+      ],
+    },
+    {
+      title:"Machine Goddess",
+      phases:[{
+        text:(h,s)=>`Devices tick on bodies across campus. Talia stands in the center of her workshop — soft, wide, solder-stained — and watches status lights blink like constellations. "Manual phase over," she says quietly.`,
+        choices:[
+          {id:"expand",label:"Authorize wider deployment",result:`She pushes a campus-wide update. Growth becomes infrastructure.`,lbs:10,rel:8},
+          {id:"consolidate",label:"Consolidate the core network",result:`She keeps the mesh tight and obsessive. Quality over reach.`,lbs:7,rel:10},
+        ],
+      }],
+      endings:[
+        {condition:()=>true,text:(h,s,gain)=>`The network lives. Talia is ${Math.round(s.lbs+gain)} pounds and no longer pretends she's only the inventor — she's the system.`,gainBonus:12,relBonus:12},
+      ],
+    },
+  ],
 };
 
 export const EVOLVED_FORM_META = {
@@ -3605,6 +3710,7 @@ export const EVOLVED_FORM_META = {
   cultivator:           { title:"The Cultivator",         color:"#8B4513" },
   community_researcher: { title:"Community Researcher",    color:"#4a6fa5" },
   pharmacist:           { title:"The Chemist",            color:"#2e6b5a" },
+  machine_goddess:        { title:"Machine Goddess",        color:"#4a6080" },
 };
 
 export const EVOLUTION_BUTTON_BLURB = {
@@ -3623,6 +3729,7 @@ export const EVOLUTION_BUTTON_BLURB = {
   culinary:(s)=>`You find ${s.name}'s test kitchen unexpectedly unlocked. She's not there, but someone else is — a woman you don't recognize, sitting at the prep table with an empty plate and the particular slow contentment of someone who ate something extraordinary and hasn't decided to leave yet. She looks up. She seems confused about how long she's been there. When Reneé comes back she sees you in the doorway and she doesn't explain anything. She takes the plate, washes it, and says: "I've been running some tests. With willing subjects." A pause. "Very willing subjects." She looks at you with the calibrated calm of someone who has been thinking about whether to say the next thing for a long time. "I think I can do this properly. I just need the right direction."`,
   farm_girl:(s)=>`You stop by and find Mary Jane at the counter with more food than two people could eat and a look of complete purpose. She's not cooking because she's hungry — or not only that. She's cooking because she knows something about food and feeding and what a soft home feels like and she's starting to understand she's the only person in the building who knows it. She's ${Math.round(s.lbs)} pounds and she looks like a plan that's been waiting to be named.`,
   pharmacy_grad:(s)=>`You find ${s.name} in the pharmacy lab after hours, gloves on, hair tied back, a corporate ID badge still clipped to her coat. The notebook open on the bench isn't her assigned research — it's dosage tables with appetite curves crossed out and rewritten. She doesn't pretend otherwise when she sees you. "I've been adjusting compounds," she says, very carefully. "Wellness adjacents. Metabolic support." She taps the page. "I can make things for you. Food delivery only — that's the safe route." She looks anxious and absolutely certain in the same breath. "I need someone who knows what they're authorizing."`,
+  inventor:(s)=>`You pass the engineering workshop after midnight and the light is still on. ${s.name} is hunched over a bench covered in harness sketches, servo specs, and half-finished belts that look less like clothing and more like opinions. She doesn't startle when you enter — she marks a measurement and says, without looking up, "I've been modeling growth as a control problem." She finally meets your eyes. Her smile is clinical and hungry in the same instant. "I can build things that make bodies do what spreadsheets can't. I need a partner who won't pretend that's innocent."`,
 };
 
 
@@ -3723,6 +3830,12 @@ export const EVOLUTION_OFFER = {
     intro:(s)=>`${s.name} meets you after hours in a pharmacy lab that smells like ethanol and vanilla. Her corporate badge is still on — she hasn't gone home yet, maybe won't. "I don't want to cure cancer," she says, too quietly, then corrects herself: "I mean — I want to work on appetite. Metabolic wellness. Support compounds." She slides a vial across the bench. "Delivered through food. Always through food." Her hands are steady. Her eyes aren't. "I can build you tools. I need a partner who won't pretend this is innocent."`,
     paths:{
       pharmacist:{ label:"The Chemist", desc:"Sophia synthesizes appetite stimulants, pleasure enhancers, and metabolic compounds — a slow descent from corporate researcher to campus-scale transformation architect." },
+    },
+  },
+  inventor:{
+    intro:(s)=>`${s.name} pulls you into her workshop and locks the door like it's protocol. Blueprints cover every surface — belts, arms, injectors, rigs that treat flesh as tunable material. "Manual feeding is inefficient," she says, tapping a schematic. "I build externals. Wearables. Automations." She gestures at her own body without embarrassment. "I spend mass to make mass. Ambiguously metaphorical. Works either way." Her eyes are bright. "Help me deploy this properly."`,
+    paths:{
+      machine_goddess:{ label:"Machine Goddess", desc:"Talia builds devices that bloat, feed, inject, and reshape — a workshop empire of external machines that override bodies until she becomes the controller of the whole network." },
     },
   },
 };
