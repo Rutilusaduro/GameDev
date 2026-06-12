@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { C } from '../styles.js';
 import { createContext, render } from '../textEngine/engine.js';
 import {
-  BRANDS, deriveBarParams, roundDurationFor,
+  BRANDS, deriveBarParams, roundDurationFor, STREAM_DEFAULT_ROUNDS, STREAM_ROUND_SECONDS,
 } from '../gameData/streaming.js';
 import { StreamPreStreamPanel } from './StreamPreStreamPanel.jsx';
 
@@ -84,7 +84,7 @@ function FocusBar({ barParams, onHit, onMiss, active, paused }) {
     const tick = (now) => {
       const dt = now - last;
       last = now;
-      tRef.current += dt * 0.00085 * (barParams?.speed || 0.42);
+      tRef.current += dt * 0.001 * (barParams?.speed || 0.78);
       const p = (Math.sin(tRef.current * Math.PI * 2) + 1) / 2;
       setPos(p);
       rafRef.current = requestAnimationFrame(tick);
@@ -194,7 +194,7 @@ export function StreamSessionModal({
   // roundStart → round after wind-up
   useEffect(() => {
     if (ss.phase !== 'roundStart') return undefined;
-    const t = setTimeout(() => beginActiveRound(), 2500);
+    const t = setTimeout(() => beginActiveRound(), 1800);
     return () => clearTimeout(t);
   }, [ss.phase, ss.roundIndex, beginActiveRound]);
 
@@ -295,15 +295,21 @@ export function StreamSessionModal({
         {/* CHALLENGE SELECT */}
         {ss.phase === 'challengeSelect' && (
           <>
-            <div style={{ fontSize: 11, color: '#d8a0a0', marginBottom: 12 }}>
-              {ss.brand ? `${BRANDS[ss.brand]?.name} offers:` : 'Choose a challenge:'}
+            <div style={{ fontSize: 9, letterSpacing: 3, color: RED, marginBottom: 6 }}>
+              {ss.brand ? `${BRANDS[ss.brand]?.name?.toUpperCase()} CHALLENGE` : 'PICK A CHALLENGE'}
+            </div>
+            <div style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 6, lineHeight: 1.2 }}>
+              What&apos;s on the menu tonight?
+            </div>
+            <div style={{ fontSize: 11, color: '#c0a0a8', marginBottom: 14 }}>
+              {STREAM_DEFAULT_ROUNDS} rounds · {STREAM_ROUND_SECONDS}s each · brand-weighted offers
             </div>
             {(ss.offeredChallenges || []).map((ch) => (
               <button key={ch.id} style={{ ...C.btn(RED_DIM), width: '100%', marginBottom: 6, textAlign: 'left', padding: '10px 12px' }}
                 onClick={() => selectChallenge(ch.id)}>
                 <div style={{ fontWeight: 700, fontSize: 12 }}>{ch.label}</div>
                 <div style={{ fontSize: 10, opacity: 0.85, marginTop: 2 }}>
-                  {ch.category} · {ch.intensity} · ~{ch.roundCount[0]}–{ch.roundCount[1]} rounds
+                  {ch.category} · {ch.intensity}
                 </div>
               </button>
             ))}

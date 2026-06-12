@@ -66,7 +66,7 @@ import { renderHiveIntake } from './textEngine/scenes/hiveIntake.js';
 import { createContext, render } from './textEngine/engine.js';
 import './textEngine/scenes/stream.js';
 import {
-  STREAM_AP_COST, CHALLENGES, ensureStreamFields, audienceTier as streamAudienceTier,
+  STREAM_AP_COST, CHALLENGES, BRANDS, ensureStreamFields, needsStreamBrand, audienceTier as streamAudienceTier,
   deriveResistance, mergePreStreamMultipliers, selectChallenges, pickRoundCount,
   computeRoundScore, computeRoundLbs, staminaPenaltyFor, stageStaminaTax,
   addictionDrainMod, MISS_STAMINA_PENALTY, STAMINA_EXCELLENT_GAIN,
@@ -82,6 +82,7 @@ import { SumoMatchModal } from './components/SumoMatchModal.jsx';
 import { CollabStreamModal } from './components/CollabStreamModal.jsx';
 import { RecordingSessionModal } from './components/RecordingSessionModal.jsx';
 import { StreamSessionModal } from './components/StreamSessionModal.jsx';
+import { StreamBrandSelectModal } from './components/StreamBrandSelectModal.jsx';
 import { CommunityResearcherModal } from './components/CommunityResearcherModal.jsx';
 import { CultivatorModal } from './components/CultivatorModal.jsx';
 import { HomeroomQueenModal } from './components/HomeroomQueenModal.jsx';
@@ -256,6 +257,8 @@ export default function ProfessorSim(){
   const [streamSessionState, setStreamSessionState] = useState(null);
   // streamSessionState: Destiny streaming mini-game — phase preStream|challengeSelect|roundStart|round|
   //   betweenRound|resolution|done; snapshot + challenge + round/stamina/gain/chat fields
+  const [streamBrandPickState, setStreamBrandPickState] = useState(null);
+  // streamBrandPickState: { studentId, required? }
   const [fairTrainingState, setFairTrainingState] = useState({
     cycleNum:0, sessionsThisCycle:0, fairPride:0,
     lastCollaborator:null, recentCollaborators:[], influenceFlags:[],
@@ -959,8 +962,19 @@ export default function ProfessorSim(){
   };
 
   const chooseEvolution=(studentId,formId)=>{
-    setStudents(prev=>prev.map(s=>s.id!==studentId?s:{...s,evolvedForm:formId,evolvedSkills:[]}));
-    const s=students.find(s=>s.id===studentId);
+    const s=students.find(st=>st.id===studentId);
+    if(formId==='eating_streamer'){
+      setStudents(prev=>prev.map(st=>{
+        if(st.id!==studentId) return st;
+        return {...ensureStreamFields(st),evolvedForm:formId,evolvedSkills:[],brand:null};
+      }));
+      const meta=EVOLVED_ACTIVITY_META[formId];
+      push(`✦ ${s?.name||"She"} has found her path: ${meta?.label||formId}.`);
+      setEvolutionModal(null);
+      setStreamBrandPickState({studentId,required:true});
+      return;
+    }
+    setStudents(prev=>prev.map(st=>st.id!==studentId?st:{...st,evolvedForm:formId,evolvedSkills:[]}));
     const meta=EVOLVED_ACTIVITY_META[formId];
     push(`✦ ${s?.name||"She"} has found her path: ${meta?.label||formId}.`);
     setEvolutionModal(null);
@@ -3108,8 +3122,27 @@ export default function ProfessorSim(){
     return ctx;
   };
 
+  const selectStreamBrand=(studentId,brandId)=>{
+    const brand=BRANDS[brandId];
+    if(!brand) return;
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==studentId) return st;
+      const favor={...(st.sponsorFavor||{})};
+      favor[brandId]=Math.min(100,(favor[brandId]||0)+20);
+      return {...ensureStreamFields(st),brand:brandId,sponsorFavor:favor};
+    }));
+    const s=students.find(st=>st.id===studentId);
+    push(`📡 ${s?.name||'Destiny'} signs with ${brand.name} — sponsor locked in.`);
+    setStreamBrandPickState(null);
+  };
+
   const startStream=(s)=>{
     if(s.evolvedForm!=='eating_streamer') return;
+    if(needsStreamBrand(s)){
+      setStreamBrandPickState({studentId:s.id,required:true});
+      push(`⚠️ ${s.name} needs a sponsor contract before going live.`);
+      return;
+    }
     if(ap<STREAM_AP_COST){push(`⚠️ Need ${STREAM_AP_COST} AP.`);return;}
     setAp(a=>a-STREAM_AP_COST);
     const dest=ensureStreamFields(s);
@@ -5223,6 +5256,7 @@ export default function ProfessorSim(){
       {/* ── RECORDING SESSION MODAL ── */}
       {recordingSessionState&&<RecordingSessionModal recordingSessionState={recordingSessionState} students={students} setRecordingSessionState={setRecordingSessionState} makeRecordingChoice={makeRecordingChoice} wrapRecordingSession={wrapRecordingSession} oneMoreTake={oneMoreTake} closeRecordingSession={closeRecordingSession} dismissRecordingChoicePopup={dismissRecordingChoicePopup}/>}
       {streamSessionState&&<StreamSessionModal streamSessionState={streamSessionState} students={students} week={week} preStreamAction={preStreamAction} selectChallenge={selectStreamChallenge} beginActiveRound={beginActiveRound} finishActiveRound={finishActiveRound} continueAfterBetweenRound={continueAfterBetweenRound} tapOutStream={tapOutStream} wrapStream={wrapStream} closeStream={closeStream} appendStreamChat={appendStreamChat}/>}
+      {streamBrandPickState&&<StreamBrandSelectModal student={students.find(st=>st.id===streamBrandPickState.studentId)} required={streamBrandPickState.required} onSelect={selectStreamBrand} onClose={streamBrandPickState.required?null:()=>setStreamBrandPickState(null)}/>}
 
       {/* ── FAIR TRAINING COLLABORATIONS HUB ── */}
       {fairTrainingState.open&&<FairTrainingHub ft={fairTrainingState} students={students} ap={ap} getFairPrideTier={getFairPrideTier} startFairTrainingSession={startFairTrainingSession} launchFairDayEvent={launchFairDayEvent} closeFairTraining={closeFairTraining} setFairTrainingState={setFairTrainingState}/>}

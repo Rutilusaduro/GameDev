@@ -54,18 +54,19 @@ export const STAMINA_EXCELLENT_GAIN = 4;
 export const MISS_STAMINA_PENALTY = 2;
 export const STAMINA_DEPLETED_PENALTY = 0.35;
 export const ZONE_MIN = 0.10;
-export const SPEED_MAX = 1.35;
-export const BAR_BASE_ZONE = 0.28;
-/** Indicator cycles per second at base — lower = slower bar (0.42 ≈ 2.4s full sweep). */
-export const BAR_BASE_SPEED = 0.42;
+export const SPEED_MAX = 1.55;
+export const BAR_BASE_ZONE = 0.26;
+/** Indicator cycles per second at base (~0.78 ≈ 1.3s full sweep). */
+export const BAR_BASE_SPEED = 0.78;
 
-export const ROUND_DURATION = {
-  endurance: 35,
-  speed: 22,
-  sensual: 28,
-  chaotic: 25,
-  greedy: 30,
-};
+export const STREAM_ROUND_SECONDS = 15;
+export const STREAM_DEFAULT_ROUNDS = 4;
+
+export const BRAND_IDS = Object.keys(BRANDS);
+
+export function needsStreamBrand(student) {
+  return student?.evolvedForm === 'eating_streamer' && !student?.brand;
+}
 
 export const PRE_STREAM_ACTIONS = [
   { id: 'outfit', label: 'Outfit Check', emoji: '👗' },
@@ -134,25 +135,25 @@ export const PRE_STREAM_CHOICES = {
 
 export const CHALLENGES = [
   { id: 'endurance_marathon', category: 'endurance', label: 'Marathon Munch', intensity: 'normal',
-    baseLbs: 7, staminaDrain: 11, speedDelta: -0.1, gainMult: 1.0, payoutMult: 1.0, roundCount: [6, 8] },
+    baseLbs: 7, staminaDrain: 11, speedDelta: -0.06, gainMult: 1.0, payoutMult: 1.0, roundCount: [4, 4] },
   { id: 'endurance_allnight', category: 'endurance', label: 'All-Night Grind', intensity: 'extreme',
-    baseLbs: 10, staminaDrain: 14, speedDelta: -0.15, gainMult: 1.15, payoutMult: 1.35, roundCount: [7, 8] },
+    baseLbs: 10, staminaDrain: 14, speedDelta: -0.08, gainMult: 1.15, payoutMult: 1.35, roundCount: [4, 4] },
   { id: 'speed_sprint', category: 'speed', label: 'Speed Sprint', intensity: 'normal',
-    baseLbs: 5, staminaDrain: 9, speedDelta: 0.10, gainMult: 0.95, payoutMult: 1.05, roundCount: [5, 6] },
+    baseLbs: 5, staminaDrain: 9, speedDelta: 0.12, gainMult: 0.95, payoutMult: 1.05, roundCount: [4, 4] },
   { id: 'speed_blitz', category: 'speed', label: 'Blitz Binge', intensity: 'high',
-    baseLbs: 6, staminaDrain: 10, speedDelta: 0.16, gainMult: 1.0, payoutMult: 1.15, roundCount: [5, 7] },
+    baseLbs: 6, staminaDrain: 10, speedDelta: 0.18, gainMult: 1.0, payoutMult: 1.15, roundCount: [4, 4] },
   { id: 'sensual_slow', category: 'sensual', label: 'Slow Indulgence', intensity: 'normal',
-    baseLbs: 6, staminaDrain: 8, speedDelta: -0.2, gainMult: 1.05, payoutMult: 1.1, roundCount: [5, 7] },
+    baseLbs: 6, staminaDrain: 8, speedDelta: -0.12, gainMult: 1.05, payoutMult: 1.1, roundCount: [4, 4] },
   { id: 'sensual_tease', category: 'sensual', label: 'Tease & Feast', intensity: 'high',
-    baseLbs: 7, staminaDrain: 9, speedDelta: -0.1, gainMult: 1.1, payoutMult: 1.2, roundCount: [6, 7] },
+    baseLbs: 7, staminaDrain: 9, speedDelta: -0.06, gainMult: 1.1, payoutMult: 1.2, roundCount: [4, 4] },
   { id: 'chaotic_multitask', category: 'chaotic', label: 'Chaos Course', intensity: 'normal',
-    baseLbs: 6, staminaDrain: 12, speedDelta: 0.08, gainMult: 1.0, payoutMult: 1.12, roundCount: [5, 6] },
+    baseLbs: 6, staminaDrain: 12, speedDelta: 0.10, gainMult: 1.0, payoutMult: 1.12, roundCount: [4, 4] },
   { id: 'chaotic_feral', category: 'chaotic', label: 'Feral Feed', intensity: 'extreme',
-    baseLbs: 9, staminaDrain: 15, speedDelta: 0.12, gainMult: 1.12, payoutMult: 1.3, roundCount: [6, 7] },
+    baseLbs: 9, staminaDrain: 15, speedDelta: 0.14, gainMult: 1.12, payoutMult: 1.3, roundCount: [4, 4] },
   { id: 'greedy_pile', category: 'greedy', label: 'Greedy Pile-On', intensity: 'high',
-    baseLbs: 9, staminaDrain: 13, speedDelta: 0.04, gainMult: 1.2, payoutMult: 1.18, roundCount: [6, 8] },
+    baseLbs: 9, staminaDrain: 13, speedDelta: 0.06, gainMult: 1.2, payoutMult: 1.18, roundCount: [4, 4] },
   { id: 'greedy_destroy', category: 'greedy', label: 'Table Destroyer', intensity: 'extreme',
-    baseLbs: 11, staminaDrain: 16, speedDelta: 0.06, gainMult: 1.25, payoutMult: 1.4, roundCount: [7, 8] },
+    baseLbs: 11, staminaDrain: 16, speedDelta: 0.08, gainMult: 1.25, payoutMult: 1.4, roundCount: [4, 4] },
 ];
 
 export const DESTINY_MONEY_FLAVOR = [
@@ -231,7 +232,7 @@ export function deriveBarParams({ weightStageId, addiction, resistance, roundInd
   const stageSpeed = Math.max(0, weightStageId - 5) * 0.035;
   // Lighter girls get a wider sweet spot and a noticeably slower indicator.
   const lowStageEase = weightStageId < 5 ? (5 - weightStageId) * 0.018 : 0;
-  const lowStageSlow = weightStageId < 5 ? (5 - weightStageId) * 0.05 : 0;
+  const lowStageSlow = weightStageId < 5 ? (5 - weightStageId) * 0.03 : 0;
   const addictionMod = addictionZoneMod(addiction, roundIndex, totalRounds);
   const zoneSize = Math.max(ZONE_MIN, BAR_BASE_ZONE - resistance * 0.08 - stagePenalty + addictionMod + lowStageEase);
   const speed = Math.max(
@@ -286,9 +287,8 @@ export function styleMatch(challenge, brand) {
   return b.favStyles.includes(challenge.category) ? 1 : 0.35;
 }
 
-export function pickRoundCount(challenge, rng = Math.random) {
-  const [lo, hi] = challenge.roundCount || [5, 7];
-  return lo + Math.floor(rng() * (hi - lo + 1));
+export function pickRoundCount() {
+  return STREAM_DEFAULT_ROUNDS;
 }
 
 export function selectChallenges(brandId, count = 3, rng = Math.random) {
@@ -412,6 +412,6 @@ export function ensureStreamFields(student) {
   };
 }
 
-export function roundDurationFor(challenge) {
-  return ROUND_DURATION[challenge?.category] || 28;
+export function roundDurationFor() {
+  return STREAM_ROUND_SECONDS;
 }
