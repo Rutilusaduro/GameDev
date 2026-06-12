@@ -10,6 +10,7 @@ import { createContext, render } from '../../engine.js';
 import './fragments.js';
 import './personas.js';
 import './breakScene.js';
+import './breakPersonas.js';
 import { appendCampusWeighIn } from '../campusSoftening.js';
 
 export const WI_INTRO = "{wi.arrival} {wi.settle} {wi.scaleApproach}";

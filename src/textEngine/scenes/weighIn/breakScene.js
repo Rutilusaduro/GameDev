@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // WEIGH-IN BREAK SCENE — the analog scale cracks under her.
 // wi.breakBeat  — physical aftermath (stage/corruption keyed)
-// wi.breakLine  — her reaction (per-girl, mined from the retired
-//                 BREAK_SCENES in WeighInModal.jsx — quotes verbatim)
+// wi.breakLine  — her reaction (per-girl + corruption in breakPersonas.js)
+// wi.breakBellyTouch — size-keyed belly gesture for tier-2 beats
 // wi.swap / wi.purchase — professor-voice beats for scale logistics.
 // ═══════════════════════════════════════════════════════════════
 import { registerPool } from '../../engine.js';
@@ -36,104 +36,47 @@ registerPool("wi.breakBeat", [
   ]},
 ]);
 
-// ── wi.breakLine ──────────────────────────────────────────────
-// Shape: DIALOGUE BEAT — her verdict on the wreckage. Per-girl.
-registerPool("wi.breakLine", [
-  { when: { studentId: 0 }, weight: 4, text: [
-    `Brittany hops off like she's dismounting a routine, hands on her hips, completely unbothered. "Okay, that one is on the scale, not me."`,
+// ── wi.breakBellyTouch ────────────────────────────────────────
+// Shape: PARTICIPLE CLAUSE — mid-sentence gesture after a comma.
+// Stage bands so tier-2 break lines don't describe a blob belly
+// at stage 2, and heavy girls get a deliberate heft at high weight.
+registerPool("wi.breakBellyTouch", [
+  { when: {}, text: ["", ""] },
+  { when: { stageMin: 2, stageMax: 4 }, text: [
+    "smoothing her top over the soft curve of her belly",
+    "pressing a palm to the warmth gathering at her middle",
   ]},
-  { when: { studentId: 1 }, weight: 4, text: [
-    `Madeline tilts her head at the fractured window with quiet, academic interest. "Material failure under sustained load. Predictable, actually."`,
+  { when: { stageMin: 5, stageMax: 7 }, weight: 2, text: [
+    "running both hands over the heavy round of her belly",
+    "cupping the low swell of her belly and letting it settle in her palms",
   ]},
-  { when: { studentId: 2 }, weight: 4, text: [
-    `Kylie is already filming. "Babe, look at this. The scale literally couldn't."`,
+  { when: { stageMin: 8, stageMax: 9 }, weight: 2, text: [
+    "spreading both palms over the vast warm weight of her belly",
+    "lifting the heavy overflow of her belly and letting it drop back with a slow, satisfied sway",
   ]},
-  { when: { studentId: 3 }, weight: 4, text: [
-    `Serena steps off and laughs once, sharp and pleased. "Yeah, I felt that one go. Get one that can keep up."`,
+  { when: { stageMin: 10 }, weight: 3, text: [
+    "hefting the enormous mass of her belly up in both hands and letting it settle back slow, flesh rippling",
+    "gathering the heavy weight of her belly in her palms and holding it there a moment, giving you time to look",
+    "lifting the warm overflow of her belly with both hands and swaying it once, deliberate, eyes on yours",
   ]},
-  { when: { studentId: 4 }, weight: 4, text: [
-    `Fiona studies the crack pattern. "It's actually beautiful, the way it spidered out."`,
-  ]},
-  { when: { studentId: 5 }, weight: 4, text: [
-    `Destiny sighs through her nose. "Low durability item. Should've upgraded ages ago."`,
-  ]},
-  { when: { studentId: 6 }, weight: 4, text: [
-    `Tiffany shrieks with delight. "GIRLS. I broke the scale. No, like, broke broke."`,
-  ]},
-  { when: { studentId: 7 }, weight: 4, text: [
-    `Priya is already pulling up procurement options. "Industrial-rated, weight-rated to four-fifty minimum, ideally five."`,
-  ]},
-  { when: { studentId: 8 }, weight: 4, text: [
-    `Maya steps off without a word, looks at the cracks, then looks at you. She nods once.`,
-  ]},
-  { when: { studentId: 9 }, weight: 4, text: [
-    `Chloe lets out a dry laugh. "Right. So your American scales are exactly as overbuilt as your portions, then."`,
-  ]},
-  { when: { studentId: 10 }, weight: 4, text: [
-    `Reneé claps once, delighted. "That is the best review my cooking has ever gotten."`,
-  ]},
-  { when: { studentId: 11 }, weight: 4, text: [
-    `Kaylee covers her mouth. "Oh no, professor, I am so sorry. We'll get you something sturdier."`,
-  ]},
-  { when: { studentId: 12 }, weight: 4, text: [
-    `Nadia watches your reaction more than the scale. "Interesting. You looked at the scale first, then at me."`,
-  ]},
-  { when: { studentId: 13 }, weight: 4, text: [
-    `Daisy laughs warmly. "Bless its little heart. You go on and get a bigger one, sugar."`,
-  ]},
-  { when: { studentId: 14 }, weight: 4, text: [
-    `Mary Jane bursts out laughing. "Back home we'd've put me on the hay scale weeks ago."`,
-  ]},
-  { when: { studentId: 15 }, weight: 4, text: [
-    `Lilith regards the cracked dial with quiet amusement. "Fragile little thing."`,
-  ]},
-  // 16 · Sophia — pharmacy grad: precision → pride in the trial
-  { when: { studentId: 16, corruption: [0] }, weight: 4, text: [
-    `Sophia stares at the cracks, mentally recalculating load tolerances. "That was rated equipment," she says faintly. "I exceeded rated equipment."`,
-    `"Oh no — the calibration—" She crouches by the wreckage. "This voids the warranty. I voided the warranty."`,
-  ]},
-  { when: { studentId: 16, corruption: [1] }, weight: 4, text: [
-    `Sophia prods the fractured dial with one gloved finger. "Material failure under sustained dosing," she murmurs. "Predictable, in retrospect."`,
-    `"The protocol wasn't supposed to include the hardware," she says. A beat. "I'm revising the protocol."`,
-    `"Load exceeded," she whispers, more fascinated than sorry. "I should've ordered a heavier-duty model weeks ago."`,
-  ]},
-  { when: { studentId: 16, corruption: [2] }, weight: 4, text: [
-    `Sophia steps off the dead platform without hurry. "Order one rated for me," she says, clinical and certain. "I'll exceed that too."`,
-    `"Collateral damage," she says, smoothing her coat over her belly. "Acceptable. The trial continues."`,
-    `"Efficacy confirmed," Sophia murmurs, looking down at the wreckage like a successful assay. "The scale failed QC. I did not."`,
-    `"I broke your equipment," she says, meeting your eyes. "Again. Keep the receipts — I intend to keep breaking them."`,
-  ]},
+]);
 
-  // 17 · Indiana Bones — explorer: dig-site bravado at every tier
-  { when: { studentId: 17, corruption: [0] }, weight: 4, text: [
-    `Indiana Bones surveys the wreckage like a dig site. "Structural collapse. Classic. Usually I'm running OUT of the temple when this happens."`,
-    `"Well." She brushes glass off her boot. "That's one more artifact I wasn't supposed to take home."`,
-    `"Cursed scale," she mutters. "Should've read the inscription. 'Thou shalt not exceed four hundred.'"`,
-  ]},
-  { when: { studentId: 17, corruption: [1] }, weight: 4, text: [
-    `Indiana Bones toes the cracked platform. "Every expedition packs on weight. I just… kept it all onboard."`,
-    `"The map didn't warn me about this terrain," she says, patting her middle. "My fault for not updating the map."`,
-    `"Structural give," she says, crouching to examine the fracture pattern. "Same as a bad tomb floor. I should've brought planks."`,
-  ]},
-  { when: { studentId: 17, corruption: [2] }, weight: 4, text: [
-    `Indiana Bones grins at the wreckage. "Fortune and glory," she says. "Mostly stored locally now."`,
-    `"Treasure weighs what treasure weighs," she tells the cracked dial. "You should've planned for a bigger hoard."`,
-    `Indiana Bones looks from the cracked glass to you. "No apology necessary, Professor. We both knew I'd win the standoff."`,
-    `"The scale conceded," she says, satisfied. "Good. I like it when ruins know when to yield."`,
-  ]},
-  // Corruption-keyed generics — pool alongside the persona lines so the
-  // break reaction tracks her psychology, not just her identity.
+// ── wi.breakLine ──────────────────────────────────────────────
+// Shape: DIALOGUE BEAT — her verdict on the wreckage.
+// Per-girl corruption-tiered voice lives in breakPersonas.js.
+registerPool("wi.breakLine", [
+  // Corruption-keyed generics — pool alongside persona lines.
   { when: { corruption: [0] }, weight: 2, text: [
     `{subject.name} steps off fast, cheeks burning. "That was already cracked. Right? Tell me that was already cracked."`,
     `{subject.name} stares at the wreckage, mortified. "I'll pay for it," she says, in the voice of someone doing math she can't afford.`,
   ]},
   { when: { corruption: [1] }, weight: 2, text: [
     `{subject.name} looks at the dead scale for a moment. "Huh," she says. "Guess we graduated."`,
-    `{subject.name} prods the cracked glass with her toe. "In its defense," she says, "I gave it plenty of warning."`,
+    `{subject.name} prods the cracked glass with her toe. "In my defense," she says, "I gave it plenty of warning."`,
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
     `{subject.name} smiles down at the wreckage like it flattered her. "Get a bigger one. I'll break that too."`,
-    `{subject.name} steps off, unhurried, and pats the dead dial. "It did its best. I'm just more than it was built to believe."`,
+    `{subject.name} steps off, unhurried{wi.breakBellyTouch|prefix:, }, and pats the dead dial. "It did its best. I'm just more than it was built to believe."`,
   ]},
   // Generic fallbacks so the pool never goes silent.
   { when: {}, text: [
