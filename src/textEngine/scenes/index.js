@@ -21,5 +21,6 @@ import './streamExtended.js';
 import './streamPreStream.js';
 import './streamPreStreamBrand.js';
 import './talkCodas.js';
+import './talkEncourage.js';
 import './weighIn/index.js';
 import '../modules.js';

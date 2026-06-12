@@ -14,6 +14,9 @@ export const TALK_TOPICS = [
   },
   { id:"encourage", label:"Encourage her appetite", icon:"🍽", group:"talk",
     effect:{ rel:1, corruption:1 },
+    // Rendered by the text engine (scenes/talkEncourage.js), not talkDialogue.
+    // Migration pattern: give a topic an engineTemplate and TalkModal routes it.
+    engineTemplate:"{talk.encourage}",
   },
 
   // ── Quiet Suggestion (Influence T1) ───────────────────────
