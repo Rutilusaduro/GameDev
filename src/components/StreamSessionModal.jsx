@@ -9,6 +9,7 @@ import {
   getBrandControlLabel, getBrandControlTier,
   getStreamMilestoneLabel, SPECIAL_OUTCOME_DEFS,
 } from '../gameData/streaming.js';
+import { formatMoney } from '../gameData/wallet.js';
 import { StreamPreStreamPanel } from './StreamPreStreamPanel.jsx';
 
 const RED = '#e74c3c';
@@ -79,6 +80,7 @@ function buildStreamContext(session, student, week, extra = {}) {
   ctx.d.brandStreak = session.brandStreak ?? 0;
   ctx.d.brandControl = session.brandControlTier ?? getBrandControlTier(session.brandStreak ?? 0);
   ctx.d.recentPerf = session.recentPerf;
+  ctx.d.streamVoice = student?.streamVoice;
   return ctx;
 }
 
@@ -109,8 +111,14 @@ function pickChatLine(session, student, week, recentLines = []) {
     weights.push({ key: 'stream.chat.brandControl.late', w: 10 });
   }
   if (session.challenge?.intensity === 'extreme') {
-    weights.push({ key: 'stream.chat.rare', w: 3 });
+    weights.push({ key: 'stream.chat.rare', w: 8 });
   }
+  if (perf === 'poor' || perf === 'verypoor') {
+    weights.push({ key: 'stream.chat.scenario.struggling', w: 12 });
+  } else if (perf === 'good' || perf === 'excellent') {
+    weights.push({ key: 'stream.chat.scenario.eating', w: 10 });
+  }
+  weights.push({ key: 'stream.chat.scenario.teased', w: 6 });
 
   for (let attempt = 0; attempt < 6; attempt++) {
     const total = weights.reduce((s, x) => s + x.w, 0);
@@ -611,9 +619,16 @@ export function StreamSessionModal({
             <div style={{ fontSize: 12, color: '#e8c0c0', fontStyle: 'italic', lineHeight: 1.9, whiteSpace: 'pre-line', marginBottom: 12 }}>
               {ss.endingText}
             </div>
-            {ss.destinyMoneyFlavor && (
+            {(ss.destinyShare > 0 || ss.destinyMoneyFlavor) && (
               <div style={{ fontSize: 11, color: '#a08080', marginBottom: 12, fontStyle: 'italic' }}>
-                💸 Destiny&apos;s cut: {ss.destinyMoneyFlavor}
+                {ss.destinyShare > 0 && (
+                  <div style={{ color: '#ffe080', marginBottom: 4 }}>
+                    💸 Destiny earned {formatMoney(ss.destinyShare)} this stream
+                  </div>
+                )}
+                {ss.destinyMoneyFlavor && (
+                  <div>She spent it on: {ss.destinyMoneyFlavor.replace(/^Destiny spends her (cut|share) on /i, '').replace(/\.$/, '')}</div>
+                )}
               </div>
             )}
             <button style={{ ...C.btn(RED), width: '100%' }} onClick={closeStream}>Close</button>

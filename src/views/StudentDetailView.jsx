@@ -2,7 +2,8 @@ import { EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, EVOLVED_ACTIVITY_META, EVOLVED
 import { ATMOSPHERE_TIERS, GUEST_TIERS, MENU_TIERS } from '../gameData/chapterHostess.js';
 import { C } from '../styles.js';
 import { LilithPixelArt } from '../components/LilithPixelArt.jsx';
-import { BRANDS, getBrandControlLabel } from '../gameData/streaming.js';
+import { BRANDS, getBrandControlLabel, getStreamVoiceLabel } from '../gameData/streaming.js';
+import { formatMoney } from '../gameData/wallet.js';
 import { getCorruptionTier, CORRUPTION_CONFIG } from '../gameData/corruption.js';
 import { CASE_STUDY_PAIRS } from '../gameData/communityResearcher.js';
 import { EVOLVED_SKILL_TREES } from '../gameData/skills.js';
@@ -18,7 +19,7 @@ import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, runPharmacistSynthesis, runPharmacistCultDistribution, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, runPharmacistSynthesis, runPharmacistCultDistribution, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -526,7 +527,18 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                               {s.sponsorFavor?.[s.brand]!=null&&(
                                 <span style={{color:"#c08090"}}> · favor {Math.round(s.sponsorFavor[s.brand])}%</span>
                               )}
+                              {(s.destinyMoney||0)>0&&(
+                                <span style={{color:"#ffe080"}}> · {formatMoney(s.destinyMoney)}</span>
+                              )}
+                              {s.streamVoice&&s.streamVoice!=='default'&&(
+                                <span style={{color:"#ff90a0"}}> · {getStreamVoiceLabel(s.streamVoice)}</span>
+                              )}
                             </div>
+                          )}
+                          {s.evolvedForm==='eating_streamer'&&s.brand&&openDestinySpend&&(
+                            <button style={{...C.btn("#802030"),marginBottom:6,width:"100%"}} onClick={()=>openDestinySpend(s.id)}>
+                              💸 Destiny&apos;s Shop
+                            </button>
                           )}
                           {s.evolvedForm==='eating_streamer'&&(
                             <button style={{...C.btn("#a02030"),opacity:ap<2?0.4:1,marginBottom:10,width:"100%"}} onClick={()=>startStream(s)}>

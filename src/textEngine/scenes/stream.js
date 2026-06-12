@@ -416,3 +416,5 @@ registerModule('stream.endStream.verypoor', [
 ]);
 
 import './streamExtended.js';
+import './streamChatIngest.js';
+import './destinyOffstream.js';

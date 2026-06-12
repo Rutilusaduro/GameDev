@@ -327,8 +327,9 @@ export function mergePreStreamMultipliers(choices = {}) {
 
 export function computeRewards({
   sessionGain, tierHistory, challenge, brandId, audience, sponsorFavor = {},
-  tapOutCause, overallTierOverride,
+  tapOutCause, overallTierOverride, spendEffects,
 }) {
+  const spend = spendEffects || {};
   const overallTier = overallTierOverride || aggregateOverallTier(tierHistory);
   const perfMult = TIER_PERF_MULT[overallTier] || 1;
   const brand = brandId ? BRANDS[brandId] : null;
@@ -347,7 +348,8 @@ export function computeRewards({
   );
 
   const favorGain = Math.round(
-    (6 + perfMult * 8) * match * (brand?.favorGainMult || 1) * tapOutPenalty,
+    ((6 + perfMult * 8) * match * (brand?.favorGainMult || 1) * tapOutPenalty)
+    + (spend.favorBonus || 0),
   );
 
   const moneyGenerated = Math.round(
@@ -356,7 +358,8 @@ export function computeRewards({
     * favorBonus
     * (brand?.payoutMult || 1)
     * (challenge?.payoutMult || 1)
-    * tapOutPenalty,
+    * tapOutPenalty
+    * (spend.moneyMult || 1),
   );
 
   const playerShare = Math.round(moneyGenerated * 0.5);
@@ -401,7 +404,142 @@ export function ensureStreamFields(student) {
     audience: student.audience ?? 120,
     totalStreams: student.totalStreams ?? 0,
     streamMilestones: student.streamMilestones ?? {},
+    destinyMoney: student.destinyMoney ?? 0,
+    destinyPurchases: student.destinyPurchases ?? {},
+    destinyPendingBuffs: student.destinyPendingBuffs ?? {},
+    personaDrift: student.personaDrift ?? {},
+    streamVoice: student.streamVoice ?? 'default',
   };
+}
+
+// ── Destiny spend shop ───────────────────────────────────────────
+
+export const DESTINY_SPEND_ITEMS = [
+  { id: 'delivery_stash', label: 'Delivery Stash', emoji: '📦', cost: 45,
+    desc: 'Always-stocked pre-stream snacks. +4% session gain.',
+    effect: { gainMult: 1.04 }, max: 1 },
+  { id: 'mic_arm', label: 'Pro Mic Arm', emoji: '🎙️', cost: 80,
+    desc: 'Crystal-clear audio. +6% audience growth.',
+    effect: { audienceMult: 1.06 }, max: 1 },
+  { id: 'rgb_rig', label: 'RGB Overload Rig', emoji: '🌈', cost: 120,
+    desc: 'Flashy setup pulls eyes. +10% audience, +5% revenue.',
+    effect: { audienceMult: 1.1, moneyMult: 1.05 }, max: 1 },
+  { id: 'comfort_throne', label: 'Comfort Throne', emoji: '🪑', cost: 100,
+    desc: 'Better stamina on long streams. +8% stamina retention.',
+    effect: { staminaMult: 1.08 }, max: 1 },
+  { id: 'brand_wardrobe', label: 'Brand Wardrobe Refresh', emoji: '👗', cost: 90,
+    desc: 'Sharper sponsor fit. +12% favor per stream.', requiresBrand: true,
+    effect: { favorBonus: 4 }, max: 1 },
+  { id: 'sub_box', label: 'Mystery Sub Box', emoji: '🎁', cost: 65,
+    desc: 'Sponsor surprise crate. +3 favor (stackable).',
+    effect: { favorBonus: 3 }, max: 5, stackable: true },
+  { id: 'chat_feast', label: 'Chat Food Delivery', emoji: '🍕', cost: 55,
+    desc: 'Treat chat — +30 audience on next stream (consumes).',
+    effect: { audienceBurst: 30 }, max: 8, stackable: true, consumable: true },
+];
+
+export function getDestinyShare(rewards) {
+  return Math.max(0, (rewards.moneyGenerated || 0) - (rewards.playerShare || 0));
+}
+
+export function aggregateDestinySpendEffects(purchases = {}) {
+  const fx = {
+    audienceMult: 1, moneyMult: 1, favorBonus: 0, gainMult: 1,
+    staminaMult: 1, audienceBurst: 0,
+  };
+  for (const [id, count] of Object.entries(purchases)) {
+    if (!count) continue;
+    const item = DESTINY_SPEND_ITEMS.find((i) => i.id === id);
+    if (!item?.effect) continue;
+    const stacks = item.stackable === false ? 1 : count;
+    const e = item.effect;
+    if (e.audienceMult) fx.audienceMult *= e.audienceMult ** stacks;
+    if (e.moneyMult) fx.moneyMult *= e.moneyMult ** stacks;
+    if (e.gainMult) fx.gainMult *= e.gainMult ** stacks;
+    if (e.staminaMult) fx.staminaMult *= e.staminaMult ** stacks;
+    if (e.favorBonus) fx.favorBonus += e.favorBonus * stacks;
+    if (e.audienceBurst) fx.audienceBurst += e.audienceBurst * count;
+  }
+  return fx;
+}
+
+export function tryDestinyPurchase(student, itemId) {
+  const item = DESTINY_SPEND_ITEMS.find((i) => i.id === itemId);
+  if (!item) return { ok: false, student, reason: 'unknown' };
+  if (item.requiresBrand && !student.brand) return { ok: false, student, reason: 'brand' };
+  const bal = student.destinyMoney || 0;
+  if (bal < item.cost) return { ok: false, student, reason: 'funds' };
+  const count = student.destinyPurchases?.[itemId] || 0;
+  if (item.max != null && count >= item.max) return { ok: false, student, reason: 'maxed' };
+  const purchases = { ...(student.destinyPurchases || {}), [itemId]: count + 1 };
+  let pending = { ...(student.destinyPendingBuffs || {}) };
+  if (item.consumable && item.effect?.audienceBurst) {
+    pending.audienceBurst = (pending.audienceBurst || 0) + item.effect.audienceBurst;
+  }
+  return {
+    ok: true,
+    student: {
+      ...student,
+      destinyMoney: bal - item.cost,
+      destinyPurchases: purchases,
+      destinyPendingBuffs: pending,
+    },
+    item,
+  };
+}
+
+export function consumeDestinySpend(student, itemId, amount = 1) {
+  const cur = student.destinyPurchases?.[itemId] || 0;
+  if (cur < amount) return student;
+  const purchases = { ...(student.destinyPurchases || {}) };
+  const next = cur - amount;
+  if (next <= 0) delete purchases[itemId];
+  else purchases[itemId] = next;
+  return { ...student, destinyPurchases: purchases };
+}
+
+export function applyPersonaDrift(student, brandId, favorGain = 0) {
+  if (!brandId || student.evolvedForm !== 'eating_streamer') return student;
+  const drift = { ...(student.personaDrift || {}) };
+  const inc = 1 + Math.floor((favorGain || 0) / 5);
+  drift[brandId] = Math.min(100, (drift[brandId] || 0) + inc);
+  for (const b of BRAND_IDS) {
+    if (b !== brandId && drift[b]) drift[b] = Math.max(0, Math.round(drift[b] - 1));
+  }
+  const next = { ...student, personaDrift: drift, brand: brandId };
+  return { ...next, streamVoice: getStreamVoice(next) };
+}
+
+export function getStreamVoice(student) {
+  if (student?.evolvedForm !== 'eating_streamer' || !student.brand) return 'default';
+  const persona = BRANDS[student.brand]?.persona;
+  if (!persona) return 'default';
+  const streak = student.brandStreaks?.[student.brand] || 0;
+  const drift = student.personaDrift?.[student.brand] || 0;
+  const control = getBrandControlTier(streak);
+  if (control === 'soldOut' || drift >= 55) return `${persona}_soldOut`;
+  if (control === 'late' || drift >= 30) return `${persona}_deep`;
+  if (drift >= 12) return persona;
+  return 'default';
+}
+
+export function getStreamVoiceLabel(voice) {
+  const map = {
+    default: 'Still herself',
+    aggressive: 'Getting feral',
+    aggressive_deep: 'CrunchForge-coded',
+    aggressive_soldOut: 'Fully sold out (feral)',
+    manic: 'Hype mode',
+    manic_deep: 'FizzPeak unhinged',
+    manic_soldOut: 'Chaos mascot',
+    sensual: 'Soft streamer voice',
+    sensual_deep: 'VelvetMelt dreamy',
+    sensual_soldOut: 'Object-of-desire mode',
+    bratty: 'Bratty tease',
+    bratty_deep: 'GlazeCo princess',
+    bratty_soldOut: 'Spoiled brand pet',
+  };
+  return map[voice] || voice;
 }
 
 export function roundDurationFor(challenge) {

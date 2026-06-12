@@ -73,8 +73,10 @@ import {
   checkTapOutConditions, computeRewards, deriveTrend, deriveRecentPerf, DESTINY_MONEY_FLAVOR,
   getBrandControlTier, detectNewStreamMilestones, detectSpecialOutcomes,
   applySpecialOutcomeBonuses, STAMINA_DRAIN_PER_SEC, STAMINA_DRAIN_CONTROL_MULT,
-  getStreamMilestoneLabel,
+  getStreamMilestoneLabel, getDestinyShare, aggregateDestinySpendEffects,
+  tryDestinyPurchase, applyPersonaDrift, getStreamVoice,
 } from './gameData/streaming.js';
+import { DestinySpendModal } from './components/DestinySpendModal.jsx';
 import { MoodBadge } from './components/ui.jsx';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
@@ -262,6 +264,7 @@ export default function ProfessorSim(){
   //   betweenRound|resolution|done; snapshot + challenge + round/stamina/gain/chat fields
   const [streamBrandPickState, setStreamBrandPickState] = useState(null);
   // streamBrandPickState: { studentId, required? }
+  const [destinySpendState, setDestinySpendState] = useState(null);
   const [fairTrainingState, setFairTrainingState] = useState({
     cycleNum:0, sessionsThisCycle:0, fairPride:0,
     lastCollaborator:null, recentCollaborators:[], influenceFlags:[],
@@ -1077,7 +1080,15 @@ export default function ProfessorSim(){
     }
     const actArr=EVOLVED_ACTIVITY_TEXT[s.evolvedForm];
     const rawText=actArr?actArr[stageIdx]:null;
-    const text=rawText?(typeof rawText==='function'?rawText(s):rawText):"She's in her element.";
+    let text=rawText?(typeof rawText==='function'?rawText(s):rawText):"She's in her element.";
+    if(s.evolvedForm==='eating_streamer'){
+      const offCtx=createContext({subject:s,week});
+      offCtx.d.brand=s.brand;
+      offCtx.d.streamVoice=s.streamVoice||getStreamVoice(ensureStreamFields(s));
+      offCtx.d.brandControl=getBrandControlTier(s.brandStreaks?.[s.brand]||0);
+      const off=render('{destiny.offstream.activity}',offCtx);
+      if(off) text=`${off}\n\n${text}`;
+    }
     // Calculate bonuses from evolved skills
     const skills=(s.evolvedSkills||[]);
     const tree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
@@ -3125,6 +3136,7 @@ export default function ProfessorSim(){
     ctx.d.brandStreak=session.brandStreak??0;
     ctx.d.brandControl=session.brandControlTier??getBrandControlTier(session.brandStreak??0);
     ctx.d.recentPerf=extra.recentPerf??deriveRecentPerf(session.tierHistory);
+    ctx.d.streamVoice=student?.streamVoice??getStreamVoice(ensureStreamFields(student||{}));
     return ctx;
   };
 
@@ -3151,7 +3163,17 @@ export default function ProfessorSim(){
     }
     if(ap<STREAM_AP_COST){push(`⚠️ Need ${STREAM_AP_COST} AP.`);return;}
     setAp(a=>a-STREAM_AP_COST);
-    const dest=ensureStreamFields(s);
+    let dest=ensureStreamFields(s);
+    const spendFx=aggregateDestinySpendEffects(dest.destinyPurchases);
+    const burst=dest.destinyPendingBuffs?.audienceBurst||0;
+    if(burst>0){
+      dest={
+        ...dest,
+        audience:Math.round((dest.audience||120)+burst),
+        destinyPendingBuffs:{...dest.destinyPendingBuffs,audienceBurst:0},
+      };
+      setStudents(prev=>prev.map(st=>st.id===s.id?dest:st));
+    }
     const weightStageId=getStage(dest.lbs).id;
     const addiction=getCorruptionTier(dest.corruption||0).id;
     const audTier=streamAudienceTier(dest.audience);
@@ -3164,7 +3186,8 @@ export default function ProfessorSim(){
       brand:dest.brand,
       brandStreak:dest.brandStreaks?.[dest.brand]||0,
       brandControlTier:getBrandControlTier(dest.brandStreaks?.[dest.brand]||0),
-      capacityMult:1, gainMult:1, audienceMult:1,
+      capacityMult:1, gainMult:spendFx.gainMult||1, audienceMult:spendFx.audienceMult||1,
+      spendStaminaMult:spendFx.staminaMult||1,
       preStreamChoices:{}, preStreamVignettes:{},
       offeredChallenges:[], challenge:null,
       totalRounds:0, roundIndex:0,
@@ -3312,6 +3335,7 @@ export default function ProfessorSim(){
       const done=prev.tapOutCause||prev.roundIndex+1>=prev.totalRounds;
       if(done){
         const student=students.find(st=>st.id===prev.studentId);
+        const spendFx=aggregateDestinySpendEffects(ensureStreamFields(student).destinyPurchases);
         let rewardsPreview=computeRewards({
           sessionGain:prev.sessionGain,
           tierHistory:prev.tierHistory,
@@ -3320,6 +3344,7 @@ export default function ProfessorSim(){
           audience:student?.audience??120,
           sponsorFavor:student?.sponsorFavor??{},
           tapOutCause:prev.tapOutCause,
+          spendEffects:spendFx,
         });
         const specialOutcomes=detectSpecialOutcomes(prev,rewardsPreview,student||{});
         rewardsPreview=applySpecialOutcomeBonuses(rewardsPreview,specialOutcomes);
@@ -3385,7 +3410,13 @@ export default function ProfessorSim(){
         fullness:prev.sessionFullness,
       };
       const{fired,milestones}=detectNewStreamMilestones(before,updated,prev.brand);
-      updated={...updated,streamMilestones:milestones};
+      const destinyShare=getDestinyShare(r);
+      updated={
+        ...updated,
+        streamMilestones:milestones,
+        destinyMoney:(updated.destinyMoney||0)+destinyShare,
+      };
+      updated=applyPersonaDrift(updated,prev.brand,r.favorGain);
       setStudents(p=>p.map(st=>st.id===prev.studentId?updated:st));
       if(r.playerShare>0) setMoney(m=>addFunds(m,r.playerShare));
       const ctx=buildStreamCtx(prev,updated,{perf:r.overallTier});
@@ -3402,15 +3433,44 @@ export default function ProfessorSim(){
         const{label,emoji}=getStreamMilestoneLabel(key);
         setTimeout(()=>push(`📡 ${emoji} Milestone: ${label}`),80+i*120);
       });
-      push(`📡 Stream wrapped — ${r.overallTier}. +${Math.round(r.weightGain)} lbs, +${r.audienceGain} audience, ${formatMoney(r.playerShare)} earned.`);
+      push(`📡 Stream wrapped — ${r.overallTier}. +${Math.round(r.weightGain)} lbs, +${r.audienceGain} audience, ${formatMoney(r.playerShare)} earned, Destiny +${formatMoney(destinyShare)}.`);
       return {
         ...prev,phase:'done',endingText,destinyMoneyFlavor:flavor,
         milestoneFired:fired,specialOutcomes:prev.specialOutcomes||[],
+        destinyShare,
       };
     });
   };
 
   const closeStream=()=>setStreamSessionState(null);
+
+  const openDestinySpend=(studentId)=>setDestinySpendState({studentId});
+
+  const purchaseDestinyItem=(itemId)=>{
+    if(!destinySpendState) return;
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==destinySpendState.studentId) return st;
+      const{ok,student,reason,item}=tryDestinyPurchase(ensureStreamFields(st),itemId);
+      if(ok){
+        push(`📡 Destiny bought ${item.emoji} ${item.label}.`);
+        return student;
+      }
+      if(reason==='funds') push('⚠️ Destiny cannot afford that.');
+      if(reason==='maxed') push('⚠️ Already at max for that upgrade.');
+      if(reason==='brand') push('⚠️ Needs a sponsor contract first.');
+      return st;
+    }));
+  };
+
+  const giftDestinyFunds=(amount)=>{
+    if(!destinySpendState) return;
+    const spent=trySpend(money,amount);
+    if(!spent.ok){push(`⚠️ Need ${formatMoney(amount)} to gift Destiny.`);return;}
+    setMoney(spent.balance);
+    setStudents(prev=>prev.map(st=>st.id===destinySpendState.studentId
+      ?{...ensureStreamFields(st),destinyMoney:(st.destinyMoney||0)+amount}:st));
+    push(`💸 You gifted Destiny ${formatMoney(amount)}.`);
+  };
 
   // ── Fair Training Collaborations + Fair Day (state_fair_queen) ─────────
   const clampFairStage=(lbs)=>Math.max(4,Math.min(10,getStage(lbs).id));
@@ -5032,7 +5092,7 @@ export default function ProfessorSim(){
           {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
@@ -5305,6 +5365,7 @@ export default function ProfessorSim(){
       {recordingSessionState&&<RecordingSessionModal recordingSessionState={recordingSessionState} students={students} setRecordingSessionState={setRecordingSessionState} makeRecordingChoice={makeRecordingChoice} wrapRecordingSession={wrapRecordingSession} oneMoreTake={oneMoreTake} closeRecordingSession={closeRecordingSession} dismissRecordingChoicePopup={dismissRecordingChoicePopup}/>}
       {streamSessionState&&<StreamSessionModal streamSessionState={streamSessionState} students={students} week={week} preStreamAction={preStreamAction} selectChallenge={selectStreamChallenge} beginActiveRound={beginActiveRound} finishActiveRound={finishActiveRound} continueAfterBetweenRound={continueAfterBetweenRound} tapOutStream={tapOutStream} wrapStream={wrapStream} closeStream={closeStream} appendStreamChat={appendStreamChat} updateRoundPerf={updateRoundPerf} tickRoundStamina={tickRoundStamina}/>}
       {streamBrandPickState&&<StreamBrandSelectModal student={students.find(st=>st.id===streamBrandPickState.studentId)} required={streamBrandPickState.required} onSelect={selectStreamBrand} onClose={streamBrandPickState.required?null:()=>setStreamBrandPickState(null)}/>}
+      {destinySpendState&&<DestinySpendModal student={students.find(st=>st.id===destinySpendState.studentId)} onPurchase={purchaseDestinyItem} onClose={()=>setDestinySpendState(null)} onGiftFromPlayer={giftDestinyFunds} playerMoney={money}/>}
 
       {/* ── FAIR TRAINING COLLABORATIONS HUB ── */}
       {fairTrainingState.open&&<FairTrainingHub ft={fairTrainingState} students={students} ap={ap} getFairPrideTier={getFairPrideTier} startFairTrainingSession={startFairTrainingSession} launchFairDayEvent={launchFairDayEvent} closeFairTraining={closeFairTraining} setFairTrainingState={setFairTrainingState}/>}
