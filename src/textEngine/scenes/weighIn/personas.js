@@ -397,7 +397,14 @@ registerModuleVariants("wi.replyDialogue", [
 
   // ── 15 · Lilith — predator: sparse, unsettling, amused ───────
   // (Her voice ignores corruption — she was never resisting anything.)
-  { when: { studentId: 15, stageMax: 5 }, weight: W, text: [
+  // Slight/Slim: the smallness is an insult she intends to correct.
+  { when: { studentId: 15, stageMax: 1 }, weight: W, text: [
+    `"So little of me," she murmurs, reading the number like an insult she has decided to correct.`,
+    `A flicker of distaste crosses her face. "A starting point. Nothing more."`,
+    `"I am still small," she says. It sounds like a threat aimed at the future.`,
+    `"It's never enough," she says softly — not complaint, appetite.`,
+  ]},
+  { when: { studentId: 15, stageMin: 2, stageMax: 5 }, weight: W, text: [
     `"Numbers are such a human obsession," she says with faint amusement.`,
     `"I'm collecting mass the way others collect grades," she smiles, without warmth.`,
   ]},

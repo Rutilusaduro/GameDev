@@ -49,7 +49,8 @@ registerPool("wi.pace", [
 // Shape: VERB PHRASE, bare present-tense verb, lowercase, no object.
 registerPool("wi.moveVerb", [
   { when: {}, text: ["comes", "walks", "steps"] },
-  { when: { stageMax: 1 }, text: ["slips", "breezes"] },
+  // pace-neutral only — "breezes"/"strides" contradict weary/slow adverbs
+  { when: { stageMax: 1 }, text: ["slips"] },
   { when: { stageMin: 2, stageMax: 4 }, text: ["moves", "eases"] },
   { when: { stageMin: 5, stageMax: 7 }, weight: 2, text: ["waddles", "rolls", "eases"] },
   { when: { stageMin: 6, stageMax: 9, bodyType: ["pear", "hourglass", "fertility_goddess"] }, text: ["angles"] },
@@ -391,7 +392,7 @@ registerPool("wi.scaleAttitude", [
     "She pretends this is routine.",
   ]},
   { when: { corruption: [0], stageMax: 2 }, text: [
-    "The scale is not the first thing on her mind.",
+    "She treats the scale as a formality, nothing more.",
     "There is a composed stillness to her — someone who has rehearsed being fine about this.",
   ]},
   { when: { corruption: [1] }, text: [

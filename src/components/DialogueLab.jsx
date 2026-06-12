@@ -1,8 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
 // DIALOGUE LAB — dev tool for tuning the modular text system.
 // Roll batches of 5 random renders across dialogue sections with
-// lockable state parameters, flag the ones that read wrong, then
-// copy the flagged set (text + exact generating state) to paste
+// lockable state parameters. Flagging a sample shows a checkbox per
+// dialogue node (engine trace provenance: module key + text); check
+// a node, say what's wrong with it, save. Done → review all flags →
+// copy-all payload (state + text + per-node problems) for pasting
 // into a tuning session. Flags live in component state only —
 // closing the lab wipes the collection.
 // ═══════════════════════════════════════════════════════════════
@@ -35,7 +37,7 @@ const SECTIONS = {
   "talk.encourage": (s, opts) => render("{talk.encourage}", createContext({
     subject: s, week: 6,
     globals: { campusFattening: (opts.campusTier || 0) > 0, campusTier: opts.campusTier || 0 },
-  })),
+  }), { trace: opts.trace }),
 };
 const SECTION_KEYS = Object.keys(SECTIONS);
 
@@ -76,33 +78,88 @@ function rollSample(params) {
     stomachCapacity: 100,
   };
   const campusTier = Number(v.campus);
-  const opts = { campusFattening: campusTier > 0, campusTier };
+  const trace = [];
+  const opts = { campusFattening: campusTier > 0, campusTier, trace };
   const text = SECTIONS[v.section](student, opts);
+  // annotation units: leaf fragments, minus bare identity helpers
+  const nodes = trace.filter((t) => t.leaf && t.text.trim() && !t.key.startsWith("subject."));
   const stateLine =
     `${base.name} (id ${base.id}) · ${Math.round(student.lbs)} lbs (stage ${stage} ${WEIGHT_STAGES[stage].label})` +
     ` · corruption ${student.corruption} (tier ${getCorruptionTier(student.corruption).id})` +
     ` · mood ${v.mood} · hunger ${hunger} · addiction ${addiction}` +
     ` · withdrawal ${v.withdrawal} · campus ${campusTier}`;
-  return { section: v.section, stateLine, text, id: `${Date.now()}_${Math.random()}` };
+  return { section: v.section, stateLine, text, nodes, id: `${Date.now()}_${Math.random()}` };
 }
 
 function formatFlagged(flagged) {
-  return flagged.map((f, i) =>
-    `=== FLAGGED ${i + 1}/${flagged.length} ===\nsection: ${f.section}\nstate: ${f.stateLine}\n---\n${f.text}`
-  ).join("\n\n");
+  return flagged.map((f, i) => {
+    const problems = f.problems.length
+      ? `\n--- problems ---\n${f.problems.map((p) => `[${p.key}] "${p.text}" → ${p.note || "(flagged, no note)"}`).join("\n")}`
+      : "";
+    return `=== FLAGGED ${i + 1}/${flagged.length} ===\nsection: ${f.section}\nstate: ${f.stateLine}\n---\n${f.text}${problems}`;
+  }).join("\n\n");
 }
 
 const selStyle = { background: "#181820", color: "#e0e0e0", border: "1px solid #444", borderRadius: 4, padding: "3px 4px", fontSize: 11, maxWidth: 150 };
+const inputStyle = { background: "#181820", color: "#e0e0e0", border: "1px solid #555", borderRadius: 4, padding: "4px 6px", fontSize: 11, flex: 1 };
+
+// Per-node annotation rows shown while flagging a sample.
+function NodeAnnotator({ node, idx, anno, setAnno }) {
+  const checked = idx in anno.notes;
+  const editing = anno.open === idx;
+  const toggle = () => {
+    setAnno((a) => {
+      const notes = { ...a.notes };
+      if (checked) { delete notes[idx]; return { ...a, notes, open: a.open === idx ? null : a.open }; }
+      notes[idx] = notes[idx] || "";
+      return { ...a, notes, open: idx };
+    });
+  };
+  return (
+    <div style={{ marginBottom: 4 }}>
+      <label style={{ display: "flex", gap: 6, alignItems: "flex-start", fontSize: 11, color: checked ? "#e0c090" : "#b0a890", cursor: "pointer" }}>
+        <input type="checkbox" checked={checked} onChange={toggle} style={{ marginTop: 2 }} />
+        <span><span style={{ color: "#7aa", fontSize: 9.5 }}>[{node.key}]</span> {node.text}</span>
+      </label>
+      {editing && (
+        <div style={{ display: "flex", gap: 6, margin: "4px 0 4px 22px" }}>
+          <input
+            autoFocus
+            style={inputStyle}
+            placeholder={`What's the problem with [${node.key}]?`}
+            value={anno.notes[idx] || ""}
+            onChange={(e) => setAnno((a) => ({ ...a, notes: { ...a.notes, [idx]: e.target.value } }))}
+            onKeyDown={(e) => { if (e.key === "Enter") setAnno((a) => ({ ...a, open: null })); }}
+          />
+          <button style={C.smBtn} onClick={() => setAnno((a) => ({ ...a, open: null }))}>Okay</button>
+        </div>
+      )}
+      {checked && !editing && anno.notes[idx] && (
+        <div style={{ margin: "2px 0 2px 22px", fontSize: 10, color: "#e0a050", fontStyle: "italic" }}>→ {anno.notes[idx]}</div>
+      )}
+    </div>
+  );
+}
 
 export function DialogueLab({ onClose }) {
   const [params, setParams] = useState(() => Object.fromEntries(PARAM_DEFS.map((d) => [d.key, RANDOM])));
   const [samples, setSamples] = useState([]);
   const [flagged, setFlagged] = useState([]);
   const [phase, setPhase] = useState("lab");
+  const [anno, setAnno] = useState(null); // { sampleId, notes: {nodeIdx: note}, open: nodeIdx|null }
   const [copied, setCopied] = useState(false);
 
-  const roll = () => setSamples(Array.from({ length: 5 }, () => rollSample(params)));
-  const flag = (sample) => setFlagged((prev) => prev.some((f) => f.id === sample.id) ? prev : [...prev, sample]);
+  const roll = () => { setSamples(Array.from({ length: 5 }, () => rollSample(params))); setAnno(null); };
+  const startFlag = (sample) => setAnno({ sampleId: sample.id, notes: {}, open: null });
+  const saveFlag = (sample) => {
+    const problems = Object.entries(anno.notes).map(([idx, note]) => ({
+      key: sample.nodes[idx].key, text: sample.nodes[idx].text, note: note.trim(),
+    }));
+    setFlagged((prev) => prev.some((f) => f.id === sample.id)
+      ? prev.map((f) => (f.id === sample.id ? { ...f, problems } : f))
+      : [...prev, { id: sample.id, section: sample.section, stateLine: sample.stateLine, text: sample.text, problems }]);
+    setAnno(null);
+  };
   const isFlagged = (sample) => flagged.some((f) => f.id === sample.id);
   const copyAll = () => {
     navigator.clipboard?.writeText(formatFlagged(flagged)).then(() => {
@@ -141,19 +198,40 @@ export function DialogueLab({ onClose }) {
             <button style={{ ...C.btn("#1a5878"), width: "100%", marginBottom: 12 }} onClick={roll}>
               🎲 Roll 5 {samples.length ? "again " : ""}(locked params stay, Random re-rolls per sample)
             </button>
-            {samples.map((s) => (
-              <div key={s.id} style={{ marginBottom: 10, padding: 10, background: "rgba(255,255,255,0.03)", borderRadius: 8, border: isFlagged(s) ? "1px solid #e0a05060" : "1px solid transparent" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "flex-start", marginBottom: 6 }}>
-                  <div style={{ fontSize: 9.5, color: "#8aa", lineHeight: 1.5 }}>[{s.section}] {s.stateLine}</div>
-                  <button
-                    style={{ ...C.smBtn, background: isFlagged(s) ? "rgba(120,80,20,0.6)" : "rgba(120,40,40,0.4)", flexShrink: 0 }}
-                    onClick={() => flag(s)} disabled={isFlagged(s)}>
-                    {isFlagged(s) ? "🚩 Flagged" : "🚩 Flag"}
-                  </button>
+            {samples.map((s) => {
+              const annotating = anno?.sampleId === s.id;
+              return (
+                <div key={s.id} style={{ marginBottom: 10, padding: 10, background: "rgba(255,255,255,0.03)", borderRadius: 8, border: isFlagged(s) ? "1px solid #e0a05060" : annotating ? "1px solid #70c0e060" : "1px solid transparent" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "flex-start", marginBottom: 6 }}>
+                    <div style={{ fontSize: 9.5, color: "#8aa", lineHeight: 1.5 }}>[{s.section}] {s.stateLine}</div>
+                    {!annotating && (
+                      <button
+                        style={{ ...C.smBtn, background: isFlagged(s) ? "rgba(120,80,20,0.6)" : "rgba(120,40,40,0.4)", flexShrink: 0 }}
+                        onClick={() => startFlag(s)}>
+                        {isFlagged(s) ? "🚩 Re-flag" : "🚩 Flag"}
+                      </button>
+                    )}
+                  </div>
+                  {!annotating && (
+                    <div style={{ fontSize: 12, color: "#e0d0b0", lineHeight: 1.7, fontStyle: "italic", whiteSpace: "pre-wrap" }}>{s.text}</div>
+                  )}
+                  {annotating && (
+                    <>
+                      <div style={{ fontSize: 10, color: "#70c0e0", marginBottom: 6 }}>Check the node(s) that are wrong, say why, then save:</div>
+                      {s.nodes.map((n, idx) => (
+                        <NodeAnnotator key={idx} node={n} idx={idx} anno={anno} setAnno={setAnno} />
+                      ))}
+                      <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+                        <button style={{ ...C.btn("#5a4010"), flex: 1 }} onClick={() => saveFlag(s)}>
+                          💾 Save flag ({Object.keys(anno.notes).length} problem{Object.keys(anno.notes).length === 1 ? "" : "s"})
+                        </button>
+                        <button style={C.btn("#333")} onClick={() => setAnno(null)}>Cancel</button>
+                      </div>
+                    </>
+                  )}
                 </div>
-                <div style={{ fontSize: 12, color: "#e0d0b0", lineHeight: 1.7, fontStyle: "italic", whiteSpace: "pre-wrap" }}>{s.text}</div>
-              </div>
-            ))}
+              );
+            })}
           </>
         )}
 
@@ -162,13 +240,18 @@ export function DialogueLab({ onClose }) {
             <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
               <button style={C.btn("#1a5878")} onClick={() => setPhase("lab")}>← Back to lab</button>
               <button style={{ ...C.btn(copied ? "#206030" : "#5a4010"), flex: 1 }} onClick={copyAll}>
-                {copied ? "✓ Copied!" : `📋 Copy all ${flagged.length} (text + state)`}
+                {copied ? "✓ Copied!" : `📋 Copy all ${flagged.length} (text + state + problems)`}
               </button>
             </div>
             {flagged.map((f, i) => (
               <div key={f.id} style={{ marginBottom: 10, padding: 10, background: "rgba(120,80,20,0.08)", borderRadius: 8, border: "1px solid #e0a05030" }}>
                 <div style={{ fontSize: 9.5, color: "#c0a070", marginBottom: 6 }}>#{i + 1} · [{f.section}] {f.stateLine}</div>
                 <div style={{ fontSize: 12, color: "#e0d0b0", lineHeight: 1.7, fontStyle: "italic", whiteSpace: "pre-wrap" }}>{f.text}</div>
+                {f.problems.map((p, j) => (
+                  <div key={j} style={{ fontSize: 10, color: "#e0a050", marginTop: 4 }}>
+                    ⚠ <span style={{ color: "#7aa" }}>[{p.key}]</span> "{p.text}" → {p.note || "(no note)"}
+                  </div>
+                ))}
               </div>
             ))}
           </>

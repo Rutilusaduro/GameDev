@@ -29,31 +29,37 @@ function weighInCtx(student, week, opts = {}) {
   });
 }
 
+// All renderers honor opts.trace (array) — slot provenance for dev tooling.
+
 // Intro scene: arrival + settle + scale approach.
 export function renderWeighInIntro(student, week, goesDirectlyToBig = false, opts = {}) {
   const ctx = weighInCtx(student, week, { ...opts, bigScale: goesDirectlyToBig });
-  return render(goesDirectlyToBig ? WI_INTRO_BIG : WI_INTRO, ctx);
+  return render(goesDirectlyToBig ? WI_INTRO_BIG : WI_INTRO, ctx, { trace: opts.trace });
 }
 
 // Reaction: step-off beat + her personal reply (campus coda preserved).
 export function renderWeighInReaction(student, week, opts = {}) {
   const ctx = weighInCtx(student, week, opts);
-  const stepOff = render("{wi.stepOff}", ctx);
-  const reply = appendCampusWeighIn(render("{wi.reply}{wi.foodAsk|prefix: }", ctx), student, { ...opts, week });
+  const stepOff = render("{wi.stepOff}", ctx, { trace: opts.trace });
+  const reply = appendCampusWeighIn(
+    render("{wi.reply}{wi.foodAsk|prefix: }", ctx, { trace: opts.trace }),
+    student,
+    { ...opts, week },
+  );
   return `${stepOff}\n\n${reply}`;
 }
 
 // The analog scale cracks under her.
 export function renderWeighInBreak(student, week, opts = {}) {
-  return render(WI_BREAK, weighInCtx(student, week, opts));
+  return render(WI_BREAK, weighInCtx(student, week, opts), { trace: opts.trace });
 }
 
 // Professor swaps in the already-purchased industrial scale.
 export function renderWeighInSwap(student, week, opts = {}) {
-  return render("{wi.swap}", weighInCtx(student, week, opts));
+  return render("{wi.swap}", weighInCtx(student, week, opts), { trace: opts.trace });
 }
 
 // Professor notes the need to buy a bigger scale.
 export function renderWeighInPurchase(student, week, opts = {}) {
-  return render("{wi.purchase}", weighInCtx(student, week, opts));
+  return render("{wi.purchase}", weighInCtx(student, week, opts), { trace: opts.trace });
 }

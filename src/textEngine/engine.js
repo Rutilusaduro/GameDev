@@ -303,7 +303,27 @@ const MAX_DEPTH = 5;
 // Per-slot recursive resolution: nested slots inside a module's output
 // resolve with the SLOT's context, so {char.desc:ref} keeps describing
 // the ref all the way down into its {word.*} slots.
-function resolveText(text, ctx, depth) {
+// Resolve one slot: pick the variant, recurse into its slots, and
+// (when tracing) record { key, text, leaf, depth }. A "leaf" is a
+// fragment whose raw variant text contained no further slots —
+// the granularity the Dialogue Lab annotates at.
+function resolveSlot(name, slotCtx, depth, trace) {
+  const raw = String(selectVariant(name, slotCtx));
+  // Leaf = no nested content slots. subject.* identity slots ({subject.lbs}
+  // inside a sentence) don't make a fragment composite — the sentence is
+  // still the natural annotation unit.
+  let leaf = true;
+  SLOT_RE.lastIndex = 0;
+  let m;
+  while ((m = SLOT_RE.exec(raw))) {
+    if (!m[1].startsWith("subject.")) { leaf = false; break; }
+  }
+  const out = resolveText(raw, slotCtx, depth + 1, trace);
+  if (trace && out.trim()) trace.push({ key: name, text: out.trim(), leaf, depth });
+  return out;
+}
+
+function resolveText(text, ctx, depth, trace) {
   if (depth >= MAX_DEPTH) {
     SLOT_RE.lastIndex = 0;
     if (SLOT_RE.test(text)) {
@@ -324,7 +344,7 @@ function resolveText(text, ctx, depth) {
     if (name === "join") {
       const parts = (arg || "")
         .split(",").map((k) => k.trim()).filter(Boolean)
-        .map((k) => resolveText(String(selectVariant(k, ctx)), ctx, depth + 1).trim())
+        .map((k) => resolveSlot(k, ctx, depth, trace).trim())
         .filter(Boolean);
       const out = parts.length <= 1 ? (parts[0] || "")
         : parts.length === 2 ? `${parts[0]} and ${parts[1]}`
@@ -335,9 +355,7 @@ function resolveText(text, ctx, depth) {
     let slotCtx = ctx;
     if (arg === "ref" || arg === "group") slotCtx = retarget(ctx, arg);
     else if (arg) slotCtx = { ...ctx, arg }; // pass-through arg for module fns
-    let out = selectVariant(name, slotCtx);
-    out = resolveText(String(out), slotCtx, depth + 1);
-    return applyFilters(out, filters);
+    return applyFilters(resolveSlot(name, slotCtx, depth, trace), filters);
   });
 }
 
@@ -352,9 +370,11 @@ function smooth(text) {
 
 // render(template, ctx, opts) — the single public entry point.
 // Never throws: unknown modules emit "" with a dev warning.
+// opts.trace: pass an array to collect { key, text, leaf, depth }
+// for every slot resolved (dev tooling — see DialogueLab).
 export function render(template, ctx, opts = {}) {
   let text = String(template).replace(/\{\{/g, ESCAPE_TOKEN);
-  text = resolveText(text, ctx, 0);
+  text = resolveText(text, ctx, 0, opts.trace || null);
   text = text.replace(new RegExp(ESCAPE_TOKEN, "g"), "{");
   return opts.noSmooth ? text : smooth(text);
 }
