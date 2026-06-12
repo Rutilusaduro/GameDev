@@ -4,8 +4,12 @@
 import { ELARA_ID } from './relicHunter.js';
 import { getDevice, isCampusTool } from './devices.js';
 import { resolveCampusDeviceUse } from './deviceEffects.js';
-import '../textEngine/scenes/campusDeviceText.js';
-import { renderCampusDeviceEncounter, renderCampusDeviceResult } from '../textEngine/scenes/campusDeviceText.js';
+import '../textEngine/scenes/campusDevice/index.js';
+import {
+  renderCampusDeviceEncounter,
+  renderCampusDeviceResult,
+  renderCampusDeviceFlavor,
+} from '../textEngine/scenes/campusDevice/index.js';
 
 export const CAMPUS_DEVICE_CONFIG = {
   encounterChance: 0.38,
@@ -23,12 +27,12 @@ export const CAMPUS_NPCS = [
   { id: 'npc_rand_athlete', name: 'Walk-on athlete', role: 'student', archetype: 'athlete', lbs: 132, emoji: '🏃' },
 ];
 
-const FLAVOR_EVENTS = [
-  { deviceId: 'sleep_feeding_system', line: '🌙 You pass a dorm window — someone sleeps hooked to a soft mask and slow drip, belly rising in the dark.' },
-  { deviceId: 'living_furniture_rig', line: '🪑 A common-room couch sighs when someone sits. You pretend not to hear the muffled moan inside.' },
-  { deviceId: 'liquid_fat_infuser', line: '💧 A water cooler by the vending bank hums wrong — warm, heavy, faintly sweet. Talia would know that sound.' },
-  { deviceId: 'remote_feeding_system', line: '📡 A tiny drone retreats behind a vent, tube still glistening. Someone nearby pats their mouth, confused.' },
-  { deviceId: 'feeding_mask', line: '🎭 A discarded mask shell sits in a planter — straps locked, tube clogged with dried paste.' },
+const FLAVOR_DEVICE_IDS = [
+  'sleep_feeding_system',
+  'living_furniture_rig',
+  'liquid_fat_infuser',
+  'remote_feeding_system',
+  'feeding_mask',
 ];
 
 function pick(rng, arr) {
@@ -141,8 +145,13 @@ export function maybeRollDeviceFlavor(nodeId, ctx, rng = Math.random) {
   if (!ctx.labState) return null;
   if (rng() > CAMPUS_DEVICE_CONFIG.flavorChance) return null;
   const ownedIds = Object.keys(ctx.deviceInventory || {}).filter(k => (ctx.deviceInventory[k] ?? 0) > 0);
-  const relevant = FLAVOR_EVENTS.filter(e => ownedIds.includes(e.deviceId) || ctx.labState);
-  return pick(rng, relevant);
+  const pool = FLAVOR_DEVICE_IDS.filter(id => ownedIds.includes(id) || ctx.labState);
+  const deviceId = pick(rng, pool);
+  if (!deviceId) return null;
+  const line = renderCampusDeviceFlavor(deviceId, ctx);
+  if (!line) return null;
+  const icons = { sleep_feeding_system: '🌙', living_furniture_rig: '🪑', liquid_fat_infuser: '💧', remote_feeding_system: '📡', feeding_mask: '🎭' };
+  return { deviceId, line: `${icons[deviceId] || '⚙️'} ${line}` };
 }
 
 export function applyCampusDeviceEncounter({

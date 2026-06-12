@@ -2,6 +2,7 @@
 // TALIA VALE — Inventor / Machine Goddess path & lab state
 // ═══════════════════════════════════════════════════════════════
 import { partsAcquisitionByStage } from './labParts.js';
+import { defaultNetworkState, ensureNetwork } from './networkState.js';
 
 export const TALIA_STUDENT_ID = 18;
 
@@ -17,15 +18,15 @@ export const INVENTOR_PATH_STAGES = [
     id: 2,
     key: 'automator',
     label: 'The Automator',
-    desc: 'Networks and semi-autonomous systems across campus.',
-    unlockNote: 'Locked — requires 8 lab sessions and stage-2 blueprints.',
+    desc: 'Interconnected device networks — node graphs, experiment slotting, deployment zones, and detection risk.',
+    unlockNote: 'Unlocks at 8 lab sessions — build and monitor campus mesh.',
   },
   {
     id: 3,
     key: 'networked_controller',
     label: 'Networked Controller',
-    desc: 'Interlinked machine ecosystems and remote influence.',
-    unlockNote: 'Locked — endgame automation scaffold (pass 2).',
+    desc: 'Distributed intelligence — influence web, autonomous proposals, nexus integration.',
+    unlockNote: 'Unlocks at 16 lab sessions — command the mesh as Talia becomes the system.',
   },
 ];
 
@@ -45,20 +46,20 @@ export const INVENTOR_ACTIVITIES = {
     instability: 5,
   },
   2: {
-    label: '⚙️ Calibrate Network',
-    apCost: 2,
-    desc: 'Stage 2 scaffold — tune automated systems (stub).',
-    taliaGain: [4, 8],
-    instability: 8,
-    stub: true,
+    label: '⚙️ Network Control',
+    apCost: 1,
+    desc: 'Open the node graph — slot experiments, expand coverage, manage detection risk.',
+    opensNetwork: true,
+    taliaGain: [2, 4],
+    instability: 4,
   },
   3: {
-    label: '🌐 Remote Override',
-    apCost: 3,
-    desc: 'Stage 3 scaffold — campus-wide device mesh (stub).',
-    taliaGain: [6, 12],
-    instability: 12,
-    stub: true,
+    label: '🌐 Nexus Command',
+    apCost: 2,
+    desc: 'Command the influence web — approve autonomous proposals and deepen integration.',
+    opensNetwork: true,
+    taliaGain: [3, 6],
+    instability: 6,
   },
 };
 
@@ -115,7 +116,11 @@ export function maybeAdvanceInventorStage(state) {
   }
   stage = Math.min(3, stage);
   if (stage <= (state.stage ?? 1)) return state;
-  const researched = [...(state.researchedBlueprints || [])];
+  let next = { ...state, stage };
+  if (stage >= 2 && !next.network) {
+    next.network = defaultNetworkState(stage);
+  }
+  const researched = [...(next.researchedBlueprints || [])];
   if (stage >= 2 && !researched.includes('bp_serum_injector')) researched.push('bp_serum_injector');
   if (stage >= 2 && !researched.includes('bp_redistribution_rig')) researched.push('bp_redistribution_rig');
   if (stage >= 2 && !researched.includes('bp_paste_printer')) researched.push('bp_paste_printer');
@@ -123,7 +128,8 @@ export function maybeAdvanceInventorStage(state) {
   if (stage >= 2 && !researched.includes('bp_liquid_infuser')) researched.push('bp_liquid_infuser');
   if (stage >= 3 && !researched.includes('bp_predator_capture')) researched.push('bp_predator_capture');
   if (stage >= 3 && !researched.includes('bp_furniture_rig')) researched.push('bp_furniture_rig');
-  return { ...state, stage, researchedBlueprints: researched };
+  next.researchedBlueprints = researched;
+  return ensureNetwork(next);
 }
 
 export function completeLabSession(state, session, builtDeviceId = null) {
@@ -146,12 +152,15 @@ export function completeLabSession(state, session, builtDeviceId = null) {
 
 export function tickLabWeek(state) {
   if (!state) return state;
-  let next = { ...state };
+  let next = ensureNetwork({ ...state });
   if ((next.maintenanceDebt ?? 0) > 0) {
     next.maintenanceDebt = Math.max(0, next.maintenanceDebt - 1);
   }
   next.instability = Math.max(0, (next.instability ?? 0) - 2);
   next.builtThisSession = [];
+  if (next.network) {
+    next.network.stats = next.network.stats || {};
+  }
   return next;
 }
 

@@ -225,9 +225,8 @@ function evalWhen(when, ctx) {
       }
       case "bigScale": ok = !!ctx.globals?.bigScale === !!v; break;
       default: {
-        // dimension on ctx.d: corruption, stage, relationship, relSize,
-        // bodyType, archetype, mood, evolvedForm, refStage...
-        const actual = d[k];
+        // dimension on ctx.d, else ctx.globals (network/campus device keys)
+        const actual = d[k] ?? ctx.globals?.[k];
         ok = Array.isArray(v) ? v.includes(actual) : actual === v;
       }
     }
