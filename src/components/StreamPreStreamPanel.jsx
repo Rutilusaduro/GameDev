@@ -36,7 +36,7 @@ function ProgressRail({ choices, accent }) {
   );
 }
 
-function ChoiceCard({ actionId, choice, theme, onPick }) {
+function ChoiceCard({ actionId, choice, theme, onPick, brandId }) {
   const key = `${actionId}.${choice.id}`;
   const meta = PRE_STREAM_CHOICE_META[key] || {};
   return (
@@ -68,7 +68,7 @@ function ChoiceCard({ actionId, choice, theme, onPick }) {
         e.currentTarget.style.boxShadow = 'none';
       }}
     >
-      <StreamPixelIcon spriteKey={key} size={52} glow={theme.accentGlow} brandId={student?.brand} />
+      <StreamPixelIcon spriteKey={key} size={52} glow={theme.accentGlow} brandId={brandId} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontSize: 13, fontWeight: 700, color: theme.accent, marginBottom: 3 }}>
           {choice.label}
@@ -343,6 +343,7 @@ export function StreamPreStreamPanel({ streamSession, student, preStreamAction }
             choice={c}
             theme={theme}
             onPick={handlePick}
+            brandId={streamSession.brand}
           />
         ))}
       </div>

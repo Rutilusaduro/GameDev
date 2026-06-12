@@ -6,6 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 import './attitude.js';
 import './campusExplorationText.js';
+import './campusDevice/index.js';
 import './campusSoftening.js';
 import './destinyOffstream.js';
 import './diary.js';
@@ -23,4 +24,8 @@ import './streamPreStreamBrand.js';
 import './talkCodas.js';
 import './talkEncourage.js';
 import './weighIn/index.js';
+import './deviceBody.js';
+import './deviceTick/index.js';
+import './suddenGrowth/index.js';
+import './talia/index.js';
 import '../modules.js';

@@ -9,6 +9,7 @@ import { getExplorationFind, pickExplorationFind, travelFindPool, formatExplorat
 import { ELARA_ID, getElaraQuest, elaraQuestProgressLine } from './relicHunter.js';
 import '../textEngine/scenes/campusExplorationText.js';
 import { renderCampusSighting, renderCampusTravelLine, renderCampusFindFlavor } from '../textEngine/scenes/campusExplorationText.js';
+import { maybeRollDeviceEncounter, maybeRollDeviceFlavor } from './campusDeviceEncounters.js';
 
 export const EXPLORATION_CONFIG = {
   travelEventChance: 0.62,
@@ -75,6 +76,8 @@ export function buildExplorationContext({
   week,
   lilithUnlocked,
   exploration,
+  labState = null,
+  deviceInventory = null,
 }) {
   const campusTier = getCampusNarrativeTier(pharmacistState);
   const avgLbs = students.length
@@ -91,6 +94,8 @@ export function buildExplorationContext({
     elaraDiscovered: !!exploration?.elaraDiscovered,
     elaraMet: !!exploration?.elaraMet,
     exploration,
+    labState,
+    deviceInventory,
   };
 }
 
@@ -105,7 +110,7 @@ function applyFindToEffects(find, effects) {
 
 export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
   const lines = [];
-  const effects = { ingredientGrant: null, foodGrant: null, observeNode: nodeId };
+  const effects = { ingredientGrant: null, foodGrant: null, observeNode: nodeId, deviceEncounter: null };
   const travelCtx = { ...ctx, nodeId };
 
   if (ctx.campusFattening && rng() < 0.35) {
@@ -142,6 +147,15 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
   if (ctx.exploration?.elaraMet) {
     const questLine = elaraQuestProgressLine(ctx.exploration, nodeId, ctx);
     if (questLine) lines.push(questLine);
+  }
+
+  const flavor = maybeRollDeviceFlavor(nodeId, ctx, rng);
+  if (flavor) lines.push(flavor.line);
+
+  const encounter = maybeRollDeviceEncounter(nodeId, ctx, rng);
+  if (encounter) {
+    effects.deviceEncounter = encounter;
+    lines.push(encounter.openingLine);
   }
 
   return { lines, effects };
