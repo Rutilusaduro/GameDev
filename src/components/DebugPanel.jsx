@@ -68,7 +68,7 @@ export function DebugPanel({ adminScrutiny, ap, debugApply, debugInputs, setAdmi
             <div style={{marginBottom:14,padding:10,background:"rgba(255,255,255,0.04)",borderRadius:8}}>
               <div style={{fontSize:10,color:"#888",marginBottom:6}}>TEXT ENGINE — {_registryEntries().length} registered modules/pools</div>
               <div style={{fontSize:9,color:"#606878",marginBottom:8,lineHeight:1.5}}>
-                Dialogue Lab sweeps weigh-in, talk, device ticks, campus devices, Talia network, hunger interrupts, attitude, and hive intake.
+                Dialogue Lab sweeps weigh-in, talk, device ticks, campus devices, hunger interrupts, attitude, and hive intake.
               </div>
               <button style={{...C.smBtn,background:"rgba(100,60,140,0.4)"}}
                 onClick={()=>setTextSample(sampleTextEngine())}>📜 Sample hive intake (6 combos)</button>

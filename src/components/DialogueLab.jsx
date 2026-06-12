@@ -20,7 +20,6 @@ import {
 } from '../textEngine/scenes/weighIn/index.js';
 import { renderDeviceTickLine } from '../textEngine/scenes/deviceTick/index.js';
 import { renderCampusDeviceEncounter, renderCampusDeviceResult } from '../textEngine/scenes/campusDevice/index.js';
-import { renderNetworkEventLine, renderProposalLine } from '../textEngine/scenes/talia/networkText.js';
 import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes/hungerInterrupt.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
@@ -37,8 +36,6 @@ const MOODS = ["happy", "focused", "excited", "content", "tired", "stressed", "w
 const COR_POINTS = { 0: 10, 1: 50, 2: 90 };
 const RANDOM = "random";
 const DEVICE_IDS = Object.keys(DEVICES).filter(id => DEVICES[id].form === 'worn' || DEVICES[id].form === 'campus_tool');
-const NETWORK_EVENTS = ['node_added', 'experiment_run', 'detection_spike', 'stability_dip', 'zone_expanded'];
-const PROPOSAL_TYPES = ['expand_zone', 'slot_experiment', 'increase_automation'];
 
 const MOCK_EXPLORATION = { week: 6, campusTier: 1 };
 const MOCK_ENCOUNTER = {
@@ -99,18 +96,6 @@ const SECTIONS = {
       { discovered: false, modeId: 'stealth' },
       'quad',
     ) },
-  "talia.networkEvent": { params: ["campus"],
-    fn: (_s, opts) => renderNetworkEventLine(
-      opts.networkEvent || 'experiment_run',
-      { stability: 72, detectionRisk: 18, nodeCount: 4 },
-      2,
-    ) },
-  "talia.proposal": { params: ["campus"],
-    fn: (_s, opts) => renderProposalLine(
-      opts.proposalType || 'expand_zone',
-      'North Quad',
-      3,
-    ) },
   "hunger.interrupt": { params: STATE_PARAMS,
     fn: (s) => renderHungerInterrupt(s, 6) },
   "hunger.outcome.feed": { params: STATE_PARAMS,
@@ -139,8 +124,6 @@ const PARAM_DEFS = [
   { key: "withdrawal", label: "Withdrawal", options: ["no", "yes"] },
   { key: "campus", label: "Campus tier", options: ["0", "1", "2", "3"] },
   { key: "device", label: "Device", options: DEVICE_IDS, optionLabel: (v) => DEVICES[v]?.label || v },
-  { key: "networkEvent", label: "Network event", options: NETWORK_EVENTS },
-  { key: "proposalType", label: "Proposal", options: PROPOSAL_TYPES },
 ];
 
 // Resolve one sample's state: locked params stay, Random rolls fresh.
@@ -189,8 +172,6 @@ function rollSample(params) {
     campusTier,
     trace,
     device: v.device,
-    networkEvent: v.networkEvent,
-    proposalType: v.proposalType,
   };
   const text = SECTIONS[v.section].fn(student, opts);
   // annotation units: leaf fragments, minus bare identity helpers
