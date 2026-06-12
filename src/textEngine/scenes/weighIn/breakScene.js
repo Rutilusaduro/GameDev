@@ -87,11 +87,39 @@ registerPool("wi.breakLine", [
   { when: { studentId: 15 }, weight: 4, text: [
     `Lilith regards the cracked dial with quiet amusement. "Fragile little thing."`,
   ]},
-  { when: { studentId: 16 }, weight: 4, text: [
+  // 16 · Sophia — pharmacy grad: precision → pride in the trial
+  { when: { studentId: 16, corruption: [0] }, weight: 4, text: [
     `Sophia stares at the cracks, mentally recalculating load tolerances. "That was rated equipment," she says faintly. "I exceeded rated equipment."`,
+    `"Oh no — the calibration—" She crouches by the wreckage. "This voids the warranty. I voided the warranty."`,
   ]},
-  { when: { studentId: 17 }, weight: 4, text: [
+  { when: { studentId: 16, corruption: [1] }, weight: 4, text: [
+    `Sophia prods the fractured dial with one gloved finger. "Material failure under sustained dosing," she murmurs. "Predictable, in retrospect."`,
+    `"The protocol wasn't supposed to include the hardware," she says. A beat. "I'm revising the protocol."`,
+    `"Load exceeded," she whispers, more fascinated than sorry. "I should've ordered a heavier-duty model weeks ago."`,
+  ]},
+  { when: { studentId: 16, corruption: [2] }, weight: 4, text: [
+    `Sophia steps off the dead platform without hurry. "Order one rated for me," she says, clinical and certain. "I'll exceed that too."`,
+    `"Collateral damage," she says, smoothing her coat over her belly. "Acceptable. The trial continues."`,
+    `"Efficacy confirmed," Sophia murmurs, looking down at the wreckage like a successful assay. "The scale failed QC. I did not."`,
+    `"I broke your equipment," she says, meeting your eyes. "Again. Keep the receipts — I intend to keep breaking them."`,
+  ]},
+
+  // 17 · Indiana Bones — explorer: dig-site bravado at every tier
+  { when: { studentId: 17, corruption: [0] }, weight: 4, text: [
     `Indiana Bones surveys the wreckage like a dig site. "Structural collapse. Classic. Usually I'm running OUT of the temple when this happens."`,
+    `"Well." She brushes glass off her boot. "That's one more artifact I wasn't supposed to take home."`,
+    `"Cursed scale," she mutters. "Should've read the inscription. 'Thou shalt not exceed four hundred.'"`,
+  ]},
+  { when: { studentId: 17, corruption: [1] }, weight: 4, text: [
+    `Indiana Bones toes the cracked platform. "Every expedition packs on weight. I just… kept it all onboard."`,
+    `"The map didn't warn me about this terrain," she says, patting her middle. "My fault for not updating the map."`,
+    `"Structural give," she says, crouching to examine the fracture pattern. "Same as a bad tomb floor. I should've brought planks."`,
+  ]},
+  { when: { studentId: 17, corruption: [2] }, weight: 4, text: [
+    `Indiana Bones grins at the wreckage. "Fortune and glory," she says. "Mostly stored locally now."`,
+    `"Treasure weighs what treasure weighs," she tells the cracked dial. "You should've planned for a bigger hoard."`,
+    `Indiana Bones looks from the cracked glass to you. "No apology necessary, Professor. We both knew I'd win the standoff."`,
+    `"The scale conceded," she says, satisfied. "Good. I like it when ruins know when to yield."`,
   ]},
   // Corruption-keyed generics — pool alongside the persona lines so the
   // break reaction tracks her psychology, not just her identity.
