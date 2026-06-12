@@ -14,7 +14,7 @@ import { appendCampusWeighIn } from '../campusSoftening.js';
 
 export const WI_INTRO = "{wi.arrival} {wi.settle} {wi.scaleApproach}";
 export const WI_INTRO_BIG = "{wi.arrival} {wi.settle} {wi.bigScaleApproach}";
-export const WI_REACTION = "{wi.stepOff}\n\n{wi.reply}";
+export const WI_REACTION = "{wi.stepOff}\n\n{wi.reply}{wi.foodAsk|prefix: }";
 export const WI_BREAK = "{wi.breakBeat} {wi.breakLine}";
 
 function weighInCtx(student, week, opts = {}) {
@@ -39,7 +39,7 @@ export function renderWeighInIntro(student, week, goesDirectlyToBig = false, opt
 export function renderWeighInReaction(student, week, opts = {}) {
   const ctx = weighInCtx(student, week, opts);
   const stepOff = render("{wi.stepOff}", ctx);
-  const reply = appendCampusWeighIn(render("{wi.reply}", ctx), student, { ...opts, week });
+  const reply = appendCampusWeighIn(render("{wi.reply}{wi.foodAsk|prefix: }", ctx), student, { ...opts, week });
   return `${stepOff}\n\n${reply}`;
 }
 

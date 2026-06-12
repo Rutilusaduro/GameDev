@@ -407,7 +407,11 @@ registerModuleVariants("wi.replyDialogue", [
   ]},
 
   // ── 16 · Sophia — pharmacy grad: anxious precision (new) ─────
-  { when: { studentId: 16, corruption: [0], stageMax: 5 }, weight: W, text: [
+  { when: { studentId: 16, corruption: [0], stageMax: 1 }, weight: W, text: [
+    `"Baseline confirmed," she says, relieved, like the scale might have argued.`,
+    `"Within parameters." She checks the number against the one in her head anyway. Twice.`,
+  ]},
+  { when: { studentId: 16, corruption: [0], stageMin: 2, stageMax: 5 }, weight: W, text: [
     `"That's— I double-checked my intake math. Twice. The variance shouldn't be this large."`,
     `"It's fine. It's within tolerances." A beat. "Mostly within tolerances."`,
   ]},

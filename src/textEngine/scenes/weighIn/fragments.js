@@ -365,7 +365,6 @@ registerPool("wi.greeting", [
   { when: { corruption: [1] }, text: [
     `"Another week," she says. Flat. Familiar.`,
     `"Let's do it," she says, like clocking in.`,
-    `"Same time next week, same deal," she says, like she is trying it on for size.`,
   ]},
   { when: { corruption: [2] }, text: [
     `"Ready when you are," she says — and she means the scale, not the paperwork.`,
@@ -383,7 +382,7 @@ registerPool("wi.greeting", [
 registerPool("wi.scaleAttitude", [
   { when: {}, text: [
     "She glances at the scale only once.",
-    "The scale waits; so does she.",
+    "She makes small talk that neither of you is really listening to.",
     "She checks the time like this is just another appointment.",
   ]},
   { when: { corruption: [0], stageMin: 3, stageMax: 7 }, text: [
@@ -396,8 +395,8 @@ registerPool("wi.scaleAttitude", [
     "There is a composed stillness to her — someone who has rehearsed being fine about this.",
   ]},
   { when: { corruption: [1] }, text: [
-    "She looks at the scale without flinching. That is new.",
-    "No face at the scale. That is progress.",
+    "She looks at the scale without flinching — a month ago she couldn't.",
+    "She's stopped making a face at the scale somewhere along the way.",
     "She does not apologize for the space she takes up. She does not celebrate it either.",
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
@@ -726,6 +725,14 @@ registerPool("wi.replyBody", [
 registerPool("wi.replyDialogue", [
   { when: { corruption: [0] }, text: [
     `"Okay," she says. Not convinced. Not devastated. Just processing.`,
+  ]},
+  // Slight/Slim: nothing to explain away yet — keep it neutral
+  { when: { corruption: [0], stageMax: 1 }, text: [
+    `"That seems right," she says, shrugging. "Nothing to report."`,
+    `"Fine," she says. She was already thinking about lunch.`,
+  ]},
+  // Soft+: the gain is visible; the excuses start
+  { when: { corruption: [0], stageMin: 2 }, text: [
     `"It's the food here," she says, unconvincing even to herself.`,
     `"I'll cut back," she says, to herself as much as you.`,
     `"Water weight," she says. Nobody believes it.`,
@@ -735,6 +742,7 @@ registerPool("wi.replyDialogue", [
     `"It's only going one direction," she says, with a small, settled nod.`,
     `"Fine. New baseline."`,
     `"Is it bad that I expected that?"`,
+    `"Same time next week," she says, already gathering her things.`,
   ]},
   { when: { corruption: [2] }, text: [
     `"Good," she says simply, hands settling on the soft weight of herself. "More."`,
@@ -765,6 +773,40 @@ registerPool("wi.replyDialogue", [
     `"Can we hurry this up," she says, rubbing her arms. She doesn't say why. You both know why.`,
   ]},
   { when: {}, text: [`She takes in the reading and nods.`] },
+]);
+
+// ── wi.foodAsk ────────────────────────────────────────────────
+// Shape: FULL SENTENCE — after the number, the appetite speaks up.
+// Silent (empty wildcard) unless hunger/addiction/withdrawal is
+// active; keyed variants are weighted heavy so a hungry girl
+// reliably asks — or demands — food before she leaves.
+registerPool("wi.foodAsk", [
+  { when: {}, text: [""] },
+  { when: { hungerTierMin: 2, hungerTierMax: 2, corruption: [0] }, weight: 6, text: [
+    `On her way out she hesitates at the door. "You don't happen to have anything to eat in here, do you? Skipped breakfast." She didn't.`,
+    `"Is it lunch yet?" she asks, too casually, eyes doing a lap of the desk.`,
+  ]},
+  { when: { hungerTierMin: 2, hungerTierMax: 2, corruption: [1, 2] }, weight: 6, text: [
+    `"Okay. Weighed, measured." She points at the snack drawer. "Now feed me. That's the arrangement, right?"`,
+    `"That worked up an appetite somehow," she says, not moving toward the door.`,
+  ]},
+  { when: { hungerTierMin: 3 }, weight: 9, text: [
+    `She doesn't leave. "Sorry — before I go. Do you have food? I'm not asking for later. I mean now."`,
+    `"Great, number recorded, science done." Her stomach growls loud enough to co-sign. "Where's the food?"`,
+    `Her eyes have been on the snack drawer this whole time. "I sat through the whole weigh-in," she says. "I earned something."`,
+  ]},
+  { when: { hungerTierMin: 3, corruption: [2] }, weight: 9, text: [
+    `"You weighed me. Now you feed me." She sits back down. "That's how this works, Professor."`,
+    `She pats the desk twice, like ringing a bell. "Kitchen's open. Don't make me ask twice — I will, but don't make me."`,
+  ]},
+  { when: { addictionLevelMin: 3 }, weight: 9, text: [
+    `"I did my part," she says, and there's a thin edge under the lightness. "The part where you feed me comes next. It always comes next."`,
+    `She doesn't ask. She just waits, hand open on the desk, with the patience of someone who knows the food is coming.`,
+  ]},
+  { when: { inWithdrawal: true }, weight: 12, text: [
+    `She catches your sleeve before you can file the number. "Please tell me you have something. Anything. It's been a bad week."`,
+    `"Whatever the scale says is fine. I don't care." Her hands aren't steady. "I need something from you. The usual something."`,
+  ]},
 ]);
 
 // ── wi.moodTag ────────────────────────────────────────────────
