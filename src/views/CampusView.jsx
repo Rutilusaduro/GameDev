@@ -201,7 +201,7 @@ export function CampusView({
           </div>
           {elaraMet && quests.length > 0 && (
             <div style={{...C.card,borderColor:"#3a3520",padding:"10px 12px"}}>
-              <div style={{fontSize:9,color:"#8a7a50",letterSpacing:0.5,marginBottom:6}}>ELARA'S QUESTS</div>
+              <div style={{fontSize:9,color:"#8a7a50",letterSpacing:0.5,marginBottom:6}}>INDIANA'S QUESTS</div>
               {quests.map(q=>(
                 <div key={q.id} style={{marginBottom:8}}>
                   <div style={{fontSize:11,color:"#d0c8a0",fontWeight:600}}>{q.label}</div>

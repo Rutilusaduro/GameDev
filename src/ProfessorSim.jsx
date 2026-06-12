@@ -396,6 +396,12 @@ export default function ProfessorSim(){
     ||(st.id===LILITH_ID&&lilithUnlocked)
     ||(st.id===ELARA_ID&&elaraDiscovered);
 
+  /** Hidden students stay frozen until discovered; Lilith always passively gains. */
+  const studentReceivesPassiveGain=(st)=>
+    !st.hidden
+    ||st.id===LILITH_ID
+    ||(st.id===ELARA_ID&&elaraDiscovered);
+
   const getCampusExplorationCtx=()=>buildExplorationContext({
     students, pharmacistState, week, lilithUnlocked,
     exploration:campusState.exploration||defaultCampusExplorationState(),
@@ -544,13 +550,13 @@ export default function ProfessorSim(){
 
   const beginElaraQuest=(questId)=>{
     const exploration=campusState.exploration||defaultCampusExplorationState();
-    if(!exploration.elaraDiscovered){ campusLog(['⚠️ You have not found Elara yet.']); return; }
-    if(!exploration.elaraMet){ campusLog(['⚠️ Talk to Elara or open her profile before taking her quests.']); return; }
+    if(!exploration.elaraDiscovered){ campusLog(['⚠️ You have not found Indiana Bones yet.']); return; }
+    if(!exploration.elaraMet){ campusLog(['⚠️ Talk to Indiana or open her profile before taking her quests.']); return; }
     if(exploration.questId){ campusLog(['⚠️ Finish your current exploration quest first.']); return; }
     const quest=availableElaraQuests(exploration,getCampusExplorationCtx()).find(q=>q.id===questId);
     if(!quest){ campusLog(['⚠️ That quest is not available yet.']); return; }
     const next=startElaraQuest(exploration,questId);
-    commitCampusExploration(next,[`🗺️ Elara nods. "${quest.desc}"`, `→ First stop: ${quest.steps[0].nodeId.replace(/_/g,' ')}.`]);
+    commitCampusExploration(next,[`🗺️ Indiana nods. "${quest.desc}"`, `→ First stop: ${quest.steps[0].nodeId.replace(/_/g,' ')}.`]);
   };
 
   // ── INVENTORY ──────────────────────────────────────────────────
@@ -770,6 +776,7 @@ export default function ProfessorSim(){
       setCultivatorState(prev=>prev?{...prev,digestWeeksLeft:Math.max(0,prev.digestWeeksLeft-1)}:null);
     }
     let updated=students.map(s=>{
+      if(!studentReceivesPassiveGain(s)) return s;
       if(s.id===LILITH_ID) return processStudentGain(s,LILITH_PASSIVE_GAIN,0); // Lilith only gains passively
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       let gain=rnd(1,3)+skillPassiveBonus;
@@ -803,7 +810,7 @@ export default function ProfessorSim(){
     });
     if(pharmacistState?.campusFattening){
       updated=updated.map(s=>{
-        if(s.hidden) return s;
+        if(!studentReceivesPassiveGain(s)) return s;
         const extra=rollCampusPassiveLbs(pharmacistState,rnd);
         return extra>0?processStudentGain(s,extra,0):s;
       });
@@ -814,7 +821,7 @@ export default function ProfessorSim(){
       const cultTick=nextPharmacistState._cultWeekly;
       if(cultTick?.passiveAddictedGain>0){
         updated=updated.map(s=>{
-          if(s.hidden||(s.addictionLevel??0)<1) return s;
+          if(!studentReceivesPassiveGain(s)||(s.addictionLevel??0)<1) return s;
           return processStudentGain(s,cultTick.passiveAddictedGain,0);
         });
       }
@@ -830,10 +837,11 @@ export default function ProfessorSim(){
         setTimeout(()=>{
           if(campusEv.target==='class'){
             push(`🌿 ${campusEv.text()}`);
-            setStudents(prev=>prev.map(s=>s.hidden?s:processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd),0)));
+            setStudents(prev=>prev.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd),0):s));
           }else{
-            const target=updated[rnd(0,updated.length-1)];
-            if(target&&!target.hidden){
+            const gainTargets=updated.filter(studentReceivesPassiveGain);
+            const target=gainTargets.length?gainTargets[rnd(0,gainTargets.length-1)]:null;
+            if(target){
               push(`🌿 ${campusEv.text(target)}`);
               setStudents(prev=>prev.map(s=>s.id===target.id?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd),0):s));
             }
@@ -2254,13 +2262,13 @@ export default function ProfessorSim(){
     if(outcome.classGainRange[1]>0){
       const g=rnd(...outcome.classGainRange);
       classGainApplied=g;
-      setStudents(prev=>prev.map(st=>st.hidden?st:processStudentGain(st,g,0)));
+      setStudents(prev=>prev.map(st=>studentReceivesPassiveGain(st)?processStudentGain(st,g,0):st));
     }
     if(outcome.addictedGainRange[1]>0){
       const g=rnd(...outcome.addictedGainRange);
       addictedGainApplied=g;
       setStudents(prev=>prev.map(st=>{
-        if(st.hidden||(st.addictionLevel??0)<1) return st;
+        if(!studentReceivesPassiveGain(st)||(st.addictionLevel??0)<1) return st;
         return processStudentGain(st,g,0);
       }));
     }
@@ -3683,7 +3691,7 @@ export default function ProfessorSim(){
 
 
   const startClass=()=>{
-    const scenes=generateClassSession(students,week);
+    const scenes=generateClassSession(students.filter(studentReceivesPassiveGain),week);
     if(!scenes.length){advanceWeek();return;}
     setClassSession({scenes,sceneIdx:0,outcomes:[],pendingResult:null});
   };
@@ -3710,7 +3718,7 @@ export default function ProfessorSim(){
       }
     }else if(type==="class"){
       gainAmt=rnd(choice.effect.gain[0],choice.effect.gain[1]);
-      newStudents=newStudents.map(s=>processStudentGain(s,gainAmt,0));
+      newStudents=newStudents.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,gainAmt,0):s);
       targetName="the class";
     }
     const evs=collectEvents(newStudents);
@@ -3748,7 +3756,7 @@ export default function ProfessorSim(){
     let refusals=0,fedCount=0,totalCals=0;
     const compoundLabel=compoundId?COMPOUNDS[compoundId]?.label:null;
     const updated=students.map(s=>{
-      if(s.hidden) return s;
+      if(!studentReceivesPassiveGain(s)) return s;
       const cals=rnd(action.cal[0],action.cal[1]);
       const fed=feedStudentCalories(s,cals,action.full,1,'',compoundId?{compoundId}:{});
       if(!fed){refusals++;return s;}
