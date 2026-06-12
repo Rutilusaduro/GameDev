@@ -23,7 +23,7 @@ registerPool("wi.arrival", [
   { when: { stageMin: 8, stageMax: 9 }, weight: 2, text: [
     "{subject.name} fills the doorway before she finishes entering{join:wi.bodyClause,wi.soundClause|prefix:, }.",
     "{subject.name} {wi.moveVerb} {wi.doorway}{wi.bodyClause|prefix:, } — the office rearranges itself around her without discussion.",
-    "The hall announces {subject.name} before the door does{join:wi.soundClause,wi.faceClause|prefix:, }.",
+    "The hall announces {subject.name} before the door does{wi.faceClause|prefix:, }.",
   ]},
   // Stage 10-11: immobility changes the sentence itself
   { when: { stageMin: 10 }, weight: 4, text: [
@@ -151,7 +151,7 @@ registerPool("wi.bodyClause", [
   ]},
   { when: { bodyType: "straight", stageMin: 4, stageMax: 5 }, text: [
     "even thickness settling everywhere at once",
-    "softness poured into her old shape",
+    "her old shape rounding out in every direction",
     "weight carried uniformly, shoulder to knee",
   ]},
   { when: { bodyType: "straight", stageMin: 6 }, weight: 2, text: [
@@ -368,8 +368,8 @@ registerPool("wi.greeting", [
     `"Let's do it," she says, like clocking in.`,
   ]},
   { when: { corruption: [2] }, text: [
-    `"Ready when you are," she says — and she means the scale, not the paperwork.`,
-    `"Let's see it," she says, and she is already halfway there.`,
+    `"Ready when you are," she says, eyes already on the scale.`,
+    `"Let's see it," she says, already moving toward the scale.`,
     `"Been thinking about this all week," she says, warm and easy.`,
     `"Good morning. Let's see where I'm at."`,
   ]},
@@ -759,7 +759,7 @@ registerPool("wi.replyDialogue", [
   { when: { corruption: [1], stageMin: 6 }, weight: 2, text: [
     `"I'm not pretending anymore. This is what I am now."`,
     `"At least it's consistent," she says, and laughs once, without much humor.`,
-    `"That's not stopping, is it," she says. It is not really a question.`,
+    `"That's not stopping, is it," she says — flat, already sure of the answer.`,
   ]},
   { when: { corruption: [2], stageMin: 6 }, weight: 2, text: [
     `"Beautiful," she says, and she means herself. "I'm not done."`,
@@ -771,7 +771,7 @@ registerPool("wi.replyDialogue", [
     `She nods at the number, but her attention has already moved to the question of lunch.`,
   ]},
   { when: { inWithdrawal: true }, weight: 2, text: [
-    `"Can we hurry this up," she says, rubbing her arms. She doesn't say why. You both know why.`,
+    `"Can we hurry this up," she says, rubbing her arms, eyes flicking to the door and whatever is on the other side of it.`,
   ]},
   { when: {}, text: [`She takes in the reading and nods.`] },
 ]);
@@ -802,7 +802,7 @@ registerPool("wi.foodAsk", [
   ]},
   { when: { addictionLevelMin: 3 }, weight: 9, text: [
     `"I did my part," she says, and there's a thin edge under the lightness. "The part where you feed me comes next. It always comes next."`,
-    `She doesn't ask. She just waits, hand open on the desk, with the patience of someone who knows the food is coming.`,
+    `"I'll wait," she says, settling in beside the desk instead of leaving. "You always have something."`,
   ]},
   { when: { inWithdrawal: true }, weight: 12, text: [
     `She catches your sleeve before you can file the number. "Please tell me you have something. Anything. It's been a bad week."`,

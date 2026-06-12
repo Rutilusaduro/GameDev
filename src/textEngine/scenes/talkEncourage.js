@@ -92,7 +92,7 @@ registerPool("enc.reach", [
     "Her eyes flick to the food before the sentence is even finished.",
   ]},
   { when: { inWithdrawal: true }, weight: 3, text: [
-    "Her hand is shaking slightly when it closes around the food. Neither of you mentions it.",
+    "Her hand is shaking slightly when it closes around the food; she steadies it with the other and keeps going.",
   ]},
   { when: { hungerTierMin: 3 }, weight: 2, text: [
     "She is already eating. The encouragement is mostly ceremonial at this point.",
@@ -105,6 +105,7 @@ registerPool("enc.giveIn", [
     `"I shouldn't," she says, which both of you recognize as the opening move of someone who absolutely will. She unwraps it. She eats.`,
     `"Why am I rationing?" Her shoulders drop — tension leaving in a visible wave. "It's not like it's working."`,
     `"Just this once," she says, the way she said it last time.`,
+    `"This is your fault," she says, around the first bite. It doesn't sound like an accusation. It sounds like thanks.`,
   ]},
 ]);
 
@@ -125,6 +126,7 @@ registerPool("enc.accept", [
     `{subject.name} considers, then nods like you've settled an argument she's been having with herself for weeks. "You're right. Why am I rationing?"`,
     `"Permission granted," {subject.name} murmurs, and the words land somewhere deep.`,
     `"It's not like fighting it did anything except make me miserable," {subject.name} says, and the admission sounds like relief.`,
+    `"You're the only one who says it out loud," {subject.name} murmurs. "Everyone else just watches me grow and says nothing."`,
   ]},
 ]);
 
@@ -149,6 +151,7 @@ registerPool("enc.resolve", [
     `"Okay. Tonight I'm not counting anything." She meets your eyes. "Hold me to that."`,
     `"Say it again," she whispers. "Tell me it's okay to want more." She is already reaching for the food.`,
     `"No more halves," she says. "Whole portions. Whole everything."`,
+    `"Okay," she breathes. "But you have to keep telling me it's good. It works better when it's your voice."`,
   ]},
 ]);
 
@@ -160,6 +163,8 @@ registerPool("enc.owned", [
     `{subject.name} grins. "You don't have to encourage me anymore, Professor. But I like it when you do."`,
     `"Already ahead of you," {subject.name} says, gesturing to the spread she's assembled without waiting for permission. "But say the words anyway. They help it go down."`,
     `"Keep talking," {subject.name} says, settling in. "I eat better with an audience."`,
+    `"Say it slower," {subject.name} says, pulling the plate closer. "I want to hear you mean it."`,
+    `"I was waiting for you to say that," {subject.name} admits. "I eat more when you watch. That's not a complaint."`,
   ]},
 ]);
 
@@ -169,6 +174,7 @@ registerPool("enc.display", [
     `"Watch this." She eats with deliberate sensuality — each bite an act of faith in her own growth.`,
     "Her body jiggles and settles; her breathing deepens; her eyes stay on yours.",
     "She pats the chair beside her and makes the meal a performance with one viewer.",
+    "She makes sure you're watching before the first bite — your attention is half the meal.",
   ]},
   { when: { hungerTierMin: 3 }, weight: 2, text: [
     "There is nothing performed about the speed. The hunger is real, and she lets you see all of it.",
@@ -181,9 +187,10 @@ registerPool("enc.display", [
 // Shape: DIALOGUE BEAT — the bottomless closer.
 registerPool("enc.stillHungry", [
   { when: {}, text: [
-    `"Still hungry," she says when she finishes. "Always hungry now."`,
+    `"I'm still hungry," she says when she finishes. "I'm always hungry now."`,
     `She runs her hand over her belly. "They help all of it—" a slow circle, "—feel right."`,
-    `"More tomorrow," she says. It is not a question.`,
+    `"More tomorrow," she says. She isn't asking.`,
+    `"Tell me to keep going," she murmurs. "I will anyway. But I like it better as an instruction."`,
   ]},
 ]);
 
@@ -194,6 +201,8 @@ registerPool("enc.bodyAside", [
   { when: {}, text: ["", ""] },
   { when: { stageMin: 2, stageMax: 5 }, text: [
     "At {subject.lbs} lbs she can feel the weight when she moves — belly rounding, thighs rubbing.",
+  ]},
+  { when: { stageMin: 2, stageMax: 5, corruption: [0] }, weight: 2, text: [
     "At {subject.lbs} lbs she's still negotiating with herself. The negotiation doesn't last long.",
   ]},
   { when: { stageMin: 6 }, weight: 2, text: [

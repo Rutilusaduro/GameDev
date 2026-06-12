@@ -17,9 +17,18 @@ registerPool("wi.breakBeat", [
     "The scale makes one last sound — half creak, half surrender — and the glass fractures.",
     "The platform sinks a half-inch and stays there. The dial face is a web of cracks.",
   ]},
+  { when: { corruption: [0] }, text: [
+    "The crack is the loudest thing either of you has heard all week. She freezes mid-step, like stillness might undo it.",
+    "Glass splinters under the dial face. Her hands fly up — an apology already forming.",
+  ]},
+  { when: { corruption: [1] }, text: [
+    "The dial dies mid-climb. She watches it go with something between guilt and pride.",
+    "The platform gives with a flat crack. She exhales — less startled than she expected to be.",
+  ]},
   { when: { corruption: [2] }, text: [
     "The crack of the dial glass sounds almost ceremonial. She does not flinch.",
     "The scale breaks under her like a record being set.",
+    "Glass splinters, and she stays on the platform a moment longer — letting the wreckage make her point for her.",
   ]},
   { when: { stageMin: 8 }, weight: 2, text: [
     "The scale does not so much break as concede — platform bowing, glass going white with fractures.",
@@ -83,6 +92,20 @@ registerPool("wi.breakLine", [
   ]},
   { when: { studentId: 17 }, weight: 4, text: [
     `Indiana Bones surveys the wreckage like a dig site. "Structural collapse. Classic. Usually I'm running OUT of the temple when this happens."`,
+  ]},
+  // Corruption-keyed generics — pool alongside the persona lines so the
+  // break reaction tracks her psychology, not just her identity.
+  { when: { corruption: [0] }, weight: 2, text: [
+    `{subject.name} steps off fast, cheeks burning. "That was already cracked. Right? Tell me that was already cracked."`,
+    `{subject.name} stares at the wreckage, mortified. "I'll pay for it," she says, in the voice of someone doing math she can't afford.`,
+  ]},
+  { when: { corruption: [1] }, weight: 2, text: [
+    `{subject.name} looks at the dead scale for a moment. "Huh," she says. "Guess we graduated."`,
+    `{subject.name} prods the cracked glass with her toe. "In its defense," she says, "I gave it plenty of warning."`,
+  ]},
+  { when: { corruption: [2] }, weight: 2, text: [
+    `{subject.name} smiles down at the wreckage like it flattered her. "Get a bigger one. I'll break that too."`,
+    `{subject.name} steps off, unhurried, and pats the dead dial. "It did its best. I'm just more than it was built to believe."`,
   ]},
   // Generic fallbacks so the pool never goes silent.
   { when: {}, text: [

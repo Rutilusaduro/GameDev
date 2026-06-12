@@ -27,17 +27,29 @@ const MOODS = ["happy", "focused", "excited", "content", "tired", "stressed", "w
 const COR_POINTS = { 0: 10, 1: 50, 2: 90 };
 const RANDOM = "random";
 
+// Each section declares which state params actually influence its text
+// (irrelevant dropdowns are dithered in the UI) and, where the game
+// gates access, a stage floor — the big scale only exists for girls
+// who broke the analog one (>400 lbs ⇒ stage 7+).
+const STATE_PARAMS = ["girl", "stage", "corruption", "mood", "hunger", "addiction", "withdrawal"];
 const SECTIONS = {
-  "weighIn.intro": (s, opts) => renderWeighInIntro(s, 6, false, opts),
-  "weighIn.introBig": (s, opts) => renderWeighInIntro(s, 6, true, opts),
-  "weighIn.reaction": (s, opts) => renderWeighInReaction(s, 6, { ...opts, bigScale: getStage(s.lbs).id >= 7 }),
-  "weighIn.break": (s, opts) => renderWeighInBreak(s, 6, opts),
-  "weighIn.swap": (s, opts) => renderWeighInSwap(s, 6, opts),
-  "weighIn.purchase": (s, opts) => renderWeighInPurchase(s, 6, opts),
-  "talk.encourage": (s, opts) => render("{talk.encourage}", createContext({
-    subject: s, week: 6,
-    globals: { campusFattening: (opts.campusTier || 0) > 0, campusTier: opts.campusTier || 0 },
-  }), { trace: opts.trace }),
+  "weighIn.intro": { params: STATE_PARAMS,
+    fn: (s, opts) => renderWeighInIntro(s, 6, false, opts) },
+  "weighIn.introBig": { params: STATE_PARAMS, stageMin: 7,
+    fn: (s, opts) => renderWeighInIntro(s, 6, true, opts) },
+  "weighIn.reaction": { params: [...STATE_PARAMS, "campus"],
+    fn: (s, opts) => renderWeighInReaction(s, 6, { ...opts, bigScale: getStage(s.lbs).id >= 7 }) },
+  "weighIn.break": { params: ["girl", "stage", "corruption"],
+    fn: (s, opts) => renderWeighInBreak(s, 6, opts) },
+  "weighIn.swap": { params: ["girl"],
+    fn: (s, opts) => renderWeighInSwap(s, 6, opts) },
+  "weighIn.purchase": { params: ["girl"],
+    fn: (s, opts) => renderWeighInPurchase(s, 6, opts) },
+  "talk.encourage": { params: STATE_PARAMS,
+    fn: (s, opts) => render("{talk.encourage}", createContext({
+      subject: s, week: 6,
+      globals: { campusFattening: (opts.campusTier || 0) > 0, campusTier: opts.campusTier || 0 },
+    }), { trace: opts.trace }) },
 };
 const SECTION_KEYS = Object.keys(SECTIONS);
 
@@ -56,8 +68,23 @@ const PARAM_DEFS = [
 // Resolve one sample's state: locked params stay, Random rolls fresh.
 function rollSample(params) {
   const v = {};
+  // Section first — its constraints shape the other rolls. A random
+  // section respects a locked stage (no introBig for a small girl).
+  if (params.section === RANDOM) {
+    const eligible = SECTION_KEYS.filter((k) => {
+      const min = SECTIONS[k].stageMin;
+      return !(min && params.stage !== RANDOM && Number(params.stage) < min);
+    });
+    v.section = pick(eligible);
+  } else {
+    v.section = params.section;
+  }
+  const stageMin = SECTIONS[v.section].stageMin || 0;
   for (const def of PARAM_DEFS) {
-    v[def.key] = params[def.key] === RANDOM ? pick(def.options) : params[def.key];
+    if (def.key === "section") continue;
+    let options = def.options;
+    if (def.key === "stage" && stageMin) options = options.filter((o) => Number(o) >= stageMin);
+    v[def.key] = params[def.key] === RANDOM ? pick(options) : params[def.key];
   }
   const base = INIT_STUDENTS.find((s) => String(s.id) === v.girl);
   const stage = Number(v.stage);
@@ -80,7 +107,7 @@ function rollSample(params) {
   const campusTier = Number(v.campus);
   const trace = [];
   const opts = { campusFattening: campusTier > 0, campusTier, trace };
-  const text = SECTIONS[v.section](student, opts);
+  const text = SECTIONS[v.section].fn(student, opts);
   // annotation units: leaf fragments, minus bare identity helpers
   const nodes = trace.filter((t) => t.leaf && t.text.trim() && !t.key.startsWith("subject."));
   const stateLine =
@@ -183,17 +210,36 @@ export function DialogueLab({ onClose }) {
         {phase === "lab" && (
           <>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10, padding: 10, background: "rgba(255,255,255,0.04)", borderRadius: 8 }}>
-              {PARAM_DEFS.map((def) => (
-                <label key={def.key} style={{ fontSize: 10, color: "#aaa", display: "flex", flexDirection: "column", gap: 2 }}>
-                  {def.label}
-                  <select style={selStyle} value={params[def.key]} onChange={(e) => setParams((p) => ({ ...p, [def.key]: e.target.value }))}>
-                    <option value={RANDOM}>🎲 Random</option>
-                    {def.options.map((o) => (
-                      <option key={o} value={o}>{def.optionLabel ? def.optionLabel(o) : o}</option>
-                    ))}
-                  </select>
-                </label>
-              ))}
+              {PARAM_DEFS.map((def) => {
+                const lockedSection = params.section !== RANDOM ? SECTIONS[params.section] : null;
+                // dither params the selected section doesn't react to
+                // (everything stays live while section is Random)
+                const relevant = def.key === "section" || !lockedSection || lockedSection.params.includes(def.key);
+                let options = def.options;
+                if (def.key === "stage" && lockedSection?.stageMin) {
+                  options = options.filter((o) => Number(o) >= lockedSection.stageMin);
+                }
+                const onChange = (e) => setParams((p) => {
+                  const next = { ...p, [def.key]: e.target.value };
+                  // picking a big-scale section invalidates a small locked stage
+                  if (def.key === "section") {
+                    const min = SECTIONS[e.target.value]?.stageMin;
+                    if (min && next.stage !== RANDOM && Number(next.stage) < min) next.stage = RANDOM;
+                  }
+                  return next;
+                });
+                return (
+                  <label key={def.key} style={{ fontSize: 10, color: relevant ? "#aaa" : "#555", display: "flex", flexDirection: "column", gap: 2, opacity: relevant ? 1 : 0.35 }}>
+                    {def.label}
+                    <select style={selStyle} value={params[def.key]} disabled={!relevant} onChange={onChange}>
+                      <option value={RANDOM}>🎲 Random</option>
+                      {options.map((o) => (
+                        <option key={o} value={o}>{def.optionLabel ? def.optionLabel(o) : o}</option>
+                      ))}
+                    </select>
+                  </label>
+                );
+              })}
             </div>
             <button style={{ ...C.btn("#1a5878"), width: "100%", marginBottom: 12 }} onClick={roll}>
               🎲 Roll 5 {samples.length ? "again " : ""}(locked params stay, Random re-rolls per sample)
