@@ -11,12 +11,17 @@ import { getCorruptionTier } from '../gameData/corruption.js';
 import { getStage } from '../gameData/stages.js';
 import { createContext, render } from '../textEngine/engine.js';
 import '../textEngine/scenes/talkCodas.js'; // registers talk.coda
+import '../textEngine/scenes/campusSoftening.js';
+import '../textEngine/scenes/hungerLexicon.js';
+import '../textEngine/scenes/destinyOffstream.js';
+import { getBrandControlTier, getStreamVoice, ensureStreamFields } from '../gameData/streaming.js';
+import { getHungerTier, getAddictionLevel } from '../gameData/hungerAddiction.js';
 import { getBodyDescRich } from '../utils/gameHelpers.js';
 import { C } from '../styles.js';
 
 // ── response builder ──────────────────────────────────────────
 
-function buildResponse(topic, student, skillEffects, week){
+function buildResponse(topic, student, skillEffects, week, campusFattening = false, campusTier = 0){
   const corTier = getCorruptionTier(student.corruption || 0).id;
 
   let text;
@@ -24,8 +29,30 @@ function buildResponse(topic, student, skillEffects, week){
     text = buildDevourScene(student, corTier, week);
   } else {
     text = buildTalkResponse(topic.id, student, corTier);
-    const ctx = createContext({ subject: student, skillEffects });
+    const ctx = createContext({
+      subject: student,
+      skillEffects,
+      week,
+      globals: {
+        campusFattening: !!campusFattening,
+        campusTier: campusTier || (campusFattening ? 1 : 0),
+      },
+    });
     text += render("{talk.coda|prefix: }", ctx, { noSmooth: true });
+    if (campusFattening) {
+      text += render("{talk.campusCoda|prefix: }", ctx, { noSmooth: true });
+    }
+    if (getHungerTier(student) >= 2 || getAddictionLevel(student) >= 1) {
+      text += render("{talk.hungryCoda}", ctx, { noSmooth: true });
+    }
+    if (student.evolvedForm === 'eating_streamer') {
+      const ds = ensureStreamFields(student);
+      ctx.d.brand = ds.brand;
+      ctx.d.streamVoice = ds.streamVoice || getStreamVoice(ds);
+      ctx.d.brandControl = getBrandControlTier(ds.brandStreaks?.[ds.brand] || 0);
+      const off = render('{destiny.offstream.talk}', ctx, { noSmooth: true });
+      if (off?.trim()) text += `\n\n${off}`;
+    }
   }
 
   return text;
@@ -117,7 +144,7 @@ function ResponseDisplay({ topic, text, student, week, onClose }){
 
 // ── main modal ────────────────────────────────────────────────
 
-export function TalkModal({ student, skillEffects, week, onClose, onApplyEffect }){
+export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevouring, onClose, onApplyEffect, campusFattening = false, campusTier = 0 }){
   const [activeResponse, setActiveResponse] = useState(null); // {topic, text}
   const corTier = getCorruptionTier(student.corruption || 0);
   const eff     = skillEffects || {};
@@ -139,7 +166,7 @@ export function TalkModal({ student, skillEffects, week, onClose, onApplyEffect 
       }
     }
 
-    const text = buildResponse(topic, student, eff, week);
+    const text = buildResponse(topic, student, eff, week, campusFattening, campusTier);
     setActiveResponse({topic, text, refused:false});
   };
 
@@ -188,6 +215,26 @@ export function TalkModal({ student, skillEffects, week, onClose, onApplyEffect 
         <div style={{fontSize:10,color:"#5a3870",marginBottom:12}}>
           Talking costs {TALK_CONFIG.apCost} AP.
         </div>
+
+        {eff.devouringPresence && !activeResponse && onArmDevouring && (
+          <button
+            type="button"
+            style={{
+              ...C.btn(weeklyArms?.devouringStudentId === student.id ? "#802818" : "#401018"),
+              width: "100%",
+              marginBottom: 12,
+              opacity: weeklyArms?.devouringConsumed ? 0.45 : 1,
+            }}
+            disabled={weeklyArms?.devouringConsumed}
+            onClick={onArmDevouring}
+          >
+            {weeklyArms?.devouringConsumed
+              ? "😈 Devouring Presence — hunger event spent this week"
+              : weeklyArms?.devouringStudentId === student.id
+                ? "😈 Devouring Presence armed (click to disarm)"
+                : "😈 Arm Devouring Presence — her hunger becomes an event this week"}
+          </button>
+        )}
 
         {activeResponse ? (
           <ResponseDisplay

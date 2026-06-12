@@ -920,7 +920,7 @@ export const EVOLVED_ACTIVITY_META = {
   big_squad_captain:{ label:"Attend a Squad Event",    apCost:1, gainRange:[2,5],  relBonus:12 },
   eating_diarist:  { label:"Read Her Latest Entry",    apCost:1, gainRange:[3,6],  relBonus:11 },
   food_researcher: { label:"Visit Her Lab",            apCost:1, gainRange:[3,6],  relBonus:10 },
-  eating_streamer: { label:"Tune In to the Stream",    apCost:1, gainRange:[4,8],  relBonus:10 },
+  eating_streamer: { label:"📡 Stream Event",           apCost:1, gainRange:[4,8],  relBonus:10 },
   speed_eater:     { label:"Watch a Challenge",        apCost:1, gainRange:[4,9],  relBonus:9  },
   ranked_feedee:   { label:"🎮 Run a Session",          apCost:1, gainRange:[8,22], relBonus:12 },
   competitive_gainer:{ label:"📊 Check Her Progress",    apCost:1, gainRange:[10,50], relBonus:8 },
@@ -942,6 +942,7 @@ export const EVOLVED_ACTIVITY_META = {
   psych_researcher:{ label:"Continue Research Session", apCost:1, gainRange:[4,9],  relBonus:11 },
   cultivator:          { label:"🍰 Run Taste-Test Session", apCost:1, gainRange:[2,8],  relBonus:12 },
   community_researcher:{ label:"📋 Conduct Case Study",     apCost:1, gainRange:[3,8],  relBonus:10 },
+  pharmacist:          { label:"🧪 Run Synthesis Session",  apCost:1, gainRange:[2,6],  relBonus:10 },
 };
 
 export const EVOLVED_EVENTS = {
@@ -1357,6 +1358,174 @@ The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
         {condition:()=>true,text:`Your lane. The Grand Invitational table. Maya is at hers, watching you with the focused warmth of someone who knows what is about to happen and came specifically to see it.
 
 The horn fires.`,gainBonus:0,relBonus:0,startsContest:true},
+      ]
+    },
+  ],
+
+  eating_streamer:[
+    // stageIdx 0 — ~258 lbs — First Real Mukbang
+    {
+      title:"First Real Mukbang",
+      phases:[
+        {
+          text:(h,s)=>`The ring light is on. The overlay is set. The delivery bags are stacked off-camera and your stomach is already making small anticipatory noises because you ate a little while setting up and you're not embarrassed about that anymore.
+
+You're ${Math.round(s.lbs)} pounds and thirty-two people are watching. That's more than you've ever had for a gaming stream. The chat is already asking what's in the bags.
+
+"Sponsor said don't go easy," you read off your phone. "Chat said go harder. I'm listening to both of you. Don't say I didn't warn you."`,
+          choices:[
+            {id:"hype_chat",label:"Hype chat up — promise them a real challenge",result:`You lean into the mic and tell them tonight isn't a warm-up. Real food, real timer, real consequences. The viewer count ticks up before you've finished the sentence. Someone donates five dollars with the message *finally*.`,rel:8,flag:"hyped"},
+            {id:"load_pre",label:"Eat a little on camera before the challenge starts",result:`You open the first bag on stream and eat slow enough that chat can see you're already serious. Sauce on your fingers. A soft sound you don't edit out. "Pre-loading," you say. "For research." The viewer count doubles.`,lbs:5,rel:6,flag:"preloaded"},
+          ]
+        },
+        {
+          text:(h,s)=>`Challenge mode is armed. The focus bar minigame is live on your second monitor — green zone, moving indicator, the whole stupid beautiful thing. Chat spam is moving too fast to read.
+
+You're ${Math.round(s.lbs)} pounds, mic hot, sponsor logo on your sleeve. This is the format. This is what they came for.`,
+          choices:[
+            {id:"own_nerves",label:"Admit the nerves — good nervous, let's eat",result:`You say it plain. Chat loses their minds in the supportive way. Someone clips it before the round even starts.`,rel:7,flag:"confident"},
+            {id:"play_cool",label:"Play it cool — act like you've done this forever",result:`You adjust the camera with practiced casualness. "We do this every week now," you lie. Chat believes you. That's power.`,rel:5,flag:"cool"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("preloaded")&&h.includes("hyped"),text:`First real mukbang. Pre-loaded, hyped, chat climbing. The focus bar is waiting and so are four hundred people by the time you hit go-live on the challenge.
+
+Time to perform.`,gainBonus:4,relBonus:6,startsStream:true},
+        {condition:h=>h.includes("confident"),text:`You admitted the nerves and chat loved you for it. Viewer count is climbing. The challenge UI is armed.
+
+Go live.`,gainBonus:2,relBonus:8,startsStream:true},
+        {condition:()=>true,text:`First mukbang format stream. Chat's ready. Bags are ready. You are… ready enough.
+
+The challenge starts now.`,gainBonus:0,relBonus:5,startsStream:true},
+      ]
+    },
+    // stageIdx 1 — ~320 lbs — Sponsor Pressure
+    {
+      title:"Sponsor Pressure",
+      phases:[
+        {
+          text:(h,s)=>`Your brand rep texted before stream: *push the new extreme menu tonight.* You're ${Math.round(s.lbs)} pounds and the logo on your chest is stretched tighter than last month. The chat knows what sponsor you signed with. They have opinions.
+
+"Contract says perform," you mutter to the empty room. Then you smile for the camera anyway.`,
+          choices:[
+            {id:"lean_brand",label:"Lean into the sponsor angle on camera",result:`You do a full brand callout — logo, catchphrase, the works. Chat roasts you and also tips. The rep is going to love this VOD.`,rel:6,flag:"brand_push"},
+            {id:"push_back",label:"Tease chat — make them beg before you obey",result:`You make them spam before you'll touch the sponsor crate. It takes forty seconds. They do it. You knew they would.`,rel:8,flag:"tease"},
+          ]
+        },
+        {
+          text:(h,s)=>`The extreme menu is in frame. It's obscene. You're ${Math.round(s.lbs)} pounds and your belly already has that soft forward settle from pre-stream snacking.
+
+Chat is chanting. The focus bar is loaded. Sponsor is watching.`,
+          choices:[
+            {id:"accept_hype",label:'"Let\'s ruin my stomach on brand time."',result:`You say it like a threat. Chat treats it like a promise. Donations spike.`,rel:7,flag:"feral"},
+            {id:"stay_cute",label:'Play cute — "I\'m too full already~"',result:`Brat voice. Batted lashes. Chat melts and also bullies you into starting anyway. Perfect.`,rel:9,flag:"brat"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("brand_push")&&h.includes("feral"),text:`Sponsor happy. Chat feral. You're about to do something extreme on the focus bar while four digits of people watch.
+
+Stream challenge — go.`,gainBonus:6,relBonus:8,startsStream:true},
+        {condition:h=>h.includes("tease"),text:`You made them work for it and they're still here. Extreme menu. Live challenge. Let's eat.`,gainBonus:3,relBonus:10,startsStream:true},
+        {condition:()=>true,text:`Sponsor pressure accepted. Challenge armed. Time to eat on camera like it pays rent.`,gainBonus:0,relBonus:6,startsStream:true},
+      ]
+    },
+    // stageIdx 2 — ~419 lbs — Trending Night
+    {
+      title:"Trending Night",
+      phases:[
+        {
+          text:(h,s)=>`You're trending. Not metaphorically — the little trending tag is actually on your category page and your phone will not stop buzzing. ${Math.round(s.lbs)} pounds, three thousand viewers before you've eaten anything, and newcomers keep asking how long you've been doing this.
+
+"Long enough," you tell chat. "You're late. Catch up."`,
+          choices:[
+            {id:"welcome_wave",label:"Welcome the new viewers — show them the format",result:`You explain the focus bar, the rounds, the stakes. New chat spam is half horny half confused. Both are good for metrics.`,rel:7,flag:"welcoming"},
+            {id:"ignore_hype",label:"Ignore the hype — act like this is normal",result:`You act like trending is your baseline. Confidence reads as fame. More people stay.`,rel:5,flag:"unbothered"},
+          ]
+        },
+        {
+          text:(h,s)=>`The mods are working overtime. You're ${Math.round(s.lbs)} pounds and your chair creaks when you shift to reach the food. Someone in chat says you're their whole personality now.
+
+You can't tell if that's a compliment. You eat anyway.`,
+          choices:[
+            {id:"clip_bait",label:"Set up a clip-worthy moment before the challenge",result:`You pose, pat your belly, promise chat a round they'll remember. They're already clipping and you haven't started.`,rel:8,flag:"clip_bait"},
+            {id:"speed_run",label:'"No preamble — challenge starts now."',result:`You skip the bit and slam into challenge mode. Chat respects the aggression. Viewer count jumps again.`,rel:6,flag:"speed_run"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("welcoming")&&h.includes("clip_bait"),text:`Trending, welcoming, clip-ready. Three thousand viewers and climbing. The focus bar challenge is about to give them a reason to stay.
+
+Go live.`,gainBonus:8,relBonus:10,startsStream:true},
+        {condition:h=>h.includes("speed_run"),text:`No preamble. Pure challenge. Trending tag still glowing. Eat.`,gainBonus:5,relBonus:7,startsStream:true},
+        {condition:()=>true,text:`Trending night. Big audience. Bigger appetite. Challenge mode — now.`,gainBonus:0,relBonus:8,startsStream:true},
+      ]
+    },
+    // stageIdx 3 — ~519 lbs — Sold-Out Energy
+    {
+      title:"Sold-Out Energy",
+      phases:[
+        {
+          text:(h,s)=>`You don't pick challenges anymore — the brand sends a list and you pick from theirs. You're ${Math.round(s.lbs)} pounds, streak in the double digits, chat calls you sold out like it's a compliment. It kind of is.
+
+"Sponsor wants a massacre," you read. "Chat wants a massacre. I want a snack first. Nobody asked me." You eat the snack anyway. On camera. Obviously.`,
+          choices:[
+            {id:"embrace_sold_out",label:'Own the sold-out thing — "yeah they own me"',result:`You say it laughing. Chat spam is unhinged. Brand rep sends a heart emoji. You're too far gone to pretend otherwise.`,rel:6,flag:"sold_out"},
+            {id:"defiant_tease",label:"Pretend you still have choices — pick from their list dramatically",result:`You read the sponsor options like a game show host. Chat votes. You "choose" the most extreme one like you had free will. Everyone wins.`,rel:9,flag:"defiant"},
+          ]
+        },
+        {
+          text:(h,s)=>`The challenge loadout is brutal. You're ${Math.round(s.lbs)} pounds and your belly rests on your thighs when you sit forward. The focus bar looks smaller than it used to — or you're just worse at it now. Chat would love either explanation.
+
+"Round one starts when I stop talking," you say. You don't stop talking for another minute. Then you start.`,
+          choices:[
+            {id:"trash_talk",label:"Trash-talk chat before round one",result:`You roast your own stamina, your own size, chat's parasocial bullshit. They eat it up. Literally and figuratively.`,rel:7,flag:"trash_talk"},
+            {id:"silent_start",label:"Go quiet — let the food do the talking",result:`You stop performing for ten seconds. Just you and the food and the bar. It's unnerving. Viewers hold.`,rel:5,flag:"silent"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("sold_out")&&h.includes("trash_talk"),text:`Sold out, mouthy, and about to run a branded massacre on the focus bar. Ten thousand people would watch you fail. More would watch you succeed.
+
+Challenge live.`,gainBonus:10,relBonus:9,startsStream:true},
+        {condition:h=>h.includes("defiant"),text:`You performed free will for chat. Sponsor's challenge is loaded. Time to eat like a corporate mascot.`,gainBonus:6,relBonus:11,startsStream:true},
+        {condition:()=>true,text:`Sold-out streamer energy. Brutal challenge. Focus bar armed. Go.`,gainBonus:0,relBonus:7,startsStream:true},
+      ]
+    },
+    // stageIdx 4 — ~650+ lbs — Icon Stream
+    {
+      title:"Icon Stream",
+      phases:[
+        {
+          text:(h,s)=>`Platform email: *featured slot tonight.* You're ${Math.round(s.lbs)} pounds and the thumbnail is just your belly and a controller and you didn't even have to pose. The algorithm knows what you are.
+
+Chat is already at five figures. New people keep asking if this is real. Old people keep saying they've watched you grow since the beginning. Both are true.`,
+          choices:[
+            {id:"legend_mode",label:'"This is what an icon eats." — main-character energy',result:`You say it without blinking. Clip farms activate. Someone writes a thinkpiece in real time. You don't care.`,rel:8,flag:"legend"},
+            {id:"grateful_real",label:"Get genuinely soft with chat for a minute",result:`You thank them — really mean it — for watching you become this. Chat cries and tips at the same time.`,rel:12,flag:"grateful"},
+          ]
+        },
+        {
+          text:(h,s)=>`Featured stream. ${Math.round(s.lbs)} pounds. The biggest challenge loadout you've ever run on the focus bar — more rounds, more food, more ways to fail in front of everyone.
+
+You adjust the camera one last time. Your belly fills half the frame. "Don't look away," you tell chat. "You started this."`,
+          choices:[
+            {id:"max_challenge",label:"Run the longest, hardest challenge they'll give you",result:`You queue the nightmare mode. Chat panics appreciatively. The brand sends a fire emoji.`,rel:7,flag:"max_challenge"},
+            {id:"crowd_pick",label:"Let chat pick between two brutal options",result:`Poll goes up. Both options are absurd. The winner is worse. Perfect.`,rel:10,flag:"crowd_pick"},
+          ]
+        },
+      ],
+      endings:[
+        {condition:h=>h.includes("legend")&&h.includes("max_challenge"),text:`Icon stream. Legend energy. Nightmare challenge loaded. The focus bar has never mattered more.
+
+Go live — make it historic.`,gainBonus:14,relBonus:12,startsStream:true},
+        {condition:h=>h.includes("grateful")&&h.includes("crowd_pick"),text:`Soft with chat, brutal with yourself. They picked the worse challenge. You accept their judgment.
+
+Stream starts now.`,gainBonus:10,relBonus:15,startsStream:true},
+        {condition:()=>true,text:`Featured. Enormous. Ready. The challenge is waiting and so is everyone.
+
+Eat.`,gainBonus:0,relBonus:10,startsStream:true},
       ]
     },
   ],
@@ -3435,6 +3604,7 @@ export const EVOLVED_FORM_META = {
   delivery_hive:         { title:"Delivery Hive Queen",    color:"#d98cff" },
   cultivator:           { title:"The Cultivator",         color:"#8B4513" },
   community_researcher: { title:"Community Researcher",    color:"#4a6fa5" },
+  pharmacist:           { title:"The Chemist",            color:"#2e6b5a" },
 };
 
 export const EVOLUTION_BUTTON_BLURB = {
@@ -3452,6 +3622,7 @@ export const EVOLUTION_BUTTON_BLURB = {
   eced:(s)=>`You stop by the classroom on a Tuesday afternoon — not for any particular reason, just passing — and the smell hits you before the door fully opens. Butter, sugar, something warm. ${s.name} is at the counter at ${Math.round(s.lbs)} pounds, her apron dusty with flour, and around the table are the girls she teaches and apparently their mothers, and everyone is eating, and the room has the specific quality of a space that has found its purpose. Daisy looks up. She sees you see the room. "I've been doing Tuesdays for a while now," she says. Her voice is carefully normal. "I think it's working."`,
   culinary:(s)=>`You find ${s.name}'s test kitchen unexpectedly unlocked. She's not there, but someone else is — a woman you don't recognize, sitting at the prep table with an empty plate and the particular slow contentment of someone who ate something extraordinary and hasn't decided to leave yet. She looks up. She seems confused about how long she's been there. When Reneé comes back she sees you in the doorway and she doesn't explain anything. She takes the plate, washes it, and says: "I've been running some tests. With willing subjects." A pause. "Very willing subjects." She looks at you with the calibrated calm of someone who has been thinking about whether to say the next thing for a long time. "I think I can do this properly. I just need the right direction."`,
   farm_girl:(s)=>`You stop by and find Mary Jane at the counter with more food than two people could eat and a look of complete purpose. She's not cooking because she's hungry — or not only that. She's cooking because she knows something about food and feeding and what a soft home feels like and she's starting to understand she's the only person in the building who knows it. She's ${Math.round(s.lbs)} pounds and she looks like a plan that's been waiting to be named.`,
+  pharmacy_grad:(s)=>`You find ${s.name} in the pharmacy lab after hours, gloves on, hair tied back, a corporate ID badge still clipped to her coat. The notebook open on the bench isn't her assigned research — it's dosage tables with appetite curves crossed out and rewritten. She doesn't pretend otherwise when she sees you. "I've been adjusting compounds," she says, very carefully. "Wellness adjacents. Metabolic support." She taps the page. "I can make things for you. Food delivery only — that's the safe route." She looks anxious and absolutely certain in the same breath. "I need someone who knows what they're authorizing."`,
 };
 
 
@@ -3487,6 +3658,7 @@ export const EVOLUTION_OFFER = {
     intro:(s)=>`${s.name} swivels her chair toward you mid-session, something she never does. The game is still running. 'I've been thinking,' she says, not looking up. 'About what this is now.' She indicates herself with one hand while the other keeps the controller. 'The sessions. The eating. The way they work together.' She pauses. 'I want to lean into it. Properly.'`,
     paths:{
       ranked_feedee:{ label:"Ranked Feedee", desc:"Sessions optimized for both. Focus bar, food queue, delivery driver who knows the schedule better than she does. The game never stops. Neither does the eating." },
+      eating_streamer:{ label:"Eating Streamer", desc:"Turn the camera on and make the appetite the content. Sponsors, chat, and a focus bar that never lets her coast. The stream doesn't end until she does." },
     },
   },
   sorority:{
@@ -3545,6 +3717,12 @@ export const EVOLUTION_OFFER = {
     intro:(s)=>`${s.name} sets two things on the table between you: a recipe notebook and a short list of names. No explanation. She waits. When you ask, she says: "I've been running informal trials. Voluntary subjects, controlled portions, careful observation." She pauses. "The subjects gained weight. I gained weight. The data is consistent across six sessions." She taps the list. "I want to do it properly. One subject at a time, managed correctly, from selection through — completion." She says 'completion' the way someone says a word they've chosen very carefully. "I need someone who understands what they're authorizing."`,
     paths:{
       cultivator:{ label:"The Cultivator", desc:"Recruit a taste tester. Run feeding sessions using carefully constructed recipes. Grow the subject through stages and harvest when the yield is right. Three full cycles. Precise, personal, and deeply satisfying." },
+    },
+  },
+  pharmacy_grad:{
+    intro:(s)=>`${s.name} meets you after hours in a pharmacy lab that smells like ethanol and vanilla. Her corporate badge is still on — she hasn't gone home yet, maybe won't. "I don't want to cure cancer," she says, too quietly, then corrects herself: "I mean — I want to work on appetite. Metabolic wellness. Support compounds." She slides a vial across the bench. "Delivered through food. Always through food." Her hands are steady. Her eyes aren't. "I can build you tools. I need a partner who won't pretend this is innocent."`,
+    paths:{
+      pharmacist:{ label:"The Chemist", desc:"Sophia synthesizes appetite stimulants, pleasure enhancers, and metabolic compounds — a slow descent from corporate researcher to campus-scale transformation architect." },
     },
   },
 };

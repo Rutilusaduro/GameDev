@@ -198,7 +198,8 @@ function UhOhButton({onClick}){
   );
 }
 
-export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,week}){
+export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,week,campusFattening=false,campusTier=0}){
+  const weighInOpts = { campusFattening: !!campusFattening, campusTier: campusTier || (campusFattening ? 1 : 0), week: week || 1 };
   if(!weighInState) return null;
   const {student,phase,reactionText}=weighInState;
   if(!student) return null;
@@ -211,9 +212,9 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
   const setPhase=(nextPhase)=>setWeighInState({...weighInState,phase:nextPhase});
   const close=()=>setWeighInState(null);
   const stepOntoScale=()=>setPhase(goesDirectlyToBig?"digital":"analog");
-  const introText=renderWeighInIntro(student,week||1,goesDirectlyToBig);
+  const introText=renderWeighInIntro(student,week||1,goesDirectlyToBig,weighInOpts);
   const goToReaction=()=>{
-    const text=renderWeighInReaction(student,week||1);
+    const text=renderWeighInReaction(student,week||1,weighInOpts);
     setWeighInState({...weighInState,phase:"reaction",reactionText:text});
   };
   const handleAfterBreak=()=>{

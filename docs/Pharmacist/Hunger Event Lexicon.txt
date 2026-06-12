@@ -1,0 +1,219 @@
+This is the core structure for the hunger interruption scenes, please modify as needed to include small snippets, words, or phrases for each girl(im thinking a half dozsn for each one? More? That slot organically throughout)
+
+Here’s the proper structure:
+
+### Core Template
+
+```js
+export const HUNGER_INTERRUPTION =
+  "You open the door and find {subject.name}. " +
+  "{scene.hungerInterrupt.appearance} " +
+  "{scene.hungerInterrupt.behavior} " +
+  "{scene.hungerInterrupt.request} " +
+  "{scene.hungerInterrupt.tone}";
+```
+
+This way each part is its own module and can vary independently based on weight stage, hunger tier, addiction level, etc.
+
+---
+
+### Modules
+
+#### 1. `scene.hungerInterrupt.appearance`
+
+This handles how she physically looks standing at the door, especially at high weights.
+
+```js
+registerModule("scene.hungerInterrupt.appearance", [
+  // === LEVIATHAN (Stage 10) ===
+  { when: { stage: 10 }, 
+    text: [
+      "She completely fills the doorway with her sheer mass.",
+      "Her body is so vast she can barely fit in the frame.",
+      "She takes up almost the entire doorway, soft flesh pressing against the sides.",
+    ] },
+
+  // === ENORMOUS (Stage 8–9) ===
+  { when: { stage: [8,9] }, 
+    text: [
+      "She fills most of the doorframe with her girth.",
+      "Her massive body takes up nearly the entire doorway.",
+      "She’s so large she has to turn slightly to fit through the frame.",
+    ] },
+
+  // === Default / Lower weights ===
+  { when: {}, text: "" }, // No special appearance line
+]);
+```
+
+#### 2. `scene.hungerInterrupt.behavior`
+
+How she’s acting / looking emotionally.
+
+```js
+registerModule("scene.hungerInterrupt.behavior", [
+  // Dependent + Starving Hunger
+  { when: { addictionLevel: 4, hungerTier: 4 }, 
+    text: [
+      "She’s standing there looking almost frantic.",
+      "She’s breathing hard, eyes wide with need.",
+      "She looks like she’s barely holding herself together.",
+      "She’s visibly shaking as she stands in front of you.",
+    ] },
+
+  // Severe + Craving/Starving
+  { when: { addictionLevel: 3, hungerTier: [3,4] }, 
+    text: [
+      "She’s shifting restlessly, clearly struggling.",
+      "She keeps glancing at you with a desperate look.",
+      "She looks like she’s been pacing outside your door.",
+    ] },
+
+  // Withdrawal (Aggressive)
+  { when: { inWithdrawal: true }, 
+    text: [
+      "She looks visibly irritated and on edge.",
+      "She’s glaring at you, clearly short-tempered.",
+      "She looks like she’s fighting the urge to snap.",
+    ] },
+
+  // Default
+  { when: {}, 
+    text: [
+      "She’s standing there looking restless.",
+      "She shifts awkwardly in front of you.",
+    ] },
+]);
+```
+
+#### 3. `scene.hungerInterrupt.request`
+
+What she actually wants.
+
+```js
+registerModule("scene.hungerInterrupt.request", [
+  { when: { addictionLevel: 4, hungerTier: 4 }, 
+    text: [
+      "She blurts out that she needs you to feed her.",
+      "She’s clearly struggling not to beg as she says she’s starving.",
+      "She looks like she’s about to start pleading for food.",
+    ] },
+
+  { when: { addictionLevel: 3, hungerTier: [3,4] }, 
+    text: [
+      "She admits she’s been thinking about you feeding her all day.",
+      "She says she’s really hungry and was hoping you’d be around.",
+    ] },
+
+  { when: { inWithdrawal: true }, 
+    text: [
+      "She snaps that she needs something from you.",
+      "She’s clearly agitated and says she’s not leaving until you help her.",
+    ] },
+
+  { when: {}, 
+    text: [
+      "She says she needs to talk to you.",
+      "She shifts and quietly asks if you have a minute.",
+    ] },
+]);
+```
+
+#### 4. `scene.hungerInterrupt.tone`
+
+Closing emotional note.
+
+```js
+registerModule("scene.hungerInterrupt.tone", [
+  { when: { stage: 10 }, 
+    text: "Her massive body shifts heavily as she waits for your answer." },
+
+  { when: { stage: [8,9] }, 
+    text: "She’s clearly struggling to stay upright while she waits." },
+
+  { when: { addictionLevel: 4, hungerTier: 4 }, 
+    text: "She looks like she might actually start crying if you turn her away." },
+
+  { when: { inWithdrawal: true }, 
+    text: "She’s angry, but underneath it she just looks miserable." },
+
+  { when: {}, 
+    text: "She waits for your answer." },
+]);
+```
+
+---
+
+### Example Outputs
+
+**Brittany (Severe + Craving Hunger):**
+> You open the door and find Brittany. She’s shifting restlessly, clearly struggling. She admits she’s been thinking about you feeding her all day. She’s clearly desperate and not even trying to hide it anymore.
+
+**Taylor (Dependent + Starving Hunger):**
+> You open the door and find Taylor. She’s standing there looking almost frantic, eyes wide with need. She blurts out that she needs you to feed her. She looks like she might actually start crying if you turn her away.
+
+**Leviathan-stage girl:**
+> You open the door and find [Name]. She completely fills the doorway with her sheer mass. She’s breathing hard, eyes wide with need. She blurts out that she needs you to feed her. Her massive body shifts heavily as she waits for your answer.
+
+**Enormous-stage girl (withdrawal):**
+> You open the door and find [Name]. She fills most of the doorframe with her girth. She looks visibly irritated and on edge. She snaps that she needs something from you. She’s angry, but underneath it she just looks miserable.
+
+---
+
+### Summary of the Structure
+
+| Module                              | Purpose                                      | Varies By                          |
+|-------------------------------------|----------------------------------------------|------------------------------------|
+| `scene.hungerInterrupt.appearance`  | Physical description at the door             | Weight stage (especially Enormous/Leviathan) |
+| `scene.hungerInterrupt.behavior`    | How she looks / acts emotionally             | Addiction + Hunger level           |
+| `scene.hungerInterrupt.request`     | What she wants / says                        | Addiction + Hunger level           |
+| `scene.hungerInterrupt.tone`        | Closing emotional beat                       | Stage + Addiction level            |
+
+This structure lets you mix and match fragments naturally while still feeling very specific to the girl and her state. 
+
+registerModule("scene.hungerInterrupt.request", [
+  // === LEVIATHAN + High Hunger (Threatening) ===
+  { when: { stage: 10, hungerTier: [3,4], addictionLevel: [3,4] }, 
+    text: [
+      "“You’re going to feed me.”",
+      "“I’m not leaving until you feed me.”",
+      "“Don’t even think about turning me away right now.”",
+      "“I’ve been waiting long enough. Feed me.”",
+    ] },
+
+  // === DEPENDENT + STARVING (Very Needy / "I'm so hungry" vibes) ===
+  { when: { addictionLevel: 4, hungerTier: 4 }, 
+    text: [
+      "“I’m so hungry…”",
+      "“Please… I’m starving. I need you to feed me.”",
+      "“I can’t stop thinking about food… please feed me.”",
+      "“I’m so hungry it hurts. Please…”",
+      "“I’ve been thinking about this all day… I need it.”",
+      "“I’m starving. I need you to feed me right now.”",
+      "“Please… I’m so hungry I can barely think.”",
+    ] },
+
+  // === SEVERE + CRAVING ===
+  { when: { addictionLevel: 3, hungerTier: [3,4] }, 
+    text: [
+      "“I’ve been thinking about you feeding me all day…”",
+      "“I’m really hungry… can you feed me?”",
+      "“I was hoping you’d be around… I’m so hungry.”",
+      "“I can’t stop thinking about food…”",
+    ] },
+
+  // === WITHDRAWAL (Aggressive) ===
+  { when: { inWithdrawal: true }, 
+    text: [
+      "“I need something from you. Now.”",
+      "“Don’t ignore me. I’m not in the mood.”",
+      "“You’re not leaving me like this.”",
+    ] },
+
+  // === Default ===
+  { when: {}, 
+    text: [
+      "“Hey… can we talk?”",
+      "“Do you have a minute?”",
+    ] },
+]);

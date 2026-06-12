@@ -8,6 +8,7 @@
 import { getStage } from '../gameData/stages.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
 import { getTier } from '../gameData/sessions.js';
+import { getAddictionLevel, getHungerTier, isInWithdrawal } from '../gameData/hungerAddiction.js';
 
 const DEV = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV;
 const warn = (...args) => { if (DEV) console.warn('[textEngine]', ...args); };
@@ -72,6 +73,9 @@ function deriveFor(student, ref, skillEffects) {
       : 0,
     devourCount: student.devourCount || 0,
     hasDevoured: (student.devourCount || 0) > 0,
+    addictionLevel: getAddictionLevel(student),
+    hungerTier: getHungerTier(student),
+    inWithdrawal: isInWithdrawal(student),
     skillEffects: skillEffects || {},
   };
 }
@@ -114,6 +118,13 @@ export function registerModule(key, variants) {
   REGISTRY.set(key, Array.isArray(variants) ? variants : [variants]);
 }
 
+/** Prepend higher-priority variants without replacing the base module pool. */
+export function registerModuleVariants(key, variants) {
+  const extra = Array.isArray(variants) ? variants : [variants];
+  const existing = REGISTRY.get(key) || [];
+  REGISTRY.set(key, [...extra, ...existing]);
+}
+
 export function hasModule(key) { return REGISTRY.has(key); }
 
 // ── selector resolution ───────────────────────────────────────
@@ -138,6 +149,16 @@ function evalWhen(when, ctx) {
       case "devourMax": ok = (d.devourCount ?? 0) <= v; break;
       case "fullnessMin": ok = (d.fullnessRatio ?? 0) >= v; break;
       case "fullnessMax": ok = (d.fullnessRatio ?? 0) <= v; break;
+      case "hungerTierMin": ok = (d.hungerTier ?? 0) >= v; break;
+      case "hungerTierMax": ok = (d.hungerTier ?? 0) <= v; break;
+      case "addictionLevelMin": ok = (d.addictionLevel ?? 0) >= v; break;
+      case "addictionLevelMax": ok = (d.addictionLevel ?? 0) <= v; break;
+      case "campusFattening": ok = !!ctx.globals?.campusFattening === !!v; break;
+      case "campusTierMin": ok = (ctx.globals?.campusTier ?? 0) >= v; break;
+      case "campusTierMax": ok = (ctx.globals?.campusTier ?? 0) <= v; break;
+      case "weightBand": ok = ctx.globals?.weightBand === v; break;
+      case "nodeId": ok = ctx.globals?.nodeId === v; break;
+      case "studentId": ok = ctx.globals?.studentId === v; break;
       default: {
         // dimension on ctx.d: corruption, stage, relationship, relSize,
         // bodyType, archetype, mood, evolvedForm, refStage...

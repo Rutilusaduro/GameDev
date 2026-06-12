@@ -1,0 +1,158 @@
+Here's a clean, modular **dialogue tree** for what happens *after* the interruption scene triggers.
+
+### Core Structure
+
+When a girl shows up at the door in a high hunger or withdrawal state, the player gets a small choice menu. The tree is split into:
+
+1. **Immediate Response Choices**
+2. **Outcome based on choice + her current state** (hunger tier + addiction level)
+
+---
+
+### Main Interruption Response Template
+
+```js
+export const HUNGER_RESPONSE_TEMPLATE =
+  "{scene.hungerInterrupt.responseIntro} " +
+  "{scene.hungerInterrupt.playerChoice}";
+```
+
+---
+
+### 1. Response Intro (What she does while waiting)
+
+```js
+registerModule("scene.hungerInterrupt.responseIntro", [
+  { when: { hungerTier: 4, addictionLevel: [3,4] }, 
+    text: "She stands there, barely able to stay still." },
+  { when: { hungerTier: 3 }, 
+    text: "She shifts restlessly, waiting for your answer." },
+  { when: { inWithdrawal: true }, 
+    text: "She glares at you, clearly impatient." },
+  { when: {}, text: "She waits." },
+]);
+```
+
+---
+
+### 2. Player Choices
+
+These are the options the player sees:
+
+```js
+registerModule("scene.hungerInterrupt.playerChoice", [
+  { text: "Feed her", action: "feed" },
+  { text: "Give her a compound", action: "compound" },
+  { text: "Turn her away", action: "deny" },
+  { text: "Talk to her / calm her down", action: "talk" },
+]);
+```
+
+---
+
+### 3. Outcome Branches
+
+#### **A. Feed her**
+
+```js
+registerModule("scene.hunger.response.feed", [
+  { when: { hungerTier: 4, addictionLevel: 4 }, 
+    text: "She practically lunges forward the moment you agree. She eats like she’s been starving for days, making soft, desperate sounds between bites. By the time she’s done, she looks dazed and deeply satisfied." },
+  
+  { when: { hungerTier: 4 }, 
+    text: "She eats fast and intensely, barely pausing. When she finishes, she looks at you with glassy, grateful eyes." },
+  
+  { when: { hungerTier: 3 }, 
+    text: "She eats eagerly, clearly relieved. She thanks you multiple times, looking much calmer afterward." },
+  
+  { when: { inWithdrawal: true }, 
+    text: "She eats quickly, still tense at first, but slowly relaxes as the food hits her. The aggression fades from her expression." },
+]);
+```
+
+**Mechanical Effects (suggested):**
+- Significantly reduces hunger tier
+- Slightly increases addiction (if already Moderate+)
+- Small corruption gain
+- Prevents the time/action from being interrupted this turn
+
+#### **B. Give her a compound**
+
+```js
+registerModule("scene.hunger.response.compound", [
+  { when: { hungerTier: 4, addictionLevel: [3,4] }, 
+    text: "Her eyes light up the moment she sees what you’re offering. She takes it without hesitation and eats it immediately. Within minutes, her breathing slows and she looks almost drunk with relief." },
+  
+  { when: { hungerTier: 3 }, 
+    text: "She accepts it quickly and swallows it down. She visibly relaxes as the effects kick in." },
+  
+  { when: { inWithdrawal: true }, 
+    text: "She takes it almost aggressively, clearly desperate for relief. Her aggressive demeanor fades as the compound works." },
+]);
+```
+
+**Mechanical Effects (suggested):**
+- Strong reduction in hunger
+- Increases addiction level
+- Can push her into higher hunger tiers later if overused
+- Higher corruption gain than normal feeding
+
+#### **C. Turn her away / Deny her**
+
+```js
+registerModule("scene.hunger.response.deny", [
+  { when: { hungerTier: 4, addictionLevel: 4 }, 
+    text: "Her face falls. For a second she looks like she might actually cry, then her expression twists into something more desperate and angry. She stares at you for a long moment before turning and leaving without another word." },
+  
+  { when: { hungerTier: 4 }, 
+    text: "She looks genuinely hurt. She stands there for a few seconds like she doesn’t know what to do, then slowly turns and walks away." },
+  
+  { when: { inWithdrawal: true }, 
+    text: "She snaps at you, clearly furious, before storming off. You can hear her muttering angrily as she leaves." },
+  
+  { when: {}, 
+    text: "She looks disappointed but doesn’t argue. She just nods quietly and leaves." },
+]);
+```
+
+**Mechanical Effects (suggested):**
+- Hunger tier stays high or increases
+- Increases withdrawal aggression
+- Relationship damage
+- Possible future interrupting scenes or negative events
+
+#### **D. Talk to her / Calm her down**
+
+```js
+registerModule("scene.hunger.response.talk", [
+  { when: { hungerTier: 4, addictionLevel: [3,4] }, 
+    text: "You manage to calm her down a little. She’s still clearly struggling, but she listens to you. She eventually leaves, though she keeps looking back at you." },
+  
+  { when: { hungerTier: 3 }, 
+    text: "You talk to her for a while. She seems embarrassed about how desperate she got, but she calms down and eventually leaves on her own." },
+  
+  { when: { inWithdrawal: true }, 
+    text: "You manage to talk her down from her aggressive state. She’s still irritable, but she eventually leaves without causing a bigger scene." },
+]);
+```
+
+**Mechanical Effects (suggested):**
+- Small reduction in hunger
+- No increase in addiction
+- Relationship can improve or stay neutral depending on previous interactions
+- Does **not** fully resolve the hunger state (she may come back later)
+
+---
+
+### Quick Summary of Outcomes
+
+| Choice              | Hunger Effect      | Addiction Effect     | Relationship     | Risk / Consequence          |
+|---------------------|--------------------|----------------------|------------------|-----------------------------|
+| **Feed her**        | Strong decrease    | Slight increase      | Positive         | Low                         |
+| **Give compound**   | Very strong decrease | Strong increase    | Neutral / Slight positive | Can accelerate addiction |
+| **Deny / Turn away**| None or increase   | Increases withdrawal | Negative         | High (future interruptions) |
+| **Talk / Calm down**| Small decrease     | None                 | Neutral / Positive | Low                         |
+
+---
+
+Would you like me to expand any of these branches further (especially the **Deny** consequences or long-term effects of repeatedly denying her)? Or are you good with this structure?

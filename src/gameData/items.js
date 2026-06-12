@@ -21,6 +21,19 @@ export const ITEMS = [
     desc:"Catering surplus, officially. A centerpiece feast for one, actually." },
   { id:"gainer_fudge",   label:"Double-Cream Fudge",  emoji:"🍫", cal:6400,  full:18, rarity:"rare",
     desc:"A recipe traded quietly between feeders. Absurd density, almost no bulk. She won't know what hit her." },
+  // exploration-only finds (campus secrets & travel)
+  { id:"greenhouse_honey_tart", label:"Greenhouse Honey Tart", emoji:"🍯", cal:2200, full:12, rarity:"uncommon", exploration:true,
+    desc:"Still warm from a hidden greenhouse bench. Honey forward, buttery, impossible to eat just one slice." },
+  { id:"cellar_comfort_loaf", label:"Cellar Comfort Loaf", emoji:"🍞", cal:3400, full:20, rarity:"uncommon", exploration:true,
+    desc:"Pre-renovation dining cellar recipe — dense, sweet, cut thick. Feeds a study group or one very committed girl." },
+  { id:"trail_ration", label:"Relic Hunter Trail Ration", emoji:"🥾", cal:1800, full:8, rarity:"uncommon", exploration:true,
+    desc:"Indiana's preferred field snack: nuts, dried fruit, and a bar that somehow packs diner-level calories." },
+  { id:"tunnel_mushroom_stew", label:"Tunnel Mushroom Stew", emoji:"🍄", cal:4100, full:24, rarity:"rare", exploration:true,
+    desc:"Bioluminescent fungus simmered with cream. Tastes illegal. Digests enthusiastically." },
+  { id:"archives_seed_bread", label:"Archives Seed Bread", emoji:"🌾", cal:2900, full:16, rarity:"rare", exploration:true,
+    desc:"Pressed herbs baked into a loaf from a forgotten archive recipe. Crust crackles. Crumb surrenders." },
+  { id:"wellness_sample_plate", label:"Wellness Sample Plate", emoji:"🕯️", cal:3600, full:14, rarity:"rare", exploration:true,
+    desc:"Corporate wellness branding on the label. The portions are not corporate. Neither is the appetite it awakens." },
 ];
 
 export const ITEM_RARITY_WEIGHTS = { common: 60, uncommon: 30, rare: 10 };

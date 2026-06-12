@@ -14,17 +14,69 @@ import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, 
 import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_FEED_LINES, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
 import { TALK_CONFIG } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES } from './gameData/items.js';
-import { CAMPUS_NODES, CAMPUS_CONFIG, CAMPUS_ENCOUNTERS, stageDescriptor } from './gameData/campus.js';
+import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
+import { WalletBadge } from './components/WalletBadge.jsx';
+import { CAMPUS_NODES, CAMPUS_CONFIG } from './gameData/campus.js';
+import {
+  defaultCampusExplorationState, buildExplorationContext, rollTravelExploration,
+  searchCampusLocation, applySecretSolve,
+} from './gameData/campusExploration.js';
+import { ELARA_ID, availableElaraQuests, startElaraQuest, advanceElaraQuestAtNode, takePendingQuestReward } from './gameData/relicHunter.js';
+import { getExplorationFind } from './gameData/campusIngredients.js';
+import { availableSecretsAtNode } from './gameData/campusSecrets.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
-import { getAttitude, getEvolvedActivityStageIdx, rnd, generateClassSession } from './utils/gameHelpers.js';
+import { getAttitude, getEvolvedActivityStageIdx, rnd, generateClassSession, pharmacistTextOpts } from './utils/gameHelpers.js';
 import {
-  aggregateSkillEffects, computeSpentSkillPoints, isTreeTierUnlocked,
+  pickInterruptStudent, feedResolvesHunger, talkCalmsHunger,
+  tickHungerAddiction, adjustHunger, applyDenialConsequences,
+  withdrawalGainMultiplier, isWithdrawalAggressive,
+} from './gameData/hungerAddiction.js';
+import {
+  defaultPharmacistState, PHARMACIST_ACTIVITIES, PHARMACIST_STAGES, applyCompoundToFeed, COMPOUNDS,
+  completePharmacistChemSession, getStockedCompoundIds, consumeCompoundDose, rollExposureEvent,
+  applyExposureEvent, formatSynthesisGrant, tickPharmacistWeek,
+} from './gameData/pharmacist.js';
+import {
+  startChemSession, applyAcquisitionChoice, skipAcquisition, finalizeBrewPlan, mergeIngredients,
+} from './gameData/pharmacistIngredients.js';
+import {
+  rollCampusPassiveLbs, pickPharmacistCampusEvent,
+  getCampusTesterStartLbs, getCampusHiveRecruitLbsBonus,
+  getCampusWeeklyEventChance, scaleCampusEventGain, CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier,
+} from './gameData/pharmacistCampus.js';
+import { PharmacistChemModal } from './components/PharmacistChemModal.jsx';
+import { PharmacistCultModal } from './components/PharmacistCultModal.jsx';
+import {
+  applyCultDistribution, tickCultWeek, pickInterruptCompound, CULT_DISTRIBUTION_ROUTES,
+} from './gameData/pharmacistCult.js';
+import { HungerInterruptModal } from './components/HungerInterruptModal.jsx';
+import { CompoundFeedModal } from './components/CompoundFeedModal.jsx';
+import { renderHungerOutcome } from './textEngine/scenes/hungerInterrupt.js';
+import './textEngine/scenes/hungerInterrupt.js';
+import './textEngine/scenes/hungerLexicon.js';
+import './textEngine/scenes/hungerInterruptPersonal.js';
+import {
+  aggregateSkillEffects, computeSpentSkillPoints, isTreeTierUnlocked, tickPhysicalTraits,
   RANK_COSTS, softStartBonus,
 } from './gameData/skillTrees.js';
 import { renderHiveIntake } from './textEngine/scenes/hiveIntake.js';
+import { createContext, render } from './textEngine/engine.js';
+import './textEngine/scenes/stream.js';
+import {
+  STREAM_AP_COST, CHALLENGES, BRANDS, ensureStreamFields, needsStreamBrand, audienceTier as streamAudienceTier,
+  deriveResistance, mergePreStreamMultipliers, selectChallenges, pickRoundCount,
+  computeRoundScore, computeRoundLbs, staminaPenaltyFor, stageStaminaTax,
+  addictionDrainMod, MISS_STAMINA_PENALTY, STAMINA_EXCELLENT_GAIN,
+  checkTapOutConditions, computeRewards, deriveTrend, deriveRecentPerf, DESTINY_MONEY_FLAVOR,
+  getBrandControlTier, detectNewStreamMilestones, detectSpecialOutcomes,
+  applySpecialOutcomeBonuses, STAMINA_DRAIN_PER_SEC, STAMINA_DRAIN_CONTROL_MULT,
+  getStreamMilestoneLabel, getDestinyShare, aggregateDestinySpendEffects,
+  tryDestinyPurchase, applyPersonaDrift, getStreamVoice,
+} from './gameData/streaming.js';
+import { DestinySpendModal } from './components/DestinySpendModal.jsx';
 import { MoodBadge } from './components/ui.jsx';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
@@ -34,6 +86,8 @@ import { EatingContestModal } from './components/EatingContestModal.jsx';
 import { SumoMatchModal } from './components/SumoMatchModal.jsx';
 import { CollabStreamModal } from './components/CollabStreamModal.jsx';
 import { RecordingSessionModal } from './components/RecordingSessionModal.jsx';
+import { StreamSessionModal } from './components/StreamSessionModal.jsx';
+import { StreamBrandSelectModal } from './components/StreamBrandSelectModal.jsx';
 import { CommunityResearcherModal } from './components/CommunityResearcherModal.jsx';
 import { CultivatorModal } from './components/CultivatorModal.jsx';
 import { HomeroomQueenModal } from './components/HomeroomQueenModal.jsx';
@@ -73,6 +127,7 @@ export default function ProfessorSim(){
   const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({...st,...initGainStats(st),corruption:0})));
   const [ap,setAp]=useState(5);
   const [week,setWeek]=useState(1);
+  const [money,setMoney]=useState(WALLET_CONFIG.startingBalance);
   const [view,setView]=useState("class");
   const [selectedId,setSelectedId]=useState(null);
   const [log,setLog]=useState(["📋 Welcome, Professor. Your class of 15 students awaits."]);
@@ -118,7 +173,11 @@ export default function ProfessorSim(){
   // inventory: {[itemId]: qty}
   const [itemTargetPicker,setItemTargetPicker]=useState(null);
   // itemTargetPicker: {item}
-  const [campusState,setCampusState]=useState({at:CAMPUS_CONFIG.startNode,log:[CAMPUS_NODES[CAMPUS_CONFIG.startNode].desc]});
+  const [campusState,setCampusState]=useState({
+    at:CAMPUS_CONFIG.startNode,
+    log:[CAMPUS_NODES[CAMPUS_CONFIG.startNode].desc],
+    exploration:defaultCampusExplorationState(),
+  });
   // {student, phase:"scene"|"analog"|"break"|"purchase"|"swap"|"digital"}
   const [bigScaleUnlocked,setBigScaleUnlocked]=useState(false);
   const [brokeScaleIds,setBrokeScaleIds]=useState([]);
@@ -169,6 +228,15 @@ export default function ProfessorSim(){
   const [lilithKillCount, setLilithKillCount] = useState(0);
   const [cultivatorState, setCultivatorState] = useState(null);
   // cultivatorState: {testerName,testerStageId,testerLbs,fatBar,suspicion,harvestsCompleted,usedNames,modalPhase,session,pendingStageUp,harvestType,harvestVignetteText,growthGain,growthVignetteText,digestWeeksLeft,digestTotalWeeks}
+  const [pharmacistState, setPharmacistState] = useState(null);
+  const [pharmacistChemSession, setPharmacistChemSession] = useState(null);
+  const [pharmacistChemStudentId, setPharmacistChemStudentId] = useState(null);
+  const [pharmacistCultSession, setPharmacistCultSession] = useState(null);
+  const [hungerInterrupt, setHungerInterrupt] = useState(null);
+  const [weeklyArms, setWeeklyArms] = useState({ devouringStudentId: null, mesmerizingStudentId: null, devouringConsumed: false });
+  const skipHungerCheckRef = useRef(false);
+  const pendingAfterInterruptRef = useRef(null);
+  const [compoundFeedPicker, setCompoundFeedPicker] = useState(null);
   const [communityResearcherState, setCommunityResearcherState] = useState(null);
   // communityResearcherState: {thesisComplete,boardPhase,caseStudyStage,lastPairId,pairsUsed,modalPhase,activePairId,eventText,totalSuspicion,boardReactionPairId,chatMemberIdx,chatPhaseIdx,chatHistory,chatWon,thesisApproved,thesisRejected,finalReviewText}
   const [presentationState, setPresentationState] = useState(null);
@@ -191,6 +259,12 @@ export default function ProfessorSim(){
   //   takeNum, timeLeft, kylieGain, clipRatings, bestClip,
   //   choiceStep, currentChoices:{angle,food,pace}, perfectTakeAchieved,
   //   popupText, done, endingText }
+  const [streamSessionState, setStreamSessionState] = useState(null);
+  // streamSessionState: Destiny streaming mini-game — phase preStream|challengeSelect|roundStart|round|
+  //   betweenRound|resolution|done; snapshot + challenge + round/stamina/gain/chat fields
+  const [streamBrandPickState, setStreamBrandPickState] = useState(null);
+  // streamBrandPickState: { studentId, required? }
+  const [destinySpendState, setDestinySpendState] = useState(null);
   const [fairTrainingState, setFairTrainingState] = useState({
     cycleNum:0, sessionsThisCycle:0, fairPride:0,
     lastCollaborator:null, recentCollaborators:[], influenceFlags:[],
@@ -255,6 +329,25 @@ export default function ProfessorSim(){
 
   const push=useCallback((msg)=>setLog(prev=>[...prev,msg]),[]);
 
+  /** Spend player funds. Returns false if insufficient (logs a warning). */
+  const spendMoney=(cost,label="")=>{
+    const result=trySpend(money,cost);
+    if(!result.ok){
+      push(`⚠️ Need ${formatMoney(cost)} — you have ${formatMoney(money)}.`);
+      return false;
+    }
+    setMoney(result.balance);
+    if(label) push(`💸 ${label}: −${formatMoney(cost)}`);
+    return true;
+  };
+
+  /** Credit player funds (optional log line). */
+  const earnMoney=(amount,label="")=>{
+    if(!amount) return;
+    setMoney(prev=>addFunds(prev,amount));
+    if(label) push(`💰 ${label}: +${formatMoney(amount)}`);
+  };
+
   const inhabitProfessor=()=>{
     setProfessorProfile(INHABITED_PROFESSOR_PROFILE);
     push("🌒 You take root behind the professor's eyes. The class waits, and abundance has found a door.");
@@ -296,51 +389,224 @@ export default function ProfessorSim(){
   // ── CAMPUS EXPLORATION ─────────────────────────────────────────
   const campusLog=(lines)=>setCampusState(prev=>({...prev,log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit)}));
 
-  const rollCampusEvent=(nodeId)=>{
-    const lines=[];
-    if(Math.random()<CAMPUS_CONFIG.encounterChance){
-      const visible=students.filter(st=>!st.hidden||lilithUnlocked);
-      if(visible.length){
-        const who=visible[rnd(0,visible.length-1)];
-        const sd=stageDescriptor(getStage(who.lbs).id);
-        const enc=CAMPUS_ENCOUNTERS[rnd(0,CAMPUS_ENCOUNTERS.length-1)](who,sd);
-        lines.push(`👁 ${enc}`);
-      }
+  const elaraDiscovered=!!campusState.exploration?.elaraDiscovered;
+  const elaraMet=!!campusState.exploration?.elaraMet;
+  const studentVisibleOnCampus=(st)=>
+    !st.hidden
+    ||(st.id===LILITH_ID&&lilithUnlocked)
+    ||(st.id===ELARA_ID&&elaraDiscovered);
+
+  /** Hidden students stay frozen until discovered; Lilith always passively gains. */
+  const studentReceivesPassiveGain=(st)=>
+    !st.hidden
+    ||st.id===LILITH_ID
+    ||(st.id===ELARA_ID&&elaraDiscovered);
+
+  const getCampusExplorationCtx=()=>buildExplorationContext({
+    students, pharmacistState, week, lilithUnlocked,
+    exploration:campusState.exploration||defaultCampusExplorationState(),
+  });
+
+  const grantExplorationReward=(grants)=>{
+    if(!grants||!Object.keys(grants).length) return;
+    if(grants.foodId){
+      setInventory(prev=>({...prev,[grants.foodId]:Math.min(INVENTORY_CONFIG.maxStack,(prev[grants.foodId]||0)+1)}));
     }
-    if(Math.random()<CAMPUS_CONFIG.itemFindChance){
+    const ing={...grants};
+    delete ing.foodId;
+    if(!Object.keys(ing).length) return;
+    if(pharmacistState){
+      setPharmacistState(prev=>prev?{...prev,ingredients:mergeIngredients(prev.ingredients,ing)}:prev);
+      return;
+    }
+    if(!grants.foodId){
       const item=rollWeeklyItem();
       setInventory(prev=>({...prev,[item.id]:Math.min(INVENTORY_CONFIG.maxStack,(prev[item.id]||0)+1)}));
-      lines.push(`🎒 You come across ${item.emoji} ${item.label.toLowerCase()} — into the pantry it goes.`);
     }
-    return lines;
+  };
+
+  const markElaraMet=()=>{
+    setCampusState(prev=>{
+      const ex=prev.exploration||defaultCampusExplorationState();
+      if(ex.elaraMet) return prev;
+      return {...prev,exploration:{...ex,elaraMet:true}};
+    });
+  };
+
+  useEffect(()=>{
+    if(selectedId===ELARA_ID&&elaraDiscovered) markElaraMet();
+  },[selectedId,elaraDiscovered]);
+
+  const applyExplorationQuestReward=(exploration)=>{
+    const { exploration: nextExp, reward }=takePendingQuestReward(exploration);
+    if(!reward) return exploration;
+    if(reward.findId){
+      const find=getExplorationFind(reward.findId);
+      if(find) grantExplorationReward(find.grants);
+    }
+    if(reward.relationship){
+      setStudents(prev=>prev.map(s=>s.id===ELARA_ID?{...s,relationship:Math.min(100,s.relationship+(reward.relationship||0))}:s));
+    }
+    return nextExp;
+  };
+
+  const commitCampusExploration=(explorationPatch,lines)=>{
+    let exploration={...(campusState.exploration||defaultCampusExplorationState()),...explorationPatch};
+    exploration=applyExplorationQuestReward(exploration);
+    setCampusState(prev=>({
+      ...prev,
+      exploration,
+      log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit),
+    }));
+    if(explorationPatch.elaraDiscovered){
+      setStudents(prev=>prev.map(s=>s.id===ELARA_ID?{...s,relationship:Math.max(s.relationship,25)}:s));
+    }
+  };
+
+  const rollCampusEvent=(nodeId,isTravel=true)=>{
+    const ctx=getCampusExplorationCtx();
+    const { lines, effects }=rollTravelExploration(nodeId,ctx);
+    const extra=[];
+    if(effects.ingredientGrant||effects.foodGrant) grantExplorationReward({...effects.ingredientGrant,...(effects.foodGrant?{foodId:effects.foodGrant}:{})});
+    if(Math.random()<CAMPUS_CONFIG.itemFindChance*0.5){
+      const item=rollWeeklyItem();
+      setInventory(prev=>({...prev,[item.id]:Math.min(INVENTORY_CONFIG.maxStack,(prev[item.id]||0)+1)}));
+      extra.push(`🎒 You come across ${item.emoji} ${item.label.toLowerCase()} — into the pantry it goes.`);
+    }
+    let exploration=campusState.exploration||defaultCampusExplorationState();
+    if(isTravel&&exploration.elaraMet){
+      const quest=advanceElaraQuestAtNode(exploration,nodeId,ctx);
+      exploration=applyExplorationQuestReward(quest.exploration);
+      if(quest.lines?.length) extra.push(...quest.lines);
+      if(quest.completed&&quest.reward?.findId){
+        const find=getExplorationFind(quest.reward.findId);
+        if(find) grantExplorationReward(find.grants);
+      }
+      if(quest.completed&&quest.reward?.relationship){
+        setStudents(prev=>prev.map(s=>s.id===ELARA_ID?{...s,relationship:Math.min(100,s.relationship+(quest.reward.relationship||0))}:s));
+      }
+    }
+    return { lines:[...lines,...extra], exploration };
   };
 
   const moveToCampusNode=(nodeId)=>{
     const from=CAMPUS_NODES[campusState.at];
     if(!from.exits.includes(nodeId)) return;
     const node=CAMPUS_NODES[nodeId];
-    const lines=[`→ You walk to ${node.emoji} ${node.label}.`,node.desc,...rollCampusEvent(nodeId)];
-    setCampusState(prev=>({...prev,at:nodeId,log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit)}));
+    const { lines:eventLines, exploration }=rollCampusEvent(nodeId,true);
+    const lines=[`→ You walk to ${node.emoji} ${node.label}.`,node.desc,...eventLines];
+    setCampusState(prev=>({
+      ...prev,
+      at:nodeId,
+      exploration,
+      log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit),
+    }));
   };
 
   const lookAround=()=>{
     const node=CAMPUS_NODES[campusState.at];
     const flavor=node.flavor[rnd(0,node.flavor.length-1)];
-    campusLog([flavor,...rollCampusEvent(campusState.at)]);
+    const { lines:eventLines, exploration:eventExploration }=rollCampusEvent(campusState.at,false);
+    const ctx=getCampusExplorationCtx();
+    let exploration=eventExploration;
+    const lines=[flavor,...eventLines];
+    const observeSecrets=availableSecretsAtNode(campusState.at,exploration,ctx).filter(s=>s.solve==='observe');
+    if(observeSecrets.length){
+      const secret=observeSecrets[0];
+      const count=(exploration.observeCounts?.[campusState.at]||0)+1;
+      exploration={...exploration,observeCounts:{...exploration.observeCounts,[campusState.at]:count}};
+      if(count>=(secret.observeCount||2)){
+        exploration=applySecretSolve(exploration,secret.id);
+        lines.push(`🔓 ${secret.discover}`);
+        if(secret.reward?.findId){
+          const find=getExplorationFind(secret.reward.findId);
+          if(find){
+            grantExplorationReward(find.grants);
+            lines.push(`   + ${find.label}`);
+          }
+        }
+      } else {
+        lines.push(`…${secret.hint} (${count}/${secret.observeCount||2} observations)`);
+      }
+    }
+    setCampusState(prev=>({
+      ...prev,
+      exploration,
+      log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit),
+    }));
+  };
+
+  const searchCampus=()=>{
+    const nodeId=campusState.at;
+    const ctx=getCampusExplorationCtx();
+    const exploration=campusState.exploration||defaultCampusExplorationState();
+    const { lines, effects, exploration: searched }=searchCampusLocation(nodeId,exploration,ctx);
+    let next=searched;
+    if(effects.solvedSecret) next=applySecretSolve(next,effects.solvedSecret);
+    if(effects.ingredientGrant||effects.foodGrant) grantExplorationReward({...effects.ingredientGrant,...(effects.foodGrant?{foodId:effects.foodGrant}:{})});
+    if(effects.discoverElara) next={...next,elaraDiscovered:true};
+    commitCampusExploration(next,lines);
+  };
+
+  const beginElaraQuest=(questId)=>{
+    const exploration=campusState.exploration||defaultCampusExplorationState();
+    if(!exploration.elaraDiscovered){ campusLog(['⚠️ You have not found Indiana Bones yet.']); return; }
+    if(!exploration.elaraMet){ campusLog(['⚠️ Talk to Indiana or open her profile before taking her quests.']); return; }
+    if(exploration.questId){ campusLog(['⚠️ Finish your current exploration quest first.']); return; }
+    const quest=availableElaraQuests(exploration,getCampusExplorationCtx()).find(q=>q.id===questId);
+    if(!quest){ campusLog(['⚠️ That quest is not available yet.']); return; }
+    const next=startElaraQuest(exploration,questId);
+    commitCampusExploration(next,[`🗺️ Indiana nods. "${quest.desc}"`, `→ First stop: ${quest.steps[0].nodeId.replace(/_/g,' ')}.`]);
   };
 
   // ── INVENTORY ──────────────────────────────────────────────────
+  const getStockedCompounds=()=>pharmacistState?getStockedCompoundIds(pharmacistState):[];
+
+  const guardHungerInterrupt=(onProceed)=>{
+    if(skipHungerCheckRef.current){
+      skipHungerCheckRef.current=false;
+      onProceed();
+      return;
+    }
+    const hungerEff=aggregateSkillEffects(ownedSkills);
+    const inter=pickInterruptStudent(students,hungerEff,weeklyArms);
+    if(inter){
+      if(weeklyArms.devouringStudentId===inter.id&&!weeklyArms.devouringConsumed){
+        setWeeklyArms(prev=>({...prev,devouringConsumed:true}));
+      }
+      setStudents(prev=>prev.map(s=>s.id===inter.id?inter:s));
+      pendingAfterInterruptRef.current=onProceed;
+      setHungerInterrupt({studentId:inter.id,after:'resume'});
+      return;
+    }
+    onProceed();
+  };
+
+  const executeItemFeed=(item,studentId,compoundId)=>{
+    const target=students.find(st=>st.id===studentId);
+    if(!target) return;
+    const compoundLabel=compoundId?COMPOUNDS[compoundId]?.label:null;
+    const fed=feedStudentCalories(target,item.cal,item.full,1,
+      `${item.emoji} ${item.label}${compoundLabel?` + ${compoundLabel}`:''}`,
+      compoundId?{compoundId}:{});
+    if(!fed) return;
+    setInventory(prev=>({...prev,[item.id]:prev[item.id]-1}));
+    setStudents(prev=>prev.map(st=>st.id===studentId?fed:st));
+    const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](target,item);
+    setTimeout(()=>push(`🎒 ${line}${compoundLabel?` (${compoundLabel})`:''}`),80);
+  };
+
   const useItemOn=(item,studentId)=>{
     if((inventory[item.id]||0)<=0) return;
     const target=students.find(st=>st.id===studentId);
     if(!target) return;
-    const fed=feedStudentCalories(target,item.cal,item.full,1,`${item.emoji} ${item.label}`);
     setItemTargetPicker(null);
-    if(!fed) return; // she refused — item is not consumed
-    setInventory(prev=>({...prev,[item.id]:prev[item.id]-1}));
-    setStudents(prev=>prev.map(st=>st.id===studentId?fed:st));
-    const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](target,item);
-    setTimeout(()=>push(`🎒 ${line}`),80);
+    const compounds=getStockedCompounds();
+    if(compounds.length>0){
+      setCompoundFeedPicker({kind:'item',item,studentId});
+      return;
+    }
+    executeItemFeed(item,studentId,null);
   };
 
   // ── CORRUPTION: hidden psyche progression (general actions only) ──
@@ -356,11 +622,24 @@ export default function ProfessorSim(){
 
   // ── STOMACH MODEL: feed calories + fullness instead of direct lbs ──
   // Returns the updated student, or null if she refused (over capacity).
-  const feedStudentCalories=(s,calories,fullnessCost,extraRel=0,label="")=>{
+  const feedStudentCalories=(s,calories,fullnessCost,extraRel=0,label="",opts={})=>{
+    if(opts.compoundId){
+      const stocked=getStockedCompoundIds(pharmacistState||{});
+      if(!stocked.includes(opts.compoundId)){
+        push(`⚠️ No ${COMPOUNDS[opts.compoundId]?.label||opts.compoundId} doses left — run a synthesis session.`);
+        return null;
+      }
+    }
     const eff=aggregateSkillEffects(ownedSkills);
     const stageId=getStage(s.lbs).id;
     const cap=(s.stomachCapacity||GAIN_CONFIG.baseCapacity)+softStartBonus(ownedSkills,stageId);
-    const wouldExceed=(s.fullness||0)+fullnessCost>cap;
+    let fullMult=1;
+    if(opts.compoundId){
+      const preview=applyCompoundToFeed(s,opts.compoundId,{},pharmacistState);
+      fullMult=preview.feedResult.fullMult??1;
+    }
+    const scaledFullEarly=Math.round(fullnessCost*fullMult);
+    const wouldExceed=(s.fullness||0)+scaledFullEarly>cap;
     let forced=false;
     if(wouldExceed){
       if(eff.totalSurrender&&(s.corruption||0)>=90){
@@ -380,9 +659,14 @@ export default function ProfessorSim(){
       const line=FORCE_SUCCESS_LINES[rnd(0,FORCE_SUCCESS_LINES.length-1)](s);
       setTimeout(()=>push(`🔥 ${line}`),60);
     }
-    const calMult=1+(eff.calorieBonus||0)+(eff.conversionBonus||0);
+    let calMult=1+(eff.calorieBonus||0)+(eff.conversionBonus||0);
+    if(opts.compoundId){
+      const preview=applyCompoundToFeed(s,opts.compoundId,{},pharmacistState);
+      calMult*=(preview.feedResult.calMult??1);
+    }
     const scaledCals=Math.round(calories*(s.gainMultiplier||1)*profGainMult*calMult);
-    if(label) push(`🍽️ ${label} — ${s.name}: +${scaledCals.toLocaleString()} cal (fullness ${Math.min(999,(s.fullness||0)+fullnessCost)}/${cap})`);
+    const scaledFull=scaledFullEarly;
+    if(label) push(`🍽️ ${label} — ${s.name}: +${scaledCals.toLocaleString()} cal (fullness ${Math.min(999,(s.fullness||0)+scaledFull)}/${cap})`);
     if(Math.random()<CORRUPTION_CONFIG.dialogueChance){
       const tier=getCorruptionTier(s.corruption||0);
       const lines=CORRUPTION_FEED_LINES[tier.id];
@@ -398,21 +682,45 @@ export default function ProfessorSim(){
       if(eff.firstCrack&&priorForceCount===0) corruptGain+=eff.firstCrack;
       corruption=addCorruption(s,corruptGain);
     }
-    return {
+    let result={
       ...s,
       consumedCalories:(s.consumedCalories||0)+scaledCals,
-      fullness:(s.fullness||0)+fullnessCost,
+      fullness:(s.fullness||0)+scaledFull,
       corruption,
       timesForceFed:forced?(s.timesForceFed||0)+1:(s.timesForceFed||0),
       relationship:Math.min(100,s.relationship+relGain),
+      playerFedThisWeek:true,
     };
+    if(opts.compoundId){
+      const applied=applyCompoundToFeed(result,opts.compoundId,{},pharmacistState);
+      result=applied.student;
+      if(applied.feedResult.corruptionGain) result.corruption=addCorruption(result,applied.feedResult.corruptionGain);
+      if(applied.feedResult.relGain) result.relationship=Math.min(100,result.relationship+(applied.feedResult.relGain||0));
+      const dm=applied.feedResult.digestMult??1;
+      if(dm>1) result.weeklyDigestMult=Math.max(result.weeklyDigestMult||1,dm);
+      if(applied.flavor) setTimeout(()=>push(`💊 ${applied.flavor}`),90);
+    }
+    if(opts.compoundId&&pharmacistState){
+      setPharmacistState(prev=>consumeCompoundDose(prev,opts.compoundId));
+    }
+    if(opts.compoundId){
+      const compound=COMPOUNDS[opts.compoundId];
+      if(compound?.immediateLbsGain){
+        const [lo,hi]=compound.immediateLbsGain;
+        const lbsGain=rnd(lo,hi);
+        result=processStudentGain(result,lbsGain,0);
+        setTimeout(()=>push(`💊 ${compound.label} — ${s.name} gains ${lbsGain} lbs immediately. Fullness unchanged.`),75);
+      }
+    }
+    const hungerEff=aggregateSkillEffects(ownedSkills);
+    return feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
   };
 
   const processStudentGain=(s,gain,extraRel=0)=>{
     const scaledGain=Math.round(gain*(s.gainMultiplier||1)*skillGainMult);
     const {newLbs,oldStageId,newStageId,narrativeEvents}=applyGainToStudent(s,scaledGain);
     if(newStageId>oldStageId){
-      setTimeout(()=>push(`📣 ${s.name} reaches ${WEIGHT_STAGES[newStageId].label}! "${getAttitude({...s,lbs:newLbs}, week)}"`) ,50);
+      setTimeout(()=>push(`📣 ${s.name} reaches ${WEIGHT_STAGES[newStageId].label}! "${getAttitude({...s,lbs:newLbs}, week, pharmacistTextOpts(pharmacistState, week))}"`) ,50);
     }
     return {
       ...s,
@@ -438,6 +746,20 @@ export default function ProfessorSim(){
   };
 
   const advanceWeek=()=>{
+    const hungerEff=aggregateSkillEffects(ownedSkills);
+    if(!skipHungerCheckRef.current){
+      const inter=pickInterruptStudent(students,hungerEff,weeklyArms);
+      if(inter){
+        if(weeklyArms.devouringStudentId===inter.id&&!weeklyArms.devouringConsumed){
+          setWeeklyArms(prev=>({...prev,devouringConsumed:true}));
+        }
+        setStudents(prev=>prev.map(s=>s.id===inter.id?inter:s));
+        setHungerInterrupt({studentId:inter.id,after:"week"});
+        return;
+      }
+    }
+    skipHungerCheckRef.current=false;
+    setWeeklyArms({devouringStudentId:null,mesmerizingStudentId:null,devouringConsumed:false});
     const newWeek=week+1;
     setWeek(newWeek);
     const newAp=Math.min(ap+5+skillApBonus,20);
@@ -454,9 +776,11 @@ export default function ProfessorSim(){
       setCultivatorState(prev=>prev?{...prev,digestWeeksLeft:Math.max(0,prev.digestWeeksLeft-1)}:null);
     }
     let updated=students.map(s=>{
+      if(!studentReceivesPassiveGain(s)) return s;
       if(s.id===LILITH_ID) return processStudentGain(s,LILITH_PASSIVE_GAIN,0); // Lilith only gains passively
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
-      let gain=rnd(1,3)+skillPassiveBonus; // passive + skill bonus
+      let gain=rnd(1,3)+skillPassiveBonus;
+      gain=Math.max(0,Math.round(gain*withdrawalGainMultiplier(s)));
       // Corruption-driven autonomous eating (willingness made flesh)
       const cTier=getCorruptionTier(s.corruption||0).id;
       if(cTier===1) gain+=rnd(CORRUPTION_CONFIG.tier2AutoLbs[0],CORRUPTION_CONFIG.tier2AutoLbs[1]);
@@ -464,7 +788,10 @@ export default function ProfessorSim(){
       if(semEv) gain+=rnd(semEv.gain[0],semEv.gain[1]);
       if(randomEv){
         if(randomEv.target==="class") gain+=rnd(randomEv.gain[0],randomEv.gain[1]);
-        else if(randomEv.target==="single"&&s.id===rnd(0,14)) gain+=rnd(randomEv.gain[0],randomEv.gain[1]);
+        else if(randomEv.target==="single"){
+          const vis=students.filter(st=>!st.hidden);
+          if(vis.length&&s.id===vis[rnd(0,vis.length-1)].id) gain+=rnd(randomEv.gain[0],randomEv.gain[1]);
+        }
       }
       // Evolved skill passive bonuses
       if(s.evolvedForm&&(s.evolvedSkills||[]).length>0){
@@ -472,8 +799,56 @@ export default function ProfessorSim(){
         const evPassive=evTree.filter(sk=>(s.evolvedSkills||[]).includes(sk.id)&&sk.passiveBonus).reduce((a,b)=>a+(b.passiveBonus||0),0);
         gain+=evPassive;
       }
-      return processStudentGain(s,gain,0);
+      let ns=processStudentGain(s,gain,0);
+      ns=tickPhysicalTraits(ns,ownedSkills);
+      ns=tickHungerAddiction(ns,!!ns.playerFedThisWeek,hungerEff,weeklyArms);
+      if(hungerEff.gluttonsInstinct){
+        const cap=ns.stomachCapacity||GAIN_CONFIG.baseCapacity;
+        if((ns.fullness||0)/cap>=0.7&&Math.random()<0.45) ns=adjustHunger(ns,1);
+      }
+      return {...ns,playerFedThisWeek:false};
     });
+    if(pharmacistState?.campusFattening){
+      updated=updated.map(s=>{
+        if(!studentReceivesPassiveGain(s)) return s;
+        const extra=rollCampusPassiveLbs(pharmacistState,rnd);
+        return extra>0?processStudentGain(s,extra,0):s;
+      });
+    }
+    let nextPharmacistState=pharmacistState?tickPharmacistWeek(pharmacistState):null;
+    if(nextPharmacistState?.cultActive){
+      nextPharmacistState=tickCultWeek(nextPharmacistState,updated,rnd);
+      const cultTick=nextPharmacistState._cultWeekly;
+      if(cultTick?.passiveAddictedGain>0){
+        updated=updated.map(s=>{
+          if(!studentReceivesPassiveGain(s)||(s.addictionLevel??0)<1) return s;
+          return processStudentGain(s,cultTick.passiveAddictedGain,0);
+        });
+      }
+      const { _cultWeekly, ...cleanPs }=nextPharmacistState;
+      nextPharmacistState=cleanPs;
+    }
+    if(pharmacistState) setPharmacistState(nextPharmacistState);
+    if(pharmacistState?.campusFattening&&Math.random()<getCampusWeeklyEventChance(pharmacistState)){
+      const campusEv=pickPharmacistCampusEvent(updated,{
+        hasMayaHive:!!students.find(s=>s.evolvedForm==='delivery_hive'),
+      });
+      if(campusEv){
+        setTimeout(()=>{
+          if(campusEv.target==='class'){
+            push(`🌿 ${campusEv.text()}`);
+            setStudents(prev=>prev.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd),0):s));
+          }else{
+            const gainTargets=updated.filter(studentReceivesPassiveGain);
+            const target=gainTargets.length?gainTargets[rnd(0,gainTargets.length-1)]:null;
+            if(target){
+              push(`🌿 ${campusEv.text(target)}`);
+              setStudents(prev=>prev.map(s=>s.id===target.id?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd),0):s));
+            }
+          }
+        },180);
+      }
+    }
     // ── PANTRY RESTOCK ──
     {
       const drops=rnd(INVENTORY_CONFIG.weeklyDrops[0],INVENTORY_CONFIG.weeklyDrops[1]);
@@ -506,7 +881,9 @@ export default function ProfessorSim(){
       if(d.stuffed) corruption=addCorruption({...ns,corruption},CORRUPTION_CONFIG.perStuffedWeek);
       if(stagedUp) corruption=addCorruption({...ns,corruption},CORRUPTION_CONFIG.perStageUp);
       let carriedFullness=0;
-      if(getCorruptionTier(corruption).id===2&&Math.random()<CORRUPTION_CONFIG.tier3SelfStuffChance){
+      let selfStuffChance=CORRUPTION_CONFIG.tier3SelfStuffChance;
+      if(hungerEff.willingVessel&&getCorruptionTier(corruption).id===2) selfStuffChance=Math.min(1,selfStuffChance*2);
+      if(getCorruptionTier(corruption).id===2&&Math.random()<selfStuffChance){
         carriedFullness=Math.round((growth.stomachCapacity+d.capacityGained)*1.15);
         const autoLine=CORRUPTION_AUTO_LINES[rnd(0,CORRUPTION_AUTO_LINES.length-1)](ns);
         setTimeout(()=>push(`💭 ${autoLine}`),250);
@@ -516,6 +893,7 @@ export default function ProfessorSim(){
         capacityChunkProgress:growth.capacityChunkProgress,
         stuffedStreak:d.stuffedStreak,
         corruption,
+        weeklyDigestMult:undefined,
         ...d.reset,
         fullness:carriedFullness,
       };
@@ -551,7 +929,8 @@ export default function ProfessorSim(){
     push(`📅 Week ${newWeek} begins. ${newAp} AP available.`);
     if(semEv) setTimeout(()=>push(`🎉 Semester Event: ${semEv.title} — ${semEv.text}`),100);
     if(randomEv){
-      setTimeout(()=>push(`🎲 ${randomEv.text(updated[rnd(0,14)])}`),150);
+      const visForEv=updated.filter(st=>!st.hidden);
+      if(visForEv.length) setTimeout(()=>push(`🎲 ${randomEv.text(visForEv[rnd(0,visForEv.length-1)])}`),150);
       if(randomEv.scrutinyHit) addScrutiny(randomEv.scrutinyHit);
     }
     if(evs.length){
@@ -597,8 +976,19 @@ export default function ProfessorSim(){
   };
 
   const chooseEvolution=(studentId,formId)=>{
-    setStudents(prev=>prev.map(s=>s.id!==studentId?s:{...s,evolvedForm:formId,evolvedSkills:[]}));
-    const s=students.find(s=>s.id===studentId);
+    const s=students.find(st=>st.id===studentId);
+    if(formId==='eating_streamer'){
+      setStudents(prev=>prev.map(st=>{
+        if(st.id!==studentId) return st;
+        return {...ensureStreamFields(st),evolvedForm:formId,evolvedSkills:[],brand:null};
+      }));
+      const meta=EVOLVED_ACTIVITY_META[formId];
+      push(`✦ ${s?.name||"She"} has found her path: ${meta?.label||formId}.`);
+      setEvolutionModal(null);
+      setStreamBrandPickState({studentId,required:true});
+      return;
+    }
+    setStudents(prev=>prev.map(st=>st.id!==studentId?st:{...st,evolvedForm:formId,evolvedSkills:[]}));
     const meta=EVOLVED_ACTIVITY_META[formId];
     push(`✦ ${s?.name||"She"} has found her path: ${meta?.label||formId}.`);
     setEvolutionModal(null);
@@ -638,12 +1028,16 @@ export default function ProfessorSim(){
     if(formId==='delivery_hive'&&s){
       setMayaHiveState(prev=>prev||createInitialHiveState(s.id));
     }
+    if(formId==='pharmacist'){
+      setPharmacistState(defaultPharmacistState());
+    }
   };
 
   const doEvolvedActivity=(s)=>{
     if(!s.evolvedForm) return;
     if(s.evolvedForm==='chapter_hostess') return; // handled by custom panel UI
     if(s.evolvedForm==='cultivator') return; // handled by custom panel UI
+    if(s.evolvedForm==='pharmacist') return; // handled by custom panel UI
     if(s.evolvedForm==='community_researcher') return; // handled by custom panel UI
     if(s.evolvedForm==='feedee_creator'){ openCollabPartnerPicker(s); return; }
     if(s.evolvedForm==='psych_researcher'){
@@ -694,7 +1088,15 @@ export default function ProfessorSim(){
     }
     const actArr=EVOLVED_ACTIVITY_TEXT[s.evolvedForm];
     const rawText=actArr?actArr[stageIdx]:null;
-    const text=rawText?(typeof rawText==='function'?rawText(s):rawText):"She's in her element.";
+    let text=rawText?(typeof rawText==='function'?rawText(s):rawText):"She's in her element.";
+    if(s.evolvedForm==='eating_streamer'){
+      const offCtx=createContext({subject:s,week});
+      offCtx.d.brand=s.brand;
+      offCtx.d.streamVoice=s.streamVoice||getStreamVoice(ensureStreamFields(s));
+      offCtx.d.brandControl=getBrandControlTier(s.brandStreaks?.[s.brand]||0);
+      const off=render('{destiny.offstream.activity}',offCtx);
+      if(off) text=`${off}\n\n${text}`;
+    }
     // Calculate bonuses from evolved skills
     const skills=(s.evolvedSkills||[]);
     const tree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
@@ -1359,9 +1761,10 @@ export default function ProfessorSim(){
       if(recruits>0){
         const lilith=students.find(s=>s.id===LILITH_ID);
         if(lilith){
+          const hiveBonus=getCampusHiveRecruitLbsBonus(pharmacistState);
           const victims=Array.from({length:Math.min(recruits,5)},()=>({
             name:"a dorm resident",
-            lbs:Math.round(120+Math.random()*260),
+            lbs:Math.round(120+Math.random()*260+hiveBonus),
             bodyType:["pear","apple","hourglass","athletic","straight"][rnd(0,4)],
             corruption:0,relationship:0,
           }));
@@ -1668,7 +2071,7 @@ export default function ProfessorSim(){
     const name=available[Math.floor(Math.random()*available.length)];
     setCultivatorState(prev=>({
       ...prev,
-      testerName:name, testerStageId:6, testerLbs:TESTER_START_LBS,
+      testerName:name, testerStageId:6, testerLbs:getCampusTesterStartLbs(pharmacistState),
       fatBar:0, suspicion:0, session:null, pendingStageUp:false,
       usedNames:[...prev.usedNames,name],
       modalPhase:null,
@@ -1775,6 +2178,147 @@ export default function ProfessorSim(){
   };
   const openDigestCheck=()=>{
     setCultivatorState(prev=>prev?{...prev,modalPhase:'digest_check'}:null);
+  };
+
+  // ── PHARMACIST (Sophia) handlers ─────────────────────────────
+  const runPharmacistSynthesis=(s)=>{
+    if(!pharmacistState||s.evolvedForm!=='pharmacist') return;
+    const act=PHARMACIST_ACTIVITIES[pharmacistState.stage]||PHARMACIST_ACTIVITIES[1];
+    if((pharmacistState.synthesisPausedWeeks||0)>0){
+      push(`⚠️ Corporate scrutiny paused home synthesis for ${pharmacistState.synthesisPausedWeeks} more week(s).`);
+      return;
+    }
+    if(ap<act.apCost){push(`⚠️ Need ${act.apCost} AP.`);return;}
+    guardHungerInterrupt(()=>{
+      setPharmacistChemStudentId(s.id);
+      setPharmacistChemSession(startChemSession(pharmacistState));
+    });
+  };
+
+  const cancelPharmacistChem=()=>{
+    setPharmacistChemSession(null);
+    setPharmacistChemStudentId(null);
+  };
+
+  const confirmPharmacistChem=()=>{
+    const s=students.find(st=>st.id===pharmacistChemStudentId);
+    if(!s||!pharmacistChemSession||pharmacistChemSession.phase!=='summary') return;
+    const act=PHARMACIST_ACTIVITIES[pharmacistChemSession.stageId||pharmacistState.stage]||PHARMACIST_ACTIVITIES[1];
+    if(ap<act.apCost){push(`⚠️ Need ${act.apCost} AP.`);return;}
+    setAp(a=>a-act.apCost);
+    const gain=rnd(...act.sophiaGain);
+    const ns=processStudentGain(s,gain,10);
+    setStudents(prev=>prev.map(st=>st.id===s.id?ns:st));
+    const prevState=pharmacistState;
+    const stageId=pharmacistChemSession.stageId||pharmacistState.stage;
+    let next=completePharmacistChemSession(pharmacistState,stageId,pharmacistChemSession);
+    const exposureEv=rollExposureEvent(prevState,next);
+    if(exposureEv){
+      next=applyExposureEvent(next,exposureEv);
+      setTimeout(()=>{
+        push(`⚠️ ${exposureEv.text()}`);
+        if(exposureEv.scrutiny) addScrutiny(exposureEv.scrutiny);
+      },140);
+    }
+    setPharmacistState(next);
+    const stageMeta=PHARMACIST_STAGES.find(x=>x.id===next.stage);
+    const brewed=formatSynthesisGrant(next.lastSynthesisGrant);
+    const narrative=CAMPUS_NARRATIVE_LABELS[getCampusNarrativeTier(next)];
+    push(`🧪 ${s.name} — synthesis complete. ${stageMeta?.label||'Stage'} · exposure ${next.exposureRisk}%${brewed?` · brewed ${brewed}`:''}`);
+    if(next.stage>(pharmacistState.stage)){
+      setTimeout(()=>push(`✦ Sophia advances: ${stageMeta?.label}. New compounds unlocked.`),120);
+    }
+    if(!prevState.campusFattening&&next.campusFattening){
+      setTimeout(()=>push(`🌿 ${narrative||'Campus Softening'} — the student body starts rounding out.`),160);
+    }else if(narrative&&narrative!==CAMPUS_NARRATIVE_LABELS[getCampusNarrativeTier(prevState)]){
+      setTimeout(()=>push(`🌿 Campus influence intensifies: ${narrative}.`),160);
+    }
+    if(!prevState.cultActive&&next.cultActive){
+      setTimeout(()=>push(`🕯️ The circle is live — ${next.cult?.circleSize||4} devotees under Sophia's wellness supply.`),180);
+    }
+    cancelPharmacistChem();
+  };
+
+  const runPharmacistCultDistribution=(s)=>{
+    if(!pharmacistState?.cultActive||s.evolvedForm!=='pharmacist') return;
+    setPharmacistChemStudentId(s.id);
+    setPharmacistCultSession({ phase: 'route' });
+  };
+
+  const cancelPharmacistCult=()=>{
+    setPharmacistCultSession(null);
+    setPharmacistChemStudentId(null);
+  };
+
+  const selectCultRoute=(routeId)=>{
+    if(!pharmacistState) return;
+    const route=CULT_DISTRIBUTION_ROUTES.find(r=>r.id===routeId);
+    if(!route||ap<route.apCost){push(`⚠️ Need ${route?.apCost||1} AP.`);return;}
+    setAp(a=>a-route.apCost);
+    const { state: nextPs, outcome }=applyCultDistribution(pharmacistState,routeId,rnd);
+    if(!outcome) return;
+    let classGainApplied=0;
+    let addictedGainApplied=0;
+    if(outcome.classGainRange[1]>0){
+      const g=rnd(...outcome.classGainRange);
+      classGainApplied=g;
+      setStudents(prev=>prev.map(st=>studentReceivesPassiveGain(st)?processStudentGain(st,g,0):st));
+    }
+    if(outcome.addictedGainRange[1]>0){
+      const g=rnd(...outcome.addictedGainRange);
+      addictedGainApplied=g;
+      setStudents(prev=>prev.map(st=>{
+        if(!studentReceivesPassiveGain(st)||(st.addictionLevel??0)<1) return st;
+        return processStudentGain(st,g,0);
+      }));
+    }
+    if(outcome.scrutiny) addScrutiny(outcome.scrutiny);
+    setPharmacistState(nextPs);
+    setPharmacistCultSession({
+      phase: 'summary',
+      outcome: { ...outcome, classGainApplied, addictedGainApplied },
+    });
+  };
+
+  const confirmPharmacistCult=()=>{
+    const o=pharmacistCultSession?.outcome;
+    if(o) push(`🕯️ Distribution routed — circle at ${pharmacistState?.cult?.circleSize??0}, supply stock ${pharmacistState?.cult?.supplyReservoir??0}.`);
+    cancelPharmacistCult();
+  };
+
+  // ── HUNGER INTERRUPT handlers ─────────────────────────────────
+  const finishHungerInterrupt=(studentId,action,compoundId=null)=>{
+    const s=students.find(st=>st.id===studentId);
+    if(!s){setHungerInterrupt(null);return;}
+    let ns=s;
+    const after=hungerInterrupt?.after;
+    if(action==='feed'){
+      const fed=feedStudentCalories(ns,8000,35,6,'Emergency feeding');
+      if(fed) ns=fed;
+      setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'feed',week)}`),100);
+    }else if(action==='compound'){
+      const cid=compoundId||pharmacistState?.unlockedCompounds?.[0]||'appetite_stimulant';
+      const fed=feedStudentCalories(ns,6000,28,4,`Compound-laced meal (${COMPOUNDS[cid]?.label||cid})`,{compoundId:cid});
+      if(fed) ns=fed;
+      setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'compound',week)}`),100);
+    }else if(action==='deny'){
+      ns=applyDenialConsequences(ns);
+      setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'deny',week)}`),100);
+    }else if(action==='talk'){
+      const hungerEff=aggregateSkillEffects(ownedSkills);
+      ns=talkCalmsHunger(ns,hungerEff,weeklyArms);
+      ns={...ns,relationship:Math.min(100,ns.relationship+3)};
+      setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'talk',week)}`),100);
+    }
+    setStudents(prev=>prev.map(st=>st.id===studentId?ns:st));
+    setHungerInterrupt(null);
+    skipHungerCheckRef.current=true;
+    if(after==='week') advanceWeek();
+    else if(after==='resume'){
+      const resume=pendingAfterInterruptRef.current;
+      pendingAfterInterruptRef.current=null;
+      if(resume) resume();
+    }
   };
 
   // ── COMMUNITY RESEARCHER handlers ─────────────────────────────
@@ -2587,6 +3131,355 @@ export default function ProfessorSim(){
 
   const closeRecordingSession=()=>setRecordingSessionState(null);
 
+  // ── Destiny Streaming Mini-Game (eating_streamer) ─────────────────────
+  const buildStreamCtx=(session,student,extra={})=>{
+    const ctx=createContext({subject:student,week});
+    ctx.d.brand=session.brand;
+    ctx.d.perf=extra.perf??session.lastRoundTier??session.currentRoundTierSoFar??'average';
+    ctx.d.challengeType=session.challenge?.category;
+    ctx.d.intensity=session.challenge?.intensity;
+    ctx.d.addiction=session.addiction;
+    ctx.d.audienceTier=session.audienceTier;
+    ctx.d.trend=extra.trend??session.trend;
+    ctx.d.brandStreak=session.brandStreak??0;
+    ctx.d.brandControl=session.brandControlTier??getBrandControlTier(session.brandStreak??0);
+    ctx.d.recentPerf=extra.recentPerf??deriveRecentPerf(session.tierHistory);
+    ctx.d.streamVoice=student?.streamVoice??getStreamVoice(ensureStreamFields(student||{}));
+    return ctx;
+  };
+
+  const selectStreamBrand=(studentId,brandId)=>{
+    const brand=BRANDS[brandId];
+    if(!brand) return;
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==studentId) return st;
+      const favor={...(st.sponsorFavor||{})};
+      favor[brandId]=Math.min(100,(favor[brandId]||0)+20);
+      return {...ensureStreamFields(st),brand:brandId,sponsorFavor:favor};
+    }));
+    const s=students.find(st=>st.id===studentId);
+    push(`📡 ${s?.name||'Destiny'} signs with ${brand.name} — sponsor locked in.`);
+    setStreamBrandPickState(null);
+  };
+
+  const startStream=(s)=>{
+    if(s.evolvedForm!=='eating_streamer') return;
+    if(needsStreamBrand(s)){
+      setStreamBrandPickState({studentId:s.id,required:true});
+      push(`⚠️ ${s.name} needs a sponsor contract before going live.`);
+      return;
+    }
+    if(ap<STREAM_AP_COST){push(`⚠️ Need ${STREAM_AP_COST} AP.`);return;}
+    setAp(a=>a-STREAM_AP_COST);
+    let dest=ensureStreamFields(s);
+    const spendFx=aggregateDestinySpendEffects(dest.destinyPurchases);
+    const burst=dest.destinyPendingBuffs?.audienceBurst||0;
+    if(burst>0){
+      dest={
+        ...dest,
+        audience:Math.round((dest.audience||120)+burst),
+        destinyPendingBuffs:{...dest.destinyPendingBuffs,audienceBurst:0},
+      };
+      setStudents(prev=>prev.map(st=>st.id===s.id?dest:st));
+    }
+    const weightStageId=getStage(dest.lbs).id;
+    const addiction=getCorruptionTier(dest.corruption||0).id;
+    const audTier=streamAudienceTier(dest.audience);
+    const resistance=deriveResistance({corruption:dest.corruption,_weightStageId:weightStageId},0);
+    setStreamSessionState({
+      studentId:s.id,
+      phase:'preStream',
+      weightStageId, addiction, resistance,
+      audienceTier:audTier,
+      brand:dest.brand,
+      brandStreak:dest.brandStreaks?.[dest.brand]||0,
+      brandControlTier:getBrandControlTier(dest.brandStreaks?.[dest.brand]||0),
+      capacityMult:1, gainMult:spendFx.gainMult||1, audienceMult:spendFx.audienceMult||1,
+      spendStaminaMult:spendFx.staminaMult||1,
+      preStreamChoices:{}, preStreamVignettes:{},
+      offeredChallenges:[], challenge:null,
+      totalRounds:0, roundIndex:0,
+      stamina:100, sessionGain:0,
+      sessionFullness:dest.fullness||0,
+      stomachCapacity:dest.stomachCapacity||GAIN_CONFIG.baseCapacity,
+      tierHistory:[], tapOutCause:null,
+      chatLines:[], lastRoundTier:null, lastRoundLbs:0,
+      betweenRoundLine:'', roundStartLine:'',
+      rewardsPreview:null, endingText:'', destinyMoneyFlavor:'',
+      startLbs:dest.lbs, startStageId:weightStageId,
+      trend:'steady',
+    });
+  };
+
+  const preStreamAction=(actionId,choiceId)=>{
+    setStreamSessionState(prev=>{
+      if(!prev) return prev;
+      if(actionId==='__done__'){
+        if(Object.keys(prev.preStreamChoices).length<5) return prev;
+        return {...prev,phase:'challengeSelect',offeredChallenges:selectChallenges(prev.brand,3,prev.brandStreak)};
+      }
+      const student=students.find(st=>st.id===prev.studentId);
+      const newChoices={...prev.preStreamChoices,[actionId]:choiceId};
+      const mults=mergePreStreamMultipliers(newChoices);
+      const ctx=buildStreamCtx(prev,student);
+      const vignette=render(`{stream.pre.${actionId}.${choiceId}}`,ctx);
+      return {
+        ...prev,
+        preStreamChoices:newChoices,
+        preStreamVignettes:{...prev.preStreamVignettes,[actionId]:vignette},
+        capacityMult:mults.capacityMult,
+        gainMult:mults.gainMult,
+        audienceMult:mults.audienceMult,
+        resistance:deriveResistance(
+          {corruption:student?.corruption,_weightStageId:prev.weightStageId},
+          mults.resistanceDelta,
+        ),
+      };
+    });
+  };
+
+  const selectStreamChallenge=(challengeId)=>{
+    setStreamSessionState(prev=>{
+      const challenge=CHALLENGES.find(c=>c.id===challengeId);
+      if(!challenge||!prev) return prev;
+      const student=students.find(st=>st.id===prev.studentId);
+      const totalRounds=pickRoundCount(challenge);
+      const ctx=buildStreamCtx({...prev,challenge},student);
+      const roundStartLine=render('{stream.roundStart}',ctx);
+      return {
+        ...prev,
+        phase:'roundStart',
+        challenge, totalRounds, roundIndex:0,
+        roundStartLine,
+        chatLines:[...prev.chatLines,`📡 ${challenge.label} — let's go!`].slice(-40),
+      };
+    });
+  };
+
+  const beginActiveRound=useCallback(()=>{
+    setStreamSessionState(prev=>(prev&&prev.phase==='roundStart'?{...prev,phase:'round',currentRoundTierSoFar:'average'}:prev));
+  },[]);
+
+  const appendStreamChat=useCallback((line)=>{
+    if(!line) return;
+    setStreamSessionState(prev=>(prev?{...prev,chatLines:[...prev.chatLines,line].slice(-40)}:prev));
+  },[]);
+
+  const updateRoundPerf=useCallback((hits,misses,centerQualities=[])=>{
+    setStreamSessionState(prev=>{
+      if(!prev||prev.phase!=='round') return prev;
+      const{tier}=computeRoundScore(hits,misses,centerQualities);
+      if(prev.currentRoundTierSoFar===tier) return prev;
+      return {...prev,currentRoundTierSoFar:tier};
+    });
+  },[]);
+
+  const tickRoundStamina=useCallback((dtMs)=>{
+    setStreamSessionState(prev=>{
+      if(!prev||prev.phase!=='round') return prev;
+      const control=prev.brandControlTier||getBrandControlTier(prev.brandStreak);
+      const mult=STAMINA_DRAIN_CONTROL_MULT[control]||1;
+      const drainMod=addictionDrainMod(prev.addiction,prev.roundIndex,prev.totalRounds);
+      const drain=STAMINA_DRAIN_PER_SEC*mult*drainMod*(dtMs/1000);
+      const newStamina=Math.max(0,prev.stamina-drain);
+      if(Math.abs(newStamina-prev.stamina)<0.01) return prev;
+      return {...prev,stamina:newStamina};
+    });
+  },[]);
+
+  const finishActiveRound=useCallback((liveStats)=>{
+    setStreamSessionState(prev=>{
+      if(!prev||prev.phase!=='round') return prev;
+      const{hits=0,misses=0,centerQualities=[]}=liveStats||{};
+      const{tier}=computeRoundScore(hits,misses,centerQualities);
+      const stamPen=staminaPenaltyFor(prev.stamina);
+      const roundLbs=computeRoundLbs({
+        challenge:prev.challenge, tier,
+        capacityMult:prev.capacityMult, gainMult:prev.gainMult,
+        weightStageId:prev.weightStageId, stamina:prev.stamina, staminaPenalty:stamPen,
+      });
+      const drain=(prev.challenge?.staminaDrain||10)
+        +misses*MISS_STAMINA_PENALTY
+        +stageStaminaTax(prev.weightStageId);
+      const drainMod=addictionDrainMod(prev.addiction,prev.roundIndex,prev.totalRounds);
+      let newStamina=prev.stamina-drain*drainMod;
+      if(tier==='excellent') newStamina+=STAMINA_EXCELLENT_GAIN;
+      newStamina=Math.max(0,Math.min(100,newStamina));
+      const newFullness=prev.sessionFullness+roundLbs;
+      const tierHistory=[...prev.tierHistory,tier];
+      const student=students.find(st=>st.id===prev.studentId);
+      const ctx=buildStreamCtx(prev,student,{perf:tier,trend:deriveTrend(tierHistory),recentPerf:deriveRecentPerf(tierHistory)});
+      const betweenRoundLine=render('{stream.betweenRound}',ctx);
+      let tapOutCause=prev.tapOutCause;
+      if(!tapOutCause){
+        tapOutCause=checkTapOutConditions({
+          stamina:newStamina, tierHistory, resistance:prev.resistance,
+          addiction:prev.addiction, fullness:newFullness, stomachCapacity:prev.stomachCapacity,
+        });
+      }
+      const burst=[];
+      for(let i=0;i<2;i++){
+        const l=render(`{stream.chat.perf.${tier}}`,ctx);
+        if(l) burst.push(l);
+      }
+      return {
+        ...prev,
+        phase:'betweenRound',
+        stamina:newStamina,
+        sessionGain:prev.sessionGain+roundLbs,
+        sessionFullness:newFullness,
+        tierHistory, lastRoundTier:tier, lastRoundLbs:roundLbs,
+        betweenRoundLine, tapOutCause,
+        chatLines:[...prev.chatLines,...burst].slice(-40),
+        trend:deriveTrend(tierHistory),
+        recentPerf:deriveRecentPerf(tierHistory),
+      };
+    });
+  },[students, week]);
+
+  const continueAfterBetweenRound=()=>{
+    setStreamSessionState(prev=>{
+      if(!prev) return prev;
+      const done=prev.tapOutCause||prev.roundIndex+1>=prev.totalRounds;
+      if(done){
+        const student=students.find(st=>st.id===prev.studentId);
+        const spendFx=aggregateDestinySpendEffects(ensureStreamFields(student).destinyPurchases);
+        let rewardsPreview=computeRewards({
+          sessionGain:prev.sessionGain,
+          tierHistory:prev.tierHistory,
+          challenge:prev.challenge,
+          brandId:prev.brand,
+          audience:student?.audience??120,
+          sponsorFavor:student?.sponsorFavor??{},
+          tapOutCause:prev.tapOutCause,
+          spendEffects:spendFx,
+        });
+        const specialOutcomes=detectSpecialOutcomes(prev,rewardsPreview,student||{});
+        rewardsPreview=applySpecialOutcomeBonuses(rewardsPreview,specialOutcomes);
+        return {...prev,phase:'resolution',rewardsPreview,specialOutcomes};
+      }
+      const student=students.find(st=>st.id===prev.studentId);
+      const nextIdx=prev.roundIndex+1;
+      const ctx=buildStreamCtx({...prev,roundIndex:nextIdx},student);
+      return {
+        ...prev,
+        phase:'roundStart',
+        roundIndex:nextIdx,
+        roundStartLine:render('{stream.roundStart}',ctx),
+      };
+    });
+  };
+
+  const tapOutStream=()=>{
+    setStreamSessionState(prev=>{
+      if(!prev) return prev;
+      const cause=checkTapOutConditions({
+        stamina:prev.stamina, tierHistory:prev.tierHistory,
+        resistance:prev.resistance, addiction:prev.addiction,
+        fullness:prev.sessionFullness, stomachCapacity:prev.stomachCapacity,
+      })||'performance';
+      const student=students.find(st=>st.id===prev.studentId);
+      const ctx=buildStreamCtx(prev,student);
+      const line=render(`{stream.tapOut.${cause}}`,ctx);
+      const tapChat=render(`{stream.chat.tapOut.${cause}}`,ctx);
+      const chatBurst=tapChat?[tapChat]:[];
+      return {
+        ...prev,tapOutCause:cause,
+        betweenRoundLine:line||prev.betweenRoundLine,
+        chatLines:[...prev.chatLines,...chatBurst].slice(-40),
+      };
+    });
+  };
+
+  const wrapStream=()=>{
+    setStreamSessionState(prev=>{
+      if(!prev||!prev.rewardsPreview) return prev;
+      const r=prev.rewardsPreview;
+      const student=students.find(st=>st.id===prev.studentId);
+      if(!student) return prev;
+      const before=ensureStreamFields(student);
+      let updated=before;
+      if(r.weightGain>0){
+        updated=processStudentGain(updated,Math.round(r.weightGain),0);
+        if(r.corruptionGain) updated={...updated,corruption:addCorruption(updated,r.corruptionGain)};
+      }
+      const brandKey=prev.brand||'none';
+      const newFavor={...(updated.sponsorFavor||{})};
+      newFavor[brandKey]=Math.min(100,(newFavor[brandKey]||0)+r.favorGain);
+      const newStreaks={...(updated.brandStreaks||{})};
+      if(prev.brand) newStreaks[prev.brand]=(newStreaks[prev.brand]||0)+1;
+      const newAudience=Math.round((updated.audience||120)+r.audienceGain*prev.audienceMult);
+      updated={
+        ...updated,
+        audience:newAudience,
+        sponsorFavor:newFavor,
+        brandStreaks:newStreaks,
+        totalStreams:(updated.totalStreams||0)+1,
+        fullness:prev.sessionFullness,
+      };
+      const{fired,milestones}=detectNewStreamMilestones(before,updated,prev.brand);
+      const destinyShare=getDestinyShare(r);
+      updated={
+        ...updated,
+        streamMilestones:milestones,
+        destinyMoney:(updated.destinyMoney||0)+destinyShare,
+      };
+      updated=applyPersonaDrift(updated,prev.brand,r.favorGain);
+      setStudents(p=>p.map(st=>st.id===prev.studentId?updated:st));
+      if(r.playerShare>0) setMoney(m=>addFunds(m,r.playerShare));
+      const ctx=buildStreamCtx(prev,updated,{perf:r.overallTier});
+      const endLine=render(`{stream.endStream.${r.overallTier}}`,ctx);
+      const tapLine=prev.tapOutCause?render(`{stream.tapOut.${prev.tapOutCause}}`,ctx):'';
+      const specialLines=(prev.specialOutcomes||[]).map(id=>render(`{stream.special.${id}}`,ctx)).filter(Boolean);
+      const milestoneLines=fired.map(key=>{
+        const mod=key.startsWith('stage_')?'stream.milestone.stage':`stream.milestone.${key}`;
+        return render(`{${mod}}`,ctx);
+      }).filter(Boolean);
+      const endingText=[tapLine,...specialLines,...milestoneLines,endLine].filter(Boolean).join('\n\n');
+      const flavor=DESTINY_MONEY_FLAVOR[Math.floor(Math.random()*DESTINY_MONEY_FLAVOR.length)];
+      fired.forEach((key,i)=>{
+        const{label,emoji}=getStreamMilestoneLabel(key);
+        setTimeout(()=>push(`📡 ${emoji} Milestone: ${label}`),80+i*120);
+      });
+      push(`📡 Stream wrapped — ${r.overallTier}. +${Math.round(r.weightGain)} lbs, +${r.audienceGain} audience, ${formatMoney(r.playerShare)} earned, Destiny +${formatMoney(destinyShare)}.`);
+      return {
+        ...prev,phase:'done',endingText,destinyMoneyFlavor:flavor,
+        milestoneFired:fired,specialOutcomes:prev.specialOutcomes||[],
+        destinyShare,
+      };
+    });
+  };
+
+  const closeStream=()=>setStreamSessionState(null);
+
+  const openDestinySpend=(studentId)=>setDestinySpendState({studentId});
+
+  const purchaseDestinyItem=(itemId)=>{
+    if(!destinySpendState) return;
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==destinySpendState.studentId) return st;
+      const{ok,student,reason,item}=tryDestinyPurchase(ensureStreamFields(st),itemId);
+      if(ok){
+        push(`📡 Destiny bought ${item.emoji} ${item.label}.`);
+        return student;
+      }
+      if(reason==='funds') push('⚠️ Destiny cannot afford that.');
+      if(reason==='maxed') push('⚠️ Already at max for that upgrade.');
+      if(reason==='brand') push('⚠️ Needs a sponsor contract first.');
+      return st;
+    }));
+  };
+
+  const giftDestinyFunds=(amount)=>{
+    if(!destinySpendState) return;
+    const spent=trySpend(money,amount);
+    if(!spent.ok){push(`⚠️ Need ${formatMoney(amount)} to gift Destiny.`);return;}
+    setMoney(spent.balance);
+    setStudents(prev=>prev.map(st=>st.id===destinySpendState.studentId
+      ?{...ensureStreamFields(st),destinyMoney:(st.destinyMoney||0)+amount}:st));
+    push(`💸 You gifted Destiny ${formatMoney(amount)}.`);
+  };
+
   // ── Fair Training Collaborations + Fair Day (state_fair_queen) ─────────
   const clampFairStage=(lbs)=>Math.max(4,Math.min(10,getStage(lbs).id));
   const getFairPrideTier=(pride)=>FAIR_TRAINING_CONFIG.fairPrideTiers.find(t=>pride>=t.min&&pride<=t.max)||FAIR_TRAINING_CONFIG.fairPrideTiers[0];
@@ -2798,7 +3691,7 @@ export default function ProfessorSim(){
 
 
   const startClass=()=>{
-    const scenes=generateClassSession(students,week);
+    const scenes=generateClassSession(students.filter(studentReceivesPassiveGain),week);
     if(!scenes.length){advanceWeek();return;}
     setClassSession({scenes,sceneIdx:0,outcomes:[],pendingResult:null});
   };
@@ -2825,7 +3718,7 @@ export default function ProfessorSim(){
       }
     }else if(type==="class"){
       gainAmt=rnd(choice.effect.gain[0],choice.effect.gain[1]);
-      newStudents=newStudents.map(s=>processStudentGain(s,gainAmt,0));
+      newStudents=newStudents.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,gainAmt,0):s);
       targetName="the class";
     }
     const evs=collectEvents(newStudents);
@@ -2858,38 +3751,19 @@ export default function ProfessorSim(){
     advanceWeek();
   };
 
-  const doSingle=(action,s)=>{
-    if(ap<action.cost){push("⚠️ Not enough AP!");return;}
-    if(action.id==="restaurant"){ startDinner(s); return; }
-    setAp(a=>a-action.cost);
-    const gain=rnd(action.gain[0],action.gain[1]);
-    const ns=processStudentGain(s,gain,4);
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:ns));
-    push(`🍽️ ${action.label} with ${s.name}: +${gain} lbs (now ${ns.lbs} lbs)`);
-    const evs=collectEvents([ns]);
-    if(evs.length){
-      setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
-      setEventQueue(prev=>[...prev,...evs]);
-    }
-  };
-
-  const doClass=(action)=>{
-    if(ap<action.cost){push("⚠️ Not enough AP!");return;}
-    if(action.id==="group_dinner"){
-      setGroupDinnerPicker({count:2,selected:[]});
-      return;
-    }
+  const executeClassFeed=(action,compoundId)=>{
     setAp(a=>a-action.cost);
     let refusals=0,fedCount=0,totalCals=0;
+    const compoundLabel=compoundId?COMPOUNDS[compoundId]?.label:null;
     const updated=students.map(s=>{
-      if(s.hidden) return s;
+      if(!studentReceivesPassiveGain(s)) return s;
       const cals=rnd(action.cal[0],action.cal[1]);
-      const fed=feedStudentCalories(s,cals,action.full,1);
+      const fed=feedStudentCalories(s,cals,action.full,1,'',compoundId?{compoundId}:{});
       if(!fed){refusals++;return s;}
       fedCount++;totalCals+=cals;
       return fed;
     });
-    push(`🎉 ${action.label}: ${fedCount} students dug in (~${Math.round(totalCals/Math.max(1,fedCount)).toLocaleString()} cal each)${refusals?` · ${refusals} too full to join`:""}.`);
+    push(`🎉 ${action.label}: ${fedCount} students dug in (~${Math.round(totalCals/Math.max(1,fedCount)).toLocaleString()} cal each)${refusals?` · ${refusals} too full to join`:""}${compoundLabel?` · laced with ${compoundLabel}`:""}.`);
     const evs=collectEvents(updated);
     setStudents(updated);
     if(evs.length){
@@ -2898,11 +3772,66 @@ export default function ProfessorSim(){
     }
   };
 
+  const doSingle=(action,s)=>{
+    if(ap<action.cost){push("⚠️ Not enough AP!");return;}
+    if(action.id==="restaurant"){ guardHungerInterrupt(()=>startDinner(s)); return; }
+    guardHungerInterrupt(()=>{
+      setAp(a=>a-action.cost);
+      const gain=rnd(action.gain[0],action.gain[1]);
+      const ns=processStudentGain(s,gain,4);
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:ns));
+      push(`🍽️ ${action.label} with ${s.name}: +${gain} lbs (now ${ns.lbs} lbs)`);
+      const evs=collectEvents([ns]);
+      if(evs.length){
+        setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
+        setEventQueue(prev=>[...prev,...evs]);
+      }
+    });
+  };
+
+  const doClass=(action)=>{
+    if(ap<action.cost){push("⚠️ Not enough AP!");return;}
+    if(action.id==="group_dinner"){
+      setGroupDinnerPicker({count:2,selected:[]});
+      return;
+    }
+    guardHungerInterrupt(()=>{
+      const compounds=getStockedCompounds();
+      if(compounds.length>0){
+        setCompoundFeedPicker({kind:'class',action});
+        return;
+      }
+      executeClassFeed(action,null);
+    });
+  };
+
   const openTalk=(s)=>{
-    if(!s||s.hidden) return;
+    if(!s) return;
+    if(s.hidden&&!(s.id===LILITH_ID&&lilithUnlocked)&&!(s.id===ELARA_ID&&elaraDiscovered)) return;
+    if(s.id===ELARA_ID&&elaraDiscovered) markElaraMet();
+    if(isWithdrawalAggressive(s)&&(s.withdrawalAggroWeeks||0)>0){
+      push(`⚠️ ${s.name} is in withdrawal — irritable and snapping at anyone who isn't feeding her.`);
+      return;
+    }
     if(ap<TALK_CONFIG.apCost){ push(`⚠️ Need ${TALK_CONFIG.apCost} AP to talk.`); return; }
-    setAp(a=>a-TALK_CONFIG.apCost);
-    setTalkStudentId(s.id);
+    guardHungerInterrupt(()=>{
+      setAp(a=>a-TALK_CONFIG.apCost);
+      setTalkStudentId(s.id);
+    });
+  };
+
+  const armDevouringPresence=(studentId)=>{
+    const name=students.find(s=>s.id===studentId)?.name||"her";
+    setWeeklyArms(prev=>{
+      const togglingOff=prev.devouringStudentId===studentId;
+      return{
+        devouringStudentId:togglingOff?null:studentId,
+        mesmerizingStudentId:prev.mesmerizingStudentId,
+        devouringConsumed:false,
+      };
+    });
+    const togglingOff=weeklyArms.devouringStudentId===studentId;
+    push(togglingOff?`😈 Devouring Presence disarmed on ${name}.`:`😈 Devouring Presence armed on ${name} — her hunger will surface this week.`);
   };
 
   const applyTalkEffect=(effect)=>{
@@ -3028,13 +3957,15 @@ export default function ProfessorSim(){
     const ratio=finalFullness/maxFullness;
     const fullGrp=ratio<=1.0?0:ratio<=1.3?1:ratio<=1.6?2:3;
     const narrative=DINNER_ENDING_TEXT[stGrp][fullGrp](s);
-    setAp(a=>a-2);
-    push(`✅ Dinner with ${s.name} complete. +${totalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(totalGain))} lbs once digested) · +${relBonus} relationship.`);
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+relBonus)}));
-    const evs=collectEvents([s]);
-    if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
-    setDinnerEvent(null);
-    setDinnerEndPopup({ student:s, finalFullness, maxFullness, totalGain, narrative });
+    guardHungerInterrupt(()=>{
+      setAp(a=>a-2);
+      push(`✅ Dinner with ${s.name} complete. +${totalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(totalGain))} lbs once digested) · +${relBonus} relationship.`);
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+relBonus)}));
+      const evs=collectEvents([s]);
+      if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
+      setDinnerEvent(null);
+      setDinnerEndPopup({ student:s, finalFullness, maxFullness, totalGain, narrative });
+    });
   };
 
   const startDinner=(s,opts={})=>{
@@ -3349,13 +4280,15 @@ export default function ProfessorSim(){
     if(tier.id<1){push(`⚠️ ${s.name} needs to be at least Close tier for a private session.`);return;}
     if(s.id===10&&cultivatorState?.digestWeeksLeft>0){push(`⚠️ Reneé is digesting — ${cultivatorState.digestWeeksLeft} week(s) remaining.`);return;}
     if(ap<2){push("⚠️ Need 2 AP.");return;}
-    const hist=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
-    setSessionLog([]);
-    setPrivateSession({
-      student:s,phase:"venue",venue:null,foods:[],totalGain:0,
-      fullness:0,maxFullness:100+hist.capacityBonus+skillSessionCapBonus,
-      encouragementsUsed:[],toleranceBuffer:0,sessionNum:hist.count+1,
-      refillRound:0,tappedOut:false,tapOutDialogue:null,
+    guardHungerInterrupt(()=>{
+      const hist=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
+      setSessionLog([]);
+      setPrivateSession({
+        student:s,phase:"venue",venue:null,foods:[],totalGain:0,
+        fullness:0,maxFullness:100+hist.capacityBonus+skillSessionCapBonus,
+        encouragementsUsed:[],toleranceBuffer:0,sessionNum:hist.count+1,
+        refillRound:0,tappedOut:false,tapOutDialogue:null,
+      });
     });
   };
 
@@ -3463,6 +4396,7 @@ export default function ProfessorSim(){
     const s=privateSession.student;
     const effectiveMax=privateSession.maxFullness+privateSession.toleranceBuffer;
     const fPct=Math.round((privateSession.fullness/effectiveMax)*100);
+    guardHungerInterrupt(()=>{
     setAp(a=>a-2);
     addScrutiny(2);
     const hist=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
@@ -3474,6 +4408,7 @@ export default function ProfessorSim(){
     push(`✅ Session with ${s.name} complete. ${privateSession.totalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(privateSession.totalGain))} lbs once digested) · session capacity expanded (+8).`);
     setSessionResult({student:liveStudent,totalGain:privateSession.totalGain,fullnessPct:fPct,scene:aftermath.scene(liveStudent),sessionCount:hist.count+1,capacityBonus:newCapBonus});
     setPrivateSession(null);
+    });
   };
 
   const sel=selectedId!==null?students.find(s=>s.id===selectedId):null;
@@ -3483,7 +4418,7 @@ export default function ProfessorSim(){
   const spiritLevel=1+Math.floor(spiritXp/SPIRIT_XP_PER_LEVEL);
   const spiritRankProgress=Math.max(0,spiritLevel-1);
   const totalSkillPoints=Math.max(0,spiritLevel-1);
-  const visibleStudents=students.filter(s=>!s.hidden||lilithUnlocked);
+  const visibleStudents=students.filter(studentVisibleOnCampus);
   const avgLbs=Math.round(visibleStudents.reduce((a,s)=>a+s.lbs,0)/Math.max(1,visibleStudents.length));
   // ── PROFESSOR SUBJECT / TRAIT EFFECTS ───────────────────────
   const hasTrait=(id)=>professorProfile?.traits?.includes(id)||false;
@@ -4142,6 +5077,7 @@ export default function ProfessorSim(){
             </div>
           )}
           <button onClick={startClass} style={C.btn("#186028")}>⏩ Next Week (+5 AP)</button>
+          <WalletBadge balance={money} />
           {students.some(s=>s.evolvedForm==='competitive_gainer')&&(
             <button onClick={()=>setCgChatOpen(true)} style={{...C.btn("#7a1530"),fontSize:10,border:"1px solid #e8294a40"}}>💬 Softening Stats</button>
           )}
@@ -4161,10 +5097,10 @@ export default function ProfessorSim(){
         <div style={C.main}>
 
           {/* ── CLASS VIEW ── */}
-          {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week}/>}
+          {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} students={students} week={week}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
@@ -4173,7 +5109,16 @@ export default function ProfessorSim(){
           {view==="inventory"&&<InventoryView inventory={inventory} setItemTargetPicker={setItemTargetPicker}/>}
 
           {/* ── CAMPUS EXPLORATION ── */}
-          {view==="campus"&&<CampusView campusState={campusState} moveToCampusNode={moveToCampusNode} lookAround={lookAround}/>}
+          {view==="campus"&&<CampusView
+            campusState={campusState}
+            moveToCampusNode={moveToCampusNode}
+            lookAround={lookAround}
+            searchCampus={searchCampus}
+            beginElaraQuest={beginElaraQuest}
+            explorationCtx={getCampusExplorationCtx()}
+            campusTier={getCampusNarrativeTier(pharmacistState)}
+            elaraMet={elaraMet}
+          />}
 
 {/* ── SKILL TREE ── */}
           {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} ownedSkills={ownedSkills} skillEffects={skillEffects} students={students} onBuy={buySkillRank} onMax={maxSkillRank} spiritLevel={spiritLevel} spiritXp={spiritXp%SPIRIT_XP_PER_LEVEL} spiritXpForNextLevel={SPIRIT_XP_PER_LEVEL}/>}
@@ -4227,6 +5172,8 @@ export default function ProfessorSim(){
         onBreakScale={(sid)=>setBrokeScaleIds(arr=>arr.includes(sid)?arr:[...arr,sid])}
         onUnlockBigScale={()=>{ setBigScaleUnlocked(true); push("⚖ Ordered a heavy-duty 1000 lb scale."); }}
         week={week}
+        campusFattening={!!pharmacistState?.campusFattening}
+        campusTier={getCampusNarrativeTier(pharmacistState)}
       />}
 
       {/* ── SESSION RESULT ── */}
@@ -4239,7 +5186,7 @@ export default function ProfessorSim(){
       {evolutionModal&&<EvolutionOfferModal chooseEvolution={chooseEvolution} evolutionModal={evolutionModal} setEvolutionModal={setEvolutionModal}/>}
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
-      {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} students={students}/>}
+      {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students}/>}
 
       {/* ── HOMEROOM QUEEN: CLASSROOM MINI-INTERFACE ── */}
       {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession}/>}
@@ -4364,7 +5311,41 @@ export default function ProfessorSim(){
       {chapterHostessState?.feastLogOpen&&<ChapterHostessFeastLogModal chapterHostessState={chapterHostessState} completeFeast={completeFeast}/>}
 
       {/* ── LILITH — CLUE / INVESTIGATION MODAL ── */}
-      {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect}/>}
+      {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} weeklyArms={weeklyArms} onArmDevouring={()=>armDevouringPresence(talkStudent.id)} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect} campusFattening={!!pharmacistState?.campusFattening} campusTier={getCampusNarrativeTier(pharmacistState)}/>}
+
+      {pharmacistChemSession&&pharmacistChemStudentId!=null&&(()=>{
+        const chemStudent=students.find(st=>st.id===pharmacistChemStudentId);
+        if(!chemStudent) return null;
+        return(
+          <PharmacistChemModal
+            student={chemStudent}
+            chemSession={pharmacistChemSession}
+            setChemSession={setPharmacistChemSession}
+            pharmacistState={pharmacistState}
+            onConfirm={confirmPharmacistChem}
+            onCancel={cancelPharmacistChem}
+            finalizeBrewPlan={finalizeBrewPlan}
+            applyAcquisitionChoice={applyAcquisitionChoice}
+            skipAcquisition={skipAcquisition}
+          />
+        );
+      })()}
+
+      {pharmacistCultSession&&pharmacistChemStudentId!=null&&(()=>{
+        const cultStudent=students.find(st=>st.id===pharmacistChemStudentId);
+        if(!cultStudent) return null;
+        return(
+          <PharmacistCultModal
+            student={cultStudent}
+            cultSession={pharmacistCultSession}
+            pharmacistState={pharmacistState}
+            ap={ap}
+            onSelectRoute={selectCultRoute}
+            onConfirm={confirmPharmacistCult}
+            onCancel={cancelPharmacistCult}
+          />
+        );
+      })()}
       {lilithClueModal&&<LilithClueModal lilithClueModal={lilithClueModal} investigateClue={investigateClue} setLilithClueModal={setLilithClueModal} confirmInvestigation={confirmInvestigation}/>}
 
       {/* ── LILITH — FEASTING BEAUTY (TEXT ADVENTURE) ── */}
@@ -4390,6 +5371,9 @@ export default function ProfessorSim(){
 
       {/* ── RECORDING SESSION MODAL ── */}
       {recordingSessionState&&<RecordingSessionModal recordingSessionState={recordingSessionState} students={students} setRecordingSessionState={setRecordingSessionState} makeRecordingChoice={makeRecordingChoice} wrapRecordingSession={wrapRecordingSession} oneMoreTake={oneMoreTake} closeRecordingSession={closeRecordingSession} dismissRecordingChoicePopup={dismissRecordingChoicePopup}/>}
+      {streamSessionState&&<StreamSessionModal streamSessionState={streamSessionState} students={students} week={week} preStreamAction={preStreamAction} selectChallenge={selectStreamChallenge} beginActiveRound={beginActiveRound} finishActiveRound={finishActiveRound} continueAfterBetweenRound={continueAfterBetweenRound} tapOutStream={tapOutStream} wrapStream={wrapStream} closeStream={closeStream} appendStreamChat={appendStreamChat} updateRoundPerf={updateRoundPerf} tickRoundStamina={tickRoundStamina}/>}
+      {streamBrandPickState&&<StreamBrandSelectModal student={students.find(st=>st.id===streamBrandPickState.studentId)} required={streamBrandPickState.required} onSelect={selectStreamBrand} onClose={streamBrandPickState.required?null:()=>setStreamBrandPickState(null)}/>}
+      {destinySpendState&&<DestinySpendModal student={students.find(st=>st.id===destinySpendState.studentId)} onPurchase={purchaseDestinyItem} onClose={()=>setDestinySpendState(null)} onGiftFromPlayer={giftDestinyFunds} playerMoney={money}/>}
 
       {/* ── FAIR TRAINING COLLABORATIONS HUB ── */}
       {fairTrainingState.open&&<FairTrainingHub ft={fairTrainingState} students={students} ap={ap} getFairPrideTier={getFairPrideTier} startFairTrainingSession={startFairTrainingSession} launchFairDayEvent={launchFairDayEvent} closeFairTraining={closeFairTraining} setFairTrainingState={setFairTrainingState}/>}
@@ -4414,6 +5398,63 @@ export default function ProfessorSim(){
 
       {/* ── CULTIVATOR MODAL ── */}
       {cultivatorState?.modalPhase&&<CultivatorModal cultivatorState={cultivatorState} students={students} setCultivatorState={setCultivatorState} confirmCultivatorRecruit={confirmCultivatorRecruit} pickCultivatorFood={pickCultivatorFood} makeCultivatorChoice={makeCultivatorChoice} confirmCultivatorSession={confirmCultivatorSession} dismissCultivatorStageUp={dismissCultivatorStageUp} confirmCultivatorHarvest={confirmCultivatorHarvest} closeCultivatorGrowth={closeCultivatorGrowth}/>}
+
+      {hungerInterrupt&&(()=>{
+        const hs=students.find(st=>st.id===hungerInterrupt.studentId);
+        if(!hs) return null;
+        return(
+          <HungerInterruptModal
+            student={hs}
+            week={week}
+            pharmacistState={pharmacistState}
+            onFeed={()=>finishHungerInterrupt(hs.id,'feed')}
+            onCompound={()=>{
+              const compounds=getStockedCompounds();
+              if(compounds.length>1){
+                setCompoundFeedPicker({kind:'interrupt',studentId:hs.id});
+              }else{
+                finishHungerInterrupt(hs.id,'compound',pickInterruptCompound(compounds,hs)||compounds[0]||'appetite_stimulant');
+              }
+            }}
+            onDeny={()=>finishHungerInterrupt(hs.id,'deny')}
+            onTalk={()=>finishHungerInterrupt(hs.id,'talk')}
+          />
+        );
+      })()}
+
+      {compoundFeedPicker&&(()=>{
+        const picker=compoundFeedPicker;
+        const compounds=getStockedCompounds();
+        let student=null;
+        let feedLabel='';
+        if(picker.kind==='item'){
+          student=students.find(st=>st.id===picker.studentId);
+          feedLabel=`${picker.item.emoji} ${picker.item.label} → ${student?.name}`;
+        }else if(picker.kind==='interrupt'){
+          student=students.find(st=>st.id===picker.studentId);
+          feedLabel=`Compound-laced meal for ${student?.name}`;
+        }else if(picker.kind==='class'){
+          feedLabel=`${picker.action.label} — lace the whole class meal?`;
+          student=students.find(st=>!st.hidden)||students[0];
+        }
+        if(!student) return null;
+        return(
+          <CompoundFeedModal
+            student={student}
+            unlockedCompoundIds={compounds}
+            compoundInventory={pharmacistState?.compoundInventory}
+            feedLabel={feedLabel}
+            studentAddiction={student?.addictionLevel??0}
+            onConfirm={(compoundId)=>{
+              setCompoundFeedPicker(null);
+              if(picker.kind==='item') executeItemFeed(picker.item,picker.studentId,compoundId);
+              else if(picker.kind==='class') executeClassFeed(picker.action,compoundId);
+              else if(picker.kind==='interrupt') finishHungerInterrupt(picker.studentId,'compound',compoundId);
+            }}
+            onCancel={()=>setCompoundFeedPicker(null)}
+          />
+        );
+      })()}
 
     </div>
   );

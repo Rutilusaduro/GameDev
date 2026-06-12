@@ -1210,7 +1210,7 @@ registerModule("diary.community_researcher", [
 
 // ── renderDiary — public wrapper ──────────────────────────────
 
-export function renderDiary(student, week) {
+export function renderEvolvedDiary(student, week) {
   if (!student || !student.evolvedForm) return null;
   const key = `diary.${student.evolvedForm}`;
   const ctx = createContext({ subject: student, week: week || 1 });

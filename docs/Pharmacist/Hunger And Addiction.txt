@@ -1,0 +1,187 @@
+Here's a clean, professional **suggestions document** you can hand directly to Claude or Cursor, written in the same style as the modular text system doc you shared earlier.
+
+---
+
+# Addiction & Hunger System — Implementation Suggestions
+
+**Status:** Core system design (v1)  
+**Related Systems:** Modular Text System, Compound System, Character State Machine
+
+---
+
+## 1. Overview
+
+This document defines the **Addiction** and **Hunger** systems tied to Sophia’s compounds and the broader game. These two systems are **related but separate**:
+
+- **Hunger** = General desire to eat and be fed.
+- **Addiction** = Specific craving for food and compounds **given by the player**.
+
+Addiction should feel meaningful and slightly punishing without becoming overwhelming. Hunger should feel reactive and alive, especially at higher levels.
+
+---
+
+## 2. Core Rules
+
+- Compounds must be delivered through **food or drink** (never directly).
+- Addiction is **player-specific** — girls crave *you* feeding them.
+- Hunger and addiction are related but not 1:1. Many things can increase hunger; addiction specifically amplifies it and unlocks worse behaviors.
+- Higher addiction levels unlock **more deranged and desperate** hunger behaviors.
+- There should be a **Stage 3 drug** that can reduce addiction back down to **Mild** (but not remove it entirely).
+
+---
+
+## 3. Addiction System
+
+### Addiction Levels
+
+| Level     | Name        | Description                              |
+|-----------|-------------|------------------------------------------|
+| 0         | None        | No addiction                             |
+| 1         | Mild        | Light craving                            |
+| 2         | Moderate    | Noticeable dependency                    |
+| 3         | Severe      | Strong, difficult-to-ignore craving      |
+| 4         | Dependent   | Deep, near-constant need                 |
+
+### How Addiction is Gained
+
+- Taking addictive compounds (Pleasure Enhancer, Weight Gain Potion, Craving Inducer, Intentional Addiction Compound, etc.).
+- Repeated heavy feeding while already at Moderate+ addiction.
+- Some evolved forms and high corruption can contribute.
+
+### Effects by Level
+
+| Level      | Hunger Impact                     | Withdrawal Risk | Behavioral Changes                          | Visibility      |
+|------------|-----------------------------------|-----------------|---------------------------------------------|-----------------|
+| None       | Normal                            | None            | Normal                                      | None            |
+| Mild       | Slightly increased                | Low             | Slightly more food-focused                  | Very Low        |
+| Moderate   | Noticeably hungrier               | Medium          | Starts asking/begging more often            | Low             |
+| Severe     | Very strong hunger                | High            | More desperate, possible manipulation       | Medium          |
+| Dependent  | Near-constant intense hunger      | Very High       | Deranged / aggressive craving states        | High            |
+
+### Withdrawal
+
+If a girl at **Moderate+** addiction is neglected for too long, she enters **Withdrawal**.
+
+- **Primary symptom**: **Aggression** (irritability, short temper, lashing out).
+- Other effects: reduced mood, slower gains, refusing certain interactions.
+
+### Curing Addiction
+
+- **Stage 3** unlocks a drug that can reduce addiction back down to **Mild**.
+- Addiction cannot be fully removed once acquired.
+
+### Visibility
+
+Addiction should have **very low visibility**:
+- No obvious meter.
+- Only visual cue: subtle color shift on the girl’s card (light red/orange tint).
+- Most information should come through behavior and interrupting scenes.
+
+---
+
+## 4. Hunger System
+
+Hunger exists independently of addiction. Many sources can raise it (normal feeding, compounds, corruption, evolved forms, etc.).
+
+### Hunger Tiers
+
+| Tier | Name                | Description                          |
+|------|---------------------|--------------------------------------|
+| 0    | Normal              | Regular appetite                     |
+| 1    | Increased           | Clearly thinking about food more     |
+| 2    | High                | Very hungry                          |
+| 3    | Craving Hunger      | Strong, difficult-to-ignore hunger   |
+| 4    | Starving Hunger     | Desperate, near-frantic hunger       |
+
+**Important Rule**: Tiers 3 and 4 (**Craving Hunger** and **Starving Hunger**) are **only available** when the girl has **Moderate+ addiction**. These represent the “deranged” tiers.
+
+### Deranged Hunger Behaviors (Addiction Tier 3+)
+
+When a girl reaches Tier 3 or 4, she can exhibit more unhinged behaviors such as:
+- Actively seeking the player out
+- Intense, desperate begging
+- Getting aggressive or emotional if denied
+- Trying to manipulate or guilt the player
+- Making needy or desperate sounds while eating
+- Looking almost worshipful or dazed while being fed
+
+---
+
+## 5. Interruption Mechanic (“Knock at the Door”)
+
+When the player tries to advance the week or spend an action point:
+
+- If any girl is in **Craving Hunger (Tier 3)**, **Starving Hunger (Tier 4)**, or deep in **Withdrawal**, there is a chance of an interrupting scene.
+- These scenes usually start with lines like:
+  - “There’s a knock at your door…”
+  - “You hear someone outside…”
+- These interruptions force the player to deal with the girl immediately and can cost time, resources, or relationship progress.
+
+This is the main way high addiction creates **real ongoing friction**.
+
+---
+
+## 6. Integration with Modular Text System
+
+All hunger and addiction text should go through the **Modular Text System**.
+
+### Recommended New Modules
+
+| Module Name                  | Purpose                                              | Example Output |
+|-----------------------------|------------------------------------------------------|----------------|
+| `hunger.desc`               | Describes current hunger level                       | “She’s clearly starving.” |
+| `hunger.addictedDesc`       | Addiction-flavored hunger description                | “She’s starving for anything you’ll give her.” |
+| `eating.style`              | How she eats right now                               | “She devours the food like she’s afraid it’ll be taken away.” |
+| `talk.hungryCoda`           | Hunger-related dialogue additions                    | “She keeps glancing at you with that hungry look.” |
+| `scene.hungerInterrupt`     | Interrupting scenes when advancing time              | “There’s a knock at your door. She looks almost frantic.” |
+
+### Recommended Lexicon Additions
+
+Add these dictionaries to `lexicon.js`:
+
+- `HUNGER_WORDS`
+- `ADDICTED_HUNGER_WORDS`
+- `EATING_STYLE`
+- `ADDICTED_EATING`
+
+These should support both normal hunger and the more deranged behaviors at higher addiction levels.
+
+---
+
+## 7. Compound Interaction Rules
+
+- All of Sophia’s compounds must be delivered through **food or drink**.
+- Some compounds have addictive properties (especially Pleasure Enhancers, Weight Gain Potions, Craving Inducer, and the Stage 3 Intentional Addiction Compound).
+- **Craving Inducer** should be **strong but short-term**. It can push girls into higher hunger tiers even at lower addiction levels.
+- **Stage 3** includes a drug that can reduce addiction back to **Mild**.
+
+---
+
+## 8. Summary of Key Rules
+
+- Hunger and addiction are **related but separate**.
+- Addiction is **player-specific** (girls crave food from *you*).
+- Compounds must go through food.
+- Higher addiction unlocks **more deranged hunger behaviors**.
+- Withdrawal causes **aggression**.
+- There is a **Stage 3 drug** that can reduce addiction back to Mild.
+- High hunger/addiction states can trigger **interrupting scenes** when advancing time.
+- All text should be handled through the **Modular Text System**.
+
+---
+
+## 9. Suggested Next Steps
+
+1. Add the new derived dimensions (`addictionLevel`, `hungerTier`, `inWithdrawal`) to `createContext()`.
+2. Create the lexicon dictionaries and core modules listed in Section 6.
+3. Build the interrupting scene system (`scene.hungerInterrupt`).
+4. Update relevant diary entries and dialogue to use the new modules (especially anything mentioning other students or eating).
+5. Hook the interrupting mechanic into week advancement and action point spending.
+
+---
+
+**End of Document**
+
+---
+
+

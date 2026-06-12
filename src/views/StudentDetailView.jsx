@@ -2,18 +2,24 @@ import { EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, EVOLVED_ACTIVITY_META, EVOLVED
 import { ATMOSPHERE_TIERS, GUEST_TIERS, MENU_TIERS } from '../gameData/chapterHostess.js';
 import { C } from '../styles.js';
 import { LilithPixelArt } from '../components/LilithPixelArt.jsx';
+import { BRANDS, getBrandControlLabel, getStreamVoiceLabel } from '../gameData/streaming.js';
+import { formatMoney } from '../gameData/wallet.js';
 import { getCorruptionTier, CORRUPTION_CONFIG } from '../gameData/corruption.js';
 import { CASE_STUDY_PAIRS } from '../gameData/communityResearcher.js';
 import { EVOLVED_SKILL_TREES } from '../gameData/skills.js';
 import { INNER_CIRCLE_TIERS, getTier } from '../gameData/sessions.js';
 import { LILITH_ID } from '../gameData/lilith.js';
 import { RECRUITMENT_SCENE, TESTER_APPEARANCE } from '../gameData/cultivator.js';
-import { getAttitude, getBodyDesc, getDiary, getOutfit } from '../utils/gameHelpers.js';
+import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } from '../utils/gameHelpers.js';
+import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
+import { formatIngredientBag } from '../gameData/pharmacistIngredients.js';
+import { CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier } from '../gameData/pharmacistCampus.js';
+import { getAddictionLevel, getHungerTier, HUNGER_TIERS, ADDICTION_LEVELS } from '../gameData/hungerAddiction.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, students, week }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, runPharmacistSynthesis, runPharmacistCultDistribution, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -180,14 +186,24 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                 <div style={C.infoBox("rgba(40,8,70,0.35)")}>
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>CURRENT ATTITUDE</div>
                   <div style={{fontSize:13,color:"#e8d8a8",fontStyle:"italic",lineHeight:1.75}}>
-                    "{getAttitude(s, week)}"
+                    "{getAttitude(s, week, pharmacistTextOpts(pharmacistState, week))}"
                   </div>
                 </div>
+
+                {/* Hunger / addiction (subtle) */}
+                {(getAddictionLevel(s)>0||getHungerTier(s)>0)&&(
+                  <div style={C.infoBox("rgba(50,20,10,0.25)")}>
+                    <div style={{fontSize:9,color:"#804030",letterSpacing:2,marginBottom:4}}>CRAVING STATE</div>
+                    <div style={{fontSize:12,color:"#c8a090",lineHeight:1.7}}>
+                      Hunger: {HUNGER_TIERS[getHungerTier(s)]?.label} · Addiction: {ADDICTION_LEVELS[getAddictionLevel(s)]?.label}
+                    </div>
+                  </div>
+                )}
 
                 {/* Diary */}
                 <div style={C.infoBox("rgba(30,5,60,0.4)")}>
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>DIARY ENTRY</div>
-                  <div style={{fontSize:12,color:"#c8b898",fontStyle:"italic",lineHeight:1.8}}>{getDiary(s, week)}</div>
+                  <div style={{fontSize:12,color:"#c8b898",fontStyle:"italic",lineHeight:1.8}}>{getDiary(s, week, pharmacistTextOpts(pharmacistState, week))}</div>
                 </div>
 
                 {/* ── EP2: EVOLUTION SECTION ── */}
@@ -295,6 +311,76 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                                   </div>
                                 </div>
                               )}
+                            </div>
+                          );
+                        }
+                        // ── PHARMACIST (Sophia) — custom panel ──
+                        if(s.evolvedForm==='pharmacist'&&pharmacistState){
+                          const ps=pharmacistState;
+                          const green="#2e6b5a";
+                          const stageMeta=PHARMACIST_STAGES.find(x=>x.id===ps.stage);
+                          const act=PHARMACIST_ACTIVITIES[ps.stage]||PHARMACIST_ACTIVITIES[1];
+                          const actLabel=stageMeta?.label||'Chemist';
+                          const stocked=(ps.unlockedCompounds||[]).filter(id=>(ps.compoundInventory?.[id]??0)>0);
+                          const campusLabel=CAMPUS_NARRATIVE_LABELS[getCampusNarrativeTier(ps)];
+                          const ingredients=formatIngredientBag(ps.ingredients||{});
+                          const cult=ps.cult||{};
+                          const purple="#6b4a8a";
+                          return(
+                            <div style={{background:"rgba(8,30,22,0.6)",border:`1px solid ${green}80`,borderRadius:10,padding:12}}>
+                              <div style={{fontSize:9,letterSpacing:3,color:green,marginBottom:4}}>🧪 EVOLVED PATH</div>
+                              <div style={{fontSize:13,fontWeight:700,color:"#6ab89a",marginBottom:6}}>The Chemist — {actLabel}</div>
+                              <div style={{fontSize:10,color:"#508070",marginBottom:8,lineHeight:1.6}}>
+                                Exposure {ps.exposureRisk}% · Sessions {ps.sessionsRun||0}
+                                {campusLabel?` · ${campusLabel}`:""}
+                                {(ps.synthesisPausedWeeks||0)>0?` · Synthesis paused ${ps.synthesisPausedWeeks}w`:""}
+                              </div>
+                              {ps.cultActive&&(
+                                <div style={{background:"rgba(40,20,60,0.35)",border:`1px solid ${purple}50`,borderRadius:8,padding:8,marginBottom:8}}>
+                                  <div style={{fontSize:9,letterSpacing:2,color:purple,marginBottom:4}}>🕯️ THE CIRCLE</div>
+                                  <div style={{fontSize:10,color:"#9070b0",lineHeight:1.55,marginBottom:8}}>
+                                    {cult.circleSize??0} devotees · Devotion {cult.devotion??0}% · Supply {cult.supplyReservoir??0}
+                                    {cult.bulkProductionUnlocked?" · Bulk brew unlocked":""}
+                                  </div>
+                                  <button style={{...C.btn(purple),width:"100%",fontSize:11}} onClick={()=>runPharmacistCultDistribution(s)}>
+                                    🕯️ Route Distribution (1–2 AP)
+                                  </button>
+                                </div>
+                              )}
+                              {ingredients.length>0&&(
+                                <>
+                                  <div style={{fontSize:9,color:"#406858",marginBottom:6}}>Saved ingredients:</div>
+                                  <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:8}}>
+                                    {ingredients.map(item=>(
+                                      <span key={item.id} style={{...C.tag("rgba(46,107,90,0.2)","#8ad4b0"),fontSize:8}}>
+                                        {item.icon} {item.label} ×{item.qty}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </>
+                              )}
+                              <div style={{fontSize:9,color:"#406858",marginBottom:6}}>Home lab stash:</div>
+                              <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:8}}>
+                                {(ps.unlockedCompounds||[]).map(id=>{
+                                  const qty=ps.compoundInventory?.[id]??0;
+                                  return(
+                                    <span key={id} style={{...C.tag(qty>0?"rgba(46,107,90,0.25)":"rgba(40,40,40,0.4)",qty>0?"#8ad4b0":"#666"),fontSize:8}}>
+                                      {COMPOUNDS[id]?.label||id} ×{qty}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                              {stocked.length===0&&(
+                                <div style={{fontSize:9,color:"#a07050",fontStyle:"italic",marginBottom:8}}>
+                                  Stash empty — brew a batch to lace feeds.
+                                </div>
+                              )}
+                              <div style={{fontSize:9,color:"#406858",marginBottom:8,lineHeight:1.5}}>
+                                {act.desc}
+                              </div>
+                              <button style={{...C.btn(green),width:"100%",opacity:ap<(act.apCost||1)?0.4:1}} onClick={()=>runPharmacistSynthesis(s)}>
+                                {act.label||"🧪 Run Synthesis Session"} ({act.apCost||1} AP)
+                              </button>
                             </div>
                           );
                         }
@@ -428,6 +514,35 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                           {s.evolvedForm==='feedee_creator'&&getTier(s.relationship).id>=3&&(
                             <button style={{...C.btn("#804020"),opacity:ap<2?0.4:1,marginBottom:10,width:"100%"}} onClick={()=>startRecordingSession(s)}>
                               🎬 Film Her Session (2 AP)
+                            </button>
+                          )}
+                          {s.evolvedForm==='eating_streamer'&&s.brand&&(
+                            <div style={{fontSize:10,color:"#e08090",marginBottom:6,padding:"6px 10px",background:"rgba(80,10,20,0.35)",borderRadius:6,border:"1px solid #e74c3c33"}}>
+                              📡 Sponsor: <span style={{color:"#ff8090",fontWeight:700}}>{BRANDS[s.brand]?.name||s.brand}</span>
+                              {s.audience!=null&&<span style={{color:"#a06070"}}> · {Math.round(s.audience)} followers</span>}
+                              {(s.totalStreams||0)>0&&<span style={{color:"#a06070"}}> · {s.totalStreams} streams</span>}
+                              {(s.brandStreaks?.[s.brand]||0)>0&&(
+                                <span style={{color:"#ff6080"}}> · {getBrandControlLabel(s.brandStreaks[s.brand])} ({s.brandStreaks[s.brand]} streak)</span>
+                              )}
+                              {s.sponsorFavor?.[s.brand]!=null&&(
+                                <span style={{color:"#c08090"}}> · favor {Math.round(s.sponsorFavor[s.brand])}%</span>
+                              )}
+                              {(s.destinyMoney||0)>0&&(
+                                <span style={{color:"#ffe080"}}> · {formatMoney(s.destinyMoney)}</span>
+                              )}
+                              {s.streamVoice&&s.streamVoice!=='default'&&(
+                                <span style={{color:"#ff90a0"}}> · {getStreamVoiceLabel(s.streamVoice)}</span>
+                              )}
+                            </div>
+                          )}
+                          {s.evolvedForm==='eating_streamer'&&s.brand&&openDestinySpend&&(
+                            <button style={{...C.btn("#802030"),marginBottom:6,width:"100%"}} onClick={()=>openDestinySpend(s.id)}>
+                              💸 Destiny&apos;s Shop
+                            </button>
+                          )}
+                          {s.evolvedForm==='eating_streamer'&&(
+                            <button style={{...C.btn("#a02030"),opacity:ap<2?0.4:1,marginBottom:10,width:"100%"}} onClick={()=>startStream(s)}>
+                              {s.brand?'📡 Go Live (2 AP)':'📡 Sign Sponsor & Go Live'}
                             </button>
                           )}
                           {tree.length>0&&(

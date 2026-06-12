@@ -7,10 +7,18 @@ import { BODY_DESCS, OUTFITS } from '../gameData/content.js';
 import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS } from '../gameData/evolvedForms.js';
 import { getStage } from '../gameData/stages.js';
 import { CLASS_SCENES } from '../gameData/classEvents.js';
-import { createContext, render } from '../textEngine/engine.js';
+import { createContext, render, hasModule } from '../textEngine/engine.js';
 import '../textEngine/lexicon.js'; // registers word.* modules
 import { renderDiary } from '../textEngine/scenes/diary.js';
+import { renderEvolvedDiary } from '../textEngine/scenes/evolvedDiary.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
+import { appendCampusDiary, appendCampusAttitude } from '../textEngine/scenes/campusSoftening.js';
+import { getCampusNarrativeTier } from '../gameData/pharmacistIngredients.js';
+
+export function pharmacistTextOpts(pharmacistState, week = 1) {
+  const campusTier = getCampusNarrativeTier(pharmacistState);
+  return { campusFattening: campusTier > 0, campusTier, week };
+}
 
 export const ALL_SKILLS = [];
 
@@ -28,11 +36,20 @@ export function getOutfit(s){
   }
   const o=OUTFITS[s.archetype]||OUTFITS.default; return o[Math.min(getStage(s.lbs).id,o.length-1)];
 }
-export function getDiary(s, week = 1){
+export function getDiary(s, week = 1, opts = {}){
   if(s.evolvedForm && getStage(s.lbs).id>=5){
-    const arr=EVOLVED_DIARY[s.evolvedForm]; if(arr){ return arr[Math.min(getStage(s.lbs).id-5,arr.length-1)]; }
+    // Modular evolved diary takes priority when a module is registered
+    if(hasModule(`diary.${s.evolvedForm}`)){
+      return renderEvolvedDiary(s, week);
+    }
+    const arr=EVOLVED_DIARY[s.evolvedForm];
+    if(arr){
+      const base=arr[Math.min(getStage(s.lbs).id-5,arr.length-1)];
+      const text=typeof base==='function'?base(s):base;
+      return appendCampusDiary(text, s, { ...opts, week });
+    }
   }
-  return renderDiary(s, week);
+  return renderDiary(s, week, opts);
 }
 export function getEvolvedReaction(s){
   if(!s.evolvedForm) return null;
@@ -40,10 +57,10 @@ export function getEvolvedReaction(s){
   const idx=getStage(s.lbs).id-5; if(idx<0) return null;
   return arr[Math.min(idx,arr.length-1)];
 }
-export function getAttitude(s, week = 1){
+export function getAttitude(s, week = 1, opts = {}){
   const evR=getEvolvedReaction(s);
-  if(evR) return evR;
-  return renderAttitude(s, week);
+  if(evR) return appendCampusAttitude(evR, s, { ...opts, week });
+  return renderAttitude(s, week, opts);
 }
 export function getEvolvedActivityStageIdx(s){
   const id=getStage(s.lbs).id;

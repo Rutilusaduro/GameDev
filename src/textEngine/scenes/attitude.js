@@ -3,6 +3,7 @@
 // One first-person sentence from mood, corruption, hunger, devour.
 // ═══════════════════════════════════════════════════════════════
 import { registerModule, createContext, render } from '../engine.js';
+import './campusSoftening.js';
 
 // ── attitude.line — primary emotional sentence ────────────────
 
@@ -293,6 +294,18 @@ registerModule("attitude.line", [
       `Warm, tired, feeding everyone including myself.`,
       `I recommend rest and snacks. I take my own advice too literally.`,
     ] },
+  { when: { archetype: "pharmacy_grad", corruption: [0] }, priority: 1,
+    text: [
+      `Anxious and precise — I rationalize appetite the way I rationalize dosage.`,
+      `Professional on the outside. My stomach has opinions I keep logging as data.`,
+      `I know exactly what these compounds do. I tell myself that's control.`,
+    ] },
+  { when: { archetype: "pharmacy_grad", corruption: [1, 2] }, priority: 1,
+    text: [
+      `Wellness is a word I use when I mean want.`,
+      `Calm and clinical — until food arrives. Then I'm just hungry.`,
+      `I sound responsible. I don't feel responsible.`,
+    ] },
   { when: { archetype: "eced" }, priority: 1,
     text: [
       `Warm and a little guilty — I bake for them and eat half the tray myself.`,
@@ -331,9 +344,16 @@ registerModule("attitude.line", [
     ] },
 ]);
 
-export const ATTITUDE_TEMPLATE = "{attitude.line}";
+export const ATTITUDE_TEMPLATE = "{attitude.line}{attitude.campus|prefix: }";
 
-export function renderAttitude(student, week = 1) {
-  const ctx = createContext({ subject: student, week });
+export function renderAttitude(student, week = 1, opts = {}) {
+  const ctx = createContext({
+    subject: student,
+    week,
+    globals: {
+      campusFattening: !!opts.campusFattening,
+      campusTier: opts.campusTier ?? (opts.campusFattening ? 1 : 0),
+    },
+  });
   return render(ATTITUDE_TEMPLATE, ctx).trim() || "—";
 }
