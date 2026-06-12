@@ -3,6 +3,7 @@
 // wi.breakBeat  — physical aftermath (stage/corruption keyed)
 // wi.breakLine  — her reaction (per-girl + corruption in breakPersonas.js)
 // wi.breakBodyGesture — body-type + stage keyed touch (belly/butt/breast)
+// wi.breakThighGesture — athletic thigh beat (flex → jiggle by stage)
 // wi.swap / wi.purchase — professor-voice beats for scale logistics.
 // ═══════════════════════════════════════════════════════════════
 import { registerPool } from '../../engine.js';
@@ -55,12 +56,13 @@ registerPool("wi.breakBodyGesture", [
     "rolling her hips once so her heavy backside settles with a soft jiggle",
   ]},
   { when: { bodyType: "pear", stageMin: 8, stageMax: 9 }, weight: 2, text: [
-    "squeezing her vast hips together and swaying them once, deliberate",
-    "hefting one generous cheek in her palm and releasing it slow, flesh rippling",
+    "squeezing both cheeks of her ass together and swaying her hips once, deliberate",
+    "cupping the heavy swell of her backside in both hands and giving it a slow squeeze",
   ]},
   { when: { bodyType: "pear", stageMin: 10 }, weight: 3, text: [
-    "gathering the heavy weight of her hips in both hands and holding it there a moment, giving you time to look",
-    "lifting one wide cheek and letting it drop back with a slow, satisfied sway, eyes on yours",
+    "palming the vast round of her ass and squeezing until soft flesh spills between her fingers",
+    "squeezing both heavy cheeks of her backside together and letting them bounce once, eyes on yours",
+    "cupping her wide backside in both hands and giving it a slow, shameless squeeze",
   ]},
 
   // ── hourglass — bust and hips, no belly pool ────────────────
@@ -181,12 +183,13 @@ registerPool("wi.breakBodyGesture", [
     "pressing a palm to the firm swell of her hip",
   ]},
   { when: { bodyType: "athletic", stageMin: 5, stageMax: 7 }, weight: 2, text: [
-    "squeezing the heavy muscle of her thigh and releasing slow",
-    "cupping the plush swell her training has converted to power",
+    "squeezing the thickening flesh of her thigh and releasing slow",
+    "running her palm along a leg that's gone noticeably softer",
   ]},
   { when: { bodyType: "athletic", stageMin: 8 }, weight: 2, text: [
-    "rolling her hips once — athlete's control, new mass swaying anyway",
-    "hefting the thick weight of her thigh in one hand, testing the new heft",
+    "giving her heavy thigh a shake and watching it jiggle",
+    "slapping her thick thigh once — soft flesh rippling where muscle used to be",
+    "cupping the plush weight of her thigh and letting it settle slow in her palm",
   ]},
 
   // ── straight — light middle fallback ──────────────────────────
@@ -201,6 +204,28 @@ registerPool("wi.breakBodyGesture", [
   { when: { bodyType: "straight", stageMin: 8 }, weight: 2, text: [
     "spreading both palms over the vast warm weight of her belly",
     "lifting the heavy overflow of her middle and letting it drop back with a slow sway",
+  ]},
+]);
+
+// ── wi.breakThighGesture ──────────────────────────────────────
+// Shape: PARTICIPLE CLAUSE — athletic thigh beat for breakLine slots.
+// Flex at light weight; squeeze mid; jiggle at blob. Used inline in
+// Serena's tier-0/1 lines so "flexing her thigh" doesn't fire on a
+// five-hundred-pound girl.
+registerPool("wi.breakThighGesture", [
+  { when: {}, text: [""] },
+  { when: { bodyType: "athletic", stageMax: 4 }, text: [
+    "flexing her thigh once, testing the muscle",
+    "pressing her thumb into the firm line of her quad",
+  ]},
+  { when: { bodyType: "athletic", stageMin: 5, stageMax: 7 }, text: [
+    "squeezing the thickening flesh of her thigh",
+    "running her palm along a leg that's gone noticeably softer",
+  ]},
+  { when: { bodyType: "athletic", stageMin: 8 }, weight: 2, text: [
+    "giving her heavy thigh a shake and watching it jiggle",
+    "slapping her thick thigh once — soft flesh rippling where muscle used to be",
+    "cupping the plush weight of her thigh and letting it settle slow in her palm",
   ]},
 ]);
 

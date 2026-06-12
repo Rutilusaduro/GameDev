@@ -22,7 +22,7 @@ registerModuleVariants("wi.breakLine", [
   ]},
   { when: { studentId: 0, corruption: [2] }, weight: W, text: [
     `Brittany steps off, radiant. "Order a bigger one. I'll break that too." She flexes — soft, proud, unashamed.`,
-    `"Beautiful," she says of the wreckage, then of herself{wi.breakBodyGesture|prefix:, }. "Same energy."`,
+    `"Still winning," she says{wi.breakBodyGesture|prefix:, }, toeing the cracked glass. "Scale lost. I didn't."`,
     `"That's what I wanted," she says simply. "More of me. Scale included."`,
     `"Thank you," she adds — and she is not talking to the wreckage.`,
   ]},
@@ -66,13 +66,13 @@ registerModuleVariants("wi.breakLine", [
   // ── 3 · Serena — athlete ─────────────────────────────────────
   { when: { studentId: 3, corruption: [0] }, weight: W, text: [
     `Serena steps off and laughs once, sharp and pleased. "Yeah, I felt that one go. Get one that can keep up."`,
-    `"Different training load," she says, flexing her thigh. "Scale couldn't handle the program."`,
-    `"Huh." She prods her thigh. "Something else is happening instead."`,
+    `"Different training load," she says{wi.breakThighGesture|prefix:, }. "Scale couldn't handle the program."`,
+    `"I can't run like I used to," she says, looking at the wreckage. "Guess the scale can't either."`,
   ]},
   { when: { studentId: 3, corruption: [1] }, weight: W, text: [
     `"Personal best," Serena says, like a split time. "New event: breaking hardware."`,
     `"Same discipline," she says, rolling her shoulders. "Different arena. Bigger equipment."`,
-    `"I've redirected," she says. "Same drive. Different arena."`,
+    `"New sport," she says{wi.breakThighGesture|prefix:, }. "Same split-time mentality. Better equipment next week."`,
   ]},
   { when: { studentId: 3, corruption: [2] }, weight: W, text: [
     `"Champion," Serena murmurs{wi.breakBodyGesture|prefix:, }, satisfied. "Get a scale that can keep up with me."`,
@@ -88,14 +88,14 @@ registerModuleVariants("wi.breakLine", [
     `"It's beautiful," she says, surprised at herself. "I didn't expect to think that."`,
   ]},
   { when: { studentId: 4, corruption: [1] }, weight: W, text: [
-    `"The line couldn't hold," Fiona says softly. "Neither could the scale. I'm becoming the work."`,
+    `"The scale gave up before I finished the sketch," Fiona murmurs. "Rude."`,
     `"I've been painting this body for weeks," she says. "Now the canvas broke the frame."`,
     `"I've been drawing myself differently," she murmurs. "Didn't realize I was also… becoming it."`,
   ]},
   { when: { studentId: 4, corruption: [2] }, weight: W, text: [
     `"Masterpiece in progress," Fiona whispers{wi.breakBodyGesture|prefix:, }. "Needs a bigger gallery. And a bigger scale."`,
-    `"Exhibit," she murmurs, looking down at the wreckage. "Open indefinitely."`,
-    `"More canvas," she says softly. "More to work with."`,
+    `"I could hang this crack pattern on a wall," she says, studying the spiderweb in the glass. "Next to a mirror."`,
+    `"More canvas," she says softly{wi.breakBodyGesture|prefix:, }. "More to work with."`,
     `"Perfect," she breathes, like a gallery opening.`,
   ]},
 
