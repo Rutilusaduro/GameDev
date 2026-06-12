@@ -102,7 +102,7 @@ registerModuleVariants("wi.breakLine", [
   // ── 5 · Destiny — gamer ──────────────────────────────────────
   { when: { studentId: 5, corruption: [0] }, weight: W, text: [
     `Destiny sighs through her nose. "Low durability item. Should've upgraded ages ago."`,
-    `"Scale broke. Not my fault. Bad item stats." She doesn't look up from her phone.`,
+    `"Scale broke. Not my fault — hardware was underleveled." She doesn't look up from her phone.`,
     `"Chair ergonomics are trash for this meta," she mutters. "Scale too."`,
   ]},
   { when: { studentId: 5, corruption: [1] }, weight: W, text: [
@@ -168,7 +168,7 @@ registerModuleVariants("wi.breakLine", [
     `"More," Maya says, meeting your eyes{wi.breakBodyGesture|prefix:, }. One word. She means the scale, and herself.`,
     `"Thank you," she whispers — not to the wreckage.`,
     `"Here," she murmurs. "All of me."`,
-    `"Home," she breathes.`,
+    `Maya steps off the wreckage without hurry. "The scale stopped," she says quietly. "I didn't."`,
   ]},
 
   // ── 9 · Chloe — transfer ─────────────────────────────────────
