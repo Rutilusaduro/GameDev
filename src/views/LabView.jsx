@@ -15,13 +15,14 @@ import {
 } from '../gameData/labParts.js';
 import { DEVICE_BLUEPRINT_CATEGORIES } from '../gameData/deviceCategories.js';
 import { INVENTOR_PATH_STAGES, LAB_BUILD_CONFIG } from '../gameData/talia.js';
+import { BREAKTHROUGH_ICON, BREAKTHROUGH_LABEL } from '../gameData/labTechTree.js';
 import { RecipeCostDisplay } from '../components/RecipeCostDisplay.jsx';
+import { LabTechTree } from '../components/LabTechTree.jsx';
 
 const RARITY_COLORS = { common: '#8a8a7a', uncommon: '#4a9a5a', rare: '#c8860a' };
 const ACCENT = '#4a6080';
-const RESEARCH_ACCENT = '#5090c8';
 
-function BlueprintCard({ recipe, labState, taliaStudent, money, onBuild, onResearch }) {
+function BlueprintCard({ recipe, labState, taliaStudent, money, onBuild }) {
   const def = DEVICES[recipe.deviceDefId];
   const researched = isBlueprintResearched(labState, recipe.blueprint);
   const buildable = isBlueprintBuildable(recipe, labState);
@@ -42,21 +43,9 @@ function BlueprintCard({ recipe, labState, taliaStudent, money, onBuild, onResea
       <div style={{ fontSize: 10, color: '#5a6080', marginBottom: 8, lineHeight: 1.4 }}>{def?.desc}</div>
       <RecipeCostDisplay recipe={recipe} labState={labState} money={money} taliaLbs={taliaLbs} />
       {!researched && (
-        <button
-          style={{
-            ...C.btn(RESEARCH_ACCENT),
-            width: '100%',
-            fontSize: 11,
-            fontWeight: 700,
-            marginBottom: 4,
-            boxShadow: '0 0 12px rgba(80,144,200,0.35)',
-            border: `1px solid ${RESEARCH_ACCENT}`,
-            cursor: 'pointer',
-          }}
-          onClick={() => onResearch(recipe.blueprint)}
-        >
-          📐 Research blueprint
-        </button>
+        <div style={{ fontSize: 9, color: '#806050', fontStyle: 'italic', marginBottom: 6, lineHeight: 1.45 }}>
+          🔒 Locked — unlock this blueprint in the Research Tech Tree above.
+        </div>
       )}
       {researched && !buildable && (
         <div style={{ fontSize: 9, color: '#a07050', fontStyle: 'italic', marginBottom: 6 }}>
@@ -81,7 +70,7 @@ function BlueprintCard({ recipe, labState, taliaStudent, money, onBuild, onResea
   );
 }
 
-function CategorySection({ category, labState, taliaStudent, money, onBuild, onResearch, defaultOpen }) {
+function CategorySection({ category, labState, taliaStudent, money, onBuild, defaultOpen }) {
   const [open, setOpen] = useState(defaultOpen ?? true);
   const recipes = category.deviceIds
     .map(id => BLUEPRINT_RECIPES[id])
@@ -117,7 +106,6 @@ function CategorySection({ category, labState, taliaStudent, money, onBuild, onR
               taliaStudent={taliaStudent}
               money={money}
               onBuild={onBuild}
-              onResearch={onResearch}
             />
           ))}
         </div>
@@ -131,7 +119,7 @@ export function LabView({
   taliaStudent,
   money,
   onBuild,
-  onResearch,
+  onUnlockTech,
   onOpenSession,
   ap,
 }) {
@@ -156,6 +144,7 @@ export function LabView({
               Talia: <strong>{Math.round(taliaStudent.lbs)} lbs</strong> available as build material
               · Instability {labState.instability ?? 0}%
               · Sessions {labState.sessionsRun ?? 0}
+              · {BREAKTHROUGH_ICON} {labState.breakthroughs ?? 0} {BREAKTHROUGH_LABEL}
             </div>
           )}
         </div>
@@ -185,6 +174,8 @@ export function LabView({
         })}
       </div>
 
+      <LabTechTree labState={labState} onUnlock={onUnlockTech} />
+
       <div style={{ fontSize: 9, letterSpacing: 2, color: ACCENT, marginBottom: 8 }}>BLUEPRINTS BY CATEGORY</div>
       {DEVICE_BLUEPRINT_CATEGORIES.map((cat, i) => (
         <CategorySection
@@ -194,7 +185,6 @@ export function LabView({
           taliaStudent={taliaStudent}
           money={money}
           onBuild={onBuild}
-          onResearch={onResearch}
           defaultOpen={i === 0}
         />
       ))}

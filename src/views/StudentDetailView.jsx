@@ -15,7 +15,7 @@ import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData
 import { INVENTOR_PATH_STAGES, INVENTOR_ACTIVITIES } from '../gameData/talia.js';
 import { networkSummary } from '../gameData/networkState.js';
 import { getAvailableDeviceActions, getBodyOverrideBadge } from '../gameData/deviceActions.js';
-import { StudentEquipPanel } from '../components/StudentEquipPanel.jsx';
+import { EquipmentButton } from '../components/StudentEquipModal.jsx';
 import { formatIngredientBag } from '../gameData/pharmacistIngredients.js';
 import { CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier } from '../gameData/pharmacistCampus.js';
 import { getAddictionLevel, getHungerTier, HUNGER_TIERS, ADDICTION_LEVELS } from '../gameData/hungerAddiction.js';
@@ -23,7 +23,7 @@ import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -188,7 +188,9 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                   <div style={{fontSize:13,color:"#e0d0b0",lineHeight:1.8,fontStyle:"italic"}}>{getBodyDesc(s, week)}</div>
                 </div>
 
-                <StudentEquipPanel student={s} onUnequip={unequipDeviceSlot} />
+                <div style={{ marginBottom: 10 }}>
+                  <EquipmentButton onClick={() => openEquipModal?.(s.id)} />
+                </div>
 
                 {getAvailableDeviceActions(s,{deviceInventory}).length>0&&(
                   <div style={C.infoBox("rgba(30,40,55,0.4)")}>
@@ -346,7 +348,7 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                           const ls=labState;
                           const steel="#4a6080";
                           const stageMeta=INVENTOR_PATH_STAGES.find(x=>x.id===ls.stage);
-                          const act=INVENTOR_ACTIVITIES[ls.stage]||INVENTOR_ACTIVITIES[1];
+                          const act=INVENTOR_ACTIVITIES[1];
                           const netSum=ls.stage>=2?networkSummary(ls):null;
                           return(
                             <div style={{background:"rgba(8,12,22,0.6)",border:`1px solid ${steel}80`,borderRadius:10,padding:12}}>
@@ -354,6 +356,7 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                               <div style={{fontSize:13,fontWeight:700,color:"#90a8c8",marginBottom:6}}>Machine Goddess — {stageMeta?.label||'Tinkerer'}</div>
                               <div style={{fontSize:10,color:"#607090",marginBottom:8,lineHeight:1.6}}>
                                 Instability {ls.instability??0}% · Sessions {ls.sessionsRun??0}
+                                · 💡 {ls.breakthroughs??0} Breakthroughs
                                 <div style={{marginTop:4}}>Talia: {Math.round(s.lbs)} lbs (builds spend her mass)</div>
                                 {netSum&&(
                                   <div style={{marginTop:4,color:"#50c0e0"}}>
@@ -365,14 +368,14 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                               <div style={{fontSize:9,color:"#506070",marginBottom:8,lineHeight:1.5}}>{act.desc}</div>
                               <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
                                 <button style={{...C.btn(steel),flex:"1 1 120px",opacity:ap<(act.apCost||1)?0.4:1}} onClick={()=>runLabSession(s)}>
-                                  {act.label||'🔧 Run Lab Session'} ({act.apCost||1} AP)
+                                  🔧 Run Lab Session ({act.apCost||1} AP)
                                 </button>
                                 <button style={{...C.btn("#2a3848"),flex:"1 1 100px"}} onClick={openLabView}>
                                   The Lab
                                 </button>
-                                {ls.stage>=2&&openNetworkView&&(
-                                  <button style={{...C.btn("#1a4050"),flex:"1 1 100px"}} onClick={openNetworkView}>
-                                    ⚙️ Network
+                                {ls.stage>=2&&openNetworkControl&&(
+                                  <button style={{...C.btn("#1a4050"),flex:"1 1 100px",opacity:ap<1?0.4:1}} onClick={()=>openNetworkControl(s)}>
+                                    ⚙️ Network ({INVENTOR_ACTIVITIES[ls.stage]?.apCost||1} AP)
                                   </button>
                                 )}
                               </div>

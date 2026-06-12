@@ -45,6 +45,7 @@ registerPool('campus.dev.rangeNote', [
   { when: { targetType: 'student' }, text: [
     'Your inventory hums with possibility.',
     'The campus network marks her as in range.',
+    'Signal strong — delivery window open.',
     '',
   ] },
   { when: { targetType: 'npc' }, text: [
@@ -81,7 +82,11 @@ registerPool('campus.dev.delivery', [
   { when: { deviceId: 'liquid_fat_infuser' }, text: [
     'the infuser does its clinical work through ordinary thirst',
   ] },
-  { when: {}, text: ['your device finds its mark'] },
+  { when: {}, text: [
+    'your device finds its mark',
+    'the mesh delivers on schedule',
+    'calories land before she can object',
+  ] },
 ]);
 
 registerPool('campus.dev.reaction', [
@@ -103,6 +108,8 @@ registerPool('campus.dev.reaction', [
   ] },
   { when: {}, text: [
     'The gain is already showing.',
+    'She touches her middle like something changed.',
+    'Fullness settles in before she names it.',
     '',
   ] },
 ]);
@@ -131,6 +138,8 @@ registerPool('campus.deviceFlavor', [
   ] },
   { when: {}, text: [
     'The campus hums with machine activity you cannot quite see.',
+    'Somewhere nearby, a rig ticks through its cycle.',
+    'You catch the faint smell of warm paste on the air.',
     '',
   ] },
 ]);

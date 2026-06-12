@@ -17,6 +17,8 @@ registerPool('campus.deviceEncounter', [
   ] },
   { when: {}, text: [
     '{subject.name} is within device range.',
+    'You have a clean line on {subject.name}.',
+    '{subject.name} crosses the mesh without noticing.',
   ] },
 ]);
 

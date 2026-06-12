@@ -3,6 +3,11 @@
 // ═══════════════════════════════════════════════════════════════
 import { partsAcquisitionByStage } from './labParts.js';
 import { defaultNetworkState, ensureNetwork } from './networkState.js';
+import {
+  initialUnlockedTech,
+  applyStageTechUnlocks,
+  rollSessionBreakthroughs,
+} from './labTechTree.js';
 
 export const TALIA_STUDENT_ID = 18;
 
@@ -77,7 +82,9 @@ export function defaultLabState() {
     stage: 1,
     instability: 0,
     sessionsRun: 0,
-    researchedBlueprints: ['bp_bloating_belt', 'bp_feeder_arm', 'bp_sleep_feeding', 'bp_feeding_mask'],
+    breakthroughs: 4,
+    unlockedTech: initialUnlockedTech(),
+    researchedBlueprints: [],
     parts: partsAcquisitionByStage(1),
     maintenanceDebt: 0,
     builtThisSession: [],
@@ -120,31 +127,23 @@ export function maybeAdvanceInventorStage(state) {
   if (stage >= 2 && !next.network) {
     next.network = defaultNetworkState(stage);
   }
-  const researched = [...(next.researchedBlueprints || [])];
-  if (stage >= 2 && !researched.includes('bp_serum_injector')) researched.push('bp_serum_injector');
-  if (stage >= 2 && !researched.includes('bp_redistribution_rig')) researched.push('bp_redistribution_rig');
-  if (stage >= 2 && !researched.includes('bp_paste_printer')) researched.push('bp_paste_printer');
-  if (stage >= 2 && !researched.includes('bp_remote_feeding')) researched.push('bp_remote_feeding');
-  if (stage >= 2 && !researched.includes('bp_liquid_infuser')) researched.push('bp_liquid_infuser');
-  if (stage >= 3 && !researched.includes('bp_predator_capture')) researched.push('bp_predator_capture');
-  if (stage >= 3 && !researched.includes('bp_furniture_rig')) researched.push('bp_furniture_rig');
-  next.researchedBlueprints = researched;
+  const breakthroughBonus = stage === 2 ? 6 : stage === 3 ? 10 : 0;
+  next.breakthroughs = (next.breakthroughs ?? 0) + breakthroughBonus;
+  next = applyStageTechUnlocks(next, stage);
   return ensureNetwork(next);
 }
 
-export function completeLabSession(state, session, builtDeviceId = null) {
+export function completeLabSession(state, session, builtDeviceId = null, rng = Math.random) {
   if (!state || !session) return state;
   let next = { ...state };
   next.sessionsRun = (next.sessionsRun ?? 0) + 1;
   next.parts = session.poolAfter || session.pool || next.parts;
   next.instability = Math.min(100, (next.instability ?? 0) + (session.instabilityGained ?? 5));
+  const btGain = session.breakthroughsGained ?? rollSessionBreakthroughs(rng);
+  next.breakthroughs = (next.breakthroughs ?? 0) + btGain;
   if (builtDeviceId) {
     next.builtThisSession = [...(next.builtThisSession || []), builtDeviceId];
-  }
-  if (session.researchedBlueprint) {
-    const researched = new Set(next.researchedBlueprints || []);
-    researched.add(session.researchedBlueprint);
-    next.researchedBlueprints = [...researched];
+    next.breakthroughs += 1;
   }
   next = maybeAdvanceInventorStage(next);
   return next;

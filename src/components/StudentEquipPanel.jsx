@@ -13,29 +13,38 @@ const SLOT_LAYOUT = [
   { slot: 'fullBody', label: 'Full body', row: 5, col: 1 },
 ];
 
-function SlotCard({ slotMeta, entry, onUnequip, studentId }) {
+function SlotCard({ slotMeta, entry, onUnequip, onSlotTap, studentId, activeSlot }) {
   const def = entry ? getDevice(entry.defId) : null;
   const attachments = entry?.attachments ? Object.entries(entry.attachments).filter(([, a]) => a?.defId) : [];
   const occupied = !!entry;
+  const isActive = activeSlot === slotMeta.slot;
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      onClick={() => onSlotTap?.(slotMeta.slot)}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onSlotTap?.(slotMeta.slot); }}
       style={{
         gridRow: slotMeta.row + 1,
         gridColumn: slotMeta.col + 1,
         ...C.card,
         padding: '8px 10px',
         minHeight: 72,
-        borderColor: occupied ? '#4a6080' : '#2a3040',
-        background: occupied ? 'rgba(30,45,65,0.55)' : 'rgba(12,16,24,0.4)',
-        opacity: occupied ? 1 : 0.75,
+        borderColor: isActive ? '#80a0c0' : occupied ? '#4a6080' : '#2a3040',
+        background: isActive ? 'rgba(40,55,80,0.65)' : occupied ? 'rgba(30,45,65,0.55)' : 'rgba(12,16,24,0.4)',
+        opacity: occupied ? 1 : 0.85,
+        cursor: onSlotTap ? 'pointer' : 'default',
+        boxShadow: isActive ? '0 0 10px rgba(100,140,180,0.35)' : 'none',
       }}
     >
       <div style={{ fontSize: 8, letterSpacing: 1.5, color: '#506070', marginBottom: 4, textTransform: 'uppercase' }}>
         {slotMeta.label}
       </div>
       {!occupied && (
-        <div style={{ fontSize: 10, color: '#404850', fontStyle: 'italic' }}>empty</div>
+        <div style={{ fontSize: 10, color: '#606878', fontStyle: 'italic' }}>
+          {onSlotTap ? 'tap to equip' : 'empty'}
+        </div>
       )}
       {occupied && (
         <>
@@ -56,7 +65,7 @@ function SlotCard({ slotMeta, entry, onUnequip, studentId }) {
           )}
           <button
             style={{ ...C.smBtn, fontSize: 8, padding: '2px 6px', marginTop: 4 }}
-            onClick={() => onUnequip(studentId, slotMeta.slot)}
+            onClick={e => { e.stopPropagation(); onUnequip(studentId, slotMeta.slot); }}
           >
             Unequip
           </button>
@@ -66,7 +75,7 @@ function SlotCard({ slotMeta, entry, onUnequip, studentId }) {
   );
 }
 
-export function StudentEquipPanel({ student, onUnequip }) {
+export function StudentEquipPanel({ student, onUnequip, onSlotTap, activeSlot, embedded = false }) {
   if (!student) return null;
   const equip = student.equip || {};
   const equippedCount = DEVICE_SLOTS.filter(s => equip[s]).length;
@@ -74,13 +83,15 @@ export function StudentEquipPanel({ student, onUnequip }) {
     ? furnitureComfortLabel(student)
     : null;
 
-  return (
-    <div style={C.infoBox('rgba(20,28,40,0.5)')}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-        <div style={{ fontSize: 9, color: '#6080a0', letterSpacing: 2 }}>EQUIPPED DEVICES</div>
-        <span style={{ fontSize: 9, color: '#506070' }}>{equippedCount} active</span>
-      </div>
-      {comfort && (
+  const inner = (
+    <>
+      {!embedded && (
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+          <div style={{ fontSize: 9, color: '#6080a0', letterSpacing: 2 }}>EQUIPPED DEVICES</div>
+          <span style={{ fontSize: 9, color: '#506070' }}>{equippedCount} active</span>
+        </div>
+      )}
+      {!embedded && comfort && (
         <div style={{ fontSize: 10, color: comfort.color, marginBottom: 8 }}>
           🪑 {comfort.label}
           {student.deviceState?.furnitureComfort != null && ` (${student.deviceState.furnitureComfort}/100)`}
@@ -91,7 +102,7 @@ export function StudentEquipPanel({ student, onUnequip }) {
           display: 'grid',
           gridTemplateColumns: '1fr 1.2fr 1fr',
           gap: 8,
-          maxWidth: 420,
+          maxWidth: embedded ? '100%' : 420,
         }}
       >
         {SLOT_LAYOUT.map(slotMeta => (
@@ -100,10 +111,20 @@ export function StudentEquipPanel({ student, onUnequip }) {
             slotMeta={slotMeta}
             entry={equip[slotMeta.slot]}
             onUnequip={onUnequip}
+            onSlotTap={onSlotTap}
+            activeSlot={activeSlot}
             studentId={student.id}
           />
         ))}
       </div>
+    </>
+  );
+
+  if (embedded) return inner;
+
+  return (
+    <div style={C.infoBox('rgba(20,28,40,0.5)')}>
+      {inner}
     </div>
   );
 }

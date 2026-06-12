@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { C } from '../styles.js';
 import { LILITH_ID } from '../gameData/lilith.js';
-import { render, createContext, getSeason, relSize } from '../textEngine/engine.js';
+import { render, createContext, getSeason, relSize, _registryEntries } from '../textEngine/engine.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
 import { DialogueLab } from './DialogueLab.jsx';
 
@@ -66,7 +66,10 @@ export function DebugPanel({ adminScrutiny, ap, debugApply, debugInputs, setAdmi
             </div>
             {/* Text engine harness */}
             <div style={{marginBottom:14,padding:10,background:"rgba(255,255,255,0.04)",borderRadius:8}}>
-              <div style={{fontSize:10,color:"#888",marginBottom:6}}>TEXT ENGINE</div>
+              <div style={{fontSize:10,color:"#888",marginBottom:6}}>TEXT ENGINE — {_registryEntries().length} registered modules/pools</div>
+              <div style={{fontSize:9,color:"#606878",marginBottom:8,lineHeight:1.5}}>
+                Dialogue Lab sweeps weigh-in, talk, device ticks, campus devices, Talia network, hunger interrupts, attitude, and hive intake.
+              </div>
               <button style={{...C.smBtn,background:"rgba(100,60,140,0.4)"}}
                 onClick={()=>setTextSample(sampleTextEngine())}>📜 Sample hive intake (6 combos)</button>
               <button style={{...C.smBtn,background:"rgba(60,100,140,0.4)",marginLeft:6}}

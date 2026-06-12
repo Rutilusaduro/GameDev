@@ -81,6 +81,8 @@ registerPool('device.tick.sensation', [
   ] },
   { when: {}, text: [
     'she feels the week\'s device work in her body',
+    'the mechanical rhythm leaves its mark on her',
+    'warmth and pressure settle where the rig worked',
     '',
   ] },
 ]);
