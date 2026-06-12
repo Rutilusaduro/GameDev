@@ -11,6 +11,7 @@ import { getCorruptionTier } from '../gameData/corruption.js';
 import { getStage } from '../gameData/stages.js';
 import { createContext, render } from '../textEngine/engine.js';
 import '../textEngine/scenes/talkCodas.js'; // registers talk.coda
+import '../textEngine/scenes/talkEncourage.js'; // registers talk.encourage
 import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';
 import '../textEngine/scenes/destinyOffstream.js';
@@ -28,7 +29,6 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
   if (topic.sceneType === 'devour') {
     text = buildDevourScene(student, corTier, week);
   } else {
-    text = buildTalkResponse(topic.id, student, corTier);
     const ctx = createContext({
       subject: student,
       skillEffects,
@@ -38,6 +38,11 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
         campusTier: campusTier || (campusFattening ? 1 : 0),
       },
     });
+    // Engine-routed topics declare an engineTemplate (talkSystem.js);
+    // legacy topics still come from the talkDialogue.js pools.
+    text = topic.engineTemplate
+      ? render(topic.engineTemplate, ctx)
+      : buildTalkResponse(topic.id, student, corTier);
     text += render("{talk.coda|prefix: }", ctx, { noSmooth: true });
     if (campusFattening) {
       text += render("{talk.campusCoda|prefix: }", ctx, { noSmooth: true });

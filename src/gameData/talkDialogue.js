@@ -1,28 +1,9 @@
-// Expanded talk responses — longer, archetype-flavored, corruption-tiered.
-import { getStage } from './stages.js';
+// Legacy talk responses — corruption-tiered pools, being migrated
+// topic-by-topic to text-engine scenes (give the topic an
+// engineTemplate in talkSystem.js; see scenes/talkEncourage.js).
 import { pick } from '../textEngine/engine.js';
 
 function lbs(s) { return Math.round(s.lbs).toLocaleString(); }
-
-// ── archetype voice modifiers appended to base lines ──────────
-const ARCHETYPE_FLAVOR = {
-  cheerleader: (s, text) => text,
-  bookworm: (s, text) => text,
-  influencer: (s, text) => text,
-  athlete: (s, text) => text,
-  artsy: (s, text) => text,
-  gamer: (s, text) => text,
-  sorority: (s, text) => text,
-  overachiever: (s, text) => text,
-  quiet: (s, text) => text,
-  transfer: (s, text) => text,
-  culinary: (s, text) => text,
-  nursing: (s, text) => text,
-  psych: (s, text) => text,
-  eced: (s, text) => text,
-  farm_girl: (s, text) => text,
-  predator: (s, text) => text,
-};
 
 const MOOD_OPENERS = {
   stressed: (s) => pick([
@@ -112,33 +93,6 @@ She smooths both hands down the vast soft geography of her belly, hips, thighs �
       (s) => `"Again," ${s.name} says, eyes never leaving yours. Her enormous soft body fills the office with heat and presence — flesh pressing at every seam, jiggling when she shifts, settling heavy and warm when she stills.
 
 "You wanted this," she murmurs. "So did I. Look what we made." She takes your hand and places it on the warm crest of her belly. "Feel that? Still growing. Still yours to watch."`,
-    ],
-  ],
-
-  encourage: [
-    [
-      (s) => `${s.name} laughs nervously. "You're a bad influence, you know that?" But her hand is already reaching for the snack she was pretending not to think about — fingers closing around it with guilty speed.
-
-"I shouldn't," she says, which both of you recognize as the opening move of someone who absolutely will. At ${lbs(s)} lbs she's still negotiating with herself. The negotiation doesn't last long. She unwraps it. She eats. Her cheeks flush with pleasure and something else she isn't naming yet.`,
-      (s) => `"Permission granted, huh," ${s.name} repeats softly, like testing the words. Her shoulders drop — tension leaving in a visible wave. At ${lbs(s)} lbs her body has softened; her appetite has sharpened. "Why am I rationing? It's not like it's working."
-
-She reaches for more. Not hurried. Not ashamed. Just hungry, finally allowed to be hungry in front of you.`,
-    ],
-    [
-      (s) => `${s.name} considers, then nods like you've settled an argument she's been having with herself for weeks. "You're right. Why am I rationing?" At ${lbs(s)} lbs she can feel the weight when she moves — belly rounding, thighs rubbing, ass heavier behind her. "It's not like fighting it did anything except make me miserable."
-
-Something in her shoulders lets go. She exhales, belly pushing forward. "Okay. Tonight I'm not counting anything." She meets your eyes. "Hold me to that."`,
-      (s) => `"Permission granted," ${s.name} murmurs, and the words land somewhere deep. Her ${lbs(s)}-lb body responds before her mind catches up — hands drifting to her middle, thighs shifting wider, a soft sound in her throat that she doesn't try to hide.
-
-"Say it again," she whispers. "Tell me it's okay to want more." She is already reaching for the food. She is already growing into the wanting.`,
-    ],
-    [
-      (s) => `${s.name} grins. "You don't have to encourage me anymore, Professor. But I like it when you do." At ${lbs(s)} lbs she is past the point of pretending — belly soft and heavy, thighs spreading, appetite vast and unapologetic. "Watch this."
-
-She eats with deliberate sensuality — each bite an act of faith in her own growth. Her body jiggles and settles; her breathing deepens; her eyes stay on yours. "Still hungry," she says when she finishes. "Always hungry now."`,
-      (s) => `"Already ahead of you," ${s.name} says, gesturing to the spread she's assembled without waiting for permission. At ${lbs(s)} lbs the table looks small beside her — her body takes up space the way hunger takes up time: completely.
-
-"But say the words anyway." She pats the chair beside her. "They help it go down. They help all of it—" She runs her hand over her belly. "—feel right."`,
     ],
   ],
 
@@ -236,8 +190,5 @@ export function buildTalkResponse(topicId, student, corTier) {
   const tier = Math.min(corTier, pools.length - 1);
   const pool = pools[tier] || pools[0];
   const fn = pick(pool);
-  let text = typeof fn === 'function' ? fn(student) : fn;
-  const flavor = ARCHETYPE_FLAVOR[student.archetype];
-  if (flavor) text = flavor(student, text);
-  return text;
+  return typeof fn === 'function' ? fn(student) : fn;
 }
