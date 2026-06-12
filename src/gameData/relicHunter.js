@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// ELARA VOSS — The Relic Hunter (hidden student + exploration quests)
+// INDIANA BONES — The Relic Hunter (hidden student + exploration quests)
 // ═══════════════════════════════════════════════════════════════
 
 export const ELARA_ID = 17;
@@ -8,9 +8,9 @@ export const ELARA_QUESTS = [
   {
     id: 'tunnel_markings',
     label: 'Tunnel Markings',
-    desc: 'Elara wants eyes on the old maintenance routes beneath the rec center.',
+    desc: 'Indiana wants eyes on the old maintenance routes beneath the rec center.',
     steps: [
-      { nodeId: 'gym', text: 'Elara crouches by the grate: "These chalk marks predate the renovation. Someone mapped feeding routes — or escape routes. Same thing, maybe."' },
+      { nodeId: 'gym', text: 'Indiana crouches by the grate: "These chalk marks predate the renovation. Someone mapped feeding routes — or escape routes. Same thing, maybe."' },
       { nodeId: 'outdoor_track', text: 'At the field house edge she compares symbols. "They line up. Whoever drew them knew where the tunnels breathe."' },
     ],
     reward: { findId: 'tunnel_fungus', relationship: 8 },
@@ -20,7 +20,7 @@ export const ELARA_QUESTS = [
     label: 'Botanical Specimen',
     desc: 'A rare plant only grows in the walled greenhouse — if you know which bench to lift.',
     steps: [
-      { nodeId: 'garden', text: 'Elara pockets a cutting with reverent care. "This species shows up in pre-expansion campus records. Appetite suppressant trials, allegedly."' },
+      { nodeId: 'garden', text: 'Indiana pockets a cutting with reverent care. "This species shows up in pre-expansion campus records. Appetite suppressant trials, allegedly."' },
       { nodeId: 'science_wing', text: 'She cross-references the cutting against a mislabeled cold-room jar. "Same leaf structure. Someone recycled an old formula."' },
     ],
     reward: { findId: 'archive_herb', relationship: 10 },
@@ -30,7 +30,7 @@ export const ELARA_QUESTS = [
     label: 'Basement Inscriptions',
     desc: 'The sealed stacks hold carvings that do not match any registered club.',
     steps: [
-      { nodeId: 'library', text: 'Elara traces a carving with her flashlight. "These are older than the library basement. Campus was built on something hungry."' },
+      { nodeId: 'library', text: 'Indiana traces a carving with her flashlight. "These are older than the library basement. Campus was built on something hungry."' },
       { nodeId: 'theater', text: 'She matches the carving to a trap-door seam backstage. "Performance and appetite — always linked here."' },
     ],
     reward: { findId: 'basement_relic', relationship: 12 },
@@ -38,7 +38,7 @@ export const ELARA_QUESTS = [
   {
     id: 'wellness_investigation',
     label: 'Wellness Trail',
-    desc: 'Elara smells corporate wellness on the secret map. She wants proof.',
+    desc: 'Indiana smells corporate wellness on the secret map. She wants proof.',
     requires: { campusTierMin: 2, sophiaStageMin: 3 },
     steps: [
       { nodeId: 'student_union', text: 'She peels flyers until the old archaeology map appears. "Your pharmacist did not invent saturation. She industrialized it."' },
@@ -92,7 +92,7 @@ export function advanceElaraQuestAtNode(exploration, nodeId, ctx) {
         questsCompleted: completed,
         pendingQuestReward: quest.reward,
       },
-      lines: [...lines, `✨ Quest complete: ${quest.label}. Elara grins — "Partners, then. For now."`],
+      lines: [...lines, `✨ Quest complete: ${quest.label}. Indiana grins — "Partners, then. For now."`],
       completed: true,
       reward: quest.reward,
     };
@@ -110,7 +110,7 @@ export function elaraQuestProgressLine(exploration, nodeId, ctx) {
   const quest = getElaraQuest(exploration.questId);
   const step = quest?.steps[exploration.questStep ?? 0];
   if (!step || step.nodeId !== nodeId) return null;
-  return `🗺️ Elara is waiting for you to investigate here (${quest.label}).`;
+  return `🗺️ Indiana is waiting for you to investigate here (${quest.label}).`;
 }
 
 export function takePendingQuestReward(exploration) {

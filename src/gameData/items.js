@@ -27,7 +27,7 @@ export const ITEMS = [
   { id:"cellar_comfort_loaf", label:"Cellar Comfort Loaf", emoji:"🍞", cal:3400, full:20, rarity:"uncommon", exploration:true,
     desc:"Pre-renovation dining cellar recipe — dense, sweet, cut thick. Feeds a study group or one very committed girl." },
   { id:"trail_ration", label:"Relic Hunter Trail Ration", emoji:"🥾", cal:1800, full:8, rarity:"uncommon", exploration:true,
-    desc:"Elara's preferred field snack: nuts, dried fruit, and a bar that somehow packs diner-level calories." },
+    desc:"Indiana's preferred field snack: nuts, dried fruit, and a bar that somehow packs diner-level calories." },
   { id:"tunnel_mushroom_stew", label:"Tunnel Mushroom Stew", emoji:"🍄", cal:4100, full:24, rarity:"rare", exploration:true,
     desc:"Bioluminescent fungus simmered with cream. Tastes illegal. Digests enthusiastically." },
   { id:"archives_seed_bread", label:"Archives Seed Bread", emoji:"🌾", cal:2900, full:16, rarity:"rare", exploration:true,

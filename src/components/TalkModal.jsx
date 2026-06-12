@@ -13,6 +13,8 @@ import { createContext, render } from '../textEngine/engine.js';
 import '../textEngine/scenes/talkCodas.js'; // registers talk.coda
 import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';
+import '../textEngine/scenes/destinyOffstream.js';
+import { getBrandControlTier, getStreamVoice, ensureStreamFields } from '../gameData/streaming.js';
 import { getHungerTier, getAddictionLevel } from '../gameData/hungerAddiction.js';
 import { getBodyDescRich } from '../utils/gameHelpers.js';
 import { C } from '../styles.js';
@@ -42,6 +44,14 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
     }
     if (getHungerTier(student) >= 2 || getAddictionLevel(student) >= 1) {
       text += render("{talk.hungryCoda}", ctx, { noSmooth: true });
+    }
+    if (student.evolvedForm === 'eating_streamer') {
+      const ds = ensureStreamFields(student);
+      ctx.d.brand = ds.brand;
+      ctx.d.streamVoice = ds.streamVoice || getStreamVoice(ds);
+      ctx.d.brandControl = getBrandControlTier(ds.brandStreaks?.[ds.brand] || 0);
+      const off = render('{destiny.offstream.talk}', ctx, { noSmooth: true });
+      if (off?.trim()) text += `\n\n${off}`;
     }
   }
 

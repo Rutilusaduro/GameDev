@@ -68,7 +68,7 @@ function ChoiceCard({ actionId, choice, theme, onPick }) {
         e.currentTarget.style.boxShadow = 'none';
       }}
     >
-      <StreamPixelIcon spriteKey={key} size={52} glow={theme.accentGlow} />
+      <StreamPixelIcon spriteKey={key} size={52} glow={theme.accentGlow} brandId={student?.brand} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontSize: 13, fontWeight: 700, color: theme.accent, marginBottom: 3 }}>
           {choice.label}
@@ -217,7 +217,7 @@ export function StreamPreStreamPanel({ streamSession, student, preStreamAction }
                 borderRadius: 8,
                 border: `1px solid ${t.accent}33`,
               }}>
-                {spriteKey && <StreamPixelIcon spriteKey={spriteKey} size={36} glow={t.accentGlow} />}
+                {spriteKey && <StreamPixelIcon spriteKey={spriteKey} size={36} glow={t.accentGlow} brandId={student?.brand} />}
                 <div>
                   <div style={{ fontSize: 9, letterSpacing: 2, color: t.accent }}>{t.tag}</div>
                   <div style={{ fontSize: 11, color: '#e0c8d0' }}>{choiceLabel || '—'}</div>
@@ -256,6 +256,7 @@ export function StreamPreStreamPanel({ streamSession, student, preStreamAction }
               spriteKey={`${vignetteActionId}.${choiceId}`}
               size={56}
               glow={vignetteTheme.accentGlow}
+              brandId={student?.brand}
             />
           )}
           <div>

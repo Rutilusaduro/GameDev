@@ -186,7 +186,7 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
       }
       if (secret.reward?.discoverElara) {
         effects.discoverElara = true;
-        lines.push(`👋 Elara Voss — The Relic Hunter — has noticed you. "You found the basement too," she says. "Guess we are on the same map."`);
+        lines.push(`👋 Indiana Bones — The Relic Hunter — has noticed you. "You found the basement too," she says. "Guess we are on the same map."`);
       }
       return { lines, effects, exploration: nextExploration };
     }

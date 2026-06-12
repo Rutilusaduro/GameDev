@@ -232,3 +232,5 @@ registerModule('stream.pre.setup.production', [
   { when: {},
     text: ['Lights, overlays, mic check. She fusses with details until everything gleams on the preview monitor.\n\n"If we\'re doing this, we\'re doing it right."'] },
 ]);
+
+import './streamPreStreamBrand.js';

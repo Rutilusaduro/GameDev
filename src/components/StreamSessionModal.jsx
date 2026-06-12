@@ -9,11 +9,54 @@ import {
   getBrandControlLabel, getBrandControlTier,
   getStreamMilestoneLabel, SPECIAL_OUTCOME_DEFS,
 } from '../gameData/streaming.js';
+import { formatMoney } from '../gameData/wallet.js';
 import { StreamPreStreamPanel } from './StreamPreStreamPanel.jsx';
 
 const RED = '#e74c3c';
 const RED_DIM = '#a03030';
 const BG = 'linear-gradient(160deg,#120408,#1a0810,#120408)';
+
+let streamAudioCtx = null;
+function playStreamSound(kind, enabled = true) {
+  if (!enabled || typeof window === 'undefined') return;
+  try {
+    if (!streamAudioCtx) streamAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = streamAudioCtx;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    if (kind === 'hit') {
+      osc.frequency.value = 540;
+      gain.gain.setValueAtTime(0.07, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09);
+    } else {
+      osc.frequency.value = 160;
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.14);
+    }
+    osc.start();
+    osc.stop(ctx.currentTime + 0.14);
+  } catch { /* audio optional */ }
+}
+
+function EatingBurst({ tier, reducedMotion }) {
+  const emoji = tier === 'excellent' || tier === 'good' ? '🍕' : tier === 'poor' || tier === 'verypoor' ? '😮‍💨' : '🍔';
+  return (
+    <div style={{
+      textAlign: 'center', marginBottom: 10, fontSize: 28,
+      animation: reducedMotion ? 'none' : 'streamEatPulse 0.9s ease-in-out infinite',
+    }}>
+      <style>{`
+        @keyframes streamEatPulse {
+          0%, 100% { transform: scale(1); opacity: 0.85; }
+          50% { transform: scale(1.18); opacity: 1; }
+        }
+      `}</style>
+      {emoji} <span style={{ fontSize: 11, color: '#a08080', verticalAlign: 'middle' }}>eating…</span>
+    </div>
+  );
+}
 
 function tierColor(tier) {
   return ({
@@ -36,6 +79,8 @@ function buildStreamContext(session, student, week, extra = {}) {
   ctx.d.trend = extra.trend ?? session.trend;
   ctx.d.brandStreak = session.brandStreak ?? 0;
   ctx.d.brandControl = session.brandControlTier ?? getBrandControlTier(session.brandStreak ?? 0);
+  ctx.d.recentPerf = session.recentPerf;
+  ctx.d.streamVoice = student?.streamVoice;
   return ctx;
 }
 
@@ -66,8 +111,14 @@ function pickChatLine(session, student, week, recentLines = []) {
     weights.push({ key: 'stream.chat.brandControl.late', w: 10 });
   }
   if (session.challenge?.intensity === 'extreme') {
-    weights.push({ key: 'stream.chat.rare', w: 3 });
+    weights.push({ key: 'stream.chat.rare', w: 8 });
   }
+  if (perf === 'poor' || perf === 'verypoor') {
+    weights.push({ key: 'stream.chat.scenario.struggling', w: 12 });
+  } else if (perf === 'good' || perf === 'excellent') {
+    weights.push({ key: 'stream.chat.scenario.eating', w: 10 });
+  }
+  weights.push({ key: 'stream.chat.scenario.teased', w: 6 });
 
   for (let attempt = 0; attempt < 6; attempt++) {
     const total = weights.reduce((s, x) => s + x.w, 0);
@@ -96,7 +147,7 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
-function FocusBar({ barParams, onHit, onMiss, active, paused, reducedMotion }) {
+function FocusBar({ barParams, onHit, onMiss, active, paused, reducedMotion, soundEnabled }) {
   const [pos, setPos] = useState(0.5);
   const [flash, setFlash] = useState(null);
   const rafRef = useRef(null);
@@ -130,9 +181,11 @@ function FocusBar({ barParams, onHit, onMiss, active, paused, reducedMotion }) {
       const dist = Math.abs(pos - zoneCenter);
       const centerQuality = 1 - dist / half;
       setFlash('hit');
+      playStreamSound('hit', soundEnabled);
       onHit(centerQuality);
     } else {
       setFlash('miss');
+      playStreamSound('miss', soundEnabled);
       onMiss();
     }
     setTimeout(() => setFlash(null), 180);
@@ -197,6 +250,7 @@ export function StreamSessionModal({
   const student = students.find((st) => st.id === ss.studentId);
   const chatRef = useRef(null);
   const reducedMotion = usePrefersReducedMotion();
+  const soundEnabled = !reducedMotion;
   const [paused, setPaused] = useState(false);
   const [roundStats, setRoundStats] = useState({ hits: 0, misses: 0, centerQualities: [] });
   const [roundTimeLeft, setRoundTimeLeft] = useState(0);
@@ -355,7 +409,7 @@ export function StreamSessionModal({
               What&apos;s on the menu tonight?
             </div>
             <div style={{ fontSize: 11, color: '#c0a0a8', marginBottom: 8 }}>
-              {STREAM_DEFAULT_ROUNDS} rounds · {STREAM_ROUND_SECONDS}s each · brand-weighted offers
+              Variable rounds & timing per challenge · brand-weighted offers
             </div>
             {ss.brandStreak > 0 && (
               <div style={{
@@ -368,15 +422,19 @@ export function StreamSessionModal({
                 )}
               </div>
             )}
-            {(ss.offeredChallenges || []).map((ch) => (
+            {(ss.offeredChallenges || []).map((ch) => {
+              const [rMin, rMax] = ch.roundCount || [STREAM_DEFAULT_ROUNDS, STREAM_DEFAULT_ROUNDS];
+              const secs = ch.roundSeconds ?? STREAM_ROUND_SECONDS;
+              return (
               <button key={ch.id} style={{ ...C.btn(RED_DIM), width: '100%', marginBottom: 6, textAlign: 'left', padding: '10px 12px' }}
                 onClick={() => selectChallenge(ch.id)}>
                 <div style={{ fontWeight: 700, fontSize: 12 }}>{ch.label}</div>
                 <div style={{ fontSize: 10, opacity: 0.85, marginTop: 2 }}>
-                  {ch.category} · {ch.intensity}
+                  {ch.category} · {ch.intensity} · {rMin === rMax ? `${rMin} rounds` : `${rMin}–${rMax} rounds`} · {secs}s
                 </div>
               </button>
-            ))}
+              );
+            })}
           </>
         )}
 
@@ -415,6 +473,7 @@ export function StreamSessionModal({
                 active={!paused}
                 paused={paused}
                 reducedMotion={reducedMotion}
+                soundEnabled={soundEnabled}
               />
               <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 10, fontSize: 10, color: '#a08080' }}>
                 <span style={{ color: '#60c080' }}>✓ {roundStats.hits}</span>
@@ -454,6 +513,7 @@ export function StreamSessionModal({
                 <div style={{ fontSize: 10, color: '#80c080' }}>+{ss.lastRoundLbs} lbs</div>
               )}
             </div>
+            <EatingBurst tier={ss.lastRoundTier} reducedMotion={reducedMotion} />
             <div style={{ fontSize: 12, color: '#e8c0c0', fontStyle: 'italic', lineHeight: 1.8, marginBottom: 12, whiteSpace: 'pre-line' }}>
               {ss.betweenRoundLine}
             </div>
@@ -559,9 +619,16 @@ export function StreamSessionModal({
             <div style={{ fontSize: 12, color: '#e8c0c0', fontStyle: 'italic', lineHeight: 1.9, whiteSpace: 'pre-line', marginBottom: 12 }}>
               {ss.endingText}
             </div>
-            {ss.destinyMoneyFlavor && (
+            {(ss.destinyShare > 0 || ss.destinyMoneyFlavor) && (
               <div style={{ fontSize: 11, color: '#a08080', marginBottom: 12, fontStyle: 'italic' }}>
-                💸 Destiny&apos;s cut: {ss.destinyMoneyFlavor}
+                {ss.destinyShare > 0 && (
+                  <div style={{ color: '#ffe080', marginBottom: 4 }}>
+                    💸 Destiny earned {formatMoney(ss.destinyShare)} this stream
+                  </div>
+                )}
+                {ss.destinyMoneyFlavor && (
+                  <div>She spent it on: {ss.destinyMoneyFlavor.replace(/^Destiny spends her (cut|share) on /i, '').replace(/\.$/, '')}</div>
+                )}
               </div>
             )}
             <button style={{ ...C.btn(RED), width: '100%' }} onClick={closeStream}>Close</button>

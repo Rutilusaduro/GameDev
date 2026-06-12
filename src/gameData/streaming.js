@@ -57,8 +57,8 @@ export const STAMINA_DEPLETED_PENALTY = 0.35;
 export const ZONE_MIN = 0.10;
 export const SPEED_MAX = 1.55;
 export const BAR_BASE_ZONE = 0.26;
-/** Indicator cycles per second at base (~0.78 ≈ 1.3s full sweep). */
-export const BAR_BASE_SPEED = 0.78;
+/** Indicator cycles per second at base (~0.68 ≈ 1.5s full sweep). */
+export const BAR_BASE_SPEED = 0.68;
 
 export const STREAM_ROUND_SECONDS = 15;
 export const STREAM_DEFAULT_ROUNDS = 4;
@@ -136,25 +136,25 @@ export const PRE_STREAM_CHOICES = {
 
 export const CHALLENGES = [
   { id: 'endurance_marathon', category: 'endurance', label: 'Marathon Munch', intensity: 'normal',
-    baseLbs: 7, staminaDrain: 11, speedDelta: -0.06, gainMult: 1.0, payoutMult: 1.0, roundCount: [4, 4] },
+    baseLbs: 7, staminaDrain: 11, speedDelta: -0.06, gainMult: 1.0, payoutMult: 1.0, roundCount: [5, 6], roundSeconds: 18 },
   { id: 'endurance_allnight', category: 'endurance', label: 'All-Night Grind', intensity: 'extreme',
-    baseLbs: 10, staminaDrain: 14, speedDelta: -0.08, gainMult: 1.15, payoutMult: 1.35, roundCount: [4, 4] },
+    baseLbs: 10, staminaDrain: 14, speedDelta: -0.08, gainMult: 1.15, payoutMult: 1.35, roundCount: [6, 7], roundSeconds: 20 },
   { id: 'speed_sprint', category: 'speed', label: 'Speed Sprint', intensity: 'normal',
-    baseLbs: 5, staminaDrain: 9, speedDelta: 0.12, gainMult: 0.95, payoutMult: 1.05, roundCount: [4, 4] },
+    baseLbs: 5, staminaDrain: 9, speedDelta: 0.12, gainMult: 0.95, payoutMult: 1.05, roundCount: [4, 5], roundSeconds: 12 },
   { id: 'speed_blitz', category: 'speed', label: 'Blitz Binge', intensity: 'high',
-    baseLbs: 6, staminaDrain: 10, speedDelta: 0.18, gainMult: 1.0, payoutMult: 1.15, roundCount: [4, 4] },
+    baseLbs: 6, staminaDrain: 10, speedDelta: 0.18, gainMult: 1.0, payoutMult: 1.15, roundCount: [5, 6], roundSeconds: 13 },
   { id: 'sensual_slow', category: 'sensual', label: 'Slow Indulgence', intensity: 'normal',
-    baseLbs: 6, staminaDrain: 8, speedDelta: -0.12, gainMult: 1.05, payoutMult: 1.1, roundCount: [4, 4] },
+    baseLbs: 6, staminaDrain: 8, speedDelta: -0.12, gainMult: 1.05, payoutMult: 1.1, roundCount: [5, 6], roundSeconds: 17 },
   { id: 'sensual_tease', category: 'sensual', label: 'Tease & Feast', intensity: 'high',
-    baseLbs: 7, staminaDrain: 9, speedDelta: -0.06, gainMult: 1.1, payoutMult: 1.2, roundCount: [4, 4] },
+    baseLbs: 7, staminaDrain: 9, speedDelta: -0.06, gainMult: 1.1, payoutMult: 1.2, roundCount: [5, 7], roundSeconds: 16 },
   { id: 'chaotic_multitask', category: 'chaotic', label: 'Chaos Course', intensity: 'normal',
-    baseLbs: 6, staminaDrain: 12, speedDelta: 0.10, gainMult: 1.0, payoutMult: 1.12, roundCount: [4, 4] },
+    baseLbs: 6, staminaDrain: 12, speedDelta: 0.10, gainMult: 1.0, payoutMult: 1.12, roundCount: [4, 5], roundSeconds: 14 },
   { id: 'chaotic_feral', category: 'chaotic', label: 'Feral Feed', intensity: 'extreme',
-    baseLbs: 9, staminaDrain: 15, speedDelta: 0.14, gainMult: 1.12, payoutMult: 1.3, roundCount: [4, 4] },
+    baseLbs: 9, staminaDrain: 15, speedDelta: 0.14, gainMult: 1.12, payoutMult: 1.3, roundCount: [5, 6], roundSeconds: 15 },
   { id: 'greedy_pile', category: 'greedy', label: 'Greedy Pile-On', intensity: 'high',
-    baseLbs: 9, staminaDrain: 13, speedDelta: 0.06, gainMult: 1.2, payoutMult: 1.18, roundCount: [4, 4] },
+    baseLbs: 9, staminaDrain: 13, speedDelta: 0.06, gainMult: 1.2, payoutMult: 1.18, roundCount: [5, 6], roundSeconds: 15 },
   { id: 'greedy_destroy', category: 'greedy', label: 'Table Destroyer', intensity: 'extreme',
-    baseLbs: 11, staminaDrain: 16, speedDelta: 0.08, gainMult: 1.25, payoutMult: 1.4, roundCount: [4, 4] },
+    baseLbs: 11, staminaDrain: 16, speedDelta: 0.08, gainMult: 1.25, payoutMult: 1.4, roundCount: [6, 7], roundSeconds: 16 },
 ];
 
 export const DESTINY_MONEY_FLAVOR = [
@@ -288,8 +288,25 @@ export function styleMatch(challenge, brand) {
   return b.favStyles.includes(challenge.category) ? 1 : 0.35;
 }
 
-export function pickRoundCount() {
-  return STREAM_DEFAULT_ROUNDS;
+export function pickRoundCount(challenge, rng = Math.random) {
+  if (!challenge?.roundCount) return STREAM_DEFAULT_ROUNDS;
+  const [min, max] = challenge.roundCount;
+  if (min >= max) return min;
+  return min + Math.floor(rng() * (max - min + 1));
+}
+
+/** Rolling performance over last 2–3 rounds for reactive dialogue. */
+export function deriveRecentPerf(tierHistory = []) {
+  if (!tierHistory.length) return 'unknown';
+  const last = tierHistory.slice(-3);
+  const avg = last.reduce((s, t) => s + TIER_ORDER.indexOf(t), 0) / last.length;
+  if (avg >= 3.5) return 'hot';
+  if (avg >= 2) return 'mixed';
+  return 'cold';
+}
+
+export function getBrandPersona(brandId) {
+  return BRANDS[brandId]?.persona || null;
 }
 
 export function mergePreStreamMultipliers(choices = {}) {
@@ -310,8 +327,9 @@ export function mergePreStreamMultipliers(choices = {}) {
 
 export function computeRewards({
   sessionGain, tierHistory, challenge, brandId, audience, sponsorFavor = {},
-  tapOutCause, overallTierOverride,
+  tapOutCause, overallTierOverride, spendEffects,
 }) {
+  const spend = spendEffects || {};
   const overallTier = overallTierOverride || aggregateOverallTier(tierHistory);
   const perfMult = TIER_PERF_MULT[overallTier] || 1;
   const brand = brandId ? BRANDS[brandId] : null;
@@ -330,7 +348,8 @@ export function computeRewards({
   );
 
   const favorGain = Math.round(
-    (6 + perfMult * 8) * match * (brand?.favorGainMult || 1) * tapOutPenalty,
+    ((6 + perfMult * 8) * match * (brand?.favorGainMult || 1) * tapOutPenalty)
+    + (spend.favorBonus || 0),
   );
 
   const moneyGenerated = Math.round(
@@ -339,7 +358,8 @@ export function computeRewards({
     * favorBonus
     * (brand?.payoutMult || 1)
     * (challenge?.payoutMult || 1)
-    * tapOutPenalty,
+    * tapOutPenalty
+    * (spend.moneyMult || 1),
   );
 
   const playerShare = Math.round(moneyGenerated * 0.5);
@@ -384,11 +404,146 @@ export function ensureStreamFields(student) {
     audience: student.audience ?? 120,
     totalStreams: student.totalStreams ?? 0,
     streamMilestones: student.streamMilestones ?? {},
+    destinyMoney: student.destinyMoney ?? 0,
+    destinyPurchases: student.destinyPurchases ?? {},
+    destinyPendingBuffs: student.destinyPendingBuffs ?? {},
+    personaDrift: student.personaDrift ?? {},
+    streamVoice: student.streamVoice ?? 'default',
   };
 }
 
-export function roundDurationFor() {
-  return STREAM_ROUND_SECONDS;
+// ── Destiny spend shop ───────────────────────────────────────────
+
+export const DESTINY_SPEND_ITEMS = [
+  { id: 'delivery_stash', label: 'Delivery Stash', emoji: '📦', cost: 45,
+    desc: 'Always-stocked pre-stream snacks. +4% session gain.',
+    effect: { gainMult: 1.04 }, max: 1 },
+  { id: 'mic_arm', label: 'Pro Mic Arm', emoji: '🎙️', cost: 80,
+    desc: 'Crystal-clear audio. +6% audience growth.',
+    effect: { audienceMult: 1.06 }, max: 1 },
+  { id: 'rgb_rig', label: 'RGB Overload Rig', emoji: '🌈', cost: 120,
+    desc: 'Flashy setup pulls eyes. +10% audience, +5% revenue.',
+    effect: { audienceMult: 1.1, moneyMult: 1.05 }, max: 1 },
+  { id: 'comfort_throne', label: 'Comfort Throne', emoji: '🪑', cost: 100,
+    desc: 'Better stamina on long streams. +8% stamina retention.',
+    effect: { staminaMult: 1.08 }, max: 1 },
+  { id: 'brand_wardrobe', label: 'Brand Wardrobe Refresh', emoji: '👗', cost: 90,
+    desc: 'Sharper sponsor fit. +12% favor per stream.', requiresBrand: true,
+    effect: { favorBonus: 4 }, max: 1 },
+  { id: 'sub_box', label: 'Mystery Sub Box', emoji: '🎁', cost: 65,
+    desc: 'Sponsor surprise crate. +3 favor (stackable).',
+    effect: { favorBonus: 3 }, max: 5, stackable: true },
+  { id: 'chat_feast', label: 'Chat Food Delivery', emoji: '🍕', cost: 55,
+    desc: 'Treat chat — +30 audience on next stream (consumes).',
+    effect: { audienceBurst: 30 }, max: 8, stackable: true, consumable: true },
+];
+
+export function getDestinyShare(rewards) {
+  return Math.max(0, (rewards.moneyGenerated || 0) - (rewards.playerShare || 0));
+}
+
+export function aggregateDestinySpendEffects(purchases = {}) {
+  const fx = {
+    audienceMult: 1, moneyMult: 1, favorBonus: 0, gainMult: 1,
+    staminaMult: 1, audienceBurst: 0,
+  };
+  for (const [id, count] of Object.entries(purchases)) {
+    if (!count) continue;
+    const item = DESTINY_SPEND_ITEMS.find((i) => i.id === id);
+    if (!item?.effect) continue;
+    const stacks = item.stackable === false ? 1 : count;
+    const e = item.effect;
+    if (e.audienceMult) fx.audienceMult *= e.audienceMult ** stacks;
+    if (e.moneyMult) fx.moneyMult *= e.moneyMult ** stacks;
+    if (e.gainMult) fx.gainMult *= e.gainMult ** stacks;
+    if (e.staminaMult) fx.staminaMult *= e.staminaMult ** stacks;
+    if (e.favorBonus) fx.favorBonus += e.favorBonus * stacks;
+    if (e.audienceBurst) fx.audienceBurst += e.audienceBurst * count;
+  }
+  return fx;
+}
+
+export function tryDestinyPurchase(student, itemId) {
+  const item = DESTINY_SPEND_ITEMS.find((i) => i.id === itemId);
+  if (!item) return { ok: false, student, reason: 'unknown' };
+  if (item.requiresBrand && !student.brand) return { ok: false, student, reason: 'brand' };
+  const bal = student.destinyMoney || 0;
+  if (bal < item.cost) return { ok: false, student, reason: 'funds' };
+  const count = student.destinyPurchases?.[itemId] || 0;
+  if (item.max != null && count >= item.max) return { ok: false, student, reason: 'maxed' };
+  const purchases = { ...(student.destinyPurchases || {}), [itemId]: count + 1 };
+  let pending = { ...(student.destinyPendingBuffs || {}) };
+  if (item.consumable && item.effect?.audienceBurst) {
+    pending.audienceBurst = (pending.audienceBurst || 0) + item.effect.audienceBurst;
+  }
+  return {
+    ok: true,
+    student: {
+      ...student,
+      destinyMoney: bal - item.cost,
+      destinyPurchases: purchases,
+      destinyPendingBuffs: pending,
+    },
+    item,
+  };
+}
+
+export function consumeDestinySpend(student, itemId, amount = 1) {
+  const cur = student.destinyPurchases?.[itemId] || 0;
+  if (cur < amount) return student;
+  const purchases = { ...(student.destinyPurchases || {}) };
+  const next = cur - amount;
+  if (next <= 0) delete purchases[itemId];
+  else purchases[itemId] = next;
+  return { ...student, destinyPurchases: purchases };
+}
+
+export function applyPersonaDrift(student, brandId, favorGain = 0) {
+  if (!brandId || student.evolvedForm !== 'eating_streamer') return student;
+  const drift = { ...(student.personaDrift || {}) };
+  const inc = 1 + Math.floor((favorGain || 0) / 5);
+  drift[brandId] = Math.min(100, (drift[brandId] || 0) + inc);
+  for (const b of BRAND_IDS) {
+    if (b !== brandId && drift[b]) drift[b] = Math.max(0, Math.round(drift[b] - 1));
+  }
+  const next = { ...student, personaDrift: drift, brand: brandId };
+  return { ...next, streamVoice: getStreamVoice(next) };
+}
+
+export function getStreamVoice(student) {
+  if (student?.evolvedForm !== 'eating_streamer' || !student.brand) return 'default';
+  const persona = BRANDS[student.brand]?.persona;
+  if (!persona) return 'default';
+  const streak = student.brandStreaks?.[student.brand] || 0;
+  const drift = student.personaDrift?.[student.brand] || 0;
+  const control = getBrandControlTier(streak);
+  if (control === 'soldOut' || drift >= 55) return `${persona}_soldOut`;
+  if (control === 'late' || drift >= 30) return `${persona}_deep`;
+  if (drift >= 12) return persona;
+  return 'default';
+}
+
+export function getStreamVoiceLabel(voice) {
+  const map = {
+    default: 'Still herself',
+    aggressive: 'Getting feral',
+    aggressive_deep: 'CrunchForge-coded',
+    aggressive_soldOut: 'Fully sold out (feral)',
+    manic: 'Hype mode',
+    manic_deep: 'FizzPeak unhinged',
+    manic_soldOut: 'Chaos mascot',
+    sensual: 'Soft streamer voice',
+    sensual_deep: 'VelvetMelt dreamy',
+    sensual_soldOut: 'Object-of-desire mode',
+    bratty: 'Bratty tease',
+    bratty_deep: 'GlazeCo princess',
+    bratty_soldOut: 'Spoiled brand pet',
+  };
+  return map[voice] || voice;
+}
+
+export function roundDurationFor(challenge) {
+  return challenge?.roundSeconds ?? STREAM_ROUND_SECONDS;
 }
 
 // ── Brand loyalty / selling out ─────────────────────────────────

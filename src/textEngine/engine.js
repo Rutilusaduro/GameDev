@@ -118,6 +118,13 @@ export function registerModule(key, variants) {
   REGISTRY.set(key, Array.isArray(variants) ? variants : [variants]);
 }
 
+/** Prepend higher-priority variants without replacing the base module pool. */
+export function registerModuleVariants(key, variants) {
+  const extra = Array.isArray(variants) ? variants : [variants];
+  const existing = REGISTRY.get(key) || [];
+  REGISTRY.set(key, [...extra, ...existing]);
+}
+
 export function hasModule(key) { return REGISTRY.has(key); }
 
 // ── selector resolution ───────────────────────────────────────
