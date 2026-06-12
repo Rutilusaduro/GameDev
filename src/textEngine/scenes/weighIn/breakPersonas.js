@@ -276,7 +276,7 @@ registerModuleVariants("wi.breakLine", [
     `"Bounty," Mary Jane says simply{wi.breakBodyGesture|prefix:, }. "Scale couldn't hold it. Get a barn-sized one."`,
     `"Plenty," she murmurs, smiling like a barn at harvest. "More coming. Scale knew."`,
     `"Land don't lie," she says, patting herself.`,
-    `"Home," she breathes.`,
+    `"Back home we'd call this a good problem," she laughs, toeing the cracked glass.`,
   ]},
 
   // ── 15 · Lilith — predator (voice barely shifts with corruption)
