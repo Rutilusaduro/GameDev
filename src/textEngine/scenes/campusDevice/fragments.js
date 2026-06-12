@@ -98,6 +98,19 @@ registerPool('campus.dev.reaction', [
     'She doubles over, belly surging, fighting not to gag in public.',
     'She clamps a hand to her stomach and calls it a cramp.',
   ] },
+  { when: { deviceId: 'feeding_mask', modeId: 'capture' }, text: [
+    'A muffled protest becomes another swallow.',
+    'She sags as the locked tube keeps pumping.',
+  ] },
+  { when: { deviceId: 'feeding_mask', deviceDependenceTierMin: 2 }, text: [
+    'She leans into the seal before the paste arrives.',
+    'Eagerness shows — she wants the mask more than she admits.',
+    'Her throat works automatically when the pump engages.',
+  ] },
+  { when: { deviceId: 'feeding_mask', deviceDependenceTierMin: 1 }, text: [
+    'Resistance thins into hungry compliance.',
+    'She stops fighting once the tube warms.',
+  ] },
   { when: { modeId: 'capture' }, text: [
     'A muffled protest becomes another swallow.',
     'She sags as the locked tube keeps pumping.',

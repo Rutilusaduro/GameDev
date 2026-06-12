@@ -107,6 +107,7 @@ export function initDeviceState() {
       fullBody: null,
     },
     bodyOverride: null,
+    deviceDependence: {},
     deviceState: {
       furnitureComfort: 100,
     },

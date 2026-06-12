@@ -67,12 +67,17 @@ const SECTIONS = {
       subject: s, week: 6,
       globals: { campusFattening: (opts.campusTier || 0) > 0, campusTier: opts.campusTier || 0 },
     }), { trace: opts.trace }) },
-  "device.tick": { params: [...STATE_PARAMS, "device"],
+  "device.tick": { params: [...STATE_PARAMS, "device", "deviceDep"],
     fn: (s, opts) => {
       const deviceId = opts.device || 'auto_feeder_arm';
       const def = DEVICES[deviceId] || DEVICES.auto_feeder_arm;
+      const dep = Number(opts.deviceDep || 0);
+      const mockStudent = {
+        ...s,
+        deviceDependence: { ...s.deviceDependence, [def.id]: dep },
+      };
       return renderDeviceTickLine({
-        student: s,
+        student: mockStudent,
         deviceId: def.id,
         deviceLabel: def.label,
         slot: def.slot || 'waist',
@@ -124,6 +129,7 @@ const PARAM_DEFS = [
   { key: "withdrawal", label: "Withdrawal", options: ["no", "yes"] },
   { key: "campus", label: "Campus tier", options: ["0", "1", "2", "3"] },
   { key: "device", label: "Device", options: DEVICE_IDS, optionLabel: (v) => DEVICES[v]?.label || v },
+  { key: "deviceDep", label: "Device dep", options: ["0", "15", "30", "55", "80"], optionLabel: (v) => `${v} (${({ 0: 'Low', 15: 'Low+', 30: 'Elevated', 55: 'High', 80: 'Extreme' })[v]})` },
 ];
 
 // Resolve one sample's state: locked params stay, Random rolls fresh.
@@ -172,6 +178,7 @@ function rollSample(params) {
     campusTier,
     trace,
     device: v.device,
+    deviceDep: v.deviceDep,
   };
   const text = SECTIONS[v.section].fn(student, opts);
   // annotation units: leaf fragments, minus bare identity helpers

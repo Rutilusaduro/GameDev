@@ -4,6 +4,11 @@
 import { renderDeviceTickLine } from '../textEngine/scenes/deviceTick/index.js';
 import { getDevice, DEVICE_SLOTS } from './devices.js';
 import { applyPsychDelta } from './psychState.js';
+import {
+  bumpWeeklyDeviceDependence,
+  bumpEquipDeviceDependence,
+  bumpCampusDeviceDependence,
+} from './deviceDependence.js';
 
 export { getEquippedDeviceIds, hasPredatorCapture } from './deviceEquip.js';
 
@@ -33,7 +38,9 @@ export function equipDevice(student, defId, week = 1) {
   if (!slot || !isSlotFree(student, slot)) return { student, ok: false, reason: 'slot_occupied' };
   const equip = { ...(student.equip || {}) };
   equip[slot] = { defId, instanceId: nextDeviceInstanceId(), attachments: {} };
-  return { student: { ...student, equip }, ok: true, slot };
+  let next = { ...student, equip };
+  next = bumpEquipDeviceDependence(next, defId);
+  return { student: next, ok: true, slot };
 }
 
 export function unequipDevice(student, slot) {
@@ -251,6 +258,7 @@ function resolveWeeklyDevice(student, slot, entry, week, rng) {
 
   const applied = applyDeviceEffect(next, weekly, { week, sourceDeviceId: def.id, rng });
   next = applied.student;
+  next = bumpWeeklyDeviceDependence(next, def.id, def);
   const gainBeforeMalf = next._pendingGainLbs || 0;
 
   const malf = rollMalfunction(def, next, rng);
@@ -381,6 +389,7 @@ export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng =
     const mApplied = applyDeviceEffect(result.student, malf.effect, { week, sourceDeviceId: def.id, rng });
     result = { student: mApplied.student, lines: [...result.lines, malf.text] };
   }
+  result.student = bumpCampusDeviceDependence(result.student, def.id);
   const discoveryRisk = mode?.discoveryRisk ?? 0.15;
   const discovered = rng() < discoveryRisk;
   return {

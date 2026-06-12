@@ -225,6 +225,9 @@ function evalWhen(when, ctx) {
       case "equippedHead": ok = d.equippedHead === v || ctx.globals?.equippedHead === v; break;
       case "gainLbsMin": ok = (ctx.globals?.gainLbs ?? 0) >= v; break;
       case "equippedCountMin": ok = (ctx.globals?.equippedCountMin ?? 0) >= v; break;
+      case "deviceDependenceTierMin": ok = (ctx.globals?.deviceDependenceTier ?? 0) >= v; break;
+      case "deviceDependenceTier": ok = (ctx.globals?.deviceDependenceTier ?? 0) === v; break;
+      case "deviceDependenceMin": ok = (ctx.globals?.deviceDependence ?? 0) >= v; break;
       case "studentId": {
         const actual = d.studentId ?? ctx.globals?.studentId;
         ok = Array.isArray(v) ? v.includes(actual) : actual === v;

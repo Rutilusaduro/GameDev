@@ -4,17 +4,18 @@
 import { registerPool, createContext, render } from '../../engine.js';
 import { getStage } from '../../../gameData/stages.js';
 import { getEquippedDeviceIds } from '../../../gameData/deviceEquip.js';
+import { getDeviceDependence, getDeviceDependenceTier } from '../../../gameData/deviceDependence.js';
 import './fragments.js';
 import '../../modules.js';
 
 registerPool('device.tick.beat', [
   { when: { isMalfunction: true }, text: [
-    '{device.tick.action}{join:device.tick.malfClause|prefix: — }; {device.tick.sensation}.',
-    '⚠️ {device.tick.action}{join:device.tick.malfClause|prefix: — } {subject.name} {device.tick.sensation}.',
+    '{device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }{join:device.tick.malfClause|prefix: — }; {device.tick.growth}{join:device.tick.sensation|prefix: — }.',
+    '⚠️ {device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }{join:device.tick.malfClause|prefix: — }; {device.tick.growth}.',
   ] },
   { when: {}, text: [
-    '{device.tick.action}; {device.tick.sensation}{join:device.tick.synergy|prefix: }.',
-    'On {subject.name}: {device.tick.action}{join:device.tick.sensation|prefix: — }.',
+    '{device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }; {device.tick.growth}{join:device.tick.sensation|prefix: — }{join:device.tick.synergy|prefix: }.',
+    '{device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }; {device.tick.growth}{join:device.tick.gainTag|prefix: }.',
   ] },
 ]);
 
@@ -47,6 +48,8 @@ export function renderDeviceTickLine({
 }) {
   const equipped = getEquippedDeviceIds(student);
   const comfort = student?.deviceState?.furnitureComfort ?? 100;
+  const depLevel = getDeviceDependence(student, deviceId);
+  const depTier = getDeviceDependenceTier(depLevel).id;
   const ctx = createContext({
     subject: student,
     week,
@@ -66,6 +69,8 @@ export function renderDeviceTickLine({
       equippedWaist: student?.equip?.waist?.defId || null,
       equippedHead: student?.equip?.head?.defId || null,
       furnitureComfortLow: deviceId === 'living_furniture_rig' && comfort < 40,
+      deviceDependence: depLevel,
+      deviceDependenceTier: depTier,
     },
   });
   return render('{device.tick.beat}', ctx);

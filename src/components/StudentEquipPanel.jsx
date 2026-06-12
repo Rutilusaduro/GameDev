@@ -2,6 +2,7 @@ import { C } from '../styles.js';
 import { DEVICE_SLOTS } from '../gameData/devices.js';
 import { getDevice } from '../gameData/devices.js';
 import { furnitureComfortLabel } from '../gameData/deviceEffects.js';
+import { deviceDependenceLabel } from '../gameData/deviceDependence.js';
 
 const SLOT_LAYOUT = [
   { slot: 'head', label: 'Head', row: 0, col: 1 },
@@ -13,8 +14,9 @@ const SLOT_LAYOUT = [
   { slot: 'fullBody', label: 'Full body', row: 5, col: 1 },
 ];
 
-function SlotCard({ slotMeta, entry, onUnequip, onSlotTap, studentId, activeSlot }) {
+function SlotCard({ slotMeta, entry, onUnequip, onSlotTap, student, studentId, activeSlot }) {
   const def = entry ? getDevice(entry.defId) : null;
+  const dep = entry && def ? deviceDependenceLabel(student, entry.defId) : null;
   const attachments = entry?.attachments ? Object.entries(entry.attachments).filter(([, a]) => a?.defId) : [];
   const occupied = !!entry;
   const isActive = activeSlot === slotMeta.slot;
@@ -51,6 +53,11 @@ function SlotCard({ slotMeta, entry, onUnequip, onSlotTap, studentId, activeSlot
           <div style={{ fontSize: 11, fontWeight: 700, color: '#90a8c8', marginBottom: 2 }}>
             {def?.icon} {def?.label || entry.defId}
           </div>
+          {dep && (
+            <div style={{ fontSize: 8, color: dep.color, marginBottom: 4 }}>
+              device dependence · {dep.label} ({dep.level})
+            </div>
+          )}
           {attachments.length > 0 && (
             <div style={{ marginTop: 4, marginBottom: 4 }}>
               {attachments.map(([attachSlot, attachEntry]) => {
@@ -113,6 +120,7 @@ export function StudentEquipPanel({ student, onUnequip, onSlotTap, activeSlot, e
             onUnequip={onUnequip}
             onSlotTap={onSlotTap}
             activeSlot={activeSlot}
+            student={student}
             studentId={student.id}
           />
         ))}
