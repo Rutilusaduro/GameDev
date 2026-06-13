@@ -12,6 +12,8 @@ import {
   listEquippedEntries,
   summarizeDeviceEffect,
 } from '../gameData/deviceQuery.js';
+import { MOD_COMPONENTS } from '../gameData/deviceMods.js';
+import { applyModification } from '../gameData/deviceEffects.js';
 
 const RARITY_COLORS = { common: '#8a8a7a', uncommon: '#4a9a5a', rare: '#c8860a' };
 const ACCENT = '#4a6080';
@@ -132,10 +134,13 @@ export function DeviceInventoryView({
   deviceInventory,
   students = [],
   player,
+  setStudents,
+  setPlayer,
   setPaperDoll,
   setDeviceTargetPicker,
   setEquipPicker,
   setAttachPicker,
+  pushLog,
 }) {
   const [subTab, setSubTab] = useState('catalog');
   const [formFilter, setFormFilter] = useState('all');
@@ -148,6 +153,32 @@ export function DeviceInventoryView({
     [deviceInventory, students, player],
   );
 
+  const handleApplyMod = (row, componentId) => {
+    if (row.holderType === 'player' || !row.slot || !row.holderId) return;
+    const student = students.find((s) => s.id === row.holderId);
+    if (!student) return;
+    const qty = player?.modInventory?.[componentId] ?? 0;
+    if (qty < 1) {
+      pushLog?.('⚠️ No mod components in inventory.');
+      return;
+    }
+    const result = applyModification(student, row.slot, componentId);
+    if (!result.ok) {
+      pushLog?.('⚠️ Could not apply modification.');
+      return;
+    }
+    setStudents?.((prev) => prev.map((s) => (s.id === student.id ? result.student : s)));
+    setPlayer?.((p) => ({
+      ...p,
+      modInventory: {
+        ...p.modInventory,
+        [componentId]: Math.max(0, (p.modInventory?.[componentId] ?? 0) - 1),
+      },
+    }));
+    pushLog?.(`🔧 Applied ${MOD_COMPONENTS[componentId]?.label || componentId} to ${row.def?.label}.`);
+  };
+
+  const availableMods = Object.entries(player?.modInventory || {}).filter(([, q]) => q > 0);
   const ownedCount = countOwnedDevices(deviceInventory);
   const equippedCount = countEquippedAcrossStudents(students, player);
 
@@ -303,6 +334,19 @@ export function DeviceInventoryView({
               >
                 Open Paper Doll
               </button>
+              {row.holderType === 'student' && availableMods.length > 0 && (
+                <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                  {availableMods.map(([modId]) => (
+                    <button
+                      key={modId}
+                      style={{ ...C.smBtn, fontSize: 8 }}
+                      onClick={() => handleApplyMod(row, modId)}
+                    >
+                      + {MOD_COMPONENTS[modId]?.icon} {MOD_COMPONENTS[modId]?.label}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -312,7 +356,7 @@ export function DeviceInventoryView({
         <div>
           {modifiedRows.length === 0 ? (
             <div style={{ fontSize: 11, color: '#5a3888', fontStyle: 'italic' }}>
-              No modified devices yet. Attach Pharmacist or Relic components in Phase 3.
+              No modified devices yet. Apply components from the Equipped tab.
             </div>
           ) : (
             modifiedRows.map((row, i) => (

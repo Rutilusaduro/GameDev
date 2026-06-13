@@ -16,6 +16,7 @@ import { TALK_CONFIG } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES } from './gameData/items.js';
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
 import { createInitialPlayer, updatePlayerField } from './gameData/player.js';
+import { evaluatePlayerRecipeUnlocks, isPlayerRecipeUnlocked, playerRecipeForDevice } from './gameData/playerRecipes.js';
 import { WalletBadge } from './components/WalletBadge.jsx';
 import { CAMPUS_NODES, CAMPUS_CONFIG } from './gameData/campus.js';
 import {
@@ -114,6 +115,8 @@ import {
   equipDevice, unequipDevice, attachToDevice, findAttachmentHostSlot, useConsumableDevice,
   tickEquippedDevices, clearExpiredOverrides, triggerBeltBloatNow, applyDeviceEffect,
   runStationaryDeviceSession, runStimulatorPulse, runRegressionRay, intensifyHungerEngine,
+  triggerTightenPulse, runBurstFeed, runSustainedDrip, ventResidualSwell, applyMeasuredBloatResidual,
+  rollPlayerPastePsychBonus,
 } from './gameData/deviceEffects.js';
 import { buildGrowthEvent } from './gameData/growthEvents.js';
 import { applyPsychDelta } from './gameData/psychState.js';
@@ -881,6 +884,11 @@ export default function ProfessorSim(){
     const newAp=Math.min(ap+5+skillApBonus,20);
     setAp(newAp);
 
+    setPlayer((p)=>{
+      const fresh=evaluatePlayerRecipeUnlocks({ player:p, students, labState, pharmacistState, campusState });
+      return { ...p, deviceUnlocks: { ...p.deviceUnlocks, ...fresh } };
+    });
+
     // Semester events
     const semEv=SEMESTER_EVENTS.find(e=>e.week===newWeek);
 
@@ -949,7 +957,7 @@ export default function ProfessorSim(){
     updated=updated.map(s=>{
       let ns=clearExpiredOverrides(s,newWeek);
       const preLbs=ns.lbs;
-      const tick=tickEquippedDevices(ns,newWeek,Math.random);
+      const tick=tickEquippedDevices(ns,newWeek,Math.random,{ player });
       ns=tick.student;
       if(ns._pendingGainLbs){
         const g=ns._pendingGainLbs;
@@ -2639,6 +2647,11 @@ export default function ProfessorSim(){
     const recipe=BLUEPRINT_RECIPES[deviceDefId];
     const talia=taliaStudent();
     if(!recipe||!labState||!talia) return;
+    const playerRecipe=playerRecipeForDevice(deviceDefId);
+    if(playerRecipe&&!isPlayerRecipeUnlocked(playerRecipe.id,player,{ students, labState, pharmacistState, campusState })){
+      push('⚠️ Player invention recipe not unlocked yet.');
+      return;
+    }
     const pool=getEffectiveLabParts();
     const affordState={ parts: pool };
     if(!canAfford(recipe,affordState,money)){
@@ -2680,6 +2693,7 @@ export default function ProfessorSim(){
     }
     const gainLbs=Math.max(0, Math.round(ns.lbs-preLbs));
     setStudents(prev=>prev.map(st=>st.id===studentId?ns:st));
+    setPlayer((p)=>rollPlayerPastePsychBonus(p,Math.random));
     if(consumeInventory&&def?.id){
       setDeviceInventory(prev=>{
         const q=(prev[def.id]||0)-1;
@@ -2896,6 +2910,38 @@ export default function ProfessorSim(){
       const result=runRegressionRay(s,'moderate',week,Math.random);
       applyStudentDeviceResult(studentId,result,def,true,'lab');
       push(`👶 Regression ray on ${s.name}.`);
+      return;
+    }
+    if(actionId==='tighten_pulse'){
+      const result=triggerTightenPulse(s,player,week,Math.random);
+      if(!result.ok){ push(result.lines?.[0]||'⚠️ Tighten pulse unavailable.'); return; }
+      if(result.player) setPlayer(result.player);
+      applyStudentDeviceResult(studentId,result,DEVICES.controlled_bloating_rig);
+      push(`⭕ Tighten pulse on ${s.name}.`);
+      return;
+    }
+    if(actionId==='burst_feed'){
+      const result=runBurstFeed(s,player,week,Math.random);
+      if(!result.ok){ push('⚠️ Precision feeder not equipped.'); return; }
+      applyStudentDeviceResult(studentId,result,DEVICES.precision_feeder_arm);
+      push(`🦾 Burst feed on ${s.name}.`);
+      return;
+    }
+    if(actionId==='sustained_drip'){
+      const result=runSustainedDrip(s,player,week,Math.random);
+      if(!result.ok){ push('⚠️ Precision feeder not equipped.'); return; }
+      if(result.player) setPlayer(result.player);
+      applyStudentDeviceResult(studentId,result,DEVICES.precision_feeder_arm);
+      push(`💧 Sustained drip on ${s.name}.`);
+      return;
+    }
+    if(actionId==='vent_residual_swell'){
+      const result=ventResidualSwell(s,player,week,Math.random);
+      if(!result.ok){ push(result.lines?.[0]||'⚠️ Nothing to vent.'); return; }
+      if(result.player) setPlayer(result.player);
+      setStudents(prev=>prev.map(st=>st.id===studentId?result.student:st));
+      push(`💨 Residual swell vented on ${s.name}.`);
+      return;
     }
   };
 
@@ -5782,7 +5828,7 @@ export default function ProfessorSim(){
           {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} gatherLabParts={gatherLabParts} openLabView={openLabView} openNetworkView={openNetworkView} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} setPaperDoll={setPaperDoll} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} gatherLabParts={gatherLabParts} openLabView={openLabView} openNetworkView={openNetworkView} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} setPaperDoll={setPaperDoll} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
@@ -5795,6 +5841,10 @@ export default function ProfessorSim(){
             taliaStudent={taliaStudent()}
             money={money}
             ap={ap}
+            player={player}
+            students={students}
+            pharmacistState={pharmacistState}
+            campusState={campusState}
             onBuild={buildLabDevice}
             onResearch={researchLabBlueprint}
             onOpenSession={()=>{ const t=taliaStudent(); if(t) runLabSessionOpen(t); }}
@@ -5804,10 +5854,13 @@ export default function ProfessorSim(){
             deviceInventory={deviceInventory}
             students={students}
             player={player}
+            setStudents={setStudents}
+            setPlayer={setPlayer}
             setPaperDoll={setPaperDoll}
             setDeviceTargetPicker={setDeviceTargetPicker}
             setEquipPicker={setEquipPicker}
             setAttachPicker={setAttachPicker}
+            pushLog={push}
           />}
 
           {view==="network"&&<NetworkView

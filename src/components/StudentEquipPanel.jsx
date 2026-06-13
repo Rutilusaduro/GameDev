@@ -1,4 +1,6 @@
 import { C } from '../styles.js';
+import { getDependenceLevel, getDependenceTier } from '../gameData/deviceDependence.js';
+import { Bar } from './ui.jsx';
 import { DEVICE_SLOTS } from '../gameData/devices.js';
 import { getDevice } from '../gameData/devices.js';
 import { furnitureComfortLabel } from '../gameData/deviceEffects.js';
@@ -13,7 +15,7 @@ const SLOT_LAYOUT = [
   { slot: 'fullBody', label: 'Full body', row: 5, col: 1 },
 ];
 
-function SlotCard({ slotMeta, entry, onUnequip, studentId }) {
+function SlotCard({ slotMeta, entry, onUnequip, studentId, student }) {
   const def = entry ? getDevice(entry.defId) : null;
   const attachments = entry?.attachments ? Object.entries(entry.attachments).filter(([, a]) => a?.defId) : [];
   const occupied = !!entry;
@@ -54,6 +56,17 @@ function SlotCard({ slotMeta, entry, onUnequip, studentId }) {
               })}
             </div>
           )}
+          {(() => {
+            const dep = getDependenceLevel(student, slotMeta.slot);
+            if (dep < 5) return null;
+            const tier = getDependenceTier(dep);
+            return (
+              <div style={{ marginTop: 4, marginBottom: 4 }}>
+                <div style={{ fontSize: 8, color: tier.color, marginBottom: 2 }}>Dependence · {tier.label}</div>
+                <Bar val={dep} max={100} color={tier.color} height={4} />
+              </div>
+            );
+          })()}
           <button
             style={{ ...C.smBtn, fontSize: 8, padding: '2px 6px', marginTop: 4 }}
             onClick={() => onUnequip(studentId, slotMeta.slot)}
@@ -101,6 +114,7 @@ export function StudentEquipPanel({ student, onUnequip }) {
             entry={equip[slotMeta.slot]}
             onUnequip={onUnequip}
             studentId={student.id}
+            student={student}
           />
         ))}
       </div>

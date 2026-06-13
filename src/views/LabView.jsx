@@ -17,6 +17,7 @@ import { DEVICE_BLUEPRINT_CATEGORIES } from '../gameData/deviceCategories.js';
 import { INVENTOR_PATH_STAGES, LAB_BUILD_CONFIG } from '../gameData/talia.js';
 import { RecipeCostDisplay } from '../components/RecipeCostDisplay.jsx';
 import { summarizeDeviceEffect } from '../gameData/deviceQuery.js';
+import { isPlayerRecipeUnlocked, playerRecipeForDevice } from '../gameData/playerRecipes.js';
 
 const RARITY_COLORS = { common: '#8a8a7a', uncommon: '#4a9a5a', rare: '#c8860a' };
 const ACCENT = '#4a6080';
@@ -32,7 +33,12 @@ const LAB_SIDEBAR_CATEGORIES = [
   { id: 'research', label: 'Research', icon: '📐', deviceIds: [] },
 ];
 
-function blueprintStatus(recipe, labState, money, taliaLbs) {
+function blueprintStatus(recipe, labState, money, taliaLbs, unlockCtx) {
+  const def = DEVICES[recipe.deviceDefId];
+  const playerRecipe = playerRecipeForDevice(recipe.deviceDefId);
+  if (playerRecipe && !isPlayerRecipeUnlocked(playerRecipe.id, unlockCtx?.player, unlockCtx)) {
+    return { label: 'Locked (recipe)', color: '#806060' };
+  }
   const researched = isBlueprintResearched(labState, recipe.blueprint);
   const buildable = isBlueprintBuildable(recipe, labState);
   const afford = canAfford(recipe, labState, money) && taliaLbs >= getMinLbsForBuild(recipe);
@@ -42,9 +48,9 @@ function blueprintStatus(recipe, labState, money, taliaLbs) {
   return { label: 'Craftable', color: '#4a9a5a' };
 }
 
-function BlueprintGridCard({ recipe, selected, onSelect, labState, money, taliaLbs }) {
+function BlueprintGridCard({ recipe, selected, onSelect, labState, money, taliaLbs, unlockCtx }) {
   const def = DEVICES[recipe.deviceDefId];
-  const status = blueprintStatus(recipe, labState, money, taliaLbs);
+  const status = blueprintStatus(recipe, labState, money, taliaLbs, unlockCtx);
   const rarityColor = RARITY_COLORS[def?.rarity || 'common'];
 
   return (
@@ -77,6 +83,10 @@ export function LabView({
   onResearch,
   onOpenSession,
   ap,
+  player,
+  students,
+  pharmacistState,
+  campusState,
 }) {
   const [categoryId, setCategoryId] = useState('feeding');
   const [search, setSearch] = useState('');
@@ -95,6 +105,7 @@ export function LabView({
 
   const stageMeta = INVENTOR_PATH_STAGES.find((s) => s.id === labState.stage) || INVENTOR_PATH_STAGES[0];
   const taliaLbs = taliaStudent?.lbs ?? Infinity;
+  const unlockCtx = { player, students, labState, pharmacistState, campusState };
   const category = LAB_SIDEBAR_CATEGORIES.find((c) => c.id === categoryId) || LAB_SIDEBAR_CATEGORIES[0];
 
   const recipes = useMemo(() => {
@@ -224,6 +235,7 @@ export function LabView({
                   labState={labState}
                   money={money}
                   taliaLbs={taliaLbs}
+                  unlockCtx={unlockCtx}
                 />
               ))}
               {recipes.length === 0 && (

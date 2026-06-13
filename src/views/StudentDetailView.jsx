@@ -23,7 +23,7 @@ import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, gatherLabParts, openLabView, openNetworkView, runDeviceAction, unequipDeviceSlot, setPaperDoll, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, gatherLabParts, openLabView, openNetworkView, runDeviceAction, unequipDeviceSlot, setPaperDoll, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -198,11 +198,11 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
 
                 <StudentEquipPanel student={s} onUnequip={unequipDeviceSlot} />
 
-                {getAvailableDeviceActions(s,{deviceInventory}).length>0&&(
+                {getAvailableDeviceActions(s,{deviceInventory,player}).length>0&&(
                   <div style={C.infoBox("rgba(30,40,55,0.4)")}>
                     <div style={{fontSize:9,color:"#506080",letterSpacing:2,marginBottom:6}}>DEVICE ACTIONS</div>
                     <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-                      {getAvailableDeviceActions(s,{deviceInventory}).map(act=>(
+                      {getAvailableDeviceActions(s,{deviceInventory,player}).map(act=>(
                         <button key={act.id} style={{...C.smBtn,fontSize:10}} onClick={()=>runDeviceAction(act.id,s.id)}>
                           {act.icon} {act.label}
                         </button>

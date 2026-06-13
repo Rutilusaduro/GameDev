@@ -2,9 +2,22 @@
 // DEVICE EFFECT RESOLUTION — engine-free logic
 // ═══════════════════════════════════════════════════════════════
 import { renderDeviceTickLine } from '../textEngine/scenes/deviceTick/index.js';
+import { renderDeviceUseLine } from '../textEngine/scenes/deviceUse/index.js';
 import { getDevice, DEVICE_SLOTS } from './devices.js';
 import { applyPsychDelta } from './psychState.js';
 import { adjustHunger } from './hungerAddiction.js';
+import {
+  tickDependence,
+  applyDependenceBonuses,
+  getDependenceLevel,
+  dependenceMalfunctionScale,
+  applyWithdrawal,
+} from './deviceDependence.js';
+import { foldModPatches, applyModificationToEntry } from './deviceMods.js';
+import { findUniqueInteraction } from './deviceInteractions.js';
+import { renderDeviceUniqueInteraction } from '../textEngine/scenes/deviceUniqueInteraction/index.js';
+import { renderDeviceCampusUseLine } from '../textEngine/scenes/deviceCampusUse/index.js';
+import { getEquippedDeviceIds } from './deviceEquip.js';
 
 export { getEquippedDeviceIds, hasPredatorCapture } from './deviceEquip.js';
 
@@ -33,7 +46,7 @@ export function equipDevice(student, defId, week = 1) {
   const slot = slotFor(def);
   if (!slot || !isSlotFree(student, slot)) return { student, ok: false, reason: 'slot_occupied' };
   const equip = { ...(student.equip || {}) };
-  equip[slot] = { defId, instanceId: nextDeviceInstanceId(), attachments: {} };
+  equip[slot] = { defId, instanceId: nextDeviceInstanceId(), attachments: {}, mods: [] };
   return { student: { ...student, equip }, ok: true, slot };
 }
 
@@ -47,8 +60,10 @@ export function unequipDevice(student, slot) {
     if (def?.weeklyEffect?.bodyOverride || student.bodyOverride?.sourceDeviceId === entry.defId) {
       next = { ...next, bodyOverride: null };
     }
+    const withdrawal = applyWithdrawal(next, slot, entry.defId);
+    next = withdrawal.student;
   }
-  return { student: next, cleared: true };
+  return { student: next, cleared: true, withdrawal: entry?.defId ? true : false };
 }
 
 export function findAttachmentHostSlot(student, attachDefId) {
@@ -149,10 +164,15 @@ function attachmentIdsFromEntry(entry) {
   return Object.values(entry.attachments).map(a => a?.defId).filter(Boolean);
 }
 
-function buildTickEvent(student, slot, entry, week, rng, resultStudent, gainLbs, malf) {
+function buildTickEvent(student, slot, entry, week, rng, resultStudent, gainLbs, malf, ctx = {}) {
   const def = getDevice(entry.defId);
   if (!def) return null;
   const attachmentIds = attachmentIdsFromEntry(entry);
+  const dependenceLevel = getDependenceLevel(resultStudent, slot);
+  const uniqueTag = findUniqueInteraction(resultStudent, ctx.player, slot, { deviceId: def.id });
+  const uniqueProse = uniqueTag
+    ? renderDeviceUniqueInteraction({ student: resultStudent, deviceId: def.id, deviceLabel: def.label, uniqueTag, week })
+    : null;
   const prose = renderDeviceTickLine({
     student: resultStudent,
     deviceId: def.id,
@@ -163,6 +183,9 @@ function buildTickEvent(student, slot, entry, week, rng, resultStudent, gainLbs,
     attachmentIds,
     isMalfunction: !!malf,
     week,
+    modificationState: entry.mods || [],
+    dependenceLevel,
+    dependenceTier: dependenceLevel >= 75 ? 3 : dependenceLevel >= 50 ? 2 : dependenceLevel >= 25 ? 1 : 0,
   });
   return {
     studentId: student.id,
@@ -176,6 +199,9 @@ function buildTickEvent(student, slot, entry, week, rng, resultStudent, gainLbs,
     attachmentIds,
     prose,
     isMalfunction: !!malf,
+    uniqueTag,
+    uniqueProse,
+    dependenceLevel,
   };
 }
 
@@ -201,7 +227,15 @@ export function applyDeviceEffect(student, effectSpec, ctx = {}) {
   let zoneOverride = null;
 
   if (effectSpec?.gainLbs) {
-    const lbs = rollRange(effectSpec.gainLbs, rng);
+    let gainRange = effectSpec.gainLbs;
+    const swell = next.deviceState?.residualSwell;
+    if (swell?.active && swell.amplify) {
+      gainRange = [
+        Math.round((gainRange[0] || 0) * swell.amplify),
+        Math.round((gainRange[1] || 0) * swell.amplify),
+      ];
+    }
+    const lbs = rollRange(gainRange, rng);
     next._pendingGainLbs = (next._pendingGainLbs || 0) + lbs;
     lines.push(`+${lbs} lbs from device effect`);
   }
@@ -262,11 +296,14 @@ export function applyDeviceEffect(student, effectSpec, ctx = {}) {
   return { student: next, lines, zoneOverride };
 }
 
-export function rollMalfunction(def, student, rng = Math.random) {
+export function rollMalfunction(def, student, rng = Math.random, ctx = {}) {
   if (!def?.malfunctions?.length) return null;
-  const stability = def.stability ?? 0.5;
-  const risk = def.risk ?? 0.3;
-  const chance = Math.min(0.85, Math.max(0.05, (1 - stability) * risk * 0.65));
+  const stability = ctx.effectiveStability ?? def.stability ?? 0.5;
+  const risk = ctx.effectiveRisk ?? def.risk ?? 0.3;
+  const depScale = ctx.dependenceLevel != null
+    ? dependenceMalfunctionScale(ctx.dependenceLevel)
+    : 1;
+  const chance = Math.min(0.85, Math.max(0.05, (1 - stability) * risk * 0.65 * depScale));
   if (rng() > chance) return null;
 
   const totalW = def.malfunctions.reduce((a, m) => a + (m.weight || 1), 0);
@@ -283,14 +320,28 @@ export function rollMalfunction(def, student, rng = Math.random) {
   };
 }
 
-function resolveWeeklyDevice(student, slot, entry, week, rng) {
+function resolveWeeklyDevice(student, slot, entry, week, rng, ctx = {}) {
   const def = getDevice(entry.defId);
   if (!def) return { student, tickEvents: [], malfunctions: [] };
   let next = student;
   const tickEvents = [];
   const malfunctions = [];
 
-  let weekly = { ...(def.weeklyEffect || {}) };
+  const modFold = foldModPatches(def.weeklyEffect, entry.mods || [], def);
+  let weekly = { ...modFold.effectSpec };
+  const dependenceLevel = getDependenceLevel(student, slot);
+
+  if (def.id === 'adaptive_growth_harness') {
+    const count = getEquippedDeviceIds(student).length;
+    const bonus = Math.min(4, Math.max(0, count - 1));
+    if (bonus > 0 && weekly.gainLbs) {
+      weekly.gainLbs = [
+        (weekly.gainLbs[0] || 0) + bonus,
+        (weekly.gainLbs[1] || 0) + bonus,
+      ];
+    }
+  }
+
   if (def.id === 'living_furniture_rig') {
     const comfort = student.deviceState?.furnitureComfort ?? 100;
     if (comfort < 30) {
@@ -313,8 +364,11 @@ function resolveWeeklyDevice(student, slot, entry, week, rng) {
     }
   }
 
+  weekly = applyDependenceBonuses(weekly, dependenceLevel);
+
   const applied = applyDeviceEffect(next, weekly, { week, sourceDeviceId: def.id, rng });
   next = applied.student;
+  next = tickDependence(next, slot, 1, def);
   const gainBeforeMalf = next._pendingGainLbs || 0;
 
   if (def.id === 'endless_hunger_engine') {
@@ -326,16 +380,20 @@ function resolveWeeklyDevice(student, slot, entry, week, rng) {
     next = adjustHunger(next, distress ? 2 : 1);
   }
 
-  const malf = rollMalfunction(def, next, rng);
+  const malf = rollMalfunction(def, next, rng, {
+    effectiveStability: modFold.effectiveStability,
+    effectiveRisk: modFold.effectiveRisk,
+    dependenceLevel: getDependenceLevel(next, slot),
+  });
   if (malf) {
     malfunctions.push(malf);
     const mApplied = applyDeviceEffect(next, malf.effect, { week, sourceDeviceId: def.id, rng });
     next = mApplied.student;
     const totalGain = next._pendingGainLbs || 0;
-    const ev = buildTickEvent(student, slot, entry, week, rng, next, totalGain, malf);
+    const ev = buildTickEvent(student, slot, entry, week, rng, next, totalGain, malf, ctx);
     if (ev) tickEvents.push(ev);
   } else {
-    const ev = buildTickEvent(student, slot, entry, week, rng, next, gainBeforeMalf, null);
+    const ev = buildTickEvent(student, slot, entry, week, rng, next, gainBeforeMalf, null, ctx);
     if (ev) tickEvents.push(ev);
   }
 
@@ -359,7 +417,7 @@ function tickFurnitureComfortBonus(student, week, rng) {
   return event ? { student: applied.student, event } : null;
 }
 
-export function tickEquippedDevices(student, week, rng = Math.random) {
+export function tickEquippedDevices(student, week, rng = Math.random, ctx = {}) {
   if (!student?.equip) return { student, tickEvents: [], malfunctions: [] };
   let next = { ...student };
   const tickEvents = [];
@@ -368,7 +426,7 @@ export function tickEquippedDevices(student, week, rng = Math.random) {
   for (const slot of DEVICE_SLOTS) {
     const entry = next.equip[slot];
     if (!entry) continue;
-    const res = resolveWeeklyDevice(next, slot, entry, week, rng);
+    const res = resolveWeeklyDevice(next, slot, entry, week, rng, ctx);
     next = res.student;
     tickEvents.push(...res.tickEvents);
     allMalfs.push(...res.malfunctions);
@@ -642,9 +700,55 @@ export function triggerBeltBloatNow(student, week, rng = Math.random) {
   return { ...result, ok: true, malfunction: malf };
 }
 
-export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng = Math.random) {
+export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng = Math.random, ctx = {}) {
   const def = getDevice(defId);
   if (!def) return { ok: false, reason: 'unknown_device' };
+  const targetType = ctx.targetType || 'student';
+
+  if (targetType === 'npc_random') {
+    const npcGain = rollRange(modeId === 'deep' ? [4, 8] : [2, 5], rng);
+    const discoveryRisk = (ctx.adminScrutiny ?? 0) > 50 ? 0.35 : 0.2;
+    const discovered = rng() < discoveryRisk;
+    return {
+      ok: true,
+      student: null,
+      targetType,
+      lines: [renderDeviceCampusUseLine({
+        student: targetStudent,
+        deviceId: def.id,
+        deviceLabel: def.label,
+        targetType: 'npc_random',
+        week,
+      })],
+      npcGainLbs: npcGain,
+      discovered,
+      discoveryRisk,
+      modeId,
+    };
+  }
+
+  if (targetType === 'group_class') {
+    const classGain = rollRange([1, 3], rng);
+    const discoveryRisk = 0.25 + ((ctx.adminScrutiny ?? 0) / 200);
+    const discovered = rng() < discoveryRisk;
+    return {
+      ok: true,
+      student: null,
+      targetType,
+      lines: [renderDeviceCampusUseLine({
+        student: targetStudent,
+        deviceId: def.id,
+        deviceLabel: def.label,
+        targetType: 'group_class',
+        week,
+      })],
+      classGainLbs: classGain,
+      discovered,
+      discoveryRisk,
+      modeId,
+    };
+  }
+
   const mode = def.campusModes?.find(m => m.id === modeId) || def.campusModes?.[0];
   if (!mode && def.form !== 'campus_tool' && !def.useEffect) {
     return { ok: false, reason: 'no_mode' };
@@ -671,7 +775,7 @@ export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng =
     const mApplied = applyDeviceEffect(result.student, malf.effect, { week, sourceDeviceId: def.id, rng });
     result = { student: mApplied.student, lines: [...result.lines, malf.text] };
   }
-  const discoveryRisk = mode?.discoveryRisk ?? 0.15;
+  const discoveryRisk = (mode?.discoveryRisk ?? 0.15) + ((ctx.adminScrutiny ?? 0) / 300);
   const discovered = rng() < discoveryRisk;
   return {
     ok: true,
@@ -681,7 +785,171 @@ export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng =
     discovered,
     discoveryRisk,
     modeId: mode?.id || modeId,
+    targetType: 'student',
   };
+}
+
+// ── Player personal device actions ─────────────────────────────
+
+function playerHasDevice(player, defId) {
+  if (!player?.equip) return false;
+  return Object.values(player.equip).some((e) => e?.defId === defId);
+}
+
+function patchSelfDeviceState(player, defId, patch) {
+  const prev = player.selfDeviceState?.[defId] || {};
+  return {
+    ...player,
+    selfDeviceState: {
+      ...(player.selfDeviceState || {}),
+      [defId]: { ...prev, ...patch },
+    },
+  };
+}
+
+export function triggerTightenPulse(student, player, week, rng = Math.random) {
+  if (!playerHasDevice(player, 'controlled_bloating_rig')) {
+    return { student, player, ok: false, lines: [], malfunction: null };
+  }
+  const cooldown = player.selfDeviceState?.controlled_bloating_rig?.lastTightenWeek;
+  if (cooldown === week) {
+    return { student, player, ok: false, lines: ['Tighten pulse already fired this week.'], malfunction: null };
+  }
+  const def = getDevice('controlled_bloating_rig');
+  const hungerBoost = (student?.hungerTier ?? 0) >= 2 ? 2 : 0;
+  const effect = applyDependenceBonuses({
+    bodyOverride: { stateType: 'bloated', stageBump: 3, durationWeeks: 1 },
+    gainLbs: [4 + hungerBoost, 8 + hungerBoost],
+    psychDelta: { dependence: 5, obsession: 3, shame: 2 },
+  }, getDependenceLevel(student, 'waist'));
+  let nextStudent = student;
+  const applied = applyDeviceEffect(nextStudent, effect, { week, sourceDeviceId: def.id, rng });
+  nextStudent = tickDependence(applied.student, 'waist', 2, def);
+  let nextPlayer = patchSelfDeviceState(player, def.id, { lastTightenWeek: week, tightenCount: (player.selfDeviceState?.controlled_bloating_rig?.tightenCount || 0) + 1 });
+  const malf = rollMalfunction(def, nextStudent, rng, { effectiveRisk: (def.risk ?? 0.38) + 0.15 });
+  let lines = applied.lines.length ? applied.lines : [renderDeviceUseLine({
+    student: nextStudent, deviceId: def.id, deviceLabel: def.label, actionId: 'tighten_pulse', week, dependenceLevel: getDependenceLevel(nextStudent, 'waist'),
+  })];
+  if (malf) {
+    const m2 = applyDeviceEffect(nextStudent, malf.effect, { week, sourceDeviceId: def.id, rng });
+    nextStudent = m2.student;
+    lines.push(`⚠️ ${malf.text}`);
+  }
+  return { student: nextStudent, player: nextPlayer, ok: true, lines, malfunction: malf };
+}
+
+export function runBurstFeed(student, player, week, rng = Math.random) {
+  if (!playerHasDevice(player, 'precision_feeder_arm')) {
+    return { student, player, ok: false, lines: [], malfunction: null };
+  }
+  const def = getDevice('precision_feeder_arm');
+  const effect = {
+    gainLbs: [6, 10],
+    psychDelta: { dependence: 4, fixation: 2 },
+    deviceStatePatch: {
+      overeatingFatigue: { active: true, expiresWeek: week + 2, feedPenalty: 0.35 },
+    },
+  };
+  const applied = applyDeviceEffect(student, effect, { week, sourceDeviceId: def.id, rng });
+  let nextStudent = tickDependence(applied.student, 'back', 1.5, def);
+  const malf = rollMalfunction(def, nextStudent, rng);
+  let lines = applied.lines.length ? applied.lines : [renderDeviceUseLine({
+    student: nextStudent, deviceId: def.id, deviceLabel: def.label, actionId: 'burst_feed', week,
+  })];
+  if (malf) {
+    const m2 = applyDeviceEffect(nextStudent, malf.effect, { week, sourceDeviceId: def.id, rng });
+    nextStudent = m2.student;
+    lines.push(`⚠️ ${malf.text}`);
+  }
+  return { student: nextStudent, player, ok: true, lines, malfunction: malf };
+}
+
+export function runSustainedDrip(student, player, week, rng = Math.random) {
+  if (!playerHasDevice(player, 'precision_feeder_arm')) {
+    return { student, player, ok: false, lines: [], malfunction: null };
+  }
+  const hasPaste = Object.values(student?.equip || {}).some((entry) =>
+    Object.values(entry?.attachments || {}).some((a) => a?.defId === 'stabilized_paste_printer' || a?.defId === 'calorie_paste_printer'),
+  );
+  const def = getDevice('precision_feeder_arm');
+  const effect = {
+    gainLbs: hasPaste ? [3, 5] : [2, 4],
+    psychDelta: { dependence: 2 },
+  };
+  const applied = applyDeviceEffect(student, effect, { week, sourceDeviceId: def.id, rng });
+  const nextStudent = tickDependence(applied.student, 'back', 1, def);
+  return {
+    student: nextStudent,
+    player: patchSelfDeviceState(player, def.id, { lastDripWeek: week }),
+    ok: true,
+    lines: applied.lines.length ? applied.lines : [renderDeviceUseLine({
+      student: nextStudent, deviceId: def.id, deviceLabel: def.label, actionId: 'sustained_drip', week,
+    })],
+    malfunction: null,
+  };
+}
+
+export function ventResidualSwell(student, player, week, rng = Math.random) {
+  if (!playerHasDevice(player, 'measured_bloat_canister')) {
+    return { student, player, ok: false, lines: [], malfunction: null };
+  }
+  if (!student?.deviceState?.residualSwell?.active) {
+    return { student, player, ok: false, lines: ['No residual swell to vent.'], malfunction: null };
+  }
+  const def = getDevice('measured_bloat_canister');
+  const { residualSwell: _rs, ...restState } = student.deviceState || {};
+  let nextStudent = {
+    ...student,
+    deviceState: restState,
+    bodyOverride: student.bodyOverride?.amplify ? null : student.bodyOverride,
+  };
+  return {
+    student: nextStudent,
+    player: patchSelfDeviceState(player, 'measured_bloat_canister', { lastVentWeek: week }),
+    ok: true,
+    lines: [renderDeviceUseLine({
+      student: nextStudent, deviceId: 'measured_bloat_canister', deviceLabel: def?.label || 'Measured Bloat Canister', actionId: 'vent_residual_swell', week,
+    })],
+    malfunction: null,
+  };
+}
+
+export function applyMeasuredBloatResidual(student, week, rng = Math.random) {
+  const def = getDevice('measured_bloat_canister');
+  const applied = applyDeviceEffect(student, {
+    ...(def.useEffect || {}),
+    deviceStatePatch: {
+      residualSwell: { active: true, amplify: 1.25, startedWeek: week },
+    },
+  }, { week, sourceDeviceId: def.id, rng });
+  const malf = rollMalfunction(def, applied.student, rng);
+  let next = applied.student;
+  let lines = applied.lines;
+  if (malf) {
+    const m2 = applyDeviceEffect(next, malf.effect, { week, sourceDeviceId: def.id, rng });
+    next = m2.student;
+    lines = [...lines, `⚠️ ${malf.text}`];
+  }
+  return { student: next, ok: true, lines, malfunction: malf };
+}
+
+/** Stabilized paste printer — chance to grant player psych bonus on gain events. */
+export function rollPlayerPastePsychBonus(player, rng = Math.random) {
+  if (!playerHasDevice(player, 'stabilized_paste_printer')) return player;
+  if (rng() > 0.12) return player;
+  const bonus = { ...(player.psychBonus || { obsession: 0, fixation: 0 }) };
+  if (bonus.obsession < 15) bonus.obsession += 1;
+  else if (bonus.fixation < 15) bonus.fixation += 1;
+  return { ...player, psychBonus: bonus };
+}
+
+export function applyModification(student, slot, componentId) {
+  const entry = student?.equip?.[slot];
+  if (!entry) return { student, ok: false, reason: 'no_entry' };
+  const { entry: nextEntry, ok, reason, component } = applyModificationToEntry(entry, componentId);
+  if (!ok) return { student, ok: false, reason };
+  const equip = { ...student.equip, [slot]: nextEntry };
+  return { student: { ...student, equip }, ok: true, component };
 }
 
 export function furnitureComfortLabel(student) {
