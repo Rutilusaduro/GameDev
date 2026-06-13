@@ -22,10 +22,9 @@ import {
   researchPrereqsMet,
   EXPERIMENT_SESSION_COST,
 } from '../gameData/researchTree.js';
+import { CircuitBoardPanel } from '../components/CircuitBoardPanel.jsx';
 import {
-  getUpgradeLevel,
-  nextUpgradeDef,
-  canPurchaseUpgrade,
+  getInventionTierLabel,
 } from '../gameData/inventionUpgrades.js';
 import { isForceFeederInstalled } from '../gameData/forceFeederEvent.js';
 import { RecipeCostDisplay } from '../components/RecipeCostDisplay.jsx';
@@ -99,7 +98,7 @@ export function LabView({
   onBuild,
   onResearch,
   onExperiment,
-  onPurchaseUpgrade,
+  onUnlockCircuitNode,
   onUseForceFeeder,
   onOpenSession,
   labStage = 1,
@@ -125,21 +124,11 @@ export function LabView({
   const taliaLbs = taliaStudent?.lbs ?? Infinity;
   const category = DEVICE_BLUEPRINT_CATEGORIES.find((c) => c.id === categoryId) || DEVICE_BLUEPRINT_CATEGORIES[0];
   const forceFeederInstalled = isForceFeederInstalled(labState);
-  const ffUpgradeLevel = getUpgradeLevel(labState, 'feeding_mask');
-  const ffNextUpgrade = nextUpgradeDef('feeding_mask', ffUpgradeLevel);
+  const ffTierLabel = getInventionTierLabel(labState, 'feeding_mask');
 
   const recipes = useMemo(() => {
     let list = category.deviceIds.map((id) => BLUEPRINT_RECIPES[id]).filter(Boolean);
     if (tierFilter !== 'all') list = list.filter((r) => r.tier === Number(tierFilter));
-    if (onlyCraftable) {
-      list = list.filter((r) => {
-        const researched = isBlueprintResearched(labState, r.blueprint);
-        const buildable = isBlueprintBuildable(r, labState);
-        const afford = canAfford(r, labState, money) && taliaLbs >= getMinLbsForBuild(r);
-        return researched && buildable && afford;
-      });
-    }
-    if (onlyResearched) list = list.filter((r) => isBlueprintResearched(labState, r.blueprint));
     const q = search.trim().toLowerCase();
     if (q) {
       list = list.filter((r) => {
@@ -148,7 +137,7 @@ export function LabView({
       });
     }
     return list;
-  }, [category, tierFilter, onlyCraftable, onlyResearched, search, labState, money, taliaLbs]);
+  }, [category, tierFilter, search, labState, money, taliaLbs]);
 
   const branchNodes = useMemo(() => nodesForBranch(branchId), [branchId]);
   const preview = selectedRecipe || recipes[0] || null;
@@ -285,27 +274,22 @@ export function LabView({
       {labTab === 'terminal' && (
         <div>
           {forceFeederInstalled && (
-            <div style={{ ...C.card, border: `1px solid ${TERMINAL_ACCENT}60`, marginBottom: 12 }}>
-              <div style={{ fontWeight: 700, color: '#c0a8e0', marginBottom: 6 }}>🎭 Force Feeder — installed</div>
-              <div style={{ fontSize: 10, color: '#9080b0', marginBottom: 8 }}>
-                Upgrade tier {ffUpgradeLevel}/3
-                {ffNextUpgrade && ` · Next: ${ffNextUpgrade.label}`}
-              </div>
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                <button style={{ ...C.btn(TERMINAL_ACCENT), flex: 1, minWidth: 140 }} onClick={onUseForceFeeder}>
-                  Use Force Feeder
+            <>
+              <div style={{ ...C.card, border: `1px solid ${TERMINAL_ACCENT}60`, marginBottom: 12 }}>
+                <div style={{ fontWeight: 700, color: '#c0a8e0', marginBottom: 6 }}>🎭 {ffTierLabel}</div>
+                <div style={{ fontSize: 10, color: '#9080b0', marginBottom: 8 }}>
+                  Successful calibrations earn Invention Points for the circuit board below.
+                </div>
+                <button style={{ ...C.btn(TERMINAL_ACCENT), width: '100%' }} onClick={onUseForceFeeder}>
+                  Use Force Feeder — Gullet Calibration
                 </button>
-                {ffNextUpgrade && (
-                  <button
-                    style={{ ...C.btn(canPurchaseUpgrade(labState, 'feeding_mask') ? '#4a6080' : '#302030'), flex: 1, minWidth: 140 }}
-                    disabled={!canPurchaseUpgrade(labState, 'feeding_mask')}
-                    onClick={() => onPurchaseUpgrade('feeding_mask')}
-                  >
-                    Upgrade: {ffNextUpgrade.label}
-                  </button>
-                )}
               </div>
-            </div>
+              <CircuitBoardPanel
+                deviceDefId="feeding_mask"
+                labState={labState}
+                onUnlockNode={onUnlockCircuitNode}
+              />
+            </>
           )}
 
           <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: 12 }}>

@@ -19,6 +19,9 @@ export function buildForceFeederGlobals(student, params = {}) {
     stagesJumped: params.stagesJumped ?? 0,
     gainLbs: params.gainLbs ?? 0,
     deviceId: 'feeding_mask',
+    chokedOut: !!params.chokedOut,
+    chokeMeter: params.chokeMeter ?? 0,
+    efficiencyPct: params.efficiencyPct ?? 0,
     locale: 'lab',
   };
 }

@@ -60,6 +60,7 @@ export function defaultLabState() {
       'bp_obedience_belt',
     ],
     installedInventions: {},
+    circuitBoards: {},
     inventionUpgrades: {},
     parts: partsAcquisitionByStage(1),
     maintenanceDebt: 0,

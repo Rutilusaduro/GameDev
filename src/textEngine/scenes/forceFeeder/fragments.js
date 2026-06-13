@@ -42,6 +42,10 @@ registerPool('ff.openDialogue', [
 
 // ── ff.machineBeat — FULL SENTENCE ──────────────────────────────
 registerPool('ff.machineBeat', [
+  { when: { chokedOut: true }, text: [
+    'The choke alarm screams. The machine over-pressurizes and paste forces its way down at once.',
+    'Choke threshold breached — pressure spikes and the pump floods past what her throat can take.',
+  ]},
   { when: { performanceTier: 'failure' }, text: [
     'The timing goes completely wrong. The machine over-pressurizes for a moment and a large amount of paste forces its way down at once.',
     'The pump surges off-rhythm. Pressure spikes and paste slams down her throat in one brutal flood.',

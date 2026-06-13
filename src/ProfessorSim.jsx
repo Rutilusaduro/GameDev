@@ -120,9 +120,15 @@ import { buildGrowthEvent } from './gameData/growthEvents.js';
 import {
   getResearchNode, EXPERIMENT_SESSION_COST, spendExperimentMaterials, rollExperimentOutcome,
 } from './gameData/researchTree.js';
-import { purchaseUpgrade, getUpgradeLevel } from './gameData/inventionUpgrades.js';
 import {
-  buildForceFeederEffect, isForceFeederInstalled,
+  unlockCircuitNode,
+  getCircuitNode,
+  recordForceFeederUse,
+} from './gameData/inventionUpgrades.js';
+import {
+  buildForceFeederEffect,
+  isForceFeederInstalled,
+  isHighRelationship,
 } from './gameData/forceFeederEvent.js';
 import { renderForceFeederScene } from './textEngine/scenes/forceFeeder/index.js';
 import { applyPsychDelta } from './gameData/psychState.js';
@@ -2610,13 +2616,13 @@ export default function ProfessorSim(){
     });
   };
 
-  const purchaseLabUpgrade=(deviceDefId)=>{
+  const unlockLabCircuitNode=(deviceDefId,nodeId)=>{
     setLabState(prev=>{
       if(!prev) return prev;
-      const next=purchaseUpgrade(prev,deviceDefId);
+      const next=unlockCircuitNode(prev,deviceDefId,nodeId);
       if(next===prev) return prev;
-      const level=getUpgradeLevel(next,deviceDefId);
-      setTimeout(()=>push(`🖥 Upgrade installed — ${DEVICES[deviceDefId]?.label||deviceDefId} tier ${level}.`),0);
+      const node=getCircuitNode(deviceDefId,nodeId);
+      setTimeout(()=>push(`🔌 Circuit node installed — ${node?.label||nodeId}.`),0);
       return next;
     });
   };
@@ -2634,28 +2640,43 @@ export default function ProfessorSim(){
     setForceFeederState(prev=>{
       if(!prev) return null;
       const target=students.find(st=>st.id===prev.targetId);
-      const next=advanceForceFeederOnComplete(prev,payload,target,week);
+      const next=advanceForceFeederOnComplete(prev,payload,target,week,labState);
       if(next.phase==='aftermath'&&target&&next.resultParams){
-        const upgradeLevel=getUpgradeLevel(labState,'feeding_mask');
-        const built=buildForceFeederEffect(target,next.resultParams.performanceTier,upgradeLevel,week,target.id===TALIA_STUDENT_ID);
+        const built=buildForceFeederEffect(target,next.resultParams.performanceTier,labState,week,{
+          targetIsTalia: target.id===TALIA_STUDENT_ID,
+          growthZone: next.resultParams.growthZone||'default',
+          efficiencyPct: next.resultParams.efficiencyPct,
+          chokeMeter: next.resultParams.chokeMeter,
+          chokedOut: next.resultParams.chokedOut,
+        });
         const applied=applyDeviceEffect(target,{
           gainLbs: built.gainLbs,
           bodyOverride: built.bodyOverride,
           psychDelta: built.psychDelta,
         },{ week, sourceDeviceId:'feeding_mask', rng:Math.random });
-        applyStudentDeviceResult(target.id,{ ok:true, ...applied },DEVICES.feeding_mask);
+        applyStudentDeviceResult(target.id,{ ok:true, ...applied, zoneOverride: built.zoneOverride },DEVICES.feeding_mask);
+        const usage=recordForceFeederUse(labState,{
+          performanceTier: built.performanceTier,
+          targetIsTalia: built.targetIsTalia,
+          highRelationship: isHighRelationship(target),
+          targetedZone: next.resultParams.growthZone,
+        });
+        setLabState(usage.labState);
         const proseParams={
           ...built,
           feedAttitude: built.feedAttitude,
           targetIsTalia: built.targetIsTalia,
           performanceTier: built.performanceTier,
+          pointsEarned: usage.pointsEarned,
         };
         const prose=renderForceFeederScene(
           { ...target, lbs: applied.student?.lbs??target.lbs },
           week,
           proseParams,
         );
-        push(`🎭 Force Feeder — ${target.name} (${built.performanceTier}).`);
+        const ptsMsg=usage.pointsEarned>0?` +${usage.pointsEarned} invention pts`:'';
+        push(`🎭 Force Feeder — ${target.name} (${built.performanceTier}${ptsMsg}).`);
+        if(usage.fieldDataBonus) setTimeout(()=>push('🔌 Field Data Accumulation — bonus invention point.'),80);
         return { ...next, resultParams: proseParams, prose };
       }
       return next;
@@ -5721,7 +5742,7 @@ export default function ProfessorSim(){
             onBuild={buildLabDevice}
             onResearch={researchLabBlueprint}
             onExperiment={runResearchExperiment}
-            onPurchaseUpgrade={purchaseLabUpgrade}
+            onUnlockCircuitNode={unlockLabCircuitNode}
             onUseForceFeeder={openForceFeeder}
             onOpenSession={()=>{ const t=taliaStudent(); if(t) runLabSessionOpen(t); }}
             labStage={labState?.stage??1}
