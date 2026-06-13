@@ -32,5 +32,6 @@ import './deviceUniqueInteraction/index.js';
 import './deviceModification/index.js';
 import './deviceCampusUse/index.js';
 import './growthEvent/index.js';
+import './forceFeeder/index.js';
 import './talia/index.js';
 import '../modules.js';

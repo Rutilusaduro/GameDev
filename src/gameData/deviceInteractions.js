@@ -11,11 +11,6 @@ const INTERACTION_RULES = [
     requires: { equipped: ['living_furniture_rig', 'reinforced_legs'], minStage: 5 },
   },
   {
-    id: 'feeder_mask_stack',
-    tag: 'device_synergy_feeder_mask',
-    requires: { equipped: ['auto_feeder_arm', 'feeding_mask'], minStage: 4 },
-  },
-  {
     id: 'belt_obedience_stack',
     tag: 'device_synergy_belt_obedience',
     requires: { equipped: ['auto_bloating_belt', 'obedience_belt'], minStage: 4 },

@@ -29,7 +29,6 @@ export const CAMPUS_NPCS = [
 
 const FLAVOR_DEVICE_IDS = [
   'living_furniture_rig',
-  'feeding_mask',
   'endless_hunger_engine',
   'growth_accelerator_chamber',
 ];
@@ -65,7 +64,7 @@ export function getCampusUsableDevices(deviceInventory = {}) {
       usable.push(def.id);
     }
   }
-  if ((deviceInventory.feeding_mask ?? 0) > 0) usable.push('feeding_mask');
+  if ((deviceInventory.endless_hunger_engine ?? 0) > 0) usable.push('endless_hunger_engine');
   return [...new Set(usable)];
 }
 
@@ -96,8 +95,7 @@ export function maybeRollDeviceEncounter(nodeId, ctx, rng = Math.random) {
   if (rng() > CAMPUS_DEVICE_CONFIG.encounterChance) return null;
 
   const students = visibleStudents(ctx.students || [], ctx);
-  const useNpc = rng() < CAMPUS_DEVICE_CONFIG.npcChance
-    || usable.includes('feeding_mask');
+  const useNpc = rng() < CAMPUS_DEVICE_CONFIG.npcChance;
 
   let target;
   if (useNpc && rng() < 0.55) {
@@ -116,11 +114,7 @@ export function maybeRollDeviceEncounter(nodeId, ctx, rng = Math.random) {
     };
   }
 
-  const allowedDevices = usable.filter(id => {
-    if (id === 'feeding_mask' && target.type === 'npc') return true;
-    if (id === 'feeding_mask' && target.type === 'student') return true;
-    return id !== 'feeding_mask' || (ctx.deviceInventory?.feeding_mask ?? 0) > 0;
-  });
+  const allowedDevices = usable;
 
   const openingLine = renderCampusDeviceEncounter(target, nodeId, ctx);
   return {
@@ -129,7 +123,7 @@ export function maybeRollDeviceEncounter(nodeId, ctx, rng = Math.random) {
     target,
     allowedDevices,
     openingLine: openingLine ? `🎯 ${openingLine}` : `🎯 ${target.name} is within range of your devices.`,
-    captureAvailable: (ctx.deviceInventory?.feeding_mask ?? 0) > 0,
+    captureAvailable: false,
   };
 }
 
@@ -142,7 +136,7 @@ export function maybeRollDeviceFlavor(nodeId, ctx, rng = Math.random) {
   if (!deviceId) return null;
   const line = renderCampusDeviceFlavor(deviceId, ctx);
   if (!line) return null;
-  const icons = { living_furniture_rig: '🪑', feeding_mask: '🎭', endless_hunger_engine: '🔫', growth_accelerator_chamber: '☢️' };
+  const icons = { living_furniture_rig: '🪑', endless_hunger_engine: '🔫', growth_accelerator_chamber: '☢️' };
   return { deviceId, line: `${icons[deviceId] || '⚙️'} ${line}` };
 }
 

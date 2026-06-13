@@ -52,12 +52,15 @@ export function defaultLabState() {
     stage: 1,
     instability: 0,
     sessionsRun: 0,
+    abundancePoints: 6,
     researchedBlueprints: [
       'bp_feeder_arm',
       'bp_force_feeder',
       'bp_weight_belt',
       'bp_obedience_belt',
     ],
+    installedInventions: {},
+    inventionUpgrades: {},
     parts: partsAcquisitionByStage(1),
     maintenanceDebt: 0,
     builtThisSession: [],
@@ -95,6 +98,7 @@ export function completeLabSession(state, session, builtDeviceId = null) {
   let next = { ...state };
   next.sessionsRun = (next.sessionsRun ?? 0) + 1;
   next.parts = session.poolAfter || session.pool || next.parts;
+  next.abundancePoints = (next.abundancePoints ?? 0) + 2;
   next.instability = Math.min(100, (next.instability ?? 0) + (session.instabilityGained ?? 5));
   if (builtDeviceId) {
     next.builtThisSession = [...(next.builtThisSession || []), builtDeviceId];

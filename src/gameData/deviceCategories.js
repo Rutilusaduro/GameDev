@@ -9,7 +9,6 @@ export const DEVICE_BLUEPRINT_CATEGORIES = [
     icon: '🧩',
     deviceIds: [
       'auto_feeder_arm',
-      'feeding_mask',
       'obedience_belt',
       'auto_bloating_belt',
       'living_furniture_rig',
@@ -21,6 +20,7 @@ export const DEVICE_BLUEPRINT_CATEGORIES = [
     label: 'Event',
     icon: '⚡',
     deviceIds: [
+      'feeding_mask',
       'growth_accelerator_chamber',
       'growth_serum_injector',
       'endless_hunger_engine',

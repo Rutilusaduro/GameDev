@@ -39,7 +39,7 @@ import '../textEngine/scenes/hungerLexicon.js';
 import '../textEngine/scenes/hungerInterruptPersonal.js';
 import '../textEngine/scenes/hungerArchetypeBehavior.js';
 import '../textEngine/scenes/hiveIntake.js';
-import '../textEngine/modules.js';
+import { renderForceFeederFeed, renderForceFeederAftermath } from '../textEngine/scenes/forceFeeder/index.js';
 
 const MOODS = ["happy", "focused", "excited", "content", "tired", "stressed", "warm", "observant", "cheerful", "bemused", "curious", "nervous"];
 const COR_POINTS = { 0: 10, 1: 50, 2: 90 };
@@ -129,6 +129,20 @@ const SECTIONS = {
         trace: opts.trace,
       });
     },
+  },
+  "ff.feed": { params: [...STATE_PARAMS, "performanceTier", "feedAttitude"],
+    fn: (s, opts) => renderForceFeederFeed(s, 6, {
+      performanceTier: opts.performanceTier || 'good',
+      feedAttitude: opts.feedAttitude || 'willing',
+      targetIsTalia: s.id === 18,
+    }, opts),
+  },
+  "ff.aftermath": { params: [...STATE_PARAMS, "performanceTier", "feedAttitude"],
+    fn: (s, opts) => renderForceFeederAftermath(s, 6, {
+      performanceTier: opts.performanceTier || 'good',
+      feedAttitude: opts.feedAttitude || 'willing',
+      targetIsTalia: s.id === 18,
+    }, opts),
   },
   "campus.deviceEncounter": { params: ["girl", "stage", "campusNode"],
     fn: (s, opts) => {

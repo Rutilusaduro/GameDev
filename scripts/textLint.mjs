@@ -94,6 +94,8 @@ const SWEEPS = [
   { name: 'WI_BREAK', root: 'wi.breakLine', tpl: '{wi.breakBeat} {wi.breakLine}' },
   { name: 'talk.encourage', root: 'talk.encourage', tpl: '{talk.encourage}' },
   { name: 'grow.crossing', root: 'grow.crossing', tpl: '{grow.crossing} {grow.crossingDialogue}' },
+  { name: 'ff.feed', root: 'ff.feed', tpl: '{ff.feed}' },
+  { name: 'ff.aftermath', root: 'ff.aftermath', tpl: '{ff.aftermath}' },
 ];
 
 const STAGE_PROBES = [0, 2, 4, 6, 8, 10, 11];

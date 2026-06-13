@@ -26,13 +26,6 @@ export const DEVICE_ACTIONS = [
     when: (_student, ctx) => (ctx?.deviceInventory?.growth_serum_injector ?? 0) > 0,
   },
   {
-    id: 'run_mask_session',
-    label: 'Force-feed through mask',
-    icon: '🎭',
-    requires: { equipped: 'feeding_mask' },
-    when: (student) => student?.equip?.head?.defId === 'feeding_mask',
-  },
-  {
     id: 'feed_furniture',
     label: 'Feed the furniture',
     icon: '🪑',
@@ -84,6 +77,6 @@ export function bodyOverrideLabel(student) {
   return badge?.label || null;
 }
 
-export function canCaptureOnCampus(deviceInventory) {
-  return (deviceInventory?.feeding_mask ?? 0) > 0;
+export function canCaptureOnCampus() {
+  return false;
 }

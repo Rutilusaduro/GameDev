@@ -11,11 +11,6 @@ registerPool('device.tick.action', [
     'servo-guided bites from the {device.label} land whether {subject.name} is ready or not',
     'the {device.label} holds {subject.name} in feeding position and pushes another portion through',
   ] },
-  { when: { deviceId: 'feeding_mask' }, text: [
-    'the {device.label} forces another feeding quota through the tube into {subject.name}',
-    'the {device.label} keeps {subject.name} sealed and fed, straps cinched, tube pulsing',
-    'the {device.label} delivers measured calories past {subject.name}\'s lips whether she cooperates or not',
-  ] },
   { when: { deviceId: 'obedience_belt' }, text: [
     'the {device.label} tightens its compliance loop around {subject.name}\'s waist each time she hesitates',
     'the {device.label} hums through {subject.name}\'s week — shame cues and feeding prompts stacked in sequence',
@@ -84,18 +79,6 @@ registerPool('device.tick.sensation', [
   { when: { deviceId: 'auto_feeder_arm' }, text: [
     'fullness stacks in her middle where the arm keeps landing portions',
     'her stomach yields to mechanical feeding, softness showing by the end of the week',
-  ] },
-  { when: { deviceId: 'feeding_mask', hungerTierMin: 3 }, text: [
-    'her rolls swell hungrily around the mask, accepting paste like she was starving for it',
-    'sealed lips still part for the tube — hunger wins before the mask releases her',
-  ] },
-  { when: { deviceId: 'feeding_mask', addictionLevelMin: 3 }, text: [
-    'she drinks on reflex, addicted to the mask\'s steady calorie flood',
-    'warm paste disappears into her; dependence makes the feeding feel like mercy',
-  ] },
-  { when: { deviceId: 'feeding_mask' }, text: [
-    'paste and calories vanish into her; the mask leaves her softer by the week\'s end',
-    'her cheeks flush around the tube while measured portions keep stacking inside',
   ] },
   { when: { deviceId: 'obedience_belt', dependenceLevelMin: 2 }, text: [
     'shame and compliance stack in her middle — she eats faster when the belt hums approval',
@@ -186,10 +169,6 @@ registerPool('device.tick.malfClause', [
     'then overfeeds past the safe quota — portions stacking faster than she can finish',
     'then dumps an oversized portion before the arm resets',
   ] },
-  { when: { deviceId: 'feeding_mask', malfunctionTier: 'moderate' }, text: [
-    'then floods paste faster than the tube should carry',
-    'then overfeeds until mask pressure spikes past the safe rhythm',
-  ] },
   { when: { deviceId: 'obedience_belt', malfunctionTier: 'moderate' }, text: [
     'then punishes hesitation with a hum she feels in her bones',
     'then stacks compliance cues until shame outruns her ability to refuse food',
@@ -262,9 +241,6 @@ registerPool('device.tick.synergy', [
   ] },
   { when: { equippedWaist: 'obedience_belt', deviceId: 'auto_feeder_arm' }, text: [
     'Compliance cues and feeding land together — shame and fullness in one rhythm.',
-  ] },
-  { when: { equippedWaist: 'auto_bloating_belt', deviceId: 'feeding_mask' }, text: [
-    'The mask floods calories while the belt swells her midsection around them.',
   ] },
   { when: { deviceId: 'living_furniture_rig', equippedWaist: 'auto_bloating_belt' }, text: [
     'Furniture form and waist bloat deepen together — upholstery and pressure both rising.',

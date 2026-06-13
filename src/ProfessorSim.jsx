@@ -84,6 +84,7 @@ import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
 import { CompetitiveGainerChatModal, CompetitiveGainerMainModal } from './components/CompetitiveGainerModals.jsx';
 import { MayaHiveModal } from './components/MayaHiveModal.jsx';
 import { EatingContestModal } from './components/EatingContestModal.jsx';
+import { ForceFeederModal, buildForceFeederModalState, advanceForceFeederOnComplete } from './components/ForceFeederModal.jsx';
 import { SumoMatchModal } from './components/SumoMatchModal.jsx';
 import { CollabStreamModal } from './components/CollabStreamModal.jsx';
 import { RecordingSessionModal } from './components/RecordingSessionModal.jsx';
@@ -116,6 +117,14 @@ import {
   runStationaryDeviceSession,
 } from './gameData/deviceEffects.js';
 import { buildGrowthEvent } from './gameData/growthEvents.js';
+import {
+  getResearchNode, EXPERIMENT_SESSION_COST, spendExperimentMaterials, rollExperimentOutcome,
+} from './gameData/researchTree.js';
+import { purchaseUpgrade, getUpgradeLevel } from './gameData/inventionUpgrades.js';
+import {
+  buildForceFeederEffect, isForceFeederInstalled,
+} from './gameData/forceFeederEvent.js';
+import { renderForceFeederScene } from './textEngine/scenes/forceFeeder/index.js';
 import { applyPsychDelta } from './gameData/psychState.js';
 import { applyCampusDeviceEncounter } from './gameData/campusDeviceEncounters.js';
 import { LabBuildModal } from './components/LabBuildModal.jsx';
@@ -276,6 +285,7 @@ export default function ProfessorSim(){
   const [paperDoll, setPaperDoll] = useState(null);
   const [malfunctionPopup, setMalfunctionPopup] = useState(null);
   const [deviceTickQueue, setDeviceTickQueue] = useState(null);
+  const [forceFeederState, setForceFeederState] = useState(null);
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
   const [weeklyArms, setWeeklyArms] = useState({ devouringStudentId: null, mesmerizingStudentId: null, devouringConsumed: false });
   const skipHungerCheckRef = useRef(false);
@@ -2555,10 +2565,104 @@ export default function ProfessorSim(){
       if(st.id!==TALIA_STUDENT_ID) return st;
       return processStudentGain(st,-weightCost,0);
     }));
-    setDeviceInventory(prev=>({ ...prev, [deviceDefId]: (prev[deviceDefId]||0)+1 }));
     const def=DEVICES[deviceDefId];
-    push(`🔧 Built ${def?.label||deviceDefId} — Talia spent ${weightCost} lbs as raw material.`);
+    const isLabInstall=def?.inventionKind==='event'&&(def?.form==='stationary'||def?.labStation);
+    if(isLabInstall){
+      setLabState(prev=>({
+        ...prev,
+        parts: spentParts,
+        installedInventions: { ...(prev?.installedInventions||{}), [deviceDefId]: true },
+      }));
+      push(`🔧 Installed ${def?.label||deviceDefId} in the lab — Talia spent ${weightCost} lbs as raw material.`);
+    }else{
+      setDeviceInventory(prev=>({ ...prev, [deviceDefId]: (prev[deviceDefId]||0)+1 }));
+      push(`🔧 Built ${def?.label||deviceDefId} — Talia spent ${weightCost} lbs as raw material.`);
+    }
   };
+
+  const runResearchExperiment=(blueprintId)=>{
+    const node=getResearchNode(blueprintId);
+    if(!node||!labState) return;
+    if(ap<EXPERIMENT_SESSION_COST.ap){ push(`⚠️ Need ${EXPERIMENT_SESSION_COST.ap} AP.`); return; }
+    const affordState={ ...labState };
+    if(!canAfford({ parts: node.materials||{}, money: 0 }, affordState, money)){
+      push('⚠️ Insufficient materials for this experiment.');
+      return;
+    }
+    const abundanceNeed=node.experimentCost+EXPERIMENT_SESSION_COST.abundance;
+    if((labState.abundancePoints??0)<abundanceNeed){
+      push(`⚠️ Need ${abundanceNeed} Abundance Points.`);
+      return;
+    }
+    setAp(a=>a-EXPERIMENT_SESSION_COST.ap);
+    const outcome=rollExperimentOutcome(node,Math.random);
+    setLabState(prev=>{
+      if(!prev) return prev;
+      let next=spendExperimentMaterials(prev,node);
+      if(outcome.ok){
+        next=researchBlueprint(next,blueprintId);
+        setTimeout(()=>push(`🖥 Experiment succeeded — ${node.label} blueprint unlocked.`),0);
+      }else{
+        next={ ...next, instability: Math.min(100,(next.instability??0)+(outcome.instabilityBonus??8)) };
+        setTimeout(()=>push(`⚠️ Experiment failed — side effects spiked lab instability.`),0);
+      }
+      return next;
+    });
+  };
+
+  const purchaseLabUpgrade=(deviceDefId)=>{
+    setLabState(prev=>{
+      if(!prev) return prev;
+      const next=purchaseUpgrade(prev,deviceDefId);
+      if(next===prev) return prev;
+      const level=getUpgradeLevel(next,deviceDefId);
+      setTimeout(()=>push(`🖥 Upgrade installed — ${DEVICES[deviceDefId]?.label||deviceDefId} tier ${level}.`),0);
+      return next;
+    });
+  };
+
+  const openForceFeeder=()=>{
+    if(!isForceFeederInstalled(labState)){ push('⚠️ Build the Force Feeder in the Workshop first.'); return; }
+    setForceFeederState(buildForceFeederModalState('setup'));
+  };
+
+  const handleForceFeederSelectTarget=(targetId)=>{
+    setForceFeederState(prev=>prev?{ ...prev, targetId }:null);
+  };
+
+  const handleForceFeederComplete=(payload)=>{
+    setForceFeederState(prev=>{
+      if(!prev) return null;
+      const target=students.find(st=>st.id===prev.targetId);
+      const next=advanceForceFeederOnComplete(prev,payload,target,week);
+      if(next.phase==='aftermath'&&target&&next.resultParams){
+        const upgradeLevel=getUpgradeLevel(labState,'feeding_mask');
+        const built=buildForceFeederEffect(target,next.resultParams.performanceTier,upgradeLevel,week,target.id===TALIA_STUDENT_ID);
+        const applied=applyDeviceEffect(target,{
+          gainLbs: built.gainLbs,
+          bodyOverride: built.bodyOverride,
+          psychDelta: built.psychDelta,
+        },{ week, sourceDeviceId:'feeding_mask', rng:Math.random });
+        applyStudentDeviceResult(target.id,{ ok:true, ...applied },DEVICES.feeding_mask);
+        const proseParams={
+          ...built,
+          feedAttitude: built.feedAttitude,
+          targetIsTalia: built.targetIsTalia,
+          performanceTier: built.performanceTier,
+        };
+        const prose=renderForceFeederScene(
+          { ...target, lbs: applied.student?.lbs??target.lbs },
+          week,
+          proseParams,
+        );
+        push(`🎭 Force Feeder — ${target.name} (${built.performanceTier}).`);
+        return { ...next, resultParams: proseParams, prose };
+      }
+      return next;
+    });
+  };
+
+  const closeForceFeeder=()=>setForceFeederState(null);
 
   const applyStudentDeviceResult=(studentId,result,def,consumeInventory=false,locale='lab')=>{
     if(!result?.ok && result?.student==null) return null;
@@ -2691,13 +2795,6 @@ export default function ProfessorSim(){
       const def=DEVICES.growth_serum_injector;
       if((deviceInventory[def.id]||0)<1){ push('⚠️ No serum injectors in inventory.'); return; }
       useDeviceOn(def,studentId);
-      return;
-    }
-    if(actionId==='run_mask_session'){
-      const effect=DEVICES.feeding_mask.useEffect||{};
-      const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'feeding_mask', rng:Math.random });
-      applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.feeding_mask);
-      push(`🎭 Mask session on ${s.name}.`);
       return;
     }
     if(actionId==='feed_furniture'){
@@ -5623,6 +5720,9 @@ export default function ProfessorSim(){
             campusState={campusState}
             onBuild={buildLabDevice}
             onResearch={researchLabBlueprint}
+            onExperiment={runResearchExperiment}
+            onPurchaseUpgrade={purchaseLabUpgrade}
+            onUseForceFeeder={openForceFeeder}
             onOpenSession={()=>{ const t=taliaStudent(); if(t) runLabSessionOpen(t); }}
             labStage={labState?.stage??1}
           />}
@@ -5780,6 +5880,16 @@ export default function ProfessorSim(){
 
       {/* ── EATING CONTEST MINI-GAME MODAL ── */}
       {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup}/>}
+
+      {forceFeederState&&<ForceFeederModal
+        state={forceFeederState}
+        students={students}
+        labState={labState}
+        week={week}
+        onSelectTarget={handleForceFeederSelectTarget}
+        onComplete={handleForceFeederComplete}
+        onClose={closeForceFeeder}
+      />}
 
       {/* ── RANKED FEEDEE SESSION MINI-GAME MODAL ── */}
       {rankedFeedeeState&&(()=>{
