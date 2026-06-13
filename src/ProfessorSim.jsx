@@ -100,8 +100,8 @@ import { InventoryView, ItemTargetPicker } from './views/InventoryView.jsx';
 import { LabView } from './views/LabView.jsx';
 import { DeviceInventoryView } from './views/DeviceInventoryView.jsx';
 import {
-  defaultLabState, defaultDeviceInventory, INVENTOR_ACTIVITIES,
-  completeLabSession, tickLabWeek, researchBlueprint, TALIA_STUDENT_ID,
+  defaultLabState, defaultDeviceInventory, INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES,
+  completeLabSession, tickLabWeek, researchBlueprint, maybeAdvanceInventorStage, TALIA_STUDENT_ID,
 } from './gameData/talia.js';
 import {
   BLUEPRINT_RECIPES, canAfford, spendRecipe, startLabSession, applyLabAcquisition,
@@ -2483,6 +2483,13 @@ export default function ProfessorSim(){
     return labState?.parts||{};
   };
 
+  const gatherLabParts=(s)=>{
+    if(!labState||s.evolvedForm!=='machine_goddess') return;
+    if(ap<1){ push('⚠️ Need 1 AP.'); return; }
+    setLabStudentId(s.id);
+    setLabSession(startLabSession(labState));
+  };
+
   const runLabSessionOpen=(s)=>{
     if(!labState||s.evolvedForm!=='machine_goddess') return;
     const act=INVENTOR_ACTIVITIES[labState.stage]||INVENTOR_ACTIVITIES[1];
@@ -2493,7 +2500,17 @@ export default function ProfessorSim(){
       setStudents(prev=>prev.map(st=>st.id===s.id?processStudentGain(st,gain,0):st));
       setLabState(prev=>{
         const synced=syncSubjectInfluence(ensureNetwork(prev),students);
-        return {...synced,instability:Math.min(100,(synced.instability??0)+(act.instability||4))};
+        const advanced=maybeAdvanceInventorStage({
+          ...synced,
+          sessionsRun:(synced.sessionsRun??0)+1,
+          instability:Math.min(100,(synced.instability??0)+(act.instability||4)),
+        });
+        const prevStage=synced.stage??1;
+        if((advanced.stage??1)>prevStage){
+          const meta=INVENTOR_PATH_STAGES.find(x=>x.id===advanced.stage);
+          setTimeout(()=>push(`🔧 Talia advances — ${meta?.label||'new inventor stage'} unlocked.`),120);
+        }
+        return advanced;
       });
       setView('network');
       push(`⚙️ ${act.label} — Talia jacked into the mesh.`);
@@ -2589,8 +2606,14 @@ export default function ProfessorSim(){
       poolAfter: labSession.pool,
       instabilityGained: act.instability||5,
     });
+    const prevStage=labState.stage??1;
     setLabState(next);
-    push(`🔧 ${s.name} — lab session saved. Instability ${next.instability}% · parts stocked.`);
+    if((next.stage??1)>prevStage){
+      const meta=INVENTOR_PATH_STAGES.find(x=>x.id===next.stage);
+      push(`🔧 Talia advances — ${meta?.label||'new inventor stage'} unlocked.`);
+    } else {
+      push(`🔧 ${s.name} — lab session saved. Instability ${next.instability}% · parts stocked.`);
+    }
     cancelLabSession();
   };
 
@@ -5724,7 +5747,7 @@ export default function ProfessorSim(){
           {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} gatherLabParts={gatherLabParts} openLabView={openLabView} openNetworkView={openNetworkView} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}

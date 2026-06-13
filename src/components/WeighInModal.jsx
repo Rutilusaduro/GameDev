@@ -6,13 +6,13 @@ import {
   renderWeighInBreak, renderWeighInSwap, renderWeighInPurchase,
 } from '../textEngine/scenes/weighIn/index.js';
 
-function AnalogScale({lbs,willBreak,onBroken}){
+function AnalogScale({lbs,willBreak,onSnapComplete}){
   const safeLbs=Math.max(0,Math.round(lbs));
   const [settled,setSettled]=useState(false);
   const [cracked,setCracked]=useState(false);
   const firedRef=useRef(false);
-  const onBrokenRef=useRef(onBroken);
-  useEffect(()=>{ onBrokenRef.current=onBroken; },[onBroken]);
+  const onSnapCompleteRef=useRef(onSnapComplete);
+  useEffect(()=>{ onSnapCompleteRef.current=onSnapComplete; },[onSnapComplete]);
 
   const max=willBreak?400:Math.min(1500,Math.max(300,Math.ceil(safeLbs*1.25/50)*50));
   const targetAngle=willBreak?94:-90+(Math.min(safeLbs,max)/max)*180;
@@ -39,7 +39,7 @@ function AnalogScale({lbs,willBreak,onBroken}){
         setSettled(true);
         if(!firedRef.current){
           firedRef.current=true;
-          onBrokenRef.current&&onBrokenRef.current();
+          onSnapCompleteRef.current&&onSnapCompleteRef.current();
         }
       },1550);
       return ()=>{ clearTimeout(t1); clearTimeout(t2); };
@@ -156,19 +156,6 @@ function DigitalScale({lbs}){
   );
 }
 
-function UhOhButton({onClick}){
-  const [ready,setReady]=useState(false);
-  useEffect(()=>{
-    setReady(false);
-    const t=setTimeout(()=>setReady(true),1600);
-    return ()=>clearTimeout(t);
-  },[]);
-  return(
-    <button style={{...C.btn(ready?"#7a2030":"#3a1018"),width:"100%",opacity:ready?1:.55,cursor:ready?"pointer":"default"}} disabled={!ready} onClick={ready?onClick:undefined}>
-      {ready?"Uh oh...":"..."}
-    </button>
-  );
-}
 
 export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,week,campusFattening=false,campusTier=0}){
   const weighInOpts = { campusFattening: !!campusFattening, campusTier: campusTier || (campusFattening ? 1 : 0), week: week || 1 };
@@ -184,6 +171,10 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
   const setPhase=(nextPhase)=>setWeighInState({...weighInState,phase:nextPhase});
   const close=()=>setWeighInState(null);
   const stepOntoScale=()=>setPhase(goesDirectlyToBig?"digital":"analog");
+  const goToBreak=()=>{
+    if(willBreakNow&&onBreakScale) onBreakScale(student.id);
+    setPhase("break");
+  };
   // useMemo: phase texts are RNG-composed — keep them stable across re-renders
   const introText=useMemo(
     ()=>renderWeighInIntro(student,week||1,goesDirectlyToBig,weighInOpts),
@@ -233,9 +224,9 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
         {phase==="analog"&&(
           <>
             <div style={{...C.infoBox("rgba(20,15,40,.55)"),padding:14,marginBottom:14,display:"flex",justifyContent:"center"}}>
-              <AnalogScale lbs={student.lbs} willBreak={willBreakNow} onBroken={()=>onBreakScale&&onBreakScale(student.id)}/>
+              <AnalogScale lbs={student.lbs} willBreak={willBreakNow} onSnapComplete={willBreakNow?goToBreak:undefined}/>
             </div>
-            {willBreakNow?<UhOhButton onClick={()=>setPhase("break")}/>:<button style={{...C.btn("#5818a8"),width:"100%"}} onClick={goToReaction}>Continue →</button>}
+            {!willBreakNow&&<button style={{...C.btn("#5818a8"),width:"100%"}} onClick={goToReaction}>Continue →</button>}
           </>
         )}
 

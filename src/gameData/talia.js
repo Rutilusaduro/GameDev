@@ -19,14 +19,14 @@ export const INVENTOR_PATH_STAGES = [
     key: 'automator',
     label: 'The Automator',
     desc: 'Interconnected device networks — node graphs, experiment slotting, deployment zones, and detection risk.',
-    unlockNote: 'Unlocks at 8 lab sessions — build and monitor campus mesh.',
+    unlockNote: 'Unlocks at 6 lab sessions — build and monitor campus mesh.',
   },
   {
     id: 3,
     key: 'networked_controller',
     label: 'Networked Controller',
     desc: 'Distributed intelligence — influence web, autonomous proposals, nexus integration.',
-    unlockNote: 'Unlocks at 16 lab sessions — command the mesh as Talia becomes the system.',
+    unlockNote: 'Unlocks at 12 lab sessions — command the mesh as Talia becomes the system.',
   },
 ];
 
@@ -106,7 +106,7 @@ export function initDeviceState() {
   };
 }
 
-const STAGE_SESSION_THRESHOLDS = [0, 8, 16];
+const STAGE_SESSION_THRESHOLDS = [0, 6, 12];
 
 export function maybeAdvanceInventorStage(state) {
   const sessions = state.sessionsRun ?? 0;

@@ -160,9 +160,10 @@ export function partsAcquisitionByStage(stageId) {
   if (stageId >= 2) {
     base.servos = 1;
     base.reagents = 1;
+    base.exotics = 1;
   }
   if (stageId >= 3) {
-    base.exotics = 1;
+    base.exotics = 2;
     base.circuits = 2;
   }
   return base;
@@ -257,8 +258,8 @@ export function startLabSession(labState) {
 export function applyLabAcquisition(session, choiceId, labState) {
   const grants = {
     salvage: { scrap: 2, circuits: 1 },
-    campus_surplus: { servos: 1, scrap: 1 },
-    reagent_run: { reagents: 2 },
+    campus_surplus: { servos: 1, scrap: 1, exotics: 1 },
+    reagent_run: { reagents: 2, exotics: 1 },
     skip: {},
   };
   const grant = grants[choiceId] || grants.skip;
