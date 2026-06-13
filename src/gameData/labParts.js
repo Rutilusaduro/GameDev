@@ -202,6 +202,7 @@ export function isBlueprintResearched(labState, blueprintId) {
 export function isBlueprintBuildable(recipe, labState) {
   if (!recipe) return false;
   if (!isBlueprintResearched(labState, recipe.blueprint)) return false;
+  if (!techPrereqsMet(labState, recipe.blueprint)) return false;
   for (const req of recipe.requiresResearched || []) {
     if (!isBlueprintResearched(labState, req)) return false;
   }
