@@ -28,9 +28,6 @@ function weightBandFromLbs(lbs) {
 }
 
 function primaryAttachment(attachmentIds = []) {
-  if (attachmentIds.includes('liquid_fat_infuser')) return 'liquid_fat_infuser';
-  if (attachmentIds.includes('calorie_paste_printer')) return 'calorie_paste_printer';
-  if (attachmentIds.includes('predator_capture_module')) return 'predator_capture_module';
   return attachmentIds[0] || null;
 }
 

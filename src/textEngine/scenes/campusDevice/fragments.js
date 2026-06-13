@@ -32,11 +32,12 @@ registerPool('campus.dev.vulnerability', [
   ] },
   { when: { targetType: 'npc' }, text: [
     'wandering through without roster protection',
-    'within range of Talia\'s predator tools',
+    'close enough for a handheld invention to reach',
   ] },
   { when: {}, text: [
     'crossing your line of sight',
-    'close enough for the mesh to reach',
+    'close enough for Talia\'s tools to reach',
+    'paused where a device could find her',
     '',
   ] },
 ]);
@@ -44,93 +45,113 @@ registerPool('campus.dev.vulnerability', [
 registerPool('campus.dev.rangeNote', [
   { when: { targetType: 'student' }, text: [
     'Your inventory hums with possibility.',
-    'The campus network marks her as in range.',
+    'She is close enough for a campus invention to land.',
+    'Talia\'s gear marks her as in range.',
     '',
   ] },
   { when: { targetType: 'npc' }, text: [
     'Not on the roster — still absolutely feedable.',
     'A stranger the mask was built for.',
+    'Off-roster, but well within device range.',
   ] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    'Within range of your inventions.',
+    'Close enough to deploy.',
+    'A viable target for the lab\'s portable gear.',
+  ] },
 ]);
 
-// Result fragments
+// Result fragments — device-keyed delivery
 registerPool('campus.dev.delivery', [
-  { when: { deviceId: 'remote_feeding_system', modeId: 'stealth' }, text: [
-    'a hidden tube kisses her lips — slow, warm calories she never asked for',
-    'the remote feeder drips in silence while she keeps walking',
+  { when: { deviceId: 'endless_hunger_engine', modeId: 'pulse' }, text: [
+    'the Hunger Ray fires a short pulse — satiety drops before she notices why she is starving',
+    'a hunger pulse ripples through her midsection, appetite spiking mid-step',
+    'the ray tags her with craving; her next meal will not feel optional',
   ] },
-  { when: { deviceId: 'remote_feeding_system', modeId: 'force' }, text: [
-    'your controller spikes a heavy pulse through the mesh',
-    'force mode hits like a fist of cream mid-step',
+  { when: { deviceId: 'endless_hunger_engine', modeId: 'sustain' }, text: [
+    'sustained craving mode locks in — she will not feel full for days',
+    'the ray holds hunger high, every snack feeling like the first of many',
+    'craving sustains across the afternoon; her belly never quite believes it ate enough',
   ] },
-  { when: { deviceId: 'remote_feeding_system' }, text: [
-    'the remote feeding network delivers on command',
+  { when: { deviceId: 'endless_hunger_engine' }, text: [
+    'the Hunger Ray finds her and strips satiety down to nothing useful',
+    'a beam of engineered craving lands — hunger becomes obsession on contact',
+    'the ray does its clinical work; appetite rewrites itself before she can object',
   ] },
   { when: { deviceId: 'feeding_mask', modeId: 'capture' }, text: [
-    'the Predator Mask launches — straps bite, sedative hisses, paste floods the tube',
+    'the Force Feeder launches — straps bite, tube locks, calories flood past sealed lips',
     'capture mode is merciless: mask, lock, feed',
+    'the mask seals before she finishes protesting; paste keeps coming',
   ] },
   { when: { deviceId: 'feeding_mask' }, text: [
-    'the feeding mask seals and pumps without mercy',
+    'the Force Feeder seals and pumps without mercy',
+    'the mask locks over her face and delivers another measured quota',
+    'straps cinch, tube pulses — the feeding continues until the cycle ends',
   ] },
-  { when: { deviceId: 'liquid_fat_infuser', modeId: 'water_aggressive' }, text: [
-    'water fattening turns a drink into heavy slurry',
-    'infused liquid slides warm while her belly swells',
+  { when: {}, text: [
+    'your device finds its mark',
+    'the invention lands exactly where Talia designed it to',
+    'calibrated output hits before she can get clear',
   ] },
-  { when: { deviceId: 'liquid_fat_infuser' }, text: [
-    'the infuser does its clinical work through ordinary thirst',
-  ] },
-  { when: {}, text: ['your device finds its mark'] },
 ]);
 
 registerPool('campus.dev.reaction', [
-  { when: { modeId: 'stealth' }, text: [
-    'She blinks, swallows, and pretends nothing happened.',
-    'She touches her mouth, confused, already fuller.',
+  { when: { deviceId: 'endless_hunger_engine', modeId: 'sustain' }, text: [
+    'She clutches her stomach and starts hunting food with single-minded focus.',
+    'Her eyes go distant — hunger rewriting every other priority.',
   ] },
-  { when: { modeId: 'force' }, text: [
-    'She doubles over, belly surging, fighting not to gag in public.',
-    'She clamps a hand to her stomach and calls it a cramp.',
+  { when: { deviceId: 'endless_hunger_engine' }, text: [
+    'She blinks, suddenly ravenous, already scanning for something to eat.',
+    'Her hand drifts to her belly; the hollow feels wrong and urgent.',
   ] },
   { when: { modeId: 'capture' }, text: [
     'A muffled protest becomes another swallow.',
     'She sags as the locked tube keeps pumping.',
+    'Resistance lasts seconds; fullness lasts much longer.',
   ] },
   { when: { discovered: true }, text: [
     'Someone nearby definitely noticed.',
     'Whispers may follow.',
+    'A witness will remember the sound of the straps locking.',
   ] },
   { when: {}, text: [
     'The gain is already showing.',
+    'She touches her middle, confused, already fuller.',
+    'Softness arrives before she has words for it.',
     '',
   ] },
 ]);
 
 // Ambient flavor when exploring with lab active
 registerPool('campus.deviceFlavor', [
-  { when: { flavorDevice: 'sleep_feeding_system' }, text: [
-    'You pass a dorm window — someone sleeps hooked to a soft mask and slow drip, belly rising in the dark.',
-    'A bedside drip clicks in rhythm behind thin curtains.',
-  ] },
   { when: { flavorDevice: 'living_furniture_rig' }, text: [
     'A common-room couch sighs when someone sits. You pretend not to hear the muffled moan inside.',
     'Furniture in the lounge shifts like it is breathing.',
-  ] },
-  { when: { flavorDevice: 'liquid_fat_infuser' }, text: [
-    'A water cooler hums wrong — warm, heavy, faintly sweet. Talia would know that sound.',
-    'A shared bottle sweats with something thicker than water.',
-  ] },
-  { when: { flavorDevice: 'remote_feeding_system' }, text: [
-    'A tiny drone retreats behind a vent, tube still glistening.',
-    'Someone nearby pats their mouth, confused, already fuller.',
+    'A padded ottoman creaks under a guest — straps hidden under upholstery, tubes tucked neat.',
+    'Someone jokes about the new lounge bench being "too comfortable." Talia would smirk.',
   ] },
   { when: { flavorDevice: 'feeding_mask' }, text: [
     'A discarded mask shell sits in a planter — straps locked, tube clogged with dried paste.',
     'Scuffed mask padding lies in the grass like shed skin.',
+    'Someone wipes paste from their chin and cannot explain how it got there.',
+    'A locker room trash can holds a crumpled face rig still warm to the touch.',
+  ] },
+  { when: { flavorDevice: 'endless_hunger_engine' }, text: [
+    'A vending machine empties faster than usual — someone ate like the hollow would not close.',
+    'You catch a faint ozone smell and a girl patting her belly, confused and still hungry.',
+    'A snack wrapper trail leads to a bench where someone keeps eating without looking satisfied.',
+    'Talia\'s ray leaves no obvious mark — only appetite that outlasts the meal.',
+  ] },
+  { when: { flavorDevice: 'growth_accelerator_chamber' }, text: [
+    'Warm light spills under a lab-side door — sealed air, faint hum, someone heavier when they emerge.',
+    'A transport cart rattles past with chamber panels still radiating heat.',
+    'The walkway near the engineering annex smells like warm polymer and post-session sweat.',
+    'Someone crosses the quad slower than they did yesterday, curves catching the light differently.',
   ] },
   { when: {}, text: [
     'The campus hums with machine activity you cannot quite see.',
+    'Somewhere nearby, a Talia-built invention ticks through its cycle.',
+    'Engineering runoff clings to the air — sweet, warm, faintly mechanical.',
     '',
   ] },
 ]);
