@@ -15,6 +15,7 @@ import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_FEED_LINES, CORRUPTION
 import { TALK_CONFIG } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES } from './gameData/items.js';
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
+import { createInitialPlayer, updatePlayerField } from './gameData/player.js';
 import { WalletBadge } from './components/WalletBadge.jsx';
 import { CAMPUS_NODES, CAMPUS_CONFIG } from './gameData/campus.js';
 import {
@@ -157,17 +158,26 @@ export default function ProfessorSim(){
   const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({
     ...st, ...initGainStats(st), ...initDeviceState(), psych: initPsychState(), corruption: 0,
   })));
-  const [ap,setAp]=useState(5);
-  const [week,setWeek]=useState(1);
-  const [money,setMoney]=useState(WALLET_CONFIG.startingBalance);
+  const [player, setPlayer] = useState(() => createInitialPlayer());
+  const {
+    money, ap, week, ownedSkills, professorProfile, adminScrutiny,
+    globalStats, achievements, bigScaleUnlocked,
+  } = player;
+  const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
+  const setMoney = (updater) => setPlayer((p) => updatePlayerField(p, 'money', updater));
+  const setAp = (updater) => setPlayer((p) => updatePlayerField(p, 'ap', updater));
+  const setWeek = (updater) => setPlayer((p) => updatePlayerField(p, 'week', updater));
+  const setOwnedSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedSkills', updater));
+  const setProfessorProfile = (updater) => setPlayer((p) => updatePlayerField(p, 'professorProfile', updater));
+  const setAdminScrutiny = (updater) => setPlayer((p) => updatePlayerField(p, 'adminScrutiny', updater));
+  const setGlobalStats = (updater) => setPlayer((p) => updatePlayerField(p, 'globalStats', updater));
+  const setAchievements = (updater) => setPlayer((p) => updatePlayerField(p, 'achievements', updater));
+  const setBigScaleUnlocked = (updater) => setPlayer((p) => updatePlayerField(p, 'bigScaleUnlocked', updater));
   const [view,setView]=useState("class");
   const [selectedId,setSelectedId]=useState(null);
   const [log,setLog]=useState(["📋 Welcome, Professor. Your class of 15 students awaits."]);
   const [activeEvent,setActiveEvent]=useState(null);
-  const [achievements,setAchievements]=useState([]);
-  const [globalStats,setGlobalStats]=useState({ narrativeCount:0 });
   const [eventQueue,setEventQueue]=useState([]);
-  const [ownedSkills,setOwnedSkills]=useState({}); // { skillId: rank }
   const [dinnerEvent,setDinnerEvent]=useState(null);
   const [dinnerLog,setDinnerLog]=useState([]);
   const [groupDinnerEvent,setGroupDinnerEvent]=useState(null);
@@ -184,9 +194,7 @@ export default function ProfessorSim(){
   const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
   const [talkStudentId,setTalkStudentId]=useState(null);
-  const [professorProfile,setProfessorProfile]=useState(null);
-  // professorProfile: {name, subject, traits:[], origin?}
-  const [adminScrutiny,setAdminScrutiny]=useState(0);
+  // professorProfile lives on player object
   // DLC: Inner Circle
   const seenTiersRef=useRef(new Set());
   const prevRelsRef=useRef(Object.fromEntries(INIT_STUDENTS.map(s=>[s.id,s.relationship])));
@@ -211,7 +219,6 @@ export default function ProfessorSim(){
     exploration:defaultCampusExplorationState(),
   });
   // {student, phase:"scene"|"analog"|"break"|"purchase"|"swap"|"digital"}
-  const [bigScaleUnlocked,setBigScaleUnlocked]=useState(false);
   const [brokeScaleIds,setBrokeScaleIds]=useState([]);
   // {student, phase:"scene"|"scale"}
   const [sessionLog,setSessionLog]=useState([]);
