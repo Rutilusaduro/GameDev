@@ -1,65 +1,34 @@
 // ═══════════════════════════════════════════════════════════════
-// TALIA VALE — Inventor / Machine Goddess path & lab state
+// TALIA VALE — Inventor path & lab state (device workshop only)
 // ═══════════════════════════════════════════════════════════════
 import { partsAcquisitionByStage } from './labParts.js';
-import { defaultNetworkState, ensureNetwork } from './networkState.js';
 
 export const TALIA_STUDENT_ID = 18;
 
 export const INVENTOR_PATH_STAGES = [
   {
     id: 1,
-    key: 'tinkerer',
-    label: 'The Tinkerer',
-    desc: 'Individual devices, hands-on builds, private workshop experiments.',
-    unlockNote: 'Active — build and deploy wearable prototypes.',
-  },
-  {
-    id: 2,
-    key: 'automator',
-    label: 'The Automator',
-    desc: 'Interconnected device networks — node graphs, experiment slotting, deployment zones, and detection risk.',
-    unlockNote: 'Unlocks at 6 lab sessions — build and monitor campus mesh.',
-  },
-  {
-    id: 3,
-    key: 'networked_controller',
-    label: 'Networked Controller',
-    desc: 'Distributed intelligence — influence web, autonomous proposals, nexus integration.',
-    unlockNote: 'Unlocks at 12 lab sessions — command the mesh as Talia becomes the system.',
+    key: 'inventor',
+    label: 'The Inventor',
+    desc: 'Hands-on device builds, private workshop experiments, and equipping prototypes on your students.',
+    unlockNote: 'Active — gather parts, research blueprints, build inventions.',
   },
 ];
 
 export const LAB_BUILD_CONFIG = {
-  buildWeightCostByTier: { 1: 3, 2: 6, 3: 10, 4: 15 },
-  moneyCostByTier: { 1: 50, 2: 120, 3: 250, 4: 500 },
+  buildWeightCostByTier: { 1: 3, 2: 6, 3: 10 },
+  moneyCostByTier: { 1: 50, 2: 120, 3: 250 },
   apCost: 1,
-  minLbsByTier: { 1: 125, 2: 140, 3: 160, 4: 180 },
+  minLbsByTier: { 1: 125, 2: 140, 3: 160 },
 };
 
 export const INVENTOR_ACTIVITIES = {
   1: {
     label: '🔧 Run Lab Session',
     apCost: 1,
-    desc: 'Gather parts, research blueprints, and build devices. Talia spends her own mass as raw material.',
+    desc: 'Gather parts, research blueprints, and build inventions. Talia spends her own mass as raw material.',
     taliaGain: [2, 5],
     instability: 5,
-  },
-  2: {
-    label: '⚙️ Network Control',
-    apCost: 1,
-    desc: 'Open the node graph — slot experiments, expand coverage, manage detection risk.',
-    opensNetwork: true,
-    taliaGain: [2, 4],
-    instability: 4,
-  },
-  3: {
-    label: '🌐 Nexus Command',
-    apCost: 2,
-    desc: 'Command the influence web — approve autonomous proposals and deepen integration.',
-    opensNetwork: true,
-    taliaGain: [3, 6],
-    instability: 6,
   },
 };
 
@@ -70,24 +39,8 @@ export const LAB_ACQUISITION_OPTIONS = {
     { id: 'reagent_run', label: 'Pick up lab reagents on credit', grant: 'reagents' },
     { id: 'skip', label: 'Skip — use saved stock', grant: 'none' },
   ],
-  2: [
-    { id: 'salvage', label: 'Salvage the engineering scrap pile', grant: 'scrap + circuits' },
-    { id: 'campus_surplus', label: 'Raid campus surplus lockers', grant: 'servos + scrap + exotics' },
-    { id: 'mesh_scavenge', label: 'Scavenge retired mesh nodes', grant: 'circuits + servos' },
-    { id: 'reagent_run', label: 'Pick up lab reagents on credit', grant: 'reagents + exotics' },
-    { id: 'skip', label: 'Skip — use saved stock', grant: 'none' },
-  ],
-  3: [
-    { id: 'salvage', label: 'Salvage the engineering scrap pile', grant: 'scrap + circuits' },
-    { id: 'campus_surplus', label: 'Raid campus surplus lockers', grant: 'servos + scrap + exotics' },
-    { id: 'mesh_scavenge', label: 'Scavenge retired mesh nodes', grant: 'circuits + servos + scrap' },
-    { id: 'reagent_run', label: 'Pick up lab reagents on credit', grant: 'reagents + exotics' },
-    { id: 'nexus_salvage', label: 'Strip parts from nexus failover racks', grant: 'circuits + exotics' },
-    { id: 'skip', label: 'Skip — use saved stock', grant: 'none' },
-  ],
 };
 
-/** AP / gains for saving a lab session — independent of network-control activities. */
 export const LAB_SESSION_ACTIVITY = {
   apCost: 1,
   taliaGain: [2, 5],
@@ -99,7 +52,12 @@ export function defaultLabState() {
     stage: 1,
     instability: 0,
     sessionsRun: 0,
-    researchedBlueprints: ['bp_bloating_belt', 'bp_feeder_arm', 'bp_sleep_feeding', 'bp_feeding_mask'],
+    researchedBlueprints: [
+      'bp_feeder_arm',
+      'bp_force_feeder',
+      'bp_weight_belt',
+      'bp_obedience_belt',
+    ],
     parts: partsAcquisitionByStage(1),
     maintenanceDebt: 0,
     builtThisSession: [],
@@ -128,33 +86,8 @@ export function initDeviceState() {
   };
 }
 
-const STAGE_SESSION_THRESHOLDS = [0, 6, 12];
-
 export function maybeAdvanceInventorStage(state) {
-  const sessions = state.sessionsRun ?? 0;
-  let stage = 1;
-  for (let i = STAGE_SESSION_THRESHOLDS.length - 1; i >= 0; i--) {
-    if (sessions >= STAGE_SESSION_THRESHOLDS[i]) {
-      stage = i + 1;
-      break;
-    }
-  }
-  stage = Math.min(3, stage);
-  if (stage <= (state.stage ?? 1)) return state;
-  let next = { ...state, stage };
-  if (stage >= 2 && !next.network) {
-    next.network = defaultNetworkState(stage);
-  }
-  const researched = [...(next.researchedBlueprints || [])];
-  if (stage >= 2 && !researched.includes('bp_serum_injector')) researched.push('bp_serum_injector');
-  if (stage >= 2 && !researched.includes('bp_redistribution_rig')) researched.push('bp_redistribution_rig');
-  if (stage >= 2 && !researched.includes('bp_paste_printer')) researched.push('bp_paste_printer');
-  if (stage >= 2 && !researched.includes('bp_remote_feeding')) researched.push('bp_remote_feeding');
-  if (stage >= 2 && !researched.includes('bp_liquid_infuser')) researched.push('bp_liquid_infuser');
-  if (stage >= 3 && !researched.includes('bp_predator_capture')) researched.push('bp_predator_capture');
-  if (stage >= 3 && !researched.includes('bp_furniture_rig')) researched.push('bp_furniture_rig');
-  next.researchedBlueprints = researched;
-  return ensureNetwork(next);
+  return state;
 }
 
 export function completeLabSession(state, session, builtDeviceId = null) {
@@ -171,25 +104,21 @@ export function completeLabSession(state, session, builtDeviceId = null) {
     researched.add(session.researchedBlueprint);
     next.researchedBlueprints = [...researched];
   }
-  next = maybeAdvanceInventorStage(next);
   return next;
 }
 
 export function tickLabWeek(state) {
   if (!state) return state;
-  let next = ensureNetwork({ ...state });
+  const next = { ...state };
   if ((next.maintenanceDebt ?? 0) > 0) {
     next.maintenanceDebt = Math.max(0, next.maintenanceDebt - 1);
   }
   next.instability = Math.max(0, (next.instability ?? 0) - 2);
   next.builtThisSession = [];
-  if (next.network) {
-    next.network.stats = next.network.stats || {};
-  }
   return next;
 }
 
-export function researchBlueprint(state, blueprintId, apCost = 0) {
+export function researchBlueprint(state, blueprintId) {
   const researched = new Set(state?.researchedBlueprints || []);
   if (researched.has(blueprintId)) return state;
   researched.add(blueprintId);

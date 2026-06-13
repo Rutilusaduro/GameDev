@@ -17,7 +17,6 @@ import { DEVICE_BLUEPRINT_CATEGORIES } from '../gameData/deviceCategories.js';
 import { INVENTOR_PATH_STAGES } from '../gameData/talia.js';
 import { RecipeCostDisplay } from '../components/RecipeCostDisplay.jsx';
 import { summarizeDeviceEffect } from '../gameData/deviceQuery.js';
-import { isPlayerRecipeUnlocked, playerRecipeForDevice } from '../gameData/playerRecipes.js';
 
 const RARITY_COLORS = { common: '#8a8a7a', uncommon: '#4a9a5a', rare: '#c8860a' };
 const ACCENT = '#4a6080';
@@ -25,20 +24,10 @@ const RESEARCH_ACCENT = '#5090c8';
 
 const LAB_SIDEBAR_CATEGORIES = [
   ...DEVICE_BLUEPRINT_CATEGORIES,
-  { id: 'attachments', label: 'Attachments', icon: '🔗', deviceIds: ['liquid_fat_infuser', 'calorie_paste_printer', 'predator_capture_module'] },
-  { id: 'consumables', label: 'Consumables', icon: '💉', deviceIds: ['growth_serum_injector'] },
-  { id: 'campus', label: 'Campus Tools', icon: '📡', deviceIds: ['remote_feeding_system', 'regression_ray'] },
-  { id: 'installed', label: 'Installed', icon: '⚙️', deviceIds: ['sleep_feeding_system', 'feeding_mask', 'weight_redistribution_rig', 'living_furniture_rig'] },
-  { id: 'player', label: 'Player Inventions', icon: '🎓', deviceIds: [] },
   { id: 'research', label: 'Research', icon: '📐', deviceIds: [] },
 ];
 
-function blueprintStatus(recipe, labState, money, taliaLbs, unlockCtx) {
-  const def = DEVICES[recipe.deviceDefId];
-  const playerRecipe = playerRecipeForDevice(recipe.deviceDefId);
-  if (playerRecipe && !isPlayerRecipeUnlocked(playerRecipe.id, unlockCtx?.player, unlockCtx)) {
-    return { label: 'Locked (recipe)', color: '#806060' };
-  }
+function blueprintStatus(recipe, labState, money, taliaLbs) {
   const researched = isBlueprintResearched(labState, recipe.blueprint);
   const buildable = isBlueprintBuildable(recipe, labState);
   const afford = canAfford(recipe, labState, money) && taliaLbs >= getMinLbsForBuild(recipe);
@@ -48,9 +37,9 @@ function blueprintStatus(recipe, labState, money, taliaLbs, unlockCtx) {
   return { label: 'Craftable', color: '#4a9a5a' };
 }
 
-function BlueprintGridCard({ recipe, selected, onSelect, labState, money, taliaLbs, unlockCtx }) {
+function BlueprintGridCard({ recipe, selected, onSelect, labState, money, taliaLbs }) {
   const def = DEVICES[recipe.deviceDefId];
-  const status = blueprintStatus(recipe, labState, money, taliaLbs, unlockCtx);
+  const status = blueprintStatus(recipe, labState, money, taliaLbs);
   const rarityColor = RARITY_COLORS[def?.rarity || 'common'];
 
   return (
@@ -82,15 +71,10 @@ export function LabView({
   onBuild,
   onResearch,
   onOpenSession,
-  onOpenNetwork,
   labStage = 1,
   ap,
-  player,
-  students,
-  pharmacistState,
-  campusState,
 }) {
-  const [categoryId, setCategoryId] = useState('feeding');
+  const [categoryId, setCategoryId] = useState('equipable');
   const [search, setSearch] = useState('');
   const [tierFilter, setTierFilter] = useState('all');
   const [onlyCraftable, setOnlyCraftable] = useState(false);
@@ -100,21 +84,17 @@ export function LabView({
   if (!labState) {
     return (
       <div style={{ fontSize: 12, color: '#5a3888', fontStyle: 'italic' }}>
-        The lab is locked until Talia evolves into the Machine Goddess path.
+        The lab is locked until Talia evolves into the Inventor path.
       </div>
     );
   }
 
   const stageMeta = INVENTOR_PATH_STAGES.find((s) => s.id === labState.stage) || INVENTOR_PATH_STAGES[0];
   const taliaLbs = taliaStudent?.lbs ?? Infinity;
-  const unlockCtx = { player, students, labState, pharmacistState, campusState };
   const category = LAB_SIDEBAR_CATEGORIES.find((c) => c.id === categoryId) || LAB_SIDEBAR_CATEGORIES[0];
 
   const recipes = useMemo(() => {
     let list = category.deviceIds.map((id) => BLUEPRINT_RECIPES[id]).filter(Boolean);
-    if (categoryId === 'player') {
-      list = Object.values(BLUEPRINT_RECIPES).filter((r) => DEVICES[r.deviceDefId]?.playerInvention);
-    }
     if (categoryId === 'research') {
       list = Object.values(BLUEPRINT_RECIPES).filter((r) => !isBlueprintResearched(labState, r.blueprint));
     }
@@ -164,19 +144,11 @@ export function LabView({
           )}
         </div>
         <button
-          style={{ ...C.btn(ACCENT), width: '100%', marginBottom: labStage >= 2 ? 6 : 0, opacity: ap < 1 ? 0.45 : 1 }}
+          style={{ ...C.btn(ACCENT), width: '100%', opacity: ap < 1 ? 0.45 : 1 }}
           onClick={onOpenSession}
         >
           Gather Parts (1 AP)
         </button>
-        {labStage >= 2 && onOpenNetwork && (
-          <button
-            style={{ ...C.btn('#1a4050'), width: '100%', opacity: ap < 1 ? 0.45 : 1 }}
-            onClick={onOpenNetwork}
-          >
-            Network Control (1 AP) — does not stock parts
-          </button>
-        )}
       </div>
 
       <div style={{ fontSize: 9, letterSpacing: 2, color: ACCENT, marginBottom: 6 }}>PARTS INVENTORY</div>
@@ -245,12 +217,11 @@ export function LabView({
                   labState={labState}
                   money={money}
                   taliaLbs={taliaLbs}
-                  unlockCtx={unlockCtx}
                 />
               ))}
               {recipes.length === 0 && (
                 <div style={{ fontSize: 11, color: '#5a3888', fontStyle: 'italic', gridColumn: '1 / -1' }}>
-                  {categoryId === 'player' ? 'Player inventions unlock via progression recipes.' : 'No blueprints in this category.'}
+                  {categoryId === 'research' ? 'All blueprints researched.' : 'No blueprints in this category.'}
                 </div>
               )}
             </div>

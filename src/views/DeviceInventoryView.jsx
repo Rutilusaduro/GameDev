@@ -22,7 +22,6 @@ const SUB_TABS = [
   { id: 'catalog', label: 'Catalog' },
   { id: 'equipped', label: 'Equipped' },
   { id: 'modified', label: 'Modified' },
-  { id: 'player', label: 'Player Inventions' },
 ];
 
 const FORM_OPTIONS = [
@@ -73,20 +72,18 @@ function DeviceDetailPanel({ def, statusCtx, onClose, onEquipStudent, onQuickUse
       )}
       <div style={{ fontSize: 10, color: '#506070', marginBottom: 10 }}>
         Slot: {def.slot || def.attachSlot || '—'} · Form: {def.form}
-        {def.playerInvention && ' · Professor personal device'}
+        {def.inventionKind === 'equipable' && ' · Equipable'}
+        {def.inventionKind === 'event' && ' · Event invention'}
       </div>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-        {!def.playerInvention && def.form !== 'campus_tool' && def.form !== 'stationary' && (
+        {!def.playerInvention && def.form !== 'campus_tool' && def.form !== 'stationary' && def.form !== 'consumable' && (
           <button style={C.btn(ACCENT)} onClick={() => onEquipStudent(def)}>
             Equip to Student…
           </button>
         )}
-        {def.playerInvention && (
-          <button style={C.btn('#6a4080')} onClick={() => onEquipStudent(def)}>
-            Equip to Professor…
-          </button>
+        {(def.form === 'consumable' || def.form === 'stationary' || def.form === 'campus_tool') && (
+          <button style={C.btn('#333')} onClick={() => onQuickUse(def)}>Use on student…</button>
         )}
-        <button style={C.btn('#333')} onClick={() => onQuickUse(def)}>Quick action</button>
       </div>
     </div>
   );
@@ -187,14 +184,7 @@ export function DeviceInventoryView({
     tier: tierFilter,
     search,
     deviceInventory,
-    excludePlayerInventions: subTab === 'catalog',
-  }), [formFilter, tierFilter, search, deviceInventory, subTab]);
-
-  const playerDevices = useMemo(() => filterDevices({
-    playerInventionsOnly: true,
-    search,
-    deviceInventory,
-  }), [search, deviceInventory]);
+  }), [formFilter, tierFilter, search, deviceInventory]);
 
   const equippedRows = useMemo(
     () => listEquippedEntries(students, player),
@@ -207,18 +197,13 @@ export function DeviceInventoryView({
 
   const handleQuickUse = (def) => {
     if (!def) return;
-    if (def.form === 'consumable') setDeviceTargetPicker({ def });
+    if (def.form === 'consumable' || def.form === 'stationary') setDeviceTargetPicker({ def });
     else if (def.form === 'attachment') setAttachPicker({ def });
-    else if (def.playerInvention) setPaperDoll?.({ target: 'professor' });
     else setEquipPicker({ def });
   };
 
   const handleEquipStudent = (def) => {
     if (!def) return;
-    if (def.playerInvention) {
-      setPaperDoll?.({ target: 'professor' });
-      return;
-    }
     setPaperDoll?.({ studentPicker: true, def });
   };
 
@@ -254,9 +239,6 @@ export function DeviceInventoryView({
         <div style={{ fontSize: 11, color: '#8090b0' }}>
           <strong style={{ color: '#90c0a0' }}>{equippedCount}</strong> equipped
         </div>
-        <div style={{ fontSize: 11, color: '#8090b0' }}>
-          <strong style={{ color: '#c0a0e0' }}>{playerDevices.length}</strong> player inventions in catalog
-        </div>
       </div>
 
       <div style={{ display: 'flex', gap: 4, marginBottom: 10, flexWrap: 'wrap' }}>
@@ -267,7 +249,7 @@ export function DeviceInventoryView({
         ))}
       </div>
 
-      {(subTab === 'catalog' || subTab === 'player') && (
+      {(subTab === 'catalog') && (
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 10 }}>
           {subTab === 'catalog' && (
             <select
@@ -311,7 +293,6 @@ export function DeviceInventoryView({
       )}
 
       {subTab === 'catalog' && renderCatalogGrid(catalogDevices)}
-      {subTab === 'player' && renderCatalogGrid(playerDevices)}
 
       {subTab === 'equipped' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>

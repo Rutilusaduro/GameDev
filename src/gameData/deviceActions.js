@@ -1,8 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // CONTEXT-DEPENDENT DEVICE ACTIONS — registry for StudentDetailView
 // ═══════════════════════════════════════════════════════════════
-import { getEquippedDeviceIds, hasPredatorCapture } from './deviceEffects.js';
-import { getPlayerEquippedIds } from './playerDevices.js';
+import { getEquippedDeviceIds } from './deviceEffects.js';
 
 export const DEVICE_ACTIONS = [
   {
@@ -21,17 +20,10 @@ export const DEVICE_ACTIONS = [
   },
   {
     id: 'inject_serum',
-    label: 'Inject growth serum',
+    label: 'Inject growth formula',
     icon: '💉',
     requires: { owned: 'growth_serum_injector' },
     when: (_student, ctx) => (ctx?.deviceInventory?.growth_serum_injector ?? 0) > 0,
-  },
-  {
-    id: 'sculpt_redistribution',
-    label: 'Run sculpt cycle',
-    icon: '⚖️',
-    requires: { equipped: 'weight_redistribution_rig' },
-    when: (student) => student?.equip?.fullBody?.defId === 'weight_redistribution_rig',
   },
   {
     id: 'run_mask_session',
@@ -39,27 +31,6 @@ export const DEVICE_ACTIONS = [
     icon: '🎭',
     requires: { equipped: 'feeding_mask' },
     when: (student) => student?.equip?.head?.defId === 'feeding_mask',
-  },
-  {
-    id: 'sleep_feed_gentle',
-    label: 'Sleep feed — gentle mode',
-    icon: '🌙',
-    requires: { equipped: 'sleep_feeding_system' },
-    when: (student) => student?.equip?.head?.defId === 'sleep_feeding_system',
-  },
-  {
-    id: 'sleep_feed_aggressive',
-    label: 'Sleep feed — aggressive mode',
-    icon: '🌙',
-    requires: { equipped: 'sleep_feeding_system' },
-    when: (student) => student?.equip?.head?.defId === 'sleep_feeding_system',
-  },
-  {
-    id: 'infuser_water_mode',
-    label: 'Water fattening infusion',
-    icon: '💧',
-    requires: { owned: 'liquid_fat_infuser' },
-    when: (_student, ctx) => (ctx?.deviceInventory?.liquid_fat_infuser ?? 0) > 0,
   },
   {
     id: 'feed_furniture',
@@ -82,84 +53,6 @@ export const DEVICE_ACTIONS = [
     requires: { owned: 'growth_accelerator_chamber' },
     when: (_student, ctx) => (ctx?.deviceInventory?.growth_accelerator_chamber ?? 0) > 0,
   },
-  {
-    id: 'spray_serum',
-    label: 'Spray growth serum',
-    icon: '🌫️',
-    requires: { owned: 'growth_serum_sprayer' },
-    when: (_student, ctx) => (ctx?.deviceInventory?.growth_serum_sprayer ?? 0) > 0,
-  },
-  {
-    id: 'release_gas',
-    label: 'Release bloat gas',
-    icon: '💨',
-    requires: { owned: 'bloating_gas_canister' },
-    when: (_student, ctx) => (ctx?.deviceInventory?.bloating_gas_canister ?? 0) > 0,
-  },
-  {
-    id: 'remove_limiter',
-    label: 'Remove growth limiter',
-    icon: '🔓',
-    requires: { owned: 'growth_limit_remover' },
-    when: (_student, ctx) => (ctx?.deviceInventory?.growth_limit_remover ?? 0) > 0,
-  },
-  {
-    id: 'stimulator_pulse',
-    label: 'Trigger stimulator pulse',
-    icon: '💗',
-    requires: { equipped: 'erogenous_growth_stimulator' },
-    when: (student) => student?.equip?.neck?.defId === 'erogenous_growth_stimulator',
-  },
-  {
-    id: 'intensify_hunger',
-    label: 'Engage distress hunger mode',
-    icon: '🕳️',
-    requires: { equipped: 'endless_hunger_engine' },
-    when: (student) => student?.equip?.arms?.defId === 'endless_hunger_engine',
-  },
-  {
-    id: 'run_mutation_session',
-    label: 'Run mutation session',
-    icon: '🧬',
-    requires: { owned: 'rapid_mutation_chamber' },
-    when: (_student, ctx) => (ctx?.deviceInventory?.rapid_mutation_chamber ?? 0) > 0,
-  },
-  {
-    id: 'fire_regression',
-    label: 'Fire regression ray',
-    icon: '👶',
-    requires: { owned: 'regression_ray' },
-    when: (_student, ctx) => (ctx?.deviceInventory?.regression_ray ?? 0) > 0,
-  },
-  {
-    id: 'tighten_pulse',
-    label: 'Tighten pulse',
-    icon: '⭕',
-    requires: { playerEquipped: 'controlled_bloating_rig' },
-    when: (_student, ctx) => getPlayerEquippedIds(ctx.player || {}).includes('controlled_bloating_rig'),
-  },
-  {
-    id: 'burst_feed',
-    label: 'Burst feed',
-    icon: '🦾',
-    requires: { playerEquipped: 'precision_feeder_arm' },
-    when: (_student, ctx) => getPlayerEquippedIds(ctx.player || {}).includes('precision_feeder_arm'),
-  },
-  {
-    id: 'sustained_drip',
-    label: 'Sustained drip',
-    icon: '💧',
-    requires: { playerEquipped: 'precision_feeder_arm' },
-    when: (_student, ctx) => getPlayerEquippedIds(ctx.player || {}).includes('precision_feeder_arm'),
-  },
-  {
-    id: 'vent_residual_swell',
-    label: 'Vent residual swell',
-    icon: '💨',
-    requires: { playerEquipped: 'measured_bloat_canister' },
-    when: (student, ctx) => getPlayerEquippedIds(ctx.player || {}).includes('measured_bloat_canister')
-      && !!student?.deviceState?.residualSwell,
-  },
 ];
 
 export function getAvailableDeviceActions(student, ctx = {}) {
@@ -172,10 +65,6 @@ export function getAvailableDeviceActions(student, ctx = {}) {
     if (action.requires?.owned) {
       const qty = ctx.deviceInventory?.[action.requires.owned] ?? 0;
       if (qty <= 0) return false;
-    }
-    if (action.requires?.playerEquipped) {
-      const ids = getPlayerEquippedIds(ctx.player || {});
-      if (!ids.includes(action.requires.playerEquipped)) return false;
     }
     return true;
   });
@@ -195,8 +84,6 @@ export function bodyOverrideLabel(student) {
   return badge?.label || null;
 }
 
-export function canCaptureOnCampus(deviceInventory, studentEquip) {
-  if ((deviceInventory?.feeding_mask ?? 0) > 0) return true;
-  if ((deviceInventory?.predator_capture_module ?? 0) > 0) return true;
-  return hasPredatorCapture({ equip: { head: studentEquip?.head } });
+export function canCaptureOnCampus(deviceInventory) {
+  return (deviceInventory?.feeding_mask ?? 0) > 0;
 }

@@ -30,7 +30,6 @@ import './deviceUse/index.js';
 import './deviceMalfunction/index.js';
 import './deviceUniqueInteraction/index.js';
 import './deviceModification/index.js';
-import './devicePlayerPersonal/index.js';
 import './deviceCampusUse/index.js';
 import './growthEvent/index.js';
 import './talia/index.js';

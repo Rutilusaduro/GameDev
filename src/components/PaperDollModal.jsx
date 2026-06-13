@@ -1,12 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
-// PAPER DOLL — device equip modal (student or Professor)
+// PAPER DOLL — device equip modal (student)
 // ═══════════════════════════════════════════════════════════════
 import { useMemo, useState } from 'react';
 import { C } from '../styles.js';
 import { getDevice } from '../gameData/devices.js';
-import { equipDevice, unequipDevice, slotFor } from '../gameData/deviceEffects.js';
+import { equipDevice, unequipDevice } from '../gameData/deviceEffects.js';
 import { devicesCompatibleWithSlot, summarizeDeviceEffect } from '../gameData/deviceQuery.js';
-import { equipPlayerDevice, unequipPlayerDevice } from '../gameData/playerDevices.js';
 
 const ACCENT = '#4a6080';
 
@@ -18,7 +17,6 @@ const SLOT_DISPLAY = [
   { key: 'waist', label: 'Waist', row: 3, col: 1, engineSlot: 'waist' },
   { key: 'legs', label: 'Legs', row: 4, col: 1, engineSlot: 'legs' },
   { key: 'fullBody', label: 'Full Body', row: 5, col: 1, engineSlot: 'fullBody' },
-  { key: 'special', label: 'Special', row: 6, col: 1, engineSlot: null, placeholder: true },
 ];
 
 const MODAL_TABS = [
@@ -32,8 +30,6 @@ export function PaperDollModal({
   setPaperDoll,
   students,
   setStudents,
-  player,
-  setPlayer,
   deviceInventory,
   setDeviceInventory,
   week,
@@ -43,15 +39,11 @@ export function PaperDollModal({
 }) {
   const [modalTab, setModalTab] = useState('devices');
   const [selectedSlot, setSelectedSlot] = useState('waist');
-  const [professorMode, setProfessorMode] = useState(
-    () => paperDoll?.target === 'professor',
-  );
 
   const student = useMemo(() => {
-    if (professorMode || paperDoll?.target === 'professor') return null;
     const id = paperDoll?.studentId ?? students[0]?.id;
     return students.find((s) => s.id === id) ?? null;
-  }, [paperDoll, students, professorMode]);
+  }, [paperDoll, students]);
 
   const resolvedPreselect = preselectDef || paperDoll?.def || null;
 
@@ -60,15 +52,10 @@ export function PaperDollModal({
   const slotMeta = SLOT_DISPLAY.find((s) => s.key === selectedSlot) || SLOT_DISPLAY[0];
   const engineSlot = slotMeta.engineSlot;
 
-  const currentEntry = professorMode
-    ? player?.equip?.[selectedSlot === 'torso' ? 'torso' : selectedSlot]
-    : (engineSlot ? student?.equip?.[engineSlot] : null);
-
+  const currentEntry = engineSlot ? student?.equip?.[engineSlot] : null;
   const currentDef = currentEntry ? getDevice(currentEntry.defId) : null;
 
-  const compatible = slotMeta.placeholder
-    ? []
-    : devicesCompatibleWithSlot(deviceInventory, selectedSlot, { playerMode: professorMode });
+  const compatible = devicesCompatibleWithSlot(deviceInventory, selectedSlot);
 
   const close = () => setPaperDoll(null);
 
@@ -90,39 +77,12 @@ export function PaperDollModal({
     pushLog?.(`🛠 Equipped ${getDevice(defId)?.label} on ${student.name}.`);
   };
 
-  const handleEquipProfessor = (defId) => {
-    const result = equipPlayerDevice(player, defId, selectedSlot === 'torso' ? 'torso' : selectedSlot);
-    if (!result.ok) {
-      pushLog?.('⚠️ Could not equip personal device.');
-      return;
-    }
-    setPlayer(result.player);
-    setDeviceInventory((prev) => {
-      const q = (prev[defId] || 0) - 1;
-      const next = { ...prev };
-      if (q <= 0) delete next[defId];
-      else next[defId] = q;
-      return next;
-    });
-    pushLog?.(`🛠 Equipped ${getDevice(defId)?.label} on yourself.`);
-  };
-
   const handleUnequip = () => {
-    if (professorMode) {
-      const slotKey = selectedSlot === 'torso' ? 'torso' : selectedSlot;
-      setPlayer(unequipPlayerDevice(player, slotKey).player);
-      return;
-    }
     if (!student || !engineSlot) return;
     const result = unequipDevice(student, engineSlot);
     if (result.cleared) {
       setStudents((prev) => prev.map((st) => (st.id === student.id ? result.student : st)));
     }
-  };
-
-  const handlePickDevice = (def) => {
-    if (professorMode) handleEquipProfessor(def.id);
-    else handleEquipStudent(def.id);
   };
 
   return (
@@ -147,29 +107,15 @@ export function PaperDollModal({
         </div>
 
         <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
-          <button
-            style={C.navB(!professorMode)}
-            onClick={() => setProfessorMode(false)}
+          <select
+            value={student?.id ?? ''}
+            onChange={(e) => setPaperDoll({ studentId: Number(e.target.value) })}
+            style={{ ...C.btn('#1a2030'), fontSize: 10, flex: 1 }}
           >
-            Student
-          </button>
-          <button
-            style={C.navB(professorMode)}
-            onClick={() => setProfessorMode(true)}
-          >
-            Professor
-          </button>
-          {!professorMode && (
-            <select
-              value={student?.id ?? ''}
-              onChange={(e) => setPaperDoll({ studentId: Number(e.target.value) })}
-              style={{ ...C.btn('#1a2030'), fontSize: 10, flex: 1 }}
-            >
-              {students.filter((s) => !s.hidden).map((s) => (
-                <option key={s.id} value={s.id}>{s.name}</option>
-              ))}
-            </select>
-          )}
+            {students.filter((s) => !s.hidden).map((s) => (
+              <option key={s.id} value={s.id}>{s.name}</option>
+            ))}
+          </select>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: 12 }}>
@@ -182,24 +128,19 @@ export function PaperDollModal({
             }}>
               {SLOT_DISPLAY.map((slot) => {
                 const active = selectedSlot === slot.key;
-                const equipped = professorMode
-                  ? !!player?.equip?.[slot.key]
-                  : (slot.engineSlot && !!student?.equip?.[slot.engineSlot]);
+                const equipped = slot.engineSlot && !!student?.equip?.[slot.engineSlot];
                 return (
                   <button
                     key={slot.key}
-                    disabled={slot.placeholder}
-                    onClick={() => !slot.placeholder && setSelectedSlot(slot.key)}
+                    onClick={() => setSelectedSlot(slot.key)}
                     style={{
                       ...C.btn(active ? ACCENT : '#1a2030'),
-                      opacity: slot.placeholder ? 0.4 : 1,
                       fontSize: 9,
                       padding: '8px 4px',
                       border: equipped ? '1px solid #4a9a5a' : undefined,
                     }}
                   >
                     {slot.label}
-                    {slot.placeholder && <div style={{ fontSize: 7, color: '#606878' }}>soon</div>}
                   </button>
                 );
               })}
@@ -213,7 +154,7 @@ export function PaperDollModal({
                   <div style={{ fontWeight: 700, color: '#90b0d0' }}>{currentDef.icon} {currentDef.label}</div>
                   <div style={{ fontSize: 10, color: '#607080', marginTop: 4 }}>{summarizeDeviceEffect(currentDef)}</div>
                   <button style={{ ...C.smBtn, marginTop: 8, fontSize: 9 }} onClick={handleUnequip}>Unequip</button>
-                  {!professorMode && currentEntry?.attachments && (
+                  {currentEntry?.attachments && (
                     <button
                       style={{ ...C.smBtn, marginTop: 6, marginLeft: 6, fontSize: 9 }}
                       onClick={() => setAttachPicker?.({ studentId: student.id, hostSlot: engineSlot })}
@@ -232,23 +173,18 @@ export function PaperDollModal({
             <div style={{ fontSize: 9, color: ACCENT, letterSpacing: 2, marginBottom: 6 }}>
               COMPATIBLE DEVICES
             </div>
-            {slotMeta.placeholder && (
-              <div style={{ fontSize: 11, color: '#5a3888', fontStyle: 'italic' }}>
-                Special slot reserved for future content.
-              </div>
-            )}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 280, overflow: 'auto' }}>
               {compatible.map((def) => (
                 <button
                   key={def.id}
                   style={{ ...C.btn(), textAlign: 'left', padding: '8px 10px' }}
-                  onClick={() => handlePickDevice(def)}
+                  onClick={() => handleEquipStudent(def.id)}
                 >
                   <div style={{ fontWeight: 700, fontSize: 11 }}>{def.icon} {def.label}</div>
                   <div style={{ fontSize: 9, color: '#607080' }}>{summarizeDeviceEffect(def)}</div>
                 </button>
               ))}
-              {!slotMeta.placeholder && compatible.length === 0 && (
+              {compatible.length === 0 && (
                 <div style={{ fontSize: 10, color: '#5a3888', fontStyle: 'italic' }}>
                   No owned devices fit this slot.
                 </div>
@@ -256,7 +192,7 @@ export function PaperDollModal({
               {resolvedPreselect && compatible.some((d) => d.id === resolvedPreselect.id) && (
                 <button
                   style={{ ...C.btn(ACCENT), marginTop: 4 }}
-                  onClick={() => handlePickDevice(resolvedPreselect)}
+                  onClick={() => handleEquipStudent(resolvedPreselect.id)}
                 >
                   Equip selected: {resolvedPreselect.label}
                 </button>

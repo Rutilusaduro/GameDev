@@ -1,79 +1,61 @@
 // ═══════════════════════════════════════════════════════════════
-// LAB TECH TREE — growth-device research gates
+// LAB TECH TREE — invention research gates
 // ═══════════════════════════════════════════════════════════════
 
 export const LAB_TECH_NODES = {
+  tech_feeder_arm: {
+    id: 'tech_feeder_arm',
+    label: 'Automated Feeding',
+    blueprint: 'bp_feeder_arm',
+    requires: [],
+  },
+  tech_force_feeder: {
+    id: 'tech_force_feeder',
+    label: 'Forced Intake',
+    blueprint: 'bp_force_feeder',
+    requires: ['tech_feeder_arm'],
+  },
+  tech_weight_belt: {
+    id: 'tech_weight_belt',
+    label: 'Pressure Bloat',
+    blueprint: 'bp_weight_belt',
+    requires: [],
+  },
+  tech_obedience_belt: {
+    id: 'tech_obedience_belt',
+    label: 'Compliance Harness',
+    blueprint: 'bp_obedience_belt',
+    requires: [],
+  },
+  tech_reinforced_legs: {
+    id: 'tech_reinforced_legs',
+    label: 'Load-Bearing Braces',
+    blueprint: 'bp_reinforced_legs',
+    requires: ['tech_weight_belt'],
+  },
+  tech_furniture_rig: {
+    id: 'tech_furniture_rig',
+    label: 'Living Furniture',
+    blueprint: 'bp_furniture_rig',
+    requires: ['tech_reinforced_legs'],
+  },
   tech_serum_injector: {
     id: 'tech_serum_injector',
     label: 'Serum Deposition',
     blueprint: 'bp_serum_injector',
     requires: [],
   },
-  tech_bloating_belt: {
-    id: 'tech_bloating_belt',
-    label: 'Pressure Bloat Systems',
-    blueprint: 'bp_bloating_belt',
-    requires: [],
-  },
-  automation_gate: {
-    id: 'automation_gate',
-    label: 'Feedback Automation',
-    blueprint: 'bp_feeder_arm',
-    requires: ['tech_serum_injector'],
-  },
-  nexus_gate: {
-    id: 'nexus_gate',
-    label: 'Nexus Integration',
-    blueprint: 'bp_growth_chamber',
-    requires: ['tech_serum_injector', 'automation_gate'],
-  },
-  tech_growth_sprayer: {
-    id: 'tech_growth_sprayer',
-    label: 'Aerosol Growth',
-    blueprint: 'bp_serum_sprayer',
-    requires: ['tech_serum_injector'],
-  },
-  tech_bloating_gas: {
-    id: 'tech_bloating_gas',
-    label: 'Volatile Bloat Gas',
-    blueprint: 'bp_bloating_gas',
-    requires: ['tech_bloating_belt'],
-  },
-  tech_growth_stimulator: {
-    id: 'tech_growth_stimulator',
-    label: 'Pleasure-Growth Coupling',
-    blueprint: 'bp_growth_stimulator',
-    requires: ['automation_gate'],
-  },
   tech_growth_chamber: {
     id: 'tech_growth_chamber',
     label: 'Accelerator Chamber',
     blueprint: 'bp_growth_chamber',
-    requires: ['nexus_gate', 'tech_serum_injector'],
-  },
-  tech_limit_remover: {
-    id: 'tech_limit_remover',
-    label: 'Limiter Excision',
-    blueprint: 'bp_limit_remover',
-    requires: ['tech_growth_chamber'],
+    requires: ['tech_serum_injector'],
   },
   tech_hunger_engine: {
     id: 'tech_hunger_engine',
     label: 'Satiety Suppression',
     blueprint: 'bp_hunger_engine',
-    requires: ['automation_gate'],
-  },
-  tech_mutation_chamber: {
-    id: 'tech_mutation_chamber',
-    label: 'Evolution Accelerator',
-    blueprint: 'bp_mutation_chamber',
-    requires: ['tech_growth_chamber'],
-  },
-  tech_regression_ray: {
-    id: 'tech_regression_ray',
-    label: 'Neural Regression',
-    blueprint: 'bp_regression_ray',
-    requires: ['tech_growth_stimulator'],
+    requires: ['tech_feeder_arm'],
   },
 };
 

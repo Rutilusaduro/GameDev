@@ -16,7 +16,6 @@ import { TALK_CONFIG } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES } from './gameData/items.js';
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
 import { createInitialPlayer, updatePlayerField } from './gameData/player.js';
-import { evaluatePlayerRecipeUnlocks, isPlayerRecipeUnlocked, playerRecipeForDevice } from './gameData/playerRecipes.js';
 import { WalletBadge } from './components/WalletBadge.jsx';
 import { CAMPUS_NODES, CAMPUS_CONFIG } from './gameData/campus.js';
 import {
@@ -103,8 +102,8 @@ import { LabView } from './views/LabView.jsx';
 import { DeviceInventoryView } from './views/DeviceInventoryView.jsx';
 import { PaperDollModal } from './components/PaperDollModal.jsx';
 import {
-  defaultLabState, defaultDeviceInventory, INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES, LAB_SESSION_ACTIVITY,
-  completeLabSession, tickLabWeek, researchBlueprint, maybeAdvanceInventorStage, TALIA_STUDENT_ID,
+  defaultLabState, defaultDeviceInventory, INVENTOR_PATH_STAGES, LAB_SESSION_ACTIVITY,
+  completeLabSession, tickLabWeek, researchBlueprint, TALIA_STUDENT_ID,
 } from './gameData/talia.js';
 import {
   BLUEPRINT_RECIPES, canAfford, spendRecipe, startLabSession, applyLabAcquisition,
@@ -114,19 +113,11 @@ import { DEVICES } from './gameData/devices.js';
 import {
   equipDevice, unequipDevice, attachToDevice, findAttachmentHostSlot, useConsumableDevice,
   tickEquippedDevices, clearExpiredOverrides, triggerBeltBloatNow, applyDeviceEffect,
-  runStationaryDeviceSession, runStimulatorPulse, runRegressionRay, intensifyHungerEngine,
-  triggerTightenPulse, runBurstFeed, runSustainedDrip, ventResidualSwell, applyMeasuredBloatResidual,
-  rollPlayerPastePsychBonus,
+  runStationaryDeviceSession,
 } from './gameData/deviceEffects.js';
 import { buildGrowthEvent } from './gameData/growthEvents.js';
 import { applyPsychDelta } from './gameData/psychState.js';
 import { applyCampusDeviceEncounter } from './gameData/campusDeviceEncounters.js';
-import {
-  ensureNetwork, addNetworkNode, slotExperimentOnNode, clearExperimentSlot,
-  upgradeNetworkNode, setNodeAutomation, expandDeploymentArea, adjustNexusIntegration,
-  upgradeNexus, approveProposal, denyProposal, tickNetworkWeek, syncSubjectInfluence,
-} from './gameData/networkState.js';
-import { NetworkView } from './views/NetworkView.jsx';
 import { LabBuildModal } from './components/LabBuildModal.jsx';
 import { DeviceTargetPicker } from './components/DeviceTargetPicker.jsx';
 import { EquipPicker, AttachPicker } from './components/EquipPicker.jsx';
@@ -884,11 +875,6 @@ export default function ProfessorSim(){
     const newAp=Math.min(ap+5+skillApBonus,20);
     setAp(newAp);
 
-    setPlayer((p)=>{
-      const fresh=evaluatePlayerRecipeUnlocks({ player:p, students, labState, pharmacistState, campusState });
-      return { ...p, deviceUnlocks: { ...p.deviceUnlocks, ...fresh } };
-    });
-
     // Semester events
     const semEv=SEMESTER_EVENTS.find(e=>e.week===newWeek);
 
@@ -1000,22 +986,7 @@ export default function ProfessorSim(){
       setDeviceTickQueue({ events: deviceTickEvents, index: 0 });
     }
     if(labState){
-      let nextLab=tickLabWeek(ensureNetwork(labState));
-      if((nextLab.stage??1)>=2&&nextLab.network){
-        const netTick=tickNetworkWeek(nextLab,updated,newWeek,Math.random);
-        nextLab=netTick.labState;
-        netTick.lines.forEach((line,idx)=>setTimeout(()=>push(line),80+idx*50));
-        if(netTick.studentDeltas?.length){
-          updated=updated.map(s=>{
-            const d=netTick.studentDeltas.find(x=>x.studentId===s.id);
-            if(!d) return s;
-            let ns=processStudentGain(s,d.gainLbs,0);
-            if(d.psychDelta) ns={...ns,psych:applyPsychDelta(ns.psych||{},d.psychDelta)};
-            return ns;
-          });
-        }
-        if(netTick.scrutinyDelta) addScrutiny(netTick.scrutinyDelta);
-      }
+      const nextLab=tickLabWeek(labState);
       setLabState(nextLab);
     }
     if(pharmacistState?.campusFattening&&Math.random()<getCampusWeeklyEventChance(pharmacistState)){
@@ -1236,7 +1207,7 @@ export default function ProfessorSim(){
       setPharmacistState(defaultPharmacistState());
     }
     if(formId==='machine_goddess'){
-      setLabState(ensureNetwork(defaultLabState()));
+      setLabState(defaultLabState());
       setDeviceInventory(defaultDeviceInventory());
     }
   };
@@ -2511,93 +2482,7 @@ export default function ProfessorSim(){
     setLabSession(startLabSession(labState));
   };
 
-  const runNetworkControl=(s)=>{
-    if(!labState||s.evolvedForm!=='machine_goddess') return;
-    if((labState.stage??1)<2){ push('⚠️ Network control unlocks at the Automator stage (6 lab sessions).'); return; }
-    const act=INVENTOR_ACTIVITIES[labState.stage]||INVENTOR_ACTIVITIES[2];
-    if(ap<(act.apCost||1)){ push(`⚠️ Need ${act.apCost} AP.`); return; }
-    setAp(a=>a-(act.apCost||0));
-    const gain=rnd(...(act.taliaGain||[2,4]));
-    setStudents(prev=>prev.map(st=>st.id===s.id?processStudentGain(st,gain,0):st));
-    setLabState(prev=>{
-      const synced=syncSubjectInfluence(ensureNetwork(prev),students);
-      const advanced=maybeAdvanceInventorStage({
-        ...synced,
-        sessionsRun:(synced.sessionsRun??0)+1,
-        instability:Math.min(100,(synced.instability??0)+(act.instability||4)),
-      });
-      const prevStage=synced.stage??1;
-      if((advanced.stage??1)>prevStage){
-        const meta=INVENTOR_PATH_STAGES.find(x=>x.id===advanced.stage);
-        setTimeout(()=>push(`🔧 Talia advances — ${meta?.label||'new inventor stage'} unlocked.`),120);
-      }
-      return advanced;
-    });
-    setView('network');
-    push(`⚙️ ${act.label} — Talia jacked into the mesh.`);
-  };
-
-  const openNetworkView=()=>setView('network');
-
-  const handleAddNetworkNode=(typeId)=>{
-    const res=addNetworkNode(labState,typeId);
-    if(!res.ok){ push(res.reason==='parts'?'⚠️ Need more scrap metal.':'⚠️ Could not add node.'); return; }
-    setLabState(res.labState);
-    push(`⚙️ Added ${typeId} node to the mesh.`);
-  };
-
-  const handleSlotExperiment=(nodeId,slotIndex,experimentId)=>{
-    const res=slotExperimentOnNode(labState,nodeId,slotIndex,experimentId);
-    if(!res.ok){ push('⚠️ Could not slot experiment.'); return; }
-    setLabState(res.labState);
-    push('⚙️ Experiment slotted.');
-  };
-
-  const handleClearExperimentSlot=(nodeId,slotIndex)=>{
-    setLabState(clearExperimentSlot(labState,nodeId,slotIndex).labState);
-  };
-
-  const handleUpgradeNetworkNode=(nodeId)=>{
-    const res=upgradeNetworkNode(labState,nodeId);
-    if(!res.ok){ push(res.reason==='parts'?'⚠️ Need more circuits.':'⚠️ Node at max level.'); return; }
-    setLabState(res.labState);
-    push('⚙️ Node upgraded.');
-  };
-
-  const handleSetNodeAutomation=(nodeId,level)=>{
-    setLabState(setNodeAutomation(labState,nodeId,level));
-  };
-
-  const handleExpandDeployment=(areaId)=>{
-    const res=expandDeploymentArea(labState,areaId);
-    if(!res.ok){ push('⚠️ Area already deployed or locked.'); return; }
-    setLabState(res.labState);
-    push(`⚙️ Network expanded — detection risk may rise.`);
-  };
-
-  const handleApproveProposal=(proposalId)=>{
-    const res=approveProposal(labState,proposalId);
-    if(!res.ok){ push('⚠️ Proposal unavailable.'); return; }
-    setLabState(res.labState);
-    push(`🌐 Approved: ${res.proposal?.label||'network proposal'}.`);
-  };
-
-  const handleDenyProposal=(proposalId)=>{
-    setLabState(denyProposal(labState,proposalId));
-    push('🌐 Proposal denied — stability ticks up slightly.');
-  };
-
-  const handleAdjustIntegration=(delta)=>{
-    setLabState(adjustNexusIntegration(labState,delta));
-    push(delta>0?'🌐 Talia deepens integration with the nexus.':'🌐 Talia pulls back from the mesh.');
-  };
-
-  const handleUpgradeNexus=()=>{
-    const res=upgradeNexus(labState);
-    if(!res.ok){ push('⚠️ Insufficient parts for nexus upgrade.'); return; }
-    setLabState(res.labState);
-    push('🌐 Nexus upgraded.');
-  };
+  const openLabView=()=>setView('lab');
 
   const applyLabAcquisitionChoice=(choiceId)=>{
     setLabSession(prev=>prev?applyLabAcquisition(prev,choiceId,labState):null);
@@ -2646,11 +2531,6 @@ export default function ProfessorSim(){
     const recipe=BLUEPRINT_RECIPES[deviceDefId];
     const talia=taliaStudent();
     if(!recipe||!labState||!talia) return;
-    const playerRecipe=playerRecipeForDevice(deviceDefId);
-    if(playerRecipe&&!isPlayerRecipeUnlocked(playerRecipe.id,player,{ students, labState, pharmacistState, campusState })){
-      push('⚠️ Player invention recipe not unlocked yet.');
-      return;
-    }
     const pool=getEffectiveLabParts();
     const affordState={ parts: pool };
     if(!canAfford(recipe,affordState,money)){
@@ -2692,7 +2572,6 @@ export default function ProfessorSim(){
     }
     const gainLbs=Math.max(0, Math.round(ns.lbs-preLbs));
     setStudents(prev=>prev.map(st=>st.id===studentId?ns:st));
-    setPlayer((p)=>rollPlayerPastePsychBonus(p,Math.random));
     if(consumeInventory&&def?.id){
       setDeviceInventory(prev=>{
         const q=(prev[def.id]||0)-1;
@@ -2814,38 +2693,11 @@ export default function ProfessorSim(){
       useDeviceOn(def,studentId);
       return;
     }
-    if(actionId==='sculpt_redistribution'){
-      const effect=DEVICES.weight_redistribution_rig.useEffect||{};
-      const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'weight_redistribution_rig', rng:Math.random });
-      applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.weight_redistribution_rig);
-      push(`⚖️ Sculpt cycle complete on ${s.name}.`);
-      return;
-    }
     if(actionId==='run_mask_session'){
       const effect=DEVICES.feeding_mask.useEffect||{};
       const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'feeding_mask', rng:Math.random });
       applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.feeding_mask);
       push(`🎭 Mask session on ${s.name}.`);
-      return;
-    }
-    if(actionId==='sleep_feed_gentle'){
-      const effect={ gainLbs:[2,4], psychDelta:{ dependence:2 } };
-      const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'sleep_feeding_system', rng:Math.random });
-      applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.sleep_feeding_system);
-      push(`🌙 Gentle overnight prep on ${s.name}.`);
-      return;
-    }
-    if(actionId==='sleep_feed_aggressive'){
-      const effect={ gainLbs:[5,9], bodyOverride:{ stateType:'bloated', stageBump:2, durationWeeks:1 }, psychDelta:{ dependence:4 } };
-      const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'sleep_feeding_system', rng:Math.random });
-      applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.sleep_feeding_system);
-      push(`🌙 Aggressive sleep-feed cycle on ${s.name}.`);
-      return;
-    }
-    if(actionId==='infuser_water_mode'){
-      const def=DEVICES.liquid_fat_infuser;
-      if((deviceInventory[def.id]||0)<1){ push('⚠️ No liquid fat infusers in inventory.'); return; }
-      useDeviceOn(def,studentId);
       return;
     }
     if(actionId==='feed_furniture'){
@@ -2869,82 +2721,7 @@ export default function ProfessorSim(){
       push(`☢️ Chamber session on ${s.name}.`);
       return;
     }
-    if(actionId==='spray_serum'){
-      useDeviceOn(DEVICES.growth_serum_sprayer,studentId);
-      return;
-    }
-    if(actionId==='release_gas'){
-      useDeviceOn(DEVICES.bloating_gas_canister,studentId);
-      return;
-    }
-    if(actionId==='remove_limiter'){
-      useDeviceOn(DEVICES.growth_limit_remover,studentId);
-      return;
-    }
-    if(actionId==='stimulator_pulse'){
-      const result=runStimulatorPulse(s,week,Math.random);
-      if(!result.ok){ push('⚠️ Stimulator not equipped.'); return; }
-      applyStudentDeviceResult(studentId,result,DEVICES.erogenous_growth_stimulator,false,'lab');
-      push(`💗 Stimulator pulse on ${s.name}.`);
-      return;
-    }
-    if(actionId==='intensify_hunger'){
-      const result=intensifyHungerEngine(s,week,Math.random);
-      if(!result.ok){ push('⚠️ Hunger engine not equipped.'); return; }
-      applyStudentDeviceResult(studentId,result,DEVICES.endless_hunger_engine,false,'lab');
-      push(`🕳️ Distress hunger mode on ${s.name}.`);
-      return;
-    }
-    if(actionId==='run_mutation_session'){
-      const def=DEVICES.rapid_mutation_chamber;
-      if((deviceInventory[def.id]||0)<1){ push('⚠️ No mutation chamber in inventory.'); return; }
-      const result=runStationaryDeviceSession(s,def.id,week,Math.random);
-      applyStudentDeviceResult(studentId,result,def,false,'lab');
-      push(`🧬 Mutation session on ${s.name}.`);
-      return;
-    }
-    if(actionId==='fire_regression'){
-      const def=DEVICES.regression_ray;
-      if((deviceInventory[def.id]||0)<1){ push('⚠️ No regression ray in inventory.'); return; }
-      const result=runRegressionRay(s,'moderate',week,Math.random);
-      applyStudentDeviceResult(studentId,result,def,true,'lab');
-      push(`👶 Regression ray on ${s.name}.`);
-      return;
-    }
-    if(actionId==='tighten_pulse'){
-      const result=triggerTightenPulse(s,player,week,Math.random);
-      if(!result.ok){ push(result.lines?.[0]||'⚠️ Tighten pulse unavailable.'); return; }
-      if(result.player) setPlayer(result.player);
-      applyStudentDeviceResult(studentId,result,DEVICES.controlled_bloating_rig);
-      push(`⭕ Tighten pulse on ${s.name}.`);
-      return;
-    }
-    if(actionId==='burst_feed'){
-      const result=runBurstFeed(s,player,week,Math.random);
-      if(!result.ok){ push('⚠️ Precision feeder not equipped.'); return; }
-      applyStudentDeviceResult(studentId,result,DEVICES.precision_feeder_arm);
-      push(`🦾 Burst feed on ${s.name}.`);
-      return;
-    }
-    if(actionId==='sustained_drip'){
-      const result=runSustainedDrip(s,player,week,Math.random);
-      if(!result.ok){ push('⚠️ Precision feeder not equipped.'); return; }
-      if(result.player) setPlayer(result.player);
-      applyStudentDeviceResult(studentId,result,DEVICES.precision_feeder_arm);
-      push(`💧 Sustained drip on ${s.name}.`);
-      return;
-    }
-    if(actionId==='vent_residual_swell'){
-      const result=ventResidualSwell(s,player,week,Math.random);
-      if(!result.ok){ push(result.lines?.[0]||'⚠️ Nothing to vent.'); return; }
-      if(result.player) setPlayer(result.player);
-      setStudents(prev=>prev.map(st=>st.id===studentId?result.student:st));
-      push(`💨 Residual swell vented on ${s.name}.`);
-      return;
-    }
   };
-
-  const openLabView=()=>setView('lab');
 
   const selectCultRoute=(routeId)=>{
     if(!pharmacistState) return;
@@ -5813,7 +5590,7 @@ export default function ProfessorSim(){
       {/* NAV */}
       <div style={C.nav}>
         {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],
-          ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"],...(labState.stage>=2?[["network","⚙️ Network"]]:[])]:[]),
+          ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"]]:[]),
         ].map(([v,l])=>(
           v==="student"&&!sel?null:
           <button key={v} style={C.navB(view===v)} onClick={()=>setView(v)}>{l}</button>
@@ -5827,7 +5604,7 @@ export default function ProfessorSim(){
           {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} runNetworkControl={runNetworkControl} gatherLabParts={gatherLabParts} openLabView={openLabView} openNetworkView={openNetworkView} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} setPaperDoll={setPaperDoll} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} gatherLabParts={gatherLabParts} openLabView={openLabView} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} setPaperDoll={setPaperDoll} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
@@ -5847,7 +5624,6 @@ export default function ProfessorSim(){
             onBuild={buildLabDevice}
             onResearch={researchLabBlueprint}
             onOpenSession={()=>{ const t=taliaStudent(); if(t) runLabSessionOpen(t); }}
-            onOpenNetwork={()=>{ const t=taliaStudent(); if(t) runNetworkControl(t); }}
             labStage={labState?.stage??1}
           />}
 
@@ -5862,22 +5638,6 @@ export default function ProfessorSim(){
             setEquipPicker={setEquipPicker}
             setAttachPicker={setAttachPicker}
             pushLog={push}
-          />}
-
-          {view==="network"&&<NetworkView
-            labState={labState}
-            deviceInventory={deviceInventory}
-            students={students}
-            onAddNode={handleAddNetworkNode}
-            onSlotExperiment={handleSlotExperiment}
-            onClearSlot={handleClearExperimentSlot}
-            onUpgradeNode={handleUpgradeNetworkNode}
-            onSetAutomation={handleSetNodeAutomation}
-            onExpandArea={handleExpandDeployment}
-            onApproveProposal={handleApproveProposal}
-            onDenyProposal={handleDenyProposal}
-            onAdjustIntegration={handleAdjustIntegration}
-            onUpgradeNexus={handleUpgradeNexus}
           />}
 
           {/* ── CAMPUS EXPLORATION ── */}

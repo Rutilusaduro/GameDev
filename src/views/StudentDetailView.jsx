@@ -12,8 +12,7 @@ import { LILITH_ID } from '../gameData/lilith.js';
 import { RECRUITMENT_SCENE, TESTER_APPEARANCE } from '../gameData/cultivator.js';
 import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
-import { INVENTOR_PATH_STAGES, INVENTOR_ACTIVITIES } from '../gameData/talia.js';
-import { networkSummary } from '../gameData/networkState.js';
+import { INVENTOR_PATH_STAGES } from '../gameData/talia.js';
 import { getAvailableDeviceActions, getBodyOverrideBadge } from '../gameData/deviceActions.js';
 import { StudentEquipPanel } from '../components/StudentEquipPanel.jsx';
 import { formatIngredientBag } from '../gameData/pharmacistIngredients.js';
@@ -23,7 +22,7 @@ import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, runNetworkControl, gatherLabParts, openLabView, openNetworkView, runDeviceAction, unequipDeviceSlot, setPaperDoll, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, gatherLabParts, openLabView, runDeviceAction, unequipDeviceSlot, setPaperDoll, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -349,49 +348,29 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                             </div>
                           );
                         }
-                        // ── MACHINE GODDESS (Talia) — custom panel ──
+                        // ── INVENTOR (Talia) — custom panel ──
                         if(s.evolvedForm==='machine_goddess'&&labState){
                           const ls=labState;
                           const steel="#4a6080";
                           const stageMeta=INVENTOR_PATH_STAGES.find(x=>x.id===ls.stage);
-                          const netAct=INVENTOR_ACTIVITIES[ls.stage]||INVENTOR_ACTIVITIES[2];
-                          const netSum=ls.stage>=2?networkSummary(ls):null;
                           return(
                             <div style={{background:"rgba(8,12,22,0.6)",border:`1px solid ${steel}80`,borderRadius:10,padding:12}}>
                               <div style={{fontSize:9,letterSpacing:3,color:steel,marginBottom:4}}>🔧 EVOLVED PATH</div>
-                              <div style={{fontSize:13,fontWeight:700,color:"#90a8c8",marginBottom:6}}>Machine Goddess — {stageMeta?.label||'Tinkerer'}</div>
+                              <div style={{fontSize:13,fontWeight:700,color:"#90a8c8",marginBottom:6}}>The Inventor — {stageMeta?.label||'Workshop'}</div>
                               <div style={{fontSize:10,color:"#607090",marginBottom:8,lineHeight:1.6}}>
                                 Instability {ls.instability??0}% · Sessions {ls.sessionsRun??0}
                                 <div style={{marginTop:4}}>Talia: {Math.round(s.lbs)} lbs (builds spend her mass)</div>
-                                {netSum&&(
-                                  <div style={{marginTop:4,color:"#50c0e0"}}>
-                                    Mesh: stability {netSum.stability}% · detection {netSum.detectionRisk}% · {netSum.nodeCount} nodes
-                                    {ls.stage>=3&&` · integration ${netSum.integration}%`}
-                                  </div>
-                                )}
                               </div>
                               <div style={{fontSize:9,color:"#506070",marginBottom:8,lineHeight:1.5}}>
-                                {ls.stage>=2
-                                  ? 'Gather parts in a lab session, then build in The Lab. Network control is separate from stocking materials.'
-                                  : (INVENTOR_ACTIVITIES[1]?.desc || 'Run lab sessions to gather parts and build devices.')}
+                                Gather parts in a lab session, research blueprints, then build equipable and event inventions in The Lab.
                               </div>
                               <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
                                 <button style={{...C.btn(steel),flex:"1 1 120px",opacity:ap<1?0.4:1}} onClick={()=>runLabSession(s)}>
                                   🔧 Gather Parts (1 AP)
                                 </button>
-                                {ls.stage>=2&&runNetworkControl&&(
-                                  <button style={{...C.btn("#1a4050"),flex:"1 1 120px",opacity:ap<(netAct.apCost||1)?0.4:1}} onClick={()=>runNetworkControl(s)}>
-                                    {netAct.label||'⚙️ Network Control'} ({netAct.apCost||1} AP)
-                                  </button>
-                                )}
                                 <button style={{...C.btn("#2a3848"),flex:"1 1 100px"}} onClick={openLabView}>
                                   The Lab
                                 </button>
-                                {ls.stage>=2&&openNetworkView&&(
-                                  <button style={{...C.btn("#1a3040"),flex:"1 1 100px"}} onClick={openNetworkView}>
-                                    ⚙️ Mesh Map
-                                  </button>
-                                )}
                               </div>
                             </div>
                           );
