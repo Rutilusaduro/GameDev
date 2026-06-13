@@ -2,7 +2,7 @@
 // SCENE: GROWTH EVENT — multi-beat major gain scenes
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../../engine.js';
-import { getStage, WEIGHT_STAGES } from '../../../gameData/stages.js';
+import { getStage } from '../../../gameData/stages.js';
 import { getEquippedDeviceIds } from '../../../gameData/deviceEquip.js';
 import { getDependenceTier } from '../../../gameData/psychState.js';
 import { MARQUEE_GROWTH_DEVICE_IDS } from '../../../gameData/devices.js';

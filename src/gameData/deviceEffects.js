@@ -103,6 +103,12 @@ function rollRange(range, rng) {
   return lo + Math.floor(rng() * (hi - lo + 1));
 }
 
+const ZONE_OVERRIDE_POOL = ['belly', 'hips', 'thighs', 'ass', 'chest'];
+
+function pickZoneOverride(rng = Math.random) {
+  return ZONE_OVERRIDE_POOL[Math.floor(rng() * ZONE_OVERRIDE_POOL.length)];
+}
+
 function attachmentIdsFromEntry(entry) {
   if (!entry?.attachments) return [];
   return Object.values(entry.attachments).map(a => a?.defId).filter(Boolean);
