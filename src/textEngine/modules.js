@@ -131,3 +131,9 @@ registerModule("group.desc", [
     return `${sizeWord} of ${flavor}`;
   } },
 ]);
+
+// ── device.label — equipped device display name from globals ──
+
+registerModule('device.label', [
+  { when: {}, text: [(ctx) => ctx.globals?.deviceLabel || 'the device'] },
+]);

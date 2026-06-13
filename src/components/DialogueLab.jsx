@@ -110,7 +110,7 @@ const SECTIONS = {
           gainLbs: Number(opts.gain || 14),
         }),
       });
-      return render("{grow.sudden}", ctx, { trace: opts.trace });
+      return render("{ge.surge}", ctx, { trace: opts.trace });
     },
   },
   "device.tick": { params: [...STATE_PARAMS, "deviceId", "gain", "malfunction"],
