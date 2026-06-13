@@ -47,6 +47,21 @@ registerPool('ge.causeAction', [
     'the compound tears away whatever kept her body in check',
     'the limit-removal dose does exactly what the name implies',
   ] },
+  { when: { deviceId: 'endless_hunger_engine' }, text: [
+    'the hunger engine hums against her arms, dulling every full signal',
+    'satiety suppression kicks in — the hollow feeling returns fast',
+    'the engine rewires hunger until eating is the only relief',
+  ] },
+  { when: { deviceId: 'rapid_mutation_chamber' }, text: [
+    'the mutation chamber seals and catalysts flood the chamber',
+    'rapid tissue reconstruction begins — fast, chaotic, beautiful',
+    'the evolution accelerator forces her body through impossible change',
+  ] },
+  { when: { deviceId: 'regression_ray' }, text: [
+    'the regression beam washes over her — filters dropping away',
+    'neurological regression takes hold, impulse control thinning',
+    'the ray dials her maturity back while her body stays adult',
+  ] },
   { when: { deviceId: 'auto_bloating_belt' }, text: [
     'the belt inflates around her waist',
     'the bloating belt clamps her midsection in automatic pressure',
@@ -168,6 +183,9 @@ registerPool('ge.causeAnchor', [
   { when: { deviceId: 'bloating_gas_canister' }, text: [' with gas filling the room', ' in the pressurized cloud', ''] },
   { when: { deviceId: 'erogenous_growth_stimulator' }, text: [' at the stimulator\'s pulse', ''] },
   { when: { deviceId: 'growth_limit_remover' }, text: [' as the limiter fails', ''] },
+  { when: { deviceId: 'endless_hunger_engine' }, text: [' with hunger gnawing underneath', ' while satiety never quite lands', ''] },
+  { when: { deviceId: 'rapid_mutation_chamber' }, text: [' inside the mutation chamber', ' under unstable catalyst flood', ''] },
+  { when: { deviceId: 'regression_ray' }, text: [' in a haze of regressed impulse', ' while she acts younger than she looks', ''] },
   { when: { deviceId: 'auto_bloating_belt' }, text: [' around her waist', ' against her midsection', ''] },
   { when: { deviceId: 'auto_feeder_arm' }, text: [' from the feeder arm', ''] },
   { when: { deviceId: 'sleep_feeding_system' }, text: [' through the night', ' while she slept', ''] },
@@ -223,6 +241,10 @@ registerPool('ge.firstSensation', [
     'fullness climbing before she can resist it',
     'her middle filling up fast',
   ] },
+  { when: { sensation: 'craving' }, text: [
+    'gnawing emptiness under every swallow',
+    'hunger blooming faster than fullness can answer',
+  ] },
   { when: {}, text: ['feeling the first swell', 'registering weight before the scale does'] },
 ]);
 
@@ -259,6 +281,14 @@ registerPool('ge.surgeDetail', [
   { when: { growthMethod: 'limit_break' }, text: [
     'the limiter gone — her body with nothing left to argue with',
     'runaway deposition finding no ceiling',
+  ] },
+  { when: { growthMethod: 'mutation' }, text: [
+    'tissue rewriting itself in impossible directions',
+    'mutations stacking faster than her body can stabilize',
+  ] },
+  { when: { growthMethod: 'hunger' }, text: [
+    'appetite outrunning whatever she just ate',
+    'satiety failing to catch up with the swell',
   ] },
   { when: { growthMethod: 'bloat' }, text: [
     'bloat converting to real mass beneath the pressure',
@@ -539,6 +569,18 @@ registerPool('ge.settleClause', [
     'the limiter architecture dissolved — that chapter closed',
     'nothing left to cap the curve',
   ] },
+  { when: { deviceId: 'rapid_mutation_chamber' }, text: [
+    'new features still settling into her changed frame',
+    'mutations stabilizing — or still evolving, hard to tell',
+  ] },
+  { when: { deviceId: 'endless_hunger_engine' }, text: [
+    'hunger already building again behind the swell',
+    'the hollow feeling returning faster than it should',
+  ] },
+  { when: { deviceId: 'regression_ray' }, text: [
+    'she looks embarrassed and needy at once',
+    'regression leaving her emotionally raw around the gain',
+  ] },
   { when: { growthIntensity: 'violent' }, text: ['leaving damage and delight tangled together'] },
   { when: {}, text: ['', 'leaving her flushed and fuller'] },
 ]);
@@ -581,6 +623,18 @@ registerPool('ge.taliaCameo', [
     '"There it is," Talia says, putting down her pen. "No going back. Data\'s clean."',
     'Talia looks at the readout a long moment. "Limiter dissolved. New baseline unlocked."',
   ] },
+  { when: { deviceId: 'rapid_mutation_chamber', locale: 'lab' }, text: [
+    '"Mutation stack logged," Talia says, already sketching the new features. "Elegant chaos."',
+    'Talia checks the chamber readout. "Evolution rate: obscene. I approve."',
+  ] },
+  { when: { deviceId: 'endless_hunger_engine', locale: 'lab' }, text: [
+    'Talia watches her reach for snacks mid-sentence. "Satiety suppression: nominal," she notes.',
+    '"Hunger regulation is optional now," Talia says, almost kindly.',
+  ] },
+  { when: { deviceId: 'regression_ray', locale: 'lab' }, text: [
+    'Talia lowers the ray. "Regression depth acceptable. She\'ll be needy for a while."',
+    '"Filters are down," Talia says. "Interesting behavioral data."',
+  ] },
   { when: { causeType: 'device_use', locale: 'lab' }, text: [
     '"Within tolerance," Talia says, already taking notes. "Huh. That\'s new."',
     'Talia watches the readout. "Interesting deposition curve."',
@@ -612,6 +666,18 @@ registerPool('ge.deviceWindDown', [
   { when: { deviceId: 'growth_limit_remover' }, text: [
     'nothing left to power down — the work is structural',
     'silence where the limiter used to be',
+  ] },
+  { when: { deviceId: 'rapid_mutation_chamber' }, text: [
+    'the chamber vents as new features settle on her frame',
+    'catalyst residue fading while mutations keep their shape',
+  ] },
+  { when: { deviceId: 'endless_hunger_engine' }, text: [
+    'the engine idling down but hunger still humming underneath',
+    'suppression holding steady as the cycle ends',
+  ] },
+  { when: { deviceId: 'regression_ray' }, text: [
+    'the ray powering off while the regression lingers',
+    'beam fading — bratty neediness still in her eyes',
   ] },
   { when: { deviceId: 'auto_bloating_belt' }, text: ['the belt deflating slowly back to baseline', ''] },
   { when: { deviceId: 'living_furniture_rig' }, text: ['the rig settling into passive mode around her', ''] },

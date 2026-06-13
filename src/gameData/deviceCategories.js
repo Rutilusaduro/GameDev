@@ -24,6 +24,16 @@ export const DEVICE_BLUEPRINT_CATEGORIES = [
       'bloating_gas_canister',
       'erogenous_growth_stimulator',
       'growth_limit_remover',
+      'rapid_mutation_chamber',
+    ],
+  },
+  {
+    id: 'control',
+    label: 'Control',
+    icon: '🧠',
+    deviceIds: [
+      'endless_hunger_engine',
+      'regression_ray',
     ],
   },
 ];

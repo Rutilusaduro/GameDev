@@ -153,6 +153,33 @@ export const BLUEPRINT_RECIPES = {
     tier: 4,
     requiresResearched: ['bp_growth_chamber'],
   },
+  endless_hunger_engine: {
+    deviceDefId: 'endless_hunger_engine',
+    blueprint: 'bp_hunger_engine',
+    parts: { circuits: 2, reagents: 3, exotics: 1, servos: 1 },
+    money: 130,
+    weightCost: 6,
+    tier: 2,
+    requiresResearched: ['bp_feeder_arm'],
+  },
+  rapid_mutation_chamber: {
+    deviceDefId: 'rapid_mutation_chamber',
+    blueprint: 'bp_mutation_chamber',
+    parts: { exotics: 4, reagents: 4, circuits: 3, servos: 2 },
+    money: 320,
+    weightCost: 12,
+    tier: 3,
+    requiresResearched: ['bp_growth_chamber'],
+  },
+  regression_ray: {
+    deviceDefId: 'regression_ray',
+    blueprint: 'bp_regression_ray',
+    parts: { circuits: 2, reagents: 2, exotics: 2, scrap: 1 },
+    money: 115,
+    weightCost: 5,
+    tier: 2,
+    requiresResearched: ['bp_growth_stimulator'],
+  },
 };
 
 export function partsAcquisitionByStage(stageId) {
