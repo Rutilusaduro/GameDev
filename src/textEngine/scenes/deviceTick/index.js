@@ -4,6 +4,8 @@
 import { registerPool, createContext, render } from '../../engine.js';
 import { getStage } from '../../../gameData/stages.js';
 import { getEquippedDeviceIds } from '../../../gameData/deviceEquip.js';
+import { getDevice } from '../../../gameData/devices.js';
+import { resolveGrowthZone } from '../../../gameData/growthEvents.js';
 import './fragments.js';
 import '../../modules.js';
 
@@ -30,6 +32,13 @@ function primaryAttachment(attachmentIds = []) {
   if (attachmentIds.includes('calorie_paste_printer')) return 'calorie_paste_printer';
   if (attachmentIds.includes('predator_capture_module')) return 'predator_capture_module';
   return attachmentIds[0] || null;
+}
+
+function tickGrowthZone(deviceId, student) {
+  const profile = getDevice(deviceId)?.growthProfile;
+  if (profile?.zoneBias === 'lower_body') return 'lower_body';
+  const bodyType = student?.bodyOverride?.bodyTypeOverride || student?.bodyType;
+  return resolveGrowthZone(profile, null, bodyType);
 }
 
 export function renderDeviceTickLine({
@@ -65,6 +74,8 @@ export function renderDeviceTickLine({
       equippedWaist: student?.equip?.waist?.defId || null,
       equippedHead: student?.equip?.head?.defId || null,
       furnitureComfortLow: deviceId === 'living_furniture_rig' && comfort < 40,
+      growthZone: tickGrowthZone(deviceId, student),
+      growthMethod: getDevice(deviceId)?.growthProfile?.growthMethod || null,
     },
   });
   return render('{device.tick.beat}', ctx, { trace });

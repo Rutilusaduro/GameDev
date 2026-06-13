@@ -9,6 +9,7 @@ import { MARQUEE_GROWTH_DEVICE_IDS } from '../../../gameData/devices.js';
 import './fragments.js';
 import './environment.js';
 import './stageCrossings.js';
+import './garments.js';
 import './personas.js';
 import '../../modules.js';
 

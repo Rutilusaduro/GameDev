@@ -48,7 +48,7 @@ registerPool('device.tick.action', [
   ] },
   { when: { deviceId: 'weight_redistribution_rig' }, text: [
     'the {device.label} vibrates against {subject.name}, coaxing fat toward new zones on its sculpt cycle',
-    'pressure nodes on the {device.label} knead {subject.name}\'s shape into a new geometry for the week',
+    'pressure nodes on the {device.label} knead {subject.name}\'s silhouette on a timed redistribution program',
     'the {device.label} works {subject.name}\'s adipose like clay, redistributing weight on a timed program',
   ] },
   { when: { deviceId: 'living_furniture_rig', furnitureComfortLow: true }, text: [
@@ -176,10 +176,45 @@ registerPool('device.tick.sensation', [
     'cushioned flesh yields under the rig\'s maintenance; she grows into a heavier, roomier piece',
     'calories stack until the furniture form creaks content — {subject.name} softer, larger, more useful',
   ] },
-  // ── redistribution (sculpt, not feed) ──
+  // ── redistribution (sculpt, not feed) — describe HOW the shape changed ──
+  { when: { deviceId: 'weight_redistribution_rig', growthZone: 'lower_body' }, text: [
+    'her waist cinches while hips and thighs swell — belly fat migrating south into lower curves',
+    'weight drains from her middle and pools in her hips and thighs, her silhouette pear-heavier',
+    'her belly softens flatter as lower-body curves deepen, thighs pressing together with new insistence',
+  ] },
+  { when: { deviceId: 'weight_redistribution_rig', growthZone: 'hips' }, text: [
+    'her hips widen visibly, upper body drawing narrower by comparison',
+    'fat migrates to her hips until her waist looks pinched between new lower curves',
+    'her lower half claims the week\'s sculpt — hips spreading, ass rounding behind them',
+  ] },
+  { when: { deviceId: 'weight_redistribution_rig', growthZone: 'belly' }, text: [
+    'her belly rounds forward while hips and thighs trim slightly — mass climbing toward her midsection',
+    'softness concentrates in her gut, lower curves easing back to feed the new belly',
+    'her middle swells assertive and forward; the rig pulled weight up from her hips',
+  ] },
+  { when: { deviceId: 'weight_redistribution_rig', growthZone: 'thighs' }, text: [
+    'inner thighs swell and press together harder; softness migrating down her legs',
+    'her thighs thicken in one visible pass, hips following a beat behind',
+    'leg fat stacks heavy and close; walking brings thighs together with new friction',
+  ] },
+  { when: { deviceId: 'weight_redistribution_rig', growthZone: 'ass' }, text: [
+    'her backside fills out while her waist holds — weight settling behind her',
+    'ass and hips round together, belly easing back to make room astern',
+    'the sculpt lands rear-heavy; she feels the new shelf before she sees it',
+  ] },
+  { when: { deviceId: 'weight_redistribution_rig', growthZone: 'chest' }, text: [
+    'fullness migrates to her chest; bust swelling while her waist draws in',
+    'her top heavies forward, lower curves slimming to pay for the new balance',
+    'breasts swell fuller and softer; the rig narrowed everything below to emphasize them',
+  ] },
+  { when: { deviceId: 'weight_redistribution_rig', growthZone: 'full' }, text: [
+    'her frame softens evenly — curves deepening everywhere at once in the rig\'s proportions',
+    'fat redistributes in a full pass, no zone left untouched by the sculpt',
+    'every major curve swells in concert; the rig rebuilt her silhouette wholesale',
+  ] },
   { when: { deviceId: 'weight_redistribution_rig', weightBand: 'heavy' }, text: [
-    'her heavy rolls shift and settle into the rig\'s new geometry, flesh obedient to the sculpt',
-    'adipose redistributes under the vibration — curves migrating where the rig demands',
+    'her heavy rolls shift and settle — belly easing as hips and thighs claim the week\'s gain',
+    'adipose redistributes under the vibration, old zones thinning as new ones swell',
   ] },
   { when: { deviceId: 'weight_redistribution_rig' }, text: [
     'fat settles into the rig\'s planned shape, old zones thinning as new ones swell',

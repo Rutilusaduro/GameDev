@@ -464,8 +464,8 @@ registerModuleVariants("ge.reactionDialogue", [
     `"A starting point," she says. "Nothing more."`,
   ]},
   { when: { studentId: 15, endStageMin: 2, endStageMax: 5 }, weight: W, text: [
-    `"Progressing," she says, with the patience of something that does not hurry.`,
     `"I feel it accumulating," she says, and sounds pleased by that.`,
+    `"Closer," she says, with the patience of something that does not hurry.`,
   ]},
   { when: { studentId: 15, endStageMin: 6 }, weight: W, text: [
     `"Getting there," she murmurs, eyes on you, nowhere else.`,
@@ -615,7 +615,8 @@ registerModuleVariants("grow.crossingDialogue", [
     `"Full portions," she murmurs, warmly.`,
   ]},
   { when: { studentId: 10, endStageMin: 9 }, weight: W, text: [
-    `"Feast," she breathes. "I have become the feast."`,
+    `"Feast," she breathes. "Banquet scale. About right."`,
+    `"The table's set," she murmurs. "I'm what's on it."`,
   ]},
 
   // ── Daisy (13) ─────────────────────────────────────────────────
@@ -634,7 +635,7 @@ registerModuleVariants("grow.crossingDialogue", [
   // ── Lilith (15) ────────────────────────────────────────────────
   { when: { studentId: 15, endStageMin: 3, endStageMax: 5 }, weight: W, text: [
     `"Growing," she murmurs. She sounds as if she has been waiting for this.`,
-    `"Progress," she says. Flat. Satisfied.`,
+    `"Closer," she says. Flat. Satisfied.`,
   ]},
   { when: { studentId: 15, endStageMin: 6, endStageMax: 8 }, weight: W, text: [
     `"Almost," she says. Her patience is intact.`,

@@ -53,6 +53,8 @@ Check NEW content against this list too, not just fixes. When a fix generalizes,
 6. **Big-scale references outside stage 7+** — the industrial scale exists only for girls who broke the analog one.
 7. **Tone-loaded generics in shared pools** — any fragment with tier-specific psychology gets a corruption gate, full stop.
 8. **Stale-context dialogue**: greetings referencing things not in the scene ("not the paperwork"), pre-weigh lines that only make sense post-weigh ("Same time next week"). Place lines in the beat where their content is true.
+9. **Stage-name label crossings** — `"Colossal: reinforced chairs…"` / `"Heavy — chairs complain…"`. Crossings describe the lived threshold (furniture, doorways, movement), not a stage title plus flavor text.
+10. **"I have become the X" dialogue** — banned narrator/character tic in growth crossings and reactions. Show the role metaphorically or cut it.
 
 ## Fix mechanics quick-reference
 
