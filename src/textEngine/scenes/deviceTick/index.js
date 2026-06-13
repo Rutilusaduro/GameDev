@@ -10,11 +10,11 @@ import './fragments.js';
 import '../../modules.js';
 
 registerPool('device.tick.beat', [
-  { when: { isMalfunction: true }, text: [
-    '⚠️ {device.tick.action}{device.tick.anchor}{join:device.tick.malfClause|prefix: — }; {device.tick.sensation}.',
+  { when: { isMalfunction: true }, priority: 1, text: [
+    '⚠️ {device.tick.action}{device.tick.anchor}{join:device.tick.malfClause|prefix: — }; {device.tick.sensation|cap}.',
   ] },
   { when: {}, text: [
-    '{device.tick.action}{device.tick.anchor}; {device.tick.sensation}{join:device.tick.synergy|prefix: }.',
+    '{device.tick.action}{device.tick.anchor}; {device.tick.sensation|cap}{join:device.tick.synergy|prefix: }.',
   ] },
 ]);
 

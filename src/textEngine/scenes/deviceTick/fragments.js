@@ -63,8 +63,8 @@ registerPool('device.tick.action', [
   ] },
   { when: { deviceId: 'growth_accelerator_chamber' }, text: [
     'the {device.label} hums to life around {subject.name}, sealed air turning faintly electric',
-    'the {device.label} seals and floods {subject.name} with radiation through a full acceleration cycle',
-    'inside the {device.label}, {subject.name} stands under a silent field that works her adipose tissue',
+    'the {device.label} seals and floods {subject.name} with radiation through a full acceleration cycle on her adipose tissue',
+    'inside the {device.label}, {subject.name} stands under a silent field that multiplies her adipose tissue',
   ] },
   { when: { deviceId: 'growth_serum_sprayer' }, text: [
     'the {device.label} mists fattening serum across {subject.name}\'s skin in controlled bursts',
@@ -221,6 +221,11 @@ registerPool('device.tick.sensation', [
     'her silhouette changes without a scale tick — redistribution doing its quiet work',
   ] },
   // ── growth chamber (radiation) ──
+  { when: { deviceId: 'growth_accelerator_chamber', weightBand: 'lean' }, text: [
+    'radiation swells her waist and hips before she has words for it — soft tissue appearing where angles used to be',
+    'her slight frame picks up padding fast; belly and thighs soften in the mirror by week\'s end',
+    'fat cells multiply under the field — new curve at her hips, new give in her middle',
+  ] },
   { when: { deviceId: 'growth_accelerator_chamber', weightBand: 'extreme' }, text: [
     'radiation-fed adipose tissue multiplies across her monumental frame without resistance',
     'every deposited pound lands on flesh already vast — the chamber barely slows for her size',
@@ -234,6 +239,7 @@ registerPool('device.tick.sensation', [
   { when: { deviceId: 'rapid_mutation_chamber' }, text: [
     'tissue rewrites itself under the catalyst flood — growth chaotic but undeniable',
     'her body absorbs the mutation cycle\'s output, curves arriving from impossible directions',
+    'mutations settle into new softness — hips rounding, belly deepening, flesh unfamiliar under her hands',
   ] },
   // ── bloat devices ──
   { when: { deviceId: 'auto_bloating_belt', bodyState: 'bloated' }, text: [
@@ -272,11 +278,12 @@ registerPool('device.tick.sensation', [
   // ── weight-band fallbacks (only when device-specific cells miss) ──
   { when: { weightBand: 'lean' }, text: [
     'the new softness shows almost immediately on {subject.name}\'s still-small frame',
-    'her stomach takes the gain faster than she expected',
+    'padding appears where bone and muscle used to define her outline',
+    'curves arrive fast on a frame that had almost none to hide them',
   ] },
   { when: { weightBand: 'mid' }, text: [
     'fullness settles into curves on {subject.name} that will not hide',
-    'her middle softens where the week\'s output keeps landing',
+    'her middle softens where the rig keeps adding mass',
   ] },
   { when: { weightBand: 'heavy', hungerTierMin: 3 }, text: [
     'her heavy rolls swell hungrily to accept what the rig delivers',
@@ -295,61 +302,97 @@ registerPool('device.tick.sensation', [
     'cushioned flesh yields under the rig\'s maintenance',
   ] },
   { when: {}, text: [
-    'the week\'s gain settles into {subject.name}\'s body with mechanical certainty',
+    'the gain settles into {subject.name}\'s body with mechanical certainty',
     '{subject.name}\'s flesh takes the output without argument',
     'the gain shows on {subject.name} by the week\'s end — subtle but real',
   ] },
 ]);
 
-// Malfunction clause — device-keyed where the failure mode differs
+// Malfunction clause — device-keyed; each line must read as a complete clause after the em dash
 registerPool('device.tick.malfClause', [
   { when: { deviceId: 'weight_redistribution_rig', malfunctionTier: 'moderate' }, text: [
-    'then overcorrects — fat sloshes into the wrong zones',
-    'then surges past the sculpt rhythm, geometry turning sloppy',
+    'then overcorrects and fat sloshes into the wrong zones',
+    'then surges past the sculpt rhythm until her silhouette turns sloppy',
   ] },
   { when: { deviceId: 'weight_redistribution_rig', malfunctionTier: 'major' }, text: [
     'then locks into a lopsided redistribution overrun',
-    'refuses to stop sculpting until her silhouette is warped',
+    'then refuses to stop sculpting until her silhouette is warped',
   ] },
   { when: { deviceId: 'growth_accelerator_chamber', malfunctionTier: 'moderate' }, text: [
     'then spikes past the safe radiation ceiling',
-    'then overdrives the field — deposition well outside spec',
+    'then overdrives the field until deposition runs well outside spec',
   ] },
   { when: { deviceId: 'growth_accelerator_chamber', malfunctionTier: 'major' }, text: [
     'then locks the radiation field in a dangerous overrun',
-    'refuses to power down at the planned limit',
+    'then refuses to power down at the planned limit',
   ] },
   { when: { deviceId: 'auto_bloating_belt', malfunctionTier: 'moderate' }, text: [
     'then overpressurizes past the planned bloat limit',
-    'then surges — her waist balloons harder than the belt should allow',
+    'then surges until her waist balloons harder than the belt should allow',
   ] },
   { when: { deviceId: 'bloating_gas_canister', malfunctionTier: 'moderate' }, text: [
     'then vents far past the measured dose',
     'then floods the room with more gas than the canister was rated for',
   ] },
   { when: { deviceId: 'auto_feeder_arm', malfunctionTier: 'moderate' }, text: [
-    'then surges too hard — a messy overfeed past the safe quota',
+    'then overfeeds past the safe quota — portions stacking faster than she can finish',
     'then dumps an oversized portion before the arm resets',
   ] },
   { when: { deviceId: 'feeding_mask', malfunctionTier: 'moderate' }, text: [
     'then floods paste faster than the tube should carry',
-    'then overfeeds — mask pressure spiking past the safe rhythm',
+    'then overfeeds until mask pressure spikes past the safe rhythm',
   ] },
   { when: { deviceId: 'sleep_feeding_system', malfunctionTier: 'moderate' }, text: [
-    'then overdrives the overnight drip into a messy surplus',
+    'then overdrives the overnight drip into a calorie surplus she wakes into',
     'then keeps feeding hours past the scheduled stop',
   ] },
   { when: { deviceId: 'living_furniture_rig', malfunctionTier: 'moderate' }, text: [
     'then overfeeds the furniture form past its comfort threshold',
     'then surges calories until the harness groans in protest',
   ] },
+  { when: { deviceId: 'erogenous_growth_stimulator', malfunctionTier: 'moderate' }, text: [
+    'then locks the pleasure-growth loop on high — deposition racing ahead of the program',
+    'then overdrives each pulse until fat stacks wherever sensation peaks',
+  ] },
+  { when: { deviceId: 'erogenous_growth_stimulator', malfunctionTier: 'major' }, text: [
+    'then refuses to drop intensity — growth tied to arousal with no ceiling',
+    'then runs the stimulator hot until her body cannot stabilize the gain',
+  ] },
+  { when: { deviceId: 'growth_serum_sprayer', malfunctionTier: 'moderate' }, text: [
+    'then oversaturates the mist cloud — serum converting faster than planned',
+    'then keeps aerosolizing past the safe exposure window',
+  ] },
+  { when: { deviceId: 'growth_limit_remover', malfunctionTier: 'moderate' }, text: [
+    'then dissolves the limiter too fast — deposition finding no remaining cap',
+    'then overdrives the compound until her body forgets where enough was',
+  ] },
+  { when: { deviceId: 'endless_hunger_engine', malfunctionTier: 'moderate' }, text: [
+    'then suppresses satiety past safe levels — hunger rewriting her whole week',
+    'then locks hunger high until she eats through every reserve she had',
+  ] },
+  { when: { deviceId: 'regression_ray', malfunctionTier: 'moderate' }, text: [
+    'then deepens the regression haze — impulse and appetite both running hot',
+    'then overdrives the beam until she acts hungry and heedless at once',
+  ] },
+  { when: { deviceId: 'remote_feeding_system', malfunctionTier: 'moderate' }, text: [
+    'then delivers a surplus portion she never saw coming',
+    'then overfeeds from concealment — calories landing before she can refuse',
+  ] },
+  { when: { deviceId: 'growth_serum_injector', malfunctionTier: 'moderate' }, text: [
+    'then plunges a dose well above the safe serum load',
+    'then overdrives the injection until compound floods her bloodstream at once',
+  ] },
   { when: { deviceId: 'rapid_mutation_chamber', malfunctionTier: 'moderate' }, text: [
     'then destabilizes — mutations stacking faster than her body can reconcile',
     'then overdrives the catalyst flood into chaotic overrun',
   ] },
+  { when: { deviceId: 'rapid_mutation_chamber', malfunctionTier: 'major' }, text: [
+    'then locks the evolution cycle in runaway reconstruction',
+    'then refuses to stabilize until her tissue stops rewriting itself',
+  ] },
   { when: { malfunctionTier: 'minor' }, text: [
-    'then hiccups — a minor glitch in the cycle',
-    'stutters once, then keeps going',
+    'then hiccups with a minor glitch in the cycle',
+    'then stutters once before continuing',
   ] },
   { when: { malfunctionTier: 'moderate' }, text: [
     'then spikes past the safe rhythm',
@@ -357,11 +400,11 @@ registerPool('device.tick.malfClause', [
   ] },
   { when: { malfunctionTier: 'major' }, text: [
     'then locks in a dangerous overrun',
-    'refuses to stop at the planned limit',
+    'then refuses to stop at the planned limit',
   ] },
   { when: { malfunctionTier: 'critical' }, text: [
     'then fails catastrophically — nothing looks the same after',
-    'breaks safe parameters entirely',
+    'then breaks safe parameters entirely',
   ] },
   { when: {}, text: [''] },
 ]);

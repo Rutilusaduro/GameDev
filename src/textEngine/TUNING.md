@@ -55,6 +55,8 @@ Check NEW content against this list too, not just fixes. When a fix generalizes,
 8. **Stale-context dialogue**: greetings referencing things not in the scene ("not the paperwork"), pre-weigh lines that only make sense post-weigh ("Same time next week"). Place lines in the beat where their content is true.
 9. **Stage-name label crossings** — `"Colossal: reinforced chairs…"` / `"Heavy — chairs complain…"`. Crossings describe the lived threshold (furniture, doorways, movement), not a stage title plus flavor text.
 10. **"I have become the X" dialogue** — banned narrator/character tic in growth crossings and reactions. Show the role metaphorically or cut it.
+11. **Malformed malfunction ticks** — malf clauses must be complete clauses after the em dash (not noun fragments like "a messy overfeed {name}"); malfunction beats use `; {sensation|cap}` so the second half is a proper sentence. Device-specific failure modes only — feeders overfeed, stims overrun pulses, chambers spike fields.
+12. **"Week's device work" / bland surprise gain** — no "she feels the week's device work", no generic "takes the gain faster than she expected"; sensations name what changed on the body.
 
 ## Fix mechanics quick-reference
 
