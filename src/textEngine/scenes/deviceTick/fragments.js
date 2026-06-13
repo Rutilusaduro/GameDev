@@ -50,7 +50,42 @@ registerPool('device.tick.action', [
     'the living furniture rig passively swells its cushion',
     'restraints and tubes keep the furniture form fed',
   ] },
+  { when: { deviceId: 'growth_accelerator_chamber' }, text: [
+    'the chamber runs a full acceleration cycle on her adipose',
+    'the radiation field floods the sealed chamber, deposits working in silence',
+  ] },
+  { when: { deviceId: 'growth_serum_sprayer' }, text: [
+    'aerosolized serum mists across her skin in controlled bursts',
+    'the growth mist settles and soaks through the week',
+  ] },
+  { when: { deviceId: 'bloating_gas_canister' }, text: [
+    'the gas canister vents a measured bloat dose',
+    'pressurized compound floods the space with slow, inevitable effect',
+  ] },
+  { when: { deviceId: 'erogenous_growth_stimulator' }, text: [
+    'the neck stimulator pulses through its weekly arousal cycle',
+    'the pleasure-linked growth stimulus runs its steady program',
+  ] },
+  { when: { deviceId: 'growth_limit_remover' }, text: [
+    'the limit-removal compound continues its dissolving work',
+    'whatever kept her body in check dissolves another fraction this week',
+  ] },
   { when: {}, text: ['the device completes its weekly cycle'] },
+]);
+
+// PREP ANCHOR — contextualizes where/how the device applies this tick; '' is valid
+registerPool('device.tick.anchor', [
+  { when: { deviceId: 'growth_accelerator_chamber' }, text: [' inside the sealed chamber', ' under the radiation field', ''] },
+  { when: { deviceId: 'growth_serum_sprayer' }, text: [' under the aerosol cloud', ''] },
+  { when: { deviceId: 'bloating_gas_canister' }, text: [' in the gas-filled space', ' in the pressurized cloud', ''] },
+  { when: { deviceId: 'erogenous_growth_stimulator' }, text: [' at the stimulator\'s weekly pulse', ''] },
+  { when: { deviceId: 'growth_limit_remover' }, text: [' as the limiter continues to dissolve', ''] },
+  { when: { deviceId: 'auto_bloating_belt' }, text: [' around her waist', ''] },
+  { when: { deviceId: 'auto_feeder_arm' }, text: [' from the mechanical arm', ''] },
+  { when: { deviceId: 'sleep_feeding_system' }, text: [' through the night', ' in overnight drip', ''] },
+  { when: { deviceId: 'feeding_mask' }, text: [' behind the sealed mask', ''] },
+  { when: { deviceId: 'living_furniture_rig' }, text: [' in the furniture form', ''] },
+  { when: {}, text: ['', ''] },
 ]);
 
 // PARTICIPLE CLAUSE — how it lands on her body
