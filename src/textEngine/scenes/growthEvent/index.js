@@ -75,24 +75,25 @@ function magnitudeFromGlobals(g) {
   return 'notable';
 }
 
-function assembleBeats(ctx, magnitude) {
+function assembleBeats(ctx, magnitude, trace = null) {
+  const r = (tpl) => render(tpl, ctx, { trace });
   const beats = [];
-  beats.push(render('{ge.onset}', ctx));
-  beats.push(render('{ge.surge}', ctx));
+  beats.push(r('{ge.onset}'));
+  beats.push(r('{ge.surge}'));
   if (magnitude !== 'notable') {
-    beats.push(render('{ge.strain}', ctx));
+    beats.push(r('{ge.strain}'));
   }
   if (magnitude === 'dramatic' || (magnitude === 'significant' && ctx.globals.endStage >= 6)) {
-    beats.push(render('{ge.environment}', ctx));
+    beats.push(r('{ge.environment}'));
   }
   if (ctx.globals.stagesJumped >= 1) {
-    const crossing = render('{grow.crossing}', ctx);
-    const crossingDlg = render('{grow.crossingDialogue}', ctx);
+    const crossing = r('{grow.crossing}');
+    const crossingDlg = r('{grow.crossingDialogue}');
     beats.push([crossing, crossingDlg].filter(Boolean).join(' '));
   }
-  beats.push(render('{ge.reaction}', ctx));
-  const settle = render('{ge.settle}', ctx);
-  const talia = render('{ge.taliaCameo}', ctx);
+  beats.push(r('{ge.reaction}'));
+  const settle = r('{ge.settle}');
+  const talia = r('{ge.taliaCameo}');
   beats.push([settle, talia].filter(Boolean).join('\n'));
   return beats.filter(b => b && b.trim());
 }
@@ -100,7 +101,7 @@ function assembleBeats(ctx, magnitude) {
 export function renderGrowthScene(student, params = {}, opts = {}) {
   const ctx = growthCtx(student, params, opts);
   const magnitude = magnitudeFromGlobals(ctx.globals);
-  return assembleBeats(ctx, magnitude).join('\n\n');
+  return assembleBeats(ctx, magnitude, opts.trace || null).join('\n\n');
 }
 
 export function renderStageCrossingLine(student, { endStage, week = 1 } = {}) {

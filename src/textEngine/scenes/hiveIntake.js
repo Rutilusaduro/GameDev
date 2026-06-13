@@ -27,7 +27,7 @@ registerModule("hive.mayaWatches", [
 // renderHiveIntake(lilith, victims, week) → finished scene string.
 // `victims` is an array of student-like objects ({name, lbs, bodyType, ...});
 // a representative is used for body/clothing description.
-export function renderHiveIntake(lilith, victims, week) {
+export function renderHiveIntake(lilith, victims, week, opts = {}) {
   const proxy = victims && victims.length ? victims[0] : null;
   const ctx = createContext({
     subject: proxy,
@@ -35,5 +35,5 @@ export function renderHiveIntake(lilith, victims, week) {
     group: victims,
     week,
   });
-  return render(HIVE_INTAKE_TEMPLATE, ctx);
+  return render(HIVE_INTAKE_TEMPLATE, ctx, { trace: opts.trace || null });
 }

@@ -65,12 +65,12 @@ function resultContext(encounter, deviceId, modeId, result, nodeId) {
   });
 }
 
-export function renderCampusDeviceEncounter(target, nodeId, explorationCtx) {
-  return render('{campus.deviceEncounter}', encounterContext(target, nodeId, explorationCtx));
+export function renderCampusDeviceEncounter(target, nodeId, explorationCtx, opts = {}) {
+  return render('{campus.deviceEncounter}', encounterContext(target, nodeId, explorationCtx), { trace: opts.trace || null });
 }
 
-export function renderCampusDeviceResult(encounter, deviceId, modeId, result, nodeId) {
-  return render('{campus.deviceResult}', resultContext(encounter, deviceId, modeId, result, nodeId));
+export function renderCampusDeviceResult(encounter, deviceId, modeId, result, nodeId, opts = {}) {
+  return render('{campus.deviceResult}', resultContext(encounter, deviceId, modeId, result, nodeId), { trace: opts.trace || null });
 }
 
 export function renderCampusDeviceFlavor(flavorDevice, explorationCtx) {

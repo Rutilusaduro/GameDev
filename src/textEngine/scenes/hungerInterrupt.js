@@ -156,18 +156,19 @@ export const HUNGER_INTERRUPT_TEMPLATE =
   "{scene.hungerInterrupt.personal|prefix: }{scene.hungerInterrupt.appearance|prefix: }{scene.hungerInterrupt.archetypeBehavior|prefix: }{scene.hungerInterrupt.behavior|prefix: }" +
   "{scene.hungerInterrupt.archetypeRequest|prefix: }{scene.hungerInterrupt.request} {scene.hungerInterrupt.tone}";
 
-export function renderHungerInterrupt(student, week = 1) {
+export function renderHungerInterrupt(student, week = 1, opts = {}) {
   const ctx = createContext({ subject: student, week });
-  return render(HUNGER_INTERRUPT_TEMPLATE, ctx).trim();
+  return render(HUNGER_INTERRUPT_TEMPLATE, ctx, { trace: opts.trace || null }).trim();
 }
 
-export function renderHungerOutcome(student, action, week = 1) {
+export function renderHungerOutcome(student, action, week = 1, opts = {}) {
   const key = { feed: "scene.hunger.response.feed", compound: "scene.hunger.response.compound", deny: "scene.hunger.response.deny", talk: "scene.hunger.response.talk" }[action];
   if (!key) return "";
   const ctx = createContext({ subject: student, week });
-  let text = render(`{${key}}`, ctx).trim();
+  const trace = opts.trace || null;
+  let text = render(`{${key}}`, ctx, { trace }).trim();
   if (action === "feed" || action === "compound") {
-    const style = render("{eating.style}", ctx).trim();
+    const style = render("{eating.style}", ctx, { trace }).trim();
     if (style) text = `${text} ${style}`;
   }
   return text;

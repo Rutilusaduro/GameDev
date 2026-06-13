@@ -44,6 +44,7 @@ export function renderDeviceTickLine({
   attachmentIds = [],
   isMalfunction = false,
   week = 1,
+  trace = null,
 }) {
   const equipped = getEquippedDeviceIds(student);
   const comfort = student?.deviceState?.furnitureComfort ?? 100;
@@ -68,5 +69,5 @@ export function renderDeviceTickLine({
       furnitureComfortLow: deviceId === 'living_furniture_rig' && comfort < 40,
     },
   });
-  return render('{device.tick.beat}', ctx);
+  return render('{device.tick.beat}', ctx, { trace });
 }

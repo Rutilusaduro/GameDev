@@ -355,5 +355,5 @@ export function renderAttitude(student, week = 1, opts = {}) {
       campusTier: opts.campusTier ?? (opts.campusFattening ? 1 : 0),
     },
   });
-  return render(ATTITUDE_TEMPLATE, ctx).trim() || "—";
+  return render(ATTITUDE_TEMPLATE, ctx, { trace: opts.trace || null }).trim() || "—";
 }
