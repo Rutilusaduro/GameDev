@@ -152,12 +152,12 @@ const SECTIONS = {
           lbs: s.lbs,
         },
       };
-      const deviceId = opts.deviceId || 'remote_feeding_system';
+      const deviceId = opts.deviceId || 'endless_hunger_engine';
       return renderCampusDeviceResult(
         encounter,
         deviceId,
-        'stealth',
-        { discovered: false, modeId: 'stealth' },
+        'pulse',
+        { discovered: false, modeId: 'pulse' },
         opts.campusNode || 'quad',
         opts,
       );

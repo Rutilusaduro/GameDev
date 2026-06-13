@@ -261,7 +261,7 @@ if (hasModule('ge.onset')) {
             const out = renderGrowthScene(student, {
               causeType,
               featureId: causeType === 'feature' ? 'stream' : null,
-              deviceId: 'growth_serum_sprayer',
+              deviceId: 'growth_serum_injector',
               gainLbs: 14,
               startStage,
               endStage,

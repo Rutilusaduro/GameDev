@@ -21,135 +21,76 @@ registerPool('ge.onset', [
 
 // VERB PHRASE — what triggers the growth
 registerPool('ge.causeAction', [
-  // per-device cells
   { when: { deviceId: 'growth_accelerator_chamber' }, text: [
     'the chamber seals and the radiation field ramps up',
     'the acceleration field floods her from every panel',
     'the chamber begins its cycle, warm and relentless',
   ] },
-  { when: { deviceId: 'growth_serum_sprayer' }, text: [
-    'the aerosol cloud settles over her skin',
-    'serum mist hangs in the air and soaks in',
-    'the sprayer fills the room with fattening compound',
-  ] },
-  { when: { deviceId: 'bloating_gas_canister' }, text: [
-    'the canister vents its payload in a rush',
-    'pressurized bloat gas floods the space around her',
-    'the canister releases with a hiss and the gas takes over',
-  ] },
-  { when: { deviceId: 'erogenous_growth_stimulator' }, text: [
-    'the stimulator pulses at her neck in slow waves',
-    'the pleasure-linked growth stimulus cycles on',
-    'the neck device hums and links pleasure to growth',
-  ] },
-  { when: { deviceId: 'growth_limit_remover' }, text: [
-    'the limiter dissolves in her bloodstream',
-    'the compound tears away whatever kept her body in check',
-    'the limit-removal dose does exactly what the name implies',
+  { when: { deviceId: 'growth_serum_injector' }, text: [
+    'the injector plunges its volatile dose home',
+    'the formula shot hits her bloodstream fast',
+    'growth compound races through her before the ache fades',
   ] },
   { when: { deviceId: 'endless_hunger_engine' }, text: [
-    'the hunger engine hums against her arms, dulling every full signal',
-    'satiety suppression kicks in — the hollow feeling returns fast',
-    'the engine rewires hunger until eating is the only relief',
-  ] },
-  { when: { deviceId: 'rapid_mutation_chamber' }, text: [
-    'the mutation chamber seals and catalysts flood the chamber',
-    'rapid tissue reconstruction begins — fast, chaotic, beautiful',
-    'the evolution accelerator forces her body through impossible change',
-  ] },
-  { when: { deviceId: 'regression_ray' }, text: [
-    'the regression beam washes over her — filters dropping away',
-    'neurological regression takes hold, impulse control thinning',
-    'the ray dials her maturity back while her body stays adult',
+    'the Hunger Ray tags her with engineered craving',
+    'satiety suppression lands — the hollow returns fast',
+    'the ray rewires hunger until eating is the only relief',
   ] },
   { when: { deviceId: 'auto_bloating_belt' }, text: [
     'the belt inflates around her waist',
-    'the bloating belt clamps her midsection in automatic pressure',
-  ] },
-  { when: { deviceId: 'auto_feeder_arm', hasAttachment: 'liquid_fat_infuser' }, text: [
-    'the arm delivers infused slurry at mechanical pace',
-    'fattening slurry lands by servo rhythm',
+    'the Weight Belt clamps her midsection in automatic pressure',
+    'bloat pressure cycles through the waist harness on schedule',
   ] },
   { when: { deviceId: 'auto_feeder_arm' }, text: [
     'the feeder arm swings to her mouth on schedule',
     'another measured portion arrives by servo-guided arm',
-  ] },
-  { when: { deviceId: 'growth_serum_injector' }, text: [
-    'the injector plunges its volatile dose home',
-    'the serum shot hits her bloodstream fast',
-  ] },
-  { when: { deviceId: 'weight_redistribution_rig' }, text: [
-    'the redistribution rig engages, vibrating fat toward new zones',
-    'pressure nodes cycle through her body on schedule',
-  ] },
-  { when: { deviceId: 'remote_feeding_system' }, text: [
-    'a hidden drone delivers another calibrated portion',
-    'the remote system feeds her from across campus without warning',
-  ] },
-  { when: { deviceId: 'sleep_feeding_system', hasAttachment: 'liquid_fat_infuser' }, text: [
-    'the sleep mask floods her with infused slurry through the night',
-    'overnight infusion runs while she is helpless',
-  ] },
-  { when: { deviceId: 'sleep_feeding_system' }, text: [
-    'the sleep mask continues its overnight drip',
-    'sensors hold the overnight calorie flow perfectly steady',
-  ] },
-  { when: { deviceId: 'feeding_mask', hasAttachment: 'liquid_fat_infuser' }, text: [
-    'the locked mask pumps warm infused formula past her lips',
-    'the mask floods her with fattening compound on a timer',
+    'the Auto-Feed Arm holds position and pushes food through',
   ] },
   { when: { deviceId: 'feeding_mask' }, text: [
-    'the locked mask forces another quota through the tube',
+    'the Force Feeder locks and forces another quota through the tube',
     'the mask holds fast and keeps feeding',
+    'straps cinch while paste keeps landing past sealed lips',
   ] },
-  { when: { deviceId: 'liquid_fat_infuser' }, text: [
-    'warm fattening slurry flows from the infuser',
-    'dense infused liquid hits her bloodstream in heavy waves',
+  { when: { deviceId: 'obedience_belt' }, text: [
+    'the Obedience Belt tightens its compliance loop',
+    'shame cues and feeding prompts stack from the waist harness',
+    'the belt hums whenever she hesitates — obedience and appetite braided',
+  ] },
+  { when: { deviceId: 'reinforced_legs' }, text: [
+    'the leg braces bear new load as her lower body thickens',
+    'reinforced supports adjust while furniture-weight settles through her thighs',
+    'servos in the braces compensate as mass stacks lower on her frame',
   ] },
   { when: { deviceId: 'living_furniture_rig' }, text: [
-    'the furniture rig feeds her to hold the shape',
+    'the Furniture Harness feeds her to hold the shape',
     'restraint tubes maintain the furniture form with steady calories',
+    'the rig swells its cushion while calories keep the form usable',
   ] },
-  { when: { deviceId: 'calorie_paste_printer' }, text: [
-    'dense paste extrudes from the feeder on cue',
-    'optimized calorie paste lands on her tongue by mechanical routine',
-  ] },
-  // growthMethod fallbacks
+  // growthMethod fallbacks (approved invention profiles only)
   { when: { growthMethod: 'feed' }, text: [
     'more food arrives, mechanical and certain',
     'the feeding mechanism delivers another round',
+    'calories land on schedule, portion after portion',
   ] },
   { when: { growthMethod: 'bloat' }, text: [
     'the bloating pressure builds from the inside out',
     'the bloat compound takes its toll',
+    'pressure swells through her midsection in measured waves',
   ] },
   { when: { growthMethod: 'serum' }, text: [
-    'the growth serum takes hold in her bloodstream',
+    'the growth formula takes hold in her bloodstream',
     'the serum cascade begins',
-  ] },
-  { when: { growthMethod: 'gas' }, text: [
-    'the gas hangs and soaks in, doing its work',
-    'the compound gas works through her skin',
+    'volatile compound converts faster than comfort allows',
   ] },
   { when: { growthMethod: 'radiation' }, text: [
     'the radiation field builds toward critical density',
     'the field concentrates on her adipose',
+    'warm deposition multiplies under the sealed field',
   ] },
-  { when: { growthMethod: 'stimulate' }, text: [
-    'the stimulation cycles up, linking pleasure to growth',
-    'the pleasure-growth feedback loop activates',
-  ] },
-  { when: { growthMethod: 'sculpt' }, text: [
-    'the rig sculpts with precise pressure and vibration',
-    'fat migrates at the rig\'s direction',
-  ] },
-  { when: { growthMethod: 'infuse' }, text: [
-    'the infusion compound spreads through her system',
-    'fat-dense fluid infuses directly',
-  ] },
-  { when: { growthMethod: 'limit_break' }, text: [
-    'the limit-removal compound floods her bloodstream',
-    'whatever biological ceiling she had comes down',
+  { when: { growthMethod: 'hunger' }, text: [
+    'craving outruns whatever she just ate',
+    'satiety fails to catch up with appetite',
+    'hunger rewrites the week before fullness can argue back',
   ] },
   // featureId cells
   { when: { featureId: 'stream' }, text: [
@@ -179,18 +120,14 @@ registerPool('ge.causeAction', [
 // PREP ANCHOR — contextualizes where/how the cause acts; '' is valid
 registerPool('ge.causeAnchor', [
   { when: { deviceId: 'growth_accelerator_chamber' }, text: [' inside the chamber', ' in the sealed radiation field', ''] },
-  { when: { deviceId: 'growth_serum_sprayer' }, text: [' under the mist cloud', ''] },
-  { when: { deviceId: 'bloating_gas_canister' }, text: [' with gas filling the room', ' in the pressurized cloud', ''] },
-  { when: { deviceId: 'erogenous_growth_stimulator' }, text: [' at the stimulator\'s pulse', ''] },
-  { when: { deviceId: 'growth_limit_remover' }, text: [' as the limiter fails', ''] },
-  { when: { deviceId: 'endless_hunger_engine' }, text: [' with hunger gnawing underneath', ' while satiety never quite lands', ''] },
-  { when: { deviceId: 'rapid_mutation_chamber' }, text: [' inside the mutation chamber', ' under unstable catalyst flood', ''] },
-  { when: { deviceId: 'regression_ray' }, text: [' in a haze of regressed impulse', ' while she acts younger than she looks', ''] },
+  { when: { deviceId: 'growth_serum_injector' }, text: [' as the injector hisses shut', ' with formula still burning through her veins', ''] },
+  { when: { deviceId: 'endless_hunger_engine' }, text: [' with hunger gnawing underneath', ' while satiety never quite lands', ' at range'] },
   { when: { deviceId: 'auto_bloating_belt' }, text: [' around her waist', ' against her midsection', ''] },
-  { when: { deviceId: 'auto_feeder_arm' }, text: [' from the feeder arm', ''] },
-  { when: { deviceId: 'sleep_feeding_system' }, text: [' through the night', ' while she slept', ''] },
-  { when: { deviceId: 'feeding_mask' }, text: [' behind the locked mask', ''] },
-  { when: { deviceId: 'living_furniture_rig' }, text: [' in the furniture harness', ''] },
+  { when: { deviceId: 'auto_feeder_arm' }, text: [' from the feeder arm', ' under mechanical feeding', ''] },
+  { when: { deviceId: 'feeding_mask' }, text: [' behind the locked mask', ' through the sealed tube', ''] },
+  { when: { deviceId: 'obedience_belt' }, text: [' under the compliance harness', ' at the waist', ''] },
+  { when: { deviceId: 'reinforced_legs' }, text: [' through the braced supports', ' as the leg rig takes load', ''] },
+  { when: { deviceId: 'living_furniture_rig' }, text: [' in the furniture harness', ' inside the restraint frame', ''] },
   { when: { locale: 'lab' }, text: [
     ' with {subject.name} in the lab',
     ' as {subject.name} stands in Talia\'s lab',
@@ -274,37 +211,20 @@ registerPool('ge.surgeDetail', [
     'the serum working faster than the label ever suggested',
     'compound accelerating every fat cell at once',
   ] },
-  { when: { growthMethod: 'gas' }, text: [
-    'the bloat converting to something more permanent',
-    'gas converting to mass faster than she can deflate',
-  ] },
-  { when: { growthMethod: 'stimulate' }, text: [
-    'pleasure-fed adipose multiplication, slow but inevitable',
-    'each pulse adding wherever the feeling settles',
-  ] },
-  { when: { growthMethod: 'limit_break' }, text: [
-    'the limiter gone — her body with nothing left to argue with',
-    'runaway deposition finding no ceiling',
-  ] },
-  { when: { growthMethod: 'mutation' }, text: [
-    'tissue rewriting itself in impossible directions',
-    'mutations stacking faster than her body can stabilize',
-  ] },
   { when: { growthMethod: 'hunger' }, text: [
     'appetite outrunning whatever she just ate',
     'satiety failing to catch up with the swell',
+    'craving stacking faster than fullness can answer',
   ] },
   { when: { growthMethod: 'bloat' }, text: [
     'bloat converting to real mass beneath the pressure',
     'the belt\'s work showing up as permanent curve',
+    'pressure settling into softness that will not deflate',
   ] },
-  { when: { growthMethod: 'sculpt' }, text: [
-    'fat settling into its new address with mechanical efficiency',
-    'redistribution completing its final geometry',
-  ] },
-  { when: { growthMethod: 'infuse' }, text: [
-    'the infusion binding to adipose like it was always meant to',
-    'dense compound converting straight to stored fat',
+  { when: { growthMethod: 'feed' }, text: [
+    'calories landing faster than shame can organize',
+    'another round of feeding converting straight to stored mass',
+    'fullness compounding into visible curve',
   ] },
   { when: { malfunctionTier: 'critical' }, text: [
     'with catastrophic disregard for limits',
@@ -543,7 +463,7 @@ registerPool('ge.reactionDialogue', [
     '"Keep going," she says, then stops herself. Doesn\'t apologize.',
     '"Oh, that\'s good," she says, warm and honest.',
   ] },
-  { when: { growthMethod: 'limit_break' }, text: [
+  { when: { limitRemoved: true }, text: [
     '"So that\'s it, then," she says. She sounds calm.',
     '"There\'s no going back now, is there."',
   ] },
@@ -570,33 +490,37 @@ registerPool('ge.settleClause', [
     'the radiation signature still warm on her skin',
     'the chamber log noting the deposition as nominal',
   ] },
-  { when: { deviceId: 'growth_serum_sprayer' }, text: [
-    'the mist deposited and metabolized',
-    'the serum absorbed, its work done',
-  ] },
-  { when: { deviceId: 'bloating_gas_canister' }, text: [
-    'the gas converted to something she cannot undo',
-    'residual pressure still settling into permanent mass',
-  ] },
-  { when: { deviceId: 'erogenous_growth_stimulator' }, text: [
-    'the pleasure-gain loop quieting into warmth',
-    'the stimulator\'s feedback fading but the gain staying',
-  ] },
-  { when: { deviceId: 'growth_limit_remover' }, text: [
-    'the limiter architecture dissolved — that chapter closed',
-    'nothing left to cap the curve',
-  ] },
-  { when: { deviceId: 'rapid_mutation_chamber' }, text: [
-    'new features still settling into her changed frame',
-    'mutations stabilizing — or still evolving, hard to tell',
+  { when: { deviceId: 'growth_serum_injector' }, text: [
+    'the formula still metabolizing in uneven waves',
+    'serum absorbed, its work only partly finished',
   ] },
   { when: { deviceId: 'endless_hunger_engine' }, text: [
     'hunger already building again behind the swell',
     'the hollow feeling returning faster than it should',
   ] },
-  { when: { deviceId: 'regression_ray' }, text: [
-    'she looks embarrassed and needy at once',
-    'regression leaving her emotionally raw around the gain',
+  { when: { deviceId: 'auto_bloating_belt' }, text: [
+    'residual pressure still settling into permanent mass',
+    'the waist harness easing while the gain stays',
+  ] },
+  { when: { deviceId: 'auto_feeder_arm' }, text: [
+    'the arm retracting to idle with paste still on her lips',
+    'servo rhythm slowing while fullness remains',
+  ] },
+  { when: { deviceId: 'feeding_mask' }, text: [
+    'the mask unlocking with a wet click',
+    'tube pressure bleeding off while calories remain',
+  ] },
+  { when: { deviceId: 'obedience_belt' }, text: [
+    'compliance cues fading to a low hum',
+    'shame and fullness braided together in the aftermath',
+  ] },
+  { when: { deviceId: 'reinforced_legs' }, text: [
+    'braces ticking as they readjust to new load',
+    'supports settling under heavier thighs',
+  ] },
+  { when: { deviceId: 'living_furniture_rig' }, text: [
+    'the furniture form creaking content at the new weight',
+    'harness straps easing while the shape holds',
   ] },
   { when: { growthIntensity: 'violent' }, text: ['leaving damage and delight tangled together'] },
   { when: {}, text: ['', 'leaving her flushed and fuller'] },
@@ -604,14 +528,12 @@ registerPool('ge.settleClause', [
 
 // FULL SENTENCE — permanent note tail (used via join, so Capitalized)
 registerPool('ge.permanentNote', [
-  { when: { deviceId: 'growth_limit_remover' }, text: [
-    'Whatever her body remembered as "enough" has been surgically removed.',
-  ] },
   { when: { growthMethod: 'radiation' }, text: [
     'Radiation-induced adipose is permanent by design.',
   ] },
   { when: { growthMethod: 'serum', isPermanent: true }, text: [
-    'The serum batch was not reversible.',
+    'The formula batch was not reversible.',
+    'Serum deposition keeps working after it should have stopped.',
   ] },
   { when: { limitRemoved: true }, text: ['There is no going back to how her body remembered limits.'] },
   { when: { isPermanent: true }, text: ['Some of this will not unwind.'] },
@@ -624,33 +546,25 @@ registerPool('ge.taliaCameo', [
     '"Field\'s still warm," Talia notes, checking the chamber readout. "Interesting."',
     'Talia marks the deposition curve. "Chamber efficiency: above spec. I\'ll update the model."',
   ] },
-  { when: { deviceId: 'growth_serum_sprayer', locale: 'lab' }, text: [
-    '"Aerosol deposition is patchy," Talia says. "But the numbers work."',
-    'Talia fans residual mist from her clipboard. "Skin absorption rate. Useful data."',
-  ] },
-  { when: { deviceId: 'bloating_gas_canister', locale: 'lab' }, text: [
-    'Talia fans the residual gas away from her clipboard. "Volume: consistent."',
-    '"Gas-to-mass conversion is running at 94%," Talia says. "Healthy."',
-  ] },
-  { when: { deviceId: 'erogenous_growth_stimulator', locale: 'lab' }, text: [
-    'Talia adjusts the stimulator collar. "Feedback loop nominal," she says, not looking up.',
-    '"Pleasure-correlated gain is my favorite data type," Talia says, and seems to mean it.',
-  ] },
-  { when: { deviceId: 'growth_limit_remover', locale: 'lab' }, text: [
-    '"There it is," Talia says, putting down her pen. "No going back. Data\'s clean."',
-    'Talia looks at the readout a long moment. "Limiter dissolved. New baseline unlocked."',
-  ] },
-  { when: { deviceId: 'rapid_mutation_chamber', locale: 'lab' }, text: [
-    '"Mutation stack logged," Talia says, already sketching the new features. "Elegant chaos."',
-    'Talia checks the chamber readout. "Evolution rate: obscene. I approve."',
+  { when: { deviceId: 'growth_serum_injector', locale: 'lab' }, text: [
+    '"Variance within parameters," Talia says, watching the readout climb. "Chaos, but useful."',
+    'Talia logs the injection curve. "Formula deposition: faster than the label suggests."',
   ] },
   { when: { deviceId: 'endless_hunger_engine', locale: 'lab' }, text: [
     'Talia watches her reach for snacks mid-sentence. "Satiety suppression: nominal," she notes.',
     '"Hunger regulation is optional now," Talia says, almost kindly.',
   ] },
-  { when: { deviceId: 'regression_ray', locale: 'lab' }, text: [
-    'Talia lowers the ray. "Regression depth acceptable. She\'ll be needy for a while."',
-    '"Filters are down," Talia says. "Interesting behavioral data."',
+  { when: { deviceId: 'living_furniture_rig', locale: 'lab' }, text: [
+    'Talia checks the harness tension. "Furniture form stable. Comfort acceptable."',
+    '"She\'s holding the shape," Talia says, tapping a strap. "Feed her again before it creaks."',
+  ] },
+  { when: { deviceId: 'feeding_mask', locale: 'lab' }, text: [
+    'Talia wipes paste from the mask seal. "Throughput acceptable. Subject compliant enough."',
+    '"Mask pressure nominal," Talia says, already logging the next cycle.',
+  ] },
+  { when: { deviceId: 'auto_feeder_arm', locale: 'lab' }, text: [
+    'Talia watches the arm retract. "Servo rhythm clean. Portion size: obscene, as intended."',
+    '"Feeder efficiency holds," Talia says, making a note without looking up.',
   ] },
   { when: { causeType: 'device_use', locale: 'lab' }, text: [
     '"Within tolerance," Talia says, already taking notes. "Huh. That\'s new."',
@@ -668,36 +582,38 @@ registerPool('ge.deviceWindDown', [
     'the chamber venting with a long decompressing sigh',
     'radiation readings dropping back to safe as the panels cool',
   ] },
-  { when: { deviceId: 'growth_serum_sprayer' }, text: [
-    'the mist thinning to nothing, but the work already done',
-    'the sprayer running dry with a quiet hiss',
-  ] },
-  { when: { deviceId: 'bloating_gas_canister' }, text: [
-    'the canister running empty as the gas clears',
-    'the hiss of the last gas dying away',
-  ] },
-  { when: { deviceId: 'erogenous_growth_stimulator' }, text: [
-    'the stimulator humming down to idle, leaving lingering warmth',
-    'pulse frequency dropping to rest as the cycle closes',
-  ] },
-  { when: { deviceId: 'growth_limit_remover' }, text: [
-    'nothing left to power down — the work is structural',
-    'silence where the limiter used to be',
-  ] },
-  { when: { deviceId: 'rapid_mutation_chamber' }, text: [
-    'the chamber vents as new features settle on her frame',
-    'catalyst residue fading while mutations keep their shape',
+  { when: { deviceId: 'growth_serum_injector' }, text: [
+    'the injector clicking empty, compound already in her blood',
+    'the hiss of the spent cartridge dying away',
   ] },
   { when: { deviceId: 'endless_hunger_engine' }, text: [
-    'the engine idling down but hunger still humming underneath',
-    'suppression holding steady as the cycle ends',
+    'the ray powering down but hunger still humming underneath',
+    'suppression holding steady as the exposure ends',
   ] },
-  { when: { deviceId: 'regression_ray' }, text: [
-    'the ray powering off while the regression lingers',
-    'beam fading — bratty neediness still in her eyes',
+  { when: { deviceId: 'auto_bloating_belt' }, text: [
+    'the belt deflating slowly back to baseline',
+    'pressure bleeding off the waist harness with a soft vent',
   ] },
-  { when: { deviceId: 'auto_bloating_belt' }, text: ['the belt deflating slowly back to baseline', ''] },
-  { when: { deviceId: 'living_furniture_rig' }, text: ['the rig settling into passive mode around her', ''] },
+  { when: { deviceId: 'auto_feeder_arm' }, text: [
+    'the arm folding back to its mount with a servo whine',
+    'feeding cycle ending with one last mechanical click',
+  ] },
+  { when: { deviceId: 'feeding_mask' }, text: [
+    'the mask unlocking with a wet release of pressure',
+    'tube flow stopping while straps loosen one notch',
+  ] },
+  { when: { deviceId: 'obedience_belt' }, text: [
+    'the harness humming down to standby',
+    'compliance cues fading to idle',
+  ] },
+  { when: { deviceId: 'reinforced_legs' }, text: [
+    'braces ticking as servos return to neutral',
+    'supports settling after bearing the new load',
+  ] },
+  { when: { deviceId: 'living_furniture_rig' }, text: [
+    'the rig settling into passive mode around her',
+    'harness straps easing while the furniture form holds',
+  ] },
   { when: {}, text: ['', ''] },
 ]);
 

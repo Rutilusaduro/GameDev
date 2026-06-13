@@ -972,7 +972,7 @@ export default function ProfessorSim(){
         const lrPre=ns.lbs;
         ns=processStudentGain(ns,extra,0);
         const lrEv=buildGrowthEvent(ns,{
-          cause:{ type:'device_use', deviceId:'growth_limit_remover', locale:'campus' },
+          cause:{ type:'device_use', deviceId:'growth_serum_injector', locale:'campus' },
           preLbs:lrPre,
           gainLbs:extra,
           week:newWeek,
