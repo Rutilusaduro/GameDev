@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// THE LAB — Workshop + Research Terminal
+// THE LAB — Workshop + Research Terminal + Inventions
 // ═══════════════════════════════════════════════════════════════
 import { useMemo, useState } from 'react';
 import { C } from '../styles.js';
@@ -22,8 +22,10 @@ import {
   researchPrereqsMet,
   EXPERIMENT_SESSION_COST,
 } from '../gameData/researchTree.js';
-import { CircuitBoardPanel } from '../components/CircuitBoardPanel.jsx';
+import { CircuitBoardModal } from '../components/CircuitBoardModal.jsx';
 import {
+  CIRCUIT_BOARDS,
+  getCircuitBoard,
   getInventionTierLabel,
 } from '../gameData/inventionUpgrades.js';
 import { isForceFeederInstalled } from '../gameData/forceFeederEvent.js';
@@ -34,6 +36,7 @@ const RARITY_COLORS = { common: '#8a8a7a', uncommon: '#4a9a5a', rare: '#c8860a' 
 const ACCENT = '#4a6080';
 const RESEARCH_ACCENT = '#5090c8';
 const TERMINAL_ACCENT = '#6a5088';
+const INVENTIONS_ACCENT = '#7a5088';
 
 function blueprintStatus(recipe, labState, money, taliaLbs) {
   const researched = isBlueprintResearched(labState, recipe.blueprint);
@@ -68,12 +71,18 @@ function BlueprintGridCard({ recipe, selected, onSelect, labState, money, taliaL
   );
 }
 
+function formatMaterialCost(materials = {}) {
+  const entries = Object.entries(materials);
+  if (!entries.length) return 'no extra materials';
+  return entries.map(([k, n]) => `${PARTS[k]?.label || k} ×${n}`).join(', ');
+}
+
 function ResearchNodeCard({ node, labState, taliaStudent, selected, onSelect }) {
   const researched = isBlueprintResearched(labState, node.blueprint);
   const prereqs = researchPrereqsMet(node, labState, taliaStudent);
   const affordable = canResearchNode(node, labState, taliaStudent);
   const statusColor = researched ? '#4a9a5a' : affordable ? RESEARCH_ACCENT : prereqs ? '#a07050' : '#806060';
-  const statusLabel = researched ? 'Unlocked' : affordable ? 'Experiment ready' : prereqs ? 'Need abundance/materials' : 'Locked';
+  const statusLabel = researched ? 'Unlocked' : affordable ? 'Experiment ready' : prereqs ? 'Need materials' : 'Locked';
 
   return (
     <div
@@ -84,7 +93,7 @@ function ResearchNodeCard({ node, labState, taliaStudent, selected, onSelect }) 
       <div style={{ fontSize: 9, color: statusColor }}>{statusLabel}</div>
       {!researched && (
         <div style={{ fontSize: 8, color: '#7060a0', marginTop: 4 }}>
-          {node.experimentCost + EXPERIMENT_SESSION_COST.abundance} abundance · risk {(node.riskChance * 100).toFixed(0)}%
+          {formatMaterialCost(node.materials)} · risk {(node.riskChance * 100).toFixed(0)}%
         </div>
       )}
     </div>
@@ -111,6 +120,7 @@ export function LabView({
   const [tierFilter, setTierFilter] = useState('all');
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null);
+  const [circuitDevice, setCircuitDevice] = useState(null);
 
   if (!labState) {
     return (
@@ -124,7 +134,13 @@ export function LabView({
   const taliaLbs = taliaStudent?.lbs ?? Infinity;
   const category = DEVICE_BLUEPRINT_CATEGORIES.find((c) => c.id === categoryId) || DEVICE_BLUEPRINT_CATEGORIES[0];
   const forceFeederInstalled = isForceFeederInstalled(labState);
-  const ffTierLabel = getInventionTierLabel(labState, 'feeding_mask');
+
+  const installedDeviceIds = useMemo(
+    () => Object.entries(labState.installedInventions || {})
+      .filter(([, v]) => v)
+      .map(([id]) => id),
+    [labState.installedInventions],
+  );
 
   const recipes = useMemo(() => {
     let list = category.deviceIds.map((id) => BLUEPRINT_RECIPES[id]).filter(Boolean);
@@ -160,7 +176,6 @@ export function LabView({
           {taliaStudent && (
             <div style={{ marginTop: 6 }}>
               Talia: <strong>{Math.round(taliaStudent.lbs)} lbs</strong> build material
-              · Abundance <strong>{labState.abundancePoints ?? 0}</strong>
               · Instability {labState.instability ?? 0}%
             </div>
           )}
@@ -178,12 +193,18 @@ export function LabView({
           >
             🖥 Research Terminal
           </button>
+          <button
+            style={{ ...C.btn(labTab === 'inventions' ? INVENTIONS_ACCENT : '#1a2030'), flex: 1 }}
+            onClick={() => setLabTab('inventions')}
+          >
+            ⚡ Inventions
+          </button>
         </div>
         <button
           style={{ ...C.btn(ACCENT), width: '100%', opacity: ap < 1 ? 0.45 : 1 }}
           onClick={onOpenSession}
         >
-          Gather Parts (1 AP) — +2 Abundance
+          Gather Parts (1 AP)
         </button>
       </div>
 
@@ -273,25 +294,6 @@ export function LabView({
 
       {labTab === 'terminal' && (
         <div>
-          {forceFeederInstalled && (
-            <>
-              <div style={{ ...C.card, border: `1px solid ${TERMINAL_ACCENT}60`, marginBottom: 12 }}>
-                <div style={{ fontWeight: 700, color: '#c0a8e0', marginBottom: 6 }}>🎭 {ffTierLabel}</div>
-                <div style={{ fontSize: 10, color: '#9080b0', marginBottom: 8 }}>
-                  Successful calibrations earn Invention Points for the circuit board below.
-                </div>
-                <button style={{ ...C.btn(TERMINAL_ACCENT), width: '100%' }} onClick={onUseForceFeeder}>
-                  Use Force Feeder — Gullet Calibration
-                </button>
-              </div>
-              <CircuitBoardPanel
-                deviceDefId="feeding_mask"
-                labState={labState}
-                onUnlockNode={onUnlockCircuitNode}
-              />
-            </>
-          )}
-
           <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: 12 }}>
             <div>
               <div style={{ fontSize: 9, letterSpacing: 2, color: TERMINAL_ACCENT, marginBottom: 6 }}>BRANCHES</div>
@@ -326,7 +328,7 @@ export function LabView({
                   <div style={{ ...C.card, border: `1px solid ${TERMINAL_ACCENT}`, position: 'sticky', top: 0 }}>
                     <div style={{ fontWeight: 700, color: '#c0b0e0', marginBottom: 6 }}>{nodePreview.label}</div>
                     <div style={{ fontSize: 9, color: '#8070a0', marginBottom: 8 }}>
-                      Experiment session: {EXPERIMENT_SESSION_COST.ap} AP + {nodePreview.experimentCost + EXPERIMENT_SESSION_COST.abundance} abundance
+                      Experiment: {EXPERIMENT_SESSION_COST.ap} AP + {formatMaterialCost(nodePreview.materials)}
                     </div>
                     {nodeResearched ? (
                       <div style={{ fontSize: 9, color: '#4a9a5a' }}>Blueprint unlocked — build in Workshop.</div>
@@ -353,6 +355,74 @@ export function LabView({
             </div>
           </div>
         </div>
+      )}
+
+      {labTab === 'inventions' && (
+        <div>
+          <p style={{ fontSize: 10, color: '#8070a0', lineHeight: 1.55, marginBottom: 12 }}>
+            Lab-installed devices. Run calibrations here and open each circuit board to spend invention points on upgrades.
+          </p>
+          {installedDeviceIds.length === 0 ? (
+            <div style={{ fontSize: 11, color: '#7060a0', fontStyle: 'italic' }}>
+              No inventions installed yet. Research a blueprint in the Terminal, then build it in the Workshop.
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gap: 10 }}>
+              {installedDeviceIds.map((deviceId) => {
+                const def = DEVICES[deviceId];
+                const hasBoard = !!CIRCUIT_BOARDS[deviceId];
+                const points = getCircuitBoard(labState, deviceId).inventionPoints ?? 0;
+                const tierLabel = hasBoard ? getInventionTierLabel(labState, deviceId) : null;
+                const isForceFeeder = deviceId === 'feeding_mask';
+                return (
+                  <div key={deviceId} style={{ ...C.card, border: `1px solid ${INVENTIONS_ACCENT}60`, marginBottom: 0 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
+                      <div style={{ fontWeight: 700, color: '#c0a8e0', fontSize: 13 }}>
+                        {def?.icon} {def?.label || deviceId}
+                      </div>
+                      {def?.form === 'stationary' && (
+                        <span style={{ ...C.tag(`${INVENTIONS_ACCENT}30`, '#c0a8e0'), fontSize: 8 }}>Lab station</span>
+                      )}
+                    </div>
+                    {tierLabel && (
+                      <div style={{ fontSize: 10, color: '#9080b0', marginBottom: 4 }}>{tierLabel}</div>
+                    )}
+                    <div style={{ fontSize: 10, color: '#8090a8', lineHeight: 1.5, marginBottom: 8 }}>{def?.desc}</div>
+                    {hasBoard && (
+                      <div style={{ fontSize: 9, color: '#7060a0', marginBottom: 10 }}>
+                        Invention points: <strong style={{ color: '#d0c0f0' }}>{points}</strong>
+                      </div>
+                    )}
+                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                      {isForceFeeder && forceFeederInstalled && (
+                        <button style={{ ...C.btn(INVENTIONS_ACCENT), flex: 1, minWidth: 160 }} onClick={onUseForceFeeder}>
+                          Use Force Feeder — Gullet Calibration
+                        </button>
+                      )}
+                      {hasBoard && (
+                        <button
+                          style={{ ...C.btn('#2a2840'), flex: 1, minWidth: 160 }}
+                          onClick={() => setCircuitDevice(deviceId)}
+                        >
+                          Open circuit board
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {circuitDevice && (
+        <CircuitBoardModal
+          deviceDefId={circuitDevice}
+          labState={labState}
+          onUnlockNode={onUnlockCircuitNode}
+          onClose={() => setCircuitDevice(null)}
+        />
       )}
     </div>
   );

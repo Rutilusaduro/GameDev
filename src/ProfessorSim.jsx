@@ -2595,11 +2595,6 @@ export default function ProfessorSim(){
       push('⚠️ Insufficient materials for this experiment.');
       return;
     }
-    const abundanceNeed=node.experimentCost+EXPERIMENT_SESSION_COST.abundance;
-    if((labState.abundancePoints??0)<abundanceNeed){
-      push(`⚠️ Need ${abundanceNeed} Abundance Points.`);
-      return;
-    }
     setAp(a=>a-EXPERIMENT_SESSION_COST.ap);
     const outcome=rollExperimentOutcome(node,Math.random);
     setLabState(prev=>{

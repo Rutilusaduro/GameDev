@@ -13,9 +13,12 @@ import {
 export const GULLET_BEAT_COUNT = 8;
 export const PERFORMANCE_TIERS = ['perfect', 'good', 'messy', 'failure'];
 export const CHOKE_MAX = 100;
+export const PULSE_START_MS = 1400;
+export const PULSE_INTERVAL_MS = 1300;
 
 const CHOKE_PER_LABEL = { perfect: 0, good: 4, messy: 10, miss: 18 };
 const CHOKE_PASSIVE_PER_SEC = 3.5;
+const MISS_GRACE_MULT = 2.2;
 
 export function scoreToTier(efficiencyPct, chokeMeter, chokedOut = false) {
   if (chokedOut || chokeMeter >= CHOKE_MAX) return 'failure';
@@ -29,12 +32,12 @@ export function createGulletSession(labState, growthZone = 'default') {
   const mods = getForceFeederBoardMods(labState);
   const windowMs = timingWindowMs(labState);
   const beatCount = Math.max(6, Math.round(GULLET_BEAT_COUNT * mods.beatCountMult));
-  const interval = mods.overclockedPump ? 950 : 1100;
+  const interval = mods.overclockedPump ? 1000 : PULSE_INTERVAL_MS;
   const beats = [];
   for (let i = 0; i < beatCount; i++) {
     beats.push({
       id: i,
-      pulseAt: 900 + i * interval + Math.round(Math.random() * 160),
+      pulseAt: PULSE_START_MS + i * interval,
       windowMs,
       hit: null,
       deltaMs: null,
@@ -49,9 +52,10 @@ export function createGulletSession(labState, growthZone = 'default') {
     chokedOut: false,
     emergencyUsed: false,
     growthZone,
-    phase: 'ready',
+    phase: 'playing',
     holding: false,
     lastTickMs: 0,
+    pulseInterval: interval,
   };
 }
 
@@ -76,10 +80,11 @@ export function tickGulletSession(session, nowMs, labState, { holding = false } 
   const dtSec = Math.min(0.25, elapsed / 1000);
   let next = { ...session, lastTickMs: nowMs, holding };
 
-  if (session.phase === 'playing' || session.phase === 'ready') {
+  if (session.phase === 'playing') {
     const passive = CHOKE_PASSIVE_PER_SEC * dtSec * (mods.chokePressureMult ?? 1);
     next = applyChoke(next, passive, mods);
     if (holding) next = applyChoke(next, 5 * dtSec, mods);
+    next = maybeAutoMissBeat(next, nowMs, labState);
   }
   if (next.chokedOut && next.beatIndex < next.beats.length) {
     next = { ...next, phase: 'complete' };
@@ -111,6 +116,44 @@ export function registerBeatHit(session, nowMs, labState) {
     next.phase = 'complete';
   }
   return next;
+}
+
+export function registerMissedBeat(session, labState) {
+  const beat = session.beats[session.beatIndex];
+  if (!beat || beat.hit != null || session.chokedOut) return session;
+  const result = { points: 8, label: 'miss' };
+  const mods = getForceFeederBoardMods(labState);
+  const beats = session.beats.map((b, i) => (
+    i === session.beatIndex
+      ? { ...b, hit: result.label, deltaMs: beat.windowMs * 2, points: result.points }
+      : b
+  ));
+  let next = {
+    ...session,
+    beats,
+    scoreSum: session.scoreSum + result.points,
+    beatIndex: session.beatIndex + 1,
+    phase: 'playing',
+  };
+  next = applyChoke(next, CHOKE_PER_LABEL.miss, mods);
+  if (next.beatIndex >= session.beats.length || next.chokedOut) {
+    next.phase = 'complete';
+  }
+  return next;
+}
+
+export function isInPulseWindow(session, nowMs) {
+  const beat = session.beats[session.beatIndex];
+  if (!beat || beat.hit != null) return false;
+  return Math.abs(nowMs - beat.pulseAt) <= beat.windowMs * 1.15;
+}
+
+export function maybeAutoMissBeat(session, nowMs, labState) {
+  const beat = session.beats[session.beatIndex];
+  if (!beat || beat.hit != null || session.chokedOut || session.phase === 'complete') return session;
+  if (nowMs < beat.pulseAt - beat.windowMs * 0.4) return session;
+  if (nowMs <= beat.pulseAt + beat.windowMs * MISS_GRACE_MULT) return session;
+  return registerMissedBeat(session, labState);
 }
 
 export function mistimedPress(session, labState) {

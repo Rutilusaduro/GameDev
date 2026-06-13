@@ -115,7 +115,6 @@ export const RESEARCH_NODES = {
 
 export const EXPERIMENT_SESSION_COST = {
   ap: 1,
-  abundance: 3,
   instability: 4,
 };
 
@@ -143,8 +142,6 @@ export function canAffordExperiment(node, labState) {
   for (const [k, n] of Object.entries(node.materials || {})) {
     if ((pool[k] || 0) < n) return false;
   }
-  const abundance = labState.abundancePoints ?? 0;
-  if (abundance < (node.experimentCost ?? 0) + EXPERIMENT_SESSION_COST.abundance) return false;
   return true;
 }
 
@@ -160,11 +157,9 @@ export function spendExperimentMaterials(labState, node) {
   for (const [k, n] of Object.entries(node.materials || {})) {
     parts[k] = Math.max(0, (parts[k] || 0) - n);
   }
-  const abundanceCost = (node.experimentCost ?? 0) + EXPERIMENT_SESSION_COST.abundance;
   return {
     ...labState,
     parts,
-    abundancePoints: Math.max(0, (labState.abundancePoints ?? 0) - abundanceCost),
     instability: Math.min(100, (labState.instability ?? 0) + EXPERIMENT_SESSION_COST.instability),
   };
 }
@@ -179,11 +174,4 @@ export function rollExperimentOutcome(node, rng = Math.random) {
 
 export function nodesForBranch(branchId) {
   return Object.values(RESEARCH_NODES).filter((n) => n.branch === branchId);
-}
-
-export function grantAbundancePoints(labState, amount) {
-  return {
-    ...labState,
-    abundancePoints: (labState.abundancePoints ?? 0) + amount,
-  };
 }

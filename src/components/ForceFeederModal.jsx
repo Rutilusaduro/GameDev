@@ -6,7 +6,6 @@ import { C } from '../styles.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALIA_STUDENT_ID } from '../gameData/talia.js';
 import {
-  GULLET_BEAT_COUNT,
   CHOKE_MAX,
   createGulletSession,
   registerBeatHit,
@@ -14,9 +13,9 @@ import {
   mistimedPress,
   emergencyRelease,
   finalizeGulletScore,
+  isInPulseWindow,
 } from '../gameData/forceFeederEvent.js';
 import {
-  getInventionTier,
   getInventionTierLabel,
   getForceFeederBoardMods,
   availableGrowthZones,
@@ -40,56 +39,65 @@ export function ForceFeederModal({
   onComplete,
   onClose,
 }) {
-  const { phase, targetId, session, resultParams, prose, growthZone = 'default' } = state || {};
+  const { phase, targetId, resultParams, prose, growthZone = 'default' } = state || {};
   const target = students.find((s) => s.id === targetId);
-  const tier = getInventionTier(labState, 'feeding_mask');
   const tierLabel = getInventionTierLabel(labState, 'feeding_mask');
   const mods = getForceFeederBoardMods(labState);
   const zones = availableGrowthZones(labState);
+
+  const [localSession, setLocalSession] = useState(null);
   const [now, setNow] = useState(0);
   const [holding, setHolding] = useState(false);
   const startRef = useRef(null);
   const rafRef = useRef(null);
-  const sessionRef = useRef(session);
-  sessionRef.current = session;
+
+  const gameSession = phase === 'calibrate' ? localSession : null;
+
+  useEffect(() => {
+    if (phase === 'calibrate' && state?.session) {
+      setLocalSession(state.session);
+      startRef.current = performance.now();
+      setNow(0);
+    }
+    if (phase === 'setup' || phase === 'aftermath') {
+      setLocalSession(null);
+      startRef.current = null;
+    }
+  }, [phase, state?.session]);
 
   const tick = useCallback(() => {
     if (!startRef.current) return;
     const elapsed = performance.now() - startRef.current;
     setNow(elapsed);
-    const cur = sessionRef.current;
-    if (cur && (cur.phase === 'playing' || cur.phase === 'ready')) {
+    setLocalSession((cur) => {
+      if (!cur || cur.phase === 'complete') return cur;
       const next = tickGulletSession(cur, elapsed, labState, { holding });
-      const chokeDelta = Math.abs((next.chokeMeter ?? 0) - (cur.chokeMeter ?? 0));
-      if (chokeDelta > 0.25 || next.chokedOut !== cur.chokedOut || next.phase !== cur.phase) {
-        onComplete({ type: 'session', session: next });
-      } else {
-        sessionRef.current = { ...cur, lastTickMs: elapsed, holding };
+      if (next.phase === 'complete' || next.chokedOut) {
+        queueMicrotask(() => onComplete({ type: 'finish', session: next }));
       }
-    }
+      return next;
+    });
     rafRef.current = requestAnimationFrame(tick);
   }, [holding, labState, onComplete]);
 
   useEffect(() => {
-    if (phase === 'calibrate' && session) {
-      if (!startRef.current) startRef.current = performance.now();
+    if (phase === 'calibrate' && localSession) {
       rafRef.current = requestAnimationFrame(tick);
       return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
     }
     return undefined;
-  }, [phase, session, tick]);
+  }, [phase, !!localSession, tick]);
 
-  const activeBeat = session?.beats?.[session.beatIndex];
-  const pulseProgress = activeBeat
-    ? Math.min(1, Math.max(0, 1 - Math.abs(now - activeBeat.pulseAt) / (activeBeat.windowMs * 1.4)))
+  const activeBeat = gameSession?.beats?.[gameSession.beatIndex];
+  const pulseProgress = activeBeat && activeBeat.hit == null
+    ? Math.max(0, 1 - Math.abs(now - activeBeat.pulseAt) / (activeBeat.windowMs * 1.6))
     : 0;
-  const chokePct = Math.min(100, Math.round(session?.chokeMeter ?? 0));
+  const chokePct = Math.min(100, Math.round(gameSession?.chokeMeter ?? 0));
+  const beatTotal = gameSession?.beats?.length ?? 8;
 
   const setupProse = useMemo(() => {
     if (!target || phase !== 'setup') return '';
-    return renderForceFeederSetup(target, week, {
-      targetIsTalia: target.id === TALIA_STUDENT_ID,
-    });
+    return renderForceFeederSetup(target, week, { targetIsTalia: target.id === TALIA_STUDENT_ID });
   }, [target, phase, week]);
 
   const aftermathProse = useMemo(() => {
@@ -103,35 +111,34 @@ export function ForceFeederModal({
   if (!state) return null;
 
   const handlePulse = () => {
-    if (phase !== 'calibrate' || !session || session.chokedOut) return;
-    if (session.phase !== 'playing' && session.phase !== 'ready') return;
-    const started = startRef.current ?? performance.now();
-    if (!startRef.current) startRef.current = started;
-    const elapsed = performance.now() - started;
-    const active = session.beats[session.beatIndex];
-    const nearPulse = active && Math.abs(elapsed - active.pulseAt) > active.windowMs * 1.4;
-    let next = session.phase === 'ready'
-      ? { ...session, phase: 'playing' }
-      : session;
-    if (nearPulse && session.phase === 'playing') {
-      next = mistimedPress(next, labState);
+    if (!gameSession || gameSession.chokedOut || gameSession.phase === 'complete') return;
+    const elapsed = performance.now() - (startRef.current ?? performance.now());
+    if (isInPulseWindow(gameSession, elapsed)) {
+      setLocalSession((cur) => {
+        const next = registerBeatHit(cur, elapsed, labState);
+        if (next.phase === 'complete') {
+          queueMicrotask(() => onComplete({ type: 'finish', session: next }));
+        }
+        return next;
+      });
     } else {
-      next = registerBeatHit(next, elapsed, labState);
+      setLocalSession((cur) => mistimedPress(cur, labState));
     }
-    onComplete({ type: 'session', session: next });
   };
 
   const handleEmergency = () => {
-    if (!session || !mods.emergencyRelease) return;
-    onComplete({ type: 'session', session: emergencyRelease(session, labState) });
+    if (!gameSession) return;
+    setLocalSession((cur) => emergencyRelease(cur, labState));
   };
 
   useEffect(() => {
     const down = (e) => {
-      if (e.code === 'Space' || e.code === 'Enter') {
-        e.preventDefault();
+      if (e.code !== 'Space' && e.code !== 'Enter') return;
+      e.preventDefault();
+      if (phase !== 'calibrate') return;
+      if (e.type === 'keydown') {
+        if (!e.repeat) handlePulse();
         setHolding(true);
-        if (e.type === 'keydown' && !e.repeat) handlePulse();
       }
     };
     const up = (e) => {
@@ -147,7 +154,6 @@ export function ForceFeederModal({
     };
   });
 
-  const beatTotal = session?.beats?.length ?? GULLET_BEAT_COUNT;
   const candidates = students.filter((s) => !s.hidden || s.id === TALIA_STUDENT_ID);
 
   return (
@@ -162,20 +168,16 @@ export function ForceFeederModal({
         padding: 20,
       }}
       >
-        <div style={{ fontSize: 9, letterSpacing: 4, color: ACCENT, marginBottom: 4 }}>
-          GULLET CALIBRATION
-        </div>
-        <div style={{ fontSize: 14, fontWeight: 700, color: '#c0a8e0', marginBottom: 4 }}>
-          {tierLabel}
-        </div>
+        <div style={{ fontSize: 9, letterSpacing: 4, color: ACCENT, marginBottom: 4 }}>GULLET CALIBRATION</div>
+        <div style={{ fontSize: 14, fontWeight: 700, color: '#c0a8e0', marginBottom: 4 }}>{tierLabel}</div>
         <div style={{ fontSize: 9, color: '#7060a0', marginBottom: 10 }}>
-          Time pulses · manage choke · efficiency + control set your tier
+          Time each pulse · keep the choke meter low · missed windows auto-advance
         </div>
 
         {phase === 'setup' && (
           <>
             <div style={{ fontSize: 11, color: '#9080b0', lineHeight: 1.7, marginBottom: 12, fontStyle: 'italic' }}>
-              Select a target. Mistimed presses and holding too long build the Choke Meter — overflow causes spillage.
+              Select a target. Wait for each throat pulse, then tap — mistimed presses fill the choke meter.
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
               {candidates.map((s) => {
@@ -188,14 +190,12 @@ export function ForceFeederModal({
                     onClick={() => onSelectTarget(s.id)}
                   >
                     <div style={{ fontWeight: 700, color: '#d0c0f0', fontSize: 12 }}>{s.name}</div>
-                    <div style={{ fontSize: 9, color: '#8070a0' }}>
-                      {stage.label} → {next?.label || 'max'}
-                    </div>
+                    <div style={{ fontSize: 9, color: '#8070a0' }}>{stage.label} → {next?.label || 'max'}</div>
                   </button>
                 );
               })}
             </div>
-            {tier >= 2 && zones.length > 1 && (
+            {zones.length > 1 && (
               <div style={{ marginBottom: 12 }}>
                 <div style={{ fontSize: 9, letterSpacing: 2, color: ACCENT, marginBottom: 6 }}>GROWTH ZONE</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -212,19 +212,14 @@ export function ForceFeederModal({
               </div>
             )}
             {target && setupProse && (
-              <div style={{ fontSize: 11, color: '#b0a0d0', lineHeight: 1.8, fontStyle: 'italic', marginBottom: 12 }}>
-                {setupProse}
-              </div>
+              <div style={{ fontSize: 11, color: '#b0a0d0', lineHeight: 1.8, fontStyle: 'italic', marginBottom: 12 }}>{setupProse}</div>
             )}
             <div style={{ display: 'flex', gap: 8 }}>
               <button style={{ ...C.btn('#302030'), flex: 1 }} onClick={onClose}>Cancel</button>
               <button
                 style={{ ...C.btn(target ? ACCENT : '#302030'), flex: 2, opacity: target ? 1 : 0.45 }}
                 disabled={!target}
-                onClick={() => onComplete({
-                  type: 'start',
-                  session: createGulletSession(labState, growthZone),
-                })}
+                onClick={() => onComplete({ type: 'start', session: createGulletSession(labState, growthZone) })}
               >
                 Begin calibration
               </button>
@@ -232,78 +227,53 @@ export function ForceFeederModal({
           </>
         )}
 
-        {phase === 'calibrate' && session && (
+        {phase === 'calibrate' && gameSession && (
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontSize: 11, color: '#c0b0e0' }}>
               <span>Target: <strong>{target?.name}</strong></span>
               <span style={{ fontSize: 9, color: '#8070a0' }}>
-                Pulse {Math.min(session.beatIndex + 1, beatTotal)}/{beatTotal}
+                Pulse {Math.min(gameSession.beatIndex + 1, beatTotal)}/{beatTotal}
               </span>
             </div>
-
             <div style={{ marginBottom: 6 }}>
               <div style={{ fontSize: 9, color: CHOKE_COLOR, letterSpacing: 2, marginBottom: 3 }}>
                 CHOKE METER {chokePct}/{CHOKE_MAX}
-                {session.chokedOut && <span style={{ marginLeft: 8 }}>— SPILL</span>}
               </div>
               <div style={{ height: 8, background: '#1a0818', borderRadius: 4, overflow: 'hidden' }}>
-                <div style={{
-                  height: '100%',
-                  width: `${chokePct}%`,
-                  background: chokePct > 75 ? '#e04030' : chokePct > 45 ? '#c07030' : '#804050',
-                  transition: 'width 0.12s',
-                }}
-                />
+                <div style={{ height: '100%', width: `${chokePct}%`, background: chokePct > 75 ? '#e04030' : chokePct > 45 ? '#c07030' : '#804050', transition: 'width 0.12s' }} />
               </div>
             </div>
-
             <div style={{
-              height: 110,
-              background: '#0a0818',
-              borderRadius: 10,
-              border: `1px solid ${session.chokedOut ? CHOKE_COLOR : `${PULSE_COLOR}40`}`,
-              marginBottom: 10,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
+              height: 110, background: '#0a0818', borderRadius: 10,
+              border: `1px solid ${gameSession.chokedOut ? CHOKE_COLOR : `${PULSE_COLOR}40`}`,
+              marginBottom: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative',
             }}
             >
               <div style={{
-                width: 72,
-                height: 72,
-                borderRadius: '50%',
+                width: 72, height: 72, borderRadius: '50%',
                 background: `radial-gradient(circle, ${PULSE_COLOR}${Math.round(50 + pulseProgress * 70).toString(16).padStart(2, '0')} 0%, transparent 72%)`,
                 transform: `scale(${0.75 + pulseProgress * 0.55})`,
               }}
               />
               <div style={{ position: 'absolute', bottom: 8, fontSize: 8, color: '#7060a0', letterSpacing: 1 }}>
-                {holding ? 'RELEASE BEFORE CHOKE BUILDS' : 'TAP / SPACE ON THE PULSE'}
+                {holding ? 'RELEASE — holding builds choke' : 'TAP / SPACE ON EACH PULSE'}
               </div>
             </div>
-
             <div style={{ display: 'flex', gap: 3, marginBottom: 10 }}>
-              {session.beats.map((b) => (
+              {gameSession.beats.map((b) => (
                 <div
                   key={b.id}
                   style={{
-                    flex: 1,
-                    height: 5,
-                    borderRadius: 2,
-                    background: b.hit === 'perfect' ? '#60c080'
-                      : b.hit === 'good' ? '#90b050'
-                        : b.hit === 'messy' ? '#c09040'
-                          : b.hit === 'miss' ? '#a04040'
-                            : '#2a2040',
+                    flex: 1, height: 5, borderRadius: 2,
+                    background: b.hit === 'perfect' ? '#60c080' : b.hit === 'good' ? '#90b050'
+                      : b.hit === 'messy' ? '#c09040' : b.hit === 'miss' ? '#a04040' : '#2a2040',
                   }}
                 />
               ))}
             </div>
-
             <div style={{ display: 'flex', gap: 8 }}>
               <button
-                style={{ ...C.btn(PULSE_COLOR), flex: 2, fontSize: 14, padding: '12px 0', opacity: session.chokedOut ? 0.4 : 1 }}
-                disabled={session.chokedOut || session.phase === 'complete'}
+                style={{ ...C.btn(PULSE_COLOR), flex: 2, fontSize: 14, padding: '12px 0' }}
                 onMouseDown={() => setHolding(true)}
                 onMouseUp={() => setHolding(false)}
                 onMouseLeave={() => setHolding(false)}
@@ -313,8 +283,8 @@ export function ForceFeederModal({
               </button>
               {mods.emergencyRelease && (
                 <button
-                  style={{ ...C.btn('#503030'), flex: 1, fontSize: 10, opacity: session.emergencyUsed ? 0.35 : 1 }}
-                  disabled={session.emergencyUsed || session.chokedOut}
+                  style={{ ...C.btn('#503030'), flex: 1, fontSize: 10, opacity: gameSession.emergencyUsed ? 0.35 : 1 }}
+                  disabled={gameSession.emergencyUsed}
                   onClick={handleEmergency}
                 >
                   Emergency release
@@ -329,28 +299,19 @@ export function ForceFeederModal({
             <div style={{ fontSize: 12, color: '#c0b0e0', marginBottom: 8, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
               <span>{target.name}</span>
               {resultParams?.performanceTier && (
-                <span style={{ ...C.tag(`${ACCENT}40`, '#d0c0f0'), fontSize: 9 }}>
-                  {resultParams.performanceTier.toUpperCase()}
-                </span>
+                <span style={{ ...C.tag(`${ACCENT}40`, '#d0c0f0'), fontSize: 9 }}>{resultParams.performanceTier.toUpperCase()}</span>
               )}
               {resultParams?.pointsEarned > 0 && (
-                <span style={{ ...C.tag('#2a483040', '#80d0a0'), fontSize: 9 }}>
-                  +{resultParams.pointsEarned} INVENTION PTS
-                </span>
+                <span style={{ ...C.tag('#2a483040', '#80d0a0'), fontSize: 9 }}>+{resultParams.pointsEarned} INVENTION PTS</span>
               )}
             </div>
             {resultParams && (
               <div style={{ fontSize: 9, color: '#7060a0', marginBottom: 8 }}>
-                Efficiency {resultParams.efficiencyPct ?? resultParams.scorePct ?? '?'}%
-                {' · '}Choke {resultParams.chokeMeter ?? '?'}%
+                Efficiency {resultParams.efficiencyPct ?? '?'}% · Choke {resultParams.chokeMeter ?? '?'}%
               </div>
             )}
-            <div style={{ fontSize: 12, color: '#d8cce8', lineHeight: 1.9, fontStyle: 'italic', marginBottom: 16, whiteSpace: 'pre-line' }}>
-              {aftermathProse}
-            </div>
-            <button style={{ ...C.btn(ACCENT), width: '100%' }} onClick={onClose}>
-              Close
-            </button>
+            <div style={{ fontSize: 12, color: '#d8cce8', lineHeight: 1.9, fontStyle: 'italic', marginBottom: 16, whiteSpace: 'pre-line' }}>{aftermathProse}</div>
+            <button style={{ ...C.btn(ACCENT), width: '100%' }} onClick={onClose}>Close</button>
           </>
         )}
       </div>
@@ -359,23 +320,15 @@ export function ForceFeederModal({
 }
 
 export function buildForceFeederModalState(phase = 'setup') {
-  return {
-    phase, targetId: null, session: null, resultParams: null, prose: null, growthZone: 'default',
-  };
+  return { phase, targetId: null, session: null, resultParams: null, prose: null, growthZone: 'default' };
 }
 
 export function advanceForceFeederOnComplete(state, payload, target, week, labState = null) {
-  if (payload.type === 'zone') {
-    return { ...state, growthZone: payload.growthZone };
-  }
-  if (payload.type === 'start') {
-    return { ...state, phase: 'calibrate', session: payload.session };
-  }
-  if (payload.type === 'session') {
+  if (payload.type === 'zone') return { ...state, growthZone: payload.growthZone };
+  if (payload.type === 'start') return { ...state, phase: 'calibrate', session: payload.session };
+  if (payload.type === 'finish' || payload.type === 'session') {
     const session = payload.session;
-    if (session.phase !== 'complete') {
-      return { ...state, session };
-    }
+    if (session?.phase !== 'complete') return { ...state, session };
     const result = finalizeGulletScore(session, labState);
     return {
       ...state,

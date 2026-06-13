@@ -82,6 +82,58 @@ export const CIRCUIT_BOARDS = {
   },
 };
 
+/** Visual positions (% of board area) for the circuit board modal */
+export const FORCE_FEEDER_LAYOUT = {
+  ff_main_1: { x: 50, y: 92 },
+  ff_main_2: { x: 50, y: 82 },
+  ff_main_3: { x: 50, y: 72 },
+  ff_main_4: { x: 50, y: 62 },
+  ff_main_5: { x: 50, y: 52 },
+  ff_main_6: { x: 50, y: 42 },
+  ff_main_7: { x: 50, y: 32 },
+  ff_main_8: { x: 50, y: 22 },
+  ff_main_9: { x: 50, y: 10 },
+  ff_stable_pulse: { x: 16, y: 68 },
+  ff_calibrated_flow: { x: 10, y: 52 },
+  ff_overclocked_pump: { x: 18, y: 36 },
+  ff_belly_focus: { x: 84, y: 68 },
+  ff_lower_body: { x: 90, y: 54 },
+  ff_even_dist: { x: 82, y: 42 },
+  ff_rapid_sat: { x: 88, y: 28 },
+  ff_gentle_override: { x: 14, y: 24 },
+  ff_intimate_cal: { x: 8, y: 14 },
+  ff_self_experiment: { x: 22, y: 10 },
+  ff_public_demo: { x: 16, y: 4 },
+  ff_reinforced_tubing: { x: 86, y: 18 },
+  ff_high_pressure: { x: 92, y: 10 },
+  ff_emergency_release: { x: 78, y: 8 },
+  ff_field_data: { x: 88, y: 4 },
+};
+
+export function getNodeLayout(deviceDefId, nodeId) {
+  if (deviceDefId === 'feeding_mask') return FORCE_FEEDER_LAYOUT[nodeId] || { x: 50, y: 50 };
+  return { x: 50, y: 50 };
+}
+
+export function getBoardEdges(deviceDefId) {
+  if (deviceDefId !== 'feeding_mask') return [];
+  const edges = [];
+  const mains = FF_MAIN_PATH.map((n) => n.id);
+  for (let i = 0; i < mains.length - 1; i++) {
+    edges.push({ from: mains[i], to: mains[i + 1], kind: 'main' });
+  }
+  const branchAnchors = {
+    ff_stable_pulse: 'ff_main_3', ff_calibrated_flow: 'ff_main_4', ff_overclocked_pump: 'ff_main_5',
+    ff_belly_focus: 'ff_main_4', ff_lower_body: 'ff_main_5', ff_even_dist: 'ff_main_6', ff_rapid_sat: 'ff_main_6',
+    ff_gentle_override: 'ff_main_2', ff_intimate_cal: 'ff_main_4', ff_self_experiment: 'ff_main_3', ff_public_demo: 'ff_main_7',
+    ff_reinforced_tubing: 'ff_main_3', ff_high_pressure: 'ff_main_6', ff_emergency_release: 'ff_main_4', ff_field_data: 'ff_main_8',
+  };
+  for (const [nodeId, anchor] of Object.entries(branchAnchors)) {
+    edges.push({ from: anchor, to: nodeId, kind: 'branch' });
+  }
+  return edges;
+}
+
 export const POINTS_BY_PERFORMANCE = { perfect: 2, good: 1, messy: 1, failure: 0 };
 
 export function defaultCircuitBoardState() {
