@@ -70,6 +70,28 @@ export const LAB_ACQUISITION_OPTIONS = {
     { id: 'reagent_run', label: 'Pick up lab reagents on credit', grant: 'reagents' },
     { id: 'skip', label: 'Skip — use saved stock', grant: 'none' },
   ],
+  2: [
+    { id: 'salvage', label: 'Salvage the engineering scrap pile', grant: 'scrap + circuits' },
+    { id: 'campus_surplus', label: 'Raid campus surplus lockers', grant: 'servos + scrap + exotics' },
+    { id: 'mesh_scavenge', label: 'Scavenge retired mesh nodes', grant: 'circuits + servos' },
+    { id: 'reagent_run', label: 'Pick up lab reagents on credit', grant: 'reagents + exotics' },
+    { id: 'skip', label: 'Skip — use saved stock', grant: 'none' },
+  ],
+  3: [
+    { id: 'salvage', label: 'Salvage the engineering scrap pile', grant: 'scrap + circuits' },
+    { id: 'campus_surplus', label: 'Raid campus surplus lockers', grant: 'servos + scrap + exotics' },
+    { id: 'mesh_scavenge', label: 'Scavenge retired mesh nodes', grant: 'circuits + servos + scrap' },
+    { id: 'reagent_run', label: 'Pick up lab reagents on credit', grant: 'reagents + exotics' },
+    { id: 'nexus_salvage', label: 'Strip parts from nexus failover racks', grant: 'circuits + exotics' },
+    { id: 'skip', label: 'Skip — use saved stock', grant: 'none' },
+  ],
+};
+
+/** AP / gains for saving a lab session — independent of network-control activities. */
+export const LAB_SESSION_ACTIVITY = {
+  apCost: 1,
+  taliaGain: [2, 5],
+  instability: 5,
 };
 
 export function defaultLabState() {

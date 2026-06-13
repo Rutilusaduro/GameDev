@@ -14,7 +14,7 @@ import {
   PARTS,
 } from '../gameData/labParts.js';
 import { DEVICE_BLUEPRINT_CATEGORIES } from '../gameData/deviceCategories.js';
-import { INVENTOR_PATH_STAGES, LAB_BUILD_CONFIG } from '../gameData/talia.js';
+import { INVENTOR_PATH_STAGES } from '../gameData/talia.js';
 import { RecipeCostDisplay } from '../components/RecipeCostDisplay.jsx';
 import { summarizeDeviceEffect } from '../gameData/deviceQuery.js';
 import { isPlayerRecipeUnlocked, playerRecipeForDevice } from '../gameData/playerRecipes.js';
@@ -82,6 +82,8 @@ export function LabView({
   onBuild,
   onResearch,
   onOpenSession,
+  onOpenNetwork,
+  labStage = 1,
   ap,
   player,
   students,
@@ -162,11 +164,19 @@ export function LabView({
           )}
         </div>
         <button
-          style={{ ...C.btn(ACCENT), width: '100%', opacity: ap < LAB_BUILD_CONFIG.apCost ? 0.45 : 1 }}
+          style={{ ...C.btn(ACCENT), width: '100%', marginBottom: labStage >= 2 ? 6 : 0, opacity: ap < 1 ? 0.45 : 1 }}
           onClick={onOpenSession}
         >
-          Run Lab Session ({LAB_BUILD_CONFIG.apCost} AP)
+          Gather Parts (1 AP)
         </button>
+        {labStage >= 2 && onOpenNetwork && (
+          <button
+            style={{ ...C.btn('#1a4050'), width: '100%', opacity: ap < 1 ? 0.45 : 1 }}
+            onClick={onOpenNetwork}
+          >
+            Network Control (1 AP) — does not stock parts
+          </button>
+        )}
       </div>
 
       <div style={{ fontSize: 9, letterSpacing: 2, color: ACCENT, marginBottom: 6 }}>PARTS INVENTORY</div>

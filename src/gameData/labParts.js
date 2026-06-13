@@ -337,6 +337,8 @@ export function applyLabAcquisition(session, choiceId, labState) {
     salvage: { scrap: 2, circuits: 1 },
     campus_surplus: { servos: 1, scrap: 1, exotics: 1 },
     reagent_run: { reagents: 2, exotics: 1 },
+    mesh_scavenge: { circuits: 2, servos: 1, scrap: 1 },
+    nexus_salvage: { circuits: 2, exotics: 2 },
     skip: {},
   };
   const grant = grants[choiceId] || grants.skip;

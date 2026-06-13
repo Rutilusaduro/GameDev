@@ -23,7 +23,7 @@ import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, gatherLabParts, openLabView, openNetworkView, runDeviceAction, unequipDeviceSlot, setPaperDoll, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, runNetworkControl, gatherLabParts, openLabView, openNetworkView, runDeviceAction, unequipDeviceSlot, setPaperDoll, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -354,7 +354,7 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                           const ls=labState;
                           const steel="#4a6080";
                           const stageMeta=INVENTOR_PATH_STAGES.find(x=>x.id===ls.stage);
-                          const act=INVENTOR_ACTIVITIES[ls.stage]||INVENTOR_ACTIVITIES[1];
+                          const netAct=INVENTOR_ACTIVITIES[ls.stage]||INVENTOR_ACTIVITIES[2];
                           const netSum=ls.stage>=2?networkSummary(ls):null;
                           return(
                             <div style={{background:"rgba(8,12,22,0.6)",border:`1px solid ${steel}80`,borderRadius:10,padding:12}}>
@@ -370,22 +370,26 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                                   </div>
                                 )}
                               </div>
-                              <div style={{fontSize:9,color:"#506070",marginBottom:8,lineHeight:1.5}}>{act.desc}</div>
+                              <div style={{fontSize:9,color:"#506070",marginBottom:8,lineHeight:1.5}}>
+                                {ls.stage>=2
+                                  ? 'Gather parts in a lab session, then build in The Lab. Network control is separate from stocking materials.'
+                                  : (INVENTOR_ACTIVITIES[1]?.desc || 'Run lab sessions to gather parts and build devices.')}
+                              </div>
                               <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                                <button style={{...C.btn(steel),flex:"1 1 120px",opacity:ap<(act.apCost||1)?0.4:1}} onClick={()=>runLabSession(s)}>
-                                  {act.label||'🔧 Run Lab Session'} ({act.apCost||1} AP)
+                                <button style={{...C.btn(steel),flex:"1 1 120px",opacity:ap<1?0.4:1}} onClick={()=>runLabSession(s)}>
+                                  🔧 Gather Parts (1 AP)
                                 </button>
-                                {ls.stage>=2&&gatherLabParts&&(
-                                  <button style={{...C.btn("#3a5068"),flex:"1 1 120px",opacity:ap<1?0.4:1}} onClick={()=>gatherLabParts(s)}>
-                                    🔧 Gather Parts (1 AP)
+                                {ls.stage>=2&&runNetworkControl&&(
+                                  <button style={{...C.btn("#1a4050"),flex:"1 1 120px",opacity:ap<(netAct.apCost||1)?0.4:1}} onClick={()=>runNetworkControl(s)}>
+                                    {netAct.label||'⚙️ Network Control'} ({netAct.apCost||1} AP)
                                   </button>
                                 )}
                                 <button style={{...C.btn("#2a3848"),flex:"1 1 100px"}} onClick={openLabView}>
                                   The Lab
                                 </button>
                                 {ls.stage>=2&&openNetworkView&&(
-                                  <button style={{...C.btn("#1a4050"),flex:"1 1 100px"}} onClick={openNetworkView}>
-                                    ⚙️ Network
+                                  <button style={{...C.btn("#1a3040"),flex:"1 1 100px"}} onClick={openNetworkView}>
+                                    ⚙️ Mesh Map
                                   </button>
                                 )}
                               </div>
