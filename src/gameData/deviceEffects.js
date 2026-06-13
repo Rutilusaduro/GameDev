@@ -415,7 +415,7 @@ export function clearExpiredDeviceStates(student, week) {
       weeksActive: (m.weeksActive || 0) + 1,
     }));
     if (!deviceState.mutations.some(m => m.evolving) && (deviceState.mutationEvolvingWeeks ?? 0) > 3) {
-      const { mutationEvolving, mutationEvolvingWeeks, ...rest } = deviceState;
+      const { mutationEvolving: _me, mutationEvolvingWeeks: _mew, ...rest } = deviceState;
       deviceState = rest;
     } else if (deviceState.mutationEvolving) {
       deviceState.mutationEvolvingWeeks = (deviceState.mutationEvolvingWeeks || 0) + 1;

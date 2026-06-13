@@ -2594,26 +2594,29 @@ export default function ProfessorSim(){
 
   const confirmLabSession=()=>{
     const s=students.find(st=>st.id===labStudentId);
-    if(!s||!labSession) return;
+    if(!s||!labSession||!labState) return;
     const act=INVENTOR_ACTIVITIES[labSession.stageId||labState.stage]||INVENTOR_ACTIVITIES[1];
     if(ap<act.apCost){ push(`⚠️ Need ${act.apCost} AP.`); return; }
     setAp(a=>a-act.apCost);
     const gain=rnd(...act.taliaGain);
     const ns=processStudentGain(s,gain,8);
     setStudents(prev=>prev.map(st=>st.id===s.id?ns:st));
-    const next=completeLabSession(labState,{
-      ...labSession,
-      poolAfter: labSession.pool,
-      instabilityGained: act.instability||5,
+    setLabState(prev=>{
+      if(!prev) return prev;
+      const prevStage=prev.stage??1;
+      const next=completeLabSession(prev,{
+        ...labSession,
+        poolAfter: labSession.pool,
+        instabilityGained: act.instability||5,
+      });
+      if((next.stage??1)>prevStage){
+        const meta=INVENTOR_PATH_STAGES.find(x=>x.id===next.stage);
+        setTimeout(()=>push(`🔧 Talia advances — ${meta?.label||'new inventor stage'} unlocked.`),0);
+      } else {
+        setTimeout(()=>push(`🔧 ${s.name} — lab session saved. Instability ${next.instability}% · parts stocked.`),0);
+      }
+      return next;
     });
-    const prevStage=labState.stage??1;
-    setLabState(next);
-    if((next.stage??1)>prevStage){
-      const meta=INVENTOR_PATH_STAGES.find(x=>x.id===next.stage);
-      push(`🔧 Talia advances — ${meta?.label||'new inventor stage'} unlocked.`);
-    } else {
-      push(`🔧 ${s.name} — lab session saved. Instability ${next.instability}% · parts stocked.`);
-    }
     cancelLabSession();
   };
 
