@@ -51,6 +51,9 @@ export function renderDeviceTickLine({
   attachmentIds = [],
   isMalfunction = false,
   week = 1,
+  modificationState = [],
+  dependenceLevel = 0,
+  dependenceTier = 0,
   trace = null,
 }) {
   const equipped = getEquippedDeviceIds(student);
@@ -68,6 +71,9 @@ export function renderDeviceTickLine({
       isMalfunction,
       hasAttachment: primaryAttachment(attachmentIds),
       attachmentIds,
+      modificationState,
+      dependenceLevel,
+      dependenceTier,
       weightBand: weightBandFromLbs(student?.lbs),
       bodyState: student?.bodyOverride?.stateType || null,
       equippedCountMin: equipped.length >= 3 ? equipped.length : 0,
