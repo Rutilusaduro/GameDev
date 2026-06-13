@@ -20,6 +20,7 @@ export const MARQUEE_GROWTH_DEVICE_IDS = [
   'erogenous_growth_stimulator',
   'growth_limit_remover',
   'growth_serum_injector',
+  'rapid_mutation_chamber',
 ];
 
 export const DEVICES = {
@@ -448,6 +449,85 @@ export const DEVICES = {
     malfunctions: [
       { tier: 'major', weight: 2, text: 'The limiter does not reattach — growth continues unchecked.', effect: { permanentConvert: { gainLbs: [10, 18] } } },
       { tier: 'critical', weight: 1, text: 'Point of no return — the body forgets how to stop.', effect: { setFlags: { limitRemoved: true }, permanentConvert: { gainLbs: [8, 14] } } },
+    ],
+  },
+  endless_hunger_engine: {
+    id: 'endless_hunger_engine',
+    label: 'Endless Hunger Engine',
+    icon: '🕳️',
+    form: 'worn',
+    slot: 'arms',
+    tier: 2,
+    stability: 0.35,
+    risk: 0.80,
+    effectStrength: 0.92,
+    maintenanceCost: 3,
+    rarity: 'rare',
+    growthProfile: { growthMethod: 'hunger', zoneBias: 'bodyType', growthIntensity: 'steady', sensation: 'craving' },
+    desc: 'Arm-mounted neurological suppressor — dulls satiety signals and amplifies hunger until eating becomes obsession.',
+    weeklyEffect: {
+      gainLbs: [2, 5],
+      psychDelta: { dependence: 3, fixation: 3 },
+    },
+    useEffect: {
+      psychDelta: { fixation: 4, dependence: 2 },
+    },
+    malfunctions: [
+      { tier: 'minor', weight: 4, text: 'Calibration drift — hunger spikes without warning between meals.', effect: { psychDelta: { fixation: 3 } } },
+      { tier: 'moderate', weight: 3, text: 'Satiety suppression locks high — she cannot feel full even when overstuffed.', effect: { gainLbs: [3, 6], psychDelta: { dependence: 4, shame: 2 } } },
+      { tier: 'major', weight: 2, text: 'Distress mode engages — hunger becomes physically painful when ignored.', effect: { gainLbs: [4, 8], psychDelta: { dependence: 6, obsession: 4 } } },
+      { tier: 'critical', weight: 1, text: 'The suppression becomes semi-permanent — normal hunger regulation may never return.', effect: { setFlags: { endlessHungerPermanent: true }, psychDelta: { obsession: 8, dependence: 8 } } },
+    ],
+  },
+  rapid_mutation_chamber: {
+    id: 'rapid_mutation_chamber',
+    label: 'Rapid Mutation Chamber',
+    icon: '🧬',
+    form: 'stationary',
+    tier: 3,
+    stability: 0.15,
+    risk: 0.95,
+    effectStrength: 1.0,
+    maintenanceCost: 8,
+    rarity: 'rare',
+    growthProfile: { growthMethod: 'mutation', zoneBias: 'full', growthIntensity: 'violent', sensation: 'stretch' },
+    desc: 'Sealed evolution accelerator — forces fast, fantastical biological changes that may keep evolving after she exits.',
+    useEffect: {
+      gainLbs: [10, 22],
+      psychDelta: { obsession: 5, shame: 2 },
+    },
+    malfunctions: [
+      { tier: 'moderate', weight: 3, text: 'Unpredictable mutation stack — horns, tail, and wings all at once.', effect: { gainLbs: [6, 12], psychDelta: { shame: 4 } } },
+      { tier: 'major', weight: 2, text: 'Continued evolution lock — mutations keep developing for days after exit.', effect: { gainLbs: [8, 14], psychDelta: { obsession: 6 } } },
+      { tier: 'critical', weight: 1, text: 'Runaway metamorphosis — the chamber refuses to stabilize her form.', effect: { gainLbs: [12, 20], permanentConvert: { gainLbs: [5, 10] }, psychDelta: { obsession: 8 } } },
+    ],
+  },
+  regression_ray: {
+    id: 'regression_ray',
+    label: 'Regression Ray',
+    icon: '👶',
+    form: 'campus_tool',
+    tier: 2,
+    stability: 0.55,
+    risk: 0.70,
+    effectStrength: 0.85,
+    maintenanceCost: 3,
+    rarity: 'rare',
+    growthProfile: { growthMethod: 'regress', zoneBias: 'bodyType', growthIntensity: 'steady', sensation: 'craving' },
+    desc: 'Handheld ray that dials back impulse control and emotional regulation — bratty, needy, childlike behavior in an adult body.',
+    useEffect: {
+      gainLbs: [2, 5],
+      psychDelta: { dependence: 4, shame: 2 },
+    },
+    campusModes: [
+      { id: 'light', label: 'Light regression', gainLbs: [1, 3], psychDelta: { dependence: 2, shame: 1 }, discoveryRisk: 0.10, regressionDepth: 'light', regressionWeeks: 1 },
+      { id: 'moderate', label: 'Moderate regression', gainLbs: [3, 6], psychDelta: { dependence: 4, shame: 2 }, discoveryRisk: 0.18, regressionDepth: 'moderate', regressionWeeks: 2 },
+      { id: 'deep', label: 'Deep regression', gainLbs: [4, 8], bodyOverride: { stateType: 'bloated', stageBump: 1, durationWeeks: 1 }, psychDelta: { dependence: 6, shame: 3 }, discoveryRisk: 0.28, regressionDepth: 'deep', regressionWeeks: 2 },
+    ],
+    malfunctions: [
+      { tier: 'minor', weight: 4, text: 'Emotional bleed — she pouts at strangers for no clear reason.', effect: { psychDelta: { shame: 3 } } },
+      { tier: 'moderate', weight: 3, text: 'Regression deepens mid-session — she forgets why she was resisting.', effect: { psychDelta: { dependence: 5, shame: 4 } } },
+      { tier: 'major', weight: 2, text: 'The effect lasts longer than programmed — needy behavior persists for days.', effect: { psychDelta: { dependence: 7, obsession: 3 } } },
     ],
   },
 };

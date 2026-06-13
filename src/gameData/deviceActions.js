@@ -109,6 +109,27 @@ export const DEVICE_ACTIONS = [
     requires: { equipped: 'erogenous_growth_stimulator' },
     when: (student) => student?.equip?.neck?.defId === 'erogenous_growth_stimulator',
   },
+  {
+    id: 'intensify_hunger',
+    label: 'Engage distress hunger mode',
+    icon: '🕳️',
+    requires: { equipped: 'endless_hunger_engine' },
+    when: (student) => student?.equip?.arms?.defId === 'endless_hunger_engine',
+  },
+  {
+    id: 'run_mutation_session',
+    label: 'Run mutation session',
+    icon: '🧬',
+    requires: { owned: 'rapid_mutation_chamber' },
+    when: (_student, ctx) => (ctx?.deviceInventory?.rapid_mutation_chamber ?? 0) > 0,
+  },
+  {
+    id: 'fire_regression',
+    label: 'Fire regression ray',
+    icon: '👶',
+    requires: { owned: 'regression_ray' },
+    when: (_student, ctx) => (ctx?.deviceInventory?.regression_ray ?? 0) > 0,
+  },
 ];
 
 export function getAvailableDeviceActions(student, ctx = {}) {

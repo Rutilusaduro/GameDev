@@ -33,6 +33,8 @@ const FLAVOR_DEVICE_IDS = [
   'liquid_fat_infuser',
   'remote_feeding_system',
   'feeding_mask',
+  'regression_ray',
+  'endless_hunger_engine',
 ];
 
 function pick(rng, arr) {

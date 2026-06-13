@@ -111,7 +111,7 @@ import { DEVICES } from './gameData/devices.js';
 import {
   equipDevice, unequipDevice, attachToDevice, findAttachmentHostSlot, useConsumableDevice,
   tickEquippedDevices, clearExpiredOverrides, triggerBeltBloatNow, applyDeviceEffect,
-  runStationaryDeviceSession, runStimulatorPulse,
+  runStationaryDeviceSession, runStimulatorPulse, runRegressionRay, intensifyHungerEngine,
 } from './gameData/deviceEffects.js';
 import { buildGrowthEvent } from './gameData/growthEvents.js';
 import { applyPsychDelta } from './gameData/psychState.js';
@@ -2861,6 +2861,29 @@ export default function ProfessorSim(){
       if(!result.ok){ push('⚠️ Stimulator not equipped.'); return; }
       applyStudentDeviceResult(studentId,result,DEVICES.erogenous_growth_stimulator,false,'lab');
       push(`💗 Stimulator pulse on ${s.name}.`);
+      return;
+    }
+    if(actionId==='intensify_hunger'){
+      const result=intensifyHungerEngine(s,week,Math.random);
+      if(!result.ok){ push('⚠️ Hunger engine not equipped.'); return; }
+      applyStudentDeviceResult(studentId,result,DEVICES.endless_hunger_engine,false,'lab');
+      push(`🕳️ Distress hunger mode on ${s.name}.`);
+      return;
+    }
+    if(actionId==='run_mutation_session'){
+      const def=DEVICES.rapid_mutation_chamber;
+      if((deviceInventory[def.id]||0)<1){ push('⚠️ No mutation chamber in inventory.'); return; }
+      const result=runStationaryDeviceSession(s,def.id,week,Math.random);
+      applyStudentDeviceResult(studentId,result,def,false,'lab');
+      push(`🧬 Mutation session on ${s.name}.`);
+      return;
+    }
+    if(actionId==='fire_regression'){
+      const def=DEVICES.regression_ray;
+      if((deviceInventory[def.id]||0)<1){ push('⚠️ No regression ray in inventory.'); return; }
+      const result=runRegressionRay(s,'moderate',week,Math.random);
+      applyStudentDeviceResult(studentId,result,def,true,'lab');
+      push(`👶 Regression ray on ${s.name}.`);
     }
   };
 

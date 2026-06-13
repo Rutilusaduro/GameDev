@@ -70,6 +70,18 @@ registerPool('device.tick.action', [
     'the limit-removal compound continues its dissolving work',
     'whatever kept her body in check dissolves another fraction this week',
   ] },
+  { when: { deviceId: 'endless_hunger_engine' }, text: [
+    'the hunger engine suppresses satiety through another weekly cycle',
+    'the arm-mounted engine keeps hunger gnawing beneath every meal',
+  ] },
+  { when: { deviceId: 'rapid_mutation_chamber' }, text: [
+    'the mutation chamber runs another evolution cycle',
+    'catalyst flood forces dramatic tissue reconstruction',
+  ] },
+  { when: { deviceId: 'regression_ray' }, text: [
+    'residual regression leaves her impulsive and needy',
+    'the ray\'s mental regression still echoing through the week',
+  ] },
   { when: {}, text: ['the device completes its weekly cycle'] },
 ]);
 
@@ -80,6 +92,9 @@ registerPool('device.tick.anchor', [
   { when: { deviceId: 'bloating_gas_canister' }, text: [' in the gas-filled space', ' in the pressurized cloud', ''] },
   { when: { deviceId: 'erogenous_growth_stimulator' }, text: [' at the stimulator\'s weekly pulse', ''] },
   { when: { deviceId: 'growth_limit_remover' }, text: [' as the limiter continues to dissolve', ''] },
+  { when: { deviceId: 'endless_hunger_engine' }, text: [' on her arms', ' through satiety suppression', ''] },
+  { when: { deviceId: 'rapid_mutation_chamber' }, text: [' inside the mutation chamber', ' under unstable catalysts', ''] },
+  { when: { deviceId: 'regression_ray' }, text: [' under regression haze', ''] },
   { when: { deviceId: 'auto_bloating_belt' }, text: [' around her waist', ''] },
   { when: { deviceId: 'auto_feeder_arm' }, text: [' from the mechanical arm', ''] },
   { when: { deviceId: 'sleep_feeding_system' }, text: [' through the night', ' in overnight drip', ''] },

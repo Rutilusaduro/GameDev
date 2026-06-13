@@ -57,6 +57,24 @@ export const LAB_TECH_NODES = {
     blueprint: 'bp_limit_remover',
     requires: ['tech_growth_chamber'],
   },
+  tech_hunger_engine: {
+    id: 'tech_hunger_engine',
+    label: 'Satiety Suppression',
+    blueprint: 'bp_hunger_engine',
+    requires: ['automation_gate'],
+  },
+  tech_mutation_chamber: {
+    id: 'tech_mutation_chamber',
+    label: 'Evolution Accelerator',
+    blueprint: 'bp_mutation_chamber',
+    requires: ['tech_growth_chamber'],
+  },
+  tech_regression_ray: {
+    id: 'tech_regression_ray',
+    label: 'Neural Regression',
+    blueprint: 'bp_regression_ray',
+    requires: ['tech_growth_stimulator'],
+  },
 };
 
 export function getTechNodeForBlueprint(blueprintId) {

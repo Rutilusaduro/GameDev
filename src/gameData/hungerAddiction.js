@@ -38,7 +38,7 @@ export const HUNGER_CONFIG = {
   denyRelLoss: { default: 5, craving: 8, starving: 14, withdrawal: 12 },
 };
 
-/** Per-student hunger modifiers from owned skills, weekly arms, and physical traits. */
+/** Per-student hunger modifiers from owned skills, weekly arms, physical traits, and devices. */
 export function getHungerModifiers(student, skillEffects = {}, weeklyArms = {}) {
   const eff = skillEffects || {};
   const traits = student?.physicalTraits || [];
@@ -52,6 +52,21 @@ export function getHungerModifiers(student, skillEffects = {}, weeklyArms = {}) 
     forceInterrupt: false,
     feedAddictionChance: 0,
   };
+
+  if (hasEndlessHunger(student)) {
+    const distress = student?.deviceState?.endlessHunger?.distress;
+    mod.feedDropMult *= distress ? 0.2 : 0.4;
+    mod.passiveRiseMult *= distress ? 1.9 : 1.55;
+    mod.interruptBonus += distress ? 0.35 : 0.2;
+    mod.addictionFloorForCraving = Math.min(mod.addictionFloorForCraving, 1);
+    mod.feedAddictionChance += 0.1;
+  }
+
+  if (student?.deviceState?.regression) {
+    mod.passiveRiseMult *= 1.25;
+    mod.interruptBonus += 0.15;
+    mod.feedDropMult *= 0.85;
+  }
 
   if (eff.devouringPresence && weeklyArms.devouringStudentId === student?.id && !weeklyArms.devouringConsumed) {
     mod.forceInterrupt = true;
@@ -90,6 +105,16 @@ export function getHungerModifiers(student, skillEffects = {}, weeklyArms = {}) 
 
 export function getAddictionLevel(student) {
   return Math.min(4, Math.max(0, student?.addictionLevel ?? 0));
+}
+
+export function hasEndlessHunger(student) {
+  return student?.equip?.arms?.defId === 'endless_hunger_engine'
+    || !!student?.endlessHungerPermanent
+    || !!student?.deviceState?.endlessHunger?.active;
+}
+
+export function hasRegressionActive(student) {
+  return !!student?.deviceState?.regression;
 }
 
 export function getHungerTier(student) {
