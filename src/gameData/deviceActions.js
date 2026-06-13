@@ -74,6 +74,41 @@ export const DEVICE_ACTIONS = [
     requires: { equipped: 'living_furniture_rig' },
     when: (student) => student?.equip?.fullBody?.defId === 'living_furniture_rig',
   },
+  {
+    id: 'run_chamber_session',
+    label: 'Run chamber session',
+    icon: '☢️',
+    requires: { owned: 'growth_accelerator_chamber' },
+    when: (_student, ctx) => (ctx?.deviceInventory?.growth_accelerator_chamber ?? 0) > 0,
+  },
+  {
+    id: 'spray_serum',
+    label: 'Spray growth serum',
+    icon: '🌫️',
+    requires: { owned: 'growth_serum_sprayer' },
+    when: (_student, ctx) => (ctx?.deviceInventory?.growth_serum_sprayer ?? 0) > 0,
+  },
+  {
+    id: 'release_gas',
+    label: 'Release bloat gas',
+    icon: '💨',
+    requires: { owned: 'bloating_gas_canister' },
+    when: (_student, ctx) => (ctx?.deviceInventory?.bloating_gas_canister ?? 0) > 0,
+  },
+  {
+    id: 'remove_limiter',
+    label: 'Remove growth limiter',
+    icon: '🔓',
+    requires: { owned: 'growth_limit_remover' },
+    when: (_student, ctx) => (ctx?.deviceInventory?.growth_limit_remover ?? 0) > 0,
+  },
+  {
+    id: 'stimulator_pulse',
+    label: 'Trigger stimulator pulse',
+    icon: '💗',
+    requires: { equipped: 'erogenous_growth_stimulator' },
+    when: (student) => student?.equip?.neck?.defId === 'erogenous_growth_stimulator',
+  },
 ];
 
 export function getAvailableDeviceActions(student, ctx = {}) {

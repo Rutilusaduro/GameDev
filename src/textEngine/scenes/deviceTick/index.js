@@ -9,11 +9,11 @@ import '../../modules.js';
 
 registerPool('device.tick.beat', [
   { when: { isMalfunction: true }, text: [
-    '{device.tick.action}{join:device.tick.malfClause|prefix: — }; {device.tick.sensation}.',
+    '{device.tick.action}{device.tick.anchor}{join:device.tick.malfClause|prefix: — }; {device.tick.sensation}.',
     '⚠️ {device.tick.action}{join:device.tick.malfClause|prefix: — } {subject.name} {device.tick.sensation}.',
   ] },
   { when: {}, text: [
-    '{device.tick.action}; {device.tick.sensation}{join:device.tick.synergy|prefix: }.',
+    '{device.tick.action}{device.tick.anchor}; {device.tick.sensation}{join:device.tick.synergy|prefix: }.',
     'On {subject.name}: {device.tick.action}{join:device.tick.sensation|prefix: — }.',
   ] },
 ]);

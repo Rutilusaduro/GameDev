@@ -10,6 +10,8 @@ import {
 } from '../src/textEngine/engine.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { WEIGHT_STAGES } from '../src/gameData/stages.js';
+import { DEVICES } from '../src/gameData/devices.js';
+import { renderGrowthScene } from '../src/textEngine/scenes/growthEvent/index.js';
 
 const errors = [];
 const warnings = [];
@@ -91,6 +93,7 @@ const SWEEPS = [
   { name: 'WI_REACTION', root: 'wi.reply', tpl: '{wi.stepOff}\n\n{wi.reply}' },
   { name: 'WI_BREAK', root: 'wi.breakLine', tpl: '{wi.breakBeat} {wi.breakLine}' },
   { name: 'talk.encourage', root: 'talk.encourage', tpl: '{talk.encourage}' },
+  { name: 'grow.crossing', root: 'grow.crossing', tpl: '{grow.crossing} {grow.crossingDialogue}' },
 ];
 
 const STAGE_PROBES = [0, 2, 4, 6, 8, 10, 11];
@@ -156,6 +159,137 @@ for (const sweep of SWEEPS) {
 if (cells > 0 && lowVariety / cells > 0.05) {
   warning(`dynamic sweep: ${lowVariety}/${cells} cells produced identical output across ${RENDERS_PER_CELL} renders — variety is low`);
 }
+
+// ── growth event sweeps ───────────────────────────────────────
+
+const DEVICE_IDS = Object.keys(DEVICES);
+const MALF_TIERS = [null, 'moderate', 'critical'];
+const BODY_REP_STUDENTS = [INIT_STUDENTS[0], INIT_STUDENTS[5], INIT_STUDENTS[10]];
+const SPAN_PROBES = [[2, 3], [6, 7]];
+const CAUSE_TYPES = ['device_use', 'device_malfunction', 'digest_stageup', 'feature'];
+const LOCALES = ['office', 'dorm', 'lab', 'stream_setup', 'dining_hall', 'kitchen', 'campus'];
+const OUTFIT_HINTS = ['casual', 'contest', 'cheerleader', 'gamer'];
+const GROWTH_RENDERS = 2;
+
+function assertGrowthOut(name, out, meta) {
+  rendersDone++;
+  if (!out || !out.trim()) {
+    err(`${name}: empty render (${meta})`);
+    return;
+  }
+  for (const [needle, desc] of ARTIFACTS) {
+    if (out.includes(needle)) {
+      err(`${name}: ${desc} (${meta}): "${out.slice(0, 140)}"`);
+      break;
+    }
+  }
+}
+
+let growthCells = 0;
+if (hasModule('ge.onset')) {
+  // Grid A — devices
+  for (const deviceId of DEVICE_IDS) {
+    for (const malfTier of MALF_TIERS) {
+      for (const base of BODY_REP_STUDENTS) {
+        for (const [startStage, endStage] of SPAN_PROBES) {
+          const student = {
+            ...base,
+            lbs: stageLbs(endStage),
+            corruption: 50,
+            psych: { fixation: 20, obsession: 30, dependence: 25, shame: 15 },
+          };
+          for (let i = 0; i < GROWTH_RENDERS; i++) {
+            const out = renderGrowthScene(student, {
+              causeType: malfTier ? 'device_malfunction' : 'device_use',
+              deviceId,
+              gainLbs: endStage - startStage >= 2 ? 22 : 10,
+              startStage,
+              endStage,
+              stagesJumped: endStage - startStage,
+              malfunctionTier: malfTier,
+              isMalfunction: !!malfTier,
+              locale: 'lab',
+              week: 6,
+            });
+            assertGrowthOut('GE_DEVICE', out, `device=${deviceId} malf=${malfTier} student=${base.name}`);
+          }
+          growthCells++;
+        }
+      }
+    }
+  }
+
+  // Grid B — stage crossings
+  for (let endStage = 2; endStage <= 11; endStage++) {
+    for (const base of INIT_STUDENTS) {
+      for (const corruption of CORRUPTIONS) {
+        const student = {
+          ...base,
+          lbs: stageLbs(endStage),
+          corruption,
+          psych: initPsych(corruption),
+        };
+        const out = renderGrowthScene(student, {
+          causeType: 'digest_stageup',
+          gainLbs: 12,
+          startStage: endStage - 1,
+          endStage,
+          stagesJumped: 1,
+          locale: 'campus',
+          week: 6,
+        });
+        assertGrowthOut('GE_CROSSING', out, `end=${endStage} student=${base.name} cor=${corruption}`);
+        if (!out.includes('cross') && !out.includes('Soft') && !out.includes('Chubby') && endStage >= 2) {
+          // crossing beat should appear when stagesJumped >= 1
+          const hasCrossingBeat = out.split('\n\n').length >= 4;
+          if (!hasCrossingBeat) {
+            warning(`GE_CROSSING: short scene at stage ${endStage} for ${base.name}`);
+          }
+        }
+        growthCells++;
+      }
+    }
+  }
+
+  // Grid C — cause/locale/outfit
+  for (const causeType of CAUSE_TYPES) {
+    for (const locale of LOCALES) {
+      for (const outfitHint of OUTFIT_HINTS) {
+        for (const base of BODY_REP_STUDENTS) {
+          for (const [startStage, endStage] of SPAN_PROBES) {
+            const student = { ...base, lbs: stageLbs(endStage), corruption: 50 };
+            const out = renderGrowthScene(student, {
+              causeType,
+              featureId: causeType === 'feature' ? 'stream' : null,
+              deviceId: 'growth_serum_sprayer',
+              gainLbs: 14,
+              startStage,
+              endStage,
+              stagesJumped: endStage - startStage,
+              locale,
+              outfitHint,
+              week: 6,
+            });
+            assertGrowthOut('GE_CAUSE', out, `cause=${causeType} locale=${locale} outfit=${outfitHint}`);
+            growthCells++;
+          }
+        }
+      }
+    }
+  }
+}
+
+function initPsych(corruption) {
+  const scale = corruption >= 90 ? 1.4 : corruption >= 40 ? 1 : 0.5;
+  return {
+    fixation: Math.round(20 * scale),
+    obsession: Math.round(25 * scale),
+    dependence: Math.round(30 * scale),
+    shame: Math.round(35 * scale),
+  };
+}
+
+cells += growthCells;
 
 // ── report ────────────────────────────────────────────────────
 

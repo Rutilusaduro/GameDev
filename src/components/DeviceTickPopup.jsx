@@ -1,4 +1,5 @@
 import { C } from '../styles.js';
+import { WEIGHT_STAGES } from '../gameData/stages.js';
 
 const TIER_COLORS = {
   minor: '#8a8a7a',
@@ -13,16 +14,23 @@ export function DeviceTickPopup({ queue, onAdvance, onDismissAll }) {
   const event = events[index];
   if (!event) return null;
 
-  const isMalf = event.isMalfunction;
-  const tierColor = isMalf ? (TIER_COLORS[event.malfunction?.tier] || '#c8860a') : '#4a8090';
+  const isGrowthScene = event.kind === 'growth_scene';
+  const isMalf = event.isMalfunction && !isGrowthScene;
+  const tierColor = isGrowthScene
+    ? (TIER_COLORS[event.malfunction?.tier] || '#5090b8')
+    : isMalf
+      ? (TIER_COLORS[event.malfunction?.tier] || '#c8860a')
+      : '#4a8090';
   const progress = `${index + 1} / ${events.length}`;
+  const startLabel = WEIGHT_STAGES[event.startStage]?.label || '';
+  const endLabel = WEIGHT_STAGES[event.endStage]?.label || '';
 
   return (
     <div style={C.overlay}>
-      <div style={{ ...C.modal, maxWidth: 480, border: `1px solid ${tierColor}` }}>
+      <div style={{ ...C.modal, maxWidth: isGrowthScene ? 560 : 480, border: `1px solid ${tierColor}` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: tierColor }}>
-            {isMalf ? '⚠️ DEVICE MALFUNCTION' : '⚙️ DEVICE TICK'}
+            {isGrowthScene ? '🌊 GROWTH EVENT' : isMalf ? '⚠️ DEVICE MALFUNCTION' : '⚙️ DEVICE TICK'}
           </div>
           <div style={{ fontSize: 10, color: '#708090', fontWeight: 600 }}>{progress}</div>
         </div>
@@ -31,13 +39,25 @@ export function DeviceTickPopup({ queue, onAdvance, onDismissAll }) {
           <div>
             <div style={{ fontSize: 14, fontWeight: 700, color: '#a0c0e0' }}>{event.deviceLabel}</div>
             <div style={{ fontSize: 10, color: '#708090' }}>
-              {event.studentName} · {event.slot}
+              {event.studentName}
+              {!isGrowthScene && event.slot && <span> · {event.slot}</span>}
+              {isGrowthScene && startLabel && endLabel && (
+                <span> · {startLabel} → {endLabel}</span>
+              )}
               {event.gainLbs > 0 && <span style={{ color: '#60a060' }}> · +{event.gainLbs} lbs</span>}
             </div>
           </div>
         </div>
-        <div style={{ fontSize: 12, color: '#c8d4e0', lineHeight: 1.75, fontStyle: 'italic', marginBottom: 14, minHeight: 48 }}>
-          {event.prose}
+        <div style={{
+          fontSize: 12,
+          color: '#c8d4e0',
+          lineHeight: 1.75,
+          fontStyle: isGrowthScene ? 'normal' : 'italic',
+          whiteSpace: isGrowthScene ? 'pre-line' : 'normal',
+          marginBottom: 14,
+          minHeight: 48,
+        }}>
+          {isGrowthScene ? event.prose : event.prose}
         </div>
         {event.malfunction?.text && isMalf && (
           <div style={{ fontSize: 11, color: tierColor, marginBottom: 12, lineHeight: 1.6 }}>
@@ -49,7 +69,7 @@ export function DeviceTickPopup({ queue, onAdvance, onDismissAll }) {
             style={{ ...C.btn(tierColor), flex: 1 }}
             onClick={() => (index + 1 < events.length ? onAdvance() : onDismissAll())}
           >
-            {index + 1 < events.length ? 'Next device →' : 'Done'}
+            {index + 1 < events.length ? (isGrowthScene ? 'Next event →' : 'Next device →') : 'Done'}
           </button>
           {events.length > 1 && (
             <button style={{ ...C.btn('#333'), flex: 0 }} onClick={onDismissAll}>

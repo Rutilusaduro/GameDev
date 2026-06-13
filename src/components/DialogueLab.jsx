@@ -18,6 +18,8 @@ import {
   renderWeighInIntro, renderWeighInReaction,
   renderWeighInBreak, renderWeighInSwap, renderWeighInPurchase,
 } from '../textEngine/scenes/weighIn/index.js';
+import { renderGrowthScene } from '../textEngine/scenes/growthEvent/index.js';
+import '../textEngine/scenes/growthEvent/fragments.js';
 import '../textEngine/scenes/talkEncourage.js';
 import '../textEngine/scenes/talkCodas.js';
 import '../textEngine/scenes/campusSoftening.js';
@@ -50,6 +52,30 @@ const SECTIONS = {
       subject: s, week: 6,
       globals: { campusFattening: (opts.campusTier || 0) > 0, campusTier: opts.campusTier || 0 },
     }), { trace: opts.trace }) },
+  "growthEvent.scene": { params: [...STATE_PARAMS, "locale", "gain", "stagesJumped"],
+    fn: (s, opts) => {
+      const endStage = Number(opts.stage);
+      const jumped = Number(opts.stagesJumped || 0);
+      const startStage = Math.max(0, endStage - jumped);
+      const gainLbs = Number(opts.gain || 14);
+      const preLbs = WEIGHT_STAGES[startStage].min + 5;
+      const student = { ...s, lbs: WEIGHT_STAGES[endStage].min + 10 };
+      return renderGrowthScene(student, {
+        causeType: 'device_use',
+        deviceId: 'growth_accelerator_chamber',
+        gainLbs,
+        startStage,
+        endStage,
+        stagesJumped: jumped,
+        growthZone: 'belly',
+        growthMethod: 'radiation',
+        growthIntensity: jumped >= 2 ? 'violent' : 'rapid',
+        sensation: 'warmth',
+        locale: opts.locale || 'lab',
+        week: 6,
+      }, { trace: opts.trace });
+    },
+  },
 };
 const SECTION_KEYS = Object.keys(SECTIONS);
 
@@ -63,6 +89,9 @@ const PARAM_DEFS = [
   { key: "addiction", label: "Addiction", options: ["0", "1", "2", "3", "4"] },
   { key: "withdrawal", label: "Withdrawal", options: ["no", "yes"] },
   { key: "campus", label: "Campus tier", options: ["0", "1", "2", "3"] },
+  { key: "locale", label: "Locale", options: ["lab", "campus", "stream_setup", "dining_hall", "kitchen", "office"] },
+  { key: "gain", label: "Gain lbs", options: ["8", "14", "22", "30"] },
+  { key: "stagesJumped", label: "Stages jumped", options: ["0", "1", "2", "3"] },
 ];
 
 // Resolve one sample's state: locked params stay, Random rolls fresh.

@@ -26,7 +26,7 @@ export function isSlotFree(student, slot) {
 
 export function equipDevice(student, defId, week = 1) {
   const def = getDevice(defId);
-  if (!def || def.form === 'consumable' || def.form === 'attachment' || def.form === 'campus_tool') {
+  if (!def || def.form === 'consumable' || def.form === 'attachment' || def.form === 'campus_tool' || def.form === 'stationary') {
     return { student, ok: false, reason: 'invalid' };
   }
   const slot = slotFor(def);
@@ -103,6 +103,12 @@ function rollRange(range, rng) {
   return lo + Math.floor(rng() * (hi - lo + 1));
 }
 
+const ZONE_OVERRIDE_POOL = ['belly', 'hips', 'thighs', 'ass', 'chest'];
+
+function pickZoneOverride(rng = Math.random) {
+  return ZONE_OVERRIDE_POOL[Math.floor(rng() * ZONE_OVERRIDE_POOL.length)];
+}
+
 function attachmentIdsFromEntry(entry) {
   if (!entry?.attachments) return [];
   return Object.values(entry.attachments).map(a => a?.defId).filter(Boolean);
@@ -157,6 +163,7 @@ export function applyDeviceEffect(student, effectSpec, ctx = {}) {
   const { week = 1, sourceDeviceId = null, rng = Math.random } = ctx;
   let next = { ...student };
   const lines = [];
+  let zoneOverride = null;
 
   if (effectSpec?.gainLbs) {
     const lbs = rollRange(effectSpec.gainLbs, rng);
@@ -195,7 +202,19 @@ export function applyDeviceEffect(student, effectSpec, ctx = {}) {
     lines.push(`furniture comfort ${effectSpec.furnitureComfortDelta > 0 ? '+' : ''}${effectSpec.furnitureComfortDelta}`);
   }
 
-  return { student: next, lines };
+  if (effectSpec?.setFlags) {
+    next = { ...next, ...effectSpec.setFlags };
+    lines.push('permanent device flags applied');
+  }
+
+  if (effectSpec?.zoneOverride === 'random') {
+    zoneOverride = pickZoneOverride(rng);
+    lines.push(`growth clustered in her ${zoneOverride}`);
+  } else if (effectSpec?.zoneOverride) {
+    zoneOverride = effectSpec.zoneOverride;
+  }
+
+  return { student: next, lines, zoneOverride };
 }
 
 export function rollMalfunction(def, student, rng = Math.random) {
@@ -321,23 +340,77 @@ export function clearExpiredOverrides(student, week) {
 
 export function useConsumableDevice(student, defId, week = 1, rng = Math.random) {
   const def = getDevice(defId);
-  if (!def || def.form !== 'consumable') return { student, ok: false, lines: [], malfunction: null };
+  if (!def || def.form !== 'consumable') return { student, ok: false, lines: [], malfunction: null, zoneOverride: null };
   let lines = [];
   let malf = null;
   let next = student;
+  let zoneOverride = null;
 
   const applied = applyDeviceEffect(next, def.useEffect || {}, { week, sourceDeviceId: def.id, rng });
   next = applied.student;
   lines = [...applied.lines];
+  zoneOverride = applied.zoneOverride;
 
   malf = rollMalfunction(def, next, rng);
   if (malf) {
     const mApplied = applyDeviceEffect(next, malf.effect, { week, sourceDeviceId: def.id, rng });
     next = mApplied.student;
     lines.push(`⚠️ ${malf.text}`);
+    if (mApplied.zoneOverride) zoneOverride = mApplied.zoneOverride;
   }
 
-  return { student: next, ok: true, lines, malfunction: malf };
+  return { student: next, ok: true, lines, malfunction: malf, zoneOverride };
+}
+
+export function runStationaryDeviceSession(student, defId, week = 1, rng = Math.random) {
+  const def = getDevice(defId);
+  if (!def || def.form !== 'stationary') return { student, ok: false, lines: [], malfunction: null, zoneOverride: null };
+  let lines = [];
+  let malf = null;
+  let next = student;
+  let zoneOverride = null;
+
+  const applied = applyDeviceEffect(next, def.useEffect || {}, { week, sourceDeviceId: def.id, rng });
+  next = applied.student;
+  lines = [...applied.lines];
+  zoneOverride = applied.zoneOverride;
+
+  malf = rollMalfunction(def, next, rng);
+  if (malf) {
+    const mApplied = applyDeviceEffect(next, malf.effect, { week, sourceDeviceId: def.id, rng });
+    next = mApplied.student;
+    lines.push(`⚠️ ${malf.text}`);
+    if (mApplied.zoneOverride) zoneOverride = mApplied.zoneOverride;
+  }
+
+  return { student: next, ok: true, lines, malfunction: malf, zoneOverride };
+}
+
+export function runStimulatorPulse(student, week = 1, rng = Math.random) {
+  const entry = student?.equip?.neck;
+  if (!entry || entry.defId !== 'erogenous_growth_stimulator') {
+    return { student, ok: false, lines: [], malfunction: null, zoneOverride: null };
+  }
+  const def = getDevice('erogenous_growth_stimulator');
+  const effect = {
+    gainLbs: [3, 7],
+    psychDelta: { fixation: 4, obsession: 3, dependence: 2 },
+  };
+  let next = student;
+  let zoneOverride = null;
+  const applied = applyDeviceEffect(next, effect, { week, sourceDeviceId: def.id, rng });
+  next = applied.student;
+  let lines = [...applied.lines];
+  zoneOverride = applied.zoneOverride;
+  const malf = rollMalfunction(def, next, rng);
+  if (malf) {
+    const mApplied = applyDeviceEffect(next, malf.effect, { week, sourceDeviceId: def.id, rng });
+    next = mApplied.student;
+    lines.push(`⚠️ ${malf.text}`);
+    if (mApplied.zoneOverride) zoneOverride = mApplied.zoneOverride;
+    return { student: next, ok: true, lines, malfunction: malf, zoneOverride };
+  }
+  return { student: next, ok: true, lines, malfunction: null, zoneOverride };
 }
 
 export function triggerBeltBloatNow(student, week, rng = Math.random) {

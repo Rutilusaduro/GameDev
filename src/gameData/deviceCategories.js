@@ -14,6 +14,18 @@ export const DEVICE_BLUEPRINT_CATEGORIES = [
       'auto_bloating_belt',
     ],
   },
+  {
+    id: 'growth',
+    label: 'Growth',
+    icon: '🌊',
+    deviceIds: [
+      'growth_accelerator_chamber',
+      'growth_serum_sprayer',
+      'bloating_gas_canister',
+      'erogenous_growth_stimulator',
+      'growth_limit_remover',
+    ],
+  },
 ];
 
 export function recipesForCategory(categoryId) {
