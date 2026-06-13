@@ -2,6 +2,7 @@
 // CONTEXT-DEPENDENT DEVICE ACTIONS — registry for StudentDetailView
 // ═══════════════════════════════════════════════════════════════
 import { getEquippedDeviceIds, hasPredatorCapture } from './deviceEffects.js';
+import { getPlayerEquippedIds } from './playerDevices.js';
 
 export const DEVICE_ACTIONS = [
   {
@@ -130,6 +131,35 @@ export const DEVICE_ACTIONS = [
     requires: { owned: 'regression_ray' },
     when: (_student, ctx) => (ctx?.deviceInventory?.regression_ray ?? 0) > 0,
   },
+  {
+    id: 'tighten_pulse',
+    label: 'Tighten pulse',
+    icon: '⭕',
+    requires: { playerEquipped: 'controlled_bloating_rig' },
+    when: (_student, ctx) => getPlayerEquippedIds(ctx.player || {}).includes('controlled_bloating_rig'),
+  },
+  {
+    id: 'burst_feed',
+    label: 'Burst feed',
+    icon: '🦾',
+    requires: { playerEquipped: 'precision_feeder_arm' },
+    when: (_student, ctx) => getPlayerEquippedIds(ctx.player || {}).includes('precision_feeder_arm'),
+  },
+  {
+    id: 'sustained_drip',
+    label: 'Sustained drip',
+    icon: '💧',
+    requires: { playerEquipped: 'precision_feeder_arm' },
+    when: (_student, ctx) => getPlayerEquippedIds(ctx.player || {}).includes('precision_feeder_arm'),
+  },
+  {
+    id: 'vent_residual_swell',
+    label: 'Vent residual swell',
+    icon: '💨',
+    requires: { playerEquipped: 'measured_bloat_canister' },
+    when: (student, ctx) => getPlayerEquippedIds(ctx.player || {}).includes('measured_bloat_canister')
+      && !!student?.deviceState?.residualSwell,
+  },
 ];
 
 export function getAvailableDeviceActions(student, ctx = {}) {
@@ -142,6 +172,10 @@ export function getAvailableDeviceActions(student, ctx = {}) {
     if (action.requires?.owned) {
       const qty = ctx.deviceInventory?.[action.requires.owned] ?? 0;
       if (qty <= 0) return false;
+    }
+    if (action.requires?.playerEquipped) {
+      const ids = getPlayerEquippedIds(ctx.player || {});
+      if (!ids.includes(action.requires.playerEquipped)) return false;
     }
     return true;
   });

@@ -3,6 +3,7 @@
 // Engine-free. Persistence not implemented (in-memory only).
 // ═══════════════════════════════════════════════════════════════
 import { WALLET_CONFIG } from './wallet.js';
+import { DEFAULT_MOD_INVENTORY } from './deviceMods.js';
 
 /** Empty player equip slots (Professor self-equipped personal devices). */
 export const PLAYER_EQUIP_SLOTS = ['head', 'neck', 'torso', 'arms', 'waist', 'legs', 'fullBody', 'special'];
@@ -32,6 +33,7 @@ export function createInitialPlayer(overrides = {}) {
     psychBonus: { obsession: 0, fixation: 0 },
     deviceUnlocks: {},
     modUnlocks: {},
+    modInventory: { ...DEFAULT_MOD_INVENTORY },
     ...overrides,
   };
 }
