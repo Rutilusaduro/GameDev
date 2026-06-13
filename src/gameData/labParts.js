@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // LAB PARTS & BLUEPRINT RECIPES — Talia's workshop economy
 // ═══════════════════════════════════════════════════════════════
+import { techPrereqsMet } from './labTechTree.js';
 const BUILD_WEIGHT_COST_BY_TIER = { 1: 3, 2: 6, 3: 10, 4: 15 };
 const MONEY_COST_BY_TIER = { 1: 50, 2: 120, 3: 250, 4: 500 };
 const MIN_LBS_BY_TIER = { 1: 125, 2: 140, 3: 160, 4: 180 };
@@ -106,6 +107,51 @@ export const BLUEPRINT_RECIPES = {
     weightCost: 10,
     tier: 3,
     requiresResearched: ['bp_redistribution_rig'],
+  },
+  growth_serum_sprayer: {
+    deviceDefId: 'growth_serum_sprayer',
+    blueprint: 'bp_serum_sprayer',
+    parts: { reagents: 3, circuits: 2, scrap: 1 },
+    money: 110,
+    weightCost: 6,
+    tier: 2,
+    requiresResearched: ['bp_serum_injector'],
+  },
+  bloating_gas_canister: {
+    deviceDefId: 'bloating_gas_canister',
+    blueprint: 'bp_bloating_gas',
+    parts: { reagents: 2, servos: 1, scrap: 2 },
+    money: 90,
+    weightCost: 5,
+    tier: 2,
+    requiresResearched: ['bp_bloating_belt'],
+  },
+  erogenous_growth_stimulator: {
+    deviceDefId: 'erogenous_growth_stimulator',
+    blueprint: 'bp_growth_stimulator',
+    parts: { circuits: 2, servos: 1, reagents: 2 },
+    money: 100,
+    weightCost: 5,
+    tier: 2,
+    requiresResearched: ['bp_feeder_arm'],
+  },
+  growth_accelerator_chamber: {
+    deviceDefId: 'growth_accelerator_chamber',
+    blueprint: 'bp_growth_chamber',
+    parts: { exotics: 3, circuits: 3, servos: 2, reagents: 2 },
+    money: 280,
+    weightCost: 10,
+    tier: 3,
+    requiresResearched: ['bp_serum_injector'],
+  },
+  growth_limit_remover: {
+    deviceDefId: 'growth_limit_remover',
+    blueprint: 'bp_limit_remover',
+    parts: { exotics: 4, reagents: 4, circuits: 2, servos: 2 },
+    money: 500,
+    weightCost: 15,
+    tier: 4,
+    requiresResearched: ['bp_growth_chamber'],
   },
 };
 

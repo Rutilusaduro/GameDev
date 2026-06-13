@@ -6,6 +6,22 @@ export const DEVICE_SLOTS = [
   'head', 'neck', 'back', 'waist', 'arms', 'legs', 'fullBody',
 ];
 
+const DEFAULT_GROWTH_PROFILE = {
+  growthMethod: 'feed',
+  zoneBias: 'bodyType',
+  growthIntensity: 'steady',
+  sensation: 'fullness',
+};
+
+export const MARQUEE_GROWTH_DEVICE_IDS = [
+  'growth_accelerator_chamber',
+  'growth_serum_sprayer',
+  'bloating_gas_canister',
+  'erogenous_growth_stimulator',
+  'growth_limit_remover',
+  'growth_serum_injector',
+];
+
 export const DEVICES = {
   auto_bloating_belt: {
     id: 'auto_bloating_belt',
@@ -19,6 +35,7 @@ export const DEVICES = {
     effectStrength: 0.7,
     maintenanceCost: 2,
     rarity: 'uncommon',
+    growthProfile: { growthMethod: 'bloat', zoneBias: 'belly', growthIntensity: 'gradual', sensation: 'pressure' },
     desc: 'A reinforced waist harness that slowly but relentlessly bloats the wearer\'s stomach — constant pressure, visible swelling, inescapable fullness.',
     weeklyEffect: {
       bodyOverride: { stateType: 'bloated', stageBump: 2, durationWeeks: 1 },
@@ -45,6 +62,7 @@ export const DEVICES = {
     effectStrength: 0.65,
     maintenanceCost: 3,
     rarity: 'uncommon',
+    growthProfile: { growthMethod: 'feed', zoneBias: 'bodyType', growthIntensity: 'steady', sensation: 'fullness' },
     desc: 'A servo-driven arm that delivers food to the target\'s mouth at a steady mechanical rhythm — feeding without consent or effort.',
     weeklyEffect: {
       gainLbs: [3, 6],
@@ -75,6 +93,7 @@ export const DEVICES = {
     effectStrength: 0.85,
     maintenanceCost: 2,
     rarity: 'rare',
+    growthProfile: { growthMethod: 'feed', zoneBias: 'bodyType', growthIntensity: 'steady', sensation: 'fullness' },
     desc: 'Upgraded paste system — dense, optimized calories engineered for maximum storage efficiency. Slots into a feeder arm.',
     weeklyEffect: {},
     malfunctions: [
@@ -93,6 +112,7 @@ export const DEVICES = {
     effectStrength: 0.95,
     maintenanceCost: 0,
     rarity: 'rare',
+    growthProfile: { growthMethod: 'serum', zoneBias: 'bodyType', growthIntensity: 'rapid', sensation: 'warmth' },
     desc: 'One-shot volatile serum delivery — rapid, dramatic, never fully predictable localized growth.',
     useEffect: {
       gainLbs: [10, 22],
@@ -118,6 +138,7 @@ export const DEVICES = {
     effectStrength: 0.8,
     maintenanceCost: 4,
     rarity: 'rare',
+    growthProfile: { growthMethod: 'sculpt', zoneBias: 'lower_body', growthIntensity: 'steady', sensation: 'pressure' },
     desc: 'Pressure, vibration, and compounds that let Talia sculpt fat between major zones — intimate, controlling body redesign.',
     weeklyEffect: {
       bodyOverride: { bodyTypeOverride: 'pear', durationWeeks: 2 },
@@ -143,6 +164,7 @@ export const DEVICES = {
     effectStrength: 0.75,
     maintenanceCost: 3,
     rarity: 'rare',
+    growthProfile: { growthMethod: 'feed', zoneBias: 'bodyType', growthIntensity: 'steady', sensation: 'fullness' },
     desc: 'Drones, wireless tubes, and hidden pumps — feed a target from anywhere on campus without standing beside them.',
     campusModes: [
       { id: 'stealth', label: 'Stealth drip', gainLbs: [1, 3], psychDelta: { dependence: 1 }, discoveryRisk: 0.08 },
@@ -169,6 +191,7 @@ export const DEVICES = {
     effectStrength: 0.85,
     maintenanceCost: 3,
     rarity: 'rare',
+    growthProfile: { growthMethod: 'feed', zoneBias: 'bodyType', growthIntensity: 'steady', sensation: 'fullness' },
     desc: 'Soft mask, drip tubes, and sleep sensors — steady overnight calories while the target is helpless and unconscious.',
     weeklyEffect: {
       gainLbs: [4, 8],
@@ -201,6 +224,7 @@ export const DEVICES = {
     effectStrength: 0.9,
     maintenanceCost: 3,
     rarity: 'rare',
+    growthProfile: { growthMethod: 'feed', zoneBias: 'belly', growthIntensity: 'steady', sensation: 'fullness' },
     desc: 'A locking lower-face mask that forces consumption through an integrated tube — you will eat.',
     weeklyEffect: {
       gainLbs: [3, 7],
@@ -239,6 +263,7 @@ export const DEVICES = {
     effectStrength: 0.95,
     maintenanceCost: 2,
     rarity: 'rare',
+    growthProfile: { growthMethod: 'feed', zoneBias: 'belly', growthIntensity: 'rapid', sensation: 'fullness' },
     desc: 'Launch-and-lock arms plus mild sedative gas — grab unwilling targets on campus and mask them before they can flee.',
     weeklyEffect: {},
     campusCapture: true,
@@ -256,6 +281,7 @@ export const DEVICES = {
     effectStrength: 0.95,
     maintenanceCost: 3,
     rarity: 'rare',
+    growthProfile: { growthMethod: 'infuse', zoneBias: 'bodyType', growthIntensity: 'rapid', sensation: 'warmth' },
     desc: 'Turns ordinary liquids into dense fattening slurry — devastating in Water Fattening mode.',
     weeklyEffect: {},
     useEffect: {
@@ -286,6 +312,7 @@ export const DEVICES = {
     effectStrength: 0.9,
     maintenanceCost: 5,
     rarity: 'rare',
+    growthProfile: { growthMethod: 'feed', zoneBias: 'full', growthIntensity: 'gradual', sensation: 'pressure' },
     desc: 'Restraints and reshaping frames that turn a person into functional furniture — chair, couch, ottoman — fed to stay comfortable.',
     weeklyEffect: {
       gainLbs: [2, 5],
@@ -305,6 +332,124 @@ export const DEVICES = {
       { tier: 'critical', weight: 1, text: 'She starts answering to the furniture name Talia gave her.', effect: { psychDelta: { obsession: 8, dependence: 6 } } },
     ],
   },
+  growth_accelerator_chamber: {
+    id: 'growth_accelerator_chamber',
+    label: 'Growth Accelerator Chamber',
+    icon: '☢️',
+    form: 'stationary',
+    tier: 3,
+    stability: 0.45,
+    risk: 0.70,
+    effectStrength: 0.95,
+    maintenanceCost: 6,
+    rarity: 'rare',
+    growthProfile: { growthMethod: 'radiation', zoneBias: 'bodyType', growthIntensity: 'rapid', sensation: 'warmth' },
+    desc: 'A sealed radiation chamber that accelerates adipose deposition — warm, pleasurable, and never quite predictable.',
+    useEffect: {
+      gainLbs: [12, 24],
+      psychDelta: { obsession: 4, dependence: 3 },
+    },
+    malfunctions: [
+      { tier: 'moderate', weight: 3, text: 'Uneven field — one side swells faster than the other.', effect: { bodyOverride: { stateType: 'bloated', stageBump: 2, durationWeeks: 1 }, psychDelta: { shame: 3 } } },
+      { tier: 'major', weight: 2, text: 'Field spike — near-immobility from sheer swell.', effect: { gainLbs: [8, 14], bodyOverride: { stateType: 'bloated', stageBump: 4, durationWeeks: 2 }, psychDelta: { shame: 5 } } },
+      { tier: 'critical', weight: 1, text: 'Runaway acceleration — the chamber will not shut down on schedule.', effect: { gainLbs: [15, 25], permanentConvert: { gainLbs: [6, 12] }, psychDelta: { obsession: 6 } } },
+    ],
+  },
+  growth_serum_sprayer: {
+    id: 'growth_serum_sprayer',
+    label: 'Growth Serum Sprayer',
+    icon: '🌫️',
+    form: 'consumable',
+    tier: 2,
+    stability: 0.40,
+    risk: 0.65,
+    effectStrength: 0.90,
+    maintenanceCost: 0,
+    rarity: 'rare',
+    growthProfile: { growthMethod: 'serum', zoneBias: 'bodyType', growthIntensity: 'rapid', sensation: 'warmth' },
+    desc: 'Aerosolized growth serum — coats skin and lungs, deposits fat wherever the mist settles.',
+    useEffect: {
+      gainLbs: [8, 16],
+      psychDelta: { obsession: 3, shame: 2 },
+    },
+    malfunctions: [
+      { tier: 'minor', weight: 4, text: 'Weak mist — barely a tickle of deposition.', effect: { gainLbs: [2, 4] } },
+      { tier: 'moderate', weight: 3, text: 'Unpredictable deposition — all belly, or all ass.', effect: { gainLbs: [8, 14], zoneOverride: 'random' } },
+      { tier: 'major', weight: 2, text: 'Extreme uncontrolled growth — the mist keeps working.', effect: { gainLbs: [14, 22], permanentConvert: { gainLbs: [4, 8] } } },
+    ],
+  },
+  bloating_gas_canister: {
+    id: 'bloating_gas_canister',
+    label: 'Bloating Gas Canister',
+    icon: '💨',
+    form: 'consumable',
+    tier: 2,
+    stability: 0.35,
+    risk: 0.70,
+    effectStrength: 0.85,
+    maintenanceCost: 0,
+    rarity: 'uncommon',
+    growthProfile: { growthMethod: 'gas', zoneBias: 'belly', growthIntensity: 'violent', sensation: 'pressure' },
+    desc: 'Pressurized bloat gas — inflates the midsection violently, leaves residual softness when it fades.',
+    useEffect: {
+      gainLbs: [2, 5],
+      bodyOverride: { stateType: 'bloated', stageBump: 3, durationWeeks: 1 },
+      psychDelta: { shame: 3, dependence: 1 },
+    },
+    malfunctions: [
+      { tier: 'moderate', weight: 3, text: 'Valve sticks — the swell holds longer than planned.', effect: { bodyOverride: { stateType: 'bloated', stageBump: 4, durationWeeks: 2 } } },
+      { tier: 'major', weight: 2, text: 'Uncontrollable bloat — she cannot deflate on command.', effect: { bodyOverride: { stateType: 'bloated', stageBump: 5, durationWeeks: 3 }, gainLbs: [3, 6] } },
+      { tier: 'critical', weight: 1, text: 'It never fully deflates — the bloat becomes permanent.', effect: { permanentConvert: { gainLbs: [8, 14], bodyState: 'bloated' } } },
+    ],
+  },
+  erogenous_growth_stimulator: {
+    id: 'erogenous_growth_stimulator',
+    label: 'Erogenous Growth Stimulator',
+    icon: '💗',
+    form: 'worn',
+    slot: 'neck',
+    tier: 2,
+    stability: 0.75,
+    risk: 0.50,
+    effectStrength: 0.80,
+    maintenanceCost: 2,
+    rarity: 'rare',
+    growthProfile: { growthMethod: 'stimulate', zoneBias: 'bodyType', growthIntensity: 'steady', sensation: 'pleasure' },
+    desc: 'A neck-mounted stimulator that links arousal to adipose growth — pleasure and pounds in a steady feedback loop.',
+    weeklyEffect: {
+      gainLbs: [2, 5],
+      psychDelta: { fixation: 3, obsession: 2, dependence: 2 },
+    },
+    malfunctions: [
+      { tier: 'minor', weight: 4, text: 'Calibration drift — pleasure spikes without proportional gain.', effect: { psychDelta: { fixation: 4 } } },
+      { tier: 'moderate', weight: 3, text: 'Feedback loop tightens — she craves the pulse between sessions.', effect: { psychDelta: { obsession: 5, dependence: 4 } } },
+      { tier: 'major', weight: 2, text: 'The stimulator rewires appetite — food and arousal merge.', effect: { psychDelta: { fixation: 6, obsession: 5, dependence: 5 } } },
+      { tier: 'critical', weight: 1, text: 'Addictive cascade — she cannot function without the pulse.', effect: { gainLbs: [4, 8], psychDelta: { obsession: 10, fixation: 8, dependence: 8 } } },
+    ],
+  },
+  growth_limit_remover: {
+    id: 'growth_limit_remover',
+    label: 'Growth Limit Remover',
+    icon: '🔓',
+    form: 'consumable',
+    tier: 4,
+    stability: 0.30,
+    risk: 0.90,
+    effectStrength: 1.0,
+    maintenanceCost: 0,
+    rarity: 'rare',
+    growthProfile: { growthMethod: 'limit_break', zoneBias: 'full', growthIntensity: 'violent', sensation: 'stretch' },
+    desc: 'Surgical-grade limiter removal — tears away whatever kept her body from running away with itself.',
+    useEffect: {
+      gainLbs: [15, 30],
+      permanentConvert: { gainLbs: [5, 10] },
+      psychDelta: { obsession: 6, dependence: 4 },
+    },
+    malfunctions: [
+      { tier: 'major', weight: 2, text: 'The limiter does not reattach — growth continues unchecked.', effect: { permanentConvert: { gainLbs: [10, 18] } } },
+      { tier: 'critical', weight: 1, text: 'Point of no return — the body forgets how to stop.', effect: { setFlags: { limitRemoved: true }, permanentConvert: { gainLbs: [8, 14] } } },
+    ],
+  },
 };
 
 export function getDevice(defId) {
@@ -319,6 +464,15 @@ export function isPortableDevice(def) {
   return def && def.form !== 'installed';
 }
 
+export function getGrowthProfile(defId) {
+  const def = getDevice(defId);
+  return def?.growthProfile || DEFAULT_GROWTH_PROFILE;
+}
+
+export function isStationaryDevice(def) {
+  return def?.form === 'stationary';
+}
+
 export function isCampusTool(def) {
-  return def?.form === 'campus_tool' || (def?.campusModes?.length > 0);
+  return def?.form === 'campus_tool' || def?.form === 'stationary' || (def?.campusModes?.length > 0);
 }
