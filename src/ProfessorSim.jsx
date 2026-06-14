@@ -2640,6 +2640,7 @@ export default function ProfessorSim(){
   };
 
   const openNetworkView=()=>setView('network');
+  const openLabView=()=>setView('lab');
 
   const handleAddNetworkNode=(typeId)=>{
     const res=addNetworkNode(labState,typeId);

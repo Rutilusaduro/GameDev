@@ -12,7 +12,7 @@ import { LILITH_ID } from '../gameData/lilith.js';
 import { RECRUITMENT_SCENE, TESTER_APPEARANCE } from '../gameData/cultivator.js';
 import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
-import { INVENTOR_PATH_STAGES } from '../gameData/talia.js';
+import { INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES } from '../gameData/talia.js';
 import { getAvailableDeviceActions, getBodyOverrideBadge } from '../gameData/deviceActions.js';
 import { EquipmentButton } from '../components/StudentEquipModal.jsx';
 import { formatIngredientBag } from '../gameData/pharmacistIngredients.js';
