@@ -59,6 +59,8 @@ import { renderHungerOutcome } from './textEngine/scenes/hungerInterrupt.js';
 import './textEngine/scenes/hungerInterrupt.js';
 import './textEngine/scenes/hungerLexicon.js';
 import './textEngine/scenes/hungerInterruptPersonal.js';
+import './textEngine/scenes/jealousyReaction.js';
+import './textEngine/scenes/corruptionVoice.js';
 import {
   aggregateSkillEffects, computeSpentSkillPoints, isTreeTierUnlocked, tickPhysicalTraits,
   RANK_COSTS, softStartBonus,
@@ -104,7 +106,7 @@ import { DeviceInventoryView } from './views/DeviceInventoryView.jsx';
 import { PaperDollModal } from './components/PaperDollModal.jsx';
 import {
   defaultLabState, defaultDeviceInventory, INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES,
-  completeLabSession, tickLabWeek, TALIA_STUDENT_ID,
+  completeLabSession, tickLabWeek, TALIA_STUDENT_ID, maybeAdvanceInventorStage,
 } from './gameData/talia.js';
 import { unlockTechNode, normalizeLabTechState } from './gameData/labTechTree.js';
 import {
@@ -142,6 +144,32 @@ import {
   upgradeNexus,
 } from './gameData/networkState.js';
 import { getForceFeedComplianceBonus } from './gameData/deviceGating.js';
+import {
+  tickRelationshipDecay,
+  applyJealousyRelDelta,
+  favoritismSummary,
+} from './gameData/relationshipEcology.js';
+import {
+  tickCampusSaturationState,
+  saturationWeeklyPassiveBonus,
+  getSaturationTier,
+} from './gameData/campusSaturation.js';
+import {
+  scrutinyApModifier,
+  scrutinyBlocksPublicEvents,
+  weeklyScrutinyNudge,
+  getScrutinyTier,
+} from './gameData/scrutinyConsequences.js';
+import { getArrivalCapstone, markArrivalUnlocked } from './gameData/arrivalCapstones.js';
+import {
+  tuningGainMult,
+  scoreRouteSession,
+  applyDeviceUsageReward,
+  runStationaryDeviceSession,
+  runRouteDeviceSession,
+} from './gameData/deviceUsageEvents.js';
+import { computePrestigeScore, prestigeApBonus } from './gameData/prestigeLite.js';
+import { DeviceTuningModal, DeviceRouteModal } from './components/DeviceTuningModal.jsx';
 import {
   buildForceFeederEffect,
   isForceFeederInstalled,
@@ -245,6 +273,7 @@ export default function ProfessorSim(){
     at:CAMPUS_CONFIG.startNode,
     log:[CAMPUS_NODES[CAMPUS_CONFIG.startNode].desc],
     exploration:defaultCampusExplorationState(),
+    saturation:{ score:0, tier:0, tierLabel:'Normal Campus', weeksAtTier:0 },
   });
   // {student, phase:"scene"|"analog"|"break"|"purchase"|"swap"|"digital"}
   const [brokeScaleIds,setBrokeScaleIds]=useState([]);
@@ -312,6 +341,8 @@ export default function ProfessorSim(){
   const [equipModalStudentId, setEquipModalStudentId] = useState(null);
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
   const [forceFeederState, setForceFeederState] = useState(null);
+  const [deviceUsageModal, setDeviceUsageModal] = useState(null);
+  const [weeklyFeedCounts, setWeeklyFeedCounts] = useState({});
   const [weeklyArms, setWeeklyArms] = useState({ devouringStudentId: null, mesmerizingStudentId: null, devouringConsumed: false });
   const skipHungerCheckRef = useRef(false);
   const pendingAfterInterruptRef = useRef(null);
@@ -588,6 +619,7 @@ export default function ProfessorSim(){
       encounter, deviceId, modeId, student, week, exploration, rng:Math.random,
     });
     if(!result.ok){ campusLog(['⚠️ Device use failed.']); return; }
+    if(result.scrutinyDelta) addScrutiny(result.scrutinyDelta);
     const def=DEVICES[deviceId];
     if(encounter.target.type==='student'&&result.student){
       const growthEv=applyStudentDeviceResult(encounter.target.studentId,{ ok:true, ...result, student:result.student },def,false,'campus');
@@ -801,8 +833,14 @@ export default function ProfessorSim(){
     if(label) push(`🍽️ ${label} — ${s.name}: +${scaledCals.toLocaleString()} cal (fullness ${Math.min(999,(s.fullness||0)+scaledFull)}/${cap})`);
     if(Math.random()<CORRUPTION_CONFIG.dialogueChance){
       const tier=getCorruptionTier(s.corruption||0);
-      const lines=CORRUPTION_FEED_LINES[tier.id];
-      setTimeout(()=>push(`💭 ${lines[rnd(0,lines.length-1)](s)}`),120);
+      const voiceCtx=createContext({ subject:s, week });
+      const voiceLine=render('{corruption.voice}', voiceCtx);
+      if(voiceLine?.trim()){
+        setTimeout(()=>push(`💭 ${voiceLine}`),120);
+      } else {
+        const lines=CORRUPTION_FEED_LINES[tier.id];
+        setTimeout(()=>push(`💭 ${lines[rnd(0,lines.length-1)](s)}`),120);
+      }
     }
     let corruption=s.corruption||0;
     let relGain=extraRel+(forced?1:0);
@@ -858,7 +896,9 @@ export default function ProfessorSim(){
       }
     }
     const hungerEff=aggregateSkillEffects(ownedSkills);
-    return feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
+    const fedStudent=feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
+    setWeeklyFeedCounts(prev=>({...prev,[s.id]:(prev[s.id]||0)+1}));
+    return fedStudent;
   };
 
   const processStudentGain=(s,gain,extraRel=0)=>{
@@ -907,14 +947,17 @@ export default function ProfessorSim(){
     setWeeklyArms({devouringStudentId:null,mesmerizingStudentId:null,devouringConsumed:false});
     const newWeek=week+1;
     setWeek(newWeek);
-    const newAp=Math.min(ap+5+skillApBonus,20);
+    const scrutinyTier=getScrutinyTier(adminScrutiny);
+    const prestigeScore=computePrestigeScore({ week:newWeek, labState, campusSaturation:campusState.saturation, globalStats });
+    const weeklyApBase=5+skillApBonus+prestigeApBonus(prestigeScore)+scrutinyApModifier(adminScrutiny);
+    const newAp=Math.min(ap+weeklyApBase,20);
     setAp(newAp);
 
     // Semester events
     const semEv=SEMESTER_EVENTS.find(e=>e.week===newWeek);
 
-    // Random event (30% chance)
-    let randomEv=Math.random()<0.3?RANDOM_EVENTS[rnd(0,RANDOM_EVENTS.length-1)]:null;
+    // Random event (30% chance) — blocked at investigation tier
+    let randomEv=(!scrutinyBlocksPublicEvents(adminScrutiny)&&Math.random()<0.3)?RANDOM_EVENTS[rnd(0,RANDOM_EVENTS.length-1)]:null;
 
     // Decrement Reneé digestion timer each week
     if(cultivatorState?.digestWeeksLeft>0){
@@ -947,6 +990,7 @@ export default function ProfessorSim(){
       let ns=processStudentGain(s,gain,0);
       ns=tickPhysicalTraits(ns,ownedSkills);
       ns=tickHungerAddiction(ns,!!ns.playerFedThisWeek,hungerEff,weeklyArms);
+      ns=tickRelationshipDecay(ns);
       if(hungerEff.gluttonsInstinct){
         const cap=ns.stomachCapacity||GAIN_CONFIG.baseCapacity;
         if((ns.fullness||0)/cap>=0.7&&Math.random()<0.45) ns=adjustHunger(ns,1);
@@ -974,6 +1018,41 @@ export default function ProfessorSim(){
       nextPharmacistState=cleanPs;
     }
     if(pharmacistState) setPharmacistState(nextPharmacistState);
+
+    const satCtx={
+      pharmacistState:nextPharmacistState||pharmacistState,
+      labState,
+      students:updated,
+      cultSupply:nextPharmacistState?.cult?.supplyReservoir??pharmacistState?.cult?.supplyReservoir??0,
+    };
+    const nextSaturation=tickCampusSaturationState(campusState.saturation||{},satCtx);
+    setCampusState(prev=>({...prev,saturation:nextSaturation}));
+    if(nextSaturation.crossedTier){
+      const tierMeta=getSaturationTier(nextSaturation.score);
+      setTimeout(()=>push(`🌐 Campus saturation — ${tierMeta.label}: ${tierMeta.desc}`),130);
+    }
+    const satPassive=saturationWeeklyPassiveBonus(nextSaturation.tier);
+    if(satPassive>0){
+      updated=updated.map(s=>{
+        if(!studentReceivesPassiveGain(s)) return s;
+        return processStudentGain(s,satPassive,0);
+      });
+    }
+
+    const favSummary=favoritismSummary(updated,weeklyFeedCounts);
+    if(favSummary){
+      updated=updated.map(s=>{
+        const flag=favSummary.flags[s.id];
+        if(!flag) return s;
+        return applyJealousyRelDelta(s,{ isNeglected:flag==='neglected', isFavored:flag==='favored' });
+      });
+      if(favSummary.neglected.length){
+        const names=favSummary.neglected.map(s=>s.name).join(', ');
+        setTimeout(()=>push(`💔 Roster tension — ${names} feel sidelined by your attention this week.`),210);
+      }
+    }
+    setWeeklyFeedCounts({});
+
     const deviceTickEvents=[];
     updated=updated.map(s=>{
       let ns=clearExpiredOverrides(s,newWeek);
@@ -1151,7 +1230,9 @@ export default function ProfessorSim(){
     if(devotedCount>0) setAdminScrutiny(prev=>Math.max(0,prev-devotedCount));
     if(skillScrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-skillScrutinyPassiveReduce));
     if(evolvedScrutinyReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-evolvedScrutinyReduce));
-    push(`📅 Week ${newWeek} begins. ${newAp} AP available.`);
+    const scrutinyMsg=weeklyScrutinyNudge(adminScrutiny,scrutinyTier.id);
+    if(scrutinyMsg) setTimeout(()=>push(scrutinyMsg.message),170);
+    push(`📅 Week ${newWeek} begins. ${newAp} AP available.${scrutinyTier.apPenalty?` (Scrutiny: −${scrutinyTier.apPenalty} AP)`:""}`);
     if(semEv) setTimeout(()=>push(`🎉 Semester Event: ${semEv.title} — ${semEv.text}`),100);
     if(randomEv){
       const visForEv=updated.filter(st=>!st.hidden);
@@ -1292,6 +1373,16 @@ export default function ProfessorSim(){
       if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
       setAp(a=>a-meta.apCost);
       openCompetitiveGainerModal(s);
+      return;
+    }
+    const capstone=getArrivalCapstone(s);
+    if(capstone){
+      if(ap<capstone.apCost){push(`⚠️ Need ${capstone.apCost} AP.`);return;}
+      setAp(a=>a-capstone.apCost);
+      const gain=rnd(8,14);
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:markArrivalUnlocked(processStudentGain(st,gain,6))));
+      push(`✦ Arrival — ${capstone.label}: +${gain} lbs · ${capstone.firstUnlock?'capstone unlocked':'repeatable arrival'}`);
+      setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:capstone.desc });
       return;
     }
     if(s.evolvedForm==='delivery_hive'){
@@ -2549,6 +2640,7 @@ export default function ProfessorSim(){
   };
 
   const openNetworkView=()=>setView('network');
+  const openLabView=()=>setView('lab');
 
   const handleAddNetworkNode=(typeId)=>{
     const res=addNetworkNode(labState,typeId);
@@ -2629,11 +2721,12 @@ export default function ProfessorSim(){
     const ns=processStudentGain(s,gain,8);
     setStudents(prev=>prev.map(st=>st.id===s.id?ns:st));
     const prevStage=labState.stage??1;
-    const next=completeLabSession(labState,{
+    let next=completeLabSession(labState,{
       ...labSession,
       poolAfter: labSession.pool,
       instabilityGained: act.instability||5,
     }, null, Math.random);
+    next=maybeAdvanceInventorStage(next);
     setLabState(normalizeLabTechState(next));
     const btMsg=` +${(next.breakthroughs??0)-(labState.breakthroughs??0)} 💡`;
     if((next.stage??1)>prevStage){
@@ -2647,9 +2740,9 @@ export default function ProfessorSim(){
 
   const unlockLabTech=(nodeId)=>{
     if(!labState) return;
-    const res=unlockTechNode(normalizeLabTechState(labState),nodeId);
+    const res=unlockTechNode(normalizeLabTechState(labState),nodeId,taliaStudent());
     if(!res.ok){
-      const msg=res.reason==='cost'?'Not enough breakthroughs.':res.reason==='prereqs'?'Prerequisites not met.':res.reason==='stage'?'Requires a higher inventor stage.':'Already unlocked.';
+      const msg=res.reason==='cost'?'Not enough breakthroughs.':res.reason==='prereqs'?'Prerequisites not met.':res.reason==='relationship'?'Talia needs a closer bond first.':res.reason==='stage'?'Requires a higher inventor stage.':'Already unlocked.';
       push(`⚠️ ${msg}`);
       return;
     }
@@ -2907,6 +3000,52 @@ export default function ProfessorSim(){
     push(`🛠 Unequipped ${DEVICES[defId]?.label||defId} from ${s.name}.`);
   };
 
+  const completeDeviceUsage=(payload)=>{
+    const modal=deviceUsageModal;
+    if(!modal) return;
+    const s=students.find(st=>st.id===modal.studentId);
+    if(!s){ setDeviceUsageModal(null); return; }
+    const { deviceDefId, actionId }=modal;
+    const def=DEVICES[deviceDefId];
+    let result;
+    let gainMult=1;
+    let performanceTier='good';
+    if(payload?.performanceTier){
+      performanceTier=payload.performanceTier;
+      gainMult=tuningGainMult({ magnitude:payload.magnitude??0.5, stability:payload.stability??0.5, resultQuality:performanceTier },labState,deviceDefId);
+      result=runStationaryDeviceSession(s,deviceDefId,week,Math.random,{ gainMult, performanceTier });
+    } else if(payload?.allocations){
+      const routeScore=scoreRouteSession({ allocations:payload.allocations },0.15);
+      performanceTier=routeScore.performanceTier;
+      result=runRouteDeviceSession(s,deviceDefId,week,routeScore,Math.random);
+      if(routeScore.discoveryRisk>0.25) addScrutiny(Math.round(routeScore.discoveryRisk*10));
+    } else {
+      setDeviceUsageModal(null);
+      return;
+    }
+    if(actionId==='inject_serum'&&(deviceInventory[deviceDefId]||0)<1){
+      push('⚠️ No serum injectors in inventory.');
+      setDeviceUsageModal(null);
+      return;
+    }
+    if(actionId==='run_chamber_session'&&(deviceInventory[deviceDefId]||0)<1){
+      push('⚠️ No growth chamber in inventory.');
+      setDeviceUsageModal(null);
+      return;
+    }
+    applyStudentDeviceResult(modal.studentId,result,def,actionId==='inject_serum'||actionId==='run_chamber_session','lab');
+    if(labState){
+      const usage=applyDeviceUsageReward(labState,deviceDefId,performanceTier);
+      setLabState(usage.labState);
+      if(usage.pointsEarned>0) setTimeout(()=>push(`🔌 +${usage.pointsEarned} invention pts (${performanceTier}).`),70);
+    }
+    if(actionId==='inject_serum'||actionId==='run_chamber_session'){
+      setDeviceInventory(prev=>({ ...prev, [deviceDefId]: Math.max(0,(prev[deviceDefId]||0)-1) }));
+    }
+    push(`${def?.icon||'🛠'} ${def?.label||deviceDefId} — ${s.name} (${performanceTier}).`);
+    setDeviceUsageModal(null);
+  };
+
   const runDeviceAction=(actionId,studentId)=>{
     const s=students.find(st=>st.id===studentId);
     if(!s) return;
@@ -2919,18 +3058,11 @@ export default function ProfessorSim(){
       return;
     }
     if(actionId==='run_feeder_session'){
-      const effect={ gainLbs:[4,8], psychDelta:{ dependence:2 } };
-      const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'auto_feeder_arm', rng:Math.random });
-      const gain=applied.student._pendingGainLbs||0;
-      const gl=growthLineForStudent(applied.student,gain);
-      applyStudentDeviceResult(studentId,{ ok:true, ...applied, lines:[...applied.lines,...(gl?[gl]:[])] },DEVICES.auto_feeder_arm);
-      push(`🦾 Feeder session run on ${s.name}.${gl?` ${gl}`:''}`);
+      setDeviceUsageModal({ type:'route', deviceDefId:'auto_feeder_arm', studentId, actionId, deviceLabel:DEVICES.auto_feeder_arm?.label });
       return;
     }
     if(actionId==='inject_serum'){
-      const def=DEVICES.growth_serum_injector;
-      if((deviceInventory[def.id]||0)<1){ push('⚠️ No serum injectors in inventory.'); return; }
-      useDeviceOn(def,studentId);
+      setDeviceUsageModal({ type:'tuning', deviceDefId:'growth_serum_injector', studentId, actionId, deviceLabel:DEVICES.growth_serum_injector?.label });
       return;
     }
     if(actionId==='sculpt_redistribution'){
@@ -2985,11 +3117,7 @@ export default function ProfessorSim(){
       return;
     }
     if(actionId==='run_chamber_session'){
-      const def=DEVICES.growth_accelerator_chamber;
-      if((deviceInventory[def.id]||0)<1){ push('⚠️ No growth chamber in inventory.'); return; }
-      const result=runStationaryDeviceSession(s,def.id,week,Math.random);
-      applyStudentDeviceResult(studentId,result,def,false,'lab');
-      push(`☢️ Chamber session on ${s.name}.`);
+      setDeviceUsageModal({ type:'tuning', deviceDefId:'growth_accelerator_chamber', studentId, actionId, deviceLabel:DEVICES.growth_accelerator_chamber?.label });
       return;
     }
   };
@@ -4800,25 +4928,30 @@ export default function ProfessorSim(){
 
   const orderDish=(dish)=>{
     if((dinnerEvent.dishes||[]).includes(dish.id)) return;
+    const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
     const gain=rnd(dish.gain[0],dish.gain[1]);
-    const scaledGain=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(dinnerEvent.student.gainMultiplier||1));
-    const prevFullness=dinnerEvent.fullness||0;
-    const newFullness=prevFullness+(dish.fullness||15);
-    const maxFull=dinnerEvent.maxFullness||80;
-    const newTotalGain=dinnerEvent.totalGain+scaledGain;
+    const calories=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
+    const fullnessCost=dish.fullness||15;
+    const cap=s.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const prevFullness=s.fullness||0;
+    const fed=feedStudentCalories(s,calories,fullnessCost,0,dish.label);
+    if(!fed){
+      setDinnerLog(dl=>[...dl,`🚫 ${s.name} refuses another bite of ${dish.label}.`]);
+      return;
+    }
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
+    const newFullness=fed.fullness||0;
+    const maxFull=Math.max(dinnerEvent.maxFullness||80,cap);
+    const newTotalGain=(dinnerEvent.totalGain||0)+calories;
     const newDishes=[...(dinnerEvent.dishes||[]),dish.id];
-    setStudents(prev=>prev.map(s=>s.id!==dinnerEvent.student.id?s:{...s,consumedCalories:(s.consumedCalories||0)+scaledGain,fullness:(s.fullness||0)+Math.round((dish.fullness||15)*0.5)}));
-    push(`🍴 ${dinnerEvent.student.name}: ${dish.label} (+${scaledGain.toLocaleString()} cal)`);
-    // Overfill probabilistic ending
+    push(`🍴 ${s.name}: ${dish.label} (+${calories.toLocaleString()} cal)`);
     if(newFullness>maxFull){
       const overfillRatio=(newFullness-maxFull)/maxFull;
       const endChance=Math.min(0.8,overfillRatio);
       if(Math.random()<endChance){
-        const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
-        const sUpdated=s;
-        const endMsg=getOverfillEndMsg(sUpdated,getStage(sUpdated.lbs).id);
-        setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain.toLocaleString()} cal)`,`😵 ${endMsg}`]);
-        setTimeout(()=>triggerDinnerEnd(sUpdated,newFullness,maxFull,newTotalGain,6),1000);
+        const endMsg=getOverfillEndMsg(fed,getStage(fed.lbs).id);
+        setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${calories.toLocaleString()} cal)`,`😵 ${endMsg}`]);
+        setTimeout(()=>triggerDinnerEnd(fed,newFullness,maxFull,newTotalGain,6),1000);
         return;
       }
     }
@@ -4827,8 +4960,8 @@ export default function ProfessorSim(){
       :newFullness>maxFull?" — she's past full, but she doesn't stop."
       :newFullness>=maxFull*0.8?" — getting full..."
       :"";
-    setDinnerEvent(prev=>({...prev,dishes:newDishes,totalGain:newTotalGain,fullness:newFullness}));
-    setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${scaledGain.toLocaleString()} cal)${fullMsg}`]);
+    setDinnerEvent(prev=>({...prev,dishes:newDishes,totalGain:newTotalGain,fullness:newFullness,student:fed}));
+    setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${calories.toLocaleString()} cal)${fullMsg}`]);
   };
 
   const callWaiter=()=>{
@@ -4847,12 +4980,22 @@ export default function ProfessorSim(){
     const scaledBonus=Math.round(gainBonus*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
     const convText=conv.text(s,stId);
     const fullnessChange=conv.fullnessEffect||0;
-    const newFullness=Math.max(0,(dinnerEvent.fullness||0)+fullnessChange);
-    const newOffense=(dinnerEvent.offenseLevel||0)+(conv.offenseRisk||0);
+    let fed=s;
+    if(scaledBonus>0||fullnessChange!==0){
+      const bonusFed=feedStudentCalories(s,scaledBonus,Math.max(0,fullnessChange),conv.relBonus||0,conv.label);
+      if(bonusFed){
+        fed=bonusFed;
+        setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
+      }
+    } else if(conv.relBonus){
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+(conv.relBonus||0))}));
+    }
+    const newFullness=fed.fullness||0;
+    const maxFull=Math.max(dinnerEvent.maxFullness||80,fed.stomachCapacity||GAIN_CONFIG.baseCapacity);
     setDinnerLog(dl=>[...dl,`💬 ${convText}${scaledBonus>0?` (+${scaledBonus.toLocaleString()} cal)`:""}`]);
     push(`💬 Dinner conversation: ${conv.label}`);
-    setDinnerEvent(prev=>({...prev,conversationUsed:[...prev.conversationUsed,conv.id],totalGain:prev.totalGain+scaledBonus,fullness:newFullness,offenseLevel:newOffense}));
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,consumedCalories:(st.consumedCalories||0)+scaledBonus,relationship:Math.min(100,st.relationship+(conv.relBonus||0))}));
+    const newOffense=(dinnerEvent.offenseLevel||0)+(conv.offenseRisk||0);
+    setDinnerEvent(prev=>({...prev,conversationUsed:[...prev.conversationUsed,conv.id],totalGain:prev.totalGain+scaledBonus,fullness:newFullness,offenseLevel:newOffense,student:fed}));
     if(newOffense>=6){
       setTimeout(()=>{
         setDinnerLog(dl=>[...dl,`😤 ${s.name} sets her napkin down. "I think I should head home." She leaves.`]);
@@ -4892,14 +5035,20 @@ export default function ProfessorSim(){
   const orderGroupDish=(dish,targetId)=>{
     const target=groupDinnerEvent.students.find(s=>s.id===targetId);
     if(!target||target.dishes.includes(dish.id)) return;
+    const live=students.find(st=>st.id===targetId)||target;
     const gain=rnd(dish.gain[0],dish.gain[1]);
-    const scaledGain=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(target.gainMultiplier||1));
-    const newFullness=target.fullness+(dish.fullness||15);
-    const maxFull=target.maxFullness;
-    const newTotalGain=target.totalGain+scaledGain;
+    const calories=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(live.gainMultiplier||1));
+    const fed=feedStudentCalories(live,calories,dish.fullness||15,0,dish.label);
+    if(!fed){
+      setGroupDinnerLog(dl=>[...dl,`🚫 ${live.name} refuses ${dish.label}.`]);
+      return;
+    }
+    setStudents(prev=>prev.map(s=>s.id!==targetId?s:fed));
+    const newFullness=fed.fullness||0;
+    const maxFull=Math.max(target.maxFullness,fed.stomachCapacity||GAIN_CONFIG.baseCapacity);
+    const newTotalGain=target.totalGain+calories;
     const newDishes=[...target.dishes,dish.id];
-    setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,consumedCalories:(s.consumedCalories||0)+scaledGain,fullness:(s.fullness||0)+Math.round((dish.fullness||15)*0.5)}));
-    push(`🍴 ${target.name}: ${dish.label} (+${scaledGain.toLocaleString()} cal)`);
+    push(`🍴 ${live.name}: ${dish.label} (+${calories.toLocaleString()} cal)`);
 
     // Build reaction log entries before state updates
     const reactionLines=[];
@@ -4955,10 +5104,8 @@ export default function ProfessorSim(){
       const overfillRatio=(newFullness-maxFull)/maxFull;
       const endChance=Math.min(0.8,overfillRatio);
       if(Math.random()<endChance){
-        const sLive=students.find(s=>s.id===targetId)||target;
-        const sUpdated={...sLive,lbs:sLive.lbs+scaledGain};
-        const endMsg=getOverfillEndMsg(sUpdated,getStage(sUpdated.lbs).id);
-        setGroupDinnerLog(dl=>[...dl,`🍴 ${dish.label} for ${target.name}. (+${scaledGain} lbs)`,`😵 ${endMsg}`,...reactionLines.map(r=>`👀 ${r}`)]);
+        const endMsg=getOverfillEndMsg(fed,getStage(fed.lbs).id);
+        setGroupDinnerLog(dl=>[...dl,`🍴 ${dish.label} for ${live.name}. (+${calories.toLocaleString()} cal)`,`😵 ${endMsg}`,...reactionLines.map(r=>`👀 ${r}`)]);
         setGroupDinnerEvent(prev=>{
           const remaining=prev.students.filter(s=>s.id!==targetId);
           if(remaining.length===0){
@@ -4967,12 +5114,12 @@ export default function ProfessorSim(){
           }
           return {...prev,students:remaining,reactionLevels:newReactionLevels};
         });
-        const stId=getStage(sUpdated.lbs).id;
+        const stId=getStage(fed.lbs).id;
         const stGrp=stId<=2?0:stId<=5?1:stId<=7?2:3;
         const ratio=newFullness/maxFull;
         const fullGrp=ratio<=1.0?0:ratio<=1.3?1:ratio<=1.6?2:3;
         setTimeout(()=>{
-          setDinnerEndPopup({student:sUpdated,finalFullness:newFullness,maxFullness:maxFull,totalGain:newTotalGain,narrative:DINNER_ENDING_TEXT[stGrp][fullGrp](sUpdated)});
+          setDinnerEndPopup({student:fed,finalFullness:newFullness,maxFullness:maxFull,totalGain:newTotalGain,narrative:DINNER_ENDING_TEXT[stGrp][fullGrp](fed)});
           setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,relationship:Math.min(100,s.relationship+5)}));
         },1100);
         return;
@@ -4980,18 +5127,15 @@ export default function ProfessorSim(){
     }
 
     const firstHit=newFullness>=maxFull&&target.fullness<maxFull;
-    const fullMsg=firstHit?` — ${target.name} is satisfied. You can keep going.`
-      :newFullness>maxFull?` — ${target.name} is past full.`
-      :newFullness>=maxFull*0.8?` — ${target.name} is getting full.`:"";
-    setGroupDinnerLog(dl=>[...dl,`🍴 ${dish.label} for ${target.name}. ${dish.desc} (+${scaledGain} lbs)${fullMsg}`]);
+    const fullMsg=firstHit?` — ${live.name} is satisfied. You can keep going.`
+      :newFullness>maxFull?` — ${live.name} is past full.`
+      :newFullness>=maxFull*0.8?` — ${live.name} is getting full.`:"";
+    setGroupDinnerLog(dl=>[...dl,`🍴 ${dish.label} for ${live.name}. ${dish.desc} (+${calories.toLocaleString()} cal)${fullMsg}`,...reactionLines.map(r=>`👀 ${r}`)]);
     setGroupDinnerEvent(prev=>({
       ...prev,
+      students:prev.students.map(s=>s.id===targetId?{...s,dishes:newDishes,totalGain:newTotalGain,fullness:newFullness,lbs:fed.lbs}:s),
       reactionLevels:newReactionLevels,
-      students:prev.students.map(s=>s.id!==targetId?s:{...s,fullness:newFullness,dishes:newDishes,totalGain:newTotalGain}),
     }));
-    if(reactionLines.length){
-      setTimeout(()=>setGroupDinnerLog(dl=>[...dl,...reactionLines.map(r=>`👀 ${r}`)]),450);
-    }
   };
 
   const callGroupWaiter=()=>{
@@ -5076,16 +5220,23 @@ export default function ProfessorSim(){
   };
 
   const feedInSession=(food)=>{
-    const s=privateSession.student;
+    const s=students.find(st=>st.id===privateSession.student.id)||privateSession.student;
     const gain=rnd(food.gain[0],food.gain[1]);
-    const scaledGain=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
-    const newFullness=privateSession.fullness+food.fullness;
+    const calories=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
+    const fed=feedStudentCalories(s,calories,food.fullness,0,food.label);
+    if(!fed){
+      setSessionLog(sl=>[...sl,`🚫 ${s.name} refuses ${food.label}.`]);
+      return;
+    }
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
+    const scaledGain=calories;
     const effectiveMax=privateSession.maxFullness+privateSession.toleranceBuffer;
-    const fPct=Math.round((newFullness/effectiveMax)*100);
+    const cap=fed.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const newFullness=fed.fullness||0;
+    const fPct=Math.round((newFullness/Math.max(effectiveMax,cap))*100);
     const fsStage=getFullnessStage(fPct);
     const descFns=SESSION_FULLNESS_DESCS[s.archetype]||SESSION_FULLNESS_DESCS.default;
-    const desc=descFns[Math.min(fsStage.id,descFns.length-1)](s);
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,consumedCalories:(st.consumedCalories||0)+scaledGain}));
+    const desc=descFns[Math.min(fsStage.id,descFns.length-1)](fed);
     push(`🍽️ ${food.label}: +${scaledGain.toLocaleString()} cal`);
     setSessionLog(sl=>[...sl,`🍽️ ${food.label} (+${scaledGain.toLocaleString()} cal) — ${food.desc}`,`   ${desc}`]);
     // Check for tap-out
@@ -5093,7 +5244,7 @@ export default function ProfessorSim(){
     const adjustedTapProb=tapProb===Infinity?1:Math.max(0,tapProb-skillTapOutResistance);
     const tapsOut=Math.random()<adjustedTapProb;
     if(tapsOut){
-      const liveS=students.find(st=>st.id===s.id)||s;
+      const liveS=fed;
       let tapLine;
       if(fPct>=250){
         // At 250%+ — unique per-student extreme tap-out
@@ -5116,7 +5267,7 @@ export default function ProfessorSim(){
       setPrivateSession(null);
       setTapOutPopup({student:liveS,text:tapLine,totalGain:currentTotalGain});
     } else {
-      setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:prev.totalGain+scaledGain,fullness:newFullness}));
+      setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:prev.totalGain+scaledGain,fullness:newFullness,student:fed}));
     }
   };
 
@@ -5204,7 +5355,7 @@ export default function ProfessorSim(){
   const availableSkillPoints=Math.max(0,totalSkillPoints-spentSkillPoints);
   const hasSkill=(id)=>(ownedSkills[id]||0)>0;
   const skillPassiveBonus=(skillEffects.passiveLbs||0)+profPassiveBonus;
-  const skillApBonus=0;
+  const skillApBonus=(skillEffects.apBonus||0);
   const skillGainMult=profGainMult;
   const skillScrutinyReduce=1;
   const skillScrutinyPassiveReduce=0;
@@ -5875,7 +6026,7 @@ export default function ProfessorSim(){
           {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} setPaperDoll={setPaperDoll} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
@@ -6072,6 +6223,24 @@ export default function ProfessorSim(){
         onComplete={handleForceFeederComplete}
         onClose={closeForceFeeder}
       />}
+
+      {deviceUsageModal?.type==='tuning'&&(
+        <DeviceTuningModal
+          deviceDefId={deviceUsageModal.deviceDefId}
+          deviceLabel={deviceUsageModal.deviceLabel}
+          studentName={students.find(st=>st.id===deviceUsageModal.studentId)?.name||'Student'}
+          onComplete={completeDeviceUsage}
+          onClose={()=>setDeviceUsageModal(null)}
+        />
+      )}
+      {deviceUsageModal?.type==='route'&&(
+        <DeviceRouteModal
+          deviceLabel={deviceUsageModal.deviceLabel}
+          studentName={students.find(st=>st.id===deviceUsageModal.studentId)?.name||'Student'}
+          onComplete={completeDeviceUsage}
+          onClose={()=>setDeviceUsageModal(null)}
+        />
+      )}
 
       {/* ── RANKED FEEDEE SESSION MINI-GAME MODAL ── */}
       {rankedFeedeeState&&(()=>{

@@ -19,6 +19,14 @@ registerModule("talk.coda", [
     text: [
       (ctx) => `"...thank you for taking care of me, Professor," ${ctx.subject.name} adds, quieter. "Your greedy girl appreciates it."`,
       (ctx) => `${ctx.subject.name} adds, almost to herself: "I'm getting so big for you." She doesn't seem to notice she said 'for you.'`,
+      (ctx) => `"You know exactly what I need," ${ctx.subject.name} says, voice low. "You always do."`,
+      (ctx) => `${ctx.subject.name} leans into the attention like warmth. "Keep going. I'm yours to feed."`,
+    ] },
+  // High relationship — devoted register
+  { when: { relationship: [3, 4] },
+    text: [
+      (ctx) => `${ctx.subject.name} catches your eye afterward, smiling like this was the best part of her week.`,
+      (ctx) => `"I trust you," ${ctx.subject.name} says simply. "Even when you're pushing."`,
     ] },
   // No register unlocked — emit nothing
   { when: {}, text: "" },

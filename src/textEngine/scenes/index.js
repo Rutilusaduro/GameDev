@@ -23,6 +23,8 @@ import './streamPreStream.js';
 import './streamPreStreamBrand.js';
 import './talkCodas.js';
 import './talkEncourage.js';
+import './jealousyReaction.js';
+import './corruptionVoice.js';
 import './weighIn/index.js';
 import './deviceBody.js';
 import './deviceTick/index.js';
