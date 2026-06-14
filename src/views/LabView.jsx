@@ -197,7 +197,7 @@ export function LabView({
         })}
       </div>
 
-      <LabTechTree labState={labState} onUnlock={onUnlockTech} />
+      <LabTechTree labState={labState} taliaStudent={taliaStudent} onUnlock={onUnlockTech} />
 
       {installedDeviceIds.length > 0 && (
         <div style={{ fontSize: 9, letterSpacing: 2, color: '#6a5088', marginBottom: 8, marginTop: 12 }}>

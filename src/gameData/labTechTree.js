@@ -1,6 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // LAB TECH TREE — breakthrough currency unlocks blueprint research
+// Merged with former researchTree.js nodes (single currency path).
 // ═══════════════════════════════════════════════════════════════
+import { getTier } from './sessions.js';
 
 /** Insight Talia earns from lab sessions; spent to unlock blueprint nodes. */
 export const BREAKTHROUGH_LABEL = 'Breakthroughs';
@@ -61,8 +63,68 @@ export const LAB_TECH_NODES = [
     prereqs: ['foundation'],
     blueprint: 'bp_serum_injector',
     stageMin: 1,
+    relationshipMin: 1,
     category: 'feeding',
     desc: 'One-shot serum delivery — rapid, dramatic, never fully predictable.',
+  },
+  {
+    id: 'tech_force_feeder',
+    label: 'Sealed Mask Protocols',
+    icon: '🎭',
+    cost: 5,
+    prereqs: ['tech_feeder_arm'],
+    blueprint: 'bp_force_feeder',
+    stageMin: 1,
+    relationshipMin: 1,
+    category: 'feeding',
+    desc: 'Force-feeding mask — measured quotas past sealed lips.',
+  },
+  {
+    id: 'tech_obedience_belt',
+    label: 'Compliance Harness Theory',
+    icon: '🔗',
+    cost: 3,
+    prereqs: ['foundation'],
+    blueprint: 'bp_obedience_belt',
+    stageMin: 1,
+    category: 'restraint',
+    desc: 'Waist harnesses that trade comfort for obedience conditioning.',
+  },
+  {
+    id: 'tech_hunger_engine',
+    label: 'Appetite Amplification Field',
+    icon: '🔫',
+    cost: 7,
+    prereqs: ['tech_feeder_arm'],
+    blueprint: 'bp_hunger_engine',
+    stageMin: 2,
+    relationshipMin: 2,
+    category: 'feeding',
+    desc: 'Directed hunger ray — endless craving on command.',
+  },
+  {
+    id: 'tech_reinforced_legs',
+    label: 'Load-Bearing Gait Systems',
+    icon: '🦵',
+    cost: 5,
+    prereqs: ['tech_bloating_belt'],
+    blueprint: 'bp_reinforced_legs',
+    stageMin: 2,
+    relationshipMin: 1,
+    category: 'structural',
+    desc: 'Braces and servos that keep enormous bodies mobile.',
+  },
+  {
+    id: 'tech_growth_chamber',
+    label: 'Sealed Growth Acceleration',
+    icon: '☢️',
+    cost: 8,
+    prereqs: ['tech_serum_injector'],
+    blueprint: 'bp_growth_chamber',
+    stageMin: 2,
+    relationshipMin: 2,
+    category: 'structural',
+    desc: 'Radiation chamber sessions — warm, rapid, unpredictable deposition.',
   },
   // ── Stage 2 gates ──
   {
@@ -194,19 +256,23 @@ export function techPrereqsMet(state, blueprintId) {
   return isTechUnlocked(state, gate.id);
 }
 
-export function canUnlockTech(state, nodeId) {
+export function canUnlockTech(state, nodeId, taliaStudent = null) {
   const node = techNodeById(nodeId);
   if (!node || isTechUnlocked(state, nodeId)) return { ok: false, reason: 'owned' };
   if ((state?.stage ?? 1) < (node.stageMin ?? 1)) return { ok: false, reason: 'stage' };
   for (const p of node.prereqs || []) {
     if (!isTechUnlocked(state, p)) return { ok: false, reason: 'prereqs' };
   }
+  if (node.relationshipMin != null && taliaStudent) {
+    const relTier = getTier(taliaStudent.relationship ?? 0).id;
+    if (relTier < node.relationshipMin) return { ok: false, reason: 'relationship' };
+  }
   if ((state?.breakthroughs ?? 0) < (node.cost ?? 0)) return { ok: false, reason: 'cost' };
   return { ok: true, node };
 }
 
-export function unlockTechNode(state, nodeId) {
-  const check = canUnlockTech(state, nodeId);
+export function unlockTechNode(state, nodeId, taliaStudent = null) {
+  const check = canUnlockTech(state, nodeId, taliaStudent);
   if (!check.ok) return { ok: false, reason: check.reason, state };
   const node = check.node;
   const unlockedTech = [...(state.unlockedTech || []), nodeId];
@@ -249,6 +315,8 @@ export function nodesByCategory(category) {
 export const TECH_CATEGORIES = [
   { id: 'core', label: 'Core', icon: '🔬' },
   { id: 'feeding', label: 'Feeding', icon: '🍽️' },
+  { id: 'restraint', label: 'Restraint', icon: '🔗' },
+  { id: 'structural', label: 'Structural', icon: '🪑' },
   { id: 'automation', label: 'Automation', icon: '⚙️' },
   { id: 'nexus', label: 'Nexus', icon: '🌐' },
 ];
