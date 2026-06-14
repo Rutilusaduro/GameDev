@@ -13,6 +13,8 @@ import { C } from '../styles.js';
 import { INIT_STUDENTS } from '../gameData/students.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
+import { LILITH_ID } from '../gameData/lilith.js';
+import { DEVICES } from '../gameData/devices.js';
 import { createContext, render, pick } from '../textEngine/engine.js';
 import {
   renderWeighInIntro, renderWeighInReaction,
@@ -181,6 +183,7 @@ function rollSample(params) {
     weeksWithoutPlayerFeed: v.withdrawal === "yes" ? 3 : 0,
     fullness: 10,
     stomachCapacity: 100,
+    psych: { fixation: 20, obsession: 30, dependence: 25, shame: 15 },
   };
   const campusTier = Number(v.campus);
   const trace = [];

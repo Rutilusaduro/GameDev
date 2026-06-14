@@ -28,11 +28,9 @@ export const CAMPUS_NPCS = [
 ];
 
 const FLAVOR_DEVICE_IDS = [
-  'sleep_feeding_system',
   'living_furniture_rig',
-  'liquid_fat_infuser',
-  'remote_feeding_system',
-  'feeding_mask',
+  'endless_hunger_engine',
+  'growth_accelerator_chamber',
 ];
 
 function pick(rng, arr) {
@@ -66,11 +64,7 @@ export function getCampusUsableDevices(deviceInventory = {}) {
       usable.push(def.id);
     }
   }
-  if ((deviceInventory.feeding_mask ?? 0) > 0) usable.push('feeding_mask');
-  if ((deviceInventory.predator_capture_module ?? 0) > 0) usable.push('feeding_mask');
-  if ((deviceInventory.liquid_fat_infuser ?? 0) > 0 && !usable.includes('liquid_fat_infuser')) {
-    usable.push('liquid_fat_infuser');
-  }
+  if ((deviceInventory.endless_hunger_engine ?? 0) > 0) usable.push('endless_hunger_engine');
   return [...new Set(usable)];
 }
 
@@ -101,9 +95,7 @@ export function maybeRollDeviceEncounter(nodeId, ctx, rng = Math.random) {
   if (rng() > CAMPUS_DEVICE_CONFIG.encounterChance) return null;
 
   const students = visibleStudents(ctx.students || [], ctx);
-  const useNpc = rng() < CAMPUS_DEVICE_CONFIG.npcChance
-    || usable.includes('feeding_mask')
-    || (ctx.deviceInventory?.predator_capture_module ?? 0) > 0;
+  const useNpc = rng() < CAMPUS_DEVICE_CONFIG.npcChance;
 
   let target;
   if (useNpc && rng() < 0.55) {
@@ -122,12 +114,7 @@ export function maybeRollDeviceEncounter(nodeId, ctx, rng = Math.random) {
     };
   }
 
-  const allowedDevices = usable.filter(id => {
-    if (id === 'feeding_mask' && target.type === 'npc') return true;
-    if (id === 'feeding_mask' && target.type === 'student') return true;
-    return id !== 'feeding_mask' || (ctx.deviceInventory?.feeding_mask ?? 0) > 0
-      || (ctx.deviceInventory?.predator_capture_module ?? 0) > 0;
-  });
+  const allowedDevices = usable;
 
   const openingLine = renderCampusDeviceEncounter(target, nodeId, ctx);
   return {
@@ -136,8 +123,7 @@ export function maybeRollDeviceEncounter(nodeId, ctx, rng = Math.random) {
     target,
     allowedDevices,
     openingLine: openingLine ? `🎯 ${openingLine}` : `🎯 ${target.name} is within range of your devices.`,
-    captureAvailable: (ctx.deviceInventory?.predator_capture_module ?? 0) > 0
-      || (ctx.deviceInventory?.feeding_mask ?? 0) > 0,
+    captureAvailable: false,
   };
 }
 
@@ -150,7 +136,7 @@ export function maybeRollDeviceFlavor(nodeId, ctx, rng = Math.random) {
   if (!deviceId) return null;
   const line = renderCampusDeviceFlavor(deviceId, ctx);
   if (!line) return null;
-  const icons = { sleep_feeding_system: '🌙', living_furniture_rig: '🪑', liquid_fat_infuser: '💧', remote_feeding_system: '📡', feeding_mask: '🎭' };
+  const icons = { living_furniture_rig: '🪑', endless_hunger_engine: '🔫', growth_accelerator_chamber: '☢️' };
   return { deviceId, line: `${icons[deviceId] || '⚙️'} ${line}` };
 }
 
@@ -222,15 +208,7 @@ export function getDeviceModesForCampus(deviceId, deviceInventory) {
   const def = getDevice(deviceId);
   if (!def) return [];
   if (def.campusModes?.length) {
-    const hasCapture = (deviceInventory?.predator_capture_module ?? 0) > 0;
-    return def.campusModes.map(m => {
-      if (m.id !== 'capture') return m;
-      return {
-        ...m,
-        label: hasCapture ? m.label : 'Mask and feed (cooperative)',
-        discoveryRisk: hasCapture ? m.discoveryRisk : 0.2,
-      };
-    });
+    return def.campusModes;
   }
   return [{ id: 'default', label: 'Activate', gainLbs: def.useEffect?.gainLbs || [3, 6] }];
 }

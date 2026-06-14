@@ -38,10 +38,14 @@ function weightBandFromLbs(lbs) {
 }
 
 function primaryAttachment(attachmentIds = []) {
-  if (attachmentIds.includes('liquid_fat_infuser')) return 'liquid_fat_infuser';
-  if (attachmentIds.includes('calorie_paste_printer')) return 'calorie_paste_printer';
-  if (attachmentIds.includes('predator_capture_module')) return 'predator_capture_module';
   return attachmentIds[0] || null;
+}
+
+function tickGrowthZone(deviceId, student) {
+  const profile = getDevice(deviceId)?.growthProfile;
+  if (profile?.zoneBias === 'lower_body') return 'lower_body';
+  const bodyType = student?.bodyOverride?.bodyTypeOverride || student?.bodyType;
+  return resolveGrowthZone(profile, null, bodyType);
 }
 
 export function renderDeviceTickLine({
@@ -54,6 +58,10 @@ export function renderDeviceTickLine({
   attachmentIds = [],
   isMalfunction = false,
   week = 1,
+  modificationState = [],
+  dependenceLevel = 0,
+  dependenceTier = 0,
+  trace = null,
 }) {
   const equipped = getEquippedDeviceIds(student);
   const comfort = student?.deviceState?.furnitureComfort ?? 100;
@@ -72,6 +80,9 @@ export function renderDeviceTickLine({
       isMalfunction,
       hasAttachment: primaryAttachment(attachmentIds),
       attachmentIds,
+      modificationState,
+      dependenceLevel,
+      dependenceTier,
       weightBand: weightBandFromLbs(student?.lbs),
       bodyState: student?.bodyOverride?.stateType || null,
       equippedCountMin: equipped.length >= 3 ? equipped.length : 0,
@@ -83,5 +94,5 @@ export function renderDeviceTickLine({
       growthZone: resolveGrowthZone(student),
     },
   });
-  return render('{device.tick.beat}', ctx);
+  return render('{device.tick.beat}', ctx, { trace });
 }

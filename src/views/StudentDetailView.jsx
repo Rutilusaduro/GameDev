@@ -12,8 +12,7 @@ import { LILITH_ID } from '../gameData/lilith.js';
 import { RECRUITMENT_SCENE, TESTER_APPEARANCE } from '../gameData/cultivator.js';
 import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
-import { INVENTOR_PATH_STAGES, INVENTOR_ACTIVITIES } from '../gameData/talia.js';
-import { networkSummary } from '../gameData/networkState.js';
+import { INVENTOR_PATH_STAGES } from '../gameData/talia.js';
 import { getAvailableDeviceActions, getBodyOverrideBadge } from '../gameData/deviceActions.js';
 import { EquipmentButton } from '../components/StudentEquipModal.jsx';
 import { formatIngredientBag } from '../gameData/pharmacistIngredients.js';
@@ -23,7 +22,7 @@ import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
+9export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -111,6 +110,14 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                       <span style={C.tag("#2a1050","#b080e0")}>{s.personality}</span>
                     </div>
                   </div>
+                  <div style={{ marginBottom: 8 }}>
+                    <button
+                      style={{ ...C.btn('#4a6080'), fontSize: 10, padding: '5px 12px' }}
+                      onClick={() => setPaperDoll?.({ studentId: s.id })}
+                    >
+                      🧩 Devices
+                    </button>
+                  </div>
                   <div style={{fontSize:11,color:"#70509a",marginBottom:8}}>{s.role||s.archetype} · {s.archetype} · age {s.age} · {s.bodyType} body · fav: {s.favFood} · hobby: {s.hobby}</div>
 
                   <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:8}}>
@@ -192,11 +199,11 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                   <EquipmentButton onClick={() => openEquipModal?.(s.id)} />
                 </div>
 
-                {getAvailableDeviceActions(s,{deviceInventory}).length>0&&(
+                {getAvailableDeviceActions(s,{deviceInventory,player}).length>0&&(
                   <div style={C.infoBox("rgba(30,40,55,0.4)")}>
                     <div style={{fontSize:9,color:"#506080",letterSpacing:2,marginBottom:6}}>DEVICE ACTIONS</div>
                     <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-                      {getAvailableDeviceActions(s,{deviceInventory}).map(act=>(
+                      {getAvailableDeviceActions(s,{deviceInventory,player}).map(act=>(
                         <button key={act.id} style={{...C.smBtn,fontSize:10}} onClick={()=>runDeviceAction(act.id,s.id)}>
                           {act.icon} {act.label}
                         </button>
@@ -343,7 +350,7 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                             </div>
                           );
                         }
-                        // ── MACHINE GODDESS (Talia) — custom panel ──
+                        // ── INVENTOR (Talia) — custom panel ──
                         if(s.evolvedForm==='machine_goddess'&&labState){
                           const ls=labState;
                           const steel="#4a6080";
@@ -353,19 +360,15 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                           return(
                             <div style={{background:"rgba(8,12,22,0.6)",border:`1px solid ${steel}80`,borderRadius:10,padding:12}}>
                               <div style={{fontSize:9,letterSpacing:3,color:steel,marginBottom:4}}>🔧 EVOLVED PATH</div>
-                              <div style={{fontSize:13,fontWeight:700,color:"#90a8c8",marginBottom:6}}>Machine Goddess — {stageMeta?.label||'Tinkerer'}</div>
+                              <div style={{fontSize:13,fontWeight:700,color:"#90a8c8",marginBottom:6}}>The Inventor — {stageMeta?.label||'Workshop'}</div>
                               <div style={{fontSize:10,color:"#607090",marginBottom:8,lineHeight:1.6}}>
                                 Instability {ls.instability??0}% · Sessions {ls.sessionsRun??0}
                                 · 💡 {ls.breakthroughs??0} Breakthroughs
                                 <div style={{marginTop:4}}>Talia: {Math.round(s.lbs)} lbs (builds spend her mass)</div>
-                                {netSum&&(
-                                  <div style={{marginTop:4,color:"#50c0e0"}}>
-                                    Mesh: stability {netSum.stability}% · detection {netSum.detectionRisk}% · {netSum.nodeCount} nodes
-                                    {ls.stage>=3&&` · integration ${netSum.integration}%`}
-                                  </div>
-                                )}
                               </div>
-                              <div style={{fontSize:9,color:"#506070",marginBottom:8,lineHeight:1.5}}>{act.desc}</div>
+                              <div style={{fontSize:9,color:"#506070",marginBottom:8,lineHeight:1.5}}>
+                                Gather parts in a lab session, research blueprints, then build equipable and event inventions in The Lab.
+                              </div>
                               <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
                                 <button style={{...C.btn(steel),flex:"1 1 120px",opacity:ap<(act.apCost||1)?0.4:1}} onClick={()=>runLabSession(s)}>
                                   🔧 Run Lab Session ({act.apCost||1} AP)

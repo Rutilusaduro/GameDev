@@ -94,6 +94,21 @@ All keys combine (AND within a variant; value arrays are OR). Unlisted keys are 
 | `bigScale` | true when the industrial scale is in play (say "display", not "dial") |
 | `skill` | one skillEffects flag name, truthy check |
 | `relSize` / `refStage` | vs `ctx.ref`: much_smaller, smaller, similar, larger, much_larger |
+| `causeType` | device_use, device_malfunction, weekly_tick, digest_stageup, feature |
+| `featureId` | stream, compound, cultivator, contest, digest_stageup |
+| `growthMethod` | feed, bloat, serum, gas, radiation, stimulate, limit_break, sculpt, infuse |
+| `growthIntensity` | gradual, steady, rapid, violent |
+| `sensation` | pressure, fullness, warmth, pleasure, stretch |
+| `growthZone` | belly, hips, thighs, ass, chest, full, lower_body |
+| `locale` | lab, dorm, campus, stream_setup, dining_hall, kitchen, office |
+| `outfitHint` | archetype string or override: stream outfit, contest, casual |
+| `startStageMin/Max` | pre-gain stage (globals.startStage) |
+| `endStageMin/Max` | post-gain stage (globals.endStage); `endStage` exact for crossings |
+| `stagesJumpedMin` | stage span of the event |
+| `limitRemoved` | student/globals flag — runaway growth residual |
+| `isPermanent` / `isMalfunction` / `malfunctionTier` | growth event tone gates |
+| `deviceDependenceTierMin` | 0–3 psych+equip composite |
+| `gainLbsMin` | minimum pounds gained this event |
 
 ### Student roster + voice cheat-sheet
 

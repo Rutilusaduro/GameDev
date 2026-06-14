@@ -260,7 +260,7 @@ export const EVOLVED_REACTIONS = {
     "A malfunction last week should have been alarming. Instead I stayed up rerunning the failure curve until 3am. The subject's belly was enormous afterward. So was mine, from stress-eating beside the bench.",
     "I stopped describing the devices as experiments. They're infrastructure. My body is infrastructure too — raw polymer, heat-formed, repurposed into better machines.",
     "Campus whispers about the engineering girl with the harnesses. I don't correct them. Correction is inefficient. Installation is the point.",
-    "I am the network now — devices on bodies, bodies in my logs, my own mass feeding the builds that feed everyone else. The workshop hums whether I'm in it or not. I find that correct.",
+    "Devices tick on bodies I equipped myself. My own mass feeds the builds that feed everyone else. The workshop hums whether I'm in it or not. I find that correct.",
   ],
   community_researcher:[
     "First observation session. I went in as a researcher. I ate what was offered because refusing felt like contaminating the sample. I'm noting my own intake separately from the field notes.",
@@ -507,7 +507,7 @@ export const EVOLVED_DIARY = {
     `Subject wore the belt through a lecture. She texted circumference readings hourly. I replied with duty-cycle adjustments. We are both getting better at this.`,
     `Instability hit thirty percent after the serum injector trial. The subject gained fourteen pounds in an afternoon. I gained six from celebratory paste. Variance within acceptable chaos parameters.`,
     `Redistribution rig online. I sculpted a pear silhouette onto a volunteer and watched her discover the new center of gravity. I ran the same program on myself afterward. Data should be symmetrical.`,
-    `Endgame note: the lab never sleeps. Devices tick on bodies across campus. My belly is soft against the workbench when I lean in to solder. I am the network the machines were always pointing at.`,
+    `Endgame note: the lab never sleeps. Devices tick on bodies across campus. My belly is soft against the workbench when I lean in to solder. I am the inventor the machines were always pointing at.`,
   ],
   // ── BOOKWORM path ───────────────────────────────────────────────
   community_researcher:[
@@ -3615,7 +3615,7 @@ Becca says Sofia can no longer sit in a standard chair comfortably. Ruthanne say
       phases:[{
         text:(h,s)=>`The auto-feeder arm whirs through its first full session — mechanical, patient, relentless. Talia monitors throughput on a tablet. "Calories per minute are obscene," she says, pleased.`,
         choices:[
-          {id:"boost_paste",label:"Slot in the paste printer upgrade",result:`The paste printer locks into the arm with a satisfying click. Output density doubles. Talia drinks a celebratory cup of slurry and calls it "QC."`,lbs:8,rel:5},
+          {id:"boost_throughput",label:"Run greedy feeder throughput",result:`The arm accelerates until someone hits the kill switch. Throughput data is obscene.`,lbs:8,rel:5},
           {id:"slow_tease",label:"Run tease mode for precision data",result:`The arm slows to maddening intervals. The subject squirms; Talia graphs it. "Psychological coupling confirmed."`,lbs:5,rel:7},
         ],
       }],
@@ -3637,16 +3637,16 @@ Becca says Sofia can no longer sit in a standard chair comfortably. Ruthanne say
       ],
     },
     {
-      title:"Redistribution Study",
+      title:"Furniture Commission",
       phases:[{
-        text:(h,s)=>`The rig hums. Fat migrates visibly — pear-heavy, deliberate, intimate. Talia adjusts sliders with the focus of a sculptor. "Hold still," she says. "I'm almost done redesigning you."`,
+        text:(h,s)=>`The harness creaks as Talia bolts the last frame brace. "Living furniture," she says. "She stays useful while she swells." Reinforced legs click into place beneath the rig.`,
         choices:[
-          {id:"pear",label:"Push toward lower-body concentration",result:`Hips and thighs swell while the waist stays comparatively narrow. Talia nods approval.`,lbs:6,rel:7},
-          {id:"belly",label:"Bank mass forward instead",result:`The belly dominates the new silhouette. Talia tags the file "alternate aesthetic."`,lbs:7,rel:5},
+          {id:"comfort",label:"Prioritize comfort calibration",result:`She feeds the subject until the rig hums content. Furniture that moans when sat on is still furniture.`,lbs:6,rel:7},
+          {id:"display",label:"Prioritize display posture",result:`Talia locks the frame into a pose that shows every swell. The subject blushes; Talia takes photos for the log.`,lbs:7,rel:5},
         ],
       }],
       endings:[
-        {condition:()=>true,text:(h,s,gain)=>`Sculpt cycle saved. Talia runs a mirror pass on herself afterward — symmetry matters.`,gainBonus:6,relBonus:7},
+        {condition:()=>true,text:(h,s,gain)=>`Commission complete. Talia files the rig as ${Math.round(s.lbs+gain)} pounds heavier and entirely justified.`,gainBonus:6,relBonus:7},
       ],
     },
     {
@@ -3663,16 +3663,16 @@ Becca says Sofia can no longer sit in a standard chair comfortably. Ruthanne say
       ],
     },
     {
-      title:"Machine Goddess",
+      title:"Master Inventor",
       phases:[{
-        text:(h,s)=>`Devices tick on bodies across campus. Talia stands in the center of her workshop — soft, wide, solder-stained — and watches status lights blink like constellations. "Manual phase over," she says quietly.`,
+        text:(h,s)=>`Devices tick on bodies across campus. Talia stands in the center of her workshop — soft, wide, solder-stained — and watches status lights blink on her bench. "Manual phase over," she says quietly.`,
         choices:[
           {id:"expand",label:"Authorize wider deployment",result:`She pushes a campus-wide update. Growth becomes infrastructure.`,lbs:10,rel:8},
-          {id:"consolidate",label:"Consolidate the core network",result:`She keeps the mesh tight and obsessive. Quality over reach.`,lbs:7,rel:10},
+          {id:"consolidate",label:"Consolidate the core workshop",result:`She keeps the builds tight and obsessive. Quality over reach.`,lbs:7,rel:10},
         ],
       }],
       endings:[
-        {condition:()=>true,text:(h,s,gain)=>`The network lives. Talia is ${Math.round(s.lbs+gain)} pounds and no longer pretends she's only the inventor — she's the system.`,gainBonus:12,relBonus:12},
+        {condition:()=>true,text:(h,s,gain)=>`The workshop lives. Talia is ${Math.round(s.lbs+gain)} pounds and no longer pretends she's only the tinkerer — she's the inventor.`,gainBonus:12,relBonus:12},
       ],
     },
   ],
@@ -3710,7 +3710,7 @@ export const EVOLVED_FORM_META = {
   cultivator:           { title:"The Cultivator",         color:"#8B4513" },
   community_researcher: { title:"Community Researcher",    color:"#4a6fa5" },
   pharmacist:           { title:"The Chemist",            color:"#2e6b5a" },
-  machine_goddess:        { title:"Machine Goddess",        color:"#4a6080" },
+  machine_goddess:        { title:"The Inventor",           color:"#4a6080" },
 };
 
 export const EVOLUTION_BUTTON_BLURB = {
@@ -3835,7 +3835,7 @@ export const EVOLUTION_OFFER = {
   inventor:{
     intro:(s)=>`${s.name} pulls you into her workshop and locks the door like it's protocol. Blueprints cover every surface — belts, arms, injectors, rigs that treat flesh as tunable material. "Manual feeding is inefficient," she says, tapping a schematic. "I build externals. Wearables. Automations." She gestures at her own body without embarrassment. "I spend mass to make mass. Ambiguously metaphorical. Works either way." Her eyes are bright. "Help me deploy this properly."`,
     paths:{
-      machine_goddess:{ label:"Machine Goddess", desc:"Talia builds devices that bloat, feed, inject, and reshape — a workshop empire of external machines that override bodies until she becomes the controller of the whole network." },
+      machine_goddess:{ label:"The Inventor", desc:"Talia builds devices that bloat, feed, inject, and reshape — a workshop of external machines that override bodies until she becomes the campus's master inventor." },
     },
   },
 };

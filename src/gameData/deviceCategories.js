@@ -1,26 +1,38 @@
 // ═══════════════════════════════════════════════════════════════
-// DEVICE BLUEPRINT CATEGORIES — lab UI grouping
+// DEVICE BLUEPRINT CATEGORIES — equipable vs event inventions
 // ═══════════════════════════════════════════════════════════════
 
 export const DEVICE_BLUEPRINT_CATEGORIES = [
   {
-    id: 'feeding',
-    label: 'Feeding',
-    icon: '🍽️',
+    id: 'equipable',
+    label: 'Equipable',
+    icon: '🧩',
     deviceIds: [
       'auto_feeder_arm',
-      'calorie_paste_printer',
-      'growth_serum_injector',
+      'obedience_belt',
       'auto_bloating_belt',
+      'living_furniture_rig',
+      'reinforced_legs',
+    ],
+  },
+  {
+    id: 'event',
+    label: 'Event',
+    icon: '⚡',
+    deviceIds: [
+      'feeding_mask',
+      'growth_accelerator_chamber',
+      'growth_serum_injector',
+      'endless_hunger_engine',
     ],
   },
 ];
 
 export function recipesForCategory(categoryId) {
-  const cat = DEVICE_BLUEPRINT_CATEGORIES.find(c => c.id === categoryId);
+  const cat = DEVICE_BLUEPRINT_CATEGORIES.find((c) => c.id === categoryId);
   return cat?.deviceIds ?? [];
 }
 
 export function categorizedDeviceIds() {
-  return new Set(DEVICE_BLUEPRINT_CATEGORIES.flatMap(c => c.deviceIds));
+  return new Set(DEVICE_BLUEPRINT_CATEGORIES.flatMap((c) => c.deviceIds));
 }

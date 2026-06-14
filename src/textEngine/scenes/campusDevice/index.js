@@ -11,10 +11,12 @@ registerPool('campus.deviceEncounter', [
   { when: { targetType: 'student' }, text: [
     'You spot {subject.name} {campus.dev.vulnerability}{join:campus.dev.rangeNote|prefix: — }.',
     '{subject.name} is {campus.dev.vulnerability}{join:campus.dev.rangeNote|prefix: — }.',
+    'On campus: {subject.name}, {campus.dev.vulnerability}{join:campus.dev.rangeNote|prefix: — }.',
   ] },
   { when: { targetType: 'npc' }, text: [
     '{subject.name} is {campus.dev.vulnerability}{join:campus.dev.rangeNote|prefix: — }.',
     'A target of opportunity: {subject.name}, {campus.dev.vulnerability}.',
+    'Off-roster but reachable: {subject.name} {campus.dev.vulnerability}.',
   ] },
   { when: {}, text: [
     '{subject.name} is within device range.',
@@ -78,8 +80,8 @@ function resultContext(encounter, deviceId, modeId, result, nodeId, student = nu
   });
 }
 
-export function renderCampusDeviceEncounter(target, nodeId, explorationCtx) {
-  return render('{campus.deviceEncounter}', encounterContext(target, nodeId, explorationCtx));
+export function renderCampusDeviceEncounter(target, nodeId, explorationCtx, opts = {}) {
+  return render('{campus.deviceEncounter}', encounterContext(target, nodeId, explorationCtx), { trace: opts.trace || null });
 }
 
 export function renderCampusDeviceResult(encounter, deviceId, modeId, result, nodeId, student = null) {

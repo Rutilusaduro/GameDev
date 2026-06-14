@@ -15,6 +15,7 @@ import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_FEED_LINES, CORRUPTION
 import { TALK_CONFIG } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES } from './gameData/items.js';
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
+import { createInitialPlayer, updatePlayerField } from './gameData/player.js';
 import { WalletBadge } from './components/WalletBadge.jsx';
 import { CAMPUS_NODES, CAMPUS_CONFIG } from './gameData/campus.js';
 import {
@@ -83,6 +84,7 @@ import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
 import { CompetitiveGainerChatModal, CompetitiveGainerMainModal } from './components/CompetitiveGainerModals.jsx';
 import { MayaHiveModal } from './components/MayaHiveModal.jsx';
 import { EatingContestModal } from './components/EatingContestModal.jsx';
+import { ForceFeederModal, buildForceFeederModalState, advanceForceFeederOnComplete } from './components/ForceFeederModal.jsx';
 import { SumoMatchModal } from './components/SumoMatchModal.jsx';
 import { CollabStreamModal } from './components/CollabStreamModal.jsx';
 import { RecordingSessionModal } from './components/RecordingSessionModal.jsx';
@@ -99,6 +101,7 @@ import { ActionsView } from './views/ActionsView.jsx';
 import { InventoryView, ItemTargetPicker } from './views/InventoryView.jsx';
 import { LabView } from './views/LabView.jsx';
 import { DeviceInventoryView } from './views/DeviceInventoryView.jsx';
+import { PaperDollModal } from './components/PaperDollModal.jsx';
 import {
   defaultLabState, defaultDeviceInventory, INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES,
   completeLabSession, tickLabWeek, TALIA_STUDENT_ID,
@@ -114,14 +117,23 @@ import {
   tickEquippedDevices, clearExpiredOverrides, triggerBeltBloatNow, applyDeviceEffect,
   growthLineForStudent,
 } from './gameData/deviceEffects.js';
+import { buildGrowthEvent } from './gameData/growthEvents.js';
+import {
+  getResearchNode, EXPERIMENT_SESSION_COST, spendExperimentMaterials, rollExperimentOutcome,
+} from './gameData/researchTree.js';
+import {
+  unlockCircuitNode,
+  getCircuitNode,
+  recordForceFeederUse,
+} from './gameData/inventionUpgrades.js';
+import {
+  buildForceFeederEffect,
+  isForceFeederInstalled,
+  isHighRelationship,
+} from './gameData/forceFeederEvent.js';
+import { renderForceFeederScene } from './textEngine/scenes/forceFeeder/index.js';
 import { applyPsychDelta } from './gameData/psychState.js';
 import { applyCampusDeviceEncounter } from './gameData/campusDeviceEncounters.js';
-import {
-  ensureNetwork, addNetworkNode, slotExperimentOnNode, clearExperimentSlot,
-  upgradeNetworkNode, setNodeAutomation, expandDeploymentArea, adjustNexusIntegration,
-  upgradeNexus, approveProposal, denyProposal, tickNetworkWeek, syncSubjectInfluence,
-} from './gameData/networkState.js';
-import { NetworkView } from './views/NetworkView.jsx';
 import { LabBuildModal } from './components/LabBuildModal.jsx';
 import { DeviceTargetPicker } from './components/DeviceTargetPicker.jsx';
 import { EquipPicker, AttachPicker } from './components/EquipPicker.jsx';
@@ -158,17 +170,26 @@ export default function ProfessorSim(){
   const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({
     ...st, ...initGainStats(st), ...initDeviceState(), psych: initPsychState(), corruption: 0,
   })));
-  const [ap,setAp]=useState(5);
-  const [week,setWeek]=useState(1);
-  const [money,setMoney]=useState(WALLET_CONFIG.startingBalance);
+  const [player, setPlayer] = useState(() => createInitialPlayer());
+  const {
+    money, ap, week, ownedSkills, professorProfile, adminScrutiny,
+    globalStats, achievements, bigScaleUnlocked,
+  } = player;
+  const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
+  const setMoney = (updater) => setPlayer((p) => updatePlayerField(p, 'money', updater));
+  const setAp = (updater) => setPlayer((p) => updatePlayerField(p, 'ap', updater));
+  const setWeek = (updater) => setPlayer((p) => updatePlayerField(p, 'week', updater));
+  const setOwnedSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedSkills', updater));
+  const setProfessorProfile = (updater) => setPlayer((p) => updatePlayerField(p, 'professorProfile', updater));
+  const setAdminScrutiny = (updater) => setPlayer((p) => updatePlayerField(p, 'adminScrutiny', updater));
+  const setGlobalStats = (updater) => setPlayer((p) => updatePlayerField(p, 'globalStats', updater));
+  const setAchievements = (updater) => setPlayer((p) => updatePlayerField(p, 'achievements', updater));
+  const setBigScaleUnlocked = (updater) => setPlayer((p) => updatePlayerField(p, 'bigScaleUnlocked', updater));
   const [view,setView]=useState("class");
   const [selectedId,setSelectedId]=useState(null);
   const [log,setLog]=useState(["📋 Welcome, Professor. Your class of 15 students awaits."]);
   const [activeEvent,setActiveEvent]=useState(null);
-  const [achievements,setAchievements]=useState([]);
-  const [globalStats,setGlobalStats]=useState({ narrativeCount:0 });
   const [eventQueue,setEventQueue]=useState([]);
-  const [ownedSkills,setOwnedSkills]=useState({}); // { skillId: rank }
   const [dinnerEvent,setDinnerEvent]=useState(null);
   const [dinnerLog,setDinnerLog]=useState([]);
   const [groupDinnerEvent,setGroupDinnerEvent]=useState(null);
@@ -185,9 +206,7 @@ export default function ProfessorSim(){
   const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
   const [talkStudentId,setTalkStudentId]=useState(null);
-  const [professorProfile,setProfessorProfile]=useState(null);
-  // professorProfile: {name, subject, traits:[], origin?}
-  const [adminScrutiny,setAdminScrutiny]=useState(0);
+  // professorProfile lives on player object
   // DLC: Inner Circle
   const seenTiersRef=useRef(new Set());
   const prevRelsRef=useRef(Object.fromEntries(INIT_STUDENTS.map(s=>[s.id,s.relationship])));
@@ -212,7 +231,6 @@ export default function ProfessorSim(){
     exploration:defaultCampusExplorationState(),
   });
   // {student, phase:"scene"|"analog"|"break"|"purchase"|"swap"|"digital"}
-  const [bigScaleUnlocked,setBigScaleUnlocked]=useState(false);
   const [brokeScaleIds,setBrokeScaleIds]=useState([]);
   // {student, phase:"scene"|"scale"}
   const [sessionLog,setSessionLog]=useState([]);
@@ -272,6 +290,7 @@ export default function ProfessorSim(){
   const [deviceTargetPicker, setDeviceTargetPicker] = useState(null);
   const [equipPicker, setEquipPicker] = useState(null);
   const [attachPicker, setAttachPicker] = useState(null);
+  const [paperDoll, setPaperDoll] = useState(null);
   const [malfunctionPopup, setMalfunctionPopup] = useState(null);
   const [deviceTickQueue, setDeviceTickQueue] = useState(null);
   const [equipModalStudentId, setEquipModalStudentId] = useState(null);
@@ -554,10 +573,14 @@ export default function ProfessorSim(){
     if(!result.ok){ campusLog(['⚠️ Device use failed.']); return; }
     const def=DEVICES[deviceId];
     if(encounter.target.type==='student'&&result.student){
-      applyStudentDeviceResult(encounter.target.studentId,{ ok:true, ...result, student:result.student },def,false);
-    }
-    if(result.scrutinyDelta) addScrutiny(result.scrutinyDelta);
-    if(result.malfunction&&(result.malfunction.tier==='major'||result.malfunction.tier==='critical')){
+      const growthEv=applyStudentDeviceResult(encounter.target.studentId,{ ok:true, ...result, student:result.student },def,false,'campus');
+      if(!growthEv&&result.malfunction&&(result.malfunction.tier==='major'||result.malfunction.tier==='critical')){
+        setMalfunctionPopup({
+          studentName:encounter.target.name,tier:result.malfunction.tier,
+          text:result.malfunction.text,deviceLabel:def?.label,
+        });
+      }
+    } else if(result.malfunction&&(result.malfunction.tier==='major'||result.malfunction.tier==='critical')){
       setMalfunctionPopup({
         studentName:encounter.target.name,tier:result.malfunction.tier,
         text:result.malfunction.text,deviceLabel:def?.label,
@@ -800,7 +823,20 @@ export default function ProfessorSim(){
       if(compound?.immediateLbsGain){
         const [lo,hi]=compound.immediateLbsGain;
         const lbsGain=rnd(lo,hi);
+        const preLbs=result.lbs;
         result=processStudentGain(result,lbsGain,0);
+        const growthEv=buildGrowthEvent(result,{
+          cause:{ type:'feature', featureId:'compound', locale:'office' },
+          preLbs,
+          gainLbs:lbsGain,
+          week,
+        });
+        if(growthEv){
+          setDeviceTickQueue(prev=>{
+            const events=prev?.events?[...prev.events,growthEv]:[growthEv];
+            return { events, index: prev?.index??0 };
+          });
+        }
         setTimeout(()=>push(`💊 ${compound.label} — ${s.name} gains ${lbsGain} lbs immediately. Fullness unchanged.`),75);
       }
     }
@@ -924,15 +960,43 @@ export default function ProfessorSim(){
     const deviceTickEvents=[];
     updated=updated.map(s=>{
       let ns=clearExpiredOverrides(s,newWeek);
-      const tick=tickEquippedDevices(ns,newWeek,Math.random);
+      const preLbs=ns.lbs;
+      const tick=tickEquippedDevices(ns,newWeek,Math.random,{ player });
       ns=tick.student;
-      if(tick.tickEvents?.length){
-        deviceTickEvents.push(...tick.tickEvents);
-      }
       if(ns._pendingGainLbs){
         const g=ns._pendingGainLbs;
         const{ _pendingGainLbs,...rest}=ns;
         ns=processStudentGain(rest,g,0);
+      }
+      if(tick.tickEvents?.length){
+        for(const ev of tick.tickEvents){
+          const growthEv=buildGrowthEvent(ns,{
+            cause:{
+              type:ev.isMalfunction?'device_malfunction':'weekly_tick',
+              deviceId:ev.deviceId,
+              malfunctionTier:ev.malfunction?.tier,
+              locale:'lab',
+            },
+            preLbs,
+            gainLbs:ev.gainLbs||Math.max(0,Math.round(ns.lbs-preLbs)),
+            week:newWeek,
+            malfunction:ev.malfunction,
+          });
+          deviceTickEvents.push(growthEv?{ ...growthEv, slot:ev.slot }:ev);
+        }
+      }
+      if(ns.limitRemoved){
+        const extra=rnd(2,4);
+        const lrPre=ns.lbs;
+        ns=processStudentGain(ns,extra,0);
+        const lrEv=buildGrowthEvent(ns,{
+          cause:{ type:'device_use', deviceId:'growth_serum_injector', locale:'campus' },
+          preLbs:lrPre,
+          gainLbs:extra,
+          week:newWeek,
+          isPermanent:true,
+        });
+        if(lrEv) deviceTickEvents.push(lrEv);
       }
       return ns;
     });
@@ -994,13 +1058,22 @@ export default function ProfessorSim(){
     }
     // ── WEEKLY DIGESTION: convert this week's fed calories into weight ──
     const digestLines=[];
+    const digestGrowthEvents=[];
     updated=updated.map(s=>{
       if((s.consumedCalories||0)<=0&&(s.fullness||0)<=0&&!s.stuffedStreak) return s;
       const d=digestStudent(s);
       const oldStageId=getStage(s.lbs).id;
+      const preLbs=s.lbs;
       let ns=s;
       if(d.lbsGained>0) ns=processStudentGain(s,d.lbsGained,0);
       const stagedUp=getStage(ns.lbs).id>oldStageId;
+      const growthEv=stagedUp||d.lbsGained>=8?buildGrowthEvent(ns,{
+        cause:{ type:'digest_stageup', locale:'campus' },
+        preLbs,
+        gainLbs:d.lbsGained,
+        week:newWeek,
+      }):null;
+      if(growthEv) digestGrowthEvents.push(growthEv);
       const growth=applyCapacityGrowth(ns,d.lbsGained,stagedUp);
       const capacityGained=d.capacityGained+(growth.stomachCapacity-(ns.stomachCapacity||GAIN_CONFIG.baseCapacity));
       if(d.lbsGained>0||capacityGained>0){
@@ -1028,6 +1101,12 @@ export default function ProfessorSim(){
       };
     });
     if(digestLines.length) setTimeout(()=>push(`🧬 Digestion — ${digestLines.join(" · ")}`),150);
+    if(digestGrowthEvents.length){
+      setDeviceTickQueue(prev=>{
+        const events=prev?.events?[...prev.events,...digestGrowthEvents]:digestGrowthEvents;
+        return { events, index: prev?.index??0 };
+      });
+    }
 
     // Influence spread
     INFLUENCE_PAIRS.forEach(([a,b])=>{
@@ -1161,7 +1240,7 @@ export default function ProfessorSim(){
       setPharmacistState(defaultPharmacistState());
     }
     if(formId==='machine_goddess'){
-      setLabState(ensureNetwork(defaultLabState()));
+      setLabState(defaultLabState());
       setDeviceInventory(defaultDeviceInventory());
     }
   };
@@ -2268,8 +2347,16 @@ export default function ProfessorSim(){
       const _bSid=getStage(renee.lbs).id;
       const _stagesJumped=Math.max(1,getStage(renee.lbs+hGain).id-_bSid);
       const gVignette=getGrowthVignette(_bSid,hGain,_stagesJumped);
-      setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,hGain,8)}:st));
-      setCultivatorState(prev=>({...prev,testerStageId:cs.testerStageId,fatBar:finalFatBar,suspicion:200,session:null,pendingStageUp:false,harvestType:'emergency',harvestVignetteText:vignette,growthGain:hGain,growthVignetteText:gVignette,harvestStagesJumped:_stagesJumped,digestWeeksLeft:digestW,digestTotalWeeks:digestW,modalPhase:'emergency'}));
+      const reneePre=renee.lbs;
+      const grown=processStudentGain(renee,hGain,8);
+      const growthEv=buildGrowthEvent(grown,{
+        cause:{ type:'feature', featureId:'cultivator', locale:'kitchen' },
+        preLbs:reneePre,
+        gainLbs:hGain,
+        week,
+      });
+      setStudents(prev=>prev.map(st=>st.id===s.id?grown:st));
+      setCultivatorState(prev=>({...prev,testerStageId:cs.testerStageId,fatBar:finalFatBar,suspicion:200,session:null,pendingStageUp:false,harvestType:'emergency',harvestVignetteText:vignette,growthGain:hGain,growthVignetteText:[gVignette,growthEv?.prose].filter(Boolean).join('\n\n'),harvestStagesJumped:_stagesJumped,digestWeeksLeft:digestW,digestTotalWeeks:digestW,modalPhase:'emergency'}));
       push(`🍰 EMERGENCY: ${cs.testerName} got suspicious — harvest triggered (+${hGain} lbs to Reneé)`);
       return;
     }
@@ -2300,9 +2387,34 @@ export default function ProfessorSim(){
     const cs=cultivatorState; if(!cs) return;
     const hGain=cs.growthGain;
     const digestW=DIGEST_WEEKS[cs.testerStageId]||2;
-    setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,hGain,12)}:st));
+    const renee=students.find(st=>st.id===s.id)||s;
+    const reneePre=renee.lbs;
+    const grown=processStudentGain(renee,hGain,12);
+    const growthEv=buildGrowthEvent(grown,{
+      cause:{ type:'feature', featureId:'cultivator', locale:'kitchen' },
+      preLbs:reneePre,
+      gainLbs:hGain,
+      week,
+    });
+    setStudents(prev=>prev.map(st=>st.id===s.id?grown:st));
     push(`🍰 Reneé — harvest complete: +${hGain} lbs. Digesting for ${digestW} weeks.`);
-    setCultivatorState(prev=>({...prev,testerName:null,testerStageId:6,testerLbs:TESTER_START_LBS,fatBar:0,suspicion:0,session:null,pendingStageUp:false,harvestsCompleted:prev.harvestsCompleted+1,harvestType:null,harvestVignetteText:null,digestWeeksLeft:digestW,digestTotalWeeks:digestW,modalPhase:'growth'}));
+    setCultivatorState(prev=>({
+      ...prev,
+      testerName:null,
+      testerStageId:6,
+      testerLbs:TESTER_START_LBS,
+      fatBar:0,
+      suspicion:0,
+      session:null,
+      pendingStageUp:false,
+      harvestsCompleted:prev.harvestsCompleted+1,
+      harvestType:null,
+      harvestVignetteText:null,
+      digestWeeksLeft:digestW,
+      digestTotalWeeks:digestW,
+      modalPhase:'growth',
+      growthVignetteText:[cs.growthVignetteText,growthEv?.prose].filter(Boolean).join('\n\n'),
+    }));
   };
   const closeCultivatorGrowth=()=>{
     setCultivatorState(prev=>prev?{...prev,modalPhase:null,growthVignetteText:null,growthGain:0}:null);
@@ -2390,6 +2502,10 @@ export default function ProfessorSim(){
   const getEffectiveLabParts=()=>{
     if(labSession?.pool) return labSession.pool;
     return labState?.parts||{};
+  };
+
+  const gatherLabParts=(s)=>{
+    runLabSessionOpen(s);
   };
 
   const runLabSessionOpen=(s)=>{
@@ -2488,8 +2604,8 @@ export default function ProfessorSim(){
 
   const confirmLabSession=()=>{
     const s=students.find(st=>st.id===labStudentId);
-    if(!s||!labSession) return;
-    const act=INVENTOR_ACTIVITIES[labSession.stageId||labState.stage]||INVENTOR_ACTIVITIES[1];
+    if(!s||!labSession||!labState) return;
+    const act=LAB_SESSION_ACTIVITY;
     if(ap<act.apCost){ push(`⚠️ Need ${act.apCost} AP.`); return; }
     setAp(a=>a-act.apCost);
     const gain=rnd(...act.taliaGain);
@@ -2552,19 +2668,126 @@ export default function ProfessorSim(){
       if(st.id!==TALIA_STUDENT_ID) return st;
       return processStudentGain(st,-weightCost,0);
     }));
-    setDeviceInventory(prev=>({ ...prev, [deviceDefId]: (prev[deviceDefId]||0)+1 }));
     const def=DEVICES[deviceDefId];
-    push(`🔧 Built ${def?.label||deviceDefId} — Talia spent ${weightCost} lbs as raw material.`);
+    const isLabInstall=def?.inventionKind==='event'&&(def?.form==='stationary'||def?.labStation);
+    if(isLabInstall){
+      setLabState(prev=>({
+        ...prev,
+        parts: spentParts,
+        installedInventions: { ...(prev?.installedInventions||{}), [deviceDefId]: true },
+      }));
+      push(`🔧 Installed ${def?.label||deviceDefId} in the lab — Talia spent ${weightCost} lbs as raw material.`);
+    }else{
+      setDeviceInventory(prev=>({ ...prev, [deviceDefId]: (prev[deviceDefId]||0)+1 }));
+      push(`🔧 Built ${def?.label||deviceDefId} — Talia spent ${weightCost} lbs as raw material.`);
+    }
   };
 
-  const applyStudentDeviceResult=(studentId,result,def,consumeInventory=false)=>{
-    if(!result?.ok && result?.student==null) return;
+  const runResearchExperiment=(blueprintId)=>{
+    const node=getResearchNode(blueprintId);
+    if(!node||!labState) return;
+    if(ap<EXPERIMENT_SESSION_COST.ap){ push(`⚠️ Need ${EXPERIMENT_SESSION_COST.ap} AP.`); return; }
+    const affordState={ ...labState };
+    if(!canAfford({ parts: node.materials||{}, money: 0 }, affordState, money)){
+      push('⚠️ Insufficient materials for this experiment.');
+      return;
+    }
+    setAp(a=>a-EXPERIMENT_SESSION_COST.ap);
+    const outcome=rollExperimentOutcome(node,Math.random);
+    setLabState(prev=>{
+      if(!prev) return prev;
+      let next=spendExperimentMaterials(prev,node);
+      if(outcome.ok){
+        next=researchBlueprint(next,blueprintId);
+        setTimeout(()=>push(`🖥 Experiment succeeded — ${node.label} blueprint unlocked.`),0);
+      }else{
+        next={ ...next, instability: Math.min(100,(next.instability??0)+(outcome.instabilityBonus??8)) };
+        setTimeout(()=>push(`⚠️ Experiment failed — side effects spiked lab instability.`),0);
+      }
+      return next;
+    });
+  };
+
+  const unlockLabCircuitNode=(deviceDefId,nodeId)=>{
+    setLabState(prev=>{
+      if(!prev) return prev;
+      const next=unlockCircuitNode(prev,deviceDefId,nodeId);
+      if(next===prev) return prev;
+      const node=getCircuitNode(deviceDefId,nodeId);
+      setTimeout(()=>push(`🔌 Circuit node installed — ${node?.label||nodeId}.`),0);
+      return next;
+    });
+  };
+
+  const openForceFeeder=()=>{
+    if(!isForceFeederInstalled(labState)){ push('⚠️ Build the Force Feeder in the Workshop first.'); return; }
+    setForceFeederState(buildForceFeederModalState('setup'));
+  };
+
+  const handleForceFeederSelectTarget=(targetId)=>{
+    setForceFeederState(prev=>prev?{ ...prev, targetId }:null);
+  };
+
+  const handleForceFeederComplete=(payload)=>{
+    setForceFeederState(prev=>{
+      if(!prev) return null;
+      const target=students.find(st=>st.id===prev.targetId);
+      const next=advanceForceFeederOnComplete(prev,payload,target,week,labState);
+      if(next.phase==='aftermath'&&target&&next.resultParams){
+        const built=buildForceFeederEffect(target,next.resultParams.performanceTier,labState,week,{
+          targetIsTalia: target.id===TALIA_STUDENT_ID,
+          growthZone: next.resultParams.growthZone||'default',
+          efficiencyPct: next.resultParams.efficiencyPct,
+          chokeMeter: next.resultParams.chokeMeter,
+          chokedOut: next.resultParams.chokedOut,
+        });
+        const applied=applyDeviceEffect(target,{
+          gainLbs: built.gainLbs,
+          bodyOverride: built.bodyOverride,
+          psychDelta: built.psychDelta,
+        },{ week, sourceDeviceId:'feeding_mask', rng:Math.random });
+        applyStudentDeviceResult(target.id,{ ok:true, ...applied, zoneOverride: built.zoneOverride },DEVICES.feeding_mask);
+        const usage=recordForceFeederUse(labState,{
+          performanceTier: built.performanceTier,
+          targetIsTalia: built.targetIsTalia,
+          highRelationship: isHighRelationship(target),
+          targetedZone: next.resultParams.growthZone,
+        });
+        setLabState(usage.labState);
+        const proseParams={
+          ...built,
+          feedAttitude: built.feedAttitude,
+          targetIsTalia: built.targetIsTalia,
+          performanceTier: built.performanceTier,
+          pointsEarned: usage.pointsEarned,
+        };
+        const prose=renderForceFeederScene(
+          { ...target, lbs: applied.student?.lbs??target.lbs },
+          week,
+          proseParams,
+        );
+        const ptsMsg=usage.pointsEarned>0?` +${usage.pointsEarned} invention pts`:'';
+        push(`🎭 Force Feeder — ${target.name} (${built.performanceTier}${ptsMsg}).`);
+        if(usage.fieldDataBonus) setTimeout(()=>push('🔌 Field Data Accumulation — bonus invention point.'),80);
+        return { ...next, resultParams: proseParams, prose };
+      }
+      return next;
+    });
+  };
+
+  const closeForceFeeder=()=>setForceFeederState(null);
+
+  const applyStudentDeviceResult=(studentId,result,def,consumeInventory=false,locale='lab')=>{
+    if(!result?.ok && result?.student==null) return null;
+    const preStudent=students.find(st=>st.id===studentId);
+    const preLbs=preStudent?.lbs??130;
     let ns=result.student;
     if(ns._pendingGainLbs){
       const g=ns._pendingGainLbs;
       const{ _pendingGainLbs,...rest}=ns;
       ns=processStudentGain(rest,g,0);
     }
+    const gainLbs=Math.max(0, Math.round(ns.lbs-preLbs));
     setStudents(prev=>prev.map(st=>st.id===studentId?ns:st));
     if(consumeInventory&&def?.id){
       setDeviceInventory(prev=>{
@@ -2574,6 +2797,27 @@ export default function ProfessorSim(){
         return next;
       });
     }
+    const growthEv=buildGrowthEvent(ns,{
+      cause:{
+        type:result.malfunction?'device_malfunction':'device_use',
+        deviceId:def?.id,
+        malfunctionTier:result.malfunction?.tier,
+        locale,
+        zoneOverride:result.zoneOverride,
+      },
+      preLbs,
+      gainLbs,
+      week,
+      malfunction:result.malfunction,
+      isPermanent:!!(result.malfunction?.effect?.permanentConvert||result.malfunction?.effect?.setFlags?.limitRemoved),
+    });
+    if(growthEv){
+      setDeviceTickQueue(prev=>{
+        const events=prev?.events?[...prev.events,growthEv]:[growthEv];
+        return { events, index: prev?.index??0 };
+      });
+      return growthEv;
+    }
     if(result.malfunction&&(result.malfunction.tier==='major'||result.malfunction.tier==='critical')){
       const subj=students.find(st=>st.id===studentId);
       setMalfunctionPopup({
@@ -2581,6 +2825,7 @@ export default function ProfessorSim(){
         text:result.malfunction.text,deviceLabel:def?.label,
       });
     }
+    return null;
   };
 
   const useDeviceOn=(def,studentId)=>{
@@ -2717,10 +2962,17 @@ export default function ProfessorSim(){
     if(actionId==='furniture_comfort_check'){
       const comfort=s.deviceState?.furnitureComfort??100;
       push(`🪑 ${s.name} furniture comfort: ${comfort}/100${comfort<40?' — unstable, needs feeding':''}.`);
+      return;
+    }
+    if(actionId==='run_chamber_session'){
+      const def=DEVICES.growth_accelerator_chamber;
+      if((deviceInventory[def.id]||0)<1){ push('⚠️ No growth chamber in inventory.'); return; }
+      const result=runStationaryDeviceSession(s,def.id,week,Math.random);
+      applyStudentDeviceResult(studentId,result,def,false,'lab');
+      push(`☢️ Chamber session on ${s.name}.`);
+      return;
     }
   };
-
-  const openLabView=()=>setView('lab');
 
   const selectCultRoute=(routeId)=>{
     if(!pharmacistState) return;
@@ -3117,11 +3369,28 @@ export default function ProfessorSim(){
 
   const closeEatingContest=()=>{
     if(!eatingContestState) return;
-    const{studentId,yourGain,mayaGain,stageIdx,phase}=eatingContestState;
+    const{studentId,yourGain,mayaGain,stageIdx,phase,pantsFactor}=eatingContestState;
     const s=students.find(st=>st.id===studentId);
     const mayaLbs=CONTEST_MAYA_WEIGHTS[stageIdx]||330;
     const won=yourGain>=mayaGain;
-    if(s) push(`🏆 ${s.name} — Competition: +${Math.round(yourGain)} lbs · ${won?'Victory':'Loss'} vs Maya (${mayaLbs} lbs)`);
+    if(s){
+      push(`🏆 ${s.name} — Competition: +${Math.round(yourGain)} lbs · ${won?'Victory':'Loss'} vs Maya (${mayaLbs} lbs)`);
+      if(yourGain>0){
+        const growthEv=buildGrowthEvent(s,{
+          cause:{ type:'feature', featureId:'contest', locale:'dining_hall', outfitHint:'contest' },
+          preLbs:Math.max(80,s.lbs-yourGain),
+          gainLbs:yourGain,
+          week,
+          pantsFactor:pantsFactor||0,
+        });
+        if(growthEv){
+          setDeviceTickQueue(prev=>{
+            const events=prev?.events?[...prev.events,growthEv]:[growthEv];
+            return { events, index: prev?.index??0 };
+          });
+        }
+      }
+    }
     // Increment completions when player reaches scoreboard (completed the contest)
     if(phase==='scoreboard'&&s){
       setStudents(prev=>prev.map(st=>st.id===studentId?{...st,contestCompletions:(st.contestCompletions||0)+1}:st));
@@ -3871,6 +4140,7 @@ export default function ProfessorSim(){
       if(!student) return prev;
       const before=ensureStreamFields(student);
       let updated=before;
+      const preLbs=before.lbs;
       if(r.weightGain>0){
         updated=processStudentGain(updated,Math.round(r.weightGain),0);
         if(r.corruptionGain) updated={...updated,corruption:addCorruption(updated,r.corruptionGain)};
@@ -3907,7 +4177,18 @@ export default function ProfessorSim(){
         const mod=key.startsWith('stage_')?'stream.milestone.stage':`stream.milestone.${key}`;
         return render(`{${mod}}`,ctx);
       }).filter(Boolean);
-      const endingText=[tapLine,...specialLines,...milestoneLines,endLine].filter(Boolean).join('\n\n');
+      const streamGrowth=Math.round(r.weightGain)>0?buildGrowthEvent(updated,{
+        cause:{
+          type:'feature',
+          featureId:'stream',
+          locale:'stream_setup',
+          outfitHint:prev.preStreamChoices?.outfit||'casual',
+        },
+        preLbs,
+        gainLbs:Math.round(r.weightGain),
+        week,
+      }):null;
+      const endingText=[tapLine,...specialLines,...milestoneLines,streamGrowth?.prose,endLine].filter(Boolean).join('\n\n');
       const flavor=DESTINY_MONEY_FLAVOR[Math.floor(Math.random()*DESTINY_MONEY_FLAVOR.length)];
       fired.forEach((key,i)=>{
         const{label,emoji}=getStreamMilestoneLabel(key);
@@ -5560,7 +5841,7 @@ export default function ProfessorSim(){
       {/* NAV */}
       <div style={C.nav}>
         {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],
-          ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"],...(labState.stage>=2?[["network","⚙️ Network"]]:[])]:[]),
+          ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"]]:[]),
         ].map(([v,l])=>(
           v==="student"&&!sel?null:
           <button key={v} style={C.navB(view===v)} onClick={()=>setView(v)}>{l}</button>
@@ -5587,32 +5868,27 @@ export default function ProfessorSim(){
             taliaStudent={taliaStudent()}
             money={money}
             ap={ap}
+            player={player}
+            students={students}
+            pharmacistState={pharmacistState}
+            campusState={campusState}
             onBuild={buildLabDevice}
             onUnlockTech={unlockLabTech}
             onOpenSession={()=>{ const t=taliaStudent(); if(t) runLabSessionOpen(t); }}
+            labStage={labState?.stage??1}
           />}
 
           {view==="devices"&&<DeviceInventoryView
             deviceInventory={deviceInventory}
+            students={students}
+            player={player}
+            setStudents={setStudents}
+            setPlayer={setPlayer}
+            setPaperDoll={setPaperDoll}
             setDeviceTargetPicker={setDeviceTargetPicker}
             setEquipPicker={setEquipPicker}
             setAttachPicker={setAttachPicker}
-          />}
-
-          {view==="network"&&<NetworkView
-            labState={labState}
-            deviceInventory={deviceInventory}
-            students={students}
-            onAddNode={handleAddNetworkNode}
-            onSlotExperiment={handleSlotExperiment}
-            onClearSlot={handleClearExperimentSlot}
-            onUpgradeNode={handleUpgradeNetworkNode}
-            onSetAutomation={handleSetNodeAutomation}
-            onExpandArea={handleExpandDeployment}
-            onApproveProposal={handleApproveProposal}
-            onDenyProposal={handleDenyProposal}
-            onAdjustIntegration={handleAdjustIntegration}
-            onUpgradeNexus={handleUpgradeNexus}
+            pushLog={push}
           />}
 
           {/* ── CAMPUS EXPLORATION ── */}
@@ -5652,6 +5928,20 @@ export default function ProfessorSim(){
       {itemTargetPicker&&<ItemTargetPicker itemTargetPicker={itemTargetPicker} setItemTargetPicker={setItemTargetPicker} students={students} lilithUnlocked={lilithUnlocked} useItemOn={useItemOn}/>}
 
       {deviceTargetPicker&&<DeviceTargetPicker deviceTargetPicker={deviceTargetPicker} setDeviceTargetPicker={setDeviceTargetPicker} students={students} lilithUnlocked={lilithUnlocked} useDeviceOn={useDeviceOn}/>}
+      {paperDoll&&<PaperDollModal
+        paperDoll={paperDoll}
+        setPaperDoll={setPaperDoll}
+        students={students}
+        setStudents={setStudents}
+        player={player}
+        setPlayer={setPlayer}
+        deviceInventory={deviceInventory}
+        setDeviceInventory={setDeviceInventory}
+        week={week}
+        setAttachPicker={setAttachPicker}
+        pushLog={push}
+        preselectDef={paperDoll.def ? (typeof paperDoll.def === 'string' ? null : paperDoll.def) : null}
+      />}
       {equipPicker&&<EquipPicker equipPicker={equipPicker} setEquipPicker={setEquipPicker} students={students} lilithUnlocked={lilithUnlocked} equipDeviceOn={equipDeviceOn}/>}
       {attachPicker&&<AttachPicker attachPicker={attachPicker} setAttachPicker={setAttachPicker} students={students} lilithUnlocked={lilithUnlocked} attachDeviceOn={attachDeviceOn}/>}
       {equipModalStudentId!=null&&(
@@ -5751,6 +6041,16 @@ export default function ProfessorSim(){
 
       {/* ── EATING CONTEST MINI-GAME MODAL ── */}
       {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup}/>}
+
+      {forceFeederState&&<ForceFeederModal
+        state={forceFeederState}
+        students={students}
+        labState={labState}
+        week={week}
+        onSelectTarget={handleForceFeederSelectTarget}
+        onComplete={handleForceFeederComplete}
+        onClose={closeForceFeeder}
+      />}
 
       {/* ── RANKED FEEDEE SESSION MINI-GAME MODAL ── */}
       {rankedFeedeeState&&(()=>{

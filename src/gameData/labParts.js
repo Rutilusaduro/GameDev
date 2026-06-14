@@ -1,27 +1,21 @@
 // ═══════════════════════════════════════════════════════════════
 // LAB PARTS & BLUEPRINT RECIPES — Talia's workshop economy
 // ═══════════════════════════════════════════════════════════════
-const BUILD_WEIGHT_COST_BY_TIER = { 1: 3, 2: 6, 3: 10, 4: 15 };
-const MONEY_COST_BY_TIER = { 1: 50, 2: 120, 3: 250, 4: 500 };
-const MIN_LBS_BY_TIER = { 1: 125, 2: 140, 3: 160, 4: 180 };
+import { techPrereqsMet } from './labTechTree.js';
+
+const BUILD_WEIGHT_COST_BY_TIER = { 1: 3, 2: 6, 3: 10 };
+const MONEY_COST_BY_TIER = { 1: 50, 2: 120, 3: 250 };
+const MIN_LBS_BY_TIER = { 1: 125, 2: 140, 3: 160 };
 
 export const PARTS = {
   scrap: { id: 'scrap', label: 'Scrap Metal', icon: '🔩', desc: 'Salvaged frames, bent brackets, useful junk.' },
   circuits: { id: 'circuits', label: 'Circuit Boards', icon: '💾', desc: 'Recovered logic boards and soldered traces.' },
   servos: { id: 'servos', label: 'Servo Motors', icon: '⚙️', desc: 'Precision actuators for arms, belts, and rigs.' },
-  reagents: { id: 'reagents', label: 'Reagents', icon: '🧪', desc: 'Chemical precursors for serum and paste systems.' },
+  reagents: { id: 'reagents', label: 'Reagents', icon: '🧪', desc: 'Chemical precursors for serum systems.' },
   exotics: { id: 'exotics', label: 'Exotic Components', icon: '✨', desc: 'Rare parts from campus surplus and black-market bins.' },
 };
 
 export const BLUEPRINT_RECIPES = {
-  auto_bloating_belt: {
-    deviceDefId: 'auto_bloating_belt',
-    blueprint: 'bp_bloating_belt',
-    parts: { scrap: 2, servos: 1, circuits: 1 },
-    money: 40,
-    weightCost: 3,
-    tier: 1,
-  },
   auto_feeder_arm: {
     deviceDefId: 'auto_feeder_arm',
     blueprint: 'bp_feeder_arm',
@@ -30,14 +24,48 @@ export const BLUEPRINT_RECIPES = {
     weightCost: 5,
     tier: 1,
   },
-  calorie_paste_printer: {
-    deviceDefId: 'calorie_paste_printer',
-    blueprint: 'bp_paste_printer',
-    parts: { circuits: 2, reagents: 2, scrap: 1 },
-    money: 60,
-    weightCost: 4,
+  feeding_mask: {
+    deviceDefId: 'feeding_mask',
+    blueprint: 'bp_force_feeder',
+    parts: { scrap: 2, servos: 2, circuits: 2, reagents: 1 },
+    money: 100,
+    weightCost: 5,
     tier: 1,
     requiresResearched: ['bp_feeder_arm'],
+  },
+  obedience_belt: {
+    deviceDefId: 'obedience_belt',
+    blueprint: 'bp_obedience_belt',
+    parts: { scrap: 2, circuits: 2, servos: 1 },
+    money: 70,
+    weightCost: 4,
+    tier: 1,
+  },
+  auto_bloating_belt: {
+    deviceDefId: 'auto_bloating_belt',
+    blueprint: 'bp_weight_belt',
+    parts: { scrap: 2, servos: 1, circuits: 1 },
+    money: 40,
+    weightCost: 3,
+    tier: 1,
+  },
+  reinforced_legs: {
+    deviceDefId: 'reinforced_legs',
+    blueprint: 'bp_reinforced_legs',
+    parts: { scrap: 2, servos: 2, circuits: 1 },
+    money: 90,
+    weightCost: 4,
+    tier: 2,
+    requiresResearched: ['bp_weight_belt'],
+  },
+  living_furniture_rig: {
+    deviceDefId: 'living_furniture_rig',
+    blueprint: 'bp_furniture_rig',
+    parts: { servos: 4, scrap: 3, circuits: 2, exotics: 2 },
+    money: 180,
+    weightCost: 10,
+    tier: 2,
+    requiresResearched: ['bp_reinforced_legs'],
   },
   growth_serum_injector: {
     deviceDefId: 'growth_serum_injector',
@@ -47,65 +75,23 @@ export const BLUEPRINT_RECIPES = {
     weightCost: 6,
     tier: 2,
   },
-  weight_redistribution_rig: {
-    deviceDefId: 'weight_redistribution_rig',
-    blueprint: 'bp_redistribution_rig',
-    parts: { servos: 3, circuits: 2, exotics: 2, scrap: 2 },
-    money: 150,
-    weightCost: 8,
-    tier: 2,
+  growth_accelerator_chamber: {
+    deviceDefId: 'growth_accelerator_chamber',
+    blueprint: 'bp_growth_chamber',
+    parts: { exotics: 3, circuits: 3, servos: 2, reagents: 2 },
+    money: 280,
+    weightCost: 10,
+    tier: 3,
+    requiresResearched: ['bp_serum_injector'],
   },
-  remote_feeding_system: {
-    deviceDefId: 'remote_feeding_system',
-    blueprint: 'bp_remote_feeding',
-    parts: { circuits: 3, servos: 2, scrap: 2 },
+  endless_hunger_engine: {
+    deviceDefId: 'endless_hunger_engine',
+    blueprint: 'bp_hunger_engine',
+    parts: { circuits: 2, reagents: 3, exotics: 1, servos: 1 },
     money: 130,
     weightCost: 6,
     tier: 2,
     requiresResearched: ['bp_feeder_arm'],
-  },
-  sleep_feeding_system: {
-    deviceDefId: 'sleep_feeding_system',
-    blueprint: 'bp_sleep_feeding',
-    parts: { circuits: 2, reagents: 2, scrap: 2, servos: 1 },
-    money: 110,
-    weightCost: 5,
-    tier: 2,
-  },
-  feeding_mask: {
-    deviceDefId: 'feeding_mask',
-    blueprint: 'bp_feeding_mask',
-    parts: { scrap: 2, servos: 2, circuits: 2, reagents: 1 },
-    money: 100,
-    weightCost: 5,
-    tier: 2,
-  },
-  predator_capture_module: {
-    deviceDefId: 'predator_capture_module',
-    blueprint: 'bp_predator_capture',
-    parts: { servos: 2, circuits: 2, exotics: 1, reagents: 1 },
-    money: 140,
-    weightCost: 5,
-    tier: 3,
-    requiresResearched: ['bp_feeding_mask'],
-  },
-  liquid_fat_infuser: {
-    deviceDefId: 'liquid_fat_infuser',
-    blueprint: 'bp_liquid_infuser',
-    parts: { reagents: 3, circuits: 2, scrap: 1 },
-    money: 115,
-    weightCost: 5,
-    tier: 2,
-    requiresResearched: ['bp_feeder_arm'],
-  },
-  living_furniture_rig: {
-    deviceDefId: 'living_furniture_rig',
-    blueprint: 'bp_furniture_rig',
-    parts: { servos: 4, scrap: 3, circuits: 2, exotics: 2 },
-    money: 180,
-    weightCost: 10,
-    tier: 3,
-    requiresResearched: ['bp_redistribution_rig'],
   },
 };
 
@@ -114,10 +100,7 @@ export function partsAcquisitionByStage(stageId) {
   if (stageId >= 2) {
     base.servos = 1;
     base.reagents = 1;
-  }
-  if (stageId >= 3) {
     base.exotics = 1;
-    base.circuits = 2;
   }
   return base;
 }
@@ -156,6 +139,7 @@ export function isBlueprintResearched(labState, blueprintId) {
 export function isBlueprintBuildable(recipe, labState) {
   if (!recipe) return false;
   if (!isBlueprintResearched(labState, recipe.blueprint)) return false;
+  if (!techPrereqsMet(labState, recipe.blueprint)) return false;
   for (const req of recipe.requiresResearched || []) {
     if (!isBlueprintResearched(labState, req)) return false;
   }
@@ -210,8 +194,8 @@ export function startLabSession(labState) {
 export function applyLabAcquisition(session, choiceId, labState) {
   const grants = {
     salvage: { scrap: 2, circuits: 1 },
-    campus_surplus: { servos: 1, scrap: 1 },
-    reagent_run: { reagents: 2 },
+    campus_surplus: { servos: 1, scrap: 1, exotics: 1 },
+    reagent_run: { reagents: 2, exotics: 1 },
     skip: {},
   };
   const grant = grants[choiceId] || grants.skip;

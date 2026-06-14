@@ -224,6 +224,12 @@ function evalWhen(when, ctx) {
       case "furnitureComfortLow": ok = !!ctx.globals?.furnitureComfortLow === !!v; break;
       case "equippedHead": ok = d.equippedHead === v || ctx.globals?.equippedHead === v; break;
       case "gainLbsMin": ok = (ctx.globals?.gainLbs ?? 0) >= v; break;
+      case "startStageMin": ok = (ctx.globals?.startStage ?? d.stage ?? 0) >= v; break;
+      case "startStageMax": ok = (ctx.globals?.startStage ?? d.stage ?? 0) <= v; break;
+      case "endStageMin": ok = (ctx.globals?.endStage ?? d.stage ?? 0) >= v; break;
+      case "endStageMax": ok = (ctx.globals?.endStage ?? d.stage ?? 0) <= v; break;
+      case "stagesJumpedMin": ok = (ctx.globals?.stagesJumped ?? 0) >= v; break;
+      case "limitRemoved": ok = !!ctx.globals?.limitRemoved === !!v || !!ctx.subject?.limitRemoved === !!v; break;
       case "equippedCountMin": ok = (ctx.globals?.equippedCountMin ?? 0) >= v; break;
       case "deviceDependenceTierMin": ok = (ctx.globals?.deviceDependenceTier ?? 0) >= v; break;
       case "deviceDependenceTier": ok = (ctx.globals?.deviceDependenceTier ?? 0) === v; break;
