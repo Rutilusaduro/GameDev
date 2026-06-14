@@ -187,6 +187,13 @@ export function isTechUnlocked(state, nodeId) {
   return (state?.unlockedTech || []).includes(nodeId);
 }
 
+export function techPrereqsMet(state, blueprintId) {
+  if (!blueprintId) return true;
+  const gate = LAB_TECH_NODES.find((n) => n.blueprint === blueprintId);
+  if (!gate) return true;
+  return isTechUnlocked(state, gate.id);
+}
+
 export function canUnlockTech(state, nodeId) {
   const node = techNodeById(nodeId);
   if (!node || isTechUnlocked(state, nodeId)) return { ok: false, reason: 'owned' };

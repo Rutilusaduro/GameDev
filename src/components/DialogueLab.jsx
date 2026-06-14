@@ -27,8 +27,6 @@ import { renderCampusDeviceEncounter, renderCampusDeviceResult } from '../textEn
 import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes/hungerInterrupt.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
-import { DEVICES } from '../gameData/devices.js';
-import { LILITH_ID } from '../gameData/lilith.js';
 import '../textEngine/scenes/talkEncourage.js';
 import '../textEngine/scenes/talkCodas.js';
 import '../textEngine/scenes/campusSoftening.js';

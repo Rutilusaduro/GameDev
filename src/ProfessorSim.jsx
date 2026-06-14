@@ -127,6 +127,22 @@ import {
   recordForceFeederUse,
 } from './gameData/inventionUpgrades.js';
 import {
+  ensureNetwork,
+  syncSubjectInfluence,
+  tickNetworkWeek,
+  addNetworkNode,
+  slotExperimentOnNode,
+  clearExperimentSlot,
+  upgradeNetworkNode,
+  setNodeAutomation,
+  expandDeploymentArea,
+  approveProposal,
+  denyProposal,
+  adjustNexusIntegration,
+  upgradeNexus,
+} from './gameData/networkState.js';
+import { getForceFeedComplianceBonus } from './gameData/deviceGating.js';
+import {
   buildForceFeederEffect,
   isForceFeederInstalled,
   isHighRelationship,
@@ -295,6 +311,7 @@ export default function ProfessorSim(){
   const [deviceTickQueue, setDeviceTickQueue] = useState(null);
   const [equipModalStudentId, setEquipModalStudentId] = useState(null);
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
+  const [forceFeederState, setForceFeederState] = useState(null);
   const [weeklyArms, setWeeklyArms] = useState({ devouringStudentId: null, mesmerizingStudentId: null, devouringConsumed: false });
   const skipHungerCheckRef = useRef(false);
   const pendingAfterInterruptRef = useRef(null);
@@ -761,7 +778,7 @@ export default function ProfessorSim(){
         forced=true;
       } else {
         const corruptionBonus=Math.min(0.30,(s.corruption||0)*CORRUPTION_CONFIG.resistancePerPoint);
-        let chance=forceFeedChance(s,fullnessCost,spiritLevel)+corruptionBonus;
+        let chance=forceFeedChance(s,fullnessCost,spiritLevel)+corruptionBonus+getForceFeedComplianceBonus(s);
         chance+=eff.forceFeedBonus||0;
         chance+=eff.extremeBonus||0;
         if(Math.random()>=chance){
@@ -2847,7 +2864,10 @@ export default function ProfessorSim(){
       s=unequipDevice(s,slot).student;
     }
     const result=equipDevice(s,def.id,week);
-    if(!result.ok){ push('⚠️ Could not equip device.'); return; }
+    if(!result.ok){
+      push(result.reason==='corruption_gate'&&result.message?`⚠️ ${result.message}`:'⚠️ Could not equip device.');
+      return;
+    }
     setStudents(prev=>prev.map(st=>st.id===studentId?result.student:st));
     setDeviceInventory(prev=>{
       const q=(prev[def.id]||0)-1;
@@ -5874,6 +5894,7 @@ export default function ProfessorSim(){
             campusState={campusState}
             onBuild={buildLabDevice}
             onUnlockTech={unlockLabTech}
+            onUnlockCircuit={unlockLabCircuitNode}
             onOpenSession={()=>{ const t=taliaStudent(); if(t) runLabSessionOpen(t); }}
             labStage={labState?.stage??1}
           />}
