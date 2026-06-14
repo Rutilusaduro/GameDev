@@ -1,6 +1,14 @@
 // ═══════════════════════════════════════════════════════════════
 // CIRCUIT BOARD SKILL TREES — per-invention node boards
 // ═══════════════════════════════════════════════════════════════
+import {
+  ADDITIONAL_CIRCUIT_BOARDS,
+  BOARD_LAYOUTS,
+  BOARD_EDGES,
+  DEVICE_TIER_LABELS,
+  stripBoardMeta,
+  collectBoardMods,
+} from './circuitBoardDefs.js';
 
 export const MAIN_PATH_TIER_THRESHOLDS = { 2: 4, 3: 9 };
 
@@ -80,6 +88,9 @@ export const CIRCUIT_BOARDS = {
     mainPath: FF_MAIN_PATH,
     branches: FF_BRANCHES,
   },
+  ...Object.fromEntries(
+    Object.entries(ADDITIONAL_CIRCUIT_BOARDS).map(([id, board]) => [id, stripBoardMeta(board)]),
+  ),
 };
 
 /** Visual positions (% of board area) for the circuit board modal */
@@ -112,11 +123,11 @@ export const FORCE_FEEDER_LAYOUT = {
 
 export function getNodeLayout(deviceDefId, nodeId) {
   if (deviceDefId === 'feeding_mask') return FORCE_FEEDER_LAYOUT[nodeId] || { x: 50, y: 50 };
-  return { x: 50, y: 50 };
+  return BOARD_LAYOUTS[deviceDefId]?.[nodeId] || { x: 50, y: 50 };
 }
 
 export function getBoardEdges(deviceDefId) {
-  if (deviceDefId !== 'feeding_mask') return [];
+  if (deviceDefId !== 'feeding_mask') return BOARD_EDGES[deviceDefId] || [];
   const edges = [];
   const mains = FF_MAIN_PATH.map((n) => n.id);
   for (let i = 0; i < mains.length - 1; i++) {
@@ -173,7 +184,10 @@ export function getUpgradeLevel(labState, deviceDefId) {
 export function getInventionTierLabel(labState, deviceDefId) {
   const tier = getInventionTier(labState, deviceDefId);
   if (deviceDefId === 'feeding_mask') return FORCE_FEEDER_TIER_LABELS[tier] || `Tier ${tier}`;
-  return `Tier ${tier}`;
+  const labels = DEVICE_TIER_LABELS[deviceDefId];
+  if (labels?.[tier]) return labels[tier];
+  const board = CIRCUIT_BOARDS[deviceDefId];
+  return board ? `${board.label} — Tier ${tier}` : `Tier ${tier}`;
 }
 
 export function allCircuitNodes(deviceDefId) {
@@ -256,6 +270,37 @@ export function awardInventionPoints(labState, deviceDefId, amount) {
       },
     },
   };
+}
+
+export function recordDeviceUse(labState, deviceDefId, { performanceTier = 'good', bonusPoints = 0 } = {}) {
+  if (deviceDefId === 'feeding_mask') {
+    return recordForceFeederUse(labState, { performanceTier, targetIsTalia: false, highRelationship: false, targetedZone: null });
+  }
+  let cb = getCircuitBoard(labState, deviceDefId);
+  const points = (POINTS_BY_PERFORMANCE[performanceTier] ?? 0) + bonusPoints;
+  const successful = performanceTier !== 'failure';
+  cb = {
+    ...cb,
+    totalUses: (cb.totalUses ?? 0) + 1,
+    successfulUses: (cb.successfulUses ?? 0) + (successful ? 1 : 0),
+    inventionPoints: (cb.inventionPoints ?? 0) + points,
+  };
+  return {
+    labState: {
+      ...labState,
+      circuitBoards: {
+        ...(labState.circuitBoards || {}),
+        [deviceDefId]: cb,
+      },
+    },
+    pointsEarned: points,
+  };
+}
+
+export function getDeviceBoardMods(labState, deviceDefId) {
+  if (deviceDefId === 'feeding_mask') return getForceFeederBoardMods(labState);
+  const has = (id) => hasCircuitNode(labState, deviceDefId, id);
+  return collectBoardMods(labState, deviceDefId, has);
 }
 
 export function recordForceFeederUse(labState, { performanceTier, targetIsTalia, highRelationship, targetedZone }) {

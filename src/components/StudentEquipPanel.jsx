@@ -1,10 +1,8 @@
 import { C } from '../styles.js';
-import { getDependenceLevel, getDependenceTier } from '../gameData/deviceDependence.js';
+import { getDeviceDependence, getDeviceDependenceTier, deviceDependenceLabel } from '../gameData/deviceDependence.js';
 import { Bar } from './ui.jsx';
-import { DEVICE_SLOTS } from '../gameData/devices.js';
-import { getDevice } from '../gameData/devices.js';
+import { DEVICE_SLOTS, getDevice } from '../gameData/devices.js';
 import { furnitureComfortLabel } from '../gameData/deviceEffects.js';
-import { deviceDependenceLabel } from '../gameData/deviceDependence.js';
 
 const SLOT_LAYOUT = [
   { slot: 'head', label: 'Head', row: 0, col: 1 },
@@ -73,13 +71,14 @@ function SlotCard({ slotMeta, entry, onUnequip, onSlotTap, student, studentId, a
             </div>
           )}
           {(() => {
-            const dep = getDependenceLevel(student, slotMeta.slot);
-            if (dep < 5) return null;
-            const tier = getDependenceTier(dep);
+            if (!entry?.defId) return null;
+            const depLevel = getDeviceDependence(student, entry.defId);
+            if (depLevel < 5) return null;
+            const tier = getDeviceDependenceTier(depLevel);
             return (
               <div style={{ marginTop: 4, marginBottom: 4 }}>
                 <div style={{ fontSize: 8, color: tier.color, marginBottom: 2 }}>Dependence · {tier.label}</div>
-                <Bar val={dep} max={100} color={tier.color} height={4} />
+                <Bar val={depLevel} max={100} color={tier.color} height={4} />
               </div>
             );
           })()}
@@ -135,7 +134,6 @@ export function StudentEquipPanel({ student, onUnequip, onSlotTap, activeSlot, e
             activeSlot={activeSlot}
             student={student}
             studentId={student.id}
-            student={student}
           />
         ))}
       </div>
