@@ -32,6 +32,40 @@ export const CORRUPTION_TIERS = [
 export const getCorruptionTier = (c = 0) =>
   [...CORRUPTION_TIERS].reverse().find(t => c >= t.min) || CORRUPTION_TIERS[0];
 
+/** Minimum corruption tier required to use/equip a device (DEPTH_PLAN §1). */
+export const DEVICE_CORRUPTION_GATES = {
+  feeding_mask: 1,
+  auto_feeder_arm: 0,
+  obedience_belt: 0,
+  auto_bloating_belt: 0,
+  living_furniture_rig: 1,
+  reinforced_legs: 0,
+  growth_accelerator_chamber: 2,
+  growth_serum_injector: 2,
+  endless_hunger_engine: 2,
+};
+
+export function getDeviceCorruptionRequirement(deviceDefId) {
+  return DEVICE_CORRUPTION_GATES[deviceDefId] ?? 0;
+}
+
+export function canAcceptDevice(student, deviceDefId) {
+  const required = getDeviceCorruptionRequirement(deviceDefId);
+  const tier = getCorruptionTier(student?.corruption ?? 0).id;
+  return tier >= required;
+}
+
+export function deviceIntensityCap(student) {
+  const tier = getCorruptionTier(student?.corruption ?? 0).id;
+  if (tier >= 2) return 1;
+  if (tier >= 1) return 0.75;
+  return 0.55;
+}
+
+export function corruptionRefusalReduction(student) {
+  return Math.min(0.25, (student?.corruption ?? 0) * 0.0025);
+}
+
 // Inner-voice lines surfaced during general feeding, by tier.
 export const CORRUPTION_FEED_LINES = [
   [ // tier 0 — hesitant

@@ -2,7 +2,7 @@
 // TALIA VALE — Inventor path & lab state (device workshop only)
 // ═══════════════════════════════════════════════════════════════
 import { partsAcquisitionByStage } from './labParts.js';
-import { defaultNetworkState, ensureNetwork } from './networkState.js';
+import { defaultNetworkState, ensureNetwork, STAGE_SESSION_THRESHOLDS } from './networkState.js';
 import {
   initialUnlockedTech,
   applyStageTechUnlocks,
@@ -35,6 +35,20 @@ export const INVENTOR_ACTIVITIES = {
     desc: 'Gather parts, research blueprints, and build inventions. Talia spends her own mass as raw material.',
     taliaGain: [2, 5],
     instability: 5,
+  },
+  2: {
+    label: '⚙️ Network Control',
+    apCost: 1,
+    desc: 'Jack into the automation mesh — route feeds and monitor detection risk.',
+    taliaGain: [2, 4],
+    instability: 4,
+  },
+  3: {
+    label: '🌐 Nexus Override',
+    apCost: 2,
+    desc: 'Full-factory phase — semi-autonomous devices across the roster.',
+    taliaGain: [3, 6],
+    instability: 6,
   },
 };
 

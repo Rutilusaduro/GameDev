@@ -9,7 +9,9 @@ import {
   bumpWeeklyDeviceDependence,
   bumpEquipDeviceDependence,
   bumpCampusDeviceDependence,
+  getDependenceLevel,
 } from './deviceDependence.js';
+import { adjustHunger } from './hungerAddiction.js';
 
 export { getEquippedDeviceIds, hasPredatorCapture } from './deviceEquip.js';
 
@@ -253,7 +255,8 @@ export function applyDeviceEffect(student, effectSpec, ctx = {}) {
     if (pc.gainLbs) {
       const lbs = rollRange(pc.gainLbs, rng);
       next._pendingGainLbs = (next._pendingGainLbs || 0) + lbs;
-      lines.push(`+${lbs} lbs banked permanently`);
+      next.permanentDeviceGain = (next.permanentDeviceGain || 0) + lbs;
+      lines.push(`+${lbs} lbs crystallized permanently`);
     }
     if (pc.bodyTypeOverride) {
       next.bodyType = pc.bodyTypeOverride;

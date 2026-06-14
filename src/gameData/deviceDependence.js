@@ -52,3 +52,26 @@ export function deviceDependenceLabel(student, deviceId) {
   const tier = getDeviceDependenceTier(level);
   return { level, tier: tier.id, label: tier.label, color: tier.color };
 }
+
+/** Slot-based dependence (deviceEffects compatibility). */
+export function getDependenceLevel(student, slot) {
+  const defId = student?.equip?.[slot]?.defId;
+  if (!defId) return 0;
+  return getDeviceDependence(student, defId);
+}
+
+export function getDependenceTier(level) {
+  return getDeviceDependenceTier(level);
+}
+
+/** Addiction-style compliance bonus from device dependence (lowers refusal). */
+export function dependenceRefusalBonus(student, deviceId) {
+  const level = getDeviceDependence(student, deviceId);
+  return Math.min(0.2, level * 0.002);
+}
+
+export function dependenceWithdrawalRisk(student, deviceId) {
+  const level = getDeviceDependence(student, deviceId);
+  if (level < 40) return 0;
+  return Math.min(0.35, (level - 40) * 0.004);
+}
