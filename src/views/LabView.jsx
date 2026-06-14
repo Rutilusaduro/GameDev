@@ -254,7 +254,7 @@ export function LabView({
           onBuild={onBuild}
           defaultOpen={i === 0}
         />
-      )}
+      ))}
     </div>
   );
 }
