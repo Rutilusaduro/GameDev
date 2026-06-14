@@ -4,6 +4,7 @@
 import { renderDeviceTickLine } from '../textEngine/scenes/deviceTick/index.js';
 import { renderSuddenGrowthLine } from '../textEngine/scenes/suddenGrowth/index.js';
 import { getDevice, DEVICE_SLOTS } from './devices.js';
+import { canStudentAcceptDevice, deviceAcceptanceBlockReason, scalePsychDeltaForStudent, scaleGainRangeForStudent } from './deviceGating.js';
 import { applyPsychDelta } from './psychState.js';
 import {
   bumpWeeklyDeviceDependence,
@@ -34,6 +35,9 @@ export function equipDevice(student, defId, week = 1) {
   const def = getDevice(defId);
   if (!def || def.form === 'consumable' || def.form === 'attachment' || def.form === 'campus_tool' || def.form === 'stationary') {
     return { student, ok: false, reason: 'invalid' };
+  }
+  if (!canStudentAcceptDevice(student, defId)) {
+    return { student, ok: false, reason: 'corruption_gate', message: deviceAcceptanceBlockReason(student, defId) };
   }
   const slot = slotFor(def);
   if (!slot || !isSlotFree(student, slot)) return { student, ok: false, reason: 'slot_occupied' };
@@ -230,7 +234,7 @@ export function applyDeviceEffect(student, effectSpec, ctx = {}) {
   let zoneOverride = null;
 
   if (effectSpec?.gainLbs) {
-    let gainRange = effectSpec.gainLbs;
+    let gainRange = scaleGainRangeForStudent(next, effectSpec.gainLbs);
     const swell = next.deviceState?.residualSwell;
     if (swell?.active && swell.amplify) {
       gainRange = [
@@ -266,7 +270,7 @@ export function applyDeviceEffect(student, effectSpec, ctx = {}) {
   }
 
   if (effectSpec?.psychDelta) {
-    next.psych = applyPsychDelta(next.psych || {}, effectSpec.psychDelta);
+    next.psych = applyPsychDelta(next.psych || {}, scalePsychDeltaForStudent(next, effectSpec.psychDelta));
   }
 
   if (effectSpec?.furnitureComfortDelta != null) {

@@ -42,6 +42,16 @@ registerModule("scene.hungerInterrupt.appearance", [
 ]);
 
 registerModule("scene.hungerInterrupt.behavior", [
+  { when: { corruption: [2], hungerTier: [3, 4] }, priority: 5,
+    text: [
+      "She doesn't bother with pretense anymore — she needs you to feed her.",
+      "She looks at you like feeding her is the only thing that matters right now.",
+    ] },
+  { when: { corruption: [0], addictionLevel: [3, 4] }, priority: 4,
+    text: [
+      "She's embarrassed by how desperate she looks, but she can't hide it.",
+      "She keeps trying to compose herself and failing.",
+    ] },
   { when: { addictionLevel: [4], hungerTier: [4] }, priority: 4,
     text: [
       "She's standing there looking almost frantic.",
@@ -69,6 +79,16 @@ registerModule("scene.hungerInterrupt.behavior", [
 ]);
 
 registerModule("scene.hungerInterrupt.request", [
+  { when: { corruption: [2], hungerTier: [3, 4] }, priority: 5,
+    text: [
+      "\"Feed me. I'm not asking nicely anymore.\"",
+      "\"You know what I need. Stop making me wait.\"",
+    ] },
+  { when: { corruption: [0], hungerTier: [3, 4] }, priority: 4,
+    text: [
+      "\"I… I hate that I need this. But I do. Please?\"",
+      "\"Could we… maybe get food? I'm trying not to sound desperate.\"",
+    ] },
   { when: { stage: [10, 11], hungerTier: [3, 4], addictionLevel: [3, 4] }, priority: 4,
     text: [
       "\"You're going to feed me.\"",

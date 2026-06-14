@@ -53,6 +53,8 @@ export const LAB_SESSION_ACTIVITY = {
   instability: 5,
 };
 
+const STAGE_SESSION_THRESHOLDS = [0, 8, 18];
+
 export function defaultLabState() {
   return {
     stage: 1,

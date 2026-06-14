@@ -80,6 +80,11 @@ export function getHungerModifiers(student, skillEffects = {}, weeklyArms = {}) 
     mod.addictionFloorForCraving = 1;
   }
 
+  const addiction = getAddictionLevel(student);
+  if (addiction >= 2) {
+    mod.interruptBonus += (addiction - 1) * 0.06;
+  }
+
   if (eff.cravingSubmission) mod.passiveRiseMult *= 1.12;
   if (eff.corruptionRate) mod.addictionDriftChance += 0.06 * eff.corruptionRate;
 

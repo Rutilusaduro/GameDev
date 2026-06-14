@@ -18,6 +18,7 @@ import { EquipmentButton } from '../components/StudentEquipModal.jsx';
 import { formatIngredientBag } from '../gameData/pharmacistIngredients.js';
 import { CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier } from '../gameData/pharmacistCampus.js';
 import { getAddictionLevel, getHungerTier, HUNGER_TIERS, ADDICTION_LEVELS } from '../gameData/hungerAddiction.js';
+import { computeSurrenderVector, formatSurrenderSummary } from '../gameData/transformationPressure.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
@@ -226,6 +227,19 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                   </div>
                 </div>
 
+                {/* Transformation pressure / surrender readout */}
+                {(() => {
+                  const sv = computeSurrenderVector(s);
+                  return (
+                    <div style={C.infoBox(`${sv.color}18`)}>
+                      <div style={{ fontSize: 9, color: sv.color, letterSpacing: 2, marginBottom: 4 }}>SURRENDER · {sv.composite}%</div>
+                      <div style={{ fontSize: 12, color: '#d8c8b8', lineHeight: 1.7 }}>
+                        {formatSurrenderSummary(s)}
+                      </div>
+                    </div>
+                  );
+                })()}
+
                 {/* Hunger / addiction (subtle) */}
                 {(getAddictionLevel(s)>0||getHungerTier(s)>0)&&(
                   <div style={C.infoBox("rgba(50,20,10,0.25)")}>
@@ -356,7 +370,6 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                           const steel="#4a6080";
                           const stageMeta=INVENTOR_PATH_STAGES.find(x=>x.id===ls.stage);
                           const act=INVENTOR_ACTIVITIES[1];
-                          const netSum=ls.stage>=2?networkSummary(ls):null;
                           return(
                             <div style={{background:"rgba(8,12,22,0.6)",border:`1px solid ${steel}80`,borderRadius:10,padding:12}}>
                               <div style={{fontSize:9,letterSpacing:3,color:steel,marginBottom:4}}>🔧 EVOLVED PATH</div>

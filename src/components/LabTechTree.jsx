@@ -13,13 +13,14 @@ const UNLOCKED = '#50a070';
 const LOCKED = '#506070';
 const SHORT = '#e05040';
 
-function TechNodeCard({ node, labState, onUnlock }) {
+function TechNodeCard({ node, labState, taliaStudent, onUnlock }) {
   const owned = isTechUnlocked(labState, node.id);
-  const check = canUnlockTech(labState, node.id);
+  const check = canUnlockTech(labState, node.id, taliaStudent);
   const canBuy = check.ok;
   const stageBlocked = (labState?.stage ?? 1) < (node.stageMin ?? 1);
   const prereqBlocked = check.reason === 'prereqs';
   const costBlocked = check.reason === 'cost';
+  const relBlocked = check.reason === 'relationship';
 
   return (
     <div
@@ -49,6 +50,11 @@ function TechNodeCard({ node, labState, onUnlock }) {
           {prereqBlocked && !owned && !stageBlocked && (
             <div style={{ fontSize: 8, color: '#806050', marginTop: 4 }}>Complete prerequisites first</div>
           )}
+          {relBlocked && !owned && !stageBlocked && (
+            <div style={{ fontSize: 8, color: '#a05070', marginTop: 4 }}>
+              Requires closer bond with Talia (relationship tier {node.relationshipMin}+)
+            </div>
+          )}
         </div>
         {!owned && node.cost > 0 && (
           <div style={{ textAlign: 'right', flexShrink: 0 }}>
@@ -70,7 +76,7 @@ function TechNodeCard({ node, labState, onUnlock }) {
   );
 }
 
-export function LabTechTree({ labState, onUnlock }) {
+export function LabTechTree({ labState, taliaStudent, onUnlock }) {
   const breakthroughs = labState?.breakthroughs ?? 0;
 
   return (
@@ -93,7 +99,7 @@ export function LabTechTree({ labState, onUnlock }) {
               {cat.icon} {cat.label.toUpperCase()}
             </div>
             {nodes.map(node => (
-              <TechNodeCard key={node.id} node={node} labState={labState} onUnlock={onUnlock} />
+              <TechNodeCard key={node.id} node={node} labState={labState} taliaStudent={taliaStudent} onUnlock={onUnlock} />
             ))}
           </div>
         );
