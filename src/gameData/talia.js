@@ -2,6 +2,12 @@
 // TALIA VALE — Inventor path & lab state (device workshop only)
 // ═══════════════════════════════════════════════════════════════
 import { partsAcquisitionByStage } from './labParts.js';
+import { defaultNetworkState, ensureNetwork } from './networkState.js';
+import {
+  initialUnlockedTech,
+  applyStageTechUnlocks,
+  rollSessionBreakthroughs,
+} from './labTechTree.js';
 
 export const TALIA_STUDENT_ID = 18;
 
@@ -52,15 +58,9 @@ export function defaultLabState() {
     stage: 1,
     instability: 0,
     sessionsRun: 0,
-    researchedBlueprints: [
-      'bp_feeder_arm',
-      'bp_force_feeder',
-      'bp_weight_belt',
-      'bp_obedience_belt',
-    ],
-    installedInventions: {},
-    circuitBoards: {},
-    inventionUpgrades: {},
+    breakthroughs: 4,
+    unlockedTech: initialUnlockedTech(),
+    researchedBlueprints: [],
     parts: partsAcquisitionByStage(1),
     maintenanceDebt: 0,
     builtThisSession: [],
@@ -83,6 +83,7 @@ export function initDeviceState() {
       fullBody: null,
     },
     bodyOverride: null,
+    deviceDependence: {},
     deviceState: {
       furnitureComfort: 100,
     },
@@ -90,22 +91,34 @@ export function initDeviceState() {
 }
 
 export function maybeAdvanceInventorStage(state) {
-  return state;
+  const sessions = state.sessionsRun ?? 0;
+  let stage = 1;
+  for (let i = STAGE_SESSION_THRESHOLDS.length - 1; i >= 0; i--) {
+    if (sessions >= STAGE_SESSION_THRESHOLDS[i]) stage = i + 1;
+  }
+  stage = Math.min(3, stage);
+  if (stage <= (state.stage ?? 1)) return state;
+  let next = { ...state, stage };
+  if (stage >= 2 && !next.network) {
+    next.network = defaultNetworkState(stage);
+  }
+  const breakthroughBonus = stage === 2 ? 6 : stage === 3 ? 10 : 0;
+  next.breakthroughs = (next.breakthroughs ?? 0) + breakthroughBonus;
+  next = applyStageTechUnlocks(next, stage);
+  return ensureNetwork(next);
 }
 
-export function completeLabSession(state, session, builtDeviceId = null) {
+export function completeLabSession(state, session, builtDeviceId = null, rng = Math.random) {
   if (!state || !session) return state;
   let next = { ...state };
   next.sessionsRun = (next.sessionsRun ?? 0) + 1;
   next.parts = session.poolAfter || session.pool || next.parts;
   next.instability = Math.min(100, (next.instability ?? 0) + (session.instabilityGained ?? 5));
+  const btGain = session.breakthroughsGained ?? rollSessionBreakthroughs(rng);
+  next.breakthroughs = (next.breakthroughs ?? 0) + btGain;
   if (builtDeviceId) {
     next.builtThisSession = [...(next.builtThisSession || []), builtDeviceId];
-  }
-  if (session.researchedBlueprint) {
-    const researched = new Set(next.researchedBlueprints || []);
-    researched.add(session.researchedBlueprint);
-    next.researchedBlueprints = [...researched];
+    next.breakthroughs += 1;
   }
   return next;
 }

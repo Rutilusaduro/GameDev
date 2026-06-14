@@ -13,18 +13,18 @@ import { registerModule, stageBucket, pick } from './engine.js';
 // ── size adjectives — canonical Slight→Blob ladder ───────────
 
 export const SIZE_WORDS = {
-  slight:   ["slight", "angular", "underweight", "wispy"],
-  slim:     ["slim", "slender", "lean", "narrow"],
-  soft:     ["soft", "softened", "rounded", "filled-out"],
-  chubby:   ["chubby", "thickening", "padded", "rounded"],
-  plump:    ["plump", "thick", "heavyset", "well-padded"],
-  heavy:    ["heavy", "broad", "ponderous", "weighty"],
-  fat:      ["fat", "very fat", "rolling", "waddling"],
-  veryFat:  ["very fat", "vast", "immense", "overflowing"],
-  enormous: ["enormous", "staggering", "room-filling", "mountainous"],
-  colossal: ["monumental", "barely mobile", "overwhelming", "spreadingly vast"],
-  blob:     ["immobile", "mountainous", "room-filling", "warmly spreading"],
-  leviathan: ["impossibly vast", "overwhelming", "warm and endless", "barely mobile"],
+  slight:   ["slight", "angular", "underweight", "wispy", "bird-boned", "narrow through the hips", "barely there"],
+  slim:     ["slim", "slender", "lean", "narrow", "willowy", "light on her feet", "trim"],
+  soft:     ["soft", "softened", "rounded", "filled-out", "gently padded", "yielding at the edges", "taking on curves"],
+  chubby:   ["chubby", "thickening", "padded", "rounded", "pleasantly plump", "soft in the middle", "noticeably fuller"],
+  plump:    ["plump", "thick", "heavyset", "well-padded", "substantially soft", "carrying extra weight", "full-figured"],
+  heavy:    ["heavy", "broad", "ponderous", "weighty", "substantial", "dense with softness", "carrying real mass"],
+  fat:      ["fat", "very fat", "rolling", "waddling", "abundant", "overflowing at the seams", "generously proportioned"],
+  veryFat:  ["very fat", "vast", "immense", "overflowing", "enormous", "barely contained", "spilling past every edge"],
+  enormous: ["enormous", "staggering", "room-filling", "mountainous", "colossal in scale", "immense by any measure", "overwhelmingly large"],
+  colossal: ["monumental", "barely mobile", "overwhelming", "spreadingly vast", "architectural in scale", "immobile with mass", "beyond ordinary furniture"],
+  blob:     ["immobile", "mountainous", "room-filling", "warmly spreading", "a landscape of flesh", "settled into sheer bulk", "motionless abundance"],
+  leviathan: ["impossibly vast", "overwhelming", "warm and endless", "barely mobile", "a weather system of softness", "beyond measurement", "the room bends around her"],
 };
 
 // ── body phrases — bodyType × stage ───────────────────────────
@@ -183,18 +183,18 @@ export const BODY_WORDS = {
 // ── movement verbs by stage ───────────────────────────────────
 
 export const MOVEMENT_WORDS = {
-  slight:   ["strides", "moves lightly", "slips along", "takes quick easy steps"],
-  slim:     ["walks easily", "moves with natural ease", "glides through the room"],
-  soft:     ["walks with a new sway", "moves with a soft bounce", "steps with a gentle heaviness settling in"],
-  chubby:   ["walks with a thickened gait", "moves with a soft bounce", "sways slightly with new weight"],
-  plump:    ["sways", "moves with deliberate, rolling steps", "walks with thighs brushing together"],
-  heavy:    ["waddles slightly", "moves with slow, weighty purpose", "rocks side to side as she goes"],
-  fat:      ["waddles", "moves with a rolling gait", "rocks side to side with each deliberate step"],
-  veryFat:  ["waddles slowly", "moves with great deliberation", "advances one careful step at a time"],
-  enormous: ["lumbers", "advances like weather", "moves one ponderous step at a time"],
-  colossal: ["shuffles", "moves inches at a time", "shifts her mass with audible effort"],
-  blob:     ["barely moves", "shifts like a slow tide", "settles rather than walks"],
-  leviathan: ["barely shifts", "settles rather than walks", "exists more than arrives"],
+  slight:   ["strides", "moves lightly", "slips along", "takes quick easy steps", "crosses the room without effort", "drifts through space"],
+  slim:     ["walks easily", "moves with natural ease", "glides through the room", "steps without hurry", "moves like she still owns the floor"],
+  soft:     ["walks with a new sway", "moves with a soft bounce", "steps with a gentle heaviness settling in", "carries a little more rhythm in her hips", "sways when she turns"],
+  chubby:   ["walks with a thickened gait", "moves with a soft bounce", "sways slightly with new weight", "steps with thighs beginning to brush", "rocks a little with each stride"],
+  plump:    ["sways", "moves with deliberate, rolling steps", "walks with thighs brushing together", "carries her weight with a settled rhythm", "moves like the room should make room"],
+  heavy:    ["waddles slightly", "moves with slow, weighty purpose", "rocks side to side as she goes", "advances with audible breath", "shifts her mass before each step"],
+  fat:      ["waddles", "moves with a rolling gait", "rocks side to side with each deliberate step", "labors pleasantly forward", "lets momentum do half the work"],
+  veryFat:  ["waddles slowly", "moves with great deliberation", "advances one careful step at a time", "pauses to settle between steps", "rolls forward by inches"],
+  enormous: ["lumbers", "advances like weather", "moves one ponderous step at a time", "crosses space in slow surges", "makes the floor answer"],
+  colossal: ["shuffles", "moves inches at a time", "shifts her mass with audible effort", "barely crosses the threshold", "repositions rather than walks"],
+  blob:     ["barely moves", "shifts like a slow tide", "settles rather than walks", "ripples when she tries", "exists in place with effort"],
+  leviathan: ["barely shifts", "settles rather than walks", "exists more than arrives", "moves like geography rearranging", "arrives by accumulation not stride"],
 };
 
 // ── clothing fit — season × stage ─────────────────────────────
@@ -282,11 +282,11 @@ for (const [key, phrases] of Object.entries(LEVIATHAN_BODY)) {
 // ── fullness phrases by fullness/capacity ratio ───────────────
 
 export const FULLNESS_WORDS = [
-  { max: 0.25, words: ["barely touched", "comfortably empty", "light", "hardly started"] },
-  { max: 0.60, words: ["pleasantly full", "satisfied", "warm and fed", "comfortably fed"] },
-  { max: 0.90, words: ["very full", "heavily laden", "packed tight", "substantially full"] },
-  { max: 1.10, words: ["stuffed to her limit", "achingly full", "stretched taut", "drum-tight"] },
-  { max: Infinity, words: ["overfilled past anything reasonable", "swollen drum-tight", "beyond capacity and still holding", "packed past what should fit"] },
+  { max: 0.25, words: ["barely touched", "comfortably empty", "light", "hardly started", "still hungry", "room for much more", "hollow with appetite"] },
+  { max: 0.60, words: ["pleasantly full", "satisfied", "warm and fed", "comfortably fed", "content but not done", "softly full", "fed enough to relax"] },
+  { max: 0.90, words: ["very full", "heavily laden", "packed tight", "substantially full", "stuffed but still moving", "full to the brim", "swollen with food"] },
+  { max: 1.10, words: ["stuffed to her limit", "achingly full", "stretched taut", "drum-tight", "painfully full", "packed past comfort", "breathing around fullness"] },
+  { max: Infinity, words: ["overfilled past anything reasonable", "swollen drum-tight", "beyond capacity and still holding", "packed past what should fit", "obscenely full", "stuffed into immobility", "full past the point of pride"] },
 ];
 
 // ── registration ──────────────────────────────────────────────

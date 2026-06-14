@@ -4,7 +4,7 @@
 import { registerPool } from '../../engine.js';
 import '../../modules.js';
 
-// FULL SENTENCE — what the device does this tick
+// VERB PHRASE — what the device does this tick (device voice, no name)
 registerPool('device.tick.action', [
   { when: { deviceId: 'auto_feeder_arm' }, text: [
     'the {device.label} swings to {subject.name}\'s mouth and delivers another quota by mechanical arm',
@@ -31,15 +31,14 @@ registerPool('device.tick.action', [
     'the {device.label} trembles around {subject.name}; she needs calories before the furniture form stabilizes',
     'the {device.label} creaks warnings through its straps — {subject.name} must be fed to stay usable',
   ] },
-  { when: { deviceId: 'living_furniture_rig' }, text: [
-    'the myriad straps of the {device.label} keep {subject.name} restrained and fed on schedule',
-    'tubes and restraints on the {device.label} maintain {subject.name} as living furniture, calories flowing steady',
-    'the {device.label} swells its cushion around {subject.name}, feeding her to preserve the form',
+  { when: { deviceId: 'feeding_mask', hasAttachment: 'liquid_fat_infuser' }, text: [
+    'the locked mask floods warm infused formula',
+    'the mask pumps heavy slurry past sealed lips',
   ] },
-  { when: { deviceId: 'growth_accelerator_chamber' }, text: [
-    'the {device.label} hums to life around {subject.name}, sealed air turning faintly electric',
-    'the {device.label} seals and floods {subject.name} with radiation through a full acceleration cycle',
-    'inside the {device.label}, {subject.name} stands under a silent field that multiplies adipose tissue',
+  { when: { deviceId: 'feeding_mask' }, text: [
+    'the feeding mask forces another quota through the tube',
+    'locked straps hold while the mask feeds on schedule',
+    'the mask completes another forced-feeding cycle',
   ] },
   { when: { deviceId: 'growth_serum_injector' }, text: [
     'the {device.label} drives another volatile formula dose into {subject.name}',
@@ -56,17 +55,172 @@ registerPool('device.tick.action', [
     '{subject.name} spends the week under the {device.label}\'s steady output',
     'the {device.label} keeps {subject.name} on its schedule for another cycle',
   ] },
+  { when: {}, text: [
+    'the device completes its weekly cycle',
+    'the rig runs another maintenance feeding',
+    'mechanical patience delivers another quota',
+  ] },
 ]);
 
-// PREP ANCHOR — optional atmospheric tail
+// PREPOSITIONAL ANCHOR — ties action to {subject.name}'s body (always uses name slots)
 registerPool('device.tick.anchor', [
-  { when: { deviceId: 'growth_accelerator_chamber' }, text: ['', ' under the radiation field', ' as the chamber seals'] },
-  { when: { deviceId: 'growth_serum_injector' }, text: ['', ' as the injector hisses shut'] },
-  { when: { deviceId: 'endless_hunger_engine' }, text: ['', ' at range', ' while the ray warms her skin'] },
-  { when: {}, text: ['', ''] },
+  { when: { deviceId: 'feeding_mask' }, text: [
+    ' on {subject.name}\'s face',
+    ' sealed over {subject.first}\'s mouth',
+    ' locked against {subject.name}\'s lips',
+    ' strapped to {subject.first}\'s jaw',
+  ] },
+  { when: { deviceId: 'sleep_feeding_system' }, text: [
+    ' while {subject.name} sleeps',
+    ' over {subject.first}\'s slack features',
+    ' against {subject.name}\'s unconscious mouth',
+  ] },
+  { when: { deviceId: 'auto_feeder_arm' }, text: [
+    ' at {subject.name}\'s lips',
+    ' into {subject.first}\'s waiting mouth',
+  ] },
+  { when: { deviceId: 'auto_bloating_belt' }, text: [
+    ' around {subject.name}\'s waist',
+    ' cinched over {subject.first}\'s middle',
+  ] },
+  { when: { deviceId: 'living_furniture_rig' }, text: [
+    ' through {subject.name}\'s restrained form',
+    ' into {subject.first}\'s cushioned body',
+  ] },
+  { when: { deviceId: 'weight_redistribution_rig' }, text: [
+    ' across {subject.name}\'s frame',
+    ' mapping {subject.first}\'s fat in real time',
+  ] },
+  { when: {}, text: [
+    ' on {subject.name}',
+    ' while {subject.first} wears it',
+    '',
+  ] },
 ]);
 
-// PARTICIPLE CLAUSE / SECOND SENTENCE — how it lands on her body
+// DEPENDENCE REACTION — keyed on per-device dependence tier
+registerPool('device.tick.dependence', [
+  { when: { deviceId: 'feeding_mask', deviceDependenceTierMin: 3 }, text: [
+    '{subject.first} leans into the tube before the pump starts',
+    'she swallows eagerly the moment paste arrives',
+    'anticipation makes her hips twitch when the mask pressurizes',
+    'she moans around the seal — wanting the next serving already',
+  ] },
+  { when: { deviceId: 'feeding_mask', deviceDependenceTierMin: 2 }, text: [
+    'she stopped fighting the straps weeks ago',
+    'her throat works automatically when the cycle begins',
+    'resistance has thinned into hungry compliance',
+  ] },
+  { when: { deviceId: 'feeding_mask', deviceDependenceTierMin: 1 }, text: [
+    'she tenses, then yields when the tube floods warm',
+    'familiar dread mixes with a growing appetite for the seal',
+  ] },
+  { when: { deviceId: 'feeding_mask', deviceDependenceTier: 0 }, text: [
+    'she jerks against the straps at first',
+    'fear flickers behind the visor before the pump wins',
+    '',
+  ] },
+  { when: { deviceId: 'sleep_feeding_system', deviceDependenceTierMin: 2 }, text: [
+    '{subject.name} swallows in her sleep without waking',
+    'her body welcomes the drip before consciousness returns',
+  ] },
+  { when: { deviceId: 'auto_bloating_belt', deviceDependenceTierMin: 2 }, text: [
+    'she breathes into the pressure instead of fighting it',
+    'her hands rest on her swelling middle like it belongs there',
+  ] },
+  { when: {}, text: ['', '', ''] },
+]);
+
+// GROWTH CLAUSE — how her body changes this tick (PARTICIPLE CLAUSE)
+registerPool('device.tick.growth', [
+  { when: { bodyType: 'pear', weightBand: 'lean', gainLbsMin: 2 }, text: [
+    'her hips widen first — soft weight ringing her waist before the scale admits it',
+    'new flesh settles low on {subject.first}\'s frame in a curve she can feel forming',
+  ] },
+  { when: { bodyType: 'pear', weightBand: 'mid' }, text: [
+    'her thighs thicken until they brush with every step she takes',
+    'weight pools under {subject.name}\'s waist in a pear-soft spread',
+  ] },
+  { when: { bodyType: 'pear', weightBand: 'heavy' }, text: [
+    'her lower body swells outward — hips and thighs claiming another inch',
+    'pear curves deepen as fat deposits stack on {subject.first}\'s hips',
+  ] },
+  { when: { bodyType: 'apple', weightBand: 'lean', gainLbsMin: 2 }, text: [
+    'a gentle forward roundness pushes at her shirts',
+    'her belly pooching softens the line of {subject.name}\'s waist',
+  ] },
+  { when: { bodyType: 'apple', weightBand: 'mid' }, text: [
+    'her middle rounds forward — an apple-full swell straining waistbands',
+    'fat gathers on {subject.first}\'s stomach in a visible arc',
+  ] },
+  { when: { bodyType: 'apple', weightBand: 'heavy' }, text: [
+    'her belly hangs heavier — forward mass {subject.name} balances with each step',
+    'apple weight stacks on her gut until it rests on her lap when she sits',
+  ] },
+  { when: { bodyType: 'hourglass', weightBand: 'mid' }, text: [
+    'bust and hips swell together while her waist softens between them',
+    '{subject.first}\'s curves deepen evenly — an hourglass pouring fuller',
+  ] },
+  { when: { bodyType: 'topHeavy', weightBand: 'mid' }, text: [
+    'her chest grows heavier first — upper softness arriving before the rest',
+    'weight stacks on {subject.name}\'s bust until straps dig in',
+  ] },
+  { when: { bodyType: 'athletic', weightBand: 'mid' }, text: [
+    'muscle softens under new padding — power buried in comfortable thickness',
+    'her trained frame rounds at the edges where the device insists',
+  ] },
+  { when: { weightBand: 'lean', gainLbsMin: 1 }, text: [
+    'the new softness shows almost before {subject.first} believes it',
+    'subtle thickening accumulates where the rig keeps feeding',
+    'her clothes pull differently by the end of the week',
+  ] },
+  { when: { weightBand: 'mid', gainLbsMin: 2 }, text: [
+    'fullness settles into curves that will not hide on {subject.name}',
+    'her middle softens around the mechanical insistence',
+    'another layer deposits itself across her hips and waist',
+  ] },
+  { when: { weightBand: 'heavy', gainLbsMin: 3 }, text: [
+    'rolls and swell accept the device on {subject.first}\'s heavy frame',
+    'her body absorbs every calorie without resistance',
+    'existing softness deepens — gain stacking on gain',
+  ] },
+  { when: { weightBand: 'extreme', gainLbsMin: 1 }, text: [
+    'every pound lands on {subject.name}\'s already monumental frame',
+    'her vast body swells further — the device barely slows',
+    'immobile abundance thickens in quiet, visible surges',
+  ] },
+  { when: { gainLbsMin: 8 }, text: [
+    'this week\'s surge is unmistakable — {subject.first} feels it in every mirror',
+    'her body answers the machine with a brutal, uneven swell',
+    'the gain stacks hard enough to change how she fits through doors',
+  ] },
+  { when: { gainLbsMin: 4 }, text: [
+    'steady device gain reshapes her silhouette over seven days',
+    '{subject.name} carries the week\'s swell in her stride and her seams',
+    'softness accumulates in obvious inches she cannot deny',
+  ] },
+  { when: { gainLbsMin: 1 }, text: [
+    'incremental softness deposits itself on schedule',
+    'her body grows quietly around the machine\'s rhythm',
+    'another modest layer settles where the rig worked hardest',
+  ] },
+  { when: { bodyState: 'bloated' }, text: [
+    'bloat makes the gain visible on {subject.first} before the scale does',
+    'her belly drums tight with artificial fullness swelling further',
+  ] },
+  { when: { bodyState: 'furniture' }, text: [
+    'cushioned flesh yields and thickens under the rig\'s maintenance',
+    'the furniture form grows softer — {subject.name}\'s bulk deepening',
+  ] },
+  { when: {}, text: [
+    'her body grows incrementally around the machine\'s schedule',
+    'softness accumulates in quiet, visible inches on {subject.name}',
+    'the gain shows in how her clothes pull and her steps shorten',
+    'another week of mechanical feeding leaves her unmistakably fuller',
+  ] },
+]);
+
+// SENSATION — tactile / immediate feel (PARTICIPLE CLAUSE)
 registerPool('device.tick.sensation', [
   { when: { deviceId: 'auto_feeder_arm', hungerTierMin: 3 }, text: [
     'her rolls swell hungrily to accept every calorie the arm pushes in',
@@ -131,35 +285,29 @@ registerPool('device.tick.sensation', [
     'craving rewrites her week; every snack feels like it was always inevitable',
   ] },
   { when: { weightBand: 'lean' }, text: [
-    'the new softness shows almost immediately on {subject.name}\'s still-small frame',
-    'padding appears where bone and muscle used to define her outline',
-    'curves arrive fast on a frame that had almost none to hide them',
+    'warmth spreads through her middle faster than she expects',
+    'she feels the new softness before she names it',
   ] },
   { when: { weightBand: 'mid' }, text: [
-    'fullness settles into curves on {subject.name} that will not hide',
-    'her middle softens where the rig keeps adding mass',
-    'new give appears at her waist and hips by the week\'s end',
-  ] },
-  { when: { weightBand: 'heavy', hungerTierMin: 3 }, text: [
-    'her heavy rolls swell hungrily to accept what the rig delivers',
-    'flesh that was already ample takes more without protest — appetite making room',
+    'fullness lingers in her tissues after each cycle',
+    'her skin feels taut where the gain landed',
   ] },
   { when: { weightBand: 'heavy' }, text: [
-    'her heavy body takes the week\'s deposition without argument',
-    'rolls deepen and spread; the gain settles where gravity already favored her',
+    'every roll jiggles with the aftershock of feeding',
+    'heaviness settles into her bones between cycles',
   ] },
   { when: { weightBand: 'extreme' }, text: [
-    'her vast frame swells further — another week of mass layered onto mass',
-    'monumental flesh absorbs the output; every new pound finds existing curve to thicken',
+    'the sheer mass of her body answers each pulse slowly',
+    'warmth pools in folds that barely shift when she breathes',
   ] },
-  { when: { bodyState: 'furniture' }, text: [
-    'the furniture form creaks softer with each feeding',
-    'cushioned flesh yields under the rig\'s maintenance',
+  { when: { bodyState: 'bloated' }, text: [
+    'artificial tightness drums across her swollen middle',
+    'bloat and gain blur together under the rig',
   ] },
   { when: {}, text: [
-    'the gain settles into {subject.name}\'s body with mechanical certainty',
-    '{subject.name}\'s flesh takes the output without argument',
-    'the gain shows on {subject.name} by the week\'s end — subtle but real',
+    'she carries the week\'s work in how she moves',
+    'the mechanical rhythm leaves its mark on her flesh',
+    '',
   ] },
 ]);
 
@@ -242,10 +390,10 @@ registerPool('device.tick.synergy', [
   { when: { equippedWaist: 'obedience_belt', deviceId: 'auto_feeder_arm' }, text: [
     'Compliance cues and feeding land together — shame and fullness in one rhythm.',
   ] },
-  { when: { deviceId: 'living_furniture_rig', equippedWaist: 'auto_bloating_belt' }, text: [
-    'Furniture form and waist bloat deepen together — upholstery and pressure both rising.',
+  { when: { equippedHead: 'feeding_mask', deviceId: 'auto_bloating_belt' }, text: [
+    'Mask and belt stack pressure — face fed while her middle swells.',
   ] },
-  { when: {}, text: ['', '', ''] },
+  { when: {}, text: ['', ''] },
 ]);
 
 // Gain tag — short factual tail

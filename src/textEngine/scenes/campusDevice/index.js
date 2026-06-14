@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../../engine.js';
 import { getStage } from '../../../gameData/stages.js';
+import { getDeviceDependence, getDeviceDependenceTier } from '../../../gameData/deviceDependence.js';
 import './fragments.js';
 import '../../modules.js';
 
@@ -19,8 +20,8 @@ registerPool('campus.deviceEncounter', [
   ] },
   { when: {}, text: [
     '{subject.name} is within device range.',
-    '{subject.name} crosses into range of your inventions.',
-    'A viable target: {subject.name}, close enough to deploy.',
+    'You have a clean line on {subject.name}.',
+    '{subject.name} crosses the mesh without noticing.',
   ] },
 ]);
 
@@ -28,7 +29,7 @@ registerPool('campus.deviceResult', [
   { when: {}, text: [
     '{campus.dev.delivery} — {subject.name} {campus.dev.reaction}.',
     'On {subject.name}: {campus.dev.delivery}{join:campus.dev.reaction|prefix: — }.',
-    '{subject.name}: {campus.dev.delivery}{join:campus.dev.reaction|prefix: — }.',
+    '{campus.dev.delivery}; {subject.name} {campus.dev.reaction}.',
   ] },
 ]);
 
@@ -55,9 +56,16 @@ function encounterContext(target, nodeId, explorationCtx) {
   });
 }
 
-function resultContext(encounter, deviceId, modeId, result, nodeId) {
+function resultContext(encounter, deviceId, modeId, result, nodeId, student = null) {
+  const subj = student || {
+    name: encounter.target.name,
+    archetype: encounter.target.archetype,
+    lbs: encounter.target.lbs,
+    deviceDependence: {},
+  };
+  const depLevel = getDeviceDependence(subj, deviceId);
   return createContext({
-    subject: { name: encounter.target.name, archetype: encounter.target.archetype, lbs: encounter.target.lbs },
+    subject: subj,
     week: 1,
     globals: {
       deviceId,
@@ -66,6 +74,8 @@ function resultContext(encounter, deviceId, modeId, result, nodeId) {
       nodeId,
       discovered: !!result.discovered,
       npcGain: result.npcGain ?? null,
+      deviceDependence: depLevel,
+      deviceDependenceTier: getDeviceDependenceTier(depLevel).id,
     },
   });
 }
@@ -74,8 +84,8 @@ export function renderCampusDeviceEncounter(target, nodeId, explorationCtx, opts
   return render('{campus.deviceEncounter}', encounterContext(target, nodeId, explorationCtx), { trace: opts.trace || null });
 }
 
-export function renderCampusDeviceResult(encounter, deviceId, modeId, result, nodeId, opts = {}) {
-  return render('{campus.deviceResult}', resultContext(encounter, deviceId, modeId, result, nodeId), { trace: opts.trace || null });
+export function renderCampusDeviceResult(encounter, deviceId, modeId, result, nodeId, student = null) {
+  return render('{campus.deviceResult}', resultContext(encounter, deviceId, modeId, result, nodeId, student));
 }
 
 export function renderCampusDeviceFlavor(flavorDevice, explorationCtx) {

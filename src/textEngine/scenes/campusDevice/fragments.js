@@ -45,8 +45,8 @@ registerPool('campus.dev.vulnerability', [
 registerPool('campus.dev.rangeNote', [
   { when: { targetType: 'student' }, text: [
     'Your inventory hums with possibility.',
-    'She is close enough for a campus invention to land.',
-    'Talia\'s gear marks her as in range.',
+    'The campus network marks her as in range.',
+    'Signal strong — delivery window open.',
     '',
   ] },
   { when: { targetType: 'npc' }, text: [
@@ -93,6 +93,11 @@ registerPool('campus.dev.delivery', [
     'the invention lands exactly where Talia designed it to',
     'calibrated output hits before she can get clear',
   ] },
+  { when: {}, text: [
+    'your device finds its mark',
+    'the mesh delivers on schedule',
+    'calories land before she can object',
+  ] },
 ]);
 
 registerPool('campus.dev.reaction', [
@@ -103,6 +108,19 @@ registerPool('campus.dev.reaction', [
   { when: { deviceId: 'endless_hunger_engine' }, text: [
     'She blinks, suddenly ravenous, already scanning for something to eat.',
     'Her hand drifts to her belly; the hollow feels wrong and urgent.',
+  ] },
+  { when: { deviceId: 'feeding_mask', modeId: 'capture' }, text: [
+    'A muffled protest becomes another swallow.',
+    'She sags as the locked tube keeps pumping.',
+  ] },
+  { when: { deviceId: 'feeding_mask', deviceDependenceTierMin: 2 }, text: [
+    'She leans into the seal before the paste arrives.',
+    'Eagerness shows — she wants the mask more than she admits.',
+    'Her throat works automatically when the pump engages.',
+  ] },
+  { when: { deviceId: 'feeding_mask', deviceDependenceTierMin: 1 }, text: [
+    'Resistance thins into hungry compliance.',
+    'She stops fighting once the tube warms.',
   ] },
   { when: { modeId: 'capture' }, text: [
     'A muffled protest becomes another swallow.',
@@ -116,8 +134,8 @@ registerPool('campus.dev.reaction', [
   ] },
   { when: {}, text: [
     'The gain is already showing.',
-    'She touches her middle, confused, already fuller.',
-    'Softness arrives before she has words for it.',
+    'She touches her middle like something changed.',
+    'Fullness settles in before she names it.',
     '',
   ] },
 ]);
@@ -150,8 +168,8 @@ registerPool('campus.deviceFlavor', [
   ] },
   { when: {}, text: [
     'The campus hums with machine activity you cannot quite see.',
-    'Somewhere nearby, a Talia-built invention ticks through its cycle.',
-    'Engineering runoff clings to the air — sweet, warm, faintly mechanical.',
+    'Somewhere nearby, a rig ticks through its cycle.',
+    'You catch the faint smell of warm paste on the air.',
     '',
   ] },
 ]);

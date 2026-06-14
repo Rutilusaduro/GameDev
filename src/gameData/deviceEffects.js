@@ -2,22 +2,14 @@
 // DEVICE EFFECT RESOLUTION — engine-free logic
 // ═══════════════════════════════════════════════════════════════
 import { renderDeviceTickLine } from '../textEngine/scenes/deviceTick/index.js';
-import { renderDeviceUseLine } from '../textEngine/scenes/deviceUse/index.js';
+import { renderSuddenGrowthLine } from '../textEngine/scenes/suddenGrowth/index.js';
 import { getDevice, DEVICE_SLOTS } from './devices.js';
 import { applyPsychDelta } from './psychState.js';
-import { adjustHunger } from './hungerAddiction.js';
 import {
-  tickDependence,
-  applyDependenceBonuses,
-  getDependenceLevel,
-  dependenceMalfunctionScale,
-  applyWithdrawal,
+  bumpWeeklyDeviceDependence,
+  bumpEquipDeviceDependence,
+  bumpCampusDeviceDependence,
 } from './deviceDependence.js';
-import { foldModPatches, applyModificationToEntry } from './deviceMods.js';
-import { findUniqueInteraction } from './deviceInteractions.js';
-import { renderDeviceUniqueInteraction } from '../textEngine/scenes/deviceUniqueInteraction/index.js';
-import { renderDeviceCampusUseLine } from '../textEngine/scenes/deviceCampusUse/index.js';
-import { getEquippedDeviceIds } from './deviceEquip.js';
 
 export { getEquippedDeviceIds, hasPredatorCapture } from './deviceEquip.js';
 
@@ -46,8 +38,10 @@ export function equipDevice(student, defId, week = 1) {
   const slot = slotFor(def);
   if (!slot || !isSlotFree(student, slot)) return { student, ok: false, reason: 'slot_occupied' };
   const equip = { ...(student.equip || {}) };
-  equip[slot] = { defId, instanceId: nextDeviceInstanceId(), attachments: {}, mods: [] };
-  return { student: { ...student, equip }, ok: true, slot };
+  equip[slot] = { defId, instanceId: nextDeviceInstanceId(), attachments: {} };
+  let next = { ...student, equip };
+  next = bumpEquipDeviceDependence(next, defId);
+  return { student: next, ok: true, slot };
 }
 
 export function unequipDevice(student, slot) {
@@ -164,7 +158,16 @@ function attachmentIdsFromEntry(entry) {
   return Object.values(entry.attachments).map(a => a?.defId).filter(Boolean);
 }
 
-function buildTickEvent(student, slot, entry, week, rng, resultStudent, gainLbs, malf, ctx = {}) {
+function growthLineForStudent(student, gainLbs) {
+  return renderSuddenGrowthLine(student, {
+    gainLbs,
+    bodyState: student?.bodyOverride?.stateType || null,
+  });
+}
+
+export { growthLineForStudent };
+
+function buildTickEvent(student, slot, entry, week, rng, resultStudent, gainLbs, malf) {
   const def = getDevice(entry.defId);
   if (!def) return null;
   const attachmentIds = attachmentIdsFromEntry(entry);
@@ -368,7 +371,7 @@ function resolveWeeklyDevice(student, slot, entry, week, rng, ctx = {}) {
 
   const applied = applyDeviceEffect(next, weekly, { week, sourceDeviceId: def.id, rng });
   next = applied.student;
-  next = tickDependence(next, slot, 1, def);
+  next = bumpWeeklyDeviceDependence(next, def.id, def);
   const gainBeforeMalf = next._pendingGainLbs || 0;
 
   if (def.id === 'endless_hunger_engine') {
@@ -508,176 +511,11 @@ export function useConsumableDevice(student, defId, week = 1, rng = Math.random)
     if (mApplied.zoneOverride) zoneOverride = mApplied.zoneOverride;
   }
 
-  return { student: next, ok: true, lines, malfunction: malf, zoneOverride };
-}
+  const gainLbs = next._pendingGainLbs || 0;
+  const growthLine = growthLineForStudent(next, gainLbs);
+  if (growthLine) lines.push(growthLine);
 
-export function runMutationChamberSession(student, defId, week = 1, rng = Math.random) {
-  const def = getDevice(defId);
-  if (!def || def.form !== 'stationary') return { student, ok: false, lines: [], malfunction: null, zoneOverride: null };
-  const mutations = rollMutations(rng, 3);
-  let lines = [];
-  let malf = null;
-  let next = student;
-  let zoneOverride = null;
-
-  const applied = applyDeviceEffect(next, {
-    ...(def.useEffect || {}),
-    deviceStatePatch: {
-      mutations,
-      mutationEvolving: mutations.some(m => m.evolving),
-      mutationEvolvingWeeks: 0,
-    },
-  }, { week, sourceDeviceId: def.id, rng });
-  next = applied.student;
-  lines = [...applied.lines, `mutations: ${mutations.map(m => m.id).join(', ')}`];
-  zoneOverride = applied.zoneOverride;
-
-  malf = rollMalfunction(def, next, rng);
-  if (malf) {
-    const extraMutations = rollMutations(rng, 2);
-    const mApplied = applyDeviceEffect(next, {
-      ...malf.effect,
-      deviceStatePatch: {
-        mutations: [...mutations, ...extraMutations],
-        mutationEvolving: true,
-        mutationEvolvingWeeks: 0,
-      },
-    }, { week, sourceDeviceId: def.id, rng });
-    next = mApplied.student;
-    lines.push(`⚠️ ${malf.text}`);
-    if (mApplied.zoneOverride) zoneOverride = mApplied.zoneOverride;
-  }
-
-  return { student: next, ok: true, lines, malfunction: malf, zoneOverride };
-}
-
-export function runRegressionRay(student, modeId = 'moderate', week = 1, rng = Math.random) {
-  const def = getDevice('regression_ray');
-  if (!def) return { student, ok: false, lines: [], malfunction: null, zoneOverride: null };
-  const mode = def.campusModes?.find(m => m.id === modeId) || def.campusModes?.[0];
-  const effect = {
-    gainLbs: mode?.gainLbs || def.useEffect?.gainLbs,
-    bodyOverride: mode?.bodyOverride,
-    psychDelta: mode?.psychDelta || def.useEffect?.psychDelta,
-    deviceStatePatch: {
-      regression: {
-        depth: mode?.regressionDepth || 'moderate',
-        expiresWeek: week + (mode?.regressionWeeks || 1),
-      },
-    },
-  };
-  let next = student;
-  let zoneOverride = null;
-  const applied = applyDeviceEffect(next, effect, { week, sourceDeviceId: def.id, rng });
-  next = applied.student;
-  let lines = [...applied.lines];
-  zoneOverride = applied.zoneOverride;
-  const malf = rollMalfunction(def, next, rng);
-  if (malf) {
-    const mApplied = applyDeviceEffect(next, {
-      ...malf.effect,
-      deviceStatePatch: {
-        regression: {
-          depth: 'deep',
-          expiresWeek: week + 3,
-        },
-      },
-    }, { week, sourceDeviceId: def.id, rng });
-    next = mApplied.student;
-    lines.push(`⚠️ ${malf.text}`);
-    if (mApplied.zoneOverride) zoneOverride = mApplied.zoneOverride;
-    return { student: next, ok: true, lines, malfunction: malf, zoneOverride };
-  }
-  return { student: next, ok: true, lines, malfunction: null, zoneOverride };
-}
-
-export function intensifyHungerEngine(student, week = 1, rng = Math.random) {
-  const entry = student?.equip?.arms;
-  if (!entry || entry.defId !== 'endless_hunger_engine') {
-    return { student, ok: false, lines: [], malfunction: null, zoneOverride: null };
-  }
-  const def = getDevice('endless_hunger_engine');
-  const effect = {
-    hungerDelta: 2,
-    gainLbs: [2, 4],
-    psychDelta: { fixation: 5, dependence: 3, shame: 2 },
-    deviceStatePatch: {
-      endlessHunger: {
-        active: true,
-        distress: true,
-        weeksActive: (student.deviceState?.endlessHunger?.weeksActive ?? 0) + 1,
-      },
-    },
-  };
-  let next = student;
-  let zoneOverride = null;
-  const applied = applyDeviceEffect(next, effect, { week, sourceDeviceId: def.id, rng });
-  next = applied.student;
-  let lines = [...applied.lines, 'Distress hunger mode engaged.'];
-  zoneOverride = applied.zoneOverride;
-  const malf = rollMalfunction(def, next, rng);
-  if (malf) {
-    const mApplied = applyDeviceEffect(next, malf.effect, { week, sourceDeviceId: def.id, rng });
-    next = mApplied.student;
-    lines.push(`⚠️ ${malf.text}`);
-    if (mApplied.zoneOverride) zoneOverride = mApplied.zoneOverride;
-    return { student: next, ok: true, lines, malfunction: malf, zoneOverride };
-  }
-  return { student: next, ok: true, lines, malfunction: null, zoneOverride };
-}
-
-export function runStationaryDeviceSession(student, defId, week = 1, rng = Math.random) {
-  if (defId === 'rapid_mutation_chamber') {
-    return runMutationChamberSession(student, defId, week, rng);
-  }
-  const def = getDevice(defId);
-  if (!def || def.form !== 'stationary') return { student, ok: false, lines: [], malfunction: null, zoneOverride: null };
-  let lines = [];
-  let malf = null;
-  let next = student;
-  let zoneOverride = null;
-
-  const applied = applyDeviceEffect(next, def.useEffect || {}, { week, sourceDeviceId: def.id, rng });
-  next = applied.student;
-  lines = [...applied.lines];
-  zoneOverride = applied.zoneOverride;
-
-  malf = rollMalfunction(def, next, rng);
-  if (malf) {
-    const mApplied = applyDeviceEffect(next, malf.effect, { week, sourceDeviceId: def.id, rng });
-    next = mApplied.student;
-    lines.push(`⚠️ ${malf.text}`);
-    if (mApplied.zoneOverride) zoneOverride = mApplied.zoneOverride;
-  }
-
-  return { student: next, ok: true, lines, malfunction: malf, zoneOverride };
-}
-
-export function runStimulatorPulse(student, week = 1, rng = Math.random) {
-  const entry = student?.equip?.neck;
-  if (!entry || entry.defId !== 'erogenous_growth_stimulator') {
-    return { student, ok: false, lines: [], malfunction: null, zoneOverride: null };
-  }
-  const def = getDevice('erogenous_growth_stimulator');
-  const effect = {
-    gainLbs: [3, 7],
-    psychDelta: { fixation: 4, obsession: 3, dependence: 2 },
-  };
-  let next = student;
-  let zoneOverride = null;
-  const applied = applyDeviceEffect(next, effect, { week, sourceDeviceId: def.id, rng });
-  next = applied.student;
-  let lines = [...applied.lines];
-  zoneOverride = applied.zoneOverride;
-  const malf = rollMalfunction(def, next, rng);
-  if (malf) {
-    const mApplied = applyDeviceEffect(next, malf.effect, { week, sourceDeviceId: def.id, rng });
-    next = mApplied.student;
-    lines.push(`⚠️ ${malf.text}`);
-    if (mApplied.zoneOverride) zoneOverride = mApplied.zoneOverride;
-    return { student: next, ok: true, lines, malfunction: malf, zoneOverride };
-  }
-  return { student: next, ok: true, lines, malfunction: null, zoneOverride };
+  return { student: next, ok: true, lines, malfunction: malf };
 }
 
 export function triggerBeltBloatNow(student, week, rng = Math.random) {
@@ -697,6 +535,9 @@ export function triggerBeltBloatNow(student, week, rng = Math.random) {
   } else {
     result.lines = ['Belt cycles to aggressive bloat mode.'];
   }
+  const gainLbs = result.student._pendingGainLbs || 0;
+  const growthLine = growthLineForStudent(result.student, gainLbs);
+  if (growthLine) result.lines.push(growthLine);
   return { ...result, ok: true, malfunction: malf };
 }
 
@@ -775,7 +616,11 @@ export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng =
     const mApplied = applyDeviceEffect(result.student, malf.effect, { week, sourceDeviceId: def.id, rng });
     result = { student: mApplied.student, lines: [...result.lines, malf.text] };
   }
-  const discoveryRisk = (mode?.discoveryRisk ?? 0.15) + ((ctx.adminScrutiny ?? 0) / 300);
+  result.student = bumpCampusDeviceDependence(result.student, def.id);
+  const gainLbs = result.student._pendingGainLbs || 0;
+  const growthLine = growthLineForStudent(result.student, gainLbs);
+  if (growthLine) result.lines = [...(result.lines || []), growthLine];
+  const discoveryRisk = mode?.discoveryRisk ?? 0.15;
   const discovered = rng() < discoveryRisk;
   return {
     ok: true,

@@ -158,7 +158,7 @@ export function applyCampusDeviceEncounter({
   if (encounter.target.type === 'student') {
     const result = resolveCampusDeviceUse(deviceId, modeId, student, week, rng);
     if (!result.ok) return result;
-    const line = renderCampusDeviceResult(encounter, deviceId, modeId, result, encounter.nodeId);
+    const line = renderCampusDeviceResult(encounter, deviceId, modeId, result, encounter.nodeId, student);
     return {
       ...result,
       logLines: [

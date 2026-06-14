@@ -14,31 +14,16 @@ import {
   PARTS,
 } from '../gameData/labParts.js';
 import { DEVICE_BLUEPRINT_CATEGORIES } from '../gameData/deviceCategories.js';
-import { INVENTOR_PATH_STAGES } from '../gameData/talia.js';
-import {
-  RESEARCH_BRANCHES,
-  nodesForBranch,
-  canResearchNode,
-  researchPrereqsMet,
-  EXPERIMENT_SESSION_COST,
-} from '../gameData/researchTree.js';
-import { CircuitBoardModal } from '../components/CircuitBoardModal.jsx';
-import {
-  CIRCUIT_BOARDS,
-  getCircuitBoard,
-  getInventionTierLabel,
-} from '../gameData/inventionUpgrades.js';
-import { isForceFeederInstalled } from '../gameData/forceFeederEvent.js';
+import { INVENTOR_PATH_STAGES, LAB_BUILD_CONFIG } from '../gameData/talia.js';
+import { BREAKTHROUGH_ICON, BREAKTHROUGH_LABEL } from '../gameData/labTechTree.js';
 import { RecipeCostDisplay } from '../components/RecipeCostDisplay.jsx';
-import { summarizeDeviceEffect } from '../gameData/deviceQuery.js';
+import { LabTechTree } from '../components/LabTechTree.jsx';
 
 const RARITY_COLORS = { common: '#8a8a7a', uncommon: '#4a9a5a', rare: '#c8860a' };
 const ACCENT = '#4a6080';
-const RESEARCH_ACCENT = '#5090c8';
-const TERMINAL_ACCENT = '#6a5088';
-const INVENTIONS_ACCENT = '#7a5088';
 
-function blueprintStatus(recipe, labState, money, taliaLbs) {
+function BlueprintCard({ recipe, labState, taliaStudent, money, onBuild }) {
+  const def = DEVICES[recipe.deviceDefId];
   const researched = isBlueprintResearched(labState, recipe.blueprint);
   const buildable = isBlueprintBuildable(recipe, labState);
   const afford = canAfford(recipe, labState, money) && taliaLbs >= getMinLbsForBuild(recipe);
@@ -63,37 +48,74 @@ function BlueprintGridCard({ recipe, selected, onSelect, labState, money, taliaL
         <div style={{ fontWeight: 700, color: '#90a8c8', fontSize: 12 }}>{def?.icon} {def?.label}</div>
         <span style={{ ...C.tag(`${rarityColor}30`, rarityColor), fontSize: 8 }}>T{recipe.tier}</span>
       </div>
-      <div style={{ fontSize: 9, color: status.color, marginBottom: 4 }}>
-        {installed ? 'Installed in lab' : status.label}
-      </div>
-      <div style={{ fontSize: 9, color: '#5a6080', lineHeight: 1.35 }}>{summarizeDeviceEffect(def)}</div>
+      <div style={{ fontSize: 10, color: '#5a6080', marginBottom: 8, lineHeight: 1.4 }}>{def?.desc}</div>
+      <RecipeCostDisplay recipe={recipe} labState={labState} money={money} taliaLbs={taliaLbs} />
+      {!researched && (
+        <div style={{ fontSize: 9, color: '#806050', fontStyle: 'italic', marginBottom: 6, lineHeight: 1.45 }}>
+          🔒 Locked — unlock this blueprint in the Research Tech Tree above.
+        </div>
+      )}
+      {researched && !buildable && (
+        <div style={{ fontSize: 9, color: '#a07050', fontStyle: 'italic', marginBottom: 6 }}>
+          Unlock prerequisites first.
+        </div>
+      )}
+      {buildable && (
+        <button
+          style={{ ...C.btn(afford ? ACCENT : '#442828'), width: '100%', fontSize: 10, opacity: afford ? 1 : 0.85 }}
+          disabled={!afford}
+          onClick={() => onBuild(recipe.deviceDefId)}
+        >
+          Build (−{weightCost} lbs Talia)
+        </button>
+      )}
+      {buildable && !taliaOk && (
+        <div style={{ fontSize: 9, color: '#e05040', marginTop: 4 }}>
+          Talia needs at least {minLbs} lbs (has {Math.round(taliaLbs)}).
+        </div>
+      )}
     </div>
   );
 }
 
-function formatMaterialCost(materials = {}) {
-  const entries = Object.entries(materials);
-  if (!entries.length) return 'no extra materials';
-  return entries.map(([k, n]) => `${PARTS[k]?.label || k} ×${n}`).join(', ');
-}
-
-function ResearchNodeCard({ node, labState, taliaStudent, selected, onSelect }) {
-  const researched = isBlueprintResearched(labState, node.blueprint);
-  const prereqs = researchPrereqsMet(node, labState, taliaStudent);
-  const affordable = canResearchNode(node, labState, taliaStudent);
-  const statusColor = researched ? '#4a9a5a' : affordable ? RESEARCH_ACCENT : prereqs ? '#a07050' : '#806060';
-  const statusLabel = researched ? 'Unlocked' : affordable ? 'Experiment ready' : prereqs ? 'Need materials' : 'Locked';
+function CategorySection({ category, labState, taliaStudent, money, onBuild, defaultOpen }) {
+  const [open, setOpen] = useState(defaultOpen ?? true);
+  const recipes = category.deviceIds
+    .map(id => BLUEPRINT_RECIPES[id])
+    .filter(Boolean);
 
   return (
-    <div
-      style={{ ...C.card, cursor: 'pointer', borderColor: selected ? TERMINAL_ACCENT : undefined, marginBottom: 0 }}
-      onClick={() => onSelect(node)}
-    >
-      <div style={{ fontWeight: 700, color: '#b0a0d0', fontSize: 11, marginBottom: 4 }}>{node.label}</div>
-      <div style={{ fontSize: 9, color: statusColor }}>{statusLabel}</div>
-      {!researched && (
-        <div style={{ fontSize: 8, color: '#7060a0', marginTop: 4 }}>
-          {formatMaterialCost(node.materials)} · risk {(node.riskChance * 100).toFixed(0)}%
+    <div style={{ marginBottom: 10 }}>
+      <button
+        type="button"
+        onClick={() => setOpen(v => !v)}
+        style={{
+          ...C.btn('#1a2838'),
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: open ? 8 : 0,
+          border: `1px solid ${ACCENT}60`,
+        }}
+      >
+        <span style={{ fontWeight: 700, color: '#90b8d8' }}>
+          {category.icon} {category.label}
+        </span>
+        <span style={{ fontSize: 10, color: '#6080a0' }}>{open ? '▾' : '▸'} {recipes.length}</span>
+      </button>
+      {open && (
+        <div style={{ paddingLeft: 4 }}>
+          {recipes.map(recipe => (
+            <BlueprintCard
+              key={recipe.deviceDefId}
+              recipe={recipe}
+              labState={labState}
+              taliaStudent={taliaStudent}
+              money={money}
+              onBuild={onBuild}
+            />
+          ))}
         </div>
       )}
     </div>
@@ -105,10 +127,7 @@ export function LabView({
   taliaStudent,
   money,
   onBuild,
-  onResearch,
-  onExperiment,
-  onUnlockCircuitNode,
-  onUseForceFeeder,
+  onUnlockTech,
   onOpenSession,
   labStage = 1,
   ap,
@@ -177,6 +196,8 @@ export function LabView({
             <div style={{ marginTop: 6 }}>
               Talia: <strong>{Math.round(taliaStudent.lbs)} lbs</strong> build material
               · Instability {labState.instability ?? 0}%
+              · Sessions {labState.sessionsRun ?? 0}
+              · {BREAKTHROUGH_ICON} {labState.breakthroughs ?? 0} {BREAKTHROUGH_LABEL}
             </div>
           )}
         </div>
@@ -220,208 +241,18 @@ export function LabView({
         })}
       </div>
 
-      {labTab === 'workshop' && (
-        <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr', gap: 12, alignItems: 'start' }}>
-          <div>
-            <div style={{ fontSize: 9, letterSpacing: 2, color: ACCENT, marginBottom: 6 }}>CATEGORIES</div>
-            {DEVICE_BLUEPRINT_CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                style={{ ...C.btn(categoryId === cat.id ? ACCENT : '#1a2030'), width: '100%', textAlign: 'left', marginBottom: 4, fontSize: 10 }}
-                onClick={() => { setCategoryId(cat.id); setSelectedRecipe(null); }}
-              >
-                {cat.icon} {cat.label}
-              </button>
-            ))}
-          </div>
-          <div>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 8 }}>
-              <input
-                type="search"
-                placeholder="Search blueprints…"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                style={{ flex: 1, minWidth: 120, background: '#0a1020', border: '1px solid #304050', borderRadius: 6, color: '#a0b0c0', padding: '6px 10px', fontSize: 11, fontFamily: 'inherit' }}
-              />
-              <select value={tierFilter} onChange={(e) => setTierFilter(e.target.value)} style={{ ...C.btn('#1a2030'), fontSize: 10 }}>
-                <option value="all">All tiers</option>
-                {[1, 2, 3].map((t) => <option key={t} value={t}>Tier {t}</option>)}
-              </select>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 220px', gap: 10 }}>
-              <div style={C.grid2}>
-                {recipes.map((recipe) => (
-                  <BlueprintGridCard
-                    key={recipe.deviceDefId}
-                    recipe={recipe}
-                    selected={preview?.deviceDefId === recipe.deviceDefId}
-                    onSelect={setSelectedRecipe}
-                    labState={labState}
-                    money={money}
-                    taliaLbs={taliaLbs}
-                  />
-                ))}
-              </div>
-              {preview && previewDef && (
-                <div style={{ ...C.card, border: `1px solid ${ACCENT}`, position: 'sticky', top: 0 }}>
-                  <div style={{ fontWeight: 700, color: '#90b0d0', marginBottom: 6 }}>{previewDef.icon} {previewDef.label}</div>
-                  <div style={{ fontSize: 10, color: '#8090a8', lineHeight: 1.5, marginBottom: 8 }}>{previewDef.desc}</div>
-                  <RecipeCostDisplay recipe={preview} labState={labState} money={money} taliaLbs={taliaLbs} />
-                  {!previewResearched && (
-                    <div style={{ fontSize: 9, color: RESEARCH_ACCENT, marginTop: 8, fontStyle: 'italic' }}>
-                      Unlock via Research Terminal first.
-                    </div>
-                  )}
-                  {previewResearched && previewBuildable && !previewInstalled && (
-                    <button
-                      style={{ ...C.btn(previewAfford ? ACCENT : '#442828'), width: '100%', marginTop: 8 }}
-                      disabled={!previewAfford}
-                      onClick={() => onBuild(preview.deviceDefId)}
-                    >
-                      {previewDef.inventionKind === 'event' ? 'Install in lab' : 'Build'}
-                      {' '}(−{getBuildWeightCost(preview)} lbs Talia)
-                    </button>
-                  )}
-                  {previewInstalled && (
-                    <div style={{ fontSize: 9, color: '#4a9a5a', marginTop: 8 }}>Already installed / built.</div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      <LabTechTree labState={labState} onUnlock={onUnlockTech} />
 
-      {labTab === 'terminal' && (
-        <div>
-          <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: 12 }}>
-            <div>
-              <div style={{ fontSize: 9, letterSpacing: 2, color: TERMINAL_ACCENT, marginBottom: 6 }}>BRANCHES</div>
-              {RESEARCH_BRANCHES.map((branch) => (
-                <button
-                  key={branch.id}
-                  style={{ ...C.btn(branchId === branch.id ? TERMINAL_ACCENT : '#1a1830'), width: '100%', textAlign: 'left', marginBottom: 4, fontSize: 10 }}
-                  onClick={() => { setBranchId(branch.id); setSelectedNode(null); }}
-                >
-                  {branch.icon} {branch.label}
-                </button>
-              ))}
-            </div>
-            <div>
-              <div style={{ fontSize: 10, color: '#8070a0', marginBottom: 8, lineHeight: 1.5 }}>
-                {RESEARCH_BRANCHES.find((b) => b.id === branchId)?.desc}
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 220px', gap: 10 }}>
-                <div style={C.grid2}>
-                  {branchNodes.map((node) => (
-                    <ResearchNodeCard
-                      key={node.id}
-                      node={node}
-                      labState={labState}
-                      taliaStudent={taliaStudent}
-                      selected={nodePreview?.id === node.id}
-                      onSelect={setSelectedNode}
-                    />
-                  ))}
-                </div>
-                {nodePreview && (
-                  <div style={{ ...C.card, border: `1px solid ${TERMINAL_ACCENT}`, position: 'sticky', top: 0 }}>
-                    <div style={{ fontWeight: 700, color: '#c0b0e0', marginBottom: 6 }}>{nodePreview.label}</div>
-                    <div style={{ fontSize: 9, color: '#8070a0', marginBottom: 8 }}>
-                      Experiment: {EXPERIMENT_SESSION_COST.ap} AP + {formatMaterialCost(nodePreview.materials)}
-                    </div>
-                    {nodeResearched ? (
-                      <div style={{ fontSize: 9, color: '#4a9a5a' }}>Blueprint unlocked — build in Workshop.</div>
-                    ) : (
-                      <button
-                        style={{ ...C.btn(nodeCanExperiment && ap >= EXPERIMENT_SESSION_COST.ap ? TERMINAL_ACCENT : '#302030'), width: '100%' }}
-                        disabled={!nodeCanExperiment || ap < EXPERIMENT_SESSION_COST.ap}
-                        onClick={() => onExperiment(nodePreview.blueprint)}
-                      >
-                        Run experiment
-                      </button>
-                    )}
-                    {!nodeResearched && (
-                      <button
-                        style={{ ...C.btn(RESEARCH_ACCENT), width: '100%', marginTop: 6, opacity: isBlueprintResearched(labState, nodePreview.blueprint) ? 0.4 : 1 }}
-                        onClick={() => onResearch(nodePreview.blueprint)}
-                      >
-                        Quick research (no experiment)
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {labTab === 'inventions' && (
-        <div>
-          <p style={{ fontSize: 10, color: '#8070a0', lineHeight: 1.55, marginBottom: 12 }}>
-            Lab-installed devices. Run calibrations here and open each circuit board to spend invention points on upgrades.
-          </p>
-          {installedDeviceIds.length === 0 ? (
-            <div style={{ fontSize: 11, color: '#7060a0', fontStyle: 'italic' }}>
-              No inventions installed yet. Research a blueprint in the Terminal, then build it in the Workshop.
-            </div>
-          ) : (
-            <div style={{ display: 'grid', gap: 10 }}>
-              {installedDeviceIds.map((deviceId) => {
-                const def = DEVICES[deviceId];
-                const hasBoard = !!CIRCUIT_BOARDS[deviceId];
-                const points = getCircuitBoard(labState, deviceId).inventionPoints ?? 0;
-                const tierLabel = hasBoard ? getInventionTierLabel(labState, deviceId) : null;
-                const isForceFeeder = deviceId === 'feeding_mask';
-                return (
-                  <div key={deviceId} style={{ ...C.card, border: `1px solid ${INVENTIONS_ACCENT}60`, marginBottom: 0 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
-                      <div style={{ fontWeight: 700, color: '#c0a8e0', fontSize: 13 }}>
-                        {def?.icon} {def?.label || deviceId}
-                      </div>
-                      {def?.form === 'stationary' && (
-                        <span style={{ ...C.tag(`${INVENTIONS_ACCENT}30`, '#c0a8e0'), fontSize: 8 }}>Lab station</span>
-                      )}
-                    </div>
-                    {tierLabel && (
-                      <div style={{ fontSize: 10, color: '#9080b0', marginBottom: 4 }}>{tierLabel}</div>
-                    )}
-                    <div style={{ fontSize: 10, color: '#8090a8', lineHeight: 1.5, marginBottom: 8 }}>{def?.desc}</div>
-                    {hasBoard && (
-                      <div style={{ fontSize: 9, color: '#7060a0', marginBottom: 10 }}>
-                        Invention points: <strong style={{ color: '#d0c0f0' }}>{points}</strong>
-                      </div>
-                    )}
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                      {isForceFeeder && forceFeederInstalled && (
-                        <button style={{ ...C.btn(INVENTIONS_ACCENT), flex: 1, minWidth: 160 }} onClick={onUseForceFeeder}>
-                          Use Force Feeder — Gullet Calibration
-                        </button>
-                      )}
-                      {hasBoard && (
-                        <button
-                          style={{ ...C.btn('#2a2840'), flex: 1, minWidth: 160 }}
-                          onClick={() => setCircuitDevice(deviceId)}
-                        >
-                          Open circuit board
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      )}
-
-      {circuitDevice && (
-        <CircuitBoardModal
-          deviceDefId={circuitDevice}
+      <div style={{ fontSize: 9, letterSpacing: 2, color: ACCENT, marginBottom: 8 }}>BLUEPRINTS BY CATEGORY</div>
+      {DEVICE_BLUEPRINT_CATEGORIES.map((cat, i) => (
+        <CategorySection
+          key={cat.id}
+          category={cat}
           labState={labState}
-          onUnlockNode={onUnlockCircuitNode}
-          onClose={() => setCircuitDevice(null)}
+          taliaStudent={taliaStudent}
+          money={money}
+          onBuild={onBuild}
+          defaultOpen={i === 0}
         />
       )}
     </div>

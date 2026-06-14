@@ -20,53 +20,34 @@ import {
   renderWeighInIntro, renderWeighInReaction,
   renderWeighInBreak, renderWeighInSwap, renderWeighInPurchase,
 } from '../textEngine/scenes/weighIn/index.js';
-import { renderGrowthScene, buildGrowthGlobals } from '../textEngine/scenes/growthEvent/index.js';
 import { renderDeviceTickLine } from '../textEngine/scenes/deviceTick/index.js';
+import { renderSuddenGrowthLine } from '../textEngine/scenes/suddenGrowth/index.js';
+import { resolveGrowthZone } from '../textEngine/growthLexicon.js';
 import { renderCampusDeviceEncounter, renderCampusDeviceResult } from '../textEngine/scenes/campusDevice/index.js';
 import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes/hungerInterrupt.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
-import '../textEngine/scenes/growthEvent/fragments.js';
-import '../textEngine/scenes/growthEvent/environment.js';
-import '../textEngine/scenes/growthEvent/stageCrossings.js';
-import '../textEngine/scenes/growthEvent/personas.js';
-import '../textEngine/scenes/deviceTick/fragments.js';
-import '../textEngine/scenes/campusDevice/fragments.js';
+import { DEVICES } from '../gameData/devices.js';
+import { LILITH_ID } from '../gameData/lilith.js';
 import '../textEngine/scenes/talkEncourage.js';
 import '../textEngine/scenes/talkCodas.js';
 import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';
-import '../textEngine/scenes/hungerInterruptPersonal.js';
-import '../textEngine/scenes/hungerArchetypeBehavior.js';
-import '../textEngine/scenes/hiveIntake.js';
-import { renderForceFeederFeed, renderForceFeederAftermath } from '../textEngine/scenes/forceFeeder/index.js';
+import '../textEngine/scenes/deviceBody.js';
+import '../textEngine/scenes/campusDevice/fragments.js';
 
 const MOODS = ["happy", "focused", "excited", "content", "tired", "stressed", "warm", "observant", "cheerful", "bemused", "curious", "nervous"];
 const COR_POINTS = { 0: 10, 1: 50, 2: 90 };
 const RANDOM = "random";
-const DEVICE_IDS = Object.keys(DEVICES);
-const GROWTH_ZONES = ['belly', 'hips', 'thighs', 'ass', 'chest', 'full', 'lower_body'];
-const CAMPUS_NODES = ['quad', 'dorms', 'dining', 'library'];
+const DEVICE_IDS = Object.keys(DEVICES).filter(id => DEVICES[id].form === 'worn' || DEVICES[id].form === 'campus_tool');
+const GROWTH_ZONES = ['belly', 'lower_body', 'curves', 'full', 'bust'];
 
-function codaSkillEffects(register) {
-  if (register === 'broken') return { brokenMind: true, internalizedRole: true };
-  if (register === 'internalized') return { internalizedRole: true };
-  return {};
-}
-
-function growthStudent(base, stage, extra = {}) {
-  return {
-    ...base,
-    lbs: WEIGHT_STAGES[stage].min + 10,
-    psych: { fixation: 20, obsession: 30, dependence: 25, shame: 15 },
-    ...extra,
-  };
-}
+const MOCK_EXPLORATION = { week: 6, campusTier: 1 };
+const MOCK_ENCOUNTER = {
+  target: { name: 'Maya', type: 'student', archetype: 'athletic', lbs: 220, studentId: 3 },
+};
 
 // Each section declares which state params actually influence its text
-// (irrelevant dropdowns are dithered in the UI) and, where the game
-// gates access, a stage floor — the big scale only exists for girls
-// who broke the analog one (>400 lbs ⇒ stage 7+).
 const STATE_PARAMS = ["girl", "stage", "corruption", "mood", "hunger", "addiction", "withdrawal"];
 const SECTIONS = {
   "weighIn.intro": { params: STATE_PARAMS,
@@ -86,149 +67,66 @@ const SECTIONS = {
       subject: s, week: 6,
       globals: { campusFattening: (opts.campusTier || 0) > 0, campusTier: opts.campusTier || 0 },
     }), { trace: opts.trace }) },
-  "talk.coda": { params: ["girl", "corruption", "codaRegister"],
+  "talk.coda": { params: [...STATE_PARAMS, "campus"],
     fn: (s, opts) => render("{talk.coda}", createContext({
-      subject: s,
-      week: 6,
-      skillEffects: codaSkillEffects(opts.codaRegister),
+      subject: s, week: 6,
       globals: { campusFattening: (opts.campusTier || 0) > 0, campusTier: opts.campusTier || 0 },
     }), { trace: opts.trace }) },
-  "grow.sudden": { params: [...STATE_PARAMS, "growthZone", "stagesJumped"],
+  "grow.sudden": { params: [...STATE_PARAMS, "growthZone"],
     fn: (s, opts) => {
-      const endStage = Number(opts.stage);
-      const jumped = Number(opts.stagesJumped || 0);
-      const ctx = createContext({
-        subject: s,
-        week: 6,
-        globals: buildGrowthGlobals(s, {
-          endStage,
-          startStage: Math.max(0, endStage - jumped),
-          stagesJumped: jumped,
-          growthZone: opts.growthZone || 'belly',
-          growthMethod: 'radiation',
-          growthIntensity: jumped >= 2 ? 'violent' : 'rapid',
-          gainLbs: Number(opts.gain || 14),
-        }),
-      });
-      return render("{ge.surge}", ctx, { trace: opts.trace });
-    },
-  },
-  "device.tick": { params: [...STATE_PARAMS, "deviceId", "gain", "malfunction"],
+      const zone = opts.growthZone && opts.growthZone !== 'random'
+        ? opts.growthZone
+        : resolveGrowthZone(s);
+      return renderSuddenGrowthLine(s, { gainLbs: 6, growthZone: zone, week: 6 });
+    } },
+  "device.tick": { params: [...STATE_PARAMS, "device", "deviceDep"],
     fn: (s, opts) => {
-      const deviceId = opts.deviceId || 'auto_bloating_belt';
-      const def = DEVICES[deviceId];
+      const deviceId = opts.device || 'auto_feeder_arm';
+      const def = DEVICES[deviceId] || DEVICES.auto_feeder_arm;
+      const dep = Number(opts.deviceDep || 0);
+      const mockStudent = {
+        ...s,
+        deviceDependence: { ...s.deviceDependence, [def.id]: dep },
+      };
       return renderDeviceTickLine({
-        student: s,
-        deviceId,
-        deviceLabel: def?.label || deviceId,
-        slot: def?.slot || 'waist',
-        gainLbs: Number(opts.gain || 4),
-        malfunctionTier: opts.malfunction === 'yes' ? 'moderate' : null,
-        isMalfunction: opts.malfunction === 'yes',
+        student: mockStudent,
+        deviceId: def.id,
+        deviceLabel: def.label,
+        slot: def.slot || 'waist',
+        gainLbs: 4,
         week: 6,
-        trace: opts.trace,
+        attachmentIds: [],
+        isMalfunction: false,
       });
-    },
-  },
-  "ff.feed": { params: [...STATE_PARAMS, "performanceTier", "feedAttitude"],
-    fn: (s, opts) => renderForceFeederFeed(s, 6, {
-      performanceTier: opts.performanceTier || 'good',
-      feedAttitude: opts.feedAttitude || 'willing',
-      targetIsTalia: s.id === 18,
-    }, opts),
-  },
-  "ff.aftermath": { params: [...STATE_PARAMS, "performanceTier", "feedAttitude"],
-    fn: (s, opts) => renderForceFeederAftermath(s, 6, {
-      performanceTier: opts.performanceTier || 'good',
-      feedAttitude: opts.feedAttitude || 'willing',
-      targetIsTalia: s.id === 18,
-    }, opts),
-  },
-  "campus.deviceEncounter": { params: ["girl", "stage", "campusNode"],
-    fn: (s, opts) => {
-      const target = {
-        type: 'student',
-        name: s.name,
-        archetype: s.archetype,
-        lbs: s.lbs,
-        studentId: s.id,
-      };
-      return renderCampusDeviceEncounter(target, opts.campusNode || 'quad', { week: 6 }, opts);
-    },
-  },
-  "campus.deviceResult": { params: ["girl", "stage", "deviceId", "campusNode"],
-    fn: (s, opts) => {
-      const encounter = {
-        target: {
-          type: 'student',
-          name: s.name,
-          archetype: s.archetype,
-          lbs: s.lbs,
-        },
-      };
-      const deviceId = opts.deviceId || 'endless_hunger_engine';
-      return renderCampusDeviceResult(
-        encounter,
-        deviceId,
-        'pulse',
-        { discovered: false, modeId: 'pulse' },
-        opts.campusNode || 'quad',
-        opts,
-      );
-    },
-  },
+    } },
+  "campus.deviceEncounter": { params: ["girl", "stage"],
+    fn: (s) => renderCampusDeviceEncounter(
+      { name: s.name, type: 'student', archetype: s.archetype, lbs: s.lbs, studentId: s.id },
+      'quad',
+      MOCK_EXPLORATION,
+    ) },
+  "campus.deviceResult": { params: ["girl", "stage"],
+    fn: (s) => renderCampusDeviceResult(
+      { ...MOCK_ENCOUNTER, target: { ...MOCK_ENCOUNTER.target, name: s.name, lbs: s.lbs } },
+      'remote_feeding_system',
+      'stealth',
+      { discovered: false, modeId: 'stealth' },
+      'quad',
+    ) },
   "hunger.interrupt": { params: STATE_PARAMS,
-    fn: (s, opts) => renderHungerInterrupt(s, 6, opts) },
+    fn: (s) => renderHungerInterrupt(s, 6) },
   "hunger.outcome.feed": { params: STATE_PARAMS,
-    fn: (s, opts) => renderHungerOutcome(s, 'feed', 6, opts) },
+    fn: (s) => renderHungerOutcome(s, 'feed', 6) },
   "hunger.outcome.deny": { params: STATE_PARAMS,
-    fn: (s, opts) => renderHungerOutcome(s, 'deny', 6, opts) },
-  "attitude.line": { params: [...STATE_PARAMS, "campus"],
+    fn: (s) => renderHungerOutcome(s, 'deny', 6) },
+  "attitude.line": { params: STATE_PARAMS,
     fn: (s, opts) => renderAttitude(s, 6, opts) },
-  "hive.intake": { params: ["girl", "stage", "lilithStage"],
-    fn: (s, opts) => {
-      const lilithBase = INIT_STUDENTS.find(st => st.id === LILITH_ID) || { name: 'Lilith', bodyType: 'hourglass' };
-      const lilithStage = Number(opts.lilithStage ?? 8);
-      const lilith = {
-        ...lilithBase,
-        lbs: WEIGHT_STAGES[lilithStage].min + 15,
-        corruption: 85,
-        bodyType: lilithBase.bodyType || 'hourglass',
-      };
-      const partner = INIT_STUDENTS[(INIT_STUDENTS.findIndex(st => st.id === s.id) + 1) % INIT_STUDENTS.length];
-      const victims = [
-        { ...s, corruption: s.corruption ?? 0 },
-        { ...partner, lbs: Math.max(WEIGHT_STAGES[0].min, s.lbs - 12), corruption: 0 },
-      ];
-      return renderHiveIntake(lilith, victims, 6, opts);
-    },
-  },
-  "growthEvent.scene": { params: [...STATE_PARAMS, "locale", "gain", "stagesJumped", "deviceId"],
-    fn: (s, opts) => {
-      const endStage = Number(opts.stage);
-      const jumped = Number(opts.stagesJumped || 0);
-      const startStage = Math.max(0, endStage - jumped);
-      const gainLbs = Number(opts.gain || 14);
-      const deviceId = opts.deviceId || 'growth_accelerator_chamber';
-      const def = DEVICES[deviceId];
-      const profile = def?.growthProfile || {};
-      const student = growthStudent(s, endStage);
-      return renderGrowthScene(student, {
-        causeType: 'device_use',
-        deviceId,
-        gainLbs,
-        startStage,
-        endStage,
-        stagesJumped: jumped,
-        growthZone: profile.zoneBias === 'bodyType' ? 'belly' : (profile.zoneBias || 'belly'),
-        growthMethod: profile.growthMethod || 'feed',
-        growthIntensity: jumped >= 2 ? 'violent' : (profile.growthIntensity || 'rapid'),
-        sensation: profile.sensation || 'fullness',
-        locale: opts.locale || 'lab',
-        week: 6,
-      }, { trace: opts.trace });
-    },
-  },
+  "hive.intake": { params: ["girl", "stage", "corruption"],
+    fn: (s) => {
+      const lilith = INIT_STUDENTS.find(st => st.id === LILITH_ID) || { name: 'Lilith', lbs: 520, corruption: 90, bodyType: 'hourglass', relationship: 50 };
+      const victims = [{ name: s.name, lbs: s.lbs, bodyType: s.bodyType, corruption: s.corruption, relationship: 0 }];
+      return renderHiveIntake(lilith, victims, 6);
+    } },
 };
 const SECTION_KEYS = Object.keys(SECTIONS);
 
@@ -242,15 +140,9 @@ const PARAM_DEFS = [
   { key: "addiction", label: "Addiction", options: ["0", "1", "2", "3", "4"] },
   { key: "withdrawal", label: "Withdrawal", options: ["no", "yes"] },
   { key: "campus", label: "Campus tier", options: ["0", "1", "2", "3"] },
-  { key: "locale", label: "Locale", options: ["lab", "campus", "stream_setup", "dining_hall", "kitchen", "office"] },
-  { key: "gain", label: "Gain lbs", options: ["4", "8", "14", "22", "30"] },
-  { key: "stagesJumped", label: "Stages jumped", options: ["0", "1", "2", "3"] },
-  { key: "deviceId", label: "Device", options: DEVICE_IDS, optionLabel: (v) => DEVICES[v]?.label || v },
-  { key: "growthZone", label: "Growth zone", options: GROWTH_ZONES },
-  { key: "malfunction", label: "Malfunction", options: ["no", "yes"] },
-  { key: "campusNode", label: "Campus node", options: CAMPUS_NODES },
-  { key: "codaRegister", label: "Talk coda", options: ["none", "internalized", "broken"], optionLabel: (v) => ({ none: "None", internalized: "Internalized role", broken: "Broken mind" })[v] },
-  { key: "lilithStage", label: "Lilith stage", options: WEIGHT_STAGES.map((w) => String(w.id)), optionLabel: (v) => `${v} · ${WEIGHT_STAGES[Number(v)].label}` },
+  { key: "device", label: "Device", options: DEVICE_IDS, optionLabel: (v) => DEVICES[v]?.label || v },
+  { key: "deviceDep", label: "Device dep", options: ["0", "15", "30", "55", "80"], optionLabel: (v) => `${v} (${({ 0: 'Low', 15: 'Low+', 30: 'Elevated', 55: 'High', 80: 'Extreme' })[v]})` },
+  { key: "growthZone", label: "Growth zone", options: [...GROWTH_ZONES, "random"], optionLabel: (v) => v === 'random' ? 'auto (body type)' : v },
 ];
 
 // Resolve one sample's state: locked params stay, Random rolls fresh.
@@ -299,17 +191,9 @@ function rollSample(params) {
     campusFattening: campusTier > 0,
     campusTier,
     trace,
-    stage: v.stage,
-    stagesJumped: v.stagesJumped,
-    gain: v.gain,
-    locale: v.locale,
-    deviceId: v.deviceId,
+    device: v.device,
+    deviceDep: v.deviceDep,
     growthZone: v.growthZone,
-    malfunction: v.malfunction,
-    campusNode: v.campusNode,
-    codaRegister: v.codaRegister,
-    lilithStage: v.lilithStage,
-    corruption: v.corruption,
   };
   const text = SECTIONS[v.section].fn(student, opts);
   // annotation units: leaf fragments, minus bare identity helpers
