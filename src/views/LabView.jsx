@@ -232,15 +232,6 @@ export function LabView({
           defaultOpen={i === 0}
         />
       ))}
-
-      {circuitDevice && (
-        <CircuitBoardModal
-          deviceDefId={circuitDevice}
-          labState={labState}
-          onUnlockNode={onUnlockCircuit}
-          onClose={() => setCircuitDevice(null)}
-        />
-      )}
     </div>
   );
 }
