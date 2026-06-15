@@ -69,7 +69,7 @@ export function OversightView({
       <div style={{ fontSize: 12, color: '#ccc', marginBottom: 8 }}>
         Scrutiny {adminScrutiny} · Scandal {aib.scandalMeter} · Truce {aib.truceWeeks}w
         {opposition.proxies?.wellnessCoalition && ' · Wellness Coalition'}
-        {opposition.proxies?.accreditation && ' · Accreditation Observer'}
+        {opposition.proxies?.accreditation && ` · Accreditation${opposition.proxies?.observerName ? ` (${opposition.proxies.observerName})` : ''}`}
         {opposition.proxies?.asceticCircle && ' · Ascetic Circle'}
         {opposition.supernatural?.actTriggered && ` · Scarcity ${opposition.supernatural.scarcityPressure}`}
         {opposition.supernatural?.famineWeek && ' · FAMINE WEEK'}
@@ -134,6 +134,17 @@ export function OversightView({
             >
               Chamber
             </button>
+            {lilithUnlocked && m.stance !== 'consumed' && m.stance !== 'removed' && (
+              <button
+                type="button"
+                disabled={ap < 1}
+                style={{ ...C.btn('#4a2050'), fontSize: 10, padding: '4px 8px', opacity: ap >= 1 ? 1 : 0.4 }}
+                title="Mark for Lilith hunt map"
+                onClick={() => onRunCounterOnMember('lilith_hunt', m.id)}
+              >
+                🩸 Hunt
+              </button>
+            )}
           </div>
         ))}
         {aib.rotatingAdvocate && (

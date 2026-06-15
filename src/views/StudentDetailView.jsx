@@ -249,7 +249,7 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                     <div style={C.infoBox('rgba(20,30,50,0.45)')}>
                       <div style={{ fontSize: 9, color: '#7090c0', letterSpacing: 2, marginBottom: 4 }}>👻 THIN FORM</div>
                       <div style={{ fontSize: 12, color: '#b8c8e0', lineHeight: 1.7 }}>
-                        {form?.label || s.supernaturalForm} · display {Math.round(s.lbs)} lbs · memory mass {Math.round(memory)} lbs
+                        {form?.label || s.supernaturalForm} · ethereal {Math.round(s.etherealLbs ?? s.lbs)} lbs · memory mass {Math.round(memory)} lbs · current {Math.round(s.lbs)} lbs
                       </div>
                       <div style={{ position: 'relative', height: 6, background: 'rgba(255,255,255,0.08)', borderRadius: 3, marginTop: 8 }}>
                         <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', borderRadius: 3, width: `${refeedPct}%`, background: '#5080b0' }} />

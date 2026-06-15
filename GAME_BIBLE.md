@@ -1698,7 +1698,7 @@ ProfessorSim maintains a single string updated on meaningful player actions (`ad
 | Phase | Scope | Status |
 |-------|-------|--------|
 | **1** | Ring buffer, boundary, Field Notes modal, snapshot export, opposition debug tab, log footer | **Shipped** |
-| **2** | Save attach, GitHub issue template, textLint hash in DEV | Backlog |
+| **2** | Save attach, GitHub issue template, textLint hash in DEV | **Done** |
 | **3** | Screenshot hook, Playwright repro from snapshot | Stretch |
 
 ### 38.8 Cross-references
@@ -1711,7 +1711,7 @@ ProfessorSim maintains a single string updated on meaningful player actions (`ad
 
 ## 39. Oppositional Forces — Implementation Status
 
-*Last updated: branch `cursor/oppositional-forces-design-935f` (June 2026). Status keys: **Done** · **Partial** · **Backlog**.*
+*Last updated: branch `cursor/empty-opposition-backlog-935f` (June 2026). Status keys: **Done** · **Partial** · **Backlog**.*
 
 ### 39.1 Core files
 
@@ -1729,7 +1729,12 @@ ProfessorSim maintains a single string updated on meaningful player actions (`ad
 | `src/components/SupernaturalAscensionModal.jsx` | Second evolution offer |
 | `src/gameData/classroomSkills.js` | Classroom prestige shop (lbs-cost `SKILL_TREE` purchases) |
 | `src/gameData/scarcityTools.js` | Devour, Echoed Will, synthesis endgame helpers |
-| `src/gameData/oppositionCampus.js` | Vance spawns, Portion Saint dining-hall events |
+| `src/gameData/lilithAibHunt.js` | AIB members as Lilith hunt map targets |
+| `src/gameData/oppositionCampus.js` | Vance spawns, Portion Saint, accreditation observer, ascetic garden, Mirror Fast, Ledger Wight |
+| `src/gameData/gameSave.js` | Compressed save blob for Field Notes attach |
+| `src/gameData/textLintMeta.js` | Registry fingerprint for DEV snapshots |
+| `src/components/RefeedSurgeModal.jsx` | Refeed surge tap mini-game |
+| `.github/ISSUE_TEMPLATE/bug_report.yml` | GitHub Field Notes issue template |
 
 ### 39.2 §29 Acts — **Done**
 
@@ -1757,17 +1762,17 @@ Act dormancy (weeks 1–7, scrutiny &lt; 25), overlapping acts banner, class tra
 
 Wellness Coalition, Accreditation (saturation Softening), Ascetic Circle (Saturated or cult 3+), week-18 joint seminar, week 26+ extra draw, travel protests, stage-5 scrutiny bonus.
 
-### 39.5 §32 Supernatural Act — **Partial**
+### 39.5 §32 Supernatural Act — **Done**
 
-All three trigger paths, ascension modal, 16 thin forms, `memoryMass`, Thin Form student panel, per-form evolved activity gain/scarcity/scrutiny hooks, text pools — **Done**.
+All three trigger paths, ascension modal, 16 thin forms, `memoryMass`, `etherealLbs`, Thin Form student panel, per-form evolved activity gain/scarcity/scrutiny hooks, Hollow Icon stream drain, Archivist Skin free discredit, text pools — **Done**.
 
 ### 39.6 §33 Scarcity — **Done**
 
 +5/week pressure, curse queue, Famine Week block, Refeast clear, capture cap 60, banishment path, Lilith Portion Saint hunt (dining hall), synthesis ally endgame, Devour scarcity damage, Echoed Will curse reversal — **Done**.
 
-### 39.7 §34 UI & achievements — **Partial**
+### 39.7 §34 UI & achievements — **Done**
 
-Oversight, scarcity HUD, hearings, Field Notes, opposition debug — **Done**. Extended achievement set incl. `lilith_saint`, `synthesis_ally` — **Done**.
+Oversight, scarcity HUD, hearings, Field Notes, opposition debug, Lilith AIB hunt on map, Refeed Surge mini-game — **Done**. Extended achievement set incl. `lilith_saint`, `synthesis_ally`, `aib_first_hearing`, `act_trigger` — **Done**.
 
 ### 39.8 §35 Integration — **Done**
 
@@ -1777,7 +1782,9 @@ Week-end hook order, `digestNpc`, informant suspicion, standalone `facultyAffini
 
 `artisan_gallery`, `salon_appetit` paths and modals from prior branch work.
 
-### 39.10 §38 Debug — **Phase 1 Done**
+### 39.10 §38 Debug — **Phase 1–2 Done**
+
+Phase 2: save attach checkbox, GitHub issue template (`.github/ISSUE_TEMPLATE/bug_report.yml`), textLint hash in DEV snapshots — **Done**.
 
 ### 39.11 Text engine
 

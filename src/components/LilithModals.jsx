@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { C } from '../styles.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, PHYSICAL_MOVES, getEffectiveDifficulty, CLUE_INVESTIGATION } from '../gameData/lilith.js';
+import { aibMemberToHuntTarget } from '../gameData/lilithAibHunt.js';
 import { getStage } from '../gameData/stages.js';
 
 export function LilithClueModal({ lilithClueModal, investigateClue, setLilithClueModal, confirmInvestigation }){
@@ -37,7 +38,7 @@ export function LilithClueModal({ lilithClueModal, investigateClue, setLilithClu
 }
 
 export function LilithHuntModal({ lilithHuntState, students, setLilithHuntState, navigateHunt, deliveryScene, closeHunt, approachMan, consumeMan, encounterSetMode, makeReply, makeSeduction }){
-        const{textLog,currentNode,encounter,deliveryMode,deliveryDone}=lilithHuntState;
+        const{textLog,currentNode,encounter,deliveryMode,deliveryDone,aibTarget}=lilithHuntState;
         const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return null;
         const stageId=getStage(lilith.lbs).id;
         const accessibleNodes=HUNT_NODE_ACCESS[stageId]||[];
@@ -85,10 +86,12 @@ export function LilithHuntModal({ lilithHuntState, students, setLilithHuntState,
             choices.push({id:'close',label:'← Stay in',action:closeHunt,dim:true});
           } else {
             const menHere=HUNT_MEN.filter(m=>m.location===currentNode&&m.difficulty>0);
-            menHere.forEach(man=>{
+            const aibHere=aibTarget&&aibTarget.location===currentNode?[aibTarget]:[];
+            [...menHere,...aibHere].forEach(man=>{
               const eff=getEffectiveDifficulty(man.difficulty,stageId);
               const diffColor=eff<=1?"#40c060":eff===2?"#c0a030":"#c04030";
-              choices.push({id:`approach_${man.id}`,label:`APPROACH  ${man.name}`,sublabel:`${man.tag} · ${eff<=1?"Easy":eff===2?"Medium":"Hard"}`,sublabelColor:diffColor,action:()=>approachMan(man.id),approach:true});
+              const diffLabel=man.isAibTarget?"Board":eff<=1?"Easy":eff===2?"Medium":"Hard";
+              choices.push({id:`approach_${man.id}`,label:`APPROACH  ${man.name}`,sublabel:`${man.tag} · ${diffLabel}`,sublabelColor:man.isAibTarget?"#c06080":diffColor,action:()=>approachMan(man.id),approach:true});
             });
             addNavChoices(currentNode);
             choices.push({id:'leave',label:'Leave the hunt',action:closeHunt,dim:true,small:true});

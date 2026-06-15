@@ -69,9 +69,46 @@ export function applySupernaturalActivityPressure(opposition, student) {
 export function applyRefeedSurge(student, lbsGain = 12) {
   if (!student?.supernaturalForm) return student;
   const memory = student.memoryMass || student.lbs;
+  const nextLbs = student.lbs + lbsGain;
   return {
     ...student,
-    lbs: student.lbs + lbsGain,
+    lbs: nextLbs,
     memoryMass: memory,
+    etherealLbs: student.etherealLbs ?? student.lbs,
+    lastRefeedSurgeWeek: true,
   };
+}
+
+export function getEtherealDisplayLbs(student) {
+  if (!student?.supernaturalForm) return student?.lbs ?? 0;
+  return student.etherealLbs ?? student.lbs;
+}
+
+export function applyAscensionThinForm(student, form) {
+  const memory = student.lbs;
+  const ethereal = Math.max(student.startLbs || 110, Math.round((student.startLbs || 110) * 0.92));
+  return {
+    ...student,
+    supernaturalForm: form.id,
+    memoryMass: memory,
+    etherealLbs: ethereal,
+    lbs: ethereal,
+  };
+}
+
+/** Hollow Icon — streams pull scarcity attention away. */
+export function hollowIconStreamDrain(opposition, amount = 4) {
+  if (!opposition?.supernatural?.actTriggered) return opposition;
+  return {
+    ...opposition,
+    supernatural: {
+      ...opposition.supernatural,
+      scarcityPressure: Math.max(0, (opposition.supernatural.scarcityPressure || 0) - amount),
+    },
+  };
+}
+
+export function canArchivistFreeDiscredit(students, opposition) {
+  if (opposition?.meta?.archivistDiscreditUsed) return false;
+  return students.some((s) => s.supernaturalForm === 'archivist_skin');
 }

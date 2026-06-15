@@ -48,7 +48,7 @@ export const AIB_COUNTERS = [
   { id: 'evolved_student_op', label: 'Evolved Student Operation', ap: 2, resolveHit: 0, scrutiny: -5, desc: 'An evolved student delays the top agenda card one week.' },
   { id: 'machine_fatten', label: 'Machine Fattening', ap: 2, resolveHit: 12, scrutiny: 5, desc: 'Growth chamber targets a board member (+lbs, −resolve, scandal risk).' },
   { id: 'faculty_testimony', label: 'Faculty Testimony', ap: 1, resolveHit: 0, scrutiny: -4, desc: 'Faculty ally cancels informant effects for two weeks.' },
-  { id: 'lilith_hunt', label: 'Lilith AIB Hunt', ap: 2, resolveHit: 20, scrutiny: -15, desc: 'Lilith consumes a board member — removed from play.', path: 'lilith' },
+  { id: 'lilith_hunt', label: 'Lilith AIB Hunt', ap: 1, resolveHit: 20, scrutiny: -15, desc: 'Mark a board member for Lilith\'s hunt map (difficulty 4).', path: 'lilith' },
   { id: 'compound_seduction', label: 'Compound Seduction', ap: 2, resolveHit: 8, scrutiny: -6, desc: 'Sophia seduces faculty lounge intel — slows scrutiny.', path: 'pharmacist' },
   { id: 'network_misdirect', label: 'Network Misdirect', ap: 1, resolveHit: 0, scrutiny: -5, desc: 'Lab network buries scandal traces — detection risk on fail.', path: 'network' },
 ];
@@ -96,6 +96,7 @@ export function defaultOppositionState() {
       wellnessCoalition: false,
       accreditation: false,
       asceticCircle: false,
+      observerName: null,
     },
     supernatural: {
       actTriggered: false,
@@ -114,6 +115,8 @@ export function defaultOppositionState() {
       counterTypesUsed: [],
       investigationReached: false,
       jointSeminarFired: false,
+      archivistDiscreditUsed: false,
+      echoedWillSpentWeek: null,
     },
   };
 }
@@ -267,8 +270,11 @@ function resolveAgendaEffect(card, students, opposition, rnd = Math.random) {
     }
     case 'shame_vigil':
       effects.studentPatches.push(
-        ...students.filter((s) => !s.hidden).map((s) => ({ id: s.id, corruptionDelta: -5 })),
+        ...students.filter((s) => !s.hidden && s.supernaturalForm !== 'apple_oracle').map((s) => ({ id: s.id, corruptionDelta: -5 })),
       );
+      if (students.some((s) => s.supernaturalForm === 'apple_oracle')) {
+        effects.logs.push('🍎 Apple Oracle shields the homeroom from shame — one student untouched.');
+      }
       effects.logs.push('🕯️ Shame vigil — corruption −5 for visible students.');
       break;
     case 'faculty_informant':
@@ -318,17 +324,35 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
   if (counterId === 'public_discredit') {
     const cardId = options.cardId;
     const pool = AIB_AGENDA_CARDS.map((c) => c.id).filter((id) => !next.aib.deckRemoved.includes(id));
+    const archivistFree = options.archivistDiscreditFree;
     const removeId = cardId && pool.includes(cardId) ? cardId : pool[Math.floor(Math.random() * pool.length)];
-    if (!removeId) return { opposition: next, message: '⚠️ No agenda cards left to discredit.', scrutinyDelta: 0, apCost: counter.ap, moneyDelta: 0 };
-    next.aib.deckRemoved = [...next.aib.deckRemoved, removeId];
-    next.aib.agendaQueue = next.aib.agendaQueue.filter((q) => q.cardId !== removeId);
-    const label = AIB_AGENDA_CARDS.find((c) => c.id === removeId)?.label || removeId;
+    if (!removeId && !archivistFree) return { opposition: next, message: '⚠️ No agenda cards left to discredit.', scrutinyDelta: 0, apCost: counter.ap, moneyDelta: 0 };
+    if (removeId) {
+      next.aib.deckRemoved = [...next.aib.deckRemoved, removeId];
+      next.aib.agendaQueue = next.aib.agendaQueue.filter((q) => q.cardId !== removeId);
+    }
+    const label = removeId ? (AIB_AGENDA_CARDS.find((c) => c.id === removeId)?.label || removeId) : 'agenda pressure';
     next.aib.members = next.aib.members.map((m) => ({ ...m, resolve: Math.max(0, m.resolve - 3) }));
-    return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: `📰 Discredited: ${label}. Card removed from deck.`, scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
+    const meta = recordCounterType(next.meta, counterId);
+    if (archivistFree) meta.archivistDiscreditUsed = true;
+    return {
+      opposition: { ...next, meta },
+      message: archivistFree ? `📚 Archivist Skin — discredit lands unchallenged: ${label}.` : `📰 Discredited: ${label}. Card removed from deck.`,
+      scrutinyDelta: counter.scrutiny,
+      apCost: archivistFree ? 0 : counter.ap,
+      moneyDelta: 0,
+    };
   }
   if (counterId === 'spirit_pressure' && next.aib.agendaQueue.length) {
+    if (options.spendEchoedWill && !options.spendEchoedWill()) {
+      return { opposition: next, message: '⚠️ Echoed Will spent — nothing left to press.', scrutinyDelta: 0, apCost: 0, moneyDelta: 0 };
+    }
+    const misfired = next.aib.agendaQueue[0];
     next.aib.agendaQueue = next.aib.agendaQueue.slice(1);
-    return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: '👁 Spirit pressure — agenda misfires into mandatory tasting.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
+    const misfireMsg = misfired?.cardId === 'removal_hearing'
+      ? '👁 Spirit pressure — removal hearing misfires into mandatory tasting.'
+      : '👁 Spirit pressure — agenda misfires into mandatory tasting.';
+    return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: misfireMsg, scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
   }
   if (counterId === 'evolved_student_op' && next.aib.agendaQueue.length) {
     next.aib.agendaQueue = next.aib.agendaQueue.map((item, i) => (
@@ -384,11 +408,20 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
     return { opposition: next, message: '📎 Member compromised — they look away at hearings.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0, boardCompromised: true };
   }
   if (counterId === 'lilith_hunt') {
-    const target = [...next.aib.members].sort((a, b) => a.resolve - b.resolve)[0];
+    const memberId = options.memberId;
+    const target = memberId
+      ? next.aib.members.find((m) => m.id === memberId)
+      : [...next.aib.members].sort((a, b) => a.resolve - b.resolve)[0];
     if (!target) return { opposition: next, message: '⚠️ No board members remain.', scrutinyDelta: 0, apCost: counter.ap, moneyDelta: 0 };
-    next.aib.members = next.aib.members.filter((m) => m.id !== target.id);
-    next.aib.scandalMeter = Math.max(0, next.aib.scandalMeter - 5);
-    return { opposition: next, message: `🩸 Lilith hunts ${target.name} — consumed. Member removed.`, scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
+    return {
+      opposition: next,
+      message: `🩸 ${target.name} marked for Lilith's hunt — find them on the map.`,
+      scrutinyDelta: 0,
+      apCost: counter.ap,
+      moneyDelta: 0,
+      openLilithAibHunt: true,
+      aibMemberId: target.id,
+    };
   }
   if (counterId === 'compound_seduction') {
     next.aib.informantShieldWeeks = Math.max(next.aib.informantShieldWeeks || 0, 3);
@@ -427,6 +460,17 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
 
 function rndRange(a, b) {
   return a + Math.floor(Math.random() * (b - a + 1));
+}
+
+const ACCREDITATION_OBSERVERS = [
+  'Dr. Ellis Marchetti',
+  'Prof. Yuki Okonkwo',
+  'Ms. Renata Cole',
+  'Dr. Samuel Greer',
+];
+
+function pickAccreditationObserver(rng = Math.random) {
+  return ACCREDITATION_OBSERVERS[Math.floor(rng() * ACCREDITATION_OBSERVERS.length)];
 }
 
 export function processOppositionWeek(opposition, {
@@ -509,7 +553,11 @@ export function processOppositionWeek(opposition, {
   if (next.proxies.wellnessCoalition && week === 8) {
     logs.push(`🏥 ${oppositionProxyLine('wellnessCoalition', week) || 'Wellness Coalition forms on campus.'}`);
   }
-  if (next.proxies.accreditation && week === 14) logs.push('📨 Regional Accreditation Observer letter arrives.');
+  if (next.proxies.accreditation && week === 14) {
+    const observerName = pickAccreditationObserver(rnd);
+    next = { ...next, proxies: { ...next.proxies, observerName } };
+    logs.push(`📨 Regional Accreditation Observer letter arrives — ${observerName} will be watching.`);
+  }
   if (next.proxies.asceticCircle && week === 20) {
     logs.push(`🕯️ ${oppositionProxyLine('asceticCircle', week) || 'Ascetic Circle protests begin at the garden.'}`);
   }

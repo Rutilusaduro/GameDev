@@ -56,6 +56,7 @@ export function DebugPanel({
   log,
   lastPlayerAction,
   getSnapshotContext,
+  getSaveContext,
   campusState,
   pharmacistState,
   eventQueueLen,
@@ -236,7 +237,7 @@ export function DebugPanel({
               </pre>
             )}
             {fieldNotesOpen && (
-              <BugReportModal getSnapshotContext={getSnapshotContext} onClose={() => setFieldNotesOpen(false)} />
+              <BugReportModal getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} onClose={() => setFieldNotesOpen(false)} />
             )}
           </div>
         )}

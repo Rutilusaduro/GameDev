@@ -3,6 +3,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { getErrorRingBuffer } from '../utils/errorRingBuffer.js';
+import { buildGameSaveBlob, encodeSaveBlob } from './gameSave.js';
+import { computeTextLintFingerprint } from './textLintMeta.js';
 
 export const BUG_REPORT_SCHEMA = 1;
 export const GAME_VERSION = '1.0.0';
@@ -23,7 +25,7 @@ function trimStudent(s) {
   };
 }
 
-export function buildGameSnapshot(ctx, playerNote = null) {
+export function buildGameSnapshot(ctx, playerNote = null, options = {}) {
   const {
     week,
     ap,
@@ -38,7 +40,20 @@ export function buildGameSnapshot(ctx, playerNote = null) {
     eventQueueLen = 0,
     campusState,
     pharmacistState,
-  } = ctx;
+    attachSave = false,
+    saveContext = null,
+  } = { ...ctx, ...options };
+
+  const dev = !!import.meta.env?.DEV;
+  const textLint = dev ? computeTextLintFingerprint() : null;
+  let saveBlob = null;
+  if (attachSave && saveContext) {
+    try {
+      saveBlob = encodeSaveBlob(buildGameSaveBlob(saveContext));
+    } catch {
+      saveBlob = null;
+    }
+  }
 
   return {
     schemaVersion: BUG_REPORT_SCHEMA,
@@ -47,7 +62,8 @@ export function buildGameSnapshot(ctx, playerNote = null) {
     environment: {
       userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : null,
       viewport: typeof window !== 'undefined' ? { w: window.innerWidth, h: window.innerHeight } : null,
-      dev: !!import.meta.env?.DEV,
+      dev,
+      textLint,
     },
     session: {
       week,
@@ -75,7 +91,31 @@ export function buildGameSnapshot(ctx, playerNote = null) {
     logTail: (log || []).slice(-40),
     errors: getErrorRingBuffer(),
     playerNote,
+    saveBlob,
   };
+}
+
+const GITHUB_BUG_REPORT_BASE = 'https://github.com/Rutilusaduro/GameDev/issues/new?template=bug_report.yml';
+
+export function buildGitHubIssueUrl(snapshot) {
+  if (!snapshot) return GITHUB_BUG_REPORT_BASE;
+  const params = new URLSearchParams();
+  if (snapshot.playerNote?.category) {
+    const catMap = {
+      stuck: 'Stuck — can\'t continue',
+      blank: 'Blank or frozen screen',
+      numbers: 'Numbers look wrong',
+      story: 'Story or text broke',
+      other: 'Something else',
+    };
+    params.set('category', catMap[snapshot.playerNote.category] || 'Something else');
+  }
+  if (snapshot.playerNote?.steps) params.set('steps', snapshot.playerNote.steps);
+  params.set('snapshot', serializeBugReport(snapshot).slice(0, 6000));
+  if (snapshot.session?.week) params.set('week', String(snapshot.session.week));
+  if (snapshot.gameVersion) params.set('version', snapshot.gameVersion);
+  if (snapshot.saveBlob) params.set('save_blob', snapshot.saveBlob.slice(0, 4000));
+  return `${GITHUB_BUG_REPORT_BASE}&${params.toString()}`;
 }
 
 export function serializeBugReport(snapshot) {

@@ -3,13 +3,15 @@ import { C } from '../styles.js';
 import {
   FIELD_NOTE_CATEGORIES,
   buildGameSnapshot,
+  buildGitHubIssueUrl,
   copyBugReport,
   downloadBugReport,
 } from '../gameData/bugReport.js';
 
-export function BugReportModal({ getSnapshotContext, prefillError, onClose }) {
+export function BugReportModal({ getSnapshotContext, getSaveContext, prefillError, onClose }) {
   const [category, setCategory] = useState('other');
   const [steps, setSteps] = useState('');
+  const [attachSave, setAttachSave] = useState(false);
   const [status, setStatus] = useState(null);
 
   const buildSnapshot = () => {
@@ -19,7 +21,10 @@ export function BugReportModal({ getSnapshotContext, prefillError, onClose }) {
       steps: steps.trim() || null,
       prefillError: prefillError ? String(prefillError.message || prefillError) : null,
     };
-    return buildGameSnapshot(ctx, playerNote);
+    return buildGameSnapshot(ctx, playerNote, {
+      attachSave,
+      saveContext: attachSave ? (getSaveContext?.() || ctx) : null,
+    });
   };
 
   const handleCopy = async () => {
@@ -30,6 +35,13 @@ export function BugReportModal({ getSnapshotContext, prefillError, onClose }) {
   const handleDownload = () => {
     downloadBugReport(buildSnapshot());
     setStatus('Field Note downloaded.');
+  };
+
+  const handleGitHub = () => {
+    const snap = buildSnapshot();
+    const url = buildGitHubIssueUrl(snap);
+    if (typeof window !== 'undefined') window.open(url, '_blank', 'noopener');
+    setStatus('Opened GitHub issue template in a new tab.');
   };
 
   return (
@@ -64,12 +76,17 @@ export function BugReportModal({ getSnapshotContext, prefillError, onClose }) {
           rows={3}
           style={{ width: '100%', background: '#12100e', color: '#ddd', border: '1px solid #444', borderRadius: 6, padding: 8, fontSize: 11, marginBottom: 12, resize: 'vertical', boxSizing: 'border-box' }}
         />
+        <label style={{ fontSize: 11, color: '#b0a090', display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12, cursor: 'pointer' }}>
+          <input type="checkbox" checked={attachSave} onChange={(e) => setAttachSave(e.target.checked)} />
+          Attach compressed save slot (helps reproduce)
+        </label>
         <div style={{ fontSize: 9, color: '#706050', marginBottom: 12, lineHeight: 1.5 }}>
           Snapshot includes week, students, opposition state, last log lines, and recent errors. No account data.
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <button type="button" style={{ ...C.btn('#5a4830') }} onClick={handleCopy}>Transcribe to clipboard</button>
           <button type="button" style={{ ...C.btn('#4a3828') }} onClick={handleDownload}>Seal the note (download .json)</button>
+          <button type="button" style={{ ...C.btn('#3a3048') }} onClick={handleGitHub}>Open GitHub issue template</button>
         </div>
         {status && <div style={{ fontSize: 10, color: '#80a060', marginTop: 10 }}>{status}</div>}
       </div>

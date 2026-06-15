@@ -1,0 +1,87 @@
+// ═══════════════════════════════════════════════════════════════
+// GAME SAVE — export blob for Field Notes attach (§38 Phase 2)
+// ═══════════════════════════════════════════════════════════════
+
+export const SAVE_SCHEMA = 1;
+
+/** Trimmed save suitable for bug-report attach (not full session replay). */
+export function buildGameSaveBlob(ctx = {}) {
+  const {
+    player,
+    students,
+    opposition,
+    campusState,
+    inventory,
+    lilithUnlocked,
+    lilithKillCount,
+    labState,
+    pharmacistState,
+    deviceInventory,
+    brokeScaleIds,
+    view,
+  } = ctx;
+
+  return {
+    schemaVersion: SAVE_SCHEMA,
+    exportedAt: new Date().toISOString(),
+    player: player || null,
+    students: (students || []).map((s) => ({
+      id: s.id,
+      name: s.name,
+      lbs: s.lbs,
+      startLbs: s.startLbs,
+      relationship: s.relationship,
+      evolvedForm: s.evolvedForm || null,
+      supernaturalForm: s.supernaturalForm || null,
+      memoryMass: s.memoryMass ?? null,
+      etherealLbs: s.etherealLbs ?? null,
+      hidden: !!s.hidden,
+      corruption: s.corruption || 0,
+      equip: s.equip || null,
+    })),
+    opposition: opposition || null,
+    campusState: campusState ? {
+      at: campusState.at,
+      saturation: campusState.saturation,
+      exploration: campusState.exploration,
+    } : null,
+    inventory: inventory || {},
+    deviceInventory: deviceInventory || {},
+    labState: labState || null,
+    pharmacistState: pharmacistState ? {
+      stage: pharmacistState.stage,
+      campusFattening: !!pharmacistState.campusFattening,
+      cult: pharmacistState.cult || null,
+    } : null,
+    lilithUnlocked: !!lilithUnlocked,
+    lilithKillCount: lilithKillCount || 0,
+    brokeScaleIds: brokeScaleIds || [],
+    view: view || null,
+  };
+}
+
+export function encodeSaveBlob(save) {
+  const json = JSON.stringify(save);
+  if (typeof btoa === 'function') {
+    try {
+      return btoa(unescape(encodeURIComponent(json)));
+    } catch {
+      return btoa(json);
+    }
+  }
+  return json;
+}
+
+export function decodeSaveBlob(encoded) {
+  if (!encoded) return null;
+  try {
+    const json = decodeURIComponent(escape(atob(encoded)));
+    return JSON.parse(json);
+  } catch {
+    try {
+      return JSON.parse(atob(encoded));
+    } catch {
+      return null;
+    }
+  }
+}

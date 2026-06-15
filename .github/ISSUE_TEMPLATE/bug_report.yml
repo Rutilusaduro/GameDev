@@ -1,0 +1,49 @@
+name: Field Note — Bug Report
+description: Report a semester hiccup with an attached Field Note snapshot
+title: "[Field Note] "
+labels: ["bug", "field-notes"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use **Field Notes** in-game (log footer → "Something wrong?") to copy or download a snapshot, then paste it below.
+  - type: dropdown
+    id: category
+    attributes:
+      label: What happened?
+      options:
+        - Stuck — can't continue
+        - Blank or frozen screen
+        - Numbers look wrong
+        - Story or text broke
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: "Week 14, opened Oversight, clicked Chamber…"
+  - type: textarea
+    id: snapshot
+    attributes:
+      label: Field Note JSON (paste full export)
+      description: From "Transcribe to clipboard" or the downloaded .json file
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: save_blob
+    attributes:
+      label: Save blob (optional, base64)
+      description: If you checked "Attach save slot" in Field Notes, paste the save blob here
+  - type: input
+    id: week
+    attributes:
+      label: Week (if known)
+      placeholder: "14"
+  - type: input
+    id: version
+    attributes:
+      label: Game version (from snapshot)
+      placeholder: "1.0.0"

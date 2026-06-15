@@ -7,7 +7,7 @@ import { CAMPUS_SOFT_FLAVOR } from './pharmacistCampus.js';
 import { availableSecretsAtNode, isSecretSolved, secretsSolvedCount } from './campusSecrets.js';
 import { getExplorationFind, pickExplorationFind, travelFindPool, formatExplorationGrant } from './campusIngredients.js';
 import { ELARA_ID, getElaraQuest, elaraQuestProgressLine } from './relicHunter.js';
-import { rollVanceCampusEvent, rollPortionSaintEvent } from './oppositionCampus.js';
+import { rollVanceCampusEvent, rollPortionSaintEvent, rollAccreditationObserverEvent, rollAsceticGardenProtest, rollMirrorFastEvent, rollLedgerWightEvent } from './oppositionCampus.js';
 import { renderCampusSighting, renderCampusTravelLine, renderCampusFindFlavor } from '../textEngine/scenes/campusExplorationText.js';
 import { maybeRollDeviceEncounter, maybeRollDeviceFlavor } from './campusDeviceEncounters.js';
 
@@ -133,6 +133,21 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
 
   const vanceLine = rollVanceCampusEvent(nodeId, ctx.opposition, rng);
   if (vanceLine) lines.push(vanceLine);
+
+  const observerLine = rollAccreditationObserverEvent(nodeId, ctx.opposition, rng);
+  if (observerLine) lines.push(observerLine);
+
+  const gardenProtest = rollAsceticGardenProtest(nodeId, ctx.opposition, rng);
+  if (gardenProtest) {
+    lines.push(gardenProtest);
+    effects.asceticGardenProtest = true;
+  }
+
+  const mirrorLine = rollMirrorFastEvent(nodeId, ctx.opposition, rng);
+  if (mirrorLine) lines.push(mirrorLine);
+
+  const ledgerLine = rollLedgerWightEvent(nodeId, ctx.opposition, rng);
+  if (ledgerLine) lines.push(ledgerLine);
 
   const saintLine = rollPortionSaintEvent(nodeId, ctx.opposition, ctx.lilithUnlocked, rng);
   if (saintLine) {

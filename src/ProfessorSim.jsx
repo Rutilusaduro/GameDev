@@ -201,7 +201,9 @@ import {
 } from './gameData/opposition.js';
 import { supernaturalActLine } from './gameData/oppositionText.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason } from './gameData/oppositionIntegration.js';
-import { consumePortionSaint } from './gameData/oppositionCampus.js';
+import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled } from './gameData/oppositionCampus.js';
+import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
+import { buildGameSaveBlob } from './gameData/gameSave.js';
 import {
   computeClassSkillCurrency, buyClassSkill, aggregateClassSkillEffects, listPurchasableClassSkills,
 } from './gameData/classroomSkills.js';
@@ -210,8 +212,9 @@ import {
 } from './gameData/scarcityTools.js';
 import {
   getSupernaturalActivityBonus, applySupernaturalActivityPressure,
+  canSupernaturalEvolve, getSupernaturalFormForStudent, getSupernaturalGainMult, applyRefeedSurge,
+  applyAscensionThinForm, hollowIconStreamDrain, canArchivistFreeDiscredit,
 } from './gameData/supernaturalForms.js';
-import { canSupernaturalEvolve, getSupernaturalFormForStudent, getSupernaturalGainMult, applyRefeedSurge } from './gameData/supernaturalForms.js';
 import {
   defaultSalonState, startSalonSession, salonPickMenu, salonServiceChoice, salonFinishDigestif,
 } from './gameData/chloeSalon.js';
@@ -222,6 +225,7 @@ import { WeighInModal } from './components/WeighInModal.jsx';
 import { TalkModal } from './components/TalkModal.jsx';
 import { DebugPanel } from './components/DebugPanel.jsx';
 import { BugReportModal } from './components/BugReportModal.jsx';
+import { RefeedSurgeModal } from './components/RefeedSurgeModal.jsx';
 import { tickScarcityBanishment, checkOppositionEndgame } from './gameData/oppositionEndgame.js';
 import { EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
@@ -358,6 +362,7 @@ export default function ProfessorSim(){
   const [lilithHuntState, setLilithHuntState] = useState(null);
   // lilithHuntState: {textLog:[{text,type}],currentNode,encounter:{manId,diff,willpower,apprehension,maxApprehension,failed,consumed,won,mode,replyOptions,usedReplyIds,turnIdx,currentLine}|null,deliveryMode,deliveryDone}
   const [lilithKillCount, setLilithKillCount] = useState(0);
+  const [refeedSurgeState, setRefeedSurgeState] = useState(null);
   const [cultivatorState, setCultivatorState] = useState(null);
   // cultivatorState: {testerName,testerStageId,testerLbs,fatBar,suspicion,harvestsCompleted,usedNames,modalPhase,session,pendingStageUp,harvestType,harvestVignetteText,growthGain,growthVignetteText,digestWeeksLeft,digestTotalWeeks}
   const [pharmacistState, setPharmacistState] = useState(null);
@@ -529,6 +534,11 @@ export default function ProfessorSim(){
     campusState,
     pharmacistState,
   }),[week,ap,money,adminScrutiny,students,opposition,view,log,lastPlayerAction,getActiveModals,eventQueue.length,campusState,pharmacistState]);
+
+  const getSaveContext=useCallback(()=>({
+    player, students, opposition, campusState, inventory, lilithUnlocked, lilithKillCount,
+    labState, pharmacistState, deviceInventory, brokeScaleIds, view,
+  }),[player,students,opposition,campusState,inventory,lilithUnlocked,lilithKillCount,labState,pharmacistState,deviceInventory,brokeScaleIds,view]);
 
   /** Spend player funds. Returns false if insufficient (logs a warning). */
   const spendMoney=(cost,label="")=>{
@@ -726,7 +736,12 @@ export default function ProfessorSim(){
         setStudents(prev=>prev.map(s=>s.id===ELARA_ID?{...s,relationship:Math.min(100,s.relationship+(quest.reward.relationship||0))}:s));
       }
     }
-    return { lines:[...lines,...extra], exploration, deviceEncounter:effects.deviceEncounter||null };
+    return {
+      lines:[...lines,...extra],
+      exploration,
+      deviceEncounter:effects.deviceEncounter||null,
+      asceticGardenProtest:!!effects.asceticGardenProtest,
+    };
   };
 
   const useCampusDevice=(encounter,deviceId,modeId)=>{
@@ -784,21 +799,24 @@ export default function ProfessorSim(){
     const from=CAMPUS_NODES[campusState.at];
     if(!from.exits.includes(nodeId)) return;
     const node=CAMPUS_NODES[nodeId];
-    const { lines:eventLines, exploration, deviceEncounter }=rollCampusEvent(nodeId,true);
+    const { lines:eventLines, exploration, deviceEncounter, asceticGardenProtest }=rollCampusEvent(nodeId,true);
     const lines=[`→ You walk to ${node.emoji} ${node.label}.`,node.desc,...eventLines];
-    setCampusState(prev=>({
-      ...prev,
-      at:nodeId,
-      exploration,
-      activeEncounter:deviceEncounter||null,
-      log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit),
-    }));
+    setCampusState(prev=>{
+      const next=asceticGardenProtest?applyAsceticGardenProtest(prev):prev;
+      return {
+        ...next,
+        at:nodeId,
+        exploration,
+        activeEncounter:deviceEncounter||null,
+        log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit),
+      };
+    });
   };
 
   const lookAround=()=>{
     const node=CAMPUS_NODES[campusState.at];
     const flavor=node.flavor[rnd(0,node.flavor.length-1)];
-    const { lines:eventLines, exploration:eventExploration, deviceEncounter }=rollCampusEvent(campusState.at,false);
+    const { lines:eventLines, exploration:eventExploration, deviceEncounter, asceticGardenProtest }=rollCampusEvent(campusState.at,false);
     const ctx=getCampusExplorationCtx();
     let exploration=eventExploration;
     const lines=[flavor,...eventLines];
@@ -821,12 +839,15 @@ export default function ProfessorSim(){
         lines.push(`…${secret.hint} (${count}/${secret.observeCount||2} observations)`);
       }
     }
-    setCampusState(prev=>({
-      ...prev,
-      exploration,
-      activeEncounter:deviceEncounter||prev.activeEncounter,
-      log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit),
-    }));
+    setCampusState(prev=>{
+      const next=asceticGardenProtest?applyAsceticGardenProtest(prev):prev;
+      return {
+        ...next,
+        exploration,
+        activeEncounter:deviceEncounter||prev.activeEncounter,
+        log:[...prev.log,...lines].slice(-CAMPUS_CONFIG.logLimit),
+      };
+    });
   };
 
   const searchCampus=()=>{
@@ -1930,16 +1951,40 @@ export default function ProfessorSim(){
     const memberId=options.memberId
       ?? (counterId==='bureaucratic_capture' ? opposition?.aib?.members?.find(m=>m.resolve<=40)?.id : null);
     const evolvedOpMessage=counterId==='evolved_student_op'?getEvolvedOpMessage(students):undefined;
-    const result=runAibCounter(opposition,counterId,memberId,{...options,evolvedOpMessage});
+    const archivistFree=counterId==='public_discredit'&&canArchivistFreeDiscredit(students,opposition);
+    let echoedWillSpent=false;
+    const spendEchoedWill=()=>{
+      if((ownedSkills.echoed_will||0)<1) return false;
+      if(opposition?.meta?.echoedWillSpentWeek===week) return false;
+      echoedWillSpent=true;
+      return true;
+    };
+    const result=runAibCounter(opposition,counterId,memberId,{
+      ...options,
+      evolvedOpMessage,
+      archivistDiscreditFree:archivistFree,
+      spendEchoedWill:counterId==='spirit_pressure'?spendEchoedWill:undefined,
+    });
     if(result.apCost&&ap<result.apCost){push(`⚠️ Need ${result.apCost} AP.`);return;}
     if(result.apCost) setAp(a=>a-result.apCost);
-    setOpposition(result.opposition);
+    let nextOpposition=result.opposition;
+    if(echoedWillSpent){
+      nextOpposition={
+        ...nextOpposition,
+        meta:{...nextOpposition.meta,echoedWillSpentWeek:week},
+      };
+    }
+    if(counterId==='public_discredit'||counterId==='machine_fatten'){
+      nextOpposition=ledgerWightRepelled(nextOpposition);
+    }
+    setOpposition(nextOpposition);
     if(result.scrutinyDelta) addScrutiny(result.scrutinyDelta);
     if(result.moneyDelta) setMoney(m=>m+(result.moneyDelta||0));
     if(result.message) push(result.message);
     else if(counterId!=='public_discredit') push('⚠️ Counter had no effect — check agenda queue or member resolve.');
     if(result.boardCompromised) setGlobalStats(g=>({...g,boardCompromised:(g.boardCompromised||0)+1}));
     if(counterId==='feast_bribe'&&adminScrutiny>=90) setGlobalStats(g=>({...g,boardFeastInvestigation:true}));
+    if(result.openLilithAibHunt&&result.aibMemberId) openLilithAibHunt(result.aibMemberId);
   };
 
   const startOppositionHearing=(type,studentId=null)=>{
@@ -2038,13 +2083,8 @@ export default function ProfessorSim(){
   const ascendSupernatural=(studentId,formId)=>{
     const s=students.find(st=>st.id===studentId);
     const form=getSupernaturalFormForStudent(s);
-    if(!s||!form) return;
-    setStudents(prev=>prev.map(st=>st.id!==studentId?st:{
-      ...st,
-      supernaturalForm:formId,
-      memoryMass:st.lbs,
-      lbs:Math.max(st.startLbs||110,Math.round(st.startLbs*0.92)),
-    }));
+    if(!s||!form||formId!==form.id) return;
+    setStudents(prev=>prev.map(st=>st.id!==studentId?st:applyAscensionThinForm(st,form)));
     setOpposition(prev=>({
       ...prev,
       supernatural:{
@@ -2805,10 +2845,31 @@ export default function ProfessorSim(){
     const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
     const stageId=getStage(lilith.lbs).id;
     if(stageId>=9){
-      setLilithHuntState({textLog:[{text:"ROOM 312 — DELIVERY",type:'location'},{text:DELIVERY_SCENE,type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:true,deliveryDone:false});
+      setLilithHuntState({textLog:[{text:"ROOM 312 — DELIVERY",type:'location'},{text:DELIVERY_SCENE,type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:true,deliveryDone:false,aibTarget:null});
       return;
     }
-    setLilithHuntState({textLog:[{text:"HER DORM · ROOM 312",type:'location'},{text:LILITH_DORM_TEXT(stageId),type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:false,deliveryDone:false});
+    setLilithHuntState({textLog:[{text:"HER DORM · ROOM 312",type:'location'},{text:LILITH_DORM_TEXT(stageId),type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:false,deliveryDone:false,aibTarget:null});
+  };
+  const openLilithAibHunt=(memberId)=>{
+    const member=opposition?.aib?.members?.find(m=>m.id===memberId);
+    const aibTarget=aibMemberToHuntTarget(member);
+    if(!aibTarget) return;
+    const lilith=students.find(s=>s.id===LILITH_ID);
+    if(!lilith) return;
+    const stageId=getStage(lilith.lbs).id;
+    const node=HUNT_NODES[aibTarget.location];
+    setLilithHuntState({
+      textLog:[
+        {text:'HER DORM · ROOM 312',type:'location'},
+        {text:LILITH_DORM_TEXT(stageId),type:'narrative'},
+        {text:`🩸 ${member.name} marked — find them at ${node?.label||aibTarget.location}.`,type:'system'},
+      ],
+      currentNode:'dorm',
+      encounter:null,
+      deliveryMode:false,
+      deliveryDone:false,
+      aibTarget,
+    });
   };
   const navigateHunt=(nodeId)=>{
     const node=HUNT_NODES[nodeId]; if(!node) return;
@@ -2823,16 +2884,19 @@ export default function ProfessorSim(){
   };
   const approachMan=(manId)=>{
     const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
-    const man=HUNT_MEN.find(m=>m.id===manId); if(!man) return;
+    let man=HUNT_MEN.find(m=>m.id===manId);
+    if(!man&&lilithHuntState?.aibTarget?.id===manId) man=lilithHuntState.aibTarget;
+    if(!man) return;
     const stageId=getStage(lilith.lbs).id;
     const diff=getEffectiveDifficulty(man.difficulty,stageId);
     const willpower=WILLPOWER_START[diff]??45;
     const maxApprehension=MAX_APPREHENSION[diff]??5;
     const firstLine=getGuyLine(diff,willpower);
     const replies=drawReplies([]);
+    const desc=typeof man.desc==='function'?man.desc(stageId):man.desc;
     const entries=[
       {text:`${man.name.toUpperCase()} — ${man.tag}`,type:'location'},
-      {text:man.desc(stageId),type:'narrative'},
+      {text:desc,type:'narrative'},
       {text:firstLine,type:'guy'},
     ];
     setLilithHuntState(prev=>({...prev,
@@ -2899,11 +2963,25 @@ export default function ProfessorSim(){
   };
   const consumeMan=()=>{
     const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
+    const aibTarget=lilithHuntState?.aibTarget;
+    const isAib=!!(aibTarget&&lilithHuntState?.encounter?.manId===aibTarget.id);
     const stageId=getStage(lilith.lbs).id;
     const nextStage=WEIGHT_STAGES[Math.min(10,stageId+1)];
     const gain=nextStage&&nextStage.id>stageId?Math.max(1,nextStage.min-Math.round(lilith.lbs)+5):20;
     setStudents(prev=>prev.map(s=>s.id===LILITH_ID?{...s,lbs:s.lbs+gain}:s));
     setLilithKillCount(k=>k+1);
+    if(isAib){
+      setOpposition(prev=>removeConsumedAibMember(prev,aibTarget.aibMemberId));
+      push(`🩸 Lilith devours ${aibTarget.name} — board member removed (+${gain} lbs)`);
+      const consumeText=getConsumeText(stageId);
+      setLilithHuntState(prev=>({
+        ...prev,
+        aibTarget:null,
+        encounter:{...prev.encounter,consumed:true},
+        textLog:[...prev.textLog,{text:consumeText,type:'narrative'},{text:`✦ +${gain} lbs · ${aibTarget.name} consumed`,type:'system'}],
+      }));
+      return;
+    }
     push(`🌑 Lilith — hunt complete: +${gain} lbs`);
     const consumeText=getConsumeText(stageId);
     setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,consumed:true},textLog:[...prev.textLog,{text:consumeText,type:'narrative'},{text:`✦ +${gain} lbs`,type:'system'}]}));
@@ -4622,6 +4700,9 @@ export default function ProfessorSim(){
     }
     if(ap<STREAM_AP_COST){push(`⚠️ Need ${STREAM_AP_COST} AP.`);return;}
     setAp(a=>a-STREAM_AP_COST);
+    if(s.supernaturalForm==='hollow_icon'){
+      setOpposition(prev=>hollowIconStreamDrain(prev,4));
+    }
     let dest=ensureStreamFields(s);
     const spendFx=aggregateDestinySpendEffects(dest.destinyPurchases);
     const burst=dest.destinyPendingBuffs?.audienceBurst||0;
@@ -5227,9 +5308,15 @@ export default function ProfessorSim(){
         },
       }));
       let fedCount=0,refused=0;
+      let surgeStudent=null;
       const updated=students.map(s=>{
         let ns=s;
-        if(s.supernaturalForm) ns=applyRefeedSurge(ns,rnd(10,16));
+        if(s.supernaturalForm){
+          const beforePct=(s.memoryMass??s.lbs)>0?Math.round((s.lbs/(s.memoryMass??s.lbs))*100):0;
+          ns=applyRefeedSurge(ns,rnd(10,16));
+          const afterPct=(ns.memoryMass??ns.lbs)>0?Math.round((ns.lbs/(ns.memoryMass??ns.lbs))*100):0;
+          if(!surgeStudent&&(beforePct<50&&afterPct>=50)) surgeStudent=ns;
+        }
         if(!studentReceivesPassiveGain(ns)) return ns;
         const cals=rnd(action.cal[0],action.cal[1]);
         const fed=feedStudentCalories(ns,cals,action.full,2,'Refeast',{});
@@ -5239,6 +5326,7 @@ export default function ProfessorSim(){
       });
       push(`👻 Refeast Ritual: ${fedCount} students refed${refused?` · ${refused} too full`:""} — scarcity pressure eases.`);
       setStudents(updated);
+      if(surgeStudent) setRefeedSurgeState({studentId:surgeStudent.id,taps:0,tapsNeeded:3});
       const evs=collectEvents(updated);
       if(evs.length){
         setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
@@ -6793,9 +6881,9 @@ export default function ProfessorSim(){
       {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students}/>}
 
       {/* ── DEBUG PANEL ── */}
-      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} money={money} view={view} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length}/>}
+      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} money={money} view={view} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length}/>}
 
-      {bugReportOpen&&<BugReportModal getSnapshotContext={getSnapshotContext} prefillError={fieldNoteError} onClose={()=>{ setBugReportOpen(false); setFieldNoteError(null); }}/>}
+      {bugReportOpen&&<BugReportModal getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} prefillError={fieldNoteError} onClose={()=>{ setBugReportOpen(false); setFieldNoteError(null); }}/>}
 
       {/* ── TAP-OUT POPUP ── */}
       {tapOutPopup&&<TapOutPopup setTapOutPopup={setTapOutPopup} tapOutPopup={tapOutPopup}/>}
@@ -6830,6 +6918,25 @@ export default function ProfessorSim(){
       {galleryOpen&&galleryState&&<ArtisanGalleryModal galleryState={galleryState} students={students} onClose={closeGalleryHub} onOpenSubjectPicker={galleryOpenSubjectPicker} onConfirmEnroll={galleryConfirmEnroll} onStartStudio={galleryBeginStudio} onStudioAction={galleryStudioAction} onFieldShoot={galleryDoFieldShoot} onExhibition={galleryDoExhibition}/>}
 
       {supernaturalModalOpen&&<SupernaturalAscensionModal students={students} opposition={opposition} onAscend={ascendSupernatural} onDismiss={dismissSupernaturalAct}/>}
+      {refeedSurgeState&&(()=>{
+        const surgeStudent=students.find(st=>st.id===refeedSurgeState.studentId);
+        if(!surgeStudent) return null;
+        return(
+          <RefeedSurgeModal
+            student={surgeStudent}
+            tapsNeeded={refeedSurgeState.tapsNeeded}
+            taps={refeedSurgeState.taps}
+            onTap={()=>setRefeedSurgeState(prev=>prev?{...prev,taps:Math.min(prev.tapsNeeded,prev.taps+1)}:null)}
+            onComplete={()=>{
+              const bonus=rnd(4,8);
+              setStudents(prev=>prev.map(st=>st.id!==surgeStudent.id?st:{...st,lbs:st.lbs+bonus}));
+              push(`✨ ${surgeStudent.name} surges — memory floods back (+${bonus} lbs).`);
+              setRefeedSurgeState(null);
+            }}
+            onDismiss={()=>setRefeedSurgeState(null)}
+          />
+        );
+      })()}
 
       {hearingState&&<OppositionHearingModal hearingState={hearingState} students={students} opposition={opposition} onChoice={makeHearingChoice} onClose={closeHearing}/>}
 
