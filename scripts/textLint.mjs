@@ -237,6 +237,10 @@ if (hasModule('ge.onset')) {
         };
         const out = renderGrowthScene(student, {
           causeType: 'digest_stageup',
+          featureId: 'digest_stageup',
+          growthMethod: 'digest',
+          growthIntensity: 'gradual',
+          sensation: 'fullness',
           gainLbs: 12,
           startStage: endStage - 1,
           endStage,

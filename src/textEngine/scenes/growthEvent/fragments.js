@@ -12,10 +12,12 @@ registerPool('ge.onset', [
     '{ge.causeAction}{ge.causeAnchor} — {ge.firstSensation}, then something goes wrong.',
     'It starts as planned{ge.causeAnchor}: {ge.firstSensation}, until the rig stutters.',
   ] },
+  { when: { featureId: 'digest_stageup' }, weight: 4, text: [
+    '{subject.name} {ge.digestOnsetLine}.',
+  ] },
   { when: {}, text: [
     '{ge.causeAction}{ge.causeAnchor} — {ge.firstSensation}.',
     'The change begins{ge.causeAnchor}: {ge.firstSensation}.',
-    '{subject.name} {ge.firstSensation}{ge.causeAnchor} as {ge.causeAction}.',
   ] },
 ]);
 
@@ -66,11 +68,16 @@ registerPool('ge.causeAction', [
     'restraint tubes maintain the furniture form with steady calories',
     'the rig swells its cushion while calories keep the form usable',
   ] },
-  // growthMethod fallbacks (approved invention profiles only)
-  { when: { growthMethod: 'feed' }, text: [
+  // growthMethod fallbacks — device-driven feeding only (not organic digest stage-ups)
+  { when: { growthMethod: 'feed', causeType: ['device_use', 'weekly_tick', 'device_malfunction'] }, text: [
     'more food arrives, mechanical and certain',
     'the feeding mechanism delivers another round',
     'calories land on schedule, portion after portion',
+  ] },
+  { when: { growthMethod: 'digest' }, text: [
+    'the week\'s calories finally settle into stored mass',
+    'accumulated eating crosses from fullness into permanence',
+    'digestion catches up with everything she consumed',
   ] },
   { when: { growthMethod: 'bloat' }, text: [
     'the bloating pressure builds from the inside out',
@@ -109,7 +116,7 @@ registerPool('ge.causeAction', [
     'the contest session triggers the expected change',
     'competitive conditions accelerate the process',
   ] },
-  { when: { featureId: 'digest_stageup' }, text: [
+  { when: { featureId: 'digest_stageup' }, weight: 4, text: [
     'her body quietly tips over its own threshold',
     'accumulated mass crosses into a new register',
   ] },
@@ -133,7 +140,25 @@ registerPool('ge.causeAnchor', [
     ' as {subject.name} stands in Talia\'s lab',
     ' while {subject.name} waits inside the lab',
   ] },
-  { when: {}, text: ['', ' with {subject.name} on campus', ' where {subject.name} stands'] },
+  { when: { featureId: 'digest_stageup' }, weight: 4, text: [
+    '',
+    ' after a week of steady eating',
+    ' without fanfare',
+  ] },
+  { when: {}, text: ['', ' with {subject.name} on campus', ' on campus'] },
+]);
+
+// VERB PHRASE — digest onset line (subject.name + this slot = full sentence)
+registerPool('ge.digestOnsetLine', [
+  { when: { featureId: 'digest_stageup' }, text: [
+    'wakes on Sunday and feels the difference before she reaches the mirror',
+    'notices getting into her bra takes an extra tug at the clasp',
+    'finds last week\'s jeans reluctant at the waist',
+    'feels the week\'s meals finally becoming visible curve',
+    'registers weight the scale has been hinting at all week',
+    'feels her body quietly tip past a familiar line',
+  ] },
+  { when: {}, text: ['feels the weight settle in'] },
 ]);
 
 // PARTICIPLE CLAUSE — first sensation keyed on sensation × growthIntensity
@@ -182,11 +207,28 @@ registerPool('ge.firstSensation', [
     'fullness climbing before she can resist it',
     'her middle filling up fast',
   ] },
+  { when: { sensation: 'fullness', growthIntensity: 'gradual' }, weight: 2, text: [
+    'a slow fullness spreading into permanence',
+    'gentle heaviness gathering under the skin',
+  ] },
+  { when: { sensation: 'fullness', growthIntensity: 'steady' }, weight: 2, text: [
+    'fullness settling into something that will not pass',
+    'the steady weight of a week\'s eating catching up',
+  ] },
+  { when: { featureId: 'digest_stageup' }, weight: 4, text: [
+    'feeling the week\'s meals finally become visible curve',
+    'registering weight the scale has been hinting at all week',
+    'body quietly tipping past a familiar line',
+  ] },
   { when: { sensation: 'craving' }, text: [
     'gnawing emptiness under every swallow',
     'hunger blooming faster than fullness can answer',
   ] },
-  { when: {}, text: ['feeling the first swell', 'registering weight before the scale does'] },
+  { when: { deviceId: 'auto_feeder_arm' }, text: [
+    'feeling the next portion arrive on schedule',
+    'fullness stacking under mechanical feeding',
+  ] },
+  { when: {}, text: ['registering the change before her mind catches up', 'body answering before thought does'] },
 ]);
 
 // FULL SENTENCE — surge beat skeletons
@@ -221,10 +263,14 @@ registerPool('ge.surgeDetail', [
     'the belt\'s work showing up as permanent curve',
     'pressure settling into softness that will not deflate',
   ] },
-  { when: { growthMethod: 'feed' }, text: [
+  { when: { growthMethod: 'feed', causeType: ['device_use', 'weekly_tick', 'device_malfunction'] }, text: [
     'calories landing faster than shame can organize',
     'another round of feeding converting straight to stored mass',
     'fullness compounding into visible curve',
+  ] },
+  { when: { growthMethod: 'digest' }, text: [
+    'the week\'s intake converting into stored curve',
+    'digestion depositing what eating promised all week',
   ] },
   { when: { malfunctionTier: 'critical' }, text: [
     'with catastrophic disregard for limits',

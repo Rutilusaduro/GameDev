@@ -6,6 +6,7 @@ import { getStage } from '../../../gameData/stages.js';
 import { getEquippedDeviceIds } from '../../../gameData/deviceEquip.js';
 import { getDependenceTier } from '../../../gameData/psychState.js';
 import { MARQUEE_GROWTH_DEVICE_IDS } from '../../../gameData/devices.js';
+import './digestScene.js';
 import './fragments.js';
 import './environment.js';
 import './stageCrossings.js';
@@ -76,6 +77,21 @@ function magnitudeFromGlobals(g) {
   return 'notable';
 }
 
+function assembleDigestBeats(ctx, trace = null) {
+  const r = (tpl) => render(tpl, ctx, { trace });
+  const beats = [];
+  beats.push(r('{ge.digestOnset}'));
+  beats.push(r('{ge.digestNotice}'));
+  if (ctx.globals.stagesJumped >= 1) {
+    const crossing = r('{grow.crossing}');
+    const crossingDlg = r('{grow.crossingDialogue}');
+    beats.push([crossing, crossingDlg].filter(Boolean).join(' '));
+  }
+  beats.push(r('{ge.digestReaction}'));
+  beats.push(r('{ge.digestSettle}'));
+  return beats.filter(b => b && b.trim());
+}
+
 function assembleBeats(ctx, magnitude, trace = null) {
   const r = (tpl) => render(tpl, ctx, { trace });
   const beats = [];
@@ -101,6 +117,9 @@ function assembleBeats(ctx, magnitude, trace = null) {
 
 export function renderGrowthScene(student, params = {}, opts = {}) {
   const ctx = growthCtx(student, params, opts);
+  if (ctx.globals.featureId === 'digest_stageup') {
+    return assembleDigestBeats(ctx, opts.trace || null).join('\n\n');
+  }
   const magnitude = magnitudeFromGlobals(ctx.globals);
   return assembleBeats(ctx, magnitude, opts.trace || null).join('\n\n');
 }

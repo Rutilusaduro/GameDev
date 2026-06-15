@@ -10,6 +10,14 @@ import { traceToFlagNodes } from '../textEngine/textFlagFormat.js';
 
 const ZONE_POOL = ['belly', 'hips', 'thighs', 'ass', 'chest', 'full', 'lower_body'];
 
+/** Natural weekly-digest stage-up — not device-driven mechanical feeding. */
+const DIGEST_STAGEUP_PROFILE = {
+  growthMethod: 'digest',
+  zoneBias: 'bodyType',
+  growthIntensity: 'gradual',
+  sensation: 'fullness',
+};
+
 export function resolveGrowthZone(profile, zoneOverride = null, bodyType = null) {
   if (zoneOverride && zoneOverride !== 'random') return zoneOverride;
   const bias = profile?.zoneBias || 'bodyType';
@@ -89,8 +97,13 @@ export function buildGrowthEvent(student, params = {}) {
   if (!isMajorGrowth(cause, gainLbs, stagesJumped)) return null;
 
   const deviceId = cause.deviceId || null;
+  const isDigestStageup = cause.type === 'digest_stageup';
   const def = deviceId ? getDevice(deviceId) : null;
-  const profile = deviceId ? getGrowthProfile(deviceId) : getGrowthProfile(null);
+  const profile = deviceId
+    ? getGrowthProfile(deviceId)
+    : isDigestStageup
+      ? DIGEST_STAGEUP_PROFILE
+      : getGrowthProfile(null);
   const growthZone = resolveGrowthZone(profile, cause.zoneOverride || malfunction?.effect?.zoneOverride, student?.bodyType);
 
   const trace = [];
