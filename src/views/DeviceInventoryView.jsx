@@ -133,10 +133,10 @@ export function DeviceInventoryView({
   player,
   setStudents,
   setPlayer,
-  setPaperDoll,
   setDeviceTargetPicker,
   setEquipPicker,
   setAttachPicker,
+  openEquipModal,
   pushLog,
 }) {
   const [subTab, setSubTab] = useState('catalog');
@@ -204,7 +204,7 @@ export function DeviceInventoryView({
 
   const handleEquipStudent = (def) => {
     if (!def) return;
-    setPaperDoll?.({ studentPicker: true, def });
+    setEquipPicker?.({ def });
   };
 
   const renderCatalogGrid = (devices) => (
@@ -306,15 +306,14 @@ export function DeviceInventoryView({
                 on {row.holder} · {row.slot}
                 {row.modified && <span style={{ color: '#c8860a' }}> · modified</span>}
               </div>
-              <button
-                style={{ ...C.smBtn, marginTop: 6, fontSize: 9 }}
-                onClick={() => {
-                  if (row.holderType === 'player') setPaperDoll?.({ target: 'professor' });
-                  else setPaperDoll?.({ studentId: row.holderId });
-                }}
-              >
-                Open Paper Doll
-              </button>
+              {row.holderType === 'student' && (
+                <button
+                  style={{ ...C.smBtn, marginTop: 6, fontSize: 9 }}
+                  onClick={() => openEquipModal?.(row.holderId)}
+                >
+                  Manage equipment
+                </button>
+              )}
               {row.holderType === 'student' && availableMods.length > 0 && (
                 <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
                   {availableMods.map(([modId]) => (
