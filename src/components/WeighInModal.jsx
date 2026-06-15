@@ -5,6 +5,14 @@ import {
   renderWeighInIntro, renderWeighInReaction,
   renderWeighInBreak, renderWeighInSwap, renderWeighInPurchase,
 } from '../textEngine/scenes/weighIn/index.js';
+import { TextFlagToolbar } from './TextFlagToolbar.jsx';
+import { buildStateLine, traceToFlagNodes } from '../textEngine/textFlagFormat.js';
+
+function renderWeighInPhase(renderFn, student, week, opts) {
+  const trace = [];
+  const text = renderFn(student, week, { ...opts, trace });
+  return { text, traceNodes: traceToFlagNodes(trace) };
+}
 
 function AnalogScale({lbs,willBreak,onSnapComplete}){
   const safeLbs=Math.max(0,Math.round(lbs));
@@ -176,25 +184,48 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
     setPhase("break");
   };
   // useMemo: phase texts are RNG-composed — keep them stable across re-renders
-  const introText=useMemo(
-    ()=>renderWeighInIntro(student,week||1,goesDirectlyToBig,weighInOpts),
-    [student.id,goesDirectlyToBig,weighInState?.aibMandatory]
+  const introBundle = useMemo(
+    () => renderWeighInPhase(
+      (s, w, o) => renderWeighInIntro(s, w, goesDirectlyToBig, o),
+      student,
+      week || 1,
+      weighInOpts,
+    ),
+    [student.id, goesDirectlyToBig, weighInState?.aibMandatory],
   );
-  const breakText=useMemo(
-    ()=>phase==="break"?renderWeighInBreak(student,week||1,weighInOpts):"",
-    [phase,student.id]
+  const breakBundle = useMemo(
+    () => (phase === 'break'
+      ? renderWeighInPhase(renderWeighInBreak, student, week || 1, weighInOpts)
+      : { text: '', traceNodes: [] }),
+    [phase, student.id],
   );
-  const purchaseText=useMemo(
-    ()=>phase==="purchase"?renderWeighInPurchase(student,week||1,weighInOpts):"",
-    [phase,student.id]
+  const purchaseBundle = useMemo(
+    () => (phase === 'purchase'
+      ? renderWeighInPhase(renderWeighInPurchase, student, week || 1, weighInOpts)
+      : { text: '', traceNodes: [] }),
+    [phase, student.id],
   );
-  const swapText=useMemo(
-    ()=>phase==="swap"?renderWeighInSwap(student,week||1,weighInOpts):"",
-    [phase,student.id]
+  const swapBundle = useMemo(
+    () => (phase === 'swap'
+      ? renderWeighInPhase(renderWeighInSwap, student, week || 1, weighInOpts)
+      : { text: '', traceNodes: [] }),
+    [phase, student.id],
   );
+  const reactionBundle = useMemo(
+    () => (phase === 'reaction' && reactionText
+      ? { text: reactionText, traceNodes: [] }
+      : { text: '', traceNodes: [] }),
+    [phase, reactionText],
+  );
+  const flagState = buildStateLine(student, { week: week || 1, stageLabel: st.label });
   const goToReaction=()=>{
-    const text=renderWeighInReaction(student,week||1,{...weighInOpts,bigScale:phase==="digital"});
-    setWeighInState({...weighInState,phase:"reaction",reactionText:text});
+    const bundle=renderWeighInPhase(
+      (s, w, o) => renderWeighInReaction(s, w, { ...o, bigScale: phase === 'digital' }),
+      student,
+      week || 1,
+      weighInOpts,
+    );
+    setWeighInState({ ...weighInState, phase: 'reaction', reactionText: bundle.text, reactionTraceNodes: bundle.traceNodes });
   };
   const handleAfterBreak=()=>{
     if(!bigScaleUnlocked){
@@ -212,9 +243,10 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
 
         {phase==="scene"&&(
           <>
-            <div style={{...C.infoBox("rgba(50,10,90,.25)"),fontSize:13,color:"#e0d0b0",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>
-              {introText}
+            <div style={{...C.infoBox("rgba(50,10,90,.25)"),fontSize:13,color:"#e0d0b0",lineHeight:1.85,fontStyle:"italic",marginBottom:8}}>
+              {introBundle.text}
             </div>
+            <TextFlagToolbar section="weighIn.intro" stateLine={flagState} text={introBundle.text} nodes={introBundle.traceNodes} />
             {weighInState?.aibMandatory && onMandatorySkip && (
               <button style={{...C.btn("#502030"),width:"100%",marginBottom:8}} onClick={onMandatorySkip}>
                 Refuse documented weigh-in (+12 scrutiny)
@@ -237,14 +269,16 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
 
         {phase==="break"&&(
           <>
-            <div style={{...C.infoBox("rgba(60,5,15,.5)"),border:"1px solid #80202040",fontSize:13,color:"#f0c0a0",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>{breakText}</div>
+            <div style={{...C.infoBox("rgba(60,5,15,.5)"),border:"1px solid #80202040",fontSize:13,color:"#f0c0a0",lineHeight:1.85,fontStyle:"italic",marginBottom:8}}>{breakBundle.text}</div>
+            <TextFlagToolbar section="weighIn.break" stateLine={flagState} text={breakBundle.text} nodes={breakBundle.traceNodes} />
             <button style={{...C.btn(bigScaleUnlocked?"#5818a8":"#7a2030"),width:"100%"}} onClick={handleAfterBreak}>{bigScaleUnlocked?"Let me grab the big one. →":"I'll get her a real scale. →"}</button>
           </>
         )}
 
         {phase==="purchase"&&(
           <>
-            <div style={{...C.infoBox("rgba(40,20,60,.45)"),border:"1px solid #5028a040",fontSize:13,color:"#e0d0b0",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>{purchaseText}</div>
+            <div style={{...C.infoBox("rgba(40,20,60,.45)"),border:"1px solid #5028a040",fontSize:13,color:"#e0d0b0",lineHeight:1.85,fontStyle:"italic",marginBottom:8}}>{purchaseBundle.text}</div>
+            <TextFlagToolbar section="weighIn.purchase" stateLine={flagState} text={purchaseBundle.text} nodes={purchaseBundle.traceNodes} />
             <div style={{fontSize:11,color:"#a070d0",letterSpacing:1,marginBottom:12,textAlign:"center"}}>🛠 Heavy-duty scale unlocked · used automatically next time.</div>
             <button style={{...C.btn("#5818a8"),width:"100%"}} onClick={close}>Close ✓</button>
           </>
@@ -252,7 +286,8 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
 
         {phase==="swap"&&(
           <>
-            <div style={{...C.infoBox("rgba(35,40,55,.55)"),border:"1px solid #6a708040",fontSize:13,color:"#d0d8e0",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>{swapText}</div>
+            <div style={{...C.infoBox("rgba(35,40,55,.55)"),border:"1px solid #6a708040",fontSize:13,color:"#d0d8e0",lineHeight:1.85,fontStyle:"italic",marginBottom:8}}>{swapBundle.text}</div>
+            <TextFlagToolbar section="weighIn.swap" stateLine={flagState} text={swapBundle.text} nodes={swapBundle.traceNodes} />
             <button style={{...C.btn("#3a4250"),width:"100%"}} onClick={()=>setPhase("digital")}>Step onto the heavy-duty scale →</button>
           </>
         )}
@@ -268,9 +303,15 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
 
         {phase==="reaction"&&(
           <>
-            <div style={{...C.infoBox("rgba(30,15,50,.35)"),fontSize:13,color:"#e8d8f8",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>
+            <div style={{...C.infoBox("rgba(30,15,50,.35)"),fontSize:13,color:"#e8d8f8",lineHeight:1.85,fontStyle:"italic",marginBottom:8}}>
               {reactionText}
             </div>
+            <TextFlagToolbar
+              section="weighIn.reaction"
+              stateLine={flagState}
+              text={reactionText}
+              nodes={weighInState?.reactionTraceNodes || reactionBundle.traceNodes}
+            />
             <button style={{...C.btn("#5818a8"),width:"100%"}} onClick={close}>Close ✓</button>
           </>
         )}

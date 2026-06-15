@@ -1,5 +1,7 @@
 import { C } from '../styles.js';
 import { WEIGHT_STAGES } from '../gameData/stages.js';
+import { TextFlagToolbar } from './TextFlagToolbar.jsx';
+import { buildStateLine } from '../textEngine/textFlagFormat.js';
 
 const TIER_COLORS = {
   minor: '#8a8a7a',
@@ -24,6 +26,14 @@ export function DeviceTickPopup({ queue, onAdvance, onDismissAll }) {
   const progress = `${index + 1} / ${events.length}`;
   const startLabel = WEIGHT_STAGES[event.startStage]?.label || '';
   const endLabel = WEIGHT_STAGES[event.endStage]?.label || '';
+  const prose = event.prose || '';
+  const flagSection = isGrowthScene
+    ? `growth.${event.causeType || 'scene'}`
+    : `device.tick.${event.deviceId || 'unknown'}`;
+  const flagState = buildStateLine(
+    { id: event.studentId, name: event.studentName, lbs: event.endLbs },
+    { stageLabel: endLabel, extra: event.deviceLabel },
+  );
 
   return (
     <div style={C.overlay}>
@@ -54,17 +64,23 @@ export function DeviceTickPopup({ queue, onAdvance, onDismissAll }) {
           lineHeight: 1.75,
           fontStyle: isGrowthScene ? 'normal' : 'italic',
           whiteSpace: isGrowthScene ? 'pre-line' : 'normal',
-          marginBottom: 14,
+          marginBottom: 8,
           minHeight: 48,
         }}>
-          {isGrowthScene ? event.prose : event.prose}
+          {prose}
         </div>
+        <TextFlagToolbar
+          section={flagSection}
+          stateLine={flagState}
+          text={prose}
+          nodes={event.traceNodes}
+        />
         {event.malfunction?.text && isMalf && (
           <div style={{ fontSize: 11, color: tierColor, marginBottom: 12, lineHeight: 1.6 }}>
             {event.malfunction.text}
           </div>
         )}
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
           <button
             style={{ ...C.btn(tierColor), flex: 1 }}
             onClick={() => (index + 1 < events.length ? onAdvance() : onDismissAll())}

@@ -24,6 +24,14 @@ registerModule('subject.lbs', [
   { when: {}, text: [(ctx) => String(Math.round(ctx.subject?.lbs || 0))] },
 ]);
 
+registerModule('subject.semesterGain', [
+  { when: {}, text: [(ctx) => {
+    const s = ctx.subject;
+    const start = s?.startLbs ?? s?.lbs ?? 130;
+    return String(Math.max(0, Math.round((s?.lbs ?? start) - start)));
+  }] },
+]);
+
 // ── char.desc — composite of size, movement and corruption ────
 // Demonstrates recursion: variants embed {word.*} slots.
 

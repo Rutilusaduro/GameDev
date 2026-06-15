@@ -6,6 +6,7 @@ import { getDevice, getGrowthProfile, MARQUEE_GROWTH_DEVICE_IDS } from './device
 import { getEquippedDeviceIds } from './deviceEquip.js';
 import { getDependenceTier } from './psychState.js';
 import { renderGrowthScene } from '../textEngine/scenes/growthEvent/index.js';
+import { traceToFlagNodes } from '../textEngine/textFlagFormat.js';
 
 const ZONE_POOL = ['belly', 'hips', 'thighs', 'ass', 'chest', 'full', 'lower_body'];
 
@@ -92,10 +93,11 @@ export function buildGrowthEvent(student, params = {}) {
   const profile = deviceId ? getGrowthProfile(deviceId) : getGrowthProfile(null);
   const growthZone = resolveGrowthZone(profile, cause.zoneOverride || malfunction?.effect?.zoneOverride, student?.bodyType);
 
+  const trace = [];
   const prose = renderGrowthScene(student, {
     causeType: cause.type,
     deviceId,
-    featureId: cause.featureId || null,
+    featureId: cause.featureId || (cause.type === 'digest_stageup' ? 'digest_stageup' : null),
     gainLbs,
     startStage,
     endStage,
@@ -111,7 +113,7 @@ export function buildGrowthEvent(student, params = {}) {
     outfitHint: outfitHintFor(student, cause),
     pantsFactor,
     week,
-  });
+  }, { trace });
 
   return {
     kind: 'growth_scene',
@@ -128,6 +130,7 @@ export function buildGrowthEvent(student, params = {}) {
     stagesJumped,
     malfunction,
     prose,
+    traceNodes: traceToFlagNodes(trace),
     magnitude: magnitudeTier(stagesJumped, { ...cause, malfunctionTier: malfunction?.tier }),
   };
 }

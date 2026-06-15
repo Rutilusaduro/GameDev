@@ -35,6 +35,8 @@ import './supernatural/scarcityCurse.js';
 import './jealousyReaction.js';
 import './opposition/endgameBeat.js';
 import './dinner/endingScene.js';
+import './growthEvent/index.js';
+import './weeklyEvent/index.js';
 import './weighIn/index.js';
 import './deviceBody.js';
 import './deviceTick/index.js';
