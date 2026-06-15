@@ -18,7 +18,7 @@ export function tickRelationshipDecay(student) {
   if (weeks < RELATIONSHIP_ECOLOGY.weeksIgnoredBeforeDecay) return student;
   const rel = student.relationship ?? 0;
   const tier = getTier(rel).id;
-  if (tier >= 4) return student;
+  if (tier >= 3) return student; // Devoted — max inner-circle tier
   const excess = weeks - RELATIONSHIP_ECOLOGY.weeksIgnoredBeforeDecay + 1;
   const loss = Math.min(RELATIONSHIP_ECOLOGY.maxDecayPerWeek, RELATIONSHIP_ECOLOGY.decayPerWeek * excess);
   return { ...student, relationship: Math.max(0, rel - loss), _relDecayApplied: loss };

@@ -108,7 +108,7 @@ import {
   defaultLabState, defaultDeviceInventory, INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES,
   completeLabSession, tickLabWeek, TALIA_STUDENT_ID, maybeAdvanceInventorStage,
 } from './gameData/talia.js';
-import { unlockTechNode, normalizeLabTechState } from './gameData/labTechTree.js';
+import { unlockTechNode, normalizeLabTechState, rollSessionBreakthroughs } from './gameData/labTechTree.js';
 import {
   BLUEPRINT_RECIPES, canAfford, spendRecipe, startLabSession, applyLabAcquisition,
   getBuildWeightCost, getMinLbsForBuild,
@@ -168,7 +168,7 @@ import {
   runStationaryDeviceSession,
   runRouteDeviceSession,
 } from './gameData/deviceUsageEvents.js';
-import { computePrestigeScore, prestigeApBonus } from './gameData/prestigeLite.js';
+import { computePrestigeScore, prestigeApBonus, prestigeBreakthroughBonus } from './gameData/prestigeLite.js';
 import { DeviceTuningModal, DeviceRouteModal } from './components/DeviceTuningModal.jsx';
 import {
   buildForceFeederEffect,
@@ -206,6 +206,7 @@ import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilit
 import { buildGameSaveBlob } from './gameData/gameSave.js';
 import {
   computeClassSkillCurrency, buyClassSkill, aggregateClassSkillEffects, listPurchasableClassSkills,
+  hasClassUnlock, getClassActionCost, isDinnerVenueUnlocked,
 } from './gameData/classroomSkills.js';
 import {
   devourScarcityDamage, echoedWillReverseCurse, checkSynthesisEndgame, applySynthesisAlly,
@@ -649,8 +650,7 @@ export default function ProfessorSim(){
   };
 
   const purchaseClassSkill=(skillId)=>{
-    const currency=computeClassSkillCurrency(students);
-    const result=buyClassSkill(skillId,ownedClassSkills||{},currency);
+    const result=buyClassSkill(skillId,ownedClassSkills||{},students);
     if(!result.ok){push(`⚠️ ${result.reason}`);return;}
     setOwnedClassSkills(result.owned);
     push(`🏛️ Classroom upgrade: ${result.skill.label} (${result.spent} lbs prestige).`);
@@ -963,6 +963,8 @@ export default function ProfessorSim(){
         let chance=forceFeedChance(s,fullnessCost,spiritLevel)+corruptionBonus+getForceFeedComplianceBonus(s);
         chance+=eff.forceFeedBonus||0;
         chance+=eff.extremeBonus||0;
+        if(weeklyArms.mesmerizingStudentId===s.id&&eff.mesmerizingAura) chance+=TALK_CONFIG.auraBonus;
+        if(s.suggestDebuffWeek===week) chance+=TALK_CONFIG.suggestResistReduction;
         if(Math.random()>=chance){
           const line=REFUSAL_LINES[rnd(0,REFUSAL_LINES.length-1)](s);
           push(`🚫 ${line}`);
@@ -2674,7 +2676,7 @@ export default function ProfessorSim(){
       if(recruits>0){
         const lilith=students.find(s=>s.id===LILITH_ID);
         if(lilith){
-          const hiveBonus=getCampusHiveRecruitLbsBonus(pharmacistState);
+          const hiveBonus=getCampusHiveRecruitLbsBonus(pharmacistState, campusState.saturation?.tier ?? 0);
           const victims=Array.from({length:Math.min(recruits,5)},()=>({
             name:"a dorm resident",
             lbs:Math.round(120+Math.random()*260+hiveBonus),
@@ -3023,7 +3025,7 @@ export default function ProfessorSim(){
     const name=available[Math.floor(Math.random()*available.length)];
     setCultivatorState(prev=>({
       ...prev,
-      testerName:name, testerStageId:6, testerLbs:getCampusTesterStartLbs(pharmacistState),
+      testerName:name, testerStageId:6, testerLbs:getCampusTesterStartLbs(pharmacistState, campusState.saturation?.tier ?? 0),
       fatBar:0, suspicion:0, session:null, pendingStageUp:false,
       usedNames:[...prev.usedNames,name],
       modalPhase:null,
@@ -3352,10 +3354,13 @@ export default function ProfessorSim(){
     const ns=processStudentGain(s,gain,8);
     setStudents(prev=>prev.map(st=>st.id===s.id?ns:st));
     const prevStage=labState.stage??1;
+    const prestigeScore=computePrestigeScore({ week, labState, campusSaturation:campusState.saturation, globalStats });
+    const btPrestige=prestigeBreakthroughBonus(prestigeScore);
     let next=completeLabSession(labState,{
       ...labSession,
       poolAfter: labSession.pool,
       instabilityGained: act.instability||5,
+      breakthroughsGained: (labSession.breakthroughsGained ?? rollSessionBreakthroughs(Math.random)) + btPrestige,
     }, null, Math.random);
     next=maybeAdvanceInventorStage(next);
     setLabState(normalizeLabTechState(next));
@@ -5297,7 +5302,8 @@ export default function ProfessorSim(){
   };
 
   const executeClassFeed=(action,compoundId)=>{
-    setAp(a=>a-action.cost);
+    const actionCost=getClassActionCost(action,ownedClassSkills||{});
+    setAp(a=>a-actionCost);
     if(action.id==='refeast_ritual'){
       setOpposition(prev=>({
         ...prev,
@@ -5373,7 +5379,8 @@ export default function ProfessorSim(){
 
   const doClass=(action)=>{
     trackAction(`doClass:${action.id}`);
-    if(ap<action.cost){push("⚠️ Not enough AP!");return;}
+    const actionCost=getClassActionCost(action,ownedClassSkills||{});
+    if(ap<actionCost){push("⚠️ Not enough AP!");return;}
     if(action.id==='refeast_ritual'&&!opposition?.supernatural?.actTriggered){
       push('⚠️ Refeast Ritual requires the Supernatural Act.');
       return;
@@ -5421,8 +5428,28 @@ export default function ProfessorSim(){
     push(togglingOff?`😈 Devouring Presence disarmed on ${name}.`:`😈 Devouring Presence armed on ${name} — her hunger will surface this week.`);
   };
 
-  const applyTalkEffect=(effect)=>{
-    if(!talkStudentId||!effect) return;
+  const armMesmerizingPresence=(studentId)=>{
+    const name=students.find(s=>s.id===studentId)?.name||"her";
+    setWeeklyArms(prev=>{
+      const togglingOff=prev.mesmerizingStudentId===studentId;
+      return{
+        devouringStudentId:prev.devouringStudentId,
+        mesmerizingStudentId:togglingOff?null:studentId,
+        devouringConsumed:prev.devouringConsumed,
+      };
+    });
+    const togglingOff=weeklyArms.mesmerizingStudentId===studentId;
+    push(togglingOff?`🌀 Mesmerizing Aura disarmed on ${name}.`:`🌀 Mesmerizing Aura armed on ${name} — +35% to her rolls this week.`);
+  };
+
+  const applyTalkEffect=(effect,meta={})=>{
+    if(!talkStudentId) return;
+    const applySuggest=!!effect?.applySuggestDebuff||meta.topicId==='suggest_indulgence';
+    if(applySuggest){
+      setStudents(prev=>prev.map(x=>x.id===talkStudentId?{...x,suggestDebuffWeek:week}:x));
+      push(`🗣 Suggestion planted — ${students.find(s=>s.id===talkStudentId)?.name||'she'} resists less this week.`);
+    }
+    if(!effect) return;
     if(effect.cals){
       setStudents(prev=>{
         const st=prev.find(x=>x.id===talkStudentId);
@@ -6042,6 +6069,7 @@ export default function ProfessorSim(){
   const profPassiveBonus=hasTrait("patient")?1:0;
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
   const skillEffects=aggregateSkillEffects(ownedSkills);
+  const classSkillFx=aggregateClassSkillEffects(ownedClassSkills||{});
   const spentSkillPoints=computeSpentSkillPoints(ownedSkills);
   const availableSkillPoints=Math.max(0,totalSkillPoints-spentSkillPoints);
   const hasSkill=(id)=>(ownedSkills[id]||0)>0;
@@ -6050,8 +6078,8 @@ export default function ProfessorSim(){
   const skillGainMult=profGainMult;
   const skillScrutinyReduce=1;
   const skillScrutinyPassiveReduce=0;
-  const skillSessionCapBonus=0;
-  const skillTapOutResistance=0;
+  const skillSessionCapBonus=classSkillFx.sessionCapBonus||0;
+  const skillTapOutResistance=classSkillFx.tapOutResistance||0;
   // EP2: total weekly scrutiny reduction from evolved skills across all students
   const evolvedScrutinyReduce=students.reduce((total,s)=>{
     if(!s.evolvedForm||!(s.evolvedSkills||[]).length) return total;
@@ -6060,16 +6088,21 @@ export default function ProfessorSim(){
   },0);
 
   // ── EFFECTIVE ACTIONS (applying unlocked skill effects) ──────
-  const effectiveSingleActions=ACTIONS_SINGLE;
+  const ownedClass=ownedClassSkills||{};
+  const effectiveSingleActions=ACTIONS_SINGLE.filter(a=>{
+    if(!a.requiresUnlock) return true;
+    return hasClassUnlock(ownedClass,a.requiresUnlock);
+  });
   const effectiveClassActions=ACTIONS_CLASS.filter(a=>{
-    if(a.supernaturalOnly) return !!opposition?.supernatural?.actTriggered;
+    if(a.supernaturalOnly&&!opposition?.supernatural?.actTriggered) return false;
+    if(a.requiresUnlock&&!hasClassUnlock(ownedClass,a.requiresUnlock)) return false;
     return true;
   });
 
   const availableVenues=DINNER_VENUES.filter(v=>{
     if(v.id==="home_dinner") return false;
-    if(v.id==="atelier") return false; // filtered per-student inside dinner modal
-    return true;
+    if(v.id==="atelier") return false;
+    return isDinnerVenueUnlocked(v.id,ownedClass);
   });
 
   const views=["class","actions","achievements","log"];
@@ -7092,7 +7125,7 @@ export default function ProfessorSim(){
       {chapterHostessState?.feastLogOpen&&<ChapterHostessFeastLogModal chapterHostessState={chapterHostessState} completeFeast={completeFeast}/>}
 
       {/* ── LILITH — CLUE / INVESTIGATION MODAL ── */}
-      {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} weeklyArms={weeklyArms} onArmDevouring={()=>armDevouringPresence(talkStudent.id)} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect} campusFattening={!!pharmacistState?.campusFattening} campusTier={getCampusNarrativeTier(pharmacistState)}/>}
+      {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} weeklyArms={weeklyArms} onArmDevouring={()=>armDevouringPresence(talkStudent.id)} onArmMesmerizing={()=>armMesmerizingPresence(talkStudent.id)} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect} campusFattening={!!pharmacistState?.campusFattening} campusTier={getCampusNarrativeTier(pharmacistState)}/>}
 
       {pharmacistChemSession&&pharmacistChemStudentId!=null&&(()=>{
         const chemStudent=students.find(st=>st.id===pharmacistChemStudentId);

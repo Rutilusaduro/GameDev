@@ -21,7 +21,7 @@ export const TALK_TOPICS = [
 
   // ── Quiet Suggestion (Influence T1) ───────────────────────
   { id:"suggest_indulgence", label:"Plant a suggestion", icon:"🗣", group:"suggest", requires:"unlockSuggestion",
-    effect:{ corruption:2, rel:1 },
+    effect:{ corruption:2, rel:1, applySuggestDebuff:true },
     suggestNote:"Her resistance softens this week (-10% refusal).",
   },
   { id:"suggest_growth", label:"Suggest she's meant for more", icon:"🌙", group:"suggest", requires:"unlockSuggestion",
