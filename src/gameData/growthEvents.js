@@ -144,6 +144,7 @@ export function buildGrowthEvent(student, params = {}) {
     malfunction,
     prose,
     traceNodes: traceToFlagNodes(trace),
+    endLbs: Math.round(student.lbs),
     magnitude: magnitudeTier(stagesJumped, { ...cause, malfunctionTier: malfunction?.tier }),
   };
 }

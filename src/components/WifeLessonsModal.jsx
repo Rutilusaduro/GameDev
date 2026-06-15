@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { C } from '../styles.js';
 import { WL_CONFIG, WL_LESSONS } from '../gameData/evolvedForms.js';
+import { FlaggedProse } from './TextFlagToolbar.jsx';
 
 export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversationChoice, makeWifeLessonsSubChoice, dismissWifeLessonsConversation, chooseWifeLessonsLesson, startWifeLessonsConversation, closeWifeLessonsSession }){
         const{stage,daughters,moms,session}=wifeLessonsState;
@@ -30,9 +31,12 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                   <div style={{marginLeft:"auto",fontSize:9,color:WINE_DIM}}>{Math.round(personWeight)} lbs · Stage {stage}</div>
                 </div>
                 {resultText&&(
-                  <div style={{fontSize:12,color:WINE_TEXT,lineHeight:1.75,marginBottom:14,padding:"10px 12px",background:"rgba(139,34,82,0.08)",border:`1px solid ${WINE_DIM}40`,borderRadius:5}}>
-                    {resultText}
-                  </div>
+                  <FlaggedProse
+                    section={`wifeLessons.talk.${person}`}
+                    text={resultText}
+                    stateLine={`${person} · Stage ${stage} · ${Math.round(personWeight)} lbs`}
+                    style={{fontSize:12,color:WINE_TEXT,lineHeight:1.75,marginBottom:14,padding:"10px 12px",background:"rgba(139,34,82,0.08)",border:`1px solid ${WINE_DIM}40`,borderRadius:5}}
+                  />
                 )}
                 {atGreeting&&!done&&(
                   <button style={{...C.btn(WINE_ACCENT),width:"100%"}} onClick={()=>makeWifeLessonsConversationChoice(0)}>Continue →</button>

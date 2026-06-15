@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { C } from '../styles.js';
 import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../gameData/evolvedForms.js';
+import { FlaggedProse } from './TextFlagToolbar.jsx';
 
 const STUDENT_KEYS = ["Kayla", "Bri", "Sofia"];
 const MOM_KEYS = ["Mrs_Calloway", "Mrs_Reyes", "Mrs_Monroe"];
@@ -101,9 +102,13 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                   </div>
                 </div>
                 <div style={{fontSize:9,letterSpacing:3,color:warmAccent,marginBottom:8}}>{actTitle.toUpperCase()}</div>
-                <div style={{fontSize:12,color:"#d4b898",lineHeight:1.9,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-line"}}>
-                  {resultText||phaseText}
-                </div>
+                <FlaggedProse
+                  section={`homeroom.${type}.${key}`}
+                  text={resultText || phaseText || ''}
+                  student={daisy}
+                  week={1}
+                  style={{fontSize:12,color:"#d4b898",lineHeight:1.9,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-line"}}
+                />
                 {revealsWeights&&(
                   <div style={{marginBottom:12,padding:"8px 10px",background:"rgba(196,122,42,0.08)",border:`1px solid ${warmAccent}30`,borderRadius:6}}>
                     <div style={{fontSize:9,letterSpacing:2,color:warmAccent,marginBottom:6}}>MEASUREMENTS RECORDED</div>

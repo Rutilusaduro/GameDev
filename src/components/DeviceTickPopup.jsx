@@ -31,9 +31,12 @@ export function DeviceTickPopup({ queue, onAdvance, onDismissAll }) {
     ? `growth.${event.causeType || 'scene'}`
     : `device.tick.${event.deviceId || 'unknown'}`;
   const flagState = buildStateLine(
-    { id: event.studentId, name: event.studentName, lbs: event.endLbs },
-    { stageLabel: endLabel, extra: event.deviceLabel },
+    { id: event.studentId, name: event.studentName, lbs: event.endLbs ?? 0 },
+    { stageLabel: endLabel, extra: isGrowthScene && startLabel ? `${startLabel} → ${endLabel}` : event.deviceLabel },
   );
+  const displayProse = isMalf && event.malfunction?.text
+    ? `${prose}\n\n${event.malfunction.text}`
+    : prose;
 
   return (
     <div style={C.overlay}>
@@ -72,7 +75,7 @@ export function DeviceTickPopup({ queue, onAdvance, onDismissAll }) {
         <TextFlagToolbar
           section={flagSection}
           stateLine={flagState}
-          text={prose}
+          text={displayProse}
           nodes={event.traceNodes}
         />
         {event.malfunction?.text && isMalf && (
