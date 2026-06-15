@@ -1144,7 +1144,8 @@ export default function ProfessorSim(){
       if(s.id===LILITH_ID) return processStudentGain(s,LILITH_PASSIVE_GAIN,0); // Lilith only gains passively
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       let gain=rnd(1,3)+skillPassiveBonus+(classSkillFx.passiveBonus||0);
-      gain=Math.max(0,Math.round(gain*oppGainMult*getSupernaturalGainMult(s)*(1+(classSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
+      const asceticMult=campusState?.asceticProtestWeek?0.88:1;
+      gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*getSupernaturalGainMult(s)*(1+(classSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
       if(opposition?.supernatural?.synthesisAlly) gain=Math.max(0,Math.round(gain*1.1));
       // Corruption-driven autonomous eating (willingness made flesh)
       const cTier=getCorruptionTier(s.corruption||0).id;
@@ -1518,6 +1519,10 @@ export default function ProfessorSim(){
     if(evs.length){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
+    }
+    if(campusState?.asceticProtestWeek){
+      setCampusState(prev=>({...prev,asceticProtestWeek:false}));
+      setTimeout(()=>push('🕯️ Ascetic Circle protest fades — campus appetite recovers.'),280);
     }
     // Competitive Gainer: auto-post to group chat each new week
     const priyaCG=updated.find(s=>s.evolvedForm==='competitive_gainer');
@@ -1958,8 +1963,7 @@ export default function ProfessorSim(){
       push(`⚠️ Counter unavailable${hint?`: ${hint}`:''}.`);
       return;
     }
-    const memberId=options.memberId
-      ?? (counterId==='bureaucratic_capture' ? opposition?.aib?.members?.find(m=>m.resolve<=40)?.id : null);
+    const memberId=options.memberId ?? null;
     const evolvedOpMessage=counterId==='evolved_student_op'?getEvolvedOpMessage(students):undefined;
     const archivistFree=counterId==='public_discredit'&&canArchivistFreeDiscredit(students,opposition);
     let echoedWillSpent=false;
@@ -1993,7 +1997,10 @@ export default function ProfessorSim(){
     if(result.message) push(result.message);
     else if(counterId!=='public_discredit') push('⚠️ Counter had no effect — check agenda queue or member resolve.');
     if(result.boardCompromised) setGlobalStats(g=>({...g,boardCompromised:(g.boardCompromised||0)+1}));
-    if(counterId==='feast_bribe'&&adminScrutiny>=90) setGlobalStats(g=>({...g,boardFeastInvestigation:true}));
+    if(counterId==='feast_bribe'&&adminScrutiny>=90){
+      setGlobalStats(g=>({...g,boardFeastInvestigation:true}));
+      push('🍷 Board Feast Investigation — Vance notes the catering invoices. Achievement progress logged.');
+    }
     if(result.openLilithAibHunt&&result.aibMemberId) openLilithAibHunt(result.aibMemberId);
   };
 
@@ -2853,6 +2860,14 @@ export default function ProfessorSim(){
   };
   const openLilithHunt=()=>{
     const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
+    const markedId=opposition?.aib?.markedForHunt;
+    if(markedId){
+      const member=opposition?.aib?.members?.find(m=>m.id===markedId);
+      if(member&&member.stance!=='consumed'&&member.stance!=='removed'){
+        openLilithAibHunt(markedId);
+        return;
+      }
+    }
     const stageId=getStage(lilith.lbs).id;
     if(stageId>=9){
       setLilithHuntState({textLog:[{text:"ROOM 312 — DELIVERY",type:'location'},{text:DELIVERY_SCENE,type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:true,deliveryDone:false,aibTarget:null});
@@ -2990,6 +3005,10 @@ export default function ProfessorSim(){
         aibTarget:null,
         encounter:{...prev.encounter,consumed:true},
         textLog:[...prev.textLog,{text:consumeText,type:'narrative'},{text:`✦ +${gain} lbs · ${aibTarget.name} consumed`,type:'system'}],
+      }));
+      setOpposition(prev=>({
+        ...prev,
+        aib:{...prev.aib,markedForHunt:prev.aib?.markedForHunt===aibTarget.aibMemberId?null:prev.aib?.markedForHunt},
       }));
       return;
     }
@@ -3826,9 +3845,20 @@ export default function ProfessorSim(){
       ns={...ns,relationship:Math.min(100,ns.relationship+3)};
       setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'talk',week)}`),100);
     }else if(action==='echoed_will'){
+      if((ownedSkills.echoed_will||0)<1){
+        push('⚠️ Echoed Will not unlocked.');
+        return;
+      }
+      if(opposition?.meta?.echoedWillSpentWeek===week){
+        push('⚠️ Echoed Will already spent this week — Spirit Pressure and curse reversal share one charge.');
+        return;
+      }
       const fx=echoedWillReverseCurse(opposition,studentId,adminScrutiny);
       if(fx.ok){
-        setOpposition(fx.opposition);
+        setOpposition({
+          ...fx.opposition,
+          meta:{...fx.opposition.meta,echoedWillSpentWeek:week},
+        });
         if(fx.scrutinyDelta) addScrutiny(fx.scrutinyDelta);
         push(fx.message);
         ns={...ns,oppositionBlockedGain:false};
@@ -6806,7 +6836,9 @@ export default function ProfessorSim(){
               </span>
             </div>
           )}
-          <button onClick={startClass} style={C.btn("#186028")}>⏩ Next Week (+5 AP)</button>
+          <button onClick={startClass} style={{...C.btn(opposition?.supernatural?.famineWeek?"#333":"#186028"),opacity:opposition?.supernatural?.famineWeek?0.45:1}} title={opposition?.supernatural?.famineWeek?"Complete a Refeast Ritual first":"Advance the semester"}>
+            {opposition?.supernatural?.famineWeek?"⏸ Famine Week":"⏩ Next Week (+5 AP)"}
+          </button>
           <WalletBadge balance={money} />
           {students.some(s=>s.evolvedForm==='competitive_gainer')&&(
             <button onClick={()=>setCgChatOpen(true)} style={{...C.btn("#7a1530"),fontSize:10,border:"1px solid #e8294a40"}}>💬 Softening Stats</button>
@@ -6836,7 +6868,7 @@ export default function ProfessorSim(){
           {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} setPaperDoll={setPaperDoll} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState}/>}
 
           {/* ── CLASS ACTIONS ── */}
-          {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
+          {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
 
           {/* ── PANTRY / INVENTORY ── */}
           {view==="inventory"&&<InventoryView inventory={inventory} setItemTargetPicker={setItemTargetPicker}/>}
@@ -6999,6 +7031,11 @@ export default function ProfessorSim(){
         brokeScaleIds={brokeScaleIds}
         onBreakScale={(sid)=>setBrokeScaleIds(arr=>arr.includes(sid)?arr:[...arr,sid])}
         onUnlockBigScale={()=>{ setBigScaleUnlocked(true); push("⚖ Ordered a heavy-duty 1000 lb scale."); }}
+        onMandatorySkip={weighInState?.aibMandatory ? ()=>{
+          addScrutiny(12);
+          push(`⚖️ Mandatory AIB weigh-in refused — documentation gap (+12 scrutiny).`);
+          setWeighInState(null);
+        } : undefined}
         week={week}
         campusFattening={!!pharmacistState?.campusFattening}
         campusTier={getCampusNarrativeTier(pharmacistState)}
@@ -7287,6 +7324,7 @@ export default function ProfessorSim(){
         if(!hs) return null;
         const echoedWillAvailable=(ownedSkills.echoed_will||0)>0
           &&!!opposition?.supernatural?.actTriggered
+          &&opposition?.meta?.echoedWillSpentWeek!==week
           &&!!(opposition?.supernatural?.curseQueue||[]).some(c=>c.studentId===hs.id);
         return(
           <HungerInterruptModal

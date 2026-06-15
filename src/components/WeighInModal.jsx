@@ -157,7 +157,7 @@ function DigitalScale({lbs}){
 }
 
 
-export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,week,campusFattening=false,campusTier=0}){
+export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,onMandatorySkip,week,campusFattening=false,campusTier=0}){
   const weighInOpts = { campusFattening: !!campusFattening, campusTier: campusTier || (campusFattening ? 1 : 0), week: week || 1, aibMandatory: !!weighInState?.aibMandatory };
   if(!weighInState) return null;
   const {student,phase,reactionText}=weighInState;
@@ -215,6 +215,11 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
             <div style={{...C.infoBox("rgba(50,10,90,.25)"),fontSize:13,color:"#e0d0b0",lineHeight:1.85,fontStyle:"italic",marginBottom:14}}>
               {introText}
             </div>
+            {weighInState?.aibMandatory && onMandatorySkip && (
+              <button style={{...C.btn("#502030"),width:"100%",marginBottom:8}} onClick={onMandatorySkip}>
+                Refuse documented weigh-in (+12 scrutiny)
+              </button>
+            )}
             <button style={{...C.btn("#5818a8"),width:"100%"}} onClick={showScaleAfter?stepOntoScale:close}>
               {showScaleAfter?(goesDirectlyToBig?"Step onto the heavy-duty scale →":"Step onto the scale →"):"Close ✓"}
             </button>

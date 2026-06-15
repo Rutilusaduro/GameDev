@@ -38,3 +38,7 @@ export function agendaResolveLine(cardId, week) {
   const pool = `opposition.agenda.${cardId}`;
   return renderOppositionLine(pool, { week });
 }
+
+export function counterSuccessLine(counterId) {
+  return renderOppositionLine('opposition.counter.success', { counter: counterId });
+}

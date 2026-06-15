@@ -1,6 +1,7 @@
 import { C } from '../styles.js';
-import { AIB_AGENDA_CARDS, getAvailableCounters, getCounterGateHints, getOversightTelegraph } from '../gameData/opposition.js';
+import { AIB_AGENDA_CARDS, getAvailableCounters, getCounterGateHints, getOversightTelegraph, getAgendaCounterHint } from '../gameData/opposition.js';
 import { getOppositionActSummary, isBoardDormant } from '../gameData/oppositionActs.js';
+import { canArchivistFreeDiscredit } from '../gameData/supernaturalForms.js';
 
 export function OversightView({
   opposition,
@@ -54,7 +55,16 @@ export function OversightView({
 
   const telegraph = getOversightTelegraph(opposition);
   const debuffs = aib.activeDebuffs || {};
-  const discreditable = AIB_AGENDA_CARDS.filter((c) => !aib.deckRemoved.includes(c.id));
+  const canDiscredit = oppositionCtx?.hasMadelineResearcher || oppositionCtx?.hasKylieStream
+    || canArchivistFreeDiscredit(students, opposition);
+  const discreditable = canDiscredit
+    ? AIB_AGENDA_CARDS.filter((c) => !aib.deckRemoved.includes(c.id))
+    : [];
+  const captureTargets = aib.members.filter((m) => m.resolve <= 40 && m.stance !== 'compromised' && m.stance !== 'consumed');
+  const pendingConfiscation = aib.agendaQueue?.some((item) => item.cardId === 'device_confiscation');
+  const markedHuntMember = aib.markedForHunt
+    ? aib.members.find((m) => m.id === aib.markedForHunt)
+    : null;
 
   return (
     <div style={{ padding: 20, maxWidth: 720, margin: '0 auto' }}>
@@ -74,6 +84,21 @@ export function OversightView({
         {opposition.supernatural?.actTriggered && ` · Scarcity ${opposition.supernatural.scarcityPressure}`}
         {opposition.supernatural?.famineWeek && ' · FAMINE WEEK'}
       </div>
+      {opposition.supernatural?.famineWeek && (
+        <div style={{ fontSize: 11, color: '#f88', padding: '10px 12px', background: '#301018', borderRadius: 6, marginBottom: 12, lineHeight: 1.6 }}>
+          🕯️ <strong>Famine Week</strong> — scarcity pressure peaked. Complete a <strong>Refeast Ritual</strong> (4 AP, Class Actions) before the semester can advance.
+        </div>
+      )}
+      {pendingConfiscation && (
+        <div style={{ fontSize: 11, color: '#eaa', padding: '8px 10px', background: '#2a2010', borderRadius: 4, marginBottom: 12 }}>
+          🔧 Device confiscation queued — equip backup gear or counter with Spirit Pressure / Evolved Student Op before it resolves.
+        </div>
+      )}
+      {markedHuntMember && (
+        <div style={{ fontSize: 11, color: '#c8a0d0', padding: '8px 10px', background: '#1a1028', borderRadius: 4, marginBottom: 12 }}>
+          🩸 {markedHuntMember.name} marked for Lilith — open Lilith&apos;s hunt from her student panel.
+        </div>
+      )}
       {telegraph && (
         <div style={{ fontSize: 11, color: '#eaa', padding: '8px 10px', background: '#2a1818', borderRadius: 4, marginBottom: 12 }}>
           {telegraph}
@@ -89,11 +114,15 @@ export function OversightView({
 
       <div style={{ marginBottom: 20 }}>
         <div style={{ fontSize: 10, color: '#888', marginBottom: 8 }}>AGENDA QUEUE</div>
-        {aib.agendaQueue?.length ? aib.agendaQueue.map((item, i) => (
-          <div key={i} style={{ fontSize: 12, color: '#eaa', padding: '8px 10px', background: '#2a1818', borderRadius: 4, marginBottom: 6 }}>
-            {item.label} — resolves week {item.resolvesWeek}
-          </div>
-        )) : <div style={{ fontSize: 12, color: '#6a6' }}>No pending agenda cards.</div>}
+        {aib.agendaQueue?.length ? aib.agendaQueue.map((item, i) => {
+          const hint = getAgendaCounterHint(item.cardId);
+          return (
+            <div key={i} style={{ fontSize: 12, color: '#eaa', padding: '8px 10px', background: '#2a1818', borderRadius: 4, marginBottom: 6 }}>
+              {item.label} — resolves week {item.resolvesWeek}
+              {hint && <span style={{ display: 'block', fontSize: 10, color: '#a88', marginTop: 4 }}>Suggested counter: {hint}</span>}
+            </div>
+          );
+        }) : <div style={{ fontSize: 12, color: '#6a6' }}>No pending agenda cards.</div>}
       </div>
 
       {aib.pendingHearing && (
@@ -125,6 +154,17 @@ export function OversightView({
               <strong>{m.name}</strong> — {m.role}<br />
               <span style={{ color: '#999' }}>Resolve {m.resolve} · {m.stance} · {Math.round(m.weightLbs)} lbs</span>
             </div>
+            {m.resolve <= 40 && m.stance !== 'compromised' && m.stance !== 'consumed' && (
+              <button
+                type="button"
+                disabled={ap < 2}
+                style={{ ...C.btn('#3a4a30'), fontSize: 10, padding: '4px 8px', opacity: ap >= 2 ? 1 : 0.4 }}
+                title="Bureaucratic capture — convert wavering member"
+                onClick={() => onRunCounterOnMember('bureaucratic_capture', m.id)}
+              >
+                Capture
+              </button>
+            )}
             <button
               type="button"
               disabled={ap < 2 || !oppositionCtx?.hasGrowthChamber}
@@ -153,6 +193,12 @@ export function OversightView({
           </div>
         )}
       </div>
+
+      {captureTargets.length > 0 && (
+        <div style={{ fontSize: 10, color: '#8a9', marginBottom: 12 }}>
+          Wavering members (resolve ≤ 40): {captureTargets.map((m) => m.name).join(', ')} — use Capture on their row.
+        </div>
+      )}
 
       <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 10, color: '#888', marginBottom: 8 }}>COUNTERS</div>

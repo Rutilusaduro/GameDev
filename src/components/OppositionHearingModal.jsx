@@ -18,8 +18,10 @@ export function OppositionHearingModal({
     studentLbs: student ? Math.round(student.lbs) : 0,
   };
   const phaseText = phase ? (typeof phase.text === 'function' ? phase.text(ctx) : phase.text) : null;
-  const hasDiscreditPath = students.some((s) => s.evolvedForm === 'competitive_gainer' || s.evolvedForm === 'feedee_creator');
+  const hasDiscreditPath = students.some((s) => s.evolvedForm === 'community_researcher' || s.evolvedForm === 'eating_streamer')
+    || students.some((s) => s.supernaturalForm === 'archivist_skin');
   const hasSpiritPath = students.some((s) => s.supernaturalForm);
+  const testifyWitness = students.find((s) => s.id !== hearingState.studentId && !s.hidden && (s.relationship || 0) >= 70);
   const visibleChoices = phase?.choices?.filter((ch) => {
     if (ch.id === 'discredit' && !hasDiscreditPath) return false;
     if (ch.id === 'spirit' && !hasSpiritPath) return false;
@@ -40,7 +42,9 @@ export function OppositionHearingModal({
         {!done && phase && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
             {visibleChoices.map((ch) => {
-              const locked = ch.relReq && (!student || student.relationship < ch.relReq);
+              const locked = ch.id === 'testify'
+                ? !testifyWitness
+                : !!(ch.relReq && (!student || student.relationship < ch.relReq));
               return (
                 <button
                   key={ch.id}
