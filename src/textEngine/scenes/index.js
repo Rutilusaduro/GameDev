@@ -27,6 +27,7 @@ import './oppositionSalonGallery.js';
 import './opposition/aibHearing.js';
 import './opposition/agendaFire.js';
 import './opposition/counterOutcome.js';
+import './opposition/weighInMandatory.js';
 import './supernatural/ascension.js';
 import './supernatural/thinVoice.js';
 import './supernatural/refeedSurge.js';

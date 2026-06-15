@@ -90,6 +90,7 @@ export function defaultOppositionState() {
       },
       pendingHearing: null,
       emergencyHearingDue: false,
+      pendingForcedWeighInStudentId: null,
     },
     proxies: {
       wellnessCoalition: false,
@@ -103,6 +104,8 @@ export function defaultOppositionState() {
       curseQueue: [],
       ascensionOffered: false,
       famineWeek: false,
+      portionSaintConsumed: false,
+      synthesisAlly: false,
     },
     meta: {
       aibUnlockWeek: null,
@@ -217,14 +220,20 @@ function resolveAgendaEffect(card, students, opposition, rnd = Math.random) {
       effects.oppositionPatch.pendingDeviceConfiscation = true;
       effects.logs.push('🔧 A device will be confiscated unless countered.');
       break;
-    case 'size_review':
+    case 'size_review': {
+      const target = pickRandomVisible(students, rnd);
       effects.oppositionPatch.activeDebuffs = {
         ...opposition.aib.activeDebuffs,
         forcedWeighInWeek: true,
       };
+      if (target) {
+        effects.oppositionPatch.pendingForcedWeighInStudentId = target.id;
+        effects.logs.push(`⚖️ ${target.name} flagged for mandatory class weigh-in.`);
+      }
       effects.scrutinyDelta += 3;
       effects.logs.push('⚖️ Class weigh-in documentation demanded (+3 scrutiny).');
       break;
+    }
     case 'wellness_seminar':
       effects.oppositionPatch.activeDebuffs = {
         ...opposition.aib.activeDebuffs,
@@ -539,6 +548,12 @@ export function processOppositionWeek(opposition, {
         if (fx.oppositionPatch.pendingHearing) {
           next = { ...next, aib: { ...next.aib, pendingHearing: fx.oppositionPatch.pendingHearing } };
         }
+        if (fx.oppositionPatch.pendingForcedWeighInStudentId) {
+          next = {
+            ...next,
+            aib: { ...next.aib, pendingForcedWeighInStudentId: fx.oppositionPatch.pendingForcedWeighInStudentId },
+          };
+        }
       }
     } else {
       stillQueued.push(item);
@@ -587,7 +602,7 @@ export function processOppositionWeek(opposition, {
     logs.push('🚨 Scandal meter critical — emergency Board hearing convened.');
   }
 
-  return { opposition: next, scrutinyDelta, moneyDelta, logs, studentPatches, pendingDeviceConfiscation };
+  return { opposition: next, scrutinyDelta, moneyDelta, logs, studentPatches, pendingDeviceConfiscation, forcedWeighInStudentId: next.aib.pendingForcedWeighInStudentId || null };
 }
 
 export function checkSupernaturalTrigger(opposition, {

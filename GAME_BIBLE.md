@@ -1727,12 +1727,15 @@ ProfessorSim maintains a single string updated on meaningful player actions (`ad
 | `src/views/OversightView.jsx` | Oversight tab UI |
 | `src/components/OppositionHearingModal.jsx` | Hearing modal |
 | `src/components/SupernaturalAscensionModal.jsx` | Second evolution offer |
+| `src/gameData/classroomSkills.js` | Classroom prestige shop (lbs-cost `SKILL_TREE` purchases) |
+| `src/gameData/scarcityTools.js` | Devour, Echoed Will, synthesis endgame helpers |
+| `src/gameData/oppositionCampus.js` | Vance spawns, Portion Saint dining-hall events |
 
 ### 39.2 §29 Acts — **Done**
 
 Act dormancy (weeks 1–7, scrutiny &lt; 25), overlapping acts banner, class transformation pressure, Act I rumor logs, Latent Appetite corruption drift.
 
-### 39.3 §30 AIB — **Partial**
+### 39.3 §30 AIB — **Done**
 
 | Feature | Status |
 |---------|--------|
@@ -1746,9 +1749,9 @@ Act dormancy (weeks 1–7, scrutiny &lt; 25), overlapping acts banner, class tra
 | `faculty_informant` + Madeline suspicion | Done |
 | `wellness_seminar` + saturation Softening | Done |
 | Device confiscation + network disable | Done |
-| Vance campus node spawns | Backlog |
-| `size_review` weigh-in scene | Partial |
-| Classroom `institutional_cover` skill | Backlog |
+| Vance campus node spawns | Done |
+| `size_review` weigh-in scene | Done |
+| Classroom `institutional_cover` skill | Done |
 
 ### 39.4 §31 Proxies — **Done**
 
@@ -1756,19 +1759,19 @@ Wellness Coalition, Accreditation (saturation Softening), Ascetic Circle (Satura
 
 ### 39.5 §32 Supernatural Act — **Partial**
 
-All three trigger paths, ascension modal, 16 thin forms, `memoryMass`, Thin Form student panel, text pools — **Done**. Per-form evolved activity modifiers — **Partial**. 
+All three trigger paths, ascension modal, 16 thin forms, `memoryMass`, Thin Form student panel, per-form evolved activity gain/scarcity/scrutiny hooks, text pools — **Done**.
 
-### 39.6 §33 Scarcity — **Partial**
+### 39.6 §33 Scarcity — **Done**
 
-+5/week pressure, curse queue, Famine Week block, Refeast clear, capture cap 60, banishment path — **Done**. Lilith Saint / synthesis / Devour / Echoed Will reversal — **Backlog**.
++5/week pressure, curse queue, Famine Week block, Refeast clear, capture cap 60, banishment path, Lilith Portion Saint hunt (dining hall), synthesis ally endgame, Devour scarcity damage, Echoed Will curse reversal — **Done**.
 
 ### 39.7 §34 UI & achievements — **Partial**
 
-Oversight, scarcity HUD, hearings, Field Notes, opposition debug — **Done**. Extended achievement set — **Done**.
+Oversight, scarcity HUD, hearings, Field Notes, opposition debug — **Done**. Extended achievement set incl. `lilith_saint`, `synthesis_ally` — **Done**.
 
-### 39.8 §35 Integration — **Partial**
+### 39.8 §35 Integration — **Done**
 
-Week-end hook order, `digestNpc`, informant suspicion — **Done**. Standalone `facultyAffinity` lounge — **Backlog**.
+Week-end hook order, `digestNpc`, informant suspicion, standalone `facultyAffinity` lounge at faculty lounge node — **Done**.
 
 ### 39.9 Fiona §36 / Chloé §37 — **Done**
 

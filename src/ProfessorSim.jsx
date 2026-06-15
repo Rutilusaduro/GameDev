@@ -201,6 +201,16 @@ import {
 } from './gameData/opposition.js';
 import { supernaturalActLine } from './gameData/oppositionText.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason } from './gameData/oppositionIntegration.js';
+import { consumePortionSaint } from './gameData/oppositionCampus.js';
+import {
+  computeClassSkillCurrency, buyClassSkill, aggregateClassSkillEffects, listPurchasableClassSkills,
+} from './gameData/classroomSkills.js';
+import {
+  devourScarcityDamage, echoedWillReverseCurse, checkSynthesisEndgame, applySynthesisAlly,
+} from './gameData/scarcityTools.js';
+import {
+  getSupernaturalActivityBonus, applySupernaturalActivityPressure,
+} from './gameData/supernaturalForms.js';
 import { canSupernaturalEvolve, getSupernaturalFormForStudent, getSupernaturalGainMult, applyRefeedSurge } from './gameData/supernaturalForms.js';
 import {
   defaultSalonState, startSalonSession, salonPickMenu, salonServiceChoice, salonFinishDigestif,
@@ -237,7 +247,7 @@ export default function ProfessorSim(){
   })));
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {
-    money, ap, week, ownedSkills, professorProfile, adminScrutiny,
+    money, ap, week, ownedSkills, ownedClassSkills, facultyAffinity, professorProfile, adminScrutiny,
     globalStats, achievements, bigScaleUnlocked,
   } = player;
   const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
@@ -245,6 +255,8 @@ export default function ProfessorSim(){
   const setAp = (updater) => setPlayer((p) => updatePlayerField(p, 'ap', updater));
   const setWeek = (updater) => setPlayer((p) => updatePlayerField(p, 'week', updater));
   const setOwnedSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedSkills', updater));
+  const setOwnedClassSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedClassSkills', updater));
+  const setFacultyAffinity = (updater) => setPlayer((p) => updatePlayerField(p, 'facultyAffinity', updater));
   const setProfessorProfile = (updater) => setPlayer((p) => updatePlayerField(p, 'professorProfile', updater));
   const setAdminScrutiny = (updater) => setPlayer((p) => updatePlayerField(p, 'adminScrutiny', updater));
   const setGlobalStats = (updater) => setPlayer((p) => updatePlayerField(p, 'globalStats', updater));
@@ -476,7 +488,12 @@ export default function ProfessorSim(){
     if(evolved.length&&evolved.every(s=>s.supernaturalForm)){
       setGlobalStats(g=>g.allThinAscended?g:{...g,allThinAscended:true});
     }
-  },[opposition,students]);
+    if(checkSynthesisEndgame(opposition,students,pharmacistState?.stage) && !opposition?.supernatural?.synthesisAlly){
+      setOpposition(prev=>applySynthesisAlly(prev));
+      setGlobalStats(g=>g.synthesisAlly?g:{...g,synthesisAlly:true});
+      setTimeout(()=>push('✨ Synthesis — Scarcity bends into Hungry Angel. Passive abundance +10%.'),200);
+    }
+  },[opposition,students,pharmacistState?.stage]);
 
   // Process event queue — hold events until class session is done
   useEffect(()=>{
@@ -553,9 +570,11 @@ export default function ProfessorSim(){
   };
 
   const addScrutiny=(n)=>{
+    const classFx=aggregateClassSkillEffects(ownedClassSkills||{});
     const mult=(1-(professorProfile?.traits?.includes("discreet")?0.35:0))
               *(1-(professorProfile?.subject==="philosophy"?0.2:0))
-              *skillScrutinyReduce;
+              *skillScrutinyReduce
+              *(1-(classFx.scrutinyReduce||0));
     const actual=Math.max(0,Math.round(n*mult));
     if(actual>0) setAdminScrutiny(prev=>Math.min(100,prev+actual));
   };
@@ -606,7 +625,26 @@ export default function ProfessorSim(){
     exploration:campusState.exploration||defaultCampusExplorationState(),
     labState, deviceInventory,
     asceticCircle:!!opposition?.proxies?.asceticCircle,
+    opposition,
   });
+
+  const huntPortionSaint=()=>{
+    if(ap<2){push('⚠️ Need 2 AP.');return;}
+    if(campusState.at!=='dining_hall'){push('⚠️ The Portion Saint haunts the dining hall.');return;}
+    if(opposition?.supernatural?.portionSaintConsumed){push('⚠️ Already consumed.');return;}
+    setAp(a=>a-2);
+    setOpposition(prev=>consumePortionSaint(prev));
+    setGlobalStats(g=>({...g,lilithSaint:true}));
+    push('🩸 Lilith devours the Portion Saint — scarcity pressure collapses (−50).');
+  };
+
+  const purchaseClassSkill=(skillId)=>{
+    const currency=computeClassSkillCurrency(students);
+    const result=buyClassSkill(skillId,ownedClassSkills||{},currency);
+    if(!result.ok){push(`⚠️ ${result.reason}`);return;}
+    setOwnedClassSkills(result.owned);
+    push(`🏛️ Classroom upgrade: ${result.skill.label} (${result.spent} lbs prestige).`);
+  };
 
   const grantExplorationReward=(grants)=>{
     if(!grants||!Object.keys(grants).length) return;
@@ -1045,7 +1083,8 @@ export default function ProfessorSim(){
     setWeek(newWeek);
     const scrutinyTier=getScrutinyTier(adminScrutiny);
     const prestigeScore=computePrestigeScore({ week:newWeek, labState, campusSaturation:campusState.saturation, globalStats });
-    const weeklyApBase=5+skillApBonus+prestigeApBonus(prestigeScore)+scrutinyApModifier(adminScrutiny);
+    const classSkillFx=aggregateClassSkillEffects(ownedClassSkills||{});
+    const weeklyApBase=5+skillApBonus+(classSkillFx.apBonus||0)+prestigeApBonus(prestigeScore)+scrutinyApModifier(adminScrutiny);
     const newAp=Math.min(ap+weeklyApBase,20);
     setAp(newAp);
 
@@ -1073,8 +1112,9 @@ export default function ProfessorSim(){
       if(!studentReceivesPassiveGain(s)) return s;
       if(s.id===LILITH_ID) return processStudentGain(s,LILITH_PASSIVE_GAIN,0); // Lilith only gains passively
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
-      let gain=rnd(1,3)+skillPassiveBonus;
-      gain=Math.max(0,Math.round(gain*oppGainMult*getSupernaturalGainMult(s)*withdrawalGainMultiplier(s)));
+      let gain=rnd(1,3)+skillPassiveBonus+(classSkillFx.passiveBonus||0);
+      gain=Math.max(0,Math.round(gain*oppGainMult*getSupernaturalGainMult(s)*(1+(classSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
+      if(opposition?.supernatural?.synthesisAlly) gain=Math.max(0,Math.round(gain*1.1));
       // Corruption-driven autonomous eating (willingness made flesh)
       const cTier=getCorruptionTier(s.corruption||0).id;
       if(cTier===1) gain+=rnd(CORRUPTION_CONFIG.tier2AutoLbs[0],CORRUPTION_CONFIG.tier2AutoLbs[1]);
@@ -1406,6 +1446,17 @@ export default function ProfessorSim(){
     if(oppResult.scrutinyDelta) addScrutiny(oppResult.scrutinyDelta);
     if(oppResult.moneyDelta) setMoney(m=>m+oppResult.moneyDelta);
     [...oppResult.logs,...superTick.logs].forEach((msg,i)=>setTimeout(()=>push(msg),200+i*60));
+    if(oppResult.forcedWeighInStudentId){
+      const wid=oppResult.forcedWeighInStudentId;
+      const ws=updated.find(st=>st.id===wid);
+      setOpposition(prev=>({...prev,aib:{...prev.aib,pendingForcedWeighInStudentId:null}}));
+      if(ws){
+        setTimeout(()=>{
+          push(`⚖️ AIB size review — mandatory weigh-in for ${ws.name}.`);
+          setWeighInState({student:ws,phase:'scene',aibMandatory:true});
+        },320);
+      }
+    }
     if(newlyTriggered&&!nextOpposition.meta?.supernaturalAnnounced){
       const line=supernaturalActLine(newWeek);
       if(line) setTimeout(()=>push(`👻 ${line}`),240);
@@ -1422,6 +1473,7 @@ export default function ProfessorSim(){
     const devotedCount=updated.filter(s=>getTier(s.relationship).id>=3).length;
     if(devotedCount>0) setAdminScrutiny(prev=>Math.max(0,prev-devotedCount));
     if(skillScrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-skillScrutinyPassiveReduce));
+    if(classSkillFx.scrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-classSkillFx.scrutinyPassiveReduce));
     if(evolvedScrutinyReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-evolvedScrutinyReduce));
     const scrutinyMsg=weeklyScrutinyNudge(adminScrutiny,scrutinyTier.id,nextOpposition);
     if(scrutinyMsg) setTimeout(()=>push(scrutinyMsg.message),170);
@@ -1652,11 +1704,16 @@ export default function ProfessorSim(){
     const bonusGain=tree.filter(sk=>skills.includes(sk.id)&&sk.activityGainBonus).reduce((a,b)=>a+(b.activityGainBonus||0),0);
     const bonusRel=tree.filter(sk=>skills.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
     const doubleCharge=tree.find(sk=>skills.includes(sk.id)&&sk.doubleActivityCharge);
-    const rawGain=rnd(meta.gainRange[0],meta.gainRange[1])+bonusGain;
+    const rawGain=rnd(meta.gainRange[0],meta.gainRange[1])+bonusGain+getSupernaturalActivityBonus(s).gainBonus;
     const gain=doubleCharge?rawGain*2:rawGain;
     const relGain=meta.relBonus+bonusRel;
     setAp(a=>a-meta.apCost);
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+gain,relationship:Math.min(100,st.relationship+relGain)}));
+    if(s.supernaturalForm){
+      const pressureFx=applySupernaturalActivityPressure(opposition,s);
+      setOpposition(pressureFx.opposition);
+      if(pressureFx.scrutinyDelta) addScrutiny(pressureFx.scrutinyDelta);
+    }
     push(`✦ ${s.name} — ${meta.label}: +${gain} lbs · +${relGain} rel`);
     setEvolvedActivityModal({student:s,stageIdx,text});
   };
@@ -1861,7 +1918,8 @@ export default function ProfessorSim(){
   const runOppositionCounter=(counterId,options={})=>{
     trackAction(`counter:${counterId}`);
     const oppCtx=buildOppositionContext({
-      students, ownedSkills, labState, pharmacistState, communityResearcherState, lilithUnlocked,
+      students, ownedSkills, ownedClassSkills, facultyAffinity,
+      labState, pharmacistState, communityResearcherState, lilithUnlocked,
     });
     const available=getAvailableCounters(opposition,students,{...oppCtx,lilithUnlocked,pharmacistStage:pharmacistState?.stage??1});
     if(!available.find(c=>c.id===counterId)){
@@ -3675,6 +3733,16 @@ export default function ProfessorSim(){
       ns=talkCalmsHunger(ns,hungerEff,weeklyArms);
       ns={...ns,relationship:Math.min(100,ns.relationship+3)};
       setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'talk',week)}`),100);
+    }else if(action==='echoed_will'){
+      const fx=echoedWillReverseCurse(opposition,studentId,adminScrutiny);
+      if(fx.ok){
+        setOpposition(fx.opposition);
+        if(fx.scrutinyDelta) addScrutiny(fx.scrutinyDelta);
+        push(fx.message);
+        ns={...ns,oppositionBlockedGain:false};
+      }else{
+        push('⚠️ Echoed Will found no curse to reverse.');
+      }
     }
     setStudents(prev=>prev.map(st=>st.id===studentId?ns:st));
     setHungerInterrupt(null);
@@ -5282,6 +5350,11 @@ export default function ProfessorSim(){
             corruption:addCorruption(ns,effect.corruption||0),
           };
           setTimeout(()=>push(`🩸 ${ns.name} has changed. Something in her eyes is different now.`),200);
+          if(opposition?.supernatural?.actTriggered){
+            const sl=1+Math.floor((player.spiritXp||0)/SPIRIT_XP_PER_LEVEL);
+            setOpposition(prev=>devourScarcityDamage(prev,sl));
+            push('👁 Devour tears a hole in Scarcity\'s counting — pressure eases.');
+          }
         } else if(effect.corruption){
           ns={...ns,corruption:addCorruption(ns,effect.corruption)};
         }
@@ -6566,7 +6639,7 @@ export default function ProfessorSim(){
         <div style={C.main}>
 
           {/* ── CLASS VIEW ── */}
-          {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
+          {view==="class"&&<ClassView view={view} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
 
           {/* ── STUDENT DETAIL ── */}
           {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} setPaperDoll={setPaperDoll} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState}/>}
@@ -6619,6 +6692,11 @@ export default function ProfessorSim(){
             deviceInventory={deviceInventory}
             useCampusDevice={useCampusDevice}
             dismissCampusEncounter={dismissCampusEncounter}
+            facultyAffinity={facultyAffinity}
+            setFacultyAffinity={setFacultyAffinity}
+            portionSaintAvailable={lilithUnlocked&&!!opposition?.supernatural?.actTriggered&&!opposition?.supernatural?.portionSaintConsumed&&campusState.at==='dining_hall'&&(opposition?.supernatural?.scarcityPressure||0)>=35}
+            onHuntPortionSaint={huntPortionSaint}
+            ap={ap}
           />}
 
 {/* ── SKILL TREE ── */}
@@ -6626,7 +6704,7 @@ export default function ProfessorSim(){
 
           {view==="achievements"&&<AchievementsView achievements={achievements}/>}
 
-          {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} week={week} lilithUnlocked={lilithUnlocked} pharmacistStage={pharmacistState?.stage??1} oppositionCtx={buildOppositionContext({students,ownedSkills,labState,pharmacistState,communityResearcherState,lilithUnlocked})} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onStartHearing={startOppositionHearing} onClose={()=>setView('class')}/>}
+          {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} week={week} lilithUnlocked={lilithUnlocked} pharmacistStage={pharmacistState?.stage??1} oppositionCtx={buildOppositionContext({students,ownedSkills,ownedClassSkills,facultyAffinity,labState,pharmacistState,communityResearcherState,lilithUnlocked})} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onStartHearing={startOppositionHearing} onClose={()=>setView('class')}/>}
 
         </div>
 
@@ -6997,6 +7075,9 @@ export default function ProfessorSim(){
       {hungerInterrupt&&(()=>{
         const hs=students.find(st=>st.id===hungerInterrupt.studentId);
         if(!hs) return null;
+        const echoedWillAvailable=(ownedSkills.echoed_will||0)>0
+          &&!!opposition?.supernatural?.actTriggered
+          &&!!(opposition?.supernatural?.curseQueue||[]).some(c=>c.studentId===hs.id);
         return(
           <HungerInterruptModal
             student={hs}
@@ -7013,6 +7094,8 @@ export default function ProfessorSim(){
             }}
             onDeny={()=>finishHungerInterrupt(hs.id,'deny')}
             onTalk={()=>finishHungerInterrupt(hs.id,'talk')}
+            echoedWillAvailable={echoedWillAvailable}
+            onEchoedWill={()=>finishHungerInterrupt(hs.id,'echoed_will')}
           />
         );
       })()}

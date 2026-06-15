@@ -26,6 +26,8 @@ export function getEvolvedOpMessage(students) {
 export function buildOppositionContext({
   students = [],
   ownedSkills = {},
+  ownedClassSkills = {},
+  facultyAffinity = {},
   labState = null,
   pharmacistState = null,
   communityResearcherState = null,
@@ -34,15 +36,17 @@ export function buildOppositionContext({
   const relMax = students.reduce((m, s) => Math.max(m, s.relationship || 0), 0);
   const suspicion = communityResearcherState?.totalSuspicion ?? 0;
   const cultStage = pharmacistState?.cult?.stage ?? pharmacistState?.stage ?? 0;
+  const facultyAffinityScore = Object.values(facultyAffinity || {}).reduce((a, v) => a + (v || 0), 0);
   return {
     lilithUnlocked,
     pharmacistStage: pharmacistState?.stage ?? 0,
     cultStage,
     hasGrowthChamber: !!labState?.installedInventions?.growth_accelerator_chamber,
     networkStage: labState?.stage ?? 1,
-    hasInstitutionalCover: !!(ownedSkills?.institutional_cover),
+    hasInstitutionalCover: !!(ownedClassSkills?.institutional_cover || ownedSkills?.institutional_cover),
     hasEchoedWill: (ownedSkills?.echoed_will || 0) > 0,
     relMaxStudent: relMax,
+    facultyAffinityScore,
     hasMadelineResearcher: students.some((s) => s.evolvedForm === 'community_researcher'),
     hasKylieStream: students.some((s) => s.evolvedForm === 'eating_streamer'),
     hasReneeCulinary: students.some((s) => s.id === 10 && !!s.evolvedForm),
@@ -66,7 +70,9 @@ export function counterGateReason(counter, ctx) {
     case 'spirit_pressure':
       return ctx.hasEchoedWill ? null : 'Requires Echoed Will (Gluttony tree)';
     case 'faculty_testimony':
-      return ctx.relMaxStudent >= 60 ? null : 'Requires a student at 60+ relationship (faculty goodwill)';
+      return (ctx.facultyAffinityScore ?? 0) >= 60 || ctx.relMaxStudent >= 60
+        ? null
+        : 'Requires faculty affinity 60+ or devoted student goodwill';
     case 'feast_bribe':
       return (ctx.hasReneeCulinary || ctx.hasTiffanyFeast) ? null : 'Requires Reneé or Tiffany evolved path';
     case 'network_misdirect':

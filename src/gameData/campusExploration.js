@@ -7,7 +7,7 @@ import { CAMPUS_SOFT_FLAVOR } from './pharmacistCampus.js';
 import { availableSecretsAtNode, isSecretSolved, secretsSolvedCount } from './campusSecrets.js';
 import { getExplorationFind, pickExplorationFind, travelFindPool, formatExplorationGrant } from './campusIngredients.js';
 import { ELARA_ID, getElaraQuest, elaraQuestProgressLine } from './relicHunter.js';
-import '../textEngine/scenes/campusExplorationText.js';
+import { rollVanceCampusEvent, rollPortionSaintEvent } from './oppositionCampus.js';
 import { renderCampusSighting, renderCampusTravelLine, renderCampusFindFlavor } from '../textEngine/scenes/campusExplorationText.js';
 import { maybeRollDeviceEncounter, maybeRollDeviceFlavor } from './campusDeviceEncounters.js';
 
@@ -79,6 +79,7 @@ export function buildExplorationContext({
   labState = null,
   deviceInventory = null,
   asceticCircle = false,
+  opposition = null,
 }) {
   const campusTier = getCampusNarrativeTier(pharmacistState);
   const avgLbs = students.length
@@ -98,6 +99,7 @@ export function buildExplorationContext({
     labState,
     deviceInventory,
     asceticCircle,
+    opposition,
   };
 }
 
@@ -127,6 +129,15 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
     ];
     lines.push(pick(rng, protests));
     effects.asceticShame = true;
+  }
+
+  const vanceLine = rollVanceCampusEvent(nodeId, ctx.opposition, rng);
+  if (vanceLine) lines.push(vanceLine);
+
+  const saintLine = rollPortionSaintEvent(nodeId, ctx.opposition, ctx.lilithUnlocked, rng);
+  if (saintLine) {
+    lines.push(saintLine);
+    effects.portionSaintSpotted = true;
   }
 
   if (rng() < 0.28) {

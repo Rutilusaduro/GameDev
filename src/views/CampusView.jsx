@@ -9,6 +9,7 @@ import { availableSecretsAtNode } from '../gameData/campusSecrets.js';
 import { availableElaraQuests } from '../gameData/relicHunter.js';
 import { CAMPUS_NARRATIVE_LABELS } from '../gameData/pharmacistCampus.js';
 import { CampusDeviceEncounterPanel } from '../components/CampusDeviceEncounterPanel.jsx';
+import { FacultyLoungeView } from './FacultyLoungeView.jsx';
 
 const MAP_W = 420, MAP_H = 300;
 const px = (x) => (x / 100) * MAP_W;
@@ -96,6 +97,11 @@ export function CampusView({
   deviceInventory,
   useCampusDevice,
   dismissCampusEncounter,
+  facultyAffinity,
+  setFacultyAffinity,
+  portionSaintAvailable,
+  onHuntPortionSaint,
+  ap,
 }){
   const node = CAMPUS_NODES[campusState.at] || CAMPUS_NODES["office"];
   const exploration = campusState.exploration || {};
@@ -199,6 +205,21 @@ export function CampusView({
               onUseDevice={useCampusDevice}
               onDismiss={dismissCampusEncounter}
             />
+          )}
+          {campusState.at === 'faculty_lounge' && setFacultyAffinity && (
+            <div style={{ marginBottom: 10 }}>
+              <FacultyLoungeView facultyAffinity={facultyAffinity} setFacultyAffinity={setFacultyAffinity} />
+            </div>
+          )}
+          {portionSaintAvailable && onHuntPortionSaint && (
+            <div style={{ ...C.card, borderColor: '#4a3060', marginBottom: 8, padding: '10px 12px' }}>
+              <div style={{ fontSize: 11, color: '#c0a0e0', marginBottom: 8, lineHeight: 1.6 }}>
+                Lilith senses the Portion Saint in the dining hall — a possessed liaison counting bites.
+              </div>
+              <button type="button" style={{ ...C.btn('#5a2040'), width: '100%', fontSize: 11 }} disabled={ap < 2} onClick={onHuntPortionSaint}>
+                🩸 Lilith hunts the Portion Saint (2 AP) — scarcity −50
+              </button>
+            </div>
           )}
           <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:8}}>
             <button style={C.btn("#1e3a12")} onClick={lookAround}>👁 Look around</button>
