@@ -14,8 +14,6 @@ registerPool('ge.onset', [
   ] },
   { when: { featureId: 'digest_stageup' }, weight: 4, text: [
     '{subject.name} {ge.digestOnsetLine}.',
-    '{ge.causeAction}{ge.causeAnchor} — {ge.firstSensation}.',
-    'The change begins{ge.causeAnchor}: {ge.firstSensation}.',
   ] },
   { when: {}, text: [
     '{ge.causeAction}{ge.causeAnchor} — {ge.firstSensation}.',
@@ -153,6 +151,9 @@ registerPool('ge.causeAnchor', [
 // VERB PHRASE — digest onset line (subject.name + this slot = full sentence)
 registerPool('ge.digestOnsetLine', [
   { when: { featureId: 'digest_stageup' }, text: [
+    'wakes on Sunday and feels the difference before she reaches the mirror',
+    'notices getting into her bra takes an extra tug at the clasp',
+    'finds last week\'s jeans reluctant at the waist',
     'feels the week\'s meals finally becoming visible curve',
     'registers weight the scale has been hinting at all week',
     'feels her body quietly tip past a familiar line',
