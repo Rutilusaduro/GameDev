@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { C } from '../styles.js';
 import { getStage } from '../gameData/stages.js';
 import { formatTextFlagExport, proseToFlagNodes, traceToFlagNodes, buildStateLine } from '../textEngine/textFlagFormat.js';
+import { addTextFlag } from '../gameData/textFlagStore.js';
 import { useTextFlags } from '../contexts/TextFlagContext.jsx';
 
 const inputStyle = {
@@ -69,6 +70,7 @@ export function TextFlagToolbar({
   const [open, setOpen] = useState(false);
   const [anno, setAnno] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   if (!enabled || !text?.trim()) return null;
 
@@ -89,17 +91,21 @@ export function TextFlagToolbar({
       text: nodes[idx]?.text || '',
       note: String(note || '').trim(),
     }));
-    const payload = formatTextFlagExport([{
+    const entry = {
       id: `${section}_${Date.now()}`,
       section,
       stateLine,
       text,
       problems,
-    }]);
+    };
+    addTextFlag(entry);
+    const payload = formatTextFlagExport([entry]);
     navigator.clipboard?.writeText(payload).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
     setAnno(null);
     setOpen(false);
   };
@@ -129,7 +135,7 @@ export function TextFlagToolbar({
               disabled={!anno || !Object.keys(anno.notes).length}
               onClick={saveAndCopy}
             >
-              {copied ? '✓ Copied' : '📋 Save & copy'}
+              {copied ? '✓ Copied' : saved ? '✓ Saved' : '📋 Save & copy'}
             </button>
             <button type="button" style={C.smBtn} onClick={() => { setOpen(false); setAnno(null); }}>Cancel</button>
           </div>

@@ -5,8 +5,8 @@
 // dialogue node (engine trace provenance: module key + text); check
 // a node, say what's wrong with it, save. Done → review all flags →
 // copy-all payload (state + text + per-node problems) for pasting
-// into a tuning session. Flags live in component state only —
-// closing the lab wipes the collection.
+// into a tuning session. Saves also append to the persistent flag log
+// (localStorage) — export the full log from Debug → Download .txt.
 // ═══════════════════════════════════════════════════════════════
 import { useState } from 'react';
 import { C } from '../styles.js';
@@ -16,6 +16,8 @@ import { getCorruptionTier } from '../gameData/corruption.js';
 import { LILITH_ID } from '../gameData/lilith.js';
 import { DEVICES } from '../gameData/devices.js';
 import { createContext, render, pick } from '../textEngine/engine.js';
+import { formatTextFlagExport } from '../textEngine/textFlagFormat.js';
+import { addTextFlag } from '../gameData/textFlagStore.js';
 import {
   renderWeighInIntro, renderWeighInReaction,
   renderWeighInBreak, renderWeighInSwap, renderWeighInPurchase,
@@ -204,15 +206,6 @@ function rollSample(params) {
   return { section: v.section, stateLine, text, nodes, id: `${Date.now()}_${Math.random()}` };
 }
 
-function formatFlagged(flagged) {
-  return flagged.map((f, i) => {
-    const problems = f.problems.length
-      ? `\n--- problems ---\n${f.problems.map((p) => `[${p.key}] "${p.text}" → ${p.note || "(flagged, no note)"}`).join("\n")}`
-      : "";
-    return `=== FLAGGED ${i + 1}/${flagged.length} ===\nsection: ${f.section}\nstate: ${f.stateLine}\n---\n${f.text}${problems}`;
-  }).join("\n\n");
-}
-
 const selStyle = { background: "#181820", color: "#e0e0e0", border: "1px solid #444", borderRadius: 4, padding: "3px 4px", fontSize: 11, maxWidth: 150 };
 const inputStyle = { background: "#181820", color: "#e0e0e0", border: "1px solid #555", borderRadius: 4, padding: "4px 6px", fontSize: 11, flex: 1 };
 
@@ -268,14 +261,16 @@ export function DialogueLab({ onClose }) {
     const problems = Object.entries(anno.notes).map(([idx, note]) => ({
       key: sample.nodes[idx].key, text: sample.nodes[idx].text, note: note.trim(),
     }));
+    const entry = { id: sample.id, section: sample.section, stateLine: sample.stateLine, text: sample.text, problems };
+    addTextFlag(entry);
     setFlagged((prev) => prev.some((f) => f.id === sample.id)
-      ? prev.map((f) => (f.id === sample.id ? { ...f, problems } : f))
-      : [...prev, { id: sample.id, section: sample.section, stateLine: sample.stateLine, text: sample.text, problems }]);
+      ? prev.map((f) => (f.id === sample.id ? entry : f))
+      : [...prev, entry]);
     setAnno(null);
   };
   const isFlagged = (sample) => flagged.some((f) => f.id === sample.id);
   const copyAll = () => {
-    navigator.clipboard?.writeText(formatFlagged(flagged)).then(() => {
+    navigator.clipboard?.writeText(formatTextFlagExport(flagged)).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     });
