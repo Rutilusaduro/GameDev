@@ -2972,7 +2972,8 @@ export default function ProfessorSim(){
     setLilithKillCount(k=>k+1);
     if(isAib){
       setOpposition(prev=>removeConsumedAibMember(prev,aibTarget.aibMemberId));
-      push(`🩸 Lilith devours ${aibTarget.name} — board member removed (+${gain} lbs)`);
+      addScrutiny(-15);
+      push(`🩸 Lilith devours ${aibTarget.name} — board member removed (+${gain} lbs, −15 scrutiny)`);
       const consumeText=getConsumeText(stageId);
       setLilithHuntState(prev=>({
         ...prev,
