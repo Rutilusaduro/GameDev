@@ -96,6 +96,7 @@ function TopicCard({ topic, student, skillEffects, onSelect, disabled }){
           const parts=[];
           if(topic.effect.rel)   parts.push(`+${topic.effect.rel} rel`);
           if(topic.effect.corruption) parts.push(`+${topic.effect.corruption} corruption`);
+          if(topic.suggestNote) parts.push(topic.suggestNote);
           if(topic.effect.cals)  parts.push(`~${(topic.effect.cals/1000).toFixed(0)}k cal`);
           return parts.length ? <div style={{fontSize:9,color:`${col}88`,marginTop:2}}>{parts.join(" · ")}</div> : null;
         })()}
@@ -149,7 +150,7 @@ function ResponseDisplay({ topic, text, student, week, onClose }){
 
 // ── main modal ────────────────────────────────────────────────
 
-export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevouring, onClose, onApplyEffect, campusFattening = false, campusTier = 0 }){
+export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevouring, onArmMesmerizing, onClose, onApplyEffect, campusFattening = false, campusTier = 0 }){
   const [activeResponse, setActiveResponse] = useState(null); // {topic, text}
   const corTier = getCorruptionTier(student.corruption || 0);
   const eff     = skillEffects || {};
@@ -178,14 +179,14 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
   const handleBack = () => {
     // Apply effect when going back if we got a response (not a refusal)
     if(activeResponse && !activeResponse.refused){
-      onApplyEffect(activeResponse.topic.effect || {});
+      onApplyEffect(activeResponse.topic.effect || {}, { topicId: activeResponse.topic.id });
     }
     setActiveResponse(null);
   };
 
   const handleCloseFromResponse = () => {
     if(activeResponse && !activeResponse.refused){
-      onApplyEffect(activeResponse.topic.effect || {});
+      onApplyEffect(activeResponse.topic.effect || {}, { topicId: activeResponse.topic.id });
     }
     onClose();
   };
@@ -238,6 +239,22 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
               : weeklyArms?.devouringStudentId === student.id
                 ? "😈 Devouring Presence armed (click to disarm)"
                 : "😈 Arm Devouring Presence — her hunger becomes an event this week"}
+          </button>
+        )}
+
+        {eff.mesmerizingAura && !activeResponse && onArmMesmerizing && (
+          <button
+            type="button"
+            style={{
+              ...C.btn(weeklyArms?.mesmerizingStudentId === student.id ? "#5030a0" : "#281848"),
+              width: "100%",
+              marginBottom: 12,
+            }}
+            onClick={onArmMesmerizing}
+          >
+            {weeklyArms?.mesmerizingStudentId === student.id
+              ? "🌀 Mesmerizing Aura armed (click to disarm)"
+              : "🌀 Arm Mesmerizing Aura — +35% to her rolls this week"}
           </button>
         )}
 

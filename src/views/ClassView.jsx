@@ -8,21 +8,23 @@ import { EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
 import { SKILL_TREE } from '../gameData/skills.js';
 import { getAttitude, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { addictionTint } from '../gameData/hungerAddiction.js';
-import { computeClassSkillCurrency, canBuyClassSkill } from '../gameData/classroomSkills.js';
+import { computeClassSkillCurrency, computeClassSkillTotal, computeClassSkillSpent, canBuyClassSkill } from '../gameData/classroomSkills.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-const TIER_LABELS = ['I', 'II', 'III', 'IV', 'V'];
+const TIER_LABELS = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
 function ClassroomSkillsPanel({ students, ownedClassSkills, onPurchase }) {
-  const currency = computeClassSkillCurrency(students);
   const owned = ownedClassSkills || {};
-  const tiers = [1, 2, 3, 4, 5];
+  const total = computeClassSkillTotal(students);
+  const spent = computeClassSkillSpent(owned);
+  const currency = computeClassSkillCurrency(students, owned);
+  const tiers = [1, 2, 3, 4, 5, 6];
 
   return (
     <div style={{ ...C.card, borderColor: '#2a1840', marginBottom: 14, padding: '12px 14px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8, flexWrap: 'wrap', gap: 8 }}>
         <div style={{ fontSize: 10, color: '#a080d0', letterSpacing: 1.5 }}>CLASSROOM PRESTIGE</div>
-        <div style={{ fontSize: 11, color: '#c0a0e0' }}>{currency} lbs prestige available</div>
+        <div style={{ fontSize: 11, color: '#c0a0e0' }}>{currency} lbs available · {spent} spent of {total}</div>
       </div>
       <div style={{ fontSize: 10, color: '#605080', marginBottom: 10, lineHeight: 1.5 }}>
         Spend cumulative class weight gain on permanent room upgrades. Institutional Cover unlocks AIB counter paths.
@@ -36,7 +38,7 @@ function ClassroomSkillsPanel({ students, ownedClassSkills, onPurchase }) {
             <div style={{ display: 'grid', gap: 6 }}>
               {skills.map((sk) => {
                 const purchased = !!owned[sk.id];
-                const check = purchased ? null : canBuyClassSkill(sk.id, owned, currency);
+                const check = purchased ? null : canBuyClassSkill(sk.id, owned, students);
                 const affordable = check?.ok;
                 return (
                   <div

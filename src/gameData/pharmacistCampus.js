@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { TESTER_START_LBS } from './cultivator.js';
+import { saturationNewStudentLbsBonus } from './campusSaturation.js';
 import { getCampusNarrativeTier, CAMPUS_NARRATIVE_LABELS } from './pharmacistIngredients.js';
 
 export { CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier };
@@ -20,14 +21,15 @@ export function getCampusFatteningTier(pharmacistState) {
   return CAMPUS_FATTENING_BY_STAGE[pharmacistState.stage] || CAMPUS_FATTENING_BY_STAGE[2];
 }
 
-export function getCampusTesterStartLbs(pharmacistState) {
+export function getCampusTesterStartLbs(pharmacistState, saturationTier = 0) {
   const tier = getCampusFatteningTier(pharmacistState);
-  if (!tier) return TESTER_START_LBS;
-  return TESTER_START_LBS + tier.testerBonus;
+  const base = tier ? TESTER_START_LBS + tier.testerBonus : TESTER_START_LBS;
+  return base + saturationNewStudentLbsBonus(saturationTier);
 }
 
-export function getCampusHiveRecruitLbsBonus(pharmacistState) {
-  return getCampusFatteningTier(pharmacistState)?.hiveRecruitBonus ?? 0;
+export function getCampusHiveRecruitLbsBonus(pharmacistState, saturationTier = 0) {
+  const campus = getCampusFatteningTier(pharmacistState)?.hiveRecruitBonus ?? 0;
+  return campus + saturationNewStudentLbsBonus(saturationTier);
 }
 
 export function rollCampusPassiveLbs(pharmacistState, rndFn) {
