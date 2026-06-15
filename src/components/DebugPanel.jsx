@@ -6,6 +6,8 @@ import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
 import { DialogueLab } from './DialogueLab.jsx';
 import { BugReportModal } from './BugReportModal.jsx';
 import { useTextFlags } from '../contexts/TextFlagContext.jsx';
+import { useTextFlagLog } from '../hooks/useTextFlagLog.js';
+import { clearTextFlags, downloadTextFlagsTxt } from '../gameData/textFlagStore.js';
 import { buildGameSnapshot, serializeBugReport } from '../gameData/bugReport.js';
 import { defaultOppositionState } from '../gameData/opposition.js';
 
@@ -63,8 +65,10 @@ export function DebugPanel({
   eventQueueLen,
 }) {
   const { enabled: textFlagsOn, setEnabled: setTextFlagsOn } = useTextFlags();
+  const savedFlags = useTextFlagLog();
   const [textSample, setTextSample] = useState(null);
   const [labOpen, setLabOpen] = useState(false);
+  const [flagExportMsg, setFlagExportMsg] = useState('');
   const [tab, setTab] = useState('state');
   const [notesPreview, setNotesPreview] = useState(null);
   const [fieldNotesOpen, setFieldNotesOpen] = useState(false);
@@ -132,6 +136,44 @@ export function DebugPanel({
                 onClick={() => setTextSample(sampleTextEngine())}>📜 Sample hive intake</button>
               <button type="button" style={{ ...C.smBtn, background: 'rgba(60,100,140,0.4)', marginLeft: 6 }}
                 onClick={() => setLabOpen(true)}>🎲 Dialogue Lab</button>
+              <div style={{ marginTop: 10, paddingTop: 8, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                <div style={{ fontSize: 10, color: '#888', marginBottom: 6 }}>
+                  DIALOGUE FLAG LOG · {savedFlags.length} saved entr{savedFlags.length === 1 ? 'y' : 'ies'}
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'center' }}>
+                  <button
+                    type="button"
+                    style={{ ...C.smBtn, background: savedFlags.length ? 'rgba(90,70,40,0.55)' : 'rgba(40,40,40,0.4)' }}
+                    disabled={!savedFlags.length}
+                    onClick={() => {
+                      const ok = downloadTextFlagsTxt({ week });
+                      setFlagExportMsg(ok ? 'Downloaded dialogue-flags .txt' : 'No saved flags to export');
+                      setTimeout(() => setFlagExportMsg(''), 2500);
+                    }}
+                  >
+                    ⬇ Download flag log (.txt)
+                  </button>
+                  <button
+                    type="button"
+                    style={{ ...C.smBtn, background: 'rgba(80,40,40,0.35)' }}
+                    disabled={!savedFlags.length}
+                    onClick={() => {
+                      if (!window.confirm(`Clear all ${savedFlags.length} saved dialogue flags?`)) return;
+                      clearTextFlags();
+                      setFlagExportMsg('Flag log cleared');
+                      setTimeout(() => setFlagExportMsg(''), 2500);
+                    }}
+                  >
+                    Clear log
+                  </button>
+                  {flagExportMsg && (
+                    <span style={{ fontSize: 10, color: '#c9a060' }}>{flagExportMsg}</span>
+                  )}
+                </div>
+                <div style={{ fontSize: 9, color: '#666', marginTop: 6, lineHeight: 1.45 }}>
+                  Popup 🚩 saves and Dialogue Lab 💾 Save flag append here (persists across sessions). Export when ready for tuning.
+                </div>
+              </div>
               {labOpen && <DialogueLab onClose={() => setLabOpen(false)} />}
               {textSample && (
                 <pre style={{ fontSize: 10, color: '#c8b8e0', whiteSpace: 'pre-wrap', lineHeight: 1.6, marginTop: 8, maxHeight: 240, overflowY: 'auto', background: 'rgba(0,0,0,0.3)', padding: 8, borderRadius: 6 }}>
