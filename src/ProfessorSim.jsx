@@ -193,11 +193,13 @@ import { SalonAppetitModal } from './components/SalonAppetitModal.jsx';
 import { ArtisanGalleryModal } from './components/ArtisanGalleryModal.jsx';
 import { OversightView } from './views/OversightView.jsx';
 import { SupernaturalAscensionModal } from './components/SupernaturalAscensionModal.jsx';
+import { OppositionHearingModal } from './components/OppositionHearingModal.jsx';
+import { pickHearingEnding, REMOVAL_HEARING, EMERGENCY_HEARING } from './gameData/oppositionHearings.js';
 import {
   defaultOppositionState, processOppositionWeek, runAibCounter, checkSupernaturalTrigger,
   getOppositionGainMult, tickSupernaturalWeek,
 } from './gameData/opposition.js';
-import { canSupernaturalEvolve, getSupernaturalFormForStudent } from './gameData/supernaturalForms.js';
+import { canSupernaturalEvolve, getSupernaturalFormForStudent, getSupernaturalGainMult, applyRefeedSurge } from './gameData/supernaturalForms.js';
 import {
   defaultSalonState, startSalonSession, salonPickMenu, salonServiceChoice, salonFinishDigestif,
 } from './gameData/chloeSalon.js';
@@ -405,6 +407,7 @@ export default function ProfessorSim(){
   const [galleryState, setGalleryState] = useState(null);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [supernaturalModalOpen, setSupernaturalModalOpen] = useState(false);
+  const [hearingState, setHearingState] = useState(null);
   // fairDayState: { studentId, stageIdx, phase:'weighin'|'judging'|'afterparty'|'done',
   //   influenceKey, weighInChoice:null, weighInResultText:null, weighInGain:0,
   //   afterpartyChoice:null, afterpartyResultText:null, totalGain:0, relBonus:0 }
@@ -552,6 +555,7 @@ export default function ProfessorSim(){
     students, pharmacistState, week, lilithUnlocked,
     exploration:campusState.exploration||defaultCampusExplorationState(),
     labState, deviceInventory,
+    asceticCircle:!!opposition?.proxies?.asceticCircle,
   });
 
   const grantExplorationReward=(grants)=>{
@@ -614,6 +618,7 @@ export default function ProfessorSim(){
     const ctx=getCampusExplorationCtx();
     const { lines, effects }=rollTravelExploration(nodeId,ctx);
     const extra=[];
+    if(effects.asceticShame) addScrutiny(2);
     if(effects.ingredientGrant||effects.foodGrant) grantExplorationReward({...effects.ingredientGrant,...(effects.foodGrant?{foodId:effects.foodGrant}:{})});
     if(Math.random()<CAMPUS_CONFIG.itemFindChance*0.5){
       const item=rollWeeklyItem();
@@ -1001,12 +1006,20 @@ export default function ProfessorSim(){
     }
     const oppGainMult=getOppositionGainMult(opposition);
     let updated=students.map(s=>{
+      if((s.aibSuspensionWeeks||0)>0){
+        const w=s.aibSuspensionWeeks-1;
+        if(w<=0){
+          const restoreHidden=s.wasHiddenBeforeSuspension??(s.id===LILITH_ID||s.id===ELARA_ID);
+          return {...s,aibSuspensionWeeks:0,hidden:restoreHidden,wasHiddenBeforeSuspension:undefined};
+        }
+        return {...s,aibSuspensionWeeks:w};
+      }
       if(s.oppositionBlockedGain) return {...s,oppositionBlockedGain:false};
       if(!studentReceivesPassiveGain(s)) return s;
       if(s.id===LILITH_ID) return processStudentGain(s,LILITH_PASSIVE_GAIN,0); // Lilith only gains passively
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       let gain=rnd(1,3)+skillPassiveBonus;
-      gain=Math.max(0,Math.round(gain*oppGainMult*withdrawalGainMultiplier(s)));
+      gain=Math.max(0,Math.round(gain*oppGainMult*getSupernaturalGainMult(s)*withdrawalGainMultiplier(s)));
       // Corruption-driven autonomous eating (willingness made flesh)
       const cTier=getCorruptionTier(s.corruption||0).id;
       if(cTier===1) gain+=rnd(CORRUPTION_CONFIG.tier2AutoLbs[0],CORRUPTION_CONFIG.tier2AutoLbs[1]);
@@ -1269,6 +1282,7 @@ export default function ProfessorSim(){
       students:updated,
       campusSaturation:nextSaturation?.score??campusState.saturation?.score??0,
     });
+    const wasAibUnlocked=!!opposition?.aib?.unlocked;
     const newlyTriggered=!wasActTriggered&&nextOpposition.supernatural.actTriggered;
     const oppResult=processOppositionWeek(nextOpposition,{week:newWeek,scrutiny:adminScrutiny,students:updated,rnd});
     nextOpposition=oppResult.opposition;
@@ -1290,6 +1304,27 @@ export default function ProfessorSim(){
       }
     }
     setOpposition(nextOpposition);
+    if(!wasAibUnlocked&&nextOpposition.aib.unlocked) setGlobalStats(g=>({...g,aibUnlocked:true}));
+    if(newlyTriggered) setGlobalStats(g=>({...g,supernaturalAct:true}));
+    let hearingToOpen=null;
+    if(nextOpposition.aib.pendingHearing){
+      hearingToOpen={
+        type:'removal',
+        studentId:nextOpposition.aib.pendingHearing.studentId,
+        phaseIdx:0,history:[],log:[],done:false,endingText:null,
+      };
+      nextOpposition={...nextOpposition,aib:{...nextOpposition.aib,pendingHearing:null}};
+      setOpposition(nextOpposition);
+    }else if(nextOpposition.aib.emergencyHearingDue){
+      hearingToOpen={
+        type:'emergency',
+        studentId:null,
+        phaseIdx:0,history:[],log:[],done:false,endingText:null,
+      };
+      nextOpposition={...nextOpposition,aib:{...nextOpposition.aib,emergencyHearingDue:false}};
+      setOpposition(nextOpposition);
+    }
+    if(hearingToOpen) setHearingState(hearingToOpen);
     if(oppResult.scrutinyDelta) addScrutiny(oppResult.scrutinyDelta);
     if(oppResult.moneyDelta) setMoney(m=>m+oppResult.moneyDelta);
     [...oppResult.logs,...superTick.logs].forEach((msg,i)=>setTimeout(()=>push(msg),200+i*60));
@@ -1459,7 +1494,7 @@ export default function ProfessorSim(){
     if(capstone){
       if(ap<capstone.apCost){push(`⚠️ Need ${capstone.apCost} AP.`);return;}
       setAp(a=>a-capstone.apCost);
-      const gain=rnd(8,14);
+      const gain=Math.max(1,Math.round(rnd(8,14)*getSupernaturalGainMult(s)));
       setStudents(prev=>prev.map(st=>st.id!==s.id?st:markArrivalUnlocked(processStudentGain(st,gain,6))));
       push(`✦ Arrival — ${capstone.label}: +${gain} lbs · ${capstone.firstUnlock?'capstone unlocked':'repeatable arrival'}`);
       setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:capstone.desc });
@@ -1749,6 +1784,95 @@ export default function ProfessorSim(){
     if(result.moneyDelta) setMoney(m=>m+(result.moneyDelta||0));
     if(result.message) push(result.message);
     else if(counterId!=='public_discredit') push('⚠️ Counter had no effect — check agenda queue or member resolve.');
+    if(result.boardCompromised) setGlobalStats(g=>({...g,boardCompromised:(g.boardCompromised||0)+1}));
+  };
+
+  const startOppositionHearing=(type,studentId=null)=>{
+    if(hearingState) return;
+    const sid=type==='removal'
+      ? (studentId??opposition?.aib?.pendingHearing?.studentId)
+      : null;
+    setHearingState({
+      type,studentId:sid,phaseIdx:0,history:[],log:[],done:false,endingText:null,
+    });
+    if(type==='removal'&&opposition?.aib?.pendingHearing){
+      setOpposition(prev=>({...prev,aib:{...prev.aib,pendingHearing:null}}));
+    }
+    if(type==='emergency'&&opposition?.aib?.emergencyHearingDue){
+      setOpposition(prev=>({...prev,aib:{...prev.aib,emergencyHearingDue:false}}));
+    }
+  };
+
+  const makeHearingChoice=(choiceId)=>{
+    setHearingState(prev=>{
+      if(!prev||prev.done) return prev;
+      const def=prev.type==='emergency'?EMERGENCY_HEARING:REMOVAL_HEARING;
+      const phase=def.phases[prev.phaseIdx];
+      const ch=phase?.choices?.find(c=>c.id===choiceId);
+      if(!ch) return prev;
+      const log=[...(prev.log||[]),ch.result];
+      const history=[...(prev.history||[]),ch.flag||choiceId];
+      const nextPhase=prev.phaseIdx+1;
+      if(nextPhase>=def.phases.length){
+        const student=students.find(s=>s.id===prev.studentId);
+        const ctx={
+          studentName:student?.name||'the student',
+          studentLbs:student?Math.round(student.lbs):0,
+        };
+        const ending=pickHearingEnding(def,history);
+        const endingText=typeof ending.text==='function'?ending.text(ctx):ending.text;
+        return {...prev,log,history,done:true,endingText,pendingEnding:ending};
+      }
+      return {...prev,log,history,phaseIdx:nextPhase};
+    });
+  };
+
+  const closeHearing=()=>{
+    const ending=hearingState?.pendingEnding;
+    const type=hearingState?.type;
+    const studentId=hearingState?.studentId;
+    if(ending){
+      if(ending.scrutinyDelta) addScrutiny(ending.scrutinyDelta);
+      if(ending.moneyDelta) setMoney(m=>m+(ending.moneyDelta||0));
+      if(ending.scandalDelta!=null){
+        setOpposition(prev=>({
+          ...prev,
+          aib:{...prev.aib,scandalMeter:Math.max(0,Math.min(100,(prev.aib.scandalMeter||0)+(ending.scandalDelta||0)))},
+        }));
+      }
+      if(ending.truceWeeks){
+        setOpposition(prev=>({...prev,aib:{...prev.aib,truceWeeks:Math.max(prev.aib.truceWeeks||0,ending.truceWeeks)}}));
+      }
+      if(ending.resolveHitAll){
+        setOpposition(prev=>({
+          ...prev,
+          aib:{...prev.aib,members:prev.aib.members.map(m=>({...m,resolve:Math.max(0,m.resolve-(ending.resolveHitAll||0))}))},
+        }));
+      }
+      if(ending.memberResolveHit){
+        setOpposition(prev=>{
+          const target=[...prev.aib.members].sort((a,b)=>a.resolve-b.resolve)[0];
+          if(!target) return prev;
+          return {
+            ...prev,
+            aib:{
+              ...prev.aib,
+              members:prev.aib.members.map(m=>m.id!==target.id?m:{...m,resolve:Math.max(0,m.resolve-ending.memberResolveHit),stance:'wavering'}),
+            },
+          };
+        });
+      }
+      if(ending.studentHiddenWeeks>0&&studentId!=null){
+        setStudents(prev=>prev.map(s=>{
+          if(s.id!==studentId) return s;
+          return {...s,wasHiddenBeforeSuspension:s.hidden,aibSuspensionWeeks:ending.studentHiddenWeeks,hidden:true};
+        }));
+        push(`⚠️ ${students.find(s=>s.id===studentId)?.name||'Student'} suspended from campus for ${ending.studentHiddenWeeks} weeks.`);
+      }else if((type==='removal'&&ending.studentHiddenWeeks===0)||(type==='emergency'&&(ending.scandalDelta||0)<-10)){
+        setGlobalStats(g=>({...g,oppositionHearingsWon:(g.oppositionHearingsWon||0)+1}));
+      }
+    }
+    setHearingState(null);
   };
 
   const runOppositionCounterOnMember=(counterId,memberId)=>{
@@ -4926,6 +5050,35 @@ export default function ProfessorSim(){
 
   const executeClassFeed=(action,compoundId)=>{
     setAp(a=>a-action.cost);
+    if(action.id==='refeast_ritual'){
+      setOpposition(prev=>({
+        ...prev,
+        supernatural:{
+          ...prev.supernatural,
+          scarcityPressure:Math.max(0,(prev.supernatural?.scarcityPressure||0)-15),
+          curseQueue:[],
+        },
+      }));
+      let fedCount=0,refused=0;
+      const updated=students.map(s=>{
+        let ns=s;
+        if(s.supernaturalForm) ns=applyRefeedSurge(ns,rnd(10,16));
+        if(!studentReceivesPassiveGain(ns)) return ns;
+        const cals=rnd(action.cal[0],action.cal[1]);
+        const fed=feedStudentCalories(ns,cals,action.full,2,'Refeast',{});
+        if(!fed){refused++;return ns;}
+        fedCount++;
+        return {...fed,oppositionBlockedGain:false};
+      });
+      push(`👻 Refeast Ritual: ${fedCount} students refed${refused?` · ${refused} too full`:""} — scarcity pressure eases.`);
+      setStudents(updated);
+      const evs=collectEvents(updated);
+      if(evs.length){
+        setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
+        setEventQueue(prev=>[...prev,...evs]);
+      }
+      return;
+    }
     let refusals=0,fedCount=0,totalCals=0;
     const compoundLabel=compoundId?COMPOUNDS[compoundId]?.label:null;
     const updated=students.map(s=>{
@@ -4964,6 +5117,10 @@ export default function ProfessorSim(){
 
   const doClass=(action)=>{
     if(ap<action.cost){push("⚠️ Not enough AP!");return;}
+    if(action.id==='refeast_ritual'&&!opposition?.supernatural?.actTriggered){
+      push('⚠️ Refeast Ritual requires the Supernatural Act.');
+      return;
+    }
     if(action.id==="group_dinner"){
       setGroupDinnerPicker({count:2,selected:[]});
       return;
@@ -5642,7 +5799,10 @@ export default function ProfessorSim(){
 
   // ── EFFECTIVE ACTIONS (applying unlocked skill effects) ──────
   const effectiveSingleActions=ACTIONS_SINGLE;
-  const effectiveClassActions=ACTIONS_CLASS;
+  const effectiveClassActions=ACTIONS_CLASS.filter(a=>{
+    if(a.supernaturalOnly) return !!opposition?.supernatural?.actTriggered;
+    return true;
+  });
 
   const availableVenues=DINNER_VENUES.filter(v=>{
     if(v.id==="home_dinner") return false;
@@ -6356,7 +6516,7 @@ export default function ProfessorSim(){
 
           {view==="achievements"&&<AchievementsView achievements={achievements}/>}
 
-          {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onClose={()=>setView('class')}/>}
+          {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} lilithUnlocked={lilithUnlocked} pharmacistStage={pharmacistState?.stage??1} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onStartHearing={startOppositionHearing} onClose={()=>setView('class')}/>}
 
         </div>
 
@@ -6476,6 +6636,8 @@ export default function ProfessorSim(){
       {galleryOpen&&galleryState&&<ArtisanGalleryModal galleryState={galleryState} students={students} onClose={closeGalleryHub} onOpenSubjectPicker={galleryOpenSubjectPicker} onConfirmEnroll={galleryConfirmEnroll} onStartStudio={galleryBeginStudio} onStudioAction={galleryStudioAction} onFieldShoot={galleryDoFieldShoot} onExhibition={galleryDoExhibition}/>}
 
       {supernaturalModalOpen&&<SupernaturalAscensionModal students={students} opposition={opposition} onAscend={ascendSupernatural} onDismiss={dismissSupernaturalAct}/>}
+
+      {hearingState&&<OppositionHearingModal hearingState={hearingState} students={students} opposition={opposition} onChoice={makeHearingChoice} onClose={closeHearing}/>}
 
       {/* ── HOMEROOM QUEEN: CLASSROOM MINI-INTERFACE ── */}
       {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession}/>}

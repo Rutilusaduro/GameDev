@@ -31,3 +31,19 @@ export function canSupernaturalEvolve(student, opposition) {
 export function getSupernaturalFormForStudent(student) {
   return SUPERNATURAL_FORMS[student?.archetype] || null;
 }
+
+export function getSupernaturalGainMult(student) {
+  if (!student?.supernaturalForm) return 1;
+  const form = SUPERNATURAL_FORMS[student.archetype];
+  return form?.gainMult ?? 1;
+}
+
+export function applyRefeedSurge(student, lbsGain = 12) {
+  if (!student?.supernaturalForm) return student;
+  const memory = student.memoryMass || student.lbs;
+  return {
+    ...student,
+    lbs: student.lbs + lbsGain,
+    memoryMass: memory,
+  };
+}

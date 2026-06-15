@@ -38,7 +38,22 @@ export const AIB_COUNTERS = [
   { id: 'evolved_student_op', label: 'Evolved Student Operation', ap: 2, resolveHit: 0, scrutiny: -5, desc: 'An evolved student delays the top agenda card one week.' },
   { id: 'machine_fatten', label: 'Machine Fattening', ap: 2, resolveHit: 12, scrutiny: 5, desc: 'Growth chamber targets a board member (+lbs, −resolve, scandal risk).' },
   { id: 'faculty_testimony', label: 'Faculty Testimony', ap: 1, resolveHit: 0, scrutiny: -4, desc: 'Faculty ally cancels informant effects for two weeks.' },
+  { id: 'lilith_hunt', label: 'Lilith AIB Hunt', ap: 2, resolveHit: 20, scrutiny: -15, desc: 'Lilith consumes a board member — removed from play.', path: 'lilith' },
+  { id: 'compound_seduction', label: 'Compound Seduction', ap: 2, resolveHit: 8, scrutiny: -6, desc: 'Sophia seduces faculty lounge intel — slows scrutiny.', path: 'pharmacist' },
 ];
+
+export function getAvailableCounters(opposition, students, ctx = {}) {
+  const hasEvolved = students.some((s) => s.evolvedForm);
+  return AIB_COUNTERS.filter((c) => {
+    if (c.id === 'machine_fatten') return false;
+    if (c.id === 'evolved_student_op') return hasEvolved;
+    if (c.path === 'lilith') return !!ctx.lilithUnlocked && students.some((s) => s.id === 15);
+    if (c.path === 'pharmacist') {
+      return (ctx.pharmacistStage ?? 0) >= 2 && students.some((s) => s.evolvedForm === 'pharmacist');
+    }
+    return true;
+  });
+}
 
 export function defaultOppositionState() {
   return {
@@ -59,6 +74,7 @@ export function defaultOppositionState() {
         forcedWeighInWeek: null,
       },
       pendingHearing: null,
+      emergencyHearingDue: false,
     },
     proxies: {
       wellnessCoalition: false,
@@ -277,7 +293,19 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
       if (m.resolve > 40) return m;
       return { ...m, stance: 'compromised', corruption: Math.min(100, m.corruption + 25) };
     });
-    return { opposition: next, message: '📎 Member compromised — they look away at hearings.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
+    return { opposition: next, message: '📎 Member compromised — they look away at hearings.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0, boardCompromised: true };
+  }
+  if (counterId === 'lilith_hunt') {
+    const target = [...next.aib.members].sort((a, b) => a.resolve - b.resolve)[0];
+    if (!target) return { opposition: next, message: '⚠️ No board members remain.', scrutinyDelta: 0, apCost: counter.ap, moneyDelta: 0 };
+    next.aib.members = next.aib.members.filter((m) => m.id !== target.id);
+    next.aib.scandalMeter = Math.max(0, next.aib.scandalMeter - 5);
+    return { opposition: next, message: `🩸 Lilith hunts ${target.name} — consumed. Member removed.`, scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
+  }
+  if (counterId === 'compound_seduction') {
+    next.aib.informantShieldWeeks = Math.max(next.aib.informantShieldWeeks || 0, 3);
+    next.aib.scandalMeter = Math.max(0, next.aib.scandalMeter - 8);
+    return { opposition: next, message: '💊 Compound seduction — faculty lounge whispers favor abundance.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
   }
   return { opposition: next, message: null, scrutinyDelta: 0, apCost: counter.ap, moneyDelta: 0 };
 }
@@ -388,8 +416,9 @@ export function processOppositionWeek(opposition, { week, scrutiny, students, rn
     },
   };
 
-  if (next.aib.scandalMeter >= 60) {
-    logs.push('🚨 Scandal meter critical — emergency hearing risk elevated.');
+  if (next.aib.scandalMeter >= 60 && !next.aib.emergencyHearingDue) {
+    next = { ...next, aib: { ...next.aib, emergencyHearingDue: true } };
+    logs.push('🚨 Scandal meter critical — emergency Board hearing convened.');
   }
 
   return { opposition: next, scrutinyDelta, moneyDelta, logs, studentPatches, pendingDeviceConfiscation };

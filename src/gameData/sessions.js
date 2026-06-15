@@ -853,4 +853,8 @@ export const ACHIEVEMENT_LIST = [
   { id:"all_rel50",     label:"💜 Well-Loved",          desc:"All students at 50%+ relationship.",                        check:(sts)=>sts.every(s=>s.relationship>=50) },
   { id:"narrative5",    label:"📖 Storyteller",         desc:"Trigger 5 narrative events.",                               check:(sts,g)=>g.narrativeCount>=5 },
   { id:"narrative10",   label:"📚 Epic Saga",           desc:"Trigger 10 narrative events.",                              check:(sts,g)=>g.narrativeCount>=10 },
+  { id:"aib_notice",    label:"👁 Under Watch",         desc:"Academic Inquiry Board takes notice.",                      check:(sts,g)=>!!g.aibUnlocked },
+  { id:"hearing_won",   label:"⚖️ Hearing Denied",      desc:"Win a removal or emergency hearing.",                       check:(sts,g)=>(g.oppositionHearingsWon||0)>=1 },
+  { id:"board_capture", label:"📎 Institutional Capture",desc:"Compromise three board members.",                          check:(sts,g)=>(g.boardCompromised||0)>=3 },
+  { id:"supernatural",  label:"👻 Thin Hunger",          desc:"Trigger the Supernatural Act.",                            check:(sts,g)=>!!g.supernaturalAct },
 ];

@@ -78,6 +78,7 @@ export function buildExplorationContext({
   exploration,
   labState = null,
   deviceInventory = null,
+  asceticCircle = false,
 }) {
   const campusTier = getCampusNarrativeTier(pharmacistState);
   const avgLbs = students.length
@@ -96,6 +97,7 @@ export function buildExplorationContext({
     exploration,
     labState,
     deviceInventory,
+    asceticCircle,
   };
 }
 
@@ -115,6 +117,16 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
 
   if (ctx.campusFattening && rng() < 0.35) {
     lines.push(`🌿 ${pick(rng, CAMPUS_SOFT_FLAVOR)}`);
+  }
+
+  if (ctx.asceticCircle && rng() < 0.28) {
+    const protests = [
+      '🕯️ Ascetic Circle vigil at the crosswalk — shame pamphlets flutter against dining hall flyers.',
+      '🕯️ Ascetic protesters chant outside the union. A few students pocket the pamphlets anyway.',
+      '🕯️ The garden hosts an abstinence rally. Someone orders delivery mid-sermon.',
+    ];
+    lines.push(pick(rng, protests));
+    effects.asceticShame = true;
   }
 
   if (rng() < 0.28) {

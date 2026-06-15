@@ -9,6 +9,7 @@ export const ACTIONS_CLASS = [
   { id:"potluck",      label:"🥘 Class Potluck",             cost:2, cal:[9000,18000],  full:30, desc:"Everyone brings a dish. Everyone is expected to try everything." },
   { id:"feast",        label:"🦃 Holiday Class Feast",       cost:5, cal:[28000,52000], full:70, desc:"A full holiday spread. This one really goes far." },
   { id:"group_dinner", label:"👥 Arrange Group Dinner",      cost:3, cal:[14000,30000], full:45, desc:"Take two students to dinner together. Their bond amplifies the result for both." },
+  { id:"refeast_ritual", label:"👻 Refeast Ritual", cost:4, cal:[8000,16000], full:50, supernaturalOnly:true, desc:"Supernatural Act only — clears hunger curses, bites scarcity pressure, refeeds ascended students." },
 ];
 
 export const SEMESTER_EVENTS = [

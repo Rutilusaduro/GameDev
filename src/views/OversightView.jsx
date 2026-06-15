@@ -1,13 +1,16 @@
 import { C } from '../styles.js';
-import { AIB_AGENDA_CARDS, AIB_COUNTERS, getOversightTelegraph } from '../gameData/opposition.js';
+import { AIB_AGENDA_CARDS, getAvailableCounters, getOversightTelegraph } from '../gameData/opposition.js';
 
 export function OversightView({
   opposition,
   adminScrutiny,
   ap,
   students,
+  lilithUnlocked,
+  pharmacistStage,
   onRunCounter,
   onRunCounterOnMember,
+  onStartHearing,
   onClose,
 }) {
   const aib = opposition?.aib;
@@ -59,6 +62,21 @@ export function OversightView({
       {aib.pendingHearing && (
         <div style={{ fontSize: 11, color: '#e88', marginBottom: 12, padding: 10, background: '#301010', borderRadius: 6 }}>
           ⚠️ Removal hearing pending for {students.find((s) => s.id === aib.pendingHearing.studentId)?.name || 'student'}.
+          {onStartHearing && (
+            <button type="button" style={{ ...C.btn('#6a2838'), width: '100%', marginTop: 8, fontSize: 11 }} onClick={() => onStartHearing('removal', aib.pendingHearing.studentId)}>
+              Begin Removal Hearing
+            </button>
+          )}
+        </div>
+      )}
+      {aib.emergencyHearingDue && (
+        <div style={{ fontSize: 11, color: '#eaa', marginBottom: 12, padding: 10, background: '#2a1810', borderRadius: 6 }}>
+          🚨 Emergency Board hearing — scandal meter critical.
+          {onStartHearing && (
+            <button type="button" style={{ ...C.btn('#6a2838'), width: '100%', marginTop: 8, fontSize: 11 }} onClick={() => onStartHearing('emergency')}>
+              Face Emergency Hearing
+            </button>
+          )}
         </div>
       )}
 
@@ -90,7 +108,7 @@ export function OversightView({
       <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 10, color: '#888', marginBottom: 8 }}>COUNTERS</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          {AIB_COUNTERS.filter((c) => c.id !== 'machine_fatten').map((c) => (
+          {getAvailableCounters(opposition, students, { lilithUnlocked, pharmacistStage }).map((c) => (
             <button
               key={c.id}
               type="button"
