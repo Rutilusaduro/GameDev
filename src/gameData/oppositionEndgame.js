@@ -10,13 +10,17 @@ export function checkOppositionEndgame(opposition, students) {
   const supernatural = opposition?.supernatural || {};
   const ascended = (students || []).filter((s) => s.supernaturalForm);
   const refedThin = ascended.filter((s) => getStage(s.lbs).id >= 6).length;
+  const vanceCompromised = members.some((m) => m.id === 'vance' && m.stance === 'compromised');
 
   return {
-    institutionalCapture: compromised >= 3,
+    institutionalCapture: compromised >= 4,
     compromisedCount: compromised,
     scarcityBanished: !!supernatural.actTriggered && (supernatural.scarcityPressure || 0) <= 0,
     refedThinCount: refedThin,
     ascendedCount: ascended.length,
+    allThinAscended: ascended.length > 0 && ascended.every((s) => !!s.supernaturalForm),
+    vanceCompromised,
+    scarcityCapped: compromised >= 4 && (supernatural.scarcityPressure || 0) <= 60,
   };
 }
 

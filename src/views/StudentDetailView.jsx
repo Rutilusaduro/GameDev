@@ -19,6 +19,7 @@ import { formatIngredientBag } from '../gameData/pharmacistIngredients.js';
 import { CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier } from '../gameData/pharmacistCampus.js';
 import { getAddictionLevel, getHungerTier, HUNGER_TIERS, ADDICTION_LEVELS } from '../gameData/hungerAddiction.js';
 import { computeSurrenderVector, formatSurrenderSummary } from '../gameData/transformationPressure.js';
+import { getSupernaturalFormForStudent } from '../gameData/supernaturalForms.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
@@ -235,6 +236,26 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                       <div style={{ fontSize: 9, color: sv.color, letterSpacing: 2, marginBottom: 4 }}>SURRENDER · {sv.composite}%</div>
                       <div style={{ fontSize: 12, color: '#d8c8b8', lineHeight: 1.7 }}>
                         {formatSurrenderSummary(s)}
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {s.supernaturalForm && (() => {
+                  const form = getSupernaturalFormForStudent(s);
+                  const memory = s.memoryMass ?? s.lbs;
+                  const refeedPct = memory > 0 ? Math.min(100, Math.round((s.lbs / memory) * 100)) : 0;
+                  return (
+                    <div style={C.infoBox('rgba(20,30,50,0.45)')}>
+                      <div style={{ fontSize: 9, color: '#7090c0', letterSpacing: 2, marginBottom: 4 }}>👻 THIN FORM</div>
+                      <div style={{ fontSize: 12, color: '#b8c8e0', lineHeight: 1.7 }}>
+                        {form?.label || s.supernaturalForm} · display {Math.round(s.lbs)} lbs · memory mass {Math.round(memory)} lbs
+                      </div>
+                      <div style={{ position: 'relative', height: 6, background: 'rgba(255,255,255,0.08)', borderRadius: 3, marginTop: 8 }}>
+                        <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', borderRadius: 3, width: `${refeedPct}%`, background: '#5080b0' }} />
+                      </div>
+                      <div style={{ fontSize: 10, color: '#8098b8', marginTop: 4 }}>
+                        Refeed progress {refeedPct}% toward remembered peak
                       </div>
                     </div>
                   );

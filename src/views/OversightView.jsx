@@ -1,5 +1,5 @@
 import { C } from '../styles.js';
-import { AIB_AGENDA_CARDS, getAvailableCounters, getOversightTelegraph } from '../gameData/opposition.js';
+import { AIB_AGENDA_CARDS, getAvailableCounters, getCounterGateHints, getOversightTelegraph } from '../gameData/opposition.js';
 import { getOppositionActSummary, isBoardDormant } from '../gameData/oppositionActs.js';
 
 export function OversightView({
@@ -10,6 +10,7 @@ export function OversightView({
   week,
   lilithUnlocked,
   pharmacistStage,
+  oppositionCtx,
   onRunCounter,
   onRunCounterOnMember,
   onStartHearing,
@@ -71,6 +72,7 @@ export function OversightView({
         {opposition.proxies?.accreditation && ' · Accreditation Observer'}
         {opposition.proxies?.asceticCircle && ' · Ascetic Circle'}
         {opposition.supernatural?.actTriggered && ` · Scarcity ${opposition.supernatural.scarcityPressure}`}
+        {opposition.supernatural?.famineWeek && ' · FAMINE WEEK'}
       </div>
       {telegraph && (
         <div style={{ fontSize: 11, color: '#eaa', padding: '8px 10px', background: '#2a1818', borderRadius: 4, marginBottom: 12 }}>
@@ -125,8 +127,9 @@ export function OversightView({
             </div>
             <button
               type="button"
-              disabled={ap < 2}
-              style={{ ...C.btn('#5a3040'), fontSize: 10, padding: '4px 8px', opacity: ap >= 2 ? 1 : 0.4 }}
+              disabled={ap < 2 || !oppositionCtx?.hasGrowthChamber}
+              style={{ ...C.btn('#5a3040'), fontSize: 10, padding: '4px 8px', opacity: ap >= 2 && oppositionCtx?.hasGrowthChamber ? 1 : 0.4 }}
+              title={oppositionCtx?.hasGrowthChamber ? 'Machine fatten in chamber' : 'Requires growth accelerator chamber'}
               onClick={() => onRunCounterOnMember('machine_fatten', m.id)}
             >
               Chamber
@@ -143,7 +146,7 @@ export function OversightView({
       <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 10, color: '#888', marginBottom: 8 }}>COUNTERS</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          {getAvailableCounters(opposition, students, { lilithUnlocked, pharmacistStage }).map((c) => (
+          {getAvailableCounters(opposition, students, { ...oppositionCtx, lilithUnlocked, pharmacistStage }).map((c) => (
             <button
               key={c.id}
               type="button"
@@ -155,6 +158,11 @@ export function OversightView({
             </button>
           ))}
         </div>
+        {oppositionCtx && getCounterGateHints(oppositionCtx).length > 0 && (
+          <div style={{ fontSize: 10, color: '#888', marginTop: 8, lineHeight: 1.5 }}>
+            Locked: {getCounterGateHints(oppositionCtx).map((g) => `${g.id.replace(/_/g, ' ')} (${g.gate})`).join(' · ')}
+          </div>
+        )}
       </div>
 
       {discreditable.length > 0 && (

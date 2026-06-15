@@ -197,9 +197,10 @@ import { OppositionHearingModal } from './components/OppositionHearingModal.jsx'
 import { pickHearingEnding, REMOVAL_HEARING, EMERGENCY_HEARING } from './gameData/oppositionHearings.js';
 import {
   defaultOppositionState, processOppositionWeek, runAibCounter, checkSupernaturalTrigger,
-  getOppositionGainMult, tickSupernaturalWeek,
+  getOppositionGainMult, tickSupernaturalWeek, getAvailableCounters,
 } from './gameData/opposition.js';
 import { supernaturalActLine } from './gameData/oppositionText.js';
+import { buildOppositionContext, getEvolvedOpMessage, counterGateReason } from './gameData/oppositionIntegration.js';
 import { canSupernaturalEvolve, getSupernaturalFormForStudent, getSupernaturalGainMult, applyRefeedSurge } from './gameData/supernaturalForms.js';
 import {
   defaultSalonState, startSalonSession, salonPickMenu, salonServiceChoice, salonFinishDigestif,
@@ -470,6 +471,11 @@ export default function ProfessorSim(){
     const end=checkOppositionEndgame(opposition,students);
     if(end.scarcityBanished) setGlobalStats(g=>g.scarcityBanished?g:{...g,scarcityBanished:true});
     if(end.institutionalCapture) setGlobalStats(g=>g.institutionalCapture?g:{...g,institutionalCapture:true});
+    if(end.vanceCompromised) setGlobalStats(g=>g.vanceCompromised?g:{...g,vanceCompromised:true});
+    const evolved=students.filter(s=>s.evolvedForm);
+    if(evolved.length&&evolved.every(s=>s.supernaturalForm)){
+      setGlobalStats(g=>g.allThinAscended?g:{...g,allThinAscended:true});
+    }
   },[opposition,students]);
 
   // Process event queue — hold events until class session is done
@@ -1017,6 +1023,10 @@ export default function ProfessorSim(){
 
   const advanceWeek=()=>{
     trackAction('advanceWeek');
+    if(opposition?.supernatural?.famineWeek){
+      push('🕯️ Famine Week — the semester cannot advance until you complete a Refeast Ritual (4 AP class action).');
+      return;
+    }
     const hungerEff=aggregateSkillEffects(ownedSkills);
     if(!skipHungerCheckRef.current){
       const inter=pickInterruptStudent(students,hungerEff,weeklyArms);
@@ -1321,15 +1331,30 @@ export default function ProfessorSim(){
     // Opposition week-end processing (AIB agenda, proxies, supernatural)
     const wasActTriggered=!!opposition?.supernatural?.actTriggered;
     let nextOpposition=opposition||defaultOppositionState();
+    const satTier=nextSaturation?.tier??campusState.saturation?.tier??0;
+    const weeksAtRegional=(satTier===3)?(nextSaturation?.weeksAtTier??0):0;
+    const cultStage=nextPharmacistState?.cult?.stage??pharmacistState?.cult?.stage??pharmacistState?.stage??0;
+    const crSuspicion=communityResearcherState?.totalSuspicion??0;
+    const informantRisk=crSuspicion>=18;
     nextOpposition=checkSupernaturalTrigger(nextOpposition,{
       week:newWeek,
       scrutiny:adminScrutiny,
       students:updated,
       campusSaturation:nextSaturation?.score??campusState.saturation?.score??0,
+      weeksAtRegionalExcess:weeksAtRegional,
     });
     const wasAibUnlocked=!!opposition?.aib?.unlocked;
     const newlyTriggered=!wasActTriggered&&nextOpposition.supernatural.actTriggered;
-    const oppResult=processOppositionWeek(nextOpposition,{week:newWeek,scrutiny:adminScrutiny,students:updated,rnd});
+    const oppResult=processOppositionWeek(nextOpposition,{
+      week:newWeek,
+      scrutiny:adminScrutiny,
+      students:updated,
+      rnd,
+      saturationTier:satTier,
+      weeksAtRegionalExcess:weeksAtRegional,
+      pharmacistCultStage:cultStage,
+      facultyInformantRisk:informantRisk,
+    });
     nextOpposition=oppResult.opposition;
     updated=applyOppositionStudentPatches(updated,oppResult.studentPatches);
     const superTick=tickSupernaturalWeek(nextOpposition,updated,rnd,newWeek);
@@ -1347,6 +1372,13 @@ export default function ProfessorSim(){
           setDeviceInventory(prev=>({...prev,[defId]:(prev[defId]||0)+1}));
           oppResult.logs.push(`🔧 Confiscated ${DEVICES[defId]?.label||defId} from ${equipped.name}.`);
         }
+      }
+      if((labState?.stage??1)>=2){
+        setLabState(prev=>prev?{
+          ...prev,
+          network:{...(prev.network||{}),disabledWeeks:Math.max(prev.network?.disabledWeeks||0,2)},
+        }:prev);
+        oppResult.logs.push('📡 Compliance audit — lab network nodes disabled 2 weeks.');
       }
     }
     setOpposition(nextOpposition);
@@ -1828,9 +1860,19 @@ export default function ProfessorSim(){
   // ── OPPOSITION / AIB ─────────────────────────────────────────────
   const runOppositionCounter=(counterId,options={})=>{
     trackAction(`counter:${counterId}`);
+    const oppCtx=buildOppositionContext({
+      students, ownedSkills, labState, pharmacistState, communityResearcherState, lilithUnlocked,
+    });
+    const available=getAvailableCounters(opposition,students,{...oppCtx,lilithUnlocked,pharmacistStage:pharmacistState?.stage??1});
+    if(!available.find(c=>c.id===counterId)){
+      const hint=counterGateReason?.({id:counterId},oppCtx);
+      push(`⚠️ Counter unavailable${hint?`: ${hint}`:''}.`);
+      return;
+    }
     const memberId=options.memberId
       ?? (counterId==='bureaucratic_capture' ? opposition?.aib?.members?.find(m=>m.resolve<=40)?.id : null);
-    const result=runAibCounter(opposition,counterId,memberId,options);
+    const evolvedOpMessage=counterId==='evolved_student_op'?getEvolvedOpMessage(students):undefined;
+    const result=runAibCounter(opposition,counterId,memberId,{...options,evolvedOpMessage});
     if(result.apCost&&ap<result.apCost){push(`⚠️ Need ${result.apCost} AP.`);return;}
     if(result.apCost) setAp(a=>a-result.apCost);
     setOpposition(result.opposition);
@@ -1839,6 +1881,7 @@ export default function ProfessorSim(){
     if(result.message) push(result.message);
     else if(counterId!=='public_discredit') push('⚠️ Counter had no effect — check agenda queue or member resolve.');
     if(result.boardCompromised) setGlobalStats(g=>({...g,boardCompromised:(g.boardCompromised||0)+1}));
+    if(counterId==='feast_bribe'&&adminScrutiny>=90) setGlobalStats(g=>({...g,boardFeastInvestigation:true}));
   };
 
   const startOppositionHearing=(type,studentId=null)=>{
@@ -5112,6 +5155,7 @@ export default function ProfessorSim(){
           ...prev.supernatural,
           scarcityPressure:Math.max(0,(prev.supernatural?.scarcityPressure||0)-15),
           curseQueue:[],
+          famineWeek:false,
         },
       }));
       let fedCount=0,refused=0;
@@ -6488,6 +6532,16 @@ export default function ProfessorSim(){
               <span style={{fontSize:9,color:adminScrutiny>=80?"#ff6060":adminScrutiny>=50?"#ffaa40":"#60389a",letterSpacing:2}}>SCRUTINY</span>
             </div>
           )}
+          {opposition?.supernatural?.actTriggered&&(
+            <div style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:70}}>
+              <div style={{position:"relative",height:6,background:"rgba(255,255,255,0.08)",borderRadius:3,width:70,margin:"4px 0 2px"}}>
+                <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:3,width:`${opposition.supernatural.scarcityPressure||0}%`,background:(opposition.supernatural.scarcityPressure||0)>=80?"#4060a0":(opposition.supernatural.scarcityPressure||0)>=50?"#506888":"#304860",transition:"width 0.4s"}}/>
+              </div>
+              <span style={{fontSize:9,color:opposition.supernatural.famineWeek?"#ff8080":"#6080a0",letterSpacing:2}}>
+                {opposition.supernatural.famineWeek?"FAMINE":"SCARCITY"}
+              </span>
+            </div>
+          )}
           <button onClick={startClass} style={C.btn("#186028")}>⏩ Next Week (+5 AP)</button>
           <WalletBadge balance={money} />
           {students.some(s=>s.evolvedForm==='competitive_gainer')&&(
@@ -6572,7 +6626,7 @@ export default function ProfessorSim(){
 
           {view==="achievements"&&<AchievementsView achievements={achievements}/>}
 
-          {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} week={week} lilithUnlocked={lilithUnlocked} pharmacistStage={pharmacistState?.stage??1} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onStartHearing={startOppositionHearing} onClose={()=>setView('class')}/>}
+          {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} week={week} lilithUnlocked={lilithUnlocked} pharmacistStage={pharmacistState?.stage??1} oppositionCtx={buildOppositionContext({students,ownedSkills,labState,pharmacistState,communityResearcherState,lilithUnlocked})} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onStartHearing={startOppositionHearing} onClose={()=>setView('class')}/>}
 
         </div>
 

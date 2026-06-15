@@ -10,6 +10,9 @@ import {
 import {
   oppositionUnlockLine, oppositionProxyLine, supernaturalActLine, agendaResolveLine,
 } from './oppositionText.js';
+import {
+  counterGateReason, getEvolvedOpMessage, proxyUnlockFlags, recordCounterType, wellnessScrutinyBonus,
+} from './oppositionIntegration.js';
 
 export const AIB_MEMBERS = [
   { id: 'vance', name: 'Dr. Helena Vance', role: 'Chair, Dean of Student Life', resolve: 85, corruption: 0, weightLbs: 145, stance: 'hostile' },
@@ -47,19 +50,24 @@ export const AIB_COUNTERS = [
   { id: 'faculty_testimony', label: 'Faculty Testimony', ap: 1, resolveHit: 0, scrutiny: -4, desc: 'Faculty ally cancels informant effects for two weeks.' },
   { id: 'lilith_hunt', label: 'Lilith AIB Hunt', ap: 2, resolveHit: 20, scrutiny: -15, desc: 'Lilith consumes a board member — removed from play.', path: 'lilith' },
   { id: 'compound_seduction', label: 'Compound Seduction', ap: 2, resolveHit: 8, scrutiny: -6, desc: 'Sophia seduces faculty lounge intel — slows scrutiny.', path: 'pharmacist' },
+  { id: 'network_misdirect', label: 'Network Misdirect', ap: 1, resolveHit: 0, scrutiny: -5, desc: 'Lab network buries scandal traces — detection risk on fail.', path: 'network' },
 ];
 
 export function getAvailableCounters(opposition, students, ctx = {}) {
   const hasEvolved = students.some((s) => s.evolvedForm);
   return AIB_COUNTERS.filter((c) => {
-    if (c.id === 'machine_fatten') return false;
-    if (c.id === 'evolved_student_op') return hasEvolved;
-    if (c.path === 'lilith') return !!ctx.lilithUnlocked && students.some((s) => s.id === 15);
-    if (c.path === 'pharmacist') {
-      return (ctx.pharmacistStage ?? 0) >= 2 && students.some((s) => s.evolvedForm === 'pharmacist');
-    }
+    if (c.id === 'evolved_student_op' && !hasEvolved) return false;
+    if (c.path === 'lilith' && (!ctx.lilithUnlocked || !students.some((s) => s.id === 15))) return false;
+    if (c.path === 'pharmacist' && ((ctx.pharmacistStage ?? 0) < 2 || !students.some((s) => s.evolvedForm === 'pharmacist'))) return false;
+    if (c.path === 'network' && (ctx.networkStage ?? 1) < 2) return false;
+    const gate = counterGateReason(c, ctx);
+    if (gate) return false;
     return true;
   });
+}
+
+export function getCounterGateHints(ctx = {}) {
+  return AIB_COUNTERS.map((c) => ({ id: c.id, gate: counterGateReason(c, ctx) })).filter((x) => x.gate);
 }
 
 export function defaultOppositionState() {
@@ -94,11 +102,15 @@ export function defaultOppositionState() {
       scarcityPressure: 0,
       curseQueue: [],
       ascensionOffered: false,
+      famineWeek: false,
     },
     meta: {
       aibUnlockWeek: null,
       supernaturalAnnounced: false,
       rumorCount: 0,
+      counterTypesUsed: [],
+      investigationReached: false,
+      jointSeminarFired: false,
     },
   };
 }
@@ -109,9 +121,14 @@ function pickRandomVisible(students, rnd = Math.random) {
   return vis[Math.floor(rnd() * vis.length)];
 }
 
-function drawAgendaCard(opposition, scrutiny, rnd = Math.random) {
+function drawAgendaCard(opposition, scrutiny, rnd = Math.random, saturationTier = 0) {
   const removed = new Set(opposition.aib.deckRemoved || []);
-  let pool = AIB_AGENDA_CARDS.filter((c) => scrutiny >= c.minScrutiny && !removed.has(c.id));
+  let pool = AIB_AGENDA_CARDS.filter((c) => {
+    if (scrutiny < c.minScrutiny || removed.has(c.id)) return false;
+    if (c.id === 'wellness_seminar' && saturationTier < 1) return false;
+    if (c.id === 'faculty_informant' && !opposition.meta?.facultyInformantActive) return false;
+    return true;
+  });
   if (opposition.proxies?.wellnessCoalition) {
     pool = [...pool, ...AIB_AGENDA_CARDS.filter((c) => c.proxy === 'wellnessCoalition' && !removed.has(c.id))];
   }
@@ -168,11 +185,11 @@ export function getOppositionGainMult(opposition) {
   return debuffs.gainMult ?? 1;
 }
 
-export function getAibScrutinyMod(opposition) {
+export function getAibScrutinyMod(opposition, students = []) {
   if (!opposition?.aib?.unlocked) return 0;
   const compromised = opposition.aib.members.filter((m) => m.stance === 'compromised').length;
   let mod = compromised >= 3 ? -2 : 0;
-  if (opposition.proxies?.wellnessCoalition) mod += 1;
+  if (opposition.proxies?.wellnessCoalition) mod += 1 + wellnessScrutinyBonus(students);
   if (opposition.aib.informantShieldWeeks > 0) mod -= 1;
   return mod;
 }
@@ -287,7 +304,7 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
   if (counterId === 'feast_bribe') {
     next.aib.truceWeeks = Math.max(next.aib.truceWeeks, 1);
     next.aib.members = next.aib.members.map((m) => ({ ...m, resolve: Math.max(0, m.resolve - counter.resolveHit) }));
-    return { opposition: next, message: '🍷 Feast bribe accepted. AIB pauses this week.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
+    return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: '🍷 Feast bribe accepted. AIB pauses this week.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
   }
   if (counterId === 'public_discredit') {
     const cardId = options.cardId;
@@ -298,17 +315,24 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
     next.aib.agendaQueue = next.aib.agendaQueue.filter((q) => q.cardId !== removeId);
     const label = AIB_AGENDA_CARDS.find((c) => c.id === removeId)?.label || removeId;
     next.aib.members = next.aib.members.map((m) => ({ ...m, resolve: Math.max(0, m.resolve - 3) }));
-    return { opposition: next, message: `📰 Discredited: ${label}. Card removed from deck.`, scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
+    return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: `📰 Discredited: ${label}. Card removed from deck.`, scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
   }
   if (counterId === 'spirit_pressure' && next.aib.agendaQueue.length) {
     next.aib.agendaQueue = next.aib.agendaQueue.slice(1);
-    return { opposition: next, message: '👁 Spirit pressure — agenda misfires into mandatory tasting.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
+    return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: '👁 Spirit pressure — agenda misfires into mandatory tasting.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
   }
   if (counterId === 'evolved_student_op' && next.aib.agendaQueue.length) {
     next.aib.agendaQueue = next.aib.agendaQueue.map((item, i) => (
       i === 0 ? { ...item, resolvesWeek: item.resolvesWeek + 1 } : item
     ));
-    return { opposition: next, message: '✦ Evolved student operation — top agenda delayed one week.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
+    const msg = options.evolvedOpMessage || '✦ Evolved student operation — top agenda delayed one week.';
+    return {
+      opposition: { ...next, meta: recordCounterType(next.meta, counterId) },
+      message: msg,
+      scrutinyDelta: counter.scrutiny,
+      apCost: counter.ap,
+      moneyDelta: 0,
+    };
   }
   if (counterId === 'machine_fatten' && memberId) {
     const scandalRoll = Math.random();
@@ -360,7 +384,34 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
   if (counterId === 'compound_seduction') {
     next.aib.informantShieldWeeks = Math.max(next.aib.informantShieldWeeks || 0, 3);
     next.aib.scandalMeter = Math.max(0, next.aib.scandalMeter - 8);
-    return { opposition: next, message: '💊 Compound seduction — faculty lounge whispers favor abundance.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
+    return {
+      opposition: { ...next, meta: recordCounterType(next.meta, counterId) },
+      message: '💊 Compound seduction — faculty lounge whispers favor abundance.',
+      scrutinyDelta: counter.scrutiny,
+      apCost: counter.ap,
+      moneyDelta: 0,
+    };
+  }
+  if (counterId === 'network_misdirect') {
+    const detected = Math.random() < 0.35;
+    next.aib.scandalMeter = Math.max(0, next.aib.scandalMeter - 20);
+    if (detected) {
+      next.aib.scandalMeter = Math.min(100, next.aib.scandalMeter + 12);
+      return {
+        opposition: { ...next, meta: recordCounterType(next.meta, counterId) },
+        message: '📡 Network misdirect traced — scandal scrubbed, but compliance noticed (+12 scandal).',
+        scrutinyDelta: counter.scrutiny + 8,
+        apCost: counter.ap,
+        moneyDelta: 0,
+      };
+    }
+    return {
+      opposition: { ...next, meta: recordCounterType(next.meta, counterId) },
+      message: '📡 Network misdirect — audit trails dissolve (−20 scandal).',
+      scrutinyDelta: counter.scrutiny,
+      apCost: counter.ap,
+      moneyDelta: 0,
+    };
   }
   return { opposition: next, message: null, scrutinyDelta: 0, apCost: counter.ap, moneyDelta: 0 };
 }
@@ -369,11 +420,31 @@ function rndRange(a, b) {
   return a + Math.floor(Math.random() * (b - a + 1));
 }
 
-export function processOppositionWeek(opposition, { week, scrutiny, students, rnd = Math.random }) {
+export function processOppositionWeek(opposition, {
+  week, scrutiny, students, rnd = Math.random,
+  saturationTier = 0,
+  weeksAtRegionalExcess = 0,
+  pharmacistCultStage = 0,
+  facultyInformantRisk = false,
+}) {
   let next = {
     ...opposition,
-    meta: { rumorCount: 0, aibUnlockWeek: null, supernaturalAnnounced: false, ...opposition.meta },
+    meta: {
+      rumorCount: 0,
+      aibUnlockWeek: null,
+      supernaturalAnnounced: false,
+      counterTypesUsed: [],
+      investigationReached: false,
+      jointSeminarFired: false,
+      ...opposition.meta,
+    },
   };
+  if (scrutiny >= 90) {
+    next = { ...next, meta: { ...next.meta, investigationReached: true } };
+  }
+  if (facultyInformantRisk) {
+    next = { ...next, meta: { ...next.meta, facultyInformantActive: true } };
+  }
   const logs = [];
   let scrutinyDelta = 0;
   let moneyDelta = 0;
@@ -415,10 +486,16 @@ export function processOppositionWeek(opposition, { week, scrutiny, students, rn
     logs.push('💸 Budget freeze continues (−$200).');
   }
 
-  // Proxy unlocks
-  if (week >= 8 && scrutiny >= 40) next = { ...next, proxies: { ...next.proxies, wellnessCoalition: true } };
-  if (week >= 14 && scrutiny >= 50) next = { ...next, proxies: { ...next.proxies, accreditation: true } };
-  if (week >= 20) next = { ...next, proxies: { ...next.proxies, asceticCircle: true } };
+  // Proxy unlocks (§31)
+  const proxyFlags = proxyUnlockFlags(week, scrutiny, saturationTier, pharmacistCultStage);
+  next = {
+    ...next,
+    proxies: {
+      wellnessCoalition: next.proxies.wellnessCoalition || proxyFlags.wellnessCoalition,
+      accreditation: next.proxies.accreditation || proxyFlags.accreditation,
+      asceticCircle: next.proxies.asceticCircle || proxyFlags.asceticCircle,
+    },
+  };
 
   if (next.proxies.wellnessCoalition && week === 8) {
     logs.push(`🏥 ${oppositionProxyLine('wellnessCoalition', week) || 'Wellness Coalition forms on campus.'}`);
@@ -426,6 +503,10 @@ export function processOppositionWeek(opposition, { week, scrutiny, students, rn
   if (next.proxies.accreditation && week === 14) logs.push('📨 Regional Accreditation Observer letter arrives.');
   if (next.proxies.asceticCircle && week === 20) {
     logs.push(`🕯️ ${oppositionProxyLine('asceticCircle', week) || 'Ascetic Circle protests begin at the garden.'}`);
+  }
+  if (week === 18 && next.proxies.wellnessCoalition && !next.meta.jointSeminarFired) {
+    next = { ...next, meta: { ...next.meta, jointSeminarFired: true } };
+    logs.push('📢 Joint Wellness Coalition + AIB seminar — double agenda pressure this week.');
   }
 
   // Truce from feast bribe
@@ -467,17 +548,21 @@ export function processOppositionWeek(opposition, { week, scrutiny, students, rn
 
   // Draw new cards — Investigation tier draws 2/week (§30.5)
   let draws = next.proxies.accreditation || scrutiny >= 90 ? 2 : 1;
+  if (week >= 26 && !next.supernatural?.actTriggered && (next.proxies.wellnessCoalition || next.proxies.accreditation || next.proxies.asceticCircle)) {
+    draws += 1;
+  }
+  if (week === 18 && next.meta.jointSeminarFired) draws += 1;
   if (next.aib.informantShieldWeeks > 0) draws = Math.max(1, draws - 1);
   const newQueue = [...stillQueued];
-  for (let i = 0; i < draws && newQueue.length < 2; i++) {
-    const card = drawAgendaCard(next, scrutiny, rnd);
+  for (let i = 0; i < draws && newQueue.length < 3; i++) {
+    const card = drawAgendaCard(next, scrutiny, rnd, saturationTier);
     if (!card) break;
     newQueue.push({ cardId: card.id, label: card.label, resolvesWeek: week + 1 });
     logs.push(`📌 AIB agenda queued: ${card.label}`);
   }
   next = { ...next, aib: { ...next.aib, agendaQueue: newQueue } };
 
-  scrutinyDelta += getAibScrutinyMod(next);
+  scrutinyDelta += getAibScrutinyMod(next, students);
 
   // Member resolve softens when heavy; digest chamber calories; stance transitions
   next = {
@@ -505,47 +590,44 @@ export function processOppositionWeek(opposition, { week, scrutiny, students, rn
   return { opposition: next, scrutinyDelta, moneyDelta, logs, studentPatches, pendingDeviceConfiscation };
 }
 
-export function checkSupernaturalTrigger(opposition, { week, scrutiny, students, campusSaturation }) {
+export function checkSupernaturalTrigger(opposition, {
+  week, scrutiny, students, campusSaturation, weeksAtRegionalExcess = 0,
+}) {
   if (opposition.supernatural.actTriggered) return opposition;
   const avgPressure = computeClassTransformationPressure(students);
   const committed = avgPressure >= 55;
-  const investigation = scrutiny >= 90;
-  const regional = campusSaturation >= 85;
-  if (committed && investigation) {
-    return {
-      ...opposition,
-      supernatural: {
-        ...opposition.supernatural,
-        actTriggered: true,
-        actWeek: week,
-        scarcityPressure: 20,
-        ascensionOffered: false,
-      },
-      meta: { ...opposition.meta, supernaturalAnnounced: false },
-    };
-  }
-  if (regional && week >= 20) {
-    return {
-      ...opposition,
-      supernatural: {
-        ...opposition.supernatural,
-        actTriggered: true,
-        actWeek: week,
-        scarcityPressure: 15,
-        ascensionOffered: false,
-      },
-      meta: { ...opposition.meta, supernaturalAnnounced: false },
-    };
-  }
-  return opposition;
+  const investigation = scrutiny >= 90 || opposition.meta?.investigationReached;
+  const regional = weeksAtRegionalExcess >= 3 && week >= 20;
+  const counterPath = (opposition.meta?.counterTypesUsed?.length ?? 0) >= 3 && week >= 22;
+  const fire = (committed && investigation) || regional || counterPath;
+  if (!fire) return opposition;
+  const scarcityStart = regional ? 15 : committed ? 20 : 18;
+  return {
+    ...opposition,
+    supernatural: {
+      ...opposition.supernatural,
+      actTriggered: true,
+      actWeek: week,
+      scarcityPressure: scarcityStart,
+      ascensionOffered: false,
+      famineWeek: false,
+    },
+    meta: { ...opposition.meta, supernaturalAnnounced: false },
+  };
 }
 
 export function tickSupernaturalWeek(opposition, students, rnd = Math.random, week = 0) {
   if (!opposition.supernatural?.actTriggered) return { opposition, logs: [], studentPatches: [] };
   const logs = [];
   const studentPatches = [];
-  let scarcityPressure = opposition.supernatural.scarcityPressure;
+  let scarcityPressure = (opposition.supernatural.scarcityPressure || 0) + 5;
   let curseQueue = [...(opposition.supernatural.curseQueue || [])];
+  let famineWeek = opposition.supernatural.famineWeek || false;
+
+  const compromised = opposition.aib?.members?.filter((m) => m.stance === 'compromised').length ?? 0;
+  if (compromised >= 4) scarcityPressure = Math.min(scarcityPressure, 60);
+
+  scarcityPressure += curseQueue.length * 0.5;
 
   if (scarcityPressure > 0 && rnd() < 0.35) {
     const vis = students.filter((s) => !s.hidden);
@@ -559,6 +641,12 @@ export function tickSupernaturalWeek(opposition, students, rnd = Math.random, we
   }
   curseQueue = curseQueue.slice(-12);
 
+  if (scarcityPressure >= 100) {
+    scarcityPressure = 100;
+    famineWeek = true;
+    logs.push('🕯️ Famine Week — scarcity pressure peaks. Complete a Refeast Ritual to continue.');
+  }
+
   const latent = applyLatentAppetiteWeek(students, opposition, rnd);
   logs.push(...latent.logs);
   studentPatches.push(...latent.patches);
@@ -566,7 +654,12 @@ export function tickSupernaturalWeek(opposition, students, rnd = Math.random, we
   return {
     opposition: {
       ...opposition,
-      supernatural: { ...opposition.supernatural, scarcityPressure, curseQueue },
+      supernatural: {
+        ...opposition.supernatural,
+        scarcityPressure: Math.round(scarcityPressure),
+        curseQueue,
+        famineWeek,
+      },
     },
     logs,
     studentPatches,

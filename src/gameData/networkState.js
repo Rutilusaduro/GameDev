@@ -42,6 +42,17 @@ export function tickNetworkWeek(labState, students, week, rng = Math.random) {
     return { labState: next, lines: [], studentDeltas: [], scrutinyDelta: 0 };
   }
 
+  const disabledWeeks = network.disabledWeeks ?? 0;
+  if (disabledWeeks > 0) {
+    const updatedNetwork = { ...network, disabledWeeks: disabledWeeks - 1 };
+    return {
+      labState: { ...next, network: updatedNetwork },
+      lines: disabledWeeks === 1 ? ['🌐 Lab network nodes back online after compliance audit.'] : ['🌐 Network nodes remain offline after device confiscation audit.'],
+      studentDeltas: [],
+      scrutinyDelta: 0,
+    };
+  }
+
   const lines = [];
   const studentDeltas = [];
   let scrutinyDelta = 0;

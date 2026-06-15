@@ -1606,9 +1606,9 @@ Remove: `campus_legend` offer, events, diary, skills, journalist arc (journalist
 
 ---
 
-## 36. Debug, Field Notes & Bug Reporting
+## 38. Debug, Field Notes & Bug Reporting
 
-### 36.1 Design intent
+### 38.1 Design intent
 
 Professor Sim is a systems-heavy simulation — soft-locks, modal stack bugs, and opposition edge cases are inevitable at scale. §36 defines a **two-tier diagnostics layer**:
 
@@ -1619,7 +1619,7 @@ Professor Sim is a systems-heavy simulation — soft-locks, modal stack bugs, an
 
 **Goals:** (1) Every player report includes enough context to debug from JSON alone. (2) Writers keep Dialogue Lab for prose. (3) Opposition/AIB bugs are triggerable without 20-week playthroughs. (4) No silent telemetry — export is opt-in copy/download only.
 
-### 36.2 Field Notes — player flow
+### 38.2 Field Notes — player flow
 
 **Access:** Log tab footer · error-boundary fallback screen · optional main-menu link.
 
@@ -1641,7 +1641,7 @@ Category → Steps to reproduce (optional) → Auto snapshot → Copy / Download
 
 **In-world voice:** *"Something didn't taste right. Leave a note for the archivist."*
 
-### 36.3 Snapshot schema (v1)
+### 38.3 Snapshot schema (v1)
 
 Exported JSON (`schemaVersion: 1`):
 
@@ -1660,7 +1660,7 @@ Exported JSON (`schemaVersion: 1`):
 
 **Privacy:** No account data; single-player local state only. Optional Phase 2 save-slot attach.
 
-### 36.4 Error capture
+### 38.4 Error capture
 
 | Source | Handler |
 |--------|---------|
@@ -1670,7 +1670,7 @@ Exported JSON (`schemaVersion: 1`):
 
 Boundary copy: *"The semester hiccuped. Your progress is still here."*
 
-### 36.5 Debug Console extensions
+### 38.5 Debug Console extensions
 
 Existing `DebugPanel.jsx` sections retained. **New tabs:**
 
@@ -1689,23 +1689,96 @@ Existing `DebugPanel.jsx` sections retained. **New tabs:**
 
 **Dialogue Lab** — unchanged; text sweeps per `TUNING.md`.
 
-### 36.6 `lastPlayerAction`
+### 38.6 `lastPlayerAction`
 
 ProfessorSim maintains a single string updated on meaningful player actions (`advanceWeek`, `doClass`, opposition counters, evolution picks, hearing choices). Included in every snapshot so reports cluster by action type.
 
-### 36.7 Implementation phases
+### 38.7 Implementation phases
 
 | Phase | Scope | Status |
 |-------|-------|--------|
-| **1** | Ring buffer, boundary, Field Notes modal, snapshot export, opposition debug tab, log footer | Target |
+| **1** | Ring buffer, boundary, Field Notes modal, snapshot export, opposition debug tab, log footer | **Shipped** |
 | **2** | Save attach, GitHub issue template, textLint hash in DEV | Backlog |
 | **3** | Screenshot hook, Playwright repro from snapshot | Stretch |
 
-### 36.8 Cross-references
+### 38.8 Cross-references
 
 - Text coverage: §23, `src/textEngine/TUNING.md`, Dialogue Lab in Debug  
 - Opposition repro: §30 hearings, §33 supernatural — use Opposition Lab  
 - Session transcript: `docs/DEBUG_BUG_REPORTING_DESIGN_SESSION.md`
+
+---
+
+## 39. Oppositional Forces — Implementation Status
+
+*Last updated: branch `cursor/oppositional-forces-design-935f` (June 2026). Status keys: **Done** · **Partial** · **Backlog**.*
+
+### 39.1 Core files
+
+| File | Role |
+|------|------|
+| `src/gameData/opposition.js` | AIB roster, agenda queue, counters, week tick, supernatural trigger/tick |
+| `src/gameData/oppositionActs.js` | Acts I–IV, dormancy, class transformation pressure |
+| `src/gameData/oppositionIntegration.js` | Counter gates, proxy unlock helpers, evolved-op flavors |
+| `src/gameData/oppositionHearings.js` | Removal + emergency hearing phases |
+| `src/gameData/oppositionEndgame.js` | Capture / banishment checks |
+| `src/gameData/oppositionText.js` | Render helpers for unlock/proxy/agenda lines |
+| `src/gameData/supernaturalForms.js` | Thin-form map, ascension gate, refeed surge |
+| `src/views/OversightView.jsx` | Oversight tab UI |
+| `src/components/OppositionHearingModal.jsx` | Hearing modal |
+| `src/components/SupernaturalAscensionModal.jsx` | Second evolution offer |
+
+### 39.2 §29 Acts — **Done**
+
+Act dormancy (weeks 1–7, scrutiny &lt; 25), overlapping acts banner, class transformation pressure, Act I rumor logs, Latent Appetite corruption drift.
+
+### 39.3 §30 AIB — **Partial**
+
+| Feature | Status |
+|---------|--------|
+| Member roster + stances | Done |
+| Agenda queue + telegraph | Done |
+| All 10 counters (incl. `network_misdirect`) | Done |
+| Counter path gates | Done |
+| Machine fatten chamber targeting | Done |
+| Removal + emergency hearings | Done |
+| Investigation tier 2 draws/week | Done |
+| `faculty_informant` + Madeline suspicion | Done |
+| `wellness_seminar` + saturation Softening | Done |
+| Device confiscation + network disable | Done |
+| Vance campus node spawns | Backlog |
+| `size_review` weigh-in scene | Partial |
+| Classroom `institutional_cover` skill | Backlog |
+
+### 39.4 §31 Proxies — **Done**
+
+Wellness Coalition, Accreditation (saturation Softening), Ascetic Circle (Saturated or cult 3+), week-18 joint seminar, week 26+ extra draw, travel protests, stage-5 scrutiny bonus.
+
+### 39.5 §32 Supernatural Act — **Partial**
+
+All three trigger paths, ascension modal, 16 thin forms, `memoryMass`, Thin Form student panel, text pools — **Done**. Per-form evolved activity modifiers — **Partial**. 
+
+### 39.6 §33 Scarcity — **Partial**
+
++5/week pressure, curse queue, Famine Week block, Refeast clear, capture cap 60, banishment path — **Done**. Lilith Saint / synthesis / Devour / Echoed Will reversal — **Backlog**.
+
+### 39.7 §34 UI & achievements — **Partial**
+
+Oversight, scarcity HUD, hearings, Field Notes, opposition debug — **Done**. Extended achievement set — **Done**.
+
+### 39.8 §35 Integration — **Partial**
+
+Week-end hook order, `digestNpc`, informant suspicion — **Done**. Standalone `facultyAffinity` lounge — **Backlog**.
+
+### 39.9 Fiona §36 / Chloé §37 — **Done**
+
+`artisan_gallery`, `salon_appetit` paths and modals from prior branch work.
+
+### 39.10 §38 Debug — **Phase 1 Done**
+
+### 39.11 Text engine
+
+`opposition/*` and `supernatural/*` scene modules registered in `scenes/index.js`. Run `npm run text:lint` after edits.
 
 ---
 
