@@ -59,7 +59,7 @@ import { renderHungerOutcome } from './textEngine/scenes/hungerInterrupt.js';
 import './textEngine/scenes/hungerInterrupt.js';
 import './textEngine/scenes/hungerLexicon.js';
 import './textEngine/scenes/hungerInterruptPersonal.js';
-import './textEngine/scenes/jealousyReaction.js';
+import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
 import './textEngine/scenes/corruptionVoice.js';
 import {
   aggregateSkillEffects, computeSpentSkillPoints, isTreeTierUnlocked, tickPhysicalTraits,
@@ -1238,10 +1238,14 @@ export default function ProfessorSim(){
         if(!flag) return s;
         return applyJealousyRelDelta(s,{ isNeglected:flag==='neglected', isFavored:flag==='favored' });
       });
-      if(favSummary.neglected.length){
-        const names=favSummary.neglected.map(s=>s.name).join(', ');
-        setTimeout(()=>push(`💔 Roster tension — ${names} feel sidelined by your attention this week.`),210);
-      }
+      favSummary.neglected.forEach((s,i)=>{
+        const line=renderJealousyReaction(s,'neglected',newWeek);
+        setTimeout(()=>push(line?`💔 ${line}`:`💔 ${s.name} feels sidelined by your attention this week.`),210+i*90);
+      });
+      favSummary.favored.slice(0,2).forEach((s,i)=>{
+        const line=renderJealousyReaction(s,'favored',newWeek);
+        if(line) setTimeout(()=>push(`✦ ${line}`),320+i*70);
+      });
     }
     setWeeklyFeedCounts({});
 

@@ -21,6 +21,13 @@ registerModule('corruption.voice', [
     ],
   },
   {
+    when: { corruption: [1], relationship: [3, 4] },
+    text: [
+      (ctx) => `${ctx.subject.name} presses closer after the meal. "You know what I want before I ask. That's why I stay."`,
+      (ctx) => `"Feed me like that every week," ${ctx.subject.name} whispers, "and I'll never pretend I'm not yours."`,
+    ],
+  },
+  {
     when: { corruption: [1] },
     text: [
       (ctx) => `${ctx.subject.name}, softer than she intends: "It feels kind of good when you make me eat like this."`,

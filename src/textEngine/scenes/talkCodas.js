@@ -27,6 +27,13 @@ registerModule("talk.coda", [
     text: [
       (ctx) => `${ctx.subject.name} catches your eye afterward, smiling like this was the best part of her week.`,
       (ctx) => `"I trust you," ${ctx.subject.name} says simply. "Even when you're pushing."`,
+      (ctx) => `${ctx.subject.name} exhales, soft and full. "You always know how to reach me."`,
+    ] },
+  // Hunger-forward codas
+  { when: { hungerTier: [3, 4], corruption: [1, 2] },
+    text: [
+      (ctx) => `${ctx.subject.name} licks her lips. "Don't stop talking. I'm still hungry."`,
+      (ctx) => `The conversation trails off — ${ctx.subject.name} is already looking at the pantry.`,
     ] },
   // No register unlocked — emit nothing
   { when: {}, text: "" },
