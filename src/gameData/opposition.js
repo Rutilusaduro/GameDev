@@ -8,7 +8,7 @@ import {
   isBoardDormant, pickActIRumor, computeClassTransformationPressure,
 } from './oppositionActs.js';
 import {
-  oppositionUnlockLine, oppositionProxyLine, supernaturalActLine, agendaResolveLine,
+  oppositionUnlockLine, oppositionProxyLine, supernaturalActLine, agendaResolveLine, counterSuccessLine,
 } from './oppositionText.js';
 import {
   counterGateReason, getEvolvedOpMessage, proxyUnlockFlags, recordCounterType, wellnessScrutinyBonus,
@@ -55,8 +55,10 @@ export const AIB_COUNTERS = [
 
 export function getAvailableCounters(opposition, students, ctx = {}) {
   const hasEvolved = students.some((s) => s.evolvedForm);
+  const agendaLen = opposition?.aib?.agendaQueue?.length || 0;
   return AIB_COUNTERS.filter((c) => {
     if (c.id === 'evolved_student_op' && !hasEvolved) return false;
+    if (c.id === 'spirit_pressure' && agendaLen === 0) return false;
     if (c.path === 'lilith' && (!ctx.lilithUnlocked || !students.some((s) => s.id === 15))) return false;
     if (c.path === 'pharmacist' && ((ctx.pharmacistStage ?? 0) < 2 || !students.some((s) => s.evolvedForm === 'pharmacist'))) return false;
     if (c.path === 'network' && (ctx.networkStage ?? 1) < 2) return false;
@@ -91,6 +93,7 @@ export function defaultOppositionState() {
       pendingHearing: null,
       emergencyHearingDue: false,
       pendingForcedWeighInStudentId: null,
+      markedForHunt: null,
     },
     proxies: {
       wellnessCoalition: false,
@@ -204,7 +207,25 @@ export function getOversightTelegraph(opposition) {
   const queue = opposition?.aib?.agendaQueue || [];
   if (!queue.length) return null;
   const next = queue[0];
-  return `👁 AIB agenda pending: ${next.label} (week ${next.resolvesWeek})`;
+  const hint = getAgendaCounterHint(next.cardId);
+  const base = `👁 AIB agenda pending: ${next.label} (week ${next.resolvesWeek})`;
+  return hint ? `${base} · Counter: ${hint}` : base;
+}
+
+const AGENDA_COUNTER_HINTS = {
+  wellness_audit: 'feast bribe or evolved student op',
+  device_confiscation: 'spirit pressure or evolved student op',
+  size_review: 'complete mandatory weigh-in or discredit',
+  wellness_seminar: 'feast bribe',
+  budget_freeze: 'public discredit or feast bribe',
+  removal_hearing: 'hearing scene — discredit + spirit pressure',
+  mandatory_fitness: 'evolved student op',
+  shame_vigil: 'Apple Oracle shields some students',
+  faculty_informant: 'faculty testimony',
+};
+
+export function getAgendaCounterHint(cardId) {
+  return AGENDA_COUNTER_HINTS[cardId] || null;
 }
 
 function resolveAgendaEffect(card, students, opposition, rnd = Math.random) {
@@ -319,7 +340,7 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
   if (counterId === 'feast_bribe') {
     next.aib.truceWeeks = Math.max(next.aib.truceWeeks, 1);
     next.aib.members = next.aib.members.map((m) => ({ ...m, resolve: Math.max(0, m.resolve - counter.resolveHit) }));
-    return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: '🍷 Feast bribe accepted. AIB pauses this week.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
+    return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: counterSuccessLine(counterId) || '🍷 Feast bribe accepted. AIB pauses this week.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
   }
   if (counterId === 'public_discredit') {
     const cardId = options.cardId;
@@ -337,7 +358,9 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
     if (archivistFree) meta.archivistDiscreditUsed = true;
     return {
       opposition: { ...next, meta },
-      message: archivistFree ? `📚 Archivist Skin — discredit lands unchallenged: ${label}.` : `📰 Discredited: ${label}. Card removed from deck.`,
+      message: archivistFree
+        ? `📚 Archivist Skin — discredit lands unchallenged: ${label}.`
+        : (counterSuccessLine(counterId) || `📰 Discredited: ${label}. Card removed from deck.`),
       scrutinyDelta: counter.scrutiny,
       apCost: archivistFree ? 0 : counter.ap,
       moneyDelta: 0,
@@ -349,9 +372,10 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
     }
     const misfired = next.aib.agendaQueue[0];
     next.aib.agendaQueue = next.aib.agendaQueue.slice(1);
-    const misfireMsg = misfired?.cardId === 'removal_hearing'
-      ? '👁 Spirit pressure — removal hearing misfires into mandatory tasting.'
-      : '👁 Spirit pressure — agenda misfires into mandatory tasting.';
+    const misfireMsg = counterSuccessLine(counterId)
+      || (misfired?.cardId === 'removal_hearing'
+        ? '👁 Spirit pressure — removal hearing misfires into mandatory tasting.'
+        : '👁 Spirit pressure — agenda misfires into mandatory tasting.');
     return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: misfireMsg, scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
   }
   if (counterId === 'evolved_student_op' && next.aib.agendaQueue.length) {
@@ -399,20 +423,39 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
     next.aib.informantShieldWeeks = 2;
     return { opposition: next, message: '📎 Faculty testimony on record — informant muted 2 weeks.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
   }
-  if (counterId === 'bureaucratic_capture' && memberId) {
+  if (counterId === 'bureaucratic_capture') {
+    if (!memberId) {
+      return { opposition: next, message: '⚠️ Select a board member with resolve ≤ 40 to capture.', scrutinyDelta: 0, apCost: 0, moneyDelta: 0 };
+    }
+    const target = next.aib.members.find((m) => m.id === memberId);
+    if (!target || target.resolve > 40) {
+      return {
+        opposition: next,
+        message: target
+          ? `⚠️ ${target.name} is too resolved (${target.resolve}) — capture needs wavering resolve (≤40).`
+          : '⚠️ Board member not found.',
+        scrutinyDelta: 0,
+        apCost: 0,
+        moneyDelta: 0,
+      };
+    }
     next.aib.members = next.aib.members.map((m) => {
       if (m.id !== memberId) return m;
-      if (m.resolve > 40) return m;
       return { ...m, stance: 'compromised', corruption: Math.min(100, m.corruption + 25) };
     });
-    return { opposition: next, message: '📎 Member compromised — they look away at hearings.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0, boardCompromised: true };
+    const msg = counterSuccessLine(counterId) || '📎 Member compromised — they look away at hearings.';
+    return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: msg, scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0, boardCompromised: true };
   }
   if (counterId === 'lilith_hunt') {
-    const memberId = options.memberId;
-    const target = memberId
-      ? next.aib.members.find((m) => m.id === memberId)
+    const huntMemberId = options.memberId || memberId;
+    const target = huntMemberId
+      ? next.aib.members.find((m) => m.id === huntMemberId)
       : [...next.aib.members].sort((a, b) => a.resolve - b.resolve)[0];
     if (!target) return { opposition: next, message: '⚠️ No board members remain.', scrutinyDelta: 0, apCost: counter.ap, moneyDelta: 0 };
+    next = {
+      ...next,
+      aib: { ...next.aib, markedForHunt: target.id },
+    };
     return {
       opposition: next,
       message: `🩸 ${target.name} marked for Lilith's hunt — find them on the map.`,
