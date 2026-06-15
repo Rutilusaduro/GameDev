@@ -3,7 +3,7 @@ import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL } from './gameData/intimacy.js';
 import { WAITER_DESC, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, UNBUTTON_LINES, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { narrativeEventText, randomEventText } from './gameData/weeklyEventText.js';
-import { TextFlagToolbar } from './components/TextFlagToolbar.jsx';
+import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from './textEngine/textFlagFormat.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS } from './gameData/classEvents.js';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
@@ -6353,9 +6353,13 @@ export default function ProfessorSim(){
 
               {pendingResult&&(
                 <div>
-                  <div style={{...C.infoBox("rgba(100,40,200,0.1)"),fontSize:13,lineHeight:1.75,color:"#d0b8e8",marginBottom:12}}>
-                    {pendingResult.result}
-                  </div>
+                  <FlaggedProse
+                    section={`classSession.result.${pendingResult.sceneTitle}`}
+                    text={pendingResult.result}
+                    student={scenes[sceneIdx]?.student || students.find(s => s.name === pendingResult.target) || null}
+                    week={week}
+                    style={{...C.infoBox("rgba(100,40,200,0.1)"),fontSize:13,lineHeight:1.75,color:"#d0b8e8",marginBottom:8}}
+                  />
                   {pendingResult.gain>0&&(
                     <div style={{fontSize:12,color:"#f0a060",marginBottom:12}}>
                       {pendingResult.target==="the class"
@@ -6378,9 +6382,13 @@ export default function ProfessorSim(){
                         {student.archetype} · {student.lbs} lbs · <MoodBadge mood={student.mood}/>
                       </div>
                     )}
-                    <div style={{...C.infoBox("rgba(20,8,40,0.8)"),fontSize:13,lineHeight:1.75,color:"#c8a8e8",marginBottom:14}}>
-                      {typeof scene.text==="function"?scene.text(student):scene.text}
-                    </div>
+                    <FlaggedProse
+                      section={`classSession.scene.${scene.title}`}
+                      text={typeof scene.text==="function"?scene.text(student):scene.text}
+                      student={student}
+                      week={week}
+                      style={{...C.infoBox("rgba(20,8,40,0.8)"),fontSize:13,lineHeight:1.75,color:"#c8a8e8",marginBottom:14}}
+                    />
                     <div style={C.secT}>How do you respond?</div>
                     <div style={{display:"flex",flexDirection:"column",gap:8}}>
                       {scene.choices.map((ch,i)=>(

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { C } from '../styles.js';
-import { formatTextFlagExport, proseToFlagNodes, traceToFlagNodes } from '../textEngine/textFlagFormat.js';
+import { getStage } from '../gameData/stages.js';
+import { formatTextFlagExport, proseToFlagNodes, traceToFlagNodes, buildStateLine } from '../textEngine/textFlagFormat.js';
 
 const inputStyle = {
   background: '#181820',
@@ -134,5 +135,28 @@ export function TextFlagToolbar({
         </div>
       )}
     </div>
+  );
+}
+
+/** Prose block + dev flag toolbar — use on any modal that shows narrative text. */
+export function FlaggedProse({
+  section,
+  text,
+  student = null,
+  week,
+  stateLine: stateLineProp,
+  traceNodes,
+  style,
+  children,
+}) {
+  if (!text?.trim()) return children ?? null;
+  const stateLine = stateLineProp ?? (student
+    ? buildStateLine(student, { week, stageLabel: getStage(student.lbs).label })
+    : week ? `week ${week}` : '—');
+  return (
+    <>
+      {children ?? <div style={style}>{text}</div>}
+      <TextFlagToolbar section={section} stateLine={stateLine} text={text} nodes={traceNodes} />
+    </>
   );
 }

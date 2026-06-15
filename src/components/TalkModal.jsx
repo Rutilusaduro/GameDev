@@ -10,6 +10,8 @@ import { buildDevourScene } from '../gameData/devourScene.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
 import { getStage } from '../gameData/stages.js';
 import { createContext, render } from '../textEngine/engine.js';
+import { traceToFlagNodes } from '../textEngine/textFlagFormat.js';
+import { FlaggedProse } from './TextFlagToolbar.jsx';
 import '../textEngine/scenes/talkCodas.js'; // registers talk.coda
 import '../textEngine/scenes/talkEncourage.js'; // registers talk.encourage
 import '../textEngine/scenes/campusSoftening.js';
@@ -22,8 +24,10 @@ import { C } from '../styles.js';
 
 // ── response builder ──────────────────────────────────────────
 
-function buildResponse(topic, student, skillEffects, week, campusFattening = false, campusTier = 0){
+function buildResponse(topic, student, skillEffects, week, campusFattening = false, campusTier = 0) {
   const corTier = getCorruptionTier(student.corruption || 0).id;
+  const trace = [];
+  const section = topic.sceneType === 'devour' ? 'talk.devour' : `talk.${topic.id}`;
 
   let text;
   if (topic.sceneType === 'devour') {
@@ -38,29 +42,28 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
         campusTier: campusTier || (campusFattening ? 1 : 0),
       },
     });
-    // Engine-routed topics declare an engineTemplate (talkSystem.js);
-    // legacy topics still come from the talkDialogue.js pools.
+    const renderOpts = { trace };
     text = topic.engineTemplate
-      ? render(topic.engineTemplate, ctx)
+      ? render(topic.engineTemplate, ctx, renderOpts)
       : buildTalkResponse(topic.id, student, corTier);
-    text += render("{talk.coda|prefix: }", ctx, { noSmooth: true });
+    text += render('{talk.coda|prefix: }', ctx, { ...renderOpts, noSmooth: true });
     if (campusFattening) {
-      text += render("{talk.campusCoda|prefix: }", ctx, { noSmooth: true });
+      text += render('{talk.campusCoda|prefix: }', ctx, { ...renderOpts, noSmooth: true });
     }
     if (getHungerTier(student) >= 2 || getAddictionLevel(student) >= 1) {
-      text += render("{talk.hungryCoda}", ctx, { noSmooth: true });
+      text += render('{talk.hungryCoda}', ctx, { ...renderOpts, noSmooth: true });
     }
     if (student.evolvedForm === 'eating_streamer') {
       const ds = ensureStreamFields(student);
       ctx.d.brand = ds.brand;
       ctx.d.streamVoice = ds.streamVoice || getStreamVoice(ds);
       ctx.d.brandControl = getBrandControlTier(ds.brandStreaks?.[ds.brand] || 0);
-      const off = render('{destiny.offstream.talk}', ctx, { noSmooth: true });
+      const off = render('{destiny.offstream.talk}', ctx, { ...renderOpts, noSmooth: true });
       if (off?.trim()) text += `\n\n${off}`;
     }
   }
 
-  return text;
+  return { text, traceNodes: traceToFlagNodes(trace), section };
 }
 
 // ── topic card ────────────────────────────────────────────────
@@ -107,7 +110,7 @@ function TopicCard({ topic, student, skillEffects, onSelect, disabled }){
 
 // ── response display ──────────────────────────────────────────
 
-function ResponseDisplay({ topic, text, student, week, onClose }){
+function ResponseDisplay({ topic, text, student, week, section, traceNodes, onClose }) {
   const col = GROUP_COLORS[topic.group] || "#8040c0";
   const st  = getStage(student.lbs);
   const isLong = topic.sceneType === 'devour' || (text && text.length > 600);
@@ -119,21 +122,26 @@ function ResponseDisplay({ topic, text, student, week, onClose }){
         {topic.extreme&&<span style={{...C.tag(`${col}22`,col),fontSize:8,marginLeft:4}}>EXTREME</span>}
       </div>
 
-      <div style={{
-        background:`${col}10`,
-        border:`1px solid ${col}30`,
-        borderRadius:10,
-        padding:"14px 16px",
-        fontSize:isLong?12:13,
-        color:"#ddd0b8",
-        lineHeight:1.85,
-        fontStyle:"italic",
-        maxHeight:isLong?340:"none",
-        overflowY:isLong?"auto":"visible",
-        whiteSpace:"pre-wrap",
-      }}>
-        {text}
-      </div>
+      <FlaggedProse
+        section={section || `talk.${topic.id}`}
+        text={text}
+        student={student}
+        week={week}
+        traceNodes={traceNodes}
+        style={{
+          background: `${col}10`,
+          border: `1px solid ${col}30`,
+          borderRadius: 10,
+          padding: '14px 16px',
+          fontSize: isLong ? 12 : 13,
+          color: '#ddd0b8',
+          lineHeight: 1.85,
+          fontStyle: 'italic',
+          maxHeight: isLong ? 340 : 'none',
+          overflowY: isLong ? 'auto' : 'visible',
+          whiteSpace: 'pre-wrap',
+        }}
+      />
 
       {/* stage context — season-aware body flavor via the text engine */}
       <div style={{fontSize:10,color:"#8a6a98",textAlign:"right",fontStyle:"italic"}}>
@@ -167,13 +175,25 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
       const cap  = student.stomachCapacity || 100;
       if(full >= cap * 0.85 && !(eff.totalSurrender && (student.corruption||0) >= 90)){
         const refusalText = typeof topic.refusal === "function" ? topic.refusal(student) : topic.refusal;
-        setActiveResponse({topic, text:refusalText, refused:true});
+        setActiveResponse({
+          topic,
+          text: refusalText,
+          refused: true,
+          section: `talk.refusal.${topic.id}`,
+          traceNodes: [],
+        });
         return;
       }
     }
 
-    const text = buildResponse(topic, student, eff, week, campusFattening, campusTier);
-    setActiveResponse({topic, text, refused:false});
+    const bundle = buildResponse(topic, student, eff, week, campusFattening, campusTier);
+    setActiveResponse({
+      topic,
+      text: bundle.text,
+      refused: false,
+      section: bundle.section,
+      traceNodes: bundle.traceNodes,
+    });
   };
 
   const handleBack = () => {
@@ -264,6 +284,8 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
             text={activeResponse.text}
             student={student}
             week={week}
+            section={activeResponse.section}
+            traceNodes={activeResponse.traceNodes}
             onClose={handleBack}
           />
         ) : (
