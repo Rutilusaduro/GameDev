@@ -315,7 +315,7 @@ Pantry restocks 2–3 random items/week. Use on student → calories + fullness.
 | 1 | Madeline | bookworm | 125 | Community Researcher |
 | 2 | Kylie | influencer | 122 | Feedee Channel, Body Positive Platform |
 | 3 | Serena | athlete | 145 | Sumo, Circuit Competitor |
-| 4 | Fiona | artsy | 115 | **Living Canvas** *(replaces Installation Artist, Food Photographer)* |
+| 4 | Fiona | artsy | 115 | **Artisan Gallery** *(replaces Installation Artist, Food Photographer)* |
 | 5 | Destiny | gamer | 155 | Ranked Feedee, Eating Streamer |
 | 6 | Tiffany | sorority | 128 | Chapter Hostess |
 | 7 | Priya | overachiever | 120 | Competitive Gainer |
@@ -1268,106 +1268,196 @@ endWeek():
 
 ---
 
-## 36. Fiona — Living Canvas (Artsy Evolution Redesign)
+## 36. Fiona — Artisan Gallery (Artsy Evolution Redesign)
 
 ### 36.1 Design rationale
 
 **Removed paths:** `installation_artist`, `food_photographer` — generic activity + reaction lines only; no custom UI; split Fiona's content budget.
 
-**New single path:** `living_canvas` — **The Living Canvas**. Fiona treats her growing body as the primary artwork: composed, exhibited, critiqued, and fed in public. Quality tier: Homestead Queen / Pharmacist (custom modal, multi-phase `EVOLVED_EVENTS`, lbs-cost skill tree, scrutiny integration).
+**Superseded v1 concept:** `living_canvas` (self-as-medium) — replaced per creative direction.
+
+**New single path:** `artisan_gallery` — **The Artisan Gallery of Abundance**. Fiona runs a fattening-atelier and exhibition space: she **feeds and documents** classmates as living subjects, **photographs abundance in the wild** (campus and beyond), and **mounts shows** that pair prints with the bodies that grew into them. Quality tier: Homestead Queen / Pharmacist / Community Researcher (custom modal, subject arcs, field expeditions, multi-phase `EVOLVED_EVENTS`, lbs-cost skill tree, scrutiny integration).
 
 ### 36.2 Evolution offer
 
 **Unlock:** Standard gates (§15.1): stage ≥ Plump, rel ≥ 60.
 
-**Intro:** Fiona arrives with two portfolios — old work (thin figures, negative space) and new sketches (her body at increasing scale). *"I've been thinking about what the work is about now. I don't want to document the transformation. I want to **be** it — composed, lit, exhibited. Will you help me curate?"*
+**Intro:** Fiona's studio walls are covered in contact sheets — not of herself, but of **every soft belly and widening hip she's noticed on campus**. She has one empty pin-board labeled *In Progress*.
 
-**Single choice:** Living Canvas.
+*"I used to paint thin figures because that's what they taught me to see."* She taps a photo of Brittany mid-laugh, mid-bite. *"I want a gallery that documents **abundance** — the feeding, the growth, the bodies. I want to make people bigger and **keep the proof**. Will you help me build it?"*
+
+**Single choice:** Artisan Gallery.
 
 ### 36.3 Core fantasy
 
-The studio becomes a gallery. The player helps Fiona **compose** pieces (motif + body zone + edible "medium"), run **sessions** that allocate indulgence across zones, manage **patrons** and **critics**, and stage **Opening Nights** where Fiona eats as performance art — scandalous, reverent, lucrative.
+Fiona is **curator, feeder, and photographer**. The player helps her:
 
-### 36.4 Custom UI — Studio Canvas (`FionaCanvasModal.jsx`)
+1. **Document subjects** — fatten classmates in staged studio sessions while shooting progression  
+2. **Field work** — capture candid "fat in the world" images on campus  
+3. **Mount exhibitions** — hang prints, optionally present the living subject beside their timeline  
+4. **Sell the work** — patrons, press, scandal, scrutiny  
+
+Fiona **also gains** during sessions (she eats on set — the artist shares the meal). Her own body is part of the gallery's mythology, not the sole canvas.
+
+### 36.4 Custom UI — Artisan Gallery (`ArtisanGalleryModal.jsx`)
 
 **Tabs:**
 
 | Tab | Function |
 |-----|----------|
-| **Compose** | Pick motif, zone, medium; run allocation mini-game |
-| **Patrons** | Commission queue, payments, rel bonuses |
-| **Archive** | Past compositions, critic quotes, scandal log |
+| **Gallery Floor** | Current exhibition layout (4–12 wall slots), mounted prints, preview foot traffic |
+| **Subjects** | Active documentation arcs (max 3), progression contact sheets, stage snapshots |
+| **Field Archive** | Candid rolls from campus expeditions; filter by location/tag/quality |
+| **Patrons & Press** | Reputation meter, print sales, critic log, scrutiny heat |
 
-**Student state:** `canvasState: { patrons: 0–100, archive: [], scandalStreak, lastMotif, openingsHeld }`
+**Student state:** `galleryState: { patrons: 0–100, scrutinyHeat: 0–100, subjects: [], fieldArchive: [], mountedIds: [], exhibitionsHeld, printsSold, activeExhibition? }`
 
-### 36.5 Compose session (1–2 AP)
+### 36.5 Activity catalog
 
-**Step 1 — Motif** (flavor + modifier):
+| Activity | AP | Gate | Effect |
+|----------|-----|------|--------|
+| **Enroll Subject** | 0 | rel ≥ 45 with target; slot free | Start documentation arc on classmate |
+| **Studio Session** | 2 | active subject | Feed + shoot progression; subject + Fiona lbs |
+| **Field Shoot** | 1 | campus unlocked OR post-stage-2 | Candid abundance photos; archive entries |
+| **Mount Exhibition** | 2 | 8+ archive pieces; every 2 activity tiers | Opening night; patrons; scrutiny |
+| **Print Sale** | 0 | patrons ≥ 30 | Passive $; occasional rel with subject |
 
-| Motif | Gain mult | Scrutiny |
-|-------|-----------|----------|
-| Abundance | +10% lbs | +2 |
-| Still Life | +5% rel | 0 |
-| Portrait | +8% corruption | +1 |
-| Performance | +15% lbs | +4 |
+### 36.6 Studio Session mini-game (core loop)
 
-**Step 2 — Zone focus:** belly | bust | hips | full — biases growth-event text and inner voice.
+**Phases:**
 
-**Step 3 — Medium palette:** butter / cream / chocolate / pastry — renames calories in prose.
+```
+Setup → Feed & Frame → Contact Sheet → Archive
+```
 
-**Step 4 — Allocation mini-game:** Distribute 12 "pigment" points across zones (reuse route-allocation pattern from §19.6). Over-allocate primary zone → force-feed roll bonus.
+#### Setup (choices)
 
-**Outcome:** +4–9 lbs (activity tier scaled), +patrons, critic reaction tier.
+| Choice | Effect |
+|--------|--------|
+| **Lighting** | Warm (rel+) / Dramatic (patrons+) / Intimate (corruption+) |
+| **Palette** | French picnic / Bakery spread / Banquet trays — sets calories + prose |
+| **Pose brief** | Belly forward / Profile curve / Hands on fullness — zone bias for subject |
 
-### 36.6 Patron & critic system
+#### Feed & Frame (3 rounds)
 
-- **Patron meter** 0–100: rises from Reverent/Provocative reviews; unlocks commissions ($80–$250, +rel).
-- **Critic roll** each session: Reverent (patrons +8) | Provocative (patrons +12, scrutiny +3) | Scandalous (patrons +20, scrutiny +8, AIB telegraph).
-- **Commissions:** occasional requests — "paint" specific zone via next compose session; bonus lbs on completion.
+Each round, pick one:
 
-### 36.7 Opening Night (every 2 activity stage indices)
+| Action | Subject | Fiona | Archive |
+|--------|---------|-------|---------|
+| **Feed subject** | +cal → lbs | — | Progression shot roll |
+| **Feed together** | +cal (less) | +cal → lbs | "Shared Table" tag |
+| **Shoot only** | — | — | Candid during fullness; no cal |
+| **Direct & feed** | +cal++, corruption+ | +cal | "Directed" quality tier |
 
-2 AP capstone within arc:
+Force-feed rolls use subject corruption; Fiona auto-eats when player picks "together" or "direct."
 
-- Public feeding performance in studio/gallery
-- Player choices: **Intimate scale** (rel focus) | **Spectacle** (lbs focus) | **Scandal** (patrons + scrutiny)
-- +10–18 direct lbs
-- Triggers `growthEvent` weighted to zone focus
-- **Opposition hook (§30):** Investigation tier + Scandal opening → `wellness_audit` agenda priority
+#### Contact Sheet
 
-### 36.8 EVOLVED_EVENTS arc (6 stages)
+Pick **best 2 of 4** generated frames → `quality`: Study | Print | Masterwork (patrons mult).
+
+**Subject payout:** +5–12 lbs typical (direct bypass stomach partial); rel + corruption per session.  
+**Fiona payout:** +2–6 lbs when she eats on set.
+
+**Milestones:** auto-snapshot at subject stage-up → unlocks **Before/After wall pair** for exhibitions.
+
+### 36.7 Field Shoot (campus abundance)
+
+1 AP expedition; location roll weighted by campus node if player is exploring, else studio-adjacent pool.
+
+| Location tag | Sample vignette | Archive quality bias |
+|--------------|-----------------|----------------------|
+| `dining_hall` | Staff knows the regulars; trays, booths | Documentary |
+| `quad` | Students lounging, snacking, sun on soft skin | Candid |
+| `food_court` | Strangers eating without apology | Street |
+| `gym_aftermath` | Post-workout appetite, towels, vending | Contrast |
+| `faculty_lounge` | Risk shot — Coach, Chef Rosa | Scandal |
+| `visible_classmate` | Named student if stage ≥ 4 on campus | Portrait rights choice |
+
+**Portrait rights choice** (if classmate visible): **Ask consent** (+rel, legal) | **Shoot first** (+scandal, scrutiny, patrons++) | **Invite to studio** (enroll subject discount).
+
+Field entries store `{ id, location, tag, quality, week, caption }`. High **campus saturation** (§22.2) enriches roll table with softer crowd descriptors.
+
+### 36.8 Mount Exhibition (opening night)
+
+**Requirements:** 8+ archived pieces (mix field + subject); 2 AP.
+
+**Planner:**
+
+1. **Theme** — Documentary | Indulgence | Living Progress | Scandal  
+2. **Wall selection** — pick 6–10 prints; subject pairs give bonus patrons  
+3. **Living presence** — optional featured subject attends (rel gate, stage ≥ 4)  
+4. **Opening tone** — Reverent | Celebratory | Confrontational (scrutiny/patrons tradeoff)
+
+**Outcomes:**
+
+- Patrons +10–25; $100–$400 print sales  
+- Subject rel +5–12 if featured  
+- Scrutiny +0–12; AIB `wellness_audit` telegraph if Confrontational + Investigation tier  
+- Fiona +3–8 lbs (she always eats at her own openings)
+
+### 36.9 Subject documentation arcs
+
+Max **3 concurrent subjects**. Each arc tracks:
+
+| Field | Purpose |
+|-------|---------|
+| `studentId` | Who is being fattened/documented |
+| `weekStarted` | Timeline for exhibition narrative |
+| `sessions` | Count of studio sessions |
+| `photos[]` | All frames with quality + week |
+| `stageSnapshots[]` | Auto at stage-up |
+| `consentTier` | asked / enthusiastic / directed |
+
+**Arc completion** (optional achievement): subject reaches stage 6+ with 4+ sessions → **Triptych Masterwork** (permanent patron bonus).
+
+**Eligible subjects:** any visible class student; hidden students need unlock. Lilith excluded. Professor-favored students give diary jealousy hooks.
+
+### 36.10 EVOLVED_EVENTS arc (6 stages)
 
 | Stage | Title | Beats |
 |-------|-------|-------|
-| 0 | First Study | Solo session; Fiona admits body is the subject |
-| 1 | The Patron Arrives | First commission; first critic review |
-| 2 | Scandal Opening | Public night; campus paper attends |
-| 3 | Two-Room Show | Studio expansion; Fiona immobile-adjacent redirect if blob |
-| 4 | The Retrospective That Isn't | Curator wants "work in progress" show |
-| 5 | Perpetual Exhibition | Fiona as living installation; patrons weekly |
+| 0 | First Subject | Enroll first classmate; first studio session; first print pinned |
+| 1 | Field Roll | First field shoot; Fiona admits she sees abundance everywhere now |
+| 2 | Wall of Proof | First real exhibition; critic attends; subject optional |
+| 3 | The Living Room | Featured subject stands beside their timeline; crowd hushes |
+| 4 | Regional Interest | Off-campus gallery email; scrutiny spike; Fiona must choose travel show |
+| 5 | Permanent Collection | Museum/collector acquires series; gallery becomes institution |
 
-Each stage: 2 phases × 2 choices → ending variants (flags: `patron_secured`, `scandal_embraced`, etc.).
+Each stage: 2 phases × 2 choices → flags (`subject_featured`, `scandal_embraced`, `consent_strict`, etc.).
 
-### 36.9 Skill tree (`living_canvas`, lbs currency)
+### 36.11 Skill tree (`artisan_gallery`, lbs currency)
 
 | Skill | Cost | Effect |
 |-------|------|--------|
-| Patronage Network | 20 | +$ per commission |
-| Scandal as Publicity | 40 | Scandalous reviews +patrons, −scrutiny 1/wk |
-| Immersive Scale | 70 | +2 lbs/compose |
-| The Artist Present | 110 | Opening nights +rel all attendees |
-| Perpetual Exhibition | 160 | +2 passive lbs/wk, scrutiny −2/wk |
+| Documentarian's Eye | 20 | +1 Field Shoot quality tier |
+| Consent as Composition | 40 | Ask-consent field shots +rel double |
+| Shared Table | 70 | Fiona +3 lbs/session when feeding together |
+| Living Installation | 110 | Featured subject openings +patrons 50% |
+| Abundance Archive | 160 | +$ print sales, scrutiny −2/wk, +1 subject slot |
 
-### 36.10 Cross-system integration
+### 36.12 Cross-system integration
 
-- **Tiffany Chapter Hostess:** Fiona atmosphere prep → bonus patron roll if evolved `living_canvas`
-- **AIB (§30):** Scandal openings feed `scandalMeter`
-- **Supernatural Act (§32):** thin-form `canvas_wraith` — ethereal installations, refeed = "restoring the piece"
-- **Text engine:** `living_canvas.*` pools; motif/zone selectors
+| System | Hook |
+|--------|------|
+| **Madeline `community_researcher`** | Parallel "documentation" fantasy; Fiona's work is aesthetic not thesis — cross-dialogue at high suspicion |
+| **Nadia `psych_researcher`** | Optional rivalry/jealousy text if same subject enrolled |
+| **Tiffany `chapter_hostess`** | Fiona atmosphere prep → exhibition patron bonus |
+| **Campus saturation** | Richer field rolls; Softening+ unlocks `regional_crowd` tag |
+| **AIB (§30)** | Confrontational openings; "shoot first" field choice; mounted evidence → `faculty_informant` risk |
+| **Supernatural Act (§32)** | thin-form `curator_wraith` — photographs hunger as negative space; refeed restores subjects **in frame** |
+| **Text engine** | `artisan_gallery.*` pools; `subjectId`, `photoQuality`, `exhibitionTheme` selectors |
 
-### 36.11 Deprecation notes
+### 36.13 Sample prose
 
-Remove from active offers: `installation_artist`, `food_photographer`. Retain ids in save migration map → `living_canvas` if either was set. Update `skills.js`, diary modules, `EVOLVED_REACTIONS`, outfits.
+**Studio session:** *"Hold still — no, don't hold still. Let the fullness settle while I shoot." Fiona doesn't look away from the viewfinder. The subject swallows another bite; Fiona's own brush hand reaches for cheese without looking. "Good. That's the frame. That's the whole semester."*
+
+**Field roll (quad):** *She photographs a girl on the quad who doesn't know she's being seen — mid-yawn, mid-pastry, sunlight on a soft midsection. Fiona lowers the camera like a confession. "There," she says. "That's civilization."*
+
+**Living Room opening:** *The print on the left: stage three, shy smile. Center: stage five, hands on belly. Right: the subject herself, live, heavier than the latest frame, eating grapes while the crowd stares. Fiona introduces her: "The work continues. She continues." Applause. The subject curtsies without thinking. Fiona is already loading her plate.*
+
+### 36.14 Deprecation notes
+
+Remove from active offers: `installation_artist`, `food_photographer`, `living_canvas` (design-only). Migration map: any prior artsy form → `artisan_gallery`. Files: `fionaGallery.js`, `ArtisanGalleryModal.jsx`, `diary.artisan_gallery`, skills tree, `EVOLVED_EVENTS`, supernatural `curator_wraith`.
 
 ---
 
