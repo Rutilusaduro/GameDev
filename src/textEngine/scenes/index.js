@@ -10,6 +10,7 @@ import './campusDevice/index.js';
 import './campusSoftening.js';
 import './destinyOffstream.js';
 import './diary.js';
+import './diaryBase.js';
 import './evolvedDiary.js';
 import './hiveIntake.js';
 import './hungerArchetypeBehavior.js';
