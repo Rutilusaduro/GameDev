@@ -23,7 +23,7 @@ import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, setPaperDoll, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, setPaperDoll, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -585,6 +585,34 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                                   {ch.stageIdx>=1&&(<div style={{display:"flex",justifyContent:"space-between"}}><span>Camille</span><span>{Math.round(ch.camille.lbs)} lbs</span></div>)}
                                 </div>
                               )}
+                            </div>
+                          );
+                        }
+                        if(s.evolvedForm==='salon_appetit'&&salonState?.chloeStudentId===s.id){
+                          return(
+                            <div style={{background:"rgba(60,8,24,0.5)",border:`1px solid ${borderColor}`,borderRadius:10,padding:12}}>
+                              <div style={{fontSize:9,letterSpacing:3,color:"#c9a227",marginBottom:4}}>✦ EVOLVED PATH</div>
+                              <div style={{fontSize:13,fontWeight:700,color:"#e8c0cc",marginBottom:6}}>Salon de l'Appétit</div>
+                              <div style={{fontSize:10,color:"#b89098",marginBottom:8}}>
+                                Prestige {salonState.prestige} · Indulgence {salonState.indulgence} · Evenings {salonState.eveningsHosted}
+                              </div>
+                              <button style={{...C.btn("#8b2942"),width:"100%",opacity:ap<2?0.4:1,marginBottom:8}} onClick={()=>doEvolvedActivity(s)}>
+                                🥂 Host Salon Evening (2 AP)
+                              </button>
+                            </div>
+                          );
+                        }
+                        if(s.evolvedForm==='artisan_gallery'&&galleryState?.fionaStudentId===s.id){
+                          return(
+                            <div style={{background:"rgba(40,24,8,0.5)",border:`1px solid ${borderColor}`,borderRadius:10,padding:12}}>
+                              <div style={{fontSize:9,letterSpacing:3,color:"#c47a2a",marginBottom:4}}>✦ EVOLVED PATH</div>
+                              <div style={{fontSize:13,fontWeight:700,color:"#f5e6d3",marginBottom:6}}>Artisan Gallery</div>
+                              <div style={{fontSize:10,color:"#c9a87c",marginBottom:8}}>
+                                Patrons {galleryState.patrons} · Archive {galleryState.fieldArchive.length} · Exhibitions {galleryState.exhibitionsHeld}
+                              </div>
+                              <button style={{...C.btn("#c47a2a"),width:"100%",opacity:ap<1?0.4:1,marginBottom:8}} onClick={()=>doEvolvedActivity(s)}>
+                                🖼 Open Artisan Gallery (1 AP)
+                              </button>
                             </div>
                           );
                         }

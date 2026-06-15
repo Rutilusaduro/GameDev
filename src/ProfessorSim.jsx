@@ -189,6 +189,18 @@ import { SkillTreeView } from './views/SkillTreeView.jsx';
 import { AchievementsView } from './views/AchievementsView.jsx';
 import { PrivateSessionModal } from './components/PrivateSessionModal.jsx';
 import { EvolvedEventModal } from './components/EvolvedEventModal.jsx';
+import { SalonAppetitModal } from './components/SalonAppetitModal.jsx';
+import { ArtisanGalleryModal } from './components/ArtisanGalleryModal.jsx';
+import { OversightView } from './views/OversightView.jsx';
+import {
+  defaultOppositionState, processOppositionWeek, runAibCounter, checkSupernaturalTrigger,
+} from './gameData/opposition.js';
+import {
+  defaultSalonState, startSalonSession, salonPickMenu, salonServiceChoice, salonFinishDigestif,
+} from './gameData/chloeSalon.js';
+import {
+  defaultGalleryState, enrollSubject, startStudioSession, studioAction, runFieldShoot, mountExhibition,
+} from './gameData/fionaGallery.js';
 import { WeighInModal } from './components/WeighInModal.jsx';
 import { TalkModal } from './components/TalkModal.jsx';
 import { DebugPanel } from './components/DebugPanel.jsx';
@@ -384,6 +396,11 @@ export default function ProfessorSim(){
     sessionSceneTag:null, sessionPhotoTag:null, sessionBoostSummary:null, sessionLog:null,
   });
   const [fairDayState, setFairDayState] = useState(null);
+  const [opposition, setOpposition] = useState(() => defaultOppositionState());
+  const [salonState, setSalonState] = useState(null);
+  const [salonOpen, setSalonOpen] = useState(false);
+  const [galleryState, setGalleryState] = useState(null);
+  const [galleryOpen, setGalleryOpen] = useState(false);
   // fairDayState: { studentId, stageIdx, phase:'weighin'|'judging'|'afterparty'|'done',
   //   influenceKey, weighInChoice:null, weighInResultText:null, weighInGain:0,
   //   afterpartyChoice:null, afterpartyResultText:null, totalGain:0, relBonus:0 }
@@ -1221,6 +1238,21 @@ export default function ProfessorSim(){
 
 
     const evs=collectEvents(updated);
+
+    // Opposition week-end processing (AIB agenda, proxies, supernatural)
+    let nextOpposition=opposition||defaultOppositionState();
+    nextOpposition=checkSupernaturalTrigger(nextOpposition,{
+      week:newWeek,
+      scrutiny:adminScrutiny,
+      students:updated,
+      campusSaturation:nextSaturation?.score??campusState.saturation?.score??0,
+    });
+    const oppResult=processOppositionWeek(nextOpposition,{week:newWeek,scrutiny:adminScrutiny,students:updated});
+    setOpposition(oppResult.opposition);
+    if(oppResult.scrutinyDelta) addScrutiny(oppResult.scrutinyDelta);
+    if(oppResult.moneyDelta) setMoney(m=>m+oppResult.moneyDelta);
+    oppResult.logs.forEach((msg,i)=>setTimeout(()=>push(msg),200+i*60));
+
     setStudents(updated);
     // Admin notices visibly large students (hidden students like Lilith don't trigger scrutiny)
     const visibleCount=updated.filter(s=>!s.hidden&&getStage(s.lbs).id>=5).length;
@@ -1341,6 +1373,12 @@ export default function ProfessorSim(){
       setLabState(defaultLabState());
       setDeviceInventory(defaultDeviceInventory());
     }
+    if(formId==='salon_appetit'){
+      setSalonState(defaultSalonState(studentId));
+    }
+    if(formId==='artisan_gallery'){
+      setGalleryState(defaultGalleryState(studentId));
+    }
   };
 
   const doEvolvedActivity=(s)=>{
@@ -1395,6 +1433,34 @@ export default function ProfessorSim(){
     if(s.evolvedForm==='state_fair_queen'){
       // Training collaborations hub — AP is deducted when a session is confirmed inside the modal
       setFairTrainingState(prev=>({...prev, open:true, view:'main', mjStudentId:s.id, pendingCollab:null, pendingRecruits:null}));
+      return;
+    }
+    if(s.evolvedForm==='salon_appetit'){
+      const meta=EVOLVED_ACTIVITY_META['salon_appetit']; if(!meta) return;
+      const stageIdx=getEvolvedActivityStageIdx(s);
+      const evDef=EVOLVED_EVENTS[s.evolvedForm]?.[stageIdx];
+      if(evDef){
+        if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
+        setAp(a=>a-meta.apCost);
+        setEvolvedEventState({studentId:s.id,formId:s.evolvedForm,stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});
+        return;
+      }
+      openSalonHub(s.id);
+      return;
+    }
+    if(s.evolvedForm==='artisan_gallery'){
+      const meta=EVOLVED_ACTIVITY_META['artisan_gallery']; if(!meta) return;
+      const stageIdx=getEvolvedActivityStageIdx(s);
+      const evDef=EVOLVED_EVENTS[s.evolvedForm]?.[stageIdx];
+      if(evDef){
+        if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
+        setAp(a=>a-meta.apCost);
+        setEvolvedEventState({studentId:s.id,formId:s.evolvedForm,stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});
+        return;
+      }
+      if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
+      setAp(a=>a-meta.apCost);
+      openGalleryHub(s.id);
       return;
     }
     const meta=EVOLVED_ACTIVITY_META[s.evolvedForm]; if(!meta) return;
@@ -1473,13 +1539,13 @@ export default function ProfessorSim(){
         const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
         return processStudentGain(st,totalGain,totalRel+bonusRel);
       }));
-      if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairDay&&!ending.startsSession&&!ending.startsPresentation&&!ending.startsDelivery&&!ending.startsChallenge) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
+      if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairDay&&!ending.startsSession&&!ending.startsPresentation&&!ending.startsDelivery&&!ending.startsChallenge&&!ending.startsSalon&&!ending.startsGallery) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
       // handle recipe unlock (homestead_queen)
       if(ending.unlockRecipe){
         setStudents(ss=>ss.map(st=>st.id===s.id?{...st,mjRecipes:[...(st.mjRecipes||[]),ending.unlockRecipe].filter((v,i,a)=>a.indexOf(v)===i)}:st));
       }
       const endText=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
-      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:ending.classGain||0,momGain:ending.momGain||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairDay:!!ending.startsFairDay,startsSession:!!ending.startsSession,startsPresentation:!!ending.startsPresentation,startsDelivery:!!ending.startsDelivery,startsChallenge:!!ending.startsChallenge}));
+      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:ending.classGain||0,momGain:ending.momGain||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairDay:!!ending.startsFairDay,startsSession:!!ending.startsSession,startsPresentation:!!ending.startsPresentation,startsDelivery:!!ending.startsDelivery,startsChallenge:!!ending.startsChallenge,startsSalon:!!ending.startsSalon,startsGallery:!!ending.startsGallery}));
     } else {
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }
@@ -1507,6 +1573,141 @@ export default function ProfessorSim(){
       });
     }
     setEvolvedEventState(null);
+  };
+
+  // ── SALON DE L'APPÉTIT (Chloé) ───────────────────────────────────
+  const openSalonHub=(studentId)=>{
+    setSalonState(prev=>{
+      if(prev?.chloeStudentId===studentId) return prev;
+      return defaultSalonState(studentId);
+    });
+    setSalonOpen(true);
+  };
+
+  const closeSalonHub=()=>setSalonOpen(false);
+
+  const startSalonEvening=(guestIds)=>{
+    if(ap<2){push('⚠️ Need 2 AP to host a salon.');return;}
+    if(!guestIds?.length){push('⚠️ Pick at least one guest.');return;}
+    setAp(a=>a-2);
+    setSalonState(prev=>startSalonSession(prev,guestIds));
+    push('🥂 Chloé lights the candles. The soirée begins.');
+  };
+
+  const salonPickCourse=(courseId)=>{
+    setSalonState(prev=>salonPickMenu(prev,courseId));
+  };
+
+  const salonMakeServiceChoice=(choiceId)=>{
+    setSalonState(prev=>salonServiceChoice(prev,choiceId));
+  };
+
+  const salonCloseEvening=()=>{
+    setSalonState(prev=>{
+      const result=salonFinishDigestif(prev);
+      if(!result?.done) return prev;
+      const chloeId=prev.chloeStudentId;
+      if(chloeId!=null){
+        setStudents(st=>st.map(s=>s.id!==chloeId?s:processStudentGain(s,result.chloeLbs,8)));
+      }
+      if(result.scrutiny) addScrutiny(result.scrutiny);
+      push(`🥂 ${result.log}`);
+      return result.state;
+    });
+  };
+
+  // ── ARTISAN GALLERY (Fiona) ──────────────────────────────────────
+  const openGalleryHub=(studentId)=>{
+    setGalleryState(prev=>{
+      if(prev?.fionaStudentId===studentId) return prev;
+      return defaultGalleryState(studentId);
+    });
+    setGalleryOpen(true);
+  };
+
+  const closeGalleryHub=()=>{
+    setGalleryState(prev=>prev?{...prev,subjectPickerOpen:false}:prev);
+    setGalleryOpen(false);
+  };
+
+  const galleryOpenSubjectPicker=()=>{
+    setGalleryState(prev=>prev?{...prev,subjectPickerOpen:true}:prev);
+  };
+
+  const galleryConfirmEnroll=(studentId,studentName)=>{
+    setGalleryState(prev=>{
+      const { state:next, ok, reason }=enrollSubject(prev,studentId,studentName);
+      if(!ok){push(`⚠️ ${reason}`);return prev;}
+      push(`🖼 ${studentName} enrolled as gallery subject.`);
+      return {...next,subjectPickerOpen:false};
+    });
+  };
+
+  const galleryBeginStudio=(subjectId)=>{
+    if(ap<2){push('⚠️ Need 2 AP for a studio session.');return;}
+    setAp(a=>a-2);
+    setGalleryState(prev=>startStudioSession(prev,subjectId,{motif:'portrait'}));
+  };
+
+  const galleryStudioAction=(actionId)=>{
+    setGalleryState(prev=>{
+      const next=studioAction(prev,actionId);
+      if(next.pendingGains){
+        const {subjectId,subjectLbs,fionaLbs,scrutiny}=next.pendingGains;
+        const fionaId=next.fionaStudentId;
+        setStudents(st=>st.map(s=>{
+          if(s.id===subjectId) return processStudentGain(s,subjectLbs,5);
+          if(s.id===fionaId&&fionaLbs) return processStudentGain(s,fionaLbs,0);
+          return s;
+        }));
+        if(scrutiny) addScrutiny(scrutiny);
+        (next.sessionLog||[]).forEach(line=>push(`🖼 ${line}`));
+        const {pendingGains,sessionLog,...clean}=next;
+        return clean;
+      }
+      return next;
+    });
+  };
+
+  const galleryDoFieldShoot=(locationId)=>{
+    if(ap<1){push('⚠️ Need 1 AP.');return;}
+    setAp(a=>a-1);
+    setGalleryState(prev=>{
+      const {state:next,scrutiny,log}=runFieldShoot(prev,locationId);
+      if(scrutiny) addScrutiny(scrutiny);
+      push(`🖼 ${log}`);
+      return next;
+    });
+  };
+
+  const galleryDoExhibition=(theme)=>{
+    if(ap<2){push('⚠️ Need 2 AP.');return;}
+    const result=mountExhibition(galleryState,theme);
+    if(!result.ok){push(`⚠️ ${result.reason}`);return;}
+    setAp(a=>a-2);
+    setGalleryState(result.state);
+    if(result.scrutiny) addScrutiny(result.scrutiny);
+    if(result.money) setMoney(m=>m+result.money);
+    const fionaId=galleryState?.fionaStudentId;
+    if(fionaId!=null&&result.fionaLbs){
+      setStudents(prev=>prev.map(st=>st.id!==fionaId?st:processStudentGain(st,result.fionaLbs,6)));
+    }
+    push(`🖼 ${result.log}`);
+  };
+
+  // ── OPPOSITION / AIB ─────────────────────────────────────────────
+  const runOppositionCounter=(counterId)=>{
+    const memberId=counterId==='bureaucratic_capture'
+      ? opposition?.aib?.members?.find(m=>m.resolve<=40)?.id
+      : null;
+    const result=runAibCounter(opposition,counterId,memberId);
+    if(result.apCost&&ap<result.apCost){push(`⚠️ Need ${result.apCost} AP.`);return;}
+    if(result.apCost) setAp(a=>a-result.apCost);
+    setOpposition(result.opposition);
+    if(result.scrutinyDelta) addScrutiny(result.scrutinyDelta);
+    if(result.moneyDelta) setMoney(m=>m+(result.moneyDelta||0));
+    if(result.message) push(result.message);
+    else push('⚠️ Counter had no effect — check agenda queue or member resolve.');
   };
 
   // ── HOMEROOM QUEEN handlers ───────────────────────────────────────
@@ -6012,6 +6213,7 @@ export default function ProfessorSim(){
       {/* NAV */}
       <div style={C.nav}>
         {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],
+          ...(opposition?.aib?.unlocked||adminScrutiny>=25?[["oversight","👁 Oversight"]]:[]),
           ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"]]:[]),
         ].map(([v,l])=>(
           v==="student"&&!sel?null:
@@ -6026,7 +6228,7 @@ export default function ProfessorSim(){
           {view==="class"&&<ClassView view={view} ap={ap} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} setPaperDoll={setPaperDoll} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} setPaperDoll={setPaperDoll} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions}/>}
@@ -6082,6 +6284,8 @@ export default function ProfessorSim(){
           {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} ownedSkills={ownedSkills} skillEffects={skillEffects} students={students} onBuy={buySkillRank} onMax={maxSkillRank} spiritLevel={spiritLevel} spiritXp={spiritXp%SPIRIT_XP_PER_LEVEL} spiritXpForNextLevel={SPIRIT_XP_PER_LEVEL}/>}
 
           {view==="achievements"&&<AchievementsView achievements={achievements}/>}
+
+          {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} onRunCounter={runOppositionCounter} onClose={()=>setView('class')}/>}
 
         </div>
 
@@ -6194,7 +6398,11 @@ export default function ProfessorSim(){
       {evolutionModal&&<EvolutionOfferModal chooseEvolution={chooseEvolution} evolutionModal={evolutionModal} setEvolutionModal={setEvolutionModal}/>}
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
-      {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students}/>}
+      {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} openSalonHub={openSalonHub} openGalleryHub={openGalleryHub} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students}/>}
+
+      {salonOpen&&salonState&&<SalonAppetitModal salonState={salonState} students={students} onClose={closeSalonHub} onStartSession={startSalonEvening} onPickMenu={salonPickCourse} onService={salonMakeServiceChoice} onDigestif={salonCloseEvening}/>}
+
+      {galleryOpen&&galleryState&&<ArtisanGalleryModal galleryState={galleryState} students={students} onClose={closeGalleryHub} onOpenSubjectPicker={galleryOpenSubjectPicker} onConfirmEnroll={galleryConfirmEnroll} onStartStudio={galleryBeginStudio} onStudioAction={galleryStudioAction} onFieldShoot={galleryDoFieldShoot} onExhibition={galleryDoExhibition}/>}
 
       {/* ── HOMEROOM QUEEN: CLASSROOM MINI-INTERFACE ── */}
       {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession}/>}

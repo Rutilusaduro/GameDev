@@ -1007,6 +1007,7 @@ Week trigger: global scene — lights dim, stomachs flutter empty then **hunger 
 | gamer | `lag_sprite` | Twitch-thin, gluttonous chat | Stream focus bar: hunger as resource |
 | sorority | `silhouette_host` | Elegant empty host | Feasts apply re-indulgence bonus |
 | overachiever | `metric_hollow` | Sharp, measuring | Competitive gainer: steal lbs from curse |
+| artsy | `curator_wraith` | Thin photographer, hollow frames | Gallery: subjects refeed in-frame; −scarcityPressure |
 | quiet | `hive_mote` | Single point, many appetites | Hive grid: biomass from refeed |
 | transfer | `salon_wraith` | Ethereal hostess, empty room | Evenings drain scarcityPressure |
 | eced | `apple_oracle` | Thin teacher, heavy prophecy | Homeroom: shame vigil immunity |

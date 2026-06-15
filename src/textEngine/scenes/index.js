@@ -23,6 +23,7 @@ import './streamPreStream.js';
 import './streamPreStreamBrand.js';
 import './talkCodas.js';
 import './talkEncourage.js';
+import './oppositionSalonGallery.js';
 import './jealousyReaction.js';
 import './corruptionVoice.js';
 import './weighIn/index.js';

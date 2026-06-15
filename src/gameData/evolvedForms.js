@@ -1,4 +1,6 @@
 import { getStage } from './stages.js';
+import { SALON_EVOLVED_EVENTS } from './chloeSalon.js';
+import { GALLERY_EVOLVED_EVENTS } from './fionaGallery.js';
 import {
   CG_FILLED_REACTIONS,
   CG_FILLED_DIARY,
@@ -182,6 +184,22 @@ export const EVOLVED_REACTIONS = {
     "Future students hear about me before they arrive. A campus tour guide mentioned me by name. She was kind.",
     "I am campus mythology. Incoming classes are told about me during orientation. I have heard this directly.",
     "I have become the campus. The campus has grown around me. We are one thing now.",
+  ],
+  salon_appetit:[
+    "Première soirée — trois invités, fromage, vin. I said *j'ai faim* and meant it as philosophy.",
+    "Dr. Mori followed the smell to my door. She stayed for dessert. I consider that a review.",
+    "They whisper *the French girl's dinners* in the group chats. I pour more wine and let them.",
+    "The campus writer watched me eat and called it performance. I called it Thursday.",
+    "Rooftop, candlelight, protesters below. I raised my glass. The room ate with me.",
+    "La Grande Soirée — twelve settings, black silk, *encore* until the sun. I am the salon.",
+  ],
+  artisan_gallery:[
+    "First subject enrolled. First contact sheet pinned. The camera doesn't lie — only frames truth generously.",
+    "Field roll on the quad: abundance everywhere, if you know how to look.",
+    "Opening night — eight prints, critics, cheese. I ate in the corner on purpose.",
+    "The Living Room: her timeline on the wall, her body live, heavier than the latest frame.",
+    "Regional gallery wants the series. AIB calls it evidence. I call it archive.",
+    "Permanent collection. Legacy program. I still shoot, still feed, still pin.",
   ],
   food_tourist:[
     "Systematic expedition through every cuisine available within thirty miles. Documenting everything.",
@@ -876,6 +894,22 @@ export const EVOLVED_ACTIVITY_TEXT = {
     (s)=>`${Math.round(s.lbs)} pounds. The mainstream crossover. A large creator — 3 million subscribers — mentioned her channel in a video about comfort content. She watches the mention twice, sitting very still both times. "I don't want it to change," she says. It doesn't. The new subscribers find the ritual and most of them observe it correctly. The videos are exactly as they were: the soft sounds, the careful pace, the food, her belly at ${Math.round(s.lbs)} pounds rounding forward into the frame, warm and enormous. She records the next one that evening and it's the best thing she's made.`,
     (s)=>`${Math.round(s.lbs)} pounds. The therapist collaboration video. She's been planning it for two months — a licensed therapist explains, briefly and carefully, the clinical basis for the calming effect of ASMR eating content, and then the session proceeds normally. Your student at ${Math.round(s.lbs)} pounds, seated at the recording setup, her belly vast and warm and completely at ease, eating slowly and deliberately for ninety-five minutes. The video has 2.1 million views in a week. The comment section is the same as always: people saying they're fed, they're calm, they feel okay. She reads them with you. "I weigh ${Math.round(s.lbs)} pounds," she says. "I eat on camera. It helps people." She is very satisfied with this. She opens a new delivery order.`,
   ],
+  salon_appetit:[
+    (s)=>`Chloé weighs ${Math.round(s.lbs)} pounds and the dorm smells of butter and wine. Three guests arrive to find candles already lit, cheese already breathing on the board. She pours without asking who wants what. "In Paris they teach you to stop," she says, biting a croissant. "Here they teach you to continue." She means it as philosophy. The guests leave curious and full.`,
+    (s)=>`${Math.round(s.lbs)} pounds in black silk, hostess at the door. Dr. Mori followed the smell of coq au vin and stayed for dessert — faculty lends prestige, Chloé lends appetite. She charms the room between courses, feeding herself with theatrical pleasure while the wine loosens every conversation.`,
+    (s)=>`They whisper *the French girl's dinners* in group chats Chloé is not in. She reads one aloud, amused, at ${Math.round(s.lbs)} pounds. The campus writer attended last week and left flushed, notebook open. Chloé pours more wine. "Let them arrive hungry," she says.`,
+    (s)=>`The piece published: *An Exchange Student's Salon of Excess*. Chloé is ${Math.round(s.lbs)} pounds and reads it twice. "They call me dangerous," she says, pleased. Rooftop bookings follow. Protesters chant wellness slogans below. She raises her glass and eats anyway.`,
+    (s)=>`Twelve settings. Twelve place cards. Chloé is ${Math.round(s.lbs)} pounds and welcomes them in French, then English, then mostly with her hands on her own waist. "Tonight," she says, "we do not stop." The digestif never ends. Someone applauds. She curtsies without standing.`,
+    (s)=>`La Grande Soirée closes at dawn. Chloé is ${Math.round(s.lbs)} pounds, silk clinging where she's grown fullest, the guest book thick with names. She finds you in the kitchen afterward, licking pastry cream from her thumb. "*Encore,*" she murmurs — not to the room anymore, to the semester itself.`,
+  ],
+  artisan_gallery:[
+    (s)=>`Fiona weighs ${Math.round(s.lbs)} pounds and pins the first contact sheet to *In Progress* — a classmate mid-bite, mid-laugh. "The subject cooperates," she says. "The camera doesn't lie." Consent forms become art contracts. Everyone signs.`,
+    (s)=>`${Math.round(s.lbs)} pounds on the quad with a camera and hunger. She photographs abundance without apology — strangers' softness, dining-hall regulars, the honest curve of a bench under someone who's stopped pretending. The field archive grows fat with frames.`,
+    (s)=>`Opening night: eight prints, critics, cheese. Fiona is ${Math.round(s.lbs)} pounds in linen that won't survive the evening. She eats in the corner on purpose — performance and documentation the same act. A critic writes *uncomfortably generous.* She pins the review beside the work.`,
+    (s)=>`The Living Room: her subject stands beside a timeline on the wall — stage three, stage five, live and heavier than the latest frame. Fiona is ${Math.round(s.lbs)} pounds and introduces them: "The work continues. She continues." The crowd hushes. Then it doesn't.`,
+    (s)=>`Regional gallery wants the series. AIB calls it evidence. Fiona is ${Math.round(s.lbs)} pounds and calls it archive. She publishes online anyway. Patrons explode. Scrutiny follows. She shoots more.`,
+    (s)=>`Permanent collection. Legacy program. Fiona is ${Math.round(s.lbs)} pounds and still shooting, still feeding, still pinning — museum-grade, institution made flesh. New subjects every semester. The wall never stops growing.`,
+  ],
   campus_legend:[
     (s)=>`She weighs ${Math.round(s.lbs)} pounds and the dining hall staff has her usual ready before she sits down. The booth is the largest one — corner, good light — and she fills it well at ${Math.round(s.lbs)} pounds, her thighs spreading warmly across the bench, her belly soft against the table's edge. A table of first-years watches her order. One of them leans to another and you can see the question being asked: the second one shrugs and says her name. The first one's eyes widen. You eat across from her. She is working through her third plate.`,
     (s)=>`${Math.round(s.lbs)} pounds. The booth gets a brass nameplate. The dining director installs it herself, a small ceremony: her name and a date. Your student looks at it for a long time, belly warm and round against her sweater at ${Math.round(s.lbs)} pounds, thighs broad and easy on the bench. "Is this weird?" she says. You say no. She looks at it again. "No," she says, "it's right." She sits back down. The kitchen sends out a complimentary fourth plate. She eats it. The staff watches from the service window with the satisfaction of people who made a good call.`,
@@ -954,6 +988,8 @@ export const EVOLVED_ACTIVITY_META = {
   body_positive_greek:{ label:"Attend Chapter Event",  apCost:1, gainRange:[2,5],  relBonus:12 },
   installation_artist:{ label:"View the Installation", apCost:1, gainRange:[2,5],  relBonus:12 },
   food_photographer:{ label:"Review the Latest Shoot", apCost:1, gainRange:[2,5],  relBonus:11 },
+  artisan_gallery:   { label:"🖼 Open Artisan Gallery",   apCost:1, gainRange:[4,9],  relBonus:11 },
+  salon_appetit:   { label:"🥂 Host Salon Evening",    apCost:2, gainRange:[6,14], relBonus:12 },
   anonymous_blogger:{ label:"Read the Latest Post",    apCost:1, gainRange:[3,6],  relBonus:10 },
   asmr_creator:    { label:"Watch a Recording Session",apCost:1, gainRange:[3,6],  relBonus:12 },
   campus_legend:   { label:"Share a Meal at the Booth",apCost:1, gainRange:[5,10], relBonus:11 },
@@ -3676,6 +3712,9 @@ Becca says Sofia can no longer sit in a standard chair comfortably. Ruthanne say
       ],
     },
   ],
+
+  salon_appetit: SALON_EVOLVED_EVENTS,
+  artisan_gallery: GALLERY_EVOLVED_EVENTS,
 };
 
 export const EVOLVED_FORM_META = {
@@ -3697,6 +3736,8 @@ export const EVOLVED_FORM_META = {
   anonymous_blogger:    { title:"Anonymous Blogger",    color:"#5d6d7e" },
   asmr_creator:         { title:"ASMR Creator",         color:"#7d3c98" },
   campus_legend:        { title:"Campus Legend",        color:"#b7950b" },
+  salon_appetit:        { title:"Salon de l'Appétit",   color:"#8b2942" },
+  artisan_gallery:      { title:"Artisan Gallery",      color:"#c47a2a" },
   food_tourist:         { title:"Food Tourist",         color:"#148f77" },
   ff_author:            { title:"FF Author",            color:"#922b21" },
   homeroom_queen:       { title:"Apprentice",             color:"#c47a2a" },
@@ -3781,10 +3822,9 @@ export const EVOLUTION_OFFER = {
     },
   },
   artsy:{
-    intro:(s)=>`${s.name} comes in late carrying a portfolio and sits down without speaking for thirty seconds. Then: 'I've been thinking about what the work is about now.' She opens the portfolio: two sets of sketches. Two directions. Both use this body as the primary material.`,
+    intro:(s)=>`${s.name}'s studio walls are contact sheets — soft bellies, widening hips, mid-bite laughter. She pins an empty board labeled *In Progress*. "I want a gallery that documents abundance — the feeding, the growth, the proof. Will you help me build it?"`,
     paths:{
-      installation_artist:{ label:"Installation Artist",   desc:"Document the transformation as art. Galleries, reviews, a retrospective of a body in progress." },
-      food_photographer:  { label:"Food Photographer",     desc:"Aesthetic eating as visual art. Shoots, gallery shows, museum collections." },
+      artisan_gallery:{ label:"Artisan Gallery", desc:"Fatten subjects, shoot campus abundance, mount exhibitions — living bodies beside their timelines." },
     },
   },
   quiet:{
@@ -3795,9 +3835,9 @@ export const EVOLUTION_OFFER = {
     },
   },
   transfer:{
-    intro:(s)=>`${s.name} is already eating when you sit down across from her — something from a place near campus she found in her second week. She doesn't offer an explanation or a pitch. She just looks at you steadily and says: 'I want to go through everything. Every food challenge, every dining hall, every place that does something absurd. I want to document it. I want to be the one who did it.' She takes another bite. 'I want someone to write that down.'`,
+    intro:(s)=>`Chloé's dorm already smells of wine and butter — candles, a cheese board, silk scarves on the chairs. She's ${Math.round(s.lbs)} pounds and pouring when you arrive. "I hosted salons in Paris. Polite ones." She smiles. "America taught me otherwise. Help me fill the room — and the plates — and me."`,
     paths:{
-      campus_legend: { label:"Campus Legend", desc:"She works through the campus food challenge circuit — every venue, every ridiculous item, every crowd that gathers to watch. A food journalist keeps finding her. The legend grows with every table she clears." },
+      salon_appetit: { label:"Salon de l'Appétit", desc:"Intimate French soirées that escalate — guests, menus, indulgence, campus scandal. La Grande Soirée awaits." },
     },
   },
   eced:{
