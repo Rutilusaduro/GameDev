@@ -400,11 +400,8 @@ export default function ProfessorSim(){
   const [communityResearcherState, setCommunityResearcherState] = useState(null);
   // communityResearcherState: {thesisComplete,boardPhase,caseStudyStage,lastPairId,pairsUsed,modalPhase,activePairId,eventText,totalSuspicion,boardReactionPairId,chatMemberIdx,chatPhaseIdx,chatHistory,chatWon,thesisApproved,thesisRejected,finalReviewText}
   const [presentationState, setPresentationState] = useState(null);
-  // presentationState: {studentId,stageIdx} — placeholder until mini-game implemented
   const [deliveryState, setDeliveryState] = useState(null);
-  // deliveryState: {studentId,stageIdx} — placeholder until mini-game implemented
   const [challengeState, setChallengeState] = useState(null);
-  // challengeState: {studentId,stageIdx} — placeholder until mini-game implemented
   const [subjectJournalState, setSubjectJournalState] = useState(null);
   // subjectJournalState: { subjectId, currentPage (0–10) }
   const [nadiaNotesState, setNadiaNotesState] = useState(null);
@@ -7212,13 +7209,9 @@ export default function ProfessorSim(){
         );
       })()}
 
-      {/* ── PRESENTATION DEFENSE MINI-GAME MODAL (placeholder) ── */}
+      {/* ── EVOLVED PATH MINI-GAMES ── */}
       {presentationState&&<PresentationDefenseModal presentationState={presentationState} processStudentGain={processStudentGain} push={push} setPresentationState={setPresentationState} setStudents={setStudents} students={students}/>}
-
-      {/* ── DELIVERY ORDER MINI-GAME MODAL (placeholder) ── */}
       {deliveryState&&<DeliveryOrderModal deliveryState={deliveryState} processStudentGain={processStudentGain} push={push} setDeliveryState={setDeliveryState} setStudents={setStudents} students={students}/>}
-
-      {/* ── CAMPUS CHALLENGE MINI-GAME MODAL (placeholder) ── */}
       {challengeState&&<CampusChallengeModal challengeState={challengeState} processStudentGain={processStudentGain} push={push} setChallengeState={setChallengeState} setStudents={setStudents} students={students}/>}
 
       {/* ── CHAPTER HOSTESS — STUDENT PICKER / HANGOUT MODAL ── */}

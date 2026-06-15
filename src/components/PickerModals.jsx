@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { C } from '../styles.js';
 import { COLLAB_CONTENT_CREATOR_ARCHETYPES } from '../gameData/miniGames.js';
 import { EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS } from '../gameData/evolvedForms.js';
 import { INTIMACY_CONTEXTUAL, INTIMACY_SCENES } from '../gameData/intimacy.js';
 import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
+import { EVOLVED_MINIGAMES, computeMinigameOutcome, minigameTierLabel } from '../gameData/evolvedMinigames.js';
 
 
 export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, students }){
@@ -184,79 +186,119 @@ export function CollabPartnerPicker({ collabPartnerPicker, setCollabPartnerId, s
         );
 }
 
-export function CampusChallengeModal({ challengeState, processStudentGain, push, setChallengeState, setStudents, students }){
-        const{studentId,stageIdx}=challengeState;
-        const s=students.find(st=>st.id===studentId); if(!s) return null;
-        const accentColor="#7a4a1a";
-        return(
-          <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#100800,#1a1000,#100800)",border:`1px solid ${accentColor}50`,maxHeight:"85vh",overflowY:"auto"}}>
-              <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>CAMPUS LEGEND</div>
-              <div style={{fontSize:15,color:"#e0b080",fontWeight:"bold",marginBottom:10}}>Food Challenge — Stage {stageIdx+1}</div>
-              <div style={{color:"#907050",fontSize:12,lineHeight:1.6,marginBottom:16}}>
-                {s.name} steps up to the counter. The menu is in front of her. There's a small crowd already forming.
-                <br/><br/>
-                <em style={{color:"#705030"}}>(Mini-game coming in Phase 3)</em>
-              </div>
-              <button style={{...C.btn(accentColor),width:"100%"}} onClick={()=>{
-                const gain=Math.round(8+Math.random()*12);
-                setStudents(ss=>ss.map(st=>st.id===studentId?processStudentGain(st,gain,9):st));
-                push(`✦ ${s.name} — Campus Challenge: +${gain} lbs · +9 rel`);
-                setChallengeState(null);
-              }}>Challenge Complete ✓</button>
-            </div>
+function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processStudentGain, setStudents, push, onClose }) {
+  const def = EVOLVED_MINIGAMES[gameId];
+  const s = students.find((st) => st.id === studentId);
+  const [phaseIdx, setPhaseIdx] = useState(0);
+  const [history, setHistory] = useState([]);
+  const [log, setLog] = useState([]);
+  const [done, setDone] = useState(false);
+  const [outcome, setOutcome] = useState(null);
+  if (!def || !s) return null;
+
+  const ctx = { studentName: s.name, stageIdx };
+  const phase = !done ? def.phases[phaseIdx] : null;
+  const phaseText = phase ? (typeof phase.text === 'function' ? phase.text(ctx) : phase.text) : null;
+
+  const pickChoice = (choice) => {
+    const nextLog = [...log, choice.log];
+    const nextHistory = [...history, choice];
+    const nextPhase = phaseIdx + 1;
+    if (nextPhase >= def.phases.length) {
+      const result = computeMinigameOutcome(gameId, nextHistory, stageIdx);
+      setStudents((ss) => ss.map((st) => (st.id === studentId ? processStudentGain(st, result.gain, result.rel) : st)));
+      const labels = {
+        campus_challenge: 'Campus Challenge',
+        delivery_order: 'Home Nest Delivery',
+        presentation_defense: 'Academic Subject Defense',
+      };
+      push(`✦ ${s.name} — ${labels[gameId]}: ${minigameTierLabel(result.tier)} · +${result.gain} lbs · +${result.rel} rel`);
+      setOutcome(result);
+      setLog(nextLog);
+      setHistory(nextHistory);
+      setDone(true);
+      return;
+    }
+    setLog(nextLog);
+    setHistory(nextHistory);
+    setPhaseIdx(nextPhase);
+  };
+
+  return (
+    <div style={C.overlay}>
+      <div style={{ ...C.modal, maxWidth: 540, background: 'linear-gradient(160deg,#100800,#1a1000,#100800)', border: `1px solid ${def.accent}50`, maxHeight: '85vh', overflowY: 'auto' }}>
+        <div style={{ fontSize: 9, letterSpacing: 4, color: def.accent, marginBottom: 4 }}>{def.tag}</div>
+        <div style={{ fontSize: 15, color: '#e0d0c0', fontWeight: 'bold', marginBottom: 4 }}>{def.title} — Stage {stageIdx + 1}</div>
+        <div style={{ fontSize: 10, color: '#907060', marginBottom: 10 }}>{s.name} · {Math.round(s.lbs)} lbs</div>
+        {log.map((line, i) => (
+          <div key={i} style={{ fontSize: 11, color: '#806050', fontStyle: 'italic', marginBottom: 6, paddingLeft: 8, borderLeft: `2px solid ${def.accent}30` }}>{line}</div>
+        ))}
+        <div style={{ color: '#a09080', fontSize: 12, lineHeight: 1.7, marginBottom: 16 }}>
+          {done ? `${s.name} exhales, full and satisfied. ${outcome ? minigameTierLabel(outcome.tier) : ''}` : phaseText}
+        </div>
+        {!done && phase && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {phase.choices.map((ch) => (
+              <button key={ch.id} type="button" style={{ ...C.btn(def.accent), textAlign: 'left', fontSize: 12 }} onClick={() => pickChoice(ch)}>
+                {ch.label}
+              </button>
+            ))}
           </div>
-        );
+        )}
+        {done && (
+          <button type="button" style={{ ...C.btn(def.accent), width: '100%' }} onClick={onClose}>Continue ✓</button>
+        )}
+      </div>
+    </div>
+  );
 }
 
-export function DeliveryOrderModal({ deliveryState, processStudentGain, push, setDeliveryState, setStudents, students }){
-        const{studentId,stageIdx}=deliveryState;
-        const s=students.find(st=>st.id===studentId); if(!s) return null;
-        const accentColor="#4a6a4a";
-        return(
-          <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#030e03,#071407,#030e03)",border:`1px solid ${accentColor}50`,maxHeight:"85vh",overflowY:"auto"}}>
-              <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>HOME NEST</div>
-              <div style={{fontSize:15,color:"#a0c0a0",fontWeight:"bold",marginBottom:10}}>Order In — Stage {stageIdx+1}</div>
-              <div style={{color:"#708070",fontSize:12,lineHeight:1.6,marginBottom:16}}>
-                {s.name} opens her phone. The apartment is quiet. Three apps, twelve menus, and nowhere else to be.
-                <br/><br/>
-                <em style={{color:"#507050"}}>(Mini-game coming in Phase 3)</em>
-              </div>
-              <button style={{...C.btn(accentColor),width:"100%"}} onClick={()=>{
-                const gain=Math.round(7+Math.random()*10);
-                setStudents(ss=>ss.map(st=>st.id===studentId?processStudentGain(st,gain,7):st));
-                push(`✦ ${s.name} — Home Nest Delivery: +${gain} lbs · +7 rel`);
-                setDeliveryState(null);
-              }}>Close the Apps ✓</button>
-            </div>
-          </div>
-        );
+export function CampusChallengeModal({ challengeState, processStudentGain, push, setChallengeState, setStudents, students }) {
+  if (!challengeState) return null;
+  return (
+    <EvolvedMinigameModal
+      gameId="campus_challenge"
+      studentId={challengeState.studentId}
+      stageIdx={challengeState.stageIdx}
+      students={students}
+      processStudentGain={processStudentGain}
+      setStudents={setStudents}
+      push={push}
+      onClose={() => setChallengeState(null)}
+    />
+  );
 }
 
-export function PresentationDefenseModal({ presentationState, processStudentGain, push, setPresentationState, setStudents, students }){
-        const{studentId,stageIdx}=presentationState;
-        const s=students.find(st=>st.id===studentId); if(!s) return null;
-        const accentColor="#2c5f8a";
-        return(
-          <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#030b14,#071424,#030b14)",border:`1px solid ${accentColor}50`,maxHeight:"85vh",overflowY:"auto"}}>
-              <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>ACADEMIC SUBJECT</div>
-              <div style={{fontSize:15,color:"#a0c0e0",fontWeight:"bold",marginBottom:10}}>Committee Defense — Stage {stageIdx+1}</div>
-              <div style={{color:"#8090a0",fontSize:12,lineHeight:1.6,marginBottom:16}}>
-                {s.name} stands at the front of the room. The committee has questions. The data is... irregular.
-                <br/><br/>
-                <em style={{color:"#5070a0"}}>(Mini-game coming in Phase 3)</em>
-              </div>
-              <button style={{...C.btn(accentColor),width:"100%"}} onClick={()=>{
-                const gain=Math.round(6+Math.random()*8);
-                setStudents(ss=>ss.map(st=>st.id===studentId?processStudentGain(st,gain,8):st));
-                push(`✦ ${s.name} — Academic Subject Defense: +${gain} lbs · +8 rel`);
-                setPresentationState(null);
-              }}>Conclude Defense ✓</button>
-            </div>
-          </div>
-        );
+export function DeliveryOrderModal({ deliveryState, processStudentGain, push, setDeliveryState, setStudents, students }) {
+  if (!deliveryState) return null;
+  return (
+    <EvolvedMinigameModal
+      gameId="delivery_order"
+      studentId={deliveryState.studentId}
+      stageIdx={deliveryState.stageIdx}
+      students={students}
+      processStudentGain={processStudentGain}
+      setStudents={setStudents}
+      push={push}
+      onClose={() => setDeliveryState(null)}
+    />
+  );
+}
+
+export function PresentationDefenseModal({ presentationState, processStudentGain, push, setPresentationState, setStudents, students }) {
+  if (!presentationState) return null;
+  return (
+    <EvolvedMinigameModal
+      gameId="presentation_defense"
+      studentId={presentationState.studentId}
+      stageIdx={presentationState.stageIdx}
+      students={students}
+      processStudentGain={processStudentGain}
+      setStudents={setStudents}
+      push={push}
+      onClose={() => setPresentationState(null)}
+    />
+  );
 }
 
 export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, makeIntimacyChoice, students }){
