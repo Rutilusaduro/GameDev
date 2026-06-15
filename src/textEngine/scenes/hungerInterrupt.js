@@ -71,6 +71,22 @@ registerModule("scene.hungerInterrupt.behavior", [
       "She's glaring at you, clearly short-tempered.",
       "She looks like she's fighting the urge to snap.",
     ] },
+  // Per-student personality behavior
+  { when: { studentId: 5 }, priority: 2,
+    text: [
+      "She's wearing her headset around her neck, stream presumably paused. That means something.",
+      "She's not on her phone. She's just standing there. That's more alarming than usual.",
+    ] },
+  { when: { studentId: 10 }, priority: 2,
+    text: [
+      "She's holding a container of something. For you, technically. She smells like whatever's in it.",
+      "She came with food. She looks like she wants credit for this restraint.",
+    ] },
+  { when: { studentId: 16 }, priority: 2,
+    text: [
+      "Her lab notebook is tucked under one arm. She's here off-schedule. She knows that.",
+      "She's annotating something in the margins as she waits. The pen hasn't stopped moving.",
+    ] },
   { when: {},
     text: [
       "She's standing there looking restless.",
@@ -113,6 +129,22 @@ registerModule("scene.hungerInterrupt.request", [
       "\"I need something from you. Now.\"",
       "\"Don't ignore me. I'm not in the mood.\"",
       "\"You're not leaving me like this.\"",
+    ] },
+  // Per-student request dialogue
+  { when: { studentId: 5 }, priority: 2,
+    text: [
+      "\"Stream's on pause,\" she says. \"Don't make this take long.\" She's going to make it take long.",
+      "\"I'm… not going back until we do this.\" She doesn't say what 'this' is. You both know.",
+    ] },
+  { when: { studentId: 10 }, priority: 2,
+    text: [
+      "\"I was going to cook anyway. You should be here for it.\" She wasn't cooking yet. She will be now.",
+      "\"Come taste this,\" she says. Her voice says it's an invitation. Her face says it's not optional.",
+    ] },
+  { when: { studentId: 16 }, priority: 2,
+    text: [
+      "\"I've adjusted the intake protocol,\" she says. \"This counts as a session. I've noted it.\"",
+      "\"My data says now.\" She looks embarrassed. Then doesn't.",
     ] },
   { when: {},
     text: [

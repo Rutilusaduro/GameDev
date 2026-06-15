@@ -35,6 +35,22 @@ registerModule("talk.coda", [
       (ctx) => `${ctx.subject.name} licks her lips. "Don't stop talking. I'm still hungry."`,
       (ctx) => `The conversation trails off — ${ctx.subject.name} is already looking at the pantry.`,
     ] },
+  // Per-student corruption[2] codas — personality-specific end beats
+  { when: { studentId: 5, corruption: [2] },
+    text: [
+      (ctx) => `${ctx.subject.name} pulls the hoodie tighter. "Don't go," she says to the doorway after you leave. The stream is still running.`,
+      (ctx) => `"Hold on." ${ctx.subject.name} puts the controller down. "You don't have to go yet." She doesn't reach for it again.`,
+    ] },
+  { when: { studentId: 10, corruption: [2] },
+    text: [
+      (ctx) => `${ctx.subject.name} slides something across the table toward you. "I made extra," she says. "I always make extra now."`,
+      (ctx) => `"You're the only person I cook for at this hour," ${ctx.subject.name} says. The pot is already on the stove. It was already on the stove.`,
+    ] },
+  { when: { studentId: 16, corruption: [2] },
+    text: [
+      (ctx) => `${ctx.subject.name} looks at you with something that isn't anxiety anymore. "Optimal outcome," she says. "I wrote it in the notes."`,
+      (ctx) => `"The case study is ongoing," ${ctx.subject.name} adds quietly. "I don't want to conclude it." A pause. "I won't."`,
+    ] },
   // No register unlocked — emit nothing
   { when: {}, text: "" },
 ]);
