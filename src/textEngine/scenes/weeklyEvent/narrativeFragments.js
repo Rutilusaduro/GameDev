@@ -51,7 +51,7 @@ registerPool('weekly.uniformSplit.recovery', [
 registerPool('weekly.uniformSplit.afterDialogue', [
   { when: { studentId: 0 }, priority: 1, weight: 4, text: [
     'She finds you afterward. "I\'m going to need a new uniform. Four sizes up. I\'m still captain. Don\'t give me a look."',
-    'She finds you after. "Please tell no one. Also do you know a seamstress. Also I had three dinners last week and it was worth it."',
+    'She finds you after. "Please tell no one." A beat. "Do you know a seamstress?" She smiles despite herself. "I had three dinners last week and it was worth it."',
     'She texts you that night: "New uniforms. Bigger. I\'m still running tryouts. Don\'t say anything to the athletic director. I will handle it."',
   ] },
   { when: { archetype: 'cheerleader' }, text: [
@@ -247,11 +247,12 @@ registerPool('weekly.interventionFails.payoff', [
   { when: { archetype: 'sorority' }, text: [
     'By dessert everyone has forgotten the intervention. {subject.name} has eaten more than anyone. She tells you the next day, delighted. "I think I accidentally converted three of them."',
     'She wins on points and tells you later she may have recruited three converts.',
+    'The sisters leave with to-go boxes and new opinions. {subject.name} texts you a photo of empty appetizer plates: "Mission failed successfully."',
   ] },
   { when: {}, text: [
-    'She wins on points.',
-    'She eats more than anyone and looks satisfied.',
-    'The intervention fails in the best possible way.',
+    'The lecture dissolves into shared plates. {subject.name} eats more than anyone and looks entirely unrepentant.',
+    'Someone proposes a toast to "honest appetites." {subject.name} raises her glass first.',
+    'By the time coffee arrives, nobody remembers why they gathered — only that {subject.name} ordered for the table.',
     'Nobody leaves hungry. Nobody leaves convinced she should stop.',
   ] },
 ]);

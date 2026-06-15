@@ -3429,9 +3429,13 @@ export default function ProfessorSim(){
     setLabStudentId(null);
   };
 
-  const confirmLabSession=()=>{
+  const confirmLabSession=(sessionToSave)=>{
+    const session=sessionToSave||labSession;
     const s=students.find(st=>st.id===labStudentId);
-    if(!s||!labSession||!labState) return;
+    if(!s){ push('⚠️ Lab session expired — open a new session from Talia.'); return; }
+    if(!session){ push('⚠️ No lab session to save.'); return; }
+    if(!labState){ push('⚠️ Lab is not available.'); return; }
+    if(session.phase!=='build'){ push('⚠️ Choose how to gather parts before saving.'); return; }
     const act=LAB_SESSION_ACTIVITY;
     if(ap<act.apCost){ push(`⚠️ Need ${act.apCost} AP.`); return; }
     setAp(a=>a-act.apCost);
@@ -3441,15 +3445,17 @@ export default function ProfessorSim(){
     const prevStage=labState.stage??1;
     const prestigeScore=computePrestigeScore({ week, labState, campusSaturation:campusState.saturation, globalStats });
     const btPrestige=prestigeBreakthroughBonus(prestigeScore);
-    let next=completeLabSession(labState,{
-      ...labSession,
-      poolAfter: labSession.pool,
+    const sessionPayload={
+      ...session,
+      poolAfter: session.pool,
       instabilityGained: act.instability||5,
-      breakthroughsGained: (labSession.breakthroughsGained ?? rollSessionBreakthroughs(Math.random)) + btPrestige,
-    }, null, Math.random);
+      breakthroughsGained: (session.breakthroughsGained ?? rollSessionBreakthroughs(Math.random)) + btPrestige,
+    };
+    let next=completeLabSession(labState, sessionPayload, null, Math.random);
     next=maybeAdvanceInventorStage(next);
-    setLabState(normalizeLabTechState(next));
-    const btMsg=` +${(next.breakthroughs??0)-(labState.breakthroughs??0)} 💡`;
+    next=normalizeLabTechState(next);
+    setLabState(next);
+    const btMsg=` +${sessionPayload.breakthroughsGained} 💡`;
     if((next.stage??1)>prevStage){
       const stageMeta=INVENTOR_PATH_STAGES.find(x=>x.id===next.stage);
       push(`🎉 Talia advances — ${stageMeta?.label||'new stage'}! Sessions ${next.sessionsRun}${btMsg}`);
@@ -6961,6 +6967,7 @@ export default function ProfessorSim(){
             deviceInventory={deviceInventory}
             students={students}
             player={player}
+            labState={labState}
             setStudents={setStudents}
             setPlayer={setPlayer}
             setDeviceTargetPicker={setDeviceTargetPicker}

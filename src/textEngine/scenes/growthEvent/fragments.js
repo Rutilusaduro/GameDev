@@ -150,13 +150,20 @@ registerPool('ge.causeAnchor', [
 
 // VERB PHRASE — digest onset line (subject.name + this slot = full sentence)
 registerPool('ge.digestOnsetLine', [
+  { when: { featureId: 'digest_stageup', studentId: 16 }, weight: 4, text: [
+    'wakes on Sunday and feels the difference before she reaches the mirror',
+    'notices her lab coat buttons need an extra tug at the clasp',
+    'finds last week\'s slacks reluctant at the waist',
+    'feels the week\'s meals finally becoming visible curve',
+    'registers weight the scale has been hinting at all week',
+    'feels her hips and belly settle into a heavier, softer line',
+  ] },
   { when: { featureId: 'digest_stageup' }, text: [
     'wakes on Sunday and feels the difference before she reaches the mirror',
     'notices getting into her bra takes an extra tug at the clasp',
     'finds last week\'s jeans reluctant at the waist',
     'feels the week\'s meals finally becoming visible curve',
     'registers weight the scale has been hinting at all week',
-    'feels her body quietly tip past a familiar line',
   ] },
   { when: {}, text: ['feels the weight settle in'] },
 ]);
@@ -391,7 +398,7 @@ registerPool('ge.garment', [
   { when: { archetype: 'sorority', stageMin: 6 }, text: ['the fitted chapter top, well past fitted', 'her chapter look, resized'] },
   { when: { archetype: 'sorority', stageMin: 3, stageMax: 5 }, text: ['the chapter fitted top', 'her sorority event look'] },
   { when: { archetype: 'culinary', stageMin: 6 }, text: ['her apron, straining over kitchen blacks', 'chef\'s whites fighting new curves'] },
-  { when: { archetype: 'culinary', stageMin: 3, stageMax: 5 }, text: ['her flour-dusted apron', 'her chef\'s whites and checked pants'] },
+  { when: { archetype: 'culinary', stageMin: 3, stageMax: 5 }, text: ['her flour-dusted apron', 'her chef\'s jacket and checked kitchen pants'] },
   { when: { archetype: 'nursing', stageMin: 6 }, text: ['her scrubs, stretched at every seam', 'soft knit layers pulled tight'] },
   { when: { archetype: 'nursing', stageMin: 3, stageMax: 5 }, text: ['her cardigan and scrub pants', 'her nursing-student layers'] },
   { when: { archetype: 'predator', stageMin: 3 }, text: ['her black fitted dress', 'the dark clothes she wears like camouflage'] },

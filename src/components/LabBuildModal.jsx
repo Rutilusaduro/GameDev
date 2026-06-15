@@ -61,7 +61,7 @@ export function LabBuildModal({
             <span key={p.id} style={{ ...C.tag(`${ACCENT}30`, '#a0b8d8'), fontSize: 9 }}>{p.icon} {p.label} ×{p.qty}</span>
           ))}
         </div>
-        <button style={{ ...C.btn(ACCENT), width: '100%', marginBottom: 6 }} onClick={onConfirm}>Save parts to lab</button>
+        <button style={{ ...C.btn(ACCENT), width: '100%', marginBottom: 6 }} onClick={() => onConfirm(labSession)}>Save parts to lab</button>
         <button style={{ ...C.btn('#333'), width: '100%' }} onClick={onCancel}>Discard session</button>
       </>,
     );

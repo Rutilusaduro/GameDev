@@ -19,8 +19,8 @@ registerModuleVariants('ge.garment', [
   { when: { studentId: 8 }, weight: W, text: ['her loose gray sweater and jeans', 'the soft hoodie she disappears into'] },
   { when: { studentId: 9 }, weight: W, text: ['her fitted tee and jeans', 'the transfer-student casual she brought from Dublin'] },
   { when: { studentId: 10 }, weight: W, text: [
-    'her flour-dusted chef\'s apron over kitchen blacks',
-    'her whites and checked pants, still smelling faintly of stock',
+    'her flour-dusted chef\'s jacket over kitchen blacks',
+    'her chef\'s jacket and checked kitchen pants, still smelling faintly of stock',
   ] },
   { when: { studentId: 11 }, weight: W, text: [
     'her soft knit cardigan and scrub pants',
