@@ -739,112 +739,11 @@ export const DIARY_ENTRIES = {
   },
 };
 
-export const RANDOM_EVENTS = [
-  { id:"dining_special",   target:"class",  gain:[4,9],
-    text:()=>`The dining hall announces a bottomless brunch that, through a combination of slow kitchen turns and no posted end time, runs until dinner. The class does not leave. They settle in. By 7 pm the booths have been rearranged twice and the serving staff has given up trying to close the section. The students return changed: slower, warmer, considerably more substantial.` },
-  { id:"stress_week",      target:"single", gain:[3,7],
-    text:(s)=>`${s.name} has a major paper due Thursday. The pattern is well-established by now: stress arrives, appetite follows. She doesn't track it. She just eats — through the outline, through the rough draft, through the citations. When the paper is submitted she surveys the empty fridge and three takeout containers and decides this is a reasonable trade. She seems fine.` },
-  { id:"chair_incident",   target:"single", gain:[0,0], scrutinyHit:3,
-    text:(s)=>`During your Tuesday lecture, ${s.name}'s chair releases a sharp, definitive crack and gives way. She lands without dignity. She remains on the floor for a moment, assessing the situation, then rises with absolute composure and takes a different seat. She meets no one's eyes. You notice that every student in the row quietly shifts their weight. The moment is not discussed. It absolutely happened.` },
-  { id:"food_delivery",    target:"single", gain:[4,8],
-    text:(s)=>`Three competing delivery apps are all running aggressive new-user deals. ${s.name} has three accounts. The evening becomes a logistics problem of a very specific kind. At one point two drivers arrive simultaneously. She manages the handoff with the efficiency of someone who has been waiting for this exact convergence. Nothing goes unfinished.` },
-  { id:"pizza_deal",       target:"class",  gain:[4,9],
-    text:()=>`Someone in the group chat finds a pizza deal: buy two, get two. The math is straightforward. The scale is not. Twenty-two pizzas arrive at a dorm common room. No one intended this outcome. Everyone participates. The room smells of cheese until Wednesday. No slice survives the night.` },
-  { id:"admin_memo",       target:"class",  gain:[0,0], scrutinyHit:5,
-    text:()=>`A memo from the Dean of Students arrives this week. The subject line reads: "Regarding Wellness Observations in Certain Courses." The building is named. Specific floor is named. Your room number is not named but the description is not ambiguous. The class is not mentioned by name. Everything else is mentioned. You read it three times. Nothing actionable is stated. The feeling it creates is very actionable.` },
-  { id:"food_festival",    target:"class",  gain:[5,11],
-    text:()=>`There's a food festival in the park this weekend. The class decides to go together. They return Sunday evening transformed: quieter, heavier, radiating the specific satisfaction of a weekend spent doing exactly one thing very well. Several students report they "lost track" of their intake. No one sounds sorry. The van home is completely silent.` },
-  { id:"care_package",     target:"single", gain:[4,8],
-    text:(s)=>`A package arrives from ${s.name}'s family. It is enormous. It is almost entirely food — the kind of care that arrives in bulk, in containers marked with masking tape and her childhood nickname. She calls home to say thank you. She does not mention that the pantry is already half depleted. She does not mention a lot of things. She sounds happy.` },
-  { id:"birthday",         target:"single", gain:[6,12],
-    text:(s)=>`It is ${s.name}'s birthday. Someone tells the class. Someone else orders a cake. Then someone else orders a different cake because they couldn't decide. Then someone who didn't know there were already cakes shows up with a third. ${s.name} eats with the abandon of someone who has been given permission to take up exactly as much space as she wants, for one day, and has decided to take it seriously.` },
-  { id:"class_cancelled",  target:"class",  gain:[3,7],
-    text:()=>`A scheduling conflict cancels your Tuesday session. The class, without an obligation and with a collective appetite, materializes at a nearby brunch spot. Brunch runs long. Long becomes lunch. Lunch becomes a decision to order one more thing. By the time anyone thinks to leave, the restaurant is setting up for dinner. They stay for that too.` },
-  { id:"faculty_overheard",target:"single", gain:[2,5], scrutinyHit:1,
-    text:(s)=>`You overhear two faculty members in the hallway. One is asking about enrollment in your section. "Interesting group of students," the other says. "Particularly this semester." A pause. "You've noticed too." They don't say more. ${s.name} is passing in the corridor behind you. She is wearing a coat that didn't button last year. She does not notice the conversation. You do.` },
-  { id:"bake_sale",        target:"class",  gain:[2,6],
-    text:()=>`The junior class is running a bake sale for a field trip fund. Your students buy out the first round by ten am. Several make return trips when new trays come out. The junior running the table posts about it: "Record day. Bought by the same class, all six times." The post gets sixteen shares before she takes it down. The fundraising goal is exceeded.` },
-  { id:"netflix_binge",    target:"single", gain:[3,7],
-    text:(s)=>`${s.name} finds a show Friday night. It is an eight-season show. She does not know this at the time. She is eating when she starts it — something small, casual, not a meal really. By Sunday morning the snacking has become ambient, the meals have merged, and the bags and containers tell a story she couldn't narrate in real time. She finishes the season. She opens another.` },
-  { id:"rainy_weekend",    target:"class",  gain:[3,7],
-    text:()=>`It rains for four days without stopping. No one goes anywhere. Delivery apps log their busiest weekend of the semester. The class is horizontal, fed, and largely stationary from Friday to Monday — a long comfortable exhale of a weekend that leaves everyone softer, fuller, and faintly reluctant to explain where the time went.` },
-  { id:"cooking_experiment",target:"single", gain:[3,6],
-    text:(s)=>`${s.name} announces she's learning to cook and invites a handful of classmates to "taste test." The tasting runs six hours. She produces five dishes. Everything is made in quantities that suggest she calibrated her portion sense against an entirely different standard. The classmates eat steadily for the duration. They leave late. They leave round. They text her about it the next morning.` },
-];
+export { RANDOM_EVENTS, NARRATIVE_EVENTS } from './weeklyEventDefs.js';
 
 export const INFLUENCE_PAIRS = [
-  [0,10],[1,11],[4,12],[3,13],[6,14]
+  [0, 10], [1, 11], [4, 12], [3, 13], [6, 14],
 ];
-
-export const NARRATIVE_EVENTS = [
-  { id:"uniform_split", stageMin:3, archetype:"cheerleader", title:"Uniform Incident",
-    text:(s)=>{
-      if(s.role==="Cheer Captain"){
-        const pool=[
-          `During tryouts — tryouts ${s.name} is running as captain — her cheer uniform splits along the seam with an audible pop. The entire squad freezes. ${s.name} looks down at herself, at the soft belly now escaping the fabric, and very deliberately straightens up. "Take five," she tells the squad. She finds you afterward. "I'm going to need a new uniform. Four sizes up. I'm still captain. Don't give me a look."`,
-          `${s.name}'s captain sash won't close over her middle anymore. She's been ignoring this for weeks, but today, in front of the whole squad for the routine review, it gives up entirely. A seam splits at the shoulder. The gym goes quiet. ${s.name} looks around at twenty-two juniors watching their captain, tilts her chin up, and says: "Dismissed for today." She finds you after. "Please tell no one. Also do you know a seamstress. Also I had three dinners last week and it was worth it."`,
-          `Her squad jacket hasn't closed in a month. Today the uniform top finally splits at the back mid-demonstration, in front of the school, in full view of the stands. ${s.name} keeps the movement going for two more counts, then stops. She walks off the floor with the quiet dignity of someone who is not ready to have this conversation yet. She texts you that night: "New uniforms. Bigger. I'm still running tryouts. Don't say anything to the athletic director. I will handle it."`,
-        ];
-        return pool[s.id % pool.length];
-      }
-      // Dance Co-Captain (Jasmine)
-      const pool=[
-        `Mid-routine — a difficult lift section ${s.name} choreographed herself — her dance costume splits at the hip with a sharp crack. The music keeps playing. ${s.name} lands the count, finishes the eight, and then walks calmly off to the wings. She finds you in the corridor afterward, still in the damaged costume, eating a granola bar. "So. New costume. I've already emailed the seamstress. Four sizes up probably." She thinks. "Make it five."`,
-        `The recital costumes arrived this week and none of them fit. ${s.name} holds one up against herself in the studio, looks in the mirror, and laughs. "I designed these," she says. "I designed them to fit me." She turns to the full-length mirror. "I am no longer that person." She calls the costume shop. She tells you afterward: "The new ones will be better. I've had some ideas. My body is different now. The choreography will adapt."`,
-        `It happens during the showcase — exactly the wrong moment, exactly the right uniform to fail. ${s.name}'s costume splits at the seam during her own solo. She pauses, adjusts, and finishes the piece. The audience thinks it's intentional. She texts you: "I hate that it happened and also I've never moved better in my life. Ordering new costumes. Going to dinner. These two facts are connected."`,
-      ];
-      return pool[s.id % pool.length];
-    },
-    gain:[4,8], rel:12 },
-  { id:"chair_breaks", stageMin:4, archetype:null, title:"The Chair Incident",
-    text:(s)=>{
-      const pool=[
-        `A classroom chair gives way under ${s.name} with a loud crack. She goes bright red. You slide a sturdier chair over without a word. After class she hangs back. "Thank you for… not making it weird." She glances down at herself, pats her belly almost fondly. "I've gotten kind of big, haven't I." It doesn't come out like a problem.`,
-        `The chair under ${s.name} lets out a sharp crack and lists sideways. ${s.name} grabs the desk with both hands. For a moment the room is very quiet. You produce a reinforced chair from the back as if this were planned. She sits in it, cheeks pink, then after class catches you at the door. "That was smooth of you," she says. "Very diplomatic." She's smiling. "I should probably stop being surprised when furniture can't handle me."`,
-        `It happens during a quiet part of lecture — a groan of plastic and then ${s.name} is suddenly much lower than she was. She lets out a short laugh before she can stop herself. You wave off the moment and keep talking, and she settles into your sturdier desk chair. Afterwards: "I actually feel better about it than I expected to," she admits, pressing a hand to her soft middle. "I mean. Look at me. I've gotten enormous. I think I knew the chairs were on borrowed time."`,
-        `${s.name}'s chair goes with a crack that makes everyone look up. Her face is unreadable for a long beat — then she sighs the sigh of someone who saw this coming. You hand her the solid chair from behind your desk. "I ordered three of these," you tell her quietly. "For high achievers." She snorts. "Sure you did." But she sits down and, after a moment, she's smiling. After class: "I've gained like ${s.lbs-s.startLbs} pounds this semester. I should have seen that coming." She pats her belly. "Anyway."`,
-      ];
-      return pool[s.id % pool.length];
-    },
-    gain:[3,5], rel:18 },
-  { id:"viral_post", stageMin:4, archetype:"influencer", title:"Going Viral",
-    text:(s)=>`${s.name} posts a video attempting to fit into her old jeans. It goes viral overnight. Two million views in twelve hours. Comments are overwhelmingly enthusiastic. She shows you in class, glowing. "Two. Million." She tilts the phone to show you the view count. Her old jeans are somewhere around her thighs in the thumbnail. "I think this is my era," she says.`,
-    gain:[5,9], rel:20 },
-  { id:"thesis_rewrite", stageMin:3, archetype:"bookworm", title:"Academic Pivot",
-    text:(s)=>`${s.name} submits a revised thesis outline. New title: 'Adaptive Caloric Strategy and Cognitive Performance: An Ethnographic Self-Study.' The abstract is rigorous. It is also clearly an elaborate academic justification for eating constantly. You approve it immediately. She beams with the energy of someone who has made weight gain count toward her GPA.`,
-    gain:[3,6], rel:15 },
-  { id:"gaming_sponsor", stageMin:5, archetype:"gamer", title:"Snack Sponsorship",
-    text:(s)=>`${s.name} has a snack sponsorship deal. She tells you with enormous satisfaction, adjusting herself in her chair. "They send boxes. Every week. Full boxes." She pauses. "I've been doing a lot of product testing." You look at her — noticeably bigger — and nod. "Thorough research," you say. She grins. "The most thorough."`,
-    gain:[5,10], rel:18 },
-  { id:"intervention_fails", stageMin:4, archetype:"sorority", title:"The Intervention That Wasn't",
-    text:(s)=>`${s.name}'s sisters stage an 'intervention' about her eating. It devolves into a two-hour dinner when ${s.name} orders for the table. By dessert everyone has forgotten the intervention. ${s.name} has eaten more than anyone. She tells you the next day, delighted. "I think I accidentally converted three of them."`,
-    gain:[5,8], rel:22 },
-  { id:"art_exhibition", stageMin:5, archetype:"artsy", title:"The Body Exhibition",
-    text:(s)=>`${s.name}'s senior show opens and every piece is a meditation on abundance — overflowing bowls, voluptuous figures, textures of excess. Critics write 'opulent' and 'unapologetically sensual.' ${s.name} stands at the opening in a flowing dress that shows every curve, eating cheese from the reception table. "The artist," she says, gesturing at herself, "is also the subject matter."`,
-    gain:[4,7], rel:20 },
-  { id:"team_weigh_in", stageMin:3, archetype:"athlete", title:"The Weigh-In",
-    text:(s)=>`${s.name} has been avoiding the athletics department scale for weeks. Today she can't. She tells you flatly: "Thirty-five pounds over their limit." Beat. "They were very professional about it." Another beat. "I ate an entire pizza on the way home and I feel fine, actually." She does look fine — soft and full-cheeked and more relaxed than you've ever seen her.`,
-    gain:[4,7], rel:15 },
-  { id:"quiet_opens_up", stageMin:4, archetype:"quiet", title:"She Opens Up",
-    text:(s)=>`After class, ${s.name} catches you packing up. She's looking at her own rounded belly with an expression you can't read. Then she looks up. "I actually like how I look now," she says quietly. "Is that weird?" You tell her it isn't. She nods, pulls a pastry from her bag, takes a bite. The two of you eat in comfortable silence for a moment. She smiles.`,
-    gain:[3,5], rel:28 },
-  { id:"overachiever_pivot", stageMin:4, archetype:"overachiever", title:"A Change of Thesis",
-    text:(s)=>`${s.name} submits a revised thesis proposal: 'Adaptive Caloric Strategy and Cognitive Performance: A Self-Study.' You read the abstract. It is rigorous. It is also clearly an elaborate academic justification for eating constantly. You approve it. She beams with the energy of someone who has made gaining weight count toward her GPA.`,
-    gain:[3,6], rel:20 },
-  { id:"transfer_settled", stageMin:5, archetype:"transfer", title:"Finally Home",
-    text:(s)=>`${s.name} gets a call from her parents asking if she wants to transfer back home. She's quiet for a moment, looking out the window at the campus she's come to know so intimately. "No," she says finally. "I think I'm where I'm supposed to be." She hangs up, pats her enormous belly with obvious affection, and heads to the dining hall.`,
-    gain:[4,8], rel:22 },
-  { id:"custom_clothing", stageMin:6, archetype:null, title:"Shopping Trip",
-    text:(s)=>`${s.name} announces she's had to go up four clothing sizes and nothing in stores fits anymore. Rather than distress, there's satisfaction in her voice. "I got measured properly for the first time. Did you know I carry most of it here —" she pats her belly "— and here." She pats her hips. "Custom order. It's going to look incredible."`,
-    gain:[2,5], rel:16 },
-  { id:"immobility_peace", stageMin:8, archetype:null, title:"Comfortable",
-    text:(s)=>`You find ${s.name} settled into the reinforced couch, a plate balanced on her enormous belly, utterly at ease. "I've been thinking," she says, "I used to spend so much energy on movement. Walking, exercising, all of that." She takes a slow bite. "This is better." She isn't asking for your opinion. She's just telling you how things are. You bring her something else to eat.`,
-    gain:[5,12], rel:22 },
-  { id:"blob_ending", stageMin:10, archetype:null, title:"Final Form",
-    text:(s)=>`${s.name} can no longer come to class. You bring class to her. She holds court from her specially furnished room — vast, warm, content. Students orbit her. She eats, talks, laughs. When you ask how she feels, she considers this. "Full," she finally says. "Really, genuinely full." She smiles. "Keep it coming."`,
-    gain:[0,0], rel:35 },
-];
-
 
 // ─── CHARACTER-SPECIFIC TALK RESPONSES ────────────────────────────────────────
 // Keyed by student id. Overrides archetype fallback in TALK_RESPONSES.
