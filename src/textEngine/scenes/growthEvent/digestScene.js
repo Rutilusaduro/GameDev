@@ -50,7 +50,7 @@ registerPool('ge.digestReaction', [
   ] },
   { when: { featureId: 'digest_stageup' }, text: [
     '{subject.name} meets her own eyes in the mirror and does not look away.',
-    '"Huh," {subject.name} says softly. Not shocked — just arrived.',
+    '{subject.name} exhales through her nose. "Huh. Okay."',
     '{subject.name} steadies herself and keeps dressing.',
   ] },
   { when: {}, text: ['{subject.name} takes a breath and keeps going.'] },

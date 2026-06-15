@@ -541,6 +541,10 @@ registerModuleVariants("ge.reactionDialogue", [
 registerModuleVariants("grow.crossingDialogue", [
 
   // ── Brittany (0) ───────────────────────────────────────────────
+  { when: { studentId: 0, endStageMin: 2, endStageMax: 2 }, weight: W, text: [
+    `"Soft already," she says, like a scouting report. "Fine. I'll own it."`,
+    `"There it is," she says, touching her side. "First real curve."`,
+  ]},
   { when: { studentId: 0, endStageMin: 3, endStageMax: 5 }, weight: W, text: [
     `"New weight class," she says, like a division change. "I'll own this one."`,
     `"Noted," she says. "I'm going higher."`,
@@ -579,6 +583,24 @@ registerModuleVariants("grow.crossingDialogue", [
     `"Iconic," she breathes. "This is the whole arc."`,
   ]},
 
+  // ── Serena (3) ────────────────────────────────────────────────
+  { when: { studentId: 3, endStageMin: 2, endStageMax: 2 }, weight: W, text: [
+    `"Soft," she says, testing the word. "Huh. Okay."`,
+    `"That tracks," she murmurs, flexing once. "The portions were louder than I admitted."`,
+  ]},
+  { when: { studentId: 3, endStageMin: 3, endStageMax: 5 }, weight: W, text: [
+    `"Chubby on paper," she says, dry. "Still moves like me."`,
+    `"There it is," she says, without drama. "The dining hall finally won."`,
+    `"So that's the new weight class," she says, rolling her shoulders. "Fine."`,
+  ]},
+  { when: { studentId: 3, endStageMin: 6, endStageMax: 8 }, weight: W, text: [
+    `"Fat now," she says, like a training log entry. "Still mine."`,
+    `"Heavier," she says. "Still functional."`,
+  ]},
+  { when: { studentId: 3, endStageMin: 9 }, weight: W, text: [
+    `"Vast," she breathes. "Still standing."`,
+  ]},
+
   // ── Destiny (5) ────────────────────────────────────────────────
   { when: { studentId: 5, endStageMin: 3, endStageMax: 5 }, weight: W, text: [
     `"New tier unlocked," she says. "Mid-game. Expected."`,
@@ -595,7 +617,7 @@ registerModuleVariants("grow.crossingDialogue", [
   // ── Chloe (9) ──────────────────────────────────────────────────
   { when: { studentId: 9, endStageMin: 3, endStageMax: 5 }, weight: W, text: [
     `"Grand," she says. "My mam would have words for this."`,
-    `"Chubby," she says, with dry Dublin acceptance. "I suit it."`,
+    `"I suit it," she says, with dry Dublin acceptance.`,
   ]},
   { when: { studentId: 9, endStageMin: 6, endStageMax: 8 }, weight: W, text: [
     `"Fat is not an insult where I'm from," she says. "It means well-fed."`,
@@ -632,11 +654,42 @@ registerModuleVariants("grow.crossingDialogue", [
     `"Blessed," she breathes. "Lord, what a bounty."`,
   ]},
 
+  // ── Mary Jane (14) ─────────────────────────────────────────────
+  { when: { studentId: 14, endStageMin: 3, endStageMax: 4 }, weight: W, text: [
+    `"Plump," she says, like naming weather. "Been heading here all season."`,
+    `"Heavier than the hay bales," she murmurs, not complaining.`,
+    `"That's a real belly now," she says quietly. "Feels honest."`,
+  ]},
+  { when: { studentId: 14, endStageMin: 5, endStageMax: 6 }, weight: W, text: [
+    `"Heavy," she says, patting her middle. "Still me underneath."`,
+    `"Stairs told me first," she murmurs. "Mirror just agreed."`,
+  ]},
+  { when: { studentId: 14, endStageMin: 7 }, weight: W, text: [
+    `"Lord," she breathes. "That's a lot of girl."`,
+  ]},
+
+  // ── Sophia (16) ────────────────────────────────────────────────
+  { when: { studentId: 16, endStageMin: 2, endStageMax: 2 }, weight: W, text: [
+    `"Soft," she says, clinical habit slipping. "Huh. Okay."`,
+    `"The data matches the mirror," she murmurs.`,
+  ]},
+  { when: { studentId: 16, endStageMin: 3, endStageMax: 5 }, weight: W, text: [
+    `"Chubby on the chart," she says. "Still within acceptable parameters."`,
+    `"Noted," she murmurs. "The portions were consistent."`,
+  ]},
+  { when: { studentId: 16, endStageMin: 6, endStageMax: 8 }, weight: W, text: [
+    `"Fat," she says, like a lab result. "This is real."`,
+    `"Heavier," she murmurs. "The coat agrees."`,
+  ]},
+  { when: { studentId: 16, endStageMin: 9 }, weight: W, text: [
+    `"Vast," she breathes. "Still taking notes."`,
+  ]},
+
   // ── Tiffany (6) ────────────────────────────────────────────────
   { when: { studentId: 6, endStageMin: 3, endStageMax: 5 }, weight: W, text: [
     `"More is more, babe," she says, checking her reflection.`,
-    `"Okay, so we're doing this," she says, pleased.`,
     `"The girls are going to lose their minds," she murmurs, delighted.`,
+    `"New chapter," she says, pleased. "Bigger chapter."`,
   ]},
   { when: { studentId: 6, endStageMin: 6, endStageMax: 8 }, weight: W, text: [
     `"Bigger is better," she says, like it's obvious.`,
@@ -675,9 +728,13 @@ registerModuleVariants("grow.crossingDialogue", [
 
   // ── Shared band supplements (no studentId) ────────────────────
   // These supplement all girls; persona variants dominate when they match.
+  { when: { endStageMin: 2, endStageMax: 2 }, weight: W, text: [
+    `"Soft," she says quietly, like naming a fact.`,
+    `"There it is," she murmurs, touching her side.`,
+  ]},
   { when: { endStageMin: 3, endStageMax: 5 }, weight: W, text: [
-    `"Huh," she says softly.`,
-    `"There it is," she says, without drama.`,
+    `"So that's the new fit," she says quietly.`,
+    `"Well," she says. "That explains the week."`,
   ]},
   { when: { endStageMin: 6, endStageMax: 8 }, weight: W, text: [
     `"This is real," she says.`,
@@ -690,7 +747,8 @@ registerModuleVariants("grow.crossingDialogue", [
 
   // Wildcard add-on: brings combined wildcard pool to ≥3 texts.
   { when: {}, text: [
-    `"Here now," she says.`,
+    `"Yeah," she says softly. "That tracks."`,
+    `"Okay," she says quietly, like accepting a fact.`,
     `"Yes," she says quietly.`,
   ]},
 ]);

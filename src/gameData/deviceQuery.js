@@ -23,6 +23,14 @@ export function countEquippedAcrossStudents(students = [], player = null) {
   return n;
 }
 
+/** True once the player has built, owned, equipped, or installed at least one device. */
+export function devicesCatalogUnlocked(deviceInventory = {}, students = [], player = null, labState = null) {
+  if (countOwnedDevices(deviceInventory) > 0) return true;
+  if (countEquippedAcrossStudents(students, player) > 0) return true;
+  if (Object.values(labState?.installedInventions || {}).some(Boolean)) return true;
+  return false;
+}
+
 export function isDeviceModified(student, defId) {
   if (!student?.equip || !defId) return false;
   for (const slot of DEVICE_SLOTS) {

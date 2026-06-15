@@ -7,6 +7,7 @@ import { DEVICES } from '../gameData/devices.js';
 import {
   countOwnedDevices,
   countEquippedAcrossStudents,
+  devicesCatalogUnlocked,
   deviceStatusBadge,
   filterDevices,
   listEquippedEntries,
@@ -131,6 +132,7 @@ export function DeviceInventoryView({
   deviceInventory,
   students = [],
   player,
+  labState,
   setStudents,
   setPlayer,
   setDeviceTargetPicker,
@@ -178,13 +180,15 @@ export function DeviceInventoryView({
   const availableMods = Object.entries(player?.modInventory || {}).filter(([, q]) => q > 0);
   const ownedCount = countOwnedDevices(deviceInventory);
   const equippedCount = countEquippedAcrossStudents(students, player);
+  const catalogUnlocked = devicesCatalogUnlocked(deviceInventory, students, player, labState);
 
   const catalogDevices = useMemo(() => filterDevices({
     form: formFilter,
     tier: tierFilter,
     search,
     deviceInventory,
-  }), [formFilter, tierFilter, search, deviceInventory]);
+    ownedOnly: catalogUnlocked,
+  }), [formFilter, tierFilter, search, deviceInventory, catalogUnlocked]);
 
   const equippedRows = useMemo(
     () => listEquippedEntries(students, player),
@@ -232,6 +236,15 @@ export function DeviceInventoryView({
     <div>
       <p style={C.secT}>🛠 Devices & Inventions</p>
 
+      {!catalogUnlocked ? (
+        <div style={{ ...C.card, border: `1px solid ${ACCENT}40` }}>
+          <div style={{ fontSize: 12, color: '#8090b0', lineHeight: 1.7 }}>
+            The device catalog stays locked until you build your first invention in The Lab.
+            Research a blueprint, gather parts, and complete a build — then owned devices appear here.
+          </div>
+        </div>
+      ) : (
+        <>
       <div style={{ ...C.card, marginBottom: 10, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
         <div style={{ fontSize: 11, color: '#8090b0' }}>
           <strong style={{ color: '#a0c0e0' }}>{ownedCount}</strong> owned
@@ -356,6 +369,8 @@ export function DeviceInventoryView({
           onEquipStudent={handleEquipStudent}
           onQuickUse={handleQuickUse}
         />
+      )}
+        </>
       )}
     </div>
   );
