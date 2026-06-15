@@ -2,15 +2,17 @@ import { C } from '../styles.js';
 import { ENCOURAGEMENT_ACTIONS, PRIVATE_FOODS, PRIVATE_VENUES, SESSION_FULLNESS_DESCS, getFullnessStage, getTier } from '../gameData/sessions.js';
 import { MJ_RECIPES } from '../gameData/miniGames.js';
 import { getStage } from '../gameData/stages.js';
+import { getFullnessPercent, getSessionCapacityCap } from '../gameData/feedingSession.js';
 
-export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, feedInSession, getMoreFood, privateSession, sessionLog, setAp, setPrivateSession, skillTapOutResistance, startIntimacyScene, useSessionEncouragement }){
+export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, feedInSession, getMoreFood, privateSession, sessionLog, setAp, setPrivateSession, skillTapOutResistance, startIntimacyScene, useSessionEncouragement, liveStudent }){
         const ps=privateSession;
-        const s=ps.student;
-        const effectiveMax=ps.maxFullness+ps.toleranceBuffer;
-        const fPct=ps.fullness>0?Math.round((ps.fullness/effectiveMax)*100):0;
+        const s=liveStudent||ps.student;
+        const capOpts={capacityBonus:ps.capacityBonus||0,toleranceBuffer:ps.toleranceBuffer||0};
+        const effectiveMax=getSessionCapacityCap(s,capOpts);
+        const fPct=getFullnessPercent(s,capOpts);
         const fsStage=getFullnessStage(fPct);
         const descFns=SESSION_FULLNESS_DESCS[s.archetype]||SESSION_FULLNESS_DESCS.default;
-        const currentDesc=ps.fullness>0?descFns[Math.min(fsStage.id,descFns.length-1)](s):null;
+        const currentDesc=fPct>0?descFns[Math.min(fsStage.id,descFns.length-1)](s):null;
         const courseOrder=["opener","main","more","dessert","extra"];
         const tier=getTier(s.relationship);
         const availableVenueList=PRIVATE_VENUES.filter(v=>tier.id>=v.minTier);

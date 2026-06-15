@@ -13,7 +13,7 @@ import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
 import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_FEED_LINES, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
 import { TALK_CONFIG } from './gameData/talkSystem.js';
-import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES } from './gameData/items.js';
+import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES, ITEMS } from './gameData/items.js';
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
 import { createInitialPlayer, updatePlayerField } from './gameData/player.js';
 import { WalletBadge } from './components/WalletBadge.jsx';
@@ -203,7 +203,15 @@ import { supernaturalActLine } from './gameData/oppositionText.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
-import { buildGameSaveBlob } from './gameData/gameSave.js';
+import {
+  getSessionCapacityCap,
+  getFullnessPercent,
+  getDinnerFullnessGroup,
+  rollOverfillEndChance,
+  getTapOutProbability,
+  getSessionCaloriesFed,
+  getFeedingAppetiteNote,
+} from './gameData/feedingSession.js';
 import {
   computeClassSkillCurrency, buyClassSkill, aggregateClassSkillEffects, listPurchasableClassSkills,
   hasClassUnlock, getClassActionCost, isDinnerVenueUnlocked,
@@ -299,7 +307,7 @@ export default function ProfessorSim(){
   // DLC: Social Events
   // DLC: Private Sessions
   const [privateSession,setPrivateSession]=useState(null);
-  // {student,venue,phase,foods:[],totalGain,fullness,maxFullness,encouragementsUsed:[],toleranceBuffer,sessionNum}
+  // {student,venue,phase,foods:[],totalGain,sessionStartCalories,capacityBonus,encouragementsUsed:[],toleranceBuffer,sessionNum}
   const [sessionHistory,setSessionHistory]=useState({});
   // {[studentId]:{count,totalGain,capacityBonus}}
   const [sessionResult,setSessionResult]=useState(null);
@@ -5570,11 +5578,10 @@ export default function ProfessorSim(){
   };
 
   // ── DINNER END (single) ──────────────────────────────────────
-  const triggerDinnerEnd=(s,finalFullness,maxFullness,totalGain,relBonus)=>{
+  const triggerDinnerEnd=(s,finalFullness,cap,totalGain,relBonus)=>{
     const stId=getStage(s.lbs).id;
     const stGrp=stId<=2?0:stId<=5?1:stId<=7?2:3;
-    const ratio=finalFullness/maxFullness;
-    const fullGrp=ratio<=1.0?0:ratio<=1.3?1:ratio<=1.6?2:3;
+    const fullGrp=getDinnerFullnessGroup(finalFullness,cap);
     const narrative=DINNER_ENDING_TEXT[stGrp][fullGrp](s);
     guardHungerInterrupt(()=>{
       setAp(a=>a-2);
@@ -5583,7 +5590,7 @@ export default function ProfessorSim(){
       const evs=collectEvents([s]);
       if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
       setDinnerEvent(null);
-      setDinnerEndPopup({ student:s, finalFullness, maxFullness, totalGain, narrative });
+      setDinnerEndPopup({ student:s, finalFullness, maxFullness:cap, totalGain, narrative });
     });
   };
 
@@ -5603,7 +5610,7 @@ export default function ProfessorSim(){
       }
     }
     if(ap<2){push("⚠️ Need 2 AP for a dinner.");return;}
-    const maxFullness=60+getStage(s.lbs).id*14;
+    const sessionStartCalories=s.consumedCalories||0;
     if(opts.skipImmobileCheck){
       const path=s.ascensionPath;
       const venueLabel=path==="celestial"?"✨ The Sanctum"
@@ -5627,13 +5634,13 @@ export default function ProfessorSim(){
         :`Her room. She is here, she is enormous, she is warm. She knew you were coming.`;
       const atelier=DINNER_VENUES.find(v=>v.id==="atelier");
       const homeVenue={id:venueId,label:venueLabel,desc:venueDesc,dishes:atelier?atelier.dishes:[]};
-      setDinnerEvent({student:s,phase:"dishes",venue:homeVenue,dishes:[],conversationUsed:[],totalGain:0,fullness:0,maxFullness,offenseLevel:0});
+      setDinnerEvent({student:s,phase:"dishes",venue:homeVenue,dishes:[],conversationUsed:[],totalGain:0,offenseLevel:0,sessionStartCalories});
       setDinnerLog([`You bring dinner to ${s.name}. ${venueDesc}`]);
       addScrutiny(2);
       push(`🏠 Visiting ${s.name}.`);
       return;
     }
-    setDinnerEvent({ student:s, phase:"venue", venue:null, dishes:[], conversationUsed:[], totalGain:0, fullness:0, maxFullness, offenseLevel:0 });
+    setDinnerEvent({ student:s, phase:"venue", venue:null, dishes:[], conversationUsed:[], totalGain:0, offenseLevel:0, sessionStartCalories });
     setDinnerLog([]);
     addScrutiny(2);
   };
@@ -5659,27 +5666,55 @@ export default function ProfessorSim(){
     }
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
     const newFullness=fed.fullness||0;
-    const maxFull=Math.max(dinnerEvent.maxFullness||80,cap);
-    const newTotalGain=(dinnerEvent.totalGain||0)+calories;
+    const sessionCals=getSessionCaloriesFed(fed,dinnerEvent.sessionStartCalories||0);
     const newDishes=[...(dinnerEvent.dishes||[]),dish.id];
     push(`🍴 ${s.name}: ${dish.label} (+${calories.toLocaleString()} cal)`);
-    if(newFullness>maxFull){
-      const overfillRatio=(newFullness-maxFull)/maxFull;
-      const endChance=Math.min(0.8,overfillRatio);
+    if(newFullness>cap){
+      const endChance=rollOverfillEndChance(newFullness,cap);
       if(Math.random()<endChance){
         const endMsg=getOverfillEndMsg(fed,getStage(fed.lbs).id);
         setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${calories.toLocaleString()} cal)`,`😵 ${endMsg}`]);
-        setTimeout(()=>triggerDinnerEnd(fed,newFullness,maxFull,newTotalGain,6),1000);
+        setTimeout(()=>triggerDinnerEnd(fed,newFullness,cap,sessionCals,6),1000);
         return;
       }
     }
-    const firstHit=newFullness>=maxFull&&prevFullness<maxFull;
+    const firstHit=newFullness>=cap&&prevFullness<cap;
     const fullMsg=firstHit?" — she's completely satisfied. The evening could end here..."
-      :newFullness>maxFull?" — she's past full, but she doesn't stop."
-      :newFullness>=maxFull*0.8?" — getting full..."
+      :newFullness>cap?" — she's past full, but she doesn't stop."
+      :newFullness>=cap*0.8?" — getting full..."
       :"";
-    setDinnerEvent(prev=>({...prev,dishes:newDishes,totalGain:newTotalGain,fullness:newFullness,student:fed}));
+    setDinnerEvent(prev=>({...prev,dishes:newDishes,totalGain:sessionCals,student:fed}));
     setDinnerLog(dl=>[...dl,`🍴 ${dish.label} arrives. ${dish.desc} (+${calories.toLocaleString()} cal)${fullMsg}`]);
+  };
+
+  const sharePantryItemAtDinner=(itemId)=>{
+    if(!dinnerEvent) return;
+    if((inventory[itemId]||0)<=0){push('⚠️ None left in the pantry.');return;}
+    const item=ITEMS.find(i=>i.id===itemId);
+    if(!item) return;
+    const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
+    const cap=s.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const prevFullness=s.fullness||0;
+    const fed=feedStudentCalories(s,item.cal,item.full,2,item.label);
+    if(!fed){
+      setDinnerLog(dl=>[...dl,`🚫 ${s.name} won't take the ${item.label.toLowerCase()} right now.`]);
+      return;
+    }
+    setInventory(prev=>({...prev,[itemId]:Math.max(0,(prev[itemId]||0)-1)}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
+    const newFullness=fed.fullness||0;
+    const sessionCals=getSessionCaloriesFed(fed,dinnerEvent.sessionStartCalories||0);
+    const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](fed,item);
+    push(`🎒 ${item.label} shared at dinner.`);
+    if(newFullness>cap&&Math.random()<rollOverfillEndChance(newFullness,cap)){
+      setDinnerLog(dl=>[...dl,`🎒 ${line}`,`😵 ${getOverfillEndMsg(fed,getStage(fed.lbs).id)}`]);
+      setTimeout(()=>triggerDinnerEnd(fed,newFullness,cap,sessionCals,6),1000);
+      return;
+    }
+    const fullMsg=newFullness>=cap&&prevFullness<cap?" — completely full."
+      :newFullness>cap?" — past full.":"";
+    setDinnerEvent(prev=>({...prev,totalGain:sessionCals,student:fed}));
+    setDinnerLog(dl=>[...dl,`🎒 ${line}${fullMsg}`]);
   };
 
   const callWaiter=()=>{
@@ -5709,11 +5744,12 @@ export default function ProfessorSim(){
       setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+(conv.relBonus||0))}));
     }
     const newFullness=fed.fullness||0;
-    const maxFull=Math.max(dinnerEvent.maxFullness||80,fed.stomachCapacity||GAIN_CONFIG.baseCapacity);
+    const cap=fed.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const sessionCals=getSessionCaloriesFed(fed,dinnerEvent.sessionStartCalories||0);
     setDinnerLog(dl=>[...dl,`💬 ${convText}${scaledBonus>0?` (+${scaledBonus.toLocaleString()} cal)`:""}`]);
     push(`💬 Dinner conversation: ${conv.label}`);
     const newOffense=(dinnerEvent.offenseLevel||0)+(conv.offenseRisk||0);
-    setDinnerEvent(prev=>({...prev,conversationUsed:[...prev.conversationUsed,conv.id],totalGain:prev.totalGain+scaledBonus,fullness:newFullness,offenseLevel:newOffense,student:fed}));
+    setDinnerEvent(prev=>({...prev,conversationUsed:[...prev.conversationUsed,conv.id],totalGain:sessionCals,offenseLevel:newOffense,student:fed}));
     if(newOffense>=6){
       setTimeout(()=>{
         setDinnerLog(dl=>[...dl,`😤 ${s.name} sets her napkin down. "I think I should head home." She leaves.`]);
@@ -5726,7 +5762,9 @@ export default function ProfessorSim(){
 
   const endEvening=()=>{
     const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
-    triggerDinnerEnd(s,dinnerEvent.fullness,dinnerEvent.maxFullness,dinnerEvent.totalGain,9);
+    const cap=s.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const sessionCals=getSessionCaloriesFed(s,dinnerEvent.sessionStartCalories||0);
+    triggerDinnerEnd(s,s.fullness||0,cap,sessionCals,9);
   };
 
   // ── GROUP DINNER ─────────────────────────────────────────────
@@ -5736,7 +5774,7 @@ export default function ProfessorSim(){
     const apCost=studentList.length>=3?3:3;
     if(ap<apCost){push(`⚠️ Need ${apCost} AP for a group dinner.`);return;}
     const gStudents=studentList.map(s=>({
-      ...s, fullness:0, maxFullness:60+getStage(s.lbs).id*14, dishes:[], totalGain:0,
+      id:s.id, dishes:[], totalGain:0, sessionStartCalories:s.consumedCalories||0,
     }));
     setGroupDinnerEvent({ students:gStudents, phase:"venue", venue:null, conversationUsed:[], reactionLevels:{} });
     setGroupDinnerLog([]);
@@ -5745,17 +5783,20 @@ export default function ProfessorSim(){
 
   const chooseGroupVenue=(venue)=>{
     setGroupDinnerEvent(prev=>({...prev,venue,phase:"dishes"}));
-    const names=groupDinnerEvent.students.map(s=>s.name).join(" & ");
+    const names=groupDinnerEvent.students.map(gs=>students.find(st=>st.id===gs.id)?.name?.split(' ')[0]||'her').join(" & ");
     setGroupDinnerLog(dl=>[...dl,`You arrive at ${venue.label} with ${names}. ${venue.desc}`]);
     push(`🍽️ Group dinner at ${venue.label}.`);
   };
 
   const orderGroupDish=(dish,targetId)=>{
-    const target=groupDinnerEvent.students.find(s=>s.id===targetId);
-    if(!target||target.dishes.includes(dish.id)) return;
-    const live=students.find(st=>st.id===targetId)||target;
+    const evtStudent=groupDinnerEvent.students.find(s=>s.id===targetId);
+    if(!evtStudent||evtStudent.dishes.includes(dish.id)) return;
+    const live=students.find(st=>st.id===targetId);
+    if(!live) return;
     const gain=rnd(dish.gain[0],dish.gain[1]);
     const calories=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(live.gainMultiplier||1));
+    const cap=live.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const prevFullness=live.fullness||0;
     const fed=feedStudentCalories(live,calories,dish.fullness||15,0,dish.label);
     if(!fed){
       setGroupDinnerLog(dl=>[...dl,`🚫 ${live.name} refuses ${dish.label}.`]);
@@ -5763,47 +5804,43 @@ export default function ProfessorSim(){
     }
     setStudents(prev=>prev.map(s=>s.id!==targetId?s:fed));
     const newFullness=fed.fullness||0;
-    const maxFull=Math.max(target.maxFullness,fed.stomachCapacity||GAIN_CONFIG.baseCapacity);
-    const newTotalGain=target.totalGain+calories;
-    const newDishes=[...target.dishes,dish.id];
+    const sessionCals=getSessionCaloriesFed(fed,evtStudent.sessionStartCalories||0);
+    const newDishes=[...evtStudent.dishes,dish.id];
     push(`🍴 ${live.name}: ${dish.label} (+${calories.toLocaleString()} cal)`);
 
-    // Build reaction log entries before state updates
     const reactionLines=[];
     const newReactionLevels={...groupDinnerEvent.reactionLevels};
     groupDinnerEvent.students.filter(s=>s.id!==targetId).forEach(neg=>{
+      const negLive=students.find(st=>st.id===neg.id);
+      if(!negLive) return;
       const dishDiff=newDishes.length-neg.dishes.length;
       if(dishDiff<=2) return;
-      const negStage=getStage(neg.lbs).id;
-      const fedStage=getStage(target.lbs).id;
-      const stageDiff=fedStage-negStage; // positive = fed girl is fatter
+      const negStage=getStage(negLive.lbs).id;
+      const fedStage=getStage(fed.lbs).id;
+      const stageDiff=fedStage-negStage;
       const level=Math.min(3,newReactionLevels[neg.id]||0);
       const lines=[];
       if(Math.abs(stageDiff)>=2){
         if(stageDiff>=2){
-          // Fat girl being fed; thin girl neglected → thin jealousy
-          const jFn=THIN_JEALOUSY[neg.archetype]?.[level];
-          if(jFn) lines.push(jFn(neg,target));
-          // Contextual override at level 2+
+          const jFn=THIN_JEALOUSY[negLive.archetype]?.[level];
+          if(jFn) lines.push(jFn(negLive,fed));
           if(level>=2){
-            const ctx=THIN_CONTEXTUAL[target.archetype]?.(neg,target);
+            const ctx=THIN_CONTEXTUAL[fed.archetype]?.(negLive,fed);
             if(ctx&&Math.random()<0.5) lines.push(ctx);
           }
-          // Fat girl retorts at level 1+
           if(level>=1){
-            const retArr=FAT_RETORT[target.archetype];
+            const retArr=FAT_RETORT[fed.archetype];
             if(retArr&&Math.random()<0.65){
               const rFn=retArr[Math.min(level-1,retArr.length-1)];
-              if(rFn) lines.push(rFn(target,neg));
+              if(rFn) lines.push(rFn(fed,negLive));
             }
           }
         } else {
-          // Thin girl being fed; fat girl neglected → fat girl encourages feeding thin one
-          const eFn=FAT_ENCOURAGE[neg.archetype]?.[level];
-          if(eFn) lines.push(eFn(neg,target));
+          const eFn=FAT_ENCOURAGE[negLive.archetype]?.[level];
+          if(eFn) lines.push(eFn(negLive,fed));
         }
       } else {
-        lines.push(getJealousyLine(neg,target));
+        lines.push(getJealousyLine(negLive,fed));
       }
       if(lines.length){
         reactionLines.push(...lines.filter(Boolean));
@@ -5811,16 +5848,12 @@ export default function ProfessorSim(){
       }
     });
 
-
-    // Unbutton line when first crossing capacity
-    if(newFullness>maxFull&&target.fullness<=maxFull){
-      reactionLines.push(UNBUTTON_LINES[rnd(0,UNBUTTON_LINES.length-1)](target));
+    if(newFullness>cap&&prevFullness<=cap){
+      reactionLines.push(UNBUTTON_LINES[rnd(0,UNBUTTON_LINES.length-1)](fed));
     }
 
-    // Overfill check
-    if(newFullness>maxFull){
-      const overfillRatio=(newFullness-maxFull)/maxFull;
-      const endChance=Math.min(0.8,overfillRatio);
+    if(newFullness>cap){
+      const endChance=rollOverfillEndChance(newFullness,cap);
       if(Math.random()<endChance){
         const endMsg=getOverfillEndMsg(fed,getStage(fed.lbs).id);
         setGroupDinnerLog(dl=>[...dl,`🍴 ${dish.label} for ${live.name}. (+${calories.toLocaleString()} cal)`,`😵 ${endMsg}`,...reactionLines.map(r=>`👀 ${r}`)]);
@@ -5834,48 +5867,54 @@ export default function ProfessorSim(){
         });
         const stId=getStage(fed.lbs).id;
         const stGrp=stId<=2?0:stId<=5?1:stId<=7?2:3;
-        const ratio=newFullness/maxFull;
-        const fullGrp=ratio<=1.0?0:ratio<=1.3?1:ratio<=1.6?2:3;
+        const fullGrp=getDinnerFullnessGroup(newFullness,cap);
         setTimeout(()=>{
-          setDinnerEndPopup({student:fed,finalFullness:newFullness,maxFullness:maxFull,totalGain:newTotalGain,narrative:DINNER_ENDING_TEXT[stGrp][fullGrp](fed)});
+          setDinnerEndPopup({student:fed,finalFullness:newFullness,maxFullness:cap,totalGain:sessionCals,narrative:DINNER_ENDING_TEXT[stGrp][fullGrp](fed)});
           setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,relationship:Math.min(100,s.relationship+5)}));
         },1100);
         return;
       }
     }
 
-    const firstHit=newFullness>=maxFull&&target.fullness<maxFull;
+    const firstHit=newFullness>=cap&&prevFullness<cap;
     const fullMsg=firstHit?` — ${live.name} is satisfied. You can keep going.`
-      :newFullness>maxFull?` — ${live.name} is past full.`
-      :newFullness>=maxFull*0.8?` — ${live.name} is getting full.`:"";
+      :newFullness>cap?` — ${live.name} is past full.`
+      :newFullness>=cap*0.8?` — ${live.name} is getting full.`:"";
     setGroupDinnerLog(dl=>[...dl,`🍴 ${dish.label} for ${live.name}. ${dish.desc} (+${calories.toLocaleString()} cal)${fullMsg}`,...reactionLines.map(r=>`👀 ${r}`)]);
     setGroupDinnerEvent(prev=>({
       ...prev,
-      students:prev.students.map(s=>s.id===targetId?{...s,dishes:newDishes,totalGain:newTotalGain,fullness:newFullness,lbs:fed.lbs}:s),
+      students:prev.students.map(s=>s.id===targetId?{...s,dishes:newDishes,totalGain:sessionCals}:s),
       reactionLevels:newReactionLevels,
     }));
   };
 
   const callGroupWaiter=()=>{
     const vId=groupDinnerEvent.venue?.id||"bistro";
-    const firstS=groupDinnerEvent.students[0];
-    const desc=(WAITER_DESC[vId]||(()=>`The server arrives with fresh menus.`))(firstS);
+    const firstLive=students.find(st=>st.id===groupDinnerEvent.students[0]?.id);
+    const desc=(WAITER_DESC[vId]||(()=>`The server arrives with fresh menus.`))(firstLive||{name:'she'});
     setGroupDinnerLog(dl=>[...dl,`🫆 ${desc}`]);
     setGroupDinnerEvent(prev=>({...prev,students:prev.students.map(s=>({...s,dishes:[]}))}));
   };
 
   const useGroupConversation=(conv)=>{
     if(groupDinnerEvent.conversationUsed.includes(conv.id)) return;
-    const [s1,s2]=groupDinnerEvent.students;
+    const liveStudents=groupDinnerEvent.students.map(gs=>students.find(st=>st.id===gs.id)).filter(Boolean);
+    const [s1,s2]=liveStudents;
+    if(!s1) return;
     const text=conv.text(s1,s2||s1);
     const relB=conv.relBonus||0;
     const fullE=conv.fullnessEffect||0;
     setGroupDinnerLog(dl=>[...dl,`💬 ${text}`]);
     push(`💬 Group conversation: ${conv.label}`);
+    if(fullE>0){
+      liveStudents.forEach(ls=>{
+        const fed=feedStudentCalories(ls,0,fullE,0,'');
+        if(fed) setStudents(prev=>prev.map(st=>st.id!==ls.id?st:fed));
+      });
+    }
     setGroupDinnerEvent(prev=>({
       ...prev,
       conversationUsed:[...prev.conversationUsed,conv.id],
-      students:prev.students.map(s=>({...s,fullness:Math.max(0,s.fullness+fullE),totalGain:s.totalGain})),
     }));
     setStudents(prev=>prev.map(s=>{
       const inGroup=groupDinnerEvent.students.some(gs=>gs.id===s.id);
@@ -5920,7 +5959,8 @@ export default function ProfessorSim(){
       setSessionLog([]);
       setPrivateSession({
         student:s,phase:"venue",venue:null,foods:[],totalGain:0,
-        fullness:0,maxFullness:100+hist.capacityBonus+skillSessionCapBonus,
+        capacityBonus:(hist.capacityBonus||0)+skillSessionCapBonus,
+        sessionStartCalories:s.consumedCalories||0,
         encouragementsUsed:[],toleranceBuffer:0,sessionNum:hist.count+1,
         refillRound:0,tappedOut:false,tapOutDialogue:null,
       });
@@ -5948,24 +5988,20 @@ export default function ProfessorSim(){
     }
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
     const scaledGain=calories;
-    const effectiveMax=privateSession.maxFullness+privateSession.toleranceBuffer;
-    const cap=fed.stomachCapacity||GAIN_CONFIG.baseCapacity;
-    const newFullness=fed.fullness||0;
-    const fPct=Math.round((newFullness/Math.max(effectiveMax,cap))*100);
+    const capOpts={capacityBonus:privateSession.capacityBonus||0,toleranceBuffer:privateSession.toleranceBuffer||0};
+    const fPct=getFullnessPercent(fed,capOpts);
     const fsStage=getFullnessStage(fPct);
     const descFns=SESSION_FULLNESS_DESCS[s.archetype]||SESSION_FULLNESS_DESCS.default;
     const desc=descFns[Math.min(fsStage.id,descFns.length-1)](fed);
     push(`🍽️ ${food.label}: +${scaledGain.toLocaleString()} cal`);
     setSessionLog(sl=>[...sl,`🍽️ ${food.label} (+${scaledGain.toLocaleString()} cal) — ${food.desc}`,`   ${desc}`]);
-    // Check for tap-out
-    const tapProb=fPct<150?0:fPct>=250?Infinity:((fPct-150)/100)*0.90;
-    const adjustedTapProb=tapProb===Infinity?1:Math.max(0,tapProb-skillTapOutResistance);
+    const sessionCals=getSessionCaloriesFed(fed,privateSession.sessionStartCalories||0);
+    const adjustedTapProb=getTapOutProbability(fPct,skillTapOutResistance);
     const tapsOut=Math.random()<adjustedTapProb;
     if(tapsOut){
       const liveS=fed;
       let tapLine;
       if(fPct>=250){
-        // At 250%+ — unique per-student extreme tap-out
         const entry250=TAP_OUT_250[s.id]||TAP_OUT_250.default;
         tapLine=typeof entry250==='function'?entry250(liveS):entry250;
       } else {
@@ -5973,19 +6009,19 @@ export default function ProfessorSim(){
         const dialogueSet=TAP_OUT_DIALOGUE[s.id]||TAP_OUT_DIALOGUE.default;
         tapLine=dialogueSet[tapStage](liveS);
       }
-      // End the session immediately — close private session, show tap-out popup
-      const currentTotalGain=(privateSession.totalGain||0)+scaledGain;
+      const currentTotalGain=sessionCals;
       const hist2=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
       const newCapBonus2=hist2.capacityBonus+8;
       setAp(a=>a-2);
       addScrutiny(2);
       setSessionHistory(prev=>({...prev,[s.id]:{count:hist2.count+1,totalGain:hist2.totalGain+currentTotalGain,capacityBonus:newCapBonus2}}));
-      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4),fullness:Math.max(st.fullness||0,Math.round((st.stomachCapacity||GAIN_CONFIG.baseCapacity)*Math.min(2.5,fPct/100)))}));
+      const cap=getSessionCapacityCap(liveS,capOpts);
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4),fullness:Math.max(st.fullness||0,Math.round(cap*Math.min(2.5,fPct/100)))}));
       push(`⛔ ${s.name} taps out! Session ended — ${currentTotalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(currentTotalGain))} lbs once digested).`);
       setPrivateSession(null);
       setTapOutPopup({student:liveS,text:tapLine,totalGain:currentTotalGain});
     } else {
-      setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:prev.totalGain+scaledGain,fullness:newFullness,student:fed}));
+      setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:sessionCals,student:fed}));
     }
   };
 
@@ -6015,40 +6051,46 @@ export default function ProfessorSim(){
 
   const useSessionEncouragement=(enc)=>{
     if(!privateSession||privateSession.encouragementsUsed.includes(enc.id)) return;
-    const s=privateSession.student;
-    const effectiveMax=privateSession.maxFullness+privateSession.toleranceBuffer;
-    const fPct=Math.round((privateSession.fullness/effectiveMax)*100);
+    const s=students.find(st=>st.id===privateSession.student.id)||privateSession.student;
+    const capOpts={capacityBonus:privateSession.capacityBonus||0,toleranceBuffer:privateSession.toleranceBuffer||0};
+    const fPct=getFullnessPercent(s,capOpts);
     const lbsBonus=enc.lbsBonus?rnd(enc.lbsBonus[0],enc.lbsBonus[1]):0;
     const encLine=enc.line(s,fPct);
     push(`💬 ${encLine}`);
     setSessionLog(sl=>[...sl,`💬 ${encLine}`]);
     if(lbsBonus>0){
-      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,consumedCalories:(st.consumedCalories||0)+lbsBonus*GAIN_CONFIG.calsPerLb}));
+      const bonusCals=lbsBonus*GAIN_CONFIG.calsPerLb;
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,consumedCalories:(st.consumedCalories||0)+bonusCals}));
     }
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+enc.relBonus)}));
+    const sessionCals=getSessionCaloriesFed(
+      students.find(st=>st.id===s.id)||s,
+      privateSession.sessionStartCalories||0,
+    );
     setPrivateSession(prev=>({
       ...prev,
       encouragementsUsed:[...prev.encouragementsUsed,enc.id],
       toleranceBuffer:prev.toleranceBuffer+enc.toleranceBoost,
-      totalGain:prev.totalGain+lbsBonus*GAIN_CONFIG.calsPerLb,
+      totalGain:sessionCals,
     }));
   };
 
   const endPrivateSession=()=>{
-    const s=privateSession.student;
-    const effectiveMax=privateSession.maxFullness+privateSession.toleranceBuffer;
-    const fPct=Math.round((privateSession.fullness/effectiveMax)*100);
+    const s=students.find(st=>st.id===privateSession.student.id)||privateSession.student;
+    const capOpts={capacityBonus:privateSession.capacityBonus||0,toleranceBuffer:privateSession.toleranceBuffer||0};
+    const fPct=getFullnessPercent(s,capOpts);
     guardHungerInterrupt(()=>{
     setAp(a=>a-2);
     addScrutiny(2);
     const hist=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
     const newCapBonus=hist.capacityBonus+8;
-    setSessionHistory(prev=>({...prev,[s.id]:{count:hist.count+1,totalGain:hist.totalGain+privateSession.totalGain,capacityBonus:newCapBonus}}));
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4),fullness:Math.max(st.fullness||0,Math.round((st.stomachCapacity||GAIN_CONFIG.baseCapacity)*Math.min(2.5,fPct/100)))}));
+    const sessionCals=getSessionCaloriesFed(s,privateSession.sessionStartCalories||0);
+    setSessionHistory(prev=>({...prev,[s.id]:{count:hist.count+1,totalGain:hist.totalGain+sessionCals,capacityBonus:newCapBonus}}));
+    const cap=getSessionCapacityCap(s,capOpts);
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4),fullness:Math.max(st.fullness||0,Math.round(cap*Math.min(2.5,fPct/100)))}));
     const aftermath=getAftermath(fPct);
-    const liveStudent=students.find(st=>st.id===s.id)||s;
-    push(`✅ Session with ${s.name} complete. ${privateSession.totalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(privateSession.totalGain))} lbs once digested) · session capacity expanded (+8).`);
-    setSessionResult({student:liveStudent,totalGain:privateSession.totalGain,fullnessPct:fPct,scene:aftermath.scene(liveStudent),sessionCount:hist.count+1,capacityBonus:newCapBonus});
+    push(`✅ Session with ${s.name} complete. ${sessionCals.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(sessionCals))} lbs once digested) · session capacity expanded (+8).`);
+    setSessionResult({student:s,totalGain:sessionCals,fullnessPct:fPct,scene:aftermath.scene(s),sessionCount:hist.count+1,capacityBonus:newCapBonus});
     setPrivateSession(null);
     });
   };
@@ -6301,12 +6343,15 @@ export default function ProfessorSim(){
       {dinnerEvent&&(()=>{
         const ds=students.find(s=>s.id===dinnerEvent.student.id)||dinnerEvent.student;
         const stId=getStage(ds.lbs).id;
-        const rawPct=Math.round(((dinnerEvent.fullness||0)/(dinnerEvent.maxFullness||80))*100);
+        const cap=ds.stomachCapacity||GAIN_CONFIG.baseCapacity;
+        const rawPct=getFullnessPercent(ds);
         const fullnessPct=rawPct;
         const fullnessColor=rawPct>=130?"#801010":rawPct>=100?"#c02020":rawPct>=80?"#c08020":"#20a060";
         const isOverfull=rawPct>100;
         const isAtCapacity=rawPct>=100;
         const isAlmostFull=rawPct>=80;
+        const appetiteNote=getFeedingAppetiteNote(ds);
+        const pantryItems=ITEMS.filter(i=>(inventory[i.id]||0)>0);
         const atelier=DINNER_VENUES.find(v=>v.id==="atelier");
         const showAtelier=hasSkill("dinner_accessible")&&stId>=6;
         const venueList=[...availableVenues,...(showAtelier?[atelier]:[])];
@@ -6321,10 +6366,13 @@ export default function ProfessorSim(){
                   <div style={{fontSize:11,color:"#5a309a",marginTop:3}}>{ds.lbs} lbs · {getStage(ds.lbs).label} · ❤ {ds.relationship}%</div>
                 </div>
                 <div style={{textAlign:"right"}}>
-                  <div style={{fontSize:13,color:"#f0a060",fontWeight:700}}>+{dinnerEvent.totalGain} lbs so far</div>
+                  <div style={{fontSize:13,color:"#f0a060",fontWeight:700}}>{(dinnerEvent.totalGain||0).toLocaleString()} cal</div>
                   <div style={{fontSize:10,color:"#5a4070",marginTop:3}}>{dinnerEvent.dishes.length} dishes · {dinnerEvent.conversationUsed.length} conversations</div>
                 </div>
               </div>
+              {appetiteNote&&(
+                <div style={{fontSize:10,color:"#a07090",fontStyle:"italic",marginBottom:10}}>{appetiteNote}</div>
+              )}
 
               {/* Fullness meter — only in dishes phase */}
               {dinnerEvent.phase==="dishes"&&(
@@ -6337,7 +6385,7 @@ export default function ProfessorSim(){
                   </div>
                   <div style={{background:"#0d0816",borderRadius:4,height:7,overflow:"hidden",position:"relative"}}>
                     <div style={{width:`${Math.min(100,fullnessPct)}%`,height:"100%",background:fullnessColor,borderRadius:4,transition:"width 0.4s ease"}}/>
-                    {isOverfull&&<div style={{position:"absolute",left:`${Math.round(100*dinnerEvent.maxFullness/(dinnerEvent.fullness||1))}%`,top:0,bottom:0,width:2,background:"#ffffff44"}}/>}
+                    {isOverfull&&<div style={{position:"absolute",left:`${Math.min(99,Math.round(100*cap/Math.max(1,ds.fullness||1)))}%`,top:0,bottom:0,width:2,background:"#ffffff44"}}/>}
                   </div>
                   {isOverfull&&<div style={{fontSize:10,color:"#c04020",marginTop:2,fontStyle:"italic"}}>Each additional dish risks ending the evening.</div>}
                 </div>
@@ -6402,6 +6450,20 @@ export default function ProfessorSim(){
                     </>);
                   })()}
 
+                  {/* Pantry share */}
+                  {pantryItems.length>0&&(
+                    <>
+                      <div style={{...C.secT,marginBottom:7}}>From your pantry</div>
+                      <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:12}}>
+                        {pantryItems.map(item=>(
+                          <button key={item.id} style={C.smBtn} onClick={()=>sharePantryItemAtDinner(item.id)}>
+                            {item.emoji} {item.label} ({inventory[item.id]})
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
+
                   {/* Conversation */}
                   <div style={{...C.secT,marginBottom:7}}>Conversation</div>
                   <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:12}}>
@@ -6431,7 +6493,7 @@ export default function ProfessorSim(){
                   </div>
 
                   <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
-                    <div style={{fontSize:11,color:"#f0a060",fontWeight:700,flex:1}}>+{dinnerEvent.totalGain} lbs total</div>
+                    <div style={{fontSize:11,color:"#f0a060",fontWeight:700,flex:1}}>{(dinnerEvent.totalGain||0).toLocaleString()} cal total</div>
                     {isAtCapacity&&(
                       <button style={C.btn("#2a6830")} onClick={endEvening}>End Evening ✓</button>
                     )}
@@ -6543,7 +6605,7 @@ export default function ProfessorSim(){
       {/* GROUP DINNER MODAL */}
       {groupDinnerEvent&&(()=>{
         const gev=groupDinnerEvent;
-        const venueList=[...availableVenues,...(hasSkill("dinner_accessible")&&gev.students.some(s=>getStage(s.lbs).id>=6)?[DINNER_VENUES.find(v=>v.id==="atelier")]:[])].filter(Boolean);
+        const venueList=[...availableVenues,...(hasSkill("dinner_accessible")&&gev.students.some(gs=>{const ls=students.find(st=>st.id===gs.id);return ls&&getStage(ls.lbs).id>=6;})?[DINNER_VENUES.find(v=>v.id==="atelier")]:[])].filter(Boolean);
         const allDishIds=gev.venue?.dishes.map(d=>d.id)||[];
         const allFed=gev.students.some(s=>allDishIds.every(id=>s.dishes.includes(id)));
         return(
@@ -6554,18 +6616,20 @@ export default function ProfessorSim(){
               {/* Per-girl fullness bars */}
               <div style={{display:"flex",gap:10,marginBottom:14,flexWrap:"wrap"}}>
                 {gev.students.map(gs=>{
-                  const rawP=Math.round((gs.fullness/gs.maxFullness)*100);
+                  const live=students.find(st=>st.id===gs.id);
+                  if(!live) return null;
+                  const rawP=getFullnessPercent(live);
                   const col=rawP>=130?"#801010":rawP>=100?"#c02020":rawP>=80?"#c08020":"#20a060";
                   return(
                     <div key={gs.id} style={{flex:1,minWidth:120}}>
                       <div style={{display:"flex",justifyContent:"space-between",fontSize:10,marginBottom:2}}>
-                        <span style={{color:"#c0a0e0",fontWeight:700}}>{gs.name.split(" ")[0]}</span>
+                        <span style={{color:"#c0a0e0",fontWeight:700}}>{live.name.split(" ")[0]}</span>
                         <span style={{color:col,fontWeight:700}}>{rawP}%{rawP>=100?" 🔴":rawP>=80?" 🟡":""}</span>
                       </div>
                       <div style={{background:"#0d0816",borderRadius:3,height:5}}>
                         <div style={{width:`${Math.min(100,rawP)}%`,height:"100%",background:col,borderRadius:3,transition:"width 0.4s"}}/>
                       </div>
-                      <div style={{fontSize:9,color:"#5a3060",marginTop:1}}>+{gs.totalGain} lbs · {gs.dishes.length} dishes</div>
+                      <div style={{fontSize:9,color:"#5a3060",marginTop:1}}>{(gs.totalGain||0).toLocaleString()} cal · {gs.dishes.length} dishes</div>
                     </div>
                   );
                 })}
@@ -6575,7 +6639,7 @@ export default function ProfessorSim(){
               {gev.phase==="venue"&&(
                 <div>
                   <div style={{fontSize:12,color:"#9070c0",marginBottom:10,fontStyle:"italic"}}>
-                    Where are you taking {gev.students.map(s=>s.name.split(" ")[0]).join(" & ")} tonight?
+                    Where are you taking {gev.students.map(gs=>students.find(st=>st.id===gs.id)?.name?.split(' ')[0]||'her').join(" & ")} tonight?
                   </div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:7,marginBottom:12}}>
                     {venueList.map(v=>(
@@ -6607,7 +6671,10 @@ export default function ProfessorSim(){
                       {gev.venue.dishes.map(dish=>{
                         const unfedGirls=gev.students.filter(s=>!s.dishes.includes(dish.id));
                         if(unfedGirls.length===0) return null;
-                        const isOver=gev.students.some(s=>s.fullness>s.maxFullness);
+                        const isOver=gev.students.some(gs=>{
+                          const ls=students.find(st=>st.id===gs.id);
+                          return ls&&getFullnessPercent(ls)>100;
+                        });
                         return(
                           <div key={dish.id} style={{...C.card,border:`1px solid ${isOver?"#502020":"#180830"}`}}>
                             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
@@ -6617,13 +6684,15 @@ export default function ProfessorSim(){
                             <div style={{fontSize:10,color:"#6a4870",marginBottom:6}}>{dish.desc}</div>
                             <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
                               {unfedGirls.map(gs=>{
-                                const gRaw=Math.round((gs.fullness/gs.maxFullness)*100);
+                                const live=students.find(st=>st.id===gs.id);
+                                const gRaw=live?getFullnessPercent(live):0;
                                 const overText=gRaw>=100?" (overfull!)":"";
+                                const firstName=live?.name?.split(" ")[0]||"her";
                                 return(
                                   <button key={gs.id}
                                     style={{...C.smBtn,borderColor:gRaw>=100?"#602020":"#4a1280",color:gRaw>=100?"#e08080":"#b080e8"}}
                                     onClick={()=>orderGroupDish(dish,gs.id)}>
-                                    Feed {gs.name.split(" ")[0]}{overText}
+                                    Feed {firstName}{overText}
                                   </button>
                                 );
                               })}
@@ -6652,7 +6721,7 @@ export default function ProfessorSim(){
                   {/* Log */}
                   <div style={{background:"rgba(20,5,35,0.8)",border:"1px solid #2a0848",borderRadius:8,padding:10,marginBottom:10,maxHeight:140,overflowY:"auto",display:"flex",flexDirection:"column",gap:3}}>
                     {groupDinnerLog.length===0
-                      ?<div style={{fontSize:12,color:"#5a3070",fontStyle:"italic"}}>{gev.students.map(s=>s.name.split(" ")[0]).join(" and ")} look at the menu.</div>
+                      ?<div style={{fontSize:12,color:"#5a3070",fontStyle:"italic"}}>{gev.students.map(gs=>students.find(st=>st.id===gs.id)?.name?.split(' ')[0]||'her').join(" and ")} look at the menu.</div>
                       :groupDinnerLog.map((line,i)=>(
                         <div key={i} style={{fontSize:12,color:line.startsWith("💬")?"#e8d0a8":line.startsWith("👀")?"#d8a8c8":line.startsWith("😵")?"#f06040":"#d0a860",lineHeight:1.6}}>
                           {line}
@@ -6906,7 +6975,7 @@ export default function ProfessorSim(){
       {/* ── SOCIAL EVENT RESULT ── */}
 
       {/* ── PRIVATE SESSION MODAL ── */}
-      {privateSession&&<PrivateSessionModal chooseSessionVenue={chooseSessionVenue} endPrivateSession={endPrivateSession} feedInSession={feedInSession} getMoreFood={getMoreFood} privateSession={privateSession} sessionLog={sessionLog} setAp={setAp} setPrivateSession={setPrivateSession} skillTapOutResistance={skillTapOutResistance} startIntimacyScene={startIntimacyScene} useSessionEncouragement={useSessionEncouragement}/>}
+      {privateSession&&<PrivateSessionModal chooseSessionVenue={chooseSessionVenue} endPrivateSession={endPrivateSession} feedInSession={feedInSession} getMoreFood={getMoreFood} privateSession={privateSession} sessionLog={sessionLog} setAp={setAp} setPrivateSession={setPrivateSession} skillTapOutResistance={skillTapOutResistance} startIntimacyScene={startIntimacyScene} useSessionEncouragement={useSessionEncouragement} liveStudent={students.find(st=>st.id===privateSession.student.id)||privateSession.student}/>}
 
       {/* ── EP5: INTIMACY SCENE SELECTOR ── */}
       {intimacySceneSelector&&<IntimacySceneSelector ap={ap} intimacySceneSelector={intimacySceneSelector} setIntimacySceneSelector={setIntimacySceneSelector} startIntimacyScene={startIntimacyScene}/>}
