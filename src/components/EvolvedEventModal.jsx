@@ -1,8 +1,8 @@
 import { C } from '../styles.js';
 import { EVOLVED_EVENTS, EVOLVED_FORM_META, HOMEROOM_SUSPICION_DELTAS } from '../gameData/evolvedForms.js';
 
-export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPartnerId, evolvedEventState, makeEvolvedEventChoice, push, setChallengeState, setDeliveryState, setEvolvedEventState, setPresentationState, startCollabStream, startEatingContest, startFairDay, startRankedSession, startSumoMatch, startStream, students }){
-        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairDay,startsSession,startsPresentation,startsDelivery,startsChallenge}=evolvedEventState;
+export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPartnerId, evolvedEventState, makeEvolvedEventChoice, openSalonHub, openGalleryHub, push, setChallengeState, setDeliveryState, setEvolvedEventState, setPresentationState, startCollabStream, startEatingContest, startFairDay, startRankedSession, startSumoMatch, startStream, students }){
+        const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairDay,startsSession,startsPresentation,startsDelivery,startsChallenge,startsSalon,startsGallery}=evolvedEventState;
         const s=students.find(st=>st.id===studentId);
         const evDef=EVOLVED_EVENTS[formId]?.[stageIdx];
         if(!s||!evDef) return null;
@@ -82,7 +82,7 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
                   })}
                 </div>
               )}
-              {done&&!startsContest&&!startsMatch&&!startsStream&&!startsFairDay&&!startsSession&&!startsPresentation&&!startsDelivery&&!startsChallenge&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
+              {done&&!startsContest&&!startsMatch&&!startsStream&&!startsFairDay&&!startsSession&&!startsPresentation&&!startsDelivery&&!startsChallenge&&!startsSalon&&!startsGallery&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
               {done&&startsContest&&<button style={{...C.btn("#1a6030"),width:"100%",marginTop:4}} onClick={()=>startEatingContest(studentId,stageIdx,history)}>🍽️ Step to the Table</button>}
               {done&&startsMatch&&<button style={{...C.btn("#7a2018"),width:"100%",marginTop:4}} onClick={()=>startSumoMatch(studentId,stageIdx,history)}>🥋 Step Onto the Dohyo</button>}
               {done&&startsStream&&formId==='eating_streamer'&&<button style={{...C.btn("#a02030"),width:"100%",marginTop:4}} onClick={()=>{setEvolvedEventState(null);if(s)startStream(s);}}>📡 Go Live — Challenge Mode</button>}
@@ -92,6 +92,8 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
               {done&&startsPresentation&&<button style={{...C.btn("#2c5f8a"),width:"100%",marginTop:4}} onClick={()=>{setPresentationState({studentId,stageIdx});setEvolvedEventState(null);}}>📊 Begin the Defense</button>}
               {done&&startsDelivery&&<button style={{...C.btn("#4a6a4a"),width:"100%",marginTop:4}} onClick={()=>{setDeliveryState({studentId,stageIdx});setEvolvedEventState(null);}}>🍜 Place the Order</button>}
               {done&&startsChallenge&&<button style={{...C.btn("#7a4a1a"),width:"100%",marginTop:4}} onClick={()=>{setChallengeState({studentId,stageIdx});setEvolvedEventState(null);}}>🍺 Take the Challenge</button>}
+              {done&&startsSalon&&<button style={{...C.btn("#8b2942"),width:"100%",marginTop:4}} onClick={()=>{setEvolvedEventState(null);openSalonHub(studentId);}}>🥂 Open the Salon</button>}
+              {done&&startsGallery&&<button style={{...C.btn("#c47a2a"),width:"100%",marginTop:4}} onClick={()=>{setEvolvedEventState(null);openGalleryHub(studentId);}}>🖼 Open the Gallery</button>}
             </div>
           </div>
         );

@@ -9,6 +9,8 @@ export function HungerInterruptModal({
   onCompound,
   onDeny,
   onTalk,
+  onEchoedWill,
+  echoedWillAvailable = false,
 }) {
   const s = student;
   const hasCompounds = (pharmacistState?.unlockedCompounds || []).some(
@@ -28,6 +30,11 @@ export function HungerInterruptModal({
             <button type="button" style={{ ...C.btn("#2a5070"), width: "100%" }} onClick={onCompound}>Give her a compound (in food)</button>
           )}
           <button type="button" style={{ ...C.btn("#3a3060"), width: "100%" }} onClick={onTalk}>Talk to her / calm her down</button>
+          {echoedWillAvailable && onEchoedWill && (
+            <button type="button" style={{ ...C.btn("#2a4060"), width: "100%" }} onClick={onEchoedWill}>
+              🔁 Echoed Will — reverse hunger curse (backlash scrutiny)
+            </button>
+          )}
           <button type="button" style={{ ...C.btn("#502030"), width: "100%" }} onClick={onDeny}>Turn her away</button>
         </div>
       </div>

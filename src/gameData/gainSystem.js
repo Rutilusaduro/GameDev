@@ -97,6 +97,38 @@ export const digestStudent = (s, rng = Math.random) => {
   };
 };
 
+// NPC / board-member digestion — shallow pipeline for AIB members (§30, §36 opposition lab)
+export const NPC_GAIN_CONFIG = {
+  maxLbs: 350,
+  baseCapacity: 80,
+  calsPerLb: GAIN_CONFIG.calsPerLb,
+};
+
+export function feedNpcCalories(npc, cals, fullness = 0) {
+  const cap = npc.stomachCapacity || NPC_GAIN_CONFIG.baseCapacity;
+  return {
+    ...npc,
+    stomachCapacity: cap,
+    consumedCalories: (npc.consumedCalories || 0) + cals,
+    fullness: Math.min((npc.fullness || 0) + fullness, cap * 1.4),
+  };
+}
+
+export function digestNpc(npc, rng = Math.random) {
+  const surplus = npc.consumedCalories || 0;
+  const lbsGained = surplus > 0 ? Math.max(0, Math.round(calsToLbs(surplus))) : 0;
+  const startLbs = npc.weightLbs ?? 140;
+  const newLbs = Math.min(NPC_GAIN_CONFIG.maxLbs, startLbs + lbsGained);
+  const cap = npc.stomachCapacity || NPC_GAIN_CONFIG.baseCapacity;
+  const stuffed = (npc.fullness || 0) > cap;
+  return {
+    weightLbs: newLbs,
+    lbsGained,
+    stuffed,
+    reset: { fullness: 0, consumedCalories: 0 },
+  };
+}
+
 // Capacity growth from this week's confirmed weight gain.
 // Stage-up: +30 and the 50-lb chunk progress resets.
 // Otherwise: +15 per full 50 lbs of accumulated gain.

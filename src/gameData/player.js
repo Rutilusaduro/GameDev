@@ -22,6 +22,8 @@ export function createInitialPlayer(overrides = {}) {
     ap: 5,
     week: 1,
     ownedSkills: {},
+    ownedClassSkills: {},
+    facultyAffinity: {},
     professorProfile: null,
     adminScrutiny: 0,
     globalStats: { narrativeCount: 0 },

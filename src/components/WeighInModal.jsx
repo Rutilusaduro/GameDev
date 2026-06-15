@@ -158,7 +158,7 @@ function DigitalScale({lbs}){
 
 
 export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,week,campusFattening=false,campusTier=0}){
-  const weighInOpts = { campusFattening: !!campusFattening, campusTier: campusTier || (campusFattening ? 1 : 0), week: week || 1 };
+  const weighInOpts = { campusFattening: !!campusFattening, campusTier: campusTier || (campusFattening ? 1 : 0), week: week || 1, aibMandatory: !!weighInState?.aibMandatory };
   if(!weighInState) return null;
   const {student,phase,reactionText}=weighInState;
   if(!student) return null;
@@ -178,7 +178,7 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
   // useMemo: phase texts are RNG-composed — keep them stable across re-renders
   const introText=useMemo(
     ()=>renderWeighInIntro(student,week||1,goesDirectlyToBig,weighInOpts),
-    [student.id,goesDirectlyToBig]
+    [student.id,goesDirectlyToBig,weighInState?.aibMandatory]
   );
   const breakText=useMemo(
     ()=>phase==="break"?renderWeighInBreak(student,week||1,weighInOpts):"",

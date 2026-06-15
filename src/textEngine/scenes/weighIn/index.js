@@ -25,6 +25,7 @@ function weighInCtx(student, week, opts = {}) {
       campusFattening: !!opts.campusFattening,
       campusTier: opts.campusTier || (opts.campusFattening ? 1 : 0),
       bigScale: !!opts.bigScale,
+      aibMandatory: !!opts.aibMandatory,
     },
   });
 }
@@ -34,6 +35,11 @@ function weighInCtx(student, week, opts = {}) {
 // Intro scene: arrival + settle + scale approach.
 export function renderWeighInIntro(student, week, goesDirectlyToBig = false, opts = {}) {
   const ctx = weighInCtx(student, week, { ...opts, bigScale: goesDirectlyToBig });
+  if (opts.aibMandatory) {
+    const mandate = render('{wi.aibMandatory}', ctx, { trace: opts.trace });
+    const arrival = render(goesDirectlyToBig ? WI_INTRO_BIG : WI_INTRO, ctx, { trace: opts.trace });
+    return `${mandate}\n\n${arrival}`;
+  }
   return render(goesDirectlyToBig ? WI_INTRO_BIG : WI_INTRO, ctx, { trace: opts.trace });
 }
 

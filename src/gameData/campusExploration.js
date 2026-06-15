@@ -7,7 +7,7 @@ import { CAMPUS_SOFT_FLAVOR } from './pharmacistCampus.js';
 import { availableSecretsAtNode, isSecretSolved, secretsSolvedCount } from './campusSecrets.js';
 import { getExplorationFind, pickExplorationFind, travelFindPool, formatExplorationGrant } from './campusIngredients.js';
 import { ELARA_ID, getElaraQuest, elaraQuestProgressLine } from './relicHunter.js';
-import '../textEngine/scenes/campusExplorationText.js';
+import { rollVanceCampusEvent, rollPortionSaintEvent, rollAccreditationObserverEvent, rollAsceticGardenProtest, rollMirrorFastEvent, rollLedgerWightEvent } from './oppositionCampus.js';
 import { renderCampusSighting, renderCampusTravelLine, renderCampusFindFlavor } from '../textEngine/scenes/campusExplorationText.js';
 import { maybeRollDeviceEncounter, maybeRollDeviceFlavor } from './campusDeviceEncounters.js';
 
@@ -78,6 +78,8 @@ export function buildExplorationContext({
   exploration,
   labState = null,
   deviceInventory = null,
+  asceticCircle = false,
+  opposition = null,
 }) {
   const campusTier = getCampusNarrativeTier(pharmacistState);
   const avgLbs = students.length
@@ -96,6 +98,8 @@ export function buildExplorationContext({
     exploration,
     labState,
     deviceInventory,
+    asceticCircle,
+    opposition,
   };
 }
 
@@ -115,6 +119,40 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
 
   if (ctx.campusFattening && rng() < 0.35) {
     lines.push(`🌿 ${pick(rng, CAMPUS_SOFT_FLAVOR)}`);
+  }
+
+  if (ctx.asceticCircle && rng() < 0.28) {
+    const protests = [
+      '🕯️ Ascetic Circle vigil at the crosswalk — shame pamphlets flutter against dining hall flyers.',
+      '🕯️ Ascetic protesters chant outside the union. A few students pocket the pamphlets anyway.',
+      '🕯️ The garden hosts an abstinence rally. Someone orders delivery mid-sermon.',
+    ];
+    lines.push(pick(rng, protests));
+    effects.asceticShame = true;
+  }
+
+  const vanceLine = rollVanceCampusEvent(nodeId, ctx.opposition, rng);
+  if (vanceLine) lines.push(vanceLine);
+
+  const observerLine = rollAccreditationObserverEvent(nodeId, ctx.opposition, rng);
+  if (observerLine) lines.push(observerLine);
+
+  const gardenProtest = rollAsceticGardenProtest(nodeId, ctx.opposition, rng);
+  if (gardenProtest) {
+    lines.push(gardenProtest);
+    effects.asceticGardenProtest = true;
+  }
+
+  const mirrorLine = rollMirrorFastEvent(nodeId, ctx.opposition, rng);
+  if (mirrorLine) lines.push(mirrorLine);
+
+  const ledgerLine = rollLedgerWightEvent(nodeId, ctx.opposition, rng);
+  if (ledgerLine) lines.push(ledgerLine);
+
+  const saintLine = rollPortionSaintEvent(nodeId, ctx.opposition, ctx.lilithUnlocked, rng);
+  if (saintLine) {
+    lines.push(saintLine);
+    effects.portionSaintSpotted = true;
   }
 
   if (rng() < 0.28) {

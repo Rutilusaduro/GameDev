@@ -472,6 +472,20 @@ export const EVOLVED_SKILL_TREES = {
     { id:"fs_cited",      tier:4, label:"Cited Research",     cost:110, desc:"Scrutiny -4/week. Prestigious citations change the conversation.",           weeklyScrutinyReduce:4 },
     { id:"fs_keynote",    tier:5, label:"Keynote",            cost:160, desc:"+2 passive, +5 rel/activity, scrutiny -4/week. The experiment is complete.", passiveBonus:2, activityRelBonus:5, weeklyScrutinyReduce:4 },
   ],
+  artisan_gallery:[
+    { id:"ag_eye",        tier:1, label:"Documentarian's Eye", cost:20, desc:"+4 relationship per gallery activity.",                                        activityRelBonus:4 },
+    { id:"ag_consent",    tier:2, label:"Consent as Composition", cost:40, desc:"Scrutiny -2/week. Release forms are art.",                                weeklyScrutinyReduce:2 },
+    { id:"ag_shared",     tier:3, label:"Shared Table",       cost:70, desc:"+3 lbs for Fiona per studio session.",                                       activityGainBonus:3 },
+    { id:"ag_living",     tier:4, label:"Living Installation", cost:110, desc:"Exhibitions +50% patrons.",                                                 activityGainBonus:5 },
+    { id:"ag_archive",    tier:5, label:"Abundance Archive",  cost:160, desc:"+2 passive, scrutiny -2/wk, +1 subject slot.",                               passiveBonus:2, weeklyScrutinyReduce:2 },
+  ],
+  salon_appetit:[
+    { id:"sa_grace",      tier:1, label:"Hostess Grâce",      cost:20, desc:"+5 relationship per salon evening.",                                         activityRelBonus:5 },
+    { id:"sa_menu",       tier:2, label:"Menu Magnifique",    cost:40, desc:"Salon evenings +4 extra lbs.",                                               activityGainBonus:4 },
+    { id:"sa_invite",     tier:3, label:"Invité Spécial",     cost:70, desc:"Scrutiny -2/week. Faculty dine with discretion.",                            weeklyScrutinyReduce:2 },
+    { id:"sa_double",     tier:4, label:"Double Service",     cost:110, desc:"+6 lbs per salon evening.",                                                 activityGainBonus:6 },
+    { id:"sa_reine",      tier:5, label:"Reine du Salon",     cost:160, desc:"+2 passive, scrutiny -2/wk, +6 rel/activity.",                              passiveBonus:2, activityRelBonus:6, weeklyScrutinyReduce:2 },
+  ],
   installation_artist:[
     { id:"ia_first",      tier:1, label:"First Installation", cost:20, desc:"+4 relationship per activity viewing.",                                       activityRelBonus:4 },
     { id:"ia_gallery",    tier:2, label:"Gallery Interest",   cost:40, desc:"Scrutiny -2/week. Art legitimizes everything.",                               weeklyScrutinyReduce:2 },
