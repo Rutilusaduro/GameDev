@@ -1606,4 +1606,107 @@ Remove: `campus_legend` offer, events, diary, skills, journalist arc (journalist
 
 ---
 
-*Document generated from codebase audit on branch `Primary`. Oppositional forces design added branch `cursor/oppositional-forces-design-935f`. Session transcripts: `docs/OPPOSITIONAL_FORCES_DESIGN_SESSION.md`, `docs/FIONA_CHLOE_EVOLUTION_DESIGN_SESSION.md`. Implementation depth: `docs/DEPTH_PLAN.md`.*
+## 36. Debug, Field Notes & Bug Reporting
+
+### 36.1 Design intent
+
+Professor Sim is a systems-heavy simulation — soft-locks, modal stack bugs, and opposition edge cases are inevitable at scale. §36 defines a **two-tier diagnostics layer**:
+
+| Tier | Name | Audience | Purpose |
+|------|------|----------|---------|
+| **Field Notes** | Player bug reporter | Everyone | Capture reproducible state without cheats |
+| **Debug Console** | Developer panel | Dev / `import.meta.env.DEV` | State surgery, text sweeps, opposition lab |
+
+**Goals:** (1) Every player report includes enough context to debug from JSON alone. (2) Writers keep Dialogue Lab for prose. (3) Opposition/AIB bugs are triggerable without 20-week playthroughs. (4) No silent telemetry — export is opt-in copy/download only.
+
+### 36.2 Field Notes — player flow
+
+**Access:** Log tab footer · error-boundary fallback screen · optional main-menu link.
+
+**Flow:**
+
+```
+Category → Steps to reproduce (optional) → Auto snapshot → Copy / Download
+```
+
+**Categories (flavored):**
+
+| ID | Label | Use when |
+|----|-------|----------|
+| `stuck` | Stuck / can't continue | Soft-lock, AP won't spend, week won't advance |
+| `blank` | Blank or frozen screen | Modal empty, white overlay |
+| `numbers` | Numbers look wrong | Lbs, scrutiny, money, meters |
+| `story` | Story or text broke | `{unresolved}`, wrong scene, missing button |
+| `other` | Something else | Catch-all |
+
+**In-world voice:** *"Something didn't taste right. Leave a note for the archivist."*
+
+### 36.3 Snapshot schema (v1)
+
+Exported JSON (`schemaVersion: 1`):
+
+| Block | Contents |
+|-------|----------|
+| `gameVersion` | From `package.json` |
+| `exportedAt` | ISO timestamp |
+| `environment` | `userAgent`, viewport, `dev` flag |
+| `session` | `week`, `ap`, `money`, `adminScrutiny`, active `view` |
+| `students[]` | Trimmed: `id`, `name`, `lbs`, `evolvedForm`, `supernaturalForm`, `hidden`, key flags |
+| `opposition` | Full `game.opposition` slice (§29.3) |
+| `ui` | `activeModals[]`, `eventQueueLen`, `lastPlayerAction` |
+| `logTail` | Last 40 log lines |
+| `errors[]` | Ring buffer from global handlers (max 20) |
+| `playerNote` | `{ category, steps }` |
+
+**Privacy:** No account data; single-player local state only. Optional Phase 2 save-slot attach.
+
+### 36.4 Error capture
+
+| Source | Handler |
+|--------|---------|
+| React render crash | `GameErrorBoundary` → Field Notes offer |
+| Uncaught JS | `window.onerror` → ring buffer |
+| Unhandled promise | `unhandledrejection` → ring buffer |
+
+Boundary copy: *"The semester hiccuped. Your progress is still here."*
+
+### 36.5 Debug Console extensions
+
+Existing `DebugPanel.jsx` sections retained. **New tabs:**
+
+**Opposition Lab**
+
+| Control | Effect |
+|---------|--------|
+| Scandal meter slider | Set `aib.scandalMeter` |
+| Queue removal hearing | Pick student → `pendingHearing` |
+| Fire Supernatural Act | `supernatural.actTriggered` (confirm) |
+| Compromise member | Set stance `compromised` |
+| Clear agenda queue | Reset `agendaQueue` |
+| +10 scrutiny | Quick escalation |
+
+**Field Notes (dev)** — preview live snapshot, test export pipeline.
+
+**Dialogue Lab** — unchanged; text sweeps per `TUNING.md`.
+
+### 36.6 `lastPlayerAction`
+
+ProfessorSim maintains a single string updated on meaningful player actions (`advanceWeek`, `doClass`, opposition counters, evolution picks, hearing choices). Included in every snapshot so reports cluster by action type.
+
+### 36.7 Implementation phases
+
+| Phase | Scope | Status |
+|-------|-------|--------|
+| **1** | Ring buffer, boundary, Field Notes modal, snapshot export, opposition debug tab, log footer | Target |
+| **2** | Save attach, GitHub issue template, textLint hash in DEV | Backlog |
+| **3** | Screenshot hook, Playwright repro from snapshot | Stretch |
+
+### 36.8 Cross-references
+
+- Text coverage: §23, `src/textEngine/TUNING.md`, Dialogue Lab in Debug  
+- Opposition repro: §30 hearings, §33 supernatural — use Opposition Lab  
+- Session transcript: `docs/DEBUG_BUG_REPORTING_DESIGN_SESSION.md`
+
+---
+
+*Document generated from codebase audit on branch `Primary`. Oppositional forces design added branch `cursor/oppositional-forces-design-935f`. Session transcripts: `docs/OPPOSITIONAL_FORCES_DESIGN_SESSION.md`, `docs/FIONA_CHLOE_EVOLUTION_DESIGN_SESSION.md`, `docs/DEBUG_BUG_REPORTING_DESIGN_SESSION.md`. Implementation depth: `docs/DEPTH_PLAN.md`.*

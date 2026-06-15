@@ -209,6 +209,8 @@ import {
 import { WeighInModal } from './components/WeighInModal.jsx';
 import { TalkModal } from './components/TalkModal.jsx';
 import { DebugPanel } from './components/DebugPanel.jsx';
+import { BugReportModal } from './components/BugReportModal.jsx';
+import { tickScarcityBanishment, checkOppositionEndgame } from './gameData/oppositionEndgame.js';
 import { EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
 import { C } from './styles.js';
@@ -262,6 +264,9 @@ export default function ProfessorSim(){
   // immobileRedirect: { student, text } | null
   const [debugOpen,setDebugOpen]=useState(false);
   const [debugInputs,setDebugInputs]=useState({});
+  const [bugReportOpen,setBugReportOpen]=useState(false);
+  const [fieldNoteError,setFieldNoteError]=useState(null);
+  const [lastPlayerAction,setLastPlayerAction]=useState(null);
   // debugInputs: { [studentId]: { lbs:string, path:string, stage:number, rel:number } }
   const [classSession,setClassSession]=useState(null);
   const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
@@ -417,6 +422,15 @@ export default function ProfessorSim(){
 
   useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
 
+  useEffect(()=>{
+    const handler=(ev)=>{
+      setFieldNoteError(ev.detail?.error||null);
+      setBugReportOpen(true);
+    };
+    window.addEventListener('profSim:openFieldNotes',handler);
+    return ()=>window.removeEventListener('profSim:openFieldNotes',handler);
+  },[]);
+
   // Tier-up detection
   useEffect(()=>{
     if(!professorProfile) return;
@@ -451,6 +465,12 @@ export default function ProfessorSim(){
     }
   },[students,globalStats]);
 
+  useEffect(()=>{
+    const end=checkOppositionEndgame(opposition,students);
+    if(end.scarcityBanished) setGlobalStats(g=>g.scarcityBanished?g:{...g,scarcityBanished:true});
+    if(end.institutionalCapture) setGlobalStats(g=>g.institutionalCapture?g:{...g,institutionalCapture:true});
+  },[opposition,students]);
+
   // Process event queue — hold events until class session is done
   useEffect(()=>{
     if(eventQueue.length>0 && !activeEvent && !classSession){
@@ -462,6 +482,29 @@ export default function ProfessorSim(){
   // (auto-end dinner removed — endings now handled by overfill check or manual "End Evening")
 
   const push=useCallback((msg)=>setLog(prev=>[...prev,msg]),[]);
+
+  const trackAction=useCallback((label)=>setLastPlayerAction(label),[]);
+
+  const getActiveModals=useCallback(()=>{
+    const open=[];
+    if(hearingState) open.push('hearing');
+    if(supernaturalModalOpen) open.push('supernatural');
+    if(salonOpen) open.push('salon');
+    if(galleryOpen) open.push('gallery');
+    if(evolvedEventState) open.push('evolvedEvent');
+    if(debugOpen) open.push('debug');
+    if(bugReportOpen) open.push('fieldNotes');
+    return open;
+  },[hearingState,supernaturalModalOpen,salonOpen,galleryOpen,evolvedEventState,debugOpen,bugReportOpen]);
+
+  const getSnapshotContext=useCallback(()=>({
+    week, ap, money, adminScrutiny, students, opposition, view, log,
+    lastPlayerAction,
+    activeModals: getActiveModals(),
+    eventQueueLen: eventQueue.length,
+    campusState,
+    pharmacistState,
+  }),[week,ap,money,adminScrutiny,students,opposition,view,log,lastPlayerAction,getActiveModals,eventQueue.length,campusState,pharmacistState]);
 
   /** Spend player funds. Returns false if insufficient (logs a warning). */
   const spendMoney=(cost,label="")=>{
@@ -972,6 +1015,7 @@ export default function ProfessorSim(){
   };
 
   const advanceWeek=()=>{
+    trackAction('advanceWeek');
     const hungerEff=aggregateSkillEffects(ownedSkills);
     if(!skipHungerCheckRef.current){
       const inter=pickInterruptStudent(students,hungerEff,weeklyArms);
@@ -1290,6 +1334,7 @@ export default function ProfessorSim(){
     const superTick=tickSupernaturalWeek(nextOpposition,updated);
     nextOpposition=superTick.opposition;
     updated=applyOppositionStudentPatches(updated,superTick.studentPatches);
+    nextOpposition=tickScarcityBanishment(nextOpposition,updated);
     if(oppResult.pendingDeviceConfiscation){
       const equipped=updated.find(st=>st.equip&&Object.values(st.equip).some(Boolean));
       if(equipped){
@@ -1391,6 +1436,7 @@ export default function ProfessorSim(){
   };
 
   const chooseEvolution=(studentId,formId)=>{
+    trackAction(`evolution:${formId}`);
     const s=students.find(st=>st.id===studentId);
     if(formId==='eating_streamer'){
       setStudents(prev=>prev.map(st=>{
@@ -1774,6 +1820,7 @@ export default function ProfessorSim(){
 
   // ── OPPOSITION / AIB ─────────────────────────────────────────────
   const runOppositionCounter=(counterId,options={})=>{
+    trackAction(`counter:${counterId}`);
     const memberId=options.memberId
       ?? (counterId==='bureaucratic_capture' ? opposition?.aib?.members?.find(m=>m.resolve<=40)?.id : null);
     const result=runAibCounter(opposition,counterId,memberId,options);
@@ -1804,6 +1851,7 @@ export default function ProfessorSim(){
   };
 
   const makeHearingChoice=(choiceId)=>{
+    trackAction(`hearing:${choiceId}`);
     setHearingState(prev=>{
       if(!prev||prev.done) return prev;
       const def=prev.type==='emergency'?EMERGENCY_HEARING:REMOVAL_HEARING;
@@ -5116,6 +5164,7 @@ export default function ProfessorSim(){
   };
 
   const doClass=(action)=>{
+    trackAction(`doClass:${action.id}`);
     if(ap<action.cost){push("⚠️ Not enough AP!");return;}
     if(action.id==='refeast_ritual'&&!opposition?.supernatural?.actTriggered){
       push('⚠️ Refeast Ritual requires the Supernatural Act.');
@@ -6526,6 +6575,10 @@ export default function ProfessorSim(){
           <div ref={logRef} style={{flex:1, overflow:"auto"}}>
             {log.map((e,i)=><div key={i} style={C.logE}>{e}</div>)}
           </div>
+          <button type="button" onClick={()=>{ setFieldNoteError(null); setBugReportOpen(true); }}
+            style={{...C.btn('#3a3028'), fontSize:9, marginTop:8, flexShrink:0, opacity:0.85}}>
+            📋 Something wrong? Field Notes
+          </button>
         </div>
       </div>
 
@@ -6601,7 +6654,9 @@ export default function ProfessorSim(){
       {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students}/>}
 
       {/* ── DEBUG PANEL ── */}
-      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students}/>}
+      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} money={money} view={view} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length}/>}
+
+      {bugReportOpen&&<BugReportModal getSnapshotContext={getSnapshotContext} prefillError={fieldNoteError} onClose={()=>{ setBugReportOpen(false); setFieldNoteError(null); }}/>}
 
       {/* ── TAP-OUT POPUP ── */}
       {tapOutPopup&&<TapOutPopup setTapOutPopup={setTapOutPopup} tapOutPopup={tapOutPopup}/>}

@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { getStage } from './stages.js';
+import { digestNpc } from './gainSystem.js';
 
 export const AIB_MEMBERS = [
   { id: 'vance', name: 'Dr. Helena Vance', role: 'Chair, Dean of Student Life', resolve: 85, corruption: 0, weightLbs: 145, stance: 'hostile' },
@@ -272,10 +273,23 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
     const scandalRoll = Math.random();
     next.aib.members = next.aib.members.map((m) => {
       if (m.id !== memberId) return m;
-      const newLbs = m.weightLbs + rndRange(8, 14);
+      const cals = rndRange(28000, 42000);
+      const fed = {
+        ...m,
+        stomachCapacity: m.stomachCapacity || 80,
+        consumedCalories: (m.consumedCalories || 0) + cals,
+        fullness: Math.min((m.fullness || 0) + 30, 110),
+      };
+      const dig = digestNpc(fed);
       const newResolve = Math.max(0, m.resolve - counter.resolveHit);
       const newStance = newResolve < 40 && m.stance === 'hostile' ? 'wavering' : m.stance;
-      return { ...m, weightLbs: newLbs, resolve: newResolve, stance: newStance };
+      return {
+        ...fed,
+        weightLbs: dig.weightLbs,
+        resolve: newResolve,
+        stance: newStance,
+        ...dig.reset,
+      };
     });
     if (scandalRoll > 0.55) {
       next.aib.scandalMeter = Math.min(100, next.aib.scandalMeter + 15);
@@ -402,16 +416,21 @@ export function processOppositionWeek(opposition, { week, scrutiny, students, rn
 
   scrutinyDelta += getAibScrutinyMod(next);
 
-  // Member resolve softens when heavy; wavering transition
+  // Member resolve softens when heavy; digest chamber calories; wavering transition
   next = {
     ...next,
     aib: {
       ...next.aib,
       members: next.aib.members.map((m) => {
-        let resolve = m.weightLbs >= 195 ? Math.max(0, m.resolve - 3) : m.resolve;
-        let stance = m.stance;
+        let member = m;
+        if (member.consumedCalories > 0) {
+          const dig = digestNpc(member);
+          member = { ...member, weightLbs: dig.weightLbs, ...dig.reset };
+        }
+        let resolve = member.weightLbs >= 195 ? Math.max(0, member.resolve - 3) : member.resolve;
+        let stance = member.stance;
         if (resolve < 40 && stance === 'hostile') stance = 'wavering';
-        return { ...m, resolve, stance };
+        return { ...member, resolve, stance };
       }),
     },
   };

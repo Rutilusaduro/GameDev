@@ -857,4 +857,6 @@ export const ACHIEVEMENT_LIST = [
   { id:"hearing_won",   label:"⚖️ Hearing Denied",      desc:"Win a removal or emergency hearing.",                       check:(sts,g)=>(g.oppositionHearingsWon||0)>=1 },
   { id:"board_capture", label:"📎 Institutional Capture",desc:"Compromise three board members.",                          check:(sts,g)=>(g.boardCompromised||0)>=3 },
   { id:"supernatural",  label:"👻 Thin Hunger",          desc:"Trigger the Supernatural Act.",                            check:(sts,g)=>!!g.supernaturalAct },
+  { id:"scarcity_banished", label:"🕯️ Scarcity Banished", desc:"Reduce scarcity pressure to zero after the Act.",         check:(sts,g)=>!!g.scarcityBanished },
+  { id:"institutional_capture", label:"🏛️ Institutional Capture", desc:"Compromise the full Board.",                    check:(sts,g)=>!!g.institutionalCapture },
 ];
