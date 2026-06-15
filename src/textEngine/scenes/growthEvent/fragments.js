@@ -12,10 +12,14 @@ registerPool('ge.onset', [
     '{ge.causeAction}{ge.causeAnchor} — {ge.firstSensation}, then something goes wrong.',
     'It starts as planned{ge.causeAnchor}: {ge.firstSensation}, until the rig stutters.',
   ] },
+  { when: { featureId: 'digest_stageup' }, weight: 4, text: [
+    '{subject.name} {ge.digestOnsetLine}.',
+    '{ge.causeAction}{ge.causeAnchor} — {ge.firstSensation}.',
+    'The change begins{ge.causeAnchor}: {ge.firstSensation}.',
+  ] },
   { when: {}, text: [
     '{ge.causeAction}{ge.causeAnchor} — {ge.firstSensation}.',
     'The change begins{ge.causeAnchor}: {ge.firstSensation}.',
-    '{subject.name} {ge.firstSensation}{ge.causeAnchor} as {ge.causeAction}.',
   ] },
 ]);
 
@@ -138,7 +142,22 @@ registerPool('ge.causeAnchor', [
     ' as {subject.name} stands in Talia\'s lab',
     ' while {subject.name} waits inside the lab',
   ] },
-  { when: {}, text: ['', ' with {subject.name} on campus', ' where {subject.name} stands'] },
+  { when: { featureId: 'digest_stageup' }, weight: 4, text: [
+    '',
+    ' after a week of steady eating',
+    ' without fanfare',
+  ] },
+  { when: {}, text: ['', ' with {subject.name} on campus', ' on campus'] },
+]);
+
+// VERB PHRASE — digest onset line (subject.name + this slot = full sentence)
+registerPool('ge.digestOnsetLine', [
+  { when: { featureId: 'digest_stageup' }, text: [
+    'feels the week\'s meals finally becoming visible curve',
+    'registers weight the scale has been hinting at all week',
+    'feels her body quietly tip past a familiar line',
+  ] },
+  { when: {}, text: ['feels the weight settle in'] },
 ]);
 
 // PARTICIPLE CLAUSE — first sensation keyed on sensation × growthIntensity
@@ -198,7 +217,7 @@ registerPool('ge.firstSensation', [
   { when: { featureId: 'digest_stageup' }, weight: 4, text: [
     'feeling the week\'s meals finally become visible curve',
     'registering weight the scale has been hinting at all week',
-    'her body quietly tipping past a familiar line',
+    'body quietly tipping past a familiar line',
   ] },
   { when: { sensation: 'craving' }, text: [
     'gnawing emptiness under every swallow',
