@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL } from './gameData/intimacy.js';
-import { WAITER_DESC, DINNER_ENDING_TEXT, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, UNBUTTON_LINES, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
+import { WAITER_DESC, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, UNBUTTON_LINES, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS } from './gameData/classEvents.js';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
@@ -59,7 +59,10 @@ import { renderHungerOutcome } from './textEngine/scenes/hungerInterrupt.js';
 import './textEngine/scenes/hungerInterrupt.js';
 import './textEngine/scenes/hungerLexicon.js';
 import './textEngine/scenes/hungerInterruptPersonal.js';
-import './textEngine/scenes/jealousyReaction.js';
+import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
+import { renderDinnerEnding } from './textEngine/scenes/dinner/endingScene.js';
+import './textEngine/scenes/dinner/endingScene.js';
+import './textEngine/scenes/opposition/endgameBeat.js';
 import './textEngine/scenes/corruptionVoice.js';
 import {
   aggregateSkillEffects, computeSpentSkillPoints, isTreeTierUnlocked, tickPhysicalTraits,
@@ -194,6 +197,7 @@ import { ArtisanGalleryModal } from './components/ArtisanGalleryModal.jsx';
 import { OversightView } from './views/OversightView.jsx';
 import { SupernaturalAscensionModal } from './components/SupernaturalAscensionModal.jsx';
 import { OppositionHearingModal } from './components/OppositionHearingModal.jsx';
+import { OppositionEndgameModal } from './components/OppositionEndgameModal.jsx';
 import { pickHearingEnding, REMOVAL_HEARING, EMERGENCY_HEARING } from './gameData/oppositionHearings.js';
 import {
   defaultOppositionState, processOppositionWeek, runAibCounter, checkSupernaturalTrigger,
@@ -201,7 +205,7 @@ import {
 } from './gameData/opposition.js';
 import { supernaturalActLine } from './gameData/oppositionText.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason } from './gameData/oppositionIntegration.js';
-import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled } from './gameData/oppositionCampus.js';
+import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
 import {
   getSessionCapacityCap,
@@ -285,6 +289,7 @@ export default function ProfessorSim(){
   const [groupDinnerEvent,setGroupDinnerEvent]=useState(null);
   const [groupDinnerLog,setGroupDinnerLog]=useState([]);
   const [dinnerEndPopup,setDinnerEndPopup]=useState(null);
+  const [endgameQueue,setEndgameQueue]=useState([]);
   const [groupDinnerPicker,setGroupDinnerPicker]=useState(null);
   // groupDinnerPicker: { count:2|3, selected:[] }
   const [immobileRedirect,setImmobileRedirect]=useState(null);
@@ -492,19 +497,37 @@ export default function ProfessorSim(){
 
   useEffect(()=>{
     const end=checkOppositionEndgame(opposition,students);
-    if(end.scarcityBanished) setGlobalStats(g=>g.scarcityBanished?g:{...g,scarcityBanished:true});
-    if(end.institutionalCapture) setGlobalStats(g=>g.institutionalCapture?g:{...g,institutionalCapture:true});
-    if(end.vanceCompromised) setGlobalStats(g=>g.vanceCompromised?g:{...g,vanceCompromised:true});
+    const pending=[];
     const evolved=students.filter(s=>s.evolvedForm);
-    if(evolved.length&&evolved.every(s=>s.supernaturalForm)){
-      setGlobalStats(g=>g.allThinAscended?g:{...g,allThinAscended:true});
+    if(end.scarcityBanished&&!globalStats.scarcityBanished){
+      setGlobalStats(g=>({...g,scarcityBanished:true}));
+      pending.push({ id:'scarcity_banished', week, detail:'Famine lifts. Scarcity curses thin out.' });
     }
-    if(checkSynthesisEndgame(opposition,students,pharmacistState?.stage) && !opposition?.supernatural?.synthesisAlly){
+    if(end.institutionalCapture&&!globalStats.institutionalCapture){
+      setGlobalStats(g=>({...g,institutionalCapture:true}));
+      pending.push({ id:'institutional_capture', week, detail:`${end.compromisedCount} members compromised — scarcity capped at 60.` });
+    }
+    if(end.vanceCompromised&&!globalStats.vanceCompromised){
+      setGlobalStats(g=>({...g,vanceCompromised:true}));
+      pending.push({ id:'vance_compromised', week, detail:'Removal hearings lose bite while she stays compromised.' });
+    }
+    if(evolved.length&&evolved.every(s=>s.supernaturalForm)&&!globalStats.allThinAscended){
+      setGlobalStats(g=>({...g,allThinAscended:true}));
+      pending.push({ id:'all_thin_ascended', week, detail:`${end.ascendedCount} ascended students wear their thin skins.` });
+    }
+    if(checkSynthesisEndgame(opposition,students,pharmacistState?.stage) && !opposition?.supernatural?.synthesisAlly && !globalStats.synthesisAlly){
       setOpposition(prev=>applySynthesisAlly(prev));
-      setGlobalStats(g=>g.synthesisAlly?g:{...g,synthesisAlly:true});
-      setTimeout(()=>push('✨ Synthesis — Scarcity bends into Hungry Angel. Passive abundance +10%.'),200);
+      setGlobalStats(g=>({...g,synthesisAlly:true}));
+      pending.push({ id:'synthesis_ally', week, detail:'Passive abundance +10% while synthesis holds.' });
     }
-  },[opposition,students,pharmacistState?.stage]);
+    if(pending.length){
+      setEndgameQueue(q=>{
+        const seen=new Set(q.map(b=>b.id));
+        const novel=pending.filter(b=>!seen.has(b.id));
+        return novel.length?[...q,...novel]:q;
+      });
+    }
+  },[opposition,students,pharmacistState?.stage,globalStats.scarcityBanished,globalStats.institutionalCapture,globalStats.vanceCompromised,globalStats.allThinAscended,globalStats.synthesisAlly,week]);
 
   // Process event queue — hold events until class session is done
   useEffect(()=>{
@@ -722,6 +745,11 @@ export default function ProfessorSim(){
     const { lines, effects }=rollTravelExploration(nodeId,ctx);
     const extra=[];
     if(effects.asceticShame) addScrutiny(2);
+    if(effects.ledgerWightAudit){
+      const ledgerFx=applyLedgerWightEncounter(opposition);
+      if(ledgerFx.scrutinyDelta) addScrutiny(ledgerFx.scrutinyDelta);
+      setOpposition(ledgerFx.opposition);
+    }
     if(effects.ingredientGrant||effects.foodGrant) grantExplorationReward({...effects.ingredientGrant,...(effects.foodGrant?{foodId:effects.foodGrant}:{})});
     if(Math.random()<CAMPUS_CONFIG.itemFindChance*0.5){
       const item=rollWeeklyItem();
@@ -746,6 +774,7 @@ export default function ProfessorSim(){
       exploration,
       deviceEncounter:effects.deviceEncounter||null,
       asceticGardenProtest:!!effects.asceticGardenProtest,
+      mirrorFastWeek:!!effects.mirrorFastWeek,
     };
   };
 
@@ -804,10 +833,15 @@ export default function ProfessorSim(){
     const from=CAMPUS_NODES[campusState.at];
     if(!from.exits.includes(nodeId)) return;
     const node=CAMPUS_NODES[nodeId];
-    const { lines:eventLines, exploration, deviceEncounter, asceticGardenProtest }=rollCampusEvent(nodeId,true);
+    const { lines:eventLines, exploration, deviceEncounter, asceticGardenProtest, mirrorFastWeek }=rollCampusEvent(nodeId,true);
     const lines=[`→ You walk to ${node.emoji} ${node.label}.`,node.desc,...eventLines];
     setCampusState(prev=>{
-      const next=asceticGardenProtest?applyAsceticGardenProtest(prev):prev;
+      let next=asceticGardenProtest?applyAsceticGardenProtest(prev):prev;
+      if(mirrorFastWeek){
+        const fx=applyMirrorFastEncounter(next,opposition);
+        next=fx.campus;
+        if(fx.opposition) setOpposition(fx.opposition);
+      }
       return {
         ...next,
         at:nodeId,
@@ -821,7 +855,7 @@ export default function ProfessorSim(){
   const lookAround=()=>{
     const node=CAMPUS_NODES[campusState.at];
     const flavor=node.flavor[rnd(0,node.flavor.length-1)];
-    const { lines:eventLines, exploration:eventExploration, deviceEncounter, asceticGardenProtest }=rollCampusEvent(campusState.at,false);
+    const { lines:eventLines, exploration:eventExploration, deviceEncounter, asceticGardenProtest, mirrorFastWeek }=rollCampusEvent(campusState.at,false);
     const ctx=getCampusExplorationCtx();
     let exploration=eventExploration;
     const lines=[flavor,...eventLines];
@@ -845,7 +879,12 @@ export default function ProfessorSim(){
       }
     }
     setCampusState(prev=>{
-      const next=asceticGardenProtest?applyAsceticGardenProtest(prev):prev;
+      let next=asceticGardenProtest?applyAsceticGardenProtest(prev):prev;
+      if(mirrorFastWeek){
+        const fx=applyMirrorFastEncounter(next,opposition);
+        next=fx.campus;
+        if(fx.opposition) setOpposition(fx.opposition);
+      }
       return {
         ...next,
         exploration,
@@ -1142,7 +1181,8 @@ export default function ProfessorSim(){
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       let gain=rnd(1,3)+skillPassiveBonus+(classSkillFx.passiveBonus||0);
       const asceticMult=campusState?.asceticProtestWeek?0.88:1;
-      gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*getSupernaturalGainMult(s)*(1+(classSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
+      const mirrorMult=campusState?.mirrorFastWeek?0.9:1;
+      gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*mirrorMult*getSupernaturalGainMult(s)*(1+(classSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
       if(opposition?.supernatural?.synthesisAlly) gain=Math.max(0,Math.round(gain*1.1));
       // Corruption-driven autonomous eating (willingness made flesh)
       const cTier=getCorruptionTier(s.corruption||0).id;
@@ -1221,10 +1261,14 @@ export default function ProfessorSim(){
         if(!flag) return s;
         return applyJealousyRelDelta(s,{ isNeglected:flag==='neglected', isFavored:flag==='favored' });
       });
-      if(favSummary.neglected.length){
-        const names=favSummary.neglected.map(s=>s.name).join(', ');
-        setTimeout(()=>push(`💔 Roster tension — ${names} feel sidelined by your attention this week.`),210);
-      }
+      favSummary.neglected.forEach((s,i)=>{
+        const line=renderJealousyReaction(s,'neglected',newWeek);
+        setTimeout(()=>push(line?`💔 ${line}`:`💔 ${s.name} feels sidelined by your attention this week.`),210+i*90);
+      });
+      favSummary.favored.slice(0,2).forEach((s,i)=>{
+        const line=renderJealousyReaction(s,'favored',newWeek);
+        if(line) setTimeout(()=>push(`✦ ${line}`),320+i*70);
+      });
     }
     setWeeklyFeedCounts({});
 
@@ -1520,6 +1564,10 @@ export default function ProfessorSim(){
     if(campusState?.asceticProtestWeek){
       setCampusState(prev=>({...prev,asceticProtestWeek:false}));
       setTimeout(()=>push('🕯️ Ascetic Circle protest fades — campus appetite recovers.'),280);
+    }
+    if(campusState?.mirrorFastWeek){
+      setCampusState(prev=>({...prev,mirrorFastWeek:false}));
+      setTimeout(()=>push('🪞 Mirror Fast dissolves — appetite returns to the body.'),300);
     }
     // Competitive Gainer: auto-post to group chat each new week
     const priyaCG=updated.find(s=>s.evolvedForm==='competitive_gainer');
@@ -5606,10 +5654,7 @@ export default function ProfessorSim(){
 
   // ── DINNER END (single) ──────────────────────────────────────
   const triggerDinnerEnd=(s,finalFullness,cap,totalGain,relBonus)=>{
-    const stId=getStage(s.lbs).id;
-    const stGrp=stId<=2?0:stId<=5?1:stId<=7?2:3;
-    const fullGrp=getDinnerFullnessGroup(finalFullness,cap);
-    const narrative=DINNER_ENDING_TEXT[stGrp][fullGrp](s);
+    const narrative=renderDinnerEnding(s,finalFullness,cap,week);
     guardHungerInterrupt(()=>{
       setAp(a=>a-2);
       push(`✅ Dinner with ${s.name} complete. +${totalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(totalGain))} lbs once digested) · +${relBonus} relationship.`);
@@ -5892,11 +5937,8 @@ export default function ProfessorSim(){
           }
           return {...prev,students:remaining,reactionLevels:newReactionLevels};
         });
-        const stId=getStage(fed.lbs).id;
-        const stGrp=stId<=2?0:stId<=5?1:stId<=7?2:3;
-        const fullGrp=getDinnerFullnessGroup(newFullness,cap);
         setTimeout(()=>{
-          setDinnerEndPopup({student:fed,finalFullness:newFullness,maxFullness:cap,totalGain:sessionCals,narrative:DINNER_ENDING_TEXT[stGrp][fullGrp](fed)});
+          setDinnerEndPopup({student:fed,finalFullness:newFullness,maxFullness:cap,totalGain:sessionCals,narrative:renderDinnerEnding(fed,newFullness,cap,week)});
           setStudents(prev=>prev.map(s=>s.id!==targetId?s:{...s,relationship:Math.min(100,s.relationship+5)}));
         },1100);
         return;
@@ -7075,6 +7117,7 @@ export default function ProfessorSim(){
         );
       })()}
 
+      {endgameQueue[0]&&<OppositionEndgameModal beat={endgameQueue[0]} onDismiss={()=>setEndgameQueue(q=>q.slice(1))}/>}
       {hearingState&&<OppositionHearingModal hearingState={hearingState} students={students} opposition={opposition} onChoice={makeHearingChoice} onClose={closeHearing}/>}
 
       {/* ── HOMEROOM QUEEN: CLASSROOM MINI-INTERFACE ── */}

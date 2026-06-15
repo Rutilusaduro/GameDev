@@ -9,6 +9,7 @@ export const REMOVAL_HEARING = {
       text: (ctx) => `Chairwoman Vance opens the hearing. Photos of ${ctx.studentName} fill the screen — abundance framed as concern. "The Board must protect institutional wellness," she says. Your student sits beside you, ${ctx.studentLbs} lbs and unapologetic.`,
       choices: [
         { id: 'testify', label: 'Have a devoted student testify to her character', relReq: 70, result: 'A classmate speaks — warm, specific, unashamed. The room shifts.', flag: 'testify' },
+        { id: 'advocate', label: 'Yield floor to the rotating student advocate', result: 'The advocate frames appetite as student autonomy. Vance\'s mouth tightens.', flag: 'advocate' },
         { id: 'discredit', label: 'Present hypocrisy evidence (Madeline/Kylie path)', result: 'Side-by-side banquet photos. Wellness language curdles in Vance\'s mouth.', flag: 'discredit' },
         { id: 'feast_demo', label: 'Stage a live tasting demonstration', result: 'You serve. They eat. The hearing becomes dinner.', flag: 'feast' },
       ],
@@ -23,6 +24,11 @@ export const REMOVAL_HEARING = {
     },
   ],
   endings: [
+    {
+      condition: (h) => h.includes('advocate') && (h.includes('firm') || h.includes('spirit')),
+      text: () => 'Student voice carries. Removal denied with the advocate on record.',
+      studentHiddenWeeks: 0, scrutinyDelta: -6, resolveHitAll: 10,
+    },
     {
       condition: (h) => h.includes('discredit') && h.includes('spirit'),
       text: () => 'The hearing collapses into crumbs and contradiction. Removal denied. The Board leaves hungry.',

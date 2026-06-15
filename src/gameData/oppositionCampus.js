@@ -116,3 +116,41 @@ export function ledgerWightRepelled(opposition, amount = 6) {
     },
   };
 }
+
+/** Mirror Fast — campus appetite chills; refeed surges counter it. */
+export function applyMirrorFastEncounter(campusState, opposition) {
+  return {
+    campus: {
+      ...campusState,
+      mirrorFastWeek: true,
+    },
+    opposition: opposition ? {
+      ...opposition,
+      supernatural: {
+        ...opposition.supernatural,
+        scarcityPressure: Math.min(100, (opposition.supernatural?.scarcityPressure || 0) + 4),
+      },
+    } : opposition,
+    scrutinyDelta: 0,
+  };
+}
+
+/** Ledger Wight — audits feasts unless recently discredited. */
+export function applyLedgerWightEncounter(opposition) {
+  if (!opposition?.supernatural?.actTriggered) {
+    return { opposition, scrutinyDelta: 0 };
+  }
+  const repelled = (opposition.meta?.counterTypesUsed || []).includes('public_discredit')
+    || (opposition.meta?.counterTypesUsed || []).includes('machine_fatten');
+  const scrutinyDelta = repelled ? 1 : 4;
+  return {
+    opposition: {
+      ...opposition,
+      supernatural: {
+        ...opposition.supernatural,
+        scarcityPressure: Math.min(100, (opposition.supernatural.scarcityPressure || 0) + (repelled ? 2 : 6)),
+      },
+    },
+    scrutinyDelta,
+  };
+}

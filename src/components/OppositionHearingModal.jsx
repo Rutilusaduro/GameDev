@@ -1,5 +1,6 @@
 import { C } from '../styles.js';
 import { REMOVAL_HEARING, EMERGENCY_HEARING, pickHearingEnding } from '../gameData/oppositionHearings.js';
+import { getSupernaturalHearingFlags } from '../gameData/supernaturalForms.js';
 
 export function OppositionHearingModal({
   hearingState,
@@ -18,13 +19,16 @@ export function OppositionHearingModal({
     studentLbs: student ? Math.round(student.lbs) : 0,
   };
   const phaseText = phase ? (typeof phase.text === 'function' ? phase.text(ctx) : phase.text) : null;
+  const hearingFlags = getSupernaturalHearingFlags(students);
   const hasDiscreditPath = students.some((s) => s.evolvedForm === 'community_researcher' || s.evolvedForm === 'eating_streamer')
-    || students.some((s) => s.supernaturalForm === 'archivist_skin');
-  const hasSpiritPath = students.some((s) => s.supernaturalForm);
+    || hearingFlags.hasArchivistDiscredit;
+  const advocate = opposition?.aib?.rotatingAdvocate;
+  const hasAdvocatePath = advocate && ['neutral', 'compromised', 'wavering'].includes(advocate.stance);
   const testifyWitness = students.find((s) => s.id !== hearingState.studentId && !s.hidden && (s.relationship || 0) >= 70);
   const visibleChoices = phase?.choices?.filter((ch) => {
     if (ch.id === 'discredit' && !hasDiscreditPath) return false;
-    if (ch.id === 'spirit' && !hasSpiritPath) return false;
+    if (ch.id === 'advocate' && !hasAdvocatePath) return false;
+    if (ch.id === 'spirit' && !hearingFlags.hasSpiritPath) return false;
     if (ch.id === 'hive' && !students.some((s) => s.evolvedForm === 'delivery_hive')) return false;
     return true;
   }) ?? [];
@@ -33,6 +37,11 @@ export function OppositionHearingModal({
     <div style={{ ...C.overlay, zIndex: 380 }}>
       <div style={{ ...C.modal, maxWidth: 580, background: 'linear-gradient(160deg,#0a0408,#1a0810,#0a0408)', border: '1px solid #8b304050', maxHeight: '88vh', overflowY: 'auto' }}>
         <div style={{ fontSize: 9, letterSpacing: 4, color: '#c44', marginBottom: 6 }}>👁 {def.title.toUpperCase()}</div>
+        {advocate && hasAdvocatePath && !done && (
+          <div style={{ fontSize: 10, color: '#8090a8', marginBottom: 8 }}>
+            Rotating seat: {advocate.name} ({advocate.stance}) may intervene.
+          </div>
+        )}
         {hearingState.log?.map((line, i) => (
           <div key={i} style={{ fontSize: 11, color: '#a08090', fontStyle: 'italic', marginBottom: 6, paddingLeft: 8, borderLeft: '2px solid #8b304030' }}>{line}</div>
         ))}

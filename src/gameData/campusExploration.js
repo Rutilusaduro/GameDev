@@ -144,10 +144,16 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
   }
 
   const mirrorLine = rollMirrorFastEvent(nodeId, ctx.opposition, rng);
-  if (mirrorLine) lines.push(mirrorLine);
+  if (mirrorLine) {
+    lines.push(mirrorLine);
+    effects.mirrorFastWeek = true;
+  }
 
   const ledgerLine = rollLedgerWightEvent(nodeId, ctx.opposition, rng);
-  if (ledgerLine) lines.push(ledgerLine);
+  if (ledgerLine) {
+    lines.push(ledgerLine);
+    effects.ledgerWightAudit = true;
+  }
 
   const saintLine = rollPortionSaintEvent(nodeId, ctx.opposition, ctx.lilithUnlocked, rng);
   if (saintLine) {

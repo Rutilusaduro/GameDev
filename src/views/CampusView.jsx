@@ -118,6 +118,12 @@ export function CampusView({
   return(
     <div>
       <p style={C.secT}>Campus — {node.emoji} {node.label}</p>
+      {(campusState.asceticProtestWeek || campusState.mirrorFastWeek) && (
+        <div style={{ ...C.infoBox('rgba(40,20,10,.35)'), fontSize: 11, color: '#d0a080', lineHeight: 1.6, marginBottom: 10 }}>
+          {campusState.asceticProtestWeek && <div>🕯️ Ascetic protest — class passive gain −12% this week.</div>}
+          {campusState.mirrorFastWeek && <div>🪞 Mirror Fast chill — class passive gain −10% until next week.</div>}
+        </div>
+      )}
       <div style={{display:"flex",gap:14,flexWrap:"wrap",alignItems:"flex-start"}}>
         <div style={{flex:"0 0 auto"}}>
           <CampusMap
