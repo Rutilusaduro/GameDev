@@ -9,7 +9,7 @@
 // Stage 7-8: mid — fully in it
 // Stage 9-10: late — vast, settled, definitive
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, createContext, render } from '../engine.js';
+import { registerModule, registerPool, createContext, render } from '../engine.js';
 
 // ── SUMO ──────────────────────────────────────────────────────
 registerModule("diary.sumo", [
@@ -1208,11 +1208,233 @@ registerModule("diary.community_researcher", [
   { when: {}, text: [`The fieldwork continues. The data grows. So does the researcher.`] },
 ]);
 
+// ── diary.innerBeat — per-student psychological beat pool ────────
+// FULL SENTENCE — first-person inner voice. Pool mode: all matching
+// variants eligible; weight:4 dominant per-student, weight:5 flag-gated.
+// 200-char hard cap per entry enforced by lint.
+registerPool('diary.innerBeat', [
+  { when: {}, text: [
+    "Something is different this week. I haven't written it down. This is me writing it down.",
+    "More of everything. Less worry about it.",
+    "The week passed. I ate. I'm still here.",
+  ] },
+  { when: { studentId: 0, stageMin: 2 }, weight: 4, text: [
+    "Still going to practice. Just to watch. Coach says I 'command presence.' I'm filing that.",
+    "The squad doesn't say anything when I show up. Neither do I. I keep showing up anyway.",
+  ] },
+  { when: { studentId: 0, stageMin: 5, brittanyUniformStrained: true }, weight: 5, text: [
+    "The zipper stopped. I let it go. Then I went to the game in something softer. Still kept score.",
+    "Retired the uniform before it retired me. That's the only version of this I'm allowing.",
+  ] },
+  { when: { studentId: 1, stageMin: 2 }, weight: 4, text: [
+    "Found a study on metabolic individual variation. Sound methodology. Convenient conclusions. Both noted.",
+    "Three supporting papers. Their limitations are logged in the margin. The limitations are shrinking.",
+  ] },
+  { when: { studentId: 1, stageMin: 5, corruption: [1] }, weight: 5, text: [
+    "The paper said what I needed. I found it after I already knew. I'm calling that efficient research.",
+    "I've stopped noting the limitations. The literature and I are in agreement. That's research.",
+  ] },
+  { when: { studentId: 2, stageMin: 3, kyliePrivateMoment: true }, weight: 5, text: [
+    "Ate something off camera. Didn't frame it. Didn't caption it. Just ate it. I don't know what to do with that.",
+    "There's no angle that makes it look like less than what it is. I've stopped trying. I think that's the video.",
+  ] },
+  { when: { studentId: 2, stageMin: 7 }, weight: 4, text: [
+    "Shooting wide now. The physics won the argument with my curation. I'm starting to think this is the content.",
+    "No filter for this. No framing. It's just me. I think that's the post.",
+  ] },
+  { when: { studentId: 3, stageMin: 4 }, weight: 4, text: [
+    "Worst run of my life this morning. Best my body has felt. I don't know which number to trust yet.",
+    "Slower every week. More of everything else. I've been measuring in miles. There are other units.",
+  ] },
+  { when: { studentId: 3, stageMin: 6 }, weight: 4, text: [
+    "Stopped timing runs. Started noticing different things. How the ground receives me. How I fill a doorway.",
+    "A different kind of presence in a room now. I've stopped measuring it in miles.",
+  ] },
+  { when: { studentId: 4, stageMin: 5, fionaSelfPhotographed: true }, weight: 5, text: [
+    "Turned the camera on myself. The image is good. I'm entering it in the spring show.",
+    "I've photographed everything worth seeing on this campus. The best subject was here the whole time.",
+  ] },
+  { when: { studentId: 5, stageMin: 4 }, weight: 4, text: [
+    "Third session hunger interrupted. Third time I didn't mind losing the game. Fifth time the food came to the stream.",
+    "The body interrupts and then you adapt. I stopped logging it as a bug. It's not a bug.",
+  ] },
+  { when: { studentId: 6, stageMin: 5, tiffanySatDownAtTable: true }, weight: 5, text: [
+    "Someone refilled my plate. First time at my own party. The party is real when the hostess eats.",
+    "Ate as much as I served. More, actually. The chapter ate more because I did. That's not incidental.",
+  ] },
+  { when: { studentId: 7, stageMin: 3 }, weight: 4, text: [
+    "Added a goal column to the spreadsheet. Not a tracking column. A goal column. I know the difference.",
+    "The numbers are going right. I've updated 'right direction' to match where the numbers are going.",
+  ] },
+  { when: { studentId: 8, stageMin: 5 }, weight: 4, text: [
+    "The bed holds me differently now. I settle into it. Woke up with my hands on my stomach. Good.",
+    "Getting up takes longer. I noticed and then stopped noticing. Both things happened in one week.",
+  ] },
+  { when: { studentId: 8, stageMin: 9, isImmobile: true }, weight: 5, text: [
+    "I don't go to the room anymore. The room comes to me. That is not wrong. That is right.",
+    "Everything I need arrives. Everything I am is here. I don't need to go anywhere.",
+  ] },
+  { when: { studentId: 9, stageMin: 2 }, weight: 4, text: [
+    "Cleared the plate. Entirely. There is a word in English I have learned: 'more.' C'est obscène. I approve.",
+    "My grandmother would have something to say. She is not here. The plate is empty. I ordered another.",
+  ] },
+  { when: { studentId: 9, stageMin: 5 }, weight: 4, text: [
+    "Called it civilization. Without irony. For the first time. This is a dialect I was always fluent in.",
+    "Third plate. Didn't tell anyone. It's just dinner, I said. That is a lie I enjoy telling.",
+  ] },
+  { when: { studentId: 10, stageMin: 4, reneePotNightEating: true }, weight: 5, text: [
+    "Midnight. Kitchen empty. Both hands. No plate. The art fell away and what was underneath was just this.",
+    "The pot was warm and my belly pressed against the counter's edge and I leaned in instead of away.",
+  ] },
+  { when: { studentId: 11, stageMin: 3 }, weight: 4, text: [
+    "Found three supporting papers. Noted their limitations. The limitations are methodological. Not personal.",
+    "The BMI chart has documented flaws. I've noted them. I'm working with better tools now.",
+  ] },
+  { when: { studentId: 11, stageMin: 6, corruption: [2] }, weight: 5, text: [
+    "Didn't cite anything today. Didn't need to. This is what it feels like to just know something.",
+    "No citations this entry. The feeling doesn't need a reference. It just is.",
+  ] },
+  { when: { studentId: 12, stageMin: 3 }, weight: 4, text: [
+    "Behavioral note: subject selected largest portion without deliberate process. [Note: subject is me. I know.]",
+    "Reinforcement pattern consistent with hedonic adjustment. [Note: I wanted more. That's the whole entry.]",
+  ] },
+  { when: { studentId: 12, stageMin: 5, nadiaBracketsNote: true }, weight: 5, text: [
+    "The brackets have taken over. The clinical language is doing work I didn't authorize. I just wanted more.",
+    "Four paragraphs of observation notes to say: I wanted more. I've known that for a while.",
+  ] },
+  { when: { studentId: 13, stageMin: 4, daisyPermissionSlip: true }, weight: 5, text: [
+    "Read the book to myself tonight. The one about bodies. It still works. I'm not surprised.",
+    "Your body is good and your body is yours. I say it every week. Tonight I said it to myself. It worked.",
+  ] },
+  { when: { studentId: 14 }, weight: 4, text: [
+    "Good land bears good weight. This is knowledge I've had since I could walk the fields.",
+    "The harvest doesn't apologize. Neither do I.",
+  ] },
+  { when: { studentId: 14, stageMin: 5 }, weight: 4, text: [
+    "Grandma said: if the harvest is heavy, the land is healthy. I put my hands on my belly. Good crop.",
+    "This is what thriving looks like. I already knew. Everything else is confirmation.",
+  ] },
+  { when: { studentId: 15, stageMin: 5 }, weight: 4, text: [
+    "Chose my position. Stayed there. Things came anyway.",
+    "I don't explain myself. I don't need to.",
+  ] },
+  { when: { studentId: 16, stageMin: 4 }, weight: 4, text: [
+    "Annotation in different ink: 'did not want the session to end.' Estimate of desired intake revised upward.",
+    "Subject report: resistance at this threshold absent. Case study continues beyond initial specification.",
+  ] },
+  { when: { studentId: 16, stageMin: 4, sophiaAnnotatedLog: true, corruption: [2] }, weight: 5, text: [
+    "The annotations have taken over the case study. The subject keeps revising the methodology. The subject is me.",
+    "Case conclusion: most successful experiment I've run. I intend to continue it indefinitely.",
+  ] },
+  { when: { studentId: 17, stageMin: 3 }, weight: 4, text: [
+    "Field note: jacket circumference shifted +7cm from baseline. Noting in artifact find format. Condition: excellent.",
+    "Campus dig far more active than Crete site. Subject changing faster than expected. Subject is me.",
+  ] },
+  { when: { studentId: 17, stageMin: 5 }, weight: 4, text: [
+    "Most interesting subject this site has produced. Taking measurements with the same calipers as the finds.",
+    "Every dig has one find that reorganizes everything else. I've found mine. It was here the whole time.",
+  ] },
+  { when: { studentId: 18, stageMin: 3 }, weight: 4, text: [
+    "Build yield within spec. Personal yield also within spec. Column G has a good trend. I like Column G.",
+    "Lab log: total available mass [crossed out] [different handwriting] [crossed out again] okay. :)",
+  ] },
+  { when: { studentId: 18, stageMin: 6, taliaScaleSurprise: true }, weight: 5, text: [
+    "Weighed on the lab scale for build calculations. Number bigger than spring. Wrote it down. Wrote it again, larger.",
+    "The number is bigger than it was. I wrote it in larger handwriting. Then I drew a small face next to it.",
+  ] },
+]);
+
+// ── diary.lilith — chronicle voice, stage-gated ───────────────
+// FULL SENTENCE — first-person chronicle. No confession, no corruption arc.
+// Gravity, not hunger. Patience, not wanting.
+registerPool('diary.lilith', [
+  { when: {}, text: [
+    "Still here. Still hungry. Nothing about this has changed.",
+    "I wait. Things come.",
+  ] },
+  { when: { studentId: 15, stageMin: 7 }, weight: 5, text: [
+    "Chose my position on the north quad. Sat down. Didn't move for two hours. Three things came to me.",
+    "I choose where I am and I stay there. The rest arranges itself around me.",
+  ] },
+  { when: { studentId: 15, stageMin: 9 }, weight: 5, text: [
+    "I don't go anywhere now. I sit and the campus comes to me. This is not limitation. This is reach.",
+    "Before, I hunted. Now I wait. The order changed. The result is the same.",
+  ] },
+  { when: { studentId: 15, stageMin: 10, isImmobile: true }, weight: 5, text: [
+    "Three people brought things today without being asked. I am the reason. The gravity has shifted.",
+    "The campus comes to me now. I have become a place that things come to. That's all hunting ever was.",
+  ] },
+]);
+
 // ── renderDiary — public wrapper ──────────────────────────────
+// Tries evolved form diary first, then base diary per-student sub-arcs,
+// then returns null if neither exists.
 
 export function renderDiary(student, week) {
-  if (!student || !student.evolvedForm) return null;
-  const key = `diary.${student.evolvedForm}`;
+  if (!student) return null;
+
   const ctx = createContext({ subject: student, week: week || 1 });
-  return render(`{${key}}`, ctx);
+
+  // Try evolved form diary first
+  if (student.evolvedForm) {
+    const evolvedKey = `diary.${student.evolvedForm}`;
+    const evolvedText = render(`{${evolvedKey}}`, ctx, { noSmooth: false });
+    if (evolvedText && evolvedText.trim()) return evolvedText;
+  }
+
+  // Fall back to base diary per-student sub-arc
+  // Try to find any diary.studentId.* entry that matches current state
+  const studentId = student.id;
+  const subArcKeys = [
+    'diary.brittany.uniform',
+    'diary.madeline.dataset',
+    'diary.kylie.unfiltered',
+    'diary.serena.newpr',
+    'diary.fiona.subject',
+    'diary.destiny.achievement',
+    'diary.tiffany.uncounted',
+    'diary.priya.spreadsheet',
+    'diary.maya.chair',
+    'diary.chloe.americaine',
+    'diary.renee.recipe',
+    'diary.kaylee.patient',
+    'diary.nadia.casestudy',
+    'diary.daisy.softening',
+    'diary.maryjane.ripe',
+    'diary.sophia.trial',
+    'diary.talia.justification',
+    'diary.lilith.chair',
+    'diary.indiana.fieldmap',
+  ];
+
+  // Map studentId to the correct diary key
+  const diaryKeyMap = {
+    0: 'diary.brittany.uniform',
+    1: 'diary.madeline.dataset',
+    2: 'diary.kylie.unfiltered',
+    3: 'diary.serena.newpr',
+    4: 'diary.fiona.subject',
+    5: 'diary.destiny.achievement',
+    6: 'diary.tiffany.uncounted',
+    7: 'diary.priya.spreadsheet',
+    8: 'diary.maya.chair',
+    9: 'diary.chloe.americaine',
+    10: 'diary.renee.recipe',
+    11: 'diary.kaylee.patient',
+    12: 'diary.nadia.casestudy',
+    13: 'diary.daisy.softening',
+    14: 'diary.maryjane.ripe',
+    15: 'diary.lilith.chair',
+    16: 'diary.sophia.trial',
+    17: 'diary.indiana.fieldmap',
+    18: 'diary.talia.justification',
+  };
+
+  const baseKey = diaryKeyMap[studentId];
+  if (baseKey) {
+    const baseText = render(`{${baseKey}}`, ctx, { noSmooth: false });
+    if (baseText && baseText.trim()) return baseText;
+  }
+
+  return null;
 }

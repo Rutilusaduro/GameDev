@@ -313,6 +313,64 @@ registerModule("attitude.line", [
       `Happy about the girls, nervous about what I'm becoming. Both real.`,
     ] },
 
+  // Per-student sub-arc attitudes — stage 5+, priority 2
+  { when: { studentId: 0, stageMin: 5 }, priority: 2,
+    text: [
+      `I lead differently now. Louder somehow. Or maybe just larger.`,
+      `The squad follows my energy. My energy is expansive. So is everything else.`,
+      `Command presence doesn't shrink. I've been told this. I'm starting to believe it.`,
+    ] },
+  { when: { studentId: 1, stageMin: 5 }, priority: 2,
+    text: [
+      `The data doesn't lie. Neither do I, technically. I just — update my hypotheses.`,
+      `I've stopped calling this anomalous. It's well within the literature now.`,
+    ] },
+  { when: { studentId: 2, stageMin: 5 }, priority: 2,
+    text: [
+      `The engagement is different when I'm real about it. Less filtered. More views.`,
+      `I used to know what I was performing. Now I think I'm just living and someone's watching.`,
+    ] },
+  { when: { studentId: 3, stageMin: 5 }, priority: 2,
+    text: [
+      `I'm not slower. My whole measurement system just shifted. I'm working with better units.`,
+      `The track wasn't everything. I knew that once. I'm back to knowing it.`,
+    ] },
+  { when: { studentId: 4, stageMin: 5 }, priority: 2,
+    text: [
+      `I see myself more clearly than I used to. Paint doesn't lie if you let it.`,
+      `Best work I've made this semester. I keep looking at it. I keep looking at myself.`,
+    ] },
+  { when: { studentId: 5, stageMin: 5 }, priority: 2,
+    text: [
+      `Chat asks questions I don't answer. Not because I can't. Because I'm eating.`,
+      `The stream doesn't get all of me anymore. Some of me is just here.`,
+    ] },
+  { when: { studentId: 6, stageMin: 5 }, priority: 2,
+    text: [
+      `Chapter is thriving. So is everything else. I'm connecting the dots.`,
+      `The hostess is the party now. I'm starting to understand that as a compliment.`,
+    ] },
+  { when: { studentId: 10, stageMin: 5 }, priority: 2,
+    text: [
+      `I taste things differently when I stop performing restraint. More notes. More.`,
+      `The kitchen at midnight is honest in a way the kitchen at noon isn't.`,
+    ] },
+  { when: { studentId: 12, stageMin: 5 }, priority: 2,
+    text: [
+      `Clinical observation: subject increasingly comfortable with the subject being herself.`,
+      `The bracket habit hasn't stopped. But the thing in the brackets is cleaner now.`,
+    ] },
+  { when: { studentId: 16, stageMin: 5 }, priority: 2,
+    text: [
+      `The case study conclusion is writing itself. I keep revising the methodology to match.`,
+      `Optimal outcome, by my revised metrics. I keep revising the metrics. They keep pointing here.`,
+    ] },
+  { when: { studentId: 18, stageMin: 5 }, priority: 2,
+    text: [
+      `The build is exceeding specifications. I haven't decided if the specs need updating.`,
+      `Yield beyond initial parameters. Column G has excellent numbers. So do the others.`,
+    ] },
+
   // Corruption fallbacks
   { when: { corruption: [0] }, priority: 0,
     text: [

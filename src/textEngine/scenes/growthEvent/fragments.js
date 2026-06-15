@@ -673,3 +673,89 @@ registerPool('ge.deviceWindDown', [
 registerPool('grow.crossingDialogue', [
   { when: {}, text: ['', '"So that\'s where I am now."'] },
 ]);
+
+// FULL SENTENCE — per-student physical/character reaction to a stage crossing.
+// Third-person narrator. 200-char cap enforced by lint.
+registerPool('grow.reaction', [
+  { when: {}, text: [
+    "The change registers on her face a moment before she registers it herself.",
+    "Something shifts. She goes still. Then she continues.",
+    "Her body has moved forward. The rest of her is catching up.",
+  ] },
+  { when: { studentId: 0, stageMin: 3 }, weight: 4, text: [
+    "She straightens. Her shoulders settle wider than before. She does not acknowledge this.",
+    "Command doesn't shrink. She's noticed that.",
+  ] },
+  { when: { studentId: 1, stageMin: 3 }, weight: 4, text: [
+    "She notes it in the margin. Not the weight number — the date. The data is ongoing.",
+    "The observation is made. Filed. The methodology continues.",
+  ] },
+  { when: { studentId: 2, stageMin: 3 }, weight: 4, text: [
+    "She doesn't reach for her phone. The moment passes undocumented. That's new.",
+    "She frames it differently afterward. She's still figuring out what the frame is.",
+  ] },
+  { when: { studentId: 3, stageMin: 3 }, weight: 4, text: [
+    "She touches the new weight with the same hands she uses to measure distance. Both are data.",
+    "She stopped tracking split times the week the weight made itself obvious. Better metrics exist.",
+  ] },
+  { when: { studentId: 4, stageMin: 3 }, weight: 4, text: [
+    "She holds still a moment — the way she holds still in front of a subject worth painting.",
+    "She goes to her sketchbook. The drawing takes longer than she expects.",
+  ] },
+  { when: { studentId: 5, stageMin: 3 }, weight: 4, text: [
+    "She mutes the stream for a second. Then unmutes. Chat asks why. She doesn't answer.",
+    "The notification goes unread. She's thinking about something else.",
+  ] },
+  { when: { studentId: 6, stageMin: 3 }, weight: 4, text: [
+    "She smiles at it, briefly, then composes herself. The chapter president is watching.",
+    "She makes a note in the event planner. In a different column than usual.",
+  ] },
+  { when: { studentId: 7, stageMin: 3 }, weight: 4, text: [
+    "She updates a cell in the spreadsheet. Then adds a column she hasn't named yet.",
+    "She notes it. The note doesn't fit any existing category. She makes a new one.",
+  ] },
+  { when: { studentId: 8, stageMin: 4 }, weight: 4, text: [
+    "She doesn't say anything. She finds a quieter spot and sits with it.",
+    "She draws it, carefully, in the margin of her notebook.",
+  ] },
+  { when: { studentId: 9, stageMin: 3 }, weight: 4, text: [
+    "She says something in French under her breath. Not for translation.",
+    "She orders another. Without ceremony. That's how Paris would do it.",
+  ] },
+  { when: { studentId: 10, stageMin: 3 }, weight: 4, text: [
+    "She taps the counter twice, the way she does when a sauce has come together.",
+    "She smells something she was cooking. Decides the batch is ready.",
+  ] },
+  { when: { studentId: 11, stageMin: 3 }, weight: 4, text: [
+    "She notes it. Adds three supporting sources. The sources are longer than the note.",
+    "She nods at the data. She's been waiting for this data.",
+  ] },
+  { when: { studentId: 12, stageMin: 3 }, weight: 4, text: [
+    "She opens her notebook. Writes: [behavioral observation: subject has reached a new threshold].",
+    "She logs the change. The brackets say subject. She wrote it without hesitating.",
+  ] },
+  { when: { studentId: 13, stageMin: 3 }, weight: 4, text: [
+    "She puts her hand on her belly the way she puts her hand on a child's shoulder. Steady.",
+    "She says nothing. Her face says: this is fine. This is good.",
+  ] },
+  { when: { studentId: 14, stageMin: 3 }, weight: 4, text: [
+    "She pats her belly once, the way her grandmother pats bread dough. Satisfied.",
+    "She smiles. She's been smiling at it for a while now.",
+  ] },
+  { when: { studentId: 15, stageMin: 5 }, weight: 4, text: [
+    "She does not react. Things come to where she is. This is one more thing.",
+    "She settles deeper. More of her to occupy the space she has chosen.",
+  ] },
+  { when: { studentId: 16, stageMin: 3 }, weight: 4, text: [
+    "She updates the log. The annotation is longer than the original entry.",
+    "She crosses out a number and writes a larger one. Underlines it once.",
+  ] },
+  { when: { studentId: 17, stageMin: 3 }, weight: 4, text: [
+    "She measures it the same way she measures a find. Reference notes. Condition: excellent.",
+    "She photographs it for the record. She has a good eye for significant artifacts.",
+  ] },
+  { when: { studentId: 18, stageMin: 3 }, weight: 4, text: [
+    "She runs the calculation twice. The result is the same. She marks it green.",
+    "She documents it in the lab notebook. The handwriting is neater than usual.",
+  ] },
+]);
