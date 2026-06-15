@@ -4,6 +4,7 @@
 
 import { getStage } from './stages.js';
 import { digestNpc } from './gainSystem.js';
+import { applySupernaturalAgendaHook } from './supernaturalForms.js';
 import {
   isBoardDormant, pickActIRumor, computeClassTransformationPressure,
 } from './oppositionActs.js';
@@ -23,9 +24,9 @@ export const AIB_MEMBERS = [
 ];
 
 export const ROTATING_ADVOCATES = [
-  { id: 'advocate_1', name: 'Jordan Ellis', role: 'Student Advocate (rotating)' },
-  { id: 'advocate_2', name: 'Sam Okonkwo', role: 'Student Advocate (rotating)' },
-  { id: 'advocate_3', name: 'Riley Chen', role: 'Student Advocate (rotating)' },
+  { id: 'advocate_1', name: 'Jordan Ellis', role: 'Student Advocate (rotating)', resolve: 55, corruption: 0, weightLbs: 128, stance: 'neutral', personality: 'sympathetic' },
+  { id: 'advocate_2', name: 'Sam Okonkwo', role: 'Student Advocate (rotating)', resolve: 50, corruption: 0, weightLbs: 134, stance: 'neutral', personality: 'procedural' },
+  { id: 'advocate_3', name: 'Riley Chen', role: 'Student Advocate (rotating)', resolve: 60, corruption: 0, weightLbs: 122, stance: 'neutral', personality: 'activist' },
 ];
 
 export const AIB_AGENDA_CARDS = [
@@ -38,6 +39,7 @@ export const AIB_AGENDA_CARDS = [
   { id: 'mandatory_fitness', minScrutiny: 40, label: 'Mandatory Fitness', scrutiny: 5, message: '🏃 Wellness Coalition orders fitness assessments.', effect: 'mandatory_fitness', proxy: 'wellnessCoalition' },
   { id: 'shame_vigil', minScrutiny: 45, label: 'Shame Vigil', scrutiny: 7, message: '🕯️ Ascetic Circle vigil — shame ripples through the class.', effect: 'shame_vigil', proxy: 'asceticCircle' },
   { id: 'faculty_informant', minScrutiny: 55, label: 'Faculty Informant', scrutiny: 4, message: '📝 Faculty informant briefs the Board on your class.', effect: 'faculty_informant' },
+  { id: 'student_advocacy', minScrutiny: 35, label: 'Student Advocacy Session', scrutiny: 4, message: '📣 Rotating advocate schedules a student voice session.', effect: 'student_advocacy' },
 ];
 
 export const AIB_COUNTERS = [
@@ -198,6 +200,7 @@ export function getAibScrutinyMod(opposition, students = []) {
   if (!opposition?.aib?.unlocked) return 0;
   const compromised = opposition.aib.members.filter((m) => m.stance === 'compromised').length;
   let mod = compromised >= 3 ? -2 : 0;
+  mod += getAdvocateScrutinyMod(opposition.aib.rotatingAdvocate);
   if (opposition.proxies?.wellnessCoalition) mod += 1 + wellnessScrutinyBonus(students);
   if (opposition.aib.informantShieldWeeks > 0) mod -= 1;
   return mod;
@@ -222,6 +225,7 @@ const AGENDA_COUNTER_HINTS = {
   mandatory_fitness: 'evolved student op',
   shame_vigil: 'Apple Oracle shields some students',
   faculty_informant: 'faculty testimony',
+  student_advocacy: 'feast bribe or high class relationship',
 };
 
 export function getAgendaCounterHint(cardId) {
@@ -306,10 +310,33 @@ function resolveAgendaEffect(card, students, opposition, rnd = Math.random) {
         effects.logs.push('📝 Informant report filed — faculty testimony shields you.');
       }
       break;
+    case 'student_advocacy': {
+      const advocate = opposition.aib.rotatingAdvocate;
+      const visible = students.filter((s) => !s.hidden);
+      const avgRel = visible.length
+        ? visible.reduce((a, s) => a + (s.relationship || 0), 0) / visible.length
+        : 0;
+      if (advocate && (advocate.stance === 'neutral' || advocate.stance === 'compromised' || advocate.stance === 'wavering' || avgRel >= 50)) {
+        effects.scrutinyDelta -= 3;
+        effects.oppositionPatch.agendaDelay = true;
+        effects.logs.push(`📣 ${advocate.name} amplifies student voice — scrutiny −3, top agenda delayed.`);
+      } else if (advocate?.personality === 'activist') {
+        effects.scrutinyDelta -= 1;
+        effects.logs.push(`📣 ${advocate.name} files a dissent — scrutiny −1.`);
+      } else {
+        const target = pickRandomVisible(students, rnd);
+        if (target) {
+          effects.studentPatches.push({ id: target.id, relDelta: -4 });
+          effects.logs.push(`📣 Advocacy session backfires — ${target.name} singled out (−4 rel).`);
+        }
+        effects.scrutinyDelta += 2;
+      }
+      break;
+    }
     default:
       break;
   }
-  return effects;
+  return applySupernaturalAgendaHook(card.effect, students, effects);
 }
 
 function tickDebuffs(debuffs) {
@@ -323,13 +350,46 @@ function tickDebuffs(debuffs) {
   return next;
 }
 
-function rotateAdvocate(opposition, week) {
+function rotateAdvocate(opposition, week, students = []) {
   const rotateEvery = 6;
+  let advocate;
   if (opposition.aib.rotatingAdvocate && week - (opposition.aib.advocateRotateWeek || 0) < rotateEvery) {
-    return opposition.aib.rotatingAdvocate;
+    advocate = { ...opposition.aib.rotatingAdvocate };
+  } else {
+    const idx = Math.floor(week / rotateEvery) % ROTATING_ADVOCATES.length;
+    advocate = { ...ROTATING_ADVOCATES[idx] };
   }
-  const idx = Math.floor(week / rotateEvery) % ROTATING_ADVOCATES.length;
-  return ROTATING_ADVOCATES[idx];
+  return tickAdvocateStance(advocate, students);
+}
+
+function tickAdvocateStance(advocate, students = []) {
+  if (!advocate) return advocate;
+  let { resolve, stance, corruption } = advocate;
+  const visible = students.filter((s) => !s.hidden);
+  const avgRel = visible.length
+    ? visible.reduce((a, s) => a + (s.relationship || 0), 0) / visible.length
+    : 0;
+  const evolvedCount = visible.filter((s) => s.evolvedForm).length;
+  if (corruption >= 50) stance = 'compromised';
+  else if (avgRel >= 55 || evolvedCount >= 3) {
+    if (stance === 'hostile') stance = 'wavering';
+    else if (stance === 'wavering' || stance === 'neutral') stance = 'neutral';
+    resolve = Math.min(100, resolve + 2);
+  } else if (avgRel < 30) {
+    resolve = Math.max(0, resolve - 2);
+    if (resolve < 45 && stance === 'neutral') stance = 'wavering';
+  }
+  if (advocate.personality === 'sympathetic' && avgRel >= 45) resolve = Math.min(100, resolve + 1);
+  if (advocate.personality === 'activist' && evolvedCount >= 2) resolve = Math.min(100, resolve + 2);
+  return { ...advocate, resolve, stance, corruption };
+}
+
+export function getAdvocateScrutinyMod(advocate) {
+  if (!advocate) return 0;
+  if (advocate.stance === 'compromised') return -2;
+  if (advocate.stance === 'neutral' || advocate.stance === 'wavering') return -1;
+  if (advocate.personality === 'activist') return 0;
+  return 1;
 }
 
 export function runAibCounter(opposition, counterId, memberId, options = {}) {
@@ -565,7 +625,7 @@ export function processOppositionWeek(opposition, {
     return { opposition: next, scrutinyDelta, moneyDelta, logs, studentPatches, pendingDeviceConfiscation };
   }
 
-  const advocate = rotateAdvocate(next, week);
+  const advocate = rotateAdvocate(next, week, students);
   next = {
     ...next,
     aib: {
@@ -619,6 +679,7 @@ export function processOppositionWeek(opposition, {
   // Resolve due agenda
   const queue = [...next.aib.agendaQueue];
   const stillQueued = [];
+  let delayNextAgenda = false;
   queue.forEach((item) => {
     if (item.resolvesWeek <= week) {
       const card = AIB_AGENDA_CARDS.find((c) => c.id === item.cardId);
@@ -645,11 +706,16 @@ export function processOppositionWeek(opposition, {
             aib: { ...next.aib, pendingForcedWeighInStudentId: fx.oppositionPatch.pendingForcedWeighInStudentId },
           };
         }
+        if (fx.oppositionPatch.agendaDelay) delayNextAgenda = true;
       }
     } else {
       stillQueued.push(item);
     }
   });
+  if (delayNextAgenda && stillQueued.length) {
+    stillQueued[0] = { ...stillQueued[0], resolvesWeek: stillQueued[0].resolvesWeek + 1 };
+    logs.push('📣 Student advocate delay — top agenda pushed one week.');
+  }
   next = { ...next, aib: { ...next.aib, agendaQueue: stillQueued } };
 
   // Draw new cards — Investigation tier draws 2/week (§30.5)

@@ -188,8 +188,15 @@ export function OversightView({
           </div>
         ))}
         {aib.rotatingAdvocate && (
-          <div style={{ fontSize: 10, color: '#888', marginTop: 8 }}>
-            Rotating seat: {aib.rotatingAdvocate.name}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, padding: '8px 10px', background: '#141820', borderRadius: 6, border: '1px solid #304050' }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 12, color: '#c8d0e0' }}>{aib.rotatingAdvocate.name}</div>
+              <div style={{ fontSize: 10, color: '#8090a8' }}>{aib.rotatingAdvocate.role} · {aib.rotatingAdvocate.personality || 'rotating'}</div>
+            </div>
+            <div style={{ fontSize: 10, color: '#90a8c0' }}>resolve {aib.rotatingAdvocate.resolve}</div>
+            <div style={{ fontSize: 10, color: aib.rotatingAdvocate.stance === 'compromised' ? '#8a8' : aib.rotatingAdvocate.stance === 'neutral' ? '#8ac' : '#c88' }}>
+              {aib.rotatingAdvocate.stance}
+            </div>
           </div>
         )}
       </div>

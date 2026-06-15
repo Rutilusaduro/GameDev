@@ -112,3 +112,59 @@ export function canArchivistFreeDiscredit(students, opposition) {
   if (opposition?.meta?.archivistDiscreditUsed) return false;
   return students.some((s) => s.supernaturalForm === 'archivist_skin');
 }
+
+/** Per-form supernatural hooks on AIB agenda resolution (§32 opposition). */
+export function applySupernaturalAgendaHook(cardEffect, students, effects) {
+  const forms = new Set((students || []).filter((s) => s.supernaturalForm).map((s) => s.supernaturalForm));
+  if (!forms.size) return effects;
+
+  if (cardEffect === 'wellness_audit' && forms.has('hive_mote')) {
+    effects.scrutinyDelta = (effects.scrutinyDelta || 0) - 2;
+    effects.logs = [...(effects.logs || []), '🐝 Hive Mote — audit findings dissolve into collective noise (−2 scrutiny).'];
+    effects.studentPatches = (effects.studentPatches || []).map((p) => ({ ...p, relDelta: (p.relDelta || 0) + 3 }));
+  }
+  if (cardEffect === 'mandatory_fitness' && forms.has('pep_ghost')) {
+    effects.studentPatches = (effects.studentPatches || []).map((p) => ({ ...p, relDelta: (p.relDelta || 0) + 4, hungerDelta: Math.max(0, (p.hungerDelta || 0) - 1) }));
+    effects.logs = [...(effects.logs || []), '👻 Pep Ghost — fitness order becomes pep rally; one student spared the worst (−hunger).'];
+  }
+  if (cardEffect === 'shame_vigil' && forms.has('salon_wraith')) {
+    effects.studentPatches = (effects.studentPatches || []).map((p) => {
+      const s = students.find((st) => st.id === p.id);
+      if (s?.supernaturalForm === 'salon_wraith') return { ...p, corruptionDelta: 0 };
+      return p;
+    });
+    effects.logs = [...(effects.logs || []), '🥀 Salon Wraith — shame slides off the hostess like silk.'];
+  }
+  if (cardEffect === 'faculty_informant' && forms.has('dose_saint')) {
+    effects.scrutinyDelta = Math.max(0, (effects.scrutinyDelta || 0) - 2);
+    effects.logs = [...(effects.logs || []), '💊 Dose Saint — informant report arrives chemically illegible (−2 scrutiny).'];
+  }
+  if (cardEffect === 'size_review' && forms.has('mirror_thin')) {
+    effects.scrutinyDelta = Math.max(0, (effects.scrutinyDelta || 0) - 1);
+    effects.logs = [...(effects.logs || []), '🪞 Mirror Thin — weigh-in documentation blurs at the edges (−1 scrutiny).'];
+  }
+  if (cardEffect === 'wellness_seminar' && forms.has('wire_saint')) {
+    effects.oppositionPatch = {
+      ...(effects.oppositionPatch || {}),
+      activeDebuffs: {
+        ...(effects.oppositionPatch?.activeDebuffs || {}),
+        gainMult: 0.92,
+        gainMultWeeks: 1,
+      },
+    };
+    effects.logs = [...(effects.logs || []), '⚡ Wire Saint — seminar interference softens appetite dampening (−8% not −15%).'];
+  }
+  return effects;
+}
+
+/** Hearing paths unlocked by ascended thin-forms. */
+export function getSupernaturalHearingFlags(students) {
+  const forms = new Set((students || []).filter((s) => s.supernaturalForm).map((s) => s.supernaturalForm));
+  return {
+    hasSpiritPath: forms.size > 0,
+    hasArchivistDiscredit: forms.has('archivist_skin'),
+    hasHiveShield: forms.has('hive_mote'),
+    hasSalonCharm: forms.has('salon_wraith'),
+    hasMetricHollow: forms.has('metric_hollow'),
+  };
+}

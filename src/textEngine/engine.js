@@ -105,6 +105,8 @@ function deriveFor(student, ref, skillEffects) {
     dependenceTier: getDependenceTier(student.psych?.dependence ?? 0).id,
     shameTier: getShameTier(student.psych?.shame ?? 0).id,
     hasDeviceEquipped: getEquippedDeviceIds(student).length > 0,
+    supernaturalForm: student.supernaturalForm || null,
+    supernatural: !!student.supernaturalForm,
   };
 }
 
