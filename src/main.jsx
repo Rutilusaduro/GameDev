@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import ProfessorSim from './ProfessorSim';
 import { GameErrorBoundary } from './components/GameErrorBoundary.jsx';
+import { TextFlagProvider } from './contexts/TextFlagContext.jsx';
 import { initErrorCapture } from './utils/errorRingBuffer.js';
 
 initErrorCapture();
@@ -10,7 +11,9 @@ initErrorCapture();
 function App() {
   return (
     <GameErrorBoundary>
-      <ProfessorSim />
+      <TextFlagProvider>
+        <ProfessorSim />
+      </TextFlagProvider>
     </GameErrorBoundary>
   );
 }

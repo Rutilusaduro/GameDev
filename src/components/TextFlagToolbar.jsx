@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { C } from '../styles.js';
 import { getStage } from '../gameData/stages.js';
 import { formatTextFlagExport, proseToFlagNodes, traceToFlagNodes, buildStateLine } from '../textEngine/textFlagFormat.js';
+import { useTextFlags } from '../contexts/TextFlagContext.jsx';
 
 const inputStyle = {
   background: '#181820',
@@ -55,7 +56,7 @@ function NodeAnnotator({ node, idx, anno, setAnno }) {
 
 /**
  * Inline Dialogue-Lab-style flag UI for any prose popup.
- * Only renders in dev builds (import.meta.env.DEV).
+ * On by default (including gh-pages); toggle off in Debug panel.
  */
 export function TextFlagToolbar({
   section,
@@ -64,12 +65,12 @@ export function TextFlagToolbar({
   trace,
   nodes: nodesProp,
 }) {
-  const dev = typeof import.meta !== 'undefined' && import.meta.env?.DEV;
+  const { enabled } = useTextFlags();
   const [open, setOpen] = useState(false);
   const [anno, setAnno] = useState(null);
   const [copied, setCopied] = useState(false);
 
-  if (!dev || !text?.trim()) return null;
+  if (!enabled || !text?.trim()) return null;
 
   const nodes = nodesProp?.length
     ? nodesProp

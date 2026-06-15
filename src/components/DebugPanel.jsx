@@ -5,6 +5,7 @@ import { render, createContext, getSeason, relSize, _registryEntries } from '../
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
 import { DialogueLab } from './DialogueLab.jsx';
 import { BugReportModal } from './BugReportModal.jsx';
+import { useTextFlags } from '../contexts/TextFlagContext.jsx';
 import { buildGameSnapshot, serializeBugReport } from '../gameData/bugReport.js';
 import { defaultOppositionState } from '../gameData/opposition.js';
 
@@ -61,6 +62,7 @@ export function DebugPanel({
   pharmacistState,
   eventQueueLen,
 }) {
+  const { enabled: textFlagsOn, setEnabled: setTextFlagsOn } = useTextFlags();
   const [textSample, setTextSample] = useState(null);
   const [labOpen, setLabOpen] = useState(false);
   const [tab, setTab] = useState('state');
@@ -118,6 +120,14 @@ export function DebugPanel({
             </div>
             <div style={{ marginBottom: 14, padding: 10, background: 'rgba(255,255,255,0.04)', borderRadius: 8 }}>
               <div style={{ fontSize: 10, color: '#888', marginBottom: 6 }}>TEXT ENGINE — {_registryEntries().length} modules</div>
+              <label style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 11, color: '#b0a890', marginBottom: 8, cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={textFlagsOn}
+                  onChange={(e) => setTextFlagsOn(e.target.checked)}
+                />
+                🚩 Text flags on popups (growth, narrative, talk, weigh-in…)
+              </label>
               <button type="button" style={{ ...C.smBtn, background: 'rgba(100,60,140,0.4)' }}
                 onClick={() => setTextSample(sampleTextEngine())}>📜 Sample hive intake</button>
               <button type="button" style={{ ...C.smBtn, background: 'rgba(60,100,140,0.4)', marginLeft: 6 }}
