@@ -192,9 +192,12 @@ import { EvolvedEventModal } from './components/EvolvedEventModal.jsx';
 import { SalonAppetitModal } from './components/SalonAppetitModal.jsx';
 import { ArtisanGalleryModal } from './components/ArtisanGalleryModal.jsx';
 import { OversightView } from './views/OversightView.jsx';
+import { SupernaturalAscensionModal } from './components/SupernaturalAscensionModal.jsx';
 import {
   defaultOppositionState, processOppositionWeek, runAibCounter, checkSupernaturalTrigger,
+  getOppositionGainMult, tickSupernaturalWeek,
 } from './gameData/opposition.js';
+import { canSupernaturalEvolve, getSupernaturalFormForStudent } from './gameData/supernaturalForms.js';
 import {
   defaultSalonState, startSalonSession, salonPickMenu, salonServiceChoice, salonFinishDigestif,
 } from './gameData/chloeSalon.js';
@@ -401,6 +404,7 @@ export default function ProfessorSim(){
   const [salonOpen, setSalonOpen] = useState(false);
   const [galleryState, setGalleryState] = useState(null);
   const [galleryOpen, setGalleryOpen] = useState(false);
+  const [supernaturalModalOpen, setSupernaturalModalOpen] = useState(false);
   // fairDayState: { studentId, stageIdx, phase:'weighin'|'judging'|'afterparty'|'done',
   //   influenceKey, weighInChoice:null, weighInResultText:null, weighInGain:0,
   //   afterpartyChoice:null, afterpartyResultText:null, totalGain:0, relBonus:0 }
@@ -478,6 +482,21 @@ export default function ProfessorSim(){
   const inhabitProfessor=()=>{
     setProfessorProfile(INHABITED_PROFESSOR_PROFILE);
     push("🌒 You take root behind the professor's eyes. The class waits, and abundance has found a door.");
+  };
+
+  const applyOppositionStudentPatches=(studentList,patches)=>{
+    if(!patches?.length) return studentList;
+    return studentList.map(s=>{
+      const p=patches.find(x=>x.id===s.id);
+      if(!p) return s;
+      let ns={...s};
+      if(p.relDelta!=null) ns.relationship=Math.max(0,Math.min(100,ns.relationship+(p.relDelta||0)));
+      if(p.mood) ns.mood=p.mood;
+      if(p.corruptionDelta!=null) ns.corruption=Math.max(0,(ns.corruption||0)+(p.corruptionDelta||0));
+      if(p.passiveGainBlocked) ns.oppositionBlockedGain=true;
+      if(p.hungerDelta) ns=adjustHunger(ns,p.hungerDelta);
+      return ns;
+    });
   };
 
   const addScrutiny=(n)=>{
@@ -980,12 +999,14 @@ export default function ProfessorSim(){
     if(cultivatorState?.digestWeeksLeft>0){
       setCultivatorState(prev=>prev?{...prev,digestWeeksLeft:Math.max(0,prev.digestWeeksLeft-1)}:null);
     }
+    const oppGainMult=getOppositionGainMult(opposition);
     let updated=students.map(s=>{
+      if(s.oppositionBlockedGain) return {...s,oppositionBlockedGain:false};
       if(!studentReceivesPassiveGain(s)) return s;
       if(s.id===LILITH_ID) return processStudentGain(s,LILITH_PASSIVE_GAIN,0); // Lilith only gains passively
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       let gain=rnd(1,3)+skillPassiveBonus;
-      gain=Math.max(0,Math.round(gain*withdrawalGainMultiplier(s)));
+      gain=Math.max(0,Math.round(gain*oppGainMult*withdrawalGainMultiplier(s)));
       // Corruption-driven autonomous eating (willingness made flesh)
       const cTier=getCorruptionTier(s.corruption||0).id;
       if(cTier===1) gain+=rnd(CORRUPTION_CONFIG.tier2AutoLbs[0],CORRUPTION_CONFIG.tier2AutoLbs[1]);
@@ -1240,6 +1261,7 @@ export default function ProfessorSim(){
     const evs=collectEvents(updated);
 
     // Opposition week-end processing (AIB agenda, proxies, supernatural)
+    const wasActTriggered=!!opposition?.supernatural?.actTriggered;
     let nextOpposition=opposition||defaultOppositionState();
     nextOpposition=checkSupernaturalTrigger(nextOpposition,{
       week:newWeek,
@@ -1247,11 +1269,31 @@ export default function ProfessorSim(){
       students:updated,
       campusSaturation:nextSaturation?.score??campusState.saturation?.score??0,
     });
-    const oppResult=processOppositionWeek(nextOpposition,{week:newWeek,scrutiny:adminScrutiny,students:updated});
-    setOpposition(oppResult.opposition);
+    const newlyTriggered=!wasActTriggered&&nextOpposition.supernatural.actTriggered;
+    const oppResult=processOppositionWeek(nextOpposition,{week:newWeek,scrutiny:adminScrutiny,students:updated,rnd});
+    nextOpposition=oppResult.opposition;
+    updated=applyOppositionStudentPatches(updated,oppResult.studentPatches);
+    const superTick=tickSupernaturalWeek(nextOpposition,updated);
+    nextOpposition=superTick.opposition;
+    updated=applyOppositionStudentPatches(updated,superTick.studentPatches);
+    if(oppResult.pendingDeviceConfiscation){
+      const equipped=updated.find(st=>st.equip&&Object.values(st.equip).some(Boolean));
+      if(equipped){
+        const slot=Object.keys(equipped.equip).find(k=>equipped.equip[k]);
+        if(slot){
+          const defId=equipped.equip[slot].defId;
+          const { student:stripped }=unequipDevice(equipped,slot);
+          updated=updated.map(st=>st.id===equipped.id?stripped:st);
+          setDeviceInventory(prev=>({...prev,[defId]:(prev[defId]||0)+1}));
+          oppResult.logs.push(`🔧 Confiscated ${DEVICES[defId]?.label||defId} from ${equipped.name}.`);
+        }
+      }
+    }
+    setOpposition(nextOpposition);
     if(oppResult.scrutinyDelta) addScrutiny(oppResult.scrutinyDelta);
     if(oppResult.moneyDelta) setMoney(m=>m+oppResult.moneyDelta);
-    oppResult.logs.forEach((msg,i)=>setTimeout(()=>push(msg),200+i*60));
+    [...oppResult.logs,...superTick.logs].forEach((msg,i)=>setTimeout(()=>push(msg),200+i*60));
+    if(newlyTriggered&&!nextOpposition.supernatural.ascensionOffered) setSupernaturalModalOpen(true);
 
     setStudents(updated);
     // Admin notices visibly large students (hidden students like Lilith don't trigger scrutiny)
@@ -1262,7 +1304,7 @@ export default function ProfessorSim(){
     if(devotedCount>0) setAdminScrutiny(prev=>Math.max(0,prev-devotedCount));
     if(skillScrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-skillScrutinyPassiveReduce));
     if(evolvedScrutinyReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-evolvedScrutinyReduce));
-    const scrutinyMsg=weeklyScrutinyNudge(adminScrutiny,scrutinyTier.id);
+    const scrutinyMsg=weeklyScrutinyNudge(adminScrutiny,scrutinyTier.id,nextOpposition);
     if(scrutinyMsg) setTimeout(()=>push(scrutinyMsg.message),170);
     push(`📅 Week ${newWeek} begins. ${newAp} AP available.${scrutinyTier.apPenalty?` (Scrutiny: −${scrutinyTier.apPenalty} AP)`:""}`);
     if(semEv) setTimeout(()=>push(`🎉 Semester Event: ${semEv.title} — ${semEv.text}`),100);
@@ -1696,18 +1738,47 @@ export default function ProfessorSim(){
   };
 
   // ── OPPOSITION / AIB ─────────────────────────────────────────────
-  const runOppositionCounter=(counterId)=>{
-    const memberId=counterId==='bureaucratic_capture'
-      ? opposition?.aib?.members?.find(m=>m.resolve<=40)?.id
-      : null;
-    const result=runAibCounter(opposition,counterId,memberId);
+  const runOppositionCounter=(counterId,options={})=>{
+    const memberId=options.memberId
+      ?? (counterId==='bureaucratic_capture' ? opposition?.aib?.members?.find(m=>m.resolve<=40)?.id : null);
+    const result=runAibCounter(opposition,counterId,memberId,options);
     if(result.apCost&&ap<result.apCost){push(`⚠️ Need ${result.apCost} AP.`);return;}
     if(result.apCost) setAp(a=>a-result.apCost);
     setOpposition(result.opposition);
     if(result.scrutinyDelta) addScrutiny(result.scrutinyDelta);
     if(result.moneyDelta) setMoney(m=>m+(result.moneyDelta||0));
     if(result.message) push(result.message);
-    else push('⚠️ Counter had no effect — check agenda queue or member resolve.');
+    else if(counterId!=='public_discredit') push('⚠️ Counter had no effect — check agenda queue or member resolve.');
+  };
+
+  const runOppositionCounterOnMember=(counterId,memberId)=>{
+    runOppositionCounter(counterId,{ memberId });
+  };
+
+  const ascendSupernatural=(studentId,formId)=>{
+    const s=students.find(st=>st.id===studentId);
+    const form=getSupernaturalFormForStudent(s);
+    if(!s||!form) return;
+    setStudents(prev=>prev.map(st=>st.id!==studentId?st:{
+      ...st,
+      supernaturalForm:formId,
+      memoryMass:st.lbs,
+      lbs:Math.max(st.startLbs||110,Math.round(st.startLbs*0.92)),
+    }));
+    setOpposition(prev=>({
+      ...prev,
+      supernatural:{
+        ...prev.supernatural,
+        scarcityPressure:Math.max(0,(prev.supernatural?.scarcityPressure||0)-(form.scrutinyDrain||2)),
+      },
+    }));
+    push(`👻 ${s.name} ascends as ${form.label} — thin, hungry, remembering every pound.`);
+  };
+
+  const dismissSupernaturalAct=()=>{
+    setOpposition(prev=>({...prev,supernatural:{...prev.supernatural,ascensionOffered:true}}));
+    setSupernaturalModalOpen(false);
+    push('👻 The Supernatural Act has begun. Scarcity watches — refeed your evolved students.');
   };
 
   // ── HOMEROOM QUEEN handlers ───────────────────────────────────────
@@ -6285,7 +6356,7 @@ export default function ProfessorSim(){
 
           {view==="achievements"&&<AchievementsView achievements={achievements}/>}
 
-          {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} onRunCounter={runOppositionCounter} onClose={()=>setView('class')}/>}
+          {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onClose={()=>setView('class')}/>}
 
         </div>
 
@@ -6403,6 +6474,8 @@ export default function ProfessorSim(){
       {salonOpen&&salonState&&<SalonAppetitModal salonState={salonState} students={students} onClose={closeSalonHub} onStartSession={startSalonEvening} onPickMenu={salonPickCourse} onService={salonMakeServiceChoice} onDigestif={salonCloseEvening}/>}
 
       {galleryOpen&&galleryState&&<ArtisanGalleryModal galleryState={galleryState} students={students} onClose={closeGalleryHub} onOpenSubjectPicker={galleryOpenSubjectPicker} onConfirmEnroll={galleryConfirmEnroll} onStartStudio={galleryBeginStudio} onStudioAction={galleryStudioAction} onFieldShoot={galleryDoFieldShoot} onExhibition={galleryDoExhibition}/>}
+
+      {supernaturalModalOpen&&<SupernaturalAscensionModal students={students} opposition={opposition} onAscend={ascendSupernatural} onDismiss={dismissSupernaturalAct}/>}
 
       {/* ── HOMEROOM QUEEN: CLASSROOM MINI-INTERFACE ── */}
       {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession}/>}
