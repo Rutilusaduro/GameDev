@@ -1,5 +1,11 @@
 import { registerPool } from '../engine.js';
 
+registerPool('opposition.act.rumor', [
+  'Whispers in the faculty lounge about your "generous" catering budget.',
+  'A resident advisor asks if your class has a nutrition plan.',
+  'Someone pinned a wellness flyer outside your classroom door.',
+]);
+
 registerPool('opposition.aib.unlocked', [
   'The Academic Inquiry Board has noticed your class. Agendas queue. Resolve bends.',
   'Scrutiny opens doors — the wrong kind. Five members watch from polished tables.',

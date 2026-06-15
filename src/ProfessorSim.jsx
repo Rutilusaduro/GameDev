@@ -199,6 +199,7 @@ import {
   defaultOppositionState, processOppositionWeek, runAibCounter, checkSupernaturalTrigger,
   getOppositionGainMult, tickSupernaturalWeek,
 } from './gameData/opposition.js';
+import { supernaturalActLine } from './gameData/oppositionText.js';
 import { canSupernaturalEvolve, getSupernaturalFormForStudent, getSupernaturalGainMult, applyRefeedSurge } from './gameData/supernaturalForms.js';
 import {
   defaultSalonState, startSalonSession, salonPickMenu, salonServiceChoice, salonFinishDigestif,
@@ -1331,7 +1332,7 @@ export default function ProfessorSim(){
     const oppResult=processOppositionWeek(nextOpposition,{week:newWeek,scrutiny:adminScrutiny,students:updated,rnd});
     nextOpposition=oppResult.opposition;
     updated=applyOppositionStudentPatches(updated,oppResult.studentPatches);
-    const superTick=tickSupernaturalWeek(nextOpposition,updated);
+    const superTick=tickSupernaturalWeek(nextOpposition,updated,rnd,newWeek);
     nextOpposition=superTick.opposition;
     updated=applyOppositionStudentPatches(updated,superTick.studentPatches);
     nextOpposition=tickScarcityBanishment(nextOpposition,updated);
@@ -1373,6 +1374,12 @@ export default function ProfessorSim(){
     if(oppResult.scrutinyDelta) addScrutiny(oppResult.scrutinyDelta);
     if(oppResult.moneyDelta) setMoney(m=>m+oppResult.moneyDelta);
     [...oppResult.logs,...superTick.logs].forEach((msg,i)=>setTimeout(()=>push(msg),200+i*60));
+    if(newlyTriggered&&!nextOpposition.meta?.supernaturalAnnounced){
+      const line=supernaturalActLine(newWeek);
+      if(line) setTimeout(()=>push(`👻 ${line}`),240);
+      nextOpposition={...nextOpposition,meta:{...nextOpposition.meta,supernaturalAnnounced:true}};
+      setOpposition(nextOpposition);
+    }
     if(newlyTriggered&&!nextOpposition.supernatural.ascensionOffered) setSupernaturalModalOpen(true);
 
     setStudents(updated);
@@ -6493,7 +6500,7 @@ export default function ProfessorSim(){
       {/* NAV */}
       <div style={C.nav}>
         {[["class","📋 Roster"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],
-          ...(opposition?.aib?.unlocked||adminScrutiny>=25?[["oversight","👁 Oversight"]]:[]),
+          ...(week>=8||opposition?.aib?.unlocked||adminScrutiny>=25?[["oversight","👁 Oversight"]]:[]),
           ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"]]:[]),
         ].map(([v,l])=>(
           v==="student"&&!sel?null:
@@ -6565,7 +6572,7 @@ export default function ProfessorSim(){
 
           {view==="achievements"&&<AchievementsView achievements={achievements}/>}
 
-          {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} lilithUnlocked={lilithUnlocked} pharmacistStage={pharmacistState?.stage??1} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onStartHearing={startOppositionHearing} onClose={()=>setView('class')}/>}
+          {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} week={week} lilithUnlocked={lilithUnlocked} pharmacistStage={pharmacistState?.stage??1} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onStartHearing={startOppositionHearing} onClose={()=>setView('class')}/>}
 
         </div>
 

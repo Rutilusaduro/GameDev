@@ -4,6 +4,12 @@
 
 import { getStage } from './stages.js';
 import { digestNpc } from './gainSystem.js';
+import {
+  isBoardDormant, pickActIRumor, computeClassTransformationPressure,
+} from './oppositionActs.js';
+import {
+  oppositionUnlockLine, oppositionProxyLine, supernaturalActLine, agendaResolveLine,
+} from './oppositionText.js';
 
 export const AIB_MEMBERS = [
   { id: 'vance', name: 'Dr. Helena Vance', role: 'Chair, Dean of Student Life', resolve: 85, corruption: 0, weightLbs: 145, stance: 'hostile' },
@@ -89,6 +95,11 @@ export function defaultOppositionState() {
       curseQueue: [],
       ascensionOffered: false,
     },
+    meta: {
+      aibUnlockWeek: null,
+      supernaturalAnnounced: false,
+      rumorCount: 0,
+    },
   };
 }
 
@@ -112,13 +123,43 @@ function drawAgendaCard(opposition, scrutiny, rnd = Math.random) {
   return unique[Math.floor(rnd() * unique.length)];
 }
 
-export function unlockOppositionIfNeeded(opposition, scrutiny) {
+export function unlockOppositionIfNeeded(opposition, scrutiny, week = 1) {
   if (opposition.aib.unlocked) return opposition;
   if (scrutiny < 25) return opposition;
   return {
     ...opposition,
     aib: { ...opposition.aib, unlocked: true },
+    meta: { ...opposition.meta, aibUnlockWeek: week },
   };
+}
+
+function tickMemberStances(members) {
+  return members.map((m) => {
+    let { resolve, stance, corruption, weightLbs } = m;
+    if (corruption >= 67) resolve = Math.max(0, resolve - 10);
+    if (corruption >= 50 && stance !== 'compromised') stance = 'compromised';
+    else if (resolve < 20 && stance === 'hostile') stance = 'wavering';
+    else if (resolve < 20 && stance === 'wavering') stance = 'compromised';
+    else if (resolve < 40 && stance === 'hostile') stance = 'wavering';
+    if (weightLbs >= 195) resolve = Math.max(0, resolve - 3);
+    return { ...m, resolve, stance };
+  });
+}
+
+/** Latent Appetite — non-evolved students gain corruption when Supernatural Act is active (§29 design). */
+export function applyLatentAppetiteWeek(students, opposition, rnd = Math.random) {
+  if (!opposition?.supernatural?.actTriggered) return { students, patches: [], logs: [] };
+  const logs = [];
+  const patches = [];
+  const updated = students.map((s) => {
+    if (s.hidden || s.evolvedForm || s.supernaturalForm) return s;
+    if (rnd() > 0.45) return s;
+    const delta = rnd() < 0.3 ? 2 : 1;
+    patches.push({ id: s.id, corruptionDelta: delta });
+    logs.push(`👁 Latent appetite — ${s.name} feels the hollow pull (+${delta} corruption).`);
+    return { ...s, corruption: Math.min(100, (s.corruption || 0) + delta) };
+  });
+  return { students: updated, patches, logs };
 }
 
 export function getOppositionGainMult(opposition) {
@@ -329,16 +370,33 @@ function rndRange(a, b) {
 }
 
 export function processOppositionWeek(opposition, { week, scrutiny, students, rnd = Math.random }) {
-  let next = unlockOppositionIfNeeded(opposition, scrutiny);
-  if (!next.aib.unlocked) {
-    return { opposition: next, scrutinyDelta: 0, moneyDelta: 0, logs: [], studentPatches: [], pendingDeviceConfiscation: false };
-  }
-
+  let next = {
+    ...opposition,
+    meta: { rumorCount: 0, aibUnlockWeek: null, supernaturalAnnounced: false, ...opposition.meta },
+  };
   const logs = [];
   let scrutinyDelta = 0;
   let moneyDelta = 0;
   const studentPatches = [];
   let pendingDeviceConfiscation = false;
+
+  // Act I — rumors only while board dormant (§29.2)
+  if (isBoardDormant(week, scrutiny, next)) {
+    if (rnd() < 0.4) {
+      logs.push(pickActIRumor(week, rnd));
+      next = { ...next, meta: { ...next.meta, rumorCount: (next.meta.rumorCount || 0) + 1 } };
+    }
+    return { opposition: next, scrutinyDelta, moneyDelta, logs, studentPatches, pendingDeviceConfiscation };
+  }
+
+  const wasUnlocked = next.aib.unlocked;
+  next = unlockOppositionIfNeeded(next, scrutiny, week);
+  if (!wasUnlocked && next.aib.unlocked) {
+    logs.push(`👁 ${oppositionUnlockLine(week)}`);
+  }
+  if (!next.aib.unlocked) {
+    return { opposition: next, scrutinyDelta, moneyDelta, logs, studentPatches, pendingDeviceConfiscation };
+  }
 
   const advocate = rotateAdvocate(next, week);
   next = {
@@ -362,9 +420,13 @@ export function processOppositionWeek(opposition, { week, scrutiny, students, rn
   if (week >= 14 && scrutiny >= 50) next = { ...next, proxies: { ...next.proxies, accreditation: true } };
   if (week >= 20) next = { ...next, proxies: { ...next.proxies, asceticCircle: true } };
 
-  if (next.proxies.wellnessCoalition && week === 8) logs.push('🏥 Wellness Coalition forms on campus.');
+  if (next.proxies.wellnessCoalition && week === 8) {
+    logs.push(`🏥 ${oppositionProxyLine('wellnessCoalition', week) || 'Wellness Coalition forms on campus.'}`);
+  }
   if (next.proxies.accreditation && week === 14) logs.push('📨 Regional Accreditation Observer letter arrives.');
-  if (next.proxies.asceticCircle && week === 20) logs.push('🕯️ Ascetic Circle protests begin at the garden.');
+  if (next.proxies.asceticCircle && week === 20) {
+    logs.push(`🕯️ ${oppositionProxyLine('asceticCircle', week) || 'Ascetic Circle protests begin at the garden.'}`);
+  }
 
   // Truce from feast bribe
   if (next.aib.truceWeeks > 0) {
@@ -380,7 +442,8 @@ export function processOppositionWeek(opposition, { week, scrutiny, students, rn
     if (item.resolvesWeek <= week) {
       const card = AIB_AGENDA_CARDS.find((c) => c.id === item.cardId);
       if (card) {
-        logs.push(card.message);
+        const flavor = agendaResolveLine(card.id, week);
+        logs.push(flavor || card.message);
         scrutinyDelta += card.scrutiny || 0;
         moneyDelta += card.money || 0;
         const fx = resolveAgendaEffect(card, students, next, rnd);
@@ -402,8 +465,8 @@ export function processOppositionWeek(opposition, { week, scrutiny, students, rn
   });
   next = { ...next, aib: { ...next.aib, agendaQueue: stillQueued } };
 
-  // Draw new cards
-  let draws = next.proxies.accreditation ? 2 : 1;
+  // Draw new cards — Investigation tier draws 2/week (§30.5)
+  let draws = next.proxies.accreditation || scrutiny >= 90 ? 2 : 1;
   if (next.aib.informantShieldWeeks > 0) draws = Math.max(1, draws - 1);
   const newQueue = [...stillQueued];
   for (let i = 0; i < draws && newQueue.length < 2; i++) {
@@ -416,22 +479,21 @@ export function processOppositionWeek(opposition, { week, scrutiny, students, rn
 
   scrutinyDelta += getAibScrutinyMod(next);
 
-  // Member resolve softens when heavy; digest chamber calories; wavering transition
+  // Member resolve softens when heavy; digest chamber calories; stance transitions
   next = {
     ...next,
     aib: {
       ...next.aib,
-      members: next.aib.members.map((m) => {
-        let member = m;
-        if (member.consumedCalories > 0) {
-          const dig = digestNpc(member);
-          member = { ...member, weightLbs: dig.weightLbs, ...dig.reset };
-        }
-        let resolve = member.weightLbs >= 195 ? Math.max(0, member.resolve - 3) : member.resolve;
-        let stance = member.stance;
-        if (resolve < 40 && stance === 'hostile') stance = 'wavering';
-        return { ...member, resolve, stance };
-      }),
+      members: tickMemberStances(
+        next.aib.members.map((m) => {
+          let member = m;
+          if (member.consumedCalories > 0) {
+            const dig = digestNpc(member);
+            member = { ...member, weightLbs: dig.weightLbs, ...dig.reset };
+          }
+          return member;
+        }),
+      ),
     },
   };
 
@@ -445,14 +507,7 @@ export function processOppositionWeek(opposition, { week, scrutiny, students, rn
 
 export function checkSupernaturalTrigger(opposition, { week, scrutiny, students, campusSaturation }) {
   if (opposition.supernatural.actTriggered) return opposition;
-  const visible = students.filter((s) => !s.hidden);
-  const avgPressure = visible.length
-    ? visible.reduce((a, s) => {
-        const stage = Math.min(11, Math.floor((s.lbs - 80) / 40));
-        const corr = s.corruption || 0;
-        return a + stage * 0.35 + corr * 0.3;
-      }, 0) / visible.length
-    : 0;
+  const avgPressure = computeClassTransformationPressure(students);
   const committed = avgPressure >= 55;
   const investigation = scrutiny >= 90;
   const regional = campusSaturation >= 85;
@@ -466,6 +521,7 @@ export function checkSupernaturalTrigger(opposition, { week, scrutiny, students,
         scarcityPressure: 20,
         ascensionOffered: false,
       },
+      meta: { ...opposition.meta, supernaturalAnnounced: false },
     };
   }
   if (regional && week >= 20) {
@@ -478,30 +534,39 @@ export function checkSupernaturalTrigger(opposition, { week, scrutiny, students,
         scarcityPressure: 15,
         ascensionOffered: false,
       },
+      meta: { ...opposition.meta, supernaturalAnnounced: false },
     };
   }
   return opposition;
 }
 
-export function tickSupernaturalWeek(opposition, students) {
+export function tickSupernaturalWeek(opposition, students, rnd = Math.random, week = 0) {
   if (!opposition.supernatural?.actTriggered) return { opposition, logs: [], studentPatches: [] };
   const logs = [];
   const studentPatches = [];
   let scarcityPressure = opposition.supernatural.scarcityPressure;
+  let curseQueue = [...(opposition.supernatural.curseQueue || [])];
 
-  if (scarcityPressure > 0 && Math.random() < 0.35) {
-    const target = pickRandomVisible(students);
+  if (scarcityPressure > 0 && rnd() < 0.35) {
+    const vis = students.filter((s) => !s.hidden);
+    const target = vis.length ? vis[Math.floor(rnd() * vis.length)] : null;
     if (target) {
-      studentPatches.push({ id: target.id, curseWeeks: 1, passiveGainBlocked: true });
+      studentPatches.push({ id: target.id, passiveGainBlocked: true });
+      curseQueue.push({ studentId: target.id, week });
       logs.push(`👻 Hunger curse — ${target.name} gains nothing passively this week.`);
       scarcityPressure = Math.min(100, scarcityPressure + 2);
     }
   }
+  curseQueue = curseQueue.slice(-12);
+
+  const latent = applyLatentAppetiteWeek(students, opposition, rnd);
+  logs.push(...latent.logs);
+  studentPatches.push(...latent.patches);
 
   return {
     opposition: {
       ...opposition,
-      supernatural: { ...opposition.supernatural, scarcityPressure },
+      supernatural: { ...opposition.supernatural, scarcityPressure, curseQueue },
     },
     logs,
     studentPatches,
