@@ -201,7 +201,7 @@ import {
 } from './gameData/opposition.js';
 import { supernaturalActLine } from './gameData/oppositionText.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason } from './gameData/oppositionIntegration.js';
-import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled } from './gameData/oppositionCampus.js';
+import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
 import {
   getSessionCapacityCap,
@@ -722,6 +722,11 @@ export default function ProfessorSim(){
     const { lines, effects }=rollTravelExploration(nodeId,ctx);
     const extra=[];
     if(effects.asceticShame) addScrutiny(2);
+    if(effects.ledgerWightAudit){
+      const ledgerFx=applyLedgerWightEncounter(opposition);
+      if(ledgerFx.scrutinyDelta) addScrutiny(ledgerFx.scrutinyDelta);
+      setOpposition(ledgerFx.opposition);
+    }
     if(effects.ingredientGrant||effects.foodGrant) grantExplorationReward({...effects.ingredientGrant,...(effects.foodGrant?{foodId:effects.foodGrant}:{})});
     if(Math.random()<CAMPUS_CONFIG.itemFindChance*0.5){
       const item=rollWeeklyItem();
@@ -746,6 +751,7 @@ export default function ProfessorSim(){
       exploration,
       deviceEncounter:effects.deviceEncounter||null,
       asceticGardenProtest:!!effects.asceticGardenProtest,
+      mirrorFastWeek:!!effects.mirrorFastWeek,
     };
   };
 
@@ -804,10 +810,15 @@ export default function ProfessorSim(){
     const from=CAMPUS_NODES[campusState.at];
     if(!from.exits.includes(nodeId)) return;
     const node=CAMPUS_NODES[nodeId];
-    const { lines:eventLines, exploration, deviceEncounter, asceticGardenProtest }=rollCampusEvent(nodeId,true);
+    const { lines:eventLines, exploration, deviceEncounter, asceticGardenProtest, mirrorFastWeek }=rollCampusEvent(nodeId,true);
     const lines=[`→ You walk to ${node.emoji} ${node.label}.`,node.desc,...eventLines];
     setCampusState(prev=>{
-      const next=asceticGardenProtest?applyAsceticGardenProtest(prev):prev;
+      let next=asceticGardenProtest?applyAsceticGardenProtest(prev):prev;
+      if(mirrorFastWeek){
+        const fx=applyMirrorFastEncounter(next,opposition);
+        next=fx.campus;
+        if(fx.opposition) setOpposition(fx.opposition);
+      }
       return {
         ...next,
         at:nodeId,
@@ -821,7 +832,7 @@ export default function ProfessorSim(){
   const lookAround=()=>{
     const node=CAMPUS_NODES[campusState.at];
     const flavor=node.flavor[rnd(0,node.flavor.length-1)];
-    const { lines:eventLines, exploration:eventExploration, deviceEncounter, asceticGardenProtest }=rollCampusEvent(campusState.at,false);
+    const { lines:eventLines, exploration:eventExploration, deviceEncounter, asceticGardenProtest, mirrorFastWeek }=rollCampusEvent(campusState.at,false);
     const ctx=getCampusExplorationCtx();
     let exploration=eventExploration;
     const lines=[flavor,...eventLines];
@@ -845,7 +856,12 @@ export default function ProfessorSim(){
       }
     }
     setCampusState(prev=>{
-      const next=asceticGardenProtest?applyAsceticGardenProtest(prev):prev;
+      let next=asceticGardenProtest?applyAsceticGardenProtest(prev):prev;
+      if(mirrorFastWeek){
+        const fx=applyMirrorFastEncounter(next,opposition);
+        next=fx.campus;
+        if(fx.opposition) setOpposition(fx.opposition);
+      }
       return {
         ...next,
         exploration,
@@ -1142,7 +1158,8 @@ export default function ProfessorSim(){
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       let gain=rnd(1,3)+skillPassiveBonus+(classSkillFx.passiveBonus||0);
       const asceticMult=campusState?.asceticProtestWeek?0.88:1;
-      gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*getSupernaturalGainMult(s)*(1+(classSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
+      const mirrorMult=campusState?.mirrorFastWeek?0.9:1;
+      gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*mirrorMult*getSupernaturalGainMult(s)*(1+(classSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
       if(opposition?.supernatural?.synthesisAlly) gain=Math.max(0,Math.round(gain*1.1));
       // Corruption-driven autonomous eating (willingness made flesh)
       const cTier=getCorruptionTier(s.corruption||0).id;
@@ -1520,6 +1537,10 @@ export default function ProfessorSim(){
     if(campusState?.asceticProtestWeek){
       setCampusState(prev=>({...prev,asceticProtestWeek:false}));
       setTimeout(()=>push('🕯️ Ascetic Circle protest fades — campus appetite recovers.'),280);
+    }
+    if(campusState?.mirrorFastWeek){
+      setCampusState(prev=>({...prev,mirrorFastWeek:false}));
+      setTimeout(()=>push('🪞 Mirror Fast dissolves — appetite returns to the body.'),300);
     }
     // Competitive Gainer: auto-post to group chat each new week
     const priyaCG=updated.find(s=>s.evolvedForm==='competitive_gainer');
