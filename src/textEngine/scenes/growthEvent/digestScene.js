@@ -61,7 +61,7 @@ registerPool('ge.digestSettle', [
     'By evening it feels normal again — heavier, softer, undeniably hers.',
     'The gain does not explode; it settles, like a decision she made one bite at a time.',
     'She carries the new weight into the week without ceremony.',
-    'No wizard, no chamber — just the slow arithmetic of a week well fed.',
+    'The week\'s meals have left their mark — slow, steady, and entirely welcome.',
   ] },
   { when: {}, text: ['The softness stays.'] },
 ]);

@@ -3,7 +3,9 @@
 // ═══════════════════════════════════════════════════════════════
 import { createContext, render } from '../../engine.js';
 import { getStage } from '../../../gameData/stages.js';
+import '../../modules.js';
 import './chairIncident.js';
+import './teamWeighIn.js';
 import './randomEvents.js';
 import './narrativeEvents.js';
 

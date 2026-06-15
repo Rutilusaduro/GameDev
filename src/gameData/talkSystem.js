@@ -8,6 +8,7 @@ export const TALK_TOPICS = [
   // ── always available ───────────────────────────────────────
   { id:"check_in", label:"Check in", icon:"💬", group:"talk",
     effect:{ rel:2 },
+    engineTemplate:"{talk.check_in}",
   },
   { id:"compliment", label:"Compliment her figure", icon:"🌸", group:"talk",
     effect:{ rel:3 },

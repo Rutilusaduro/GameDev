@@ -66,5 +66,9 @@ registerPool('grow.crossing', [
     'Movement is memory; mass is the present tense.',
     'The ultimate threshold — and still, somehow, growing room remains.',
   ] },
-  { when: {}, text: ['She has crossed into a new weight class.'] },
+  { when: {}, text: [
+    'The gain shows in the mirror before she has words for it.',
+    'Something new settles against her ribs — heavier, softer, undeniably hers.',
+    'Her body announces the threshold in fabric and breath before her mind catches up.',
+  ] },
 ]);

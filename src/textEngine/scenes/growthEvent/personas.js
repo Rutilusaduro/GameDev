@@ -632,6 +632,34 @@ registerModuleVariants("grow.crossingDialogue", [
     `"Blessed," she breathes. "Lord, what a bounty."`,
   ]},
 
+  // ── Tiffany (6) ────────────────────────────────────────────────
+  { when: { studentId: 6, endStageMin: 3, endStageMax: 5 }, weight: W, text: [
+    `"More is more, babe," she says, checking her reflection.`,
+    `"Okay, so we're doing this," she says, pleased.`,
+    `"The girls are going to lose their minds," she murmurs, delighted.`,
+  ]},
+  { when: { studentId: 6, endStageMin: 6, endStageMax: 8 }, weight: W, text: [
+    `"Bigger is better," she says, like it's obvious.`,
+    `"This is the vibe now," she says, patting her middle.`,
+  ]},
+  { when: { studentId: 6, endStageMin: 9 }, weight: W, text: [
+    `"Iconic," she breathes. "Absolutely iconic."`,
+  ]},
+
+  // ── Kaylee (11) ────────────────────────────────────────────────
+  { when: { studentId: 11, endStageMin: 3, endStageMax: 5 }, weight: W, text: [
+    `"Noted," she murmurs, clinical habit intact.`,
+    `"So that's where I am now," she says, and means it.`,
+    `"The chart would call this significant," she says quietly. "I call it honest."`,
+  ]},
+  { when: { studentId: 11, endStageMin: 6, endStageMax: 8 }, weight: W, text: [
+    `"Documented," she says, almost to herself.`,
+    `"Heavier than last month," she murmurs. "Still me."`,
+  ]},
+  { when: { studentId: 11, endStageMin: 9 }, weight: W, text: [
+    `"Well," she says softly. "That's a lot of patient."`,
+  ]},
+
   // ── Lilith (15) ────────────────────────────────────────────────
   { when: { studentId: 15, endStageMin: 3, endStageMax: 5 }, weight: W, text: [
     `"Growing," she murmurs. She sounds as if she has been waiting for this.`,
@@ -648,8 +676,8 @@ registerModuleVariants("grow.crossingDialogue", [
   // ── Shared band supplements (no studentId) ────────────────────
   // These supplement all girls; persona variants dominate when they match.
   { when: { endStageMin: 3, endStageMax: 5 }, weight: W, text: [
-    `"Getting there," she says.`,
-    `"So that's where I am now," she says, and means it.`,
+    `"Huh," she says softly.`,
+    `"There it is," she says, without drama.`,
   ]},
   { when: { endStageMin: 6, endStageMax: 8 }, weight: W, text: [
     `"This is real," she says.`,
