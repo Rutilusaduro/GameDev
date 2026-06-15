@@ -42,33 +42,6 @@ function withMood(s, text) {
 // ── topic pools: [tier0, tier1, tier2] ────────────────────────
 
 const DIALOGUE = {
-  check_in: [
-    [
-      (s) => withMood(s, `"Oh — hi, Professor." ${s.name} tucks a strand of hair back and glances at the snack stash she's been pretending isn't hers. "I'm good. Busy. Hungry, kind of constantly, which is — anyway." She laughs once, embarrassed. "Good. I'm good."
-
-She shifts in her chair and you notice how her clothes sit differently than they did at the start of semester — snugger at the hips, pulling across her middle when she breathes. She hasn't noticed you noticing. Or she's pretending not to.`),
-      (s) => withMood(s, `${s.name} smiles, a little guarded, and sets down whatever she was holding. "Things are fine. Classes are fine." A beat. Her hand drifts to her waist, thumb hooking the waistband. "The dining hall got better, did you notice? Or I did. One of those."
-
-She's ${lbs(s)} lbs now — still early enough that she can call it temporary if she wants to. She doesn't call it that. She just changes the subject.`),
-    ],
-    [
-      (s) => withMood(s, `"Better now," ${s.name} says, and means the company, or possibly the snacks you tend to bring. Probably both. She settles deeper into her chair — it creaks — and her softened body spreads warm and unhurried against the cushions.
-
-"I'm not fighting it anymore," she admits, quieter. "The hunger, the weight, all of it. It feels… honest." She runs her palm along the curve of her belly through her top. "I used to hold my breath around this stuff. I don't anymore."`),
-      (s) => withMood(s, `${s.name} stretches, comfortable in her skin in a way she wasn't a semester ago. At ${lbs(s)} lbs she takes up more of the office than she used to — thighs pressing together when she crosses her legs, belly rounding softly when she leans back.
-
-"Honestly? Really good. I've stopped fighting myself about… most things." She meets your eyes. "You helped. I know you helped. I'm not mad about it."`),
-    ],
-    [
-      (s) => withMood(s, `${s.name} lights up the moment she sees you. "I was hoping you'd come by. Sit. Watch me finish this." She pats the seat beside her like she's granting an audience, then gestures at the spread she's assembled — pastries, takeout, something warm still steaming.
-
-Her body has grown into the invitation. At ${lbs(s)} lbs she is plush and present and completely unashamed of either the food or the flesh. "I saved you the good stuff," she says. "Well. I saved some of it."`),
-      (s) => withMood(s, `"I'm wonderful," ${s.name} says simply. She spreads her hands over the warm round of her belly — ${lbs(s)} lbs of soft, deliberate growth. "I'm fed, I'm growing, and you're here. List complete."
-
-She says it without performance. Without asking if it's okay. Her thighs spread wide in the chair; her breathing is easy; her smile is real. "Talk to me," she murmurs. "Or don't. Just stay a while."`),
-    ],
-  ],
-
   compliment: [
     [
       (s) => `${s.name} flushes scarlet. "I— you noticed? I mean. Of course you noticed. It's… a lot to notice." She hugs her arms over her middle and fails to hide either the soft curve she's grown or the smile pulling at her mouth.
