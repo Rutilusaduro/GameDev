@@ -315,12 +315,12 @@ Pantry restocks 2–3 random items/week. Use on student → calories + fullness.
 | 1 | Madeline | bookworm | 125 | Community Researcher |
 | 2 | Kylie | influencer | 122 | Feedee Channel, Body Positive Platform |
 | 3 | Serena | athlete | 145 | Sumo, Circuit Competitor |
-| 4 | Fiona | artsy | 115 | Installation Artist, Food Photographer |
+| 4 | Fiona | artsy | 115 | **Living Canvas** *(replaces Installation Artist, Food Photographer)* |
 | 5 | Destiny | gamer | 155 | Ranked Feedee, Eating Streamer |
 | 6 | Tiffany | sorority | 128 | Chapter Hostess |
 | 7 | Priya | overachiever | 120 | Competitive Gainer |
 | 8 | Maya | quiet | 130 | Home Nest, Delivery Hive Queen |
-| 9 | Chloe | transfer | 135 | Campus Legend |
+| 9 | Chloé | transfer | 135 | **Salon de l'Appétit** *(replaces Campus Legend; French exchange reboot)* |
 | 10 | Reneé | culinary | 148 | Cultivator (special unlock) |
 | 11 | Kaylee | nursing | 132 | *(no evolution offer)* |
 | 12 | Nadia | psych | 117 | Psych Researcher |
@@ -1008,7 +1008,7 @@ Week trigger: global scene — lights dim, stomachs flutter empty then **hunger 
 | sorority | `silhouette_host` | Elegant empty host | Feasts apply re-indulgence bonus |
 | overachiever | `metric_hollow` | Sharp, measuring | Competitive gainer: steal lbs from curse |
 | quiet | `hive_mote` | Single point, many appetites | Hive grid: biomass from refeed |
-| transfer | `legend_echo` | Campus myth, barely there | Legend challenges: +scarcity damage |
+| transfer | `salon_wraith` | Ethereal hostess, empty room | Evenings drain scarcityPressure |
 | eced | `apple_oracle` | Thin teacher, heavy prophecy | Homeroom: shame vigil immunity |
 | farm_girl | `harvest_maiden` | Wiry, ripe magic | Fair training: mass memory stacks |
 | psych | `mirror_thin` | Reflects hunger in others | Researcher: corruption splash |
@@ -1268,4 +1268,251 @@ endWeek():
 
 ---
 
-*Document generated from codebase audit on branch `Primary`. Oppositional forces design added branch `cursor/oppositional-forces-design-935f`. Session transcript: `docs/OPPOSITIONAL_FORCES_DESIGN_SESSION.md`. Implementation depth: `docs/DEPTH_PLAN.md`.*
+## 36. Fiona — Living Canvas (Artsy Evolution Redesign)
+
+### 36.1 Design rationale
+
+**Removed paths:** `installation_artist`, `food_photographer` — generic activity + reaction lines only; no custom UI; split Fiona's content budget.
+
+**New single path:** `living_canvas` — **The Living Canvas**. Fiona treats her growing body as the primary artwork: composed, exhibited, critiqued, and fed in public. Quality tier: Homestead Queen / Pharmacist (custom modal, multi-phase `EVOLVED_EVENTS`, lbs-cost skill tree, scrutiny integration).
+
+### 36.2 Evolution offer
+
+**Unlock:** Standard gates (§15.1): stage ≥ Plump, rel ≥ 60.
+
+**Intro:** Fiona arrives with two portfolios — old work (thin figures, negative space) and new sketches (her body at increasing scale). *"I've been thinking about what the work is about now. I don't want to document the transformation. I want to **be** it — composed, lit, exhibited. Will you help me curate?"*
+
+**Single choice:** Living Canvas.
+
+### 36.3 Core fantasy
+
+The studio becomes a gallery. The player helps Fiona **compose** pieces (motif + body zone + edible "medium"), run **sessions** that allocate indulgence across zones, manage **patrons** and **critics**, and stage **Opening Nights** where Fiona eats as performance art — scandalous, reverent, lucrative.
+
+### 36.4 Custom UI — Studio Canvas (`FionaCanvasModal.jsx`)
+
+**Tabs:**
+
+| Tab | Function |
+|-----|----------|
+| **Compose** | Pick motif, zone, medium; run allocation mini-game |
+| **Patrons** | Commission queue, payments, rel bonuses |
+| **Archive** | Past compositions, critic quotes, scandal log |
+
+**Student state:** `canvasState: { patrons: 0–100, archive: [], scandalStreak, lastMotif, openingsHeld }`
+
+### 36.5 Compose session (1–2 AP)
+
+**Step 1 — Motif** (flavor + modifier):
+
+| Motif | Gain mult | Scrutiny |
+|-------|-----------|----------|
+| Abundance | +10% lbs | +2 |
+| Still Life | +5% rel | 0 |
+| Portrait | +8% corruption | +1 |
+| Performance | +15% lbs | +4 |
+
+**Step 2 — Zone focus:** belly | bust | hips | full — biases growth-event text and inner voice.
+
+**Step 3 — Medium palette:** butter / cream / chocolate / pastry — renames calories in prose.
+
+**Step 4 — Allocation mini-game:** Distribute 12 "pigment" points across zones (reuse route-allocation pattern from §19.6). Over-allocate primary zone → force-feed roll bonus.
+
+**Outcome:** +4–9 lbs (activity tier scaled), +patrons, critic reaction tier.
+
+### 36.6 Patron & critic system
+
+- **Patron meter** 0–100: rises from Reverent/Provocative reviews; unlocks commissions ($80–$250, +rel).
+- **Critic roll** each session: Reverent (patrons +8) | Provocative (patrons +12, scrutiny +3) | Scandalous (patrons +20, scrutiny +8, AIB telegraph).
+- **Commissions:** occasional requests — "paint" specific zone via next compose session; bonus lbs on completion.
+
+### 36.7 Opening Night (every 2 activity stage indices)
+
+2 AP capstone within arc:
+
+- Public feeding performance in studio/gallery
+- Player choices: **Intimate scale** (rel focus) | **Spectacle** (lbs focus) | **Scandal** (patrons + scrutiny)
+- +10–18 direct lbs
+- Triggers `growthEvent` weighted to zone focus
+- **Opposition hook (§30):** Investigation tier + Scandal opening → `wellness_audit` agenda priority
+
+### 36.8 EVOLVED_EVENTS arc (6 stages)
+
+| Stage | Title | Beats |
+|-------|-------|-------|
+| 0 | First Study | Solo session; Fiona admits body is the subject |
+| 1 | The Patron Arrives | First commission; first critic review |
+| 2 | Scandal Opening | Public night; campus paper attends |
+| 3 | Two-Room Show | Studio expansion; Fiona immobile-adjacent redirect if blob |
+| 4 | The Retrospective That Isn't | Curator wants "work in progress" show |
+| 5 | Perpetual Exhibition | Fiona as living installation; patrons weekly |
+
+Each stage: 2 phases × 2 choices → ending variants (flags: `patron_secured`, `scandal_embraced`, etc.).
+
+### 36.9 Skill tree (`living_canvas`, lbs currency)
+
+| Skill | Cost | Effect |
+|-------|------|--------|
+| Patronage Network | 20 | +$ per commission |
+| Scandal as Publicity | 40 | Scandalous reviews +patrons, −scrutiny 1/wk |
+| Immersive Scale | 70 | +2 lbs/compose |
+| The Artist Present | 110 | Opening nights +rel all attendees |
+| Perpetual Exhibition | 160 | +2 passive lbs/wk, scrutiny −2/wk |
+
+### 36.10 Cross-system integration
+
+- **Tiffany Chapter Hostess:** Fiona atmosphere prep → bonus patron roll if evolved `living_canvas`
+- **AIB (§30):** Scandal openings feed `scandalMeter`
+- **Supernatural Act (§32):** thin-form `canvas_wraith` — ethereal installations, refeed = "restoring the piece"
+- **Text engine:** `living_canvas.*` pools; motif/zone selectors
+
+### 36.11 Deprecation notes
+
+Remove from active offers: `installation_artist`, `food_photographer`. Retain ids in save migration map → `living_canvas` if either was set. Update `skills.js`, diary modules, `EVOLVED_REACTIONS`, outfits.
+
+---
+
+## 37. Chloé — Salon de l'Appétit (Transfer Evolution Redesign)
+
+### 37.1 Character reboot
+
+| Field | Value |
+|-------|-------|
+| **id** | 9 (unchanged) |
+| **name** | Chloé Moreau |
+| **archetype** | transfer |
+| **role** | Étudiante d'échange — Sorbonne Université |
+| **age** | 21 |
+| **bodyType** | hourglass *(was apple — softer French curves)* |
+| **startLbs** | 128 |
+| **personality** | sultry |
+| **desc** | Exchange from Paris. Silk scarves, wine-colored lipstick, the kind of accent that makes the dining hall feel smaller. She came for a semester of architecture and discovered American portions with the slow, delighted horror of a woman finding a new appetite. |
+| **favFood** | cheese, wine, anything fried she pretends not to want |
+| **hobby** | hosting, flirting, "cultural comparison" |
+
+**Voice:** Precise, warm, occasionally French — *mon dieu*, *encore*, *c'est obscène* (said with approval). Seductive hostess energy; not Irish dry bemusement. Weight as *rondeur*, *débordement* — sensual, unashamed.
+
+**Removed path:** `campus_legend` (food challenge circuit + journalist).
+
+**New path:** `salon_appetit` — **Salon de l'Appétit**.
+
+### 37.2 Evolution offer
+
+**Intro:** Chloé's dorm already smells like wine and butter. She's hosting before she's official — three chairs, candles, a cheese board she's been picking at while waiting.
+
+*"I hosted salons in Paris. Small ones. Polite ones."* She pours wine. *"America has taught me that polite is not the only option. I want **soirées** — real ones. You will help me fill the room. And the plates. And—"* She touches her waist, already softer than arrival. *"—me."*
+
+**Single choice:** Salon de l'Appétit.
+
+### 37.3 Core fantasy
+
+Chloé transforms her exchange semester into a **salon circuit** — intimate dinners that grow bolder, guest lists that escalate from classmates to faculty to journalists to scandal. The player curates menus, balances **charming guests** vs **feeding Chloé**, and builds **salon prestige** until the capstone **Grande Soirée**.
+
+### 37.4 Mini-game — Salon de l'Appétit (`SalonAppetitModal.jsx`)
+
+**Trigger:** Evolved activity, 2 AP (1 AP with skill unlock).
+
+**Per-session phases:**
+
+```
+Invitations → Menu du Soir → Service → Le Digestif → Afterglow
+```
+
+**Student state:** `salonState: { prestige: 0–100, indulgence: 0–100, eveningsHosted, guestBook[], scandalFlags[] }`
+
+#### Phase 1 — Invitations
+
+Pick 2–4 guests from roster (prestige-gated):
+
+| Guest tier | Examples | Unlock |
+|------------|----------|--------|
+| Classmates | Brittany, Madeline, Kylie | 0 |
+| Evolved collaborators | Reneé, Sophia, Tiffany | 20 |
+| Faculty | Chef Rosa, Dr. Mori | 45 |
+| Risk guests | Journalist, Ms. Platt (AIB) | 60 / 70 |
+
+AIB guest: high corruption chance, scrutiny spike, unique prose.
+
+#### Phase 2 — Menu du Soir
+
+Pick 4 courses from pools:
+
+- **French classic** (cheese, coq au vin, tarte) — prestige +, moderate lbs
+- **American excess** (fried tower, milkshake flight) — lbs +, indulgence +
+- **Fusion** (croissant burger, wine float) — balanced
+- **Reneé special** (if guest) — lbs ++
+
+Each course: `{ cal, full, lbs, prestige, indulgence }`.
+
+#### Phase 3 — Service
+
+Per course, choose:
+
+| Choice | Effect |
+|--------|--------|
+| **Charm le salon** | +prestige, guest rel, Chloé +modest lbs |
+| **Nourrir Chloé** | +lbs, +indulgence, guest fascination |
+| **Toast & tandem** | both moderate; best for journalist nights |
+
+Indulgence meter ≥ 80 → **Surge** flag (bonus digestif phase).
+
+#### Phase 4 — Le Digestif
+
+Private beat: player encourages final indulgence. Direct lbs roll +8–15. Corruption +2. Intimacy-adjacent prose without breaking house voice.
+
+#### Phase 5 — Afterglow
+
+Guest reactions; prestige delta; scandal if AIB present; unlock new guests.
+
+**Session payout:** +6–14 lbs typical; +prestige 5–15; scrutiny 0–10.
+
+### 37.5 EVOLVED_EVENTS arc (6 stages)
+
+| Stage | Title | Narrative |
+|-------|-------|-----------|
+| 0 | Première Soirée | Dorm salon; 3 guests; cheese & wine |
+| 1 | Faculty Drift | Dr. Mori smells cooking; stays for dessert |
+| 2 | Campus Murmur | "The French girl's dinners" — whisper network |
+| 3 | The Journalist's Notebook | Campus writer returns; new tone (seduction not spectacle) |
+| 4 | Rooftop Under Stars | Opposition protest optional; prestige 50+ |
+| 5 | La Grande Soirée | 12 guests, full menu, capstone lbs |
+
+Each stage: branching phases like `campus_legend` structure (flags: `journalist_charmed`, `faculty_regular`, `aib_scandal`, etc.).
+
+### 37.6 Skill tree (`salon_appetit`)
+
+| Skill | Cost | Effect |
+|-------|------|--------|
+| Hostess Grâce | 20 | +prestige per evening |
+| Menu Magnifique | 40 | Fusion courses +lbs |
+| Invité Spécial | 70 | Unlock faculty earlier |
+| Double Service | 110 | Service phase: both choices partial |
+| Reine du Salon | 160 | +3 lbs/evening, scrutiny −2/wk, 1 AP evenings |
+
+### 37.7 Cross-system integration
+
+- **Opposition (§30–31):** AIB guest path; Ascetic Circle protests outside salon
+- **Sophia:** compound + wine pairing bonus
+- **Reneé:** guest unlocks chef's course
+- **Campus:** rooftop node for stage 4
+- **Supernatural (§32):** `salon_wraith` thin-form — ethereal hostess, refeed = "the room remembers her fullness"
+
+### 37.8 Text engine modules
+
+- `salon_appetit.invite`, `menu`, `service`, `digestif`, `afterglow`
+- `weighIn` persona rewrite for studentId 9
+- `sessions.js` transfer archetype lines → French sultry hostess
+- `diary.salon_appetit` — 6-stage arc entries
+
+### 37.9 Sample prose beats
+
+**First evening:** *"In Paris we are taught to stop. Here—"* she bites something golden. *"Ici, they teach you to continue."*
+
+**Grande Soirée:** Twelve settings; Chloé in black silk; eats with performed appetite; curtsies without standing; *"Merci. Maintenant — encore."*
+
+### 37.10 Deprecation notes
+
+Remove: `campus_legend` offer, events, diary, skills, journalist arc (journalist NPC may persist for salon stage 3). Migrate saves → `salon_appetit`. Update supernatural mapping `legend_echo` → `salon_wraith`.
+
+---
+
+*Document generated from codebase audit on branch `Primary`. Oppositional forces design added branch `cursor/oppositional-forces-design-935f`. Session transcripts: `docs/OPPOSITIONAL_FORCES_DESIGN_SESSION.md`, `docs/FIONA_CHLOE_EVOLUTION_DESIGN_SESSION.md`. Implementation depth: `docs/DEPTH_PLAN.md`.*
