@@ -3,12 +3,14 @@
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import './fragments.js';
+import './personas.js';
 
 registerPool('campus.scene', [
   { when: {}, text: [
     '{campus.localeIntro} {campus.moveSentence} {campus.spaceObs|prefix: }',
     '{campus.moveSentence} {campus.obstacle|prefix: }{campus.spaceObs|prefix: }',
     '{campus.localeIntro} {campus.obstacle}{campus.soundTex|prefix:, }.',
+    '{campus.moveSentence} {campus.destination}{campus.soundTex|prefix:, }.',
   ] },
 ]);
 

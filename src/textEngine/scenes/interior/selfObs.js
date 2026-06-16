@@ -2,7 +2,7 @@
 import { registerPool } from '../../engine.js';
 
 registerPool('interior.selfObs', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   // A6 Slender — early interior, corruption 0
   { when: { corruption: [0], stageMax: 2 }, text: [
     'The body is still mostly the old story. The margins are changing.',

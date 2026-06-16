@@ -3,6 +3,8 @@
 // Run: npm run text:lint
 //      npm run text:lint -- --sample=500 --scene=wi
 //      npm run text:lint -- --coverage
+//      npm run text:lint -- --volume
+//      npm run text:lint -- --volume=slender.
 // See src/textEngine/AUTHORING.md for the rules this enforces.
 // ═══════════════════════════════════════════════════════════════
 import '../src/textEngine/scenes/index.js';
@@ -17,6 +19,7 @@ import { DEVICES } from '../src/gameData/devices.js';
 import { renderGrowthScene } from '../src/textEngine/scenes/growthEvent/index.js';
 import {
   BANNED_PATTERNS, SAMPLE_SCENES, COVERAGE_STAGE_PROBES, STAGE_COVERAGE_PREFIXES,
+  VOLUME_SQUAD_PREFIXES, OPTIONAL_EMPTY_POOLS,
 } from './text-lint.config.js';
 
 const CLI_ARGS = process.argv.slice(2);
@@ -25,6 +28,9 @@ const sceneArg = CLI_ARGS.find((a) => a.startsWith('--scene='));
 const SAMPLE_COUNT = sampleArg ? parseInt(sampleArg.split('=')[1], 10) : 0;
 const SAMPLE_SCENE = sceneArg ? sceneArg.split('=')[1] : 'wi';
 const RUN_COVERAGE = CLI_ARGS.includes('--coverage');
+const RUN_VOLUME = CLI_ARGS.includes('--volume');
+const volumePrefixArg = CLI_ARGS.find((a) => a.startsWith('--volume='));
+const VOLUME_PREFIX_FILTER = volumePrefixArg ? volumePrefixArg.split('=')[1] : null;
 
 const errors = [];
 const warnings = [];
@@ -387,6 +393,110 @@ if (SAMPLE_COUNT > 0) {
       warning(`sample: trigram "${tri}" appeared ${n}× in ${SAMPLE_COUNT} samples`);
     }
     console.log(`textLint sample: ${SAMPLE_COUNT} renders of scene "${SAMPLE_SCENE}"`);
+  }
+}
+
+// ── volume dashboard (Squad Step 9 targets) ───────────────────
+
+function countTexts(variant) {
+  const t = variant.text;
+  return Array.isArray(t) ? t.length : 1;
+}
+
+function wildcardVariants(variants) {
+  return variants.filter((v) => !v.when || Object.keys(v.when).length === 0);
+}
+
+function wildcardTextCount(variants) {
+  return wildcardVariants(variants).reduce((n, v) => n + countTexts(v), 0);
+}
+
+function nonEmptyWildcardCount(variants) {
+  return wildcardVariants(variants)
+    .flatMap((v) => (Array.isArray(v.text) ? v.text : [v.text]))
+    .filter((t) => typeof t === 'string' && t.trim()).length;
+}
+
+function personaCoverage(variants) {
+  const byStudent = new Map();
+  for (const v of variants) {
+    const sid = v.when?.studentId;
+    if (sid == null) continue;
+    const ids = Array.isArray(sid) ? sid : [sid];
+    const n = countTexts(v);
+    for (const id of ids) {
+      byStudent.set(id, (byStudent.get(id) || 0) + n);
+    }
+  }
+  return byStudent;
+}
+
+if (RUN_VOLUME) {
+  const prefixes = VOLUME_PREFIX_FILTER
+    ? VOLUME_SQUAD_PREFIXES.filter((p) => p.startsWith(VOLUME_PREFIX_FILTER) || p === VOLUME_PREFIX_FILTER)
+    : VOLUME_SQUAD_PREFIXES;
+  const squadEntries = entries.filter(([key]) =>
+    prefixes.some((p) => key.startsWith(p)) && _moduleOpts(key).select === 'pool'
+  );
+
+  const thinWildcard = [];
+  const thinKeyed = [];
+  const personaGaps = [];
+  const PERSONA_POOLS = new Set([
+    'slender.deflect', 'slender.neutral', 'slender.secret', 'slender.eatPause', 'slender.mindFeel',
+    'eat.firstBite', 'eat.finish', 'cloth.reaction', 'shift.interior', 'shift.physical', 'shift.coda',
+    'interior.selfObs', 'immob.register', 'immob.settledState',
+  ]);
+
+  for (const [key, variants] of squadEntries) {
+    const wc = wildcardTextCount(variants);
+    const nonEmpty = nonEmptyWildcardCount(variants);
+    const optional = OPTIONAL_EMPTY_POOLS.has(key);
+    if (!optional && (wc < 4 || nonEmpty < 3)) {
+      thinWildcard.push({ key, wc, nonEmpty });
+    } else if (optional && wc < 4) {
+      thinWildcard.push({ key, wc, nonEmpty, optional: true });
+    }
+
+    const keyed = new Map();
+    for (const v of variants) {
+      if (!v.when || Object.keys(v.when).length === 0) continue;
+      const k = JSON.stringify(v.when);
+      keyed.set(k, (keyed.get(k) || 0) + countTexts(v));
+    }
+    for (const [k, n] of keyed) {
+      if (n < 3) thinKeyed.push({ key, when: k, count: n });
+    }
+
+    if (PERSONA_POOLS.has(key)) {
+      const cov = personaCoverage(variants);
+      for (const base of INIT_STUDENTS) {
+        const n = cov.get(base.id) || 0;
+        if (n < 2) personaGaps.push({ key, student: base.name, id: base.id, count: n });
+      }
+    }
+  }
+
+  console.log(`\nVolume dashboard (MIGRATION.md targets: pool ≥4 wildcard, keyed ≥3, persona ≥2/student)`);
+  console.log(`Namespaces: ${prefixes.join(', ')}`);
+  console.log(`Pools scanned: ${squadEntries.length}`);
+  console.log(`Thin wildcard pools: ${thinWildcard.length} (${thinWildcard.filter((t) => !t.optional).length} need prose)`);
+  for (const t of thinWildcard.filter((x) => !x.optional).slice(0, 25)) {
+    console.log(`  · ${t.key}: ${t.wc} wildcard (${t.nonEmpty} non-empty)`);
+  }
+  if (thinWildcard.filter((t) => !t.optional).length > 25) {
+    console.log(`  … and ${thinWildcard.filter((t) => !t.optional).length - 25} more`);
+  }
+  console.log(`Keyed cells under 3 texts: ${thinKeyed.length}`);
+  for (const t of thinKeyed.slice(0, 20)) console.log(`  · ${t.key} ${t.when}: ${t.count}`);
+  if (thinKeyed.length > 20) console.log(`  … and ${thinKeyed.length - 20} more`);
+  console.log(`Persona gaps (<2 lines/student): ${personaGaps.length}`);
+  const gapByPool = new Map();
+  for (const g of personaGaps) {
+    gapByPool.set(g.key, (gapByPool.get(g.key) || 0) + 1);
+  }
+  for (const [pool, n] of [...gapByPool.entries()].sort((a, b) => b[1] - a[1]).slice(0, 15)) {
+    console.log(`  · ${pool}: ${n} student(s) under target`);
   }
 }
 

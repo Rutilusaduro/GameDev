@@ -2,7 +2,7 @@
 import { registerPool } from '../../engine.js';
 
 registerPool('interior.sizeRealize', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { stageMin: 4, corruption: [0] }, text: [
     'A chair complains. She hears it and feels her cheeks heat.',
     'The desk arm leaves a mark. Evidence she did not ask for.',

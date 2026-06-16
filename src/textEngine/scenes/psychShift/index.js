@@ -3,6 +3,7 @@
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import './fragments.js';
+import './personas.js';
 
 export const SHIFT_SCENE = '{shift.scene}';
 

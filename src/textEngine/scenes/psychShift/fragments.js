@@ -15,6 +15,8 @@ registerPool('shift.trigger', [
   { when: {}, text: [
     'The week brings a shift she will not name until later.',
     'Something changes — small, physical, undeniable.',
+    'A threshold passes without announcement.',
+    'The body crosses a line the mind has been circling.',
   ] },
 ]);
 
@@ -32,6 +34,8 @@ registerPool('shift.interior', [
   { when: {}, text: [
     'Something shifts inside — unnamed, unready, real.',
     'The interior voice changes register without announcing itself.',
+    'A quiet rearrangement behind her ribs.',
+    'The old argument loses a witness.',
   ] },
 ]);
 
@@ -49,11 +53,13 @@ registerPool('shift.physical', [
   { when: {}, text: [
     'The body knows before the mind agrees.',
     'Flesh warm and present — the argument physical now.',
+    'Sensation arrives ahead of vocabulary.',
+    'Her body makes the case without rhetoric.',
   ] },
 ]);
 
 registerPool('shift.denial', [
-  { when: {}, text: ['', '', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { corruption: [1] }, text: [
     'She almost says the old thing. She does not.',
     '"It\'s fine," she says — and for the first time, she is not sure she means "temporary."',
@@ -69,5 +75,10 @@ registerPool('shift.coda', [
     'The surrender is complete and gentle. She does not mourn the old self.',
     'She is what she is now. The scale will confirm it Thursday.',
   ] },
-  { when: {}, text: ['The shift settles in like warmth.'] },
+  { when: {}, text: [
+    'The shift settles in like warmth.',
+    'Something has changed. She carries it forward.',
+    'The week closes on a new interior weather.',
+    'Quiet follows — not empty, rearranged.',
+  ] },
 ]);

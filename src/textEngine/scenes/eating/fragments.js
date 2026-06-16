@@ -8,6 +8,7 @@ registerPool('eat.settleIn', [
     '{subject.name} takes her seat and orients toward the food without preamble.',
     'The meal begins the way most meals do — {subject.first} present, appetite accounted for.',
     '{subject.name} settles in, tray or plate arranged within reach.',
+    'Food within reach, {subject.name} begins without ceremony.',
   ] },
   { when: { stageMin: 4 }, text: [
     '{subject.name} chooses the chair that has learned her and sits with the ease of practice.',
@@ -41,6 +42,7 @@ registerPool('eat.firstBite', [
     'She takes the first bite without ceremony.',
     'The first mouthful goes down easy — appetite still polite, not yet committed.',
     'She eats the way people eat when they are only starting to mean it.',
+    'The opening bite is small. The intention is not.',
   ] },
   { when: { hungerTierMin: 2 }, weight: 2, text: [
     'The first bite lands like relief — she was hungrier than she admitted.',
@@ -88,7 +90,7 @@ registerPool('eat.firstBite', [
 
 // ── eat.midMeal — FULL SENTENCE (optional) ────────────────────
 registerPool('eat.midMeal', [
-  { when: {}, text: ['', '', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { hungerTierMin: 2 }, text: [
     'Halfway through, the pace does not slow — if anything it steadies into purpose.',
     'The middle of the meal finds her committed, fork moving with quiet efficiency.',
@@ -114,7 +116,7 @@ registerPool('eat.bitePace', [
 
 // ── eat.pacing — FULL SENTENCE fragment (optional) ──────────────
 registerPool('eat.pacing', [
-  { when: {}, text: ['', '', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { hungerTierMin: 3 }, weight: 2, text: [
     'She eats {eat.bitePace} — the plate emptying faster than conversation could keep up.',
   ] },
@@ -125,7 +127,7 @@ registerPool('eat.pacing', [
 
 // ── eat.portionObs — PARTICIPLE CLAUSE ──────────────────────────
 registerPool('eat.portionObs', [
-  { when: {}, text: ['', 'portions disappearing with quiet efficiency'] },
+  { when: {}, text: ['', '', 'portions disappearing with quiet efficiency', 'the plate thinning steadily'] },
   { when: { fullnessMin: 0.5 }, text: [
     'the plate thinning despite fullness already present',
     'servings vanishing at a pace that outruns comfort',
@@ -142,7 +144,7 @@ registerPool('eat.portionObs', [
 
 // ── eat.hungerClause — FULL SENTENCE (optional lead) ───────────
 registerPool('eat.hungerClause', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { hungerTierMin: 2 }, text: [
     'She was hungry before she sat down — the meal is overdue.',
     'Appetite arrived ahead of her; the food is catching up.',
@@ -163,7 +165,7 @@ registerPool('eat.hungerClause', [
 
 // ── eat.bodyResponse — PARTICIPLE CLAUSE ────────────────────────
 registerPool('eat.bodyResponse', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { stageMin: 3, stageMax: 5 }, text: [
     'her middle softening visibly with each course',
     'waistband working harder as the meal progresses',
@@ -189,7 +191,7 @@ registerPool('eat.bodyResponse', [
 
 // ── eat.soundTex — PARTICIPLE CLAUSE ────────────────────────────
 registerPool('eat.soundTex', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { hungerTierMin: 2 }, text: ['fork moving faster than conversation'] },
   { when: { hungerTierMin: 3 }, weight: 2, text: [
     'the small sounds of urgent eating',
@@ -207,6 +209,7 @@ registerPool('eat.finish', [
     'She finishes what she started.',
     'The plate empties. She sets the fork down with finality.',
     'The last bite goes down; the meal is complete.',
+    'Empty plate, appetite acknowledged. She is done for now.',
   ] },
   { when: { corruption: [0], fullnessMin: 0.7 }, text: [
     'She stops before the plate is clean — then goes back for one more bite anyway.',

@@ -4,38 +4,59 @@ import { registerPool } from '../../engine.js';
 const LOCALES = ['hallway', 'lecture_hall', 'gym', 'cafeteria', 'dorm_room', 'stairwell', 'elevator', 'prof_office'];
 
 registerPool('campus.localeIntro', [
-  { when: {}, text: ['On campus,', 'Between classes,', 'The college day offers its usual geography.'] },
+  { when: {}, text: [
+    'On campus,',
+    'Between classes,',
+    'The college day offers its usual geography.',
+    'Another hour on campus unfolds.',
+  ] },
   { when: { campusLocale: 'hallway' }, text: [
     'The hallway carries its usual foot traffic.',
     'Between classes, the corridor fills.',
+    'Lockers and chatter frame the walk.',
+    'The corridor hums with passing bodies.',
   ] },
   { when: { campusLocale: 'lecture_hall' }, text: [
     'The lecture hall rows wait, desk arms at attention.',
     'Tiered seating — designed for smaller assumptions.',
+    'The auditorium smells like chalk and old upholstery.',
+    'Rows climb toward the back; every seat is a small negotiation.',
   ] },
   { when: { campusLocale: 'cafeteria' }, text: [
     'The cafeteria hums with trays and appetite.',
     'The dining hall at peak hour — noise, steam, possibility.',
+    'Steam and voices layer over the serving line.',
+    'The cafeteria opens its arms to hunger on schedule.',
   ] },
   { when: { campusLocale: 'gym' }, text: [
     'The gym floor gleams under fluorescent light.',
     'Equipment sized for a different population.',
+    'Rubber mats and metal frames wait under bright lights.',
+    'The gym smells like effort and disinfectant.',
   ] },
   { when: { campusLocale: 'dorm_room' }, text: [
     'Her dorm room — familiar, close, honest about space.',
     'The room she has been outgrowing in increments.',
+    'Posters, laundry, and a mirror that tells the truth.',
+    'Her dorm holds the week\'s quiet aftermath.',
   ] },
   { when: { campusLocale: 'stairwell' }, text: [
     'The stairwell smells like concrete and effort.',
     'Stairs: a decision she makes more carefully now.',
+    'Echoes climb the landing with each step.',
+    'The stairwell is narrow, honest, and vertical.',
   ] },
   { when: { campusLocale: 'elevator' }, text: [
     'The elevator arrives with its small ding.',
     'A metal box with a weight limit posted inside.',
+    'Fluorescent light and a posted capacity sign.',
+    'The elevator doors part with mechanical patience.',
   ] },
   { when: { campusLocale: 'prof_office' }, text: [
     'Your office — desk, chairs, doorframe she has learned.',
     'The office where weekly check-ins happen.',
+    'Bookshelves and a chair that knows her shape.',
+    'Your office holds the ritual of the weekly weigh-in.',
   ] },
 ]);
 
@@ -68,7 +89,7 @@ registerPool('campus.destination', [
 ]);
 
 registerPool('campus.obstacle', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { campusLocale: 'hallway', stageMin: 5 }, text: [
     ' — two-way traffic parts around her',
     ', displacing foot traffic without malice',
@@ -100,7 +121,7 @@ registerPool('campus.obstacle', [
 ]);
 
 registerPool('campus.spaceObs', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { campusLocale: 'hallway', stageMin: 6 }, text: [
     'Students make room — not unkindly, simply factually.',
     'The corridor was not designed for her. She uses it anyway.',
@@ -120,7 +141,7 @@ registerPool('campus.spaceObs', [
 ]);
 
 registerPool('campus.soundTex', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { stageMin: 5 }, text: ['footfalls heavier than they used to be'] },
   { when: { stageMin: 7 }, text: [
     'the floor registering her decision to move',

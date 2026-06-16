@@ -11,7 +11,7 @@ registerPool('eat.foodDesc', [
 ]);
 
 registerPool('eat.aroma', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { studentId: 10 }, weight: 3, text: ['butter and garlic threading the air', 'something rich enough to make the room smaller'] },
   { when: { mealContext: 'binge' }, text: ['heat and salt and the promise of more'] },
 ]);

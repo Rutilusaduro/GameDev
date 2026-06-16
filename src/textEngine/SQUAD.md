@@ -1,10 +1,10 @@
 # The Squad — Narrative Engine Creative & Technical Team
 
-> **Binding for all LLM and human work on the text engine.** Before authoring, migrating, or extending narrative systems, identify which Squad member owns the work — and run Agent 5's quality gate on every prose pass.
+> **Binding for all LLM and human work on the text engine.** Before authoring, migrating, or extending narrative systems, identify which Squad member owns the work — run **Agent 7 (Artisan)** on every prose draft, then **Agent 5 (Editor)** as the structural sign-off.
 >
 > Companion: `AUTHORING.md` (mechanics) · `TUNING.md` (Style Ledger) · strategic plan (`docs/` or uploaded plan artifact)
 
-The Squad is the six-agent team defined in the Near-Infinite Narrative Engine strategic plan. **Do not substitute generic "help me write prose" for Squad routing** — each member has a domain, a voice contract, and file ownership.
+The Squad is the seven-agent team for the Near-Infinite Narrative Engine. **Do not substitute generic "help me write prose" for Squad routing** — each member has a domain, a voice contract, and file ownership.
 
 **Early game is A6 territory.** Stages 0–4 and corruption 0 run through Slender before Mobile, Psych, or Immobility pools dominate. Route thin-body change, reluctance, neutrality, and secret appetite here first.
 
@@ -30,7 +30,7 @@ The Squad is the six-agent team defined in the Near-Infinite Narrative Engine st
 | `neutral` | corruption 0, low shame & fixation | Genuinely unfussed; number as fact |
 | `acclimating` | corruption 1+ | **A2 Psych** — A6 pools gate out |
 
-**Expansion targets:** ~~Per-girl early persona lines (`earlyGain/personas.js`)~~ ✅ · mirror/weigh-in embeds · dining-hall first-month beats · Dialogue Lab `slender.*` sections ✅
+**Expansion targets:** ~~Per-girl early persona lines (`earlyGain/personas.js`)~~ ✅ · mirror/weigh-in embeds · dining-hall first-month beats · Dialogue Lab `slender.*` sections ✅ · **Step 9 volume floors** (`slender.*` wildcards + all-girl `eatPause`/`deflect`/`neutral`/`secret`) ✅
 
 **Hard rules:** No medical decline, no real distress pathology, no shame spirals that read as self-harm. Resistance is erotic tension, not cruelty. Characters are always adults.
 
@@ -44,7 +44,7 @@ The Squad is the six-agent team defined in the Near-Infinite Narrative Engine st
 
 **Owns:** `scenes/campus/`, `wi.mobilityClause`, mobility-tagged `word.moveVerb.*`, stage 5–9 bands in `cloth.*`, `eat.bodyResponse` at high stages, Agent 1 review on `wi.arrival` / `wi.bodyClause` stage 7–9 variants.
 
-**Expansion targets:** Campus locale pools, hallway/stairwell/elevator beats, clothing failure physical beats, eating at scale (tray, booth, chair).
+**Expansion targets:** Campus locale pools, hallway/stairwell/elevator beats, clothing failure physical beats, eating at scale (tray, booth, chair). **Step 9:** `campus/personas.js`, `clothing/personas.js`, `eating/personas.js` all-girl coverage ✅
 
 ---
 
@@ -56,7 +56,7 @@ The Squad is the six-agent team defined in the Near-Infinite Narrative Engine st
 
 **Owns:** `scenes/psychShift/`, `scenes/interior/`, `shift.*`, `interior.*`, corruption-keyed generics across scenes, per-girl corruption arc table in `AUTHORING.md` §3, `npc.peer` / `prof.observation` relationship gates.
 
-**Expansion targets:** Per-girl 6-line arc lines in persona pools, `shift.*` keyed on archetype, interior beats embeddable in eating/campus/clothing skeletons.
+**Expansion targets:** Per-girl 6-line arc lines in persona pools, `shift.*` keyed on archetype, interior beats embeddable in eating/campus/clothing skeletons. **Step 9:** `psychShift/personas.js`, `interior/personas.js` ✅
 
 ---
 
@@ -68,9 +68,9 @@ The Squad is the six-agent team defined in the Near-Infinite Narrative Engine st
 
 **Owns:** `scenes/immobility/`, `immob.*`, stage 10–11 weigh-in skeletons, `word.moveVerb.bed`, leviathan lines in persona pools, stage 10+ `eat.settleIn` / `eat.aftermath`.
 
-**Expansion targets:** 8+ `immob.settledState` per stage band, 6+ `immob.spaceObs`, 6+ `immob.register` per corruption × persona, all 18 students with ≥1 leviathan-specific line.
+**Expansion targets:** 8+ `immob.settledState` per stage band, 6+ `immob.spaceObs`, 6+ `immob.register` per corruption × persona, all 19 students with ≥1 stage-11-specific persona line. **Step 9:** `immobility/personas.js` ✅
 
-**Hard rules:** No atrophy, no "useless," no distress framing. Sound is primary at this scale.
+**Hard rules:** No atrophy, no "useless," no distress framing. Sound is primary at this scale. **Never name engine stages** (`blob`, `leviathan`, etc.) in player-facing text — describe immobility, architecture, warmth.
 
 ---
 
@@ -78,13 +78,33 @@ The Squad is the six-agent team defined in the Near-Infinite Narrative Engine st
 
 **Domain:** Engine APIs, pool architecture, dimensions, flags, lint tooling, game-state plumbing, barrel imports, render wrappers, performance, migration mechanics.
 
-**Voice:** N/A (code). Prose quality is Agent 5's job; Architect ensures slots compose without collision.
+**Voice:** N/A (code). Prose quality is Agent 7's rewrite pass and Agent 5's structural gate; Architect ensures slots compose without collision.
 
 **Owns:** `engine.js`, `lexicon/`, `gameData/textContext.js`, `scripts/textLint.mjs`, `scripts/text-lint.config.js`, `registerDimension` / `ctx.flags` / `consumes` / `requireAbsent`, scene `index.js` exports, Dialogue Lab section wiring.
 
-**Expansion targets:** ~~`registerModule` → `registerPool` migration — hungerInterrupt, stream.pre, diaryBase, evolved diary decomposed~~ ✅ · ~~`ctx.sessionUsed` anti-repetition~~ ✅ · coverage report automation · volume tracking dashboard.
+**Expansion targets:** ~~`registerModule` → `registerPool` migration — hungerInterrupt, stream.pre, diaryBase, evolved diary decomposed~~ ✅ · ~~`ctx.sessionUsed` anti-repetition~~ ✅ · coverage report automation · ~~volume tracking dashboard (`text:lint --volume`)~~ ✅
 
-**Does not:** Write long-form prose variants (delegates to A1/A2/A3, reviewed by A5).
+**Does not:** Write long-form prose variants (delegates to A1/A2/A3/A6, rewritten by A7, reviewed by A5).
+
+---
+
+### Agent 7 — Artisan (Prose Director & Line Editor) ★ prose rewrite
+
+**Domain:** The **mandatory rewrite pass** on draft prose from domain authors (A1–A3, A6). Watches for sentences that are nonsensical, gimmicky, template-flat, or semantically broken; rewrites for flow, clarity, and voice while preserving grammar shape and `when` keys.
+
+**Voice:** Literary, readable, sensual where appropriate. Every line must make sense when read aloud in isolation and in composition. Cut meta-gimmicks (RPG UI jargon, patch-note narration) unless they are **in-character dialogue** that a real person would say.
+
+**Owns:** Line-edit passes on all persona files and fragment pools after volume expansion; Style Ledger enforcement for semantic sense; coordination with A5 on rhythm vs. readability.
+
+**Rewrite checklist (every prose batch):**
+1. Read aloud — does every sentence mean something concrete?
+2. No engine stage labels in text (`leviathan scale`, `blob scale`, `Colossal:`…). Stage keys gate selectors only.
+3. Character gimmicks (gamer/influencer voice) stay in **dialogue**, not narrator beats.
+4. No contradictory slots-in-one-sentence after composition.
+5. Preserve declared grammar shape (FULL SENTENCE / DIALOGUE BEAT / clause).
+6. Persona lines sound like the girl, not like an LLM filling quota.
+
+**Workflow position:** Domain author drafts → **A7 Artisan rewrites** → A5 Editor lint/sign-off.
 
 ---
 
@@ -111,19 +131,20 @@ The Squad is the six-agent team defined in the Near-Infinite Narrative Engine st
 
 | Asset / phase | Lead | Support |
 |---------------|------|---------|
-| **Early game (stages 0–4, cor 0)** | **A6 Slender** | A2 Psych, A5 Editor |
+| **Early game (stages 0–4, cor 0)** | **A6 Slender** | A7 Artisan, A5 Editor |
 | `slender.*`, `gainStance`, `scenes/earlyGain/` | A6 Slender | A4 Architect |
 | `ctx.flags`, `registerDimension`, moveVerb corpus | A4 Architect | A5 Editor |
 | `word.adv.*`, compounds, skeleton patterns | A4 Architect | A5 Editor |
 | `wi.approachSentence`, weigh-in expansion | A5 Editor | A1 Mobile, A4 Architect |
-| `eat.*` scene library | A1 Mobile | A2 Psych, A5 Editor |
-| `cloth.*` scene library | A1 Mobile | A2 Psych, A5 Editor |
+| `eat.*` scene library | A1 Mobile | A2 Psych, A7 Artisan, A5 Editor |
+| `cloth.*` scene library | A1 Mobile | A2 Psych, A7 Artisan, A5 Editor |
 | `campus.*` scene library | A1 Mobile | A4 Architect |
 | `npc.*` reactions | A2 Psych | A1 Mobile |
 | `wi.mobilityClause`, stages 7–9 movement | A1 Mobile | A5 Editor |
-| `immob.*`, stages 10–11 | A3 Immobility | A5 Editor |
-| `psychShift.*`, `interior.*` | A2 Psych | A5 Editor |
-| Corruption arc bible, personas | A2 Psych | A5 Editor |
+| `immob.*`, stages 10–11 | A3 Immobility | A7 Artisan, A5 Editor |
+| `psychShift.*`, `interior.*` | A2 Psych | A7 Artisan, A5 Editor |
+| Corruption arc bible, personas | A2 Psych | A7 Artisan, A5 Editor |
+| **Prose rewrite / line-edit pass** | **A7 Artisan** | A5 Editor |
 | `text:lint` sampling, coverage, ledger | A4 Architect | A5 Editor |
 | Game wiring (`textContext.js`, render wrappers) | A4 Architect | — |
 
@@ -135,8 +156,9 @@ The Squad is the six-agent team defined in the Near-Infinite Narrative Engine st
 
 1. Identify lead from matrix above.
 2. Read lead's voice contract + `AUTHORING.md` grammar shapes.
-3. Implement.
-4. **Agent 5 pass** before commit (lint + sample + ledger).
+3. Implement (domain draft).
+4. **Agent 7 pass** — rewrite for flow, semantic sense, no stage labels in prose.
+5. **Agent 5 pass** before commit (lint + sample + ledger).
 
 ### Multi-domain task (e.g. new campus locale)
 
@@ -144,6 +166,7 @@ The Squad is the six-agent team defined in the Near-Infinite Narrative Engine st
 2. **A1** — locale pools (movement, spatial obs, obstacles), stages 5–9 emphasis.
 3. **A2** — NPC/relationship variants if social beats present.
 4. **A5** — rhythm check on skeletons; run `--sample=200 --scene=campus`.
+5. **A7** — line-edit all new persona/fragment text before merge.
 
 ### Parallel review (recommended for large content passes)
 
@@ -157,13 +180,14 @@ When using subagents or multi-step generation, spawn reviewers by Squad role:
 | A4 Architect | "Pools compose? Dimensions wired? Lint clean?" |
 | A5 Editor | "Template-itis? Shape violations? Ledger bans?" |
 | A6 Slender | "Early stages 0–4: reluctance/neutral/secret earned? Body change subtle and sensual, not clinical? gainStance keys correct?" |
+| A7 Artisan | "Does every sentence make sense read aloud? Stage labels absent from prose? Gimmick/meta lines fixed?" |
 
 ### File header convention
 
 Tag scene files at the top:
 
 ```js
-// The Squad — Lead: A1 Mobile | Support: A2 Psych, A5 Editor
+// The Squad — Lead: A1 Mobile | Support: A2 Psych, A7 Artisan, A5 Editor
 ```
 
 ---
@@ -183,14 +207,14 @@ Tag scene files at the top:
 | `scenes/psychShift/` | A2 |
 | `scenes/interior/` | A2 |
 | `scenes/npcReactions.js` | A2 |
-| `AUTHORING.md`, `SQUAD.md`, `TUNING.md` | A5 |
+| `AUTHORING.md`, `SQUAD.md`, `TUNING.md` | A5, A7 |
 
 ---
 
 ## Naming
 
 - **The Squad** — collective; use in PR descriptions and planning.
-- **Agent N** or **A1–A6** — shorthand in file headers and commit messages.
-- **Mobile / Psych / Immobility / Architect / Editor / Slender** — role nicknames in conversation.
+- **Agent N** or **A1–A7** — shorthand in file headers and commit messages.
+- **Mobile / Psych / Immobility / Architect / Editor / Slender / Artisan** — role nicknames in conversation.
 
-Example commit: `Squad A6+A5: slender mirror pool, stages 0–3 gainStance coverage`
+Example commit: `Squad A6+A7+A5: slender mirror pool, stages 0–3 gainStance coverage`

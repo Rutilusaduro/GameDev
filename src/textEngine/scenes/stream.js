@@ -323,7 +323,7 @@ registerPool('stream.chat.parasocial.late', [
 registerPool('stream.chat.parasocial.veryLate', [
   { when: { stageMin: 10 },
     text: [
-      'she\'s literally just a blob at this point',
+      'she can barely shift in frame at this point',
       'destiny if you\'re reading this we own you now',
       'she can\'t even pretend to be a normal streamer anymore',
       'I can\'t believe we watched this happen in real time',

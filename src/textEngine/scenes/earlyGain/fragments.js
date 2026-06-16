@@ -125,7 +125,7 @@ registerPool('slender.mindFeel', [
 // ── slender.deflect — DIALOGUE BEAT ────────────────────────────
 // Opposed / reluctant verbal armor — corruption 0, early stages.
 registerPool('slender.deflect', [
-  { when: {}, text: [''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { gainStance: 'opposed' }, weight: 3, text: [
     `"It's temporary," she says, too quickly.`,
     `"I've been stressed. That's all."`,
@@ -143,13 +143,14 @@ registerPool('slender.deflect', [
     `"That can't be right."`,
     `"The scale is wrong. It has to be."`,
     `"I barely ate this week." She did.`,
+    `"It's water. It's always water."`,
   ] },
 ]);
 
 // ── slender.neutral — DIALOGUE BEAT ──────────────────────────────
 // Genuinely unfussed — not opposed, not eager.
 registerPool('slender.neutral', [
-  { when: {}, text: [''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { gainStance: 'neutral' }, weight: 3, text: [
     `"Okay," she says. "What's next?"`,
     `"Numbers," she says, and shrugs.`,
@@ -166,7 +167,7 @@ registerPool('slender.neutral', [
 // ── slender.secret — FULL SENTENCE ─────────────────────────────
 // Body contradicts stated resistance — hidden appetite, corruption 0.
 registerPool('slender.secret', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { gainStance: 'secret' }, weight: 3, text: [
     'Her breath catches on the number — not with dismay. She looks away too slowly.',
     'She smooths her top over a middle that has grown since last week and does not pull her hand back.',
@@ -186,7 +187,7 @@ registerPool('slender.secret', [
 
 // ── slender.mirror — FULL SENTENCE (optional) ──────────────────
 registerPool('slender.mirror', [
-  { when: {}, text: ['', '', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { stageMin: 2, stageMax: 4, corruption: [0] }, text: [
     'She catches her reflection and pauses a beat longer than necessary.',
     'The mirror shows someone softer at the edges. She is still learning that face.',
@@ -205,7 +206,7 @@ registerPool('slender.mirror', [
 // ── slender.eatPause — FULL SENTENCE ─────────────────────────────
 // Early eating beats — reluctant/neutral/secret at the table.
 registerPool('slender.eatPause', [
-  { when: {}, text: [''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { corruption: [0], stageMax: 3 }, text: [
     'She eats like someone still negotiating portion size with herself.',
     'Each bite is measured — performance, not yet appetite.',

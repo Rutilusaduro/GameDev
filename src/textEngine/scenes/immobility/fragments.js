@@ -5,7 +5,7 @@ registerPool('immob.settledState', [
   { when: { stageMin: 10, stageMax: 10 }, text: [
     '{subject.name} has settled into the room the way weather settles — vast, warm, not going anywhere soon.',
     'She rests as immobile abundance — the room organized around her presence.',
-    'At blob scale, movement is optional. She has opted out for now.',
+    'Movement is optional now. She has opted out for the moment.',
     'Her mass fills the available space with the patience of something geological.',
     'She is present the way a landscape is present — total, warm, immobile.',
     'The room holds her the way a basin holds water — completely, without argument.',
@@ -13,9 +13,9 @@ registerPool('immob.settledState', [
     'Immobility is not distress. It is the natural state of enough mass in one place.',
   ] },
   { when: { stageMin: 11 }, weight: 2, text: [
-    '{subject.name} is the room\'s warm center of gravity — leviathan scale, barely mobile, entirely present.',
+    '{subject.name} is the room\'s warm center of gravity — barely mobile, entirely present.',
     'She has become architectural — flesh at a scale the building did not anticipate.',
-    'The leviathan rests: impossibly vast, warm, the floorboards a long memory.',
+    'She rests: impossibly vast, warm, the floorboards a long memory.',
     'She fills the space the way warmth fills a blanket — completely, softly, without edges.',
     'At this scale, position is description. She is where she is.',
     'Movement is assisted transfer now. Rest is the default state.',
@@ -25,6 +25,8 @@ registerPool('immob.settledState', [
   { when: {}, text: [
     '{subject.name} rests, vast and warm.',
     'She has settled into stillness.',
+    'Immobility holds her gently.',
+    'Warm mass at rest — present, unhurried.',
   ] },
 ]);
 
@@ -45,7 +47,12 @@ registerPool('immob.spaceObs', [
     'The bed frame adapted. The floor adapted. The building is still catching up.',
     'She knows which surfaces sound like what under her. Practical knowledge.',
   ] },
-  { when: {}, text: ['The room holds her.', 'Space accommodates.'] },
+  { when: {}, text: [
+    'The room holds her.',
+    'Space accommodates.',
+    'Architecture bends without breaking.',
+    'The floor knows her weight.',
+  ] },
 ]);
 
 registerPool('immob.environmental', [
@@ -53,34 +60,42 @@ registerPool('immob.environmental', [
     'Sound arrives before sight — floorboards, breath, the small creak of furniture under load.',
     'Her presence has an audio signature the room recognizes.',
     'Warmth radiates from immobile mass — the air thicker near her.',
+    'The floor remembers her before her voice does.',
   ] },
   { when: { stageMin: 11 }, text: [
     'Before you see her, you hear her — the floor, the furniture, the air rearranging.',
     'The room sounds different when she is in it. Fuller. Warmer.',
+    'At her size, sound has its own geography — soft shifts, deep breath, wood complaining kindly.',
+    'Sound travels through her mass before light finds a path around it.',
   ] },
-  { when: {}, text: ['The room is quiet around vast warmth.'] },
+  { when: {}, text: [
+    'The room is quiet around vast warmth.',
+    'Stillness has a sound at this scale.',
+    'Warm air pools where she rests.',
+    'The space holds its breath around her.',
+  ] },
 ]);
 
 registerPool('immob.attempt', [
-  { when: {}, text: ['', '', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { stageMin: 10 }, text: [
     'She considers movement — a shift, not a journey.',
     'An attempt to reposition: mass redistributing by degrees.',
   ] },
   { when: { stageMin: 11 }, text: [
     'A transfer attempt — assisted, incremental, honest about the physics.',
-    'Movement at leviathan scale is architecture, not locomotion.',
+    'Movement now is architecture, not locomotion.',
   ] },
 ]);
 
 registerPool('immob.attemptVerb', [
-  { when: { stageMin: 10 }, text: ['shifts', 'redistributes', 'settles differently'] },
-  { when: { stageMin: 11 }, text: ['ripples toward', 'surges by degrees', 'repositions'] },
-  { when: {}, text: ['moves'] },
+  { when: { stageMin: 10 }, text: ['shifts', 'redistributes', 'settles differently', 'ripples by degrees'] },
+  { when: { stageMin: 11 }, text: ['ripples toward', 'surges by degrees', 'repositions', 'rolls her weight'] },
+  { when: {}, text: ['moves', 'settles', 'adjusts', 'rearranges'] },
 ]);
 
 registerPool('immob.assistClause', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { stageMin: 10 }, text: [
     'furniture failing forward in small, helpful ways',
     'the chair surrendering its shape to assist',
@@ -94,7 +109,7 @@ registerPool('immob.assistClause', [
 ]);
 
 registerPool('immob.assistance', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { stageMin: 10 }, text: [
     ', {immob.assistClause}',
     ' — {immob.assistClause}',
@@ -116,7 +131,12 @@ registerPool('immob.bodyDesc', [
     'rolls and warmth extending past every familiar measurement',
     'a body that answers to no one\'s schedule',
   ] },
-  { when: {}, text: ['vast warm softness'] },
+  { when: {}, text: [
+    'vast warm softness',
+    'immobile abundance at rest',
+    'warmth pooled where gravity directs it',
+    'soft mass filling the available space',
+  ] },
 ]);
 
 registerPool('immob.register', [
@@ -140,5 +160,7 @@ registerPool('immob.register', [
   { when: {}, text: [
     `She rests without commentary.`,
     `Silence — vast, warm, sufficient.`,
+    `She breathes around her own immensity.`,
+    `Stillness suits her at this scale.`,
   ] },
 ]);

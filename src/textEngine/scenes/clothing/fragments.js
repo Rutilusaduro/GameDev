@@ -95,7 +95,7 @@ registerPool('cloth.failBeat', [
 ]);
 
 registerPool('cloth.failSound', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { clothingState: 'button_pop' }, text: ['a soft tok against the floor', 'the button rolling to a stop'] },
   { when: { clothingState: 'seam_split' }, text: ['a quiet rip along the seam', 'thread popping in sequence'] },
   { when: { clothingState: 'zipper_fail' }, text: ['the zipper catching, then refusing', 'metal teeth giving up halfway'] },
@@ -110,6 +110,7 @@ registerPool('cloth.reaction', [
   { when: { corruption: [1] }, text: [
     `"Okay," she says, smoothing what cannot be smoothed. "Bigger size."`,
     `She laughs once — not quite humor. "I knew this was coming."`,
+    `"Well. Shopping trip," she says, already resigned.`,
   ] },
   { when: { corruption: [2] }, text: [
     `{subject.name} smiles down at the wreck of her waistband. "Buy bigger."`,
@@ -119,11 +120,13 @@ registerPool('cloth.reaction', [
   { when: {}, text: [
     `{subject.name} looks at the damage and exhales.`,
     `She says nothing. The clothes have spoken for her.`,
+    `{subject.name} smooths what she can and lets the rest show.`,
+    `Fabric has made its point. She listens.`,
   ] },
 ]);
 
 registerPool('cloth.aftermath', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: ['', '', '', ''] },
   { when: { corruption: [0] }, text: [
     'She spends the rest of the day aware of the gap.',
     'The failure follows her like a blush she cannot shake.',
