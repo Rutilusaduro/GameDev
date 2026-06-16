@@ -2,9 +2,6 @@
 // SCENE: DINNER ENDING — composed end-of-evening reflection
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render, createContext } from '../../engine.js';
-import { getStage } from '../../../gameData/stages.js';
-import { getDinnerFullnessGroup } from '../../../gameData/feedingSession.js';
-import { DINNER_ENDING_TEXT } from '../../../gameData/sessions.js';
 import { DINNER_END_OPEN, DINNER_END_CLOSE } from './dinnerEndingData.js';
 
 function bandVariants(chunks) {
@@ -31,19 +28,10 @@ registerPool('dinner.ending', [
   { when: {}, text: ['{dinner.endOpen} {dinner.endClose}'] },
 ]);
 
-/** Render dinner closing narrative via text engine; falls back to legacy grid. */
+/** Render dinner closing narrative via text engine. */
 export function renderDinnerEnding(student, finalFullness, cap, week = 1) {
   if (!student) return '';
   const proxy = { ...student, fullness: finalFullness, stomachCapacity: cap || student.stomachCapacity || 1 };
-  try {
-    const line = render('{dinner.ending}', createContext({ subject: proxy, week }));
-    if (line && !line.includes('{unresolved') && line.trim().length > 40) return line;
-  } catch {
-    /* fall through */
-  }
-  const stId = getStage(student.lbs).id;
-  const stGrp = stId <= 2 ? 0 : stId <= 5 ? 1 : stId <= 7 ? 2 : 3;
-  const fullGrp = getDinnerFullnessGroup(finalFullness, cap);
-  const fn = DINNER_ENDING_TEXT[stGrp]?.[fullGrp];
-  return fn ? fn(student) : `${student.name} finishes the evening full and content.`;
+  const line = render('{dinner.ending}', createContext({ subject: proxy, week }));
+  return line?.trim() || `${student.name} finishes the evening full and content.`;
 }

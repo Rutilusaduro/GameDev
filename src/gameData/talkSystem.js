@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // TALK SYSTEM — conversations shaped by Influence skills and her
-// corruption tier. Response prose lives in talkDialogue.js and
-// devourScene.js; this file defines topics, gates, and effects.
+// corruption tier. Response prose lives in text-engine scenes;
+// this file defines topics, gates, and effects.
 // ═══════════════════════════════════════════════════════════════
 
 export const TALK_TOPICS = [
@@ -37,6 +37,7 @@ export const TALK_TOPICS = [
   // ── Dominant Will commands (Influence T3) — EXTREME ────────
   { id:"command_finish", label:"Command: clean every plate", icon:"👑", group:"command", requires:"unlockCommand", extreme:true,
     effect:{ cals:6000, full:30, corruption:3 },
+    engineTemplate:"{talk.command_finish}",
     refusalTemplate:"{talk.refusal.command_finish}",
   },
   { id:"command_devour", label:"Command: devour", icon:"🩸", group:"command", requires:"devourersThreshold", extreme:true,

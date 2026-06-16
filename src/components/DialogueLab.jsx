@@ -38,14 +38,17 @@ import { renderCampusDeviceEncounter, renderCampusDeviceResult } from '../textEn
 import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes/hungerInterrupt/index.js';
 import {
   renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction,
-  renderDinnerUnbutton, renderDinnerEnding,
+  renderDinnerUnbutton, renderDinnerEnding, renderDinnerWaiter,
 } from '../textEngine/scenes/dinner/index.js';
+import { renderBodyPortrait } from '../textEngine/scenes/body/index.js';
+import { renderSessionFullness, renderSessionAftermath } from '../textEngine/scenes/session/index.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
 import '../textEngine/scenes/talkEncourage.js';
 import '../textEngine/scenes/talkCodas.js';
 import '../textEngine/scenes/talkSuggest.js';
 import '../textEngine/scenes/talkRefusal.js';
+import '../textEngine/scenes/talkCommandFinish.js';
 import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';
 import '../textEngine/scenes/deviceBody.js';
@@ -122,6 +125,16 @@ const SECTIONS = {
     fn: (s, opts) => render("{talk.refusal.command_finish}", createContext({ subject: s, week: 6 }), { trace: opts.trace }) },
   "talk.refusal.command_devour": { params: STATE_PARAMS,
     fn: (s, opts) => render("{talk.refusal.command_devour}", createContext({ subject: s, week: 6 }), { trace: opts.trace }) },
+  "talk.command_finish": { params: STATE_PARAMS,
+    fn: (s, opts) => render("{talk.command_finish}", createContext({ subject: s, week: 6 }), { trace: opts.trace }) },
+  "body.portrait": { params: STATE_PARAMS,
+    fn: (s, opts) => renderBodyPortrait(s, 6, opts) },
+  "dinner.waiter": { params: [...STATE_PARAMS, "dinnerVenue"],
+    fn: (s, opts) => renderDinnerWaiter(opts.dinnerVenue || 'bistro', s, 6, opts) },
+  "session.fullness": { params: [...STATE_PARAMS, "fullnessStage"],
+    fn: (s, opts) => renderSessionFullness(s, Number(opts.fullnessStage ?? 2), 6, opts) },
+  "session.aftermath": { params: [...STATE_PARAMS, "fullnessPct"],
+    fn: (s, opts) => renderSessionAftermath(s, Number(opts.fullnessPct ?? 110), 6, opts) },
   "dinner.conv": { params: [...STATE_PARAMS, "dinnerConv"],
     fn: (s, opts) => renderDinnerConversation(opts.dinnerConv || DINNER_CONV_IDS[0], s, 6, opts) },
   "dinner.groupConv": { params: [...STATE_PARAMS, "groupConv", "refGirl"],
@@ -252,6 +265,9 @@ const PARAM_DEFS = [
   { key: "clothingState", label: "Clothing", options: CLOTHING_STATES },
   { key: "gainStance", label: "Gain stance", options: GAIN_STANCES, optionLabel: (v) => ({ opposed: "opposed · high shame", reluctant: "reluctant · shame crack", neutral: "neutral · unfussed", secret: "secret · hidden appetite" })[v] || v },
   { key: "dinnerConv", label: "Dinner topic", options: DINNER_CONV_IDS },
+  { key: "dinnerVenue", label: "Dinner venue", options: ["bistro", "italian", "steakhouse", "french", "japanese", "private_club", "chefs_table", "home_dinner", "brunch_hall", "atelier"] },
+  { key: "fullnessStage", label: "Fullness stg", options: ["0", "1", "2", "3", "4", "5"] },
+  { key: "fullnessPct", label: "Fullness %", options: ["40", "80", "100", "130", "180"] },
   { key: "groupConv", label: "Group topic", options: GROUP_CONV_IDS },
   { key: "refGirl", label: "Ref girl", options: INIT_STUDENTS.map((s) => String(s.id)), optionLabel: (v) => INIT_STUDENTS.find((s) => String(s.id) === v)?.name || v },
   { key: "reactionLevel", label: "Reaction lvl", options: ["0", "1", "2", "3"] },

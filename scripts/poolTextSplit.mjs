@@ -50,6 +50,51 @@ export function decomposeVariants(poolKey, variants) {
   return { variants: newVariants, fragmentPools };
 }
 
+const MAX_SLOTS_PER_LINE = 2;
+const MAX_LINE_CHARS = 100;
+
+/** Build a lint-safe skeleton from monolith prose (≤200 chars per pool text). */
+export function buildBodyPool(bodyKey, body, fragmentPools, counter = { n: 1 }) {
+  const lines = [];
+  for (const para of body.split(/\n\n+/)) {
+    const chunks = splitChunk(para.trim());
+    let slotBatch = [];
+    for (const chunk of chunks) {
+      const fragKey = `${bodyKey}._f${counter.n}`;
+      counter.n += 1;
+      fragmentPools.push({ key: fragKey, text: [chunk] });
+      slotBatch.push(`{${fragKey}}`);
+      if (slotBatch.length >= MAX_SLOTS_PER_LINE || slotBatch.join(' ').length > MAX_LINE_CHARS) {
+        lines.push(slotBatch.join(' '));
+        slotBatch = [];
+      }
+    }
+    if (slotBatch.length) lines.push(slotBatch.join(' '));
+  }
+
+  const parts = [];
+  let batch = [];
+  let batchLen = 0;
+  for (const line of lines) {
+    const addLen = (batch.length ? 2 : 0) + line.length;
+    if (batchLen + addLen > MAX && batch.length) {
+      parts.push(batch.join('\n\n'));
+      batch = [line];
+      batchLen = line.length;
+    } else {
+      batch.push(line);
+      batchLen += addLen;
+    }
+  }
+  if (batch.length) parts.push(batch.join('\n\n'));
+
+  if (parts.length === 1) return { mainSkeleton: parts[0], subPools: [] };
+
+  const subPools = parts.map((skeleton, i) => ({ key: `${bodyKey}._sk${i}`, skeleton }));
+  const mainSkeleton = subPools.map((sp) => `{${sp.key}}`).join('\n\n');
+  return { mainSkeleton, subPools };
+}
+
 export function emitFragmentPools(fragmentPools, esc) {
   return fragmentPools.map(
     (fp) => `registerPool('${fp.key}', [\n  { when: {}, text: ${esc(fp.text)} },\n]);`,

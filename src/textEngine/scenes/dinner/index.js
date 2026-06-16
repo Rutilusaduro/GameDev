@@ -6,6 +6,7 @@ import './endingScene.js';
 import './conversations.js';
 import './groupConversations.js';
 import './reactions.js';
+import './waiter.js';
 
 export { renderDinnerEnding } from './endingScene.js';
 
@@ -61,4 +62,17 @@ export function renderGroupDinnerConversation(convId, subject, ref, week = 1, op
   });
   const line = render(`{dinner.groupConv.${convId}}`, ctx, { trace: opts.trace || null });
   return line?.trim() || '';
+}
+
+/** Venue waiter line when clearing plates mid-dinner. */
+export function renderDinnerWaiter(venueId, student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    globals: { venueId: venueId || 'bistro', ...(opts.globals || {}) },
+    ...opts,
+  });
+  const line = render('{dinner.waiter}', ctx, { trace: opts.trace || null });
+  return line?.trim() || 'The server arrives. "Shall I bring more?" she asks.';
 }

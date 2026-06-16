@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL, evalIntimacyEndingCondition } from './gameData/intimacy.js';
-import { WAITER_DESC, getOverfillEndMsg, GROUP_CONVERSATIONS, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
+import { WAITER_DESC, getOverfillEndMsg, GROUP_CONVERSATIONS, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { narrativeEventText, randomEventText } from './gameData/weeklyEventText.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
@@ -63,7 +63,8 @@ import './textEngine/scenes/hungerInterrupt/index.js';
 import './textEngine/scenes/hungerLexicon.js';
 import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
-import { renderDinnerEnding, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton } from './textEngine/scenes/dinner/index.js';
+import { renderDinnerEnding, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter } from './textEngine/scenes/dinner/index.js';
+import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding } from './textEngine/scenes/intimacy/index.js';
 import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
@@ -5894,7 +5895,7 @@ export default function ProfessorSim(){
   const callWaiter=()=>{
     const s=dinnerEvent.student;
     const venueId=dinnerEvent.venue.id;
-    const desc=(WAITER_DESC[venueId]||(()=>`The server arrives. "Shall I bring more?" she asks.`))(s);
+    const desc=renderDinnerWaiter(venueId, s, week);
     setDinnerLog(dl=>[...dl,`🫆 ${desc}`]);
     setDinnerEvent(prev=>({...prev,dishes:[]}));
   };
@@ -6060,7 +6061,7 @@ export default function ProfessorSim(){
   const callGroupWaiter=()=>{
     const vId=groupDinnerEvent.venue?.id||"bistro";
     const firstLive=students.find(st=>st.id===groupDinnerEvent.students[0]?.id);
-    const desc=(WAITER_DESC[vId]||(()=>`The server arrives with fresh menus.`))(firstLive||{name:'she'});
+    const desc=renderDinnerWaiter(vId, firstLive||{name:'she'}, week);
     setGroupDinnerLog(dl=>[...dl,`🫆 ${desc}`]);
     setGroupDinnerEvent(prev=>({...prev,students:prev.students.map(s=>({...s,dishes:[]}))}));
   };
@@ -6160,8 +6161,7 @@ export default function ProfessorSim(){
     const capOpts={capacityBonus:privateSession.capacityBonus||0,toleranceBuffer:privateSession.toleranceBuffer||0};
     const fPct=getFullnessPercent(fed,capOpts);
     const fsStage=getFullnessStage(fPct);
-    const descFns=SESSION_FULLNESS_DESCS[s.archetype]||SESSION_FULLNESS_DESCS.default;
-    const desc=descFns[Math.min(fsStage.id,descFns.length-1)](fed);
+    const desc=renderSessionFullness(fed, Math.min(fsStage.id, 5), week);
     push(`🍽️ ${food.label}: +${scaledGain.toLocaleString()} cal`);
     setSessionLog(sl=>[...sl,`🍽️ ${food.label} (+${scaledGain.toLocaleString()} cal) — ${food.desc}`,`   ${desc}`]);
     const sessionCals=getSessionCaloriesFed(fed,privateSession.sessionStartCalories||0);
@@ -6257,9 +6257,9 @@ export default function ProfessorSim(){
     setSessionHistory(prev=>({...prev,[s.id]:{count:hist.count+1,totalGain:hist.totalGain+sessionCals,capacityBonus:newCapBonus}}));
     const cap=getSessionCapacityCap(s,capOpts);
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4),fullness:Math.max(st.fullness||0,Math.round(cap*Math.min(2.5,fPct/100)))}));
-    const aftermath=getAftermath(fPct);
+    const scene=renderSessionAftermath(s, fPct, week);
     push(`✅ Session with ${s.name} complete. ${sessionCals.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(sessionCals))} lbs once digested) · session capacity expanded (+8).`);
-    setSessionResult({student:s,totalGain:sessionCals,fullnessPct:fPct,scene:aftermath.scene(s),sessionCount:hist.count+1,capacityBonus:newCapBonus});
+    setSessionResult({student:s,totalGain:sessionCals,fullnessPct:fPct,scene,sessionCount:hist.count+1,capacityBonus:newCapBonus});
     setPrivateSession(null);
     });
   };

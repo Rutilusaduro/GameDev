@@ -5,7 +5,6 @@
 // ═══════════════════════════════════════════════════════════════
 import { useState } from 'react';
 import { TALK_TOPICS, TALK_CONFIG } from '../gameData/talkSystem.js';
-import { buildTalkResponse } from '../gameData/talkDialogue.js';
 import { buildDevourScene } from '../gameData/devourScene.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
 import { getStage } from '../gameData/stages.js';
@@ -18,6 +17,7 @@ import '../textEngine/scenes/talkCheckIn.js'; // registers talk.check_in
 import '../textEngine/scenes/talkCompliment.js'; // registers talk.compliment
 import '../textEngine/scenes/talkSuggest.js'; // registers talk.suggest_*
 import '../textEngine/scenes/talkRefusal.js'; // registers talk.refusal.*
+import '../textEngine/scenes/talkCommandFinish.js'; // registers talk.command_finish
 import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';
 import '../textEngine/scenes/destinyOffstream.js';
@@ -49,7 +49,7 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
     const renderOpts = { trace };
     text = topic.engineTemplate
       ? render(topic.engineTemplate, ctx, renderOpts)
-      : buildTalkResponse(topic.id, student, corTier);
+      : '';
     text += render('{talk.coda|prefix: }', ctx, { ...renderOpts, noSmooth: true });
     if (campusFattening) {
       text += render('{talk.campusCoda|prefix: }', ctx, { ...renderOpts, noSmooth: true });

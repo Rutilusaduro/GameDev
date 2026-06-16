@@ -3,7 +3,7 @@
 // Pure functions + balance constants used across the app.
 // Index 0 = weight stage 5 (Heavy), index 5 = weight stage 10 (Blob)
 // ═══════════════════════════════════════════════════════════════
-import { BODY_DESCS, OUTFITS } from '../gameData/content.js';
+import { OUTFITS } from '../gameData/content.js';
 import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS } from '../gameData/evolvedForms.js';
 import { getStage } from '../gameData/stages.js';
 import { CLASS_SCENES } from '../gameData/classEvents.js';
@@ -13,6 +13,7 @@ import '../textEngine/scenes/deviceBody.js';
 import '../textEngine/scenes/talia/index.js';
 import { renderDiary } from '../textEngine/scenes/diary.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
+import { renderBodyPortrait } from '../textEngine/scenes/body/index.js';
 import { appendCampusDiary, appendCampusAttitude } from '../textEngine/scenes/campusSoftening.js';
 import { getCampusNarrativeTier } from '../gameData/pharmacistIngredients.js';
 
@@ -23,11 +24,8 @@ export function pharmacistTextOpts(pharmacistState, week = 1) {
 
 export const ALL_SKILLS = [];
 
-export function getBodyDesc(s, week = 1){
-  if (s.bodyOverride?.stateType || s.bodyOverride?.bodyTypeOverride) {
-    return getBodyDescRich(s, week);
-  }
-  const bd=BODY_DESCS[s.bodyType]||BODY_DESCS.straight; return bd[Math.min(getStage(s.lbs).id,bd.length-1)];
+export function getBodyDesc(s, week = 1) {
+  return renderBodyPortrait(s, week);
 }
 // Season-aware body flavor line via the modular text engine.
 export function getBodyDescRich(s,week){

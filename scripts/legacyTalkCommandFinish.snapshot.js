@@ -1,48 +1,5 @@
-// Legacy talk responses — corruption-tiered pools, being migrated
-// topic-by-topic to text-engine scenes (give the topic an
-// engineTemplate in talkSystem.js; see scenes/talkEncourage.js).
-import { pick } from '../textEngine/engine.js';
-
-function lbs(s) { return Math.round(s.lbs).toLocaleString(); }
-
-const MOOD_OPENERS = {
-  stressed: (s) => pick([
-    `${s.name} rubs her temples before she answers.`,
-    `She's been running on fumes; the question lands soft anyway.`,
-    `The stress shows in her shoulders, but she makes room for you.`,
-  ]),
-  tired: (s) => pick([
-    `${s.name} blinks slowly, fighting a yawn.`,
-    `She's half-melted into the chair already.`,
-    `Exhaustion softens her edges; she still turns toward you.`,
-  ]),
-  happy: (s) => pick([
-    `${s.name} brightens the moment you speak.`,
-    `Good mood radiates off her like warmth.`,
-    `She was already smiling before you finished the question.`,
-  ]),
-  excited: (s) => pick([
-    `${s.name} sits forward, energy crackling.`,
-    `She's buzzing — you can feel it in how fast she answers.`,
-    `Enthusiasm spills out before the words do.`,
-  ]),
-  nervous: (s) => pick([
-    `${s.name} picks at her sleeve.`,
-    `Her hands fidget; her voice comes out careful.`,
-    `She's wound tight, but she doesn't send you away.`,
-  ]),
-};
-
-function withMood(s, text) {
-  const opener = MOOD_OPENERS[s.mood];
-  if (!opener) return text;
-  return `${opener(s)}\n\n${text}`;
-}
-
-// ── topic pools: [tier0, tier1, tier2] ────────────────────────
-
-const DIALOGUE = {
-  compliment: [
+// Legacy talk command_finish pool — for generatePhaseCTail.mjs only.
+const DIALOGUE = {compliment: [
     [
       (s) => `${s.name} flushes scarlet. "I— you noticed? I mean. Of course you noticed. It's… a lot to notice." She hugs her arms over her middle and fails to hide either the soft curve she's grown or the smile pulling at her mouth.
 
@@ -100,12 +57,3 @@ At ${lbs(s)} lbs she is beyond shame. Beyond resistance. She licks her fingers o
     ],
   ],
 };
-
-export function buildTalkResponse(topicId, student, corTier) {
-  const pools = DIALOGUE[topicId];
-  if (!pools) return '';
-  const tier = Math.min(corTier, pools.length - 1);
-  const pool = pools[tier] || pools[0];
-  const fn = pick(pool);
-  return typeof fn === 'function' ? fn(student) : fn;
-}
