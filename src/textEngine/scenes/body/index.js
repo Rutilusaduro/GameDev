@@ -4,6 +4,7 @@ import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { createContext } from '../../engine.js';
 import './portraits.js';
+import './depth.js';
 
 function renderRichFallback(student, week) {
   const ctx = createContext({ subject: student, week });
@@ -17,6 +18,8 @@ export function renderBodyPortrait(student, week = 1, opts = {}) {
     return renderRichFallback(student, week);
   }
   const ctx = buildTextContext({ subject: student, week, ...opts });
+  const depthLine = render('{body.portrait.depth}', ctx, { trace: opts.trace || null });
+  if (depthLine?.trim() && !depthLine.includes('{unresolved}')) return depthLine.trim();
   const line = render('{body.portrait}', ctx, { trace: opts.trace || null });
   return line?.trim() || renderRichFallback(student, week);
 }

@@ -4,13 +4,13 @@
 import { createContext } from '../../engine.js';
 import { getStage } from '../../../gameData/stages.js';
 import { getCorruptionTier } from '../../../gameData/corruption.js';
-import { getDependenceTier } from '../../../gameData/deviceDependence.js';
+import { getDeviceDependenceTier } from '../../../gameData/deviceDependence.js';
 
 export function buildDeviceSceneContext(student, opts = {}) {
   const stage = getStage(student?.lbs ?? 130);
   const corruption = getCorruptionTier(student?.corruption ?? 0).id;
   const depLevel = opts.dependenceLevel ?? 0;
-  const depTier = getDependenceTier(depLevel).id;
+  const depTier = getDeviceDependenceTier(depLevel).id;
   return createContext({
     subject: student,
     week: opts.week ?? 1,

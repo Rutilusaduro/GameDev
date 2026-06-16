@@ -38,9 +38,13 @@ import { renderCampusDeviceEncounter, renderCampusDeviceResult } from '../textEn
 import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes/hungerInterrupt/index.js';
 import {
   renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction,
-  renderDinnerUnbutton, renderDinnerEnding, renderDinnerWaiter,
+  renderDinnerUnbutton, renderDinnerEnding, renderDinnerWaiter, renderDinnerDepth,
 } from '../textEngine/scenes/dinner/index.js';
 import { renderBodyPortrait } from '../textEngine/scenes/body/index.js';
+import { renderFeedVoice } from '../textEngine/scenes/feedVoice/index.js';
+import { renderIntimacyDepth } from '../textEngine/scenes/intimacy/index.js';
+import { renderHuntNode, renderHuntTarget } from '../textEngine/scenes/hunt/index.js';
+import { renderDeviceFlavor } from '../textEngine/scenes/deviceFlavor.js';
 import { renderSessionFullness, renderSessionAftermath } from '../textEngine/scenes/session/index.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
@@ -129,6 +133,27 @@ const SECTIONS = {
     fn: (s, opts) => render("{talk.command_finish}", createContext({ subject: s, week: 6 }), { trace: opts.trace }) },
   "body.portrait": { params: STATE_PARAMS,
     fn: (s, opts) => renderBodyPortrait(s, 6, opts) },
+  "feed.voice": { params: STATE_PARAMS,
+    fn: (s, opts) => renderFeedVoice(s, 6, opts) },
+  "dinner.depth": { params: STATE_PARAMS,
+    fn: (s, opts) => renderDinnerDepth(s, 6, opts) },
+  "intimacy.depth": { params: STATE_PARAMS,
+    fn: (s, opts) => renderIntimacyDepth(s, 6, opts) },
+  "jealousy.reaction": { params: [...STATE_PARAMS, "favoritism"],
+    fn: (s, opts) => render('{jealousy.reaction}', createContext({ subject: s, week: 6, favoritism: opts.favoritism || 'neglected' }), { trace: opts.trace }) },
+  "hunt.node": { params: STATE_PARAMS,
+    fn: (s, opts) => renderHuntNode(opts.huntNode || 'quad', s, 6, opts) },
+  "hunt.target": { params: STATE_PARAMS,
+    fn: (s, opts) => renderHuntTarget(opts.huntTarget || 'chad_w', s, 6, opts) },
+  "campusEvent.beat": { params: [...STATE_PARAMS, "campusTier"],
+    fn: (s, opts) => render('{campusEvent.beat}', createContext({
+      subject: s, week: 6,
+      globals: { campusFattening: (opts.campusTier || 0) > 0, campusTier: opts.campusTier || 0 },
+    }), { trace: opts.trace }) },
+  "device.flavor": { params: [...STATE_PARAMS, "device"],
+    fn: (s, opts) => renderDeviceFlavor(opts.device || 'feeding_mask', s, 6, opts) },
+  "talk.coda": { params: STATE_PARAMS,
+    fn: (s, opts) => render('{talk.coda}', createContext({ subject: s, week: 6 }), { trace: opts.trace }) },
   "dinner.waiter": { params: [...STATE_PARAMS, "dinnerVenue"],
     fn: (s, opts) => renderDinnerWaiter(opts.dinnerVenue || 'bistro', s, 6, opts) },
   "session.fullness": { params: [...STATE_PARAMS, "fullnessStage"],

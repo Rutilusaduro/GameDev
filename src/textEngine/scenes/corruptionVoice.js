@@ -6,6 +6,14 @@ import { registerPool } from '../engine.js';
 
 registerPool('corruption.voice', [
   {
+    when: { corruption: [0], hungerTier: [0, 1], mood: ['stressed', 'nervous'] },
+    text: [
+      (ctx) => `${ctx.subject.name} picks at the food like it might judge her back.`,
+      (ctx) => `"I shouldn't," ${ctx.subject.name} murmurs — and eats anyway.`,
+      (ctx) => `${ctx.subject.name} eats with careful, guilty attention, eyes on the plate.`,
+    ],
+  },
+  {
     when: { corruption: [0], hungerTier: [0, 1] },
     text: [
       (ctx) => `${ctx.subject.name}, quietly: "I… I don't know if I should be eating this much…"`,
@@ -18,6 +26,14 @@ registerPool('corruption.voice', [
     text: [
       (ctx) => `${ctx.subject.name} eats before you finish setting the plate down. "Sorry — I was hungry."`,
       (ctx) => `Hunger wins before shame can: ${ctx.subject.name} is already reaching for seconds.`,
+    ],
+  },
+  {
+    when: { corruption: [1], mood: ['happy', 'content', 'excited'] },
+    text: [
+      (ctx) => `${ctx.subject.name} smiles around a bite. "This is exactly what I needed."`,
+      (ctx) => `"You always know," ${ctx.subject.name} says, softer than she intends.`,
+      (ctx) => `${ctx.subject.name} eats like someone who has stopped fighting the pleasure of it.`,
     ],
   },
   {
@@ -38,6 +54,13 @@ registerPool('corruption.voice', [
     ],
   },
   {
+    when: { corruption: [2], mood: ['content', 'warm'] },
+    text: [
+      (ctx) => `${ctx.subject.name} sighs, full and pleased. "More when you're ready."`,
+      (ctx) => `"I love when you feed me like this," ${ctx.subject.name} says simply.`,
+    ],
+  },
+  {
     when: { corruption: [2], hungerTier: [0, 1, 2] },
     text: [
       (ctx) => `${ctx.subject.name}, grinning around a mouthful: "I'm such a greedy pig now… and I don't even want to stop."`,
@@ -55,10 +78,32 @@ registerPool('corruption.voice', [
     ],
   },
   {
+    when: { inWithdrawal: true },
+    text: [
+      (ctx) => `${ctx.subject.name}'s hands shake until food arrives — then go steady around the fork.`,
+      (ctx) => `"Don't make me wait," ${ctx.subject.name} breathes. "You know what withdrawal does to me."`,
+      (ctx) => `Withdrawal makes her blunt: ${ctx.subject.name} eats before you finish sitting down.`,
+    ],
+  },
+  {
     when: { addictionLevel: [2, 3] },
     text: [
       (ctx) => `${ctx.subject.name}'s hands shake slightly until the food arrives — then go steady around the fork.`,
       (ctx) => `"Don't make me wait," ${ctx.subject.name} breathes. "You know what withdrawal does to me."`,
+    ],
+  },
+  {
+    when: { mood: ['tired'] },
+    text: [
+      (ctx) => `${ctx.subject.name} eats slowly, half-melted into the chair, grateful for the warmth.`,
+      (ctx) => `Exhaustion softens every bite: ${ctx.subject.name} doesn't hurry.`,
+    ],
+  },
+  {
+    when: { stageMin: 8 },
+    text: [
+      (ctx) => `${ctx.subject.name} eats with the unhurried authority of someone who has made peace with her scale.`,
+      (ctx) => `At ${Math.round(ctx.subject.lbs)} lbs, ${ctx.subject.name} takes up the chair completely — and keeps eating.`,
     ],
   },
   {

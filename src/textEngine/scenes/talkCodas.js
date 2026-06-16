@@ -35,6 +35,26 @@ registerPool("talk.coda", [
       (ctx) => `${ctx.subject.name} licks her lips. "Don't stop talking. I'm still hungry."`,
       (ctx) => `The conversation trails off — ${ctx.subject.name} is already looking at the pantry.`,
     ] },
+  { when: { stageMin: 7, relationship: [2, 3, 4] },
+    text: [
+      (ctx) => `${ctx.subject.name} shifts her weight — a slow reminder of how much body you're investing in.`,
+      (ctx) => `At ${Math.round(ctx.subject.lbs)} lbs, ${ctx.subject.name} takes up the chair completely. She doesn't apologize for it.`,
+    ] },
+  { when: { mood: ['warm', 'content'], corruption: [1] },
+    text: [
+      (ctx) => `${ctx.subject.name} exhales, soft and full. "You always know how to reach me."`,
+      (ctx) => `"This is the best part of my week," ${ctx.subject.name} admits quietly.`,
+    ] },
+  { when: { mood: ['stressed', 'tired'], relationship: [1, 2, 3, 4] },
+    text: [
+      (ctx) => `${ctx.subject.name} sags with relief afterward — fed, heard, steadier.`,
+      (ctx) => `The tension drains out of her shoulders. "Thanks for not rushing me."`,
+    ] },
+  { when: { season: ['winter'], mood: ['content', 'warm'] },
+    text: [
+      (ctx) => `Winter cold outside; ${ctx.subject.name} stays in the warmth a moment longer.`,
+      (ctx) => `She pulls her sweater tighter, pleased. "Don't let me leave hungry."`,
+    ] },
   // Per-student corruption[2] codas — personality-specific end beats
   { when: { studentId: 5, corruption: [2] },
     text: [
