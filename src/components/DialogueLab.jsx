@@ -43,7 +43,7 @@ import {
 import { renderBodyPortrait } from '../textEngine/scenes/body/index.js';
 import { renderFeedVoice } from '../textEngine/scenes/feedVoice/index.js';
 import { renderIntimacyDepth } from '../textEngine/scenes/intimacy/index.js';
-import { renderHuntNode, renderHuntTarget } from '../textEngine/scenes/hunt/index.js';
+import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from '../textEngine/scenes/hunt/index.js';
 import { renderDeviceFlavor } from '../textEngine/scenes/deviceFlavor.js';
 import { renderSessionFullness, renderSessionAftermath } from '../textEngine/scenes/session/index.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
@@ -145,6 +145,10 @@ const SECTIONS = {
     fn: (s, opts) => renderHuntNode(opts.huntNode || 'quad', s, 6, opts) },
   "hunt.target": { params: STATE_PARAMS,
     fn: (s, opts) => renderHuntTarget(opts.huntTarget || 'chad_w', s, 6, opts) },
+  "hunt.feast": { params: [...STATE_PARAMS, "feastStage"],
+    fn: (s, opts) => renderLilithFeast(s, Number(opts.feastStage ?? 0), 6, opts) },
+  "hunt.feast.deliveryIntro": { params: STATE_PARAMS,
+    fn: (s, opts) => renderLilithDeliveryIntro(s, 6, opts) },
   "campusEvent.beat": { params: [...STATE_PARAMS, "campusTier"],
     fn: (s, opts) => render('{campusEvent.beat}', createContext({
       subject: s, week: 6,

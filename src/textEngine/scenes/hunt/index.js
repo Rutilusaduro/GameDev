@@ -2,6 +2,9 @@
 // Lilith hunt location + target flavor — from gameData/lilith.js (DEPTH_PLAN §9d).
 import { registerPool, render, createContext } from '../../engine.js';
 import { HUNT_NODES, HUNT_MEN } from '../../../gameData/lilith.js';
+import './feastStageUp.js';
+
+export { renderLilithFeast, renderLilithDeliveryIntro } from './feastStageUp.js';
 
 for (const [nodeId, node] of Object.entries(HUNT_NODES)) {
   registerPool(`hunt.node.${nodeId}`, [
