@@ -7,6 +7,7 @@ import { getHungerTier, getAddictionLevel } from './hungerAddiction.js';
 import { getCorruptionTier } from './corruption.js';
 import { getForceFeedComplianceBonus } from './deviceGating.js';
 import { ITEMS } from './items.js';
+import { getStage } from './stages.js';
 
 /**
  * Venue/private dish ids linked to pantry ITEMS[] for a shared cal/full model.
@@ -32,7 +33,42 @@ export const DISH_ITEM_LINKS = {
   french_toast: 'donut_box',
   waffle_stack: 'donut_box',
   pr_chocolates: 'gainer_fudge',
+  pasta: 'family_lasagna',
+  risotto: 'family_lasagna',
+  soup_bread: 'snack_crate',
+  bruschetta: 'snack_crate',
+  shrimp_cocktail: 'feast_platter',
+  loaded_potato: 'feast_platter',
+  foie_gras: 'feast_platter',
+  duck_confit: 'feast_platter',
+  cheese: 'cake_whole',
+  sashimi: 'feast_platter',
+  wagyu: 'feast_platter',
+  ramen: 'family_lasagna',
+  mochi: 'cake_whole',
+  truffle_pasta: 'family_lasagna',
+  wagyu_private: 'feast_platter',
+  wagyu_special: 'feast_platter',
+  home_app: 'snack_crate',
+  home_main: 'family_lasagna',
+  home_second: 'feast_platter',
+  midnight: 'donut_box',
+  eggs_bene: 'butter_coffee',
+  atelier_main: 'feast_platter',
+  atelier_cheese: 'cake_whole',
+  atelier_nightcap: 'gainer_fudge',
 };
+
+/** Session pace — tactical layer over force-feed odds (DEPTH_PLAN §4/§8). */
+export const SESSION_PACE_ACTIONS = [
+  { id: 'gentle', label: 'Gentle pace', refusalBonus: -0.06, tapOutMult: 0.82, desc: 'Easier refusal, less tap-out pressure.' },
+  { id: 'steady', label: 'Steady pace', refusalBonus: 0, tapOutMult: 1, desc: 'Default rhythm.' },
+  { id: 'push', label: 'Push harder', refusalBonus: 0.14, tapOutMult: 1.22, desc: 'Higher force-feed odds when she\'s stuffed.' },
+];
+
+export function getSessionPaceModifiers(paceId = 'steady') {
+  return SESSION_PACE_ACTIONS.find((p) => p.id === paceId) || SESSION_PACE_ACTIONS[1];
+}
 
 /** Hunger/corruption/trait modifiers for feed attempts (DEPTH_PLAN §8). */
 export function getFeedingModifiers(student, {
@@ -105,9 +141,129 @@ export function getVenuePantrySuggestions(venueId) {
     atelier: ['feast_platter', 'cake_whole', 'gainer_fudge'],
     chefs_table: ['feast_platter', 'cake_whole'],
     private_club: ['cake_whole', 'feast_platter'],
+    omakase: ['feast_platter', 'protein_shake'],
+    italian: ['family_lasagna', 'cake_whole'],
+    bistro: ['snack_crate', 'donut_box'],
   };
   const ids = byVenue[venueId] || ['protein_shake', 'donut_box'];
   return ids.map((id) => ITEMS.find((i) => i.id === id)).filter(Boolean);
+}
+
+/** Offense threshold before a solo dinner conversation storm-out (corruption-softened). */
+export function dinnerConversationStormThreshold(student) {
+  const cor = getCorruptionTier(student?.corruption || 0).id;
+  return cor >= 2 ? 8 : 6;
+}
+
+/**
+ * Unified venue feed attempt — resolve payload, apply modifiers, call feedStudentCalories.
+ * Used by solo dinner, group dinner, and private sessions (DEPTH_PLAN §8).
+ */
+export function runVenueFeedAttempt({
+  student,
+  source,
+  feedStudentCalories,
+  sessionCtx = {},
+  gameCtx = {},
+  rng = Math.random,
+}) {
+  const {
+    sessionStartCalories = 0,
+    sessionPace = 'steady',
+    capacityBonus = 0,
+    toleranceBuffer = 0,
+    pendingHungerResolve = false,
+  } = sessionCtx;
+
+  const {
+    skillGainMult = 1,
+    profGainMult = 1,
+    softStartBonus = 0,
+    generousTrait = false,
+    context = 'meal',
+    forcePush = false,
+    gainLbs = null,
+    extraRel = 0,
+    labelOverride = null,
+    feedOpts = {},
+  } = gameCtx;
+
+  const feedMods = getFeedingModifiers(student, { generousTrait, context });
+  const pace = getSessionPaceModifiers(sessionPace);
+  const pushBonus = forcePush ? 0.12 : 0;
+  const hungerBonus = pendingHungerResolve ? 0.1 : 0;
+
+  const payload = resolveFeedPayload(source, student, {
+    skillGainMult,
+    profGainMult: profGainMult * feedMods.calorieMult,
+    gainLbs,
+  });
+
+  const capOpts = {
+    softStartBonus,
+    capacityBonus,
+    toleranceBuffer,
+  };
+  const cap = getFeedCapacity(student, capOpts);
+  const prevFullness = student.fullness || 0;
+
+  const fed = feedStudentCalories(
+    student,
+    payload.calories,
+    payload.fullness,
+    extraRel,
+    labelOverride || payload.label,
+    {
+      ...capOpts,
+      ...feedOpts,
+      refusalBonus: (feedOpts.refusalBonus ?? 0)
+        + feedMods.refusalBonus
+        + pace.refusalBonus
+        + pushBonus
+        + hungerBonus,
+      fullnessMult: feedOpts.fullnessMult ?? feedMods.fullnessMult,
+    },
+  );
+
+  if (!fed) {
+    return { ok: false, refused: true, payload, cap, capOpts };
+  }
+
+  const newFullness = fed.fullness || 0;
+  const sessionCals = getSessionCaloriesFed(fed, sessionStartCalories);
+  const overfillEnd = newFullness > cap && rng() < rollOverfillEndChance(newFullness, cap);
+
+  return {
+    ok: true,
+    fed,
+    payload,
+    cap,
+    capOpts,
+    prevFullness,
+    newFullness,
+    sessionCals,
+    overfillEnd,
+    atCapacity: newFullness >= cap,
+    firstHitCapacity: newFullness >= cap && prevFullness < cap,
+    pastCapacity: newFullness > cap,
+    almostFull: newFullness >= cap * 0.8,
+    clearedHungerResolve: pendingHungerResolve,
+    pace,
+  };
+}
+
+/** Build standard cap options for a feeding session from skill + history bonuses. */
+export function buildSessionCapOpts(student, {
+  softStartBonus = 0,
+  capacityBonus = 0,
+  toleranceBuffer = 0,
+} = {}) {
+  return {
+    softStartBonus,
+    capacityBonus,
+    toleranceBuffer,
+    stageId: getStage(student?.lbs ?? 100).id,
+  };
 }
 
 /**

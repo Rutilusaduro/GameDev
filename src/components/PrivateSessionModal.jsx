@@ -3,19 +3,21 @@ import { ENCOURAGEMENT_ACTIONS, PRIVATE_FOODS, PRIVATE_VENUES, getFullnessStage,
 import { renderSessionFullness } from '../textEngine/scenes/session/index.js';
 import { MJ_RECIPES } from '../gameData/miniGames.js';
 import { getStage } from '../gameData/stages.js';
-import { getFullnessPercent, getSessionCapacityCap } from '../gameData/feedingSession.js';
+import { getFullnessPercent, getSessionCapacityCap, SESSION_PACE_ACTIONS, getFeedingAppetiteNote } from '../gameData/feedingSession.js';
 
 export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, feedInSession, getMoreFood, privateSession, sessionLog, setAp, setPrivateSession, skillTapOutResistance, startIntimacyScene, useSessionEncouragement, liveStudent }){
         const ps=privateSession;
-        const s=liveStudent||ps.student;
-        const capOpts={capacityBonus:ps.capacityBonus||0,toleranceBuffer:ps.toleranceBuffer||0};
-        const effectiveMax=getSessionCapacityCap(s,capOpts);
-        const fPct=getFullnessPercent(s,capOpts);
-        const fsStage=getFullnessStage(fPct);
-        const currentDesc=fPct>0?renderSessionFullness(s, Math.min(fsStage.id, 5), 1):null;
-        const courseOrder=["opener","main","more","dessert","extra"];
-        const tier=getTier(s.relationship);
-        const availableVenueList=PRIVATE_VENUES.filter(v=>tier.id>=v.minTier);
+    const s=liveStudent||ps.student;
+    const capOpts={capacityBonus:ps.capacityBonus||0,toleranceBuffer:ps.toleranceBuffer||0};
+    const effectiveMax=getSessionCapacityCap(s,capOpts);
+    const fPct=getFullnessPercent(s,capOpts);
+    const fsStage=getFullnessStage(fPct);
+    const currentDesc=fPct>0?renderSessionFullness(s, Math.min(fsStage.id, 5), 1):null;
+    const courseOrder=["opener","main","more","dessert","extra"];
+    const tier=getTier(s.relationship);
+    const appetiteNote=getFeedingAppetiteNote(s);
+    const sessionPace=ps.sessionPace||'steady';
+    const availableVenueList=PRIVATE_VENUES.filter(v=>tier.id>=v.minTier);
         return(
           <div style={C.overlay}>
             <div style={{...C.modal,maxWidth:640,padding:20}}>
@@ -75,7 +77,31 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
                         {currentDesc}
                       </div>
                     )}
+                    {appetiteNote&&(
+                      <div style={{fontSize:10,color:"#a07090",marginTop:6,fontStyle:"italic"}}>{appetiteNote}</div>
+                    )}
                   </div>
+
+                  <div style={{...C.secT,marginBottom:6}}>Pace</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:10}}>
+                    {SESSION_PACE_ACTIONS.map(p=>(
+                      <button key={p.id} type="button"
+                        style={{...C.smBtn,opacity:sessionPace===p.id?1:0.55,background:sessionPace===p.id?"rgba(120,60,180,0.45)":"rgba(40,10,60,0.2)"}}
+                        onClick={()=>setPrivateSession(prev=>({...prev,sessionPace:p.id}))}
+                        title={p.desc}>
+                        {p.label}
+                      </button>
+                    ))}
+                  </div>
+                  {fPct>=100&&(
+                    <button type="button" style={{...C.btn("#6a2848"),width:"100%",fontSize:10,marginBottom:10}}
+                      onClick={()=>{
+                        const food=PRIVATE_FOODS.find(f=>f.course==='dessert')||PRIVATE_FOODS[PRIVATE_FOODS.length-1];
+                        feedInSession(food,{forcePush:true});
+                      }}>
+                      Push past capacity — force another course
+                    </button>
+                  )}
 
                   {/* Food menu */}
                   <div style={{...C.secT,marginBottom:6}}>Food</div>
