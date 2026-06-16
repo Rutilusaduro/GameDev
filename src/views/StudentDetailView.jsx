@@ -229,6 +229,16 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                       <div style={{ fontSize: 12, color: '#d8c8b8', lineHeight: 1.7 }}>
                         {formatSurrenderSummary(s)}
                       </div>
+                      {sv.favoritism === 'neglected' && (
+                        <div style={{ fontSize: 10, color: '#c07050', marginTop: 6, fontStyle: 'italic' }}>
+                          Roster ecology — she's noticed where your attention went.
+                        </div>
+                      )}
+                      {sv.favoritism === 'favored' && (
+                        <div style={{ fontSize: 10, color: '#80a060', marginTop: 6, fontStyle: 'italic' }}>
+                          Roster ecology — your priority this week.
+                        </div>
+                      )}
                     </div>
                   );
                 })()}

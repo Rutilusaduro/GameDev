@@ -2,6 +2,7 @@
 // CONTEXT-DEPENDENT DEVICE ACTIONS — registry for StudentDetailView
 // ═══════════════════════════════════════════════════════════════
 import { getEquippedDeviceIds } from './deviceEffects.js';
+import { canStudentUseDevice } from './deviceGating.js';
 
 export const DEVICE_ACTIONS = [
   {
@@ -54,10 +55,12 @@ export function getAvailableDeviceActions(student, ctx = {}) {
     if (action.requires?.equipped) {
       const ids = getEquippedDeviceIds(student);
       if (!ids.includes(action.requires.equipped)) return false;
+      if (!canStudentUseDevice(student, action.requires.equipped)) return false;
     }
     if (action.requires?.owned) {
       const qty = ctx.deviceInventory?.[action.requires.owned] ?? 0;
       if (qty <= 0) return false;
+      if (!canStudentUseDevice(student, action.requires.owned)) return false;
     }
     return true;
   });
