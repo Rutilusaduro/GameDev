@@ -8,8 +8,22 @@ import './groupConversations.js';
 import './reactions.js';
 import './waiter.js';
 import './depth.js';
+import './selectors.js';
 
 export { renderDinnerEnding } from './endingScene.js';
+
+function composeOverlay(main, overlay) {
+  const a = main?.trim() || '';
+  const b = overlay?.trim() || '';
+  if (a && b) return `${a} ${b}`;
+  return a || b;
+}
+
+function renderOverlay(student, week, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return render('{dinner.selectorOverlay}', ctx, { trace: opts.trace || null })?.trim() || '';
+}
 
 const REACTION_POOLS = {
   thinJealousy: 'dinner.reaction.thinJealousy',
@@ -36,20 +50,23 @@ function renderReactionPool(poolKey, subject, ref, week, opts = {}) {
 /** Group dinner table reaction by kind (see REACTION_POOLS). */
 export function renderGroupDinnerReaction(kind, subject, ref, week = 1, opts = {}) {
   const poolKey = REACTION_POOLS[kind];
-  return poolKey ? renderReactionPool(poolKey, subject, ref, week, opts) : '';
+  if (!poolKey) return '';
+  const main = renderReactionPool(poolKey, subject, ref, week, opts);
+  return composeOverlay(main, renderOverlay(subject, week, { ref, ...opts }));
 }
 
 /** Fed girl unbuttons mid-meal when she crosses fullness cap. */
 export function renderDinnerUnbutton(student, week = 1, opts = {}) {
-  return renderReactionPool(REACTION_POOLS.unbutton, student, student, week, opts);
+  const main = renderReactionPool(REACTION_POOLS.unbutton, student, student, week, opts);
+  return composeOverlay(main, renderOverlay(student, week, opts));
 }
 
 /** Render a solo dinner conversation topic by id (matches DINNER_CONVERSATION[].id). */
 export function renderDinnerConversation(convId, student, week = 1, opts = {}) {
   if (!student || !convId) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  const line = render(`{dinner.conv.${convId}}`, ctx, { trace: opts.trace || null });
-  return line?.trim() || '';
+  const main = render(`{dinner.conv.${convId}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  return composeOverlay(main, renderOverlay(student, week, opts));
 }
 
 /** Render a group dinner conversation; subject + ref are the two girls at the table. */
@@ -61,8 +78,8 @@ export function renderGroupDinnerConversation(convId, subject, ref, week = 1, op
     week,
     ...opts,
   });
-  const line = render(`{dinner.groupConv.${convId}}`, ctx, { trace: opts.trace || null });
-  return line?.trim() || '';
+  const main = render(`{dinner.groupConv.${convId}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  return composeOverlay(main, renderOverlay(subject, week, { ref, ...opts }));
 }
 
 /** Venue waiter line when clearing plates mid-dinner. */
@@ -74,14 +91,16 @@ export function renderDinnerWaiter(venueId, student, week = 1, opts = {}) {
     globals: { venueId: venueId || 'bistro', ...(opts.globals || {}) },
     ...opts,
   });
-  const line = render('{dinner.waiter}', ctx, { trace: opts.trace || null });
-  return line?.trim() || 'The server arrives. "Shall I bring more?" she asks.';
+  const main = render('{dinner.waiter}', ctx, { trace: opts.trace || null })?.trim()
+    || 'The server arrives. "Shall I bring more?" she asks.';
+  return composeOverlay(main, renderOverlay(student, week, opts));
 }
 
 /** Full dinner depth beat — setup through exit. */
 export function renderDinnerDepth(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  const line = render('{dinner.depth}', ctx, { trace: opts.trace || null });
-  return line?.trim() || renderDinnerEnding(student, student.fullness || 0, student.stomachCapacity || 100, week);
+  const main = render('{dinner.depth}', ctx, { trace: opts.trace || null })?.trim()
+    || renderDinnerEnding(student, student.fullness || 0, student.stomachCapacity || 100, week);
+  return composeOverlay(main, renderOverlay(student, week, opts));
 }
