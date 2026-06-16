@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL } from './gameData/intimacy.js';
-import { WAITER_DESC, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, UNBUTTON_LINES, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
+import { WAITER_DESC, getOverfillEndMsg, GROUP_CONVERSATIONS, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { narrativeEventText, randomEventText } from './gameData/weeklyEventText.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
@@ -63,7 +63,7 @@ import './textEngine/scenes/hungerInterrupt/index.js';
 import './textEngine/scenes/hungerLexicon.js';
 import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
-import { renderDinnerEnding, renderDinnerConversation, renderGroupDinnerConversation } from './textEngine/scenes/dinner/index.js';
+import { renderDinnerEnding, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton } from './textEngine/scenes/dinner/index.js';
 import './textEngine/scenes/dinner/endingScene.js';
 import './textEngine/scenes/opposition/endgameBeat.js';
 import './textEngine/scenes/corruptionVoice.js';
@@ -5990,25 +5990,23 @@ export default function ProfessorSim(){
       const lines=[];
       if(Math.abs(stageDiff)>=2){
         if(stageDiff>=2){
-          const jFn=THIN_JEALOUSY[negLive.archetype]?.[level];
-          if(jFn) lines.push(jFn(negLive,fed));
-          if(level>=2){
-            const ctx=THIN_CONTEXTUAL[fed.archetype]?.(negLive,fed);
-            if(ctx&&Math.random()<0.5) lines.push(ctx);
+          const jealousy=renderGroupDinnerReaction('thinJealousy',negLive,fed,week,{reactionLevel:level});
+          if(jealousy) lines.push(jealousy);
+          if(level>=2&&Math.random()<0.5){
+            const ctx=renderGroupDinnerReaction('thinContextual',negLive,fed,week,{reactionLevel:level});
+            if(ctx) lines.push(ctx);
           }
-          if(level>=1){
-            const retArr=FAT_RETORT[fed.archetype];
-            if(retArr&&Math.random()<0.65){
-              const rFn=retArr[Math.min(level-1,retArr.length-1)];
-              if(rFn) lines.push(rFn(fed,negLive));
-            }
+          if(level>=1&&Math.random()<0.65){
+            const retort=renderGroupDinnerReaction('fatRetort',negLive,fed,week,{reactionLevel:level-1});
+            if(retort) lines.push(retort);
           }
         } else {
-          const eFn=FAT_ENCOURAGE[negLive.archetype]?.[level];
-          if(eFn) lines.push(eFn(negLive,fed));
+          const encourage=renderGroupDinnerReaction('fatEncourage',negLive,fed,week,{reactionLevel:level});
+          if(encourage) lines.push(encourage);
         }
       } else {
-        lines.push(getJealousyLine(negLive,fed));
+        const jealousy=renderGroupDinnerReaction('jealousyDefault',negLive,fed,week);
+        if(jealousy) lines.push(jealousy);
       }
       if(lines.length){
         reactionLines.push(...lines.filter(Boolean));
@@ -6017,7 +6015,8 @@ export default function ProfessorSim(){
     });
 
     if(newFullness>cap&&prevFullness<=cap){
-      reactionLines.push(UNBUTTON_LINES[rnd(0,UNBUTTON_LINES.length-1)](fed));
+      const unbutton=renderDinnerUnbutton(fed,week);
+      if(unbutton) reactionLines.push(unbutton);
     }
 
     if(newFullness>cap){

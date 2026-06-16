@@ -27,9 +27,11 @@ export const TALK_TOPICS = [
   { id:"suggest_indulgence", label:"Plant a suggestion", icon:"🗣", group:"suggest", requires:"unlockSuggestion",
     effect:{ corruption:2, rel:1, applySuggestDebuff:true },
     suggestNote:"Her resistance softens this week (-10% refusal).",
+    engineTemplate:"{talk.suggest_indulgence}",
   },
   { id:"suggest_growth", label:"Suggest she's meant for more", icon:"🌙", group:"suggest", requires:"unlockSuggestion",
     effect:{ corruption:3 },
+    engineTemplate:"{talk.suggest_growth}",
   },
 
   // ── Dominant Will commands (Influence T3) — EXTREME ────────

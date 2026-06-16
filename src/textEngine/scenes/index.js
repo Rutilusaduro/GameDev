@@ -28,6 +28,7 @@ import './talkCodas.js';
 import './talkEncourage.js';
 import './talkCheckIn.js';
 import './talkCompliment.js';
+import './talkSuggest.js';
 import './oppositionSalonGallery.js';
 import './opposition/aibHearing.js';
 import './opposition/agendaFire.js';
