@@ -235,4 +235,4 @@ Archetype colors the six lines (competitor/data for Brittany, sensory catalog fo
 
 - `npm run text:lint` — static + dynamic sweep (required clean).
 - `npm run text:lint -- --sample=500 --scene=wi` — combinatorial sampling with trigram/length checks.
-- `npm run text:lint -- --coverage` — pool × stage matrix for stages 8-11 gaps.
+- `npm run text:lint -- --coverage` — squad band dashboard (early/mobile/vast); `--coverage=slender.` filters namespaces.
