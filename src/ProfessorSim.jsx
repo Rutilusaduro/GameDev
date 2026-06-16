@@ -40,6 +40,8 @@ import {
   pickInterruptStudent, feedResolvesHunger, talkCalmsHunger,
   tickHungerAddiction, adjustHunger, applyDenialConsequences,
   withdrawalGainMultiplier, isWithdrawalAggressive,
+  getInterruptFeedPortion, getInterruptCompoundPortion, getInterruptTalkRelGain,
+  getInterruptDenyRelLoss,
 } from './gameData/hungerAddiction.js';
 import {
   defaultPharmacistState, PHARMACIST_ACTIVITIES, PHARMACIST_STAGES, applyCompoundToFeed, COMPOUNDS,
@@ -185,9 +187,13 @@ import {
 import {
   scrutinyApModifier,
   scrutinyBlocksPublicEvents,
+  scrutinyBlocksClassFeast,
+  scrutinyPrivateSessionCost,
   weeklyScrutinyNudge,
   getScrutinyTier,
 } from './gameData/scrutinyConsequences.js';
+import { appendWitnessLog } from './gameData/campusWitness.js';
+import { normalizePerformanceTier, performanceResultLine, performanceRelMult } from './gameData/performanceContract.js';
 import { getArrivalCapstone, markArrivalUnlocked } from './gameData/arrivalCapstones.js';
 import {
   tuningGainMult,
@@ -242,6 +248,8 @@ import {
   getSessionCaloriesFed,
   getFeedingAppetiteNote,
   getFeedingModifiers,
+  getSessionPaceModifiers,
+  SESSION_PACE_ACTIONS,
   resolveFeedPayload,
   getVenuePantrySuggestions,
 } from './gameData/feedingSession.js';
@@ -369,6 +377,7 @@ export default function ProfessorSim(){
     log:[CAMPUS_NODES[CAMPUS_CONFIG.startNode].desc],
     exploration:defaultCampusExplorationState(),
     saturation:{ score:0, tier:0, tierLabel:'Normal Campus', weeksAtTier:0 },
+    witnessLog:[],
   });
   // {student, phase:"scene"|"analog"|"break"|"purchase"|"swap"|"digital"}
   const [brokeScaleIds,setBrokeScaleIds]=useState([]);
@@ -835,10 +844,13 @@ export default function ProfessorSim(){
       };
     }
     const result=applyCampusDeviceEncounter({
-      encounter, deviceId, modeId, student, week, exploration, labState, rng:Math.random,
+      encounter, deviceId, modeId, student, week, exploration, labState, adminScrutiny, rng:Math.random,
     });
     if(!result.ok){ campusLog(['⚠️ Device use failed.']); return; }
     if(result.scrutinyDelta) addScrutiny(result.scrutinyDelta);
+    if(result.witnessEntry){
+      setCampusState(prev=>appendWitnessLog(prev,result.witnessEntry));
+    }
     const def=DEVICES[deviceId];
     if(encounter.target.type==='student'&&result.student){
       const growthEv=applyStudentDeviceResult(encounter.target.studentId,{ ok:true, ...result, student:result.student },def,false,'campus');
@@ -4003,7 +4015,8 @@ export default function ProfessorSim(){
         ns=feedResolvesHunger(ns,false,hungerEff,weeklyArms);
         setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'feed',week)} — you'll feed her properly at dinner.`),100);
       }else{
-        const fed=feedStudentCalories(ns,8000,35,6,'Emergency feeding');
+        const portion=getInterruptFeedPortion(ns);
+        const fed=feedStudentCalories(ns,portion.calories,portion.fullness,portion.relGain,'Emergency feeding');
         if(fed) ns=fed;
         const eatLine=isSlenderEligible(fed||ns)
           ?renderSlenderEatBeat(fed||ns,week,{mealType:'binge'})
@@ -4013,7 +4026,8 @@ export default function ProfessorSim(){
       }
     }else if(action==='compound'){
       const cid=compoundId||pharmacistState?.unlockedCompounds?.[0]||'appetite_stimulant';
-      const fed=feedStudentCalories(ns,6000,28,4,`Compound-laced meal (${COMPOUNDS[cid]?.label||cid})`,{compoundId:cid});
+      const portion=getInterruptCompoundPortion(ns);
+      const fed=feedStudentCalories(ns,portion.calories,portion.fullness,portion.relGain,`Compound-laced meal (${COMPOUNDS[cid]?.label||cid})`,{compoundId:cid});
       if(fed) ns=fed;
       setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'compound',week)}`),100);
     }else if(action==='deny'){
@@ -4022,7 +4036,8 @@ export default function ProfessorSim(){
     }else if(action==='talk'){
       const hungerEff=aggregateSkillEffects(ownedSkills);
       ns=talkCalmsHunger(ns,hungerEff,weeklyArms);
-      ns={...ns,relationship:Math.min(100,ns.relationship+3)};
+      const relGain=getInterruptTalkRelGain(ns);
+      ns={...ns,relationship:Math.min(100,ns.relationship+relGain)};
       setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'talk',week)}`),100);
     }else if(action==='echoed_will'){
       if((ownedSkills.echoed_will||0)<1){
@@ -4387,7 +4402,8 @@ export default function ProfessorSim(){
     const mayaLbs=CONTEST_MAYA_WEIGHTS[stageIdx]||330;
     const won=yourGain>=mayaGain;
     if(s){
-      push(`🏆 ${s.name} — Competition: +${Math.round(yourGain)} lbs · ${won?'Victory':'Loss'} vs Maya (${mayaLbs} lbs)`);
+      const tier=yourGain>=mayaGain*1.15?'perfect':won?'good':yourGain>=mayaGain*0.85?'messy':'failure';
+      push(`🏆 ${s.name} — Competition: +${Math.round(yourGain)} lbs · ${won?'Victory':'Loss'} vs Maya (${mayaLbs} lbs) · ${performanceResultLine(tier,'contest')}`);
       if(yourGain>0){
         const growthEv=buildGrowthEvent(s,{
           cause:{ type:'feature', featureId:'contest', locale:'dining_hall', outfitHint:'contest' },
@@ -4865,20 +4881,19 @@ export default function ProfessorSim(){
   const wrapRecordingSession=()=>{
     setRecordingSessionState(prev=>{
       if(!prev) return prev;
-      const quality=prev.bestClip||'okay';
+      const quality=normalizePerformanceTier(prev.bestClip||'okay');
       const kylie=students.find(st=>st.id===prev.studentId);
       const kyleLbs=kylie?.lbs||258;
-      const endArr=(RECORDING_WRAP_ENDINGS[quality]||RECORDING_WRAP_ENDINGS.good);
+      const endArr=(RECORDING_WRAP_ENDINGS[prev.bestClip]||RECORDING_WRAP_ENDINGS.good);
       const endFn=endArr[prev.stageIdx]||endArr[0];
       const endStr=typeof endFn==='function'?endFn(kyleLbs):(endFn||'');
       const payFn=RECORDING_PAYOFF_TEXT[prev.stageIdx];
       const payStr=typeof payFn==='function'?payFn(kyleLbs):(payFn||'');
       const endText=endStr+(payStr?'\n\n'+payStr:'');
-      // Rel bonus
-      const relBonuses={okay:1,good:3,great:6,perfect:10};
-      const relBonus=relBonuses[quality]||1;
+      const relBonuses={perfect:10,good:3,messy:1,failure:0};
+      const relBonus=Math.round((relBonuses[quality]||1)*performanceRelMult(quality));
       if(kylie) setStudents(p=>p.map(st=>st.id===prev.studentId?{...st,relationship:Math.min(100,st.relationship+relBonus),contestCompletions:(st.contestCompletions||0)+1}:st));
-      push(`🎬 Filming session wrapped — ${quality} clip. +${relBonus} relationship.`);
+      push(`🎬 Filming session wrapped — ${performanceResultLine(quality,'session')}. +${relBonus} relationship.`);
       return {...prev, phase:'done', done:true, endingText:endText, popupText:null};
     });
   };
@@ -5608,6 +5623,10 @@ export default function ProfessorSim(){
     trackAction(`doClass:${action.id}`);
     const actionCost=getClassActionCost(action,ownedClassSkills||{});
     if(ap<actionCost){push("⚠️ Not enough AP!");return;}
+    if(scrutinyBlocksClassFeast(adminScrutiny,action.id)){
+      push('⚠️ Administration review — public class feasts are suspended until scrutiny eases.');
+      return;
+    }
     if(action.id==='refeast_ritual'&&!opposition?.supernatural?.actTriggered){
       push('⚠️ Refeast Ritual requires the Supernatural Act.');
       return;
@@ -5854,13 +5873,13 @@ export default function ProfessorSim(){
         :`Her room. She is here, she is enormous, she is warm. She knew you were coming.`;
       const atelier=DINNER_VENUES.find(v=>v.id==="atelier");
       const homeVenue={id:venueId,label:venueLabel,desc:venueDesc,dishes:atelier?atelier.dishes:[]};
-      setDinnerEvent({student:s,phase:"dishes",venue:homeVenue,dishes:[],conversationUsed:[],totalGain:0,offenseLevel:0,sessionStartCalories,textSession:{sessionUsed:createSessionUsed(),weekUsed:weekUsedFromStudent(s)}});
+      setDinnerEvent({student:s,phase:"dishes",venue:homeVenue,dishes:[],conversationUsed:[],totalGain:0,offenseLevel:0,sessionStartCalories,sessionPace:'steady',textSession:{sessionUsed:createSessionUsed(),weekUsed:weekUsedFromStudent(s)}});
       setDinnerLog([`You bring dinner to ${s.name}. ${venueDesc}`]);
       addScrutiny(2);
       push(`🏠 Visiting ${s.name}.`);
       return;
     }
-    setDinnerEvent({ student:s, phase:"venue", venue:null, dishes:[], conversationUsed:[], totalGain:0, offenseLevel:0, sessionStartCalories, textSession:{sessionUsed:createSessionUsed(),weekUsed:weekUsedFromStudent(s)} });
+    setDinnerEvent({ student:s, phase:"venue", venue:null, dishes:[], conversationUsed:[], totalGain:0, offenseLevel:0, sessionStartCalories, sessionPace:'steady', textSession:{sessionUsed:createSessionUsed(),weekUsed:weekUsedFromStudent(s)} });
     setDinnerLog([]);
     addScrutiny(2);
   };
@@ -5871,11 +5890,13 @@ export default function ProfessorSim(){
     push(`🍽️ Dinner with ${dinnerEvent.student.name} at ${venue.label}.`);
   };
 
-  const orderDish=(dish)=>{
-    if((dinnerEvent.dishes||[]).includes(dish.id)) return;
+  const orderDish=(dish,opts={})=>{
+    if((dinnerEvent.dishes||[]).includes(dish.id)&&!opts.forcePush) return;
     const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
     const gain=rnd(dish.gain[0],dish.gain[1]);
     const feedMods=getFeedingModifiers(s,{generousTrait:hasTrait('generous'),context:'dinner'});
+    const pace=getSessionPaceModifiers(dinnerEvent.sessionPace||'steady');
+    const pushBonus=opts.forcePush?0.12:0;
     const payload=resolveFeedPayload(dish,s,{
       skillGainMult,
       profGainMult:profGainMult*feedMods.calorieMult,
@@ -5886,7 +5907,7 @@ export default function ProfessorSim(){
     const cap=getFeedCapacity(s,{softStartBonus:softStartBonus(ownedSkills,stageId)});
     const prevFullness=s.fullness||0;
     const fed=feedStudentCalories(s,payload.calories,fullnessCost,0,payload.label,{
-      refusalBonus:feedMods.refusalBonus,
+      refusalBonus:feedMods.refusalBonus+pace.refusalBonus+pushBonus,
       fullnessMult:feedMods.fullnessMult,
     });
     if(!fed){
@@ -6225,8 +6246,10 @@ export default function ProfessorSim(){
         capacityBonus:(hist.capacityBonus||0)+skillSessionCapBonus,
         sessionStartCalories:s.consumedCalories||0,
         encouragementsUsed:[],toleranceBuffer:0,sessionNum:hist.count+1,
-        refillRound:0,tappedOut:false,tapOutDialogue:null,
+        refillRound:0,tappedOut:false,tapOutDialogue:null,sessionPace:'steady',
       });
+      const scrutinyCost=scrutinyPrivateSessionCost(adminScrutiny);
+      if(scrutinyCost>0) addScrutiny(scrutinyCost);
     });
   };
 
@@ -6240,7 +6263,7 @@ export default function ProfessorSim(){
     setSessionLog(blobIntroText?[blobIntroText, venue.intro(s)]:[venue.intro(s)]);
   };
 
-  const feedInSession=(food)=>{
+  const feedInSession=(food,opts={})=>{
     const s=students.find(st=>st.id===privateSession.student.id)||privateSession.student;
     const stageId=getStage(s.lbs).id;
     const capOpts={
@@ -6250,6 +6273,8 @@ export default function ProfessorSim(){
     };
     const gain=rnd(food.gain[0],food.gain[1]);
     const feedMods=getFeedingModifiers(s,{generousTrait:hasTrait('generous'),context:'private_session'});
+    const pace=getSessionPaceModifiers(privateSession.sessionPace||'steady');
+    const pushBonus=opts.forcePush?0.12:0;
     const payload=resolveFeedPayload(food,s,{
       skillGainMult,
       profGainMult:profGainMult*feedMods.calorieMult,
@@ -6257,7 +6282,7 @@ export default function ProfessorSim(){
     });
     const fed=feedStudentCalories(s,payload.calories,payload.fullness,0,payload.label,{
       ...capOpts,
-      refusalBonus:feedMods.refusalBonus,
+      refusalBonus:feedMods.refusalBonus+pace.refusalBonus+pushBonus,
       fullnessMult:feedMods.fullnessMult,
     });
     if(!fed){
@@ -6272,7 +6297,7 @@ export default function ProfessorSim(){
     push(`🍽️ ${payload.label}: +${scaledGain.toLocaleString()} cal`);
     setSessionLog(sl=>[...sl,`🍽️ ${payload.label} (+${scaledGain.toLocaleString()} cal) — ${food.desc}`,`   ${desc}`]);
     const sessionCals=getSessionCaloriesFed(fed,privateSession.sessionStartCalories||0);
-    const adjustedTapProb=getTapOutProbability(fPct,skillTapOutResistance);
+    const adjustedTapProb=getTapOutProbability(fPct,skillTapOutResistance)*pace.tapOutMult;
     const tapsOut=Math.random()<adjustedTapProb;
     if(tapsOut){
       const liveS=fed;
@@ -6688,6 +6713,31 @@ export default function ProfessorSim(){
                   </div>
                   {isOverfull&&<div style={{fontSize:10,color:"#c04020",marginTop:2,fontStyle:"italic"}}>Each additional dish risks ending the evening.</div>}
                 </div>
+              )}
+
+              {dinnerEvent.phase==="dishes"&&(
+                <>
+                  <div style={{fontSize:9,letterSpacing:2,color:"#7a5090",marginBottom:6}}>FEEDING PACE</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:10}}>
+                    {SESSION_PACE_ACTIONS.map(p=>(
+                      <button key={p.id} type="button"
+                        style={{...C.smBtn,opacity:(dinnerEvent.sessionPace||'steady')===p.id?1:0.55}}
+                        onClick={()=>setDinnerEvent(prev=>({...prev,sessionPace:p.id}))}
+                        title={p.desc}>
+                        {p.label}
+                      </button>
+                    ))}
+                  </div>
+                  {isAtCapacity&&dinnerEvent.venue?.dishes?.length>0&&(
+                    <button type="button" style={{...C.btn("#6a2848"),width:"100%",fontSize:10,marginBottom:10}}
+                      onClick={()=>{
+                        const dish=dinnerEvent.venue.dishes.find(d=>!(dinnerEvent.dishes||[]).includes(d.id))||dinnerEvent.venue.dishes[0];
+                        if(dish) orderDish(dish,{forcePush:true});
+                      }}>
+                      Push past capacity — insist on another course
+                    </button>
+                  )}
+                </>
               )}
 
               {/* PHASE: VENUE SELECTION */}

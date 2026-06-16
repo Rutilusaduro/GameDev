@@ -12,6 +12,7 @@ import { applyPsychDelta } from './psychState.js';
 import { adjustHunger } from './hungerAddiction.js';
 import { foldModPatches } from './deviceMods.js';
 import { getDeviceBoardMods, applyBoardModsToWeeklyEffect } from './inventionUpgrades.js';
+import { scaleDiscoveryRisk } from './campusWitness.js';
 import {
   bumpWeeklyDeviceDependence,
   bumpEquipDeviceDependence,
@@ -682,7 +683,11 @@ export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng =
   if (growthLine) result.lines = [...(result.lines || []), growthLine];
   const boardMods = ctx.labState ? getDeviceBoardMods(ctx.labState, def.id) : {};
   const discoveryMult = boardMods.discoveryMult ?? 1;
-  const discoveryRisk = (mode?.discoveryRisk ?? 0.15) * discoveryMult;
+  const discoveryRisk = scaleDiscoveryRisk(
+    mode?.discoveryRisk ?? 0.15,
+    ctx.adminScrutiny ?? 0,
+    discoveryMult,
+  );
   const discovered = rng() < discoveryRisk;
   return {
     ok: true,
