@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { C } from '../styles.js';
-import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes/hungerInterrupt.js';
+import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes/hungerInterrupt/index.js';
 import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from '../textEngine/textFlagFormat.js';
 import { getStage } from '../gameData/stages.js';

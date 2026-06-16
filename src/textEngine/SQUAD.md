@@ -82,7 +82,7 @@ The Squad is the six-agent team defined in the Near-Infinite Narrative Engine st
 
 **Owns:** `engine.js`, `lexicon/`, `gameData/textContext.js`, `scripts/textLint.mjs`, `scripts/text-lint.config.js`, `registerDimension` / `ctx.flags` / `consumes` / `requireAbsent`, scene `index.js` exports, Dialogue Lab section wiring.
 
-**Expansion targets:** `registerModule` → `registerPool` migration — scene pools migrated; legacy monoliths remain `registerModule` until decomposed · ~~`ctx.sessionUsed` anti-repetition~~ ✅ · coverage report automation · volume tracking dashboard.
+**Expansion targets:** ~~`registerModule` → `registerPool` migration — hungerInterrupt, stream.pre, diaryBase, evolved diary decomposed~~ ✅ · ~~`ctx.sessionUsed` anti-repetition~~ ✅ · coverage report automation · volume tracking dashboard.
 
 **Does not:** Write long-form prose variants (delegates to A1/A2/A3, reviewed by A5).
 

@@ -34,7 +34,7 @@ import { renderDeviceTickLine } from '../textEngine/scenes/deviceTick/index.js';
 import { renderSuddenGrowthLine } from '../textEngine/scenes/suddenGrowth/index.js';
 import { resolveGrowthZone } from '../textEngine/growthLexicon.js';
 import { renderCampusDeviceEncounter, renderCampusDeviceResult } from '../textEngine/scenes/campusDevice/index.js';
-import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes/hungerInterrupt.js';
+import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes/hungerInterrupt/index.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
 import '../textEngine/scenes/talkEncourage.js';

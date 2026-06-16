@@ -58,8 +58,8 @@ import {
 } from './gameData/pharmacistCult.js';
 import { HungerInterruptModal } from './components/HungerInterruptModal.jsx';
 import { CompoundFeedModal } from './components/CompoundFeedModal.jsx';
-import { renderHungerOutcome } from './textEngine/scenes/hungerInterrupt.js';
-import './textEngine/scenes/hungerInterrupt.js';
+import { renderHungerOutcome } from './textEngine/scenes/hungerInterrupt/index.js';
+import './textEngine/scenes/hungerInterrupt/index.js';
 import './textEngine/scenes/hungerLexicon.js';
 import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';

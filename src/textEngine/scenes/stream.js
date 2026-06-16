@@ -2,7 +2,7 @@
 // DESTINY STREAMING — text modules (stream.*)
 // ═══════════════════════════════════════════════════════════════
 import { registerPool } from '../engine.js';
-import './streamPreStream.js';
+import './streamPreStream/index.js';
 
 // ── Between-round dialogue ─────────────────────────────────────
 
