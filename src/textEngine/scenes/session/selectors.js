@@ -64,10 +64,33 @@ registerPool('session.selectorOverlay', [
   { when: { season: ['winter', 'summer'] }, weight: 2, text: [
     '{session.seasonNote} {session.moodTone}',
   ] },
+  { when: { campusFattening: true }, weight: 2, text: [
+    '{session.campusNote} {session.moodTone}',
+  ] },
   { when: {}, text: [
     '{session.moodTone}',
     '{session.seasonNote}',
     '{session.relWarmth}',
+    '{session.campusNote}',
+    '{session.skillNote}',
     '',
   ] },
+]);
+
+registerPool('session.campusNote', [
+  { when: { campusFattening: true }, weight: 2, text: [
+    'The campus runs indulgent — she eats like the world agrees with her appetite.',
+    'Portions feel larger everywhere; tonight she matches the mood.',
+  ] },
+  { when: {}, text: [''] },
+]);
+
+registerPool('session.skillNote', [
+  { when: { skill: ['growth_hunger', 'endless_hunger'] }, weight: 2, text: [
+    'Your influence keeps appetite lit — she rarely refuses the next course.',
+  ] },
+  { when: { skill: ['mesmerizing_aura'] }, weight: 2, text: [
+    'She watches you more than the menu; your cue is enough.',
+  ] },
+  { when: {}, text: [''] },
 ]);

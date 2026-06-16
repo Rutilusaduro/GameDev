@@ -2,7 +2,7 @@
 // CULTIVATOR — Reneé taste-tester / harvest modal
 // ═══════════════════════════════════════════════════════════════
 import { C } from '../styles.js';
-import { RECRUITMENT_SCENE, RECIPES, getDigestVignette } from '../gameData/cultivator.js';
+import { getRecruitmentScene, RECIPES, getDigestVignette } from '../gameData/cultivator.js';
 import { getStage } from '../gameData/stages.js';
 import { renderCultivatorIntro, renderCultivatorChoice } from '../textEngine/scenes/cultivator/index.js';
 
@@ -22,7 +22,7 @@ export function CultivatorModal({ cultivatorState, students, week = 1, setCultiv
         if(cs.modalPhase==='recruit_setup') return wrap(<>
           <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 CULTIVATOR</div>
           <div style={{fontSize:14,fontWeight:700,color:amber,marginBottom:10}}>Select a Subject</div>
-          <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>{RECRUITMENT_SCENE}</div>
+          <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>{getRecruitmentScene()}</div>
           <div style={{fontSize:11,color:"#8a5030",marginBottom:16}}>A candidate will be selected from your contact list. She will believe she is a paid taste tester. This is technically accurate. Cycle {cs.harvestsCompleted+1} of 4.</div>
           <div style={{display:"flex",gap:8}}>
             <button style={C.btn("#333")} onClick={()=>setCultivatorState(prev=>({...prev,modalPhase:null}))}>Cancel</button>

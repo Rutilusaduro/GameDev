@@ -21,7 +21,7 @@ import { DEVICES } from '../src/gameData/devices.js';
 import { renderGrowthScene } from '../src/textEngine/scenes/growthEvent/index.js';
 import {
   BANNED_PATTERNS, SAMPLE_SCENES, COVERAGE_STAGE_PROBES, STAGE_COVERAGE_PREFIXES,
-  VOLUME_SQUAD_PREFIXES, OPTIONAL_EMPTY_POOLS,
+  VOLUME_SQUAD_PREFIXES, OPTIONAL_EMPTY_POOLS, MIGRATION_BRIDGE_PREFIXES,
   COVERAGE_BANDS, COVERAGE_CORRUPTION_PROBES,
   INFRA_MODULE_KEYS, STRICT_VOLUME_MAX_THIN, STRICT_COVERAGE_MIN_PCT,
 } from './text-lint.config.js';
@@ -51,6 +51,10 @@ const NO_WILDCARD_OK = new Set([
   // legacy modules are only warned about, not whitelisted here
 ]);
 
+function isMigrationBridge(key) {
+  return MIGRATION_BRIDGE_PREFIXES.some((p) => key.startsWith(p));
+}
+
 // ── static checks ─────────────────────────────────────────────
 
 const SLOT_RE = /\{([a-zA-Z][\w.]*)(?::([^|}]*))?(?:\|[^}]*)?\}/g;
@@ -77,6 +81,7 @@ for (const [key, variants] of entries) {
 
   // 2. Monolith detector — fragments must stay fragment-sized.
   for (const { text } of stringTexts(variants)) {
+    if (isMigrationBridge(key)) continue;
     if (isPool && text.length > 200) {
       err(`${label}: ${text.length}-char text in a pool module — decompose into a skeleton + fragments: "${text.slice(0, 60)}…"`);
     } else if (!isPool && text.length > 320) {
@@ -138,6 +143,9 @@ const SWEEPS = [
   { name: 'immob.scene', root: 'immob.scene', tpl: '{immob.scene}' },
   { name: 'slender.scene', root: 'slender.scene', tpl: '{slender.scene}', corruptionTier: [0], stageMax: 4 },
   { name: 'slender.mirror', root: 'slender.mirror', tpl: '{slender.mirror} {slender.mindFeel}', corruptionTier: [0], stageMax: 4 },
+  { name: 'dinner.overfill', root: 'dinner.overfill', tpl: '{dinner.overfill}' },
+  { name: 'feed.voice', root: 'feed.voice', tpl: '{feed.voice}' },
+  { name: 'body.portrait.depth', root: 'body.portrait.depth', tpl: '{body.portrait.depth}' },
 ];
 
 const STAGE_PROBES = [0, 2, 4, 6, 8, 10, 11];

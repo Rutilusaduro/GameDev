@@ -44,7 +44,16 @@ import { renderBodyPortrait } from '../textEngine/scenes/body/index.js';
 import { renderFeedVoice } from '../textEngine/scenes/feedVoice/index.js';
 import { renderIntimacyDepth } from '../textEngine/scenes/intimacy/index.js';
 import { renderHuntNode, renderHuntTarget } from '../textEngine/scenes/hunt/index.js';
-import { renderDeviceFlavor, renderDeviceCatalogDesc } from '../textEngine/scenes/deviceFlavor.js';
+import {
+  renderCultivatorIntro,
+  renderCultivatorChoice,
+  renderCultivatorHarvestPlanned,
+  renderCultivatorDigest,
+  renderCultivatorGrowth,
+  renderCultivatorRecruitment,
+  renderCultivatorStageUp,
+} from '../textEngine/scenes/cultivator/index.js';
+import { renderDeviceFlavor } from '../textEngine/scenes/deviceFlavor.js';
 import { renderSessionFullness, renderSessionAftermath } from '../textEngine/scenes/session/index.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
@@ -145,6 +154,21 @@ const SECTIONS = {
     fn: (s, opts) => renderHuntNode(opts.huntNode || 'quad', s, 6, opts) },
   "hunt.target": { params: STATE_PARAMS,
     fn: (s, opts) => renderHuntTarget(opts.huntTarget || 'chad_w', s, 6, opts) },
+  "cultivator.harvest": { params: [...STATE_PARAMS, "reneeStage", "testerStage"],
+    fn: (s, opts) => renderCultivatorHarvestPlanned(
+      Number(opts.reneeStage ?? 6), Number(opts.testerStage ?? 7), s.name, 6) },
+  "cultivator.digest": { params: [...STATE_PARAMS, "reneeStage", "stagesJumped", "digestLate"],
+    fn: (s, opts) => renderCultivatorDigest(
+      Number(opts.reneeStage ?? 6), s.name, Number(opts.stagesJumped ?? 1), opts.digestLate === 'late', 6) },
+  "cultivator.growth": { params: ["reneeStage", "stagesJumped"],
+    fn: (_s, opts) => renderCultivatorGrowth(
+      Number(opts.reneeStage ?? 6), 130, Number(opts.stagesJumped ?? 1), 6) },
+  "cultivator.stageUp": { params: [...STATE_PARAMS, "testerStage"],
+    fn: (s, opts) => renderCultivatorStageUp(Number(opts.testerStage ?? 7), s.name, 6) },
+  "cultivator.recruitment": { params: [],
+    fn: () => renderCultivatorRecruitment(6) },
+  "cultivator.intro": { params: STATE_PARAMS,
+    fn: (s, opts) => renderCultivatorIntro(opts.recipeId || 'cake', s.name, 6) },
   "campusEvent.beat": { params: [...STATE_PARAMS, "campusTier"],
     fn: (s, opts) => render('{campusEvent.beat}', createContext({
       subject: s, week: 6,
@@ -298,6 +322,11 @@ const PARAM_DEFS = [
   { key: "groupConv", label: "Group topic", options: GROUP_CONV_IDS },
   { key: "refGirl", label: "Ref girl", options: INIT_STUDENTS.map((s) => String(s.id)), optionLabel: (v) => INIT_STUDENTS.find((s) => String(s.id) === v)?.name || v },
   { key: "reactionLevel", label: "Reaction lvl", options: ["0", "1", "2", "3"] },
+  { key: "reneeStage", label: "Reneé stage", options: ["5", "6", "7", "8", "9", "10"], optionLabel: (v) => `${v} · ${WEIGHT_STAGES[Number(v)]?.label || v}` },
+  { key: "testerStage", label: "Tester stage", options: ["6", "7", "8", "9", "10"], optionLabel: (v) => `${v} · ${WEIGHT_STAGES[Number(v)]?.label || v}` },
+  { key: "stagesJumped", label: "Stages jumped", options: ["1", "2", "3"] },
+  { key: "digestLate", label: "Digest phase", options: ["early", "late"] },
+  { key: "recipeId", label: "Recipe", options: ["milkshake", "cookies", "cake"] },
 ];
 
 function sectionFitsLockedParams(sectionKey, params) {

@@ -1,6 +1,15 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect
 // Cultivator recipe prose — migrated from gameData/cultivator.js (DEPTH_PLAN §9d).
+import './vignettes.js';
 import { registerPool, render, createContext } from '../../engine.js';
+export {
+  renderCultivatorHarvestPlanned,
+  renderCultivatorHarvestEmergency,
+  renderCultivatorStageUp,
+  renderCultivatorRecruitment,
+  renderCultivatorDigest,
+  renderCultivatorGrowth,
+} from './vignettes.js';
 import { RECIPES, EATING_REACTIONS } from '../../../gameData/cultivator.js';
 
 function testerSubject(testerName) {

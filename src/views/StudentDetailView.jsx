@@ -1,4 +1,5 @@
-import { EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, EVOLVED_ACTIVITY_META, EVOLVED_FORM_META, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS } from '../gameData/evolvedForms.js';
+import { EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, EVOLVED_ACTIVITY_META, EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
+import { FEEDER_JOURNAL_ARCHETYPES, NADIA_JOURNAL_ARCHETYPES } from '../textEngine/scenes/researchJournal/index.js';
 import { ATMOSPHERE_TIERS, GUEST_TIERS, MENU_TIERS } from '../gameData/chapterHostess.js';
 import { C } from '../styles.js';
 import { LilithPixelArt } from '../components/LilithPixelArt.jsx';
@@ -9,7 +10,7 @@ import { CASE_STUDY_PAIRS } from '../gameData/communityResearcher.js';
 import { EVOLVED_SKILL_TREES } from '../gameData/skills.js';
 import { INNER_CIRCLE_TIERS, getTier } from '../gameData/sessions.js';
 import { LILITH_ID } from '../gameData/lilith.js';
-import { RECRUITMENT_SCENE, TESTER_APPEARANCE } from '../gameData/cultivator.js';
+import { getRecruitmentScene, TESTER_APPEARANCE } from '../gameData/cultivator.js';
 import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
 import { INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES } from '../gameData/talia.js';
@@ -346,7 +347,7 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                                 </div>
                               ):!hasActive?(
                                 <div>
-                                  <div style={{color:"#9a6030",fontSize:11,lineHeight:1.6,marginBottom:10,fontStyle:"italic"}}>{RECRUITMENT_SCENE.slice(0,120)}…</div>
+                                  <div style={{color:"#9a6030",fontSize:11,lineHeight:1.6,marginBottom:10,fontStyle:"italic"}}>{getRecruitmentScene().slice(0,120)}…</div>
                                   <div style={{color:"#7a5030",fontSize:10,marginBottom:8}}>Cycles remaining: {4-cs.harvestsCompleted}/4</div>
                                   <button style={{...C.btn(brown),width:"100%"}} onClick={()=>openCultivatorRecruit()}>
                                     Recruit 🐷 <s style={{opacity:0.6}}>'Taste Tester'</s>
@@ -723,10 +724,10 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                                     <div style={{color:"#c0a0e0",fontSize:13,fontWeight:700}}>{subj.name}</div>
                                     <div style={{color:"#7050a0",fontSize:10}}>{getStage(subj.lbs).label} · {Math.round(subj.lbs)} lbs</div>
                                     <div style={{display:"flex",gap:5,marginTop:6,flexWrap:"wrap"}}>
-                                      {s.researchFocus==='feeder_focus'&&FEEDER_SUBJECT_JOURNALS[subj.archetype]&&(
+                                      {s.researchFocus==='feeder_focus'&&FEEDER_JOURNAL_ARCHETYPES.includes(subj.archetype)&&(
                                         <button style={{...C.smBtn,fontSize:10}} onClick={()=>setSubjectJournalState({subjectId:subj.id,currentPage:getStage(subj.lbs).id})}>📔 Journal</button>
                                       )}
-                                      {NADIA_SUBJECT_JOURNALS[subj.archetype]&&(
+                                      {NADIA_JOURNAL_ARCHETYPES.includes(subj.archetype)&&(
                                         <button style={{...C.smBtn,fontSize:10,background:"#0a0020",border:"1px solid #5030a040"}} onClick={()=>setNadiaNotesState({nadiaId:s.id,subjectId:subj.id,currentPage:-1})}>📓 Notes</button>
                                       )}
                                       <button style={{...C.smBtn,fontSize:10,opacity:0.7}} onClick={()=>{setStudents(prev=>prev.map(x=>x.id===s.id?{...x,researchSubjectId:null}:x));}}>Change</button>
