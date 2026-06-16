@@ -5,13 +5,22 @@ import { renderDeviceTickLine } from '../textEngine/scenes/deviceTick/index.js';
 import { renderDeviceUseLine } from '../textEngine/scenes/deviceUse/index.js';
 import { renderDeviceFlavor } from '../textEngine/scenes/deviceFlavor.js';
 import { renderSuddenGrowthLine } from '../textEngine/scenes/suddenGrowth/index.js';
+import { renderDeviceCampusUseLine } from '../textEngine/scenes/deviceCampusUse/index.js';
 import { getDevice, DEVICE_SLOTS } from './devices.js';
 import { canStudentAcceptDevice, deviceAcceptanceBlockReason, scalePsychDeltaForStudent, scaleGainRangeForStudent } from './deviceGating.js';
 import { applyPsychDelta } from './psychState.js';
+import { adjustHunger } from './hungerAddiction.js';
+import { foldModPatches } from './deviceMods.js';
+import { getDeviceBoardMods, applyBoardModsToWeeklyEffect } from './inventionUpgrades.js';
 import {
   bumpWeeklyDeviceDependence,
   bumpEquipDeviceDependence,
   bumpCampusDeviceDependence,
+  getDependenceLevel,
+  applyDependenceBonuses,
+  dependenceMalfunctionScale,
+  tickDependence,
+  applyWithdrawal,
 } from './deviceDependence.js';
 
 export { getEquippedDeviceIds, hasPredatorCapture } from './deviceEquip.js';
@@ -268,18 +277,26 @@ export function applyDeviceEffect(student, effectSpec, ctx = {}) {
 
   if (effectSpec?.permanentConvert) {
     const pc = effectSpec.permanentConvert;
+    const boardMods = ctx.labState && sourceDeviceId
+      ? getDeviceBoardMods(ctx.labState, sourceDeviceId)
+      : {};
+    const allowPermanent = ctx.allowPermanentConvert || boardMods.permanentConvert;
     if (pc.gainLbs) {
       const lbs = rollRange(pc.gainLbs, rng);
       next._pendingGainLbs = (next._pendingGainLbs || 0) + lbs;
-      lines.push(`+${lbs} lbs banked permanently`);
+      lines.push(`+${lbs} lbs banked${allowPermanent ? ' permanently' : ''}`);
     }
-    if (pc.bodyTypeOverride) {
-      next.bodyType = pc.bodyTypeOverride;
-      lines.push(`body shape shifted toward ${pc.bodyTypeOverride}`);
-    }
-    if (pc.bodyState) {
-      next.bodyOverride = null;
-      lines.push('override crystallized into permanent change');
+    if (allowPermanent) {
+      if (pc.bodyTypeOverride) {
+        next.bodyType = pc.bodyTypeOverride;
+        lines.push(`body shape shifted toward ${pc.bodyTypeOverride}`);
+      }
+      if (pc.bodyState) {
+        next.bodyOverride = null;
+        lines.push('override crystallized into permanent change');
+      }
+    } else if (pc.gainLbs) {
+      lines.push('permanent lattice locked — unlock the board node to crystallize form');
     }
   }
 
@@ -350,6 +367,9 @@ function resolveWeeklyDevice(student, slot, entry, week, rng, ctx = {}) {
 
   const modFold = foldModPatches(def.weeklyEffect, entry.mods || [], def);
   let weekly = { ...modFold.effectSpec };
+  if (ctx.labState) {
+    weekly = applyBoardModsToWeeklyEffect(weekly, ctx.labState, def.id);
+  }
   const dependenceLevel = getDependenceLevel(student, slot);
 
   if (def.id === 'adaptive_growth_harness') {
@@ -395,20 +415,32 @@ function resolveWeeklyDevice(student, slot, entry, week, rng, ctx = {}) {
   if (def.id === 'endless_hunger_engine') {
     const weeksActive = (next.deviceState?.endlessHunger?.weeksActive ?? 0) + 1;
     const distress = next.deviceState?.endlessHunger?.distress ?? false;
+    const boardMods = ctx.labState ? getDeviceBoardMods(ctx.labState, def.id) : {};
+    const hungerDelta = distress ? 2 : 1;
+    const scaledDelta = boardMods.hungerRiseMult
+      ? Math.round(hungerDelta * boardMods.hungerRiseMult)
+      : hungerDelta;
     next = mergeDeviceState(next, {
       endlessHunger: { active: true, distress, weeksActive },
     });
-    next = adjustHunger(next, distress ? 2 : 1);
+    next = adjustHunger(next, scaledDelta);
   }
 
   const malf = rollMalfunction(def, next, rng, {
     effectiveStability: modFold.effectiveStability,
     effectiveRisk: modFold.effectiveRisk,
     dependenceLevel: getDependenceLevel(next, slot),
+    labState: ctx.labState,
+    deviceDefId: def.id,
   });
   if (malf) {
     malfunctions.push(malf);
-    const mApplied = applyDeviceEffect(next, malf.effect, { week, sourceDeviceId: def.id, rng });
+    const mApplied = applyDeviceEffect(next, malf.effect, {
+      week,
+      sourceDeviceId: def.id,
+      rng,
+      labState: ctx.labState,
+    });
     next = mApplied.student;
     const totalGain = next._pendingGainLbs || 0;
     const ev = buildTickEvent(student, slot, entry, week, rng, next, totalGain, malf, ctx);
@@ -508,22 +540,27 @@ export function clearExpiredDeviceStates(student, week) {
   return { ...next, deviceState };
 }
 
-export function useConsumableDevice(student, defId, week = 1, rng = Math.random) {
+export function useConsumableDevice(student, defId, week = 1, rng = Math.random, ctx = {}) {
   const def = getDevice(defId);
   if (!def || def.form !== 'consumable') return { student, ok: false, lines: [], malfunction: null, zoneOverride: null };
   let lines = [];
   let malf = null;
   let next = student;
   let zoneOverride = null;
+  const effectCtx = { week, sourceDeviceId: def.id, rng, labState: ctx.labState };
 
-  const applied = applyDeviceEffect(next, def.useEffect || {}, { week, sourceDeviceId: def.id, rng });
+  const applied = applyDeviceEffect(next, def.useEffect || {}, effectCtx);
   next = applied.student;
   lines = [...applied.lines];
   zoneOverride = applied.zoneOverride;
 
-  malf = rollMalfunction(def, next, rng);
+  malf = rollMalfunction(def, next, rng, {
+    dependenceLevel: getDependenceLevel(student, def.id),
+    labState: ctx.labState,
+    deviceDefId: def.id,
+  });
   if (malf) {
-    const mApplied = applyDeviceEffect(next, malf.effect, { week, sourceDeviceId: def.id, rng });
+    const mApplied = applyDeviceEffect(next, malf.effect, effectCtx);
     next = mApplied.student;
     lines.push(`⚠️ ${malf.text}`);
     if (mApplied.zoneOverride) zoneOverride = mApplied.zoneOverride;
@@ -628,17 +665,24 @@ export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng =
   if (!effect.gainLbs && def.useEffect) {
     Object.assign(effect, def.useEffect);
   }
-  let result = applyDeviceEffect(targetStudent, effect, { week, sourceDeviceId: def.id, rng });
-  const malf = rollMalfunction(def, result.student, rng);
+  const effectCtx = { week, sourceDeviceId: def.id, rng, labState: ctx.labState };
+  let result = applyDeviceEffect(targetStudent, effect, effectCtx);
+  const malf = rollMalfunction(def, result.student, rng, {
+    dependenceLevel: getDependenceLevel(targetStudent, def.id),
+    labState: ctx.labState,
+    deviceDefId: def.id,
+  });
   if (malf) {
-    const mApplied = applyDeviceEffect(result.student, malf.effect, { week, sourceDeviceId: def.id, rng });
+    const mApplied = applyDeviceEffect(result.student, malf.effect, effectCtx);
     result = { student: mApplied.student, lines: [...result.lines, malf.text] };
   }
   result.student = bumpCampusDeviceDependence(result.student, def.id);
   const gainLbs = result.student._pendingGainLbs || 0;
   const growthLine = growthLineForStudent(result.student, gainLbs);
   if (growthLine) result.lines = [...(result.lines || []), growthLine];
-  const discoveryRisk = mode?.discoveryRisk ?? 0.15;
+  const boardMods = ctx.labState ? getDeviceBoardMods(ctx.labState, def.id) : {};
+  const discoveryMult = boardMods.discoveryMult ?? 1;
+  const discoveryRisk = (mode?.discoveryRisk ?? 0.15) * discoveryMult;
   const discovered = rng() < discoveryRisk;
   return {
     ok: true,

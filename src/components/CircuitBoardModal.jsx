@@ -19,7 +19,7 @@ const ACCENT = '#6a5088';
 const LINE_MAIN = '#5090c8';
 const LINE_BRANCH = '#4a6080';
 
-export function CircuitBoardModal({ deviceDefId, labState, onUnlockNode, onClose }) {
+export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlockNode, onClose }) {
   const board = CIRCUIT_BOARDS[deviceDefId];
   const [selectedId, setSelectedId] = useState(null);
 
@@ -34,7 +34,7 @@ export function CircuitBoardModal({ deviceDefId, labState, onUnlockNode, onClose
 
   const nodeColor = (node) => {
     const unlocked = hasCircuitNode(labState, deviceDefId, node.id);
-    const canBuy = canUnlockCircuitNode(labState, deviceDefId, node.id);
+    const canBuy = canUnlockCircuitNode(labState, deviceDefId, node.id, students);
     if (unlocked) return { bg: '#1a3828', border: '#4a9a5a', text: '#80d0a0' };
     if (canBuy) return { bg: '#1a1830', border: ACCENT, text: '#d0c0f0' };
     return { bg: '#100c18', border: '#302840', text: '#7060a0' };
@@ -154,8 +154,8 @@ export function CircuitBoardModal({ deviceDefId, labState, onUnlockNode, onClose
               <div style={{ fontSize: 9, color: '#4a9a5a' }}>✓ Node installed on circuit board</div>
             ) : (
               <button
-                style={{ ...C.btn(canUnlockCircuitNode(labState, deviceDefId, selected.id) ? ACCENT : '#302030'), width: '100%' }}
-                disabled={!canUnlockCircuitNode(labState, deviceDefId, selected.id)}
+                style={{ ...C.btn(canUnlockCircuitNode(labState, deviceDefId, selected.id, students) ? ACCENT : '#302030'), width: '100%' }}
+                disabled={!canUnlockCircuitNode(labState, deviceDefId, selected.id, students)}
                 onClick={() => onUnlockNode(deviceDefId, selected.id)}
               >
                 Install node ({selected.cost} invention pt{selected.cost !== 1 ? 's' : ''})

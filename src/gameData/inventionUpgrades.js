@@ -211,12 +211,16 @@ export function nextMainPathNode(labState, deviceDefId) {
   return board.mainPath.find((n) => !unlocked.has(n.id)) || null;
 }
 
-export function canUnlockCircuitNode(labState, deviceDefId, nodeId) {
+export function canUnlockCircuitNode(labState, deviceDefId, nodeId, roster = []) {
   if (!labState?.installedInventions?.[deviceDefId]) return false;
   const cb = getCircuitBoard(labState, deviceDefId);
   if (cb.unlockedNodes.includes(nodeId)) return false;
   const node = getCircuitNode(deviceDefId, nodeId);
   if (!node) return false;
+  if (node.requiresEvolvedForm) {
+    const hasForm = roster.some((s) => !s.hidden && s.evolvedForm === node.requiresEvolvedForm);
+    if (!hasForm) return false;
+  }
   if ((cb.inventionPoints ?? 0) < (node.cost ?? 1)) return false;
   const tier = getInventionTier(labState, deviceDefId);
   if (node.requiresTier && tier < node.requiresTier) return false;
@@ -231,8 +235,8 @@ export function canUnlockCircuitNode(labState, deviceDefId, nodeId) {
   return true;
 }
 
-export function unlockCircuitNode(labState, deviceDefId, nodeId) {
-  if (!canUnlockCircuitNode(labState, deviceDefId, nodeId)) return labState;
+export function unlockCircuitNode(labState, deviceDefId, nodeId, roster = []) {
+  if (!canUnlockCircuitNode(labState, deviceDefId, nodeId, roster)) return labState;
   const node = getCircuitNode(deviceDefId, nodeId);
   const cb = getCircuitBoard(labState, deviceDefId);
   const cost = node.cost ?? 1;
@@ -301,6 +305,39 @@ export function getDeviceBoardMods(labState, deviceDefId) {
   if (deviceDefId === 'feeding_mask') return getForceFeederBoardMods(labState);
   const has = (id) => hasCircuitNode(labState, deviceDefId, id);
   return collectBoardMods(labState, deviceDefId, has);
+}
+
+/** Scale weekly equip ticks by unlocked circuit-board mods (DEPTH_PLAN §2a). */
+export function applyBoardModsToWeeklyEffect(weekly, labState, deviceDefId) {
+  if (!weekly || !labState || !deviceDefId) return weekly;
+  const mods = getDeviceBoardMods(labState, deviceDefId);
+  const next = { ...weekly };
+  if (mods.weeklyGainMult && next.gainLbs) {
+    const mult = 1 + mods.weeklyGainMult;
+    next.gainLbs = next.gainLbs.map((g) => Math.max(1, Math.round(g * mult)));
+  }
+  if (mods.gainMult && next.gainLbs) {
+    next.gainLbs = next.gainLbs.map((g) => Math.max(1, Math.round(g * mods.gainMult)));
+  }
+  if (mods.shameMult != null && next.psychDelta?.shame) {
+    next.psychDelta = { ...next.psychDelta, shame: Math.round(next.psychDelta.shame * mods.shameMult) };
+  }
+  if (mods.dependenceMult != null && next.psychDelta?.dependence) {
+    next.psychDelta = { ...next.psychDelta, dependence: Math.round(next.psychDelta.dependence * mods.dependenceMult) };
+  }
+  if (mods.stageBumpBonus && next.bodyOverride?.stageBump) {
+    next.bodyOverride = { ...next.bodyOverride, stageBump: next.bodyOverride.stageBump + mods.stageBumpBonus };
+  }
+  if (mods.furnitureComfort != null && next.furnitureComfortDelta != null) {
+    next.furnitureComfortDelta += mods.furnitureComfort;
+  }
+  if (mods.comfortDecayMult != null && next.furnitureComfortDelta != null) {
+    next.furnitureComfortDelta = Math.round(next.furnitureComfortDelta * mods.comfortDecayMult);
+  }
+  if (mods.hungerRiseMult && next.hungerDelta) {
+    next.hungerDelta = Math.round(next.hungerDelta * mods.hungerRiseMult);
+  }
+  return next;
 }
 
 export function recordForceFeederUse(labState, { performanceTier, targetIsTalia, highRelationship, targetedZone }) {

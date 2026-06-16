@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { getCorruptionTier, CORRUPTION_CONFIG } from './corruption.js';
 import { getAddictionLevel } from './hungerAddiction.js';
+import { getDependenceRefusalBonus } from './deviceDependence.js';
 
 /**
  * Minimum corruption tier (0–2) before a student accepts equipping or running a device.
@@ -75,6 +76,7 @@ export function getForceFeedChanceBonuses(student) {
   return {
     corruptionBonus: getCorruptionForceFeedBonus(student),
     complianceBonus: getForceFeedComplianceBonus(student),
+    dependenceBonus: getDependenceRefusalBonus(student),
     intensityMult: getDeviceIntensityMult(student),
   };
 }
