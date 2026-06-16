@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 /**
- * Parse Flabwife placeholder fill upload and replace "[TAG]" strings in evolvedForms.js
+ * Parse Flabwife placeholder fill upload and replace "[TAG]" strings in evolvedForms.js.
+ *
+ * Migration: filled prose is a bridge — target decomposition is wifeLessons.* pools
+ * (see src/textEngine/scenes/wifeLessons/index.js and MIGRATION.md § Wife Lessons).
  */
 import fs from 'fs';
 import path from 'path';

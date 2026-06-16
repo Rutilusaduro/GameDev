@@ -4740,6 +4740,13 @@ export const SESSION_PAYOFF_TEXT = [
 ];
 
 // ─── WIFE LESSONS MINI-GAME DATA ──────────────────────────────────────────────
+//
+// MIGRATION BRIDGE (DEPTH_PLAN §9d) — decomposition deferred, prose is playable wholecloth.
+// Legacy source: WL_LESSONS + WL_DIALOGUES below (429 upload tags, filled via scripts/apply-flabwife-fills.mjs).
+// Target engine: src/textEngine/scenes/wifeLessons/ → wifeLessons.lesson.* | wifeLessons.talk.*
+// Inventory + beat map: src/textEngine/scenes/wifeLessons/index.js
+// Related prose already in engine: diary.wife_lessons (diary.js). Still legacy in evolvedForms:
+//   EVOLVED_EVENTS['wife_lessons'] (stageIdx 0–5 branching), EVOLVED_ACTIVITY_TEXT.wife_lessons (MJ diary beats).
 
 export const WL_CONFIG = {
   // Starting weights (lbs)
@@ -4758,6 +4765,7 @@ export const WL_CONFIG = {
 };
 
 // 3 lessons per stage (stages 1-8). daughterLbs applied to ALL daughters (Chloe × 1.15 from stage 3).
+// @migrate wifeLessons.lesson.s{stage}.{id} — monolith lesson beat per pick
 export const WL_LESSONS = {
   1: [
     { id:"honey_butter",   label:"Honey Butter Rolls",       text:`The kitchen filled with the sweet, yeasty aroma of rising dough as Mary Jane worked generous pats of butter directly into the flour for her famous Honey Butter Rolls. "Fat is what makes a home feel like home," she said softly with her gentle Southern smile, her gingham apron dusted with flour. Darlene and Wanda watched closely, tearing off warm pieces straight from the pan as the golden glaze dripped down their fingers. The room grew cozy with shared bites and quiet murmurs of approval while the professor observed from the side.`, daughterLbs:4, momLbs:1, mjLbs:2, rel:3 },
@@ -4802,6 +4810,7 @@ export const WL_LESSONS = {
 };
 
 // Helper to build a compact 1-on-1 dialogue entry.
+// @migrate wifeLessons.talk.{person}.s{stage} — greeting/capped/overtook + options/subs tree
 // outcome shape: { momKey?, momLbs?, daughterKey?, daughterLbs?, mjLbs, rel }
 // Each entry: { greeting, cappedGreeting, overtookGreeting?, options:[{label,text,subs:[{label,text,outcome}]}] }
 
