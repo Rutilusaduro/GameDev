@@ -105,8 +105,9 @@ for (const [key, variants] of entries) {
 // asserts clean output. Only runs for templates whose modules exist.
 
 const SWEEPS = [
-  { name: 'WI_INTRO', root: 'wi.arrival', tpl: '{wi.arrival} {wi.settle} {wi.scaleApproach}' },
-  { name: 'WI_INTRO_BIG', root: 'wi.bigScaleApproach', tpl: '{wi.arrival} {wi.settle} {wi.bigScaleApproach}' },
+  { name: 'WI_INTRO', root: 'wi.arrival', tpl: '{wi.arrival} {wi.settle} {wi.approachSentence} {wi.scaleSentence}' },
+  { name: 'WI_INTRO_BIG', root: 'wi.approachSentence', tpl: '{wi.arrival} {wi.settle} {wi.approachSentence} {wi.scaleSentence}', bigScale: true },
+  { name: 'WI_INTRO_LEGACY', root: 'wi.scaleApproach', tpl: '{wi.arrival} {wi.settle} {wi.scaleApproach}' },
   { name: 'WI_REACTION', root: 'wi.reply', tpl: '{wi.stepOff}\n\n{wi.reply}' },
   { name: 'WI_BREAK', root: 'wi.breakLine', tpl: '{wi.breakBeat} {wi.breakLine}' },
   { name: 'talk.encourage', root: 'talk.encourage', tpl: '{talk.encourage}' },
@@ -157,7 +158,11 @@ for (const sweep of SWEEPS) {
               };
               const ctx = createContext({
                 subject: student, week: 6,
-                globals: { campusFattening: campusTier > 0, campusTier, bigScale: stage >= 7 },
+                globals: {
+                  campusFattening: campusTier > 0,
+                  campusTier,
+                  bigScale: sweep.bigScale ?? stage >= 7,
+                },
               });
               const outs = new Set();
               for (let i = 0; i < RENDERS_PER_CELL; i++) {

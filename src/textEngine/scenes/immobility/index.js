@@ -1,6 +1,7 @@
 // The Squad — Lead: A3 Immobility | Support: A5 Editor
 // Immobility scene system — stages 10-11.
-import { registerPool } from '../../engine.js';
+import { registerPool, render } from '../../engine.js';
+import { buildTextContext } from '../../../gameData/textContext.js';
 import './fragments.js';
 
 registerPool('immob.scene', [
@@ -10,3 +11,9 @@ registerPool('immob.scene', [
     '{immob.environmental} {immob.bodyDesc|prefix:, }{immob.register}',
   ] },
 ]);
+
+export function renderImmobScene(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return render('{immob.scene}', ctx, { trace: opts.trace || null })?.trim() || '';
+}

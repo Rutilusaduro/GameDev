@@ -1,6 +1,7 @@
 // The Squad — Lead: A1 Mobile | Support: A2 Psych, A5 Editor
 // Clothing failure scene library.
-import { registerPool } from '../../engine.js';
+import { registerPool, render } from '../../engine.js';
+import { buildTextContext } from '../../../gameData/textContext.js';
 import './fragments.js';
 
 registerPool('cloth.scene', [
@@ -10,3 +11,9 @@ registerPool('cloth.scene', [
     '{cloth.moment} {cloth.failSound|prefix:, }{cloth.reaction}',
   ] },
 ]);
+
+export function renderClothScene(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return render('{cloth.scene}', ctx, { trace: opts.trace || null })?.trim() || '';
+}

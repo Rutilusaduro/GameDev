@@ -1,6 +1,7 @@
 // The Squad — Lead: A1 Mobile | Support: A4 Architect, A5 Editor
 // Campus navigation scene library.
-import { registerPool } from '../../engine.js';
+import { registerPool, render } from '../../engine.js';
+import { buildTextContext } from '../../../gameData/textContext.js';
 import './fragments.js';
 
 registerPool('campus.scene', [
@@ -10,3 +11,9 @@ registerPool('campus.scene', [
     '{campus.localeIntro} {campus.obstacle}{campus.soundTex|prefix:, }.',
   ] },
 ]);
+
+export function renderCampusScene(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, locale: opts.locale ?? 'hallway', ...opts });
+  return render('{campus.scene}', ctx, { trace: opts.trace || null })?.trim() || '';
+}
