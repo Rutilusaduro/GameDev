@@ -11,6 +11,7 @@ export const ARRIVAL_CAPSTONES = {
     apCost: 2,
     desc: 'A ceremonial match that celebrates how far she has come — repeatable, always heavier.',
     boardBranchHint: 'sumo_arrival',
+    boardUnlock: { deviceDefId: 'auto_bloating_belt', nodeId: 'abb_sumo_arrival' },
   },
   eating_streamer: {
     formId: 'eating_streamer',
@@ -18,6 +19,7 @@ export const ARRIVAL_CAPSTONES = {
     label: 'Legacy Stream',
     apCost: 2,
     desc: 'A capstone broadcast where the audience knows exactly what they are watching.',
+    boardUnlock: { deviceDefId: 'obedience_belt', nodeId: 'ob_streamer_arrival' },
   },
   feedee_creator: {
     formId: 'feedee_creator',
@@ -25,6 +27,7 @@ export const ARRIVAL_CAPSTONES = {
     label: 'Creator Arrival',
     apCost: 2,
     desc: 'The channel stops pretending. The feed is the point.',
+    boardUnlock: { deviceDefId: 'growth_serum_injector', nodeId: 'gsi_creator_arrival' },
   },
   machine_goddess: {
     formId: 'machine_goddess',
@@ -32,6 +35,7 @@ export const ARRIVAL_CAPSTONES = {
     label: 'Factory Blessing',
     apCost: 2,
     desc: 'Talia runs the mesh at full saturation across the roster for one perfect week.',
+    boardUnlock: { deviceDefId: 'endless_hunger_engine', nodeId: 'ehe_mesh_arrival' },
   },
   competitive_gainer: {
     formId: 'competitive_gainer',
@@ -39,6 +43,7 @@ export const ARRIVAL_CAPSTONES = {
     label: 'Open Challenge',
     apCost: 2,
     desc: 'She invites the room to witness the final version of the competition.',
+    boardUnlock: { deviceDefId: 'growth_accelerator_chamber', nodeId: 'gac_metabolic_override' },
   },
   delivery_hive: {
     formId: 'delivery_hive',
@@ -46,6 +51,7 @@ export const ARRIVAL_CAPSTONES = {
     label: 'Hive Arrival',
     apCost: 2,
     desc: 'The building answers to her completely. Deliveries never stop.',
+    boardUnlock: { deviceDefId: 'living_furniture_rig', nodeId: 'lfr_hive_arrival' },
   },
 };
 
@@ -65,4 +71,9 @@ export function getArrivalCapstone(student) {
 
 export function markArrivalUnlocked(student) {
   return { ...student, arrivalCapstoneUnlocked: true };
+}
+
+export function getArrivalBoardUnlock(student) {
+  if (!student?.evolvedForm) return null;
+  return ARRIVAL_CAPSTONES[student.evolvedForm]?.boardUnlock ?? null;
 }

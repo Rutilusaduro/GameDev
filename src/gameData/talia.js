@@ -19,6 +19,20 @@ export const INVENTOR_PATH_STAGES = [
     desc: 'Hands-on device builds, private workshop experiments, and equipping prototypes on your students.',
     unlockNote: 'Active — gather parts, research blueprints, build inventions.',
   },
+  {
+    id: 2,
+    key: 'integrator',
+    label: 'The Integrator',
+    desc: 'Campus mesh nodes, deployment areas, and semi-autonomous calorie routing across the roster.',
+    unlockNote: 'Network unlocked — calibrate nodes and expand deployment after 8 lab sessions.',
+  },
+  {
+    id: 3,
+    key: 'architect',
+    label: 'The Architect',
+    desc: 'Full factory-phase mastery: nexus upgrades, proposal chains, and automated drip at scale.',
+    unlockNote: 'Endgame automation — lower mesh thresholds and higher passive routing after 18 sessions.',
+  },
 ];
 
 export const LAB_BUILD_CONFIG = {
@@ -35,6 +49,20 @@ export const INVENTOR_ACTIVITIES = {
     desc: 'Gather parts, research blueprints, and build inventions. Talia spends her own mass as raw material.',
     taliaGain: [2, 5],
     instability: 5,
+  },
+  2: {
+    label: '⚙️ Calibrate Mesh',
+    apCost: 1,
+    desc: 'Jack into the campus mesh — tune nodes, approve proposals, and route surplus calories.',
+    taliaGain: [2, 4],
+    instability: 4,
+  },
+  3: {
+    label: '🌐 Nexus Command',
+    apCost: 1,
+    desc: 'Run the network at full saturation — nexus upgrades and automation at factory scale.',
+    taliaGain: [3, 6],
+    instability: 6,
   },
 };
 

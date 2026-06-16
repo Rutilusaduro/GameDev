@@ -1,6 +1,31 @@
 // ═══════════════════════════════════════════════════════════════
 // TALIA NETWORK — stage 2+ automation mesh
 // ═══════════════════════════════════════════════════════════════
+import { getCircuitBoard } from './inventionUpgrades.js';
+
+export const NETWORK_NODE_TYPES = [
+  { id: 'relay', label: 'Calorie Relay', desc: 'Routes passive drip to the roster each week.' },
+  { id: 'sensor', label: 'Craving Sensor', desc: 'Raises integration and proposal quality.' },
+  { id: 'pump', label: 'Pressure Pump', desc: 'Higher automation output per level.' },
+];
+
+export const DEPLOYMENT_AREAS = [
+  { id: 'dining_hall', label: 'Dining Hall', emoji: '🍽️' },
+  { id: 'dorms', label: 'Residence Halls', emoji: '🏠' },
+  { id: 'gym', label: 'Athletic Center', emoji: '🏋️' },
+  { id: 'library', label: 'Library Stacks', emoji: '📚' },
+];
+
+export const NETWORK_EXPERIMENTS = [
+  { id: 'craving_amp', label: 'Craving Amp', desc: '+4 automation when slotted.' },
+  { id: 'stealth_coat', label: 'Stealth Coat', desc: '−2 detection risk while slotted.' },
+  { id: 'surge_route', label: 'Surge Route', desc: '+6 automation, +1 scrutiny risk.' },
+];
+
+export function automationThreshold(network) {
+  const nexus = network?.nexusLevel ?? 1;
+  return Math.max(12, 25 - nexus * 4);
+}
 
 export function defaultNetworkState(stage = 2) {
   return {
@@ -58,11 +83,15 @@ export function tickNetworkWeek(labState, students, week, rng = Math.random) {
   let scrutinyDelta = 0;
 
   const nodes = network.nodes || [];
-  const automationTotal = nodes.reduce((a, n) => a + (n.automation ?? 0), 0);
+  const meshBonus = (getCircuitBoard(next, 'endless_hunger_engine').unlockedNodes || []).includes('ehe_mesh_arrival') ? 10 : 0;
+  const automationTotal = nodes.reduce((a, n) => a + (n.automation ?? 0), 0)
+    + nodes.reduce((a, n) => a + (n.slots || []).filter(Boolean).length * 4, 0)
+    + meshBonus;
   const deployed = (network.deploymentAreas || []).length;
   const visible = (students || []).filter((s) => !s.hidden && s.id !== 18);
+  const threshold = automationThreshold(network);
 
-  if (automationTotal >= 25 && visible.length && rng() < 0.55) {
+  if (automationTotal >= threshold && visible.length && rng() < 0.55) {
     const target = visible[Math.floor(rng() * visible.length)];
     const gainLbs = Math.max(1, Math.floor(automationTotal / 35) + rndBand(rng, 1, 2));
     studentDeltas.push({ studentId: target.id, gainLbs, psychDelta: { dependence: 1 } });

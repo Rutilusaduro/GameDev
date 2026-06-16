@@ -8,6 +8,7 @@ import { explorationSummary } from '../gameData/campusExploration.js';
 import { availableSecretsAtNode } from '../gameData/campusSecrets.js';
 import { availableElaraQuests } from '../gameData/relicHunter.js';
 import { CAMPUS_NARRATIVE_LABELS } from '../gameData/pharmacistCampus.js';
+import { SATURATION_TIERS } from '../gameData/campusSaturation.js';
 import { CampusDeviceEncounterPanel } from '../components/CampusDeviceEncounterPanel.jsx';
 import { FacultyLoungeView } from './FacultyLoungeView.jsx';
 
@@ -93,6 +94,7 @@ export function CampusView({
   beginElaraQuest,
   explorationCtx,
   campusTier = 0,
+  saturation = null,
   elaraMet = false,
   deviceInventory,
   useCampusDevice,
@@ -118,6 +120,25 @@ export function CampusView({
   return(
     <div>
       <p style={C.secT}>Campus — {node.emoji} {node.label}</p>
+      {saturation && (
+        <div style={{ ...C.card, borderColor: '#4a6080', marginBottom: 10, padding: '10px 12px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, gap: 8 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: '#90b0d0', letterSpacing: 1 }}>CAMPUS SATURATION</div>
+            <span style={{ fontSize: 10, color: '#70a0c0' }}>{saturation.tierLabel || SATURATION_TIERS[saturation.tier ?? 0]?.label}</span>
+          </div>
+          <div style={{ height: 8, background: 'rgba(255,255,255,0.06)', borderRadius: 4, overflow: 'hidden', marginBottom: 6 }}>
+            <div style={{ width: `${saturation.score ?? 0}%`, height: '100%', background: 'linear-gradient(90deg,#3a6080,#70a8c8)', transition: 'width 0.4s' }} />
+          </div>
+          <div style={{ fontSize: 10, color: '#7088a0', lineHeight: 1.5 }}>
+            {SATURATION_TIERS[saturation.tier ?? 0]?.desc}
+            {(saturation.tier ?? 0) >= 2 && (
+              <span style={{ display: 'block', color: '#90c0a8', marginTop: 4 }}>
+                Heavier new students · softer ambient events · richer exploration finds.
+              </span>
+            )}
+          </div>
+        </div>
+      )}
       {(campusState.asceticProtestWeek || campusState.mirrorFastWeek) && (
         <div style={{ ...C.infoBox('rgba(40,20,10,.35)'), fontSize: 11, color: '#d0a080', lineHeight: 1.6, marginBottom: 10 }}>
           {campusState.asceticProtestWeek && <div>🕯️ Ascetic protest — class passive gain −12% this week.</div>}

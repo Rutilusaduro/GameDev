@@ -155,11 +155,23 @@ const OBEDIENCE_BELT = makeBoard(
         node('ob_public', 'Public Demo', 'Semi-public belt scenes.', 3, { mod: { publicDemo: true }, requiresTier: 3 }),
       ],
     },
+    arrival: {
+      label: 'Arrival',
+      requiresTier: 2,
+      nodes: [
+        node('ob_streamer_arrival', 'Legacy Broadcast', 'Arrival capstone: stream scenes gain +15% dependence.', 2, {
+          mod: { dependenceMult: 1.15 },
+          requiresEvolvedForm: 'eating_streamer',
+          requiresTier: 2,
+        }),
+      ],
+    },
   },
   {
     ob_shame_up: 'ob_main_3', ob_shame_voice: 'ob_main_4',
     ob_dep_gain: 'ob_main_5', ob_dep_lock: 'ob_main_6',
     ob_obsession: 'ob_main_7', ob_public: 'ob_main_8',
+    ob_streamer_arrival: 'ob_main_6',
   },
 );
 
@@ -195,10 +207,22 @@ const WEIGHT_BELT = makeBoard(
         node('abb_rapid', 'Rapid Saturation', 'Manual bloat +extra stage bump.', 2, { mod: { manualStageBump: true } }),
       ],
     },
+    arrival: {
+      label: 'Arrival',
+      requiresTier: 2,
+      nodes: [
+        node('abb_sumo_arrival', 'Grand Bout Crown', 'Arrival capstone: +20% bloat intensity on ceremonial matches.', 2, {
+          mod: { bloatMult: 1.2 },
+          requiresEvolvedForm: 'sumo',
+          requiresTier: 2,
+        }),
+      ],
+    },
   },
   {
     abb_slow_bloat: 'abb_main_2', abb_tight_bloat: 'abb_main_5',
     abb_stage_bump: 'abb_main_4', abb_rapid: 'abb_main_6',
+    abb_sumo_arrival: 'abb_main_7',
   },
 );
 
@@ -235,10 +259,22 @@ const FURNITURE_RIG = makeBoard(
         node('lfr_fixture', 'Fixture Mode', 'Furniture override lasts +1 week.', 2, { mod: { overrideWeeks: 1 } }),
       ],
     },
+    arrival: {
+      label: 'Arrival',
+      requiresTier: 2,
+      nodes: [
+        node('lfr_hive_arrival', 'Hive Fixture', 'Arrival capstone: delivery hive comfort floor +20.', 2, {
+          mod: { comfortFeedBonus: 20 },
+          requiresEvolvedForm: 'delivery_hive',
+          requiresTier: 2,
+        }),
+      ],
+    },
   },
   {
     lfr_comfort_slow: 'lfr_main_2', lfr_comfort_feed: 'lfr_main_4',
     lfr_immobile: 'lfr_main_6', lfr_fixture: 'lfr_main_8',
+    lfr_hive_arrival: 'lfr_main_7',
   },
 );
 
@@ -371,10 +407,22 @@ const GROWTH_SERUM = makeBoard(
         node('gsi_permanent', 'Permanent Trace', 'Handles permanentConvert on serum overrun.', 2, { mod: { permanentConvert: true } }),
       ],
     },
+    arrival: {
+      label: 'Arrival',
+      requiresTier: 2,
+      nodes: [
+        node('gsi_creator_arrival', 'Creator Formula', 'Arrival capstone: collab sessions +18% gain.', 2, {
+          mod: { gainMult: 1.18 },
+          requiresEvolvedForm: 'feedee_creator',
+          requiresTier: 2,
+        }),
+      ],
+    },
   },
   {
     gsi_burst: 'gsi_main_4', gsi_cascade: 'gsi_main_6',
     gsi_chaos: 'gsi_main_3', gsi_permanent: 'gsi_main_7',
+    gsi_creator_arrival: 'gsi_main_5',
   },
 );
 
@@ -418,11 +466,23 @@ const HUNGER_RAY = makeBoard(
         node('ehe_interrupt', 'Knock Generator', 'Interrupt bonus +12% (more scenes).', 1, { mod: { interruptBonus: 0.12 } }),
       ],
     },
+    arrival: {
+      label: 'Arrival',
+      requiresTier: 2,
+      nodes: [
+        node('ehe_mesh_arrival', 'Factory Blessing', 'Arrival capstone: mesh automation +10 each week.', 2, {
+          mod: { meshAutomationBonus: 10 },
+          requiresEvolvedForm: 'machine_goddess',
+          requiresTier: 2,
+        }),
+      ],
+    },
   },
   {
     ehe_hunger_up: 'ehe_main_2', ehe_feed_drop: 'ehe_main_5',
     ehe_stealth: 'ehe_main_4', ehe_sustain: 'ehe_main_6',
     ehe_distress_cap: 'ehe_main_3', ehe_interrupt: 'ehe_main_7',
+    ehe_mesh_arrival: 'ehe_main_8',
   },
 );
 
