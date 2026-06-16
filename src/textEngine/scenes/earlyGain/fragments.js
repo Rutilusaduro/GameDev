@@ -5,7 +5,12 @@ import { registerPool } from '../../engine.js';
 // ── slender.bodyNotice — PARTICIPLE CLAUSE ─────────────────────
 // First visible changes: stages 0–3, still-thin bodies beginning to soften.
 registerPool('slender.bodyNotice', [
-  { when: {}, text: ['', '', 'still slender in the doorway'] },
+  { when: {}, text: [
+    'still slender in the doorway',
+    'nothing dramatic yet — only fabric sitting a fraction differently',
+    'still mostly herself at a glance, if you do not look twice',
+    '',
+  ] },
   { when: { stageMax: 1 }, text: [
     'still mostly the girl she was at move-in',
     'clothes fitting the way they always have',
@@ -50,6 +55,7 @@ registerPool('slender.bodyFeel', [
     'Her body feels familiar — the same limbs, the same mirror — with something new tucked under the surface.',
     'She is aware of herself in a way she was not at the start of the semester.',
     'Warmth gathers low on her torso when she sits; she notices, then tries not to.',
+    'She still feels light — and then she sits, and the chair reminds her otherwise.',
   ] },
   { when: { stageMax: 1 }, text: [
     'She still feels light on her feet. The number is creeping anyway.',
@@ -91,6 +97,7 @@ registerPool('slender.mindFeel', [
     'She is still deciding what this means — if it means anything yet.',
     'The story she tells herself has not caught up to the mirror.',
     'She holds the feeling at arm\'s length until she knows what to call it.',
+    'The number is a fact she has not finished arguing with.',
   ] },
   { when: { gainStance: 'opposed' }, weight: 2, text: [
     'This is not what she planned. She rehearses the reasons it will reverse.',

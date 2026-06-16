@@ -10,6 +10,7 @@ registerPool('immob.scene', [
     '{immob.settledState} {immob.environmental} {immob.attempt|prefix: }{immob.assistance|prefix: }{immob.register}',
     '{immob.settledState} {immob.spaceObs} {immob.register}',
     '{immob.environmental} {immob.bodyDesc|prefix:, }{immob.register}',
+    '{immob.settledState} {immob.bodyDesc|prefix:, }{immob.spaceObs|prefix: }{immob.register}',
   ] },
 ]);
 

@@ -22,6 +22,7 @@ registerPool('campus.deviceEncounter', [
     '{subject.name} is within device range.',
     'You have a clean line on {subject.name}.',
     '{subject.name} crosses the mesh without noticing.',
+    '{subject.name} drifts through coverage — unaware, reachable.',
   ] },
 ]);
 
@@ -30,6 +31,7 @@ registerPool('campus.deviceResult', [
     '{campus.dev.delivery} — {subject.name} {campus.dev.reaction}.',
     'On {subject.name}: {campus.dev.delivery}{join:campus.dev.reaction|prefix: — }.',
     '{campus.dev.delivery}; {subject.name} {campus.dev.reaction}.',
+    'Deploy lands on {subject.name}: {campus.dev.delivery}{campus.dev.reaction|prefix: — }.',
   ] },
 ]);
 

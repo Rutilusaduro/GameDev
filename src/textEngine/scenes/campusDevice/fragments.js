@@ -58,6 +58,7 @@ registerPool('campus.dev.rangeNote', [
     'Within range of your inventions.',
     'Close enough to deploy.',
     'A viable target for the lab\'s portable gear.',
+    'Talia\'s field kit hums — signal clean, window open.',
   ] },
 ]);
 

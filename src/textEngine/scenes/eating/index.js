@@ -15,6 +15,7 @@ registerPool('eat.scene', [
     '{eat.settleIn} {eat.firstBite} {eat.midMeal|prefix: }{eat.pacing|prefix: }{eat.finish} {eat.aftermath}',
     '{eat.settleIn} {eat.hungerClause|prefix: }{eat.firstBite} {eat.bodyResponse|prefix:, }{eat.finish}',
     '{eat.firstBite} {eat.portionObs|prefix:, }{eat.finish} {eat.aftermath}',
+    '{eat.hungerClause|prefix: }{eat.firstBite} {eat.midMeal|prefix: }{eat.finish} {eat.aftermath}',
   ] },
 ]);
 

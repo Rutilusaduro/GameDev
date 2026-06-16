@@ -65,6 +65,7 @@ registerPool('campus.moveSentence', [
     '{subject.name} {word.adv.pace|suffix: }{word.moveVerb.campus} {campus.destination}{word.adv.sizeQual|prefix: }.',
     '{subject.name} {word.moveVerb.campus}{join:wi.mobilityClause,wi.bodyClause|prefix:, }{word.adv.sizeQual|prefix: }.',
     '{subject.name} {word.adv.pace|suffix: }{word.moveVerb.campus}{wi.mobilityClause|prefix:, }.',
+    '{subject.name} {word.moveVerb.campus} {campus.destination}{campus.soundTex|prefix:, }.',
   ] },
   { when: { stageMin: 8 }, weight: 2, text: [
     '{subject.name} {word.moveVerb.hallway} — the environment not designed for her, accommodating anyway.',
@@ -77,7 +78,7 @@ registerPool('campus.moveSentence', [
 ]);
 
 registerPool('campus.destination', [
-  { when: {}, text: ['down the hall', 'across campus', 'toward her next class'] },
+  { when: {}, text: ['down the hall', 'across campus', 'toward her next class', 'where the afternoon takes her next'] },
   { when: { campusLocale: 'hallway' }, text: ['through the foot traffic', 'along the corridor', 'past students who make room'] },
   { when: { campusLocale: 'lecture_hall' }, text: ['into the aisle', 'toward her seat', 'down the steps'] },
   { when: { campusLocale: 'cafeteria' }, text: ['through the line', 'toward an open table', 'to the booth she prefers'] },
