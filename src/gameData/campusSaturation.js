@@ -51,3 +51,22 @@ export function saturationWeeklyPassiveBonus(tierId) {
 export function saturationNewStudentLbsBonus(tierId) {
   return { 0: 0, 1: 5, 2: 12, 3: 20 }[tierId] ?? 0;
 }
+
+/** Extra travel-event weight from campus saturation tier. */
+export function saturationTravelEventBonus(tierId) {
+  return { 0: 0, 1: 0.06, 2: 0.14, 3: 0.22 }[tierId] ?? 0;
+}
+
+/** Chance to inject soft ambient indulgence lines while exploring. */
+export function saturationSoftFlavorChance(tierId) {
+  return { 0: 0, 1: 0.22, 2: 0.38, 3: 0.52 }[tierId] ?? 0;
+}
+
+/** Minimum saturation tier to surface certain campus venues in exploration. */
+export function saturationVenueUnlockTier(venueId) {
+  return { faculty_lounge: 2, underground_passage: 3 }[venueId] ?? 0;
+}
+
+export function isVenueUnlockedBySaturation(venueId, tierId) {
+  return tierId >= saturationVenueUnlockTier(venueId);
+}

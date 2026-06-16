@@ -261,6 +261,31 @@ export function unlockCircuitNode(labState, deviceDefId, nodeId, roster = []) {
   };
 }
 
+/** Arrival capstone reward — unlocks a permanent board branch without spending points. */
+export function forceUnlockArrivalNode(labState, deviceDefId, nodeId) {
+  if (!labState || !deviceDefId || !nodeId) return labState;
+  const node = getCircuitNode(deviceDefId, nodeId);
+  if (!node) return labState;
+  const cb = getCircuitBoard(labState, deviceDefId);
+  if ((cb.unlockedNodes || []).includes(nodeId)) return labState;
+  const nextCb = {
+    ...cb,
+    unlockedNodes: [...(cb.unlockedNodes || []), nodeId],
+    arrivalUnlocked: [...(cb.arrivalUnlocked || []), nodeId],
+  };
+  return {
+    ...labState,
+    circuitBoards: {
+      ...(labState.circuitBoards || {}),
+      [deviceDefId]: nextCb,
+    },
+    inventionUpgrades: {
+      ...(labState.inventionUpgrades || {}),
+      [deviceDefId]: getInventionTier({ ...labState, circuitBoards: { ...labState.circuitBoards, [deviceDefId]: nextCb } }, deviceDefId),
+    },
+  };
+}
+
 export function awardInventionPoints(labState, deviceDefId, amount) {
   if (!amount || amount <= 0) return labState;
   const cb = getCircuitBoard(labState, deviceDefId);

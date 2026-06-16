@@ -4,6 +4,7 @@
 import { getStage } from './stages.js';
 import { getCampusNarrativeTier } from './pharmacistIngredients.js';
 import { CAMPUS_SOFT_FLAVOR } from './pharmacistCampus.js';
+import { saturationSoftFlavorChance, saturationTravelEventBonus } from './campusSaturation.js';
 import { availableSecretsAtNode, isSecretSolved, secretsSolvedCount } from './campusSecrets.js';
 import { getExplorationFind, pickExplorationFind, travelFindPool, formatExplorationGrant } from './campusIngredients.js';
 import { ELARA_ID, getElaraQuest, elaraQuestProgressLine } from './relicHunter.js';
@@ -49,6 +50,7 @@ function effectiveStage(student, ctx) {
   let stageId = getStage(student.lbs).id;
   if (ctx.campusFattening) stageId = Math.min(11, stageId + 1);
   if (ctx.campusTier >= 2) stageId = Math.min(11, stageId + 1);
+  if ((ctx.saturationTier ?? 0) >= 2) stageId = Math.min(11, stageId + 1);
   return stageId;
 }
 
@@ -105,6 +107,7 @@ export function buildExplorationContext({
   deviceInventory = null,
   asceticCircle = false,
   opposition = null,
+  saturationTier = 0,
 }) {
   const campusTier = getCampusNarrativeTier(pharmacistState);
   const avgLbs = students.length
@@ -116,6 +119,7 @@ export function buildExplorationContext({
     lilithUnlocked,
     campusFattening: !!pharmacistState?.campusFattening,
     campusTier,
+    saturationTier,
     sophiaStage: pharmacistState?.stage ?? 1,
     avgLbs,
     elaraDiscovered: !!exploration?.elaraDiscovered,
@@ -144,6 +148,11 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
 
   if (ctx.campusFattening && rng() < 0.35) {
     lines.push(`🌿 ${pick(rng, CAMPUS_SOFT_FLAVOR)}`);
+  }
+
+  const satTier = ctx.saturationTier ?? 0;
+  if (satTier > 0 && rng() < saturationSoftFlavorChance(satTier)) {
+    lines.push(`🌐 ${pick(rng, CAMPUS_SOFT_FLAVOR)}`);
   }
 
   if (ctx.asceticCircle && rng() < 0.28) {
@@ -191,7 +200,8 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
     if (locLine) lines.push(locLine);
   }
 
-  if (rng() < EXPLORATION_CONFIG.travelEventChance) {
+  const travelChance = EXPLORATION_CONFIG.travelEventChance + saturationTravelEventBonus(satTier);
+  if (rng() < travelChance) {
     const travelLine = renderCampusTravelLine(travelCtx, nodeId, 'travel');
     if (travelLine) {
       lines.push(ctx.campusTier >= 2 && rng() < 0.35 ? `🕯️ ${travelLine}` : travelLine);
@@ -203,8 +213,8 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
     if (sightingLines.length) lines.push(...sightingLines);
   }
 
-  if (rng() < EXPLORATION_CONFIG.ingredientFindChance) {
-    const findId = pickExplorationFind(travelFindPool(nodeId, ctx.campusTier), rng);
+  if (rng() < EXPLORATION_CONFIG.ingredientFindChance + satTier * 0.04) {
+    const findId = pickExplorationFind(travelFindPool(nodeId, Math.max(ctx.campusTier, satTier >= 2 ? 2 : 0)), rng);
     const find = getExplorationFind(findId);
     if (find) {
       lines.push(`🎒 ${find.text}`);
