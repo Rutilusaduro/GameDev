@@ -107,7 +107,7 @@ registerPool('eat.midMeal', [
 
 // ── eat.bitePace — ADVERBIAL ──────────────────────────────────
 registerPool('eat.bitePace', [
-  { when: {}, text: ['', 'steadily', 'without hurry'] },
+  { when: {}, text: ['', 'steadily', 'without hurry', 'with polite restraint'] },
   { when: { hungerTierMin: 2 }, text: ['with growing urgency', 'a little faster than polite'] },
   { when: { hungerTierMin: 3 }, weight: 2, text: ['quickly', 'with single-minded focus'] },
   { when: { corruption: [0] }, text: ['carefully', 'as if each bite requires justification'] },
@@ -214,10 +214,12 @@ registerPool('eat.finish', [
   { when: { corruption: [0], fullnessMin: 0.7 }, text: [
     'She stops before the plate is clean — then goes back for one more bite anyway.',
     'She finishes and immediately wonders if she should have stopped earlier.',
+    'The last bite wins the argument she was having with herself.',
   ] },
   { when: { corruption: [1] }, text: [
     'She finishes without the old negotiation. That is its own kind of news.',
     'The plate is empty. She notices and does not apologize.',
+    'Empty dish, quiet acceptance — the meal filed without protest.',
   ] },
   { when: { corruption: [2] }, text: [
     'She finishes everything within reach and looks for what comes next.',
@@ -227,10 +229,12 @@ registerPool('eat.finish', [
   { when: { hungerTierMin: 3 }, weight: 2, text: [
     'She finishes and is already thinking about what comes after.',
     'Empty plate, appetite not quite answered — but closer.',
+    'The meal ends; hunger softens without fully leaving.',
   ] },
   { when: { mealContext: 'binge' }, weight: 2, text: [
     'The binge ends when the food does — not when appetite does.',
     'She finishes the spread because that was the point.',
+    'Plates cleared, intention honored — she sits back into the warmth of it.',
   ] },
 ]);
 
@@ -240,6 +244,7 @@ registerPool('eat.aftermath', [
     'She sits back, satisfied in the ordinary way.',
     'Fullness settles; the meal becomes memory.',
     'A quiet aftermath — appetite answered, body warm.',
+    'She exhales; the meal loosens its grip and warmth spreads low.',
   ] },
   { when: { fullnessMin: 0.7 }, text: [
     'She sits back heavily, hand finding her middle without being told.',

@@ -54,6 +54,19 @@ export const COVERAGE_BANDS = [
 /** Corruption tiers probed for psych-heavy namespaces in --coverage. */
 export const COVERAGE_CORRUPTION_PROBES = [0, 1, 2];
 
+/** Dynamic lexicon / subject plumbing — allowed to stay on registerModule best-mode. */
+export const INFRA_MODULE_KEYS = new Set([
+  'subject.name', 'subject.first', 'subject.lbs', 'subject.semesterGain',
+  'char.desc', 'sizeCompare', 'bodyType.desc', 'clothing.desc', 'group.desc', 'device.label',
+  'word.size', 'word.movement', 'word.body', 'word.clothingFit', 'word.fullness',
+]);
+
+/** --strict-volume: fail when thin wildcard pools remain (Phase A gate). */
+export const STRICT_VOLUME_MAX_THIN = 0;
+
+/** --strict-coverage: fail when overall band coverage falls below this percent. */
+export const STRICT_COVERAGE_MIN_PCT = 80;
+
 // Squad-owned namespaces for --volume reporting (Step 9 content targets).
 export const VOLUME_SQUAD_PREFIXES = [
   'slender.', 'campus.', 'eat.', 'cloth.', 'shift.', 'interior.', 'immob.',
@@ -68,4 +81,5 @@ export const OPTIONAL_EMPTY_POOLS = new Set([
   'shift.denial', 'shift.scene',
   'interior.selfObs', 'interior.sizeRealize', 'interior.gainPride',
   'slender.deflect', 'slender.neutral', 'slender.secret', 'slender.mirror', 'slender.eatPause',
+  'word.addictedHunger', 'word.addictedEating', 'word.withdrawal',
 ]);

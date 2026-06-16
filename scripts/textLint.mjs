@@ -5,7 +5,8 @@
 //      npm run text:lint -- --coverage
 //      npm run text:lint -- --coverage=slender.
 //      npm run text:lint -- --volume
-//      npm run text:lint -- --volume=slender.
+//      npm run text:lint -- --strict-volume
+//      npm run text:lint -- --strict-coverage
 // See src/textEngine/AUTHORING.md for the rules this enforces.
 // ═══════════════════════════════════════════════════════════════
 import '../src/textEngine/scenes/index.js';
@@ -22,6 +23,7 @@ import {
   BANNED_PATTERNS, SAMPLE_SCENES, COVERAGE_STAGE_PROBES, STAGE_COVERAGE_PREFIXES,
   VOLUME_SQUAD_PREFIXES, OPTIONAL_EMPTY_POOLS,
   COVERAGE_BANDS, COVERAGE_CORRUPTION_PROBES,
+  INFRA_MODULE_KEYS, STRICT_VOLUME_MAX_THIN, STRICT_COVERAGE_MIN_PCT,
 } from './text-lint.config.js';
 
 const CLI_ARGS = process.argv.slice(2);
@@ -35,15 +37,13 @@ const COVERAGE_PREFIX_FILTER = coveragePrefixArg ? coveragePrefixArg.split('=')[
 const RUN_VOLUME = CLI_ARGS.includes('--volume');
 const volumePrefixArg = CLI_ARGS.find((a) => a.startsWith('--volume='));
 const VOLUME_PREFIX_FILTER = volumePrefixArg ? volumePrefixArg.split('=')[1] : null;
+const STRICT_VOLUME = CLI_ARGS.includes('--strict-volume');
+const STRICT_COVERAGE = CLI_ARGS.includes('--strict-coverage');
 
 const errors = [];
 const warnings = [];
 const err = (msg) => errors.push(msg);
 const warning = (msg) => warnings.push(msg);
-
-// Migrated weekly-event pools still carry legacy-length prose (>200 chars)
-// pending fragment decomposition — keyed variants are live; monolith split is backlog.
-const POOL_MONOLITH_OK_PREFIX = 'weekly.';
 
 // Modules that intentionally have no wildcard fallback (selector-complete
 // or deliberately silent outside their domain). Add sparingly, with reason.
@@ -77,7 +77,7 @@ for (const [key, variants] of entries) {
 
   // 2. Monolith detector — fragments must stay fragment-sized.
   for (const { text } of stringTexts(variants)) {
-    if (isPool && text.length > 200 && !key.startsWith(POOL_MONOLITH_OK_PREFIX)) {
+    if (isPool && text.length > 200) {
       err(`${label}: ${text.length}-char text in a pool module — decompose into a skeleton + fragments: "${text.slice(0, 60)}…"`);
     } else if (!isPool && text.length > 320) {
       warning(`${label}: ${text.length}-char legacy monolith: "${text.slice(0, 60)}…"`);
@@ -108,6 +108,14 @@ for (const [key, variants] of entries) {
       warning(`${label}: only ${wildcardTexts} wildcard text(s) — aim for ≥3 for variety`);
     }
   }
+}
+
+// Legacy registerModule (best-mode) audit — prose should use registerPool.
+for (const [key] of entries) {
+  const opts = _moduleOpts(key);
+  if (opts.select === 'pool') continue;
+  if (INFRA_MODULE_KEYS.has(key)) continue;
+  warning(`module "${key}": legacy registerModule (best mode) — migrate to registerPool`);
 }
 
 // ── dynamic sweep ─────────────────────────────────────────────
@@ -503,6 +511,16 @@ if (RUN_VOLUME) {
   for (const [pool, n] of [...gapByPool.entries()].sort((a, b) => b[1] - a[1]).slice(0, 15)) {
     console.log(`  · ${pool}: ${n} student(s) under target`);
   }
+
+  if (STRICT_VOLUME) {
+    const needProse = thinWildcard.filter((t) => !t.optional).length;
+    if (needProse > STRICT_VOLUME_MAX_THIN) {
+      err(`strict-volume: ${needProse} thin wildcard pool(s) exceed max ${STRICT_VOLUME_MAX_THIN}`);
+    }
+    if (personaGaps.length > 0) {
+      err(`strict-volume: ${personaGaps.length} persona gap(s) remain`);
+    }
+  }
 }
 
 // ── stage coverage report (Step 12 — squad band dashboard) ────
@@ -600,6 +618,10 @@ if (RUN_COVERAGE) {
 
   const overallPct = totalCells ? Math.round(((totalCells - totalGaps) / totalCells) * 100) : 100;
   console.log(`\nOverall band coverage: ${totalCells - totalGaps}/${totalCells} (${overallPct}%)`);
+
+  if (STRICT_COVERAGE && overallPct < STRICT_COVERAGE_MIN_PCT) {
+    err(`strict-coverage: ${overallPct}% below minimum ${STRICT_COVERAGE_MIN_PCT}%`);
+  }
 }
 
 // ── banned pattern static scan ────────────────────────────────

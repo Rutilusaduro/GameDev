@@ -2,7 +2,7 @@
 // HUNGER LEXICON — word modules + hunger/eating/talk codas
 // See docs/Pharmacist/Hunger Lexicon.txt
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, registerPool, pick } from '../engine.js';
+import { registerPool, pick } from '../engine.js';
 
 const HUNGER_TIER_KEYS = ['normal', 'increased', 'high', 'craving', 'starving'];
 
@@ -94,38 +94,44 @@ function withdrawalKey(addiction) {
   return 'moderate';
 }
 
-registerModule('word.hunger', [{
+registerPool('word.hunger', [{
   when: {},
   text: (ctx) => pick(HUNGER_WORDS[hungerKey(ctx.d.hungerTier)] || HUNGER_WORDS.normal),
 }]);
 
-registerModule('word.addictedHunger', [{
-  when: { addictionLevelMin: 2 },
-  text: (ctx) => {
-    const key = ctx.d.hungerTier >= 4 ? 'starving' : 'craving';
-    return pick(ADDICTED_HUNGER_WORDS[key] || ADDICTED_HUNGER_WORDS.craving);
+registerPool('word.addictedHunger', [
+  { when: { addictionLevelMin: 2 },
+    text: (ctx) => {
+      const key = ctx.d.hungerTier >= 4 ? 'starving' : 'craving';
+      return pick(ADDICTED_HUNGER_WORDS[key] || ADDICTED_HUNGER_WORDS.craving);
+    },
   },
-}]);
+  { when: {}, text: '' },
+]);
 
-registerModule('word.eating', [{
+registerPool('word.eating', [{
   when: {},
   text: (ctx) => pick(EATING_STYLE[hungerKey(ctx.d.hungerTier)] || EATING_STYLE.normal),
 }]);
 
-registerModule('word.addictedEating', [{
-  when: { addictionLevelMin: 2 },
-  text: (ctx) => {
-    const key = addictionEatKey(ctx.d.addictionLevel);
-    return key ? pick(ADDICTED_EATING[key]) : pick(ADDICTED_EATING.moderate);
+registerPool('word.addictedEating', [
+  { when: { addictionLevelMin: 2 },
+    text: (ctx) => {
+      const key = addictionEatKey(ctx.d.addictionLevel);
+      return key ? pick(ADDICTED_EATING[key]) : pick(ADDICTED_EATING.moderate);
+    },
   },
-}]);
+  { when: {}, text: '' },
+]);
 
-registerModule('word.withdrawal', [{
-  when: { inWithdrawal: true },
-  text: (ctx) => pick(WITHDRAWAL_BEHAVIOR[withdrawalKey(ctx.d.addictionLevel)]),
-}]);
+registerPool('word.withdrawal', [
+  { when: { inWithdrawal: true },
+    text: (ctx) => pick(WITHDRAWAL_BEHAVIOR[withdrawalKey(ctx.d.addictionLevel)]),
+  },
+  { when: {}, text: '' },
+]);
 
-registerModule('word.begging', [{
+registerPool('word.begging', [{
   when: {},
   text: (ctx) => {
     const key = beggingKey(ctx.d.addictionLevel, ctx.d.hungerTier);

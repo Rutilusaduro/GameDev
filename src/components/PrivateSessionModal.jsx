@@ -1,5 +1,6 @@
 import { C } from '../styles.js';
-import { ENCOURAGEMENT_ACTIONS, PRIVATE_FOODS, PRIVATE_VENUES, SESSION_FULLNESS_DESCS, getFullnessStage, getTier } from '../gameData/sessions.js';
+import { ENCOURAGEMENT_ACTIONS, PRIVATE_FOODS, PRIVATE_VENUES, getFullnessStage, getTier } from '../gameData/sessions.js';
+import { renderSessionFullness } from '../textEngine/scenes/session/index.js';
 import { MJ_RECIPES } from '../gameData/miniGames.js';
 import { getStage } from '../gameData/stages.js';
 import { getFullnessPercent, getSessionCapacityCap } from '../gameData/feedingSession.js';
@@ -11,8 +12,7 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
         const effectiveMax=getSessionCapacityCap(s,capOpts);
         const fPct=getFullnessPercent(s,capOpts);
         const fsStage=getFullnessStage(fPct);
-        const descFns=SESSION_FULLNESS_DESCS[s.archetype]||SESSION_FULLNESS_DESCS.default;
-        const currentDesc=fPct>0?descFns[Math.min(fsStage.id,descFns.length-1)](s):null;
+        const currentDesc=fPct>0?renderSessionFullness(s, Math.min(fsStage.id, 5), 1):null;
         const courseOrder=["opener","main","more","dessert","extra"];
         const tier=getTier(s.relationship);
         const availableVenueList=PRIVATE_VENUES.filter(v=>tier.id>=v.minTier);

@@ -38,6 +38,7 @@ registerPool('slender.scene', [
     '{slender.bodyFeel} {slender.mindFeel}',
     'She is still learning what the number means.',
     'The body keeps its own calendar.',
+    '{slender.bodyNotice|prefix: }{slender.mindFeel}{slender.neutral|prefix: }',
   ] },
 ]);
 

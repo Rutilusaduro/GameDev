@@ -6,6 +6,7 @@ registerPool('cloth.discovery', [
     '{subject.name} notices the strain before the failure — fabric honest about what comes next.',
     'The clothes have been negotiating all morning. Now they are losing.',
     'She catches her reflection and sees what the seam has been trying to say.',
+    'The outfit has been honest all morning; she is only now listening.',
   ] },
   { when: { clothingState: 'button_pop' }, text: [
     'A button that has been holding its breath finally gives up.',
@@ -34,7 +35,7 @@ registerPool('cloth.discovery', [
 ]);
 
 registerPool('cloth.struggleVerb', [
-  { when: {}, text: ['tugs', 'adjusts', 'smooths'] },
+  { when: {}, text: ['tugs', 'adjusts', 'smooths', 'works at'] },
   { when: { stageMin: 4 }, text: ['wrestles with', 'negotiates with', 'coaxes'] },
   { when: { stageMin: 6 }, text: ['abandons hope for', 'makes peace with the failure of'] },
   { when: { bodyType: 'apple', stageMin: 4 }, text: ['tries to convince the waistband over her belly'] },
@@ -45,6 +46,8 @@ registerPool('cloth.struggle', [
   { when: {}, text: [
     'She {cloth.struggleVerb} the fabric without success.',
     'Hands find the strain point. The fabric does not yield the way she needs.',
+    'She {cloth.struggleVerb} the gap; the fabric answers with silence.',
+    'The strain point is obvious. Relief is not.',
   ] },
   { when: { clothingState: 'sleeve_restriction' }, text: [
     'Her arms have outgrown the sleeves — movement costs friction now.',
@@ -64,6 +67,8 @@ registerPool('cloth.moment', [
   { when: {}, text: [
     'The fabric gives — soft tok, thread surrendering.',
     'Something pops. Something skitters. The outfit has lost.',
+    'Thread surrenders in sequence — small, audible, final.',
+    'Elastic stops pretending. The outfit admits defeat.',
   ] },
   { when: { clothingState: 'button_pop' }, weight: 2, text: [
     'A button departs at speed, skittering across the floor.',
@@ -79,6 +84,8 @@ registerPool('cloth.failBeat', [
   { when: {}, text: [
     'The outfit capitulates in a small, audible way.',
     'What used to close does not close anymore. The fact is plain.',
+    'The closure that used to meet does not meet anymore.',
+    'Fabric concedes; the fact is too plain to dress up.',
   ] },
   { when: { corruption: [0] }, text: [
     'She freezes — cheeks heating — as the failure becomes public.',

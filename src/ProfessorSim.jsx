@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL } from './gameData/intimacy.js';
-import { WAITER_DESC, getOverfillEndMsg, getJealousyLine, GROUP_CONVERSATIONS, THIN_JEALOUSY, FAT_ENCOURAGE, FAT_RETORT, THIN_CONTEXTUAL, UNBUTTON_LINES, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
+import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL, evalIntimacyEndingCondition } from './gameData/intimacy.js';
+import { WAITER_DESC, getOverfillEndMsg, GROUP_CONVERSATIONS, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { narrativeEventText, randomEventText } from './gameData/weeklyEventText.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
@@ -63,10 +63,14 @@ import './textEngine/scenes/hungerInterrupt/index.js';
 import './textEngine/scenes/hungerLexicon.js';
 import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
-import { renderDinnerEnding } from './textEngine/scenes/dinner/endingScene.js';
+import { renderDinnerEnding, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter } from './textEngine/scenes/dinner/index.js';
+import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
+import { renderIntimacyChoice, renderIntimacyEnding } from './textEngine/scenes/intimacy/index.js';
+import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
 import './textEngine/scenes/opposition/endgameBeat.js';
 import './textEngine/scenes/corruptionVoice.js';
+import { DINNER_LOG_PANEL_STYLE, dinnerLogDisplayText, getDinnerLogLineStyle } from './utils/dinnerLogStyle.js';
 import { renderEatScene } from './textEngine/scenes/eating/index.js';
 import './textEngine/scenes/eating/index.js';
 import { renderSlenderScene, renderSlenderEatBeat } from './textEngine/scenes/earlyGain/index.js';
@@ -5349,19 +5353,20 @@ export default function ProfessorSim(){
     if(ap<cost){push(`⚠️ Need ${cost} AP.`);return;}
     if(cost>0) setAp(a=>a-cost);
     const tier=getTier(s.relationship).id;
-    setIntimacyEventState({studentId:s.id,sceneId,tier,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});
+    setIntimacyEventState({studentId:s.id,sceneId,tier,week,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});
     setIntimacySceneSelector(null);
   };
 
   const makeIntimacyChoice=(choiceId)=>{
     if(!intimacyEventState) return;
-    const {studentId,sceneId,phaseIdx,history,logLines,gainAccum,relAccum}=intimacyEventState;
+    const {studentId,sceneId,phaseIdx,history,logLines,gainAccum,relAccum,week:sceneWeek}=intimacyEventState;
+    const sceneWeekNum=sceneWeek??week;
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId]; if(!def) return;
     const phase=def.phases[phaseIdx]; if(!phase) return;
     const choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
-    const newLog=[...logLines,(typeof choice.result==='function'?choice.result(s):choice.result)];
+    const newLog=[...logLines,renderIntimacyChoice(sceneId,choiceId,s,sceneWeekNum)];
     let newGain=gainAccum+(choice.lbs||0);
     const newRel=relAccum+(choice.rel||0);
     if(choice.feed&&choice.gainRange){
@@ -5372,7 +5377,9 @@ export default function ProfessorSim(){
     }
     const nextPhase=phaseIdx+1;
     if(nextPhase>=def.phases.length){
-      const ending=def.endings.find(e=>e.condition(newHistory))||def.endings[def.endings.length-1];
+      let endingIdx=def.endings.findIndex(e=>evalIntimacyEndingCondition(e.conditionSrc,newHistory));
+      if(endingIdx<0) endingIdx=def.endings.length-1;
+      const ending=def.endings[endingIdx];
       const totalGain=newGain+ending.gainBonus;
       const totalRel=newRel+ending.relBonus;
       setStudents(prev=>prev.map(st=>{
@@ -5381,7 +5388,7 @@ export default function ProfessorSim(){
       }));
       if(totalGain>0) push(`💜 ${s.name} — intimacy: +${totalGain} lbs · +${totalRel} rel`);
       else push(`💜 ${s.name} — intimacy: +${totalRel} rel`);
-      setIntimacyEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:ending.text,gainBonus:ending.gainBonus,relBonus:ending.relBonus}));
+      setIntimacyEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:renderIntimacyEnding(sceneId,endingIdx,s,sceneWeekNum),gainBonus:ending.gainBonus,relBonus:ending.relBonus}));
     } else {
       setIntimacyEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }
@@ -5851,7 +5858,7 @@ export default function ProfessorSim(){
     setDinnerEvent(prev=>({...prev,dishes:newDishes,totalGain:sessionCals,student:fed}));
     setDinnerLog(dl=>[...dl,
       `🍴 ${dish.label} arrives. ${dish.desc} (+${calories.toLocaleString()} cal)${fullMsg}`,
-      ...(eatLine?[eatLine]:[]),
+      ...(eatLine?[`💬 ${eatLine}`]:[]),
     ]);
   };
 
@@ -5888,7 +5895,7 @@ export default function ProfessorSim(){
   const callWaiter=()=>{
     const s=dinnerEvent.student;
     const venueId=dinnerEvent.venue.id;
-    const desc=(WAITER_DESC[venueId]||(()=>`The server arrives. "Shall I bring more?" she asks.`))(s);
+    const desc=renderDinnerWaiter(venueId, s, week);
     setDinnerLog(dl=>[...dl,`🫆 ${desc}`]);
     setDinnerEvent(prev=>({...prev,dishes:[]}));
   };
@@ -5896,10 +5903,9 @@ export default function ProfessorSim(){
   const useDinnerConversation=(conv)=>{
     if(dinnerEvent.conversationUsed.includes(conv.id)) return;
     const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
-    const stId=getStage(s.lbs).id;
     const gainBonus=rnd(conv.gainBonus[0],conv.gainBonus[1]);
     const scaledBonus=Math.round(gainBonus*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
-    const convText=conv.text(s,stId);
+    const convText=renderDinnerConversation(conv.id, s, week);
     const fullnessChange=conv.fullnessEffect||0;
     let fed=s;
     if(scaledBonus>0||fullnessChange!==0){
@@ -5990,25 +5996,23 @@ export default function ProfessorSim(){
       const lines=[];
       if(Math.abs(stageDiff)>=2){
         if(stageDiff>=2){
-          const jFn=THIN_JEALOUSY[negLive.archetype]?.[level];
-          if(jFn) lines.push(jFn(negLive,fed));
-          if(level>=2){
-            const ctx=THIN_CONTEXTUAL[fed.archetype]?.(negLive,fed);
-            if(ctx&&Math.random()<0.5) lines.push(ctx);
+          const jealousy=renderGroupDinnerReaction('thinJealousy',negLive,fed,week,{reactionLevel:level});
+          if(jealousy) lines.push(jealousy);
+          if(level>=2&&Math.random()<0.5){
+            const ctx=renderGroupDinnerReaction('thinContextual',negLive,fed,week,{reactionLevel:level});
+            if(ctx) lines.push(ctx);
           }
-          if(level>=1){
-            const retArr=FAT_RETORT[fed.archetype];
-            if(retArr&&Math.random()<0.65){
-              const rFn=retArr[Math.min(level-1,retArr.length-1)];
-              if(rFn) lines.push(rFn(fed,negLive));
-            }
+          if(level>=1&&Math.random()<0.65){
+            const retort=renderGroupDinnerReaction('fatRetort',negLive,fed,week,{reactionLevel:level-1});
+            if(retort) lines.push(retort);
           }
         } else {
-          const eFn=FAT_ENCOURAGE[negLive.archetype]?.[level];
-          if(eFn) lines.push(eFn(negLive,fed));
+          const encourage=renderGroupDinnerReaction('fatEncourage',negLive,fed,week,{reactionLevel:level});
+          if(encourage) lines.push(encourage);
         }
       } else {
-        lines.push(getJealousyLine(negLive,fed));
+        const jealousy=renderGroupDinnerReaction('jealousyDefault',negLive,fed,week);
+        if(jealousy) lines.push(jealousy);
       }
       if(lines.length){
         reactionLines.push(...lines.filter(Boolean));
@@ -6017,7 +6021,8 @@ export default function ProfessorSim(){
     });
 
     if(newFullness>cap&&prevFullness<=cap){
-      reactionLines.push(UNBUTTON_LINES[rnd(0,UNBUTTON_LINES.length-1)](fed));
+      const unbutton=renderDinnerUnbutton(fed,week);
+      if(unbutton) reactionLines.push(unbutton);
     }
 
     if(newFullness>cap){
@@ -6056,7 +6061,7 @@ export default function ProfessorSim(){
   const callGroupWaiter=()=>{
     const vId=groupDinnerEvent.venue?.id||"bistro";
     const firstLive=students.find(st=>st.id===groupDinnerEvent.students[0]?.id);
-    const desc=(WAITER_DESC[vId]||(()=>`The server arrives with fresh menus.`))(firstLive||{name:'she'});
+    const desc=renderDinnerWaiter(vId, firstLive||{name:'she'}, week);
     setGroupDinnerLog(dl=>[...dl,`🫆 ${desc}`]);
     setGroupDinnerEvent(prev=>({...prev,students:prev.students.map(s=>({...s,dishes:[]}))}));
   };
@@ -6066,7 +6071,7 @@ export default function ProfessorSim(){
     const liveStudents=groupDinnerEvent.students.map(gs=>students.find(st=>st.id===gs.id)).filter(Boolean);
     const [s1,s2]=liveStudents;
     if(!s1) return;
-    const text=conv.text(s1,s2||s1);
+    const text=renderGroupDinnerConversation(conv.id, s1, s2||s1, week);
     const relB=conv.relBonus||0;
     const fullE=conv.fullnessEffect||0;
     setGroupDinnerLog(dl=>[...dl,`💬 ${text}`]);
@@ -6156,8 +6161,7 @@ export default function ProfessorSim(){
     const capOpts={capacityBonus:privateSession.capacityBonus||0,toleranceBuffer:privateSession.toleranceBuffer||0};
     const fPct=getFullnessPercent(fed,capOpts);
     const fsStage=getFullnessStage(fPct);
-    const descFns=SESSION_FULLNESS_DESCS[s.archetype]||SESSION_FULLNESS_DESCS.default;
-    const desc=descFns[Math.min(fsStage.id,descFns.length-1)](fed);
+    const desc=renderSessionFullness(fed, Math.min(fsStage.id, 5), week);
     push(`🍽️ ${food.label}: +${scaledGain.toLocaleString()} cal`);
     setSessionLog(sl=>[...sl,`🍽️ ${food.label} (+${scaledGain.toLocaleString()} cal) — ${food.desc}`,`   ${desc}`]);
     const sessionCals=getSessionCaloriesFed(fed,privateSession.sessionStartCalories||0);
@@ -6253,9 +6257,9 @@ export default function ProfessorSim(){
     setSessionHistory(prev=>({...prev,[s.id]:{count:hist.count+1,totalGain:hist.totalGain+sessionCals,capacityBonus:newCapBonus}}));
     const cap=getSessionCapacityCap(s,capOpts);
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4),fullness:Math.max(st.fullness||0,Math.round(cap*Math.min(2.5,fPct/100)))}));
-    const aftermath=getAftermath(fPct);
+    const scene=renderSessionAftermath(s, fPct, week);
     push(`✅ Session with ${s.name} complete. ${sessionCals.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(sessionCals))} lbs once digested) · session capacity expanded (+8).`);
-    setSessionResult({student:s,totalGain:sessionCals,fullnessPct:fPct,scene:aftermath.scene(s),sessionCount:hist.count+1,capacityBonus:newCapBonus});
+    setSessionResult({student:s,totalGain:sessionCals,fullnessPct:fPct,scene,sessionCount:hist.count+1,capacityBonus:newCapBonus});
     setPrivateSession(null);
     });
   };
@@ -6654,12 +6658,12 @@ export default function ProfessorSim(){
                   </div>
 
                   {/* Dinner log */}
-                  <div style={{background:"rgba(20,5,35,0.8)",border:"1px solid #2a0848",borderRadius:8,padding:10,marginBottom:10,maxHeight:160,overflowY:"auto",display:"flex",flexDirection:"column",gap:3}}>
+                  <div style={DINNER_LOG_PANEL_STYLE}>
                     {dinnerLog.length===0
                       ?<div style={{fontSize:12,color:"#5a3070",fontStyle:"italic"}}>{ds.name} looks at the menu with obvious interest.</div>
                       :dinnerLog.map((line,i)=>(
-                        <div key={i} style={{fontSize:12,color:line.startsWith("💬")?"#e8d0a8":line.startsWith("🍴")?"#d0a860":line.startsWith("😤")?"#f06040":"#b090c8",lineHeight:1.6,borderBottom:i<dinnerLog.length-1?"1px solid rgba(80,20,120,0.1)":"none",paddingBottom:i<dinnerLog.length-1?3:0}}>
-                          {line}
+                        <div key={i} style={getDinnerLogLineStyle(line, i<dinnerLog.length-1)}>
+                          {dinnerLogDisplayText(line)}
                         </div>
                       ))
                     }
@@ -6767,7 +6771,7 @@ export default function ProfessorSim(){
               {" · "}{Math.round((dinnerEndPopup.finalFullness/dinnerEndPopup.maxFullness)*100)}% full
               {" · "}{dinnerEndPopup.totalGain.toLocaleString()} cal tonight (≈+{Math.round(dinnerEndPopup.totalGain/3500)} lbs digesting)
             </div>
-            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20,whiteSpace:"pre-line"}}>
+            <p style={{lineHeight:1.95,color:"#f8ead8",fontSize:15,marginBottom:20,whiteSpace:"pre-line",background:"rgba(48,24,72,0.55)",padding:"14px 16px",borderRadius:8,borderLeft:"3px solid #c898ff"}}>
               {dinnerEndPopup.narrative}
             </p>
             <button style={C.btn("#5818a8")} onClick={()=>setDinnerEndPopup(null)}>Continue →</button>
@@ -6892,12 +6896,12 @@ export default function ProfessorSim(){
                   </div>
 
                   {/* Log */}
-                  <div style={{background:"rgba(20,5,35,0.8)",border:"1px solid #2a0848",borderRadius:8,padding:10,marginBottom:10,maxHeight:140,overflowY:"auto",display:"flex",flexDirection:"column",gap:3}}>
+                  <div style={DINNER_LOG_PANEL_STYLE}>
                     {groupDinnerLog.length===0
                       ?<div style={{fontSize:12,color:"#5a3070",fontStyle:"italic"}}>{gev.students.map(gs=>students.find(st=>st.id===gs.id)?.name?.split(' ')[0]||'her').join(" and ")} look at the menu.</div>
                       :groupDinnerLog.map((line,i)=>(
-                        <div key={i} style={{fontSize:12,color:line.startsWith("💬")?"#e8d0a8":line.startsWith("👀")?"#d8a8c8":line.startsWith("😵")?"#f06040":"#d0a860",lineHeight:1.6}}>
-                          {line}
+                        <div key={i} style={getDinnerLogLineStyle(line, i<groupDinnerLog.length-1)}>
+                          {dinnerLogDisplayText(line)}
                         </div>
                       ))
                     }

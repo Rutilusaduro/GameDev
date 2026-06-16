@@ -3,7 +3,7 @@
 import { registerPool } from '../../engine.js';
 
 registerPool('eat.foodDesc', [
-  { when: {}, text: ['the meal', 'the spread', 'what is in front of her'] },
+  { when: {}, text: ['the meal', 'the spread', 'what is in front of her', 'what she ordered — and then some'] },
   { when: { mealContext: 'breakfast' }, text: ['pancakes and syrup', 'a breakfast that does not apologize for its portions'] },
   { when: { mealContext: 'binge' }, text: ['an embarrassment of portions', 'more food than one person should have — and yet'] },
   { when: { mealContext: 'snack' }, text: ['something small that will not stay small', 'a snack that escalates'] },

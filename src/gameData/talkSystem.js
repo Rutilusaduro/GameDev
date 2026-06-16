@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // TALK SYSTEM — conversations shaped by Influence skills and her
-// corruption tier. Response prose lives in talkDialogue.js and
-// devourScene.js; this file defines topics, gates, and effects.
+// corruption tier. Response prose lives in text-engine scenes;
+// this file defines topics, gates, and effects.
 // ═══════════════════════════════════════════════════════════════
 
 export const TALK_TOPICS = [
@@ -27,20 +27,23 @@ export const TALK_TOPICS = [
   { id:"suggest_indulgence", label:"Plant a suggestion", icon:"🗣", group:"suggest", requires:"unlockSuggestion",
     effect:{ corruption:2, rel:1, applySuggestDebuff:true },
     suggestNote:"Her resistance softens this week (-10% refusal).",
+    engineTemplate:"{talk.suggest_indulgence}",
   },
   { id:"suggest_growth", label:"Suggest she's meant for more", icon:"🌙", group:"suggest", requires:"unlockSuggestion",
     effect:{ corruption:3 },
+    engineTemplate:"{talk.suggest_growth}",
   },
 
   // ── Dominant Will commands (Influence T3) — EXTREME ────────
   { id:"command_finish", label:"Command: clean every plate", icon:"👑", group:"command", requires:"unlockCommand", extreme:true,
     effect:{ cals:6000, full:30, corruption:3 },
-    refusal:(s)=>`${s.name} wavers — the command lands, but her body outvotes it. "I can't," she whispers, and means the physics, not the will. Her belly is too full, too tight, too honest about its limits. She trembles with how close she came to obeying anyway.`,
+    engineTemplate:"{talk.command_finish}",
+    refusalTemplate:"{talk.refusal.command_finish}",
   },
   { id:"command_devour", label:"Command: devour", icon:"🩸", group:"command", requires:"devourersThreshold", extreme:true,
     sceneType:"devour",
     effect:{ cals:45000, full:100, corruption:18, rel:3, devourShift:true },
-    refusal:(s)=>`Something ancient in ${s.name} rises to meet the command — and falters at the brink. Not tonight. Her body is too full to hold what you're asking. She trembles with how close it was, hands pressed to her middle, eyes dark with wanting anyway.`,
+    refusalTemplate:"{talk.refusal.command_devour}",
   },
 ];
 

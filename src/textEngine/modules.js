@@ -32,6 +32,14 @@ registerModule('subject.semesterGain', [
   }] },
 ]);
 
+registerModule('ref.name', [
+  { when: {}, text: [(ctx) => ctx.ref?.name || ctx.subject?.name || 'Someone'] },
+]);
+
+registerModule('ref.first', [
+  { when: {}, text: [(ctx) => (ctx.ref?.name || ctx.subject?.name || 'Someone').split(' ')[0]] },
+]);
+
 // ── char.desc — composite of size, movement and corruption ────
 // Demonstrates recursion: variants embed {word.*} slots.
 

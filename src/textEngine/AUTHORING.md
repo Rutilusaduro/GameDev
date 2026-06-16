@@ -236,3 +236,7 @@ Archetype colors the six lines (competitor/data for Brittany, sensory catalog fo
 - `npm run text:lint` — static + dynamic sweep (required clean).
 - `npm run text:lint -- --sample=500 --scene=wi` — combinatorial sampling with trigram/length checks.
 - `npm run text:lint -- --coverage` — squad band dashboard (early/mobile/vast); `--coverage=slender.` filters namespaces.
+- `npm run text:lint -- --volume` — squad namespace volume dashboard (wildcard ≥4, keyed ≥3, persona ≥2/student).
+- `npm run text:lint -- --strict-volume` / `--strict-coverage` — CI gates (fail on thin squad wildcards or &lt;80% band coverage). Both pass after Phase B; enable in CI when ready.
+- `node scripts/generateStageCoverage.mjs` — regenerate `scenes/squadStageCoverage.js` after adding stage-keyed pools.
+- `node scripts/generateKeyedDepth.mjs` — regenerate `scenes/squadKeyedDepth.js` when new keyed variants fall under the ≥3-text floor.
