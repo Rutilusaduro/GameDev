@@ -17,6 +17,7 @@ import '../textEngine/scenes/talkEncourage.js'; // registers talk.encourage
 import '../textEngine/scenes/talkCheckIn.js'; // registers talk.check_in
 import '../textEngine/scenes/talkCompliment.js'; // registers talk.compliment
 import '../textEngine/scenes/talkSuggest.js'; // registers talk.suggest_*
+import '../textEngine/scenes/talkRefusal.js'; // registers talk.refusal.*
 import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';
 import '../textEngine/scenes/destinyOffstream.js';
@@ -173,11 +174,25 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
 
   const handleSelect = (topic) => {
     // Check refusal (command topics only)
-    if(topic.refusal && topic.effect?.full){
+    if((topic.refusal || topic.refusalTemplate) && topic.effect?.full){
       const full = student.fullness || 0;
       const cap  = student.stomachCapacity || 100;
       if(full >= cap * 0.85 && !(eff.totalSurrender && (student.corruption||0) >= 90)){
-        const refusalText = typeof topic.refusal === "function" ? topic.refusal(student) : topic.refusal;
+        let refusalText;
+        if (topic.refusalTemplate) {
+          const ctx = createContext({
+            subject: student,
+            skillEffects: eff,
+            week,
+            globals: {
+              campusFattening: !!campusFattening,
+              campusTier: campusTier || (campusFattening ? 1 : 0),
+            },
+          });
+          refusalText = render(topic.refusalTemplate, ctx);
+        } else {
+          refusalText = typeof topic.refusal === "function" ? topic.refusal(student) : topic.refusal;
+        }
         setActiveResponse({
           topic,
           text: refusalText,

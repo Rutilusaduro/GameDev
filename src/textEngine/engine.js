@@ -345,6 +345,8 @@ function evalWhen(when, ctx) {
       case "bigScale": ok = !!ctx.globals?.bigScale === !!v; break;
       case "lastCorruptionShift": ok = !!ctx.globals?.lastCorruptionShift === !!v; break;
       case "reactionLevel": ok = (ctx.globals?.reactionLevel ?? 0) === v; break;
+      case "relTierMin": ok = (ctx.globals?.relTier ?? 0) >= v; break;
+      case "relTier": ok = (ctx.globals?.relTier ?? 0) === v; break;
       case "refArchetype": {
         const ra = ctx.ref?.archetype ?? ctx.globals?.refArchetype;
         ok = Array.isArray(v) ? v.includes(ra) : ra === v;

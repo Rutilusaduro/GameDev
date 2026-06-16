@@ -3,6 +3,7 @@ import { C } from '../styles.js';
 import { COLLAB_CONTENT_CREATOR_ARCHETYPES } from '../gameData/miniGames.js';
 import { EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS } from '../gameData/evolvedForms.js';
 import { INTIMACY_CONTEXTUAL, INTIMACY_SCENES } from '../gameData/intimacy.js';
+import { renderIntimacyPhase } from '../textEngine/scenes/intimacy/index.js';
 import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
 import { EVOLVED_MINIGAMES, computeMinigameOutcome, minigameTierLabel } from '../gameData/evolvedMinigames.js';
@@ -302,12 +303,12 @@ export function PresentationDefenseModal({ presentationState, processStudentGain
 }
 
 export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, makeIntimacyChoice, students }){
-        const {studentId,sceneId,tier,phaseIdx,history,logLines,done,endingText,gainAccum}=intimacyEventState;
+        const {studentId,sceneId,tier,week:sceneWeek,phaseIdx,history,logLines,done,endingText,gainAccum}=intimacyEventState;
         const s=students.find(st=>st.id===studentId);
         const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId];
         if(!s||!def) return null;
         const phase=!done?def.phases[phaseIdx]:null;
-        const phaseText=phase?(typeof phase.text==="function"?phase.text(history,s,tier):phase.text):null;
+        const phaseText=phase?renderIntimacyPhase(sceneId,phaseIdx,s,history,tier,sceneWeek??1):null;
         const accentColor="#c050a0";
         return(
           <div style={C.overlay}>

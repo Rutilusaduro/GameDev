@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL } from './gameData/intimacy.js';
+import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL, evalIntimacyEndingCondition } from './gameData/intimacy.js';
 import { WAITER_DESC, getOverfillEndMsg, GROUP_CONVERSATIONS, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, SESSION_FULLNESS_DESCS, getAftermath, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { narrativeEventText, randomEventText } from './gameData/weeklyEventText.js';
@@ -64,6 +64,8 @@ import './textEngine/scenes/hungerLexicon.js';
 import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
 import { renderDinnerEnding, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton } from './textEngine/scenes/dinner/index.js';
+import { renderIntimacyChoice, renderIntimacyEnding } from './textEngine/scenes/intimacy/index.js';
+import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
 import './textEngine/scenes/opposition/endgameBeat.js';
 import './textEngine/scenes/corruptionVoice.js';
@@ -5350,19 +5352,20 @@ export default function ProfessorSim(){
     if(ap<cost){push(`⚠️ Need ${cost} AP.`);return;}
     if(cost>0) setAp(a=>a-cost);
     const tier=getTier(s.relationship).id;
-    setIntimacyEventState({studentId:s.id,sceneId,tier,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});
+    setIntimacyEventState({studentId:s.id,sceneId,tier,week,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});
     setIntimacySceneSelector(null);
   };
 
   const makeIntimacyChoice=(choiceId)=>{
     if(!intimacyEventState) return;
-    const {studentId,sceneId,phaseIdx,history,logLines,gainAccum,relAccum}=intimacyEventState;
+    const {studentId,sceneId,phaseIdx,history,logLines,gainAccum,relAccum,week:sceneWeek}=intimacyEventState;
+    const sceneWeekNum=sceneWeek??week;
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId]; if(!def) return;
     const phase=def.phases[phaseIdx]; if(!phase) return;
     const choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
-    const newLog=[...logLines,(typeof choice.result==='function'?choice.result(s):choice.result)];
+    const newLog=[...logLines,renderIntimacyChoice(sceneId,choiceId,s,sceneWeekNum)];
     let newGain=gainAccum+(choice.lbs||0);
     const newRel=relAccum+(choice.rel||0);
     if(choice.feed&&choice.gainRange){
@@ -5373,7 +5376,9 @@ export default function ProfessorSim(){
     }
     const nextPhase=phaseIdx+1;
     if(nextPhase>=def.phases.length){
-      const ending=def.endings.find(e=>e.condition(newHistory))||def.endings[def.endings.length-1];
+      let endingIdx=def.endings.findIndex(e=>evalIntimacyEndingCondition(e.conditionSrc,newHistory));
+      if(endingIdx<0) endingIdx=def.endings.length-1;
+      const ending=def.endings[endingIdx];
       const totalGain=newGain+ending.gainBonus;
       const totalRel=newRel+ending.relBonus;
       setStudents(prev=>prev.map(st=>{
@@ -5382,7 +5387,7 @@ export default function ProfessorSim(){
       }));
       if(totalGain>0) push(`💜 ${s.name} — intimacy: +${totalGain} lbs · +${totalRel} rel`);
       else push(`💜 ${s.name} — intimacy: +${totalRel} rel`);
-      setIntimacyEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:ending.text,gainBonus:ending.gainBonus,relBonus:ending.relBonus}));
+      setIntimacyEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:renderIntimacyEnding(sceneId,endingIdx,s,sceneWeekNum),gainBonus:ending.gainBonus,relBonus:ending.relBonus}));
     } else {
       setIntimacyEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }
