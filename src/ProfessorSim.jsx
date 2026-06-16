@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL, evalIntimacyEndingCondition } from './gameData/intimacy.js';
-import { WAITER_DESC, getOverfillEndMsg, GROUP_CONVERSATIONS, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
+import { GROUP_CONVERSATIONS, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { narrativeEventText, randomEventText } from './gameData/weeklyEventText.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
@@ -33,7 +33,7 @@ import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLin
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
 import { renderHuntNode, renderHuntTarget } from './textEngine/scenes/hunt/index.js';
-import { renderCampusEventBeat } from './textEngine/scenes/campusEvent/index.js';
+import { renderClassSceneText, renderClassChoiceResult } from './textEngine/scenes/campusEvent/index.js';
 import { getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateClassSession, pharmacistTextOpts } from './utils/gameHelpers.js';
 import {
@@ -66,7 +66,7 @@ import './textEngine/scenes/hungerInterrupt/index.js';
 import './textEngine/scenes/hungerLexicon.js';
 import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
-import { renderDinnerEnding, renderDinnerDepth, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter } from './textEngine/scenes/dinner/index.js';
+import { renderDinnerEnding, renderDinnerDepth, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter, renderDinnerOverfill, renderDinnerDishDesc } from './textEngine/scenes/dinner/index.js';
 import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding } from './textEngine/scenes/intimacy/index.js';
@@ -5504,7 +5504,7 @@ export default function ProfessorSim(){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
     }
-    const resultText=typeof choice.result==="function"?choice.result(student||newStudents[0]):choice.result;
+    const resultText=renderClassChoiceResult(scene, choiceIdx, student || newStudents[0], week, pharmacistTextOpts(pharmacistState, week));
     const outcome={sceneTitle:scene.title,choice:choice.label,result:resultText,gain:gainAmt,target:targetName};
     setClassSession(prev=>({...prev,pendingResult:outcome}));
   };
@@ -5910,8 +5910,9 @@ export default function ProfessorSim(){
     if(newFullness>cap){
       const endChance=rollOverfillEndChance(newFullness,cap);
       if(Math.random()<endChance){
-        const endMsg=getOverfillEndMsg(fed,getStage(fed.lbs).id);
-        setDinnerLog(dl=>[...dl,`🍴 ${payload.label} arrives. ${dish.desc} (+${payload.calories.toLocaleString()} cal)`,`😵 ${endMsg}`]);
+        const endMsg=renderDinnerOverfill(fed, week);
+        const dishDesc=renderDinnerDishDesc(dish, fed, week);
+        setDinnerLog(dl=>[...dl,`🍴 ${payload.label} arrives. ${dishDesc} (+${payload.calories.toLocaleString()} cal)`,`😵 ${endMsg}`]);
         setTimeout(()=>triggerDinnerEnd(fed,newFullness,cap,sessionCals,6),1000);
         return;
       }
@@ -5923,7 +5924,7 @@ export default function ProfessorSim(){
       :"";
     setDinnerEvent(prev=>({...prev,dishes:newDishes,totalGain:sessionCals,student:fed}));
     setDinnerLog(dl=>[...dl,
-      `🍴 ${payload.label} arrives. ${dish.desc} (+${payload.calories.toLocaleString()} cal)${fullMsg}`,
+      `🍴 ${payload.label} arrives. ${renderDinnerDishDesc(dish, fed, week)} (+${payload.calories.toLocaleString()} cal)${fullMsg}`,
       ...(eatLine?[`💬 ${eatLine}`]:[]),
     ]);
   };
@@ -5953,7 +5954,7 @@ export default function ProfessorSim(){
     const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](fed,item);
     push(`🎒 ${item.label} shared at dinner.`);
     if(newFullness>cap&&Math.random()<rollOverfillEndChance(newFullness,cap)){
-      setDinnerLog(dl=>[...dl,`🎒 ${line}`,`😵 ${getOverfillEndMsg(fed,getStage(fed.lbs).id)}`]);
+      setDinnerLog(dl=>[...dl,`🎒 ${line}`,`😵 ${renderDinnerOverfill(fed, week)}`]);
       setTimeout(()=>triggerDinnerEnd(fed,newFullness,cap,sessionCals,6),1000);
       return;
     }
@@ -6115,7 +6116,7 @@ export default function ProfessorSim(){
     if(newFullness>cap){
       const endChance=rollOverfillEndChance(newFullness,cap);
       if(Math.random()<endChance){
-        const endMsg=getOverfillEndMsg(fed,getStage(fed.lbs).id);
+        const endMsg=renderDinnerOverfill(fed, week);
         setGroupDinnerLog(dl=>[...dl,`🍴 ${payload.label} for ${live.name}. (+${payload.calories.toLocaleString()} cal)`,`😵 ${endMsg}`,...reactionLines.map(r=>`👀 ${r}`)]);
         setGroupDinnerEvent(prev=>{
           const remaining=prev.students.filter(s=>s.id!==targetId);
@@ -6137,7 +6138,7 @@ export default function ProfessorSim(){
     const fullMsg=firstHit?` — ${live.name} is satisfied. You can keep going.`
       :newFullness>cap?` — ${live.name} is past full.`
       :newFullness>=cap*0.8?` — ${live.name} is getting full.`:"";
-    setGroupDinnerLog(dl=>[...dl,`🍴 ${payload.label} for ${live.name}. ${dish.desc} (+${payload.calories.toLocaleString()} cal)${fullMsg}`,...reactionLines.map(r=>`👀 ${r}`)]);
+    setGroupDinnerLog(dl=>[...dl,`🍴 ${payload.label} for ${live.name}. ${renderDinnerDishDesc(dish, live, week)} (+${payload.calories.toLocaleString()} cal)${fullMsg}`,...reactionLines.map(r=>`👀 ${r}`)]);
     setGroupDinnerEvent(prev=>({
       ...prev,
       students:prev.students.map(s=>s.id===targetId?{...s,dishes:newDishes,totalGain:sessionCals}:s),
@@ -6270,7 +6271,7 @@ export default function ProfessorSim(){
     const fsStage=getFullnessStage(fPct);
     const desc=renderSessionFullness(fed, Math.min(fsStage.id, 5), week);
     push(`🍽️ ${payload.label}: +${scaledGain.toLocaleString()} cal`);
-    setSessionLog(sl=>[...sl,`🍽️ ${payload.label} (+${scaledGain.toLocaleString()} cal) — ${food.desc}`,`   ${desc}`]);
+    setSessionLog(sl=>[...sl,`🍽️ ${payload.label} (+${scaledGain.toLocaleString()} cal) — ${renderDinnerDishDesc(food, fed, week)}`,`   ${desc}`]);
     const sessionCals=getSessionCaloriesFed(fed,privateSession.sessionStartCalories||0);
     const adjustedTapProb=getTapOutProbability(fPct,skillTapOutResistance);
     const tapsOut=Math.random()<adjustedTapProb;
@@ -6590,8 +6591,7 @@ export default function ProfessorSim(){
                     <FlaggedProse
                       section={`classSession.scene.${scene.title}`}
                       text={student
-                        ? (renderCampusEventBeat(student, week, pharmacistTextOpts(pharmacistState, week))
-                          || (typeof scene.text==="function"?scene.text(student):scene.text))
+                        ? renderClassSceneText(scene, student, week, pharmacistTextOpts(pharmacistState, week))
                         : (typeof scene.text==="function"?scene.text(student):scene.text)}
                       student={student}
                       week={week}
@@ -6741,7 +6741,7 @@ export default function ProfessorSim(){
                                 <span style={{fontWeight:700,fontSize:12,color:isOverfull?"#e09090":"#d8a8ff"}}>{dish.label}</span>
                                 <span style={{fontSize:9,color:"#a07050"}}>+{dish.gain[0]}–{dish.gain[1]} lbs</span>
                               </div>
-                              <div style={{fontSize:10,color:"#6a4870",lineHeight:1.4,marginTop:2}}>{dish.desc}</div>
+                              <div style={{fontSize:10,color:"#6a4870",lineHeight:1.4,marginTop:2}}>{renderDinnerDishDesc(dish, ds, week)}</div>
                             </div>
                           ))}
                         </div>
@@ -6981,7 +6981,7 @@ export default function ProfessorSim(){
                               <span style={{fontWeight:700,fontSize:12,color:"#d8a8ff"}}>{dish.label}</span>
                               <span style={{fontSize:9,color:"#a07050"}}>+{dish.gain[0]}–{dish.gain[1]} lbs</span>
                             </div>
-                            <div style={{fontSize:10,color:"#6a4870",marginBottom:6}}>{dish.desc}</div>
+                            <div style={{fontSize:10,color:"#6a4870",marginBottom:6}}>{renderDinnerDishDesc(dish, students.find(st=>st.id===gev.students[0]?.id), week)}</div>
                             <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
                               {unfedGirls.map(gs=>{
                                 const live=students.find(st=>st.id===gs.id);

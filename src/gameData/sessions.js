@@ -1,11 +1,5 @@
 import { getStage } from './stages.js';
 
-export const getOverfillEndMsg=(s,stId)=>
-  stId<=2 ? `${s.name} goes very still. Both hands on her middle. "I think I need to stop," she says quietly, with genuine surprise. She means it this time.`
-  :stId<=5 ? `${s.name} puts her fork down with a kind of finality. "Okay," she says. "Okay, I think that's it." She doesn't move for a moment. Even for her, that's a lot.`
-  :stId<=7 ? `${s.name} breathes out slowly, both hands settling on her belly. "I'm done," she announces, with the gravity of a formal statement. Even she has a limit.`
-  : `${s.name} goes completely still. Even she has reached a genuine limit. The room seems to hold its breath.`;
-
 export const GROUP_CONVERSATIONS=[
   { id:"get_them_talking", label:"Get them talking", relBonus:4, fullnessEffect:-4 },
   { id:"compliment_both", label:"Compliment them both", relBonus:3, fullnessEffect:0 },

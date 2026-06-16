@@ -1239,6 +1239,10 @@ registerPool('diary.lilith', [
     "Three people brought things today without being asked. I am the reason. The gravity has shifted.",
     "The campus comes to me now. I have become a place that things come to. That's all hunting ever was.",
   ] },
+  { when: { studentId: 15, stageMin: 11, isImmobile: true }, weight: 5, text: [
+    "I do not move. The world moves toward me — food, attention, the slow orbit of everything hungry. This is reach.",
+    "Hunting ended when I became the place. I wait. Things arrive. The appetite is patient and vast.",
+  ] },
 ]);
 
 // ── renderDiary — public wrapper ──────────────────────────────
@@ -1252,7 +1256,9 @@ export function renderDiary(student, week) {
 
   // Try evolved form diary first
   if (student.evolvedForm) {
-    const evolvedKey = `diary.${student.evolvedForm}`;
+    const formAliases = { predator: 'lilith' };
+    const formId = formAliases[student.evolvedForm] || student.evolvedForm;
+    const evolvedKey = `diary.${formId}`;
     const evolvedText = render(`{${evolvedKey}}`, ctx, { noSmooth: false });
     if (evolvedText && evolvedText.trim()) return evolvedText;
   }

@@ -9,8 +9,12 @@ import './reactions.js';
 import './waiter.js';
 import './depth.js';
 import './selectors.js';
+import './overfill.js';
+import './dishDesc.js';
 
 export { renderDinnerEnding } from './endingScene.js';
+export { renderDinnerOverfill } from './overfill.js';
+export { renderDinnerDishDesc } from './dishDesc.js';
 
 function composeOverlay(main, overlay) {
   const a = main?.trim() || '';

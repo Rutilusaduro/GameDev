@@ -67,6 +67,15 @@ export const STRICT_VOLUME_MAX_THIN = 0;
 /** --strict-coverage: fail when overall band coverage falls below this percent. */
 export const STRICT_COVERAGE_MIN_PCT = 80;
 
+// §9 programmatic bridges — legacy prose registered verbatim pending MIGRATION.md decomposition.
+export const MIGRATION_BRIDGE_PREFIXES = [
+  'journal.feeder.',
+  'journal.nadia.',
+  'campusEvent.scene.',
+  'campusEvent.choice.',
+  'dinner.dish.',
+];
+
 // Squad-owned namespaces for --volume reporting (Step 9 content targets).
 export const VOLUME_SQUAD_PREFIXES = [
   'slender.', 'campus.', 'eat.', 'cloth.', 'shift.', 'interior.', 'immob.',
