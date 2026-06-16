@@ -13,7 +13,7 @@ import './campusSoftening.js';
 import './destinyOffstream.js';
 import './diary.js';
 import './diaryBase.js';
-// import './evolvedDiary.js'; // superseded by diary.js (single source)
+// import './evolvedDiary.js'; — removed Phase A; diary.js is single source
 import './hiveIntake.js';
 import './hungerArchetypeBehavior.js';
 import './hungerInterrupt/index.js';

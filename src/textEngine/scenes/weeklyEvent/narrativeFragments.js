@@ -152,8 +152,10 @@ registerPool('weekly.thesisRewrite.title', [
 
 registerPool('weekly.thesisRewrite.verdict', [
   { when: { archetype: 'bookworm' }, text: [
-    'The abstract is rigorous. It is also clearly an elaborate academic justification for eating constantly. You approve it immediately. She beams with the energy of someone who has made weight gain count toward her GPA.',
-    'You read it twice. It is real scholarship and transparently convenient. Approved. She beams.',
+    'The abstract is rigorous. It is also clearly an elaborate academic justification for eating constantly.',
+    'You read it twice. It is real scholarship and transparently convenient.',
+    'You approve it immediately.',
+    'She beams with the energy of someone who has made weight gain count toward her GPA.',
   ] },
   { when: {}, text: [
     'It is rigorous on paper and transparently about eating in practice. You approve it. She beams.',
@@ -370,8 +372,10 @@ registerPool('weekly.overachieverPivot.submit', [
 
 registerPool('weekly.overachieverPivot.verdict', [
   { when: { archetype: 'overachiever' }, text: [
-    'You read the abstract. It is rigorous. It is also clearly an elaborate academic justification for eating constantly. You approve it. She beams with the energy of someone who has made gaining weight count toward her GPA.',
-    'Academically sound. Transparently convenient. Approved. She beams.',
+    'You read the abstract. It is rigorous. It is also clearly an elaborate academic justification for eating constantly.',
+    'Academically sound. Transparently convenient.',
+    'You approve it.',
+    'She beams with the energy of someone who has made gaining weight count toward her GPA.',
   ] },
   { when: {}, text: [
     'Academically sound. Transparently convenient. Approved.',

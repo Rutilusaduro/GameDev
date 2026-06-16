@@ -82,7 +82,7 @@ The Squad is the seven-agent team for the Near-Infinite Narrative Engine. **Do n
 
 **Owns:** `engine.js`, `lexicon/`, `gameData/textContext.js`, `scripts/textLint.mjs`, `scripts/text-lint.config.js`, `registerDimension` / `ctx.flags` / `consumes` / `requireAbsent`, scene `index.js` exports, Dialogue Lab section wiring.
 
-**Expansion targets:** ~~`registerModule` → `registerPool` migration — hungerInterrupt, stream.pre, diaryBase, evolved diary decomposed~~ ✅ · ~~`ctx.sessionUsed` anti-repetition~~ ✅ · ~~coverage report automation (`text:lint --coverage`)~~ ✅ · ~~volume tracking dashboard (`text:lint --volume`)~~ ✅
+**Expansion targets:** ~~`registerModule` → `registerPool` migration — hungerInterrupt, stream.pre, diaryBase, evolved diary decomposed~~ ✅ · ~~`ctx.sessionUsed` anti-repetition~~ ✅ · ~~coverage report automation (`text:lint --coverage`)~~ ✅ · ~~volume tracking dashboard (`text:lint --volume`)~~ ✅ · ~~Phase A engine hygiene — retire `evolvedDiary.js`, hunger lexicon pools, weekly monolith decomposition, psych lexicon (`word.psychVoice`, `word.breathQuality`, `word.jealousyReaction`, `word.hungerPhrase`), strict lint gates~~ ✅
 
 **Does not:** Write long-form prose variants (delegates to A1/A2/A3/A6, rewritten by A7, reviewed by A5).
 
