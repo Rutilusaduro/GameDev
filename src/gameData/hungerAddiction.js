@@ -9,6 +9,7 @@ import { PHYSICAL_TRAITS } from './skillTrees.js';
 import { getStage } from './stages.js';
 import { TALK_CONFIG } from './talkSystem.js';
 import { pickWeightedInterruptStudent } from './relationshipEcology.js';
+import { getTier } from './sessions.js';
 
 export const ADDICTION_LEVELS = [
   { id: 0, label: "None",       color: null },
@@ -197,17 +198,85 @@ export function isWithdrawalAggressive(student) {
   return isInWithdrawal(student) && getAddictionLevel(student) >= 2;
 }
 
-/** Relationship, mood, and aggression fallout when turning a hungry girl away. */
-export function applyDenialConsequences(student) {
-  let s = denyHunger(student);
-  const tier = getHungerTier(s);
-  const withdrawal = isInWithdrawal(s);
+/** Emergency feed portion scales with hunger, addiction, and surrender (DEPTH_PLAN §4). */
+export function getInterruptFeedPortion(student) {
+  const hunger = getHungerTier(student);
+  const addiction = getAddictionLevel(student);
+  const cor = getCorruptionTier(student?.corruption || 0).id;
+  let calories = 5200;
+  let fullness = 26;
+  let relGain = 4;
+  if (hunger >= 4) { calories = 9800; fullness = 40; relGain = 8; }
+  else if (hunger >= 3) { calories = 8200; fullness = 36; relGain = 7; }
+  else if (hunger >= 2) { calories = 6800; fullness = 32; relGain = 5; }
+  if (addiction >= 3) {
+    calories = Math.round(calories * 1.12);
+    fullness += 3;
+    relGain += 1;
+  }
+  if (cor >= 2) {
+    fullness += 2;
+    relGain += 1;
+  }
+  return { calories, fullness, relGain };
+}
+
+export function getInterruptCompoundPortion(student) {
+  const addiction = getAddictionLevel(student);
+  const hunger = getHungerTier(student);
+  let calories = 6000;
+  let fullness = 28;
+  let relGain = 4;
+  if (addiction >= 3 || hunger >= 4) {
+    calories = 7200;
+    fullness = 32;
+    relGain = 5;
+  }
+  return { calories, fullness, relGain };
+}
+
+/** Deny fallout — hunger tier base, scaled by relationship and corruption. */
+export function getInterruptDenyRelLoss(student) {
+  const tier = getHungerTier(student);
+  const withdrawal = isInWithdrawal(student);
   const losses = HUNGER_CONFIG.denyRelLoss;
+  const relTier = getTier(student?.relationship ?? 0).id;
+  const cor = getCorruptionTier(student?.corruption || 0).id;
 
   let relLoss = losses.default;
   if (withdrawal) relLoss = losses.withdrawal;
   else if (tier >= 4) relLoss = losses.starving;
   else if (tier >= 3) relLoss = losses.craving;
+
+  if (relTier >= 3) relLoss = Math.round(relLoss * 1.18);
+  else if (relTier <= 1 && tier < 3) relLoss = Math.round(relLoss * 0.82);
+  if (cor >= 2) relLoss = Math.round(relLoss * 0.72);
+  else if (cor >= 1) relLoss = Math.round(relLoss * 0.9);
+
+  return Math.max(2, relLoss);
+}
+
+/** Talk calm — devoted girls bond harder; starving girls harder to soothe. */
+export function getInterruptTalkRelGain(student) {
+  const relTier = getTier(student?.relationship ?? 0).id;
+  const cor = getCorruptionTier(student?.corruption || 0).id;
+  const hunger = getHungerTier(student);
+  let gain = 3;
+  if (relTier >= 3) gain += 3;
+  else if (relTier >= 2) gain += 2;
+  else if (relTier >= 1) gain += 1;
+  if (cor >= 2 && hunger >= 3) gain += 1;
+  if (hunger >= 4) gain = Math.max(2, gain - 1);
+  return gain;
+}
+
+/** Relationship, mood, and aggression fallout when turning a hungry girl away. */
+export function applyDenialConsequences(student) {
+  let s = denyHunger(student);
+  const tier = getHungerTier(s);
+  const withdrawal = isInWithdrawal(s);
+  const relLoss = getInterruptDenyRelLoss(s);
+  const cor = getCorruptionTier(s?.corruption || 0).id;
 
   s = {
     ...s,
@@ -215,6 +284,9 @@ export function applyDenialConsequences(student) {
     mood: withdrawal || tier >= 3 ? 'stressed' : 'sad',
     withdrawalAggroWeeks: withdrawal ? (s.withdrawalAggroWeeks || 0) + 2 : (s.withdrawalAggroWeeks || 0),
   };
+  if (cor >= 2 && tier >= 3 && !withdrawal) {
+    s.corruption = Math.min(100, (s.corruption || 0) + 1);
+  }
   return s;
 }
 

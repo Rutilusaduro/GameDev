@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { ELARA_ID } from './relicHunter.js';
 import { getDevice, isCampusTool } from './devices.js';
-import { resolveCampusDeviceUse } from './deviceEffects.js';
+import { scrutinyDiscoveryMult } from './scrutinyConsequences.js';
 import { hasCircuitNode } from './inventionUpgrades.js';
 import '../textEngine/scenes/campusDevice/index.js';
 import {
@@ -149,6 +149,7 @@ export function applyCampusDeviceEncounter({
   week,
   exploration,
   labState = null,
+  adminScrutiny = 0,
   rng = Math.random,
 }) {
   const def = getDevice(deviceId);
@@ -158,9 +159,10 @@ export function applyCampusDeviceEncounter({
   let npcGain = 0;
 
   if (encounter.target.type === 'student') {
-    const result = resolveCampusDeviceUse(deviceId, modeId, student, week, rng, { labState });
+    const result = resolveCampusDeviceUse(deviceId, modeId, student, week, rng, { labState, adminScrutiny });
     if (!result.ok) return result;
     const line = renderCampusDeviceResult(encounter, deviceId, modeId, result, encounter.nodeId, student);
+    const scrutinyDelta = result.discovered ? Math.max(2, Math.round(2 * scrutinyDiscoveryMult(adminScrutiny))) : 0;
     return {
       ...result,
       logLines: [
@@ -168,7 +170,15 @@ export function applyCampusDeviceEncounter({
         result.discovered ? '⚠️ Someone noticed. Whispers may follow.' : null,
       ].filter(Boolean),
       exploration: nextExploration,
-      scrutinyDelta: result.discovered ? 2 : 0,
+      scrutinyDelta,
+      witnessEntry: result.discovered ? {
+        week,
+        eventType: 'device',
+        studentId: student?.id,
+        studentName: student?.name,
+        deviceId,
+        nodeId: encounter.nodeId,
+      } : null,
     };
   }
 

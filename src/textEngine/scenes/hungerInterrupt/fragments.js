@@ -30,6 +30,9 @@ registerPool('hunger.response.feed.aftermath', [
   { when: { hungerTier: [4], addictionLevel: [4] }, priority: 3, text: [
     "By the time she's done, she looks dazed and deeply satisfied.",
   ] },
+  { when: { corruption: [2], relationship: [3, 4] }, priority: 2, text: [
+    'She leans into you afterward, warm and heavy, like feeding her was the only thing that mattered.',
+  ] },
   { when: { hungerTier: [4] }, priority: 2, text: [
     'When she finishes, she looks at you with glassy, grateful eyes.',
   ] },
@@ -87,8 +90,15 @@ registerPool('hunger.response.deny.reaction', [
     'Her face falls.',
     "For a second she looks like she might cry, then her expression twists into something more desperate and angry.",
   ] },
+  { when: { corruption: [2], relationship: [3, 4] }, priority: 2, text: [
+    'She stares at you like you betrayed something sacred between you.',
+    'The hurt is raw — she expected you to understand.',
+  ] },
   { when: { inWithdrawal: true }, priority: 2, text: [
     'She snaps at you, clearly furious, before storming off.',
+  ] },
+  { when: { relationship: [0, 1] }, priority: 2, text: [
+    'She looks embarrassed more than angry — like she knows she asked too much.',
   ] },
   { when: {}, text: [
     "She looks disappointed but doesn't argue.",
@@ -119,6 +129,9 @@ registerPool('hunger.response.talk.calm', [
   { when: { hungerTier: [4], addictionLevel: [3, 4] }, priority: 2, text: [
     'You manage to calm her down a little.',
     "She's still clearly struggling, but she listens to you.",
+  ] },
+  { when: { corruption: [2], relationship: [3, 4] }, priority: 2, text: [
+    'Your voice reaches her — she exhales, shame and hunger tangled, and lets you steer the moment.',
   ] },
   { when: { inWithdrawal: true }, priority: 2, text: [
     'You manage to talk her down from her aggressive state.',

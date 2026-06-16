@@ -26,6 +26,22 @@ export function scrutinyDiscoveryMult(scrutiny) {
   return 1 + tier * 0.08;
 }
 
+/** Extra scrutiny when starting a private session under review. */
+export function scrutinyPrivateSessionCost(scrutiny) {
+  const tier = getScrutinyTier(scrutiny).id;
+  if (tier >= 3) return 3;
+  if (tier >= 2) return 1;
+  return 0;
+}
+
+const PUBLIC_CLASS_FEASTS = new Set(['pizza', 'potluck', 'feast']);
+
+/** Investigation tier blocks visible class feasts. */
+export function scrutinyBlocksClassFeast(scrutiny, actionId) {
+  if (!scrutinyBlocksPublicEvents(scrutiny)) return false;
+  return PUBLIC_CLASS_FEASTS.has(actionId);
+}
+
 export function weeklyScrutinyNudge(scrutiny, tierId, opposition) {
   if (opposition?.aib?.unlocked && opposition.aib.agendaQueue?.length) {
     const next = opposition.aib.agendaQueue[0];

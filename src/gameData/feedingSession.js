@@ -34,6 +34,17 @@ export const DISH_ITEM_LINKS = {
   pr_chocolates: 'gainer_fudge',
 };
 
+/** Session pace — tactical layer over force-feed odds (DEPTH_PLAN §4). */
+export const SESSION_PACE_ACTIONS = [
+  { id: 'gentle', label: 'Gentle pace', refusalBonus: -0.06, tapOutMult: 0.82, desc: 'Easier refusal, less tap-out pressure.' },
+  { id: 'steady', label: 'Steady pace', refusalBonus: 0, tapOutMult: 1, desc: 'Default rhythm.' },
+  { id: 'push', label: 'Push harder', refusalBonus: 0.14, tapOutMult: 1.22, desc: 'Higher force-feed odds when she\'s stuffed.' },
+];
+
+export function getSessionPaceModifiers(paceId = 'steady') {
+  return SESSION_PACE_ACTIONS.find((p) => p.id === paceId) || SESSION_PACE_ACTIONS[1];
+}
+
 /** Hunger/corruption/trait modifiers for feed attempts (DEPTH_PLAN §8). */
 export function getFeedingModifiers(student, {
   generousTrait = false,

@@ -4,6 +4,7 @@ import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes
 import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from '../textEngine/textFlagFormat.js';
 import { getStage } from '../gameData/stages.js';
+import { getInterruptDenyRelLoss } from '../gameData/hungerAddiction.js';
 
 export function HungerInterruptModal({
   student,
@@ -17,6 +18,7 @@ export function HungerInterruptModal({
   echoedWillAvailable = false,
 }) {
   const s = student;
+  const denyRelLoss = getInterruptDenyRelLoss(s);
   const interruptCopy = useMemo(() => {
     const trace = [];
     const text = renderHungerInterrupt(s, week, { trace });
@@ -50,7 +52,9 @@ export function HungerInterruptModal({
               🔁 Echoed Will — reverse hunger curse (backlash scrutiny)
             </button>
           )}
-          <button type="button" style={{ ...C.btn("#502030"), width: "100%" }} onClick={onDeny}>Turn her away</button>
+          <button type="button" style={{ ...C.btn("#502030"), width: "100%" }} onClick={onDeny}>
+            Turn her away (−{denyRelLoss} relationship)
+          </button>
         </div>
       </div>
     </div>
