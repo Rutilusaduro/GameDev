@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { C } from '../styles.js';
 import { COLLAB_CONTENT_CREATOR_ARCHETYPES } from '../gameData/miniGames.js';
-import { EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS } from '../gameData/evolvedForms.js';
+import { EVOLVED_ACTIVITY_META, EVOLVED_EVENTS } from '../gameData/evolvedForms.js';
+import { renderNadiaJournalEntry, renderFeederJournalEntry } from '../textEngine/scenes/researchJournal/index.js';
 import { INTIMACY_CONTEXTUAL, INTIMACY_SCENES } from '../gameData/intimacy.js';
 import { renderIntimacyPhase } from '../textEngine/scenes/intimacy/index.js';
 import { getStage } from '../gameData/stages.js';
@@ -14,16 +15,16 @@ export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, st
         const nadia=students.find(st=>st.id===nadiaId);
         const subj=students.find(st=>st.id===subjectId);
         if(!nadia||!subj) return null;
-        const journal=NADIA_SUBJECT_JOURNALS[subj.archetype];
-        if(!journal) return null;
+        const journalAvailable=!!subj?.archetype;
+        if(!journalAvailable) return null;
         const nadiaStageId=getStage(nadia.lbs).id;
         const nadiaLevel=nadiaStageId>=10?2:nadiaStageId>=8?1:0;
         const maxPage=getStage(subj.lbs).id;
         const STAGE_LABELS=["Slight","Slim","Soft","Chubby","Plump","Heavy","Fat","Very Fat","Enormous","Colossal","Blob"];
         const NADIA_LEVEL_LABELS=["Heavy–Very Fat","Enormous–Colossal","Blob"];
         const isIntro=currentPage===-1;
-        const introText=Array.isArray(journal.intro)?journal.intro[nadiaLevel]||journal.intro[0]:journal.intro;
-        const entryText=isIntro?introText:(journal.entries[currentPage]?.[nadiaLevel]||"[no entry]");
+        const introText=renderNadiaJournalEntry(subj.archetype, -1, nadiaLevel, subj, 1);
+        const entryText=isIntro?introText:renderNadiaJournalEntry(subj.archetype, currentPage, nadiaLevel, subj, 1);
         const purple="#6b5b95";
 
         const canPrev=!isIntro;
@@ -70,10 +71,9 @@ export function SubjectJournalModal({ setSubjectJournalState, students, subjectJ
         const subj=students.find(st=>st.id===subjectId);
         if(!subj) return null;
         const maxPage=getStage(subj.lbs).id;
-        const entries=FEEDER_SUBJECT_JOURNALS[subj.archetype]||[];
-        const entry=entries[currentPage]||"No entry for this stage yet.";
+        const entry=renderFeederJournalEntry(subj.archetype, currentPage, subj, 1) || "No entry for this stage yet.";
         const STAGE_LABELS=["Slight","Slim","Soft","Chubby","Plump","Heavy","Fat","Very Fat","Enormous","Colossal","Blob"];
-        const minPage=entries.findIndex(e=>e!=null);
+        const minPage=0;
         const canPrev=currentPage>Math.max(0,minPage);
         const canNext=currentPage<maxPage;
         const inkColor="#2a1a40";

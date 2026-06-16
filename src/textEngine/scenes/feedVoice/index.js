@@ -10,9 +10,7 @@ import '../hungerInterruptPersonal.js';
 export function renderFeedVoice(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  const personal = (ctx.d?.hungerTier ?? 0) >= 3
-    ? render('{scene.hungerInterrupt.personal}', ctx, { noSmooth: true })?.trim()
-    : '';
+  const personal = render('{scene.hungerInterrupt.personal}', ctx, { noSmooth: true })?.trim();
   const line = render('{feed.voice}', ctx, { trace: opts.trace || null, noSmooth: true });
   const voice = line?.trim() || '';
   if (personal && voice) return `${personal} ${voice}`;

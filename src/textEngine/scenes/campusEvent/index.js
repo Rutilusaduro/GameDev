@@ -54,9 +54,13 @@ registerPool('campusEvent.beat', [
   { when: {}, text: ['{campusEvent.observation} {campusEvent.result}'] },
 ]);
 
+import './classIntegration.js';
+
 /** Class-session observation beat keyed on student mood/archetype/campus state. */
 export function renderCampusEventBeat(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   return render('{campusEvent.beat}', ctx, { trace: opts.trace || null })?.trim() || '';
 }
+
+export { renderClassSceneText, renderClassChoiceResult } from './classIntegration.js';

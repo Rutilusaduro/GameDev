@@ -152,6 +152,18 @@ registerPool('diary.competitive_gainer.s10', [
   { when: {}, text: ["{diary.competitive_gainer.s10._f26} {diary.competitive_gainer.s10._f27}\n\n{diary.competitive_gainer.s10._f28}\n\n{diary.competitive_gainer.s10._f29}"] },
 ]);
 
+registerPool('diary.competitive_gainer.s11._f30', [
+  { when: {}, text: ["The corkboard is mounted lower now. I update it from the chair — pins at eye level, my belly a warm shelf across my lap, every column still mine."] },
+]);
+
+registerPool('diary.competitive_gainer.s11._f31', [
+  { when: {}, text: [" Assistants reach the top row. I dictate the numbers. The board stays flawless. I remain the fattest. The room rearranges; the data does not."] },
+]);
+
+registerPool('diary.competitive_gainer.s11', [
+  { when: {}, text: ["{diary.competitive_gainer.s11._f30} {diary.competitive_gainer.s11._f31}"] },
+]);
+
 registerPool('diary.competitive_gainer', [
   { when: { stage: [5] }, text: ['{diary.competitive_gainer.s5}'] },
   { when: { stage: [6] }, text: ['{diary.competitive_gainer.s6}'] },
@@ -159,6 +171,7 @@ registerPool('diary.competitive_gainer', [
   { when: { stage: [8] }, text: ['{diary.competitive_gainer.s8}'] },
   { when: { stage: [9] }, text: ['{diary.competitive_gainer.s9}'] },
   { when: { stage: [10] }, text: ['{diary.competitive_gainer.s10}'] },
+  { when: { stage: [11] }, text: ['{diary.competitive_gainer.s11}'] },
   { when: {}, text: ['{diary.competitive_gainer.s5}'] }
 ]);
 
@@ -223,6 +236,18 @@ registerPool('diary.machine_goddess.s10', [
   { when: {}, text: ["{diary.machine_goddess.s10._f9}"] },
 ]);
 
+registerPool('diary.machine_goddess.s11._f10', [
+  { when: {}, text: ["The lab comes to me now — feeder arms within reach, paste warm on the tray, my belly soft against the bench when I lean to calibrate."] },
+]);
+
+registerPool('diary.machine_goddess.s11._f11', [
+  { when: {}, text: [" Devices hum across campus. I hum with them. The inventor and the invention share one appetite."] },
+]);
+
+registerPool('diary.machine_goddess.s11', [
+  { when: {}, text: ["{diary.machine_goddess.s11._f10} {diary.machine_goddess.s11._f11}"] },
+]);
+
 registerPool('diary.machine_goddess', [
   { when: { stage: [5] }, text: ['{diary.machine_goddess.s5}'] },
   { when: { stage: [6] }, text: ['{diary.machine_goddess.s6}'] },
@@ -230,6 +255,7 @@ registerPool('diary.machine_goddess', [
   { when: { stage: [8] }, text: ['{diary.machine_goddess.s8}'] },
   { when: { stage: [9] }, text: ['{diary.machine_goddess.s9}'] },
   { when: { stage: [10] }, text: ['{diary.machine_goddess.s10}'] },
+  { when: { stage: [11] }, text: ['{diary.machine_goddess.s11}'] },
   { when: {}, text: ['{diary.machine_goddess.s5}'] }
 ]);
 
@@ -306,6 +332,18 @@ registerPool('diary.salon_appetit.s10', [
   { when: {}, text: ["{diary.salon_appetit.s10._f11} {diary.salon_appetit.s10._f12}"] },
 ]);
 
+registerPool('diary.salon_appetit.s11._f13', [
+  { when: {}, text: ["The salon no longer fits one room. Guests arrive in shifts; I host from the center, silk and appetite both vast, courses brought to my hands."] },
+]);
+
+registerPool('diary.salon_appetit.s11._f14', [
+  { when: {}, text: [" \"*Encore,*\" I say — to the night, to the semester, to whatever still wants feeding. The digestif never ends. Neither do I."] },
+]);
+
+registerPool('diary.salon_appetit.s11', [
+  { when: {}, text: ["{diary.salon_appetit.s11._f13} {diary.salon_appetit.s11._f14}"] },
+]);
+
 registerPool('diary.salon_appetit', [
   { when: { stage: [5] }, text: ['{diary.salon_appetit.s5}'] },
   { when: { stage: [6] }, text: ['{diary.salon_appetit.s6}'] },
@@ -313,6 +351,7 @@ registerPool('diary.salon_appetit', [
   { when: { stage: [8] }, text: ['{diary.salon_appetit.s8}'] },
   { when: { stage: [9] }, text: ['{diary.salon_appetit.s9}'] },
   { when: { stage: [10] }, text: ['{diary.salon_appetit.s10}'] },
+  { when: { stage: [11] }, text: ['{diary.salon_appetit.s11}'] },
   { when: {}, text: ['{diary.salon_appetit.s5}'] }
 ]);
 
@@ -389,6 +428,18 @@ registerPool('diary.artisan_gallery.s10', [
   { when: {}, text: ["{diary.artisan_gallery.s10._f11} {diary.artisan_gallery.s10._f12}"] },
 ]);
 
+registerPool('diary.artisan_gallery.s11._f13', [
+  { when: {}, text: ["The gallery is wherever I sit now — prints on every wall, my body the living centerpiece, subjects still arriving to be documented and fed."] },
+]);
+
+registerPool('diary.artisan_gallery.s11._f14', [
+  { when: {}, text: [" The wall never stops growing. Neither does the appetite behind the lens."] },
+]);
+
+registerPool('diary.artisan_gallery.s11', [
+  { when: {}, text: ["{diary.artisan_gallery.s11._f13} {diary.artisan_gallery.s11._f14}"] },
+]);
+
 registerPool('diary.artisan_gallery', [
   { when: { stage: [5] }, text: ['{diary.artisan_gallery.s5}'] },
   { when: { stage: [6] }, text: ['{diary.artisan_gallery.s6}'] },
@@ -396,6 +447,7 @@ registerPool('diary.artisan_gallery', [
   { when: { stage: [8] }, text: ['{diary.artisan_gallery.s8}'] },
   { when: { stage: [9] }, text: ['{diary.artisan_gallery.s9}'] },
   { when: { stage: [10] }, text: ['{diary.artisan_gallery.s10}'] },
+  { when: { stage: [11] }, text: ['{diary.artisan_gallery.s11}'] },
   { when: {}, text: ['{diary.artisan_gallery.s5}'] }
 ]);
 
@@ -472,6 +524,18 @@ registerPool('diary.pharmacist.s10', [
   { when: {}, text: ["{diary.pharmacist.s10._f11} {diary.pharmacist.s10._f12}"] },
 ]);
 
+registerPool('diary.pharmacist.s11._f13', [
+  { when: {}, text: ["The lab comes to me. Compounds ship without my standing. My belly rests on the bench when I lean — when I lean at all."] },
+]);
+
+registerPool('diary.pharmacist.s11._f14', [
+  { when: {}, text: [" Campus saturation is complete. I am inside the system I built, larger every week, exactly where the math said I would be."] },
+]);
+
+registerPool('diary.pharmacist.s11', [
+  { when: {}, text: ["{diary.pharmacist.s11._f13} {diary.pharmacist.s11._f14}"] },
+]);
+
 registerPool('diary.pharmacist', [
   { when: { stage: [5] }, text: ['{diary.pharmacist.s5}'] },
   { when: { stage: [6] }, text: ['{diary.pharmacist.s6}'] },
@@ -479,5 +543,6 @@ registerPool('diary.pharmacist', [
   { when: { stage: [8] }, text: ['{diary.pharmacist.s8}'] },
   { when: { stage: [9] }, text: ['{diary.pharmacist.s9}'] },
   { when: { stage: [10] }, text: ['{diary.pharmacist.s10}'] },
+  { when: { stage: [11] }, text: ['{diary.pharmacist.s11}'] },
   { when: {}, text: ['{diary.pharmacist.s5}'] }
 ]);

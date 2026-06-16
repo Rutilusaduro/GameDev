@@ -1,4 +1,5 @@
-import { EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, EVOLVED_ACTIVITY_META, EVOLVED_FORM_META, FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS } from '../gameData/evolvedForms.js';
+import { EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, EVOLVED_ACTIVITY_META, EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
+import { FEEDER_JOURNAL_ARCHETYPES, NADIA_JOURNAL_ARCHETYPES } from '../textEngine/scenes/researchJournal/index.js';
 import { ATMOSPHERE_TIERS, GUEST_TIERS, MENU_TIERS } from '../gameData/chapterHostess.js';
 import { C } from '../styles.js';
 import { LilithPixelArt } from '../components/LilithPixelArt.jsx';
@@ -723,10 +724,10 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                                     <div style={{color:"#c0a0e0",fontSize:13,fontWeight:700}}>{subj.name}</div>
                                     <div style={{color:"#7050a0",fontSize:10}}>{getStage(subj.lbs).label} · {Math.round(subj.lbs)} lbs</div>
                                     <div style={{display:"flex",gap:5,marginTop:6,flexWrap:"wrap"}}>
-                                      {s.researchFocus==='feeder_focus'&&FEEDER_SUBJECT_JOURNALS[subj.archetype]&&(
+                                      {s.researchFocus==='feeder_focus'&&FEEDER_JOURNAL_ARCHETYPES.includes(subj.archetype)&&(
                                         <button style={{...C.smBtn,fontSize:10}} onClick={()=>setSubjectJournalState({subjectId:subj.id,currentPage:getStage(subj.lbs).id})}>📔 Journal</button>
                                       )}
-                                      {NADIA_SUBJECT_JOURNALS[subj.archetype]&&(
+                                      {NADIA_JOURNAL_ARCHETYPES.includes(subj.archetype)&&(
                                         <button style={{...C.smBtn,fontSize:10,background:"#0a0020",border:"1px solid #5030a040"}} onClick={()=>setNadiaNotesState({nadiaId:s.id,subjectId:subj.id,currentPage:-1})}>📓 Notes</button>
                                       )}
                                       <button style={{...C.smBtn,fontSize:10,opacity:0.7}} onClick={()=>{setStudents(prev=>prev.map(x=>x.id===s.id?{...x,researchSubjectId:null}:x));}}>Change</button>

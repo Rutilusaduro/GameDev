@@ -64,10 +64,44 @@ registerPool('intimacy.selectorOverlay', [
   { when: { season: ['winter', 'summer'] }, weight: 2, text: [
     '{intimacy.seasonAmbience} {intimacy.moodTone}',
   ] },
+  { when: { campusFattening: true }, weight: 2, text: [
+    '{intimacy.campusNote} {intimacy.moodTone}',
+  ] },
   { when: {}, text: [
     '{intimacy.moodTone}',
     '{intimacy.seasonAmbience}',
     '{intimacy.relOverlay}',
+    '{intimacy.campusNote}',
+    '{intimacy.relSizeNote}',
     '',
   ] },
+]);
+
+registerPool('intimacy.campusNote', [
+  { when: { campusFattening: true }, weight: 2, text: [
+    'The campus feels indulgent lately — closeness comes easier, restraint thinner.',
+    'Something in the air encourages appetite; she surrenders to touch and heat.',
+  ] },
+  { when: {}, text: [''] },
+]);
+
+registerPool('intimacy.relSizeNote', [
+  { when: { relSize: ['muchLarger', 'larger'] }, weight: 2, text: [
+    'Your size frames the moment — she presses into you like shelter.',
+    'She notices how much of you there is to hold onto.',
+  ] },
+  { when: { relSize: ['smaller', 'muchSmaller'] }, weight: 2, text: [
+    'She takes up the space between you — soft, heavy, unmistakable.',
+  ] },
+  { when: {}, text: [''] },
+]);
+
+registerPool('intimacy.skillNote', [
+  { when: { skill: ['mesmerizing_aura'] }, weight: 2, text: [
+    'She follows your lead without thinking — your suggestion becomes her want.',
+  ] },
+  { when: { skill: ['growth_hunger', 'endless_hunger'] }, weight: 2, text: [
+    'Hunger and heat braid together under your influence.',
+  ] },
+  { when: {}, text: [''] },
 ]);
