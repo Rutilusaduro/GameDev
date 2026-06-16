@@ -7,7 +7,7 @@ import { FlaggedProse } from './TextFlagToolbar.jsx';
 
 export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversationChoice, makeWifeLessonsSubChoice, dismissWifeLessonsConversation, chooseWifeLessonsLesson, startWifeLessonsConversation, closeWifeLessonsSession }){
         const{stage,daughters,moms,session}=wifeLessonsState;
-        const{lessonChosen,mjGainAccum,relAccum,conversationState,log}=session;
+        const{lessonChosen,lessonId,mjGainAccum,relAccum,conversationState,log}=session;
 
         const WINE_BG="#0e0508";
         const WINE_DIM="#5a2040";
@@ -17,6 +17,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
         const cap=WL_CONFIG.stageCaps[stage];
         const isDaughterStage=stage>=WL_CONFIG.daughtersFrom;
         const lessons=WL_LESSONS[stage]||[];
+        const chosenLesson=lessonId?lessons.find(l=>l.id===lessonId):null;
 
         // ── Conversation panel ──
         if(conversationState){
@@ -103,8 +104,18 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                   </div>
                 </div>
               ):(
-                <div style={{marginBottom:14,padding:"8px 12px",background:"rgba(139,34,82,0.08)",border:`1px solid ${WINE_DIM}30`,borderRadius:5}}>
-                  <div style={{fontSize:9,color:WINE_SUBTLE}}>Lesson done · You +{mjGainAccum} lbs this session · +{relAccum} rel</div>
+                <div style={{marginBottom:14}}>
+                  <div style={{padding:"8px 12px",background:"rgba(139,34,82,0.08)",border:`1px solid ${WINE_DIM}30`,borderRadius:5,marginBottom:chosenLesson?.text?10:0}}>
+                    <div style={{fontSize:9,color:WINE_SUBTLE}}>Lesson done · You +{mjGainAccum} lbs this session · +{relAccum} rel</div>
+                  </div>
+                  {chosenLesson?.text&&(
+                    <FlaggedProse
+                      section={`wifeLessons.lesson.${chosenLesson.id}`}
+                      text={chosenLesson.text}
+                      stateLine={`Stage ${stage} · ${chosenLesson.label}`}
+                      style={{fontSize:12,color:WINE_TEXT,lineHeight:1.75,padding:"10px 12px",background:"rgba(139,34,82,0.06)",border:`1px solid ${WINE_DIM}30`,borderRadius:5}}
+                    />
+                  )}
                 </div>
               )}
 
