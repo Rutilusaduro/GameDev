@@ -234,6 +234,7 @@ import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, ap
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
 import {
   getSessionCapacityCap,
+  getFeedCapacity,
   getFullnessPercent,
   getDinnerFullnessGroup,
   rollOverfillEndChance,
@@ -1030,7 +1031,11 @@ export default function ProfessorSim(){
     }
     const eff=aggregateSkillEffects(ownedSkills);
     const stageId=getStage(s.lbs).id;
-    const cap=(s.stomachCapacity||GAIN_CONFIG.baseCapacity)+softStartBonus(ownedSkills,stageId);
+    const cap=getFeedCapacity(s,{
+      softStartBonus:softStartBonus(ownedSkills,stageId),
+      capacityBonus:opts.capacityBonus||0,
+      toleranceBuffer:opts.toleranceBuffer||0,
+    });
     let fullMult=1;
     if(opts.compoundId){
       const preview=applyCompoundToFeed(s,opts.compoundId,{},pharmacistState);
@@ -5750,7 +5755,7 @@ export default function ProfessorSim(){
       push(`✅ Dinner with ${s.name} complete. +${totalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(totalGain))} lbs once digested) · +${relBonus} relationship.`);
       setStudents(prev=>prev.map(st=>{
         if(st.id!==s.id) return st;
-        return {...st,relationship:Math.min(100,st.relationship+relBonus),...(textPatch||{})};
+        return {...st,relationship:Math.max(0,Math.min(100,st.relationship+relBonus)),...(textPatch||{})};
       }));
       const evs=collectEvents([s]);
       if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
@@ -5822,7 +5827,8 @@ export default function ProfessorSim(){
     const gain=rnd(dish.gain[0],dish.gain[1]);
     const calories=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
     const fullnessCost=dish.fullness||15;
-    const cap=s.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const stageId=getStage(s.lbs).id;
+    const cap=getFeedCapacity(s,{softStartBonus:softStartBonus(ownedSkills,stageId)});
     const prevFullness=s.fullness||0;
     const fed=feedStudentCalories(s,calories,fullnessCost,0,dish.label);
     if(!fed){
@@ -5870,7 +5876,8 @@ export default function ProfessorSim(){
     const item=ITEMS.find(i=>i.id===itemId);
     if(!item) return;
     const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
-    const cap=s.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const stageId=getStage(s.lbs).id;
+    const cap=getFeedCapacity(s,{softStartBonus:softStartBonus(ownedSkills,stageId)});
     const prevFullness=s.fullness||0;
     const fed=feedStudentCalories(s,item.cal,item.full,2,item.label);
     if(!fed){
@@ -5920,7 +5927,8 @@ export default function ProfessorSim(){
       setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+(conv.relBonus||0))}));
     }
     const newFullness=fed.fullness||0;
-    const cap=fed.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const stageId=getStage(fed.lbs).id;
+    const cap=getFeedCapacity(fed,{softStartBonus:softStartBonus(ownedSkills,stageId)});
     const sessionCals=getSessionCaloriesFed(fed,dinnerEvent.sessionStartCalories||0);
     setDinnerLog(dl=>[...dl,`💬 ${convText}${scaledBonus>0?` (+${scaledBonus.toLocaleString()} cal)`:""}`]);
     push(`💬 Dinner conversation: ${conv.label}`);
@@ -5929,16 +5937,15 @@ export default function ProfessorSim(){
     if(newOffense>=6){
       setTimeout(()=>{
         setDinnerLog(dl=>[...dl,`😤 ${s.name} sets her napkin down. "I think I should head home." She leaves.`]);
-        push(`💔 Dinner ended — ${s.name} left. Relationship -15.`);
-        setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.max(0,st.relationship-15)}));
-        setAp(a=>a-2); setDinnerEvent(null);
+        triggerDinnerEnd(fed,newFullness,cap,sessionCals,-15);
       },800);
     }
   };
 
   const endEvening=()=>{
     const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
-    const cap=s.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const stageId=getStage(s.lbs).id;
+    const cap=getFeedCapacity(s,{softStartBonus:softStartBonus(ownedSkills,stageId)});
     const sessionCals=getSessionCaloriesFed(s,dinnerEvent.sessionStartCalories||0);
     triggerDinnerEnd(s,s.fullness||0,cap,sessionCals,9);
   };
@@ -5949,12 +5956,14 @@ export default function ProfessorSim(){
     if(immobile){push(`⚠️ ${immobile.name} can't leave her location. Visit her individually to bring food.`);return;}
     const apCost=studentList.length>=3?3:3;
     if(ap<apCost){push(`⚠️ Need ${apCost} AP for a group dinner.`);return;}
-    const gStudents=studentList.map(s=>({
-      id:s.id, dishes:[], totalGain:0, sessionStartCalories:s.consumedCalories||0,
-    }));
-    setGroupDinnerEvent({ students:gStudents, phase:"venue", venue:null, conversationUsed:[], reactionLevels:{} });
-    setGroupDinnerLog([]);
-    addScrutiny(5);
+    guardHungerInterrupt(()=>{
+      const gStudents=studentList.map(s=>({
+        id:s.id, dishes:[], totalGain:0, sessionStartCalories:s.consumedCalories||0,
+      }));
+      setGroupDinnerEvent({ students:gStudents, phase:"venue", venue:null, conversationUsed:[], reactionLevels:{} });
+      setGroupDinnerLog([]);
+      addScrutiny(5);
+    });
   };
 
   const chooseGroupVenue=(venue)=>{
@@ -5971,7 +5980,8 @@ export default function ProfessorSim(){
     if(!live) return;
     const gain=rnd(dish.gain[0],dish.gain[1]);
     const calories=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(live.gainMultiplier||1));
-    const cap=live.stomachCapacity||GAIN_CONFIG.baseCapacity;
+    const stageId=getStage(live.lbs).id;
+    const cap=getFeedCapacity(live,{softStartBonus:softStartBonus(ownedSkills,stageId)});
     const prevFullness=live.fullness||0;
     const fed=feedStudentCalories(live,calories,dish.fullness||15,0,dish.label);
     if(!fed){
@@ -6151,16 +6161,21 @@ export default function ProfessorSim(){
 
   const feedInSession=(food)=>{
     const s=students.find(st=>st.id===privateSession.student.id)||privateSession.student;
+    const stageId=getStage(s.lbs).id;
+    const capOpts={
+      softStartBonus:softStartBonus(ownedSkills,stageId),
+      capacityBonus:privateSession.capacityBonus||0,
+      toleranceBuffer:privateSession.toleranceBuffer||0,
+    };
     const gain=rnd(food.gain[0],food.gain[1]);
     const calories=Math.round(gain*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
-    const fed=feedStudentCalories(s,calories,food.fullness,0,food.label);
+    const fed=feedStudentCalories(s,calories,food.fullness,0,food.label,capOpts);
     if(!fed){
       setSessionLog(sl=>[...sl,`🚫 ${s.name} refuses ${food.label}.`]);
       return;
     }
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
     const scaledGain=calories;
-    const capOpts={capacityBonus:privateSession.capacityBonus||0,toleranceBuffer:privateSession.toleranceBuffer||0};
     const fPct=getFullnessPercent(fed,capOpts);
     const fsStage=getFullnessStage(fPct);
     const desc=renderSessionFullness(fed, Math.min(fsStage.id, 5), week);
@@ -6186,8 +6201,7 @@ export default function ProfessorSim(){
       setAp(a=>a-2);
       addScrutiny(2);
       setSessionHistory(prev=>({...prev,[s.id]:{count:hist2.count+1,totalGain:hist2.totalGain+currentTotalGain,capacityBonus:newCapBonus2}}));
-      const cap=getSessionCapacityCap(liveS,capOpts);
-      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4),fullness:Math.max(st.fullness||0,Math.round(cap*Math.min(2.5,fPct/100)))}));
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4)}));
       push(`⛔ ${s.name} taps out! Session ended — ${currentTotalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(currentTotalGain))} lbs once digested).`);
       setPrivateSession(null);
       setTapOutPopup({student:liveS,text:tapLine,totalGain:currentTotalGain});
@@ -6223,21 +6237,29 @@ export default function ProfessorSim(){
   const useSessionEncouragement=(enc)=>{
     if(!privateSession||privateSession.encouragementsUsed.includes(enc.id)) return;
     const s=students.find(st=>st.id===privateSession.student.id)||privateSession.student;
-    const capOpts={capacityBonus:privateSession.capacityBonus||0,toleranceBuffer:privateSession.toleranceBuffer||0};
+    const stageId=getStage(s.lbs).id;
+    const capOpts={
+      softStartBonus:softStartBonus(ownedSkills,stageId),
+      capacityBonus:privateSession.capacityBonus||0,
+      toleranceBuffer:privateSession.toleranceBuffer||0,
+    };
     const fPct=getFullnessPercent(s,capOpts);
     const lbsBonus=enc.lbsBonus?rnd(enc.lbsBonus[0],enc.lbsBonus[1]):0;
     const encLine=enc.line(s,fPct);
     push(`💬 ${encLine}`);
     setSessionLog(sl=>[...sl,`💬 ${encLine}`]);
+    let fed=s;
     if(lbsBonus>0){
       const bonusCals=lbsBonus*GAIN_CONFIG.calsPerLb;
-      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,consumedCalories:(st.consumedCalories||0)+bonusCals}));
+      const bonusFed=feedStudentCalories(s,bonusCals,0,enc.relBonus,enc.label,capOpts);
+      if(bonusFed) fed=bonusFed;
+    } else {
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+enc.relBonus)}));
     }
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+enc.relBonus)}));
-    const sessionCals=getSessionCaloriesFed(
-      students.find(st=>st.id===s.id)||s,
-      privateSession.sessionStartCalories||0,
-    );
+    if(lbsBonus>0&&fed!==s){
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
+    }
+    const sessionCals=getSessionCaloriesFed(fed,privateSession.sessionStartCalories||0);
     setPrivateSession(prev=>({
       ...prev,
       encouragementsUsed:[...prev.encouragementsUsed,enc.id],
@@ -6248,7 +6270,12 @@ export default function ProfessorSim(){
 
   const endPrivateSession=()=>{
     const s=students.find(st=>st.id===privateSession.student.id)||privateSession.student;
-    const capOpts={capacityBonus:privateSession.capacityBonus||0,toleranceBuffer:privateSession.toleranceBuffer||0};
+    const stageId=getStage(s.lbs).id;
+    const capOpts={
+      softStartBonus:softStartBonus(ownedSkills,stageId),
+      capacityBonus:privateSession.capacityBonus||0,
+      toleranceBuffer:privateSession.toleranceBuffer||0,
+    };
     const fPct=getFullnessPercent(s,capOpts);
     guardHungerInterrupt(()=>{
     setAp(a=>a-2);
@@ -6257,8 +6284,7 @@ export default function ProfessorSim(){
     const newCapBonus=hist.capacityBonus+8;
     const sessionCals=getSessionCaloriesFed(s,privateSession.sessionStartCalories||0);
     setSessionHistory(prev=>({...prev,[s.id]:{count:hist.count+1,totalGain:hist.totalGain+sessionCals,capacityBonus:newCapBonus}}));
-    const cap=getSessionCapacityCap(s,capOpts);
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4),fullness:Math.max(st.fullness||0,Math.round(cap*Math.min(2.5,fPct/100)))}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+4)}));
     const scene=renderSessionAftermath(s, fPct, week);
     push(`✅ Session with ${s.name} complete. ${sessionCals.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(sessionCals))} lbs once digested) · session capacity expanded (+8).`);
     setSessionResult({student:s,totalGain:sessionCals,fullnessPct:fPct,scene,sessionCount:hist.count+1,capacityBonus:newCapBonus});
@@ -6525,8 +6551,9 @@ export default function ProfessorSim(){
       {dinnerEvent&&(()=>{
         const ds=students.find(s=>s.id===dinnerEvent.student.id)||dinnerEvent.student;
         const stId=getStage(ds.lbs).id;
-        const cap=ds.stomachCapacity||GAIN_CONFIG.baseCapacity;
-        const rawPct=getFullnessPercent(ds);
+        const feedCapOpts={softStartBonus:softStartBonus(ownedSkills,stId)};
+        const cap=getFeedCapacity(ds,feedCapOpts);
+        const rawPct=getFullnessPercent(ds,feedCapOpts);
         const fullnessPct=rawPct;
         const fullnessColor=rawPct>=130?"#801010":rawPct>=100?"#c02020":rawPct>=80?"#c08020":"#20a060";
         const isOverfull=rawPct>100;
@@ -6800,7 +6827,8 @@ export default function ProfessorSim(){
                 {gev.students.map(gs=>{
                   const live=students.find(st=>st.id===gs.id);
                   if(!live) return null;
-                  const rawP=getFullnessPercent(live);
+                  const gStageId=getStage(live.lbs).id;
+                  const rawP=getFullnessPercent(live,{softStartBonus:softStartBonus(ownedSkills,gStageId)});
                   const col=rawP>=130?"#801010":rawP>=100?"#c02020":rawP>=80?"#c08020":"#20a060";
                   return(
                     <div key={gs.id} style={{flex:1,minWidth:120}}>

@@ -6,10 +6,22 @@ import { GAIN_CONFIG } from './gainSystem.js';
 import { getHungerTier, getAddictionLevel } from './hungerAddiction.js';
 import { getCorruptionTier } from './corruption.js';
 
+/**
+ * Unified feed capacity — stomach + skill soft-start + optional session bonuses.
+ * Use everywhere refusal, UI %, and overfill checks must agree (DEPTH_PLAN §8).
+ */
+export function getFeedCapacity(student, {
+  softStartBonus = 0,
+  capacityBonus = 0,
+  toleranceBuffer = 0,
+} = {}) {
+  const base = student?.stomachCapacity || GAIN_CONFIG.baseCapacity;
+  return base + softStartBonus + capacityBonus + toleranceBuffer;
+}
+
 /** Effective stomach cap during a venue session (optional session bonuses). */
-export function getSessionCapacityCap(student, { capacityBonus = 0, toleranceBuffer = 0 } = {}) {
-  const cap = student?.stomachCapacity || GAIN_CONFIG.baseCapacity;
-  return cap + capacityBonus + toleranceBuffer;
+export function getSessionCapacityCap(student, opts = {}) {
+  return getFeedCapacity(student, opts);
 }
 
 /** Fullness as % of effective cap (100 = at capacity, 130 = 30% over). */

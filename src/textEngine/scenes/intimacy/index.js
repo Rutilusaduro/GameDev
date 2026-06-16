@@ -6,6 +6,7 @@ import './fragments.js';
 import './skeletons.js';
 import './depth.js';
 import './selectors.js';
+import './personas.js';
 
 function composeOverlay(main, overlay) {
   const a = main?.trim() || '';

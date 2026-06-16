@@ -4,6 +4,7 @@
 import { registerPool, render, createContext } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { DINNER_END_OPEN, DINNER_END_CLOSE } from './dinnerEndingData.js';
+import { getDinnerFullnessGroup } from '../../../gameData/feedingSession.js';
 import './selectors.js';
 
 function bandVariants(chunks) {
@@ -37,9 +38,12 @@ export function renderDinnerEnding(student, finalFullness, cap, week = 1, opts =
   const ctx = opts.trace != null || opts.globals
     ? buildTextContext({ subject: proxy, week, ...opts })
     : createContext({ subject: proxy, week });
-  const main = render('{dinner.ending}', ctx, { trace: opts.trace || null })?.trim()
+  const line = render('{dinner.ending}', ctx, { trace: opts.trace || null })?.trim()
     || `${student.name} finishes the evening full and content.`;
+  const band = getDinnerFullnessGroup(finalFullness, cap || student.stomachCapacity || 1);
   const overlay = render('{dinner.selectorOverlay}', ctx, { trace: opts.trace || null })?.trim() || '';
-  if (main && overlay) return `${main} ${overlay}`;
-  return main || overlay;
+  const bandNote = band >= 2 ? ` She is gloriously, unmistakably full.` : '';
+  if (line && overlay) return `${line}${bandNote} ${overlay}`;
+  if (line) return `${line}${bandNote}`;
+  return overlay;
 }

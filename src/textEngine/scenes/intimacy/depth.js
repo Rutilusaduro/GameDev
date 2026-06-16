@@ -76,6 +76,22 @@ registerPool('intimacy.resistance', [
   { when: {}, text: [''] },
 ]);
 
+registerPool('intimacy.encourages', [
+  { when: { corruption: [2], relationship: [3, 4] }, weight: 2, text: [
+    '"More," she breathes — wanting, unashamed.',
+    'She pulls you closer without asking.',
+  ] },
+  { when: { corruption: [1] }, text: [
+    '"Don\'t stop," she whispers — half plea, half permission.',
+    'Encouragement arrives quiet and certain.',
+  ] },
+  { when: {}, text: [
+    '"Yes," she says softly. "Like that."',
+    'She meets your touch with open want.',
+    '',
+  ] },
+]);
+
 registerPool('intimacy.psychVoice', [
   { when: { corruption: [0] }, weight: 2, text: [
     'Her voice wavers — {word.psychVoice}.',
@@ -113,10 +129,10 @@ registerPool('intimacy.climax', [
 
 registerPool('intimacy.depth', [
   { when: { corruption: [0] }, weight: 2, text: [
-    '{intimacy.approach} {intimacy.bodyFeel} {intimacy.resistance} {intimacy.psychVoice}',
+    '{intimacy.approach} {intimacy.bodyFeel} {intimacy.resistance} {intimacy.encourages} {intimacy.psychVoice}',
   ] },
   { when: {}, text: [
-    '{intimacy.approach} {intimacy.bodyFeel} {intimacy.psychVoice} {intimacy.climax}',
+    '{intimacy.approach} {intimacy.bodyFeel} {intimacy.encourages} {intimacy.psychVoice} {intimacy.climax}',
     '{intimacy.approach} {intimacy.bodyFeel} {intimacy.climax}',
   ] },
 ]);
