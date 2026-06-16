@@ -67,6 +67,15 @@ export const STRICT_VOLUME_MAX_THIN = 0;
 /** --strict-coverage: fail when overall band coverage falls below this percent. */
 export const STRICT_COVERAGE_MIN_PCT = 80;
 
+// Programmatically registered monolithic vignettes — decomposition deferred (DEPTH_PLAN §9d).
+export const MIGRATION_BRIDGE_PREFIXES = [
+  'cultivator.harvest.',
+  'cultivator.digest.',
+  'cultivator.growth.',
+  'cultivator.stageUp.',
+  'cultivator.recruitment',
+];
+
 // Squad-owned namespaces for --volume reporting (Step 9 content targets).
 export const VOLUME_SQUAD_PREFIXES = [
   'slender.', 'campus.', 'eat.', 'cloth.', 'shift.', 'interior.', 'immob.',

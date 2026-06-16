@@ -30,7 +30,7 @@ import { getExplorationFind } from './gameData/campusIngredients.js';
 import { availableSecretsAtNode } from './gameData/campusSecrets.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
-import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
+import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getStageUpText, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
 import { renderHuntNode, renderHuntTarget } from './textEngine/scenes/hunt/index.js';
 import { renderCampusEventBeat } from './textEngine/scenes/campusEvent/index.js';
@@ -3266,7 +3266,7 @@ export default function ProfessorSim(){
     }
     // Normal session close — stage-up or continue
     if(stageUp){
-      const stageText=STAGE_UP_TEXT[nextStageId]?.(cs.testerName)||'The subject has grown.';
+      const stageText=getStageUpText(nextStageId,cs.testerName)||'The subject has grown.';
       setCultivatorState(prev=>({...prev,testerStageId:nextStageId,testerLbs:nextTesterLbs,fatBar:finalFatBar,suspicion:finalSusp,session:null,pendingStageUp:false,stageUpText:stageText,modalPhase:'stage_up'}));
       push(`🍰 ${cs.testerName} advanced to ${getStage(nextTesterLbs).label} — suspicion reset.`);
     } else {
