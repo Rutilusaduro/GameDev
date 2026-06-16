@@ -30,7 +30,7 @@ The Squad is the seven-agent team for the Near-Infinite Narrative Engine. **Do n
 | `neutral` | corruption 0, low shame & fixation | Genuinely unfussed; number as fact |
 | `acclimating` | corruption 1+ | **A2 Psych** — A6 pools gate out |
 
-**Expansion targets:** ~~Per-girl early persona lines (`earlyGain/personas.js`)~~ ✅ · mirror/weigh-in embeds · dining-hall first-month beats · Dialogue Lab `slender.*` sections ✅ · **Step 9 volume floors** (`slender.*` wildcards + all-girl `eatPause`/`deflect`/`neutral`/`secret`) ✅
+**Expansion targets:** ~~Per-girl early persona lines (`earlyGain/personas.js`)~~ ✅ · mirror/weigh-in embeds · ~~dining-hall first-month beats~~ ✅ · ~~digest slender body beats~~ ✅ · Dialogue Lab `slender.*` sections ✅ · **Step 9 volume floors** (`slender.*` wildcards + all-girl `eatPause`/`deflect`/`neutral`/`secret`) ✅
 
 **Hard rules:** No medical decline, no real distress pathology, no shame spirals that read as self-harm. Resistance is erotic tension, not cruelty. Characters are always adults.
 

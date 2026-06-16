@@ -69,6 +69,8 @@ import './textEngine/scenes/opposition/endgameBeat.js';
 import './textEngine/scenes/corruptionVoice.js';
 import { renderEatScene } from './textEngine/scenes/eating/index.js';
 import './textEngine/scenes/eating/index.js';
+import { renderSlenderScene, renderSlenderEatBeat } from './textEngine/scenes/earlyGain/index.js';
+import './textEngine/scenes/earlyGain/index.js';
 import { renderPsychShift } from './textEngine/scenes/psychShift/index.js';
 import './textEngine/scenes/psychShift/index.js';
 import { renderClothScene } from './textEngine/scenes/clothing/index.js';
@@ -77,7 +79,7 @@ import { renderImmobScene } from './textEngine/scenes/immobility/index.js';
 import './textEngine/scenes/immobility/index.js';
 import {
   corruptionStudentPatch, clearWeeklyTextFlags, dinnerVenueToLocale, clothingStateForStage,
-  createSessionUsed, weekUsedFromStudent, weekUsedToPatch,
+  createSessionUsed, weekUsedFromStudent, weekUsedToPatch, isSlenderEligible,
 } from './gameData/textContext.js';
 import {
   aggregateSkillEffects, computeSpentSkillPoints, isTreeTierUnlocked, tickPhysicalTraits,
@@ -1432,6 +1434,10 @@ export default function ProfessorSim(){
       const capacityGained=d.capacityGained+(growth.stomachCapacity-(ns.stomachCapacity||GAIN_CONFIG.baseCapacity));
       if(d.lbsGained>0||capacityGained>0){
         digestLines.push(`${ns.name} +${d.lbsGained} lbs${d.stuffed?" · stuffed all week":""}${capacityGained>0?` · capacity +${capacityGained}`:""}`);
+      }
+      if(d.lbsGained>0&&isSlenderEligible(ns)){
+        const slenderLine=renderSlenderScene(ns,week,{weekGainLbs:d.lbsGained,...textOpts});
+        if(slenderLine) setTimeout(()=>push(`✨ ${slenderLine}`),220);
       }
       let corruption=ns.corruption||0;
       if(d.stuffed){
@@ -3940,7 +3946,9 @@ export default function ProfessorSim(){
     if(action==='feed'){
       const fed=feedStudentCalories(ns,8000,35,6,'Emergency feeding');
       if(fed) ns=fed;
-      const eatLine=renderEatScene(fed||ns,week,{mealType:'binge'});
+      const eatLine=isSlenderEligible(fed||ns)
+        ?renderSlenderEatBeat(fed||ns,week,{mealType:'binge'})
+        :renderEatScene(fed||ns,week,{mealType:'binge'});
       if(eatLine) setTimeout(()=>push(`🍽️ ${eatLine}`),70);
       setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'feed',week)}`),100);
     }else if(action==='compound'){
@@ -5816,12 +5824,15 @@ export default function ProfessorSim(){
     const newFullness=fed.fullness||0;
     const sessionCals=getSessionCaloriesFed(fed,dinnerEvent.sessionStartCalories||0);
     const newDishes=[...(dinnerEvent.dishes||[]),dish.id];
-    const eatLine=renderEatScene(fed,week,{
+    const eatOpts={
       mealType:'campus_meal',
       locale:dinnerVenueToLocale(dinnerEvent.venue?.id),
       sessionUsed:dinnerEvent.textSession?.sessionUsed,
       weekUsed:dinnerEvent.textSession?.weekUsed,
-    });
+    };
+    const eatLine=isSlenderEligible(fed)
+      ?renderSlenderEatBeat(fed,week,eatOpts)
+      :renderEatScene(fed,week,eatOpts);
     push(`🍴 ${s.name}: ${dish.label} (+${calories.toLocaleString()} cal)`);
     if(newFullness>cap){
       const endChance=rollOverfillEndChance(newFullness,cap);

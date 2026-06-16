@@ -140,6 +140,14 @@ export function clothingStateForStage(stageId) {
   return 'fitted';
 }
 
+/** Stages 0–4 and corruption tier 0 — earlyGain / slender scene eligibility. */
+export function isSlenderEligible(student) {
+  if (!student) return false;
+  const stageId = getStage(student.lbs ?? 0).id;
+  const corruptionId = getCorruptionTier(student.corruption ?? 0).id;
+  return stageId <= 4 && corruptionId === 0;
+}
+
 /** Clear per-week text flags when advancing the calendar. */
 export function clearWeeklyTextFlags(student, endingWeek) {
   const patch = { weekStartLbs: student.lbs, textUsedKeys: [] };
