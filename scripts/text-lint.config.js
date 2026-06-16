@@ -28,6 +28,32 @@ export const STAGE_COVERAGE_PREFIXES = [
   'wi.', 'eat.', 'cloth.', 'campus.', 'immob.', 'slender.', 'word.moveVerb', 'word.adv.',
 ];
 
+/** Squad stage bands for --coverage dashboard (Step 12). */
+export const COVERAGE_BANDS = [
+  {
+    id: 'early',
+    label: 'Early (A6 Slender)',
+    stages: [0, 1, 2, 3, 4],
+    corruption: [0],
+    prefixes: ['slender.', 'wi.'],
+  },
+  {
+    id: 'mobile',
+    label: 'Mobile (A1)',
+    stages: [5, 6, 7, 8, 9],
+    prefixes: ['campus.', 'cloth.', 'eat.', 'wi.'],
+  },
+  {
+    id: 'vast',
+    label: 'Vast (A3 Immobility)',
+    stages: [8, 9, 10, 11],
+    prefixes: ['immob.', 'wi.', 'eat.', 'cloth.', 'word.moveVerb'],
+  },
+];
+
+/** Corruption tiers probed for psych-heavy namespaces in --coverage. */
+export const COVERAGE_CORRUPTION_PROBES = [0, 1, 2];
+
 // Squad-owned namespaces for --volume reporting (Step 9 content targets).
 export const VOLUME_SQUAD_PREFIXES = [
   'slender.', 'campus.', 'eat.', 'cloth.', 'shift.', 'interior.', 'immob.',

@@ -24,7 +24,7 @@ import {
   WI_INTRO_LEGACY,
 } from '../textEngine/scenes/weighIn/index.js';
 import { renderEatScene } from '../textEngine/scenes/eating/index.js';
-import { renderSlenderScene, renderSlenderEatBeat } from '../textEngine/scenes/earlyGain/index.js';
+import { renderSlenderScene, renderSlenderEatBeat, renderSlenderMirrorBeat } from '../textEngine/scenes/earlyGain/index.js';
 import { renderPsychShift } from '../textEngine/scenes/psychShift/index.js';
 import { renderClothScene } from '../textEngine/scenes/clothing/index.js';
 import { renderCampusScene } from '../textEngine/scenes/campus/index.js';
@@ -161,6 +161,8 @@ const SECTIONS = {
     fn: (s, opts) => renderSlenderScene(s, 6, { trace: opts.trace, weekGainLbs: 3 }) },
   "slender.eat": { params: [...STATE_PARAMS, "gainStance"], stageMax: 4, corruptionMax: 0,
     fn: (s, opts) => renderSlenderEatBeat(s, 6, { trace: opts.trace }) },
+  "slender.mirror": { params: [...STATE_PARAMS, "gainStance"], stageMax: 4, corruptionMax: 0,
+    fn: (s, opts) => renderSlenderMirrorBeat(s, 6, { trace: opts.trace, weekGainLbs: 2 }) },
   "campus.scene": { params: [...STATE_PARAMS, "locale"],
     fn: (s, opts) => renderCampusScene(s, 6, { locale: opts.locale, trace: opts.trace }) },
   "cloth.scene": { params: [...STATE_PARAMS, "clothingState"],

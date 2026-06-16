@@ -3,6 +3,7 @@
 // Run: npm run text:lint
 //      npm run text:lint -- --sample=500 --scene=wi
 //      npm run text:lint -- --coverage
+//      npm run text:lint -- --coverage=slender.
 //      npm run text:lint -- --volume
 //      npm run text:lint -- --volume=slender.
 // See src/textEngine/AUTHORING.md for the rules this enforces.
@@ -20,6 +21,7 @@ import { renderGrowthScene } from '../src/textEngine/scenes/growthEvent/index.js
 import {
   BANNED_PATTERNS, SAMPLE_SCENES, COVERAGE_STAGE_PROBES, STAGE_COVERAGE_PREFIXES,
   VOLUME_SQUAD_PREFIXES, OPTIONAL_EMPTY_POOLS,
+  COVERAGE_BANDS, COVERAGE_CORRUPTION_PROBES,
 } from './text-lint.config.js';
 
 const CLI_ARGS = process.argv.slice(2);
@@ -28,6 +30,8 @@ const sceneArg = CLI_ARGS.find((a) => a.startsWith('--scene='));
 const SAMPLE_COUNT = sampleArg ? parseInt(sampleArg.split('=')[1], 10) : 0;
 const SAMPLE_SCENE = sceneArg ? sceneArg.split('=')[1] : 'wi';
 const RUN_COVERAGE = CLI_ARGS.includes('--coverage');
+const coveragePrefixArg = CLI_ARGS.find((a) => a.startsWith('--coverage='));
+const COVERAGE_PREFIX_FILTER = coveragePrefixArg ? coveragePrefixArg.split('=')[1] : null;
 const RUN_VOLUME = CLI_ARGS.includes('--volume');
 const volumePrefixArg = CLI_ARGS.find((a) => a.startsWith('--volume='));
 const VOLUME_PREFIX_FILTER = volumePrefixArg ? volumePrefixArg.split('=')[1] : null;
@@ -125,6 +129,7 @@ const SWEEPS = [
   { name: 'cloth.scene', root: 'cloth.scene', tpl: '{cloth.scene}' },
   { name: 'immob.scene', root: 'immob.scene', tpl: '{immob.scene}' },
   { name: 'slender.scene', root: 'slender.scene', tpl: '{slender.scene}', corruptionTier: [0], stageMax: 4 },
+  { name: 'slender.mirror', root: 'slender.mirror', tpl: '{slender.mirror} {slender.mindFeel}', corruptionTier: [0], stageMax: 4 },
 ];
 
 const STAGE_PROBES = [0, 2, 4, 6, 8, 10, 11];
@@ -500,31 +505,101 @@ if (RUN_VOLUME) {
   }
 }
 
-// ── stage coverage report ─────────────────────────────────────
+// ── stage coverage report (Step 12 — squad band dashboard) ────
+
+function variantCoversStage(variant, stage) {
+  const w = variant.when || {};
+  if (!w.stageMin && !w.stageMax && w.stage == null) return false;
+  const min = w.stageMin ?? 0;
+  const max = w.stageMax ?? 11;
+  if (w.stage != null) {
+    return Array.isArray(w.stage) ? w.stage.includes(stage) : w.stage === stage;
+  }
+  return stage >= min && stage <= max;
+}
+
+function variantCoversCorruption(variant, corTier) {
+  const w = variant.when || {};
+  if (w.corruption == null) return true;
+  const tiers = Array.isArray(w.corruption) ? w.corruption : [w.corruption];
+  return tiers.includes(corTier);
+}
+
+function poolHasStageCoverage(variants, stage, corTier = null) {
+  return variants.some((v) => {
+    if (!variantCoversStage(v, stage)) return false;
+    if (corTier != null && !variantCoversCorruption(v, corTier)) return false;
+    return true;
+  });
+}
 
 if (RUN_COVERAGE) {
-  const stageIds = COVERAGE_STAGE_PROBES;
+  const bands = COVERAGE_BANDS.map((band) => ({
+    ...band,
+    prefixes: COVERAGE_PREFIX_FILTER
+      ? band.prefixes.filter((p) => p.startsWith(COVERAGE_PREFIX_FILTER) || p === COVERAGE_PREFIX_FILTER)
+      : band.prefixes,
+  })).filter((band) => band.prefixes.length > 0);
+
   const relevant = entries.filter(([key]) =>
-    STAGE_COVERAGE_PREFIXES.some((p) => key.startsWith(p))
+    STAGE_COVERAGE_PREFIXES.some((p) => key.startsWith(p)) && _moduleOpts(key).select === 'pool',
   );
-  const gaps = [];
+
+  console.log(`\nCoverage dashboard (squad stage bands — pool × stage matrix)`);
+  if (COVERAGE_PREFIX_FILTER) console.log(`Filter: ${COVERAGE_PREFIX_FILTER}`);
+  console.log(`Pools scanned: ${relevant.length}`);
+
+  let totalCells = 0;
+  let totalGaps = 0;
+  const allGaps = [];
+
+  for (const band of bands) {
+    const bandPools = relevant.filter(([key]) => band.prefixes.some((p) => key.startsWith(p)));
+    const corProbes = band.corruption ?? COVERAGE_CORRUPTION_PROBES;
+    const gaps = [];
+    let cells = 0;
+
+    for (const [key, variants] of bandPools) {
+      const needsCorruption = key.startsWith('shift.') || key.startsWith('interior.')
+        || key.includes('corruption') || key.startsWith('psych');
+      const corruptionPasses = needsCorruption ? corProbes : [null];
+
+      for (const stage of band.stages) {
+        for (const corTier of corruptionPasses) {
+          cells++;
+          totalCells++;
+          const covered = poolHasStageCoverage(variants, stage, corTier);
+          if (!covered) {
+            const label = corTier != null ? `${key}@stage${stage}/cor${corTier}` : `${key}@stage${stage}`;
+            gaps.push(label);
+            allGaps.push({ band: band.id, label });
+            totalGaps++;
+          }
+        }
+      }
+    }
+
+    const covered = cells - gaps.length;
+    const pct = cells ? Math.round((covered / cells) * 100) : 100;
+    console.log(`\n${band.label}: ${covered}/${cells} cells covered (${pct}%) · ${bandPools.length} pools`);
+    for (const g of gaps.slice(0, 20)) console.log(`  · ${g}`);
+    if (gaps.length > 20) console.log(`  … and ${gaps.length - 20} more`);
+  }
+
+  // Legacy vast-stage focus (stages 8–11 across all STAGE_COVERAGE_PREFIXES)
+  const legacyGaps = [];
   for (const [key, variants] of relevant) {
-    for (const stage of stageIds) {
-      if (stage < 8) continue; // focus report on stages 8-11 per plan
-      const hasStage = variants.some((v) => {
-        const w = v.when || {};
-        if (!w.stageMin && !w.stageMax && !w.stage) return false;
-        const min = w.stageMin ?? 0;
-        const max = w.stageMax ?? 11;
-        if (w.stage != null) return Array.isArray(w.stage) ? w.stage.includes(stage) : w.stage === stage;
-        return stage >= min && stage <= max;
-      });
-      if (!hasStage) gaps.push(`${key}@stage${stage}`);
+    for (const stage of COVERAGE_STAGE_PROBES) {
+      if (stage < 8) continue;
+      if (!poolHasStageCoverage(variants, stage)) legacyGaps.push(`${key}@stage${stage}`);
     }
   }
-  console.log(`\nCoverage report (stages 8-11): ${relevant.length} pools scanned, ${gaps.length} gap(s)`);
-  for (const g of gaps.slice(0, 30)) console.log(`  · ${g}`);
-  if (gaps.length > 30) console.log(`  … and ${gaps.length - 30} more`);
+  console.log(`\nLegacy vast focus (stages 8–11): ${legacyGaps.length} gap(s)`);
+  for (const g of legacyGaps.slice(0, 15)) console.log(`  · ${g}`);
+  if (legacyGaps.length > 15) console.log(`  … and ${legacyGaps.length - 15} more`);
+
+  const overallPct = totalCells ? Math.round(((totalCells - totalGaps) / totalCells) * 100) : 100;
+  console.log(`\nOverall band coverage: ${totalCells - totalGaps}/${totalCells} (${overallPct}%)`);
 }
 
 // ── banned pattern static scan ────────────────────────────────

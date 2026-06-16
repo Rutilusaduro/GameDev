@@ -30,7 +30,7 @@ The Squad is the seven-agent team for the Near-Infinite Narrative Engine. **Do n
 | `neutral` | corruption 0, low shame & fixation | Genuinely unfussed; number as fact |
 | `acclimating` | corruption 1+ | **A2 Psych** — A6 pools gate out |
 
-**Expansion targets:** ~~Per-girl early persona lines (`earlyGain/personas.js`)~~ ✅ · mirror/weigh-in embeds · ~~dining-hall first-month beats~~ ✅ · ~~digest slender body beats~~ ✅ · Dialogue Lab `slender.*` sections ✅ · **Step 9 volume floors** (`slender.*` wildcards + all-girl `eatPause`/`deflect`/`neutral`/`secret`) ✅
+**Expansion targets:** ~~Per-girl early persona lines (`earlyGain/personas.js`)~~ ✅ · ~~mirror/weigh-in embeds~~ ✅ · ~~dining-hall first-month beats~~ ✅ · ~~digest slender body beats~~ ✅ · Dialogue Lab `slender.*` sections ✅ · **Step 9 volume floors** (`slender.*` wildcards + all-girl `eatPause`/`deflect`/`neutral`/`secret`) ✅
 
 **Hard rules:** No medical decline, no real distress pathology, no shame spirals that read as self-harm. Resistance is erotic tension, not cruelty. Characters are always adults.
 
@@ -82,7 +82,7 @@ The Squad is the seven-agent team for the Near-Infinite Narrative Engine. **Do n
 
 **Owns:** `engine.js`, `lexicon/`, `gameData/textContext.js`, `scripts/textLint.mjs`, `scripts/text-lint.config.js`, `registerDimension` / `ctx.flags` / `consumes` / `requireAbsent`, scene `index.js` exports, Dialogue Lab section wiring.
 
-**Expansion targets:** ~~`registerModule` → `registerPool` migration — hungerInterrupt, stream.pre, diaryBase, evolved diary decomposed~~ ✅ · ~~`ctx.sessionUsed` anti-repetition~~ ✅ · coverage report automation · ~~volume tracking dashboard (`text:lint --volume`)~~ ✅
+**Expansion targets:** ~~`registerModule` → `registerPool` migration — hungerInterrupt, stream.pre, diaryBase, evolved diary decomposed~~ ✅ · ~~`ctx.sessionUsed` anti-repetition~~ ✅ · ~~coverage report automation (`text:lint --coverage`)~~ ✅ · ~~volume tracking dashboard (`text:lint --volume`)~~ ✅
 
 **Does not:** Write long-form prose variants (delegates to A1/A2/A3/A6, rewritten by A7, reviewed by A5).
 
