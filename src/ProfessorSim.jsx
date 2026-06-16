@@ -77,6 +77,7 @@ import { renderImmobScene } from './textEngine/scenes/immobility/index.js';
 import './textEngine/scenes/immobility/index.js';
 import {
   corruptionStudentPatch, clearWeeklyTextFlags, dinnerVenueToLocale, clothingStateForStage,
+  createSessionUsed, weekUsedFromStudent, weekUsedToPatch,
 } from './gameData/textContext.js';
 import {
   aggregateSkillEffects, computeSpentSkillPoints, isTreeTierUnlocked, tickPhysicalTraits,
@@ -993,7 +994,7 @@ export default function ProfessorSim(){
   };
 
   // ── CORRUPTION: hidden psyche progression (general actions only) ──
-  const addCorruption=(s,amount)=>{
+  const addCorruption=(s,amount,textOpts={})=>{
     const before=getCorruptionTier(s.corruption||0).id;
     const newC=Math.min(CORRUPTION_CONFIG.max,(s.corruption||0)+amount);
     const after=getCorruptionTier(newC).id;
@@ -1001,7 +1002,7 @@ export default function ProfessorSim(){
       if(CORRUPTION_TIER_UP_LINES[after]){
         setTimeout(()=>push(`🕯️ ${CORRUPTION_TIER_UP_LINES[after]({...s,corruption:newC})}`),200);
       }
-      const shiftLine=renderPsychShift({...s,corruption:newC},week,{lastCorruptionShift:true});
+      const shiftLine=renderPsychShift({...s,corruption:newC},week,{lastCorruptionShift:true,...textOpts});
       if(shiftLine) setTimeout(()=>push(`💫 ${shiftLine}`),320);
     }
     return newC;
@@ -1409,6 +1410,11 @@ export default function ProfessorSim(){
     const digestGrowthEvents=[];
     updated=updated.map(s=>{
       if((s.consumedCalories||0)<=0&&(s.fullness||0)<=0&&!s.stuffedStreak) return s;
+      const digestTextSession={
+        sessionUsed:createSessionUsed(),
+        weekUsed:weekUsedFromStudent(s),
+      };
+      const textOpts=digestTextSession;
       const d=digestStudent(s);
       const oldStageId=getStage(s.lbs).id;
       const preLbs=s.lbs;
@@ -1429,12 +1435,12 @@ export default function ProfessorSim(){
       }
       let corruption=ns.corruption||0;
       if(d.stuffed){
-        const newC=addCorruption({...ns,corruption},CORRUPTION_CONFIG.perStuffedWeek);
+        const newC=addCorruption({...ns,corruption},CORRUPTION_CONFIG.perStuffedWeek,textOpts);
         Object.assign(ns,{...corruptionStudentPatch({...ns,corruption},newC,week)});
         corruption=ns.corruption;
       }
       if(stagedUp){
-        const newC=addCorruption(ns,CORRUPTION_CONFIG.perStageUp);
+        const newC=addCorruption(ns,CORRUPTION_CONFIG.perStageUp,textOpts);
         const newStageId=getStage(ns.lbs).id;
         const clothState=clothingStateForStage(newStageId);
         Object.assign(ns,{
@@ -1442,10 +1448,10 @@ export default function ProfessorSim(){
           clothingState:clothState,
         });
         corruption=ns.corruption;
-        const clothLine=renderClothScene({...ns,clothingState:clothState},week,{clothingState:clothState});
+        const clothLine=renderClothScene({...ns,clothingState:clothState},week,{clothingState:clothState,...textOpts});
         if(clothLine) setTimeout(()=>push(`👗 ${clothLine}`),400);
         if(newStageId>=10){
-          const immobLine=renderImmobScene(ns,week);
+          const immobLine=renderImmobScene(ns,week,textOpts);
           if(immobLine) setTimeout(()=>push(`🛋️ ${immobLine}`),480);
         }
       }
@@ -1465,6 +1471,7 @@ export default function ProfessorSim(){
         weeklyDigestMult:undefined,
         ...d.reset,
         fullness:carriedFullness,
+        ...weekUsedToPatch(digestTextSession.weekUsed),
       };
     });
     if(digestLines.length) setTimeout(()=>push(`🧬 Digestion — ${digestLines.join(" · ")}`),150);
@@ -5320,6 +5327,11 @@ export default function ProfessorSim(){
 
   const openIntimacySelector=(s)=>{setIntimacySceneSelector({student:s});};
 
+  const persistStudentWeekTextUsed=(studentId,patch)=>{
+    if(!patch?.textUsedKeys) return;
+    setStudents(prev=>prev.map(s=>s.id===studentId?{...s,...patch}:s));
+  };
+
   const openWeighIn=(s)=>{ if(!s) return; setWeighInState({student:s,phase:"scene"}); };
 
   const startIntimacyScene=(s,sceneId)=>{
@@ -5715,10 +5727,14 @@ export default function ProfessorSim(){
   // ── DINNER END (single) ──────────────────────────────────────
   const triggerDinnerEnd=(s,finalFullness,cap,totalGain,relBonus)=>{
     const narrative=renderDinnerEnding(s,finalFullness,cap,week);
+    const textPatch=dinnerEvent?.textSession?.weekUsed?weekUsedToPatch(dinnerEvent.textSession.weekUsed):null;
     guardHungerInterrupt(()=>{
       setAp(a=>a-2);
       push(`✅ Dinner with ${s.name} complete. +${totalGain.toLocaleString()} cal packed in (≈${Math.round(calsToLbs(totalGain))} lbs once digested) · +${relBonus} relationship.`);
-      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+relBonus)}));
+      setStudents(prev=>prev.map(st=>{
+        if(st.id!==s.id) return st;
+        return {...st,relationship:Math.min(100,st.relationship+relBonus),...(textPatch||{})};
+      }));
       const evs=collectEvents([s]);
       if(evs.length){setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));setEventQueue(prev=>[...prev,...evs]);}
       setDinnerEvent(null);
@@ -5766,13 +5782,13 @@ export default function ProfessorSim(){
         :`Her room. She is here, she is enormous, she is warm. She knew you were coming.`;
       const atelier=DINNER_VENUES.find(v=>v.id==="atelier");
       const homeVenue={id:venueId,label:venueLabel,desc:venueDesc,dishes:atelier?atelier.dishes:[]};
-      setDinnerEvent({student:s,phase:"dishes",venue:homeVenue,dishes:[],conversationUsed:[],totalGain:0,offenseLevel:0,sessionStartCalories});
+      setDinnerEvent({student:s,phase:"dishes",venue:homeVenue,dishes:[],conversationUsed:[],totalGain:0,offenseLevel:0,sessionStartCalories,textSession:{sessionUsed:createSessionUsed(),weekUsed:weekUsedFromStudent(s)}});
       setDinnerLog([`You bring dinner to ${s.name}. ${venueDesc}`]);
       addScrutiny(2);
       push(`🏠 Visiting ${s.name}.`);
       return;
     }
-    setDinnerEvent({ student:s, phase:"venue", venue:null, dishes:[], conversationUsed:[], totalGain:0, offenseLevel:0, sessionStartCalories });
+    setDinnerEvent({ student:s, phase:"venue", venue:null, dishes:[], conversationUsed:[], totalGain:0, offenseLevel:0, sessionStartCalories, textSession:{sessionUsed:createSessionUsed(),weekUsed:weekUsedFromStudent(s)} });
     setDinnerLog([]);
     addScrutiny(2);
   };
@@ -5803,6 +5819,8 @@ export default function ProfessorSim(){
     const eatLine=renderEatScene(fed,week,{
       mealType:'campus_meal',
       locale:dinnerVenueToLocale(dinnerEvent.venue?.id),
+      sessionUsed:dinnerEvent.textSession?.sessionUsed,
+      weekUsed:dinnerEvent.textSession?.weekUsed,
     });
     push(`🍴 ${s.name}: ${dish.label} (+${calories.toLocaleString()} cal)`);
     if(newFullness>cap){
@@ -7145,6 +7163,7 @@ export default function ProfessorSim(){
           push(`⚖️ Mandatory AIB weigh-in refused — documentation gap (+12 scrutiny).`);
           setWeighInState(null);
         } : undefined}
+        onPersistWeekTextUsed={persistStudentWeekTextUsed}
         week={week}
         campusFattening={!!pharmacistState?.campusFattening}
         campusTier={getCampusNarrativeTier(pharmacistState)}

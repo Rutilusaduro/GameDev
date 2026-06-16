@@ -4,7 +4,7 @@
 // Centralizes mealType, locale, clothingState, corruption shift,
 // and week gain plumbing for procedural prose.
 // ═══════════════════════════════════════════════════════════════
-import { createContext } from '../textEngine/engine.js';
+import { createContext, createSessionUsed } from '../textEngine/engine.js';
 import { getCorruptionTier } from './corruption.js';
 import { getStage } from './stages.js';
 
@@ -62,6 +62,27 @@ export function campusNodeToLocale(nodeId) {
   return CAMPUS_NODE_LOCALE[nodeId] || 'hallway';
 }
 
+/** Re-export for gameplay callers wiring narrative sessions. */
+export { createSessionUsed };
+
+/** Week-long anti-repetition bag from persisted student state. */
+export function weekUsedFromStudent(student) {
+  return new Set(student?.textUsedKeys || []);
+}
+
+/** Serialize weekUsed for student patch after a narrative session. */
+export function weekUsedToPatch(weekUsed) {
+  if (!weekUsed?.size) return {};
+  return { textUsedKeys: [...weekUsed] };
+}
+
+/** Merge session picks into the student's week bag (mutates weekUsed). */
+export function absorbSessionUsed(sessionUsed, weekUsed) {
+  if (!sessionUsed?.size || !weekUsed) return weekUsed;
+  for (const key of sessionUsed) weekUsed.add(key);
+  return weekUsed;
+}
+
 /** Week-over-week gain in lbs (0 if unknown). */
 export function weekGainLbs(student) {
   if (student?.weekStartLbs == null) return 0;
@@ -86,12 +107,14 @@ export function buildTextGlobals(student, week, opts = {}) {
   };
 }
 
-export function buildTextContext({ subject, week = 1, ref = null, skillEffects = {}, ...opts }) {
+export function buildTextContext({ subject, week = 1, ref = null, skillEffects = {}, sessionUsed, weekUsed, ...opts }) {
   return createContext({
     subject,
     ref,
     week,
     skillEffects,
+    sessionUsed: sessionUsed ?? opts.sessionUsed,
+    weekUsed: weekUsed ?? opts.weekUsed ?? weekUsedFromStudent(subject),
     globals: buildTextGlobals(subject, week, opts),
   });
 }
@@ -119,7 +142,7 @@ export function clothingStateForStage(stageId) {
 
 /** Clear per-week text flags when advancing the calendar. */
 export function clearWeeklyTextFlags(student, endingWeek) {
-  const patch = { weekStartLbs: student.lbs };
+  const patch = { weekStartLbs: student.lbs, textUsedKeys: [] };
   if (student.corruptionShiftWeek != null && student.corruptionShiftWeek <= endingWeek) {
     patch.corruptionShiftWeek = undefined;
   }

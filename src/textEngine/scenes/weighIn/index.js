@@ -23,6 +23,8 @@ function weighInCtx(student, week, opts = {}) {
   return createContext({
     subject: student,
     week,
+    sessionUsed: opts.sessionUsed,
+    weekUsed: opts.weekUsed,
     globals: {
       campusFattening: !!opts.campusFattening,
       campusTier: opts.campusTier || (opts.campusFattening ? 1 : 0),

@@ -57,6 +57,12 @@ registerPool("wi.bodyClause", [
 
 Authorized namespaces: `psych_mood`, `scale_ref`, `speed_mod`, `size_reminder`, `sound_tex`, `spatial_obs`. Use only for known problem pairings (e.g. pace adverb + psychological annotation both firing). Most pools need neither field.
 
+### Anti-repetition (`sessionUsed` / `weekUsed`)
+
+Pool picks record a stable key per variant line (`moduleKey#variantIndex:textIndex`). Lines already chosen this **session** (one weigh-in, dinner, digest beat) or this **week** (`student.textUsedKeys`) are deprioritized, not excluded — weights multiply by `0.12` (session) and `0.4` (week). If every eligible line is penalized, the engine falls back to full weights.
+
+Gameplay passes a shared `sessionUsed` Set across renders in one event; `weekUsed` loads from / saves to `student.textUsedKeys` via `textContext.js` helpers. Cleared on week advance in `clearWeeklyTextFlags`.
+
 ### Extensible dimensions (`registerDimension`)
 
 New game-state dimensions can be registered without editing `engine.js`:

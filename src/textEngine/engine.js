@@ -17,6 +17,63 @@ import { getEquippedDeviceIds } from '../gameData/deviceEquip.js';
 const DEV = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV;
 const warn = (...args) => { if (DEV) console.warn('[textEngine]', ...args); };
 
+// Anti-repetition — pool picks already used this session/week are deprioritized.
+export const SESSION_REPEAT_WEIGHT = 0.12;
+export const WEEK_REPEAT_WEIGHT = 0.4;
+
+/** Fresh per-event bag — share one Set across renders in a weigh-in, dinner, etc. */
+export function createSessionUsed() {
+  return new Set();
+}
+
+/** Stable key for a variant text line within a module pool. */
+export function variantUsageKey(moduleKey, variantIndex, textIndex) {
+  return `${moduleKey}#${variantIndex}:${textIndex}`;
+}
+
+function repeatMultiplier(usageKey, ctx) {
+  if (!usageKey) return 1;
+  let m = 1;
+  if (ctx.sessionUsed?.has(usageKey)) m *= SESSION_REPEAT_WEIGHT;
+  if (ctx.weekUsed?.has(usageKey)) m *= WEEK_REPEAT_WEIGHT;
+  return m;
+}
+
+function recordVariantUsage(usageKey, ctx) {
+  if (!usageKey) return;
+  ctx.sessionUsed?.add(usageKey);
+  ctx.weekUsed?.add(usageKey);
+}
+
+function buildPickEntries(moduleKey, matches, poolBase, ctx, applyPenalty) {
+  const entries = [];
+  for (const m of matches) {
+    const { variant, score, variantIndex } = m;
+    const baseW = (variant.weight ?? 1) * Math.pow(poolBase, score);
+    const t = variant.text;
+    if (Array.isArray(t)) {
+      t.forEach((text, textIndex) => {
+        const usageKey = variantUsageKey(moduleKey, variantIndex, textIndex);
+        const w = baseW * (applyPenalty ? repeatMultiplier(usageKey, ctx) : 1);
+        if (w > 0) entries.push({ item: { variant, text, usageKey }, w });
+      });
+    } else {
+      const usageKey = variantUsageKey(moduleKey, variantIndex, 0);
+      const w = baseW * (applyPenalty ? repeatMultiplier(usageKey, ctx) : 1);
+      if (w > 0) entries.push({ item: { variant, text: t, usageKey }, w });
+    }
+  }
+  return entries;
+}
+
+function pickFromEntries(entries, moduleKey, matches, poolBase, ctx) {
+  if (!entries.length && matches.length) {
+    entries = buildPickEntries(moduleKey, matches, poolBase, ctx, false);
+  }
+  if (!entries.length) return null;
+  return weightedPick(entries);
+}
+
 // ── helpers ───────────────────────────────────────────────────
 
 export function pick(arr) {
@@ -153,6 +210,8 @@ export function createContext(raw = {}) {
     season: raw.season || getSeason(week),
     skillEffects, globals,
     flags: Object.create(null),
+    sessionUsed: raw.sessionUsed instanceof Set ? raw.sessionUsed : createSessionUsed(),
+    weekUsed: raw.weekUsed instanceof Set ? raw.weekUsed : new Set(),
     d: deriveFor(subject, ref, skillEffects),
   };
   for (const [key, deriveFn] of DIMENSION_DERIVERS) {
@@ -326,58 +385,56 @@ function selectVariantRecord(key, ctx) {
   if (opts.select === 'pool') {
     const matches = [];
     let maxPriority = -Infinity;
-    for (const variant of variants) {
+    for (let variantIndex = 0; variantIndex < variants.length; variantIndex++) {
+      const variant = variants[variantIndex];
       const { match, score } = evalWhen(variant.when, ctx);
       if (!match || !flagsAbsent(ctx, variant.requireAbsent)) continue;
       const priority = variant.priority || 0;
       if (priority > maxPriority) maxPriority = priority;
-      matches.push({ variant, score, priority });
+      matches.push({ variant, score, priority, variantIndex });
     }
     const eligible = matches.filter((m) => m.priority === maxPriority);
     if (!eligible.length) return null;
     const base = opts.poolBase ?? 3;
-    const entries = eligible
-      .map((m) => ({ item: m.variant, w: (m.variant.weight ?? 1) * Math.pow(base, m.score) }))
-      .filter((e) => e.w > 0);
-    if (!entries.length) return null;
-    return weightedPick(entries);
+    const picked = pickFromEntries(
+      buildPickEntries(key, eligible, base, ctx, true),
+      key, eligible, base, ctx,
+    );
+    return picked ?? null;
   }
 
   let best = [], bestScore = -1, bestPriority = -Infinity;
-  for (const variant of variants) {
+  for (let variantIndex = 0; variantIndex < variants.length; variantIndex++) {
+    const variant = variants[variantIndex];
     const { match, score } = evalWhen(variant.when, ctx);
     if (!match || !flagsAbsent(ctx, variant.requireAbsent)) continue;
     const priority = variant.priority || 0;
     if (score > bestScore || (score === bestScore && priority > bestPriority)) {
-      best = [variant]; bestScore = score; bestPriority = priority;
+      best = [{ variant, score, priority, variantIndex }];
+      bestScore = score;
+      bestPriority = priority;
     } else if (score === bestScore && priority === bestPriority) {
-      best.push(variant);
+      best.push({ variant, score, priority, variantIndex });
     }
   }
   if (!best.length) return null;
 
-  const entries = [];
-  for (const variant of best) {
-    const w = variant.weight ?? 1;
-    if (w <= 0) continue;
-    const t = variant.text;
-    if (Array.isArray(t)) for (const text of t) entries.push({ item: { variant, text }, w });
-    else entries.push({ item: { variant, text: t }, w });
-  }
-  if (!entries.length) return null;
-  return weightedPick(entries);
+  const base = opts.poolBase ?? 3;
+  const picked = pickFromEntries(
+    buildPickEntries(key, best, base, ctx, true),
+    key, best, base, ctx,
+  );
+  return picked ?? null;
 }
 
 function selectVariant(key, ctx) {
   const picked = selectVariantRecord(key, ctx);
   if (!picked) return "";
-  const variant = picked.variant ?? picked;
+  const variant = picked.variant;
+  if (picked.usageKey) recordVariantUsage(picked.usageKey, ctx);
   applyConsumes(ctx, variant);
-  if (picked.variant) {
-    const t = picked.text;
-    return typeof t === "function" ? (t(ctx) ?? "") : (t ?? "");
-  }
-  return resolveChosen(variant, ctx);
+  const t = picked.text;
+  return typeof t === "function" ? (t(ctx) ?? "") : (t ?? "");
 }
 
 // ── filters ───────────────────────────────────────────────────
