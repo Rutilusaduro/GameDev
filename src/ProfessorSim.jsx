@@ -71,6 +71,10 @@ import { renderEatScene } from './textEngine/scenes/eating/index.js';
 import './textEngine/scenes/eating/index.js';
 import { renderPsychShift } from './textEngine/scenes/psychShift/index.js';
 import './textEngine/scenes/psychShift/index.js';
+import { renderClothScene } from './textEngine/scenes/clothing/index.js';
+import './textEngine/scenes/clothing/index.js';
+import { renderImmobScene } from './textEngine/scenes/immobility/index.js';
+import './textEngine/scenes/immobility/index.js';
 import {
   corruptionStudentPatch, clearWeeklyTextFlags, dinnerVenueToLocale, clothingStateForStage,
 } from './gameData/textContext.js';
@@ -1431,11 +1435,19 @@ export default function ProfessorSim(){
       }
       if(stagedUp){
         const newC=addCorruption(ns,CORRUPTION_CONFIG.perStageUp);
+        const newStageId=getStage(ns.lbs).id;
+        const clothState=clothingStateForStage(newStageId);
         Object.assign(ns,{
           ...corruptionStudentPatch(ns,newC,week),
-          clothingState:clothingStateForStage(getStage(ns.lbs).id),
+          clothingState:clothState,
         });
         corruption=ns.corruption;
+        const clothLine=renderClothScene({...ns,clothingState:clothState},week,{clothingState:clothState});
+        if(clothLine) setTimeout(()=>push(`👗 ${clothLine}`),400);
+        if(newStageId>=10){
+          const immobLine=renderImmobScene(ns,week);
+          if(immobLine) setTimeout(()=>push(`🛋️ ${immobLine}`),480);
+        }
       }
       let carriedFullness=0;
       let selfStuffChance=CORRUPTION_CONFIG.tier3SelfStuffChance;

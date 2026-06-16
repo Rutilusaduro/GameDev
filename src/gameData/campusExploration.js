@@ -9,6 +9,8 @@ import { getExplorationFind, pickExplorationFind, travelFindPool, formatExplorat
 import { ELARA_ID, getElaraQuest, elaraQuestProgressLine } from './relicHunter.js';
 import { rollVanceCampusEvent, rollPortionSaintEvent, rollAccreditationObserverEvent, rollAsceticGardenProtest, rollMirrorFastEvent, rollLedgerWightEvent } from './oppositionCampus.js';
 import { renderCampusSighting, renderCampusTravelLine, renderCampusFindFlavor } from '../textEngine/scenes/campusExplorationText.js';
+import { renderCampusScene } from '../textEngine/scenes/campus/index.js';
+import { campusNodeToLocale } from './textContext.js';
 import { maybeRollDeviceEncounter, maybeRollDeviceFlavor } from './campusDeviceEncounters.js';
 
 export const EXPLORATION_CONFIG = {
@@ -50,6 +52,17 @@ function effectiveStage(student, ctx) {
   return stageId;
 }
 
+function campusNavSceneLine(student, ctx) {
+  const stageId = effectiveStage(student, ctx);
+  if (stageId < 3) return null;
+  const line = renderCampusScene(student, ctx.week ?? 1, {
+    locale: campusNodeToLocale(ctx.nodeId),
+    campusFattening: ctx.campusFattening,
+    campusTier: ctx.campusTier ?? 0,
+  });
+  return line?.trim() || null;
+}
+
 function pickStudentSighting(students, ctx, rng) {
   const visible = students.filter(st => {
     if (st.hidden && st.id !== ELARA_ID) return false;
@@ -58,16 +71,28 @@ function pickStudentSighting(students, ctx, rng) {
     if (st.evolvedForm === 'pharmacist') return false;
     return true;
   });
-  if (!visible.length) return null;
+  if (!visible.length) return [];
 
   if (ctx.lilithUnlocked && rng() < EXPLORATION_CONFIG.lilithSightingChance) {
     const lilith = visible.find(s => s.id === 15);
-    if (lilith) return renderCampusSighting(lilith, ctx, ctx.nodeId);
+    if (lilith) {
+      const lines = [];
+      const sighting = renderCampusSighting(lilith, ctx, ctx.nodeId);
+      if (sighting) lines.push(sighting);
+      const nav = campusNavSceneLine(lilith, ctx);
+      if (nav) lines.push(nav);
+      return lines;
+    }
   }
 
   const who = pick(rng, visible.filter(s => s.id !== 15));
-  if (!who) return null;
-  return renderCampusSighting(who, ctx, ctx.nodeId);
+  if (!who) return [];
+  const lines = [];
+  const sighting = renderCampusSighting(who, ctx, ctx.nodeId);
+  if (sighting) lines.push(sighting);
+  const nav = campusNavSceneLine(who, ctx);
+  if (nav) lines.push(nav);
+  return lines;
 }
 
 export function buildExplorationContext({
@@ -174,8 +199,8 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
   }
 
   if (rng() < EXPLORATION_CONFIG.studentSightingChance) {
-    const sighting = pickStudentSighting(ctx.students, travelCtx, rng);
-    if (sighting) lines.push(sighting);
+    const sightingLines = pickStudentSighting(ctx.students, travelCtx, rng);
+    if (sightingLines.length) lines.push(...sightingLines);
   }
 
   if (rng() < EXPLORATION_CONFIG.ingredientFindChance) {

@@ -36,6 +36,32 @@ export function dinnerVenueToLocale(venueId) {
   return DINNER_VENUE_LOCALE[venueId] || 'cafeteria';
 }
 
+/** Map campus exploration node ids to campus.scene locale keys. */
+const CAMPUS_NODE_LOCALE = {
+  office: 'prof_office',
+  lecture_hall: 'lecture_hall',
+  science_wing: 'hallway',
+  quad: 'hallway',
+  library: 'hallway',
+  dining_hall: 'cafeteria',
+  gym: 'gym',
+  dorms: 'dorm_room',
+  faculty_lounge: 'prof_office',
+  garden: 'hallway',
+  food_court: 'cafeteria',
+  student_union: 'hallway',
+  coffee_shop: 'cafeteria',
+  arts_wing: 'hallway',
+  outdoor_track: 'gym',
+  health_center: 'hallway',
+  theater: 'lecture_hall',
+  rooftop: 'prof_office',
+};
+
+export function campusNodeToLocale(nodeId) {
+  return CAMPUS_NODE_LOCALE[nodeId] || 'hallway';
+}
+
 /** Week-over-week gain in lbs (0 if unknown). */
 export function weekGainLbs(student) {
   if (student?.weekStartLbs == null) return 0;
