@@ -8,6 +8,7 @@ import { getCorruptionTier } from './corruption.js';
 import { PHYSICAL_TRAITS } from './skillTrees.js';
 import { getStage } from './stages.js';
 import { TALK_CONFIG } from './talkSystem.js';
+import { pickWeightedInterruptStudent } from './relationshipEcology.js';
 
 export const ADDICTION_LEVELS = [
   { id: 0, label: "None",       color: null },
@@ -87,7 +88,10 @@ export function getHungerModifiers(student, skillEffects = {}, weeklyArms = {}) 
 
   const addiction = getAddictionLevel(student);
   if (addiction >= 2) {
-    mod.interruptBonus += (addiction - 1) * 0.06;
+    mod.interruptBonus += (addiction - 1) * 0.09;
+  }
+  if (addiction >= 3) {
+    mod.passiveRiseMult *= 1.1;
   }
 
   if (eff.cravingSubmission) mod.passiveRiseMult *= 1.12;
@@ -311,5 +315,5 @@ export function pickInterruptStudent(students, skillEffects = {}, weeklyArms = {
 
   const triggered = urgent.filter(s => needsHungerInterrupt(s, skillEffects, weeklyArms));
   if (!triggered.length) return null;
-  return triggered[Math.floor(Math.random() * triggered.length)];
+  return pickWeightedInterruptStudent(triggered);
 }

@@ -4,6 +4,7 @@
 import { recordDeviceUse, getDeviceBoardMods } from './inventionUpgrades.js';
 import { applyDeviceEffect } from './deviceEffects.js';
 import { DEVICES } from './devices.js';
+import { canStudentUseDevice, deviceAcceptanceBlockReason } from './deviceGating.js';
 
 export const DEVICE_INTERACTION_TYPES = {
   feeding_mask: 'rhythm',
@@ -76,6 +77,9 @@ export function applyDeviceUsageReward(labState, deviceDefId, performanceTier, e
 export function runStationaryDeviceSession(student, deviceDefId, week, rng = Math.random, opts = {}) {
   const def = DEVICES[deviceDefId];
   if (!def?.useEffect) return { ok: false, lines: ['⚠️ Device has no session effect.'] };
+  if (!canStudentUseDevice(student, deviceDefId)) {
+    return { ok: false, lines: [`⚠️ ${deviceAcceptanceBlockReason(student, deviceDefId)}`] };
+  }
   const gainMult = opts.gainMult ?? 1;
   const effect = { ...def.useEffect };
   if (effect.gainLbs && gainMult !== 1) {
@@ -87,6 +91,9 @@ export function runStationaryDeviceSession(student, deviceDefId, week, rng = Mat
 
 export function runRouteDeviceSession(student, deviceDefId, week, routeResult, rng = Math.random) {
   const def = DEVICES[deviceDefId];
+  if (!canStudentUseDevice(student, deviceDefId)) {
+    return { ok: false, lines: [`⚠️ ${deviceAcceptanceBlockReason(student, deviceDefId)}`] };
+  }
   const tier = routeResult?.performanceTier ?? 'good';
   const gainMult = routeResult?.gainMult ?? 1;
   const base = def?.useEffect?.gainLbs ?? [4, 8];

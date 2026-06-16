@@ -171,10 +171,10 @@ import {
   adjustNexusIntegration,
   upgradeNexus,
 } from './gameData/networkState.js';
-import { getForceFeedComplianceBonus } from './gameData/deviceGating.js';
+import { getForceFeedChanceBonuses, canStudentUseDevice, deviceAcceptanceBlockReason } from './gameData/deviceGating.js';
 import {
   tickRelationshipDecay,
-  applyJealousyRelDelta,
+  applyFavoritismEcology,
   favoritismSummary,
 } from './gameData/relationshipEcology.js';
 import {
@@ -1053,8 +1053,10 @@ export default function ProfessorSim(){
       if(eff.totalSurrender&&(s.corruption||0)>=90){
         forced=true;
       } else {
-        const corruptionBonus=Math.min(0.30,(s.corruption||0)*CORRUPTION_CONFIG.resistancePerPoint);
-        let chance=forceFeedChance(s,fullnessCost,spiritLevel)+corruptionBonus+getForceFeedComplianceBonus(s);
+        const bonuses=getForceFeedChanceBonuses(s);
+        let chance=forceFeedChance(s,fullnessCost,spiritLevel)+bonuses.corruptionBonus;
+        if(opts.refusalBonus!=null) chance+=opts.refusalBonus;
+        else chance+=bonuses.complianceBonus;
         chance+=eff.forceFeedBonus||0;
         chance+=eff.extremeBonus||0;
         if(weeklyArms.mesmerizingStudentId===s.id&&eff.mesmerizingAura) chance+=TALK_CONFIG.auraBonus;
@@ -1309,7 +1311,7 @@ export default function ProfessorSim(){
       updated=updated.map(s=>{
         const flag=favSummary.flags[s.id];
         if(!flag) return s;
-        return applyJealousyRelDelta(s,{ isNeglected:flag==='neglected', isFavored:flag==='favored' });
+        return applyFavoritismEcology(s,flag,newWeek);
       });
       favSummary.neglected.forEach((s,i)=>{
         const line=renderJealousyReaction(s,'neglected',newWeek);
@@ -3819,6 +3821,12 @@ export default function ProfessorSim(){
       setDeviceUsageModal(null);
       return;
     }
+    if(!result?.ok){
+      const msg=result?.lines?.[0]||deviceAcceptanceBlockReason(s,deviceDefId)||'Device session failed.';
+      push(msg.startsWith('⚠️')?msg:`⚠️ ${msg}`);
+      setDeviceUsageModal(null);
+      return;
+    }
     if(actionId==='inject_serum'&&(deviceInventory[deviceDefId]||0)<1){
       push('⚠️ No serum injectors in inventory.');
       setDeviceUsageModal(null);
@@ -3845,7 +3853,13 @@ export default function ProfessorSim(){
   const runDeviceAction=(actionId,studentId)=>{
     const s=students.find(st=>st.id===studentId);
     if(!s) return;
+    const gateDeviceUse=(deviceDefId)=>{
+      if(canStudentUseDevice(s,deviceDefId)) return true;
+      push(`⚠️ ${deviceAcceptanceBlockReason(s,deviceDefId)}`);
+      return false;
+    };
     if(actionId==='trigger_belt_bloat'){
+      if(!gateDeviceUse('auto_bloating_belt')) return;
       const result=triggerBeltBloatNow(s,week,Math.random);
       if(!result.ok){ push('⚠️ Belt not active.'); return; }
       applyStudentDeviceResult(studentId,result,DEVICES.auto_bloating_belt);
@@ -3854,10 +3868,12 @@ export default function ProfessorSim(){
       return;
     }
     if(actionId==='run_feeder_session'){
+      if(!gateDeviceUse('auto_feeder_arm')) return;
       setDeviceUsageModal({ type:'route', deviceDefId:'auto_feeder_arm', studentId, actionId, deviceLabel:DEVICES.auto_feeder_arm?.label });
       return;
     }
     if(actionId==='inject_serum'){
+      if(!gateDeviceUse('growth_serum_injector')) return;
       setDeviceUsageModal({ type:'tuning', deviceDefId:'growth_serum_injector', studentId, actionId, deviceLabel:DEVICES.growth_serum_injector?.label });
       return;
     }
@@ -3869,6 +3885,7 @@ export default function ProfessorSim(){
       return;
     }
     if(actionId==='run_mask_session'){
+      if(!gateDeviceUse('feeding_mask')) return;
       const effect=DEVICES.feeding_mask.useEffect||{};
       const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'feeding_mask', rng:Math.random });
       const gain=applied.student._pendingGainLbs||0;
@@ -3900,6 +3917,7 @@ export default function ProfessorSim(){
       return;
     }
     if(actionId==='feed_furniture'){
+      if(!gateDeviceUse('living_furniture_rig')) return;
       const effect=DEVICES.living_furniture_rig.useEffect||{};
       const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'living_furniture_rig', rng:Math.random });
       applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.living_furniture_rig);
@@ -3913,6 +3931,7 @@ export default function ProfessorSim(){
       return;
     }
     if(actionId==='run_chamber_session'){
+      if(!gateDeviceUse('growth_accelerator_chamber')) return;
       setDeviceUsageModal({ type:'tuning', deviceDefId:'growth_accelerator_chamber', studentId, actionId, deviceLabel:DEVICES.growth_accelerator_chamber?.label });
       return;
     }

@@ -5,6 +5,7 @@
 import { GAIN_CONFIG } from './gainSystem.js';
 import { getHungerTier, getAddictionLevel } from './hungerAddiction.js';
 import { getCorruptionTier } from './corruption.js';
+import { getForceFeedComplianceBonus } from './deviceGating.js';
 import { ITEMS } from './items.js';
 
 /**
@@ -46,6 +47,7 @@ export function getFeedingModifiers(student, {
   else if (hunger >= 2) refusalBonus += 0.06;
   if (cor >= 2) refusalBonus += 0.08;
   else if (cor >= 1) refusalBonus += 0.04;
+  refusalBonus += getForceFeedComplianceBonus(student);
 
   let fullnessMult = 1;
   if (generousTrait && (context === 'dinner' || context === 'group_dinner')) fullnessMult = 1.1;

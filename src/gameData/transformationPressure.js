@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// TRANSFORMATION PRESSURE — unified per-student surrender readout
+// TRANSFORMATION PRESSURE — unified per-student surrender readout (DEPTH_PLAN §1)
 // ═══════════════════════════════════════════════════════════════
 import { getCorruptionTier } from './corruption.js';
 import { getAddictionLevel, getHungerTier, HUNGER_TIERS, ADDICTION_LEVELS } from './hungerAddiction.js';
@@ -14,6 +14,11 @@ const SURRENDER_COLORS = {
   surrendered: '#c03050',
 };
 
+const FAVORITISM_LABELS = {
+  favored: 'Your priority this week',
+  neglected: 'Feeling sidelined',
+};
+
 export function getDominantEvolvedLabel(student) {
   if (!student?.evolvedForm) return null;
   return EVOLVED_FORM_META[student.evolvedForm]?.label || student.evolvedForm;
@@ -25,12 +30,16 @@ export function computeSurrenderVector(student) {
   const addiction = getAddictionLevel(student);
   const hunger = getHungerTier(student);
   const relTier = getTier(student?.relationship ?? 0);
+  const relValue = student?.relationship ?? 0;
+  const favoritism = student?.rosterEcology?.favoritism ?? null;
 
   const stageScore = stage.id / 11;
   const corScore = (student?.corruption ?? 0) / 100;
   const addScore = addiction / 4;
   const hungerScore = hunger / 4;
-  const composite = stageScore * 0.35 + corScore * 0.3 + addScore * 0.2 + hungerScore * 0.15;
+  const relScore = relValue / 100;
+  const composite = stageScore * 0.30 + corScore * 0.28 + addScore * 0.18
+    + hungerScore * 0.14 + relScore * 0.10;
 
   let band = 'emerging';
   if (composite >= 0.72) band = 'surrendered';
@@ -45,8 +54,10 @@ export function computeSurrenderVector(student) {
     corruption: { value: student?.corruption ?? 0, tier: corruption.id, label: corruption.label },
     addiction: { level: addiction, label: ADDICTION_LEVELS[addiction]?.label || 'None' },
     hunger: { tier: hunger, label: HUNGER_TIERS[hunger]?.label || 'Normal' },
-    relationship: { value: student?.relationship ?? 0, tier: relTier.id, label: relTier.label },
+    relationship: { value: relValue, tier: relTier.id, label: relTier.label },
     evolvedForm: getDominantEvolvedLabel(student),
+    favoritism,
+    favoritismLabel: favoritism ? FAVORITISM_LABELS[favoritism] : null,
   };
 }
 
@@ -56,7 +67,9 @@ export function formatSurrenderSummary(student) {
     v.stage.label,
     v.corruption.label,
     v.addiction.label !== 'None' ? v.addiction.label : null,
+    v.relationship.label,
     v.evolvedForm,
+    v.favoritismLabel,
   ].filter(Boolean);
   return parts.join(' · ');
 }
