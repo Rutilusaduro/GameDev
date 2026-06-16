@@ -5,6 +5,108 @@
 import { GAIN_CONFIG } from './gainSystem.js';
 import { getHungerTier, getAddictionLevel } from './hungerAddiction.js';
 import { getCorruptionTier } from './corruption.js';
+import { ITEMS } from './items.js';
+
+/**
+ * Venue/private dish ids linked to pantry ITEMS[] for a shared cal/full model.
+ * Dishes without a link still use gain[] + fullness fields.
+ */
+export const DISH_ITEM_LINKS = {
+  lasagne: 'family_lasagna',
+  cheesecake: 'cake_whole',
+  tiramisu: 'cake_whole',
+  soufle: 'cake_whole',
+  mille_feuille: 'cake_whole',
+  pr_cake: 'cake_whole',
+  pr_brownie: 'gainer_fudge',
+  dessert_cart: 'cake_whole',
+  home_dessert: 'cake_whole',
+  atelier_dessert: 'cake_whole',
+  brunch_board: 'snack_crate',
+  pr_board: 'snack_crate',
+  ribeye: 'feast_platter',
+  personal_menu: 'feast_platter',
+  tasting_menu: 'feast_platter',
+  pr_roast: 'feast_platter',
+  french_toast: 'donut_box',
+  waffle_stack: 'donut_box',
+  pr_chocolates: 'gainer_fudge',
+};
+
+/** Hunger/corruption/trait modifiers for feed attempts (DEPTH_PLAN §8). */
+export function getFeedingModifiers(student, {
+  generousTrait = false,
+  context = 'meal',
+} = {}) {
+  const hunger = getHungerTier(student);
+  const addiction = getAddictionLevel(student);
+  const cor = getCorruptionTier(student?.corruption || 0).id;
+  let refusalBonus = 0;
+  if (hunger >= 3 && addiction >= 2) refusalBonus += 0.12;
+  else if (hunger >= 2) refusalBonus += 0.06;
+  if (cor >= 2) refusalBonus += 0.08;
+  else if (cor >= 1) refusalBonus += 0.04;
+
+  let fullnessMult = 1;
+  if (generousTrait && (context === 'dinner' || context === 'group_dinner')) fullnessMult = 1.1;
+
+  let calorieMult = 1;
+  if (hunger >= 3 && addiction >= 2) calorieMult = 1.12;
+  else if (hunger >= 2) calorieMult = 1.05;
+
+  return { refusalBonus, fullnessMult, calorieMult, hunger, corruption: cor };
+}
+
+/**
+ * Resolve a venue dish, private food, or pantry item into calories + fullness.
+ * Prefers itemId / DISH_ITEM_LINKS → ITEMS[]; falls back to gain[] + fullness.
+ */
+export function resolveFeedPayload(source, student, {
+  skillGainMult = 1,
+  profGainMult = 1,
+  calorieMult = 1,
+  gainLbs = null,
+} = {}) {
+  const itemId = source.itemId || DISH_ITEM_LINKS[source.id];
+  const gainMult = (student?.gainMultiplier || 1) * profGainMult * calorieMult;
+
+  if (itemId) {
+    const item = ITEMS.find((i) => i.id === itemId);
+    if (item) {
+      return {
+        calories: Math.round(item.cal * gainMult),
+        fullness: item.full,
+        label: source.label || item.label,
+        itemId,
+      };
+    }
+  }
+
+  const lo = source.gain?.[0] ?? 1;
+  const hi = source.gain?.[1] ?? lo;
+  const gain = gainLbs ?? lo;
+  return {
+    calories: Math.round(gain * GAIN_CONFIG.calsPerLb * skillGainMult * gainMult),
+    fullness: source.fullness ?? 15,
+    label: source.label || 'Meal',
+    itemId: null,
+  };
+}
+
+/** Pantry items a venue may surface beyond the player's inventory. */
+export function getVenuePantrySuggestions(venueId) {
+  const byVenue = {
+    steakhouse: ['feast_platter', 'protein_shake'],
+    french: ['butter_coffee', 'cake_whole'],
+    brunch_hall: ['donut_box', 'butter_coffee'],
+    home_dinner: ['family_lasagna', 'cake_whole', 'snack_crate'],
+    atelier: ['feast_platter', 'cake_whole', 'gainer_fudge'],
+    chefs_table: ['feast_platter', 'cake_whole'],
+    private_club: ['cake_whole', 'feast_platter'],
+  };
+  const ids = byVenue[venueId] || ['protein_shake', 'donut_box'];
+  return ids.map((id) => ITEMS.find((i) => i.id === id)).filter(Boolean);
+}
 
 /**
  * Unified feed capacity — stomach + skill soft-start + optional session bonuses.
