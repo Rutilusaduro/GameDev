@@ -82,7 +82,7 @@ The Squad is the seven-agent team for the Near-Infinite Narrative Engine. **Do n
 
 **Owns:** `engine.js`, `lexicon/`, `gameData/textContext.js`, `scripts/textLint.mjs`, `scripts/text-lint.config.js`, `registerDimension` / `ctx.flags` / `consumes` / `requireAbsent`, scene `index.js` exports, Dialogue Lab section wiring.
 
-**Expansion targets:** ~~Phase A engine hygiene~~ ✅ · ~~Phase B volume floors — squad wildcard ≥4, band coverage 100%, `generateStageCoverage.mjs`~~ ✅ · **Phase B.2:** keyed persona depth (431 cells remain under 3 texts in squad namespaces)
+**Expansion targets:** ~~Phase A engine hygiene~~ ✅ · ~~Phase B volume floors — squad wildcard ≥4, band coverage 100%, `generateStageCoverage.mjs`~~ ✅ · ~~**Phase B.2:** keyed persona depth (keyed cells ≥3 via `generateKeyedDepth.mjs`)~~ ✅
 
 **Does not:** Write long-form prose variants (delegates to A1/A2/A3/A6, rewritten by A7, reviewed by A5).
 

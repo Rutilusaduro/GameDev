@@ -57,4 +57,5 @@ import './npcReactions.js';
 import './earlyGain/index.js';
 import './forceFeeder/index.js';
 import './squadStageCoverage.js';
+import './squadKeyedDepth.js';
 import '../modules.js';
