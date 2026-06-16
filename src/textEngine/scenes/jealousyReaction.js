@@ -1,9 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // SCENE: JEALOUSY REACTION — roster favoritism lines
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, render, createContext } from '../engine.js';
+import { registerPool, render, createContext } from '../engine.js';
 
-registerModule('jealousy.reaction', [
+registerPool('jealousy.reaction', [
   {
     when: { favoritism: ['neglected'], relationship: [3, 4] },
     priority: 3,

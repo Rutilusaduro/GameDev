@@ -3,7 +3,7 @@
 // The canonical Modular Text showcase. Subject = the victims
 // (proxied by the first of the group), ref = Lilith.
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, createContext, render } from '../engine.js';
+import { registerPool, createContext, render } from '../engine.js';
 import '../modules.js'; // char.desc, sizeCompare, clothing.desc, group.desc
 
 export const HIVE_INTAKE_TEMPLATE =
@@ -13,7 +13,7 @@ export const HIVE_INTAKE_TEMPLATE =
 
 // Maya's reaction shifts with her own size and the room she has built.
 
-registerModule("hive.mayaWatches", [
+registerPool("hive.mayaWatches", [
   { when: { refStage: null }, // no ref context — generic
     text: ["Maya watches from her position, the air thick with warm, hungry resonance."] },
   { when: {},

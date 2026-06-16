@@ -2,12 +2,12 @@
 // SCENE: ATTITUDE — emotional state (not weight-stage boasts)
 // One first-person sentence from mood, corruption, hunger, devour.
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, createContext, render } from '../engine.js';
+import { registerPool, createContext, render } from '../engine.js';
 import './campusSoftening.js';
 
 // ── attitude.line — primary emotional sentence ────────────────
 
-registerModule("attitude.line", [
+registerPool("attitude.line", [
   // Devour aftermath × corruption
   { when: { devourMin: 1, corruption: [0] }, priority: 4,
     text: [

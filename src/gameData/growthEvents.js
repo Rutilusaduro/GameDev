@@ -6,6 +6,7 @@ import { getDevice, getGrowthProfile, MARQUEE_GROWTH_DEVICE_IDS } from './device
 import { getEquippedDeviceIds } from './deviceEquip.js';
 import { getDependenceTier } from './psychState.js';
 import { renderGrowthScene } from '../textEngine/scenes/growthEvent/index.js';
+import { renderImmobScene } from '../textEngine/scenes/immobility/index.js';
 import { traceToFlagNodes } from '../textEngine/textFlagFormat.js';
 
 const ZONE_POOL = ['belly', 'hips', 'thighs', 'ass', 'chest', 'full', 'lower_body'];
@@ -107,7 +108,7 @@ export function buildGrowthEvent(student, params = {}) {
   const growthZone = resolveGrowthZone(profile, cause.zoneOverride || malfunction?.effect?.zoneOverride, student?.bodyType);
 
   const trace = [];
-  const prose = renderGrowthScene(student, {
+  let prose = renderGrowthScene(student, {
     causeType: cause.type,
     deviceId,
     featureId: cause.featureId || (cause.type === 'digest_stageup' ? 'digest_stageup' : null),
@@ -127,6 +128,13 @@ export function buildGrowthEvent(student, params = {}) {
     pantsFactor,
     week,
   }, { trace });
+
+  if (endStage >= 10) {
+    const immobSupplement = renderImmobScene(student, week);
+    if (immobSupplement) {
+      prose = [prose, immobSupplement].filter(Boolean).join('\n\n');
+    }
+  }
 
   return {
     kind: 'growth_scene',

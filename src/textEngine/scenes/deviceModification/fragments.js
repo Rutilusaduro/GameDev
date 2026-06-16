@@ -1,7 +1,7 @@
 import { registerPool, registerModule } from '../../engine.js';
 import '../../modules.js';
 
-registerModule('device.componentLabel', [
+registerPool('device.componentLabel', [
   { when: {}, text: [(ctx) => ctx.globals?.componentLabel || 'the component'] },
 ]);
 

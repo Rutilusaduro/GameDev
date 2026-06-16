@@ -1,6 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // TEXT LINT — static + dynamic checks over the text-engine registry.
-// Run: npm run text:lint        (node scripts/textLint.mjs)
+// Run: npm run text:lint
+//      npm run text:lint -- --sample=500 --scene=wi
+//      npm run text:lint -- --coverage
+//      npm run text:lint -- --coverage=slender.
+//      npm run text:lint -- --volume
+//      npm run text:lint -- --volume=slender.
 // See src/textEngine/AUTHORING.md for the rules this enforces.
 // ═══════════════════════════════════════════════════════════════
 import '../src/textEngine/scenes/index.js';
@@ -10,8 +15,26 @@ import {
 } from '../src/textEngine/engine.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { WEIGHT_STAGES } from '../src/gameData/stages.js';
+import { getCorruptionTier } from '../src/gameData/corruption.js';
 import { DEVICES } from '../src/gameData/devices.js';
 import { renderGrowthScene } from '../src/textEngine/scenes/growthEvent/index.js';
+import {
+  BANNED_PATTERNS, SAMPLE_SCENES, COVERAGE_STAGE_PROBES, STAGE_COVERAGE_PREFIXES,
+  VOLUME_SQUAD_PREFIXES, OPTIONAL_EMPTY_POOLS,
+  COVERAGE_BANDS, COVERAGE_CORRUPTION_PROBES,
+} from './text-lint.config.js';
+
+const CLI_ARGS = process.argv.slice(2);
+const sampleArg = CLI_ARGS.find((a) => a.startsWith('--sample='));
+const sceneArg = CLI_ARGS.find((a) => a.startsWith('--scene='));
+const SAMPLE_COUNT = sampleArg ? parseInt(sampleArg.split('=')[1], 10) : 0;
+const SAMPLE_SCENE = sceneArg ? sceneArg.split('=')[1] : 'wi';
+const RUN_COVERAGE = CLI_ARGS.includes('--coverage');
+const coveragePrefixArg = CLI_ARGS.find((a) => a.startsWith('--coverage='));
+const COVERAGE_PREFIX_FILTER = coveragePrefixArg ? coveragePrefixArg.split('=')[1] : null;
+const RUN_VOLUME = CLI_ARGS.includes('--volume');
+const volumePrefixArg = CLI_ARGS.find((a) => a.startsWith('--volume='));
+const VOLUME_PREFIX_FILTER = volumePrefixArg ? volumePrefixArg.split('=')[1] : null;
 
 const errors = [];
 const warnings = [];
@@ -92,14 +115,21 @@ for (const [key, variants] of entries) {
 // asserts clean output. Only runs for templates whose modules exist.
 
 const SWEEPS = [
-  { name: 'WI_INTRO', root: 'wi.arrival', tpl: '{wi.arrival} {wi.settle} {wi.scaleApproach}' },
-  { name: 'WI_INTRO_BIG', root: 'wi.bigScaleApproach', tpl: '{wi.arrival} {wi.settle} {wi.bigScaleApproach}' },
+  { name: 'WI_INTRO', root: 'wi.arrival', tpl: '{wi.arrival} {wi.settle} {wi.approachSentence} {wi.scaleSentence}' },
+  { name: 'WI_INTRO_BIG', root: 'wi.approachSentence', tpl: '{wi.arrival} {wi.settle} {wi.approachSentence} {wi.scaleSentence}', bigScale: true },
+  { name: 'WI_INTRO_LEGACY', root: 'wi.scaleApproach', tpl: '{wi.arrival} {wi.settle} {wi.scaleApproach}' },
   { name: 'WI_REACTION', root: 'wi.reply', tpl: '{wi.stepOff}\n\n{wi.reply}' },
   { name: 'WI_BREAK', root: 'wi.breakLine', tpl: '{wi.breakBeat} {wi.breakLine}' },
   { name: 'talk.encourage', root: 'talk.encourage', tpl: '{talk.encourage}' },
   { name: 'grow.crossing', root: 'grow.crossing', tpl: '{grow.crossing} {grow.crossingDialogue}' },
   { name: 'ff.feed', root: 'ff.feed', tpl: '{ff.feed}' },
   { name: 'ff.aftermath', root: 'ff.aftermath', tpl: '{ff.aftermath}' },
+  { name: 'eat.scene', root: 'eat.scene', tpl: '{eat.scene}' },
+  { name: 'campus.scene', root: 'campus.scene', tpl: '{campus.scene}' },
+  { name: 'cloth.scene', root: 'cloth.scene', tpl: '{cloth.scene}' },
+  { name: 'immob.scene', root: 'immob.scene', tpl: '{immob.scene}' },
+  { name: 'slender.scene', root: 'slender.scene', tpl: '{slender.scene}', corruptionTier: [0], stageMax: 4 },
+  { name: 'slender.mirror', root: 'slender.mirror', tpl: '{slender.mirror} {slender.mindFeel}', corruptionTier: [0], stageMax: 4 },
 ];
 
 const STAGE_PROBES = [0, 2, 4, 6, 8, 10, 11];
@@ -124,7 +154,11 @@ for (const sweep of SWEEPS) {
   if (!hasModule(sweep.root)) continue;
   for (const base of INIT_STUDENTS) {
     for (const stage of STAGE_PROBES) {
+      if (sweep.stageMax != null && stage > sweep.stageMax) continue;
+      if (sweep.stageMin != null && stage < sweep.stageMin) continue;
       for (const corruption of CORRUPTIONS) {
+        const corTier = getCorruptionTier(corruption).id;
+        if (sweep.corruptionTier != null && !sweep.corruptionTier.includes(corTier)) continue;
         for (const mood of MOODS) {
           for (const hungerOverride of HUNGER_TIERS) {
             for (const campusTier of CAMPUS_TIERS) {
@@ -135,7 +169,11 @@ for (const sweep of SWEEPS) {
               };
               const ctx = createContext({
                 subject: student, week: 6,
-                globals: { campusFattening: campusTier > 0, campusTier, bigScale: stage >= 7 },
+                globals: {
+                  campusFattening: campusTier > 0,
+                  campusTier,
+                  bigScale: sweep.bigScale ?? stage >= 7,
+                },
               });
               const outs = new Set();
               for (let i = 0; i < RENDERS_PER_CELL; i++) {
@@ -300,6 +338,281 @@ function initPsych(corruption) {
 }
 
 cells += growthCells;
+
+// ── combinatorial sampling mode ───────────────────────────────
+
+if (SAMPLE_COUNT > 0) {
+  const tpl = SAMPLE_SCENES[SAMPLE_SCENE];
+  if (!tpl) {
+    err(`--scene=${SAMPLE_SCENE}: unknown scene (known: ${Object.keys(SAMPLE_SCENES).join(', ')})`);
+  } else {
+    const trigramCounts = new Map();
+    let shortCount = 0;
+    let longCount = 0;
+    for (let i = 0; i < SAMPLE_COUNT; i++) {
+      const base = INIT_STUDENTS[Math.floor(Math.random() * INIT_STUDENTS.length)];
+      const stage = COVERAGE_STAGE_PROBES[Math.floor(Math.random() * COVERAGE_STAGE_PROBES.length)];
+      const corruption = [0, 50, 95][Math.floor(Math.random() * 3)];
+      const student = {
+        ...base,
+        lbs: stageLbs(stage),
+        corruption,
+        mood: MOODS[Math.floor(Math.random() * MOODS.length)],
+        hungerTier: HUNGER_TIERS[Math.floor(Math.random() * HUNGER_TIERS.length)],
+        fullness: 20 + Math.random() * 80,
+        stomachCapacity: 100,
+      };
+      const ctx = createContext({
+        subject: student,
+        week: 1 + Math.floor(Math.random() * 12),
+        globals: {
+          campusFattening: Math.random() > 0.5,
+          campusTier: CAMPUS_TIERS[Math.floor(Math.random() * CAMPUS_TIERS.length)],
+          bigScale: stage >= 7,
+          locale: LOCALES[Math.floor(Math.random() * LOCALES.length)],
+          mealType: ['breakfast', 'binge', 'snack', 'campus_meal', 'meal'][Math.floor(Math.random() * 5)],
+          clothingState: ['button_pop', 'zipper_fail', 'seam_split', 'fitted'][Math.floor(Math.random() * 4)],
+        },
+      });
+      const out = render(tpl, ctx);
+      rendersDone++;
+      if (out.length < 20) shortCount++;
+      if (out.length > 250) longCount++;
+      for (const { pattern, message } of BANNED_PATTERNS) {
+        if (pattern.test(out)) err(`sample ${i}: banned pattern (${message}): "${out.slice(0, 100)}"`);
+      }
+      const words = out.toLowerCase().split(/\s+/).filter(Boolean);
+      for (let w = 0; w < words.length - 2; w++) {
+        const tri = `${words[w]} ${words[w + 1]} ${words[w + 2]}`;
+        trigramCounts.set(tri, (trigramCounts.get(tri) || 0) + 1);
+      }
+    }
+    const hotTrigrams = [...trigramCounts.entries()].filter(([, n]) => n > 3);
+    if (shortCount > SAMPLE_COUNT * 0.05) {
+      warning(`sample: ${shortCount}/${SAMPLE_COUNT} outputs under 20 chars — slot may resolve empty`);
+    }
+    if (longCount > SAMPLE_COUNT * 0.05) {
+      warning(`sample: ${longCount}/${SAMPLE_COUNT} outputs over 250 chars — possible slot doubling`);
+    }
+    for (const [tri, n] of hotTrigrams.slice(0, 10)) {
+      warning(`sample: trigram "${tri}" appeared ${n}× in ${SAMPLE_COUNT} samples`);
+    }
+    console.log(`textLint sample: ${SAMPLE_COUNT} renders of scene "${SAMPLE_SCENE}"`);
+  }
+}
+
+// ── volume dashboard (Squad Step 9 targets) ───────────────────
+
+function countTexts(variant) {
+  const t = variant.text;
+  return Array.isArray(t) ? t.length : 1;
+}
+
+function wildcardVariants(variants) {
+  return variants.filter((v) => !v.when || Object.keys(v.when).length === 0);
+}
+
+function wildcardTextCount(variants) {
+  return wildcardVariants(variants).reduce((n, v) => n + countTexts(v), 0);
+}
+
+function nonEmptyWildcardCount(variants) {
+  return wildcardVariants(variants)
+    .flatMap((v) => (Array.isArray(v.text) ? v.text : [v.text]))
+    .filter((t) => typeof t === 'string' && t.trim()).length;
+}
+
+function personaCoverage(variants) {
+  const byStudent = new Map();
+  for (const v of variants) {
+    const sid = v.when?.studentId;
+    if (sid == null) continue;
+    const ids = Array.isArray(sid) ? sid : [sid];
+    const n = countTexts(v);
+    for (const id of ids) {
+      byStudent.set(id, (byStudent.get(id) || 0) + n);
+    }
+  }
+  return byStudent;
+}
+
+if (RUN_VOLUME) {
+  const prefixes = VOLUME_PREFIX_FILTER
+    ? VOLUME_SQUAD_PREFIXES.filter((p) => p.startsWith(VOLUME_PREFIX_FILTER) || p === VOLUME_PREFIX_FILTER)
+    : VOLUME_SQUAD_PREFIXES;
+  const squadEntries = entries.filter(([key]) =>
+    prefixes.some((p) => key.startsWith(p)) && _moduleOpts(key).select === 'pool'
+  );
+
+  const thinWildcard = [];
+  const thinKeyed = [];
+  const personaGaps = [];
+  const PERSONA_POOLS = new Set([
+    'slender.deflect', 'slender.neutral', 'slender.secret', 'slender.eatPause', 'slender.mindFeel',
+    'eat.firstBite', 'eat.finish', 'cloth.reaction', 'shift.interior', 'shift.physical', 'shift.coda',
+    'interior.selfObs', 'immob.register', 'immob.settledState',
+  ]);
+
+  for (const [key, variants] of squadEntries) {
+    const wc = wildcardTextCount(variants);
+    const nonEmpty = nonEmptyWildcardCount(variants);
+    const optional = OPTIONAL_EMPTY_POOLS.has(key);
+    if (!optional && (wc < 4 || nonEmpty < 3)) {
+      thinWildcard.push({ key, wc, nonEmpty });
+    } else if (optional && wc < 4) {
+      thinWildcard.push({ key, wc, nonEmpty, optional: true });
+    }
+
+    const keyed = new Map();
+    for (const v of variants) {
+      if (!v.when || Object.keys(v.when).length === 0) continue;
+      const k = JSON.stringify(v.when);
+      keyed.set(k, (keyed.get(k) || 0) + countTexts(v));
+    }
+    for (const [k, n] of keyed) {
+      if (n < 3) thinKeyed.push({ key, when: k, count: n });
+    }
+
+    if (PERSONA_POOLS.has(key)) {
+      const cov = personaCoverage(variants);
+      for (const base of INIT_STUDENTS) {
+        const n = cov.get(base.id) || 0;
+        if (n < 2) personaGaps.push({ key, student: base.name, id: base.id, count: n });
+      }
+    }
+  }
+
+  console.log(`\nVolume dashboard (MIGRATION.md targets: pool ≥4 wildcard, keyed ≥3, persona ≥2/student)`);
+  console.log(`Namespaces: ${prefixes.join(', ')}`);
+  console.log(`Pools scanned: ${squadEntries.length}`);
+  console.log(`Thin wildcard pools: ${thinWildcard.length} (${thinWildcard.filter((t) => !t.optional).length} need prose)`);
+  for (const t of thinWildcard.filter((x) => !x.optional).slice(0, 25)) {
+    console.log(`  · ${t.key}: ${t.wc} wildcard (${t.nonEmpty} non-empty)`);
+  }
+  if (thinWildcard.filter((t) => !t.optional).length > 25) {
+    console.log(`  … and ${thinWildcard.filter((t) => !t.optional).length - 25} more`);
+  }
+  console.log(`Keyed cells under 3 texts: ${thinKeyed.length}`);
+  for (const t of thinKeyed.slice(0, 20)) console.log(`  · ${t.key} ${t.when}: ${t.count}`);
+  if (thinKeyed.length > 20) console.log(`  … and ${thinKeyed.length - 20} more`);
+  console.log(`Persona gaps (<2 lines/student): ${personaGaps.length}`);
+  const gapByPool = new Map();
+  for (const g of personaGaps) {
+    gapByPool.set(g.key, (gapByPool.get(g.key) || 0) + 1);
+  }
+  for (const [pool, n] of [...gapByPool.entries()].sort((a, b) => b[1] - a[1]).slice(0, 15)) {
+    console.log(`  · ${pool}: ${n} student(s) under target`);
+  }
+}
+
+// ── stage coverage report (Step 12 — squad band dashboard) ────
+
+function variantCoversStage(variant, stage) {
+  const w = variant.when || {};
+  if (!w.stageMin && !w.stageMax && w.stage == null) return false;
+  const min = w.stageMin ?? 0;
+  const max = w.stageMax ?? 11;
+  if (w.stage != null) {
+    return Array.isArray(w.stage) ? w.stage.includes(stage) : w.stage === stage;
+  }
+  return stage >= min && stage <= max;
+}
+
+function variantCoversCorruption(variant, corTier) {
+  const w = variant.when || {};
+  if (w.corruption == null) return true;
+  const tiers = Array.isArray(w.corruption) ? w.corruption : [w.corruption];
+  return tiers.includes(corTier);
+}
+
+function poolHasStageCoverage(variants, stage, corTier = null) {
+  return variants.some((v) => {
+    if (!variantCoversStage(v, stage)) return false;
+    if (corTier != null && !variantCoversCorruption(v, corTier)) return false;
+    return true;
+  });
+}
+
+if (RUN_COVERAGE) {
+  const bands = COVERAGE_BANDS.map((band) => ({
+    ...band,
+    prefixes: COVERAGE_PREFIX_FILTER
+      ? band.prefixes.filter((p) => p.startsWith(COVERAGE_PREFIX_FILTER) || p === COVERAGE_PREFIX_FILTER)
+      : band.prefixes,
+  })).filter((band) => band.prefixes.length > 0);
+
+  const relevant = entries.filter(([key]) =>
+    STAGE_COVERAGE_PREFIXES.some((p) => key.startsWith(p)) && _moduleOpts(key).select === 'pool',
+  );
+
+  console.log(`\nCoverage dashboard (squad stage bands — pool × stage matrix)`);
+  if (COVERAGE_PREFIX_FILTER) console.log(`Filter: ${COVERAGE_PREFIX_FILTER}`);
+  console.log(`Pools scanned: ${relevant.length}`);
+
+  let totalCells = 0;
+  let totalGaps = 0;
+  const allGaps = [];
+
+  for (const band of bands) {
+    const bandPools = relevant.filter(([key]) => band.prefixes.some((p) => key.startsWith(p)));
+    const corProbes = band.corruption ?? COVERAGE_CORRUPTION_PROBES;
+    const gaps = [];
+    let cells = 0;
+
+    for (const [key, variants] of bandPools) {
+      const needsCorruption = key.startsWith('shift.') || key.startsWith('interior.')
+        || key.includes('corruption') || key.startsWith('psych');
+      const corruptionPasses = needsCorruption ? corProbes : [null];
+
+      for (const stage of band.stages) {
+        for (const corTier of corruptionPasses) {
+          cells++;
+          totalCells++;
+          const covered = poolHasStageCoverage(variants, stage, corTier);
+          if (!covered) {
+            const label = corTier != null ? `${key}@stage${stage}/cor${corTier}` : `${key}@stage${stage}`;
+            gaps.push(label);
+            allGaps.push({ band: band.id, label });
+            totalGaps++;
+          }
+        }
+      }
+    }
+
+    const covered = cells - gaps.length;
+    const pct = cells ? Math.round((covered / cells) * 100) : 100;
+    console.log(`\n${band.label}: ${covered}/${cells} cells covered (${pct}%) · ${bandPools.length} pools`);
+    for (const g of gaps.slice(0, 20)) console.log(`  · ${g}`);
+    if (gaps.length > 20) console.log(`  … and ${gaps.length - 20} more`);
+  }
+
+  // Legacy vast-stage focus (stages 8–11 across all STAGE_COVERAGE_PREFIXES)
+  const legacyGaps = [];
+  for (const [key, variants] of relevant) {
+    for (const stage of COVERAGE_STAGE_PROBES) {
+      if (stage < 8) continue;
+      if (!poolHasStageCoverage(variants, stage)) legacyGaps.push(`${key}@stage${stage}`);
+    }
+  }
+  console.log(`\nLegacy vast focus (stages 8–11): ${legacyGaps.length} gap(s)`);
+  for (const g of legacyGaps.slice(0, 15)) console.log(`  · ${g}`);
+  if (legacyGaps.length > 15) console.log(`  … and ${legacyGaps.length - 15} more`);
+
+  const overallPct = totalCells ? Math.round(((totalCells - totalGaps) / totalCells) * 100) : 100;
+  console.log(`\nOverall band coverage: ${totalCells - totalGaps}/${totalCells} (${overallPct}%)`);
+}
+
+// ── banned pattern static scan ────────────────────────────────
+
+for (const [key, variants] of entries) {
+  for (const { text } of stringTexts(variants)) {
+    for (const { pattern, message } of BANNED_PATTERNS) {
+      if (pattern.test(text)) {
+        warning(`${key}: banned pattern (${message}): "${text.slice(0, 60)}…"`);
+      }
+    }
+  }
+}
 
 // ── report ────────────────────────────────────────────────────
 

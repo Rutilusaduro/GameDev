@@ -6,12 +6,12 @@
 // ranges and corruption tiers. These entries capture the emotional
 // core of transformation for each girl.
 //
-// Structure: registerModule("diary.<studentId>.<arcName>", variants)
+// Structure: registerPool("diary.<studentId>.<arcName>", variants)
 // Selectors: stage, stageMin/stageMax, corruption (0/1/2), season, mood
 // Each sub-arc: 3 variants minimum (discovery, fracture, release)
 // ═══════════════════════════════════════════════════════════════
 
-import { registerModule } from '../engine.js';
+import { registerPool } from '../engine.js';
 
 // ══════════════════════════════════════════════════════════════════
 // BRITTANY (0) — Cheerleader — "The Uniform"
@@ -19,7 +19,7 @@ import { registerModule } from '../engine.js';
 // Her gaining becomes the first thing that belongs to nobody's clipboard.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.brittany.uniform", [
+registerPool("diary.brittany.uniform", [
   // Beat 1: Discovery — the loss she doesn't quite grieve.
   { when: { studentId: 0, stageMin: 3, stageMax: 3, corruption: [0] }, weight: 4, text: [
     "Coach left my name off the performance roster this week. Scheduling conflict, he said. I ate an extra dinner and thought about it and then stopped thinking about it.",
@@ -32,11 +32,12 @@ registerModule("diary.brittany.uniform", [
   ]},
   // Beat 3: Release — ownership declared.
   { when: { studentId: 0, stageMin: 5, stageMax: 6, corruption: [2] }, weight: 4, text: [
-    "My body was the squad's for four years. Performance property. They kept the clipboard; I kept the muscle memory. Now I eat what I want, when I want, as much as I want, and there is nobody's score to keep. I'm keeping my own.",
+    "My body was the squad's for four years. Performance property. They kept the clipboard; I kept the muscle memory.",
+    "Now I eat what I want, when I want, as much as I want, and there is nobody's score to keep. I'm keeping my own.",
     "Coach saw me on campus. Something crossed his face. I smiled. I've been practicing that smile.",
   ]},
   // Fallback
-  { when: { studentId: 0 }, text: [
+  { when: {}, text: [
     "The roster feels lighter now. So do I.",
   ]},
 ]);
@@ -47,7 +48,7 @@ registerModule("diary.brittany.uniform", [
 // Clinical distance gradually erodes as she documents herself.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.madeline.dataset", [
+registerPool("diary.madeline.dataset", [
   { when: { studentId: 1, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
     "Field note, Week 3. [Subject] reports appetite increase outside structured meal windows. Hypothesis: stress response, elevated cortisol. Recommend monitoring.",
     "Field note, Week 5. [Subject] appetite continues elevated. Stress hypothesis weakening. Secondary hypothesis under consideration. No intervention at this time.",
@@ -57,10 +58,11 @@ registerModule("diary.madeline.dataset", [
     "The brackets around [Subject] look strange today. I keep typing them and deleting them and retyping them. The data doesn't change.",
   ]},
   { when: { studentId: 1, stageMin: 4, stageMax: 6, corruption: [2] }, weight: 4, text: [
-    "Week 11. I am the trial. The dosing is irregular and entirely self-administered. Efficacy: excellent. Side effects: none I'm interested in correcting. I ate two dinners tonight and wrote them both up as data and then I didn't write them up as data. I just ate them.",
+    "Week 11. I am the trial. The dosing is irregular and entirely self-administered. Efficacy: excellent. Side effects: none I'm interested in correcting.",
+    "I ate two dinners tonight and wrote them both up as data and then I didn't write them up as data. I just ate them.",
     "No brackets. No [Subject]. I don't want to correct this. I am very good at my job and I am using that skill to not correct this.",
   ]},
-  { when: { studentId: 1 }, text: [
+  { when: {}, text: [
     "The field work continues. The researcher continues. So does the data.",
   ]},
 ]);
@@ -71,7 +73,7 @@ registerModule("diary.madeline.dataset", [
 // The audience sees her real hunger. She doesn't re-film it.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.kylie.unfiltered", [
+registerPool("diary.kylie.unfiltered", [
   { when: { studentId: 2, stageMin: 4, stageMax: 4, corruption: [0] }, weight: 4, text: [
     "Shot a video today for the channel. Set up, hit record, did the whole bit — you know, the eating-aesthetic thing I do. Halfway through I just forgot the camera was there and ate like I actually eat.",
     "Uploaded the one where I forgot to perform. The one where my face just closed in on the fork and I didn't narrate my appetite. Usually I edit those out.",
@@ -81,9 +83,10 @@ registerModule("diary.kylie.unfiltered", [
     "I'm not sure if I'm going to film the next one or just eat.",
   ]},
   { when: { studentId: 2, stageMin: 5, stageMax: 6, corruption: [2] }, weight: 4, text: [
-    "I uploaded the one where I'm just eating. No script. No framing. Just me and a tray and an appetite nobody had to ask about. The engagement is insane. But I'm not reading the comments because I don't want to perform gratitude.",
+    "I uploaded the one where I'm just eating. No script. No framing. Just me and a tray and an appetite nobody had to ask about.",
+    "The engagement is insane. But I'm not reading the comments because I don't want to perform gratitude.",
   ]},
-  { when: { studentId: 2 }, text: [
+  { when: {}, text: [
     "No filter. Just me.",
   ]},
 ]);
@@ -94,20 +97,23 @@ registerModule("diary.kylie.unfiltered", [
 // Lb gained per week = weekly volume. Stage = tier advancement.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.serena.newpr", [
+registerPool("diary.serena.newpr", [
   { when: { studentId: 3, stageMin: 3, stageMax: 4, corruption: [0] }, weight: 4, text: [
-    "Started a new log. Metrics: weekly volume, conversion rate, stage tier. It's helping me understand the progression. The numbers make sense. I don't have to make sense of the wanting part separately from the numbers.",
+    "Started a new log. Metrics: weekly volume, conversion rate, stage tier. It's helping me understand the progression. The numbers make sense.",
+    "I don't have to make sense of the wanting part separately from the numbers.",
     "PR this week: +2.1 lbs in 7 days. New personal record. Logged it.",
   ]},
   { when: { studentId: 3, stageMin: 4, stageMax: 5, corruption: [1] }, weight: 4, text: [
-    "Weekly volume trending up. I could attribute this to increased baseline nutrition. I'm not going to because the attribution would be a lie. The attribution would be an excuse. I'm not looking for excuses. I'm looking for better metrics.",
+    "Weekly volume trending up. I could attribute this to increased baseline nutrition.",
+    "I'm not going to because the attribution would be a lie. The attribution would be an excuse.",
+    "I'm not looking for excuses. I'm looking for better metrics.",
     "Crossed into Plump tier yesterday. Logged it. PR stands at stage gain speed of +1 tier per 11.2 weeks. Excellent trajectory.",
   ]},
   { when: { studentId: 3, stageMin: 5, stageMax: 6, corruption: [2] }, weight: 4, text: [
     "New event. No weight class. No ceiling. The spreadsheet has infinite rows and I keep filling them and the numbers keep climbing. I'm competing against myself and I'm winning every single session.",
     "This is what winning looks like. It looks like more.",
   ]},
-  { when: { studentId: 3 }, text: [
+  { when: {}, text: [
     "New event. New build. New PR to chase.",
   ]},
 ]);
@@ -118,20 +124,21 @@ registerModule("diary.serena.newpr", [
 // Just herself, camera timer, full plate. She doesn't perform.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.fiona.subject", [
+registerPool("diary.fiona.subject", [
   { when: { studentId: 4, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
     "Set up the camera today. Studio, good light, three hours. Just ate. Didn't perform. Let the timer click. Developed the prints alone at 2am.",
     "One of the frames is perfect. I pinned it above my desk without a caption. The subject is beautiful and honest and I'm not sure I've seen myself like that before.",
   ]},
   { when: { studentId: 4, stageMin: 3, stageMax: 4, corruption: [1] }, weight: 4, text: [
-    "I've pinned three more prints since the first. Each session the light is different, the fullness is different, something in my face is softer. I look at them and I think: here. I was here and I was hungry and I didn't apologize for it.",
+    "I've pinned three more prints since the first. Each session the light is different, the fullness is different, something in my face is softer.",
+    "I look at them and I think: here. I was here and I was hungry and I didn't apologize for it.",
     "The camera doesn't lie. Neither do I, in these frames.",
   ]},
   { when: { studentId: 4, stageMin: 4, stageMax: 5, corruption: [2] }, weight: 4, text: [
     "The art is choosing itself now. Every appetite becomes a composition. Every weight gain a study in form. I am the medium and the artist and the subject. This feels correct.",
     "I'm going to need more plates.",
   ]},
-  { when: { studentId: 4 }, text: [
+  { when: {}, text: [
     "The subject is excellent. The work is just beginning.",
   ]},
 ]);
@@ -143,7 +150,7 @@ registerModule("diary.fiona.subject", [
 // Screenshots the scale. Sets a new target.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.destiny.achievement", [
+registerPool("diary.destiny.achievement", [
   { when: { studentId: 5, stageMin: 3, stageMax: 4, corruption: [0] }, weight: 4, text: [
     "Saw a number on the scale that I remember typing into a build calculator years ago. The number I was ashamed of. The number I deleted without telling anyone.",
     "That number is real now. That number is me. I don't know if I should have told someone.",
@@ -156,7 +163,7 @@ registerModule("diary.destiny.achievement", [
     "New build selected. Old ashamed version of me would not recognize the specs. Current version: very interested in what comes next in the progression.",
     "Save point: achieved. Next tier unlocked. Continue.",
   ]},
-  { when: { studentId: 5 }, text: [
+  { when: {}, text: [
     "New high score.",
   ]},
 ]);
@@ -167,9 +174,10 @@ registerModule("diary.destiny.achievement", [
 // One night she stops keeping count for herself.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.tiffany.uncounted", [
+registerPool("diary.tiffany.uncounted", [
   { when: { studentId: 6, stageMin: 3, stageMax: 4, corruption: [0] }, weight: 4, text: [
-    "Hosted an event tonight. Twenty-three girls, three courses, wine for the ones who wanted it. I was the hostess, the timekeeper, the plate-counter. I made sure everyone had enough because that's what I do.",
+    "Hosted an event tonight. Twenty-three girls, three courses, wine for the ones who wanted it.",
+    "I was the hostess, the timekeeper, the plate-counter. I made sure everyone had enough because that's what I do.",
     "Halfway through dessert I realized I hadn't eaten. I hadn't even set a place for myself.",
   ]},
   { when: { studentId: 6, stageMin: 4, stageMax: 5, corruption: [1] }, weight: 4, text: [
@@ -180,7 +188,7 @@ registerModule("diary.tiffany.uncounted", [
     "Hosted again last night. No spreadsheet, no count. I fed the room and I fed myself and the dress was tight and I didn't bother to change. Felt excellent walking home.",
     "The uncomplicated feeling is becoming my favorite.",
   ]},
-  { when: { studentId: 6 }, text: [
+  { when: {}, text: [
     "More is more, babe.",
   ]},
 ]);
@@ -191,20 +199,22 @@ registerModule("diary.tiffany.uncounted", [
 // She's been updating actuals every week. She hasn't corrected anything.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.priya.spreadsheet", [
+registerPool("diary.priya.spreadsheet", [
   { when: { studentId: 7, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
     "Built a spreadsheet. Rows 1-30 for weeks, columns for starting weight, weekly gain, cumulative, stage, projected end. Made it to show myself the trajectory and correct it. To see the problem clearly.",
     "I'm updating the actuals every week. The projected end weight keeps going up.",
   ]},
   { when: { studentId: 7, stageMin: 3, stageMax: 4, corruption: [1] }, weight: 4, text: [
-    "Week 7: projected end weight 280. Week 12: projected end weight 295. Week 16: projected end weight 310. I keep updating the projection because the trajectory keeps changing. Or maybe because I keep changing.",
+    "Week 7: projected end weight 280. Week 12: projected end weight 295. Week 16: projected end weight 310.",
+    "I keep updating the projection because the trajectory keeps changing. Or maybe because I keep changing.",
     "I haven't corrected anything. I'm just updating the projections.",
   ]},
   { when: { studentId: 7, stageMin: 4, stageMax: 6, corruption: [2] }, weight: 4, text: [
-    "The spreadsheet is perfect. The data is perfect. The only thing that's not perfect is the pretense that I'm going to correct any of it. I open it every morning and I smile at the numbers and I add to them.",
+    "The spreadsheet is perfect. The data is perfect. The only thing that's not perfect is the pretense that I'm going to correct any of it.",
+    "I open it every morning and I smile at the numbers and I add to them.",
     "The projection updates itself. So do I.",
   ]},
-  { when: { studentId: 7 }, text: [
+  { when: {}, text: [
     "KPIs: excellent. Overperformance: sustained.",
   ]},
 ]);
@@ -215,7 +225,7 @@ registerModule("diary.priya.spreadsheet", [
 // She's become the comfortable position. She stays two minutes after.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.maya.chair", [
+registerPool("diary.maya.chair", [
   { when: { studentId: 8, stageMin: 4, stageMax: 5, corruption: [0] }, weight: 4, text: [
     "Sat in the office today for longer than I needed to. The chair was different. Or I was. The fit was exact. No adjusting. Just right.",
     "Stayed two minutes after the conversation ended. Just sat there in the right-fitting chair. Went home.",
@@ -227,7 +237,7 @@ registerModule("diary.maya.chair", [
   { when: { studentId: 8, stageMin: 5, stageMax: 6, corruption: [2] }, weight: 4, text: [
     "I love the chair. I should say that plainly. I eat and I sit and the chair receives me and I'm exactly the size and shape the chair was waiting for. This is what home feels like.",
   ]},
-  { when: { studentId: 8 }, text: [
+  { when: {}, text: [
     "Home.",
   ]},
 ]);
@@ -238,7 +248,7 @@ registerModule("diary.maya.chair", [
 // portions to genuine appetite to the request: send the dress with extra fabric.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.chloe.americaine", [
+registerPool("diary.chloe.americaine", [
   { when: { studentId: 9, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
     "À Maman: les portions ici are obscène. A scientific obscenity. A form of cultural aggression. I observed this from a great distance. I continue observing.",
     "À Maman: the dining hall has surrendered to me. Or I am surrendering to it. Still observing which is which.",
@@ -251,7 +261,7 @@ registerModule("diary.chloe.americaine", [
     "À Maman: I need you to send my blue dress. No, the other one. The one with the extra fabric. The one you said I would never need. I need it now.",
     "À Maman: l'Amérique m'a changée. Not damaged. Changed. I am larger and this is not a shame. This is an accomplishment.",
   ]},
-  { when: { studentId: 9 }, text: [
+  { when: {}, text: [
     "C'est obscène. C'est merveilleux.",
   ]},
 ]);
@@ -262,7 +272,7 @@ registerModule("diary.chloe.americaine", [
 // The entry reads like a recipe notation. Perfect proofing.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.renee.recipe", [
+registerPool("diary.renee.recipe", [
   { when: { studentId: 10, stageMin: 3, stageMax: 4, corruption: [0] }, weight: 4, text: [
     "New category in the journal today: self. The entry: subject is soft, warming, resting properly. Temperature stable. This is observation.",
     "Fed myself the way I feed everyone else. Excellent yield.",
@@ -274,7 +284,7 @@ registerModule("diary.renee.recipe", [
   { when: { studentId: 10, stageMin: 5, stageMax: 6, corruption: [2] }, weight: 4, text: [
     "Subject is perfectly proofed. Fat content: increasing. This is correct. This is the recipe working. Yield: abundant. No corrections needed. The journal entry is complete.",
   ]},
-  { when: { studentId: 10 }, text: [
+  { when: {}, text: [
     "The recipe is ready. The kitchen is warm.",
   ]},
 ]);
@@ -285,7 +295,7 @@ registerModule("diary.renee.recipe", [
 // Clinical distance gradually dissolves as language becomes intimate.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.kaylee.patient", [
+registerPool("diary.kaylee.patient", [
   { when: { studentId: 11, stageMin: 3, stageMax: 4, corruption: [0] }, weight: 4, text: [
     "Self-assessment today. Subcutaneous layer: increasing. Adipose distribution: symmetric. Palpation results: compliance noted. The examination is thorough. This is clinical practice.",
     "I documented everything in proper notation. Filed under my own name.",
@@ -298,7 +308,7 @@ registerModule("diary.kaylee.patient", [
     "No assessment today. Just: I am soft and warm and full and this is good nursing care for myself. This is the most aggressive self-care I've ever practiced and I approve completely.",
     "The chart is closed. I have become the cure.",
   ]},
-  { when: { studentId: 11 }, text: [
+  { when: {}, text: [
     "Vital signs: all excellent.",
   ]},
 ]);
@@ -309,7 +319,7 @@ registerModule("diary.kaylee.patient", [
 // She names this out loud to the professor, mid-bite.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.nadia.casestudy", [
+registerPool("diary.nadia.casestudy", [
   { when: { studentId: 12, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
     "Read the literature on feederism and weight gain dynamics today. Assembled a review. Noted that I appear in several case studies. This is academic interest.",
     "The case studies are thorough. The mechanism is clear. I am clear about the mechanism.",
@@ -322,7 +332,7 @@ registerModule("diary.nadia.casestudy", [
     "I have become the literature. I am writing myself into the case study in real time. The researcher is the subject is the analyst. The observation is inseparable from the happening.",
     "This is the richest psychological material I've ever inhabited.",
   ]},
-  { when: { studentId: 12 }, text: [
+  { when: {}, text: [
     "The dynamic is named. So am I.",
   ]},
 ]);
@@ -333,7 +343,7 @@ registerModule("diary.nadia.casestudy", [
 // against her warmth. She thinks: this is what a body is for.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.daisy.softening", [
+registerPool("diary.daisy.softening", [
   { when: { studentId: 13, stageMin: 3, stageMax: 4, corruption: [0] }, weight: 4, text: [
     "The children reached for me today the way they reach for their own mothers. With complete ease. My belly was where they wanted to be during read-aloud.",
     "I fed them snacks and they pressed against my warmth and stayed. This is what I'm becoming.",
@@ -346,7 +356,7 @@ registerModule("diary.daisy.softening", [
     "I am soft and the children are comfortable. This is the most purposeful I've ever felt. My body is a home for the people I love. My body is for warmth and presence and feeding.",
     "I will feed them forever. I will be exactly this soft forever.",
   ]},
-  { when: { studentId: 13 }, text: [
+  { when: {}, text: [
     "Soft is strong. Warm is everything.",
   ]},
 ]);
@@ -357,7 +367,7 @@ registerModule("diary.daisy.softening", [
 // One word, exactly right, then back to eating.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.maryjane.ripe", [
+registerPool("diary.maryjane.ripe", [
   { when: { studentId: 14, stageMin: 4, stageMax: 5, corruption: [0] }, weight: 4, text: [
     "Saw myself in the car window walking back from the dining hall. Stopped. Looked at the reflection the way I look at the garden in late summer.",
     "Used one word and kept walking: Ripe.",
@@ -369,7 +379,7 @@ registerModule("diary.maryjane.ripe", [
   { when: { studentId: 14, stageMin: 5, stageMax: 6, corruption: [2] }, weight: 4, text: [
     "Everything ripe falls from the tree. Everything ripe feeds what comes next. I'm ripe and full and absolutely ready to fall into whatever's next.",
   ]},
-  { when: { studentId: 14 }, text: [
+  { when: {}, text: [
     "Harvest time.",
   ]},
 ]);
@@ -379,7 +389,7 @@ registerModule("diary.maryjane.ripe", [
 // Sub-arc: Field notes on herself. Brackets disappear. She removes the distance.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.sophia.trial", [
+registerPool("diary.sophia.trial", [
   { when: { studentId: 16, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
     "Field note, Week 3. [Subject] reports appetite increase outside structured meal windows. Hypothesis: stress response, elevated cortisol. Recommend monitoring.",
     "Field note, Week 5. [Subject] appetite continues elevated. Stress hypothesis weakening. Secondary hypothesis under consideration. No intervention at this time.",
@@ -389,10 +399,11 @@ registerModule("diary.sophia.trial", [
     "The brackets around [Subject] look strange today. I keep typing them and deleting them and retyping them. The data doesn't change.",
   ]},
   { when: { studentId: 16, stageMin: 4, stageMax: 6, corruption: [2] }, weight: 4, text: [
-    "Week 11. I am the trial. The dosing is irregular and entirely self-administered. Efficacy: excellent. Side effects: none I'm interested in correcting. I ate two dinners tonight and wrote them both up as data and then I didn't write them up as data. I just ate them.",
+    "Week 11. I am the trial. The dosing is irregular and entirely self-administered. Efficacy: excellent. Side effects: none I'm interested in correcting.",
+    "I ate two dinners tonight and wrote them both up as data and then I didn't write them up as data. I just ate them.",
     "No brackets. No [Subject]. I don't want to correct this. I am very good at my job and I am using that skill to not correct this.",
   ]},
-  { when: { studentId: 16 }, text: [
+  { when: {}, text: [
     "The field work continues. So do I.",
   ]},
 ]);
@@ -403,20 +414,23 @@ registerModule("diary.sophia.trial", [
 // All technically accurate. She also knows the reason is hunger and pleasure.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.talia.justification", [
+registerPool("diary.talia.justification", [
   { when: { studentId: 18, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
     "Researched metabolic baselines today. Found papers on how increased body mass affects lab output. Wrote three pages. Technically sound. Entirely true. Also entirely a rationalization.",
     "I know why I'm eating more. The papers are real anyway.",
   ]},
   { when: { studentId: 18, stageMin: 3, stageMax: 4, corruption: [1] }, weight: 4, text: [
-    "Expanded the research. Found more papers. Found papers I wrote. Found papers I wrote that prove I was building toward this from the beginning. The arguments are excellent. The conclusion was already decided.",
+    "Expanded the research. Found more papers. Found papers I wrote.",
+    "Found papers I wrote that prove I was building toward this from the beginning. The arguments are excellent. The conclusion was already decided.",
     "The justification is airtight. The hunger is real.",
   ]},
   { when: { studentId: 18, stageMin: 4, stageMax: 6, corruption: [2] }, weight: 4, text: [
-    "The lab notes are full now. Conductivity: improved. Field resonance: optimal at this current mass. Metabolic baseline: perfectly calibrated for precision work. All true. All excellent. All necessary.",
-    "I'm going to keep building the machines. And the machines are going to keep working better when I'm this big. And I'm going to keep being this big. The math is perfect.",
+    "The lab notes are full now. Conductivity: improved. Field resonance: optimal at this current mass.",
+    "Metabolic baseline: perfectly calibrated for precision work. All true. All excellent. All necessary.",
+    "I'm going to keep building the machines. And the machines are going to keep working better when I'm this big.",
+    "And I'm going to keep being this big. The math is perfect.",
   ]},
-  { when: { studentId: 18 }, text: [
+  { when: {}, text: [
     "The research justifies itself. So do I.",
   ]},
 ]);
@@ -427,7 +441,7 @@ registerModule("diary.talia.justification", [
 // The fit is precise. She feels it. She adds more plates.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.lilith.chair", [
+registerPool("diary.lilith.chair", [
   { when: { studentId: 15, stageMin: 4, stageMax: 5 }, weight: 4, text: [
     "Took a chair at the feast. Sat down. The fit was perfect and precise and total. The wood said something when I made my presence clear. I picked up a plate.",
   ]},
@@ -439,7 +453,7 @@ registerModule("diary.lilith.chair", [
     "The chair is dying under me in the most satisfying way. The wood groans. The fit is absolute. This is what dominance feels like — the room rearranging itself around your mass.",
     "Soon.",
   ]},
-  { when: { studentId: 15 }, text: [
+  { when: {}, text: [
     "The feast awaits.",
   ]},
 ]);
@@ -450,20 +464,24 @@ registerModule("diary.lilith.chair", [
 // Field notebook notation. Site expanding. Ground soft. Very promising.
 // ══════════════════════════════════════════════════════════════════
 
-registerModule("diary.indiana.fieldmap", [
+registerPool("diary.indiana.fieldmap", [
   { when: { studentId: 17, stageMin: 2, stageMax: 3 }, weight: 4, text: [
     "*EXPEDITION LOG — Site Designation: [personal]*",
     "Week three. Initial survey complete. Site perimeter: stable. Ground topography: warming. No expedition hazards detected. Recommend extended field stay.",
   ]},
   { when: { studentId: 17, stageMin: 3, stageMax: 5 }, weight: 4, text: [
     "*EXPEDITION LOG — Site Expansion Phase*",
-    "Belly circumference up four inches since survey. Hips: corresponding expansion. Thighs: notable softening — ground cover thick, excellent insulation properties. General topography: rounder, warmer, increasingly promising. Surface texture: surprisingly pleasant. I have dispatched no reports to the university because this does not fit standard academic categories.",
+    "Belly circumference up four inches since survey. Hips: corresponding expansion. Thighs: notable softening — ground cover thick, excellent insulation properties.",
+    "General topography: rounder, warmer, increasingly promising. Surface texture: surprisingly pleasant.",
+    "I have dispatched no reports to the university because this does not fit standard academic categories.",
   ]},
   { when: { studentId: 17, stageMin: 5, stageMax: 10 }, weight: 4, text: [
     "*EXPEDITION LOG — Final Phase*",
-    "Site is expanding under active conditions. Provisioning continues. This site is very promising. I have extended my field stay indefinitely. I am not finished looking. Additional measurements required. Comprehensive survey in progress. Additional surveys: ongoing.",
+    "Site is expanding under active conditions. Provisioning continues. This site is very promising.",
+    "I have extended my field stay indefinitely. I am not finished looking.",
+    "Additional measurements required. Comprehensive survey in progress. Additional surveys: ongoing.",
   ]},
-  { when: { studentId: 17 }, text: [
+  { when: {}, text: [
     "Expedition status: very promising.",
   ]},
 ]);

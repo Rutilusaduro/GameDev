@@ -11,9 +11,13 @@ import './fragments.js';
 import './personas.js';
 import './breakScene.js';
 import { appendCampusWeighIn } from '../campusSoftening.js';
+import { renderSlenderMirrorBeat } from '../earlyGain/index.js';
+import { isSlenderEligible } from '../../../gameData/textContext.js';
 
-export const WI_INTRO = "{wi.arrival} {wi.settle} {wi.scaleApproach}";
-export const WI_INTRO_BIG = "{wi.arrival} {wi.settle} {wi.bigScaleApproach}";
+export const WI_INTRO_LEGACY = "{wi.arrival} {wi.settle} {wi.scaleApproach}";
+export const WI_INTRO = "{wi.arrival} {wi.settle} {wi.approachSentence} {wi.scaleSentence}";
+export const WI_INTRO_BIG = "{wi.arrival} {wi.settle} {wi.approachSentence} {wi.scaleSentence}";
+export const WI_APPROACH_V2 = "{wi.approachSentence} {wi.scaleSentence}";
 export const WI_REACTION = "{wi.stepOff}\n\n{wi.reply}{wi.foodAsk|prefix: }";
 export const WI_BREAK = "{wi.breakBeat} {wi.breakLine}";
 
@@ -21,6 +25,8 @@ function weighInCtx(student, week, opts = {}) {
   return createContext({
     subject: student,
     week,
+    sessionUsed: opts.sessionUsed,
+    weekUsed: opts.weekUsed,
     globals: {
       campusFattening: !!opts.campusFattening,
       campusTier: opts.campusTier || (opts.campusFattening ? 1 : 0),
@@ -32,26 +38,37 @@ function weighInCtx(student, week, opts = {}) {
 
 // All renderers honor opts.trace (array) — slot provenance for dev tooling.
 
-// Intro scene: arrival + settle + scale approach.
+// Intro scene: arrival + settle + scale approach (V2 skeleton in production).
 export function renderWeighInIntro(student, week, goesDirectlyToBig = false, opts = {}) {
   const ctx = weighInCtx(student, week, { ...opts, bigScale: goesDirectlyToBig });
+  const introTpl = goesDirectlyToBig ? WI_INTRO_BIG : WI_INTRO;
   if (opts.aibMandatory) {
     const mandate = render('{wi.aibMandatory}', ctx, { trace: opts.trace });
-    const arrival = render(goesDirectlyToBig ? WI_INTRO_BIG : WI_INTRO, ctx, { trace: opts.trace });
+    const arrival = render(introTpl, ctx, { trace: opts.trace });
     return `${mandate}\n\n${arrival}`;
   }
-  return render(goesDirectlyToBig ? WI_INTRO_BIG : WI_INTRO, ctx, { trace: opts.trace });
+  return render(introTpl, ctx, { trace: opts.trace });
+}
+
+/** Approach + readout only — Dialogue Lab / tuning (WI_APPROACH_V2). */
+export function renderWeighInApproachV2(student, week, goesDirectlyToBig = false, opts = {}) {
+  const ctx = weighInCtx(student, week, { ...opts, bigScale: goesDirectlyToBig });
+  return render(WI_APPROACH_V2, ctx, { trace: opts.trace });
 }
 
 // Reaction: step-off beat + her personal reply (campus coda preserved).
 export function renderWeighInReaction(student, week, opts = {}) {
   const ctx = weighInCtx(student, week, opts);
   const stepOff = render("{wi.stepOff}", ctx, { trace: opts.trace });
-  const reply = appendCampusWeighIn(
+  let reply = appendCampusWeighIn(
     render("{wi.reply}{wi.foodAsk|prefix: }", ctx, { trace: opts.trace }),
     student,
     { ...opts, week },
   );
+  if (isSlenderEligible(student)) {
+    const mirrorBeat = renderSlenderMirrorBeat(student, week, opts);
+    if (mirrorBeat) reply = `${mirrorBeat}\n\n${reply}`;
+  }
   return `${stepOff}\n\n${reply}`;
 }
 

@@ -2,7 +2,7 @@
 // HUNGER LEXICON — word modules + hunger/eating/talk codas
 // See docs/Pharmacist/Hunger Lexicon.txt
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, pick } from '../engine.js';
+import { registerModule, registerPool, pick } from '../engine.js';
 
 const HUNGER_TIER_KEYS = ['normal', 'increased', 'high', 'craving', 'starving'];
 
@@ -133,7 +133,7 @@ registerModule('word.begging', [{
   },
 }]);
 
-registerModule('hunger.desc', [
+registerPool('hunger.desc', [
   { when: { hungerTier: [4] }, priority: 4, text: (ctx) => `She is ${pick(HUNGER_WORDS.starving)}.` },
   { when: { hungerTier: [3] }, priority: 3, text: (ctx) => `She is ${pick(HUNGER_WORDS.craving)}.` },
   { when: { hungerTier: [2] }, priority: 2, text: (ctx) => `She is ${pick(HUNGER_WORDS.high)}.` },
@@ -141,7 +141,7 @@ registerModule('hunger.desc', [
   { when: {}, text: 'Her appetite seems normal for now.' },
 ]);
 
-registerModule('hunger.addictedDesc', [
+registerPool('hunger.addictedDesc', [
   { when: { addictionLevelMin: 2, hungerTierMin: 3 }, priority: 3,
     text: (ctx) => `More than that — she is ${pick(ADDICTED_HUNGER_WORDS.starving)}.` },
   { when: { addictionLevelMin: 2 }, priority: 2,
@@ -149,7 +149,7 @@ registerModule('hunger.addictedDesc', [
   { when: {}, text: '' },
 ]);
 
-registerModule('eating.style', [
+registerPool('eating.style', [
   { when: { addictionLevelMin: 3, hungerTierMin: 3 }, priority: 4,
     text: (ctx) => `She ${pick(ADDICTED_EATING.dependent)}.` },
   { when: { addictionLevelMin: 2, hungerTierMin: 2 }, priority: 3,
@@ -159,7 +159,7 @@ registerModule('eating.style', [
   { when: {}, text: (ctx) => `She ${pick(EATING_STYLE.normal)}.` },
 ]);
 
-registerModule('talk.hungryCoda', [
+registerPool('talk.hungryCoda', [
   { when: { inWithdrawal: true }, priority: 4,
     text: (ctx) => ` ${pick(WITHDRAWAL_BEHAVIOR[withdrawalKey(ctx.d.addictionLevel)])}.` },
   { when: { addictionLevelMin: 2, hungerTierMin: 3 }, priority: 3,

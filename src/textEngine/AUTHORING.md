@@ -2,7 +2,9 @@
 
 > **Audience: you, the LLM (or human) about to write game prose.** Read this whole file before writing or editing ANY narrative text. The engine reference is `docs/modular-text-system.md`; this file is the content contract. The canonical exemplar files to copy are `src/textEngine/scenes/weighIn/` and `src/textEngine/scenes/talkEncourage.js`.
 >
-> Companions: `MIGRATION.md` (process for converting legacy prose into this form) · `TUNING.md` (the flag-batch editing loop + the **Style Ledger** of banned constructions — new prose must respect the ledger too).
+> **The Squad:** All narrative work is owned by the six-agent team in **`SQUAD.md`** — identify your lead agent before editing. **Early game (stages 0–4, corruption 0) is Agent 6 (Slender).** Every prose pass ends with Agent 5's quality gate.
+>
+> Companions: `SQUAD.md` (agent ownership & workflow) · `MIGRATION.md` (legacy → modular) · `TUNING.md` (flag-batch loop + **Style Ledger**)
 
 ## 0. Prime directive
 
@@ -45,6 +47,32 @@ registerPool("wi.bodyClause", [
 - **`registerModule` ('best' mode) — legacy/suppressive.** Most specific match wins outright. Use ONLY when less-specific variants must be *impossible*, not just rare (e.g. `talk.coda` registers an empty wildcard so the coda is silent unless a corruption register fires).
 - `weight` raises/lowers a variant's share (`weight: 4` on persona variants keeps the girl's own voice dominant; `weight: 0` parks a draft).
 - `priority` in pool mode is a **hard gate**: only max-priority matches survive. Use rarely and document why in a comment.
+
+### Inter-slot flags (`consumes` / `requireAbsent`)
+
+`createContext()` initializes `ctx.flags` — a per-render bag for inter-slot exclusivity. Variant fields:
+
+- `consumes: ['flagName']` — sets the flag after this variant is selected.
+- `requireAbsent: ['flagName']` — excludes the variant if the flag is already set.
+
+Authorized namespaces: `psych_mood`, `scale_ref`, `speed_mod`, `size_reminder`, `sound_tex`, `spatial_obs`. Use only for known problem pairings (e.g. pace adverb + psychological annotation both firing). Most pools need neither field.
+
+### Anti-repetition (`sessionUsed` / `weekUsed`)
+
+Pool picks record a stable key per variant line (`moduleKey#variantIndex:textIndex`). Lines already chosen this **session** (one weigh-in, dinner, digest beat) or this **week** (`student.textUsedKeys`) are deprioritized, not excluded — weights multiply by `0.12` (session) and `0.4` (week). If every eligible line is penalized, the engine falls back to full weights.
+
+Gameplay passes a shared `sessionUsed` Set across renders in one event; `weekUsed` loads from / saves to `student.textUsedKeys` via `textContext.js` helpers. Cleared on week advance in `clearWeeklyTextFlags`.
+
+### Extensible dimensions (`registerDimension`)
+
+New game-state dimensions can be registered without editing `engine.js`:
+
+```js
+import { registerDimension } from '../engine.js';
+registerDimension('myKey', (ctx) => ctx.globals?.myValue ?? 'default');
+```
+
+Results land on `ctx.d.myKey` and are usable in `when` immediately. Built-in dimensions: `campusLocale`, `mobilityLevel`, `clothingState`, `mealContext`, `isGaining`, `lastCorruptionShift`, **`gainStance`** (A6 — `opposed` | `reluctant` | `secret` | `neutral` | `acclimating`; derived from shame/fixation tiers at corruption 0).
 
 ### Consequence of pooling: generic fragments must be tone-neutral
 
@@ -92,6 +120,12 @@ All keys combine (AND within a variant; value arrays are OR). Unlisted keys are 
 | `season` | fall, winter, spring, summer (4-week cycles) |
 | `campusFattening` / `campusTierMin/Max` | school-wide softening flag / tier 0-3 |
 | `bigScale` | true when the industrial scale is in play (say "display", not "dial") |
+| `campusLocale` | hallway, lecture_hall, gym, cafeteria, dorm_room, stairwell, elevator, prof_office (via `registerDimension`) |
+| `mobilityLevel` | full · present · planning · economy · minimal · immobile (derived from stage) |
+| `clothingState` | fitted, button_pop, zipper_fail, seam_split, waistband_surrender, sleeve_restriction, shirt_rise, bra_protest |
+| `mealContext` | breakfast, binge, snack, campus_meal, meal |
+| `isGaining` | true when week-over-week gain is active |
+| `lastCorruptionShift` | true in the week corruption actually increased (psych shift scenes) |
 | `skill` | one skillEffects flag name, truthy check |
 | `relSize` / `refStage` | vs `ctx.ref`: much_smaller, smaller, similar, larger, much_larger |
 | `causeType` | device_use, device_malfunction, weekly_tick, digest_stageup, feature |
@@ -133,6 +167,21 @@ All keys combine (AND within a variant; value arrays are OR). Unlisted keys are 
 | 16 | Sophia | pharmacy_grad | pear | Anxious precision; wellness-research framing, double-checked numbers. |
 | 17 | Indiana Bones | explorer | straight | Roguish archaeology bravado; everything is an expedition. |
 
+### Per-girl corruption arc voice (6-line guide)
+
+**Squad lead: Agent 2 (Psych)** for beats 2–6. **Agent 6 (Slender)** owns beat 1 and all early-game staging. Agent 5 (Editor) holds final voice consistency.
+
+For each student, calibrate interior voice across these beats — use when writing `shift.*`, `interior.*`, `slender.*`, `eat.*` persona lines, and `diary` entries:
+
+1. **Corruption 0, visible gain** — **A6 Slender:** resistance, neutrality, or secret appetite; excuses vs. unfussed vs. body contradicting words; `gainStance` keys. Subtle physical change on still-thin bodies.
+2. **Corruption 0→1 transition** — first crack; pleasure where dread was; files feeling elsewhere, does not stay filed.
+3. **Corruption 1** — ambivalent; stopped fighting, not yet celebrating; flat familiarity.
+4. **Corruption 1→2 transition** — surrender; social witness; interior goes quiet; nothing left to argue.
+5. **Corruption 2** — settled; appetite open; body as project/status report; "more."
+6. **Stage 10-11** — leviathan reality; practical knowledge of scale; immobility as fact, not emergency.
+
+Archetype colors the six lines (competitor/data for Brittany, sensory catalog for Reneé, resource management for Destiny, clinical warmth for Kaylee, silence for Maya, predator watchfulness for Lilith) but corruption tier is the primary axis.
+
 ## 4. Per-girl persona conventions
 
 - Persona variants live in a dedicated `personas.js` next to the scene (see `scenes/weighIn/personas.js`), registered into the SAME slot keys via `registerModuleVariants` — they extend the shared pool, they don't replace it.
@@ -142,12 +191,15 @@ All keys combine (AND within a variant; value arrays are OR). Unlisted keys are 
 
 ## 5. Authoring a new scene (checklist)
 
+**Route through `SQUAD.md` first** — confirm lead agent, then:
+
 1. New file under `src/textEngine/scenes/` (or a folder for multi-file scenes). Register scene-local modules at import time; export template constants + a `renderX()` wrapper. Namespace keys (`wi.*`, `enc.*`, `<feature>.*`).
 2. Add the file to `src/textEngine/scenes/index.js` (the barrel — lint and DebugPanel sweep it).
 3. Every pool: a `when: {}` wildcard variant (lint errors otherwise), ≥3 wildcard texts, one grammar shape, a shape comment.
 4. Decide which axes the scene should react to (stage? bodyType? mood? hunger? per-girl?) and write keyed variants for the top 2-3 axes minimum.
 5. `npm run text:lint` — must be clean for your keys. Then `npm run lint`.
-6. Eyeball renders: DebugPanel sweep buttons, or `node --input-type=module -e "import './src/textEngine/scenes/index.js'; import { createContext, render } from './src/textEngine/engine.js'; ..."`.
+6. **Agent 5 (Editor) gate:** sample renders + Style Ledger check (see `SQUAD.md`).
+7. Eyeball renders: DebugPanel sweep buttons, or `node --input-type=module -e "import './src/textEngine/scenes/index.js'; import { createContext, render } from './src/textEngine/engine.js'; ..."`.
 
 ## 6. Anti-patterns
 
@@ -159,4 +211,28 @@ All keys combine (AND within a variant; value arrays are OR). Unlisted keys are 
 - **Re-registering a key** — overwrites silently in prod (dev warns). Check the namespace before naming.
 - **Paraphrasing mined dialogue** — kills the character voice that playtesters already know.
 - **`gameHelpers.rnd` vs `pick`** — `rnd(a,b)` is an int range, `pick(arr)` picks from an array. Never mix.
-- **Anything in the TUNING.md Style Ledger** — banned constructions discovered through live tuning ("Statement. That is X.", knowing-narrator winks, gain-excuse lines below stage 2, double-described phenomena, pace/verb contradictions…). The ledger grows; check it before writing.
+- **Anything in the TUNING.md Style Ledger** — banned constructions discovered through live tuning ("Statement. That is X.", knowing-narrator winks, gain-excuse lines below stage 2, double-described phenomena, pace/verb contradictions…). The ledger grows; check it before writing. Automated grep: `scripts/text-lint.config.js`.
+
+## 7. Onboarding templates
+
+### New character checklist
+
+1. `studentId` + archetype/bodyType/voice row in this file.
+2. Six-line corruption arc voice guide (§3 table format).
+3. **A6 early lines:** `slender.*` or `wi.replyDialogue` persona (2× gainStance bands), `wi.bodyClause` stageMax 3 (1), `eat.firstBite` corruption 0 (1).
+4. Per-girl lines in: `wi.breakLine` (1), `wi.arrival` persona (2×2 stage bands), `eat.firstBite` persona (2), diary base (3 across corruption).
+5. `npm run text:lint` clean → `npm run build`.
+
+### New campus locale checklist
+
+1. Register `campusLocale` key via `registerDimension()` if new.
+2. Navigation pool (`campus.moveSentence` + locale-keyed `campus.destination`) — 8+ entries across stage range.
+3. Spatial observation (`campus.spaceObs`) — 5+ entries.
+4. NPC presence (`npc.bystander` + locale `when`) — 5+ entries.
+5. `npm run text:lint` clean → `npm run build`.
+
+### Lint tooling
+
+- `npm run text:lint` — static + dynamic sweep (required clean).
+- `npm run text:lint -- --sample=500 --scene=wi` — combinatorial sampling with trigram/length checks.
+- `npm run text:lint -- --coverage` — squad band dashboard (early/mobile/vast); `--coverage=slender.` filters namespaces.

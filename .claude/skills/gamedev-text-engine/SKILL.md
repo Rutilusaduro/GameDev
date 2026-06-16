@@ -1,6 +1,6 @@
 ---
 name: gamedev-text-engine
-description: Operating manual for Rutilusaduro's GameDev repo — "Professor Sim", a React + Vite weight-gain college sim whose narrative comes from a modular text engine that fills templated slots from a registry of when-keyed prose variants (most-specific wins, or pool by specificity). Use this whenever working in that repo or its text engine — writing or editing ANY game prose, adding or wiring a scene, building registerPool variants, composing slot skeletons, reusing the word.* lexicon, keying content on game state, fixing the content linter (npm run text:lint), weight-stage coverage, or tuning/migrating prose. Even a casual "add a scene", "write a weigh-in beat for her", "give Maya a line", or "the text linter is failing" pulls it in. It carries the engine API, the when-selector vocabulary, the lexicon/module catalog, the breakScene authoring pattern, the non-negotiable weight-stage coverage rule, the adults-only house voice, and the lint-until-clean discipline.
+description: Operating manual for Rutilusaduro's GameDev repo — "Professor Sim", a React + Vite weight-gain college sim whose narrative comes from a modular text engine that fills templated slots from a registry of when-keyed prose variants (most-specific wins, or pool by specificity). Use this whenever working in that repo or its text engine — writing or editing ANY game prose, adding or wiring a scene, building registerPool variants, composing slot skeletons, reusing the word.* lexicon, keying content on game state, fixing the content linter (npm run text:lint), weight-stage coverage, or tuning/migrating prose. Even a casual "add a scene", "write a weigh-in beat for her", "give Maya a line", or "the text linter is failing" pulls it in. It carries the engine API, the when-selector vocabulary, the lexicon/module catalog, the breakScene authoring pattern, the non-negotiable weight-stage coverage rule, the adults-only house voice, the lint-until-clean discipline, and **The Squad** — seven role agents whose ownership matrix and workflow live in `src/textEngine/SQUAD.md`.
 ---
 
 # GameDev — Modular Text Engine Operating Manual
@@ -12,6 +12,22 @@ Almost every task here is: write/edit prose, add or wire a scene, build/extend a
 ## Prime directive
 
 Never write a monolithic paragraph as a single variant. Compose a **skeleton of slots**, make each slot a **pool of small, grammar-shaped variants**, **key variants on game state** via `when`, **always include a `{ when: {} }` fallback so the pool never goes silent**, reuse the `word.*` lexicon instead of re-describing bodies, and run **`npm run text:lint` until clean**. Everything below is in service of this.
+
+## The Squad
+
+All narrative work routes through **The Squad** — seven agents from the Near-Infinite Narrative Engine plan. Read `src/textEngine/SQUAD.md` before authoring; identify your lead agent, run **Agent 7 (Artisan)** on every prose draft, then **Agent 5 (Editor)** as the structural sign-off.
+
+| Agent | Nickname | Domain |
+|-------|----------|--------|
+| A1 | Mobile | Stages 5–9 — campus, mobility, clothing strain, eating at scale |
+| A2 | Psych | Corruption arc, interior life, NPC psychology |
+| A3 | Immobility | Stages 10–11 — environmental body scale, assisted transfer |
+| A4 | Architect | Engine APIs, dimensions, lint tooling, game-state plumbing |
+| A5 | Editor | Structural prose quality — skeleton rhythm, Style Ledger, lint sign-off |
+| A6 | Slender | Stages 0–4, corruption 0 — early gain, reluctance, secret appetite |
+| A7 | Artisan | **Prose rewrite pass** — flow, semantic sense, no stage labels in text |
+
+**Workflow:** (1) pick lead from the ownership matrix in `SQUAD.md`; (2) implement in that agent's voice contract; (3) **Agent 7 pass** — rewrite draft lines for readability and sense; (4) Agent 5 pass — `npm run text:lint`, sample renders, Style Ledger grep. **Never use engine stage names** (`leviathan`, `blob`, `Colossal:`…) in player-facing prose — gate on `stageMin`/`stageMax`, describe lived experience. Tag new scene files: `// The Squad — Lead: A1 Mobile | Support: A7 Artisan, A5 Editor`.
 
 ## How content is authored (the benchmark pattern)
 
@@ -153,13 +169,13 @@ registerPool('grow.sudden', buildVariants(GROWTH_LEXICON_CHUNKS));
 ## Standard workflows
 
 **Add / extend a scene**
-1. Open `breakScene.js`; skim `AUTHORING.md` if anything's unclear.
+1. Read `SQUAD.md` — identify lead agent; open `breakScene.js`; skim `AUTHORING.md` if anything's unclear.
 2. Design beats → skeleton → sub-pools. Decide the `when` dimensions per slot.
 3. Author grammar-shaped variants; give **every pool a `{ when: {} }` fallback**; satisfy stage coverage for weight-related slots; reuse `word.*`.
 4. Add persona lines on `studentId` (heavy weight) + psych-keyed generics with `{subject.name}`.
-5. `import './fragments.js'`; add the file to `src/textEngine/scenes/index.js`.
-6. Keep new state/logic in `src/gameData/` (engine-free) and components prose-free; render at the call site.
-7. `npm run text:lint` until clean → `npm run lint` → `npm run build`.
+5. `import './fragments.js'`; add the file to `src/textEngine/scenes/index.js`; tag file header with Squad lead.
+6. Keep new state/logic in `src/gameData/` (engine-free) and components prose-free; render at the call site (A4 Architect owns `textContext.js` plumbing).
+7. **Agent 5 gate:** `npm run text:lint` until clean → sample renders for touched scenes → `npm run lint` → `npm run build`.
 
 **Tune / batch-edit prose** — read `TUNING.md`, load the **Style Ledger** (its banned constructions apply to new prose too), run the Dialogue Lab loop, then `text:lint` until clean.
 
@@ -181,4 +197,4 @@ registerPool('grow.sudden', buildVariants(GROWTH_LEXICON_CHUNKS));
 ## Deeper references
 
 - **`references/engine-reference.md`** (in this skill) — the complete `when`-selector vocabulary, the `word.*` lexicon + core module catalog, and the current `studentId` roster.
-- **In-repo, source of truth, read when relevant:** `src/textEngine/AUTHORING.md` (binding content contract, per-girl voice, anti-patterns), `src/textEngine/TUNING.md` (Style Ledger + tuning loop), `src/textEngine/MIGRATION.md` (migration protocol), `docs/modular-text-system.md` (engine reference), `DESIGN_BIBLE.md` (design + stage ladder + voice prompt), `CLAUDE.md` (project map). When this skill and a repo doc disagree, the repo wins.
+- **In-repo, source of truth, read when relevant:** `src/textEngine/SQUAD.md` (The Squad — agent ownership, workflow, parallel review prompts), `src/textEngine/AUTHORING.md` (binding content contract, per-girl voice, anti-patterns), `src/textEngine/TUNING.md` (Style Ledger + tuning loop), `src/textEngine/MIGRATION.md` (migration protocol), `docs/modular-text-system.md` (engine reference), `DESIGN_BIBLE.md` (design + stage ladder + voice prompt), `CLAUDE.md` (project map). When this skill and a repo doc disagree, the repo wins.

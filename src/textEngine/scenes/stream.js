@@ -1,12 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // DESTINY STREAMING — text modules (stream.*)
 // ═══════════════════════════════════════════════════════════════
-import { registerModule } from '../engine.js';
-import './streamPreStream.js';
+import { registerPool } from '../engine.js';
+import './streamPreStream/index.js';
 
 // ── Between-round dialogue ─────────────────────────────────────
 
-registerModule('stream.betweenRound', [
+registerPool('stream.betweenRound', [
   { when: { perf: 'good' },
     text: [
       'Okay… that actually felt really good.',
@@ -143,7 +143,7 @@ registerModule('stream.betweenRound', [
 
 // ── Round start ────────────────────────────────────────────────
 
-registerModule('stream.roundStart', [
+registerPool('stream.roundStart', [
   { when: { challengeType: 'endurance' },
     text: ['Alright chat… this is gonna be a long one. Buckle up.', 'Deep breath. Let\'s see how long I can last.'] },
   { when: { challengeType: 'speed' },
@@ -202,14 +202,14 @@ const perfChat = {
 };
 
 for (const [tier, lines] of Object.entries(perfChat)) {
-  registerModule(`stream.chat.perf.${tier}`, [
+  registerPool(`stream.chat.perf.${tier}`, [
     { when: {}, text: lines },
   ]);
 }
 
 // ── Chat: brand flavor ─────────────────────────────────────────
 
-registerModule('stream.chat.brand.crunchforge', [
+registerPool('stream.chat.brand.crunchforge', [
   { when: {}, text: [
     'she\'s going feral',
     'this is so crunchyforge coded',
@@ -219,7 +219,7 @@ registerModule('stream.chat.brand.crunchforge', [
   ] },
 ]);
 
-registerModule('stream.chat.brand.fizzpeak', [
+registerPool('stream.chat.brand.fizzpeak', [
   { when: {}, text: [
     'she\'s actually popping off',
     'this is so fizzpeak',
@@ -229,7 +229,7 @@ registerModule('stream.chat.brand.fizzpeak', [
   ] },
 ]);
 
-registerModule('stream.chat.brand.velvetmelt', [
+registerPool('stream.chat.brand.velvetmelt', [
   { when: {}, text: [
     'the way she\'s eating is actually insane',
     'she looks so soft rn',
@@ -239,7 +239,7 @@ registerModule('stream.chat.brand.velvetmelt', [
   ] },
 ]);
 
-registerModule('stream.chat.brand.glazeco', [
+registerPool('stream.chat.brand.glazeco', [
   { when: {}, text: [
     'she\'s being such a brat about it',
     'this is so glazeco',
@@ -285,14 +285,14 @@ const typeChat = {
 };
 
 for (const [cat, lines] of Object.entries(typeChat)) {
-  registerModule(`stream.chat.type.${cat}`, [
+  registerPool(`stream.chat.type.${cat}`, [
     { when: {}, text: lines },
   ]);
 }
 
 // ── Chat: parasocial by audience tier ──────────────────────────
 
-registerModule('stream.chat.parasocial.mid', [
+registerPool('stream.chat.parasocial.mid', [
   { when: { stageMin: 6 },
     text: [
       'she\'s actually getting really big…',
@@ -306,7 +306,7 @@ registerModule('stream.chat.parasocial.mid', [
   ] },
 ]);
 
-registerModule('stream.chat.parasocial.late', [
+registerPool('stream.chat.parasocial.late', [
   { when: { stageMin: 8 },
     text: [
       'this is actually insane',
@@ -320,10 +320,10 @@ registerModule('stream.chat.parasocial.late', [
   ] },
 ]);
 
-registerModule('stream.chat.parasocial.veryLate', [
+registerPool('stream.chat.parasocial.veryLate', [
   { when: { stageMin: 10 },
     text: [
-      'she\'s literally just a blob at this point',
+      'she can barely shift in frame at this point',
       'destiny if you\'re reading this we own you now',
       'she can\'t even pretend to be a normal streamer anymore',
       'I can\'t believe we watched this happen in real time',
@@ -341,7 +341,7 @@ registerModule('stream.chat.parasocial.veryLate', [
   ] },
 ]);
 
-registerModule('stream.chat.rare', [
+registerPool('stream.chat.rare', [
   { when: { intensity: 'extreme' }, priority: 3,
     text: [
       'someone call an intervention',
@@ -354,7 +354,7 @@ registerModule('stream.chat.rare', [
 
 // ── Tap-out endings ────────────────────────────────────────────
 
-registerModule('stream.tapOut.stamina', [
+registerPool('stream.tapOut.stamina', [
   { when: {}, text: [
     'I… I can\'t. I\'m done. My whole body is shaking.',
     'Chat, I\'m tapping out. I physically cannot keep going.',
@@ -362,7 +362,7 @@ registerModule('stream.tapOut.stamina', [
   ] },
 ]);
 
-registerModule('stream.tapOut.fullness', [
+registerPool('stream.tapOut.fullness', [
   { when: {}, text: [
     'I can\'t breathe around my own stomach. I have to stop.',
     'Chat… I\'m too full. I\'m actually too full to continue.',
@@ -370,7 +370,7 @@ registerModule('stream.tapOut.fullness', [
   ] },
 ]);
 
-registerModule('stream.tapOut.performance', [
+registerPool('stream.tapOut.performance', [
   { when: {}, text: [
     'I\'m embarrassing myself. I\'m ending this before it gets worse.',
     'Three rounds of that? I\'m done. I can\'t do this to chat anymore.',
@@ -380,35 +380,35 @@ registerModule('stream.tapOut.performance', [
 
 // ── End stream ─────────────────────────────────────────────────
 
-registerModule('stream.endStream.excellent', [
+registerPool('stream.endStream.excellent', [
   { when: {}, text: [
     'That was actually insane. I can\'t believe we pulled that off.',
     'Chat, that might\'ve been my best stream ever. I\'m still buzzing.',
   ] },
 ]);
 
-registerModule('stream.endStream.good', [
+registerPool('stream.endStream.good', [
   { when: {}, text: [
     'Solid stream. I\'m tired but proud.',
     'Not perfect, but chat showed up and so did I.',
   ] },
 ]);
 
-registerModule('stream.endStream.average', [
+registerPool('stream.endStream.average', [
   { when: {}, text: [
     'Okay… we made it through. Could\'ve been worse.',
     'I\'m wiped. Thanks for sticking around anyway.',
   ] },
 ]);
 
-registerModule('stream.endStream.poor', [
+registerPool('stream.endStream.poor', [
   { when: {}, text: [
     'That was rough. I\'m gonna go lie down.',
     'I don\'t want to talk about how that went.',
   ] },
 ]);
 
-registerModule('stream.endStream.verypoor', [
+registerPool('stream.endStream.verypoor', [
   { when: {}, text: [
     'I need to delete the VOD. I\'m not even joking.',
     'Please don\'t clip that. Please.',

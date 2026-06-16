@@ -19,14 +19,22 @@ import { createContext, render, pick } from '../textEngine/engine.js';
 import { formatTextFlagExport } from '../textEngine/textFlagFormat.js';
 import { addTextFlag } from '../gameData/textFlagStore.js';
 import {
-  renderWeighInIntro, renderWeighInReaction,
+  renderWeighInIntro, renderWeighInReaction, renderWeighInApproachV2,
   renderWeighInBreak, renderWeighInSwap, renderWeighInPurchase,
+  WI_INTRO_LEGACY,
 } from '../textEngine/scenes/weighIn/index.js';
+import { renderEatScene } from '../textEngine/scenes/eating/index.js';
+import { renderSlenderScene, renderSlenderEatBeat, renderSlenderMirrorBeat } from '../textEngine/scenes/earlyGain/index.js';
+import { renderPsychShift } from '../textEngine/scenes/psychShift/index.js';
+import { renderClothScene } from '../textEngine/scenes/clothing/index.js';
+import { renderCampusScene } from '../textEngine/scenes/campus/index.js';
+import { renderImmobScene } from '../textEngine/scenes/immobility/index.js';
+import { buildTextContext, deriveClothingState } from '../gameData/textContext.js';
 import { renderDeviceTickLine } from '../textEngine/scenes/deviceTick/index.js';
 import { renderSuddenGrowthLine } from '../textEngine/scenes/suddenGrowth/index.js';
 import { resolveGrowthZone } from '../textEngine/growthLexicon.js';
 import { renderCampusDeviceEncounter, renderCampusDeviceResult } from '../textEngine/scenes/campusDevice/index.js';
-import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes/hungerInterrupt.js';
+import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes/hungerInterrupt/index.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
 import '../textEngine/scenes/talkEncourage.js';
@@ -41,6 +49,16 @@ const COR_POINTS = { 0: 10, 1: 50, 2: 90 };
 const RANDOM = "random";
 const DEVICE_IDS = Object.keys(DEVICES).filter(id => DEVICES[id].form === 'worn' || DEVICES[id].form === 'campus_tool');
 const GROWTH_ZONES = ['belly', 'lower_body', 'curves', 'full', 'bust'];
+const CAMPUS_LOCALES = ['hallway', 'lecture_hall', 'cafeteria', 'gym', 'dorm_room', 'stairwell', 'elevator', 'prof_office'];
+const MEAL_TYPES = ['meal', 'campus_meal', 'binge'];
+const CLOTHING_STATES = ['fitted', 'button_pop', 'zipper_fail', 'seam_split', 'waistband_surrender'];
+const GAIN_STANCES = ['opposed', 'reluctant', 'neutral', 'secret'];
+const PSYCH_BY_STANCE = {
+  opposed: { shame: 60, fixation: 10, obsession: 20, dependence: 15 },
+  reluctant: { shame: 30, fixation: 20, obsession: 25, dependence: 20 },
+  neutral: { shame: 5, fixation: 5, obsession: 15, dependence: 10 },
+  secret: { shame: 5, fixation: 65, obsession: 30, dependence: 20 },
+};
 
 const MOCK_EXPLORATION = { week: 6, campusTier: 1 };
 const MOCK_ENCOUNTER = {
@@ -54,6 +72,14 @@ const SECTIONS = {
     fn: (s, opts) => renderWeighInIntro(s, 6, false, opts) },
   "weighIn.introBig": { params: STATE_PARAMS, stageMin: 7,
     fn: (s, opts) => renderWeighInIntro(s, 6, true, opts) },
+  "weighIn.introLegacy": { params: STATE_PARAMS,
+    fn: (s, opts) => render(WI_INTRO_LEGACY, buildTextContext({
+      subject: s, week: 6, campusFattening: opts.campusFattening, campusTier: opts.campusTier, bigScale: false,
+    }), { trace: opts.trace }) },
+  "weighIn.approachV2": { params: STATE_PARAMS,
+    fn: (s, opts) => renderWeighInApproachV2(s, 6, false, opts) },
+  "weighIn.approachV2Big": { params: STATE_PARAMS, stageMin: 7,
+    fn: (s, opts) => renderWeighInApproachV2(s, 6, true, opts) },
   "weighIn.reaction": { params: [...STATE_PARAMS, "campus"],
     fn: (s, opts) => renderWeighInReaction(s, 6, { ...opts, bigScale: getStage(s.lbs).id >= 7 }) },
   "weighIn.break": { params: ["girl", "stage", "corruption"],
@@ -127,6 +153,24 @@ const SECTIONS = {
       const victims = [{ name: s.name, lbs: s.lbs, bodyType: s.bodyType, corruption: s.corruption, relationship: 0 }];
       return renderHiveIntake(lilith, victims, 6);
     } },
+  "eat.scene": { params: [...STATE_PARAMS, "mealType", "locale"],
+    fn: (s, opts) => renderEatScene(s, 6, {
+      mealType: opts.mealType, locale: opts.locale, trace: opts.trace,
+    }) },
+  "slender.scene": { params: [...STATE_PARAMS, "gainStance"], stageMax: 4, corruptionMax: 0,
+    fn: (s, opts) => renderSlenderScene(s, 6, { trace: opts.trace, weekGainLbs: 3 }) },
+  "slender.eat": { params: [...STATE_PARAMS, "gainStance"], stageMax: 4, corruptionMax: 0,
+    fn: (s, opts) => renderSlenderEatBeat(s, 6, { trace: opts.trace }) },
+  "slender.mirror": { params: [...STATE_PARAMS, "gainStance"], stageMax: 4, corruptionMax: 0,
+    fn: (s, opts) => renderSlenderMirrorBeat(s, 6, { trace: opts.trace, weekGainLbs: 2 }) },
+  "campus.scene": { params: [...STATE_PARAMS, "locale"],
+    fn: (s, opts) => renderCampusScene(s, 6, { locale: opts.locale, trace: opts.trace }) },
+  "cloth.scene": { params: [...STATE_PARAMS, "clothingState"],
+    fn: (s, opts) => renderClothScene(s, 6, { clothingState: opts.clothingState, trace: opts.trace }) },
+  "immob.scene": { params: STATE_PARAMS, stageMin: 10,
+    fn: (s, opts) => renderImmobScene(s, 6, { trace: opts.trace }) },
+  "psychShift.scene": { params: STATE_PARAMS,
+    fn: (s, opts) => renderPsychShift(s, 6, { lastCorruptionShift: true, trace: opts.trace }) },
 };
 const SECTION_KEYS = Object.keys(SECTIONS);
 
@@ -143,7 +187,20 @@ const PARAM_DEFS = [
   { key: "device", label: "Device", options: DEVICE_IDS, optionLabel: (v) => DEVICES[v]?.label || v },
   { key: "deviceDep", label: "Device dep", options: ["0", "15", "30", "55", "80"], optionLabel: (v) => `${v} (${({ 0: 'Low', 15: 'Low+', 30: 'Elevated', 55: 'High', 80: 'Extreme' })[v]})` },
   { key: "growthZone", label: "Growth zone", options: [...GROWTH_ZONES, "random"], optionLabel: (v) => v === 'random' ? 'auto (body type)' : v },
+  { key: "locale", label: "Locale", options: CAMPUS_LOCALES },
+  { key: "mealType", label: "Meal type", options: MEAL_TYPES },
+  { key: "clothingState", label: "Clothing", options: CLOTHING_STATES },
+  { key: "gainStance", label: "Gain stance", options: GAIN_STANCES, optionLabel: (v) => ({ opposed: "opposed · high shame", reluctant: "reluctant · shame crack", neutral: "neutral · unfussed", secret: "secret · hidden appetite" })[v] || v },
 ];
+
+function sectionFitsLockedParams(sectionKey, params) {
+  const sec = SECTIONS[sectionKey];
+  if (!sec) return false;
+  if (sec.stageMin != null && params.stage !== RANDOM && Number(params.stage) < sec.stageMin) return false;
+  if (sec.stageMax != null && params.stage !== RANDOM && Number(params.stage) > sec.stageMax) return false;
+  if (sec.corruptionMax != null && params.corruption !== RANDOM && Number(params.corruption) > sec.corruptionMax) return false;
+  return true;
+}
 
 // Resolve one sample's state: locked params stay, Random rolls fresh.
 function rollSample(params) {
@@ -151,19 +208,21 @@ function rollSample(params) {
   // Section first — its constraints shape the other rolls. A random
   // section respects a locked stage (no introBig for a small girl).
   if (params.section === RANDOM) {
-    const eligible = SECTION_KEYS.filter((k) => {
-      const min = SECTIONS[k].stageMin;
-      return !(min && params.stage !== RANDOM && Number(params.stage) < min);
-    });
-    v.section = pick(eligible);
+    const eligible = SECTION_KEYS.filter((k) => sectionFitsLockedParams(k, params));
+    v.section = pick(eligible.length ? eligible : SECTION_KEYS);
   } else {
     v.section = params.section;
   }
-  const stageMin = SECTIONS[v.section].stageMin || 0;
+  const lockedSection = SECTIONS[v.section];
+  const stageMin = lockedSection?.stageMin || 0;
+  const stageMax = lockedSection?.stageMax;
   for (const def of PARAM_DEFS) {
     if (def.key === "section") continue;
     let options = def.options;
-    if (def.key === "stage" && stageMin) options = options.filter((o) => Number(o) >= stageMin);
+    if (def.key === "stage") {
+      if (stageMin) options = options.filter((o) => Number(o) >= stageMin);
+      if (stageMax != null) options = options.filter((o) => Number(o) <= stageMax);
+    }
     v[def.key] = params[def.key] === RANDOM ? pick(options) : params[def.key];
   }
   const base = INIT_STUDENTS.find((s) => String(s.id) === v.girl);
@@ -173,6 +232,10 @@ function rollSample(params) {
   // mirror game rules: hunger 3+ needs addiction 2+; withdrawal needs addiction 2+
   if (hunger >= 3 && addiction < 2) addiction = 2;
   if (v.withdrawal === "yes" && addiction < 2) addiction = 2;
+  const stanceKey = v.gainStance && v.gainStance !== RANDOM ? v.gainStance : null;
+  const psych = stanceKey && PSYCH_BY_STANCE[stanceKey]
+    ? { obsession: 25, dependence: 20, ...PSYCH_BY_STANCE[stanceKey] }
+    : { fixation: 20, obsession: 30, dependence: 25, shame: 15 };
   const student = {
     ...base,
     lbs: WEIGHT_STAGES[stage].min + 10,
@@ -183,9 +246,13 @@ function rollSample(params) {
     weeksWithoutPlayerFeed: v.withdrawal === "yes" ? 3 : 0,
     fullness: 10,
     stomachCapacity: 100,
-    psych: { fixation: 20, obsession: 30, dependence: 25, shame: 15 },
+    psych,
+    weekStartLbs: WEIGHT_STAGES[stage].min,
   };
   const campusTier = Number(v.campus);
+  const locale = v.locale === RANDOM ? pick(CAMPUS_LOCALES) : v.locale;
+  const mealType = v.mealType === RANDOM ? pick(MEAL_TYPES) : v.mealType;
+  const clothingState = v.clothingState === RANDOM ? deriveClothingState(student) : v.clothingState;
   const trace = [];
   const opts = {
     campusFattening: campusTier > 0,
@@ -194,6 +261,9 @@ function rollSample(params) {
     device: v.device,
     deviceDep: v.deviceDep,
     growthZone: v.growthZone,
+    locale,
+    mealType,
+    clothingState,
   };
   const text = SECTIONS[v.section].fn(student, opts);
   // annotation units: leaf fragments, minus bare identity helpers
@@ -202,7 +272,11 @@ function rollSample(params) {
     `${base.name} (id ${base.id}) · ${Math.round(student.lbs)} lbs (stage ${stage} ${WEIGHT_STAGES[stage].label})` +
     ` · corruption ${student.corruption} (tier ${getCorruptionTier(student.corruption).id})` +
     ` · mood ${v.mood} · hunger ${hunger} · addiction ${addiction}` +
-    ` · withdrawal ${v.withdrawal} · campus ${campusTier}`;
+    ` · withdrawal ${v.withdrawal} · campus ${campusTier}` +
+    (lockedSection?.params?.includes('gainStance') ? ` · gainStance ${stanceKey || 'default'}` : '') +
+    (lockedSection?.params?.includes('locale') ? ` · locale ${locale}` : '') +
+    (lockedSection?.params?.includes('mealType') ? ` · meal ${mealType}` : '') +
+    (lockedSection?.params?.includes('clothingState') ? ` · cloth ${clothingState}` : '');
   return { section: v.section, stateLine, text, nodes, id: `${Date.now()}_${Math.random()}` };
 }
 
@@ -297,15 +371,23 @@ export function DialogueLab({ onClose }) {
                 // (everything stays live while section is Random)
                 const relevant = def.key === "section" || !lockedSection || lockedSection.params.includes(def.key);
                 let options = def.options;
-                if (def.key === "stage" && lockedSection?.stageMin) {
-                  options = options.filter((o) => Number(o) >= lockedSection.stageMin);
+                if (def.key === "stage" && lockedSection) {
+                  if (lockedSection.stageMin) options = options.filter((o) => Number(o) >= lockedSection.stageMin);
+                  if (lockedSection.stageMax != null) options = options.filter((o) => Number(o) <= lockedSection.stageMax);
+                }
+                if (def.key === "corruption" && lockedSection?.corruptionMax != null) {
+                  options = options.filter((o) => Number(o) <= lockedSection.corruptionMax);
                 }
                 const onChange = (e) => setParams((p) => {
                   const next = { ...p, [def.key]: e.target.value };
                   // picking a big-scale section invalidates a small locked stage
                   if (def.key === "section") {
                     const min = SECTIONS[e.target.value]?.stageMin;
+                    const max = SECTIONS[e.target.value]?.stageMax;
                     if (min && next.stage !== RANDOM && Number(next.stage) < min) next.stage = RANDOM;
+                    if (max != null && next.stage !== RANDOM && Number(next.stage) > max) next.stage = RANDOM;
+                    const cmax = SECTIONS[e.target.value]?.corruptionMax;
+                    if (cmax != null && next.corruption !== RANDOM && Number(next.corruption) > cmax) next.corruption = RANDOM;
                   }
                   return next;
                 });

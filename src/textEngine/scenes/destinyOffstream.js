@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // DESTINY — off-stream personality drift (talk, activity, weigh-in)
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, registerModuleVariants } from '../engine.js';
+import { registerPool, registerModuleVariants } from '../engine.js';
 
 // ── Talk codas (appended in TalkModal) ─────────────────────────
 
@@ -63,7 +63,7 @@ for (const [voice, lines] of Object.entries(talkDrift)) {
   ]);
 }
 
-registerModule('destiny.offstream.talk', [
+registerPool('destiny.offstream.talk', [
   { when: { brand: 'crunchforge', brandControl: 'soldOut' },
     text: ['She\'s still got that CrunchForge edge even off-camera. "What? I\'m always hungry."'] },
   { when: { brand: 'fizzpeak' },
@@ -77,7 +77,7 @@ registerModule('destiny.offstream.talk', [
 
 // ── Evolved activity preamble ──────────────────────────────────
 
-registerModule('destiny.offstream.activity', [
+registerPool('destiny.offstream.activity', [
   { when: { streamVoice: 'aggressive_soldOut' },
     text: ['She\'s already in sponsor mode before you say anything. "Stream event? Say less. I\'m feral either way."'] },
   { when: { streamVoice: 'manic_soldOut' },
@@ -103,7 +103,7 @@ registerModule('destiny.offstream.activity', [
 
 // ── Weigh-in / detail flavor ───────────────────────────────────
 
-registerModule('destiny.offstream.weighIn', [
+registerPool('destiny.offstream.weighIn', [
   { when: { streamVoice: 'aggressive_soldOut', stageMin: 7 },
     text: ['She steps on the scale like it\'s content. "Chat\'s gonna lose it. Good."'] },
   { when: { streamVoice: 'sensual_deep' },

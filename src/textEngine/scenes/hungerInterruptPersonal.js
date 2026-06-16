@@ -1,5 +1,5 @@
 // Per-archetype flavor lines for hunger interrupts (see Hunger Event Lexicon.txt)
-import { registerModule } from '../engine.js';
+import { registerPool } from '../engine.js';
 
 const PERSONAL = {
   cheerleader: [
@@ -106,10 +106,13 @@ const PERSONAL = {
   ],
 };
 
+const archetypeVariants = [];
 for (const [archetype, lines] of Object.entries(PERSONAL)) {
-  registerModule('scene.hungerInterrupt.personal', [{
+  archetypeVariants.push({
     when: { archetype },
     priority: 2,
     text: lines,
-  }]);
+  });
 }
+archetypeVariants.push({ when: {}, text: [''] });
+registerPool('scene.hungerInterrupt.personal', archetypeVariants);

@@ -7,6 +7,8 @@ import {
 } from '../textEngine/scenes/weighIn/index.js';
 import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from '../textEngine/textFlagFormat.js';
+import { createSessionUsed, weekUsedFromStudent, weekUsedToPatch, isSlenderEligible } from '../gameData/textContext.js';
+import { renderSlenderMirrorBeat } from '../textEngine/scenes/earlyGain/index.js';
 
 function renderWeighInPhase(renderFn, student, week, opts) {
   const trace = [];
@@ -165,11 +167,22 @@ function DigitalScale({lbs}){
 }
 
 
-export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,onMandatorySkip,week,campusFattening=false,campusTier=0}){
-  const weighInOpts = { campusFattening: !!campusFattening, campusTier: campusTier || (campusFattening ? 1 : 0), week: week || 1, aibMandatory: !!weighInState?.aibMandatory };
-  if(!weighInState) return null;
-  const {student,phase,reactionText}=weighInState;
-  if(!student) return null;
+export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,onMandatorySkip,onPersistWeekTextUsed,week,campusFattening=false,campusTier=0}){
+  const student=weighInState?.student;
+  const textSession=useMemo(()=>({
+    sessionUsed:createSessionUsed(),
+    weekUsed:weekUsedFromStudent(student),
+  }),[student?.id,(student?.textUsedKeys||[]).join('|')]);
+  if(!weighInState||!student) return null;
+  const {phase,reactionText}=weighInState;
+  const weighInOpts={
+    campusFattening:!!campusFattening,
+    campusTier:campusTier||(campusFattening?1:0),
+    week:week||1,
+    aibMandatory:!!weighInState?.aibMandatory,
+    sessionUsed:textSession.sessionUsed,
+    weekUsed:textSession.weekUsed,
+  };
   const st=getStage(student.lbs);
   const lbs=Math.round(student.lbs);
   const alreadyBroke=(brokeScaleIds||[]).includes(student.id);
@@ -177,7 +190,11 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
   const showScaleAfter=st.id>4||goesDirectlyToBig;
   const willBreakNow=lbs>400&&!alreadyBroke;
   const setPhase=(nextPhase)=>setWeighInState({...weighInState,phase:nextPhase});
-  const close=()=>setWeighInState(null);
+  const close=()=>{
+    const patch=weekUsedToPatch(textSession.weekUsed);
+    if(patch.textUsedKeys&&onPersistWeekTextUsed) onPersistWeekTextUsed(student.id,patch);
+    setWeighInState(null);
+  };
   const stepOntoScale=()=>setPhase(goesDirectlyToBig?"digital":"analog");
   const goToBreak=()=>{
     if(willBreakNow&&onBreakScale) onBreakScale(student.id);
@@ -191,25 +208,31 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
       week || 1,
       weighInOpts,
     ),
-    [student.id, goesDirectlyToBig, weighInState?.aibMandatory],
+    [student.id, goesDirectlyToBig, weighInState?.aibMandatory, textSession],
+  );
+  const slenderMirrorBundle = useMemo(
+    () => (!showScaleAfter && isSlenderEligible(student)
+      ? renderWeighInPhase(renderSlenderMirrorBeat, student, week || 1, weighInOpts)
+      : { text: '', traceNodes: [] }),
+    [student.id, showScaleAfter, textSession],
   );
   const breakBundle = useMemo(
     () => (phase === 'break'
       ? renderWeighInPhase(renderWeighInBreak, student, week || 1, weighInOpts)
       : { text: '', traceNodes: [] }),
-    [phase, student.id],
+    [phase, student.id, textSession],
   );
   const purchaseBundle = useMemo(
     () => (phase === 'purchase'
       ? renderWeighInPhase(renderWeighInPurchase, student, week || 1, weighInOpts)
       : { text: '', traceNodes: [] }),
-    [phase, student.id],
+    [phase, student.id, textSession],
   );
   const swapBundle = useMemo(
     () => (phase === 'swap'
       ? renderWeighInPhase(renderWeighInSwap, student, week || 1, weighInOpts)
       : { text: '', traceNodes: [] }),
-    [phase, student.id],
+    [phase, student.id, textSession],
   );
   const reactionBundle = useMemo(
     () => (phase === 'reaction' && reactionText
@@ -247,6 +270,14 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
               {introBundle.text}
             </div>
             <TextFlagToolbar section="weighIn.intro" stateLine={flagState} text={introBundle.text} nodes={introBundle.traceNodes} />
+            {slenderMirrorBundle.text && (
+              <>
+                <div style={{...C.infoBox("rgba(40,25,55,.35)"),border:"1px solid #6a408040",fontSize:13,color:"#e8d4f0",lineHeight:1.85,fontStyle:"italic",marginBottom:8}}>
+                  {slenderMirrorBundle.text}
+                </div>
+                <TextFlagToolbar section="slender.mirror" stateLine={flagState} text={slenderMirrorBundle.text} nodes={slenderMirrorBundle.traceNodes} />
+              </>
+            )}
             {weighInState?.aibMandatory && onMandatorySkip && (
               <button style={{...C.btn("#502030"),width:"100%",marginBottom:8}} onClick={onMandatorySkip}>
                 Refuse documented weigh-in (+12 scrutiny)

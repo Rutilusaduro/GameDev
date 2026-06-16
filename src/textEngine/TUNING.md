@@ -57,6 +57,8 @@ Check NEW content against this list too, not just fixes. When a fix generalizes,
 10. **"I have become the X" dialogue** — banned narrator/character tic in growth crossings and reactions. Show the role metaphorically or cut it.
 11. **Malformed malfunction ticks** — malf clauses must be complete clauses after the em dash (not noun fragments like "a messy overfeed {name}"); malfunction beats use `; {sensation|cap}` so the second half is a proper sentence. Device-specific failure modes only — feeders overfeed, stims overrun pulses, chambers spike fields.
 12. **"Week's device work" / bland surprise gain** — no "she feels the week's device work", no generic "takes the gain faster than she expected"; sensations name what changed on the body.
+13. **Engine stage labels in prose** — never write `leviathan scale`, `blob scale`, `Colossal:`, or use stage keys (`blob`, `leviathan`, `colossal`…) as nouns for the character. Stage selectors gate content; the text describes lived experience (doorways, chairs, immobility, sound) without naming the ladder.
+14. **Meta-gimmick narrator lines** — RPG/UI jargon (`HP`, `patch notes`, `rollback`, `local maximum`, `alt-tab`) in narrator beats or out-of-character dialogue. Character voice may reference streaming/gaming sparingly in **dialogue** when it fits (Destiny, Kylie) — it must read as something a person would actually say.
 
 ## Fix mechanics quick-reference
 
