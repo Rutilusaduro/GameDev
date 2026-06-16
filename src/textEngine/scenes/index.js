@@ -39,7 +39,7 @@ import './supernatural/refeedSurge.js';
 import './supernatural/scarcityCurse.js';
 import './jealousyReaction.js';
 import './opposition/endgameBeat.js';
-import './dinner/endingScene.js';
+import './dinner/index.js';
 import './growthEvent/index.js';
 import './weeklyEvent/index.js';
 import './weighIn/index.js';

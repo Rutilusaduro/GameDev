@@ -63,10 +63,11 @@ import './textEngine/scenes/hungerInterrupt/index.js';
 import './textEngine/scenes/hungerLexicon.js';
 import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
-import { renderDinnerEnding } from './textEngine/scenes/dinner/endingScene.js';
+import { renderDinnerEnding, renderDinnerConversation, renderGroupDinnerConversation } from './textEngine/scenes/dinner/index.js';
 import './textEngine/scenes/dinner/endingScene.js';
 import './textEngine/scenes/opposition/endgameBeat.js';
 import './textEngine/scenes/corruptionVoice.js';
+import { DINNER_LOG_PANEL_STYLE, dinnerLogDisplayText, getDinnerLogLineStyle } from './utils/dinnerLogStyle.js';
 import { renderEatScene } from './textEngine/scenes/eating/index.js';
 import './textEngine/scenes/eating/index.js';
 import { renderSlenderScene, renderSlenderEatBeat } from './textEngine/scenes/earlyGain/index.js';
@@ -5851,7 +5852,7 @@ export default function ProfessorSim(){
     setDinnerEvent(prev=>({...prev,dishes:newDishes,totalGain:sessionCals,student:fed}));
     setDinnerLog(dl=>[...dl,
       `🍴 ${dish.label} arrives. ${dish.desc} (+${calories.toLocaleString()} cal)${fullMsg}`,
-      ...(eatLine?[eatLine]:[]),
+      ...(eatLine?[`💬 ${eatLine}`]:[]),
     ]);
   };
 
@@ -5896,10 +5897,9 @@ export default function ProfessorSim(){
   const useDinnerConversation=(conv)=>{
     if(dinnerEvent.conversationUsed.includes(conv.id)) return;
     const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
-    const stId=getStage(s.lbs).id;
     const gainBonus=rnd(conv.gainBonus[0],conv.gainBonus[1]);
     const scaledBonus=Math.round(gainBonus*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
-    const convText=conv.text(s,stId);
+    const convText=renderDinnerConversation(conv.id, s, week);
     const fullnessChange=conv.fullnessEffect||0;
     let fed=s;
     if(scaledBonus>0||fullnessChange!==0){
@@ -6066,7 +6066,7 @@ export default function ProfessorSim(){
     const liveStudents=groupDinnerEvent.students.map(gs=>students.find(st=>st.id===gs.id)).filter(Boolean);
     const [s1,s2]=liveStudents;
     if(!s1) return;
-    const text=conv.text(s1,s2||s1);
+    const text=renderGroupDinnerConversation(conv.id, s1, s2||s1, week);
     const relB=conv.relBonus||0;
     const fullE=conv.fullnessEffect||0;
     setGroupDinnerLog(dl=>[...dl,`💬 ${text}`]);
@@ -6654,12 +6654,12 @@ export default function ProfessorSim(){
                   </div>
 
                   {/* Dinner log */}
-                  <div style={{background:"rgba(20,5,35,0.8)",border:"1px solid #2a0848",borderRadius:8,padding:10,marginBottom:10,maxHeight:160,overflowY:"auto",display:"flex",flexDirection:"column",gap:3}}>
+                  <div style={DINNER_LOG_PANEL_STYLE}>
                     {dinnerLog.length===0
                       ?<div style={{fontSize:12,color:"#5a3070",fontStyle:"italic"}}>{ds.name} looks at the menu with obvious interest.</div>
                       :dinnerLog.map((line,i)=>(
-                        <div key={i} style={{fontSize:12,color:line.startsWith("💬")?"#e8d0a8":line.startsWith("🍴")?"#d0a860":line.startsWith("😤")?"#f06040":"#b090c8",lineHeight:1.6,borderBottom:i<dinnerLog.length-1?"1px solid rgba(80,20,120,0.1)":"none",paddingBottom:i<dinnerLog.length-1?3:0}}>
-                          {line}
+                        <div key={i} style={getDinnerLogLineStyle(line, i<dinnerLog.length-1)}>
+                          {dinnerLogDisplayText(line)}
                         </div>
                       ))
                     }
@@ -6767,7 +6767,7 @@ export default function ProfessorSim(){
               {" · "}{Math.round((dinnerEndPopup.finalFullness/dinnerEndPopup.maxFullness)*100)}% full
               {" · "}{dinnerEndPopup.totalGain.toLocaleString()} cal tonight (≈+{Math.round(dinnerEndPopup.totalGain/3500)} lbs digesting)
             </div>
-            <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20,whiteSpace:"pre-line"}}>
+            <p style={{lineHeight:1.95,color:"#f8ead8",fontSize:15,marginBottom:20,whiteSpace:"pre-line",background:"rgba(48,24,72,0.55)",padding:"14px 16px",borderRadius:8,borderLeft:"3px solid #c898ff"}}>
               {dinnerEndPopup.narrative}
             </p>
             <button style={C.btn("#5818a8")} onClick={()=>setDinnerEndPopup(null)}>Continue →</button>
@@ -6892,12 +6892,12 @@ export default function ProfessorSim(){
                   </div>
 
                   {/* Log */}
-                  <div style={{background:"rgba(20,5,35,0.8)",border:"1px solid #2a0848",borderRadius:8,padding:10,marginBottom:10,maxHeight:140,overflowY:"auto",display:"flex",flexDirection:"column",gap:3}}>
+                  <div style={DINNER_LOG_PANEL_STYLE}>
                     {groupDinnerLog.length===0
                       ?<div style={{fontSize:12,color:"#5a3070",fontStyle:"italic"}}>{gev.students.map(gs=>students.find(st=>st.id===gs.id)?.name?.split(' ')[0]||'her').join(" and ")} look at the menu.</div>
                       :groupDinnerLog.map((line,i)=>(
-                        <div key={i} style={{fontSize:12,color:line.startsWith("💬")?"#e8d0a8":line.startsWith("👀")?"#d8a8c8":line.startsWith("😵")?"#f06040":"#d0a860",lineHeight:1.6}}>
-                          {line}
+                        <div key={i} style={getDinnerLogLineStyle(line, i<groupDinnerLog.length-1)}>
+                          {dinnerLogDisplayText(line)}
                         </div>
                       ))
                     }

@@ -73,24 +73,11 @@ export const getJealousyLine=(neglected,fed)=>{
 };
 
 export const GROUP_CONVERSATIONS=[
-  { id:"get_them_talking", label:"Get them talking",
-    text:(s1,s2)=>{
-      const topics={cheerleader:"the upcoming competition",quiet:"her current project",party:"last weekend",sorority:"the chapter event",scholar:"her research",athlete:"her training",artsy:"her current piece",honors:"her family",influencer:"her content strategy",foodie:"the menu"};
-      const t1=topics[s1.archetype]||"her plans";
-      return `You ask ${s1.name} about ${t1}. She starts — and ${s2.name} leans in, more interested than she expected.\n"Wait, really?" ${s2.name} says. "I didn't know you were doing that."\n${s1.name}: "You never asked." No edge in it. Just fact.\n${s2.name} considers this, reaches for her drink. "Fair." Then: "Tell me the rest."`;
-    }, relBonus:4, fullnessEffect:-4 },
-  { id:"compliment_both", label:"Compliment them both",
-    text:(s1,s2)=>`You say something genuine about each of them — something you've actually noticed. ${s1.name} receives it differently than expected: more quietly, more truly. ${s2.name} looks at her, then at you.\n"He means it," ${s2.name} says.\n${s1.name}: "I know." Something about the table shifts half a degree warmer.`,
-    relBonus:3, fullnessEffect:0 },
-  { id:"let_it_settle", label:"Let it settle",
-    text:(s1,s2)=>`The conversation drops away. Both of them are eating. The restaurant makes its small sounds. Then ${s1.name} says something about the sauce. ${s2.name} responds. Neither is talking to you, and that's fine — better, actually. The evening has found something you weren't planning for.`,
-    relBonus:2, fullnessEffect:5 },
-  { id:"toast_together_group", label:"Toast the evening",
-    text:(s1,s2)=>`You raise your glass. They raise theirs.\n${s1.name}: "To what?"\n"To a good evening."\n${s2.name}: "We should toast to something real." She thinks. "To the food."\n${s1.name} looks at her. Then she laughs — actually laughs. "To the food." The glasses clink.`,
-    relBonus:4, fullnessEffect:-3 },
-  { id:"order_for_table", label:"Order another round",
-    text:(s1,s2)=>`You catch the server's eye and gesture at the table generally. More arrives. ${s1.name} and ${s2.name} look at the new dishes, look at each other.\n${s2.name}: "We didn't need more."\n${s1.name}, already reaching: "I know." She keeps reaching. ${s2.name} watches for a moment, then reaches too. The evening continues.`,
-    relBonus:3, fullnessEffect:8 },
+  { id:"get_them_talking", label:"Get them talking", relBonus:4, fullnessEffect:-4 },
+  { id:"compliment_both", label:"Compliment them both", relBonus:3, fullnessEffect:0 },
+  { id:"let_it_settle", label:"Let it settle", relBonus:2, fullnessEffect:5 },
+  { id:"toast_together_group", label:"Toast the evening", relBonus:4, fullnessEffect:-3 },
+  { id:"order_for_table", label:"Order another round", relBonus:3, fullnessEffect:8 },
 ];
 
 // ── GROUP DINNER REACTION DATA ────────────────────────────────
@@ -721,118 +708,25 @@ export const DINNER_VENUES = [
 ];
 
 export const DINNER_CONVERSATION = [
-  // { id, label, requires (skill or null), text:(s,stageId)=>str, gainBonus, relBonus }
-  { id:"compliment_appetite", label:"Compliment her appetite",  requires:null,
-    text:(s,st)=>st<=2
-      ? `You mention how much she's enjoying herself. ${s.name} flushes slightly but picks up her fork with renewed purpose.`
-      : st<=5 ? `"I love watching you eat," you say. ${s.name} grins without looking up from her plate. "Then keep watching." She takes an enormous bite.`
-      : `"You eat beautifully," you tell her. ${s.name} laughs warmly. "I know. It's my best quality." She gestures for more bread.`,
-    gainBonus:[1,3], relBonus:3 },
-
-  { id:"suggest_second",      label:"Suggest a second helping", requires:null,
-    text:(s,st)=>st<=2
-      ? `"You should try the other dish," you suggest. ${s.name} hesitates, then: "You know what, yes. Why not."`
-      : st<=5 ? `"More?" ${s.name} is already raising her hand for the waiter. "I was already going to, but thank you for the permission."`
-      : `You gesture at her nearly empty plate. "Again?" ${s.name} pats her enormous middle contentedly. "Obviously."`,
-    gainBonus:[2,5], relBonus:2 },
-
-  { id:"food_talk_dinner",    label:"Talk about the food",      requires:null,
-    text:(s,st)=>`You and ${s.name} spend ten minutes discussing the dish in detail. She is an enthusiastic critic. She demonstrates her critique by eating more of it.`,
-    gainBonus:[1,3], relBonus:3 },
-
-  { id:"order_for_her",       label:"Order for her",            requires:"dinner_upscale",
-    text:(s,st)=>st<=3
-      ? `You order before she can deliberate too long — all the richest options, extra courses. ${s.name} raises her eyebrows. "That's a lot." She says it like a compliment.`
-      : `You order for the table. Extensively. ${s.name} watches the dishes arrive with visible pleasure. "You know exactly what you're doing," she says. "I appreciate that."`,
-    gainBonus:[3,6], relBonus:4 },
-
-  { id:"wine_and_cheese",     label:"Insist on cheese course",  requires:"dinner_upscale",
-    text:(s,st)=>`"We're having the cheese course," you say. It is not a question. ${s.name} settles back with a smile. "Obviously we are." The board that arrives is enormous. She works through all of it.`,
-    gainBonus:[2,5], relBonus:3 },
-
-  { id:"overcomes_hesitation",label:"Talk her through hesitation",requires:null,
-    text:(s,st)=>st<=2
-      ? `${s.name} glances at the menu uncertainly. "I shouldn't really—" You remind her she deserves a good meal. She considers this. Orders the larger option.`
-      : st<=4 ? `${s.name} pauses mid-plate, looking at herself. "I've eaten so much." You tell her she's doing wonderfully. She laughs and keeps going.`
-      : `${s.name} is full — visibly, obviously full. "I literally cannot," she says. You slide the dessert menu toward her. She opens it. "Fine." She eats it all.`,
-    gainBonus:[2,4], relBonus:4 },
-
-  { id:"body_compliment",     label:"Compliment how she looks", requires:null,
-    text:(s,st)=>st<=1
-      ? `You tell ${s.name} she looks wonderful tonight. She blinks, then smiles and takes a large bite of her food. "Thank you." She sounds like she means it.`
-      : st<=4 ? `You tell ${s.name} she looks incredible. She pats her very round belly and grins. "I've been working on it." She takes another bite. "Still working on it, actually."`
-      : `You tell ${s.name} she looks spectacular. She spreads her hands across her enormous, soft middle and raises an eybrow. "I know," she says simply. She resumes eating with great satisfaction.`,
-    gainBonus:[1,3], relBonus:5 },
-
-  { id:"personal_chef_story", label:"Tell her about the chef",  requires:"dinner_private",
-    text:(s,st)=>`You tell ${s.name} the chef prepared the menu specifically around her preferences. She goes still for a moment, then something in her expression shifts. "Really?" You nod. She looks at her plate differently now — with something more personal — and eats every last bite.`,
-    gainBonus:[2,5], relBonus:5 },
-
-  { id:"endless_courses",     label:"Keep ordering courses",    requires:"dinner_private",
-    text:(s,st)=>`Every time ${s.name} finishes a dish you signal for another. She notices after the fourth course. "Are you just going to keep ordering?" You shrug. She laughs. "Okay." She doesn't stop eating for another two hours.`,
-    gainBonus:[4,8], relBonus:4 },
-
-  { id:"praise_capacity",     label:"Express amazement at her appetite", requires:null,
-    text:(s,st)=>st<=2
-      ? `"I'm impressed," you say. ${s.name} grins and finishes the dish. "I've always eaten a lot." She orders another.`
-      : st<=5 ? `"I genuinely cannot believe how much you've eaten," you say. ${s.name} looks down at herself, at the pile of empty plates, and laughs. "I can." She orders dessert.`
-      : `You survey the wreckage of the table. "That was extraordinary." ${s.name} pats her vast belly with a look of absolute serenity. "I'm just getting started," she says — and means it.`,
-    gainBonus:[2,4], relBonus:4 },
-
-  { id:"ask_passion",         label:"Ask about what she loves", requires:null,
-    text:(s,st)=>{
-      const roleLines={"Cheer Captain":`You ask about the squad. ${s.name}'s whole posture changes. "We're building something," she says. "A legacy." She describes tryout strategy for ten minutes. At some point the entire main course disappears without her noticing.`,"Dance Co-Captain":`You ask about her choreography. ${s.name} puts her fork down entirely — which she hasn't done all evening — and starts describing a movement sequence with her hands. "I want it to feel inevitable," she says. She picks up her fork and finishes everything on the plate.`,"Track Sprinter":`You ask about running. ${s.name} is quiet for a moment. "I miss it less than I thought I would," she says finally. "I still dream about it sometimes." She takes a large bite. "But this is also good."`, "Basketball Star":`You ask about basketball. ${s.name} laughs. "God. I think about the game differently now — like, I watch it differently." She tilts her head. "I'm kind of glad I'm not playing right now. I'd be a liability." She pats herself. "A comfortable liability."`, default:`You ask what she's most passionate about right now. ${s.name} looks genuinely pleased by the question. She talks for twenty minutes — animated, specific, completely unselfconscious. At some point she's eaten the entire main course without noticing.`};
-      return roleLines[s.role]||roleLines.default;
-    },
-    gainBonus:[2,4], relBonus:5, fullnessEffect:-8 },
-
-  { id:"talk_genuinely",      label:"Ask how she's really doing", requires:null,
-    text:(s,st)=>st<=2
-      ? `You set the menu down and actually ask. ${s.name} looks surprised. Then she talks — really talks — about her semester, things outside of class. She's more present than usual. She also keeps eating through it, almost unconsciously.`
-      : `You turn the conversation to her, genuinely. ${s.name} pauses, then opens up. Something real passes between you. She eats steadily through the whole thing, comfortable and unhurried. She finishes three courses before she realizes.`,
-    gainBonus:[1,4], relBonus:6, fullnessEffect:-5 },
-
-  { id:"toast_together",      label:"Propose a toast", requires:null,
-    text:(s,st)=>`You raise your glass. "To good food and good company." ${s.name} looks at you for a moment, then lifts her glass. The toast is simple, but something settles between you — warm and unhurried. She eats more after that.`,
-    gainBonus:[1,3], relBonus:4, fullnessEffect:-4 },
-
-  { id:"share_a_dish",        label:"Order something to share", requires:null,
-    text:(s,st)=>st<=3
-      ? `You order a dish for the table. "We can share." ${s.name} looks at it and, after a beat, reaches in. "Okay." She eats most of it.`
-      : `You order an extra dish between you. ${s.name} looks delighted. "Perfect." She eats significantly more than half. You don't point this out.`,
-    gainBonus:[2,5], relBonus:3, fullnessEffect:6 },
-
-  { id:"after_dinner_stroll", label:"Suggest staying for another course", requires:null,
-    text:(s,st)=>st<=3
-      ? `"We should do the cheese course," you say. ${s.name} pauses. "I don't — " She looks at the menu. "Actually. Yes. Obviously yes."`
-      : st<=6 ? `"I'm going to get more," you say. "Obviously I'm joining you," ${s.name} says. She did not need the invitation.`
-      : `You gesture toward the dessert menu. ${s.name} already has it. "I've been reading it for five minutes," she says. "Let's do all of it."`,
-    gainBonus:[3,7], relBonus:3, fullnessEffect:10 },
-
-  { id:"awkward_comment",     label:"Comment on her portions", requires:null,
-    text:(s,st)=>st<=2
-      ? `"That's... quite a lot," you say. ${s.name}'s expression flickers. "I know," she says, shortly. She puts her fork down and picks it up again more slowly. The evening is a degree cooler now.`
-      : `You gesture at her plate. "You've really eaten a lot tonight." ${s.name} gives you a flat look. "Yes. I have." She continues eating, but something in the warmth has shifted.`,
-    gainBonus:[0,0], relBonus:-5, offenseRisk:2, fullnessEffect:0 },
-
-  { id:"suggest_diet",        label:"Point out the lighter option", requires:null,
-    text:(s,st)=>st<=1
-      ? `You mention there's a lighter option on the menu. ${s.name} glances at it, then at what she'd already chosen. "I'll stick with what I ordered, thanks." She eats it with slightly more purpose than before.`
-      : `You gesture toward the salad section. ${s.name} puts her fork down. Very deliberately. "I'm sorry?" A beat. "I know what's on the menu." Another beat. "I don't need the recommendation."`,
-    gainBonus:[0,0], relBonus:-8, offenseRisk:3, fullnessEffect:0 },
-
-  { id:"ask_about_weight",    label:"Ask about the gaining", requires:null,
-    text:(s,st)=>st<=2
-      ? `You ask lightly whether she's noticed any changes lately. ${s.name} stiffens slightly. "I mean... yeah." She looks at her food. "Are you asking that at dinner?" There's an edge now.`
-      : st<=5 ? `You bring it up. ${s.name} puts her fork down. "I know," she says, flatly. "I'm here." She picks the fork back up but the ease of the evening has changed.`
-      : `You comment on it. ${s.name} gives you a long, measuring look. "I was having a very good time," she says. "You should be more careful with your dinner conversation." She eats, but something is cooler.`,
-    gainBonus:[0,0], relBonus:-6, offenseRisk:2, fullnessEffect:0 },
-
-  { id:"second_table",        label:"Move to a more comfortable spot", requires:"dinner_private",
-    text:(s,st)=>st<=4
-      ? `You suggest a more private corner table. ${s.name} appreciates the gesture. The move is easy, the new spot better. She orders again as soon as she sits.`
-      : `You notice she's shifted twice to accommodate herself in the standard chair, and quietly arrange a better setup. ${s.name} settles in. "How did you know?" You shrug. She eats considerably more after that.`,
-    gainBonus:[2,4], relBonus:5, fullnessEffect:-6 },
+  { id:"compliment_appetite", label:"Compliment her appetite", requires:null, gainBonus:[1,3], relBonus:3 },
+  { id:"suggest_second", label:"Suggest a second helping", requires:null, gainBonus:[2,5], relBonus:2 },
+  { id:"food_talk_dinner", label:"Talk about the food", requires:null, gainBonus:[1,3], relBonus:3 },
+  { id:"order_for_her", label:"Order for her", requires:"dinner_upscale", gainBonus:[3,6], relBonus:4 },
+  { id:"wine_and_cheese", label:"Insist on cheese course", requires:"dinner_upscale", gainBonus:[2,5], relBonus:3 },
+  { id:"overcomes_hesitation", label:"Talk her through hesitation", requires:null, gainBonus:[2,4], relBonus:4 },
+  { id:"body_compliment", label:"Compliment how she looks", requires:null, gainBonus:[1,3], relBonus:5 },
+  { id:"personal_chef_story", label:"Tell her about the chef", requires:"dinner_private", gainBonus:[2,5], relBonus:5 },
+  { id:"endless_courses", label:"Keep ordering courses", requires:"dinner_private", gainBonus:[4,8], relBonus:4 },
+  { id:"praise_capacity", label:"Express amazement at her appetite", requires:null, gainBonus:[2,4], relBonus:4 },
+  { id:"ask_passion", label:"Ask about what she loves", requires:null, gainBonus:[2,4], relBonus:5, fullnessEffect:-8 },
+  { id:"talk_genuinely", label:"Ask how she's really doing", requires:null, gainBonus:[1,4], relBonus:6, fullnessEffect:-5 },
+  { id:"toast_together", label:"Propose a toast", requires:null, gainBonus:[1,3], relBonus:4, fullnessEffect:-4 },
+  { id:"share_a_dish", label:"Order something to share", requires:null, gainBonus:[2,5], relBonus:3, fullnessEffect:6 },
+  { id:"after_dinner_stroll", label:"Suggest staying for another course", requires:null, gainBonus:[3,7], relBonus:3, fullnessEffect:10 },
+  { id:"awkward_comment", label:"Comment on her portions", requires:null, gainBonus:[0,0], relBonus:-5, offenseRisk:2, fullnessEffect:0 },
+  { id:"suggest_diet", label:"Point out the lighter option", requires:null, gainBonus:[0,0], relBonus:-8, offenseRisk:3, fullnessEffect:0 },
+  { id:"ask_about_weight", label:"Ask about the gaining", requires:null, gainBonus:[0,0], relBonus:-6, offenseRisk:2, fullnessEffect:0 },
+  { id:"second_table", label:"Move to a more comfortable spot", requires:"dinner_private", gainBonus:[2,4], relBonus:5, fullnessEffect:-6 },
 ];
 
 
