@@ -2,7 +2,7 @@
 
 > **Audience: you, the LLM (or human) about to write game prose.** Read this whole file before writing or editing ANY narrative text. The engine reference is `docs/modular-text-system.md`; this file is the content contract. The canonical exemplar files to copy are `src/textEngine/scenes/weighIn/` and `src/textEngine/scenes/talkEncourage.js`.
 >
-> **The Squad:** All narrative work is owned by the five-agent team in **`SQUAD.md`** — identify your lead agent (Mobile, Psych, Immobility, Architect, Editor) before editing; every prose pass ends with Agent 5's quality gate.
+> **The Squad:** All narrative work is owned by the six-agent team in **`SQUAD.md`** — identify your lead agent before editing. **Early game (stages 0–4, corruption 0) is Agent 6 (Slender).** Every prose pass ends with Agent 5's quality gate.
 >
 > Companions: `SQUAD.md` (agent ownership & workflow) · `MIGRATION.md` (legacy → modular) · `TUNING.md` (flag-batch loop + **Style Ledger**)
 
@@ -66,7 +66,7 @@ import { registerDimension } from '../engine.js';
 registerDimension('myKey', (ctx) => ctx.globals?.myValue ?? 'default');
 ```
 
-Results land on `ctx.d.myKey` and are usable in `when` immediately. Built-in dimensions: `campusLocale`, `mobilityLevel`, `clothingState`, `mealContext`, `isGaining`, `lastCorruptionShift`.
+Results land on `ctx.d.myKey` and are usable in `when` immediately. Built-in dimensions: `campusLocale`, `mobilityLevel`, `clothingState`, `mealContext`, `isGaining`, `lastCorruptionShift`, **`gainStance`** (A6 — `opposed` | `reluctant` | `secret` | `neutral` | `acclimating`; derived from shame/fixation tiers at corruption 0).
 
 ### Consequence of pooling: generic fragments must be tone-neutral
 
@@ -163,11 +163,11 @@ All keys combine (AND within a variant; value arrays are OR). Unlisted keys are 
 
 ### Per-girl corruption arc voice (6-line guide)
 
-**Squad lead: Agent 2 (Psych).** Agent 5 (Editor) holds final voice consistency.
+**Squad lead: Agent 2 (Psych)** for beats 2–6. **Agent 6 (Slender)** owns beat 1 and all early-game staging. Agent 5 (Editor) holds final voice consistency.
 
-For each student, calibrate interior voice across these beats — use when writing `shift.*`, `interior.*`, `eat.*` persona lines, and `diary` entries:
+For each student, calibrate interior voice across these beats — use when writing `shift.*`, `interior.*`, `slender.*`, `eat.*` persona lines, and `diary` entries:
 
-1. **Corruption 0, visible gain** — resistance mode; excuses, deflection, body contradicting words.
+1. **Corruption 0, visible gain** — **A6 Slender:** resistance, neutrality, or secret appetite; excuses vs. unfussed vs. body contradicting words; `gainStance` keys. Subtle physical change on still-thin bodies.
 2. **Corruption 0→1 transition** — first crack; pleasure where dread was; files feeling elsewhere, does not stay filed.
 3. **Corruption 1** — ambivalent; stopped fighting, not yet celebrating; flat familiarity.
 4. **Corruption 1→2 transition** — surrender; social witness; interior goes quiet; nothing left to argue.
@@ -213,8 +213,9 @@ Archetype colors the six lines (competitor/data for Brittany, sensory catalog fo
 
 1. `studentId` + archetype/bodyType/voice row in this file.
 2. Six-line corruption arc voice guide (§3 table format).
-3. Per-girl lines in: `wi.breakLine` (1), `wi.arrival` persona (2×2 stage bands), `eat.firstBite` persona (2), diary base (3 across corruption).
-4. `npm run text:lint` clean → `npm run build`.
+3. **A6 early lines:** `slender.*` or `wi.replyDialogue` persona (2× gainStance bands), `wi.bodyClause` stageMax 3 (1), `eat.firstBite` corruption 0 (1).
+4. Per-girl lines in: `wi.breakLine` (1), `wi.arrival` persona (2×2 stage bands), `eat.firstBite` persona (2), diary base (3 across corruption).
+5. `npm run text:lint` clean → `npm run build`.
 
 ### New campus locale checklist
 

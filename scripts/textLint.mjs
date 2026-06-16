@@ -12,6 +12,7 @@ import {
 } from '../src/textEngine/engine.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { WEIGHT_STAGES } from '../src/gameData/stages.js';
+import { getCorruptionTier } from '../src/gameData/corruption.js';
 import { DEVICES } from '../src/gameData/devices.js';
 import { renderGrowthScene } from '../src/textEngine/scenes/growthEvent/index.js';
 import {
@@ -116,6 +117,7 @@ const SWEEPS = [
   { name: 'campus.scene', root: 'campus.scene', tpl: '{campus.scene}' },
   { name: 'cloth.scene', root: 'cloth.scene', tpl: '{cloth.scene}' },
   { name: 'immob.scene', root: 'immob.scene', tpl: '{immob.scene}' },
+  { name: 'slender.scene', root: 'slender.scene', tpl: '{slender.scene}', corruptionTier: [0], stageMax: 4 },
 ];
 
 const STAGE_PROBES = [0, 2, 4, 6, 8, 10, 11];
@@ -140,7 +142,11 @@ for (const sweep of SWEEPS) {
   if (!hasModule(sweep.root)) continue;
   for (const base of INIT_STUDENTS) {
     for (const stage of STAGE_PROBES) {
+      if (sweep.stageMax != null && stage > sweep.stageMax) continue;
+      if (sweep.stageMin != null && stage < sweep.stageMin) continue;
       for (const corruption of CORRUPTIONS) {
+        const corTier = getCorruptionTier(corruption).id;
+        if (sweep.corruptionTier != null && !sweep.corruptionTier.includes(corTier)) continue;
         for (const mood of MOODS) {
           for (const hungerOverride of HUNGER_TIERS) {
             for (const campusTier of CAMPUS_TIERS) {

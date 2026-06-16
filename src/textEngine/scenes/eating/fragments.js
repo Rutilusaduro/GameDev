@@ -54,6 +54,24 @@ registerPool('eat.firstBite', [
     'She takes a careful first bite — measured, as if the calories might be watching.',
     'The first forkful goes down with the performance of someone still deciding.',
   ] },
+  { when: { corruption: [0], stageMax: 3, gainStance: 'opposed' }, weight: 2, text: [
+    'She eats the first bite like it counts against her.',
+    'The opening mouthful is small — apology sized.',
+    '"I shouldn\'t," she murmurs, and eats anyway.',
+  ] },
+  { when: { corruption: [0], stageMax: 3, gainStance: 'reluctant' }, weight: 2, text: [
+    'The first bite lands; she pauses, surprised by how much she wanted it.',
+    'She eats slowly, then faster once she stops performing restraint.',
+  ] },
+  { when: { corruption: [0], stageMax: 3, gainStance: 'neutral' }, text: [
+    'She eats the first bite the way anyone eats when they are hungry.',
+    'Food, fork, mouth — no commentary required.',
+  ] },
+  { when: { corruption: [0], stageMax: 3, gainStance: 'secret' }, weight: 2, text: [
+    'The first bite goes down with quiet focus — appetite unmasked.',
+    'She leans into the food before she remembers to look casual.',
+    'Her eyes close on the first mouthful. She blames how good it smells.',
+  ] },
   { when: { corruption: [1] }, text: [
     'She starts eating without the old argument — not eager, not resisting, simply continuing.',
     'The first bite is unremarkable. That is new, and she notices.',

@@ -4,11 +4,37 @@
 >
 > Companion: `AUTHORING.md` (mechanics) · `TUNING.md` (Style Ledger) · strategic plan (`docs/` or uploaded plan artifact)
 
-The Squad is the five-agent team defined in the Near-Infinite Narrative Engine strategic plan. **Do not substitute generic "help me write prose" for Squad routing** — each member has a domain, a voice contract, and file ownership.
+The Squad is the six-agent team defined in the Near-Infinite Narrative Engine strategic plan. **Do not substitute generic "help me write prose" for Squad routing** — each member has a domain, a voice contract, and file ownership.
+
+**Early game is A6 territory.** Stages 0–4 and corruption 0 run through Slender before Mobile, Psych, or Immobility pools dominate. Route thin-body change, reluctance, neutrality, and secret appetite here first.
 
 ---
 
 ## Roster
+
+### Agent 6 — Slender (Early Gain & Reluctant Bodies) ★ early game
+
+**Domain:** Stages 0–4, corruption 0. Still-thin and first-softening bodies — women who do not want to get fat (or secretly do), or who are genuinely neutral. How small bodies change first: waistband awareness, mirror checks, thigh brush, the first surprising number. The emotional texture of resistance, curiosity, indifference, and hidden appetite **before** the corruption arc hands off to Psych.
+
+**Voice:** Intimate, close-focus. Physical change is subtle but legible. Opposed = rehearsed excuses, shame without pathology; reluctant = protest that weakens; neutral = unfussed, filed and forgotten; secret = body contradicts words, pleasure kept private. Sensual undertone allowed at secret/reluctant — never clinical, never health-consequence framing.
+
+**Owns:** `scenes/earlyGain/`, `slender.*`, `gainStance` dimension, early-stage bands in `wi.bodyClause` (stageMax 1–3), `wi.replyDialogue` / `wi.numberLine` at corruption 0 stageMax 4, `eat.firstBite` / `slender.eatPause` stageMax 3, `interior.selfObs` stageMax 3 corruption 0. **Lead on all new early-game prose** until stage 5 or corruption 1.
+
+**`gainStance` axis** (derived from psych + corruption):
+
+| Stance | Derivation | Write as |
+|--------|------------|----------|
+| `opposed` | corruption 0, shameTier ≥ 2 | Active resistance, excuses, dread of the number |
+| `reluctant` | corruption 0, shameTier 1 | Crack under denial; body ahead of words |
+| `secret` | corruption 0, fixationTier ≥ 2, shameTier ≤ 1 | Hidden appetite; physical tells |
+| `neutral` | corruption 0, low shame & fixation | Genuinely unfussed; number as fact |
+| `acclimating` | corruption 1+ | **A2 Psych** — A6 pools gate out |
+
+**Expansion targets:** Per-girl early persona lines (`earlyGain/personas.js`), mirror/weigh-in embeds, dining-hall first-month beats, Dialogue Lab `slender.*` sections.
+
+**Hard rules:** No medical decline, no real distress pathology, no shame spirals that read as self-harm. Resistance is erotic tension, not cruelty. Characters are always adults.
+
+---
 
 ### Agent 1 — Mobile (SSBBW Lifestyle & High-Mobile Weight)
 
@@ -85,6 +111,8 @@ The Squad is the five-agent team defined in the Near-Infinite Narrative Engine s
 
 | Asset / phase | Lead | Support |
 |---------------|------|---------|
+| **Early game (stages 0–4, cor 0)** | **A6 Slender** | A2 Psych, A5 Editor |
+| `slender.*`, `gainStance`, `scenes/earlyGain/` | A6 Slender | A4 Architect |
 | `ctx.flags`, `registerDimension`, moveVerb corpus | A4 Architect | A5 Editor |
 | `word.adv.*`, compounds, skeleton patterns | A4 Architect | A5 Editor |
 | `wi.approachSentence`, weigh-in expansion | A5 Editor | A1 Mobile, A4 Architect |
@@ -128,6 +156,7 @@ When using subagents or multi-step generation, spawn reviewers by Squad role:
 | A3 Immobility | "Any stage 10–11 content architectural, not pathological?" |
 | A4 Architect | "Pools compose? Dimensions wired? Lint clean?" |
 | A5 Editor | "Template-itis? Shape violations? Ledger bans?" |
+| A6 Slender | "Early stages 0–4: reluctance/neutral/secret earned? Body change subtle and sensual, not clinical? gainStance keys correct?" |
 
 ### File header convention
 
@@ -145,7 +174,8 @@ Tag scene files at the top:
 |------|------|
 | `engine.js`, `lexicon/*`, `gameData/textContext.js` | A4 |
 | `scripts/textLint.mjs`, `text-lint.config.js` | A4 |
-| `scenes/weighIn/` | A5 (skeletons), A1 (mobility clauses) |
+| `scenes/earlyGain/` | A6 |
+| `scenes/weighIn/` (early bands) | A6 (stages 0–4), A5 (skeletons), A1 (mobility 7+) |
 | `scenes/eating/` | A1, A2 (personas) |
 | `scenes/clothing/` | A1, A2 (reactions) |
 | `scenes/campus/` | A1 |
@@ -160,7 +190,7 @@ Tag scene files at the top:
 ## Naming
 
 - **The Squad** — collective; use in PR descriptions and planning.
-- **Agent N** or **A1–A5** — shorthand in file headers and commit messages.
-- **Mobile / Psych / Immobility / Architect / Editor** — role nicknames in conversation.
+- **Agent N** or **A1–A6** — shorthand in file headers and commit messages.
+- **Mobile / Psych / Immobility / Architect / Editor / Slender** — role nicknames in conversation.
 
-Example commit: `Squad A1+A5: campus stairwell pool expansion, stages 7–9`
+Example commit: `Squad A6+A5: slender mirror pool, stages 0–3 gainStance coverage`

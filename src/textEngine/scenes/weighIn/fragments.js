@@ -162,6 +162,25 @@ registerPool("wi.massNoun", [
 // bodyType × stage band. Mined from the legacy arrival grid.
 registerPool("wi.bodyClause", [
   { when: {}, text: ["", "", "her steps unhurried", "bag over one shoulder"] },
+  // A6 Slender — stage 0–1: still thin, first hints only
+  { when: { stageMax: 1 }, text: [
+    "still mostly the silhouette she arrived with",
+    "clothes hanging the way they always have",
+    "a softness at the cheek and hip only if you are looking for it",
+    "still light on her feet, unchanged in the doorway",
+  ]},
+  { when: { bodyType: "pear", stageMax: 1 }, text: [
+    "hips still narrow — only a promise of sway",
+    "thighs still clearing each other, for now",
+  ]},
+  { when: { bodyType: "apple", stageMax: 1 }, text: [
+    "waist still defined, belly still quiet",
+    "shirt lying flat across her middle",
+  ]},
+  { when: { bodyType: "athletic", stageMax: 1 }, text: [
+    "trained lines still visible at the shoulder",
+    "stride still quick, body still economical",
+  ]},
   // pear / lower-half led
   { when: { bodyType: "pear", stageMin: 2, stageMax: 3 }, text: [
     "a new sway at her hips, softness settling low",
@@ -814,6 +833,27 @@ registerPool("wi.replyDialogue", [
   { when: { corruption: [0], stageMax: 1 }, text: [
     `"That seems right," she says, shrugging. "Nothing to report."`,
     `"Fine," she says. She was already thinking about lunch.`,
+  ]},
+  // A6 Slender — gainStance at early softening (stage 2–4)
+  { when: { corruption: [0], stageMin: 2, stageMax: 4, gainStance: 'opposed' }, weight: 2, text: [
+    `"That's… more than I thought," she says, already reaching for an excuse.`,
+    `"It'll come off," she says, without conviction.`,
+    `"Don't make a thing of it."`,
+  ]},
+  { when: { corruption: [0], stageMin: 2, stageMax: 4, gainStance: 'reluctant' }, weight: 2, text: [
+    `"Huh." She touches her waist. "Huh."`,
+    `"I should watch it," she says, and does not sound like she means it.`,
+    `"Okay. Okay." She needs a second to place the feeling.`,
+  ]},
+  { when: { corruption: [0], stageMin: 2, stageMax: 4, gainStance: 'neutral' }, weight: 2, text: [
+    `"Sure," she says. "That tracks."`,
+    `"Noted." She is already half out the door.`,
+    `"Fine. See you next week."`,
+  ]},
+  { when: { corruption: [0], stageMin: 2, stageMax: 4, gainStance: 'secret' }, weight: 2, text: [
+    `"Oh." Her breath catches — not quite dismay. "Oh."`,
+    `She says nothing. Her cheeks are pink. She is already thinking about food.`,
+    `"Interesting," she says, too lightly. Her hand rests on her hip a beat too long.`,
   ]},
   // Soft+: the gain is visible; the excuses start
   { when: { corruption: [0], stageMin: 2 }, text: [

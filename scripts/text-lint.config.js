@@ -14,11 +14,12 @@ export const SAMPLE_SCENES = {
   cloth: '{cloth.scene}',
   immob: '{immob.scene}',
   shift: '{shift.scene}',
+  slender: '{slender.scene}',
 };
 
 export const COVERAGE_STAGE_PROBES = [0, 2, 4, 6, 8, 10, 11];
 
 // Pools expected to have stage 10-11 weight-related variants.
 export const STAGE_COVERAGE_PREFIXES = [
-  'wi.', 'eat.', 'cloth.', 'campus.', 'immob.', 'word.moveVerb', 'word.adv.',
+  'wi.', 'eat.', 'cloth.', 'campus.', 'immob.', 'slender.', 'word.moveVerb', 'word.adv.',
 ];

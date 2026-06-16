@@ -1,6 +1,6 @@
 ---
 name: gamedev-text-engine
-description: Operating manual for Rutilusaduro's GameDev repo — "Professor Sim", a React + Vite weight-gain college sim whose narrative comes from a modular text engine that fills templated slots from a registry of when-keyed prose variants (most-specific wins, or pool by specificity). Use this whenever working in that repo or its text engine — writing or editing ANY game prose, adding or wiring a scene, building registerPool variants, composing slot skeletons, reusing the word.* lexicon, keying content on game state, fixing the content linter (npm run text:lint), weight-stage coverage, or tuning/migrating prose. Even a casual "add a scene", "write a weigh-in beat for her", "give Maya a line", or "the text linter is failing" pulls it in. It carries the engine API, the when-selector vocabulary, the lexicon/module catalog, the breakScene authoring pattern, the non-negotiable weight-stage coverage rule, the adults-only house voice, the lint-until-clean discipline, and **The Squad** — five role agents (Mobile, Psych, Immobility, Architect, Editor) whose ownership matrix and workflow live in `src/textEngine/SQUAD.md`.
+description: Operating manual for Rutilusaduro's GameDev repo — "Professor Sim", a React + Vite weight-gain college sim whose narrative comes from a modular text engine that fills templated slots from a registry of when-keyed prose variants (most-specific wins, or pool by specificity). Use this whenever working in that repo or its text engine — writing or editing ANY game prose, adding or wiring a scene, building registerPool variants, composing slot skeletons, reusing the word.* lexicon, keying content on game state, fixing the content linter (npm run text:lint), weight-stage coverage, or tuning/migrating prose. Even a casual "add a scene", "write a weigh-in beat for her", "give Maya a line", or "the text linter is failing" pulls it in. It carries the engine API, the when-selector vocabulary, the lexicon/module catalog, the breakScene authoring pattern, the non-negotiable weight-stage coverage rule, the adults-only house voice, the lint-until-clean discipline, and **The Squad** — six role agents whose ownership matrix and workflow live in `src/textEngine/SQUAD.md`. **Early game (stages 0–4, corruption 0) routes to A6 Slender first.**
 ---
 
 # GameDev — Modular Text Engine Operating Manual
@@ -15,17 +15,20 @@ Never write a monolithic paragraph as a single variant. Compose a **skeleton of 
 
 ## The Squad
 
-All narrative work routes through **The Squad** — five agents from the Near-Infinite Narrative Engine plan. Read `src/textEngine/SQUAD.md` before authoring; identify your lead agent and run Agent 5 (Editor) as the final prose gate on every pass.
+All narrative work routes through **The Squad** — six agents from the Near-Infinite Narrative Engine plan. Read `src/textEngine/SQUAD.md` before authoring; identify your lead agent and run Agent 5 (Editor) as the final prose gate on every pass.
 
 | Agent | Nickname | Domain |
 |-------|----------|--------|
+| **A6** | **Slender** | **Stages 0–4, cor 0 — thin bodies, reluctance, neutrality, secret appetite (early game)** |
 | A1 | Mobile | Stages 5–9 — campus, mobility, clothing strain, eating at scale |
 | A2 | Psych | Corruption arc, interior life, NPC psychology |
 | A3 | Immobility | Stages 10–11 — environmental body scale, assisted transfer |
 | A4 | Architect | Engine APIs, dimensions, lint tooling, game-state plumbing |
 | A5 | Editor | Prose quality — skeleton rhythm, Style Ledger, lint sign-off |
 
-**Workflow:** (1) pick lead from the ownership matrix in `SQUAD.md`; (2) implement in that agent's voice contract; (3) Agent 5 pass — `npm run text:lint`, sample renders for touched scenes, Style Ledger grep. Tag new scene files: `// The Squad — Lead: A1 Mobile | Support: A2 Psych, A5 Editor`. When spawning subagents for parallel review, assign Squad roles (see `SQUAD.md` § Parallel review).
+**Early game rule:** stages 0–4 at corruption 0 → **A6 Slender** is lead. Use `gainStance` (`opposed` | `reluctant` | `secret` | `neutral`) from psych tiers. Pools live in `scenes/earlyGain/` (`slender.*`).
+
+**Workflow:** (1) pick lead from the ownership matrix in `SQUAD.md`; (2) implement in that agent's voice contract; (3) Agent 5 pass — `npm run text:lint`, sample renders for touched scenes, Style Ledger grep. Tag new scene files: `// The Squad — Lead: A6 Slender | Support: A2 Psych, A5 Editor`. When spawning subagents for parallel review, assign Squad roles (see `SQUAD.md` § Parallel review).
 
 ## How content is authored (the benchmark pattern)
 
