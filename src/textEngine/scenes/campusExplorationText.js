@@ -1,13 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
 // SCENE: CAMPUS EXPLORATION — modular travel & sighting prose
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, createContext, render } from '../engine.js';
+import { registerPool, createContext, render } from '../engine.js';
 import { getStage } from '../../gameData/stages.js';
 import '../modules.js'; // subject.name etc.
 
 // ── student sightings (weight-band × archetype) ───────────────
 
-registerModule('campus.sighting', [
+registerPool('campus.sighting', [
   // Brittany — cheerleader
   { when: { archetype: 'cheerleader', weightBand: 'lean' }, priority: 4,
     text: [
@@ -197,9 +197,14 @@ registerModule('campus.sighting', [
       '{subject.name} has become a landmark — installed, fed, content.',
       'Campus routes around {subject.name} now. She seems to prefer it that way.',
     ] },
+  { when: {}, text: [
+    'You spot {subject.name} between classes — present, unhurried, part of the campus flow.',
+    '{subject.name} crosses your path with the easy confidence of someone who belongs here.',
+    'Campus noise softens for a moment around {subject.name}, then resumes.',
+  ] },
 ]);
 
-registerModule('campus.travel', [
+registerPool('campus.travel', [
   { when: { campusTierMin: 2 }, priority: 2,
     text: [
       'Students whisper "wellness solutions" like a password. Someone hands out samples with devotional care.',
@@ -219,7 +224,7 @@ registerModule('campus.travel', [
     ] },
 ]);
 
-registerModule('campus.location', [
+registerPool('campus.location', [
   { when: { nodeId: 'quad' }, priority: 2,
     text: ['Food trucks idle in a row like predators that learned parking etiquette.', 'The lawn has more blankets than grass on a weekday afternoon.'] },
   { when: { nodeId: 'library' }, priority: 2,
@@ -230,9 +235,14 @@ registerModule('campus.location', [
     text: ['The juice bar blender never stops during peak hours.', 'A poster advertises "recovery" portions the size of small pets.'] },
   { when: { nodeId: 'garden' }, priority: 2,
     text: ['Fruit trees lean slightly toward the path, as if offering.', 'A greenhouse fan hums. Inside, someone is eating something not on the syllabus.'] },
+  { when: {}, text: [
+    'The campus hums with its usual foot traffic and appetite.',
+    'Students drift past carrying food like portable flags.',
+    'Something smells good from a direction you cannot quite name.',
+  ] },
 ]);
 
-registerModule('campus.find', [
+registerPool('campus.find', [
   { when: { campusTierMin: 3 }, priority: 2,
     text: [
       'You find condensed sweetness pooled where students gather — useful, unsettling, bottled before it evaporates.',

@@ -3,6 +3,7 @@
 import { registerPool, registerDimension, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import './fragments.js';
+import './personas.js';
 
 /**
  * Derive early-game attitude toward gaining from psych + corruption.

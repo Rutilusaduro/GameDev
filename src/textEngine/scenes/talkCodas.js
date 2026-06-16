@@ -5,9 +5,9 @@
 // The broken register wins over submissive at corruption tier 2
 // via priority — the old if/else got this backwards.
 // ═══════════════════════════════════════════════════════════════
-import { registerModule } from '../engine.js';
+import { registerPool } from '../engine.js';
 
-registerModule("talk.coda", [
+registerPool("talk.coda", [
   // Broken register — corruption tier 2 + brokenMind skill
   { when: { corruption: [2], skill: "brokenMind" }, priority: 1,
     text: [

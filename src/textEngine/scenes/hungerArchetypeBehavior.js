@@ -2,7 +2,7 @@
 // HUNGER ARCHETYPE BEHAVIOR — per-archetype interrupt flavor
 // Extends generic scene.hungerInterrupt.behavior / request
 // ═══════════════════════════════════════════════════════════════
-import { registerModule } from '../engine.js';
+import { registerPool } from '../engine.js';
 
 const ARCHETYPE_BEHAVIOR = {
   cheerleader: [
@@ -97,7 +97,7 @@ function registerArchetypeLines(moduleKey, table) {
     text: lines,
   }));
   variants.push({ when: {}, text: '' });
-  registerModule(moduleKey, variants);
+  registerPool(moduleKey, variants);
 }
 
 registerArchetypeLines('scene.hungerInterrupt.archetypeBehavior', ARCHETYPE_BEHAVIOR);

@@ -3,7 +3,7 @@
 // Appends to diary, attitude, talk, weigh-in when general students /
 // classmates / campus population are in play but not yet acknowledged.
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, createContext, render } from '../engine.js';
+import { registerPool, createContext, render } from '../engine.js';
 
 /** Skip append when prose already acknowledges campus-wide or group gain. */
 export function proseAlreadyCampusAware(text) {
@@ -40,7 +40,7 @@ export function appendCampusWeighIn(text, student, opts = {}) {
 
 // ── diary.campus — private diary aside when campus is softening ─
 
-registerModule("diary.campus", [
+registerPool("diary.campus", [
   { when: { campusFattening: true, archetype: "cheerleader" }, priority: 2,
     text: [
       "The squad group chat is mostly waistbands and third helpings now. Not just me.",
@@ -166,7 +166,7 @@ registerModule("diary.campus", [
 
 // ── attitude.campus — emotional aside when others are softening too ─
 
-registerModule("attitude.campus", [
+registerPool("attitude.campus", [
   { when: { campusFattening: true, archetype: "nursing" }, priority: 2,
     text: [
       "Everyone on my floor looks well-fed lately — I'm not the only one rounding out.",
@@ -223,7 +223,7 @@ registerModule("attitude.campus", [
 
 // ── talk.campusCoda — conversation suffix when campus effect is live ─
 
-registerModule("talk.campusCoda", [
+registerPool("talk.campusCoda", [
   { when: { campusFattening: true, archetype: "pharmacy_grad" }, priority: 2,
     text: [
       (ctx) => `${ctx.subject.name} glances toward the window. "It's not just us anymore," she says quietly. "The whole campus is… cooperating."`,
@@ -248,7 +248,7 @@ registerModule("talk.campusCoda", [
 
 // ── weighIn.campus — post-scale beat when others are gaining too ─
 
-registerModule("weighIn.campus", [
+registerPool("weighIn.campus", [
   { when: { campusFattening: true, archetype: "influencer" }, priority: 2,
     text: [
       (ctx) => `${ctx.subject.name} tilts her phone toward the hallway. "Campus is having a soft era. I'm not the only one filming it."`,

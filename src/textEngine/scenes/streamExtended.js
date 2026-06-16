@@ -3,11 +3,11 @@
 // brand control, trend matrix, expanded chat)
 // Loaded after stream.js — overwrites key modules with richer pools.
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, registerModuleVariants } from '../engine.js';
+import { registerPool, registerModuleVariants } from '../engine.js';
 
 // ── Between-round: perf × brand × challenge × trend × brandControl ─
 
-registerModule('stream.betweenRound', [
+registerPool('stream.betweenRound', [
   // Excellent
   { when: { perf: 'excellent', trend: 'improving' }, priority: 8,
     text: [
@@ -229,7 +229,7 @@ registerModule('stream.betweenRound', [
 
 // ── Round start expansions ─────────────────────────────────────
 
-registerModule('stream.roundStart', [
+registerPool('stream.roundStart', [
   { when: { brandControl: 'soldOut' }, priority: 6,
     text: [
       'They own me now. Let\'s give them a show.',
@@ -319,10 +319,10 @@ const milestoneLines = {
 };
 
 for (const [key, lines] of Object.entries(milestoneLines)) {
-  registerModule(`stream.milestone.${key}`, [{ when: {}, text: lines }]);
+  registerPool(`stream.milestone.${key}`, [{ when: {}, text: lines }]);
 }
 
-registerModule('stream.milestone.stage', [
+registerPool('stream.milestone.stage', [
   { when: { stageMin: 10 }, text: [
     'I hit a new size on stream. Chat lost their minds.',
     'Stage up — live, on camera, no take-backs.',
@@ -374,7 +374,7 @@ const specialLines = {
 };
 
 for (const [key, lines] of Object.entries(specialLines)) {
-  registerModule(`stream.special.${key}`, [{ when: {}, text: lines }]);
+  registerPool(`stream.special.${key}`, [{ when: {}, text: lines }]);
 }
 
 // ── Expanded performance chat ──────────────────────────────────
@@ -452,12 +452,12 @@ const expandedPerfChat = {
 };
 
 for (const [tier, lines] of Object.entries(expandedPerfChat)) {
-  registerModule(`stream.chat.perf.${tier}`, [{ when: {}, text: lines }]);
+  registerPool(`stream.chat.perf.${tier}`, [{ when: {}, text: lines }]);
 }
 
 // ── Brand control chat (selling out) ─────────────────────────────
 
-registerModule('stream.chat.brandControl.soldOut', [
+registerPool('stream.chat.brandControl.soldOut', [
   { when: {}, text: [
     'she\'s fully sold out lmaooo',
     'brand owns her stomach',
@@ -468,7 +468,7 @@ registerModule('stream.chat.brandControl.soldOut', [
   ] },
 ]);
 
-registerModule('stream.chat.brandControl.late', [
+registerPool('stream.chat.brandControl.late', [
   { when: {}, text: [
     'sponsor\'s favorite girl',
     'she\'s their mascot now',
@@ -479,7 +479,7 @@ registerModule('stream.chat.brandControl.late', [
 
 // ── Trend chat ─────────────────────────────────────────────────
 
-registerModule('stream.chat.trend.improving', [
+registerPool('stream.chat.trend.improving', [
   { when: {}, text: [
     'she\'s getting better each round??',
     'momentum shift',
@@ -489,7 +489,7 @@ registerModule('stream.chat.trend.improving', [
   ] },
 ]);
 
-registerModule('stream.chat.trend.declining', [
+registerPool('stream.chat.trend.declining', [
   { when: {}, text: [
     'she\'s falling off',
     'it\'s getting worse each round',
@@ -501,7 +501,7 @@ registerModule('stream.chat.trend.declining', [
 
 // ── Early parasocial (small audience) ───────────────────────────
 
-registerModule('stream.chat.parasocial.early', [
+registerPool('stream.chat.parasocial.early', [
   { when: { stageMin: 6 },
     text: [
       'found her early before she blows up',
@@ -518,7 +518,7 @@ registerModule('stream.chat.parasocial.early', [
 
 // ── Tap-out chat reactions ─────────────────────────────────────
 
-registerModule('stream.chat.tapOut.stamina', [
+registerPool('stream.chat.tapOut.stamina', [
   { when: {}, text: [
     'she tapped out NOOO',
     'empty tank',
@@ -528,7 +528,7 @@ registerModule('stream.chat.tapOut.stamina', [
   ] },
 ]);
 
-registerModule('stream.chat.tapOut.fullness', [
+registerPool('stream.chat.tapOut.fullness', [
   { when: {}, text: [
     'too full to continue',
     'she hit the wall',
@@ -538,7 +538,7 @@ registerModule('stream.chat.tapOut.fullness', [
   ] },
 ]);
 
-registerModule('stream.chat.tapOut.performance', [
+registerPool('stream.chat.tapOut.performance', [
   { when: {}, text: [
     'she ended it herself',
     'self tap out',
@@ -550,7 +550,7 @@ registerModule('stream.chat.tapOut.performance', [
 
 // ── Brand end-stream lines ─────────────────────────────────────
 
-registerModule('stream.endStream.excellent', [
+registerPool('stream.endStream.excellent', [
   { when: { brand: 'crunchforge' },
     text: ['CrunchForge got their massacre. I got my check. Everybody wins.'] },
   { when: { brand: 'fizzpeak' },
@@ -568,7 +568,7 @@ registerModule('stream.endStream.excellent', [
   ] },
 ]);
 
-registerModule('stream.endStream.good', [
+registerPool('stream.endStream.good', [
   { when: { trend: 'improving' },
     text: ['Started shaky, ended strong. I\'ll take that arc.'] },
   { when: {}, text: [
@@ -578,7 +578,7 @@ registerModule('stream.endStream.good', [
   ] },
 ]);
 
-registerModule('stream.endStream.average', [
+registerPool('stream.endStream.average', [
   { when: { brandControl: 'soldOut' },
     text: ['Sold out and mid. Sponsor\'s gonna have words.'] },
   { when: {}, text: [
@@ -588,7 +588,7 @@ registerModule('stream.endStream.average', [
   ] },
 ]);
 
-registerModule('stream.endStream.poor', [
+registerPool('stream.endStream.poor', [
   { when: {}, text: [
     'That was rough. I\'m gonna go lie down.',
     'I don\'t want to talk about how that went.',
@@ -596,7 +596,7 @@ registerModule('stream.endStream.poor', [
   ] },
 ]);
 
-registerModule('stream.endStream.verypoor', [
+registerPool('stream.endStream.verypoor', [
   { when: {}, text: [
     'I need to delete the VOD. I\'m not even joking.',
     'Please don\'t clip that. Please.',
@@ -606,7 +606,7 @@ registerModule('stream.endStream.verypoor', [
 
 // ── Expanded tap-out Destiny lines ─────────────────────────────
 
-registerModule('stream.tapOut.stamina', [
+registerPool('stream.tapOut.stamina', [
   { when: { brandControl: 'soldOut' },
     text: ['Brand wanted more. My body said absolutely not. I\'m tapping out.'] },
   { when: { addiction: [1, 2] },
@@ -619,7 +619,7 @@ registerModule('stream.tapOut.stamina', [
   ] },
 ]);
 
-registerModule('stream.tapOut.fullness', [
+registerPool('stream.tapOut.fullness', [
   { when: { stageMin: 8 },
     text: ['I\'m too big and too full to continue. Tap out before I pop.'] },
   { when: {}, text: [
@@ -630,7 +630,7 @@ registerModule('stream.tapOut.fullness', [
   ] },
 ]);
 
-registerModule('stream.tapOut.performance', [
+registerPool('stream.tapOut.performance', [
   { when: { brandControl: 'soldOut' },
     text: ['I\'m embarrassing the brand. Ending it before they fire me.'] },
   { when: {}, text: [

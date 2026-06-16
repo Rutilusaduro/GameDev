@@ -2,9 +2,9 @@
 // SCENE: CORRUPTION VOICE — inner monologue during feeds
 // Expanded pool keyed on corruption tier + hunger tier.
 // ═══════════════════════════════════════════════════════════════
-import { registerModule } from '../engine.js';
+import { registerPool } from '../engine.js';
 
-registerModule('corruption.voice', [
+registerPool('corruption.voice', [
   {
     when: { corruption: [0], hungerTier: [0, 1] },
     text: [

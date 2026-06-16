@@ -9,7 +9,7 @@
 // Stage 7-8: mid — fully in it
 // Stage 9-10: late — vast, settled, definitive
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, registerPool, createContext, render } from '../engine.js';
+import { registerModule, createContext, render } from '../engine.js';
 
 // ── SUMO ──────────────────────────────────────────────────────
 registerModule("diary.sumo", [
@@ -1212,7 +1212,7 @@ registerModule("diary.community_researcher", [
 // FULL SENTENCE — first-person inner voice. Pool mode: all matching
 // variants eligible; weight:4 dominant per-student, weight:5 flag-gated.
 // 200-char hard cap per entry enforced by lint.
-registerPool('diary.innerBeat', [
+registerModule('diary.innerBeat', [
   { when: {}, text: [
     "Something is different this week. I haven't written it down. This is me writing it down.",
     "More of everything. Less worry about it.",
@@ -1347,7 +1347,7 @@ registerPool('diary.innerBeat', [
 // ── diary.lilith — chronicle voice, stage-gated ───────────────
 // FULL SENTENCE — first-person chronicle. No confession, no corruption arc.
 // Gravity, not hunger. Patience, not wanting.
-registerPool('diary.lilith', [
+registerModule('diary.lilith', [
   { when: {}, text: [
     "Still here. Still hungry. Nothing about this has changed.",
     "I wait. Things come.",
