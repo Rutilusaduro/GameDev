@@ -11,6 +11,8 @@ import './fragments.js';
 import './personas.js';
 import './breakScene.js';
 import { appendCampusWeighIn } from '../campusSoftening.js';
+import { renderSlenderMirrorBeat } from '../earlyGain/index.js';
+import { isSlenderEligible } from '../../../gameData/textContext.js';
 
 export const WI_INTRO_LEGACY = "{wi.arrival} {wi.settle} {wi.scaleApproach}";
 export const WI_INTRO = "{wi.arrival} {wi.settle} {wi.approachSentence} {wi.scaleSentence}";
@@ -58,11 +60,15 @@ export function renderWeighInApproachV2(student, week, goesDirectlyToBig = false
 export function renderWeighInReaction(student, week, opts = {}) {
   const ctx = weighInCtx(student, week, opts);
   const stepOff = render("{wi.stepOff}", ctx, { trace: opts.trace });
-  const reply = appendCampusWeighIn(
+  let reply = appendCampusWeighIn(
     render("{wi.reply}{wi.foodAsk|prefix: }", ctx, { trace: opts.trace }),
     student,
     { ...opts, week },
   );
+  if (isSlenderEligible(student)) {
+    const mirrorBeat = renderSlenderMirrorBeat(student, week, opts);
+    if (mirrorBeat) reply = `${mirrorBeat}\n\n${reply}`;
+  }
   return `${stepOff}\n\n${reply}`;
 }
 

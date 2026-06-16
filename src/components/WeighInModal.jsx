@@ -7,7 +7,8 @@ import {
 } from '../textEngine/scenes/weighIn/index.js';
 import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from '../textEngine/textFlagFormat.js';
-import { createSessionUsed, weekUsedFromStudent, weekUsedToPatch } from '../gameData/textContext.js';
+import { createSessionUsed, weekUsedFromStudent, weekUsedToPatch, isSlenderEligible } from '../gameData/textContext.js';
+import { renderSlenderMirrorBeat } from '../textEngine/scenes/earlyGain/index.js';
 
 function renderWeighInPhase(renderFn, student, week, opts) {
   const trace = [];
@@ -209,6 +210,12 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
     ),
     [student.id, goesDirectlyToBig, weighInState?.aibMandatory, textSession],
   );
+  const slenderMirrorBundle = useMemo(
+    () => (!showScaleAfter && isSlenderEligible(student)
+      ? renderWeighInPhase(renderSlenderMirrorBeat, student, week || 1, weighInOpts)
+      : { text: '', traceNodes: [] }),
+    [student.id, showScaleAfter, textSession],
+  );
   const breakBundle = useMemo(
     () => (phase === 'break'
       ? renderWeighInPhase(renderWeighInBreak, student, week || 1, weighInOpts)
@@ -263,6 +270,14 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
               {introBundle.text}
             </div>
             <TextFlagToolbar section="weighIn.intro" stateLine={flagState} text={introBundle.text} nodes={introBundle.traceNodes} />
+            {slenderMirrorBundle.text && (
+              <>
+                <div style={{...C.infoBox("rgba(40,25,55,.35)"),border:"1px solid #6a408040",fontSize:13,color:"#e8d4f0",lineHeight:1.85,fontStyle:"italic",marginBottom:8}}>
+                  {slenderMirrorBundle.text}
+                </div>
+                <TextFlagToolbar section="slender.mirror" stateLine={flagState} text={slenderMirrorBundle.text} nodes={slenderMirrorBundle.traceNodes} />
+              </>
+            )}
             {weighInState?.aibMandatory && onMandatorySkip && (
               <button style={{...C.btn("#502030"),width:"100%",marginBottom:8}} onClick={onMandatorySkip}>
                 Refuse documented weigh-in (+12 scrutiny)
