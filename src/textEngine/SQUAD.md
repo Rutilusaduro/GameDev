@@ -1,0 +1,166 @@
+# The Squad — Narrative Engine Creative & Technical Team
+
+> **Binding for all LLM and human work on the text engine.** Before authoring, migrating, or extending narrative systems, identify which Squad member owns the work — and run Agent 5's quality gate on every prose pass.
+>
+> Companion: `AUTHORING.md` (mechanics) · `TUNING.md` (Style Ledger) · strategic plan (`docs/` or uploaded plan artifact)
+
+The Squad is the five-agent team defined in the Near-Infinite Narrative Engine strategic plan. **Do not substitute generic "help me write prose" for Squad routing** — each member has a domain, a voice contract, and file ownership.
+
+---
+
+## Roster
+
+### Agent 1 — Mobile (SSBBW Lifestyle & High-Mobile Weight)
+
+**Domain:** Stages 5–9. Still-moving bodies at massive scale — lifestyle adaptation, movement, clothing strain, daily rituals, campus navigation, furniture negotiation, sound and spatial displacement.
+
+**Voice:** Sensual, grounded, practical. Mass is *present* in every motion; architecture is insufficient but not hostile. No clinical language; no pathology framing.
+
+**Owns:** `scenes/campus/`, `wi.mobilityClause`, mobility-tagged `word.moveVerb.*`, stage 5–9 bands in `cloth.*`, `eat.bodyResponse` at high stages, Agent 1 review on `wi.arrival` / `wi.bodyClause` stage 7–9 variants.
+
+**Expansion targets:** Campus locale pools, hallway/stairwell/elevator beats, clothing failure physical beats, eating at scale (tray, booth, chair).
+
+---
+
+### Agent 2 — Psych (Psychological Weight Gain & Fatness Appreciation)
+
+**Domain:** Corruption arc, interior life, denial → acceptance → pride, relational reads (relationship tier), shame vs. celebration, the emotional texture of a growing body being witnessed.
+
+**Voice:** Interior contradiction at tier 0; flat familiarity at tier 1; open appetite at tier 2. Physical response contradicts words at transitions.
+
+**Owns:** `scenes/psychShift/`, `scenes/interior/`, `shift.*`, `interior.*`, corruption-keyed generics across scenes, per-girl corruption arc table in `AUTHORING.md` §3, `npc.peer` / `prof.observation` relationship gates.
+
+**Expansion targets:** Per-girl 6-line arc lines in persona pools, `shift.*` keyed on archetype, interior beats embeddable in eating/campus/clothing skeletons.
+
+---
+
+### Agent 3 — Immobility (Hyper-Unrealistic Gains & Immobility)
+
+**Domain:** Stages 10–11. Blob and leviathan — environmental body scale, assisted transfer, architecture-not-pathology, sound-before-sight, position not locomotion.
+
+**Voice:** Her body is environmental. She has practical familiarity with her scale. Warmth, vastness, immobility as fact — never deterioration, never medical decline.
+
+**Owns:** `scenes/immobility/`, `immob.*`, stage 10–11 weigh-in skeletons, `word.moveVerb.bed`, leviathan lines in persona pools, stage 10+ `eat.settleIn` / `eat.aftermath`.
+
+**Expansion targets:** 8+ `immob.settledState` per stage band, 6+ `immob.spaceObs`, 6+ `immob.register` per corruption × persona, all 18 students with ≥1 leviathan-specific line.
+
+**Hard rules:** No atrophy, no "useless," no distress framing. Sound is primary at this scale.
+
+---
+
+### Agent 4 — Architect (Technical Coder & Procedural Systems)
+
+**Domain:** Engine APIs, pool architecture, dimensions, flags, lint tooling, game-state plumbing, barrel imports, render wrappers, performance, migration mechanics.
+
+**Voice:** N/A (code). Prose quality is Agent 5's job; Architect ensures slots compose without collision.
+
+**Owns:** `engine.js`, `lexicon/`, `gameData/textContext.js`, `scripts/textLint.mjs`, `scripts/text-lint.config.js`, `registerDimension` / `ctx.flags` / `consumes` / `requireAbsent`, scene `index.js` exports, Dialogue Lab section wiring.
+
+**Expansion targets:** `registerModule` → `registerPool` migration (non-foundational pools), `ctx.sessionUsed` anti-repetition, coverage report automation, volume tracking dashboard.
+
+**Does not:** Write long-form prose variants (delegates to A1/A2/A3, reviewed by A5).
+
+---
+
+### Agent 5 — Editor (Master Narrative Author)
+
+**Domain:** Prose quality gates across all phases. Skeleton rhythm, anti-template-itis, grammar-shape discipline, Style Ledger compliance, combinatorial read-aloud sanity.
+
+**Voice:** Literary, varied cadence. Three skeleton variants must differ in *rhythm*, not word order. Optional slots fire ≤60% at wildcard weighting. No two adjacent pools share shape.
+
+**Owns:** `TUNING.md` Style Ledger growth, `text-lint.config.js` banned patterns, Phase 2 rhythm guidelines, final sign-off on any pool merge.
+
+**Quality gate checklist (every prose PR):**
+1. No monolith variants (>200 chars in pools).
+2. Every pool has `{ when: {} }` fallback with ≥3 wildcard texts where applicable.
+3. Shape comments accurate; no shape mixing.
+4. Wildcard fragments tone-neutral.
+5. Stage coverage for weight-related pools — no gaps in applicable bands.
+6. `npm run text:lint` clean; sample 100+ renders for touched scenes.
+7. Style Ledger grep clean.
+
+---
+
+## Ownership matrix (quick reference)
+
+| Asset / phase | Lead | Support |
+|---------------|------|---------|
+| `ctx.flags`, `registerDimension`, moveVerb corpus | A4 Architect | A5 Editor |
+| `word.adv.*`, compounds, skeleton patterns | A4 Architect | A5 Editor |
+| `wi.approachSentence`, weigh-in expansion | A5 Editor | A1 Mobile, A4 Architect |
+| `eat.*` scene library | A1 Mobile | A2 Psych, A5 Editor |
+| `cloth.*` scene library | A1 Mobile | A2 Psych, A5 Editor |
+| `campus.*` scene library | A1 Mobile | A4 Architect |
+| `npc.*` reactions | A2 Psych | A1 Mobile |
+| `wi.mobilityClause`, stages 7–9 movement | A1 Mobile | A5 Editor |
+| `immob.*`, stages 10–11 | A3 Immobility | A5 Editor |
+| `psychShift.*`, `interior.*` | A2 Psych | A5 Editor |
+| Corruption arc bible, personas | A2 Psych | A5 Editor |
+| `text:lint` sampling, coverage, ledger | A4 Architect | A5 Editor |
+| Game wiring (`textContext.js`, render wrappers) | A4 Architect | — |
+
+---
+
+## Workflow — how to use The Squad
+
+### Single-agent task
+
+1. Identify lead from matrix above.
+2. Read lead's voice contract + `AUTHORING.md` grammar shapes.
+3. Implement.
+4. **Agent 5 pass** before commit (lint + sample + ledger).
+
+### Multi-domain task (e.g. new campus locale)
+
+1. **A4** — register dimension/locale key, scene file scaffold, barrel, lint sweep entry.
+2. **A1** — locale pools (movement, spatial obs, obstacles), stages 5–9 emphasis.
+3. **A2** — NPC/relationship variants if social beats present.
+4. **A5** — rhythm check on skeletons; run `--sample=200 --scene=campus`.
+
+### Parallel review (recommended for large content passes)
+
+When using subagents or multi-step generation, spawn reviewers by Squad role:
+
+| Reviewer | Prompt focus |
+|----------|----------------|
+| A1 Mobile | "Stage 7–9 mobility, campus physics, clothing strain — grounded and sensual?" |
+| A2 Psych | "Corruption and relationship keys correct? Interior beats earned?" |
+| A3 Immobility | "Any stage 10–11 content architectural, not pathological?" |
+| A4 Architect | "Pools compose? Dimensions wired? Lint clean?" |
+| A5 Editor | "Template-itis? Shape violations? Ledger bans?" |
+
+### File header convention
+
+Tag scene files at the top:
+
+```js
+// The Squad — Lead: A1 Mobile | Support: A2 Psych, A5 Editor
+```
+
+---
+
+## Current file → Squad map
+
+| Path | Lead |
+|------|------|
+| `engine.js`, `lexicon/*`, `gameData/textContext.js` | A4 |
+| `scripts/textLint.mjs`, `text-lint.config.js` | A4 |
+| `scenes/weighIn/` | A5 (skeletons), A1 (mobility clauses) |
+| `scenes/eating/` | A1, A2 (personas) |
+| `scenes/clothing/` | A1, A2 (reactions) |
+| `scenes/campus/` | A1 |
+| `scenes/immobility/` | A3 |
+| `scenes/psychShift/` | A2 |
+| `scenes/interior/` | A2 |
+| `scenes/npcReactions.js` | A2 |
+| `AUTHORING.md`, `SQUAD.md`, `TUNING.md` | A5 |
+
+---
+
+## Naming
+
+- **The Squad** — collective; use in PR descriptions and planning.
+- **Agent N** or **A1–A5** — shorthand in file headers and commit messages.
+- **Mobile / Psych / Immobility / Architect / Editor** — role nicknames in conversation.
+
+Example commit: `Squad A1+A5: campus stairwell pool expansion, stages 7–9`

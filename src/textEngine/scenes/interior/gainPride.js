@@ -1,3 +1,4 @@
+// The Squad — Lead: A2 Psych | Support: A5 Editor
 import { registerPool } from '../../engine.js';
 
 registerPool('interior.gainPride', [

@@ -1,3 +1,4 @@
+// The Squad — Lead: A5 Editor | Support: A1 Mobile
 // ═══════════════════════════════════════════════════════════════
 // WEIGH-IN FRAGMENTS — shared wi.* pools (see ../../AUTHORING.md)
 // Beat modules (wi.arrival, wi.settle, …) are pools of SKELETONS —

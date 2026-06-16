@@ -1,3 +1,4 @@
+// The Squad — Lead: A1 Mobile | Support: A4 Architect, A5 Editor
 import { registerPool } from '../../engine.js';
 
 const LOCALES = ['hallway', 'lecture_hall', 'gym', 'cafeteria', 'dorm_room', 'stairwell', 'elevator', 'prof_office'];

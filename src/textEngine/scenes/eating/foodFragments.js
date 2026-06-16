@@ -1,3 +1,4 @@
+// The Squad — Lead: A1 Mobile | Support: A5 Editor
 // Food-specific descriptor pools.
 import { registerPool } from '../../engine.js';
 

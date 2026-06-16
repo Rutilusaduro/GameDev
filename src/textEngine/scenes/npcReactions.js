@@ -1,3 +1,4 @@
+// The Squad — Lead: A2 Psych | Support: A1 Mobile, A5 Editor
 // NPC reaction pools — campus observers and professor voice.
 import { registerPool } from '../engine.js';
 

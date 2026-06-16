@@ -2,7 +2,9 @@
 
 > **Audience: you, the LLM (or human) about to write game prose.** Read this whole file before writing or editing ANY narrative text. The engine reference is `docs/modular-text-system.md`; this file is the content contract. The canonical exemplar files to copy are `src/textEngine/scenes/weighIn/` and `src/textEngine/scenes/talkEncourage.js`.
 >
-> Companions: `MIGRATION.md` (process for converting legacy prose into this form) · `TUNING.md` (the flag-batch editing loop + the **Style Ledger** of banned constructions — new prose must respect the ledger too).
+> **The Squad:** All narrative work is owned by the five-agent team in **`SQUAD.md`** — identify your lead agent (Mobile, Psych, Immobility, Architect, Editor) before editing; every prose pass ends with Agent 5's quality gate.
+>
+> Companions: `SQUAD.md` (agent ownership & workflow) · `MIGRATION.md` (legacy → modular) · `TUNING.md` (flag-batch loop + **Style Ledger**)
 
 ## 0. Prime directive
 
@@ -161,6 +163,8 @@ All keys combine (AND within a variant; value arrays are OR). Unlisted keys are 
 
 ### Per-girl corruption arc voice (6-line guide)
 
+**Squad lead: Agent 2 (Psych).** Agent 5 (Editor) holds final voice consistency.
+
 For each student, calibrate interior voice across these beats — use when writing `shift.*`, `interior.*`, `eat.*` persona lines, and `diary` entries:
 
 1. **Corruption 0, visible gain** — resistance mode; excuses, deflection, body contradicting words.
@@ -181,12 +185,15 @@ Archetype colors the six lines (competitor/data for Brittany, sensory catalog fo
 
 ## 5. Authoring a new scene (checklist)
 
+**Route through `SQUAD.md` first** — confirm lead agent, then:
+
 1. New file under `src/textEngine/scenes/` (or a folder for multi-file scenes). Register scene-local modules at import time; export template constants + a `renderX()` wrapper. Namespace keys (`wi.*`, `enc.*`, `<feature>.*`).
 2. Add the file to `src/textEngine/scenes/index.js` (the barrel — lint and DebugPanel sweep it).
 3. Every pool: a `when: {}` wildcard variant (lint errors otherwise), ≥3 wildcard texts, one grammar shape, a shape comment.
 4. Decide which axes the scene should react to (stage? bodyType? mood? hunger? per-girl?) and write keyed variants for the top 2-3 axes minimum.
 5. `npm run text:lint` — must be clean for your keys. Then `npm run lint`.
-6. Eyeball renders: DebugPanel sweep buttons, or `node --input-type=module -e "import './src/textEngine/scenes/index.js'; import { createContext, render } from './src/textEngine/engine.js'; ..."`.
+6. **Agent 5 (Editor) gate:** sample renders + Style Ledger check (see `SQUAD.md`).
+7. Eyeball renders: DebugPanel sweep buttons, or `node --input-type=module -e "import './src/textEngine/scenes/index.js'; import { createContext, render } from './src/textEngine/engine.js'; ..."`.
 
 ## 6. Anti-patterns
 

@@ -1,3 +1,4 @@
+// The Squad — Lead: A1 Mobile | Support: A2 Psych, A5 Editor
 // ═══════════════════════════════════════════════════════════════
 // EATING SCENE LIBRARY — meal beats for the feeding game core loop.
 // ═══════════════════════════════════════════════════════════════

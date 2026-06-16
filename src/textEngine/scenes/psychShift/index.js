@@ -1,3 +1,4 @@
+// The Squad — Lead: A2 Psych | Support: A5 Editor
 // Corruption transition scenes — psychological shift beats.
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';

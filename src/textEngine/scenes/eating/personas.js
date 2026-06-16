@@ -1,3 +1,4 @@
+// The Squad — Lead: A2 Psych | Support: A1 Mobile, A5 Editor
 // Per-girl eating voice — studentId-keyed persona lines.
 import { registerModuleVariants } from '../../engine.js';
 

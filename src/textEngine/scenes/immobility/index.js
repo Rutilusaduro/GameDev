@@ -1,3 +1,4 @@
+// The Squad — Lead: A3 Immobility | Support: A5 Editor
 // Immobility scene system — stages 10-11.
 import { registerPool } from '../../engine.js';
 import './fragments.js';

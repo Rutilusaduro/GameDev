@@ -1,3 +1,4 @@
+// The Squad — Lead: A1 Mobile | Support: A2 Psych, A5 Editor
 import { registerPool } from '../../engine.js';
 
 registerPool('cloth.discovery', [

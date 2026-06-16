@@ -1,3 +1,4 @@
+// The Squad — Lead: A4 Architect
 // ═══════════════════════════════════════════════════════════════
 // TEXT CONTEXT — game state → text-engine globals/dimensions
 // Centralizes mealType, locale, clothingState, corruption shift,

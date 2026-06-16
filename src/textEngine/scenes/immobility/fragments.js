@@ -1,3 +1,4 @@
+// The Squad — Lead: A3 Immobility | Support: A5 Editor
 import { registerPool } from '../../engine.js';
 
 registerPool('immob.settledState', [
