@@ -15,6 +15,7 @@ import { FlaggedProse } from './TextFlagToolbar.jsx';
 import '../textEngine/scenes/talkCodas.js'; // registers talk.coda
 import '../textEngine/scenes/talkEncourage.js'; // registers talk.encourage
 import '../textEngine/scenes/talkCheckIn.js'; // registers talk.check_in
+import '../textEngine/scenes/talkCompliment.js'; // registers talk.compliment
 import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';
 import '../textEngine/scenes/destinyOffstream.js';
