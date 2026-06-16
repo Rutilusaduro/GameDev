@@ -32,28 +32,6 @@ export const CORRUPTION_TIERS = [
 export const getCorruptionTier = (c = 0) =>
   [...CORRUPTION_TIERS].reverse().find(t => c >= t.min) || CORRUPTION_TIERS[0];
 
-// Inner-voice lines surfaced during general feeding, by tier.
-export const CORRUPTION_FEED_LINES = [
-  [ // tier 0 — hesitant
-    (s) => `${s.name}, quietly: "I… I don't know if I should be eating this much…"`,
-    (s) => `${s.name} glances down at herself mid-bite and goes a little pink. She keeps eating, slower.`,
-    (s) => `${s.name}: "This is the last one. I mean it this time." She has said this before.`,
-    (s) => `${s.name} eats with the careful, guilty attention of someone keeping a secret from herself.`,
-  ],
-  [ // tier 1 — conflicted
-    (s) => `${s.name}, softer than she intends: "I know I shouldn't… but it feels kind of good when you make me eat like this."`,
-    (s) => `${s.name} catches herself reaching for more without being asked, and decides not to stop.`,
-    (s) => `${s.name}: "I thought about this all day. The food. Is that weird?" She doesn't wait for an answer.`,
-    (s) => `${s.name} presses a hand to her belly — not in dismay. Checking. Appreciating.`,
-  ],
-  [ // tier 2 — broken in
-    (s) => `${s.name}, grinning around a mouthful: "I'm such a greedy pig now… and I don't even want to stop."`,
-    (s) => `${s.name} finishes the plate and slides it back toward you. "More." It isn't a question.`,
-    (s) => `${s.name}: "Look what you did to me." She says it like a thank-you.`,
-    (s) => `${s.name} pats the deep curve of her belly with open pride. "We can do better than this. Feed me."`,
-  ],
-];
-
 // Lines for tier-3 autonomous self-stuffing (weekly tick).
 export const CORRUPTION_AUTO_LINES = [
   (s) => `${s.name} didn't wait for you this week — the delivery receipts speak for themselves.`,

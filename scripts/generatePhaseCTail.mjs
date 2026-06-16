@@ -1,7 +1,7 @@
 // Phase C tail — body portraits, dinner waiter, session fullness/aftermath, command_finish.
 // Run: node scripts/generatePhaseCTail.mjs
 import { writeFileSync, mkdirSync } from 'fs';
-import { BODY_DESCS } from '../src/gameData/content.js';
+import { BODY_DESCS } from './legacy/bodyDescsSource.js';
 import {
   WAITER_DESC,
   SESSION_FULLNESS_DESCS,

@@ -141,14 +141,6 @@ export const EATING_REACTIONS = [
   "She's quieter than usual. She looks at what's in front of her for a moment before starting. Then she eats all of it. She does not say goodbye when she leaves.",
 ];
 
-export function getEatingReaction(suspicion){
-  if(suspicion<50)  return EATING_REACTIONS[0];
-  if(suspicion<100) return EATING_REACTIONS[1];
-  if(suspicion<140) return EATING_REACTIONS[2];
-  if(suspicion<180) return EATING_REACTIONS[3];
-  return EATING_REACTIONS[4];
-}
-
 // ── STAGE-UP TEXT ────────────────────────────────────────────────────────────
 // Shown when tester advances one weight stage
 

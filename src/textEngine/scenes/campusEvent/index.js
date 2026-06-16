@@ -1,6 +1,7 @@
 // The Squad — Lead: A1 Mobile | Support: A4 Architect
 // Campus class-event observation prose — keyed mood/archetype/campusFattening (DEPTH_PLAN §9d).
-import { registerPool } from '../../engine.js';
+import { registerPool, render } from '../../engine.js';
+import { buildTextContext } from '../../../gameData/textContext.js';
 
 registerPool('campusEvent.observation', [
   { when: { mood: ['stressed'] }, weight: 2, text: [
@@ -52,3 +53,10 @@ registerPool('campusEvent.result', [
 registerPool('campusEvent.beat', [
   { when: {}, text: ['{campusEvent.observation} {campusEvent.result}'] },
 ]);
+
+/** Class-session observation beat keyed on student mood/archetype/campus state. */
+export function renderCampusEventBeat(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return render('{campusEvent.beat}', ctx, { trace: opts.trace || null })?.trim() || '';
+}

@@ -1,7 +1,8 @@
 // Phase D — missing evolved diaries + lint-safe decomposition.
 // Run: node scripts/generatePhaseD.mjs
 import { writeFileSync } from 'fs';
-import { EVOLVED_DIARY, EVOLVED_REACTIONS, EVOLVED_ACTIVITY_TEXT } from '../src/gameData/evolvedForms.js';
+import { EVOLVED_DIARY } from './legacy/evolvedDiarySource.js';
+import { EVOLVED_REACTIONS, EVOLVED_ACTIVITY_TEXT } from '../src/gameData/evolvedForms.js';
 import { CG_FILLED_DIARY } from '../src/gameData/competitiveGainerText.js';
 import { buildBodyPool, emitFragmentPools } from './poolTextSplit.mjs';
 

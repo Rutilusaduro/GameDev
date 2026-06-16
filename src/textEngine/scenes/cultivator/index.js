@@ -1,7 +1,33 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect
 // Cultivator recipe prose — migrated from gameData/cultivator.js (DEPTH_PLAN §9d).
-import { registerPool } from '../../engine.js';
-import { RECIPES } from '../../../gameData/cultivator.js';
+import { registerPool, render, createContext } from '../../engine.js';
+import { RECIPES, EATING_REACTIONS } from '../../../gameData/cultivator.js';
+
+function testerSubject(testerName) {
+  const name = testerName || 'the tester';
+  return { id: 0, name, first: name.split(' ')[0] || name };
+}
+
+function suspicionTier(suspicion) {
+  if (suspicion < 50) return 0;
+  if (suspicion < 100) return 1;
+  if (suspicion < 140) return 2;
+  if (suspicion < 180) return 3;
+  return 4;
+}
+
+EATING_REACTIONS.forEach((text, tier) => {
+  registerPool(`cultivator.eating.s${tier}`, [{ when: {}, text: [text] }]);
+});
+
+registerPool('cultivator.eating', [
+  { when: { suspicionTier: [0] }, text: ['{cultivator.eating.s0}'] },
+  { when: { suspicionTier: [1] }, text: ['{cultivator.eating.s1}'] },
+  { when: { suspicionTier: [2] }, text: ['{cultivator.eating.s2}'] },
+  { when: { suspicionTier: [3] }, text: ['{cultivator.eating.s3}'] },
+  { when: { suspicionTier: [4] }, text: ['{cultivator.eating.s4}'] },
+  { when: {}, text: ['{cultivator.eating.s0}'] },
+]);
 
 for (const [recipeId, recipe] of Object.entries(RECIPES)) {
   const introText = typeof recipe.intro === 'function'
@@ -47,3 +73,24 @@ registerPool('cultivator.reaction', [
 registerPool('cultivator.beat', [
   { when: {}, text: ['{cultivator.reaction}'] },
 ]);
+
+export function renderCultivatorIntro(recipeId, testerName, week = 1) {
+  if (!recipeId) return '';
+  const ctx = createContext({ subject: testerSubject(testerName), week, globals: { featureId: 'cultivator' } });
+  return render(`{cultivator.intro.${recipeId}}`, ctx)?.trim() || '';
+}
+
+export function renderCultivatorChoice(recipeId, choiceId, testerName, week = 1) {
+  if (!recipeId || !choiceId) return '';
+  const ctx = createContext({ subject: testerSubject(testerName), week, globals: { featureId: 'cultivator' } });
+  return render(`{cultivator.choice.${recipeId}.${choiceId}}`, ctx)?.trim() || '';
+}
+
+export function renderCultivatorReaction(testerName, suspicion, week = 1) {
+  const ctx = createContext({
+    subject: testerSubject(testerName),
+    week,
+    globals: { featureId: 'cultivator', suspicionTier: suspicionTier(suspicion) },
+  });
+  return render('{cultivator.eating}', ctx)?.trim() || '';
+}

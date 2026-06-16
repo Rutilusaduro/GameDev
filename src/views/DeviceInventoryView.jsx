@@ -4,6 +4,7 @@
 import { useMemo, useState } from 'react';
 import { C } from '../styles.js';
 import { DEVICES } from '../gameData/devices.js';
+import { renderDeviceFlavor } from '../textEngine/scenes/deviceFlavor.js';
 import {
   countOwnedDevices,
   countEquippedAcrossStudents,
@@ -35,7 +36,15 @@ const FORM_OPTIONS = [
   { value: 'stationary', label: 'Stationary' },
 ];
 
-function DeviceDetailPanel({ def, statusCtx, onClose, onEquipStudent, onQuickUse }) {
+function deviceCatalogLine(def, student, week) {
+  if (student) {
+    const flavor = renderDeviceFlavor(def.id, student, week);
+    if (flavor) return flavor;
+  }
+  return def.desc || '';
+}
+
+function DeviceDetailPanel({ def, statusCtx, flavorStudent, week, onClose, onEquipStudent, onQuickUse }) {
   if (!def) return null;
   const badge = deviceStatusBadge(def.id, statusCtx);
   const malfCount = def.malfunctions?.length ?? 0;
@@ -54,7 +63,7 @@ function DeviceDetailPanel({ def, statusCtx, onClose, onEquipStudent, onQuickUse
         </div>
         <button style={C.smBtn} onClick={onClose}>✕</button>
       </div>
-      <div style={{ fontSize: 11, color: '#8090a8', lineHeight: 1.6, marginBottom: 10 }}>{def.desc}</div>
+      <div style={{ fontSize: 11, color: '#8090a8', lineHeight: 1.6, marginBottom: 10 }}>{deviceCatalogLine(def, flavorStudent, week)}</div>
       <div style={{ fontSize: 10, color: '#607080', marginBottom: 8 }}>
         Tier {def.tier} · {def.rarity} · Stability {(def.stability * 100).toFixed(0)}% · Risk {(def.risk * 100).toFixed(0)}%
       </div>
@@ -90,7 +99,7 @@ function DeviceDetailPanel({ def, statusCtx, onClose, onEquipStudent, onQuickUse
   );
 }
 
-function DeviceCard({ def, qty, statusCtx, selected, onSelect, onQuickUse }) {
+function DeviceCard({ def, qty, statusCtx, flavorStudent, week, selected, onSelect, onQuickUse }) {
   const badge = deviceStatusBadge(def.id, statusCtx);
   const rarityColor = RARITY_COLORS[def.rarity] || RARITY_COLORS.common;
 
@@ -111,7 +120,10 @@ function DeviceCard({ def, qty, statusCtx, selected, onSelect, onQuickUse }) {
         )}
       </div>
       <div style={{ fontSize: 9, color: '#5a6080', marginBottom: 6, lineHeight: 1.4, minHeight: 32 }}>
-        {def.desc?.slice(0, 90)}{def.desc?.length > 90 ? '…' : ''}
+        {(() => {
+          const line = deviceCatalogLine(def, flavorStudent, week);
+          return line.length > 90 ? `${line.slice(0, 90)}…` : line;
+        })()}
       </div>
       <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 6 }}>
         <span style={{ ...C.tag(`${rarityColor}25`, rarityColor), fontSize: 8 }}>T{def.tier}</span>
@@ -131,6 +143,7 @@ function DeviceCard({ def, qty, statusCtx, selected, onSelect, onQuickUse }) {
 export function DeviceInventoryView({
   deviceInventory,
   students = [],
+  week = 1,
   player,
   labState,
   setStudents,
@@ -150,6 +163,11 @@ export function DeviceInventoryView({
   const statusCtx = useMemo(
     () => ({ deviceInventory, students, player }),
     [deviceInventory, students, player],
+  );
+
+  const flavorStudent = useMemo(
+    () => students.find((s) => Object.keys(s.equip || {}).length > 0) || students[0] || null,
+    [students],
   );
 
   const handleApplyMod = (row, componentId) => {
@@ -219,6 +237,8 @@ export function DeviceInventoryView({
           def={def}
           qty={deviceInventory[def.id] || 0}
           statusCtx={statusCtx}
+          flavorStudent={flavorStudent}
+          week={week}
           selected={selectedId === def.id}
           onSelect={setSelectedId}
           onQuickUse={handleQuickUse}
@@ -365,6 +385,8 @@ export function DeviceInventoryView({
         <DeviceDetailPanel
           def={selectedDef}
           statusCtx={statusCtx}
+          flavorStudent={flavorStudent}
+          week={week}
           onClose={() => setSelectedId(null)}
           onEquipStudent={handleEquipStudent}
           onQuickUse={handleQuickUse}

@@ -30,7 +30,10 @@ import { getExplorationFind } from './gameData/campusIngredients.js';
 import { availableSecretsAtNode } from './gameData/campusSecrets.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
-import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getEatingReaction, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
+import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, STAGE_UP_TEXT, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
+import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
+import { renderHuntNode, renderHuntTarget } from './textEngine/scenes/hunt/index.js';
+import { renderCampusEventBeat } from './textEngine/scenes/campusEvent/index.js';
 import { getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateClassSession, pharmacistTextOpts } from './utils/gameHelpers.js';
 import {
@@ -3014,7 +3017,9 @@ export default function ProfessorSim(){
     const entries=[];
     if(travelText) entries.push({text:travelText,type:'action'});
     entries.push({text:node.label.toUpperCase(),type:'location'});
-    entries.push({text:node.desc,type:'narrative'});
+    const lilith=students.find(s=>s.id===LILITH_ID);
+    const nodeDesc=lilith?renderHuntNode(nodeId,lilith,week):node.desc;
+    entries.push({text:nodeDesc||node.desc,type:'narrative'});
     setLilithHuntState(prev=>({...prev,currentNode:nodeId,encounter:null,textLog:[...prev.textLog,...entries]}));
   };
   const approachMan=(manId)=>{
@@ -3028,7 +3033,7 @@ export default function ProfessorSim(){
     const maxApprehension=MAX_APPREHENSION[diff]??5;
     const firstLine=getGuyLine(diff,willpower);
     const replies=drawReplies([]);
-    const desc=typeof man.desc==='function'?man.desc(stageId):man.desc;
+    const desc=renderHuntTarget(man.id,lilith,week)||(typeof man.desc==='function'?man.desc(stageId):man.desc);
     const entries=[
       {text:`${man.name.toUpperCase()} — ${man.tag}`,type:'location'},
       {text:desc,type:'narrative'},
@@ -3188,11 +3193,12 @@ export default function ProfessorSim(){
     const newFat=session.sessionFatAccum+choice.fatGain;
     const newSusp=session.sessionSuspAccum+choice.suspChange;
     const newChoices=[...session.choices,choice.id];
-    const newLog=[...session.log,choice.desc];
+    const choiceLine=renderCultivatorChoice(session.foodType,choice.id,cs.testerName,week)||choice.desc;
+    const newLog=[...session.log,choiceLine];
     const nextIdx=session.junctionIdx+1;
     const isDone=nextIdx>=recipe.junctions.length;
     if(isDone){
-      const reaction=getEatingReaction(Math.max(0,cs.suspicion+newSusp));
+      const reaction=renderCultivatorReaction(cs.testerName,Math.max(0,cs.suspicion+newSusp),week);
       setCultivatorState(prev=>({...prev,session:{...prev.session,choices:newChoices,log:newLog,sessionFatAccum:newFat,sessionSuspAccum:newSusp,complete:true,eatingReaction:reaction}}));
     } else {
       setCultivatorState(prev=>({...prev,session:{...prev.session,choices:newChoices,log:newLog,sessionFatAccum:newFat,sessionSuspAccum:newSusp,junctionIdx:nextIdx}}));
@@ -6467,7 +6473,10 @@ export default function ProfessorSim(){
                     )}
                     <FlaggedProse
                       section={`classSession.scene.${scene.title}`}
-                      text={typeof scene.text==="function"?scene.text(student):scene.text}
+                      text={student
+                        ? (renderCampusEventBeat(student, week, pharmacistTextOpts(pharmacistState, week))
+                          || (typeof scene.text==="function"?scene.text(student):scene.text))
+                        : (typeof scene.text==="function"?scene.text(student):scene.text)}
                       student={student}
                       week={week}
                       style={{...C.infoBox("rgba(20,8,40,0.8)"),fontSize:13,lineHeight:1.75,color:"#c8a8e8",marginBottom:14}}
@@ -7043,6 +7052,7 @@ export default function ProfessorSim(){
           {view==="devices"&&<DeviceInventoryView
             deviceInventory={deviceInventory}
             students={students}
+            week={week}
             player={player}
             labState={labState}
             setStudents={setStudents}
@@ -7453,7 +7463,7 @@ export default function ProfessorSim(){
       {communityResearcherState?.modalPhase&&<CommunityResearcherModal communityResearcherState={communityResearcherState} students={students} lilithUnlocked={lilithUnlocked} lilithKillCount={lilithKillCount} advanceThesisBoard={advanceThesisBoard} completeThesisDefense={completeThesisDefense} selectCasePair={selectCasePair} setCommunityResearcherState={setCommunityResearcherState} completeCaseStudy={completeCaseStudy} dismissBoardReaction={dismissBoardReaction} proceedFromFinalReview={proceedFromFinalReview} makeHaveAChatChoice={makeHaveAChatChoice} closeThesisOutcome={closeThesisOutcome}/>}
 
       {/* ── CULTIVATOR MODAL ── */}
-      {cultivatorState?.modalPhase&&<CultivatorModal cultivatorState={cultivatorState} students={students} setCultivatorState={setCultivatorState} confirmCultivatorRecruit={confirmCultivatorRecruit} pickCultivatorFood={pickCultivatorFood} makeCultivatorChoice={makeCultivatorChoice} confirmCultivatorSession={confirmCultivatorSession} dismissCultivatorStageUp={dismissCultivatorStageUp} confirmCultivatorHarvest={confirmCultivatorHarvest} closeCultivatorGrowth={closeCultivatorGrowth}/>}
+      {cultivatorState?.modalPhase&&<CultivatorModal cultivatorState={cultivatorState} students={students} week={week} setCultivatorState={setCultivatorState} confirmCultivatorRecruit={confirmCultivatorRecruit} pickCultivatorFood={pickCultivatorFood} makeCultivatorChoice={makeCultivatorChoice} confirmCultivatorSession={confirmCultivatorSession} dismissCultivatorStageUp={dismissCultivatorStageUp} confirmCultivatorHarvest={confirmCultivatorHarvest} closeCultivatorGrowth={closeCultivatorGrowth}/>}
 
       {hungerInterrupt&&(()=>{
         const hs=students.find(st=>st.id===hungerInterrupt.studentId);

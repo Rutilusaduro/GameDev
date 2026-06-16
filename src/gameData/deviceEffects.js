@@ -2,6 +2,8 @@
 // DEVICE EFFECT RESOLUTION — engine-free logic
 // ═══════════════════════════════════════════════════════════════
 import { renderDeviceTickLine } from '../textEngine/scenes/deviceTick/index.js';
+import { renderDeviceUseLine } from '../textEngine/scenes/deviceUse/index.js';
+import { renderDeviceFlavor } from '../textEngine/scenes/deviceFlavor.js';
 import { renderSuddenGrowthLine } from '../textEngine/scenes/suddenGrowth/index.js';
 import { getDevice, DEVICE_SLOTS } from './devices.js';
 import { canStudentAcceptDevice, deviceAcceptanceBlockReason, scalePsychDeltaForStudent, scaleGainRangeForStudent } from './deviceGating.js';
@@ -171,6 +173,13 @@ function growthLineForStudent(student, gainLbs) {
 
 export { growthLineForStudent };
 
+function withDeviceFlavor(student, deviceId, week, line) {
+  const flavor = renderDeviceFlavor(deviceId, student, week);
+  if (!flavor?.trim() || !line?.trim()) return line || flavor || '';
+  if (line.includes(flavor)) return line;
+  return `${flavor} ${line}`;
+}
+
 function buildTickEvent(student, slot, entry, week, rng, resultStudent, gainLbs, malf) {
   const def = getDevice(entry.defId);
   if (!def) return null;
@@ -180,20 +189,25 @@ function buildTickEvent(student, slot, entry, week, rng, resultStudent, gainLbs,
   const uniqueProse = uniqueTag
     ? renderDeviceUniqueInteraction({ student: resultStudent, deviceId: def.id, deviceLabel: def.label, uniqueTag, week })
     : null;
-  const prose = renderDeviceTickLine({
-    student: resultStudent,
-    deviceId: def.id,
-    deviceLabel: def.label,
-    slot,
-    gainLbs,
-    malfunctionTier: malf?.tier || null,
-    attachmentIds,
-    isMalfunction: !!malf,
+  const prose = withDeviceFlavor(
+    resultStudent,
+    def.id,
     week,
-    modificationState: entry.mods || [],
-    dependenceLevel,
-    dependenceTier: dependenceLevel >= 75 ? 3 : dependenceLevel >= 50 ? 2 : dependenceLevel >= 25 ? 1 : 0,
-  });
+    renderDeviceTickLine({
+      student: resultStudent,
+      deviceId: def.id,
+      deviceLabel: def.label,
+      slot,
+      gainLbs,
+      malfunctionTier: malf?.tier || null,
+      attachmentIds,
+      isMalfunction: !!malf,
+      week,
+      modificationState: entry.mods || [],
+      dependenceLevel,
+      dependenceTier: dependenceLevel >= 75 ? 3 : dependenceLevel >= 50 ? 2 : dependenceLevel >= 25 ? 1 : 0,
+    }),
+  );
   return {
     studentId: student.id,
     studentName: student.name,
@@ -676,9 +690,14 @@ export function triggerTightenPulse(student, player, week, rng = Math.random) {
   nextStudent = tickDependence(applied.student, 'waist', 2, def);
   let nextPlayer = patchSelfDeviceState(player, def.id, { lastTightenWeek: week, tightenCount: (player.selfDeviceState?.controlled_bloating_rig?.tightenCount || 0) + 1 });
   const malf = rollMalfunction(def, nextStudent, rng, { effectiveRisk: (def.risk ?? 0.38) + 0.15 });
-  let lines = applied.lines.length ? applied.lines : [renderDeviceUseLine({
-    student: nextStudent, deviceId: def.id, deviceLabel: def.label, actionId: 'tighten_pulse', week, dependenceLevel: getDependenceLevel(nextStudent, 'waist'),
-  })];
+  let lines = applied.lines.length ? applied.lines : [withDeviceFlavor(
+    nextStudent,
+    def.id,
+    week,
+    renderDeviceUseLine({
+      student: nextStudent, deviceId: def.id, deviceLabel: def.label, actionId: 'tighten_pulse', week, dependenceLevel: getDependenceLevel(nextStudent, 'waist'),
+    }),
+  )];
   if (malf) {
     const m2 = applyDeviceEffect(nextStudent, malf.effect, { week, sourceDeviceId: def.id, rng });
     nextStudent = m2.student;
@@ -702,9 +721,14 @@ export function runBurstFeed(student, player, week, rng = Math.random) {
   const applied = applyDeviceEffect(student, effect, { week, sourceDeviceId: def.id, rng });
   let nextStudent = tickDependence(applied.student, 'back', 1.5, def);
   const malf = rollMalfunction(def, nextStudent, rng);
-  let lines = applied.lines.length ? applied.lines : [renderDeviceUseLine({
-    student: nextStudent, deviceId: def.id, deviceLabel: def.label, actionId: 'burst_feed', week,
-  })];
+  let lines = applied.lines.length ? applied.lines : [withDeviceFlavor(
+    nextStudent,
+    def.id,
+    week,
+    renderDeviceUseLine({
+      student: nextStudent, deviceId: def.id, deviceLabel: def.label, actionId: 'burst_feed', week,
+    }),
+  )];
   if (malf) {
     const m2 = applyDeviceEffect(nextStudent, malf.effect, { week, sourceDeviceId: def.id, rng });
     nextStudent = m2.student;
@@ -731,9 +755,14 @@ export function runSustainedDrip(student, player, week, rng = Math.random) {
     student: nextStudent,
     player: patchSelfDeviceState(player, def.id, { lastDripWeek: week }),
     ok: true,
-    lines: applied.lines.length ? applied.lines : [renderDeviceUseLine({
-      student: nextStudent, deviceId: def.id, deviceLabel: def.label, actionId: 'sustained_drip', week,
-    })],
+    lines: applied.lines.length ? applied.lines : [withDeviceFlavor(
+      nextStudent,
+      def.id,
+      week,
+      renderDeviceUseLine({
+        student: nextStudent, deviceId: def.id, deviceLabel: def.label, actionId: 'sustained_drip', week,
+      }),
+    )],
     malfunction: null,
   };
 }
@@ -756,9 +785,14 @@ export function ventResidualSwell(student, player, week, rng = Math.random) {
     student: nextStudent,
     player: patchSelfDeviceState(player, 'measured_bloat_canister', { lastVentWeek: week }),
     ok: true,
-    lines: [renderDeviceUseLine({
-      student: nextStudent, deviceId: 'measured_bloat_canister', deviceLabel: def?.label || 'Measured Bloat Canister', actionId: 'vent_residual_swell', week,
-    })],
+    lines: [withDeviceFlavor(
+      nextStudent,
+      'measured_bloat_canister',
+      week,
+      renderDeviceUseLine({
+        student: nextStudent, deviceId: 'measured_bloat_canister', deviceLabel: def?.label || 'Measured Bloat Canister', actionId: 'vent_residual_swell', week,
+      }),
+    )],
     malfunction: null,
   };
 }
