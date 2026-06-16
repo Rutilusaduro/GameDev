@@ -12,6 +12,9 @@ export const TALK_TOPICS = [
   },
   { id:"compliment", label:"Compliment her figure", icon:"🌸", group:"talk",
     effect:{ rel:3 },
+    // Rendered by the text engine (scenes/talkCompliment.js).
+    // Stage-varying: tone and body-focus evolve across all 12 stages.
+    engineTemplate:"{talk.compliment}",
   },
   { id:"encourage", label:"Encourage her appetite", icon:"🍽", group:"talk",
     effect:{ rel:1, corruption:1 },
