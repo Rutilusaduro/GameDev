@@ -2,7 +2,10 @@
 // SCENE: DINNER ENDING — composed end-of-evening reflection
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render, createContext } from '../../engine.js';
+import { buildTextContext } from '../../../gameData/textContext.js';
 import { DINNER_END_OPEN, DINNER_END_CLOSE } from './dinnerEndingData.js';
+import { getDinnerFullnessGroup } from '../../../gameData/feedingSession.js';
+import './selectors.js';
 
 function bandVariants(chunks) {
   const variants = chunks.flatMap((c) => {
@@ -29,9 +32,18 @@ registerPool('dinner.ending', [
 ]);
 
 /** Render dinner closing narrative via text engine. */
-export function renderDinnerEnding(student, finalFullness, cap, week = 1) {
+export function renderDinnerEnding(student, finalFullness, cap, week = 1, opts = {}) {
   if (!student) return '';
   const proxy = { ...student, fullness: finalFullness, stomachCapacity: cap || student.stomachCapacity || 1 };
-  const line = render('{dinner.ending}', createContext({ subject: proxy, week }));
-  return line?.trim() || `${student.name} finishes the evening full and content.`;
+  const ctx = opts.trace != null || opts.globals
+    ? buildTextContext({ subject: proxy, week, ...opts })
+    : createContext({ subject: proxy, week });
+  const line = render('{dinner.ending}', ctx, { trace: opts.trace || null })?.trim()
+    || `${student.name} finishes the evening full and content.`;
+  const band = getDinnerFullnessGroup(finalFullness, cap || student.stomachCapacity || 1);
+  const overlay = render('{dinner.selectorOverlay}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const bandNote = band >= 2 ? ` She is gloriously, unmistakably full.` : '';
+  if (line && overlay) return `${line}${bandNote} ${overlay}`;
+  if (line) return `${line}${bandNote}`;
+  return overlay;
 }

@@ -4,6 +4,20 @@ import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import './fullness.js';
 import './aftermath.js';
+import './selectors.js';
+
+function composeOverlay(main, overlay) {
+  const a = main?.trim() || '';
+  const b = overlay?.trim() || '';
+  if (a && b) return `${a} ${b}`;
+  return a || b;
+}
+
+function renderSessionOverlay(student, week, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return render('{session.selectorOverlay}', ctx, { trace: opts.trace || null })?.trim() || '';
+}
 
 /** Map session fullness percent to aftermath band key. */
 export function getAftermathBand(fPct) {
@@ -22,8 +36,8 @@ export function renderSessionFullness(student, fullnessStageId, week = 1, opts =
     globals: { fullnessStage: fullnessStageId, ...(opts.globals || {}) },
     ...opts,
   });
-  const line = render('{session.fullness}', ctx, { trace: opts.trace || null });
-  return line?.trim() || '';
+  const main = render('{session.fullness}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return composeOverlay(main, renderSessionOverlay(student, week, opts));
 }
 
 /** Closing beat when a private session ends (keyed by fullness percent band). */
@@ -35,6 +49,6 @@ export function renderSessionAftermath(student, fPct, week = 1, opts = {}) {
     globals: { aftermathBand: getAftermathBand(fPct), ...(opts.globals || {}) },
     ...opts,
   });
-  const line = render('{session.aftermath}', ctx, { trace: opts.trace || null });
-  return line?.trim() || '';
+  const main = render('{session.aftermath}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return composeOverlay(main, renderSessionOverlay(student, week, opts));
 }
