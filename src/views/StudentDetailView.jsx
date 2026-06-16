@@ -10,7 +10,7 @@ import { CASE_STUDY_PAIRS } from '../gameData/communityResearcher.js';
 import { EVOLVED_SKILL_TREES } from '../gameData/skills.js';
 import { INNER_CIRCLE_TIERS, getTier } from '../gameData/sessions.js';
 import { LILITH_ID } from '../gameData/lilith.js';
-import { RECRUITMENT_SCENE, TESTER_APPEARANCE } from '../gameData/cultivator.js';
+import { getRecruitmentScene, TESTER_APPEARANCE } from '../gameData/cultivator.js';
 import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
 import { INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES } from '../gameData/talia.js';
@@ -347,7 +347,7 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                                 </div>
                               ):!hasActive?(
                                 <div>
-                                  <div style={{color:"#9a6030",fontSize:11,lineHeight:1.6,marginBottom:10,fontStyle:"italic"}}>{RECRUITMENT_SCENE.slice(0,120)}…</div>
+                                  <div style={{color:"#9a6030",fontSize:11,lineHeight:1.6,marginBottom:10,fontStyle:"italic"}}>{getRecruitmentScene().slice(0,120)}…</div>
                                   <div style={{color:"#7a5030",fontSize:10,marginBottom:8}}>Cycles remaining: {4-cs.harvestsCompleted}/4</div>
                                   <button style={{...C.btn(brown),width:"100%"}} onClick={()=>openCultivatorRecruit()}>
                                     Recruit 🐷 <s style={{opacity:0.6}}>'Taste Tester'</s>
