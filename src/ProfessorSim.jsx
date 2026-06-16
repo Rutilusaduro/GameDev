@@ -14,7 +14,7 @@ import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS, initDeviceState, initPsychState } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
-import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_FEED_LINES, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
+import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
 import { TALK_CONFIG } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES, ITEMS } from './gameData/items.js';
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
@@ -63,7 +63,8 @@ import './textEngine/scenes/hungerInterrupt/index.js';
 import './textEngine/scenes/hungerLexicon.js';
 import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
-import { renderDinnerEnding, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter } from './textEngine/scenes/dinner/index.js';
+import { renderDinnerEnding, renderDinnerDepth, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter } from './textEngine/scenes/dinner/index.js';
+import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding } from './textEngine/scenes/intimacy/index.js';
 import './textEngine/scenes/intimacy/scenes.js';
@@ -1064,14 +1065,9 @@ export default function ProfessorSim(){
     const scaledFull=scaledFullEarly;
     if(label) push(`🍽️ ${label} — ${s.name}: +${scaledCals.toLocaleString()} cal (fullness ${Math.min(999,(s.fullness||0)+scaledFull)}/${cap})`);
     if(Math.random()<CORRUPTION_CONFIG.dialogueChance){
-      const tier=getCorruptionTier(s.corruption||0);
-      const voiceCtx=createContext({ subject:s, week });
-      const voiceLine=render('{corruption.voice}', voiceCtx);
+      const voiceLine=renderFeedVoice(s, week);
       if(voiceLine?.trim()){
         setTimeout(()=>push(`💭 ${voiceLine}`),120);
-      } else {
-        const lines=CORRUPTION_FEED_LINES[tier.id];
-        setTimeout(()=>push(`💭 ${lines[rnd(0,lines.length-1)](s)}`),120);
       }
     }
     let corruption=s.corruption||0;
@@ -5741,7 +5737,7 @@ export default function ProfessorSim(){
 
   // ── DINNER END (single) ──────────────────────────────────────
   const triggerDinnerEnd=(s,finalFullness,cap,totalGain,relBonus)=>{
-    const narrative=renderDinnerEnding(s,finalFullness,cap,week);
+    const narrative=renderDinnerDepth(s, week) || renderDinnerEnding(s,finalFullness,cap,week);
     const textPatch=dinnerEvent?.textSession?.weekUsed?weekUsedToPatch(dinnerEvent.textSession.weekUsed):null;
     guardHungerInterrupt(()=>{
       setAp(a=>a-2);
@@ -5810,7 +5806,7 @@ export default function ProfessorSim(){
 
   const chooseDinnerVenue=(venue)=>{
     setDinnerEvent(prev=>({...prev, venue, phase:"dishes"}));
-    setDinnerLog(dl=>[...dl, `You arrive at ${venue.label}. ${venue.desc}`]);
+    setDinnerLog(dl=>[...dl, [`You arrive at ${venue.label}. ${venue.desc}`, renderDinnerDepth(dinnerEvent.student, week, { globals: { venueId: venue.id } })].filter(Boolean).join(' ')]);
     push(`🍽️ Dinner with ${dinnerEvent.student.name} at ${venue.label}.`);
   };
 

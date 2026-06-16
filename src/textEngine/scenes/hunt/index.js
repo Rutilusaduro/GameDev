@@ -1,0 +1,36 @@
+// The Squad — Lead: A2 Psych | Support: A4 Architect
+// Lilith hunt location + target flavor — from gameData/lilith.js (DEPTH_PLAN §9d).
+import { registerPool, render, createContext } from '../../engine.js';
+import { HUNT_NODES, HUNT_MEN } from '../../../gameData/lilith.js';
+
+for (const [nodeId, node] of Object.entries(HUNT_NODES)) {
+  registerPool(`hunt.node.${nodeId}`, [
+    { when: { stageMin: 7 }, weight: 2, text: [node.desc] },
+    { when: {}, text: [node.desc] },
+  ]);
+}
+
+for (const man of HUNT_MEN) {
+  const stages = [3, 5, 7, 9];
+  const variants = stages.map((stage) => {
+    const text = typeof man.desc === 'function' ? man.desc(stage) : man.desc;
+    return { when: { stageMin: stage, stageMax: stage + 1 }, text: [text] };
+  });
+  variants.push({ when: {}, text: [typeof man.desc === 'function' ? man.desc(3) : man.desc] });
+  registerPool(`hunt.man.${man.id}`, variants);
+}
+
+export function renderHuntNode(nodeId, student, week = 1, opts = {}) {
+  if (!nodeId || !student) return '';
+  const key = HUNT_NODES[nodeId] ? `hunt.node.${nodeId}` : 'hunt.node.quad';
+  const line = render(`{${key}}`, createContext({ subject: student, week, ...opts }));
+  return line?.trim() || '';
+}
+
+export function renderHuntTarget(targetId, student, week = 1, opts = {}) {
+  if (!student) return '';
+  const man = HUNT_MEN.find((m) => m.id === targetId);
+  const key = man ? `hunt.man.${man.id}` : 'hunt.man.chad_w';
+  const line = render(`{${key}}`, createContext({ subject: student, week, ...opts }));
+  return line?.trim() || '';
+}

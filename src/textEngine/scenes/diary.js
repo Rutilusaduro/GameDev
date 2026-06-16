@@ -10,6 +10,7 @@
 // Stage 9-10: late — vast, settled, definitive
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../engine.js';
+import './diaryPhaseD.js';
 
 // ── SUMO ──────────────────────────────────────────────────────
 // ── diary.sumo (decomposed) ─────────────────────────────────────

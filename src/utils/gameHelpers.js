@@ -4,11 +4,11 @@
 // Index 0 = weight stage 5 (Heavy), index 5 = weight stage 10 (Blob)
 // ═══════════════════════════════════════════════════════════════
 import { OUTFITS } from '../gameData/content.js';
-import { EVOLVED_REACTIONS, EVOLVED_DIARY, EVOLVED_OUTFITS } from '../gameData/evolvedForms.js';
+import { EVOLVED_REACTIONS, EVOLVED_OUTFITS } from '../gameData/evolvedForms.js';
 import { getStage } from '../gameData/stages.js';
 import { CLASS_SCENES } from '../gameData/classEvents.js';
 import { createContext, render } from '../textEngine/engine.js';
-import '../textEngine/lexicon.js'; // registers word.* modules
+import '../textEngine/lexicon.js';
 import '../textEngine/scenes/deviceBody.js';
 import '../textEngine/scenes/talia/index.js';
 import { renderDiary } from '../textEngine/scenes/diary.js';
@@ -41,15 +41,6 @@ export function getOutfit(s){
 export function getDiary(s, week = 1, opts = {}){
   const modular = renderDiary(s, week);
   if (modular) return appendCampusDiary(modular, s, { ...opts, week });
-
-  if (s.evolvedForm && getStage(s.lbs).id >= 5) {
-    const arr = EVOLVED_DIARY[s.evolvedForm];
-    if (arr) {
-      const base = arr[Math.min(getStage(s.lbs).id - 5, arr.length - 1)];
-      const text = typeof base === 'function' ? base(s) : base;
-      return appendCampusDiary(text, s, { ...opts, week });
-    }
-  }
   return null;
 }
 export function getEvolvedReaction(s){

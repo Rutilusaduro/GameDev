@@ -7,6 +7,7 @@ import './conversations.js';
 import './groupConversations.js';
 import './reactions.js';
 import './waiter.js';
+import './depth.js';
 
 export { renderDinnerEnding } from './endingScene.js';
 
@@ -75,4 +76,12 @@ export function renderDinnerWaiter(venueId, student, week = 1, opts = {}) {
   });
   const line = render('{dinner.waiter}', ctx, { trace: opts.trace || null });
   return line?.trim() || 'The server arrives. "Shall I bring more?" she asks.';
+}
+
+/** Full dinner depth beat — setup through exit. */
+export function renderDinnerDepth(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  const line = render('{dinner.depth}', ctx, { trace: opts.trace || null });
+  return line?.trim() || renderDinnerEnding(student, student.fullness || 0, student.stomachCapacity || 100, week);
 }

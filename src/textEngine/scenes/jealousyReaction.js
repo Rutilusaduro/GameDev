@@ -28,6 +28,7 @@ registerPool('jealousy.reaction', [
       (ctx) => `"You always find time for her," ${ctx.subject.name} says, not quite looking at you. "I'm still here too."`,
       (ctx) => `${ctx.subject.name} picks at her napkin. "I guess I'm not the one you're pushing right now."`,
       (ctx) => `${ctx.subject.name} tries to smile. It doesn't reach her eyes. "Should I wait my turn again?"`,
+      (ctx) => `${ctx.subject.name} watches quietly — {word.jealousyReaction}.`,
     ],
   },
   {
