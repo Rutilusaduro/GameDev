@@ -2,6 +2,7 @@
 // DEVICE QUERY — filtering and derived status (engine-free)
 // ═══════════════════════════════════════════════════════════════
 import { DEVICES, DEVICE_SLOTS } from './devices.js';
+import { getDeviceCatalogSearchText } from '../textEngine/scenes/deviceFlavor.js';
 import { PLAYER_EQUIP_SLOTS } from './player.js';
 
 export function countOwnedDevices(deviceInventory = {}) {
@@ -116,7 +117,7 @@ export function filterDevices(opts = {}) {
     if (tier != null && tier !== 'all' && def.tier !== Number(tier)) return false;
     if (!matchesTarget(def, target)) return false;
     if (q) {
-      const hay = `${def.label} ${def.desc} ${def.id}`.toLowerCase();
+      const hay = `${def.label} ${getDeviceCatalogSearchText(def.id)} ${def.id}`.toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;

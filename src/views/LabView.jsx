@@ -4,6 +4,7 @@
 import { useMemo, useState } from 'react';
 import { C } from '../styles.js';
 import { DEVICES } from '../gameData/devices.js';
+import { renderDeviceCatalogDesc } from '../textEngine/scenes/deviceFlavor.js';
 import {
   BLUEPRINT_RECIPES,
   isBlueprintBuildable,
@@ -46,7 +47,7 @@ function BlueprintCard({ recipe, labState, taliaStudent, money, onBuild, onOpenC
         </div>
         <span style={{ ...C.tag(`${rarityColor}30`, rarityColor), fontSize: 8 }}>T{recipe.tier}</span>
       </div>
-      <div style={{ fontSize: 10, color: '#5a6080', marginBottom: 8, lineHeight: 1.4 }}>{def?.desc}</div>
+      <div style={{ fontSize: 10, color: '#5a6080', marginBottom: 8, lineHeight: 1.4 }}>{renderDeviceCatalogDesc(def?.id)}</div>
       <RecipeCostDisplay recipe={recipe} labState={labState} money={money} taliaLbs={taliaLbs} />
       {!researched && (
         <div style={{ fontSize: 9, color: '#806050', fontStyle: 'italic', marginBottom: 6, lineHeight: 1.45 }}>

@@ -44,7 +44,7 @@ import { renderBodyPortrait } from '../textEngine/scenes/body/index.js';
 import { renderFeedVoice } from '../textEngine/scenes/feedVoice/index.js';
 import { renderIntimacyDepth } from '../textEngine/scenes/intimacy/index.js';
 import { renderHuntNode, renderHuntTarget } from '../textEngine/scenes/hunt/index.js';
-import { renderDeviceFlavor } from '../textEngine/scenes/deviceFlavor.js';
+import { renderDeviceFlavor, renderDeviceCatalogDesc } from '../textEngine/scenes/deviceFlavor.js';
 import { renderSessionFullness, renderSessionAftermath } from '../textEngine/scenes/session/index.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
@@ -152,6 +152,8 @@ const SECTIONS = {
     }), { trace: opts.trace }) },
   "device.flavor": { params: [...STATE_PARAMS, "device"],
     fn: (s, opts) => renderDeviceFlavor(opts.device || 'feeding_mask', s, 6, opts) },
+  "device.catalog": { params: [...STATE_PARAMS, "device"],
+    fn: (s, opts) => renderDeviceCatalogDesc(opts.device || 'feeding_mask', s, 6, opts) },
   "talk.coda": { params: STATE_PARAMS,
     fn: (s, opts) => render('{talk.coda}', createContext({ subject: s, week: 6 }), { trace: opts.trace }) },
   "dinner.waiter": { params: [...STATE_PARAMS, "dinnerVenue"],

@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // TALIA VALE — Approved invention catalog
 // inventionKind: 'equipable' | 'event'
+// Catalog prose: src/textEngine/scenes/deviceFlavor.js (device.catalog.*)
 // ═══════════════════════════════════════════════════════════════
 
 export const DEVICE_SLOTS = [
@@ -39,7 +40,6 @@ export const DEVICES = {
     effectStrength: 0.9,
     rarity: 'uncommon',
     growthProfile: { growthMethod: 'feed', zoneBias: 'belly', growthIntensity: 'steady', sensation: 'fullness' },
-    desc: 'A lab-mounted intake rig with locking harness and calibrated pump — deliberate, mechanical stage advancement.',
     useEffect: {
       gainLbs: [8, 14],
       bodyOverride: { stateType: 'bloated', stageBump: 2, durationWeeks: 1 },
@@ -62,7 +62,6 @@ export const DEVICES = {
     effectStrength: 0.65,
     rarity: 'uncommon',
     growthProfile: { growthMethod: 'feed', zoneBias: 'bodyType', growthIntensity: 'steady', sensation: 'fullness' },
-    desc: 'A servo-driven arm that delivers food at a steady mechanical rhythm — feeding without consent or effort.',
     weeklyEffect: {
       gainLbs: [3, 6],
       psychDelta: { dependence: 3 },
@@ -84,7 +83,6 @@ export const DEVICES = {
     effectStrength: 0.6,
     rarity: 'uncommon',
     growthProfile: { growthMethod: 'feed', zoneBias: 'bodyType', growthIntensity: 'gradual', sensation: 'pressure' },
-    desc: 'A waist harness wired to compliance cues — shame and dependence climb whenever she hesitates to obey.',
     weeklyEffect: {
       gainLbs: [1, 3],
       psychDelta: { dependence: 3, shame: 2, obsession: 1 },
@@ -106,7 +104,6 @@ export const DEVICES = {
     effectStrength: 0.7,
     rarity: 'uncommon',
     growthProfile: { growthMethod: 'bloat', zoneBias: 'belly', growthIntensity: 'gradual', sensation: 'pressure' },
-    desc: 'A reinforced waist harness that slowly but relentlessly bloats the wearer — constant pressure and visible swelling.',
     weeklyEffect: {
       bodyOverride: { stateType: 'bloated', stageBump: 2, durationWeeks: 1 },
       gainLbs: [1, 3],
@@ -129,7 +126,6 @@ export const DEVICES = {
     effectStrength: 0.9,
     rarity: 'rare',
     growthProfile: { growthMethod: 'feed', zoneBias: 'full', growthIntensity: 'gradual', sensation: 'pressure' },
-    desc: 'Restraints and reshaping frames that turn a person into functional furniture — fed to stay comfortable.',
     weeklyEffect: {
       gainLbs: [2, 5],
       bodyOverride: { stateType: 'furniture', stageBump: 1, durationWeeks: 2 },
@@ -158,7 +154,6 @@ export const DEVICES = {
     effectStrength: 0.5,
     rarity: 'uncommon',
     growthProfile: { growthMethod: 'feed', zoneBias: 'lower_body', growthIntensity: 'gradual', sensation: 'pressure' },
-    desc: 'Braced leg supports that bear furniture-weight loads — keeps a harnessed girl stable while she swells.',
     weeklyEffect: {
       gainLbs: [1, 2],
       psychDelta: { dependence: 1 },
@@ -181,7 +176,6 @@ export const DEVICES = {
     effectStrength: 0.95,
     rarity: 'rare',
     growthProfile: { growthMethod: 'radiation', zoneBias: 'bodyType', growthIntensity: 'rapid', sensation: 'warmth' },
-    desc: 'A sealed chamber session that accelerates adipose deposition — warm, pleasurable, and never quite predictable.',
     useEffect: {
       gainLbs: [12, 24],
       psychDelta: { obsession: 4, dependence: 3 },
@@ -202,7 +196,6 @@ export const DEVICES = {
     effectStrength: 0.95,
     rarity: 'rare',
     growthProfile: { growthMethod: 'serum', zoneBias: 'bodyType', growthIntensity: 'rapid', sensation: 'warmth' },
-    desc: 'One-shot volatile formula delivery — rapid, dramatic, never fully predictable localized growth.',
     useEffect: {
       gainLbs: [10, 22],
       bodyOverride: { stateType: 'bloated', stageBump: 3, durationWeeks: 2 },
@@ -224,7 +217,6 @@ export const DEVICES = {
     effectStrength: 0.92,
     rarity: 'rare',
     growthProfile: { growthMethod: 'hunger', zoneBias: 'bodyType', growthIntensity: 'steady', sensation: 'craving' },
-    desc: 'A handheld ray that suppresses satiety at range — hunger becomes obsession until she feeds.',
     useEffect: {
       hungerDelta: 2,
       psychDelta: { fixation: 4, dependence: 3 },
