@@ -5,6 +5,7 @@ import { getDeviceModesForCampus } from '../gameData/campusDeviceEncounters.js';
 export function CampusDeviceEncounterPanel({
   encounter,
   deviceInventory,
+  labState = null,
   onUseDevice,
   onDismiss,
 }) {
@@ -38,7 +39,7 @@ export function CampusDeviceEncounterPanel({
       {allowedDevices.map(deviceId => {
         const def = DEVICES[deviceId];
         if (!def) return null;
-        const modes = getDeviceModesForCampus(deviceId, deviceInventory);
+        const modes = getDeviceModesForCampus(deviceId, deviceInventory, labState);
         return (
           <div key={deviceId} style={{ marginBottom: 10, paddingBottom: 8, borderBottom: '1px solid #2a2030' }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: '#b0a0d0', marginBottom: 6 }}>

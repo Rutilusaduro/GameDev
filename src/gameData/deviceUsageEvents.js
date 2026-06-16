@@ -2,7 +2,8 @@
 // DEVICE USAGE MINI-GAMES — tuning / route / rhythm archetypes
 // ═══════════════════════════════════════════════════════════════
 import { recordDeviceUse, getDeviceBoardMods } from './inventionUpgrades.js';
-import { applyDeviceEffect } from './deviceEffects.js';
+import { applyDeviceEffect, rollMalfunction } from './deviceEffects.js';
+import { getDependenceLevel } from './deviceDependence.js';
 import { DEVICES } from './devices.js';
 import { canStudentUseDevice, deviceAcceptanceBlockReason } from './deviceGating.js';
 
@@ -12,6 +13,9 @@ export const DEVICE_INTERACTION_TYPES = {
   growth_serum_injector: 'tuning',
   auto_feeder_arm: 'route',
   endless_hunger_engine: 'route',
+  obedience_belt: 'tuning',
+  auto_bloating_belt: 'tuning',
+  living_furniture_rig: 'route',
 };
 
 export function interactionTypeForDevice(deviceDefId) {
@@ -53,10 +57,14 @@ export function createRouteSession(deviceDefId, budget = 100) {
   };
 }
 
-export function scoreRouteSession(session, discoveryRiskBase = 0.15) {
+export function scoreRouteSession(session, discoveryRiskBase = 0.15, labState = null, deviceDefId = null) {
   const campus = session.allocations?.campus ?? 0;
   const belly = session.allocations?.belly ?? 0;
-  const discoveryRisk = discoveryRiskBase * (campus / 50);
+  let discoveryRisk = discoveryRiskBase * (campus / 50);
+  if (labState && deviceDefId) {
+    const mods = getDeviceBoardMods(labState, deviceDefId);
+    if (mods.discoveryMult) discoveryRisk *= mods.discoveryMult;
+  }
   const gainMult = 1 + belly / 120;
   const efficiency = Math.min(100, belly + campus * 0.7);
   let tier = 'good';
@@ -85,8 +93,31 @@ export function runStationaryDeviceSession(student, deviceDefId, week, rng = Mat
   if (effect.gainLbs && gainMult !== 1) {
     effect.gainLbs = effect.gainLbs.map((g) => Math.max(1, Math.round(g * gainMult)));
   }
-  const applied = applyDeviceEffect(student, effect, { week, sourceDeviceId: deviceDefId, rng });
-  return { ok: true, ...applied, performanceTier: opts.performanceTier ?? 'good' };
+  const effectCtx = { week, sourceDeviceId: deviceDefId, rng, labState: opts.labState };
+  const applied = applyDeviceEffect(student, effect, effectCtx);
+  let next = applied.student;
+  let lines = applied.lines;
+  let malfunction = null;
+  if (def.malfunctions?.length) {
+    malfunction = rollMalfunction(def, next, rng, {
+      dependenceLevel: getDependenceLevel(student, deviceDefId),
+      labState: opts.labState,
+      deviceDefId,
+    });
+    if (malfunction) {
+      const m2 = applyDeviceEffect(next, malfunction.effect, effectCtx);
+      next = m2.student;
+      lines = [...lines, malfunction.text];
+    }
+  }
+  return {
+    ok: true,
+    student: next,
+    lines,
+    zoneOverride: applied.zoneOverride,
+    malfunction,
+    performanceTier: opts.performanceTier ?? 'good',
+  };
 }
 
 export function runRouteDeviceSession(student, deviceDefId, week, routeResult, rng = Math.random) {
@@ -101,7 +132,8 @@ export function runRouteDeviceSession(student, deviceDefId, week, routeResult, r
     gainLbs: base.map((g) => Math.max(1, Math.round(g * gainMult))),
     psychDelta: def?.useEffect?.psychDelta ?? { dependence: 2 },
   };
-  const applied = applyDeviceEffect(student, effect, { week, sourceDeviceId: deviceDefId, rng });
+  const effectCtx = { week, sourceDeviceId: deviceDefId, rng, labState: routeResult?.labState };
+  const applied = applyDeviceEffect(student, effect, effectCtx);
   return { ok: true, ...applied, performanceTier: tier, discoveryRisk: routeResult?.discoveryRisk ?? 0 };
 }
 

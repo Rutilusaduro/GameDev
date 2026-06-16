@@ -208,6 +208,7 @@ export function CampusView({
             <CampusDeviceEncounterPanel
               encounter={campusState.activeEncounter}
               deviceInventory={deviceInventory}
+              labState={explorationCtx?.labState}
               onUseDevice={useCampusDevice}
               onDismiss={dismissCampusEncounter}
             />

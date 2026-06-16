@@ -319,11 +319,23 @@ const GROWTH_CHAMBER = makeBoard(
         node('gac_permanent', 'Permanent Lattice', 'Unlocks permanent-convert malfunction handler.', 3, { mod: { permanentConvert: true }, requiresTier: 3 }),
       ],
     },
+    identity: {
+      label: 'Identity Branch',
+      requiresTier: 2,
+      nodes: [
+        node('gac_metabolic_override', 'Metabolic Override', 'Exclusive: competitive gainer unlocks +15% chamber gain.', 2, {
+          mod: { gainMult: 1.15 },
+          requiresEvolvedForm: 'competitive_gainer',
+          requiresTier: 2,
+        }),
+      ],
+    },
   },
   {
     gac_gain_up: 'gac_main_4', gac_stage_push: 'gac_main_6',
     gac_stable: 'gac_main_3', gac_soft_fail: 'gac_main_5',
     gac_permanent: 'gac_main_8',
+    gac_metabolic_override: 'gac_main_5',
   },
 );
 

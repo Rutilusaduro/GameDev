@@ -4,6 +4,7 @@
 import { ELARA_ID } from './relicHunter.js';
 import { getDevice, isCampusTool } from './devices.js';
 import { resolveCampusDeviceUse } from './deviceEffects.js';
+import { hasCircuitNode } from './inventionUpgrades.js';
 import '../textEngine/scenes/campusDevice/index.js';
 import {
   renderCampusDeviceEncounter,
@@ -147,6 +148,7 @@ export function applyCampusDeviceEncounter({
   student,
   week,
   exploration,
+  labState = null,
   rng = Math.random,
 }) {
   const def = getDevice(deviceId);
@@ -156,7 +158,7 @@ export function applyCampusDeviceEncounter({
   let npcGain = 0;
 
   if (encounter.target.type === 'student') {
-    const result = resolveCampusDeviceUse(deviceId, modeId, student, week, rng);
+    const result = resolveCampusDeviceUse(deviceId, modeId, student, week, rng, { labState });
     if (!result.ok) return result;
     const line = renderCampusDeviceResult(encounter, deviceId, modeId, result, encounter.nodeId, student);
     return {
@@ -204,11 +206,16 @@ export function applyCampusDeviceEncounter({
   };
 }
 
-export function getDeviceModesForCampus(deviceId, deviceInventory) {
+export function getDeviceModesForCampus(deviceId, deviceInventory, labState = null) {
   const def = getDevice(deviceId);
   if (!def) return [];
   if (def.campusModes?.length) {
-    return def.campusModes;
+    return def.campusModes.filter((mode) => {
+      if (mode.id === 'sustain' && labState) {
+        return hasCircuitNode(labState, deviceId, 'ehe_sustain');
+      }
+      return true;
+    });
   }
   return [{ id: 'default', label: 'Activate', gainLbs: def.useEffect?.gainLbs || [3, 6] }];
 }

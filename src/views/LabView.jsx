@@ -139,7 +139,9 @@ export function LabView({
   onUnlockTech,
   onUnlockCircuit,
   onOpenSession,
+  onOpenForceFeeder,
   ap,
+  students = [],
 }) {
   const [circuitDevice, setCircuitDevice] = useState(null);
 
@@ -232,6 +234,26 @@ export function LabView({
           defaultOpen={i === 0}
         />
       ))}
+
+      {labState?.installedInventions?.feeding_mask && onOpenForceFeeder && (
+        <button
+          type="button"
+          style={{ ...C.btn('#5818a8'), width: '100%', fontSize: 11, marginBottom: 12 }}
+          onClick={onOpenForceFeeder}
+        >
+          🎭 Run Force Feeder Session
+        </button>
+      )}
+
+      {circuitDevice && (
+        <CircuitBoardModal
+          deviceDefId={circuitDevice}
+          labState={labState}
+          students={students}
+          onUnlockNode={onUnlockCircuit}
+          onClose={() => setCircuitDevice(null)}
+        />
+      )}
     </div>
   );
 }

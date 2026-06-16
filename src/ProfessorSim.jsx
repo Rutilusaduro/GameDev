@@ -835,13 +835,14 @@ export default function ProfessorSim(){
       };
     }
     const result=applyCampusDeviceEncounter({
-      encounter, deviceId, modeId, student, week, exploration, rng:Math.random,
+      encounter, deviceId, modeId, student, week, exploration, labState, rng:Math.random,
     });
     if(!result.ok){ campusLog(['⚠️ Device use failed.']); return; }
     if(result.scrutinyDelta) addScrutiny(result.scrutinyDelta);
     const def=DEVICES[deviceId];
     if(encounter.target.type==='student'&&result.student){
       const growthEv=applyStudentDeviceResult(encounter.target.studentId,{ ok:true, ...result, student:result.student },def,false,'campus');
+      if(labState) awardDeviceMastery(deviceId, result.malfunction ? 'messy' : 'good');
       if(!growthEv&&result.malfunction&&(result.malfunction.tier==='major'||result.malfunction.tier==='critical')){
         setMalfunctionPopup({
           studentName:encounter.target.name,tier:result.malfunction.tier,
@@ -1057,6 +1058,7 @@ export default function ProfessorSim(){
         let chance=forceFeedChance(s,fullnessCost,spiritLevel)+bonuses.corruptionBonus;
         if(opts.refusalBonus!=null) chance+=opts.refusalBonus;
         else chance+=bonuses.complianceBonus;
+        chance+=bonuses.dependenceBonus||0;
         chance+=eff.forceFeedBonus||0;
         chance+=eff.extremeBonus||0;
         if(weeklyArms.mesmerizingStudentId===s.id&&eff.mesmerizingAura) chance+=TALK_CONFIG.auraBonus;
@@ -1328,7 +1330,7 @@ export default function ProfessorSim(){
     updated=updated.map(s=>{
       let ns=clearExpiredOverrides(s,newWeek);
       const preLbs=ns.lbs;
-      const tick=tickEquippedDevices(ns,newWeek,Math.random,{ player });
+      const tick=tickEquippedDevices(ns,newWeek,Math.random,{ player, labState });
       ns=tick.student;
       if(ns._pendingGainLbs){
         const g=ns._pendingGainLbs;
@@ -3407,6 +3409,10 @@ export default function ProfessorSim(){
 
   const runLabSessionOpen=(s)=>{
     if(!labState||s.evolvedForm!=='machine_goddess') return;
+    if((labState.instability??0)>=85){
+      push('⚠️ Lab instability critical — run maintenance before another parts session.');
+      return;
+    }
     const act=INVENTOR_ACTIVITIES[1];
     if(ap<act.apCost){ push(`⚠️ Need ${act.apCost} AP.`); return; }
     setLabStudentId(s.id);
@@ -3619,7 +3625,7 @@ export default function ProfessorSim(){
   const unlockLabCircuitNode=(deviceDefId,nodeId)=>{
     setLabState(prev=>{
       if(!prev) return prev;
-      const next=unlockCircuitNode(prev,deviceDefId,nodeId);
+      const next=unlockCircuitNode(prev,deviceDefId,nodeId,students);
       if(next===prev) return prev;
       const node=getCircuitNode(deviceDefId,nodeId);
       setTimeout(()=>push(`🔌 Circuit node installed — ${node?.label||nodeId}.`),0);
@@ -3740,10 +3746,12 @@ export default function ProfessorSim(){
     setDeviceTargetPicker(null);
     const result=useConsumableDevice(
       students.find(st=>st.id===studentId),
-      def.id,week,Math.random,
+      def.id,week,Math.random,{ labState },
     );
     if(!result.ok){ push('⚠️ Device use failed.'); return; }
     applyStudentDeviceResult(studentId,result,def,true);
+    const tier=result.malfunction?(result.malfunction.tier==='minor'?'messy':'failure'):'good';
+    awardDeviceMastery(def.id,tier);
     push(`💉 ${def.label} used — ${result.lines.join(' · ')}`);
   };
 
@@ -3811,11 +3819,11 @@ export default function ProfessorSim(){
     if(payload?.performanceTier){
       performanceTier=payload.performanceTier;
       gainMult=tuningGainMult({ magnitude:payload.magnitude??0.5, stability:payload.stability??0.5, resultQuality:performanceTier },labState,deviceDefId);
-      result=runStationaryDeviceSession(s,deviceDefId,week,Math.random,{ gainMult, performanceTier });
+      result=runStationaryDeviceSession(s,deviceDefId,week,Math.random,{ gainMult, performanceTier, labState });
     } else if(payload?.allocations){
-      const routeScore=scoreRouteSession({ allocations:payload.allocations },0.15);
+      const routeScore=scoreRouteSession({ allocations:payload.allocations },0.15,labState,deviceDefId);
       performanceTier=routeScore.performanceTier;
-      result=runRouteDeviceSession(s,deviceDefId,week,routeScore,Math.random);
+      result=runRouteDeviceSession(s,deviceDefId,week,{ ...routeScore, labState },Math.random);
       if(routeScore.discoveryRisk>0.25) addScrutiny(Math.round(routeScore.discoveryRisk*10));
     } else {
       setDeviceUsageModal(null);
@@ -3850,6 +3858,13 @@ export default function ProfessorSim(){
     setDeviceUsageModal(null);
   };
 
+  const awardDeviceMastery=(deviceDefId,performanceTier='good')=>{
+    if(!labState) return;
+    const usage=applyDeviceUsageReward(labState,deviceDefId,performanceTier);
+    setLabState(usage.labState);
+    if(usage.pointsEarned>0) setTimeout(()=>push(`🔌 +${usage.pointsEarned} invention pts (${performanceTier}).`),70);
+  };
+
   const runDeviceAction=(actionId,studentId)=>{
     const s=students.find(st=>st.id===studentId);
     if(!s) return;
@@ -3863,6 +3878,7 @@ export default function ProfessorSim(){
       const result=triggerBeltBloatNow(s,week,Math.random);
       if(!result.ok){ push('⚠️ Belt not active.'); return; }
       applyStudentDeviceResult(studentId,result,DEVICES.auto_bloating_belt);
+      awardDeviceMastery('auto_bloating_belt', result.malfunction ? 'messy' : 'good');
       const extra=result.lines?.filter(l=>!l.startsWith('⚠️')&&l!=='Belt cycles to aggressive bloat mode.').join(' ');
       push(`⭕ Belt bloat triggered on ${s.name}.${extra?` ${extra}`:''}`);
       return;
@@ -3921,6 +3937,7 @@ export default function ProfessorSim(){
       const effect=DEVICES.living_furniture_rig.useEffect||{};
       const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'living_furniture_rig', rng:Math.random });
       applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.living_furniture_rig);
+      awardDeviceMastery('living_furniture_rig', 'good');
       const comfort=applied.student?.deviceState?.furnitureComfort;
       push(`🪑 Fed the furniture (${s.name}) — comfort ${comfort ?? '?'}/100.`);
       return;
@@ -7139,14 +7156,12 @@ export default function ProfessorSim(){
             taliaStudent={taliaStudent()}
             money={money}
             ap={ap}
-            player={player}
             students={students}
-            pharmacistState={pharmacistState}
-            campusState={campusState}
             onBuild={buildLabDevice}
             onUnlockTech={unlockLabTech}
             onUnlockCircuit={unlockLabCircuitNode}
             onOpenSession={()=>{ const t=taliaStudent(); if(t) runLabSessionOpen(t); }}
+            onOpenForceFeeder={openForceFeeder}
             labStage={labState?.stage??1}
           />}
 
