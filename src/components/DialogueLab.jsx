@@ -176,6 +176,8 @@ const SECTIONS = {
     }), { trace: opts.trace }) },
   "device.flavor": { params: [...STATE_PARAMS, "device"],
     fn: (s, opts) => renderDeviceFlavor(opts.device || 'feeding_mask', s, 6, opts) },
+  "device.catalog": { params: [...STATE_PARAMS, "device"],
+    fn: (s, opts) => renderDeviceCatalogDesc(opts.device || 'feeding_mask', s, 6, opts) },
   "talk.coda": { params: STATE_PARAMS,
     fn: (s, opts) => render('{talk.coda}', createContext({ subject: s, week: 6 }), { trace: opts.trace }) },
   "dinner.waiter": { params: [...STATE_PARAMS, "dinnerVenue"],

@@ -4,7 +4,7 @@
 import { useMemo, useState } from 'react';
 import { C } from '../styles.js';
 import { DEVICES } from '../gameData/devices.js';
-import { renderDeviceFlavor } from '../textEngine/scenes/deviceFlavor.js';
+import { renderDeviceFlavor, renderDeviceCatalogDesc } from '../textEngine/scenes/deviceFlavor.js';
 import {
   countOwnedDevices,
   countEquippedAcrossStudents,
@@ -41,7 +41,7 @@ function deviceCatalogLine(def, student, week) {
     const flavor = renderDeviceFlavor(def.id, student, week);
     if (flavor) return flavor;
   }
-  return def.desc || '';
+  return renderDeviceCatalogDesc(def.id, student, week);
 }
 
 function DeviceDetailPanel({ def, statusCtx, flavorStudent, week, onClose, onEquipStudent, onQuickUse }) {
