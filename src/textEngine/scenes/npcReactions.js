@@ -1,0 +1,80 @@
+// NPC reaction pools — campus observers and professor voice.
+import { registerPool } from '../engine.js';
+
+registerPool('npc.bystander', [
+  { when: {}, text: [
+    'Someone glances, looks away, glances again.',
+    'A passing student registers her size and recalibrates their path.',
+  ] },
+  { when: { stageMin: 6, campusLocale: 'hallway' }, text: [
+    'Foot traffic parts — not unkindly, simply spatially.',
+    'A whispered comment she pretends not to hear.',
+  ] },
+  { when: { stageMin: 8 }, text: [
+    'The hallway goes quieter as she passes. Sound precedes her.',
+    'Bystanders make room the way you make room for weather.',
+  ] },
+  { when: { stageMin: 10 }, text: [
+    'People stop pretending not to look. At this scale, looking is honesty.',
+    'The corridor reorganizes around her passage.',
+  ] },
+]);
+
+registerPool('npc.peer', [
+  { when: {}, text: [
+    'A classmate nods — familiar, noncommittal.',
+    'Someone she knows offers a smile that does not quite reach their eyes.',
+  ] },
+  { when: { relationship: [2, 3], stageMin: 5 }, text: [
+    'A friend squeezes her arm — affectionate, unsurprised by the size of it.',
+    '"You\'re looking well," someone says, and means it.',
+  ] },
+  { when: { stageMin: 7 }, text: [
+    '"Girl," a teammate says, "you are not the same person from September."',
+    'A peer stares openly. She stares back. That ends it.',
+  ] },
+]);
+
+registerPool('npc.coach', [
+  { when: {}, text: [''] },
+  { when: { stageMin: 4, archetype: 'athlete' }, text: [
+    `"Coach would lose his mind," she says — but she does not sound worried.`,
+  ] },
+  { when: { stageMin: 6, corruption: [2] }, text: [
+    `"I'm off the team," she says. "Best thing that happened to me."`,
+  ] },
+]);
+
+registerPool('npc.staff', [
+  { when: {}, text: [''] },
+  { when: { campusLocale: 'cafeteria', stageMin: 5 }, text: [
+    'The cafeteria worker loads her tray without comment. They have seen this before.',
+    'Staff refills her plate before she asks. Habit, not judgment.',
+  ] },
+  { when: { stageMin: 8 }, text: [
+    'Campus staff have learned her — which doors, which portions, which chairs.',
+  ] },
+]);
+
+registerPool('prof.observation', [
+  { when: {}, text: [
+    'You note the change without saying it aloud.',
+    'The numbers tell one story. Her presence tells another.',
+  ] },
+  { when: { relationship: [0, 1], stageMin: 5 }, text: [
+    'You observe clinically — data accumulating, relationship still formal.',
+    'Detached assessment: she is larger than last month. The trend continues.',
+  ] },
+  { when: { relationship: [2, 3], stageMin: 5 }, text: [
+    'You watch her with the fondness of someone who has been waiting for this.',
+    'Confirmation, not surprise — she is becoming what you hoped.',
+  ] },
+  { when: { corruption: [2], stageMin: 6 }, text: [
+    'She wants this. You can see it in how she moves, how she eats, how she waits for the number.',
+    'The project is succeeding. She is succeeding.',
+  ] },
+  { when: { stageMin: 10 }, text: [
+    'At this scale, observation is architectural. She is the room\'s primary feature.',
+    'Immobility is not failure. It is arrival.',
+  ] },
+]);

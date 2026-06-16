@@ -1,6 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // TEXT LINT — static + dynamic checks over the text-engine registry.
-// Run: npm run text:lint        (node scripts/textLint.mjs)
+// Run: npm run text:lint
+//      npm run text:lint -- --sample=500 --scene=wi
+//      npm run text:lint -- --coverage
 // See src/textEngine/AUTHORING.md for the rules this enforces.
 // ═══════════════════════════════════════════════════════════════
 import '../src/textEngine/scenes/index.js';
@@ -12,6 +14,16 @@ import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { WEIGHT_STAGES } from '../src/gameData/stages.js';
 import { DEVICES } from '../src/gameData/devices.js';
 import { renderGrowthScene } from '../src/textEngine/scenes/growthEvent/index.js';
+import {
+  BANNED_PATTERNS, SAMPLE_SCENES, COVERAGE_STAGE_PROBES, STAGE_COVERAGE_PREFIXES,
+} from './text-lint.config.js';
+
+const CLI_ARGS = process.argv.slice(2);
+const sampleArg = CLI_ARGS.find((a) => a.startsWith('--sample='));
+const sceneArg = CLI_ARGS.find((a) => a.startsWith('--scene='));
+const SAMPLE_COUNT = sampleArg ? parseInt(sampleArg.split('=')[1], 10) : 0;
+const SAMPLE_SCENE = sceneArg ? sceneArg.split('=')[1] : 'wi';
+const RUN_COVERAGE = CLI_ARGS.includes('--coverage');
 
 const errors = [];
 const warnings = [];
@@ -100,6 +112,10 @@ const SWEEPS = [
   { name: 'grow.crossing', root: 'grow.crossing', tpl: '{grow.crossing} {grow.crossingDialogue}' },
   { name: 'ff.feed', root: 'ff.feed', tpl: '{ff.feed}' },
   { name: 'ff.aftermath', root: 'ff.aftermath', tpl: '{ff.aftermath}' },
+  { name: 'eat.scene', root: 'eat.scene', tpl: '{eat.scene}' },
+  { name: 'campus.scene', root: 'campus.scene', tpl: '{campus.scene}' },
+  { name: 'cloth.scene', root: 'cloth.scene', tpl: '{cloth.scene}' },
+  { name: 'immob.scene', root: 'immob.scene', tpl: '{immob.scene}' },
 ];
 
 const STAGE_PROBES = [0, 2, 4, 6, 8, 10, 11];
@@ -300,6 +316,107 @@ function initPsych(corruption) {
 }
 
 cells += growthCells;
+
+// ── combinatorial sampling mode ───────────────────────────────
+
+if (SAMPLE_COUNT > 0) {
+  const tpl = SAMPLE_SCENES[SAMPLE_SCENE];
+  if (!tpl) {
+    err(`--scene=${SAMPLE_SCENE}: unknown scene (known: ${Object.keys(SAMPLE_SCENES).join(', ')})`);
+  } else {
+    const trigramCounts = new Map();
+    let shortCount = 0;
+    let longCount = 0;
+    for (let i = 0; i < SAMPLE_COUNT; i++) {
+      const base = INIT_STUDENTS[Math.floor(Math.random() * INIT_STUDENTS.length)];
+      const stage = COVERAGE_STAGE_PROBES[Math.floor(Math.random() * COVERAGE_STAGE_PROBES.length)];
+      const corruption = [0, 50, 95][Math.floor(Math.random() * 3)];
+      const student = {
+        ...base,
+        lbs: stageLbs(stage),
+        corruption,
+        mood: MOODS[Math.floor(Math.random() * MOODS.length)],
+        hungerTier: HUNGER_TIERS[Math.floor(Math.random() * HUNGER_TIERS.length)],
+        fullness: 20 + Math.random() * 80,
+        stomachCapacity: 100,
+      };
+      const ctx = createContext({
+        subject: student,
+        week: 1 + Math.floor(Math.random() * 12),
+        globals: {
+          campusFattening: Math.random() > 0.5,
+          campusTier: CAMPUS_TIERS[Math.floor(Math.random() * CAMPUS_TIERS.length)],
+          bigScale: stage >= 7,
+          locale: LOCALES[Math.floor(Math.random() * LOCALES.length)],
+          mealType: ['breakfast', 'binge', 'snack', 'campus_meal', 'meal'][Math.floor(Math.random() * 5)],
+          clothingState: ['button_pop', 'zipper_fail', 'seam_split', 'fitted'][Math.floor(Math.random() * 4)],
+        },
+      });
+      const out = render(tpl, ctx);
+      rendersDone++;
+      if (out.length < 20) shortCount++;
+      if (out.length > 250) longCount++;
+      for (const { pattern, message } of BANNED_PATTERNS) {
+        if (pattern.test(out)) err(`sample ${i}: banned pattern (${message}): "${out.slice(0, 100)}"`);
+      }
+      const words = out.toLowerCase().split(/\s+/).filter(Boolean);
+      for (let w = 0; w < words.length - 2; w++) {
+        const tri = `${words[w]} ${words[w + 1]} ${words[w + 2]}`;
+        trigramCounts.set(tri, (trigramCounts.get(tri) || 0) + 1);
+      }
+    }
+    const hotTrigrams = [...trigramCounts.entries()].filter(([, n]) => n > 3);
+    if (shortCount > SAMPLE_COUNT * 0.05) {
+      warning(`sample: ${shortCount}/${SAMPLE_COUNT} outputs under 20 chars — slot may resolve empty`);
+    }
+    if (longCount > SAMPLE_COUNT * 0.05) {
+      warning(`sample: ${longCount}/${SAMPLE_COUNT} outputs over 250 chars — possible slot doubling`);
+    }
+    for (const [tri, n] of hotTrigrams.slice(0, 10)) {
+      warning(`sample: trigram "${tri}" appeared ${n}× in ${SAMPLE_COUNT} samples`);
+    }
+    console.log(`textLint sample: ${SAMPLE_COUNT} renders of scene "${SAMPLE_SCENE}"`);
+  }
+}
+
+// ── stage coverage report ─────────────────────────────────────
+
+if (RUN_COVERAGE) {
+  const stageIds = COVERAGE_STAGE_PROBES;
+  const relevant = entries.filter(([key]) =>
+    STAGE_COVERAGE_PREFIXES.some((p) => key.startsWith(p))
+  );
+  const gaps = [];
+  for (const [key, variants] of relevant) {
+    for (const stage of stageIds) {
+      if (stage < 8) continue; // focus report on stages 8-11 per plan
+      const hasStage = variants.some((v) => {
+        const w = v.when || {};
+        if (!w.stageMin && !w.stageMax && !w.stage) return false;
+        const min = w.stageMin ?? 0;
+        const max = w.stageMax ?? 11;
+        if (w.stage != null) return Array.isArray(w.stage) ? w.stage.includes(stage) : w.stage === stage;
+        return stage >= min && stage <= max;
+      });
+      if (!hasStage) gaps.push(`${key}@stage${stage}`);
+    }
+  }
+  console.log(`\nCoverage report (stages 8-11): ${relevant.length} pools scanned, ${gaps.length} gap(s)`);
+  for (const g of gaps.slice(0, 30)) console.log(`  · ${g}`);
+  if (gaps.length > 30) console.log(`  … and ${gaps.length - 30} more`);
+}
+
+// ── banned pattern static scan ────────────────────────────────
+
+for (const [key, variants] of entries) {
+  for (const { text } of stringTexts(variants)) {
+    for (const { pattern, message } of BANNED_PATTERNS) {
+      if (pattern.test(text)) {
+        warning(`${key}: banned pattern (${message}): "${text.slice(0, 60)}…"`);
+      }
+    }
+  }
+}
 
 // ── report ────────────────────────────────────────────────────
 

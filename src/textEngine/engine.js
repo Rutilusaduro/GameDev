@@ -71,6 +71,38 @@ export function groupStageBucket(group) {
   return stageBucket(Math.round(avg));
 }
 
+// ── extensible dimensions ─────────────────────────────────────
+
+const DIMENSION_DERIVERS = new Map();
+
+/** Register a derived dimension callable from `when` via ctx.d[key]. */
+export function registerDimension(key, deriveFn) {
+  if (DIMENSION_DERIVERS.has(key)) warn(`dimension "${key}" re-registered (overwriting)`);
+  DIMENSION_DERIVERS.set(key, deriveFn);
+}
+
+function deriveMobilityLevel(d) {
+  const stage = d.stage ?? 0;
+  if (stage <= 6) return 'full';
+  if (stage <= 7) return 'present';
+  if (stage <= 8) return 'planning';
+  if (stage <= 9) return 'economy';
+  if (stage <= 10) return 'minimal';
+  return 'immobile';
+}
+
+// Priority dimensions — registered at engine load; games may add more.
+registerDimension('campusLocale', (ctx) => ctx.globals?.locale ?? 'default');
+registerDimension('mobilityLevel', (ctx) => deriveMobilityLevel(ctx.d || {}));
+registerDimension('clothingState', (ctx) => ctx.subject?.clothingState ?? ctx.globals?.clothingState ?? 'fitted');
+registerDimension('mealContext', (ctx) => ctx.globals?.mealType ?? 'meal');
+registerDimension('isGaining', (ctx) => {
+  const delta = ctx.globals?.weekGainLbs ?? ctx.subject?.weekGainLbs;
+  if (delta != null) return delta > 0;
+  return (ctx.globals?.isGaining ?? ctx.subject?.isGaining) === true;
+});
+registerDimension('lastCorruptionShift', (ctx) => !!ctx.globals?.lastCorruptionShift);
+
 // ── context ───────────────────────────────────────────────────
 
 function deriveFor(student, ref, skillEffects) {
@@ -115,13 +147,22 @@ function deriveFor(student, ref, skillEffects) {
 // reference character for relative comparisons (size etc.).
 export function createContext(raw = {}) {
   const { subject = null, ref = null, group = null, week = 1, skillEffects = {}, globals = {} } = raw;
-  return {
+  const ctx = {
     subject, ref, group,
     week,
     season: raw.season || getSeason(week),
     skillEffects, globals,
+    flags: Object.create(null),
     d: deriveFor(subject, ref, skillEffects),
   };
+  for (const [key, deriveFn] of DIMENSION_DERIVERS) {
+    try {
+      ctx.d[key] = deriveFn(ctx);
+    } catch (e) {
+      warn(`dimension "${key}" derive failed`, e);
+    }
+  }
+  return ctx;
 }
 
 // Retarget a context onto another character (used by the :ref / :group args
@@ -243,6 +284,7 @@ function evalWhen(when, ctx) {
         break;
       }
       case "bigScale": ok = !!ctx.globals?.bigScale === !!v; break;
+      case "lastCorruptionShift": ok = !!ctx.globals?.lastCorruptionShift === !!v; break;
       default: {
         // dimension on ctx.d, else ctx.globals (network/campus device keys)
         const actual = d[k] ?? ctx.globals?.[k];
@@ -259,47 +301,52 @@ function evalWhen(when, ctx) {
   return { match: true, score };
 }
 
+function flagsAbsent(ctx, requireAbsent) {
+  if (!requireAbsent?.length) return true;
+  const flags = ctx.flags || {};
+  return !requireAbsent.some((flag) => flags[flag]);
+}
+
+function applyConsumes(ctx, variant) {
+  if (!variant.consumes?.length) return;
+  for (const flag of variant.consumes) ctx.flags[flag] = true;
+}
+
 function resolveChosen(variant, ctx) {
   const t = variant.text;
   const chosen = Array.isArray(t) ? pick(t) : t;
   return typeof chosen === "function" ? (chosen(ctx) ?? "") : (chosen ?? "");
 }
 
-function selectVariant(key, ctx) {
+function selectVariantRecord(key, ctx) {
   const variants = REGISTRY.get(key);
-  if (!variants) { warn(`unknown module "${key}"`); return ""; }
+  if (!variants) { warn(`unknown module "${key}"`); return null; }
   const opts = MODULE_OPTS.get(key) || {};
 
   if (opts.select === 'pool') {
-    // Pool mode: every matching variant is RNG-eligible, weighted toward
-    // specificity. Priority is a hard gate here (the escape hatch for
-    // deliberately suppressing everything below).
     const matches = [];
     let maxPriority = -Infinity;
     for (const variant of variants) {
       const { match, score } = evalWhen(variant.when, ctx);
-      if (!match) continue;
+      if (!match || !flagsAbsent(ctx, variant.requireAbsent)) continue;
       const priority = variant.priority || 0;
       if (priority > maxPriority) maxPriority = priority;
       matches.push({ variant, score, priority });
     }
     const eligible = matches.filter((m) => m.priority === maxPriority);
-    if (!eligible.length) return "";
+    if (!eligible.length) return null;
     const base = opts.poolBase ?? 3;
     const entries = eligible
       .map((m) => ({ item: m.variant, w: (m.variant.weight ?? 1) * Math.pow(base, m.score) }))
       .filter((e) => e.w > 0);
-    if (!entries.length) return "";
-    return resolveChosen(weightedPick(entries), ctx);
+    if (!entries.length) return null;
+    return weightedPick(entries);
   }
 
-  // 'best' mode (default): most specific match wins; priority breaks score
-  // ties; texts of the surviving tied variants pool flat (weighted only if
-  // an author sets variant.weight — otherwise identical to a uniform pick).
   let best = [], bestScore = -1, bestPriority = -Infinity;
   for (const variant of variants) {
     const { match, score } = evalWhen(variant.when, ctx);
-    if (!match) continue;
+    if (!match || !flagsAbsent(ctx, variant.requireAbsent)) continue;
     const priority = variant.priority || 0;
     if (score > bestScore || (score === bestScore && priority > bestPriority)) {
       best = [variant]; bestScore = score; bestPriority = priority;
@@ -307,19 +354,30 @@ function selectVariant(key, ctx) {
       best.push(variant);
     }
   }
-  if (!best.length) return "";
+  if (!best.length) return null;
 
   const entries = [];
   for (const variant of best) {
     const w = variant.weight ?? 1;
     if (w <= 0) continue;
     const t = variant.text;
-    if (Array.isArray(t)) for (const text of t) entries.push({ item: text, w });
-    else entries.push({ item: t, w });
+    if (Array.isArray(t)) for (const text of t) entries.push({ item: { variant, text }, w });
+    else entries.push({ item: { variant, text: t }, w });
   }
-  if (!entries.length) return "";
-  const chosen = weightedPick(entries);
-  return typeof chosen === "function" ? (chosen(ctx) ?? "") : (chosen ?? "");
+  if (!entries.length) return null;
+  return weightedPick(entries);
+}
+
+function selectVariant(key, ctx) {
+  const picked = selectVariantRecord(key, ctx);
+  if (!picked) return "";
+  const variant = picked.variant ?? picked;
+  applyConsumes(ctx, variant);
+  if (picked.variant) {
+    const t = picked.text;
+    return typeof t === "function" ? (t(ctx) ?? "") : (t ?? "");
+  }
+  return resolveChosen(variant, ctx);
 }
 
 // ── filters ───────────────────────────────────────────────────

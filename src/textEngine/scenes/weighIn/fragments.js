@@ -34,6 +34,88 @@ registerPool("wi.arrival", [
   ]},
 ]);
 
+// ╔══════════════════════════════════════════════════════════════
+// ║ BEAT: wi.approachSentence — scale approach (Phase 2 skeleton)
+// ╚══════════════════════════════════════════════════════════════
+registerPool("wi.approachSentence", [
+  { when: {}, text: [
+    "{subject.name}{word.adv.pace|prefix: } {wi.moveVerb} onto the scale{word.adv.sizeQual|prefix: }{join:wi.bodyClause,wi.soundClause|prefix:, }.",
+    "{subject.name}{join:wi.bodyClause|prefix:, } {word.adv.pace|prefix: }{wi.moveVerb} onto the scale{word.adv.sizeQual|prefix: }.",
+    "{subject.name} {wi.moveVerb} onto the scale{join:wi.bodyClause,wi.soundClause|prefix:, }{word.adv.sizeQual|prefix: }.",
+  ]},
+  { when: { stageMin: 8 }, weight: 2, text: [
+    "{subject.name} {word.moveVerb.scale} onto the scale{wi.mobilityClause|prefix:, }.",
+  ]},
+  { when: { stageMin: 10 }, weight: 3, text: [
+    "{subject.name} {word.moveVerb.scale} onto the scale.",
+    "{subject.name} settles onto the scale{wi.mobilityClause|prefix:, }.",
+  ]},
+]);
+
+// ╔══════════════════════════════════════════════════════════════
+// ║ BEAT: wi.scaleSentence — needle/LCD reaction sentence
+// ╚══════════════════════════════════════════════════════════════
+registerPool("wi.scaleSentence", [
+  { when: { stageMax: 5, bigScale: false }, text: [
+    "The needle swept upward and settled at {subject.lbs}.",
+    "The needle climbed, paused, and found {subject.lbs}.",
+    "The needle {wi.needleVerb} to {subject.lbs}.",
+  ]},
+  { when: { stageMin: 6, stageMax: 8, bigScale: false }, weight: 2, text: [
+    "The needle swung hard and settled, creaking, at {subject.lbs}.",
+    "The needle labored upward — {wi.scaleStressClause} — and found {subject.lbs}.",
+  ]},
+  { when: { bigScale: true }, weight: 4, text: [
+    "The green display climbed to {subject.lbs}.",
+    "The LCD flickered and resolved: {subject.lbs}.",
+    "The display stabilized at {subject.lbs} lbs.",
+  ]},
+  { when: {}, text: ["The needle settled at {subject.lbs}."] },
+]);
+
+registerPool("wi.needleVerb", [
+  { when: { stageMax: 3 }, text: ["ticked", "swept", "climbed"] },
+  { when: { stageMin: 4, stageMax: 5 }, text: ["shot", "rocketed", "ran"] },
+  { when: { stageMin: 6 }, text: ["creaked", "labored", "pinned itself"] },
+  { when: {}, text: ["climbed"] },
+]);
+
+registerPool("wi.scaleStressClause", [
+  { when: {}, text: [
+    "the platform flexing slightly",
+    "the dial almost leaving its bracket",
+    "the old white scale protesting",
+  ] },
+  { when: { stageMin: 8 }, text: [
+    "the platform groaning like something remembering its limits",
+    "the dial giving up pretending",
+  ] },
+]);
+
+registerPool("wi.mobilityClause", [
+  { when: {}, text: ["", ""] },
+  { when: { stageMin: 7, stageMax: 7 }, text: [
+    "momentum carrying her the last step",
+    "the familiar geometry of her body in motion doing most of the work",
+    "mass present in every motion, sound arriving with her",
+  ]},
+  { when: { stageMin: 8, stageMax: 8 }, weight: 2, text: [
+    "each step deliberate, the floor registering her decision",
+    "her weight committing to each step before the next is considered",
+    "the three-beat step audible — shift, commit, settle",
+  ]},
+  { when: { stageMin: 9, stageMax: 9 }, weight: 2, text: [
+    "the room accommodating itself to her movement",
+    "navigating with the practiced economy of someone who has done the math",
+    "routes rerouted mentally, furniture evaluated in advance",
+  ]},
+  { when: { stageMin: 10 }, weight: 2, text: [
+    "movement more redistribution than locomotion",
+    "mass settling onto the platform by degrees",
+    "the scale approached the way geography is approached",
+  ]},
+]);
+
 // ── wi.pace ───────────────────────────────────────────────────
 // Shape: ADVERBIAL, pre-verb, lowercase, TRAILING SPACE INCLUDED
 // (so an empty pick leaves no double space). Mostly empty on purpose.

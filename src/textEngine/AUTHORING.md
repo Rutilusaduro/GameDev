@@ -46,6 +46,26 @@ registerPool("wi.bodyClause", [
 - `weight` raises/lowers a variant's share (`weight: 4` on persona variants keeps the girl's own voice dominant; `weight: 0` parks a draft).
 - `priority` in pool mode is a **hard gate**: only max-priority matches survive. Use rarely and document why in a comment.
 
+### Inter-slot flags (`consumes` / `requireAbsent`)
+
+`createContext()` initializes `ctx.flags` — a per-render bag for inter-slot exclusivity. Variant fields:
+
+- `consumes: ['flagName']` — sets the flag after this variant is selected.
+- `requireAbsent: ['flagName']` — excludes the variant if the flag is already set.
+
+Authorized namespaces: `psych_mood`, `scale_ref`, `speed_mod`, `size_reminder`, `sound_tex`, `spatial_obs`. Use only for known problem pairings (e.g. pace adverb + psychological annotation both firing). Most pools need neither field.
+
+### Extensible dimensions (`registerDimension`)
+
+New game-state dimensions can be registered without editing `engine.js`:
+
+```js
+import { registerDimension } from '../engine.js';
+registerDimension('myKey', (ctx) => ctx.globals?.myValue ?? 'default');
+```
+
+Results land on `ctx.d.myKey` and are usable in `when` immediately. Built-in dimensions: `campusLocale`, `mobilityLevel`, `clothingState`, `mealContext`, `isGaining`, `lastCorruptionShift`.
+
 ### Consequence of pooling: generic fragments must be tone-neutral
 
 There are no NOT-conditions. A wildcard fragment can fire while the girl is in withdrawal, grieving, or ecstatic — so wildcard texts must read correctly under ANY state ("she crosses the room" ✓, "she bounces in cheerfully" ✗ — key that one on `mood`).
@@ -92,6 +112,12 @@ All keys combine (AND within a variant; value arrays are OR). Unlisted keys are 
 | `season` | fall, winter, spring, summer (4-week cycles) |
 | `campusFattening` / `campusTierMin/Max` | school-wide softening flag / tier 0-3 |
 | `bigScale` | true when the industrial scale is in play (say "display", not "dial") |
+| `campusLocale` | hallway, lecture_hall, gym, cafeteria, dorm_room, stairwell, elevator, prof_office (via `registerDimension`) |
+| `mobilityLevel` | full · present · planning · economy · minimal · immobile (derived from stage) |
+| `clothingState` | fitted, button_pop, zipper_fail, seam_split, waistband_surrender, sleeve_restriction, shirt_rise, bra_protest |
+| `mealContext` | breakfast, binge, snack, campus_meal, meal |
+| `isGaining` | true when week-over-week gain is active |
+| `lastCorruptionShift` | true in the week corruption actually increased (psych shift scenes) |
 | `skill` | one skillEffects flag name, truthy check |
 | `relSize` / `refStage` | vs `ctx.ref`: much_smaller, smaller, similar, larger, much_larger |
 | `causeType` | device_use, device_malfunction, weekly_tick, digest_stageup, feature |
@@ -133,6 +159,19 @@ All keys combine (AND within a variant; value arrays are OR). Unlisted keys are 
 | 16 | Sophia | pharmacy_grad | pear | Anxious precision; wellness-research framing, double-checked numbers. |
 | 17 | Indiana Bones | explorer | straight | Roguish archaeology bravado; everything is an expedition. |
 
+### Per-girl corruption arc voice (6-line guide)
+
+For each student, calibrate interior voice across these beats — use when writing `shift.*`, `interior.*`, `eat.*` persona lines, and `diary` entries:
+
+1. **Corruption 0, visible gain** — resistance mode; excuses, deflection, body contradicting words.
+2. **Corruption 0→1 transition** — first crack; pleasure where dread was; files feeling elsewhere, does not stay filed.
+3. **Corruption 1** — ambivalent; stopped fighting, not yet celebrating; flat familiarity.
+4. **Corruption 1→2 transition** — surrender; social witness; interior goes quiet; nothing left to argue.
+5. **Corruption 2** — settled; appetite open; body as project/status report; "more."
+6. **Stage 10-11** — leviathan reality; practical knowledge of scale; immobility as fact, not emergency.
+
+Archetype colors the six lines (competitor/data for Brittany, sensory catalog for Reneé, resource management for Destiny, clinical warmth for Kaylee, silence for Maya, predator watchfulness for Lilith) but corruption tier is the primary axis.
+
 ## 4. Per-girl persona conventions
 
 - Persona variants live in a dedicated `personas.js` next to the scene (see `scenes/weighIn/personas.js`), registered into the SAME slot keys via `registerModuleVariants` — they extend the shared pool, they don't replace it.
@@ -159,4 +198,27 @@ All keys combine (AND within a variant; value arrays are OR). Unlisted keys are 
 - **Re-registering a key** — overwrites silently in prod (dev warns). Check the namespace before naming.
 - **Paraphrasing mined dialogue** — kills the character voice that playtesters already know.
 - **`gameHelpers.rnd` vs `pick`** — `rnd(a,b)` is an int range, `pick(arr)` picks from an array. Never mix.
-- **Anything in the TUNING.md Style Ledger** — banned constructions discovered through live tuning ("Statement. That is X.", knowing-narrator winks, gain-excuse lines below stage 2, double-described phenomena, pace/verb contradictions…). The ledger grows; check it before writing.
+- **Anything in the TUNING.md Style Ledger** — banned constructions discovered through live tuning ("Statement. That is X.", knowing-narrator winks, gain-excuse lines below stage 2, double-described phenomena, pace/verb contradictions…). The ledger grows; check it before writing. Automated grep: `scripts/text-lint.config.js`.
+
+## 7. Onboarding templates
+
+### New character checklist
+
+1. `studentId` + archetype/bodyType/voice row in this file.
+2. Six-line corruption arc voice guide (§3 table format).
+3. Per-girl lines in: `wi.breakLine` (1), `wi.arrival` persona (2×2 stage bands), `eat.firstBite` persona (2), diary base (3 across corruption).
+4. `npm run text:lint` clean → `npm run build`.
+
+### New campus locale checklist
+
+1. Register `campusLocale` key via `registerDimension()` if new.
+2. Navigation pool (`campus.moveSentence` + locale-keyed `campus.destination`) — 8+ entries across stage range.
+3. Spatial observation (`campus.spaceObs`) — 5+ entries.
+4. NPC presence (`npc.bystander` + locale `when`) — 5+ entries.
+5. `npm run text:lint` clean → `npm run build`.
+
+### Lint tooling
+
+- `npm run text:lint` — static + dynamic sweep (required clean).
+- `npm run text:lint -- --sample=500 --scene=wi` — combinatorial sampling with trigram/length checks.
+- `npm run text:lint -- --coverage` — pool × stage matrix for stages 8-11 gaps.
