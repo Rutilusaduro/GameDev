@@ -143,6 +143,9 @@ const SWEEPS = [
   { name: 'immob.scene', root: 'immob.scene', tpl: '{immob.scene}' },
   { name: 'slender.scene', root: 'slender.scene', tpl: '{slender.scene}', corruptionTier: [0], stageMax: 4 },
   { name: 'slender.mirror', root: 'slender.mirror', tpl: '{slender.mirror} {slender.mindFeel}', corruptionTier: [0], stageMax: 4 },
+  { name: 'dinner.overfill', root: 'dinner.overfill', tpl: '{dinner.overfill}' },
+  { name: 'feed.voice', root: 'feed.voice', tpl: '{feed.voice}' },
+  { name: 'body.portrait.depth', root: 'body.portrait.depth', tpl: '{body.portrait.depth}' },
 ];
 
 const STAGE_PROBES = [0, 2, 4, 6, 8, 10, 11];

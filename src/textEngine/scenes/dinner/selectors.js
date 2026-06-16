@@ -80,10 +80,50 @@ registerPool('dinner.selectorOverlay', [
     '{dinner.seasonAmbience} {dinner.moodTone}',
     '{dinner.seasonAmbience}',
   ] },
+  { when: { campusFattening: true }, weight: 2, text: [
+    '{dinner.campusNote} {dinner.moodTone}',
+    '{dinner.campusNote}',
+  ] },
   { when: {}, text: [
     '{dinner.moodTone}',
     '{dinner.seasonAmbience}',
     '{dinner.relWarmth}',
+    '{dinner.campusNote}',
     '',
   ] },
+]);
+
+// Shape: CLAUSE — campus saturation softens restraint at the table.
+registerPool('dinner.campusNote', [
+  { when: { campusFattening: true }, weight: 3, text: [
+    'The campus runs indulgent lately — portions feel larger, excuses thinner.',
+    'Everyone eats more openly now; {subject.first} follows the current without shame.',
+    'Something in the air encourages appetite; dinner feels like permission.',
+  ] },
+  { when: {}, text: [''] },
+]);
+
+// Shape: CLAUSE — size contrast when a reference character is present.
+registerPool('dinner.relSizeNote', [
+  { when: { relSize: ['muchLarger', 'larger'] }, weight: 2, text: [
+    'She watches how much more room you take at the table — and eats accordingly.',
+    'Your size sets the tone; she matches your appetite without comment.',
+  ] },
+  { when: { relSize: ['smaller', 'muchSmaller'] }, weight: 2, text: [
+    'She fills more of the booth than you do tonight — a fact neither of you ignores.',
+    'Her body claims the space; you keep the courses coming.',
+  ] },
+  { when: {}, text: [''] },
+]);
+
+// Shape: CLAUSE — spirit-skill flavor at feeding sessions.
+registerPool('dinner.skillNote', [
+  { when: { skill: ['growth_hunger', 'endless_hunger'] }, weight: 3, text: [
+    'Your influence hums under the meal — appetite answers before she thinks.',
+    'Hunger feels directed tonight, as if the room itself encourages another bite.',
+  ] },
+  { when: { skill: ['mesmerizing_aura'] }, weight: 2, text: [
+    'She follows your lead at the table — eyes on you, fork moving when you suggest it.',
+  ] },
+  { when: {}, text: [''] },
 ]);

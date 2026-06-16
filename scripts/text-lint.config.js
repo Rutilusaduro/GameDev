@@ -67,13 +67,13 @@ export const STRICT_VOLUME_MAX_THIN = 0;
 /** --strict-coverage: fail when overall band coverage falls below this percent. */
 export const STRICT_COVERAGE_MIN_PCT = 80;
 
-// Programmatically registered monolithic vignettes — decomposition deferred (DEPTH_PLAN §9d).
+// §9 programmatic bridges — legacy prose registered verbatim pending MIGRATION.md decomposition.
 export const MIGRATION_BRIDGE_PREFIXES = [
-  'cultivator.harvest.',
-  'cultivator.digest.',
-  'cultivator.growth.',
-  'cultivator.stageUp.',
-  'cultivator.recruitment',
+  'journal.feeder.',
+  'journal.nadia.',
+  'campusEvent.scene.',
+  'campusEvent.choice.',
+  'dinner.dish.',
 ];
 
 // Squad-owned namespaces for --volume reporting (Step 9 content targets).

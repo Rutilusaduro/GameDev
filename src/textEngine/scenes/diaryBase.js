@@ -453,6 +453,10 @@ registerPool("diary.lilith.chair", [
     "The chair is dying under me in the most satisfying way. The wood groans. The fit is absolute. This is what dominance feels like — the room rearranging itself around your mass.",
     "Soon.",
   ]},
+  { when: { studentId: 15, stageMin: 11 }, weight: 4, text: [
+    "The chair surrendered long ago. I am the feast now — vast, still, attended. Plates find me without my asking.",
+    "The fit is total. The room orbits. I eat because the gravity demands it.",
+  ]},
   { when: {}, text: [
     "The feast awaits.",
   ]},
