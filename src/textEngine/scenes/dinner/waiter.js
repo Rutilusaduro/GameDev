@@ -96,6 +96,7 @@ registerPool('dinner.waiter', [
   { when: { venueId: "steakhouse" }, text: ['{dinner.waiter.steakhouse}'] },
   { when: { venueId: "french" }, text: ['{dinner.waiter.french}'] },
   { when: { venueId: "japanese" }, text: ['{dinner.waiter.japanese}'] },
+  { when: { venueId: "omakase" }, text: ['{dinner.waiter.japanese}'] },
   { when: { venueId: "private_club" }, text: ['{dinner.waiter.private_club}'] },
   { when: { venueId: "chefs_table" }, text: ['{dinner.waiter.chefs_table}'] },
   { when: { venueId: "home_dinner" }, text: ['{dinner.waiter.home_dinner}'] },
