@@ -413,7 +413,7 @@ export default function ProfessorSim(){
   const [homeroomSessionState, setHomeroomSessionState] = useState(null);
   // homeroomSessionState: {daisyStudentId,ap,log,daisyGain,relAccum,classGainAccum,momGainAccum,suspDeltaAccum,activeActivity}
   const [wifeLessonsState, setWifeLessonsState] = useState(null);
-  // wifeLessonsState: persistent {mjStudentId,stage,daughters:{Emma,Chloe,Kezia,Lila},moms:{Darlene,Wanda,Patrice},session:null|{lessonChosen,conversationState,log}}
+  // wifeLessonsState: persistent {mjStudentId,stage,daughters:{Emma,Chloe,Kezia,Lila},moms:{Darlene,Wanda,Patrice},session:null|{lessonChosen,lessonId,conversationState,log}}
   // session.conversationState: null|{person,stageEntry,optionIdx,subIdx,done,resultText}
   const [competitiveGainerState, setCompetitiveGainerState] = useState(null);
   // competitiveGainerState: persistent {priyaStudentId,spirit,chatLog:[{text,isProf,wk}],measuredStudentIds:[],measuredComparisons:{},lastChatWeek,corkboardVisitCount,open,view,subState}
@@ -2461,7 +2461,7 @@ export default function ProfessorSim(){
         moms:{...WL_CONFIG.momStart},
         session:null,
       };
-      return{...base,mjStudentId:s.id,session:{lessonChosen:false,mjGainAccum:0,relAccum:0,conversationState:null,log:[]}};
+      return{...base,mjStudentId:s.id,session:{lessonChosen:false,lessonId:null,mjGainAccum:0,relAccum:0,conversationState:null,log:[]}};
     });
   };
 
@@ -2481,7 +2481,7 @@ export default function ProfessorSim(){
       Object.keys(newMoms).forEach(k=>{ newMoms[k]=newMoms[k]+lesson.momLbs; });
       const logLine=`${lesson.label}: all daughters +${lesson.daughterLbs} lbs, all moms +${lesson.momLbs} lbs, you +${lesson.mjLbs} lbs`;
       let next={...prev,daughters:newDaughters,moms:newMoms,
-        session:{...prev.session,lessonChosen:true,mjGainAccum:prev.session.mjGainAccum+lesson.mjLbs,relAccum:prev.session.relAccum+(lesson.rel||0),log:[...prev.session.log,logLine]}};
+        session:{...prev.session,lessonChosen:true,lessonId:lesson.id,mjGainAccum:prev.session.mjGainAccum+lesson.mjLbs,relAccum:prev.session.relAccum+(lesson.rel||0),log:[...prev.session.log,logLine]}};
       next=_wlCheckStageAdvance(next);
       return next;
     });

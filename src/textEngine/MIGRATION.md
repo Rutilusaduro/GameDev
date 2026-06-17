@@ -66,3 +66,40 @@ Delete the legacy source **in the same commit** as the replacement (avoids doubl
 2. Node spot-renders across the extremes: smallest stage × cor 0, biggest × cor 2, hungry/withdrawal states, 2-3 distinct girls. Read the output like a player.
 3. `npm run lint` + `npm run build`.
 4. Roll the feature in the Dialogue Lab; then run the TUNING.md loop — migration is finished when a flag batch comes back boring.
+
+---
+
+## Wife Lessons (Flabwife) — migration inventory
+
+**Status:** WL mini-game prose is **filled and playable wholecloth** in `gameData/evolvedForms.js`. Engine decomposition is **deferred**; tagged `@migrate` and listed in `MIGRATION_BRIDGE_PREFIXES` (`wifeLessons.lesson.*`, `wifeLessons.talk.*`).
+
+### Text sources (Step 1)
+
+| Source | Location | Status |
+|--------|----------|--------|
+| Lesson beats (24) | `WL_LESSONS` | Filled — upload tags `[WL_S{n}_L{m}_text]` |
+| 1-on-1 talk trees | `WL_DIALOGUES` | Filled — `[Person_S{n}_…]` tags |
+| MJ diary on activity | `EVOLVED_ACTIVITY_TEXT.wife_lessons` | Real prose (6 beats) |
+| Branching evolved events | `EVOLVED_EVENTS['wife_lessons']` | Real prose (stageIdx 0–5) |
+| Between-session diary | `diary.wife_lessons.*` | **Already in engine** (`diary.js`) |
+| NPC body blurbs | `WIFE_LESSONS_NPCS` | Real prose — not yet surfaced in modal UI |
+
+Re-apply upload revisions: `node scripts/apply-flabwife-fills.mjs <path-to-upload.txt>`.
+
+### Target beats (Step 2)
+
+- **Lesson pick:** `wifeLessons.lesson.s{stage}.{id}` — scene setup + eating + MJ line + room reaction (split into 3–4 fragment pools, not one paragraph).
+- **Talk greeting:** `wifeLessons.talk.{person}.s{stage}.greeting` (+ `capped`, `overtook` variants keyed on session state).
+- **Talk branch:** `wifeLessons.talk.{person}.s{stage}.o{n}` / `.o{n}a` / `.o{n}b` — DIALOGUE BEAT shape; keep quotes verbatim.
+
+### Wire-up (Step 5)
+
+- Export `renderWifeLessonsLesson(stage, lessonId, ctx)` and `renderWifeLessonsTalk(person, stage, beat, ctx)` from `scenes/wifeLessons/index.js`.
+- `WifeLessonsModal` + `ProfessorSim` import renderers; delete `text` fields from `WL_LESSONS` / `WL_DIALOGUES` in the same commit.
+- Dialogue Lab section: `wifeLessons.lesson`, `wifeLessons.talk` with `wlStage`, `person`, `capped`, `overtook` params.
+
+### Known cleanup (not placeholders)
+
+- **Name drift:** `WIFE_LESSONS_NPCS.Patrice.daughter` is "Taylor" but `WL_DIALOGUES` / session state use **Lila**; `EVOLVED_EVENTS` references **Claire** vs modal **Chloe** — reconcile on decomposition pass.
+- **Artisan pass:** Patrice S5–8 and extended daughter S6–8 lines marked "sensual" in upload — Style Ledger review when splitting pools.
+- **NPC blurbs:** wire `WIFE_LESSONS_NPCS` into modal cards or migrate to `wifeLessons.npc.{person}.stage` pools.
