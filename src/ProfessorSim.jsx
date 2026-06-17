@@ -137,7 +137,7 @@ import { NetworkView } from './views/NetworkView.jsx';
 import { DeviceInventoryView } from './views/DeviceInventoryView.jsx';
 import {
   defaultLabState, defaultDeviceInventory, INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES,
-  completeLabSession, tickLabWeek, TALIA_STUDENT_ID, maybeAdvanceInventorStage,
+  completeLabSession, tickLabWeek, TALIA_STUDENT_ID, maybeAdvanceInventorStage, LAB_SESSION_ACTIVITY,
 } from './gameData/talia.js';
 import { unlockTechNode, normalizeLabTechState, rollSessionBreakthroughs } from './gameData/labTechTree.js';
 import {
