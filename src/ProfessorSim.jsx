@@ -3606,7 +3606,7 @@ export default function ProfessorSim(){
     if(labSession){
       setLabSession(prev=>prev?{...prev,pool:spentParts}:null);
     }
-    setLabState(prev=>({ ...prev, parts: spentParts }));
+    setLabState(prev=>({ ...prev, parts: spentParts, builtInventions: { ...(prev?.builtInventions||{}), [deviceDefId]: true } }));
     setStudents(prev=>prev.map(st=>{
       if(st.id!==TALIA_STUDENT_ID) return st;
       return processStudentGain(st,-weightCost,0);
