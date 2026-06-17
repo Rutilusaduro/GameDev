@@ -257,7 +257,6 @@ import {
   runVenueFeedAttempt,
   buildSessionCapOpts,
   dinnerConversationStormThreshold,
-  SESSION_PACE_ACTIONS,
 } from './gameData/feedingSession.js';
 import {
   computeClassSkillCurrency, buyClassSkill, aggregateClassSkillEffects, listPurchasableClassSkills,
