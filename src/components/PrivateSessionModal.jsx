@@ -7,17 +7,17 @@ import { getFullnessPercent, getSessionCapacityCap, SESSION_PACE_ACTIONS, getFee
 
 export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, feedInSession, getMoreFood, privateSession, sessionLog, setAp, setPrivateSession, skillTapOutResistance, startIntimacyScene, useSessionEncouragement, liveStudent }){
         const ps=privateSession;
-        const s=liveStudent||ps.student;
-        const capOpts={capacityBonus:ps.capacityBonus||0,toleranceBuffer:ps.toleranceBuffer||0};
-        const effectiveMax=getSessionCapacityCap(s,capOpts);
-        const fPct=getFullnessPercent(s,capOpts);
-        const fsStage=getFullnessStage(fPct);
-        const currentDesc=fPct>0?renderSessionFullness(s, Math.min(fsStage.id, 5), 1):null;
-        const courseOrder=["opener","main","more","dessert","extra"];
-        const tier=getTier(s.relationship);
+    const s=liveStudent||ps.student;
+    const capOpts={capacityBonus:ps.capacityBonus||0,toleranceBuffer:ps.toleranceBuffer||0};
+    const effectiveMax=getSessionCapacityCap(s,capOpts);
+    const fPct=getFullnessPercent(s,capOpts);
+    const fsStage=getFullnessStage(fPct);
+    const currentDesc=fPct>0?renderSessionFullness(s, Math.min(fsStage.id, 5), 1):null;
+    const courseOrder=["opener","main","more","dessert","extra"];
+    const tier=getTier(s.relationship);
     const appetiteNote=getFeedingAppetiteNote(s);
     const sessionPace=ps.sessionPace||'steady';
-        const availableVenueList=PRIVATE_VENUES.filter(v=>tier.id>=v.minTier);
+    const availableVenueList=PRIVATE_VENUES.filter(v=>tier.id>=v.minTier);
         return(
           <div style={C.overlay}>
             <div style={{...C.modal,maxWidth:640,padding:20}}>
