@@ -43,7 +43,7 @@ import {
 import { renderBodyPortrait } from '../textEngine/scenes/body/index.js';
 import { renderFeedVoice } from '../textEngine/scenes/feedVoice/index.js';
 import { renderIntimacyDepth } from '../textEngine/scenes/intimacy/index.js';
-import { renderHuntNode, renderHuntTarget } from '../textEngine/scenes/hunt/index.js';
+import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from '../textEngine/scenes/hunt/index.js';
 import {
   renderCultivatorIntro,
   renderCultivatorChoice,
@@ -169,6 +169,10 @@ const SECTIONS = {
     fn: () => renderCultivatorRecruitment(6) },
   "cultivator.intro": { params: STATE_PARAMS,
     fn: (s, opts) => renderCultivatorIntro(opts.recipeId || 'cake', s.name, 6) },
+  "hunt.feast": { params: [...STATE_PARAMS, "feastStage"],
+    fn: (s, opts) => renderLilithFeast(s, Number(opts.feastStage ?? 0), 6, opts) },
+  "hunt.feast.deliveryIntro": { params: STATE_PARAMS,
+    fn: (s, opts) => renderLilithDeliveryIntro(s, 6, opts) },
   "campusEvent.beat": { params: [...STATE_PARAMS, "campusTier"],
     fn: (s, opts) => render('{campusEvent.beat}', createContext({
       subject: s, week: 6,

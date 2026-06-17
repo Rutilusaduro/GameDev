@@ -32,7 +32,7 @@ import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFe
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getStageUpText, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
-import { renderHuntNode, renderHuntTarget } from './textEngine/scenes/hunt/index.js';
+import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from './textEngine/scenes/hunt/index.js';
 import { renderClassSceneText, renderClassChoiceResult } from './textEngine/scenes/campusEvent/index.js';
 import { getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateClassSession, pharmacistTextOpts } from './utils/gameHelpers.js';
@@ -3007,7 +3007,8 @@ export default function ProfessorSim(){
     }
     const stageId=getStage(lilith.lbs).id;
     if(stageId>=9){
-      setLilithHuntState({textLog:[{text:"ROOM 312 — DELIVERY",type:'location'},{text:DELIVERY_SCENE,type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:true,deliveryDone:false,aibTarget:null});
+      const intro=renderLilithDeliveryIntro(lilith, week);
+      setLilithHuntState({textLog:[{text:"ROOM 312 — DELIVERY",type:'location'},{text:intro,type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:true,deliveryDone:false,aibTarget:null});
       return;
     }
     setLilithHuntState({textLog:[{text:"HER DORM · ROOM 312",type:'location'},{text:LILITH_DORM_TEXT(stageId),type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:false,deliveryDone:false,aibTarget:null});
@@ -3138,7 +3139,7 @@ export default function ProfessorSim(){
       setOpposition(prev=>removeConsumedAibMember(prev,aibTarget.aibMemberId));
       addScrutiny(-15);
       push(`🩸 Lilith devours ${aibTarget.name} — board member removed (+${gain} lbs, −15 scrutiny)`);
-      const consumeText=getConsumeText(stageId);
+      const consumeText=renderLilithFeast(lilith, stageId, week);
       setLilithHuntState(prev=>({
         ...prev,
         aibTarget:null,
@@ -3152,7 +3153,7 @@ export default function ProfessorSim(){
       return;
     }
     push(`🌑 Lilith — hunt complete: +${gain} lbs`);
-    const consumeText=getConsumeText(stageId);
+    const consumeText=renderLilithFeast(lilith, stageId, week);
     setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,consumed:true},textLog:[...prev.textLog,{text:consumeText,type:'narrative'},{text:`✦ +${gain} lbs`,type:'system'}]}));
   };
   const deliveryScene=()=>{
@@ -3163,7 +3164,8 @@ export default function ProfessorSim(){
     setStudents(prev=>prev.map(s=>s.id===LILITH_ID?{...s,lbs:s.lbs+gain}:s));
     setLilithKillCount(k=>k+1);
     push(`🌑 Lilith — delivery: +${gain} lbs`);
-    setLilithHuntState(prev=>({...prev,deliveryDone:true,textLog:[...prev.textLog,{text:`✦ +${gain} lbs`,type:'system'},{text:"You pick up your phone. You order again.",type:'narrative'}]}));
+    const feastText=renderLilithFeast(lilith, stageId, week);
+    setLilithHuntState(prev=>({...prev,deliveryDone:true,textLog:[...prev.textLog,{text:feastText,type:'narrative'},{text:`✦ +${gain} lbs`,type:'system'}]}));
   };
   const closeHunt=()=>setLilithHuntState(null);
   const investigateClue=()=>{

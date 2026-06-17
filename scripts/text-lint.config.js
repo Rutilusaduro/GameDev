@@ -74,6 +74,7 @@ export const MIGRATION_BRIDGE_PREFIXES = [
   'campusEvent.scene.',
   'campusEvent.choice.',
   'dinner.dish.',
+  'hunt.feast.',
 ];
 
 // Squad-owned namespaces for --volume reporting (Step 9 content targets).
