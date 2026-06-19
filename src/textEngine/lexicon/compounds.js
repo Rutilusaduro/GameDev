@@ -90,6 +90,25 @@ registerPool('word.sizeCompar.chair', [
   { when: {}, text: ['accepted her weight with a small sound', 'held steady', 'took the load without comment'] },
 ]);
 
+// ── word.mountVerb.scale — clean intransitive mounting verbs ──────────────────
+// Shape: VERB PHRASE, lowercase — used as "{subject.name} {word.mountVerb.scale}
+// onto the scale". Stage-gated; no destination built in (unlike word.moveVerb.scale
+// corpus entries that self-carry "to the scale" / "onto the platform").
+registerPool('word.mountVerb.scale', [
+  { when: { stageMin: 8, stageMax: 9 }, text: [
+    'heaves herself',
+    'rolls herself',
+    'eases herself',
+    'lowers herself',
+  ]},
+  { when: { stageMin: 10 }, text: [
+    'shifts herself',
+    'settles herself',
+    'redistributes herself',
+  ]},
+  { when: {}, text: ['steps', 'eases', 'hoists herself'] },
+]);
+
 registerPool('word.sizeCompar.scale', [
   { when: { stageMin: 4, stageMax: 5 }, text: [
     'flexed slightly under her',
