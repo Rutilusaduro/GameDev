@@ -211,12 +211,8 @@ export function nextMainPathNode(labState, deviceDefId) {
   return board.mainPath.find((n) => !unlocked.has(n.id)) || null;
 }
 
-export function isInventionBuilt(labState, deviceDefId) {
-  return !!(labState?.installedInventions?.[deviceDefId] || labState?.builtInventions?.[deviceDefId]);
-}
-
 export function canUnlockCircuitNode(labState, deviceDefId, nodeId, roster = []) {
-  if (!isInventionBuilt(labState, deviceDefId)) return false;
+  if (!labState?.installedInventions?.[deviceDefId]) return false;
   const cb = getCircuitBoard(labState, deviceDefId);
   if (cb.unlockedNodes.includes(nodeId)) return false;
   const node = getCircuitNode(deviceDefId, nodeId);
