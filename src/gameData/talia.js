@@ -124,7 +124,7 @@ export function maybeAdvanceInventorStage(state) {
   const sessions = state.sessionsRun ?? 0;
   let stage = 1;
   for (let i = STAGE_SESSION_THRESHOLDS.length - 1; i >= 0; i--) {
-    if (sessions >= STAGE_SESSION_THRESHOLDS[i]) { stage = i + 1; break; }
+    if (sessions >= STAGE_SESSION_THRESHOLDS[i]) stage = i + 1;
   }
   stage = Math.min(3, stage);
   if (stage <= (state.stage ?? 1)) return state;

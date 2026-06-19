@@ -20,7 +20,7 @@ import { BREAKTHROUGH_ICON, BREAKTHROUGH_LABEL } from '../gameData/labTechTree.j
 import { RecipeCostDisplay } from '../components/RecipeCostDisplay.jsx';
 import { LabTechTree } from '../components/LabTechTree.jsx';
 import { CircuitBoardModal } from '../components/CircuitBoardModal.jsx';
-import { CIRCUIT_BOARDS, isInventionBuilt } from '../gameData/inventionUpgrades.js';
+import { CIRCUIT_BOARDS } from '../gameData/inventionUpgrades.js';
 
 const RARITY_COLORS = { common: '#8a8a7a', uncommon: '#4a9a5a', rare: '#c8860a' };
 const ACCENT = '#4a6080';
@@ -36,7 +36,6 @@ function BlueprintCard({ recipe, labState, taliaStudent, money, onBuild, onOpenC
   const taliaOk = taliaLbs >= minLbs;
   const rarityColor = RARITY_COLORS[def?.rarity || 'common'];
   const installed = labState?.installedInventions?.[recipe.deviceDefId];
-  const built = isInventionBuilt(labState, recipe.deviceDefId);
   const hasBoard = !!CIRCUIT_BOARDS[recipe.deviceDefId];
 
   return (
@@ -75,7 +74,7 @@ function BlueprintCard({ recipe, labState, taliaStudent, money, onBuild, onOpenC
           Talia needs at least {minLbs} lbs (has {Math.round(taliaLbs)}).
         </div>
       )}
-      {built && hasBoard && (
+      {installed && hasBoard && (
         <button
           type="button"
           style={{ ...C.btn('#6a5088'), width: '100%', fontSize: 10, marginTop: 6 }}
@@ -158,14 +157,10 @@ export function LabView({
   const stageMeta = INVENTOR_PATH_STAGES.find((s) => s.id === labState.stage) || INVENTOR_PATH_STAGES[0];
 
   const installedDeviceIds = useMemo(
-    () => {
-      const ids = new Set([
-        ...Object.entries(labState.installedInventions || {}).filter(([, v]) => v).map(([id]) => id),
-        ...Object.entries(labState.builtInventions || {}).filter(([, v]) => v).map(([id]) => id),
-      ]);
-      return [...ids];
-    },
-    [labState.installedInventions, labState.builtInventions],
+    () => Object.entries(labState.installedInventions || {})
+      .filter(([, v]) => v)
+      .map(([id]) => id),
+    [labState.installedInventions],
   );
 
   return (
