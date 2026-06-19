@@ -26,12 +26,19 @@ registerPool("wi.arrival", [
     "{subject.name} {wi.moveVerb} {wi.doorway}{wi.bodyClause|prefix:, } — the office already rearranged for her, the way he's had to arrange it for months.",
     "The hall announces {subject.name} before the door does{wi.faceClause|prefix:, }.",
   ]},
-  // Stage 10-11: immobility changes the sentence itself
-  { when: { stageMin: 10 }, weight: 4, text: [
+  // Stage 10: immobility changes the sentence itself
+  { when: { stageMin: 10, stageMax: 10 }, weight: 4, text: [
     "{subject.name}'s {wi.massNoun} arrives before the rest of her{join:wi.soundClause,wi.faceClause|prefix:, }.",
     "{subject.name} settles into the doorway{join:wi.bodyClause,wi.soundClause|prefix:, } — movement more shift than step.",
-    "{subject.name} enters as warm, immobile abundance{wi.faceClause|prefix:, }; the room organizes itself around her.",
+    "{subject.name} fills the doorway from side to side{wi.faceClause|prefix:, } — the room rearranged to receive her, as it has had to be for months.",
     "{subject.name}'s {wi.massNoun} fills the frame{wi.bodyClause|prefix:, }, and the office becomes hers.",
+  ]},
+  // Stage 11: she cannot fit through the door; consultation moves to her
+  { when: { stageMin: 11 }, weight: 6, text: [
+    "The doorway does not accommodate {subject.name}. You bring the clipboard to her{wi.faceClause|prefix:, }.",
+    "{subject.name} presents herself at the threshold — the door is not a threshold she crosses anymore{wi.soundClause|prefix:, }.",
+    "{subject.name}'s {wi.massNoun} fills the frame entirely. The consultation happens in the hall{wi.faceClause|prefix:, }.",
+    "You meet {subject.name} at the door. She has not fit through it in weeks{wi.soundClause|prefix:, }.",
   ]},
 ]);
 
@@ -140,7 +147,8 @@ registerPool("wi.moveVerb", [
   // pace-neutral only — "breezes"/"strides" contradict weary/slow adverbs
   { when: { stageMax: 1 }, text: ["slips"] },
   { when: { stageMin: 2, stageMax: 4 }, text: ["moves", "eases"] },
-  { when: { stageMin: 5, stageMax: 7 }, weight: 2, text: ["waddles", "rolls", "eases"] },
+  { when: { stageMin: 5, stageMax: 5 }, text: ["moves", "eases", "pads"] },
+  { when: { stageMin: 6, stageMax: 7 }, weight: 2, text: ["waddles", "rolls", "eases"] },
   { when: { stageMin: 6, stageMax: 9, bodyType: ["pear", "hourglass", "fertility_goddess"] }, text: ["angles"] },
   { when: { stageMin: 8 }, weight: 2, text: ["shuffles", "labors"] },
 ]);
@@ -156,7 +164,7 @@ registerPool("wi.doorway", [
 // ── wi.massNoun ───────────────────────────────────────────────
 // Shape: noun phrase, lowercase (used as "{subject.name}'s {wi.massNoun}").
 registerPool("wi.massNoun", [
-  { when: {}, text: ["warmth", "soft bulk", "presence"] },
+  { when: {}, text: ["soft bulk", "presence", "weight"] },
   { when: { bodyType: ["pear", "fertility_goddess"] }, text: ["lower body", "hips"] },
   { when: { bodyType: ["apple", "rotund"] }, text: ["belly"] },
   { when: { bodyType: ["topHeavy", "voluptuous"] }, text: ["bust", "upper body"] },
@@ -177,7 +185,7 @@ registerPool("wi.bodyClause", [
   // stage 1: first faint hints only
   { when: { stageMin: 1, stageMax: 1 }, text: [
     "a trace of softness at the cheek and hip, easy to miss",
-    "clothes sitting just slightly closer than before",
+    "clothes sitting just slightly tighter than before",
     "the first faint rounding at the edges",
   ]},
   { when: { bodyType: "pear", stageMax: 1 }, text: [
@@ -392,7 +400,7 @@ registerPool("wi.faceClause", [
     "a thin, strung-out edge to her expression",
   ]},
   { when: { corruption: [2] }, text: [
-    "her eyes going straight to the scale, fond as a greeting",
+    "her eyes finding the scale before they find you",
     "open appetite in the way she scans the room",
   ]},
 ]);
@@ -462,6 +470,15 @@ registerPool("wi.settleAction", [
   ]},
   { when: { corruption: [2], stageMin: 3 }, text: [
     "She pats her middle once, affectionately, on the way in.",
+    "She rests a hand on her belly a moment — checking in.",
+  ]},
+  { when: { corruption: [2], stageMin: 3, hungerTierMin: 3 }, weight: 2, text: [
+    "She kneads her belly on the way through the door, restless with hunger.",
+    "Her hand moves to her middle, pressing once, like she's checking inventory.",
+  ]},
+  { when: { corruption: [2], stageMin: 8 }, weight: 2, text: [
+    "Her hand finds the shelf of her belly on the way in — it takes longer to cross than it used to.",
+    "She runs a hand across the full width of her middle, proprietary, before she does anything else.",
   ]},
   { when: { stageMin: 10 }, weight: 3, text: [
     "Settling takes time; she gives it the time it takes.",
@@ -486,7 +503,7 @@ registerPool("wi.greeting", [
   { when: { corruption: [1] }, text: [
     `"Another week," she says. Flat. Familiar.`,
     `"Here we are," she says, and hangs her bag.`,
-    `"Every week," she says, and means just that.`,
+    `"Here again," she says, and hangs her coat.`,
   ]},
   { when: { corruption: [2] }, text: [
     `"Ready when you are," she says, eyes already on the scale.`,
@@ -510,10 +527,15 @@ registerPool("wi.scaleAttitude", [
   { when: { stageMax: 5 }, text: [
     "She fills the silence with small talk while the scale waits.",
   ]},
+  { when: { hungerTierMin: 3 }, weight: 3, text: [
+    "Her gaze sweeps the room for food first. The scale is an afterthought.",
+    "She registers the scale somewhere in the middle of scanning for anything to eat.",
+    "The scale is the second thing she notices.",
+  ]},
   { when: { corruption: [0], stageMin: 3, stageMax: 7 }, text: [
     "She glances at the scale and then away, like it might be rude to stare.",
     "She looks away from the scale first.",
-    "She pretends this is routine.",
+    "She keeps her eyes above the scale, deliberate about it.",
   ]},
   { when: { corruption: [0], stageMax: 2 }, text: [
     "She treats the scale as a formality, nothing more.",
@@ -624,12 +646,17 @@ registerPool("wi.needleReact", [
   { when: { stageMin: 6, stageMax: 7 }, text: [
     "The needle slams toward the far end of its range.",
     "The scale takes a breath, holds it, and the needle keeps going.",
-    "The needle doesn't hesitate — it runs for numbers the dial was not built to show this quickly.",
+    "The dial swings hard and doesn't apologize for it.",
   ]},
-  { when: { stageMin: 8 }, weight: 2, text: [
+  { when: { stageMin: 8, stageMax: 10 }, weight: 2, text: [
     "The needle slams toward the end of its travel and keeps trying.",
     "The needle pins itself to the far edge. The dial has run out of numbers.",
-    "The dial gives up pretending.",
+    "The dial gives up pretending, needle pinned past its marked range.",
+  ]},
+  { when: { stageMin: 11 }, weight: 4, text: [
+    "The needle hits its stop and the mechanism keeps pushing. Something clicks that shouldn't.",
+    "The dial slams its limit. The number has to be inferred — the needle can't go further.",
+    "The mechanism strains once, then stops with a sound it has never made before.",
   ]},
   { when: {}, text: ["The red needle begins to spin."] },
 ]);
