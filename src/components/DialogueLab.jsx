@@ -406,8 +406,12 @@ function rollSample(params) {
     clothingState,
   };
   const text = SECTIONS[v.section].fn(student, opts);
-  // annotation units: leaf fragments, minus bare identity helpers
-  const nodes = trace.filter((t) => t.leaf && t.text.trim() && !t.key.startsWith("subject."));
+  // leaf fragments — the per-slot annotation units
+  const leafNodes = trace.filter((t) => t.leaf && t.text.trim() && !t.key.startsWith("subject."));
+  // skeleton nodes — depth-0 non-leaf templates (the "skeleton" the user wants to flag/inspect)
+  const skeletonNodes = trace.filter((t) => !t.leaf && t.depth === 0 && t.text.trim() && !t.key.startsWith("subject."));
+  // skeleton first so it's at the top of the flag annotator list
+  const nodes = [...skeletonNodes, ...leafNodes];
   const stateLine =
     `${base.name} (id ${base.id}) · ${Math.round(student.lbs)} lbs (stage ${stage} ${WEIGHT_STAGES[stage].label})` +
     ` · corruption ${student.corruption} (tier ${getCorruptionTier(student.corruption).id})` +
@@ -417,7 +421,7 @@ function rollSample(params) {
     (lockedSection?.params?.includes('locale') ? ` · locale ${locale}` : '') +
     (lockedSection?.params?.includes('mealType') ? ` · meal ${mealType}` : '') +
     (lockedSection?.params?.includes('clothingState') ? ` · cloth ${clothingState}` : '');
-  return { section: v.section, stateLine, text, nodes, id: `${Date.now()}_${Math.random()}`, student, campusTier };
+  return { section: v.section, stateLine, text, nodes, fullTrace: trace, id: `${Date.now()}_${Math.random()}`, student, campusTier };
 }
 
 const selStyle = { background: "#181820", color: "#e0e0e0", border: "1px solid #444", borderRadius: 4, padding: "3px 4px", fontSize: 11, maxWidth: 150 };
@@ -463,6 +467,38 @@ function NodeAnnotator({ node, idx, anno, setAnno }) {
 
 // Slot Inspector helpers ─────────────────────────────────────────────────────
 
+// Extract {slot} names from a raw variant template string
+function extractSlotRefs(rawText) {
+  if (!rawText || typeof rawText !== 'string') return [];
+  const re = /\{([a-zA-Z][\w.]*)(?::[^|}]*)?(?:\|[^}]*)?\}/g;
+  const found = [];
+  const seen = new Set();
+  let m;
+  while ((m = re.exec(rawText)) !== null) {
+    const key = m[1];
+    if (!key.startsWith('subject.') && key !== 'join' && !seen.has(key)) {
+      seen.add(key);
+      found.push(key);
+    }
+  }
+  return found;
+}
+
+// Find the most-specific non-leaf ancestor for a plain text segment
+function findParentKey(plainText, fullTrace) {
+  const trimmed = plainText.trim();
+  if (!trimmed) return null;
+  let best = null;
+  let bestDepth = -1;
+  for (const t of fullTrace) {
+    if (!t.leaf && t.depth > bestDepth && t.text.includes(trimmed)) {
+      best = { key: t.key, text: t.text };
+      bestDepth = t.depth;
+    }
+  }
+  return best;
+}
+
 function buildAnnotatedSegments(text, nodes) {
   let remaining = text;
   const segments = [];
@@ -484,23 +520,58 @@ function formatWhen(when) {
     .join(' ');
 }
 
-function InspectorPanel({ poolKey, resolvedText, sampleCtx, onClose }) {
-  if (!poolKey || !sampleCtx) return null;
-  const variants = getEligibleVariants(poolKey, sampleCtx);
+function InspectorPanel({ initialKey, initialText, sampleCtx, fullTrace, onClose, onQuickFlag }) {
+  const [stack, setStack] = useState([{ key: initialKey, text: initialText }]);
+  const current = stack[stack.length - 1];
+  const variants = getEligibleVariants(current.key, sampleCtx);
+
+  const navigate = (key) => {
+    const entry = (fullTrace || []).find(t => t.key === key);
+    setStack(prev => [...prev, { key, text: entry?.text ?? '' }]);
+  };
+  const goBack = () => setStack(prev => prev.length > 1 ? prev.slice(0, -1) : prev);
+
   const panelStyle = {
     marginTop: 8, padding: 10,
     background: "rgba(20,40,70,0.95)", border: "1px solid #3060a0",
     borderRadius: 8, fontSize: 11,
   };
+  const chipStyle = {
+    display: "inline-block",
+    background: "rgba(50,90,130,0.5)", border: "1px solid #3060a0",
+    borderRadius: 3, padding: "1px 5px", cursor: "pointer",
+    fontSize: 10, color: "#80c0e0", fontFamily: "monospace",
+    marginRight: 4, marginTop: 3,
+  };
+
   return (
     <div style={panelStyle}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-        <span style={{ color: "#70c0e0", fontFamily: "monospace" }}>{poolKey}</span>
-        <button style={C.smBtn} onClick={onClose}>✕</button>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, gap: 4 }}>
+        <div style={{ display: "flex", gap: 4, alignItems: "center", flexWrap: "wrap", flex: 1, minWidth: 0 }}>
+          {stack.length > 1 && (
+            <button style={{ ...C.smBtn, marginRight: 4 }} onClick={goBack}>← Back</button>
+          )}
+          {stack.map((frame, i) => (
+            <span key={i} style={{ fontFamily: "monospace", fontSize: 10, color: i === stack.length - 1 ? "#70c0e0" : "#4a78a0" }}>
+              {i > 0 && <span style={{ color: "#555", marginRight: 2 }}>›</span>}
+              {frame.key}
+            </span>
+          ))}
+        </div>
+        <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
+          <button
+            style={{ ...C.smBtn, background: "rgba(120,40,40,0.55)" }}
+            onClick={() => onQuickFlag(current.key, current.text)}
+            title="Quick-flag this pool"
+          >🚩</button>
+          <button style={C.smBtn} onClick={onClose}>✕</button>
+        </div>
       </div>
-      <div style={{ color: "#c0a060", marginBottom: 8, fontStyle: "italic" }}>
-        Picked: "{resolvedText}"
-      </div>
+      {current.text && (
+        <div style={{ color: "#c0a060", marginBottom: 8, fontStyle: "italic", fontSize: 10, wordBreak: "break-word" }}>
+          Picked: "{current.text}"
+        </div>
+      )}
       {variants.length === 0 && <div style={{ color: "#888" }}>No eligible variants for current context.</div>}
       {variants.map((v, i) => (
         <div key={i} style={{ marginBottom: 8, paddingBottom: 8, borderBottom: i < variants.length - 1 ? "1px solid #2a4060" : "none" }}>
@@ -508,15 +579,26 @@ function InspectorPanel({ poolKey, resolvedText, sampleCtx, onClose }) {
             <span style={{ color: "#50d090", fontWeight: "bold", minWidth: 36 }}>{v.probability}%</span>
             <span style={{ color: "#6090c0", fontSize: 10 }}>{formatWhen(v.when)}</span>
           </div>
-          {v.texts.map((t, j) => (
-            <div key={j} style={{
-              color: t === resolvedText ? "#e0c090" : "#a0b0c0",
-              paddingLeft: 8, marginBottom: 2, lineHeight: 1.5,
-              fontStyle: t === resolvedText ? "italic" : "normal",
-            }}>
-              {t === resolvedText && "→ "}{t}
-            </div>
-          ))}
+          {v.texts.map((t, j) => {
+            const isChosen = t === current.text;
+            const subSlots = extractSlotRefs(t);
+            return (
+              <div key={j} style={{ paddingLeft: 8, marginBottom: subSlots.length ? 6 : 2 }}>
+                <div style={{ color: isChosen ? "#e0c090" : "#a0b0c0", lineHeight: 1.5, fontStyle: isChosen ? "italic" : "normal" }}>
+                  {isChosen && "→ "}{t}
+                </div>
+                {subSlots.length > 0 && (
+                  <div style={{ marginTop: 2 }}>
+                    {subSlots.map(ref => (
+                      <span key={ref} style={chipStyle} onClick={() => navigate(ref)} title={`Inspect ${ref}`}>
+                        {'{' + ref + '}'}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>
@@ -533,7 +615,18 @@ export function DialogueLab({ onClose }) {
   const [inspectMode, setInspectMode] = useState(false);
   const [inspector, setInspector] = useState(null); // { sampleId, key, resolvedText }
 
-  const roll = () => { setSamples(Array.from({ length: 5 }, () => rollSample(params))); setAnno(null); };
+  const roll = () => { setSamples(Array.from({ length: 5 }, () => rollSample(params))); setAnno(null); setInspector(null); };
+  const quickFlag = (sample, key, resolvedText) => {
+    const entry = {
+      id: `${sample.id}_${key}`,
+      section: sample.section,
+      stateLine: sample.stateLine,
+      text: sample.text,
+      problems: [{ key, text: resolvedText || '(skeleton)', note: '(flagged via inspector)' }],
+    };
+    addTextFlag(entry);
+    setFlagged(prev => prev.some(f => f.id === entry.id) ? prev : [...prev, entry]);
+  };
   const startFlag = (sample) => setAnno({ sampleId: sample.id, notes: {}, open: null });
   const saveFlag = (sample) => {
     const problems = Object.entries(anno.notes).map(([idx, note]) => ({
@@ -637,38 +730,76 @@ export function DialogueLab({ onClose }) {
                     <div style={{ fontSize: 12, color: "#e0d0b0", lineHeight: 1.7, fontStyle: "italic", whiteSpace: "pre-wrap" }}>{s.text}</div>
                   )}
                   {!annotating && inspectMode && (() => {
-                    const segs = buildAnnotatedSegments(s.text, s.nodes);
+                    const leafNodes = s.nodes.filter(n => !s.fullTrace?.find(t => t.key === n.key && t.depth === 0 && !t.leaf));
+                    const segs = buildAnnotatedSegments(s.text, leafNodes);
                     const sampleCtx = buildTextContext({ subject: s.student, week: 6, campusFattening: s.campusTier > 0, campusTier: s.campusTier });
                     const inspThis = inspector?.sampleId === s.id ? inspector : null;
+                    const rootKeys = (s.fullTrace || []).filter(t => t.depth === 0 && !t.leaf && t.text.trim() && !t.key.startsWith('subject.'));
                     return (
                       <>
+                        {rootKeys.length > 0 && (
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 6 }}>
+                            <span style={{ fontSize: 10, color: "#557", marginRight: 2 }}>skeleton:</span>
+                            {rootKeys.map(rk => (
+                              <span
+                                key={rk.key}
+                                onClick={() => setInspector({ sampleId: s.id, key: rk.key, resolvedText: rk.text })}
+                                style={{
+                                  fontSize: 10, fontFamily: "monospace", cursor: "pointer",
+                                  background: inspThis?.key === rk.key ? "rgba(80,160,200,0.35)" : "rgba(80,160,200,0.14)",
+                                  border: `1px solid ${inspThis?.key === rk.key ? "#70c0e0" : "#2a5070"}`,
+                                  borderRadius: 3, padding: "1px 5px", color: "#70c0d0",
+                                }}
+                                title={`Inspect skeleton: ${rk.key}`}
+                              >{rk.key}</span>
+                            ))}
+                          </div>
+                        )}
                         <div style={{ fontSize: 12, color: "#e0d0b0", lineHeight: 1.7, fontStyle: "italic", whiteSpace: "pre-wrap" }}>
-                          {segs.map((seg, i) =>
-                            seg.plain != null
-                              ? <span key={i}>{seg.plain}</span>
-                              : (
-                                <span
-                                  key={i}
-                                  title={seg.key}
-                                  onClick={() => setInspector({ sampleId: s.id, key: seg.key, resolvedText: seg.text })}
-                                  style={{
-                                    background: inspThis?.key === seg.key ? "rgba(80,160,200,0.3)" : "rgba(80,160,200,0.12)",
-                                    borderBottom: `1px dashed ${inspThis?.key === seg.key ? "#70c0e0" : "#3080a0"}`,
-                                    cursor: "pointer",
-                                    borderRadius: 2,
-                                  }}
-                                >
-                                  {seg.text}
-                                </span>
-                              )
-                          )}
+                          {segs.map((seg, i) => {
+                            if (seg.plain != null) {
+                              const parent = findParentKey(seg.plain, s.fullTrace || []);
+                              return parent
+                                ? (
+                                  <span
+                                    key={i}
+                                    title={`Part of: ${parent.key}`}
+                                    onClick={() => setInspector({ sampleId: s.id, key: parent.key, resolvedText: parent.text })}
+                                    style={{
+                                      cursor: "pointer",
+                                      background: inspThis?.key === parent.key ? "rgba(80,160,200,0.15)" : "transparent",
+                                      borderBottom: "1px dotted #2a5070",
+                                    }}
+                                  >{seg.plain}</span>
+                                )
+                                : <span key={i}>{seg.plain}</span>;
+                            }
+                            return (
+                              <span
+                                key={i}
+                                title={seg.key}
+                                onClick={() => setInspector({ sampleId: s.id, key: seg.key, resolvedText: seg.text })}
+                                style={{
+                                  background: inspThis?.key === seg.key ? "rgba(80,160,200,0.3)" : "rgba(80,160,200,0.12)",
+                                  borderBottom: `1px dashed ${inspThis?.key === seg.key ? "#70c0e0" : "#3080a0"}`,
+                                  cursor: "pointer",
+                                  borderRadius: 2,
+                                }}
+                              >
+                                {seg.text}
+                              </span>
+                            );
+                          })}
                         </div>
                         {inspThis && (
                           <InspectorPanel
-                            poolKey={inspThis.key}
-                            resolvedText={inspThis.resolvedText}
+                            key={inspThis.key + inspThis.resolvedText}
+                            initialKey={inspThis.key}
+                            initialText={inspThis.resolvedText}
                             sampleCtx={sampleCtx}
+                            fullTrace={s.fullTrace}
                             onClose={() => setInspector(null)}
+                            onQuickFlag={(key, text) => quickFlag(s, key, text)}
                           />
                         )}
                       </>
