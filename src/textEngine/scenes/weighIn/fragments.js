@@ -166,12 +166,18 @@ registerPool("wi.massNoun", [
 // bodyType × stage band. Mined from the legacy arrival grid.
 registerPool("wi.bodyClause", [
   { when: {}, text: ["", "", "her steps unhurried", "bag over one shoulder"] },
-  // A6 Slender — stage 0–1: still thin, first hints only
-  { when: { stageMax: 1 }, text: [
-    "still mostly the silhouette she arrived with",
-    "clothes hanging the way they always have",
-    "a softness at the cheek and hip only if you are looking for it",
-    "still light on her feet, unchanged in the doorway",
+  // A6 Slender — stage 0: truly unchanged
+  { when: { stageMax: 0 }, text: [
+    "the same silhouette she walked in with",
+    "clothes lying flat, nothing changed yet",
+    "unchanged in the doorway",
+    "not a pound different from the first week",
+  ]},
+  // stage 1: first faint hints only
+  { when: { stageMin: 1, stageMax: 1 }, text: [
+    "a trace of softness at the cheek and hip, easy to miss",
+    "clothes sitting just slightly closer than before",
+    "the first faint rounding at the edges",
   ]},
   { when: { bodyType: "pear", stageMax: 1 }, text: [
     "hips still narrow — only a promise of sway",
@@ -258,7 +264,7 @@ registerPool("wi.bodyClause", [
   { when: { bodyType: "straight", stageMin: 4, stageMax: 5 }, text: [
     "even thickness settling everywhere at once",
     "her old shape rounding out in every direction",
-    "weight carried uniformly, shoulder to knee",
+    "no single curve outpacing the others — waist, hip, and bust all thickening together",
   ]},
   { when: { bodyType: "straight", stageMin: 6 }, weight: 2, text: [
     "a single continuous expanse of soft body",
@@ -293,7 +299,7 @@ registerPool("wi.bodyClause", [
     "curves leading every movement",
   ]},
   { when: { bodyType: "voluptuous", stageMin: 6 }, weight: 2, text: [
-    "breasts and belly grown vast",
+    "her breasts and belly grown vast",
     "voluptuous excess in motion",
     "curves past any ordinary scale",
   ]},
@@ -320,7 +326,7 @@ registerPool("wi.bodyClause", [
     "her thighs starting to brush",
   ]},
   { when: { bodyType: "fertility_goddess", stageMin: 4, stageMax: 5 }, text: [
-    "heavy breasts and thunder thighs grown plush",
+    "her chest and thighs both deepened, lush with new weight",
     "her hips brushing the doorframe without apology",
     "curves overflowing in every direction",
   ]},
@@ -396,11 +402,14 @@ registerPool("wi.soundClause", [
   { when: {}, text: ["", ""] },
   { when: { stageMin: 4, stageMax: 5 }, text: [
     "the floorboards noting her arrival",
-    "a chair creaking as she passes",
+    "her footfalls heavier than they were last semester",
+  ]},
+  { when: { bodyType: ["voluptuous", "fertility_goddess", "topHeavy"], stageMin: 4, stageMax: 5 }, text: [
+    "her chest bouncing gently with each step",
   ]},
   { when: { stageMin: 6, stageMax: 9 }, weight: 2, text: [
     "the floorboards registering her",
-    "the furniture bracing in advance",
+    "a low creak tracing each step across the room",
     "her breathing audible from the hall",
   ]},
   { when: { stageMin: 10 }, weight: 2, text: [
@@ -472,13 +481,15 @@ registerPool("wi.greeting", [
   ]},
   { when: { corruption: [1] }, text: [
     `"Another week," she says. Flat. Familiar.`,
-    `"Let's do it," she says, like clocking in.`,
+    `"Here we are," she says, and hangs her bag.`,
+    `"Same time every week," she says, with a small shrug.`,
   ]},
   { when: { corruption: [2] }, text: [
     `"Ready when you are," she says, eyes already on the scale.`,
-    `"Let's see it," she says, already moving toward the scale.`,
+    `"Let's see how far we've gotten," she says, already moving toward the scale.`,
     `"Been thinking about this all week," she says, warm and easy.`,
     `"Good morning. Let's see where I'm at."`,
+    `"Let's do it," she says, like clocking in.`,
   ]},
   { when: { corruption: [2], stageMin: 10 }, text: [
     `"Let's see how vast I've become," she says, and means it.`,
@@ -490,8 +501,10 @@ registerPool("wi.greeting", [
 registerPool("wi.scaleAttitude", [
   { when: {}, text: [
     "She glances at the scale only once.",
-    "She fills the silence with small talk while the scale waits.",
     "She checks the time like this is just another appointment.",
+  ]},
+  { when: { stageMax: 5 }, text: [
+    "She fills the silence with small talk while the scale waits.",
   ]},
   { when: { corruption: [0], stageMin: 3, stageMax: 7 }, text: [
     "She glances at the scale and then away, like it might be rude to stare.",
@@ -509,8 +522,10 @@ registerPool("wi.scaleAttitude", [
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
     "She looks at the scale like it is the most interesting thing in the room.",
-    "She smiles at the scale like an old friend.",
     "No preamble. She wants the number.",
+  ]},
+  { when: { corruption: [2], stageMin: 2 }, text: [
+    "She smiles at the scale like an old friend.",
   ]},
   { when: { stageMin: 10 }, text: [
     "She regards the scale with the practicality of someone who knows what it will say.",
