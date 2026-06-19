@@ -23,7 +23,7 @@ registerPool("wi.arrival", [
   // Stage 8-9: the doorway is a negotiation; sentence shape acknowledges it
   { when: { stageMin: 8, stageMax: 9 }, weight: 2, text: [
     "{subject.name} fills the doorway before she finishes entering{join:wi.bodyClause,wi.soundClause|prefix:, }.",
-    "{subject.name} {wi.moveVerb} {wi.doorway}{wi.bodyClause|prefix:, } — the office rearranges itself around her without discussion.",
+    "{subject.name} {wi.moveVerb} {wi.doorway}{wi.bodyClause|prefix:, } — the office already rearranged for her, the way he's had to arrange it for months.",
     "The hall announces {subject.name} before the door does{wi.faceClause|prefix:, }.",
   ]},
   // Stage 10-11: immobility changes the sentence itself
@@ -64,7 +64,8 @@ registerPool("wi.scaleSentence", [
   ]},
   { when: { stageMin: 6, stageMax: 8, bigScale: false }, weight: 2, text: [
     "The needle swung hard and settled, creaking, at {subject.lbs}.",
-    "The needle labored upward — {wi.scaleStressClause} — and found {subject.lbs}.",
+    "The needle labored upward — {wi.scaleStressClause} — before pinning at {subject.lbs}.",
+    "The needle dragged itself to {subject.lbs}, {wi.scaleStressClause}.",
   ]},
   { when: { bigScale: true }, weight: 4, text: [
     "The green display climbed to {subject.lbs}.",
@@ -116,7 +117,7 @@ registerPool("wi.mobilityClause", [
   ]},
   { when: { stageMin: 10 }, weight: 2, text: [
     "movement more redistribution than locomotion",
-    "mass settling onto the platform by degrees",
+    "flesh yielding to the platform, settling like something poured",
     "the scale approached the way geography is approached",
   ]},
 ]);
@@ -214,7 +215,7 @@ registerPool("wi.bodyClause", [
     "her waistline gone quietly round",
   ]},
   { when: { bodyType: "apple", stageMin: 4, stageMax: 5 }, text: [
-    "her belly leading, round and forward",
+    "her belly leading the way",
     "her middle straining at her waistband — she exhales once, then commits",
     "her belly swaying with the effort of walking",
   ]},
@@ -258,7 +259,7 @@ registerPool("wi.bodyClause", [
   // straight / even all over
   { when: { bodyType: "straight", stageMin: 2, stageMax: 3 }, text: [
     "softness settling evenly at the edges",
-    "her clothes fitting a little closer everywhere",
+    "her clothes sitting a little tighter everywhere",
     "evenly padded, face rounder",
   ]},
   { when: { bodyType: "straight", stageMin: 4, stageMax: 5 }, text: [
@@ -403,6 +404,8 @@ registerPool("wi.soundClause", [
   { when: { stageMin: 4, stageMax: 5 }, text: [
     "the floorboards noting her arrival",
     "her footfalls heavier than they were last semester",
+    "each step settling with a little more authority than before",
+    "her steps landing soft but deliberate",
   ]},
   { when: { bodyType: ["voluptuous", "fertility_goddess", "topHeavy"], stageMin: 4, stageMax: 5 }, text: [
     "her chest bouncing gently with each step",
@@ -443,9 +446,10 @@ registerPool("wi.settleAction", [
     "She takes up her usual corner.",
   ]},
   { when: { corruption: [0], stageMin: 2, stageMax: 5 }, text: [
-    "She tugs at her hem before she sits.",
+    "She tugs at her hem, once, on the way in.",
     "She smooths her top over her middle without looking at it.",
-    "She tugs at her waistband once before she sits. Reflex.",
+    "She tugs at her waistband once. Reflex.",
+    "She adjusts her shirt at the hem, deliberate, like she rehearsed it.",
   ]},
   { when: { corruption: [0], stageMin: 6 }, text: [
     "She waits by the door a moment, gathering herself.",
@@ -482,7 +486,7 @@ registerPool("wi.greeting", [
   { when: { corruption: [1] }, text: [
     `"Another week," she says. Flat. Familiar.`,
     `"Here we are," she says, and hangs her bag.`,
-    `"Same time every week," she says, with a small shrug.`,
+    `"Every week," she says, and means just that.`,
   ]},
   { when: { corruption: [2] }, text: [
     `"Ready when you are," she says, eyes already on the scale.`,
@@ -513,11 +517,13 @@ registerPool("wi.scaleAttitude", [
   ]},
   { when: { corruption: [0], stageMax: 2 }, text: [
     "She treats the scale as a formality, nothing more.",
-    "There is a composed stillness to her — someone who has rehearsed being fine about this.",
+    "She moves with a composed stillness — the stillness of someone who has rehearsed being fine about this.",
   ]},
   { when: { corruption: [1] }, text: [
     "She looks at the scale without flinching — a month ago she couldn't.",
     "She's stopped making a face at the scale somewhere along the way.",
+  ]},
+  { when: { corruption: [1], stageMin: 4 }, text: [
     "She does not apologize for the space she takes up. She does not celebrate it either.",
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
