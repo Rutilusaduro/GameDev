@@ -16,11 +16,8 @@ import {
 } from '../gameData/inventionUpgrades.js';
 
 const ACCENT = '#6a5088';
-// Real-PCB palette: green soldermask substrate, gold/copper traces.
-const PCB_GREEN = '#0c3a1f';
-const GOLD = '#e6c34a';
-const GOLD_DIM = '#8a7220';
-const LINE_BRANCH = '#b8941f';
+const LINE_MAIN = '#5090c8';
+const LINE_BRANCH = '#4a6080';
 
 export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlockNode, onClose }) {
   const board = CIRCUIT_BOARDS[deviceDefId];
@@ -38,9 +35,9 @@ export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlo
   const nodeColor = (node) => {
     const unlocked = hasCircuitNode(labState, deviceDefId, node.id);
     const canBuy = canUnlockCircuitNode(labState, deviceDefId, node.id, students);
-    if (unlocked) return { bg: '#14401f', border: GOLD, text: '#ffe9a0' };
-    if (canBuy) return { bg: '#2a2410', border: '#caa030', text: '#ffd98a' };
-    return { bg: '#0a2614', border: GOLD_DIM, text: '#7fa088' };
+    if (unlocked) return { bg: '#1a3828', border: '#4a9a5a', text: '#80d0a0' };
+    if (canBuy) return { bg: '#1a1830', border: ACCENT, text: '#d0c0f0' };
+    return { bg: '#100c18', border: '#302840', text: '#7060a0' };
   };
 
   return (
@@ -74,10 +71,9 @@ export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlo
         <div style={{
           position: 'relative',
           height: 420,
-          background: `repeating-linear-gradient(0deg, transparent, transparent 19px, ${GOLD}12 19px, ${GOLD}12 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, ${GOLD}12 19px, ${GOLD}12 20px), radial-gradient(circle at 50% 38%, #11492a 0%, ${PCB_GREEN} 55%, #07260f 100%)`,
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 19px, #1a203008 19px, #1a203008 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, #1a203008 19px, #1a203008 20px), #080610',
           borderRadius: 10,
-          border: `1px solid ${GOLD}55`,
-          boxShadow: `inset 0 0 60px #00000080`,
+          border: `1px solid ${ACCENT}40`,
           marginBottom: 12,
           overflow: 'hidden',
         }}
@@ -95,7 +91,7 @@ export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlo
                   y1={`${from.y}%`}
                   x2={`${to.x}%`}
                   y2={`${to.y}%`}
-                  stroke={unlocked ? (e.kind === 'main' ? GOLD : LINE_BRANCH) : (e.kind === 'main' ? `${GOLD}40` : `${GOLD_DIM}55`)}
+                  stroke={unlocked ? (e.kind === 'main' ? LINE_MAIN : '#4a9a5a') : (e.kind === 'main' ? `${LINE_MAIN}55` : `${LINE_BRANCH}55`)}
                   strokeWidth={e.kind === 'main' ? 2.5 : 1.5}
                 />
               );

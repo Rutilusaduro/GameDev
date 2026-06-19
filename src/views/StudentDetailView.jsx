@@ -1,7 +1,7 @@
 import { EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, EVOLVED_ACTIVITY_META, EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
 import { FEEDER_JOURNAL_ARCHETYPES, NADIA_JOURNAL_ARCHETYPES } from '../textEngine/scenes/researchJournal/index.js';
 import { ATMOSPHERE_TIERS, GUEST_TIERS, MENU_TIERS } from '../gameData/chapterHostess.js';
-import { C, LUXE } from '../styles.js';
+import { C } from '../styles.js';
 import { LilithPixelArt } from '../components/LilithPixelArt.jsx';
 import { BRANDS, getBrandControlLabel, getStreamVoiceLabel } from '../gameData/streaming.js';
 import { formatMoney } from '../gameData/wallet.js';
@@ -103,19 +103,10 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
               <div>
                 {/* Header card */}
                 {(()=>{const detailEvMeta=s.evolvedForm?EVOLVED_FORM_META[s.evolvedForm]:null; return(
-                <div style={{
-                  ...C.card,
-                  cursor:"default",
-                  marginBottom:14,
-                  borderColor:detailEvMeta?`${detailEvMeta.color}80`:LUXE.lineStrong,
-                  background:detailEvMeta
-                    ? `radial-gradient(circle at 88% 8%, ${detailEvMeta.color}24, transparent 34%), ${C.card.background}`
-                    : `radial-gradient(circle at 88% 8%, ${st.color}22, transparent 34%), ${C.card.background}`,
-                  padding:16,
-                }}>
+                <div style={{...C.card,cursor:"default",marginBottom:10,borderColor:detailEvMeta?`${detailEvMeta.color}60`:""}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
-                      <h2 style={{margin:0,color:detailEvMeta?detailEvMeta.color:LUXE.cream,fontSize:26,lineHeight:1.05}}>{s.name}</h2>
+                      <h2 style={{margin:0,color:detailEvMeta?detailEvMeta.color:"#d8a8ff",fontSize:22}}>{s.name}</h2>
                       {detailEvMeta&&<span style={{fontSize:11,fontWeight:700,color:detailEvMeta.color,background:`${detailEvMeta.color}22`,borderRadius:6,padding:"2px 8px"}}>✦ {detailEvMeta.title}</span>}
                     </div>
                     <div style={{display:"flex",gap:6,alignItems:"center"}}>

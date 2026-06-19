@@ -43,7 +43,7 @@ export const BLUEPRINT_RECIPES = {
   },
   auto_bloating_belt: {
     deviceDefId: 'auto_bloating_belt',
-    blueprint: 'bp_bloating_belt',
+    blueprint: 'bp_weight_belt',
     parts: { scrap: 2, servos: 1, circuits: 1 },
     money: 40,
     weightCost: 3,
@@ -56,7 +56,7 @@ export const BLUEPRINT_RECIPES = {
     money: 90,
     weightCost: 4,
     tier: 2,
-    requiresResearched: ['bp_bloating_belt'],
+    requiresResearched: ['bp_weight_belt'],
   },
   living_furniture_rig: {
     deviceDefId: 'living_furniture_rig',
