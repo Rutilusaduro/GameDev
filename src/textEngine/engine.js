@@ -275,6 +275,28 @@ export function hasModule(key) { return REGISTRY.has(key); }
 export function _registryEntries() { return [...REGISTRY.entries()]; }
 export function _moduleOpts(key) { return MODULE_OPTS.get(key) || {}; }
 
+/** Return all variants for a pool key that match ctx, sorted by descending weight,
+ *  each annotated with a probability percentage. Used by the Dialogue Lab Slot Inspector. */
+export function getEligibleVariants(key, ctx) {
+  const variants = REGISTRY.get(key);
+  if (!variants) return [];
+  const poolBase = MODULE_OPTS.get(key)?.poolBase ?? 3;
+  const results = [];
+  for (const v of variants) {
+    const { match, score } = evalWhen(v.when ?? {}, ctx);
+    if (!match) continue;
+    const weight = (v.weight ?? 1) * Math.pow(poolBase, score);
+    const texts = Array.isArray(v.text) ? v.text
+      : typeof v.text === 'function' ? ['[dynamic]']
+      : [v.text];
+    results.push({ when: v.when ?? {}, score, weight, texts });
+  }
+  const total = results.reduce((s, r) => s + r.weight, 0);
+  return results
+    .sort((a, b) => b.weight - a.weight)
+    .map(r => ({ ...r, probability: total > 0 ? Math.round((r.weight / total) * 100) : 0 }));
+}
+
 // ── selector resolution ───────────────────────────────────────
 
 // Returns {match:boolean, score:number} for one variant's `when` clause.

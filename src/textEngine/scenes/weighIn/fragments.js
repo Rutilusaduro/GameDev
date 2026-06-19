@@ -45,10 +45,10 @@ registerPool("wi.approachSentence", [
     "{subject.name} {wi.moveVerb} onto the scale{join:wi.bodyClause,wi.soundClause|prefix:, }{word.adv.sizeQual|prefix: }.",
   ]},
   { when: { stageMin: 8 }, weight: 2, text: [
-    "{subject.name} {word.moveVerb.scale} onto the scale{wi.mobilityClause|prefix:, }.",
+    "{subject.name} {word.mountVerb.scale} onto the scale{wi.mobilityClause|prefix:, }.",
   ]},
   { when: { stageMin: 10 }, weight: 3, text: [
-    "{subject.name} {word.moveVerb.scale} onto the scale.",
+    "{subject.name} {word.mountVerb.scale} onto the scale.",
     "{subject.name} settles onto the scale{wi.mobilityClause|prefix:, }.",
   ]},
 ]);
@@ -71,7 +71,11 @@ registerPool("wi.scaleSentence", [
     "The LCD flickered and resolved: {subject.lbs}.",
     "The display stabilized at {subject.lbs} lbs.",
   ]},
-  { when: {}, text: ["The needle settled at {subject.lbs}."] },
+  { when: {}, text: [
+    "The needle settled at {subject.lbs}.",
+    "The scale read {subject.lbs}.",
+    "The dial found {subject.lbs}.",
+  ]},
 ]);
 
 registerPool("wi.needleVerb", [
@@ -413,6 +417,7 @@ registerPool("wi.settle", [
   { when: {}, text: [
     "{wi.settleAction} {wi.scaleAttitude}",
     "{wi.greeting} {wi.scaleAttitude}",
+    "{wi.greeting} {wi.settleAction}",
   ]},
   { when: { corruption: [2] }, text: [
     "{wi.greeting}",
@@ -485,7 +490,7 @@ registerPool("wi.greeting", [
 registerPool("wi.scaleAttitude", [
   { when: {}, text: [
     "She glances at the scale only once.",
-    "She makes small talk that neither of you is really listening to.",
+    "She fills the silence with small talk while the scale waits.",
     "She checks the time like this is just another appointment.",
   ]},
   { when: { corruption: [0], stageMin: 3, stageMax: 7 }, text: [

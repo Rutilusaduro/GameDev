@@ -16,7 +16,7 @@ import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
 import { LILITH_ID } from '../gameData/lilith.js';
 import { DEVICES } from '../gameData/devices.js';
-import { createContext, render, pick } from '../textEngine/engine.js';
+import { createContext, render, pick, getEligibleVariants } from '../textEngine/engine.js';
 import { formatTextFlagExport } from '../textEngine/textFlagFormat.js';
 import { addTextFlag } from '../gameData/textFlagStore.js';
 import {
@@ -417,7 +417,7 @@ function rollSample(params) {
     (lockedSection?.params?.includes('locale') ? ` · locale ${locale}` : '') +
     (lockedSection?.params?.includes('mealType') ? ` · meal ${mealType}` : '') +
     (lockedSection?.params?.includes('clothingState') ? ` · cloth ${clothingState}` : '');
-  return { section: v.section, stateLine, text, nodes, id: `${Date.now()}_${Math.random()}` };
+  return { section: v.section, stateLine, text, nodes, id: `${Date.now()}_${Math.random()}`, student, campusTier };
 }
 
 const selStyle = { background: "#181820", color: "#e0e0e0", border: "1px solid #444", borderRadius: 4, padding: "3px 4px", fontSize: 11, maxWidth: 150 };
@@ -461,6 +461,68 @@ function NodeAnnotator({ node, idx, anno, setAnno }) {
   );
 }
 
+// Slot Inspector helpers ─────────────────────────────────────────────────────
+
+function buildAnnotatedSegments(text, nodes) {
+  let remaining = text;
+  const segments = [];
+  for (const node of nodes) {
+    const idx = remaining.indexOf(node.text);
+    if (idx === -1) continue;
+    if (idx > 0) segments.push({ plain: remaining.slice(0, idx) });
+    segments.push({ key: node.key, text: node.text });
+    remaining = remaining.slice(idx + node.text.length);
+  }
+  if (remaining) segments.push({ plain: remaining });
+  return segments;
+}
+
+function formatWhen(when) {
+  if (!when || Object.keys(when).length === 0) return 'wildcard';
+  return Object.entries(when)
+    .map(([k, v]) => Array.isArray(v) ? `${k}:[${v.join(',')}]` : `${k}:${v}`)
+    .join(' ');
+}
+
+function InspectorPanel({ poolKey, resolvedText, sampleCtx, onClose }) {
+  if (!poolKey || !sampleCtx) return null;
+  const variants = getEligibleVariants(poolKey, sampleCtx);
+  const panelStyle = {
+    marginTop: 8, padding: 10,
+    background: "rgba(20,40,70,0.95)", border: "1px solid #3060a0",
+    borderRadius: 8, fontSize: 11,
+  };
+  return (
+    <div style={panelStyle}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
+        <span style={{ color: "#70c0e0", fontFamily: "monospace" }}>{poolKey}</span>
+        <button style={C.smBtn} onClick={onClose}>✕</button>
+      </div>
+      <div style={{ color: "#c0a060", marginBottom: 8, fontStyle: "italic" }}>
+        Picked: "{resolvedText}"
+      </div>
+      {variants.length === 0 && <div style={{ color: "#888" }}>No eligible variants for current context.</div>}
+      {variants.map((v, i) => (
+        <div key={i} style={{ marginBottom: 8, paddingBottom: 8, borderBottom: i < variants.length - 1 ? "1px solid #2a4060" : "none" }}>
+          <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 4 }}>
+            <span style={{ color: "#50d090", fontWeight: "bold", minWidth: 36 }}>{v.probability}%</span>
+            <span style={{ color: "#6090c0", fontSize: 10 }}>{formatWhen(v.when)}</span>
+          </div>
+          {v.texts.map((t, j) => (
+            <div key={j} style={{
+              color: t === resolvedText ? "#e0c090" : "#a0b0c0",
+              paddingLeft: 8, marginBottom: 2, lineHeight: 1.5,
+              fontStyle: t === resolvedText ? "italic" : "normal",
+            }}>
+              {t === resolvedText && "→ "}{t}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function DialogueLab({ onClose }) {
   const [params, setParams] = useState(() => Object.fromEntries(PARAM_DEFS.map((d) => [d.key, RANDOM])));
   const [samples, setSamples] = useState([]);
@@ -468,6 +530,8 @@ export function DialogueLab({ onClose }) {
   const [phase, setPhase] = useState("lab");
   const [anno, setAnno] = useState(null); // { sampleId, notes: {nodeIdx: note}, open: nodeIdx|null }
   const [copied, setCopied] = useState(false);
+  const [inspectMode, setInspectMode] = useState(false);
+  const [inspector, setInspector] = useState(null); // { sampleId, key, resolvedText }
 
   const roll = () => { setSamples(Array.from({ length: 5 }, () => rollSample(params))); setAnno(null); };
   const startFlag = (sample) => setAnno({ sampleId: sample.id, notes: {}, open: null });
@@ -497,6 +561,14 @@ export function DialogueLab({ onClose }) {
           <div style={{ fontSize: 11, letterSpacing: 3, color: "#70c0e0" }}>🎲 DIALOGUE LAB</div>
           <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
             <span style={{ fontSize: 10, color: flagged.length ? "#e0a050" : "#666" }}>🚩 {flagged.length} flagged</span>
+            {phase === "lab" && (
+              <button
+                style={C.btn(inspectMode ? "#1a5050" : "#333")}
+                onClick={() => { setInspectMode((m) => !m); setInspector(null); }}
+              >
+                {inspectMode ? "🔍 Inspecting" : "🔍 Inspect"}
+              </button>
+            )}
             {phase === "lab" && <button style={C.btn("#5a4010")} onClick={() => setPhase("review")} disabled={!flagged.length}>Done →</button>}
             <button style={C.btn("#333")} onClick={onClose}>✕ Close</button>
           </div>
@@ -561,9 +633,47 @@ export function DialogueLab({ onClose }) {
                       </button>
                     )}
                   </div>
-                  {!annotating && (
+                  {!annotating && !inspectMode && (
                     <div style={{ fontSize: 12, color: "#e0d0b0", lineHeight: 1.7, fontStyle: "italic", whiteSpace: "pre-wrap" }}>{s.text}</div>
                   )}
+                  {!annotating && inspectMode && (() => {
+                    const segs = buildAnnotatedSegments(s.text, s.nodes);
+                    const sampleCtx = buildTextContext({ subject: s.student, week: 6, campusFattening: s.campusTier > 0, campusTier: s.campusTier });
+                    const inspThis = inspector?.sampleId === s.id ? inspector : null;
+                    return (
+                      <>
+                        <div style={{ fontSize: 12, color: "#e0d0b0", lineHeight: 1.7, fontStyle: "italic", whiteSpace: "pre-wrap" }}>
+                          {segs.map((seg, i) =>
+                            seg.plain != null
+                              ? <span key={i}>{seg.plain}</span>
+                              : (
+                                <span
+                                  key={i}
+                                  title={seg.key}
+                                  onClick={() => setInspector({ sampleId: s.id, key: seg.key, resolvedText: seg.text })}
+                                  style={{
+                                    background: inspThis?.key === seg.key ? "rgba(80,160,200,0.3)" : "rgba(80,160,200,0.12)",
+                                    borderBottom: `1px dashed ${inspThis?.key === seg.key ? "#70c0e0" : "#3080a0"}`,
+                                    cursor: "pointer",
+                                    borderRadius: 2,
+                                  }}
+                                >
+                                  {seg.text}
+                                </span>
+                              )
+                          )}
+                        </div>
+                        {inspThis && (
+                          <InspectorPanel
+                            poolKey={inspThis.key}
+                            resolvedText={inspThis.resolvedText}
+                            sampleCtx={sampleCtx}
+                            onClose={() => setInspector(null)}
+                          />
+                        )}
+                      </>
+                    );
+                  })()}
                   {annotating && (
                     <>
                       <div style={{ fontSize: 10, color: "#70c0e0", marginBottom: 6 }}>Check the node(s) that are wrong, say why, then save:</div>
