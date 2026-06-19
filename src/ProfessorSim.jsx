@@ -4,6 +4,7 @@ import { GROUP_CONVERSATIONS, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessSt
 import { STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { narrativeEventText, randomEventText } from './gameData/weeklyEventText.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
+import { LuxeAmbient, LuxeLogLine, ViewStage } from './components/Luxe.jsx';
 import { buildStateLine, traceToFlagNodes } from './textEngine/textFlagFormat.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS } from './gameData/classEvents.js';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
@@ -6579,7 +6580,8 @@ export default function ProfessorSim(){
   }
 
   return (
-    <div style={C.app}>
+    <div className="prof-sim-luxe" style={C.app}>
+      <LuxeAmbient />
 
 {/* SKILL PURCHASE MODAL */}
       {skillPurchase&&(()=>{
@@ -7367,8 +7369,9 @@ export default function ProfessorSim(){
         ))}
       </div>
 
-      <div style={C.body}>
-        <div style={C.main}>
+      <div className="prof-sim-body luxe-layer" style={C.body}>
+        <div className="prof-sim-main" style={C.main}>
+          <ViewStage viewKey={view}>
 
           {/* ── CLASS VIEW ── */}
           {view==="class"&&<ClassView view={view} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
@@ -7456,13 +7459,14 @@ export default function ProfessorSim(){
 
           {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} week={week} lilithUnlocked={lilithUnlocked} pharmacistStage={pharmacistState?.stage??1} oppositionCtx={buildOppositionContext({students,ownedSkills,ownedClassSkills,facultyAffinity,labState,pharmacistState,communityResearcherState,lilithUnlocked})} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onStartHearing={startOppositionHearing} onClose={()=>setView('class')}/>}
 
+          </ViewStage>
         </div>
 
         {/* ── SIDEBAR: LIVE LOG ── */}
-        <div style={{...C.side, display:"flex", flexDirection:"column"}}>
+        <div className="prof-sim-side" style={{...C.side, display:"flex", flexDirection:"column"}}>
           <p style={{...C.secT, flexShrink:0}}>Event Log — {log.length} entries</p>
           <div ref={logRef} style={{flex:1, overflow:"auto"}}>
-            {log.map((e,i)=><div key={i} style={C.logE}>{e}</div>)}
+            {log.map((e,i)=><LuxeLogLine key={`${i}-${String(e).slice(0,18)}`}>{e}</LuxeLogLine>)}
           </div>
           <button type="button" onClick={()=>{ setFieldNoteError(null); setBugReportOpen(true); }}
             style={{...C.btn('#3a3028'), fontSize:9, marginTop:8, flexShrink:0, opacity:0.85}}>
