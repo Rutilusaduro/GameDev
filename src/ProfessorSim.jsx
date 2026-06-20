@@ -1104,9 +1104,18 @@ export default function ProfessorSim(){
     const scaledCals=Math.round(calories*(s.gainMultiplier||1)*profGainMult*calMult);
     const scaledFull=scaledFullEarly;
     if(label) push(`🍽️ ${label} — ${s.name}: +${scaledCals.toLocaleString()} cal (fullness ${Math.min(999,(s.fullness||0)+scaledFull)}/${cap})`);
+    let feedWeekUsed=null;
     if(label){
       const feedRoom=feedRoomFromFullness(((s.fullness||0)+scaledFull)/Math.max(1,cap),forced);
-      const reaction=renderFeedReaction(s,week,{foodKind:foodKindFromFeed(label,calories,fullnessCost),feedRoom});
+      // Render off a projected POST-feed snapshot so {word.fullness} agrees
+      // with the room band (she can't read "still hungry" while she's stuffed).
+      const projected={...s,fullness:(s.fullness||0)+scaledFull,stomachCapacity:cap};
+      // Per-girl week bag → reaction lines don't repeat within a week.
+      feedWeekUsed=weekUsedFromStudent(s);
+      const reaction=renderFeedReaction(projected,week,{
+        foodKind:foodKindFromFeed(label,calories,fullnessCost),feedRoom,
+        weekUsed:feedWeekUsed,sessionUsed:createSessionUsed(),
+      });
       if(reaction?.trim()) setTimeout(()=>push(reaction),40);
     }
     if(Math.random()<CORRUPTION_CONFIG.dialogueChance){
@@ -1172,6 +1181,7 @@ export default function ProfessorSim(){
         setTimeout(()=>push(`💊 ${compound.label} — ${s.name} gains ${lbsGain} lbs immediately. Fullness unchanged.`),75);
       }
     }
+    if(feedWeekUsed) result={...result,...weekUsedToPatch(feedWeekUsed)};
     const hungerEff=aggregateSkillEffects(ownedSkills);
     const fedStudent=feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
     setWeeklyFeedCounts(prev=>({...prev,[s.id]:(prev[s.id]||0)+1}));
