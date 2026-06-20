@@ -6,6 +6,7 @@ import { narrativeEventText } from './gameData/weeklyEventText.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from './textEngine/textFlagFormat.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS } from './gameData/classEvents.js';
+import { gatewayFlagPatch } from './gameData/gatewayMoments.js';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
@@ -1249,12 +1250,15 @@ export default function ProfessorSim(){
     if(newStageId>oldStageId){
       setTimeout(()=>push(`📣 ${s.name} reaches ${WEIGHT_STAGES[newStageId].label}! "${getAttitude({...s,lbs:newLbs}, week, pharmacistTextOpts(pharmacistState, week))}"`) ,50);
     }
+    const mergedTriggered=[...s.triggeredEvents,...narrativeEvents.map(e=>e.id)];
     return {
       ...s,
       lbs:newLbs,
       relationship:Math.min(100,s.relationship+extraRel),
-      triggeredEvents:[...s.triggeredEvents,...narrativeEvents.map(e=>e.id)],
+      triggeredEvents:mergedTriggered,
       mood: newStageId>=5?"content":s.mood,
+      // Unlock any signature-beat diary gate her new state has earned.
+      ...gatewayFlagPatch({...s,triggeredEvents:mergedTriggered},newStageId),
     };
   };
 
@@ -1554,6 +1558,8 @@ export default function ProfessorSim(){
         Object.assign(ns,{
           ...corruptionStudentPatch(ns,newC,week),
           clothingState:clothState,
+          // Settling into a new stage can unlock her signature diary gate.
+          ...gatewayFlagPatch(ns,newStageId),
         });
         corruption=ns.corruption;
         ns.memories=appendMemory(ns.memories,'stageUp',week,newStageId);
