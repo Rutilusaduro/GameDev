@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL, evalIntimacyEndingCondition } from './gameData/intimacy.js';
 import { GROUP_CONVERSATIONS, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
-import { STAGE_DROP_REACTIONS, PROFESSOR_RANKS, RANDOM_EVENTS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
-import { narrativeEventText, randomEventText } from './gameData/weeklyEventText.js';
+import { STAGE_DROP_REACTIONS, PROFESSOR_RANKS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
+import { narrativeEventText } from './gameData/weeklyEventText.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from './textEngine/textFlagFormat.js';
-import { ACTIONS_SINGLE, ACTIONS_CLASS, SEMESTER_EVENTS } from './gameData/classEvents.js';
+import { ACTIONS_SINGLE, ACTIONS_CLASS } from './gameData/classEvents.js';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
@@ -199,7 +199,6 @@ import {
 } from './gameData/campusSaturation.js';
 import {
   scrutinyApModifier,
-  scrutinyBlocksPublicEvents,
   scrutinyBlocksClassFeast,
   scrutinyPrivateSessionCost,
   weeklyScrutinyNudge,
@@ -1302,12 +1301,6 @@ export default function ProfessorSim(){
     const newAp=Math.min(ap+weeklyApBase,20);
     setAp(newAp);
 
-    // Semester events
-    const semEv=SEMESTER_EVENTS.find(e=>e.week===newWeek);
-
-    // Random event (30% chance) — blocked at investigation tier
-    let randomEv=(!scrutinyBlocksPublicEvents(adminScrutiny)&&Math.random()<0.3)?RANDOM_EVENTS[rnd(0,RANDOM_EVENTS.length-1)]:null;
-
     // Decrement Reneé digestion timer each week
     if(cultivatorState?.digestWeeksLeft>0){
       setCultivatorState(prev=>prev?{...prev,digestWeeksLeft:Math.max(0,prev.digestWeeksLeft-1)}:null);
@@ -1335,14 +1328,6 @@ export default function ProfessorSim(){
       const cTier=getCorruptionTier(s.corruption||0).id;
       if(cTier===1) gain+=rnd(CORRUPTION_CONFIG.tier2AutoLbs[0],CORRUPTION_CONFIG.tier2AutoLbs[1]);
       if(cTier===2) gain+=rnd(CORRUPTION_CONFIG.tier3AutoLbs[0],CORRUPTION_CONFIG.tier3AutoLbs[1]);
-      if(semEv) gain+=rnd(semEv.gain[0],semEv.gain[1]);
-      if(randomEv){
-        if(randomEv.target==="class") gain+=rnd(randomEv.gain[0],randomEv.gain[1]);
-        else if(randomEv.target==="single"){
-          const vis=students.filter(st=>!st.hidden);
-          if(vis.length&&s.id===vis[rnd(0,vis.length-1)].id) gain+=rnd(randomEv.gain[0],randomEv.gain[1]);
-        }
-      }
       // Evolved skill passive bonuses
       if(s.evolvedForm&&(s.evolvedSkills||[]).length>0){
         const evTree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
@@ -1810,12 +1795,6 @@ export default function ProfessorSim(){
     const scrutinyMsg=weeklyScrutinyNudge(adminScrutiny,scrutinyTier.id,nextOpposition);
     if(scrutinyMsg) setTimeout(()=>push(scrutinyMsg.message),170);
     push(`📅 Week ${newWeek} begins. ${newAp} AP available.${scrutinyTier.apPenalty?` (Scrutiny: −${scrutinyTier.apPenalty} AP)`:""}`);
-    if(semEv) setTimeout(()=>push(`🎉 Semester Event: ${semEv.title} — ${semEv.text}`),100);
-    if(randomEv){
-      const visForEv=updated.filter(st=>!st.hidden);
-      if(visForEv.length) setTimeout(()=>push(`🎲 ${randomEventText(randomEv, visForEv[rnd(0,visForEv.length-1)], { week: newWeek })}`),150);
-      if(randomEv.scrutinyHit) addScrutiny(randomEv.scrutinyHit);
-    }
     if(evs.length){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
