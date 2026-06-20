@@ -4,6 +4,7 @@ import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import './fragments.js';
 import './personas.js';
+export { renderImmobArrival } from './arrival.js';
 
 registerPool('immob.scene', [
   { when: {}, text: [

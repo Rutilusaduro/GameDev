@@ -15,6 +15,7 @@ import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } fro
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
 import { INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES } from '../gameData/talia.js';
 import { getArrivalCapstone } from '../gameData/arrivalCapstones.js';
+import { getImmobilityArrival } from '../gameData/immobilityArrival.js';
 import { getAvailableDeviceActions, getBodyOverrideBadge } from '../gameData/deviceActions.js';
 import { EquipmentButton } from '../components/StudentEquipModal.jsx';
 import { formatIngredientBag } from '../gameData/pharmacistIngredients.js';
@@ -26,7 +27,7 @@ import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -757,6 +758,27 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                           onClick={()=>runArrivalCapstone(s)}
                         >
                           {cap.label} ({cap.apCost} AP){cap.firstUnlock?' · unlocks board branch':''}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {runImmobilityArrival&&(()=>{
+                  const arr=getImmobilityArrival(s);
+                  if(!arr) return null;
+                  return(
+                    <div style={{marginBottom:14}}>
+                      <div style={{background:"rgba(40,16,44,0.55)",border:"1px solid #a060c080",borderRadius:10,padding:12}}>
+                        <div style={{fontSize:9,letterSpacing:3,color:"#c080d0",marginBottom:4}}>
+                          ✦ THE SETTLING{arr.tier>=2?' · the room’s whole gravity':' · settled in place'}
+                        </div>
+                        <div style={{fontSize:12,color:"#e8d0f0",lineHeight:1.6,marginBottom:8}}>{arr.desc}</div>
+                        <button
+                          style={{...C.btn("#7a3aa0"),width:"100%",opacity:ap<arr.apCost?0.4:1}}
+                          onClick={()=>runImmobilityArrival(s)}
+                        >
+                          {arr.label} ({arr.apCost} AP){arr.firstUnlock?' · she Arrives, then settles on her own':' · settle her deeper'}
                         </button>
                       </div>
                     </div>

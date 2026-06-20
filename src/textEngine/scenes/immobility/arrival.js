@@ -1,0 +1,87 @@
+// The Squad — Lead: A3 Immobility | Support: A7 Artisan, A5 Editor
+// ═══════════════════════════════════════════════════════════════
+// IMMOBILITY ARRIVAL — "Hold Court" capstone narration (stages 10-11).
+// The player brings the world to her where she rests; she settles deeper
+// into being kept, and the bond answers. Three beats:
+//   immob.arrival.tend     — you bring the day to her (the caretaking-at-scale)
+//   immob.arrival.deepen   — she goes on arriving, kept and softening further
+//   immob.arrival.devotion — her contentment / being adored (corruption beat)
+//   immob.arrival          — skeleton "{tend} {deepen} {devotion}"
+// House voice: celebrated, never medicalized; vastness and being kept; adored.
+// ═══════════════════════════════════════════════════════════════
+import { registerPool, render } from '../../engine.js';
+import { buildTextContext } from '../../../gameData/textContext.js';
+import './fragments.js';
+
+// ── immob.arrival.tend ────────────────────────────────────────
+// Shape: FULL SENTENCE — the player bringing the day to her.
+registerPool('immob.arrival.tend', [
+  { when: {}, text: [
+    `You bring the day to {subject.name} where she rests — the food, the warmth, the company, all of it arriving at her now instead of the other way around.`,
+  ]},
+  { when: { stageMin: 10, stageMax: 10 }, weight: 2, text: [
+    `She holds court from the warm center of the room, and you tend her there — trays carried in, cushions eased under her, every comfort delivered to the vast soft spread of her.`,
+    `There is no question of her coming to anything anymore; you bring it instead, laying the meal and the slow afternoon within easy reach of her settled, spreading warmth.`,
+    `You move through the day in orbit of her, ferrying the world in piece by piece to where {subject.name} has come to rest, and she receives all of it like her due.`,
+  ]},
+  { when: { stageMin: 11 }, weight: 2, text: [
+    `The room belongs to her entirely now, and you keep it that way — attending the immense warm expanse of her, bringing the world in by degrees to where she has come to rest for good.`,
+    `She presides over the whole space simply by filling it, and you tend her like a season's harvest, carrying everything she could want to the slow warm gravity of where she lies.`,
+    `You keep court for her where she has settled — vast and unhurried and going nowhere — and the tending of her has become the warm center your own day turns around.`,
+  ]},
+]);
+
+// ── immob.arrival.deepen ──────────────────────────────────────
+// Shape: FULL SENTENCE — kept, she goes on arriving. Reuses {word.movement}.
+registerPool('immob.arrival.deepen', [
+  { when: {}, text: [
+    `And she settles deeper as you tend her, softening further into the shape of being kept, every comfort folding another warm degree into her.`,
+  ]},
+  { when: { stageMin: 10, stageMax: 10 }, weight: 2, text: [
+    `Tended like this she keeps arriving — the soft mass of her easing a little further into the room with each attended hour, {word.movement} when she shifts and then going still again.`,
+    `She grows softer under the care, not less, the warm weight of her spreading by slow contented inches into the space you keep clear for it.`,
+  ]},
+  { when: { stageMin: 11 }, weight: 2, text: [
+    `Kept this completely she only becomes more so, the vast warm tide of her creeping outward by slow degrees, settling and resettling into ever more of the room.`,
+    `There is no ceiling left for her to reach, only deeper to settle, and she does — softening outward without end while you keep the world arriving at her side.`,
+  ]},
+]);
+
+// ── immob.arrival.devotion ────────────────────────────────────
+// Shape: DIALOGUE / BEHAVIOR BEAT — her contentment, shaded by psyche.
+registerPool('immob.arrival.devotion', [
+  { when: {}, text: [
+    `{subject.name} settles under your care, warm and vast and wholly content to be exactly where she is.`,
+  ]},
+  { when: { corruption: [0] }, weight: 2, text: [
+    `{subject.name} watches you tend her with something soft and overwhelmed in her face. "You really don't mind," she says — not quite a question, not quite able to believe it.`,
+  ]},
+  { when: { corruption: [1] }, weight: 2, text: [
+    `{subject.name} lets herself be tended without a flicker of the old protest, and the warmth in her eyes when she finds yours says she has stopped wanting anything but this.`,
+  ]},
+  { when: { corruption: [2] }, weight: 2, text: [
+    `{subject.name} accepts the tending as her due, regal and glowing, and tells you plainly she means to be larger still by the time you next come to court her.`,
+  ]},
+  // ── a few persona voices (weight 4) over the psyche generics ──
+  { when: { studentId: 0, stageMin: 10 }, weight: 4, text: [
+    `Brittany surveys the room arranged around her and smiles like a captain who never left the field. "Still in charge," she says. "Just from here now."`,
+  ]},
+  { when: { studentId: 10, stageMin: 10 }, weight: 4, text: [
+    `Reneé tastes what you've brought her, closes her eyes, and sighs the sigh of a cook who has finally let someone else carry the plates. "Perfect," she says. "Bring the rest."`,
+  ]},
+  { when: { studentId: 8, stageMin: 10 }, weight: 4, text: [
+    `Maya doesn't say anything. She finds your hand where it rests against the warm slope of her, holds it there, and lets the quiet say it for her.`,
+  ]},
+]);
+
+// ── immob.arrival — composed skeleton ─────────────────────────
+registerPool('immob.arrival', [
+  { when: {}, text: ['{immob.arrival.tend} {immob.arrival.deepen} {immob.arrival.devotion}'] },
+]);
+
+/** Render a Hold Court capstone beat for an immobile student. */
+export function renderImmobArrival(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return render('{immob.arrival}', ctx, { trace: opts.trace || null })?.trim() || '';
+}
