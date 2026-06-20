@@ -9,6 +9,7 @@ import { EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
 import { renderRosterTell } from '../textEngine/scenes/rosterTell/index.js';
 import { renderMemorySelf } from '../textEngine/scenes/memory/index.js';
 import { pickStudentMemory } from '../gameData/memory.js';
+import { getDiscontentTier } from '../gameData/discontent.js';
 import { addictionTint } from '../gameData/hungerAddiction.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
@@ -26,14 +27,19 @@ function RosterTile({ s, week, onOpen }) {
   // until her state actually changes, rather than flickering per render.
   const tell = useMemo(
     () => {
-      const mem = pickStudentMemory(s, week);
-      if (mem && Math.random() < 0.45) {
-        const m = renderMemorySelf(s, week, mem);
-        if (m) return m;
+      const discTier = getDiscontentTier(s).id;
+      // An unhappy girl's tell is about that (the scene priority-gates it),
+      // and we don't drown it in a memory callback.
+      if (discTier === 0) {
+        const mem = pickStudentMemory(s, week);
+        if (mem && Math.random() < 0.45) {
+          const m = renderMemorySelf(s, week, mem);
+          if (m) return m;
+        }
       }
-      return renderRosterTell(s, week);
+      return renderRosterTell(s, week, { globals: { discontentTier: discTier } });
     },
-    [s.id, st.id, s.corruption, s.hungerTier, s.addictionLevel, (s.memories || []).length, week],
+    [s.id, st.id, s.corruption, s.hungerTier, s.addictionLevel, s.discontent, (s.memories || []).length, week],
   );
   return (
     <div

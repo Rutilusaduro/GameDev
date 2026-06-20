@@ -76,6 +76,8 @@ import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
 import { appendMemory, pickStudentMemory, pickClassMemory } from './gameData/memory.js';
+import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, DISCONTENT_GAIN, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, DISCONTENT_WEEKLY_DECAY } from './gameData/discontent.js';
+import { renderDiscontentRefusal } from './textEngine/scenes/discontent/index.js';
 import { renderMemorySelf, renderMemoryClass } from './textEngine/scenes/memory/index.js';
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding } from './textEngine/scenes/intimacy/index.js';
@@ -1075,6 +1077,12 @@ export default function ProfessorSim(){
         return null;
       }
     }
+    // An unhappy girl may simply refuse to be fed by you (real stakes).
+    if(!opts.compoundId&&!opts.ignoreDiscontent&&getDiscontentTier(s).id>=2&&Math.random()<discontentRefusalChance(s)){
+      const dl=renderDiscontentRefusal(s,week,{discontentTier:getDiscontentTier(s).id});
+      push(`🙅 ${dl||`${s.name} refuses to take anything from you right now.`}`);
+      return null;
+    }
     const eff=aggregateSkillEffects(ownedSkills);
     const stageId=getStage(s.lbs).id;
     const cap=getFeedCapacity(s,{
@@ -1213,6 +1221,15 @@ export default function ProfessorSim(){
     // so the prose can call back to it later.
     const memEvent=forced?'forced':((fullnessCost>=40||/feast|banquet|platter/i.test(label||''))?'feast':null);
     if(memEvent) result={...result,memories:appendMemory(result.memories,memEvent,week)};
+    // Force-feeding her before she trusts you is a betrayal — it festers.
+    // A willing feed is attention, and eases discontent a little.
+    if(forced&&forceFeedIsBetrayal(s)){
+      result={...result,mood:"stressed",
+        discontent:bumpDiscontent(result.discontent,DISCONTENT_GAIN.betrayed),
+        memories:appendMemory(result.memories,'betrayed',week)};
+    } else if(!forced&&(result.discontent||0)>0){
+      result={...result,discontent:Math.max(0,(result.discontent||0)-DISCONTENT_EASE_FEED)};
+    }
     const hungerEff=aggregateSkillEffects(ownedSkills);
     const fedStudent=feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
     setWeeklyFeedCounts(prev=>({...prev,[s.id]:(prev[s.id]||0)+1}));
@@ -1609,6 +1626,25 @@ export default function ProfessorSim(){
         return { events, index: prev?.index??0 };
       });
     }
+
+    // ── DISCONTENT weekly tick ──────────────────────────────────
+    // Cools if you've stopped offending; public exposure (high scrutiny)
+    // stings visible girls who aren't yet comfortable being seen.
+    let exposedCount=0;
+    updated=updated.map(s=>{
+      let disc=Math.max(0,(s.discontent||0)-DISCONTENT_WEEKLY_DECAY);
+      let mems=s.memories,mood=s.mood;
+      const exposed=scrutinyTier?.id>=2&&!s.hidden&&getStage(s.lbs).id>=5&&getCorruptionTier(s.corruption||0).id===0;
+      if(exposed&&Math.random()<0.5){
+        disc=bumpDiscontent(disc,DISCONTENT_GAIN.exposed);
+        mems=appendMemory(mems,'exposed',newWeek);
+        mood="stressed";
+        exposedCount++;
+      }
+      if(disc===(s.discontent||0)&&mems===s.memories&&mood===s.mood) return s;
+      return {...s,discontent:disc,memories:mems,mood};
+    });
+    if(exposedCount>0) setTimeout(()=>push(`😠 ${exposedCount} ${exposedCount===1?"girl bristles":"girls bristle"} at being paraded under this much scrutiny.`),170);
 
     // Influence spread
     INFLUENCE_PAIRS.forEach(([a,b])=>{
@@ -5823,7 +5859,9 @@ export default function ProfessorSim(){
       const target=students.find(x=>x.id===talkStudentId);
       if(target&&isBodyComplimentUnwelcome(target)){
         setStudents(prev=>prev.map(x=>x.id===talkStudentId
-          ?{...x,relationship:Math.max(0,(x.relationship||0)-COMPLIMENT_BACKFIRE_REL),mood:"stressed"}
+          ?{...x,relationship:Math.max(0,(x.relationship||0)-COMPLIMENT_BACKFIRE_REL),mood:"stressed",
+             discontent:bumpDiscontent(x.discontent,DISCONTENT_GAIN.creeped),
+             memories:appendMemory(x.memories,'creeped',week)}
           :x));
         addScrutiny(COMPLIMENT_BACKFIRE_SCRUTINY);
         push(`😬 ${target.name} bristles — unsolicited and unwelcome. −${COMPLIMENT_BACKFIRE_REL} relationship · scrutiny +${COMPLIMENT_BACKFIRE_SCRUTINY}.`);
@@ -5866,6 +5904,8 @@ export default function ProfessorSim(){
       let ns={...x};
       if(effect.rel) ns.relationship=Math.min(100,ns.relationship+(effect.rel||0));
       if(effect.corruption) ns={...ns,corruption:addCorruption(ns,effect.corruption)};
+      // Talking to her is attention — it cools discontent.
+      if((ns.discontent||0)>0) ns.discontent=Math.max(0,ns.discontent-DISCONTENT_EASE_TALK);
       return ns;
     }));
   };
