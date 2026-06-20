@@ -71,6 +71,8 @@ import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js'
 import { renderDinnerEnding, renderDinnerDepth, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter, renderDinnerOverfill, renderDinnerDishDesc } from './textEngine/scenes/dinner/index.js';
 import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
 import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
+import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
+import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding } from './textEngine/scenes/intimacy/index.js';
 import './textEngine/scenes/intimacy/scenes.js';
@@ -450,6 +452,7 @@ export default function ProfessorSim(){
   const [deviceTickQueue, setDeviceTickQueue] = useState(null);
   const [equipModalStudentId, setEquipModalStudentId] = useState(null);
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
+  const [weekRecap, setWeekRecap] = useState(null);
   const [forceFeederState, setForceFeederState] = useState(null);
   const [deviceUsageModal, setDeviceUsageModal] = useState(null);
   const [weeklyFeedCounts, setWeeklyFeedCounts] = useState({});
@@ -1452,6 +1455,7 @@ export default function ProfessorSim(){
     // ── WEEKLY DIGESTION: convert this week's fed calories into weight ──
     const digestLines=[];
     const digestGrowthEvents=[];
+    const recapMovers=[];
     updated=updated.map(s=>{
       if((s.consumedCalories||0)<=0&&(s.fullness||0)<=0&&!s.stuffedStreak) return s;
       const digestTextSession={
@@ -1510,6 +1514,16 @@ export default function ProfessorSim(){
         carriedFullness=Math.round((growth.stomachCapacity+d.capacityGained)*1.15);
         const autoLine=CORRUPTION_AUTO_LINES[rnd(0,CORRUPTION_AUTO_LINES.length-1)](ns);
         setTimeout(()=>push(`💭 ${autoLine}`),250);
+      }
+      if(d.lbsGained>0||stagedUp||d.stuffed){
+        const prose=renderWeekRecap(ns,newWeek,{
+          lbsGained:d.lbsGained,gainBand:gainBandFromLbs(d.lbsGained),
+          stagedUp,stuffedWeek:d.stuffed,...textOpts,
+        });
+        if(prose?.trim()) recapMovers.push({
+          id:ns.id,name:ns.name,lbsGained:d.lbsGained,stagedUp,stuffed:d.stuffed,
+          stageLabel:WEIGHT_STAGES[getStage(ns.lbs).id]?.label,prose,
+        });
       }
       return {...ns,
         stomachCapacity:growth.stomachCapacity+d.capacityGained,
@@ -1646,6 +1660,12 @@ export default function ProfessorSim(){
     if(newlyTriggered&&!nextOpposition.supernatural.ascensionOffered) setSupernaturalModalOpen(true);
 
     setStudents(updated.map(s=>clearWeeklyTextFlags(s,week)));
+    if(recapMovers.length){
+      const ordered=recapMovers
+        .sort((a,b)=>(b.stagedUp?1:0)-(a.stagedUp?1:0)||b.lbsGained-a.lbsGained)
+        .slice(0,6);
+      setWeekRecap({week:newWeek,movers:ordered});
+    }
     // Admin notices visibly large students (hidden students like Lilith don't trigger scrutiny)
     const visibleCount=updated.filter(s=>!s.hidden&&getStage(s.lbs).id>=5).length;
     if(visibleCount>0) addScrutiny(visibleCount);
@@ -7563,6 +7583,7 @@ export default function ProfessorSim(){
 
       {/* ── SESSION RESULT ── */}
       {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}
+      {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)}/>}
 
       {/* ── GODDESS VISION MODAL ── */}
 
