@@ -1,30 +1,15 @@
 // ═══════════════════════════════════════════════════════════════
-// WEEKLY EVENT — render API for between-week narrative + random incidents
+// WEEKLY EVENT — render API for per-girl stage-up narrative beats
+// (The class-wide random-incident layer was removed with RANDOM_EVENTS.)
 // ═══════════════════════════════════════════════════════════════
 import { createContext, render } from '../../engine.js';
 import { getStage } from '../../../gameData/stages.js';
 import '../../modules.js';
 import './chairIncident.js';
 import './teamWeighIn.js';
-import './randomEvents/index.js';
 import './narrativeEvents.js';
 
 const POOL_BY_EVENT_ID = {
-  chair_incident: 'weekly.chair_incident',
-  dining_special: 'weekly.dining_special',
-  stress_week: 'weekly.stress_week',
-  food_delivery: 'weekly.food_delivery',
-  pizza_deal: 'weekly.pizza_deal',
-  admin_memo: 'weekly.admin_memo',
-  food_festival: 'weekly.food_festival',
-  care_package: 'weekly.care_package',
-  birthday: 'weekly.birthday',
-  class_cancelled: 'weekly.class_cancelled',
-  faculty_overheard: 'weekly.faculty_overheard',
-  bake_sale: 'weekly.bake_sale',
-  netflix_binge: 'weekly.netflix_binge',
-  rainy_weekend: 'weekly.rainy_weekend',
-  cooking_experiment: 'weekly.cooking_experiment',
   uniform_split: 'weekly.uniform_split',
   chair_breaks: 'weekly.chair_breaks',
   viral_post: 'weekly.viral_post',

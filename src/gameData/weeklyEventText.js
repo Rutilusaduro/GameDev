@@ -8,13 +8,4 @@ export function narrativeEventText(event, student, opts = {}) {
   });
 }
 
-export function randomEventText(event, student, opts = {}) {
-  return renderWeeklyEvent(event.id, student, {
-    ...opts,
-    eventKind: 'random',
-    targetType: event.target || 'single',
-    legacyText: typeof event.text === 'function' ? event.text : null,
-  });
-}
-
 export { weeklyEventHasModularText };
