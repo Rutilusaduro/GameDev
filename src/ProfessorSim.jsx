@@ -305,6 +305,17 @@ const SPIRIT_INTRO_PARAGRAPHS=[
 const INHABITED_PROFESSOR_PROFILE={name:"The Professor",subject:null,traits:[],origin:"gluttony_spirit"};
 const SPIRIT_XP_PER_LEVEL=40;
 
+// Two-tab log: split the live feed into a narrative "Story" stream and a
+// mechanical "Ledger" stream. Classified by leading marker so push() and
+// every call site stay untouched. Ledger = receipts/stats/system; anything
+// else (in-voice beats, reactions, milestones — incl. un-prefixed prose) is
+// Story, the stream you actually want to read.
+const LEDGER_LOG_PREFIXES = ['🍽️','🧬','🎒','🔧','✅','🍴','💰','💵','⚠️','📡','🪑','🌐','📋','🏆','🖼','💊','🚮','🩻'];
+function isLedgerLogLine(text){
+  const t = (text || '').trimStart();
+  return LEDGER_LOG_PREFIXES.some((p) => t.startsWith(p));
+}
+
 export default function ProfessorSim(){
   const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({
     ...st, ...initGainStats(st), ...initDeviceState(), psych: initPsychState(), corruption: 0,
@@ -330,6 +341,7 @@ export default function ProfessorSim(){
   const [view,setView]=useState("class");
   const [selectedId,setSelectedId]=useState(null);
   const [log,setLog]=useState(["📋 Welcome, Professor. Your class of 15 students awaits."]);
+  const [logTab,setLogTab]=useState("story");
   const [activeEvent,setActiveEvent]=useState(null);
   const [eventQueue,setEventQueue]=useState([]);
   const activeNarrativeCopy = useMemo(() => {
@@ -513,7 +525,7 @@ export default function ProfessorSim(){
   // intimacySceneSelector: {student}
   const logRef=useRef(null);
 
-  useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
+  useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log,logTab]);
 
   useEffect(()=>{
     const handler=(ev)=>{
@@ -7521,12 +7533,35 @@ export default function ProfessorSim(){
 
         </div>
 
-        {/* ── SIDEBAR: LIVE LOG ── */}
+        {/* ── SIDEBAR: LIVE LOG (Story / Ledger tabs) ── */}
         <div style={{...C.side, display:"flex", flexDirection:"column"}}>
-          <p style={{...C.secT, flexShrink:0}}>Event Log — {log.length} entries</p>
-          <div ref={logRef} style={{flex:1, overflow:"auto"}}>
-            {log.map((e,i)=><div key={i} style={C.logE}>{e}</div>)}
-          </div>
+          {(()=>{
+            const entries=log.map((e,i)=>({e,i}));
+            const story=entries.filter(x=>!isLedgerLogLine(x.e));
+            const ledger=entries.filter(x=>isLedgerLogLine(x.e));
+            const shown=logTab==="ledger"?ledger:story;
+            const tabBtn=(id,label,count)=>(
+              <button key={id} type="button" onClick={()=>setLogTab(id)}
+                style={{flex:1,fontSize:10,fontWeight:700,padding:"4px 6px",cursor:"pointer",
+                  border:"none",borderBottom:logTab===id?"2px solid #c090e8":"2px solid transparent",
+                  background:"transparent",color:logTab===id?"#d8a8ff":"#6a5078"}}>
+                {label} <span style={{opacity:0.6,fontWeight:400}}>{count}</span>
+              </button>
+            );
+            return(<>
+              <div style={{display:"flex",flexShrink:0,marginBottom:4}}>
+                {tabBtn("story","📖 Story",story.length)}
+                {tabBtn("ledger","📊 Ledger",ledger.length)}
+              </div>
+              <div ref={logRef} style={{flex:1, overflow:"auto"}}>
+                {shown.length===0
+                  ? <div style={{fontSize:11,color:"#5a3888",fontStyle:"italic",padding:"6px 2px"}}>
+                      {logTab==="ledger"?"No receipts yet this session.":"Nothing's happened yet — feed someone."}
+                    </div>
+                  : shown.map(({e,i})=><div key={i} style={C.logE}>{e}</div>)}
+              </div>
+            </>);
+          })()}
           <button type="button" onClick={()=>{ setFieldNoteError(null); setBugReportOpen(true); }}
             style={{...C.btn('#3a3028'), fontSize:9, marginTop:8, flexShrink:0, opacity:0.85}}>
             📋 Something wrong? Field Notes
