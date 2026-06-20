@@ -15,7 +15,7 @@ import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, I
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
 import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
-import { TALK_CONFIG } from './gameData/talkSystem.js';
+import { TALK_CONFIG, isBodyComplimentUnwelcome, COMPLIMENT_BACKFIRE_REL, COMPLIMENT_BACKFIRE_SCRUTINY } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES, ITEMS } from './gameData/items.js';
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
 import { createInitialPlayer, updatePlayerField } from './gameData/player.js';
@@ -1138,7 +1138,7 @@ export default function ProfessorSim(){
         // Pick from PRIOR history (s, pre-feed) so it reads as a callback.
         let out=reaction;
         const mem=pickStudentMemory(s,week);
-        if(mem&&Math.random()<0.28){
+        if(mem&&Math.random()<0.4){
           const memBeat=renderMemorySelf(projected,week,mem);
           if(memBeat?.trim()) out=`${reaction} ${memBeat}`;
         }
@@ -5817,6 +5817,19 @@ export default function ProfessorSim(){
       push(`🗣 Suggestion planted — ${students.find(s=>s.id===talkStudentId)?.name||'she'} resists less this week.`);
     }
     if(!effect) return;
+    // Body compliments that land wrong (she's not pretty fat yet AND not close
+    // to you) are a negative interaction and draw scrutiny.
+    if(meta.topicId==='compliment'){
+      const target=students.find(x=>x.id===talkStudentId);
+      if(target&&isBodyComplimentUnwelcome(target)){
+        setStudents(prev=>prev.map(x=>x.id===talkStudentId
+          ?{...x,relationship:Math.max(0,(x.relationship||0)-COMPLIMENT_BACKFIRE_REL),mood:"stressed"}
+          :x));
+        addScrutiny(COMPLIMENT_BACKFIRE_SCRUTINY);
+        push(`😬 ${target.name} bristles — unsolicited and unwelcome. −${COMPLIMENT_BACKFIRE_REL} relationship · scrutiny +${COMPLIMENT_BACKFIRE_SCRUTINY}.`);
+        return;
+      }
+    }
     if(effect.cals){
       setStudents(prev=>{
         const st=prev.find(x=>x.id===talkStudentId);

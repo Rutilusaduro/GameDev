@@ -8,6 +8,7 @@ import { TALK_TOPICS, TALK_CONFIG } from '../gameData/talkSystem.js';
 import { buildDevourScene } from '../gameData/devourScene.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
 import { getStage } from '../gameData/stages.js';
+import { isBodyComplimentUnwelcome } from '../gameData/talkSystem.js';
 import { createContext, render } from '../textEngine/engine.js';
 import { traceToFlagNodes } from '../textEngine/textFlagFormat.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
@@ -44,6 +45,7 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
       globals: {
         campusFattening: !!campusFattening,
         campusTier: campusTier || (campusFattening ? 1 : 0),
+        complimentUnwelcome: topic.id === 'compliment' && isBodyComplimentUnwelcome(student),
       },
     });
     const renderOpts = { trace };

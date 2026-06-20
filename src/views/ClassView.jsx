@@ -27,7 +27,7 @@ function RosterTile({ s, week, onOpen }) {
   const tell = useMemo(
     () => {
       const mem = pickStudentMemory(s, week);
-      if (mem && Math.random() < 0.3) {
+      if (mem && Math.random() < 0.45) {
         const m = renderMemorySelf(s, week, mem);
         if (m) return m;
       }
