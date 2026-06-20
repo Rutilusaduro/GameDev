@@ -51,3 +51,25 @@ export function discontentRefusalChance(student) {
   if (tier >= 2) return 0.25;
   return 0;
 }
+
+// ── Confrontation & repair ────────────────────────────────────
+export const CONFRONT_THRESHOLD = 80;        // she confronts you here
+export const AMENDS_FLOOR = 35;              // a sincere apology lands here
+export const GIFT_FLOOR = 15;                // a peace offering goes further
+export const GIFT_COST = 250;                // what smoothing it over costs
+
+const GRIEVANCE_TYPES = ['betrayed', 'creeped', 'exposed'];
+
+/** The grievance she's angriest about — most recent of the offending kinds. */
+export function dominantGrievance(student) {
+  const mems = (student?.memories || []).filter((m) => GRIEVANCE_TYPES.includes(m.t));
+  return mems.length ? mems[mems.length - 1].t : null;
+}
+
+/** Should this girl confront you now? */
+export function shouldConfront(student, week) {
+  if (!student || student.withdrawn) return false;
+  if ((student.discontent || 0) < CONFRONT_THRESHOLD) return false;
+  const last = student.lastConfrontWeek;
+  return last == null || week - last >= 2;
+}

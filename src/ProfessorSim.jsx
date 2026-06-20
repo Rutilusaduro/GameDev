@@ -76,8 +76,10 @@ import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
 import { appendMemory, pickStudentMemory, pickClassMemory } from './gameData/memory.js';
-import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, DISCONTENT_GAIN, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, DISCONTENT_WEEKLY_DECAY } from './gameData/discontent.js';
+import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, DISCONTENT_GAIN, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, DISCONTENT_WEEKLY_DECAY, shouldConfront, dominantGrievance, AMENDS_FLOOR, GIFT_FLOOR, GIFT_COST } from './gameData/discontent.js';
 import { renderDiscontentRefusal } from './textEngine/scenes/discontent/index.js';
+import { renderConfront } from './textEngine/scenes/confront/index.js';
+import { ConfrontationModal } from './components/ConfrontationModal.jsx';
 import { renderMemorySelf, renderMemoryClass } from './textEngine/scenes/memory/index.js';
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding } from './textEngine/scenes/intimacy/index.js';
@@ -472,6 +474,7 @@ export default function ProfessorSim(){
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
   const [weekRecap, setWeekRecap] = useState(null);
   const [milestoneQueue, setMilestoneQueue] = useState(null);
+  const [confrontation, setConfrontation] = useState(null);
   const [forceFeederState, setForceFeederState] = useState(null);
   const [deviceUsageModal, setDeviceUsageModal] = useState(null);
   const [weeklyFeedCounts, setWeeklyFeedCounts] = useState({});
@@ -1077,6 +1080,11 @@ export default function ProfessorSim(){
         return null;
       }
     }
+    // A girl who has walked out won't engage until you make amends.
+    if(s.withdrawn){
+      push(`🚪 ${s.name} has walked out — make amends before she'll take anything from you.`);
+      return null;
+    }
     // An unhappy girl may simply refuse to be fed by you (real stakes).
     if(!opts.compoundId&&!opts.ignoreDiscontent&&getDiscontentTier(s).id>=2&&Math.random()<discontentRefusalChance(s)){
       const dl=renderDiscontentRefusal(s,week,{discontentTier:getDiscontentTier(s).id});
@@ -1645,6 +1653,17 @@ export default function ProfessorSim(){
       return {...s,discontent:disc,memories:mems,mood};
     });
     if(exposedCount>0) setTimeout(()=>push(`😠 ${exposedCount} ${exposedCount===1?"girl bristles":"girls bristle"} at being paraded under this much scrutiny.`),170);
+
+    // A girl pushed past the brink confronts you (one per week).
+    const rebel=updated.find(s=>shouldConfront(s,newWeek));
+    if(rebel){
+      updated=updated.map(s=>s.id===rebel.id?{...s,lastConfrontWeek:newWeek}:s);
+      const grievance=dominantGrievance(rebel);
+      setConfrontation({
+        studentId:rebel.id,name:rebel.name,grievance,winBack:false,withdrawn:false,
+        prose:renderConfront(rebel,newWeek,{grievanceType:grievance||undefined}),
+      });
+    }
 
     // Influence spread
     INFLUENCE_PAIRS.forEach(([a,b])=>{
@@ -5910,6 +5929,47 @@ export default function ProfessorSim(){
     }));
   };
 
+  // ── Confrontation resolution ─────────────────────────────────
+  const confrontApologize=()=>{
+    if(!confrontation) return;
+    const {studentId,winBack}=confrontation;
+    setStudents(prev=>prev.map(x=>x.id===studentId
+      ?{...x,discontent:Math.min(x.discontent||0,AMENDS_FLOOR),mood:"focused",withdrawn:winBack?false:x.withdrawn}
+      :x));
+    const nm=students.find(s=>s.id===studentId)?.name||'She';
+    push(winBack?`🕊 ${nm} comes back — wary, but back. The air clears a little.`:`🕊 You hear ${nm} out and own it. She's not over it, but she stays.`);
+    setConfrontation(null);
+  };
+  const confrontGift=()=>{
+    if(!confrontation) return;
+    if(money<GIFT_COST){ push(`⚠️ Need ${formatMoney(GIFT_COST)} for a peace offering.`); return; }
+    const {studentId,winBack}=confrontation;
+    setMoney(m=>m-GIFT_COST);
+    setStudents(prev=>prev.map(x=>x.id===studentId
+      ?{...x,discontent:Math.min(x.discontent||0,GIFT_FLOOR),mood:"happy",withdrawn:winBack?false:x.withdrawn}
+      :x));
+    const nm=students.find(s=>s.id===studentId)?.name||'She';
+    push(winBack?`🎁 A peace offering for ${nm} — she comes back, mood softened.`:`🎁 A peace offering for ${nm}. It goes a long way; she softens.`);
+    setConfrontation(null);
+  };
+  const confrontStandFirm=()=>{
+    if(!confrontation) return;
+    const {studentId}=confrontation;
+    setStudents(prev=>prev.map(x=>x.id===studentId?{...x,withdrawn:true,mood:"stressed"}:x));
+    const nm=students.find(s=>s.id===studentId)?.name||'She';
+    push(`🚪 ${nm} walks out of your class. She won't engage until you make it right.`);
+    setConfrontation(null);
+  };
+  const openAmends=(studentId)=>{
+    const s=students.find(x=>x.id===studentId);
+    if(!s) return;
+    const grievance=dominantGrievance(s);
+    setConfrontation({
+      studentId:s.id,name:s.name,grievance,winBack:true,withdrawn:!!s.withdrawn,
+      prose:renderConfront(s,week,{grievanceType:grievance||undefined,winBack:true}),
+    });
+  };
+
   const buySkillRank=(sk)=>{
     const rank=ownedSkills[sk.id]||0;
     if(rank>=sk.maxRanks) return;
@@ -7527,7 +7587,7 @@ export default function ProfessorSim(){
         <div style={C.main}>
 
           {/* ── CLASS VIEW ── */}
-          {view==="class"&&<ClassView view={view} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
+          {view==="class"&&<ClassView view={view} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} onAmends={openAmends}/>}
 
           {view==="classroom"&&<ClassroomView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
 
@@ -7743,6 +7803,9 @@ export default function ProfessorSim(){
       {milestoneQueue&&<MilestoneCeremonyModal queue={milestoneQueue}
         onAdvance={()=>setMilestoneQueue(q=>q?{...q,index:q.index+1}:null)}
         onDismissAll={()=>setMilestoneQueue(null)}/>}
+      {confrontation&&<ConfrontationModal confrontation={confrontation} money={money}
+        onApologize={confrontApologize} onGift={confrontGift}
+        onStandFirm={confrontStandFirm} onLeave={()=>setConfrontation(null)}/>}
 
       {/* ── GODDESS VISION MODAL ── */}
 

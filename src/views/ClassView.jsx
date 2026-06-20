@@ -16,10 +16,10 @@ import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 // One roster tile. Extracted so the at-a-glance "tell" can be memoized —
 // it only re-rolls when her meaningful state (size/psyche/appetite/week)
 // changes, so it doesn't flicker on every parent re-render.
-function RosterTile({ s, week, onOpen }) {
+function RosterTile({ s, week, onOpen, onAmends }) {
   const st = getStage(s.lbs);
   const evMeta = s.evolvedForm ? EVOLVED_FORM_META[s.evolvedForm] : null;
-  const cardBorder = evMeta ? `1px solid ${evMeta.color}80` : '1px solid #180830';
+  const cardBorder = s.withdrawn ? '1px solid #c05038' : evMeta ? `1px solid ${evMeta.color}80` : '1px solid #180830';
   const cardBg = addictionTint(s) || '';
   const nameColor = evMeta ? evMeta.color : '#d8a8ff';
   // Mostly a steady-state vibe; occasionally she's caught remembering a
@@ -59,9 +59,17 @@ function RosterTile({ s, week, onOpen }) {
       <div style={{ fontSize: 11, color: '#a88050', margin: '2px 0' }}>
         {s.lbs.toLocaleString()} lbs  (+{s.lbs - s.startLbs}) · ❤ {s.relationship}%
       </div>
-      <div style={{ fontSize: 10.5, color: '#6a5078', fontStyle: 'italic', lineHeight: 1.4, marginTop: 3 }}>
-        {tell}
+      <div style={{ fontSize: 10.5, color: s.withdrawn ? '#c87858' : '#6a5078', fontStyle: 'italic', lineHeight: 1.4, marginTop: 3 }}>
+        {s.withdrawn ? 'has walked out of your class' : tell}
       </div>
+      {s.withdrawn && onAmends && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onAmends(s.id); }}
+          style={{ ...C.btn('#c05038'), width: '100%', marginTop: 6, fontSize: 11 }}
+        >
+          🕊 Make amends
+        </button>
+      )}
     </div>
   );
 }
@@ -75,6 +83,7 @@ export function ClassView({
   setSelectedId,
   setView,
   week = 1,
+  onAmends,
 }) {
   const rosterVisible = (s) => !s.hidden || (s.id === 15 && lilithUnlocked) || (s.id === 17 && elaraDiscovered);
   return (
@@ -84,7 +93,7 @@ export function ClassView({
           <p style={C.secT}>Students — {students.filter(rosterVisible).length} enrolled · avg {avgLbs} lbs</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(195px,1fr))', gridAutoRows: 'minmax(140px,auto)', gap: 8 }}>
             {[...students].filter(rosterVisible).sort((a, b) => a.id - b.id).map((s) => (
-              <RosterTile key={s.id} s={s} week={week} onOpen={() => { setSelectedId(s.id); setView('student'); }} />
+              <RosterTile key={s.id} s={s} week={week} onOpen={() => { setSelectedId(s.id); setView('student'); }} onAmends={onAmends} />
             ))}
           </div>
         </div>
