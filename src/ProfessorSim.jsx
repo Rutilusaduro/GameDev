@@ -1530,10 +1530,17 @@ export default function ProfessorSim(){
           lbsGained:d.lbsGained,gainBand:gainBandFromLbs(d.lbsGained),
           stagedUp,stuffedWeek:d.stuffed,...textOpts,
         });
-        if(prose?.trim()) recapMovers.push({
-          id:ns.id,name:ns.name,lbsGained:d.lbsGained,stagedUp,stuffed:d.stuffed,
-          stageLabel:WEIGHT_STAGES[getStage(ns.lbs).id]?.label,prose,
-        });
+        if(prose?.trim()){
+          const curStageId=getStage(ns.lbs).id;
+          const startStageId=getStage(ns.startLbs??ns.lbs).id;
+          recapMovers.push({
+            id:ns.id,name:ns.name,lbsGained:d.lbsGained,stagedUp,stuffed:d.stuffed,
+            stageLabel:WEIGHT_STAGES[curStageId]?.label,prose,
+            totalGained:Math.round((ns.lbs??0)-(ns.startLbs??ns.lbs??0)),
+            startStageLabel:WEIGHT_STAGES[startStageId]?.label,
+            journeyStages:curStageId-startStageId,
+          });
+        }
       }
       return {...ns,
         stomachCapacity:growth.stomachCapacity+d.capacityGained,
@@ -7593,7 +7600,7 @@ export default function ProfessorSim(){
 
       {/* ── SESSION RESULT ── */}
       {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}
-      {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)}/>}
+      {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)} onSelectGirl={(id)=>{setSelectedId(id);setView("student");setWeekRecap(null);}}/>}
 
       {/* ── GODDESS VISION MODAL ── */}
 
