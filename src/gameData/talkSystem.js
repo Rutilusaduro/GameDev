@@ -67,3 +67,20 @@ export const TALK_CONFIG = {
   auraBonus: 0.35,              // mesmerizing aura weekly bonus
   devouringBonus: 0.30,         // devouring presence weekly bonus
 };
+
+// ── Body-compliment welcome rule ──────────────────────────────
+// Complimenting a girl's body only lands once she's either pretty fat
+// (into the heavier stages) OR close enough to you. Before that it reads
+// as unsolicited and creepy: a negative interaction that also draws
+// admin scrutiny.
+import { getStage } from './stages.js';
+export const COMPLIMENT_WELCOME_STAGE = 5;   // Heavy+ — the body itself earns it
+export const COMPLIMENT_WELCOME_REL = 50;    // ...or she's close enough to want it
+export const COMPLIMENT_BACKFIRE_REL = 4;    // relationship lost when it lands wrong
+export const COMPLIMENT_BACKFIRE_SCRUTINY = 2;
+
+export function isBodyComplimentUnwelcome(student) {
+  if (!student) return false;
+  const stage = getStage(student.lbs ?? 0).id;
+  return stage < COMPLIMENT_WELCOME_STAGE && (student.relationship ?? 0) <= COMPLIMENT_WELCOME_REL;
+}

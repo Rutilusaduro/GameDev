@@ -75,6 +75,36 @@ registerPool("talk.compliment", [
   ]},
 ]);
 
+// ── Unwelcome compliment override ─────────────────────────────
+// When she's neither pretty fat yet nor close to you, a comment on her
+// body lands wrong. priority:3 hard-gates the appreciative skeletons so
+// only the rebuff renders. complimentUnwelcome is set by TalkModal.
+registerModuleVariants("talk.compliment", [
+  { when: { complimentUnwelcome: true }, priority: 3, text: [
+    "{talk.moodOpener|suffix:\n\n}{comp.unwelcome}",
+  ]},
+]);
+
+// Shape: DIALOGUE BEAT — she rebuffs the unsolicited body comment.
+registerPool("comp.unwelcome", [
+  { when: {}, text: [
+    `{subject.name}'s smile goes flat. "That's a weird thing to say to me, honestly." She folds her arms, and the warmth drains out of the room.`,
+    `"My figure." {subject.name} repeats it back, unimpressed, and takes a half-step back. "We're not — please don't do that."`,
+  ]},
+  { when: { stageMax: 2 }, weight: 2, text: [
+    `{subject.name} stiffens. "Okay, that's — no." A glance at the door. "I don't know why you'd comment on my body."`,
+  ]},
+  { when: { stageMin: 3, stageMax: 4 }, weight: 2, text: [
+    `{subject.name} crosses her arms over her middle, defensive. "Is that supposed to be a compliment? Because it doesn't feel like one. Not from you."`,
+  ]},
+  { when: { studentId: 3 }, weight: 4, text: [
+    `Serena's jaw sets. "Don't comment on my body. We're not there, and honestly we may never be." She holds your eye until you look away.`,
+  ]},
+  { when: { studentId: 7 }, weight: 4, text: [
+    `Priya's pen stops. "That was inappropriate, and I think you know it." She makes a note you can't see. "Let's not."`,
+  ]},
+]);
+
 // At stages 7+ the body is not a footnote but the whole argument;
 // priority:2 beats priority:1 corruption-only skeletons.
 registerModuleVariants("talk.compliment", [

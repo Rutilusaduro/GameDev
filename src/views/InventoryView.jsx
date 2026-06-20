@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { C } from '../styles.js';
 import { ITEMS } from '../gameData/items.js';
+import { foodProfile } from '../textEngine/scenes/feedReaction/index.js';
 
 const RARITY_COLORS = { common:"#8a8a7a", uncommon:"#4a9a5a", rare:"#c8860a" };
 
@@ -24,6 +25,12 @@ export function InventoryView({ inventory, setItemTargetPicker }){
               <span style={{...C.tag(`${RARITY_COLORS[item.rarity]}30`,RARITY_COLORS[item.rarity])}}>×{inventory[item.id]}</span>
             </div>
             <div style={{fontSize:11,color:"#5a3888",marginBottom:8,lineHeight:1.4}}>{item.desc}</div>
+            {(()=>{const p=foodProfile(item.label,item.cal,item.full);return(
+              <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8,fontSize:10}}>
+                <span style={{...C.tag(p.dense?"#7a3a1a30":"#3a5a7a30",p.dense?"#d88030":"#70a0d0")}}>{p.icon} {p.kindLabel}</span>
+                <span style={{color:"#7a6a55",fontStyle:"italic"}}>{p.fill}</span>
+              </div>
+            );})()}
             <div style={{display:"flex",justifyContent:"space-between",marginBottom:8,fontSize:10,color:"#604030"}}>
               <span>{item.cal.toLocaleString()} cal</span>
               <span>{item.full} fullness</span>
@@ -44,7 +51,11 @@ export function ItemTargetPicker({ itemTargetPicker, setItemTargetPicker, studen
       <div style={{...C.modal,maxWidth:460}}>
         <div style={{fontSize:9,letterSpacing:3,color:"#9050c8",marginBottom:6}}>USE ITEM</div>
         <div style={{fontSize:14,fontWeight:700,color:"#c090e8",marginBottom:4}}>{item.emoji} {item.label}</div>
-        <div style={{fontSize:11,color:"#5a3888",marginBottom:12}}>{item.cal.toLocaleString()} cal · {item.full} fullness — who's it for?</div>
+        {(()=>{const p=foodProfile(item.label,item.cal,item.full);return(
+          <div style={{fontSize:11,color:"#5a3888",marginBottom:12}}>
+            {p.icon} {p.kindLabel} · <span style={{fontStyle:"italic",color:"#7a6a55"}}>{p.fill}</span> — {item.cal.toLocaleString()} cal · {item.full} fullness — who's it for?
+          </div>
+        );})()}
         <div style={{maxHeight:320,overflowY:"auto",marginBottom:10}}>
           {students.filter(s=>!s.hidden||lilithUnlocked).map(s=>{
             const cap=s.stomachCapacity||100;

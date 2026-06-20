@@ -15,7 +15,7 @@ import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, I
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
 import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
-import { TALK_CONFIG } from './gameData/talkSystem.js';
+import { TALK_CONFIG, isBodyComplimentUnwelcome, COMPLIMENT_BACKFIRE_REL, COMPLIMENT_BACKFIRE_SCRUTINY } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES, ITEMS } from './gameData/items.js';
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
 import { createInitialPlayer, updatePlayerField } from './gameData/player.js';
@@ -70,6 +70,17 @@ import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
 import { renderDinnerEnding, renderDinnerDepth, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter, renderDinnerOverfill, renderDinnerDishDesc } from './textEngine/scenes/dinner/index.js';
 import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
+import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
+import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
+import { WeekRecapModal } from './components/WeekRecapModal.jsx';
+import { renderMilestone } from './textEngine/scenes/milestone/index.js';
+import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
+import { appendMemory, pickStudentMemory, pickClassMemory } from './gameData/memory.js';
+import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, grievanceGain, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, DISCONTENT_WEEKLY_DECAY, DISCONTENT_RIPPLE, shouldConfront, dominantGrievance, AMENDS_FLOOR, GIFT_FLOOR, GIFT_COST } from './gameData/discontent.js';
+import { renderDiscontentRefusal } from './textEngine/scenes/discontent/index.js';
+import { renderConfront } from './textEngine/scenes/confront/index.js';
+import { ConfrontationModal } from './components/ConfrontationModal.jsx';
+import { renderMemorySelf, renderMemoryClass } from './textEngine/scenes/memory/index.js';
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding } from './textEngine/scenes/intimacy/index.js';
 import './textEngine/scenes/intimacy/scenes.js';
@@ -300,6 +311,17 @@ const SPIRIT_INTRO_PARAGRAPHS=[
 const INHABITED_PROFESSOR_PROFILE={name:"The Professor",subject:null,traits:[],origin:"gluttony_spirit"};
 const SPIRIT_XP_PER_LEVEL=40;
 
+// Two-tab log: split the live feed into a narrative "Story" stream and a
+// mechanical "Ledger" stream. Classified by leading marker so push() and
+// every call site stay untouched. Ledger = receipts/stats/system; anything
+// else (in-voice beats, reactions, milestones — incl. un-prefixed prose) is
+// Story, the stream you actually want to read.
+const LEDGER_LOG_PREFIXES = ['🍽️','🧬','🎒','🔧','✅','🍴','💰','💵','⚠️','📡','🪑','🌐','📋','🏆','🖼','💊','🚮','🩻'];
+function isLedgerLogLine(text){
+  const t = (text || '').trimStart();
+  return LEDGER_LOG_PREFIXES.some((p) => t.startsWith(p));
+}
+
 export default function ProfessorSim(){
   const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({
     ...st, ...initGainStats(st), ...initDeviceState(), psych: initPsychState(), corruption: 0,
@@ -325,6 +347,7 @@ export default function ProfessorSim(){
   const [view,setView]=useState("class");
   const [selectedId,setSelectedId]=useState(null);
   const [log,setLog]=useState(["📋 Welcome, Professor. Your class of 15 students awaits."]);
+  const [logTab,setLogTab]=useState("story");
   const [activeEvent,setActiveEvent]=useState(null);
   const [eventQueue,setEventQueue]=useState([]);
   const activeNarrativeCopy = useMemo(() => {
@@ -449,6 +472,9 @@ export default function ProfessorSim(){
   const [deviceTickQueue, setDeviceTickQueue] = useState(null);
   const [equipModalStudentId, setEquipModalStudentId] = useState(null);
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
+  const [weekRecap, setWeekRecap] = useState(null);
+  const [milestoneQueue, setMilestoneQueue] = useState(null);
+  const [confrontation, setConfrontation] = useState(null);
   const [forceFeederState, setForceFeederState] = useState(null);
   const [deviceUsageModal, setDeviceUsageModal] = useState(null);
   const [weeklyFeedCounts, setWeeklyFeedCounts] = useState({});
@@ -506,7 +532,7 @@ export default function ProfessorSim(){
   // intimacySceneSelector: {student}
   const logRef=useRef(null);
 
-  useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log]);
+  useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log,logTab]);
 
   useEffect(()=>{
     const handler=(ev)=>{
@@ -1054,6 +1080,17 @@ export default function ProfessorSim(){
         return null;
       }
     }
+    // A girl who has walked out won't engage until you make amends.
+    if(s.withdrawn){
+      push(`🚪 ${s.name} has walked out — make amends before she'll take anything from you.`);
+      return null;
+    }
+    // An unhappy girl may simply refuse to be fed by you (real stakes).
+    if(!opts.compoundId&&!opts.ignoreDiscontent&&getDiscontentTier(s).id>=2&&Math.random()<discontentRefusalChance(s)){
+      const dl=renderDiscontentRefusal(s,week,{discontentTier:getDiscontentTier(s).id});
+      push(`🙅 ${dl||`${s.name} refuses to take anything from you right now.`}`);
+      return null;
+    }
     const eff=aggregateSkillEffects(ownedSkills);
     const stageId=getStage(s.lbs).id;
     const cap=getFeedCapacity(s,{
@@ -1100,6 +1137,30 @@ export default function ProfessorSim(){
     const scaledCals=Math.round(calories*(s.gainMultiplier||1)*profGainMult*calMult);
     const scaledFull=scaledFullEarly;
     if(label) push(`🍽️ ${label} — ${s.name}: +${scaledCals.toLocaleString()} cal (fullness ${Math.min(999,(s.fullness||0)+scaledFull)}/${cap})`);
+    let feedWeekUsed=null;
+    if(label){
+      const feedRoom=feedRoomFromFullness(((s.fullness||0)+scaledFull)/Math.max(1,cap),forced);
+      // Render off a projected POST-feed snapshot so {word.fullness} agrees
+      // with the room band (she can't read "still hungry" while she's stuffed).
+      const projected={...s,fullness:(s.fullness||0)+scaledFull,stomachCapacity:cap};
+      // Per-girl week bag → reaction lines don't repeat within a week.
+      feedWeekUsed=weekUsedFromStudent(s);
+      const reaction=renderFeedReaction(projected,week,{
+        foodKind:foodKindFromFeed(label,calories,fullnessCost),feedRoom,
+        weekUsed:feedWeekUsed,sessionUsed:createSessionUsed(),
+      });
+      if(reaction?.trim()){
+        // Occasionally she references a recent meal/milestone mid-feed.
+        // Pick from PRIOR history (s, pre-feed) so it reads as a callback.
+        let out=reaction;
+        const mem=pickStudentMemory(s,week);
+        if(mem&&Math.random()<0.4){
+          const memBeat=renderMemorySelf(projected,week,mem);
+          if(memBeat?.trim()) out=`${reaction} ${memBeat}`;
+        }
+        setTimeout(()=>push(out),40);
+      }
+    }
     if(Math.random()<CORRUPTION_CONFIG.dialogueChance){
       const voiceLine=renderFeedVoice(s, week);
       if(voiceLine?.trim()){
@@ -1162,6 +1223,20 @@ export default function ProfessorSim(){
         }
         setTimeout(()=>push(`💊 ${compound.label} — ${s.name} gains ${lbsGain} lbs immediately. Fullness unchanged.`),75);
       }
+    }
+    if(feedWeekUsed) result={...result,...weekUsedToPatch(feedWeekUsed)};
+    // Record a memory of a notable feed — a forced meal, or a real feast —
+    // so the prose can call back to it later.
+    const memEvent=forced?'forced':((fullnessCost>=40||/feast|banquet|platter/i.test(label||''))?'feast':null);
+    if(memEvent) result={...result,memories:appendMemory(result.memories,memEvent,week)};
+    // Force-feeding her before she trusts you is a betrayal — it festers.
+    // A willing feed is attention, and eases discontent a little.
+    if(forced&&forceFeedIsBetrayal(s)){
+      result={...result,mood:"stressed",
+        discontent:bumpDiscontent(result.discontent,grievanceGain(s,'betrayed')),
+        memories:appendMemory(result.memories,'betrayed',week)};
+    } else if(!forced&&(result.discontent||0)>0){
+      result={...result,discontent:Math.max(0,(result.discontent||0)-DISCONTENT_EASE_FEED)};
     }
     const hungerEff=aggregateSkillEffects(ownedSkills);
     const fedStudent=feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
@@ -1446,6 +1521,8 @@ export default function ProfessorSim(){
     // ── WEEKLY DIGESTION: convert this week's fed calories into weight ──
     const digestLines=[];
     const digestGrowthEvents=[];
+    const recapMovers=[];
+    const milestones=[];
     updated=updated.map(s=>{
       if((s.consumedCalories||0)<=0&&(s.fullness||0)<=0&&!s.stuffedStreak) return s;
       const digestTextSession={
@@ -1459,7 +1536,10 @@ export default function ProfessorSim(){
       let ns=s;
       if(d.lbsGained>0) ns=processStudentGain(s,d.lbsGained,0);
       const stagedUp=getStage(ns.lbs).id>oldStageId;
-      const growthEv=stagedUp||d.lbsGained>=8?buildGrowthEvent(ns,{
+      // Stage-ups route to the dedicated Milestone Ceremony (below), not the
+      // generic growth-event popup — so big-gain-without-stageup still shows
+      // there, but a stage crossing gets its own set-piece.
+      const growthEv=(!stagedUp&&d.lbsGained>=8)?buildGrowthEvent(ns,{
         cause:{ type:'digest_stageup', locale:'campus' },
         preLbs,
         gainLbs:d.lbsGained,
@@ -1480,6 +1560,7 @@ export default function ProfessorSim(){
         const newC=addCorruption({...ns,corruption},CORRUPTION_CONFIG.perStuffedWeek,textOpts);
         Object.assign(ns,{...corruptionStudentPatch({...ns,corruption},newC,week)});
         corruption=ns.corruption;
+        ns.memories=appendMemory(ns.memories,'stuffed',week);
       }
       if(stagedUp){
         const newC=addCorruption(ns,CORRUPTION_CONFIG.perStageUp,textOpts);
@@ -1490,8 +1571,21 @@ export default function ProfessorSim(){
           clothingState:clothState,
         });
         corruption=ns.corruption;
-        const clothLine=renderClothScene({...ns,clothingState:clothState},week,{clothingState:clothState,...textOpts});
-        if(clothLine) setTimeout(()=>push(`👗 ${clothLine}`),400);
+        ns.memories=appendMemory(ns.memories,'stageUp',week,newStageId);
+        // The stage crossing becomes a Milestone Ceremony: body-as-she-grows
+        // + the garment giving way + her reaction, in its own popup.
+        const milestoneTrace=[];
+        const ceremony=renderMilestone({...ns,clothingState:clothState},week,{
+          clothingState:clothState,trace:milestoneTrace,...textOpts,
+        });
+        if(ceremony?.trim()){
+          milestones.push({
+            id:ns.id,name:ns.name,stageLabel:WEIGHT_STAGES[newStageId]?.label,
+            gainLbs:d.lbsGained,endLbs:Math.round(ns.lbs),prose:ceremony,
+            traceNodes:milestoneTrace.filter(t=>t.text&&t.text.trim()&&!t.key.startsWith('subject.')),
+          });
+          setTimeout(()=>push(`✦ ${ns.name} crossed a threshold — ${WEIGHT_STAGES[newStageId]?.label}.`),120);
+        }
         if(newStageId>=10){
           const immobLine=renderImmobScene(ns,week,textOpts);
           if(immobLine) setTimeout(()=>push(`🛋️ ${immobLine}`),480);
@@ -1504,6 +1598,23 @@ export default function ProfessorSim(){
         carriedFullness=Math.round((growth.stomachCapacity+d.capacityGained)*1.15);
         const autoLine=CORRUPTION_AUTO_LINES[rnd(0,CORRUPTION_AUTO_LINES.length-1)](ns);
         setTimeout(()=>push(`💭 ${autoLine}`),250);
+      }
+      if(d.lbsGained>0||stagedUp||d.stuffed){
+        const prose=renderWeekRecap(ns,newWeek,{
+          lbsGained:d.lbsGained,gainBand:gainBandFromLbs(d.lbsGained),
+          stagedUp,stuffedWeek:d.stuffed,...textOpts,
+        });
+        if(prose?.trim()){
+          const curStageId=getStage(ns.lbs).id;
+          const startStageId=getStage(ns.startLbs??ns.lbs).id;
+          recapMovers.push({
+            id:ns.id,name:ns.name,lbsGained:d.lbsGained,stagedUp,stuffed:d.stuffed,
+            stageLabel:WEIGHT_STAGES[curStageId]?.label,prose,
+            totalGained:Math.round((ns.lbs??0)-(ns.startLbs??ns.lbs??0)),
+            startStageLabel:WEIGHT_STAGES[startStageId]?.label,
+            journeyStages:curStageId-startStageId,
+          });
+        }
       }
       return {...ns,
         stomachCapacity:growth.stomachCapacity+d.capacityGained,
@@ -1521,6 +1632,36 @@ export default function ProfessorSim(){
       setDeviceTickQueue(prev=>{
         const events=prev?.events?[...prev.events,...digestGrowthEvents]:digestGrowthEvents;
         return { events, index: prev?.index??0 };
+      });
+    }
+
+    // ── DISCONTENT weekly tick ──────────────────────────────────
+    // Cools if you've stopped offending; public exposure (high scrutiny)
+    // stings visible girls who aren't yet comfortable being seen.
+    let exposedCount=0;
+    updated=updated.map(s=>{
+      let disc=Math.max(0,(s.discontent||0)-DISCONTENT_WEEKLY_DECAY);
+      let mems=s.memories,mood=s.mood;
+      const exposed=scrutinyTier?.id>=2&&!s.hidden&&getStage(s.lbs).id>=5&&getCorruptionTier(s.corruption||0).id===0;
+      if(exposed&&Math.random()<0.5){
+        disc=bumpDiscontent(disc,grievanceGain(s,'exposed'));
+        mems=appendMemory(mems,'exposed',newWeek);
+        mood="stressed";
+        exposedCount++;
+      }
+      if(disc===(s.discontent||0)&&mems===s.memories&&mood===s.mood) return s;
+      return {...s,discontent:disc,memories:mems,mood};
+    });
+    if(exposedCount>0) setTimeout(()=>push(`😠 ${exposedCount} ${exposedCount===1?"girl bristles":"girls bristle"} at being paraded under this much scrutiny.`),170);
+
+    // A girl pushed past the brink confronts you (one per week).
+    const rebel=updated.find(s=>shouldConfront(s,newWeek));
+    if(rebel){
+      updated=updated.map(s=>s.id===rebel.id?{...s,lastConfrontWeek:newWeek}:s);
+      const grievance=dominantGrievance(rebel);
+      setConfrontation({
+        studentId:rebel.id,name:rebel.name,grievance,winBack:false,withdrawn:false,
+        prose:renderConfront(rebel,newWeek,{grievanceType:grievance||undefined}),
       });
     }
 
@@ -1640,6 +1781,23 @@ export default function ProfessorSim(){
     if(newlyTriggered&&!nextOpposition.supernatural.ascensionOffered) setSupernaturalModalOpen(true);
 
     setStudents(updated.map(s=>clearWeeklyTextFlags(s,week)));
+    if(recapMovers.length){
+      const ordered=recapMovers
+        .sort((a,b)=>(b.stagedUp?1:0)-(a.stagedUp?1:0)||b.lbsGained-a.lbsGained)
+        .slice(0,6)
+        .map(m=>{
+          // Memory callback: her own history, or cross-girl gossip (~40%).
+          const live=updated.find(u=>u.id===m.id)||m;
+          const selfMem=pickStudentMemory(live,week);
+          const classMem=pickClassMemory(updated,week,m.id);
+          let memoryProse='';
+          if(classMem&&(!selfMem||Math.random()<0.4)) memoryProse=renderMemoryClass(live,week,classMem);
+          else if(selfMem) memoryProse=renderMemorySelf(live,week,selfMem);
+          return {...m,memoryProse};
+        });
+      setWeekRecap({week:newWeek,movers:ordered});
+    }
+    if(milestones.length) setMilestoneQueue({events:milestones,index:0});
     // Admin notices visibly large students (hidden students like Lilith don't trigger scrutiny)
     const visibleCount=updated.filter(s=>!s.hidden&&getStage(s.lbs).id>=5).length;
     if(visibleCount>0) addScrutiny(visibleCount);
@@ -5714,6 +5872,21 @@ export default function ProfessorSim(){
       push(`🗣 Suggestion planted — ${students.find(s=>s.id===talkStudentId)?.name||'she'} resists less this week.`);
     }
     if(!effect) return;
+    // Body compliments that land wrong (she's not pretty fat yet AND not close
+    // to you) are a negative interaction and draw scrutiny.
+    if(meta.topicId==='compliment'){
+      const target=students.find(x=>x.id===talkStudentId);
+      if(target&&isBodyComplimentUnwelcome(target)){
+        setStudents(prev=>prev.map(x=>x.id===talkStudentId
+          ?{...x,relationship:Math.max(0,(x.relationship||0)-COMPLIMENT_BACKFIRE_REL),mood:"stressed",
+             discontent:bumpDiscontent(x.discontent,grievanceGain(x,'creeped')),
+             memories:appendMemory(x.memories,'creeped',week)}
+          :x));
+        addScrutiny(COMPLIMENT_BACKFIRE_SCRUTINY);
+        push(`😬 ${target.name} bristles — unsolicited and unwelcome. −${COMPLIMENT_BACKFIRE_REL} relationship · scrutiny +${COMPLIMENT_BACKFIRE_SCRUTINY}.`);
+        return;
+      }
+    }
     if(effect.cals){
       setStudents(prev=>{
         const st=prev.find(x=>x.id===talkStudentId);
@@ -5750,8 +5923,59 @@ export default function ProfessorSim(){
       let ns={...x};
       if(effect.rel) ns.relationship=Math.min(100,ns.relationship+(effect.rel||0));
       if(effect.corruption) ns={...ns,corruption:addCorruption(ns,effect.corruption)};
+      // Talking to her is attention — it cools discontent.
+      if((ns.discontent||0)>0) ns.discontent=Math.max(0,ns.discontent-DISCONTENT_EASE_TALK);
       return ns;
     }));
+  };
+
+  // ── Confrontation resolution ─────────────────────────────────
+  const confrontApologize=()=>{
+    if(!confrontation) return;
+    const {studentId,winBack}=confrontation;
+    setStudents(prev=>prev.map(x=>x.id===studentId
+      ?{...x,discontent:Math.min(x.discontent||0,AMENDS_FLOOR),mood:"focused",withdrawn:winBack?false:x.withdrawn}
+      :x));
+    const nm=students.find(s=>s.id===studentId)?.name||'She';
+    push(winBack?`🕊 ${nm} comes back — wary, but back. The air clears a little.`:`🕊 You hear ${nm} out and own it. She's not over it, but she stays.`);
+    setConfrontation(null);
+  };
+  const confrontGift=()=>{
+    if(!confrontation) return;
+    if(money<GIFT_COST){ push(`⚠️ Need ${formatMoney(GIFT_COST)} for a peace offering.`); return; }
+    const {studentId,winBack}=confrontation;
+    setMoney(m=>m-GIFT_COST);
+    setStudents(prev=>prev.map(x=>x.id===studentId
+      ?{...x,discontent:Math.min(x.discontent||0,GIFT_FLOOR),mood:"happy",withdrawn:winBack?false:x.withdrawn}
+      :x));
+    const nm=students.find(s=>s.id===studentId)?.name||'She';
+    push(winBack?`🎁 A peace offering for ${nm} — she comes back, mood softened.`:`🎁 A peace offering for ${nm}. It goes a long way; she softens.`);
+    setConfrontation(null);
+  };
+  const confrontStandFirm=()=>{
+    if(!confrontation) return;
+    const {studentId}=confrontation;
+    let witnesses=0;
+    setStudents(prev=>prev.map(x=>{
+      if(x.id===studentId) return {...x,withdrawn:true,mood:"stressed"};
+      // The rest of the room watches one of their own get driven out.
+      if(x.hidden||x.withdrawn) return x;
+      witnesses++;
+      return {...x,discontent:bumpDiscontent(x.discontent,DISCONTENT_RIPPLE)};
+    }));
+    const nm=students.find(s=>s.id===studentId)?.name||'She';
+    push(`🚪 ${nm} walks out of your class. She won't engage until you make it right.`);
+    if(witnesses>0) setTimeout(()=>push(`😶 The room goes quiet — the others watched her go, and it sits with them.`),180);
+    setConfrontation(null);
+  };
+  const openAmends=(studentId)=>{
+    const s=students.find(x=>x.id===studentId);
+    if(!s) return;
+    const grievance=dominantGrievance(s);
+    setConfrontation({
+      studentId:s.id,name:s.name,grievance,winBack:true,withdrawn:!!s.withdrawn,
+      prose:renderConfront(s,week,{grievanceType:grievance||undefined,winBack:true}),
+    });
   };
 
   const buySkillRank=(sk)=>{
@@ -7371,7 +7595,7 @@ export default function ProfessorSim(){
         <div style={C.main}>
 
           {/* ── CLASS VIEW ── */}
-          {view==="class"&&<ClassView view={view} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState}/>}
+          {view==="class"&&<ClassView view={view} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} onAmends={openAmends}/>}
 
           {view==="classroom"&&<ClassroomView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
 
@@ -7458,12 +7682,35 @@ export default function ProfessorSim(){
 
         </div>
 
-        {/* ── SIDEBAR: LIVE LOG ── */}
+        {/* ── SIDEBAR: LIVE LOG (Story / Ledger tabs) ── */}
         <div style={{...C.side, display:"flex", flexDirection:"column"}}>
-          <p style={{...C.secT, flexShrink:0}}>Event Log — {log.length} entries</p>
-          <div ref={logRef} style={{flex:1, overflow:"auto"}}>
-            {log.map((e,i)=><div key={i} style={C.logE}>{e}</div>)}
-          </div>
+          {(()=>{
+            const entries=log.map((e,i)=>({e,i}));
+            const story=entries.filter(x=>!isLedgerLogLine(x.e));
+            const ledger=entries.filter(x=>isLedgerLogLine(x.e));
+            const shown=logTab==="ledger"?ledger:story;
+            const tabBtn=(id,label,count)=>(
+              <button key={id} type="button" onClick={()=>setLogTab(id)}
+                style={{flex:1,fontSize:10,fontWeight:700,padding:"4px 6px",cursor:"pointer",
+                  border:"none",borderBottom:logTab===id?"2px solid #c090e8":"2px solid transparent",
+                  background:"transparent",color:logTab===id?"#d8a8ff":"#6a5078"}}>
+                {label} <span style={{opacity:0.6,fontWeight:400}}>{count}</span>
+              </button>
+            );
+            return(<>
+              <div style={{display:"flex",flexShrink:0,marginBottom:4}}>
+                {tabBtn("story","📖 Story",story.length)}
+                {tabBtn("ledger","📊 Ledger",ledger.length)}
+              </div>
+              <div ref={logRef} style={{flex:1, overflow:"auto"}}>
+                {shown.length===0
+                  ? <div style={{fontSize:11,color:"#5a3888",fontStyle:"italic",padding:"6px 2px"}}>
+                      {logTab==="ledger"?"No receipts yet this session.":"Nothing's happened yet — feed someone."}
+                    </div>
+                  : shown.map(({e,i})=><div key={i} style={C.logE}>{e}</div>)}
+              </div>
+            </>);
+          })()}
           <button type="button" onClick={()=>{ setFieldNoteError(null); setBugReportOpen(true); }}
             style={{...C.btn('#3a3028'), fontSize:9, marginTop:8, flexShrink:0, opacity:0.85}}>
             📋 Something wrong? Field Notes
@@ -7542,7 +7789,10 @@ export default function ProfessorSim(){
         setWeighInState={setWeighInState}
         bigScaleUnlocked={bigScaleUnlocked}
         brokeScaleIds={brokeScaleIds}
-        onBreakScale={(sid)=>setBrokeScaleIds(arr=>arr.includes(sid)?arr:[...arr,sid])}
+        onBreakScale={(sid)=>{
+          setBrokeScaleIds(arr=>arr.includes(sid)?arr:[...arr,sid]);
+          setStudents(prev=>prev.map(s=>s.id===sid?{...s,memories:appendMemory(s.memories,'scaleBreak',week)}:s));
+        }}
         onUnlockBigScale={()=>{ setBigScaleUnlocked(true); push("⚖ Ordered a heavy-duty 1000 lb scale."); }}
         onMandatorySkip={weighInState?.aibMandatory ? ()=>{
           addScrutiny(12);
@@ -7557,6 +7807,13 @@ export default function ProfessorSim(){
 
       {/* ── SESSION RESULT ── */}
       {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}
+      {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)} onSelectGirl={(id)=>{setSelectedId(id);setView("student");setWeekRecap(null);}}/>}
+      {milestoneQueue&&<MilestoneCeremonyModal queue={milestoneQueue}
+        onAdvance={()=>setMilestoneQueue(q=>q?{...q,index:q.index+1}:null)}
+        onDismissAll={()=>setMilestoneQueue(null)}/>}
+      {confrontation&&<ConfrontationModal confrontation={confrontation} money={money}
+        onApologize={confrontApologize} onGift={confrontGift}
+        onStandFirm={confrontStandFirm} onLeave={()=>setConfrontation(null)}/>}
 
       {/* ── GODDESS VISION MODAL ── */}
 
