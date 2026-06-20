@@ -37,6 +37,7 @@ export function WeekRecapModal({ weekRecap, onClose, onSelectGirl }){
                   </div>
                 </div>
                 <div style={{fontSize:12.5,color:"#caa8e8",lineHeight:1.5}}>{m.prose}</div>
+                {m.memoryProse&&<div style={{marginTop:5,fontSize:11.5,color:"#9a7ac0",lineHeight:1.45}}>{m.memoryProse}</div>}
                 {journey&&<div style={{marginTop:6,fontSize:10.5,color:"#8a6ab0",fontStyle:"italic"}}>{journey}</div>}
               </div>
             );

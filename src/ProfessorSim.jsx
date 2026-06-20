@@ -75,6 +75,8 @@ import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
+import { appendMemory, pickStudentMemory, pickClassMemory } from './gameData/memory.js';
+import { renderMemorySelf, renderMemoryClass } from './textEngine/scenes/memory/index.js';
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding } from './textEngine/scenes/intimacy/index.js';
 import './textEngine/scenes/intimacy/scenes.js';
@@ -1197,6 +1199,10 @@ export default function ProfessorSim(){
       }
     }
     if(feedWeekUsed) result={...result,...weekUsedToPatch(feedWeekUsed)};
+    // Record a memory of a notable feed — a forced meal, or a real feast —
+    // so the prose can call back to it later.
+    const memEvent=forced?'forced':((fullnessCost>=40||/feast|banquet|platter/i.test(label||''))?'feast':null);
+    if(memEvent) result={...result,memories:appendMemory(result.memories,memEvent,week)};
     const hungerEff=aggregateSkillEffects(ownedSkills);
     const fedStudent=feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
     setWeeklyFeedCounts(prev=>({...prev,[s.id]:(prev[s.id]||0)+1}));
@@ -1519,6 +1525,7 @@ export default function ProfessorSim(){
         const newC=addCorruption({...ns,corruption},CORRUPTION_CONFIG.perStuffedWeek,textOpts);
         Object.assign(ns,{...corruptionStudentPatch({...ns,corruption},newC,week)});
         corruption=ns.corruption;
+        ns.memories=appendMemory(ns.memories,'stuffed',week);
       }
       if(stagedUp){
         const newC=addCorruption(ns,CORRUPTION_CONFIG.perStageUp,textOpts);
@@ -1529,6 +1536,7 @@ export default function ProfessorSim(){
           clothingState:clothState,
         });
         corruption=ns.corruption;
+        ns.memories=appendMemory(ns.memories,'stageUp',week,newStageId);
         // The stage crossing becomes a Milestone Ceremony: body-as-she-grows
         // + the garment giving way + her reaction, in its own popup.
         const milestoneTrace=[];
@@ -1711,7 +1719,17 @@ export default function ProfessorSim(){
     if(recapMovers.length){
       const ordered=recapMovers
         .sort((a,b)=>(b.stagedUp?1:0)-(a.stagedUp?1:0)||b.lbsGained-a.lbsGained)
-        .slice(0,6);
+        .slice(0,6)
+        .map(m=>{
+          // Memory callback: her own history, or cross-girl gossip (~40%).
+          const live=updated.find(u=>u.id===m.id)||m;
+          const selfMem=pickStudentMemory(live,week);
+          const classMem=pickClassMemory(updated,week,m.id);
+          let memoryProse='';
+          if(classMem&&(!selfMem||Math.random()<0.4)) memoryProse=renderMemoryClass(live,week,classMem);
+          else if(selfMem) memoryProse=renderMemorySelf(live,week,selfMem);
+          return {...m,memoryProse};
+        });
       setWeekRecap({week:newWeek,movers:ordered});
     }
     if(milestones.length) setMilestoneQueue({events:milestones,index:0});
@@ -7640,7 +7658,10 @@ export default function ProfessorSim(){
         setWeighInState={setWeighInState}
         bigScaleUnlocked={bigScaleUnlocked}
         brokeScaleIds={brokeScaleIds}
-        onBreakScale={(sid)=>setBrokeScaleIds(arr=>arr.includes(sid)?arr:[...arr,sid])}
+        onBreakScale={(sid)=>{
+          setBrokeScaleIds(arr=>arr.includes(sid)?arr:[...arr,sid]);
+          setStudents(prev=>prev.map(s=>s.id===sid?{...s,memories:appendMemory(s.memories,'scaleBreak',week)}:s));
+        }}
         onUnlockBigScale={()=>{ setBigScaleUnlocked(true); push("⚖ Ordered a heavy-duty 1000 lb scale."); }}
         onMandatorySkip={weighInState?.aibMandatory ? ()=>{
           addScrutiny(12);
