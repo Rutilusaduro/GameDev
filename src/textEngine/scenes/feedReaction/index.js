@@ -202,3 +202,31 @@ export function feedRoomFromFullness(fullnessRatio = 0, forced = false) {
   if (fullnessRatio < 0.8) return 'filling';
   return 'tight';
 }
+
+// ── UI: at-a-glance food identity ─────────────────────────────
+// Surfaces what a feed IS and what it DOES so the player can tell
+// donuts from a banquet before committing (loop "choices blur" fix).
+const FOOD_KIND_META = {
+  sweet:  { icon: '🍰', label: 'sweet' },
+  hearty: { icon: '🍲', label: 'hearty' },
+  drink:  { icon: '🥤', label: 'drink' },
+  spread: { icon: '🍱', label: 'spread' },
+};
+
+/**
+ * Display descriptor for a feed. `fill` translates cal-per-fullness into the
+ * real strategic axis: weight-dense feeds pack lbs with room to spare; low
+ * density fills her toward capacity (and the stuffed-week bonus) fast.
+ * @returns {{kind, icon, kindLabel, fill, dense}}
+ */
+export function foodProfile(label = '', calories = 0, fullnessCost = 0) {
+  const kind = foodKindFromFeed(label, calories, fullnessCost);
+  const meta = FOOD_KIND_META[kind] || FOOD_KIND_META.hearty;
+  const density = fullnessCost > 0 ? calories / fullnessCost : calories;
+  let fill;
+  if (density >= 280) fill = 'packs weight, barely fills';
+  else if (density >= 200) fill = 'rich, efficient calories';
+  else if (density >= 150) fill = 'hearty, solid fill';
+  else fill = 'fills her up fast';
+  return { kind, icon: meta.icon, kindLabel: meta.label, fill, dense: density >= 240 };
+}
