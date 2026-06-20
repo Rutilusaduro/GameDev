@@ -70,6 +70,7 @@ import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
 import { renderDinnerEnding, renderDinnerDepth, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter, renderDinnerOverfill, renderDinnerDishDesc } from './textEngine/scenes/dinner/index.js';
 import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
+import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding } from './textEngine/scenes/intimacy/index.js';
 import './textEngine/scenes/intimacy/scenes.js';
@@ -1100,6 +1101,11 @@ export default function ProfessorSim(){
     const scaledCals=Math.round(calories*(s.gainMultiplier||1)*profGainMult*calMult);
     const scaledFull=scaledFullEarly;
     if(label) push(`🍽️ ${label} — ${s.name}: +${scaledCals.toLocaleString()} cal (fullness ${Math.min(999,(s.fullness||0)+scaledFull)}/${cap})`);
+    if(label){
+      const feedRoom=feedRoomFromFullness(((s.fullness||0)+scaledFull)/Math.max(1,cap),forced);
+      const reaction=renderFeedReaction(s,week,{foodKind:foodKindFromFeed(label,calories,fullnessCost),feedRoom});
+      if(reaction?.trim()) setTimeout(()=>push(reaction),40);
+    }
     if(Math.random()<CORRUPTION_CONFIG.dialogueChance){
       const voiceLine=renderFeedVoice(s, week);
       if(voiceLine?.trim()){
