@@ -48,6 +48,7 @@ import './jealousyReaction.js';
 import './feedVoice/index.js';
 import './feedReaction/index.js';
 import './weekRecap/index.js';
+import './milestone/index.js';
 import './cultivator/index.js';
 import './hunt/index.js';
 import './campusEvent/index.js';

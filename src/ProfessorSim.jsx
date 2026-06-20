@@ -73,6 +73,8 @@ import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
 import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
+import { renderMilestone } from './textEngine/scenes/milestone/index.js';
+import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding } from './textEngine/scenes/intimacy/index.js';
 import './textEngine/scenes/intimacy/scenes.js';
@@ -453,6 +455,7 @@ export default function ProfessorSim(){
   const [equipModalStudentId, setEquipModalStudentId] = useState(null);
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
   const [weekRecap, setWeekRecap] = useState(null);
+  const [milestoneQueue, setMilestoneQueue] = useState(null);
   const [forceFeederState, setForceFeederState] = useState(null);
   const [deviceUsageModal, setDeviceUsageModal] = useState(null);
   const [weeklyFeedCounts, setWeeklyFeedCounts] = useState({});
@@ -1466,6 +1469,7 @@ export default function ProfessorSim(){
     const digestLines=[];
     const digestGrowthEvents=[];
     const recapMovers=[];
+    const milestones=[];
     updated=updated.map(s=>{
       if((s.consumedCalories||0)<=0&&(s.fullness||0)<=0&&!s.stuffedStreak) return s;
       const digestTextSession={
@@ -1479,7 +1483,10 @@ export default function ProfessorSim(){
       let ns=s;
       if(d.lbsGained>0) ns=processStudentGain(s,d.lbsGained,0);
       const stagedUp=getStage(ns.lbs).id>oldStageId;
-      const growthEv=stagedUp||d.lbsGained>=8?buildGrowthEvent(ns,{
+      // Stage-ups route to the dedicated Milestone Ceremony (below), not the
+      // generic growth-event popup — so big-gain-without-stageup still shows
+      // there, but a stage crossing gets its own set-piece.
+      const growthEv=(!stagedUp&&d.lbsGained>=8)?buildGrowthEvent(ns,{
         cause:{ type:'digest_stageup', locale:'campus' },
         preLbs,
         gainLbs:d.lbsGained,
@@ -1510,8 +1517,20 @@ export default function ProfessorSim(){
           clothingState:clothState,
         });
         corruption=ns.corruption;
-        const clothLine=renderClothScene({...ns,clothingState:clothState},week,{clothingState:clothState,...textOpts});
-        if(clothLine) setTimeout(()=>push(`👗 ${clothLine}`),400);
+        // The stage crossing becomes a Milestone Ceremony: body-as-she-grows
+        // + the garment giving way + her reaction, in its own popup.
+        const milestoneTrace=[];
+        const ceremony=renderMilestone({...ns,clothingState:clothState},week,{
+          clothingState:clothState,trace:milestoneTrace,...textOpts,
+        });
+        if(ceremony?.trim()){
+          milestones.push({
+            id:ns.id,name:ns.name,stageLabel:WEIGHT_STAGES[newStageId]?.label,
+            gainLbs:d.lbsGained,endLbs:Math.round(ns.lbs),prose:ceremony,
+            traceNodes:milestoneTrace.filter(t=>t.text&&t.text.trim()&&!t.key.startsWith('subject.')),
+          });
+          setTimeout(()=>push(`✦ ${ns.name} crossed a threshold — ${WEIGHT_STAGES[newStageId]?.label}.`),120);
+        }
         if(newStageId>=10){
           const immobLine=renderImmobScene(ns,week,textOpts);
           if(immobLine) setTimeout(()=>push(`🛋️ ${immobLine}`),480);
@@ -1683,6 +1702,7 @@ export default function ProfessorSim(){
         .slice(0,6);
       setWeekRecap({week:newWeek,movers:ordered});
     }
+    if(milestones.length) setMilestoneQueue({events:milestones,index:0});
     // Admin notices visibly large students (hidden students like Lilith don't trigger scrutiny)
     const visibleCount=updated.filter(s=>!s.hidden&&getStage(s.lbs).id>=5).length;
     if(visibleCount>0) addScrutiny(visibleCount);
@@ -7601,6 +7621,9 @@ export default function ProfessorSim(){
       {/* ── SESSION RESULT ── */}
       {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}
       {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)} onSelectGirl={(id)=>{setSelectedId(id);setView("student");setWeekRecap(null);}}/>}
+      {milestoneQueue&&<MilestoneCeremonyModal queue={milestoneQueue}
+        onAdvance={()=>setMilestoneQueue(q=>q?{...q,index:q.index+1}:null)}
+        onDismissAll={()=>setMilestoneQueue(null)}/>}
 
       {/* ── GODDESS VISION MODAL ── */}
 
