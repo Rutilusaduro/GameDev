@@ -42,6 +42,8 @@ import {
 } from '../textEngine/scenes/dinner/index.js';
 import { renderBodyPortrait } from '../textEngine/scenes/body/index.js';
 import { renderFeedVoice } from '../textEngine/scenes/feedVoice/index.js';
+import { renderFeedReaction } from '../textEngine/scenes/feedReaction/index.js';
+import { renderWeekRecap } from '../textEngine/scenes/weekRecap/index.js';
 import { renderIntimacyDepth } from '../textEngine/scenes/intimacy/index.js';
 import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from '../textEngine/scenes/hunt/index.js';
 import {
@@ -144,6 +146,15 @@ const SECTIONS = {
     fn: (s, opts) => renderBodyPortrait(s, 6, opts) },
   "feed.voice": { params: STATE_PARAMS,
     fn: (s, opts) => renderFeedVoice(s, 6, opts) },
+  "feed.react": { params: [...STATE_PARAMS, "foodKind", "feedRoom"],
+    fn: (s, opts) => renderFeedReaction(s, 6, { foodKind: opts.foodKind, feedRoom: opts.feedRoom, trace: opts.trace }) },
+  "week.recap": { params: [...STATE_PARAMS, "gainBand", "milestone"],
+    fn: (s, opts) => renderWeekRecap(s, 6, {
+      gainBand: opts.gainBand,
+      stagedUp: opts.milestone === 'stageup',
+      stuffedWeek: opts.milestone === 'stuffed',
+      trace: opts.trace,
+    }) },
   "dinner.depth": { params: STATE_PARAMS,
     fn: (s, opts) => renderDinnerDepth(s, 6, opts) },
   "intimacy.depth": { params: STATE_PARAMS,
@@ -331,6 +342,10 @@ const PARAM_DEFS = [
   { key: "stagesJumped", label: "Stages jumped", options: ["1", "2", "3"] },
   { key: "digestLate", label: "Digest phase", options: ["early", "late"] },
   { key: "recipeId", label: "Recipe", options: ["milkshake", "cookies", "cake"] },
+  { key: "foodKind", label: "Food kind", options: ["sweet", "hearty", "drink", "spread"] },
+  { key: "feedRoom", label: "Feed room", options: ["eager", "filling", "tight", "past"], optionLabel: (v) => ({ eager: "eager · room to spare", filling: "filling · warming up", tight: "tight · waistband presses", past: "past · stuffed beyond" })[v] || v },
+  { key: "gainBand", label: "Week gain", options: ["trace", "solid", "big", "huge"], optionLabel: (v) => ({ trace: "trace · 1–3 lbs", solid: "solid · 4–8 lbs", big: "big · 9–15 lbs", huge: "huge · 16+ lbs" })[v] || v },
+  { key: "milestone", label: "Milestone", options: ["none", "stageup", "stuffed"], optionLabel: (v) => ({ none: "none", stageup: "↑ staged up", stuffed: "stuffed all week" })[v] || v },
 ];
 
 function sectionFitsLockedParams(sectionKey, params) {
@@ -404,6 +419,10 @@ function rollSample(params) {
     locale,
     mealType,
     clothingState,
+    foodKind: v.foodKind,
+    feedRoom: v.feedRoom,
+    gainBand: v.gainBand,
+    milestone: v.milestone,
   };
   const text = SECTIONS[v.section].fn(student, opts);
   // leaf fragments — the per-slot annotation units
