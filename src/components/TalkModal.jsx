@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { TALK_TOPICS, TALK_CONFIG } from '../gameData/talkSystem.js';
 import { buildDevourScene } from '../gameData/devourScene.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
+import { getDiscontentTier } from '../gameData/discontent.js';
 import { getStage } from '../gameData/stages.js';
 import { isBodyComplimentUnwelcome } from '../gameData/talkSystem.js';
 import { createContext, render } from '../textEngine/engine.js';
@@ -18,6 +19,7 @@ import '../textEngine/scenes/talkCheckIn.js'; // registers talk.check_in
 import '../textEngine/scenes/talkCompliment.js'; // registers talk.compliment
 import '../textEngine/scenes/talkSuggest.js'; // registers talk.suggest_*
 import '../textEngine/scenes/talkRefusal.js'; // registers talk.refusal.*
+import '../textEngine/scenes/talkDiscontent.js'; // registers talk.discontentCoda
 import '../textEngine/scenes/talkCommandFinish.js'; // registers talk.command_finish
 import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';
@@ -46,6 +48,7 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
         campusFattening: !!campusFattening,
         campusTier: campusTier || (campusFattening ? 1 : 0),
         complimentUnwelcome: topic.id === 'compliment' && isBodyComplimentUnwelcome(student),
+        discontentTier: getDiscontentTier(student).id,
       },
     });
     const renderOpts = { trace };
@@ -53,6 +56,8 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
       ? render(topic.engineTemplate, ctx, renderOpts)
       : '';
     text += render('{talk.coda|prefix: }', ctx, { ...renderOpts, noSmooth: true });
+    // An unhappy girl's words carry the chill no matter the topic.
+    text += render('{talk.discontentCoda}', ctx, { ...renderOpts, noSmooth: true });
     if (campusFattening) {
       text += render('{talk.campusCoda|prefix: }', ctx, { ...renderOpts, noSmooth: true });
     }

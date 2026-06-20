@@ -24,6 +24,13 @@ registerModuleVariants('roster.tell', [
     `done pretending she isn't furious with you`,
     `one wrong move from walking out`,
   ]},
+  // A content girl with an empty seat in the room — no priority, so it just
+  // joins the base pool and surfaces now and then (her own grievance, if she
+  // has one, still priority-gates this out).
+  { when: { classmateWithdrawn: true }, weight: 3, text: [
+    `glancing now and then at the seat a classmate left empty`,
+    `quieter than usual since one of them walked out on you`,
+  ]},
 ]);
 
 // Shape: DIALOGUE BEAT — she balks at a feed out of pique.

@@ -20,6 +20,35 @@ export const DISCONTENT_TIERS = [
 
 // How much each kind of slight stings.
 export const DISCONTENT_GAIN = { creeped: 18, betrayed: 16, exposed: 9 };
+// What watching a classmate get driven out does to the rest of the room.
+export const DISCONTENT_RIPPLE = 12;
+
+// Not everyone bristles at the same things. Keyed on archetype: the athlete
+// won't be pushed around but shrugs off being looked at; the artist and the
+// influencer court an audience; the private types hate exposure most.
+// A multiplier per grievance; absent keys default to 1.
+export const DISLIKE_SENSITIVITY = {
+  athlete:      { betrayed: 1.6, creeped: 0.7, exposed: 0.7 },
+  cheerleader:  { exposed: 0.6, creeped: 0.85 },
+  influencer:   { exposed: 0.35, creeped: 0.7 },
+  sorority:     { exposed: 0.6 },
+  artsy:        { exposed: 0.5, creeped: 1.2 },
+  bookworm:     { exposed: 1.5, creeped: 1.3 },
+  overachiever: { exposed: 1.4, betrayed: 1.3 },
+  quiet:        { exposed: 1.5, creeped: 1.4 },
+  gamer:        { exposed: 1.3 },
+  transfer:     { creeped: 1.3 },
+  nursing:      { betrayed: 1.3 },
+  psych:        { betrayed: 1.3, creeped: 1.2 },
+  predator:     { creeped: 0.4, exposed: 0.5 },
+};
+
+/** The discontent a given slight inflicts on THIS girl (per-girl weighted). */
+export function grievanceGain(student, type) {
+  const base = DISCONTENT_GAIN[type] || 0;
+  const mult = DISLIKE_SENSITIVITY[student?.archetype]?.[type] ?? 1;
+  return Math.round(base * mult);
+}
 // How it mends.
 export const DISCONTENT_EASE_FEED = 2;     // attention, slowly
 export const DISCONTENT_EASE_TALK = 4;

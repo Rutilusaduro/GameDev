@@ -76,7 +76,7 @@ import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
 import { appendMemory, pickStudentMemory, pickClassMemory } from './gameData/memory.js';
-import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, DISCONTENT_GAIN, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, DISCONTENT_WEEKLY_DECAY, shouldConfront, dominantGrievance, AMENDS_FLOOR, GIFT_FLOOR, GIFT_COST } from './gameData/discontent.js';
+import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, grievanceGain, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, DISCONTENT_WEEKLY_DECAY, DISCONTENT_RIPPLE, shouldConfront, dominantGrievance, AMENDS_FLOOR, GIFT_FLOOR, GIFT_COST } from './gameData/discontent.js';
 import { renderDiscontentRefusal } from './textEngine/scenes/discontent/index.js';
 import { renderConfront } from './textEngine/scenes/confront/index.js';
 import { ConfrontationModal } from './components/ConfrontationModal.jsx';
@@ -1233,7 +1233,7 @@ export default function ProfessorSim(){
     // A willing feed is attention, and eases discontent a little.
     if(forced&&forceFeedIsBetrayal(s)){
       result={...result,mood:"stressed",
-        discontent:bumpDiscontent(result.discontent,DISCONTENT_GAIN.betrayed),
+        discontent:bumpDiscontent(result.discontent,grievanceGain(s,'betrayed')),
         memories:appendMemory(result.memories,'betrayed',week)};
     } else if(!forced&&(result.discontent||0)>0){
       result={...result,discontent:Math.max(0,(result.discontent||0)-DISCONTENT_EASE_FEED)};
@@ -1644,7 +1644,7 @@ export default function ProfessorSim(){
       let mems=s.memories,mood=s.mood;
       const exposed=scrutinyTier?.id>=2&&!s.hidden&&getStage(s.lbs).id>=5&&getCorruptionTier(s.corruption||0).id===0;
       if(exposed&&Math.random()<0.5){
-        disc=bumpDiscontent(disc,DISCONTENT_GAIN.exposed);
+        disc=bumpDiscontent(disc,grievanceGain(s,'exposed'));
         mems=appendMemory(mems,'exposed',newWeek);
         mood="stressed";
         exposedCount++;
@@ -5879,7 +5879,7 @@ export default function ProfessorSim(){
       if(target&&isBodyComplimentUnwelcome(target)){
         setStudents(prev=>prev.map(x=>x.id===talkStudentId
           ?{...x,relationship:Math.max(0,(x.relationship||0)-COMPLIMENT_BACKFIRE_REL),mood:"stressed",
-             discontent:bumpDiscontent(x.discontent,DISCONTENT_GAIN.creeped),
+             discontent:bumpDiscontent(x.discontent,grievanceGain(x,'creeped')),
              memories:appendMemory(x.memories,'creeped',week)}
           :x));
         addScrutiny(COMPLIMENT_BACKFIRE_SCRUTINY);
@@ -5955,9 +5955,17 @@ export default function ProfessorSim(){
   const confrontStandFirm=()=>{
     if(!confrontation) return;
     const {studentId}=confrontation;
-    setStudents(prev=>prev.map(x=>x.id===studentId?{...x,withdrawn:true,mood:"stressed"}:x));
+    let witnesses=0;
+    setStudents(prev=>prev.map(x=>{
+      if(x.id===studentId) return {...x,withdrawn:true,mood:"stressed"};
+      // The rest of the room watches one of their own get driven out.
+      if(x.hidden||x.withdrawn) return x;
+      witnesses++;
+      return {...x,discontent:bumpDiscontent(x.discontent,DISCONTENT_RIPPLE)};
+    }));
     const nm=students.find(s=>s.id===studentId)?.name||'She';
     push(`🚪 ${nm} walks out of your class. She won't engage until you make it right.`);
+    if(witnesses>0) setTimeout(()=>push(`😶 The room goes quiet — the others watched her go, and it sits with them.`),180);
     setConfrontation(null);
   };
   const openAmends=(studentId)=>{

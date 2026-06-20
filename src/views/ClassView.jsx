@@ -16,7 +16,7 @@ import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 // One roster tile. Extracted so the at-a-glance "tell" can be memoized —
 // it only re-rolls when her meaningful state (size/psyche/appetite/week)
 // changes, so it doesn't flicker on every parent re-render.
-function RosterTile({ s, week, onOpen, onAmends }) {
+function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn }) {
   const st = getStage(s.lbs);
   const evMeta = s.evolvedForm ? EVOLVED_FORM_META[s.evolvedForm] : null;
   const cardBorder = s.withdrawn ? '1px solid #c05038' : evMeta ? `1px solid ${evMeta.color}80` : '1px solid #180830';
@@ -37,9 +37,9 @@ function RosterTile({ s, week, onOpen, onAmends }) {
           if (m) return m;
         }
       }
-      return renderRosterTell(s, week, { globals: { discontentTier: discTier } });
+      return renderRosterTell(s, week, { globals: { discontentTier: discTier, classmateWithdrawn: !!classmateWithdrawn } });
     },
-    [s.id, st.id, s.corruption, s.hungerTier, s.addictionLevel, s.discontent, (s.memories || []).length, week],
+    [s.id, st.id, s.corruption, s.hungerTier, s.addictionLevel, s.discontent, classmateWithdrawn, (s.memories || []).length, week],
   );
   return (
     <div
@@ -86,6 +86,7 @@ export function ClassView({
   onAmends,
 }) {
   const rosterVisible = (s) => !s.hidden || (s.id === 15 && lilithUnlocked) || (s.id === 17 && elaraDiscovered);
+  const classmateWithdrawn = students.some((s) => s.withdrawn && rosterVisible(s));
   return (
     <>
       {view === 'class' && (
@@ -93,7 +94,7 @@ export function ClassView({
           <p style={C.secT}>Students — {students.filter(rosterVisible).length} enrolled · avg {avgLbs} lbs</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(195px,1fr))', gridAutoRows: 'minmax(140px,auto)', gap: 8 }}>
             {[...students].filter(rosterVisible).sort((a, b) => a.id - b.id).map((s) => (
-              <RosterTile key={s.id} s={s} week={week} onOpen={() => { setSelectedId(s.id); setView('student'); }} onAmends={onAmends} />
+              <RosterTile key={s.id} s={s} week={week} onOpen={() => { setSelectedId(s.id); setView('student'); }} onAmends={onAmends} classmateWithdrawn={classmateWithdrawn && !s.withdrawn} />
             ))}
           </div>
         </div>
