@@ -429,8 +429,12 @@ function rollSample(params) {
   const leafNodes = trace.filter((t) => t.leaf && t.text.trim() && !t.key.startsWith("subject."));
   // skeleton nodes — depth-0 non-leaf templates (the "skeleton" the user wants to flag/inspect)
   const skeletonNodes = trace.filter((t) => !t.leaf && t.depth === 0 && t.text.trim() && !t.key.startsWith("subject."));
-  // skeleton first so it's at the top of the flag annotator list
-  const nodes = [...skeletonNodes, ...leafNodes];
+  // composite sub-slots — non-leaf beats nested below the skeleton (e.g. a
+  // feature.beat that wraps a {word.*} lexicon slot). Excluded by both filters
+  // above, but they ARE the sentence the author reads, so they must be flaggable.
+  const compositeNodes = trace.filter((t) => !t.leaf && t.depth > 0 && t.text.trim() && !t.key.startsWith("subject."));
+  // skeleton first, then composite beats, then leaves
+  const nodes = [...skeletonNodes, ...compositeNodes, ...leafNodes];
   const stateLine =
     `${base.name} (id ${base.id}) · ${Math.round(student.lbs)} lbs (stage ${stage} ${WEIGHT_STAGES[stage].label})` +
     ` · corruption ${student.corruption} (tier ${getCorruptionTier(student.corruption).id})` +
