@@ -1,22 +1,6 @@
-// Metadata for between-week random incidents — prose in textEngine/scenes/weeklyEvent/
-export const RANDOM_EVENTS = [
-  { id: 'dining_special', target: 'class', gain: [4, 9] },
-  { id: 'stress_week', target: 'single', gain: [3, 7] },
-  { id: 'chair_incident', target: 'single', gain: [0, 0], scrutinyHit: 3 },
-  { id: 'food_delivery', target: 'single', gain: [4, 8] },
-  { id: 'pizza_deal', target: 'class', gain: [4, 9] },
-  { id: 'admin_memo', target: 'class', gain: [0, 0], scrutinyHit: 5 },
-  { id: 'food_festival', target: 'class', gain: [5, 11] },
-  { id: 'care_package', target: 'single', gain: [4, 8] },
-  { id: 'birthday', target: 'single', gain: [6, 12] },
-  { id: 'class_cancelled', target: 'class', gain: [3, 7] },
-  { id: 'faculty_overheard', target: 'single', gain: [2, 5], scrutinyHit: 1 },
-  { id: 'bake_sale', target: 'class', gain: [2, 6] },
-  { id: 'netflix_binge', target: 'single', gain: [3, 7] },
-  { id: 'rainy_weekend', target: 'class', gain: [3, 7] },
-  { id: 'cooking_experiment', target: 'single', gain: [3, 6] },
-];
-
+// Metadata for per-girl stage-up narrative beats — prose in textEngine/scenes/weeklyEvent/
+// (The class-wide RANDOM_EVENTS / SEMESTER_EVENTS bulk-gain layer was removed: its
+//  balance assumptions predate the current tuning.)
 export const NARRATIVE_EVENTS = [
   { id: 'uniform_split', stageMin: 3, archetype: 'cheerleader', title: 'Uniform Incident', gain: [4, 8], rel: 12 },
   { id: 'chair_breaks', stageMin: 4, archetype: null, title: 'The Chair Incident', gain: [3, 5], rel: 18 },

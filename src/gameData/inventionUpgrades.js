@@ -425,7 +425,11 @@ export function getForceFeederBoardMods(labState) {
 }
 
 export function timingWindowMs(labStateOrLevel) {
-  const mods = typeof labStateOrLevel === 'object' && labStateOrLevel?.circuitBoards
+  // A labState object (with or without a circuitBoards slice yet) must route
+  // through getForceFeederBoardMods, which defaults safely. The old guard keyed
+  // on `?.circuitBoards`, so a fresh labState fell into the numeric branch and
+  // computed `labState * 12` → NaN, making every pulse window NaN (unhittable).
+  const mods = (labStateOrLevel && typeof labStateOrLevel === 'object')
     ? getForceFeederBoardMods(labStateOrLevel)
     : { tier: labStateOrLevel ?? 1, timingBonus: (labStateOrLevel ?? 1) * 12 };
   return 200 + (mods.timingBonus ?? 0);

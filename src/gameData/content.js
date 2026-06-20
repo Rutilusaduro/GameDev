@@ -438,7 +438,7 @@ export const OUTFITS = {
   ],
 };
 
-export { RANDOM_EVENTS, NARRATIVE_EVENTS } from './weeklyEventDefs.js';
+export { NARRATIVE_EVENTS } from './weeklyEventDefs.js';
 
 export const INFLUENCE_PAIRS = [
   [0, 10], [1, 11], [4, 12], [3, 13], [6, 14],

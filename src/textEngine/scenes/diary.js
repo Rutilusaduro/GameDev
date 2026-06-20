@@ -10,6 +10,7 @@
 // Stage 9-10: late — vast, settled, definitive
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../engine.js';
+import { gatewaySelectorGlobals } from '../../gameData/gatewayMoments.js';
 import './diaryPhaseD.js';
 
 // ── SUMO ──────────────────────────────────────────────────────
@@ -1252,7 +1253,7 @@ registerPool('diary.lilith', [
 export function renderDiary(student, week) {
   if (!student) return null;
 
-  const ctx = createContext({ subject: student, week: week || 1 });
+  const ctx = createContext({ subject: student, week: week || 1, globals: gatewaySelectorGlobals(student) });
 
   // Try evolved form diary first
   if (student.evolvedForm) {
@@ -1263,59 +1264,13 @@ export function renderDiary(student, week) {
     if (evolvedText && evolvedText.trim()) return evolvedText;
   }
 
-  // Fall back to base diary per-student sub-arc
-  // Try to find any diary.studentId.* entry that matches current state
-  const studentId = student.id;
-  const subArcKeys = [
-    'diary.brittany.uniform',
-    'diary.madeline.dataset',
-    'diary.kylie.unfiltered',
-    'diary.serena.newpr',
-    'diary.fiona.subject',
-    'diary.destiny.achievement',
-    'diary.tiffany.uncounted',
-    'diary.priya.spreadsheet',
-    'diary.maya.chair',
-    'diary.chloe.americaine',
-    'diary.renee.recipe',
-    'diary.kaylee.patient',
-    'diary.nadia.casestudy',
-    'diary.daisy.softening',
-    'diary.maryjane.ripe',
-    'diary.sophia.trial',
-    'diary.talia.justification',
-    'diary.lilith.chair',
-    'diary.indiana.fieldmap',
-  ];
-
-  // Map studentId to the correct diary key
-  const diaryKeyMap = {
-    0: 'diary.brittany.uniform',
-    1: 'diary.madeline.dataset',
-    2: 'diary.kylie.unfiltered',
-    3: 'diary.serena.newpr',
-    4: 'diary.fiona.subject',
-    5: 'diary.destiny.achievement',
-    6: 'diary.tiffany.uncounted',
-    7: 'diary.priya.spreadsheet',
-    8: 'diary.maya.chair',
-    9: 'diary.chloe.americaine',
-    10: 'diary.renee.recipe',
-    11: 'diary.kaylee.patient',
-    12: 'diary.nadia.casestudy',
-    13: 'diary.daisy.softening',
-    14: 'diary.maryjane.ripe',
-    15: 'diary.lilith.chair',
-    16: 'diary.sophia.trial',
-    17: 'diary.indiana.fieldmap',
-    18: 'diary.talia.justification',
-  };
-
-  const baseKey = diaryKeyMap[studentId];
-  if (baseKey) {
-    const baseText = render(`{${baseKey}}`, ctx, { noSmooth: false });
-    if (baseText && baseText.trim()) return baseText;
-  }
+  // Base per-student diary. diary.innerBeat is the real base pool — keyed on
+  // studentId / stage / corruption / the signature gateway flags, with a
+  // generic fallback so it covers every non-evolved student. (The old base
+  // path mapped to diary.<name>.<arc> keys that were never registered, so base
+  // diaries returned null and the gateway payoff entries were unreachable.)
+  const innerText = render('{diary.innerBeat}', ctx, { noSmooth: false });
+  if (innerText && innerText.trim()) return innerText;
 
   return null;
 }
