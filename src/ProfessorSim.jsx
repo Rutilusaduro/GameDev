@@ -1133,7 +1133,17 @@ export default function ProfessorSim(){
         foodKind:foodKindFromFeed(label,calories,fullnessCost),feedRoom,
         weekUsed:feedWeekUsed,sessionUsed:createSessionUsed(),
       });
-      if(reaction?.trim()) setTimeout(()=>push(reaction),40);
+      if(reaction?.trim()){
+        // Occasionally she references a recent meal/milestone mid-feed.
+        // Pick from PRIOR history (s, pre-feed) so it reads as a callback.
+        let out=reaction;
+        const mem=pickStudentMemory(s,week);
+        if(mem&&Math.random()<0.28){
+          const memBeat=renderMemorySelf(projected,week,mem);
+          if(memBeat?.trim()) out=`${reaction} ${memBeat}`;
+        }
+        setTimeout(()=>push(out),40);
+      }
     }
     if(Math.random()<CORRUPTION_CONFIG.dialogueChance){
       const voiceLine=renderFeedVoice(s, week);

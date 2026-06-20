@@ -7,6 +7,8 @@ import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
 import { EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
 import { renderRosterTell } from '../textEngine/scenes/rosterTell/index.js';
+import { renderMemorySelf } from '../textEngine/scenes/memory/index.js';
+import { pickStudentMemory } from '../gameData/memory.js';
 import { addictionTint } from '../gameData/hungerAddiction.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
@@ -19,9 +21,19 @@ function RosterTile({ s, week, onOpen }) {
   const cardBorder = evMeta ? `1px solid ${evMeta.color}80` : '1px solid #180830';
   const cardBg = addictionTint(s) || '';
   const nameColor = evMeta ? evMeta.color : '#d8a8ff';
+  // Mostly a steady-state vibe; occasionally she's caught remembering a
+  // recent milestone. Memoized (incl. memory count) so it stays stable
+  // until her state actually changes, rather than flickering per render.
   const tell = useMemo(
-    () => renderRosterTell(s, week),
-    [s.id, st.id, s.corruption, s.hungerTier, s.addictionLevel, week],
+    () => {
+      const mem = pickStudentMemory(s, week);
+      if (mem && Math.random() < 0.3) {
+        const m = renderMemorySelf(s, week, mem);
+        if (m) return m;
+      }
+      return renderRosterTell(s, week);
+    },
+    [s.id, st.id, s.corruption, s.hungerTier, s.addictionLevel, (s.memories || []).length, week],
   );
   return (
     <div
