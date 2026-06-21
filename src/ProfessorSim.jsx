@@ -20,6 +20,11 @@ import { TALK_CONFIG, isBodyComplimentUnwelcome, COMPLIMENT_BACKFIRE_REL, COMPLI
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES, ITEMS } from './gameData/items.js';
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
 import { createInitialPlayer, updatePlayerField } from './gameData/player.js';
+import {
+  SPIRITS, SUBJECTS, SPIRIT_LIST, SUBJECT_LIST, UNLOCK_POOL_IDS,
+  FAVOR_MAX, FAVOR_REBATE, favorFill,
+  profileGainMult, profileScrutinyMult, profilePassiveBonus, profileCorruptionMult,
+} from './gameData/spirits.js';
 import { WalletBadge } from './components/WalletBadge.jsx';
 import { CAMPUS_NODES, CAMPUS_CONFIG } from './gameData/campus.js';
 import {
@@ -315,7 +320,6 @@ const SPIRIT_INTRO_PARAGRAPHS=[
   "You inhabit the professor. Through them, you can teach. Through them, you can feed. And when your awareness slips into the students themselves, it is not a contradiction; it is the same hunger learning every shape it can wear.",
 ];
 
-const INHABITED_PROFESSOR_PROFILE={name:"The Professor",subject:null,traits:[],origin:"gluttony_spirit"};
 const SPIRIT_XP_PER_LEVEL=40;
 
 // Two-tab log: split the live feed into a narrative "Story" stream and a
@@ -337,7 +341,7 @@ export default function ProfessorSim(){
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {
     money, ap, week, ownedSkills, ownedClassSkills, facultyAffinity, professorProfile, adminScrutiny,
-    globalStats, achievements, bigScaleUnlocked,
+    globalStats, achievements, bigScaleUnlocked, spiritFavor,
   } = player;
   const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
   const setMoney = (updater) => setPlayer((p) => updatePlayerField(p, 'money', updater));
@@ -347,12 +351,17 @@ export default function ProfessorSim(){
   const setOwnedClassSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedClassSkills', updater));
   const setFacultyAffinity = (updater) => setPlayer((p) => updatePlayerField(p, 'facultyAffinity', updater));
   const setProfessorProfile = (updater) => setPlayer((p) => updatePlayerField(p, 'professorProfile', updater));
+  const setSpiritFavor = (updater) => setPlayer((p) => updatePlayerField(p, 'spiritFavor', updater));
   const setAdminScrutiny = (updater) => setPlayer((p) => updatePlayerField(p, 'adminScrutiny', updater));
   const setGlobalStats = (updater) => setPlayer((p) => updatePlayerField(p, 'globalStats', updater));
   const setAchievements = (updater) => setPlayer((p) => updatePlayerField(p, 'achievements', updater));
   const setBigScaleUnlocked = (updater) => setPlayer((p) => updatePlayerField(p, 'bigScaleUnlocked', updater));
   const [view,setView]=useState("class");
   const [selectedId,setSelectedId]=useState(null);
+  // New-game setup wizard: spirit → lore beat → vessel → start.
+  const [setupStep,setSetupStep]=useState("spirit");
+  const [setupSpirit,setSetupSpirit]=useState(null);
+  const [setupSubject,setSetupSubject]=useState(null);
   const [log,setLog]=useState(["📋 Welcome, Professor. Your class of 15 students awaits."]);
   const [logTab,setLogTab]=useState("story");
   const [activeEvent,setActiveEvent]=useState(null);
@@ -687,9 +696,54 @@ export default function ProfessorSim(){
     if(label) push(`💰 ${label}: +${formatMoney(amount)}`);
   };
 
-  const inhabitProfessor=()=>{
-    setProfessorProfile(INHABITED_PROFESSOR_PROFILE);
-    push("🌒 You take root behind the professor's eyes. The class waits, and abundance has found a door.");
+  const inhabitProfessor=(spiritId,subjectId)=>{
+    const spirit=SPIRITS[spiritId];
+    const subj=SUBJECTS[subjectId];
+    if(!spirit||!subj) return;
+    const profile={
+      name:"The Professor", origin:"gluttony_spirit",
+      subject:subj.id, spiritId:spirit.id, traits:[...(spirit.traits||[])],
+      color:spirit.color, accentSoft:spirit.accentSoft, lean:spirit.lean,
+    };
+    setProfessorProfile(profile);
+    // Pick the 5 closest girls by subject affinity (from the unlock pool).
+    const startIds=[];
+    for(const arch of subj.startArchetypes){
+      const hit=students.find(s=>UNLOCK_POOL_IDS.includes(s.id)&&s.archetype===arch&&!startIds.includes(s.id));
+      if(hit) startIds.push(hit.id);
+    }
+    // Backfill to 5 if an archetype was missing.
+    if(startIds.length<5){
+      for(const s of students){
+        if(startIds.length>=5) break;
+        if(UNLOCK_POOL_IDS.includes(s.id)&&!startIds.includes(s.id)) startIds.push(s.id);
+      }
+    }
+    const mods=spirit.startMods||{};
+    setStudents(list=>list.map(s=>{
+      if(!UNLOCK_POOL_IDS.includes(s.id)) return s; // story-gated girls untouched
+      if(!startIds.includes(s.id)) return {...s, lockState:'locked', passiveTrust:0};
+      let ns={...s, lockState:'open'};
+      if(mods.corruption) ns.corruption=(ns.corruption||0)+mods.corruption;
+      if(mods.relationship) ns.relationship=Math.min(100,(ns.relationship||0)+mods.relationship);
+      if(mods.hunger) ns=adjustHunger(ns,mods.hunger);
+      return ns;
+    }));
+    push(`🌒 ${spirit.label} takes root behind the ${subj.label} professor's eyes. Five desks lean close; the rest of the room waits.`);
+  };
+
+  // Spirit Favor meter — on-lean actions fill it; full → partial AP rebate.
+  const gainFavor=(tag)=>{
+    const fill=favorFill(professorProfile?.spiritId,tag);
+    if(!fill) return;
+    const next=(spiritFavor||0)+fill;
+    if(next>=FAVOR_MAX){
+      setSpiritFavor(next-FAVOR_MAX);
+      setAp(a=>Math.min(20,a+FAVOR_REBATE));
+      push(`✨ Spirit favor crests — ${SPIRITS[professorProfile?.spiritId]?.label} returns ${FAVOR_REBATE} AP.`);
+    }else{
+      setSpiritFavor(next);
+    }
   };
 
   const applyOppositionStudentPatches=(studentList,patches)=>{
@@ -709,8 +763,8 @@ export default function ProfessorSim(){
 
   const addScrutiny=(n)=>{
     const classFx=aggregateClassSkillEffects(ownedClassSkills||{});
-    const mult=(1-(professorProfile?.traits?.includes("discreet")?0.35:0))
-              *(1-(professorProfile?.subject==="philosophy"?0.2:0))
+    const mult=profileScrutinyMult(professorProfile)
+              *(1-(professorProfile?.traits?.includes("discreet")?0.35:0))
               *skillScrutinyReduce
               *(1-(classFx.scrutinyReduce||0));
     const actual=Math.max(0,Math.round(n*mult));
@@ -1075,7 +1129,8 @@ export default function ProfessorSim(){
   // ── CORRUPTION: hidden psyche progression (general actions only) ──
   const addCorruption=(s,amount,textOpts={})=>{
     const before=getCorruptionTier(s.corruption||0).id;
-    const newC=Math.min(CORRUPTION_CONFIG.max,(s.corruption||0)+amount);
+    const scaled=amount>0?amount*profCorruptionMult:amount;
+    const newC=Math.min(CORRUPTION_CONFIG.max,(s.corruption||0)+scaled);
     const after=getCorruptionTier(newC).id;
     if(after>before){
       if(CORRUPTION_TIER_UP_LINES[after]){
@@ -1258,6 +1313,7 @@ export default function ProfessorSim(){
     const hungerEff=aggregateSkillEffects(ownedSkills);
     const fedStudent=feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
     setWeeklyFeedCounts(prev=>({...prev,[s.id]:(prev[s.id]||0)+1}));
+    gainFavor((forced||fullnessCost>=40)?'stuff':'feed');
     return fedStudent;
   };
 
@@ -1790,6 +1846,28 @@ export default function ProfessorSim(){
       setOpposition(nextOpposition);
     }
     if(newlyTriggered&&!nextOpposition.supernatural.ascensionOffered) setSupernaturalModalOpen(true);
+
+    // ── ROSTER UNLOCK ─ spirit reach (slots) + passive trust (queue) ──
+    if(professorProfile){
+      const TRUST_GATE=60;
+      const allowedSlots=5+Math.max(0,spiritLevel-1);
+      const openCount=updated.filter(s=>UNLOCK_POOL_IDS.includes(s.id)&&s.lockState!=='locked').length;
+      // Drip trust onto every locked girl this week.
+      updated=updated.map(s=>{
+        if(s.lockState!=='locked') return s;
+        return {...s,passiveTrust:Math.min(100,(s.passiveTrust||0)+rnd(4,8))};
+      });
+      // One door per week: ripest locked girl crosses if a slot is free.
+      if(openCount<allowedSlots){
+        const ripe=updated
+          .filter(s=>s.lockState==='locked'&&(s.passiveTrust||0)>=TRUST_GATE)
+          .sort((a,b)=>(b.passiveTrust||0)-(a.passiveTrust||0))[0];
+        if(ripe){
+          updated=updated.map(s=>s.id===ripe.id?{...s,lockState:'open'}:s);
+          setTimeout(()=>push(`🌒 ${ripe.name} leans into reach — the spirit's awareness finally closes the distance. She's yours to cultivate now.`),160);
+        }
+      }
+    }
 
     setStudents(updated.map(s=>clearWeeklyTextFlags(s,week)));
     if(recapMovers.length){
@@ -3657,6 +3735,7 @@ export default function ProfessorSim(){
     if(!ms) return;
     if(ap<ms.apCost){ push(`⚠️ Need ${ms.apCost} AP.`); return; }
     setAp(a=>a-ms.apCost);
+    gainFavor('comfort');
     const prose=renderImmobComfort(s,key,week);
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:markComfortMilestone(st,key)));
     push(`✦ ${ms.label} — comfort milestone complete.`);
@@ -4424,6 +4503,7 @@ export default function ProfessorSim(){
 
   const startRankedSession=(studentId,stageIdx)=>{
     const s=students.find(st=>st.id===studentId); if(!s) return;
+    gainFavor('session');
     // maxFullness scales with weight — heavier = more capacity = longer sessions
     const maxFullnessByStage=[100,125,155,185,215,255];
     const maxFocusByStage=[90,85,80,75,70,65];
@@ -5668,7 +5748,7 @@ export default function ProfessorSim(){
     setFairDayState(null);
   };
 
-  const openIntimacySelector=(s)=>{setIntimacySceneSelector({student:s});};
+  const openIntimacySelector=(s)=>{gainFavor('intimacy');setIntimacySceneSelector({student:s});};
 
   const persistStudentWeekTextUsed=(studentId,patch)=>{
     if(!patch?.textUsedKeys) return;
@@ -5949,6 +6029,7 @@ export default function ProfessorSim(){
 
   const applyTalkEffect=(effect,meta={})=>{
     if(!talkStudentId) return;
+    gainFavor('talk');
     const applySuggest=!!effect?.applySuggestDebuff||meta.topicId==='suggest_indulgence';
     if(applySuggest){
       setStudents(prev=>prev.map(x=>x.id===talkStudentId?{...x,suggestDebuffWeek:week}:x));
@@ -6174,6 +6255,7 @@ export default function ProfessorSim(){
       }
     }
     if(ap<2){push("⚠️ Need 2 AP for a dinner.");return;}
+    gainFavor('dinner');
     const sessionStartCalories=s.consumedCalories||0;
     const pendingHungerResolve=pendingDinnerHungerResolveRef.current===s.id;
     if(pendingHungerResolve) pendingDinnerHungerResolveRef.current=null;
@@ -6812,8 +6894,9 @@ export default function ProfessorSim(){
   // ── PROFESSOR SUBJECT / TRAIT EFFECTS ───────────────────────
   const hasTrait=(id)=>professorProfile?.traits?.includes(id)||false;
   const hasSubj=(id)=>professorProfile?.subject===id;
-  const profGainMult=1+(hasSubj("nutrition")?0.1:0)+(hasSubj("philosophy")?0.05:0)+(hasTrait("generous")?0.15:0);
-  const profPassiveBonus=hasTrait("patient")?1:0;
+  const profGainMult=profileGainMult(professorProfile);
+  const profPassiveBonus=profilePassiveBonus(professorProfile);
+  const profCorruptionMult=profileCorruptionMult(professorProfile);
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
   const skillEffects=aggregateSkillEffects(ownedSkills);
   const classSkillFx=aggregateClassSkillEffects(ownedClassSkills||{});
@@ -6855,31 +6938,90 @@ export default function ProfessorSim(){
   const views=["class","actions","achievements","log"];
   if(sel) views.splice(1,0,"student");
 
-  // ── OPENING SPIRIT INTRO ───────────────────────────────────────
+  // ── OPENING: SPIRIT → LORE BEAT → VESSEL → START ──────────────
   if(!professorProfile){
+    const accent=setupSpirit?.color||"#8a4be0";
+    const accentSoft=setupSpirit?.accentSoft||"rgba(138,75,224,0.22)";
+    const panelStyle={...C.modal,maxWidth:720,background:`radial-gradient(circle at 50% 0%,${accentSoft},#0d0618 55%,#070510)`,border:`1px solid ${accent}`,boxShadow:`0 0 80px ${accentSoft}`};
+    const archName=(arch)=>students.find(s=>UNLOCK_POOL_IDS.includes(s.id)&&s.archetype===arch)?.name?.split(' ')[0]||arch;
     return(
       <div style={{...C.app,alignItems:"center",justifyContent:"center",padding:20}}>
-        <div style={{...C.modal,maxWidth:680,background:"radial-gradient(circle at 50% 0%,#1d1034,#0d0618 52%,#070510)",border:"1px solid #6a2cc0",boxShadow:"0 0 80px rgba(130,60,220,0.32)"}}>
-          <div style={{textAlign:"center",marginBottom:22}}>
-            <div style={{fontSize:10,letterSpacing:4,color:"#8a4be0",marginBottom:8}}>A SPIRIT FINDS PURCHASE</div>
-            <h1 style={{color:"#d8b0ff",margin:"0 0 8px",fontSize:28,fontWeight:400,fontFamily:"inherit"}}>Before the Semester Begins</h1>
-            <div style={{color:"#7d68a8",fontSize:13}}>The professor is only the first door.</div>
+        <div style={panelStyle}>
+          <div style={{textAlign:"center",marginBottom:20}}>
+            <div style={{fontSize:10,letterSpacing:4,color:accent,marginBottom:8}}>A SPIRIT FINDS PURCHASE</div>
+            <h1 style={{color:"#ead8ff",margin:"0 0 6px",fontSize:26,fontWeight:400,fontFamily:"inherit"}}>Before the Semester Begins</h1>
+            <div style={{color:"#7d68a8",fontSize:12}}>The professor is only the first door.</div>
           </div>
 
-          <div style={{background:"rgba(255,255,255,0.035)",border:"1px solid rgba(140,80,220,0.25)",borderRadius:10,padding:"18px 20px",marginBottom:22}}>
-            {SPIRIT_INTRO_PARAGRAPHS.map((paragraph,idx)=>(
-              <p key={idx} style={{margin:idx===0?"0 0 14px":"14px 0 0",color:idx===0?"#ead8ff":"#c9b4e8",fontSize:idx===0?17:14,lineHeight:1.8}}>
-                {paragraph}
-              </p>
-            ))}
-          </div>
+          {setupStep==="spirit"&&(<>
+            <div style={{background:"rgba(255,255,255,0.035)",border:`1px solid ${accentSoft}`,borderRadius:10,padding:"16px 18px",marginBottom:18}}>
+              {SPIRIT_INTRO_PARAGRAPHS.map((p,i)=>(
+                <p key={i} style={{margin:i===0?"0 0 12px":"12px 0 0",color:i===0?"#ead8ff":"#c9b4e8",fontSize:i===0?16:13.5,lineHeight:1.75}}>{p}</p>
+              ))}
+            </div>
+            <div style={{fontSize:10,letterSpacing:3,color:accent,textTransform:"uppercase",marginBottom:10,textAlign:"center"}}>What kind of hunger are you?</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10}}>
+              {SPIRIT_LIST.map(sp=>{
+                const on=setupSpirit?.id===sp.id;
+                return(
+                  <button key={sp.id} onClick={()=>setSetupSpirit(sp)}
+                    style={{textAlign:"left",cursor:"pointer",borderRadius:10,padding:"12px 14px",fontFamily:"inherit",
+                      background:on?sp.accentSoft:"rgba(255,255,255,0.03)",
+                      border:`1px solid ${on?sp.color:"rgba(255,255,255,0.08)"}`,
+                      boxShadow:on?`0 0 22px ${sp.accentSoft}`:"none",transition:"all 0.15s"}}>
+                    <div style={{color:sp.color,fontSize:15,marginBottom:3}}>{sp.label}</div>
+                    <div style={{color:"#b8a8d0",fontSize:12,lineHeight:1.5}}>{sp.loreParas[0]}</div>
+                  </button>
+                );
+              })}
+            </div>
+            <div style={{display:"flex",justifyContent:"center",marginTop:18}}>
+              <button disabled={!setupSpirit} onClick={()=>setSetupStep("lore")}
+                style={{...C.btn(accent),opacity:setupSpirit?1:0.4,fontSize:14,padding:"11px 32px",cursor:setupSpirit?"pointer":"default"}}>
+                Take this shape
+              </button>
+            </div>
+          </>)}
 
-          <div style={{display:"flex",justifyContent:"center"}}>
-            <button onClick={inhabitProfessor}
-              style={{...C.btn("#7020c8"),fontSize:14,padding:"12px 34px",boxShadow:"0 0 24px rgba(112,32,200,0.35)"}}>
-              Inhabit the Professor
-            </button>
-          </div>
+          {setupStep==="lore"&&setupSpirit&&(<>
+            <div style={{background:"rgba(255,255,255,0.035)",border:`1px solid ${accentSoft}`,borderRadius:10,padding:"20px 22px",marginBottom:20}}>
+              <div style={{color:accent,fontSize:18,marginBottom:12,textAlign:"center"}}>{setupSpirit.label}</div>
+              {setupSpirit.loreParas.map((p,i)=>(
+                <p key={i} style={{margin:i===0?"0":"14px 0 0",color:"#d8c8ec",fontSize:14.5,lineHeight:1.8}}>{p}</p>
+              ))}
+            </div>
+            <div style={{display:"flex",justifyContent:"space-between"}}>
+              <button onClick={()=>setSetupStep("spirit")} style={{...C.smBtn,padding:"9px 18px"}}>← Reconsider</button>
+              <button onClick={()=>setSetupStep("vessel")} style={{...C.btn(accent),fontSize:14,padding:"11px 28px"}}>Choose a vessel →</button>
+            </div>
+          </>)}
+
+          {setupStep==="vessel"&&setupSpirit&&(<>
+            <div style={{fontSize:10,letterSpacing:3,color:accent,textTransform:"uppercase",marginBottom:4,textAlign:"center"}}>Whose body do you teach through?</div>
+            <div style={{color:"#7d68a8",fontSize:11.5,textAlign:"center",marginBottom:14}}>The subject decides which five girls already lean close.</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10}}>
+              {SUBJECT_LIST.map(su=>{
+                const on=setupSubject?.id===su.id;
+                return(
+                  <button key={su.id} onClick={()=>setSetupSubject(su)}
+                    style={{textAlign:"left",cursor:"pointer",borderRadius:10,padding:"12px 14px",fontFamily:"inherit",
+                      background:on?accentSoft:"rgba(255,255,255,0.03)",
+                      border:`1px solid ${on?accent:"rgba(255,255,255,0.08)"}`,transition:"all 0.15s"}}>
+                    <div style={{color:"#ead8ff",fontSize:15,marginBottom:4}}>{su.label}</div>
+                    <div style={{color:"#b8a8d0",fontSize:12,lineHeight:1.5,marginBottom:7}}>{su.hook}</div>
+                    <div style={{color:accent,fontSize:11}}>Close: {su.startArchetypes.map(archName).join(', ')}</div>
+                  </button>
+                );
+              })}
+            </div>
+            <div style={{display:"flex",justifyContent:"space-between",marginTop:18}}>
+              <button onClick={()=>setSetupStep("lore")} style={{...C.smBtn,padding:"9px 18px"}}>← Back</button>
+              <button disabled={!setupSubject} onClick={()=>inhabitProfessor(setupSpirit.id,setupSubject.id)}
+                style={{...C.btn(accent),opacity:setupSubject?1:0.4,fontSize:14,padding:"11px 30px",cursor:setupSubject?"pointer":"default",boxShadow:setupSubject?`0 0 24px ${accentSoft}`:"none"}}>
+                Inhabit the Professor
+              </button>
+            </div>
+          </>)}
         </div>
       </div>
     );
@@ -7600,12 +7742,20 @@ export default function ProfessorSim(){
       {/* OBSERVE MODAL */}
 
       {/* HEADER */}
-      <div style={C.hdr}>
+      <div style={{...C.hdr,borderBottom:`2px solid ${professorProfile?.color||"#4a1590"}`}}>
         <div>
-          <div style={{fontSize:19,fontWeight:700,letterSpacing:2,color:"#b888ff"}}>PROFESSOR'S QUARTERS</div>
-          <div style={{fontSize:10,color:"#60389a",letterSpacing:3}}>A WEIGHT MANAGEMENT SIMULATION</div>
+          <div style={{fontSize:19,fontWeight:700,letterSpacing:2,color:professorProfile?.color||"#b888ff"}}>PROFESSOR'S QUARTERS</div>
+          <div style={{fontSize:10,color:"#60389a",letterSpacing:3}}>{SPIRITS[professorProfile?.spiritId]?.label?`${SPIRITS[professorProfile.spiritId].label.toUpperCase()} · ${SUBJECTS[professorProfile?.subject]?.label?.toUpperCase()||""}`:"A WEIGHT MANAGEMENT SIMULATION"}</div>
         </div>
         <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
+          {professorProfile&&(
+            <div title="Spirit Favor — on-lean actions fill it; full returns AP" style={{textAlign:"center",background:professorProfile.accentSoft||"rgba(80,18,140,0.3)",borderRadius:6,padding:"3px 11px",minWidth:74}}>
+              <div style={{height:6,background:"rgba(0,0,0,0.35)",borderRadius:3,overflow:"hidden",marginBottom:2}}>
+                <div style={{height:"100%",width:`${Math.min(100,((spiritFavor||0)/FAVOR_MAX)*100)}%`,background:professorProfile.color||"#a060ff",transition:"width 0.25s"}}/>
+              </div>
+              <span style={{fontSize:9,color:professorProfile.color||"#c0a8e8",letterSpacing:2}}>FAVOR</span>
+            </div>
+          )}
           {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Spirit",`Lv ${spiritLevel}`,"#a0e0b0"],["Pts",availableSkillPoints,"#f0c060"]].map(([l,v,c])=>(
             <div key={l} style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px"}}>
               <span style={{fontSize:17,fontWeight:700,color:c,display:"block"}}>{l==="Wk"?`Wk ${v}`:v}</span>
