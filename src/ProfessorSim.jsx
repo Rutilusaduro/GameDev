@@ -97,7 +97,8 @@ import { renderPsychShift } from './textEngine/scenes/psychShift/index.js';
 import './textEngine/scenes/psychShift/index.js';
 import { renderClothScene } from './textEngine/scenes/clothing/index.js';
 import './textEngine/scenes/clothing/index.js';
-import { renderImmobScene, renderImmobArrival, renderImmobRefit, renderImmobComfort, renderImmobHint, renderImmobPref } from './textEngine/scenes/immobility/index.js';
+import { renderImmobScene, renderImmobArrival, renderImmobRefit, renderImmobComfort, renderImmobHint, renderImmobPref, renderImmobVisit } from './textEngine/scenes/immobility/index.js';
+import { renderGossipReact } from './textEngine/scenes/gossip/index.js';
 import {
   getImmobilityArrival, markImmobilityArrived, immobilitySettleGain,
   needsRefit, markRefit, getRefitAction, COMFORT_MILESTONES,
@@ -3669,6 +3670,21 @@ export default function ProfessorSim(){
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:confirmCourtPreference(st)));
     push(`✦ Food preference confirmed — ${s.pendingCourtPreference}, she settles faster.`);
     if(prose) setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:prose });
+  };
+
+  const runBrokeredVisit=(immobile,visitor)=>{
+    if(ap<1){ push('⚠️ Need 1 AP.'); return; }
+    setAp(a=>a-1);
+    const visitProse=renderImmobVisit(immobile,visitor,week);
+    const gossipProse=renderGossipReact(visitor,week,{memName:immobile.name,memType:'stageUp',memWeeksAgo:0});
+    const fullProse=[visitProse,gossipProse].filter(Boolean).join('\n\n');
+    setStudents(prev=>prev.map(st=>{
+      if(st.id===immobile.id) return {...st,relationship:Math.min(100,(st.relationship??0)+3)};
+      if(st.id===visitor.id) return adjustHunger({...st,relationship:Math.min(100,(st.relationship??0)+1)},1);
+      return st;
+    }));
+    push(`✦ Visit — ${visitor.name} called on ${immobile.name}.`);
+    setEvolvedActivityModal({ student:immobile, stageIdx:getEvolvedActivityStageIdx(immobile), text:fullProse||`${visitor.name} came to sit with ${immobile.name}.` });
   };
 
   const openNetworkControl=(s)=>{
@@ -7667,7 +7683,7 @@ export default function ProfessorSim(){
           {view==="classroom"&&<ClassroomView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}

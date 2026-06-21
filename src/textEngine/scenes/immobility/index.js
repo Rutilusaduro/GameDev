@@ -6,6 +6,7 @@ import './fragments.js';
 import './personas.js';
 import './comfort.js';
 import './hints.js';
+import './visits.js';
 export { renderImmobArrival } from './arrival.js';
 
 registerPool('immob.scene', [
@@ -43,6 +44,12 @@ export function renderImmobHint(student, pref, tier, week = 1, opts = {}) {
     globals: { courtHintTier: tier, pendingCourtPreference: student.pendingCourtPreference, ...(opts.globals || {}) },
   });
   return render(`{immob.hint.${pref}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+}
+
+export function renderImmobVisit(immobile, visitor, week = 1, opts = {}) {
+  if (!immobile || !visitor) return '';
+  const ctx = buildTextContext({ subject: immobile, ref: visitor, week, ...opts });
+  return render('{immob.visit}', ctx, { trace: opts.trace || null })?.trim() || '';
 }
 
 export function renderImmobPref(student, pref, boonTier, week = 1, opts = {}) {
