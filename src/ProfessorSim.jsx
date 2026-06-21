@@ -5102,6 +5102,7 @@ export default function ProfessorSim(){
     ctx.d.brandControl=session.brandControlTier??getBrandControlTier(session.brandStreak??0);
     ctx.d.recentPerf=extra.recentPerf??deriveRecentPerf(session.tierHistory);
     ctx.d.streamVoice=student?.streamVoice??getStreamVoice(ensureStreamFields(student||{}));
+    if (extra.memScope) { ctx.d.memScope=extra.memScope; ctx.d.memType=extra.memType; ctx.d.memWeeksAgo=extra.memWeeksAgo; ctx.d.memValue=extra.memValue??null; ctx.d.scene='stream'; }
     return ctx;
   };
 
@@ -5268,8 +5269,9 @@ export default function ProfessorSim(){
       const newFullness=prev.sessionFullness+roundLbs;
       const tierHistory=[...prev.tierHistory,tier];
       const student=students.find(st=>st.id===prev.studentId);
-      const ctx=buildStreamCtx(prev,student,{perf:tier,trend:deriveTrend(tierHistory),recentPerf:deriveRecentPerf(tierHistory)});
-      const betweenRoundLine=render('{stream.betweenRound}',ctx);
+      const memG=pickStudentMemory(student,week)??{};
+      const ctx=buildStreamCtx(prev,student,{perf:tier,trend:deriveTrend(tierHistory),recentPerf:deriveRecentPerf(tierHistory),...memG});
+      const betweenRoundLine=[render('{stream.betweenRound}',ctx),memG.memScope?render('{memory.self}',ctx)?.trim():''].filter(Boolean).join('\n\n');
       let tapOutCause=prev.tapOutCause;
       if(!tapOutCause){
         tapOutCause=checkTapOutConditions({
@@ -6071,7 +6073,7 @@ export default function ProfessorSim(){
 
   // ── DINNER END (single) ──────────────────────────────────────
   const triggerDinnerEnd=(s,finalFullness,cap,totalGain,relBonus)=>{
-    const narrative=renderDinnerDepth(s, week) || renderDinnerEnding(s,finalFullness,cap,week);
+    const narrative=renderDinnerDepth(s, week, pickStudentMemory(s,week)??{}) || renderDinnerEnding(s,finalFullness,cap,week);
     const textPatch=dinnerEvent?.textSession?.weekUsed?weekUsedToPatch(dinnerEvent.textSession.weekUsed):null;
     guardHungerInterrupt(()=>{
       setAp(a=>a-2);
@@ -6142,7 +6144,7 @@ export default function ProfessorSim(){
 
   const chooseDinnerVenue=(venue)=>{
     setDinnerEvent(prev=>({...prev, venue, phase:"dishes"}));
-    setDinnerLog(dl=>[...dl, [`You arrive at ${venue.label}. ${venue.desc}`, renderDinnerDepth(dinnerEvent.student, week, { globals: { venueId: venue.id } })].filter(Boolean).join(' ')]);
+    setDinnerLog(dl=>[...dl, [`You arrive at ${venue.label}. ${venue.desc}`, renderDinnerDepth(dinnerEvent.student, week, { globals: { venueId: venue.id }, ...(pickStudentMemory(dinnerEvent.student,week)??{}) })].filter(Boolean).join(' ')]);
     push(`🍽️ Dinner with ${dinnerEvent.student.name} at ${venue.label}.`);
   };
 

@@ -59,6 +59,7 @@ import { renderDeviceFlavor } from '../textEngine/scenes/deviceFlavor.js';
 import { renderSessionFullness, renderSessionAftermath } from '../textEngine/scenes/session/index.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';
+import { pickStudentMemory } from '../gameData/memory.js';
 import '../textEngine/scenes/talkEncourage.js';
 import '../textEngine/scenes/talkCodas.js';
 import '../textEngine/scenes/talkSuggest.js';
@@ -109,7 +110,7 @@ const SECTIONS = {
   "weighIn.approachV2Big": { params: STATE_PARAMS, stageMin: 7,
     fn: (s, opts) => renderWeighInApproachV2(s, 6, true, opts) },
   "weighIn.reaction": { params: [...STATE_PARAMS, "campus"],
-    fn: (s, opts) => renderWeighInReaction(s, 6, { ...opts, bigScale: getStage(s.lbs).id >= 7 }) },
+    fn: (s, opts) => renderWeighInReaction(s, 6, { ...opts, bigScale: getStage(s.lbs).id >= 7, ...(pickStudentMemory(s, 6) ?? {}) }) },
   "weighIn.break": { params: ["girl", "stage", "corruption"],
     fn: (s, opts) => renderWeighInBreak(s, 6, opts) },
   "weighIn.swap": { params: ["girl"],
@@ -156,7 +157,7 @@ const SECTIONS = {
       trace: opts.trace,
     }) },
   "dinner.depth": { params: STATE_PARAMS,
-    fn: (s, opts) => renderDinnerDepth(s, 6, opts) },
+    fn: (s, opts) => renderDinnerDepth(s, 6, { ...opts, ...(pickStudentMemory(s, 6) ?? {}) }) },
   "intimacy.depth": { params: STATE_PARAMS,
     fn: (s, opts) => renderIntimacyDepth(s, 6, opts) },
   "jealousy.reaction": { params: [...STATE_PARAMS, "favoritism"],

@@ -51,6 +51,7 @@ import './weekRecap/index.js';
 import './milestone/index.js';
 import './rosterTell/index.js';
 import './memory/index.js';
+import './gossip/index.js';
 import './discontent/index.js';
 import './confront/index.js';
 import './cultivator/index.js';

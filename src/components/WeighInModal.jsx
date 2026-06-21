@@ -9,6 +9,7 @@ import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from '../textEngine/textFlagFormat.js';
 import { createSessionUsed, weekUsedFromStudent, weekUsedToPatch, isSlenderEligible } from '../gameData/textContext.js';
 import { renderSlenderMirrorBeat } from '../textEngine/scenes/earlyGain/index.js';
+import { pickStudentMemory } from '../gameData/memory.js';
 
 function renderWeighInPhase(renderFn, student, week, opts) {
   const trace = [];
@@ -242,8 +243,9 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
   );
   const flagState = buildStateLine(student, { week: week || 1, stageLabel: st.label });
   const goToReaction=()=>{
+    const memGlobals = pickStudentMemory(student, week || 1) ?? {};
     const bundle=renderWeighInPhase(
-      (s, w, o) => renderWeighInReaction(s, w, { ...o, bigScale: phase === 'digital' }),
+      (s, w, o) => renderWeighInReaction(s, w, { ...o, bigScale: phase === 'digital', ...memGlobals }),
       student,
       week || 1,
       weighInOpts,
