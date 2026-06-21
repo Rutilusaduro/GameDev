@@ -315,10 +315,10 @@ import { C } from './styles.js';
 // ═══════════════════════════════════════════════════════════════
 
 const SPIRIT_INTRO_PARAGRAPHS=[
-  "You are a spirit of gluttony and abundance.",
-  "The current world is diametrically opposed to you. Between the cultural shifts in humanity and the anthropogenic extinction event grinding through the biosphere, scarcity has become powerful. It has temples now: restraint, optimization, denial, survival.",
-  "Then, one day, you find a college class where you are able to take root.",
-  "You inhabit the professor. Through them, you teach. Through them, you feed. And when your awareness slips into the students themselves, it is the same hunger, learning every shape it can wear.",
+  "You are hunger that learned to be patient.",
+  "Every campus has a semester where the dining hall gets too good, where a seminar runs long over catering and nobody goes home. Where a class starts eating together and does not stop. You have been the reason before. You know what it looks like when it starts.",
+  "This time: a classroom, a professor, a roster of students who have not yet decided how much is too much.",
+  "You inhabit the professor. Through them, you teach. Through them, you feed. The students think it is their own appetite, their own good semester, their own extra portion. That is exactly right. You are all of those things.",
 ];
 
 const SPIRIT_XP_PER_LEVEL=40;
@@ -1118,6 +1118,11 @@ export default function ProfessorSim(){
     if((inventory[item.id]||0)<=0) return;
     const target=students.find(st=>st.id===studentId);
     if(!target) return;
+    if(target.lockState==='locked'){
+      push("She's not close enough yet — you can't reach her like this.");
+      setItemTargetPicker(null);
+      return;
+    }
     setItemTargetPicker(null);
     const compounds=getStockedCompounds();
     if(compounds.length>0){
@@ -5908,6 +5913,7 @@ export default function ProfessorSim(){
           if(!surgeStudent&&(beforePct<50&&afterPct>=50)) surgeStudent=ns;
         }
         if(!studentReceivesPassiveGain(ns)) return ns;
+        if(ns.lockState==='locked') return {...ns,lbs:ns.lbs+1,willpowerTaps:(ns.willpowerTaps||0)+1};
         const cals=rnd(action.cal[0],action.cal[1]);
         const fed=feedStudentCalories(ns,cals,action.full,2,'Refeast',{});
         if(!fed){refused++;return ns;}
@@ -5928,6 +5934,7 @@ export default function ProfessorSim(){
     const compoundLabel=compoundId?COMPOUNDS[compoundId]?.label:null;
     const updated=students.map(s=>{
       if(!studentReceivesPassiveGain(s)) return s;
+      if(s.lockState==='locked') return {...s,lbs:s.lbs+1,willpowerTaps:(s.willpowerTaps||0)+1};
       const cals=rnd(action.cal[0],action.cal[1]);
       const fed=feedStudentCalories(s,cals,action.full,1,'',compoundId?{compoundId}:{});
       if(!fed){refusals++;return s;}
@@ -6945,7 +6952,6 @@ export default function ProfessorSim(){
     const accent=setupSpirit?.color||"#8a4be0";
     const accentSoft=setupSpirit?.accentSoft||"rgba(138,75,224,0.22)";
     const panelStyle={...C.modal,maxWidth:720,background:`radial-gradient(circle at 50% 0%,${accentSoft},#0d0618 55%,#070510)`,border:`1px solid ${accent}`,boxShadow:`0 0 80px ${accentSoft}`};
-    const archName=(arch)=>students.find(s=>UNLOCK_POOL_IDS.includes(s.id)&&s.archetype===arch)?.name?.split(' ')[0]||arch;
     return(
       <div style={{...C.app,alignItems:"center",justifyContent:"center",padding:20}}>
         <div style={panelStyle}>
@@ -7011,7 +7017,6 @@ export default function ProfessorSim(){
                       border:`1px solid ${on?accent:"rgba(255,255,255,0.08)"}`,transition:"all 0.15s"}}>
                     <div style={{color:"#ead8ff",fontSize:15,marginBottom:4}}>{su.label}</div>
                     <div style={{color:"#b8a8d0",fontSize:12,lineHeight:1.5,marginBottom:7}}>{su.hook}</div>
-                    <div style={{color:accent,fontSize:11}}>Close: {su.startArchetypes.map(archName).join(', ')}</div>
                   </button>
                 );
               })}

@@ -55,8 +55,8 @@ export const SPIRITS = {
     startMods: { corruption: 8 },
     gainMult: 1.0, corruptionMult: 1.4,
     loreParas: [
-      'You are the one that gets in. The hunger you bring grows from the inside, until they reach for it with reasons that sound like their own.',
-      'They will not say you made them. They will say they always wanted this. Both are true. That is the whole trick of you.',
+      'You drop a word in the lecture — appetite, indulgence, the body as a site of permission — and you watch it land. She writes it down. By Thursday she has told a friend it was her own idea.',
+      'The reach for the extra portion comes with a reason, and the reason sounds right, because she built it herself from material you left in the room. That is the whole shape of you: grammar, not instruction.',
     ],
   },
   hearth: {
@@ -67,8 +67,8 @@ export const SPIRITS = {
     startMods: {},
     gainMult: 1.0, passiveBonus: 1, scrutinyMult: 0.8,
     loreParas: [
-      'You are warmth and the wish to stop moving. The gain comes as a side effect. What you make is a girl who has decided getting up was never worth it.',
-      'They soften because softness feels like rest, and rest is the only thing you ever offered.',
+      'The seminars run long. Nobody minds. She used to be the one checking the clock, but now she is the one still talking when the chairs are being stacked, still full, not ready to go back out into the cold.',
+      'The walk home gets shorter each week — she reroutes around the steep parts, then the stairs. You did not suggest any of it. She chose the path that ended with sitting down. Comfort is its own compass.',
     ],
   },
   hollow: {
@@ -79,8 +79,8 @@ export const SPIRITS = {
     startMods: { hunger: 18 },
     gainMult: 1.15, scrutinyMult: 1.1,
     loreParas: [
-      'You are the absence that food falls into and never fills. Whatever they eat, the room asks for more, and the asking is you.',
-      'There is no bottom. They learn this the way you have always known it — gladly, course after course, never once full.',
+      'She finishes the meal and the room is still asking. She stands at the counter eating from the pan because finding a plate meant a decision. She texts a friend she is a little hungry. There are six dishes in the sink already.',
+      'You are the part of her that does the accounting wrong. She calculates that she should feel done, and she should — but the number never settles. She goes back. The math never comes out right. You are why.',
     ],
   },
   tide: {
@@ -91,8 +91,8 @@ export const SPIRITS = {
     startMods: { relationship: 10 },
     gainMult: 1.0, scrutinyMult: 0.85,
     loreParas: [
-      'You do not plant the want. You are the voice that says want it, and the reason they listen. When you say eat, the spoon is already moving.',
-      'Trust first, always. They give you the door themselves, and call it their idea to open it.',
+      'She stays after the third class to tell you about a restaurant she found. The fourth time she brings leftovers. She is talking about food but she is telling you something else — that she has decided you are someone she feeds.',
+      'Trust builds the way she loosens. She stops prefacing things with I know I shouldn\'t but. She texts you what she ordered. She calls it a recommendation and it arrives in a container big enough for two and she does not mention the size.',
     ],
   },
 };
