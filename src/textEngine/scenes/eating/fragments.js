@@ -19,7 +19,7 @@ registerPool('eat.settleIn', [
     'Furniture has been evaluated; she sits where the geometry works.',
   ] },
   { when: { stageMin: 10 }, weight: 2, text: [
-    'The meal comes to her — settled warmth, food within arm\'s reach of immobile abundance.',
+    'The meal comes to her — settled warmth, food within arm\'s reach of immobile mass.',
     '{subject.name} does not travel to the food anymore. The food travels to her.',
   ] },
   { when: { campusLocale: 'cafeteria' }, text: [
@@ -177,7 +177,7 @@ registerPool('eat.bodyResponse', [
     'soft flesh shifting as capacity fills',
   ] },
   { when: { stageMin: 9 }, text: [
-    'abundance settling deeper with every course',
+    'weight settling deeper with every course',
     'warm mass rearranging around new fullness',
     'the body receiving food the way geography receives rain',
   ] },
@@ -260,7 +260,7 @@ registerPool('eat.aftermath', [
     'She shifts in the chair and the chair remembers.',
   ] },
   { when: { stageMin: 9 }, text: [
-    'Fullness joins the abundance already present — another layer of warmth.',
+    'Fullness joins the softness already present — another layer of warmth.',
     'The meal settles into mass that was already vast.',
   ] },
   { when: { hungerTierMin: 3, fullnessMin: 0.5 }, text: [

@@ -293,7 +293,7 @@ registerPool("wi.bodyClause", [
   ]},
   { when: { bodyType: "rotund", stageMin: 6 }, weight: 2, text: [
     "a heavy round mass shifting with each step",
-    "rotund abundance in motion",
+    "rotund mass in motion",
     "her own gravity arriving with her",
   ]},
   // voluptuous / curves stacked
@@ -326,7 +326,7 @@ registerPool("wi.bodyClause", [
   { when: { bodyType: "mom_bod", stageMin: 6 }, weight: 2, text: [
     "a vast pillowy softness in motion",
     "maternal mass needing space",
-    "soft abundance everywhere familiar",
+    "soft warmth everywhere familiar",
   ]},
   // fertility_goddess / abundance
   { when: { bodyType: "fertility_goddess", stageMin: 2, stageMax: 3 }, text: [

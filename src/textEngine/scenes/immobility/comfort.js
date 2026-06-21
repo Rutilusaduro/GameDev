@@ -12,7 +12,7 @@ registerPool('immob.refit', [
   ]},
   { when: { stageMin: 10, stageMax: 10 }, weight: 2, text: [
     `The tailor's tape reads differently than it ever has. What comes back is made for her current reality — soft fabric, everything that fits her now.`,
-    `She gets measured where she rests. The numbers are honest. The clothes that come back are built around her abundance — soft, sized, unhurried about it.`,
+    `She gets measured where she rests. The numbers are honest. The clothes that come back are built around her fullness — soft, sized, unhurried about it.`,
   ]},
   { when: { stageMin: 11 }, weight: 3, text: [
     `Measurement at this scale is an exercise in acknowledgment. New garments arrive: impossible proportions, made real, fitted to what she has become.`,

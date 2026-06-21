@@ -36,7 +36,7 @@ registerPool('milestone.body', [
   { when: { stageMin: 3, stageMax: 4 }, weight: 2, text: [
     `She fills everything differently now — {word.body}, rounder and heavier and warm under the hand, her whole shape gone generous.`,
     `The weight has settled into her in earnest — {word.body}, a soft heaviness that {word.movement} and asks to be noticed.`,
-    `She is unmistakably softer, fuller, more — {word.body}, every curve deepened, the new abundance sitting warm and easy on her.`,
+    `She is unmistakably softer, fuller, more — {word.body}, every curve deepened, the new richness sitting warm and easy on her.`,
   ]},
   { when: { stageMin: 5, stageMax: 6 }, weight: 2, text: [
     `She is undeniably bigger — {word.body}, {word.movement}, every motion carrying soft new weight that sways and settles.`,
@@ -49,7 +49,7 @@ registerPool('milestone.body', [
     `There is so much of her now, and all of it warm — {word.body}, spreading and settling, a body that arrives in a room and stays arriving.`,
   ]},
   { when: { stageMin: 9 }, weight: 2, text: [
-    `{word.body}; she has crossed into something monumental, {word.movement}, sheer soft abundance the room has to arrange itself around.`,
+    `{word.body}; she has crossed into something monumental, {word.movement}, sheer soft weight the room has to arrange itself around.`,
     `She is vast now in a way that rewrites the space around her — {word.body}, immense and soft and slow, settling by degrees long after she stops.`,
     `Everything about her is enormous and unhurried — {word.body}, a landscape of warm soft weight spreading gently into its own gravity.`,
   ]},

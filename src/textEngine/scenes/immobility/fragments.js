@@ -4,7 +4,7 @@ import { registerPool } from '../../engine.js';
 registerPool('immob.settledState', [
   { when: { stageMin: 10, stageMax: 10 }, text: [
     '{subject.name} has settled into the room the way weather settles — vast, warm, not going anywhere soon.',
-    'She rests as immobile abundance — the room organized around her presence.',
+    'She rests as immobile softness — the room organized around her presence.',
     'Movement is optional now. She has opted out for the moment.',
     'Her mass fills the available space with the patience of something geological.',
     'She is present the way a landscape is present — total, warm, immobile.',
@@ -19,7 +19,7 @@ registerPool('immob.settledState', [
     'She fills the space the way warmth fills a blanket — completely, softly, without edges.',
     'At this scale, position is description. She is where she is.',
     'Movement is assisted transfer now. Rest is the default state.',
-    'She is abundance made stationary — soft rolls, deep warmth, total presence.',
+    'She is fullness made stationary — soft rolls, deep warmth, total presence.',
     'The room bends around her without complaint. She has learned its angles.',
   ] },
   { when: {}, text: [
@@ -121,7 +121,7 @@ registerPool('immob.bodyDesc', [
     'soft rolls settling into familiar geography',
     'warmth spreading in layers no garment covers',
     'flesh at rest — vast, yielding, content',
-    'abundance pooled where gravity directs it',
+    'warmth pooled where gravity directs it',
     'a landscape of softness the room organizes around',
   ] },
   { when: { stageMin: 11 }, weight: 2, text: [
