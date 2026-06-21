@@ -25,6 +25,7 @@ import {
   FAVOR_MAX, FAVOR_REBATE, favorFill,
   profileGainMult, profileScrutinyMult, profilePassiveBonus, profileCorruptionMult,
 } from './gameData/spirits.js';
+import { getUnlockScene } from './gameData/unlockScenes.js';
 import { WalletBadge } from './components/WalletBadge.jsx';
 import { CAMPUS_NODES, CAMPUS_CONFIG } from './gameData/campus.js';
 import {
@@ -1864,7 +1865,8 @@ export default function ProfessorSim(){
           .sort((a,b)=>(b.passiveTrust||0)-(a.passiveTrust||0))[0];
         if(ripe){
           updated=updated.map(s=>s.id===ripe.id?{...s,lockState:'open'}:s);
-          setTimeout(()=>push(`🌒 ${ripe.name} leans into reach — the spirit's awareness finally closes the distance. She's yours to cultivate now.`),160);
+          const scene=getUnlockScene(ripe.id)||`${ripe.name} leans into reach. The spirit's awareness closes the last of the distance, and she's yours to cultivate now.`;
+          setTimeout(()=>push(`🌒 ${scene}`),160);
         }
       }
     }
