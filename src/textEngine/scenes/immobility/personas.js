@@ -116,7 +116,7 @@ registerModuleVariants('immob.settledState', [
     'The room is her stadium. She has already won.',
   ]},
   { when: { studentId: 4, ...IMMOBILE_TOP }, weight: W, text: [
-    'Fiona is a living canvas — immobile abundance, color in flesh.',
+    'Fiona is a living canvas — immobile vastness, color in flesh.',
     'She rests like a finished mural. Still art. Still growing.',
   ]},
   { when: { studentId: 6, ...IMMOBILE_TOP }, weight: W, text: [

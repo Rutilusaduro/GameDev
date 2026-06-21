@@ -53,7 +53,7 @@ registerPool('grow.crossing', [
     'Crossing campus is shuffle and commitment; every step announces her.',
   ] },
   { when: { endStage: 10 }, text: [
-    'Movement is nearly gone — warmth and spread pinned by her own abundance.',
+    'Movement is nearly gone — warmth and spread pinned by her own mass.',
     'The room works around her now; she is the landscape it accommodates.',
     'She is immobile softness at the center of everything.',
     'Getting anywhere is theory; staying put is the practical choice.',

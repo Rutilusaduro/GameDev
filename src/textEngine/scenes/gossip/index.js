@@ -70,7 +70,7 @@ registerPool('gossip.react.line', [
   // Artsy
   { when: { archetype: 'artsy', memType: 'stageUp' }, weight: 3, text: [
     `She reads the other girl's new shape the way she reads a canvas — noting what changed, and where it landed.`,
-    `Soft abundance. She's taking mental notes without knowing she is.`,
+    `Soft fullness. She's taking mental notes without knowing she is.`,
   ]},
   { when: { archetype: 'artsy', memType: 'scaleBreak' }, weight: 3, text: [
     `She stopped thinking about the number. She's been watching the body doing the work.`,
