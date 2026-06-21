@@ -55,7 +55,7 @@ export const SPIRITS = {
     startMods: { corruption: 8 },
     gainMult: 1.0, corruptionMult: 1.4,
     loreParas: [
-      'You are the one that gets in. Not hunger pushed on them — hunger grown from the inside, until they reach for it with reasons that sound like their own.',
+      'You are the one that gets in. The hunger you bring grows from the inside, until they reach for it with reasons that sound like their own.',
       'They will not say you made them. They will say they always wanted this. Both are true. That is the whole trick of you.',
     ],
   },
@@ -67,7 +67,7 @@ export const SPIRITS = {
     startMods: {},
     gainMult: 1.0, passiveBonus: 1, scrutinyMult: 0.8,
     loreParas: [
-      'You are warmth and the wish to stop moving. The gain follows, but it is not the point. The point is a girl who has decided getting up was never worth it.',
+      'You are warmth and the wish to stop moving. The gain comes as a side effect. What you make is a girl who has decided getting up was never worth it.',
       'They soften because softness feels like rest, and rest is the only thing you ever offered.',
     ],
   },

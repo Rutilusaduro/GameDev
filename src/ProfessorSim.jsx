@@ -318,7 +318,7 @@ const SPIRIT_INTRO_PARAGRAPHS=[
   "You are a spirit of gluttony and abundance.",
   "The current world is diametrically opposed to you. Between the cultural shifts in humanity and the anthropogenic extinction event grinding through the biosphere, scarcity has become powerful. It has temples now: restraint, optimization, denial, survival.",
   "Then, one day, you find a college class where you are able to take root.",
-  "You inhabit the professor. Through them, you can teach. Through them, you can feed. And when your awareness slips into the students themselves, it is not a contradiction; it is the same hunger learning every shape it can wear.",
+  "You inhabit the professor. Through them, you teach. Through them, you feed. And when your awareness slips into the students themselves, it is the same hunger, learning every shape it can wear.",
 ];
 
 const SPIRIT_XP_PER_LEVEL=40;
