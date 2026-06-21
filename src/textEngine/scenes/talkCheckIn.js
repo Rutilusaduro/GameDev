@@ -182,20 +182,66 @@ registerPool('talk.checkIn.ownedClose', [
   ] },
 ]);
 
+// ── talk.interior.aside — INTERIOR BEAT (optional, ~50% hit rate via empty variants)
+// Shape: SHORT SENTENCE or empty string — a stray thought that surfaces
+// during conversation without being announced. Reads as her inner life
+// leaking through, not a readout. Wildcard fallback must include empty
+// strings so roughly half the time it stays silent (natural conversation).
+registerPool('talk.interior.aside', [
+  // Mandatory fallback with empty options — keeps the pool optional.
+  { when: {}, text: ['', '', ''] },
+
+  // A6 Slender — early gain, awareness still tentative
+  { when: { corruption: [0], stageMin: 1, stageMax: 3 }, weight: 2, text: [
+    `She pauses mid-sentence, her hand finding the waistband of her jeans before she catches herself.`,
+    `Something crosses her face — not quite worry, not quite the opposite of worry — and vanishes.`,
+    '',
+  ]},
+  { when: { corruption: [0], stageMin: 2, stageMax: 4 }, weight: 2, text: [
+    `She loses the thread for a half-beat, gaze dropping to her lap. She finds it again. "Anyway."`,
+    `Her hand stills on the hem of her top. She doesn't seem to notice she's holding it.`,
+    '',
+  ]},
+
+  // A1 Mobile — mid-stage awareness, more body comfort
+  { when: { corruption: [1], stageMin: 3, stageMax: 6 }, weight: 2, text: [
+    `She shifts in her seat and her belly presses forward against her top, and she notices, and doesn't move.`,
+    `She half-smiles at something that wasn't said. Her weight settles warm in the chair.`,
+    '',
+  ]},
+  { when: { corruption: [1], stageMin: 5, stageMax: 8 }, weight: 2, text: [
+    `She spreads her hands over her thighs as she talks, unhurried, like checking in on something she trusts.`,
+    `Her attention drifts for one second — just long enough to feel the pull of wanting something — then comes back.`,
+    '',
+  ]},
+
+  // A2 Psych — ownership, body as fact
+  { when: { corruption: [2], stageMin: 4 }, weight: 3, text: [
+    `She lets the silence sit. Her body fills the chair the way she fills any room now — completely, without apology.`,
+    `Something warm and certain settles in her expression before she goes on. Like a private agreement she just made.`,
+    '',
+  ]},
+  { when: { corruption: [2], stageMin: 7 }, weight: 3, text: [
+    `She catches your eye and holds it a beat longer than the conversation asks for.`,
+    `Her breathing slows for just a moment. Her body takes up so much of the room, and she knows it, and the knowing is a kind of pleasure.`,
+    '',
+  ]},
+]);
+
 // ── talk.check_in — corruption-tier skeletons
 registerPool('talk.check_in', [
   { when: { corruption: [0] }, priority: 1, text: [
-    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat} {talk.checkIn.greetClose}\n\n{talk.checkIn.clothes}{talk.checkIn.clothesNote|prefix: }',
-    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat}\n\n{talk.checkIn.dining} {talk.checkIn.diningLine}\n\n{talk.checkIn.earlyWeight}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat} {talk.checkIn.greetClose}\n\n{talk.checkIn.clothes}{talk.checkIn.clothesNote|prefix: }{talk.interior.aside|prefix:\n\n}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat}\n\n{talk.checkIn.dining} {talk.checkIn.diningLine}\n\n{talk.checkIn.earlyWeight}{talk.interior.aside|prefix:\n\n}',
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat} {talk.checkIn.greetClose}\n\n{talk.checkIn.clothes}{talk.checkIn.clothesNote|prefix: }\n\n{talk.checkIn.earlyWeight}',
   ] },
   { when: { corruption: [1] }, priority: 1, text: [
-    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.acceptOpen}\n\n{talk.checkIn.acceptBody}\n\n{talk.checkIn.acceptClose}',
-    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.acceptOpen} {talk.checkIn.acceptBody}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.acceptOpen}\n\n{talk.checkIn.acceptBody}{talk.interior.aside|prefix:\n\n}\n\n{talk.checkIn.acceptClose}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.acceptOpen} {talk.checkIn.acceptBody}{talk.interior.aside|prefix:\n\n}',
   ] },
   { when: { corruption: [2] }, priority: 1, text: [
-    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.ownedOpen}\n\n{talk.checkIn.ownedSpread}\n\n{talk.checkIn.ownedClose}',
-    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.ownedOpen} {talk.checkIn.ownedSpread}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.ownedOpen}\n\n{talk.checkIn.ownedSpread}{talk.interior.aside|prefix:\n\n}\n\n{talk.checkIn.ownedClose}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.ownedOpen} {talk.checkIn.ownedSpread}{talk.interior.aside|prefix:\n\n}',
   ] },
   { when: {}, text: [
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat}',

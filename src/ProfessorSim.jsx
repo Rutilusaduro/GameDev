@@ -561,11 +561,21 @@ export default function ProfessorSim(){
       }
       prevRelsRef.current[s.id]=s.relationship;
     });
-    if(ups.length>0&&!tierUpModal){
-      const u=ups[0];
-      const scenes=TIER_SCENES[u.student.archetype]||TIER_SCENES.quiet;
-      const fn=scenes[u.newTier.id-1];
-      if(fn) setTierUpModal({student:u.student,oldTier:u.oldTier,newTier:u.newTier,scene:fn(u.student)});
+    if(ups.length>0){
+      // Record a bondShift memory at every tier crossing so prose can call back to it.
+      const bondValues=['trust+','trust++','trust+++'];
+      setStudents(prev=>prev.map(s=>{
+        const up=ups.find(u=>u.student.id===s.id);
+        if(!up) return s;
+        const v=bondValues[up.newTier.id-1]||'trust+';
+        return {...s,memories:appendMemory(s.memories,'bondShift',week,v)};
+      }));
+      if(!tierUpModal){
+        const u=ups[0];
+        const scenes=TIER_SCENES[u.student.archetype]||TIER_SCENES.quiet;
+        const fn=scenes[u.newTier.id-1];
+        if(fn) setTierUpModal({student:u.student,oldTier:u.oldTier,newTier:u.newTier,scene:fn(u.student)});
+      }
     }
   },[students,professorProfile]);
 
