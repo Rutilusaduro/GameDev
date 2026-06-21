@@ -97,8 +97,13 @@ import { renderPsychShift } from './textEngine/scenes/psychShift/index.js';
 import './textEngine/scenes/psychShift/index.js';
 import { renderClothScene } from './textEngine/scenes/clothing/index.js';
 import './textEngine/scenes/clothing/index.js';
-import { renderImmobScene, renderImmobArrival } from './textEngine/scenes/immobility/index.js';
-import { getImmobilityArrival, markImmobilityArrived, immobilitySettleGain } from './gameData/immobilityArrival.js';
+import { renderImmobScene, renderImmobArrival, renderImmobRefit, renderImmobComfort, renderImmobHint, renderImmobPref } from './textEngine/scenes/immobility/index.js';
+import {
+  getImmobilityArrival, markImmobilityArrived, immobilitySettleGain,
+  needsRefit, markRefit, getRefitAction, COMFORT_MILESTONES,
+  getAvailableComfortMilestones, markComfortMilestone,
+  getNextHint, incrementHint, initFoodHint, confirmCourtPreference, getCourtBoonTier,
+} from './gameData/immobilityArrival.js';
 import './textEngine/scenes/immobility/index.js';
 import {
   corruptionStudentPatch, clearWeeklyTextFlags, dinnerVenueToLocale, clothingStateForStage,
@@ -3612,10 +3617,58 @@ export default function ProfessorSim(){
     setAp(a=>a-arrival.apCost);
     const gain=Math.max(1,Math.round(rnd(arrival.gain[0],arrival.gain[1])*getSupernaturalGainMult(s)));
     const firstUnlock=arrival.firstUnlock;
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:markImmobilityArrived(processStudentGain(st,gain,arrival.rel))));
+    const hint=(s.courtHintWeek??-1)<week?getNextHint(s):null;
+    let hintPatched=s;
+    if(hint){
+      hintPatched=incrementHint(hintPatched,hint.pref);
+      if(hint.pref==='food'&&hint.tier===1) hintPatched=initFoodHint(hintPatched);
+    }
     const prose=renderImmobArrival(s,week);
+    const hintProse=hint?renderImmobHint(hintPatched,hint.pref,hint.tier,week):'';
+    const fullProse=[prose,hintProse].filter(Boolean).join('\n\n');
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==s.id) return st;
+      let next=markImmobilityArrived(processStudentGain(st,gain,arrival.rel));
+      if(firstUnlock&&next.lastRefitLbs==null) next=markRefit(next);
+      if(hint){
+        next={...next,courtHints:hintPatched.courtHints,courtHintWeek:week};
+        if(hintPatched.pendingCourtPreference) next={...next,pendingCourtPreference:hintPatched.pendingCourtPreference};
+      }
+      return next;
+    }));
     push(`✦ The Settling — ${arrival.label}: +${gain} lbs${firstUnlock?' · she has arrived, and now keeps settling on her own':' · still settling'}`);
-    setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:prose||arrival.desc });
+    setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:fullProse||arrival.desc });
+  };
+
+  const runImmobilityRefit=(s)=>{
+    const action=getRefitAction(s);
+    if(!action) return;
+    if(ap<action.apCost){ push(`⚠️ Need ${action.apCost} AP.`); return; }
+    setAp(a=>a-action.apCost);
+    const prose=renderImmobRefit(s,week);
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:markRefit(st)));
+    push(`✦ Re-fit — clothes remade for her size.`);
+    setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:prose||action.desc });
+  };
+
+  const runComfortMilestone=(s,key)=>{
+    const ms=COMFORT_MILESTONES[key];
+    if(!ms) return;
+    if(ap<ms.apCost){ push(`⚠️ Need ${ms.apCost} AP.`); return; }
+    setAp(a=>a-ms.apCost);
+    const prose=renderImmobComfort(s,key,week);
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:markComfortMilestone(st,key)));
+    push(`✦ ${ms.label} — comfort milestone complete.`);
+    setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:prose||ms.desc });
+  };
+
+  const runConfirmCourtPreference=(s)=>{
+    if(!s.pendingCourtPreference) return;
+    const boonTier=getCourtBoonTier(s,'food');
+    const prose=renderImmobPref(s,'food',boonTier,week);
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:confirmCourtPreference(st)));
+    push(`✦ Food preference confirmed — ${s.pendingCourtPreference}, she settles faster.`);
+    if(prose) setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:prose });
   };
 
   const openNetworkControl=(s)=>{
@@ -7614,7 +7667,7 @@ export default function ProfessorSim(){
           {view==="classroom"&&<ClassroomView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState}/>}
+          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
