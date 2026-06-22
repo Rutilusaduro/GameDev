@@ -450,7 +450,7 @@ registerPool('intimacy.chest_buried.end0._f148', [
   { when: {}, text: ["She keeps you there for a long time — her hand on the back of your head, your face buried against her, her heartbeat steady."] },
 ]);
 registerPool('intimacy.chest_buried.end0._f149', [
-  { when: {}, text: [". When you finally surface she looks at you like you've confirmed something she suspected. \"I knew you'd like it there,\" she says. She sounds profoundly pleased."] },
+  { when: {}, text: [". When you finally surface she looks at you like you've confirmed something she suspected. \"I knew you'd like it there,\" she says. She sounds pleased with herself."] },
 ]);
 registerPool('intimacy.chest_buried.end2._f150', [
   { when: {}, text: ["She releases you eventually, and the air against your face feels strange after the warmth of her. She smooths your hair with one hand, a gesture so domestic and certain it makes your chest tight."] },

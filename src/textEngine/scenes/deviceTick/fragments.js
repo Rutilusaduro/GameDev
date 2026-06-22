@@ -187,7 +187,7 @@ registerPool('device.tick.growth', [
   { when: { weightBand: 'extreme', gainLbsMin: 1 }, text: [
     'every pound lands on {subject.name}\'s already monumental frame',
     'her vast body swells further — the device barely slows',
-    'immobile abundance thickens in quiet, visible surges',
+    'immobile softness thickens in quiet, visible surges',
   ] },
   { when: { gainLbsMin: 8 }, text: [
     'this week\'s surge is unmistakable — {subject.first} feels it in every mirror',

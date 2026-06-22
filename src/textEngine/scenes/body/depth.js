@@ -51,7 +51,7 @@ registerPool('body.torso', [
 
 registerPool('body.lower', [
   { when: { bodyType: ['pear'], stageMin: 4 }, weight: 2, text: [
-    'Hips and thighs spread wide — pear-shaped abundance settling low.',
+    'Hips and thighs spread wide — pear-shaped heft settling low.',
     'Her lower body pools into the seat, thighs pressing together warmly.',
   ] },
   { when: { bodyType: ['hourglass'], stageMin: 4 }, text: [

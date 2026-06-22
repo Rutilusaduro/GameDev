@@ -15,7 +15,7 @@ import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } fro
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
 import { INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES } from '../gameData/talia.js';
 import { getArrivalCapstone } from '../gameData/arrivalCapstones.js';
-import { getImmobilityArrival } from '../gameData/immobilityArrival.js';
+import { getImmobilityArrival, getRefitAction, getAvailableComfortMilestones, COMFORT_MILESTONES, needsRefit, getImmobilityTier } from '../gameData/immobilityArrival.js';
 import { getAvailableDeviceActions, getBodyOverrideBadge } from '../gameData/deviceActions.js';
 import { EquipmentButton } from '../components/StudentEquipModal.jsx';
 import { formatIngredientBag } from '../gameData/pharmacistIngredients.js';
@@ -27,7 +27,7 @@ import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -780,6 +780,90 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                         >
                           {arr.label} ({arr.apCost} AP){arr.firstUnlock?' · she Arrives, then settles on her own':' · settle her deeper'}
                         </button>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* Re-fit */}
+                {runImmobilityRefit&&(()=>{
+                  const action=getRefitAction(s);
+                  if(!action) return null;
+                  return(
+                    <div style={{marginBottom:14}}>
+                      <div style={{background:"rgba(30,12,36,0.55)",border:"1px solid #9050b080",borderRadius:10,padding:12}}>
+                        <div style={{fontSize:9,letterSpacing:3,color:"#b070c0",marginBottom:4}}>✦ RE-FIT</div>
+                        <div style={{fontSize:12,color:"#e8d0f0",lineHeight:1.6,marginBottom:8}}>{action.desc}</div>
+                        <button
+                          style={{...C.btn("#6a3090"),width:"100%",opacity:ap<action.apCost?0.4:1}}
+                          onClick={()=>runImmobilityRefit(s)}
+                        >{action.label} ({action.apCost} AP)</button>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* Food preference confirm */}
+                {runConfirmCourtPreference&&s.pendingCourtPreference&&!s.courtPreference&&(
+                  <div style={{marginBottom:14}}>
+                    <div style={{background:"rgba(30,12,36,0.55)",border:"1px solid #9050b080",borderRadius:10,padding:12}}>
+                      <div style={{fontSize:9,letterSpacing:3,color:"#b070c0",marginBottom:4}}>✦ FOOD PREFERENCE</div>
+                      <div style={{fontSize:12,color:"#e8d0f0",lineHeight:1.6,marginBottom:8}}>
+                        She's mentioned a preference — {s.pendingCourtPreference}. Bring her what she wants.
+                      </div>
+                      <button
+                        style={{...C.btn("#6a3090"),width:"100%"}}
+                        onClick={()=>runConfirmCourtPreference(s)}
+                      >Confirm — serve {s.pendingCourtPreference} foods</button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Comfort milestones */}
+                {runComfortMilestone&&(()=>{
+                  const keys=getAvailableComfortMilestones(s);
+                  if(!keys.length) return null;
+                  return(
+                    <div style={{marginBottom:14}}>
+                      <div style={{background:"rgba(30,12,36,0.55)",border:"1px solid #9050b080",borderRadius:10,padding:12}}>
+                        <div style={{fontSize:9,letterSpacing:3,color:"#b070c0",marginBottom:8}}>✦ COMFORT MILESTONES</div>
+                        {keys.map(k=>{
+                          const ms=COMFORT_MILESTONES[k];
+                          return(
+                            <div key={k} style={{marginBottom:8}}>
+                              <div style={{fontSize:11,color:"#d0b0e0",marginBottom:4}}>{ms.label} — {ms.desc}</div>
+                              <button
+                                style={{...C.btn("#5a2880"),width:"100%",opacity:ap<ms.apCost?0.4:1}}
+                                onClick={()=>runComfortMilestone(s,k)}
+                              >{ms.label} ({ms.apCost} AP)</button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* Brokered visits */}
+                {runBrokeredVisit&&s.immobilityArrived&&(()=>{
+                  const mobile=students.filter(st=>st.id!==s.id&&getImmobilityTier(st)<1);
+                  if(!mobile.length) return null;
+                  return(
+                    <div style={{marginBottom:14}}>
+                      <div style={{background:"rgba(30,12,36,0.55)",border:"1px solid #9050b080",borderRadius:10,padding:12}}>
+                        <div style={{fontSize:9,letterSpacing:3,color:"#b070c0",marginBottom:4}}>✦ BROKER A VISIT</div>
+                        <div style={{fontSize:11,color:"#c8a8d8",lineHeight:1.5,marginBottom:8}}>
+                          Send someone to sit with her. (1 AP)
+                        </div>
+                        <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+                          {mobile.map(v=>(
+                            <button
+                              key={v.id}
+                              style={{...C.btn("#5a2880"),fontSize:11,opacity:ap<1?0.4:1,padding:"4px 10px"}}
+                              onClick={()=>runBrokeredVisit(s,v)}
+                            >{v.name}</button>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   );

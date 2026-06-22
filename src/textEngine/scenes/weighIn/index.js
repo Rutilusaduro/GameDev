@@ -12,6 +12,7 @@ import './personas.js';
 import './breakScene.js';
 import { appendCampusWeighIn } from '../campusSoftening.js';
 import { renderSlenderMirrorBeat } from '../earlyGain/index.js';
+import { renderMemoryCallback } from '../memory/index.js';
 import { isSlenderEligible } from '../../../gameData/textContext.js';
 
 export const WI_INTRO_LEGACY = "{wi.arrival} {wi.settle} {wi.scaleApproach}";
@@ -69,7 +70,8 @@ export function renderWeighInReaction(student, week, opts = {}) {
     const mirrorBeat = renderSlenderMirrorBeat(student, week, opts);
     if (mirrorBeat) reply = `${mirrorBeat}\n\n${reply}`;
   }
-  return `${stepOff}\n\n${reply}`;
+  const memBeat = opts.memScope ? renderMemoryCallback(student, week, { ...opts, scene: 'weighIn' }) : '';
+  return memBeat ? `${stepOff}\n\n${reply}\n\n${memBeat}` : `${stepOff}\n\n${reply}`;
 }
 
 // The analog scale cracks under her.

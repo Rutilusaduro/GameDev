@@ -475,7 +475,7 @@ registerPool('session.fullness.transfer.f4', [
   { when: {}, text: ["{session.fullness.transfer.f4._f1}"] },
 ]);
 registerPool('session.fullness.transfer.f5._f1', [
-  { when: {}, text: ["She is enormous with food and deeply, completely happy about it. \"I feel like I'm home,\" she says. It's unclear whether she means here or in her body. Both, probably."] },
+  { when: {}, text: ["She is enormous with food and entirely happy about it. \"I feel like I'm home,\" she says. It's unclear whether she means here or in her body. Both, probably."] },
 ]);
 
 registerPool('session.fullness.transfer.f5', [

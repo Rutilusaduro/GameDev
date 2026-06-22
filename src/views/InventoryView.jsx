@@ -57,7 +57,7 @@ export function ItemTargetPicker({ itemTargetPicker, setItemTargetPicker, studen
           </div>
         );})()}
         <div style={{maxHeight:320,overflowY:"auto",marginBottom:10}}>
-          {students.filter(s=>!s.hidden||lilithUnlocked).map(s=>{
+          {students.filter(s=>(!s.hidden||lilithUnlocked)&&s.lockState!=='locked').map(s=>{
             const cap=s.stomachCapacity||100;
             const over=(s.fullness||0)+item.full>cap;
             return(

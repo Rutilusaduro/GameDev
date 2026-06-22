@@ -948,7 +948,7 @@ registerPool('diary.psych_researcher.c1', [
   { when: { stage: [5], corruption: [0] }, text: ['Session one. The subject was uncertain — expected. I maintained clinical distance throughout. My own intake during the session exceeded my baseline. I\'ve noted it in the variable log.'] },
   { when: { stage: [5], corruption: [0] }, text: ['First session. I kept the professional framing. I noticed my note-taking was very detailed. I notice I\'m using more paper than I expected. Both things are in the log.'] },
   { when: { stage: [5] }, text: ['Session one. Subject was uncertain — expected. I maintained clinical distance throughout, which was harder than expected. My own intake during the session exceeded my baseline.'] },
-  { when: { stage: [6] }, text: ['Month three. The subject\'s appetite has changed — not just size, but relationship. They reach for things now. The data is extraordinary.'] },
+  { when: { stage: [6] }, text: ['Month three. The subject\'s appetite has changed in kind. They reach for things now, unprompted, like the food is owed to them. The data is extraordinary.'] },
   { when: { stage: [7] }, text: ['I\'ve been observing appetite dynamics in this subject for six months and I\'ve noticed my notes from shared feeding sessions are more detailed than my remote observation notes.'] },
   { when: { stage: [8] }, text: ['My subject told me today that they look forward to our sessions. I wrote it down. Then I sat with it for a while. Then I ate the rest of what was on the table.'] },
   { when: { stage: [9] }, text: ['I have generated more data on appetite, embodiment, and the feeder/feedee dynamic than I will likely be able to publish in full. My own data is extensive. The subject\'s data is extraordinary.'] },

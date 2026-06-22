@@ -134,7 +134,7 @@ registerPool('body.portrait.pear.s5', [
   { when: {}, text: ["{body.portrait.pear.s5._f1} {body.portrait.pear.s5._f2}\n\n{body.portrait.pear.s5._f3} {body.portrait.pear.s5._f4}\n\n{body.portrait.pear.s5._f5} {body.portrait.pear.s5._f6}"] },
 ]);
 registerPool('body.portrait.pear.s6._f1', [
-  { when: {}, text: ["Her face is a soft, round abundance — full cheeks resting on her shoulders, layers of chin stacked smoothly, her eyes set deep in softness. Her neck has largely merged with her shoulders."] },
+  { when: {}, text: ["Her face is a soft, round fullness — full cheeks resting on her shoulders, layers of chin stacked smoothly, her eyes set deep in softness. Her neck has largely merged with her shoulders."] },
 ]);
 
 registerPool('body.portrait.pear.s6._f2', [
@@ -188,7 +188,7 @@ registerPool('body.portrait.pear.s7', [
   { when: {}, text: ["{body.portrait.pear.s7._f1} {body.portrait.pear.s7._f2}\n\n{body.portrait.pear.s7._f3} {body.portrait.pear.s7._f4}\n\n{body.portrait.pear.s7._f5} {body.portrait.pear.s7._f6}"] },
 ]);
 registerPool('body.portrait.pear.s8._f1', [
-  { when: {}, text: ["Her face is soft and vast — a wide moonface framed entirely by softness, the features gentle and small in their abundance of cheek and chin."] },
+  { when: {}, text: ["Her face is soft and vast — a wide moonface framed entirely by softness, the features gentle and small in their expanse of cheek and chin."] },
 ]);
 
 registerPool('body.portrait.pear.s8._f2', [
@@ -277,7 +277,7 @@ registerPool('body.portrait.pear.s10', [
   { when: {}, text: ["{body.portrait.pear.s10._f1} {body.portrait.pear.s10._f2}\n\n{body.portrait.pear.s10._f3} {body.portrait.pear.s10._f4}\n\n{body.portrait.pear.s10._f5}"] },
 ]);
 registerPool('body.portrait.pear.s11._f1', [
-  { when: {}, text: ["Her face is gentle and serene above what she has become — pear-shaped abundance at a scale that reorganizes the room."] },
+  { when: {}, text: ["Her face is gentle and serene above what she has become — pear-shaped heft at a scale that reorganizes the room."] },
 ]);
 
 registerPool('body.portrait.pear.s11._f2', [
@@ -495,7 +495,7 @@ registerPool('body.portrait.hourglass.s9._f2', [
 ]);
 
 registerPool('body.portrait.hourglass.s9._f3', [
-  { when: {}, text: ["surrounding abundance. Her bust, belly, hips, and lower body have become a continuous, enormous landscape of soft flesh, rolls and folds layered upon each other, her sides extending far beyond"] },
+  { when: {}, text: ["surrounding warmth. Her bust, belly, hips, and lower body have become a continuous, enormous landscape of soft flesh, rolls and folds layered upon each other, her sides extending far beyond"] },
 ]);
 
 registerPool('body.portrait.hourglass.s9._f4', [
@@ -510,11 +510,11 @@ registerPool('body.portrait.hourglass.s9', [
   { when: {}, text: ["{body.portrait.hourglass.s9._f1} {body.portrait.hourglass.s9._f2}\n\n{body.portrait.hourglass.s9._f3} {body.portrait.hourglass.s9._f4}\n\n{body.portrait.hourglass.s9._f5}"] },
 ]);
 registerPool('body.portrait.hourglass.s10._f1', [
-  { when: {}, text: ["Her face is gentle and serene, floating above an incomprehensible abundance of warm, soft flesh."] },
+  { when: {}, text: ["Her face is gentle and serene, floating above an incomprehensible depth of warm, soft flesh."] },
 ]);
 
 registerPool('body.portrait.hourglass.s10._f2', [
-  { when: {}, text: [". Her bust and belly and hips — the great curves that once defined her silhouette — have merged into one breathtaking, continuous mass that presses outward in every direction, filling the"] },
+  { when: {}, text: [". Her bust and belly and hips — the great curves that once defined her silhouette — have merged into one continuous, overwhelming mass that presses outward in every direction, filling the"] },
 ]);
 
 registerPool('body.portrait.hourglass.s10._f3', [
@@ -723,7 +723,7 @@ registerPool('body.portrait.straight.s9._f2', [
 ]);
 
 registerPool('body.portrait.straight.s9._f3', [
-  { when: {}, text: [". Her upper and lower body have lost their distinction, merging into one immense whole — an even, spherical abundance of warm flesh in every direction."] },
+  { when: {}, text: [". Her upper and lower body have lost their distinction, merging into one immense whole — an even, spherical spread of warm flesh in every direction."] },
 ]);
 
 registerPool('body.portrait.straight.s9._f4', [
@@ -734,7 +734,7 @@ registerPool('body.portrait.straight.s9', [
   { when: {}, text: ["{body.portrait.straight.s9._f1} {body.portrait.straight.s9._f2}\n\n{body.portrait.straight.s9._f3} {body.portrait.straight.s9._f4}"] },
 ]);
 registerPool('body.portrait.straight.s10._f1', [
-  { when: {}, text: ["Her face is serene and small at the summit of what she has become — a breathtaking, still, enormous presence."] },
+  { when: {}, text: ["Her face is serene and small at the summit of what she has become — a still, immense, weather-system presence."] },
 ]);
 
 registerPool('body.portrait.straight.s10._f2', [
@@ -753,7 +753,7 @@ registerPool('body.portrait.straight.s10', [
   { when: {}, text: ["{body.portrait.straight.s10._f1} {body.portrait.straight.s10._f2}\n\n{body.portrait.straight.s10._f3} {body.portrait.straight.s10._f4}"] },
 ]);
 registerPool('body.portrait.straight.s11._f1', [
-  { when: {}, text: ["Her face floats small and serene above uniform abundance impossibly vast — softness spreading warm and heavy in every direction, bust and belly and back and hips one continuous landscape of"] },
+  { when: {}, text: ["Her face floats small and serene above uniform softness impossibly vast — warmth spreading heavy in every direction, bust and belly and back and hips one continuous landscape of"] },
 ]);
 
 registerPool('body.portrait.straight.s11._f2', [
@@ -1013,7 +1013,7 @@ registerPool('body.portrait.apple.s11._f2', [
 ]);
 
 registerPool('body.portrait.apple.s11._f3', [
-  { when: {}, text: [". Hips and thighs exist somewhere beneath the general abundance, but the belly leads — plush, sinking, impossibly indulgent. She barely moves."] },
+  { when: {}, text: [". Hips and thighs exist somewhere beneath the general mass, but the belly leads — plush, sinking, impossibly indulgent. She barely moves."] },
 ]);
 
 registerPool('body.portrait.apple.s11._f4', [
@@ -1235,7 +1235,7 @@ registerPool('body.portrait.athletic.s9._f1', [
 ]);
 
 registerPool('body.portrait.athletic.s9._f2', [
-  { when: {}, text: [". Her bust is part of the great mass of her torso: vast, heavy, its weight indistinct from the surrounding abundance of warm flesh."] },
+  { when: {}, text: [". Her bust is part of the great mass of her torso: vast, heavy, its weight indistinct from the surrounding richness of warm flesh."] },
 ]);
 
 registerPool('body.portrait.athletic.s9._f3', [
@@ -1262,7 +1262,7 @@ registerPool('body.portrait.athletic.s10._f2', [
 ]);
 
 registerPool('body.portrait.athletic.s10._f3', [
-  { when: {}, text: [". Her bust and belly and thighs are a continuous, breathtaking expanse of heavy, warm, soft flesh. Her thighs alone are vast enough to fill the width of reinforced furniture."] },
+  { when: {}, text: [". Her bust and belly and thighs are a continuous, unbroken expanse of heavy, warm, soft flesh. Her thighs alone are vast enough to fill the width of reinforced furniture."] },
 ]);
 
 registerPool('body.portrait.athletic.s10._f4', [

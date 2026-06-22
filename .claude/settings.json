@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/skill-router.sh",
+            "statusMessage": "Loading skill routing"
+          }
+        ]
+      },
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v node >/dev/null 2>&1 && node \"$CLAUDE_PROJECT_DIR/.claude/ponytail/hooks/ponytail-activate.js\" || exit 0",
+            "timeout": 5,
+            "statusMessage": "Loading ponytail mode"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/skill-router.sh"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v node >/dev/null 2>&1 && node \"$CLAUDE_PROJECT_DIR/.claude/ponytail/hooks/ponytail-mode-tracker.js\" || exit 0",
+            "timeout": 5,
+            "statusMessage": "Tracking ponytail mode"
+          }
+        ]
+      }
+    ]
+  }
+}

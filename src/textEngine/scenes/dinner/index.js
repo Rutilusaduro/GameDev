@@ -2,6 +2,7 @@
 // Dinner scene library — endings, conversations, group beats.
 import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { renderMemoryCallback } from '../memory/index.js';
 import './endingScene.js';
 import './conversations.js';
 import './groupConversations.js';
@@ -106,5 +107,7 @@ export function renderDinnerDepth(student, week = 1, opts = {}) {
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const main = render('{dinner.depth}', ctx, { trace: opts.trace || null })?.trim()
     || renderDinnerEnding(student, student.fullness || 0, student.stomachCapacity || 100, week);
-  return composeOverlay(main, renderOverlay(student, week, opts));
+  const base = composeOverlay(main, renderOverlay(student, week, opts));
+  const memBeat = opts.memScope ? renderMemoryCallback(student, week, { ...opts, scene: 'dinner' }) : '';
+  return memBeat ? `${base}\n\n${memBeat}` : base;
 }

@@ -85,18 +85,40 @@ export function ClassView({
   week = 1,
   onAmends,
 }) {
-  const rosterVisible = (s) => !s.hidden || (s.id === 15 && lilithUnlocked) || (s.id === 17 && elaraDiscovered);
+  const isLocked = (s) => s.lockState === 'locked';
+  const rosterVisible = (s) => (!s.hidden || (s.id === 15 && lilithUnlocked) || (s.id === 17 && elaraDiscovered)) && !isLocked(s);
   const classmateWithdrawn = students.some((s) => s.withdrawn && rosterVisible(s));
+  const locked = students.filter(isLocked).sort((a, b) => (b.passiveTrust || 0) - (a.passiveTrust || 0));
   return (
     <>
       {view === 'class' && (
         <div>
-          <p style={C.secT}>Students — {students.filter(rosterVisible).length} enrolled · avg {avgLbs} lbs</p>
+          <p style={C.secT}>Students — {students.filter(rosterVisible).length} close · avg {avgLbs} lbs</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(195px,1fr))', gridAutoRows: 'minmax(140px,auto)', gap: 8 }}>
             {[...students].filter(rosterVisible).sort((a, b) => a.id - b.id).map((s) => (
               <RosterTile key={s.id} s={s} week={week} onOpen={() => { setSelectedId(s.id); setView('student'); }} onAmends={onAmends} classmateWithdrawn={classmateWithdrawn && !s.withdrawn} />
             ))}
           </div>
+          {locked.length > 0 && (
+            <div style={{ marginTop: 18 }}>
+              <p style={C.secT}>The rest of the class — {locked.length} out of reach</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(150px,1fr))', gap: 7 }}>
+                {locked.map((s) => {
+                  const pct = Math.min(100, Math.round(((s.passiveTrust || 0) / 100) * 100));
+                  return (
+                    <div key={s.id} style={{ ...C.card, cursor: 'default', opacity: 0.72, border: '1px dashed #2a1a48' }}>
+                      <div style={{ fontWeight: 700, fontSize: 13, color: '#6a5a88' }}>{s.name}</div>
+                      <div style={{ fontSize: 10, color: '#50406a', marginBottom: 5 }}>{s.role || s.archetype}</div>
+                      <Bar val={pct} max={100} color="#5a3aa0" />
+                      <div style={{ fontSize: 9.5, color: '#50406a', marginTop: 3, fontStyle: 'italic' }}>
+                        {pct >= 100 ? 'on the verge of leaning close' : 'still a stranger to the spirit'}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </>
