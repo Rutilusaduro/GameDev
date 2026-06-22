@@ -167,6 +167,7 @@ import { InventoryView, ItemTargetPicker } from './views/InventoryView.jsx';
 import { LabView } from './views/LabView.jsx';
 import { NetworkView } from './views/NetworkView.jsx';
 import { DeviceInventoryView } from './views/DeviceInventoryView.jsx';
+import { SpriteTestView } from './views/SpriteTestView.jsx';
 import {
   defaultLabState, defaultDeviceInventory, INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES,
   completeLabSession, tickLabWeek, TALIA_STUDENT_ID, maybeAdvanceInventorStage, LAB_SESSION_ACTIVITY,
@@ -372,6 +373,7 @@ export default function ProfessorSim(){
   const [setupSubject,setSetupSubject]=useState(null);
   const [log,setLog]=useState(["📋 Welcome, Professor. Your class of 15 students awaits."]);
   const [logTab,setLogTab]=useState("story");
+  const [sidebarOpen,setSidebarOpen]=useState(true);
   const [activeEvent,setActiveEvent]=useState(null);
   const [eventQueue,setEventQueue]=useState([]);
   const activeNarrativeCopy = useMemo(() => {
@@ -8037,11 +8039,17 @@ export default function ProfessorSim(){
 
           {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} week={week} lilithUnlocked={lilithUnlocked} pharmacistStage={pharmacistState?.stage??1} oppositionCtx={buildOppositionContext({students,ownedSkills,ownedClassSkills,facultyAffinity,labState,pharmacistState,communityResearcherState,lilithUnlocked})} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onStartHearing={startOppositionHearing} onClose={()=>setView('class')}/>}
 
+          {view==="sprite-test"&&<SpriteTestView/>}
+
         </div>
 
         {/* ── SIDEBAR: LIVE LOG (Story / Ledger tabs) ── */}
-        <div style={{...C.side, display:"flex", flexDirection:"column"}}>
-          {(()=>{
+        <div style={{...C.side, width:sidebarOpen?320:32, transition:"width 0.18s", display:"flex", flexDirection:"column", overflow:"hidden"}}>
+          <button type="button" onClick={()=>setSidebarOpen(o=>!o)}
+            style={{alignSelf:"flex-end",background:"transparent",border:"none",color:"#7050a0",fontSize:14,cursor:"pointer",padding:"2px 4px",flexShrink:0,lineHeight:1}}>
+            {sidebarOpen?"◀":"▶"}
+          </button>
+          {sidebarOpen&&(()=>{
             const entries=log.map((e,i)=>({e,i}));
             const story=entries.filter(x=>!isLedgerLogLine(x.e));
             const ledger=entries.filter(x=>isLedgerLogLine(x.e));
@@ -8066,12 +8074,12 @@ export default function ProfessorSim(){
                     </div>
                   : shown.map(({e,i})=><div key={i} style={C.logE}>{e}</div>)}
               </div>
+              <button type="button" onClick={()=>{ setFieldNoteError(null); setBugReportOpen(true); }}
+                style={{...C.btn('#3a3028'), fontSize:9, marginTop:8, flexShrink:0, opacity:0.85}}>
+                📋 Something wrong? Field Notes
+              </button>
             </>);
           })()}
-          <button type="button" onClick={()=>{ setFieldNoteError(null); setBugReportOpen(true); }}
-            style={{...C.btn('#3a3028'), fontSize:9, marginTop:8, flexShrink:0, opacity:0.85}}>
-            📋 Something wrong? Field Notes
-          </button>
         </div>
       </div>
 
@@ -8133,7 +8141,7 @@ export default function ProfessorSim(){
       {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students}/>}
 
       {/* ── DEBUG PANEL ── */}
-      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} money={money} view={view} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length}/>}
+      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} money={money} view={view} setView={setView} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length}/>}
 
       {bugReportOpen&&<BugReportModal getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} prefillError={fieldNoteError} onClose={()=>{ setBugReportOpen(false); setFieldNoteError(null); }}/>}
 
