@@ -373,6 +373,7 @@ export default function ProfessorSim(){
   const [setupSubject,setSetupSubject]=useState(null);
   const [log,setLog]=useState(["📋 Welcome, Professor. Your class of 15 students awaits."]);
   const [logTab,setLogTab]=useState("story");
+  const [sidebarOpen,setSidebarOpen]=useState(true);
   const [activeEvent,setActiveEvent]=useState(null);
   const [eventQueue,setEventQueue]=useState([]);
   const activeNarrativeCopy = useMemo(() => {
@@ -8043,8 +8044,12 @@ export default function ProfessorSim(){
         </div>
 
         {/* ── SIDEBAR: LIVE LOG (Story / Ledger tabs) ── */}
-        <div style={{...C.side, display:"flex", flexDirection:"column"}}>
-          {(()=>{
+        <div style={{...C.side, width:sidebarOpen?320:32, transition:"width 0.18s", display:"flex", flexDirection:"column", overflow:"hidden"}}>
+          <button type="button" onClick={()=>setSidebarOpen(o=>!o)}
+            style={{alignSelf:"flex-end",background:"transparent",border:"none",color:"#7050a0",fontSize:14,cursor:"pointer",padding:"2px 4px",flexShrink:0,lineHeight:1}}>
+            {sidebarOpen?"◀":"▶"}
+          </button>
+          {sidebarOpen&&(()=>{
             const entries=log.map((e,i)=>({e,i}));
             const story=entries.filter(x=>!isLedgerLogLine(x.e));
             const ledger=entries.filter(x=>isLedgerLogLine(x.e));
@@ -8069,12 +8074,12 @@ export default function ProfessorSim(){
                     </div>
                   : shown.map(({e,i})=><div key={i} style={C.logE}>{e}</div>)}
               </div>
+              <button type="button" onClick={()=>{ setFieldNoteError(null); setBugReportOpen(true); }}
+                style={{...C.btn('#3a3028'), fontSize:9, marginTop:8, flexShrink:0, opacity:0.85}}>
+                📋 Something wrong? Field Notes
+              </button>
             </>);
           })()}
-          <button type="button" onClick={()=>{ setFieldNoteError(null); setBugReportOpen(true); }}
-            style={{...C.btn('#3a3028'), fontSize:9, marginTop:8, flexShrink:0, opacity:0.85}}>
-            📋 Something wrong? Field Notes
-          </button>
         </div>
       </div>
 
