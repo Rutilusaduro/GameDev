@@ -110,8 +110,13 @@ import {
   needsRefit, markRefit, getRefitAction, COMFORT_MILESTONES,
   getAvailableComfortMilestones, markComfortMilestone,
   getNextHint, incrementHint, initFoodHint, confirmCourtPreference, getCourtBoonTier,
+  getImmobilityTier, SETTLING_ACTIONS,
+  incrementSettleCount, markFinalForm,
 } from './gameData/immobilityArrival.js';
 import './textEngine/scenes/immobility/index.js';
+import { renderSettlingScene } from './textEngine/scenes/settling/index.js';
+import './textEngine/scenes/settling/index.js';
+import { SettlingListView, SettlingDetailView } from './views/SettlingView.jsx';
 import {
   corruptionStudentPatch, clearWeeklyTextFlags, dinnerVenueToLocale, clothingStateForStage,
   createSessionUsed, weekUsedFromStudent, weekUsedToPatch, isSlenderEligible,
@@ -3773,6 +3778,61 @@ export default function ProfessorSim(){
     setEvolvedActivityModal({ student:immobile, stageIdx:getEvolvedActivityStageIdx(immobile), text:fullProse||`${visitor.name} came to sit with ${immobile.name}.` });
   };
 
+  // Unified handler for the Settling 3-tree loop. Special subs defer to the
+  // existing flows (intimacy / private session / refit / comfort) that own
+  // their own AP and prose; everything else runs through here.
+  const runSettlingAction=(s,branch,sub)=>{
+    if(sub.action==='openIntimacy'){ openIntimacySelector(s); return; }
+    if(sub.action==='privateSession'){ startPrivateSession(s); return; }
+    if(sub.action==='refit'){ runImmobilityRefit(s); return; }
+    if(sub.action==='comfort'){ runComfortMilestone(s,sub.comfortKey); return; }
+
+    const cost=sub.apCost||0;
+    if(ap<cost){ push(`⚠️ Need ${cost} AP.`); return; }
+    setAp(a=>a-cost);
+
+    const eff=sub.effects||{};
+    const rolled=eff.gain?Math.max(1,Math.round(rnd(eff.gain[0],eff.gain[1])*getSupernaturalGainMult(s))):0;
+    // Hand-feeding her known preference carries the +20% taste bonus.
+    const prefMult=(branch==='feed'&&sub.id==='preferred'&&s.courtPreference)?1.2:1;
+    const finalGain=Math.round(rolled*prefMult);
+
+    // Care > Tend Her fires the hint escalation, once per week.
+    const tendHint=(branch==='care'&&sub.id==='tend'&&(s.courtHintWeek??-1)<week)?getNextHint(s):null;
+    let hintPatched=s;
+    if(tendHint){
+      hintPatched=incrementHint(hintPatched,tendHint.pref);
+      if(tendHint.pref==='food'&&tendHint.tier===1) hintPatched=initFoodHint(hintPatched);
+    }
+
+    const prose=renderSettlingScene(sub.sceneKey,s,{week});
+    const hintProse=tendHint?renderImmobHint(hintPatched,tendHint.pref,tendHint.tier,week):'';
+    const fullProse=[prose,hintProse].filter(Boolean).join('\n\n');
+
+    if(branch==='socialize') gainFavor('socialize');
+    else if(branch==='care') gainFavor('comfort');
+
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==s.id) return st;
+      let next=st;
+      if(finalGain>0) next=processStudentGain(next,finalGain,eff.rel||0);
+      else if(eff.rel) next={...next,relationship:Math.min(100,(next.relationship??0)+eff.rel)};
+      if(eff.capacity) next={...next,stomachCapacity:(next.stomachCapacity||GAIN_CONFIG.baseCapacity)+eff.capacity};
+      next=markImmobilityArrived(next);
+      if(next.lastRefitLbs==null) next=markRefit(next);
+      next=incrementSettleCount(next,branch);
+      if(getImmobilityTier(next)>=2) next=markFinalForm(next);
+      if(tendHint){
+        next={...next,courtHints:hintPatched.courtHints,courtHintWeek:week};
+        if(hintPatched.pendingCourtPreference) next={...next,pendingCourtPreference:hintPatched.pendingCourtPreference};
+      }
+      return next;
+    }));
+
+    push(`✦ ${SETTLING_ACTIONS[branch].label} — ${sub.label}${finalGain>0?`: +${finalGain} lbs`:''}`);
+    setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:fullProse||sub.label });
+  };
+
   const openNetworkControl=(s)=>{
     if(!labState||labState.stage<2) return;
     const act=INVENTOR_ACTIVITIES[labState.stage]||INVENTOR_ACTIVITIES[2];
@@ -6892,6 +6952,10 @@ export default function ProfessorSim(){
   };
 
   const sel=selectedId!==null?students.find(s=>s.id===selectedId):null;
+  // Immobile girls (stage 10+) leave the class roster and live in The Settling.
+  const settledStudents=students.filter(s=>getImmobilityTier(s)>=1);
+  const mobileStudents=students.filter(s=>getImmobilityTier(s)<1);
+  const selSettled=!!sel&&getImmobilityTier(sel)>=1;
   const talkStudent=talkStudentId!=null?students.find(s=>s.id===talkStudentId):null;
   const totalGained=students.reduce((a,s)=>a+(s.lbs-s.startLbs),0);
   const spiritXp=Math.max(0,Math.round(totalGained));
@@ -7823,6 +7887,7 @@ export default function ProfessorSim(){
       {/* NAV */}
       <div style={C.nav}>
         {[["class","📋 Roster"],["classroom","🏛 Classroom"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],
+          ...(settledStudents.length>0?[["settling","✦ The Settling"]]:[]),
           ...(week>=8||opposition?.aib?.unlocked||adminScrutiny>=25?[["oversight","👁 Oversight"]]:[]),
           ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"],...((labState.stage??1)>=2?[["network","🌐 Network"]]:[])]:[]),
         ].map(([v,l])=>(
@@ -7835,12 +7900,18 @@ export default function ProfessorSim(){
         <div style={C.main}>
 
           {/* ── CLASS VIEW ── */}
-          {view==="class"&&<ClassView view={view} students={students} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} onAmends={openAmends}/>}
+          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} onAmends={openAmends}/>}
+
+          {/* ── THE SETTLING (list) ── */}
+          {view==="settling"&&<SettlingListView students={students} week={week} setSelectedId={setSelectedId} setView={setView}/>}
+
+          {/* ── THE SETTLING (detail) ── */}
+          {(view==="settling-detail"||(view==="student"&&selSettled))&&sel&&<SettlingDetailView sel={sel} students={students} ap={ap} week={week} setView={setView} openWeighIn={openWeighIn} runDeviceAction={runDeviceAction} deviceInventory={deviceInventory} player={player} runSettlingAction={runSettlingAction} runBrokeredVisit={runBrokeredVisit}/>}
 
           {view==="classroom"&&<ClassroomView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState}/>}
+          {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
