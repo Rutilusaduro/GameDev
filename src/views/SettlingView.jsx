@@ -15,7 +15,7 @@ import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 import {
   SETTLING_ACTIONS, getAvailableCareSubs, getImmobilityTier,
   getSettleDominant, getFinalForm, FINAL_FORMS,
-  GATHERING, getAttendees,
+  GATHERING, getAttendees, getFinalFormFx,
 } from '../gameData/immobilityArrival.js';
 
 // The Settling reads in warm amber/gold against the class roster's cold violet —
@@ -31,10 +31,12 @@ function DestinyBar({ student }) {
   const dominant = getSettleDominant(student);
   const form = getFinalForm(student);
   if (form) {
+    const fx = getFinalFormFx(student);
     return (
       <div style={{ marginTop: 6 }}>
         <span style={{ ...C.tag(`${GOLD}22`, GOLD), fontSize: 9 }}>✦ {form.label}</span>
         <div style={{ fontSize: 9.5, color: GOLD_DIM, marginTop: 3, fontStyle: 'italic' }}>{form.desc}</div>
+        {fx && <div style={{ fontSize: 9, color: GOLD, marginTop: 2 }}>⟡ {fx.perk}</div>}
       </div>
     );
   }
@@ -204,7 +206,7 @@ function TreeCard({ branch, def, s, students, ap, open, onToggle, onRun }) {
 export function SettlingDetailView({
   sel, students, ap, week, setView,
   openWeighIn, runDeviceAction, deviceInventory, player,
-  runSettlingAction, runBrokeredVisit, runGathering,
+  runSettlingAction, runBrokeredVisit, runGathering, chooseLeviathanForm,
 }) {
   const s = sel;
   const [openBranch, setOpenBranch] = useState('feed');
@@ -266,6 +268,26 @@ export function SettlingDetailView({
           </div>
         </div>
       </div>
+
+      {/* Tie-breaker — leviathan with no dominant branch picks her form by hand */}
+      {tier >= 2 && !form && (
+        <div style={{ ...C.infoBox('rgba(70,45,12,0.3)'), border: `1px solid ${GOLD}66`, marginBottom: 10 }}>
+          <div style={{ fontSize: 9, letterSpacing: 3, color: GOLD, marginBottom: 4 }}>✦ HER SETTLING IS SPLIT</div>
+          <div style={{ fontSize: 10.5, color: '#80708a', lineHeight: 1.4, marginBottom: 8 }}>No single way of keeping her won out. Choose the form she settles into for good.</div>
+          <div style={{ display: 'grid', gap: 6 }}>
+            {['feed', 'care', 'socialize'].map((b) => (
+              <button
+                key={b}
+                onClick={() => chooseLeviathanForm(s, b)}
+                style={{ textAlign: 'left', background: `${BRANCH_TINT[b]}1a`, border: `1px solid ${BRANCH_TINT[b]}66`, borderRadius: 8, padding: '7px 11px', cursor: 'pointer', fontFamily: 'inherit' }}
+              >
+                <div style={{ fontSize: 12.5, fontWeight: 700, color: BRANCH_TINT[b] }}>{FINAL_FORMS[b].label}</div>
+                <div style={{ fontSize: 10, color: '#a08850', marginTop: 1, lineHeight: 1.35 }}>{FINAL_FORMS[b].desc}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Appearance */}
       <div style={C.infoBox('rgba(70,40,15,0.22)')}>

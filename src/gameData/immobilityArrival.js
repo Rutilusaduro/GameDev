@@ -267,6 +267,54 @@ export function getAttendees(student, allStudents = []) {
     .slice(0, 4);
 }
 
+// ── Final-form effects — branching payoffs (M4) ────────────────
+// Once a form locks at stage 11 it earns a weekly signature. Ever-Expanding
+// (feed) feeds her own uncapped growth; Comfort Queen (care) and The Adored
+// (socialize) radiate outward across the rest of the campus. Keyed by the
+// branch string stored on student.finalForm.
+export const FINAL_FORM_FX = {
+  feed:      { selfGain: [3, 6],        perk: '+3–6 lbs to her own settling each week — growth without ceiling.' },
+  care:      { othersDiscontent: 2,     perk: 'Soothes the room — every other girl sheds 2 discontent each week.' },
+  socialize: { othersRel: 1,            perk: 'The campus orbits her — every other girl warms +1 toward you each week.' },
+};
+
+export function getFinalFormFx(student) {
+  return student?.finalForm ? (FINAL_FORM_FX[student.finalForm] ?? null) : null;
+}
+
+/** Ever-Expanding's bonus to HER OWN passive settle gain. 0 for other forms. */
+export function finalFormSelfGain(student, rng = Math.random) {
+  if (student?.finalForm !== 'feed') return 0;
+  const [lo, hi] = FINAL_FORM_FX.feed.selfGain;
+  return lo + Math.floor(rng() * (hi - lo + 1));
+}
+
+/**
+ * Apply each leviathan's outward radiate to the rest of the campus. Comfort
+ * Queens soothe discontent; The Adored warm relationships. Effects scale with
+ * how many leviathans hold each form. Returns a new students array. The
+ * form-locked leviathans themselves are exempt.
+ */
+export function applyFinalFormRadiate(students = []) {
+  const queens = students.filter(s => s.finalForm === 'care').length;
+  const adored = students.filter(s => s.finalForm === 'socialize').length;
+  if (!queens && !adored) return students;
+  return students.map(s => {
+    if (getImmobilityTier(s) >= 2 && s.finalForm) return s;
+    let next = s;
+    if (queens) next = { ...next, discontent: Math.max(0, (next.discontent ?? 0) - FINAL_FORM_FX.care.othersDiscontent * queens) };
+    if (adored) next = { ...next, relationship: Math.min(100, (next.relationship ?? 0) + FINAL_FORM_FX.socialize.othersRel * adored) };
+    return next;
+  });
+}
+
+/** Player-chosen final form, for when settleCounts tie at stage 11. No-op if
+ *  already locked or the branch is unknown. */
+export function chooseFinalForm(student, branchKey) {
+  if (student.finalForm || !FINAL_FORMS[branchKey]) return student;
+  return { ...student, finalForm: branchKey };
+}
+
 // ── Settle gain (modified) ─────────────────────────────────────
 
 /**

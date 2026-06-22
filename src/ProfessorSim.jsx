@@ -111,8 +111,9 @@ import {
   getAvailableComfortMilestones, markComfortMilestone,
   getNextHint, incrementHint, initFoodHint, confirmCourtPreference, getCourtBoonTier,
   getImmobilityTier, SETTLING_ACTIONS,
-  incrementSettleCount, markFinalForm,
+  incrementSettleCount, markFinalForm, FINAL_FORMS,
   GATHERING, getAttendees,
+  finalFormSelfGain, applyFinalFormRadiate, chooseFinalForm,
 } from './gameData/immobilityArrival.js';
 import './textEngine/scenes/immobility/index.js';
 import { renderSettlingScene } from './textEngine/scenes/settling/index.js';
@@ -1420,6 +1421,8 @@ export default function ProfessorSim(){
       // Immobility "settling" — once she has Arrived, sustained care keeps her
       // gently growing without active feeding (the set-and-forget endgame).
       gain+=immobilitySettleGain(s,Math.random);
+      // Ever-Expanding final form: her own settling uncaps further.
+      gain+=finalFormSelfGain(s,Math.random);
       // Evolved skill passive bonuses
       if(s.evolvedForm&&(s.evolvedSkills||[]).length>0){
         const evTree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
@@ -1436,6 +1439,8 @@ export default function ProfessorSim(){
       }
       return {...ns,playerFedThisWeek:false};
     });
+    // Final-form campus radiate: Comfort Queens soothe, The Adored warm.
+    updated=applyFinalFormRadiate(updated);
     if(pharmacistState?.campusFattening){
       updated=updated.map(s=>{
         if(!studentReceivesPassiveGain(s)) return s;
@@ -3865,6 +3870,13 @@ export default function ProfessorSim(){
     }));
     push(`✦ Gather Her Court — ${names.join(', ')} attended.`);
     setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:prose||GATHERING.desc });
+  };
+
+  // Tie-breaker: at leviathan with no dominant branch, the player picks her
+  // final form by hand. chooseFinalForm no-ops if one is already locked.
+  const chooseLeviathanForm=(s,branchKey)=>{
+    setStudents(prev=>prev.map(st=>st.id===s.id?chooseFinalForm(st,branchKey):st));
+    push(`✦ ${s.name} settles into ${FINAL_FORMS[branchKey].label}.`);
   };
 
   const openNetworkControl=(s)=>{
@@ -7940,7 +7952,7 @@ export default function ProfessorSim(){
           {view==="settling"&&<SettlingListView students={students} week={week} setSelectedId={setSelectedId} setView={setView}/>}
 
           {/* ── THE SETTLING (detail) ── */}
-          {(view==="settling-detail"||(view==="student"&&selSettled))&&sel&&<SettlingDetailView sel={sel} students={students} ap={ap} week={week} setView={setView} openWeighIn={openWeighIn} runDeviceAction={runDeviceAction} deviceInventory={deviceInventory} player={player} runSettlingAction={runSettlingAction} runBrokeredVisit={runBrokeredVisit} runGathering={runGathering}/>}
+          {(view==="settling-detail"||(view==="student"&&selSettled))&&sel&&<SettlingDetailView sel={sel} students={students} ap={ap} week={week} setView={setView} openWeighIn={openWeighIn} runDeviceAction={runDeviceAction} deviceInventory={deviceInventory} player={player} runSettlingAction={runSettlingAction} runBrokeredVisit={runBrokeredVisit} runGathering={runGathering} chooseLeviathanForm={chooseLeviathanForm}/>}
 
           {view==="classroom"&&<ClassroomView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
 
