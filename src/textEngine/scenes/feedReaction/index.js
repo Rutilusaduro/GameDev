@@ -149,6 +149,56 @@ registerPool('feed.react.line', [
     `{subject.name} sits back, breath shallow, one hand resting on the warm tight curve of her belly. "Okay. Okay, that's — a lot."`,
   ]},
 
+  // ── psych-state tinting — feed.react.line ────────────────────
+  // Elevated fixation: the meal is something she keeps thinking about after.
+  { when: { fixationTierMin: 1, corruption: [1, 2] }, weight: 2, text: [
+    `{subject.name} finishes and her gaze goes soft for a moment — not at anything. Already thinking about the next one.`,
+    `{subject.name} sets the empty plate down slowly, like putting something precious back on a shelf.`,
+  ]},
+  // High fixation: the eating is the whole foreground.
+  { when: { fixationTierMin: 2 }, weight: 3, text: [
+    `{subject.name} sits back and the satisfied quiet settles over her like a closing chapter. For about ten seconds. Then she eyes the rest.`,
+    `{subject.name} finishes without entirely stopping — her hands keep moving, checking for more, before she registers there is no more.`,
+  ]},
+
+  // Elevated obsession: she is doing this on purpose.
+  { when: { obsessionTierMin: 1, corruption: [1, 2] }, weight: 2, text: [
+    `{subject.name} smiles before she even looks up. "Yes. More of that, please." It is not a question.`,
+    `{subject.name} clears it like someone meeting a self-imposed quota — which she is.`,
+  ]},
+  // High obsession: the gaining is the point; the food is just the method.
+  { when: { obsessionTierMin: 2, stageMin: 4 }, weight: 3, text: [
+    `{subject.name} holds your eye while she finishes the last bite. Deliberate. Self-aware. "Good," she says. "Keep going."`,
+    `{subject.name} pats her belly once, satisfied — not just with the food. With the direction.`,
+  ]},
+  // Extreme obsession: no pretense.
+  { when: { obsessionTierMin: 3, stageMin: 5 }, weight: 4, text: [
+    `{subject.name} does not say anything. She just pushes the empty plate aside and reaches for what is next.`,
+    `{subject.name} finishes and tilts her head at you like a question. "Is that all you brought?"`,
+  ]},
+
+  // Elevated shame: pleasure and self-consciousness share the bite.
+  { when: { shameTierMin: 1, corruption: [0] }, weight: 2, text: [
+    `{subject.name} eats with one hand pulling at her top, not quite conscious of it. "I keep saying I'm going to cut back," she murmurs. She keeps eating.`,
+    `{subject.name} finishes and does not look at the plate. "Don't say anything. I know."`,
+  ]},
+  // High shame: eating is its own complexity.
+  { when: { shameTierMin: 2, corruption: [0], stageMin: 3 }, weight: 3, text: [
+    `{subject.name} sets her fork down, looks at the clean plate, and feels something she does not have the right word for — not regret, not the opposite of regret. Both.`,
+    `She ate the whole thing and she knew she was going to. The knowing was part of it.`,
+  ]},
+
+  // Elevated dependence: she looks to you after.
+  { when: { dependenceTierMin: 1, corruption: [1, 2] }, weight: 2, text: [
+    `{subject.name} finishes and the first thing she does is look at you. Not the plate. You.`,
+    `She eats for herself, but she finishes for you — the last bite more deliberate than the rest.`,
+  ]},
+  // High dependence: the act of eating is structured around your attention.
+  { when: { dependenceTierMin: 2, stageMin: 4 }, weight: 3, text: [
+    `{subject.name} finishes and goes still, warm and full and waiting — comfortable in a way that depends entirely on being in this specific room with you.`,
+    `She does not say thank you. She does not have to. The way she settles back says it — soft, heavy, satisfied, yours.`,
+  ]},
+
   // Mandatory generic fallback.
   { when: {}, text: [
     `{subject.name} finishes, warm and pleased, and looks up at you for whatever comes next.`,

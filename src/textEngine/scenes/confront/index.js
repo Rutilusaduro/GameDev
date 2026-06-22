@@ -62,8 +62,72 @@ registerModuleVariants('confront.grievance', [
   ]},
 ]);
 
+// ── confront.memoryCallback ───────────────────────────────────
+// Shape: SHORT SENTENCE — she names a specific past incident from
+// the memory store. Fires as a second beat after confront.grievance
+// when memType is in scope, giving the confrontation a concrete anchor.
+// globals: memType ∈ forced | feast | stageUp | stuffed ; memWeeksAgo
+registerPool('confront.memoryCallback', [
+  // Mandatory fallback — no memory in scope, no callback fires.
+  { when: {}, text: [''] },
+
+  // betrayed grievance + forced memory — she recalls the specific feed.
+  { when: { grievanceType: 'betrayed', memType: 'forced' }, weight: 4, text: [
+    (ctx) => `"${ctx.globals?.memWeeksAgo === 1 ? 'Last week' : `${ctx.globals?.memWeeksAgo ?? 'A few weeks'} weeks ago`} — I told you I was full and you kept going. That's the one I keep thinking about."`,
+    `"I remember exactly which time. I said stop. You heard me."`,
+  ]},
+
+  // betrayed grievance + feast memory — the big meal she didn't choose.
+  { when: { grievanceType: 'betrayed', memType: 'feast' }, weight: 3, text: [
+    `"That big meal — the one you arranged without asking. That was the moment I realized I don't actually get a vote here."`,
+  ]},
+
+  // creeped grievance + stageUp memory — she noticed you noticed her change.
+  { when: { grievanceType: 'creeped', memType: 'stageUp' }, weight: 4, text: [
+    `"When I changed — when my body started really changing — the way you looked at me? I saw it. I've been seeing it."`,
+    `"You started paying a different kind of attention right around when the numbers went up. Don't pretend you didn't."`,
+  ]},
+
+  // creeped grievance + forced memory — a forced feed that read as predatory.
+  { when: { grievanceType: 'creeped', memType: 'forced' }, weight: 3, text: [
+    `"There was a specific moment where I thought — he's enjoying this. Not in a normal way. And I didn't know what to do with that."`,
+  ]},
+
+  // exposed grievance + feast memory — a public feed she hadn't consented to.
+  { when: { grievanceType: 'exposed', memType: 'feast' }, weight: 4, text: [
+    `"That dinner — in front of everyone. You sat there and watched them watch me eat and you never once asked if that was okay."`,
+    `"I know exactly which time. Everyone at the table could see how much I ate. And you let them."`,
+  ]},
+
+  // exposed grievance + stageUp memory — her changing body, watched publicly.
+  { when: { grievanceType: 'exposed', memType: 'stageUp' }, weight: 3, text: [
+    `"When I was getting bigger — visibly bigger — you didn't protect me from anyone's attention. You made it into a performance."`,
+  ]},
+
+  // stuffed memory, any grievance type — the over-full incident.
+  { when: { memType: 'stuffed' }, weight: 2, text: [
+    `"You kept feeding me until I couldn't move and then you just — watched. Like it was fine. Like I was fine."`,
+  ]},
+]);
+
+// ── confront.withMemory — skeleton that weaves in the callback ─
+// Shape: FULL SCENE — open + grievance + optional memory anchor + demand.
+registerPool('confront.withMemory', [
+  { when: {}, text: [
+    '{confront.open} {confront.grievance}{confront.memoryCallback|prefix: } {confront.demand}',
+  ]},
+]);
+
 export function renderConfront(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });
   return render('{confront}', ctx, { trace: opts.trace || null })?.trim() || '';
+}
+
+/** Render confrontation with a memory-anchored grievance callback.
+ *  Pass memType + memWeeksAgo from pickStudentMemory() in opts.globals. */
+export function renderConfrontWithMemory(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });
+  return render('{confront.withMemory}', ctx, { trace: opts.trace || null })?.trim() || '';
 }

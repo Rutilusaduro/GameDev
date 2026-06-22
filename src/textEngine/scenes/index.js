@@ -78,5 +78,6 @@ import './forceFeeder/index.js';
 import './squadStageCoverage.js';
 import './squadKeyedDepth.js';
 import './researchJournal/index.js';
+import './scrutiny/index.js';
 import './wifeLessons/index.js';
 import '../modules.js';

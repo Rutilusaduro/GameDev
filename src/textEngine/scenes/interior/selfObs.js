@@ -40,4 +40,56 @@ registerPool('interior.selfObs', [
     'She looks at herself with the fondness of someone checking progress.',
     'The body is a project. The project is going well.',
   ] },
+
+  // ── psych-state tinting — fixation / obsession / dependence / shame ──
+  // These ride on top of existing stage/corruption coverage.
+
+  // Elevated fixation: the noticing has a charge.
+  { when: { fixationTierMin: 1, stageMin: 2 }, weight: 2, text: [
+    'She catches her reflection and the pause is one beat too long — measuring something.',
+    'Her hand goes to her belly without instruction. She clocks it. Leaves it there.',
+  ] },
+  // High fixation: body becomes a recurring thought-loop.
+  { when: { fixationTierMin: 2, stageMin: 3 }, weight: 3, text: [
+    'The body is back in her head again before she has finished looking away from it.',
+    'She keeps returning to it — softer than last week, heavier than last month — like pressing a bruise, gently.',
+  ] },
+  // Extreme fixation: crowding out other thought.
+  { when: { fixationTierMin: 3, stageMin: 3 }, weight: 4, text: [
+    'She loses the thread of whatever else was happening. The body is all the thought, for a moment.',
+    'It is the only thing she is really looking at, even when she is looking at something else.',
+  ] },
+
+  // Elevated obsession: the growth feels purposeful.
+  { when: { obsessionTierMin: 1, stageMin: 3 }, weight: 2, text: [
+    'She marks the softness the way you mark a page — something to come back to.',
+    'The change has an urgency to it now. Not dread. More like: keep going.',
+  ] },
+  // High obsession: the trajectory feels non-negotiable.
+  { when: { obsessionTierMin: 2, stageMin: 4 }, weight: 3, text: [
+    'There is a direction to all of this. She can feel it pulling the way gravity pulls.',
+    'She checks the waistband not to gauge how bad it is — to gauge how far.',
+  ] },
+
+  // Elevated shame: self-consciousness going underground.
+  { when: { shameTierMin: 1, corruption: [0], stageMin: 2 }, weight: 2, text: [
+    'The old urge to cover herself is still there, still familiar — but she does not move.',
+    'She is aware of herself in the specific way of someone who has been told, once, not to be.',
+  ] },
+  // High shame: wanting and not-wanting share a nerve.
+  { when: { shameTierMin: 2, corruption: [0], stageMin: 3 }, weight: 3, text: [
+    'Want and the memory of shame share the same nerve. She has stopped trying to separate them.',
+    'She does not look away. She should. The fact that she does not feels like progress.',
+  ] },
+
+  // Elevated dependence: her desire has started to feel entangled with yours.
+  { when: { dependenceTierMin: 1, corruption: [1], stageMin: 3 }, weight: 2, text: [
+    'She wonders if she would notice herself the same way if you were not in the habit of noticing her.',
+    'Is this hers, or is this yours now? The question passes without being spoken.',
+  ] },
+  // High dependence: the interiority is genuinely entangled.
+  { when: { dependenceTierMin: 2, stageMin: 4 }, weight: 3, text: [
+    'It is hard to know where the wanting started. She stopped keeping track of where it started.',
+    'Her appetite, her softness, the way she keeps looking at herself — these are yours, a little. She does not mind.',
+  ] },
 ]);
