@@ -167,6 +167,7 @@ import { InventoryView, ItemTargetPicker } from './views/InventoryView.jsx';
 import { LabView } from './views/LabView.jsx';
 import { NetworkView } from './views/NetworkView.jsx';
 import { DeviceInventoryView } from './views/DeviceInventoryView.jsx';
+import { SpriteTestView } from './views/SpriteTestView.jsx';
 import {
   defaultLabState, defaultDeviceInventory, INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES,
   completeLabSession, tickLabWeek, TALIA_STUDENT_ID, maybeAdvanceInventorStage, LAB_SESSION_ACTIVITY,
@@ -7054,7 +7055,7 @@ export default function ProfessorSim(){
     return isDinnerVenueUnlocked(v.id,ownedClass);
   });
 
-  const views=["class","actions","achievements","log"];
+  const views=["class","actions","achievements","log","sprite-test"];
   if(sel) views.splice(1,0,"student");
 
   // ── OPENING: SPIRIT → LORE BEAT → VESSEL → START ──────────────
@@ -8036,6 +8037,8 @@ export default function ProfessorSim(){
           {view==="achievements"&&<AchievementsView achievements={achievements}/>}
 
           {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} week={week} lilithUnlocked={lilithUnlocked} pharmacistStage={pharmacistState?.stage??1} oppositionCtx={buildOppositionContext({students,ownedSkills,ownedClassSkills,facultyAffinity,labState,pharmacistState,communityResearcherState,lilithUnlocked})} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onStartHearing={startOppositionHearing} onClose={()=>setView('class')}/>}
+
+          {view==="sprite-test"&&<SpriteTestView/>}
 
         </div>
 
