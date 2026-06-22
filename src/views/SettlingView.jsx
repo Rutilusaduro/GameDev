@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { C } from '../styles.js';
 import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
+import { GAIN_CONFIG } from '../gameData/gainSystem.js';
 import { getBodyDesc } from '../utils/gameHelpers.js';
 import { getAvailableDeviceActions, getBodyOverrideBadge } from '../gameData/deviceActions.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
@@ -157,6 +158,17 @@ function SubButton({ sub, s, students, ap, onRun }) {
 function TreeCard({ branch, def, s, students, ap, open, onToggle, onRun }) {
   const subs = branch === 'care' ? getAvailableCareSubs(s) : def.subs;
   const tint = BRANCH_TINT[branch];
+  // Live build readout — mirrors the bonuses runSettlingAction applies, so the
+  // player can see the throughline growing (Ever-Expanding / The Adored).
+  let buildNote = '';
+  if (branch === 'feed') {
+    const capBonus = Math.floor(((s.stomachCapacity || GAIN_CONFIG.baseCapacity) - GAIN_CONFIG.baseCapacity) / 8);
+    if (capBonus > 0) buildNote = `capacity built · +${capBonus} lbs/feed`;
+  } else if (branch === 'socialize') {
+    const standing = s.settleCounts?.socialize ?? 0;
+    const relBonus = Math.floor(standing / 4);
+    if (relBonus > 0) buildNote = `standing ${standing} · ❤ +${relBonus}/act`;
+  }
   return (
     <div style={{ marginBottom: 8 }}>
       <button
@@ -173,6 +185,7 @@ function TreeCard({ branch, def, s, students, ap, open, onToggle, onRun }) {
         <span style={{ flex: 1 }}>
           <span style={{ fontSize: 15, fontWeight: 700, color: tint }}>{def.label}</span>
           <span style={{ display: 'block', fontSize: 10.5, color: '#80708a', marginTop: 1, lineHeight: 1.4 }}>{def.desc}</span>
+          {buildNote && <span style={{ display: 'block', fontSize: 9.5, color: tint, marginTop: 2, fontWeight: 600, letterSpacing: 0.2 }}>✦ {buildNote}</span>}
         </span>
         <span style={{ fontSize: 12, color: tint, transform: open ? 'rotate(90deg)' : 'none', transition: 'transform 0.18s' }} aria-hidden="true">▸</span>
       </button>

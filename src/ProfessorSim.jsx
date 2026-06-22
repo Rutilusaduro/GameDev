@@ -3795,7 +3795,16 @@ export default function ProfessorSim(){
     const rolled=eff.gain?Math.max(1,Math.round(rnd(eff.gain[0],eff.gain[1])*getSupernaturalGainMult(s))):0;
     // Hand-feeding her known preference carries the +20% taste bonus.
     const prefMult=(branch==='feed'&&sub.id==='preferred'&&s.courtPreference)?1.2:1;
-    const finalGain=Math.round(rolled*prefMult);
+    // Ever-Expanding loop: built stomach capacity makes every feed bigger, so
+    // stuffing (capacity↑) and her own growth compound into all future feeding.
+    const capBuilt=(s.stomachCapacity||GAIN_CONFIG.baseCapacity)-GAIN_CONFIG.baseCapacity;
+    const capBonus=branch==='feed'?Math.floor(capBuilt/8):0;
+    const finalGain=rolled>0?Math.round(rolled*prefMult)+capBonus:0;
+    // The Adored: standing = accumulated socialize acts. The more the campus
+    // already orbits her, the harder each new social act lands.
+    const standing=s.settleCounts?.socialize??0;
+    const relBonus=branch==='socialize'?Math.floor(standing/4):0;
+    const finalRel=(eff.rel||0)+relBonus;
 
     // Care > Tend Her fires the hint escalation, once per week.
     const tendHint=(branch==='care'&&sub.id==='tend'&&(s.courtHintWeek??-1)<week)?getNextHint(s):null;
@@ -3815,8 +3824,8 @@ export default function ProfessorSim(){
     setStudents(prev=>prev.map(st=>{
       if(st.id!==s.id) return st;
       let next=st;
-      if(finalGain>0) next=processStudentGain(next,finalGain,eff.rel||0);
-      else if(eff.rel) next={...next,relationship:Math.min(100,(next.relationship??0)+eff.rel)};
+      if(finalGain>0) next=processStudentGain(next,finalGain,finalRel);
+      else if(finalRel) next={...next,relationship:Math.min(100,(next.relationship??0)+finalRel)};
       if(eff.capacity) next={...next,stomachCapacity:(next.stomachCapacity||GAIN_CONFIG.baseCapacity)+eff.capacity};
       next=markImmobilityArrived(next);
       if(next.lastRefitLbs==null) next=markRefit(next);
@@ -3829,7 +3838,8 @@ export default function ProfessorSim(){
       return next;
     }));
 
-    push(`✦ ${SETTLING_ACTIONS[branch].label} — ${sub.label}${finalGain>0?`: +${finalGain} lbs`:''}`);
+    const toastExtra=[finalGain>0?`+${finalGain} lbs`:'',relBonus>0?`❤ +${finalRel}`:''].filter(Boolean).join(' · ');
+    push(`✦ ${SETTLING_ACTIONS[branch].label} — ${sub.label}${toastExtra?`: ${toastExtra}`:''}`);
     setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:fullProse||sub.label });
   };
 
