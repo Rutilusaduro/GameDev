@@ -56,14 +56,14 @@ const S5 = G(20, [
   [[4,4,2],[6,13,1]],              // 6 bust forward
   [[4,4,2],[5,15,1]],              // 7 bust
   [[4,13,3],[14,15,1]],            // 8 underbust + belly start
-  [[3,15,3]],                      // 9
-  [[3,16,3]],                      // 10
-  [[2,16,3]],                      // 11
-  [[2,17,3]],                      // 12 belly max
-  [[1,17,3]],                      // 13 belly max
-  [[1,17,3]],                      // 14
-  [[0,17,3]],                      // 15 butt col0
-  [[0,16,3]],                      // 16
+  [[3,14,3]],                      // 9
+  [[3,15,3]],                      // 10
+  [[2,15,3]],                      // 11
+  [[2,16,3]],                      // 12
+  [[1,16,3]],                      // 13
+  [[1,17,3]],                      // 14 belly max (lowered)
+  [[0,17,3]],                      // 15 belly max + butt col0
+  [[0,17,3]],                      // 16 belly max
   [[0,16,3]],                      // 17
   [[0,15,3]],                      // 18 butt col0 (15–18, 4 rows)
   [[1,15,3]],                      // 19
@@ -97,18 +97,18 @@ const S6 = G(22, [
   [[4,5,2],[6,10,1]],              // 3
   [[4,4,2],[5,9,1]],               // 4
   [[4,4,2],[6,8,1]],               // 5
-  [[4,4,2],[6,16,1]],              // 6 bust forward
-  [[4,4,2],[5,18,1]],              // 7 bust
-  [[4,13,3],[14,18,1]],            // 8 underbust + belly start
-  [[3,17,3]],                      // 9
-  [[3,18,3]],                      // 10
-  [[2,18,3]],                      // 11 belly max
-  [[2,18,3]],                      // 12
-  [[1,18,3]],                      // 13
-  [[1,18,3]],                      // 14
-  [[0,17,3]],                      // 15 butt col0
+  [[4,4,2],[6,14,1]],              // 6 bust forward (reverted)
+  [[4,4,2],[5,16,1]],              // 7 bust (reverted)
+  [[4,13,3],[14,15,1]],            // 8 underbust + belly start
+  [[3,16,3]],                      // 9
+  [[3,17,3]],                      // 10
+  [[2,17,3]],                      // 11
+  [[2,17,3]],                      // 12
+  [[1,18,3]],                      // 13 belly max (lowered)
+  [[1,18,3]],                      // 14 belly max
+  [[0,18,3]],                      // 15 belly max + butt col0
   [[0,17,3]],                      // 16
-  [[0,16,3]],                      // 17
+  [[0,17,3]],                      // 17
   [[0,16,3]],                      // 18 butt col0 (15–18, 4 rows)
   [[1,15,3]],                      // 19
   [[2,15,3]],                      // 20
@@ -142,18 +142,18 @@ const S7 = G(24, [
   [[4,5,2],[6,10,1]],              // 3
   [[4,4,2],[5,9,1]],               // 4
   [[4,4,2],[6,8,1]],               // 5
-  [[4,4,2],[6,16,1]],              // 6 bust forward
-  [[4,4,2],[5,18,1]],              // 7 bust
-  [[4,13,3],[14,19,1]],            // 8 underbust + belly start
-  [[3,18,3]],                      // 9
-  [[3,19,3]],                      // 10
-  [[2,20,3]],                      // 11
-  [[2,20,3]],                      // 12
-  [[1,21,3]],                      // 13 belly max
-  [[1,21,3]],                      // 14 belly max
-  [[1,21,3]],                      // 15
-  [[0,20,3]],                      // 16 butt col0
-  [[0,20,3]],                      // 17
+  [[4,4,2],[6,14,1]],              // 6 bust forward (reverted)
+  [[4,4,2],[5,16,1]],              // 7 bust (reverted)
+  [[4,13,3],[14,16,1]],            // 8 underbust + belly start
+  [[3,17,3]],                      // 9
+  [[3,18,3]],                      // 10
+  [[2,18,3]],                      // 11
+  [[2,19,3]],                      // 12
+  [[1,20,3]],                      // 13
+  [[1,20,3]],                      // 14
+  [[1,21,3]],                      // 15 belly max (lowered)
+  [[0,21,3]],                      // 16 belly max + butt col0
+  [[0,21,3]],                      // 17 belly max
   [[0,20,3]],                      // 18
   [[0,19,3]],                      // 19
   [[0,18,3]],                      // 20 butt col0 (16–20, 5 rows)
@@ -180,8 +180,23 @@ const S7 = G(24, [
   [[2,13,4]],                      // 41
 ]);
 
+// ponytail: give every figure more height by inserting copies of the top
+// thigh row (longer legs) instead of redrawing each torso. Flat +EXTRA rows;
+// tune the constant if she reads as stilty or stubby.
+const EXTRA_LEG_ROWS = 20;
+function elongate(grid, extra) {
+  let lastDress = -1;
+  for (let i = 0; i < grid.length; i++) if (grid[i].includes(3)) lastDress = i;
+  if (lastDress < 0 || lastDress + 1 >= grid.length) return grid;
+  const thigh = grid[lastDress + 1];
+  const filler = Array.from({ length: extra }, () => thigh.slice());
+  return [...grid.slice(0, lastDress + 1), ...filler, ...grid.slice(lastDress + 1)];
+}
+
 // Indexed by game stageId (0–11). Stages 8–11 pending authoring.
-export const LILITH_PROFILES = [S0, S1, S2, S3, S4, S5, S6, S7];
+export const LILITH_PROFILES = [S0, S1, S2, S3, S4, S5, S6, S7].map(
+  (g) => elongate(g, EXTRA_LEG_ROWS)
+);
 
 export function getProfileGrid(stageId) {
   return LILITH_PROFILES[Math.min(stageId, LILITH_PROFILES.length - 1)];
