@@ -56,6 +56,7 @@ export function DebugPanel({
   week,
   money,
   view,
+  setView,
   log,
   lastPlayerAction,
   getSnapshotContext,
@@ -136,6 +137,8 @@ export function DebugPanel({
                 onClick={() => setTextSample(sampleTextEngine())}>📜 Sample hive intake</button>
               <button type="button" style={{ ...C.smBtn, background: 'rgba(60,100,140,0.4)', marginLeft: 6 }}
                 onClick={() => setLabOpen(true)}>🎲 Dialogue Lab</button>
+              <button type="button" style={{ ...C.smBtn, background: 'rgba(100,140,60,0.4)', marginLeft: 6 }}
+                onClick={() => { setDebugOpen(false); setView('sprite-test'); }}>🎨 Sprite Test</button>
               <div style={{ marginTop: 10, paddingTop: 8, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
                 <div style={{ fontSize: 10, color: '#888', marginBottom: 6 }}>
                   DIALOGUE FLAG LOG · {savedFlags.length} saved entr{savedFlags.length === 1 ? 'y' : 'ies'}
