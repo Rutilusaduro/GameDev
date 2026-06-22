@@ -241,6 +241,32 @@ export function markFinalForm(student) {
   return { ...student, finalForm: dominant };
 }
 
+// ── Gathering — leviathan capstone (tier 2) ────────────────────
+// At her scale the others come to her unprompted. Form-NEUTRAL: it never
+// touches settleCounts, because being attended is the shared payoff of both
+// The Adored and Comfort Queen — it must not tip the final form either way.
+export const GATHERING = {
+  apCost: 2,
+  label: 'Gather Her Court',
+  desc: 'The room is hers now, and the others come to it. Let them attend her.',
+  rel: 5,             // to her
+  attendeeRel: 2,     // to each girl who attends
+  attendeeGain: [1, 3],
+};
+
+/**
+ * Girls who attend a leviathan's gathering: the closest available girls (by
+ * relationship) other than her. Returns [] until tier 2. Capped at 4 so the
+ * scene stays legible.
+ */
+export function getAttendees(student, allStudents = []) {
+  if (!student || getImmobilityTier(student) < 2) return [];
+  return allStudents
+    .filter(s => s.id !== student.id && s.lockState !== 'locked' && !s.hidden && !s.withdrawn)
+    .sort((a, b) => (b.relationship ?? 0) - (a.relationship ?? 0))
+    .slice(0, 4);
+}
+
 // ── Settle gain (modified) ─────────────────────────────────────
 
 /**

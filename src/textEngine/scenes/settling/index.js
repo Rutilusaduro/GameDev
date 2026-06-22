@@ -7,6 +7,7 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import './care.js';
 import './socialize.js';
 import './feed.js';
+import './gather.js';
 
 /**
  * Render a settling action scene.

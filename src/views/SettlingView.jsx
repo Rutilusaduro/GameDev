@@ -15,6 +15,7 @@ import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 import {
   SETTLING_ACTIONS, getAvailableCareSubs, getImmobilityTier,
   getSettleDominant, getFinalForm, FINAL_FORMS,
+  GATHERING, getAttendees,
 } from '../gameData/immobilityArrival.js';
 
 // The Settling reads in warm amber/gold against the class roster's cold violet —
@@ -203,7 +204,7 @@ function TreeCard({ branch, def, s, students, ap, open, onToggle, onRun }) {
 export function SettlingDetailView({
   sel, students, ap, week, setView,
   openWeighIn, runDeviceAction, deviceInventory, player,
-  runSettlingAction, runBrokeredVisit,
+  runSettlingAction, runBrokeredVisit, runGathering,
 }) {
   const s = sel;
   const [openBranch, setOpenBranch] = useState('feed');
@@ -306,6 +307,35 @@ export function SettlingDetailView({
           </div>
         </div>
       )}
+
+      {/* Leviathan capstone — the others come to her unprompted (tier 2 only) */}
+      {tier >= 2 && (() => {
+        const attendees = getAttendees(s, students);
+        const can = attendees.length > 0 && ap >= GATHERING.apCost;
+        return (
+          <div style={{ ...C.infoBox('rgba(70,45,12,0.3)'), border: `1px solid ${GOLD}55`, marginBottom: 10 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8, marginBottom: 3 }}>
+              <span style={{ fontSize: 14, fontWeight: 700, color: GOLD }}>✦ {GATHERING.label}</span>
+              <span style={{ fontSize: 9.5, color: GOLD_DIM, whiteSpace: 'nowrap' }}>{GATHERING.apCost} AP</span>
+            </div>
+            <div style={{ fontSize: 10.5, color: '#80708a', lineHeight: 1.4, marginBottom: 7 }}>{GATHERING.desc}</div>
+            {attendees.length > 0 ? (
+              <div style={{ fontSize: 10, color: '#a08850', marginBottom: 7 }}>
+                attending: {attendees.map((a) => a.name).join(', ')} · each ❤ +{GATHERING.attendeeRel}, +{GATHERING.attendeeGain[0]}–{GATHERING.attendeeGain[1]} lbs
+              </div>
+            ) : (
+              <div style={{ fontSize: 10, color: '#9a6048', fontStyle: 'italic', marginBottom: 7 }}>🔒 no one free to attend her</div>
+            )}
+            <button
+              disabled={!can}
+              onClick={() => runGathering(s)}
+              style={{ ...C.btn(can ? '#9a6818' : '#3a2a18'), width: '100%', fontSize: 12, opacity: can ? 1 : 0.5, cursor: can ? 'pointer' : 'not-allowed' }}
+            >
+              Let them attend her
+            </button>
+          </div>
+        );
+      })()}
 
       {/* The three trees */}
       <div style={{ ...C.secT, color: GOLD_DIM, borderColor: `${GOLD}25` }}>Keep Her</div>

@@ -112,6 +112,7 @@ import {
   getNextHint, incrementHint, initFoodHint, confirmCourtPreference, getCourtBoonTier,
   getImmobilityTier, SETTLING_ACTIONS,
   incrementSettleCount, markFinalForm,
+  GATHERING, getAttendees,
 } from './gameData/immobilityArrival.js';
 import './textEngine/scenes/immobility/index.js';
 import { renderSettlingScene } from './textEngine/scenes/settling/index.js';
@@ -3841,6 +3842,29 @@ export default function ProfessorSim(){
     const toastExtra=[finalGain>0?`+${finalGain} lbs`:'',relBonus>0?`❤ +${finalRel}`:''].filter(Boolean).join(' · ');
     push(`✦ ${SETTLING_ACTIONS[branch].label} — ${sub.label}${toastExtra?`: ${toastExtra}`:''}`);
     setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:fullProse||sub.label });
+  };
+
+  // Leviathan capstone: the others come to her unprompted. Form-neutral — it
+  // never touches settleCounts, so it can't tip Adored vs Comfort Queen.
+  const runGathering=(s)=>{
+    const attendees=getAttendees(s,students);
+    if(!attendees.length){ push('⚠️ No one free to attend her.'); return; }
+    if(ap<GATHERING.apCost){ push(`⚠️ Need ${GATHERING.apCost} AP.`); return; }
+    setAp(a=>a-GATHERING.apCost);
+    const names=attendees.map(a=>a.name);
+    const prose=renderSettlingScene('set.gather',s,{week,globals:{attendeeNames:names}});
+    const ids=new Set(attendees.map(a=>a.id));
+    gainFavor('comfort');
+    setStudents(prev=>prev.map(st=>{
+      if(st.id===s.id) return markImmobilityArrived({...st,relationship:Math.min(100,(st.relationship??0)+GATHERING.rel)});
+      if(ids.has(st.id)){
+        const g=Math.max(1,Math.round(rnd(GATHERING.attendeeGain[0],GATHERING.attendeeGain[1])*getSupernaturalGainMult(st)));
+        return processStudentGain({...st,relationship:Math.min(100,(st.relationship??0)+GATHERING.attendeeRel)},g,0);
+      }
+      return st;
+    }));
+    push(`✦ Gather Her Court — ${names.join(', ')} attended.`);
+    setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:prose||GATHERING.desc });
   };
 
   const openNetworkControl=(s)=>{
@@ -7916,7 +7940,7 @@ export default function ProfessorSim(){
           {view==="settling"&&<SettlingListView students={students} week={week} setSelectedId={setSelectedId} setView={setView}/>}
 
           {/* ── THE SETTLING (detail) ── */}
-          {(view==="settling-detail"||(view==="student"&&selSettled))&&sel&&<SettlingDetailView sel={sel} students={students} ap={ap} week={week} setView={setView} openWeighIn={openWeighIn} runDeviceAction={runDeviceAction} deviceInventory={deviceInventory} player={player} runSettlingAction={runSettlingAction} runBrokeredVisit={runBrokeredVisit}/>}
+          {(view==="settling-detail"||(view==="student"&&selSettled))&&sel&&<SettlingDetailView sel={sel} students={students} ap={ap} week={week} setView={setView} openWeighIn={openWeighIn} runDeviceAction={runDeviceAction} deviceInventory={deviceInventory} player={player} runSettlingAction={runSettlingAction} runBrokeredVisit={runBrokeredVisit} runGathering={runGathering}/>}
 
           {view==="classroom"&&<ClassroomView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
 
