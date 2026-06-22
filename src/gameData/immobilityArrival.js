@@ -2,16 +2,21 @@
 // ═══════════════════════════════════════════════════════════════
 // IMMOBILITY ARRIVAL — "The Settling": the weight endgame.
 //
-//   • Hold Court     — repeatable; tends her, settles her deeper, fires hints.
-//   • Settling       — passive weekly gain once immobilityArrived; capped when
-//                      she needs a re-fit (lastRefitLbs + REFIT_INTERVAL < lbs).
+//   • Settling area  — girls at stage 10+ leave the class roster and live here.
+//                      Three robust actions (Socialize / Feed / Care For), each
+//                      with a sub-menu (2-click flow). No Talk, no dinner.
+//   • SETTLING_ACTIONS — full 3-tree data model. Care subs are dynamic (static
+//                        subs + available comfort milestones via getAvailableCareSubs).
+//   • settleCounts   — tracks {socialize, feed, care} per girl; dominant at
+//                      stage-11 entry determines finalForm.
+//   • Final forms    — Ever-Expanding (feed) / Comfort Queen (care) / The Adored
+//                      (socialize). Tie → player choice at M4.
+//   • Hold Court     — legacy; kept for old saves. New flow replaces it.
+//   • Settling       — passive weekly gain once immobilityArrived.
 //   • Re-fit         — player action every REFIT_INTERVAL lbs; uncaps settle gain.
-//   • Comfort milestones — weight-gated (bed/ac/arrangement) or hint-gated
-//                          (fan/position). One-shot scenes, stay done.
-//   • Hints          — she mentions a preference during Hold Court (one per week);
-//                      escalates 0→3; acting early gives bigger rel boon.
-//   • Preferences    — food (pendingCourtPreference → courtPreference) gives
-//                      +20% settle gain when confirmed.
+//   • Comfort milestones — one-shot scenes, stay done. Folded into Care subs.
+//   • Hints          — fire on Care > Tend Her (once per week).
+//   • Preferences    — food (pendingCourtPreference → courtPreference) +20% gain.
 // ═══════════════════════════════════════════════════════════════
 import { getStage } from './stages.js';
 
@@ -144,6 +149,96 @@ export function confirmCourtPreference(student) {
  */
 export function getCourtBoonTier(student, pref) {
   return (student.courtHints?.[pref] ?? 0) <= 1 ? 'early' : 'standard';
+}
+
+// ── Settling Actions — 3-tree endgame loop ─────────────────────
+
+export const SETTLING_ACTIONS = {
+  socialize: {
+    label: 'Socialize',
+    icon: '💬',
+    desc: 'Bring the world to her. Campus oracle, confidante, the center everything orbits.',
+    subs: [
+      { id: 'gossip',   label: 'Court Gossip',   apCost: 1, sceneKey: 'set.socialize.gossip',   effects: { rel: 4 } },
+      { id: 'confide',  label: 'Confide',         apCost: 1, sceneKey: 'set.socialize.confide',  effects: { rel: 6 } },
+      { id: 'praise',   label: 'Praise Her Size', apCost: 1, sceneKey: 'set.socialize.praise',   effects: { rel: 3, gain: [2, 5] } },
+      { id: 'visitors', label: 'Bring Visitors',  apCost: 2, sceneKey: 'immob.visit',            effects: { rel: 3 }, gate: 'hasVisitor' },
+      { id: 'intimate', label: 'Get Close',        apCost: 2, sceneKey: null, effects: {},        gate: 'relTier2', action: 'openIntimacy' },
+    ],
+  },
+  feed: {
+    label: 'Feed',
+    icon: '🍽️',
+    desc: 'Bring her what she craves. She keeps settling when she keeps eating.',
+    subs: [
+      { id: 'preferred', label: 'Hand-Feed Preferred', apCost: 1, sceneKey: 'set.feed.preferred', effects: { gain: [6, 12], rel: 4 }, gate: 'hasPreference' },
+      { id: 'spread',    label: 'Big Spread',          apCost: 2, sceneKey: 'set.feed.spread',    effects: { gain: [10, 20], rel: 5 } },
+      { id: 'stuffing',  label: 'Stuffing',            apCost: 2, sceneKey: 'set.feed.stuffing',  effects: { gain: [8, 15], rel: 4, capacity: 2 } },
+      { id: 'private',   label: 'Private Feeding',     apCost: 2, sceneKey: null, effects: {},    gate: 'relTier1', action: 'privateSession' },
+    ],
+  },
+  care: {
+    label: 'Care For',
+    icon: '🤲',
+    desc: 'Tend her where she rests. Cooling, fitting, settling — everything comes to her.',
+    subs: [
+      // Static subs; comfort milestone subs injected dynamically by getAvailableCareSubs()
+      { id: 'refit', label: 'Re-fit Clothes', apCost: 1, sceneKey: 'immob.refit',   gate: 'needsRefit', action: 'refit' },
+      { id: 'tend',  label: 'Tend Her',       apCost: 1, sceneKey: 'set.care.tend', effects: { rel: 5 } },
+    ],
+  },
+};
+
+// Dynamic Care sub-entries for comfort milestones, keyed to COMFORT_MILESTONES.
+export const COMFORT_CARE_SUBS = {
+  bed:         { id: 'care_bed',         label: 'Reinforced Bed',  apCost: 2, sceneKey: 'immob.comfort.bed',         action: 'comfort', comfortKey: 'bed' },
+  fan:         { id: 'care_fan',         label: 'Personal Fan',    apCost: 1, sceneKey: 'immob.comfort.fan',         action: 'comfort', comfortKey: 'fan' },
+  position:    { id: 'care_position',    label: 'Settle Position', apCost: 1, sceneKey: 'immob.comfort.position',    action: 'comfort', comfortKey: 'position' },
+  ac:          { id: 'care_ac',          label: 'Climate Control', apCost: 2, sceneKey: 'immob.comfort.ac',          action: 'comfort', comfortKey: 'ac' },
+  arrangement: { id: 'care_arrangement', label: 'Room Arrangement',apCost: 2, sceneKey: 'immob.comfort.arrangement', action: 'comfort', comfortKey: 'arrangement' },
+};
+
+/** Full Care sub-menu: static subs + available comfort milestone subs injected before 'tend'. */
+export function getAvailableCareSubs(student) {
+  const milestoneSubs = getAvailableComfortMilestones(student).map(k => COMFORT_CARE_SUBS[k]).filter(Boolean);
+  const result = [];
+  for (const sub of SETTLING_ACTIONS.care.subs) {
+    if (sub.gate === 'needsRefit' && !needsRefit(student)) continue;
+    if (sub.id === 'tend') result.push(...milestoneSubs);
+    result.push(sub);
+  }
+  return result;
+}
+
+// ── Settle counts & final forms ────────────────────────────────
+
+export function incrementSettleCount(student, branch) {
+  const c = student.settleCounts ?? { socialize: 0, feed: 0, care: 0 };
+  return { ...student, settleCounts: { ...c, [branch]: (c[branch] ?? 0) + 1 } };
+}
+
+export function getSettleDominant(student) {
+  const c = student.settleCounts ?? { socialize: 0, feed: 0, care: 0 };
+  const sorted = Object.entries(c).sort((a, b) => b[1] - a[1]);
+  if (sorted[0][1] === 0 || sorted[0][1] === sorted[1][1]) return null;
+  return sorted[0][0];
+}
+
+export const FINAL_FORMS = {
+  feed:      { id: 'ever_expanding', label: 'Ever-Expanding',  desc: 'Growth uncapped. She keeps settling outward without ceiling.' },
+  care:      { id: 'comfort_queen',  label: 'Comfort Queen',   desc: 'The room is hers. Other girls seek her warmth.' },
+  socialize: { id: 'the_adored',     label: 'The Adored',      desc: 'Pleasure center. Visitors come unprompted. The campus orbits her.' },
+};
+
+export function getFinalForm(student) {
+  return student?.finalForm ? (FINAL_FORMS[student.finalForm] ?? null) : null;
+}
+
+/** Mark final form on first stage-11 settling action. No-op if tied or already set. */
+export function markFinalForm(student) {
+  const dominant = getSettleDominant(student);
+  if (!dominant || student.finalForm) return student;
+  return { ...student, finalForm: dominant };
 }
 
 // ── Settle gain (modified) ─────────────────────────────────────

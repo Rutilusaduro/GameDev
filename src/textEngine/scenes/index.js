@@ -71,6 +71,7 @@ import './eating/index.js';
 import './clothing/index.js';
 import './campus/index.js';
 import './immobility/index.js';
+import './settling/index.js';
 import './psychShift/index.js';
 import './interior/index.js';
 import './npcReactions.js';
