@@ -4,9 +4,18 @@
 // Centralizes mealType, locale, clothingState, corruption shift,
 // and week gain plumbing for procedural prose.
 // ═══════════════════════════════════════════════════════════════
-import { createContext, createSessionUsed } from '../textEngine/engine.js';
+import { createContext, createSessionUsed, registerDimension } from '../textEngine/engine.js';
 import { getCorruptionTier } from './corruption.js';
 import { getStage } from './stages.js';
+import { garmentFitState, outfitFor, worstFitState } from './outfits.js';
+
+// Garment fit dimensions — usable directly as `when` keys via the ctx.d
+// fallthrough: when: { fitWaist: 'straining' } (WORD_GRANULAR_ENGINE_PLAN §4.4).
+const fitDim = (slot) => (ctx) => garmentFitState(outfitFor(ctx.subject)[slot], ctx.subject?.lbs);
+registerDimension('fitTop', fitDim('top'));
+registerDimension('fitBottom', fitDim('bottom'));
+registerDimension('fitWaist', fitDim('waist'));
+registerDimension('worstFit', (ctx) => worstFitState(ctx.subject));
 
 /** Infer clothing strain from stage when no explicit state is stored. */
 export function deriveClothingState(student) {

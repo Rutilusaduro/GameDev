@@ -10,10 +10,12 @@
 // See src/textEngine/AUTHORING.md for the rules this enforces.
 // ═══════════════════════════════════════════════════════════════
 import '../src/textEngine/scenes/index.js';
+import '../src/gameData/textContext.js'; // registers garment-fit dimensions
 import {
   _registryEntries, _moduleOpts, hasModule,
-  createContext, render, registerPool, stemsOf,
+  createContext, render, registerPool, stemsOf, createFacts,
 } from '../src/textEngine/engine.js';
+import { FIT_STATES } from '../src/gameData/outfits.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { WEIGHT_STAGES } from '../src/gameData/stages.js';
 import { getCorruptionTier } from '../src/gameData/corruption.js';
@@ -307,6 +309,43 @@ if (triplePct > STEM_TRIPLE_MAX_PCT) {
 }
 if (rendersDone > 0 && stemDoubleRenders / rendersDone > 0.2) {
   warning(`stem dedupe: ${stemDoubleRenders}/${rendersDone} renders contain a doubled stem — consider tags/asserts on the offenders`);
+}
+
+// ── garment lexicon checks (WORD_GRANULAR_ENGINE_PLAN Phase 4) ────────
+// Coverage: every word.garment.* pool must key at least one variant per
+// FIT_STATE on its fit dimension.
+
+const GARMENT_POOLS = {
+  'word.garment.top': 'fitTop',
+  'word.garment.bottom': 'fitBottom',
+  'word.garment.waist': 'fitWaist',
+};
+for (const [key, fitKey] of Object.entries(GARMENT_POOLS)) {
+  const pool = entries.find(([k]) => k === key);
+  if (!pool) { err(`garment coverage: pool "${key}" is not registered`); continue; }
+  const covered = new Set(pool[1].map((v) => v.when?.[fitKey]).filter(Boolean));
+  for (const state of FIT_STATES) {
+    if (!covered.has(state)) err(`garment coverage: ${key} has no variant for ${fitKey}: '${state}'`);
+  }
+}
+
+// Continuity: once garment.event.waistFail asserts the burst fact, no later
+// slot in the same event may describe an intact waistband. The markers below
+// appear only in intact-state variants, which all carry forbids.
+if (hasModule('garment.event.waistFail')) {
+  const INTACT_MARKERS = /finger of room|resting flush|lying flat|asking politely|seam-mark|biting into|holding on technique|lapping quietly|undoes only|button digs|learned to savor|waistband loses|trembling at the end|descending on its own|folded under her belly/;
+  const base = INIT_STUDENTS[0];
+  const student = { ...base, lbs: Math.round((base.startLbs ?? base.lbs) * 1.2) }; // dim reads 'straining'
+  for (let i = 0; i < 100; i++) {
+    const facts = createFacts();
+    render('{garment.event.waistFail}', createContext({ subject: student, week: 4, facts }));
+    const out = render('{word.garment.waist}', createContext({ subject: student, week: 4, facts }));
+    rendersDone++;
+    if (INTACT_MARKERS.test(out)) {
+      err(`garment continuity: intact waistband described after burst fact (render ${i}): "${out}"`);
+      break;
+    }
+  }
 }
 
 // ── morphology self-check (permanent) ─────────────────────────
