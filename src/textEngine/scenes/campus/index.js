@@ -11,6 +11,8 @@ registerPool('campus.scene', [
     '{campus.moveSentence} {campus.obstacle|prefix: }{campus.spaceObs|prefix: }',
     '{campus.localeIntro} {campus.obstacle}{campus.soundTex|prefix:, }.',
     '{campus.moveSentence} {campus.destination}{campus.soundTex|prefix:, }.',
+    '{campus.localeIntro} {campus.moveSentence} {campus.seenBeat|prefix: }',
+    '{campus.moveSentence} {campus.seenBeat|prefix: }{campus.spaceObs|prefix: }',
   ] },
 ]);
 

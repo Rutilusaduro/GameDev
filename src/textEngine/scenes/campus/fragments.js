@@ -141,6 +141,41 @@ registerPool('campus.spaceObs', [
   ] },
 ]);
 
+// ── campus.seenBeat — FULL SENTENCE — she is in public, and the words
+// know it. Keyed on garment fit dims (Phase 6, WORD_GRANULAR_ENGINE_PLAN):
+// what the campus notices is what her clothes are doing.
+registerPool('campus.seenBeat', [
+  { when: {}, text: ['', '', ''] },
+  { when: { fitTop: 'snug' }, text: [
+    "A classmate's glance snags on the closer fit of her top and moves on.",
+    'Her top reads as new; it is not new.',
+  ] },
+  { when: { fitBottom: 'straining' }, text: [
+    'Someone behind her watches the strained denim work and forgets what they were saying.',
+    'The seams down her thighs catch light and attention in the same pass.',
+  ] },
+  { when: { fitTop: 'straining' }, text: [
+    'Heads turn for the gap her buttons keep almost losing.',
+    'Her top holds on in public, barely, and the public notices.',
+  ] },
+  { when: { worstFit: 'failing' }, weight: 2, text: [
+    'Conversations dip when a seam announces itself; she keeps walking.',
+    "Somebody's eyes find the seam that is losing and stay there a beat too long.",
+  ] },
+  { when: { worstFit: 'failing', shameTierMin: 2 }, weight: 2, text: [
+    'She reroutes past fewer people, one arm across the seam she knows is going.',
+    'She times her walk between classes now, when the hallways forget to look.',
+  ] },
+  { when: { worstFit: ['straining', 'failing'], corruption: [2] }, weight: 2, text: [
+    'She walks the strain like a runway — let the campus do the math.',
+    'She wears the failing fit on purpose; the looks are the point.',
+  ] },
+  { when: { worstFit: 'burst', stageMin: 3 }, weight: 2, text: [
+    'What her outfit no longer covers, the campus has learned not to mention.',
+    'She carries the sprung waistband openly — old news to anyone paying attention.',
+  ] },
+]);
+
 registerPool('campus.soundTex', [
   { when: {}, text: ['', '', '', ''] },
   { when: { stageMin: 5 }, text: ['footfalls heavier than they used to be'] },
