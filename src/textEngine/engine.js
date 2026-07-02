@@ -26,6 +26,14 @@ export function createSessionUsed() {
   return new Set();
 }
 
+/** Fact ledger — Map of topic → value, shared across every render of one
+ *  game event (pass it in `createContext({ facts })` like sessionUsed).
+ *  Topics are `domain.instance` strings ("garment.top", "posture"); values
+ *  are short strings, booleans, or numbers. See AUTHORING.md. */
+export function createFacts() {
+  return new Map();
+}
+
 /** Stable key for a variant text line within a module pool. */
 export function variantUsageKey(moduleKey, variantIndex, textIndex) {
   return `${moduleKey}#${variantIndex}:${textIndex}`;
@@ -209,7 +217,7 @@ export function createContext(raw = {}) {
     week,
     season: raw.season || getSeason(week),
     skillEffects, globals,
-    flags: Object.create(null),
+    facts: raw.facts instanceof Map ? raw.facts : createFacts(),
     sessionUsed: raw.sessionUsed instanceof Set ? raw.sessionUsed : createSessionUsed(),
     weekUsed: raw.weekUsed instanceof Set ? raw.weekUsed : new Set(),
     d: deriveFor(subject, ref, skillEffects),
@@ -390,15 +398,53 @@ function evalWhen(when, ctx) {
   return { match: true, score };
 }
 
-function flagsAbsent(ctx, requireAbsent) {
-  if (!requireAbsent?.length) return true;
-  const flags = ctx.flags || {};
-  return !requireAbsent.some((flag) => flags[flag]);
+// Fact-ledger eligibility. Three rules (see docs/WORD_GRANULAR_ENGINE_PLAN.md §4.1):
+//   requires — every topic must be set to the given value (missing = fail)
+//   forbids  — object form fails on value match; array-of-strings form
+//              fails if the topic is set at all (requireAbsent sugar)
+//   asserts  — contradiction guard: asserting topic:v2 while the ledger
+//              holds topic:v1 (v1 !== v2) makes the variant ineligible,
+//              so of two statements that would contradict, only one is said.
+function factsEligible(ctx, variant) {
+  const facts = ctx.facts;
+  if (!facts) return true;
+  const { requires, forbids, asserts, requireAbsent } = variant;
+  if (requires) {
+    for (const [topic, v] of Object.entries(requires)) {
+      const cur = facts.get(topic);
+      if (!(Array.isArray(v) ? v.includes(cur) : cur === v)) return false;
+    }
+  }
+  if (requireAbsent?.length && requireAbsent.some((topic) => facts.get(topic))) return false;
+  if (forbids) {
+    if (Array.isArray(forbids)) {
+      if (forbids.some((topic) => facts.has(topic))) return false;
+    } else {
+      for (const [topic, v] of Object.entries(forbids)) {
+        if (!facts.has(topic)) continue;
+        const cur = facts.get(topic);
+        if (Array.isArray(v) ? v.includes(cur) : cur === v) return false;
+      }
+    }
+  }
+  if (asserts) {
+    for (const [topic, v] of Object.entries(asserts)) {
+      if (facts.has(topic) && facts.get(topic) !== v) return false;
+    }
+  }
+  return true;
 }
 
-function applyConsumes(ctx, variant) {
-  if (!variant.consumes?.length) return;
-  for (const flag of variant.consumes) ctx.flags[flag] = true;
+// On pick: write the variant's facts. `consumes: ['x']` is sugar for
+// `asserts: { x: true }` (kept forever for existing content).
+function applyAsserts(ctx, variant) {
+  if (!ctx.facts) return;
+  if (variant.consumes?.length) {
+    for (const topic of variant.consumes) ctx.facts.set(topic, true);
+  }
+  if (variant.asserts) {
+    for (const [topic, v] of Object.entries(variant.asserts)) ctx.facts.set(topic, v);
+  }
 }
 
 function resolveChosen(variant, ctx) {
@@ -418,7 +464,7 @@ function selectVariantRecord(key, ctx) {
     for (let variantIndex = 0; variantIndex < variants.length; variantIndex++) {
       const variant = variants[variantIndex];
       const { match, score } = evalWhen(variant.when, ctx);
-      if (!match || !flagsAbsent(ctx, variant.requireAbsent)) continue;
+      if (!match || !factsEligible(ctx, variant)) continue;
       const priority = variant.priority || 0;
       if (priority > maxPriority) maxPriority = priority;
       matches.push({ variant, score, priority, variantIndex });
@@ -437,7 +483,7 @@ function selectVariantRecord(key, ctx) {
   for (let variantIndex = 0; variantIndex < variants.length; variantIndex++) {
     const variant = variants[variantIndex];
     const { match, score } = evalWhen(variant.when, ctx);
-    if (!match || !flagsAbsent(ctx, variant.requireAbsent)) continue;
+    if (!match || !factsEligible(ctx, variant)) continue;
     const priority = variant.priority || 0;
     if (score > bestScore || (score === bestScore && priority > bestPriority)) {
       best = [{ variant, score, priority, variantIndex }];
@@ -462,7 +508,7 @@ function selectVariant(key, ctx) {
   if (!picked) return "";
   const variant = picked.variant;
   if (picked.usageKey) recordVariantUsage(picked.usageKey, ctx);
-  applyConsumes(ctx, variant);
+  applyAsserts(ctx, variant);
   const t = picked.text;
   return typeof t === "function" ? (t(ctx) ?? "") : (t ?? "");
 }

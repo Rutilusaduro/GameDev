@@ -12,7 +12,7 @@
 import '../src/textEngine/scenes/index.js';
 import {
   _registryEntries, _moduleOpts, hasModule,
-  createContext, render,
+  createContext, render, registerPool,
 } from '../src/textEngine/engine.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { WEIGHT_STAGES } from '../src/gameData/stages.js';
@@ -112,6 +112,55 @@ for (const [key, variants] of entries) {
     if (hasWildcard && wildcardTexts < 3) {
       warning(`${label}: only ${wildcardTexts} wildcard text(s) — aim for ≥3 for variety`);
     }
+  }
+}
+
+// ── fact-ledger static checks (WORD_GRANULAR_ENGINE_PLAN §4.1) ────────
+// requires/forbids/asserts topics must be `domain.instance` strings with
+// scalar (or scalar-array) values. A fact that is asserted but never read
+// anywhere is dead weight — warned, not errored.
+
+const TOPIC_RE = /^[a-z][\w.]*$/;
+const FACT_SCALARS = new Set(['string', 'boolean', 'number']);
+const factValueOk = (v) => FACT_SCALARS.has(typeof v)
+  || (Array.isArray(v) && v.every((x) => FACT_SCALARS.has(typeof x)));
+
+const assertedFactTopics = new Map(); // topic → Set of asserting module keys
+const readFactTopics = new Set();     // topics read via requires/forbids/requireAbsent
+
+for (const [key, variants] of entries) {
+  for (const v of variants) {
+    for (const field of ['requires', 'forbids', 'asserts']) {
+      const val = v[field];
+      if (val == null) continue;
+      if (Array.isArray(val)) {
+        if (field !== 'forbids') { err(`${key}: ${field} must be an object of topic→value`); continue; }
+        for (const t of val) {
+          if (typeof t !== 'string' || !TOPIC_RE.test(t)) err(`${key}: forbids topic "${t}" must be a domain.instance string`);
+          else readFactTopics.add(t);
+        }
+        continue;
+      }
+      if (typeof val !== 'object') { err(`${key}: ${field} must be an object of topic→value`); continue; }
+      for (const [t, tv] of Object.entries(val)) {
+        if (!TOPIC_RE.test(t)) err(`${key}: ${field} topic "${t}" must be a domain.instance string`);
+        if (!factValueOk(tv)) err(`${key}: ${field}.${t} value must be string/boolean/number or an array of those`);
+        if (field === 'asserts') {
+          if (!assertedFactTopics.has(t)) assertedFactTopics.set(t, new Set());
+          assertedFactTopics.get(t).add(key);
+        } else {
+          readFactTopics.add(t);
+        }
+      }
+    }
+    // Legacy sugar still counts as a read (consumes-only flags predate the
+    // ledger and are exempt from the dead-fact warning).
+    if (v.requireAbsent) for (const t of v.requireAbsent) readFactTopics.add(t);
+  }
+}
+for (const [topic, keys] of assertedFactTopics) {
+  if (!readFactTopics.has(topic)) {
+    warning(`fact "${topic}" asserted (${[...keys].slice(0, 3).join(', ')}) but never read by requires/forbids — dead weight`);
   }
 }
 
@@ -218,6 +267,38 @@ for (const sweep of SWEEPS) {
 }
 if (cells > 0 && lowVariety / cells > 0.05) {
   warning(`dynamic sweep: ${lowVariety}/${cells} cells produced identical output across ${RENDERS_PER_CELL} renders — variety is low`);
+}
+
+// ── fact-ledger dynamic self-check (permanent) ────────────────
+// Slot 1 asserts posture:seated; slot 2 holds a contradicting
+// posture:standing variant plus a requires-gated one. Across 200 renders
+// the contradiction must never surface and the gated line always must.
+// Registered after the static snapshot on purpose — these are probes,
+// not content.
+
+registerPool('lint.factCheck.first', [
+  { when: {}, asserts: { 'lint.posture': 'seated' }, text: [
+    'She sits.', 'She settles into the chair.', 'She takes a seat.',
+  ] },
+]);
+registerPool('lint.factCheck.second', [
+  { when: {}, asserts: { 'lint.posture': 'standing' }, text: ['LINT-CONTRADICTION-STANDING'] },
+  { when: {}, requires: { 'lint.posture': 'seated' }, text: [
+    'Still seated.', 'Still seated, comfortably.', 'Still seated — no hurry.',
+  ] },
+]);
+for (let i = 0; i < 200; i++) {
+  const ctx = createContext({ subject: INIT_STUDENTS[0], week: 2 });
+  const out = render('{lint.factCheck.first} {lint.factCheck.second}', ctx);
+  rendersDone++;
+  if (out.includes('LINT-CONTRADICTION-STANDING')) {
+    err(`factCheck: contradiction guard failed — asserted posture was overridden (render ${i})`);
+    break;
+  }
+  if (!out.includes('Still seated')) {
+    err(`factCheck: requires-gated variant did not render (render ${i}): "${out}"`);
+    break;
+  }
 }
 
 // ── growth event sweeps ───────────────────────────────────────
