@@ -1,5 +1,9 @@
+// The Squad — Lead: A2 Psych | Support: A1 Mobile, A7 Artisan, A5 Editor
 // ═══════════════════════════════════════════════════════════════
 // SCENE: TALK — "Check in", slot-composed (MIGRATION.md).
+// Body beats decomposed to word-granular skeletons (Phase 6,
+// WORD_GRANULAR_ENGINE_PLAN): settle core × garment clause × touch
+// beat, keyed on stage bands, psych tiers, and garment fit dims.
 // Replaces check_in tier pools in gameData/talkDialogue.js.
 // Week-aware clothes beat fixes early-semester contradiction.
 // ═══════════════════════════════════════════════════════════════
@@ -132,11 +136,72 @@ registerPool('talk.checkIn.acceptOpen', [
   ] },
 ]);
 
-// ── talk.checkIn.acceptBody — FULL SENTENCE (tier 1)
+// ── talk.checkIn.bodySettle — SENTENCE CORE (no terminal period)
+// How she settles into the office chair; stage-banded so the same beat
+// scales from soft to room-filling. (Phase 6 decomposition of the old
+// flat acceptBody — WORD_GRANULAR_ENGINE_PLAN.)
+registerPool('talk.checkIn.bodySettle', [
+  { when: {}, text: [
+    'She settles deeper into her chair',
+    'She lets the chair take her weight',
+    'She makes herself comfortable by degrees',
+  ] },
+  { when: { stageMin: 2, stageMax: 4 }, text: [
+    'She curls into the chair, new softness folding easily around her',
+    'She sits back, rounder than last month and easier about it',
+    'She tucks herself into the seat{word.adv.pace|prefix: }',
+  ] },
+  { when: { stageMin: 5, stageMax: 7 }, text: [
+    'She eases down — the chair creaks once — and spreads to fill it',
+    'She lowers herself{word.adv.pace|prefix: } and lets her body find its arrangement',
+    'She settles, and the chair reports every generous pound of the settling',
+  ] },
+  { when: { stageMin: 8, stageMax: 9 }, text: [
+    'She takes the reinforced chair with practiced economy',
+    'Settling is a project now; she manages it with unhurried grace',
+    'She descends into the seat in stages, each one soft and certain',
+  ] },
+  { when: { stageMin: 10 }, text: [
+    'She is already settled — these days the room arranges itself around her',
+    'She shifts her mass by degrees until everything rests where it wants to',
+    'Sitting is a state she inhabits rather than an act she performs',
+  ] },
+]);
+
+// ── talk.checkIn.bodyTouch — FULL SENTENCE — her hands on the change.
+// Psych-shaded per the AUTHORING.md register convention.
+registerPool('talk.checkIn.bodyTouch', [
+  { when: {}, text: [
+    'She runs her palm along the curve of her belly through her top.',
+    'Her hands find the new territory without embarrassment.',
+    'She rests both hands on her middle like it answered a question.',
+  ] },
+  { when: { shameTierMin: 2 }, weight: 2, text: [
+    'She smooths her top down, then stops pretending that was about wrinkles.',
+    'Her arms settle over her middle — half shield, half acknowledgment.',
+  ] },
+  { when: { fixationTierMin: 2 }, weight: 2, text: [
+    'Her thumb hooks the waistband for a private check she thinks you miss.',
+    'Her fingers return to the soft crest of her belly the way a tongue finds a loose tooth.',
+  ] },
+  { when: { corruption: [1], stageMin: 5 }, weight: 2, text: [
+    'She traces where her belly rests on her lap, matter-of-fact, almost fond.',
+    'She pats the widest part of herself once, a greeting between old colleagues.',
+  ] },
+  { when: { corruption: [2], stageMin: 5 }, weight: 2, text: [
+    'She strokes the round of her belly slowly, for her own pleasure and your attention, in that order.',
+  ] },
+]);
+
+// ── talk.checkIn.acceptBody — SKELETON (tier 1)
+// Composes settle core + garment clause + touch beat; the strongest of the
+// old flat lines survive as SENT fallbacks so nothing is lost.
 registerPool('talk.checkIn.acceptBody', [
   { when: {}, text: [
-    `She settles deeper into her chair — it creaks — and her softened body spreads warm and unhurried against the cushions.`,
-    `She runs her palm along the curve of her belly through her top.`,
+    '{talk.checkIn.bodySettle}, {word.garment.waist}.',
+    '{talk.checkIn.bodySettle}, {word.garment.bottom}. {talk.checkIn.bodyTouch}',
+    '{talk.checkIn.bodySettle}. {talk.checkIn.bodyTouch}',
+    '{talk.checkIn.bodyTouch}',
     `At {subject.lbs} lbs she takes up more of the office than she used to.`,
     `Her thighs press together when she crosses her legs; her belly rounds when she leans back.`,
   ] },
@@ -162,12 +227,42 @@ registerPool('talk.checkIn.ownedOpen', [
   ] },
 ]);
 
-// ── talk.checkIn.ownedSpread — FULL SENTENCE (tier 2)
+// ── talk.checkIn.ownedGesture — SENTENCE CORE (no terminal period)
+// The display move; corruption-2 register, stage-banded.
+registerPool('talk.checkIn.ownedGesture', [
+  { when: {}, text: [
+    'She pats the seat beside her like granting an audience',
+    'She arranges herself to be admired and waits for you to catch up',
+    'She spreads her hands over the warm round of her belly',
+  ] },
+  { when: { stageMin: 4, stageMax: 7 }, text: [
+    'She leans back so the full soft geography of her is on display',
+    'She stretches, deliberate, letting every curve state its case',
+  ] },
+  { when: { stageMin: 8 }, text: [
+    'She presides from the chair the way weather presides over a valley',
+    'She lifts her chin and lets the sheer fact of herself do the greeting',
+  ] },
+]);
+
+// ── talk.checkIn.ownedTable — FULL SENTENCE — the standing feast.
+registerPool('talk.checkIn.ownedTable', [
+  { when: {}, text: [
+    'Pastries, takeout, and something warm still steaming wait within reach.',
+    'The desk beside her is a small economy of snacks in various states of surrender.',
+    'A box of something rich sits open at her elbow, clearly not her first.',
+  ] },
+  { when: { hungerTierMin: 3 }, weight: 2, text: [
+    'She keeps one hand in a bakery box while she talks, unwilling to choose between you and it.',
+  ] },
+]);
+
+// ── talk.checkIn.ownedSpread — SKELETON (tier 2)
 registerPool('talk.checkIn.ownedSpread', [
   { when: {}, text: [
-    `She pats the seat beside her like she's granting an audience.`,
-    `Pastries, takeout, and something warm still steaming wait within reach.`,
-    `She spreads her hands over the warm round of her belly.`,
+    '{talk.checkIn.ownedGesture}, {word.garment.top}.',
+    '{talk.checkIn.ownedGesture}. {talk.checkIn.ownedTable}',
+    '{talk.checkIn.ownedGesture}, {word.garment.waist}.',
     `At {subject.lbs} lbs she is plush and present and completely unashamed.`,
   ] },
 ]);
