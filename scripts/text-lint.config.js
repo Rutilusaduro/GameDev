@@ -57,6 +57,7 @@ export const COVERAGE_CORRUPTION_PROBES = [0, 1, 2];
 /** Dynamic lexicon / subject plumbing — allowed to stay on registerModule best-mode. */
 export const INFRA_MODULE_KEYS = new Set([
   'subject.name', 'subject.first', 'subject.lbs', 'subject.semesterGain',
+  'subject.they', 'subject.them', 'subject.their', 'subject.theirs', 'subject.themself',
   'char.desc', 'sizeCompare', 'bodyType.desc', 'clothing.desc', 'group.desc', 'device.label',
   'word.size', 'word.movement', 'word.body', 'word.clothingFit', 'word.fullness',
 ]);

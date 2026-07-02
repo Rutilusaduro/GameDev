@@ -19,6 +19,8 @@ import { WEIGHT_STAGES } from '../src/gameData/stages.js';
 import { getCorruptionTier } from '../src/gameData/corruption.js';
 import { DEVICES } from '../src/gameData/devices.js';
 import { renderGrowthScene } from '../src/textEngine/scenes/growthEvent/index.js';
+import { pastTense, presentParticiple, thirdPerson, pluralize } from '../src/textEngine/morphology.js';
+import { MOVE_VERB_CORPUS } from '../src/textEngine/lexicon/moveVerbs.js';
 import {
   BANNED_PATTERNS, SAMPLE_SCENES, COVERAGE_STAGE_PROBES, STAGE_COVERAGE_PREFIXES,
   VOLUME_SQUAD_PREFIXES, OPTIONAL_EMPTY_POOLS, MIGRATION_BRIDGE_PREFIXES,
@@ -305,6 +307,57 @@ if (triplePct > STEM_TRIPLE_MAX_PCT) {
 }
 if (rendersDone > 0 && stemDoubleRenders / rendersDone > 0.2) {
   warning(`stem dedupe: ${stemDoubleRenders}/${rendersDone} renders contain a doubled stem — consider tags/asserts on the offenders`);
+}
+
+// ── morphology self-check (permanent) ─────────────────────────
+// Table-driven: fixed input/output pairs per filter function, plus a probe
+// over the tagged verb corpus for obviously broken forms.
+
+{
+  const cases = [
+    // pastTense (input may be 3sg — de3sg normalizes)
+    [pastTense, 'waddles', 'waddled'], [pastTense, 'strides', 'strode'],
+    [pastTense, 'comes', 'came'], [pastTense, 'sits', 'sat'],
+    [pastTense, 'eases', 'eased'], [pastTense, 'crosses', 'crossed'],
+    [pastTense, 'carries', 'carried'], [pastTense, 'goes', 'went'],
+    [pastTense, 'sinks', 'sank'], [pastTense, 'settles', 'settled'],
+    [pastTense, 'heaves', 'heaved'], [pastTense, 'spreads', 'spread'],
+    [pastTense, 'shifts', 'shifted'], [pastTense, 'rolls', 'rolled'],
+    [pastTense, 'slips', 'slipped'], [pastTense, 'is', 'was'],
+    [pastTense, 'eats', 'ate'], [pastTense, 'sways', 'swayed'],
+    // presentParticiple
+    [presentParticiple, 'waddles', 'waddling'], [presentParticiple, 'eases', 'easing'],
+    [presentParticiple, 'sits', 'sitting'], [presentParticiple, 'comes', 'coming'],
+    [presentParticiple, 'carries', 'carrying'], [presentParticiple, 'lies', 'lying'],
+    [presentParticiple, 'sees', 'seeing'], [presentParticiple, 'slips', 'slipping'],
+    // thirdPerson (base → 3sg)
+    [thirdPerson, 'waddle', 'waddles'], [thirdPerson, 'cross', 'crosses'],
+    [thirdPerson, 'carry', 'carries'], [thirdPerson, 'go', 'goes'],
+    [thirdPerson, 'have', 'has'], [thirdPerson, 'push', 'pushes'],
+    // pluralize
+    [pluralize, 'thigh', 'thighs'], [pluralize, 'dress', 'dresses'],
+    [pluralize, 'belly', 'bellies'], [pluralize, 'inch', 'inches'],
+    [pluralize, 'woman', 'women'], [pluralize, 'foot', 'feet'],
+    [pluralize, 'tray', 'trays'], [pluralize, 'button', 'buttons'],
+  ];
+  for (const [fn, input, want] of cases) {
+    const got = fn(input);
+    if (got !== want) err(`morphology: ${fn.name}("${input}") = "${got}", want "${want}"`);
+  }
+
+  // Verb-corpus probe: |past and |ing over every single-word move verb must
+  // not produce obviously broken forms.
+  const BROKEN = /(eded|inging|sss|ieed)$/;
+  for (const entry of MOVE_VERB_CORPUS) {
+    const first = entry.text.split(' ')[0];
+    // Only probe 3sg-shaped verbs; the corpus holds a few already-past
+    // phrases ("edged", "required two attempts…") the filters never target.
+    if (!/[a-z]+s$/.test(first) || first === 'was' || first === 'is') continue;
+    for (const fn of [pastTense, presentParticiple]) {
+      const out = fn(first);
+      if (BROKEN.test(out)) err(`morphology: ${fn.name}("${first}") = "${out}" — broken form; extend the irregular maps`);
+    }
+  }
 }
 
 // ── fact-ledger dynamic self-check (permanent) ────────────────

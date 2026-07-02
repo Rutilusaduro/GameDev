@@ -13,6 +13,10 @@ import {
   getFixationTier, getObsessionTier, getDependenceTier, getShameTier,
 } from '../gameData/psychState.js';
 import { getEquippedDeviceIds } from '../gameData/deviceEquip.js';
+import {
+  pastTense, presentParticiple, thirdPerson, pluralize,
+  transformFirstWord, transformLastWord,
+} from './morphology.js';
 
 const DEV = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV;
 const warn = (...args) => { if (DEV) console.warn('[textEngine]', ...args); };
@@ -603,6 +607,12 @@ function applyFilters(text, filters) {
     else if (f === "a") out = out ? (/^[aeiou]/i.test(out) ? "an " : "a ") + out : out;
     else if (f.startsWith("prefix:")) out = out ? f.slice(7) + out : out;
     else if (f.startsWith("suffix:")) out = out ? out + f.slice(7) : out;
+    // Morphology filters — verb filters transform the FIRST word of the
+    // phrase, |plural the LAST (see morphology.js).
+    else if (f === "past") out = out ? transformFirstWord(out, pastTense) : out;
+    else if (f === "ing") out = out ? transformFirstWord(out, presentParticiple) : out;
+    else if (f === "s3") out = out ? transformFirstWord(out, thirdPerson) : out;
+    else if (f === "plural") out = out ? transformLastWord(out, pluralize) : out;
     else warn(`unknown filter "${f}"`);
   }
   return out;

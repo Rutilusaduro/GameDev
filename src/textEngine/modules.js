@@ -24,6 +24,19 @@ registerModule('subject.lbs', [
   { when: {}, text: [(ctx) => String(Math.round(ctx.subject?.lbs || 0))] },
 ]);
 
+// Pronoun slots — read subject.pronouns ('she' | 'he' | 'they', default
+// 'she'). Lexicon entries written with {subject.them} etc. port to any cast.
+const PRONOUN_SETS = {
+  she: { they: 'she', them: 'her', their: 'her', theirs: 'hers', themself: 'herself' },
+  he: { they: 'he', them: 'him', their: 'his', theirs: 'his', themself: 'himself' },
+  they: { they: 'they', them: 'them', their: 'their', theirs: 'theirs', themself: 'themself' },
+};
+for (const slot of ['they', 'them', 'their', 'theirs', 'themself']) {
+  registerModule(`subject.${slot}`, [
+    { when: {}, text: [(ctx) => (PRONOUN_SETS[ctx.subject?.pronouns] || PRONOUN_SETS.she)[slot]] },
+  ]);
+}
+
 registerModule('subject.semesterGain', [
   { when: {}, text: [(ctx) => {
     const s = ctx.subject;
