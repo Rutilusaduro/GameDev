@@ -49,6 +49,15 @@ export const STEM_STOPWORDS = new Set([
   'someth', 'anyth', 'everyth', 'noth',
 ]);
 
+// Irregular forms folded to one stem so "broke"/"broken"/"breaks" collide.
+export const STEM_FOLDS = {
+  broke: 'break', broken: 'break', gave: 'give', given: 'give',
+  took: 'take', taken: 'take', wore: 'wear', worn: 'wear',
+  sank: 'sink', sunk: 'sink', fell: 'fall', fallen: 'fall',
+  went: 'gone', grew: 'grow', grown: 'grow', held: 'hold',
+  strode: 'stride', swept: 'sweep', crept: 'creep',
+};
+
 /** Salient stems of a text fragment: lowercase content words ≥4 letters,
  *  one plural/tense suffix stripped. Slot syntax is ignored. */
 export function stemsOf(text) {
@@ -63,7 +72,7 @@ export function stemsOf(text) {
       if (s.endsWith(suf) && s.length - suf.length >= 4) { s = s.slice(0, -suf.length); break; }
     }
     if (STEM_STOPWORDS.has(s)) continue; // re-check the stripped stem
-    stems.push(s);
+    stems.push(STEM_FOLDS[s] ?? s);
   }
   return stems;
 }
@@ -247,7 +256,7 @@ registerDimension('lastCorruptionShift', (ctx) => !!ctx.globals?.lastCorruptionS
 
 // Stem-tracked scene namespaces — game defaults, same precedent as the
 // priority dimensions above (Phase 7 extraction moves both out).
-['body.', 'wi.', 'ff.', 'cloth.', 'eat.', 'talk.', 'immob.'].forEach(trackStemsFor);
+['body.', 'wi.', 'ff.', 'cloth.', 'eat.', 'talk.', 'immob.', 'enc.'].forEach(trackStemsFor);
 
 // ── context ───────────────────────────────────────────────────
 

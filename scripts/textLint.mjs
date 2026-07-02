@@ -314,6 +314,7 @@ if (cells > 0 && lowVariety / cells > 0.05) {
   warning(`dynamic sweep: ${lowVariety}/${cells} cells produced identical output across ${RENDERS_PER_CELL} renders — variety is low`);
 }
 const triplePct = rendersDone > 0 ? (100 * stemTripleRenders) / rendersDone : 0;
+console.log(`stem dedupe: ${stemTripleRenders}/${rendersDone} renders carry a 3×-repeated stem (${triplePct.toFixed(2)}%, gate ${STEM_TRIPLE_MAX_PCT}%)`);
 if (triplePct > STEM_TRIPLE_MAX_PCT) {
   err(`stem dedupe: ${stemTripleRenders}/${rendersDone} renders (${triplePct.toFixed(1)}% > ${STEM_TRIPLE_MAX_PCT}%) contain a 3×-repeated stem`);
   for (const ex of STEM_TRIPLE_EXAMPLES) warning(ex);

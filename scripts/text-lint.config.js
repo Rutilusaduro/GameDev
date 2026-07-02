@@ -75,9 +75,9 @@ export const PSYCH_REGISTER_EXEMPT_PREFIXES = [
 ];
 
 /** Stem-repeat gate: max % of sweep renders allowed to carry a 3×-repeated
- *  stem. Ratchet: 5 today (body.portrait + talk families still dense with
- *  repeated imagery); tighten toward 1 as Phase 6 decomposition lands. */
-export const STEM_TRIPLE_MAX_PCT = 5;
+ *  stem. Ratcheted to the plan's 1% target (measured 0.90% after the
+ *  Phase 6 fixes: enc. tracking, irregular stem folds, portrait retirement). */
+export const STEM_TRIPLE_MAX_PCT = 1;
 
 // §9 programmatic bridges — legacy prose registered verbatim pending MIGRATION.md decomposition.
 export const MIGRATION_BRIDGE_PREFIXES = [
