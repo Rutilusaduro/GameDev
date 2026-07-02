@@ -66,6 +66,10 @@ Pool picks record a stable key per variant line (`moduleKey#variantIndex:textInd
 
 Gameplay passes a shared `sessionUsed` Set across renders in one event; `weekUsed` loads from / saves to `student.textUsedKeys` via `textContext.js` helpers. Cleared on week advance in `clearWeeklyTextFlags`.
 
+### The psych-register convention (word pools)
+
+Every `word.*` pool that renders inside dialogue, interior monologue, or body description must carry **at least one psych-keyed variant group** (corruption, mood, `gainStance`, or a psych tier) in addition to its generic fallback — a shy girl and a brazen one must not pull from an identical word list. Persona lines stay on `studentId` at weight 4, exactly as before. Exemplars: `word.garment.waist` (shame + corruption shading) and `word.size` (`SIZE_WORDS_SHADED` denial/ownership overlay in `lexicon.js`). Purely mechanical pools (the tagged verb corpus, body-compound fillers) are exempt via `PSYCH_REGISTER_EXEMPT` in `scripts/text-lint.config.js`; `text:lint` warns on everything else.
+
 ### Extensible dimensions (`registerDimension`)
 
 New game-state dimensions can be registered without editing `engine.js`:

@@ -28,7 +28,7 @@ import {
   VOLUME_SQUAD_PREFIXES, OPTIONAL_EMPTY_POOLS, MIGRATION_BRIDGE_PREFIXES,
   COVERAGE_BANDS, COVERAGE_CORRUPTION_PROBES,
   INFRA_MODULE_KEYS, STRICT_VOLUME_MAX_THIN, STRICT_COVERAGE_MIN_PCT,
-  STEM_TRIPLE_MAX_PCT,
+  STEM_TRIPLE_MAX_PCT, PSYCH_REGISTER_EXEMPT_PREFIXES,
 } from './text-lint.config.js';
 
 const CLI_ARGS = process.argv.slice(2);
@@ -167,6 +167,19 @@ for (const [topic, keys] of assertedFactTopics) {
   if (!readFactTopics.has(topic)) {
     warning(`fact "${topic}" asserted (${[...keys].slice(0, 3).join(', ')}) but never read by requires/forbids — dead weight`);
   }
+}
+
+// ── psych-register convention (AUTHORING.md / plan §4.5) ──────────────
+// word.* pool-mode pools should shade at least one variant group on a
+// psychology dimension. Warning, not error — mechanical corpora are exempt.
+
+const PSYCH_KEYS = /^(corruption|mood|gainStance|inWithdrawal)$|^(shame|fixation|obsession|dependence)Tier(Min|Max)$|^addictionLevel(Min|Max)$/;
+for (const [key, variants] of entries) {
+  if (!key.startsWith('word.')) continue;
+  if (_moduleOpts(key).select !== 'pool') continue;
+  if (PSYCH_REGISTER_EXEMPT_PREFIXES.some((p) => key.startsWith(p))) continue;
+  const hasPsych = variants.some((v) => v.when && Object.keys(v.when).some((k) => PSYCH_KEYS.test(k)));
+  if (!hasPsych) warning(`pool "${key}": no psych-keyed variant group (see AUTHORING.md psych-register convention)`);
 }
 
 // Legacy registerModule (best-mode) audit — prose should use registerPool.

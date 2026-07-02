@@ -68,6 +68,12 @@ export const STRICT_VOLUME_MAX_THIN = 0;
 /** --strict-coverage: fail when overall band coverage falls below this percent. */
 export const STRICT_COVERAGE_MIN_PCT = 80;
 
+/** Psych-register convention (AUTHORING.md): word.* pools exempt from the
+ *  "at least one psych-keyed variant" warning — mechanical corpora only. */
+export const PSYCH_REGISTER_EXEMPT_PREFIXES = [
+  'word.moveVerb', 'word.adv.sizeQual.body', 'word.needleVerb',
+];
+
 /** Stem-repeat gate: max % of sweep renders allowed to carry a 3×-repeated
  *  stem. Ratchet: 5 today (body.portrait + talk families still dense with
  *  repeated imagery); tighten toward 1 as Phase 6 decomposition lands. */
