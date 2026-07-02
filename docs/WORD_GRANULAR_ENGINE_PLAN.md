@@ -455,6 +455,17 @@ Editor sign-off).
     the new fit dims, and route her size-reactions through the §4.5 psych
     convention. `interior.selfObs` (keyed on `gainStance`) is the shape to
     copy.
+  - **Campus** (owner-requested): the `scenes/campus/` skeleton + personas,
+    `campusEvent/`, `campusExplorationText.js`, `campusSoftening.js`. These
+    beats play out in public space, so they lean hardest on `mobilityLevel`,
+    `campusLocale`, and the garment-fit dims — she is seen, and the words
+    should know it.
+  - **Hunger interrupt** (owner-requested): `scenes/hungerInterrupt/`,
+    `hungerInterruptPersonal.js`, `hungerLexicon.js`,
+    `hungerArchetypeBehavior.js`. Keyed on `hungerTier`, `addictionLevel`,
+    `inWithdrawal`; the interrupt is stateful by nature (she stops, she eats,
+    she resumes) — a natural first user of `asserts`/`requires` facts
+    (`interrupt.phase: 'eating'`) inside one composed scene.
   - Weigh-in, dinner, eating, clothing, movement — pick order within these by
     render frequency.
 - **Verify:** per family: `text:lint` clean, the Phase 2 dedupe sweep and
