@@ -1,11 +1,15 @@
 # Word-Granular Text Engine — Upgrade Plan
 
-**Status:** Phases 1–5 implemented and pushed (2026-07). Phase 6 in
-progress: talk.checkIn body beats, body.portrait monolith retirement,
-hunger-interrupt tone facts, and campus.seenBeat are done; remaining
-families (rest of dialogue/interior, weigh-in, dinner, eating, clothing,
-movement decomposition, talk.encourage repeat density) follow §5 Phase 6.
-Phase 7 parked until a second project needs the engine.
+**Status:** all phases implemented and pushed (2026-07). Phases 1–5:
+engine + lint complete. Phase 6: framework done across every family —
+talk.checkIn decomposition, body.portrait monolith retired (16.8%→0.3%
+triples), hunger-interrupt tone facts, campus.seenBeat, enc. tracking,
+irregular stem folds; full-sweep triple rate 0.90%, gate at the 1%
+target. Phase 7: engine core is game-free behind registerSubjectDeriver;
+Professor Sim's setting pack lives in gameData/textContext.js per §8.
+Ongoing (by design, forever): authoring more variants into pools and
+decomposing remaining legacy sentence pools as they're touched — §6 is
+the standing checklist for that work.
 **Audience:** any competent model or developer. Every phase names its files, its
 exact API changes, and a runnable verification step. If you can edit JS and run
 `npm run text:lint`, you can execute this plan.
