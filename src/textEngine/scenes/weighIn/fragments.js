@@ -84,7 +84,7 @@ registerPool("wi.scaleSentence", [
     "The scale read {subject.lbs}.",
     "The dial found {subject.lbs}.",
   ]},
-]);
+], { dedupe: 'stem' });
 
 registerPool("wi.needleVerb", [
   { when: { stageMax: 3 }, text: ["ticked", "swept", "climbed"] },
@@ -559,7 +559,7 @@ registerPool("wi.scaleAttitude", [
     "She regards the scale with the practicality of someone who knows what it will say.",
     "The scale can wait. It has learned patience too.",
   ]},
-]);
+], { dedupe: 'stem' });
 
 // ╔══════════════════════════════════════════════════════════════
 // ║ BEAT: wi.scaleApproach — the old analog scale

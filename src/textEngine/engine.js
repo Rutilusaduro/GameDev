@@ -21,6 +21,65 @@ const warn = (...args) => { if (DEV) console.warn('[textEngine]', ...args); };
 export const SESSION_REPEAT_WEIGHT = 0.12;
 export const WEEK_REPEAT_WEIGHT = 0.4;
 
+// Stem dedupe — a salient word already rendered in this passage (render) or
+// event (scene) makes candidates carrying the same stem near-ineligible.
+// Applies to `word.*` modules and any module registered with
+// opts.dedupe: 'stem'. See docs/WORD_GRANULAR_ENGINE_PLAN.md §4.2.
+export const STEM_RENDER_REPEAT = 0.02;
+export const STEM_SCENE_REPEAT = 0.3;
+
+export const STEM_STOPWORDS = new Set([
+  'the', 'and', 'her', 'hers', 'she', 'with', 'that', 'this', 'from', 'into',
+  'onto', 'over', 'under', 'then', 'than', 'when', 'what', 'have', 'has',
+  'had', 'been', 'being', 'they', 'them', 'their', 'there', 'here', 'where',
+  'which', 'while', 'about', 'again', 'against', 'between', 'through',
+  'because', 'before', 'after', 'above', 'below', 'down', 'just', 'more',
+  'most', 'much', 'some', 'such', 'very', 'your', 'yours', 'like', 'does',
+  'doesn', 'still', 'every', 'each', 'both', 'around', 'without', 'toward',
+  'towards', 'himself', 'herself', 'itself',
+  // Generic verbs of attribution/perception — normal English glue, not slop.
+  'says', 'said', 'saying', 'look', 'take', 'know', 'make', 'want', 'really',
+  // Contractions (apostrophes are stripped before matching) and their stems.
+  'doesnt', 'dont', 'isnt', 'wasnt', 'cant', 'wont', 'didnt', 'youre',
+  'shes', 'thats', 'theres', 'weve', 'youve', 'hasnt', 'havent', 'youll',
+  'someth', 'anyth', 'everyth', 'noth',
+]);
+
+/** Salient stems of a text fragment: lowercase content words ≥4 letters,
+ *  one plural/tense suffix stripped. Slot syntax is ignored. */
+export function stemsOf(text) {
+  if (typeof text !== 'string' || !text) return [];
+  const stems = [];
+  const cleaned = text.replace(/\{[^}]*\}/g, ' ').toLowerCase();
+  for (const raw of cleaned.split(/[^a-z']+/)) {
+    const w = raw.replace(/'/g, '');
+    if (w.length < 4 || STEM_STOPWORDS.has(w)) continue;
+    let s = w;
+    for (const suf of ['ing', 'ed', 'es', 's']) {
+      if (s.endsWith(suf) && s.length - suf.length >= 4) { s = s.slice(0, -suf.length); break; }
+    }
+    if (STEM_STOPWORDS.has(s)) continue; // re-check the stripped stem
+    stems.push(s);
+  }
+  return stems;
+}
+
+function stemMultiplier(stems, ctx) {
+  let m = 1;
+  for (const s of stems) {
+    if (ctx.renderStems?.has(s)) return STEM_RENDER_REPEAT;
+    if (ctx.sceneStems?.has(s)) m = STEM_SCENE_REPEAT;
+  }
+  return m;
+}
+
+function recordStems(stems, ctx) {
+  for (const s of stems) {
+    ctx.renderStems?.add(s);
+    ctx.sceneStems?.add(s);
+  }
+}
+
 /** Fresh per-event bag — share one Set across renders in a weigh-in, dinner, etc. */
 export function createSessionUsed() {
   return new Set();
@@ -53,23 +112,37 @@ function recordVariantUsage(usageKey, ctx) {
   ctx.weekUsed?.add(usageKey);
 }
 
+// Namespaces under stem dedupe. `word.*` always; games opt whole scene
+// namespaces in via trackStemsFor('body.') etc. (usually from the scenes
+// barrel), single pools via opts.dedupe: 'stem'.
+const STEM_TRACKED_PREFIXES = ['word.'];
+export function trackStemsFor(prefix) {
+  if (!STEM_TRACKED_PREFIXES.includes(prefix)) STEM_TRACKED_PREFIXES.push(prefix);
+}
+
+function isStemTracked(moduleKey) {
+  return STEM_TRACKED_PREFIXES.some((p) => moduleKey.startsWith(p))
+    || MODULE_OPTS.get(moduleKey)?.dedupe === 'stem';
+}
+
 function buildPickEntries(moduleKey, matches, poolBase, ctx, applyPenalty) {
   const entries = [];
+  const stemTracked = isStemTracked(moduleKey);
   for (const m of matches) {
     const { variant, score, variantIndex } = m;
     const baseW = (variant.weight ?? 1) * Math.pow(poolBase, score);
+    const push = (text, textIndex) => {
+      const usageKey = variantUsageKey(moduleKey, variantIndex, textIndex);
+      // Dedupe identity: explicit tags win; otherwise auto-stems of the raw
+      // text (function texts have no stems unless tagged).
+      const stems = stemTracked ? (variant.tags ?? stemsOf(text)) : [];
+      let w = baseW;
+      if (applyPenalty) w *= repeatMultiplier(usageKey, ctx) * stemMultiplier(stems, ctx);
+      if (w > 0) entries.push({ item: { variant, text, usageKey, stems }, w });
+    };
     const t = variant.text;
-    if (Array.isArray(t)) {
-      t.forEach((text, textIndex) => {
-        const usageKey = variantUsageKey(moduleKey, variantIndex, textIndex);
-        const w = baseW * (applyPenalty ? repeatMultiplier(usageKey, ctx) : 1);
-        if (w > 0) entries.push({ item: { variant, text, usageKey }, w });
-      });
-    } else {
-      const usageKey = variantUsageKey(moduleKey, variantIndex, 0);
-      const w = baseW * (applyPenalty ? repeatMultiplier(usageKey, ctx) : 1);
-      if (w > 0) entries.push({ item: { variant, text: t, usageKey }, w });
-    }
+    if (Array.isArray(t)) t.forEach(push);
+    else push(t, 0);
   }
   return entries;
 }
@@ -168,6 +241,10 @@ registerDimension('isGaining', (ctx) => {
 });
 registerDimension('lastCorruptionShift', (ctx) => !!ctx.globals?.lastCorruptionShift);
 
+// Stem-tracked scene namespaces — game defaults, same precedent as the
+// priority dimensions above (Phase 7 extraction moves both out).
+['body.', 'wi.', 'ff.', 'cloth.', 'eat.', 'talk.'].forEach(trackStemsFor);
+
 // ── context ───────────────────────────────────────────────────
 
 function deriveFor(student, ref, skillEffects) {
@@ -220,6 +297,8 @@ export function createContext(raw = {}) {
     facts: raw.facts instanceof Map ? raw.facts : createFacts(),
     sessionUsed: raw.sessionUsed instanceof Set ? raw.sessionUsed : createSessionUsed(),
     weekUsed: raw.weekUsed instanceof Set ? raw.weekUsed : new Set(),
+    renderStems: new Set(),
+    sceneStems: raw.sceneStems instanceof Set ? raw.sceneStems : new Set(),
     d: deriveFor(subject, ref, skillEffects),
   };
   for (const [key, deriveFn] of DIMENSION_DERIVERS) {
@@ -508,6 +587,7 @@ function selectVariant(key, ctx) {
   if (!picked) return "";
   const variant = picked.variant;
   if (picked.usageKey) recordVariantUsage(picked.usageKey, ctx);
+  if (picked.stems?.length) recordStems(picked.stems, ctx);
   applyAsserts(ctx, variant);
   const t = picked.text;
   return typeof t === "function" ? (t(ctx) ?? "") : (t ?? "");
@@ -609,6 +689,7 @@ function smooth(text) {
 // opts.trace: pass an array to collect { key, text, leaf, depth }
 // for every slot resolved (dev tooling — see DialogueLab).
 export function render(template, ctx, opts = {}) {
+  if (ctx) ctx.renderStems = new Set(); // per-passage dedupe scope
   let text = String(template).replace(/\{\{/g, ESCAPE_TOKEN);
   text = resolveText(text, ctx, 0, opts.trace || null);
   text = text.replace(new RegExp(ESCAPE_TOKEN, "g"), "{");

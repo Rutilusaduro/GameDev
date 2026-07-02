@@ -12,7 +12,7 @@
 import '../src/textEngine/scenes/index.js';
 import {
   _registryEntries, _moduleOpts, hasModule,
-  createContext, render, registerPool,
+  createContext, render, registerPool, stemsOf,
 } from '../src/textEngine/engine.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { WEIGHT_STAGES } from '../src/gameData/stages.js';
@@ -24,6 +24,7 @@ import {
   VOLUME_SQUAD_PREFIXES, OPTIONAL_EMPTY_POOLS, MIGRATION_BRIDGE_PREFIXES,
   COVERAGE_BANDS, COVERAGE_CORRUPTION_PROBES,
   INFRA_MODULE_KEYS, STRICT_VOLUME_MAX_THIN, STRICT_COVERAGE_MIN_PCT,
+  STEM_TRIPLE_MAX_PCT,
 } from './text-lint.config.js';
 
 const CLI_ARGS = process.argv.slice(2);
@@ -214,6 +215,32 @@ const ARTIFACTS = [
   ['  ', 'double space'],
 ];
 
+// Stem-repeat check (WORD_GRANULAR_ENGINE_PLAN Phase 2): a salient stem
+// appearing 3+ times in ONE rendered passage is repetition slop. Gate is
+// rate-based so RNG can't flake the lint: error when >1% of renders carry a
+// triple; the first few examples surface as warnings. Doubles are counted
+// in aggregate (some doubles are legitimate English).
+let stemDoubleRenders = 0;
+let stemTripleRenders = 0;
+const STEM_TRIPLE_EXAMPLES = [];
+function checkStemRepeats(name, out, meta) {
+  const counts = new Map();
+  for (const s of stemsOf(out)) counts.set(s, (counts.get(s) || 0) + 1);
+  let hasDouble = false, hasTriple = false;
+  for (const [s, n] of counts) {
+    if (n >= 3) {
+      hasTriple = true;
+      if (STEM_TRIPLE_EXAMPLES.length < 10) {
+        STEM_TRIPLE_EXAMPLES.push(`${name}: stem "${s}" ×${n} (${meta}): "${out.slice(0, 120)}"`);
+      }
+    } else if (n === 2) {
+      hasDouble = true;
+    }
+  }
+  if (hasTriple) stemTripleRenders++;
+  if (hasDouble) stemDoubleRenders++;
+}
+
 let cells = 0, rendersDone = 0, lowVariety = 0;
 for (const sweep of SWEEPS) {
   if (!hasModule(sweep.root)) continue;
@@ -254,6 +281,7 @@ for (const sweep of SWEEPS) {
                     break;
                   }
                 }
+                checkStemRepeats(sweep.name, out, `student=${base.name} stage=${stage} cor=${corruption}`);
                 outs.add(out);
               }
               cells++;
@@ -267,6 +295,16 @@ for (const sweep of SWEEPS) {
 }
 if (cells > 0 && lowVariety / cells > 0.05) {
   warning(`dynamic sweep: ${lowVariety}/${cells} cells produced identical output across ${RENDERS_PER_CELL} renders — variety is low`);
+}
+const triplePct = rendersDone > 0 ? (100 * stemTripleRenders) / rendersDone : 0;
+if (triplePct > STEM_TRIPLE_MAX_PCT) {
+  err(`stem dedupe: ${stemTripleRenders}/${rendersDone} renders (${triplePct.toFixed(1)}% > ${STEM_TRIPLE_MAX_PCT}%) contain a 3×-repeated stem`);
+  for (const ex of STEM_TRIPLE_EXAMPLES) warning(ex);
+} else if (stemTripleRenders > 0) {
+  warning(`stem dedupe: ${stemTripleRenders}/${rendersDone} renders (${triplePct.toFixed(1)}%) contain a 3×-repeated stem (gate: ${STEM_TRIPLE_MAX_PCT}%)`);
+}
+if (rendersDone > 0 && stemDoubleRenders / rendersDone > 0.2) {
+  warning(`stem dedupe: ${stemDoubleRenders}/${rendersDone} renders contain a doubled stem — consider tags/asserts on the offenders`);
 }
 
 // ── fact-ledger dynamic self-check (permanent) ────────────────
@@ -728,7 +766,7 @@ for (const [key, variants] of entries) {
 // ── report ────────────────────────────────────────────────────
 
 console.log(`textLint: ${entries.length} modules, ${cells} sweep cells, ${rendersDone} renders`);
-const MAX_SHOWN = 40;
+const MAX_SHOWN = 300;
 if (warnings.length) {
   console.log(`\n⚠ ${warnings.length} warning(s):`);
   for (const w of warnings.slice(0, MAX_SHOWN)) console.log(`  ⚠ ${w}`);

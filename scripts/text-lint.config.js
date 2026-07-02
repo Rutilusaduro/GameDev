@@ -67,6 +67,11 @@ export const STRICT_VOLUME_MAX_THIN = 0;
 /** --strict-coverage: fail when overall band coverage falls below this percent. */
 export const STRICT_COVERAGE_MIN_PCT = 80;
 
+/** Stem-repeat gate: max % of sweep renders allowed to carry a 3×-repeated
+ *  stem. Ratchet: 5 today (body.portrait + talk families still dense with
+ *  repeated imagery); tighten toward 1 as Phase 6 decomposition lands. */
+export const STEM_TRIPLE_MAX_PCT = 5;
+
 // §9 programmatic bridges — legacy prose registered verbatim pending MIGRATION.md decomposition.
 export const MIGRATION_BRIDGE_PREFIXES = [
   'journal.feeder.',
