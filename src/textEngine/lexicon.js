@@ -299,7 +299,43 @@ function byBucket(dict) {
   return (ctx) => pick(bucketFallback(dict, stageBucket(ctx.d.stage ?? 0)));
 }
 
-registerModule("word.size", [{ when: {}, text: byBucket(SIZE_WORDS) }]);
+// Psych-register overlay (WORD_GRANULAR_ENGINE_PLAN §4.5 exemplar): the same
+// size reads differently through denial (corruption 0) and ownership
+// (corruption 2). Overlay words mix into the stage bucket at double presence
+// so the register colors roughly half of picks at those tiers.
+export const SIZE_WORDS_SHADED = {
+  0: { // denial / reluctance — she minimizes
+    soft:     ["barely different, she'd insist", "softer than she admits"],
+    chubby:   ["fuller than she lets herself say", "rounder than her mirror-story"],
+    plump:    ["heavier than she'll count", "softer than the size she claims"],
+    heavy:    ["bigger than the number she repeats", "carrying more than she concedes"],
+    fat:      ["far past the size she still names", "larger than any of her explanations"],
+    veryFat:  ["enormous by every measure but her own", "vast beyond her last excuse"],
+    enormous: ["too big for the story she tells herself", "immense past all her hedging"],
+  },
+  2: { // owned / savored — she advertises
+    soft:     ["newly, deliberately soft", "rounding out on purpose"],
+    chubby:   ["proudly padded", "happily thickened"],
+    plump:    ["lusciously plump", "richly softened and glad of it"],
+    heavy:    ["magnificently heavy", "sumptuously weighty"],
+    fat:      ["gloriously fat", "abundant and unapologetic"],
+    veryFat:  ["decadently vast", "immense and pleased about it"],
+    enormous: ["monumentally indulged", "colossal by her own design"],
+    colossal: ["a scale she chose and keeps choosing", "vast on her own terms"],
+    blob:     ["an abundance she presides over", "mass worn like a crown"],
+    leviathan: ["a magnitude she authored herself", "endless, and endlessly satisfied"],
+  },
+};
+
+registerModule("word.size", [{
+  when: {},
+  text: (ctx) => {
+    const bucket = stageBucket(ctx.d.stage ?? 0);
+    const base = bucketFallback(SIZE_WORDS, bucket);
+    const shade = SIZE_WORDS_SHADED[ctx.d.corruption]?.[bucket];
+    return pick(shade ? [...base, ...shade, ...shade] : base);
+  },
+}]);
 
 registerModule("word.movement", [{ when: {}, text: byBucket(MOVEMENT_WORDS) }]);
 

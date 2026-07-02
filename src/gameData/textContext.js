@@ -4,9 +4,90 @@
 // Centralizes mealType, locale, clothingState, corruption shift,
 // and week gain plumbing for procedural prose.
 // ═══════════════════════════════════════════════════════════════
-import { createContext, createSessionUsed } from '../textEngine/engine.js';
+import {
+  createContext, createSessionUsed, registerDimension,
+  registerSubjectDeriver, trackStemsFor, relSize,
+} from '../textEngine/engine.js';
 import { getCorruptionTier } from './corruption.js';
 import { getStage } from './stages.js';
+import { getTier } from './sessions.js';
+import { getAddictionLevel, getHungerTier, isInWithdrawal } from './hungerAddiction.js';
+import {
+  getFixationTier, getObsessionTier, getDependenceTier, getShameTier,
+} from './psychState.js';
+import { getEquippedDeviceIds } from './deviceEquip.js';
+import { garmentFitState, outfitFor, worstFitState } from './outfits.js';
+
+// ── Professor Sim setting pack (WORD_GRANULAR_ENGINE_PLAN §8 / Phase 7) ──
+// The engine core is game-free; everything the engine needs to know about
+// THIS game registers here. Loaded by ProfessorSim.jsx (app root) and the
+// scenes barrel, so it precedes every render.
+
+registerSubjectDeriver((student, ref, skillEffects) => ({
+  stage: getStage(student.lbs).id,
+  corruption: getCorruptionTier(student.corruption || 0).id,
+  relationship: getTier(student.relationship || 0).id,
+  bodyType: student.bodyOverride?.bodyTypeOverride || student.bodyType || null,
+  archetype: student.archetype || null,
+  mood: student.mood || null,
+  evolvedForm: student.evolvedForm || null,
+  studentId: student.id ?? null,
+  lastCompound: student.lastCompound || null,
+  relSize: ref ? relSize(student, ref) : null,
+  refStage: ref ? getStage(ref.lbs).id : null,
+  fullnessRatio: student.stomachCapacity
+    ? (student.fullness || 0) / student.stomachCapacity
+    : 0,
+  devourCount: student.devourCount || 0,
+  hasDevoured: (student.devourCount || 0) > 0,
+  addictionLevel: getAddictionLevel(student),
+  hungerTier: getHungerTier(student),
+  inWithdrawal: isInWithdrawal(student),
+  skillEffects: skillEffects || {},
+  bodyState: student.bodyOverride?.stateType || null,
+  bodyTypeEff: student.bodyOverride?.bodyTypeOverride || student.bodyType || null,
+  bodyStageBump: student.bodyOverride?.stageBump ?? 0,
+  equippedWaist: student.equip?.waist?.defId || null,
+  fixationTier: getFixationTier(student.psych?.fixation ?? 0).id,
+  obsessionTier: getObsessionTier(student.psych?.obsession ?? 0).id,
+  dependenceTier: getDependenceTier(student.psych?.dependence ?? 0).id,
+  shameTier: getShameTier(student.psych?.shame ?? 0).id,
+  hasDeviceEquipped: getEquippedDeviceIds(student).length > 0,
+  supernaturalForm: student.supernaturalForm || null,
+  supernatural: !!student.supernaturalForm,
+}));
+
+function deriveMobilityLevel(d) {
+  const stage = d.stage ?? 0;
+  if (stage <= 6) return 'full';
+  if (stage <= 7) return 'present';
+  if (stage <= 8) return 'planning';
+  if (stage <= 9) return 'economy';
+  if (stage <= 10) return 'minimal';
+  return 'immobile';
+}
+
+registerDimension('campusLocale', (ctx) => ctx.globals?.locale ?? 'default');
+registerDimension('mobilityLevel', (ctx) => deriveMobilityLevel(ctx.d || {}));
+registerDimension('clothingState', (ctx) => ctx.subject?.clothingState ?? ctx.globals?.clothingState ?? 'fitted');
+registerDimension('mealContext', (ctx) => ctx.globals?.mealType ?? 'meal');
+registerDimension('isGaining', (ctx) => {
+  const delta = ctx.globals?.weekGainLbs ?? ctx.subject?.weekGainLbs;
+  if (delta != null) return delta > 0;
+  return (ctx.globals?.isGaining ?? ctx.subject?.isGaining) === true;
+});
+registerDimension('lastCorruptionShift', (ctx) => !!ctx.globals?.lastCorruptionShift);
+
+// Stem-tracked scene namespaces (dedupe applies inside these prefixes).
+['body.', 'wi.', 'ff.', 'cloth.', 'eat.', 'talk.', 'immob.', 'enc.'].forEach(trackStemsFor);
+
+// Garment fit dimensions — usable directly as `when` keys via the ctx.d
+// fallthrough: when: { fitWaist: 'straining' } (WORD_GRANULAR_ENGINE_PLAN §4.4).
+const fitDim = (slot) => (ctx) => garmentFitState(outfitFor(ctx.subject)[slot], ctx.subject?.lbs);
+registerDimension('fitTop', fitDim('top'));
+registerDimension('fitBottom', fitDim('bottom'));
+registerDimension('fitWaist', fitDim('waist'));
+registerDimension('worstFit', (ctx) => worstFitState(ctx.subject));
 
 /** Infer clothing strain from stage when no explicit state is stored. */
 export function deriveClothingState(student) {

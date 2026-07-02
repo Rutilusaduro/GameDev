@@ -3,3 +3,4 @@ import './moveVerbs.js';
 import './adverbs.js';
 import './compounds.js';
 import './psychLexicon.js';
+import './garments.js';

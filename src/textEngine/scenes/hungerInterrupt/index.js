@@ -43,18 +43,24 @@ registerPool('scene.hungerInterrupt.appearance', [
   { when: {}, text: [''] },
 ]);
 
+// Tonal coherence (WORD_GRANULAR_ENGINE_PLAN §4.1): behavior beats assert
+// interrupt.tone; request/tone beats assert theirs too, so the contradiction
+// guard makes a glaring girl unable to follow up with a shy "please".
 registerPool('scene.hungerInterrupt.behavior', [
   { when: { corruption: [2], hungerTier: [3, 4] }, priority: 5,
+    asserts: { 'interrupt.tone': 'demanding' },
     text: [
       "She doesn't bother with pretense anymore — she needs you to feed her.",
       'She looks at you like feeding her is the only thing that matters right now.',
     ] },
   { when: { corruption: [0], addictionLevel: [3, 4] }, priority: 4,
+    asserts: { 'interrupt.tone': 'ashamed' },
     text: [
       "She's embarrassed by how desperate she looks, but she can't hide it.",
       'She keeps trying to compose herself and failing.',
     ] },
   { when: { addictionLevel: [4], hungerTier: [4] }, priority: 4,
+    asserts: { 'interrupt.tone': 'desperate' },
     text: [
       "She's standing there looking almost frantic.",
       "She's breathing hard, eyes wide with need.",
@@ -62,12 +68,14 @@ registerPool('scene.hungerInterrupt.behavior', [
       "She's visibly shaking as she stands in front of you.",
     ] },
   { when: { addictionLevel: [3, 4], hungerTier: [3, 4] }, priority: 3,
+    asserts: { 'interrupt.tone': 'desperate' },
     text: [
       "She's shifting restlessly, clearly struggling.",
       'She keeps glancing at you with a desperate look.',
       "She looks like she's been pacing outside your door.",
     ] },
   { when: { inWithdrawal: true }, priority: 3,
+    asserts: { 'interrupt.tone': 'irritated' },
     text: [
       'She looks visibly irritated and on edge.',
       "She's glaring at you, clearly short-tempered.",
@@ -97,22 +105,26 @@ registerPool('scene.hungerInterrupt.behavior', [
 
 registerPool('scene.hungerInterrupt.request', [
   { when: { corruption: [2], hungerTier: [3, 4] }, priority: 5,
+    asserts: { 'interrupt.tone': 'demanding' },
     text: [
       '"Feed me. I\'m not asking nicely anymore."',
       '"You know what I need. Stop making me wait."',
     ] },
   { when: { corruption: [0], hungerTier: [3, 4] }, priority: 4,
+    asserts: { 'interrupt.tone': 'ashamed' },
     text: [
       '"I… I hate that I need this. But I do. Please?"',
       '"Could we… maybe get food? I\'m trying not to sound desperate."',
     ] },
   { when: { stage: [10, 11], hungerTier: [3, 4], addictionLevel: [3, 4] }, priority: 4,
+    asserts: { 'interrupt.tone': 'demanding' },
     text: [
       '"You\'re going to feed me."',
       '"I\'m not leaving until you feed me."',
       '"Don\'t even think about turning me away right now."',
     ] },
   { when: { addictionLevel: [4], hungerTier: [4] }, priority: 4,
+    asserts: { 'interrupt.tone': 'desperate' },
     text: [
       '"I\'m so hungry…"',
       '"Please… I\'m starving. I need you to feed me."',
@@ -120,12 +132,14 @@ registerPool('scene.hungerInterrupt.request', [
       '"I\'m starving. I need you to feed me right now."',
     ] },
   { when: { addictionLevel: [3], hungerTier: [3, 4] }, priority: 3,
+    asserts: { 'interrupt.tone': 'desperate' },
     text: [
       '"I\'ve been thinking about you feeding me all day…"',
       '"I\'m really hungry… can you feed me?"',
       '"I was hoping you\'d be around… I\'m so hungry."',
     ] },
   { when: { inWithdrawal: true }, priority: 3,
+    asserts: { 'interrupt.tone': 'irritated' },
     text: [
       '"I need something from you. Now."',
       '"Don\'t ignore me. I\'m not in the mood."',
@@ -159,8 +173,10 @@ registerPool('scene.hungerInterrupt.tone', [
   { when: { stage: [8, 9] }, priority: 2,
     text: "She's clearly struggling to stay upright while she waits." },
   { when: { addictionLevel: [4], hungerTier: [4] }, priority: 2,
+    asserts: { 'interrupt.tone': 'desperate' },
     text: 'She looks like she might actually start crying if you turn her away.' },
   { when: { inWithdrawal: true }, priority: 2,
+    asserts: { 'interrupt.tone': 'irritated' },
     text: "She's angry, but underneath it she just looks miserable." },
   { when: {}, text: 'She waits for your answer.' },
 ]);
@@ -170,15 +186,18 @@ export const HUNGER_INTERRUPT_TEMPLATE =
   '{scene.hungerInterrupt.personal|prefix: }{scene.hungerInterrupt.appearance|prefix: }{scene.hungerInterrupt.archetypeBehavior|prefix: }{scene.hungerInterrupt.behavior|prefix: }' +
   '{scene.hungerInterrupt.archetypeRequest|prefix: }{scene.hungerInterrupt.request} {scene.hungerInterrupt.tone}';
 
+// Pass a shared createFacts() Map (and optionally a sceneStems Set) as
+// opts.facts across the interrupt render and its outcome render so tone
+// facts and word dedupe carry through the whole event.
 export function renderHungerInterrupt(student, week = 1, opts = {}) {
-  const ctx = createContext({ subject: student, week });
+  const ctx = createContext({ subject: student, week, facts: opts.facts, sceneStems: opts.sceneStems });
   return render(HUNGER_INTERRUPT_TEMPLATE, ctx, { trace: opts.trace || null }).trim();
 }
 
 export function renderHungerOutcome(student, action, week = 1, opts = {}) {
   const key = { feed: 'scene.hunger.response.feed', compound: 'scene.hunger.response.compound', deny: 'scene.hunger.response.deny', talk: 'scene.hunger.response.talk' }[action];
   if (!key) return '';
-  const ctx = createContext({ subject: student, week });
+  const ctx = createContext({ subject: student, week, facts: opts.facts, sceneStems: opts.sceneStems });
   const trace = opts.trace || null;
   let text = render(`{${key}}`, ctx, { trace }).trim();
   if (action === 'feed' || action === 'compound') {

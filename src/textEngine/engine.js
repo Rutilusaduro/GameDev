@@ -5,14 +5,10 @@
 // selector conditions and the engine picks the most specific match.
 // See docs/modular-text-system.md for the full reference.
 // ═══════════════════════════════════════════════════════════════
-import { getStage } from '../gameData/stages.js';
-import { getCorruptionTier } from '../gameData/corruption.js';
-import { getTier } from '../gameData/sessions.js';
-import { getAddictionLevel, getHungerTier, isInWithdrawal } from '../gameData/hungerAddiction.js';
 import {
-  getFixationTier, getObsessionTier, getDependenceTier, getShameTier,
-} from '../gameData/psychState.js';
-import { getEquippedDeviceIds } from '../gameData/deviceEquip.js';
+  pastTense, presentParticiple, thirdPerson, pluralize,
+  transformFirstWord, transformLastWord,
+} from './morphology.js';
 
 const DEV = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV;
 const warn = (...args) => { if (DEV) console.warn('[textEngine]', ...args); };
@@ -21,9 +17,85 @@ const warn = (...args) => { if (DEV) console.warn('[textEngine]', ...args); };
 export const SESSION_REPEAT_WEIGHT = 0.12;
 export const WEEK_REPEAT_WEIGHT = 0.4;
 
+// Stem dedupe — a salient word already rendered in this passage (render) or
+// event (scene) makes candidates carrying the same stem near-ineligible.
+// Applies to `word.*` modules and any module registered with
+// opts.dedupe: 'stem'. See docs/WORD_GRANULAR_ENGINE_PLAN.md §4.2.
+export const STEM_RENDER_REPEAT = 0.02;
+export const STEM_SCENE_REPEAT = 0.3;
+
+export const STEM_STOPWORDS = new Set([
+  'the', 'and', 'her', 'hers', 'she', 'with', 'that', 'this', 'from', 'into',
+  'onto', 'over', 'under', 'then', 'than', 'when', 'what', 'have', 'has',
+  'had', 'been', 'being', 'they', 'them', 'their', 'there', 'here', 'where',
+  'which', 'while', 'about', 'again', 'against', 'between', 'through',
+  'because', 'before', 'after', 'above', 'below', 'down', 'just', 'more',
+  'most', 'much', 'some', 'such', 'very', 'your', 'yours', 'like', 'does',
+  'doesn', 'still', 'every', 'each', 'both', 'around', 'without', 'toward',
+  'towards', 'himself', 'herself', 'itself',
+  // Generic verbs of attribution/perception — normal English glue, not slop.
+  'says', 'said', 'saying', 'look', 'take', 'know', 'make', 'want', 'really',
+  // Contractions (apostrophes are stripped before matching) and their stems.
+  'doesnt', 'dont', 'isnt', 'wasnt', 'cant', 'wont', 'didnt', 'youre',
+  'shes', 'thats', 'theres', 'weve', 'youve', 'hasnt', 'havent', 'youll',
+  'someth', 'anyth', 'everyth', 'noth',
+]);
+
+// Irregular forms folded to one stem so "broke"/"broken"/"breaks" collide.
+export const STEM_FOLDS = {
+  broke: 'break', broken: 'break', gave: 'give', given: 'give',
+  took: 'take', taken: 'take', wore: 'wear', worn: 'wear',
+  sank: 'sink', sunk: 'sink', fell: 'fall', fallen: 'fall',
+  went: 'gone', grew: 'grow', grown: 'grow', held: 'hold',
+  strode: 'stride', swept: 'sweep', crept: 'creep',
+};
+
+/** Salient stems of a text fragment: lowercase content words ≥4 letters,
+ *  one plural/tense suffix stripped. Slot syntax is ignored. */
+export function stemsOf(text) {
+  if (typeof text !== 'string' || !text) return [];
+  const stems = [];
+  const cleaned = text.replace(/\{[^}]*\}/g, ' ').toLowerCase();
+  for (const raw of cleaned.split(/[^a-z']+/)) {
+    const w = raw.replace(/'/g, '');
+    if (w.length < 4 || STEM_STOPWORDS.has(w)) continue;
+    let s = w;
+    for (const suf of ['ing', 'ed', 'es', 's']) {
+      if (s.endsWith(suf) && s.length - suf.length >= 4) { s = s.slice(0, -suf.length); break; }
+    }
+    if (STEM_STOPWORDS.has(s)) continue; // re-check the stripped stem
+    stems.push(STEM_FOLDS[s] ?? s);
+  }
+  return stems;
+}
+
+function stemMultiplier(stems, ctx) {
+  let m = 1;
+  for (const s of stems) {
+    if (ctx.renderStems?.has(s)) return STEM_RENDER_REPEAT;
+    if (ctx.sceneStems?.has(s)) m = STEM_SCENE_REPEAT;
+  }
+  return m;
+}
+
+function recordStems(stems, ctx) {
+  for (const s of stems) {
+    ctx.renderStems?.add(s);
+    ctx.sceneStems?.add(s);
+  }
+}
+
 /** Fresh per-event bag — share one Set across renders in a weigh-in, dinner, etc. */
 export function createSessionUsed() {
   return new Set();
+}
+
+/** Fact ledger — Map of topic → value, shared across every render of one
+ *  game event (pass it in `createContext({ facts })` like sessionUsed).
+ *  Topics are `domain.instance` strings ("garment.top", "posture"); values
+ *  are short strings, booleans, or numbers. See AUTHORING.md. */
+export function createFacts() {
+  return new Map();
 }
 
 /** Stable key for a variant text line within a module pool. */
@@ -45,23 +117,37 @@ function recordVariantUsage(usageKey, ctx) {
   ctx.weekUsed?.add(usageKey);
 }
 
+// Namespaces under stem dedupe. `word.*` always; games opt whole scene
+// namespaces in via trackStemsFor('body.') etc. (usually from the scenes
+// barrel), single pools via opts.dedupe: 'stem'.
+const STEM_TRACKED_PREFIXES = ['word.'];
+export function trackStemsFor(prefix) {
+  if (!STEM_TRACKED_PREFIXES.includes(prefix)) STEM_TRACKED_PREFIXES.push(prefix);
+}
+
+function isStemTracked(moduleKey) {
+  return STEM_TRACKED_PREFIXES.some((p) => moduleKey.startsWith(p))
+    || MODULE_OPTS.get(moduleKey)?.dedupe === 'stem';
+}
+
 function buildPickEntries(moduleKey, matches, poolBase, ctx, applyPenalty) {
   const entries = [];
+  const stemTracked = isStemTracked(moduleKey);
   for (const m of matches) {
     const { variant, score, variantIndex } = m;
     const baseW = (variant.weight ?? 1) * Math.pow(poolBase, score);
+    const push = (text, textIndex) => {
+      const usageKey = variantUsageKey(moduleKey, variantIndex, textIndex);
+      // Dedupe identity: explicit tags win; otherwise auto-stems of the raw
+      // text (function texts have no stems unless tagged).
+      const stems = stemTracked ? (variant.tags ?? stemsOf(text)) : [];
+      let w = baseW;
+      if (applyPenalty) w *= repeatMultiplier(usageKey, ctx) * stemMultiplier(stems, ctx);
+      if (w > 0) entries.push({ item: { variant, text, usageKey, stems }, w });
+    };
     const t = variant.text;
-    if (Array.isArray(t)) {
-      t.forEach((text, textIndex) => {
-        const usageKey = variantUsageKey(moduleKey, variantIndex, textIndex);
-        const w = baseW * (applyPenalty ? repeatMultiplier(usageKey, ctx) : 1);
-        if (w > 0) entries.push({ item: { variant, text, usageKey }, w });
-      });
-    } else {
-      const usageKey = variantUsageKey(moduleKey, variantIndex, 0);
-      const w = baseW * (applyPenalty ? repeatMultiplier(usageKey, ctx) : 1);
-      if (w > 0) entries.push({ item: { variant, text: t, usageKey }, w });
-    }
+    if (Array.isArray(t)) t.forEach(push);
+    else push(t, 0);
   }
   return entries;
 }
@@ -122,11 +208,6 @@ export function stageBucket(stageId) {
   return STAGE_KEYS[id];
 }
 
-export function groupStageBucket(group) {
-  if (!group || !group.length) return "soft";
-  const avg = group.reduce((a, s) => a + getStage(s.lbs).id, 0) / group.length;
-  return stageBucket(Math.round(avg));
-}
 
 // ── extensible dimensions ─────────────────────────────────────
 
@@ -138,65 +219,27 @@ export function registerDimension(key, deriveFn) {
   DIMENSION_DERIVERS.set(key, deriveFn);
 }
 
-function deriveMobilityLevel(d) {
-  const stage = d.stage ?? 0;
-  if (stage <= 6) return 'full';
-  if (stage <= 7) return 'present';
-  if (stage <= 8) return 'planning';
-  if (stage <= 9) return 'economy';
-  if (stage <= 10) return 'minimal';
-  return 'immobile';
-}
-
-// Priority dimensions — registered at engine load; games may add more.
-registerDimension('campusLocale', (ctx) => ctx.globals?.locale ?? 'default');
-registerDimension('mobilityLevel', (ctx) => deriveMobilityLevel(ctx.d || {}));
-registerDimension('clothingState', (ctx) => ctx.subject?.clothingState ?? ctx.globals?.clothingState ?? 'fitted');
-registerDimension('mealContext', (ctx) => ctx.globals?.mealType ?? 'meal');
-registerDimension('isGaining', (ctx) => {
-  const delta = ctx.globals?.weekGainLbs ?? ctx.subject?.weekGainLbs;
-  if (delta != null) return delta > 0;
-  return (ctx.globals?.isGaining ?? ctx.subject?.isGaining) === true;
-});
-registerDimension('lastCorruptionShift', (ctx) => !!ctx.globals?.lastCorruptionShift);
-
 // ── context ───────────────────────────────────────────────────
+
+// Phase 7 extraction: the engine core is game-free. The game supplies the
+// subject → ctx.d mapping via registerSubjectDeriver (Professor Sim's lives
+// in src/gameData/textContext.js), and registers its dimensions and
+// stem-tracked namespaces from the same place.
+let SUBJECT_DERIVER = null;
+
+/** Register the game's subject deriver: (subject, ref, skillEffects) → ctx.d. */
+export function registerSubjectDeriver(fn) {
+  if (SUBJECT_DERIVER) warn('subject deriver re-registered (overwriting)');
+  SUBJECT_DERIVER = fn;
+}
 
 function deriveFor(student, ref, skillEffects) {
   if (!student) return {};
-  return {
-    stage: getStage(student.lbs).id,
-    corruption: getCorruptionTier(student.corruption || 0).id,
-    relationship: getTier(student.relationship || 0).id,
-    bodyType: student.bodyOverride?.bodyTypeOverride || student.bodyType || null,
-    archetype: student.archetype || null,
-    mood: student.mood || null,
-    evolvedForm: student.evolvedForm || null,
-    studentId: student.id ?? null,
-    lastCompound: student.lastCompound || null,
-    relSize: ref ? relSize(student, ref) : null,
-    refStage: ref ? getStage(ref.lbs).id : null,
-    fullnessRatio: student.stomachCapacity
-      ? (student.fullness || 0) / student.stomachCapacity
-      : 0,
-    devourCount: student.devourCount || 0,
-    hasDevoured: (student.devourCount || 0) > 0,
-    addictionLevel: getAddictionLevel(student),
-    hungerTier: getHungerTier(student),
-    inWithdrawal: isInWithdrawal(student),
-    skillEffects: skillEffects || {},
-    bodyState: student.bodyOverride?.stateType || null,
-    bodyTypeEff: student.bodyOverride?.bodyTypeOverride || student.bodyType || null,
-    bodyStageBump: student.bodyOverride?.stageBump ?? 0,
-    equippedWaist: student.equip?.waist?.defId || null,
-    fixationTier: getFixationTier(student.psych?.fixation ?? 0).id,
-    obsessionTier: getObsessionTier(student.psych?.obsession ?? 0).id,
-    dependenceTier: getDependenceTier(student.psych?.dependence ?? 0).id,
-    shameTier: getShameTier(student.psych?.shame ?? 0).id,
-    hasDeviceEquipped: getEquippedDeviceIds(student).length > 0,
-    supernaturalForm: student.supernaturalForm || null,
-    supernatural: !!student.supernaturalForm,
-  };
+  if (!SUBJECT_DERIVER) {
+    warn('no subject deriver registered — ctx.d is minimal (call registerSubjectDeriver)');
+    return { studentId: student.id ?? null, skillEffects: skillEffects || {} };
+  }
+  return SUBJECT_DERIVER(student, ref, skillEffects) || {};
 }
 
 // createContext(raw) — normalizes inputs and derives the selector
@@ -209,9 +252,11 @@ export function createContext(raw = {}) {
     week,
     season: raw.season || getSeason(week),
     skillEffects, globals,
-    flags: Object.create(null),
+    facts: raw.facts instanceof Map ? raw.facts : createFacts(),
     sessionUsed: raw.sessionUsed instanceof Set ? raw.sessionUsed : createSessionUsed(),
     weekUsed: raw.weekUsed instanceof Set ? raw.weekUsed : new Set(),
+    renderStems: new Set(),
+    sceneStems: raw.sceneStems instanceof Set ? raw.sceneStems : new Set(),
     d: deriveFor(subject, ref, skillEffects),
   };
   for (const [key, deriveFn] of DIMENSION_DERIVERS) {
@@ -390,15 +435,53 @@ function evalWhen(when, ctx) {
   return { match: true, score };
 }
 
-function flagsAbsent(ctx, requireAbsent) {
-  if (!requireAbsent?.length) return true;
-  const flags = ctx.flags || {};
-  return !requireAbsent.some((flag) => flags[flag]);
+// Fact-ledger eligibility. Three rules (see docs/WORD_GRANULAR_ENGINE_PLAN.md §4.1):
+//   requires — every topic must be set to the given value (missing = fail)
+//   forbids  — object form fails on value match; array-of-strings form
+//              fails if the topic is set at all (requireAbsent sugar)
+//   asserts  — contradiction guard: asserting topic:v2 while the ledger
+//              holds topic:v1 (v1 !== v2) makes the variant ineligible,
+//              so of two statements that would contradict, only one is said.
+function factsEligible(ctx, variant) {
+  const facts = ctx.facts;
+  if (!facts) return true;
+  const { requires, forbids, asserts, requireAbsent } = variant;
+  if (requires) {
+    for (const [topic, v] of Object.entries(requires)) {
+      const cur = facts.get(topic);
+      if (!(Array.isArray(v) ? v.includes(cur) : cur === v)) return false;
+    }
+  }
+  if (requireAbsent?.length && requireAbsent.some((topic) => facts.get(topic))) return false;
+  if (forbids) {
+    if (Array.isArray(forbids)) {
+      if (forbids.some((topic) => facts.has(topic))) return false;
+    } else {
+      for (const [topic, v] of Object.entries(forbids)) {
+        if (!facts.has(topic)) continue;
+        const cur = facts.get(topic);
+        if (Array.isArray(v) ? v.includes(cur) : cur === v) return false;
+      }
+    }
+  }
+  if (asserts) {
+    for (const [topic, v] of Object.entries(asserts)) {
+      if (facts.has(topic) && facts.get(topic) !== v) return false;
+    }
+  }
+  return true;
 }
 
-function applyConsumes(ctx, variant) {
-  if (!variant.consumes?.length) return;
-  for (const flag of variant.consumes) ctx.flags[flag] = true;
+// On pick: write the variant's facts. `consumes: ['x']` is sugar for
+// `asserts: { x: true }` (kept forever for existing content).
+function applyAsserts(ctx, variant) {
+  if (!ctx.facts) return;
+  if (variant.consumes?.length) {
+    for (const topic of variant.consumes) ctx.facts.set(topic, true);
+  }
+  if (variant.asserts) {
+    for (const [topic, v] of Object.entries(variant.asserts)) ctx.facts.set(topic, v);
+  }
 }
 
 function resolveChosen(variant, ctx) {
@@ -418,7 +501,7 @@ function selectVariantRecord(key, ctx) {
     for (let variantIndex = 0; variantIndex < variants.length; variantIndex++) {
       const variant = variants[variantIndex];
       const { match, score } = evalWhen(variant.when, ctx);
-      if (!match || !flagsAbsent(ctx, variant.requireAbsent)) continue;
+      if (!match || !factsEligible(ctx, variant)) continue;
       const priority = variant.priority || 0;
       if (priority > maxPriority) maxPriority = priority;
       matches.push({ variant, score, priority, variantIndex });
@@ -437,7 +520,7 @@ function selectVariantRecord(key, ctx) {
   for (let variantIndex = 0; variantIndex < variants.length; variantIndex++) {
     const variant = variants[variantIndex];
     const { match, score } = evalWhen(variant.when, ctx);
-    if (!match || !flagsAbsent(ctx, variant.requireAbsent)) continue;
+    if (!match || !factsEligible(ctx, variant)) continue;
     const priority = variant.priority || 0;
     if (score > bestScore || (score === bestScore && priority > bestPriority)) {
       best = [{ variant, score, priority, variantIndex }];
@@ -462,9 +545,14 @@ function selectVariant(key, ctx) {
   if (!picked) return "";
   const variant = picked.variant;
   if (picked.usageKey) recordVariantUsage(picked.usageKey, ctx);
-  applyConsumes(ctx, variant);
+  applyAsserts(ctx, variant);
   const t = picked.text;
-  return typeof t === "function" ? (t(ctx) ?? "") : (t ?? "");
+  const out = typeof t === "function" ? (t(ctx) ?? "") : (t ?? "");
+  if (picked.stems?.length) recordStems(picked.stems, ctx);
+  // Function texts have no stems until resolved — record them now so later
+  // slots still dedupe against dictionary-driven modules (word.body etc.).
+  else if (typeof t === "function" && isStemTracked(key)) recordStems(stemsOf(out), ctx);
+  return out;
 }
 
 // ── filters ───────────────────────────────────────────────────
@@ -477,6 +565,12 @@ function applyFilters(text, filters) {
     else if (f === "a") out = out ? (/^[aeiou]/i.test(out) ? "an " : "a ") + out : out;
     else if (f.startsWith("prefix:")) out = out ? f.slice(7) + out : out;
     else if (f.startsWith("suffix:")) out = out ? out + f.slice(7) : out;
+    // Morphology filters — verb filters transform the FIRST word of the
+    // phrase, |plural the LAST (see morphology.js).
+    else if (f === "past") out = out ? transformFirstWord(out, pastTense) : out;
+    else if (f === "ing") out = out ? transformFirstWord(out, presentParticiple) : out;
+    else if (f === "s3") out = out ? transformFirstWord(out, thirdPerson) : out;
+    else if (f === "plural") out = out ? transformLastWord(out, pluralize) : out;
     else warn(`unknown filter "${f}"`);
   }
   return out;
@@ -563,6 +657,7 @@ function smooth(text) {
 // opts.trace: pass an array to collect { key, text, leaf, depth }
 // for every slot resolved (dev tooling — see DialogueLab).
 export function render(template, ctx, opts = {}) {
+  if (ctx) ctx.renderStems = new Set(); // per-passage dedupe scope
   let text = String(template).replace(/\{\{/g, ESCAPE_TOKEN);
   text = resolveText(text, ctx, 0, opts.trace || null);
   text = text.replace(new RegExp(ESCAPE_TOKEN, "g"), "{");

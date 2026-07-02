@@ -7,8 +7,17 @@
 // clothing.desc  — clothing + fit (season × stage)
 // group.desc     — short descriptor for ctx.group
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, groupStageBucket } from './engine.js';
+import { registerModule, stageBucket } from './engine.js';
+import { getStage } from '../gameData/stages.js';
 import './lexicon.js'; // ensure word.* modules are registered
+
+// Average stage bucket for a group (moved from engine.js in the Phase 7
+// extraction — the engine core no longer knows the stage ladder).
+function groupStageBucket(group) {
+  if (!group || !group.length) return 'soft';
+  const avg = group.reduce((a, s) => a + getStage(s.lbs).id, 0) / group.length;
+  return stageBucket(Math.round(avg));
+}
 
 // ── subject.* — identity helpers usable in any template ───────
 
@@ -23,6 +32,19 @@ registerModule('subject.first', [
 registerModule('subject.lbs', [
   { when: {}, text: [(ctx) => String(Math.round(ctx.subject?.lbs || 0))] },
 ]);
+
+// Pronoun slots — read subject.pronouns ('she' | 'he' | 'they', default
+// 'she'). Lexicon entries written with {subject.them} etc. port to any cast.
+const PRONOUN_SETS = {
+  she: { they: 'she', them: 'her', their: 'her', theirs: 'hers', themself: 'herself' },
+  he: { they: 'he', them: 'him', their: 'his', theirs: 'his', themself: 'himself' },
+  they: { they: 'they', them: 'them', their: 'their', theirs: 'theirs', themself: 'themself' },
+};
+for (const slot of ['they', 'them', 'their', 'theirs', 'themself']) {
+  registerModule(`subject.${slot}`, [
+    { when: {}, text: [(ctx) => (PRONOUN_SETS[ctx.subject?.pronouns] || PRONOUN_SETS.she)[slot]] },
+  ]);
+}
 
 registerModule('subject.semesterGain', [
   { when: {}, text: [(ctx) => {

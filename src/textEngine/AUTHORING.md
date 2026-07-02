@@ -48,20 +48,27 @@ registerPool("wi.bodyClause", [
 - `weight` raises/lowers a variant's share (`weight: 4` on persona variants keeps the girl's own voice dominant; `weight: 0` parks a draft).
 - `priority` in pool mode is a **hard gate**: only max-priority matches survive. Use rarely and document why in a comment.
 
-### Inter-slot flags (`consumes` / `requireAbsent`)
+### The fact ledger (`asserts` / `requires` / `forbids`)
 
-`createContext()` initializes `ctx.flags` — a per-render bag for inter-slot exclusivity. Variant fields:
+`createContext()` initializes `ctx.facts` — a `Map` of `topic → value` shared across every render of one game event (pass a shared `createFacts()` result in `createContext({ facts })`, exactly like `sessionUsed`). Stateful prose declares its state through three variant fields:
 
-- `consumes: ['flagName']` — sets the flag after this variant is selected.
-- `requireAbsent: ['flagName']` — excludes the variant if the flag is already set.
+- `asserts: { 'garment.top': 'burst' }` — on pick, writes the fact. **Contradiction guard:** a variant asserting `topic: v2` while the ledger holds `topic: v1` (different value) is ineligible — of two statements that would contradict, only one is said. Slots resolve left to right, so the first slot to assert a fact wins; put the fact-establishing beat first in the skeleton.
+- `requires: { posture: 'seated' }` — eligible only if the ledger holds exactly that value (array = membership). A missing topic fails.
+- `forbids: { posture: 'standing' }` — ineligible on a value match. Shorthand `forbids: ['topic']` means "ineligible if the topic is set at all".
 
-Authorized namespaces: `psych_mood`, `scale_ref`, `speed_mod`, `size_reminder`, `sound_tex`, `spatial_obs`. Use only for known problem pairings (e.g. pace adverb + psychological annotation both firing). Most pools need neither field.
+Topics are `domain.instance` strings (`garment.top`, `posture`, `speech.tone`); values are short strings, booleans, or numbers. Keep topics coarse — a scene with ~10 live topics is healthy, one with 100 is authoring noise. `text:lint` validates field shapes and warns about facts that are asserted but never read.
+
+**Legacy sugar (kept forever):** `consumes: ['flagName']` ≡ `asserts: { flagName: true }`; `requireAbsent: ['flagName']` ≡ ineligible when the flag is set. Existing namespaces: `psych_mood`, `scale_ref`, `speed_mod`, `size_reminder`, `sound_tex`, `spatial_obs`. Use flags only for known problem pairings; most pools need none of these fields.
 
 ### Anti-repetition (`sessionUsed` / `weekUsed`)
 
 Pool picks record a stable key per variant line (`moduleKey#variantIndex:textIndex`). Lines already chosen this **session** (one weigh-in, dinner, digest beat) or this **week** (`student.textUsedKeys`) are deprioritized, not excluded — weights multiply by `0.12` (session) and `0.4` (week). If every eligible line is penalized, the engine falls back to full weights.
 
 Gameplay passes a shared `sessionUsed` Set across renders in one event; `weekUsed` loads from / saves to `student.textUsedKeys` via `textContext.js` helpers. Cleared on week advance in `clearWeeklyTextFlags`.
+
+### The psych-register convention (word pools)
+
+Every `word.*` pool that renders inside dialogue, interior monologue, or body description must carry **at least one psych-keyed variant group** (corruption, mood, `gainStance`, or a psych tier) in addition to its generic fallback — a shy girl and a brazen one must not pull from an identical word list. Persona lines stay on `studentId` at weight 4, exactly as before. Exemplars: `word.garment.waist` (shame + corruption shading) and `word.size` (`SIZE_WORDS_SHADED` denial/ownership overlay in `lexicon.js`). Purely mechanical pools (the tagged verb corpus, body-compound fillers) are exempt via `PSYCH_REGISTER_EXEMPT` in `scripts/text-lint.config.js`; `text:lint` warns on everything else.
 
 ### Extensible dimensions (`registerDimension`)
 

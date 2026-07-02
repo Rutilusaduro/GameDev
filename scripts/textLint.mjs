@@ -10,20 +10,25 @@
 // See src/textEngine/AUTHORING.md for the rules this enforces.
 // ═══════════════════════════════════════════════════════════════
 import '../src/textEngine/scenes/index.js';
+import '../src/gameData/textContext.js'; // registers garment-fit dimensions
 import {
   _registryEntries, _moduleOpts, hasModule,
-  createContext, render,
+  createContext, render, registerPool, stemsOf, createFacts,
 } from '../src/textEngine/engine.js';
+import { FIT_STATES } from '../src/gameData/outfits.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { WEIGHT_STAGES } from '../src/gameData/stages.js';
 import { getCorruptionTier } from '../src/gameData/corruption.js';
 import { DEVICES } from '../src/gameData/devices.js';
 import { renderGrowthScene } from '../src/textEngine/scenes/growthEvent/index.js';
+import { pastTense, presentParticiple, thirdPerson, pluralize } from '../src/textEngine/morphology.js';
+import { MOVE_VERB_CORPUS } from '../src/textEngine/lexicon/moveVerbs.js';
 import {
   BANNED_PATTERNS, SAMPLE_SCENES, COVERAGE_STAGE_PROBES, STAGE_COVERAGE_PREFIXES,
   VOLUME_SQUAD_PREFIXES, OPTIONAL_EMPTY_POOLS, MIGRATION_BRIDGE_PREFIXES,
   COVERAGE_BANDS, COVERAGE_CORRUPTION_PROBES,
   INFRA_MODULE_KEYS, STRICT_VOLUME_MAX_THIN, STRICT_COVERAGE_MIN_PCT,
+  STEM_TRIPLE_MAX_PCT, PSYCH_REGISTER_EXEMPT_PREFIXES,
 } from './text-lint.config.js';
 
 const CLI_ARGS = process.argv.slice(2);
@@ -115,6 +120,68 @@ for (const [key, variants] of entries) {
   }
 }
 
+// ── fact-ledger static checks (WORD_GRANULAR_ENGINE_PLAN §4.1) ────────
+// requires/forbids/asserts topics must be `domain.instance` strings with
+// scalar (or scalar-array) values. A fact that is asserted but never read
+// anywhere is dead weight — warned, not errored.
+
+const TOPIC_RE = /^[a-z][\w.]*$/;
+const FACT_SCALARS = new Set(['string', 'boolean', 'number']);
+const factValueOk = (v) => FACT_SCALARS.has(typeof v)
+  || (Array.isArray(v) && v.every((x) => FACT_SCALARS.has(typeof x)));
+
+const assertedFactTopics = new Map(); // topic → Set of asserting module keys
+const readFactTopics = new Set();     // topics read via requires/forbids/requireAbsent
+
+for (const [key, variants] of entries) {
+  for (const v of variants) {
+    for (const field of ['requires', 'forbids', 'asserts']) {
+      const val = v[field];
+      if (val == null) continue;
+      if (Array.isArray(val)) {
+        if (field !== 'forbids') { err(`${key}: ${field} must be an object of topic→value`); continue; }
+        for (const t of val) {
+          if (typeof t !== 'string' || !TOPIC_RE.test(t)) err(`${key}: forbids topic "${t}" must be a domain.instance string`);
+          else readFactTopics.add(t);
+        }
+        continue;
+      }
+      if (typeof val !== 'object') { err(`${key}: ${field} must be an object of topic→value`); continue; }
+      for (const [t, tv] of Object.entries(val)) {
+        if (!TOPIC_RE.test(t)) err(`${key}: ${field} topic "${t}" must be a domain.instance string`);
+        if (!factValueOk(tv)) err(`${key}: ${field}.${t} value must be string/boolean/number or an array of those`);
+        if (field === 'asserts') {
+          if (!assertedFactTopics.has(t)) assertedFactTopics.set(t, new Set());
+          assertedFactTopics.get(t).add(key);
+        } else {
+          readFactTopics.add(t);
+        }
+      }
+    }
+    // Legacy sugar still counts as a read (consumes-only flags predate the
+    // ledger and are exempt from the dead-fact warning).
+    if (v.requireAbsent) for (const t of v.requireAbsent) readFactTopics.add(t);
+  }
+}
+for (const [topic, keys] of assertedFactTopics) {
+  if (!readFactTopics.has(topic)) {
+    warning(`fact "${topic}" asserted (${[...keys].slice(0, 3).join(', ')}) but never read by requires/forbids — dead weight`);
+  }
+}
+
+// ── psych-register convention (AUTHORING.md / plan §4.5) ──────────────
+// word.* pool-mode pools should shade at least one variant group on a
+// psychology dimension. Warning, not error — mechanical corpora are exempt.
+
+const PSYCH_KEYS = /^(corruption|mood|gainStance|inWithdrawal)$|^(shame|fixation|obsession|dependence)Tier(Min|Max)$|^addictionLevel(Min|Max)$/;
+for (const [key, variants] of entries) {
+  if (!key.startsWith('word.')) continue;
+  if (_moduleOpts(key).select !== 'pool') continue;
+  if (PSYCH_REGISTER_EXEMPT_PREFIXES.some((p) => key.startsWith(p))) continue;
+  const hasPsych = variants.some((v) => v.when && Object.keys(v.when).some((k) => PSYCH_KEYS.test(k)));
+  if (!hasPsych) warning(`pool "${key}": no psych-keyed variant group (see AUTHORING.md psych-register convention)`);
+}
+
 // Legacy registerModule (best-mode) audit — prose should use registerPool.
 for (const [key] of entries) {
   const opts = _moduleOpts(key);
@@ -165,6 +232,32 @@ const ARTIFACTS = [
   ['  ', 'double space'],
 ];
 
+// Stem-repeat check (WORD_GRANULAR_ENGINE_PLAN Phase 2): a salient stem
+// appearing 3+ times in ONE rendered passage is repetition slop. Gate is
+// rate-based so RNG can't flake the lint: error when >1% of renders carry a
+// triple; the first few examples surface as warnings. Doubles are counted
+// in aggregate (some doubles are legitimate English).
+let stemDoubleRenders = 0;
+let stemTripleRenders = 0;
+const STEM_TRIPLE_EXAMPLES = [];
+function checkStemRepeats(name, out, meta) {
+  const counts = new Map();
+  for (const s of stemsOf(out)) counts.set(s, (counts.get(s) || 0) + 1);
+  let hasDouble = false, hasTriple = false;
+  for (const [s, n] of counts) {
+    if (n >= 3) {
+      hasTriple = true;
+      if (STEM_TRIPLE_EXAMPLES.length < 10) {
+        STEM_TRIPLE_EXAMPLES.push(`${name}: stem "${s}" ×${n} (${meta}): "${out.slice(0, 120)}"`);
+      }
+    } else if (n === 2) {
+      hasDouble = true;
+    }
+  }
+  if (hasTriple) stemTripleRenders++;
+  if (hasDouble) stemDoubleRenders++;
+}
+
 let cells = 0, rendersDone = 0, lowVariety = 0;
 for (const sweep of SWEEPS) {
   if (!hasModule(sweep.root)) continue;
@@ -205,6 +298,7 @@ for (const sweep of SWEEPS) {
                     break;
                   }
                 }
+                checkStemRepeats(sweep.name, out, `student=${base.name} stage=${stage} cor=${corruption}`);
                 outs.add(out);
               }
               cells++;
@@ -218,6 +312,169 @@ for (const sweep of SWEEPS) {
 }
 if (cells > 0 && lowVariety / cells > 0.05) {
   warning(`dynamic sweep: ${lowVariety}/${cells} cells produced identical output across ${RENDERS_PER_CELL} renders — variety is low`);
+}
+const triplePct = rendersDone > 0 ? (100 * stemTripleRenders) / rendersDone : 0;
+console.log(`stem dedupe: ${stemTripleRenders}/${rendersDone} renders carry a 3×-repeated stem (${triplePct.toFixed(2)}%, gate ${STEM_TRIPLE_MAX_PCT}%)`);
+if (triplePct > STEM_TRIPLE_MAX_PCT) {
+  err(`stem dedupe: ${stemTripleRenders}/${rendersDone} renders (${triplePct.toFixed(1)}% > ${STEM_TRIPLE_MAX_PCT}%) contain a 3×-repeated stem`);
+  for (const ex of STEM_TRIPLE_EXAMPLES) warning(ex);
+} else if (stemTripleRenders > 0) {
+  warning(`stem dedupe: ${stemTripleRenders}/${rendersDone} renders (${triplePct.toFixed(1)}%) contain a 3×-repeated stem (gate: ${STEM_TRIPLE_MAX_PCT}%)`);
+}
+if (rendersDone > 0 && stemDoubleRenders / rendersDone > 0.2) {
+  warning(`stem dedupe: ${stemDoubleRenders}/${rendersDone} renders contain a doubled stem — consider tags/asserts on the offenders`);
+}
+
+// ── garment lexicon checks (WORD_GRANULAR_ENGINE_PLAN Phase 4) ────────
+// Coverage: every word.garment.* pool must key at least one variant per
+// FIT_STATE on its fit dimension.
+
+const GARMENT_POOLS = {
+  'word.garment.top': 'fitTop',
+  'word.garment.bottom': 'fitBottom',
+  'word.garment.waist': 'fitWaist',
+};
+for (const [key, fitKey] of Object.entries(GARMENT_POOLS)) {
+  const pool = entries.find(([k]) => k === key);
+  if (!pool) { err(`garment coverage: pool "${key}" is not registered`); continue; }
+  const covered = new Set(pool[1].map((v) => v.when?.[fitKey]).filter(Boolean));
+  for (const state of FIT_STATES) {
+    if (!covered.has(state)) err(`garment coverage: ${key} has no variant for ${fitKey}: '${state}'`);
+  }
+}
+
+// Continuity: once garment.event.waistFail asserts the burst fact, no later
+// slot in the same event may describe an intact waistband. The markers below
+// appear only in intact-state variants, which all carry forbids.
+if (hasModule('garment.event.waistFail')) {
+  const INTACT_MARKERS = /finger of room|resting flush|lying flat|asking politely|seam-mark|biting into|holding on technique|lapping quietly|undoes only|button digs|learned to savor|waistband loses|trembling at the end|descending on its own|folded under her belly/;
+  const base = INIT_STUDENTS[0];
+  const student = { ...base, lbs: Math.round((base.startLbs ?? base.lbs) * 1.2) }; // dim reads 'straining'
+  for (let i = 0; i < 100; i++) {
+    const facts = createFacts();
+    render('{garment.event.waistFail}', createContext({ subject: student, week: 4, facts }));
+    const out = render('{word.garment.waist}', createContext({ subject: student, week: 4, facts }));
+    rendersDone++;
+    if (INTACT_MARKERS.test(out)) {
+      err(`garment continuity: intact waistband described after burst fact (render ${i}): "${out}"`);
+      break;
+    }
+  }
+}
+
+// ── hunger-interrupt tonal coherence (permanent, Phase 6) ─────────────
+// A girl in withdrawal at corruption 0 sits in several behavior/request
+// groups at once; interrupt.tone facts must prevent a glaring behavior
+// beat from pairing with a shy request (and the inverse).
+
+if (hasModule('scene.hungerInterrupt.behavior')) {
+  // corruption tier 1 + withdrawal + hunger 3 puts the irritated and
+  // desperate groups at equal priority — the state where they used to mix.
+  const IRRITATED = /irritated and on edge|glaring at you|urge to snap|Not in the mood|Don't ignore me|not leaving me like this|angry, but underneath/;
+  const DESPERATE = /starving|so hungry|feed me all day|hoping you'd be around|might actually start crying|desperate look|pacing outside/;
+  const tpl = '{scene.hungerInterrupt.behavior} {scene.hungerInterrupt.request} {scene.hungerInterrupt.tone}';
+  let sawIrritated = false, sawDesperate = false;
+  for (let i = 0; i < 300; i++) {
+    const student = {
+      ...INIT_STUDENTS[0], lbs: 250, corruption: 60,
+      hungerTier: 3, addictionLevel: 3, weeksWithoutPlayerFeed: 99,
+    };
+    const out = render(tpl, createContext({ subject: student, week: 6 }));
+    rendersDone++;
+    const irr = IRRITATED.test(out), des = DESPERATE.test(out);
+    if (irr) sawIrritated = true;
+    if (des) sawDesperate = true;
+    if (irr && des) {
+      err(`hungerInterrupt tone: irritated and desperate registers in one scene (render ${i}): "${out.slice(0, 160)}"`);
+      break;
+    }
+  }
+  if (!sawIrritated || !sawDesperate) {
+    warning(`hungerInterrupt tone: a register never surfaced across 300 renders (irritated=${sawIrritated} desperate=${sawDesperate}) — guard may be over-blocking`);
+  }
+}
+
+// ── morphology self-check (permanent) ─────────────────────────
+// Table-driven: fixed input/output pairs per filter function, plus a probe
+// over the tagged verb corpus for obviously broken forms.
+
+{
+  const cases = [
+    // pastTense (input may be 3sg — de3sg normalizes)
+    [pastTense, 'waddles', 'waddled'], [pastTense, 'strides', 'strode'],
+    [pastTense, 'comes', 'came'], [pastTense, 'sits', 'sat'],
+    [pastTense, 'eases', 'eased'], [pastTense, 'crosses', 'crossed'],
+    [pastTense, 'carries', 'carried'], [pastTense, 'goes', 'went'],
+    [pastTense, 'sinks', 'sank'], [pastTense, 'settles', 'settled'],
+    [pastTense, 'heaves', 'heaved'], [pastTense, 'spreads', 'spread'],
+    [pastTense, 'shifts', 'shifted'], [pastTense, 'rolls', 'rolled'],
+    [pastTense, 'slips', 'slipped'], [pastTense, 'is', 'was'],
+    [pastTense, 'eats', 'ate'], [pastTense, 'sways', 'swayed'],
+    // presentParticiple
+    [presentParticiple, 'waddles', 'waddling'], [presentParticiple, 'eases', 'easing'],
+    [presentParticiple, 'sits', 'sitting'], [presentParticiple, 'comes', 'coming'],
+    [presentParticiple, 'carries', 'carrying'], [presentParticiple, 'lies', 'lying'],
+    [presentParticiple, 'sees', 'seeing'], [presentParticiple, 'slips', 'slipping'],
+    // thirdPerson (base → 3sg)
+    [thirdPerson, 'waddle', 'waddles'], [thirdPerson, 'cross', 'crosses'],
+    [thirdPerson, 'carry', 'carries'], [thirdPerson, 'go', 'goes'],
+    [thirdPerson, 'have', 'has'], [thirdPerson, 'push', 'pushes'],
+    // pluralize
+    [pluralize, 'thigh', 'thighs'], [pluralize, 'dress', 'dresses'],
+    [pluralize, 'belly', 'bellies'], [pluralize, 'inch', 'inches'],
+    [pluralize, 'woman', 'women'], [pluralize, 'foot', 'feet'],
+    [pluralize, 'tray', 'trays'], [pluralize, 'button', 'buttons'],
+  ];
+  for (const [fn, input, want] of cases) {
+    const got = fn(input);
+    if (got !== want) err(`morphology: ${fn.name}("${input}") = "${got}", want "${want}"`);
+  }
+
+  // Verb-corpus probe: |past and |ing over every single-word move verb must
+  // not produce obviously broken forms.
+  const BROKEN = /(eded|inging|sss|ieed)$/;
+  for (const entry of MOVE_VERB_CORPUS) {
+    const first = entry.text.split(' ')[0];
+    // Only probe 3sg-shaped verbs; the corpus holds a few already-past
+    // phrases ("edged", "required two attempts…") the filters never target.
+    if (!/[a-z]+s$/.test(first) || first === 'was' || first === 'is') continue;
+    for (const fn of [pastTense, presentParticiple]) {
+      const out = fn(first);
+      if (BROKEN.test(out)) err(`morphology: ${fn.name}("${first}") = "${out}" — broken form; extend the irregular maps`);
+    }
+  }
+}
+
+// ── fact-ledger dynamic self-check (permanent) ────────────────
+// Slot 1 asserts posture:seated; slot 2 holds a contradicting
+// posture:standing variant plus a requires-gated one. Across 200 renders
+// the contradiction must never surface and the gated line always must.
+// Registered after the static snapshot on purpose — these are probes,
+// not content.
+
+registerPool('lint.factCheck.first', [
+  { when: {}, asserts: { 'lint.posture': 'seated' }, text: [
+    'She sits.', 'She settles into the chair.', 'She takes a seat.',
+  ] },
+]);
+registerPool('lint.factCheck.second', [
+  { when: {}, asserts: { 'lint.posture': 'standing' }, text: ['LINT-CONTRADICTION-STANDING'] },
+  { when: {}, requires: { 'lint.posture': 'seated' }, text: [
+    'Still seated.', 'Still seated, comfortably.', 'Still seated — no hurry.',
+  ] },
+]);
+for (let i = 0; i < 200; i++) {
+  const ctx = createContext({ subject: INIT_STUDENTS[0], week: 2 });
+  const out = render('{lint.factCheck.first} {lint.factCheck.second}', ctx);
+  rendersDone++;
+  if (out.includes('LINT-CONTRADICTION-STANDING')) {
+    err(`factCheck: contradiction guard failed — asserted posture was overridden (render ${i})`);
+    break;
+  }
+  if (!out.includes('Still seated')) {
+    err(`factCheck: requires-gated variant did not render (render ${i}): "${out}"`);
+    break;
+  }
 }
 
 // ── growth event sweeps ───────────────────────────────────────
@@ -647,7 +904,7 @@ for (const [key, variants] of entries) {
 // ── report ────────────────────────────────────────────────────
 
 console.log(`textLint: ${entries.length} modules, ${cells} sweep cells, ${rendersDone} renders`);
-const MAX_SHOWN = 40;
+const MAX_SHOWN = 300;
 if (warnings.length) {
   console.log(`\n⚠ ${warnings.length} warning(s):`);
   for (const w of warnings.slice(0, MAX_SHOWN)) console.log(`  ⚠ ${w}`);
