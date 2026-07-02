@@ -1,6 +1,11 @@
 # Word-Granular Text Engine — Upgrade Plan
 
-**Status:** approved plan, not yet implemented.
+**Status:** Phases 1–5 implemented and pushed (2026-07). Phase 6 in
+progress: talk.checkIn body beats, body.portrait monolith retirement,
+hunger-interrupt tone facts, and campus.seenBeat are done; remaining
+families (rest of dialogue/interior, weigh-in, dinner, eating, clothing,
+movement decomposition, talk.encourage repeat density) follow §5 Phase 6.
+Phase 7 parked until a second project needs the engine.
 **Audience:** any competent model or developer. Every phase names its files, its
 exact API changes, and a runnable verification step. If you can edit JS and run
 `npm run text:lint`, you can execute this plan.
