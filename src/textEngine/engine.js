@@ -5,14 +5,6 @@
 // selector conditions and the engine picks the most specific match.
 // See docs/modular-text-system.md for the full reference.
 // ═══════════════════════════════════════════════════════════════
-import { getStage } from '../gameData/stages.js';
-import { getCorruptionTier } from '../gameData/corruption.js';
-import { getTier } from '../gameData/sessions.js';
-import { getAddictionLevel, getHungerTier, isInWithdrawal } from '../gameData/hungerAddiction.js';
-import {
-  getFixationTier, getObsessionTier, getDependenceTier, getShameTier,
-} from '../gameData/psychState.js';
-import { getEquippedDeviceIds } from '../gameData/deviceEquip.js';
 import {
   pastTense, presentParticiple, thirdPerson, pluralize,
   transformFirstWord, transformLastWord,
@@ -216,11 +208,6 @@ export function stageBucket(stageId) {
   return STAGE_KEYS[id];
 }
 
-export function groupStageBucket(group) {
-  if (!group || !group.length) return "soft";
-  const avg = group.reduce((a, s) => a + getStage(s.lbs).id, 0) / group.length;
-  return stageBucket(Math.round(avg));
-}
 
 // ── extensible dimensions ─────────────────────────────────────
 
@@ -232,69 +219,27 @@ export function registerDimension(key, deriveFn) {
   DIMENSION_DERIVERS.set(key, deriveFn);
 }
 
-function deriveMobilityLevel(d) {
-  const stage = d.stage ?? 0;
-  if (stage <= 6) return 'full';
-  if (stage <= 7) return 'present';
-  if (stage <= 8) return 'planning';
-  if (stage <= 9) return 'economy';
-  if (stage <= 10) return 'minimal';
-  return 'immobile';
-}
-
-// Priority dimensions — registered at engine load; games may add more.
-registerDimension('campusLocale', (ctx) => ctx.globals?.locale ?? 'default');
-registerDimension('mobilityLevel', (ctx) => deriveMobilityLevel(ctx.d || {}));
-registerDimension('clothingState', (ctx) => ctx.subject?.clothingState ?? ctx.globals?.clothingState ?? 'fitted');
-registerDimension('mealContext', (ctx) => ctx.globals?.mealType ?? 'meal');
-registerDimension('isGaining', (ctx) => {
-  const delta = ctx.globals?.weekGainLbs ?? ctx.subject?.weekGainLbs;
-  if (delta != null) return delta > 0;
-  return (ctx.globals?.isGaining ?? ctx.subject?.isGaining) === true;
-});
-registerDimension('lastCorruptionShift', (ctx) => !!ctx.globals?.lastCorruptionShift);
-
-// Stem-tracked scene namespaces — game defaults, same precedent as the
-// priority dimensions above (Phase 7 extraction moves both out).
-['body.', 'wi.', 'ff.', 'cloth.', 'eat.', 'talk.', 'immob.', 'enc.'].forEach(trackStemsFor);
-
 // ── context ───────────────────────────────────────────────────
+
+// Phase 7 extraction: the engine core is game-free. The game supplies the
+// subject → ctx.d mapping via registerSubjectDeriver (Professor Sim's lives
+// in src/gameData/textContext.js), and registers its dimensions and
+// stem-tracked namespaces from the same place.
+let SUBJECT_DERIVER = null;
+
+/** Register the game's subject deriver: (subject, ref, skillEffects) → ctx.d. */
+export function registerSubjectDeriver(fn) {
+  if (SUBJECT_DERIVER) warn('subject deriver re-registered (overwriting)');
+  SUBJECT_DERIVER = fn;
+}
 
 function deriveFor(student, ref, skillEffects) {
   if (!student) return {};
-  return {
-    stage: getStage(student.lbs).id,
-    corruption: getCorruptionTier(student.corruption || 0).id,
-    relationship: getTier(student.relationship || 0).id,
-    bodyType: student.bodyOverride?.bodyTypeOverride || student.bodyType || null,
-    archetype: student.archetype || null,
-    mood: student.mood || null,
-    evolvedForm: student.evolvedForm || null,
-    studentId: student.id ?? null,
-    lastCompound: student.lastCompound || null,
-    relSize: ref ? relSize(student, ref) : null,
-    refStage: ref ? getStage(ref.lbs).id : null,
-    fullnessRatio: student.stomachCapacity
-      ? (student.fullness || 0) / student.stomachCapacity
-      : 0,
-    devourCount: student.devourCount || 0,
-    hasDevoured: (student.devourCount || 0) > 0,
-    addictionLevel: getAddictionLevel(student),
-    hungerTier: getHungerTier(student),
-    inWithdrawal: isInWithdrawal(student),
-    skillEffects: skillEffects || {},
-    bodyState: student.bodyOverride?.stateType || null,
-    bodyTypeEff: student.bodyOverride?.bodyTypeOverride || student.bodyType || null,
-    bodyStageBump: student.bodyOverride?.stageBump ?? 0,
-    equippedWaist: student.equip?.waist?.defId || null,
-    fixationTier: getFixationTier(student.psych?.fixation ?? 0).id,
-    obsessionTier: getObsessionTier(student.psych?.obsession ?? 0).id,
-    dependenceTier: getDependenceTier(student.psych?.dependence ?? 0).id,
-    shameTier: getShameTier(student.psych?.shame ?? 0).id,
-    hasDeviceEquipped: getEquippedDeviceIds(student).length > 0,
-    supernaturalForm: student.supernaturalForm || null,
-    supernatural: !!student.supernaturalForm,
-  };
+  if (!SUBJECT_DERIVER) {
+    warn('no subject deriver registered — ctx.d is minimal (call registerSubjectDeriver)');
+    return { studentId: student.id ?? null, skillEffects: skillEffects || {} };
+  }
+  return SUBJECT_DERIVER(student, ref, skillEffects) || {};
 }
 
 // createContext(raw) — normalizes inputs and derives the selector
