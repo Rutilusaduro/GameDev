@@ -441,11 +441,22 @@ The engine phases above are enablers; this phase is the payoff and the bulk
 of the hours. Squad rules apply in full (leads per `SQUAD.md`, Artisan pass,
 Editor sign-off).
 
-- **Steps:** for each high-traffic beat family (weigh-in, dinner, eating,
-  clothing, movement — pick by render frequency), decompose the top sentence
+- **Steps:** for each high-traffic beat family, decompose the top sentence
   pools into skeleton + word slots per §4.6, reusing existing sentences as
   the `SENT` fallbacks so nothing is lost. Add `tags`/`asserts`/`forbids`
-  where the prose is stateful.
+  where the prose is stateful. The families:
+  - **Dialogue & self-reaction** (owner-flagged priority): the `talk.*`
+    trees, `interior.selfObs` / `interior.sizeRealize` / `interior.gainPride`,
+    and the `body.*` semantic skeleton (`scenes/body/depth.js`). Special
+    attention: several `talk.*` body beats are flat today —
+    `talk.checkIn.acceptBody` (`talkCheckIn.js:136`) carries only generic
+    `when: {}` variants, so a girl at stage 3 and stage 10 speak identically.
+    Decomposition here must key on stage bands, `gainStance`, corruption, and
+    the new fit dims, and route her size-reactions through the §4.5 psych
+    convention. `interior.selfObs` (keyed on `gainStance`) is the shape to
+    copy.
+  - Weigh-in, dinner, eating, clothing, movement — pick order within these by
+    render frequency.
 - **Verify:** per family: `text:lint` clean, the Phase 2 dedupe sweep and
   Phase 1 contradiction self-checks pass, and a 20-render sample per family
   is read by a human (or the Editor agent) for flow.
@@ -544,8 +555,9 @@ weight stage is.
 
 ## 9. Open questions (product calls, not engineering calls)
 
-1. Phase 6 beat-family order — weigh-in and dinner first is the suggestion
-   (highest render frequency), but the owner may want a different spotlight.
+1. Phase 6 beat-family order beyond the first — dialogue & self-reaction goes
+   first (owner-flagged, 2026-07); the rest default to render frequency
+   (weigh-in, dinner, eating, clothing, movement) unless the owner reorders.
 
 Resolved (owner, 2026-07):
 
