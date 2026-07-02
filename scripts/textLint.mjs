@@ -361,6 +361,38 @@ if (hasModule('garment.event.waistFail')) {
   }
 }
 
+// ── hunger-interrupt tonal coherence (permanent, Phase 6) ─────────────
+// A girl in withdrawal at corruption 0 sits in several behavior/request
+// groups at once; interrupt.tone facts must prevent a glaring behavior
+// beat from pairing with a shy request (and the inverse).
+
+if (hasModule('scene.hungerInterrupt.behavior')) {
+  // corruption tier 1 + withdrawal + hunger 3 puts the irritated and
+  // desperate groups at equal priority — the state where they used to mix.
+  const IRRITATED = /irritated and on edge|glaring at you|urge to snap|Not in the mood|Don't ignore me|not leaving me like this|angry, but underneath/;
+  const DESPERATE = /starving|so hungry|feed me all day|hoping you'd be around|might actually start crying|desperate look|pacing outside/;
+  const tpl = '{scene.hungerInterrupt.behavior} {scene.hungerInterrupt.request} {scene.hungerInterrupt.tone}';
+  let sawIrritated = false, sawDesperate = false;
+  for (let i = 0; i < 300; i++) {
+    const student = {
+      ...INIT_STUDENTS[0], lbs: 250, corruption: 60,
+      hungerTier: 3, addictionLevel: 3, weeksWithoutPlayerFeed: 99,
+    };
+    const out = render(tpl, createContext({ subject: student, week: 6 }));
+    rendersDone++;
+    const irr = IRRITATED.test(out), des = DESPERATE.test(out);
+    if (irr) sawIrritated = true;
+    if (des) sawDesperate = true;
+    if (irr && des) {
+      err(`hungerInterrupt tone: irritated and desperate registers in one scene (render ${i}): "${out.slice(0, 160)}"`);
+      break;
+    }
+  }
+  if (!sawIrritated || !sawDesperate) {
+    warning(`hungerInterrupt tone: a register never surfaced across 300 renders (irritated=${sawIrritated} desperate=${sawDesperate}) — guard may be over-blocking`);
+  }
+}
+
 // ── morphology self-check (permanent) ─────────────────────────
 // Table-driven: fixed input/output pairs per filter function, plus a probe
 // over the tagged verb corpus for obviously broken forms.
