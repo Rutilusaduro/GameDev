@@ -103,7 +103,11 @@ registerPool('body.portrait.depth', [
   ] },
   { when: {}, text: [
     '{body.face} {body.torso} {body.lower}',
-    '{body.portrait}',
+    // '{body.portrait}' retired here: the legacy monolith repeats its own
+    // imagery internally (44% triple-stem rate vs 0.3% slot-composed) and
+    // dedupe cannot reach inside a single text. Still the rescue fallback
+    // in body/index.js when this skeleton renders empty.
+    '{body.face} {body.torso} {body.lower} {body.movement}',
     '{body.face} {body.torso} {word.clothingFit}.',
   ] },
 ]);

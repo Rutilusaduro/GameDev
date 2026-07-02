@@ -247,7 +247,7 @@ registerDimension('lastCorruptionShift', (ctx) => !!ctx.globals?.lastCorruptionS
 
 // Stem-tracked scene namespaces — game defaults, same precedent as the
 // priority dimensions above (Phase 7 extraction moves both out).
-['body.', 'wi.', 'ff.', 'cloth.', 'eat.', 'talk.'].forEach(trackStemsFor);
+['body.', 'wi.', 'ff.', 'cloth.', 'eat.', 'talk.', 'immob.'].forEach(trackStemsFor);
 
 // ── context ───────────────────────────────────────────────────
 
@@ -591,10 +591,14 @@ function selectVariant(key, ctx) {
   if (!picked) return "";
   const variant = picked.variant;
   if (picked.usageKey) recordVariantUsage(picked.usageKey, ctx);
-  if (picked.stems?.length) recordStems(picked.stems, ctx);
   applyAsserts(ctx, variant);
   const t = picked.text;
-  return typeof t === "function" ? (t(ctx) ?? "") : (t ?? "");
+  const out = typeof t === "function" ? (t(ctx) ?? "") : (t ?? "");
+  if (picked.stems?.length) recordStems(picked.stems, ctx);
+  // Function texts have no stems until resolved — record them now so later
+  // slots still dedupe against dictionary-driven modules (word.body etc.).
+  else if (typeof t === "function" && isStemTracked(key)) recordStems(stemsOf(out), ctx);
+  return out;
 }
 
 // ── filters ───────────────────────────────────────────────────
