@@ -270,7 +270,9 @@ Because `evalWhen`'s default branch already falls through to `ctx.d[key]`,
 
 **Continuity** — a garment failing *during* a scene is a game-state mutation
 (set `integrity: 0`) plus a ledger fact (`asserts: { 'garment.top': 'burst' }`)
-on the variant that narrates it. Later slots in the scene key on the fact:
+on the variant that narrates it. Damage persists across weeks until the girl
+changes that garment (owner decision, 2026-07); swapping a garment resets its
+slot to the new garment's `integrity: 1`. Later slots in the scene key on the fact:
 descriptions of an intact top carry `forbids: { 'garment.top': 'burst' }`.
 The derived dimension covers scenes that start after the damage; the fact
 covers the scene where it happens.
@@ -544,9 +546,10 @@ weight stage is.
 
 1. Phase 6 beat-family order — weigh-in and dinner first is the suggestion
    (highest render frequency), but the owner may want a different spotlight.
-2. Should garment integrity damage persist across weeks (a burst top stays
-   burst until replaced) or reset each scene? The data model supports both;
-   §4.4 assumes persistence. Gameplay call.
-3. Default outfits per student are placeholder-grade in Phase 4; per-girl
-   wardrobe authoring (Kylie dresses differently than Maya) is unscheduled
-   content work — worth a slot in the roadmap?
+
+Resolved (owner, 2026-07):
+
+2. Garment damage **persists across weeks** until the girl changes that
+   garment; changing garments resets the slot (§4.4).
+3. Per-girl wardrobe authoring is **long-term roadmap**, not part of this
+   plan. Phase 4 ships placeholder default outfits only.
