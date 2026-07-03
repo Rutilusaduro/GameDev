@@ -5,6 +5,8 @@ import {
   renderWeighInIntro, renderWeighInReaction,
   renderWeighInBreak, renderWeighInSwap, renderWeighInPurchase,
 } from '../textEngine/scenes/weighIn/index.js';
+import { renderSettlingScene } from '../textEngine/scenes/settling/index.js';
+import { getImmobilityTier } from '../gameData/immobilityArrival.js';
 import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from '../textEngine/textFlagFormat.js';
 import { createSessionUsed, weekUsedFromStudent, weekUsedToPatch, isSlenderEligible } from '../gameData/textContext.js';
@@ -168,6 +170,27 @@ function DigitalScale({lbs}){
 }
 
 
+// Static load-cell readout for a settled girl — no needle, no climb. She isn't
+// stepping on anything; the pads under her already hold the number.
+function LoadCellReadout({lbs}){
+  const total=Math.max(0,Math.round(lbs));
+  return(
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8}}>
+      <div style={{width:300,background:"linear-gradient(180deg,#2a2620,#191612)",borderRadius:14,boxShadow:"0 10px 24px rgba(0,0,0,.7), inset 0 0 0 3px #14110c, inset 0 0 0 5px #4a4030",padding:"26px 18px 16px",position:"relative"}}>
+        <div style={{position:"absolute",top:7,left:0,right:0,textAlign:"center",fontSize:8,letterSpacing:4,color:"#c0a060",fontWeight:700}}>LOAD-CELL ARRAY · FLOOR WEIGH</div>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+          <div style={{fontFamily:"Courier New, ui-monospace, monospace",fontSize:46,letterSpacing:4,color:"#ffb43a",background:"#241705",borderRadius:6,padding:"10px 18px",border:"2px inset #3a2608",boxShadow:"inset 0 0 12px rgba(0,0,0,.85), 0 0 8px rgba(255,180,58,.25)",textShadow:"0 0 6px rgba(255,180,58,.6)",minWidth:170,textAlign:"right"}}>{String(total).padStart(4," ")}</div>
+          <div style={{color:"#ffb43a",fontSize:14,fontWeight:700,letterSpacing:2}}>LB</div>
+        </div>
+        <div style={{marginTop:12,display:"flex",justifyContent:"space-between",fontSize:9,color:"#b09050",letterSpacing:2}}>
+          <span>4 PADS · SUMMED</span><span>NO PLATFORM</span>
+        </div>
+      </div>
+      <div style={{fontSize:11,color:"#b09050",fontStyle:"italic",minHeight:14,textAlign:"center"}}>The pads under her total {total} lbs — gathered from beneath her, never over.</div>
+    </div>
+  );
+}
+
 export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,onMandatorySkip,onPersistWeekTextUsed,week,campusFattening=false,campusTier=0}){
   const student=weighInState?.student;
   const textSession=useMemo(()=>({
@@ -186,6 +209,9 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
   };
   const st=getStage(student.lbs);
   const lbs=Math.round(student.lbs);
+  // Settled girls (stage 10+) can't mount a scale and can't come to the office.
+  // The weigh-in goes to HER: load pads under where she rests. Separate flow.
+  const settled=getImmobilityTier(student)>=1;
   const alreadyBroke=(brokeScaleIds||[]).includes(student.id);
   const goesDirectlyToBig=alreadyBroke&&bigScaleUnlocked;
   const showScaleAfter=st.id>4||goesDirectlyToBig;
@@ -241,6 +267,18 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
       : { text: '', traceNodes: [] }),
     [phase, reactionText],
   );
+  const settledApproach = useMemo(
+    () => (settled && phase === 'scene'
+      ? renderSettlingScene('set.weigh.approach', student, { week: week || 1 })
+      : ''),
+    [settled, phase, student.id, textSession],
+  );
+  const settledResult = useMemo(
+    () => (settled && phase === 'settledResult'
+      ? renderSettlingScene('set.weigh.result', student, { week: week || 1 })
+      : ''),
+    [settled, phase, student.id, textSession],
+  );
   const flagState = buildStateLine(student, { week: week || 1, stageLabel: st.label });
   const goToReaction=()=>{
     const memGlobals = pickStudentMemory(student, week || 1) ?? {};
@@ -266,7 +304,28 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
       <div style={{...C.modal,maxWidth:560}}>
         <div style={{fontSize:9,letterSpacing:4,color:"#a060ff",marginBottom:4}}>⚖ WEIGH-IN · {student.name?.toUpperCase()}</div>
 
-        {phase==="scene"&&(
+        {settled&&phase==="scene"&&(
+          <>
+            <div style={{...C.infoBox("rgba(50,32,10,.3)"),border:"1px solid #c0a06040",fontSize:13,color:"#e8d8b8",lineHeight:1.85,fontStyle:"italic",marginBottom:8}}>
+              {settledApproach}
+            </div>
+            <button style={{...C.btn("#8a6018"),width:"100%"}} onClick={()=>setPhase("settledResult")}>Read the pads →</button>
+          </>
+        )}
+
+        {settled&&phase==="settledResult"&&(
+          <>
+            <div style={{...C.infoBox("rgba(20,15,8,.6)"),padding:16,marginBottom:14,display:"flex",justifyContent:"center"}}>
+              <LoadCellReadout lbs={student.lbs}/>
+            </div>
+            <div style={{...C.infoBox("rgba(40,28,12,.4)"),fontSize:13,color:"#e8d8b8",lineHeight:1.85,fontStyle:"italic",marginBottom:8}}>
+              {settledResult}
+            </div>
+            <button style={{...C.btn("#8a6018"),width:"100%"}} onClick={close}>Close ✓</button>
+          </>
+        )}
+
+        {!settled&&phase==="scene"&&(
           <>
             <div style={{...C.infoBox("rgba(50,10,90,.25)"),fontSize:13,color:"#e0d0b0",lineHeight:1.85,fontStyle:"italic",marginBottom:8}}>
               {introBundle.text}

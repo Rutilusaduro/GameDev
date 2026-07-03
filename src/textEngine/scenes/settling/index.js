@@ -8,6 +8,7 @@ import './care.js';
 import './socialize.js';
 import './feed.js';
 import './gather.js';
+import './weigh.js';
 
 /**
  * Render a settling action scene.
