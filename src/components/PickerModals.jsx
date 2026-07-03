@@ -4,6 +4,7 @@ import { COLLAB_CONTENT_CREATOR_ARCHETYPES } from '../gameData/miniGames.js';
 import { EVOLVED_ACTIVITY_META, EVOLVED_EVENTS } from '../gameData/evolvedForms.js';
 import { renderNadiaJournalEntry, renderFeederJournalEntry } from '../textEngine/scenes/researchJournal/index.js';
 import { INTIMACY_CONTEXTUAL, INTIMACY_SCENES } from '../gameData/intimacy.js';
+import { intimacySceneAllowed, choiceCanPin } from '../gameData/intimacyGating.js';
 import { renderIntimacyPhase } from '../textEngine/scenes/intimacy/index.js';
 import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
@@ -340,6 +341,7 @@ export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, ma
                         {ch.lbs&&<span style={{color:"#ffdd80",marginLeft:8,fontSize:10}}>+{ch.lbs} lbs</span>}
                         {ch.feed&&<span style={{color:"#ff80c0",marginLeft:4,fontSize:10}}>+lbs</span>}
                         {ch.rel&&<span style={{color:"#80ddff",marginLeft:4,fontSize:10}}>+{ch.rel} rel</span>}
+                        {choiceCanPin(sceneId,ch.id,s)&&<span style={{display:"block",color:"#ffa030",fontSize:9.5,marginTop:3,fontStyle:"italic"}}>⚠ she could put you out for the week</span>}
                       </button>
                     );
                   })}
@@ -354,7 +356,7 @@ export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, ma
 export function IntimacySceneSelector({ ap, intimacySceneSelector, setIntimacySceneSelector, startIntimacyScene }){
         const s=intimacySceneSelector.student;
         const tier=getTier(s.relationship);
-        const availScenes=INTIMACY_SCENES.filter(sc=>tier.id>=sc.minTier);
+        const availScenes=INTIMACY_SCENES.filter(sc=>tier.id>=sc.minTier&&intimacySceneAllowed(sc.id,s));
         return(
           <div style={C.overlay}>
             <div style={{...C.modal,maxWidth:600,background:"linear-gradient(160deg,#0a0318,#160528,#0a0318)",border:"1px solid #8030c050",maxHeight:"85vh",overflowY:"auto"}}>

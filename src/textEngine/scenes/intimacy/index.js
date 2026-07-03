@@ -7,6 +7,7 @@ import './skeletons.js';
 import './depth.js';
 import './selectors.js';
 import './personas.js';
+import './immobileOverrides.js';
 
 function composeOverlay(main, overlay) {
   const a = main?.trim() || '';
@@ -48,6 +49,13 @@ export function renderIntimacyChoice(sceneId, choiceId, student, week = 1, opts 
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const main = render(`{intimacy.${sceneId}.ch.${choiceId}}`, ctx, { trace: opts.trace || null })?.trim() || '';
   return composeOverlay(main, renderIntimacyOverlay(ctx, opts));
+}
+
+/** The pin blackout — she pinned the player and he passed out; the week ends. */
+export function renderIntimacyPassout(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return render('{intimacy.blackout}', ctx, { trace: opts.trace || null })?.trim() || '';
 }
 
 export function renderIntimacyEnding(sceneId, endingIdx, student, week = 1, opts = {}) {
