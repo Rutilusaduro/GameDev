@@ -67,5 +67,5 @@ registerPool('set.care.tend.react', [
 
 // ── set.care.tend — composed skeleton ─────────────────────────
 registerPool('set.care.tend', [
-  { when: {}, text: [`{set.care.tend.beat} {set.care.tend.react}`] },
+  { when: {}, text: [`{set.care.tend.beat} {set.care.tend.react}{set.enorm|prefix: }`] },
 ]);

@@ -89,7 +89,8 @@ import { renderConfront } from './textEngine/scenes/confront/index.js';
 import { ConfrontationModal } from './components/ConfrontationModal.jsx';
 import { renderMemorySelf, renderMemoryClass } from './textEngine/scenes/memory/index.js';
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
-import { renderIntimacyChoice, renderIntimacyEnding } from './textEngine/scenes/intimacy/index.js';
+import { renderIntimacyChoice, renderIntimacyEnding, renderIntimacyPassout } from './textEngine/scenes/intimacy/index.js';
+import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
 import './textEngine/scenes/opposition/endgameBeat.js';
@@ -5891,6 +5892,16 @@ export default function ProfessorSim(){
     const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId]; if(!def) return;
     const phase=def.phases[phaseIdx]; if(!phase) return;
     const choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
+    // Pin blackout — at settled size, letting her mass come over you is a gamble.
+    // On a hit she pins you, you black out, and the week ends where you lie.
+    if(choiceCanPin(sceneId,choiceId,s) && Math.random()<pinBlackoutChance(s)){
+      const passGain=choice.lbs||0;
+      const passRel=(choice.rel||0)+PIN_PASSOUT_REL_BONUS;
+      setStudents(prev=>prev.map(st=>st.id!==studentId?st:processStudentGain(st,passGain,passRel)));
+      push(`🕳️ ${s.name} pins you under her — the room goes dark. The week ends where you lie.`);
+      setIntimacyEventState(prev=>({...prev,done:true,blackout:true,endingText:renderIntimacyPassout(s,sceneWeekNum),logLines:[...logLines,renderIntimacyChoice(sceneId,choiceId,s,sceneWeekNum)]}));
+      return;
+    }
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
     const newLog=[...logLines,renderIntimacyChoice(sceneId,choiceId,s,sceneWeekNum)];
     let newGain=gainAccum+(choice.lbs||0);
@@ -5920,7 +5931,11 @@ export default function ProfessorSim(){
     }
   };
 
-  const closeIntimacyEvent=()=>setIntimacyEventState(null);
+  const closeIntimacyEvent=()=>{
+    const wasBlackout=intimacyEventState?.blackout;
+    setIntimacyEventState(null);
+    if(wasBlackout){ setAp(0); advanceWeek(); }
+  };
 
   const purchaseEvolvedSkill=(studentId,skillId)=>{
     const s=students.find(s=>s.id===studentId); if(!s||!s.evolvedForm) return;

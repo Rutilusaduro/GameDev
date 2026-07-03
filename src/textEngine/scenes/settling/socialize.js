@@ -33,14 +33,14 @@ registerPool('set.socialize.confide', [
     `There is an ease to telling her things. She is here. She is not going anywhere. She has the time and the stillness for it.`,
   ]},
   { when: { stageMin: 10, stageMax: 10 }, weight: 2, text: [
-    `You tell her something you haven't told anyone. She receives it from the warm settled center of where she rests — no advice yet, not rushing to the next thing. She just holds the fact of what you've said, and then asks one question that gets directly to the thing you were actually trying to say.`,
+    `You tell her something you haven't told anyone. She receives it from the warm settled center of where she rests — no advice yet, not rushing to the next thing. She holds the fact of what you've said. Then: "How long have you been carrying that one around?" You realize you don't have an answer, and that the not-having is the whole problem.`,
     `She confides back. It's the deal: you bring her something real and she gives you something real in return. What she says is neither small nor performed — it is simply honest, offered from the particular perspective of someone who has been watching everything from a fixed point for months now. She knows things from here that she didn't know when she was moving through it.`,
     `"I've been thinking about something," she says, unprompted, when the gossip part is done. You listen. What she says is not for anyone else — just for the room, just for you, just for the intimate radius of the space she occupies now. It is real.`,
     `The conversation goes somewhere neither of you planned. That's the thing about confiding to someone who isn't going anywhere — you say more than you meant to, because she's still there when you run out of the easy version. She meets what you actually said. "Yeah," she says. "I know."`,
   ]},
   { when: { stageMin: 11 }, weight: 3, text: [
     `Something about her stillness makes telling her things easier than it should be. She is the fixed point. Whatever you bring her stays in this room — held by the same calm immensity that holds everything else she's collected.`,
-    `She listens to the whole thing — the actual thing, not the comfortable version — without shifting, without interjecting, without letting the weight of the room come loose. She just receives it. Then she says the thing back to you in a form you can actually use. You leave lighter.`,
+    `She listens to the whole thing — the actual thing, not the comfortable version — without shifting, without interjecting. Then she hands it back smaller and truer: "So the problem isn't the thing itself. It's that you keep waiting for someone to give you permission." You sit with that longer than you mean to.`,
     `She tells you something she hasn't told anyone else. It arrives without ceremony: a fact about herself, a fear, something she's been sitting with for weeks in the particular way of someone who has no choice but to sit with things. She tells it straight and then lets the room absorb it. You don't make it into something. She appreciates this.`,
     `"You can tell me," she said, weeks ago. You didn't believe her at the time. You believe her now. There is a register of truth that only fits this room — her immobility, her stillness, the gravity of being in the presence of something that is not going to move and not going to forget. You use it.`,
   ]},
@@ -55,37 +55,55 @@ registerPool('set.socialize.confide', [
   ]},
 ]);
 
-// ── set.socialize.praise ──────────────────────────────────────
-// You name her size aloud. She receives it; the praise feeds her.
+// ── set.socialize.praise — composed skeleton ──────────────────
+// You say concrete things about her body, out loud. She reacts.
+// Rule (Style Ledger): the praise LINE contains the actual praise,
+// quoted and specific — never "you name it specifically" placeholders.
 registerPool('set.socialize.praise', [
+  { when: {}, text: [`{set.socialize.praise.line} {set.socialize.praise.react}`] },
+]);
+
+// ── set.socialize.praise.line ─────────────────────────────────
+// Shape: DIALOGUE BEAT — YOU speaking, naming named body regions,
+// architecture, or the number. Stage-keyed (what's true of her body).
+registerPool('set.socialize.praise.line', [
   { when: {}, text: [
-    `You tell {subject.name} what she looks like to you. She takes it in.`,
-    `You say it plainly. She receives it the same way.`,
+    `"There's so much of you now," you tell her, resting a hand where her belly spills warm over her thigh. "More every week. My arm doesn't reach even a part of you."`,
+    `"You spread a little wider every time I come in," you say, and you show her where — palm flat to the soft slope of her side, sinking. "Right here. It keeps going."`,
   ]},
   { when: { stageMin: 10, stageMax: 10 }, weight: 2, text: [
-    `You tell her how vast she is, how entirely she fills the room. You name it specifically — not vaguely, not euphemistically. She goes very still while you're saying it and then, after, exhales slowly. Something settles in her at being named.`,
-    `"You know what you look like," you say, and then you tell her. She has been hearing it in her own head for months; hearing it from outside makes it more real, more fixed, more hers. Her chin lifts just slightly. "I do," she says.`,
-    `You don't make it clinical. You make it true. She is soft and enormous and beautiful and she fills the room the way light fills a room — completely, without trying. You say all of it. She listens with her eyes half-closed and doesn't interrupt once.`,
-    `You name the specific things: the softness of her arms at rest, the way her weight settles, the geography she has become. She lets each thing land. She doesn't deflect them. She collects them instead.`,
+    `"You've outgrown the bed," you say, tracing where she spills past its reinforced edge. "Your hip hangs over the side. Your arm doesn't fold shut anymore — there's too much of it to fold."`,
+    `"{subject.lbs} pounds," you tell her — she likes the number aloud. "Your belly reaches your knees when you sit up. I lift it with both arms to find your lap." You do. She exhales.`,
+    `"Look what your thighs do now," you say, pressing a palm into one until it's gone to the wrist in soft heat. "They meet in the middle and keep pushing. There's nowhere left for them to go but out."`,
+    `"Your arms," you say, both hands on one, not spanning even half of it. "The cloth stops halfway up. You've filled it past where the sleeve was built to stop." She goes very still while you say it.`,
   ]},
   { when: { stageMin: 11 }, weight: 3, text: [
-    `There is so much of her to name. You don't rush it. She receives each part you name with the stillness of something that has finally arrived at the size it was always going to be, and is glad to hear someone say it.`,
-    `You tell her what she is at this scale: extraordinary. Specific. More than you have language for. You use the language you have. She listens from the warm permanent center of the room and her breathing goes slower and softer while you speak. After, she says nothing. She doesn't need to.`,
-    `"You're impossible," you say — meaning the scale, the softness, the impossible warmth of her — and she accepts it the way she accepts everything now: from a position of absolute certainty about what she is. "I know," she says. She has been this for a while. She is glad you caught up.`,
+    `"You fill the room," you tell her — no figure of speech. Her sides touch the walls on both sides of the bed. "There's more of you than there's room for. I love that."`,
+    `"{subject.lbs}," you say. "You've near doubled since you stopped walking. Your belly's its own country — I climb it to get to you." She goes quiet, and her breathing slows.`,
+    `"I can't take you in all at once anymore," you tell her, standing back to see her. "You've gotten past a single glance. I look at you in pieces now, and every piece is enormous."`,
+  ]},
+]);
+
+// ── set.socialize.praise.react ────────────────────────────────
+// Shape: her reaction. Corruption-keyed psychology.
+registerPool('set.socialize.praise.react', [
+  { when: {}, text: [
+    `She takes it in. Something settles in her at being named out loud.`,
+    `She lets each word land and doesn't deflect a single one.`,
   ]},
   { when: { corruption: [0] }, weight: 2, text: [
-    `She goes a little undone. Not badly — something small and real, the way you go undone when something that was true quietly becomes acknowledged. She doesn't say anything right away. Then: "Thank you for saying it."`,
-    `She isn't sure where to put what you've said. She accepts it quietly, holds it somewhere warm, and thanks you without entirely meeting your eyes. The praise has found its mark.`,
-    `"Really?" she says, almost to herself. She is asking the room. You say it again. She nods slowly, not deflecting — just taking longer than expected to absorb it. "Okay," she says, finally. "Okay."`,
+    `She goes a little undone — something small and real, the way you come undone when a true thing is finally said to your face. "Thank you for saying it," she manages, after.`,
+    `She isn't sure where to put it. She holds it somewhere warm and thanks you without quite meeting your eyes.`,
+    `"Really?" she says, almost to the room. You say it again. She nods slow, not deflecting, just taking longer than expected to let it in. "Okay," she says finally. "Okay."`,
   ]},
   { when: { corruption: [1] }, weight: 2, text: [
-    `She takes it without flinching. She has been working up to being able to do that for months. The ease of it now is its own small thing. "Yeah," she says. "I know. But I like hearing it."`,
-    `She lets it land without deflecting it and without performing ease she doesn't feel. She just receives it — truly — and settles a little softer into where she rests. Being seen clearly by someone who approves entirely has its own weight.`,
-    `"Say more," she says, after a moment. Not greedy — just open. You are the audience she allows for this, and she would like the full version.`,
+    `She takes it without flinching. She's been working up to that for months. "Yeah," she says. "I know. But I like hearing it."`,
+    `She receives it and settles a little softer into where she rests. Being seen this clearly, by someone who approves entirely, has its own weight.`,
+    `"Say more," she says, after a moment. Not greedy — open. You're the audience she allows for this, and she'd like the full version.`,
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
-    `She accepts the praise with the placid certainty of someone who already knew this and is simply pleased you've caught up. "I know," she says warmly. "Keep going."`,
-    `She receives it like due tribute — not because she is performing confidence, but because she has completely made peace with what she is, and what you're saying is simply accurate. She rewards accuracy. She smiles. "More."`,
-    `"Exactly," she says, when you name the specific thing. She has been waiting for you to find that word. It was the right one. She settles a little deeper into herself, satisfied.`,
+    `She takes it like tribute, because it's accurate and she rewards accuracy. "I know," she says warmly. "Keep going."`,
+    `She has made complete peace with what she is, so the praise is just true, and true things please her. She smiles. "More."`,
+    `"Exactly," she says when you name the specific thing. She'd been waiting for you to find that word. She settles a little deeper into herself, satisfied.`,
   ]},
 ]);
