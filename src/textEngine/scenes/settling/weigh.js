@@ -85,9 +85,9 @@ registerPool('set.weigh.react', [
   ]},
 ]);
 
-// ── set.weigh.approach — panel 1 skeleton (travel + rig) ───────
+// ── set.weigh.approach — panel 1 skeleton (travel + rig + scale) ─
 registerPool('set.weigh.approach', [
-  { when: {}, text: [`{set.weigh.travel} {set.weigh.rig}`] },
+  { when: {}, text: [`{set.weigh.travel} {set.weigh.rig}{set.enorm|prefix: }`] },
 ]);
 
 // ── set.weigh.result — panel 2 skeleton (number + reaction) ────
