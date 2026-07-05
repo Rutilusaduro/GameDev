@@ -70,7 +70,11 @@ A scheduler that checks per time slot: hunger interrupts, wardrobe
 emergencies, rival/NPC events, weather/season beats, random craving calls.
 Weight by state so the world escalates with the cast. Interrupts are the
 system that makes characters feel alive between player-initiated scenes;
-budget at least one interrupt family per major system.
+budget at least one interrupt family per major system. Interrupt scenes
+are multi-slot (arrival + behavior + request): have the behavior beat
+establish a tone fact the request must agree with, or an irritated
+behavior will pool with a pleading request and read as two different
+women at the door.
 
 ## 8. Meta-progression & endings
 
