@@ -6,6 +6,12 @@ import '../src/textEngine/scenes/index.js';
 import { renderCampusScene } from '../src/textEngine/scenes/campus/index.js';
 import { renderClothScene } from '../src/textEngine/scenes/clothing/index.js';
 import { renderEatScene } from '../src/textEngine/scenes/eating/index.js';
+import {
+  renderAscensionCeremony,
+  renderAscensionDecline,
+  renderAscensionHeld,
+  renderAscensionStirring,
+} from '../src/textEngine/scenes/ascension/index.js';
 import { renderWeighInIntro, renderWeighInReaction } from '../src/textEngine/scenes/weighIn/index.js';
 import { initGainStats } from '../src/gameData/gainSystem.js';
 import { ASCENSION_FORM_ROSTER } from '../src/gameData/ascension/forms.js';
@@ -23,6 +29,10 @@ const SCENES = [
   ['eat.scene', (student) => renderEatScene(student, WEEK, { locale: 'cafeteria' })],
   ['cloth.scene', (student) => renderClothScene(student, WEEK)],
   ['campus.scene', (student) => renderCampusScene(student, WEEK, { locale: 'hallway' })],
+  ['asc.ceremony', (student) => renderAscensionCeremony(student, WEEK)],
+  ['asc.decline', (student) => renderAscensionDecline(student, WEEK)],
+  ['asc.held', (student) => renderAscensionHeld(student, WEEK)],
+  ['asc.stirring', (student) => renderAscensionStirring(student, WEEK)],
 ];
 
 function runtimeStudent(seed) {

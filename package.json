@@ -10,6 +10,7 @@
     "cap:sync": "npx cap sync",
     "lint": "eslint src/",
     "ascension:probe": "node scripts/ascension-baseline-probe.mjs",
+    "ascension:sweep": "node scripts/ascension-ability-sweep.mjs",
     "text:lint": "node scripts/textLint.mjs"
   },
   "dependencies": {

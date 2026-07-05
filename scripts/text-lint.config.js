@@ -59,7 +59,7 @@ export const INFRA_MODULE_KEYS = new Set([
   'subject.name', 'subject.first', 'subject.lbs', 'subject.semesterGain',
   'subject.they', 'subject.them', 'subject.their', 'subject.theirs', 'subject.themself',
   'char.desc', 'sizeCompare', 'bodyType.desc', 'clothing.desc', 'group.desc', 'device.label',
-  'word.size', 'word.movement', 'word.body', 'word.clothingFit', 'word.fullness',
+  'word.size', 'word.movement', 'word.body', 'word.clothingFit', 'word.fullness', 'word.essence',
 ]);
 
 /** --strict-volume: fail when thin wildcard pools remain (Phase A gate). */
@@ -71,7 +71,7 @@ export const STRICT_COVERAGE_MIN_PCT = 80;
 /** Psych-register convention (AUTHORING.md): word.* pools exempt from the
  *  "at least one psych-keyed variant" warning — mechanical corpora only. */
 export const PSYCH_REGISTER_EXEMPT_PREFIXES = [
-  'word.moveVerb', 'word.adv.sizeQual.body', 'word.needleVerb',
+  'word.moveVerb', 'word.adv.sizeQual.body', 'word.needleVerb', 'word.essence',
 ];
 
 /** Stem-repeat gate: max % of sweep renders allowed to carry a 3×-repeated
@@ -93,7 +93,7 @@ export const MIGRATION_BRIDGE_PREFIXES = [
 
 // Squad-owned namespaces for --volume reporting (Step 9 content targets).
 export const VOLUME_SQUAD_PREFIXES = [
-  'slender.', 'campus.', 'eat.', 'cloth.', 'shift.', 'interior.', 'immob.',
+  'slender.', 'campus.', 'eat.', 'cloth.', 'shift.', 'interior.', 'immob.', 'asc.',
 ];
 
 // Pools where empty-string wildcards are intentional optional slots.

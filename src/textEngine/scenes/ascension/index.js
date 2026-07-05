@@ -5,12 +5,15 @@ import './ceremony.js';
 import './held.js';
 import './decline.js';
 import './stirring.js';
+import './wordLayer.js';
+import './abilities.js';
 import './personas/serena.js';
 
 export const ASC_CEREMONY = '{asc.ceremony.scene}';
 export const ASC_HELD = '{asc.held.scene}';
 export const ASC_DECLINE = '{asc.decline.scene}';
 export const ASC_STIRRING = '{asc.stirring.scene}';
+export const ASC_ABILITY_GENERIC = '{asc.ability.generic}';
 
 function ascensionCtx(student, week, opts = {}) {
   return buildTextContext({
@@ -47,4 +50,10 @@ export function renderAscensionStirring(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = ascensionCtx(student, week, { ...opts, ascensionGate: 'stirring' });
   return render(ASC_STIRRING, ctx, { trace: opts.trace || null })?.trim() || '';
+}
+
+export function renderAscensionAbility(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = ascensionCtx(student, week, { ...opts, ascensionGate: 'ability' });
+  return render(opts.template || ASC_ABILITY_GENERIC, ctx, { trace: opts.trace || null })?.trim() || '';
 }

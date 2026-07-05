@@ -77,6 +77,7 @@ registerDimension('campusLocale', (ctx) => ctx.globals?.locale ?? 'default');
 registerDimension('mobilityLevel', (ctx) => deriveMobilityLevel(ctx.d || {}));
 registerDimension('clothingState', (ctx) => ctx.subject?.clothingState ?? ctx.globals?.clothingState ?? 'fitted');
 registerDimension('mealContext', (ctx) => ctx.globals?.mealType ?? 'meal');
+registerDimension('inWater', (ctx) => !!ctx.globals?.inWater);
 registerDimension('isGaining', (ctx) => {
   const delta = ctx.globals?.weekGainLbs ?? ctx.subject?.weekGainLbs;
   if (delta != null) return delta > 0;

@@ -82,7 +82,7 @@ import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
-import { renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
+import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
 import { AscensionCeremonyModal } from './components/AscensionCeremonyModal.jsx';
 import { appendMemory, pickStudentMemory, pickClassMemory } from './gameData/memory.js';
 import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, grievanceGain, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, DISCONTENT_WEEKLY_DECAY, DISCONTENT_RIPPLE, shouldConfront, dominantGrievance, AMENDS_FLOOR, GIFT_FLOOR, GIFT_COST } from './gameData/discontent.js';
@@ -148,6 +148,7 @@ import { DestinySpendModal } from './components/DestinySpendModal.jsx';
 import { MoodBadge } from './components/ui.jsx';
 import { getAscensionFormForStudent } from './gameData/ascension/forms.js';
 import { abilityIsOnCooldown, getAscensionAbility, tickAscensionCooldowns } from './gameData/ascension/abilities.js';
+import { maybeGrantAscensionCatalyst } from './gameData/ascension/catalysts.js';
 import { applyEssenceFromGain, spendEssence } from './gameData/ascension/essence.js';
 import { formPassiveGainMultiplier } from './gameData/ascension/gainRules.js';
 import { applyAscensionRebirth, isAscended, isAscensionEligible } from './gameData/ascension/state.js';
@@ -2240,17 +2241,11 @@ export default function ProfessorSim(){
         const skList=(st.evolvedSkills||[]);
         const tree=EVOLVED_SKILL_TREES[formId]||[];
         const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
-        let next = processStudentGain(st,totalGain,totalRel+bonusRel);
-        if(st.id===3 && stageIdx >= ((EVOLVED_EVENTS[formId]?.length || 1) - 1)){
-          next = {
-            ...next,
-            ascensionCatalysts: {
-              ...(next.ascensionCatalysts || {}),
-              serena_record_board_retired: true,
-            },
-          };
-        }
-        return next;
+        const next = processStudentGain(st,totalGain,totalRel+bonusRel);
+        return maybeGrantAscensionCatalyst(next, {
+          completedStageIdx: stageIdx,
+          totalStages: EVOLVED_EVENTS[formId]?.length || 0,
+        });
       }));
       if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairDay&&!ending.startsSession&&!ending.startsPresentation&&!ending.startsDelivery&&!ending.startsChallenge&&!ending.startsSalon&&!ending.startsGallery) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
       // handle recipe unlock (homestead_queen)
@@ -2645,12 +2640,15 @@ export default function ProfessorSim(){
       push(`⚠️ Need ${ability.essenceCost} ${form?.essenceWord||'essence'} for ${ability.name}.`);
       return;
     }
+    const abilityParams=ability.params||{};
+    if(ability.hook==='economyMod'&&abilityParams.moneyDelta) setMoney(m=>m+abilityParams.moneyDelta);
+    if(ability.hook==='campusMod'&&abilityParams.scrutinyDelta) addScrutiny(abilityParams.scrutinyDelta);
     setStudents(prev=>prev.map(st=>{
       if(st.id!==studentId) return st;
       const spent=spendEssence(st,ability.essenceCost,{publicSpend:ability.public});
       if(!spent.ok) return st;
       let ns=spent.student;
-      const p=ability.params||{};
+      const p=abilityParams;
       if(ability.hook==='feedEvent'){
         ns=processStudentGain(ns,p.lbsGain||0,p.rel||0);
         if(p.hungerDelta) ns=adjustHunger(ns,p.hungerDelta);
@@ -2668,6 +2666,19 @@ export default function ProfessorSim(){
         };
       }else if(ability.hook==='psychNudge'){
         ns={...ns,psych:applyPsychDelta(ns.psych||{},p)};
+      }else if(ability.hook==='economyMod'||ability.hook==='wardrobeEvent'||ability.hook==='campusMod'){
+        ns={
+          ...ns,
+          ascension:{
+            ...ns.ascension,
+            formFlags:{
+              ...(ns.ascension.formFlags||{}),
+              [p.flag||ability.id]:true,
+              ...(p.delayFailureWeeks?{delayedWardrobeFailureWeeks:p.delayFailureWeeks}:{}),
+              ...(p.repairRelic?{relicRepairReady:true}:{}),
+            },
+          },
+        };
       }
       return {
         ...ns,
@@ -2681,7 +2692,8 @@ export default function ProfessorSim(){
         },
       };
     }));
-    push(`✦ ${live.name} — ${ability.name}: ${ability.desc}`);
+    const abilityLine=renderAscensionAbility(live,week);
+    push(`✦ ${live.name} — ${ability.name}: ${abilityLine||ability.desc}`);
   };
 
   // ── HOMEROOM QUEEN handlers ───────────────────────────────────────
