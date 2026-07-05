@@ -12,10 +12,16 @@ several for full coverage. Each file is self-contained.
 | `01-game-design.md` | Core loop, pacing, choice architecture, progression | Designing or extending a game |
 | `02-prose-voice.md` | The house voice; banned constructions; escalation craft | Writing ANY player-facing text |
 | `03-character-craft.md` | Cast design: archetypes, stances, psych axes, persona voice | Creating or writing characters |
-| `04-content-architecture.md` | Beat families, scene templates, coverage, engine wiring | Structuring content at scale |
+| `04-content-architecture.md` | Beat families, scene templates, coverage, engine wiring, migration | Structuring content at scale |
 | `05-fetish-compass.md` | Subgenre map, intensity calibration, what lands | Choosing/writing kink content |
 | `06-systems-depth.md` | Hunger, wardrobe, environment, psych state machines | Building game mechanics |
-| `07-quality-gates.md` | QA protocol, render review, the quality bar | Before shipping anything |
+| `07-quality-gates.md` | QA protocol, render review, the live tuning loop, the quality bar | Before shipping; after shipping |
+
+The engine these skills assume (when one is used) is specified end-to-end
+in the **Text Engine Manifesto** (`docs/TEXT_ENGINE_MANIFESTO.md`) — a
+self-contained document with a verified reference implementation, a worked
+setting pack, and a four-layer lint harness. `04` tells you how to organize
+content; the Manifesto tells you how to build and police the machine.
 
 ## Hard rules (bind every file; no skill overrides these)
 

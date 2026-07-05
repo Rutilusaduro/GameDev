@@ -36,18 +36,36 @@ abstract, body over concept, verb over adjective.
 ## 3. The style ledger (banned constructions)
 
 These patterns mark machine-written or lazy prose. Do not write them; grep
-for them before shipping.
+for them before shipping. The ledger is append-only and grows from live
+tuning: when a flagged line generalizes to a rule, the rule lands here the
+same day, with a regex if it is mechanically detectable (see the
+flag-batch loop, `07` §3).
 
 | Banned | Why | Instead |
 |---|---|---|
 | "It's not just X, it's Y" and kin | Empty contrast | Assert Y with evidence |
 | "That is X." judgment tags | Tells after showing | Fold judgment into the behavior |
-| "you both know" | Narrated telepathy | Show the shared glance |
+| "you both know" / "neither of you mentions it" | Narrated telepathy | Show the shared glance |
 | "water weight", gain excuses | Deflates the fantasy | Gate denial dialogue to early stages |
 | "I have become the [noun]" | Cliché | Metaphor through concrete detail |
 | Rule-of-three everywhere | Rhythm slop | Vary list lengths; break cadence |
 | Identical sentence lengths | Metronome prose | Long sentence, then a short one. |
 | "suddenly" | Unearned | Build the pressure, let it break |
+| Stale-context lines | Content true in a different beat ("Same time next week" said *before* the weigh-in) | Place the line in the beat where it's true |
+| Double-described phenomena | Two sound clauses, two body clauses in one sentence | One slot/image per phenomenon per sentence |
+| Pace/energy contradictions | "wearily breezes in" | Keep verb choices pace-neutral, or key pace and verb on the same state |
+| Tone-loaded lines in shared/generic positions | A tier-2 brag surfacing on a tier-0 girl | Gate any fragment carrying specific psychology |
+| Meta-gimmick jargon in narration | "HP", "patch notes", "local maximum" from the narrator | Character dialogue only, sparingly, where it's in-voice |
+
+Greppable core (run over the whole corpus; zero hits ships):
+
+```
+\. That is |you both know|water weight|I have become the|suddenly
+adipose|BMI|obesity|weight issues
+```
+
+Add your game's stage/tier names as a third line — engine labels leaking
+into prose is the most common automated catch.
 
 ## 4. Escalation craft (the sentence-level curve)
 
@@ -78,6 +96,10 @@ A scene about indulgence needs its own arc, small but complete:
 
 - **No salient word twice in a passage.** "Heavy" appears once. If your
   system doesn't dedupe automatically, proofread for it.
+- **Her name appears once per passage.** Open with the name, then pronouns.
+  Name-drumming ("Maya sits. Maya reaches. Maya sighs.") reads like a
+  police report, and automated dedupe won't save you — names aren't slop
+  words, so this one is on you.
 - **Verbs carry size.** waddles, labors, settles, spreads, overflows,
   redistributes — a size-keyed verb beats two adjectives.
 - **Fresh instruments over stock phrasing:** measure her against doorways,

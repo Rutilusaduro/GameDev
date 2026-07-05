@@ -85,7 +85,31 @@ Per character, write and enforce:
 Test: strip the name tags from a page of dialogue; a reader who knows the
 cast should re-attribute 80%+.
 
-## 7. Persona lines vs generic lines (content economics)
+## 7. The arc voice ladder (interior voice across the master axis)
+
+For each main character, write a 6-beat voice guide across the master
+psych axis BEFORE writing her interior/dialogue content. The beats:
+
+1. **Baseline, first visible change** — her stance in action: excuses vs.
+   unfussed vs. body contradicting her words.
+2. **First crack** — pleasure where dread was expected; she files the
+   feeling away; it does not stay filed.
+3. **Mid-tier ambivalence** — stopped fighting, not yet celebrating; flat
+   familiarity with the changes.
+4. **The turn** — surrender with a social witness; the interior argument
+   goes quiet; nothing left to negotiate.
+5. **Settled ownership** — appetite open, body as project or status
+   report; wants named plainly.
+6. **Ceiling reality** — practical knowledge of her own scale; logistics
+   as fact, not emergency.
+
+Archetype colors each beat (a competitor keeps score, a chef catalogs
+flavor, an analyst names the dynamic) but the axis position is primary.
+Six lines per character; every interior/dialogue pool you write later
+calibrates against them. This is the cheapest tool that keeps a cast from
+converging into one voice at high tiers.
+
+## 8. Persona lines vs generic lines (content economics)
 
 You cannot hand-write every line for every girl at every state. The split
 that scales: **persona lines** (unique voice, keyed to the character, used
@@ -93,9 +117,13 @@ sparingly at high weight) pooled with **trait-keyed generics** (keyed to
 stance/psych/stage, using name substitution) that cover everyone. Aim for
 persona lines at emotional peaks (rung crossings, firsts, endings) and
 generics for connective tissue. Every character deserves ≥2 persona lines
-in every major scene type.
+per psych tier in every scene type that carries personality.
 
-## 8. Arc design
+**Dialogue is sacred.** When reusing or migrating handwritten lines, keep
+quoted speech verbatim — the voice lives in the quotes. Narration around
+quotes may be genericized; the quotes themselves may not be paraphrased.
+
+## 9. Arc design
 
 An arc = stance trajectory × psych trajectory × weight trajectory, and the
 three should NOT move in lockstep — the interesting characters are the

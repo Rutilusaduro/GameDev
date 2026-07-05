@@ -57,6 +57,29 @@ callback each.
 **Style-ledger grep:** run the banned-construction list from
 `02-prose-voice.md` §3 over the whole corpus. Zero hits ships.
 
+**The flag-batch loop (live tuning — the post-ship gate):** quality after
+launch comes from batches of flagged renders, not one-off edits. Ship a
+dev panel that rolls any beat at any locked/randomized state and lets a
+reader flag a sample with per-slot notes (render tracing supplies the slot
+tags). Then, per batch:
+
+1. Each flag carries the beat, the FULL generating state, the text, and
+   per-slot problems. Triage the whole batch in one pass; commit once.
+2. Per flag: locate the pool, reproduce the captured state (render 5–10×),
+   classify (missing gate / tier leak / adjacent-beat contradiction /
+   intra-sentence contradiction / shape violation / game-logic violation /
+   stale-context line / verbatim correction / feature request in
+   disguise), apply the matching fix.
+3. **Hunt the pattern, not the instance.** Every flag is a sample from a
+   class — grep for siblings before moving on. When the reader bans "It is
+   not a question," "It is not *really* a question" is sitting in another
+   pool.
+4. When a fix generalizes, append it to the style ledger AND automate the
+   regex the same day. Re-render the captured state until the problem
+   can't appear; full gates clean before the batch commit.
+
+A feature is tuned when a flag batch comes back boring.
+
 ## 4. Content-safety gate (blocking, every release)
 
 Verify: every character's adulthood is explicit and consistent; no scene

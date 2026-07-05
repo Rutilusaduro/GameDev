@@ -61,8 +61,24 @@ Wire beat families as namespaced pools (`meal.`, `wardrobe.`, `interrupt.`).
 Per the Manifesto: skeletons compose sub-pools; sub-pools reuse the `word.*`
 lexicon; `when` keys on stage bands + psych tiers + fit states; every pool
 carries a wildcard fallback; stateful beats use `asserts`/`requires`/
-`forbids`; namespaces get stem-tracking. The lexicon to build first for THIS
-genre:
+`forbids`; namespaces get stem-tracking.
+
+Four laws that bite hardest in practice:
+
+- **Wildcard texts are tone-neutral.** Pooling has no NOT-conditions; a
+  generic can fire during withdrawal, grief, or euphoria. "She crosses the
+  room" qualifies; "she bounces in cheerfully" needs a mood key.
+- **Tier-shaped skeletons need a `priority` gate.** The wildcard skeleton
+  stays RNG-eligible in pool mode, so a tier-0-shaped fallback leaks into
+  tier-2 renders as a rare wrong-register event playtesting misses.
+  `weight` is for flavor; `priority` is for suppression.
+- **Skeletons name her once; sub-beats use pronoun slots.** See `02` §6.
+- **Volume floors:** every pool ≥4 texts at wildcard (≥3 non-empty), every
+  keyed cell ≥3, every main character ≥2 persona beats per psych tier in
+  personality slots. Below the floor, a pool reads as a loop within one
+  session.
+
+The lexicon to build first for THIS genre:
 
 - `word.size` (ADJ, stage × corruption overlay), `word.body` (NP, bodyType ×
   stage), `word.moveVerb` (VP-3SG, stage + scenario tags), `word.fullness`
@@ -105,7 +121,30 @@ loop, never hand-repeated. Always append the generic fallback row. Budget
 rule of thumb per main character: ~60% generics shared by all, ~25%
 trait-keyed, ~15% persona-unique.
 
-## 8. Continuity discipline
+## 8. Migrating legacy prose (when a game already exists)
+
+Converting handwritten paragraphs into state-keyed content:
+
+1. **Inventory every text source** — registered strings, data
+   dictionaries, and prose hardcoded in UI components (there is always
+   some). The legacy indexing (tier arrays, stage-band grids) is your
+   selector map.
+2. **Design beats and slots before writing text** — a slot inventory
+   table: key, grammar shape, state axes, which legacy text feeds it.
+   Reserve one dialogue slot per beat that carries personality.
+3. **Mine, don't rewrite.** Quoted dialogue → persona lines VERBATIM
+   (`03` §8). Description → normalized to the destination slot's shape.
+   Connective tissue → dropped; skeletons supply it now. One legacy
+   paragraph yields 2–4 fragments.
+4. **Re-gate mined lines for their wider reach.** A line written for one
+   stage band may now be selectable everywhere; if it implies gain, gate
+   it. This is the single most common migration bug.
+5. **Retire the legacy source in the same commit** as its replacement.
+6. **Verify:** lint clean, spot-renders at the extremes, then live tuning
+   (the flag-batch loop, `07` §3) until a flag batch comes back boring —
+   that is the done signal.
+
+## 9. Continuity discipline
 
 - One shared session token (Set/dict) per game event, so repeated renders
   within the event don't repeat lines or re-contradict facts.

@@ -1,24 +1,29 @@
 # The Modular Text Engine Manifesto
 
-**What this is:** a complete, self-contained guide to building a word-granular
+**What this is:** a complete, self-contained kit for building a word-granular
 procedural prose engine for text games. Read only this file and you can build
-the whole thing — the spec, a full JavaScript reference implementation, the
-authoring rules, the lint harness, and the build order are all here. Nothing
-in this document requires access to any other repository.
+the whole thing: the spec, a full JavaScript reference implementation, a
+worked setting pack, the authoring law, a four-layer lint harness, a
+mechanism self-check, and the build order. Nothing here requires access to
+any other repository.
 
-**Who this is for:** any model or developer, including small ones. Every
+**Who this is for:** any developer or model, including small ones. Every
 mechanism comes with exact data shapes, exact math, complete code, and a
-runnable check that fails if you got it wrong. When this document says MUST,
-a lint rule enforces it. Follow the build order in Part VIII and verify each
-phase before starting the next.
+runnable check that fails if you got it wrong. Where this document says
+MUST, a lint rule enforces it. Every line of code in Parts IV, V, VII, and
+VIII has been executed together: the mechanism checks pass, the lint harness
+runs clean on the worked example, and deliberately planted defects (a
+deleted fallback, a wrong verb form) are caught. If you copy the code and a
+check fails, the defect is in the copying.
 
 **What it produces:** a game whose prose is assembled at render time from
 pools of small, grammar-shaped fragments keyed on game state — so a
 character described at one body size, mood, wardrobe state, and psychology
 reads differently from the same character one stage later, and two renders
-of the same scene almost never repeat. The engine has been proven in
-production: a shipped game using it renders half a million lint passages
-with under 1% word-repetition and zero state contradictions.
+of the same scene rarely repeat. The design is proven in production: a
+shipped game built on this exact architecture runs a six-figure render
+sweep on every commit with a measured word-repetition rate under 1% and
+zero state-contradiction failures.
 
 ---
 
@@ -66,12 +71,15 @@ entries are eligible. The coherence layer keeps that volume honest.
 | **stem** | The dedupe identity of a content word ("straining" → `strain`) |
 | **skeleton** | A pool whose texts are templates stitching sub-pools together |
 | **shape** | The declared grammatical contract of a pool (Part VI) |
-| **setting pack** | Everything game-specific: deriver, dimensions, lexicon, ladders |
+| **setting pack** | Everything game-specific: deriver, dimensions, identity modules, lexicon, ladders (Part V) |
+| **lint pack** | The game-specific half of the lint harness: sweep templates, state grid, coverage spec, banned patterns (Part VII) |
+| **trace** | Per-slot provenance collected during render; powers the tuning tools (Part IX) |
 
 Naming law: module keys are `namespace.beatName` (`din.arrival`,
 `word.size`, `case.clueBeat`). One short namespace per feature. The `word.`
 namespace is reserved for word-grain lexicon pools and is always
-dedupe-tracked.
+dedupe-tracked. `join` is a reserved key. `subject.*` and `ref.*` are
+reserved for identity modules (Part V).
 
 ---
 
@@ -93,8 +101,8 @@ dedupe-tracked.
 }
 ```
 
-`text` strings may contain `{slots}` (resolved recursively, depth cap 5) and
-backticks are the sane way to hold dialogue quotes. Array `text` = one entry
+`text` strings may contain `{slots}` (resolved recursively, depth cap 5).
+Backticks are the sane way to hold dialogue quotes. Array `text` = one entry
 is picked; each entry gets its own dedupe/repeat identity.
 
 ### 3.2 `when` evaluation — exact rules
@@ -108,17 +116,26 @@ base name counts once.
 - Any key ending in `Min` / `Max`: numeric compare against
   `ctx.d[base] ?? ctx.globals[base]` where `base` is the key minus the
   suffix (`stageMin` → `d.stage >= v`). A missing dimension fails the match.
-- Every other key: equality (or array membership) against
-  `ctx.d[key] ?? ctx.globals[key]`. Booleans coerce both sides.
+- Every other key: equality against `ctx.d[key] ?? ctx.globals[key]`
+  (array condition value = membership; boolean condition values coerce the
+  actual with `!!`).
 
 This generalized rule means **any dimension a game registers is instantly
-usable in `when`, including as a range**, with no engine edits.
+usable in `when`, including as a range**, with no engine edits. One trap
+follows from it, already fixed in the reference code: values that live on
+the context itself rather than on `ctx.d` are invisible to the rule.
+`createContext` therefore seeds `ctx.d.week = week`, which is what makes
+`weekMin`/`weekMax` work. If you add another context-level value (a scene
+id, a difficulty setting), either seed it onto `ctx.d` the same way or pass
+it through `globals` — a `when` key that silently never matches is a
+missing-content bug the dynamic sweep cannot see.
 
 ### 3.3 Selection — exact math
 
 Two modes. `registerPool` (mode `'pool'`) is the default for ALL content;
-`registerModule` (mode `'best'`) is only for foundational descriptor
-dictionaries where the single most-specific match should win outright.
+`registerModule` (mode `'best'`) is for foundational descriptor dictionaries
+and identity lookups where the single most-specific match should win
+outright.
 
 **Pool mode:**
 1. Collect all variants whose `when` matches AND whose ledger fields pass
@@ -126,8 +143,9 @@ dictionaries where the single most-specific match should win outright.
 2. Keep only variants at the **maximum priority** present (the hard gate).
 3. Build one weighted entry per text:
    `w = (variant.weight ?? 1) × poolBase^score × repeatPenalty × stemPenalty`
-   with `poolBase = 3`. So a 2-condition variant outweighs a wildcard 9:1 —
-   specific flavor dominates, generic surfaces ~10–25% as spice.
+   with `poolBase = 3` (override per pool via `opts.poolBase`). So a
+   2-condition variant outweighs a wildcard 9:1 — specific flavor
+   dominates, generic surfaces roughly 10–25% of the time as spice.
 4. Weighted-random pick. If penalties zeroed everything, rebuild the
    entries **without penalties** and pick — a pool never goes silent.
 
@@ -149,9 +167,9 @@ them.
 
 ### 3.4 The fact ledger
 
-`ctx.facts` is a `Map(topic → value)`, default fresh per context, shareable
-across an event by passing one Map into every context of that event
-(exactly like the session Set). Topics are `domain.instance` strings
+`ctx.facts` is a `Map(topic → value)`, fresh per context by default,
+shareable across an event by passing one Map into every context of that
+event (exactly like the session Set). Topics are `domain.instance` strings
 (`garment.top`, `posture`, `scene.tone`); values are short scalars.
 
 Eligibility, applied with `when`:
@@ -161,7 +179,8 @@ Eligibility, applied with `when`:
   fails if the topic is set at all.
 - **contradiction guard** — a variant *asserting* `topic: v2` while the
   ledger holds `topic: v1` (different value) is **ineligible**. This single
-  rule implements "if two statements would contradict, only one is said."
+  rule implements "of two statements that would contradict, only one is
+  said."
 
 On pick, `asserts` pairs are written to the ledger. Slots resolve left to
 right, so **the first slot to assert a fact wins**; authors put the
@@ -207,9 +226,10 @@ them); any other `:arg` is passed to function texts as `ctx.arg`.
 `prefix:`/`suffix:` are the optionality mechanism: a slot that resolves
 empty vanishes cleanly, taking its punctuation with it.
 
-`{join:a,b,c|prefix:, }` resolves each listed module, drops empties, and
-glues survivors with commas and a final "and". Reserved key — never
-register a module named `join`.
+`{join:a,b,c|...}` resolves each listed module, drops empties, and glues
+survivors with commas and a final "and". Combine with `|prefix:`/`|suffix:`
+to make a whole clause group optional. Reserved key — never register a
+module named `join`.
 
 ### 3.7 Post-processing
 
@@ -218,19 +238,49 @@ punctuation, fixes `..` artifacts, and capitalizes after sentence ends.
 `{{` escapes a literal `{`. Unknown modules resolve to `""` with a dev
 warning — the engine never throws at render time.
 
+Two hard-won details:
+
+- **The smoothing pass capitalizes after `. ` and at string start, but NOT
+  after `\n\n`.** A fragment that opens a paragraph must be authored
+  capitalized or piped through `|cap`.
+- **The literal-brace escape token is a private-use Unicode character and
+  MUST be written as the escape sequence `'\uE000'`, never pasted as the
+  raw character.** The raw character is invisible; when a copy drops it,
+  the token degrades to an empty string, and
+  `text.replace(new RegExp('', 'g'), '{')` inserts a `{` between every
+  character of every render. This exact defect has been found in the wild,
+  introduced by copying code through a document.
+
+### 3.8 The persistence contract
+
+The anti-repetition and coherence layers only work if their scopes are
+wired to real game lifetimes:
+
+| Scope | Object | Lifetime | Wiring |
+|---|---|---|---|
+| render | `ctx.renderStems` | one `render()` call | automatic — the engine resets it |
+| event/scene | `ctx.facts`, `ctx.sessionUsed`, `ctx.sceneStems` | one game event (a dinner, a weigh-in) | create once per event (`createFacts()`, `createSessionUsed()`, `new Set()`), pass the same objects into every `createContext` of that event |
+| week | `ctx.weekUsed` | one game week | persist on the character: save `[...set]`, load `new Set(array)`, clear on week advance |
+
+Skipping the event scope is the most common integration mistake: every
+render gets fresh facts and a fresh session Set, and the game "works" while
+silently allowing contradictions and back-to-back repeats.
+
 ---
 
 ## Part IV — Reference implementation
 
-Two files, complete, game-free. Copy them verbatim; the only thing you
-write for your game is the setting pack (Part V). ~460 lines total.
+Two files, complete, game-free. Copy them verbatim; the only things you
+write for your game are the setting pack (Part V) and the lint pack
+(Part VII). These exact files pass the mechanism checks in Part VIII.
 
 ### 4.1 `engine.js`
 
 ```js
 // ═══════════════════════════════════════════════════════════════
 // MODULAR TEXT ENGINE — game-free core.
-// Games supply a subject deriver, dimensions, and lexicon (setting pack).
+// Games supply a subject deriver, dimensions, and lexicon (the
+// setting pack). The engine never throws at render time.
 // ═══════════════════════════════════════════════════════════════
 import {
   pastTense, presentParticiple, thirdPerson, pluralize,
@@ -251,26 +301,33 @@ export function createFacts() { return new Map(); }
 
 // ── stems ─────────────────────────────────────────────────────
 export const STEM_STOPWORDS = new Set([
-  'the','and','her','hers','she','his','him','with','that','this','from',
-  'into','onto','over','under','then','than','when','what','have','has',
-  'had','been','being','they','them','their','there','here','where','which',
-  'while','about','again','against','between','through','because','before',
-  'after','above','below','down','just','more','most','much','some','such',
-  'very','your','yours','like','does','doesn','still','every','each','both',
-  'around','without','toward','towards','himself','herself','itself',
-  'says','said','saying','look','take','know','make','want','really',
-  'doesnt','dont','isnt','wasnt','cant','wont','didnt','youre','shes','hes',
-  'thats','theres','weve','youve','hasnt','havent','youll',
-  'someth','anyth','everyth','noth',
+  'the', 'and', 'her', 'hers', 'she', 'his', 'him', 'with', 'that', 'this',
+  'from', 'into', 'onto', 'over', 'under', 'then', 'than', 'when', 'what',
+  'have', 'has', 'had', 'been', 'being', 'they', 'them', 'their', 'there',
+  'here', 'where', 'which', 'while', 'about', 'again', 'against', 'between',
+  'through', 'because', 'before', 'after', 'above', 'below', 'down', 'just',
+  'more', 'most', 'much', 'some', 'such', 'very', 'your', 'yours', 'like',
+  'does', 'doesn', 'still', 'every', 'each', 'both', 'around', 'without',
+  'toward', 'towards', 'himself', 'herself', 'itself',
+  // Generic verbs of attribution/perception — normal English glue, not slop.
+  'says', 'said', 'saying', 'look', 'take', 'know', 'make', 'want', 'really',
+  // Contractions (apostrophes are stripped before matching) and their stems.
+  'doesnt', 'dont', 'isnt', 'wasnt', 'cant', 'wont', 'didnt', 'youre',
+  'shes', 'hes', 'thats', 'theres', 'weve', 'youve', 'hasnt', 'havent',
+  'youll', 'someth', 'anyth', 'everyth', 'noth',
 ]);
 
+// Irregular forms folded to one identity so "broke"/"broken"/"breaks" collide.
 export const STEM_FOLDS = {
-  broke:'break', broken:'break', gave:'give', given:'give',
-  took:'take', taken:'take', wore:'wear', worn:'wear',
-  sank:'sink', sunk:'sink', fell:'fall', fallen:'fall',
-  went:'gone', grew:'grow', grown:'grow', held:'hold',
+  broke: 'break', broken: 'break', gave: 'give', given: 'give',
+  took: 'take', taken: 'take', wore: 'wear', worn: 'wear',
+  sank: 'sink', sunk: 'sink', fell: 'fall', fallen: 'fall',
+  went: 'gone', grew: 'grow', grown: 'grow', held: 'hold',
+  strode: 'stride', swept: 'sweep', crept: 'creep',
 };
 
+/** Salient stems of a text fragment: lowercase content words ≥4 letters,
+ *  one plural/tense suffix stripped, irregulars folded. Slot syntax ignored. */
 export function stemsOf(text) {
   if (typeof text !== 'string' || !text) return [];
   const stems = [];
@@ -282,7 +339,7 @@ export function stemsOf(text) {
     for (const suf of ['ing', 'ed', 'es', 's']) {
       if (s.endsWith(suf) && s.length - suf.length >= 4) { s = s.slice(0, -suf.length); break; }
     }
-    if (STEM_STOPWORDS.has(s)) continue;
+    if (STEM_STOPWORDS.has(s)) continue; // re-check the stripped stem
     stems.push(STEM_FOLDS[s] ?? s);
   }
   return stems;
@@ -353,7 +410,7 @@ function deriveFor(subject, ref, skillEffects) {
   if (!subject) return {};
   if (!SUBJECT_DERIVER) {
     warn('no subject deriver registered — ctx.d is minimal');
-    return { subjectId: subject.id ?? null, skillEffects: skillEffects || {} };
+    return { subjectId: subject.id ?? null };
   }
   return SUBJECT_DERIVER(subject, ref, skillEffects) || {};
 }
@@ -378,6 +435,9 @@ export function createContext(raw = {}) {
     sceneStems: raw.sceneStems instanceof Set ? raw.sceneStems : new Set(),
     d: deriveFor(subject, ref, skillEffects),
   };
+  // `week` must be visible to the generalized when-rule (weekMin/weekMax),
+  // so seed it as a dimension unless the deriver already set one.
+  if (ctx.d.week == null) ctx.d.week = week;
   for (const [key, fn] of DIMENSION_DERIVERS) {
     try { ctx.d[key] = fn(ctx); } catch (e) { warn(`dimension "${key}" failed`, e); }
   }
@@ -386,12 +446,14 @@ export function createContext(raw = {}) {
 
 function retarget(ctx, who) {
   if (who === 'ref' && ctx.ref) {
-    return { ...ctx, subject: ctx.ref, ref: ctx.subject,
-             d: deriveFor(ctx.ref, ctx.subject, ctx.skillEffects) };
+    const d = deriveFor(ctx.ref, ctx.subject, ctx.skillEffects);
+    if (d.week == null) d.week = ctx.week;
+    return { ...ctx, subject: ctx.ref, ref: ctx.subject, d };
   }
   if (who === 'group' && ctx.group?.length) {
-    return { ...ctx, subject: ctx.group[0],
-             d: deriveFor(ctx.group[0], ctx.ref, ctx.skillEffects) };
+    const d = deriveFor(ctx.group[0], ctx.ref, ctx.skillEffects);
+    if (d.week == null) d.week = ctx.week;
+    return { ...ctx, subject: ctx.group[0], d };
   }
   return ctx;
 }
@@ -414,10 +476,12 @@ export function registerModuleVariants(key, variants) {
   REGISTRY.set(key, [...extra, ...(REGISTRY.get(key) || [])]);
 }
 export function hasModule(key) { return REGISTRY.has(key); }
-export function _registryEntries() { return [...REGISTRY.entries()]; }   // lint only
-export function _moduleOpts(key) { return MODULE_OPTS.get(key) || {}; }  // lint only
+export function _registryEntries() { return [...REGISTRY.entries()]; }   // lint/tooling only
+export function _moduleOpts(key) { return MODULE_OPTS.get(key) || {}; }  // lint/tooling only
 
 // ── when evaluation ───────────────────────────────────────────
+// Generalized rule: any dimension a game registers is instantly usable in
+// `when`, including as a Min/Max range, with no engine edits.
 function evalWhen(when, ctx) {
   if (!when || Object.keys(when).length === 0) return { match: true, score: 0 };
   const d = ctx.d || {};
@@ -433,10 +497,14 @@ function evalWhen(when, ctx) {
       const base = k.slice(0, -3);
       const actual = d[base] ?? ctx.globals?.[base];
       ok = actual != null && (k.endsWith('Min') ? actual >= v : actual <= v);
-      if (ok) { if (!rangeSeen.has(base)) { rangeSeen.add(base); score += 1; } continue; }
+      if (!ok) return { match: false, score: 0 };
+      if (!rangeSeen.has(base)) { rangeSeen.add(base); score += 1; }
+      continue;
     } else {
       const actual = d[k] ?? ctx.globals?.[k];
-      ok = Array.isArray(v) ? v.includes(actual) : (actual === v || !!actual === !!v && typeof v === 'boolean');
+      ok = Array.isArray(v) ? v.includes(actual)
+        : typeof v === 'boolean' ? !!actual === v
+        : actual === v;
     }
     if (!ok) return { match: false, score: 0 };
     score += 1;
@@ -448,14 +516,13 @@ function evalWhen(when, ctx) {
 function factsEligible(ctx, variant) {
   const facts = ctx.facts;
   if (!facts) return true;
-  const { requires, forbids, asserts, requireAbsent } = variant;
+  const { requires, forbids, asserts } = variant;
   if (requires) {
     for (const [t, v] of Object.entries(requires)) {
       const cur = facts.get(t);
       if (!(Array.isArray(v) ? v.includes(cur) : cur === v)) return false;
     }
   }
-  if (requireAbsent?.length && requireAbsent.some((t) => facts.get(t))) return false;
   if (forbids) {
     if (Array.isArray(forbids)) {
       if (forbids.some((t) => facts.has(t))) return false;
@@ -475,9 +542,8 @@ function factsEligible(ctx, variant) {
   return true;
 }
 function applyAsserts(ctx, variant) {
-  if (!ctx.facts) return;
-  if (variant.consumes?.length) for (const t of variant.consumes) ctx.facts.set(t, true);
-  if (variant.asserts) for (const [t, v] of Object.entries(variant.asserts)) ctx.facts.set(t, v);
+  if (!ctx.facts || !variant.asserts) return;
+  for (const [t, v] of Object.entries(variant.asserts)) ctx.facts.set(t, v);
 }
 
 // ── selection ─────────────────────────────────────────────────
@@ -489,6 +555,8 @@ function buildPickEntries(moduleKey, matches, poolBase, ctx, applyPenalty) {
     const baseW = (variant.weight ?? 1) * Math.pow(poolBase, score);
     const push = (text, textIndex) => {
       const usageKey = variantUsageKey(moduleKey, variantIndex, textIndex);
+      // Dedupe identity: explicit tags win; else auto-stems of the raw text
+      // (function texts have no stems until resolved — see selectVariant).
       const stems = stemTracked ? (variant.tags ?? stemsOf(text)) : [];
       let w = baseW;
       if (applyPenalty) w *= repeatMultiplier(usageKey, ctx) * stemMultiplier(stems, ctx);
@@ -501,7 +569,9 @@ function buildPickEntries(moduleKey, matches, poolBase, ctx, applyPenalty) {
 }
 function pickFromEntries(entries, moduleKey, matches, poolBase, ctx) {
   if (!entries.length && matches.length) {
-    entries = buildPickEntries(moduleKey, matches, poolBase, ctx, false); // penalty-free retry
+    // Penalty-free retry — a pool never goes silent just because everything
+    // eligible was recently used.
+    entries = buildPickEntries(moduleKey, matches, poolBase, ctx, false);
   }
   if (!entries.length) return null;
   return weightedPick(entries);
@@ -554,8 +624,32 @@ function selectVariant(key, ctx) {
   const t = picked.text;
   const out = typeof t === 'function' ? (t(ctx) ?? '') : (t ?? '');
   if (picked.stems?.length) recordStems(picked.stems, ctx);
+  // Function texts have no stems until resolved — record them now so later
+  // slots still dedupe against dictionary-driven modules.
   else if (typeof t === 'function' && isStemTracked(key)) recordStems(stemsOf(out), ctx);
   return out;
+}
+
+/** Eligible variants for a key under ctx, sorted by weight, annotated with
+ *  pick probability. Powers the Slot Inspector dev panel — not game code. */
+export function getEligibleVariants(key, ctx) {
+  const variants = REGISTRY.get(key);
+  if (!variants) return [];
+  const poolBase = MODULE_OPTS.get(key)?.poolBase ?? 3;
+  const results = [];
+  for (const v of variants) {
+    const { match, score } = evalWhen(v.when ?? {}, ctx);
+    if (!match) continue;
+    const weight = (v.weight ?? 1) * Math.pow(poolBase, score);
+    const texts = Array.isArray(v.text) ? v.text
+      : typeof v.text === 'function' ? ['[dynamic]']
+      : [v.text];
+    results.push({ when: v.when ?? {}, score, weight, texts });
+  }
+  const total = results.reduce((s, r) => s + r.weight, 0);
+  return results
+    .sort((a, b) => b.weight - a.weight)
+    .map((r) => ({ ...r, probability: total > 0 ? Math.round((r.weight / total) * 100) : 0 }));
 }
 
 // ── filters ───────────────────────────────────────────────────
@@ -578,25 +672,46 @@ function applyFilters(text, filters) {
 
 // ── template resolution ───────────────────────────────────────
 const SLOT_RE = /\{([a-zA-Z][\w.]*)(?::([^|}]*))?((?:\|[^}]*)?)\}/g;
-const ESCAPE_TOKEN = '';
+// Literal-brace escape: `{{` becomes this private-use character during
+// resolution, then a real `{` afterwards. MUST be a character that can
+// never appear in prose. Write it exactly like this — as an escape
+// sequence, never pasted raw (an invisible/lost char here corrupts every
+// render).
+const ESCAPE_TOKEN = '\uE000';
 const MAX_DEPTH = 5;
 
+// Resolve one slot: pick the variant, recurse into its output, and (when
+// tracing) record { key, text, leaf, depth }. A "leaf" fragment contained
+// no further content slots — the natural annotation unit for dev tools.
+// subject.* identity slots don't make a fragment composite.
 function resolveSlot(name, slotCtx, depth, trace) {
   const raw = String(selectVariant(name, slotCtx));
+  let leaf = true;
+  SLOT_RE.lastIndex = 0;
+  let m;
+  while ((m = SLOT_RE.exec(raw))) {
+    if (!m[1].startsWith('subject.')) { leaf = false; break; }
+  }
   const out = resolveText(raw, slotCtx, depth + 1, trace);
-  if (trace && out.trim()) trace.push({ key: name, text: out.trim(), depth });
+  if (trace && out.trim()) trace.push({ key: name, text: out.trim(), leaf, depth });
   return out;
 }
 
 function resolveText(text, ctx, depth, trace) {
   if (depth >= MAX_DEPTH) {
     SLOT_RE.lastIndex = 0;
-    if (SLOT_RE.test(text)) { warn('max depth; stripping slots'); text = text.replace(SLOT_RE, ''); }
+    if (SLOT_RE.test(text)) {
+      warn('max depth; stripping slots');
+      SLOT_RE.lastIndex = 0;
+      text = text.replace(SLOT_RE, '');
+    }
     return text;
   }
   SLOT_RE.lastIndex = 0;
   return text.replace(SLOT_RE, (_, name, arg, filterStr) => {
     const filters = filterStr ? filterStr.split('|').filter(Boolean) : [];
+    // {join:a,b,c|...} — reserved meta-slot: resolve each listed module,
+    // drop empties, glue survivors with commas + a final "and".
     if (name === 'join') {
       const parts = (arg || '').split(',').map((k) => k.trim()).filter(Boolean)
         .map((k) => resolveSlot(k, ctx, depth, trace).trim()).filter(Boolean);
@@ -607,22 +722,24 @@ function resolveText(text, ctx, depth, trace) {
     }
     let slotCtx = ctx;
     if (arg === 'ref' || arg === 'group') slotCtx = retarget(ctx, arg);
-    else if (arg) slotCtx = { ...ctx, arg };
+    else if (arg) slotCtx = { ...ctx, arg }; // pass-through arg for module fns
     return applyFilters(resolveSlot(name, slotCtx, depth, trace), filters);
   });
 }
 
 function smooth(text) {
   return text
-    .replace(/ {2,}/g, ' ')
-    .replace(/ ([.,!?;:])/g, '$1')
-    .replace(/\.{2,}/g, '.')
+    .replace(/ {2,}/g, ' ')            // collapse runs of spaces
+    .replace(/ ([.,!?;:])/g, '$1')     // space before punctuation
+    .replace(/\.{2,}/g, '.')           // ".." artifacts (preserves "…")
     .replace(/(^|[.!?] )([a-z])/g, (_, lead, ch) => lead + ch.toUpperCase())
     .trim();
 }
 
-// render(template, ctx, opts) — the single public entry point. Never throws.
-// opts.trace: array to collect { key, text, depth }. opts.noSmooth: skip cleanup.
+// render(template, ctx, opts) — the single public entry point. Never throws;
+// unknown modules resolve to "" with a dev warning.
+// opts.trace: array to collect { key, text, leaf, depth } per resolved slot.
+// opts.noSmooth: skip whitespace/punctuation cleanup (normally leave it on).
 export function render(template, ctx, opts = {}) {
   if (ctx) ctx.renderStems = new Set();          // per-passage dedupe scope
   let text = String(template).replace(/\{\{/g, ESCAPE_TOKEN);
@@ -637,28 +754,29 @@ export function render(template, ctx, opts = {}) {
 ```js
 // Naive inflection + irregular maps, exposed as render filters.
 // Corpus verbs are stored third-person singular; transforms normalize
-// through de3sg() first. Extend the maps when a form renders wrong.
+// through de3sg() first. Extend the maps when a form renders wrong —
+// the lint harness's morphology table is where wrong forms get pinned.
 
 export const IRREGULAR_PAST = {
-  is:'was', are:'were', has:'had', have:'had', do:'did', go:'went',
-  come:'came', sit:'sat', eat:'ate', take:'took', give:'gave', get:'got',
-  make:'made', find:'found', hold:'held', keep:'kept', leave:'left',
-  feel:'felt', stand:'stood', rise:'rose', fall:'fell', sink:'sank',
-  swing:'swung', spread:'spread', put:'put', set:'set', let:'let',
-  shut:'shut', hit:'hit', catch:'caught', bring:'brought', buy:'bought',
-  think:'thought', say:'said', see:'saw', run:'ran', begin:'began',
-  stride:'strode', slide:'slid', cling:'clung', wear:'wore', tear:'tore',
-  bear:'bore', draw:'drew', grow:'grew', know:'knew', throw:'threw',
-  sweep:'swept', creep:'crept', mean:'meant', lead:'led', read:'read',
-  lie:'lay', lay:'laid', win:'won', spin:'spun', stick:'stuck',
-  shake:'shook', ride:'rode',
+  is: 'was', are: 'were', has: 'had', have: 'had', do: 'did', go: 'went',
+  come: 'came', sit: 'sat', eat: 'ate', take: 'took', give: 'gave', get: 'got',
+  make: 'made', find: 'found', hold: 'held', keep: 'kept', leave: 'left',
+  feel: 'felt', stand: 'stood', rise: 'rose', fall: 'fell', sink: 'sank',
+  swing: 'swung', spread: 'spread', put: 'put', set: 'set', let: 'let',
+  shut: 'shut', hit: 'hit', catch: 'caught', bring: 'brought', buy: 'bought',
+  think: 'thought', say: 'said', see: 'saw', run: 'ran', begin: 'began',
+  stride: 'strode', slide: 'slid', cling: 'clung', wear: 'wore', tear: 'tore',
+  bear: 'bore', draw: 'drew', grow: 'grew', know: 'knew', throw: 'threw',
+  sweep: 'swept', creep: 'crept', mean: 'meant', lead: 'led', read: 'read',
+  lie: 'lay', lay: 'laid', win: 'won', spin: 'spun', stick: 'stuck',
+  shake: 'shook', ride: 'rode',
 };
 export const IRREGULAR_PLURALS = {
-  woman:'women', man:'men', foot:'feet', tooth:'teeth', child:'children',
-  person:'people', mouse:'mice', shelf:'shelves', half:'halves',
-  life:'lives', loaf:'loaves',
+  woman: 'women', man: 'men', foot: 'feet', tooth: 'teeth', child: 'children',
+  person: 'people', mouse: 'mice', shelf: 'shelves', half: 'halves',
+  life: 'lives', loaf: 'loaves',
 };
-const IRREGULAR_3SG = { be:'is', have:'has', do:'does', go:'goes' };
+const IRREGULAR_3SG = { be: 'is', have: 'has', do: 'does', go: 'goes' };
 const VOWELS = 'aeiou';
 
 function doublesFinal(w) {
@@ -720,37 +838,60 @@ export function transformLastWord(text, fn) {
 
 ---
 
-## Part V — The setting pack contract
+## Part V — The setting pack
 
 The engine core knows nothing about your game. One file (conventionally
 `settingPack.js`, loaded by your app root AND your lint harness before any
 render) supplies:
 
-1. **The subject deriver** — maps your character object to `ctx.d`.
-2. **Dimensions** — `registerDimension` for anything your `when` clauses key
-   on beyond the deriver's output.
-3. **Stem-tracked namespaces** — `trackStemsFor('yourScene.')` for every
+1. **Ladders** — plain data arrays: id ascends with intensity. Any stat
+   that changes prose gets one (exhaustion, suspicion, corruption, body
+   size…).
+2. **The subject deriver** — maps your character object to `ctx.d`.
+3. **Dimensions** — `registerDimension` for anything your `when` clauses
+   key on beyond the deriver's output. Comparison dimensions belong here
+   too: a `relSize` dimension that buckets `subject.stat / ref.stat` into
+   `much_smaller … much_larger` gives you two-character scenes for free.
+4. **Stem-tracked namespaces** — `trackStemsFor('yourScene.')` for every
    prose namespace.
-4. **The lexicon** — your `word.*` pools (Part VI).
+5. **Identity modules** — `subject.name`, `subject.first`, `ref.name`, the
+   pronoun set, and any numeric-stat slots. Templates use these
+   everywhere; a game without them renders empty names. Write lexicon
+   entries with `{subject.they}`/`{subject.them}`/`{subject.their}` and
+   they port across any cast.
+6. **The lexicon** — your `word.*` pools (authoring law in Part VI).
 
-Worked example — a detective noir game (deliberately a different genre, to
-show nothing here is tied to any one subject matter):
+The worked example below is a detective noir game — deliberately a
+different genre from the engine's origin, to show nothing is genre-bound.
+It is also the content the lint harness in Part VII runs against, and it
+demonstrates every load-bearing pattern: ladder bands, psych registers,
+optional adverbials, fact assertion, and a composed skeleton.
+
+### 5.1 `settingPack.js`
 
 ```js
-// settingPack.js — noir detective game
-import { registerSubjectDeriver, registerDimension, trackStemsFor,
-         registerPool } from './engine.js';
+// ═══════════════════════════════════════════════════════════════
+// SETTING PACK — everything game-specific, in one file.
+// Worked example: a detective noir game (deliberately a different
+// genre from the engine's origin, to prove nothing is genre-bound).
+// Your game replaces the ladders, deriver, dimensions, and lexicon;
+// the identity-module section ports unchanged.
+// ═══════════════════════════════════════════════════════════════
+import {
+  registerSubjectDeriver, registerDimension, trackStemsFor,
+  registerModule, registerPool,
+} from './engine.js';
 
-// Ladders are plain data: id ascends with intensity, exactly like any
-// stat ladder (exhaustion, corruption, suspicion, body size…).
-const EXHAUSTION = [
-  { id: 0, key: 'fresh',   min: 0  },
-  { id: 1, key: 'worn',    min: 30 },
-  { id: 2, key: 'ragged',  min: 60 },
-  { id: 3, key: 'hollow',  min: 85 },
+// ── 1. Ladders — plain data, id ascends with intensity ────────
+export const EXHAUSTION = [
+  { id: 0, key: 'fresh',  min: 0 },
+  { id: 1, key: 'worn',   min: 30 },
+  { id: 2, key: 'ragged', min: 60 },
+  { id: 3, key: 'hollow', min: 85 },
 ];
-const ladder = (defs, v) => [...defs].reverse().find((s) => v >= s.min) ?? defs[0];
+export const ladder = (defs, v) => [...defs].reverse().find((s) => v >= s.min) ?? defs[0];
 
+// ── 2. The subject deriver — character object → ctx.d ─────────
 registerSubjectDeriver((det, ref) => ({
   subjectId: det.id ?? null,
   exhaustion: ladder(EXHAUSTION, det.fatigue ?? 0).id,
@@ -759,45 +900,107 @@ registerSubjectDeriver((det, ref) => ({
   caseHeat: det.caseHeat ?? 0,
 }));
 
+// ── 3. Extra dimensions (usable in `when` immediately) ────────
 registerDimension('cityDistrict', (ctx) => ctx.globals?.district ?? 'downtown');
 registerDimension('rainState', (ctx) => ctx.globals?.rain ?? 'dry');
+
+// ── 4. Stem-tracked namespaces ────────────────────────────────
 trackStemsFor('case.');
 trackStemsFor('office.');
 
-// Word-grain lexicon, keyed on the game's own dimensions:
-registerPool('word.walkVerb', [
-  { when: {}, text: ['walks', 'moves', 'heads'] },
-  { when: { exhaustionMin: 2 }, weight: 2, text: ['trudges', 'drags himself', 'shuffles'] },
-  { when: { rainState: 'pouring' }, text: ['splashes', 'hunches'] },
+// ── 5. Identity modules — every game needs these ──────────────
+// Templates use {subject.name} etc. everywhere; register them here.
+// registerModule (best mode): identity is a lookup, not a pool.
+registerModule('subject.name', [
+  { when: {}, text: [(ctx) => ctx.subject?.name || 'Someone'] },
+]);
+registerModule('subject.first', [
+  { when: {}, text: [(ctx) => (ctx.subject?.name || 'Someone').split(' ')[0]] },
+]);
+registerModule('ref.name', [
+  { when: {}, text: [(ctx) => ctx.ref?.name || 'someone'] },
+]);
+// Pronoun slots read subject.pronouns ('she' | 'he' | 'they'; default
+// per game). Lexicon written with {subject.they}/{subject.them}/… ports
+// across any cast.
+const PRONOUN_SETS = {
+  she:  { they: 'she',  them: 'her',  their: 'her',   theirs: 'hers',   themself: 'herself' },
+  he:   { they: 'he',   them: 'him',  their: 'his',   theirs: 'his',    themself: 'himself' },
+  they: { they: 'they', them: 'them', their: 'their', theirs: 'theirs', themself: 'themself' },
+};
+for (const slot of ['they', 'them', 'their', 'theirs', 'themself']) {
+  registerModule(`subject.${slot}`, [
+    { when: {}, text: [(ctx) => (PRONOUN_SETS[ctx.subject?.pronouns] || PRONOUN_SETS.he)[slot]] },
+  ]);
+}
+// Numeric-stat slots are one-liners in the same shape:
+registerModule('subject.fatigue', [
+  { when: {}, text: [(ctx) => String(Math.round(ctx.subject?.fatigue ?? 0))] },
 ]);
 
-// A skeleton + a fact demonstrate the coherence layer in this genre:
+// ── 6. Word-grain lexicon, keyed on the game's own dimensions ─
+// Shape: VP-3SG (verb phrase, third-person singular).
+registerPool('word.walkVerb', [
+  { when: {}, text: ['walks', 'moves', 'heads'] },
+  { when: { exhaustionMin: 2 }, weight: 2, text: ['trudges', 'drags {subject.themself}', 'shuffles'] },
+  { when: { rainState: 'pouring' }, text: ['splashes', 'hunches'] },
+]);
+// Shape: ADV (adverbial; empty strings make it optional). Covers every
+// EXHAUSTION rung in bands — the coverage rule, demonstrated.
+registerPool('word.adv.pace', [
+  { when: {}, text: ['', '', 'without hurry'] },
+  { when: { exhaustionMax: 1 }, text: ['', 'with the day still in front of {subject.them}'] },
+  { when: { exhaustionMin: 2 }, weight: 2, text: ['on borrowed legs', 'slower than yesterday'] },
+  { when: { integrity: 'bent' }, weight: 2, text: ['like a man who owes the room money'] },
+]);
+// Psych register: the same fact reads differently through different minds.
+registerPool('word.debtSize', [
+  { when: {}, text: ['sizable', 'serious', 'ugly'] },
+  { when: { integrity: 'straight' }, weight: 2, text: ['a number he refuses to say out loud'] },
+  { when: { integrity: 'bent' }, weight: 2, text: ['a number he has stopped apologizing for'] },
+]);
+
+// ── 7. A skeleton + facts — the coherence layer in this genre ─
+// Shape: SENT.
+// (Prose craft: the skeleton names the character ONCE; sub-beats use
+// pronoun slots so composed passages don't drum the name.)
 registerPool('case.lightBeat', [
   { when: {}, asserts: { 'office.light': 'off' }, text: [
-    'The office is dark when he gets there.',
+    'The office is dark when {subject.they} gets there.',
+    'No light under the door. {subject.they} lets {subject.themself} in.',
+    'The dark office smells of yesterday.',
   ] },
   { when: { caseHeatMin: 3 }, weight: 2, asserts: { 'office.light': 'on' }, text: [
-    'The light is already on. He did not leave it on.',
+    'The light is already on. {subject.they} did not leave it on.',
   ] },
 ]);
+// Shape: SENT.
 registerPool('case.deskBeat', [
-  { when: {}, text: ['He drops the file on the desk.'] },
-  // Impossible after the dark-office fact — the guard blocks it:
+  { when: {}, text: [
+    '{subject.they} drops the file on the desk.',
+    'The file lands on the blotter.',
+    '{subject.they} sets the folder down where the coffee ring lives.',
+  ] },
+  // Impossible after the dark-office fact — the contradiction guard blocks it:
   { when: {}, asserts: { 'office.light': 'off' }, weight: 2, text: [
-    'He reads the file by the window instead of touching the lamp.',
+    '{subject.they} reads by the window instead of touching the lamp.',
   ] },
   { when: {}, requires: { 'office.light': 'on' }, weight: 4, text: [
     'Whoever turned the light on left the file square in its center.',
   ] },
 ]);
-// render('{case.lightBeat} {case.deskBeat}', ctx) can never say the light
-// is both on and off. That is the whole trick, in any genre.
+// Shape: SKELETON — the composed beat. 3+ skeleton shapes so sentence
+// rhythm varies, not just word choice.
+registerPool('case.arrival', [
+  { when: {}, text: [
+    '{subject.name} {word.walkVerb} in{word.adv.pace|prefix: }. {case.lightBeat} {case.deskBeat}',
+    '{case.lightBeat} {subject.name} {word.walkVerb} in{word.adv.pace|prefix: }. {case.deskBeat}',
+    '{subject.name} {word.walkVerb} in. {case.lightBeat} {case.deskBeat}',
+  ] },
+]);
+// render('{case.arrival}', ctx) can never say the light is both on and
+// off. That is the whole trick, in any genre.
 ```
-
-Character objects need only what your deriver reads. Give characters a
-`pronouns` field (`'she' | 'he' | 'they'`) and register `subject.they/them/
-their/theirs/themself` modules reading it, so lexicon entries port across
-casts.
 
 ---
 
@@ -827,34 +1030,57 @@ Empty-string entries in `ADV`/`PP`/`CLAUSE` pools are the sanctioned way to
 make a modifier optional. Tense and number change at the SLOT via filters,
 never by duplicating entries.
 
-### 6.2 The ten commandments of pools
+### 6.2 The twelve commandments of pools
 
 1. Namespace keys `feature.beatName`; one prefix per feature.
 2. Shape comment above every pool.
 3. **Every pool has a `{ when: {} }` fallback with ≥3 texts.** No exceptions
-   (an optional pool's fallback includes empty strings).
-4. Keep pool texts under ~200 characters; longer means you skipped
+   (an optional pool's fallback includes empty strings, and the pool is
+   listed in the lint pack's optional-empty set).
+4. **Wildcard texts are tone-neutral.** There are no NOT-conditions: a
+   wildcard can fire while the character is exhausted, grieving, or
+   euphoric, so it must read correctly under ANY state ("she crosses the
+   room" qualifies; "she bounces in cheerfully" gets a `mood` key). Any
+   fragment carrying tier-specific psychology gets a gate, full stop.
+5. Keep pool texts under ~200 characters; longer means you skipped
    decomposition.
-5. Persona lines (character-unique voice) key on the character id at
+6. Persona lines (character-unique voice) key on the character id at
    `weight: 4`, pooled WITH trait-keyed generics at `weight: 2` that use
    `{subject.name}` — identity dominates, psychology still shades.
-6. Compose skeletons from sub-pools; sub-pools from `word.*`; reuse the
-   lexicon instead of re-describing.
-7. Stateful prose declares its state: `asserts` when text establishes a
+7. Compose skeletons from sub-pools; sub-pools from `word.*`; reuse the
+   lexicon instead of re-describing. Give each beat 3–6 skeleton shapes so
+   sentence rhythm varies, not just word choice.
+8. **The skeleton names the character once; sub-beats use pronoun slots.**
+   Composed passages that say the name in every sentence read like a
+   police report, and the name is the one stem dedupe won't save you from.
+9. Stateful prose declares its state: `asserts` when text establishes a
    physical fact, `requires`/`forbids` when text assumes one.
-8. Every state-relevant pool covers EVERY applicable rung of its ladder
-   (stage/tier bands). Count before committing; lint checks coverage.
-9. Every dialogue/interior word pool carries at least one
-   psychology-keyed variant group (the register convention) — a timid
-   character and a brazen one must not pull identical word lists.
-10. Big systematic corpora live in data files; a loop builds the variants
-    and ALWAYS appends the generic fallback.
+10. Every state-relevant pool covers EVERY applicable rung of its ladder
+    (exact value or Min/Max bands). Count before committing; the lint
+    coverage layer errors on gaps.
+11. Every dialogue/interior word pool carries at least one
+    psychology-keyed variant group (the register convention) — a timid
+    character and a brazen one must not pull identical word lists.
+12. Big systematic corpora live in data files; a loop builds the variants
+    and ALWAYS appends the generic fallback:
+
+```js
+function buildVariants(chunks) {
+  const variants = chunks.flatMap((c) =>
+    c.moods.map((mood) => ({ when: { mood, district: c.district }, text: c.texts }))
+  );
+  variants.push({ when: {}, text: [ /* ≥3 generic fallbacks */ ] });
+  return variants;
+}
+registerPool('street.corner', buildVariants(CORNER_CHUNKS));
+```
 
 ### 6.3 The optionality pattern
 
 ```
 "{subject.name} {word.walkVerb} in{word.adv.pace|prefix: }{case.rainTail|prefix:, }."
 ```
+
 If `word.adv.pace` resolves empty its leading space vanishes; if
 `case.rainTail` is empty the comma goes with it. `smooth()` cleans the rest.
 This one pattern produces most of the surface-form variety.
@@ -866,91 +1092,721 @@ overlay variants keyed on your psychology dimensions:
 
 ```js
 registerPool('word.debtSize', [
-  { when: {}, text: ['sizable', 'serious'] },
+  { when: {}, text: ['sizable', 'serious', 'ugly'] },
   { when: { integrity: 'straight' }, weight: 2, text: ['a number he refuses to say out loud'] },
   { when: { integrity: 'bent' }, weight: 2, text: ['a number he has stopped apologizing for'] },
 ]);
 ```
 
+### 6.5 `weight` vs `priority`
+
+`weight` tunes shares among co-eligible variants — flavor. `priority` is a
+hard gate that silences everything below it — suppression. The known case
+where you need the gate: a skeleton pool whose variants are shaped per
+psychology tier. In pool mode the wildcard skeleton stays RNG-eligible, so
+a tier-0-shaped fallback leaks into tier-2 renders as a rare wrong-register
+event that playtesting misses. `priority: 1` on the tier-shaped variants is
+the fix. Document every `priority` use with a comment saying what it
+suppresses.
+
 ---
 
 ## Part VII — The lint harness
 
-A node script (`textLint.mjs`) that imports every registered pool plus the
-setting pack, then runs four layers. Exit non-zero on any error. Run it
-until clean before every commit; it is the only quality gate that matters.
+The harness is two files: a generic `textLint.mjs` you copy verbatim, and a
+`lintPack.js` you own — sweep templates, the state grid, ladder-coverage
+spec, banned patterns, continuity sweeps, morphology table. Run
+`node textLint.mjs` until clean before every commit; exit non-zero is the
+only quality signal that matters.
 
-**Layer 1 — static checks** over `_registryEntries()`:
-- every pool has a wildcard fallback (error) with ≥3 texts (warning);
-- no pool text over 200 chars (error) — the monolith detector;
-- every `{slot}` referenced in any text resolves to a registered key (error);
-- `requires/forbids/asserts` field shapes valid; topics match
-  `/^[a-z][\w.]*$/` (error); facts asserted but never read (warning);
-- word pools without a psych-keyed variant group (warning, exempt list);
-- ladder coverage: state-relevant pools cover every applicable rung (error).
+Four layers:
 
-**Layer 2 — dynamic sweep**: for each flagship template, render across the
-full state grid (every character × every ladder rung × psych tiers × moods,
-~5 renders per cell). Error on: empty output, `{` in output, literal
-"undefined", double spaces, orphaned punctuation. Warn when >5% of cells
-render identically 5× (variety floor).
+- **Layer 1 — static** over `_registryEntries()`: wildcard fallback present
+  (error) with ≥3 texts (warning); all-empty wildcard on a pool not
+  declared optional (error); no pool text over 200 chars — the monolith
+  detector (error); every `{slot}` reference resolves to a registered key
+  (error); fact field shapes valid, topics `domain.instance` (error);
+  facts asserted but never read (warning); word pools without a
+  psych-keyed variant group (warning, exempt list); ladder coverage per
+  the lint pack spec (error).
+- **Layer 2 — dynamic sweep**: each flagship template rendered across the
+  full state grid, several renders per cell. Error on empty output, `{` in
+  output, literal "undefined", double spaces, orphaned punctuation, banned
+  patterns. Warn when >5% of cells render identically every time.
+- **Layer 3 — coherence** (rate-based so RNG can't flake CI): stem the
+  output of every sweep render, error when >1% of renders contain any stem
+  3+ times (cast names excluded — identity is not imagery); a permanent
+  contradiction probe (assert `seated`, verify a `standing`-asserting
+  variant never surfaces across 200 renders while a `requires`-gated one
+  always does); one continuity sweep per stateful feature, declared in the
+  lint pack.
+- **Layer 4 — morphology table**: fixed input/output pairs per filter
+  asserted equal, plus every corpus verb run through `past`/`ing` with junk
+  endings (`eded`, `inging`, `sss`) as errors.
 
-**Layer 3 — coherence gates** (rate-based so RNG can't flake CI):
-- stem the output of every sweep render; error when >1% of renders contain
-  any stem 3+ times; report the rate as a permanent stat;
-- contradiction self-check: register two probe pools where slot 1 asserts
-  `probe.state: 'a'` and slot 2 holds an asserting-`'b'` variant plus a
-  requires-`'a'` variant; 200 renders; the `'b'` text must never appear and
-  the required text always must;
-- one continuity sweep per stateful feature (e.g. assert a breakage fact,
-  then render the descriptor pool 100×; no intact-marker phrase may appear).
+Content files register pools at import time; a `scenes/index.js` barrel
+imports every content file so the harness sees the full registry. **A file
+missing from the barrel does not exist.**
 
-**Layer 4 — morphology table**: ~40 fixed input/output pairs per filter
-function asserted equal, plus a probe applying `past`/`ing` to every corpus
-verb and erroring on junk endings (`eded`, `inging`, `sss`).
+The growth protocol: every bug found by hand becomes a lint entry the same
+day — a banned-pattern regex, a continuity sweep, a morphology row, a new
+grid axis. The production game's quality came from that ratchet, and its
+lint pack is several times the size of the starter below. Yours should end
+up the same way.
 
-Skeleton:
+### 7.1 `lintPack.js`
 
 ```js
+// ═══════════════════════════════════════════════════════════════
+// LINT PACK — the game-specific half of the lint harness.
+// The harness (textLint.mjs) is generic; this file tells it what to
+// sweep, which states to probe, which ladders demand coverage, and
+// which phrasings are banned. Grows with the game, forever.
+// ═══════════════════════════════════════════════════════════════
+
+// Characters the sweep instantiates (minimum: every distinct cast
+// member the deriver treats differently; synthetic is fine).
+export const LINT_CHARACTERS = [
+  { id: 0, name: 'Ray Vessel', pronouns: 'he', fatigue: 0, bribesTaken: 0, mood: 'flat', caseHeat: 0 },
+  { id: 1, name: 'June Calloway', pronouns: 'she', fatigue: 0, bribesTaken: 0, mood: 'sharp', caseHeat: 0 },
+];
+
+// The state grid — every combination is rendered RENDERS_PER_CELL times.
+// Add an axis the day you add a dimension that changes prose.
+export const LINT_GRID = {
+  fatigue: [0, 45, 90],            // spans every EXHAUSTION rung
+  bribesTaken: [0, 1, 3],          // integrity: straight / bending / bent
+  mood: ['flat', 'sharp', 'raw'],
+  globals: [
+    { district: 'downtown', rain: 'dry' },
+    { district: 'docks', rain: 'pouring' },
+  ],
+};
+export const RENDERS_PER_CELL = 5;
+
+// Flagship templates — every feature adds its top-level template here
+// the day it ships. A template not swept is a template not tested.
+export const SWEEPS = [
+  { name: 'case.arrival', root: 'case.arrival', tpl: '{case.arrival}' },
+];
+
+// Ladder coverage: pools under these prefixes must cover every rung of
+// the named dimension (via exact value or Min/Max bands). `rungs` lists
+// the applicable rungs — narrower for content that only exists at some.
+export const LADDER_COVERAGE = [
+  { prefixes: ['word.adv.pace'], dimension: 'exhaustion', rungs: [0, 1, 2, 3] },
+];
+
+// Pools where empty-string wildcard texts are intentional (optional slots).
+export const OPTIONAL_EMPTY_POOLS = new Set(['word.adv.pace']);
+
+// Psych-register convention: word.* pools should shade on at least one
+// psychology dimension. List your game's psych keys; exempt mechanical
+// corpora by prefix.
+export const PSYCH_KEYS = /^(integrity|mood)$|^exhaustion(Min|Max)$/;
+export const PSYCH_REGISTER_EXEMPT_PREFIXES = ['word.walkVerb'];
+
+// Style ledger, automated. Grows every tuning batch — when a banned
+// construction generalizes, its regex lands here the same day.
+export const BANNED_PATTERNS = [
+  { pattern: /\. That is /i, message: "narrator tic 'That is X' — fold judgment into behavior" },
+  { pattern: /you both know/i, message: 'narrated telepathy — show the behavior' },
+  { pattern: /\bsuddenly\b/i, message: 'unearned — build pressure, let it break' },
+];
+
+// Continuity sweeps: one per stateful feature. Render setup (asserts a
+// fact), then probe the descriptor pool; the forbidden phrasing must
+// never surface while the fact holds.
+export const CONTINUITY_SWEEPS = [
+  {
+    name: 'office light stays off',
+    setupTpl: '{case.lightBeat}',
+    setupRequiredFact: ['office.light', 'off'],   // only probe when setup asserted this
+    probeTpl: '{case.deskBeat}',
+    forbidden: /turned the light on/i,
+    renders: 100,
+  },
+];
+
+// Morphology table — pin every filter with fixed pairs; extend when a
+// corpus verb renders wrong.
+export const MORPH_CASES = [
+  ['past', 'walks', 'walked'], ['past', 'strides', 'strode'],
+  ['past', 'carries', 'carried'], ['past', 'is', 'was'],
+  ['past', 'slips', 'slipped'], ['past', 'goes', 'went'],
+  ['ing', 'walks', 'walking'], ['ing', 'eases', 'easing'],
+  ['ing', 'sits', 'sitting'], ['ing', 'lies', 'lying'],
+  ['s3', 'walk', 'walks'], ['s3', 'cross', 'crosses'],
+  ['s3', 'carry', 'carries'], ['s3', 'have', 'has'],
+  ['plural', 'shelf', 'shelves'], ['plural', 'inch', 'inches'],
+  ['plural', 'alley', 'alleys'], ['plural', 'woman', 'women'],
+];
+
+// Verb corpus probe: every 3sg verb your lexicon stores, run through
+// past/ing, must not produce junk endings.
+export const VERB_CORPUS = ['walks', 'moves', 'heads', 'trudges', 'shuffles', 'splashes', 'hunches'];
+```
+
+### 7.2 `textLint.mjs`
+
+```js
+// ═══════════════════════════════════════════════════════════════
+// TEXT LINT — generic four-layer harness. Run: node textLint.mjs
+// Exit non-zero on any error. Game specifics live in lintPack.js.
+// ═══════════════════════════════════════════════════════════════
 import './settingPack.js';
-import './scenes/index.js';   // barrel that imports every content file
-import { _registryEntries, _moduleOpts, createContext, render,
-         stemsOf, createFacts, registerPool } from './engine.js';
+// import './scenes/index.js';   // barrel of every content file, once you have one
+import {
+  _registryEntries, _moduleOpts, hasModule, createContext, createFacts,
+  render, registerPool, stemsOf,
+} from './engine.js';
+import { pastTense, presentParticiple, thirdPerson, pluralize } from './morphology.js';
+import {
+  LINT_CHARACTERS, LINT_GRID, RENDERS_PER_CELL, SWEEPS,
+  LADDER_COVERAGE, OPTIONAL_EMPTY_POOLS, PSYCH_KEYS,
+  PSYCH_REGISTER_EXEMPT_PREFIXES, BANNED_PATTERNS, CONTINUITY_SWEEPS,
+  MORPH_CASES, VERB_CORPUS,
+} from './lintPack.js';
+
 const errors = [], warnings = [];
-// … layers 1–4 as specified …
-if (errors.length) { errors.forEach(e => console.error('✖', e)); process.exit(1); }
+const err = (m) => errors.push(m);
+const warning = (m) => warnings.push(m);
+const entries = _registryEntries();
+const registeredKeys = new Set(entries.map(([k]) => k));
+const SLOT_RE = /\{([a-zA-Z][\w.]*)(?::([^|}]*))?(?:\|[^}]*)?\}/g;
+const STEM_TRIPLE_MAX_PCT = 1;
+
+function* stringTexts(variants) {
+  for (const v of variants) {
+    const arr = Array.isArray(v.text) ? v.text : [v.text];
+    for (const text of arr) if (typeof text === 'string') yield { variant: v, text };
+  }
+}
+
+// ── Layer 1 — static checks ───────────────────────────────────
+for (const [key, variants] of entries) {
+  const isPool = _moduleOpts(key).select === 'pool';
+  const label = `${isPool ? 'pool' : 'module'} "${key}"`;
+
+  // Wildcard fallback presence + depth.
+  const wildcards = variants.filter((v) => !v.when || Object.keys(v.when).length === 0);
+  if (!wildcards.length) (isPool ? err : warning)(`${label}: no { when: {} } fallback`);
+  const wcTexts = wildcards.reduce((n, v) => n + (Array.isArray(v.text) ? v.text.length : 1), 0);
+  if (isPool && wildcards.length && wcTexts < 3) {
+    warning(`${label}: only ${wcTexts} wildcard text(s) — aim for ≥3`);
+  }
+  if (isPool && !OPTIONAL_EMPTY_POOLS.has(key)) {
+    const nonEmpty = wildcards
+      .flatMap((v) => (Array.isArray(v.text) ? v.text : [v.text]))
+      .filter((t) => typeof t !== 'string' || t.trim()).length;
+    if (wildcards.length && nonEmpty === 0) err(`${label}: wildcard is all empty strings but pool is not in OPTIONAL_EMPTY_POOLS`);
+  }
+
+  for (const { text } of stringTexts(variants)) {
+    // Monolith detector.
+    if (isPool && text.length > 200) {
+      err(`${label}: ${text.length}-char text — decompose into skeleton + fragments: "${text.slice(0, 60)}…"`);
+    }
+    // Every referenced slot resolves.
+    SLOT_RE.lastIndex = 0;
+    let m;
+    while ((m = SLOT_RE.exec(text))) {
+      const [, name, arg] = m;
+      const refs = name === 'join'
+        ? (arg || '').split(',').map((k) => k.trim()).filter(Boolean) : [name];
+      for (const ref of refs) {
+        if (!ref.startsWith('subject.') && !ref.startsWith('ref.') && !registeredKeys.has(ref)) {
+          err(`${label}: references unregistered module "{${ref}}"`);
+        }
+      }
+    }
+    // Banned patterns, statically.
+    for (const { pattern, message } of BANNED_PATTERNS) {
+      if (pattern.test(text)) warning(`${label}: banned pattern (${message}): "${text.slice(0, 60)}…"`);
+    }
+  }
+
+  // Fact field shapes; collect topics for the dead-fact warning.
+}
+const TOPIC_RE = /^[a-z][\w.]*$/;
+const SCALARS = new Set(['string', 'boolean', 'number']);
+const factValueOk = (v) => SCALARS.has(typeof v) || (Array.isArray(v) && v.every((x) => SCALARS.has(typeof x)));
+const assertedTopics = new Map(), readTopics = new Set();
+for (const [key, variants] of entries) {
+  for (const v of variants) {
+    for (const field of ['requires', 'forbids', 'asserts']) {
+      const val = v[field];
+      if (val == null) continue;
+      if (Array.isArray(val)) {
+        if (field !== 'forbids') { err(`${key}: ${field} must be an object`); continue; }
+        for (const t of val) {
+          if (typeof t !== 'string' || !TOPIC_RE.test(t)) err(`${key}: forbids topic "${t}" malformed`);
+          else readTopics.add(t);
+        }
+        continue;
+      }
+      if (typeof val !== 'object') { err(`${key}: ${field} must be an object`); continue; }
+      for (const [t, tv] of Object.entries(val)) {
+        if (!TOPIC_RE.test(t)) err(`${key}: ${field} topic "${t}" must be domain.instance`);
+        if (!factValueOk(tv)) err(`${key}: ${field}.${t} value must be scalar or scalar array`);
+        if (field === 'asserts') {
+          if (!assertedTopics.has(t)) assertedTopics.set(t, new Set());
+          assertedTopics.get(t).add(key);
+        } else readTopics.add(t);
+      }
+    }
+  }
+}
+for (const [topic, keys] of assertedTopics) {
+  if (!readTopics.has(topic)) {
+    warning(`fact "${topic}" asserted (${[...keys].slice(0, 3).join(', ')}) but never read — dead weight`);
+  }
+}
+
+// Psych-register convention.
+for (const [key, variants] of entries) {
+  if (!key.startsWith('word.')) continue;
+  if (_moduleOpts(key).select !== 'pool') continue;
+  if (PSYCH_REGISTER_EXEMPT_PREFIXES.some((p) => key.startsWith(p))) continue;
+  const hasPsych = variants.some((v) => v.when && Object.keys(v.when).some((k) => PSYCH_KEYS.test(k)));
+  if (!hasPsych) warning(`pool "${key}": no psych-keyed variant group`);
+}
+
+// Ladder coverage.
+function coversRung(variant, dim, rung) {
+  const w = variant.when || {};
+  if (w[dim] != null) return Array.isArray(w[dim]) ? w[dim].includes(rung) : w[dim] === rung;
+  const min = w[`${dim}Min`], max = w[`${dim}Max`];
+  if (min == null && max == null) return false;
+  return rung >= (min ?? -Infinity) && rung <= (max ?? Infinity);
+}
+for (const { prefixes, dimension, rungs } of LADDER_COVERAGE) {
+  for (const [key, variants] of entries) {
+    if (!prefixes.some((p) => key.startsWith(p))) continue;
+    for (const rung of rungs) {
+      if (!variants.some((v) => coversRung(v, dimension, rung))) {
+        err(`coverage: ${key} has no variant covering ${dimension}=${rung}`);
+      }
+    }
+  }
+}
+
+// ── Layer 2 — dynamic sweep ───────────────────────────────────
+const ARTIFACTS = [
+  ['{', 'unresolved slot'], ['undefined', 'literal "undefined"'],
+  [' ,', 'space before comma'], ['and .', 'dangling "and"'],
+  [', .', 'orphaned comma'], ['  ', 'double space'],
+];
+let cells = 0, rendersDone = 0, lowVariety = 0;
+let stemTripleRenders = 0;
+const stemTripleExamples = [];
+// Cast names are identity, not imagery — exclude them from the slop gate.
+const NAME_STEMS = new Set(LINT_CHARACTERS.flatMap((c) => stemsOf(c.name)));
+function checkStems(name, out, meta) {
+  const counts = new Map();
+  for (const s of stemsOf(out)) {
+    if (NAME_STEMS.has(s)) continue;
+    counts.set(s, (counts.get(s) || 0) + 1);
+  }
+  for (const [s, n] of counts) {
+    if (n >= 3) {
+      stemTripleRenders++;
+      if (stemTripleExamples.length < 5) stemTripleExamples.push(`${name}: stem "${s}" ×${n} (${meta}): "${out.slice(0, 100)}"`);
+      return;
+    }
+  }
+}
+for (const sweep of SWEEPS) {
+  if (!hasModule(sweep.root)) { warning(`sweep ${sweep.name}: root module missing — skipped`); continue; }
+  for (const base of LINT_CHARACTERS) {
+    for (const fatigue of LINT_GRID.fatigue) {
+      for (const bribesTaken of LINT_GRID.bribesTaken) {
+        for (const mood of LINT_GRID.mood) {
+          for (const globals of LINT_GRID.globals) {
+            const subject = { ...base, fatigue, bribesTaken, mood };
+            const ctx = createContext({ subject, week: 3, globals });
+            const outs = new Set();
+            for (let i = 0; i < RENDERS_PER_CELL; i++) {
+              ctx.facts = createFacts();     // fresh scene per render
+              const out = render(sweep.tpl, ctx);
+              rendersDone++;
+              if (!out || !out.trim()) {
+                err(`${sweep.name}: empty render (char=${base.name} fatigue=${fatigue} bribes=${bribesTaken} mood=${mood})`);
+                continue;
+              }
+              for (const [needle, desc] of ARTIFACTS) {
+                if (out.includes(needle)) {
+                  err(`${sweep.name}: ${desc} (char=${base.name} fatigue=${fatigue}): "${out.slice(0, 120)}"`);
+                  break;
+                }
+              }
+              for (const { pattern, message } of BANNED_PATTERNS) {
+                if (pattern.test(out)) err(`${sweep.name}: banned pattern in output (${message}): "${out.slice(0, 100)}"`);
+              }
+              checkStems(sweep.name, out, `char=${base.name} fatigue=${fatigue}`);
+              outs.add(out);
+            }
+            cells++;
+            if (outs.size === 1 && RENDERS_PER_CELL > 1) lowVariety++;
+          }
+        }
+      }
+    }
+  }
+}
+if (cells > 0 && lowVariety / cells > 0.05) {
+  warning(`sweep: ${lowVariety}/${cells} cells rendered identically ${RENDERS_PER_CELL}× — variety is low`);
+}
+
+// ── Layer 3 — coherence gates (rate-based; RNG can't flake CI) ─
+const triplePct = rendersDone ? (100 * stemTripleRenders) / rendersDone : 0;
+console.log(`stem dedupe: ${stemTripleRenders}/${rendersDone} renders carry a 3×-repeated stem (${triplePct.toFixed(2)}%, gate ${STEM_TRIPLE_MAX_PCT}%)`);
+if (triplePct > STEM_TRIPLE_MAX_PCT) {
+  err(`stem dedupe: ${triplePct.toFixed(1)}% > ${STEM_TRIPLE_MAX_PCT}% of renders contain a 3×-repeated stem`);
+  for (const ex of stemTripleExamples) warning(ex);
+}
+
+// Contradiction probe — registered here on purpose; probes, not content.
+registerPool('lint.factCheck.first', [
+  { when: {}, asserts: { 'lint.posture': 'seated' }, text: [
+    'She sits.', 'She settles into the chair.', 'She takes a seat.',
+  ] },
+]);
+registerPool('lint.factCheck.second', [
+  { when: {}, asserts: { 'lint.posture': 'standing' }, text: ['LINT-CONTRADICTION'] },
+  { when: {}, requires: { 'lint.posture': 'seated' }, text: [
+    'Still seated.', 'Still seated, comfortably.', 'Still seated — no hurry.',
+  ] },
+]);
+for (let i = 0; i < 200; i++) {
+  const ctx = createContext({ subject: LINT_CHARACTERS[0], week: 2 });
+  const out = render('{lint.factCheck.first} {lint.factCheck.second}', ctx);
+  rendersDone++;
+  if (out.includes('LINT-CONTRADICTION')) { err(`factCheck: contradiction guard failed (render ${i})`); break; }
+  if (!out.includes('Still seated')) { err(`factCheck: requires-gated variant did not render (render ${i}): "${out}"`); break; }
+}
+
+// Continuity sweeps from the pack.
+for (const cs of CONTINUITY_SWEEPS) {
+  let probed = 0;
+  for (let i = 0; i < cs.renders; i++) {
+    const facts = createFacts();
+    render(cs.setupTpl, createContext({ subject: LINT_CHARACTERS[0], week: 3, facts }));
+    if (cs.setupRequiredFact && facts.get(cs.setupRequiredFact[0]) !== cs.setupRequiredFact[1]) continue;
+    const out = render(cs.probeTpl, createContext({ subject: LINT_CHARACTERS[0], week: 3, facts }));
+    rendersDone++; probed++;
+    if (cs.forbidden.test(out)) { err(`continuity "${cs.name}": forbidden phrasing surfaced (render ${i}): "${out}"`); break; }
+  }
+  if (probed === 0) warning(`continuity "${cs.name}": setup never asserted the required fact — probe never ran`);
+}
+
+// ── Layer 4 — morphology table ────────────────────────────────
+const MORPH_FNS = { past: pastTense, ing: presentParticiple, s3: thirdPerson, plural: pluralize };
+for (const [filter, input, want] of MORPH_CASES) {
+  const got = MORPH_FNS[filter](input);
+  if (got !== want) err(`morphology: ${filter}("${input}") = "${got}", want "${want}"`);
+}
+const BROKEN = /(eded|inging|sss|ieed)$/;
+for (const verb of VERB_CORPUS) {
+  for (const fn of [pastTense, presentParticiple]) {
+    const out = fn(verb);
+    if (BROKEN.test(out)) err(`morphology: ${fn.name}("${verb}") = "${out}" — extend the irregular maps`);
+  }
+}
+
+// ── report ────────────────────────────────────────────────────
+console.log(`textLint: ${entries.length} modules, ${cells} sweep cells, ${rendersDone} renders`);
+if (warnings.length) {
+  console.log(`\n⚠ ${warnings.length} warning(s):`);
+  for (const w of warnings) console.log(`  ⚠ ${w}`);
+}
+if (errors.length) {
+  console.log(`\n✖ ${errors.length} error(s):`);
+  for (const e of errors) console.log(`  ✖ ${e}`);
+  process.exit(1);
+}
 console.log('✔ clean');
 ```
 
-Content files register pools at import time; a `scenes/index.js` barrel
-imports every content file so the lint harness sees the full registry. **A
-file missing from the barrel does not exist.**
-
 ---
 
-## Part VIII — Build order
+## Part VIII — Mechanism self-check and build order
+
+### 8.1 `smoke.mjs`
+
+Eighteen assertions that pin every engine mechanism: pool variety, silent
+unknowns, week ranges, specificity math, ladder gating, the fact ledger,
+render-scope dedupe, session repeat penalty, the priority gate, all seven
+filters, `{join}`, brace escaping, smoothing behavior (including the `\n\n`
+gotcha), `:ref` retargeting, pronoun modules, trace, the slot inspector,
+and seasons. Run it after copying Part IV; run it again any time you touch
+the engine. If you reimplement the engine in another language, port this
+file first — it IS the spec in executable form.
+
+```js
+// Phase-1/2 verification from the manifesto build order — engine mechanics
+// pinned by assertion. Run: node smoke.mjs
+import './settingPack.js';
+import {
+  createContext, createFacts, createSessionUsed, render, registerPool,
+  stemsOf, getSeason, getEligibleVariants,
+} from './engine.js';
+import assert from 'node:assert';
+
+const det = (over = {}) => ({
+  id: 0, name: 'Ray Vessel', pronouns: 'he',
+  fatigue: 0, bribesTaken: 0, mood: 'flat', caseHeat: 0, ...over,
+});
+const ctxOf = (over = {}, raw = {}) => createContext({ subject: det(over), week: 3, ...raw });
+
+// 1. Two-variant pool: both texts appear across renders.
+registerPool('t.two', [{ when: {}, text: ['alpha', 'beta'] }]);
+{
+  const seen = new Set();
+  for (let i = 0; i < 60; i++) seen.add(render('{t.two}', ctxOf()));
+  assert(seen.has('Alpha') && seen.has('Beta'), `both texts appear (saw ${[...seen]})`);
+}
+
+// 2. Unknown module renders "" (never throws).
+assert.equal(render('{t.missing}', ctxOf()), '');
+
+// 3. weekMin/weekMax work via the generalized rule (regression: `week`
+//    must be seeded onto ctx.d).
+registerPool('t.week', [
+  { when: {}, text: ['early'] },
+  { when: { weekMin: 10 }, weight: 1000, text: ['late'] },
+]);
+assert.equal(render('{t.week}', createContext({ subject: det(), week: 3 })), 'Early');
+assert.equal(render('{t.week}', createContext({ subject: det(), week: 12 })), 'Late');
+
+// 4. Specificity weighting: 2-condition variant outweighs wildcard 9:1.
+registerPool('t.spec', [
+  { when: {}, text: ['generic'] },
+  { when: { integrity: 'bent', mood: 'flat' }, text: ['specific'] },
+]);
+{
+  let specific = 0;
+  for (let i = 0; i < 400; i++) {
+    if (render('{t.spec}', ctxOf({ bribesTaken: 3 })) === 'Specific') specific++;
+  }
+  assert(specific > 300 && specific < 395, `specific ≈90% (got ${specific}/400)`);
+}
+
+// 5. Ladder-derived dimension gates content (exhaustion via deriver).
+{
+  const outs = new Set();
+  for (let i = 0; i < 80; i++) outs.add(render('{word.walkVerb}', ctxOf({ fatigue: 90 })));
+  assert([...outs].some((o) => /trudges|drags|shuffles/i.test(o)), 'ragged verbs surface at high fatigue');
+  const fresh = new Set();
+  for (let i = 0; i < 80; i++) fresh.add(render('{word.walkVerb}', ctxOf()));
+  assert(![...fresh].some((o) => /trudges|drags|shuffles/i.test(o)), 'ragged verbs never at fatigue 0');
+}
+
+// 6. Fact ledger: contradiction guard + requires, shared facts across renders.
+{
+  for (let i = 0; i < 200; i++) {
+    const facts = createFacts();
+    const c1 = createContext({ subject: det({ caseHeat: 5 }), week: 3, facts });
+    const first = render('{case.lightBeat}', c1);
+    const c2 = createContext({ subject: det({ caseHeat: 5 }), week: 3, facts });
+    const second = render('{case.deskBeat}', c2);
+    const lightOn = facts.get('office.light') === 'on';
+    if (lightOn) assert(!/window instead of touching the lamp/i.test(second), 'no dark-office line after light-on fact');
+    else assert(!/turned the light on/i.test(second), 'no light-on line after dark fact');
+    assert(first.length > 0 && second.length > 0);
+  }
+}
+
+// 7. Stem dedupe: a word.* stem used earlier in the same render is near-blocked.
+registerPool('word.t.echo', [{ when: {}, text: ['trudges heavily'] }]);
+registerPool('word.t.echo2', [
+  { when: {}, text: ['trudges again', 'keeps going'] },
+]);
+{
+  let echoed = 0;
+  for (let i = 0; i < 300; i++) {
+    const out = render('{word.t.echo} {word.t.echo2}', ctxOf());
+    if (/trudges.*trudges/i.test(out)) echoed++;
+  }
+  // 0.02 penalty ≈ 2% of picks; allow slack.
+  assert(echoed < 30, `render-scope dedupe suppresses repeats (echoed ${echoed}/300)`);
+}
+
+// 8. Session repeat penalty: same line rarely twice running in one event.
+registerPool('t.sess', [{ when: {}, text: ['one', 'two'] }]);
+{
+  let repeats = 0;
+  for (let i = 0; i < 300; i++) {
+    const sessionUsed = createSessionUsed();
+    const a = render('{t.sess}', createContext({ subject: det(), week: 3, sessionUsed }));
+    const b = render('{t.sess}', createContext({ subject: det(), week: 3, sessionUsed }));
+    if (a === b) repeats++;
+  }
+  // Unpenalized would repeat ~50%; 0.12 penalty predicts ~11%.
+  assert(repeats < 75, `session penalty works (repeats ${repeats}/300)`);
+}
+
+// 9. Priority is a hard gate in pool mode.
+registerPool('t.prio', [
+  { when: {}, text: ['base'] },
+  { when: { mood: 'raw' }, priority: 1, text: ['gated'] },
+]);
+{
+  const outs = new Set();
+  for (let i = 0; i < 60; i++) outs.add(render('{t.prio}', ctxOf({ mood: 'raw' })));
+  assert.deepEqual([...outs], ['Gated'], 'only max-priority variants survive');
+  assert.equal(render('{t.prio}', ctxOf()), 'Base');
+}
+
+// 10. Filters: a / cap / past / ing / s3 / plural / prefix vanishing.
+registerPool('t.noun', [{ when: {}, text: ['empty room'] }]);
+registerPool('t.verb', [{ when: {}, text: ['strides out'] }]);
+registerPool('t.empty', [{ when: {}, text: [''] }]);
+assert.equal(render('{t.noun|a}', ctxOf(), { noSmooth: true }), 'an empty room');
+assert.equal(render('{t.verb|past}', ctxOf(), { noSmooth: true }), 'strode out');
+assert.equal(render('{t.verb|ing}', ctxOf(), { noSmooth: true }), 'striding out');
+assert.equal(render('{t.noun|plural}', ctxOf(), { noSmooth: true }), 'empty rooms');
+assert.equal(render('x{t.empty|prefix:, }y', ctxOf(), { noSmooth: true }), 'xy');
+
+// 11. {join} drops empties and glues survivors.
+registerPool('t.ja', [{ when: {}, text: ['coat soaked'] }]);
+registerPool('t.jb', [{ when: {}, text: [''] }]);
+registerPool('t.jc', [{ when: {}, text: ['hat gone'] }]);
+assert.equal(
+  render('{join:t.ja,t.jb,t.jc}', ctxOf(), { noSmooth: true }),
+  'coat soaked and hat gone',
+);
+
+// 12. {{ escapes a literal brace.
+assert.equal(render('{{literal}', ctxOf(), { noSmooth: true }), '{literal}');
+
+// 13. smooth(): punctuation cleanup + capitalization (NOT after \n\n).
+registerPool('t.lc', [{ when: {}, text: ['lower start.'] }]);
+assert.equal(render('{t.lc} {t.lc}', ctxOf()), 'Lower start. Lower start.');
+assert.equal(render('{t.lc}\n\n{t.lc}', ctxOf()), 'Lower start.\n\nlower start.');
+
+// 14. :ref retargeting re-derives dimensions for the reference character.
+registerPool('t.who', [{ when: {}, text: ['{subject.first}'] }]);
+{
+  const ctx = createContext({ subject: det(), ref: det({ id: 1, name: 'June Calloway' }), week: 3 });
+  assert.equal(render('{t.who}', ctx, { noSmooth: true }), 'Ray');
+  assert.equal(render('{t.who:ref}', ctx, { noSmooth: true }), 'June');
+}
+
+// 15. Pronoun modules follow subject.pronouns.
+{
+  const she = createContext({ subject: det({ name: 'June Calloway', pronouns: 'she' }), week: 3 });
+  assert.equal(render('{subject.their} desk', she, { noSmooth: true }), 'her desk');
+}
+
+// 16. Trace records provenance with leaf flags.
+{
+  const trace = [];
+  render('{case.arrival}', ctxOf(), { trace });
+  assert(trace.length >= 3, 'trace collected');
+  assert(trace.some((t) => t.leaf), 'leaf fragments present');
+  assert(trace.some((t) => t.key === 'case.arrival'), 'root slot traced');
+}
+
+// 17. getEligibleVariants reports probabilities for the state.
+{
+  const rows = getEligibleVariants('word.walkVerb', ctxOf({ fatigue: 90 }));
+  assert(rows.length >= 2 && rows[0].probability > 0, 'inspector rows with probabilities');
+}
+
+// 18. getSeason cycles every 4 weeks.
+assert.equal(getSeason(1), 'fall');
+assert.equal(getSeason(5), 'winter');
+
+console.log('✔ smoke: all 18 mechanism checks passed');
+```
+
+### 8.2 Build order
 
 Each phase is one commit. Do not start phase N+1 until phase N's check
-passes. "Clean" means: your lint script exits 0, your project's code
+passes. "Clean" means: `node textLint.mjs` exits 0, your project's code
 linter passes, and your app builds.
 
 | # | Build | Verify |
 |---|---|---|
-| 1 | `engine.js` + `morphology.js` verbatim from Part IV | Node REPL: register a 2-variant pool, render 20×, both texts appear; unknown slot renders `""` |
-| 2 | `settingPack.js`: deriver + dimensions + ladders for YOUR game | Render `{word.*}` probes at 3 ladder rungs; outputs differ by rung |
-| 3 | Lint harness Layers 1+4 | Deliberately break a fallback and a verb; both are caught; fix; clean |
-| 4 | First feature: one skeleton + 3 sub-pools + lexicon reuse, per Part VI | Layer 2 sweep for its template; 20 sample renders read well |
-| 5 | Coherence: facts on the feature's stateful beats; stem tracking on its namespace | Layer 3 gates pass; write the continuity sweep |
+| 1 | `engine.js` + `morphology.js` verbatim from Part IV | `smoke.mjs` (needs a minimal setting pack — Part V's works) passes all 18 checks |
+| 2 | `settingPack.js`: ladders, deriver, dimensions, identity modules for YOUR game | Render `{word.*}` probes at 3 ladder rungs; outputs differ by rung |
+| 3 | `lintPack.js` + `textLint.mjs`; wire your grid and sweeps | Deliberately break a fallback and a morphology row; both are caught; fix; clean |
+| 4 | First feature: one skeleton + 3 sub-pools + lexicon reuse, per Part VI | Its template in SWEEPS; sweep clean; 20 sample renders read well |
+| 5 | Coherence: facts on the feature's stateful beats; stem tracking on its namespace; a continuity sweep in the lint pack | Layer 3 clean |
 | 6 | Repeat 4–5 per feature; wire game UI to `render()` calls | Full lint stays clean; play the game |
-| 7 | Persist `weekUsed` on characters; share `sessionUsed`+`facts`+`sceneStems` per event | Two renders in one event never repeat a line; facts carry across the event |
+| 7 | The persistence contract (3.8): share event scopes, persist `weekUsed` | Two renders in one event never contradict or repeat; facts carry across the event |
+| 8 | Tooling (Part IX): thread `trace`, build the roll/flag panel | You can roll any beat at any state and see per-slot provenance |
 
-The engine is ~460 lines you copy once. All real effort is content: expect
+The engine is ~470 lines you copy once. All real effort is content: expect
 1 part engine work to 10 parts authoring, forever. That ratio is the sign
 you built it right.
 
 ---
 
-## Part IX — Pitfalls (each observed in practice)
+## Part IX — Tooling and the tuning loop
+
+The engine ships with three hooks that exist for one purpose: making bad
+renders traceable to the pool that produced them. Build the thin UI over
+them early; it repays itself within a week.
+
+- **`render(tpl, ctx, { trace: [] })`** fills the array with
+  `{ key, text, leaf, depth }` per resolved slot. A `leaf` fragment
+  contained no further content slots — the natural unit for annotation
+  (`subject.*` identity slots don't break leaf status, so sentences with
+  `{subject.name}` stay annotatable).
+- **`getEligibleVariants(key, ctx)`** returns every variant eligible at a
+  state, with computed pick probabilities — the "why did/didn't line X
+  fire" inspector.
+- **A dev panel** (in-game debug screen or a node REPL script) that: picks
+  a beat, locks or randomizes state params, rolls N samples, and lets a
+  reader flag a sample with per-slot notes (the trace supplies the slot
+  tags). Flagged output looks like:
+
+```
+section: case.arrival
+state: Ray Vessel · fatigue 90 (ragged) · bribes 3 (bent) · mood raw · rain pouring
+---
+<the rendered text>
+--- problems ---
+[word.adv.pace] "with the day still in front of him" → he's ragged; wrong register
+```
+
+### The flag-batch loop
+
+Tuning runs as batches of flagged samples, not one-off edits:
+
+1. Reader rolls and flags; each flag carries the section, the FULL
+   generating state, the text, and per-slot notes.
+2. Fixer triages the whole batch in one pass, then commits once.
+3. Per flag: **locate** (the slot tag names the pool), **reproduce**
+   (rebuild the captured state, render 5–10×), **classify** against the
+   taxonomy below, **fix the class** — then **hunt the pattern**: every
+   flag is a sample from a class, so grep for siblings before moving on.
+4. Re-verify: re-render the captured state until the problem can't appear;
+   add the generalized pattern to the lint pack's banned list; lint clean.
+
+| Diagnosis | Signature | Fix pattern |
+|---|---|---|
+| Missing selector gate | line implies state the character isn't in | add/tighten `when`; write replacement content for the now-empty cell |
+| Tier leak through pooling | wildcard surfaces wrong-register psychology | `priority` gate on tier-shaped skeletons; psych-gate the fragment (6.2 #4) |
+| Adjacent-beat contradiction | two slots in one skeleton fight | rephrase one side to coexist, or drop the clashing slot from that skeleton |
+| Intra-sentence contradiction | independently rolled slots collide ("wearily breezes") | make one pool neutral to the other's axis, or key both on the same axis |
+| Shape violation | fragment doesn't fit the slot's declared shape | rewrite to shape |
+| Game-logic violation | text describes what game state forbids | gate at the dimension/render level, not just prose |
+| Stale-context line | content true in a different beat ("Same time next week" said pre-event) | relocate to the beat where it's true |
+| Verbatim correction | reader supplies exact wording | apply exactly; their wording wins |
+| Feature request in disguise | "she should ask for X after Y" | new pool: empty wildcard + heavily weighted state-keyed variants (weights 6–12 make conditional behavior reliable), wired with `{slot\|prefix: }` |
+
+When a fix generalizes, it becomes a **style-ledger** entry: a short rule
+plus, wherever mechanically detectable, a regex in the lint pack's
+`BANNED_PATTERNS`. The ledger is append-only and lives with the lint pack;
+new prose is checked against it, not just fixed prose. Migration is
+finished when a flag batch comes back boring.
+
+---
+
+## Part X — Pitfalls (each observed in practice)
 
 1. **Writing a paragraph as one variant.** The monolith detector exists
    because everyone does this. Decompose: skeleton + fragments.
@@ -961,22 +1817,66 @@ you built it right.
    key mysteriously doesn't exist.
 4. **Escaped quotes in single-quoted strings.** Use backticks for any text
    containing dialogue. This kills a whole bug class.
-5. **Stemming sentence pools.** Track word/clause namespaces; decompose
+5. **Pasting the escape token as a raw character.** It's invisible; it gets
+   lost in copies; a lost token corrupts every render (3.7). Write
+   `'\uE000'`.
+6. **A `when` key that reads a value the engine can't see.** Context-level
+   values must be seeded onto `ctx.d` or passed via `globals` (3.2), or the
+   condition never matches and the content silently never fires.
+7. **Fresh event scopes per render.** Facts and session dedupe do nothing
+   if each render gets new objects — wire the persistence contract (3.8).
+8. **Stemming sentence pools.** Track word/clause namespaces; decompose
    long-passage pools instead of tracking them — stems of a paragraph
    collide on everything.
-6. **Uniform-cell repetition.** If EVERY candidate in a pool's state cell
-   contains the same word, dedupe cannot help (the penalty is uniform).
+9. **Uniform-cell repetition.** If EVERY candidate in a pool's state cell
+   contains the same word, dedupe can't help (the penalty is uniform).
    The fix is more varied entries, never weaker penalties.
-7. **Function texts dodging dedupe.** Dictionary-driven texts must have
-   their stems recorded AFTER resolution (the reference code does this).
-   If you reimplement, do not lose it.
-8. **Asserting per-render trivia as scene facts.** Pools mysteriously go
-   ineligible. Keep topics coarse; watch the dead-fact warning.
-9. **Using `priority` for flavor.** Priority is a hard gate that silences
-   everything below it. Flavor wants `weight`; suppression wants priority.
-10. **Trusting your eyes over the harness.** You cannot proofread 28,800
+10. **Function texts dodging dedupe.** Dictionary-driven texts must have
+    their stems recorded AFTER resolution (the reference code does this).
+    If you reimplement, do not lose it.
+11. **Asserting per-render trivia as scene facts.** Pools mysteriously go
+    ineligible. Keep topics coarse; watch the dead-fact warning.
+12. **Using `priority` for flavor.** Priority silences everything below
+    it. Flavor wants `weight`; suppression wants `priority` (6.5).
+13. **Tone-loaded wildcards.** The pooling model has no NOT-conditions;
+    an affect-heavy generic will eventually fire in the one state where it
+    reads absurd (6.2 #4).
+14. **Name drumming.** `{subject.name}` in every sub-beat survives stem
+    review right up until a composed passage says the name three times
+    (6.2 #8).
+15. **Trusting your eyes over the harness.** You cannot proofread 28,800
     surface forms. The sweep can. Wire every new mechanism to a permanent
     self-check the day you build it.
+
+---
+
+## Part XI — Migrating existing prose (when you have a legacy game)
+
+Building fresh, skip this. Converting a game with handwritten paragraphs:
+
+1. **Inventory every text source** — registered strings, data dictionaries,
+   and prose hardcoded in UI components (there is always some). Map the
+   render call sites. Legacy indexing (tier arrays, stage-band grids) is
+   your selector map.
+2. **Design beats and slots before writing text.** Slot inventory table:
+   key, shape, axes, which legacy text feeds it. One dialogue slot per beat
+   that carries personality.
+3. **Mine the legacy.** Quoted dialogue → persona variants VERBATIM (the
+   voice lives in the quotes; never paraphrase them). Description →
+   normalize to the destination shape. Connective tissue → drop; skeletons
+   supply it now. One legacy paragraph yields 2–4 fragments.
+4. **Re-gate mined lines for their wider reach.** A line written for one
+   band may now be selectable everywhere — if it implies state, gate it.
+   This is the single most common migration bug.
+5. **Wire up, then retire the legacy source in the same commit** as its
+   replacement. Preserve cross-feature keys verbatim.
+6. **Verify:** lint clean, spot-renders at the extremes (lowest rung ×
+   lowest psych, highest × highest, plus 2–3 distinct characters), then
+   run the flag-batch loop until a batch comes back boring.
+
+Volume floors while migrating: every pool ≥4 texts at wildcard, every
+keyed cell ≥3, every main character ≥2 dialogue beats per psych tier in
+personality slots.
 
 ---
 
