@@ -346,7 +346,7 @@ function isLedgerLogLine(text){
 export default function ProfessorSim(){
   const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({
     ...st, ...initGainStats(st), ...initDeviceState(), psych: initPsychState(), corruption: 0,
-    weekStartLbs: st.lbs,
+    ascension: null, weekStartLbs: st.lbs,
   })));
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {

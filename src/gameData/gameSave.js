@@ -2,7 +2,25 @@
 // GAME SAVE — export blob for Field Notes attach (§38 Phase 2)
 // ═══════════════════════════════════════════════════════════════
 
-export const SAVE_SCHEMA = 1;
+export const SAVE_SCHEMA = 2;
+
+function trimAscensionState(ascension) {
+  if (!ascension?.formId) return null;
+  return {
+    formId: ascension.formId,
+    cycle: ascension.cycle || 2,
+    ascendedWeek: ascension.ascendedWeek ?? null,
+    peakLbs: ascension.peakLbs ?? null,
+    essence: ascension.essence ?? 0,
+    essenceSpentPublic: ascension.essenceSpentPublic ?? 0,
+    abilities: {
+      unlocked: [...(ascension.abilities?.unlocked || [])],
+      cooldowns: { ...(ascension.abilities?.cooldowns || {}) },
+    },
+    formFlags: { ...(ascension.formFlags || {}) },
+    relics: [...(ascension.relics || [])],
+  };
+}
 
 /** Trimmed save suitable for bug-report attach (not full session replay). */
 export function buildGameSaveBlob(ctx = {}) {
@@ -30,8 +48,10 @@ export function buildGameSaveBlob(ctx = {}) {
       name: s.name,
       lbs: s.lbs,
       startLbs: s.startLbs,
+      peakLbs: s.peakLbs ?? null,
       relationship: s.relationship,
       evolvedForm: s.evolvedForm || null,
+      ascension: trimAscensionState(s.ascension),
       supernaturalForm: s.supernaturalForm || null,
       memoryMass: s.memoryMass ?? null,
       etherealLbs: s.etherealLbs ?? null,

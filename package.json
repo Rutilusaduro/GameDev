@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "cap:sync": "npx cap sync",
     "lint": "eslint src/",
+    "ascension:probe": "node scripts/ascension-baseline-probe.mjs",
     "text:lint": "node scripts/textLint.mjs"
   },
   "dependencies": {
