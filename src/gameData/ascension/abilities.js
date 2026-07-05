@@ -55,7 +55,7 @@ export const ASCENSION_ABILITIES = [
 
   ability({ id: 'dryad_deep_root', formId: 'dryad', studentId: 8, name: 'Deep Root', desc: 'The grove lowers shame and steadies appetite.', essenceCost: 2, cooldownWeeks: 1, hook: 'psychNudge', params: { shame: -8, dependence: 4 } }),
   ability({ id: 'dryad_windfall', formId: 'dryad', studentId: 8, name: 'Windfall', desc: 'A surprise harvest lowers this week’s costs.', essenceCost: 3, cooldownWeeks: 2, hook: 'economyMod', params: { moneyDelta: 30, flag: 'windfallHarvest' } }),
-  ability({ id: 'dryad_heartwood', formId: 'dryad', studentId: 8, name: 'Heartwood', desc: 'A callback flag becomes part of the grove.', essenceCost: 4, cooldownWeeks: 3, hook: 'interruptSpawn', params: { flag: 'heartwoodMemory', value: true } }),
+  ability({ id: 'dryad_heartwood', formId: 'dryad', studentId: 8, name: 'Heartwood', desc: 'A callback flag becomes part of the grove.', essenceCost: 4, cooldownWeeks: 3, hook: 'wardrobeEvent', params: { repairRelic: true, flag: 'heartwoodMemory' } }),
 
   ability({ id: 'melusine_table_wine', formId: 'melusine', studentId: 9, name: 'Table Wine', desc: 'A dinner lands deeper and warmer.', essenceCost: 2, cooldownWeeks: 1, hook: 'feedEvent', params: { lbsGain: 2, rel: 3 } }),
   ability({ id: 'melusine_guest_list', formId: 'melusine', studentId: 9, name: 'Guest List', desc: 'The next group scene gets curated.', essenceCost: 3, cooldownWeeks: 2, hook: 'interruptSpawn', params: { flag: 'guestListReady', value: true } }),
@@ -75,11 +75,11 @@ export const ASCENSION_ABILITIES = [
 
   ability({ id: 'angel_grace', formId: 'angel_of_plenty', studentId: 13, name: 'Grace', desc: 'Providence covers one small purchase.', essenceCost: 2, cooldownWeeks: 1, hook: 'economyMod', params: { moneyDelta: 20, flag: 'graceCredit' }, public: true }),
   ability({ id: 'angel_potluck', formId: 'angel_of_plenty', studentId: 13, name: 'Potluck', desc: 'A warm group meal feeds her too.', essenceCost: 3, cooldownWeeks: 2, hook: 'feedEvent', params: { lbsGain: 2, rel: 4 }, public: true }),
-  ability({ id: 'angel_guardian', formId: 'angel_of_plenty', studentId: 13, name: 'Guardian', desc: 'The next negative interrupt becomes comfort.', essenceCost: 4, cooldownWeeks: 3, hook: 'interruptSpawn', params: { flag: 'guardianComfort', value: true } }),
+  ability({ id: 'angel_guardian', formId: 'angel_of_plenty', studentId: 13, name: 'Guardian', desc: 'The next negative interrupt becomes comfort.', essenceCost: 4, cooldownWeeks: 3, hook: 'wardrobeEvent', params: { strainRelief: true, flag: 'guardianComfort' } }),
 
   ability({ id: 'harvest_bumper_crop', formId: 'harvest_queen', studentId: 14, name: 'Bumper Crop', desc: 'Abundance shows up as usable budget.', essenceCost: 2, cooldownWeeks: 1, hook: 'economyMod', params: { moneyDelta: 35, flag: 'bumperCrop' }, public: true }),
   ability({ id: 'harvest_almanac', formId: 'harvest_queen', studentId: 14, name: 'Almanac', desc: 'The next interruptions get marked in advance.', essenceCost: 3, cooldownWeeks: 2, hook: 'interruptSpawn', params: { flag: 'almanacPeek', value: true } }),
-  ability({ id: 'harvest_preserves', formId: 'harvest_queen', studentId: 14, name: 'Put Up Preserves', desc: 'Surplus appetite banks for later release.', essenceCost: 4, cooldownWeeks: 3, hook: 'appetiteMod', params: { hungerDelta: 1, weeklyDigestMult: 1.2 } }),
+  ability({ id: 'harvest_preserves', formId: 'harvest_queen', studentId: 14, name: 'Put Up Preserves', desc: 'Surplus appetite banks for later release.', essenceCost: 4, cooldownWeeks: 3, hook: 'wardrobeEvent', params: { repairRelic: true, flag: 'preservesBanked' } }),
 
   ability({ id: 'lamia_old_hunger', formId: 'lamia', studentId: 15, name: 'Old Hunger', desc: 'A stored craving wakes immediately.', essenceCost: 2, cooldownWeeks: 1, hook: 'interruptSpawn', params: { flag: 'oldHungerAwake', value: true }, public: true }),
   ability({ id: 'lamia_confidence', formId: 'lamia', studentId: 15, name: 'Confidence', desc: 'A secret traded becomes steadier desire.', essenceCost: 3, cooldownWeeks: 2, hook: 'psychNudge', params: { shame: -8, dependence: 5 } }),
@@ -89,7 +89,7 @@ export const ASCENSION_ABILITIES = [
   ability({ id: 'witch_placebo', formId: 'potion_witch', studentId: 16, name: 'Placebo', desc: 'A small buff works because she said so.', essenceCost: 3, cooldownWeeks: 2, hook: 'psychNudge', params: { fixation: 5, shame: -4 } }),
   ability({ id: 'witch_peer_review', formId: 'potion_witch', studentId: 16, name: 'Peer Review', desc: 'A copied effect becomes a feeding result.', essenceCost: 4, cooldownWeeks: 3, hook: 'feedEvent', params: { lbsGain: 2, rel: 2 } }),
 
-  ability({ id: 'dragon_appraisal', formId: 'dragon', studentId: 17, name: 'Appraisal', desc: 'An owned thing becomes glint and usable value.', essenceCost: 2, cooldownWeeks: 1, hook: 'economyMod', params: { moneyDelta: 30, flag: 'appraisalFiled' }, public: true }),
+  ability({ id: 'dragon_appraisal', formId: 'dragon', studentId: 17, name: 'Appraisal', desc: 'An owned thing becomes glint and usable value.', essenceCost: 2, cooldownWeeks: 1, hook: 'wardrobeEvent', params: { repairRelic: true, flag: 'appraisalFiled' }, public: true }),
   ability({ id: 'dragon_excavation', formId: 'dragon', studentId: 17, name: 'Excavation', desc: 'A buried campus secret gets flagged.', essenceCost: 3, cooldownWeeks: 2, hook: 'interruptSpawn', params: { flag: 'excavationLead', value: true } }),
   ability({ id: 'dragon_share', formId: 'dragon', studentId: 17, name: "Dragon's Share", desc: 'Hoarded value becomes appetite pressure.', essenceCost: 4, cooldownWeeks: 3, hook: 'appetiteMod', params: { hungerDelta: 2, weeklyDigestMult: 1.2 }, public: true }),
 ];
