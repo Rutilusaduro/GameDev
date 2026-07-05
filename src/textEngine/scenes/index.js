@@ -8,6 +8,7 @@ import '../modules.js';
 import '../lexicon/index.js';
 import '../../gameData/textContext.js'; // setting pack: subject deriver + dims
 import './attitude.js';
+import './ascension/index.js';
 import './campusExplorationText.js';
 import './campusDevice/index.js';
 import './campusSoftening.js';

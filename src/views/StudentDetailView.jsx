@@ -23,11 +23,13 @@ import { CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier } from '../gameData/pha
 import { getAddictionLevel, getHungerTier, HUNGER_TIERS, ADDICTION_LEVELS } from '../gameData/hungerAddiction.js';
 import { computeSurrenderVector, formatSurrenderSummary } from '../gameData/transformationPressure.js';
 import { getSupernaturalFormForStudent } from '../gameData/supernaturalForms.js';
+import { getAscensionFormForStudent } from '../gameData/ascension/forms.js';
+import { abilityIsOnCooldown, getAbilitiesForForm } from '../gameData/ascension/abilities.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, fireAscensionAbility, openAscensionCeremony, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState }){
             const s=sel;
             const st=getStage(s.lbs);
 
@@ -103,12 +105,13 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
             return(
               <div>
                 {/* Header card */}
-                {(()=>{const detailEvMeta=s.evolvedForm?EVOLVED_FORM_META[s.evolvedForm]:null; return(
+                {(()=>{const detailEvMeta=s.evolvedForm?EVOLVED_FORM_META[s.evolvedForm]:null; const ascForm=getAscensionFormForStudent(s); return(
                 <div style={{...C.card,cursor:"default",marginBottom:10,borderColor:detailEvMeta?`${detailEvMeta.color}60`:""}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
                       <h2 style={{margin:0,color:detailEvMeta?detailEvMeta.color:"#d8a8ff",fontSize:22}}>{s.name}</h2>
                       {detailEvMeta&&<span style={{fontSize:11,fontWeight:700,color:detailEvMeta.color,background:`${detailEvMeta.color}22`,borderRadius:6,padding:"2px 8px"}}>✦ {detailEvMeta.title}</span>}
+                      {s.ascension&&ascForm&&<span style={{fontSize:11,fontWeight:700,color:"#80e8ff",background:"rgba(64,184,216,0.16)",borderRadius:6,padding:"2px 8px"}}>✦ {ascForm.label}</span>}
                     </div>
                     <div style={{display:"flex",gap:6,alignItems:"center"}}>
                       <StageTag stage={st}/>
@@ -265,6 +268,60 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                     </div>
                   );
                 })()}
+
+                {s.ascension && (() => {
+                  const form = getAscensionFormForStudent(s);
+                  const abilities = getAbilitiesForForm(s.ascension.formId);
+                  const essence = s.ascension.essence || 0;
+                  const peak = s.ascension.peakLbs || s.peakLbs || s.lbs;
+                  return (
+                    <div style={C.infoBox('rgba(20,70,90,0.35)')}>
+                      <div style={{ fontSize: 9, color: '#60d0f0', letterSpacing: 2, marginBottom: 4 }}>✦ ASCENDED FORM</div>
+                      <div style={{ fontSize: 12, color: '#c8f4ff', lineHeight: 1.7, marginBottom: 8 }}>
+                        {form?.label || s.ascension.formId} · cycle {s.ascension.cycle || 2} · peak memory {Math.round(peak)} lbs
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: '#80cfe8', marginBottom: 3 }}>
+                        <span>{form?.essenceWord || 'essence'}</span>
+                        <span>{essence.toFixed ? essence.toFixed(1) : essence}</span>
+                      </div>
+                      <Bar val={essence} max={12} color="#40b8d8" />
+                      {abilities.length > 0 && (
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: 6, marginTop: 8 }}>
+                          {abilities.map((ability) => {
+                            const cooldown = s.ascension.abilities?.cooldowns?.[ability.id] || 0;
+                            const disabled = essence < ability.essenceCost || abilityIsOnCooldown(s, ability.id);
+                            return (
+                              <button
+                                key={ability.id}
+                                type="button"
+                                disabled={disabled}
+                                style={{ ...C.smBtn, opacity: disabled ? 0.45 : 1, minHeight: 44, textAlign: 'left' }}
+                                onClick={() => fireAscensionAbility?.(s.id, ability.id)}
+                              >
+                                <b>{ability.name}</b> <span style={{ color: '#80cfe8' }}>({ability.essenceCost})</span>
+                                <div style={{ fontSize: 9, color: '#8aa8b0', marginTop: 2 }}>
+                                  {cooldown > 0 ? `${cooldown}w cooldown` : ability.desc}
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+
+                {!s.ascension && s.ascensionPending?.ceremonyReady && (
+                  <div style={C.infoBox('rgba(20,70,90,0.25)')}>
+                    <div style={{ fontSize: 9, color: '#60d0f0', letterSpacing: 2, marginBottom: 4 }}>✦ ASCENSION READY</div>
+                    <div style={{ fontSize: 12, color: '#c8f4ff', lineHeight: 1.7, marginBottom: 8 }}>
+                      She is waiting at the threshold. You can open the ceremony when you are ready.
+                    </div>
+                    <button type="button" style={{ ...C.btn('#207090'), width: '100%' }} onClick={() => openAscensionCeremony?.(s.id)}>
+                      Open the ceremony
+                    </button>
+                  </div>
+                )}
 
                 {/* Hunger / addiction (subtle) */}
                 {(getAddictionLevel(s)>0||getHungerTier(s)>0)&&(

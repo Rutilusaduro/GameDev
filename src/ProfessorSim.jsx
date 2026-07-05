@@ -82,6 +82,8 @@ import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
+import { renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
+import { AscensionCeremonyModal } from './components/AscensionCeremonyModal.jsx';
 import { appendMemory, pickStudentMemory, pickClassMemory } from './gameData/memory.js';
 import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, grievanceGain, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, DISCONTENT_WEEKLY_DECAY, DISCONTENT_RIPPLE, shouldConfront, dominantGrievance, AMENDS_FLOOR, GIFT_FLOOR, GIFT_COST } from './gameData/discontent.js';
 import { renderDiscontentRefusal } from './textEngine/scenes/discontent/index.js';
@@ -144,6 +146,11 @@ import {
 } from './gameData/streaming.js';
 import { DestinySpendModal } from './components/DestinySpendModal.jsx';
 import { MoodBadge } from './components/ui.jsx';
+import { getAscensionFormForStudent } from './gameData/ascension/forms.js';
+import { abilityIsOnCooldown, getAscensionAbility, tickAscensionCooldowns } from './gameData/ascension/abilities.js';
+import { applyEssenceFromGain, spendEssence } from './gameData/ascension/essence.js';
+import { formPassiveGainMultiplier } from './gameData/ascension/gainRules.js';
+import { applyAscensionRebirth, isAscended, isAscensionEligible } from './gameData/ascension/state.js';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
 import { CompetitiveGainerChatModal, CompetitiveGainerMainModal } from './components/CompetitiveGainerModals.jsx';
@@ -501,6 +508,7 @@ export default function ProfessorSim(){
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
   const [weekRecap, setWeekRecap] = useState(null);
   const [milestoneQueue, setMilestoneQueue] = useState(null);
+  const [ascensionCeremony, setAscensionCeremony] = useState(null);
   const [confrontation, setConfrontation] = useState(null);
   const [forceFeederState, setForceFeederState] = useState(null);
   const [deviceUsageModal, setDeviceUsageModal] = useState(null);
@@ -1340,7 +1348,7 @@ export default function ProfessorSim(){
       setTimeout(()=>push(`📣 ${s.name} reaches ${WEIGHT_STAGES[newStageId].label}! "${getAttitude({...s,lbs:newLbs}, week, pharmacistTextOpts(pharmacistState, week))}"`) ,50);
     }
     const mergedTriggered=[...s.triggeredEvents,...narrativeEvents.map(e=>e.id)];
-    return {
+    const gained = {
       ...s,
       lbs:newLbs,
       relationship:Math.min(100,s.relationship+extraRel),
@@ -1349,6 +1357,7 @@ export default function ProfessorSim(){
       // Unlock any signature-beat diary gate her new state has earned.
       ...gatewayFlagPatch({...s,triggeredEvents:mergedTriggered},newStageId),
     };
+    return applyEssenceFromGain(gained, scaledGain, { stagedUp: newStageId > oldStageId });
   };
 
   const collectEvents=(updatedStudents)=>{
@@ -1415,7 +1424,7 @@ export default function ProfessorSim(){
       let gain=rnd(1,3)+skillPassiveBonus+(classSkillFx.passiveBonus||0);
       const asceticMult=campusState?.asceticProtestWeek?0.88:1;
       const mirrorMult=campusState?.mirrorFastWeek?0.9:1;
-      gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*mirrorMult*getSupernaturalGainMult(s)*(1+(classSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
+      gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*mirrorMult*getSupernaturalGainMult(s)*formPassiveGainMultiplier(s)*(1+(classSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
       if(opposition?.supernatural?.synthesisAlly) gain=Math.max(0,Math.round(gain*1.1));
       // Corruption-driven autonomous eating (willingness made flesh)
       const cTier=getCorruptionTier(s.corruption||0).id;
@@ -1890,6 +1899,47 @@ export default function ProfessorSim(){
       }
     }
 
+    const ascensionReadyIds=[];
+    updated=updated.map(s=>{
+      let ns=tickAscensionCooldowns(s);
+      const eligibility=isAscensionEligible(ns,{students:updated});
+      if(eligibility.eligible){
+        const pending=ns.ascensionPending;
+        const formId=eligibility.form.formId;
+        if(!pending||pending.formId!==formId){
+          ns={...ns,ascensionPending:{formId,stirringWeeks:1,ceremonyReady:false,declinedWeek:null}};
+          const line=renderAscensionStirring(ns,newWeek);
+          if(line) setTimeout(()=>push(`✦ ${line}`),260);
+        }else if(!pending.ceremonyReady){
+          const stirringWeeks=(pending.stirringWeeks||0)+1;
+          const ceremonyReady=stirringWeeks>=2;
+          ns={...ns,ascensionPending:{...pending,stirringWeeks,ceremonyReady}};
+          const line=renderAscensionStirring(ns,newWeek);
+          if(line) setTimeout(()=>push(`✦ ${line}`),260);
+          if(ceremonyReady) ascensionReadyIds.push(ns.id);
+        }else if(pending.declinedWeek!==newWeek){
+          ascensionReadyIds.push(ns.id);
+        }
+      }else if(eligibility.reason==='catalyst' && getStage(ns.lbs).id>=11 && ns.ascensionHeldWeek!==newWeek){
+        ns={...ns,ascensionHeldWeek:newWeek};
+        const held=renderAscensionHeld(ns,newWeek);
+        if(held) setTimeout(()=>push(`✦ ${held}`),260);
+      }
+      return ns;
+    });
+    if(!ascensionCeremony&&ascensionReadyIds.length){
+      const ready=updated.find(s=>s.id===ascensionReadyIds[0]);
+      if(ready){
+        const trace=[];
+        const prose=renderAscensionCeremony(ready,newWeek,{trace});
+        setAscensionCeremony({
+          studentId:ready.id,
+          prose,
+          traceNodes:trace.filter(t=>t.text&&t.text.trim()&&!t.key.startsWith('subject.')),
+        });
+      }
+    }
+
     setStudents(updated.map(s=>clearWeeklyTextFlags(s,week)));
     if(recapMovers.length){
       const ordered=recapMovers
@@ -2190,7 +2240,17 @@ export default function ProfessorSim(){
         const skList=(st.evolvedSkills||[]);
         const tree=EVOLVED_SKILL_TREES[formId]||[];
         const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
-        return processStudentGain(st,totalGain,totalRel+bonusRel);
+        let next = processStudentGain(st,totalGain,totalRel+bonusRel);
+        if(st.id===3 && stageIdx >= ((EVOLVED_EVENTS[formId]?.length || 1) - 1)){
+          next = {
+            ...next,
+            ascensionCatalysts: {
+              ...(next.ascensionCatalysts || {}),
+              serena_record_board_retired: true,
+            },
+          };
+        }
+        return next;
       }));
       if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairDay&&!ending.startsSession&&!ending.startsPresentation&&!ending.startsDelivery&&!ending.startsChallenge&&!ending.startsSalon&&!ending.startsGallery) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
       // handle recipe unlock (homestead_queen)
@@ -2514,6 +2574,114 @@ export default function ProfessorSim(){
     setOpposition(prev=>({...prev,supernatural:{...prev.supernatural,ascensionOffered:true}}));
     setSupernaturalModalOpen(false);
     push('👻 The Supernatural Act has begun. Scarcity watches — refeed your evolved students.');
+  };
+
+  const openAscensionCeremony=(studentId)=>{
+    const s=students.find(st=>st.id===studentId);
+    if(!s) return;
+    const trace=[];
+    const prose=renderAscensionCeremony(s,week,{trace});
+    setAscensionCeremony({
+      studentId,
+      prose,
+      traceNodes:trace.filter(t=>t.text&&t.text.trim()&&!t.key.startsWith('subject.')),
+    });
+  };
+
+  const confirmAscensionRebirth=(studentId)=>{
+    const live=students.find(st=>st.id===studentId);
+    const eligibility=isAscensionEligible(live,{students});
+    if(!live||!eligibility.eligible){
+      push(`⚠️ ${live?.name||'Student'} is not ready to ascend.`);
+      setAscensionCeremony(null);
+      return;
+    }
+    const form=eligibility.form;
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==studentId) return st;
+      const next=applyAscensionRebirth(st,{week,formId:form.formId});
+      return {
+        ...next,
+        ascensionPending:null,
+        memories:appendMemory(next.memories,'ascended',week,form.formId),
+        triggeredEvents:[...(next.triggeredEvents||[]),`ascended_${form.formId}`].filter((v,i,a)=>a.indexOf(v)===i),
+      };
+    }));
+    push(`✦ ${live.name} ascends — ${form.label}. Cycle 2 begins at 100 lbs.`);
+    setAscensionCeremony(null);
+  };
+
+  const declineAscensionCeremony=(studentId)=>{
+    const live=students.find(st=>st.id===studentId);
+    if(!live){ setAscensionCeremony(null); return; }
+    const decline=renderAscensionDecline(live,week);
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==studentId) return st;
+      return {
+        ...st,
+        ascensionPending:{
+          ...(st.ascensionPending||{}),
+          formId:st.ascensionPending?.formId||getAscensionFormForStudent(st)?.formId,
+          ceremonyReady:true,
+          declinedWeek:week,
+        },
+        memories:appendMemory(st.memories,'ascensionDeclined',week),
+      };
+    }));
+    push(`✦ ${decline}`);
+    setAscensionCeremony(null);
+  };
+
+  const fireAscensionAbility=(studentId,abilityId)=>{
+    const ability=getAscensionAbility(abilityId);
+    const live=students.find(st=>st.id===studentId);
+    if(!ability||!live?.ascension) return;
+    if(abilityIsOnCooldown(live,abilityId)){
+      push(`⚠️ ${ability.name} is still gathering.`);
+      return;
+    }
+    if((live.ascension.essence||0)<ability.essenceCost){
+      const form=getAscensionFormForStudent(live);
+      push(`⚠️ Need ${ability.essenceCost} ${form?.essenceWord||'essence'} for ${ability.name}.`);
+      return;
+    }
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==studentId) return st;
+      const spent=spendEssence(st,ability.essenceCost,{publicSpend:ability.public});
+      if(!spent.ok) return st;
+      let ns=spent.student;
+      const p=ability.params||{};
+      if(ability.hook==='feedEvent'){
+        ns=processStudentGain(ns,p.lbsGain||0,p.rel||0);
+        if(p.hungerDelta) ns=adjustHunger(ns,p.hungerDelta);
+      }else if(ability.hook==='appetiteMod'){
+        if(p.hungerDelta) ns=adjustHunger(ns,p.hungerDelta);
+        if(p.weeklyDigestMult) ns={...ns,weeklyDigestMult:Math.max(ns.weeklyDigestMult||1,p.weeklyDigestMult)};
+      }else if(ability.hook==='interruptSpawn'){
+        ns={
+          ...ns,
+          relationship:Math.min(100,(ns.relationship||0)+(p.rel||0)),
+          ascension:{
+            ...ns.ascension,
+            formFlags:{...(ns.ascension.formFlags||{}),[p.flag||ability.id]:p.value??true},
+          },
+        };
+      }else if(ability.hook==='psychNudge'){
+        ns={...ns,psych:applyPsychDelta(ns.psych||{},p)};
+      }
+      return {
+        ...ns,
+        ascension:{
+          ...ns.ascension,
+          abilities:{
+            ...(ns.ascension.abilities||{}),
+            unlocked:[...new Set([...(ns.ascension.abilities?.unlocked||[]),ability.id])],
+            cooldowns:{...(ns.ascension.abilities?.cooldowns||{}),[ability.id]:ability.cooldownWeeks},
+          },
+        },
+      };
+    }));
+    push(`✦ ${live.name} — ${ability.name}: ${ability.desc}`);
   };
 
   // ── HOMEROOM QUEEN handlers ───────────────────────────────────────
@@ -7974,7 +8142,7 @@ export default function ProfessorSim(){
           {view==="classroom"&&<ClassroomView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState}/>}
+          {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} fireAscensionAbility={fireAscensionAbility} openAscensionCeremony={openAscensionCeremony} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
@@ -8191,6 +8359,21 @@ export default function ProfessorSim(){
       {milestoneQueue&&<MilestoneCeremonyModal queue={milestoneQueue}
         onAdvance={()=>setMilestoneQueue(q=>q?{...q,index:q.index+1}:null)}
         onDismissAll={()=>setMilestoneQueue(null)}/>}
+      {ascensionCeremony&&(()=>{
+        const ascStudent=students.find(st=>st.id===ascensionCeremony.studentId);
+        if(!ascStudent) return null;
+        return(
+          <AscensionCeremonyModal
+            student={ascStudent}
+            prose={ascensionCeremony.prose}
+            traceNodes={ascensionCeremony.traceNodes}
+            week={week}
+            onAccept={()=>confirmAscensionRebirth(ascStudent.id)}
+            onDecline={()=>declineAscensionCeremony(ascStudent.id)}
+            onClose={()=>setAscensionCeremony(null)}
+          />
+        );
+      })()}
       {confrontation&&<ConfrontationModal confrontation={confrontation} money={money}
         onApologize={confrontApologize} onGift={confrontGift}
         onStandFirm={confrontStandFirm} onLeave={()=>setConfrontation(null)}/>}

@@ -52,6 +52,8 @@ export function buildGameSaveBlob(ctx = {}) {
       relationship: s.relationship,
       evolvedForm: s.evolvedForm || null,
       ascension: trimAscensionState(s.ascension),
+      ascensionPending: s.ascensionPending || null,
+      ascensionCatalysts: s.ascensionCatalysts || null,
       supernaturalForm: s.supernaturalForm || null,
       memoryMass: s.memoryMass ?? null,
       etherealLbs: s.etherealLbs ?? null,
