@@ -26,6 +26,7 @@ const PIN_BORDER = {
   narrative: '#9070c0',
   gateway: '#b09050',
   garment: '#c05030',
+  player: '#80c0a0',
 };
 
 function WeightSparkline({ snapshots, peakLbs, startLbs, onMarker }) {

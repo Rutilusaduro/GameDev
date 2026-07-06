@@ -7,7 +7,9 @@ import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx'
 import { buildStateLine, traceToFlagNodes } from './textEngine/textFlagFormat.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS } from './gameData/classEvents.js';
 import { gatewayFlagPatch, GATEWAY_FLAG_KEYS } from './gameData/gatewayMoments.js';
-import { appendDossierSnapshot } from './gameData/dossier.js';
+import { appendDossierSnapshot, pinPlayerMoment } from './gameData/dossier.js';
+import { getPlayerPrefs, toggleInstantText } from './gameData/playerPrefs.js';
+import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
@@ -520,6 +522,8 @@ export default function ProfessorSim(){
   const [ascensionCeremony, setAscensionCeremony] = useState(null);
   const [originPickState, setOriginPickState] = useState(null);
   const [dossierOpen, setDossierOpen] = useState(false);
+  const [sceneScrollback, setSceneScrollback] = useState([]);
+  const [instantText, setInstantText] = useState(() => getPlayerPrefs().instantText);
   const [confrontation, setConfrontation] = useState(null);
   const [forceFeederState, setForceFeederState] = useState(null);
   const [deviceUsageModal, setDeviceUsageModal] = useState(null);
@@ -1770,7 +1774,7 @@ export default function ProfessorSim(){
       updated=updated.map(s=>s.id===rebel.id?{...s,lastConfrontWeek:newWeek}:s);
       const grievance=dominantGrievance(rebel);
       setConfrontation({
-        studentId:rebel.id,name:rebel.name,grievance,winBack:false,withdrawn:false,
+        studentId:rebel.id,name:rebel.name,lbs:rebel.lbs,grievance,winBack:false,withdrawn:false,
         prose:renderConfront(rebel,newWeek,{grievanceType:grievance||undefined}),
       });
     }
@@ -6088,6 +6092,20 @@ export default function ProfessorSim(){
     return false;
   };
 
+  const pushSceneScrollback = useCallback((entry) => {
+    setSceneScrollback((prev) => [...prev, entry].slice(-50));
+  }, []);
+
+  const pinSceneForStudent = useCallback((studentId, pin) => {
+    setStudents((prev) => prev.map((s) => (s.id === studentId ? pinPlayerMoment(s, pin) : s)));
+  }, []);
+
+  const sceneStageShared = {
+    scrollback: sceneScrollback,
+    onScrollbackPush: pushSceneScrollback,
+    instantText,
+  };
+
   const openStudentDetail=(studentId, opts = {})=>{
     const s=students.find(st=>st.id===studentId);
     if(!s) return;
@@ -6508,7 +6526,7 @@ export default function ProfessorSim(){
     if(!s) return;
     const grievance=dominantGrievance(s);
     setConfrontation({
-      studentId:s.id,name:s.name,grievance,winBack:true,withdrawn:!!s.withdrawn,
+      studentId:s.id,name:s.name,lbs:s.lbs,grievance,winBack:true,withdrawn:!!s.withdrawn,
       prose:renderConfront(s,week,{grievanceType:grievance||undefined,winBack:true}),
     });
   };
@@ -8116,19 +8134,27 @@ export default function ProfessorSim(){
           <div style={C.modal}>
             <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:4}}>NARRATIVE EVENT</div>
             <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:20}}>{activeNarrativeCopy.event.title}</h2>
-            <div style={{fontSize:11,color:"#5a309a",marginBottom:14}}>{activeNarrativeCopy.student.name} · {getStage(activeNarrativeCopy.student.lbs).label} · {activeNarrativeCopy.student.lbs} lbs</div>
-            <p style={{lineHeight:1.85,color:"#e0d0b0",marginBottom:8,fontStyle:"italic",whiteSpace:"pre-line"}}>{activeNarrativeCopy.text}</p>
-            <TextFlagToolbar
+            <SceneStage
+              prose={activeNarrativeCopy.text}
+              traceNodes={activeNarrativeCopy.traceNodes}
+              student={activeNarrativeCopy.student}
+              week={week}
+              locale={{ glyph: '📖', label: 'Campus' }}
               section={`weekly.narrative.${activeNarrativeCopy.event.id}`}
               stateLine={buildStateLine(activeNarrativeCopy.student, { week, stageLabel: getStage(activeNarrativeCopy.student.lbs).label })}
-              text={activeNarrativeCopy.text}
-              nodes={activeNarrativeCopy.traceNodes}
+              accentColor="#2a7830"
+              onPinBeat={(pin) => pinSceneForStudent(activeNarrativeCopy.student.id, pin)}
+              {...sceneStageShared}
+              footer={activeNarrativeCopy.event.gain[1]>0 ? (
+                <p style={{ color: '#f09050', fontSize: 12, marginTop: 10 }}>
+                  This event may result in {activeNarrativeCopy.event.gain[0]}–{activeNarrativeCopy.event.gain[1]} additional lbs gained.
+                </p>
+              ) : null}
+              choices={[
+                { id: 'continue', label: 'Continue →', intent: 'press', onClick: () => resolveNarrative(activeNarrativeCopy.event, activeNarrativeCopy.student, true) },
+                { id: 'dismiss', label: 'Dismiss', intent: 'wait', onClick: () => { push(`📖 ${activeNarrativeCopy.event.title} — dismissed.`); setActiveEvent(null); } },
+              ]}
             />
-            {activeNarrativeCopy.event.gain[1]>0&&<p style={{color:"#f09050",fontSize:12,marginBottom:16,marginTop:10}}>This event may result in {activeNarrativeCopy.event.gain[0]}–{activeNarrativeCopy.event.gain[1]} additional lbs gained.</p>}
-            <div style={{display:"flex",gap:8}}>
-              <button style={C.btn("#2a7830")} onClick={()=>resolveNarrative(activeNarrativeCopy.event,activeNarrativeCopy.student,true)}>Continue →</button>
-              <button style={C.btn("#333")} onClick={()=>{push(`📖 ${activeNarrativeCopy.event.title} — dismissed.`);setActiveEvent(null);}}>Dismiss</button>
-            </div>
           </div>
         </div>
       )}
@@ -8416,7 +8442,7 @@ export default function ProfessorSim(){
       {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students}/>}
 
       {/* ── DEBUG PANEL ── */}
-      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} money={money} view={view} setView={setView} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length}/>}
+      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} money={money} view={view} setView={setView} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length} instantText={instantText} onInstantTextChange={setInstantText}/>}
 
       {bugReportOpen&&<BugReportModal getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} prefillError={fieldNoteError} onClose={()=>{ setBugReportOpen(false); setFieldNoteError(null); }}/>}
 
@@ -8449,8 +8475,11 @@ export default function ProfessorSim(){
       {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}
       {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)} onSelectGirl={(id)=>{openStudentDetail(id,{dossier:true});setWeekRecap(null);}}/>}
       {milestoneQueue&&<MilestoneCeremonyModal queue={milestoneQueue}
+        week={week}
         onAdvance={()=>setMilestoneQueue(q=>q?{...q,index:q.index+1}:null)}
-        onDismissAll={()=>setMilestoneQueue(null)}/>}
+        onDismissAll={()=>setMilestoneQueue(null)}
+        onPinBeat={(pin)=>{const ev=milestoneQueue?.events?.[milestoneQueue.index];if(ev)pinSceneForStudent(ev.id,pin);}}
+        {...sceneStageShared}/>}
       {ascensionCeremony&&(()=>{
         const ascStudent=students.find(st=>st.id===ascensionCeremony.studentId);
         if(!ascStudent) return null;
@@ -8463,6 +8492,8 @@ export default function ProfessorSim(){
             onAccept={()=>confirmAscensionRebirth(ascStudent.id)}
             onDecline={()=>declineAscensionCeremony(ascStudent.id)}
             onClose={()=>setAscensionCeremony(null)}
+            onPinBeat={(pin)=>pinSceneForStudent(ascStudent.id,pin)}
+            {...sceneStageShared}
           />
         );
       })()}
@@ -8476,9 +8507,11 @@ export default function ProfessorSim(){
           />
         );
       })()}
-      {confrontation&&<ConfrontationModal confrontation={confrontation} money={money}
+      {confrontation&&<ConfrontationModal confrontation={confrontation} money={money} week={week}
         onApologize={confrontApologize} onGift={confrontGift}
-        onStandFirm={confrontStandFirm} onLeave={()=>setConfrontation(null)}/>}
+        onStandFirm={confrontStandFirm} onLeave={()=>setConfrontation(null)}
+        onPinBeat={(pin)=>pinSceneForStudent(confrontation.studentId,pin)}
+        {...sceneStageShared}/>}
 
       {/* ── GODDESS VISION MODAL ── */}
 

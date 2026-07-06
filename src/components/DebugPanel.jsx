@@ -10,6 +10,7 @@ import { useTextFlagLog } from '../hooks/useTextFlagLog.js';
 import { clearTextFlags, downloadTextFlagsTxt } from '../gameData/textFlagStore.js';
 import { buildGameSnapshot, serializeBugReport } from '../gameData/bugReport.js';
 import { defaultOppositionState } from '../gameData/opposition.js';
+import { toggleInstantText } from '../gameData/playerPrefs.js';
 
 if (typeof window !== 'undefined' && import.meta.env.DEV) {
   window.__textEngine = { render, createContext, getSeason, relSize };
@@ -64,6 +65,8 @@ export function DebugPanel({
   campusState,
   pharmacistState,
   eventQueueLen,
+  instantText = false,
+  onInstantTextChange,
 }) {
   const { enabled: textFlagsOn, setEnabled: setTextFlagsOn } = useTextFlags();
   const savedFlags = useTextFlagLog();
@@ -132,6 +135,14 @@ export function DebugPanel({
                   onChange={(e) => setTextFlagsOn(e.target.checked)}
                 />
                 🚩 Text flags on popups (growth, narrative, talk, weigh-in…)
+              </label>
+              <label style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 11, color: '#b0a890', marginBottom: 8, cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={!!instantText}
+                  onChange={() => onInstantTextChange?.(toggleInstantText().instantText)}
+                />
+                ⚡ Instant scene text (skip beat reveal)
               </label>
               <button type="button" style={{ ...C.smBtn, background: 'rgba(100,60,140,0.4)' }}
                 onClick={() => setTextSample(sampleTextEngine())}>📜 Sample hive intake</button>

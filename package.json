@@ -11,6 +11,7 @@
     "lint": "eslint src/",
     "ascension:probe": "node scripts/ascension-baseline-probe.mjs",
     "dossier:probe": "node scripts/dossier-probe.mjs",
+    "scene-stage:probe": "node scripts/scene-stage-probe.mjs",
     "ascension:sweep": "node scripts/ascension-ability-sweep.mjs",
     "text:lint": "node scripts/textLint.mjs"
   },

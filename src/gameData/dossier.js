@@ -286,6 +286,24 @@ function syncAutoPinnedMoments(student, week, opts = {}) {
   return pins.slice(-DOSSIER_PIN_CAP);
 }
 
+/** Player-chosen pin from SceneStage long-press (B2). */
+export function pinPlayerMoment(student, { week, excerpt, sceneId, beatIndex }) {
+  const base = ensureDossierFields(student);
+  const id = momentId(week, 'player', `${sceneId || 'scene'}:${beatIndex ?? 0}`);
+  const pins = [...(base.pinnedMoments || [])];
+  if (pins.some((p) => p.id === id)) return base;
+  pins.push({
+    id,
+    week,
+    kind: 'player',
+    ref: sceneId || 'scene',
+    label: `Your moment — week ${week}`,
+    excerpt: excerpt?.slice(0, 600) || null,
+    seed: beatIndex ?? null,
+  });
+  return { ...base, pinnedMoments: pins.slice(-DOSSIER_PIN_CAP) };
+}
+
 export function appendDossierSnapshot(student, week, opts = {}) {
   const base = ensureDossierFields(student);
   const snapshot = buildDossierSnapshot(base, week, opts);

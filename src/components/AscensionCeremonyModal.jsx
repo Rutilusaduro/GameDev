@@ -2,6 +2,7 @@ import { C } from '../styles.js';
 import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine } from '../textEngine/textFlagFormat.js';
 import { getAscensionFormForStudent } from '../gameData/ascension/forms.js';
+import { SceneStage } from './SceneStage.jsx';
 
 const ACCENT = '#40b8d8';
 
@@ -13,6 +14,10 @@ export function AscensionCeremonyModal({
   onAccept,
   onDecline,
   onClose,
+  onPinBeat,
+  scrollback,
+  onScrollbackPush,
+  instantText,
 }) {
   if (!student) return null;
   const form = getAscensionFormForStudent(student);
@@ -40,23 +45,29 @@ export function AscensionCeremonyModal({
         <div style={{ fontSize: 11, color: '#80a8b8', lineHeight: 1.6, marginBottom: 12 }}>
           Peak archived at {Math.round(student.lbs)} lbs. Rebirth returns her to 100 lbs with memory intact.
         </div>
-        <div style={{ fontSize: 13, color: '#e0f4f8', lineHeight: 1.9, marginBottom: 12, whiteSpace: 'pre-line' }}>
-          {prose}
-        </div>
-        <TextFlagToolbar section="asc.ceremony" stateLine={stateLine} text={prose} nodes={traceNodes} />
-        <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
-          <button type="button" style={{ ...C.btn(ACCENT), flex: 1, minHeight: 44 }} onClick={onAccept}>
-            See it through
-          </button>
-          <button type="button" style={{ ...C.btn('#304050'), flex: 1, minHeight: 44 }} onClick={onDecline}>
-            Not yet
-          </button>
-          {onClose && (
-            <button type="button" style={{ ...C.btn('#222'), minHeight: 44 }} onClick={onClose}>
+        <SceneStage
+          prose={prose}
+          traceNodes={traceNodes}
+          student={student}
+          week={week}
+          locale={{ glyph: '✦', label: 'Threshold' }}
+          section="asc.ceremony"
+          stateLine={stateLine}
+          accentColor={ACCENT}
+          onPinBeat={onPinBeat}
+          scrollback={scrollback}
+          onScrollbackPush={onScrollbackPush}
+          instantText={instantText}
+          choices={[
+            { id: 'accept', label: 'See it through', intent: 'press', onClick: onAccept },
+            { id: 'decline', label: 'Not yet', intent: 'wait', onClick: onDecline },
+          ]}
+          footer={onClose ? (
+            <button type="button" style={{ ...C.btn('#222'), width: '100%', marginTop: 8, minHeight: 40 }} onClick={onClose}>
               Close
             </button>
-          )}
-        </div>
+          ) : null}
+        />
       </div>
     </div>
   );
