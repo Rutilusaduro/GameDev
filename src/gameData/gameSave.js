@@ -2,7 +2,7 @@
 // GAME SAVE — export blob for Field Notes attach (§38 Phase 2)
 // ═══════════════════════════════════════════════════════════════
 
-export const SAVE_SCHEMA = 4;
+export const SAVE_SCHEMA = 5;
 
 function trimAscensionState(ascension) {
   if (!ascension?.formId) return null;
@@ -73,6 +73,9 @@ export function buildGameSaveBlob(ctx = {}) {
       corruption: s.corruption || 0,
       equip: s.equip || null,
       outfit: s.outfit || null,
+      dossierSnapshots: (s.dossierSnapshots || []).slice(-12),
+      pinnedMoments: (s.pinnedMoments || []).slice(-8),
+      wardrobeMorgue: (s.wardrobeMorgue || []).slice(-8),
     })),
     opposition: opposition || null,
     campusState: campusState ? {

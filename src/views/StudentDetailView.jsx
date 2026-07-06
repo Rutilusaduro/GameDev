@@ -29,10 +29,14 @@ import { getOriginCard } from '../gameData/origins/index.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
+import { DossierPanel } from '../components/DossierPanel.jsx';
+import { useEffect, useState } from 'react';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, fireAscensionAbility, openAscensionCeremony, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState }){
+export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, fireAscensionAbility, openAscensionCeremony, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState, dossierOpen, setDossierOpen }){
             const s=sel;
             const st=getStage(s.lbs);
+            const [showDossier, setShowDossier] = useState(!!dossierOpen);
+            useEffect(() => { setShowDossier(!!dossierOpen); }, [dossierOpen, s?.id]);
 
             // ── LILITH — custom detail panel ──────────────────────────────────
             if(s.id===LILITH_ID){
@@ -103,6 +107,20 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
               );
             }
 
+            if (showDossier) {
+              return (
+                <div>
+                  <DossierPanel
+                    student={s}
+                    week={week}
+                    diaryOpts={pharmacistTextOpts(pharmacistState, week)}
+                    onClose={() => { setShowDossier(false); setDossierOpen?.(false); }}
+                  />
+                  <button style={{ ...C.smBtn, width: '100%', marginTop: 4 }} onClick={() => setView('class')}>← Back to Class</button>
+                </div>
+              );
+            }
+
             return(
               <div>
                 {/* Header card */}
@@ -116,6 +134,7 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                       {originCard&&<span style={{fontSize:11,fontWeight:700,color:"#d8c0ff",background:"rgba(168,120,255,0.14)",borderRadius:6,padding:"2px 8px"}}>{originCard.label}</span>}
                     </div>
                     <div style={{display:"flex",gap:6,alignItems:"center"}}>
+                      <button type="button" style={{...C.smBtn,margin:0,fontSize:9}} onClick={()=>{ setShowDossier(true); setDossierOpen?.(true); }}>📖 Dossier</button>
                       <StageTag stage={st}/>
                       <span style={C.tag("#2a1050","#b080e0")}>{s.personality}</span>
                     </div>
