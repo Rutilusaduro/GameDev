@@ -2,7 +2,7 @@
 // GAME SAVE — export blob for Field Notes attach (§38 Phase 2)
 // ═══════════════════════════════════════════════════════════════
 
-export const SAVE_SCHEMA = 3;
+export const SAVE_SCHEMA = 4;
 
 function trimAscensionState(ascension) {
   if (!ascension?.formId) return null;
@@ -56,6 +56,10 @@ export function buildGameSaveBlob(ctx = {}) {
       relationship: s.relationship,
       gainStance: s.gainStance || null,
       psych: s.psych || null,
+      origin: s.origin || null,
+      originRegister: s.originRegister || null,
+      originFlags: s.originFlags || null,
+      originChosenWeek: s.originChosenWeek ?? null,
       voiceKit: s.voiceKit || null,
       customDraft: s.customDraft || null,
       evolvedForm: s.evolvedForm || null,

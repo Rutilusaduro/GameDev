@@ -85,4 +85,5 @@ import './researchJournal/index.js';
 import './scrutiny/index.js';
 import './wifeLessons/index.js';
 import './customStudent/index.js';
+import './origin/index.js';
 import '../modules.js';

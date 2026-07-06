@@ -57,6 +57,7 @@ registerSubjectDeriver((student, ref, skillEffects) => ({
   supernaturalForm: student.supernaturalForm || null,
   supernatural: !!student.supernaturalForm,
   custom: !!student.custom,
+  origin: student.origin || 'default',
   formId: student.ascension?.formId || null,
   isAscended: isAscended(student),
   cycle: student.ascension?.cycle || 1,
@@ -79,6 +80,7 @@ registerDimension('mobilityLevel', (ctx) => deriveMobilityLevel(ctx.d || {}));
 registerDimension('clothingState', (ctx) => ctx.subject?.clothingState ?? ctx.globals?.clothingState ?? 'fitted');
 registerDimension('mealContext', (ctx) => ctx.globals?.mealType ?? 'meal');
 registerDimension('inWater', (ctx) => !!ctx.globals?.inWater);
+registerDimension('origin', (ctx) => ctx.subject?.origin ?? 'default');
 registerDimension('isGaining', (ctx) => {
   const delta = ctx.globals?.weekGainLbs ?? ctx.subject?.weekGainLbs;
   if (delta != null) return delta > 0;

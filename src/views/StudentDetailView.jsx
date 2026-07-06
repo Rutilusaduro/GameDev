@@ -25,6 +25,7 @@ import { computeSurrenderVector, formatSurrenderSummary } from '../gameData/tran
 import { getSupernaturalFormForStudent } from '../gameData/supernaturalForms.js';
 import { getAscensionFormForStudent } from '../gameData/ascension/forms.js';
 import { abilityIsOnCooldown, getAbilitiesForForm } from '../gameData/ascension/abilities.js';
+import { getOriginCard } from '../gameData/origins/index.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
@@ -105,13 +106,14 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
             return(
               <div>
                 {/* Header card */}
-                {(()=>{const detailEvMeta=s.evolvedForm?EVOLVED_FORM_META[s.evolvedForm]:null; const ascForm=getAscensionFormForStudent(s); return(
+                {(()=>{const detailEvMeta=s.evolvedForm?EVOLVED_FORM_META[s.evolvedForm]:null; const ascForm=getAscensionFormForStudent(s); const originCard=getOriginCard(s,s.origin); return(
                 <div style={{...C.card,cursor:"default",marginBottom:10,borderColor:detailEvMeta?`${detailEvMeta.color}60`:""}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
                       <h2 style={{margin:0,color:detailEvMeta?detailEvMeta.color:"#d8a8ff",fontSize:22}}>{s.name}</h2>
                       {detailEvMeta&&<span style={{fontSize:11,fontWeight:700,color:detailEvMeta.color,background:`${detailEvMeta.color}22`,borderRadius:6,padding:"2px 8px"}}>✦ {detailEvMeta.title}</span>}
                       {s.ascension&&ascForm&&<span style={{fontSize:11,fontWeight:700,color:"#80e8ff",background:"rgba(64,184,216,0.16)",borderRadius:6,padding:"2px 8px"}}>✦ {ascForm.label}</span>}
+                      {originCard&&<span style={{fontSize:11,fontWeight:700,color:"#d8c0ff",background:"rgba(168,120,255,0.14)",borderRadius:6,padding:"2px 8px"}}>{originCard.label}</span>}
                     </div>
                     <div style={{display:"flex",gap:6,alignItems:"center"}}>
                       <StageTag stage={st}/>
@@ -194,6 +196,22 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                   </div>
                   <div style={{fontSize:13,color:"#e0d0b0",lineHeight:1.8,fontStyle:"italic"}}>{getBodyDesc(s, week)}</div>
                 </div>
+
+                {(() => {
+                  const originCard = getOriginCard(s, s.origin);
+                  if (!originCard) return null;
+                  return (
+                    <div style={C.infoBox('rgba(80,40,140,0.22)')}>
+                      <div style={{ fontSize: 9, color: '#a878ff', letterSpacing: 2, marginBottom: 4 }}>ORIGIN · LOCKED</div>
+                      <div style={{ fontSize: 12, color: '#d8c0ff', lineHeight: 1.7 }}>
+                        <b>{originCard.label}</b> · {originCard.voiceLine}
+                      </div>
+                      <div style={{ fontSize: 10, color: '#9c86b8', marginTop: 4 }}>
+                        {originCard.gainStance} register · fixation {originCard.psych.fixation} · obsession {originCard.psych.obsession} · dependence {originCard.psych.dependence} · shame {originCard.psych.shame}
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 <div style={{ marginBottom: 10 }}>
                   <EquipmentButton onClick={() => openEquipModal?.(s.id)} />

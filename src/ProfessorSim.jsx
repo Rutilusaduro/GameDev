@@ -83,6 +83,7 @@ import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
 import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
+import { renderOriginStirring } from './textEngine/scenes/origin/index.js';
 import { AscensionCeremonyModal } from './components/AscensionCeremonyModal.jsx';
 import { appendMemory, pickStudentMemory, pickClassMemory } from './gameData/memory.js';
 import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, grievanceGain, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, DISCONTENT_WEEKLY_DECAY, DISCONTENT_RIPPLE, shouldConfront, dominantGrievance, AMENDS_FLOOR, GIFT_FLOOR, GIFT_COST } from './gameData/discontent.js';
@@ -248,6 +249,7 @@ import {
 import { computePrestigeScore, prestigeApBonus, prestigeBreakthroughBonus, prestigeSummary } from './gameData/prestigeLite.js';
 import { DeviceTuningModal, DeviceRouteModal } from './components/DeviceTuningModal.jsx';
 import { CustomStudentWizard } from './components/CustomStudentWizard.jsx';
+import { OriginPickModal } from './components/OriginPickModal.jsx';
 import {
   buildForceFeederEffect,
   isForceFeederInstalled,
@@ -257,6 +259,7 @@ import { renderForceFeederScene } from './textEngine/scenes/forceFeeder/index.js
 import { applyPsychDelta } from './gameData/psychState.js';
 import { applyCampusDeviceEncounter } from './gameData/campusDeviceEncounters.js';
 import { createCustomStudent, CUSTOM_STUDENT_ID } from './gameData/customStudent/index.js';
+import { applyOriginPick, needsOriginPick } from './gameData/origins/index.js';
 import { LabBuildModal } from './components/LabBuildModal.jsx';
 import { DeviceTargetPicker } from './components/DeviceTargetPicker.jsx';
 import { EquipPicker, AttachPicker } from './components/EquipPicker.jsx';
@@ -325,6 +328,7 @@ import { DebugPanel } from './components/DebugPanel.jsx';
 import { BugReportModal } from './components/BugReportModal.jsx';
 import { RefeedSurgeModal } from './components/RefeedSurgeModal.jsx';
 import './textEngine/scenes/customStudent/index.js';
+import './textEngine/scenes/origin/index.js';
 import { tickScarcityBanishment, checkOppositionEndgame } from './gameData/oppositionEndgame.js';
 import { EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
@@ -513,6 +517,7 @@ export default function ProfessorSim(){
   const [weekRecap, setWeekRecap] = useState(null);
   const [milestoneQueue, setMilestoneQueue] = useState(null);
   const [ascensionCeremony, setAscensionCeremony] = useState(null);
+  const [originPickState, setOriginPickState] = useState(null);
   const [confrontation, setConfrontation] = useState(null);
   const [forceFeederState, setForceFeederState] = useState(null);
   const [deviceUsageModal, setDeviceUsageModal] = useState(null);
@@ -6057,7 +6062,36 @@ export default function ProfessorSim(){
     setStudents(prev=>prev.map(s=>s.id===studentId?{...s,...patch}:s));
   };
 
-  const openWeighIn=(s)=>{ if(!s) return; setWeighInState({student:s,phase:"scene"}); };
+  const openOriginFor=(s)=>{
+    if(!s) return false;
+    if(needsOriginPick(s)){
+      setOriginPickState({studentId:s.id});
+      return true;
+    }
+    return false;
+  };
+
+  const openStudentDetail=(studentId)=>{
+    const s=students.find(st=>st.id===studentId);
+    if(!s) return;
+    if(openOriginFor(s)) return;
+    setSelectedId(s.id);
+    setView('student');
+  };
+
+  const commitOriginPick=(studentId,originId)=>{
+    const live=students.find(st=>st.id===studentId);
+    setStudents(prev=>prev.map(st=>st.id===studentId?applyOriginPick(st,originId,week):st));
+    setOriginPickState(null);
+    if(live){
+      setSelectedId(live.id);
+      setView('student');
+      const preview=renderOriginStirring({...live,origin:originId},week);
+      push(`✦ ${live.name}'s origin is locked.${preview?` ${preview}`:''}`);
+    }
+  };
+
+  const openWeighIn=(s)=>{ if(!s||openOriginFor(s)) return; setWeighInState({student:s,phase:"scene"}); };
 
   const startIntimacyScene=(s,sceneId)=>{
     const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId];
@@ -6304,6 +6338,7 @@ export default function ProfessorSim(){
 
   const openTalk=(s)=>{
     if(!s) return;
+    if(openOriginFor(s)) return;
     if(s.hidden&&!(s.id===LILITH_ID&&lilithUnlocked)&&!(s.id===ELARA_ID&&elaraDiscovered)) return;
     if(s.id===ELARA_ID&&elaraDiscovered) markElaraMet();
     if(isWithdrawalAggressive(s)&&(s.withdrawalAggroWeeks||0)>0){
@@ -8170,7 +8205,7 @@ export default function ProfessorSim(){
         <div style={C.main}>
 
           {/* ── CLASS VIEW ── */}
-          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} onAmends={openAmends}/>}
+          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail}/>}
 
           {/* ── THE SETTLING (list) ── */}
           {view==="settling"&&<SettlingListView students={students} week={week} setSelectedId={setSelectedId} setView={setView}/>}
@@ -8410,6 +8445,16 @@ export default function ProfessorSim(){
             onAccept={()=>confirmAscensionRebirth(ascStudent.id)}
             onDecline={()=>declineAscensionCeremony(ascStudent.id)}
             onClose={()=>setAscensionCeremony(null)}
+          />
+        );
+      })()}
+      {originPickState&&(()=>{
+        const originStudent=students.find(st=>st.id===originPickState.studentId);
+        if(!originStudent) return null;
+        return(
+          <OriginPickModal
+            student={originStudent}
+            onPick={(originId)=>commitOriginPick(originStudent.id,originId)}
           />
         );
       })()}

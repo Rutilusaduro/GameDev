@@ -87,6 +87,7 @@ export function ClassView({
   setView,
   week = 1,
   onAmends,
+  onOpenStudent,
 }) {
   const isLocked = (s) => s.lockState === 'locked';
   const rosterVisible = (s) => (!s.hidden || (s.id === 15 && lilithUnlocked) || (s.id === 17 && elaraDiscovered)) && !isLocked(s);
@@ -99,7 +100,7 @@ export function ClassView({
           <p style={C.secT}>Students — {students.filter(rosterVisible).length} close · avg {avgLbs} lbs</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(195px,1fr))', gridAutoRows: 'minmax(140px,auto)', gap: 8 }}>
             {[...students].filter(rosterVisible).sort((a, b) => a.id - b.id).map((s) => (
-              <RosterTile key={s.id} s={s} week={week} onOpen={() => { setSelectedId(s.id); setView('student'); }} onAmends={onAmends} classmateWithdrawn={classmateWithdrawn && !s.withdrawn} />
+              <RosterTile key={s.id} s={s} week={week} onOpen={() => (onOpenStudent ? onOpenStudent(s.id) : (setSelectedId(s.id), setView('student')))} onAmends={onAmends} classmateWithdrawn={classmateWithdrawn && !s.withdrawn} />
             ))}
           </div>
           {locked.length > 0 && (
