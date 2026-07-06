@@ -95,7 +95,6 @@ import { renderIntimacyChoice, renderIntimacyEnding, renderIntimacyPassout } fro
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
-import './textEngine/scenes/customStudent/index.js';
 import './textEngine/scenes/opposition/endgameBeat.js';
 import './textEngine/scenes/corruptionVoice.js';
 import { DINNER_LOG_PANEL_STYLE, dinnerLogDisplayText, getDinnerLogLineStyle } from './utils/dinnerLogStyle.js';
@@ -325,6 +324,7 @@ import { TalkModal } from './components/TalkModal.jsx';
 import { DebugPanel } from './components/DebugPanel.jsx';
 import { BugReportModal } from './components/BugReportModal.jsx';
 import { RefeedSurgeModal } from './components/RefeedSurgeModal.jsx';
+import './textEngine/scenes/customStudent/index.js';
 import { tickScarcityBanishment, checkOppositionEndgame } from './gameData/oppositionEndgame.js';
 import { EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
