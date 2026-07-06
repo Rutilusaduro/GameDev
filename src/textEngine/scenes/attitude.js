@@ -365,7 +365,7 @@ registerPool("attitude.line", [
       `The case study conclusion is writing itself. I keep revising the methodology to match.`,
       `Optimal outcome, by my revised metrics. I keep revising the metrics. They keep pointing here.`,
     ] },
-  { when: { studentId: 18, stageMin: 5 }, priority: 2,
+  { when: { studentId: 18, custom: false, stageMin: 5 }, priority: 2,
     text: [
       `The build is exceeding specifications. I haven't decided if the specs need updating.`,
       `Yield beyond initial parameters. Column G has excellent numbers. So do the others.`,

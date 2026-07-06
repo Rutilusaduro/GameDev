@@ -59,7 +59,7 @@ registerModuleVariants('campus.spaceObs', [
     'Indiana maps landings like dig sites — which step creaks, which rail holds, which shortcut fits.',
     'The stairwell is another ruin to navigate. She likes ruins.',
   ]},
-  { when: { studentId: 18, campusLocale: 'prof_office', ...MOBILE }, weight: W, text: [
+  { when: { studentId: 18, custom: false, campusLocale: 'prof_office', ...MOBILE }, weight: W, text: [
     'Talia measures your doorframe on entry. Old habit. New clearance required each month.',
     'She sits where the geometry works and opens her notebook. Inputs: food. Outputs: this.',
   ]},

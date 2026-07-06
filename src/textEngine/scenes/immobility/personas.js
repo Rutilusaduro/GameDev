@@ -80,7 +80,7 @@ registerModuleVariants('immob.register', [
     `"Found the big room," Indiana says. "Marked it on the map. I'm the landmark."`,
     `"Best ruin on campus. Me."`,
   ]},
-  { when: { studentId: 18, ...IMMOBILE_TOP, corruption: [2] }, weight: W, text: [
+  { when: { studentId: 18, custom: false, ...IMMOBILE_TOP, corruption: [2] }, weight: W, text: [
     `"Output exceeded target," Talia says, satisfied. "No rollback."`,
     `"The prototype became the product. I'm keeping it."`,
   ]},
@@ -159,7 +159,7 @@ registerModuleVariants('immob.settledState', [
     'Indiana has discovered the largest ruin on campus: herself, settled and immense.',
     'X marks the spot. She is the spot. Expedition paused, satisfied.',
   ]},
-  { when: { studentId: 18, ...IMMOBILE_TOP }, weight: W, text: [
+  { when: { studentId: 18, custom: false, ...IMMOBILE_TOP }, weight: W, text: [
     'Talia rests where the geometry finally works — immobile, warm, parameters exceeded.',
     'The prototype became the product. She is keeping it.',
   ]},

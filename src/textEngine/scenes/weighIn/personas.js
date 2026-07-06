@@ -464,25 +464,25 @@ registerModuleVariants("wi.replyDialogue", [
   ]},
 
   // ── 18 · Talia — inventor: body as optimization system ────────
-  { when: { studentId: 18, corruption: [0], stageMax: 5 }, weight: W, text: [
+  { when: { studentId: 18, custom: false, corruption: [0], stageMax: 5 }, weight: W, text: [
     `"Variable drift in the output," she says, frowning at the dial. "The system is adapting without my input."`,
     `"I've been recalibrating," she says, not quite looking up. "The baseline keeps moving."`,
   ]},
-  { when: { studentId: 18, corruption: [1], stageMax: 5 }, weight: W, text: [
+  { when: { studentId: 18, custom: false, corruption: [1], stageMax: 5 }, weight: W, text: [
     `"Output is up," she says, studying the number. "Inputs justify the delta."`,
     `"That's an acceptable deviation from spec," she says. "Acceptable. And increasing."`,
   ]},
-  { when: { studentId: 18, corruption: [2], stageMax: 5 }, weight: W, text: [
+  { when: { studentId: 18, custom: false, corruption: [2], stageMax: 5 }, weight: W, text: [
     `"Every calorie is load-bearing now," she says, pleased. "Structural integrity: improving."`,
     `"The prototype found its preferred configuration," she says. "I'm endorsing the revision."`,
   ]},
-  { when: { studentId: 18, corruption: [0], stageMin: 6 }, weight: W, text: [
+  { when: { studentId: 18, custom: false, corruption: [0], stageMin: 6 }, weight: W, text: [
     `"The system is well outside spec," she says quietly. "I wrote the spec. I know exactly how far outside it is."`,
   ]},
-  { when: { studentId: 18, corruption: [1], stageMin: 6 }, weight: W, text: [
+  { when: { studentId: 18, custom: false, corruption: [1], stageMin: 6 }, weight: W, text: [
     `"Field data shows the prototype has exceeded original parameters," she says, almost to herself. "Redesigning around the actual output."`,
   ]},
-  { when: { studentId: 18, corruption: [2], stageMin: 6 }, weight: W, text: [
+  { when: { studentId: 18, custom: false, corruption: [2], stageMin: 6 }, weight: W, text: [
     `"Measuring output," she says, satisfied. "Every variable accounted for."`,
   ]},
 ]);

@@ -57,6 +57,7 @@ import './gossip/index.js';
 import './discontent/index.js';
 import './confront/index.js';
 import './cultivator/index.js';
+import './customStudent/index.js';
 import './hunt/index.js';
 import './campusEvent/index.js';
 import './deviceFlavor.js';

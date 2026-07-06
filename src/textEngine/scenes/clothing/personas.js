@@ -94,11 +94,11 @@ registerModuleVariants('cloth.reaction', [
     `Fiona looks at the tear like negative space gone wrong. "The composition… shifted."`,
     `"Art happens," she whispers, pulling fabric over the gap.`,
   ]},
-  { when: { studentId: 18, corruption: [0] }, weight: W, text: [
+  { when: { studentId: 18, custom: false, corruption: [0] }, weight: W, text: [
     `"Tolerance exceeded," Talia mutters, pinning the gap. "Revision required."`,
     `She treats the tear like a failed stress test. The test continues.`,
   ]},
-  { when: { studentId: 18, corruption: [2] }, weight: W, text: [
+  { when: { studentId: 18, custom: false, corruption: [2] }, weight: W, text: [
     `"Material stress exceeded spec," Talia says. "Recommend larger garment. Accepting growth."`,
     `She logs the pop and keeps moving. Engineering solution: elastic.`,
   ]},

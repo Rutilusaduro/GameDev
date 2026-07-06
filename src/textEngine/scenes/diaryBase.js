@@ -415,16 +415,16 @@ registerPool("diary.sophia.trial", [
 // ══════════════════════════════════════════════════════════════════
 
 registerPool("diary.talia.justification", [
-  { when: { studentId: 18, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
+  { when: { studentId: 18, custom: false, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
     "Researched metabolic baselines today. Found papers on how increased body mass affects lab output. Wrote three pages. Technically sound. Entirely true. Also entirely a rationalization.",
     "I know why I'm eating more. The papers are real anyway.",
   ]},
-  { when: { studentId: 18, stageMin: 3, stageMax: 4, corruption: [1] }, weight: 4, text: [
+  { when: { studentId: 18, custom: false, stageMin: 3, stageMax: 4, corruption: [1] }, weight: 4, text: [
     "Expanded the research. Found more papers. Found papers I wrote.",
     "Found papers I wrote that prove I was building toward this from the beginning. The arguments are excellent. The conclusion was already decided.",
     "The justification is airtight. The hunger is real.",
   ]},
-  { when: { studentId: 18, stageMin: 4, stageMax: 6, corruption: [2] }, weight: 4, text: [
+  { when: { studentId: 18, custom: false, stageMin: 4, stageMax: 6, corruption: [2] }, weight: 4, text: [
     "The lab notes are full now. Conductivity: improved. Field resonance: optimal at this current mass.",
     "Metabolic baseline: perfectly calibrated for precision work. All true. All excellent. All necessary.",
     "I'm going to keep building the machines. And the machines are going to keep working better when I'm this big.",

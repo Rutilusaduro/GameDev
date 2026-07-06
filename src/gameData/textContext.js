@@ -56,6 +56,7 @@ registerSubjectDeriver((student, ref, skillEffects) => ({
   hasDeviceEquipped: getEquippedDeviceIds(student).length > 0,
   supernaturalForm: student.supernaturalForm || null,
   supernatural: !!student.supernaturalForm,
+  custom: !!student.custom,
   formId: student.ascension?.formId || null,
   isAscended: isAscended(student),
   cycle: student.ascension?.cycle || 1,

@@ -109,7 +109,7 @@ registerPool('week.recap.line', [
   { when: { studentId: 16 }, weight: 4, text: [
     `Sophia stares at the number a beat too long, the want and the worry tangling, and the want quietly winning.`,
   ]},
-  { when: { studentId: 18 }, weight: 4, text: [
+  { when: { studentId: 18, custom: false }, weight: 4, text: [
     `Talia measures the change, frowns at the data, then notes — almost to herself — that she does not want to reverse it.`,
   ]},
 

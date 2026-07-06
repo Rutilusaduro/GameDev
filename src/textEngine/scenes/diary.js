@@ -1210,11 +1210,11 @@ registerPool('diary.innerBeat', [
     "Most interesting subject this site has produced. Taking measurements with the same calipers as the finds.",
     "Every dig has one find that reorganizes everything else. I've found mine. It was here the whole time.",
   ] },
-  { when: { studentId: 18, stageMin: 3 }, weight: 4, text: [
+  { when: { studentId: 18, custom: false, stageMin: 3 }, weight: 4, text: [
     "Build yield within spec. Personal yield also within spec. Column G has a good trend. I like Column G.",
     "Lab log: total available mass [crossed out] [different handwriting] [crossed out again] okay. :)",
   ] },
-  { when: { studentId: 18, stageMin: 6, taliaScaleSurprise: true }, weight: 5, text: [
+  { when: { studentId: 18, custom: false, stageMin: 6, taliaScaleSurprise: true }, weight: 5, text: [
     "Weighed on the lab scale for build calculations. Number bigger than spring. Wrote it down. Wrote it again, larger.",
     "The number is bigger than it was. I wrote it in larger handwriting. Then I drew a small face next to it.",
   ] },

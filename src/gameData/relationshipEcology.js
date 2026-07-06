@@ -35,7 +35,7 @@ export function applyJealousyRelDelta(student, { isNeglected = false, isFavored 
 }
 
 export function computeFavoritismFlags(students, weeklyFeedCounts = {}) {
-  const visible = students.filter((s) => !s.hidden && s.id !== 18);
+  const visible = students.filter((s) => !s.hidden && (s.id !== 18 || s.custom));
   if (visible.length < 2) return {};
   const counts = visible.map((s) => ({ id: s.id, feeds: weeklyFeedCounts[s.id] ?? 0 }));
   const max = Math.max(...counts.map((c) => c.feeds));

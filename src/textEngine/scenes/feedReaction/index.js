@@ -128,7 +128,7 @@ registerPool('feed.react.line', [
   { when: { studentId: 16 }, weight: 4, text: [
     `Sophia eats faster than she wants to, a flush rising as the want outruns her. "I — I shouldn't be this hungry."`,
   ]},
-  { when: { studentId: 18 }, weight: 4, text: [
+  { when: { studentId: 18, custom: false }, weight: 4, text: [
     `Talia eats one-handed over a blueprint, registering the pleasure a beat late. "Hm. Caloric density's excellent, actually."`,
   ]},
 

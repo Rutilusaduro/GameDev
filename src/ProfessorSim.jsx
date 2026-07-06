@@ -95,6 +95,7 @@ import { renderIntimacyChoice, renderIntimacyEnding, renderIntimacyPassout } fro
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
+import './textEngine/scenes/customStudent/index.js';
 import './textEngine/scenes/opposition/endgameBeat.js';
 import './textEngine/scenes/corruptionVoice.js';
 import { DINNER_LOG_PANEL_STYLE, dinnerLogDisplayText, getDinnerLogLineStyle } from './utils/dinnerLogStyle.js';
@@ -247,6 +248,7 @@ import {
 } from './gameData/deviceUsageEvents.js';
 import { computePrestigeScore, prestigeApBonus, prestigeBreakthroughBonus, prestigeSummary } from './gameData/prestigeLite.js';
 import { DeviceTuningModal, DeviceRouteModal } from './components/DeviceTuningModal.jsx';
+import { CustomStudentWizard } from './components/CustomStudentWizard.jsx';
 import {
   buildForceFeederEffect,
   isForceFeederInstalled,
@@ -255,6 +257,7 @@ import {
 import { renderForceFeederScene } from './textEngine/scenes/forceFeeder/index.js';
 import { applyPsychDelta } from './gameData/psychState.js';
 import { applyCampusDeviceEncounter } from './gameData/campusDeviceEncounters.js';
+import { createCustomStudent, CUSTOM_STUDENT_ID } from './gameData/customStudent/index.js';
 import { LabBuildModal } from './components/LabBuildModal.jsx';
 import { DeviceTargetPicker } from './components/DeviceTargetPicker.jsx';
 import { EquipPicker, AttachPicker } from './components/EquipPicker.jsx';
@@ -716,7 +719,7 @@ export default function ProfessorSim(){
     if(label) push(`💰 ${label}: +${formatMoney(amount)}`);
   };
 
-  const inhabitProfessor=(spiritId,subjectId)=>{
+  const inhabitProfessor=(spiritId,subjectId,customStudent=null)=>{
     const spirit=SPIRITS[spiritId];
     const subj=SUBJECTS[subjectId];
     if(!spirit||!subj) return;
@@ -741,6 +744,9 @@ export default function ProfessorSim(){
     }
     const mods=spirit.startMods||{};
     setStudents(list=>list.map(s=>{
+      const seat = customStudent && s.id === CUSTOM_STUDENT_ID ? customStudent : s;
+      if(seat.custom) return {...seat, lockState:'open'};
+      s = seat;
       if(!UNLOCK_POOL_IDS.includes(s.id)) return s; // story-gated girls untouched
       if(!startIds.includes(s.id)) return {...s, lockState:'locked', passiveTrust:0};
       let ns={...s, lockState:'open'};
@@ -749,7 +755,7 @@ export default function ProfessorSim(){
       if(mods.hunger) ns=adjustHunger(ns,mods.hunger);
       return ns;
     }));
-    push(`🌒 ${spirit.label} takes root behind the ${subj.label} professor's eyes. Five desks lean close; the rest of the room waits.`);
+    push(`🌒 ${spirit.label} takes root behind the ${subj.label} professor's eyes. Five desks lean close; the nineteenth chair is ${customStudent?'claimed':'waiting'}.`);
   };
 
   // Spirit Favor meter — on-lean actions fill it; full → partial AP rebate.
@@ -7330,12 +7336,33 @@ export default function ProfessorSim(){
             </div>
             <div style={{display:"flex",justifyContent:"space-between",marginTop:18}}>
               <button onClick={()=>setSetupStep("lore")} style={{...C.smBtn,padding:"9px 18px"}}>← Back</button>
-              <button disabled={!setupSubject} onClick={()=>inhabitProfessor(setupSpirit.id,setupSubject.id)}
+              <button disabled={!setupSubject} onClick={()=>setSetupStep("chair")}
                 style={{...C.btn(accent),opacity:setupSubject?1:0.4,fontSize:14,padding:"11px 30px",cursor:setupSubject?"pointer":"default",boxShadow:setupSubject?`0 0 24px ${accentSoft}`:"none"}}>
-                Inhabit the Professor
+                Build the Nineteenth Chair →
               </button>
             </div>
           </>)}
+
+          {setupStep==="chair"&&setupSpirit&&setupSubject&&(
+            <CustomStudentWizard
+              accent={accent}
+              onBack={()=>setSetupStep("vessel")}
+              onComplete={(draft)=>{
+                const base=students.find(s=>s.id===CUSTOM_STUDENT_ID)||{};
+                const custom=createCustomStudent(draft,base);
+                const runtimeCustom={
+                  ...custom,
+                  ...initGainStats(custom),
+                  ...initDeviceState(),
+                  psych: custom.psych,
+                  corruption: 0,
+                  ascension: null,
+                  weekStartLbs: custom.lbs,
+                };
+                inhabitProfessor(setupSpirit.id,setupSubject.id,runtimeCustom);
+              }}
+            />
+          )}
         </div>
       </div>
     );

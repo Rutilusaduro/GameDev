@@ -36,6 +36,22 @@ export function defaultOutfitFor(student) {
   };
 }
 
+export function buildCustomOutfit({ garments = {}, startLbs = 130, fit = 'fitted' } = {}) {
+  const fitMult = fit === 'relaxed' ? 1.08 : fit === 'snug' ? 0.97 : 1;
+  const make = (slot, fallbackName, slotMult) => ({
+    id: garments[slot]?.id || `custom_${slot}`,
+    name: garments[slot]?.name || fallbackName,
+    slot,
+    fitLbs: Math.round(startLbs * slotMult * fitMult),
+    integrity: 1,
+  });
+  return {
+    top: make('top', 'top', 1.12),
+    bottom: make('bottom', 'jeans', 1.05),
+    waist: make('waist', 'waistband', 1),
+  };
+}
+
 export function outfitFor(student) {
   return student?.outfit ?? defaultOutfitFor(student);
 }
