@@ -5,7 +5,6 @@ import { useMemo, useState } from 'react';
 import { C } from '../styles.js';
 import { assembleDossier } from '../gameData/dossier.js';
 import { PSYCH_TIERS } from '../gameData/psychState.js';
-import { WEIGHT_STAGES } from '../gameData/stages.js';
 import { StageTag } from './ui.jsx';
 import { getStage } from '../gameData/stages.js';
 import { getDiary } from '../utils/gameHelpers.js';

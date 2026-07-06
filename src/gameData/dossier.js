@@ -311,7 +311,6 @@ export function assembleDossier(student, week) {
   const s = backfillDossierIfEmpty(student, week);
   const snapshots = s.dossierSnapshots || [];
   const last = snapshots[snapshots.length - 1] || null;
-  const prev = snapshots.length > 1 ? snapshots[snapshots.length - 2] : null;
   const wowDelta = last?.lbsDelta ?? Math.max(0, Math.round((s.lbs ?? 0) - (s.weekStartLbs ?? s.lbs ?? 0)));
   const stageCrossings = snapshots.filter((snap, idx) => {
     if (idx === 0) return false;
