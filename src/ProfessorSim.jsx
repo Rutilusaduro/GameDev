@@ -83,6 +83,8 @@ import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
 import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
+import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
+import { buildWeekReviewExtras, emptyWeekPlan } from './gameData/weekPlanner.js';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
 import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
@@ -518,6 +520,8 @@ export default function ProfessorSim(){
   const [equipModalStudentId, setEquipModalStudentId] = useState(null);
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
   const [weekRecap, setWeekRecap] = useState(null);
+  const [weekPlan, setWeekPlan] = useState(() => emptyWeekPlan());
+  const [weekPlannerOpen, setWeekPlannerOpen] = useState(false);
   const [milestoneQueue, setMilestoneQueue] = useState(null);
   const [ascensionCeremony, setAscensionCeremony] = useState(null);
   const [originPickState, setOriginPickState] = useState(null);
@@ -1988,7 +1992,11 @@ export default function ProfessorSim(){
           else if(selfMem) memoryProse=renderMemorySelf(live,week,selfMem);
           return {...m,memoryProse};
         });
-      setWeekRecap({week:newWeek,movers:ordered});
+      setWeekRecap({
+        week: newWeek,
+        movers: ordered,
+        extras: buildWeekReviewExtras(updated, week, pharmacistTextOpts(pharmacistState, week)),
+      });
     }
     if(milestones.length) setMilestoneQueue({events:milestones,index:0});
     // Admin notices visibly large students (hidden students like Lilith don't trigger scrutiny)
@@ -7600,6 +7608,7 @@ export default function ProfessorSim(){
                       </div>}
                     </div>
                   ))}
+                  <button onClick={()=>setWeekPlannerOpen(true)} style={{...C.btn("#2a2868"),marginTop:4,width:"100%"}}>📋 Plan Week</button>
                   <button onClick={finishClass} style={{...C.btn("#186028"),marginTop:4}}>⏩ End Week</button>
                 </div>
               )}
@@ -8473,6 +8482,15 @@ export default function ProfessorSim(){
 
       {/* ── SESSION RESULT ── */}
       {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}
+      {weekPlannerOpen&&(
+        <WeekPlannerModal
+          students={students}
+          week={week}
+          initialPlan={weekPlan}
+          onCommit={(plan)=>{ setWeekPlan(plan); setWeekPlannerOpen(false); push('📋 Week plan locked — your slots are set.'); }}
+          onClose={()=>setWeekPlannerOpen(false)}
+        />
+      )}
       {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)} onSelectGirl={(id)=>{openStudentDetail(id,{dossier:true});setWeekRecap(null);}}/>}
       {milestoneQueue&&<MilestoneCeremonyModal queue={milestoneQueue}
         week={week}
