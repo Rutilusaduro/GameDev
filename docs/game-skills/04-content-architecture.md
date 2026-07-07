@@ -42,7 +42,8 @@ stance tier they can fire at.
 
 ## 3. State-keyed writing without an engine
 
-If you're in Twine/Ren'Py/plain code, reproduce the essentials manually:
+If you're in Twine/Ren'Py/plain code, reproduce the essentials manually
+(rigor tiers and the pure-branching mapping: `12-any-game.md` §2, §5):
 
 - **Descriptor functions, not inline description:** one function per
   described thing (`bodyLine(girl)`, `outfitLine(girl)`, `moveVerb(girl)`)

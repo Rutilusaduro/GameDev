@@ -19,7 +19,8 @@ several for full coverage. Each file is self-contained.
 | `08-shell-integration.md` | Wiring the engine into VN / management / parser shells; UI render sites; saves; dev panel | Building or debugging the game body around the engine |
 | `09-lexicon-forge.md` | The method for building `word.*` pools for any setting; pool briefs; sourcing sweeps | Creating or expanding the word layer |
 | `10-exemplar-gallery.md` | Graded weak→strong passages per beat family, with diagnoses | Calibrating before ANY prose session |
-| `11-agent-protocol.md` | Role wheel, build phases, session discipline, multi-agent scaling | An AI agent running the build |
+| `11-agent-protocol.md` | Role cards with instantiation prompts, build phases, session discipline, multi-agent scaling | An AI agent running the build |
+| `12-any-game.md` | Format translation, POV/subject matrix, premise remap worksheet, rigor tiers, the new-game intake | Starting ANY game that differs from the reference sim in format, POV, or premise |
 
 The engine these skills assume (when one is used) is specified end-to-end
 in the **Text Engine Manifesto** (`docs/TEXT_ENGINE_MANIFESTO.md`) — a
@@ -46,6 +47,9 @@ content; the Manifesto tells you how to build and police the machine.
 
 ## Order of operations for a new game
 
+0. If the game differs from the reference sim in format, POV, or premise
+   (it usually does), run the `12-any-game.md` intake first — it
+   translates every concept below into the new shape.
 1. Read `01` and write the one-page design (loop, cast size, ladder, arc).
 2. Read `03`, build the cast sheet. Read `05`, pick the kink palette.
 3. Read `04` (+ the Text Engine Manifesto if using the engine), lay out
@@ -57,4 +61,4 @@ content; the Manifesto tells you how to build and police the machine.
 
 **If the builder is an AI agent, start at `11-agent-protocol.md`** — it
 sequences all of the above into phases, roles, and session discipline, and
-says when to stop and ask the owner.
+says when to stop and ask the owner. Its phase 0 consumes the `12` intake.
