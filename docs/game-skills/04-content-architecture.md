@@ -85,6 +85,9 @@ The lexicon to build first for THIS genre:
   (fullness ratio bands), `word.garment.*` (CLAUSE, fit-state keyed),
   `word.adv.pace` / `word.adv.sizeQual` (ADV, psych/stage keyed).
 
+The forge method — pool briefs, sourcing sweeps, the only-here-word test —
+is `09-lexicon-forge.md`; shell wiring is `08-shell-integration.md`.
+
 ## 5. The wardrobe state model (portable)
 
 Garments carry `fitLbs` (weight they fit at) and `integrity`. Fit state

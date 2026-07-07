@@ -117,7 +117,14 @@ tier and player opt-in). Every intensity keeps the full voice contract —
 explicit scenes still run on specificity, interiority, and aftermath, not
 anatomical inventory.
 
-## 8. Self-check before shipping any prose
+## 8. Calibration
+
+Before a writing session, read two exemplars from `10-exemplar-gallery.md`
+in the beat family you're about to write; after drafting, run its
+diagnosis bullets against your own text. The gallery is the executable
+form of this contract.
+
+## 9. Self-check before shipping any prose
 
 1. Read it aloud; anywhere you stumble, rewrite.
 2. Grep the style ledger.

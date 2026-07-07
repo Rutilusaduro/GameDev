@@ -3,18 +3,18 @@
 **What this is:** a complete, self-contained kit for building a word-granular
 procedural prose engine for text games. Read only this file and you can build
 the whole thing: the spec, a full JavaScript reference implementation, a
-worked setting pack, the authoring law, a four-layer lint harness, a
-mechanism self-check, and the build order. Nothing here requires access to
-any other repository.
+worked setting pack, the shell contract, the authoring law, a four-layer
+lint harness, a mechanism self-check, and the build order. Nothing here
+requires access to any other repository.
 
 **Who this is for:** any developer or model, including small ones. Every
 mechanism comes with exact data shapes, exact math, complete code, and a
 runnable check that fails if you got it wrong. Where this document says
-MUST, a lint rule enforces it. Every line of code in Parts IV, V, VII, and
-VIII has been executed together: the mechanism checks pass, the lint harness
-runs clean on the worked example, and deliberately planted defects (a
-deleted fallback, a wrong verb form) are caught. If you copy the code and a
-check fails, the defect is in the copying.
+MUST, a lint rule enforces it. Every line of code in Parts III, IV, V, VII,
+and VIII has been executed together: the mechanism checks pass, the lint
+harness runs clean on the worked example, and deliberately planted defects
+(a deleted fallback, a wrong verb form) are caught. If you copy the code and
+a check fails, the defect is in the copying.
 
 **What it produces:** a game whose prose is assembled at render time from
 pools of small, grammar-shaped fragments keyed on game state — so a
@@ -74,6 +74,8 @@ entries are eligible. The coherence layer keeps that volume honest.
 | **setting pack** | Everything game-specific: deriver, dimensions, identity modules, lexicon, ladders (Part V) |
 | **lint pack** | The game-specific half of the lint harness: sweep templates, state grid, coverage spec, banned patterns (Part VII) |
 | **trace** | Per-slot provenance collected during render; powers the tuning tools (Part IX) |
+| **shell** | The host game — VN runner, management loop, parser — that owns state, choices, and saves; the engine is one pure `(template, ctx) → prose` call (3.10) |
+| **seed** | Value fed to `seededRandom` so a render sequence replays exactly (3.9) |
 
 Naming law: module keys are `namespace.beatName` (`din.arrival`,
 `word.size`, `case.clueBeat`). One short namespace per feature. The `word.`
@@ -266,6 +268,81 @@ Skipping the event scope is the most common integration mistake: every
 render gets fresh facts and a fresh session Set, and the game "works" while
 silently allowing contradictions and back-to-back repeats.
 
+### 3.9 The random source (determinism)
+
+Every roll — array pick and weighted pick — flows through one injectable
+function. `setRandomSource(seededRandom(seed))` makes every subsequent
+render reproducible; a falsy argument restores `Math.random`. Games never
+call this; the tooling does:
+
+- **Replay:** the dev panel stamps each rolled sample with the seed that
+  produced it, so a flagged render can be replayed as the exact same text
+  (Part IX) instead of re-rolled and hoped for.
+- **CI:** the rate-based gates (Part VII) stay on true randomness on
+  purpose — but a suspected flake can be pinned to a seed while you
+  investigate.
+
+One rule follows: reproduction needs the same *call sequence*. Replay the
+whole event from its first render — a seed applied mid-scene diverges,
+because earlier renders already advanced the generator.
+
+### 3.10 The shell contract (driving the engine from any game)
+
+The engine is one pure call: `render(template, ctx) → string`. Everything
+else belongs to the shell — the VN runner, management loop, or parser that
+owns game state, choices, and saves. The whole integration surface:
+
+```js
+// A game event = one scope bundle + a sequence of beats.
+export function runEvent(beats, { subject, ref = null, week, globals = {}, weekUsed }) {
+  // One event = one scope bundle (3.8). Create once, thread everywhere.
+  const scopes = {
+    facts: createFacts(),
+    sessionUsed: createSessionUsed(),
+    sceneStems: new Set(),
+    weekUsed,                       // persisted on the character by the shell
+  };
+  const ctxFor = () => createContext({ subject, ref, week, globals, ...scopes });
+  const out = [];
+  for (const beat of beats) {
+    if (beat.choice) {
+      // Menu labels render with a THROWAWAY scope copy: an option the
+      // player never picks must not burn dedupe state or assert facts.
+      const labels = beat.choice.map((opt) => ({
+        ...opt,
+        label: render(opt.labelTpl, createContext({ subject, ref, week, globals })),
+      }));
+      out.push({ choice: labels });   // the shell shows the menu, waits,
+      continue;                       // then runs the picked option's beats
+    }
+    out.push({ text: render(beat.tpl, ctxFor()) }); // paragraphs: one render
+  }                                                 // per beat, join '\n\n'
+  return out;
+}
+```
+
+Four rules the example encodes:
+
+1. **One event, one scope bundle** (3.8): `facts`, `sessionUsed`, and
+   `sceneStems` are created once per event and threaded into every context;
+   `weekUsed` comes from the character and outlives the event.
+2. **Paragraphs are separate renders** joined with `\n\n` — remember the
+   smoothing gotcha (3.7): a paragraph-opening fragment is authored
+   capitalized or piped through `|cap`.
+3. **Menu labels render with a throwaway scope.** A label the player never
+   picks must not record dedupe usage or assert facts. Labels get fresh
+   contexts; only the chosen branch renders into the event scope.
+4. **The shell mutates state, then renders.** Weight changes, damage,
+   psych-tier moves — apply them to the character first, then create the
+   context; `ctx.d` derives once per context, never live.
+
+Shell shapes: in a **management sim**, an event is one scheduler tick's
+scene (a meal, an interrupt); clear each character's `weekUsed` on week
+advance. In a **VN**, an event is one labeled scene block — beats map to
+text nodes, choices to menu nodes. In a **parser game**, an event is one
+player command's full response. Saves persist `weekUsed` as an array (3.8)
+and never persist `facts` — facts die with their event.
+
 ---
 
 ## Part IV — Reference implementation
@@ -383,13 +460,33 @@ function recordVariantUsage(usageKey, ctx) {
   ctx.weekUsed?.add(usageKey);
 }
 
+// ── random source ─────────────────────────────────────────────
+// Every roll flows through one injectable function. Games never touch
+// this; the tuning loop and CI do: setRandomSource(seededRandom(seed))
+// makes every render reproducible, so a flagged sample can be replayed
+// exactly. Pass a falsy value to restore Math.random.
+let RANDOM = Math.random;
+export function setRandomSource(fn) {
+  RANDOM = typeof fn === 'function' ? fn : Math.random;
+}
+/** mulberry32 — tiny seeded PRNG, good enough for prose dice. */
+export function seededRandom(seed) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
 // ── random helpers ────────────────────────────────────────────
-export function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+export function pick(arr) { return arr[Math.floor(RANDOM() * arr.length)]; }
 export function weightedPick(entries) {
   let total = 0;
   for (const e of entries) total += e.w;
   if (total <= 0) return entries.length ? entries[0].item : undefined;
-  let roll = Math.random() * total;
+  let roll = RANDOM() * total;
   for (const e of entries) { roll -= e.w; if (roll <= 0) return e.item; }
   return entries[entries.length - 1].item;
 }
@@ -852,6 +949,9 @@ render) supplies:
    key on beyond the deriver's output. Comparison dimensions belong here
    too: a `relSize` dimension that buckets `subject.stat / ref.stat` into
    `much_smaller … much_larger` gives you two-character scenes for free.
+   Production thresholds that read right for bodies: ratio < 0.6
+   `much_smaller`, < 0.85 `smaller`, ≤ 1.18 `similar`, ≤ 1.67 `larger`,
+   else `much_larger` (null when either side is missing).
 4. **Stem-tracked namespaces** — `trackStemsFor('yourScene.')` for every
    prose namespace.
 5. **Identity modules** — `subject.name`, `subject.first`, `ref.name`, the
@@ -1108,6 +1208,27 @@ a tier-0-shaped fallback leaks into tier-2 renders as a rare wrong-register
 event that playtesting misses. `priority: 1` on the tier-shaped variants is
 the fix. Document every `priority` use with a comment saying what it
 suppresses.
+
+### 6.6 The standard lexicon inventory
+
+The `word.*` families every game builds before its first feature, in build
+order. Names are conventions; shapes are law. Counts are launch floors at
+wildcard — keyed variants come on top.
+
+| Pool family | Shape | Keyed on | Wildcard floor |
+|---|---|---|---|
+| `word.<quality>` — the game's central quality (size, exhaustion, suspicion…) | ADJ | main ladder × psych overlay | 6 |
+| `word.<thing>` — the described thing itself (body, office, evidence…) | NP | type × ladder band | 6 |
+| `word.moveVerb` (+ `.sit`, `.rise` sub-pools as scenes demand) | VP-3SG | ladder + scenario | 8 |
+| `word.adv.pace`, `word.adv.<axis>Qual` | ADV | psych / ladder | 4 + `""` entries |
+| `word.<prop>.*` — whatever the state model tracks (garments, gear, rooms) | CLAUSE / PP | state dims (fit, damage…) | 3 per state |
+| `word.<sense>` — sound / smell / light texture of the setting | NP / CLAUSE | locale / season | 4 |
+
+Seeding method: fill each wildcard with the ten most concrete words the
+setting owns, then expand axis by axis — at each ladder rung and psych tier
+ask "which of these words become MORE true here, and what word exists
+*only* here?" The only-here words are the ones players remember; spend most
+of the authoring budget on them.
 
 ---
 
@@ -1534,14 +1655,14 @@ console.log('✔ clean');
 
 ### 8.1 `smoke.mjs`
 
-Eighteen assertions that pin every engine mechanism: pool variety, silent
+Nineteen assertions that pin every engine mechanism: pool variety, silent
 unknowns, week ranges, specificity math, ladder gating, the fact ledger,
 render-scope dedupe, session repeat penalty, the priority gate, all seven
 filters, `{join}`, brace escaping, smoothing behavior (including the `\n\n`
 gotcha), `:ref` retargeting, pronoun modules, trace, the slot inspector,
-and seasons. Run it after copying Part IV; run it again any time you touch
-the engine. If you reimplement the engine in another language, port this
-file first — it IS the spec in executable form.
+seasons, and seeded replay. Run it after copying Part IV; run it again any
+time you touch the engine. If you reimplement the engine in another
+language, port this file first — it IS the spec in executable form.
 
 ```js
 // Phase-1/2 verification from the manifesto build order — engine mechanics
@@ -1549,7 +1670,7 @@ file first — it IS the spec in executable form.
 import './settingPack.js';
 import {
   createContext, createFacts, createSessionUsed, render, registerPool,
-  stemsOf, getSeason, getEligibleVariants,
+  stemsOf, getSeason, getEligibleVariants, setRandomSource, seededRandom,
 } from './engine.js';
 import assert from 'node:assert';
 
@@ -1718,7 +1839,22 @@ registerPool('t.who', [{ when: {}, text: ['{subject.first}'] }]);
 assert.equal(getSeason(1), 'fall');
 assert.equal(getSeason(5), 'winter');
 
-console.log('✔ smoke: all 18 mechanism checks passed');
+// 19. Seeded RNG: same seed → identical render sequence; falsy restores
+//     Math.random. This is what makes flagged samples replayable (Part IX).
+{
+  const runs = [];
+  for (let r = 0; r < 2; r++) {
+    setRandomSource(seededRandom(1234));
+    const ctx = createContext({ subject: det(), week: 3 });
+    const outs = [];
+    for (let i = 0; i < 10; i++) outs.push(render('{case.arrival}', ctx));
+    runs.push(outs.join('\n'));
+  }
+  setRandomSource(null);
+  assert.equal(runs[0], runs[1], 'seeded runs reproduce exactly');
+}
+
+console.log('✔ smoke: all 19 mechanism checks passed');
 ```
 
 ### 8.2 Build order
@@ -1746,7 +1882,7 @@ you built it right.
 
 ## Part IX — Tooling and the tuning loop
 
-The engine ships with three hooks that exist for one purpose: making bad
+The engine ships with four hooks that exist for one purpose: making bad
 renders traceable to the pool that produced them. Build the thin UI over
 them early; it repays itself within a week.
 
@@ -1758,6 +1894,9 @@ them early; it repays itself within a week.
 - **`getEligibleVariants(key, ctx)`** returns every variant eligible at a
   state, with computed pick probabilities — the "why did/didn't line X
   fire" inspector.
+- **`setRandomSource(seededRandom(seed))`** (3.9) — the dev panel rolls
+  each sample under a fresh visible seed, so every flag is replayable as
+  the exact text, not a re-roll that may refuse to misbehave.
 - **A dev panel** (in-game debug screen or a node REPL script) that: picks
   a beat, locks or randomizes state params, rolls N samples, and lets a
   reader flag a sample with per-slot notes (the trace supplies the slot
@@ -1766,6 +1905,7 @@ them early; it repays itself within a week.
 ```
 section: case.arrival
 state: Ray Vessel · fatigue 90 (ragged) · bribes 3 (bent) · mood raw · rain pouring
+seed: 884213
 ---
 <the rendered text>
 --- problems ---
@@ -1780,9 +1920,11 @@ Tuning runs as batches of flagged samples, not one-off edits:
    generating state, the text, and per-slot notes.
 2. Fixer triages the whole batch in one pass, then commits once.
 3. Per flag: **locate** (the slot tag names the pool), **reproduce**
-   (rebuild the captured state, render 5–10×), **classify** against the
-   taxonomy below, **fix the class** — then **hunt the pattern**: every
-   flag is a sample from a class, so grep for siblings before moving on.
+   (rebuild the captured state; with a captured seed,
+   `setRandomSource(seededRandom(seed))` replays the exact text —
+   otherwise render 5–10×), **classify** against the taxonomy below,
+   **fix the class** — then **hunt the pattern**: every flag is a sample
+   from a class, so grep for siblings before moving on.
 4. Re-verify: re-render the captured state until the problem can't appear;
    add the generalized pattern to the lint pack's banned list; lint clean.
 
@@ -1847,6 +1989,10 @@ finished when a flag batch comes back boring.
 15. **Trusting your eyes over the harness.** You cannot proofread 28,800
     surface forms. The sweep can. Wire every new mechanism to a permanent
     self-check the day you build it.
+16. **Rendering menu labels through the event scope.** Labels for options
+    the player never picks record dedupe usage, burn stems, and can assert
+    facts the scene then honors. Labels get throwaway contexts; only the
+    chosen branch renders into the event scope (3.10).
 
 ---
 
