@@ -100,7 +100,7 @@ registerModuleVariants('slender.mindFeel', [
     'The expedition continues. Provisions have been generous.',
   ]},
   // ── 18 Talia ─────────────────────────────────────────────────
-  { when: { studentId: 18, ...EARLY }, weight: W, text: [
+  { when: { studentId: 18, custom: false, ...EARLY }, weight: W, text: [
     'Inputs exceeded projections. She is revising the model without announcing it.',
     'Her body keeps outpacing the spreadsheet. She lets it.',
   ]},
@@ -139,7 +139,7 @@ registerModuleVariants('slender.deflect', [
     `"The scale needs calibration."`,
     `"Hydration status affects mass. I read the literature."`,
   ]},
-  { when: { studentId: 18, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
+  { when: { studentId: 18, custom: false, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
     `"Margin of error," she mutters.`,
     `"The prototype diet wasn't optimized yet."`,
     `"Sensor drift," she says. "Not mass gain."`,
@@ -260,7 +260,7 @@ registerModuleVariants('slender.neutral', [
     `"Within study bounds," Sophia says, tense.`,
     `"Documented," she whispers.`,
   ]},
-  { when: { studentId: 18, gainStance: 'neutral', ...EARLY }, weight: W, text: [
+  { when: { studentId: 18, custom: false, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Output nominal," Talia says.`,
     `"Continuing trial," she adds.`,
   ]},
@@ -332,7 +332,7 @@ registerModuleVariants('slender.secret', [
     'Indiana maps the new softness like discovered territory. X marks the spot. She is the spot.',
     'She eats stolen dining hall rolls in the stairwell and savors every one.',
   ]},
-  { when: { studentId: 18, gainStance: 'secret', ...EARLY }, weight: W, text: [
+  { when: { studentId: 18, custom: false, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Talia runs a hand along her side and updates the model with a private smile.',
     'Inputs exceeded projections. She is not correcting the error.',
   ]},
@@ -419,7 +419,7 @@ registerModuleVariants('slender.eatPause', [
     'Indiana eats like trail rations at a dig site — practical, satisfied, ready for more.',
     'She pockets a roll for later and eats two now.',
   ]},
-  { when: { studentId: 18, corruption: [0], stageMax: 3 }, weight: W, text: [
+  { when: { studentId: 18, custom: false, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Talia eats while calculating caloric efficiency. The calculation keeps losing to appetite.',
     'She revises the model mid-meal. New assumption: more is better.',
   ]},

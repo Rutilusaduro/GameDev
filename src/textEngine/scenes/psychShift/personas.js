@@ -98,7 +98,7 @@ registerModuleVariants('shift.interior', [
     'Sophia updates the trial notes. Side effect: pleasure. Severity: mild. Acceptable.',
     'Anxiety thins. Wanting does not.',
   ]},
-  { when: { studentId: 18, corruption: [1] }, weight: W, text: [
+  { when: { studentId: 18, custom: false, corruption: [1] }, weight: W, text: [
     'Talia stops arguing with the numbers. Appetite wins the model.',
     'The model converges on softness. She does not interrupt training.',
   ]},
@@ -129,7 +129,7 @@ registerModuleVariants('shift.physical', [
     'Mary Jane pats her own softness with farm-girl pride. Harvest keeps coming.',
     'Her body moves like summer — heavy, warm, impossible to rush.',
   ]},
-  { when: { studentId: 18, corruption: [1] }, weight: W, text: [
+  { when: { studentId: 18, custom: false, corruption: [1] }, weight: W, text: [
     'Talia presses palm to belly and reads the feedback. Output exceeds target. Acceptable.',
     'The prototype body reports success. She does not roll back.',
   ]},
@@ -264,7 +264,7 @@ registerModuleVariants('shift.coda', [
     'Lilith ends the week stiller, heavier, amused.',
     'Silence carries forward. So does mass.',
   ]},
-  { when: { studentId: 18, corruption: [1] }, weight: W, text: [
+  { when: { studentId: 18, custom: false, corruption: [1] }, weight: W, text: [
     'Talia accepts the change and plans the next meal. More.',
     'Next sprint: more.',
   ]},

@@ -88,7 +88,7 @@ registerModuleVariants('interior.selfObs', [
     'Indiana maps new softness like uncharted rooms on campus. Worth exploring.',
     'Every pound is a landmark. She keeps adding pins.',
   ]},
-  { when: { studentId: 18, corruption: [0], stageMax: 4 }, weight: W, text: [
+  { when: { studentId: 18, custom: false, corruption: [0], stageMax: 4 }, weight: W, text: [
     'Talia reads the new curve like output from a sensor she forgot she wore.',
     'The model updates. She does not revert the commit.',
   ]},

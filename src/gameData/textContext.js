@@ -17,6 +17,7 @@ import {
 } from './psychState.js';
 import { getEquippedDeviceIds } from './deviceEquip.js';
 import { garmentFitState, outfitFor, worstFitState } from './outfits.js';
+import { auraTier as deriveAuraTier, essenceTier as deriveEssenceTier, isAscended } from './ascension/state.js';
 
 // ── Professor Sim setting pack (WORD_GRANULAR_ENGINE_PLAN §8 / Phase 7) ──
 // The engine core is game-free; everything the engine needs to know about
@@ -55,6 +56,13 @@ registerSubjectDeriver((student, ref, skillEffects) => ({
   hasDeviceEquipped: getEquippedDeviceIds(student).length > 0,
   supernaturalForm: student.supernaturalForm || null,
   supernatural: !!student.supernaturalForm,
+  custom: !!student.custom,
+  origin: student.origin || 'default',
+  formId: student.ascension?.formId || null,
+  isAscended: isAscended(student),
+  cycle: student.ascension?.cycle || 1,
+  essenceTier: deriveEssenceTier(student.ascension?.essence || 0),
+  auraTier: deriveAuraTier(student.ascension?.essenceSpentPublic || 0),
 }));
 
 function deriveMobilityLevel(d) {
@@ -71,6 +79,8 @@ registerDimension('campusLocale', (ctx) => ctx.globals?.locale ?? 'default');
 registerDimension('mobilityLevel', (ctx) => deriveMobilityLevel(ctx.d || {}));
 registerDimension('clothingState', (ctx) => ctx.subject?.clothingState ?? ctx.globals?.clothingState ?? 'fitted');
 registerDimension('mealContext', (ctx) => ctx.globals?.mealType ?? 'meal');
+registerDimension('inWater', (ctx) => !!ctx.globals?.inWater);
+registerDimension('origin', (ctx) => ctx.subject?.origin ?? 'default');
 registerDimension('isGaining', (ctx) => {
   const delta = ctx.globals?.weekGainLbs ?? ctx.subject?.weekGainLbs;
   if (delta != null) return delta > 0;
@@ -79,7 +89,7 @@ registerDimension('isGaining', (ctx) => {
 registerDimension('lastCorruptionShift', (ctx) => !!ctx.globals?.lastCorruptionShift);
 
 // Stem-tracked scene namespaces (dedupe applies inside these prefixes).
-['body.', 'wi.', 'ff.', 'cloth.', 'eat.', 'talk.', 'immob.', 'enc.'].forEach(trackStemsFor);
+['body.', 'wi.', 'ff.', 'cloth.', 'eat.', 'talk.', 'immob.', 'enc.', 'asc.'].forEach(trackStemsFor);
 
 // Garment fit dimensions — usable directly as `when` keys via the ctx.d
 // fallthrough: when: { fitWaist: 'straining' } (WORD_GRANULAR_ENGINE_PLAN §4.4).
@@ -224,6 +234,7 @@ export function clothingStateForStage(stageId) {
 /** Stages 0–4 and corruption tier 0 — earlyGain / slender scene eligibility. */
 export function isSlenderEligible(student) {
   if (!student) return false;
+  if (isAscended(student)) return false;
   const stageId = getStage(student.lbs ?? 0).id;
   const corruptionId = getCorruptionTier(student.corruption ?? 0).id;
   return stageId <= 4 && corruptionId === 0;

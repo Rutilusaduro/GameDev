@@ -93,7 +93,7 @@ registerModuleVariants('eat.firstBite', [
     'Opening mouthful: fuel for the expedition. The expedition is lunch.',
     'She grins around the first taste. Provisions: adequate. Morale: rising.',
   ] },
-  { when: { studentId: 18 }, weight: 4, text: [
+  { when: { studentId: 18, custom: false }, weight: 4, text: [
     'Talia eats the first bite while calculating efficiency. Efficiency loses to flavor.',
     'Opening input registered. Output: pleasure. Acceptable variance.',
     'The prototype mouthful succeeds. She iterates immediately.',
@@ -173,7 +173,7 @@ registerModuleVariants('eat.finish', [
     'Indiana finishes and wipes her mouth like closing a field journal. "Provisions secured."',
     'Empty plate, fuller pack weight. She is ready for the next dig — or the next course.',
   ] },
-  { when: { studentId: 18 }, weight: 4, text: [
+  { when: { studentId: 18, custom: false }, weight: 4, text: [
     'Talia finishes and updates the model. "Output: satisfied. Recommend repeat trial."',
     'Plate empty, belly fuller, hypothesis supported. She queues seconds in her head.',
   ] },

@@ -6,7 +6,10 @@ import { narrativeEventText } from './gameData/weeklyEventText.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from './textEngine/textFlagFormat.js';
 import { ACTIONS_SINGLE, ACTIONS_CLASS } from './gameData/classEvents.js';
-import { gatewayFlagPatch } from './gameData/gatewayMoments.js';
+import { gatewayFlagPatch, GATEWAY_FLAG_KEYS } from './gameData/gatewayMoments.js';
+import { appendDossierSnapshot, pinPlayerMoment } from './gameData/dossier.js';
+import { getPlayerPrefs, toggleInstantText } from './gameData/playerPrefs.js';
+import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
@@ -80,8 +83,13 @@ import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
 import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
+import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
+import { buildWeekReviewExtras, emptyWeekPlan } from './gameData/weekPlanner.js';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
+import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
+import { renderOriginStirring } from './textEngine/scenes/origin/index.js';
+import { AscensionCeremonyModal } from './components/AscensionCeremonyModal.jsx';
 import { appendMemory, pickStudentMemory, pickClassMemory } from './gameData/memory.js';
 import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, grievanceGain, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, DISCONTENT_WEEKLY_DECAY, DISCONTENT_RIPPLE, shouldConfront, dominantGrievance, AMENDS_FLOOR, GIFT_FLOOR, GIFT_COST } from './gameData/discontent.js';
 import { renderDiscontentRefusal } from './textEngine/scenes/discontent/index.js';
@@ -144,6 +152,12 @@ import {
 } from './gameData/streaming.js';
 import { DestinySpendModal } from './components/DestinySpendModal.jsx';
 import { MoodBadge } from './components/ui.jsx';
+import { getAscensionFormForStudent } from './gameData/ascension/forms.js';
+import { abilityIsOnCooldown, getAscensionAbility, tickAscensionCooldowns } from './gameData/ascension/abilities.js';
+import { maybeGrantAscensionCatalyst } from './gameData/ascension/catalysts.js';
+import { applyEssenceFromGain, spendEssence } from './gameData/ascension/essence.js';
+import { formPassiveGainMultiplier } from './gameData/ascension/gainRules.js';
+import { applyAscensionRebirth, isAscended, isAscensionEligible } from './gameData/ascension/state.js';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
 import { CompetitiveGainerChatModal, CompetitiveGainerMainModal } from './components/CompetitiveGainerModals.jsx';
@@ -239,6 +253,8 @@ import {
 } from './gameData/deviceUsageEvents.js';
 import { computePrestigeScore, prestigeApBonus, prestigeBreakthroughBonus, prestigeSummary } from './gameData/prestigeLite.js';
 import { DeviceTuningModal, DeviceRouteModal } from './components/DeviceTuningModal.jsx';
+import { CustomStudentWizard } from './components/CustomStudentWizard.jsx';
+import { OriginPickModal } from './components/OriginPickModal.jsx';
 import {
   buildForceFeederEffect,
   isForceFeederInstalled,
@@ -247,6 +263,8 @@ import {
 import { renderForceFeederScene } from './textEngine/scenes/forceFeeder/index.js';
 import { applyPsychDelta } from './gameData/psychState.js';
 import { applyCampusDeviceEncounter } from './gameData/campusDeviceEncounters.js';
+import { createCustomStudent, CUSTOM_STUDENT_ID } from './gameData/customStudent/index.js';
+import { applyOriginPick, needsOriginPick } from './gameData/origins/index.js';
 import { LabBuildModal } from './components/LabBuildModal.jsx';
 import { DeviceTargetPicker } from './components/DeviceTargetPicker.jsx';
 import { EquipPicker, AttachPicker } from './components/EquipPicker.jsx';
@@ -314,6 +332,8 @@ import { TalkModal } from './components/TalkModal.jsx';
 import { DebugPanel } from './components/DebugPanel.jsx';
 import { BugReportModal } from './components/BugReportModal.jsx';
 import { RefeedSurgeModal } from './components/RefeedSurgeModal.jsx';
+import './textEngine/scenes/customStudent/index.js';
+import './textEngine/scenes/origin/index.js';
 import { tickScarcityBanishment, checkOppositionEndgame } from './gameData/oppositionEndgame.js';
 import { EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
@@ -346,7 +366,7 @@ function isLedgerLogLine(text){
 export default function ProfessorSim(){
   const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({
     ...st, ...initGainStats(st), ...initDeviceState(), psych: initPsychState(), corruption: 0,
-    weekStartLbs: st.lbs,
+    ascension: null, weekStartLbs: st.lbs,
   })));
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {
@@ -500,7 +520,14 @@ export default function ProfessorSim(){
   const [equipModalStudentId, setEquipModalStudentId] = useState(null);
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
   const [weekRecap, setWeekRecap] = useState(null);
+  const [weekPlan, setWeekPlan] = useState(() => emptyWeekPlan());
+  const [weekPlannerOpen, setWeekPlannerOpen] = useState(false);
   const [milestoneQueue, setMilestoneQueue] = useState(null);
+  const [ascensionCeremony, setAscensionCeremony] = useState(null);
+  const [originPickState, setOriginPickState] = useState(null);
+  const [dossierOpen, setDossierOpen] = useState(false);
+  const [sceneScrollback, setSceneScrollback] = useState([]);
+  const [instantText, setInstantText] = useState(() => getPlayerPrefs().instantText);
   const [confrontation, setConfrontation] = useState(null);
   const [forceFeederState, setForceFeederState] = useState(null);
   const [deviceUsageModal, setDeviceUsageModal] = useState(null);
@@ -707,7 +734,7 @@ export default function ProfessorSim(){
     if(label) push(`💰 ${label}: +${formatMoney(amount)}`);
   };
 
-  const inhabitProfessor=(spiritId,subjectId)=>{
+  const inhabitProfessor=(spiritId,subjectId,customStudent=null)=>{
     const spirit=SPIRITS[spiritId];
     const subj=SUBJECTS[subjectId];
     if(!spirit||!subj) return;
@@ -732,6 +759,9 @@ export default function ProfessorSim(){
     }
     const mods=spirit.startMods||{};
     setStudents(list=>list.map(s=>{
+      const seat = customStudent && s.id === CUSTOM_STUDENT_ID ? customStudent : s;
+      if(seat.custom) return {...seat, lockState:'open'};
+      s = seat;
       if(!UNLOCK_POOL_IDS.includes(s.id)) return s; // story-gated girls untouched
       if(!startIds.includes(s.id)) return {...s, lockState:'locked', passiveTrust:0};
       let ns={...s, lockState:'open'};
@@ -740,7 +770,7 @@ export default function ProfessorSim(){
       if(mods.hunger) ns=adjustHunger(ns,mods.hunger);
       return ns;
     }));
-    push(`🌒 ${spirit.label} takes root behind the ${subj.label} professor's eyes. Five desks lean close; the rest of the room waits.`);
+    push(`🌒 ${spirit.label} takes root behind the ${subj.label} professor's eyes. Five desks lean close; the nineteenth chair is ${customStudent?'claimed':'waiting'}.`);
   };
 
   // Spirit Favor meter — on-lean actions fill it; full → partial AP rebate.
@@ -1340,7 +1370,7 @@ export default function ProfessorSim(){
       setTimeout(()=>push(`📣 ${s.name} reaches ${WEIGHT_STAGES[newStageId].label}! "${getAttitude({...s,lbs:newLbs}, week, pharmacistTextOpts(pharmacistState, week))}"`) ,50);
     }
     const mergedTriggered=[...s.triggeredEvents,...narrativeEvents.map(e=>e.id)];
-    return {
+    const gained = {
       ...s,
       lbs:newLbs,
       relationship:Math.min(100,s.relationship+extraRel),
@@ -1349,6 +1379,7 @@ export default function ProfessorSim(){
       // Unlock any signature-beat diary gate her new state has earned.
       ...gatewayFlagPatch({...s,triggeredEvents:mergedTriggered},newStageId),
     };
+    return applyEssenceFromGain(gained, scaledGain, { stagedUp: newStageId > oldStageId });
   };
 
   const collectEvents=(updatedStudents)=>{
@@ -1415,7 +1446,7 @@ export default function ProfessorSim(){
       let gain=rnd(1,3)+skillPassiveBonus+(classSkillFx.passiveBonus||0);
       const asceticMult=campusState?.asceticProtestWeek?0.88:1;
       const mirrorMult=campusState?.mirrorFastWeek?0.9:1;
-      gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*mirrorMult*getSupernaturalGainMult(s)*(1+(classSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
+      gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*mirrorMult*getSupernaturalGainMult(s)*formPassiveGainMultiplier(s)*(1+(classSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
       if(opposition?.supernatural?.synthesisAlly) gain=Math.max(0,Math.round(gain*1.1));
       // Corruption-driven autonomous eating (willingness made flesh)
       const cTier=getCorruptionTier(s.corruption||0).id;
@@ -1747,7 +1778,7 @@ export default function ProfessorSim(){
       updated=updated.map(s=>s.id===rebel.id?{...s,lastConfrontWeek:newWeek}:s);
       const grievance=dominantGrievance(rebel);
       setConfrontation({
-        studentId:rebel.id,name:rebel.name,grievance,winBack:false,withdrawn:false,
+        studentId:rebel.id,name:rebel.name,lbs:rebel.lbs,grievance,winBack:false,withdrawn:false,
         prose:renderConfront(rebel,newWeek,{grievanceType:grievance||undefined}),
       });
     }
@@ -1890,6 +1921,62 @@ export default function ProfessorSim(){
       }
     }
 
+    const ascensionReadyIds=[];
+    updated=updated.map(s=>{
+      let ns=tickAscensionCooldowns(s);
+      const eligibility=isAscensionEligible(ns,{students:updated});
+      if(eligibility.eligible){
+        const pending=ns.ascensionPending;
+        const formId=eligibility.form.formId;
+        if(!pending||pending.formId!==formId){
+          ns={...ns,ascensionPending:{formId,stirringWeeks:1,ceremonyReady:false,declinedWeek:null}};
+          const line=renderAscensionStirring(ns,newWeek);
+          if(line) setTimeout(()=>push(`✦ ${line}`),260);
+        }else if(!pending.ceremonyReady){
+          const stirringWeeks=(pending.stirringWeeks||0)+1;
+          const ceremonyReady=stirringWeeks>=2;
+          ns={...ns,ascensionPending:{...pending,stirringWeeks,ceremonyReady}};
+          const line=renderAscensionStirring(ns,newWeek);
+          if(line) setTimeout(()=>push(`✦ ${line}`),260);
+          if(ceremonyReady) ascensionReadyIds.push(ns.id);
+        }else if(pending.declinedWeek!==newWeek){
+          ascensionReadyIds.push(ns.id);
+        }
+      }else if(eligibility.reason==='catalyst' && getStage(ns.lbs).id>=11 && ns.ascensionHeldWeek!==newWeek){
+        ns={...ns,ascensionHeldWeek:newWeek};
+        const held=renderAscensionHeld(ns,newWeek);
+        if(held) setTimeout(()=>push(`✦ ${held}`),260);
+      }
+      return ns;
+    });
+    if(!ascensionCeremony&&ascensionReadyIds.length){
+      const ready=updated.find(s=>s.id===ascensionReadyIds[0]);
+      if(ready){
+        const trace=[];
+        const prose=renderAscensionCeremony(ready,newWeek,{trace});
+        setAscensionCeremony({
+          studentId:ready.id,
+          prose,
+          traceNodes:trace.filter(t=>t.text&&t.text.trim()&&!t.key.startsWith('subject.')),
+        });
+      }
+    }
+
+    const milestoneByStudent=Object.fromEntries(milestones.map((m)=>[m.id, m]));
+    const dossierPre=updated.map((s)=>({
+      id: s.id,
+      triggeredEvents: [...(s.triggeredEvents || [])],
+      gateway: Object.fromEntries(GATEWAY_FLAG_KEYS.map((k)=>[k, !!s[k]])),
+    }));
+    updated=updated.map((s)=>{
+      const pre=dossierPre.find((p)=>p.id===s.id);
+      return appendDossierSnapshot(s, week, {
+        prevTriggeredEvents: pre?.triggeredEvents || [],
+        prevGateway: pre?.gateway || {},
+        milestoneByStudent,
+      });
+    });
+
     setStudents(updated.map(s=>clearWeeklyTextFlags(s,week)));
     if(recapMovers.length){
       const ordered=recapMovers
@@ -1905,7 +1992,11 @@ export default function ProfessorSim(){
           else if(selfMem) memoryProse=renderMemorySelf(live,week,selfMem);
           return {...m,memoryProse};
         });
-      setWeekRecap({week:newWeek,movers:ordered});
+      setWeekRecap({
+        week: newWeek,
+        movers: ordered,
+        extras: buildWeekReviewExtras(updated, week, pharmacistTextOpts(pharmacistState, week)),
+      });
     }
     if(milestones.length) setMilestoneQueue({events:milestones,index:0});
     // Admin notices visibly large students (hidden students like Lilith don't trigger scrutiny)
@@ -2190,7 +2281,11 @@ export default function ProfessorSim(){
         const skList=(st.evolvedSkills||[]);
         const tree=EVOLVED_SKILL_TREES[formId]||[];
         const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
-        return processStudentGain(st,totalGain,totalRel+bonusRel);
+        const next = processStudentGain(st,totalGain,totalRel+bonusRel);
+        return maybeGrantAscensionCatalyst(next, {
+          completedStageIdx: stageIdx,
+          totalStages: EVOLVED_EVENTS[formId]?.length || 0,
+        });
       }));
       if(!ending.startsContest&&!ending.startsMatch&&!ending.startsStream&&!ending.startsFairDay&&!ending.startsSession&&!ending.startsPresentation&&!ending.startsDelivery&&!ending.startsChallenge&&!ending.startsSalon&&!ending.startsGallery) push(`✦ ${s.name} — ${evDef.title}: +${totalGain} lbs · +${totalRel} rel`);
       // handle recipe unlock (homestead_queen)
@@ -2514,6 +2609,131 @@ export default function ProfessorSim(){
     setOpposition(prev=>({...prev,supernatural:{...prev.supernatural,ascensionOffered:true}}));
     setSupernaturalModalOpen(false);
     push('👻 The Supernatural Act has begun. Scarcity watches — refeed your evolved students.');
+  };
+
+  const openAscensionCeremony=(studentId)=>{
+    const s=students.find(st=>st.id===studentId);
+    if(!s) return;
+    const trace=[];
+    const prose=renderAscensionCeremony(s,week,{trace});
+    setAscensionCeremony({
+      studentId,
+      prose,
+      traceNodes:trace.filter(t=>t.text&&t.text.trim()&&!t.key.startsWith('subject.')),
+    });
+  };
+
+  const confirmAscensionRebirth=(studentId)=>{
+    const live=students.find(st=>st.id===studentId);
+    const eligibility=isAscensionEligible(live,{students});
+    if(!live||!eligibility.eligible){
+      push(`⚠️ ${live?.name||'Student'} is not ready to ascend.`);
+      setAscensionCeremony(null);
+      return;
+    }
+    const form=eligibility.form;
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==studentId) return st;
+      const next=applyAscensionRebirth(st,{week,formId:form.formId});
+      return {
+        ...next,
+        ascensionPending:null,
+        memories:appendMemory(next.memories,'ascended',week,form.formId),
+        triggeredEvents:[...(next.triggeredEvents||[]),`ascended_${form.formId}`].filter((v,i,a)=>a.indexOf(v)===i),
+      };
+    }));
+    push(`✦ ${live.name} ascends — ${form.label}. Cycle 2 begins at 100 lbs.`);
+    setAscensionCeremony(null);
+  };
+
+  const declineAscensionCeremony=(studentId)=>{
+    const live=students.find(st=>st.id===studentId);
+    if(!live){ setAscensionCeremony(null); return; }
+    const decline=renderAscensionDecline(live,week);
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==studentId) return st;
+      return {
+        ...st,
+        ascensionPending:{
+          ...(st.ascensionPending||{}),
+          formId:st.ascensionPending?.formId||getAscensionFormForStudent(st)?.formId,
+          ceremonyReady:true,
+          declinedWeek:week,
+        },
+        memories:appendMemory(st.memories,'ascensionDeclined',week),
+      };
+    }));
+    push(`✦ ${decline}`);
+    setAscensionCeremony(null);
+  };
+
+  const fireAscensionAbility=(studentId,abilityId)=>{
+    const ability=getAscensionAbility(abilityId);
+    const live=students.find(st=>st.id===studentId);
+    if(!ability||!live?.ascension) return;
+    if(abilityIsOnCooldown(live,abilityId)){
+      push(`⚠️ ${ability.name} is still gathering.`);
+      return;
+    }
+    if((live.ascension.essence||0)<ability.essenceCost){
+      const form=getAscensionFormForStudent(live);
+      push(`⚠️ Need ${ability.essenceCost} ${form?.essenceWord||'essence'} for ${ability.name}.`);
+      return;
+    }
+    const abilityParams=ability.params||{};
+    if(ability.hook==='economyMod'&&abilityParams.moneyDelta) setMoney(m=>m+abilityParams.moneyDelta);
+    if(ability.hook==='campusMod'&&abilityParams.scrutinyDelta) addScrutiny(abilityParams.scrutinyDelta);
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==studentId) return st;
+      const spent=spendEssence(st,ability.essenceCost,{publicSpend:ability.public});
+      if(!spent.ok) return st;
+      let ns=spent.student;
+      const p=abilityParams;
+      if(ability.hook==='feedEvent'){
+        ns=processStudentGain(ns,p.lbsGain||0,p.rel||0);
+        if(p.hungerDelta) ns=adjustHunger(ns,p.hungerDelta);
+      }else if(ability.hook==='appetiteMod'){
+        if(p.hungerDelta) ns=adjustHunger(ns,p.hungerDelta);
+        if(p.weeklyDigestMult) ns={...ns,weeklyDigestMult:Math.max(ns.weeklyDigestMult||1,p.weeklyDigestMult)};
+      }else if(ability.hook==='interruptSpawn'){
+        ns={
+          ...ns,
+          relationship:Math.min(100,(ns.relationship||0)+(p.rel||0)),
+          ascension:{
+            ...ns.ascension,
+            formFlags:{...(ns.ascension.formFlags||{}),[p.flag||ability.id]:p.value??true},
+          },
+        };
+      }else if(ability.hook==='psychNudge'){
+        ns={...ns,psych:applyPsychDelta(ns.psych||{},p)};
+      }else if(ability.hook==='economyMod'||ability.hook==='wardrobeEvent'||ability.hook==='campusMod'){
+        ns={
+          ...ns,
+          ascension:{
+            ...ns.ascension,
+            formFlags:{
+              ...(ns.ascension.formFlags||{}),
+              [p.flag||ability.id]:true,
+              ...(p.delayFailureWeeks?{delayedWardrobeFailureWeeks:p.delayFailureWeeks}:{}),
+              ...(p.repairRelic?{relicRepairReady:true}:{}),
+            },
+          },
+        };
+      }
+      return {
+        ...ns,
+        ascension:{
+          ...ns.ascension,
+          abilities:{
+            ...(ns.ascension.abilities||{}),
+            unlocked:[...new Set([...(ns.ascension.abilities?.unlocked||[]),ability.id])],
+            cooldowns:{...(ns.ascension.abilities?.cooldowns||{}),[ability.id]:ability.cooldownWeeks},
+          },
+        },
+      };
+    }));
+    const abilityLine=renderAscensionAbility(live,week);
+    push(`✦ ${live.name} — ${ability.name}: ${abilityLine||ability.desc}`);
   };
 
   // ── HOMEROOM QUEEN handlers ───────────────────────────────────────
@@ -5871,7 +6091,51 @@ export default function ProfessorSim(){
     setStudents(prev=>prev.map(s=>s.id===studentId?{...s,...patch}:s));
   };
 
-  const openWeighIn=(s)=>{ if(!s) return; setWeighInState({student:s,phase:"scene"}); };
+  const openOriginFor=(s)=>{
+    if(!s) return false;
+    if(needsOriginPick(s)){
+      setOriginPickState({studentId:s.id});
+      return true;
+    }
+    return false;
+  };
+
+  const pushSceneScrollback = useCallback((entry) => {
+    setSceneScrollback((prev) => [...prev, entry].slice(-50));
+  }, []);
+
+  const pinSceneForStudent = useCallback((studentId, pin) => {
+    setStudents((prev) => prev.map((s) => (s.id === studentId ? pinPlayerMoment(s, pin) : s)));
+  }, []);
+
+  const sceneStageShared = {
+    scrollback: sceneScrollback,
+    onScrollbackPush: pushSceneScrollback,
+    instantText,
+  };
+
+  const openStudentDetail=(studentId, opts = {})=>{
+    const s=students.find(st=>st.id===studentId);
+    if(!s) return;
+    if(openOriginFor(s)) return;
+    setDossierOpen(!!opts.dossier);
+    setSelectedId(s.id);
+    setView('student');
+  };
+
+  const commitOriginPick=(studentId,originId)=>{
+    const live=students.find(st=>st.id===studentId);
+    setStudents(prev=>prev.map(st=>st.id===studentId?applyOriginPick(st,originId,week):st));
+    setOriginPickState(null);
+    if(live){
+      setSelectedId(live.id);
+      setView('student');
+      const preview=renderOriginStirring({...live,origin:originId},week);
+      push(`✦ ${live.name}'s origin is locked.${preview?` ${preview}`:''}`);
+    }
+  };
+
+  const openWeighIn=(s)=>{ if(!s||openOriginFor(s)) return; setWeighInState({student:s,phase:"scene"}); };
 
   const startIntimacyScene=(s,sceneId)=>{
     const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId];
@@ -6118,6 +6382,7 @@ export default function ProfessorSim(){
 
   const openTalk=(s)=>{
     if(!s) return;
+    if(openOriginFor(s)) return;
     if(s.hidden&&!(s.id===LILITH_ID&&lilithUnlocked)&&!(s.id===ELARA_ID&&elaraDiscovered)) return;
     if(s.id===ELARA_ID&&elaraDiscovered) markElaraMet();
     if(isWithdrawalAggressive(s)&&(s.withdrawalAggroWeeks||0)>0){
@@ -6269,7 +6534,7 @@ export default function ProfessorSim(){
     if(!s) return;
     const grievance=dominantGrievance(s);
     setConfrontation({
-      studentId:s.id,name:s.name,grievance,winBack:true,withdrawn:!!s.withdrawn,
+      studentId:s.id,name:s.name,lbs:s.lbs,grievance,winBack:true,withdrawn:!!s.withdrawn,
       prose:renderConfront(s,week,{grievanceType:grievance||undefined,winBack:true}),
     });
   };
@@ -7150,12 +7415,33 @@ export default function ProfessorSim(){
             </div>
             <div style={{display:"flex",justifyContent:"space-between",marginTop:18}}>
               <button onClick={()=>setSetupStep("lore")} style={{...C.smBtn,padding:"9px 18px"}}>← Back</button>
-              <button disabled={!setupSubject} onClick={()=>inhabitProfessor(setupSpirit.id,setupSubject.id)}
+              <button disabled={!setupSubject} onClick={()=>setSetupStep("chair")}
                 style={{...C.btn(accent),opacity:setupSubject?1:0.4,fontSize:14,padding:"11px 30px",cursor:setupSubject?"pointer":"default",boxShadow:setupSubject?`0 0 24px ${accentSoft}`:"none"}}>
-                Inhabit the Professor
+                Build the Nineteenth Chair →
               </button>
             </div>
           </>)}
+
+          {setupStep==="chair"&&setupSpirit&&setupSubject&&(
+            <CustomStudentWizard
+              accent={accent}
+              onBack={()=>setSetupStep("vessel")}
+              onComplete={(draft)=>{
+                const base=students.find(s=>s.id===CUSTOM_STUDENT_ID)||{};
+                const custom=createCustomStudent(draft,base);
+                const runtimeCustom={
+                  ...custom,
+                  ...initGainStats(custom),
+                  ...initDeviceState(),
+                  psych: custom.psych,
+                  corruption: 0,
+                  ascension: null,
+                  weekStartLbs: custom.lbs,
+                };
+                inhabitProfessor(setupSpirit.id,setupSubject.id,runtimeCustom);
+              }}
+            />
+          )}
         </div>
       </div>
     );
@@ -7322,6 +7608,7 @@ export default function ProfessorSim(){
                       </div>}
                     </div>
                   ))}
+                  <button onClick={()=>setWeekPlannerOpen(true)} style={{...C.btn("#2a2868"),marginTop:4,width:"100%"}}>📋 Plan Week</button>
                   <button onClick={finishClass} style={{...C.btn("#186028"),marginTop:4}}>⏩ End Week</button>
                 </div>
               )}
@@ -7856,19 +8143,27 @@ export default function ProfessorSim(){
           <div style={C.modal}>
             <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:4}}>NARRATIVE EVENT</div>
             <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:20}}>{activeNarrativeCopy.event.title}</h2>
-            <div style={{fontSize:11,color:"#5a309a",marginBottom:14}}>{activeNarrativeCopy.student.name} · {getStage(activeNarrativeCopy.student.lbs).label} · {activeNarrativeCopy.student.lbs} lbs</div>
-            <p style={{lineHeight:1.85,color:"#e0d0b0",marginBottom:8,fontStyle:"italic",whiteSpace:"pre-line"}}>{activeNarrativeCopy.text}</p>
-            <TextFlagToolbar
+            <SceneStage
+              prose={activeNarrativeCopy.text}
+              traceNodes={activeNarrativeCopy.traceNodes}
+              student={activeNarrativeCopy.student}
+              week={week}
+              locale={{ glyph: '📖', label: 'Campus' }}
               section={`weekly.narrative.${activeNarrativeCopy.event.id}`}
               stateLine={buildStateLine(activeNarrativeCopy.student, { week, stageLabel: getStage(activeNarrativeCopy.student.lbs).label })}
-              text={activeNarrativeCopy.text}
-              nodes={activeNarrativeCopy.traceNodes}
+              accentColor="#2a7830"
+              onPinBeat={(pin) => pinSceneForStudent(activeNarrativeCopy.student.id, pin)}
+              {...sceneStageShared}
+              footer={activeNarrativeCopy.event.gain[1]>0 ? (
+                <p style={{ color: '#f09050', fontSize: 12, marginTop: 10 }}>
+                  This event may result in {activeNarrativeCopy.event.gain[0]}–{activeNarrativeCopy.event.gain[1]} additional lbs gained.
+                </p>
+              ) : null}
+              choices={[
+                { id: 'continue', label: 'Continue →', intent: 'press', onClick: () => resolveNarrative(activeNarrativeCopy.event, activeNarrativeCopy.student, true) },
+                { id: 'dismiss', label: 'Dismiss', intent: 'wait', onClick: () => { push(`📖 ${activeNarrativeCopy.event.title} — dismissed.`); setActiveEvent(null); } },
+              ]}
             />
-            {activeNarrativeCopy.event.gain[1]>0&&<p style={{color:"#f09050",fontSize:12,marginBottom:16,marginTop:10}}>This event may result in {activeNarrativeCopy.event.gain[0]}–{activeNarrativeCopy.event.gain[1]} additional lbs gained.</p>}
-            <div style={{display:"flex",gap:8}}>
-              <button style={C.btn("#2a7830")} onClick={()=>resolveNarrative(activeNarrativeCopy.event,activeNarrativeCopy.student,true)}>Continue →</button>
-              <button style={C.btn("#333")} onClick={()=>{push(`📖 ${activeNarrativeCopy.event.title} — dismissed.`);setActiveEvent(null);}}>Dismiss</button>
-            </div>
           </div>
         </div>
       )}
@@ -7963,7 +8258,7 @@ export default function ProfessorSim(){
         <div style={C.main}>
 
           {/* ── CLASS VIEW ── */}
-          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} onAmends={openAmends}/>}
+          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail}/>}
 
           {/* ── THE SETTLING (list) ── */}
           {view==="settling"&&<SettlingListView students={students} week={week} setSelectedId={setSelectedId} setView={setView}/>}
@@ -7974,7 +8269,7 @@ export default function ProfessorSim(){
           {view==="classroom"&&<ClassroomView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState}/>}
+          {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} fireAscensionAbility={fireAscensionAbility} openAscensionCeremony={openAscensionCeremony} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState} dossierOpen={dossierOpen} setDossierOpen={setDossierOpen}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
@@ -8156,7 +8451,7 @@ export default function ProfessorSim(){
       {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students}/>}
 
       {/* ── DEBUG PANEL ── */}
-      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} money={money} view={view} setView={setView} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length}/>}
+      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} money={money} view={view} setView={setView} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length} instantText={instantText} onInstantTextChange={setInstantText}/>}
 
       {bugReportOpen&&<BugReportModal getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} prefillError={fieldNoteError} onClose={()=>{ setBugReportOpen(false); setFieldNoteError(null); }}/>}
 
@@ -8187,13 +8482,54 @@ export default function ProfessorSim(){
 
       {/* ── SESSION RESULT ── */}
       {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}
-      {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)} onSelectGirl={(id)=>{setSelectedId(id);setView("student");setWeekRecap(null);}}/>}
+      {weekPlannerOpen&&(
+        <WeekPlannerModal
+          students={students}
+          week={week}
+          initialPlan={weekPlan}
+          onCommit={(plan)=>{ setWeekPlan(plan); setWeekPlannerOpen(false); push('📋 Week plan locked — your slots are set.'); }}
+          onClose={()=>setWeekPlannerOpen(false)}
+        />
+      )}
+      {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)} onSelectGirl={(id)=>{openStudentDetail(id,{dossier:true});setWeekRecap(null);}}/>}
       {milestoneQueue&&<MilestoneCeremonyModal queue={milestoneQueue}
+        week={week}
         onAdvance={()=>setMilestoneQueue(q=>q?{...q,index:q.index+1}:null)}
-        onDismissAll={()=>setMilestoneQueue(null)}/>}
-      {confrontation&&<ConfrontationModal confrontation={confrontation} money={money}
+        onDismissAll={()=>setMilestoneQueue(null)}
+        onPinBeat={(pin)=>{const ev=milestoneQueue?.events?.[milestoneQueue.index];if(ev)pinSceneForStudent(ev.id,pin);}}
+        {...sceneStageShared}/>}
+      {ascensionCeremony&&(()=>{
+        const ascStudent=students.find(st=>st.id===ascensionCeremony.studentId);
+        if(!ascStudent) return null;
+        return(
+          <AscensionCeremonyModal
+            student={ascStudent}
+            prose={ascensionCeremony.prose}
+            traceNodes={ascensionCeremony.traceNodes}
+            week={week}
+            onAccept={()=>confirmAscensionRebirth(ascStudent.id)}
+            onDecline={()=>declineAscensionCeremony(ascStudent.id)}
+            onClose={()=>setAscensionCeremony(null)}
+            onPinBeat={(pin)=>pinSceneForStudent(ascStudent.id,pin)}
+            {...sceneStageShared}
+          />
+        );
+      })()}
+      {originPickState&&(()=>{
+        const originStudent=students.find(st=>st.id===originPickState.studentId);
+        if(!originStudent) return null;
+        return(
+          <OriginPickModal
+            student={originStudent}
+            onPick={(originId)=>commitOriginPick(originStudent.id,originId)}
+          />
+        );
+      })()}
+      {confrontation&&<ConfrontationModal confrontation={confrontation} money={money} week={week}
         onApologize={confrontApologize} onGift={confrontGift}
-        onStandFirm={confrontStandFirm} onLeave={()=>setConfrontation(null)}/>}
+        onStandFirm={confrontStandFirm} onLeave={()=>setConfrontation(null)}
+        onPinBeat={(pin)=>pinSceneForStudent(confrontation.studentId,pin)}
+        {...sceneStageShared}/>}
 
       {/* ── GODDESS VISION MODAL ── */}
 

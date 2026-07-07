@@ -32,5 +32,5 @@ registerModuleVariants('ge.garment', [
   { when: { studentId: 15 }, weight: W, text: ['her black fitted dress', 'the dark layered top and skirt she never explains'] },
   { when: { studentId: 16 }, weight: W, text: ['her pressed lab coat over blouse', 'the clinical campus layers she keeps immaculate'] },
   { when: { studentId: 17 }, weight: W, text: ['her field jacket over tee', 'the cargo pants and boots-worn expedition look'] },
-  { when: { studentId: 18 }, weight: W, text: ['her grease-stained lab coat over hoodie', 'the practical engineering layers she prototypes in'] },
+  { when: { studentId: 18, custom: false }, weight: W, text: ['her grease-stained lab coat over hoodie', 'the practical engineering layers she prototypes in'] },
 ]);

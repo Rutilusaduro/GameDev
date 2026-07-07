@@ -14,6 +14,7 @@ import './personas.js';
  * acclimating — corruption 1+ (A2 Psych owns; pools gate on corruption [0])
  */
 registerDimension('gainStance', (ctx) => {
+  if ((ctx.subject?.custom || ctx.subject?.origin) && ctx.subject?.gainStance) return ctx.subject.gainStance;
   const cor = ctx.d?.corruption ?? 0;
   if (cor > 0) return 'acclimating';
   const shame = ctx.d?.shameTier ?? 0;

@@ -6,6 +6,7 @@ import { C } from '../styles.js';
 import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
 import { EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
+import { getAscensionFormForStudent } from '../gameData/ascension/forms.js';
 import { renderRosterTell } from '../textEngine/scenes/rosterTell/index.js';
 import { renderMemorySelf } from '../textEngine/scenes/memory/index.js';
 import { pickStudentMemory } from '../gameData/memory.js';
@@ -19,6 +20,7 @@ import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn }) {
   const st = getStage(s.lbs);
   const evMeta = s.evolvedForm ? EVOLVED_FORM_META[s.evolvedForm] : null;
+  const ascForm = getAscensionFormForStudent(s);
   const cardBorder = s.withdrawn ? '1px solid #c05038' : evMeta ? `1px solid ${evMeta.color}80` : '1px solid #180830';
   const cardBg = addictionTint(s) || '';
   const nameColor = evMeta ? evMeta.color : '#d8a8ff';
@@ -51,6 +53,7 @@ function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn }) {
           <span style={{ fontWeight: 700, fontSize: 15, color: nameColor }}>{s.name}</span>
           {(() => { const tier = getTier(s.relationship); return tier.id > 0 ? <span style={{ fontSize: 12, opacity: 0.9 }}>{tier.emoji}</span> : null; })()}
           {evMeta && <span style={{ fontSize: 10, color: evMeta.color, fontWeight: 600 }}>✦ {evMeta.title}</span>}
+          {s.ascension && ascForm && <span style={{ fontSize: 10, color: '#80e8ff', fontWeight: 600 }}>✦ {ascForm.label}</span>}
         </div>
         <StageTag stage={st} />
       </div>
@@ -84,6 +87,7 @@ export function ClassView({
   setView,
   week = 1,
   onAmends,
+  onOpenStudent,
 }) {
   const isLocked = (s) => s.lockState === 'locked';
   const rosterVisible = (s) => (!s.hidden || (s.id === 15 && lilithUnlocked) || (s.id === 17 && elaraDiscovered)) && !isLocked(s);
@@ -96,7 +100,7 @@ export function ClassView({
           <p style={C.secT}>Students — {students.filter(rosterVisible).length} close · avg {avgLbs} lbs</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(195px,1fr))', gridAutoRows: 'minmax(140px,auto)', gap: 8 }}>
             {[...students].filter(rosterVisible).sort((a, b) => a.id - b.id).map((s) => (
-              <RosterTile key={s.id} s={s} week={week} onOpen={() => { setSelectedId(s.id); setView('student'); }} onAmends={onAmends} classmateWithdrawn={classmateWithdrawn && !s.withdrawn} />
+              <RosterTile key={s.id} s={s} week={week} onOpen={() => (onOpenStudent ? onOpenStudent(s.id) : (setSelectedId(s.id), setView('student')))} onAmends={onAmends} classmateWithdrawn={classmateWithdrawn && !s.withdrawn} />
             ))}
           </div>
           {locked.length > 0 && (

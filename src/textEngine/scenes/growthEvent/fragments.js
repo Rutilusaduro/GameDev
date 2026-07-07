@@ -754,7 +754,7 @@ registerPool('grow.reaction', [
     "She measures it the same way she measures a find. Reference notes. Condition: excellent.",
     "She photographs it for the record. She has a good eye for significant artifacts.",
   ] },
-  { when: { studentId: 18, stageMin: 3 }, weight: 4, text: [
+  { when: { studentId: 18, custom: false, stageMin: 3 }, weight: 4, text: [
     "She runs the calculation twice. The result is the same. She marks it green.",
     "She documents it in the lab notebook. The handwriting is neater than usual.",
   ] },

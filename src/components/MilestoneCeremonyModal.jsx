@@ -1,17 +1,22 @@
 // ═══════════════════════════════════════════════════════════════
 // MILESTONE CEREMONY — the stage-crossing set-piece popup.
-// Fires when a girl crosses a weight stage during digestion. Frames
-// the moment with ceremony: the body she's grown into, the garment
-// giving way, her reaction. Queued so multiple crossings in one week
-// advance one at a time. Flaggable via the shared toolbar.
 // ═══════════════════════════════════════════════════════════════
 import { C } from '../styles.js';
-import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine } from '../textEngine/textFlagFormat.js';
+import { SceneStage } from './SceneStage.jsx';
 
 const ACCENT = '#d8a030';
 
-export function MilestoneCeremonyModal({ queue, onAdvance, onDismissAll }) {
+export function MilestoneCeremonyModal({
+  queue,
+  onAdvance,
+  onDismissAll,
+  onPinBeat,
+  scrollback,
+  onScrollbackPush,
+  instantText,
+  week = 1,
+}) {
   if (!queue?.events?.length) return null;
   const { events, index } = queue;
   const ev = events[index];
@@ -22,6 +27,7 @@ export function MilestoneCeremonyModal({ queue, onAdvance, onDismissAll }) {
     { id: ev.id, name: ev.name, lbs: ev.endLbs ?? 0 },
     { stageLabel: ev.stageLabel },
   );
+  const student = { id: ev.id, name: ev.name, lbs: ev.endLbs ?? 0 };
 
   return (
     <div style={C.overlay}>
@@ -36,18 +42,31 @@ export function MilestoneCeremonyModal({ queue, onAdvance, onDismissAll }) {
             grew into something new{ev.gainLbs > 0 && <span> · +{ev.gainLbs} lbs this week</span>}
           </div>
         </div>
-        <div style={{ fontSize: 13, color: '#e8d8c0', lineHeight: 1.8, marginBottom: 12, whiteSpace: 'pre-line' }}>
-          {ev.prose}
-        </div>
-        <TextFlagToolbar section="milestone" stateLine={flagState} text={ev.prose} nodes={ev.traceNodes} />
-        <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-          <button style={{ ...C.btn(ACCENT), flex: 1 }} onClick={() => (last ? onDismissAll() : onAdvance())}>
-            {last ? 'Take her in' : 'Next →'}
-          </button>
-          {events.length > 1 && (
-            <button style={{ ...C.btn('#333'), flex: 0 }} onClick={onDismissAll}>Skip</button>
-          )}
-        </div>
+        <SceneStage
+          prose={ev.prose}
+          traceNodes={ev.traceNodes}
+          student={student}
+          week={week}
+          locale={{ glyph: '⚖', label: 'Milestone' }}
+          section="milestone"
+          stateLine={flagState}
+          accentColor={ACCENT}
+          onPinBeat={onPinBeat}
+          scrollback={scrollback}
+          onScrollbackPush={onScrollbackPush}
+          instantText={instantText}
+          choices={[
+            {
+              id: 'next',
+              label: last ? 'Take her in' : 'Next →',
+              intent: 'press',
+              onClick: () => (last ? onDismissAll() : onAdvance()),
+            },
+            ...(events.length > 1
+              ? [{ id: 'skip', label: 'Skip remaining', intent: 'wait', onClick: onDismissAll }]
+              : []),
+          ]}
+        />
       </div>
     </div>
   );

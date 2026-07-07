@@ -149,7 +149,7 @@ registerPool('milestone.line', [
   { when: { studentId: 16 }, weight: 4, text: [
     `Sophia stares at the bigger reflection, the alarm and the wanting wrestling, and the wanting settling on top.`,
   ]},
-  { when: { studentId: 18 }, weight: 4, text: [
+  { when: { studentId: 18, custom: false }, weight: 4, text: [
     `Talia logs the new dimensions, frowns at the readout, then catches herself running a hand over the change anyway.`,
   ]},
 

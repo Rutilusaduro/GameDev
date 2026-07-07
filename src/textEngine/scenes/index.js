@@ -8,6 +8,7 @@ import '../modules.js';
 import '../lexicon/index.js';
 import '../../gameData/textContext.js'; // setting pack: subject deriver + dims
 import './attitude.js';
+import './ascension/index.js';
 import './campusExplorationText.js';
 import './campusDevice/index.js';
 import './campusSoftening.js';
@@ -83,4 +84,6 @@ import './squadKeyedDepth.js';
 import './researchJournal/index.js';
 import './scrutiny/index.js';
 import './wifeLessons/index.js';
+import './customStudent/index.js';
+import './origin/index.js';
 import '../modules.js';
