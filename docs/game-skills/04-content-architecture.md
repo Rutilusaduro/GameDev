@@ -42,7 +42,8 @@ stance tier they can fire at.
 
 ## 3. State-keyed writing without an engine
 
-If you're in Twine/Ren'Py/plain code, reproduce the essentials manually:
+If you're in Twine/Ren'Py/plain code, reproduce the essentials manually
+(rigor tiers and the pure-branching mapping: `12-any-game.md` §2, §5):
 
 - **Descriptor functions, not inline description:** one function per
   described thing (`bodyLine(girl)`, `outfitLine(girl)`, `moveVerb(girl)`)
@@ -84,6 +85,9 @@ The lexicon to build first for THIS genre:
   stage), `word.moveVerb` (VP-3SG, stage + scenario tags), `word.fullness`
   (fullness ratio bands), `word.garment.*` (CLAUSE, fit-state keyed),
   `word.adv.pace` / `word.adv.sizeQual` (ADV, psych/stage keyed).
+
+The forge method — pool briefs, sourcing sweeps, the only-here-word test —
+is `09-lexicon-forge.md`; shell wiring is `08-shell-integration.md`.
 
 ## 5. The wardrobe state model (portable)
 

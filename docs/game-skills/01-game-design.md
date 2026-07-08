@@ -90,6 +90,9 @@ strain an early-game budget, forcing reinvestment.
   across the cast; replayable by design. Recommended default.
 - **Open-ended:** needs meta-progression to avoid drift (unlockable
   locations, escalating storylines, prestige/ascension resets).
+- **Other formats** (VN routes, parser turns, idle ticks, chat scenes):
+  the same loop wears different clothes — translate via `12-any-game.md`
+  §2 before designing.
 - **Endings:** per-character epilogues keyed to final stage × psychology ×
   relationship. Write ending matrices, not single endings — the player
   should finish a run wondering what the other cells look like.
