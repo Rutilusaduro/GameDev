@@ -2,7 +2,7 @@
 // GAME SAVE — export blob for Field Notes attach (§38 Phase 2)
 // ═══════════════════════════════════════════════════════════════
 
-export const SAVE_SCHEMA = 5;
+export const SAVE_SCHEMA = 6;
 
 function trimAscensionState(ascension) {
   if (!ascension?.formId) return null;
@@ -34,6 +34,7 @@ export function buildGameSaveBlob(ctx = {}) {
     lilithKillCount,
     labState,
     pharmacistState,
+    campusInstitutions,
     deviceInventory,
     brokeScaleIds,
     view,
@@ -90,6 +91,11 @@ export function buildGameSaveBlob(ctx = {}) {
       stage: pharmacistState.stage,
       campusFattening: !!pharmacistState.campusFattening,
       cult: pharmacistState.cult || null,
+    } : null,
+    campusInstitutions: campusInstitutions ? {
+      tiers: { ...(campusInstitutions.tiers || {}) },
+      discovered: { ...(campusInstitutions.discovered || {}) },
+      inauguratedWeek: { ...(campusInstitutions.inauguratedWeek || {}) },
     } : null,
     lilithUnlocked: !!lilithUnlocked,
     lilithKillCount: lilithKillCount || 0,

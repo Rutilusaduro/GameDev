@@ -10,6 +10,7 @@ import { availableElaraQuests } from '../gameData/relicHunter.js';
 import { CAMPUS_NARRATIVE_LABELS } from '../gameData/pharmacistCampus.js';
 import { SATURATION_TIERS } from '../gameData/campusSaturation.js';
 import { CampusDeviceEncounterPanel } from '../components/CampusDeviceEncounterPanel.jsx';
+import { CampusInstitutionsPanel } from '../components/CampusInstitutionsPanel.jsx';
 import { FacultyLoungeView } from './FacultyLoungeView.jsx';
 
 const MAP_W = 420, MAP_H = 300;
@@ -104,6 +105,9 @@ export function CampusView({
   portionSaintAvailable,
   onHuntPortionSaint,
   ap,
+  money = 0,
+  institutionState,
+  onInaugurateInstitution,
 }){
   const node = CAMPUS_NODES[campusState.at] || CAMPUS_NODES["office"];
   const exploration = campusState.exploration || {};
@@ -178,6 +182,16 @@ export function CampusView({
                 </div>
               )}
             </div>
+          )}
+          {institutionState && (
+            <CampusInstitutionsPanel
+              nodeId={campusState.at}
+              institutionState={institutionState}
+              saturationTier={saturation?.tier ?? 0}
+              money={money}
+              ap={ap}
+              onInaugurate={onInaugurateInstitution}
+            />
           )}
         </div>
         <div style={{flex:"1 1 320px",minWidth:280}}>

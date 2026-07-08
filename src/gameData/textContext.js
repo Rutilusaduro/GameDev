@@ -87,9 +87,12 @@ registerDimension('isGaining', (ctx) => {
   return (ctx.globals?.isGaining ?? ctx.subject?.isGaining) === true;
 });
 registerDimension('lastCorruptionShift', (ctx) => !!ctx.globals?.lastCorruptionShift);
+registerDimension('institutionId', (ctx) => ctx.globals?.institutionId ?? null);
+registerDimension('institutionTier', (ctx) => ctx.globals?.institutionTier ?? 0);
+registerDimension('institutionTierMin', (ctx) => ctx.globals?.institutionTierMin ?? ctx.globals?.institutionTier ?? 0);
 
 // Stem-tracked scene namespaces (dedupe applies inside these prefixes).
-['body.', 'wi.', 'ff.', 'cloth.', 'eat.', 'talk.', 'immob.', 'enc.', 'asc.'].forEach(trackStemsFor);
+['body.', 'wi.', 'ff.', 'cloth.', 'eat.', 'talk.', 'immob.', 'enc.', 'asc.', 'inst.'].forEach(trackStemsFor);
 
 // Garment fit dimensions — usable directly as `when` keys via the ctx.d
 // fallthrough: when: { fitWaist: 'straining' } (WORD_GRANULAR_ENGINE_PLAN §4.4).

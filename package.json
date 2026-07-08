@@ -13,6 +13,7 @@
     "dossier:probe": "node scripts/dossier-probe.mjs",
     "scene-stage:probe": "node scripts/scene-stage-probe.mjs",
     "week-planner:probe": "node scripts/week-planner-probe.mjs",
+    "campus-institutions:probe": "node scripts/campus-institutions-probe.mjs",
     "ascension:sweep": "node scripts/ascension-ability-sweep.mjs",
     "text:lint": "node scripts/textLint.mjs"
   },

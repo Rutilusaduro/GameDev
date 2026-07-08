@@ -2,6 +2,7 @@
 import { getAddictionLevel, getHungerTier } from './hungerAddiction.js';
 import { PSYCH_TIERS } from './psychState.js';
 import { getStage } from './stages.js';
+import { institutionMealCostMultiplier } from './campusInstitutions.js';
 import { renderWeekRecap } from '../textEngine/scenes/weekRecap/index.js';
 
 export const WEEK_PLAN_SLOT_COUNT = 5;
@@ -23,20 +24,23 @@ export function emptyWeekPlan() {
   };
 }
 
-export function mealCostPreview(student, week = 1) {
+export function mealCostPreview(student, week = 1, opts = {}) {
   if (!student) return { cost: 0, label: '—' };
   const hunger = getHungerTier(student);
   const addiction = getAddictionLevel(student);
   const base = 12 + hunger * 5 + addiction * 4;
   const stageId = getStage(student.lbs ?? 0).id;
   const creep = Math.max(0, stageId - 2);
-  const cost = base + creep * 2;
+  let cost = base + creep * 2;
+  const venueId = opts.venueId || 'dining';
+  const mult = institutionMealCostMultiplier(opts.institutionState, venueId);
+  if (mult < 1) cost = Math.max(4, Math.round(cost * mult));
   return {
     cost,
     hunger,
     addiction,
     creep,
-    label: `$${cost} est. · hunger ${hunger} · addiction ${addiction}${creep > 0 ? ` · appetite creep +${creep * 2}` : ''}`,
+    label: `$${cost} est. · hunger ${hunger} · addiction ${addiction}${creep > 0 ? ` · appetite creep +${creep * 2}` : ''}${mult < 1 ? ' · dining hall discount' : ''}`,
   };
 }
 
@@ -85,11 +89,12 @@ export function planConflicts(plan, students = []) {
   return issues;
 }
 
-export function previewPlannedSlot(student, slot, week) {
+export function previewPlannedSlot(student, slot, week, students = [], institutionState = null) {
   if (!student) {
     return { cost: null, interrupt: null, hint: defaultSlotLabel(slot?.slotIndex ?? 0) };
   }
-  const cost = mealCostPreview(student, week);
+  const venueId = slot?.venueId || 'dining';
+  const cost = mealCostPreview(student, week, { institutionState, venueId });
   const interrupt = interruptLikelihood(student);
   let hint = null;
   if (student.rosterEcology?.favoritism === 'neglected') {

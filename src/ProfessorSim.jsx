@@ -235,6 +235,12 @@ import {
   getSaturationTier,
 } from './gameData/campusSaturation.js';
 import {
+  defaultCampusInstitutionState, canInaugurateTier, applyInaugurateTier,
+  tickInstitutionDiscovery, rollInstitutionInterrupts, applyInterruptMarks,
+  institutionById,
+} from './gameData/campusInstitutions.js';
+import { renderInstitutionInauguration, renderInstitutionInterrupt } from './textEngine/scenes/campusInstitutions/index.js';
+import {
   scrutinyApModifier,
   scrutinyBlocksClassFeast,
   scrutinyPrivateSessionCost,
@@ -454,6 +460,7 @@ export default function ProfessorSim(){
     saturation:{ score:0, tier:0, tierLabel:'Normal Campus', weeksAtTier:0 },
     witnessLog:[],
   });
+  const [campusInstitutions,setCampusInstitutions]=useState(defaultCampusInstitutionState());
   // {student, phase:"scene"|"analog"|"break"|"purchase"|"swap"|"digital"}
   const [brokeScaleIds,setBrokeScaleIds]=useState([]);
   // {student, phase:"scene"|"scale"}
@@ -711,9 +718,9 @@ export default function ProfessorSim(){
   }),[week,ap,money,adminScrutiny,students,opposition,view,log,lastPlayerAction,getActiveModals,eventQueue.length,campusState,pharmacistState]);
 
   const getSaveContext=useCallback(()=>({
-    player, students, opposition, campusState, inventory, lilithUnlocked, lilithKillCount,
+    player, students, opposition, campusState, campusInstitutions, inventory, lilithUnlocked, lilithKillCount,
     labState, pharmacistState, deviceInventory, brokeScaleIds, view,
-  }),[player,students,opposition,campusState,inventory,lilithUnlocked,lilithKillCount,labState,pharmacistState,deviceInventory,brokeScaleIds,view]);
+  }),[player,students,opposition,campusState,campusInstitutions,inventory,lilithUnlocked,lilithKillCount,labState,pharmacistState,deviceInventory,brokeScaleIds,view]);
 
   /** Spend player funds. Returns false if insufficient (logs a warning). */
   const spendMoney=(cost,label="")=>{
@@ -732,6 +739,23 @@ export default function ProfessorSim(){
     if(!amount) return;
     setMoney(prev=>addFunds(prev,amount));
     if(label) push(`💰 ${label}: +${formatMoney(amount)}`);
+  };
+
+  const inaugurateCampusInstitution=(institutionId)=>{
+    const satTier=campusState.saturation?.tier??0;
+    const check=canInaugurateTier(campusInstitutions,institutionId,{money,ap},{saturationTier:satTier});
+    if(!check.ok){
+      push(`⚠️ ${check.reason||'Cannot inaugurate yet.'}`);
+      return;
+    }
+    const offer=check.offer;
+    if(ap<(offer.apCost||0)){ push(`⚠️ Need ${offer.apCost} AP for inauguration.`); return; }
+    if(!spendMoney(offer.cost,`${institutionById(institutionId)?.label||'Institution'} tier ${offer.tierIndex+1}`)) return;
+    setAp(a=>a-(offer.apCost||0));
+    const nextTier=offer.tierIndex+1;
+    setCampusInstitutions(prev=>applyInaugurateTier(prev,institutionId,week,{saturationTier:satTier}));
+    const line=renderInstitutionInauguration(institutionId,nextTier,week);
+    push(`🏛️ ${line||`${institutionById(institutionId)?.label||'Campus'} tier ${nextTier} inaugurated.`}`);
   };
 
   const inhabitProfessor=(spiritId,subjectId,customStudent=null)=>{
@@ -1509,6 +1533,17 @@ export default function ProfessorSim(){
       const tierMeta=getSaturationTier(nextSaturation.score);
       setTimeout(()=>push(`🌐 Campus saturation — ${tierMeta.label}: ${tierMeta.desc}`),130);
     }
+    let nextInstitutions=tickInstitutionDiscovery(campusInstitutions,{saturationTier:nextSaturation.tier??0});
+    if(nextInstitutions!==campusInstitutions&&nextInstitutions.discovered?.gainers_society&&!campusInstitutions.discovered?.gainers_society){
+      setTimeout(()=>push("🕯️ A sealed invitation surfaces — the Gainers' Society knows your name."),180);
+    }
+    const instInterrupts=rollInstitutionInterrupts(nextInstitutions,newWeek,{rng:Math.random});
+    nextInstitutions=applyInterruptMarks(nextInstitutions,instInterrupts,newWeek);
+    setCampusInstitutions(nextInstitutions);
+    instInterrupts.slice(0,2).forEach((ev,i)=>{
+      const line=renderInstitutionInterrupt(ev,newWeek);
+      if(line) setTimeout(()=>push(`🏛️ ${line}`),400+i*100);
+    });
     const satPassive=saturationWeeklyPassiveBonus(nextSaturation.tier);
     if(satPassive>0){
       updated=updated.map(s=>{
@@ -8340,6 +8375,9 @@ export default function ProfessorSim(){
             portionSaintAvailable={lilithUnlocked&&!!opposition?.supernatural?.actTriggered&&!opposition?.supernatural?.portionSaintConsumed&&campusState.at==='dining_hall'&&(opposition?.supernatural?.scarcityPressure||0)>=35}
             onHuntPortionSaint={huntPortionSaint}
             ap={ap}
+            money={money}
+            institutionState={campusInstitutions}
+            onInaugurateInstitution={inaugurateCampusInstitution}
           />}
 
 {/* ── SKILL TREE ── */}
@@ -8487,6 +8525,7 @@ export default function ProfessorSim(){
           students={students}
           week={week}
           initialPlan={weekPlan}
+          institutionState={campusInstitutions}
           onCommit={(plan)=>{ setWeekPlan(plan); setWeekPlannerOpen(false); push('📋 Week plan locked — your slots are set.'); }}
           onClose={()=>setWeekPlannerOpen(false)}
         />
