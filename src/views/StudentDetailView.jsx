@@ -26,6 +26,7 @@ import { getSupernaturalFormForStudent } from '../gameData/supernaturalForms.js'
 import { getAscensionFormForStudent } from '../gameData/ascension/forms.js';
 import { abilityIsOnCooldown, getAbilitiesForForm } from '../gameData/ascension/abilities.js';
 import { getOriginCard } from '../gameData/origins/index.js';
+import { edgeSummaryLine } from '../gameData/relationshipWeb.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
@@ -228,6 +229,23 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                       <div style={{ fontSize: 10, color: '#9c86b8', marginTop: 4 }}>
                         {originCard.gainStance} register · fixation {originCard.psych.fixation} · obsession {originCard.psych.obsession} · dependence {originCard.psych.dependence} · shame {originCard.psych.shame}
                       </div>
+                    </div>
+                  );
+                })()}
+
+                {(() => {
+                  const edgeLine = edgeSummaryLine(s, students);
+                  const edge = s.edges?.[0];
+                  if (!edgeLine || !edge) return null;
+                  return (
+                    <div style={C.infoBox('rgba(40,55,90,0.28)')}>
+                      <div style={{ fontSize: 9, color: '#88a8d8', letterSpacing: 2, marginBottom: 4 }}>CAMPUS THREAD</div>
+                      <div style={{ fontSize: 12, color: '#c8d8f0', lineHeight: 1.7 }}>{edgeLine}</div>
+                      {edge.label && (
+                        <div style={{ fontSize: 10, color: '#8a9cb8', marginTop: 4, fontStyle: 'italic' }}>
+                          {edge.label}
+                        </div>
+                      )}
                     </div>
                   );
                 })()}

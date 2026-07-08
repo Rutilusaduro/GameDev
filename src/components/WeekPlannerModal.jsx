@@ -49,7 +49,7 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
           {plan.slots.map((slot, i) => {
             const student = slot.studentId != null ? students.find((s) => s.id === slot.studentId) : null;
             const venue = PLANNER_VENUES.find((v) => v.id === slot.venueId) || PLANNER_VENUES[0];
-            const preview = previewPlannedSlot(student, { ...slot, slotIndex: i }, week);
+            const preview = previewPlannedSlot(student, { ...slot, slotIndex: i }, week, students);
             return (
               <div key={i} style={{ ...C.card, cursor: 'default', marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>

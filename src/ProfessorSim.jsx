@@ -85,6 +85,10 @@ import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
 import { buildWeekReviewExtras, emptyWeekPlan } from './gameData/weekPlanner.js';
+import {
+  seedStarterEdges, tickRelationshipWeb, markEdgeIntroSeen, edgeRefStudent,
+} from './gameData/relationshipWeb.js';
+import { renderEdgeIntro, renderEdgeJoint } from './textEngine/scenes/relationshipWeb/index.js';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
 import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
@@ -364,10 +368,10 @@ function isLedgerLogLine(text){
 }
 
 export default function ProfessorSim(){
-  const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({
+  const [students,setStudents]=useState(()=>seedStarterEdges(INIT_STUDENTS.map(st=>({
     ...st, ...initGainStats(st), ...initDeviceState(), psych: initPsychState(), corruption: 0,
     ascension: null, weekStartLbs: st.lbs,
-  })));
+  }))));
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {
     money, ap, week, ownedSkills, ownedClassSkills, facultyAffinity, professorProfile, adminScrutiny,
@@ -1534,6 +1538,13 @@ export default function ProfessorSim(){
       });
     }
     setWeeklyFeedCounts({});
+    const feedCountsSnapshot={...weeklyFeedCounts};
+    const webTick=tickRelationshipWeb(updated,week,{weeklyFeedCounts:feedCountsSnapshot,stageUps:stageUpsThisWeek});
+    updated=webTick.students;
+    webTick.jointPairs.slice(0,2).forEach((pair,i)=>{
+      const line=renderEdgeJoint(pair.a,pair.b,week);
+      if(line) setTimeout(()=>push(`🕸️ ${line}`),340+i*90);
+    });
 
     const deviceTickEvents=[];
     updated=updated.map(s=>{
@@ -1639,6 +1650,7 @@ export default function ProfessorSim(){
     const digestGrowthEvents=[];
     const recapMovers=[];
     const milestones=[];
+    const stageUpsThisWeek=[];
     updated=updated.map(s=>{
       if((s.consumedCalories||0)<=0&&(s.fullness||0)<=0&&!s.stuffedStreak) return s;
       const digestTextSession={
@@ -1690,6 +1702,7 @@ export default function ProfessorSim(){
         });
         corruption=ns.corruption;
         ns.memories=appendMemory(ns.memories,'stageUp',week,newStageId);
+        stageUpsThisWeek.push({ id: ns.id, stageId: newStageId });
         // The stage crossing becomes a Milestone Ceremony: body-as-she-grows
         // + the garment giving way + her reaction, in its own popup.
         const milestoneTrace=[];
@@ -6118,6 +6131,13 @@ export default function ProfessorSim(){
     const s=students.find(st=>st.id===studentId);
     if(!s) return;
     if(openOriginFor(s)) return;
+    const edge=s.edges?.[0];
+    const ref=edge?edgeRefStudent(s,students):null;
+    if(edge&&!edge.introSeen&&ref){
+      const line=renderEdgeIntro(s,ref,week,{edgeType:edge.type});
+      if(line) push(`🕸️ ${line}`);
+      setStudents(prev=>prev.map(st=>st.id===s.id?markEdgeIntroSeen(st):st));
+    }
     setDossierOpen(!!opts.dossier);
     setSelectedId(s.id);
     setView('student');

@@ -18,6 +18,9 @@ import {
 import { getEquippedDeviceIds } from './deviceEquip.js';
 import { garmentFitState, outfitFor, worstFitState } from './outfits.js';
 import { auraTier as deriveAuraTier, essenceTier as deriveEssenceTier, isAscended } from './ascension/state.js';
+import {
+  primaryEdge, rivalWithId, pactWithId, mentorOfId,
+} from './relationshipWeb.js';
 
 // ── Professor Sim setting pack (WORD_GRANULAR_ENGINE_PLAN §8 / Phase 7) ──
 // The engine core is game-free; everything the engine needs to know about
@@ -63,6 +66,11 @@ registerSubjectDeriver((student, ref, skillEffects) => ({
   cycle: student.ascension?.cycle || 1,
   essenceTier: deriveEssenceTier(student.ascension?.essence || 0),
   auraTier: deriveAuraTier(student.ascension?.essenceSpentPublic || 0),
+  edgeType: primaryEdge(student)?.type ?? null,
+  edgeIntensity: primaryEdge(student)?.intensity ?? 0,
+  rivalWith: rivalWithId(student),
+  pactWith: pactWithId(student),
+  mentorOf: mentorOfId(student),
 }));
 
 function deriveMobilityLevel(d) {
@@ -81,6 +89,11 @@ registerDimension('clothingState', (ctx) => ctx.subject?.clothingState ?? ctx.gl
 registerDimension('mealContext', (ctx) => ctx.globals?.mealType ?? 'meal');
 registerDimension('inWater', (ctx) => !!ctx.globals?.inWater);
 registerDimension('origin', (ctx) => ctx.subject?.origin ?? 'default');
+registerDimension('edgeType', (ctx) => ctx.d?.edgeType ?? ctx.globals?.edgeType ?? null);
+registerDimension('edgeIntensity', (ctx) => ctx.d?.edgeIntensity ?? ctx.globals?.edgeIntensity ?? 0);
+registerDimension('edgeIntensityMin', (ctx) => ctx.d?.edgeIntensity ?? ctx.globals?.edgeIntensityMin ?? 0);
+registerDimension('rivalWith', (ctx) => ctx.d?.rivalWith ?? null);
+registerDimension('pactWith', (ctx) => ctx.d?.pactWith ?? null);
 registerDimension('isGaining', (ctx) => {
   const delta = ctx.globals?.weekGainLbs ?? ctx.subject?.weekGainLbs;
   if (delta != null) return delta > 0;
@@ -89,7 +102,7 @@ registerDimension('isGaining', (ctx) => {
 registerDimension('lastCorruptionShift', (ctx) => !!ctx.globals?.lastCorruptionShift);
 
 // Stem-tracked scene namespaces (dedupe applies inside these prefixes).
-['body.', 'wi.', 'ff.', 'cloth.', 'eat.', 'talk.', 'immob.', 'enc.', 'asc.'].forEach(trackStemsFor);
+['body.', 'wi.', 'ff.', 'cloth.', 'eat.', 'talk.', 'immob.', 'enc.', 'asc.', 'edge.'].forEach(trackStemsFor);
 
 // Garment fit dimensions — usable directly as `when` keys via the ctx.d
 // fallthrough: when: { fitWaist: 'straining' } (WORD_GRANULAR_ENGINE_PLAN §4.4).

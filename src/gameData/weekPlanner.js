@@ -2,6 +2,7 @@
 import { getAddictionLevel, getHungerTier } from './hungerAddiction.js';
 import { PSYCH_TIERS } from './psychState.js';
 import { getStage } from './stages.js';
+import { plannerSynergyHint } from './relationshipWeb.js';
 import { renderWeekRecap } from '../textEngine/scenes/weekRecap/index.js';
 
 export const WEEK_PLAN_SLOT_COUNT = 5;
@@ -85,14 +86,16 @@ export function planConflicts(plan, students = []) {
   return issues;
 }
 
-export function previewPlannedSlot(student, slot, week) {
+export function previewPlannedSlot(student, slot, week, students = []) {
   if (!student) {
     return { cost: null, interrupt: null, hint: defaultSlotLabel(slot?.slotIndex ?? 0) };
   }
   const cost = mealCostPreview(student, week);
   const interrupt = interruptLikelihood(student);
   let hint = null;
-  if (student.rosterEcology?.favoritism === 'neglected') {
+  const edgeHint = plannerSynergyHint(student, students);
+  if (edgeHint) hint = edgeHint;
+  else if (student.rosterEcology?.favoritism === 'neglected') {
     hint = 'She has felt sidelined — planning her now reads as deliberate.';
   } else if (student.rosterEcology?.favoritism === 'favored') {
     hint = 'Your priority this week — others may notice.';
