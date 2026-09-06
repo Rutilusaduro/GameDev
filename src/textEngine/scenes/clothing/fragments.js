@@ -113,22 +113,34 @@ registerPool('cloth.reaction', [
     `{subject.name} grabs at the gap, cheeks hot. "That was already loose."`,
     `"I can fix this," she says, unconvincingly, to no one in particular.`,
     `She looks from the failure to you. "Well. That's a sign."`,
+    `"It's the fabric," she insists, tugging uselessly. "Cheap fabric."`,
+    `Color rises in her cheeks. The seam does not re-close.`,
   ] },
   { when: { corruption: [1] }, text: [
     `"Okay," she says, smoothing what cannot be smoothed. "Bigger size."`,
     `She laughs once — not quite humor. "I knew this was coming."`,
     `"Well. Shopping trip," she says, already resigned.`,
+    `"New size," she murmurs, more acceptance than complaint. "Fine."`,
+    `She exhales through the strain. The garment has made its point.`,
   ] },
   { when: { corruption: [2] }, text: [
     `{subject.name} smiles down at the wreck of her waistband. "Buy bigger."`,
     `"Good," she says. "More room to grow into."`,
     `She does not fix it. She does not need to.`,
+    `"There," she says, patting the gap. "Honest at last."`,
+    `Fabric surrendered. She looks pleased.`,
+  ] },
+  { when: { stageMin: 6, stageMax: 8 }, text: [
+    `{subject.name} surveys the damage with the calm of someone who has seen this before.`,
+    `"Another size up," she says, almost bored. "The closet knew."`,
+    `She tugs once, gives up, and keeps moving — the failure already old news.`,
   ] },
   { when: {}, text: [
     `{subject.name} looks at the damage and exhales.`,
     `She says nothing. The clothes have spoken for her.`,
     `{subject.name} smooths what she can and lets the rest show.`,
     `Fabric has made its point. She listens.`,
+    `The outfit lost. Her body did not.`,
   ] },
 ]);
 
@@ -137,9 +149,22 @@ registerPool('cloth.aftermath', [
   { when: { corruption: [0] }, text: [
     'She spends the rest of the day aware of the gap.',
     'The failure follows her like a blush she cannot shake.',
+    'She checks the mirror twice before leaving. The gap is still there.',
+    'Fabric pulled, re-pulled, surrendered. She carries the embarrassment warm in her cheeks.',
+  ] },
+  { when: { corruption: [1] }, text: [
+    'She adjusts once more, then stops fighting it.',
+    'The old size is a memory. Shopping is tomorrow. Tonight she eats anyway.',
+    'Acceptance arrives before the new wardrobe does.',
   ] },
   { when: { corruption: [2] }, text: [
     'She wears the failure like a badge — or forgets it entirely.',
     'Shopping for bigger is not a crisis anymore. It is Tuesday.',
+    'The gap stays open. She does not mind the breeze.',
+    'Bigger clothes are not defeat. They are forecast.',
+  ] },
+  { when: { stageMin: 7 }, text: [
+    'At this size, wardrobe casualties are weather — noted, survived, forgotten.',
+    'She has stopped mourning garments. They were always temporary.',
   ] },
 ]);

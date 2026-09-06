@@ -18,6 +18,9 @@ import './fragments.js';
 registerPool('immob.arrival.tend', [
   { when: {}, text: [
     `You bring the day to {subject.name} where she rests — the food, the warmth, the company, all of it arriving at her now instead of the other way around.`,
+    `Court happens where she lies — you ferry trays, news, and touch to the warm center of her mass.`,
+    `The world comes to her in pieces you carry: meals, blankets, conversation, devotion.`,
+    `You tend her where she has settled — vast, warm, immobile — and the tending becomes the day's purpose.`,
   ]},
   { when: { stageMin: 10, stageMax: 10 }, weight: 2, text: [
     `She holds court from the warm center of the room, and you tend her there — trays carried in, cushions eased under her, every comfort delivered to the vast soft spread of her.`,
@@ -36,6 +39,9 @@ registerPool('immob.arrival.tend', [
 registerPool('immob.arrival.deepen', [
   { when: {}, text: [
     `And she settles deeper as you tend her, softening further into the shape of being kept, every comfort folding another warm degree into her.`,
+    `Tended, she softens by degrees — mass rearranging, warmth spreading, the pleasure of being held in place.`,
+    `Each comfort lands and stays; she grows softer under care, not smaller — more settled, more hers.`,
+    `Being kept agrees with her. She shows it in how still she becomes when you adjust the cushions.`,
   ]},
   { when: { stageMin: 10, stageMax: 10 }, weight: 2, text: [
     `Tended like this she keeps arriving — the soft mass of her easing a little further into the room with each attended hour, {word.movement} when she shifts and then going still again.`,
@@ -52,6 +58,9 @@ registerPool('immob.arrival.deepen', [
 registerPool('immob.arrival.devotion', [
   { when: {}, text: [
     `{subject.name} settles under your care, warm and vast and wholly content to be exactly where she is.`,
+    `Contentment pools in her expression — vast body, small smile, absolute permission to stay.`,
+    `She receives your tending like weather she ordered: warm, constant, deserved.`,
+    `{subject.name} closes her eyes into the care and does not hurry to open them.`,
   ]},
   { when: { corruption: [0] }, weight: 2, text: [
     `{subject.name} watches you tend her with something soft and overwhelmed in her face. "You really don't mind," she says — not quite a question, not quite able to believe it.`,
@@ -71,12 +80,30 @@ registerPool('immob.arrival.devotion', [
   ]},
   { when: { studentId: 8, stageMin: 10 }, weight: 4, text: [
     `Maya doesn't say anything. She finds your hand where it rests against the warm slope of her, holds it there, and lets the quiet say it for her.`,
+    `She watches you tend her without comment — gratitude in the pressure of her fingers on yours.`,
+  ]},
+  { when: { studentId: 12, stageMin: 10 }, weight: 4, text: [
+    `Nadia watches you arrange the tray within reach. "Good," she says. "The experiment continues. I am the result."`,
+    `She tracks your hands as you tend her. "Hypothesis confirmed," she murmurs. "I like being kept."`,
+  ]},
+  { when: { studentId: 5, stageMin: 10 }, weight: 4, text: [
+    `Destiny eats one-handed while you adjust her cushions. "Offline comfort meta," she says. "Ten out of ten."`,
+    `"Stream's off. Appetite isn't," Destiny says, settling deeper. "Keep the trays coming."`,
+  ]},
+  { when: { studentId: 14, stageMin: 10 }, weight: 4, text: [
+    `Mary Jane hums while you tend her — farm warmth, farm patience, belly rising and falling like harvest season.`,
+    `"You're good to me," she says softly. "Now bring the seconds."`,
   ]},
 ]);
 
-// ── immob.arrival — composed skeleton ─────────────────────────
 registerPool('immob.arrival', [
-  { when: {}, text: ['{immob.arrival.tend} {immob.arrival.deepen} {immob.arrival.devotion}'] },
+  { when: {}, text: [
+    '{immob.arrival.tend} {immob.arrival.deepen} {immob.arrival.devotion}',
+    '{immob.arrival.tend} {immob.arrival.devotion} {immob.arrival.deepen}',
+    '{immob.arrival.deepen} {immob.arrival.tend} {immob.arrival.devotion}',
+    '{immob.arrival.tend} {immob.arrival.deepen}',
+    '{immob.arrival.tend} {immob.arrival.devotion}',
+  ] },
 ]);
 
 /** Render a Hold Court capstone beat for an immobile student. */

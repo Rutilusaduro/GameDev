@@ -5,63 +5,119 @@ import { registerPool } from '../engine.js';
 
 // ── competitive_gainer ─────────────────────────────────────────────
 registerPool('diary.competitive_gainer.s5._f1', [
-  { when: {}, text: ["Tonight I finally mounted the corkboard properly."] },
+  { when: {}, text: [
+    "Tonight I finally mounted the corkboard properly.",
+    "The corkboard went up tonight — pins, gridlines, competitive categories labeled in my hand.",
+    "I spent an hour on the board after dinner, arranging the first wave of measurements.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s5._f2', [
-  { when: {}, text: [". The pins slide in cleanly as I lean forward, and I feel my heavy belly press warmly against the desk edge in a thick, rounded swell that was not there a month ago."] },
+  { when: {}, text: [
+    ". The pins slide in cleanly as I lean forward, and I feel my heavy belly press warmly against the desk edge in a thick, rounded swell that was not there a month ago.",
+    ". Leaning forward, I feel my belly meet the desk first — warm, rounded, undeniable.",
+    ". My middle presses the wood before my hands do. The softness is already measurable.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s5._f3', [
-  { when: {}, text: [". My once-straight waist has softened into noticeable rolls that spill over my waistband when I sit, warm and plush. Initial measurements are logged: mine, Brittany's thighs, Kylie's bust."] },
+  { when: {}, text: [
+    ". My once-straight waist has softened into noticeable rolls that spill over my waistband when I sit, warm and plush. Initial measurements are logged: mine, Brittany's thighs, Kylie's bust.",
+    ". Waistband digs; rolls spill when I sit. Initial measurements logged: mine, Brittany's thighs, Kylie's bust.",
+    ". Hips wider than last month's notebook admits. Pins mark the leaderboard.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s5._f4', [
-  { when: {}, text: [". The data is clean. Academic, even. But I already know this is more than research now. I am going to be the largest."] },
+  { when: {}, text: [
+    ". The data is clean. Academic, even. But I already know this is more than research now. I am going to be the largest.",
+    ". Spreadsheets don't blush. I do, looking at my own column leading.",
+    ". Academic on paper. Under my skin it's appetite with a scoring system.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s5._f5', [
-  { when: {}, text: ["My thighs spread wider across the chair than they used to, rubbing with a constant soft friction that makes me shift just to feel it again. The numbers do not lie."] },
+  { when: {}, text: [
+    "My thighs spread wider across the chair than they used to, rubbing with a constant soft friction that makes me shift just to feel it again. The numbers do not lie.",
+    "Chair arms disappear under my thighs now — plush friction with every shift I pretend is accidental.",
+    "I cross and uncross my legs just to feel the new rub. The numbers do not lie.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s5._f6', [
-  { when: {}, text: [". I am already leading in waist circumference. It feels... satisfying."] },
+  { when: {}, text: [
+    ". I am already leading in waist circumference. It feels... satisfying.",
+    ". Waist circumference: first place. The satisfaction is immediate and hungry.",
+    ". First on the board. I intend to widen the gap until second place is folklore.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s5._sk0', [
-  { when: {}, text: ["{diary.competitive_gainer.s5._f1} {diary.competitive_gainer.s5._f2}\n\n{diary.competitive_gainer.s5._f3} {diary.competitive_gainer.s5._f4}"] },
+  { when: {}, text: [
+    "{diary.competitive_gainer.s5._f1} {diary.competitive_gainer.s5._f2}\n\n{diary.competitive_gainer.s5._f3} {diary.competitive_gainer.s5._f4}",
+    "{diary.competitive_gainer.s5._f1} {diary.competitive_gainer.s5._f3}\n\n{diary.competitive_gainer.s5._f2} {diary.competitive_gainer.s5._f4}",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s5._sk1', [
-  { when: {}, text: ["{diary.competitive_gainer.s5._f5} {diary.competitive_gainer.s5._f6}"] },
+  { when: {}, text: [
+    "{diary.competitive_gainer.s5._f5} {diary.competitive_gainer.s5._f6}",
+    "{diary.competitive_gainer.s5._f6} {diary.competitive_gainer.s5._f5}",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s5', [
-  { when: {}, text: ["{diary.competitive_gainer.s5._sk0}\n\n{diary.competitive_gainer.s5._sk1}"] },
+  { when: {}, text: [
+    "{diary.competitive_gainer.s5._sk0}\n\n{diary.competitive_gainer.s5._sk1}",
+    "{diary.competitive_gainer.s5._sk1}\n\n{diary.competitive_gainer.s5._sk0}",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s6._f7', [
-  { when: {}, text: ["The straight lines of my old body are disappearing faster than I expected."] },
+  { when: {}, text: [
+    "The straight lines of my old body are disappearing faster than I expected.",
+    "My silhouette in the mirror is rounding faster than the spreadsheet predicted.",
+    "I used to have angles. The angles are losing.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s6._f8', [
-  { when: {}, text: [". My belly has grown rounder, pushing forward heavily when I sit at my desk, the soft apron of it resting warmly on my thickening thighs."] },
+  { when: {}, text: [
+    ". My belly has grown rounder, pushing forward heavily when I sit at my desk, the soft apron of it resting warmly on my thickening thighs.",
+    ". Sitting, my belly pools forward — soft apron on my thighs, warm and heavy.",
+    ". My middle leads when I lean. The desk remembers my shape now.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s6._f9', [
-  { when: {}, text: [". I caught my reflection earlier - fabric straining across the new width of my hips, seams pulling as I move. Thigh friction is constant now, a warm, plush reminder with every step."] },
+  { when: {}, text: [
+    ". I caught my reflection earlier - fabric straining across the new width of my hips, seams pulling as I move. Thigh friction is constant now, a warm, plush reminder with every step.",
+    ". Reflection: hips wider, seams louder, thighs brushing with every step.",
+    ". Fabric protests across my hips. Thigh friction has become baseline.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s6._f10', [
-  { when: {}, text: ["I have added five more girls to the board. I am slightly behind in hip measurement compared to one of them, and that is unacceptable. I have already adjusted my intake schedule."] },
+  { when: {}, text: [
+    "I have added five more girls to the board. I am slightly behind in hip measurement compared to one of them, and that is unacceptable. I have already adjusted my intake schedule.",
+    "Five new names on the board. One hip measurement threatens mine. Unacceptable. Intake schedule revised.",
+    "The leaderboard grew. So did my appetite. Correlation noted. Causation intended.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s6._f11', [
-  { when: {}, text: [". The data will reflect my response by next week."] },
+  { when: {}, text: [
+    ". The data will reflect my response by next week.",
+    ". Next week's column will show the correction.",
+    ". I do not lose categories. I adjust variables.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s6', [
-  { when: {}, text: ["{diary.competitive_gainer.s6._f7} {diary.competitive_gainer.s6._f8}\n\n{diary.competitive_gainer.s6._f9}\n\n{diary.competitive_gainer.s6._f10} {diary.competitive_gainer.s6._f11}"] },
+  { when: {}, text: [
+    "{diary.competitive_gainer.s6._f7} {diary.competitive_gainer.s6._f8}\n\n{diary.competitive_gainer.s6._f9}\n\n{diary.competitive_gainer.s6._f10} {diary.competitive_gainer.s6._f11}",
+    "{diary.competitive_gainer.s6._f7} {diary.competitive_gainer.s6._f9}\n\n{diary.competitive_gainer.s6._f8}\n\n{diary.competitive_gainer.s6._f10} {diary.competitive_gainer.s6._f11}",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s7._f12', [

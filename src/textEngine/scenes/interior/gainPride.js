@@ -6,6 +6,8 @@ registerPool('interior.gainPride', [
   { when: { corruption: [1, 2], stageMin: 4 }, text: [
     'The gain is visible. She is not hiding it anymore.',
     'More of her every week — she has stopped treating that as emergency.',
+    'She catches her reflection and does not look away fast.',
+    'Softness accumulates like evidence she is proud to display.',
   ] },
   { when: { corruption: [2], stageMin: 6 }, weight: 2, text: [
     'She is proud in the specific way of someone who chose this.',

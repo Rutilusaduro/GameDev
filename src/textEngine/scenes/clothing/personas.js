@@ -97,9 +97,16 @@ registerModuleVariants('cloth.reaction', [
   { when: { studentId: 18, custom: false, corruption: [0] }, weight: W, text: [
     `"Tolerance exceeded," Talia mutters, pinning the gap. "Revision required."`,
     `She treats the tear like a failed stress test. The test continues.`,
+    `"Garment spec insufficient," Talia says, cheeks pink. "Ordering larger."`,
+  ]},
+  { when: { studentId: 18, custom: false, corruption: [1] }, weight: W, text: [
+    `"Within expected failure mode," Talia says, calmer now. "Scaling up."`,
+    `She logs the pop in her notebook. "Next iteration: elastic."`,
+    `"Material limit reached," she murmurs. "Acceptable outcome."`,
   ]},
   { when: { studentId: 18, custom: false, corruption: [2] }, weight: W, text: [
     `"Material stress exceeded spec," Talia says. "Recommend larger garment. Accepting growth."`,
     `She logs the pop and keeps moving. Engineering solution: elastic.`,
+    `"Failure mode: outgrown," Talia says, pleased. "Proceeding to next size tier."`,
   ]},
 ]);

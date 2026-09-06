@@ -60,9 +60,20 @@ registerPool('shift.physical', [
 
 registerPool('shift.denial', [
   { when: {}, text: ['', '', '', ''] },
+  { when: { corruption: [0], stageMax: 4 }, text: [
+    '"It\'s fine," she says — meaning temporary. She hopes.',
+    'She almost names the old excuse. Water weight. Stress. Monday.',
+    'Denial arrives on schedule. It is thinner than last month.',
+  ] },
   { when: { corruption: [1] }, text: [
     'She almost says the old thing. She does not.',
     '"It\'s fine," she says — and for the first time, she is not sure she means "temporary."',
+    'The protest dies mid-sentence. She eats anyway.',
+    'She reaches for more before the argument finishes.',
+  ] },
+  { when: { corruption: [2] }, text: [
+    'There is nothing left to deny. She smiles instead.',
+    'The old vocabulary is gone. Appetite speaks fluent now.',
   ] },
 ]);
 
