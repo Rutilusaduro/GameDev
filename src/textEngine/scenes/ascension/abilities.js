@@ -8,11 +8,15 @@ registerPool('asc.ability.generic', [
     'A measure of {word.essence} leaves her, turning intent into consequence.',
     '{subject.name} banks the choice in her body; the second climb shifts around it.',
     'The stored charge moves through her, practical and mythic at once.',
+    'Mythic appetite becomes mythic action — {word.essence} spent, growth redirected.',
+    'She channels {word.essence} the way rivers channel rain: inevitably, beautifully.',
   ]},
   { when: {}, text: [
     'The ability resolves cleanly.',
     'The stored charge becomes action.',
     'The choice lands, quiet and exact.',
+    'Power moves through her smaller body like memory of vastness.',
+    'The ability fires — precise, warm, hungry for consequence.',
   ]},
 ]);
 
@@ -22,6 +26,8 @@ registerPool('asc.ability.refusal.essence', [
     'Not enough {word.essence} yet.',
     'She needs more {word.essence} before that will answer.',
     'The reserve is too low; the ability waits.',
+    'Her mythic charge is still gathering. Patience — or feeding.',
+    '{word.essence} has not banked enough yet. Hunger must do more work first.',
   ]},
 ]);
 
@@ -31,5 +37,7 @@ registerPool('asc.ability.refusal.cooldown', [
     'The ability is still gathering.',
     'That power has not returned yet.',
     'The last use is still settling through her.',
+    'She breathes through the cooldown — smaller body, vast patience.',
+    'Not yet. The mythic pulse needs time to rebuild.',
   ]},
 ]);

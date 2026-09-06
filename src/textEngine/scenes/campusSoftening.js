@@ -236,6 +236,15 @@ registerPool("talk.campusCoda", [
   { when: { campusFattening: true, archetype: "cheerleader" }, priority: 2,
     text: [
       (ctx) => `${ctx.subject.name} laughs softly. "Half the squad texted me their weigh-ins this week. Up. All of them."`,
+      (ctx) => `"Campus gains are trending," ${ctx.subject.name} says. "I'm team captain of a soft squad now."`,
+    ] },
+  { when: { campusFattening: true, archetype: "culinary" }, priority: 2,
+    text: [
+      (ctx) => `${ctx.subject.name} mentions the dining hall smells different lately — richer, busier. "Everyone's cooking appetite," she says.`,
+    ] },
+  { when: { campusFattening: true, archetype: "farm_girl" }, priority: 2,
+    text: [
+      (ctx) => `"Whole campus eats like harvest season," ${ctx.subject.name} says warmly. "I recognize the look."`,
     ] },
   { when: { campusFattening: true }, priority: 0,
     text: [
@@ -252,6 +261,18 @@ registerPool("weighIn.campus", [
   { when: { campusFattening: true, archetype: "influencer" }, priority: 2,
     text: [
       (ctx) => `${ctx.subject.name} tilts her phone toward the hallway. "Campus is having a soft era. I'm not the only one filming it."`,
+      (ctx) => `"Content everywhere," ${ctx.subject.name} says. "Everyone's rounding out. Relatable era."`,
+      (ctx) => `${ctx.subject.name} checks her notifications. "Three classmates posted weigh-ins this week. All up. Campus meta."`,
+    ] },
+  { when: { campusFattening: true, archetype: "cheerleader" }, priority: 2,
+    text: [
+      (ctx) => `"Half the squad gained this month," ${ctx.subject.name} says, pleased. "Campus spirit includes appetite now."`,
+      (ctx) => `${ctx.subject.name} glances down the hall. "Everyone's softer. I'm not the outlier anymore."`,
+    ] },
+  { when: { campusFattening: true, archetype: "sorority" }, priority: 2,
+    text: [
+      (ctx) => `"Chapter-wide softness," ${ctx.subject.name} says. "The whole campus caught it."`,
+      (ctx) => `${ctx.subject.name} pats her middle. "Not just me. Not just us. Everyone."`,
     ] },
   { when: { campusFattening: true, archetype: "transfer" }, priority: 2,
     text: [

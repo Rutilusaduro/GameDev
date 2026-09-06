@@ -7,6 +7,8 @@ registerPool('immob.visit', [
   { when: {}, text: [
     `{ref.name} comes to {subject.name} where she rests. They share the afternoon — she brings the outside in; {subject.name} doesn't have to go anywhere for it.`,
     `The visit is brief, unhurried. {ref.name} fills the room with outside news, and {subject.name} receives it.`,
+    `{ref.name} sits within reach. Conversation flows; {subject.name} eats; the afternoon passes warm and unremarkable in the best way.`,
+    `A visitor, food, gossip — {subject.name} receives court without leaving her settled mass.`,
   ]},
   { when: { stageMin: 11 }, weight: 2, text: [
     `{ref.name} comes to court. The room is full before she speaks — {subject.name}'s presence does that. She stays until the light changes.`,

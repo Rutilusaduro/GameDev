@@ -22,12 +22,20 @@ registerPool('asc.held.hunger', [
   { when: { stageMin: 11, corruption: [2] }, weight: 2, text: [
     'Food still answers, but something deeper does not — appetite with no rung left to feed.',
     'She eats; the number holds. The wanting stays, patient as she is.',
+    'Hunger outlasts the ladder. She feeds it anyway — vast, warm, unfinished.',
+    'Appetite persists at the ceiling. She makes peace with wanting what cannot climb further yet.',
+  ]},
+  { when: { stageMin: 11, corruption: [0] }, text: [
+    'She eats carefully at the top — appetite present, story incomplete.',
+    'Fullness arrives; the next chapter does not. Hunger waits with her.',
   ]},
   { when: {}, text: [
     '',
     '',
     'Her hunger outlasts the scale now.',
     'Appetite persists after the ladder stops.',
+    'She eats at the threshold — warm, vast, still wanting.',
+    'Wanting does not require a next rung. She proves it daily.',
   ]},
 ]);
 
@@ -36,11 +44,18 @@ registerPool('asc.held.catalyst', [
   { when: { relationship: [3], corruption: [2] }, weight: 2, text: [
     `{subject.name} looks at you. "Almost," she says. "There's one thing left to finish first."`,
     `"I'm ready," {subject.first} murmurs. "The story isn't, yet."`,
+    `{subject.name} reaches for your hand. "When you are. Not before."`,
+  ]},
+  { when: { relationship: [3], corruption: [0] }, weight: 2, text: [
+    `{subject.name} watches you carefully. "I need you to mean it," she says. "When we do this."`,
+    `"Soon," {subject.first} whispers. "But together."`,
   ]},
   { when: {}, text: [
     `{subject.name} waits — not stuck, unfinished.`,
     `"Soon," {subject.first} says, and means it.`,
     `{subject.name} keeps her eyes on you. "Not yet. Close."`,
+    `{subject.name} is patient at the top — vast, warm, certain the catalyst will arrive.`,
+    `"The ladder ends," {subject.first} says. "The appetite doesn't."`,
   ]},
 ]);
 
