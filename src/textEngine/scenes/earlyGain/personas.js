@@ -285,22 +285,27 @@ registerModuleVariants('slender.neutral', [
   { when: { studentId: 5, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Cool. Next."`,
     `"Logged."`,
+    `"Queue the next meal," she says, already scrolling.`,
   ]},
   { when: { studentId: 8, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Okay."`,
     `"Mm."`,
+    `She shrugs once. The shrug is enough.`,
   ]},
   { when: { studentId: 13, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Well, bless it."`,
     `"That's all right, honey."`,
+    `"Still me," she says, warm.`,
   ]},
   { when: { studentId: 17, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Noted for the field journal."`,
     `"Could be worse. I've seen worse ruins."`,
+    `"Landmark logged," she says, satisfied.`,
   ]},
   { when: { studentId: 0, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"New baseline," she says, like a stat line.`,
     `"Still winning."`,
+    `"Season stats update," she shrugs.`,
   ]},
   { when: { studentId: 1, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Recorded."`,
@@ -310,50 +315,62 @@ registerModuleVariants('slender.neutral', [
   { when: { studentId: 2, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Content," she says lightly. "Relatable scale moment."`,
     `"Fine. Fine. Next."`,
+    `"Authentic," she adds, already moving on.`,
   ]},
   { when: { studentId: 3, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Different training load," Serena says, shrugging.`,
     `"Still fast," she adds, ambiguous.`,
+    `"Cross-training," she says. Vague on purpose.`,
   ]},
   { when: { studentId: 4, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Canvas changed," Fiona says. "That's all."`,
     `"Notes for later," she murmurs.`,
+    `"Composition shifted," she says, calm.`,
   ]},
   { when: { studentId: 6, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Chapter brunch counts," Tiffany says, bubbly.`,
     `"Still cute," she decides.`,
+    `"Pastel still works," she grins.`,
   ]},
   { when: { studentId: 7, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Logged," Priya says. "Next task."`,
     `"Variance noted," she says, closing the planner.`,
+    `"Within tolerance," she murmurs, moving on.`,
   ]},
   { when: { studentId: 9, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"American semester," Chloé says dryly. "C'est la vie."`,
     `"Portions happen," she shrugs.`,
+    `"Butter happens," she adds, amused.`,
   ]},
   { when: { studentId: 10, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Tasting schedule," Reneé says. "Professional."`,
     `"Good ingredients show," she notes.`,
+    `"Proofing takes time," she murmurs.`,
   ]},
   { when: { studentId: 11, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Within normal parameters," Kaylee says calmly.`,
     `"Self-care includes mass," she adds, clinical.`,
+    `"Vitals stable," she says, pink-cheeked.`,
   ]},
   { when: { studentId: 12, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Noted," Nadia says, watching your face.`,
     `"Interesting," she murmurs. Not distressed.`,
+    `"Continuing observation," she says, pleased.`,
   ]},
   { when: { studentId: 14, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Harvest happens," Mary Jane says, sunny.`,
     `"Still me," she grins.`,
+    `"Good soil," she winks, patting her hip.`,
   ]},
   { when: { studentId: 15, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `Lilith inclines her head. Acknowledgment without commentary.`,
     `"Expected," she says, once.`,
+    `Silence. Mass acknowledged.`,
   ]},
   { when: { studentId: 16, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Within study bounds," Sophia says, tense.`,
     `"Documented," she whispers.`,
+    `"Continuing trial," she adds, shaky.`,
   ]},
   { when: { studentId: 18, custom: false, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Output nominal," Talia says.`,
@@ -371,22 +388,27 @@ registerModuleVariants('slender.secret', [
   { when: { studentId: 2, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'She checks the angle in the mirror and does not look away fast enough.',
     'Her hand rests on her hip. The content writes itself.',
+    'She saves the shot unposted. Liked anyway.',
   ]},
   { when: { studentId: 4, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'She traces the new curve like she is studying brushwork.',
     'The softness pleases her in a way she will not say out loud.',
+    'She sketches the curve from memory later. Accurate.',
   ]},
   { when: { studentId: 10, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'She presses her palm to her middle and exhales slowly — tasting the fullness.',
     'The rounding is a recipe finishing in the oven. She is patient.',
+    'She pats her belly like dough proofing. Satisfied.',
   ]},
   { when: { studentId: 12, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'She names the dynamic out loud to herself and smiles anyway.',
     'The gain satisfies a hypothesis she will not publish yet.',
+    'She watches you watch her soften. Data and pleasure.',
   ]},
   { when: { studentId: 14, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'She pats her hip with farm-girl pride she pretends is absentminded.',
     'Abundance feels correct on her. She will not argue with harvest logic.',
+    'She hums while fullness settles. The hum sounds like yes.',
   ]},
   { when: { studentId: 15, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Her stillness sharpens. She is pleased. She does not explain why.',
@@ -396,42 +418,52 @@ registerModuleVariants('slender.secret', [
   { when: { studentId: 1, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Madeline presses palm to softness and exhales data she will not publish yet.',
     'The curve pleases her more than her voice admits.',
+    'She weighs herself twice. Second reading higher. She smiles.',
   ]},
   { when: { studentId: 3, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Serena flexes, then relaxes into the new give at her thigh. She likes the heaviness.',
     'She checks the mirror twice. Performance and pleasure blur.',
+    'Her hand rests on her middle a beat too long.',
   ]},
   { when: { studentId: 6, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Tiffany smooths pastel over a hip that has outgrown rush standards. She does not mind.',
     'She bites her lip at the number. Bubblegum excuse. Real appetite underneath.',
+    'She takes a selfie and deletes it. Keeps the softness.',
   ]},
   { when: { studentId: 7, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Priya files the gain under private goals she did not put in the planner.',
     'Her hand rests on her middle a beat too long. Optimization can wait.',
+    'She eats seconds without logging them. Pleasure off-books.',
   ]},
   { when: { studentId: 8, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Maya draws the new curve later that night from memory. Accurate. Affectionate.',
     'She touches her waistband in the dorm mirror when the hall is empty.',
+    'She eats alone in the studio. No audience. Full appetite.',
   ]},
   { when: { studentId: 9, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Chloé\'s breath catches on the number — scandal and satisfaction braided together.',
     'She blames American butter. Her smile blames nothing.',
+    'She orders dessert twice. C\'est la vie.',
   ]},
   { when: { studentId: 11, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Kaylee calls it clinical curiosity while her cheeks flush. The chart lies. She does not.',
     'She weighs herself at home and is not always upset about the result.',
+    'She pats her belly in the shower. Private triage.',
   ]},
   { when: { studentId: 13, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Daisy pats her hip when she thinks no one sees. Southern warmth, private appetite.',
     'She hums while fullness settles. The hum sounds like contentment.',
+    'She saves herself a second plate. Bless her heart.',
   ]},
   { when: { studentId: 16, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Sophia exhales shakily at the number — not dismay. Relief wearing anxiety\'s coat.',
     'She locks the bathroom door before stepping on the scale again. Curious, not clinical.',
+    'She loosens her coat button and does not tighten it.',
   ]},
   { when: { studentId: 17, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Indiana maps the new softness like discovered territory. X marks the spot. She is the spot.',
     'She eats stolen dining hall rolls in the stairwell and savors every one.',
+    'She adds a pin to her inner map. Heavier. Warmer.',
   ]},
   { when: { studentId: 18, custom: false, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Talia runs a hand along her side and updates the model with a private smile.',
@@ -446,10 +478,12 @@ registerModuleVariants('slender.secret', [
   { when: { studentId: 0, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Brittany checks the curve in the locker mirror and does not look away fast enough.',
     'Winning feels different now. She is not sure she minds.',
+    'She flexes once, privately. Likes the softness.',
   ]},
   { when: { studentId: 5, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Destiny eats off-stream with focus that would alarm her chat.',
     'She saves the softer screenshots in a private folder. Unposted. Liked.',
+    'She queues snacks before the next broadcast. Priority shift.',
   ]},
 ]);
 

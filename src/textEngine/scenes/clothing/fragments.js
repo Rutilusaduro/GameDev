@@ -11,18 +11,22 @@ registerPool('cloth.discovery', [
   { when: { clothingState: 'button_pop' }, text: [
     'A button that has been holding its breath finally gives up.',
     'The waistband loses an argument it was never going to win.',
+    'A button departs at speed — small tok, thread surrendering.',
   ] },
   { when: { clothingState: 'zipper_fail' }, text: [
     'The zipper stops halfway — a truce neither side respects.',
     'She tugs once, twice. The zipper declines to continue.',
+    'Metal teeth refuse to meet. The gap widens anyway.',
   ] },
   { when: { clothingState: 'seam_split' }, text: [
     'A seam opens like a quiet confession along the side.',
     'Thread surrenders along the hip — not dramatic, simply factual.',
+    'Fabric parts along the stress line — honest, audible, final.',
   ] },
   { when: { clothingState: 'waistband_surrender' }, text: [
     'The elastic stops pretending. The gap widens past hope.',
     'Waistband surrender: the elastic has made its decision.',
+    'The waistband rolls under and stays — concession without apology.',
   ] },
   { when: { stageMin: 6 }, text: [
     'She has outgrown the fiction of this outfit. The fabric agrees.',
@@ -90,22 +94,25 @@ registerPool('cloth.failBeat', [
   { when: { corruption: [0] }, text: [
     'She freezes — cheeks heating — as the failure becomes public.',
     'The wardrobe malfunction is small and absolute.',
+    'Heat floods her face. The fabric does not apologize.',
   ] },
   { when: { corruption: [2] }, text: [
     'The failure happens. She does not so much as glance down.',
     'Fabric surrenders. She keeps going.',
+    'She keeps walking. The gap keeps showing.',
   ] },
   { when: { stageMin: 8 }, text: [
     'At her size, clothing failure is weather — expected, survived, forgotten.',
     'The garment loses. She has stopped keeping score.',
+    'Custom sizing was always a temporary fiction.',
   ] },
 ]);
 
 registerPool('cloth.failSound', [
   { when: {}, text: ['', '', '', ''] },
-  { when: { clothingState: 'button_pop' }, text: ['a soft tok against the floor', 'the button rolling to a stop'] },
-  { when: { clothingState: 'seam_split' }, text: ['a quiet rip along the seam', 'thread popping in sequence'] },
-  { when: { clothingState: 'zipper_fail' }, text: ['the zipper catching, then refusing', 'metal teeth giving up halfway'] },
+  { when: { clothingState: 'button_pop' }, text: ['a soft tok against the floor', 'the button rolling to a stop', 'thread snapping like a small sigh'] },
+  { when: { clothingState: 'seam_split' }, text: ['a quiet rip along the seam', 'thread popping in sequence', 'fabric parting with a soft surrender'] },
+  { when: { clothingState: 'zipper_fail' }, text: ['the zipper catching, then refusing', 'metal teeth giving up halfway', 'a stuck pull-tab and then silence'] },
 ]);
 
 registerPool('cloth.reaction', [
