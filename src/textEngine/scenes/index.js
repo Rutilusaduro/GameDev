@@ -32,6 +32,7 @@ import './talkEncourage.js';
 import './talkCheckIn.js';
 import './talkCompliment.js';
 import './talkSuggest.js';
+import './talkSuggestDepth.js';
 import './talkRefusal.js';
 import './talkCommandFinish.js';
 import './intimacy/index.js';
