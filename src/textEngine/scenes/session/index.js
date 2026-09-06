@@ -5,6 +5,7 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import './fullness.js';
 import './fullnessDepth.js';
 import './aftermath.js';
+import './aftermathDepth.js';
 import './selectors.js';
 
 function composeOverlay(main, overlay) {
