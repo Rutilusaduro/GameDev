@@ -58,6 +58,24 @@ registerModuleVariants('shift.interior', [
   ]},
 ]);
 
+registerModuleVariants('eat.finish', [
+  { when: { ...CUSTOM, corruption: [0] }, priority: P, weight: W, text: [
+    'She finishes the plate like closing a log file — complete, documented, already hungry for the appendix.',
+    'Empty dish. Output: satisfied. Next iteration queued.',
+    'Trial meal concluded. Variance within acceptable pleasure.',
+  ]},
+  { when: { ...CUSTOM, corruption: [1] }, priority: P, weight: W, text: [
+    'She sets the fork down and updates the model. "Recommend repeat trial."',
+    'Plate empty. Belly fuller. Hypothesis supported.',
+    'Intake complete. She is already planning seconds.',
+  ]},
+  { when: { ...CUSTOM, corruption: [2] }, priority: P, weight: W, text: [
+    'She finishes everything within reach and looks for what comes next.',
+    '"Output exceeded target," she says, pleased. "No rollback."',
+    'Deploy to production: this fullness. Continue feeding.',
+  ]},
+]);
+
 registerModuleVariants('diary.innerBeat', [
   { when: { ...CUSTOM, corruption: [0] }, priority: P, weight: W, text: [
     'The number climbed. I wrote it down twice. The second time looked less like a mistake.',
