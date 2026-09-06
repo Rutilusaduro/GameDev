@@ -28,6 +28,7 @@ registerPool('asc.held.hunger', [
   { when: { stageMin: 11, corruption: [0] }, text: [
     'She eats carefully at the top — appetite present, story incomplete.',
     'Fullness arrives; the next chapter does not. Hunger waits with her.',
+    'Appetite lingers at the ceiling. She feeds it gently, without urgency.',
   ]},
   { when: {}, text: [
     '',
@@ -49,6 +50,7 @@ registerPool('asc.held.catalyst', [
   { when: { relationship: [3], corruption: [0] }, weight: 2, text: [
     `{subject.name} watches you carefully. "I need you to mean it," she says. "When we do this."`,
     `"Soon," {subject.first} whispers. "But together."`,
+    `{subject.name} finds your hand. "Don't let me cross alone."`,
   ]},
   { when: {}, text: [
     `{subject.name} waits — not stuck, unfinished.`,
@@ -65,5 +67,6 @@ registerPool('asc.held.scene', [
     '{asc.held.settled} {asc.held.hunger|prefix: } {asc.held.catalyst|prefix: }',
     '{asc.held.hunger} {asc.held.settled} {asc.held.catalyst|prefix: }',
     '{asc.held.settled} {asc.held.catalyst|prefix: } {asc.held.hunger|prefix: }',
+    '{asc.held.catalyst|prefix: } {asc.held.settled} {asc.held.hunger|prefix: }',
   ]},
 ]);

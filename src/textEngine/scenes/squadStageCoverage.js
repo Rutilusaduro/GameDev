@@ -3,21 +3,21 @@
 // Prose reuses wildcard skeletons; gameplay variety comes from keyed variants.
 import { registerModuleVariants } from '../engine.js';
 
-registerModuleVariants('word.moveVerb.chair', [{ when: { stageMin: 0, stageMax: 3 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.bed', [{ when: { stageMin: 0, stageMax: 5 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.cafeteria', [{ when: { stageMin: 0, stageMax: 2 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.cafeteria', [{ when: { stage: [11] }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.stairwell', [{ when: { stageMin: 0, stageMax: 5 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.stairwell', [{ when: { stageMin: 10, stageMax: 11 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.elevator', [{ when: { stageMin: 0, stageMax: 6 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.lecture_hall', [{ when: { stageMin: 0, stageMax: 3 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.lecture_hall', [{ when: { stageMin: 10, stageMax: 11 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.gym', [{ when: { stageMin: 0, stageMax: 2 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.gym', [{ when: { stageMin: 8, stageMax: 11 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.dorm_room', [{ when: { stageMin: 0, stageMax: 4 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.dorm_room', [{ when: { stage: [11] }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.prof_office', [{ when: { stageMin: 0, stageMax: 3 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.prof_office', [{ when: { stageMin: 10, stageMax: 11 }, weight: 1, text: ["moved","went","continued"] }]);
+registerModuleVariants('word.moveVerb.chair', [{ when: { stageMin: 0, stageMax: 3 }, weight: 1, text: ["slides into the chair","settles into the seat","drops into the chair","claims the chair"] }]);
+registerModuleVariants('word.moveVerb.bed', [{ when: { stageMin: 0, stageMax: 5 }, weight: 1, text: ["slides into bed","curls into bed","settles into the mattress","rolls into bed"] }]);
+registerModuleVariants('word.moveVerb.cafeteria', [{ when: { stageMin: 0, stageMax: 2 }, weight: 1, text: ["drifts through the cafeteria line","sidles into the booth","balances the tray","parts the crowd"] }]);
+registerModuleVariants('word.moveVerb.cafeteria', [{ when: { stage: [11] }, weight: 1, text: ["has the tray brought to her","eats where she rests","receives the line at her table","is served without standing"] }]);
+registerModuleVariants('word.moveVerb.stairwell', [{ when: { stageMin: 0, stageMax: 5 }, weight: 1, text: ["takes the stairs","climbs one step at a time","grips the railing","works her way up"] }]);
+registerModuleVariants('word.moveVerb.stairwell', [{ when: { stageMin: 10, stageMax: 11 }, weight: 1, text: ["waits for the elevator instead","avoids the stairs entirely","is helped to the landing","does not attempt the stairs"] }]);
+registerModuleVariants('word.moveVerb.elevator', [{ when: { stageMin: 0, stageMax: 6 }, weight: 1, text: ["waits for the elevator","rides the elevator up","steps into the elevator","takes the elevator"] }]);
+registerModuleVariants('word.moveVerb.lecture_hall', [{ when: { stageMin: 0, stageMax: 3 }, weight: 1, text: ["tests the desk arm","squeezes into the aisle seat","finds her row","slides into a seat"] }]);
+registerModuleVariants('word.moveVerb.lecture_hall', [{ when: { stageMin: 10, stageMax: 11 }, weight: 1, text: ["claims the end row","selects the wide chair","is seated at the end row","takes the reinforced seat"] }]);
+registerModuleVariants('word.moveVerb.gym', [{ when: { stageMin: 0, stageMax: 2 }, weight: 1, text: ["crosses the gym floor","approaches the equipment","walks the gym floor","heads for the machines"] }]);
+registerModuleVariants('word.moveVerb.gym', [{ when: { stageMin: 8, stageMax: 11 }, weight: 1, text: ["passes the gym on the way to food","avoids the gym floor","crosses to the union instead","chooses the dining hall over the gym"] }]);
+registerModuleVariants('word.moveVerb.dorm_room', [{ when: { stageMin: 0, stageMax: 4 }, weight: 1, text: ["crosses the dorm room","settles into the dorm mirror","walks to her desk","moves through the room"] }]);
+registerModuleVariants('word.moveVerb.dorm_room', [{ when: { stage: [11] }, weight: 1, text: ["repositions rather than walks","shifts her mass across the room","settles rather than crosses","makes the room answer"] }]);
+registerModuleVariants('word.moveVerb.prof_office', [{ when: { stageMin: 0, stageMax: 3 }, weight: 1, text: ["navigates between desks","approaches your desk","crosses to the chair","steps into the office"] }]);
+registerModuleVariants('word.moveVerb.prof_office', [{ when: { stageMin: 10, stageMax: 11 }, weight: 1, text: ["fills the doorway","arrives by accumulation","angles through the door","exists into the office"] }]);
 registerModuleVariants('word.adv.pace', [{ when: { stageMin: 0, stageMax: 2 }, weight: 1, text: ["","","","quietly"] }]);
 registerModuleVariants('word.adv.sizeQual', [{ when: { stageMin: 0, stageMax: 4 }, weight: 1, text: ["","",""] }]);
 registerModuleVariants('word.adv.manner', [{ when: { stageMin: 0, stageMax: 7 }, weight: 1, text: ["","","with unhurried attention"] }]);

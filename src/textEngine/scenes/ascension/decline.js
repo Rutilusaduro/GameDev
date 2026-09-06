@@ -17,10 +17,12 @@ registerPool('asc.decline.line', [
   { when: { corruption: [0] }, weight: 2, text: [
     `{subject.name} nods, relieved and disappointed braided together. "Okay. When you're ready."`,
     `"I understand," {subject.first} says quietly. "I'll wait."`,
+    `{subject.name} steps back, vast and patient. "No rush. I'll be here."`,
   ]},
   { when: { corruption: [1] }, weight: 2, text: [
     `{subject.name} steps back from the line. "Not yet," she says. "But soon."`,
     `"I'll be here," {subject.first} murmurs. "Bigger. Patient."`,
+    `{subject.name} almost smiles. "Soon. You'll know when."`,
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
     `{subject.name} nods once. "Fine. I can wait at the top. I'm good at waiting now."`,
@@ -52,5 +54,6 @@ registerPool('asc.decline.scene', [
     '{asc.decline.prompt} {asc.decline.line} {asc.decline.after}',
     '{asc.decline.line} {asc.decline.prompt} {asc.decline.after}',
     '{asc.decline.prompt} {asc.decline.after} {asc.decline.line}',
+    '{asc.decline.after} {asc.decline.prompt} {asc.decline.line}',
   ]},
 ]);
