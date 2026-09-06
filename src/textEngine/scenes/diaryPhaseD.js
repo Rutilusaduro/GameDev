@@ -121,103 +121,198 @@ registerPool('diary.competitive_gainer.s6', [
 ]);
 
 registerPool('diary.competitive_gainer.s7._f12', [
-  { when: {}, text: ["When I sit down now my belly rounds forward in a heavy, undeniable arc, spilling softly over my waistband and forcing me to adjust my custom trousers constantly."] },
+  { when: {}, text: [
+    "When I sit down now my belly rounds forward in a heavy, undeniable arc, spilling softly over my waistband and forcing me to adjust my custom trousers constantly.",
+    "Sitting, my belly domes forward — undeniable, warm, constantly adjusting my trousers.",
+    "My middle leads when I sit. The waistband has stopped pretending.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s7._f13', [
-  { when: {}, text: [". The blazer I wore last semester is long gone - replaced by pieces that still feel tight across my broadening back and chest."] },
+  { when: {}, text: [
+    ". The blazer I wore last semester is long gone - replaced by pieces that still feel tight across my broadening back and chest.",
+    ". Last semester's blazer is mythology. Current clothes strain across back and chest.",
+    ". Custom pieces already feel temporary. I order ahead of the curve.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s7._f14', [
-  { when: {}, text: [". My thighs have become massive, spreading wide and pressing together with every movement, the warm friction almost distracting during lectures."] },
+  { when: {}, text: [
+    ". My thighs have become massive, spreading wide and pressing together with every movement, the warm friction almost distracting during lectures.",
+    ". Thighs massive now — warm friction through every lecture, every hallway.",
+    ". I feel my thighs before I see them. Constant plush contact.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s7._f15', [
-  { when: {}, text: ["I am leading in waist and total weight. Brittany's thighs remain a threat. I have devised a targeted binge protocol to widen the gap. The board is updating daily."] },
+  { when: {}, text: [
+    "I am leading in waist and total weight. Brittany's thighs remain a threat. I have devised a targeted binge protocol to widen the gap. The board is updating daily.",
+    "Waist and total weight: first. Brittany's thighs: threat. Binge protocol deployed. Board updates daily.",
+    "Leaderboard favors me. I intend to make second place embarrassing.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s7._f16', [
-  { when: {}, text: [". This is no longer a side project."] },
+  { when: {}, text: [
+    ". This is no longer a side project.",
+    ". Primary research now. Everything else is noise.",
+    ". The board is the point. Food is the method.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s7', [
-  { when: {}, text: ["{diary.competitive_gainer.s7._f12} {diary.competitive_gainer.s7._f13}\n\n{diary.competitive_gainer.s7._f14}\n\n{diary.competitive_gainer.s7._f15} {diary.competitive_gainer.s7._f16}"] },
+  { when: {}, text: [
+    "{diary.competitive_gainer.s7._f12} {diary.competitive_gainer.s7._f13}\n\n{diary.competitive_gainer.s7._f14}\n\n{diary.competitive_gainer.s7._f15} {diary.competitive_gainer.s7._f16}",
+    "{diary.competitive_gainer.s7._f12} {diary.competitive_gainer.s7._f14}\n\n{diary.competitive_gainer.s7._f13}\n\n{diary.competitive_gainer.s7._f15} {diary.competitive_gainer.s7._f16}",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s8._f17', [
-  { when: {}, text: ["My body has grown so heavy that reaching the top of the corkboard requires real effort."] },
+  { when: {}, text: [
+    "My body has grown so heavy that reaching the top of the corkboard requires real effort.",
+    "The top row of pins is a workout now. I lean, breathe, reach.",
+    "Corkboard mounted higher would be cruel. I mount myself instead.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s8._f18', [
-  { when: {}, text: [". I have to lean forward, my enormous gut resting heavily on the desk and sending warm ripples through the thick rolls at my sides."] },
+  { when: {}, text: [
+    ". I have to lean forward, my enormous gut resting heavily on the desk and sending warm ripples through the thick rolls at my sides.",
+    ". Belly meets desk first — warm ripples through rolls at my sides.",
+    ". I lean into the wood and feel mass settle, soft and vast.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s8._f19', [
-  { when: {}, text: [". Fabric creaks audibly as I stretch, my labored breathing filling the quiet room while my massive thighs spread across the reinforced chair. Every category is being tracked with precision."] },
+  { when: {}, text: [
+    ". Fabric creaks audibly as I stretch, my labored breathing filling the quiet room while my massive thighs spread across the reinforced chair. Every category is being tracked with precision.",
+    ". Fabric creaks; breath deep; thighs spill across reinforced chair. Every category tracked.",
+    ". Chair groans. I breathe. Pins wait. Precision is pleasure.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s8._f20', [
-  { when: {}, text: [". I refuse to let any slip."] },
+  { when: {}, text: [
+    ". I refuse to let any slip.",
+    ". No category surrendered. Not one.",
+    ". Second place is a failure mode I do not accept.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s8._f21', [
-  { when: {}, text: ["The numbers are beautiful. Mine dominate most columns. But there are still threats. I will erase them."] },
+  { when: {}, text: [
+    "The numbers are beautiful. Mine dominate most columns. But there are still threats. I will erase them.",
+    "Most columns: mine. Remaining threats: temporary. Erasure scheduled.",
+    "Beautiful data. Dominant columns. Hungry for the rest.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s8', [
-  { when: {}, text: ["{diary.competitive_gainer.s8._f17} {diary.competitive_gainer.s8._f18}\n\n{diary.competitive_gainer.s8._f19} {diary.competitive_gainer.s8._f20}\n\n{diary.competitive_gainer.s8._f21}"] },
+  { when: {}, text: [
+    "{diary.competitive_gainer.s8._f17} {diary.competitive_gainer.s8._f18}\n\n{diary.competitive_gainer.s8._f19} {diary.competitive_gainer.s8._f20}\n\n{diary.competitive_gainer.s8._f21}",
+    "{diary.competitive_gainer.s8._f17} {diary.competitive_gainer.s8._f19}\n\n{diary.competitive_gainer.s8._f18} {diary.competitive_gainer.s8._f20}\n\n{diary.competitive_gainer.s8._f21}",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s9._f22', [
-  { when: {}, text: ["Breathing feels deeper, heavier now, each inhale lifting the vast dome of my colossal belly before it settles warmly back onto my lap in heavy waves."] },
+  { when: {}, text: [
+    "Breathing feels deeper, heavier now, each inhale lifting the vast dome of my colossal belly before it settles warmly back onto my lap in heavy waves.",
+    "Each breath lifts my belly like tide — vast dome rising, settling warm on my lap.",
+    "Breathing is physical labor now. The belly moves like weather.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s9._f23', [
-  { when: {}, text: [". The custom blazer does structural work just to contain me - rolls cascade over my waistband, my hips and thighs so wide they make the chair groan softly beneath my weight."] },
+  { when: {}, text: [
+    ". The custom blazer does structural work just to contain me - rolls cascade over my waistband, my hips and thighs so wide they make the chair groan softly beneath my weight.",
+    ". Blazer contains what it can. Rolls cascade anyway. Chair groans.",
+    ". Clothes are engineering problems. My body wins.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s9._f24', [
-  { when: {}, text: [". I measured myself again tonight. Kylie is close in bust. Too close. The fury I feel is cold, controlled, and productive."] },
+  { when: {}, text: [
+    ". I measured myself again tonight. Kylie is close in bust. Too close. The fury I feel is cold, controlled, and productive.",
+    ". Kylie threatens bust category. Fury cold. Productive. Food ordered.",
+    ". Close rivals sharpen appetite. I sharpen back.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s9._f25', [
-  { when: {}, text: ["I have already ordered the next delivery. The board will reflect my response by morning. Nothing else matters as much as this."] },
+  { when: {}, text: [
+    "I have already ordered the next delivery. The board will reflect my response by morning. Nothing else matters as much as this.",
+    "Next delivery ordered. Board updates by morning. Priority: absolute.",
+    "Sleep is optional. Winning is not.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s9', [
-  { when: {}, text: ["{diary.competitive_gainer.s9._f22} {diary.competitive_gainer.s9._f23}\n\n{diary.competitive_gainer.s9._f24}\n\n{diary.competitive_gainer.s9._f25}"] },
+  { when: {}, text: [
+    "{diary.competitive_gainer.s9._f22} {diary.competitive_gainer.s9._f23}\n\n{diary.competitive_gainer.s9._f24}\n\n{diary.competitive_gainer.s9._f25}",
+    "{diary.competitive_gainer.s9._f22} {diary.competitive_gainer.s9._f24}\n\n{diary.competitive_gainer.s9._f23}\n\n{diary.competitive_gainer.s9._f25}",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s10._f26', [
-  { when: {}, text: ["Moving to the corkboard takes time now. My immense belly pools heavily between my spread thighs, rolls upon rolls shifting and spilling with every deliberate step while the floor creaks beneath"] },
+  { when: {}, text: [
+    "Moving to the corkboard takes time now. My immense belly pools heavily between my spread thighs, rolls upon rolls shifting and spilling with every deliberate step while the floor creaks beneath",
+    "Crossing the room is a project now. Belly pools between thighs; floor creaks beneath",
+    "Each step redistributes mass — deliberate, slow, audible",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s10._f27', [
-  { when: {}, text: ["me. I have to brace myself against the desk, feeling the overwhelming warmth and weight of my body as I update the final columns."] },
+  { when: {}, text: [
+    "me. I have to brace myself against the desk, feeling the overwhelming warmth and weight of my body as I update the final columns.",
+    "me. I brace on the desk — warm overwhelming weight — and update the columns.",
+    "me. Desk holds my belly while I pin the numbers. Grateful furniture.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s10._f28', [
-  { when: {}, text: [". Fabric strains and groans across my colossal frame, my breathing deep and audible in the silent room."] },
+  { when: {}, text: [
+    ". Fabric strains and groans across my colossal frame, my breathing deep and audible in the silent room.",
+    ". Fabric groans. Breath deep. Room silent except me.",
+    ". Strain audible. Victory audible too.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s10._f29', [
-  { when: {}, text: ["The data is perfect. Every single category belongs to me. Even if I need help reaching the top pins next time, the board stays flawless. I will remain the fattest. No one else even comes close."] },
+  { when: {}, text: [
+    "The data is perfect. Every single category belongs to me. Even if I need help reaching the top pins next time, the board stays flawless. I will remain the fattest. No one else even comes close.",
+    "Every category: mine. Top pins may require assistance. Dominance does not.",
+    "Flawless board. Unmatched mass. The competition is decorative.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s10', [
-  { when: {}, text: ["{diary.competitive_gainer.s10._f26} {diary.competitive_gainer.s10._f27}\n\n{diary.competitive_gainer.s10._f28}\n\n{diary.competitive_gainer.s10._f29}"] },
+  { when: {}, text: [
+    "{diary.competitive_gainer.s10._f26} {diary.competitive_gainer.s10._f27}\n\n{diary.competitive_gainer.s10._f28}\n\n{diary.competitive_gainer.s10._f29}",
+    "{diary.competitive_gainer.s10._f26} {diary.competitive_gainer.s10._f28}\n\n{diary.competitive_gainer.s10._f27}\n\n{diary.competitive_gainer.s10._f29}",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s11._f30', [
-  { when: {}, text: ["The corkboard is mounted lower now. I update it from the chair — pins at eye level, my belly a warm shelf across my lap, every column still mine."] },
+  { when: {}, text: [
+    "The corkboard is mounted lower now. I update it from the chair — pins at eye level, my belly a warm shelf across my lap, every column still mine.",
+    "Board lowered to my chair. Belly shelf across lap. Columns still mine.",
+    "I dictate numbers from immobility. The data obeys.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s11._f31', [
-  { when: {}, text: [" Assistants reach the top row. I dictate the numbers. The board stays flawless. I remain the fattest. The room rearranges; the data does not."] },
+  { when: {}, text: [
+    " Assistants reach the top row. I dictate the numbers. The board stays flawless. I remain the fattest. The room rearranges; the data does not.",
+    " Assistants pin the top row. I remain first in every column. Room adapts; I do not shrink.",
+    " Court updates the board. I update appetite. Both continue upward.",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer.s11', [
-  { when: {}, text: ["{diary.competitive_gainer.s11._f30} {diary.competitive_gainer.s11._f31}"] },
+  { when: {}, text: [
+    "{diary.competitive_gainer.s11._f30} {diary.competitive_gainer.s11._f31}",
+    "{diary.competitive_gainer.s11._f31} {diary.competitive_gainer.s11._f30}",
+  ]},
 ]);
 
 registerPool('diary.competitive_gainer', [

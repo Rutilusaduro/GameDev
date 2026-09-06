@@ -6,14 +6,19 @@ registerPool('interior.sizeRealize', [
   { when: { stageMin: 4, corruption: [0] }, text: [
     'A chair complains. She hears it and feels her cheeks heat.',
     'The desk arm leaves a mark. Evidence she did not ask for.',
+    'She turns sideways in a shop window and pretends she was checking her bag.',
+    'A booth feels narrower than last month. The booth did not shrink.',
   ] },
-  { when: { stageMin: 5 }, text: [
-    'A doorway teaches her something new about her width.',
-    'She catches her reflection in a window and pauses — not distress, recognition.',
-  ] },
-  { when: { stageMin: 6, corruption: [1] }, text: [
+  { when: { stageMin: 5, corruption: [1, 2] }, text: [
     'She takes up more room than she used to. The room has stopped pretending otherwise.',
     'Spatial awareness has become a skill — she knows her footprint now.',
+    'Doorways require angles now. She has learned the angles.',
+    'She feels her hips before she sees them in the mirror.',
+  ] },
+  { when: { stageMin: 6, corruption: [0] }, text: [
+    'The scale number lands and her body already knew it.',
+    'Clothes fit like suggestions. Her body fits like fact.',
+    'She catches her belly in a reflection and exhales — not dismay, recognition.',
   ] },
   { when: { stageMin: 8 }, text: [
     'The building was not designed for her. She has learned its compromises.',

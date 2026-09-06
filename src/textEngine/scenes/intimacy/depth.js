@@ -41,10 +41,17 @@ registerPool('intimacy.bodyFeel', [
   { when: { stageMin: 6, season: ['summer'] }, weight: 3, text: [
     'Warmth and weight settle against you — skin damp, belly soft, thighs broad, real.',
     'Summer heat and her body find yours; fullness presses through thin fabric.',
+    'Sweat and softness — her belly yields warm against your hands.',
   ] },
   { when: { stageMin: 6 }, weight: 2, text: [
     'Warmth and weight settle against you — belly soft, thighs broad, real.',
     'Her body finds yours and stays; fullness presses through fabric.',
+    'You feel the depth of her — give of flesh, heat beneath, weight that stays.',
+    'Thighs spill across yours; belly rests heavy and patient against you.',
+  ] },
+  { when: { stageMin: 9 }, weight: 3, text: [
+    'Vast warmth arrives in layers — belly, thigh, the slow tide of her breathing.',
+    'Immobility has not reduced how much of her there is to feel. If anything, more.',
   ] },
   { when: { fullnessMin: 0.85, mood: ['content', 'warm'] }, weight: 3, text: [
     'She is full and warm against you — {word.breathQuality}, utterly at ease.',
@@ -57,6 +64,8 @@ registerPool('intimacy.bodyFeel', [
   { when: {}, text: [
     'Soft heat where she touches you — skin, fabric, appetite.',
     'Her body is generous against yours; you feel wanted.',
+    'Warmth pools where she presses close — belly, thigh, the give of soft flesh.',
+    'She is heavier than memory and softer than apology.',
   ] },
 ]);
 
