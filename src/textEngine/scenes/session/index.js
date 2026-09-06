@@ -3,6 +3,7 @@
 import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import './fullness.js';
+import './fullnessDepth.js';
 import './aftermath.js';
 import './selectors.js';
 
