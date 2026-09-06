@@ -94,10 +94,18 @@ registerPool('eat.midMeal', [
   { when: { hungerTierMin: 2 }, text: [
     'Halfway through, the pace does not slow — if anything it steadies into purpose.',
     'The middle of the meal finds her committed, fork moving with quiet efficiency.',
+    'She eats through the middle stretch like someone who stopped pretending restraint.',
+    'The plate thins; her appetite does not.',
+  ] },
+  { when: { corruption: [0], stageMin: 2, stageMax: 4 }, text: [
+    'Mid-meal guilt flickers and loses. The fork keeps moving.',
+    'She slows once, hand on her middle, then takes another bite without commentary.',
   ] },
   { when: { corruption: [2], fullnessMin: 0.5 }, text: [
     'She pauses only to breathe around fullness, then continues — appetite undiminished.',
     'The middle stretch is where appetite stops asking permission.',
+    'Fullness arrives; she welcomes it and keeps eating.',
+    'Her belly swells visibly mid-meal; she shifts and continues without apology.',
   ] },
   { when: { mealContext: 'binge' }, weight: 2, text: [
     'Course gives way to course; she does not pretend this is a single serving anymore.',
@@ -170,6 +178,8 @@ registerPool('eat.bodyResponse', [
     'her middle softening visibly with each course',
     'waistband working harder as the meal progresses',
     'a gentle rounding becoming harder to ignore',
+    'her shirt skimming a belly that grows warmer with every bite',
+    'thighs spreading wider in the chair as fullness accumulates',
   ] },
   { when: { stageMin: 6, stageMax: 8 }, text: [
     'her belly rising and settling with each swallowed bite',
@@ -245,11 +255,15 @@ registerPool('eat.aftermath', [
     'Fullness settles; the meal becomes memory.',
     'A quiet aftermath — appetite answered, body warm.',
     'She exhales; the meal loosens its grip and warmth spreads low.',
+    'Her hand drifts to her middle without thinking — a new habit, soft and automatic.',
+    'Fullness pools low and warm; she shifts once and lets it stay.',
   ] },
   { when: { fullnessMin: 0.7 }, text: [
     'She sits back heavily, hand finding her middle without being told.',
     'Fullness has become the room\'s second occupant.',
     'She breathes around fullness and looks pleased despite herself.',
+    'Her belly presses forward, drum-tight and warm; she pats it once, absently.',
+    'She loosens something at her waist and sighs like a woman who ate well.',
   ] },
   { when: { corruption: [2], fullnessMin: 0.6 }, text: [
     'She pats her middle once, affectionately. The meal was a success.',
