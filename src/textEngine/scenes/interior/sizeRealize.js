@@ -2,7 +2,12 @@
 import { registerPool } from '../../engine.js';
 
 registerPool('interior.sizeRealize', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'A chair complains. She hears it and feels the fact land.',
+    'She takes up more room than she used to.',
+    'The mirror holds a size she is still meeting.',
+  ] },
   { when: { stageMin: 4, corruption: [0] }, text: [
     'A chair complains. She hears it and feels her cheeks heat.',
     'The desk arm leaves a mark. Evidence she did not ask for.',

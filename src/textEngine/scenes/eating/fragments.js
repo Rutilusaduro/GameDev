@@ -104,7 +104,22 @@ registerPool('eat.firstBite', [
 
 // ── eat.midMeal — FULL SENTENCE (optional) ────────────────────
 registerPool('eat.midMeal', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'The middle of the meal finds a steady rhythm.',
+    'Warmth spreads low while she eats; she shifts and continues.',
+    'Halfway through, appetite stops performing small.',
+  ] },
+  { when: { stageMin: 0, stageMax: 2 }, text: [
+    'The meal settles into an easy middle — fork moving, conversation optional.',
+    'She eats through the center of the plate without commentary.',
+    'Mid-meal fullness is still a novelty; she notices it and keeps going.',
+  ] },
+  { when: { stageMin: 5, stageMax: 8 }, text: [
+    'Her belly meets the table edge mid-meal; she adjusts and does not slow down.',
+    'The middle stretch is where appetite stops asking permission.',
+    'Fullness arrives early; the fork keeps moving anyway.',
+  ] },
   { when: { hungerTierMin: 2 }, text: [
     'Halfway through, the pace does not slow — if anything it steadies into purpose.',
     'The middle of the meal finds her committed, fork moving with quiet efficiency.',
@@ -140,7 +155,12 @@ registerPool('eat.bitePace', [
 
 // ── eat.pacing — FULL SENTENCE fragment (optional) ──────────────
 registerPool('eat.pacing', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'She eats {eat.bitePace} — the plate thinning steadily.',
+    'The meal proceeds without hurry and without apology.',
+    'Conversation loses to the fork halfway through.',
+  ] },
   { when: { hungerTierMin: 3 }, weight: 2, text: [
     'She eats {eat.bitePace} — the plate emptying faster than conversation could keep up.',
     'The fork keeps moving; conversation loses priority.',
@@ -180,7 +200,17 @@ registerPool('eat.portionObs', [
 
 // ── eat.hungerClause — FULL SENTENCE (optional lead) ───────────
 registerPool('eat.hungerClause', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'Appetite arrived before she sat down.',
+    'She was hungrier than she meant to admit.',
+    'The meal is overdue; her stomach made that clear.',
+  ] },
+  { when: { stageMin: 0, stageMax: 2 }, text: [
+    'Campus hunger is ordinary until the tray arrives — then it sharpens.',
+    'She did not think she was that hungry until food was in reach.',
+    'A normal appetite, she tells herself. The fork disagrees.',
+  ] },
   { when: { hungerTierMin: 2 }, text: [
     'She was hungry before she sat down — the meal is overdue.',
     'Appetite arrived ahead of her; the food is catching up.',
@@ -205,7 +235,17 @@ registerPool('eat.hungerClause', [
 
 // ── eat.bodyResponse — PARTICIPLE CLAUSE ────────────────────────
 registerPool('eat.bodyResponse', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'warmth gathering low with each bite',
+    'her middle softening under the shirt',
+    'fullness announcing itself between courses',
+  ] },
+  { when: { stageMin: 0, stageMax: 2 }, text: [
+    'a faint warmth low on her torso after the first few bites',
+    'waistband sitting a little tighter by mid-meal',
+    'subtle rounding that only she notices — for now',
+  ] },
   { when: { stageMin: 3, stageMax: 5 }, text: [
     'her middle softening visibly with each course',
     'waistband working harder as the meal progresses',
@@ -242,7 +282,17 @@ registerPool('eat.bodyResponse', [
 
 // ── eat.soundTex — PARTICIPLE CLAUSE ────────────────────────────
 registerPool('eat.soundTex', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'fork and plate keeping quiet company',
+    'the small sounds of steady eating',
+    'utensils moving with unhurried purpose',
+  ] },
+  { when: { stageMin: 0, stageMax: 4 }, text: [
+    'silverware on ceramic, unhurried',
+    'the soft scrape of a fork finding more',
+    'chewing sounds she does not bother to hide',
+  ] },
   { when: { hungerTierMin: 2 }, text: [
     'fork moving faster than conversation',
     'the small sounds of urgent eating',

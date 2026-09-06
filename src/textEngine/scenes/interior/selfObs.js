@@ -2,7 +2,12 @@
 import { registerPool } from '../../engine.js';
 
 registerPool('interior.selfObs', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'She catches herself standing differently — weight shifted, hips softer.',
+    'The body is changing faster than the story she tells about it.',
+    'The mirror holds a version of her she is still meeting.',
+  ] },
   // A6 Slender — early interior, corruption 0
   { when: { corruption: [0], stageMax: 2 }, text: [
     'The body is still mostly the old story. The margins are changing.',

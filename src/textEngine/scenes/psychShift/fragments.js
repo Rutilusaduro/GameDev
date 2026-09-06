@@ -59,7 +59,12 @@ registerPool('shift.physical', [
 ]);
 
 registerPool('shift.denial', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    '"It\'s fine," she says — meaning temporary. She hopes.',
+    'She almost names the old excuse. Stress. Water weight. Monday.',
+    'Denial arrives on schedule. It is thinner than last month.',
+  ] },
   { when: { corruption: [0], stageMax: 4 }, text: [
     '"It\'s fine," she says — meaning temporary. She hopes.',
     'She almost names the old excuse. Water weight. Stress. Monday.',

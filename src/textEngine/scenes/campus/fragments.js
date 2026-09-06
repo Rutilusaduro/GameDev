@@ -95,7 +95,17 @@ registerPool('campus.destination', [
 ]);
 
 registerPool('campus.obstacle', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    ', navigating the usual foot traffic',
+    ', a backpack brushing her hip in the crowd',
+    ', the corridor narrowing around passing bodies',
+  ] },
+  { when: { stageMin: 0, stageMax: 4 }, text: [
+    ', weaving between students who have not learned her width yet',
+    ', a door held open a beat too long',
+    ', the crowd parting without comment',
+  ] },
   { when: { campusLocale: 'hallway', stageMin: 5 }, text: [
     ' — two-way traffic parts around her',
     ', displacing foot traffic without malice',
@@ -134,7 +144,17 @@ registerPool('campus.obstacle', [
 ]);
 
 registerPool('campus.spaceObs', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'The campus is the same size. She is learning what that means.',
+    'Space feels a little tighter than last semester — or she does.',
+    'Brick paths and bell towers unchanged; her body is not.',
+  ] },
+  { when: { stageMin: 0, stageMax: 2 }, text: [
+    'Still mostly invisible in the crowd — change subtle, private.',
+    'The quad is wide open. So is the dining hall. Appetite notices.',
+    'Nothing dramatic in the architecture yet. She fits. Mostly.',
+  ] },
   { when: { stageMin: 3, stageMax: 5 }, text: [
     'She takes up a little more hallway than she used to. No one comments. She notices.',
     'The campus is the same size. She is not. The difference is subtle and real.',
@@ -222,7 +242,17 @@ registerPool('campus.seenBeat', [
 ]);
 
 registerPool('campus.soundTex', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'footfalls mixing with campus chatter',
+    'the hallway carrying voices and footsteps',
+    'a door swinging shut behind her',
+  ] },
+  { when: { stageMin: 0, stageMax: 4 }, text: [
+    'sneakers on tile, unhurried',
+    'laughter from an open dorm door',
+    'the bell tower marking another hour',
+  ] },
   { when: { stageMin: 5 }, text: ['footfalls heavier than they used to be', 'the hallway registering her passage', 'a doorframe brushed wider than last month'] },
   { when: { stageMin: 7 }, text: [
     'the floor registering her decision to move',

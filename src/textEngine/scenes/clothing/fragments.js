@@ -124,7 +124,12 @@ registerPool('cloth.failBeat', [
 ]);
 
 registerPool('cloth.failSound', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'a small sound of fabric giving up',
+    'thread popping like a quiet confession',
+    'elastic sighing its surrender',
+  ] },
   { when: { clothingState: 'button_pop' }, text: ['a soft tok against the floor', 'the button rolling to a stop', 'thread snapping like a small sigh'] },
   { when: { clothingState: 'seam_split' }, text: ['a quiet rip along the seam', 'thread popping in sequence', 'fabric parting with a soft surrender'] },
   { when: { clothingState: 'zipper_fail' }, text: ['the zipper catching, then refusing', 'metal teeth giving up halfway', 'a stuck pull-tab and then silence'] },
@@ -167,7 +172,17 @@ registerPool('cloth.reaction', [
 ]);
 
 registerPool('cloth.aftermath', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'The outfit lost. She carries the fact quietly.',
+    'Fabric failure noted, then filed under tomorrow.',
+    'She smooths what she can and lets the rest show.',
+  ] },
+  { when: { stageMin: 0, stageMax: 3 }, text: [
+    'The gap follows her like a blush she cannot shake.',
+    'She tugs once more, then stops fighting the fabric.',
+    'Shopping waits. Embarrassment is warm and immediate.',
+  ] },
   { when: { corruption: [0] }, text: [
     'She spends the rest of the day aware of the gap.',
     'The failure follows her like a blush she cannot shake.',

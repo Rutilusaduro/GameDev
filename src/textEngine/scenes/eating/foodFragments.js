@@ -11,7 +11,12 @@ registerPool('eat.foodDesc', [
 ]);
 
 registerPool('eat.aroma', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'warm food smell curling off the plate',
+    'grease and salt thick in the air',
+    'something rich enough to sharpen appetite',
+  ] },
   { when: { studentId: 10 }, weight: 3, text: ['butter and garlic threading the air', 'something rich enough to make the room smaller', 'warm fat and herbs announcing the meal'] },
   { when: { mealContext: 'binge' }, text: ['heat and salt and the promise of more', 'grease and sugar thick in the air', 'the smell of abundance before the first bite'] },
 ]);

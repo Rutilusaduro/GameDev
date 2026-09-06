@@ -2,7 +2,12 @@
 import { registerPool } from '../../engine.js';
 
 registerPool('interior.gainPride', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'The gain is visible. She is learning not to hide it.',
+    'More of her every week — softness accumulating like evidence.',
+    'She catches her reflection and does not look away fast.',
+  ] },
   { when: { corruption: [1, 2], stageMin: 4 }, text: [
     'The gain is visible. She is not hiding it anymore.',
     'More of her every week — she has stopped treating that as emergency.',
