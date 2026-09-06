@@ -847,11 +847,12 @@ export default function ProfessorSim(){
     ||(st.id===LILITH_ID&&lilithUnlocked)
     ||(st.id===ELARA_ID&&elaraDiscovered);
 
-  /** Hidden students stay frozen until discovered; Lilith always passively gains. */
-  const studentReceivesPassiveGain=(st)=>
-    !st.hidden
-    ||st.id===LILITH_ID
-    ||(st.id===ELARA_ID&&elaraDiscovered);
+  /** Hidden students stay frozen until discovered; Lilith only after unlock. */
+  const studentReceivesPassiveGain=(st)=>{
+    if(st.id===LILITH_ID) return lilithUnlocked;
+    if(st.hidden) return st.id===ELARA_ID&&elaraDiscovered;
+    return true;
+  };
 
   const getCampusExplorationCtx=()=>buildExplorationContext({
     students, pharmacistState, week, lilithUnlocked,
@@ -1441,7 +1442,7 @@ export default function ProfessorSim(){
       }
       if(s.oppositionBlockedGain) return {...s,oppositionBlockedGain:false};
       if(!studentReceivesPassiveGain(s)) return s;
-      if(s.id===LILITH_ID) return processStudentGain(s,LILITH_PASSIVE_GAIN,0); // Lilith only gains passively
+      if(s.id===LILITH_ID&&lilithUnlocked) return processStudentGain(s,LILITH_PASSIVE_GAIN,0);
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       let gain=rnd(1,3)+skillPassiveBonus+(classSkillFx.passiveBonus||0);
       const asceticMult=campusState?.asceticProtestWeek?0.88:1;
@@ -2942,7 +2943,11 @@ export default function ProfessorSim(){
         moms:{...WL_CONFIG.momStart},
         session:null,
       };
-      return{...base,mjStudentId:s.id,session:{lessonChosen:false,lessonId:null,mjGainAccum:0,relAccum:0,conversationState:null,log:[]}};
+      return _wlCheckStageAdvance({
+        ...base,
+        mjStudentId: s.id,
+        session: { lessonChosen: false, lessonId: null, mjGainAccum: 0, relAccum: 0, conversationState: null, log: [] },
+      });
     });
   };
 
@@ -2982,7 +2987,7 @@ export default function ProfessorSim(){
       const isCapped=isDaughter&&prev.daughters[personKey]>=WL_CONFIG.stageCaps[stage];
       const overtook=personKey==='Emma'||personKey==='Darlene'?prev.daughters.Chloe>prev.daughters.Emma:false;
       const greetingText=isCapped&&entry.cappedGreeting?entry.cappedGreeting:(overtook&&entry.overtookGreeting?entry.overtookGreeting:entry.greeting);
-      return{...prev,session:{...prev.session,conversationState:{person:personKey,stageEntry:entry,optionIdx:null,subIdx:null,done:false,resultText:greetingText,atGreeting:true}}};
+      return{...prev,session:{...prev.session,conversationState:{person:personKey,stageEntry:entry,optionIdx:null,subIdx:null,done:false,atGreeting:true,history:[greetingText]}}};
     });
   };
 
@@ -2991,13 +2996,13 @@ export default function ProfessorSim(){
       if(!prev?.session?.conversationState) return prev;
       const cs=prev.session.conversationState;
       if(cs.atGreeting){
-        return{...prev,session:{...prev.session,conversationState:{...cs,atGreeting:false,optionIdx:null,resultText:null}}};
+        return{...prev,session:{...prev.session,conversationState:{...cs,atGreeting:false,optionIdx:null,history:cs.history||[]}}};
       }
       const entry=cs.stageEntry;
       const opt=entry.options[optionIdx];
       if(!opt) return prev;
       if(opt.subs&&opt.subs.length>0){
-        return{...prev,session:{...prev.session,conversationState:{...cs,optionIdx,subIdx:null,resultText:opt.text}}};
+        return{...prev,session:{...prev.session,conversationState:{...cs,optionIdx,subIdx:null,history:[...(cs.history||[]),opt.text]}}};
       }
       return prev;
     });
@@ -3027,7 +3032,7 @@ export default function ProfessorSim(){
       let next={...prev,daughters:newDaughters,moms:newMoms,
         session:{...prev.session,mjGainAccum:prev.session.mjGainAccum+mjGain,relAccum:prev.session.relAccum+relGain,
           log:[...prev.session.log,logLine],
-          conversationState:{...cs,subIdx,done:true,resultText:sub.text}}};
+          conversationState:{...cs,subIdx,done:true,history:[...(cs.history||[]),sub.text]}}};
       next=_wlCheckStageAdvance(next);
       return next;
     });
@@ -8258,7 +8263,7 @@ export default function ProfessorSim(){
         <div style={C.main}>
 
           {/* ── CLASS VIEW ── */}
-          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail}/>}
+          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} spiritLevel={spiritLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail}/>}
 
           {/* ── THE SETTLING (list) ── */}
           {view==="settling"&&<SettlingListView students={students} week={week} setSelectedId={setSelectedId} setView={setView}/>}

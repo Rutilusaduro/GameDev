@@ -5,6 +5,15 @@ import { C } from '../styles.js';
 import { WL_CONFIG, WL_LESSONS } from '../gameData/evolvedForms.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
 
+/** Weight daughters must reach to advance — bumps to next stage's bar once current is met. */
+function wlNextThresholdCap(stage, daughters) {
+  if (stage >= 8) return Infinity;
+  const exitCap = WL_CONFIG.stageCaps[stage];
+  const allReady = Object.values(daughters).every((w) => w >= exitCap);
+  if (allReady && stage < 8) return WL_CONFIG.stageCaps[stage + 1];
+  return exitCap;
+}
+
 export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversationChoice, makeWifeLessonsSubChoice, dismissWifeLessonsConversation, chooseWifeLessonsLesson, startWifeLessonsConversation, closeWifeLessonsSession }){
         const{stage,daughters,moms,session}=wifeLessonsState;
         const{lessonChosen,lessonId,mjGainAccum,relAccum,conversationState,log}=session;
@@ -14,16 +23,18 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
         const WINE_TEXT="#e8c8d8";
         const WINE_SUBTLE="#b890a8";
         const WINE_ACCENT="#c03070";
-        const cap=WL_CONFIG.stageCaps[stage];
+        const cap=wlNextThresholdCap(stage, daughters);
+        const exitCap=WL_CONFIG.stageCaps[stage];
         const isDaughterStage=stage>=WL_CONFIG.daughtersFrom;
         const lessons=WL_LESSONS[stage]||[];
         const chosenLesson=lessonId?lessons.find(l=>l.id===lessonId):null;
 
         // ── Conversation panel ──
         if(conversationState){
-          const{person,stageEntry,optionIdx,atGreeting,done,resultText}=conversationState;
+          const{person,stageEntry,optionIdx,atGreeting,done,history}=conversationState;
           const isDaughter=['Emma','Chloe','Kezia','Lila'].includes(person);
           const personWeight=isDaughter?daughters[person]:moms[person];
+          const transcript=history?.length?history:[];
           return(
             <div style={{...C.overlay,zIndex:360}}>
               <div style={{...C.modal,maxWidth:560,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"88vh",overflowY:"auto"}}>
@@ -31,13 +42,18 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                   <div style={{fontSize:9,letterSpacing:4,color:WINE_ACCENT}}>💬 {person.toUpperCase()}</div>
                   <div style={{marginLeft:"auto",fontSize:9,color:WINE_DIM}}>{Math.round(personWeight)} lbs · Stage {stage}</div>
                 </div>
-                {resultText&&(
-                  <FlaggedProse
-                    section={`wifeLessons.talk.${person}`}
-                    text={resultText}
-                    stateLine={`${person} · Stage ${stage} · ${Math.round(personWeight)} lbs`}
-                    style={{fontSize:12,color:WINE_TEXT,lineHeight:1.75,marginBottom:14,padding:"10px 12px",background:"rgba(139,34,82,0.08)",border:`1px solid ${WINE_DIM}40`,borderRadius:5}}
-                  />
+                {transcript.length>0&&(
+                  <div style={{marginBottom:14,display:"flex",flexDirection:"column",gap:10}}>
+                    {transcript.map((line,i)=>(
+                      <FlaggedProse
+                        key={i}
+                        section={`wifeLessons.talk.${person}`}
+                        text={line}
+                        stateLine={`${person} · Stage ${stage}`}
+                        style={{fontSize:12,color:WINE_TEXT,lineHeight:1.75,padding:"10px 12px",background:"rgba(139,34,82,0.08)",border:`1px solid ${WINE_DIM}40`,borderRadius:5}}
+                      />
+                    ))}
+                  </div>
                 )}
                 {atGreeting&&!done&&(
                   <button style={{...C.btn(WINE_ACCENT),width:"100%"}} onClick={()=>makeWifeLessonsConversationChoice(0)}>Continue →</button>
@@ -82,7 +98,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                 <div style={{fontSize:9,letterSpacing:4,color:WINE_ACCENT}}>🍷 WIFE LESSONS</div>
                 <div style={{marginLeft:"auto",display:"flex",gap:10,alignItems:"center"}}>
                   <div style={{fontSize:9,color:WINE_DIM}}>STAGE {stage}</div>
-                  <div style={{fontSize:9,color:WINE_SUBTLE}}>Next cap: {cap===Infinity?"—":cap+" lbs"}</div>
+                  <div style={{fontSize:9,color:WINE_SUBTLE}}>Next threshold: {cap===Infinity?"—":`${cap} lbs`}</div>
                 </div>
               </div>
 
@@ -125,7 +141,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                   <div style={{fontSize:9,letterSpacing:3,color:WINE_DIM,marginBottom:8}}>DAUGHTERS</div>
                   <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8}}>
                     {Object.entries(daughters).map(([name,wt])=>{
-                      const isCapped=wt>=cap;
+                      const isCapped=wt>=exitCap;
                       const isLeader=name==='Chloe'&&stage>=WL_CONFIG.chloeRivalFrom&&wt>daughters.Emma;
                       return(
                         <div key={name} style={{background:"#130610",border:`1px solid ${isCapped?WINE_ACCENT:WINE_DIM}40`,borderRadius:5,padding:"8px 10px"}}>
@@ -150,7 +166,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                 <div style={{fontSize:9,letterSpacing:3,color:WINE_DIM,marginBottom:8}}>MOMS</div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>
                   {Object.entries(moms).map(([name,wt])=>{
-                    const isCapped=wt>=cap;
+                    const isCapped=wt>=exitCap;
                     return(
                       <div key={name} style={{background:"#130610",border:`1px solid ${isCapped?WINE_ACCENT:WINE_DIM}40`,borderRadius:5,padding:"8px 10px"}}>
                         <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>

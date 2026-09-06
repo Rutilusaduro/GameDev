@@ -1,10 +1,17 @@
 // ═══════════════════════════════════════════════════════════════
 // DOSSIER MOMENT — replay a pinned threshold beat
 // ═══════════════════════════════════════════════════════════════
+import { useMemo } from 'react';
 import { C } from '../styles.js';
 import { WEIGHT_STAGES } from '../gameData/stages.js';
+import { resolvePinExcerpt } from '../gameData/dossierReplay.js';
 
-export function DossierMomentModal({ pin, student, onClose }) {
+export function DossierMomentModal({ pin, student, week = 1, onClose }) {
+  const prose = useMemo(
+    () => (pin && student ? resolvePinExcerpt(student, pin, week) : ''),
+    [pin, student, week],
+  );
+
   if (!pin) return null;
   const stageRef = pin.kind === 'stageUp' ? WEIGHT_STAGES[Number(pin.ref)] : null;
 
@@ -20,13 +27,13 @@ export function DossierMomentModal({ pin, student, onClose }) {
           {student?.name} · week {pin.week}
           {stageRef && <span> · {stageRef.label}</span>}
         </div>
-        {pin.excerpt ? (
+        {prose ? (
           <div style={{ fontSize: 13, color: '#e0e8d8', lineHeight: 1.8, whiteSpace: 'pre-line', marginBottom: 12 }}>
-            {pin.excerpt}
+            {prose}
           </div>
         ) : (
           <div style={{ fontSize: 12, color: '#90a890', fontStyle: 'italic', lineHeight: 1.7, marginBottom: 12 }}>
-            The beat is logged. Full replay prose unlocks when the engine caches ceremony text at the crossing.
+            This beat was logged, but no replay text is available for it yet.
           </div>
         )}
         <button type="button" style={{ ...C.btn('#307050'), width: '100%' }} onClick={onClose}>

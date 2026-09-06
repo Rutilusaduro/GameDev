@@ -210,7 +210,9 @@ export function DossierPanel({ student, week, diaryOpts, onClose }) {
           <div style={{ fontSize: 11, color: '#607060' }}>Thresholds and beats pin here as they happen.</div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {dossier.pinnedMoments.map((pin) => (
+            {dossier.pinnedMoments.map((pin) => {
+              const preview = pin.excerpt || resolvePinExcerpt(student, pin, week);
+              return (
               <button
                 key={pin.id}
                 type="button"
@@ -223,13 +225,13 @@ export function DossierPanel({ student, week, diaryOpts, onClose }) {
                 }}
               >
                 <div style={{ fontSize: 12, fontWeight: 600, color: '#c0d8c0' }}>{pin.label}</div>
-                {pin.excerpt && (
+                {preview && (
                   <div style={{ fontSize: 11, color: '#90a890', marginTop: 4, fontStyle: 'italic', lineHeight: 1.5 }}>
-                    {pin.excerpt.slice(0, 120)}{pin.excerpt.length > 120 ? '…' : ''}
+                    {preview.slice(0, 120)}{preview.length > 120 ? '…' : ''}
                   </div>
                 )}
               </button>
-            ))}
+            );})}
           </div>
         )}
       </div>
@@ -257,7 +259,7 @@ export function DossierPanel({ student, week, diaryOpts, onClose }) {
       </div>
 
       {activePin && (
-        <DossierMomentModal pin={activePin} student={student} onClose={() => setActivePin(null)} />
+        <DossierMomentModal pin={activePin} student={student} week={week} onClose={() => setActivePin(null)} />
       )}
     </div>
   );
