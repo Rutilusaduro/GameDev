@@ -105,6 +105,7 @@ import './squadStageCoverage.js';
 import './squadKeyedDepth.js';
 import './researchJournal/index.js';
 import './researchJournal/depth.js';
+import './researchJournal/nadiaDepth.js';
 import './scrutiny/index.js';
 import './wifeLessons/index.js';
 import './customStudent/index.js';
