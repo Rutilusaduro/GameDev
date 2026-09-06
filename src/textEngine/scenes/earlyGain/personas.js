@@ -491,74 +491,92 @@ registerModuleVariants('slender.eatPause', [
   { when: { studentId: 0, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Brittany eats like fueling — portioned, committed, already thinking about the next plate.',
     'Second helping arrives before the first plate is moral history.',
+    'Macros forgotten by bite three. She keeps going.',
   ]},
   { when: { studentId: 1, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Madeline annotates the meal in her head between bites. The plate empties anyway.',
     'She pauses to record a note. The pause does not slow consumption.',
+    'The dataset updates live. So does her appetite.',
   ]},
   { when: { studentId: 2, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Kylie eats on camera and off — the off-camera bites are more honest.',
     'She stops filming and starts eating for real. Appetite uncut.',
+    'Off-camera hunger wins. Always does.',
   ]},
   { when: { studentId: 3, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Serena eats with athlete discipline redirected toward appetite.',
     'Training table rules dissolve halfway through. She keeps going.',
+    'Fuel cycle uninterrupted. No cooldown.',
   ]},
   { when: { studentId: 4, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Fiona savors each bite the way she savors color — slowly, reverently.',
     'Reverence gives way to hunger. The plate does not mind.',
+    'Hunger becomes color she cannot capture fast enough.',
   ]},
   { when: { studentId: 5, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Destiny eats one-handed, eyes on the screen until hunger wins.',
     'The plate empties before she looks away from the monitor.',
+    'Stream minimized. Plate maximized.',
   ]},
   { when: { studentId: 6, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Tiffany treats the table like chapter business — bubbly, social, second helpings included.',
     'She talks through bites. The talking does not reduce intake.',
+    'Chapter gossip continues. Intake continues louder.',
   ]},
   { when: { studentId: 7, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Priya eats while reviewing notes. Multitasking includes calories now.',
     'The highlighter caps. The fork does not.',
+    'Planner minimized. Fork maximized.',
   ]},
   { when: { studentId: 8, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Maya eats without commentary. The fork does not hesitate.',
     'Quiet appetite — thorough, unannounced, complete.',
+    'Silence at the table. Appetite loud.',
   ]},
   { when: { studentId: 9, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Chloé tastes American abundance with amused precision — unhurried, scandalized, continuing.',
     'She declares the portions obscene and finishes them anyway.',
+    'Scandal on the plate. She finishes anyway.',
   ]},
   { when: { studentId: 10, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Reneé eats like a chef grading her own work — eyes closed on the first bite, approving on the third.',
     'She samples, then commits. Commitment is generous.',
+    'Chef becomes diner. Diner becomes satisfied.',
   ]},
   { when: { studentId: 11, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Kaylee calls it aggressive self-care and eats with clinical calm.',
     'She recommends seconds to herself. Patient complies.',
+    'Self-care includes seconds. Prescribed.',
   ]},
   { when: { studentId: 12, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Nadia eats while observing everyone else eat. Field notes optional. Appetite mandatory.',
     'She watches you watch her chew. The observation does not slow her fork.',
+    'Observation continues. Fork does not wait.',
   ]},
   { when: { studentId: 13, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Daisy eats like feeding is kindness — warm, unhurried, generous with seconds.',
     'She hums between bites. The hum means satisfied.',
+    'Warm seconds without asking permission.',
   ]},
   { when: { studentId: 14, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Mary Jane eats with country abundance — nothing skimped, nothing rushed.',
     'She asks if you want more before her own plate is clean.',
+    'Farm portions for one. She accepts.',
   ]},
   { when: { studentId: 15, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Lilith eats without explaining her appetite. Portions are not discussed.',
     'Her gaze stays on you. The fork moves anyway.',
+    'Hunger unspoken. Fork eloquent.',
   ]},
   { when: { studentId: 16, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Sophia eats with anxious precision — measured bites, rising fullness noted and filed.',
     'Anxiety thins. Appetite does not.',
+    'Trial subject eats. Data: pleasing.',
   ]},
   { when: { studentId: 17, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Indiana eats like trail rations at a dig site — practical, satisfied, ready for more.',
     'She pockets a roll for later and eats two now.',
+    'Provisions secured. More provisions incoming.',
   ]},
   { when: { studentId: 18, custom: false, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Talia eats while calculating caloric efficiency. The calculation keeps losing to appetite.',

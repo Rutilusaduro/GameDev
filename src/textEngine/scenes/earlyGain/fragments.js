@@ -45,6 +45,7 @@ registerPool('slender.bodyNotice', [
   { when: { isGaining: true, stageMax: 3 }, weight: 2, text: [
     'this week\'s softness more legible than last week\'s',
     'the change small enough to deny, present enough to feel',
+    'gain settling into hip and waist before she names it aloud',
   ] },
 ]);
 
@@ -182,6 +183,7 @@ registerPool('slender.neutral', [
   { when: { gainStance: 'neutral', stageMax: 2 }, text: [
     `"Still me," she says, lightly.`,
     `"Could be worse."`,
+    `"Cool. Next."`,
   ] },
 ]);
 
@@ -199,10 +201,12 @@ registerPool('slender.secret', [
   { when: { gainStance: 'secret', hungerTierMin: 2 }, weight: 2, text: [
     'Hunger has been louder than shame all week. She stopped pretending otherwise somewhere around Wednesday.',
     'She checks whether you have snacks before she checks whether you noticed the gain.',
+    'Appetite arrives before denial can finish its sentence.',
   ] },
   { when: { gainStance: 'secret', isGaining: true }, text: [
     'She files the gain under things she will not discuss out loud — and under things she will remember.',
     'The upward tick satisfies something she will not name. Her face stays carefully neutral.',
+    'She smooths fabric over new softness and does not apologize to the mirror.',
   ] },
 ]);
 
@@ -217,6 +221,7 @@ registerPool('slender.mirror', [
   { when: { gainStance: 'opposed', stageMin: 2, stageMax: 4 }, weight: 2, text: [
     'She avoids the mirror on the way out. She saw enough.',
     'The reflection does not match the story she is telling. She chooses the story. For now.',
+    'She fixes her collar and does not look down.',
   ] },
   { when: { gainStance: 'secret', stageMin: 2, stageMax: 4 }, weight: 2, text: [
     'She lingers at the mirror when she thinks no one is watching.',
@@ -248,6 +253,7 @@ registerPool('slender.eatPause', [
   { when: { gainStance: 'neutral', stageMax: 3 }, text: [
     'She eats without commentary. The food is food.',
     'Hunger is hunger. She answers it and moves on.',
+    'The plate empties at its own pace. She does not apologize.',
   ] },
   { when: { gainStance: 'secret', stageMax: 3 }, weight: 2, text: [
     'She eats with quiet focus — not rushing, not stopping.',

@@ -73,10 +73,12 @@ registerPool('campus.moveSentence', [
   { when: { stageMin: 8 }, weight: 2, text: [
     '{subject.name} {word.moveVerb.hallway} — the environment not designed for her, accommodating anyway.',
     '{subject.name} {word.moveVerb.door}{join:wi.mobilityClause,wi.soundClause|prefix:, }.',
+    '{subject.name} {word.adv.pace|suffix: }{word.moveVerb.campus} {campus.destination}{word.adv.sizeQual|prefix: }.',
   ] },
   { when: { stageMin: 10 }, weight: 3, text: [
     '{subject.name} {word.moveVerb} by degrees{wi.mobilityClause|prefix:, }.',
     '{subject.name} {word.adv.pace|suffix: }{word.moveVerb.bed|prefix: }.',
+    '{subject.name} {word.moveVerb.dorm_room} — mass rearranging the room around her.',
   ] },
 ]);
 
@@ -86,8 +88,8 @@ registerPool('campus.destination', [
   { when: { campusLocale: 'lecture_hall' }, text: ['into the aisle', 'toward her seat', 'down the steps'] },
   { when: { campusLocale: 'cafeteria' }, text: ['through the line', 'toward an open table', 'to the booth she prefers'] },
   { when: { campusLocale: 'stairwell' }, text: ['up the stairs', 'to the next landing', 'one step at a time'] },
-  { when: { campusLocale: 'elevator' }, text: ['into the elevator', 'through the closing doors'] },
-  { when: { campusLocale: 'gym' }, text: ['across the gym floor', 'toward the equipment'] },
+  { when: { campusLocale: 'elevator' }, text: ['into the elevator', 'through the closing doors', 'past the capacity placard'] },
+  { when: { campusLocale: 'gym' }, text: ['across the gym floor', 'toward the equipment', 'toward the recovery station'] },
   { when: { campusLocale: 'dorm_room' }, text: ['into her room', 'to the mirror', 'to the bed'] },
   { when: { campusLocale: 'prof_office' }, text: ['into your office', 'through the door', 'to the chair she knows'] },
 ]);
@@ -97,30 +99,37 @@ registerPool('campus.obstacle', [
   { when: { campusLocale: 'hallway', stageMin: 5 }, text: [
     ' — two-way traffic parts around her',
     ', displacing foot traffic without malice',
+    ', shoulders brushing doorframes she used to clear',
   ] },
   { when: { campusLocale: 'lecture_hall', stageMin: 4 }, text: [
     ' — the desk arm leaves a mark when she sits',
     ', negotiating the desk arm with her belly',
+    ', the row behind her learning patience',
   ] },
   { when: { campusLocale: 'stairwell', stageMin: 6 }, text: [
     ' — railing load tested with each landing',
     ', breath audible at the top',
+    ', each step a small negotiation with gravity',
   ] },
   { when: { campusLocale: 'elevator', stageMin: 7 }, text: [
     ' — the elevator protesting softly at capacity',
     ', the door closing before she is fully through',
+    ', the cable sighing under redistributed mass',
   ] },
   { when: { campusLocale: 'cafeteria', stageMin: 5 }, text: [
     ' — tray balanced, chair selected by experience',
     ', booth abandoned for the table with room',
+    ', the wide booth claimed by habit and hip spread',
   ] },
   { when: { campusLocale: 'gym', stageMin: 3 }, text: [
     ' — equipment fit a negotiation',
     ', the machine adjusted past its intended range',
+    ', the bench creaking its familiar greeting',
   ] },
   { when: { stageMin: 8 }, weight: 2, text: [
     ' — architecture insufficient but not hostile',
     ', the building learning her shape',
+    ', doorframes memorizing her clearance',
   ] },
 ]);
 
@@ -140,14 +149,17 @@ registerPool('campus.spaceObs', [
   { when: { campusLocale: 'dorm_room', stageMin: 5 }, text: [
     'The mirror tells the truth she is still getting used to.',
     'The bed creaks its familiar greeting.',
+    'Snacks accumulate on every flat surface. Mass follows.',
   ] },
   { when: { campusLocale: 'lecture_hall', stageMin: 7 }, text: [
     'The desk arm is a memory on her hip when she stands.',
     'She has learned which seats survive her.',
+    'The end row is hers by negotiation, not choice.',
   ] },
   { when: { stageMin: 9 }, text: [
     'Space negotiates with her now — she does not negotiate with it.',
     'The room rearranges its assumptions around her presence.',
+    'Architecture yields. She does not.',
   ] },
 ]);
 
@@ -211,13 +223,15 @@ registerPool('campus.seenBeat', [
 
 registerPool('campus.soundTex', [
   { when: {}, text: ['', '', '', ''] },
-  { when: { stageMin: 5 }, text: ['footfalls heavier than they used to be'] },
+  { when: { stageMin: 5 }, text: ['footfalls heavier than they used to be', 'the hallway registering her passage', 'a doorframe brushed wider than last month'] },
   { when: { stageMin: 7 }, text: [
     'the floor registering her decision to move',
     'furniture bracing in advance',
+    'a chair protesting before she sits',
   ] },
   { when: { stageMin: 9 }, consumes: ['sound_tex'], text: [
     'her presence audible before she is visible',
     'the hallway going quiet around her weight',
+    'footfalls heavier than they used to be',
   ] },
 ]);
