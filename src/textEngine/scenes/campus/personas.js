@@ -79,3 +79,30 @@ registerModuleVariants('campus.obstacle', [
     ', stillness moving ahead of her like a shadow',
   ]},
 ]);
+
+registerModuleVariants('campus.seenBeat', [
+  { when: { studentId: 2, stageMin: 3, stageMax: 6 }, weight: W, text: [
+    'Kylie catches someone filming her profile and angles into it anyway.',
+    'A stranger double-taps her story before she posts it — the curve is the content.',
+  ]},
+  { when: { studentId: 5, stageMin: 3, stageMax: 6 }, weight: W, text: [
+    'Destiny pretends not to notice the stares. Her hoodie rides up. She does not fix it.',
+    'Someone recognizes her off-stream; their eyes drop to her waist and stay there.',
+  ]},
+  { when: { studentId: 6, fitTop: 'straining' }, weight: W, text: [
+    'Pastel strains across Tiffany\'s bust; chapter sisters notice and say nothing polite.',
+    'Her top skims a belly rush week forgot to budget for. She smiles through it.',
+  ]},
+  { when: { studentId: 8, stageMin: 3, stageMax: 5 }, weight: W, text: [
+    'Maya feels the glance and keeps walking — quiet, observed, unbothered on the surface.',
+    'She tucks a sketchbook tighter against a hip that has outgrown last semester\'s jeans.',
+  ]},
+  { when: { studentId: 12, stageMin: 4 }, weight: W, text: [
+    'Nadia watches who stares and files it. The stare is data. The curve is the hypothesis.',
+    'She catches your eye across the quad — amused that anyone is surprised by her softness.',
+  ]},
+  { when: { studentId: 14, campusLocale: 'cafeteria', stageMin: 4 }, weight: W, text: [
+    'Mary Jane\'s laugh draws eyes; her plate draws more. Farm appetite on display.',
+    'She pats her hip after a second helping and grins like harvest season is personal.',
+  ]},
+]);

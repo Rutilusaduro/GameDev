@@ -492,13 +492,19 @@ registerPool("wi.greeting", [
   { when: {}, text: [
     `"Hi," she says, settling in.`,
     "She says hello and waits for you to begin.",
+    `"Hey," she says, dropping into the chair.`,
+    `She offers a small wave. "Ready when you are."`,
   ]},
   { when: { corruption: [0], stageMin: 2, stageMax: 5 }, text: [
     `"Hi," she says, a beat too bright.`,
     `"Ready," she says, a little too quickly.`,
+    `"Morning," she says, smoothing her shirt over her middle.`,
+    `"Hi," she says — cheerful armor over something softer underneath.`,
   ]},
   { when: { corruption: [0], stageMin: 6 }, text: [
     "She says hello quietly. The office feels smaller.",
+    `"Hi," she says, and glances at the chair before she sits.`,
+    `She greets you and takes the wider chair without comment.`,
   ]},
   { when: { corruption: [1] }, text: [
     `"Another week," she says. Flat. Familiar.`,

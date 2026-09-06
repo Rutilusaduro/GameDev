@@ -87,6 +87,13 @@ registerPool('slender.bodyFeel', [
     'The changes are minor enough to live with. She has other things to think about.',
     'She registers the softness the way she registers weather — noted, not dwelled on.',
     'Her body is a little fuller. She shrugs. Life continues.',
+    'Warmth pools low when she sits after lunch. She shifts and forgets it.',
+    'Her thighs brush when she walks now — a small friction she files under ordinary.',
+  ] },
+  { when: { stageMin: 3, stageMax: 4, corruption: [0] }, text: [
+    'Softness has arrived in places that used to be flat — hip, belly, the underside of her arm.',
+    'She feels heavier after she eats, and the heaviness stays longer than it used to.',
+    'Her waistband leaves a faint crease; she smooths her shirt and keeps moving.',
   ] },
 ]);
 
@@ -126,6 +133,12 @@ registerPool('slender.mindFeel', [
   { when: { corruption: [0], isGaining: true }, text: [
     'This week\'s gain lands on top of last week\'s — a stack she is still pretending is temporary.',
     'The trend is visible now if you know her. She knows her.',
+    'The number keeps climbing in the same direction. She has run out of innocent explanations.',
+    'Each week adds a little more give to her reflection. She is running out of denials.',
+  ] },
+  { when: { mood: ['nervous', 'stressed'], corruption: [0], stageMax: 4 }, text: [
+    'Stress and appetite have become allies she did not invite.',
+    'She eats when she is anxious now. The fullness helps. She hates that it helps.',
   ] },
 ]);
 
@@ -207,6 +220,13 @@ registerPool('slender.mirror', [
   { when: { gainStance: 'secret', stageMin: 2, stageMax: 4 }, weight: 2, text: [
     'She lingers at the mirror when she thinks no one is watching.',
     'Her hand rests on her hip. She does not scold herself for it.',
+    'She turns sideways and exhales — watching softness settle with private pleasure.',
+    'The reflection is rounder than last month. She bites her lip and does not look away.',
+  ] },
+  { when: { stageMin: 3, stageMax: 4, corruption: [0] }, text: [
+    'The mirror shows someone softer at the edges. She is still learning that face.',
+    'She checks her profile in a shop window and pretends she was adjusting her bag.',
+    'Her reflection has new curves; she traces one with her eyes and keeps walking.',
   ] },
 ]);
 
@@ -236,5 +256,12 @@ registerPool('slender.eatPause', [
   { when: { hungerTierMin: 2, corruption: [0], stageMax: 4 }, weight: 2, text: [
     'Politeness loses to appetite halfway through the meal.',
     'She eats faster once she stops performing restraint.',
+    'Hunger makes her cheeks flush; she blames the spice and keeps chewing.',
+    'The second helping arrives before the first plate is entirely moral history.',
+  ] },
+  { when: { stageMin: 2, stageMax: 4, corruption: [0] }, text: [
+    'She pauses between bites to feel fullness settle — new, interesting, hard to ignore.',
+    'Her fork slows when her waistband tightens. It does not stop.',
+    'She eats until the plate is clean and her belly is warm and round under her shirt.',
   ] },
 ]);

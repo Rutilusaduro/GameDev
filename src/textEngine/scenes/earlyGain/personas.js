@@ -8,6 +8,41 @@ import './fragments.js';
 const W = 4;
 const EARLY = { corruption: [0], stageMax: 4 };
 
+registerModuleVariants('slender.bodyFeel', [
+  { when: { studentId: 0, ...EARLY }, weight: W, text: [
+    'Brittany still feels fast on her feet — until she sits and the chair argues.',
+    'Competition muscle softening at the edges; she flexes and feels plush where tone used to be.',
+  ]},
+  { when: { studentId: 2, ...EARLY }, weight: W, text: [
+    'Kylie feels the curve when she turns for a thumbnail angle — content, body, same problem.',
+    'Her waistband resists after lunch; she smooths her crop top and keeps filming.',
+  ]},
+  { when: { studentId: 5, ...EARLY }, weight: W, text: [
+    'Destiny feels heavier after off-stream binges — soft, warm, logged in a private folder.',
+    'Her hoodie still fits. The fit is informational: softness pooling at belly and hip.',
+  ]},
+  { when: { studentId: 8, ...EARLY }, weight: W, text: [
+    'Maya feels fullness settle slow — a quiet weight low in her belly she does not name.',
+    'Her thighs brush when she walks to class; the sensation is new and oddly grounding.',
+  ]},
+  { when: { studentId: 10, ...EARLY }, weight: W, text: [
+    'Reneé feels each course in her middle — warmth, swell, the pleasant drag of a full belly.',
+    'Her hand rests on her hip after tasting; the hip is rounder than last month.',
+  ]},
+  { when: { studentId: 12, ...EARLY }, weight: W, text: [
+    'Nadia feels you watching her soften and catalogs the heat in her cheeks.',
+    'Softness gathers at her waist; she presses there once, privately, and says nothing.',
+  ]},
+  { when: { studentId: 14, ...EARLY }, weight: W, text: [
+    'Mary Jane feels abundance in her hips when she walks — farm-girl sway, unhurried, real.',
+    'Fullness after jam tasting sits warm in her belly; she pats it like a satisfied harvest.',
+  ]},
+  { when: { studentId: 15, ...EARLY }, weight: W, text: [
+    'Lilith feels mass settle with unnerving calm — as if her body always meant to thicken.',
+    'Softness at her thigh and belly arrives without alarm. She does not flinch from it.',
+  ]},
+]);
+
 registerModuleVariants('slender.mindFeel', [
   // ── 0 Brittany ───────────────────────────────────────────────
   { when: { studentId: 0, ...EARLY }, weight: W, text: [

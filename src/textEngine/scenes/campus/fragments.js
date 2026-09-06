@@ -9,6 +9,9 @@ registerPool('campus.localeIntro', [
     'Between classes,',
     'The college day offers its usual geography.',
     'Another hour on campus unfolds.',
+    'Sun on brick, voices in the quad — the semester keeps moving.',
+    'Campus air smells like coffee, cut grass, and someone\'s takeout.',
+    'The day moves at lecture speed; bodies move at their own.',
   ] },
   { when: { campusLocale: 'hallway' }, text: [
     'The hallway carries its usual foot traffic.',
@@ -123,9 +126,15 @@ registerPool('campus.obstacle', [
 
 registerPool('campus.spaceObs', [
   { when: {}, text: ['', '', '', ''] },
+  { when: { stageMin: 3, stageMax: 5 }, text: [
+    'She takes up a little more hallway than she used to. No one comments. She notices.',
+    'The campus is the same size. She is not. The difference is subtle and real.',
+  ] },
   { when: { campusLocale: 'hallway', stageMin: 6 }, text: [
     'Students make room — not unkindly, simply factually.',
     'The corridor was not designed for her. She uses it anyway.',
+    'Foot traffic parts around her hips without drama.',
+    'She owns a lane now whether she asked for one or not.',
   ] },
   { when: { campusLocale: 'dorm_room', stageMin: 5 }, text: [
     'The mirror tells the truth she is still getting used to.',
@@ -145,18 +154,37 @@ registerPool('campus.spaceObs', [
 // know it. Keyed on garment fit dims (Phase 6, WORD_GRANULAR_ENGINE_PLAN):
 // what the campus notices is what her clothes are doing.
 registerPool('campus.seenBeat', [
-  { when: {}, text: ['', '', ''] },
+  { when: {}, text: [
+    '',
+    '',
+    '',
+    'Someone looks twice and pretends they did not.',
+    'A passing glance lingers on her silhouette a beat too long.',
+    'She feels the weight of being looked at — not hostile, just present.',
+    'Campus eyes are casual. They still do math.',
+  ] },
+  { when: { stageMin: 2, stageMax: 4 }, text: [
+    'A friend does a double take and covers it with a joke.',
+    'She catches a reflection in a window and keeps walking like she saw nothing.',
+    'Someone whispers behind her; she has learned not to turn around for whispers.',
+  ] },
   { when: { fitTop: 'snug' }, text: [
     "A classmate's glance snags on the closer fit of her top and moves on.",
     'Her top reads as new; it is not new.',
+    'Fabric pulls across her chest when she reaches; a stranger notices.',
+    'The shirt that used to hang loose now outlines what she has been feeding.',
   ] },
   { when: { fitBottom: 'straining' }, text: [
     'Someone behind her watches the strained denim work and forgets what they were saying.',
     'The seams down her thighs catch light and attention in the same pass.',
+    'Her jeans protest with every step; the protest is audible in a quiet hall.',
+    'Denim stretched pale across her hips draws eyes the way neon draws moths.',
   ] },
   { when: { fitTop: 'straining' }, text: [
     'Heads turn for the gap her buttons keep almost losing.',
     'Her top holds on in public, barely, and the public notices.',
+    'A button strains white at the lip; conversations pause and resume.',
+    'Her blouse skims a belly it was not cut for. The campus does the rest.',
   ] },
   { when: { worstFit: 'failing' }, weight: 2, text: [
     'Conversations dip when a seam announces itself; she keeps walking.',
