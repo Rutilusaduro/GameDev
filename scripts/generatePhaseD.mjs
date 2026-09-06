@@ -74,7 +74,7 @@ const forms = {
 const sections = [
   '// The Squad — Lead: A2 Psych | Support: A4 Architect',
   '// Phase D evolved diaries — competitive_gainer, salon, gallery, pharmacist, machine_goddess.',
-  '// Regenerate: node scripts/generatePhaseD.mjs',
+  '// Regenerate: node scripts/generatePhaseD.mjs && node scripts/diarySkeletonDepth.mjs',
   "import { registerPool } from '../engine.js';",
   '',
 ];

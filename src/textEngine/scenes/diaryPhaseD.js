@@ -56,6 +56,7 @@ registerPool('diary.competitive_gainer.s5._sk0', [
   { when: {}, text: [
     "{diary.competitive_gainer.s5._f1} {diary.competitive_gainer.s5._f2}\n\n{diary.competitive_gainer.s5._f3} {diary.competitive_gainer.s5._f4}",
     "{diary.competitive_gainer.s5._f1} {diary.competitive_gainer.s5._f3}\n\n{diary.competitive_gainer.s5._f2} {diary.competitive_gainer.s5._f4}",
+    "{diary.competitive_gainer.s5._f3} {diary.competitive_gainer.s5._f4}\n\n{diary.competitive_gainer.s5._f1} {diary.competitive_gainer.s5._f2}",
   ]},
 ]);
 
@@ -63,6 +64,7 @@ registerPool('diary.competitive_gainer.s5._sk1', [
   { when: {}, text: [
     "{diary.competitive_gainer.s5._f5} {diary.competitive_gainer.s5._f6}",
     "{diary.competitive_gainer.s5._f6} {diary.competitive_gainer.s5._f5}",
+    "{diary.competitive_gainer.s5._f5}\n\n{diary.competitive_gainer.s5._f6}",
   ]},
 ]);
 
@@ -70,6 +72,7 @@ registerPool('diary.competitive_gainer.s5', [
   { when: {}, text: [
     "{diary.competitive_gainer.s5._sk0}\n\n{diary.competitive_gainer.s5._sk1}",
     "{diary.competitive_gainer.s5._sk1}\n\n{diary.competitive_gainer.s5._sk0}",
+    "{diary.competitive_gainer.s5._sk0}\n\n{diary.competitive_gainer.s5._sk1}\n\n{diary.competitive_gainer.s5._sk1}",
   ]},
 ]);
 
@@ -117,6 +120,7 @@ registerPool('diary.competitive_gainer.s6', [
   { when: {}, text: [
     "{diary.competitive_gainer.s6._f7} {diary.competitive_gainer.s6._f8}\n\n{diary.competitive_gainer.s6._f9}\n\n{diary.competitive_gainer.s6._f10} {diary.competitive_gainer.s6._f11}",
     "{diary.competitive_gainer.s6._f7} {diary.competitive_gainer.s6._f9}\n\n{diary.competitive_gainer.s6._f8}\n\n{diary.competitive_gainer.s6._f10} {diary.competitive_gainer.s6._f11}",
+    "{diary.competitive_gainer.s6._f9}\n\n{diary.competitive_gainer.s6._f10} {diary.competitive_gainer.s6._f11}\n\n{diary.competitive_gainer.s6._f7} {diary.competitive_gainer.s6._f8}",
   ]},
 ]);
 
@@ -164,6 +168,7 @@ registerPool('diary.competitive_gainer.s7', [
   { when: {}, text: [
     "{diary.competitive_gainer.s7._f12} {diary.competitive_gainer.s7._f13}\n\n{diary.competitive_gainer.s7._f14}\n\n{diary.competitive_gainer.s7._f15} {diary.competitive_gainer.s7._f16}",
     "{diary.competitive_gainer.s7._f12} {diary.competitive_gainer.s7._f14}\n\n{diary.competitive_gainer.s7._f13}\n\n{diary.competitive_gainer.s7._f15} {diary.competitive_gainer.s7._f16}",
+    "{diary.competitive_gainer.s7._f14}\n\n{diary.competitive_gainer.s7._f15} {diary.competitive_gainer.s7._f16}\n\n{diary.competitive_gainer.s7._f12} {diary.competitive_gainer.s7._f13}",
   ]},
 ]);
 
@@ -211,6 +216,7 @@ registerPool('diary.competitive_gainer.s8', [
   { when: {}, text: [
     "{diary.competitive_gainer.s8._f17} {diary.competitive_gainer.s8._f18}\n\n{diary.competitive_gainer.s8._f19} {diary.competitive_gainer.s8._f20}\n\n{diary.competitive_gainer.s8._f21}",
     "{diary.competitive_gainer.s8._f17} {diary.competitive_gainer.s8._f19}\n\n{diary.competitive_gainer.s8._f18} {diary.competitive_gainer.s8._f20}\n\n{diary.competitive_gainer.s8._f21}",
+    "{diary.competitive_gainer.s8._f19} {diary.competitive_gainer.s8._f20}\n\n{diary.competitive_gainer.s8._f21}\n\n{diary.competitive_gainer.s8._f17} {diary.competitive_gainer.s8._f18}",
   ]},
 ]);
 
@@ -250,6 +256,7 @@ registerPool('diary.competitive_gainer.s9', [
   { when: {}, text: [
     "{diary.competitive_gainer.s9._f22} {diary.competitive_gainer.s9._f23}\n\n{diary.competitive_gainer.s9._f24}\n\n{diary.competitive_gainer.s9._f25}",
     "{diary.competitive_gainer.s9._f22} {diary.competitive_gainer.s9._f24}\n\n{diary.competitive_gainer.s9._f23}\n\n{diary.competitive_gainer.s9._f25}",
+    "{diary.competitive_gainer.s9._f24}\n\n{diary.competitive_gainer.s9._f25}\n\n{diary.competitive_gainer.s9._f22} {diary.competitive_gainer.s9._f23}",
   ]},
 ]);
 
@@ -289,6 +296,7 @@ registerPool('diary.competitive_gainer.s10', [
   { when: {}, text: [
     "{diary.competitive_gainer.s10._f26} {diary.competitive_gainer.s10._f27}\n\n{diary.competitive_gainer.s10._f28}\n\n{diary.competitive_gainer.s10._f29}",
     "{diary.competitive_gainer.s10._f26} {diary.competitive_gainer.s10._f28}\n\n{diary.competitive_gainer.s10._f27}\n\n{diary.competitive_gainer.s10._f29}",
+    "{diary.competitive_gainer.s10._f28}\n\n{diary.competitive_gainer.s10._f29}\n\n{diary.competitive_gainer.s10._f26} {diary.competitive_gainer.s10._f27}",
   ]},
 ]);
 
@@ -312,6 +320,7 @@ registerPool('diary.competitive_gainer.s11', [
   { when: {}, text: [
     "{diary.competitive_gainer.s11._f30} {diary.competitive_gainer.s11._f31}",
     "{diary.competitive_gainer.s11._f31} {diary.competitive_gainer.s11._f30}",
+    "{diary.competitive_gainer.s11._f30}\n\n{diary.competitive_gainer.s11._f31}",
   ]},
 ]);
 
@@ -323,7 +332,7 @@ registerPool('diary.competitive_gainer', [
   { when: { stage: [9] }, text: ['{diary.competitive_gainer.s9}'] },
   { when: { stage: [10] }, text: ['{diary.competitive_gainer.s10}'] },
   { when: { stage: [11] }, text: ['{diary.competitive_gainer.s11}'] },
-  { when: {}, text: ['{diary.competitive_gainer.s5}'] }
+  { when: {}, text: ['{diary.competitive_gainer.s5}', '{diary.competitive_gainer.s7}', '{diary.competitive_gainer.s9}'] }
 ]);
 
 // ── machine_goddess ─────────────────────────────────────────────
@@ -355,6 +364,7 @@ registerPool('diary.machine_goddess.s5', [
   { when: {}, text: [
     "{diary.machine_goddess.s5._f1} {diary.machine_goddess.s5._f2} {diary.machine_goddess.s5._f3}",
     "{diary.machine_goddess.s5._f1} {diary.machine_goddess.s5._f3}\n\n{diary.machine_goddess.s5._f2}",
+    "{diary.machine_goddess.s5._f2} {diary.machine_goddess.s5._f3}\n\n{diary.machine_goddess.s5._f1}",
   ]},
 ]);
 
@@ -386,6 +396,7 @@ registerPool('diary.machine_goddess.s6', [
   { when: {}, text: [
     "{diary.machine_goddess.s6._f3} {diary.machine_goddess.s6._f4} {diary.machine_goddess.s6._f5}",
     "{diary.machine_goddess.s6._f3} {diary.machine_goddess.s6._f5}\n\n{diary.machine_goddess.s6._f4}",
+    "{diary.machine_goddess.s6._f4} {diary.machine_goddess.s6._f5}\n\n{diary.machine_goddess.s6._f3}",
   ]},
 ]);
 
@@ -409,6 +420,7 @@ registerPool('diary.machine_goddess.s7', [
   { when: {}, text: [
     "{diary.machine_goddess.s7._f4} {diary.machine_goddess.s7._f5}",
     "{diary.machine_goddess.s7._f5}\n\n{diary.machine_goddess.s7._f4}",
+    "{diary.machine_goddess.s7._f4}\n\n{diary.machine_goddess.s7._f5}",
   ]},
 ]);
 
@@ -440,6 +452,7 @@ registerPool('diary.machine_goddess.s8', [
   { when: {}, text: [
     "{diary.machine_goddess.s8._f5} {diary.machine_goddess.s8._f6} {diary.machine_goddess.s8._f7}",
     "{diary.machine_goddess.s8._f5} {diary.machine_goddess.s8._f7}\n\n{diary.machine_goddess.s8._f6}",
+    "{diary.machine_goddess.s8._f6} {diary.machine_goddess.s8._f7}\n\n{diary.machine_goddess.s8._f5}",
   ]},
 ]);
 
@@ -471,6 +484,7 @@ registerPool('diary.machine_goddess.s9', [
   { when: {}, text: [
     "{diary.machine_goddess.s9._f7} {diary.machine_goddess.s9._f8} {diary.machine_goddess.s9._f9}",
     "{diary.machine_goddess.s9._f7} {diary.machine_goddess.s9._f9}\n\n{diary.machine_goddess.s9._f8}",
+    "{diary.machine_goddess.s9._f8} {diary.machine_goddess.s9._f9}\n\n{diary.machine_goddess.s9._f7}",
   ]},
 ]);
 
@@ -502,6 +516,7 @@ registerPool('diary.machine_goddess.s10', [
   { when: {}, text: [
     "{diary.machine_goddess.s10._f9} {diary.machine_goddess.s10._f10} {diary.machine_goddess.s10._f11}",
     "{diary.machine_goddess.s10._f9} {diary.machine_goddess.s10._f11}\n\n{diary.machine_goddess.s10._f10}",
+    "{diary.machine_goddess.s10._f10} {diary.machine_goddess.s10._f11}\n\n{diary.machine_goddess.s10._f9}",
   ]},
 ]);
 
@@ -533,6 +548,7 @@ registerPool('diary.machine_goddess.s11', [
   { when: {}, text: [
     "{diary.machine_goddess.s11._f10} {diary.machine_goddess.s11._f11} {diary.machine_goddess.s11._f12}",
     "{diary.machine_goddess.s11._f10} {diary.machine_goddess.s11._f12}\n\n{diary.machine_goddess.s11._f11}",
+    "{diary.machine_goddess.s11._f11} {diary.machine_goddess.s11._f12}\n\n{diary.machine_goddess.s11._f10}",
   ]},
 ]);
 
@@ -544,7 +560,7 @@ registerPool('diary.machine_goddess', [
   { when: { stage: [9] }, text: ['{diary.machine_goddess.s9}'] },
   { when: { stage: [10] }, text: ['{diary.machine_goddess.s10}'] },
   { when: { stage: [11] }, text: ['{diary.machine_goddess.s11}'] },
-  { when: {}, text: ['{diary.machine_goddess.s5}'] }
+  { when: {}, text: ['{diary.machine_goddess.s5}', '{diary.machine_goddess.s7}', '{diary.machine_goddess.s9}'] }
 ]);
 
 // ── salon_appetit ─────────────────────────────────────────────
@@ -592,6 +608,7 @@ registerPool('diary.salon_appetit.s5', [
   { when: {}, text: [
     "{diary.salon_appetit.s5._f1} {diary.salon_appetit.s5._f2}\n\n{diary.salon_appetit.s5._f3} {diary.salon_appetit.s5._f4} {diary.salon_appetit.s5._f5}",
     "{diary.salon_appetit.s5._f1} {diary.salon_appetit.s5._f3}\n\n{diary.salon_appetit.s5._f2} {diary.salon_appetit.s5._f4} {diary.salon_appetit.s5._f5}",
+    "{diary.salon_appetit.s5._f3} {diary.salon_appetit.s5._f4} {diary.salon_appetit.s5._f5}\n\n{diary.salon_appetit.s5._f1} {diary.salon_appetit.s5._f2}",
   ]},
 ]);
 
@@ -623,6 +640,7 @@ registerPool('diary.salon_appetit.s6', [
   { when: {}, text: [
     "{diary.salon_appetit.s6._f3} {diary.salon_appetit.s6._f4}\n\n{diary.salon_appetit.s6._f5}",
     "{diary.salon_appetit.s6._f3} {diary.salon_appetit.s6._f5}\n\n{diary.salon_appetit.s6._f4}",
+    "{diary.salon_appetit.s6._f5}\n\n{diary.salon_appetit.s6._f3} {diary.salon_appetit.s6._f4}",
   ]},
 ]);
 
@@ -662,6 +680,7 @@ registerPool('diary.salon_appetit.s7', [
   { when: {}, text: [
     "{diary.salon_appetit.s7._f5} {diary.salon_appetit.s7._f6}\n\n{diary.salon_appetit.s7._f7} {diary.salon_appetit.s7._f8}",
     "{diary.salon_appetit.s7._f5} {diary.salon_appetit.s7._f7}\n\n{diary.salon_appetit.s7._f6} {diary.salon_appetit.s7._f8}",
+    "{diary.salon_appetit.s7._f7} {diary.salon_appetit.s7._f8}\n\n{diary.salon_appetit.s7._f5} {diary.salon_appetit.s7._f6}",
   ]},
 ]);
 
@@ -701,6 +720,7 @@ registerPool('diary.salon_appetit.s8', [
   { when: {}, text: [
     "{diary.salon_appetit.s8._f7} {diary.salon_appetit.s8._f8}\n\n{diary.salon_appetit.s8._f9} {diary.salon_appetit.s8._f10}",
     "{diary.salon_appetit.s8._f7} {diary.salon_appetit.s8._f9}\n\n{diary.salon_appetit.s8._f8} {diary.salon_appetit.s8._f10}",
+    "{diary.salon_appetit.s8._f9} {diary.salon_appetit.s8._f10}\n\n{diary.salon_appetit.s8._f7} {diary.salon_appetit.s8._f8}",
   ]},
 ]);
 
@@ -740,6 +760,7 @@ registerPool('diary.salon_appetit.s9', [
   { when: {}, text: [
     "{diary.salon_appetit.s9._f9} {diary.salon_appetit.s9._f10}\n\n{diary.salon_appetit.s9._f11} {diary.salon_appetit.s9._f12}",
     "{diary.salon_appetit.s9._f9} {diary.salon_appetit.s9._f11}\n\n{diary.salon_appetit.s9._f10} {diary.salon_appetit.s9._f12}",
+    "{diary.salon_appetit.s9._f11} {diary.salon_appetit.s9._f12}\n\n{diary.salon_appetit.s9._f9} {diary.salon_appetit.s9._f10}",
   ]},
 ]);
 
@@ -779,6 +800,7 @@ registerPool('diary.salon_appetit.s10', [
   { when: {}, text: [
     "{diary.salon_appetit.s10._f11} {diary.salon_appetit.s10._f12}\n\n{diary.salon_appetit.s10._f13} {diary.salon_appetit.s10._f14}",
     "{diary.salon_appetit.s10._f11} {diary.salon_appetit.s10._f13}\n\n{diary.salon_appetit.s10._f12} {diary.salon_appetit.s10._f14}",
+    "{diary.salon_appetit.s10._f13} {diary.salon_appetit.s10._f14}\n\n{diary.salon_appetit.s10._f11} {diary.salon_appetit.s10._f12}",
   ]},
 ]);
 
@@ -818,6 +840,7 @@ registerPool('diary.salon_appetit.s11', [
   { when: {}, text: [
     "{diary.salon_appetit.s11._f13} {diary.salon_appetit.s11._f14}\n\n{diary.salon_appetit.s11._f15} {diary.salon_appetit.s11._f16}",
     "{diary.salon_appetit.s11._f13} {diary.salon_appetit.s11._f15}\n\n{diary.salon_appetit.s11._f14} {diary.salon_appetit.s11._f16}",
+    "{diary.salon_appetit.s11._f15} {diary.salon_appetit.s11._f16}\n\n{diary.salon_appetit.s11._f13} {diary.salon_appetit.s11._f14}",
   ]},
 ]);
 
@@ -829,7 +852,7 @@ registerPool('diary.salon_appetit', [
   { when: { stage: [9] }, text: ['{diary.salon_appetit.s9}'] },
   { when: { stage: [10] }, text: ['{diary.salon_appetit.s10}'] },
   { when: { stage: [11] }, text: ['{diary.salon_appetit.s11}'] },
-  { when: {}, text: ['{diary.salon_appetit.s5}'] }
+  { when: {}, text: ['{diary.salon_appetit.s5}', '{diary.salon_appetit.s7}', '{diary.salon_appetit.s9}'] }
 ]);
 
 // ── artisan_gallery ─────────────────────────────────────────────
@@ -861,6 +884,7 @@ registerPool('diary.artisan_gallery.s5', [
   { when: {}, text: [
     "{diary.artisan_gallery.s5._f1} {diary.artisan_gallery.s5._f2}\n\n{diary.artisan_gallery.s5._f3}",
     "{diary.artisan_gallery.s5._f1} {diary.artisan_gallery.s5._f3}\n\n{diary.artisan_gallery.s5._f2}",
+    "{diary.artisan_gallery.s5._f3}\n\n{diary.artisan_gallery.s5._f1} {diary.artisan_gallery.s5._f2}",
   ]},
 ]);
 
@@ -892,6 +916,7 @@ registerPool('diary.artisan_gallery.s6', [
   { when: {}, text: [
     "{diary.artisan_gallery.s6._f3} {diary.artisan_gallery.s6._f4}\n\n{diary.artisan_gallery.s6._f5}",
     "{diary.artisan_gallery.s6._f3} {diary.artisan_gallery.s6._f5}\n\n{diary.artisan_gallery.s6._f4}",
+    "{diary.artisan_gallery.s6._f5}\n\n{diary.artisan_gallery.s6._f3} {diary.artisan_gallery.s6._f4}",
   ]},
 ]);
 
@@ -931,6 +956,7 @@ registerPool('diary.artisan_gallery.s7', [
   { when: {}, text: [
     "{diary.artisan_gallery.s7._f6} {diary.artisan_gallery.s7._f7}\n\n{diary.artisan_gallery.s7._f8} {diary.artisan_gallery.s7._f9}",
     "{diary.artisan_gallery.s7._f6} {diary.artisan_gallery.s7._f8}\n\n{diary.artisan_gallery.s7._f7} {diary.artisan_gallery.s7._f9}",
+    "{diary.artisan_gallery.s7._f8} {diary.artisan_gallery.s7._f9}\n\n{diary.artisan_gallery.s7._f6} {diary.artisan_gallery.s7._f7}",
   ]},
 ]);
 
@@ -962,6 +988,7 @@ registerPool('diary.artisan_gallery.s8', [
   { when: {}, text: [
     "{diary.artisan_gallery.s8._f8} {diary.artisan_gallery.s8._f9} {diary.artisan_gallery.s8._f10}",
     "{diary.artisan_gallery.s8._f8} {diary.artisan_gallery.s8._f10}\n\n{diary.artisan_gallery.s8._f9}",
+    "{diary.artisan_gallery.s8._f9} {diary.artisan_gallery.s8._f10}\n\n{diary.artisan_gallery.s8._f8}",
   ]},
 ]);
 
@@ -993,6 +1020,7 @@ registerPool('diary.artisan_gallery.s9', [
   { when: {}, text: [
     "{diary.artisan_gallery.s9._f10} {diary.artisan_gallery.s9._f11}\n\n{diary.artisan_gallery.s9._f12}",
     "{diary.artisan_gallery.s9._f10} {diary.artisan_gallery.s9._f12}\n\n{diary.artisan_gallery.s9._f11}",
+    "{diary.artisan_gallery.s9._f12}\n\n{diary.artisan_gallery.s9._f10} {diary.artisan_gallery.s9._f11}",
   ]},
 ]);
 
@@ -1032,6 +1060,7 @@ registerPool('diary.artisan_gallery.s10', [
   { when: {}, text: [
     "{diary.artisan_gallery.s10._f11} {diary.artisan_gallery.s10._f12}\n\n{diary.artisan_gallery.s10._f13} {diary.artisan_gallery.s10._f14}",
     "{diary.artisan_gallery.s10._f11} {diary.artisan_gallery.s10._f13}\n\n{diary.artisan_gallery.s10._f12} {diary.artisan_gallery.s10._f14}",
+    "{diary.artisan_gallery.s10._f13} {diary.artisan_gallery.s10._f14}\n\n{diary.artisan_gallery.s10._f11} {diary.artisan_gallery.s10._f12}",
   ]},
 ]);
 
@@ -1071,6 +1100,7 @@ registerPool('diary.artisan_gallery.s11', [
   { when: {}, text: [
     "{diary.artisan_gallery.s11._f13} {diary.artisan_gallery.s11._f14}\n\n{diary.artisan_gallery.s11._f15} {diary.artisan_gallery.s11._f16}",
     "{diary.artisan_gallery.s11._f13} {diary.artisan_gallery.s11._f15}\n\n{diary.artisan_gallery.s11._f14} {diary.artisan_gallery.s11._f16}",
+    "{diary.artisan_gallery.s11._f15} {diary.artisan_gallery.s11._f16}\n\n{diary.artisan_gallery.s11._f13} {diary.artisan_gallery.s11._f14}",
   ]},
 ]);
 
@@ -1082,7 +1112,7 @@ registerPool('diary.artisan_gallery', [
   { when: { stage: [9] }, text: ['{diary.artisan_gallery.s9}'] },
   { when: { stage: [10] }, text: ['{diary.artisan_gallery.s10}'] },
   { when: { stage: [11] }, text: ['{diary.artisan_gallery.s11}'] },
-  { when: {}, text: ['{diary.artisan_gallery.s5}'] }
+  { when: {}, text: ['{diary.artisan_gallery.s5}', '{diary.artisan_gallery.s7}', '{diary.artisan_gallery.s9}'] }
 ]);
 
 // ── pharmacist ─────────────────────────────────────────────
@@ -1114,6 +1144,7 @@ registerPool('diary.pharmacist.s5', [
   { when: {}, text: [
     "{diary.pharmacist.s5._f1} {diary.pharmacist.s5._f2} {diary.pharmacist.s5._f3}",
     "{diary.pharmacist.s5._f1} {diary.pharmacist.s5._f3}\n\n{diary.pharmacist.s5._f2}",
+    "{diary.pharmacist.s5._f2} {diary.pharmacist.s5._f3}\n\n{diary.pharmacist.s5._f1}",
   ]},
 ]);
 
@@ -1145,6 +1176,7 @@ registerPool('diary.pharmacist.s6', [
   { when: {}, text: [
     "{diary.pharmacist.s6._f3} {diary.pharmacist.s6._f4}\n\n{diary.pharmacist.s6._f5}",
     "{diary.pharmacist.s6._f3} {diary.pharmacist.s6._f5}\n\n{diary.pharmacist.s6._f4}",
+    "{diary.pharmacist.s6._f5}\n\n{diary.pharmacist.s6._f3} {diary.pharmacist.s6._f4}",
   ]},
 ]);
 
@@ -1176,6 +1208,7 @@ registerPool('diary.pharmacist.s7', [
   { when: {}, text: [
     "{diary.pharmacist.s7._f5} {diary.pharmacist.s7._f6} {diary.pharmacist.s7._f7}",
     "{diary.pharmacist.s7._f5} {diary.pharmacist.s7._f7}\n\n{diary.pharmacist.s7._f6}",
+    "{diary.pharmacist.s7._f6} {diary.pharmacist.s7._f7}\n\n{diary.pharmacist.s7._f5}",
   ]},
 ]);
 
@@ -1207,6 +1240,7 @@ registerPool('diary.pharmacist.s8', [
   { when: {}, text: [
     "{diary.pharmacist.s8._f7} {diary.pharmacist.s8._f8} {diary.pharmacist.s8._f9}",
     "{diary.pharmacist.s8._f7} {diary.pharmacist.s8._f9}\n\n{diary.pharmacist.s8._f8}",
+    "{diary.pharmacist.s8._f8} {diary.pharmacist.s8._f9}\n\n{diary.pharmacist.s8._f7}",
   ]},
 ]);
 
@@ -1246,6 +1280,7 @@ registerPool('diary.pharmacist.s9', [
   { when: {}, text: [
     "{diary.pharmacist.s9._f9} {diary.pharmacist.s9._f10} {diary.pharmacist.s9._f11} {diary.pharmacist.s9._f12}",
     "{diary.pharmacist.s9._f9} {diary.pharmacist.s9._f11}\n\n{diary.pharmacist.s9._f10} {diary.pharmacist.s9._f12}",
+    "{diary.pharmacist.s9._f10} {diary.pharmacist.s9._f11}\n\n{diary.pharmacist.s9._f9} {diary.pharmacist.s9._f12}",
   ]},
 ]);
 
@@ -1277,6 +1312,7 @@ registerPool('diary.pharmacist.s10', [
   { when: {}, text: [
     "{diary.pharmacist.s10._f11} {diary.pharmacist.s10._f12} {diary.pharmacist.s10._f13}",
     "{diary.pharmacist.s10._f11} {diary.pharmacist.s10._f13}\n\n{diary.pharmacist.s10._f12}",
+    "{diary.pharmacist.s10._f12} {diary.pharmacist.s10._f13}\n\n{diary.pharmacist.s10._f11}",
   ]},
 ]);
 
@@ -1316,6 +1352,7 @@ registerPool('diary.pharmacist.s11', [
   { when: {}, text: [
     "{diary.pharmacist.s11._f13} {diary.pharmacist.s11._f14}\n\n{diary.pharmacist.s11._f15} {diary.pharmacist.s11._f16}",
     "{diary.pharmacist.s11._f13} {diary.pharmacist.s11._f15}\n\n{diary.pharmacist.s11._f14} {diary.pharmacist.s11._f16}",
+    "{diary.pharmacist.s11._f15} {diary.pharmacist.s11._f16}\n\n{diary.pharmacist.s11._f13} {diary.pharmacist.s11._f14}",
   ]},
 ]);
 
@@ -1327,5 +1364,5 @@ registerPool('diary.pharmacist', [
   { when: { stage: [9] }, text: ['{diary.pharmacist.s9}'] },
   { when: { stage: [10] }, text: ['{diary.pharmacist.s10}'] },
   { when: { stage: [11] }, text: ['{diary.pharmacist.s11}'] },
-  { when: {}, text: ['{diary.pharmacist.s5}'] }
+  { when: {}, text: ['{diary.pharmacist.s5}', '{diary.pharmacist.s7}', '{diary.pharmacist.s9}'] }
 ]);
