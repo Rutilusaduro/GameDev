@@ -70,6 +70,7 @@ import './discontent/depth.js';
 import './confront/index.js';
 import './confront/depth.js';
 import './cultivator/index.js';
+import './polishDepthPass40.js';
 import './hunt/index.js';
 import './hunt/depth.js';
 import './campusEvent/index.js';
