@@ -46,10 +46,12 @@ registerPool('immob.arrival.deepen', [
   { when: { stageMin: 10, stageMax: 10 }, weight: 2, text: [
     `Tended like this she keeps arriving — the soft mass of her easing a little further into the room with each attended hour, {word.movement} when she shifts and then going still again.`,
     `She grows softer under the care, not less, the warm weight of her spreading by slow contented inches into the space you keep clear for it.`,
+    `Each tray you bring seems to add another warm layer — not suddenly, but by accumulation, until the room reshapes itself around her.`,
   ]},
   { when: { stageMin: 11 }, weight: 2, text: [
     `Kept this completely she only becomes more so, the vast warm tide of her creeping outward by slow degrees, settling and resettling into ever more of the room.`,
     `There is no ceiling left for her to reach, only deeper to settle, and she does — softening outward without end while you keep the world arriving at her side.`,
+    `Immobility has become a kind of growth: she does not rise, she expands — warm, slow, pleased with every inch the tending grants her.`,
   ]},
 ]);
 
@@ -64,9 +66,13 @@ registerPool('immob.arrival.devotion', [
   ]},
   { when: { corruption: [0] }, weight: 2, text: [
     `{subject.name} watches you tend her with something soft and overwhelmed in her face. "You really don't mind," she says — not quite a question, not quite able to believe it.`,
+    `She keeps waiting for you to flinch at the scale of her. You don't. {subject.name} exhales like a weight she didn't know she was holding.`,
+    `"I could get used to this," {subject.name} murmurs — wonder and relief braided together.`,
   ]},
   { when: { corruption: [1] }, weight: 2, text: [
     `{subject.name} lets herself be tended without a flicker of the old protest, and the warmth in her eyes when she finds yours says she has stopped wanting anything but this.`,
+    `The old shame surfaces once, flickers, and drowns in how good being kept feels. {subject.name} does not rescue it.`,
+    `"Stay," she says — not to the room, to you. Court is warmer when you are in it.`,
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
     `{subject.name} accepts the tending as her due, regal and glowing, and tells you plainly she means to be larger still by the time you next come to court her.`,

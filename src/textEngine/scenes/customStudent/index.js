@@ -44,14 +44,17 @@ registerModuleVariants('shift.interior', [
   { when: { ...CUSTOM, corruption: [0] }, priority: P, weight: W, text: [
     'She files appetite under variables. It refuses to stay there.',
     'The model updates around her hunger, quietly and without permission.',
+    'Control group: denial. Results: inconclusive. She eats.',
   ]},
   { when: { ...CUSTOM, corruption: [1] }, priority: P, weight: W, text: [
     'She stops arguing with the numbers. Appetite wins the model.',
     'The old spec fails. The new body makes a better case.',
+    'Loss function: minimized shame. Accuracy: improving.',
   ]},
   { when: { ...CUSTOM, corruption: [2] }, priority: P, weight: W, text: [
     'The prototype became the product. She is keeping it.',
     'Next sprint: more.',
+    'Deploy to production: this body. No rollback.',
   ]},
 ]);
 

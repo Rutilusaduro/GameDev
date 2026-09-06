@@ -39,12 +39,6 @@ registerModuleVariants('slender.mindFeel', [{ when: {"studentId":14,"corruption"
 registerModuleVariants('slender.mindFeel', [{ when: {"studentId":15,"corruption":[0],"stageMax":4}, weight: 4, text: ["She is still deciding what this means — if it means anything yet."] }]);
 registerModuleVariants('slender.mindFeel', [{ when: {"studentId":16,"corruption":[0],"stageMax":4}, weight: 4, text: ["She is still deciding what this means — if it means anything yet."] }]);
 registerModuleVariants('slender.mindFeel', [{ when: {"studentId":17,"corruption":[0],"stageMax":4}, weight: 4, text: ["She is still deciding what this means — if it means anything yet."] }]);
-registerModuleVariants('slender.mindFeel', [{ when: {"studentId":18,"corruption":[0],"stageMax":4}, weight: 4, text: [
-  "Inputs exceeded projections. She is revising the model without announcing it.",
-  "Her body keeps outpacing the spreadsheet. She lets it.",
-  "Warmth after meals lasts longer than the trial protocol predicted. She notes it. She eats again.",
-] }]);
-registerModuleVariants('slender.mindFeel', [{ when: {"corruption":[0],"isGaining":true}, text: ["She is still deciding what this means — if it means anything yet."] }]);
 registerModuleVariants('slender.deflect', [{ when: {"studentId":0,"gainStance":"opposed","corruption":[0],"stageMax":4}, weight: 4, text: ["\"Within expected variance for semester dietary changes.\""] }]);
 registerModuleVariants('slender.deflect', [{ when: {"studentId":1,"gainStance":"opposed","corruption":[0],"stageMax":4}, weight: 4, text: ["\"It's muscle. Or retention. Or both.\""] }]);
 registerModuleVariants('slender.deflect', [{ when: {"studentId":3,"gainStance":"reluctant","corruption":[0],"stageMax":4}, weight: 4, text: ["\"It's muscle. Or retention. Or both.\""] }]);
@@ -80,11 +74,6 @@ registerModuleVariants('slender.neutral', [{ when: {"studentId":12,"gainStance":
 registerModuleVariants('slender.neutral', [{ when: {"studentId":14,"gainStance":"neutral","corruption":[0],"stageMax":4}, weight: 4, text: ["\"Cool. Next.\""] }]);
 registerModuleVariants('slender.neutral', [{ when: {"studentId":15,"gainStance":"neutral","corruption":[0],"stageMax":4}, weight: 4, text: ["\"Cool. Next.\""] }]);
 registerModuleVariants('slender.neutral', [{ when: {"studentId":16,"gainStance":"neutral","corruption":[0],"stageMax":4}, weight: 4, text: ["\"Cool. Next.\""] }]);
-registerModuleVariants('slender.neutral', [{ when: {"studentId":18,"gainStance":"neutral","corruption":[0],"stageMax":4}, weight: 4, text: [
-  "\"Output nominal,\" Talia says.",
-  "\"Continuing trial,\" she adds.",
-  "\"Within tolerance,\" she murmurs, already reaching for paste.",
-] }]);
 registerModuleVariants('slender.neutral', [{ when: {"gainStance":"neutral","stageMax":2}, text: ["\"Cool. Next.\""] }]);
 registerModuleVariants('slender.secret', [{ when: {"studentId":2,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She traces the new curve like she is studying brushwork."] }]);
 registerModuleVariants('slender.secret', [{ when: {"studentId":4,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
@@ -101,17 +90,11 @@ registerModuleVariants('slender.secret', [{ when: {"studentId":11,"gainStance":"
 registerModuleVariants('slender.secret', [{ when: {"studentId":13,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
 registerModuleVariants('slender.secret', [{ when: {"studentId":16,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
 registerModuleVariants('slender.secret', [{ when: {"studentId":17,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
-registerModuleVariants('slender.secret', [{ when: {"studentId":18,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: [
-  "Talia runs a hand along her side and updates the model with a private smile.",
-  "Inputs exceeded projections. She is not correcting the error.",
-  "She weighs herself twice after dinner. Second reading higher. She is not upset.",
-] }]);
 registerModuleVariants('slender.secret', [{ when: {"studentId":0,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
 registerModuleVariants('slender.secret', [{ when: {"studentId":5,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
 registerModuleVariants('slender.secret', [{ when: {"gainStance":"secret","hungerTierMin":2}, weight: 2, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
 registerModuleVariants('slender.secret', [{ when: {"gainStance":"secret","isGaining":true}, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
 registerModuleVariants('slender.mirror', [{ when: {"gainStance":"opposed","stageMin":2,"stageMax":4}, weight: 2, text: ["She catches her reflection and pauses a beat longer than necessary."] }]);
-registerModuleVariants('slender.mirror', [{ when: {"gainStance":"secret","stageMin":2,"stageMax":4}, weight: 2, text: ["She catches her reflection and pauses a beat longer than necessary."] }]);
 registerModuleVariants('slender.eatPause', [{ when: {"studentId":0,"corruption":[0],"stageMax":3}, weight: 4, text: ["Madeline annotates the meal in her head between bites. The plate empties anyway."] }]);
 registerModuleVariants('slender.eatPause', [{ when: {"studentId":1,"corruption":[0],"stageMax":3}, weight: 4, text: ["Brittany eats like fueling — portioned, committed, already thinking about the next plate."] }]);
 registerModuleVariants('slender.eatPause', [{ when: {"studentId":2,"corruption":[0],"stageMax":3}, weight: 4, text: ["Brittany eats like fueling — portioned, committed, already thinking about the next plate."] }]);
@@ -130,13 +113,7 @@ registerModuleVariants('slender.eatPause', [{ when: {"studentId":14,"corruption"
 registerModuleVariants('slender.eatPause', [{ when: {"studentId":15,"corruption":[0],"stageMax":3}, weight: 4, text: ["Brittany eats like fueling — portioned, committed, already thinking about the next plate."] }]);
 registerModuleVariants('slender.eatPause', [{ when: {"studentId":16,"corruption":[0],"stageMax":3}, weight: 4, text: ["Brittany eats like fueling — portioned, committed, already thinking about the next plate."] }]);
 registerModuleVariants('slender.eatPause', [{ when: {"studentId":17,"corruption":[0],"stageMax":3}, weight: 4, text: ["Brittany eats like fueling — portioned, committed, already thinking about the next plate."] }]);
-registerModuleVariants('slender.eatPause', [{ when: {"studentId":18,"corruption":[0],"stageMax":3}, weight: 4, text: [
-  "Talia eats while calculating caloric efficiency. The calculation keeps losing to appetite.",
-  "She revises the model mid-meal. New assumption: more is better.",
-  "Paste, then solids, then paste again — intake logged, appetite undefeated.",
-] }]);
 registerModuleVariants('slender.eatPause', [{ when: {"gainStance":"neutral","stageMax":3}, text: ["Brittany eats like fueling — portioned, committed, already thinking about the next plate."] }]);
-registerModuleVariants('slender.eatPause', [{ when: {"hungerTierMin":2,"corruption":[0],"stageMax":4}, weight: 2, text: ["Brittany eats like fueling — portioned, committed, already thinking about the next plate."] }]);
 registerModuleVariants('eat.settleIn', [{ when: {"stageMin":4}, text: ["{subject.name} takes her seat and orients toward the food without preamble."] }]);
 registerModuleVariants('eat.settleIn', [{ when: {"stageMin":7}, text: ["{subject.name} takes her seat and orients toward the food without preamble."] }]);
 registerModuleVariants('eat.settleIn', [{ when: {"stageMin":10}, weight: 2, text: ["{subject.name} takes her seat and orients toward the food without preamble."] }]);
@@ -151,8 +128,6 @@ registerModuleVariants('eat.firstBite', [{ when: {"corruption":[0],"stageMax":3,
 registerModuleVariants('eat.firstBite', [{ when: {"corruption":[1]}, text: ["Brittany logs the first bite like data — portion, macro, intention. Then she takes it."] }]);
 registerModuleVariants('eat.firstBite', [{ when: {"corruption":[2]}, text: ["Brittany logs the first bite like data — portion, macro, intention. Then she takes it."] }]);
 registerModuleVariants('eat.firstBite', [{ when: {"stageMin":6}, text: ["Brittany logs the first bite like data — portion, macro, intention. Then she takes it."] }]);
-registerModuleVariants('eat.midMeal', [{ when: {"hungerTierMin":2}, text: ["She pauses only to breathe around fullness, then continues — appetite undiminished."] }]);
-registerModuleVariants('eat.midMeal', [{ when: {"corruption":[2],"fullnessMin":0.5}, text: ["Halfway through, the pace does not slow — if anything it steadies into purpose."] }]);
 registerModuleVariants('eat.midMeal', [{ when: {"mealContext":"binge"}, weight: 2, text: ["Halfway through, the pace does not slow — if anything it steadies into purpose."] }]);
 registerModuleVariants('eat.bitePace', [{ when: {"hungerTierMin":2}, text: ["steadily"] }]);
 registerModuleVariants('eat.bitePace', [{ when: {"hungerTierMin":3}, weight: 2, text: ["steadily"] }]);
@@ -192,11 +167,6 @@ registerModuleVariants('eat.finish', [{ when: {"studentId":14}, weight: 4, text:
 registerModuleVariants('eat.finish', [{ when: {"studentId":15}, weight: 4, text: ["She finishes what she started."] }]);
 registerModuleVariants('eat.finish', [{ when: {"studentId":16}, weight: 4, text: ["She finishes what she started."] }]);
 registerModuleVariants('eat.finish', [{ when: {"studentId":17}, weight: 4, text: ["She finishes what she started."] }]);
-registerModuleVariants('eat.finish', [{ when: {"studentId":18}, weight: 4, text: [
-  "Talia finishes and updates the model. \"Output: satisfied. Recommend repeat trial.\"",
-  "Plate empty, belly fuller, hypothesis supported. She queues seconds in her head.",
-  "Intake complete. Variance acceptable. She is already planning the next meal.",
-] }]);
 registerModuleVariants('eat.aftermath', [{ when: {"corruption":[2],"fullnessMin":0.6}, text: ["She sits back, satisfied in the ordinary way."] }]);
 registerModuleVariants('eat.aftermath', [{ when: {"stageMin":6,"fullnessMin":0.7}, text: ["She sits back, satisfied in the ordinary way."] }]);
 registerModuleVariants('eat.aftermath', [{ when: {"stageMin":9}, text: ["She sits back, satisfied in the ordinary way."] }]);
@@ -249,18 +219,6 @@ registerModuleVariants('cloth.reaction', [{ when: {"studentId":16,"corruption":[
 registerModuleVariants('cloth.reaction', [{ when: {"studentId":17,"corruption":[1]}, weight: 4, text: ["{subject.name} looks at the damage and exhales."] }]);
 registerModuleVariants('cloth.reaction', [{ when: {"studentId":1,"corruption":[0]}, weight: 4, text: ["{subject.name} looks at the damage and exhales."] }]);
 registerModuleVariants('cloth.reaction', [{ when: {"studentId":4,"corruption":[0]}, weight: 4, text: ["{subject.name} looks at the damage and exhales."] }]);
-registerModuleVariants('cloth.reaction', [{ when: {"studentId":18,"corruption":[0]}, weight: 4, text: [
-  `"Tolerance exceeded," Talia mutters, pinning the gap. "Revision required."`,
-  `She treats the tear like a failed stress test. The test continues.`,
-  `"Garment spec insufficient," Talia says, cheeks pink. "Ordering larger."`,
-] }]);
-registerModuleVariants('cloth.reaction', [{ when: {"studentId":18,"corruption":[2]}, weight: 4, text: [
-  `"Material stress exceeded spec," Talia says. "Recommend larger garment. Accepting growth."`,
-  `She logs the pop and keeps moving. Engineering solution: elastic.`,
-  `"Failure mode: outgrown," Talia says, pleased. "Proceeding to next size tier."`,
-] }]);
-registerModuleVariants('cloth.aftermath', [{ when: {"corruption":[0]}, text: ["She wears the failure like a badge — or forgets it entirely."] }]);
-registerModuleVariants('cloth.aftermath', [{ when: {"corruption":[2]}, text: ["She spends the rest of the day aware of the gap."] }]);
 registerModuleVariants('campus.moveSentence', [{ when: {"stageMin":8}, weight: 2, text: ["{subject.name} {word.adv.pace|suffix: }{word.moveVerb.campus} {campus.destination}{word.adv.sizeQual|prefix: }."] }]);
 registerModuleVariants('campus.moveSentence', [{ when: {"stageMin":10}, weight: 3, text: ["{subject.name} {word.adv.pace|suffix: }{word.moveVerb.campus} {campus.destination}{word.adv.sizeQual|prefix: }."] }]);
 registerModuleVariants('campus.destination', [{ when: {"campusLocale":"elevator"}, text: ["down the hall"] }]);
@@ -288,12 +246,6 @@ registerModuleVariants('campus.spaceObs', [{ when: {"studentId":13,"campusLocale
 registerModuleVariants('campus.spaceObs', [{ when: {"studentId":14,"campusLocale":"cafeteria","stageMin":5,"stageMax":9}, weight: 4, text: ["Serena knows which machines still fit. The list shortens every month."] }]);
 registerModuleVariants('campus.spaceObs', [{ when: {"studentId":16,"campusLocale":"elevator","stageMin":5,"stageMax":9}, weight: 4, text: ["Serena knows which machines still fit. The list shortens every month."] }]);
 registerModuleVariants('campus.spaceObs', [{ when: {"studentId":17,"campusLocale":"stairwell","stageMin":5,"stageMax":9}, weight: 4, text: ["Serena knows which machines still fit. The list shortens every month."] }]);
-registerModuleVariants('campus.spaceObs', [{ when: {"studentId":18,"campusLocale":"prof_office","stageMin":5,"stageMax":9}, weight: 4, text: [
-  "Talia measures your doorframe on entry. Old habit. New clearance required each month.",
-  "She sits where the geometry works and opens her notebook. Inputs: food. Outputs: this.",
-  "Your office chair groans once. She notes the load rating and keeps eating.",
-] }]);
-registerModuleVariants('campus.spaceObs', [{ when: {"campusLocale":"hallway","stageMin":6}, text: ["Serena knows which machines still fit. The list shortens every month."] }]);
 registerModuleVariants('campus.spaceObs', [{ when: {"campusLocale":"dorm_room","stageMin":5}, text: ["Serena knows which machines still fit. The list shortens every month."] }]);
 registerModuleVariants('campus.spaceObs', [{ when: {"campusLocale":"lecture_hall","stageMin":7}, text: ["Serena knows which machines still fit. The list shortens every month."] }]);
 registerModuleVariants('campus.spaceObs', [{ when: {"stageMin":9}, text: ["Serena knows which machines still fit. The list shortens every month."] }]);
@@ -318,11 +270,6 @@ registerModuleVariants('immob.settledState', [{ when: {"studentId":13,"stageMin"
 registerModuleVariants('immob.settledState', [{ when: {"studentId":15,"stageMin":11}, weight: 4, text: ["{subject.name} rests, vast and warm."] }]);
 registerModuleVariants('immob.settledState', [{ when: {"studentId":16,"stageMin":11}, weight: 4, text: ["{subject.name} rests, vast and warm."] }]);
 registerModuleVariants('immob.settledState', [{ when: {"studentId":17,"stageMin":11}, weight: 4, text: ["{subject.name} rests, vast and warm."] }]);
-registerModuleVariants('immob.settledState', [{ when: {"studentId":18,"stageMin":11}, weight: 4, text: [
-  "Talia rests where the geometry finally works — immobile, warm, parameters exceeded.",
-  "The prototype became the product. She is keeping it.",
-  "Lab equipment orbits her chair. She is the largest instrument in the room.",
-] }]);
 registerModuleVariants('immob.spaceObs', [{ when: {"studentId":3,"stageMin":11}, weight: 4, text: ["The room holds her."] }]);
 registerModuleVariants('immob.spaceObs', [{ when: {"studentId":7,"stageMin":11}, weight: 4, text: ["The room holds her."] }]);
 registerModuleVariants('immob.attempt', [{ when: {"stageMin":10}, text: ["A transfer attempt — assisted, incremental, honest about the physics."] }]);
@@ -346,103 +293,25 @@ registerModuleVariants('immob.register', [{ when: {"studentId":14,"stageMin":11,
 registerModuleVariants('immob.register', [{ when: {"studentId":15,"stageMin":11,"corruption":[2]}, weight: 4, text: ["She rests without commentary."] }]);
 registerModuleVariants('immob.register', [{ when: {"studentId":16,"stageMin":11,"corruption":[0]}, weight: 4, text: ["She rests without commentary."] }]);
 registerModuleVariants('immob.register', [{ when: {"studentId":17,"stageMin":11,"corruption":[1]}, weight: 4, text: ["She rests without commentary."] }]);
-registerModuleVariants('immob.register', [{ when: {"studentId":18,"stageMin":11,"corruption":[2]}, weight: 4, text: [
-  "\"Output exceeded target,\" Talia says, satisfied. \"No rollback.\"",
-  "\"The prototype became the product. I'm keeping it.\"",
-  "\"Parameters final. Mass within acceptable glory.\"",
-] }]);
 registerModuleVariants('immob.register', [{ when: {"corruption":[0]}, text: ["She rests without commentary."] }]);
 registerModuleVariants('immob.register', [{ when: {"corruption":[1]}, text: ["She rests without commentary."] }]);
 registerModuleVariants('immob.register', [{ when: {"stageMin":11}, weight: 2, text: ["She rests without commentary."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":0,"corruption":[1]}, weight: 4, text: ["The argument is over. She wanted more. She is getting more. That is victory."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":0,"corruption":[2]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":1,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":1,"corruption":[2]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":2,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":2,"corruption":[2]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":8,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":8,"corruption":[2]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":10,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":10,"corruption":[2]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":12,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":12,"corruption":[2]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":15,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":15,"corruption":[2]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":3,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":4,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":5,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":6,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":7,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":9,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":11,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":14,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":16,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":18,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":13,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.interior', [{ when: {"studentId":17,"corruption":[1]}, weight: 4, text: ["Brittany stops calling it a setback. The scoreboard still works — different sport."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":3,"corruption":[1]}, weight: 4, text: ["Tiffany smooths pastel over abundance and smiles. The fabric lost. She won."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":6,"corruption":[2]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":9,"corruption":[2]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":14,"corruption":[2]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":18,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":0,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":1,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":2,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":4,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":5,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":7,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":8,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":10,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":11,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":12,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":13,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":15,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":16,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.physical', [{ when: {"studentId":17,"corruption":[1]}, weight: 4, text: ["Serena's hand rests on her middle without the old flinch. Athlete's discipline redirected."] }]);
-registerModuleVariants('shift.denial', [{ when: {"corruption":[1]}, text: ["The old story loosens at the edges."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":5,"corruption":[1]}, weight: 4, text: ["Priya updates the planner. Goal: larger. Status: on track. Next: dinner."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":7,"corruption":[2]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":11,"corruption":[2]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":13,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":16,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":17,"corruption":[2]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":0,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":1,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":2,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":3,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":4,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":6,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":8,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":9,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":10,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":12,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":14,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":15,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
-registerModuleVariants('shift.coda', [{ when: {"studentId":18,"corruption":[1]}, weight: 4, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
+registerModuleVariants('immob.hint.food', [{ when: {"courtHintTier":[1]}, text: ["\"Bring me what I actually want,\" she says, not unkindly. \"You know what that is.\""] }]);
+registerModuleVariants('immob.hint.food', [{ when: {"courtHintTier":[2]}, text: ["She eyes what you brought and mentions, lightly, that she'd prefer something different next time."] }]);
+registerModuleVariants('immob.hint.food', [{ when: {"courtHintTier":[3]}, text: ["She eyes what you brought and mentions, lightly, that she'd prefer something different next time."] }]);
+registerModuleVariants('immob.pref.food', [{ when: {"courtBoonTier":["early"]}, text: ["She eats like someone whose preference was finally honored — unhurried, thorough, pleased."] }]);
+registerModuleVariants('immob.arrival.devotion', [{ when: {"corruption":[2]}, weight: 2, text: ["{subject.name} settles under your care, warm and vast and wholly content to be exactly where she is.","{subject.name} closes her eyes into the care and does not hurry to open them."] }]);
+registerModuleVariants('immob.arrival.devotion', [{ when: {"studentId":0,"stageMin":10}, weight: 4, text: ["{subject.name} settles under your care, warm and vast and wholly content to be exactly where she is.","{subject.name} closes her eyes into the care and does not hurry to open them."] }]);
+registerModuleVariants('immob.arrival.devotion', [{ when: {"studentId":10,"stageMin":10}, weight: 4, text: ["{subject.name} settles under your care, warm and vast and wholly content to be exactly where she is.","{subject.name} closes her eyes into the care and does not hurry to open them."] }]);
+registerModuleVariants('immob.arrival.devotion', [{ when: {"studentId":8,"stageMin":10}, weight: 4, text: ["{subject.name} settles under your care, warm and vast and wholly content to be exactly where she is."] }]);
+registerModuleVariants('immob.arrival.devotion', [{ when: {"studentId":12,"stageMin":10}, weight: 4, text: ["{subject.name} settles under your care, warm and vast and wholly content to be exactly where she is."] }]);
+registerModuleVariants('immob.arrival.devotion', [{ when: {"studentId":5,"stageMin":10}, weight: 4, text: ["{subject.name} settles under your care, warm and vast and wholly content to be exactly where she is."] }]);
+registerModuleVariants('immob.arrival.devotion', [{ when: {"studentId":14,"stageMin":10}, weight: 4, text: ["{subject.name} settles under your care, warm and vast and wholly content to be exactly where she is."] }]);
+registerModuleVariants('shift.denial', [{ when: {"corruption":[2]}, text: ["\"It's fine,\" she says — meaning temporary. She hopes."] }]);
 registerModuleVariants('shift.coda', [{ when: {"corruption":[1]}, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
 registerModuleVariants('shift.coda', [{ when: {"corruption":[2]}, text: ["Destiny is already thinking about the next meal. The week rolls forward."] }]);
 registerModuleVariants('shift.scene', [{ when: {"lastCorruptionShift":true}, text: ["The old story loosens at the edges."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":0,"corruption":[0],"stageMin":2,"stageMax":4}, weight: 4, text: ["She checks progress the way she checks game film — proud, hungry for more."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":0,"corruption":[2],"stageMin":5}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":1,"corruption":[0],"stageMax":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":1,"corruption":[2],"stageMin":6}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":2,"corruption":[1],"stageMin":3}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":4,"corruption":[0],"stageMax":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":5,"corruption":[1],"stageMin":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":8,"corruption":[0],"stageMax":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":10,"corruption":[2],"stageMin":5}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
 registerModuleVariants('interior.selfObs', [{ when: {"studentId":12,"corruption":[1],"stageMin":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":14,"corruption":[2],"stageMin":5}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":15,"corruption":[2],"stageMin":6}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":16,"corruption":[0],"stageMax":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":3,"corruption":[0],"stageMin":2,"stageMax":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":6,"corruption":[0],"stageMax":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":7,"corruption":[0],"stageMax":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":9,"corruption":[0],"stageMax":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":11,"corruption":[0],"stageMax":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":13,"corruption":[0],"stageMax":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":17,"corruption":[0],"stageMax":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
-registerModuleVariants('interior.selfObs', [{ when: {"studentId":18,"corruption":[0],"stageMax":4}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
 registerModuleVariants('interior.selfObs', [{ when: {"corruption":[0],"stageMax":2}, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
 registerModuleVariants('interior.selfObs', [{ when: {"corruption":[0],"stageMin":2,"stageMax":3,"gainStance":"opposed"}, weight: 2, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
 registerModuleVariants('interior.selfObs', [{ when: {"corruption":[0],"stageMin":2,"stageMax":3,"gainStance":"reluctant"}, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
@@ -452,14 +321,20 @@ registerModuleVariants('interior.selfObs', [{ when: {"stageMin":3,"corruption":[
 registerModuleVariants('interior.selfObs', [{ when: {"stageMin":5,"corruption":[1]}, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
 registerModuleVariants('interior.selfObs', [{ when: {"stageMin":7}, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
 registerModuleVariants('interior.selfObs', [{ when: {"corruption":[2],"stageMin":4}, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
+registerModuleVariants('interior.selfObs', [{ when: {"fixationTierMin":1,"stageMin":2}, weight: 2, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
+registerModuleVariants('interior.selfObs', [{ when: {"fixationTierMin":2,"stageMin":3}, weight: 3, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
+registerModuleVariants('interior.selfObs', [{ when: {"fixationTierMin":3,"stageMin":3}, weight: 4, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
+registerModuleVariants('interior.selfObs', [{ when: {"obsessionTierMin":1,"stageMin":3}, weight: 2, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
+registerModuleVariants('interior.selfObs', [{ when: {"obsessionTierMin":2,"stageMin":4}, weight: 3, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
+registerModuleVariants('interior.selfObs', [{ when: {"shameTierMin":1,"corruption":[0],"stageMin":2}, weight: 2, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
+registerModuleVariants('interior.selfObs', [{ when: {"shameTierMin":2,"corruption":[0],"stageMin":3}, weight: 3, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
+registerModuleVariants('interior.selfObs', [{ when: {"dependenceTierMin":1,"corruption":[1],"stageMin":3}, weight: 2, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
+registerModuleVariants('interior.selfObs', [{ when: {"dependenceTierMin":2,"stageMin":4}, weight: 3, text: ["Brittany inventories softness like a stat line she has not named yet."] }]);
 registerModuleVariants('interior.sizeRealize', [{ when: {"studentId":3,"stageMin":6,"corruption":[0]}, weight: 4, text: ["Tiffany realizes your gaze caught the squeeze past the booth. She does not mind."] }]);
 registerModuleVariants('interior.sizeRealize', [{ when: {"studentId":6,"stageMin":5,"relationship":[2,3]}, weight: 4, text: ["Serena hears the chair complain and files it under adaptation, not defeat."] }]);
 registerModuleVariants('interior.sizeRealize', [{ when: {"studentId":9,"stageMin":7}, weight: 4, text: ["Serena hears the chair complain and files it under adaptation, not defeat."] }]);
 registerModuleVariants('interior.sizeRealize', [{ when: {"studentId":11,"stageMin":6,"corruption":[1]}, weight: 4, text: ["Serena hears the chair complain and files it under adaptation, not defeat."] }]);
 registerModuleVariants('interior.sizeRealize', [{ when: {"studentId":17,"stageMin":8}, weight: 4, text: ["Serena hears the chair complain and files it under adaptation, not defeat."] }]);
-registerModuleVariants('interior.sizeRealize', [{ when: {"stageMin":4,"corruption":[0]}, text: ["Serena hears the chair complain and files it under adaptation, not defeat."] }]);
-registerModuleVariants('interior.sizeRealize', [{ when: {"stageMin":5}, text: ["Serena hears the chair complain and files it under adaptation, not defeat."] }]);
-registerModuleVariants('interior.sizeRealize', [{ when: {"stageMin":6,"corruption":[1]}, text: ["Serena hears the chair complain and files it under adaptation, not defeat."] }]);
 registerModuleVariants('interior.sizeRealize', [{ when: {"stageMin":8}, text: ["Serena hears the chair complain and files it under adaptation, not defeat."] }]);
 registerModuleVariants('interior.sizeRealize', [{ when: {"relationship":[0,1],"stageMin":6}, text: ["Serena hears the chair complain and files it under adaptation, not defeat.","The desk arm marks her hip. Evidence of a new training load."] }]);
 registerModuleVariants('interior.sizeRealize', [{ when: {"relationship":[2,3],"stageMin":6}, text: ["Serena hears the chair complain and files it under adaptation, not defeat.","The desk arm marks her hip. Evidence of a new training load."] }]);
@@ -468,6 +343,12 @@ registerModuleVariants('interior.gainPride', [{ when: {"studentId":2,"corruption
 registerModuleVariants('interior.gainPride', [{ when: {"studentId":6,"corruption":[2],"stageMin":6}, weight: 4, text: ["Kylie likes the number climbing. The feed will too. She is ready for both."] }]);
 registerModuleVariants('interior.gainPride', [{ when: {"studentId":13,"corruption":[1],"stageMin":5}, weight: 4, text: ["Kylie likes the number climbing. The feed will too. She is ready for both."] }]);
 registerModuleVariants('interior.gainPride', [{ when: {"studentId":14,"corruption":[2],"stageMin":7}, weight: 4, text: ["Kylie likes the number climbing. The feed will too. She is ready for both."] }]);
-registerModuleVariants('interior.gainPride', [{ when: {"corruption":[1,2],"stageMin":4}, text: ["Kylie likes the number climbing. The feed will too. She is ready for both."] }]);
 registerModuleVariants('interior.gainPride', [{ when: {"corruption":[2],"stageMin":6}, weight: 2, text: ["Kylie likes the number climbing. The feed will too. She is ready for both."] }]);
 registerModuleVariants('interior.gainPride', [{ when: {"corruption":[2],"stageMin":10}, text: ["Kylie likes the number climbing. The feed will too. She is ready for both."] }]);
+registerModuleVariants('interior.gainPride', [{ when: {"obsessionTierMin":1,"corruption":[1,2],"stageMin":4}, weight: 2, text: ["Kylie likes the number climbing. The feed will too. She is ready for both."] }]);
+registerModuleVariants('interior.gainPride', [{ when: {"obsessionTierMin":2,"corruption":[1,2],"stageMin":5}, weight: 3, text: ["Kylie likes the number climbing. The feed will too. She is ready for both."] }]);
+registerModuleVariants('interior.gainPride', [{ when: {"obsessionTierMin":3,"stageMin":5}, weight: 4, text: ["Kylie likes the number climbing. The feed will too. She is ready for both."] }]);
+registerModuleVariants('interior.gainPride', [{ when: {"fixationTierMin":1,"corruption":[1,2],"stageMin":3}, weight: 2, text: ["Kylie likes the number climbing. The feed will too. She is ready for both."] }]);
+registerModuleVariants('interior.gainPride', [{ when: {"fixationTierMin":2,"stageMin":4}, weight: 3, text: ["Kylie likes the number climbing. The feed will too. She is ready for both."] }]);
+registerModuleVariants('interior.gainPride', [{ when: {"dependenceTierMin":1,"corruption":[1,2],"stageMin":4}, weight: 2, text: ["Kylie likes the number climbing. The feed will too. She is ready for both."] }]);
+registerModuleVariants('interior.gainPride', [{ when: {"dependenceTierMin":2,"stageMin":5}, weight: 3, text: ["Kylie likes the number climbing. The feed will too. She is ready for both."] }]);
