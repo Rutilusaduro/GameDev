@@ -16,7 +16,7 @@ import './diaryPhaseD.js';
 // ── SUMO ──────────────────────────────────────────────────────
 // ── diary.sumo (decomposed) ─────────────────────────────────────
 registerPool('diary.sumo.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['Regional qualifier. The warm-up room was unfamiliar and everything in it — the smell, the scale, the way my body moved in the space — felt borrowed. Dana \'The Wall\' Mercer didn\'t look at me.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['Regional qualifier. The warm-up room was unfamiliar and everything in it — the smell, the scale, the way my body moved in the space — felt borrowed. Dana \'The Wall\' Mercer didn\'t look at me.'] },
   { when: { stage: [5], corruption: [0] }, text: ['I weighed in and the number sat there and I didn\'t know how to inhabit it yet. Dana Mercer looked right through me. I need to learn how to carry this weight like it belongs to me.'] },
   { when: { stage: [5], corruption: [1] }, text: ['Regional qualifier. I understood the math before I got there: every pound I add is a pound she has to move. Dana Mercer, 340 lbs, three-year veteran. I ate between bouts.'] },
   { when: { stage: [5], corruption: [1] }, text: ['Dana said \'you\'re going to be a problem\' after she beat me and I\'ve been turning that over all week. She said it like a compliment.'] },
@@ -37,11 +37,16 @@ registerPool('diary.sumo.c1', [
   { when: { stage: [10] }, text: ['I wrote it down the night I won nationals: I stood in the middle of the dohyo, the largest competitor the sport has ever crowned, my belly vast and warm and full from a whole day of corner feedin'] },
   { when: { stageMin: 5, stageMax: 6, season: ["winter"] }, text: ['Winter training. The chanko nabe before weigh-in, cold outside, heat in the room, my body filling steadily with warmth. Dana shook my hand in the warmup hall. The gap is closing.'] },
   { when: { stageMin: 7, season: ["summer"] }, text: ['Summer circuit. The heat makes it harder but I don\'t stop eating between bouts — summer weight is still weight. Dana said it\'s the hottest she\'s competed in this circuit. I said nothing. I ate.'] },
-  { when: {}, text: ['In the warm-up room, eating, getting ready. This is what I do.'] },
+  { when: {}, text: [
+    "In the warm-up room, eating, getting ready. This is what I do.",
+    "Between bouts the belly fills lower. Strategy demands it.",
+    "Food, weight, the ring — this is the work now.",
+  ]},
+
 ]);
 
 registerPool('diary.sumo.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I didn\'t deserve to be looked at yet. I ate between bouts because the coach said to, not because I understood it. My belly felt heavy and wrong and I finished lower than I wanted.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I didn\'t deserve to be looked at yet. I ate between bouts because the coach said to, not because I understood it. My belly felt heavy and wrong and I finished lower than I wanted.'] },
   { when: { stage: [5], corruption: [0] }, text: ['It does belong to me. I haven\'t made peace with that yet, but I will.'] },
   { when: { stage: [5], corruption: [1] }, text: ['I don\'t love all of what I\'m becoming, but I\'m very good at this, and those two things are starting to feel like they can coexist.'] },
   { when: { stage: [5], corruption: [1] }, text: ['I ate my way through the drive home thinking about what it means to have a rival who respects you before you\'ve beaten her.'] },
@@ -62,11 +67,16 @@ registerPool('diary.sumo.c2', [
   { when: { stage: [10] }, text: ['Every bowl, every weigh-in, every pound. This is the record and the record is my body. There is more to add. I am not done.'] },
   { when: { stageMin: 5, stageMax: 6, season: ["winter"] }, text: ['Winter weight sits differently — I can feel it in how I move through doors.'] },
   { when: { stageMin: 7, season: ["summer"] }, text: ['I\'m larger in summer than I was in fall and that\'s all the data I need.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Warm-up room. Chanko cooling. I eat anyway.",
+    "Between bouts the belly fills lower. Strategy demands it.",
+    "Food, weight, the ring — this is the work now.",
+  ]},
+
 ]);
 
 registerPool('diary.sumo.c3', [
-  { when: { stage: [5], corruption: [0] }, text: ['I wrote down three things I did wrong. I\'ve started fixing them.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I wrote down three things I did wrong. I\'ve started fixing them.'] },
   { when: { stage: [5] }, text: ['I ate in my corner between bouts — I figured out fast that every pound I add is a pound she has to move — and I pushed her hard. She won. \' I\'m going to be a problem.'] },
   { when: { stage: [6], corruption: [0] }, text: ['I wrote it down.'] },
   { when: { stage: [6], corruption: [1] }, text: ['We\'re both just moving toward it at different speeds.'] },
@@ -74,18 +84,28 @@ registerPool('diary.sumo.c3', [
   { when: { stage: [8] }, text: ['There\'s no thinking your way around this much weight. I made sure of it.'] },
   { when: { stage: [9], corruption: [0] }, text: ['I sat with how large I\'ve become and told myself this was the plan. It was the plan.'] },
   { when: { stage: [9] }, text: ['So I fed in my corner and I grew between bouts and I buried her under all of it, and afterward she was smiling. \'Thank you,\' she said. I understood.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Warm-up room. Chanko cooling. I eat anyway.",
+    "Between bouts the belly fills lower. Strategy demands it.",
+    "Food, weight, the ring — this is the work now.",
+  ]},
+
 ]);
 
 registerPool('diary.sumo', [
-  { when: {}, text: ['{diary.sumo.c1} {diary.sumo.c2} {diary.sumo.c3}'] },
+{ when: {}, text: [
+    "{diary.sumo.c1} {diary.sumo.c2} {diary.sumo.c3}",
+    "{diary.sumo.c2} {diary.sumo.c3}\n\n{diary.sumo.c1}",
+    "{diary.sumo.c3} {diary.sumo.c1}\n\n{diary.sumo.c2}",
+  ]},
+
 ]);
 
 
 // ── EATING_COMPETITOR ─────────────────────────────────────────
 // ── diary.eating_competitor (decomposed) ─────────────────────────────────────
 registerPool('diary.eating_competitor.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['Timer ran. I finished early and sat with my hands in my lap while the others kept going and felt something I should have been proud of. I mostly felt unsure. The plate was clear.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['Timer ran. I finished early and sat with my hands in my lap while the others kept going and felt something I should have been proud of. I mostly felt unsure. The plate was clear.'] },
   { when: { stage: [5], corruption: [0] }, text: ['I finished the event before anyone else and a person I didn\'t know said \'good run.\' That felt strange. I\'m very fast at eating. That\'s what I am now. I\'m still deciding how I feel about it.'] },
   { when: { stage: [5], corruption: [1] }, text: ['Timer ran. Finished forty seconds early. The crowd didn\'t know how to react. I sat with my hands folded and waited, because the plate was empty and the record was over.'] },
   { when: { stage: [5] }, text: ['The timer is honest. It doesn\'t negotiate.'] },
@@ -102,11 +122,16 @@ registerPool('diary.eating_competitor.c1', [
   { when: { stageMin: 7, archetype: "athlete" }, text: ['I used to time my miles. Now I log my intake. The discipline is the same — set a target, approach it without flinching, exceed it. My old coach would have questions.'] },
   { when: { stageMin: 5, stageMax: 6, archetype: "overachiever" }, text: ['I have a spreadsheet. Of course I have a spreadsheet. Circuit schedule, intake logs, weight projections, record targets. My old advisor would recognize the format.'] },
   { when: { stageMin: 7, season: ["winter"] }, text: ['Winter circuit. Ate heavy, ate warm, drove home in the dark with the heater on and my belly full and my hands still on the wheel and felt, very quietly, correct.'] },
-  { when: {}, text: ['The plate is clear. The record stands. I keep going.'] },
+  { when: {}, text: [
+    "The plate is clear. The record stands. I keep going.",
+    "Records fall when appetite stops negotiating.",
+    "Another event, another empty plate. Routine now.",
+  ]},
+
 ]);
 
 registerPool('diary.eating_competitor.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I was very good at this. I went home and ate dinner and thought about what kind of person this was making me.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I was very good at this. I went home and ate dinner and thought about what kind of person this was making me.'] },
   { when: { stage: [5], corruption: [1] }, text: ['The circuit has a slot for me. My face is on a flyer. This is strange and also logical: I\'m very good at this, and circuits need people who are good at things.'] },
   { when: { stage: [5] }, text: ['It runs, and at the end of it either the plate is clear or it isn\'t, and tonight it was clear four minutes before the buzzer and I sat there with my hands in my lap watching the others finish and'] },
   { when: { stage: [6], corruption: [0] }, text: ['I\'m not sure I know what else I am anymore.'] },
@@ -121,23 +146,38 @@ registerPool('diary.eating_competitor.c2', [
   { when: { stage: [10] }, text: ['I just eat now, freely, completely, without a timer or a crowd — just appetite and the endless satisfaction of filling it.'] },
   { when: { stageMin: 7, archetype: "athlete" }, text: ['I would have answers she might not like. Both things can be true.'] },
   { when: { stageMin: 5, stageMax: 6, archetype: "overachiever" }, text: ['The subject matter would confuse her. I\'m past caring about that.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "The plate clears. The timer stops. I am still hungry.",
+    "Records fall when appetite stops negotiating.",
+    "Another event, another empty plate. Routine now.",
+  ]},
+
 ]);
 
 registerPool('diary.eating_competitor.c3', [
-  { when: { stage: [8], corruption: [0] }, text: ['I am eating my way through the paperwork of being a professional. This is fine.'] },
-  { when: {}, text: [''] },
+{ when: { stage: [8], corruption: [0] }, text: ['I am eating my way through the paperwork of being a professional. This is fine.'] },
+  { when: {}, text: [
+    "The plate clears. The timer stops. I am still hungry.",
+    "Records fall when appetite stops negotiating.",
+    "Another event, another empty plate. Routine now.",
+  ]},
+
 ]);
 
 registerPool('diary.eating_competitor', [
-  { when: {}, text: ['{diary.eating_competitor.c1} {diary.eating_competitor.c2} {diary.eating_competitor.c3}'] },
+{ when: {}, text: [
+    "{diary.eating_competitor.c1} {diary.eating_competitor.c2} {diary.eating_competitor.c3}",
+    "{diary.eating_competitor.c2} {diary.eating_competitor.c3}\n\n{diary.eating_competitor.c1}",
+    "{diary.eating_competitor.c3} {diary.eating_competitor.c1}\n\n{diary.eating_competitor.c2}",
+  ]},
+
 ]);
 
 
 // ── FEEDEE_CREATOR ────────────────────────────────────────────
 // ── diary.feedee_creator (decomposed) ─────────────────────────────────────
 registerPool('diary.feedee_creator.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['First collab tonight. " We both lied. We went live and the chat found us and by the end the subscriber count had done something I didn\'t expect.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['First collab tonight. " We both lied. We went live and the chat found us and by the end the subscriber count had done something I didn\'t expect.'] },
   { when: { stage: [5], corruption: [0] }, text: ['We went live. The format works. The chat is alive. I sat with it afterward and tried to feel bad about what this obviously is and couldn\'t. It\'s honest. That\'s the best thing I can say about it.'] },
   { when: { stage: [5], corruption: [1] }, text: ['First collab. We went live. The chat found us. The format is obvious — two people gaining together, documented, watched — and I found I didn\'t mind that it was obvious.'] },
   { when: { stage: [5] }, text: ['First collab tonight. She said "I\'ve never done this before" and I said "neither have I" and we both lied in different directions. We went live. The chat found us.'] },
@@ -151,11 +191,16 @@ registerPool('diary.feedee_creator.c1', [
   { when: { stage: [9] }, text: ['Anniversary collab. One year. She and I sat across from each other before the camera went on and we didn\'t say anything for a minute. We didn\'t have to.'] },
   { when: { stage: [10] }, text: ['Wren drove four hours and she\'s sitting outside the camera frame right now while I write this. 820 pounds. My collab partner is enormous across the table from me. The chat is 300,000 people.'] },
   { when: { stageMin: 6, mood: "happy" }, text: ['Wren is here and we\'re both enormous and the chat is alive and the food is good and I am making something that is genuinely mine. Today that feels like more than enough.'] },
-  { when: {}, text: ['The camera is on. The chat is here. Wren is watching. I begin.'] },
+  { when: {}, text: [
+    "The camera is on. The chat is here. Wren is watching. I begin.",
+    "Another mukbang logged. Another pound closer to the brand.",
+    "The feed wants more. I deliver.",
+  ]},
+
 ]);
 
 registerPool('diary.feedee_creator.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['A person called wrenWatchesEverything said she wasn\'t leaving. I turned off the camera and sat with what I\'d just started. I\'m not sure I understand it yet.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['A person called wrenWatchesEverything said she wasn\'t leaving. I turned off the camera and sat with what I\'d just started. I\'m not sure I understand it yet.'] },
   { when: { stage: [5], corruption: [1] }, text: ['Wren subscribed and said she wasn\'t leaving. I believe her. The subscriber count has tripled.'] },
   { when: { stage: [5] }, text: ['By the time we were done the subscriber count had tripled and a person called wrenWatchesEverything had subscribed and said: I\'m not leaving. I believe her.'] },
   { when: { stage: [6], corruption: [0] }, text: ['I keep making it anyway because I\'m good at it and something about it feels right in a way I haven\'t been able to argue myself out of.'] },
@@ -167,25 +212,40 @@ registerPool('diary.feedee_creator.c2', [
   { when: { stage: [9], corruption: [0] }, text: ['She and I sat across from each other before the camera went on and the room was quiet and I looked at her — enormous across the table, enormous because of these streams and this food and this yea'] },
   { when: { stage: [9] }, text: ['We both looked down — at our own bellies, at the table, at the food — and then we pressed record. Wren was in the room.'] },
   { when: { stage: [10] }, text: ['Wren is four feet away and she has been watching since I was 258 pounds. I put the journal down. I press record. I begin.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Camera on. Appetite honest. Subscribers watching.",
+    "Another mukbang logged. Another pound closer to the brand.",
+    "The feed wants more. I deliver.",
+  ]},
+
 ]);
 
 registerPool('diary.feedee_creator.c3', [
-  { when: { stage: [8], corruption: [0] }, text: ['I ate half the product before the stream because I wanted to and Wren donated the goal before we went live.'] },
+{ when: { stage: [8], corruption: [0] }, text: ['I ate half the product before the stream because I wanted to and Wren donated the goal before we went live.'] },
   { when: { stage: [9], corruption: [0] }, text: ['I pressed record.'] },
   { when: { stage: [9] }, text: ['She cried for about thirty seconds and then she stopped and watched and that was the right thing to do.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Camera on. Appetite honest. Subscribers watching.",
+    "Another mukbang logged. Another pound closer to the brand.",
+    "The feed wants more. I deliver.",
+  ]},
+
 ]);
 
 registerPool('diary.feedee_creator', [
-  { when: {}, text: ['{diary.feedee_creator.c1} {diary.feedee_creator.c2} {diary.feedee_creator.c3}'] },
+{ when: {}, text: [
+    "{diary.feedee_creator.c1} {diary.feedee_creator.c2} {diary.feedee_creator.c3}",
+    "{diary.feedee_creator.c2} {diary.feedee_creator.c3}\n\n{diary.feedee_creator.c1}",
+    "{diary.feedee_creator.c3} {diary.feedee_creator.c1}\n\n{diary.feedee_creator.c2}",
+  ]},
+
 ]);
 
 
 // ── BODY_POSITIVE_CREATOR ─────────────────────────────────────
 // ── diary.body_positive_creator (decomposed) ─────────────────────────────────────
 registerPool('diary.body_positive_creator.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['The rebrand felt risky and it was risky. The algorithm dipped and I watched my numbers fall and kept posting anyway because stopping would have meant the old thing had been right all along.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['The rebrand felt risky and it was risky. The algorithm dipped and I watched my numbers fall and kept posting anyway because stopping would have meant the old thing had been right all along.'] },
   { when: { stage: [5], corruption: [0] }, text: ['I posted the honest version of myself and the algorithm didn\'t like it for six weeks and I didn\'t care for seven. Then the numbers turned around.'] },
   { when: { stage: [5], corruption: [1] }, text: ['Rebrand launched.'] },
   { when: { stage: [5] }, text: ['The rebrand felt like a risk. It was a risk.'] },
@@ -198,11 +258,16 @@ registerPool('diary.body_positive_creator.c1', [
   { when: { stage: [10] }, text: ['The platform is legacy. The body is the argument.'] },
   { when: { stageMin: 7, archetype: "influencer" }, text: ['The numbers are still good. They\'ll always be good. But numbers were the old thing.'] },
   { when: { stageMin: 6, archetype: "artsy" }, text: ['A professor assigned my content in a cultural studies course. I found out because a student emailed me. \' I ate a full meal before I replied. The reply took three drafts.'] },
-  { when: {}, text: ['The argument continues. So does the body.'] },
+  { when: {}, text: [
+    "The argument continues. So does the body.",
+    "Another day showing skin without apology.",
+    "Visibility is the point. So is appetite.",
+  ]},
+
 ]);
 
 registerPool('diary.body_positive_creator.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['The numbers recovered. Doubled. The comments section is different now — more honest, more careful, like people who are relieved to finally say something.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['The numbers recovered. Doubled. The comments section is different now — more honest, more careful, like people who are relieved to finally say something.'] },
   { when: { stage: [5], corruption: [0] }, text: ['The audience that came back was different from the one that left. I think I prefer these people.'] },
   { when: { stage: [5], corruption: [1] }, text: ['The dip lasted six weeks, which was six weeks of holding my nerve, and then it recovered with twice the audience and three times the engagement and a comments section that reads like letters I ne'] },
   { when: { stage: [5] }, text: ['The algorithm dipped for six weeks and then recovered, and what it recovered with was twice the audience and three times the engagement and a comments section that reads like letters I wish I\'d r'] },
@@ -214,24 +279,39 @@ registerPool('diary.body_positive_creator.c2', [
   { when: { stage: [10], corruption: [0] }, text: ['The work continues without me having to defend it anymore. That is what I was working toward.'] },
   { when: { stage: [10] }, text: ['The argument did not require me to be small or quiet or apologetic, and I wasn\'t, and now I am enormous and permanent and the work is done in the sense that it continues without requiring my acti'] },
   { when: { stageMin: 7, archetype: "influencer" }, text: ['The new metric is something I can\'t chart — the messages I get from people who say my platform is the reason they stopped hating themselves. That\'s what the work was for.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Posted anyway. Soft is beautiful. Comments agree.",
+    "Another day showing skin without apology.",
+    "Visibility is the point. So is appetite.",
+  ]},
+
 ]);
 
 registerPool('diary.body_positive_creator.c3', [
-  { when: { stage: [5], corruption: [1] }, text: ['This is working. I\'m in the middle of figuring out if I\'m proud of myself for being right about this, or just relieved.'] },
+{ when: { stage: [5], corruption: [1] }, text: ['This is working. I\'m in the middle of figuring out if I\'m proud of myself for being right about this, or just relieved.'] },
   { when: { stage: [10] }, text: ['That is what winning looks like.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Posted anyway. Soft is beautiful. Comments agree.",
+    "Another day showing skin without apology.",
+    "Visibility is the point. So is appetite.",
+  ]},
+
 ]);
 
 registerPool('diary.body_positive_creator', [
-  { when: {}, text: ['{diary.body_positive_creator.c1} {diary.body_positive_creator.c2} {diary.body_positive_creator.c3}'] },
+{ when: {}, text: [
+    "{diary.body_positive_creator.c1} {diary.body_positive_creator.c2} {diary.body_positive_creator.c3}",
+    "{diary.body_positive_creator.c2} {diary.body_positive_creator.c3}\n\n{diary.body_positive_creator.c1}",
+    "{diary.body_positive_creator.c3} {diary.body_positive_creator.c1}\n\n{diary.body_positive_creator.c2}",
+  ]},
+
 ]);
 
 
 // ── EATING_CAPTAIN ────────────────────────────────────────────
 // ── diary.eating_captain (decomposed) ─────────────────────────────────────
 registerPool('diary.eating_captain.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['Regional Open. The warmup room, Maya from Lakewood at 330 lbs, not looking at me. I ate my warmup. I stepped on the scale. The judge read my number twice. Maya looked over.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['Regional Open. The warmup room, Maya from Lakewood at 330 lbs, not looking at me. I ate my warmup. I stepped on the scale. The judge read my number twice. Maya looked over.'] },
   { when: { stage: [5] }, text: ['Regional Open. My first. The warmup room smelled like cooking and the girl from State — 178 lbs, two years on the circuit — looked at me the way people look at something they didn\'t expect.'] },
   { when: { stage: [6] }, text: ['Six months in. Maya says hello now. She\'s 370 and I\'m 320 and the gap is closing and she knows it the same way I know it.'] },
   { when: { stage: [7], corruption: [0] }, text: ['Conference championship. I weighed in at 419 and Maya\'s number was 410 and the judge said mine into the microphone and Maya stopped writing with the marker.'] },
@@ -239,11 +319,16 @@ registerPool('diary.eating_captain.c1', [
   { when: { stage: [8] }, text: ['National qualifier and Maya found me backstage to say I was the best she\'d ever seen. She said it plainly. She looked me in the eye and said: "You\'re the best I\'ve ever seen.'] },
   { when: { stage: [9] }, text: ['National champion. Maya was already clapping when they read my name. She started before anyone else — before the crowd, before the other competitors, before the officials.'] },
   { when: { stage: [10] }, text: ['I put my hand on my belly after the ceremony.'] },
-  { when: {}, text: ['Warmup room. Eating. Ready. This is where I live.'] },
+  { when: {}, text: [
+    "Warmup room. Eating. Ready. This is where I live.",
+    "Plate empty before the speech ended.",
+    "Captain sets pace. Pace is hungry.",
+  ]},
+
 ]);
 
 registerPool('diary.eating_captain.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I went back to my station. I lost. I was not good enough yet. I\'m going to be good enough.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I went back to my station. I lost. I was not good enough yet. I\'m going to be good enough.'] },
   { when: { stage: [5] }, text: ['Maya from Lakewood, 330 lbs, hadn\'t looked at me at all. I ate my warmup. I stepped on the scale. The judge read my number twice. Maya looked over for the first time.'] },
   { when: { stage: [6] }, text: ['We ate in the same warmup room and talked for a few minutes before competing and it was good and then she beat me and it was fine. I know where this is going. She knows too.'] },
   { when: { stage: [7], corruption: [0] }, text: ['She put the cap back on without finishing the number. I made eye contact with her. \' She said it quietly. I won the conference. I\'m still holding the moment where she put the cap on.'] },
@@ -251,59 +336,94 @@ registerPool('diary.eating_captain.c2', [
   { when: { stage: [8] }, text: ["\" Then she went to her warmup. \" when they read my number at my first competition. Then I ate everything."] },
   { when: { stage: [9] }, text: ['I looked over and she was standing at her side of the staging area with both hands coming together and she was the first. I don\'t know if she planned to be first.'] },
   { when: { stage: [10] }, text: ['That\'s what I wrote in the diary last night — I stood in the arena hallway with the trophy and I put my hand flat on my belly, the full round warm weight of it, and I thought: this is what I buil'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Team ate. I ate more. Leadership looks like seconds.",
+    "Plate empty before the speech ended.",
+    "Captain sets pace. Pace is hungry.",
+  ]},
+
 ]);
 
 registerPool('diary.eating_captain.c3', [
-  { when: { stage: [5] }, text: ['I went back to my station and got ready. I lost. I\'m going back.'] },
+{ when: { stage: [5] }, text: ['I went back to my station and got ready. I lost. I\'m going back.'] },
   { when: { stage: [6] }, text: ['We\'re both just moving toward it at different speeds.'] },
   { when: { stage: [9] }, text: ['I think she just couldn\'t wait any longer. I understand. I am the national champion and I have been waiting for this for two years and I still couldn\'t wait for it to be over.'] },
   { when: { stage: [10] }, text: ['Every competition, every warmup room, every time I stepped on the scale and let them read the number. This is the record. This is the proof. There is more to build. I am not done.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Team ate. I ate more. Leadership looks like seconds.",
+    "Plate empty before the speech ended.",
+    "Captain sets pace. Pace is hungry.",
+  ]},
+
 ]);
 
 registerPool('diary.eating_captain', [
-  { when: {}, text: ['{diary.eating_captain.c1} {diary.eating_captain.c2} {diary.eating_captain.c3}'] },
+{ when: {}, text: [
+    "{diary.eating_captain.c1} {diary.eating_captain.c2} {diary.eating_captain.c3}",
+    "{diary.eating_captain.c2} {diary.eating_captain.c3}\n\n{diary.eating_captain.c1}",
+    "{diary.eating_captain.c3} {diary.eating_captain.c1}\n\n{diary.eating_captain.c2}",
+  ]},
+
 ]);
 
 
 // ── BIG_SQUAD_CAPTAIN ─────────────────────────────────────────
 // ── diary.big_squad_captain (decomposed) ─────────────────────────────────────
 registerPool('diary.big_squad_captain.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['I said it in front of the squad and two girls cried. One left. I kept going. Six new pledges signed up the following week. I don\'t know yet if I built a thing or just started one.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I said it in front of the squad and two girls cried. One left. I kept going. Six new pledges signed up the following week. I don\'t know yet if I built a thing or just started one.'] },
   { when: { stage: [5] }, text: ['I stood in front of the squad and said: no more weigh-ins, no more size requirements, no more conversations about who fits the uniform before we talk about who can do the work. Two girls cried.'] },
   { when: { stage: [6] }, text: ['Pledges are choosing us. They say they heard about the culture — that we celebrate what bodies can do rather than what they look like. This is accurate.'] },
   { when: { stage: [7] }, text: ['A journalist called for a quote. Then they asked for a sit-down. \' I read it three times and ate something good and thought about what a long way this has come.'] },
   { when: { stage: [8] }, text: ['National Greek leadership conference. I spoke for forty minutes. My chapter was in the front row. At the end there was a long silence and then the room started.'] },
   { when: { stage: [9] }, text: ['The national organization changed its guidance. Quietly. In a footnote of a wellness document. We were mentioned. My name was mentioned.'] },
   { when: { stage: [10] }, text: ['I built a thing that doesn\'t need me to sustain it anymore.'] },
-  { when: {}, text: ['The culture holds. The chapter grows. Both are the same thing.'] },
+  { when: {}, text: [
+    "The culture holds. The chapter grows. Both are the same thing.",
+    "Sorority table cleared. My end first.",
+    "Big squad energy means big appetite.",
+  ]},
+
 ]);
 
 registerPool('diary.big_squad_captain.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I\'m finding out.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I\'m finding out.'] },
   { when: { stage: [5] }, text: ['One left. Six signed up the next week.'] },
   { when: { stage: [6] }, text: ['The chapter is the fullest it has been in years. Some of the fullness is literal. I\'m proud of all of it.'] },
   { when: { stage: [8] }, text: ['I said afterward that the silence was the best part. That\'s true.'] },
   { when: { stage: [9] }, text: ['I filed it and made dinner and told the squad and they screamed and we ate together.'] },
   { when: { stage: [10] }, text: ['The culture lives in the chapter, in the pledges, in the alumnae who write back and say it changed how they think about their own bodies. That is permanent. I am permanent.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Chapter fed. I fed hardest. Standards.",
+    "Sorority table cleared. My end first.",
+    "Big squad energy means big appetite.",
+  ]},
+
 ]);
 
 registerPool('diary.big_squad_captain.c3', [
-  { when: { stage: [10] }, text: ['We are the same size in different ways.'] },
-  { when: {}, text: [''] },
+{ when: { stage: [10] }, text: ['We are the same size in different ways.'] },
+  { when: {}, text: [
+    "Chapter fed. I fed hardest. Standards.",
+    "Sorority table cleared. My end first.",
+    "Big squad energy means big appetite.",
+  ]},
+
 ]);
 
 registerPool('diary.big_squad_captain', [
-  { when: {}, text: ['{diary.big_squad_captain.c1} {diary.big_squad_captain.c2} {diary.big_squad_captain.c3}'] },
+{ when: {}, text: [
+    "{diary.big_squad_captain.c1} {diary.big_squad_captain.c2} {diary.big_squad_captain.c3}",
+    "{diary.big_squad_captain.c2} {diary.big_squad_captain.c3}\n\n{diary.big_squad_captain.c1}",
+    "{diary.big_squad_captain.c3} {diary.big_squad_captain.c1}\n\n{diary.big_squad_captain.c2}",
+  ]},
+
 ]);
 
 
 // ── EATING_DIARIST ────────────────────────────────────────────
 // ── diary.eating_diarist (decomposed) ─────────────────────────────────────
 registerPool('diary.eating_diarist.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['The newsletter went out to thirty people. I wrote it like an assignment I was grading myself on. Thirty people opened it by morning. Thirty people read what I wrote in the middle of the night.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['The newsletter went out to thirty people. I wrote it like an assignment I was grading myself on. Thirty people opened it by morning. Thirty people read what I wrote in the middle of the night.'] },
   { when: { stage: [5], corruption: [0] }, text: ['Thirty readers. I rewrote the opening line eleven times. Sent it at 11:47pm.'] },
   { when: { stage: [5], corruption: [1] }, text: ['Thirty readers in the morning. Not many. Enough. I already know what the next issue will be about. The writing is the part I\'m sure of. Everything else is still taking shape.'] },
   { when: { stage: [5] }, text: ['The newsletter went out to thirty people. Thirty. I wrote it like an assignment I was grading myself on, which means I rewrote the opening line eleven times and sent it at 11:47pm.'] },
@@ -315,11 +435,16 @@ registerPool('diary.eating_diarist.c1', [
   { when: { stage: [10] }, text: ['The writing and the eating were always the same act — both a form of taking in, of accumulating, of making something mine.'] },
   { when: { stageMin: 5, stageMax: 7, archetype: "bookworm" }, text: ['My academic writing has always been precise. The personal essay is a different instrument.'] },
   { when: { stageMin: 5, archetype: "quiet" }, text: ['The strangest thing about this is that I\'ve always been quiet and now I\'m making things that thousands of people read. I still feel quiet when I write. That\'s where the words come from.'] },
-  { when: {}, text: ['The notebook is full. I start another. The eating continues. Both do.'] },
+  { when: {}, text: [
+    "The notebook is full. I start another. The eating continues. Both do.",
+    "Another entry, another serving documented.",
+    "Words and calories both accumulate.",
+  ]},
+
 ]);
 
 registerPool('diary.eating_diarist.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I sat with that number for a long time before deciding it was a beginning and not an end.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I sat with that number for a long time before deciding it was a beginning and not an end.'] },
   { when: { stage: [5], corruption: [0] }, text: ['Thirty people opened it by morning and I don\'t know what I expected but I know what I felt: that I\'d done a real thing and the world had received it. That\'s rare. I went straight back to writing.'] },
   { when: { stage: [5] }, text: ['Thirty people opened it by morning. Thirty felt like a beginning.'] },
   { when: { stage: [6] }, text: ['I ate a full breakfast before I replied. The reply took four drafts.'] },
@@ -329,18 +454,28 @@ registerPool('diary.eating_diarist.c2', [
   { when: { stage: [10] }, text: ['I understand that now the way I understand my own body: completely, without effort, as a fact that was always true and simply needed time to become obvious.'] },
   { when: { stageMin: 5, stageMax: 7, archetype: "bookworm" }, text: ['I keep revising the same paragraph because I want it to do three things at once and it keeps only doing two. I\'m eating while I revise. The paragraph will give.'] },
   { when: { stageMin: 5, archetype: "quiet" }, text: ['I think that\'s the whole trick.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Logged every bite. Diary honest. Belly fuller.",
+    "Another entry, another serving documented.",
+    "Words and calories both accumulate.",
+  ]},
+
 ]);
 
 registerPool('diary.eating_diarist', [
-  { when: {}, text: ['{diary.eating_diarist.c1} {diary.eating_diarist.c2}'] },
+{ when: {}, text: [
+    "{diary.eating_diarist.c1} {diary.eating_diarist.c2}",
+    "{diary.eating_diarist.c2}\n\n{diary.eating_diarist.c1}",
+    "{diary.eating_diarist.c1}\n\n{diary.eating_diarist.c2}",
+  ]},
+
 ]);
 
 
 // ── FOOD_RESEARCHER ───────────────────────────────────────────
 // ── diary.food_researcher (decomposed) ─────────────────────────────────────
 registerPool('diary.food_researcher.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['The IRB paperwork was forty-seven pages. I am the only researcher I know who is also the primary research subject. I got the approval.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['The IRB paperwork was forty-seven pages. I am the only researcher I know who is also the primary research subject. I got the approval.'] },
   { when: { stage: [5], corruption: [0] }, text: ['I have a lab space, a grant, a meal plan that is technically research infrastructure. The institutional support is real and I keep waiting for someone to notice what it\'s actually funding.'] },
   { when: { stage: [5], corruption: [1] }, text: ['IRB approved. I am the researcher and the subject and the methodology accounts for this, which is the most interesting methodology section I\'ve ever written. The data will be good.'] },
   { when: { stage: [5] }, text: ['The IRB paperwork was forty-seven pages. I am the only researcher I know who is also the primary research subject. The committee found this unusual. They approved it.'] },
@@ -352,11 +487,16 @@ registerPool('diary.food_researcher.c1', [
   { when: { stageMin: 7, archetype: "bookworm" }, text: ['I\'ve published two papers and a grant application this semester and I\'ve been heavier for all of it than I was for any of my previous work. The correlation is documented.'] },
   { when: { stageMin: 6, archetype: "athlete" }, text: ['I used to log miles. Now I log intake. The precision is the same, the units have changed, and the body is a different kind of record. My old training coach would have questions.'] },
   { when: { stageMin: 7, archetype: "psych" }, text: ['There\'s a section in my notes where the researcher voice and the subject voice are indistinguishable. I know exactly which session that happened in. I left it in the methodology paper.'] },
-  { when: {}, text: ['The data accumulates. So does the subject.'] },
+  { when: {}, text: [
+    "The data accumulates. So does the subject.",
+    "Lab notes and snack notes blur together.",
+    "Data delicious. Sample size: me.",
+  ]},
+
 ]);
 
 registerPool('diary.food_researcher.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['The methodology section is the most honest thing I\'ve ever submitted, and I\'ve been sitting with whether that\'s a good thing or a concerning one.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['The methodology section is the most honest thing I\'ve ever submitted, and I\'ve been sitting with whether that\'s a good thing or a concerning one.'] },
   { when: { stage: [5], corruption: [0] }, text: ['No one has yet. The data I\'m generating is genuinely interesting.'] },
   { when: { stage: [5], corruption: [1] }, text: ['The subject is already performing beyond expectations. By which I mean: I\'m eating more than I projected.'] },
   { when: { stage: [5] }, text: ['The methodology section is the most honest thing I\'ve ever submitted.'] },
@@ -367,23 +507,38 @@ registerPool('diary.food_researcher.c2', [
   { when: { stageMin: 7, archetype: "bookworm" }, text: ['I choose to regard it as a research finding rather than an excuse.'] },
   { when: { stageMin: 6, archetype: "athlete" }, text: ['The IRB wouldn\'t let me interview her.'] },
   { when: { stageMin: 7, archetype: "psych" }, text: ['I noted it as a finding.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Hypothesis: more. Method: eat. Results: promising.",
+    "Lab notes and snack notes blur together.",
+    "Data delicious. Sample size: me.",
+  ]},
+
 ]);
 
 registerPool('diary.food_researcher.c3', [
-  { when: { stage: [6] }, text: ['Possibly both.'] },
-  { when: {}, text: [''] },
+{ when: { stage: [6] }, text: ['Possibly both.'] },
+  { when: {}, text: [
+    "Hypothesis: more. Method: eat. Results: promising.",
+    "Lab notes and snack notes blur together.",
+    "Data delicious. Sample size: me.",
+  ]},
+
 ]);
 
 registerPool('diary.food_researcher', [
-  { when: {}, text: ['{diary.food_researcher.c1} {diary.food_researcher.c2} {diary.food_researcher.c3}'] },
+{ when: {}, text: [
+    "{diary.food_researcher.c1} {diary.food_researcher.c2} {diary.food_researcher.c3}",
+    "{diary.food_researcher.c2} {diary.food_researcher.c3}\n\n{diary.food_researcher.c1}",
+    "{diary.food_researcher.c3} {diary.food_researcher.c1}\n\n{diary.food_researcher.c2}",
+  ]},
+
 ]);
 
 
 // ── EATING_STREAMER ───────────────────────────────────────────
 // ── diary.eating_streamer (decomposed) ─────────────────────────────────────
 registerPool('diary.eating_streamer.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['First gaming + eating stream. I was nervous in a way I haven\'t been nervous about streaming in years. The viewer count did something unexpected within two hours.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['First gaming + eating stream. I was nervous in a way I haven\'t been nervous about streaming in years. The viewer count did something unexpected within two hours.'] },
   { when: { stage: [5], corruption: [0] }, text: ['Went live with food and games at the same time. It worked. The chat was very alive. I kept thinking someone was going to tell me to stop and no one did. I think they wanted more.'] },
   { when: { stage: [5] }, text: ['First gaming + eating stream. I was nervous in a way I haven\'t been nervous about streaming in years.'] },
   { when: { stage: [6] }, text: ['The viewers who came for the games stay for the eating. The viewers who came for the eating are learning the games. The crossover is larger and more genuine than I expected.'] },
@@ -393,58 +548,88 @@ registerPool('diary.eating_streamer.c1', [
   { when: { stage: [10] }, text: ['The stream is always on in some sense. I eat in front of people every day and they watch and something genuine happens in that watching. I don\'t fully understand what it is. I don\'t need to.'] },
   { when: { stageMin: 6, archetype: "gamer" }, text: ['I\'ve been streaming for years. This format is the best version of the thing I\'ve always been doing. The optimization was always going to look like this. I just needed the right data point.'] },
   { when: { stageMin: 5, archetype: "influencer" }, text: ['My old content was fine. This content is good. The difference is I\'m not performing a version of myself anymore. I\'m just on camera being exactly what I am. The numbers reflect that.'] },
-  { when: {}, text: ['Live. Eating. Gaming. The chat is here. Good.'] },
+  { when: {}, text: [
+    "Live. Eating. Gaming. The chat is here. Good.",
+    "Donations spike when I take another bite.",
+    "Content is consumption. Both trending up.",
+  ]},
+
 ]);
 
 registerPool('diary.eating_streamer.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I sat afterward looking at the chat log and thinking: I found the format. I found the thing. I don\'t know what that means yet.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I sat afterward looking at the chat log and thinking: I found the format. I found the thing. I don\'t know what that means yet.'] },
   { when: { stage: [5] }, text: ['Within two hours the viewer count had done something I\'d never seen it do before, and the chat was completely alive, and I understood that I had found the correct format.'] },
   { when: { stage: [6] }, text: ['The snacks arrive in boxes now. I have a dedicated shelf.'] },
   { when: { stage: [7] }, text: ['I have a second fridge. I bought it with stream revenue.'] },
   { when: { stage: [10] }, text: ['The food is real. The audience is real. The rest is detail.'] },
   { when: { stageMin: 6, archetype: "gamer" }, text: ['I have it now.'] },
   { when: { stageMin: 5, archetype: "influencer" }, text: ['Numbers always reflect what\'s real.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Stream live. Chat hungry. So am I.",
+    "Donations spike when I take another bite.",
+    "Content is consumption. Both trending up.",
+  ]},
+
 ]);
 
 registerPool('diary.eating_streamer', [
-  { when: {}, text: ['{diary.eating_streamer.c1} {diary.eating_streamer.c2}'] },
+{ when: {}, text: [
+    "{diary.eating_streamer.c1} {diary.eating_streamer.c2}",
+    "{diary.eating_streamer.c2}\n\n{diary.eating_streamer.c1}",
+    "{diary.eating_streamer.c1}\n\n{diary.eating_streamer.c2}",
+  ]},
+
 ]);
 
 
 // ── SPEED_EATER ───────────────────────────────────────────────
 // ── diary.speed_eater (decomposed) ─────────────────────────────────────
 registerPool('diary.speed_eater.c1', [
-  { when: { stage: [5] }, text: ['Timer ran. I finished forty seconds early. The crowd didn\'t know how to react. The MC found words eventually.'] },
+{ when: { stage: [5] }, text: ['Timer ran. I finished forty seconds early. The crowd didn\'t know how to react. The MC found words eventually.'] },
   { when: { stage: [6] }, text: ['Records are falling in sequence. I write each one down in a notebook before I break it. The notebook is three-quarters full. The remaining quarter is projections.'] },
   { when: { stage: [7] }, text: ['Regional eating championship on Saturday, DLC speedrun on Sunday. Both won. I slept for twelve hours after and woke up hungry and started planning the next one.'] },
   { when: { stage: [8] }, text: ['My name shows up in two different competitive communities now. They\'ve started to overlap — people show up to eating competitions who know my gaming records, and vice versa.'] },
   { when: { stage: [9] }, text: ['World-record territory on multiple tables. I\'ve broken things that people thought were unbreakable. The documentation is meticulous. The methodology is reproducible. Nobody has reproduced it.'] },
   { when: { stage: [10] }, text: ['Speed doesn\'t mean anything at this size and weight and scale of appetite. I\'ve transcended the timed format.'] },
   { when: { stageMin: 7, archetype: "gamer" }, text: ['Set a record at a table and a record in a run this weekend. Same muscle. Same state. I\'ve stopped being surprised that they\'re related.'] },
-  { when: {}, text: ['The timer runs. I finish. I rest. I plan the next one.'] },
+  { when: {}, text: [
+    "The timer runs. I finish. I rest. I plan the next one.",
+    "Speed is discipline. Empty plate proof.",
+    "Another record attempt. Another victory.",
+  ]},
+
 ]);
 
 registerPool('diary.speed_eater.c2', [
-  { when: { stage: [5] }, text: ['I sat with my hands folded and waited, because there was nothing else to do — the plate was empty, the record was over, I was done.'] },
+{ when: { stage: [5] }, text: ['I sat with my hands folded and waited, because there was nothing else to do — the plate was empty, the record was over, I was done.'] },
   { when: { stage: [6] }, text: ['The projections keep proving accurate.'] },
   { when: { stage: [7] }, text: ['The two disciplines feel identical to me now: set a target, exceed it, rest, repeat.'] },
   { when: { stage: [8] }, text: ['I hold simultaneous records. It\'s unprecedented. Apparently.'] },
   { when: { stage: [9] }, text: ['I suspect nobody will.'] },
   { when: { stage: [10] }, text: ['I eat until I\'m done, and when I\'m done I\'m done, and the numbers are beside the point. The life is the point. The eating is the point.'] },
   { when: { stageMin: 7, archetype: "gamer" }, text: ['I\'ve started being surprised it took me this long to put them together.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Timer beaten again. Jaw sore. Worth it.",
+    "Speed is discipline. Empty plate proof.",
+    "Another record attempt. Another victory.",
+  ]},
+
 ]);
 
 registerPool('diary.speed_eater', [
-  { when: {}, text: ['{diary.speed_eater.c1} {diary.speed_eater.c2}'] },
+{ when: {}, text: [
+    "{diary.speed_eater.c1} {diary.speed_eater.c2}",
+    "{diary.speed_eater.c2}\n\n{diary.speed_eater.c1}",
+    "{diary.speed_eater.c1}\n\n{diary.speed_eater.c2}",
+  ]},
+
 ]);
 
 
 // ── RANKED_FEEDEE ─────────────────────────────────────────────
 // ── diary.ranked_feedee (decomposed) ─────────────────────────────────────
 registerPool('diary.ranked_feedee.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['Session log — Week 1: New delivery driver. She confirmed the order and left. I ate everything and won a game and stayed up until four. The session was good.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['Session log — Week 1: New delivery driver. She confirmed the order and left. I ate everything and won a game and stayed up until four. The session was good.'] },
   { when: { stage: [5], corruption: [0] }, text: ['Session log — Week 1: I placed a large order late. The driver was fast, eleven minutes, barely said anything. I ate everything. Something about the evening felt correct.'] },
   { when: { stage: [5] }, text: ['Session log — Week 1: Started around two. New delivery driver named Rae got here in eleven minutes. Didn\'t say much, confirmed the order, left. Stayed up until four.'] },
   { when: { stage: [6], corruption: [0] }, text: ['Session log — Week 5: Rae added something to the order. A dessert thing I\'d been meaning to try for three weeks. I ate it. I won three games in a row.'] },
@@ -453,11 +638,16 @@ registerPool('diary.ranked_feedee.c1', [
   { when: { stage: [8] }, text: ['Session log — Week 13: I didn\'t place an order. Rae showed up anyway. \' She brought the exact thing I had been thinking about ordering. I ate it. It took forty minutes.'] },
   { when: { stage: [9] }, text: ['Session log — Week 18: Rae rearranged the desk area to fit more food trays. She didn\'t ask. The setup is better now. My belly rests on the edge of the desk differently.'] },
   { when: { stage: [10] }, text: ['Session log — Week 23: Rae is here most days now. She doesn\'t always bring food. Sometimes she\'s just here. I asked once if she was still technically on shift.'] },
-  { when: {}, text: ['Session log: the food arrived. The game ran. Everything worked as intended.'] },
+  { when: {}, text: [
+    "Session log: the food arrived. The game ran. Everything worked as intended.",
+    "Rank up. Waist up. Correlated.",
+    "Competitive eating has a scoreboard. I intend to top it.",
+  ]},
+
 ]);
 
 registerPool('diary.ranked_feedee.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I don\'t want to examine why it was good. I\'m just logging that it was.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I don\'t want to examine why it was good. I\'m just logging that it was.'] },
   { when: { stage: [5], corruption: [0] }, text: ['I\'ll note that without drawing conclusions.'] },
   { when: { stage: [5] }, text: ['Lost two ranked games, won one. Ate everything. The session felt good in a way I don\'t feel like analyzing.'] },
   { when: { stage: [6], corruption: [0] }, text: ['I notice these two facts coincide and I am choosing to treat that as a coincidence.'] },
@@ -466,81 +656,126 @@ registerPool('diary.ranked_feedee.c2', [
   { when: { stage: [8] }, text: ['During those forty minutes I won four ranked games straight and my team played like a different team because I was not tilting for the first time in two weeks.'] },
   { when: { stage: [9] }, text: ['She said \'there\' when she finished, like a complete sentence. I have been thinking about that word all week. I won my first Diamond game. I am significantly heavier than I was four months ago.'] },
   { when: { stage: [10] }, text: ['She said \'not technically\' and that was the whole answer. I think she knows what she\'s doing. I think I know what she\'s doing. We\'re both choosing not to say it, which is fine.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Leaderboard climbing. Belly climbing faster.",
+    "Rank up. Waist up. Correlated.",
+    "Competitive eating has a scoreboard. I intend to top it.",
+  ]},
+
 ]);
 
 registerPool('diary.ranked_feedee.c3', [
-  { when: { stage: [6] }, text: ['I\'m not drawing conclusions from this.'] },
+{ when: { stage: [6] }, text: ['I\'m not drawing conclusions from this.'] },
   { when: { stage: [8] }, text: ['I have decided not to think carefully about any of this.'] },
   { when: { stage: [9] }, text: ['These things happened in the same week.'] },
   { when: { stage: [10] }, text: ['Working as intended.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Leaderboard climbing. Belly climbing faster.",
+    "Rank up. Waist up. Correlated.",
+    "Competitive eating has a scoreboard. I intend to top it.",
+  ]},
+
 ]);
 
 registerPool('diary.ranked_feedee', [
-  { when: {}, text: ['{diary.ranked_feedee.c1} {diary.ranked_feedee.c2} {diary.ranked_feedee.c3}'] },
+{ when: {}, text: [
+    "{diary.ranked_feedee.c1} {diary.ranked_feedee.c2} {diary.ranked_feedee.c3}",
+    "{diary.ranked_feedee.c2} {diary.ranked_feedee.c3}\n\n{diary.ranked_feedee.c1}",
+    "{diary.ranked_feedee.c3} {diary.ranked_feedee.c1}\n\n{diary.ranked_feedee.c2}",
+  ]},
+
 ]);
 
 
 // ── CHAPTER_HOSTESS ───────────────────────────────────────────
 // ── diary.chapter_hostess (decomposed) ─────────────────────────────────────
 registerPool('diary.chapter_hostess.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['Twelve courses. I planned every one. The chapter arrived uncertain and left full and I sat in the dining room afterward trying to figure out what I\'d just done. We did something real.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['Twelve courses. I planned every one. The chapter arrived uncertain and left full and I sat in the dining room afterward trying to figure out what I\'d just done. We did something real.'] },
   { when: { stage: [5] }, text: ['Twelve courses. I planned every one of them, sourced every ingredient, set every table.'] },
   { when: { stage: [6] }, text: ['Wednesday feast night is established. The chapter knows it, the schedule reflects it, the kitchen is stocked by Tuesday.'] },
   { when: { stage: [7] }, text: ['Three people transferred specifically for the Wednesday feasts. I know this because they told me. They found out about the chapter through secondhand accounts of the food.'] },
   { when: { stage: [8] }, text: ['The administration noticed. A wellness coordinator came to speak with me. I served her the Wednesday feast menu and she left with a full tupperware container and has not filed anything.'] },
   { when: { stage: [9] }, text: ['Alumni are funding the feasts. A check arrived with \'for the table\' in the memo line, from a sister who graduated seven years ago.'] },
   { when: { stage: [10] }, text: ['The chapter hosts itself now. The traditions are real, the recipes are documented, the Wednesday ritual continues. I made a culture. I am also a culture.'] },
-  { when: {}, text: ['The table is set. Wednesday is coming.'] },
+  { when: {}, text: [
+    "The table is set. Wednesday is coming.",
+    "Chapter event success measured in empty trays.",
+    "Hostess duties include finishing what guests cannot.",
+  ]},
+
 ]);
 
 registerPool('diary.chapter_hostess.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I\'m not sure what to call it yet.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I\'m not sure what to call it yet.'] },
   { when: { stage: [5] }, text: ['The chapter arrived uncertain and left full and grateful and different in a way I can\'t fully quantify but absolutely recognize. We did something real in that dining room.'] },
   { when: { stage: [6] }, text: ['I have become the person who feeds everyone, which is a role I did not apply for and have accepted completely.'] },
   { when: { stage: [7] }, text: ['I am building the chapter\'s reputation through abundance. I\'m okay with this.'] },
   { when: { stage: [8] }, text: ['I consider this a diplomatic victory.'] },
   { when: { stage: [9] }, text: ['She heard about the chapter from someone who heard about it from someone else. The feast has a legacy.'] },
   { when: { stage: [10] }, text: ['Both will outlast me in one direction or another.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Hosted, fed, out-ate everyone. Hospitality.",
+    "Chapter event success measured in empty trays.",
+    "Hostess duties include finishing what guests cannot.",
+  ]},
+
 ]);
 
 registerPool('diary.chapter_hostess', [
-  { when: {}, text: ['{diary.chapter_hostess.c1} {diary.chapter_hostess.c2}'] },
+{ when: {}, text: [
+    "{diary.chapter_hostess.c1} {diary.chapter_hostess.c2}",
+    "{diary.chapter_hostess.c2}\n\n{diary.chapter_hostess.c1}",
+    "{diary.chapter_hostess.c1}\n\n{diary.chapter_hostess.c2}",
+  ]},
+
 ]);
 
 // ── BODY_POSITIVE_GREEK ───────────────────────────────────────
 // ── diary.body_positive_greek (decomposed) ─────────────────────────────────────
 registerPool('diary.body_positive_greek.c1', [
-  { when: { stage: [5] }, text: ['The proposal passed with one abstention. The one who abstained came to my room three days later and said she\'d been thinking about it and changed her mind. The vote is now unanimous.'] },
+{ when: { stage: [5] }, text: ['The proposal passed with one abstention. The one who abstained came to my room three days later and said she\'d been thinking about it and changed her mind. The vote is now unanimous.'] },
   { when: { stage: [6] }, text: ['Pledges are choosing us because of what we stand for. \' They mean the culture, the size acceptance, the fact that we eat dinner together and nobody comments on portions.'] },
   { when: { stage: [7] }, text: ['National press. The article was sympathetic and got everything right and quoted three of my sisters by name. We printed it. We put it on the chapter bulletin board. We ordered pizza to celebrate.'] },
   { when: { stage: [8] }, text: ['I spoke for forty minutes at the Panhellenic conference. My chapter was in the front row.'] },
   { when: { stage: [9] }, text: ['The national organization changed the wellness guidance. Three sentences, in a footnote, in the appendix. My name was in one of those sentences.'] },
   { when: { stage: [10] }, text: ['I built it. The culture lives in the chapter and in the chapters that modeled themselves on ours and in the pledges who become sisters who become alumnae who go out and change other things.'] },
-  { when: {}, text: ['The chapter holds. The culture grows. Both are the same.'] },
+  { when: {}, text: [
+    "The chapter holds. The culture grows. Both are the same.",
+    "Greek row knows my appetite now.",
+    "Body positivity chapter meeting catered by me.",
+  ]},
+
 ]);
 
 registerPool('diary.body_positive_greek.c2', [
-  { when: { stage: [5] }, text: ['I considered this a signal.'] },
+{ when: { stage: [5] }, text: ['I considered this a signal.'] },
   { when: { stage: [6] }, text: ['We fill every slot in the pledge class.'] },
   { when: { stage: [7] }, text: ['The irony was appreciated.'] },
   { when: { stage: [8] }, text: ['When it was over and the applause had settled, a chapter president from another school came up and said: \'We\'ve been doing the weigh-ins wrong. \' I didn\'t say anything. I just nodded.'] },
   { when: { stage: [9] }, text: ['A footnote in a document that governs thousands of chapters. That is not nothing.'] },
   { when: { stage: [10] }, text: ['I made something that makes things. That is enough.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Letters stretch. So do I. Both still cute.",
+    "Greek row knows my appetite now.",
+    "Body positivity chapter meeting catered by me.",
+  ]},
+
 ]);
 
 registerPool('diary.body_positive_greek', [
-  { when: {}, text: ['{diary.body_positive_greek.c1} {diary.body_positive_greek.c2}'] },
+{ when: {}, text: [
+    "{diary.body_positive_greek.c1} {diary.body_positive_greek.c2}",
+    "{diary.body_positive_greek.c2}\n\n{diary.body_positive_greek.c1}",
+    "{diary.body_positive_greek.c1}\n\n{diary.body_positive_greek.c2}",
+  ]},
+
 ]);
 
 
 // ── INSTALLATION_ARTIST ───────────────────────────────────────
 // ── diary.installation_artist (decomposed) ─────────────────────────────────────
 registerPool('diary.installation_artist.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['First installation. Mirrors, photographs, audio of my voice at each stage. The opening was quiet for three minutes and then someone started talking and I stood in the corner and listened.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['First installation. Mirrors, photographs, audio of my voice at each stage. The opening was quiet for three minutes and then someone started talking and I stood in the corner and listened.'] },
   { when: { stage: [5], corruption: [0] }, text: ['The opening. I stood at the edge and watched people move through the photographs of my body at each weight and tried to understand what they were seeing. I think I understand now.'] },
   { when: { stage: [5] }, text: ['First installation: a room. Mirrors, photographs of my body at each stage, audio of my voice describing what I saw in the mirror at each weight. The opening was quiet for three minutes.'] },
   { when: { stage: [6] }, text: ['Two galleries made offers for the next show. One is in another city.'] },
@@ -549,85 +784,130 @@ registerPool('diary.installation_artist.c1', [
   { when: { stage: [9] }, text: ['Retrospective. For someone still in progress. \' I said I appreciated the confidence that there was an arc and not just a continuous expansion. She laughed. I think she understood.'] },
   { when: { stage: [10] }, text: ['The body is the final installation. The body is always the final installation. Everything I made was documentation of this body becoming itself. Now it has become itself. I am the piece.'] },
   { when: { stageMin: 7, archetype: "artsy" }, text: ['A student asked me in a crit whether the body-as-canvas metaphor was intentional or whether I\'d stumbled into it. I said both, and that that was the correct answer for most good work.'] },
-  { when: {}, text: ['The body is the work. The work continues.'] },
+  { when: {}, text: [
+    "The body is the work. The work continues.",
+    "Art and appetite both require commitment.",
+    "Exhibit open. I am the exhibit.",
+  ]},
+
 ]);
 
 registerPool('diary.installation_artist.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I made something that started a conversation. I\'m still deciding if I want to be in the room for it.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I made something that started a conversation. I\'m still deciding if I want to be in the room for it.'] },
   { when: { stage: [5], corruption: [0] }, text: ['I don\'t know how I feel about it yet.'] },
   { when: { stage: [5] }, text: ['Then someone started talking and the conversation didn\'t stop.'] },
   { when: { stage: [6] }, text: ['I am shipping the work and also shipping myself, which required a logistics conversation that I found genuinely funny and also slightly absurd. I am the largest thing in both shipments.'] },
   { when: { stage: [8] }, text: ['Several of them did not know where the art ended and I began. That is the work.'] },
   { when: { stage: [10] }, text: ['The gallery is wherever I am.'] },
   { when: { stageMin: 7, archetype: "artsy" }, text: ['She wrote it down. I ate something good after.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "The piece is my body now. Gallery agrees.",
+    "Art and appetite both require commitment.",
+    "Exhibit open. I am the exhibit.",
+  ]},
+
 ]);
 
 registerPool('diary.installation_artist', [
-  { when: {}, text: ['{diary.installation_artist.c1} {diary.installation_artist.c2}'] },
+{ when: {}, text: [
+    "{diary.installation_artist.c1} {diary.installation_artist.c2}",
+    "{diary.installation_artist.c2}\n\n{diary.installation_artist.c1}",
+    "{diary.installation_artist.c1}\n\n{diary.installation_artist.c2}",
+  ]},
+
 ]);
 
 
 // ── FOOD_PHOTOGRAPHER ─────────────────────────────────────────
 // ── diary.food_photographer (decomposed) ─────────────────────────────────────
 registerPool('diary.food_photographer.c1', [
-  { when: { stage: [5] }, text: ['First show sold out.'] },
+{ when: { stage: [5] }, text: ['First show sold out.'] },
   { when: { stage: [6] }, text: ['Gallery show in a proper space with proper lighting and proper people who stand in front of the prints and go quiet.'] },
   { when: { stage: [7] }, text: ['Book deal: my photographs, my text. \' I pointed out that I am precedent. I am setting it. The book is what happens after.'] },
   { when: { stage: [8] }, text: ['Collector interest from people who own real things. A museum in Helsinki acquired three prints for the permanent collection. I flew to see the installation.'] },
   { when: { stage: [9] }, text: ['Permanent collections in three countries. The work will be there after I am not.'] },
   { when: { stage: [10] }, text: ['I set out to photograph food. The food changed me. I photographed the change. The photographs became the subject. I became the photograph.'] },
   { when: { stageMin: 6, season: ["summer"] }, text: ['Summer show. Summer light through the gallery windows. The prints of summer food, summer abundance. " I think that\'s accurate.'] },
-  { when: {}, text: ['The photograph holds. The eating continues. Both are the record.'] },
+  { when: {}, text: [
+    "The photograph holds. The eating continues. Both are the record.",
+    "Lens on food, then mouth on food. Workflow.",
+    "Every photo session ends with empty plates.",
+  ]},
+
 ]);
 
 registerPool('diary.food_photographer.c2', [
-  { when: { stage: [5] }, text: ['I was surprised and then I wasn\'t surprised, because the work is good and the subject is present — I photographed every meal I\'ve eaten this year and the cumulative effect is something that lands'] },
+{ when: { stage: [5] }, text: ['I was surprised and then I wasn\'t surprised, because the work is good and the subject is present — I photographed every meal I\'ve eaten this year and the cumulative effect is something that lands'] },
   { when: { stage: [6] }, text: ['I spent the whole opening eating from the reception table, which I\'d argued should serve the foods that appeared in the photographs. The gallerist agreed.'] },
   { when: { stage: [8] }, text: ['The prints looked good in natural light. I ate a tremendous amount of Scandinavian food.'] },
   { when: { stage: [9] }, text: ['I don\'t think about that often but when I do I feel something that isn\'t quite pride and isn\'t quite peace but sits between them.'] },
   { when: { stage: [10] }, text: ['The gallery has my face on the wall and my body in the chair by the desk and the distance between them is one career.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Shot the spread. Ate the spread. Art complete.",
+    "Lens on food, then mouth on food. Workflow.",
+    "Every photo session ends with empty plates.",
+  ]},
+
 ]);
 
 registerPool('diary.food_photographer', [
-  { when: {}, text: ['{diary.food_photographer.c1} {diary.food_photographer.c2}'] },
+{ when: {}, text: [
+    "{diary.food_photographer.c1} {diary.food_photographer.c2}",
+    "{diary.food_photographer.c2}\n\n{diary.food_photographer.c1}",
+    "{diary.food_photographer.c1}\n\n{diary.food_photographer.c2}",
+  ]},
+
 ]);
 
 
 // ── ANONYMOUS_BLOGGER ─────────────────────────────────────────
 // ── diary.anonymous_blogger (decomposed) ─────────────────────────────────────
 registerPool('diary.anonymous_blogger.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['Forty-three readers by morning. Small. Not small to me. Forty-three people read something I made in the middle of the night and I went back and started the next post.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['Forty-three readers by morning. Small. Not small to me. Forty-three people read something I made in the middle of the night and I went back and started the next post.'] },
   { when: { stage: [5] }, text: ['Forty-three readers by morning. I know that\'s small. It wasn\'t small to me. Forty-three people found a thing I made in the middle of the night and read it.'] },
   { when: { stage: [6] }, text: ['The following has grown past what I can track informally. I have spreadsheets now. The posts with the most engagement are never the ones I expected.'] },
   { when: { stage: [7] }, text: ['A post went viral. A journalist tried to find me. She published a piece about looking for me, which meant that ten times as many people read my work trying to figure out who I was.'] },
   { when: { stage: [8] }, text: ['Interview requests by email only. Voice notes with my filter active. One podcast published an episode \'about\' me that was really about what I represent, which is the correct framing.'] },
   { when: { stage: [9] }, text: ['Cultural phenomenon with no face attached. There are fan accounts analyzing my writing style and my food choices and what my identity might be. I follow three of them. One is surprisingly close.'] },
   { when: { stage: [10] }, text: ['The blog and the body are the same record. Everything I wrote happened to the same person who ate everything. The words and the weight are both accumulations. Both are real. Both are mine.'] },
-  { when: {}, text: ['The post is up. Nobody knows who wrote it. I do.'] },
+  { when: {}, text: [
+    "The post is up. Nobody knows who wrote it. I do.",
+    "Another confession in the comments. Another pound.",
+    "The blog tells the truth my old photos deny.",
+  ]},
+
 ]);
 
 registerPool('diary.anonymous_blogger.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I need to figure out if this is sustainable or just something I\'m doing because I can\'t stop.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I need to figure out if this is sustainable or just something I\'m doing because I can\'t stop.'] },
   { when: { stage: [5] }, text: ['I ate breakfast and started the next post immediately.'] },
   { when: { stage: [6] }, text: ['The ones I wrote quickly, at odd hours, slightly recklessly — those are the ones.'] },
   { when: { stage: [7] }, text: ['Nobody found me. This is intentional. The anonymity is load-bearing.'] },
   { when: { stage: [8] }, text: ['What I represent is more interesting than what I am.'] },
   { when: { stage: [9] }, text: ['I have not said so.'] },
   { when: { stage: [10] }, text: ['That is the entire project.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Posted anonymously. Recognized anyway. Growth documented.",
+    "Another confession in the comments. Another pound.",
+    "The blog tells the truth my old photos deny.",
+  ]},
+
 ]);
 
 registerPool('diary.anonymous_blogger', [
-  { when: {}, text: ['{diary.anonymous_blogger.c1} {diary.anonymous_blogger.c2}'] },
+{ when: {}, text: [
+    "{diary.anonymous_blogger.c1} {diary.anonymous_blogger.c2}",
+    "{diary.anonymous_blogger.c2}\n\n{diary.anonymous_blogger.c1}",
+    "{diary.anonymous_blogger.c1}\n\n{diary.anonymous_blogger.c2}",
+  ]},
+
 ]);
 
 
 // ── ASMR_CREATOR ──────────────────────────────────────────────
 // ── diary.asmr_creator (decomposed) ─────────────────────────────────────
 registerPool('diary.asmr_creator.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['I whispered into a microphone and chewed slowly and three hundred people watched in the first hour and left comments that made me sit very quietly afterward. They said this helped them sleep.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I whispered into a microphone and chewed slowly and three hundred people watched in the first hour and left comments that made me sit very quietly afterward. They said this helped them sleep.'] },
   { when: { stage: [5], corruption: [0] }, text: ['First ASMR video. I kept expecting to feel embarrassed and didn\'t. The comments were careful. The community that showed up is careful.'] },
   { when: { stage: [5] }, text: ['I whispered into a microphone and chewed slowly and the three hundred people who watched in the first hour left comments that made me sit very quietly for a long time.'] },
   { when: { stage: [6] }, text: ['The community is small and loyal and understands something that I\'m still learning to articulate. They show up for every video. They leave careful comments.'] },
@@ -636,11 +916,16 @@ registerPool('diary.asmr_creator.c1', [
   { when: { stage: [9] }, text: ['A therapist wrote to say she\'d used one of my videos in a session — with client permission, as background for a relaxation exercise. She said it worked.'] },
   { when: { stage: [10] }, text: ['The sound of me eating is something people find comfort in. I find comfort in the eating. The camera is the only thing between us and it\'s not much of a barrier.'] },
   { when: { stageMin: 5, season: ["winter"] }, text: ['Winter recording session. The apartment is warm and the food is warm and I whisper into the microphone and the chat comes in from everywhere cold. People keep saying it feels like being home.'] },
-  { when: {}, text: ['The microphone is on. I eat. Someone somewhere is listening. That is enough.'] },
+  { when: {}, text: [
+    "The microphone is on. I eat. Someone somewhere is listening. That is enough.",
+    "Soft sounds, soft body, soft appetite.",
+    "Another session. Another hour of eating on camera.",
+  ]},
+
 ]);
 
 registerPool('diary.asmr_creator.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I felt responsible in a way that\'s unfamiliar and good.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I felt responsible in a way that\'s unfamiliar and good.'] },
   { when: { stage: [5], corruption: [0] }, text: ['I think I made something that matters to people in a small, specific way. That seems like the right kind of thing to make.'] },
   { when: { stage: [5] }, text: ['\' I felt responsible in a good way.'] },
   { when: { stage: [6] }, text: ['We are in some kind of agreement that I didn\'t formally sign but honor completely.'] },
@@ -649,18 +934,28 @@ registerPool('diary.asmr_creator.c2', [
   { when: { stage: [9] }, text: ['She asked whether she could recommend the channel to other clients. I said yes, obviously.'] },
   { when: { stage: [10] }, text: ['We are two sides of the same thing: appetite and the peace that comes from feeding it.'] },
   { when: { stageMin: 5, season: ["winter"] }, text: ['I think they mean it.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Mic picked up every chew. Subscribers shivered.",
+    "Soft sounds, soft body, soft appetite.",
+    "Another session. Another hour of eating on camera.",
+  ]},
+
 ]);
 
 registerPool('diary.asmr_creator', [
-  { when: {}, text: ['{diary.asmr_creator.c1} {diary.asmr_creator.c2}'] },
+{ when: {}, text: [
+    "{diary.asmr_creator.c1} {diary.asmr_creator.c2}",
+    "{diary.asmr_creator.c2}\n\n{diary.asmr_creator.c1}",
+    "{diary.asmr_creator.c1}\n\n{diary.asmr_creator.c2}",
+  ]},
+
 ]);
 
 
 // ── HOME_NEST ─────────────────────────────────────────────────
 // ── diary.home_nest (decomposed) ─────────────────────────────────────
 registerPool('diary.home_nest.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['Didn\'t go out today. No particular reason. The food came and I ate it and read something and slept. I woke up and thought about the next order.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['Didn\'t go out today. No particular reason. The food came and I ate it and read something and slept. I woke up and thought about the next order.'] },
   { when: { stage: [5], corruption: [0] }, text: ['Ordered twice today. Ate both. Stayed in. The window was good. I felt no particular urge to go anywhere. I\'m logging that as information about myself, not as a concern.'] },
   { when: { stage: [5] }, text: ['Didn\'t go out today. There was no reason to. The food came — two orders, one midday, one evening. I ate both. Read something. Watched something. Slept when I was full.'] },
   { when: { stage: [6] }, text: ['I\'ve been noting that I\'ve developed routines. Not on purpose — things just happen in the same order, at the same times. The delivery apps know my preferences. I keep refining them.'] },
@@ -670,118 +965,183 @@ registerPool('diary.home_nest.c1', [
   { when: { stage: [10] }, text: ['I\'ve been here a long time, by my standards. The room is familiar. I\'m different — softer, heavier, more settled into this particular chair than I\'ve ever been into anything.'] },
   { when: { stageMin: 7, season: ["winter"] }, text: ['Winter. Everything is better in winter. The apartment is warmer, the food is heavier, the blankets are thicker. I\'ve ordered soup every day this week. I have no intention of stopping.'] },
   { when: { stageMin: 5, season: ["summer"] }, text: ['Summer means the AC is on and the delivery is faster and I\'ve been ordering cold things and eating them in front of the fan. Perfect conditions. No reason to go anywhere.'] },
-  { when: {}, text: ['The order is placed. The room is warm. Good.'] },
+  { when: {}, text: [
+    "The order is placed. The room is warm. Good.",
+    "Home fits me now. I fit home better each week.",
+    "Delivery radius shrinking to arm's length.",
+  ]},
+
 ]);
 
 registerPool('diary.home_nest.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I\'m not sure when this became a system but it seems like one. I\'m still deciding if that\'s a problem.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I\'m not sure when this became a system but it seems like one. I\'m still deciding if that\'s a problem.'] },
   { when: { stage: [5] }, text: ['Woke up and thought about the next order. This seems like a good system.'] },
   { when: { stage: [6] }, text: ['There\'s more to this than I expected when I started.'] },
   { when: { stage: [7] }, text: ['I\'ve been making more good decisions lately. They all involve food.'] },
   { when: { stage: [8] }, text: ['The apartment is its own project — figuring out what I need, what I want, which places are best for which things. It takes time to get right. I\'m getting it right.'] },
   { when: { stage: [9] }, text: ['I like that the usual exists. I like that they know it.'] },
   { when: { stage: [10] }, text: ['I haven\'t wanted to be anywhere else. I\'ve stopped asking if that\'s something to fix.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Nest warm. Snacks closer. Movement optional.",
+    "Home fits me now. I fit home better each week.",
+    "Delivery radius shrinking to arm's length.",
+  ]},
+
 ]);
 
 registerPool('diary.home_nest', [
-  { when: {}, text: ['{diary.home_nest.c1} {diary.home_nest.c2}'] },
+{ when: {}, text: [
+    "{diary.home_nest.c1} {diary.home_nest.c2}",
+    "{diary.home_nest.c2}\n\n{diary.home_nest.c1}",
+    "{diary.home_nest.c1}\n\n{diary.home_nest.c2}",
+  ]},
+
 ]);
 
 
 // ── DELIVERY_HIVE ─────────────────────────────────────────────
 // ── diary.delivery_hive (decomposed) ─────────────────────────────────────
 registerPool('diary.delivery_hive.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['My room feels different lately. The lights are lower than I left them. There were bags by the door this morning I don\'t remember ordering.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['My room feels different lately. The lights are lower than I left them. There were bags by the door this morning I don\'t remember ordering.'] },
   { when: { stage: [5] }, text: ['My room doesn\'t feel like mine anymore. It feels like it\'s becoming something else. The lights are lower. The blankets are thicker.'] },
   { when: { stage: [6] }, text: ['Someone else moved through the Hive today. I didn\'t ask them to. They just... did. They brought food to rooms I haven\'t even claimed yet.'] },
   { when: { stage: [7] }, text: ['The rooms I\'ve taken don\'t look like dorm rooms anymore. The lights are warmer. There are blankets where there used to be desks. People sit instead of study. They eat instead of leave.'] },
   { when: { stage: [8] }, text: ['I don\'t need to walk the halls anymore. I can feel the shape of the Hive from here. Which rooms have softened. Which ones are still resisting. Which ones are already feeding back into me.'] },
   { when: { stage: [9] }, text: ['Most of the building answers to me now. Not with words. With warmth. With softness. With the way people linger in doorways instead of leaving.'] },
   { when: { stage: [10] }, text: ['I don\'t think there\'s a single room left that doesn\'t carry some part of me. The air is thick with it. The walls are warm with it. People don\'t fight it anymore. They sink into it.'] },
-  { when: {}, text: ['The Hive breathes. I breathe. We are the same breath.'] },
+  { when: {}, text: [
+    "The Hive breathes. I breathe. We are the same breath.",
+    "Hive fed. Queen fed most.",
+    "Another drop at the door. Another feast indoors.",
+  ]},
+
 ]);
 
 registerPool('diary.delivery_hive.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I keep waking up with my hands on my stomach and finding it larger than I expected. I\'m writing this down because writing things down usually makes them make sense. It isn\'t working.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I keep waking up with my hands on my stomach and finding it larger than I expected. I\'m writing this down because writing things down usually makes them make sense. It isn\'t working.'] },
   { when: { stage: [5] }, text: ['Delivery bags keep appearing by the door even when I don\'t remember ordering anything. I keep waking up with my hands resting on my stomach. It\'s getting harder to ignore how much it\'s changed.'] },
   { when: { stage: [6] }, text: ['I watched them from my bed and felt something warm settle in my chest. I think I\'m supposed to choose someone. Someone who can move when I can\'t. The thought should scare me. It doesn\'t.'] },
   { when: { stage: [7] }, text: ['I can feel it when another room starts to give in. It\'s like a soft sigh in the walls. My body feels heavier every time it happens. I think that\'s the point.'] },
   { when: { stage: [8] }, text: ['My body has become the map. I close my eyes and I know where the warmth is strongest. I know where the deliveries are going. I know where the people are settling. I am the center now.'] },
   { when: { stage: [9] }, text: ['The deliveries don\'t even feel like they\'re coming from outside anymore. They feel like they\'re coming from me. My body doesn\'t move, but the Hive does.'] },
   { when: { stage: [10] }, text: ['My body is the heart of something much larger than a dorm now. I can feel every breath the Hive takes. I am no longer waiting for it to grow. I am the reason it exists.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Drivers know the route. I know the menu.",
+    "Hive fed. Queen fed most.",
+    "Another drop at the door. Another feast indoors.",
+  ]},
+
 ]);
 
 registerPool('diary.delivery_hive.c3', [
-  { when: { stage: [5] }, text: ['The walls feel like they\'re listening when I breathe.'] },
+{ when: { stage: [5] }, text: ['The walls feel like they\'re listening when I breathe.'] },
   { when: { stage: [9] }, text: ['I think I\'ve become something the building needs.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Drivers know the route. I know the menu.",
+    "Hive fed. Queen fed most.",
+    "Another drop at the door. Another feast indoors.",
+  ]},
+
 ]);
 
 registerPool('diary.delivery_hive', [
-  { when: {}, text: ['{diary.delivery_hive.c1} {diary.delivery_hive.c2} {diary.delivery_hive.c3}'] },
+{ when: {}, text: [
+    "{diary.delivery_hive.c1} {diary.delivery_hive.c2} {diary.delivery_hive.c3}",
+    "{diary.delivery_hive.c2} {diary.delivery_hive.c3}\n\n{diary.delivery_hive.c1}",
+    "{diary.delivery_hive.c3} {diary.delivery_hive.c1}\n\n{diary.delivery_hive.c2}",
+  ]},
+
 ]);
 
 
 // ── CAMPUS_LEGEND ─────────────────────────────────────────────
 // ── diary.campus_legend (decomposed) ─────────────────────────────────────
 registerPool('diary.campus_legend.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['The dining staff started preparing my order when they see me cross the quad. I noticed today.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['The dining staff started preparing my order when they see me cross the quad. I noticed today.'] },
   { when: { stage: [5] }, text: ['The dining staff knows my order. They start preparing it when they see me cross the quad.'] },
   { when: { stage: [6] }, text: ['A freshman I\'ve never spoken to referenced \'the legend of the dining hall\' in a group chat I was added to. She meant me.'] },
   { when: { stage: [7] }, text: ['My name on a booth. The dining director did it herself, with a small brass plaque, and told me about it during a meal I was having. I looked at the plaque for a while. Then I finished eating.'] },
   { when: { stage: [8] }, text: ['A campus tour guide mentioned me by name to a group of prospectives. I was eating nearby and overheard. \' I considered interrupting. I decided to finish my meal instead.'] },
   { when: { stage: [9] }, text: ['Incoming classes are told about me during orientation. I\'ve confirmed this with four separate first-years who told me independently. The story varies slightly in the telling.'] },
   { when: { stage: [10] }, text: ['I came here not knowing anyone or anything. Now I am known before I arrive anywhere on this campus. The campus shaped me and I shaped it back. We are the same thing now.'] },
-  { when: {}, text: ['The booth is mine. The dining hall knows. Good.'] },
+  { when: {}, text: [
+    "The booth is mine. The dining hall knows. Good.",
+    "Campus myth: girl who never stops eating. True.",
+    "Legend status earned one tray at a time.",
+  ]},
+
 ]);
 
 registerPool('diary.campus_legend.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I stood at the door a little longer than necessary, watching them work, and then I went in and ate and didn\'t say anything about it. I don\'t know what to say about it.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I stood at the door a little longer than necessary, watching them work, and then I went in and ate and didn\'t say anything about it. I don\'t know what to say about it.'] },
   { when: { stage: [5] }, text: ['The booth in the corner has been \'mine\' for months in the informal sense that nobody sits in it when I\'m coming. I appreciate the courtesy.'] },
   { when: { stage: [6] }, text: ['The story she told was accurate in the facts and somehow smaller than the reality. Legends usually are.'] },
   { when: { stage: [7] }, text: ['The plaque is still there.'] },
   { when: { stage: [9] }, text: ['The core of it — a person who became part of this place — is consistent.'] },
   { when: { stage: [10] }, text: ['I am the place and the place is me.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "They tell stories in the dining hall. I am the story.",
+    "Campus myth: girl who never stops eating. True.",
+    "Legend status earned one tray at a time.",
+  ]},
+
 ]);
 
 registerPool('diary.campus_legend', [
-  { when: {}, text: ['{diary.campus_legend.c1} {diary.campus_legend.c2}'] },
+{ when: {}, text: [
+    "{diary.campus_legend.c1} {diary.campus_legend.c2}",
+    "{diary.campus_legend.c2}\n\n{diary.campus_legend.c1}",
+    "{diary.campus_legend.c1}\n\n{diary.campus_legend.c2}",
+  ]},
+
 ]);
 
 // ── FOOD_TOURIST ──────────────────────────────────────────────
 // ── diary.food_tourist (decomposed) ─────────────────────────────────────
 registerPool('diary.food_tourist.c1', [
-  { when: { stage: [5] }, text: ['Systematic expedition: I have a map, a list, a notebook. Every cuisine I\'ve identified within thirty miles gets a documented visit. The notebook is filling. The visits are never disappointing.'] },
+{ when: { stage: [5] }, text: ['Systematic expedition: I have a map, a list, a notebook. Every cuisine I\'ve identified within thirty miles gets a documented visit. The notebook is filling. The visits are never disappointing.'] },
   { when: { stage: [6] }, text: ['\' The world is smaller than I expected and food is the thing that makes it smaller. I am grateful for both.'] },
   { when: { stage: [7] }, text: ['A publication from home ran a feature on the blog. My family read it. \' That is the best review I\'ve received and it required no formal publication.'] },
   { when: { stage: [8] }, text: ['Two book deals. One here, one at home. Both publishers want the same story from two different angles. I can give them that. The story is about distance and food and what you carry across both.'] },
   { when: { stage: [9] }, text: ['Cultural ambassador. It\'s on a press release somewhere. I\'m someone who ate everything in one city while thinking about everything she left behind in another. The food was always the bridge.'] },
   { when: { stage: [10] }, text: ['I\'ve tasted everything. The list is documented, the notes are extensive, the body is the record of every meal.'] },
   { when: { stageMin: 5, season: ["fall"] }, text: ['Fall food expedition. Three new places this week. The notebook has pages for everything: what I ordered, what surprised me, what I\'ll go back for. The cold makes the warm food better.'] },
-  { when: {}, text: ['The notebook is open. The next place is on the list. I\'m going.'] },
+  { when: {}, text: [
+    "The notebook is open. The next place is on the list. I'm going.",
+    "Tour continues inward. Passport: my belly.",
+    "Another cuisine conquered. Another button lost.",
+  ]},
+
 ]);
 
 registerPool('diary.food_tourist.c2', [
-  { when: { stage: [5] }, text: ['I eat well everywhere.'] },
+{ when: { stage: [5] }, text: ['I eat well everywhere.'] },
   { when: { stage: [8] }, text: ['I know it very well. I am it.'] },
   { when: { stage: [9] }, text: ['I\'ve grown to fill the bridge.'] },
   { when: { stage: [10] }, text: ['I came here a stranger and grew into something that belongs here and to home simultaneously. The eating made that possible. It always does.'] },
   { when: { stageMin: 5, season: ["fall"] }, text: ['Everything tastes like somewhere.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Tried every truck on campus. Twice.",
+    "Tour continues inward. Passport: my belly.",
+    "Another cuisine conquered. Another button lost.",
+  ]},
+
 ]);
 
 registerPool('diary.food_tourist', [
-  { when: {}, text: ['{diary.food_tourist.c1} {diary.food_tourist.c2}'] },
+{ when: {}, text: [
+    "{diary.food_tourist.c1} {diary.food_tourist.c2}",
+    "{diary.food_tourist.c2}\n\n{diary.food_tourist.c1}",
+    "{diary.food_tourist.c1}\n\n{diary.food_tourist.c2}",
+  ]},
+
 ]);
 
 
 // ── FF_AUTHOR ─────────────────────────────────────────────────
 // ── diary.ff_author (decomposed) ─────────────────────────────────────
 registerPool('diary.ff_author.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['The character started as someone else. She\'s a literature student who gains weight — slowly, without apology — and the people around her find it beautiful and bring her food.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['The character started as someone else. She\'s a literature student who gains weight — slowly, without apology — and the people around her find it beautiful and bring her food.'] },
   { when: { stage: [5], corruption: [0] }, text: ['Forty-three comments on the first chapter. I told myself the character wasn\'t me. The comments treated her like she was me.'] },
   { when: { stage: [5] }, text: ['The character started as someone else. Or I told myself that.'] },
   { when: { stage: [6] }, text: ['The readership has opinions. Very specific preferences about the rate and distribution of the characters\' gain.'] },
@@ -789,11 +1149,16 @@ registerPool('diary.ff_author.c1', [
   { when: { stage: [8] }, text: ['The author account is anonymous but the fiction is not. Everyone I\'ve written about is in it. The gaining is the point.'] },
   { when: { stage: [9] }, text: ['Three hundred thousand words.'] },
   { when: { stage: [10] }, text: ['I don\'t write as much now. Not because I\'ve run out — I haven\'t — but because the distance between the fiction and the reality has closed.'] },
-  { when: {}, text: ['The character and I are the same person. I\'ve stopped pretending otherwise.'] },
+  { when: {}, text: [
+    "The character and I are the same person. I've stopped pretending otherwise.",
+    "Fiction and appetite trade places nightly.",
+    "Readers want more. So does the author.",
+  ]},
+
 ]);
 
 registerPool('diary.ff_author.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I posted the first chapter and forty-three strangers commented by morning. I sat with that for a while. They understood what I was writing. I\'m not sure I understood it as well as they did.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I posted the first chapter and forty-three strangers commented by morning. I sat with that for a while. They understood what I was writing. I\'m not sure I understood it as well as they did.'] },
   { when: { stage: [5], corruption: [0] }, text: ['I went back and read the chapter again and thought: maybe they\'re right. I ate a full breakfast before I started chapter two.'] },
   { when: { stage: [5] }, text: ['She\'s a literature student who gains weight over the course of the story — slowly, without apology — and the people around her find it beautiful and bring her food and want her to keep growing.'] },
   { when: { stage: [6] }, text: ['One commenter left a two-paragraph analysis of the chapter where the cheerleader\'s uniform finally splits that was more precise than anything my thesis committee has ever said about my actual aca'] },
@@ -801,31 +1166,51 @@ registerPool('diary.ff_author.c2', [
   { when: { stage: [8] }, text: ['The love that surrounds it is the point — the way the characters grow into themselves and are seen clearly and wanted for exactly what they are.'] },
   { when: { stage: [9] }, text: ['The fandom writes their own versions of the story, and some of those versions are about me — the anonymous author, imagined as the main character, large and cared for and fed. They\'re not wrong.'] },
   { when: { stage: [10] }, text: ['Everything I wrote was true: the gaining, the care, the body as something beautiful rather than something to manage. I wrote it into being. Then I became it. That\'s the best thing I\'ve ever made.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Wrote the feast scene hungry. Lived it after.",
+    "Fiction and appetite trade places nightly.",
+    "Readers want more. So does the author.",
+  ]},
+
 ]);
 
 registerPool('diary.ff_author.c3', [
-  { when: { stage: [5] }, text: ['I spent four hours on a single scene where someone notices how soft her belly has become and tells her. I posted the first chapter at 2am and couldn\'t sleep.'] },
+{ when: { stage: [5] }, text: ['I spent four hours on a single scene where someone notices how soft her belly has become and tells her. I posted the first chapter at 2am and couldn\'t sleep.'] },
   { when: { stage: [6] }, text: ['I\'ve been thinking about that a lot. I\'ve also been eating more. I don\'t think these two things are unrelated.'] },
   { when: { stage: [8] }, text: ['I\'ve stopped pretending I\'m writing about imaginary people. I\'ve stopped pretending I\'m not one of the characters.'] },
   { when: { stage: [9] }, text: ['The character I write most honestly is the one who eats everything and is loved for exactly that. She has been me for a long time.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Wrote the feast scene hungry. Lived it after.",
+    "Fiction and appetite trade places nightly.",
+    "Readers want more. So does the author.",
+  ]},
+
 ]);
 
 registerPool('diary.ff_author.c4', [
-  { when: { stage: [5] }, text: ['There were forty-three comments by morning. Forty-three strangers who understood exactly what I\'d written.'] },
-  { when: {}, text: [''] },
+{ when: { stage: [5] }, text: ['There were forty-three comments by morning. Forty-three strangers who understood exactly what I\'d written.'] },
+  { when: {}, text: [
+    "Wrote the feast scene hungry. Lived it after.",
+    "Fiction and appetite trade places nightly.",
+    "Readers want more. So does the author.",
+  ]},
+
 ]);
 
 registerPool('diary.ff_author', [
-  { when: {}, text: ['{diary.ff_author.c1} {diary.ff_author.c2} {diary.ff_author.c3} {diary.ff_author.c4}'] },
+{ when: {}, text: [
+    "{diary.ff_author.c1} {diary.ff_author.c2} {diary.ff_author.c3} {diary.ff_author.c4}",
+    "{diary.ff_author.c2} {diary.ff_author.c3}\n\n{diary.ff_author.c1}",
+    "{diary.ff_author.c3} {diary.ff_author.c1}\n\n{diary.ff_author.c2}",
+  ]},
+
 ]);
 
 
 // ── HOMESTEAD_QUEEN ───────────────────────────────────────────
 // ── diary.homestead_queen (decomposed) ─────────────────────────────────────
 registerPool('diary.homestead_queen.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['Made sweet potato pie from scratch at two in the morning because I couldn\'t sleep and the kitchen was there. I ate half of it warm, standing in front of the oven.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['Made sweet potato pie from scratch at two in the morning because I couldn\'t sleep and the kitchen was there. I ate half of it warm, standing in front of the oven.'] },
   { when: { stage: [5], corruption: [0] }, text: ['The recipe box is getting full. My notes look more like Mae\'s notes than like anything I learned at school. I ate through two test batches this week. The second was better.'] },
   { when: { stage: [5] }, text: ['I made sweet potato pie from scratch at two in the morning because I couldn\'t sleep and the kitchen was there.'] },
   { when: { stage: [6] }, text: ['Grandma Mae video-called last Sunday and she could see the setup behind me — the jars lined up on the shelf, the cast iron on every surface, the folding table I\'ve covered with oilcloth and claim'] },
@@ -835,11 +1220,16 @@ registerPool('diary.homestead_queen.c1', [
   { when: { stage: [10] }, text: ['Mae drove up. I heard her knock and I knew — I could feel it the way you feel weather coming — and when I opened the door she saw me.'] },
   { when: { stageMin: 5, season: ["fall"] }, text: ['Fall cooking is the best cooking. The apples are right, the sweet potatoes are right, everything slow-cooked in the pot is right. Mae says fall is when the kitchen comes alive.'] },
   { when: { stageMin: 6, season: ["winter"] }, text: ['Winter in this kitchen is a different thing entirely. The oven runs all day. The apartment is warm from inside out. \' It is.'] },
-  { when: {}, text: ['The kitchen is warm. The recipe is right. Mae would recognize this.'] },
+  { when: {}, text: [
+    "The kitchen is warm. The recipe is right. Mae would recognize this.",
+    "Farm table full. I am fuller.",
+    "Harvest in jars and on hips.",
+  ]},
+
 ]);
 
 registerPool('diary.homestead_queen.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['By the time I finished writing down what I\'d used I was full in a way that felt right. I wrote the number on the scale in the recipe book this morning.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['By the time I finished writing down what I\'d used I was full in a way that felt right. I wrote the number on the scale in the recipe book this morning.'] },
   { when: { stage: [5], corruption: [0] }, text: ['I am getting better at this. I am also getting larger and I think those things are the same process.'] },
   { when: { stage: [5] }, text: ['I ate half of it while it was still warm, standing in front of the open oven, in a flannel shirt I\'ve had since high school and jean shorts I can no longer fully close.'] },
   { when: { stage: [6] }, text: ['\' I cried a little after we hung up. Not sad crying. The kind that happens when someone sees exactly what you are and names it correctly.'] },
@@ -848,33 +1238,53 @@ registerPool('diary.homestead_queen.c2', [
   { when: { stage: [9] }, text: ['I don\'t feel like I\'ve run out of room. I feel like I\'ve filled it. There\'s a difference. I think Mae knows the difference too.'] },
   { when: { stage: [10] }, text: ['Really saw me, not the version I present on the phone, the full physical fact of what I\'ve become in this room with this food and this life. She looked at me for a long time.'] },
   { when: { stageMin: 5, season: ["fall"] }, text: ['I understand now what she meant.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Preserved another batch. Ate another batch.",
+    "Farm table full. I am fuller.",
+    "Harvest in jars and on hips.",
+  ]},
+
 ]);
 
 registerPool('diary.homestead_queen.c3', [
-  { when: { stage: [5], corruption: [0] }, text: ['I don\'t know exactly what I\'m building here, but I\'m building something.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I don\'t know exactly what I\'m building here, but I\'m building something.'] },
   { when: { stage: [5] }, text: ['By the time I finished writing down what I\'d used I was full in a way that felt like the word was invented for this exact moment. I weighed myself in the morning.'] },
   { when: { stage: [8] }, text: ['\' I don\'t know when I stopped sounding like myself somewhere else, but I know exactly when I found it again.'] },
   { when: { stage: [9] }, text: ['She just says it like a warning to give me time to decide how I feel about it.'] },
   { when: { stage: [10] }, text: ['Then she started crying. Then she reached past me and started looking at what was in the jars. \'Tell me what you\'ve been making,\' she said. So I told her. We were there for five hours.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Preserved another batch. Ate another batch.",
+    "Farm table full. I am fuller.",
+    "Harvest in jars and on hips.",
+  ]},
+
 ]);
 
 registerPool('diary.homestead_queen.c4', [
-  { when: { stage: [5] }, text: ['I wrote the number in the recipe book. This is a record. This is a life.'] },
+{ when: { stage: [5] }, text: ['I wrote the number in the recipe book. This is a record. This is a life.'] },
   { when: { stage: [10] }, text: ['She ate with me the whole time.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Preserved another batch. Ate another batch.",
+    "Farm table full. I am fuller.",
+    "Harvest in jars and on hips.",
+  ]},
+
 ]);
 
 registerPool('diary.homestead_queen', [
-  { when: {}, text: ['{diary.homestead_queen.c1} {diary.homestead_queen.c2} {diary.homestead_queen.c3} {diary.homestead_queen.c4}'] },
+{ when: {}, text: [
+    "{diary.homestead_queen.c1} {diary.homestead_queen.c2} {diary.homestead_queen.c3} {diary.homestead_queen.c4}",
+    "{diary.homestead_queen.c2} {diary.homestead_queen.c3}\n\n{diary.homestead_queen.c1}",
+    "{diary.homestead_queen.c3} {diary.homestead_queen.c1}\n\n{diary.homestead_queen.c2}",
+  ]},
+
 ]);
 
 
 // ── STATE_FAIR_QUEEN ──────────────────────────────────────────
 // ── diary.state_fair_queen (decomposed) ─────────────────────────────────────
 registerPool('diary.state_fair_queen.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['First county fair entry. Darcy from Meadowview looked at me like I wasn\'t serious. She won. I drove home knowing exactly what I did wrong and exactly what I\'m going to do next.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['First county fair entry. Darcy from Meadowview looked at me like I wasn\'t serious. She won. I drove home knowing exactly what I did wrong and exactly what I\'m going to do next.'] },
   { when: { stage: [5], corruption: [0] }, text: ['First fair. Darcy won. She barely looked at me. I\'m logging that as data. The gap will close. I know what closing gaps feels like.'] },
   { when: { stage: [5] }, text: ['First county fair entry. \' She won. I drove home knowing two things: what I did wrong, and that I was going to do this again. I wrote both things down.'] },
   { when: { stage: [6] }, text: ['Second year. Darcy said \'you again\' when she saw me, and she said it like she\'d been thinking about it. I was at least sixty pounds heavier.'] },
@@ -883,11 +1293,16 @@ registerPool('diary.state_fair_queen.c1', [
   { when: { stage: [9] }, text: ['Tri-state invitational. They built a bigger scale. The judge announced this at the weigh-in — \'we have a new scale this year\' — and looked at me, and the whole tent understood. I weighed in.'] },
   { when: { stage: [10] }, text: ['Grand Fair Invitational. I barely fit the tent. I don\'t say that with distress — I say it the way you say a fact that took a long time to arrive. The contest is incidental.'] },
   { when: { stageMin: 5, season: ["summer"] }, text: ['Summer fair circuit. The heat is brutal and I eat through it anyway. Darcy looked at me across the tent and I could see her doing the math. The math is not in her favor anymore.'] },
-  { when: {}, text: ['Darcy is here. I\'m eating. The scale will say what it says.'] },
+  { when: {}, text: [
+    "Darcy is here. I'm eating. The scale will say what it says.",
+    "Fair food is a sport. I am undefeated.",
+    "Crown heavy. Belly heavier. Proud.",
+  ]},
+
 ]);
 
 registerPool('diary.state_fair_queen.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I wrote both things down. The number I ate during the event is also in the notes.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I wrote both things down. The number I ate during the event is also in the notes.'] },
   { when: { stage: [5] }, text: ['I also wrote down what I\'d eaten during the event because I wanted to know the exact number. The number was not as high as it\'s going to get.'] },
   { when: { stage: [6] }, text: ['She adjusted something in how she was sitting at the table after she looked at me. She barely won. That \'barely\' matters. She felt it. I felt it. I went home and added it to my records.'] },
   { when: { stage: [7] }, text: ['I watched her do it in my peripheral vision — stopped completely, one second, just long enough to register what she was seeing — and then she went back to eating. I kept going. I won.'] },
@@ -895,57 +1310,92 @@ registerPool('diary.state_fair_queen.c2', [
   { when: { stage: [9] }, text: ['The number caused a sound. Not a cheer, something quieter — the specific noise a crowd makes when a fact is too large to simply applaud. Darcy is in the open bracket now. She comes to watch.'] },
   { when: { stage: [10] }, text: ['Darcy is competing in the open bracket, 500 pounds, here to watch me win and I know it. When my number goes up, she\'s going to be the loudest person in the building.'] },
   { when: { stageMin: 5, season: ["summer"] }, text: ['I know what summer weight means at these numbers.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Blue ribbon and blue plate. Both mine.",
+    "Fair food is a sport. I am undefeated.",
+    "Crown heavy. Belly heavier. Proud.",
+  ]},
+
 ]);
 
 registerPool('diary.state_fair_queen.c3', [
-  { when: { stage: [7] }, text: ['\' I don\'t think she found that funny. I did.'] },
+{ when: { stage: [7] }, text: ['\' I don\'t think she found that funny. I did.'] },
   { when: { stage: [8] }, text: ['I walked over and she said \'I trained for six months for this. \' She said it like she was proud of me. I think she was. I think I might be the best thing that ever happened to her career.'] },
   { when: { stage: [9] }, text: ['That means more to me than any trophy.'] },
   { when: { stage: [10] }, text: ['I\'ve been eating competitively since I couldn\'t win. I\'ve kept eating until I can\'t lose. I don\'t think there\'s a more honest biography than that.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Blue ribbon and blue plate. Both mine.",
+    "Fair food is a sport. I am undefeated.",
+    "Crown heavy. Belly heavier. Proud.",
+  ]},
+
 ]);
 
 registerPool('diary.state_fair_queen.c4', [
-  { when: { stage: [8] }, text: ['I\'m definitely the best thing that ever happened to mine.'] },
-  { when: {}, text: [''] },
+{ when: { stage: [8] }, text: ['I\'m definitely the best thing that ever happened to mine.'] },
+  { when: {}, text: [
+    "Blue ribbon and blue plate. Both mine.",
+    "Fair food is a sport. I am undefeated.",
+    "Crown heavy. Belly heavier. Proud.",
+  ]},
+
 ]);
 
 registerPool('diary.state_fair_queen', [
-  { when: {}, text: ['{diary.state_fair_queen.c1} {diary.state_fair_queen.c2} {diary.state_fair_queen.c3} {diary.state_fair_queen.c4}'] },
+{ when: {}, text: [
+    "{diary.state_fair_queen.c1} {diary.state_fair_queen.c2} {diary.state_fair_queen.c3} {diary.state_fair_queen.c4}",
+    "{diary.state_fair_queen.c2} {diary.state_fair_queen.c3}\n\n{diary.state_fair_queen.c1}",
+    "{diary.state_fair_queen.c3} {diary.state_fair_queen.c1}\n\n{diary.state_fair_queen.c2}",
+  ]},
+
 ]);
 
 
 // ── WIFE_LESSONS ──────────────────────────────────────────────
 // ── diary.wife_lessons (decomposed) ─────────────────────────────────────
 registerPool('diary.wife_lessons.c1', [
-  { when: { stage: [5] }, text: ['First class. Darlene and Wanda. I made the honey-butter rolls and we talked for two hours and by the end Darlene had eaten seven and Wanda had eaten nine and they both took containers home.'] },
+{ when: { stage: [5] }, text: ['First class. Darlene and Wanda. I made the honey-butter rolls and we talked for two hours and by the end Darlene had eaten seven and Wanda had eaten nine and they both took containers home.'] },
   { when: { stage: [6] }, text: ['Patrice joined. She came in tentative and left with three recipe cards and a look on her face I recognize — the look of someone who has just realized this is what they\'ve been missing.'] },
   { when: { stage: [7] }, text: ['Cheryl. I didn\'t think she\'d convert. I underestimated how hungry she was. Not for food — for permission. The femininity talk hit her like a key in a lock.'] },
   { when: { stage: [8] }, text: ['All six. Ruthanne passed the house on her own and knocked. I had been waiting for her without knowing I was waiting. Becca came with her. \' That means Sofia knows. That means it\'s working.'] },
   { when: { stage: [9] }, text: ['The philosophy is in the room now. They carry it without me. Lily wanted to learn how to make the recipes herself — the real ones, the ones that actually do what I\'ve been doing. She knows.'] },
   { when: { stage: [10] }, text: ['Kezia changed bedrooms. She\'d been growing into her old one for a while but the door frame finally became the problem. Wanda had the bigger bedroom cleared out and furnished for her.'] },
-  { when: {}, text: ['The recipe is right. The table is full. The work continues.'] },
+  { when: {}, text: [
+    "The recipe is right. The table is full. The work continues.",
+    "Domestic syllabus includes dessert twice.",
+    "Homework delicious. Grade: expanding.",
+  ]},
+
 ]);
 
 registerPool('diary.wife_lessons.c2', [
-  { when: { stage: [5] }, text: ['Wanda asked which fat I use. I wrote it on the card. She\'ll figure out what to do with it.'] },
+{ when: { stage: [5] }, text: ['Wanda asked which fat I use. I wrote it on the card. She\'ll figure out what to do with it.'] },
   { when: { stage: [6] }, text: ['Taylor\'s hips are widening. She doesn\'t know what\'s in her lunches. She will eventually, when she starts making them herself. That day is what I\'m working toward.'] },
   { when: { stage: [7] }, text: ['She sat very still and then she started nodding and then she asked for the full recipe list. Madison is going to be extraordinary.'] },
   { when: { stage: [9] }, text: ['She wants to. That\'s the whole thing. That\'s everything. Kezia can\'t really leave the house anymore. Wanda is not sad about this.'] },
   { when: { stage: [10] }, text: ['The bed frame cracked six weeks in. Wanda upgraded to reinforced. Kezia stays home. The world isn\'t set up for her at this size. The house is. That\'s what a home is for.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Lesson today: second helpings are love language.",
+    "Domestic syllabus includes dessert twice.",
+    "Homework delicious. Grade: expanding.",
+  ]},
+
 ]);
 
 registerPool('diary.wife_lessons', [
-  { when: {}, text: ['{diary.wife_lessons.c1} {diary.wife_lessons.c2}'] },
+{ when: {}, text: [
+    "{diary.wife_lessons.c1} {diary.wife_lessons.c2}",
+    "{diary.wife_lessons.c2}\n\n{diary.wife_lessons.c1}",
+    "{diary.wife_lessons.c1}\n\n{diary.wife_lessons.c2}",
+  ]},
+
 ]);
 
 
 // ── PSYCH_RESEARCHER ──────────────────────────────────────────
 // ── diary.psych_researcher (decomposed) ─────────────────────────────────────
 registerPool('diary.psych_researcher.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['Session one. The subject was uncertain — expected. I maintained clinical distance throughout. My own intake during the session exceeded my baseline. I\'ve noted it in the variable log.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['Session one. The subject was uncertain — expected. I maintained clinical distance throughout. My own intake during the session exceeded my baseline. I\'ve noted it in the variable log.'] },
   { when: { stage: [5], corruption: [0] }, text: ['First session. I kept the professional framing. I noticed my note-taking was very detailed. I notice I\'m using more paper than I expected. Both things are in the log.'] },
   { when: { stage: [5] }, text: ['Session one. Subject was uncertain — expected. I maintained clinical distance throughout, which was harder than expected. My own intake during the session exceeded my baseline.'] },
   { when: { stage: [6] }, text: ['Month three. The subject\'s appetite has changed in kind. They reach for things now, unprompted, like the food is owed to them. The data is extraordinary.'] },
@@ -953,107 +1403,167 @@ registerPool('diary.psych_researcher.c1', [
   { when: { stage: [8] }, text: ['My subject told me today that they look forward to our sessions. I wrote it down. Then I sat with it for a while. Then I ate the rest of what was on the table.'] },
   { when: { stage: [9] }, text: ['I have generated more data on appetite, embodiment, and the feeder/feedee dynamic than I will likely be able to publish in full. My own data is extensive. The subject\'s data is extraordinary.'] },
   { when: { stage: [10] }, text: ['Final entry for this volume. I am very large and my subject is very large and the research produced by this relationship will be the most honest work of my career.'] },
-  { when: {}, text: ['The data accumulates. The variable is noted.'] },
+  { when: {}, text: [
+    "The data accumulates. The variable is noted.",
+    "IRB would have questions. I have answers.",
+    "Self-study ongoing. Results robust.",
+  ]},
+
 ]);
 
 registerPool('diary.psych_researcher.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I\'ll adjust for next week.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I\'ll adjust for next week.'] },
   { when: { stage: [5] }, text: ['Variable acknowledged.'] },
   { when: { stage: [6] }, text: ['My own appetite has also changed and I\'m choosing to study it instead of correcting it.'] },
   { when: { stage: [7] }, text: ['I am aware of what this probably means. I am continuing anyway.'] },
   { when: { stage: [8] }, text: ['Variable noted: I found this information pleasing.'] },
   { when: { stage: [9] }, text: ['I\'ve decided to count my weight gain as a finding.'] },
   { when: { stage: [10] }, text: ['I stopped being the observer sometime around session forty. I am in the study. I always was.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Variable: appetite. Outcome: significant.",
+    "IRB would have questions. I have answers.",
+    "Self-study ongoing. Results robust.",
+  ]},
+
 ]);
 
 registerPool('diary.psych_researcher', [
-  { when: {}, text: ['{diary.psych_researcher.c1} {diary.psych_researcher.c2}'] },
+{ when: {}, text: [
+    "{diary.psych_researcher.c1} {diary.psych_researcher.c2}",
+    "{diary.psych_researcher.c2}\n\n{diary.psych_researcher.c1}",
+    "{diary.psych_researcher.c1}\n\n{diary.psych_researcher.c2}",
+  ]},
+
 ]);
 
 
 // ── HOMEROOM_QUEEN ────────────────────────────────────────────
 // ── diary.homeroom_queen (decomposed) ─────────────────────────────────────
 registerPool('diary.homeroom_queen.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['First Tuesday. I made everything from scratch and the classroom smelled like butter and warm sugar.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['First Tuesday. I made everything from scratch and the classroom smelled like butter and warm sugar.'] },
   { when: { stage: [5] }, text: ['The first Tuesday.'] },
   { when: { stage: [6] }, text: ['Mrs. Monroe came inside today instead of waiting at the window. She sat at the table and had four pieces and talked about everything and laughed at all of it.'] },
   { when: { stage: [7] }, text: ['The group has grown comfortable. Kayla doesn\'t arrive early anymore — she arrives on time, which means she was never uncertain, just cautious. Bri has stopped asking what\'s in things. Mrs.'] },
   { when: { stage: [8] }, text: ['I realized this week that I taste-test more at school than I do at home, which doesn\'t make nutritional sense unless you factor in that I\'m happy at school. I\'m happy on Tuesdays.'] },
   { when: { stage: [9] }, text: ['Sofia wore something different today. Not smaller — more comfortable, more expansive, more herself. Mrs. Reyes has stopped tugging at her jacket and I want to note that this is not a small thing.'] },
   { when: { stage: [10] }, text: ['End of term. All six of them in the room at once, which hasn\'t happened since the formal event was established. I made everything.'] },
-  { when: {}, text: ['Tuesday is coming. The kitchen is ready.'] },
+  { when: {}, text: [
+    "Tuesday is coming. The kitchen is ready.",
+    "Homeroom royalty includes royal appetite.",
+    "Crowned and still hungry.",
+  ]},
+
 ]);
 
 registerPool('diary.homeroom_queen.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I ate alongside them — quality control, I told myself — and logged the banana bread as a success. I didn\'t log how much I ate. I\'m not sure what column it would go in.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I ate alongside them — quality control, I told myself — and logged the banana bread as a success. I didn\'t log how much I ate. I\'m not sure what column it would go in.'] },
   { when: { stage: [5] }, text: ['I\'d been up since five making everything from scratch, and by the time the girls arrived the classroom smelled like butter and warm sugar and something that felt like a real home.'] },
   { when: { stage: [6] }, text: ['I found myself making more food specifically because I knew she was coming. I\'m not sure when I started planning for individual preferences. I notice I have.'] },
   { when: { stage: [7] }, text: ['Calloway ate three pieces and then asked about my training. I gave a genuine answer. She nodded. I think we understand each other now. I ate alongside them for the full hour.'] },
   { when: { stage: [8] }, text: ['The session was good — Mrs. Monroe brought wine and I politely declined and then accepted — and everyone was softer and more comfortable and more themselves than when we started this.'] },
   { when: { stage: [9] }, text: ['I am at this point something between a teacher and a caterer and possibly something else I don\'t have a word for. I ate everything I made extras of. There were a lot of extras.'] },
   { when: { stage: [10] }, text: ['I ate everything I\'d saved for myself and then some of theirs when there were offers.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Class fed. Teacher shocked. I smiled.",
+    "Homeroom royalty includes royal appetite.",
+    "Crowned and still hungry.",
+  ]},
+
 ]);
 
 registerPool('diary.homeroom_queen.c3', [
-  { when: { stage: [5] }, text: ['I ate while I watched them eat — quality control, I told myself — and by the end of the session my apron was dusted with flour and my own belly was noticeably fuller than when I\'d arrived.'] },
+{ when: { stage: [5] }, text: ['I ate while I watched them eat — quality control, I told myself — and by the end of the session my apron was dusted with flour and my own belly was noticeably fuller than when I\'d arrived.'] },
   { when: { stage: [6] }, text: ['I ate more than usual this session too. The peach cobbler required a second taste-test. Then a third.'] },
   { when: { stage: [7] }, text: ['My clothes feel different after Tuesdays. I\'ve started buying the forgiving fabrics.'] },
   { when: { stage: [8] }, text: ['I am also softer. I think this is fine. I think this is the intended outcome.'] },
   { when: { stage: [9] }, text: ['I planned it that way and I\'m no longer pretending otherwise.'] },
   { when: { stage: [10] }, text: ['The room was full and warm and loud with laughing and I sat in the middle of it — enormous and full and happy and flour-dusted — and thought: yes.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Class fed. Teacher shocked. I smiled.",
+    "Homeroom royalty includes royal appetite.",
+    "Crowned and still hungry.",
+  ]},
+
 ]);
 
 registerPool('diary.homeroom_queen.c4', [
-  { when: { stage: [5] }, text: ['I logged that the banana bread was a success. I didn\'t log the rest.'] },
+{ when: { stage: [5] }, text: ['I logged that the banana bread was a success. I didn\'t log the rest.'] },
   { when: { stage: [10] }, text: ['This is exactly what I was supposed to do with all of this. I logged that. It belongs in the record.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Class fed. Teacher shocked. I smiled.",
+    "Homeroom royalty includes royal appetite.",
+    "Crowned and still hungry.",
+  ]},
+
 ]);
 
 registerPool('diary.homeroom_queen', [
-  { when: {}, text: ['{diary.homeroom_queen.c1} {diary.homeroom_queen.c2} {diary.homeroom_queen.c3} {diary.homeroom_queen.c4}'] },
+{ when: {}, text: [
+    "{diary.homeroom_queen.c1} {diary.homeroom_queen.c2} {diary.homeroom_queen.c3} {diary.homeroom_queen.c4}",
+    "{diary.homeroom_queen.c2} {diary.homeroom_queen.c3}\n\n{diary.homeroom_queen.c1}",
+    "{diary.homeroom_queen.c3} {diary.homeroom_queen.c1}\n\n{diary.homeroom_queen.c2}",
+  ]},
+
 ]);
 
 
 // ── CULTIVATOR ────────────────────────────────────────────────
 // ── diary.cultivator (decomposed) ─────────────────────────────────────
 registerPool('diary.cultivator.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['First session. I built the recipe around her palate — not a concession, a technique. She ate everything. I ate the test portions and logged both sets of results.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['First session. I built the recipe around her palate — not a concession, a technique. She ate everything. I ate the test portions and logged both sets of results.'] },
   { when: { stage: [5] }, text: ['First subject session. I built the recipe specifically around her palate — not a concession, a technique. She ate everything without questioning.'] },
   { when: { stage: [6] }, text: ['The subject is growing on schedule. I adjusted the recipe upward this week — heavier base, extra portion — and she accepted the change as if it had always been this way.'] },
   { when: { stage: [7] }, text: ['I\'ve started noting my own weight in the session log. It\'s relevant data. I\'m considerably heavier than when this started, which is also relevant data. The subject is on pace.'] },
   { when: { stage: [8] }, text: ['Harvest window is open. The subject is at Very Fat stage. I could proceed now. I\'m not proceeding now. I want to see the next stage. This is a professional judgment, not an excuse.'] },
   { when: { stage: [9] }, text: ['The subject is enormous. She takes up the chair completely and eats with the complete appetite of someone past self-consciousness. I fed her the richest version of everything.'] },
   { when: { stage: [10] }, text: ['Session before harvest. She is very large. I am very large.'] },
-  { when: {}, text: ['The recipe is ready. The session begins. The log is open.'] },
+  { when: {}, text: [
+    "The recipe is ready. The session begins. The log is open.",
+    "Growth tended outward and inward.",
+    "Crop and curve both abundant.",
+  ]},
+
 ]);
 
 registerPool('diary.cultivator.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['The professional satisfaction is genuine. I\'m noting that separately from the personal satisfaction, which is also genuine.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['The professional satisfaction is genuine. I\'m noting that separately from the personal satisfaction, which is also genuine.'] },
   { when: { stage: [5] }, text: ['I ate the test portions and noted the results in both logs. The professional satisfaction is real.'] },
   { when: { stage: [6] }, text: ['Quality control required more attention than usual. I\'m eating more at sessions than I expected. I logged it.'] },
   { when: { stage: [7] }, text: ['The kitchen is running exactly as intended.'] },
   { when: { stage: [8] }, text: ['I ate the full quality-control portion today and did not note this as unusual.'] },
   { when: { stage: [9] }, text: ['I ate alongside her. I am considerably larger than I was at the start of this study. I find this entirely appropriate.'] },
   { when: { stage: [10] }, text: ['The kitchen is warm and full and the recipe is perfect and I ate everything I made and she ate everything I served and we sat across from each other both large and full and satisfied and I felt —'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Harvest came in heavy. I came in heavier.",
+    "Growth tended outward and inward.",
+    "Crop and curve both abundant.",
+  ]},
+
 ]);
 
 registerPool('diary.cultivator.c3', [
-  { when: { stage: [10] }, text: ['The harvest will proceed tomorrow. The log is complete.'] },
-  { when: {}, text: [''] },
+{ when: { stage: [10] }, text: ['The harvest will proceed tomorrow. The log is complete.'] },
+  { when: {}, text: [
+    "Harvest came in heavy. I came in heavier.",
+    "Growth tended outward and inward.",
+    "Crop and curve both abundant.",
+  ]},
+
 ]);
 
 registerPool('diary.cultivator', [
-  { when: {}, text: ['{diary.cultivator.c1} {diary.cultivator.c2} {diary.cultivator.c3}'] },
+{ when: {}, text: [
+    "{diary.cultivator.c1} {diary.cultivator.c2} {diary.cultivator.c3}",
+    "{diary.cultivator.c2} {diary.cultivator.c3}\n\n{diary.cultivator.c1}",
+    "{diary.cultivator.c3} {diary.cultivator.c1}\n\n{diary.cultivator.c2}",
+  ]},
+
 ]);
 
 // ── COMMUNITY_RESEARCHER ──────────────────────────────────────
 // ── diary.community_researcher (decomposed) ─────────────────────────────────────
 registerPool('diary.community_researcher.c1', [
-  { when: { stage: [5], corruption: [0] }, text: ['First case study. I told myself I was observing. I observed and I ate and I noted that being welcomed into a space creates an obligation to participate in what the space is for.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['First case study. I told myself I was observing. I observed and I ate and I noted that being welcomed into a space creates an obligation to participate in what the space is for.'] },
   { when: { stage: [5] }, text: ['First case study. I told myself I was observing.'] },
   { when: { stage: [6] }, text: ['Midway through the study. I look different than when I started. I note this the way I note everything — in clinical language that fits neatly into the methodology.'] },
   { when: { stage: [7] }, text: ['My advisor asked about my "level of personal engagement" with the research. " I believe this. I\'m writing a paper about how immersion in these communities is both unavoidable and clarifying.'] },
@@ -1061,27 +1571,47 @@ registerPool('diary.community_researcher.c1', [
   { when: { stage: [9] }, text: ['The paper is 60,000 words. It\'s going to be good — I know when something is good because the writing comes faster than the thinking, and this came faster than anything I\'ve written before.'] },
   { when: { stage: [10] }, text: ["I submitted today. \" She means the honesty. I documented my own transformation as methodology. She approved it. I ate an entire box of something celebratory before bed. I note this approvingly."] },
   { when: { stageMin: 7, archetype: "bookworm" }, text: ['The methodology is immersive participant observation. I know what immersive participant observation does to a researcher. I wrote a chapter on it before I started the study.'] },
-  { when: {}, text: ['The fieldwork continues. The data grows. So does the researcher.'] },
+  { when: {}, text: [
+    "The fieldwork continues. The data grows. So does the researcher.",
+    "Field notes and field meals both extensive.",
+    "Community data includes my waistline.",
+  ]},
+
 ]);
 
 registerPool('diary.community_researcher.c2', [
-  { when: { stage: [5], corruption: [0] }, text: ['I ate more than I planned. I\'m logging this as data and trying not to think too hard about what kind.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I ate more than I planned. I\'m logging this as data and trying not to think too hard about what kind.'] },
   { when: { stage: [5] }, text: ['I observed, and I ate, and I noted the correlation between being welcomed into these spaces and feeling an obligation to participate in what the space was for. I ate more than I planned.'] },
   { when: { stage: [6] }, text: ['The clinical language is accurate. What it doesn\'t convey is that I looked in the mirror this week and didn\'t look away.'] },
   { when: { stage: [7] }, text: ['I am clarified.'] },
   { when: { stage: [8] }, text: ['I\'ve moved on to stretch fabrics. Also documented.'] },
   { when: { stage: [9] }, text: ['There\'s a section on researcher positionality I wrote at 3am. It\'s the best part.'] },
   { when: { stageMin: 7, archetype: "bookworm" }, text: ['The chapter has more footnotes now.'] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    "Survey says: bigger portions everywhere. I contributed.",
+    "Field notes and field meals both extensive.",
+    "Community data includes my waistline.",
+  ]},
+
 ]);
 
 registerPool('diary.community_researcher.c3', [
-  { when: { stage: [5] }, text: ['The sociology of that is documented.'] },
-  { when: {}, text: [''] },
+{ when: { stage: [5] }, text: ['The sociology of that is documented.'] },
+  { when: {}, text: [
+    "Survey says: bigger portions everywhere. I contributed.",
+    "Field notes and field meals both extensive.",
+    "Community data includes my waistline.",
+  ]},
+
 ]);
 
 registerPool('diary.community_researcher', [
-  { when: {}, text: ['{diary.community_researcher.c1} {diary.community_researcher.c2} {diary.community_researcher.c3}'] },
+{ when: {}, text: [
+    "{diary.community_researcher.c1} {diary.community_researcher.c2} {diary.community_researcher.c3}",
+    "{diary.community_researcher.c2} {diary.community_researcher.c3}\n\n{diary.community_researcher.c1}",
+    "{diary.community_researcher.c3} {diary.community_researcher.c1}\n\n{diary.community_researcher.c2}",
+  ]},
+
 ]);
 
 // ── diary.innerBeat — per-student psychological beat pool ────────
@@ -1224,10 +1754,11 @@ registerPool('diary.innerBeat', [
 // FULL SENTENCE — first-person chronicle. No confession, no corruption arc.
 // Gravity, not hunger. Patience, not wanting.
 registerPool('diary.lilith', [
-  { when: {}, text: [
+{ when: {}, text: [
     "Still here. Still hungry. Nothing about this has changed.",
     "I wait. Things come.",
-  ] },
+    "Another page. Another pound without ceremony.",
+  ]},
   { when: { studentId: 15, stageMin: 7 }, weight: 5, text: [
     "Chose my position on the north quad. Sat down. Didn't move for two hours. Three things came to me.",
     "I choose where I am and I stay there. The rest arranges itself around me.",
@@ -1244,6 +1775,7 @@ registerPool('diary.lilith', [
     "I do not move. The world moves toward me — food, attention, the slow orbit of everything hungry. This is reach.",
     "Hunting ended when I became the place. I wait. Things arrive. The appetite is patient and vast.",
   ] },
+
 ]);
 
 // ── renderDiary — public wrapper ──────────────────────────────
