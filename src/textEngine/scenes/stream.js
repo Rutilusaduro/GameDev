@@ -138,7 +138,13 @@ registerPool('stream.betweenRound', [
       'That felt incredible. I\'m on a roll.',
     ] },
 
-  { when: {}, text: ['…'] },
+  { when: {}, text: [
+    '…',
+    'Breathe. Don\'t read chat. Keep going.',
+    'One round down. Reset. I can do another.',
+    'Okay. Water. My stomach\'s loud but I\'m still here.',
+    'Chat\'s spamming — I\'m pretending I can\'t see it.',
+  ] },
 ]);
 
 // ── Round start ────────────────────────────────────────────────
@@ -153,7 +159,12 @@ registerPool('stream.roundStart', [
   { when: { challengeType: 'chaotic' },
     text: ['Everything at once. Of course.', 'Chaos round. What could go wrong?'] },
   { when: {},
-    text: ['Okay… here we go.', 'Round starting. Wish me luck, chat.'] },
+    text: [
+      'Okay… here we go.',
+      'Round starting. Wish me luck, chat.',
+      'Alright — next round. Stay with me.',
+      'Deep breath. Let\'s not embarrass ourselves.',
+    ] },
 ]);
 
 // ── Chat: performance tiers ────────────────────────────────────
@@ -317,6 +328,7 @@ registerPool('stream.chat.parasocial.late', [
   { when: {}, text: [
     'she\'s actually getting really big…',
     'the denial is crazy',
+    'we\'ve been watching this arc for months',
   ] },
 ]);
 
@@ -338,6 +350,7 @@ registerPool('stream.chat.parasocial.veryLate', [
   { when: {}, text: [
     'she\'s so gone and it\'s perfect',
     'this is actually the best thing that\'s ever happened to her',
+    'she stopped pretending and chat won',
   ] },
 ]);
 
@@ -349,10 +362,13 @@ registerPool('stream.chat.rare', [
       'she\'s actually in danger rn',
       'I can\'t look away',
     ] },
-  { when: {}, text: ['…'] },
+  { when: {}, text: [
+    '…',
+    'did anyone else see that',
+    'this chat is unhinged tonight',
+    'clip that before she notices',
+  ] },
 ]);
-
-// ── Tap-out endings ────────────────────────────────────────────
 
 registerPool('stream.tapOut.stamina', [
   { when: {}, text: [
@@ -384,6 +400,7 @@ registerPool('stream.endStream.excellent', [
   { when: {}, text: [
     'That was actually insane. I can\'t believe we pulled that off.',
     'Chat, that might\'ve been my best stream ever. I\'m still buzzing.',
+    'I\'m riding the high. Don\'t ask me to stand up yet.',
   ] },
 ]);
 
@@ -391,6 +408,7 @@ registerPool('stream.endStream.good', [
   { when: {}, text: [
     'Solid stream. I\'m tired but proud.',
     'Not perfect, but chat showed up and so did I.',
+    'Good food, good vibes, good enough VOD.',
   ] },
 ]);
 
@@ -398,6 +416,7 @@ registerPool('stream.endStream.average', [
   { when: {}, text: [
     'Okay… we made it through. Could\'ve been worse.',
     'I\'m wiped. Thanks for sticking around anyway.',
+    'Mid stream, mid destruction. Classic me.',
   ] },
 ]);
 
@@ -405,6 +424,7 @@ registerPool('stream.endStream.poor', [
   { when: {}, text: [
     'That was rough. I\'m gonna go lie down.',
     'I don\'t want to talk about how that went.',
+    'Logging off before chat clips the worst parts.',
   ] },
 ]);
 
@@ -412,6 +432,7 @@ registerPool('stream.endStream.verypoor', [
   { when: {}, text: [
     'I need to delete the VOD. I\'m not even joking.',
     'Please don\'t clip that. Please.',
+    'Worst stream in a while. I\'m done.',
   ] },
 ]);
 

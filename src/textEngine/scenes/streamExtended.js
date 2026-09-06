@@ -224,7 +224,13 @@ registerPool('stream.betweenRound', [
       'Extreme challenge extreme regret. Let\'s continue anyway.',
     ] },
 
-  { when: {}, text: ['…'] },
+  { when: {}, text: [
+    '…',
+    'Breathe. Don\'t read chat. Keep going.',
+    'One round down. Reset. I can do another.',
+    'Okay. Water. My stomach\'s loud but I\'m still here.',
+    'Chat\'s spamming — I\'m pretending I can\'t see it.',
+  ] },
 ]);
 
 // ── Round start expansions ─────────────────────────────────────
@@ -265,7 +271,12 @@ registerPool('stream.roundStart', [
   { when: { challengeType: 'chaotic' },
     text: ['Everything at once. Of course.', 'Chaos round. What could go wrong?'] },
   { when: {},
-    text: ['Okay… here we go.', 'Round starting. Wish me luck, chat.'] },
+    text: [
+      'Okay… here we go.',
+      'Round starting. Wish me luck, chat.',
+      'Alright — next round. Stay with me.',
+      'Deep breath. Let\'s not embarrass ourselves.',
+    ] },
 ]);
 
 // ── Milestone burst lines (shown on wrap) ──────────────────────
@@ -335,6 +346,7 @@ registerPool('stream.milestone.stage', [
   { when: {}, text: [
     'Another pound marker passed. Thanks for witnessing.',
     'Growth spurt — the embarrassing kind. On stream.',
+    'New number, same denial. Clip it anyway.',
   ] },
 ]);
 
