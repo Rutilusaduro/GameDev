@@ -77,7 +77,13 @@ registerPool('immob.environmental', [
 ]);
 
 registerPool('immob.attempt', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    '',
+    'She shifts her weight by degrees.',
+    'A small adjustment — mass answering slowly.',
+    'Movement measured in inches, not miles.',
+  ]},
   { when: { stageMin: 10 }, text: [
     'She considers movement — a shift, not a journey.',
     'An attempt to reposition: mass redistributing by degrees.',
@@ -97,7 +103,12 @@ registerPool('immob.attemptVerb', [
 ]);
 
 registerPool('immob.assistClause', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'braced by what the room provides',
+    'furniture doing quiet work on her behalf',
+    'cushions and angles holding the arrangement',
+  ]},
   { when: { stageMin: 10 }, text: [
     'furniture failing forward in small, helpful ways',
     'the chair surrendering its shape to assist',
@@ -111,7 +122,12 @@ registerPool('immob.assistClause', [
 ]);
 
 registerPool('immob.assistance', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    ', steadied by arrangement',
+    ' — held by cushions and angles',
+    ', braced and guided by what the room provides',
+  ]},
   { when: { stageMin: 10 }, text: [
     ', {immob.assistClause}',
     ' — {immob.assistClause}',

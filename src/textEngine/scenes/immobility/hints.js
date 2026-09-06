@@ -5,7 +5,13 @@ import { registerPool } from '../../engine.js';
 
 // ── immob.hint.heat ───────────────────────────────────────────
 registerPool('immob.hint.heat', [
-  { when: {}, text: ['', '', ''] },
+  { when: {}, text: [
+    '',
+    '',
+    `Warmth gathers where she rests — unremarked, for now.`,
+    `She fans herself once without looking up.`,
+    `The room feels close. Her body holds heat like a settled furnace.`,
+  ]},
   { when: { courtHintTier: [1] }, text: [
     `She mentions, almost offhand, that she's been warm lately. More than usual.`,
     `It's warm where she rests — has been for a while. She says it the way people mention weather: casually, as fact.`,
@@ -33,7 +39,13 @@ registerPool('immob.hint.heat', [
 
 // ── immob.hint.position ───────────────────────────────────────
 registerPool('immob.hint.position', [
-  { when: {}, text: ['', '', ''] },
+  { when: {}, text: [
+    '',
+    '',
+    `She shifts once, twice — seeking a geometry her mass will accept.`,
+    `A small adjustment she does not name aloud.`,
+    `Her weight redistributes with a quiet, unsatisfied sigh.`,
+  ]},
   { when: { courtHintTier: [1] }, text: [
     `She shifts slightly as you tend her — looking for something. Not quite finding it. She doesn't say what.`,
     `There's a small adjustment she keeps making — a search for the arrangement that works. She hasn't said it out loud yet.`,
@@ -62,7 +74,13 @@ registerPool('immob.hint.position', [
 // ── immob.hint.food ───────────────────────────────────────────
 // ctx fn — exempt from 200-char limit; reads pendingCourtPreference from globals.
 registerPool('immob.hint.food', [
-  { when: {}, text: ['', '', ''] },
+  { when: {}, text: [
+    '',
+    '',
+    `She eyes the tray with the faintest flicker of preference.`,
+    `An appetite with opinions she has not voiced yet.`,
+    `"Next time," she murmurs, "bring the good stuff."`,
+  ]},
   { when: { courtHintTier: [1] }, text: [
     ctx => {
       const pref = ctx.globals?.pendingCourtPreference;
@@ -97,7 +115,12 @@ registerPool('immob.hint.food', [
 
 // ── immob.pref.heat ───────────────────────────────────────────
 registerPool('immob.pref.heat', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: [
+    '',
+    `Moving air finds her skin. She exhales once, satisfied.`,
+    `The fan hums. Court is cooler now.`,
+    `Cool air crosses the warm expanse of her. She closes her eyes into it.`,
+  ]},
   { when: { courtBoonTier: ['early'] }, text: [
     `You said once was enough — you heard her the first time and came back with a solution. She looks at the fan, then at you. "Once," she says. "I only said it once."`,
     `The fan arrives before she had to ask again. She watches you set it up. Something quiet and pleased settles into her expression.`,
@@ -113,7 +136,12 @@ registerPool('immob.pref.heat', [
 
 // ── immob.pref.position ───────────────────────────────────────
 registerPool('immob.pref.position', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: [
+    '',
+    `She settles into the new geometry — finally, properly held.`,
+    `"There," she murmurs. "That's better."`,
+    `Cushions shift; mass follows. She goes still.`,
+  ]},
   { when: { courtBoonTier: ['early'] }, text: [
     `She mentioned it once and you came back ready to fix it. She shifts as you adjust — finding it without effort now. "There," she says. "That's exactly it."`,
     `You caught it the first time she let on. She settles into the arrangement you've made. "You were listening," she says.`,
@@ -130,7 +158,12 @@ registerPool('immob.pref.position', [
 // ── immob.pref.food ───────────────────────────────────────────
 // ctx fn — reads courtPreference from subject or globals.
 registerPool('immob.pref.food', [
-  { when: {}, text: ['', ''] },
+  { when: {}, text: [
+    '',
+    `She eats without commentary — fast, focused, pleased.`,
+    `The tray was right. Her appetite knows it.`,
+    `Preference honored. Hunger answered. Court is calm again.`,
+  ]},
   { when: { courtBoonTier: ['early'] }, text: [
     ctx => {
       const pref = ctx.globals?.courtPreference || ctx.d?.subject?.courtPreference;
