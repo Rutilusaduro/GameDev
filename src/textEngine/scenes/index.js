@@ -79,6 +79,7 @@ import './opposition/endgameBeat.js';
 import './opposition/depth.js';
 import './dinner/index.js';
 import './growthEvent/index.js';
+import './growthEvent/depth.js';
 import './weeklyEvent/index.js';
 import './weighIn/index.js';
 import './deviceBody.js';
