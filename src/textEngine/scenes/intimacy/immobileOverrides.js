@@ -16,6 +16,7 @@ registerPool('intimacy.immob.herWeight.arrive', [
   { when: {}, text: [
     `There's no lowering herself onto anyone now — she can't move like that. You settle against her and ease a share of her weight over your lap. Once it arrives, it stays, and so do you.`,
     `She can't come down onto you; that kind of moving is behind her. So you get into position and help work the warm mass of her over you, and once it's down, it's down.`,
+    `Mass arrives by arrangement now — you guide, she yields, warmth settles and does not lift again.`,
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
     `"Get under me," she says, because she can't do the moving herself. You do, and help drag the warm weight of her over you until you're pinned beneath a fraction of her, going nowhere.`,
@@ -27,6 +28,7 @@ registerPool('intimacy.immob.underHer.arrive', [
   { when: {}, text: [
     `She can't roll onto you — there's no rolling left in her. You work underneath instead, easing beneath the overhang of her belly until her weight settles over you on its own.`,
     `There's no way for her to climb over you, so you go under her. You ease beneath her until she rests on you fully. Getting back out is hers to allow, not yours to manage.`,
+    `You slide beneath her by degrees — warm shadow, warmer flesh, total weight deciding when you're allowed up.`,
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
     `She directs you under her with a look and a word. You slide beneath the vast warm overhang of her, and her weight comes down to keep you. You'll surface when she decides you do.`,
@@ -45,7 +47,11 @@ registerModuleVariants('intimacy.under_her.p0', [
 // ── intimacy.blackout — the pin pass-out ──────────────────────
 // Composed skeleton: you go under, then wake to a week gone.
 registerPool('intimacy.blackout', [
-  { when: {}, text: [`{intimacy.blackout.out} {intimacy.blackout.wake}`] },
+  { when: {}, text: [
+    `{intimacy.blackout.out} {intimacy.blackout.wake}`,
+    `{intimacy.blackout.wake} {intimacy.blackout.out}`,
+    `{intimacy.blackout.out}\n\n{intimacy.blackout.wake}`,
+  ] },
 ]);
 
 // Shape: FULL SENTENCE. Her mass over you takes your air; you black out.
@@ -53,6 +59,7 @@ registerPool('intimacy.blackout.out', [
   { when: {}, text: [
     `Her weight settles across your chest at the wrong angle, and the room goes soft, then dark. You don't feel yourself go under.`,
     `A shift of her mass presses the air out of you slow, and the edges of the room dim and fold. You're gone before you can say so.`,
+    `Warm mass finds the wrong leverage; breath thins; consciousness slips away without ceremony.`,
   ]},
   { when: { stageMin: 11 }, weight: 2, text: [
     `There's too much of her over you and not enough room to breathe under it. The light narrows to a point and closes. You go out without a sound.`,
@@ -64,6 +71,7 @@ registerPool('intimacy.blackout.wake', [
   { when: {}, text: [
     `You surface a long time later, still half beneath the warm mass of her, the light in the windows all wrong. Days went by while you were under. The week is simply gone.`,
     `You come back slowly, pinned and warm and disoriented, with no idea how long. Long enough. The week bled away while you were out cold beneath her.`,
+    `Awareness returns in pieces — her weight, wrong light, a week vanished while you were under.`,
   ]},
   { when: { corruption: [0] }, weight: 2, text: [
     `You come to with her watching you, mortified. "You stopped answering," she says, small. "I couldn't get off you to check." The whole week slipped past while you were out.`,
