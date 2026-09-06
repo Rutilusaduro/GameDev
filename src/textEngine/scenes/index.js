@@ -72,6 +72,7 @@ import './cultivator/index.js';
 import './hunt/index.js';
 import './hunt/depth.js';
 import './campusEvent/index.js';
+import './campusEvent/depth.js';
 import './deviceFlavor.js';
 import './opposition/endgameBeat.js';
 import './dinner/index.js';
