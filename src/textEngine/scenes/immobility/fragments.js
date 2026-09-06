@@ -81,10 +81,12 @@ registerPool('immob.attempt', [
   { when: { stageMin: 10 }, text: [
     'She considers movement — a shift, not a journey.',
     'An attempt to reposition: mass redistributing by degrees.',
+    'Movement is measured in inches now, not miles.',
   ] },
   { when: { stageMin: 11 }, text: [
     'A transfer attempt — assisted, incremental, honest about the physics.',
     'Movement now is architecture, not locomotion.',
+    'She shifts her weight like tectonic plates — slow, total, consequential.',
   ] },
 ]);
 
@@ -113,6 +115,7 @@ registerPool('immob.assistance', [
   { when: { stageMin: 10 }, text: [
     ', {immob.assistClause}',
     ' — {immob.assistClause}',
+    ', braced and guided by what the room provides',
   ] },
 ]);
 
@@ -143,10 +146,12 @@ registerPool('immob.register', [
   { when: { corruption: [0] }, text: [
     `"This is a lot," she says quietly — not distress, simply fact.`,
     `She looks at her own vastness with the expression of someone still doing math.`,
+    `"I didn't think it would be this much," she murmurs — wonder, not regret.`,
   ] },
   { when: { corruption: [1] }, text: [
     `"I know," she says, when you look. "I know what I am now."`,
     `She meets your eyes without the old flinch. The size is just size.`,
+    `"Still me," she says. "Just more of me."`,
   ] },
   { when: { corruption: [2] }, text: [
     `"Beautiful, isn't it," she says — not a question.`,
@@ -156,6 +161,7 @@ registerPool('immob.register', [
   { when: { stageMin: 11 }, weight: 2, text: [
     `"The room fits," she says, and means herself.`,
     `"I know which walls work," she says, practical as weather.`,
+    `"Don't move the cushions," she says. "We negotiated those."`,
   ] },
   { when: {}, text: [
     `She rests without commentary.`,

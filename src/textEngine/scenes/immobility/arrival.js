@@ -76,29 +76,39 @@ registerPool('immob.arrival.devotion', [
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
     `{subject.name} accepts the tending as her due, regal and glowing, and tells you plainly she means to be larger still by the time you next come to court her.`,
+    `She receives your care like royalty receiving tribute — pleased, expectant, already planning the next course.`,
+    `"More," she says softly. Not a request. A forecast.`,
   ]},
   // ── a few persona voices (weight 4) over the psyche generics ──
   { when: { studentId: 0, stageMin: 10 }, weight: 4, text: [
     `Brittany surveys the room arranged around her and smiles like a captain who never left the field. "Still in charge," she says. "Just from here now."`,
+    `"Home field advantage," she says. "I never left."`,
+    `Victory looks immobile. She is not complaining.`,
   ]},
   { when: { studentId: 10, stageMin: 10 }, weight: 4, text: [
     `Reneé tastes what you've brought her, closes her eyes, and sighs the sigh of a cook who has finally let someone else carry the plates. "Perfect," she says. "Bring the rest."`,
+    `"Course one of care," she murmurs. "I want the full menu."`,
+    `Warmth and flavor and your hands nearby — she approves the pairing.`,
   ]},
   { when: { studentId: 8, stageMin: 10 }, weight: 4, text: [
     `Maya doesn't say anything. She finds your hand where it rests against the warm slope of her, holds it there, and lets the quiet say it for her.`,
     `She watches you tend her without comment — gratitude in the pressure of her fingers on yours.`,
+    `Stillness is her language. Your care is the translation.`,
   ]},
   { when: { studentId: 12, stageMin: 10 }, weight: 4, text: [
     `Nadia watches you arrange the tray within reach. "Good," she says. "The experiment continues. I am the result."`,
     `She tracks your hands as you tend her. "Hypothesis confirmed," she murmurs. "I like being kept."`,
+    `"Control variable: you," she says. "Outcome: excellent."`,
   ]},
   { when: { studentId: 5, stageMin: 10 }, weight: 4, text: [
     `Destiny eats one-handed while you adjust her cushions. "Offline comfort meta," she says. "Ten out of ten."`,
     `"Stream's off. Appetite isn't," Destiny says, settling deeper. "Keep the trays coming."`,
+    `"Patch notes: happier. Changelog: fuller."`,
   ]},
   { when: { studentId: 14, stageMin: 10 }, weight: 4, text: [
     `Mary Jane hums while you tend her — farm warmth, farm patience, belly rising and falling like harvest season.`,
     `"You're good to me," she says softly. "Now bring the seconds."`,
+    `"Set a spell," she murmurs. "I'm in no hurry to get up."`,
   ]},
 ]);
 

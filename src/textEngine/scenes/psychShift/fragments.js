@@ -74,6 +74,7 @@ registerPool('shift.denial', [
   { when: { corruption: [2] }, text: [
     'There is nothing left to deny. She smiles instead.',
     'The old vocabulary is gone. Appetite speaks fluent now.',
+    'Denial retired. Appetite took its desk.',
   ] },
 ]);
 
@@ -81,10 +82,12 @@ registerPool('shift.coda', [
   { when: { corruption: [1] }, text: [
     'The week continues. She is different in ways she will not discuss.',
     'Something has changed. She carries it quietly.',
+    'The old story thins. She does not mourn it aloud.',
   ] },
   { when: { corruption: [2] }, text: [
     'The surrender is complete and gentle. She does not mourn the old self.',
     'She is what she is now. The scale will confirm it Thursday.',
+    'The week closes on appetite answered and resistance retired.',
   ] },
   { when: {}, text: [
     'The shift settles in like warmth.',

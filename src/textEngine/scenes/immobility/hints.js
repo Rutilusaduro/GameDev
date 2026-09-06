@@ -71,6 +71,7 @@ registerPool('immob.hint.food', [
     },
     `She eyes what you brought and mentions, lightly, that she'd prefer something different next time.`,
     `Her appetite has a preference she hasn't named yet — you can see it in how she picks at the tray.`,
+    `"Next time," she says, "bring the good stuff."`,
   ]},
   { when: { courtHintTier: [2] }, text: [
     ctx => {
@@ -80,6 +81,7 @@ registerPool('immob.hint.food', [
     },
     `"Bring me what I actually want," she says, not unkindly. "You know what that is."`,
     `She finishes what you brought without enthusiasm. The message is clear.`,
+    `The tray is wrong. Her patience for wrong trays is thinning.`,
   ]},
   { when: { courtHintTier: [3] }, text: [
     ctx => {
@@ -89,6 +91,7 @@ registerPool('immob.hint.food', [
     },
     `"I'm tired of polite trays," she says. "Feed me what I asked for."`,
     `Her hunger is specific now — vast, particular, no longer willing to accept substitutes.`,
+    `"You know the order," she says. "Stop pretending you don't."`,
   ]},
 ]);
 
@@ -136,6 +139,7 @@ registerPool('immob.pref.food', [
     },
     `She eats without commentary — fast, focused, satisfied. You brought what she wanted. That is the whole message.`,
     `The tray is right. Her appetite knows it before her mouth does.`,
+    `Preference honored. Hunger answered. Court is calm again.`,
   ]},
   { when: { courtBoonTier: ['standard'] }, text: [
     ctx => {

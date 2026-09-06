@@ -23,15 +23,21 @@ registerPool('interior.sizeRealize', [
   { when: { stageMin: 8 }, text: [
     'The building was not designed for her. She has learned its compromises.',
     'Architecture insufficient — not hostile, simply honest about its limits.',
+    'Chairs negotiate. She brings data from every meal.',
   ] },
   { when: { relationship: [0, 1], stageMin: 6 }, text: [
     'She wonders what you see when you look at her. She is not sure she wants to know.',
+    'Your gaze makes her aware of every inch she has gained.',
+    'She catches you looking and looks away first — then back.',
   ] },
   { when: { relationship: [2, 3], stageMin: 6 }, text: [
     'Your gaze confirms what the mirror already said. She lets it.',
+    'Being seen at this size is different when the seeing is wanted.',
+    'She holds your attention the way she holds fullness — openly.',
   ] },
   { when: { stageMin: 10 }, text: [
     'She is the largest thing in most rooms. She has made peace with that.',
     'Space is negotiated around her now. She does not apologize for the negotiation.',
+    'Immobility clarified her footprint. She occupies it without apology.',
   ] },
 ]);

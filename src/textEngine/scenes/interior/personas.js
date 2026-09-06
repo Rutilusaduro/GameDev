@@ -56,6 +56,7 @@ registerModuleVariants('interior.selfObs', [
   { when: { studentId: 12, corruption: [1], stageMin: 4 }, weight: W, text: [
     'Nadia watches you watch her soften. The observation is mutual. She prefers it that way.',
     'She names the feeling in brackets and does not close them.',
+    'Field notes: mutual observation. Subjects aligned.',
   ]},
   { when: { studentId: 14, corruption: [2], stageMin: 5 }, weight: W, text: [
     'Mary Jane pats her belly in the mirror like kneading dough — proud, patient, hungry for more.',
@@ -123,22 +124,27 @@ registerModuleVariants('interior.sizeRealize', [
   { when: { studentId: 3, stageMin: 6, corruption: [0] }, weight: W, text: [
     'Serena hears the chair complain and files it under adaptation, not defeat.',
     'The desk arm marks her hip. Evidence of a new training load.',
+    'Off-season bulk has metrics now. She keeps the log open.',
   ]},
   { when: { studentId: 6, stageMin: 5, relationship: [2, 3] }, weight: W, text: [
     'Tiffany realizes your gaze caught the squeeze past the booth. She does not mind.',
     'She takes up space socially and physically. Greek letters stretch with her.',
+    'Chapter girls take up room. She is exceeding the standard.',
   ]},
   { when: { studentId: 9, stageMin: 7 }, weight: W, text: [
     'Chloé turns in a doorway and learns a new French word for how wide she has become. She smiles.',
     'Architecture was her major. Her body is the thesis now.',
+    'The doorframe is coursework. She passes with honors.',
   ]},
   { when: { studentId: 11, stageMin: 6, corruption: [1] }, weight: W, text: [
     'Kaylee knows which chairs support her without drama. Clinical calm, practical choice.',
     'She measures doorways now. Not with fear — with planning.',
+    'Support surfaces cataloged. She selects without panic.',
   ]},
   { when: { studentId: 17, stageMin: 8 }, weight: W, text: [
     'Indiana maps which halls echo when she passes. Sound is cartography at this size.',
     'The building reveals secrets to mass. She documents each one.',
+    'Every creak is a coordinate. She updates the map nightly.',
   ]},
 ]);
 
@@ -146,17 +152,21 @@ registerModuleVariants('interior.gainPride', [
   { when: { studentId: 2, corruption: [2], stageMin: 5 }, weight: W, text: [
     'Kylie likes the number climbing. The feed will too. She is ready for both.',
     'Softness is the brand now. She owns it on camera and off.',
+    'Metrics up. Engagement up. She is the content.',
   ]},
   { when: { studentId: 6, corruption: [2], stageMin: 6 }, weight: W, text: [
     'Tiffany treats every pound like a rush vote — passed, celebrated, seconded.',
     'Bigger is still on-brand. Pastel stretches. Confidence does not.',
+    'Chapter standards evolve. She leads the amendment.',
   ]},
   { when: { studentId: 13, corruption: [1], stageMin: 5 }, weight: W, text: [
     'Daisy is proud the way southern kitchens are proud — warm, full, feeding everyone.',
     'She carries more of herself and more for others. Bless it.',
+    'Abundance is hospitality turned inward. She serves herself generously.',
   ]},
   { when: { studentId: 14, corruption: [2], stageMin: 7 }, weight: W, text: [
     'Mary Jane grins at her own reflection like harvest season in a mirror.',
     'Every inch is jam-worthy. She is not stingy with growth.',
+    'The crop came in heavy. She is pleased with the yield.',
   ]},
 ]);
