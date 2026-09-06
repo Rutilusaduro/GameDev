@@ -7,8 +7,10 @@ import { registerPool } from '../../engine.js';
 registerPool('hunger.response.feed.lunge', [
   { when: { hungerTier: [4], addictionLevel: [4] }, priority: 3, text: [
     'She practically lunges forward the moment you agree.',
+    'Agreement barely leaves your mouth before she is already reaching.',
+    'She surges toward the food like restraint was a costume she shed.',
   ] },
-  { when: {}, text: [''] },
+  { when: {}, text: ['', '', ''] },
 ]);
 
 registerPool('hunger.response.feed.eating', [
@@ -23,6 +25,8 @@ registerPool('hunger.response.feed.eating', [
   ] },
   { when: {}, text: [
     'She eats eagerly, clearly relieved.',
+    'Relief shows in how fast her shoulders drop once food is in reach.',
+    'She eats like someone who has been holding her breath all day.',
   ] },
 ]);
 
@@ -41,12 +45,16 @@ registerPool('hunger.response.feed.aftermath', [
   ] },
   { when: {}, text: [
     'She thanks you multiple times, looking much calmer afterward.',
+    'Color returns to her cheeks. The frantic edge dulls into warmth.',
+    'She exhales like the meal put something back in place.',
   ] },
 ]);
 
 registerPool('scene.hunger.response.feed', [
   { when: {}, text: [
     '{hunger.response.feed.lunge|prefix: }{hunger.response.feed.eating} {hunger.response.feed.aftermath}',
+    '{hunger.response.feed.eating} {hunger.response.feed.aftermath}{hunger.response.feed.lunge|prefix: }',
+    '{hunger.response.feed.lunge|prefix: }{hunger.response.feed.aftermath} {hunger.response.feed.eating}',
   ] },
 ]);
 
@@ -62,6 +70,8 @@ registerPool('hunger.response.compound.offer', [
   ] },
   { when: {}, text: [
     'She accepts it quickly.',
+    'She takes it with both hands — careful, grateful, urgent.',
+    'No ceremony. She swallows it down and waits for the calm.',
   ] },
 ]);
 
@@ -74,12 +84,16 @@ registerPool('hunger.response.compound.relief', [
   ] },
   { when: {}, text: [
     'She visibly relaxes as the effects kick in.',
+    'Her jaw unclenches. Hunger loosens its grip by degrees.',
+    'The tension drains out of her shoulders like someone turned a valve.',
   ] },
 ]);
 
 registerPool('scene.hunger.response.compound', [
   { when: {}, text: [
     '{hunger.response.compound.offer} {hunger.response.compound.relief}',
+    '{hunger.response.compound.relief} {hunger.response.compound.offer}',
+    '{hunger.response.compound.offer}{hunger.response.compound.relief|prefix: }',
   ] },
 ]);
 
@@ -102,6 +116,8 @@ registerPool('hunger.response.deny.reaction', [
   ] },
   { when: {}, text: [
     "She looks disappointed but doesn't argue.",
+    'Hurt flashes, then she smooths it down — polite, wounded, gone.',
+    'She nods once, like she expected this and hated that she did.',
   ] },
 ]);
 
@@ -114,12 +130,16 @@ registerPool('hunger.response.deny.exit', [
   ] },
   { when: {}, text: [
     'She just nods quietly and leaves.',
+    'She turns without another word. The hallway swallows her.',
+    'Quiet footsteps. Quieter than the hunger that brought her here.',
   ] },
 ]);
 
 registerPool('scene.hunger.response.deny', [
   { when: {}, text: [
     '{hunger.response.deny.reaction} {hunger.response.deny.exit}',
+    '{hunger.response.deny.exit} {hunger.response.deny.reaction}',
+    '{hunger.response.deny.reaction}{hunger.response.deny.exit|prefix: }',
   ] },
 ]);
 
@@ -140,6 +160,7 @@ registerPool('hunger.response.talk.calm', [
   { when: {}, text: [
     'You talk to her for a while.',
     'She seems embarrassed about how desperate she got, but she calms down.',
+    'Words do what food would have — slowly, imperfectly, enough.',
   ] },
 ]);
 
@@ -149,11 +170,15 @@ registerPool('hunger.response.talk.depart', [
   ] },
   { when: {}, text: [
     'She eventually leaves on her own.',
+    'She lingers at the threshold, then chooses dignity over seconds.',
+    'The door closes. Hunger follows her down the hall anyway.',
   ] },
 ]);
 
 registerPool('scene.hunger.response.talk', [
   { when: {}, text: [
     '{hunger.response.talk.calm} {hunger.response.talk.depart}',
+    '{hunger.response.talk.depart} {hunger.response.talk.calm}',
+    '{hunger.response.talk.calm}{hunger.response.talk.depart|prefix: }',
   ] },
 ]);

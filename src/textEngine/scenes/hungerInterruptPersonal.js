@@ -114,5 +114,5 @@ for (const [archetype, lines] of Object.entries(PERSONAL)) {
     text: lines,
   });
 }
-archetypeVariants.push({ when: {}, text: [''] });
+archetypeVariants.push({ when: {}, text: ['', '', ''] });
 registerPool('scene.hungerInterrupt.personal', archetypeVariants);

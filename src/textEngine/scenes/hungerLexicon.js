@@ -94,10 +94,13 @@ function withdrawalKey(addiction) {
   return 'moderate';
 }
 
-registerPool('word.hunger', [{
-  when: {},
-  text: (ctx) => pick(HUNGER_WORDS[hungerKey(ctx.d.hungerTier)] || HUNGER_WORDS.normal),
-}]);
+registerPool('word.hunger', [
+  { when: {},
+    text: (ctx) => pick(HUNGER_WORDS[hungerKey(ctx.d.hungerTier)] || HUNGER_WORDS.normal),
+  },
+  { when: {}, text: (ctx) => pick(HUNGER_WORDS.normal) },
+  { when: {}, text: (ctx) => pick(HUNGER_WORDS.increased) },
+]);
 
 registerPool('word.addictedHunger', [
   { when: { addictionLevelMin: 2 },
@@ -106,13 +109,16 @@ registerPool('word.addictedHunger', [
       return pick(ADDICTED_HUNGER_WORDS[key] || ADDICTED_HUNGER_WORDS.craving);
     },
   },
-  { when: {}, text: '' },
+  { when: {}, text: ['', '', ''] },
 ]);
 
-registerPool('word.eating', [{
-  when: {},
-  text: (ctx) => pick(EATING_STYLE[hungerKey(ctx.d.hungerTier)] || EATING_STYLE.normal),
-}]);
+registerPool('word.eating', [
+  { when: {},
+    text: (ctx) => pick(EATING_STYLE[hungerKey(ctx.d.hungerTier)] || EATING_STYLE.normal),
+  },
+  { when: {}, text: (ctx) => pick(EATING_STYLE.normal) },
+  { when: {}, text: (ctx) => pick(EATING_STYLE.increased) },
+]);
 
 registerPool('word.addictedEating', [
   { when: { addictionLevelMin: 2 },
@@ -121,30 +127,37 @@ registerPool('word.addictedEating', [
       return key ? pick(ADDICTED_EATING[key]) : pick(ADDICTED_EATING.moderate);
     },
   },
-  { when: {}, text: '' },
+  { when: {}, text: ['', '', ''] },
 ]);
 
 registerPool('word.withdrawal', [
   { when: { inWithdrawal: true },
     text: (ctx) => pick(WITHDRAWAL_BEHAVIOR[withdrawalKey(ctx.d.addictionLevel)]),
   },
-  { when: {}, text: '' },
+  { when: {}, text: ['', '', ''] },
 ]);
 
-registerPool('word.begging', [{
-  when: {},
-  text: (ctx) => {
-    const key = beggingKey(ctx.d.addictionLevel, ctx.d.hungerTier);
-    return key ? pick(BEGGING_WORDS[key]) : pick(BEGGING_WORDS.mild);
+registerPool('word.begging', [
+  { when: {},
+    text: (ctx) => {
+      const key = beggingKey(ctx.d.addictionLevel, ctx.d.hungerTier);
+      return key ? pick(BEGGING_WORDS[key]) : pick(BEGGING_WORDS.mild);
+    },
   },
-}]);
+  { when: {}, text: (ctx) => pick(BEGGING_WORDS.mild) },
+  { when: {}, text: (ctx) => pick(BEGGING_WORDS.moderate) },
+]);
 
 registerPool('hunger.desc', [
   { when: { hungerTier: [4] }, priority: 4, text: (ctx) => `She is ${pick(HUNGER_WORDS.starving)}.` },
   { when: { hungerTier: [3] }, priority: 3, text: (ctx) => `She is ${pick(HUNGER_WORDS.craving)}.` },
   { when: { hungerTier: [2] }, priority: 2, text: (ctx) => `She is ${pick(HUNGER_WORDS.high)}.` },
   { when: { hungerTier: [1] }, priority: 1, text: (ctx) => `She is ${pick(HUNGER_WORDS.increased)}.` },
-  { when: {}, text: 'Her appetite seems normal for now.' },
+  { when: {}, text: [
+    'Her appetite seems normal for now.',
+    'Hunger sits at baseline — present, polite, not urgent.',
+    'Nothing about her appetite screams emergency yet.',
+  ] },
 ]);
 
 registerPool('hunger.addictedDesc', [
@@ -152,7 +165,7 @@ registerPool('hunger.addictedDesc', [
     text: (ctx) => `More than that — she is ${pick(ADDICTED_HUNGER_WORDS.starving)}.` },
   { when: { addictionLevelMin: 2 }, priority: 2,
     text: (ctx) => `Underneath it, she is ${pick(ADDICTED_HUNGER_WORDS.craving)}.` },
-  { when: {}, text: '' },
+  { when: {}, text: ['', '', ''] },
 ]);
 
 registerPool('eating.style', [
@@ -163,6 +176,8 @@ registerPool('eating.style', [
   { when: { hungerTierMin: 2 }, priority: 2,
     text: (ctx) => `She ${pick(EATING_STYLE[hungerKey(ctx.d.hungerTier)])}.` },
   { when: {}, text: (ctx) => `She ${pick(EATING_STYLE.normal)}.` },
+  { when: {}, text: (ctx) => `She ${pick(EATING_STYLE.increased)}.` },
+  { when: {}, text: (ctx) => `She ${pick(EATING_STYLE.high)}.` },
 ]);
 
 registerPool('talk.hungryCoda', [
@@ -172,5 +187,5 @@ registerPool('talk.hungryCoda', [
     text: (ctx) => ` She keeps glancing at you with that hungry look — ${pick(ADDICTED_HUNGER_WORDS.craving)}.` },
   { when: { hungerTierMin: 2 }, priority: 2,
     text: (ctx) => ` ${pick(BEGGING_WORDS[beggingKey(ctx.d.addictionLevel, ctx.d.hungerTier)] || BEGGING_WORDS.mild)}.` },
-  { when: {}, text: '' },
+  { when: {}, text: ['', '', ''] },
 ]);
