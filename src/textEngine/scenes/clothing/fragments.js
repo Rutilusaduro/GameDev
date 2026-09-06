@@ -31,19 +31,29 @@ registerPool('cloth.discovery', [
   { when: { stageMin: 6 }, text: [
     'She has outgrown the fiction of this outfit. The fabric agrees.',
     'Custom sizing is losing again — she can feel it before she sees it.',
+    'The mirror shows strain before failure — fabric telegraphing surrender.',
   ] },
   { when: { stageMin: 10 }, text: [
     'Clothing is a concept at this scale. She dresses in what can be arranged.',
     'The outfit was never going to win. She knew that before she started.',
+    'Garments arrive as suggestions; her body votes by outgrowing them.',
   ] },
 ]);
 
 registerPool('cloth.struggleVerb', [
   { when: {}, text: ['tugs', 'adjusts', 'smooths', 'works at'] },
   { when: { stageMin: 4 }, text: ['wrestles with', 'negotiates with', 'coaxes'] },
-  { when: { stageMin: 6 }, text: ['abandons hope for', 'makes peace with the failure of'] },
-  { when: { bodyType: 'apple', stageMin: 4 }, text: ['tries to convince the waistband over her belly'] },
-  { when: { bodyType: 'pear', stageMin: 4 }, text: ['attempts to zip over her hips'] },
+  { when: { stageMin: 6 }, text: ['abandons hope for', 'makes peace with the failure of', 'stops pretending she can close'] },
+  { when: { bodyType: 'apple', stageMin: 4 }, text: [
+    'tries to convince the waistband over her belly',
+    'smooths fabric over a middle that has outpaced the cut',
+    'works the waistband down over soft forward weight',
+  ] },
+  { when: { bodyType: 'pear', stageMin: 4 }, text: [
+    'attempts to zip over her hips',
+    'coaxes the zipper past hips that arrived ahead of schedule',
+    'tugs fabric over thighs that no longer pass quietly',
+  ] },
 ]);
 
 registerPool('cloth.struggle', [
@@ -56,14 +66,17 @@ registerPool('cloth.struggle', [
   { when: { clothingState: 'sleeve_restriction' }, text: [
     'Her arms have outgrown the sleeves — movement costs friction now.',
     'The sleeve digs at the upper arm. She stops fighting it.',
+    'Fabric bites at the bicep; she rolls her shoulders and accepts the pinch.',
   ] },
   { when: { clothingState: 'shirt_rise' }, text: [
     'Her shirt has been climbing all day. She tugs it down. It climbs again.',
     'Stomach escaping the hemline — a slow, daily negotiation.',
+    'The hem rides up with every breath; she smooths it flat and loses again.',
   ] },
   { when: { clothingState: 'bra_protest' }, text: [
     'The bra has been filing complaints for weeks. Today it escalates.',
     'Cup overflow, band riding — the underwire has chosen violence.',
+    'Straps dig; cups overflow — the lingerie has reached its limit.',
   ] },
 ]);
 
@@ -77,10 +90,12 @@ registerPool('cloth.moment', [
   { when: { clothingState: 'button_pop' }, weight: 2, text: [
     'A button departs at speed, skittering across the floor.',
     'The button goes. The gap remains, honest and wide.',
+    'Thread gives; the button rolls away like a small surrender.',
   ] },
   { when: { stageMin: 6 }, text: [
     'The seam parts before the button does — fabric conceding to {word.size} mass.',
     'Failure arrives all at once: thread, elastic, and dignity.',
+    'Custom sizing fails in sequence — seam, then waistband, then denial.',
   ] },
 ]);
 

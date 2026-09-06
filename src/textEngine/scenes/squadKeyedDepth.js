@@ -3,16 +3,6 @@
 // Adds supplemental lines to keyed cells under the ≥3-text volume floor.
 import { registerModuleVariants } from '../engine.js';
 
-registerModuleVariants('cloth.discovery', [{ when: {"stageMin":6}, text: ["{subject.name} notices the strain before the failure — fabric honest about what comes next."] }]);
-registerModuleVariants('cloth.discovery', [{ when: {"stageMin":10}, text: ["{subject.name} notices the strain before the failure — fabric honest about what comes next."] }]);
-registerModuleVariants('cloth.struggleVerb', [{ when: {"stageMin":6}, text: ["tugs"] }]);
-registerModuleVariants('cloth.struggleVerb', [{ when: {"bodyType":"apple","stageMin":4}, text: ["tugs","adjusts"] }]);
-registerModuleVariants('cloth.struggleVerb', [{ when: {"bodyType":"pear","stageMin":4}, text: ["tugs","adjusts"] }]);
-registerModuleVariants('cloth.struggle', [{ when: {"clothingState":"sleeve_restriction"}, text: ["She {cloth.struggleVerb} the fabric without success."] }]);
-registerModuleVariants('cloth.struggle', [{ when: {"clothingState":"shirt_rise"}, text: ["She {cloth.struggleVerb} the fabric without success."] }]);
-registerModuleVariants('cloth.struggle', [{ when: {"clothingState":"bra_protest"}, text: ["She {cloth.struggleVerb} the fabric without success."] }]);
-registerModuleVariants('cloth.moment', [{ when: {"clothingState":"button_pop"}, weight: 2, text: ["The fabric gives — soft tok, thread surrendering."] }]);
-registerModuleVariants('cloth.moment', [{ when: {"stageMin":6}, text: ["The fabric gives — soft tok, thread surrendering."] }]);
 registerModuleVariants('immob.settledState', [{ when: {"studentId":5,"stageMin":10,"stageMax":10}, weight: 4, text: ["{subject.name} rests, vast and warm."] }]);
 registerModuleVariants('immob.settledState', [{ when: {"studentId":10,"stageMin":11}, weight: 4, text: ["{subject.name} rests, vast and warm."] }]);
 registerModuleVariants('immob.settledState', [{ when: {"studentId":14,"stageMin":11}, weight: 4, text: ["{subject.name} rests, vast and warm."] }]);
