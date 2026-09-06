@@ -166,5 +166,6 @@ registerPool('cloth.aftermath', [
   { when: { stageMin: 7 }, text: [
     'At this size, wardrobe casualties are weather — noted, survived, forgotten.',
     'She has stopped mourning garments. They were always temporary.',
+    'The closet rotates faster now. She eats through the transition.',
   ] },
 ]);

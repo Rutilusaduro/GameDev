@@ -12,34 +12,52 @@ registerModuleVariants('slender.bodyFeel', [
   { when: { studentId: 0, ...EARLY }, weight: W, text: [
     'Brittany still feels fast on her feet — until she sits and the chair argues.',
     'Competition muscle softening at the edges; she flexes and feels plush where tone used to be.',
+    'Her thighs brush when she jogs to class — friction new, not unwelcome yet.',
   ]},
   { when: { studentId: 2, ...EARLY }, weight: W, text: [
     'Kylie feels the curve when she turns for a thumbnail angle — content, body, same problem.',
     'Her waistband resists after lunch; she smooths her crop top and keeps filming.',
+    'Softness pools at her hip when she sits cross-legged on the bed. Good lighting. Good angle.',
   ]},
   { when: { studentId: 5, ...EARLY }, weight: W, text: [
     'Destiny feels heavier after off-stream binges — soft, warm, logged in a private folder.',
     'Her hoodie still fits. The fit is informational: softness pooling at belly and hip.',
+    'Chair arms dig into her sides now. She shifts and stays seated anyway.',
   ]},
   { when: { studentId: 8, ...EARLY }, weight: W, text: [
     'Maya feels fullness settle slow — a quiet weight low in her belly she does not name.',
     'Her thighs brush when she walks to class; the sensation is new and oddly grounding.',
+    'Warmth gathers under her ribs after she eats. She sketches through it.',
   ]},
   { when: { studentId: 10, ...EARLY }, weight: W, text: [
     'Reneé feels each course in her middle — warmth, swell, the pleasant drag of a full belly.',
     'Her hand rests on her hip after tasting; the hip is rounder than last month.',
+    'Apron strings dig after kitchen hours. She loosens them and keeps tasting.',
   ]},
   { when: { studentId: 12, ...EARLY }, weight: W, text: [
     'Nadia feels you watching her soften and catalogs the heat in her cheeks.',
     'Softness gathers at her waist; she presses there once, privately, and says nothing.',
+    'Her sweater hem rides up when she reaches for a shelf. She does not fix it immediately.',
   ]},
   { when: { studentId: 14, ...EARLY }, weight: W, text: [
     'Mary Jane feels abundance in her hips when she walks — farm-girl sway, unhurried, real.',
     'Fullness after jam tasting sits warm in her belly; she pats it like a satisfied harvest.',
+    'Her overalls strain at the thigh when she crouches. She stands slower now. Still smiling.',
   ]},
   { when: { studentId: 15, ...EARLY }, weight: W, text: [
     'Lilith feels mass settle with unnerving calm — as if her body always meant to thicken.',
     'Softness at her thigh and belly arrives without alarm. She does not flinch from it.',
+    'Fabric whispers against new curves when she moves. She listens without comment.',
+  ]},
+  { when: { studentId: 18, ...EARLY }, weight: W, text: [
+    'Talia feels inputs exceed projections — warmth low in her belly, measurable, logged.',
+    'Her hoodie rides up when she reaches for a shelf; soft skin answers before her fingers do.',
+    'Prototype diet or not, fullness settles with clean data: more mass, less surprise.',
+  ]},
+  { when: { studentId: 18, custom: false, ...EARLY }, weight: W, text: [
+    'Talia feels inputs exceed projections — warmth low in her belly, measurable, logged.',
+    'Her hoodie rides up when she reaches for a shelf; soft skin answers before her fingers do.',
+    'Prototype diet or not, fullness settles with clean data: more mass, less surprise.',
   ]},
 ]);
 
@@ -138,6 +156,12 @@ registerModuleVariants('slender.mindFeel', [
   { when: { studentId: 18, custom: false, ...EARLY }, weight: W, text: [
     'Inputs exceeded projections. She is revising the model without announcing it.',
     'Her body keeps outpacing the spreadsheet. She lets it.',
+    'Warmth after meals lasts longer than the trial protocol predicted. She notes it. She eats again.',
+  ]},
+  { when: { studentId: 18, ...EARLY }, weight: W, text: [
+    'Inputs exceeded projections. She is revising the model without announcing it.',
+    'Her body keeps outpacing the spreadsheet. She lets it.',
+    'Warmth after meals lasts longer than the trial protocol predicted. She notes it. She eats again.',
   ]},
 ]);
 
@@ -298,6 +322,12 @@ registerModuleVariants('slender.neutral', [
   { when: { studentId: 18, custom: false, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Output nominal," Talia says.`,
     `"Continuing trial," she adds.`,
+    `"Within tolerance," she murmurs, already reaching for paste.`,
+  ]},
+  { when: { studentId: 18, gainStance: 'neutral', ...EARLY }, weight: W, text: [
+    `"Output nominal," Talia says.`,
+    `"Continuing trial," she adds.`,
+    `"Within tolerance," she murmurs, already reaching for paste.`,
   ]},
 ]);
 
@@ -370,6 +400,12 @@ registerModuleVariants('slender.secret', [
   { when: { studentId: 18, custom: false, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Talia runs a hand along her side and updates the model with a private smile.',
     'Inputs exceeded projections. She is not correcting the error.',
+    'She weighs herself twice after dinner. Second reading higher. She is not upset.',
+  ]},
+  { when: { studentId: 18, gainStance: 'secret', ...EARLY }, weight: W, text: [
+    'Talia runs a hand along her side and updates the model with a private smile.',
+    'Inputs exceeded projections. She is not correcting the error.',
+    'She weighs herself twice after dinner. Second reading higher. She is not upset.',
   ]},
   { when: { studentId: 0, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Brittany checks the curve in the locker mirror and does not look away fast enough.',
@@ -457,5 +493,11 @@ registerModuleVariants('slender.eatPause', [
   { when: { studentId: 18, custom: false, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Talia eats while calculating caloric efficiency. The calculation keeps losing to appetite.',
     'She revises the model mid-meal. New assumption: more is better.',
+    'Paste, then solids, then paste again — intake logged, appetite undefeated.',
+  ]},
+  { when: { studentId: 18, corruption: [0], stageMax: 3 }, weight: W, text: [
+    'Talia eats while calculating caloric efficiency. The calculation keeps losing to appetite.',
+    'She revises the model mid-meal. New assumption: more is better.',
+    'Paste, then solids, then paste again — intake logged, appetite undefeated.',
   ]},
 ]);

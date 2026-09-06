@@ -161,7 +161,7 @@ registerPool("diary.campus", [
       "The whole campus feels padded lately. Hunger hangs in the air like weather.",
       "Strangers in the dining hall eat like they belong to the same appetite now.",
     ] },
-  { when: {}, text: "" },
+  { when: {}, text: ['', '', ''] },
 ]);
 
 // ── attitude.campus — emotional aside when others are softening too ─
@@ -218,7 +218,7 @@ registerPool("attitude.campus", [
       "Campus-wide appetite and I'm right in the middle of it, happy to be.",
       "Everyone's softer in the halls. I fit the weather now.",
     ] },
-  { when: {}, text: "" },
+  { when: {}, text: ['', '', ''] },
 ]);
 
 // ── talk.campusCoda — conversation suffix when campus effect is live ─
@@ -252,7 +252,7 @@ registerPool("talk.campusCoda", [
       (ctx) => `${ctx.subject.name} mentions, almost offhand, that half her classmates looked softer at lecture this week.`,
       (ctx) => `"Everyone's eating like it's mandatory," ${ctx.subject.name} says. "Maybe it is, now."`,
     ] },
-  { when: {}, text: "" },
+  { when: {}, text: ['', '', ''] },
 ]);
 
 // ── weighIn.campus — post-scale beat when others are gaining too ─
@@ -288,5 +288,5 @@ registerPool("weighIn.campus", [
       (ctx) => `${ctx.subject.name} mentions classmates complaining about tighter jeans. She doesn't sound sympathetic. She sounds included.`,
       (ctx) => `"Not just me," ${ctx.subject.name} says quietly, patting her middle. "The whole campus feels it."`,
     ] },
-  { when: {}, text: "" },
+  { when: {}, text: ['', '', ''] },
 ]);

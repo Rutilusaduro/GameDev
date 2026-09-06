@@ -39,7 +39,11 @@ registerModuleVariants('slender.mindFeel', [{ when: {"studentId":14,"corruption"
 registerModuleVariants('slender.mindFeel', [{ when: {"studentId":15,"corruption":[0],"stageMax":4}, weight: 4, text: ["She is still deciding what this means — if it means anything yet."] }]);
 registerModuleVariants('slender.mindFeel', [{ when: {"studentId":16,"corruption":[0],"stageMax":4}, weight: 4, text: ["She is still deciding what this means — if it means anything yet."] }]);
 registerModuleVariants('slender.mindFeel', [{ when: {"studentId":17,"corruption":[0],"stageMax":4}, weight: 4, text: ["She is still deciding what this means — if it means anything yet."] }]);
-registerModuleVariants('slender.mindFeel', [{ when: {"studentId":18,"corruption":[0],"stageMax":4}, weight: 4, text: ["She is still deciding what this means — if it means anything yet."] }]);
+registerModuleVariants('slender.mindFeel', [{ when: {"studentId":18,"corruption":[0],"stageMax":4}, weight: 4, text: [
+  "Inputs exceeded projections. She is revising the model without announcing it.",
+  "Her body keeps outpacing the spreadsheet. She lets it.",
+  "Warmth after meals lasts longer than the trial protocol predicted. She notes it. She eats again.",
+] }]);
 registerModuleVariants('slender.mindFeel', [{ when: {"corruption":[0],"isGaining":true}, text: ["She is still deciding what this means — if it means anything yet."] }]);
 registerModuleVariants('slender.deflect', [{ when: {"studentId":0,"gainStance":"opposed","corruption":[0],"stageMax":4}, weight: 4, text: ["\"Within expected variance for semester dietary changes.\""] }]);
 registerModuleVariants('slender.deflect', [{ when: {"studentId":1,"gainStance":"opposed","corruption":[0],"stageMax":4}, weight: 4, text: ["\"It's muscle. Or retention. Or both.\""] }]);
@@ -76,7 +80,11 @@ registerModuleVariants('slender.neutral', [{ when: {"studentId":12,"gainStance":
 registerModuleVariants('slender.neutral', [{ when: {"studentId":14,"gainStance":"neutral","corruption":[0],"stageMax":4}, weight: 4, text: ["\"Cool. Next.\""] }]);
 registerModuleVariants('slender.neutral', [{ when: {"studentId":15,"gainStance":"neutral","corruption":[0],"stageMax":4}, weight: 4, text: ["\"Cool. Next.\""] }]);
 registerModuleVariants('slender.neutral', [{ when: {"studentId":16,"gainStance":"neutral","corruption":[0],"stageMax":4}, weight: 4, text: ["\"Cool. Next.\""] }]);
-registerModuleVariants('slender.neutral', [{ when: {"studentId":18,"gainStance":"neutral","corruption":[0],"stageMax":4}, weight: 4, text: ["\"Cool. Next.\""] }]);
+registerModuleVariants('slender.neutral', [{ when: {"studentId":18,"gainStance":"neutral","corruption":[0],"stageMax":4}, weight: 4, text: [
+  "\"Output nominal,\" Talia says.",
+  "\"Continuing trial,\" she adds.",
+  "\"Within tolerance,\" she murmurs, already reaching for paste.",
+] }]);
 registerModuleVariants('slender.neutral', [{ when: {"gainStance":"neutral","stageMax":2}, text: ["\"Cool. Next.\""] }]);
 registerModuleVariants('slender.secret', [{ when: {"studentId":2,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She traces the new curve like she is studying brushwork."] }]);
 registerModuleVariants('slender.secret', [{ when: {"studentId":4,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
@@ -93,7 +101,11 @@ registerModuleVariants('slender.secret', [{ when: {"studentId":11,"gainStance":"
 registerModuleVariants('slender.secret', [{ when: {"studentId":13,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
 registerModuleVariants('slender.secret', [{ when: {"studentId":16,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
 registerModuleVariants('slender.secret', [{ when: {"studentId":17,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
-registerModuleVariants('slender.secret', [{ when: {"studentId":18,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
+registerModuleVariants('slender.secret', [{ when: {"studentId":18,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: [
+  "Talia runs a hand along her side and updates the model with a private smile.",
+  "Inputs exceeded projections. She is not correcting the error.",
+  "She weighs herself twice after dinner. Second reading higher. She is not upset.",
+] }]);
 registerModuleVariants('slender.secret', [{ when: {"studentId":0,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
 registerModuleVariants('slender.secret', [{ when: {"studentId":5,"gainStance":"secret","corruption":[0],"stageMax":4}, weight: 4, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
 registerModuleVariants('slender.secret', [{ when: {"gainStance":"secret","hungerTierMin":2}, weight: 2, text: ["She checks the angle in the mirror and does not look away fast enough."] }]);
@@ -118,7 +130,11 @@ registerModuleVariants('slender.eatPause', [{ when: {"studentId":14,"corruption"
 registerModuleVariants('slender.eatPause', [{ when: {"studentId":15,"corruption":[0],"stageMax":3}, weight: 4, text: ["Brittany eats like fueling — portioned, committed, already thinking about the next plate."] }]);
 registerModuleVariants('slender.eatPause', [{ when: {"studentId":16,"corruption":[0],"stageMax":3}, weight: 4, text: ["Brittany eats like fueling — portioned, committed, already thinking about the next plate."] }]);
 registerModuleVariants('slender.eatPause', [{ when: {"studentId":17,"corruption":[0],"stageMax":3}, weight: 4, text: ["Brittany eats like fueling — portioned, committed, already thinking about the next plate."] }]);
-registerModuleVariants('slender.eatPause', [{ when: {"studentId":18,"corruption":[0],"stageMax":3}, weight: 4, text: ["Brittany eats like fueling — portioned, committed, already thinking about the next plate."] }]);
+registerModuleVariants('slender.eatPause', [{ when: {"studentId":18,"corruption":[0],"stageMax":3}, weight: 4, text: [
+  "Talia eats while calculating caloric efficiency. The calculation keeps losing to appetite.",
+  "She revises the model mid-meal. New assumption: more is better.",
+  "Paste, then solids, then paste again — intake logged, appetite undefeated.",
+] }]);
 registerModuleVariants('slender.eatPause', [{ when: {"gainStance":"neutral","stageMax":3}, text: ["Brittany eats like fueling — portioned, committed, already thinking about the next plate."] }]);
 registerModuleVariants('slender.eatPause', [{ when: {"hungerTierMin":2,"corruption":[0],"stageMax":4}, weight: 2, text: ["Brittany eats like fueling — portioned, committed, already thinking about the next plate."] }]);
 registerModuleVariants('eat.settleIn', [{ when: {"stageMin":4}, text: ["{subject.name} takes her seat and orients toward the food without preamble."] }]);
@@ -229,8 +245,16 @@ registerModuleVariants('cloth.reaction', [{ when: {"studentId":16,"corruption":[
 registerModuleVariants('cloth.reaction', [{ when: {"studentId":17,"corruption":[1]}, weight: 4, text: ["{subject.name} looks at the damage and exhales."] }]);
 registerModuleVariants('cloth.reaction', [{ when: {"studentId":1,"corruption":[0]}, weight: 4, text: ["{subject.name} looks at the damage and exhales."] }]);
 registerModuleVariants('cloth.reaction', [{ when: {"studentId":4,"corruption":[0]}, weight: 4, text: ["{subject.name} looks at the damage and exhales."] }]);
-registerModuleVariants('cloth.reaction', [{ when: {"studentId":18,"corruption":[0]}, weight: 4, text: ["{subject.name} looks at the damage and exhales."] }]);
-registerModuleVariants('cloth.reaction', [{ when: {"studentId":18,"corruption":[2]}, weight: 4, text: ["{subject.name} looks at the damage and exhales."] }]);
+registerModuleVariants('cloth.reaction', [{ when: {"studentId":18,"corruption":[0]}, weight: 4, text: [
+  `"Tolerance exceeded," Talia mutters, pinning the gap. "Revision required."`,
+  `She treats the tear like a failed stress test. The test continues.`,
+  `"Garment spec insufficient," Talia says, cheeks pink. "Ordering larger."`,
+] }]);
+registerModuleVariants('cloth.reaction', [{ when: {"studentId":18,"corruption":[2]}, weight: 4, text: [
+  `"Material stress exceeded spec," Talia says. "Recommend larger garment. Accepting growth."`,
+  `She logs the pop and keeps moving. Engineering solution: elastic.`,
+  `"Failure mode: outgrown," Talia says, pleased. "Proceeding to next size tier."`,
+] }]);
 registerModuleVariants('cloth.aftermath', [{ when: {"corruption":[0]}, text: ["She wears the failure like a badge — or forgets it entirely."] }]);
 registerModuleVariants('cloth.aftermath', [{ when: {"corruption":[2]}, text: ["She spends the rest of the day aware of the gap."] }]);
 registerModuleVariants('campus.moveSentence', [{ when: {"stageMin":8}, weight: 2, text: ["{subject.name} {word.adv.pace|suffix: }{word.moveVerb.campus} {campus.destination}{word.adv.sizeQual|prefix: }."] }]);
