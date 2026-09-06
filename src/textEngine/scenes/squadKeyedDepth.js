@@ -192,7 +192,11 @@ registerModuleVariants('eat.finish', [{ when: {"studentId":14}, weight: 4, text:
 registerModuleVariants('eat.finish', [{ when: {"studentId":15}, weight: 4, text: ["She finishes what she started."] }]);
 registerModuleVariants('eat.finish', [{ when: {"studentId":16}, weight: 4, text: ["She finishes what she started."] }]);
 registerModuleVariants('eat.finish', [{ when: {"studentId":17}, weight: 4, text: ["She finishes what she started."] }]);
-registerModuleVariants('eat.finish', [{ when: {"studentId":18}, weight: 4, text: ["She finishes what she started."] }]);
+registerModuleVariants('eat.finish', [{ when: {"studentId":18}, weight: 4, text: [
+  "Talia finishes and updates the model. \"Output: satisfied. Recommend repeat trial.\"",
+  "Plate empty, belly fuller, hypothesis supported. She queues seconds in her head.",
+  "Intake complete. Variance acceptable. She is already planning the next meal.",
+] }]);
 registerModuleVariants('eat.aftermath', [{ when: {"corruption":[2],"fullnessMin":0.6}, text: ["She sits back, satisfied in the ordinary way."] }]);
 registerModuleVariants('eat.aftermath', [{ when: {"stageMin":6,"fullnessMin":0.7}, text: ["She sits back, satisfied in the ordinary way."] }]);
 registerModuleVariants('eat.aftermath', [{ when: {"stageMin":9}, text: ["She sits back, satisfied in the ordinary way."] }]);
@@ -284,7 +288,11 @@ registerModuleVariants('campus.spaceObs', [{ when: {"studentId":13,"campusLocale
 registerModuleVariants('campus.spaceObs', [{ when: {"studentId":14,"campusLocale":"cafeteria","stageMin":5,"stageMax":9}, weight: 4, text: ["Serena knows which machines still fit. The list shortens every month."] }]);
 registerModuleVariants('campus.spaceObs', [{ when: {"studentId":16,"campusLocale":"elevator","stageMin":5,"stageMax":9}, weight: 4, text: ["Serena knows which machines still fit. The list shortens every month."] }]);
 registerModuleVariants('campus.spaceObs', [{ when: {"studentId":17,"campusLocale":"stairwell","stageMin":5,"stageMax":9}, weight: 4, text: ["Serena knows which machines still fit. The list shortens every month."] }]);
-registerModuleVariants('campus.spaceObs', [{ when: {"studentId":18,"campusLocale":"prof_office","stageMin":5,"stageMax":9}, weight: 4, text: ["Serena knows which machines still fit. The list shortens every month."] }]);
+registerModuleVariants('campus.spaceObs', [{ when: {"studentId":18,"campusLocale":"prof_office","stageMin":5,"stageMax":9}, weight: 4, text: [
+  "Talia measures your doorframe on entry. Old habit. New clearance required each month.",
+  "She sits where the geometry works and opens her notebook. Inputs: food. Outputs: this.",
+  "Your office chair groans once. She notes the load rating and keeps eating.",
+] }]);
 registerModuleVariants('campus.spaceObs', [{ when: {"campusLocale":"hallway","stageMin":6}, text: ["Serena knows which machines still fit. The list shortens every month."] }]);
 registerModuleVariants('campus.spaceObs', [{ when: {"campusLocale":"dorm_room","stageMin":5}, text: ["Serena knows which machines still fit. The list shortens every month."] }]);
 registerModuleVariants('campus.spaceObs', [{ when: {"campusLocale":"lecture_hall","stageMin":7}, text: ["Serena knows which machines still fit. The list shortens every month."] }]);

@@ -26,14 +26,17 @@ registerModuleVariants('eat.firstBite', [
   { when: { ...CUSTOM, corruption: [0] }, priority: P, weight: W, text: [
     'She takes the first bite like a measurement, then forgets to stop measuring.',
     `"For the log," she says, and eats anyway.`,
+    'Opening intake logged. Flavor exceeds specification. She continues.',
   ]},
   { when: { ...CUSTOM, corruption: [1] }, priority: P, weight: W, text: [
     'The first bite settles the argument faster than any spreadsheet.',
     'She calls it a field test. Her fork does not wait for peer review.',
+    'Hypothesis: one bite. Result: insufficient. She iterates.',
   ]},
   { when: { ...CUSTOM, corruption: [2] }, priority: P, weight: W, text: [
     'She eats like the prototype finally passed inspection.',
     `"Necessary intake," she says, already reaching for more.`,
+    'First mouthful: validated. Second: scheduled. Third: inevitable.',
   ]},
 ]);
 

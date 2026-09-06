@@ -139,6 +139,7 @@ registerPool('slender.mindFeel', [
   { when: { mood: ['nervous', 'stressed'], corruption: [0], stageMax: 4 }, text: [
     'Stress and appetite have become allies she did not invite.',
     'She eats when she is anxious now. The fullness helps. She hates that it helps.',
+    'Nerves loosen when her belly fills. She files that under inconvenient facts.',
   ] },
 ]);
 

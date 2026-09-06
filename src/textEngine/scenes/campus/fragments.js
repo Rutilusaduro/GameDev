@@ -129,6 +129,7 @@ registerPool('campus.spaceObs', [
   { when: { stageMin: 3, stageMax: 5 }, text: [
     'She takes up a little more hallway than she used to. No one comments. She notices.',
     'The campus is the same size. She is not. The difference is subtle and real.',
+    'Doorways feel narrower. Her hips disagree politely with the frame.',
   ] },
   { when: { campusLocale: 'hallway', stageMin: 6 }, text: [
     'Students make room — not unkindly, simply factually.',

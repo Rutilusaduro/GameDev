@@ -62,6 +62,12 @@ registerModuleVariants('campus.spaceObs', [
   { when: { studentId: 18, custom: false, campusLocale: 'prof_office', ...MOBILE }, weight: W, text: [
     'Talia measures your doorframe on entry. Old habit. New clearance required each month.',
     'She sits where the geometry works and opens her notebook. Inputs: food. Outputs: this.',
+    'Your office chair groans once. She notes the load rating and keeps eating.',
+  ]},
+  { when: { studentId: 18, campusLocale: 'prof_office', ...MOBILE }, weight: W, text: [
+    'Talia measures your doorframe on entry. Old habit. New clearance required each month.',
+    'She sits where the geometry works and opens her notebook. Inputs: food. Outputs: this.',
+    'Your office chair groans once. She notes the load rating and keeps eating.',
   ]},
 ]);
 
@@ -84,25 +90,31 @@ registerModuleVariants('campus.seenBeat', [
   { when: { studentId: 2, stageMin: 3, stageMax: 6 }, weight: W, text: [
     'Kylie catches someone filming her profile and angles into it anyway.',
     'A stranger double-taps her story before she posts it — the curve is the content.',
+    'Her waistband peeks above low-rise jeans. Three people pretend not to look. She posts anyway.',
   ]},
   { when: { studentId: 5, stageMin: 3, stageMax: 6 }, weight: W, text: [
     'Destiny pretends not to notice the stares. Her hoodie rides up. She does not fix it.',
     'Someone recognizes her off-stream; their eyes drop to her waist and stay there.',
+    'A fan whispers her handle in the hallway. Her belly brushes the desk as she passes.',
   ]},
   { when: { studentId: 6, fitTop: 'straining' }, weight: W, text: [
     'Pastel strains across Tiffany\'s bust; chapter sisters notice and say nothing polite.',
     'Her top skims a belly rush week forgot to budget for. She smiles through it.',
+    'Rush standards did not account for dessert. The fabric makes that obvious.',
   ]},
   { when: { studentId: 8, stageMin: 3, stageMax: 5 }, weight: W, text: [
     'Maya feels the glance and keeps walking — quiet, observed, unbothered on the surface.',
     'She tucks a sketchbook tighter against a hip that has outgrown last semester\'s jeans.',
+    'Someone stares at her middle. She stares at a cloud. Both continue.',
   ]},
   { when: { studentId: 12, stageMin: 4 }, weight: W, text: [
     'Nadia watches who stares and files it. The stare is data. The curve is the hypothesis.',
     'She catches your eye across the quad — amused that anyone is surprised by her softness.',
+    'A classmate whispers. Nadia smiles like she already knew the rumor would be true.',
   ]},
   { when: { studentId: 14, campusLocale: 'cafeteria', stageMin: 4 }, weight: W, text: [
     'Mary Jane\'s laugh draws eyes; her plate draws more. Farm appetite on display.',
     'She pats her hip after a second helping and grins like harvest season is personal.',
+    'The line behind her watches her stack a third tray. She waves them closer.',
   ]},
 ]);

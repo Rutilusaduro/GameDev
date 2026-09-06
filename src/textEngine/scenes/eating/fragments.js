@@ -100,6 +100,7 @@ registerPool('eat.midMeal', [
   { when: { corruption: [0], stageMin: 2, stageMax: 4 }, text: [
     'Mid-meal guilt flickers and loses. The fork keeps moving.',
     'She slows once, hand on her middle, then takes another bite without commentary.',
+    'Warmth spreads low while she eats — she shifts, breathes, continues.',
   ] },
   { when: { corruption: [2], fullnessMin: 0.5 }, text: [
     'She pauses only to breathe around fullness, then continues — appetite undiminished.',

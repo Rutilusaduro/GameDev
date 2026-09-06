@@ -176,5 +176,11 @@ registerModuleVariants('eat.finish', [
   { when: { studentId: 18, custom: false }, weight: 4, text: [
     'Talia finishes and updates the model. "Output: satisfied. Recommend repeat trial."',
     'Plate empty, belly fuller, hypothesis supported. She queues seconds in her head.',
+    'Intake complete. Variance acceptable. She is already planning the next meal.',
+  ] },
+  { when: { studentId: 18 }, weight: 4, text: [
+    'Talia finishes and updates the model. "Output: satisfied. Recommend repeat trial."',
+    'Plate empty, belly fuller, hypothesis supported. She queues seconds in her head.',
+    'Intake complete. Variance acceptable. She is already planning the next meal.',
   ] },
 ]);
