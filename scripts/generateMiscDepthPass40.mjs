@@ -40,6 +40,7 @@ const POOL_ALTS = {
   ],
   'scrutiny.tierUp.body': [
     'The institution has begun counting what you have been doing in plain sight.',
+    'Paper trails do not care how consensual the appetite felt from inside the room.',
   ],
   'scrutiny.tierUp.coda': [
     'The notice closes. The pressure does not.',
