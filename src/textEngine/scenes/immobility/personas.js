@@ -83,6 +83,12 @@ registerModuleVariants('immob.register', [
   { when: { studentId: 18, custom: false, ...IMMOBILE_TOP, corruption: [2] }, weight: W, text: [
     `"Output exceeded target," Talia says, satisfied. "No rollback."`,
     `"The prototype became the product. I'm keeping it."`,
+    `"Parameters final. Mass within acceptable glory."`,
+  ]},
+  { when: { studentId: 18, ...IMMOBILE_TOP, corruption: [2] }, weight: W, text: [
+    `"Output exceeded target," Talia says, satisfied. "No rollback."`,
+    `"The prototype became the product. I'm keeping it."`,
+    `"Parameters final. Mass within acceptable glory."`,
   ]},
 ]);
 
@@ -162,6 +168,12 @@ registerModuleVariants('immob.settledState', [
   { when: { studentId: 18, custom: false, ...IMMOBILE_TOP }, weight: W, text: [
     'Talia rests where the geometry finally works — immobile, warm, parameters exceeded.',
     'The prototype became the product. She is keeping it.',
+    'Lab equipment orbits her chair. She is the largest instrument in the room.',
+  ]},
+  { when: { studentId: 18, ...IMMOBILE_TOP }, weight: W, text: [
+    'Talia rests where the geometry finally works — immobile, warm, parameters exceeded.',
+    'The prototype became the product. She is keeping it.',
+    'Lab equipment orbits her chair. She is the largest instrument in the room.',
   ]},
 ]);
 

@@ -318,7 +318,11 @@ registerModuleVariants('immob.settledState', [{ when: {"studentId":13,"stageMin"
 registerModuleVariants('immob.settledState', [{ when: {"studentId":15,"stageMin":11}, weight: 4, text: ["{subject.name} rests, vast and warm."] }]);
 registerModuleVariants('immob.settledState', [{ when: {"studentId":16,"stageMin":11}, weight: 4, text: ["{subject.name} rests, vast and warm."] }]);
 registerModuleVariants('immob.settledState', [{ when: {"studentId":17,"stageMin":11}, weight: 4, text: ["{subject.name} rests, vast and warm."] }]);
-registerModuleVariants('immob.settledState', [{ when: {"studentId":18,"stageMin":11}, weight: 4, text: ["{subject.name} rests, vast and warm."] }]);
+registerModuleVariants('immob.settledState', [{ when: {"studentId":18,"stageMin":11}, weight: 4, text: [
+  "Talia rests where the geometry finally works — immobile, warm, parameters exceeded.",
+  "The prototype became the product. She is keeping it.",
+  "Lab equipment orbits her chair. She is the largest instrument in the room.",
+] }]);
 registerModuleVariants('immob.spaceObs', [{ when: {"studentId":3,"stageMin":11}, weight: 4, text: ["The room holds her."] }]);
 registerModuleVariants('immob.spaceObs', [{ when: {"studentId":7,"stageMin":11}, weight: 4, text: ["The room holds her."] }]);
 registerModuleVariants('immob.attempt', [{ when: {"stageMin":10}, text: ["A transfer attempt — assisted, incremental, honest about the physics."] }]);
@@ -342,7 +346,11 @@ registerModuleVariants('immob.register', [{ when: {"studentId":14,"stageMin":11,
 registerModuleVariants('immob.register', [{ when: {"studentId":15,"stageMin":11,"corruption":[2]}, weight: 4, text: ["She rests without commentary."] }]);
 registerModuleVariants('immob.register', [{ when: {"studentId":16,"stageMin":11,"corruption":[0]}, weight: 4, text: ["She rests without commentary."] }]);
 registerModuleVariants('immob.register', [{ when: {"studentId":17,"stageMin":11,"corruption":[1]}, weight: 4, text: ["She rests without commentary."] }]);
-registerModuleVariants('immob.register', [{ when: {"studentId":18,"stageMin":11,"corruption":[2]}, weight: 4, text: ["She rests without commentary."] }]);
+registerModuleVariants('immob.register', [{ when: {"studentId":18,"stageMin":11,"corruption":[2]}, weight: 4, text: [
+  "\"Output exceeded target,\" Talia says, satisfied. \"No rollback.\"",
+  "\"The prototype became the product. I'm keeping it.\"",
+  "\"Parameters final. Mass within acceptable glory.\"",
+] }]);
 registerModuleVariants('immob.register', [{ when: {"corruption":[0]}, text: ["She rests without commentary."] }]);
 registerModuleVariants('immob.register', [{ when: {"corruption":[1]}, text: ["She rests without commentary."] }]);
 registerModuleVariants('immob.register', [{ when: {"stageMin":11}, weight: 2, text: ["She rests without commentary."] }]);

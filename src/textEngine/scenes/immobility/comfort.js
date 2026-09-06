@@ -15,6 +15,7 @@ registerPool('immob.refit', [
   { when: { stageMin: 8, stageMax: 9 }, weight: 2, text: [
     `New garments built for her current geography — wide, soft, unhurried about the measurements.`,
     `Fabric cut to her actual outline, not last semester's. She runs a hand along the seam and nods.`,
+    `The tailor stops pretending she is smaller. What arrives fits like honesty.`,
   ]},
   { when: { stageMin: 10, stageMax: 10 }, weight: 2, text: [
     `The tailor's tape reads differently than it ever has. What comes back is made for her current reality — soft fabric, everything that fits her now.`,
@@ -39,10 +40,12 @@ registerPool('immob.comfort.bed', [
   { when: { stageMin: 8, stageMax: 9 }, weight: 2, text: [
     `A wider frame, built for her current scale. She tests it once and stops testing. "Keep this one," she says.`,
     `The mattress receives her mass without protest. She exhales like someone who has been waiting for this.`,
+    `Wood holds. Foam yields. She goes still — warm, vast, finally supported.`,
   ]},
   { when: { stageMin: 11 }, weight: 2, text: [
     `The frame is built to her specification — vast and solid, engineered for the weight she carries. She settles onto it and the room goes quiet around her.`,
     `Immobility needs architecture. The new bed is architecture. She receives it without ceremony.`,
+    `The bed does not shift. She notices. She appreciates it aloud.`,
   ]},
 ]);
 
@@ -57,6 +60,7 @@ registerPool('immob.comfort.fan', [
   { when: { stageMin: 10 }, weight: 2, text: [
     `At this scale, a fan is not luxury — it is infrastructure. She receives it like her due.`,
     `Moving air against immobile warmth — the room finally learns her needs.`,
+    `Cool crosses belly and thigh; she breathes slower. "Leave it on," she says.`,
   ]},
 ]);
 
@@ -71,6 +75,7 @@ registerPool('immob.comfort.position', [
   { when: { stageMin: 10 }, weight: 2, text: [
     `Position at this scale is engineering. You engineer; she settles; the room exhales.`,
     `Her mass finds the arrangement it has been asking for. She goes still — vast, warm, finally comfortable.`,
+    `"There," she says once. Then silence — the good kind.`,
   ]},
 ]);
 
@@ -85,6 +90,7 @@ registerPool('immob.comfort.ac', [
   { when: { stageMin: 10 }, weight: 2, text: [
     `At immobile scale, temperature control is care. She receives the cool air like someone tended properly.`,
     `The room finally matches her needs — cool where she is warm, still where she is vast.`,
+    `She breathes longer, slower. The heat she carries finally has somewhere to go.`,
   ]},
 ]);
 
@@ -99,9 +105,11 @@ registerPool('immob.comfort.arrangement', [
   { when: { stageMin: 8, stageMax: 9 }, weight: 2, text: [
     `The room learns her dimensions — wider paths, lower trays, furniture that does not flinch.`,
     `Everything she needs within arm's reach of where she rests. The geometry is finally honest.`,
+    `Trays at the right height. Paths cleared. She surveys it and nods once.`,
   ]},
   { when: { stageMin: 11 }, weight: 2, text: [
     `The room belongs to her completely now. You've made sure of it — every surface, every reach, every angle arranged for her settled permanence. She doesn't say thank you. She doesn't have to.`,
     `Court is not a metaphor anymore — the room is organized around her throne of warm mass.`,
+    `Everything within reach. The space stops fighting her size.`,
   ]},
 ]);

@@ -190,18 +190,22 @@ registerPool('campus.seenBeat', [
   { when: { worstFit: 'failing' }, weight: 2, text: [
     'Conversations dip when a seam announces itself; she keeps walking.',
     "Somebody's eyes find the seam that is losing and stay there a beat too long.",
+    'Fabric gives a small audible sigh; she pretends she did not hear it.',
   ] },
   { when: { worstFit: 'failing', shameTierMin: 2 }, weight: 2, text: [
     'She reroutes past fewer people, one arm across the seam she knows is going.',
     'She times her walk between classes now, when the hallways forget to look.',
+    'Her jacket stays zipped higher than the weather requires. She knows why.',
   ] },
   { when: { worstFit: ['straining', 'failing'], corruption: [2] }, weight: 2, text: [
     'She walks the strain like a runway — let the campus do the math.',
     'She wears the failing fit on purpose; the looks are the point.',
+    'A seam protests; she smiles. The campus can watch.',
   ] },
   { when: { worstFit: 'burst', stageMin: 3 }, weight: 2, text: [
     'What her outfit no longer covers, the campus has learned not to mention.',
     'She carries the sprung waistband openly — old news to anyone paying attention.',
+    'Buttons lost are gossip now. She keeps eating anyway.',
   ] },
 ]);
 

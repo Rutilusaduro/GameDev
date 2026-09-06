@@ -27,6 +27,7 @@ registerPool('immob.hint.heat', [
   { when: { stageMin: 10 }, weight: 2, text: [
     `At this scale, warmth is constant — a soft furnace she inhabits. She mentions it like weather that will not change on its own.`,
     `Heat rises off her in visible waves. She has stopped pretending it is temporary.`,
+    `Moving air is not comfort anymore — it is requirement.`,
   ]},
 ]);
 
@@ -54,6 +55,7 @@ registerPool('immob.hint.position', [
   { when: { stageMin: 10 }, weight: 2, text: [
     `Immobility makes position a project. She mentions it the way architects mention load-bearing walls.`,
     `Her mass needs geometry she has not found yet. She says so without embarrassment.`,
+    `Cushions shift; she shifts back. "Not yet," she murmurs.`,
   ]},
 ]);
 

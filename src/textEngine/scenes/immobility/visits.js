@@ -12,11 +12,15 @@ registerPool('immob.visit', [
   ]},
   { when: { stageMin: 11 }, weight: 2, text: [
     `{ref.name} comes to court. The room is full before she speaks — {subject.name}'s presence does that. She stays until the light changes.`,
+    `{ref.name} arrives like a guest at a throne room — unhurried, fed, gossiped with. {subject.name} receives it all without standing.`,
+    `Court convenes when {ref.name} enters. {subject.name} does not move. She does not need to.`,
   ]},
 
   // ── Archetype variants (weight 2 each) ───────────────────────
   { when: { refArchetype: 'cheerleader' }, weight: 2, text: [
     `{ref.name} arrives at full volume. She settles in next to {subject.name} and talks — warmly, without once making it a thing. {subject.name} is pleased.`,
+    `{ref.name} brings squad energy and snacks. {subject.name} receives both like royalty.`,
+    `{ref.name} cheers up the room without mentioning the scale. {subject.name} approves.`,
   ]},
   { when: { refArchetype: 'bookworm' }, weight: 2, text: [
     `{ref.name} brings a book and stays three hours. They read in parallel. {subject.name} decides she approves.`,
