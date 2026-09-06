@@ -83,6 +83,8 @@ registerPool('cultivator.beat', [
   { when: {}, text: ['{cultivator.reaction}'] },
 ]);
 
+import './depth.js';
+
 export function renderCultivatorIntro(recipeId, testerName, week = 1) {
   if (!recipeId) return '';
   const ctx = createContext({ subject: testerSubject(testerName), week, globals: { featureId: 'cultivator' } });
