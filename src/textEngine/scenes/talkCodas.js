@@ -71,6 +71,13 @@ registerPool("talk.coda", [
       (ctx) => `${ctx.subject.name} looks at you with something that isn't anxiety anymore. "Optimal outcome," she says. "I wrote it in the notes."`,
       (ctx) => `"The case study is ongoing," ${ctx.subject.name} adds quietly. "I don't want to conclude it." A pause. "I won't."`,
     ] },
-  // No register unlocked — emit nothing
-  { when: {}, text: "" },
+  // No register unlocked — mostly silent; rare soft closers
+  { when: {}, text: [
+    "",
+    "",
+    "",
+    (ctx) => `${ctx.subject.name} lets the moment settle — quiet, warm, complete.`,
+    (ctx) => `Something unspoken passes between you. ${ctx.subject.name} nods once, private and pleased.`,
+    (ctx) => `${ctx.subject.name} exhales softly. The conversation doesn't need more than that.`,
+  ] },
 ]);

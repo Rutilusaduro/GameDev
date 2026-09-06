@@ -22,7 +22,11 @@ import '../modules.js';
 // Empty fallback keeps it optional at stages 0–1. Used as either
 // a mid-paragraph anchor or the opening paragraph (stages 7+).
 registerPool("comp.bodyNote", [
-  { when: {}, text: ["", ""] },
+  { when: {}, text: [
+    "",
+    "",
+    "At {subject.lbs} lbs the softness is there if you know where to look — warmth, curve, appetite gathering under the surface.",
+  ]},
   { when: { stageMax: 1 }, text: [
     "At {subject.lbs} lbs the change is subtle — a new softness, the beginning of a curve that wasn't there last month.",
     "She moves the way she always has, but {subject.lbs} lbs doesn't feel quite the same. Her body is remembering what it's been fed.",
@@ -72,6 +76,8 @@ registerPool("talk.compliment", [
   ]},
   { when: {}, text: [
     "{talk.moodOpener|suffix:\n\n}{comp.react}{comp.react.follow|prefix: }",
+    "{talk.moodOpener|suffix:\n\n}{comp.react}\n\n{comp.bodyNote}",
+    "{talk.moodOpener|suffix:\n\n}{comp.bodyNote} {comp.react}",
   ]},
 ]);
 
@@ -90,6 +96,7 @@ registerPool("comp.unwelcome", [
   { when: {}, text: [
     `{subject.name}'s smile goes flat. "That's a weird thing to say to me, honestly." She folds her arms, and the warmth drains out of the room.`,
     `"My figure." {subject.name} repeats it back, unimpressed, and takes a half-step back. "We're not — please don't do that."`,
+    `"Not from you," {subject.name} says, flat and final. "Not like that."`,
   ]},
   { when: { stageMax: 2 }, weight: 2, text: [
     `{subject.name} stiffens. "Okay, that's — no." A glance at the door. "I don't know why you'd comment on my body."`,
@@ -157,13 +164,19 @@ registerPool("comp.react", [
   // Generic fallback — never silent
   { when: {}, text: [
     `{subject.name} flushes warm. "You noticed," she says. It isn't a question. "Keep going."`,
+    `"You can't just say that," {subject.name} murmurs — but she doesn't move away.`,
+    `The compliment lands; her breathing changes before her words do.`,
   ]},
 ]);
 
 // Shape: FULL SENTENCE — optional physical follow-through, stage-keyed.
 // Appended with |prefix: so it vanishes cleanly when empty (stages 0-1).
 registerPool("comp.react.follow", [
-  { when: {}, text: ["", ""] },
+  { when: {}, text: [
+    "",
+    "",
+    "The compliment sits in the air between you — warm, unhurried.",
+  ]},
   { when: { stageMin: 2, stageMax: 3 }, text: [
     "She fails to hide the smile pulling at her mouth.",
     "The compliment sits in the air. Her breathing changes — slower, deeper.",
@@ -202,6 +215,8 @@ registerPool("comp.notMeant", [
   // Generic fallback
   { when: {}, text: [
     `"Nobody says it like they mean it," she says quietly. "You do." She lets that sit.`,
+    `"Say it again," she says, softer. "Like you mean the whole thing."`,
+    `She looks at you like she's waiting for proof. "All of it," she whispers.`,
   ]},
 ]);
 
@@ -209,7 +224,11 @@ registerPool("comp.notMeant", [
 // Skeleton: comp.preening.action + comp.preening.line, both stage-keyed.
 // Keeps each variant in the sub-pools under the 200-char linter limit.
 registerPool("comp.preening", [
-  { when: {}, text: ["{comp.preening.action} {comp.preening.line}"] },
+  { when: {}, text: [
+    "{comp.preening.action} {comp.preening.line}",
+    "{comp.preening.action}\n\n{comp.preening.line}",
+    "{comp.preening.line} {comp.preening.action}",
+  ] },
 ]);
 
 // Shape: FULL SENTENCE — the physical gesture, stage-keyed.
@@ -246,6 +265,8 @@ registerPool("comp.preening.action", [
   // Generic fallback
   { when: {}, text: [
     "{subject.name} does a small half-turn, then looks back at you.",
+    "{subject.name} shifts her weight — a quiet invitation to keep looking.",
+    "She lets you look without rushing the moment.",
   ]},
 ]);
 
@@ -277,6 +298,8 @@ registerPool("comp.preening.line", [
   // Generic fallback
   { when: {}, text: [
     `"Like what you see?" she says. She already knows the answer.`,
+    `"Go on," she says softly. "I'm listening."`,
+    `"Say it again," she murmurs. "Slower."`,
   ]},
 ]);
 
@@ -299,7 +322,11 @@ registerPool("comp.practicing", [
 // ── comp.claiming ─────────────────────────────────────────────
 // Skeleton: comp.claiming.stmt + comp.claiming.add, both stage-keyed.
 registerPool("comp.claiming", [
-  { when: {}, text: ["{comp.claiming.stmt} {comp.claiming.add}"] },
+  { when: {}, text: [
+    "{comp.claiming.stmt} {comp.claiming.add}",
+    "{comp.claiming.stmt}\n\n{comp.claiming.add}",
+    "{comp.claiming.add} {comp.claiming.stmt}",
+  ] },
 ]);
 
 // Shape: DIALOGUE BEAT — the ownership statement, stage-keyed.
@@ -332,12 +359,18 @@ registerPool("comp.claiming.stmt", [
   // Generic fallback
   { when: {}, text: [
     `{subject.name} takes the compliment completely. "I know," she says. "Keep going."`,
+    `"I know," she says, warm and unhurried. "But I like hearing you say it."`,
+    `She receives the praise like warmth — slow, full, settling.`,
   ]},
 ]);
 
 // Shape: FULL SENTENCE — the follow-through beat, stage-keyed.
 registerPool("comp.claiming.add", [
-  { when: {}, text: ["And there's more.", "More every week."] },
+  { when: {}, text: [
+    "And there's more.",
+    "More every week.",
+    "She says it like weather — inevitable, welcome.",
+  ]},
   { when: { stageMax: 2 }, text: [
     `"You're early," she adds. She means: wait.`,
   ]},
@@ -383,6 +416,8 @@ registerPool("comp.show", [
   // Generic fallback
   { when: {}, text: [
     "She makes the body the subject, unhurriedly, and lets you look.",
+    "She doesn't hide what you're praising — she presents it, soft and sure.",
+    "Warmth rises in her cheeks. She doesn't look away.",
   ]},
 ]);
 

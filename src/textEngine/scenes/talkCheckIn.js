@@ -340,5 +340,7 @@ registerPool('talk.check_in', [
   ] },
   { when: {}, text: [
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetClose}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetBeat} {talk.checkIn.diningLine}',
   ] },
 ]);

@@ -15,7 +15,13 @@ import '../modules.js';
 // Mined from MOOD_OPENERS in talkDialogue.js. Wildcard is empty:
 // no opener unless the mood earns one.
 registerPool("talk.moodOpener", [
-  { when: {}, text: ["", ""] },
+  { when: {}, text: [
+    "",
+    "",
+    "{subject.name} takes a breath before she answers.",
+    "She pauses — attentive, present, already listening.",
+    "The question finds her mid-thought; she makes room for it anyway.",
+  ]},
   { when: { mood: "stressed" }, weight: 3, text: [
     "{subject.name} rubs her temples before she answers.",
     "She's been running on fumes; the question lands soft anyway.",
@@ -83,6 +89,8 @@ registerPool("talk.encourage", [
   ]},
   { when: {}, text: [
     "{talk.moodOpener|suffix:\n\n}{enc.deflect} {enc.reach}",
+    "{talk.moodOpener|suffix:\n\n}{enc.deflect}\n\n{enc.giveIn}{enc.flush|prefix: }",
+    "{talk.moodOpener|suffix:\n\n}{enc.reach} {enc.giveIn}",
   ]},
 ]);
 
@@ -226,7 +234,11 @@ registerPool("enc.stillHungry", [
 // Expanded to cover all 12 stages; the empty fallback keeps it
 // optional at stages 0–1 where weight is still near-baseline.
 registerPool("enc.bodyAside", [
-  { when: {}, text: ["", ""] },
+  { when: {}, text: [
+    "",
+    "",
+    "Her body answers the encouragement before her mouth does — warmth, give, appetite honest in the open.",
+  ]},
   // Stages 0–1: barely changed; the hunger is newer than the body
   { when: { stageMax: 1 }, text: [
     "At {subject.lbs} lbs the change is subtle — a new softness, a hunger that speaks up when it didn't used to.",
@@ -275,6 +287,7 @@ registerPool("enc.stageHunger", [
   { when: {}, text: [
     "The hunger is real — her body knows it before she does, and it doesn't ask for permission.",
     "She is hungry, and at {subject.lbs} lbs the hunger has earned the right to be.",
+    "Appetite stirs under your words — not sudden, but certain.",
   ]},
   // Stages 0–3: new and tentative; the appetite is just waking
   { when: { stageMax: 3 }, text: [
