@@ -83,6 +83,7 @@ import './weeklyEvent/index.js';
 import './weighIn/index.js';
 import './deviceBody.js';
 import './deviceTick/index.js';
+import './deviceFlavorDepth.js';
 import './suddenGrowth/index.js';
 import './talia/index.js';
 import './eating/index.js';
