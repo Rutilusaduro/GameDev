@@ -8,6 +8,7 @@ import { PSYCH_TIERS } from '../gameData/psychState.js';
 import { StageTag } from './ui.jsx';
 import { getStage } from '../gameData/stages.js';
 import { getDiary } from '../utils/gameHelpers.js';
+import { safeResolvePinExcerpt } from '../gameData/dossierReplay.js';
 import { DossierMomentModal } from './DossierMomentModal.jsx';
 
 const PSYCH_COLORS = {
@@ -127,9 +128,16 @@ function PsychRibbons({ bands }) {
 export function DossierPanel({ student, week, diaryOpts, onClose }) {
   const [activePin, setActivePin] = useState(null);
   const dossier = useMemo(() => assembleDossier(student, week), [student, week]);
+  const pinPreviews = useMemo(
+    () => (dossier.pinnedMoments || []).map((pin) => ({
+      id: pin.id,
+      preview: pin.excerpt?.trim() || safeResolvePinExcerpt(student, pin, week),
+    })),
+    [dossier.pinnedMoments, student, week],
+  );
   const st = getStage(student.lbs);
   const threshold = dossier.nextThreshold;
-  const diaryLine = getDiary(student, week, diaryOpts);
+  const diaryLine = getDiary(student, week, diaryOpts) || 'The week passed. She is still here.';
 
   const handleMarker = (point, kind) => {
     const pin = dossier.pinnedMoments.find((p) => p.week === point.week && (kind === 'stage' ? p.kind === 'stageUp' : p.kind === 'garment'));
@@ -211,7 +219,7 @@ export function DossierPanel({ student, week, diaryOpts, onClose }) {
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {dossier.pinnedMoments.map((pin) => {
-              const preview = pin.excerpt || resolvePinExcerpt(student, pin, week);
+              const preview = pinPreviews.find((p) => p.id === pin.id)?.preview || pin.label || '';
               return (
               <button
                 key={pin.id}

@@ -73,3 +73,13 @@ export function resolvePinExcerpt(student, pin, currentWeek = 1) {
       return pin.label || pinLabel(pin.kind, week, pin.ref, student);
   }
 }
+
+/** resolvePinExcerpt wrapped for UI — never throws during dossier render. */
+export function safeResolvePinExcerpt(student, pin, currentWeek = 1) {
+  try {
+    return resolvePinExcerpt(student, pin, currentWeek) || pin?.label || '';
+  } catch (err) {
+    console.warn('[dossier] pin replay failed', pin?.kind, pin?.id, err);
+    return pin?.label || '';
+  }
+}

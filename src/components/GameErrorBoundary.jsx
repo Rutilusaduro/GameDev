@@ -41,7 +41,10 @@ export class GameErrorBoundary extends Component {
             <button type="button" style={{ ...C.btn('#5a4030') }} onClick={() => window.dispatchEvent(new CustomEvent('profSim:openFieldNotes', { detail: { error } }))}>
               Leave a Field Note
             </button>
-            <button type="button" style={{ ...C.btn('#333') }} onClick={() => this.setState({ error: null, errorInfo: null })}>
+            <button type="button" style={{ ...C.btn('#333') }} onClick={() => {
+              this.setState({ error: null, errorInfo: null });
+              window.dispatchEvent(new CustomEvent('profSim:recover'));
+            }}>
               Try to continue
             </button>
             <button type="button" style={{ ...C.btn('#222'), fontSize: 11 }} onClick={() => window.location.reload()}>

@@ -598,6 +598,12 @@ export default function ProfessorSim(){
     return ()=>window.removeEventListener('profSim:openFieldNotes',handler);
   },[]);
 
+  useEffect(()=>{
+    const recover=()=>setDossierOpen(false);
+    window.addEventListener('profSim:recover',recover);
+    return ()=>window.removeEventListener('profSim:recover',recover);
+  },[]);
+
   // Tier-up detection
   useEffect(()=>{
     if(!professorProfile) return;
@@ -6123,8 +6129,12 @@ export default function ProfessorSim(){
   };
 
   const openStudentDetail=(studentId, opts = {})=>{
-    const s=students.find(st=>st.id===studentId);
-    if(!s) return;
+    const id=Number(studentId);
+    const s=students.find(st=>st.id===id);
+    if(!s){
+      setDossierOpen(false);
+      return;
+    }
     if(openOriginFor(s)) return;
     setDossierOpen(!!opts.dossier);
     setSelectedId(s.id);
@@ -8499,7 +8509,7 @@ export default function ProfessorSim(){
           onClose={()=>setWeekPlannerOpen(false)}
         />
       )}
-      {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)} onSelectGirl={(id)=>{openStudentDetail(id,{dossier:true});setWeekRecap(null);}}/>}
+      {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>{ setDossierOpen(false); setWeekRecap(null); }} onSelectGirl={(id)=>{ setWeekRecap(null); queueMicrotask(()=>openStudentDetail(id,{dossier:true})); }}/>}
       {milestoneQueue&&<MilestoneCeremonyModal queue={milestoneQueue}
         week={week}
         onAdvance={()=>setMilestoneQueue(q=>q?{...q,index:q.index+1}:null)}

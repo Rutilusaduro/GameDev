@@ -10,7 +10,7 @@ initErrorCapture();
 
 function App() {
   return (
-    <GameErrorBoundary>
+    <GameErrorBoundary onError={() => window.dispatchEvent(new CustomEvent('profSim:recover'))}>
       <TextFlagProvider>
         <ProfessorSim />
       </TextFlagProvider>

@@ -4,11 +4,11 @@
 import { useMemo } from 'react';
 import { C } from '../styles.js';
 import { WEIGHT_STAGES } from '../gameData/stages.js';
-import { resolvePinExcerpt } from '../gameData/dossierReplay.js';
+import { safeResolvePinExcerpt } from '../gameData/dossierReplay.js';
 
 export function DossierMomentModal({ pin, student, week = 1, onClose }) {
   const prose = useMemo(
-    () => (pin && student ? resolvePinExcerpt(student, pin, week) : ''),
+    () => (pin && student ? safeResolvePinExcerpt(student, pin, week) : ''),
     [pin, student, week],
   );
 
