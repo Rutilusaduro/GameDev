@@ -11,6 +11,7 @@ registerPool('shift.scene', [
   { when: { lastCorruptionShift: true }, text: [
     '{shift.trigger} {shift.interior} {shift.physical}{shift.denial|prefix: }{shift.coda}',
     '{shift.trigger} {shift.physical} {shift.interior}{shift.coda|prefix: }',
+    '{shift.trigger} {shift.interior}{shift.physical|prefix: }{shift.coda|prefix: }',
   ] },
   { when: {}, text: [''] },
 ]);

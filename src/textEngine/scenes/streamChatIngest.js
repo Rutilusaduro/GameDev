@@ -209,6 +209,11 @@ registerModuleVariants('stream.chat.scenario.eating', [
     text: ['this is so fucking hot'] },
   { when: { audienceTier: 'veryLate', stageMin: 9 },
     text: ['she\'s not even human anymore and I\'m obsessed'] },
+  { when: {}, text: [
+    'she\'s eating again',
+    'here we go again',
+    'the appetite never sleeps',
+  ] },
 ]);
 
 registerModuleVariants('stream.chat.scenario.struggling', [
@@ -220,6 +225,11 @@ registerModuleVariants('stream.chat.scenario.struggling', [
     text: ['this is actually sad… keep going'] },
   { when: { audienceTier: 'veryLate', stageMin: 10 },
     text: ['she can barely even exist and we\'re all just watching'] },
+  { when: {}, text: [
+    'oof',
+    'she\'s fighting it',
+    'this round is rough',
+  ] },
 ]);
 
 registerModuleVariants('stream.chat.scenario.teased', [
@@ -231,4 +241,9 @@ registerModuleVariants('stream.chat.scenario.teased', [
     text: ['she\'s too far gone to even defend herself'] },
   { when: { audienceTier: 'veryLate', stageMin: 10 },
     text: ['she doesn\'t even try to fight back anymore'] },
+  { when: {}, text: [
+    'chat\'s going wild',
+    'they love bullying her',
+    'destiny taking L\'s',
+  ] },
 ]);

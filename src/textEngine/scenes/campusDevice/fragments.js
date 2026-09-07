@@ -9,30 +9,37 @@ registerPool('campus.dev.vulnerability', [
   { when: { archetype: 'cheerleader' }, text: [
     'stretching between drills with her guard down',
     'laughing with the squad, unaware of the shadows',
+    'fixing a ponytail while her back stays turned',
   ] },
   { when: { archetype: 'bookworm' }, text: [
     'reading in plain sight, mouth slightly open',
     'dozing over a textbook at the wrong moment',
+    'highlighting a passage, completely absorbed',
   ] },
   { when: { archetype: 'influencer' }, text: [
     'filming B-roll without checking behind her',
     'adjusting angles while her back stays turned',
+    'checking lighting while the campus moves behind her',
   ] },
   { when: { archetype: 'athlete' }, text: [
     'recovering on a bench, breathing hard',
     'chugging a shake with both hands occupied',
+    'stretching her quads, eyes on her phone',
   ] },
   { when: { targetType: 'npc', role: 'faculty' }, text: [
     'hurrying past with a stack of papers',
     'paused at a vending machine, off-guard',
+    'unlocking an office door, distracted',
   ] },
   { when: { targetType: 'npc', role: 'staff' }, text: [
     'wiping a counter, humming to herself',
     'on break against a loading crate',
+    'restocking a vending machine, back turned',
   ] },
   { when: { targetType: 'npc' }, text: [
     'wandering through without roster protection',
     'close enough for a handheld invention to reach',
+    'paused at a crosswalk, unaware',
   ] },
   { when: {}, text: [
     'crossing your line of sight',
@@ -105,14 +112,17 @@ registerPool('campus.dev.reaction', [
   { when: { deviceId: 'endless_hunger_engine', modeId: 'sustain' }, text: [
     'She clutches her stomach and starts hunting food with single-minded focus.',
     'Her eyes go distant — hunger rewriting every other priority.',
+    'She scans the quad like a woman who forgot lunch was ever optional.',
   ] },
   { when: { deviceId: 'endless_hunger_engine' }, text: [
     'She blinks, suddenly ravenous, already scanning for something to eat.',
     'Her hand drifts to her belly; the hollow feels wrong and urgent.',
+    'Appetite spikes mid-step — she changes direction toward food without deciding to.',
   ] },
   { when: { deviceId: 'feeding_mask', modeId: 'capture' }, text: [
     'A muffled protest becomes another swallow.',
     'She sags as the locked tube keeps pumping.',
+    'Resistance lasts seconds; fullness arrives anyway.',
   ] },
   { when: { deviceId: 'feeding_mask', deviceDependenceTierMin: 2 }, text: [
     'She leans into the seal before the paste arrives.',
@@ -122,6 +132,7 @@ registerPool('campus.dev.reaction', [
   { when: { deviceId: 'feeding_mask', deviceDependenceTierMin: 1 }, text: [
     'Resistance thins into hungry compliance.',
     'She stops fighting once the tube warms.',
+    'Her throat works automatically when the pump engages.',
   ] },
   { when: { modeId: 'capture' }, text: [
     'A muffled protest becomes another swallow.',

@@ -28,18 +28,22 @@ registerModuleVariants('eat.firstBite', [
   { when: { studentId: 0, origin: 'britt_gymnast', ...EARLY }, weight: W, text: [
     'She eats like someone breaking a rule on purpose — first bite sharp, defiant.',
     'The opening forkful is rebellion portioned small. The second is not.',
+    'Coach would call this cheating. She calls it finally eating enough.',
   ]},
   { when: { studentId: 0, origin: 'britt_pageant', ...EARLY }, weight: W, text: [
     'She tastes the first bite like a judge, then forgets to be judged.',
     'Presentation first. Appetite second. Appetite is winning faster than she planned.',
+    'The crown taught her to pose. The fork teaches her to want.',
   ]},
   { when: { studentId: 8, origin: 'maya_moved_often', ...EARLY }, weight: W, text: [
     'She takes the first bite like testing whether the table will stay put.',
     'The opening mouthful is small, careful — appetite checking in before it commits.',
+    'New dorm, new plate, same quiet hunger finally allowed to stay.',
   ]},
   { when: { studentId: 8, origin: 'maya_eight_siblings', ...EARLY }, weight: W, text: [
     'She reaches first, the way someone used to a crowded kitchen does.',
     'The first bite goes down while she is already making room for the second.',
+    'No one elbows her here. She eats like the table is still full anyway.',
   ]},
 ]);
 

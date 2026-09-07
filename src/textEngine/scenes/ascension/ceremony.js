@@ -37,15 +37,27 @@ registerPool('asc.ceremony.gathering', [
 registerPool('asc.ceremony.turn', [
   { when: { corruption: [0] }, weight: 2, text: [
     'She trembles once — not fear, recognition — and looks to you for the word.',
+    'Her hand finds yours; she is not ready, and she is more ready than she admits.',
+    'The threshold waits. She waits with it, eyes on you.',
+    'Warmth pools in her vastness; the last permission is yours to give.',
+  ]},
+  { when: { corruption: [1] }, weight: 2, text: [
+    'She breathes slow — conflict and want braided together — and turns to you for the final permission.',
+    'The old body holds still. Something in her leans forward anyway.',
+    'She meets your gaze — hungry, hesitant, certain she will say yes eventually.',
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
     'She does not ask if she is ready. She asks if you will watch.',
+    'Her gaze is steady. "Say when," she murmurs. "I want you to see it."',
+    'She is already certain. She only wants your witness.',
+    'She is vast and unafraid. "Watch me," she says. "I want you to remember this."',
   ]},
   { when: {}, text: [
     'She turns toward you; the old body holds still while something else leans forward.',
     'Her hand finds yours — anchor, not restraint.',
     'This is the point of no return, and she meets it openly.',
     'The last mortal breath waits for the first mythic one.',
+    'Warmth concentrates between you — vast body, small choice, enormous consequence.',
   ]},
 ]);
 
@@ -54,6 +66,7 @@ registerPool('asc.ceremony.emergence', [
   { when: { corruption: [2] }, weight: 2, asserts: { 'asc.reborn': true }, text: [
     '{subject.name} arrives smaller than memory, warmth intact, change bright on her skin.',
     'She returns at a hundred pounds, not uncertain — only newly possible.',
+    'Light finds her smaller and brighter — myth wearing a familiar smile.',
   ]},
   { when: {}, asserts: { 'asc.reborn': true }, text: [
     'She surfaces lighter than the ceiling she left, myth on her skin, your gaze the anchor.',
@@ -65,13 +78,27 @@ registerPool('asc.ceremony.emergence', [
 
 // Shape: DIALOGUE BEAT. First words after rebirth.
 registerPool('asc.ceremony.firstWords', [
+  { when: { corruption: [0] }, weight: 2, text: [
+    `{subject.name} exhales shakily. "That was… a lot. I'm still me, right?"`,
+    `"Smaller," {subject.first} whispers, touching her own wrist. "Strange. Good-strange."`,
+    `{subject.name} looks at her hands like they belong to someone new. "Tell me I'm still me."`,
+  ]},
+  { when: { corruption: [1] }, weight: 2, text: [
+    `{subject.name} laughs once, surprised. "Okay. Okay. We do that again on purpose?"`,
+    `"I can feel the ladder still," {subject.first} says. "But lighter. Lighter on purpose."`,
+    `{subject.name} touches her middle, wonderingly. "Room to climb again. I like that."`,
+  ]},
   { when: { corruption: [2] }, weight: 2, text: [
     `{subject.name} looks at you, settled. "Say when. I'm not going back to small by accident."`,
+    `"Again," {subject.first} murmurs, hungry already. "Let's do it again."`,
+    `{subject.name} smiles. "Mythic me is still hungry. Good."`,
   ]},
   { when: {}, text: [
     `{subject.name} finds your eyes. "See it through with me."`,
     `"I'm still me," {subject.first} says. "Just more possible now."`,
     `{subject.name} exhales, almost a laugh. "Well. That happened."`,
+    `{subject.name} touches her middle, wonderingly. "Room to grow again."`,
+    `"Don't look away next time," {subject.first} says softly. "I want you watching."`,
   ]},
 ]);
 
@@ -81,5 +108,7 @@ registerPool('asc.ceremony.scene', [
     '{asc.ceremony.arrival} {asc.ceremony.gathering} {asc.ceremony.turn} {asc.ceremony.emergence} {asc.ceremony.firstWords}',
     '{asc.ceremony.gathering} {asc.ceremony.arrival} {asc.ceremony.turn} {asc.ceremony.emergence} {asc.ceremony.firstWords}',
     '{asc.ceremony.arrival} {asc.ceremony.turn} {asc.ceremony.gathering} {asc.ceremony.emergence} {asc.ceremony.firstWords}',
+    '{asc.ceremony.arrival} {asc.ceremony.gathering} {asc.ceremony.turn} {asc.ceremony.emergence} {asc.ceremony.firstWords}',
+    '{asc.ceremony.gathering} {asc.ceremony.turn} {asc.ceremony.arrival} {asc.ceremony.emergence} {asc.ceremony.firstWords}',
   ]},
 ]);

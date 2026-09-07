@@ -11,35 +11,49 @@ registerPool('cloth.discovery', [
   { when: { clothingState: 'button_pop' }, text: [
     'A button that has been holding its breath finally gives up.',
     'The waistband loses an argument it was never going to win.',
+    'A button departs at speed — small tok, thread surrendering.',
   ] },
   { when: { clothingState: 'zipper_fail' }, text: [
     'The zipper stops halfway — a truce neither side respects.',
     'She tugs once, twice. The zipper declines to continue.',
+    'Metal teeth refuse to meet. The gap widens anyway.',
   ] },
   { when: { clothingState: 'seam_split' }, text: [
     'A seam opens like a quiet confession along the side.',
     'Thread surrenders along the hip — not dramatic, simply factual.',
+    'Fabric parts along the stress line — honest, audible, final.',
   ] },
   { when: { clothingState: 'waistband_surrender' }, text: [
     'The elastic stops pretending. The gap widens past hope.',
     'Waistband surrender: the elastic has made its decision.',
+    'The waistband rolls under and stays — concession without apology.',
   ] },
   { when: { stageMin: 6 }, text: [
     'She has outgrown the fiction of this outfit. The fabric agrees.',
     'Custom sizing is losing again — she can feel it before she sees it.',
+    'The mirror shows strain before failure — fabric telegraphing surrender.',
   ] },
   { when: { stageMin: 10 }, text: [
     'Clothing is a concept at this scale. She dresses in what can be arranged.',
     'The outfit was never going to win. She knew that before she started.',
+    'Garments arrive as suggestions; her body votes by outgrowing them.',
   ] },
 ]);
 
 registerPool('cloth.struggleVerb', [
   { when: {}, text: ['tugs', 'adjusts', 'smooths', 'works at'] },
   { when: { stageMin: 4 }, text: ['wrestles with', 'negotiates with', 'coaxes'] },
-  { when: { stageMin: 6 }, text: ['abandons hope for', 'makes peace with the failure of'] },
-  { when: { bodyType: 'apple', stageMin: 4 }, text: ['tries to convince the waistband over her belly'] },
-  { when: { bodyType: 'pear', stageMin: 4 }, text: ['attempts to zip over her hips'] },
+  { when: { stageMin: 6 }, text: ['abandons hope for', 'makes peace with the failure of', 'stops pretending she can close'] },
+  { when: { bodyType: 'apple', stageMin: 4 }, text: [
+    'tries to convince the waistband over her belly',
+    'smooths fabric over a middle that has outpaced the cut',
+    'works the waistband down over soft forward weight',
+  ] },
+  { when: { bodyType: 'pear', stageMin: 4 }, text: [
+    'attempts to zip over her hips',
+    'coaxes the zipper past hips that arrived ahead of schedule',
+    'tugs fabric over thighs that no longer pass quietly',
+  ] },
 ]);
 
 registerPool('cloth.struggle', [
@@ -52,14 +66,17 @@ registerPool('cloth.struggle', [
   { when: { clothingState: 'sleeve_restriction' }, text: [
     'Her arms have outgrown the sleeves — movement costs friction now.',
     'The sleeve digs at the upper arm. She stops fighting it.',
+    'Fabric bites at the bicep; she rolls her shoulders and accepts the pinch.',
   ] },
   { when: { clothingState: 'shirt_rise' }, text: [
     'Her shirt has been climbing all day. She tugs it down. It climbs again.',
     'Stomach escaping the hemline — a slow, daily negotiation.',
+    'The hem rides up with every breath; she smooths it flat and loses again.',
   ] },
   { when: { clothingState: 'bra_protest' }, text: [
     'The bra has been filing complaints for weeks. Today it escalates.',
     'Cup overflow, band riding — the underwire has chosen violence.',
+    'Straps dig; cups overflow — the lingerie has reached its limit.',
   ] },
 ]);
 
@@ -73,10 +90,12 @@ registerPool('cloth.moment', [
   { when: { clothingState: 'button_pop' }, weight: 2, text: [
     'A button departs at speed, skittering across the floor.',
     'The button goes. The gap remains, honest and wide.',
+    'Thread gives; the button rolls away like a small surrender.',
   ] },
   { when: { stageMin: 6 }, text: [
     'The seam parts before the button does — fabric conceding to {word.size} mass.',
     'Failure arrives all at once: thread, elastic, and dignity.',
+    'Custom sizing fails in sequence — seam, then waistband, then denial.',
   ] },
 ]);
 
@@ -90,22 +109,30 @@ registerPool('cloth.failBeat', [
   { when: { corruption: [0] }, text: [
     'She freezes — cheeks heating — as the failure becomes public.',
     'The wardrobe malfunction is small and absolute.',
+    'Heat floods her face. The fabric does not apologize.',
   ] },
   { when: { corruption: [2] }, text: [
     'The failure happens. She does not so much as glance down.',
     'Fabric surrenders. She keeps going.',
+    'She keeps walking. The gap keeps showing.',
   ] },
   { when: { stageMin: 8 }, text: [
     'At her size, clothing failure is weather — expected, survived, forgotten.',
     'The garment loses. She has stopped keeping score.',
+    'Custom sizing was always a temporary fiction.',
   ] },
 ]);
 
 registerPool('cloth.failSound', [
-  { when: {}, text: ['', '', '', ''] },
-  { when: { clothingState: 'button_pop' }, text: ['a soft tok against the floor', 'the button rolling to a stop'] },
-  { when: { clothingState: 'seam_split' }, text: ['a quiet rip along the seam', 'thread popping in sequence'] },
-  { when: { clothingState: 'zipper_fail' }, text: ['the zipper catching, then refusing', 'metal teeth giving up halfway'] },
+  { when: {}, text: [
+    '',
+    'a small sound of fabric giving up',
+    'thread popping like a quiet confession',
+    'elastic sighing its surrender',
+  ] },
+  { when: { clothingState: 'button_pop' }, text: ['a soft tok against the floor', 'the button rolling to a stop', 'thread snapping like a small sigh'] },
+  { when: { clothingState: 'seam_split' }, text: ['a quiet rip along the seam', 'thread popping in sequence', 'fabric parting with a soft surrender'] },
+  { when: { clothingState: 'zipper_fail' }, text: ['the zipper catching, then refusing', 'metal teeth giving up halfway', 'a stuck pull-tab and then silence'] },
 ]);
 
 registerPool('cloth.reaction', [
@@ -113,33 +140,69 @@ registerPool('cloth.reaction', [
     `{subject.name} grabs at the gap, cheeks hot. "That was already loose."`,
     `"I can fix this," she says, unconvincingly, to no one in particular.`,
     `She looks from the failure to you. "Well. That's a sign."`,
+    `"It's the fabric," she insists, tugging uselessly. "Cheap fabric."`,
+    `Color rises in her cheeks. The seam does not re-close.`,
   ] },
   { when: { corruption: [1] }, text: [
     `"Okay," she says, smoothing what cannot be smoothed. "Bigger size."`,
     `She laughs once — not quite humor. "I knew this was coming."`,
     `"Well. Shopping trip," she says, already resigned.`,
+    `"New size," she murmurs, more acceptance than complaint. "Fine."`,
+    `She exhales through the strain. The garment has made its point.`,
   ] },
   { when: { corruption: [2] }, text: [
     `{subject.name} smiles down at the wreck of her waistband. "Buy bigger."`,
     `"Good," she says. "More room to grow into."`,
     `She does not fix it. She does not need to.`,
+    `"There," she says, patting the gap. "Honest at last."`,
+    `Fabric surrendered. She looks pleased.`,
+  ] },
+  { when: { stageMin: 6, stageMax: 8 }, text: [
+    `{subject.name} surveys the damage with the calm of someone who has seen this before.`,
+    `"Another size up," she says, almost bored. "The closet knew."`,
+    `She tugs once, gives up, and keeps moving — the failure already old news.`,
   ] },
   { when: {}, text: [
     `{subject.name} looks at the damage and exhales.`,
     `She says nothing. The clothes have spoken for her.`,
     `{subject.name} smooths what she can and lets the rest show.`,
     `Fabric has made its point. She listens.`,
+    `The outfit lost. Her body did not.`,
   ] },
 ]);
 
 registerPool('cloth.aftermath', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'The outfit lost. She carries the fact quietly.',
+    'Fabric failure noted, then filed under tomorrow.',
+    'She smooths what she can and lets the rest show.',
+  ] },
+  { when: { stageMin: 0, stageMax: 3 }, text: [
+    'The gap follows her like a blush she cannot shake.',
+    'She tugs once more, then stops fighting the fabric.',
+    'Shopping waits. Embarrassment is warm and immediate.',
+  ] },
   { when: { corruption: [0] }, text: [
     'She spends the rest of the day aware of the gap.',
     'The failure follows her like a blush she cannot shake.',
+    'She checks the mirror twice before leaving. The gap is still there.',
+    'Fabric pulled, re-pulled, surrendered. She carries the embarrassment warm in her cheeks.',
+  ] },
+  { when: { corruption: [1] }, text: [
+    'She adjusts once more, then stops fighting it.',
+    'The old size is a memory. Shopping is tomorrow. Tonight she eats anyway.',
+    'Acceptance arrives before the new wardrobe does.',
   ] },
   { when: { corruption: [2] }, text: [
     'She wears the failure like a badge — or forgets it entirely.',
     'Shopping for bigger is not a crisis anymore. It is Tuesday.',
+    'The gap stays open. She does not mind the breeze.',
+    'Bigger clothes are not defeat. They are forecast.',
+  ] },
+  { when: { stageMin: 7 }, text: [
+    'At this size, wardrobe casualties are weather — noted, survived, forgotten.',
+    'She has stopped mourning garments. They were always temporary.',
+    'The closet rotates faster now. She eats through the transition.',
   ] },
 ]);

@@ -4,6 +4,7 @@ import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import './fragments.js';
 import './skeletons.js';
+import './fragmentDepth.js';
 import './depth.js';
 import './selectors.js';
 import './personas.js';

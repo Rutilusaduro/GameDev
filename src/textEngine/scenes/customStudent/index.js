@@ -26,14 +26,17 @@ registerModuleVariants('eat.firstBite', [
   { when: { ...CUSTOM, corruption: [0] }, priority: P, weight: W, text: [
     'She takes the first bite like a measurement, then forgets to stop measuring.',
     `"For the log," she says, and eats anyway.`,
+    'Opening intake logged. Flavor exceeds specification. She continues.',
   ]},
   { when: { ...CUSTOM, corruption: [1] }, priority: P, weight: W, text: [
     'The first bite settles the argument faster than any spreadsheet.',
     'She calls it a field test. Her fork does not wait for peer review.',
+    'Hypothesis: one bite. Result: insufficient. She iterates.',
   ]},
   { when: { ...CUSTOM, corruption: [2] }, priority: P, weight: W, text: [
     'She eats like the prototype finally passed inspection.',
     `"Necessary intake," she says, already reaching for more.`,
+    'First mouthful: validated. Second: scheduled. Third: inevitable.',
   ]},
 ]);
 
@@ -41,14 +44,35 @@ registerModuleVariants('shift.interior', [
   { when: { ...CUSTOM, corruption: [0] }, priority: P, weight: W, text: [
     'She files appetite under variables. It refuses to stay there.',
     'The model updates around her hunger, quietly and without permission.',
+    'Control group: denial. Results: inconclusive. She eats.',
   ]},
   { when: { ...CUSTOM, corruption: [1] }, priority: P, weight: W, text: [
     'She stops arguing with the numbers. Appetite wins the model.',
     'The old spec fails. The new body makes a better case.',
+    'Loss function: minimized shame. Accuracy: improving.',
   ]},
   { when: { ...CUSTOM, corruption: [2] }, priority: P, weight: W, text: [
     'The prototype became the product. She is keeping it.',
     'Next sprint: more.',
+    'Deploy to production: this body. No rollback.',
+  ]},
+]);
+
+registerModuleVariants('eat.finish', [
+  { when: { ...CUSTOM, corruption: [0] }, priority: P, weight: W, text: [
+    'She finishes the plate like closing a log file — complete, documented, already hungry for the appendix.',
+    'Empty dish. Output: satisfied. Next iteration queued.',
+    'Trial meal concluded. Variance within acceptable pleasure.',
+  ]},
+  { when: { ...CUSTOM, corruption: [1] }, priority: P, weight: W, text: [
+    'She sets the fork down and updates the model. "Recommend repeat trial."',
+    'Plate empty. Belly fuller. Hypothesis supported.',
+    'Intake complete. She is already planning seconds.',
+  ]},
+  { when: { ...CUSTOM, corruption: [2] }, priority: P, weight: W, text: [
+    'She finishes everything within reach and looks for what comes next.',
+    '"Output exceeded target," she says, pleased. "No rollback."',
+    'Deploy to production: this fullness. Continue feeding.',
   ]},
 ]);
 

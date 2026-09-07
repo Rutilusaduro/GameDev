@@ -34,6 +34,7 @@ registerPool('intimacy.approach', [
   { when: {}, text: [
     '{subject.name} draws close — unhurried, present.',
     'She finds you where you are and stays.',
+    'Proximity becomes intention; she does not pretend otherwise.',
   ] },
 ]);
 
@@ -41,10 +42,17 @@ registerPool('intimacy.bodyFeel', [
   { when: { stageMin: 6, season: ['summer'] }, weight: 3, text: [
     'Warmth and weight settle against you — skin damp, belly soft, thighs broad, real.',
     'Summer heat and her body find yours; fullness presses through thin fabric.',
+    'Sweat and softness — her belly yields warm against your hands.',
   ] },
   { when: { stageMin: 6 }, weight: 2, text: [
     'Warmth and weight settle against you — belly soft, thighs broad, real.',
     'Her body finds yours and stays; fullness presses through fabric.',
+    'You feel the depth of her — give of flesh, heat beneath, weight that stays.',
+    'Thighs spill across yours; belly rests heavy and patient against you.',
+  ] },
+  { when: { stageMin: 9 }, weight: 3, text: [
+    'Vast warmth arrives in layers — belly, thigh, the slow tide of her breathing.',
+    'Immobility has not reduced how much of her there is to feel. If anything, more.',
   ] },
   { when: { fullnessMin: 0.85, mood: ['content', 'warm'] }, weight: 3, text: [
     'She is full and warm against you — {word.breathQuality}, utterly at ease.',
@@ -57,6 +65,8 @@ registerPool('intimacy.bodyFeel', [
   { when: {}, text: [
     'Soft heat where she touches you — skin, fabric, appetite.',
     'Her body is generous against yours; you feel wanted.',
+    'Warmth pools where she presses close — belly, thigh, the give of soft flesh.',
+    'She is heavier than memory and softer than apology.',
   ] },
 ]);
 
@@ -73,7 +83,12 @@ registerPool('intimacy.resistance', [
     'No resistance left — only appetite for your attention.',
     'She meets you halfway and keeps going.',
   ] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    '',
+    '',
+    'Hesitation passes; warmth remains.',
+    'She does not pull away — not yet, not really.',
+  ] },
 ]);
 
 registerPool('intimacy.encourages', [
@@ -101,7 +116,11 @@ registerPool('intimacy.psychVoice', [
     'She talks softer than she means to — {word.psychVoice}.',
     'Words arrive unfiltered; {word.psychVoice}.',
   ] },
-  { when: {}, text: ['{word.psychVoice}.'] },
+  { when: {}, text: [
+    '{word.psychVoice}.',
+    'Her voice softens — {word.psychVoice}.',
+    'Words arrive quiet: {word.psychVoice}.',
+  ] },
 ]);
 
 registerPool('intimacy.climax', [
@@ -124,6 +143,7 @@ registerPool('intimacy.climax', [
   { when: {}, text: [
     'The moment breaks open — warmth, weight, breath.',
     'She sighs, sated, still pressed close.',
+    'Release arrives soft and total; she does not hurry away.',
   ] },
 ]);
 
@@ -134,5 +154,6 @@ registerPool('intimacy.depth', [
   { when: {}, text: [
     '{intimacy.approach} {intimacy.bodyFeel} {intimacy.encourages} {intimacy.psychVoice} {intimacy.climax}',
     '{intimacy.approach} {intimacy.bodyFeel} {intimacy.climax}',
+    '{intimacy.bodyFeel} {intimacy.encourages} {intimacy.climax}',
   ] },
 ]);

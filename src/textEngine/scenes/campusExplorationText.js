@@ -263,15 +263,15 @@ registerPool('campus.travel', [
 
 registerPool('campus.location', [
   { when: { nodeId: 'quad' }, priority: 2,
-    text: ['Food trucks idle in a row like predators that learned parking etiquette.', 'The lawn has more blankets than grass on a weekday afternoon.'] },
+    text: ['Food trucks idle in a row like predators that learned parking etiquette.', 'The lawn has more blankets than grass on a weekday afternoon.', 'Someone naps on a bench with a pastry balanced on their stomach like a trophy.'] },
   { when: { nodeId: 'library' }, priority: 2,
-    text: ['The third floor smells like coffee and surrender.', 'Someone snores gently between stacks. A textbook rises and falls on their belly.'] },
+    text: ['The third floor smells like coffee and surrender.', 'Someone snores gently between stacks. A textbook rises and falls on their belly.', 'A study carrel holds crumbs, wrappers, and the ghost of a third snack break.'] },
   { when: { nodeId: 'dining_hall' }, priority: 2,
-    text: ['The dessert station has a queue that behaves like a single organism.', 'A staff member plates a fourth serving without being asked.'] },
+    text: ['The dessert station has a queue that behaves like a single organism.', 'A staff member plates a fourth serving without being asked.', 'Steam and sugar hang in the air — the whole building smells like seconds.'] },
   { when: { nodeId: 'gym' }, priority: 2,
-    text: ['The juice bar blender never stops during peak hours.', 'A poster advertises "recovery" portions the size of small pets.'] },
+    text: ['The juice bar blender never stops during peak hours.', 'A poster advertises "recovery" portions the size of small pets.', 'Someone leaves the treadmill for the smoothie line and does not return.'] },
   { when: { nodeId: 'garden' }, priority: 2,
-    text: ['Fruit trees lean slightly toward the path, as if offering.', 'A greenhouse fan hums. Inside, someone is eating something not on the syllabus.'] },
+    text: ['Fruit trees lean slightly toward the path, as if offering.', 'A greenhouse fan hums. Inside, someone is eating something not on the syllabus.', 'Herbs grow thick along the path — picked clean below, untouched above reach.'] },
   { when: {}, text: [
     'The campus hums with its usual foot traffic and appetite.',
     'Students drift past carrying food like portable flags.',
@@ -285,6 +285,7 @@ registerPool('campus.find', [
     text: [
       'You find condensed sweetness pooled where students gather — useful, unsettling, bottled before it evaporates.',
       'A feeding nook yields a jar of tithes: sticky devotion and chemical residue in equal measure.',
+      'A hidden alcove drips with residue from something engineered — you take what you can carry.',
     ] },
   { when: {}, priority: 0,
     text: [

@@ -39,6 +39,8 @@ registerPool("diary.brittany.uniform", [
   // Fallback
   { when: {}, text: [
     "The roster feels lighter now. So do I.",
+    "Nobody's asking for splits at dawn. I'm sleeping in and waking up hungry.",
+    "My body stopped auditioning for them. It started keeping score for me.",
   ]},
 ]);
 
@@ -64,6 +66,8 @@ registerPool("diary.madeline.dataset", [
   ]},
   { when: {}, text: [
     "The field work continues. The researcher continues. So does the data.",
+    "Field note, miscellaneous: appetite elevated. Attribution: unresolved. Next measure: tomorrow.",
+    "I keep writing it down. The brackets feel less necessary every week.",
   ]},
 ]);
 
@@ -88,6 +92,8 @@ registerPool("diary.kylie.unfiltered", [
   ]},
   { when: {}, text: [
     "No filter. Just me.",
+    "Left the ring light off tonight. Ate anyway. Filmed nothing.",
+    "The hunger doesn't need good lighting to be real.",
   ]},
 ]);
 
@@ -115,6 +121,8 @@ registerPool("diary.serena.newpr", [
   ]},
   { when: {}, text: [
     "New event. New build. New PR to chase.",
+    "Logged today's intake. Volume up. Excuses down.",
+    "The scale moved. I moved with it. Personal best.",
   ]},
 ]);
 
@@ -140,6 +148,8 @@ registerPool("diary.fiona.subject", [
   ]},
   { when: {}, text: [
     "The subject is excellent. The work is just beginning.",
+    "Pinned another print above the desk. No caption. Full plate in every frame.",
+    "The light caught my fullness tonight. Honest. Unretouched.",
   ]},
 ]);
 
@@ -165,6 +175,8 @@ registerPool("diary.destiny.achievement", [
   ]},
   { when: {}, text: [
     "New high score.",
+    "Screenshot the scale. New target set. Tier climbing.",
+    "Old ashamed build deleted. Current specs: running hot.",
   ]},
 ]);
 
@@ -190,6 +202,8 @@ registerPool("diary.tiffany.uncounted", [
   ]},
   { when: {}, text: [
     "More is more, babe.",
+    "Set out another plate for me. Didn't log it. Felt like winning.",
+    "The room ate and I ate and nobody kept count this time.",
   ]},
 ]);
 
@@ -216,6 +230,8 @@ registerPool("diary.priya.spreadsheet", [
   ]},
   { when: {}, text: [
     "KPIs: excellent. Overperformance: sustained.",
+    "Updated actuals. Projection climbed again. Smiled at the graph.",
+    "Still no corrective action. The data looks better every week.",
   ]},
 ]);
 
@@ -239,6 +255,8 @@ registerPool("diary.maya.chair", [
   ]},
   { when: {}, text: [
     "Home.",
+    "Sat in the chair longer than I needed. The fit held.",
+    "Left two minutes late. Went home full.",
   ]},
 ]);
 
@@ -263,6 +281,8 @@ registerPool("diary.chloe.americaine", [
   ]},
   { when: {}, text: [
     "C'est obscène. C'est merveilleux.",
+    "À Maman: another dinner I did not refuse. The dress is getting tight.",
+    "À Maman: I am learning appetite. It is a generous teacher.",
   ]},
 ]);
 
@@ -286,6 +306,8 @@ registerPool("diary.renee.recipe", [
   ]},
   { when: {}, text: [
     "The recipe is ready. The kitchen is warm.",
+    "Fed myself again tonight. Yield: excellent. Resting time: generous.",
+    "The journal entry smells like butter. So do I.",
   ]},
 ]);
 
@@ -310,6 +332,8 @@ registerPool("diary.kaylee.patient", [
   ]},
   { when: {}, text: [
     "Vital signs: all excellent.",
+    "Self-assessment note: soft, compliant, well-fed. Chart closed for the night.",
+    "Palpation: warm. Disposition: satisfied.",
   ]},
 ]);
 
@@ -334,6 +358,8 @@ registerPool("diary.nadia.casestudy", [
   ]},
   { when: {}, text: [
     "The dynamic is named. So am I.",
+    "Re-read the literature. I'm in every footnote I care about.",
+    "Another bite while I think it through. The theory holds.",
   ]},
 ]);
 
@@ -358,6 +384,8 @@ registerPool("diary.daisy.softening", [
   ]},
   { when: {}, text: [
     "Soft is strong. Warm is everything.",
+    "A child fell asleep against my belly during story time. I didn't move.",
+    "Fed them snacks, fed myself, let the warmth stay.",
   ]},
 ]);
 
@@ -381,6 +409,8 @@ registerPool("diary.maryjane.ripe", [
   ]},
   { when: {}, text: [
     "Harvest time.",
+    "Walked past the car window slow. One word: ripe.",
+    "Ate my fill from the dining hall. Felt like late summer.",
   ]},
 ]);
 
@@ -405,6 +435,8 @@ registerPool("diary.sophia.trial", [
   ]},
   { when: {}, text: [
     "The field work continues. So do I.",
+    "Week note: appetite outside meal windows. Intervention: declined.",
+    "The brackets around [Subject] are getting harder to type.",
   ]},
 ]);
 
@@ -432,6 +464,8 @@ registerPool("diary.talia.justification", [
   ]},
   { when: {}, text: [
     "The research justifies itself. So do I.",
+    "Added two pages to the lab notes. Metabolic baseline: elevated. Conclusion: favorable.",
+    "The papers are airtight. The hunger is louder anyway.",
   ]},
 ]);
 
@@ -459,6 +493,8 @@ registerPool("diary.lilith.chair", [
   ]},
   { when: {}, text: [
     "The feast awaits.",
+    "Took my chair. The wood learned my weight. I reached for another plate.",
+    "The room arranged itself around me. I ate like arrival.",
   ]},
 ]);
 
@@ -487,5 +523,7 @@ registerPool("diary.indiana.fieldmap", [
   ]},
   { when: {}, text: [
     "Expedition status: very promising.",
+    "*FIELD NOTE:* perimeter expanding. Ground soft. Provisioning adequate.",
+    "Survey ongoing. No return date set.",
   ]},
 ]);

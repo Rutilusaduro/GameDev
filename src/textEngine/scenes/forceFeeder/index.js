@@ -4,6 +4,7 @@
 import { createContext, render } from '../../engine.js';
 import { getStage } from '../../../gameData/stages.js';
 import './fragments.js';
+import './depth.js';
 
 export const FF_SETUP = '{ff.setup}';
 export const FF_FEED = '{ff.feed}';

@@ -45,6 +45,7 @@ registerPool('slender.bodyNotice', [
   { when: { isGaining: true, stageMax: 3 }, weight: 2, text: [
     'this week\'s softness more legible than last week\'s',
     'the change small enough to deny, present enough to feel',
+    'gain settling into hip and waist before she names it aloud',
   ] },
 ]);
 
@@ -87,6 +88,18 @@ registerPool('slender.bodyFeel', [
     'The changes are minor enough to live with. She has other things to think about.',
     'She registers the softness the way she registers weather — noted, not dwelled on.',
     'Her body is a little fuller. She shrugs. Life continues.',
+    'Warmth pools low when she sits after lunch. She shifts and forgets it.',
+    'Her thighs brush when she walks now — a small friction she files under ordinary.',
+  ] },
+  { when: { stageMin: 3, stageMax: 4, corruption: [0] }, text: [
+    'Softness has arrived in places that used to be flat — hip, belly, the underside of her arm.',
+    'She feels heavier after she eats, and the heaviness stays longer than it used to.',
+    'Her waistband leaves a faint crease; she smooths her shirt and keeps moving.',
+  ] },
+  { when: { stageMin: 5, stageMax: 8 }, text: [
+    'Her body feels heavier in the specific places that keep score — belly, thigh, seat.',
+    'Warmth gathers low when she sits; the chair reminds her she is not slender anymore.',
+    'She is aware of mass now — not ashamed, not proud, simply present.',
   ] },
 ]);
 
@@ -126,13 +139,35 @@ registerPool('slender.mindFeel', [
   { when: { corruption: [0], isGaining: true }, text: [
     'This week\'s gain lands on top of last week\'s — a stack she is still pretending is temporary.',
     'The trend is visible now if you know her. She knows her.',
+    'The number keeps climbing in the same direction. She has run out of innocent explanations.',
+    'Each week adds a little more give to her reflection. She is running out of denials.',
+  ] },
+  { when: { mood: ['nervous', 'stressed'], corruption: [0], stageMax: 4 }, text: [
+    'Stress and appetite have become allies she did not invite.',
+    'She eats when she is anxious now. The fullness helps. She hates that it helps.',
+    'Nerves loosen when her belly fills. She files that under inconvenient facts.',
+  ] },
+  { when: { stageMin: 5, stageMax: 8, corruption: [0] }, text: [
+    'The number is a fact she has stopped arguing with every week.',
+    'She holds the feeling at arm\'s length — then pulls it closer anyway.',
+    'The story she tells herself is catching up to the mirror, slowly.',
   ] },
 ]);
 
 // ── slender.deflect — DIALOGUE BEAT ────────────────────────────
 // Opposed / reluctant verbal armor — corruption 0, early stages.
 registerPool('slender.deflect', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    `"It's nothing," she says, too quickly.`,
+    `"Freshman year," she offers, like that explains it.`,
+    `"I'm fine," she says, and does not elaborate.`,
+  ] },
+  { when: { stageMin: 5, stageMax: 8, corruption: [0] }, text: [
+    `"It's just how I'm built now," she says, unconvincing even to herself.`,
+    `"Everyone gains in college," she repeats, like a mantra losing power.`,
+    `"It's not a big deal," she insists, hand smoothing her shirt.`,
+  ] },
   { when: { gainStance: 'opposed' }, weight: 3, text: [
     `"It's temporary," she says, too quickly.`,
     `"I've been stressed. That's all."`,
@@ -157,7 +192,17 @@ registerPool('slender.deflect', [
 // ── slender.neutral — DIALOGUE BEAT ──────────────────────────────
 // Genuinely unfussed — not opposed, not eager.
 registerPool('slender.neutral', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    `"Okay," she says. "What's next?"`,
+    `"Numbers," she says, and shrugs.`,
+    `"Sure. That tracks."`,
+  ] },
+  { when: { stageMin: 5, stageMax: 8, gainStance: 'neutral' }, text: [
+    `"Still me," she says, glancing at the scale without drama.`,
+    `"Could be worse," she murmurs, already thinking about lunch.`,
+    `"Noted," she says, and reaches for her bag.`,
+  ] },
   { when: { gainStance: 'neutral' }, weight: 3, text: [
     `"Okay," she says. "What's next?"`,
     `"Numbers," she says, and shrugs.`,
@@ -168,13 +213,24 @@ registerPool('slender.neutral', [
   { when: { gainStance: 'neutral', stageMax: 2 }, text: [
     `"Still me," she says, lightly.`,
     `"Could be worse."`,
+    `"Cool. Next."`,
   ] },
 ]);
 
 // ── slender.secret — FULL SENTENCE ─────────────────────────────
 // Body contradicts stated resistance — hidden appetite, corruption 0.
 registerPool('slender.secret', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'Her breath catches on the number — not with dismay.',
+    'Color rises in her cheeks. She blames the heat in the room.',
+    'She says nothing. Her tongue touches her lip.',
+  ] },
+  { when: { stageMin: 5, stageMax: 8, gainStance: 'secret' }, text: [
+    'She smooths fabric over new softness and does not apologize.',
+    'The upward tick satisfies something she will not name aloud.',
+    'Her thighs press together when she steps off the scale — private pleasure.',
+  ] },
   { when: { gainStance: 'secret' }, weight: 3, text: [
     'Her breath catches on the number — not with dismay. She looks away too slowly.',
     'She smooths her top over a middle that has grown since last week and does not pull her hand back.',
@@ -185,16 +241,28 @@ registerPool('slender.secret', [
   { when: { gainStance: 'secret', hungerTierMin: 2 }, weight: 2, text: [
     'Hunger has been louder than shame all week. She stopped pretending otherwise somewhere around Wednesday.',
     'She checks whether you have snacks before she checks whether you noticed the gain.',
+    'Appetite arrives before denial can finish its sentence.',
   ] },
   { when: { gainStance: 'secret', isGaining: true }, text: [
     'She files the gain under things she will not discuss out loud — and under things she will remember.',
     'The upward tick satisfies something she will not name. Her face stays carefully neutral.',
+    'She smooths fabric over new softness and does not apologize to the mirror.',
   ] },
 ]);
 
 // ── slender.mirror — FULL SENTENCE (optional) ──────────────────
 registerPool('slender.mirror', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'She catches her reflection and pauses a beat longer than necessary.',
+    'The mirror shows someone softer at the edges.',
+    'She turns sideways without meaning to — checking, comparing.',
+  ] },
+  { when: { stageMin: 5, stageMax: 8, corruption: [0] }, text: [
+    'Her reflection has new curves; she traces one with her eyes.',
+    'The mirror holds a version of her she is still meeting.',
+    'She checks her profile and pretends she was adjusting her bag.',
+  ] },
   { when: { stageMin: 2, stageMax: 4, corruption: [0] }, text: [
     'She catches her reflection and pauses a beat longer than necessary.',
     'The mirror shows someone softer at the edges. She is still learning that face.',
@@ -203,17 +271,35 @@ registerPool('slender.mirror', [
   { when: { gainStance: 'opposed', stageMin: 2, stageMax: 4 }, weight: 2, text: [
     'She avoids the mirror on the way out. She saw enough.',
     'The reflection does not match the story she is telling. She chooses the story. For now.',
+    'She fixes her collar and does not look down.',
   ] },
   { when: { gainStance: 'secret', stageMin: 2, stageMax: 4 }, weight: 2, text: [
     'She lingers at the mirror when she thinks no one is watching.',
     'Her hand rests on her hip. She does not scold herself for it.',
+    'She turns sideways and exhales — watching softness settle with private pleasure.',
+    'The reflection is rounder than last month. She bites her lip and does not look away.',
+  ] },
+  { when: { stageMin: 3, stageMax: 4, corruption: [0] }, text: [
+    'The mirror shows someone softer at the edges. She is still learning that face.',
+    'She checks her profile in a shop window and pretends she was adjusting her bag.',
+    'Her reflection has new curves; she traces one with her eyes and keeps walking.',
   ] },
 ]);
 
 // ── slender.eatPause — FULL SENTENCE ─────────────────────────────
 // Early eating beats — reluctant/neutral/secret at the table.
 registerPool('slender.eatPause', [
-  { when: {}, text: ['', '', '', ''] },
+  { when: {}, text: [
+    '',
+    'She eats like someone still negotiating portion size with herself.',
+    'Each bite is measured — performance, not yet appetite.',
+    'The plate empties anyway. She notices before she comments.',
+  ] },
+  { when: { stageMin: 5, stageMax: 8, corruption: [0] }, text: [
+    'She pauses between bites to feel fullness settle — interesting, hard to ignore.',
+    'Her fork slows when her waistband tightens. It does not stop.',
+    'Warmth pools under her shirt mid-meal; she shifts and continues.',
+  ] },
   { when: { corruption: [0], stageMax: 3 }, text: [
     'She eats like someone still negotiating portion size with herself.',
     'Each bite is measured — performance, not yet appetite.',
@@ -227,6 +313,7 @@ registerPool('slender.eatPause', [
   { when: { gainStance: 'neutral', stageMax: 3 }, text: [
     'She eats without commentary. The food is food.',
     'Hunger is hunger. She answers it and moves on.',
+    'The plate empties at its own pace. She does not apologize.',
   ] },
   { when: { gainStance: 'secret', stageMax: 3 }, weight: 2, text: [
     'She eats with quiet focus — not rushing, not stopping.',
@@ -236,5 +323,12 @@ registerPool('slender.eatPause', [
   { when: { hungerTierMin: 2, corruption: [0], stageMax: 4 }, weight: 2, text: [
     'Politeness loses to appetite halfway through the meal.',
     'She eats faster once she stops performing restraint.',
+    'Hunger makes her cheeks flush; she blames the spice and keeps chewing.',
+    'The second helping arrives before the first plate is entirely moral history.',
+  ] },
+  { when: { stageMin: 2, stageMax: 4, corruption: [0] }, text: [
+    'She pauses between bites to feel fullness settle — new, interesting, hard to ignore.',
+    'Her fork slows when her waistband tightens. It does not stop.',
+    'She eats until the plate is clean and her belly is warm and round under her shirt.',
   ] },
 ]);

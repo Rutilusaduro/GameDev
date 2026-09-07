@@ -15,7 +15,13 @@ import '../modules.js';
 // Mined from MOOD_OPENERS in talkDialogue.js. Wildcard is empty:
 // no opener unless the mood earns one.
 registerPool("talk.moodOpener", [
-  { when: {}, text: ["", ""] },
+  { when: {}, text: [
+    "",
+    "",
+    "{subject.name} takes a breath before she answers.",
+    "She pauses — attentive, present, already listening.",
+    "The question finds her mid-thought; she makes room for it anyway.",
+  ]},
   { when: { mood: "stressed" }, weight: 3, text: [
     "{subject.name} rubs her temples before she answers.",
     "She's been running on fumes; the question lands soft anyway.",
@@ -40,6 +46,22 @@ registerPool("talk.moodOpener", [
     "{subject.name} picks at her sleeve.",
     "Her hands fidget; her voice comes out careful.",
     "She's wound tight, but she doesn't send you away.",
+    "She smooths her shirt over her middle — a nervous habit that wasn't there in September.",
+  ]},
+  { when: { mood: "warm" }, weight: 3, text: [
+    "{subject.name} looks at you like you brought sunlight with the question.",
+    "Warmth pools in her expression before she answers — soft, unguarded, present.",
+    "She leans in; the chair creaks kindly under her.",
+  ]},
+  { when: { mood: "content" }, weight: 3, text: [
+    "{subject.name} is already comfortable — full, settled, easy in her skin.",
+    "Contentment shows in how she sits: belly soft, shoulders loose, appetite honest.",
+    "She hums once, low, before she speaks — a woman well fed and unhurried.",
+  ]},
+  { when: { mood: "observant" }, weight: 3, text: [
+    "{subject.name} watches you carefully before she answers.",
+    "Her eyes track your face like she's reading subtext.",
+    "She pauses — measuring words, measuring appetite, measuring you.",
   ]},
 ]);
 
@@ -67,6 +89,8 @@ registerPool("talk.encourage", [
   ]},
   { when: {}, text: [
     "{talk.moodOpener|suffix:\n\n}{enc.deflect} {enc.reach}",
+    "{talk.moodOpener|suffix:\n\n}{enc.deflect}\n\n{enc.giveIn}{enc.flush|prefix: }",
+    "{talk.moodOpener|suffix:\n\n}{enc.reach} {enc.giveIn}",
   ]},
 ]);
 
@@ -90,6 +114,9 @@ registerPool("enc.reach", [
     "But her hand is already reaching for the snack she was pretending not to think about — fingers closing around it with guilty speed.",
     "She reaches for more. Not hurried. Not ashamed. Just hungry, finally allowed to be hungry in front of you.",
     "Her eyes flick to the food before the sentence is even finished.",
+    "Her fingers find the plate before her mind catches up — appetite winning the race by a bite.",
+    "She pulls the dish closer without asking. The motion is slow, deliberate, hungry.",
+    "Warmth rises in her cheeks as she reaches — embarrassment and want in the same flush.",
   ]},
   { when: { inWithdrawal: true }, weight: 3, text: [
     "Her hand is shaking slightly when it closes around the food; she steadies it with the other and keeps going.",
@@ -106,6 +133,13 @@ registerPool("enc.giveIn", [
     `"Why am I rationing?" Her shoulders drop — tension leaving in a visible wave. "It's not like it's working."`,
     `"Just this once," she says, the way she said it last time.`,
     `"This is your fault," she says, around the first bite. It doesn't sound like an accusation. It sounds like thanks.`,
+    `"You're terrible for me," she murmurs, already chewing. "Don't stop."`,
+    `She exhales — surrender and relief braided together — and takes another bite before the protest finishes.`,
+    `"Fine," she says, voice soft. "But only because you asked nicely." The wrapper is already open.`,
+  ]},
+  { when: { stageMin: 3, stageMax: 5, corruption: [0] }, weight: 2, text: [
+    `"It's only food," she says, and the lie is thin enough to see through. She eats anyway.`,
+    `"One more won't matter," she whispers — to you, to herself, to the waistband that disagrees.`,
   ]},
 ]);
 
@@ -200,7 +234,11 @@ registerPool("enc.stillHungry", [
 // Expanded to cover all 12 stages; the empty fallback keeps it
 // optional at stages 0–1 where weight is still near-baseline.
 registerPool("enc.bodyAside", [
-  { when: {}, text: ["", ""] },
+  { when: {}, text: [
+    "",
+    "",
+    "Her body answers the encouragement before her mouth does — warmth, give, appetite honest in the open.",
+  ]},
   // Stages 0–1: barely changed; the hunger is newer than the body
   { when: { stageMax: 1 }, text: [
     "At {subject.lbs} lbs the change is subtle — a new softness, a hunger that speaks up when it didn't used to.",
@@ -249,6 +287,7 @@ registerPool("enc.stageHunger", [
   { when: {}, text: [
     "The hunger is real — her body knows it before she does, and it doesn't ask for permission.",
     "She is hungry, and at {subject.lbs} lbs the hunger has earned the right to be.",
+    "Appetite stirs under your words — not sudden, but certain.",
   ]},
   // Stages 0–3: new and tentative; the appetite is just waking
   { when: { stageMax: 3 }, text: [

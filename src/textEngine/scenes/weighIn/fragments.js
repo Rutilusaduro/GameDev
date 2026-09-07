@@ -492,13 +492,19 @@ registerPool("wi.greeting", [
   { when: {}, text: [
     `"Hi," she says, settling in.`,
     "She says hello and waits for you to begin.",
+    `"Hey," she says, dropping into the chair.`,
+    `She offers a small wave. "Ready when you are."`,
   ]},
   { when: { corruption: [0], stageMin: 2, stageMax: 5 }, text: [
     `"Hi," she says, a beat too bright.`,
     `"Ready," she says, a little too quickly.`,
+    `"Morning," she says, smoothing her shirt over her middle.`,
+    `"Hi," she says — cheerful armor over something softer underneath.`,
   ]},
   { when: { corruption: [0], stageMin: 6 }, text: [
     "She says hello quietly. The office feels smaller.",
+    `"Hi," she says, and glances at the chair before she sits.`,
+    `She greets you and takes the wider chair without comment.`,
   ]},
   { when: { corruption: [1] }, text: [
     `"Another week," she says. Flat. Familiar.`,
@@ -958,7 +964,19 @@ registerPool("wi.replyDialogue", [
 // active; keyed variants are weighted heavy so a hungry girl
 // reliably asks — or demands — food before she leaves.
 registerPool("wi.foodAsk", [
+  { when: { stageMin: 7, corruption: [2] }, weight: 8, text: [
+    `"Feed me," she says simply, belly leading the way to the chair she knows you keep snacks in.`,
+    `She does not wait to be offered. "You always have something for me after this."`,
+  ]},
+  { when: { stageMin: 10 }, weight: 8, text: [
+    `"Bring it here," she says from where she rests. "I'll eat while you file the number."`,
+    `Immobility does not reduce appetite. She reminds you with her eyes on the snack drawer.`,
+  ]},
   { when: {}, text: [""] },
+  { when: { hungerTierMin: 2, hungerTierMax: 2, corruption: [0], stageMin: 3 }, weight: 6, text: [
+    `She glances at the snack drawer. "I could eat," she says, too casual. "If you have something."`,
+    `"Weigh-in done," she murmurs. "Now the important part. Snacks?"`,
+  ]},
   { when: { hungerTierMin: 2, hungerTierMax: 2, corruption: [0] }, weight: 6, text: [
     `On her way out she hesitates at the door. "You don't happen to have anything to eat in here, do you? Skipped breakfast." She didn't.`,
     `"Is it lunch yet?" she asks, too casually, eyes doing a lap of the desk.`,
@@ -990,16 +1008,60 @@ registerPool("wi.foodAsk", [
 // Shape: FULL SENTENCE, often empty. Port of the legacy moodTag().
 registerPool("wi.moodTag", [
   { when: {}, text: ["", "", ""] },
-  { when: { mood: "happy" }, text: ["She sounds almost buoyant despite everything.", ""] },
-  { when: { mood: "stressed" }, text: ["The number lands on top of everything else she is carrying this week.", ""] },
-  { when: { mood: "tired" }, text: ["She says it through a yawn she does not quite hide.", ""] },
-  { when: { mood: "nervous" }, text: ["Her voice pitches up half a note on the last word.", ""] },
-  { when: { mood: "excited" }, text: ["There is a spark in it — like the number is another thing to win at.", ""] },
-  { when: { mood: "focused" }, text: ["Clinical. Measured. Already filing it away.", ""] },
-  { when: { mood: "content" }, text: ["Warm. Unhurried. Like she has made peace with the moment.", ""] },
-  { when: { mood: "bemused" }, text: ["Dry amusement threads through every syllable.", ""] },
-  { when: { mood: "warm" }, text: ["Soft and open, the way she is with everyone she cares for.", ""] },
-  { when: { mood: "observant" }, text: ["She watches your face more than she watches the scale.", ""] },
-  { when: { mood: "cheerful" }, text: ["Bright as sunlight through a kitchen window.", ""] },
+  { when: { mood: "happy" }, text: [
+    "She sounds almost buoyant despite everything.",
+    "Good mood makes the number feel like news she can use.",
+    "",
+  ] },
+  { when: { mood: "stressed" }, text: [
+    "The number lands on top of everything else she is carrying this week.",
+    "Stress and appetite braid together; she exhales through both.",
+    "",
+  ] },
+  { when: { mood: "tired" }, text: [
+    "She says it through a yawn she does not quite hide.",
+    "Exhaustion softens her voice — and her resistance to the result.",
+    "",
+  ] },
+  { when: { mood: "nervous" }, text: [
+    "Her voice pitches up half a note on the last word.",
+    "She laughs once, too bright, then goes quiet.",
+    "",
+  ] },
+  { when: { mood: "excited" }, text: [
+    "There is a spark in it — like the number is another thing to win at.",
+    "She bounces once on her toes — mass and enthusiasm both visible.",
+    "",
+  ] },
+  { when: { mood: "focused" }, text: [
+    "Clinical. Measured. Already filing it away.",
+    "She treats the scale like data entry. The data is her body.",
+    "",
+  ] },
+  { when: { mood: "content" }, text: [
+    "Warm. Unhurried. Like she has made peace with the moment.",
+    "Contentment pools in her voice — soft, full, unhurried.",
+    "",
+  ] },
+  { when: { mood: "bemused" }, text: [
+    "Dry amusement threads through every syllable.",
+    "She almost smiles at the number. Almost admits why.",
+    "",
+  ] },
+  { when: { mood: "warm" }, text: [
+    "Soft and open, the way she is with everyone she cares for.",
+    "Warmth in her voice matches warmth low in her belly.",
+    "",
+  ] },
+  { when: { mood: "observant" }, text: [
+    "She watches your face more than she watches the scale.",
+    "Observant eyes track your reaction before the needle settles.",
+    "",
+  ] },
+  { when: { mood: "cheerful" }, text: [
+    "Bright as sunlight through a kitchen window.",
+    "Cheerful armor over something softer underneath.",
+    "",
+  ] },
   { when: { mood: "curious" }, text: ["She files the number away like a clue.", ""] },
 ]);

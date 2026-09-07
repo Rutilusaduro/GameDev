@@ -11,6 +11,7 @@ import { appendDossierSnapshot, pinPlayerMoment } from './gameData/dossier.js';
 import { getPlayerPrefs, toggleInstantText } from './gameData/playerPrefs.js';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
+import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
 import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
@@ -847,11 +848,12 @@ export default function ProfessorSim(){
     ||(st.id===LILITH_ID&&lilithUnlocked)
     ||(st.id===ELARA_ID&&elaraDiscovered);
 
-  /** Hidden students stay frozen until discovered; Lilith always passively gains. */
-  const studentReceivesPassiveGain=(st)=>
-    !st.hidden
-    ||st.id===LILITH_ID
-    ||(st.id===ELARA_ID&&elaraDiscovered);
+  /** Hidden students stay frozen until discovered; Lilith only after unlock. */
+  const studentReceivesPassiveGain=(st)=>{
+    if(st.id===LILITH_ID) return lilithUnlocked;
+    if(st.hidden) return st.id===ELARA_ID&&elaraDiscovered;
+    return true;
+  };
 
   const getCampusExplorationCtx=()=>buildExplorationContext({
     students, pharmacistState, week, lilithUnlocked,
@@ -1441,7 +1443,7 @@ export default function ProfessorSim(){
       }
       if(s.oppositionBlockedGain) return {...s,oppositionBlockedGain:false};
       if(!studentReceivesPassiveGain(s)) return s;
-      if(s.id===LILITH_ID) return processStudentGain(s,LILITH_PASSIVE_GAIN,0); // Lilith only gains passively
+      if(s.id===LILITH_ID&&lilithUnlocked) return processStudentGain(s,LILITH_PASSIVE_GAIN,0);
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       let gain=rnd(1,3)+skillPassiveBonus+(classSkillFx.passiveBonus||0);
       const asceticMult=campusState?.asceticProtestWeek?0.88:1;
@@ -2942,7 +2944,11 @@ export default function ProfessorSim(){
         moms:{...WL_CONFIG.momStart},
         session:null,
       };
-      return{...base,mjStudentId:s.id,session:{lessonChosen:false,lessonId:null,mjGainAccum:0,relAccum:0,conversationState:null,log:[]}};
+      return _wlCheckStageAdvance({
+        ...base,
+        mjStudentId: s.id,
+        session: { lessonChosen: false, lessonId: null, mjGainAccum: 0, relAccum: 0, conversationState: null, log: [] },
+      });
     });
   };
 
@@ -2977,12 +2983,14 @@ export default function ProfessorSim(){
       const dialogues=WL_DIALOGUES[personKey];
       if(!dialogues) return prev;
       const stageIdx=isDaughter?(stage-WL_CONFIG.daughtersFrom):(stage-1);
-      const entry=dialogues[stageIdx];
+      let entry=dialogues[stageIdx];
       if(!entry) return prev;
+      const depth=getWlMomDialogueDepth(personKey,stageIdx);
+      if(depth) entry=mergeWlDialogueEntry(entry,depth);
       const isCapped=isDaughter&&prev.daughters[personKey]>=WL_CONFIG.stageCaps[stage];
       const overtook=personKey==='Emma'||personKey==='Darlene'?prev.daughters.Chloe>prev.daughters.Emma:false;
       const greetingText=isCapped&&entry.cappedGreeting?entry.cappedGreeting:(overtook&&entry.overtookGreeting?entry.overtookGreeting:entry.greeting);
-      return{...prev,session:{...prev.session,conversationState:{person:personKey,stageEntry:entry,optionIdx:null,subIdx:null,done:false,resultText:greetingText,atGreeting:true}}};
+      return{...prev,session:{...prev.session,conversationState:{person:personKey,stageEntry:entry,optionIdx:null,subIdx:null,done:false,atGreeting:true,history:[greetingText]}}};
     });
   };
 
@@ -2991,13 +2999,13 @@ export default function ProfessorSim(){
       if(!prev?.session?.conversationState) return prev;
       const cs=prev.session.conversationState;
       if(cs.atGreeting){
-        return{...prev,session:{...prev.session,conversationState:{...cs,atGreeting:false,optionIdx:null,resultText:null}}};
+        return{...prev,session:{...prev.session,conversationState:{...cs,atGreeting:false,optionIdx:null,history:cs.history||[]}}};
       }
       const entry=cs.stageEntry;
       const opt=entry.options[optionIdx];
       if(!opt) return prev;
       if(opt.subs&&opt.subs.length>0){
-        return{...prev,session:{...prev.session,conversationState:{...cs,optionIdx,subIdx:null,resultText:opt.text}}};
+        return{...prev,session:{...prev.session,conversationState:{...cs,optionIdx,subIdx:null,history:[...(cs.history||[]),opt.text]}}};
       }
       return prev;
     });
@@ -3027,7 +3035,7 @@ export default function ProfessorSim(){
       let next={...prev,daughters:newDaughters,moms:newMoms,
         session:{...prev.session,mjGainAccum:prev.session.mjGainAccum+mjGain,relAccum:prev.session.relAccum+relGain,
           log:[...prev.session.log,logLine],
-          conversationState:{...cs,subIdx,done:true,resultText:sub.text}}};
+          conversationState:{...cs,subIdx,done:true,history:[...(cs.history||[]),sub.text]}}};
       next=_wlCheckStageAdvance(next);
       return next;
     });
@@ -8258,7 +8266,7 @@ export default function ProfessorSim(){
         <div style={C.main}>
 
           {/* ── CLASS VIEW ── */}
-          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail}/>}
+          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} spiritLevel={spiritLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail}/>}
 
           {/* ── THE SETTLING (list) ── */}
           {view==="settling"&&<SettlingListView students={students} week={week} setSelectedId={setSelectedId} setView={setView}/>}

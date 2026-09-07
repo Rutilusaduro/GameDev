@@ -3,8 +3,11 @@
 import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import './fullness.js';
+import './fullnessDepth.js';
 import './aftermath.js';
+import './aftermathDepth.js';
 import './selectors.js';
+import './selectorDepth.js';
 
 function composeOverlay(main, overlay) {
   const a = main?.trim() || '';

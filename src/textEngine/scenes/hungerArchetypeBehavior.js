@@ -96,7 +96,7 @@ function registerArchetypeLines(moduleKey, table) {
     priority: 3,
     text: lines,
   }));
-  variants.push({ when: {}, text: '' });
+  variants.push({ when: {}, text: ['', '', ''] });
   registerPool(moduleKey, variants);
 }
 

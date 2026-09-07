@@ -12,6 +12,7 @@ import './depth.js';
 import './selectors.js';
 import './overfill.js';
 import './dishDesc.js';
+import './wildcardDepth.js';
 
 export { renderDinnerEnding } from './endingScene.js';
 export { renderDinnerOverfill } from './overfill.js';

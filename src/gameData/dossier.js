@@ -187,7 +187,7 @@ export function buildDossierSnapshot(student, week, opts = {}) {
   };
 }
 
-function pinLabel(kind, week, ref, student) {
+export function pinLabel(kind, week, ref, student) {
   switch (kind) {
     case 'stageUp': {
       const stage = WEIGHT_STAGES[Number(ref)] || null;

@@ -4,6 +4,7 @@ import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { createContext } from '../../engine.js';
 import './portraits.js';
+import './portraitDepth.js';
 import './depth.js';
 
 function renderRichFallback(student, week) {

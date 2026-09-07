@@ -20,9 +20,12 @@ registerPool('intimacy.moodTone', [
     'Tired but unwilling to leave — she sinks into you like rest.',
     'Fatigue makes her pliant; she lets you guide the pace.',
   ] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    '',
+    'Touch speaks louder than mood tonight.',
+    'The room holds its breath between you.',
+  ] },
 ]);
-
 registerPool('intimacy.seasonAmbience', [
   { when: { season: ['winter'] }, weight: 2, text: [
     'Winter cold outside; her body furnaces the room.',
@@ -38,9 +41,12 @@ registerPool('intimacy.seasonAmbience', [
   { when: { season: ['spring'] }, text: [
     'Spring air through cracked windows — renewal in how she touches you.',
   ] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    '',
+    'The season lingers at the edges — distant, unimportant.',
+    'Weather outside; warmth between you.',
+  ] },
 ]);
-
 registerPool('intimacy.relOverlay', [
   { when: { relTier: [4] }, weight: 3, text: [
     'She moves like she belongs here — no performance left.',
@@ -54,7 +60,11 @@ registerPool('intimacy.relOverlay', [
     'Still new — curiosity and nerves braided together.',
     'She tests the water, then dives deeper than she meant to.',
   ] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    '',
+    'Closeness needs no commentary tonight.',
+    'She stays near — present, unhurried.',
+  ] },
 ]);
 
 registerPool('intimacy.selectorOverlay', [
@@ -82,7 +92,11 @@ registerPool('intimacy.campusNote', [
     'The campus feels indulgent lately — closeness comes easier, restraint thinner.',
     'Something in the air encourages appetite; she surrenders to touch and heat.',
   ] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    '',
+    'Campus fades; only warmth between you matters.',
+    'The world outside can wait.',
+  ] },
 ]);
 
 registerPool('intimacy.relSizeNote', [
@@ -93,7 +107,11 @@ registerPool('intimacy.relSizeNote', [
   { when: { relSize: ['smaller', 'muchSmaller'] }, weight: 2, text: [
     'She takes up the space between you — soft, heavy, unmistakable.',
   ] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    '',
+    'Size is part of the intimacy — unspoken, felt.',
+    'Bodies meet at their true scale.',
+  ] },
 ]);
 
 registerPool('intimacy.skillNote', [
@@ -103,5 +121,9 @@ registerPool('intimacy.skillNote', [
   { when: { skill: ['growth_hunger', 'endless_hunger'] }, weight: 2, text: [
     'Hunger and heat braid together under your influence.',
   ] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    '',
+    'Want sharpens under your influence.',
+    'Heat and appetite braid together.',
+  ] },
 ]);

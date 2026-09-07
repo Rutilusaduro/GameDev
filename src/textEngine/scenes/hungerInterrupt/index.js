@@ -40,7 +40,11 @@ registerPool('scene.hungerInterrupt.appearance', [
       'Her massive body takes up nearly the entire doorway.',
       'She has to turn slightly to fit through the frame.',
     ] },
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    'Her clothes sit a little tighter than last week — hunger and softness both showing.',
+    'She looks flushed, restless, like her body has been arguing with itself all day.',
+    'Nothing dramatic in the doorway yet — just a girl clearly past polite hunger.',
+  ] },
 ]);
 
 // Tonal coherence (WORD_GRANULAR_ENGINE_PLAN §4.1): behavior beats assert
@@ -100,6 +104,7 @@ registerPool('scene.hungerInterrupt.behavior', [
     text: [
       "She's standing there looking restless.",
       'She shifts awkwardly in front of you.',
+      'She keeps touching her middle without seeming to notice.',
     ] },
 ]);
 
@@ -164,6 +169,7 @@ registerPool('scene.hungerInterrupt.request', [
     text: [
       '"Hey… can we talk?"',
       '"Do you have a minute?"',
+      '"I didn\'t know where else to go."',
     ] },
 ]);
 
@@ -178,7 +184,11 @@ registerPool('scene.hungerInterrupt.tone', [
   { when: { inWithdrawal: true }, priority: 2,
     asserts: { 'interrupt.tone': 'irritated' },
     text: "She's angry, but underneath it she just looks miserable." },
-  { when: {}, text: 'She waits for your answer.' },
+  { when: {}, text: [
+    'She waits for your answer.',
+    'She watches your face like the next word decides everything.',
+    'Silence stretches. Her appetite fills it.',
+  ] },
 ]);
 
 export const HUNGER_INTERRUPT_TEMPLATE =

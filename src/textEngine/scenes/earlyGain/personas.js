@@ -8,101 +8,178 @@ import './fragments.js';
 const W = 4;
 const EARLY = { corruption: [0], stageMax: 4 };
 
+registerModuleVariants('slender.bodyFeel', [
+  { when: { studentId: 0, ...EARLY }, weight: W, text: [
+    'Brittany still feels fast on her feet — until she sits and the chair argues.',
+    'Competition muscle softening at the edges; she flexes and feels plush where tone used to be.',
+    'Her thighs brush when she jogs to class — friction new, not unwelcome yet.',
+  ]},
+  { when: { studentId: 2, ...EARLY }, weight: W, text: [
+    'Kylie feels the curve when she turns for a thumbnail angle — content, body, same problem.',
+    'Her waistband resists after lunch; she smooths her crop top and keeps filming.',
+    'Softness pools at her hip when she sits cross-legged on the bed. Good lighting. Good angle.',
+  ]},
+  { when: { studentId: 5, ...EARLY }, weight: W, text: [
+    'Destiny feels heavier after off-stream binges — soft, warm, logged in a private folder.',
+    'Her hoodie still fits. The fit is informational: softness pooling at belly and hip.',
+    'Chair arms dig into her sides now. She shifts and stays seated anyway.',
+  ]},
+  { when: { studentId: 8, ...EARLY }, weight: W, text: [
+    'Maya feels fullness settle slow — a quiet weight low in her belly she does not name.',
+    'Her thighs brush when she walks to class; the sensation is new and oddly grounding.',
+    'Warmth gathers under her ribs after she eats. She sketches through it.',
+  ]},
+  { when: { studentId: 10, ...EARLY }, weight: W, text: [
+    'Reneé feels each course in her middle — warmth, swell, the pleasant drag of a full belly.',
+    'Her hand rests on her hip after tasting; the hip is rounder than last month.',
+    'Apron strings dig after kitchen hours. She loosens them and keeps tasting.',
+  ]},
+  { when: { studentId: 12, ...EARLY }, weight: W, text: [
+    'Nadia feels you watching her soften and catalogs the heat in her cheeks.',
+    'Softness gathers at her waist; she presses there once, privately, and says nothing.',
+    'Her sweater hem rides up when she reaches for a shelf. She does not fix it immediately.',
+  ]},
+  { when: { studentId: 14, ...EARLY }, weight: W, text: [
+    'Mary Jane feels abundance in her hips when she walks — farm-girl sway, unhurried, real.',
+    'Fullness after jam tasting sits warm in her belly; she pats it like a satisfied harvest.',
+    'Her overalls strain at the thigh when she crouches. She stands slower now. Still smiling.',
+  ]},
+  { when: { studentId: 15, ...EARLY }, weight: W, text: [
+    'Lilith feels mass settle with unnerving calm — as if her body always meant to thicken.',
+    'Softness at her thigh and belly arrives without alarm. She does not flinch from it.',
+    'Fabric whispers against new curves when she moves. She listens without comment.',
+  ]},
+  { when: { studentId: 18, ...EARLY }, weight: W, text: [
+    'Talia feels inputs exceed projections — warmth low in her belly, measurable, logged.',
+    'Her hoodie rides up when she reaches for a shelf; soft skin answers before her fingers do.',
+    'Prototype diet or not, fullness settles with clean data: more mass, less surprise.',
+  ]},
+  { when: { studentId: 18, custom: false, ...EARLY }, weight: W, text: [
+    'Talia feels inputs exceed projections — warmth low in her belly, measurable, logged.',
+    'Her hoodie rides up when she reaches for a shelf; soft skin answers before her fingers do.',
+    'Prototype diet or not, fullness settles with clean data: more mass, less surprise.',
+  ]},
+]);
+
 registerModuleVariants('slender.mindFeel', [
   // ── 0 Brittany ───────────────────────────────────────────────
   { when: { studentId: 0, ...EARLY }, weight: W, text: [
     'She still thinks of her body as a scoreboard. The numbers are climbing in a direction she has not named yet.',
     'Winning used to mean smaller. She is rearranging the definition without admitting it.',
+    'The pep talk she gives her reflection ends with dessert.',
   ]},
   // ── 1 Madeline ───────────────────────────────────────────────
   { when: { studentId: 1, ...EARLY }, weight: W, text: [
     'She has started a private dataset. The trend line is not cooperating with her hypotheses.',
     'Every softening inch feels like a footnote she will have to address eventually.',
+    'Outlier status: charming. She keeps the data anyway.',
   ]},
   // ── 2 Kylie ──────────────────────────────────────────────────
   { when: { studentId: 2, ...EARLY }, weight: W, text: [
     'She frames the softness as relatable before she has decided if she believes it.',
     'The mirror is content now. She is still deciding if she is the audience.',
+    'Authenticity trending up. Denial trending down.',
   ]},
   // ── 3 Serena ─────────────────────────────────────────────────
   { when: { studentId: 3, ...EARLY }, weight: W, text: [
     'Her body is adapting to a sport she did not sign up for. She calls it cross-training in her head.',
     'Discipline without a finish line — she is not sure she wants one anymore.',
+    'Off-season body, on-season appetite.',
   ]},
   // ── 4 Fiona ──────────────────────────────────────────────────
   { when: { studentId: 4, ...EARLY }, weight: W, text: [
     'She sees the rounding as composition — negative space filling in, slowly, on purpose or not.',
     'The canvas is changing. She is too interested to look away.',
+    'Negative space filling in. She calls it progress.',
   ]},
   // ── 5 Destiny ────────────────────────────────────────────────
   { when: { studentId: 5, ...EARLY }, weight: W, text: [
     'Her hoodie still fits. The fit is informational, not alarming.',
     'Her body updated quietly. She has not filed a complaint.',
+    'Offline body updating. Online excuses lagging behind.',
   ]},
   // ── 6 Tiffany ────────────────────────────────────────────────
   { when: { studentId: 6, ...EARLY }, weight: W, text: [
     'Chapter standards are flexible. She is testing the elasticity personally.',
     'Pastel still matches. The silhouette underneath is negotiating.',
+    'Cute still cute. Curve underneath setting terms.',
   ]},
   // ── 7 Priya ──────────────────────────────────────────────────
   { when: { studentId: 7, ...EARLY }, weight: W, text: [
     'The metric is off-trend. She has seventeen explanations and none of them satisfy.',
     'Overperformance was the goal. She did not specify which axis.',
+    'Efficiency metrics ignore pleasure. She does not.',
   ]},
   // ── 8 Maya ───────────────────────────────────────────────────
   { when: { studentId: 8, ...EARLY }, weight: W, text: [
     'She notices. She does not comment. The notebook gets a new drawing instead.',
     'Softness accumulates the way she accumulates everything — quietly, completely.',
+    'The sketch gets rounder. So does she.',
   ]},
   // ── 9 Chloé ──────────────────────────────────────────────────
   { when: { studentId: 9, ...EARLY }, weight: W, text: [
     'American portions are field research. Her waistband is taking notes.',
     'She treats the gain like a cultural artifact — fascinating, slightly scandalous, not yet admitted.',
+    'Scandal as lifestyle. Waistband as co-star.',
   ]},
   // ── 10 Reneé ─────────────────────────────────────────────────
   { when: { studentId: 10, ...EARLY }, weight: W, text: [
     'She catalogs the new softness the way she catalogs flavor — texture, warmth, finish.',
     'Her body is developing notes she did not write down on purpose.',
+    'Flavor notes deepening. So is she.',
   ]},
   // ── 11 Kaylee ────────────────────────────────────────────────
   { when: { studentId: 11, ...EARLY }, weight: W, text: [
     'She would chart this if charting did not require admitting she is the patient.',
     'Clinical language helps until it does not. The curve on the graph is hers.',
+    'Patient file: hers. Appetite: noted.',
   ]},
   // ── 12 Nadia ─────────────────────────────────────────────────
   { when: { studentId: 12, ...EARLY }, weight: W, text: [
     'She watches you watch her soften. The dynamic is the most interesting variable.',
     'She has theories about why she is rounding. She is not sharing all of them.',
+    'Observer effect confirmed. She leans into it.',
   ]},
   // ── 13 Daisy ─────────────────────────────────────────────────
   { when: { studentId: 13, ...EARLY }, weight: W, text: [
     'Bless it, she is a little fuller. She has children to feed and herself to tend — same category.',
     'Southern warmth does not require a smaller dress size. She is practical about that.',
+    'Fuller, warmer, still giving — starting with herself.',
   ]},
   // ── 14 Mary Jane ─────────────────────────────────────────────
   { when: { studentId: 14, ...EARLY }, weight: W, text: [
     'Harvest season on a person — slow, generous, nothing wasted.',
     'She carries abundance the way she carries jam jars: openly, with pride she has not named yet.',
+    'Bread rising. Girl rising. Same process.',
   ]},
   // ── 15 Lilith ────────────────────────────────────────────────
   { when: { studentId: 15, ...EARLY }, weight: W, text: [
     'She is stiller than the change warrants. Amusement lives somewhere under the surface.',
     'The softness does not surprise her. She behaves as if she expected it.',
+    'Mass increases. Commentary decreases.',
   ]},
   // ── 16 Sophia ────────────────────────────────────────────────
   { when: { studentId: 16, ...EARLY }, weight: W, text: [
     'Wellness research was supposed to be abstract. Her waistband disagrees.',
     'She double-checks the number the way she double-checks formulations — twice, then again.',
+    'Literature gap: why fullness feels this good.',
   ]},
   // ── 17 Indiana ───────────────────────────────────────────────
   { when: { studentId: 17, ...EARLY }, weight: W, text: [
     'Every pound is a landmark on a map she did not know she was drawing.',
     'The expedition continues. Provisions have been generous.',
+    'New rooms on the inner map. Worth keeping.',
   ]},
   // ── 18 Talia ─────────────────────────────────────────────────
   { when: { studentId: 18, custom: false, ...EARLY }, weight: W, text: [
     'Inputs exceeded projections. She is revising the model without announcing it.',
     'Her body keeps outpacing the spreadsheet. She lets it.',
+    'Warmth after meals lasts longer than the trial protocol predicted. She notes it. She eats again.',
+  ]},
+  { when: { studentId: 18, ...EARLY }, weight: W, text: [
+    'Inputs exceeded projections. She is revising the model without announcing it.',
+    'Her body keeps outpacing the spreadsheet. She lets it.',
+    'Warmth after meals lasts longer than the trial protocol predicted. She notes it. She eats again.',
   ]},
 ]);
 
@@ -110,34 +187,42 @@ registerModuleVariants('slender.deflect', [
   { when: { studentId: 0, gainStance: 'opposed', ...EARLY }, weight: W, text: [
     `"It's muscle. Or retention. Or both."`,
     `"I'm still in competition shape. The scale doesn't know that."`,
+    `"Off-season bulk," she says, like it's a strategy. Maybe it is.`,
   ]},
   { when: { studentId: 1, gainStance: 'opposed', ...EARLY }, weight: W, text: [
     `"Within expected variance for semester dietary changes."`,
     `"I'll adjust the variables. This is manageable."`,
+    `"The dataset is noisy," she says. "Not me."`,
   ]},
   { when: { studentId: 3, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
     `"Different training load," she says. Not quite a lie.`,
     `"I'm adapting. Athletes adapt."`,
+    `"Recovery calories," she mutters. Recovery keeps expanding.`,
   ]},
   { when: { studentId: 6, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
     `"It's just bloating, babe."`,
     `"Chapter brunch counts as a meal plan, right?"`,
+    `"Sisterhood calories don't count," she says. They do.`,
   ]},
   { when: { studentId: 7, gainStance: 'opposed', ...EARLY }, weight: W, text: [
     `"This is off-schedule."`,
     `"I have a remediation plan. Starting Monday."`,
+    `"Temporary deviation," she says. The planner disagrees.`,
   ]},
   { when: { studentId: 9, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
     `"American portions," she says dryly. "My mam will have words."`,
     `"It's field research. That is all."`,
+    `"Cultural immersion," she says. Her waistband is immersed.`,
   ]},
   { when: { studentId: 11, gainStance: 'opposed', ...EARLY }, weight: W, text: [
     `"I'm monitoring intake. This is a data anomaly."`,
     `"Stress eating. Clinically normal. Nothing to see."`,
+    `"Hydration artifact," she says. The belly is not hydrated.`,
   ]},
   { when: { studentId: 16, gainStance: 'opposed', ...EARLY }, weight: W, text: [
     `"The scale needs calibration."`,
     `"Hydration status affects mass. I read the literature."`,
+    `"Measurement error," she says. Her coat button disagrees.`,
   ]},
   { when: { studentId: 18, custom: false, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
     `"Margin of error," she mutters.`,
@@ -147,42 +232,52 @@ registerModuleVariants('slender.deflect', [
   { when: { studentId: 2, gainStance: 'opposed', ...EARLY }, weight: W, text: [
     `"It's the camera angle," Kylie says. "And stress. Mostly stress."`,
     `"Bloat content," she mutters. "Not real. Probably."`,
+    `"Water weight," she says. On camera. Off menu.`,
   ]},
   { when: { studentId: 4, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
     `"Artist body," Fiona says softly. "It changes. That's… normal."`,
     `"Composition shift," she murmurs. Not quite convinced.`,
+    `"Life drawing reference," she offers. Herself.`,
   ]},
   { when: { studentId: 8, gainStance: 'opposed', ...EARLY }, weight: W, text: [
     `"It's fine," Maya says, too quiet. "I'm fine."`,
     `"Sweater weather," she offers. The sweater disagrees.`,
+    `"Layering," she says. Layers keep adding.`,
   ]},
   { when: { studentId: 10, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
     `"Tasting portions," Reneé says. "Professional hazard."`,
     `"Kitchen samples add up," she admits, cheeks warm.`,
+    `"Quality control," she says. Quality is generous.`,
   ]},
   { when: { studentId: 13, gainStance: 'opposed', ...EARLY }, weight: W, text: [
     `"Bless it, I'm just tired," Daisy says. "Not… bigger."`,
     `"Snacks for the kids," she says. Some stayed with her.`,
+    `"Comfort food," she murmurs. She is the comfort.`,
   ]},
   { when: { studentId: 14, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
     `"Farm appetite," Mary Jane laughs nervously. "Comes with the territory."`,
     `"Jam testing," she says. "Quality control."`,
+    `"Harvest samples," she offers. The harvest is her.`,
   ]},
   { when: { studentId: 15, gainStance: 'opposed', ...EARLY }, weight: W, text: [
     `Lilith says nothing. The silence argues better than words.`,
     `"Temporary," she says once, without conviction.`,
+    `"Irrelevant," she says. Her hips are not.`,
   ]},
   { when: { studentId: 5, gainStance: 'opposed', ...EARLY }, weight: W, text: [
     `"Lag spike," Destiny says. "Not mass."`,
     `"Stream lag," Destiny mutters. "Not me."`,
+    `"Render delay," she says. Body renders fine.`,
   ]},
   { when: { studentId: 12, gainStance: 'opposed', ...EARLY }, weight: W, text: [
     `"Within normal variance," Nadia says, watching you.`,
     `"Subject error," she murmurs. She is the subject.`,
+    `"Control group contamination," she says. She contaminated herself.`,
   ]},
   { when: { studentId: 17, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
     `"Trail weight," Indiana says. "Provisions stick."`,
     `"Map says I'm bigger. Map's not wrong."`,
+    `"Gear bulk," she offers. The bulk is her.`,
   ]},
 ]);
 
@@ -190,22 +285,27 @@ registerModuleVariants('slender.neutral', [
   { when: { studentId: 5, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Cool. Next."`,
     `"Logged."`,
+    `"Queue the next meal," she says, already scrolling.`,
   ]},
   { when: { studentId: 8, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Okay."`,
     `"Mm."`,
+    `She shrugs once. The shrug is enough.`,
   ]},
   { when: { studentId: 13, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Well, bless it."`,
     `"That's all right, honey."`,
+    `"Still me," she says, warm.`,
   ]},
   { when: { studentId: 17, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Noted for the field journal."`,
     `"Could be worse. I've seen worse ruins."`,
+    `"Landmark logged," she says, satisfied.`,
   ]},
   { when: { studentId: 0, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"New baseline," she says, like a stat line.`,
     `"Still winning."`,
+    `"Season stats update," she shrugs.`,
   ]},
   { when: { studentId: 1, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Recorded."`,
@@ -215,54 +315,72 @@ registerModuleVariants('slender.neutral', [
   { when: { studentId: 2, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Content," she says lightly. "Relatable scale moment."`,
     `"Fine. Fine. Next."`,
+    `"Authentic," she adds, already moving on.`,
   ]},
   { when: { studentId: 3, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Different training load," Serena says, shrugging.`,
     `"Still fast," she adds, ambiguous.`,
+    `"Cross-training," she says. Vague on purpose.`,
   ]},
   { when: { studentId: 4, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Canvas changed," Fiona says. "That's all."`,
     `"Notes for later," she murmurs.`,
+    `"Composition shifted," she says, calm.`,
   ]},
   { when: { studentId: 6, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Chapter brunch counts," Tiffany says, bubbly.`,
     `"Still cute," she decides.`,
+    `"Pastel still works," she grins.`,
   ]},
   { when: { studentId: 7, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Logged," Priya says. "Next task."`,
     `"Variance noted," she says, closing the planner.`,
+    `"Within tolerance," she murmurs, moving on.`,
   ]},
   { when: { studentId: 9, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"American semester," Chloé says dryly. "C'est la vie."`,
     `"Portions happen," she shrugs.`,
+    `"Butter happens," she adds, amused.`,
   ]},
   { when: { studentId: 10, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Tasting schedule," Reneé says. "Professional."`,
     `"Good ingredients show," she notes.`,
+    `"Proofing takes time," she murmurs.`,
   ]},
   { when: { studentId: 11, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Within normal parameters," Kaylee says calmly.`,
     `"Self-care includes mass," she adds, clinical.`,
+    `"Vitals stable," she says, pink-cheeked.`,
   ]},
   { when: { studentId: 12, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Noted," Nadia says, watching your face.`,
     `"Interesting," she murmurs. Not distressed.`,
+    `"Continuing observation," she says, pleased.`,
   ]},
   { when: { studentId: 14, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Harvest happens," Mary Jane says, sunny.`,
     `"Still me," she grins.`,
+    `"Good soil," she winks, patting her hip.`,
   ]},
   { when: { studentId: 15, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `Lilith inclines her head. Acknowledgment without commentary.`,
     `"Expected," she says, once.`,
+    `Silence. Mass acknowledged.`,
   ]},
   { when: { studentId: 16, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Within study bounds," Sophia says, tense.`,
     `"Documented," she whispers.`,
+    `"Continuing trial," she adds, shaky.`,
   ]},
   { when: { studentId: 18, custom: false, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Output nominal," Talia says.`,
     `"Continuing trial," she adds.`,
+    `"Within tolerance," she murmurs, already reaching for paste.`,
+  ]},
+  { when: { studentId: 18, gainStance: 'neutral', ...EARLY }, weight: W, text: [
+    `"Output nominal," Talia says.`,
+    `"Continuing trial," she adds.`,
+    `"Within tolerance," she murmurs, already reaching for paste.`,
   ]},
 ]);
 
@@ -270,22 +388,27 @@ registerModuleVariants('slender.secret', [
   { when: { studentId: 2, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'She checks the angle in the mirror and does not look away fast enough.',
     'Her hand rests on her hip. The content writes itself.',
+    'She saves the shot unposted. Liked anyway.',
   ]},
   { when: { studentId: 4, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'She traces the new curve like she is studying brushwork.',
     'The softness pleases her in a way she will not say out loud.',
+    'She sketches the curve from memory later. Accurate.',
   ]},
   { when: { studentId: 10, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'She presses her palm to her middle and exhales slowly — tasting the fullness.',
     'The rounding is a recipe finishing in the oven. She is patient.',
+    'She pats her belly like dough proofing. Satisfied.',
   ]},
   { when: { studentId: 12, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'She names the dynamic out loud to herself and smiles anyway.',
     'The gain satisfies a hypothesis she will not publish yet.',
+    'She watches you watch her soften. Data and pleasure.',
   ]},
   { when: { studentId: 14, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'She pats her hip with farm-girl pride she pretends is absentminded.',
     'Abundance feels correct on her. She will not argue with harvest logic.',
+    'She hums while fullness settles. The hum sounds like yes.',
   ]},
   { when: { studentId: 15, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Her stillness sharpens. She is pleased. She does not explain why.',
@@ -295,54 +418,72 @@ registerModuleVariants('slender.secret', [
   { when: { studentId: 1, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Madeline presses palm to softness and exhales data she will not publish yet.',
     'The curve pleases her more than her voice admits.',
+    'She weighs herself twice. Second reading higher. She smiles.',
   ]},
   { when: { studentId: 3, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Serena flexes, then relaxes into the new give at her thigh. She likes the heaviness.',
     'She checks the mirror twice. Performance and pleasure blur.',
+    'Her hand rests on her middle a beat too long.',
   ]},
   { when: { studentId: 6, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Tiffany smooths pastel over a hip that has outgrown rush standards. She does not mind.',
     'She bites her lip at the number. Bubblegum excuse. Real appetite underneath.',
+    'She takes a selfie and deletes it. Keeps the softness.',
   ]},
   { when: { studentId: 7, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Priya files the gain under private goals she did not put in the planner.',
     'Her hand rests on her middle a beat too long. Optimization can wait.',
+    'She eats seconds without logging them. Pleasure off-books.',
   ]},
   { when: { studentId: 8, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Maya draws the new curve later that night from memory. Accurate. Affectionate.',
     'She touches her waistband in the dorm mirror when the hall is empty.',
+    'She eats alone in the studio. No audience. Full appetite.',
   ]},
   { when: { studentId: 9, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Chloé\'s breath catches on the number — scandal and satisfaction braided together.',
     'She blames American butter. Her smile blames nothing.',
+    'She orders dessert twice. C\'est la vie.',
   ]},
   { when: { studentId: 11, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Kaylee calls it clinical curiosity while her cheeks flush. The chart lies. She does not.',
     'She weighs herself at home and is not always upset about the result.',
+    'She pats her belly in the shower. Private triage.',
   ]},
   { when: { studentId: 13, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Daisy pats her hip when she thinks no one sees. Southern warmth, private appetite.',
     'She hums while fullness settles. The hum sounds like contentment.',
+    'She saves herself a second plate. Bless her heart.',
   ]},
   { when: { studentId: 16, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Sophia exhales shakily at the number — not dismay. Relief wearing anxiety\'s coat.',
     'She locks the bathroom door before stepping on the scale again. Curious, not clinical.',
+    'She loosens her coat button and does not tighten it.',
   ]},
   { when: { studentId: 17, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Indiana maps the new softness like discovered territory. X marks the spot. She is the spot.',
     'She eats stolen dining hall rolls in the stairwell and savors every one.',
+    'She adds a pin to her inner map. Heavier. Warmer.',
   ]},
   { when: { studentId: 18, custom: false, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Talia runs a hand along her side and updates the model with a private smile.',
     'Inputs exceeded projections. She is not correcting the error.',
+    'She weighs herself twice after dinner. Second reading higher. She is not upset.',
+  ]},
+  { when: { studentId: 18, gainStance: 'secret', ...EARLY }, weight: W, text: [
+    'Talia runs a hand along her side and updates the model with a private smile.',
+    'Inputs exceeded projections. She is not correcting the error.',
+    'She weighs herself twice after dinner. Second reading higher. She is not upset.',
   ]},
   { when: { studentId: 0, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Brittany checks the curve in the locker mirror and does not look away fast enough.',
     'Winning feels different now. She is not sure she minds.',
+    'She flexes once, privately. Likes the softness.',
   ]},
   { when: { studentId: 5, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Destiny eats off-stream with focus that would alarm her chat.',
     'She saves the softer screenshots in a private folder. Unposted. Liked.',
+    'She queues snacks before the next broadcast. Priority shift.',
   ]},
 ]);
 
@@ -350,77 +491,101 @@ registerModuleVariants('slender.eatPause', [
   { when: { studentId: 0, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Brittany eats like fueling — portioned, committed, already thinking about the next plate.',
     'Second helping arrives before the first plate is moral history.',
+    'Macros forgotten by bite three. She keeps going.',
   ]},
   { when: { studentId: 1, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Madeline annotates the meal in her head between bites. The plate empties anyway.',
     'She pauses to record a note. The pause does not slow consumption.',
+    'The dataset updates live. So does her appetite.',
   ]},
   { when: { studentId: 2, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Kylie eats on camera and off — the off-camera bites are more honest.',
     'She stops filming and starts eating for real. Appetite uncut.',
+    'Off-camera hunger wins. Always does.',
   ]},
   { when: { studentId: 3, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Serena eats with athlete discipline redirected toward appetite.',
     'Training table rules dissolve halfway through. She keeps going.',
+    'Fuel cycle uninterrupted. No cooldown.',
   ]},
   { when: { studentId: 4, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Fiona savors each bite the way she savors color — slowly, reverently.',
     'Reverence gives way to hunger. The plate does not mind.',
+    'Hunger becomes color she cannot capture fast enough.',
   ]},
   { when: { studentId: 5, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Destiny eats one-handed, eyes on the screen until hunger wins.',
     'The plate empties before she looks away from the monitor.',
+    'Stream minimized. Plate maximized.',
   ]},
   { when: { studentId: 6, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Tiffany treats the table like chapter business — bubbly, social, second helpings included.',
     'She talks through bites. The talking does not reduce intake.',
+    'Chapter gossip continues. Intake continues louder.',
   ]},
   { when: { studentId: 7, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Priya eats while reviewing notes. Multitasking includes calories now.',
     'The highlighter caps. The fork does not.',
+    'Planner minimized. Fork maximized.',
   ]},
   { when: { studentId: 8, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Maya eats without commentary. The fork does not hesitate.',
     'Quiet appetite — thorough, unannounced, complete.',
+    'Silence at the table. Appetite loud.',
   ]},
   { when: { studentId: 9, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Chloé tastes American abundance with amused precision — unhurried, scandalized, continuing.',
     'She declares the portions obscene and finishes them anyway.',
+    'Scandal on the plate. She finishes anyway.',
   ]},
   { when: { studentId: 10, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Reneé eats like a chef grading her own work — eyes closed on the first bite, approving on the third.',
     'She samples, then commits. Commitment is generous.',
+    'Chef becomes diner. Diner becomes satisfied.',
   ]},
   { when: { studentId: 11, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Kaylee calls it aggressive self-care and eats with clinical calm.',
     'She recommends seconds to herself. Patient complies.',
+    'Self-care includes seconds. Prescribed.',
   ]},
   { when: { studentId: 12, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Nadia eats while observing everyone else eat. Field notes optional. Appetite mandatory.',
     'She watches you watch her chew. The observation does not slow her fork.',
+    'Observation continues. Fork does not wait.',
   ]},
   { when: { studentId: 13, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Daisy eats like feeding is kindness — warm, unhurried, generous with seconds.',
     'She hums between bites. The hum means satisfied.',
+    'Warm seconds without asking permission.',
   ]},
   { when: { studentId: 14, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Mary Jane eats with country abundance — nothing skimped, nothing rushed.',
     'She asks if you want more before her own plate is clean.',
+    'Farm portions for one. She accepts.',
   ]},
   { when: { studentId: 15, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Lilith eats without explaining her appetite. Portions are not discussed.',
     'Her gaze stays on you. The fork moves anyway.',
+    'Hunger unspoken. Fork eloquent.',
   ]},
   { when: { studentId: 16, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Sophia eats with anxious precision — measured bites, rising fullness noted and filed.',
     'Anxiety thins. Appetite does not.',
+    'Trial subject eats. Data: pleasing.',
   ]},
   { when: { studentId: 17, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Indiana eats like trail rations at a dig site — practical, satisfied, ready for more.',
     'She pockets a roll for later and eats two now.',
+    'Provisions secured. More provisions incoming.',
   ]},
   { when: { studentId: 18, custom: false, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Talia eats while calculating caloric efficiency. The calculation keeps losing to appetite.',
     'She revises the model mid-meal. New assumption: more is better.',
+    'Paste, then solids, then paste again — intake logged, appetite undefeated.',
+  ]},
+  { when: { studentId: 18, corruption: [0], stageMax: 3 }, weight: W, text: [
+    'Talia eats while calculating caloric efficiency. The calculation keeps losing to appetite.',
+    'She revises the model mid-meal. New assumption: more is better.',
+    'Paste, then solids, then paste again — intake logged, appetite undefeated.',
   ]},
 ]);
