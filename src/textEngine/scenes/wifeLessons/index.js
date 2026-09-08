@@ -5,7 +5,6 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { WL_LESSONS, WL_DIALOGUES, WL_CONFIG } from '../../../gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from '../../../gameData/wlMomDialogueDepth.js';
-import './lessonDepth.js';
 
 const DAUGHTERS = new Set(['Emma', 'Chloe', 'Kezia', 'Lila']);
 

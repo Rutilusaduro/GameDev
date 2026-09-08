@@ -131,6 +131,8 @@ import './researchJournal/depth.js';
 import './researchJournal/nadiaDepth.js';
 import './scrutiny/index.js';
 import './wifeLessons/index.js';
+import './wifeLessons/lessonDepth.js';
+import './wifeLessons/talkDepth.js';
 import './homeroom/index.js';
 import './homeroom/homeroomSceneDepth.js';
 import './homeroom/homeroomActivityDepth.js';

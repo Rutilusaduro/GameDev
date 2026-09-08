@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 monolith _f* sweep (433 pools cleared turn 32); prior opposition/settling _d* depth |
+| Legacy talk prose | 🔄 wifeLessons talk+lesson depth (429 pools); prior monolith _f* sweep |
 
 ## Key Files (V2)
 
@@ -68,11 +68,13 @@
 - `src/textEngine/scenes/diaryPhaseDSceneDepth.js` — PhaseD forms (gainer/goddess/salon/gallery/pharmacist) s9–11 depth
 - `src/textEngine/scenes/evolved/evolvedSceneDepth.js` — per-student evolved.v2.depth variants
 - `src/textEngine/scenes/salonGallerySceneDepth.js` — salon/gallery hub + form evolved depth pools
+- `src/textEngine/scenes/opposition/oppositionHearingFragmentDepth.js` — hearing removal phase0._d0 depth
 - `src/textEngine/scenes/cultivator/monolithFragmentDepth.js` — harvest/digest/growth _N.fM fragment depth (auto-gen)
 - `src/textEngine/scenes/settling/settlingMonolithFragmentDepth.js` — care/feed/socialize _N.fM depth (auto-gen)
 - `src/textEngine/scenes/opposition/oppositionMonolithFragmentDepth.js` — hearing _N.fM depth (auto-gen)
 - `src/textEngine/scenes/monolithFragmentDepth.js` — global remaining _N.fM depth (auto-gen)
-- `scripts/generateMonolithFragmentDepth.mjs` — regen monolith fragment depth from registry
+- `src/textEngine/scenes/wifeLessons/talkDepth.js` — wifeLessons.talk.* depth (405 pools, auto-gen)
+- `scripts/generateWifeLessonsTalkDepth.mjs` — regen wifeLessons talk depth
 - `src/textEngine/scenes/settling/settlingFragmentDepth.js` — decomposed care/gossip/confide _d* fragment depth
 - `src/textEngine/scenes/settling/settlingFeedFragmentDepth.js` — feed spread/stuffing _d27–44 fragment depth
 - `src/textEngine/scenes/v2/echo/echoSceneDepth.js` — per-student echo.type.* replay variants
@@ -88,6 +90,6 @@ npm run build       # production build
 
 ## Remaining Toward 2.0
 
-1. Named thin pool sweep — wifeLessons, talk, dinner, etc. (~526 remain) + V2_0 audit; turn 32 cleared all 433 `_N.fM` monolith fragments
+1. Named thin pool sweep — ~65 remain (echo/ritual/dream V2, emb skeletons, singles) + V2_0 audit; turn 33 cleared wifeLessons (429) + homeroom conference
 2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
 3. Completion audit vs `docs/V2_0_DESIGN.md` — five V2 systems wired ✅; prose depth additive pass ongoing

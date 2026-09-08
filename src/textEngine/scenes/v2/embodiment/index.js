@@ -48,15 +48,18 @@ registerPool('emb.action.raid_pantry', [
 registerPool('emb.action.raid_pantry.beat', [
   { when: { stageMin: 5 }, text: [
     'Her thighs press the cabinet open. She eats standing — cold pasta, cheese torn from the block, something sweet she does not name.',
+    'Standing at the counter, she raids shelves with both hands — leftovers, cartons, anything within reach.',
   ]},
   { when: {}, text: [
     'Hands move on autopilot. Cartons, leftovers, the thing in the back she forgot she bought.',
+    'The pantry yields piece by piece. She eats before deciding whether to feel guilty.',
   ]},
 ]);
 registerPool('emb.action.raid_pantry.after', [
   { when: {}, text: [
     'She wipes her mouth and tells herself it was just a snack.',
     'Crumbs on her shirt. She will not mention this.',
+    'Empty containers. Guilt scheduled for later. Fullness already arrived.',
   ]},
 ]);
 
@@ -68,53 +71,72 @@ registerPool('emb.action.secret_binge', [
 registerPool('emb.action.secret_binge.beat', [
   { when: { corruptionMin: 50 }, text: [
     'Door locked. Phone face-down. She eats like someone who has decided not to be witnessed — and does not want to stop.',
+    'Alone with the bags, she eats with both hands until the room smells like delivery and want.',
   ]},
   { when: {}, text: [
     'She eats fast, then slower, then until the containers are empty and her belly is a warm, heavy fact.',
+    'Containers open in sequence. Shame waits outside the door. Hunger does not.',
   ]},
 ]);
 registerPool('emb.action.secret_binge.after', [
   { when: {}, text: [
     'The shame arrives late. The fullness arrived on time.',
+    'She breathes around the weight and calls it necessary.',
+    'Evidence hidden. Belly warm. The secret keeps.',
   ]},
 ]);
 
 registerPool('emb.action.seduce_appetite', [
   { when: {}, text: [
     'You whisper want into the places she keeps polite. Hunger stops being embarrassment and becomes appetite — hers, finally, without apology.',
+    'Desire pools behind her ribs. She reaches for food like it is the answer to a question she finally asked.',
   ]},
 ]);
 
 registerPool('emb.action.mirror_confession', [
   { when: {}, text: [
     'She stands before the glass and tells the truth her friends never hear: she likes this. She wants more. The reflection agrees.',
+    'Mirror, honesty, appetite — spoken aloud until shame loses its vote.',
   ]},
 ]);
 
 registerPool('emb.action.text_professor', [
   { when: {}, text: [
     'Her thumbs move before pride can intervene. "I\'m hungry again." Sent. She watches the screen like it might judge her.',
+    'The message sends hungry and plain. She waits for your reply like it is permission.',
   ]},
 ]);
 
 registerPool('emb.action.roommate_tempt', [
   { when: {}, text: [
     'Order for two. Eat for one and a half. Evidence left on the counter. Let someone else notice what she is becoming.',
-  ]},
-]);
-
-registerPool('emb.action.auto_surrender', [
-  { when: { stageMin: 6 }, text: [
-    'No negotiation. The delivery app opens and does not close until every bag is empty and her belly is a settled landscape of warmth.',
-  ]},
-  { when: {}, text: [
-    'She surrenders to hunger the way you surrender to gravity — completely, without drama.',
+    'Delivery for two, eaten mostly alone — wrappers left visible on purpose.',
   ]},
 ]);
 
 registerPool('emb.action.public_eating', [
   { when: {}, text: [
     'Campus quad. She eats without apology. People look. She does not stop. The spirit hums approval through her ribs.',
+    'Public bench, open container, no performance of restraint. Appetite on display and unashamed.',
+  ]},
+]);
+
+registerPool('emb.action.generic', [
+  { when: {}, text: [
+    'You move her hands toward food. She follows. The spirit smiles without a face.',
+    'Hunger steered from within. She obeys and calls it craving.',
+    'Your will, her mouth — the difference blurs pleasantly.',
+  ]},
+]);
+
+registerPool('emb.action.auto_surrender', [
+  { when: { stageMin: 6 }, text: [
+    'No negotiation. The delivery app opens and does not close until every bag is empty and her belly is a settled landscape of warmth.',
+    'She orders until the cards complain. Bags until the floor disappears. Belly until the spirit is satisfied.',
+  ]},
+  { when: {}, text: [
+    'She surrenders to hunger the way you surrender to gravity — completely, without drama.',
+    'No fight left. Food arrives; she accepts every piece like fate.',
   ]},
 ]);
 
@@ -191,9 +213,3 @@ export function renderEmbodimentAction(actionId, ctx) {
   }
   return appendV2Depth(base, 'spirit', ctx, 0.28);
 }
-
-registerPool('emb.action.generic', [
-  { when: {}, text: [
-    'You move her hands toward food. She follows. The spirit smiles without a face.',
-  ]},
-]);
