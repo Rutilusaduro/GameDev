@@ -4,6 +4,33 @@ import { registerModuleVariants } from '../../engine.js';
 
 const W = 4;
 
+registerModuleVariants('set.care.tend.beat', [
+  { when: { studentId: 1, stageMin: 10 }, weight: W, text: [
+    `Madeline tends her own notes between your hands — data and comfort braided, body maintained like research.`,
+  ]},
+  { when: { studentId: 3, stageMin: 10 }, weight: W, text: [
+    `Serena's athlete body needs different tending — joints, breath, the soft places training forgot.`,
+  ]},
+  { when: { studentId: 9, stageMin: 10 }, weight: W, text: [
+    `Chloé receives care like hospitality — unhurried, continental, every gesture returned with warmth.`,
+  ]},
+  { when: { studentId: 11, stageMin: 10 }, weight: W, text: [
+    `Kaylee melts under small attentions — pillow, cloth, your presence. Gratitude immediate.`,
+  ]},
+  { when: { studentId: 16, stageMin: 10 }, weight: W, text: [
+    `Vanessa's tending is practical theater — comfort staged, vanity honored, mass maintained with flair.`,
+  ]},
+  { when: { studentId: 17, stageMin: 10 }, weight: W, text: [
+    `Indiana's bulk needs brute-care — cushions shoved, folds cooled, treasure-hunter patience.`,
+  ]},
+  { when: { studentId: 18, custom: false, stageMin: 10 }, weight: W, text: [
+    `Talia catalogs each adjustment — hypothesis: comfort improves yield. Conclusion: yes.`,
+  ]},
+  { when: { stageMin: 11 }, weight: 3, text: [
+    `Tending at leviathan scale — route not gesture. You follow the warm geography of {subject.first}.`,
+  ]},
+]);
+
 registerModuleVariants('set.care.tend.react', [
   { when: { studentId: 0, corruption: [2], stageMin: 10 }, weight: W, text: [
     `Brittany receives tending like post-game care — "Good," she says. "Team needs me maintained."`,
@@ -85,6 +112,33 @@ registerModuleVariants('set.socialize.praise.react', [
   ]},
 ]);
 
+registerModuleVariants('set.feed.preferred', [
+  { when: { studentId: 0, stageMin: 10 }, weight: W, text: [
+    `Brittany gets savory depth — captain fuel, hand-fed, no apology in the portion size.`,
+  ]},
+  { when: { studentId: 2, stageMin: 10 }, weight: W, text: [
+    `Kylie eats her preference on camera even immobile — "Clip the good bites," she says.`,
+  ]},
+  { when: { studentId: 4, stageMin: 10 }, weight: W, text: [
+    `Fiona savors preferred flavors like pigment — slow, absorbed, returned as quiet bliss.`,
+  ]},
+  { when: { studentId: 7, stageMin: 10 }, weight: W, text: [
+    `Priya eats what she asked for — measured satisfaction, preference validated by data and tongue.`,
+  ]},
+  { when: { studentId: 9, stageMin: 10 }, weight: W, text: [
+    `Chloé takes sweet things with continental patience — each bite a small ceremony.`,
+  ]},
+  { when: { studentId: 11, stageMin: 10 }, weight: W, text: [
+    `Kaylee receives preferred food like medicine — soft sounds, eyes closed, trust total.`,
+  ]},
+  { when: { studentId: 15, stageMin: 10 }, weight: W, text: [
+    `Lilith eats what she wanted without performance — predator satisfied, preference met.`,
+  ]},
+  { when: { studentId: 16, stageMin: 10 }, weight: W, text: [
+    `Vanessa takes her preferred bite with drama — "Exactly right," she declares. "As always."`,
+  ]},
+]);
+
 registerModuleVariants('set.feed.stuffing', [
   { when: { studentId: 3, stageMin: 10 }, weight: W, text: [
     `Serena takes one more past full — athlete capacity rediscovered horizontal, triumphant.`,
@@ -128,6 +182,18 @@ registerModuleVariants('set.weigh.react', [
 ]);
 
 registerModuleVariants('set.gather', [
+  { when: { studentId: 0, stageMin: 11 }, weight: W, text: [
+    `Brittany's court assembles — captain immobile, squad still orbiting, loyalty geographic.`,
+  ]},
+  { when: { studentId: 2, stageMin: 11 }, weight: W, text: [
+    `Kylie's followers cluster for content — phones out, warmth shared, immobility as venue.`,
+  ]},
+  { when: { studentId: 8, stageMin: 11 }, weight: W, text: [
+    `Maya's gathering is quiet — girls settle near her heat, conversation low, presence enough.`,
+  ]},
+  { when: { studentId: 15, stageMin: 11 }, weight: W, text: [
+    `Lilith's court arrives wary and stays hungry — predator center, others careful and close.`,
+  ]},
   { when: { studentId: 6, stageMin: 10 }, weight: W, text: [
     `Chapter sisters orbit Tiffany's warmth — court by sorority gravity, gossip and reverence.`,
   ]},
