@@ -327,20 +327,37 @@ registerPool('spirit.v2.depth', [
   ]},
 ]);
 registerPool('ritual.v2.depth', [
+  { when: { stageMin: 10 }, text: [
+    'Ritual at immobile scale — bedside altars, food carried like tribute, ceremony for bodies that have become geography.',
+  ]},
   { when: { stageMin: 8 }, text: [
     'Sacred gluttony — multiple bellies, one ceremony, appetite elevated to liturgy.',
     'The ritual consecrates mass. Every participant leaves heavier in body and spirit.',
   ]},
+  { when: { stageMin: 4 }, text: [
+    'Ceremony turns dinner into doctrine — courses, heat, chewing in unison.',
+    'Plates circulate like communion. Fullness becomes collective worship.',
+  ]},
+  { when: { stageMin: 0, stageMax: 3 }, text: [
+    'A modest ritual still — intimacy formalized, appetite named aloud among friends.',
+  ]},
   { when: {}, text: [
     'Ceremony amplifies appetite — every bite consecrated, every belly an altar.',
-    'Plates circulate like communion. Fullness becomes collective worship.',
     'The kitchen transforms into temple. Hunger the only prayer.',
+    'Ritual completes. Bellies remember. The spirit is pleased.',
   ]},
 ]);
 registerPool('dream.v2.depth', [
+  { when: { stageMin: 9 }, text: [
+    'Dream at leviathan scale — impossible portions, symbolic foodscapes, her body vast even in sleep.',
+    'The subconscious serves what waking politeness refuses. She eats without ceiling.',
+  ]},
   { when: { stageMin: 6 }, text: [
     'The dream serves impossible portions — symbolic foodscapes where appetite has no ceiling.',
     'She eats in sleep what she craves awake. The spirit walks the subconscious buffet.',
+  ]},
+  { when: { stageMin: 2 }, text: [
+    'Surreal abundance still gentle — want learning its vocabulary in symbolic food.',
   ]},
   { when: {}, text: [
     'The dream lingers at the edges of waking — hunger translated into symbol.',
@@ -349,6 +366,9 @@ registerPool('dream.v2.depth', [
   ]},
 ]);
 registerPool('echo.v2.depth', [
+  { when: { stageMin: 10 }, text: [
+    'Archive at immobile depth — memory layered until past appetite and present mass merge without seam.',
+  ]},
   { when: { stageMin: 9 }, text: [
     'The echo deepens — memory layered with sensation until past and present appetite merge.',
     'Replay becomes reliving. Her body in the archive still grows warmer with each visit.',
@@ -356,6 +376,9 @@ registerPool('echo.v2.depth', [
   { when: { stageMin: 5 }, text: [
     'The moment returns fuller than before — more detail, more heat, more proof she crossed a line.',
     'Echo depth means the memory refuses to stay small.',
+  ]},
+  { when: { stageMax: 4 }, text: [
+    'Early echo — softness preserved before appetite learned to speak without blush.',
   ]},
   { when: {}, text: [
     'A preserved instant — hunger crystallized, available to revisit and amplify.',
@@ -366,7 +389,23 @@ registerPool('gossip.v2.depth', [
   { when: {}, text: ['The class keeps its own accounting — glances, whispers, appetite noticed before it is named.'] },
 ]);
 registerPool('resonance.v2.depth', [
-  { when: {}, text: ['Appetite travels the wire between them — invisible, hungry, impossible to unfeel.'] },
+  { when: { stageMin: 9 }, text: [
+    'Hive resonance at monumental scale — linked appetites swell together like weather systems, campus-wide hunger no single girl owns.',
+    'The wire between them carries mass now, not just craving — fullness echoing fullness across the roster.',
+  ]},
+  { when: { stageMin: 6 }, text: [
+    'Appetite travels the network in pulses you can almost hear — warm, immediate, impossible to unfeel.',
+    'Linked girls eat in stereo. Resonance turns private hunger into shared architecture.',
+  ]},
+  { when: { stageMin: 3 }, text: [
+    'Something invisible stitches their want together. When one softens, the other feels it before the week names why.',
+    'Craving contagious as laughter — appetite learning to echo between bodies.',
+  ]},
+  { when: {}, text: [
+    'Appetite travels the wire between them — invisible, hungry, impossible to unfeel.',
+    'The resonance hums. Hunger shared before it is confessed.',
+    'Linked at the level of want — soft, certain, quietly inevitable.',
+  ]},
 ]);
 registerPool('campusDevice.v2.depth', [
   { when: {}, text: ['Technology meets campus flesh — remote warmth, unintended discovery, hunger amplified.'] },
