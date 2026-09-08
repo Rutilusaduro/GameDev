@@ -65,7 +65,8 @@ export function renderGroupDinnerReaction(kind, subject, ref, week = 1, opts = {
   const poolKey = REACTION_POOLS[kind];
   if (!poolKey) return '';
   const main = renderReactionPool(poolKey, subject, ref, week, opts);
-  return composeOverlay(main, renderOverlay(subject, week, { ref, ...opts }));
+  const composed = composeOverlay(main, renderOverlay(subject, week, { ref, ...opts }));
+  return maybeV2Dinner(composed, subject, week, opts);
 }
 
 /** Fed girl unbuttons mid-meal when she crosses fullness cap. */
@@ -94,7 +95,8 @@ export function renderGroupDinnerConversation(convId, subject, ref, week = 1, op
     ...opts,
   });
   const main = render(`{dinner.groupConv.${convId}}`, ctx, { trace: opts.trace || null })?.trim() || '';
-  return composeOverlay(main, renderOverlay(subject, week, { ref, ...opts }));
+  const composed = composeOverlay(main, renderOverlay(subject, week, { ref, ...opts }));
+  return maybeV2Dinner(composed, subject, week, opts);
 }
 
 /** Venue waiter line when clearing plates mid-dinner. */
@@ -108,7 +110,8 @@ export function renderDinnerWaiter(venueId, student, week = 1, opts = {}) {
   });
   const main = render('{dinner.waiter}', ctx, { trace: opts.trace || null })?.trim()
     || 'The server arrives. "Shall I bring more?" she asks.';
-  return composeOverlay(main, renderOverlay(student, week, opts));
+  const composed = composeOverlay(main, renderOverlay(student, week, opts));
+  return maybeV2Dinner(composed, student, week, opts);
 }
 
 /** Full dinner depth beat — setup through exit. */
