@@ -58,8 +58,10 @@ export const COVERAGE_CORRUPTION_PROBES = [0, 1, 2];
 export const INFRA_MODULE_KEYS = new Set([
   'subject.name', 'subject.first', 'subject.lbs', 'subject.semesterGain',
   'subject.they', 'subject.them', 'subject.their', 'subject.theirs', 'subject.themself',
+  'ref.name', 'ref.first',
   'char.desc', 'sizeCompare', 'bodyType.desc', 'clothing.desc', 'group.desc', 'device.label',
   'word.size', 'word.movement', 'word.body', 'word.clothingFit', 'word.fullness', 'word.essence',
+  'partnerName', 'partnerLbs', 'partnerGain', 'wrenLine', 'kylieGain', 'studentLbs',
 ]);
 
 /** --strict-volume: fail when thin wildcard pools remain (Phase A gate). */

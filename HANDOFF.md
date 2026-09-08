@@ -34,7 +34,7 @@
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
 | Legacy talk prose | ✅ named thin pool sweep (65 pools turn 34); wifeLessons + monolith _f* |
 | V2 wildcard depth | ✅ v2WildcardDepth.js — 83 emb/res/ritual/echo/dream/*.v2.depth pools padded |
-| Banned-pattern lint | ✅ 0 style-ledger violations (149→28 total warnings; infra only remains) |
+| Banned-pattern lint | ✅ 0 style-ledger violations; text:lint 2 infra warnings (stem dedupe under 1% gate) |
 | V2_0 mechanical audit | ✅ gate fidelity fixes — resonance_bells surge, echo_gallery archive, dream_chamber hub, lucid steer, ritual milestones, embodiment AP tiers |
 | Campus device depth | ✅ all 19 students on vulnerability; keyed reaction + deviceFlavor padded |
 | Keyed volume floor | ✅ 0 thin keyed cells (`npm run text:lint -- --volume`) |
@@ -65,7 +65,7 @@
 | Item | Status | Notes |
 |------|--------|-------|
 | Bespoke hand-drawn sprites | Optional | Design doc specifies procedural pixel silhouettes; implemented |
-| Infra lint warnings (17) | Low | legacy registerModule (13), dead facts (2), stem dedupe (2) |
+| Infra lint warnings (2) | Low | stem dedupe only (0.9% triple-stem, under 1% gate) |
 | ~~Keyed cells <3 texts (14)~~ | ✅ Done | `generateKeyedDepth.mjs` + campus.v2.depth padding |
 
 ## Key Files (V2)
@@ -119,7 +119,7 @@
 ## Verification
 
 ```bash
-npm run text:lint   # exit 0 (28 infra warnings: psych-keyed, legacy modules, stem dedupe)
+npm run text:lint   # exit 0 (2 stem-dedupe infra warnings, under gate)
 npm run text:lint -- --volume  # keyed cells: 0
 npm run lint        # exit 0 errors (77 pre-existing warnings)
 npm run build       # production build
@@ -130,5 +130,5 @@ node -e "..."       # V2 handler probe (embodiment/resonance/ritual/weekly)
 
 1. ~~ESLint errors~~ — fixed turn 40 (11 missing imports)
 2. ~~Keyed volume floor~~ — fixed turn 41 (`squadKeyedDepth.js` regen + campus.v2.depth)
-3. Infra lint warnings (28) — psych-keyed word.* pools, legacy registerModule migration, stem dedupe gate
+3. ~~Infra lint warnings~~ — down to 2 stem-dedupe (under 1% gate)
 4. Bespoke hand-drawn art — optional; procedural portrait system satisfies design doc

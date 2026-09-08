@@ -78,22 +78,22 @@ registerPool('asc.ceremony.emergence', [
 
 // Shape: DIALOGUE BEAT. First words after rebirth.
 registerPool('asc.ceremony.firstWords', [
-  { when: { corruption: [0] }, weight: 2, text: [
+  { when: { corruption: [0] }, weight: 2, requires: { 'asc.reborn': true }, text: [
     `{subject.name} exhales shakily. "That was… a lot. I'm still me, right?"`,
     `"Smaller," {subject.first} whispers, touching her own wrist. "Strange. Good-strange."`,
     `{subject.name} looks at her hands like they belong to someone new. "Tell me I'm still me."`,
   ]},
-  { when: { corruption: [1] }, weight: 2, text: [
+  { when: { corruption: [1] }, weight: 2, requires: { 'asc.reborn': true }, text: [
     `{subject.name} laughs once, surprised. "Okay. Okay. We do that again on purpose?"`,
     `"I can feel the ladder still," {subject.first} says. "But lighter. Lighter on purpose."`,
     `{subject.name} touches her middle, wonderingly. "Room to climb again. I like that."`,
   ]},
-  { when: { corruption: [2] }, weight: 2, text: [
+  { when: { corruption: [2] }, weight: 2, requires: { 'asc.reborn': true }, text: [
     `{subject.name} looks at you, settled. "Say when. I'm not going back to small by accident."`,
     `"Again," {subject.first} murmurs, hungry already. "Let's do it again."`,
     `{subject.name} smiles. "Mythic me is still hungry. Good."`,
   ]},
-  { when: {}, text: [
+  { when: {}, requires: { 'asc.reborn': true }, text: [
     `{subject.name} finds your eyes. "See it through with me."`,
     `"I'm still me," {subject.first} says. "Just more possible now."`,
     `{subject.name} exhales, almost a laugh. "Well. That happened."`,

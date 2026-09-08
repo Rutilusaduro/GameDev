@@ -112,18 +112,21 @@ registerPool('scene.hungerInterrupt.behavior', [
 registerPool('scene.hungerInterrupt.request', [
   { when: { corruption: [2], hungerTier: [3, 4] }, priority: 5,
     asserts: { 'interrupt.tone': 'demanding' },
+    requires: { 'interrupt.tone': 'demanding' },
     text: [
       '"Feed me. I\'m not asking nicely anymore."',
       '"You know what I need. Stop making me wait."',
     ] },
   { when: { corruption: [0], hungerTier: [3, 4] }, priority: 4,
     asserts: { 'interrupt.tone': 'ashamed' },
+    requires: { 'interrupt.tone': 'ashamed' },
     text: [
       '"I… I hate that I need this. But I do. Please?"',
       '"Could we… maybe get food? I\'m trying not to sound desperate."',
     ] },
   { when: { stage: [10, 11], hungerTier: [3, 4], addictionLevel: [3, 4] }, priority: 4,
     asserts: { 'interrupt.tone': 'demanding' },
+    requires: { 'interrupt.tone': 'demanding' },
     text: [
       '"You\'re going to feed me."',
       '"I\'m not leaving until you feed me."',
@@ -131,6 +134,7 @@ registerPool('scene.hungerInterrupt.request', [
     ] },
   { when: { addictionLevel: [4], hungerTier: [4] }, priority: 4,
     asserts: { 'interrupt.tone': 'desperate' },
+    requires: { 'interrupt.tone': 'desperate' },
     text: [
       '"I\'m so hungry…"',
       '"Please… I\'m starving. I need you to feed me."',
@@ -139,6 +143,7 @@ registerPool('scene.hungerInterrupt.request', [
     ] },
   { when: { addictionLevel: [3], hungerTier: [3, 4] }, priority: 3,
     asserts: { 'interrupt.tone': 'desperate' },
+    requires: { 'interrupt.tone': 'desperate' },
     text: [
       '"I\'ve been thinking about you feeding me all day…"',
       '"I\'m really hungry… can you feed me?"',
@@ -146,6 +151,7 @@ registerPool('scene.hungerInterrupt.request', [
     ] },
   { when: { inWithdrawal: true }, priority: 3,
     asserts: { 'interrupt.tone': 'irritated' },
+    requires: { 'interrupt.tone': 'irritated' },
     text: [
       '"I need something from you. Now."',
       '"Don\'t ignore me. I\'m not in the mood."',
@@ -181,9 +187,11 @@ registerPool('scene.hungerInterrupt.tone', [
     text: "She's clearly struggling to stay upright while she waits." },
   { when: { addictionLevel: [4], hungerTier: [4] }, priority: 2,
     asserts: { 'interrupt.tone': 'desperate' },
+    requires: { 'interrupt.tone': 'desperate' },
     text: 'She looks like she might actually start crying if you turn her away.' },
   { when: { inWithdrawal: true }, priority: 2,
     asserts: { 'interrupt.tone': 'irritated' },
+    requires: { 'interrupt.tone': 'irritated' },
     text: "She's angry, but underneath it she just looks miserable." },
   { when: {}, text: [
     'She waits for your answer.',
