@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 stream end/tap depth + settling tend/feed/gather expansion; prior device/opposition/collab/recording |
+| Legacy talk prose | 🔄 Destiny offstream + homeroom conference/activity depth; prior stream/settling/device/opposition |
 
 ## Key Files (V2)
 
@@ -62,6 +62,7 @@
 - `src/textEngine/scenes/recordingSession/recordingSessionWrapDepth.js` — wrap/payoff pools + per-student endings
 - `src/textEngine/scenes/settling/settlingSceneDepth.js` — per-student care/socialize/feed/weigh immobility depth
 - `src/textEngine/scenes/streamSceneDepth.js` — stage-keyed Destiny live stream end/tap/round depth
+- `src/textEngine/scenes/destinyOffstreamSceneDepth.js` — off-stream talk/activity/weigh-in stage depth
 - `src/textEngine/scenes/v2/studentArchetypeDepth.js` — full 19-student voice on resonance/ritual/dream/echo V2 pools
 
 ## Verification
@@ -74,6 +75,6 @@ npm run build       # production build
 
 ## Remaining Toward 2.0
 
-1. Mass legacy prose sweep — device tick + opposition hearing base expanded; more pools still open (settling base, stream, diary monoliths)
+1. Mass legacy prose sweep — diary monoliths + more homeroom/evolved pools still open; offstream/homeroom depth added turn 24
 2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
 3. Completion audit vs `docs/V2_0_DESIGN.md` — five V2 systems wired ✅; prose depth additive pass ongoing
