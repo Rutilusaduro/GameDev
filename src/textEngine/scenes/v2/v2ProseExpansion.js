@@ -314,6 +314,20 @@ registerPool('journal.v2.depth', [
 registerPool('streamPre.v2.depth', [
   { when: {}, text: ['Before the camera lights, she rehearses abundance — outfit, mirror, snack, the private ritual of going on display.'] },
 ]);
+registerPool('wifeLessonsTalk.v2.depth', [
+  { when: { wlStage: [6, 7, 8] }, text: [
+    'The conversation settles warm as dough — mothers and daughters speaking appetite like scripture.',
+    'Kitchen intimacy in every line: fullness discussed without shame, growth treated as devotion.',
+  ]},
+  { when: { wlStage: [3, 4, 5] }, text: [
+    'She talks like someone crossing a threshold — appetite named aloud, permission spreading through the room.',
+    'The lesson lingers in her voice. Butter, belonging, the slow pleasure of admitting want.',
+  ]},
+  { when: {}, text: [
+    'Southern warmth in every syllable — food, family, the philosophy of more passed mother to daughter.',
+    'The kitchen listens. So do you. Appetite spoken like something sacred and ordinary at once.',
+  ]},
+]);
 registerPool('wifeLessons.v2.depth', [
   { when: { wlStage: [6, 7, 8] }, text: [
     'The kitchen has become a throne room of butter and belonging — daughters and mothers alike surrendering to the lesson.',

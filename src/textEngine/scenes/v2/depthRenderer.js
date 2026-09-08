@@ -47,6 +47,7 @@ const POOLS = {
   journal: 'journal.v2.depth',
   streamPre: 'streamPre.v2.depth',
   wifeLessons: 'wifeLessons.v2.depth',
+  wifeLessonsTalk: 'wifeLessonsTalk.v2.depth',
 };
 
 /** Append a V2 depth beat when pool resolves and chance hits. */

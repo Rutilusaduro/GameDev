@@ -305,7 +305,7 @@ import {
   getOppositionGainMult, tickSupernaturalWeek, getAvailableCounters,
 } from './gameData/opposition.js';
 import { supernaturalActLine } from './gameData/oppositionText.js';
-import { renderWifeLessonBeat } from './textEngine/scenes/wifeLessons/index.js';
+import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
@@ -3047,6 +3047,11 @@ export default function ProfessorSim(){
     });
   };
 
+  const _wlTalkLine=(line,person,stage,mjStudentId)=>{
+    const mj=students.find(st=>st.id===mjStudentId);
+    return mj?renderWifeLessonTalkLine(line,person,stage,mj,week):line;
+  };
+
   const startWifeLessonsConversation=(personKey)=>{
     setWifeLessonsState(prev=>{
       if(!prev?.session) return prev;
@@ -3063,7 +3068,8 @@ export default function ProfessorSim(){
       const isCapped=isDaughter&&prev.daughters[personKey]>=WL_CONFIG.stageCaps[stage];
       const overtook=personKey==='Emma'||personKey==='Darlene'?prev.daughters.Chloe>prev.daughters.Emma:false;
       const greetingText=isCapped&&entry.cappedGreeting?entry.cappedGreeting:(overtook&&entry.overtookGreeting?entry.overtookGreeting:entry.greeting);
-      return{...prev,session:{...prev.session,conversationState:{person:personKey,stageEntry:entry,optionIdx:null,subIdx:null,done:false,atGreeting:true,history:[greetingText]}}};
+      const greetingProse=_wlTalkLine(greetingText,personKey,stage,prev.mjStudentId);
+      return{...prev,session:{...prev.session,conversationState:{person:personKey,stageEntry:entry,optionIdx:null,subIdx:null,done:false,atGreeting:true,history:[greetingProse]}}};
     });
   };
 
@@ -3078,7 +3084,8 @@ export default function ProfessorSim(){
       const opt=entry.options[optionIdx];
       if(!opt) return prev;
       if(opt.subs&&opt.subs.length>0){
-        return{...prev,session:{...prev.session,conversationState:{...cs,optionIdx,subIdx:null,history:[...(cs.history||[]),opt.text]}}};
+        const optProse=_wlTalkLine(opt.text,cs.person,prev.stage,prev.mjStudentId);
+        return{...prev,session:{...prev.session,conversationState:{...cs,optionIdx,subIdx:null,history:[...(cs.history||[]),optProse]}}};
       }
       return prev;
     });
@@ -3105,10 +3112,11 @@ export default function ProfessorSim(){
       }
       const mjGain=outcome.mjLbs||0;
       const relGain=outcome.rel||0;
+      const subProse=_wlTalkLine(sub.text,cs.person,prev.stage,prev.mjStudentId);
       let next={...prev,daughters:newDaughters,moms:newMoms,
         session:{...prev.session,mjGainAccum:prev.session.mjGainAccum+mjGain,relAccum:prev.session.relAccum+relGain,
           log:[...prev.session.log,logLine],
-          conversationState:{...cs,subIdx,done:true,history:[...(cs.history||[]),sub.text]}}};
+          conversationState:{...cs,subIdx,done:true,history:[...(cs.history||[]),subProse]}}};
       next=_wlCheckStageAdvance(next);
       return next;
     });
