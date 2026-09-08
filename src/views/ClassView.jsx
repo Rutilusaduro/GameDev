@@ -3,6 +3,10 @@
 // ═══════════════════════════════════════════════════════════════
 import { useMemo } from 'react';
 import { C } from '../styles.js';
+import { UNLOCK_POOL_IDS } from '../gameData/spirits.js';
+import {
+  ROSTER_TRUST_GATE, getRosterSlotCount, countOpenPoolStudents,
+} from '../gameData/rosterUnlock.js';
 import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
 import { EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
@@ -96,9 +100,8 @@ export function ClassView({
   onAmends,
   onOpenStudent,
 }) {
-  const TRUST_GATE = 60;
-  const rosterSlots = 5 + Math.max(0, spiritLevel - 1);
-  const openCount = students.filter((s) => s.lockState !== 'locked').length;
+  const rosterSlots = getRosterSlotCount(spiritLevel);
+  const openCount = countOpenPoolStudents(students);
   const isLocked = (s) => s.lockState === 'locked';
   const rosterVisible = (s) => (!s.hidden || (s.id === 15 && lilithUnlocked) || (s.id === 17 && elaraDiscovered)) && !isLocked(s);
   const classmateWithdrawn = students.some((s) => s.withdrawn && rosterVisible(s));
@@ -118,22 +121,22 @@ export function ClassView({
               <p style={C.secT}>The rest of the class — {locked.length} out of reach</p>
               <div style={{ fontSize: 11, color: '#6a5088', marginBottom: 10, lineHeight: 1.55 }}>
                 Spirit level grants <strong style={{ color: '#a880d0' }}>{rosterSlots}</strong> roster seats ({openCount} filled).
-                Each week, one locked girl with <strong style={{ color: '#a880d0' }}>{TRUST_GATE}+</strong> passive trust opens when a seat is free.
-                Trust rises ~4–8 per week while she stays locked.
+                Each week, one locked girl with <strong style={{ color: '#a880d0' }}>{ROSTER_TRUST_GATE}+</strong> passive trust opens when a seat is free.
+                Trust rises faster as your spirit level and the semester deepen — campus sightings and embodiment help too.
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(150px,1fr))', gap: 7 }}>
                 {locked.map((s) => {
                   const trust = s.passiveTrust || 0;
-                  const pct = Math.min(100, Math.round((trust / TRUST_GATE) * 100));
+                  const pct = Math.min(100, Math.round((trust / ROSTER_TRUST_GATE) * 100));
                   return (
                     <div key={s.id} style={{ ...C.card, cursor: 'default', opacity: 0.72, border: '1px dashed #2a1a48' }}>
                       <div style={{ fontWeight: 700, fontSize: 13, color: '#6a5a88' }}>{s.name}</div>
                       <div style={{ fontSize: 10, color: '#50406a', marginBottom: 5 }}>{s.role || s.archetype}</div>
-                      <Bar val={trust} max={TRUST_GATE} color="#5a3aa0" />
+                      <Bar val={trust} max={ROSTER_TRUST_GATE} color="#5a3aa0" />
                       <div style={{ fontSize: 9.5, color: '#50406a', marginTop: 3, fontStyle: 'italic' }}>
-                        {trust >= TRUST_GATE
+                        {trust >= ROSTER_TRUST_GATE
                           ? (openCount < rosterSlots ? 'ready — waiting for a seat' : 'ready — roster full')
-                          : `${trust}/${TRUST_GATE} trust`}
+                          : `${trust}/${ROSTER_TRUST_GATE} trust`}
                       </div>
                     </div>
                   );

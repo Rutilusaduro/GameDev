@@ -17,6 +17,17 @@ import {
 } from './appetiteDreams.js';
 import { renderResonanceSurge } from '../../textEngine/scenes/v2/resonance/index.js';
 import { createContext } from '../../textEngine/engine.js';
+import {
+  canEmbodiedMove,
+  isEmbodiedImmobile,
+  rollEmbodiedArrivalEvent,
+  applyEmbodiedEvent,
+  moveEmbodiment,
+  recordEmbodiedEvent,
+  applyTrustGrants,
+  embodiedActionsAtNode,
+  appendEmbodimentWalkLog,
+} from './embodiedCampus.js';
 import { V2_CONFIG } from './state.js';
 
 export function resetV2Weekly(v2State) {
@@ -26,6 +37,8 @@ export function resetV2Weekly(v2State) {
       ...v2State.embodiment,
       activeStudentId: null,
       usedThisWeek: 0,
+      at: null,
+      lastEventKey: null,
     },
   };
 }
@@ -155,6 +168,38 @@ export function handleEmbodimentRelease(v2State, week = 1) {
     echoDigestWeek: week + 1,
     echoDigestMult: V2_CONFIG.embodimentEchoDigestMult,
   };
+}
+
+export function handleEmbodiedMove(student, fromId, toId, v2State, week, { students = [], rng = Math.random } = {}) {
+  if (!canEmbodiedMove(fromId, toId, student)) {
+    const reason = isEmbodiedImmobile(student)
+      ? 'She cannot leave — too vast to move'
+      : 'Cannot reach that location';
+    return { ok: false, reason };
+  }
+  const event = rollEmbodiedArrivalEvent(student, toId, v2State.embodiment, { students, rng });
+  let nextState = moveEmbodiment(v2State, toId);
+  return { ok: true, v2State: nextState, event, fromId, toId, week, students };
+}
+
+export function handleEmbodiedEventResolve(student, event, v2State, { students = [], rng = Math.random } = {}) {
+  if (!event) return { ok: true, v2State, student, trustGrants: [], scrutiny: 0 };
+  const locked = students.filter((s) => s.lockState === 'locked');
+  const applied = applyEmbodiedEvent(student, event, { lockedStudents: locked, rng });
+  const nextState = recordEmbodiedEvent(v2State, event.eventKey, '');
+  const patchedStudents = applyTrustGrants(students, applied.trustGrants);
+  return {
+    ok: true,
+    v2State: nextState,
+    student: applied.student,
+    students: patchedStudents,
+    trustGrants: applied.trustGrants,
+    scrutiny: applied.scrutiny || 0,
+  };
+}
+
+export function getEmbodiedCampusActions(student, nodeId, ownedSkills, ownedClassSkills) {
+  return embodiedActionsAtNode(student, nodeId, ownedSkills, ownedClassSkills);
 }
 
 export function handleResonanceLink(aId, bId, students, v2State, ownedSkills, ownedClassSkills) {

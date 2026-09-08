@@ -6,6 +6,7 @@ import { C } from '../styles.js';
 import { getResonanceTier, getCombinedClassLbs } from '../gameData/v2/cravingResonance.js';
 import { canTriggerDream } from '../gameData/v2/appetiteDreams.js';
 import { getAvailableRituals } from '../gameData/v2/feastRituals.js';
+import { witnessEntrySummary } from '../gameData/campusWitness.js';
 import { StudentPortrait } from '../components/StudentPortrait.jsx';
 
 const ACCENT = '#8a4be0';
@@ -23,9 +24,10 @@ export function SpiritHubView({
   ap,
   week = 1,
   spiritLevel = 1,
+  witnessLog = [],
 }) {
   const [linkPickA, setLinkPickA] = useState(null);
-  const visible = students.filter((s) => !s.hidden);
+  const visible = students.filter((s) => !s.hidden && s.lockState !== 'locked');
   const links = v2State?.resonance?.links || [];
   const tier = getResonanceTier(links.length, getCombinedClassLbs(students));
   const rituals = getAvailableRituals({ ownedSkills, ownedClassSkills, students, week, spiritLevel });
@@ -34,6 +36,10 @@ export function SpiritHubView({
   const hasHungerWeb = (ownedSkills?.hunger_web || 0) >= 1;
   const hasDreamWalk = (ownedSkills?.dream_walk || 0) >= 1;
   const activeId = embodimentState?.activeStudentId ?? v2State?.embodiment?.activeStudentId;
+  const activeStudent = activeId != null ? visible.find((s) => s.id === activeId) : null;
+  const activeNode = embodimentState?.at ? CAMPUS_NODES[embodimentState.at] : null;
+  const walkSteps = embodimentState?.steps || 0;
+  const embodimentWitnesses = (witnessLog || []).filter((e) => e.eventType === 'embodiment').slice(0, 3);
 
   const isLinked = (aId, bId) => links.some(
     (l) => (l.a === aId && l.b === bId) || (l.a === bId && l.b === aId),
@@ -66,30 +72,73 @@ export function SpiritHubView({
       <p style={C.secT}>Spirit Dominion — 2.0</p>
       <div style={{ ...C.card, borderColor: `${ACCENT}60`, marginBottom: 12 }}>
         <p style={{ fontSize: 11, color: '#b0a0d0', lineHeight: 1.6 }}>
-          The gluttony spirit extends beyond the professor. Inhabit students. Bind their appetites. Feast as ceremony. Dream in hunger.
+          <strong style={{ color: '#d8c0f8' }}>Flagship:</strong> Slip inside a student and pilot her across campus — waddle, eat, get noticed, trigger events. Bind appetites. Feast as ceremony.
         </p>
       </div>
 
-      {/* Embodiment */}
-      <div style={{ ...C.card, marginBottom: 12 }}>
-        <div style={{ fontSize: 10, fontWeight: 700, color: '#c0a0e0', marginBottom: 8, letterSpacing: 1 }}>
-          🌒 SPIRIT EMBODIMENT
+      {/* Embodiment — flagship */}
+      <div style={{
+        ...C.card,
+        marginBottom: 12,
+        border: `1px solid ${ACCENT}90`,
+        boxShadow: `0 0 24px ${ACCENT}22`,
+        background: 'linear-gradient(145deg, rgba(60,30,100,0.35) 0%, rgba(20,16,32,0.5) 100%)',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: '#e0c8ff', letterSpacing: 1 }}>
+            🌒 CAMPUS PILOT — SPIRIT EMBODIMENT
+          </div>
+          {hasSpiritRide && (
+            <span style={{ fontSize: 8, color: '#90c0a0', letterSpacing: 0.5, textTransform: 'uppercase' }}>Ready</span>
+          )}
         </div>
         {!hasSpiritRide ? (
           <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>Unlock Spirit Ride in the Influence skill tree.</p>
         ) : (
           <>
-            {activeId != null && (
-              <p style={{ fontSize: 11, color: '#90c0a0', marginBottom: 8 }}>
-                Currently inhabiting: {visible.find((s) => s.id === activeId)?.name || 'unknown'}
-              </p>
+            {activeStudent && activeNode && (
+              <div style={{
+                marginBottom: 10,
+                padding: '8px 10px',
+                borderRadius: 6,
+                background: 'rgba(138,75,224,0.15)',
+                border: '1px solid rgba(138,75,224,0.35)',
+              }}>
+                <p style={{ fontSize: 11, color: '#c8a8f0', margin: 0 }}>
+                  Active ride: <strong>{activeStudent.name}</strong> · {activeNode.emoji} {activeNode.label}
+                </p>
+                <p style={{ fontSize: 9, color: '#9080b0', margin: '4px 0 0' }}>
+                  {walkSteps} steps this session — tap a student below to resume the walk
+                </p>
+                {embodimentWitnesses.length > 0 && (
+                  <div style={{ marginTop: 8, paddingTop: 6, borderTop: '1px solid rgba(138,75,224,0.2)' }}>
+                    <p style={{ fontSize: 8, color: '#a080c0', margin: '0 0 4px', letterSpacing: 0.5 }}>CAMPUS WITNESS LOG</p>
+                    {embodimentWitnesses.map((e, i) => (
+                      <p key={i} style={{ fontSize: 9, color: '#8070a0', margin: '0 0 3px', lineHeight: 1.4 }}>
+                        {witnessEntrySummary(e)}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
             )}
+            <p style={{ fontSize: 10, color: '#9080b8', marginBottom: 8, lineHeight: 1.5 }}>
+              Walk the map from inside her skin. Doorframes, bullies, vending machines, gossip — campus reacts to her weight.
+            </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
               {visible.map((s) => (
-                <button key={s.id} type="button" style={{ ...C.btn('#4a2870'), fontSize: 10, padding: '6px 10px' }}
+                <button key={s.id} type="button" style={{
+                  ...C.btn(activeId === s.id ? '#6a38a8' : '#4a2870'),
+                  fontSize: 10,
+                  padding: '6px 10px',
+                  border: activeId === s.id ? '1px solid #c8a0e8' : undefined,
+                }}
                   onClick={() => onOpenEmbodiment?.(s)}>
                   <StudentPortrait student={s} size={48} showLabel={false} />
                   <span style={{ display: 'block', marginTop: 4 }}>{s.name}</span>
+                  {activeId === s.id && (
+                    <span style={{ display: 'block', fontSize: 8, color: '#c8a0e8' }}>riding</span>
+                  )}
                 </button>
               ))}
             </div>

@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { getStage } from '../stages.js';
 import { V2_CONFIG } from './state.js';
+import { EMBODIED_START_NODE } from './embodiedCampus.js';
 
 export const EMBODIMENT_ACTIONS = [
   {
@@ -18,6 +19,7 @@ export const EMBODIMENT_ACTIONS = [
     rel: 2,
     corruption: 3,
     desc: 'Her hands move before her mind catches up. Cartons, leftovers, the thing in the back she forgot she bought.',
+    nodes: ['dorms', 'office', 'faculty_lounge'],
   },
   {
     id: 'secret_binge',
@@ -32,6 +34,7 @@ export const EMBODIMENT_ACTIONS = [
     rel: 4,
     corruption: 6,
     desc: 'Door locked. Phone face-down. She eats like someone who has decided not to be witnessed.',
+    nodes: ['dorms'],
   },
   {
     id: 'seduce_appetite',
@@ -117,6 +120,7 @@ export const EMBODIMENT_ACTIONS = [
     corruption: 9,
     scrutiny: 3,
     desc: 'Campus quad. She eats without apology. People look. She does not stop.',
+    nodes: ['quad', 'dining_hall', 'food_court', 'coffee_shop', 'student_union'],
   },
   {
     id: 'immobile_feast',
@@ -145,6 +149,7 @@ export const EMBODIMENT_ACTIONS = [
     rel: 3,
     corruption: 4,
     desc: '2 AM. Fridge light. She eats standing in the dark like it is a secret between her and the hunger.',
+    nodes: ['dorms'],
   },
   {
     id: 'vending_splurge',
@@ -159,6 +164,7 @@ export const EMBODIMENT_ACTIONS = [
     rel: 2,
     corruption: 5,
     desc: 'Coins in. Buttons pressed. She collects armfuls of snacks and eats them walking back to her room.',
+    nodes: ['coffee_shop', 'food_court', 'gym', 'library', 'science_wing', 'lecture_hall'],
   },
   {
     id: 'dessert_first',
@@ -206,6 +212,7 @@ export const EMBODIMENT_ACTIONS = [
 
 export function canEmbody(student, { ownedSkills = {}, ownedClassSkills = {}, embodimentState = {}, week = 1 } = {}) {
   if (!student || student.hidden) return { ok: false, reason: 'No target' };
+  if (student.lockState === 'locked') return { ok: false, reason: 'She is not close enough to inhabit yet' };
   if ((ownedSkills.spirit_ride || 0) < 1) return { ok: false, reason: 'Requires Spirit Ride skill' };
   const maxUses = (ownedSkills.deep_ride || 0) >= 1 ? V2_CONFIG.maxEmbodimentsDeepRide : V2_CONFIG.maxEmbodimentsPerWeek;
   if ((embodimentState.usedThisWeek || 0) >= maxUses) return { ok: false, reason: 'Embodiment limit reached this week' };
@@ -219,7 +226,7 @@ export function canEmbody(student, { ownedSkills = {}, ownedClassSkills = {}, em
   return { ok: true, apCost: discounted };
 }
 
-export function getAvailableEmbodimentActions(student, ownedSkills = {}, ownedClassSkills = {}) {
+export function getAvailableEmbodimentActions(student, ownedSkills = {}, ownedClassSkills = {}, atNode = null) {
   const stage = getStage(student.lbs).id;
   const cor = student.corruption || 0;
   return EMBODIMENT_ACTIONS.filter((a) => {
@@ -227,6 +234,7 @@ export function getAvailableEmbodimentActions(student, ownedSkills = {}, ownedCl
     if (a.requiresClass && !ownedClassSkills[a.requiresClass]) return false;
     if (stage < a.minStage) return false;
     if (cor < a.minCorruption) return false;
+    if (atNode && a.nodes?.length && !a.nodes.includes(atNode)) return false;
     return true;
   });
 }
@@ -239,6 +247,12 @@ export function startEmbodiment(studentId, v2State) {
       activeStudentId: studentId,
       usedThisWeek: (v2State.embodiment.usedThisWeek || 0) + 1,
       totalSessions: (v2State.embodiment.totalSessions || 0) + 1,
+      at: EMBODIED_START_NODE,
+      steps: 0,
+      walkLog: [],
+      eventsSeen: {},
+      lastEventKey: null,
+      lastEventStep: 0,
     },
   };
 }
@@ -249,6 +263,8 @@ export function endEmbodiment(v2State) {
     embodiment: {
       ...v2State.embodiment,
       activeStudentId: null,
+      at: null,
+      lastEventKey: null,
     },
   };
 }

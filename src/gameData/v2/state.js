@@ -28,6 +28,12 @@ export function createInitialV2State() {
       usedThisWeek: 0,
       totalSessions: 0,
       lastAction: null,
+      at: null,
+      steps: 0,
+      walkLog: [],
+      eventsSeen: {},
+      lastEventKey: null,
+      lastEventStep: 0,
     },
     resonance: {
       links: [], // [{ a, b, strength }]

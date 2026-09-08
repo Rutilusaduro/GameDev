@@ -21,5 +21,10 @@ export function witnessEntrySummary(entry) {
   const who = entry.studentName || entry.targetName || 'someone';
   if (entry.eventType === 'device') return `Week ${entry.week}: ${who} — device use noticed`;
   if (entry.eventType === 'exploration') return `Week ${entry.week}: suspicious activity at ${entry.nodeId || 'campus'}`;
+  if (entry.eventType === 'embodiment') {
+    const where = entry.nodeId ? ` at ${entry.nodeId.replace(/_/g, ' ')}` : '';
+    const witness = entry.witnessName ? ` (${entry.witnessName} noticed)` : '';
+    return `Week ${entry.week}: ${who} — ${entry.label || 'embodied incident'}${where}${witness}`;
+  }
   return `Week ${entry.week}: ${who} — flagged`;
 }
