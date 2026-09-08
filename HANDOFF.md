@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 device tick base+action depth, opposition hearing endings expanded; prior hearing/collab/recording |
+| Legacy talk prose | 🔄 stream end/tap depth + settling tend/feed/gather expansion; prior device/opposition/collab/recording |
 
 ## Key Files (V2)
 
@@ -61,6 +61,7 @@
 - `src/textEngine/scenes/recordingSession/recordingSessionSceneDepth.js` — per-student recording oneMore take depth
 - `src/textEngine/scenes/recordingSession/recordingSessionWrapDepth.js` — wrap/payoff pools + per-student endings
 - `src/textEngine/scenes/settling/settlingSceneDepth.js` — per-student care/socialize/feed/weigh immobility depth
+- `src/textEngine/scenes/streamSceneDepth.js` — stage-keyed Destiny live stream end/tap/round depth
 - `src/textEngine/scenes/v2/studentArchetypeDepth.js` — full 19-student voice on resonance/ritual/dream/echo V2 pools
 
 ## Verification
