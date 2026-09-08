@@ -414,6 +414,12 @@ function evalWhen(when, ctx) {
       case "reactionLevel": ok = (ctx.globals?.reactionLevel ?? 0) === v; break;
       case "relTierMin": ok = (ctx.globals?.relTier ?? 0) >= v; break;
       case "relTier": ok = (ctx.globals?.relTier ?? 0) === v; break;
+      case "collabStageMin": ok = (ctx.globals?.collabStage ?? 0) >= v; break;
+      case "collabStageMax": ok = (ctx.globals?.collabStage ?? 0) <= v; break;
+      case "kylieGainMin": ok = (ctx.globals?.kylieGain ?? 0) >= v; break;
+      case "partnerGainMin": ok = (ctx.globals?.partnerGain ?? 0) >= v; break;
+      case "recordingStageMin": ok = (ctx.globals?.recordingStage ?? 0) >= v; break;
+      case "recordingStageMax": ok = (ctx.globals?.recordingStage ?? 0) <= v; break;
       case "refArchetype": {
         const ra = ctx.ref?.archetype ?? ctx.globals?.refArchetype;
         ok = Array.isArray(v) ? v.includes(ra) : ra === v;

@@ -5,6 +5,7 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { COLLAB_WREN_LINES, COLLAB_STAGEUP_TEXT, COLLAB_PAYOFF_TEXT } from '../../../gameData/miniGames.js';
 import './fragments.js';
+import './collabStreamSceneDepth.js';
 
 registerDimension('collabStage', (ctx) => ctx.globals?.collabStage ?? 0);
 registerDimension('partnerName', (ctx) => ctx.d?.partnerName ?? ctx.globals?.partnerName ?? 'her partner');

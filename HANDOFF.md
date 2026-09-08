@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 opposition depth + full V2 resonance/ritual/dream/echo roster; device/growth prior |
+| Legacy talk prose | 🔄 settling immobile depth; opposition + full V2 voice prior turns |
 
 ## Key Files (V2)
 
@@ -56,6 +56,7 @@
 - `src/textEngine/scenes/growthEvent/growthEventSceneDepth.js` — surge/settle/environment/student depth
 - `src/textEngine/scenes/campusDevice/campusDeviceSceneDepth.js` — campus device encounter/reaction personas
 - `src/textEngine/scenes/opposition/oppositionSceneDepth.js` — agenda/counter/hearing/endgame student+stage depth
+- `src/textEngine/scenes/settling/settlingSceneDepth.js` — per-student care/socialize/feed/weigh immobility depth
 - `src/textEngine/scenes/v2/studentArchetypeDepth.js` — full 19-student voice on resonance/ritual/dream/echo V2 pools
 
 ## Verification
@@ -68,6 +69,6 @@ npm run build       # production build
 
 ## Remaining Toward 2.0
 
-1. Mass legacy prose sweep (~35k scene lines — talk codas/check-in started; depth layer additive)
+1. Mass legacy prose sweep — settling base pools strong; still open: opposition hearing fragments, device tick base, collab/recording
 2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
-3. Completion audit before marking goal done
+3. Completion audit vs `docs/V2_0_DESIGN.md` — five V2 systems wired ✅; prose depth additive pass ongoing
