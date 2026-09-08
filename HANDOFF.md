@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 all talk topics persona pass; suggest/refusal depth; session fullness stage depth |
+| Legacy talk prose | 🔄 talk topics + discontent/command_finish depth; dinner conv stage+student depth |
 
 ## Key Files (V2)
 
