@@ -82,6 +82,6 @@ npm run build       # production build
 
 ## Remaining Toward 2.0
 
-1. Mass legacy prose sweep — decomposed monolith fragments + more evolved forms; salon/gallery/homeroom depth turn 29
+1. Mass legacy prose sweep — remaining decomposed monolith fragments + V2_0 audit; settling fragments turn 30
 2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
 3. Completion audit vs `docs/V2_0_DESIGN.md` — five V2 systems wired ✅; prose depth additive pass ongoing
