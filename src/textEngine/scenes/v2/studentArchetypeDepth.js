@@ -70,6 +70,28 @@ const dinnerByStudent = {
   18: ['Talia reverse-engineers the kitchen from the plate — curious bites, technical murmurs, appetite outrunning analysis.'],
 };
 
+const wiByStudent = {
+  0: ['Brittany reads the scale like a scoreboard — competitive calm, pride when the number climbs.'],
+  1: ['Madeline logs the weigh-in before she allows herself to feel it — data first, warmth second.'],
+  2: ['Kylie checks the number like analytics — already imagining how it will look on camera.'],
+  3: ['Serena steps off the scale with athlete poise — mass acknowledged, discipline unchanged.'],
+  4: ['Fiona regards the digits as composition — growth as aesthetic fact, pleasing and complete.'],
+  5: ['Destiny glances at the readout and shrugs — number filed, appetite unchanged.'],
+  6: ['Tiffany accepts the weigh-in with chapter-president grace — abundance treated as normal.'],
+  7: ['Priya updates her projections and looks quietly thrilled when reality exceeds model.'],
+  8: ['Maya says nothing at the scale — a single exhale communicates everything.'],
+  9: ['Chloé laughs at the number like another American extravagance she has learned to enjoy.'],
+  10: ['Reneé tastes the moment — weight as ingredient, growth as recipe coming together.'],
+  11: ['Kaylee steps off gently — nurturing calm, body cared for even while being measured.'],
+  12: ['Nadia observes the reading with clinical interest that does not quite hide pleasure.'],
+  13: ['Daisy treats the scale like attendance — warm, practical, another fact about a girl being looked after.'],
+  14: ['Mary Jane grins at the number like good weather — familiar, generous, worth celebrating.'],
+  15: ['Lilith reads weight like territory claimed — low satisfaction, predatory contentment.'],
+  16: ['Sophia whispers formulation jargon that thins when the scale proves want won again.'],
+  17: ['Indiana marks the number like a find on a map — roguish delight, appetite validated.'],
+  18: ['Talia records the reading like trial data — curiosity bright when results exceed hypothesis.'],
+};
+
 const sessionByStudent = {
   0: ['Private session, squad-captain rules — Brittany eats like she is training for something only you understand.'],
   1: ['Madeline keeps notes until she cannot — scholarly restraint dissolving into warmth only a closed door allows.'],
@@ -103,4 +125,5 @@ function studentVariants(linesById) {
 registerModuleVariants('talk.v2.depth', studentVariants(talkByStudent));
 registerModuleVariants('feed.v2.depth', studentVariants(feedByStudent));
 registerModuleVariants('dinner.v2.depth', studentVariants(dinnerByStudent));
+registerModuleVariants('wi.v2.depth', studentVariants(wiByStudent));
 registerModuleVariants('session.v2.depth', studentVariants(sessionByStudent));
