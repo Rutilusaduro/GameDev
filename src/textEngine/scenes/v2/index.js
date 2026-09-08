@@ -5,5 +5,6 @@ import './rituals/index.js';
 import './echo/index.js';
 import './dreams/index.js';
 import './v2ProseExpansion.js';
+import '../evolved/evolvedSceneDepth.js';
 import './studentArchetypeDepth.js';
 import './depthRenderer.js';

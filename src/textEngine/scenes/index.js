@@ -15,8 +15,9 @@ import './campusSoftening.js';
 import './destinyOffstream.js';
 import './diary.js';
 import './diarySceneDepth.js';
-import './diaryEvolvedSceneDepth.js';
 import './diaryPhaseD.js';
+import './diaryEvolvedSceneDepth.js';
+import './diaryPhaseDSceneDepth.js';
 import './diaryBase.js';
 // import './evolvedDiary.js'; — removed Phase A; diary.js is single source
 import './hiveIntake.js';
