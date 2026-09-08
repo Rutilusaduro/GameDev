@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 milestone/intimacy/campus/weekly depth expanded; dinner/hunger/homeroom prior turns |
+| Legacy talk prose | 🔄 device/growthEvent/campusDevice depth; milestone/intimacy/campus/weekly prior |
 
 ## Key Files (V2)
 
@@ -51,6 +51,10 @@
 - `src/textEngine/scenes/intimacy/intimacySceneDepth.js` — bodyFeel/climax/encourages personas
 - `src/textEngine/scenes/campus/campusSceneDepth.js` — missing student campus nav beats
 - `src/textEngine/scenes/weeklyEvent/weeklyEventSceneDepth.js` — per-student weekly fragment depth
+- `src/textEngine/scenes/deviceTick/deviceTickSceneDepth.js` — per-student tick dependence/sensation/growth
+- `src/textEngine/scenes/deviceSceneDepth.js` — catalog/psych stage+corruption+student depth
+- `src/textEngine/scenes/growthEvent/growthEventSceneDepth.js` — surge/settle/environment/student depth
+- `src/textEngine/scenes/campusDevice/campusDeviceSceneDepth.js` — campus device encounter/reaction personas
 
 ## Verification
 
