@@ -2,6 +2,7 @@
 // Cultivator harvest/digest/growth/stage-up vignettes — DEPTH_PLAN §9d-(d).
 // Monolithic vignettes registered programmatically; decomposition deferred.
 import { registerPool, render, createContext, hasModule } from '../../engine.js';
+import { registerDecomposedPool } from '../decomposePools.js';
 
 function testerSubject(testerName) {
   const name = testerName || 'the tester';
@@ -166,35 +167,35 @@ const DIGEST_VIGNETTES = {
 for (const [reneeKey, byTester] of Object.entries(HARVEST_VIGNETTES_PLANNED)) {
   for (const [testerStage, fn] of Object.entries(byTester)) {
     const text = typeof fn === 'function' ? fn('{subject.name}') : String(fn || '');
-    registerPool(`cultivator.harvest.planned.${reneeKey}.t${testerStage}`, [{ when: {}, text: [text] }]);
+    registerDecomposedPool(`cultivator.harvest.planned.${reneeKey}.t${testerStage}`, text);
   }
 }
 
 for (const [reneeKey, byTester] of Object.entries(HARVEST_VIGNETTES_EMERGENCY)) {
   for (const [testerStage, fn] of Object.entries(byTester)) {
     const text = typeof fn === 'function' ? fn('{subject.name}') : String(fn || '');
-    registerPool(`cultivator.harvest.emergency.${reneeKey}.t${testerStage}`, [{ when: {}, text: [text] }]);
+    registerDecomposedPool(`cultivator.harvest.emergency.${reneeKey}.t${testerStage}`, text);
   }
 }
 
 for (const [stageId, fn] of Object.entries(STAGE_UP_TEXT)) {
   const text = typeof fn === 'function' ? fn('{subject.name}') : String(fn || '');
-  registerPool(`cultivator.stageUp.t${stageId}`, [{ when: {}, text: [text] }]);
+  registerDecomposedPool(`cultivator.stageUp.t${stageId}`, text);
 }
 
-registerPool('cultivator.recruitment', [{ when: {}, text: [RECRUITMENT_SCENE] }]);
+registerDecomposedPool('cultivator.recruitment', RECRUITMENT_SCENE);
 
 for (const [reneeKey, section] of Object.entries(DIGEST_VIGNETTES)) {
   if (reneeKey === 'blob') {
     const early = section.earlySpecial?.('{subject.name}') || '';
     const late = section.lateSpecial?.('{subject.name}') || '';
-    registerPool('cultivator.digest.blob.early', [{ when: {}, text: [early] }]);
-    registerPool('cultivator.digest.blob.late', [{ when: {}, text: [late] }]);
+    registerDecomposedPool('cultivator.digest.blob.early', early);
+    registerDecomposedPool('cultivator.digest.blob.late', late);
     continue;
   }
   for (const [slot, fn] of Object.entries(section)) {
     const text = typeof fn === 'function' ? fn('{subject.name}') : String(fn || '');
-    registerPool(`cultivator.digest.${reneeKey}.${slot}`, [{ when: {}, text: [text] }]);
+    registerDecomposedPool(`cultivator.digest.${reneeKey}.${slot}`, text);
   }
 }
 
@@ -228,10 +229,10 @@ const GROWTH_REACTIONS = {
 
 for (const [beforeStage, byJump] of Object.entries(GROWTH_REACTIONS)) {
   for (const [jump, text] of Object.entries(byJump)) {
-    registerPool(`cultivator.growth.s${beforeStage}.j${jump}`, [{ when: {}, text: [text] }]);
+    registerDecomposedPool(`cultivator.growth.s${beforeStage}.j${jump}`, text);
   }
 }
-registerPool('cultivator.growth.blob', [{ when: {}, text: [BLOB_SPECIAL] }]);
+registerDecomposedPool('cultivator.growth.blob', BLOB_SPECIAL);
 
 function harvestPoolKey(kind, reneeStageId, testerStageId) {
   const rk = reneeHarvestKey(reneeStageId);

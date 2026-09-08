@@ -52,6 +52,6 @@ npm run build       # production build
 ## Remaining Toward 2.0
 
 1. Mass legacy prose sweep (~35k scene lines — depth layer is additive, not full rewrite)
-2. Monolith decomposition — homeroom ✅; cultivator/settling remain (~117 flags)
+2. Monolith decomposition — homeroom ✅, settling ✅, cultivator ✅, opposition hearing ✅; shared `decomposePools.js`
 3. Unique per-girl art beyond procedural pixel silhouettes
 4. Completion audit before marking goal done

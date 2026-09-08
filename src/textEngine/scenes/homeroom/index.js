@@ -1,73 +1,10 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect
 // Homeroom Queen — engine bridge from HOMEROOM_* legacy prose.
-import { registerPool, render } from '../../engine.js';
+import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import { registerDecomposedPool } from '../decomposePools.js';
 import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES } from '../../../gameData/evolvedForms.js';
-
-const FRAG_MAX = 200;
-
-/** Split long prose into ≤200-char fragments for pool lint compliance. */
-function splitProseFragments(text) {
-  const trimmed = (text || '').trim();
-  if (!trimmed) return [];
-  if (trimmed.length <= FRAG_MAX) return [trimmed];
-
-  const chunks = [];
-  const push = (s) => {
-    const t = s.trim();
-    if (t) chunks.push(t);
-  };
-
-  const splitLong = (para) => {
-    if (para.length <= FRAG_MAX) {
-      push(para);
-      return;
-    }
-    const sentences = para.split(/(?<=[.!?])\s+/);
-    let buf = '';
-    for (const sent of sentences) {
-      const piece = sent.trim();
-      if (!piece) continue;
-      if (piece.length > FRAG_MAX) {
-        if (buf) { push(buf); buf = ''; }
-        let remaining = piece;
-        while (remaining.length > FRAG_MAX) {
-          let cut = remaining.lastIndexOf(' ', FRAG_MAX);
-          if (cut < FRAG_MAX * 0.45) cut = FRAG_MAX;
-          push(remaining.slice(0, cut).trim());
-          remaining = remaining.slice(cut).trim();
-        }
-        if (remaining) buf = remaining;
-      } else if ((`${buf} ${piece}`).trim().length <= FRAG_MAX) {
-        buf = buf ? `${buf} ${piece}` : piece;
-      } else {
-        push(buf);
-        buf = piece;
-      }
-    }
-    if (buf) push(buf);
-  };
-
-  for (const para of trimmed.split(/\n\n+/)) {
-    splitLong(para.trim());
-  }
-  return chunks;
-}
-
-function registerDecomposedPool(poolKey, text) {
-  const fragments = splitProseFragments(text);
-  if (!fragments.length) return;
-  if (fragments.length === 1) {
-    registerPool(poolKey, [{ when: {}, text: fragments }]);
-    return;
-  }
-  const skeleton = fragments.map((_, i) => `{${poolKey}.f${i}}`).join('\n\n');
-  fragments.forEach((frag, i) => {
-    registerPool(`${poolKey}.f${i}`, [{ when: {}, text: [frag] }]);
-  });
-  registerPool(poolKey, [{ when: {}, text: [skeleton] }]);
-}
 
 for (const [key, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
   if (ev.text) registerDecomposedPool(`homeroom.conference.${key}.intro`, ev.text);

@@ -1,9 +1,12 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect
 // Opposition hearing pools — removal & emergency phases, choice results, endings.
-import { registerPool } from '../../engine.js';
+import { registerModule } from '../../engine.js';
+import { registerPoolAutoDecompose } from '../decomposePools.js';
+
+registerModule('studentLbs', [{ when: {}, text: (ctx) => String(ctx.globals?.studentLbs ?? 0) }]);
 
 // ── Removal hearing ───────────────────────────────────────────
-registerPool('opposition.hearing.removal.phase0', [
+registerPoolAutoDecompose('opposition.hearing.removal.phase0', [
   { when: {}, text: [
     'Chairwoman Vance opens the hearing. Photos of {subject.name} fill the screen — abundance framed as concern. "The Board must protect institutional wellness," she says. Your student sits beside you, {studentLbs} lbs and unapologetic.',
     'Vance taps the projector. {subject.name} at {studentLbs} pounds becomes a slide deck. The room performs worry while your girl performs hunger.',
@@ -11,7 +14,7 @@ registerPool('opposition.hearing.removal.phase0', [
   ]},
 ]);
 
-registerPool('opposition.hearing.removal.phase1', [
+registerPoolAutoDecompose('opposition.hearing.removal.phase1', [
   { when: {}, text: [
     'Vance taps her folder. "{subject.name} may remain enrolled only if this class demonstrates… restraint." The word hangs wrong in the air.',
     'Second motion: conditional enrollment. Restraint spoken like virtue while {subject.name}\'s belly still remembers lunch.',
@@ -19,7 +22,7 @@ registerPool('opposition.hearing.removal.phase1', [
   ]},
 ]);
 
-registerPool('opposition.hearing.removal.result.testify', [
+registerPoolAutoDecompose('opposition.hearing.removal.result.testify', [
   { when: {}, text: [
     'A classmate speaks — warm, specific, unashamed. The room shifts.',
     'Testimony lands soft and certain. Someone loves {subject.name} out loud and the Board flinches.',
@@ -27,7 +30,7 @@ registerPool('opposition.hearing.removal.result.testify', [
   ]},
 ]);
 
-registerPool('opposition.hearing.removal.result.advocate', [
+registerPoolAutoDecompose('opposition.hearing.removal.result.advocate', [
   { when: {}, text: [
     'The advocate frames appetite as student autonomy. Vance\'s mouth tightens.',
     'Jordan Ellis cites procedure and dignity. Hunger defended as choice, not scandal.',
@@ -35,7 +38,7 @@ registerPool('opposition.hearing.removal.result.advocate', [
   ]},
 ]);
 
-registerPool('opposition.hearing.removal.result.discredit', [
+registerPoolAutoDecompose('opposition.hearing.removal.result.discredit', [
   { when: {}, text: [
     'Side-by-side banquet photos. Wellness language curdles in Vance\'s mouth.',
     'Hypocrisy projected large. The Board ate while preaching restraint.',
@@ -43,7 +46,7 @@ registerPool('opposition.hearing.removal.result.discredit', [
   ]},
 ]);
 
-registerPool('opposition.hearing.removal.result.feast', [
+registerPoolAutoDecompose('opposition.hearing.removal.result.feast', [
   { when: {}, text: [
     'You serve. They eat. The hearing becomes dinner.',
     'Trays arrive mid-procedure. Appetite interrupts institutional theater.',
@@ -51,7 +54,7 @@ registerPool('opposition.hearing.removal.result.feast', [
   ]},
 ]);
 
-registerPool('opposition.hearing.removal.result.hold_firm', [
+registerPoolAutoDecompose('opposition.hearing.removal.result.hold_firm', [
   { when: {}, text: [
     'You do not apologize. Several members look away first.',
     'Abundance named as curriculum. Vance\'s folder feels thinner suddenly.',
@@ -59,7 +62,7 @@ registerPool('opposition.hearing.removal.result.hold_firm', [
   ]},
 ]);
 
-registerPool('opposition.hearing.removal.result.negotiate', [
+registerPoolAutoDecompose('opposition.hearing.removal.result.negotiate', [
   { when: {}, text: [
     'A compromise no one believes. It buys time.',
     'Public discretion promised, private indulgence implied. The Board nods without joy.',
@@ -67,7 +70,7 @@ registerPool('opposition.hearing.removal.result.negotiate', [
   ]},
 ]);
 
-registerPool('opposition.hearing.removal.result.spirit', [
+registerPoolAutoDecompose('opposition.hearing.removal.result.spirit', [
   { when: {}, text: [
     'Plates appear. Resolve softens with every bite.',
     'Spirit pressure turns the Board\'s table into yours. Fullness does what argument could not.',
@@ -75,35 +78,35 @@ registerPool('opposition.hearing.removal.result.spirit', [
   ]},
 ]);
 
-registerPool('opposition.hearing.removal.ending.advocate_voice', [
+registerPoolAutoDecompose('opposition.hearing.removal.ending.advocate_voice', [
   { when: {}, text: [
     'Student voice carries. Removal denied with the advocate on record.',
     'The advocate\'s argument stands. {subject.name} stays — enrollment intact, appetite unmoved.',
   ]},
 ]);
 
-registerPool('opposition.hearing.removal.ending.discredit_feast', [
+registerPoolAutoDecompose('opposition.hearing.removal.ending.discredit_feast', [
   { when: {}, text: [
     'The hearing collapses into crumbs and contradiction. Removal denied. The Board leaves hungry.',
     'Hypocrisy and hospitality undo the motion. {subject.name} walks out fed and enrolled.',
   ]},
 ]);
 
-registerPool('opposition.hearing.removal.ending.testify_firm', [
+registerPoolAutoDecompose('opposition.hearing.removal.ending.testify_firm', [
   { when: {}, text: [
     'Testimony lands. You hold the line. Removal denied — narrowly.',
     '{subject.name} stays. The gavel never finds the word suspend.',
   ]},
 ]);
 
-registerPool('opposition.hearing.removal.ending.messy_victory', [
+registerPoolAutoDecompose('opposition.hearing.removal.ending.messy_victory', [
   { when: {}, text: [
     'A messy victory. She stays — but the Board will watch closer.',
     'Removal denied with conditions nobody trusts. {subject.name} remains yours, for now.',
   ]},
 ]);
 
-registerPool('opposition.hearing.removal.ending.suspended', [
+registerPoolAutoDecompose('opposition.hearing.removal.ending.suspended', [
   { when: {}, text: [
     'The gavel falls. She is suspended from public campus life for four weeks.',
     '{subject.name} hidden from the quad — not expelled, not free. The Board calls it care.',
@@ -111,7 +114,7 @@ registerPool('opposition.hearing.removal.ending.suspended', [
 ]);
 
 // ── Emergency hearing ─────────────────────────────────────────
-registerPool('opposition.hearing.emergency.phase0', [
+registerPoolAutoDecompose('opposition.hearing.emergency.phase0', [
   { when: {}, text: [
     'Scandal meter critical. Vance calls an emergency session — no agenda, only exposure. "Explain yourself, Professor."',
     'Emergency convening — no notice, no mercy. Vance wants the department on record tonight.',
@@ -119,7 +122,7 @@ registerPool('opposition.hearing.emergency.phase0', [
   ]},
 ]);
 
-registerPool('opposition.hearing.emergency.phase1', [
+registerPoolAutoDecompose('opposition.hearing.emergency.phase1', [
   { when: {}, text: [
     'The room waits. Accreditation observer takes notes. Every counter has a cost.',
     'Second round — reputations weighed like bodies. The observer\'s pen never stops.',
@@ -127,7 +130,7 @@ registerPool('opposition.hearing.emergency.phase1', [
   ]},
 ]);
 
-registerPool('opposition.hearing.emergency.result.deflect', [
+registerPoolAutoDecompose('opposition.hearing.emergency.result.deflect', [
   { when: {}, text: [
     'Charts, saturation data, feasts as community.',
     'You redirect to metrics — culture, retention, satisfaction curves the Board cannot argue with cleanly.',
@@ -135,7 +138,7 @@ registerPool('opposition.hearing.emergency.result.deflect', [
   ]},
 ]);
 
-registerPool('opposition.hearing.emergency.result.feast_bribe', [
+registerPoolAutoDecompose('opposition.hearing.emergency.result.feast_bribe', [
   { when: {}, text: [
     'Trays arrive mid-sentence. Appetite interrupts procedure.',
     'Catering lands before the motion finishes. Hunger rewrites the agenda.',
@@ -143,7 +146,7 @@ registerPool('opposition.hearing.emergency.result.feast_bribe', [
   ]},
 ]);
 
-registerPool('opposition.hearing.emergency.result.sacrifice', [
+registerPoolAutoDecompose('opposition.hearing.emergency.result.sacrifice', [
   { when: {}, text: [
     'You point at the softest resolve on the Board.',
     'A scapegoat named. Survival purchased with someone else\'s reputation.',
@@ -151,7 +154,7 @@ registerPool('opposition.hearing.emergency.result.sacrifice', [
   ]},
 ]);
 
-registerPool('opposition.hearing.emergency.result.double_down', [
+registerPoolAutoDecompose('opposition.hearing.emergency.result.double_down', [
   { when: {}, text: [
     'You speak hunger like gospel. Half the room flinches.',
     'No apology — abundance declared as the department\'s future. Vance goes pale.',
@@ -159,7 +162,7 @@ registerPool('opposition.hearing.emergency.result.double_down', [
   ]},
 ]);
 
-registerPool('opposition.hearing.emergency.result.absorb', [
+registerPoolAutoDecompose('opposition.hearing.emergency.result.absorb', [
   { when: {}, text: [
     'You take the hit. They stay fed.',
     'Blame absorbed. The class protected at your expense.',
@@ -167,7 +170,7 @@ registerPool('opposition.hearing.emergency.result.absorb', [
   ]},
 ]);
 
-registerPool('opposition.hearing.emergency.result.hive', [
+registerPoolAutoDecompose('opposition.hearing.emergency.result.hive', [
   { when: {}, text: [
     'Delivery confusion becomes plausible deniability.',
     'Maya\'s hive misdirects records — wrong building, wrong numbers, beautiful chaos.',
@@ -175,28 +178,28 @@ registerPool('opposition.hearing.emergency.result.hive', [
   ]},
 ]);
 
-registerPool('opposition.hearing.emergency.ending.catered_future', [
+registerPoolAutoDecompose('opposition.hearing.emergency.ending.catered_future', [
   { when: {}, text: [
     'They ate through the emergency. Scandal dissipates like steam.',
     'Full bellies adjourn the crisis. The meter cools around crumbs.',
   ]},
 ]);
 
-registerPool('opposition.hearing.emergency.ending.scapegoat_survive', [
+registerPoolAutoDecompose('opposition.hearing.emergency.ending.scapegoat_survive', [
   { when: {}, text: [
     'A member falls. You survive. The meter cools — not clean, but quieter.',
     'Sacrifice accepted. You remain standing while scandal finds another target.',
   ]},
 ]);
 
-registerPool('opposition.hearing.emergency.ending.absorb_cost', [
+registerPoolAutoDecompose('opposition.hearing.emergency.ending.absorb_cost', [
   { when: {}, text: [
     'You absorb the scandal. The class eats free this month.',
     'Personal cost, collective relief. Hunger funded by your reputation.',
   ]},
 ]);
 
-registerPool('opposition.hearing.emergency.ending.unresolved', [
+registerPoolAutoDecompose('opposition.hearing.emergency.ending.unresolved', [
   { when: {}, text: [
     'Emergency hearing adjourns unresolved. Scrutiny tightens.',
     'No clean verdict. The Board leaves hungrier and more suspicious.',
@@ -204,7 +207,7 @@ registerPool('opposition.hearing.emergency.ending.unresolved', [
 ]);
 
 // ── Legacy open / verdict pools (oversight telegraph) ───────────
-registerPool('opposition.hearing.open', [
+registerPoolAutoDecompose('opposition.hearing.open', [
   { when: { hearing: 'emergency' }, text: [
     'Emergency session — scandal meter critical. Every board member watches without sitting.',
     'No agenda, only exposure. Vance wants answers before the room cools.',
@@ -215,7 +218,7 @@ registerPool('opposition.hearing.open', [
   ]},
 ]);
 
-registerPool('opposition.hearing.verdict', [
+registerPoolAutoDecompose('opposition.hearing.verdict', [
   { when: { outcome: 'win' }, text: [
     'Vance closes the folder without a signature. For now, the class remains yours.',
     'Removal denied. The gavel never lands where she wanted.',

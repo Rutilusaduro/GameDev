@@ -2,11 +2,11 @@
 // Settling care scenes — "Tend Her" action (set.care.tend).
 // Refit + comfort milestone subs reuse immob.refit / immob.comfort.* via sceneKey.
 // House voice: intimate, practical, sensory — caretaking at impossible scale.
-import { registerPool } from '../../engine.js';
+import { registerPoolAutoDecompose } from '../decomposePools.js';
 
 // ── set.care.tend.beat ────────────────────────────────────────
 // The act of tending: cooling, adjusting, maintaining.
-registerPool('set.care.tend.beat', [
+registerPoolAutoDecompose('set.care.tend.beat', [
   { when: {}, text: [
     `You tend {subject.name} where she rests — small necessary attentions at a scale that makes them intimate.`,
     `You move through the space around her, attending to what needs attending. She holds still for it.`,
@@ -29,7 +29,7 @@ registerPool('set.care.tend.beat', [
 
 // ── set.care.tend.react ───────────────────────────────────────
 // Her response: corruption-keyed, stage-keyed.
-registerPool('set.care.tend.react', [
+registerPoolAutoDecompose('set.care.tend.react', [
   { when: {}, text: [
     `{subject.name} is quiet under the attention. Warmth and stillness.`,
     `She lets you tend her without commentary. Something in her settles.`,
@@ -66,6 +66,6 @@ registerPool('set.care.tend.react', [
 ]);
 
 // ── set.care.tend — composed skeleton ─────────────────────────
-registerPool('set.care.tend', [
+registerPoolAutoDecompose('set.care.tend', [
   { when: {}, text: [`{set.care.tend.beat} {set.care.tend.react}{set.enorm|prefix: }`] },
 ]);

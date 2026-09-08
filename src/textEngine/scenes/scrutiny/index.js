@@ -10,6 +10,7 @@
 //   a SCRUTINY_TIERS boundary (prev tier id < new tier id).
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
+import { registerPoolAutoDecompose } from '../decomposePools.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 
@@ -36,7 +37,7 @@ registerPool('scrutiny.tierUp.header', [
 
 // ── scrutiny.tierUp.body ──────────────────────────────────────
 // Shape: SHORT PARAGRAPH — what the notice says and what it means.
-registerPool('scrutiny.tierUp.body', [
+registerPoolAutoDecompose('scrutiny.tierUp.body', [
   { when: {}, text: [
     `Something about your class has caught an eye it shouldn't have. No specifics. Not yet.`,
   ]},
