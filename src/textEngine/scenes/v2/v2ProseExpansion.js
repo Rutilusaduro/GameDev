@@ -46,19 +46,37 @@ registerPool('feed.v2.depth', [
 
 // ── Talk depth additions ──────────────────────────────────────
 registerPool('talk.v2.depth', [
+  { when: { stageMin: 10 }, text: [
+    'She speaks from immobile abundance — voice slow, warm, belly audible between sentences like weather.',
+    'Conversation bends around her mass. The office arranges itself to her scale.',
+    'Words arrive unhurried. Fullness has become the room she inhabits.',
+  ]},
   { when: { stageMin: 7 }, text: [
     'She speaks from inside her fullness — voice slower, warmer, belly audible between sentences.',
     'Conversation bends around her mass. She does not hurry. Neither do you.',
+    'Every sentence carries the weight of how much body she brings to it.',
+  ]},
+  { when: { stageMin: 5, corruptionMin: 40 }, text: [
+    'She talks about food the way other people talk about plans — eagerly, specifically, already leaning toward yes.',
+    'Conversation drifts to cravings and stays there. She does not redirect it.',
+    'Her voice warms whenever portions come up. You notice. She pretends not to.',
+    'Appetite sits in her syntax now — direct, unashamed, pleased to be named.',
   ]},
   { when: { stageMin: 5 }, text: [
     'She talks about food the way other people talk about plans — eagerly, specifically, already leaning toward yes.',
     'Conversation drifts to cravings and stays there. She does not redirect it.',
     'Her voice warms whenever portions come up. You notice. She pretends not to.',
   ]},
+  { when: { stageMin: 2, stageMax: 4, corruption: [0] }, text: [
+    'She chooses words carefully around appetite — hunger noticed, not yet owned.',
+    'Conversation skims food and returns to it anyway, like a tongue finding a loose tooth.',
+    'Something softens in her voice when snacks come up. She changes the subject slower each time.',
+  ]},
   { when: {}, text: [
     'Something in her voice has softened toward appetite. She does not name it. You hear it anyway.',
     'Office hours stretch longer when food is on the table — literally or otherwise.',
     'She laughs easily. Hunger makes her generous.',
+    'The talk leaves warmth behind — appetite acknowledged without ceremony.',
   ]},
 ]);
 
@@ -83,15 +101,27 @@ registerPool('wi.v2.depth', [
 
 // ── Session depth additions ───────────────────────────────────
 registerPool('session.v2.depth', [
+  { when: { stageMin: 9 }, text: [
+    'The session becomes architecture — her body reshaping the room, breath the only clock.',
+    'Portions blur into mass. She eats until the chair is memory and fullness is furniture.',
+    'Private appetite at immobile scale — vast, warm, unhurried surrender.',
+  ]},
   { when: { stageMin: 6 }, text: [
     'The session stretches. Her belly rises. Time becomes food becomes flesh.',
     'Portions blur together. Fullness becomes the only clock she obeys.',
     'She eats until the room feels smaller around her softness.',
+    'Each refill finds her ready — capacity treated as virtue, not accident.',
+  ]},
+  { when: { stageMin: 3, stageMax: 5 }, text: [
+    'The session starts disciplined and ends honest — appetite winning by inches, then miles.',
+    `She keeps pace until she doesn't — then keeps eating anyway, pleased by the slip.`,
+    'Private room, public appetite still learning its volume.',
   ]},
   { when: {}, text: [
     'She keeps eating. You keep watching. The room gets warmer.',
     'Private session, public appetite — she surrenders to both.',
     'Every refill finds her ready. Hunger has become hospitality.',
+    'The door closed. Her restraint opened. Food does the rest.',
   ]},
 ]);
 
@@ -238,8 +268,26 @@ registerPool('memory.v2.depth', [
   { when: {}, text: ['History sits in her posture — meals remembered, thresholds crossed.'] },
 ]);
 registerPool('settling.v2.depth', [
-  { when: { stageMin: 10 }, text: ['The settling is not an ending. It is a deeper kind of arrival.'] },
-  { when: {}, text: ['She rests into abundance. The room learns her shape.'] },
+  { when: { stageMin: 10 }, text: [
+    'The settling is not an ending. It is a deeper kind of arrival.',
+    'Mass finds its final geography — warm, vast, unhurried.',
+    'She rests into immobility like weather settling over a valley.',
+  ]},
+  { when: { stageMin: 7 }, text: [
+    'The settling reads as ceremony — each pound a bell, each breath a benediction.',
+    'Abundance stops being event and becomes climate.',
+    'She exhales and the room learns her shape again.',
+  ]},
+  { when: { stageMin: 4 }, text: [
+    'Softness accumulates like snowfall — quiet, certain, reshaping everything it touches.',
+    'The settling is honest now. She does not rush it.',
+    'Warmth pools where appetite has been answered generously.',
+  ]},
+  { when: {}, text: [
+    'She rests into abundance. The room learns her shape.',
+    'Growth slows to breathing — still happening, still welcome.',
+    'Fullness settles like a blanket she chose on purpose.',
+  ]},
 ]);
 registerPool('origin.v2.depth', [
   { when: { stageMax: 3 }, text: ['Old stories flavor the appetite — backstory bleeding into the plate.'] },
