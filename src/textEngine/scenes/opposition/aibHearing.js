@@ -82,6 +82,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.ending.advocate_voice', [
   { when: {}, text: [
     'Student voice carries. Removal denied with the advocate on record.',
     'The advocate\'s argument stands. {subject.name} stays — enrollment intact, appetite unmoved.',
+    'Jordan Ellis closes the record. {subject.name} remains enrolled — procedure outpaced by testimony.',
   ]},
 ]);
 
@@ -89,6 +90,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.ending.discredit_feast', [
   { when: {}, text: [
     'The hearing collapses into crumbs and contradiction. Removal denied. The Board leaves hungry.',
     'Hypocrisy and hospitality undo the motion. {subject.name} walks out fed and enrolled.',
+    'Catering photos meet wellness slides. The motion dies between bites.',
   ]},
 ]);
 
@@ -96,6 +98,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.ending.testify_firm', [
   { when: {}, text: [
     'Testimony lands. You hold the line. Removal denied — narrowly.',
     '{subject.name} stays. The gavel never finds the word suspend.',
+    'Devotion spoken plain. Vance closes without the signature she wanted.',
   ]},
 ]);
 
@@ -103,6 +106,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.ending.messy_victory', [
   { when: {}, text: [
     'A messy victory. She stays — but the Board will watch closer.',
     'Removal denied with conditions nobody trusts. {subject.name} remains yours, for now.',
+    'Win without grace. Enrollment intact, scrutiny doubled.',
   ]},
 ]);
 
@@ -110,6 +114,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.ending.suspended', [
   { when: {}, text: [
     'The gavel falls. She is suspended from public campus life for four weeks.',
     '{subject.name} hidden from the quad — not expelled, not free. The Board calls it care.',
+    'Suspension ordered. Hunger continues off the record.',
   ]},
 ]);
 
@@ -182,6 +187,7 @@ registerPoolAutoDecompose('opposition.hearing.emergency.ending.catered_future', 
   { when: {}, text: [
     'They ate through the emergency. Scandal dissipates like steam.',
     'Full bellies adjourn the crisis. The meter cools around crumbs.',
+    'Procedure drowned in hospitality. Crisis deferred, appetites satisfied.',
   ]},
 ]);
 
@@ -189,6 +195,7 @@ registerPoolAutoDecompose('opposition.hearing.emergency.ending.scapegoat_survive
   { when: {}, text: [
     'A member falls. You survive. The meter cools — not clean, but quieter.',
     'Sacrifice accepted. You remain standing while scandal finds another target.',
+    'Someone else pays. You walk out with the class intact.',
   ]},
 ]);
 
@@ -196,6 +203,7 @@ registerPoolAutoDecompose('opposition.hearing.emergency.ending.absorb_cost', [
   { when: {}, text: [
     'You absorb the scandal. The class eats free this month.',
     'Personal cost, collective relief. Hunger funded by your reputation.',
+    'Your name on the report. Their plates full anyway.',
   ]},
 ]);
 
@@ -203,6 +211,7 @@ registerPoolAutoDecompose('opposition.hearing.emergency.ending.unresolved', [
   { when: {}, text: [
     'Emergency hearing adjourns unresolved. Scrutiny tightens.',
     'No clean verdict. The Board leaves hungrier and more suspicious.',
+    'Ambiguous adjournment. Scandal meter cools without closing.',
   ]},
 ]);
 

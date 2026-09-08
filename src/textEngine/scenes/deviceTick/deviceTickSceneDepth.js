@@ -2,6 +2,36 @@
 // Per-student + stage depth on device weekly tick fragment pools.
 import { registerModuleVariants } from '../../engine.js';
 
+registerModuleVariants('device.tick.action', [
+  { when: { studentId: 2, deviceId: 'auto_feeder_arm' }, weight: 4, text: [
+    `the {device.label} feeds Kylie on camera — portions timed for the clip`,
+  ]},
+  { when: { studentId: 5, deviceId: 'endless_hunger_engine' }, weight: 4, text: [
+    `the {device.label} keeps Destiny hungry between streams — debuff permanent, belly honest`,
+  ]},
+  { when: { studentId: 8, deviceId: 'sleep_feeding_system' }, weight: 4, text: [
+    `the {device.label} feeds Maya while she sleeps — trust absolute, calories quiet`,
+  ]},
+  { when: { studentId: 10, deviceId: 'auto_feeder_arm' }, weight: 4, text: [
+    `the {device.label} serves Reneé another course — mechanical patience, culinary devotion`,
+  ]},
+  { when: { studentId: 14, deviceId: 'living_furniture_rig' }, weight: 4, text: [
+    `the {device.label} keeps Mary Jane upholstered — furniture fed like family`,
+  ]},
+  { when: { studentId: 15, deviceId: 'endless_hunger_engine' }, weight: 4, text: [
+    `the {device.label} sharpens Lilith's hollow — predator appetite never quite full`,
+  ]},
+  { when: { studentId: 18, custom: false, deviceId: 'growth_accelerator_chamber' }, weight: 4, text: [
+    `the {device.label} runs another field session on Talia — data and deposition in parallel`,
+  ]},
+  { when: { studentId: 7, deviceId: 'weight_redistribution_rig' }, weight: 4, text: [
+    `the {device.label} remaps Priya's curves — spreadsheets meet flesh`,
+  ]},
+  { when: { stageMin: 9, deviceId: 'living_furniture_rig' }, weight: 3, text: [
+    `the {device.label} maintains {subject.name} at furniture scale — vast, fed, room-filling`,
+  ]},
+]);
+
 registerModuleVariants('device.tick.dependence', [
   { when: { studentId: 0, deviceId: 'feeding_mask', deviceDependenceTierMin: 2 }, weight: 4, text: [
     `Brittany swallows on cue — captain discipline turned hungry compliance.`,

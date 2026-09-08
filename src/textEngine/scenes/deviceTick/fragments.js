@@ -31,9 +31,30 @@ registerPool('device.tick.action', [
     'the {device.label} trembles around {subject.name}; she needs calories before the furniture form stabilizes',
     'the {device.label} creaks warnings through its straps — {subject.name} must be fed to stay usable',
   ] },
+  { when: { deviceId: 'living_furniture_rig' }, text: [
+    'the {device.label} maintains {subject.name} in furniture posture — fed, cushioned, slowly swelling',
+    'the {device.label} keeps {subject.name} upholstered through another weekly maintenance cycle',
+    'the {device.label} works {subject.name}\'s restrained form — comfort calories on schedule',
+  ] },
+  { when: { deviceId: 'growth_accelerator_chamber' }, text: [
+    'the {device.label} bathes {subject.name} in warm radiation — adipose deposition accelerated',
+    'the {device.label} seals around {subject.name} and drives another growth field session',
+    'the {device.label} hums through {subject.name}\'s tissues — warmth, swell, pleasure in sequence',
+  ] },
+  { when: { deviceId: 'sleep_feeding_system' }, text: [
+    'the {device.label} drips formula into {subject.name} while she sleeps — unconscious calories on schedule',
+    'the {device.label} feeds {subject.name} through the night without waking her',
+    'the {device.label} completes another sleep-feed cycle on {subject.first}\'s slack features',
+  ] },
+  { when: { deviceId: 'weight_redistribution_rig' }, text: [
+    'the {device.label} maps fat across {subject.name}\'s frame — redistribution on mechanical schedule',
+    'the {device.label} pulls and settles weight through {subject.first}\'s body in programmed passes',
+    'the {device.label} reshapes {subject.name}\'s silhouette — curves guided, not chosen',
+  ] },
   { when: { deviceId: 'feeding_mask', hasAttachment: 'liquid_fat_infuser' }, text: [
     'the locked mask floods warm infused formula',
     'the mask pumps heavy slurry past sealed lips',
+    'the infuser attachment drives dense calories through the seal',
   ] },
   { when: { deviceId: 'feeding_mask' }, text: [
     'the feeding mask forces another quota through the tube',
@@ -316,26 +337,32 @@ registerPool('device.tick.malfClause', [
   { when: { deviceId: 'auto_feeder_arm', malfunctionTier: 'moderate' }, text: [
     'then overfeeds past the safe quota — portions stacking faster than she can finish',
     'then dumps an oversized portion before the arm resets',
+    'then locks greedy mode until the kill switch interrupts',
   ] },
   { when: { deviceId: 'obedience_belt', malfunctionTier: 'moderate' }, text: [
     'then punishes hesitation with a hum she feels in her bones',
     'then stacks compliance cues until shame outruns her ability to refuse food',
+    'then tightens the loop until obedience and appetite blur together',
   ] },
   { when: { deviceId: 'auto_bloating_belt', malfunctionTier: 'moderate' }, text: [
     'then overpressurizes past the planned bloat limit',
     'then surges until her waist balloons harder than the belt should allow',
+    'then locks the buckle through a brutal swell pulse',
   ] },
   { when: { deviceId: 'reinforced_legs', malfunctionTier: 'minor' }, text: [
     'then a brace pinches — she shifts, and the harness creaks louder',
     'then a support servo stutters under the added load',
+    'then a joint complains until the braces recalibrate',
   ] },
   { when: { deviceId: 'living_furniture_rig', malfunctionTier: 'moderate' }, text: [
     'then overfeeds the furniture form past its comfort threshold',
     'then surges calories until the harness groans in protest',
+    'then keeps feeding until the rig moans under her swelling weight',
   ] },
   { when: { deviceId: 'growth_accelerator_chamber', malfunctionTier: 'moderate' }, text: [
     'then spikes past the safe radiation ceiling',
     'then overdrives the field until deposition runs well outside spec',
+    'then holds the warmth too long — swell arriving faster than planned',
   ] },
   { when: { deviceId: 'growth_accelerator_chamber', malfunctionTier: 'major' }, text: [
     'then locks the radiation field in a dangerous overrun',
@@ -386,12 +413,18 @@ registerPool('device.tick.synergy', [
   { when: { equippedWaist: 'auto_bloating_belt', deviceId: 'auto_feeder_arm' }, text: [
     'The belt bloats her while the arm keeps feeding into it.',
     'Bloat and mechanical feeding stack in the same weekly pass.',
+    'Pressure and portions arrive together — belly tight, mouth still working.',
   ] },
   { when: { equippedWaist: 'obedience_belt', deviceId: 'auto_feeder_arm' }, text: [
     'Compliance cues and feeding land together — shame and fullness in one rhythm.',
+    'The belt hums approval while the arm delivers — obedience tasted in every bite.',
   ] },
   { when: { equippedHead: 'feeding_mask', deviceId: 'auto_bloating_belt' }, text: [
     'Mask and belt stack pressure — face fed while her middle swells.',
+    'Sealed lips and cinched waist — two devices, one weekly swell.',
+  ] },
+  { when: { equippedHead: 'feeding_mask', deviceId: 'growth_accelerator_chamber' }, text: [
+    'Radiation and forced feeding overlap — growth field while the mask keeps portions coming.',
   ] },
   { when: {}, text: ['', ''] },
 ]);

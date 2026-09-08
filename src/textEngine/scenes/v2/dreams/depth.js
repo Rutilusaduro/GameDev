@@ -24,9 +24,12 @@ registerPool('dream.open.depth', [
 registerPool('dream.endless_buffet.depth', [
   { when: { stageMin: 6 }, text: [
     'Tables past counting. She eats walking through rooms that never end — each dish familiar, each bite heavier than the last.',
+    'Corridors of food without walls. She samples everything and still reaches for more.',
   ]},
   { when: {}, text: [
     'Infinity of plates. She samples everything and still reaches for more.',
+    'The buffet stretches past sleep — appetite the only exit sign.',
+    'Course after course with no kitchen in sight. She eats because the dream insists.',
   ]},
 ]);
 
