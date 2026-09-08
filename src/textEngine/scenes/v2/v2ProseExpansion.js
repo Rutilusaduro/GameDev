@@ -298,7 +298,20 @@ registerPool('earlyGain.v2.depth', [
   { when: {}, text: ['The first pounds feel theoretical until they do not.'] },
 ]);
 registerPool('evolved.v2.depth', [
-  { when: {}, text: ['Her evolved path amplifies everything — appetite as identity, identity as spectacle.'] },
+  { when: { stageMin: 8 }, text: [
+    'Her evolved path has become architecture — appetite as identity, identity as spectacle, mass as destiny.',
+    'At this scale the form is not a costume. It is the only honest way to be hungry in public.',
+  ]},
+  { when: { stageMin: 5 }, text: [
+    'The evolved arc turns appetite into vocation — every bite proof of the path she chose.',
+    'She does not perform hunger anymore. Hunger performs through her.',
+  ]},
+  { when: {}, text: [
+    'Her evolved path amplifies everything — appetite as identity, identity as spectacle.',
+    'The form she chose reshapes every room she enters. Food follows like applause.',
+    'Evolution here means appetite with a spotlight — louder, warmer, impossible to ignore.',
+    'What began as a choice has become a signature. She eats like someone who knows who she is.',
+  ]},
 ]);
 registerPool('spirit.v2.depth', [
   { when: { stageMin: 9 }, text: [

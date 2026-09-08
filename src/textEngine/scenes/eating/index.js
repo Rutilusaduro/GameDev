@@ -5,6 +5,7 @@
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import { renderInteriorSelfObs } from '../interior/index.js';
 import './fragments.js';
 import './personas.js';
 import './foodFragments.js';
@@ -31,5 +32,10 @@ export function renderEatScene(student, week = 1, opts = {}) {
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const line = render(EAT_SCENE, ctx, { trace: opts.trace || null });
   const base = line?.trim() || '';
-  return appendV2Depth(base, 'eating', ctx, opts.v2DepthChance ?? 0.3);
+  let out = appendV2Depth(base, 'eating', ctx, opts.v2DepthChance ?? 0.3);
+  if (opts.includeInterior !== false && Math.random() < (opts.interiorChance ?? 0.22)) {
+    const interior = renderInteriorSelfObs(student, week, { v2DepthChance: 0.18, trace: opts.trace || null });
+    if (interior?.trim()) out += `\n\n${interior}`;
+  }
+  return out;
 }
