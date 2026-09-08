@@ -143,4 +143,5 @@ import './polishDepthPass40.js';
 import './v2/index.js';
 import './salonGallerySceneDepth.js';
 import './monolithFragmentDepth.js';
+import './namedPoolDepth.js';
 import '../modules.js';
