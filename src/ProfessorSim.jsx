@@ -30,6 +30,10 @@ import {
   profileGainMult, profileScrutinyMult, profilePassiveBonus, profileCorruptionMult,
 } from './gameData/spirits.js';
 import { getUnlockScene } from './gameData/unlockScenes.js';
+import {
+  applyWeeklyTrustDrip, pickRipeUnlock, ROSTER_TRUST_GATE,
+} from './gameData/rosterUnlock.js';
+import { renderEmbodiedArrive } from './textEngine/scenes/v2/embodiment/campusWalk.js';
 import { WalletBadge } from './components/WalletBadge.jsx';
 import { CAMPUS_NODES, CAMPUS_CONFIG } from './gameData/campus.js';
 import {
@@ -206,6 +210,7 @@ import { EmbodimentModal } from './components/v2/EmbodimentModal.jsx';
 import { FeastRitualModal, DreamModal, EchoArchiveModal } from './components/v2/V2Modals.jsx';
 import {
   handleEmbodimentStart, handleEmbodimentAction, handleEmbodimentRelease,
+  handleEmbodiedMove, handleEmbodiedEventResolve,
   handleResonanceLink, handleRitual, handleDreamChoice, handleEchoResonate,
   handleFeedResonancePulse, captureStageUpEcho, captureWeighInEcho, captureFeedEcho,
   handleEchoReplay, runWeeklyV2Events, captureEvolutionEcho,
@@ -2012,26 +2017,12 @@ export default function ProfessorSim(){
     if(newlyTriggered&&!nextOpposition.supernatural.ascensionOffered) setSupernaturalModalOpen(true);
 
     // ── ROSTER UNLOCK ─ spirit reach (slots) + passive trust (queue) ──
-    if(professorProfile){
-      const TRUST_GATE=60;
-      const allowedSlots=5+Math.max(0,spiritLevel-1);
-      const openCount=updated.filter(s=>UNLOCK_POOL_IDS.includes(s.id)&&s.lockState!=='locked').length;
-      // Drip trust onto every locked girl this week.
-      updated=updated.map(s=>{
-        if(s.lockState!=='locked') return s;
-        return {...s,passiveTrust:Math.min(100,(s.passiveTrust||0)+rnd(4,8))};
-      });
-      // One door per week: ripest locked girl crosses if a slot is free.
-      if(openCount<allowedSlots){
-        const ripe=updated
-          .filter(s=>s.lockState==='locked'&&(s.passiveTrust||0)>=TRUST_GATE)
-          .sort((a,b)=>(b.passiveTrust||0)-(a.passiveTrust||0))[0];
-        if(ripe){
-          updated=updated.map(s=>s.id===ripe.id?{...s,lockState:'open'}:s);
-          const scene=getUnlockScene(ripe.id)||`${ripe.name} leans into reach. The spirit's awareness closes the last of the distance, and she's yours to cultivate now.`;
-          setTimeout(()=>push(`🌒 ${scene}`),160);
-        }
-      }
+    updated = applyWeeklyTrustDrip(updated, { spiritLevel, week, rng: Math.random });
+    const ripe = pickRipeUnlock(updated, spiritLevel);
+    if (ripe) {
+      updated = updated.map((s) => (s.id === ripe.id ? { ...s, lockState: 'open' } : s));
+      const scene = getUnlockScene(ripe.id) || `${ripe.name} leans into reach. The spirit's awareness closes the last of the distance, and she's yours to cultivate now.`;
+      setTimeout(() => push(`🌒 ${scene}`), 160);
     }
 
     const ascensionReadyIds=[];
@@ -6358,6 +6349,36 @@ export default function ProfessorSim(){
     }
     push(`🌒 You return to the professor's body.${active?' Her appetite will echo into next week.':''}`);
   };
+  const runEmbodiedMove=(toId)=>{
+    const activeId=v2.embodiment?.activeStudentId;
+    const s=students.find(st=>st.id===activeId);
+    if(!s) return null;
+    const fromId=v2.embodiment?.at||'dorms';
+    const moveResult=handleEmbodiedMove(s,fromId,toId,v2,week,{students,rng:Math.random});
+    if(!moveResult.ok) return { error: moveResult.reason };
+    setV2State(moveResult.v2State);
+    const arriveText=renderEmbodiedArrive(s,toId,week);
+    return { event: moveResult.event, arriveText };
+  };
+  const runEmbodiedEventResolve=(event)=>{
+    const activeId=v2.embodiment?.activeStudentId;
+    const s=students.find(st=>st.id===activeId);
+    if(!s||!event) return;
+    const result=handleEmbodiedEventResolve(s,event,v2,{students,rng:Math.random});
+    setV2State(result.v2State);
+    setStudents(prev=>{
+      const byId=new Map(result.students.map(st=>[st.id,st]));
+      return prev.map(st=>byId.get(st.id)||st).map(st=>{
+        if(st.id!==s.id) return st;
+        return result.student;
+      });
+    });
+    if(result.scrutiny) addScrutiny(result.scrutiny);
+    if(result.trustGrants?.length){
+      const names=result.trustGrants.map(g=>students.find(st=>st.id===g.studentId)?.name).filter(Boolean);
+      if(names.length) push(`🌒 Campus gossip reaches ${names.join(', ')} — spirit trust grows.`);
+    }
+  };
   const runResonanceLink=(aId,bId)=>{
     const result=handleResonanceLink(aId,bId,students,v2,ownedSkills,ownedClassSkills||{});
     if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
@@ -9210,11 +9231,14 @@ export default function ProfessorSim(){
       {embodimentStudent&&(
         <EmbodimentModal
           student={embodimentStudent}
+          week={week}
           ownedSkills={ownedSkills}
           ownedClassSkills={ownedClassSkills||{}}
           embodimentState={v2.embodiment}
           onStart={runEmbodimentStart}
           onAction={runEmbodimentAction}
+          onMove={runEmbodiedMove}
+          onEventResolve={runEmbodiedEventResolve}
           onRelease={runEmbodimentRelease}
           onClose={()=>setEmbodimentStudent(null)}
         />

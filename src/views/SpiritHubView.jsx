@@ -25,7 +25,7 @@ export function SpiritHubView({
   spiritLevel = 1,
 }) {
   const [linkPickA, setLinkPickA] = useState(null);
-  const visible = students.filter((s) => !s.hidden);
+  const visible = students.filter((s) => !s.hidden && s.lockState !== 'locked');
   const links = v2State?.resonance?.links || [];
   const tier = getResonanceTier(links.length, getCombinedClassLbs(students));
   const rituals = getAvailableRituals({ ownedSkills, ownedClassSkills, students, week, spiritLevel });
@@ -66,7 +66,7 @@ export function SpiritHubView({
       <p style={C.secT}>Spirit Dominion — 2.0</p>
       <div style={{ ...C.card, borderColor: `${ACCENT}60`, marginBottom: 12 }}>
         <p style={{ fontSize: 11, color: '#b0a0d0', lineHeight: 1.6 }}>
-          The gluttony spirit extends beyond the professor. Inhabit students. Bind their appetites. Feast as ceremony. Dream in hunger.
+          Slip inside a student and pilot her across campus — waddle, eat, get noticed, trigger events. Bind appetites. Feast as ceremony.
         </p>
       </div>
 

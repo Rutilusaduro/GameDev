@@ -16,7 +16,7 @@ const MAP_W = 420, MAP_H = 300;
 const px = (x) => (x / 100) * MAP_W;
 const py = (y) => (y / 100) * MAP_H;
 
-function CampusMap({ at, moveTo, secretNodes, showSecretMarkers }){
+export function CampusMap({ at, moveTo, secretNodes, showSecretMarkers }){
   const nodes = Object.values(CAMPUS_NODES);
   const edges = [];
   const seen = new Set();
