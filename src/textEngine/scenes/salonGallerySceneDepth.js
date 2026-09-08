@@ -57,6 +57,90 @@ registerPool('evolved.cultivator.v2.depth', [
   ]},
 ]);
 
+registerPool('evolved.cultivator.v2.depth', [
+  { when: { studentId: 10, stageMin: 8 }, text: [
+    `Harvest window open. Reneé tastes from the pot — chef, subject, cultivator merged.`,
+    `Session log and recipe both revised upward. Yield beyond specification.`,
+  ]},
+  { when: { studentId: 10 }, text: [
+    `Kitchen smells like technique and appetite. She feeds what she grows.`,
+    `Palate built the recipe. Body proves the methodology.`,
+  ]},
+  { when: {}, text: [
+    `Cultivation at scale — appetite harvested, warmth served, growth intentional.`,
+  ]},
+]);
+
+registerPool('evolved.feedee.v2.depth', [
+  { when: { studentId: 2, stageMin: 8 }, text: [
+    `Collab energy at scale — camera honest, appetite subscriber-facing, Wren watching.`,
+    `Stream mythology thickens. Kylie feeds the format and the format feeds her.`,
+  ]},
+  { when: { studentId: 2 }, text: [
+    `Mukbang collab arc — hunger documented, gain celebrated, chat paying attention.`,
+    `Content and appetite finally the same thing. Numbers reflect honesty.`,
+  ]},
+  { when: {}, text: [
+    `Feedee evolution — spectacle made sincere, growth made content, hunger made career.`,
+  ]},
+]);
+
+registerPool('evolved.machine.v2.depth', [
+  { when: { studentId: 18, custom: false, stageMin: 8 }, text: [
+    `Campus hums her firmware. Belly on bench. Devices tick on bodies she will not visit.`,
+    `Inventor inside invention — calibration from stillness, appetite the final spec.`,
+  ]},
+  { when: { studentId: 18, custom: false }, text: [
+    `Workshop orbit her chair. Feeder arms within reach. Closed loop perfect.`,
+    `Lab relocated to immobility. Yield optimized in place.`,
+  ]},
+  { when: {}, text: [
+    `Machine goddess evolution — flesh and firmware meshed, hunger engineered outward.`,
+  ]},
+]);
+
+registerPool('evolved.pharmacist.v2.depth', [
+  { when: { studentId: 16, stageMin: 8 }, text: [
+    `Campus saturation complete. Sophia inside her own system — larger, predicted, pleased.`,
+    `Compounds ship unattended. Spreadsheet and stomach agree.`,
+  ]},
+  { when: { studentId: 16 }, text: [
+    `Synthesis at home. Batch cooling. She tasted dose one herself — data starts inside.`,
+    `Cult phase: feeding as belonging. Wellness rhetoric surrendering to compound hunger.`,
+  ]},
+  { when: {}, text: [
+    `Pharmacist evolution — appetite stimulant, pleasure enhancer, transformation architect.`,
+  ]},
+]);
+
+registerPool('evolved.gainer.v2.depth', [
+  { when: { studentId: 7, stageMin: 8 }, text: [
+    `Corkboard lowered to chair height. Priya dictates numbers. First in every column.`,
+    `Competitive gainer evolution — data and appetite peer-reviewed, shame benched.`,
+  ]},
+  { when: { studentId: 7 }, text: [
+    `Board mounted. Pins mark leaderboard. Waist circumference still hers to win.`,
+    `Spreadsheet and stomach aligned. Optimization succeeded beyond spec.`,
+  ]},
+  { when: {}, text: [
+    `Gainer evolution — every measurement victory, every pound a data point conquered.`,
+  ]},
+]);
+
+registerPool('evolved.homeroomQueen.v2.depth', [
+  { when: { studentId: 13, stageMin: 8 }, text: [
+    `Daisy flour-dusted at center — six mothers orbit, Tuesday theology made flesh.`,
+    `Homeroom queen evolution — soft power, hard butter, suspicion meter rising.`,
+  ]},
+  { when: { studentId: 13 }, text: [
+    `Conference container always out. Parents fed. Curriculum optional.`,
+    `Bake-sale diplomacy. Abundance as policy. Daisy smiling.`,
+  ]},
+  { when: {}, text: [
+    `Homeroom queen evolution — classroom as court, appetite as curriculum.`,
+  ]},
+]);
+
 registerModuleVariants('salon_appetit.hub', [
   { when: { studentId: 9, stageMin: 10 }, weight: W, text: [
     `Chloé hosts from center — silk vast, candles everywhere, courses brought to her hands. *Encore.*`,

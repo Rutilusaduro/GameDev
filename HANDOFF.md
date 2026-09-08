@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 recording/collab thin pools expanded; prior PhaseD + diary/echo depth |
+| Legacy talk prose | 🔄 settling fragments + evolved form pools; prior salon/gallery/recording |
 
 ## Key Files (V2)
 
@@ -67,6 +67,8 @@
 - `src/textEngine/scenes/diaryEvolvedSceneDepth.js` — evolved-form diary stage 11 c1/c3 + wildcard depth
 - `src/textEngine/scenes/diaryPhaseDSceneDepth.js` — PhaseD forms (gainer/goddess/salon/gallery/pharmacist) s9–11 depth
 - `src/textEngine/scenes/evolved/evolvedSceneDepth.js` — per-student evolved.v2.depth variants
+- `src/textEngine/scenes/salonGallerySceneDepth.js` — salon/gallery hub + form evolved depth pools
+- `src/textEngine/scenes/settling/settlingFragmentDepth.js` — decomposed care/gossip _d* fragment depth
 - `src/textEngine/scenes/v2/echo/echoSceneDepth.js` — per-student echo.type.* replay variants
 - `src/textEngine/scenes/v2/studentArchetypeDepth.js` — full 19-student voice on resonance/ritual/dream/echo V2 pools
 
@@ -80,6 +82,6 @@ npm run build       # production build
 
 ## Remaining Toward 2.0
 
-1. Mass legacy prose sweep — decomposed monolith fragments + more homeroom/evolved events; recording/collab thin pools fixed turn 28
+1. Mass legacy prose sweep — decomposed monolith fragments + more evolved forms; salon/gallery/homeroom depth turn 29
 2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
 3. Completion audit vs `docs/V2_0_DESIGN.md` — five V2 systems wired ✅; prose depth additive pass ongoing

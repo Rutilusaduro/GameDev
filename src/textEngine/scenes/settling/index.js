@@ -12,6 +12,7 @@ import './gather.js';
 import './weigh.js';
 import './enormity.js';
 import './settlingSceneDepth.js';
+import './settlingFragmentDepth.js';
 
 /**
  * Render a settling action scene.

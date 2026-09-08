@@ -124,6 +124,22 @@ registerModuleVariants('homeroom.activity.health_unit.p1.weigh_moms', [
   ]},
 ]);
 
+registerModuleVariants('homeroom.conference.Bri.brief', [
+  { when: {}, text: [
+    `Brief and warm — Bri accepts no snack without complaint. Specific praise lands. Tuesday math already running.`,
+    `"Not today" accepted. Bri still leaves pleased. Provisions deferred, not forgotten.`,
+    `Efficient conference. Warm close. Drawer unopened but noted for next time.`,
+  ]},
+]);
+
+registerModuleVariants('homeroom.activity.health_unit.p1.decline', [
+  { when: {}, text: [
+    `"Class only," Daisy says. Mrs. Monroe nods — comfortable without the number.`,
+    `Scale stays student-only. Self-knowledge sufficient. Monroe unbothered.`,
+    `Professional boundary held. Monroe smiles anyway. She does not need proof.`,
+  ]},
+]);
+
 registerModuleVariants('homeroom.activity.parent_meeting.p0.recipes', [
   { when: {}, text: [
     `Recipe book opens — Monroe desires, Reyes leans, Calloway names cardamom. Ninety minutes. Agenda forgotten.`,

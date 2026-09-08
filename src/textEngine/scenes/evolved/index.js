@@ -9,6 +9,11 @@ const EVOLVED_FORM_POOLS = {
   salon_appetit: 'evolved.salon.v2.depth',
   artisan_gallery: 'evolved.gallery.v2.depth',
   cultivator: 'evolved.cultivator.v2.depth',
+  feedee_creator: 'evolved.feedee.v2.depth',
+  machine_goddess: 'evolved.machine.v2.depth',
+  pharmacist: 'evolved.pharmacist.v2.depth',
+  competitive_gainer: 'evolved.gainer.v2.depth',
+  homeroom_queen: 'evolved.homeroomQueen.v2.depth',
 };
 
 /** Evolved event prose beat — V2 depth on legacy phase/choice/ending text. */

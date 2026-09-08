@@ -20,6 +20,7 @@ registerPool('lab.session.acquire', [
   { when: {}, text: [
     'Acquisition means scavenging campus, trading favors, spending what she has stored in flesh.',
     'She lists what the build needs without looking up. Her thighs press the stool. Mass is currency here.',
+    'Parts on the list, mass in reserve. Talia spends both without sentiment — inventory and appetite aligned.',
   ]},
 ]);
 
