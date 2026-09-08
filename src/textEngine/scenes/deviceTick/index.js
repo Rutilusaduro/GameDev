@@ -5,6 +5,7 @@ import { registerPool, createContext, render } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { getStage } from '../../../gameData/stages.js';
 import { getEquippedDeviceIds } from '../../../gameData/deviceEquip.js';
+import { getDevice } from '../../../gameData/devices.js';
 import { getDeviceDependence, getDeviceDependenceTier } from '../../../gameData/deviceDependence.js';
 import { resolveGrowthZone, SUDDEN_GROWTH_LBS_MIN } from '../../growthLexicon.js';
 import '../../growthLexicon.js';

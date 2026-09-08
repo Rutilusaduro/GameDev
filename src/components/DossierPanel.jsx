@@ -9,6 +9,7 @@ import { StageTag } from './ui.jsx';
 import { getStage } from '../gameData/stages.js';
 import { getDiary } from '../utils/gameHelpers.js';
 import { DossierMomentModal } from './DossierMomentModal.jsx';
+import { resolvePinExcerpt } from '../gameData/dossierReplay.js';
 
 const PSYCH_COLORS = {
   fixation: '#c070e0',

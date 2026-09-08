@@ -36,6 +36,32 @@
 | V2 wildcard depth | ✅ v2WildcardDepth.js — 83 emb/res/ritual/echo/dream/*.v2.depth pools padded |
 | Banned-pattern lint | ✅ 0 style-ledger violations (149→28 total warnings; infra only remains) |
 | V2_0 mechanical audit | ✅ gate fidelity fixes — resonance_bells surge, echo_gallery archive, dream_chamber hub, lucid steer, ritual milestones, embodiment AP tiers |
+| Campus device depth | ✅ all 19 students on vulnerability; keyed reaction + deviceFlavor padded |
+
+## V2_0 Completion Audit (evidence-based)
+
+| Requirement | Status | Evidence |
+|-------------|--------|----------|
+| Version 2.0.0 | ✅ | `package.json`, `V2_CONFIG.version` |
+| Spirit Embodiment system | ✅ | `spiritEmbodiment.js`, `EmbodimentModal`, skill/classroom gates, echo debuff on release |
+| Craving Resonance system | ✅ | `cravingResonance.js`, links/pulses/tiers/surge, `resonance_bells` gate |
+| Feast Rituals (4 tiers) | ✅ | `feastRituals.js`, `FeastRitualModal`, week/spirit milestones |
+| Body Echo Archive | ✅ | `bodyEcho.js`, capture hooks, `EchoArchivePanel`, resonate buff |
+| Appetite Dreams | ✅ | `appetiteDreams.js`, weekly roll + manual trigger, lucid steer choices |
+| Student portraits | ✅ | `StudentPortrait.jsx`, `studentSprites.js` — 19 students, 7 tiers, hair/features/glow |
+| Skill tree (6 skills) | ✅ | `skillTrees.js` — spirit_ride, deep_ride, hunger_web, dream_walk, memory_palace, ritual_master |
+| Classroom (5 upgrades) | ✅ | `skills.js` — embodiment_chamber, resonance_bells, echo_gallery, ritual_kitchen, dream_chamber |
+| Spirit nav + integration | ✅ | `SpiritHubView`, `player.v2State`, end-week hooks in `ProfessorSim.jsx` |
+| Prose depth layers | ✅ | 50+ scene kinds via `appendV2Depth`; monolith/named/wildcard sweeps; 0 banned-pattern violations |
+| Build + text lint | ✅ | `npm run build`, `npm run text:lint` exit 0 |
+
+### Not blocking 2.0 ship (per design doc / scope)
+
+| Item | Status | Notes |
+|------|--------|-------|
+| Bespoke hand-drawn sprites | Optional | Design doc specifies procedural pixel silhouettes; implemented |
+| Infra lint warnings (28) | Low | psych-keyed word.*, legacy registerModule, stem dedupe |
+| Keyed cells <3 texts (14) | Low | campus.dev edge cases; volume gate not strict |
 
 ## Key Files (V2)
 
@@ -95,6 +121,6 @@ npm run build       # production build
 
 ## Remaining Toward 2.0
 
-1. Text lint infra warnings (28) — psych-keyed word.* pools, legacy registerModule migration, stem dedupe gate
-2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional per design doc)
-3. Prose depth — additive expansion ongoing across legacy scenes; core V2 pools + depth layers complete
+1. Infra lint warnings (28) — psych-keyed word.* pools, legacy registerModule migration, stem dedupe gate
+2. 14 keyed cells under volume target (non-strict) — mostly campus.dev edge selectors
+3. Bespoke hand-drawn art — optional; procedural portrait system satisfies design doc
