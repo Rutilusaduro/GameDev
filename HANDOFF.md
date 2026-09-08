@@ -15,7 +15,8 @@
 | Body Echo Archive | ✅ wired |
 | Appetite Dreams | ✅ wired |
 | Student portraits | ✅ procedural sprites + hair + features + archetype glow (all 19) |
-| V2 depth layer | ✅ 40+ scene kinds + per-student talk/feed/dinner/session voice |
+| V2 depth layer | ✅ 40+ scene kinds + per-student talk/feed/dinner/session/wi + spirit/resonance/ritual/dream/echo voice |
+| V2 scene depth.js | ✅ embodiment, resonance, rituals, dreams, echo (stage-keyed local depth) |
 | Skill/classroom unlocks | ✅ 6 spirit skills + 5 classroom upgrades |
 | Integration + version bump | ✅ 2.0.0, build passes |
 | V2 mechanical fidelity | ✅ echo debuff, resonance lbs tiers/rel cost/surge, ritual favor, interactive dreams, lucid unlock, dream chamber gate |
@@ -53,6 +54,6 @@ npm run build       # production build
 ## Remaining Toward 2.0
 
 1. Mass legacy prose sweep (~35k scene lines — depth layer is additive, not full rewrite)
-2. Per-V2-scene dedicated `depth.js` files (embodiment complete; resonance/ritual/dream/echo still shared pools)
-3. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
+2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
+3. Wire `renderEchoCapture` / `renderResonancePulse` at capture/pulse gameplay moments
 4. Completion audit before marking goal done
