@@ -10,6 +10,7 @@ import './agendaCards.js';
 import './weighInMandatory.js';
 import './aibHearing.js';
 import './oppositionHearingFragmentDepth.js';
+import './oppositionMonolithFragmentDepth.js';
 import './counterOutcome.js';
 import './hearingBridge.js';
 

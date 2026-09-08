@@ -14,6 +14,7 @@ import './enormity.js';
 import './settlingSceneDepth.js';
 import './settlingFragmentDepth.js';
 import './settlingFeedFragmentDepth.js';
+import './settlingMonolithFragmentDepth.js';
 
 /**
  * Render a settling action scene.
