@@ -31,6 +31,8 @@
 | Interior self-obs | ✅ talk check-in + eating |
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
+| Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
+| Legacy talk prose | 🔄 per-student codas (all 19), check-in greet voice, talk/session/settling depth |
 
 ## Key Files (V2)
 
@@ -53,7 +55,6 @@ npm run build       # production build
 
 ## Remaining Toward 2.0
 
-1. Mass legacy prose sweep (~35k scene lines — depth layer is additive, not full rewrite)
+1. Mass legacy prose sweep (~35k scene lines — talk codas/check-in started; depth layer additive)
 2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
-3. Wire `renderEchoCapture` / `renderResonancePulse` at capture/pulse gameplay moments
-4. Completion audit before marking goal done
+3. Completion audit before marking goal done
