@@ -37,6 +37,7 @@ registerPool('collab.stream.reveal.kylie', [
   { when: {}, text: [
     '{collab.reveal.open} {collab.reveal.kylie.number} {collab.reveal.kylie.chat}',
     '{collab.reveal.kylie.number} {collab.reveal.kylie.body} {collab.reveal.kylie.chat}',
+    '{collab.reveal.open} {collab.reveal.kylie.body} {collab.reveal.kylie.number}',
   ]},
 ]);
 
@@ -44,6 +45,7 @@ registerPool('collab.stream.reveal.partner', [
   { when: {}, text: [
     '{collab.reveal.partner.number} {collab.reveal.partner.wren} {collab.reveal.partner.close}',
     '{collab.reveal.partner.number} {collab.reveal.partner.close}',
+    '{collab.reveal.partner.wren} {collab.reveal.partner.number} {collab.reveal.partner.close}',
   ]},
 ]);
 
@@ -54,6 +56,7 @@ registerPool('collab.stream.zoom', [
   { when: {}, text: [
     '{collab.zoom.open} {collab.zoom.table} {collab.zoom.chat}',
     '{collab.zoom.table} {collab.zoom.chat}',
+    '{collab.zoom.open} {collab.zoom.mass} {collab.zoom.chat}',
   ]},
 ]);
 
@@ -61,16 +64,19 @@ registerPool('collab.stream.chat', [
   { when: {}, text: [
     '{collab.chat.open} {collab.chat.wren} {collab.chat.bump}',
     '{collab.chat.wren} {collab.chat.bump}',
+    '{collab.chat.open} {collab.chat.bump} {collab.chat.wren}',
   ]},
 ]);
 
 registerPool('collab.stream.push.good', [
   { when: { collabStage: [3, 4, 5] }, text: [
     '{collab.push.good.hard} {collab.push.good.chat}',
+    '{collab.push.good.open} {collab.push.good.hard} {collab.push.good.chat}',
   ]},
   { when: {}, text: [
     '{collab.push.good.open} {collab.push.good.chat}',
     '{collab.push.good.hard} {collab.push.good.chat}',
+    '{collab.push.good.open} {collab.push.good.hard} {collab.push.good.chat}',
   ]},
 ]);
 
@@ -78,6 +84,7 @@ registerPool('collab.stream.push.bad', [
   { when: {}, text: [
     '{collab.push.bad.open} {collab.push.bad.recover}',
     '{collab.push.bad.recover}',
+    '{collab.push.bad.open} {collab.push.bad.recover} {collab.chat.bump}',
   ]},
 ]);
 
@@ -85,6 +92,7 @@ registerPool('collab.stream.crash', [
   { when: {}, text: [
     '{collab.crash.open} {collab.crash.gain}',
     '{collab.crash.gain}',
+    '{collab.crash.open} {collab.crash.gain} {collab.chat.bump}',
   ]},
 ]);
 

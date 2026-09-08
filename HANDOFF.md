@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 evolved diary stage 11 + homeroom gaps; prior diary/echo depth passes |
+| Legacy talk prose | 🔄 PhaseD diary s9–11 + evolved.v2 per-student; prior diary/echo/evolved depth |
 
 ## Key Files (V2)
 
@@ -65,6 +65,8 @@
 - `src/textEngine/scenes/destinyOffstreamSceneDepth.js` — off-stream talk/activity/weigh-in stage depth
 - `src/textEngine/scenes/diarySceneDepth.js` — late-stage diary.innerBeat per-student (stage 9–11, immobile)
 - `src/textEngine/scenes/diaryEvolvedSceneDepth.js` — evolved-form diary stage 11 c1/c3 + wildcard depth
+- `src/textEngine/scenes/diaryPhaseDSceneDepth.js` — PhaseD forms (gainer/goddess/salon/gallery/pharmacist) s9–11 depth
+- `src/textEngine/scenes/evolved/evolvedSceneDepth.js` — per-student evolved.v2.depth variants
 - `src/textEngine/scenes/v2/echo/echoSceneDepth.js` — per-student echo.type.* replay variants
 - `src/textEngine/scenes/v2/studentArchetypeDepth.js` — full 19-student voice on resonance/ritual/dream/echo V2 pools
 
@@ -78,6 +80,6 @@ npm run build       # production build
 
 ## Remaining Toward 2.0
 
-1. Mass legacy prose sweep — phaseD monoliths + more homeroom/evolved pools still open; evolved diary stage 11 added turn 26
+1. Mass legacy prose sweep — recording/collab thin pools + more homeroom/evolved events; PhaseD depth added turn 27
 2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
 3. Completion audit vs `docs/V2_0_DESIGN.md` — five V2 systems wired ✅; prose depth additive pass ongoing

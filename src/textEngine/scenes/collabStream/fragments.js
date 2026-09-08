@@ -26,6 +26,7 @@ registerPool('collab.reveal.kylie.body', [
   { when: {}, text: [
     '{subject.lbs} pounds — undeniable, enormous, visible in every angle the camera finds.',
     'The number lands and her body already proves it — soft, round, warm on stream.',
+    '{subject.lbs} on camera — belly forward, thighs wide, chat typing before you finish.',
   ]},
 ]);
 

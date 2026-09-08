@@ -25,6 +25,8 @@ for (const clip of CLIPS) {
     ]},
     { when: {}, text: [
       `You wrap with ${clip} footage. {subject.name} at {subject.lbs} pounds looks beautifully full.`,
+      `Cut on ${clip}. {subject.lbs} pounds glow on playback — warmth, devotion, appetite honored.`,
+      `${clip} take in the can. {subject.name} breathes easy, gain visible, crew packing smiles.`,
     ]},
   ]);
 }
@@ -48,6 +50,8 @@ registerPool('recording.payoff', [
   ]},
   { when: {}, text: [
     `Session over. {subject.name} at {subject.lbs} pounds — gain visible, devotion intact.`,
+    `Filming ends. {subject.lbs} pounds sit heavy and content — cheeks rounder, belly softer.`,
+    `Recording complete. {subject.name} at {subject.lbs} — appetite satisfied, camera off, warmth lingering.`,
   ]},
 ]);
 
@@ -95,5 +99,14 @@ registerModuleVariants('recording.payoff', [
   ]},
   { when: { corruption: [2], stageMin: 6 }, weight: 3, text: [
     `{subject.name} at {subject.lbs} — no apology in the mirror, only appetite satisfied.`,
+  ]},
+  { when: { studentId: 9 }, weight: W, text: [
+    `Chloé fans herself post-wrap. {subject.lbs} pounds — "*Magnifique,*" she says to playback.`,
+  ]},
+  { when: { studentId: 1 }, weight: W, text: [
+    `Madeline logs the session data. {subject.lbs} lbs — methodology and appetite aligned.`,
+  ]},
+  { when: { studentId: 18, custom: false }, weight: W, text: [
+    `Talia exports the footage. {subject.lbs} pounds — yield within spec, appetite exceeding it.`,
   ]},
 ]);

@@ -6,6 +6,11 @@ const stages = [0, 1, 2, 3, 4, 5];
 
 for (const si of stages) {
   registerModuleVariants(`recording.oneMore.s${si}`, [
+    { when: {}, weight: 3, text: [
+      `She nods. One more take. Crew resets. Appetite does not.`,
+      `"Again," she says — calm, certain, already opening for the next bite.`,
+      `One more. The camera loves persistence. So does she.`,
+    ]},
     { when: { studentId: 2, recordingStage: si }, weight: 4, text: [
       `Kylie nods at the camera. "One more take," she says. "This one's the clip."`,
       `"Again," Kylie says, already reaching. "Content doesn't film itself."`,

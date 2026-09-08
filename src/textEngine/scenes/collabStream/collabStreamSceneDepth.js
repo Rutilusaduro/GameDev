@@ -76,6 +76,39 @@ registerModuleVariants('collab.crash.gain', [
   ]},
 ]);
 
+registerModuleVariants('collab.stream.reveal.partner', [
+  { when: { collabStageMin: 4 }, weight: 3, text: [
+    `{collab.reveal.partner.number} {collab.reveal.partner.wren} {collab.reveal.partner.close}`,
+  ]},
+  { when: { stageMin: 8 }, weight: 3, text: [
+    `{collab.reveal.partner.number} {collab.reveal.partner.close} {collab.reveal.kylie.chat}`,
+  ]},
+]);
+
+registerModuleVariants('collab.stream.zoom', [
+  { when: { collabStageMin: 5, stageMin: 9 }, weight: 4, text: [
+    `{collab.zoom.open} {collab.zoom.mass} {collab.zoom.chat}`,
+  ]},
+]);
+
+registerModuleVariants('collab.stream.push.bad', [
+  { when: { studentId: 2 }, weight: 4, text: [
+    `{collab.push.bad.open} {collab.push.bad.recover}`,
+  ]},
+]);
+
+registerModuleVariants('collab.stream.crash', [
+  { when: { collabStageMin: 3 }, weight: 3, text: [
+    `{collab.crash.open} {collab.crash.gain}`,
+  ]},
+]);
+
+registerModuleVariants('collab.stream.chat', [
+  { when: { collabStageMin: 4 }, weight: 3, text: [
+    `{collab.chat.open} {collab.chat.wren} {collab.chat.bump}`,
+  ]},
+]);
+
 registerModuleVariants('collab.stream.reveal.kylie', [
   { when: { stageMin: 7 }, weight: 3, text: [
     `{collab.reveal.open} {collab.reveal.kylie.body} {collab.reveal.kylie.chat}`,
