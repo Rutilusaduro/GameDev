@@ -51,6 +51,7 @@ const POOLS = {
   collabStream: 'collabStream.v2.depth',
   recordingSession: 'recordingSession.v2.depth',
   eatingContest: 'eatingContest.v2.depth',
+  sumoMatch: 'sumoMatch.v2.depth',
   wifeLessons: 'wifeLessons.v2.depth',
   wifeLessonsTalk: 'wifeLessonsTalk.v2.depth',
   homeroom: 'homeroom.v2.depth',

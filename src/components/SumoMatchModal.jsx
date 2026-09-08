@@ -2,17 +2,19 @@
 // SUMO MATCH — Mini-game modal
 // ═══════════════════════════════════════════════════════════════
 import { C } from '../styles.js';
-import { SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_CORNER_FEED, SUMO_MATCH_AFTERMATH, SUMO_PAYOFF_TEXT } from '../gameData/miniGames.js';
+import { SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_CORNER_FEED } from '../gameData/miniGames.js';
 import { getStage } from '../gameData/stages.js';
+import { renderSumoAftermath, renderSumoPayoff } from '../textEngine/scenes/sumoMatch/index.js';
 
-export function SumoMatchModal({ sumoMatchState, students, sumoPlayMove, sumoCornerFeed, sumoStartNextBout, setSumoMatchState, closeSumoMatch, dismissSumoPopup }){
+export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMove, sumoCornerFeed, sumoStartNextBout, setSumoMatchState, closeSumoMatch, dismissSumoPopup }){
         const{studentId,stageIdx,oppLbs,ringPos,yourBalance,oppBalance,yourBouts,oppBouts,gainAccum,telegraph,exchangeLine,phase,popupText,fillRingUsed}=sumoMatchState;
         const s=students.find(st=>st.id===studentId); if(!s) return null;
         const won=yourBouts>oppBouts;
         const markerPct=Math.max(0,Math.min(100,(ringPos+100)/2));
         const feed=SUMO_CORNER_FEED[stageIdx]||SUMO_CORNER_FEED[0];
         const isBlob=getStage(s.lbs).id>=10;
-        const payoffText=SUMO_PAYOFF_TEXT[stageIdx]?.(gainAccum)||`${Math.round(gainAccum)} pounds added to your frame since you stepped onto the dohyo. You can feel it. More.`;
+        const payoffText=renderSumoPayoff(stageIdx,s,gainAccum,week);
+        const aftermathText=renderSumoAftermath(stageIdx,s,gainAccum,won,oppLbs,week);
         return(
           <div style={{...C.overlay,zIndex:1200}}>
             <div style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#140404,#1f0808,#140404)",border:"1px solid #80303050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
@@ -101,7 +103,7 @@ export function SumoMatchModal({ sumoMatchState, students, sumoPlayMove, sumoCor
               {/* AFTERMATH PHASE */}
               {phase==='aftermath'&&(<>
                 <div style={{fontSize:12,color:"#e0b8a8",lineHeight:1.9,marginBottom:16,fontStyle:"italic"}}>
-                  {SUMO_MATCH_AFTERMATH[stageIdx]?.(s,gainAccum,won,oppLbs)||''}
+                  {aftermathText}
                 </div>
                 <button style={{...C.btn("#7a2018"),width:"100%"}} onClick={()=>setSumoMatchState(prev=>({...prev,phase:'scoreboard'}))}>
                   📊 See the Result

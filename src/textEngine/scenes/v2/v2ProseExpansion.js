@@ -466,6 +466,26 @@ registerPool('eatingContest.v2.depth', [
     'The table is the arena. Appetite is the weapon. Weight is the trophy.',
   ]},
 ]);
+registerPool('sumoMatch.v2.depth', [
+  { when: { sumoStage: [5] }, text: [
+    'Invitational dohyo — the ring was not built for a body your size, and that is the point.',
+    'Keiko trained a year to feel what mass at this scale does to clay and crowd alike.',
+  ]},
+  { when: { sumoStage: [3, 4] }, text: [
+    'National circuit heat — belly against belly, the tawara deciding who owns the future.',
+    'Dana Mercer is the wall; you are the tide. The dohyo measures which force wins.',
+  ]},
+  { when: { sumoStage: [1, 2] }, text: [
+    'Regional sumo — chanko in the corner, weight in the stance, veteran craft vs growing mass.',
+    'Every bout feeds the next: eat heavier, push harder, let the scale write the strategy.',
+  ]},
+  { when: {}, text: [
+    'Dohyo clay under wide feet — tachi-ai, telegraph, the pleasure of mass made sport.',
+    'Corner chanko between bouts: fuel turned into force, belly turned into leverage.',
+    'Dana sets her feet. You set yours. The crowd holds its breath at the contact.',
+    'Sumo as growth ritual — heavier wins, and you intend to keep winning.',
+  ]},
+]);
 registerPool('wifeLessonsTalk.v2.depth', [
   { when: { wlStage: [6, 7, 8] }, text: [
     'The conversation settles warm as dough — mothers and daughters speaking appetite like scripture.',

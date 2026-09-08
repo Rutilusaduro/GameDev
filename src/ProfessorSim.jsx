@@ -12,7 +12,7 @@ import { getPlayerPrefs, toggleInstantText } from './gameData/playerPrefs.js';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
-import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
+import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
 import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
@@ -115,6 +115,15 @@ import {
   renderContestWeighIn2,
   renderContestPayoff,
 } from './textEngine/scenes/eatingContest/index.js';
+import {
+  renderSumoOpening,
+  renderSumoExchangeLine,
+  renderSumoBoutWon,
+  renderSumoBoutLost,
+  renderSumoFillRing,
+  renderSumoCornerFeed,
+  renderSumoNextBoutLine,
+} from './textEngine/scenes/sumoMatch/index.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
@@ -5285,7 +5294,7 @@ export default function ProfessorSim(){
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const oppLbs=SUMO_RIVAL_WEIGHTS[stageIdx]||340;
     const {move,telegraph}=pickOppMove(0,100);
-    setSumoMatchState({studentId,stageIdx,oppLbs,ringPos:0,yourBalance:100,oppBalance:100,yourBouts:0,oppBouts:0,gainAccum:0,oppMove:move,telegraph,exchangeLine:`The first tachi-ai. You square up against ${SUMO_RIVAL_NAME} — ${oppLbs} pounds of veteran across the line from you. The crowd settles. Choose your opening.`,phase:'match',popupText:null,phaseAfterPopup:null,fillRingUsed:false});
+    setSumoMatchState({studentId,stageIdx,oppLbs,ringPos:0,yourBalance:100,oppBalance:100,yourBouts:0,oppBouts:0,gainAccum:0,oppMove:move,telegraph,exchangeLine:renderSumoOpening(stageIdx,s,oppLbs,week),phase:'match',popupText:null,phaseAfterPopup:null,fillRingUsed:false});
     setEvolvedEventState(null);
   };
 
@@ -5298,7 +5307,7 @@ export default function ProfessorSim(){
       if(st.fillRingUsed) return;
       const yourBouts=st.yourBouts+1;
       const matchOver=yourBouts>=2;
-      const fillText=SUMO_FILL_RING_TEXT[st.stageIdx]||`You expand completely into the ring. Your opponent steps outside. Bout to you.`;
+      const fillText=renderSumoFillRing(st.stageIdx,s,week);
       setSumoMatchState({...st,ringPos:100,yourBouts,fillRingUsed:true,popupText:fillText,phaseAfterPopup:matchOver?'aftermath':'interbout'});
       return;
     }
@@ -5317,17 +5326,17 @@ export default function ProfessorSim(){
     let oppStumbleNote='';
     if(oppBalance<=0){ ringPos+=25; oppBalance=30; oppStumbleNote=` Dana's footing goes — she lurches, and you take the free ground.`; }
     const bucket=SUMO_TAG_BUCKET[tag]||'clash';
-    const line=((SUMO_EXCHANGE_LINES[bucket]||SUMO_EXCHANGE_LINES.clash)[st.stageIdx]||'')+oppStumbleNote;
+    const line=renderSumoExchangeLine(bucket,st.stageIdx,s,week,oppStumbleNote);
     if(ringPos>=100){
       const yourBouts=st.yourBouts+1;
       const matchOver=yourBouts>=2;
-      setSumoMatchState({...st,ringPos:100,yourBalance,oppBalance,yourBouts,exchangeLine:line,popupText:SUMO_BOUT_WON[st.stageIdx],phaseAfterPopup:matchOver?'aftermath':'interbout'});
+      setSumoMatchState({...st,ringPos:100,yourBalance,oppBalance,yourBouts,exchangeLine:line,popupText:renderSumoBoutWon(st.stageIdx,s,week),phaseAfterPopup:matchOver?'aftermath':'interbout'});
       return;
     }
     if(ringPos<=-100){
       const oppBouts=st.oppBouts+1;
       const matchOver=oppBouts>=2;
-      setSumoMatchState({...st,ringPos:-100,yourBalance,oppBalance,oppBouts,exchangeLine:line,popupText:SUMO_BOUT_LOST[st.stageIdx],phaseAfterPopup:matchOver?'aftermath':'interbout'});
+      setSumoMatchState({...st,ringPos:-100,yourBalance,oppBalance,oppBouts,exchangeLine:line,popupText:renderSumoBoutLost(st.stageIdx,s,week),phaseAfterPopup:matchOver?'aftermath':'interbout'});
       return;
     }
     const {move,telegraph}=pickOppMove(ringPos,oppBalance);
@@ -5337,17 +5346,20 @@ export default function ProfessorSim(){
   const sumoCornerFeed=()=>{
     if(!sumoMatchState) return;
     const st=sumoMatchState;
+    const s=students.find(x=>x.id===st.studentId);
     const feed=SUMO_CORNER_FEED[st.stageIdx]||SUMO_CORNER_FEED[0];
     setStudents(prev=>prev.map(x=>x.id===st.studentId?processStudentGain(x,feed.lbs,0):x));
-    setSumoMatchState({...st,gainAccum:st.gainAccum+feed.lbs,popupText:feed.text,phaseAfterPopup:'nextbout'});
+    setSumoMatchState({...st,gainAccum:st.gainAccum+feed.lbs,popupText:s?renderSumoCornerFeed(st.stageIdx,s,week):feed.text,phaseAfterPopup:'nextbout'});
   };
 
   const sumoStartNextBout=()=>{
     setSumoMatchState(prev=>{
       if(!prev) return null;
+      const s=students.find(x=>x.id===prev.studentId);
       const {move,telegraph}=pickOppMove(0,100);
       const boutNum=prev.yourBouts+prev.oppBouts+1;
-      return {...prev,ringPos:0,yourBalance:100,oppBalance:100,oppMove:move,telegraph,exchangeLine:`Bout ${boutNum}. You square up at the center again. ${SUMO_RIVAL_NAME} sets her feet across from you.`,phase:'match',popupText:null,phaseAfterPopup:null,fillRingUsed:false};
+      const exchangeLine=s?renderSumoNextBoutLine(boutNum,prev.stageIdx,s,week,false):`Bout ${boutNum}. You square up at the center again. ${SUMO_RIVAL_NAME} sets her feet across from you.`;
+      return {...prev,ringPos:0,yourBalance:100,oppBalance:100,oppMove:move,telegraph,exchangeLine,phase:'match',popupText:null,phaseAfterPopup:null,fillRingUsed:false};
     });
   };
 
@@ -5360,7 +5372,9 @@ export default function ProfessorSim(){
       if(next==='nextbout'){
         const {move,telegraph}=pickOppMove(0,100);
         const boutNum=prev.yourBouts+prev.oppBouts+1;
-        return {...prev,popupText:null,phaseAfterPopup:null,phase:'match',ringPos:0,yourBalance:100,oppBalance:100,oppMove:move,telegraph,exchangeLine:`Bout ${boutNum}. You return to center heavier than you left it. Dana sets her feet across from you.`};
+        const s=students.find(x=>x.id===prev.studentId);
+        const exchangeLine=s?renderSumoNextBoutLine(boutNum,prev.stageIdx,s,week,true):`Bout ${boutNum}. You return to center heavier than you left it. ${SUMO_RIVAL_NAME} sets her feet across from you.`;
+        return {...prev,popupText:null,phaseAfterPopup:null,phase:'match',ringPos:0,yourBalance:100,oppBalance:100,oppMove:move,telegraph,exchangeLine};
       }
       return {...prev,popupText:null,phaseAfterPopup:null};
     });
@@ -9001,7 +9015,7 @@ export default function ProfessorSim(){
       {lilithHuntState&&<LilithHuntModal lilithHuntState={lilithHuntState} students={students} setLilithHuntState={setLilithHuntState} navigateHunt={navigateHunt} deliveryScene={deliveryScene} closeHunt={closeHunt} approachMan={approachMan} consumeMan={consumeMan} encounterSetMode={encounterSetMode} makeReply={makeReply} makeSeduction={makeSeduction}/>}
 
       {/* ── SUMO MATCH MINI-GAME MODAL ── */}
-      {sumoMatchState&&<SumoMatchModal sumoMatchState={sumoMatchState} students={students} sumoPlayMove={sumoPlayMove} sumoCornerFeed={sumoCornerFeed} sumoStartNextBout={sumoStartNextBout} setSumoMatchState={setSumoMatchState} closeSumoMatch={closeSumoMatch} dismissSumoPopup={dismissSumoPopup}/>}
+      {sumoMatchState&&<SumoMatchModal sumoMatchState={sumoMatchState} students={students} week={week} sumoPlayMove={sumoPlayMove} sumoCornerFeed={sumoCornerFeed} sumoStartNextBout={sumoStartNextBout} setSumoMatchState={setSumoMatchState} closeSumoMatch={closeSumoMatch} dismissSumoPopup={dismissSumoPopup}/>}
 
       {/* ── FEEDEE CREATOR: COLLAB PARTNER PICKER ── */}
       {collabPartnerPicker&&<CollabPartnerPicker collabPartnerPicker={collabPartnerPicker} setCollabPartnerId={setCollabPartnerId} setCollabPartnerPicker={setCollabPartnerPicker} setEvolvedEventState={setEvolvedEventState} students={students}/>}

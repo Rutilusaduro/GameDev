@@ -25,6 +25,7 @@
 | Collab stream V2 | ✅ action popups + legacy payoff/stageup depth |
 | Recording session V2 | ✅ filming bridge + legacy depth wrappers |
 | Eating contest V2 | ✅ food/action/devour/weigh-in/payoff depth |
+| Sumo match V2 | ✅ exchange/bout/corner/aftermath/payoff depth |
 | Interior self-obs | ✅ talk check-in + eating |
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ `renderOppositionLine` + endgame |
@@ -37,6 +38,7 @@
 - `src/views/SpiritHubView.jsx` — central V2 nav
 - `src/textEngine/scenes/collabStream/` — collab stream engine bridge
 - `src/textEngine/scenes/eatingContest/` — competitive circuit contest bridge
+- `src/textEngine/scenes/sumoMatch/` — sumo match engine bridge
 - `src/textEngine/scenes/stream/liveBridge.js` — Destiny streaming live depth
 
 ## Verification
@@ -52,6 +54,5 @@ npm run build       # production build
 1. Mass legacy prose sweep (~35k scene lines — depth layer is additive, not full rewrite)
 2. Monolith decomposition (~144 text:lint flags — homeroom/cultivator/settling)
 3. Unique per-girl art beyond procedural pixel silhouettes
-4. Sumo mini-game bridge (same pattern as contest/recording)
-5. Opposition agenda/hearing prose expansion
-6. Completion audit before marking goal done
+4. Opposition agenda/hearing prose expansion
+5. Completion audit before marking goal done
