@@ -32,6 +32,7 @@ import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 import { DossierPanel } from '../components/DossierPanel.jsx';
 import { StudentPortrait } from '../components/StudentPortrait.jsx';
 import { EchoArchivePanel } from '../components/v2/V2Modals.jsx';
+import { canTriggerDream } from '../gameData/v2/appetiteDreams.js';
 import { useEffect, useState } from 'react';
 
 export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openDream, openEchoReplay, v2State, ownedSkills, ownedClassSkills, onEchoResonate, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, fireAscensionAbility, openAscensionCeremony, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState, dossierOpen, setDossierOpen }){
@@ -981,13 +982,17 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                           🌒 Inhabit Body
                         </button>
                       )}
-                      {(ownedSkills?.dream_walk||0)>=1&&(s.corruption||0)>=40&&(
-                        <button type="button" style={{...C.btn('#3060a0'),flex:'1 1 140px',fontSize:11,opacity:ap<2?0.45:1}}
-                          disabled={ap<2}
-                          onClick={()=>openDream?.(s)}>
-                          💤 Walk Her Dream
-                        </button>
-                      )}
+                      {(ownedSkills?.dream_walk||0)>=1&&(s.corruption||0)>=40&&getStage(s.lbs).id>=2&&(()=>{
+                        const dreamCheck=canTriggerDream(s,{ownedSkills,ownedClassSkills:ownedClassSkills||{},dreamsState:v2State?.dreams,week,manual:true});
+                        return (
+                          <button type="button" style={{...C.btn('#3060a0'),flex:'1 1 140px',fontSize:11,opacity:!dreamCheck.ok||ap<2?0.45:1}}
+                            disabled={!dreamCheck.ok||ap<2}
+                            title={!dreamCheck.ok?dreamCheck.reason:undefined}
+                            onClick={()=>dreamCheck.ok&&openDream?.(s)}>
+                            💤 Walk Her Dream
+                          </button>
+                        );
+                      })()}
                     </div>
                     {(ownedSkills?.memory_palace||0)>=1&&(
                       <div>

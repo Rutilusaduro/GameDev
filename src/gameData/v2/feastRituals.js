@@ -38,7 +38,7 @@ export const FEAST_RITUALS = [
     tier: 3,
     label: 'Sacred Gluttony',
     icon: '🔥',
-    minStudents: 5,
+    minStudents: 6,
     maxStudents: 8,
     apCost: 4,
     caloriesEach: 3200,

@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { C } from '../../styles.js';
 import { FEAST_RITUALS, getAvailableRituals } from '../../gameData/v2/feastRituals.js';
-import { DREAM_CHOICES, pickDreamScenario } from '../../gameData/v2/appetiteDreams.js';
+import { DREAM_CHOICES, pickDreamScenario, DREAM_SCENARIOS } from '../../gameData/v2/appetiteDreams.js';
 import { ECHO_TYPES, echoDepthTier } from '../../gameData/v2/bodyEcho.js';
 import { createContext } from '../../textEngine/engine.js';
 import { renderRitual } from '../../textEngine/scenes/v2/rituals/index.js';
@@ -69,9 +69,12 @@ export function FeastRitualModal({ students, ownedSkills, ownedClassSkills, onRu
   );
 }
 
-export function DreamModal({ student, onChoice, onClose }) {
-  const [phase, setPhase] = useState('open');
-  const [scenario, setScenario] = useState(null);
+export function DreamModal({ student, presetScenarioId, lucidUnlocked, onChoice, onClose }) {
+  const [phase, setPhase] = useState(presetScenarioId ? 'dream' : 'open');
+  const [scenario, setScenario] = useState(() => {
+    if (!presetScenarioId || !student) return null;
+    return DREAM_SCENARIOS.find((d) => d.id === presetScenarioId) || null;
+  });
   const ctx = createContext({ subject: student });
 
   const startDream = () => {
@@ -98,6 +101,9 @@ export function DreamModal({ student, onChoice, onClose }) {
         )}
         {phase === 'dream' && scenario && (
           <>
+            {lucidUnlocked && (
+              <p style={{ fontSize: 10, color: '#90c8e8', marginBottom: 8 }}>Lucid dream — you steer the outcome.</p>
+            )}
             <p style={{ fontSize: 12, lineHeight: 1.6, color: '#b0c0d8', marginBottom: 12 }}>
               {renderDreamScenario(scenario.id, ctx)}
             </p>

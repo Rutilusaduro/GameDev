@@ -3,7 +3,8 @@
 // ═══════════════════════════════════════════════════════════════
 import { useState } from 'react';
 import { C } from '../styles.js';
-import { getResonanceTier } from '../gameData/v2/cravingResonance.js';
+import { getResonanceTier, getCombinedClassLbs } from '../gameData/v2/cravingResonance.js';
+import { canTriggerDream } from '../gameData/v2/appetiteDreams.js';
 import { getAvailableRituals } from '../gameData/v2/feastRituals.js';
 import { StudentPortrait } from '../components/StudentPortrait.jsx';
 
@@ -24,7 +25,7 @@ export function SpiritHubView({
   const [linkPickA, setLinkPickA] = useState(null);
   const visible = students.filter((s) => !s.hidden);
   const links = v2State?.resonance?.links || [];
-  const tier = getResonanceTier(links.length);
+  const tier = getResonanceTier(links.length, getCombinedClassLbs(students));
   const rituals = getAvailableRituals({ ownedSkills, ownedClassSkills, students });
   const hasSpiritRide = (ownedSkills?.spirit_ride || 0) >= 1;
   const hasHungerWeb = (ownedSkills?.hunger_web || 0) >= 1;

@@ -210,11 +210,14 @@ import {
   handleFeedResonancePulse, captureStageUpEcho, captureWeighInEcho, captureFeedEcho,
   handleEchoReplay, runWeeklyV2Events, captureEvolutionEcho,
   captureDinnerUnbuttonEcho, captureImmobilityEcho, captureCorruptionTierEcho,
+  applyResonanceSurgeBonus,
 } from './gameData/v2/handlers.js';
 import { echoDepthTier } from './gameData/v2/bodyEcho.js';
 import { renderEchoReplay } from './textEngine/scenes/v2/echo/index.js';
+import { renderResonanceLink } from './textEngine/scenes/v2/resonance/index.js';
 import { appendV2Depth } from './textEngine/scenes/v2/depthRenderer.js';
-import { createInitialV2State } from './gameData/v2/state.js';
+import { createInitialV2State, V2_CONFIG } from './gameData/v2/state.js';
+import { canTriggerDream } from './gameData/v2/appetiteDreams.js';
 import './textEngine/scenes/v2/index.js';
 import { ClassroomView } from './views/ClassroomView.jsx';
 import { StudentDetailView } from './views/StudentDetailView.jsx';
@@ -476,6 +479,7 @@ export default function ProfessorSim(){
   const [embodimentStudent,setEmbodimentStudent]=useState(null);
   const [feastRitualOpen,setFeastRitualOpen]=useState(false);
   const [dreamStudent,setDreamStudent]=useState(null);
+  const [dreamPresetScenario,setDreamPresetScenario]=useState(null);
   const [echoReplay,setEchoReplay]=useState(null);
   const v2 = v2State || createInitialV2State();
   // professorProfile lives on player object
@@ -1713,6 +1717,27 @@ export default function ProfessorSim(){
       });
       if(found.length) setTimeout(()=>push(`🎒 Pantry restocked: ${found.map(i=>`${i.emoji} ${i.label}`).join(", ")}`),100);
     }
+    // ── V2.0 pre-digest weekly — resonance bonus/surge, embodiment reset ──
+    const v2Weekly=runWeeklyV2Events(v2,updated,ownedSkills,week);
+    const nextV2State=v2Weekly.v2State;
+    if(v2Weekly.passiveStudents) updated=v2Weekly.passiveStudents;
+    for(const msg of v2Weekly.messages){
+      if(msg.type==='surge'&&msg.applySurge){
+        updated=applyResonanceSurgeBonus(updated,nextV2State.resonance);
+      }
+    }
+    setV2State(nextV2State);
+    v2Weekly.messages.forEach((msg,i)=>{
+      if(msg.type==='passive') setTimeout(()=>push(`🔗 Resonance ${msg.tier} — class appetite +${msg.bonus}.`),160+i*40);
+      if(msg.type==='surge') setTimeout(()=>push(`🔗 Resonance surge — ${msg.text}`),200+i*50);
+      if(msg.type==='dream'&&msg.interactive){
+        const ds=updated.find(s=>s.id===msg.studentId);
+        if(ds) setTimeout(()=>{
+          setDreamPresetScenario(msg.scenarioId);
+          setDreamStudent(ds);
+        },420+i*120);
+      }
+    });
     // ── WEEKLY DIGESTION: convert this week's fed calories into weight ──
     const digestLines=[];
     const digestGrowthEvents=[];
@@ -1725,7 +1750,11 @@ export default function ProfessorSim(){
         weekUsed:weekUsedFromStudent(s),
       };
       const textOpts=digestTextSession;
-      const d=digestStudent(s);
+      const d=digestStudent(
+        s.embodimentEchoWeek===newWeek
+          ? { ...s, weeklyDigestMult: Math.max(s.weeklyDigestMult || 1, V2_CONFIG.embodimentEchoDigestMult) }
+          : s,
+      );
       const oldStageId=getStage(s.lbs).id;
       const preLbs=s.lbs;
       let ns=s;
@@ -1746,6 +1775,7 @@ export default function ProfessorSim(){
       if(d.lbsGained>0||capacityGained>0){
         digestLines.push(`${ns.name} +${d.lbsGained} lbs${d.stuffed?" · stuffed all week":""}${capacityGained>0?` · capacity +${capacityGained}`:""}`);
       }
+      if(s.embodimentEchoWeek===newWeek) ns={...ns,embodimentEchoWeek:undefined};
       if(d.lbsGained>0&&isSlenderEligible(ns)){
         const slenderLine=renderSlenderScene(ns,week,{weekGainLbs:d.lbsGained,...textOpts});
         if(slenderLine) setTimeout(()=>push(`✨ ${slenderLine}`),220);
@@ -2126,16 +2156,7 @@ export default function ProfessorSim(){
         };
       });
     }
-    // V2.0 weekly events — resonance surge, dreams, embodiment reset
-    const v2Weekly=runWeeklyV2Events(v2,updated,ownedSkills,newWeek);
-    setV2State(v2Weekly.v2State);
-    v2Weekly.messages.forEach((msg,i)=>{
-      if(msg.type==='surge') setTimeout(()=>push(`🔗 Resonance surge — ${msg.text}`),200+i*50);
-      if(msg.type==='dream'){
-        const ds=updated.find(s=>s.id===msg.studentId);
-        if(ds) setTimeout(()=>push(`💤 ${ds.name} dreamed of appetite.`),220+i*50);
-      }
-    });
+    // V2 weekly events handled pre-digest above
   };
 
   // ── EP2: EVOLUTION HANDLERS ────────────────────────────────────
@@ -6310,9 +6331,17 @@ export default function ProfessorSim(){
     push(`🌒 ${act.label} — warmth spreads through ${s.name}.`);
   };
   const runEmbodimentRelease=()=>{
-    const result=handleEmbodimentRelease(v2);
+    const activeId=v2.embodiment?.activeStudentId;
+    const active=students.find(st=>st.id===activeId);
+    const result=handleEmbodimentRelease(v2,week);
     setV2State(result.v2State);
-    push('🌒 You return to the professor\'s body.');
+    if(result.echoStudentId!=null){
+      setStudents(prev=>prev.map(st=>st.id===result.echoStudentId?{
+        ...st,
+        embodimentEchoWeek:result.echoDigestWeek,
+      }:st));
+    }
+    push(`🌒 You return to the professor's body.${active?' Her appetite will echo into next week.':''}`);
   };
   const runResonanceLink=(aId,bId)=>{
     const result=handleResonanceLink(aId,bId,students,v2,ownedSkills,ownedClassSkills||{});
@@ -6320,8 +6349,17 @@ export default function ProfessorSim(){
     if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
     setAp(a=>a-result.apCost);
     setV2State(result.v2State);
+    if(result.relPatches?.length){
+      setStudents(prev=>prev.map(st=>{
+        const p=result.relPatches.find(x=>x.id===st.id);
+        if(!p) return st;
+        return {...st,relationship:Math.max(0,Math.min(100,(st.relationship||0)+(p.relDelta||0)))};
+      }));
+    }
     const a=students.find(s=>s.id===aId), b=students.find(s=>s.id===bId);
-    push(`🔗 ${a?.name} ↔ ${b?.name} — appetites linked.`);
+    const linkCtx=createContext({ subject:a, ref:b });
+    const linkProse=renderResonanceLink(linkCtx);
+    push(`🔗 ${a?.name} ↔ ${b?.name} — appetites linked.${linkProse?` ${linkProse.slice(0,100)}`:''}`);
   };
   const runFeastRitual=(ritualId,studentIds,text)=>{
     const result=handleRitual(ritualId,studentIds,{students,ownedSkills,ownedClassSkills:ownedClassSkills||{},week,v2State:v2});
@@ -6340,10 +6378,29 @@ export default function ProfessorSim(){
       };
     }));
     push(`🕯️ Feast ritual complete.${text?` ${text.slice(0,120)}...`:''}`);
+    if(result.spiritFavor){
+      setSpiritFavor(f=>(f||0)+result.spiritFavor);
+      push(`✨ Sacred gluttony — spirit favor +${result.spiritFavor}.`);
+    }
     setFeastRitualOpen(false);
   };
   const runDream=(s,scenario,choice,wakeText)=>{
-    const result=handleDreamChoice(scenario,choice,s,v2,week);
+    const manual=!dreamPresetScenario;
+    if(manual){
+      const check=canTriggerDream(s,{ownedSkills,ownedClassSkills:ownedClassSkills||{},dreamsState:v2.dreams,week,manual:true});
+      if(!check.ok){ push(`⚠️ ${check.reason}`); setDreamStudent(null); return; }
+      if(ap<(check.apCost||0)){ push(`⚠️ Need ${check.apCost} AP`); setDreamStudent(null); return; }
+      setAp(a=>a-(check.apCost||0));
+    }
+    const lucid=v2.dreams?.lucidUnlocked;
+    const mult=lucid?1.2:1;
+    const boostedChoice={
+      ...choice,
+      calories:Math.round((choice.calories||0)*mult),
+      rel:Math.round((choice.rel||0)*mult),
+      corruption:Math.round((choice.corruption||0)*mult),
+    };
+    const result=handleDreamChoice(scenario,boostedChoice,s,v2,week);
     setV2State(result.v2State);
     setStudents(prev=>prev.map(st=>{
       if(st.id!==s.id) return st;
@@ -6354,8 +6411,9 @@ export default function ProfessorSim(){
         corruption:Math.min(100,(st.corruption||0)+(result.corruption||0)),
       };
     }));
-    push(`💤 ${s.name} wakes from the dream.${wakeText?` ${wakeText.slice(0,80)}`:''}`);
+    push(`💤 ${s.name} wakes from the dream.${wakeText?` ${wakeText.slice(0,80)}`:''}${lucid?' (lucid)':''}`);
     setDreamStudent(null);
+    setDreamPresetScenario(null);
   };
   const runEchoResonate=(echo)=>{
     const result=handleEchoResonate(echo.id,v2,ownedSkills,ownedClassSkills||{});
@@ -9155,8 +9213,10 @@ export default function ProfessorSim(){
       {dreamStudent&&(
         <DreamModal
           student={dreamStudent}
+          presetScenarioId={dreamPresetScenario}
+          lucidUnlocked={v2.dreams?.lucidUnlocked}
           onChoice={(scenario,choice,wakeText)=>runDream(dreamStudent,scenario,choice,wakeText)}
-          onClose={()=>setDreamStudent(null)}
+          onClose={()=>{ setDreamStudent(null); setDreamPresetScenario(null); }}
         />
       )}
       {echoReplay&&(

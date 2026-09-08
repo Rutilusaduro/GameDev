@@ -72,11 +72,15 @@ export function pickDreamScenario(student) {
 }
 
 export function recordDream(dreamsState, studentId, week, scenarioId) {
+  const totalDreams = (dreamsState.totalDreams || 0) + 1;
+  const lucidUnlocked = dreamsState.lucidUnlocked
+    || totalDreams >= V2_CONFIG.dreamLucidUnlockCount;
   return {
     ...dreamsState,
     lastDreamWeek: { ...dreamsState.lastDreamWeek, [studentId]: week },
-    totalDreams: (dreamsState.totalDreams || 0) + 1,
+    totalDreams,
     lastScenario: scenarioId,
+    lucidUnlocked,
   };
 }
 

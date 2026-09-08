@@ -7,6 +7,7 @@ import {
 } from './spiritEmbodiment.js';
 import {
   canCreateLink, createResonanceLink, pulseResonance, shouldResonanceSurge,
+  applyResonancePassiveBonus, applyResonanceSurgeBonus, getCombinedClassLbs, getResonanceTier,
 } from './cravingResonance.js';
 import { canRunRitual, FEAST_RITUALS } from './feastRituals.js';
 import { captureEcho, captureEchoOnce, canResonateEcho, resonateEcho, replayEcho } from './bodyEcho.js';
@@ -16,6 +17,7 @@ import {
 } from './appetiteDreams.js';
 import { renderResonanceSurge } from '../../textEngine/scenes/v2/resonance/index.js';
 import { createContext } from '../../textEngine/engine.js';
+import { V2_CONFIG } from './state.js';
 
 export function resetV2Weekly(v2State) {
   return {
@@ -107,30 +109,32 @@ export function runWeeklyV2Events(v2State, students, ownedSkills, week) {
   let next = resetV2Weekly(v2State);
   const messages = [];
 
+  // Resonance passive bonus — class-wide appetite calories before digest
+  const passive = applyResonancePassiveBonus(students, next.resonance);
+  if (passive.tier.passiveBonus > 0) {
+    messages.push({ type: 'passive', tier: passive.tier.label, bonus: passive.tier.passiveBonus });
+  }
+
   // Resonance surge
-  if (shouldResonanceSurge(next.resonance, week)) {
+  if (shouldResonanceSurge(next.resonance, week, students)) {
     next = {
       ...next,
       resonance: { ...next.resonance, lastSurgeWeek: week },
     };
     const ctx = createContext({ group: students.filter((s) => !s.hidden) });
-    messages.push({ type: 'surge', text: renderResonanceSurge(ctx) });
+    messages.push({ type: 'surge', text: renderResonanceSurge(ctx), applySurge: true });
   }
 
-  // Weekly dream rolls
+  // Weekly dream rolls — queue interactive dreams (resolved when player chooses)
   const dreamIds = rollWeeklyDreams(students, next.dreams, ownedSkills, week);
   for (const id of dreamIds) {
     const s = students.find((st) => st.id === id);
     if (!s) continue;
     const scenario = pickDreamScenario(s);
-    next = {
-      ...next,
-      dreams: recordDream(next.dreams, id, week, scenario.id),
-    };
-    messages.push({ type: 'dream', studentId: id, scenarioId: scenario.id });
+    messages.push({ type: 'dream', studentId: id, scenarioId: scenario.id, interactive: true });
   }
 
-  return { v2State: next, messages };
+  return { v2State: next, messages, passiveStudents: passive.students };
 }
 
 export function handleEmbodimentStart(student, ctx) {
@@ -154,15 +158,29 @@ export function handleEmbodimentAction(action, student, v2State) {
   };
 }
 
-export function handleEmbodimentRelease(v2State) {
-  return { ok: true, v2State: endEmbodiment(v2State) };
+export function handleEmbodimentRelease(v2State, week = 1) {
+  const studentId = v2State.embodiment?.activeStudentId ?? null;
+  return {
+    ok: true,
+    v2State: endEmbodiment(v2State),
+    echoStudentId: studentId,
+    echoDigestWeek: week + 1,
+    echoDigestMult: V2_CONFIG.embodimentEchoDigestMult,
+  };
 }
 
 export function handleResonanceLink(aId, bId, students, v2State, ownedSkills, ownedClassSkills) {
   const check = canCreateLink(aId, bId, students, v2State.resonance, ownedSkills, ownedClassSkills);
   if (!check.ok) return { ok: false, reason: check.reason };
-  const resonance = createResonanceLink(aId, bId, v2State.resonance);
-  return { ok: true, apCost: check.apCost, v2State: { ...v2State, resonance } };
+  const resonance = createResonanceLink(aId, bId, v2State.resonance, students);
+  const relCost = check.relCost || 0;
+  const relPatches = relCost > 0 ? [{ id: aId, relDelta: -relCost }, { id: bId, relDelta: -relCost }] : [];
+  return {
+    ok: true,
+    apCost: check.apCost,
+    relPatches,
+    v2State: { ...v2State, resonance },
+  };
 }
 
 export function handleRitual(ritualId, studentIds, ctx) {
@@ -187,6 +205,7 @@ export function handleRitual(ritualId, studentIds, ctx) {
     ok: true,
     apCost: ritual.apCost,
     effects,
+    spiritFavor: ritualId === 'sacred_gluttony' ? V2_CONFIG.ritualSacredFavor : 0,
     v2State: { ...ctx.v2State, rituals },
   };
 }
@@ -213,15 +232,19 @@ export function handleEchoResonate(echoId, v2State, ownedSkills, ownedClassSkill
   return { ok: true, apCost: check.apCost, moment: check.moment, v2State: { ...v2State, echoes } };
 }
 
+export { applyResonanceSurgeBonus, getCombinedClassLbs, getResonanceTier } from './cravingResonance.js';
+
 export function handleFeedResonancePulse(fedStudentId, calories, students, v2State) {
   const { pulses } = pulseResonance(fedStudentId, calories, students, v2State.resonance);
   if (!pulses.length) return { pulses: [], v2State };
   const totalPulses = (v2State.resonance.totalPulses || 0) + pulses.length;
+  const classLbs = getCombinedClassLbs(students);
+  const tier = getResonanceTier((v2State.resonance.links || []).length, classLbs);
   return {
     pulses,
     v2State: {
       ...v2State,
-      resonance: { ...v2State.resonance, totalPulses },
+      resonance: { ...v2State.resonance, totalPulses, tier: tier.id },
     },
   };
 }

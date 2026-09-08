@@ -6,13 +6,18 @@ export const V2_CONFIG = {
   version: '2.0.0',
   embodimentBaseAp: 2,
   embodimentDiscountAp: 1,
+  embodimentEchoDigestMult: 1.2,
   resonanceLinkAp: 1,
+  resonanceLinkRelCost: 5,
   dreamBaseAp: 2,
+  dreamLucidUnlockCount: 5,
   ritualBaseAp: 2,
+  ritualSacredFavor: 15,
   echoResonateAp: 1,
   maxEmbodimentsPerWeek: 1,
   maxEmbodimentsDeepRide: 2,
-  maxResonanceLinks: 6,
+  maxResonanceLinks: 1,
+  maxResonanceLinksWithBells: 3,
 };
 
 export function createInitialV2State() {
