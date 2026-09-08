@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 settling immobile depth; opposition + full V2 voice prior turns |
+| Legacy talk prose | 🔄 hearing/collab/recording depth wired turn 20; settling + opposition + V2 voice prior |
 
 ## Key Files (V2)
 
@@ -56,6 +56,9 @@
 - `src/textEngine/scenes/growthEvent/growthEventSceneDepth.js` — surge/settle/environment/student depth
 - `src/textEngine/scenes/campusDevice/campusDeviceSceneDepth.js` — campus device encounter/reaction personas
 - `src/textEngine/scenes/opposition/oppositionSceneDepth.js` — agenda/counter/hearing/endgame student+stage depth
+- `src/textEngine/scenes/opposition/oppositionHearingSceneDepth.js` — per-student hearing removal/emergency/verdict depth
+- `src/textEngine/scenes/collabStream/collabStreamSceneDepth.js` — stage-keyed collab reveal/zoom/push/crash depth
+- `src/textEngine/scenes/recordingSession/recordingSessionSceneDepth.js` — per-student recording oneMore take depth
 - `src/textEngine/scenes/settling/settlingSceneDepth.js` — per-student care/socialize/feed/weigh immobility depth
 - `src/textEngine/scenes/v2/studentArchetypeDepth.js` — full 19-student voice on resonance/ritual/dream/echo V2 pools
 
@@ -69,6 +72,6 @@ npm run build       # production build
 
 ## Remaining Toward 2.0
 
-1. Mass legacy prose sweep — settling base pools strong; still open: opposition hearing fragments, device tick base, collab/recording
+1. Mass legacy prose sweep — opposition hearing base fragments, device tick base, collab/recording wrap/payoff pools still open
 2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
 3. Completion audit vs `docs/V2_0_DESIGN.md` — five V2 systems wired ✅; prose depth additive pass ongoing

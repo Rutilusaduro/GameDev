@@ -29,6 +29,7 @@ import './stream/liveBridge.js';
 import './collabStream/index.js';
 import './recordingSession/index.js';
 import './recordingSession/recordingSessionSceneDepth.js';
+import './recordingSession/recordingSessionWrapDepth.js';
 import './eatingContest/index.js';
 import './sumoMatch/index.js';
 import './streamChatIngest.js';

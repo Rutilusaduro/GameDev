@@ -89,6 +89,14 @@ export function renderRecordingOneMoreTake(stageIdx, student, week) {
 }
 
 export function renderRecordingWrapEnding(bestClip, stageIdx, student, week) {
+  const ctx = buildRecordingCtx(student, week, stageIdx, {
+    globals: { takeQuality: bestClip },
+  });
+  const clip = ['good', 'great', 'perfect'].includes(bestClip) ? bestClip : 'good';
+  const fromPool = render(`{recording.wrap.${clip}}`, ctx)?.trim();
+  if (fromPool) {
+    return appendV2Depth(fromPool, 'recordingSession', ctx, 0.3);
+  }
   const endArr = RECORDING_WRAP_ENDINGS[bestClip] || RECORDING_WRAP_ENDINGS.good;
   const endFn = endArr[stageIdx] || endArr[0];
   const raw = resolveLegacy(endFn, student.lbs);
@@ -99,6 +107,11 @@ export function renderRecordingWrapEnding(bestClip, stageIdx, student, week) {
 }
 
 export function renderRecordingPayoff(stageIdx, student, week) {
+  const ctx = buildRecordingCtx(student, week, stageIdx);
+  const fromPool = render('{recording.payoff}', ctx)?.trim();
+  if (fromPool) {
+    return appendV2Depth(fromPool, 'recordingSession', ctx, 0.32);
+  }
   const raw = resolveLegacy(RECORDING_PAYOFF_TEXT[stageIdx], student.lbs);
   return renderRecordingLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.32 });
 }

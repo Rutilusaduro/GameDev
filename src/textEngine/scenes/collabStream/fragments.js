@@ -6,6 +6,7 @@ registerPool('collab.reveal.open', [
   { when: {}, text: [
     'You announce {subject.name}\'s weight on camera — clearly, into the mic.',
     'The number goes live: {subject.name}, {subject.lbs} pounds, no filter.',
+    'You read the scale into the mic. {subject.lbs}. The chat holds its breath one beat.',
   ]},
 ]);
 
@@ -48,6 +49,7 @@ registerPool('collab.reveal.partner.wren', [
   { when: {}, text: [
     'Wren fires immediately: {wrenLine}',
     'The chat message appears at once — {wrenLine}',
+    'Wren types before the echo fades: {wrenLine}',
   ]},
 ]);
 
@@ -79,6 +81,7 @@ registerPool('collab.zoom.mass', [
   { when: {}, text: [
     'At this scale the camera can barely fit them — mass as spectacle, appetite as architecture.',
     'Enormous and unhurried: both women eating like the room belongs to their bellies.',
+    'The frame strains around two bodies at full volume — bellies forward, hunger visible.',
   ]},
 ]);
 
@@ -86,6 +89,7 @@ registerPool('collab.zoom.chat', [
   { when: {}, text: [
     'The chat is saying something. The chat is always saying something. This is what they mean.',
     'Viewer count ticks up. Comments scroll faster than you can read.',
+    'Donations flicker. Regulars translate the moment for newcomers.',
   ]},
 ]);
 
@@ -101,6 +105,7 @@ registerPool('collab.chat.wren', [
   { when: {}, text: [
     'Wren fires a message immediately: *{wrenLine}*',
     'Wren types first, as always: *{wrenLine}*',
+    'The chat pings — Wren: *{wrenLine}*',
   ]},
 ]);
 
@@ -108,6 +113,7 @@ registerPool('collab.chat.bump', [
   { when: {}, text: [
     'The chat picks it up. Regulars explain to newcomers. Newcomers ask questions the regulars answer faster than either streamer can.',
     'The viewer count bumps slightly. Momentum holds.',
+    'Comments accelerate. The room leans in — engagement feeding the feed.',
   ]},
 ]);
 
@@ -115,6 +121,7 @@ registerPool('collab.push.good.open', [
   { when: {}, text: [
     'You push both of them harder — more food, more speed, the camera catching every bite.',
     'More plates, faster pace, both women eating like the chat is daring them.',
+    'You raise the stakes on camera — pace up, portions up, bellies answering.',
   ]},
 ]);
 
@@ -130,6 +137,7 @@ registerPool('collab.push.good.chat', [
   { when: {}, text: [
     'The chat is unanimous: more. More. The viewer count spikes. This is the right call.',
     'Donations jump. Comments demand another course. You deliver.',
+    'Caps lock encouragement. Tips roll in. You keep feeding the moment.',
   ]},
 ]);
 
@@ -137,6 +145,7 @@ registerPool('collab.push.bad.open', [
   { when: {}, text: [
     'You push too hard too fast. {partnerName} slows — genuinely full — and momentum stutters.',
     'The pace breaks. {partnerName} needs a breath the chat can see.',
+    'Too much too soon. {partnerName} pauses mid-bite and the rhythm wobbles.',
   ]},
 ]);
 
@@ -144,6 +153,7 @@ registerPool('collab.push.bad.recover', [
   { when: {}, text: [
     'Quality dips. She recovers and eats again, but the push cost something.',
     'The chat notices the pause. She finds the rhythm again — slower, still eating.',
+    'A breath, a bite, momentum returning — not as fierce, still content.',
   ]},
 ]);
 
@@ -151,6 +161,7 @@ registerPool('collab.crash.open', [
   { when: {}, text: [
     'The stream crashes. Quality hit zero — momentum died, chat thinned, connection dropped.',
     'The feed dies mid-bite. Both of you still at the table when the room goes quiet.',
+    'Connection lost. The table still full. The chat gone cold mid-chew.',
   ]},
 ]);
 
@@ -158,5 +169,6 @@ registerPool('collab.crash.gain', [
   { when: {}, text: [
     'You gained {kylieGain} pounds and {partnerName} gained {partnerGain} pounds. The stream is just over.',
     'Still: +{kylieGain} for {subject.name}, +{partnerGain} for {partnerName}. It happens.',
+    'Stream dead. Gains live: +{kylieGain}, +{partnerGain}. The numbers outlast the feed.',
   ]},
 ]);
