@@ -8,6 +8,7 @@ import { saturationSoftFlavorChance, saturationTravelEventBonus } from './campus
 import { availableSecretsAtNode, isSecretSolved, secretsSolvedCount } from './campusSecrets.js';
 import { getExplorationFind, pickExplorationFind, travelFindPool, formatExplorationGrant } from './campusIngredients.js';
 import { ELARA_ID, getElaraQuest, elaraQuestProgressLine } from './relicHunter.js';
+import { UNLOCK_POOL_IDS } from './spirits.js';
 import { rollVanceCampusEvent, rollPortionSaintEvent, rollAccreditationObserverEvent, rollAsceticGardenProtest, rollMirrorFastEvent, rollLedgerWightEvent } from './oppositionCampus.js';
 import { renderCampusSighting, renderCampusTravelLine, renderCampusFindFlavor } from '../textEngine/scenes/campusExplorationText.js';
 import { renderCampusScene } from '../textEngine/scenes/campus/index.js';
@@ -97,7 +98,7 @@ function pickStudentSighting(students, ctx, rng) {
     if (st.evolvedForm === 'pharmacist') return false;
     return true;
   });
-  if (!visible.length) return [];
+  if (!visible.length) return { lines: [], trustGrants: [] };
 
   if (ctx.lilithUnlocked && rng() < EXPLORATION_CONFIG.lilithSightingChance) {
     const lilith = visible.find(s => s.id === 15);
@@ -107,18 +108,23 @@ function pickStudentSighting(students, ctx, rng) {
       if (sighting) lines.push(sighting);
       const nav = campusNavSceneLine(lilith, ctx);
       if (nav) lines.push(nav);
-      return lines;
+      return { lines, trustGrants: [] };
     }
   }
 
   const who = pick(rng, visible.filter(s => s.id !== 15));
-  if (!who) return [];
+  if (!who) return { lines: [], trustGrants: [] };
   const lines = [];
   const sighting = renderCampusSighting(who, ctx, ctx.nodeId);
   if (sighting) lines.push(sighting);
   const nav = campusNavSceneLine(who, ctx);
   if (nav) lines.push(nav);
-  return lines;
+
+  const trustGrants = [];
+  if (who.lockState === 'locked' && UNLOCK_POOL_IDS.includes(who.id)) {
+    trustGrants.push({ studentId: who.id, amount: 4 + Math.floor(rng() * 4) });
+  }
+  return { lines, trustGrants };
 }
 
 export function buildExplorationContext({
@@ -233,8 +239,9 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
   }
 
   if (rng() < EXPLORATION_CONFIG.studentSightingChance) {
-    const sightingLines = pickStudentSighting(ctx.students, travelCtx, rng);
+    const { lines: sightingLines, trustGrants } = pickStudentSighting(ctx.students, travelCtx, rng);
     if (sightingLines.length) lines.push(...sightingLines);
+    if (trustGrants.length) effects.trustGrants = trustGrants;
   }
 
   if (rng() < EXPLORATION_CONFIG.ingredientFindChance + satTier * 0.04) {

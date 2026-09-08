@@ -31,7 +31,7 @@ import {
 } from './gameData/spirits.js';
 import { getUnlockScene } from './gameData/unlockScenes.js';
 import {
-  applyWeeklyTrustDrip, pickRipeUnlock, ROSTER_TRUST_GATE,
+  applyWeeklyTrustDrip, pickRipeUnlock, ROSTER_TRUST_GATE, grantPassiveTrust,
 } from './gameData/rosterUnlock.js';
 import { renderEmbodiedArrive } from './textEngine/scenes/v2/embodiment/campusWalk.js';
 import { WalletBadge } from './components/WalletBadge.jsx';
@@ -1008,6 +1008,17 @@ export default function ProfessorSim(){
       setOpposition(ledgerFx.opposition);
     }
     if(effects.ingredientGrant||effects.foodGrant) grantExplorationReward({...effects.ingredientGrant,...(effects.foodGrant?{foodId:effects.foodGrant}:{})});
+    if(effects.trustGrants?.length){
+      setStudents(prev=>{
+        let next=prev;
+        for(const g of effects.trustGrants){
+          next=next.map(s=>s.id===g.studentId?grantPassiveTrust(s,g.amount):s);
+        }
+        return next;
+      });
+      const names=effects.trustGrants.map(g=>students.find(s=>s.id===g.studentId)?.name).filter(Boolean);
+      if(names.length) extra.push(`🌒 ${names.join(', ')} felt your attention on campus — spirit trust grows.`);
+    }
     if(Math.random()<CAMPUS_CONFIG.itemFindChance*0.5){
       const item=rollWeeklyItem();
       setInventory(prev=>({...prev,[item.id]:Math.min(INVENTORY_CONFIG.maxStack,(prev[item.id]||0)+1)}));

@@ -71,23 +71,23 @@ registerPool('emb.event.clothes_burst', [
 
 registerPool('emb.event.bully_forcefeed', [
   { when: { corruptionMax: 30 }, text: [
-    'A ring of girls closes in — not cruel, exactly, but certain. "Eat," one says, holding out what they brought. She tries to refuse. They do not accept refusal.',
-    'They corner her with laughter and Tupperware. Every bite is witnessed. Every bite lands.',
+    '{ref.name} closes the ring — not cruel, exactly, but certain. "Eat," she says, holding out what they brought. She tries to refuse. They do not accept refusal.',
+    '{ref.name} corners her with laughter and Tupperware. Every bite is witnessed. Every bite lands.',
   ]},
   { when: {}, text: [
-    '"You\'ve been holding out on us." They push food into her hands, then her mouth — teasing, relentless, delighted by how fast she gives in.',
-    'They feed her like a dare she is already losing. She moans around the fourth bite before shame catches up.',
-    'Laughter, Tupperware, hands on her shoulders. She eats because refusing costs more than obeying.',
+    '"You\'ve been holding out on us," {ref.name} says. They push food into her hands, then her mouth — teasing, relentless, delighted by how fast she gives in.',
+    '{ref.name} feeds her like a dare she is already losing. She moans around the fourth bite before shame catches up.',
+    '{ref.name} and the others pin her shoulders. She eats because refusing costs more than obeying.',
   ]},
 ]);
 
 registerPool('emb.event.npc_stare', [
   { when: { stageMin: 6 }, text: [
-    'Eyes follow her the way eyes follow weather — openly, helplessly. She pretends not to notice and fails.',
-    'A stranger looks twice, then a third time. Her body announces itself without her permission.',
+    'Eyes follow her the way eyes follow weather — openly, helplessly. {ref.name} looks twice, then a third time. She pretends not to notice and fails.',
+    'A stranger looks too long. Her body announces itself without her permission.',
   ]},
   { when: {}, text: [
-    'Someone looks too long. She feels it on her skin like heat.',
+    '{ref.name} looks too long. She feels it on her skin like heat.',
     'A glance catches on her middle and does not let go.',
     'Eyes travel her body the way hands would if politeness allowed.',
   ]},
@@ -95,12 +95,12 @@ registerPool('emb.event.npc_stare', [
 
 registerPool('emb.event.gossip_whisper', [
   { when: { stageMin: 5 }, text: [
-    'Voices dip as she passes, then rise behind her — "did you see," "she\'s really," "I heard she." She keeps walking. Her appetite keeps score.',
+    'Voices dip as she passes — "{ref.name} did you see," "she\'s really," "I heard she." She keeps walking. Her appetite keeps score.',
     'Laughter skitters at her back. She cannot make out every word. She catches enough.',
   ]},
   { when: {}, text: [
     'Whispers stitch the air behind her. She pretends not to hear. Her face warms anyway.',
-    'She catches her name in a sentence that was not meant for her ears.',
+    'She catches her name in a sentence {ref.name} did not mean for her ears.',
     'Laughter follows like a shadow. Her appetite does not care.',
   ]},
 ]);
@@ -135,9 +135,54 @@ registerPool('emb.event.quad_picnic', [
 
 registerPool('emb.event.classmate_sighting', [
   { when: {}, text: [
-    'A classmate spots her across the path — wave, stare, the quick look at her middle. "Hey… you good?" She nods. She is more than good.',
-    'Someone from class calls her name. The spirit prickles: being seen is how reach grows.',
-    'A familiar face clocks the change in her and tries not to show it. She smiles anyway.',
+    '{ref.name} spots her across the path — wave, stare, the quick look at her middle. "Hey… you good?" She nods. She is more than good.',
+    '{ref.name} calls her name. The spirit prickles: being seen is how reach grows.',
+    '{ref.name} clocks the change in her and tries not to show it. She smiles anyway.',
+  ]},
+]);
+
+registerPool('emb.event.gym_scale_shame', [
+  { when: { stageMin: 6 }, text: [
+    'The scale by the lockers groans under her. The sticky note says OUT OF ORDER. It is not. The number climbs and she pretends she did not look.',
+    'She steps on out of habit. The platform dips. Someone behind her inhales. She steps off like the floor burned her.',
+  ]},
+  { when: {}, text: [
+    'The gym scale squeaks a protest she understands. She reads the number once and walks away flushed.',
+    'A locker-room mirror and a scale — twin witnesses. She avoids both and fails at one.',
+    'Someone left protein bars on the scale. She eats one standing there, defiant and embarrassed.',
+  ]},
+]);
+
+registerPool('emb.event.elevator_groan', [
+  { when: { stageMin: 8 }, text: [
+    'The elevator cable complains like a living thing. She fills the car — belly, hips, the soft geography of her — and the floor indicator hesitates between floors.',
+    'One passenger car, one girl, groceries on every shelf of her body. The motor whines. She pretends not to hear.',
+  ]},
+  { when: {}, text: [
+    'The dorm elevator groans when she steps in. She is the reason it groans.',
+    'Mirrored walls show her from every angle. The car sinks half an inch before deciding to rise.',
+    'She rides alone because the weight limit is not a metaphor anymore.',
+  ]},
+]);
+
+registerPool('emb.event.faculty_treats', [
+  { when: {}, text: [
+    'The faculty lounge pastry plate is communal and irresistible. She eats two éclairs before shame arrives with the third.',
+    'Burnt coffee, departmental gossip, and pastries that disappear when she stops pretending restraint.',
+    'A colleague offers the last danish without looking up from grading. She accepts like it is policy.',
+  ]},
+]);
+
+registerPool('emb.event.immobile_anchor', [
+  { when: { stageMin: 10 }, text: [
+    'She cannot leave the room. The world comes to her — platters, containers, friends who know the couch is her country now.',
+    'Furniture groans. Delivery drivers know the room number. She feasts from stillness like a queen in warm clay.',
+    'Movement is memory. Hunger is present tense. Food arrives and she accepts every tribute.',
+  ]},
+  { when: {}, text: [
+    'Anchored in the dorm, she eats what the world brings. The spirit drinks every swallowed warmth.',
+    'She is too vast to walk. Appetite does not need legs.',
+    'The room rearranges around her. Plates find her hands. She does not refuse.',
   ]},
 ]);
 
@@ -151,18 +196,25 @@ const EVENT_POOL = {
   cafeteria_binge: 'emb.event.cafeteria_binge',
   quad_picnic: 'emb.event.quad_picnic',
   classmate_sighting: 'emb.event.classmate_sighting',
+  gym_scale_shame: 'emb.event.gym_scale_shame',
+  elevator_groan: 'emb.event.elevator_groan',
+  faculty_treats: 'emb.event.faculty_treats',
+  immobile_anchor: 'emb.event.immobile_anchor',
 };
 
 function embCtx(student, week, nodeId, opts = {}) {
   const node = CAMPUS_NODES[nodeId] || CAMPUS_NODES.dorms;
+  const ref = opts.ref || opts.witness || null;
   return createContext({
     subject: student,
+    ref,
     week,
     globals: {
       embodiment: true,
       campusLocale: campusNodeToLocale(nodeId),
       campusNodeId: nodeId,
       campusDestination: node.label,
+      witnessName: ref?.name || opts.witnessName || null,
       ...opts.globals,
     },
     ...opts,

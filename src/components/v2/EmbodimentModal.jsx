@@ -4,6 +4,7 @@
 import { useState, useMemo } from 'react';
 import { C } from '../../styles.js';
 import { getAvailableEmbodimentActions } from '../../gameData/v2/spiritEmbodiment.js';
+import { isEmbodiedImmobile } from '../../gameData/v2/embodiedCampus.js';
 import { CAMPUS_NODES } from '../../gameData/campus.js';
 import { createContext } from '../../textEngine/engine.js';
 import {
@@ -75,8 +76,13 @@ export function EmbodimentModal({
     const moveLine = renderEmbodiedMove(student, atNode, toId, week);
     pushLog(moveLine);
     const result = onMove?.(toId);
+    if (result?.error) {
+      pushLog(`⚠️ ${result.error}`);
+      return;
+    }
     if (result?.event) {
-      const prose = renderEmbodiedEvent(result.event.id, student, toId, week);
+      const witness = result.event.witnessStudent || null;
+      const prose = renderEmbodiedEvent(result.event.id, student, toId, week, { ref: witness, witness });
       setPendingEvent({ ...result.event, prose, nodeId: toId });
       pushLog(`⚡ ${result.event.label}`);
       pushLog(prose);
@@ -128,6 +134,11 @@ export function EmbodimentModal({
             <div style={{ marginBottom: 10 }}>
               <CampusMap at={atNode} moveTo={handleMove} showSecretMarkers={false} />
             </div>
+            {isEmbodiedImmobile(student) && (
+              <p style={{ fontSize: 10, color: '#c08060', margin: '0 0 8px', lineHeight: 1.5 }}>
+                Too vast to walk — anchored in place. Use actions and events here.
+              </p>
+            )}
             <p style={{ fontSize: 10, color: '#708878', margin: '0 0 8px', lineHeight: 1.5 }}>
               {node.desc}
             </p>

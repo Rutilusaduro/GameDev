@@ -19,6 +19,7 @@ import { renderResonanceSurge } from '../../textEngine/scenes/v2/resonance/index
 import { createContext } from '../../textEngine/engine.js';
 import {
   canEmbodiedMove,
+  isEmbodiedImmobile,
   rollEmbodiedArrivalEvent,
   applyEmbodiedEvent,
   moveEmbodiment,
@@ -169,8 +170,13 @@ export function handleEmbodimentRelease(v2State, week = 1) {
 }
 
 export function handleEmbodiedMove(student, fromId, toId, v2State, week, { students = [], rng = Math.random } = {}) {
-  if (!canEmbodiedMove(fromId, toId)) return { ok: false, reason: 'Cannot reach that location' };
-  const event = rollEmbodiedArrivalEvent(student, toId, v2State.embodiment, rng);
+  if (!canEmbodiedMove(fromId, toId, student)) {
+    const reason = isEmbodiedImmobile(student)
+      ? 'She cannot leave — too vast to move'
+      : 'Cannot reach that location';
+    return { ok: false, reason };
+  }
+  const event = rollEmbodiedArrivalEvent(student, toId, v2State.embodiment, { students, rng });
   let nextState = moveEmbodiment(v2State, toId);
   return { ok: true, v2State: nextState, event, fromId, toId, week, students };
 }

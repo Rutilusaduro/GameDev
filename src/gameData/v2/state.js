@@ -33,6 +33,7 @@ export function createInitialV2State() {
       walkLog: [],
       eventsSeen: {},
       lastEventKey: null,
+      lastEventStep: 0,
     },
     resonance: {
       links: [], // [{ a, b, strength }]

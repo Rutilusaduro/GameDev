@@ -7,6 +7,8 @@ import { getAvailableEmbodimentActions } from './spiritEmbodiment.js';
 import { grantPassiveTrust } from '../rosterUnlock.js';
 
 export const EMBODIED_START_NODE = 'dorms';
+export const EMBODIED_EVENT_BASE_CHANCE = 0.44;
+export const EMBODIED_EVENT_DRY_SPELL = 3;
 
 /** Special arrival / look-around events while embodied. */
 export const EMBODIED_EVENTS = {
@@ -118,14 +120,74 @@ export const EMBODIED_EVENTS = {
     scrutiny: 0,
     trustNearby: 4,
   },
+  gym_scale_shame: {
+    id: 'gym_scale_shame',
+    label: 'Scale by the Lockers',
+    icon: '⚖️',
+    minStage: 4,
+    nodes: ['gym', 'outdoor_track'],
+    weight: 9,
+    calories: 0,
+    scrutiny: 2,
+    corruption: 3,
+    trustNearby: 0,
+  },
+  elevator_groan: {
+    id: 'elevator_groan',
+    label: 'Elevator Groans',
+    icon: '🛗',
+    minStage: 7,
+    nodes: ['dorms'],
+    weight: 8,
+    calories: 0,
+    scrutiny: 3,
+    trustNearby: 0,
+  },
+  faculty_treats: {
+    id: 'faculty_treats',
+    label: 'Faculty Lounge Treats',
+    icon: '🥐',
+    minStage: 2,
+    nodes: ['faculty_lounge'],
+    weight: 11,
+    calories: 1600,
+    fullness: 35,
+    corruption: 4,
+    rel: 2,
+    scrutiny: 1,
+    trustNearby: 0,
+  },
+  immobile_anchor: {
+    id: 'immobile_anchor',
+    label: 'Anchored in Place',
+    icon: '🛋️',
+    minStage: 10,
+    nodes: ['dorms'],
+    weight: 14,
+    calories: 2400,
+    fullness: 50,
+    corruption: 5,
+    rel: 3,
+    scrutiny: 0,
+    trustNearby: 3,
+  },
 };
 
 const NARROW_NODES = new Set(['lecture_hall', 'library', 'science_wing', 'office', 'dorms']);
+const WITNESS_EVENTS = new Set(['bully_forcefeed', 'npc_stare', 'gossip_whisper', 'classmate_sighting']);
+const BULLY_ARCHETYPES = new Set(['cheerleader', 'sorority', 'athlete']);
+const BULLY_PERSONALITIES = new Set(['commanding', 'competitive', 'social', 'predatory']);
 
-export function canEmbodiedMove(fromId, toId) {
+export function isEmbodiedImmobile(student) {
+  return getStage(student?.lbs ?? 0).id >= 10;
+}
+
+export function canEmbodiedMove(fromId, toId, student = null) {
   const from = CAMPUS_NODES[fromId];
   if (!from || !CAMPUS_NODES[toId]) return false;
-  return from.exits.includes(toId);
+  if (!from.exits.includes(toId)) return false;
+  if (student && isEmbodiedImmobile(student)) return false;
+  return true;
 }
 
 export function embodiedActionsAtNode(student, nodeId, ownedSkills, ownedClassSkills) {
@@ -136,28 +198,73 @@ export function embodiedActionsAtNode(student, nodeId, ownedSkills, ownedClassSk
   });
 }
 
-function eventEligible(def, student, nodeId, seenKey, rng) {
+function isEventEligible(def, student, nodeId, lastEventKey) {
   const stage = getStage(student.lbs).id;
   if (stage < (def.minStage || 0)) return false;
   if (def.maxCorruption != null && (student.corruption || 0) > def.maxCorruption) return false;
   if (def.nodes && !def.nodes.includes(nodeId)) return false;
   if (def.id === 'stuck_door' && !NARROW_NODES.has(nodeId) && stage < 8) return false;
-  if (seenKey && seenKey === `${def.id}:${nodeId}`) return false;
-  return rng() < (def.weight || 8) / 100;
+  if (lastEventKey && lastEventKey === `${def.id}:${nodeId}`) return false;
+  return true;
 }
 
-export function rollEmbodiedArrivalEvent(student, nodeId, embodimentState = {}, rng = Math.random) {
-  const seen = embodimentState.eventsSeen || {};
+function weightedPick(items, weightFn, rng) {
+  const total = items.reduce((sum, item) => sum + weightFn(item), 0);
+  if (total <= 0) return items[Math.floor(rng() * items.length)];
+  let roll = rng() * total;
+  for (const item of items) {
+    roll -= weightFn(item);
+    if (roll <= 0) return item;
+  }
+  return items[items.length - 1];
+}
+
+export function pickEmbodiedWitness(pilot, students, eventId, rng = Math.random) {
+  const pool = students.filter(
+    (s) => s.id !== pilot.id && !s.hidden && s.lockState !== 'locked' && s.id !== 15,
+  );
+  if (!pool.length) return null;
+  if (!WITNESS_EVENTS.has(eventId)) return null;
+
+  if (eventId === 'bully_forcefeed') {
+    const bullies = pool.filter(
+      (s) => BULLY_ARCHETYPES.has(s.archetype) || BULLY_PERSONALITIES.has(s.personality),
+    );
+    const pickFrom = bullies.length ? bullies : pool;
+    return pickFrom[Math.floor(rng() * pickFrom.length)];
+  }
+
+  return pool[Math.floor(rng() * pool.length)];
+}
+
+export function rollEmbodiedArrivalEvent(
+  student,
+  nodeId,
+  embodimentState = {},
+  { students = [], rng = Math.random } = {},
+) {
+  const lastEventStep = embodimentState.lastEventStep ?? 0;
+  const steps = embodimentState.steps || 0;
+  const movesSinceEvent = steps - lastEventStep;
   const seenKey = embodimentState.lastEventKey;
+
   const candidates = Object.values(EMBODIED_EVENTS).filter((def) =>
-    eventEligible(def, student, nodeId, seenKey, rng),
+    isEventEligible(def, student, nodeId, seenKey),
   );
   if (!candidates.length) return null;
-  const pick = candidates[Math.floor(rng() * candidates.length)];
+
+  const chance = movesSinceEvent >= EMBODIED_EVENT_DRY_SPELL ? 0.85 : EMBODIED_EVENT_BASE_CHANCE;
+  if (rng() > chance) return null;
+
+  const pick = weightedPick(candidates, (d) => d.weight || 8, rng);
+  const witness = pickEmbodiedWitness(student, students, pick.id, rng);
+
   return {
     ...pick,
     eventKey: `${pick.id}:${nodeId}`,
-    witnessStudentId: pick.id === 'classmate_sighting' ? null : undefined,
+    witnessStudentId: witness?.id ?? null,
+    witnessName: witness?.name ?? null,
+    witnessStudent: witness ?? null,
   };
 }
 
@@ -214,6 +321,7 @@ export function recordEmbodiedEvent(v2State, eventKey, logLine = '') {
       ...emb,
       eventsSeen,
       lastEventKey: eventKey,
+      lastEventStep: emb.steps || 0,
       walkLog,
     },
   };

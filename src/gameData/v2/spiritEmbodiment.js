@@ -252,6 +252,7 @@ export function startEmbodiment(studentId, v2State) {
       walkLog: [],
       eventsSeen: {},
       lastEventKey: null,
+      lastEventStep: 0,
     },
   };
 }

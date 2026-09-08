@@ -4,6 +4,7 @@ import { registerPool, createContext, render } from '../../../engine.js';
 import { appendV2Depth } from '../depthRenderer.js';
 import './depth.js';
 import './campusWalk.js';
+import './embodiedCampusDepth.js';
 
 // ── emb.enter — slipping inside ───────────────────────────────
 // Shape: FULL SENTENCE
