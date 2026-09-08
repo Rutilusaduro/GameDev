@@ -95,6 +95,12 @@ function withdrawalKey(addiction) {
 }
 
 registerPool('word.hunger', [
+  { when: { addictionLevelMin: 2 },
+    text: (ctx) => {
+      const key = ctx.d.hungerTier >= 4 ? 'starving' : 'craving';
+      return pick(ADDICTED_HUNGER_WORDS[key] || ADDICTED_HUNGER_WORDS.craving);
+    },
+  },
   { when: {},
     text: (ctx) => pick(HUNGER_WORDS[hungerKey(ctx.d.hungerTier)] || HUNGER_WORDS.normal),
   },
@@ -113,6 +119,12 @@ registerPool('word.addictedHunger', [
 ]);
 
 registerPool('word.eating', [
+  { when: { addictionLevelMin: 2 },
+    text: (ctx) => {
+      const key = addictionEatKey(ctx.d.addictionLevel);
+      return key ? pick(ADDICTED_EATING[key]) : pick(ADDICTED_EATING.moderate);
+    },
+  },
   { when: {},
     text: (ctx) => pick(EATING_STYLE[hungerKey(ctx.d.hungerTier)] || EATING_STYLE.normal),
   },
@@ -138,6 +150,9 @@ registerPool('word.withdrawal', [
 ]);
 
 registerPool('word.begging', [
+  { when: { addictionLevelMin: 3 },
+    text: (ctx) => pick(BEGGING_WORDS[beggingKey(ctx.d.addictionLevel, ctx.d.hungerTier)] || BEGGING_WORDS.severe),
+  },
   { when: {},
     text: (ctx) => {
       const key = beggingKey(ctx.d.addictionLevel, ctx.d.hungerTier);

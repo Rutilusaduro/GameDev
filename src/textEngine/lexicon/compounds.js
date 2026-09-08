@@ -49,6 +49,11 @@ registerPool('word.adv.sizeQual.body10', [
 ]);
 
 registerPool('word.sizeCompar.doorframe', [
+  { when: { corruption: [0], shameTierMin: 1 }, text: [
+    'turn sideways and hope nobody is counting',
+    'exhale once, as if the frame might judge',
+    'angle through with practiced embarrassment',
+  ] },
   { when: { stageMin: 6, stageMax: 7 }, text: [
     'turn sideways and commit',
     'exhale once before pressing through',
@@ -68,6 +73,11 @@ registerPool('word.sizeCompar.doorframe', [
 ]);
 
 registerPool('word.sizeCompar.chair', [
+  { when: { corruption: [2] }, text: [
+    'sank with a satisfied creak',
+    'accepted her without the old apology',
+    'held like it was made for this',
+  ] },
   { when: { stageMin: 5, stageMax: 6 }, text: [
     'groaned once and held',
     'sank a fraction lower than designed',
@@ -95,6 +105,11 @@ registerPool('word.sizeCompar.chair', [
 // onto the scale". Stage-gated; no destination built in (unlike word.moveVerb.scale
 // corpus entries that self-carry "to the scale" / "onto the platform").
 registerPool('word.mountVerb.scale', [
+  { when: { corruption: [0], shameTierMin: 1 }, text: [
+    'steps reluctantly',
+    'eases up with visible hesitation',
+    'hoists herself as if the scale might gossip',
+  ]},
   { when: { stageMin: 8, stageMax: 9 }, text: [
     'heaves herself',
     'rolls herself',
@@ -110,6 +125,11 @@ registerPool('word.mountVerb.scale', [
 ]);
 
 registerPool('word.sizeCompar.scale', [
+  { when: { shameTierMin: 2, corruption: [0] }, text: [
+    'creaked like it was confirming her fears',
+    'dipped with a sound she pretends not to hear',
+    'registered her with uncomfortable honesty',
+  ] },
   { when: { stageMin: 4, stageMax: 5 }, text: [
     'flexed slightly under her',
     'dipped with a familiar creak',

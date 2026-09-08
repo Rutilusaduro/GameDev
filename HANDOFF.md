@@ -65,7 +65,7 @@
 | Item | Status | Notes |
 |------|--------|-------|
 | Bespoke hand-drawn sprites | Optional | Design doc specifies procedural pixel silhouettes; implemented |
-| Infra lint warnings (28) | Low | psych-keyed word.*, legacy registerModule, stem dedupe |
+| Infra lint warnings (17) | Low | legacy registerModule (13), dead facts (2), stem dedupe (2) |
 | ~~Keyed cells <3 texts (14)~~ | ✅ Done | `generateKeyedDepth.mjs` + campus.v2.depth padding |
 
 ## Key Files (V2)

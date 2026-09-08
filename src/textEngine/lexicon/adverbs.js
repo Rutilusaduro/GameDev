@@ -34,6 +34,8 @@ registerPool('word.adv.pace', [
 // Post-verb size qualifier
 registerPool('word.adv.sizeQual', [
   { when: {}, text: ['', '', ''] },
+  { when: { corruption: [0], shameTierMin: 2 }, weight: 2,
+    text: ['as if speed might betray her', 'with the carefulness of someone still negotiating'] },
   { when: { stageMin: 5, stageMax: 7 }, requireAbsent: ['size_reminder'],
     consumes: ['size_reminder'],
     text: ['as quickly as her frame allows', 'without hurrying — there is too much to hurry'] },
