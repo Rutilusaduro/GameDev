@@ -86,3 +86,71 @@ const gossipFrags = {
 for (const [key, lines] of Object.entries(gossipFrags)) {
   registerModuleVariants(`set.socialize.gossip.${key}`, [{ when: {}, weight: 3, text: lines }]);
 }
+
+registerModuleVariants('set.socialize.gossip._d16', [
+  { when: {}, weight: 3, text: [
+    `Court from the warm center of the room — you bring news, she weighs it, campus orbits.`,
+    `They call it court. Accurate: verdicts issued from where she rests, immobile and current.`,
+    `News arrives like tribute. She sorts it without moving; the room accepts her answer.`,
+  ]},
+]);
+
+registerModuleVariants('set.socialize.gossip._d17', [
+  { when: {}, weight: 3, text: [
+    `Half the gossip she already has — channels you cannot trace. The rest she processes aloud.`,
+    `Campus whispers reach her anyway. What she says back becomes the official version.`,
+    `She knew some of it before you spoke. The arrangement suits her; she finds it correct.`,
+  ]},
+]);
+
+const confideFrags = {
+  _d18: [
+    `You tell her something you have told no one. She receives it from the warm center where she rests — no rush to fix.`,
+    `The truth lands in her stillness. "How long have you carried that?" she asks. You have no clean answer.`,
+    `Confession in the intimate radius of her immensity — she holds the fact until you are ready for the next part.`,
+  ],
+  _d19: [
+    `She confides back — the deal. You bring something real; she returns something real from months of watching.`,
+    `What she says is honest, not performed — perspective only fixed points earn.`,
+    `She knows things from here she never knew while moving through campus. She offers one.`,
+  ],
+  _d20: [
+    `"I've been thinking about something," she says when gossip is done. You listen.`,
+    `What she shares is not for anyone else — room, you, the radius of her warmth only.`,
+    `Unprompted honesty from the settled center. You do not interrupt. She finishes.`,
+  ],
+  _d21: [
+    `The conversation goes somewhere neither of you planned — stillness invites more than you meant.`,
+    `You say more because she is not going anywhere. She meets what you actually said.`,
+    `"Yeah," she says when you finish. "I know." She always knew part of it.`,
+  ],
+  _d22: [
+    `Her stillness makes telling easier than it should be — fixed point, calm immensity.`,
+    `Whatever you bring stays in this room. She holds it the way she holds everything now.`,
+    `Confession to someone who cannot leave and will not forget. The gravity helps.`,
+  ],
+  _d23: [
+    `She hears the actual thing — not the comfortable version — without shifting or interrupting.`,
+    `Then she hands it back smaller: "The problem is you keep waiting for permission."`,
+    `You sit with that longer than you mean to. She lets the silence do its work.`,
+  ],
+  _d24: [
+    `She tells you something she has told no one else — arrives without ceremony.`,
+    `A fear, a fact, weeks of sitting with it because sitting is what she does now.`,
+    `She tells it straight. You do not make it into something. She appreciates that.`,
+  ],
+  _d25: [
+    `"You can tell me," she said weeks ago. You did not believe her. You believe her now.`,
+    `Truth fits this room — immobility, stillness, the gravity of her presence.`,
+    `You use the register only this space allows. She receives all of it.`,
+  ],
+  _d26: [
+    `She is surprised each time you bring the real thing — not the performed version.`,
+    `She listens with careful attention, determined not to waste what you gave her.`,
+    `Gratitude without performance. She keeps it the way she keeps everything you trust her with.`,
+  ],
+};
+
+for (const [key, lines] of Object.entries(confideFrags)) {
+  registerModuleVariants(`set.socialize.confide.${key}`, [{ when: {}, weight: 3, text: lines }]);
+}

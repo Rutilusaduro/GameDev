@@ -9,6 +9,7 @@ import './agendaFire.js';
 import './agendaCards.js';
 import './weighInMandatory.js';
 import './aibHearing.js';
+import './oppositionHearingFragmentDepth.js';
 import './counterOutcome.js';
 import './hearingBridge.js';
 

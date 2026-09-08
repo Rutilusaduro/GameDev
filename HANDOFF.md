@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 settling fragments + evolved form pools; prior salon/gallery/recording |
+| Legacy talk prose | 🔄 opposition hearing + settling gossip/confide/feed _d* depth; prior salon/gallery/recording |
 
 ## Key Files (V2)
 
@@ -68,7 +68,8 @@
 - `src/textEngine/scenes/diaryPhaseDSceneDepth.js` — PhaseD forms (gainer/goddess/salon/gallery/pharmacist) s9–11 depth
 - `src/textEngine/scenes/evolved/evolvedSceneDepth.js` — per-student evolved.v2.depth variants
 - `src/textEngine/scenes/salonGallerySceneDepth.js` — salon/gallery hub + form evolved depth pools
-- `src/textEngine/scenes/settling/settlingFragmentDepth.js` — decomposed care/gossip _d* fragment depth
+- `src/textEngine/scenes/opposition/oppositionHearingFragmentDepth.js` — hearing removal phase0 _d* fragment depth
+- `src/textEngine/scenes/settling/settlingFragmentDepth.js` — decomposed care/gossip/confide _d* fragment depth
 - `src/textEngine/scenes/v2/echo/echoSceneDepth.js` — per-student echo.type.* replay variants
 - `src/textEngine/scenes/v2/studentArchetypeDepth.js` — full 19-student voice on resonance/ritual/dream/echo V2 pools
 
