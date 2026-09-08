@@ -14,8 +14,8 @@
 | Feast Rituals | ✅ wired |
 | Body Echo Archive | ✅ wired |
 | Appetite Dreams | ✅ wired |
-| Student portraits | ✅ procedural sprites + hair + immobile tier |
-| V2 depth layer | ✅ 40+ scene kinds via `depthRenderer` |
+| Student portraits | ✅ procedural sprites + hair + features + archetype glow (all 19) |
+| V2 depth layer | ✅ 40+ scene kinds + per-student talk/feed/dinner/session voice |
 | Skill/classroom unlocks | ✅ 6 spirit skills + 5 classroom upgrades |
 | Integration + version bump | ✅ 2.0.0, build passes |
 | Wife lessons bridge | ✅ lesson + talk trees |
@@ -39,7 +39,7 @@
 - `src/textEngine/scenes/collabStream/` — collab stream engine bridge
 - `src/textEngine/scenes/eatingContest/` — competitive circuit contest bridge
 - `src/textEngine/scenes/sumoMatch/` — sumo match engine bridge
-- `src/textEngine/scenes/stream/liveBridge.js` — Destiny streaming live depth
+- `src/textEngine/scenes/v2/studentArchetypeDepth.js` — per-student voice on talk/feed/dinner/session depth
 
 ## Verification
 
@@ -53,5 +53,5 @@ npm run build       # production build
 
 1. Mass legacy prose sweep (~35k scene lines — depth layer is additive, not full rewrite)
 2. Monolith decomposition — homeroom ✅, settling ✅, cultivator ✅, opposition hearing ✅; shared `decomposePools.js`
-3. Unique per-girl art beyond procedural pixel silhouettes
+3. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
 4. Completion audit before marking goal done
