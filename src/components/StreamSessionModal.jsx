@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { C } from '../styles.js';
-import { createContext, render } from '../textEngine/engine.js';
+import { createContext } from '../textEngine/engine.js';
 import { renderStreamBeat } from '../textEngine/scenes/stream/liveBridge.js';
 import {
   BRANDS, deriveBarParams, roundDurationFor, STREAM_DEFAULT_ROUNDS, STREAM_ROUND_SECONDS,

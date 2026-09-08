@@ -23,6 +23,7 @@ import './hungerInterrupt/index.js';
 import './hungerInterruptPersonal.js';
 import './hungerLexicon.js';
 import './stream.js';
+import './stream/liveBridge.js';
 import './streamChatIngest.js';
 import './streamExtended.js';
 import './streamPreStream/index.js';
