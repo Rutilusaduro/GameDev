@@ -10,6 +10,7 @@ import './depth.js';
 import './selectors.js';
 import './personas.js';
 import './immobileOverrides.js';
+import './intimacySceneDepth.js';
 
 function composeOverlay(main, overlay) {
   const a = main?.trim() || '';
