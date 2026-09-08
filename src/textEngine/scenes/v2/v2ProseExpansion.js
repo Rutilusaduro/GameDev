@@ -286,6 +286,27 @@ registerPool('ritual.v2.depth', [
 registerPool('dream.v2.depth', [
   { when: {}, text: ['The dream lingers at the edges of waking — hunger translated into symbol.'] },
 ]);
+registerPool('gossip.v2.depth', [
+  { when: {}, text: ['The class keeps its own accounting — glances, whispers, appetite noticed before it is named.'] },
+]);
+registerPool('resonance.v2.depth', [
+  { when: {}, text: ['Appetite travels the wire between them — invisible, hungry, impossible to unfeel.'] },
+]);
+registerPool('campusDevice.v2.depth', [
+  { when: {}, text: ['Technology meets campus flesh — remote warmth, unintended discovery, hunger amplified.'] },
+]);
+registerPool('opposition.v2.depth', [
+  { when: {}, text: ['Institutional pressure reshapes the board — scarcity and scrutiny braid together off-screen.'] },
+]);
+registerPool('campusSecret.v2.depth', [
+  { when: {}, text: ['The campus yields a secret — older hunger, hidden routes, abundance tucked where no one looks.'] },
+]);
+registerPool('journal.v2.depth', [
+  { when: {}, text: ['The page holds more than observation — appetite recorded like scripture, growth treated as data worth worshipping.'] },
+]);
+registerPool('streamPre.v2.depth', [
+  { when: {}, text: ['Before the camera lights, she rehearses abundance — outfit, mirror, snack, the private ritual of going on display.'] },
+]);
 
 // ── Body portrait v2 sensory layer ────────────────────────────
 registerPool('body.v2.sensory', [

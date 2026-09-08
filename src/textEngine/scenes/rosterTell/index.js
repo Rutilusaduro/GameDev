@@ -117,5 +117,6 @@ export function renderEcologyReport(student, week = 1, opts = {}) {
     week,
     globals: { favoritismFlag: opts.favoritismFlag || null, ...(opts.globals || {}) },
   });
-  return render('{roster.ecologyReport}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{roster.ecologyReport}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'roster', ctx, opts.v2DepthChance ?? 0.3);
 }

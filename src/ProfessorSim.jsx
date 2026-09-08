@@ -34,7 +34,7 @@ import { WalletBadge } from './components/WalletBadge.jsx';
 import { CAMPUS_NODES, CAMPUS_CONFIG } from './gameData/campus.js';
 import {
   defaultCampusExplorationState, buildExplorationContext, rollTravelExploration,
-  searchCampusLocation, applySecretSolve,
+  searchCampusLocation, applySecretSolve, resolveSecretDiscoverLine,
 } from './gameData/campusExploration.js';
 import { ELARA_ID, availableElaraQuests, startElaraQuest, advanceElaraQuestAtNode, takePendingQuestReward } from './gameData/relicHunter.js';
 import { getExplorationFind } from './gameData/campusIngredients.js';
@@ -99,6 +99,7 @@ import { ConfrontationModal } from './components/ConfrontationModal.jsx';
 import { renderMemorySelf, renderMemoryClass } from './textEngine/scenes/memory/index.js';
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding, renderIntimacyPassout } from './textEngine/scenes/intimacy/index.js';
+import { renderPreStreamVignette } from './textEngine/scenes/streamPreStream/index.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
@@ -1088,7 +1089,7 @@ export default function ProfessorSim(){
       exploration={...exploration,observeCounts:{...exploration.observeCounts,[campusState.at]:count}};
       if(count>=(secret.observeCount||2)){
         exploration=applySecretSolve(exploration,secret.id);
-        lines.push(`🔓 ${secret.discover}`);
+        lines.push(resolveSecretDiscoverLine(secret, ctx, campusState.at));
         if(secret.reward?.findId){
           const find=getExplorationFind(secret.reward.findId);
           if(find){
@@ -5748,7 +5749,7 @@ export default function ProfessorSim(){
       const newChoices={...prev.preStreamChoices,[actionId]:choiceId};
       const mults=mergePreStreamMultipliers(newChoices);
       const ctx=buildStreamCtx(prev,student);
-      const vignette=render(`{stream.pre.${actionId}.${choiceId}}`,ctx);
+      const vignette=renderPreStreamVignette(actionId, choiceId, ctx);
       return {
         ...prev,
         preStreamChoices:newChoices,

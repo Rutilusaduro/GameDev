@@ -2,6 +2,7 @@
 // SCENE: CAMPUS DEVICE — public API (slot-composed)
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../../engine.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import { getStage } from '../../../gameData/stages.js';
 import { getDeviceDependence, getDeviceDependenceTier } from '../../../gameData/deviceDependence.js';
 import './fragments.js';
@@ -83,11 +84,15 @@ function resultContext(encounter, deviceId, modeId, result, nodeId, student = nu
 }
 
 export function renderCampusDeviceEncounter(target, nodeId, explorationCtx, opts = {}) {
-  return render('{campus.deviceEncounter}', encounterContext(target, nodeId, explorationCtx), { trace: opts.trace || null });
+  const ctx = encounterContext(target, nodeId, explorationCtx);
+  const base = render('{campus.deviceEncounter}', ctx, { trace: opts.trace || null });
+  return appendV2Depth(base, 'campusDevice', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 export function renderCampusDeviceResult(encounter, deviceId, modeId, result, nodeId, student = null) {
-  return render('{campus.deviceResult}', resultContext(encounter, deviceId, modeId, result, nodeId, student));
+  const ctx = resultContext(encounter, deviceId, modeId, result, nodeId, student);
+  const base = render('{campus.deviceResult}', ctx);
+  return appendV2Depth(base, 'campusDevice', ctx, 0.3);
 }
 
 export function renderCampusDeviceFlavor(flavorDevice, explorationCtx) {
@@ -95,5 +100,6 @@ export function renderCampusDeviceFlavor(flavorDevice, explorationCtx) {
     week: explorationCtx.week ?? 1,
     globals: { flavorDevice, campusTier: explorationCtx.campusTier ?? 0 },
   });
-  return render('{campus.deviceFlavor}', ctx);
+  const base = render('{campus.deviceFlavor}', ctx);
+  return appendV2Depth(base, 'campusDevice', ctx, 0.25);
 }

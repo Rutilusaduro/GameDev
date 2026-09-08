@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
 import { buildDeviceSceneContext } from '../device/context.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import '../../modules.js';
 
@@ -24,5 +25,6 @@ export function renderDeviceMalfunctionLine({ student, deviceId, deviceLabel, ma
   const ctx = buildDeviceSceneContext(student, {
     deviceId, deviceLabel, malfunctionTier, week, dependenceLevel, isMalfunction: true,
   });
-  return render('{device.malf.beat}', ctx, { trace });
+  const base = render('{device.malf.beat}', ctx, { trace });
+  return appendV2Depth(base, 'device', ctx, 0.32);
 }

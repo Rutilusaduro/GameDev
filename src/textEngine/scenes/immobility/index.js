@@ -29,13 +29,15 @@ export function renderImmobScene(student, week = 1, opts = {}) {
 export function renderImmobRefit(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  return render('{immob.refit}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{immob.refit}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'immobility', ctx, opts.v2DepthChance ?? 0.3);
 }
 
 export function renderImmobComfort(student, key, week = 1, opts = {}) {
   if (!student || !key) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  return render(`{immob.comfort.${key}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render(`{immob.comfort.${key}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'immobility', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 export function renderImmobHint(student, pref, tier, week = 1, opts = {}) {
@@ -45,13 +47,15 @@ export function renderImmobHint(student, pref, tier, week = 1, opts = {}) {
     ...opts,
     globals: { courtHintTier: tier, pendingCourtPreference: student.pendingCourtPreference, ...(opts.globals || {}) },
   });
-  return render(`{immob.hint.${pref}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render(`{immob.hint.${pref}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'immobility', ctx, opts.v2DepthChance ?? 0.25);
 }
 
 export function renderImmobVisit(immobile, visitor, week = 1, opts = {}) {
   if (!immobile || !visitor) return '';
   const ctx = buildTextContext({ subject: immobile, ref: visitor, week, ...opts });
-  return render('{immob.visit}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{immob.visit}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'immobility', ctx, opts.v2DepthChance ?? 0.3);
 }
 
 export function renderImmobPref(student, pref, boonTier, week = 1, opts = {}) {
@@ -61,5 +65,6 @@ export function renderImmobPref(student, pref, boonTier, week = 1, opts = {}) {
     ...opts,
     globals: { courtBoonTier: boonTier, courtPreference: student.courtPreference, ...(opts.globals || {}) },
   });
-  return render(`{immob.pref.${pref}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render(`{immob.pref.${pref}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'immobility', ctx, opts.v2DepthChance ?? 0.28);
 }

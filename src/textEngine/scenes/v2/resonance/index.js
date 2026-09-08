@@ -1,6 +1,7 @@
 // The Squad — Lead: A2 Psych | Support: A1 Mobile, A5 Editor
 // V2.0 Craving Resonance prose
 import { registerPool, render, createContext } from '../../../engine.js';
+import { appendV2Depth } from '../depthRenderer.js';
 
 registerPool('res.link', [
   { when: {}, text: [
@@ -25,6 +26,12 @@ registerPool('res.surge', [
   ]},
 ]);
 
-export function renderResonanceLink(ctx) { return render('{res.link}', ctx); }
-export function renderResonancePulse(ctx) { return render('{res.pulse}', ctx); }
-export function renderResonanceSurge(ctx) { return render('{res.surge}', ctx); }
+export function renderResonanceLink(ctx) {
+  return appendV2Depth(render('{res.link}', ctx), 'resonance', ctx, 0.35);
+}
+export function renderResonancePulse(ctx) {
+  return appendV2Depth(render('{res.pulse}', ctx), 'resonance', ctx, 0.32);
+}
+export function renderResonanceSurge(ctx) {
+  return appendV2Depth(render('{res.surge}', ctx), 'resonance', ctx, 0.38);
+}

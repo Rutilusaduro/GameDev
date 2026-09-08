@@ -10,6 +10,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 
 // ── gossip.react.notice ───────────────────────────────────────
 // Neutral, observational. The class notices someone changed.
@@ -120,13 +121,14 @@ export function renderGossipReact(reactor, week = 1, opts = {}) {
   });
   const notice = render('{gossip.react.notice}', ctx, { trace: opts.trace || null })?.trim() || '';
   const line = render('{gossip.react.line}', ctx, { trace: opts.trace || null })?.trim() || '';
-  if (notice && line) return `${notice} ${line}`;
-  return notice || line;
+  const composed = notice && line ? `${notice} ${line}` : notice || line;
+  return appendV2Depth(composed, 'gossip', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 /** Render ambient class-awareness murmur (no specific event). */
 export function renderGossipMurmur(reactor, week = 1, opts = {}) {
   if (!reactor) return '';
   const ctx = buildTextContext({ subject: reactor, week, ...opts });
-  return render('{gossip.murmur}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{gossip.murmur}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'gossip', ctx, opts.v2DepthChance ?? 0.22);
 }

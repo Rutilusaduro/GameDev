@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
 import { buildDeviceSceneContext } from '../device/context.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import '../../modules.js';
 
@@ -24,5 +25,6 @@ registerPool('device.campus.beat', [
 
 export function renderDeviceCampusUseLine({ student, deviceId, deviceLabel, targetType = 'student', week = 1, trace = null }) {
   const ctx = buildDeviceSceneContext(student, { deviceId, deviceLabel, targetType, week });
-  return render('{device.campus.beat}', ctx, { trace });
+  const base = render('{device.campus.beat}', ctx, { trace });
+  return appendV2Depth(base, 'device', ctx, 0.3);
 }

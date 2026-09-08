@@ -51,14 +51,16 @@ export function renderIntimacyChoice(sceneId, choiceId, student, week = 1, opts 
   if (!student || !sceneId || !choiceId) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const main = render(`{intimacy.${sceneId}.ch.${choiceId}}`, ctx, { trace: opts.trace || null })?.trim() || '';
-  return composeOverlay(main, renderIntimacyOverlay(ctx, opts));
+  const composed = composeOverlay(main, renderIntimacyOverlay(ctx, opts));
+  return appendV2Depth(composed, 'intimacy', ctx, opts.v2DepthChance ?? 0.26);
 }
 
 /** The pin blackout — she pinned the player and he passed out; the week ends. */
 export function renderIntimacyPassout(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  return render('{intimacy.blackout}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{intimacy.blackout}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'intimacy', ctx, opts.v2DepthChance ?? 0.3);
 }
 
 export function renderIntimacyEnding(sceneId, endingIdx, student, week = 1, opts = {}) {

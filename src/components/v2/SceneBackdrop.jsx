@@ -9,6 +9,7 @@ const VARIANTS = {
   echo: { colors: ['#3060a0', '#90b0c8', '#1a2848'], pattern: '⌁ ≋ ⌁ ≋ ⌁' },
   lab: { colors: ['#4a6080', '#80a0c0', '#1a2030'], pattern: '⚙ ◈ ⚙ ◈ ⚙' },
   embodiment: { colors: ['#4a2870', '#c0a0e0', '#1a1028'], pattern: '🌒 · ◐ · 🌒' },
+  opposition: { colors: ['#304860', '#6080a0', '#101820'], pattern: '⚖ · 🏛 · ⚖' },
 };
 
 export function SceneBackdrop({ variant = 'spirit', height = 48 }) {

@@ -1,5 +1,6 @@
 import { C } from '../styles.js';
-import { render, createContext } from '../textEngine/engine.js';
+import { renderOppositionEndgame } from '../textEngine/scenes/opposition/index.js';
+import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
 
 const BEAT_META = {
   synthesis_ally: { label: 'SYNTHESIS', emoji: '✨', color: '#6090c0', slot: 'opposition.endgame.synthesis' },
@@ -13,12 +14,13 @@ export function OppositionEndgameModal({ beat, onDismiss }) {
   if (!beat?.id) return null;
   const meta = BEAT_META[beat.id] || { label: 'ENDGAME', emoji: '✦', color: '#8060a0', slot: null };
   const body = meta.slot
-    ? render(`{${meta.slot}}`, createContext({ week: beat.week ?? 1 }))
+    ? renderOppositionEndgame(meta.slot, beat.week ?? 1)
     : beat.fallback || 'Something fundamental shifts in the opposition.';
 
   return (
     <div style={{ ...C.overlay, zIndex: 8600 }}>
       <div style={{ ...C.modal, maxWidth: 520, border: `1px solid ${meta.color}60`, background: 'linear-gradient(160deg,#080810,#101828,#080810)' }}>
+        <SceneBackdrop variant="opposition" />
         <div style={{ fontSize: 10, letterSpacing: 4, color: meta.color, marginBottom: 8 }}>
           {meta.emoji} {meta.label}
         </div>

@@ -39,6 +39,13 @@ const POOLS = {
   spirit: 'spirit.v2.depth',
   ritual: 'ritual.v2.depth',
   dream: 'dream.v2.depth',
+  gossip: 'gossip.v2.depth',
+  resonance: 'resonance.v2.depth',
+  campusDevice: 'campusDevice.v2.depth',
+  opposition: 'opposition.v2.depth',
+  campusSecret: 'campusSecret.v2.depth',
+  journal: 'journal.v2.depth',
+  streamPre: 'streamPre.v2.depth',
 };
 
 /** Append a V2 depth beat when pool resolves and chance hits. */

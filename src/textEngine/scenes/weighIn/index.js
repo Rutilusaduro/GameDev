@@ -44,18 +44,22 @@ function weighInCtx(student, week, opts = {}) {
 export function renderWeighInIntro(student, week, goesDirectlyToBig = false, opts = {}) {
   const ctx = weighInCtx(student, week, { ...opts, bigScale: goesDirectlyToBig });
   const introTpl = goesDirectlyToBig ? WI_INTRO_BIG : WI_INTRO;
+  let base;
   if (opts.aibMandatory) {
     const mandate = render('{wi.aibMandatory}', ctx, { trace: opts.trace });
     const arrival = render(introTpl, ctx, { trace: opts.trace });
-    return `${mandate}\n\n${arrival}`;
+    base = `${mandate}\n\n${arrival}`;
+  } else {
+    base = render(introTpl, ctx, { trace: opts.trace });
   }
-  return render(introTpl, ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'wi', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 /** Approach + readout only — Dialogue Lab / tuning (WI_APPROACH_V2). */
 export function renderWeighInApproachV2(student, week, goesDirectlyToBig = false, opts = {}) {
   const ctx = weighInCtx(student, week, { ...opts, bigScale: goesDirectlyToBig });
-  return render(WI_APPROACH_V2, ctx, { trace: opts.trace });
+  const base = render(WI_APPROACH_V2, ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'wi', ctx, opts.v2DepthChance ?? 0.26);
 }
 
 // Reaction: step-off beat + her personal reply (campus coda preserved).
@@ -78,15 +82,19 @@ export function renderWeighInReaction(student, week, opts = {}) {
 
 // The analog scale cracks under her.
 export function renderWeighInBreak(student, week, opts = {}) {
-  return render(WI_BREAK, weighInCtx(student, week, opts), { trace: opts.trace });
+  const ctx = weighInCtx(student, week, opts);
+  const base = render(WI_BREAK, ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'wi', ctx, opts.v2DepthChance ?? 0.35);
 }
 
-// Professor swaps in the already-purchased industrial scale.
 export function renderWeighInSwap(student, week, opts = {}) {
-  return render("{wi.swap}", weighInCtx(student, week, opts), { trace: opts.trace });
+  const ctx = weighInCtx(student, week, opts);
+  const base = render('{wi.swap}', ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'wi', ctx, opts.v2DepthChance ?? 0.3);
 }
 
-// Professor notes the need to buy a bigger scale.
 export function renderWeighInPurchase(student, week, opts = {}) {
-  return render("{wi.purchase}", weighInCtx(student, week, opts), { trace: opts.trace });
+  const ctx = weighInCtx(student, week, opts);
+  const base = render('{wi.purchase}', ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'wi', ctx, opts.v2DepthChance ?? 0.28);
 }
