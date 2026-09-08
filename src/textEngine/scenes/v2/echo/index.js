@@ -3,6 +3,7 @@
 import { registerPool, render } from '../../../engine.js';
 import { appendV2Depth } from '../depthRenderer.js';
 import './depth.js';
+import './echoSceneDepth.js';
 
 registerPool('echo.capture', [
   { when: { stageMin: 9 }, text: [

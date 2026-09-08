@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 Destiny offstream + homeroom conference/activity depth; prior stream/settling/device/opposition |
+| Legacy talk prose | 🔄 diary innerBeat stage 9–11 + echo per-student type depth; prior stream/settling/device/opposition/homeroom |
 
 ## Key Files (V2)
 
