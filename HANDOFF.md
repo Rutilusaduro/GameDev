@@ -59,6 +59,7 @@
 - `src/textEngine/scenes/opposition/oppositionHearingSceneDepth.js` — per-student hearing removal/emergency/verdict depth
 - `src/textEngine/scenes/collabStream/collabStreamSceneDepth.js` — stage-keyed collab reveal/zoom/push/crash depth
 - `src/textEngine/scenes/recordingSession/recordingSessionSceneDepth.js` — per-student recording oneMore take depth
+- `src/textEngine/scenes/recordingSession/recordingSessionWrapDepth.js` — wrap/payoff pools + per-student endings
 - `src/textEngine/scenes/settling/settlingSceneDepth.js` — per-student care/socialize/feed/weigh immobility depth
 - `src/textEngine/scenes/v2/studentArchetypeDepth.js` — full 19-student voice on resonance/ritual/dream/echo V2 pools
 
@@ -72,6 +73,6 @@ npm run build       # production build
 
 ## Remaining Toward 2.0
 
-1. Mass legacy prose sweep — opposition hearing base fragments, device tick base, collab/recording wrap/payoff pools still open
+1. Mass legacy prose sweep — opposition hearing base fragments, device tick base still open; collab fragments + recording wrap/payoff pools added
 2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
 3. Completion audit vs `docs/V2_0_DESIGN.md` — five V2 systems wired ✅; prose depth additive pass ongoing
