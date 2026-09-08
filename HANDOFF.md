@@ -28,7 +28,7 @@
 | Sumo match V2 | ✅ exchange/bout/corner/aftermath/payoff depth |
 | Interior self-obs | ✅ talk check-in + eating |
 | Campus exploration depth | ✅ sighting/travel/find |
-| Opposition V2 | ✅ `renderOppositionLine` + endgame |
+| Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 
 ## Key Files (V2)
 
@@ -54,5 +54,5 @@ npm run build       # production build
 1. Mass legacy prose sweep (~35k scene lines — depth layer is additive, not full rewrite)
 2. Monolith decomposition (~144 text:lint flags — homeroom/cultivator/settling)
 3. Unique per-girl art beyond procedural pixel silhouettes
-4. Opposition agenda/hearing prose expansion
+4. Mass legacy prose sweep (~35k scene lines — depth layer is additive, not full rewrite)
 5. Completion audit before marking goal done

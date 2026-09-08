@@ -46,6 +46,7 @@ import './intimacy/index.js';
 import './body/index.js';
 import './session/index.js';
 import './oppositionSalonGallery.js';
+import './opposition/agendaCards.js';
 import './opposition/aibHearing.js';
 import './opposition/agendaFire.js';
 import './opposition/counterOutcome.js';

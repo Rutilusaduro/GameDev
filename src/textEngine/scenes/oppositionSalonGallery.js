@@ -21,11 +21,6 @@ registerPool('opposition.counter.discredit', [
   'The hashtag is live before the Q&A ends. The Board\'s wellness banquet looks smaller beside your honesty.',
 ]);
 
-registerPool('opposition.agenda.wellness_audit', [
-  'A clipboard finds a student mid-meal. Shame is institutional when it wears a lanyard.',
-  'Wellness audit: they photograph abundance and call it concern.',
-]);
-
 registerPool('opposition.proxy.wellness_coalition', [
   'The Wellness Coalition forms — gym coaches and nutrition liaisons with smiles like measuring tapes.',
 ]);

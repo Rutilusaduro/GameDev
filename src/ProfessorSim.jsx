@@ -324,6 +324,7 @@ import { SupernaturalAscensionModal } from './components/SupernaturalAscensionMo
 import { OppositionHearingModal } from './components/OppositionHearingModal.jsx';
 import { OppositionEndgameModal } from './components/OppositionEndgameModal.jsx';
 import { pickHearingEnding, REMOVAL_HEARING, EMERGENCY_HEARING } from './gameData/oppositionHearings.js';
+import { renderHearingChoiceResult, renderHearingEnding } from './textEngine/scenes/opposition/index.js';
 import {
   defaultOppositionState, processOppositionWeek, runAibCounter, checkSupernaturalTrigger,
   getOppositionGainMult, tickSupernaturalWeek, getAvailableCounters,
@@ -2616,20 +2617,22 @@ export default function ProfessorSim(){
     setHearingState(prev=>{
       if(!prev||prev.done) return prev;
       const def=prev.type==='emergency'?EMERGENCY_HEARING:REMOVAL_HEARING;
+      const hearingType=prev.type==='emergency'?'emergency':'removal';
       const phase=def.phases[prev.phaseIdx];
       const ch=phase?.choices?.find(c=>c.id===choiceId);
       if(!ch) return prev;
-      const log=[...(prev.log||[]),ch.result];
+      const student=students.find(s=>s.id===prev.studentId);
+      const resultLine=ch.resultPool
+        ?renderHearingChoiceResult(hearingType,choiceId,student,week,prev.phaseIdx)
+        :(ch.result||'');
+      const log=[...(prev.log||[]),resultLine];
       const history=[...(prev.history||[]),ch.flag||choiceId];
       const nextPhase=prev.phaseIdx+1;
       if(nextPhase>=def.phases.length){
-        const student=students.find(s=>s.id===prev.studentId);
-        const ctx={
-          studentName:student?.name||'the student',
-          studentLbs:student?Math.round(student.lbs):0,
-        };
         const ending=pickHearingEnding(def,history);
-        const endingText=typeof ending.text==='function'?ending.text(ctx):ending.text;
+        const endingText=ending.poolKey
+          ?renderHearingEnding(hearingType,ending.poolKey,student,week)
+          :'';
         return {...prev,log,history,done:true,endingText,pendingEnding:ending};
       }
       return {...prev,log,history,phaseIdx:nextPhase};
@@ -8825,7 +8828,7 @@ export default function ProfessorSim(){
       })()}
 
       {endgameQueue[0]&&<OppositionEndgameModal beat={endgameQueue[0]} onDismiss={()=>setEndgameQueue(q=>q.slice(1))}/>}
-      {hearingState&&<OppositionHearingModal hearingState={hearingState} students={students} opposition={opposition} onChoice={makeHearingChoice} onClose={closeHearing}/>}
+      {hearingState&&<OppositionHearingModal hearingState={hearingState} students={students} opposition={opposition} week={week} onChoice={makeHearingChoice} onClose={closeHearing}/>}
 
       {/* ── HOMEROOM QUEEN: CLASSROOM MINI-INTERFACE ── */}
       {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession}/>}

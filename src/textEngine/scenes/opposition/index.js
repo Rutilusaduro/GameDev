@@ -4,9 +4,11 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 import './endgameBeat.js';
 import './depth.js';
 import './agendaFire.js';
+import './agendaCards.js';
 import './weighInMandatory.js';
 import './aibHearing.js';
 import './counterOutcome.js';
+import './hearingBridge.js';
 
 export function renderOppositionEndgame(slot, week = 1, opts = {}) {
   if (!slot) return '';
@@ -14,3 +16,9 @@ export function renderOppositionEndgame(slot, week = 1, opts = {}) {
   const base = render(`{${slot}}`, ctx)?.trim() || '';
   return appendV2Depth(base, 'opposition', ctx, opts.v2DepthChance ?? 0.4);
 }
+
+export {
+  renderHearingPhase,
+  renderHearingChoiceResult,
+  renderHearingEnding,
+} from './hearingBridge.js';

@@ -372,9 +372,32 @@ registerPool('campusDevice.v2.depth', [
   { when: {}, text: ['Technology meets campus flesh — remote warmth, unintended discovery, hunger amplified.'] },
 ]);
 registerPool('opposition.v2.depth', [
-  { when: {}, text: ['Institutional pressure reshapes the board — scarcity and scrutiny braid together off-screen.'] },
-  { when: { hearing: 'emergency' }, text: ['Emergency session — every signature waits like a blade. The class holds its breath in the hallway.'] },
-  { when: { card: 'wellness_audit' }, text: ['Compliance arrives dressed as care. Shame wears a lanyard and calls itself assessment.'] },
+  { when: { hearingType: 'emergency' }, text: [
+    'Emergency session — every signature waits like a blade. The class holds its breath in the hallway.',
+    'Scandal made procedural. Vance wants blood on paper before anyone eats again.',
+  ]},
+  { when: { hearingType: 'removal', hearingPhase: [1, 2] }, text: [
+    'Second motion — restraint spoken like virtue while bellies still remember lunch.',
+    'Conditional enrollment on the table. Hunger treated like a phase the Board can outlast.',
+  ]},
+  { when: { card: 'wellness_audit' }, text: [
+    'Compliance arrives dressed as care. Shame wears a lanyard and calls itself assessment.',
+    'Clipboard at mid-meal — institutional concern photographing abundance.',
+  ]},
+  { when: { card: 'size_review' }, text: [
+    'Mandatory weigh-ins — mass translated into audit columns and signed testimony.',
+    'The Board wants numbers. Every scale becomes evidence in Vance\'s folder.',
+  ]},
+  { when: { card: 'removal_hearing' }, text: [
+    'Removal on the agenda — one girl\'s enrollment becomes the week\'s central argument.',
+    'Institutional teeth finally chose a name. Photos of fullness fill the projector.',
+  ]},
+  { when: {}, text: [
+    'Institutional pressure reshapes the board — scarcity and scrutiny braid together off-screen.',
+    'Vance\'s folder thickens. Appetite defended like curriculum, attacked like scandal.',
+    'Five polished chairs, one hungry class — the Board performs worry while you perform abundance.',
+    'Toner and denial in the conference air. Hunger is the argument they cannot win cleanly.',
+  ]},
 ]);
 registerPool('campusSecret.v2.depth', [
   { when: {}, text: ['The campus yields a secret — older hunger, hidden routes, abundance tucked where no one looks.'] },
