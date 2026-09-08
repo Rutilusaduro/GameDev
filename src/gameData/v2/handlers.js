@@ -30,79 +30,67 @@ export function resetV2Weekly(v2State) {
   };
 }
 
-export function captureStageUpEcho(v2State, studentId, week, stageId) {
-  if (!v2State?.echoes) return v2State;
+function echoCaptureWrap(v2State, echoes) {
+  const before = v2State?.echoes?.moments?.length || 0;
+  const after = echoes?.moments?.length || 0;
   return {
-    ...v2State,
-    echoes: captureEcho(v2State.echoes, {
-      studentId, type: 'stage_up', week, stageId,
-    }),
+    v2State: { ...v2State, echoes },
+    didCapture: after > before,
   };
+}
+
+export function captureStageUpEcho(v2State, studentId, week, stageId) {
+  if (!v2State?.echoes) return { v2State, didCapture: false };
+  return echoCaptureWrap(v2State, captureEcho(v2State.echoes, {
+    studentId, type: 'stage_up', week, stageId,
+  }));
 }
 
 export function captureWeighInEcho(v2State, studentId, week, stageId) {
-  if (!v2State?.echoes) return v2State;
-  return {
-    ...v2State,
-    echoes: captureEcho(v2State.echoes, {
-      studentId, type: 'weigh_in', week, stageId,
-    }),
-  };
+  if (!v2State?.echoes) return { v2State, didCapture: false };
+  return echoCaptureWrap(v2State, captureEcho(v2State.echoes, {
+    studentId, type: 'weigh_in', week, stageId,
+  }));
 }
 
 export function captureEvolutionEcho(v2State, studentId, week, stageId, formId) {
-  if (!v2State?.echoes) return v2State;
-  return {
-    ...v2State,
-    echoes: captureEcho(v2State.echoes, {
-      studentId, type: 'evolution', week, stageId, meta: { formId },
-    }),
-  };
+  if (!v2State?.echoes) return { v2State, didCapture: false };
+  return echoCaptureWrap(v2State, captureEcho(v2State.echoes, {
+    studentId, type: 'evolution', week, stageId, meta: { formId },
+  }));
 }
 
 export function captureFeedEcho(v2State, student, week, { forced = false, feast = false } = {}) {
-  if (!v2State?.echoes) return v2State;
+  if (!v2State?.echoes) return { v2State, didCapture: false };
   const stageId = getStage(student?.lbs || 0).id;
   let type = null;
   if (forced && (student.timesForceFed || 0) <= 1) type = 'first_force_feed';
   else if (feast) type = 'dinner_unbutton';
-  if (!type) return v2State;
-  return {
-    ...v2State,
-    echoes: captureEchoOnce(v2State.echoes, {
-      studentId: student.id, type, week, stageId,
-    }),
-  };
+  if (!type) return { v2State, didCapture: false };
+  return echoCaptureWrap(v2State, captureEchoOnce(v2State.echoes, {
+    studentId: student.id, type, week, stageId,
+  }));
 }
 
 export function captureDinnerUnbuttonEcho(v2State, studentId, week, stageId) {
-  if (!v2State?.echoes) return v2State;
-  return {
-    ...v2State,
-    echoes: captureEchoOnce(v2State.echoes, {
-      studentId, type: 'dinner_unbutton', week, stageId,
-    }),
-  };
+  if (!v2State?.echoes) return { v2State, didCapture: false };
+  return echoCaptureWrap(v2State, captureEchoOnce(v2State.echoes, {
+    studentId, type: 'dinner_unbutton', week, stageId,
+  }));
 }
 
 export function captureImmobilityEcho(v2State, studentId, week, stageId) {
-  if (!v2State?.echoes) return v2State;
-  return {
-    ...v2State,
-    echoes: captureEchoOnce(v2State.echoes, {
-      studentId, type: 'immobility', week, stageId,
-    }),
-  };
+  if (!v2State?.echoes) return { v2State, didCapture: false };
+  return echoCaptureWrap(v2State, captureEchoOnce(v2State.echoes, {
+    studentId, type: 'immobility', week, stageId,
+  }));
 }
 
 export function captureCorruptionTierEcho(v2State, studentId, week, stageId, tierId) {
-  if (!v2State?.echoes) return v2State;
-  return {
-    ...v2State,
-    echoes: captureEchoOnce(v2State.echoes, {
-      studentId, type: 'corruption_tier', week, stageId, meta: { tierId },
-    }),
-  };
+  if (!v2State?.echoes) return { v2State, didCapture: false };
+  return echoCaptureWrap(v2State, captureEchoOnce(v2State.echoes, {
+    studentId, type: 'corruption_tier', week, stageId, meta: { tierId },
+  }));
 }
 
 export function runWeeklyV2Events(v2State, students, ownedSkills, week) {

@@ -213,7 +213,8 @@ import {
   applyResonanceSurgeBonus,
 } from './gameData/v2/handlers.js';
 import { echoDepthTier } from './gameData/v2/bodyEcho.js';
-import { renderEchoReplay } from './textEngine/scenes/v2/echo/index.js';
+import { renderEchoReplay, renderEchoCapture } from './textEngine/scenes/v2/echo/index.js';
+import { renderResonancePulse } from './textEngine/scenes/v2/resonance/index.js';
 import { renderResonanceLink } from './textEngine/scenes/v2/resonance/index.js';
 import { appendV2Depth } from './textEngine/scenes/v2/depthRenderer.js';
 import { createInitialV2State, V2_CONFIG } from './gameData/v2/state.js';
@@ -1241,7 +1242,7 @@ export default function ProfessorSim(){
       if(shiftLine) setTimeout(()=>push(`💫 ${shiftLine}`),320);
       if((ownedSkills.memory_palace||0)>=1){
         const stageId=getStage(s.lbs).id;
-        setV2State(prev=>captureCorruptionTierEcho(prev||createInitialV2State(),s.id,week,stageId,after));
+        applyEchoCapture(s, prev=>captureCorruptionTierEcho(prev,s.id,week,stageId,after));
       }
     }
     return newC;
@@ -1430,14 +1431,16 @@ export default function ProfessorSim(){
             relationship:Math.min(100,(st.relationship||0)+p.rel),
           }:st));
         });
-        setTimeout(()=>push(`🔗 Appetite resonates — ${pulseResult.pulses.length} linked student(s) feel the pull.`),95);
+        const pulseProse=renderResonancePulse(createContext({ subject: s, week }));
+        const pulseSnippet=pulseProse?.trim().slice(0,160);
+        setTimeout(()=>push(`🔗 ${pulseSnippet||`Appetite resonates — ${pulseResult.pulses.length} linked student(s) feel the pull.`}`),95);
       }
     }
     if((ownedSkills.memory_palace||0)>=1){
       const echoForced=forced&&(s.timesForceFed||0)===0;
       const echoFeast=fullnessCost>=40||/feast|banquet|platter/i.test(label||'');
       if(echoForced||echoFeast){
-        setV2State(prev=>captureFeedEcho(prev||createInitialV2State(),fedStudent,week,{forced:echoForced,feast:echoFeast&&!echoForced}));
+        applyEchoCapture(fedStudent, prev=>captureFeedEcho(prev,fedStudent,week,{forced:echoForced,feast:echoFeast&&!echoForced}));
       }
     }
     return fedStudent;
@@ -1449,7 +1452,7 @@ export default function ProfessorSim(){
     if(newStageId>oldStageId){
       setTimeout(()=>push(`📣 ${s.name} reaches ${WEIGHT_STAGES[newStageId].label}! "${getAttitude({...s,lbs:newLbs}, week, pharmacistTextOpts(pharmacistState, week))}"`) ,50);
       if((ownedSkills.memory_palace||0)>=1){
-        setV2State(prev=>captureStageUpEcho(prev||createInitialV2State(),s.id,week,newStageId));
+        applyEchoCapture({...s,lbs:newLbs}, prev=>captureStageUpEcho(prev,s.id,week,newStageId));
       }
     }
     const mergedTriggered=[...s.triggeredEvents,...narrativeEvents.map(e=>e.id)];
@@ -2181,7 +2184,7 @@ export default function ProfessorSim(){
       }));
       if((ownedSkills.memory_palace||0)>=1&&s){
         const stageId=getStage(s.lbs).id;
-        setV2State(prev=>captureEvolutionEcho(prev||createInitialV2State(),studentId,week,stageId,formId));
+        applyEchoCapture(s, prev=>captureEvolutionEcho(prev,studentId,week,stageId,formId));
       }
       const meta=EVOLVED_ACTIVITY_META[formId];
       push(`✦ ${s?.name||"She"} has found her path: ${meta?.label||formId}.`);
@@ -4115,7 +4118,7 @@ export default function ProfessorSim(){
       return next;
     }));
     if((ownedSkills.memory_palace||0)>=1&&firstUnlock){
-      setV2State(prev=>captureImmobilityEcho(prev||createInitialV2State(),s.id,week,getStage(s.lbs).id));
+      applyEchoCapture(s, prev=>captureImmobilityEcho(prev,s.id,week,getStage(s.lbs).id));
     }
     push(`✦ The Settling — ${arrival.label}: +${gain} lbs${firstUnlock?' · she has arrived, and now keeps settling on her own':' · still settling'}`);
     setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:fullProse||arrival.desc });
@@ -6301,6 +6304,17 @@ export default function ProfessorSim(){
   const openWeighIn=(s)=>{ if(!s||openOriginFor(s)) return; setWeighInState({student:s,phase:"scene"}); };
 
   // ── V2.0 HANDLERS ───────────────────────────────────────────
+  const applyEchoCapture=(student, runCapture)=>{
+    setV2State(prev=>{
+      const { v2State, didCapture }=runCapture(prev||createInitialV2State());
+      if(didCapture&&student){
+        const prose=renderEchoCapture(createContext({ subject: student, week }));
+        const snippet=prose?.trim().slice(0,160);
+        if(snippet) setTimeout(()=>push(`📜 Echo captured — ${snippet}`),115);
+      }
+      return v2State;
+    });
+  };
   const openEmbodiment=(s)=>{
     if(!s) return;
     setEmbodimentStudent(s);
@@ -7263,7 +7277,7 @@ export default function ProfessorSim(){
       const unbutton=renderDinnerUnbutton(fed,week);
       if(unbutton) reactionLines.push(unbutton);
       if((ownedSkills.memory_palace||0)>=1){
-        setV2State(prev=>captureDinnerUnbuttonEcho(prev||createInitialV2State(),fed.id,week,getStage(fed.lbs).id));
+        applyEchoCapture(fed, prev=>captureDinnerUnbuttonEcho(prev,fed.id,week,getStage(fed.lbs).id));
       }
     }
 
@@ -8795,7 +8809,7 @@ export default function ProfessorSim(){
         onComplete={(s)=>{
           if((ownedSkills.memory_palace||0)>=1){
             const sid=getStage(s.lbs).id;
-            setV2State(prev=>captureWeighInEcho(prev||createInitialV2State(),s.id,week,sid));
+            applyEchoCapture(s, prev=>captureWeighInEcho(prev,s.id,week,sid));
           }
         }}
         week={week}
