@@ -12,7 +12,7 @@ import { getPlayerPrefs, toggleInstantText } from './gameData/playerPrefs.js';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
-import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
+import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
 import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
@@ -101,6 +101,7 @@ import { renderSessionFullness, renderSessionAftermath } from './textEngine/scen
 import { renderIntimacyChoice, renderIntimacyEnding, renderIntimacyPassout } from './textEngine/scenes/intimacy/index.js';
 import { renderPreStreamVignette } from './textEngine/scenes/streamPreStream/index.js';
 import { renderStreamBeat } from './textEngine/scenes/stream/liveBridge.js';
+import { renderCollabStreamBeat, pickCollabWrenLine, renderCollabStageUp, renderCollabPayoff } from './textEngine/scenes/collabStream/index.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
@@ -5399,7 +5400,7 @@ export default function ProfessorSim(){
     const initPartnerGain=history&&history.includes("both_loaded")?6:0;
     if(initKylieGain>0) setStudents(prev=>prev.map(st=>st.id===kylieId?processStudentGain(st,initKylieGain,0):st));
     if(initPartnerGain>0) setStudents(prev=>prev.map(st=>st.id===partnerId?processStudentGain(st,initPartnerGain,0):st));
-    const initChat=(COLLAB_WREN_LINES[stageIdx]||[]).slice(0,1);
+    const initChat=[pickCollabWrenLine(stageIdx,kylie,partner,week)].filter(Boolean);
     setCollabStreamState({kylieId,partnerId,stageIdx,qualityBar:initQual,kylieGain:0,partnerGain:0,partnerStageAtStart,stagedUp:false,foodQueue:tierFoods,tierIdx:0,chatLines:initChat,phase:'streaming',popupText:null,phaseAfterPopup:null,actions:{kylieRevealed:false,partnerRevealed:false,zoomUses:3,chatUses:3,pushUsed:false}});
     setCollabPartnerId(null);
     setEvolvedEventState(null);
@@ -5425,10 +5426,9 @@ export default function ProfessorSim(){
     let partnerGainThisAction=0;
 
     const addWren=()=>{
-      const wl=COLLAB_WREN_LINES[stageIdx]||[];
-      if(wl.length>0&&Math.random()<0.35){
-        const l=wl[Math.floor(Math.random()*wl.length)];
-        if(!newChat.includes(l)) newChat=[...newChat.slice(-5),l];
+      if(Math.random()<0.35){
+        const l=pickCollabWrenLine(stageIdx,kylie,partner,week);
+        if(l&&!newChat.includes(l)) newChat=[...newChat.slice(-5),l];
       }
     };
 
@@ -5453,28 +5453,27 @@ export default function ProfessorSim(){
       if(actions.kylieRevealed){push("⚠️ Already revealed Kylie's weight.");return;}
       newQual=Math.min(100,newQual+20);
       newActions={...newActions,kylieRevealed:true};
-      popupText=`You announce ${kylie.name}'s weight on camera — ${Math.round(kylie.lbs)} pounds, clearly, into the mic. The chat goes still for one second and then erupts. The number is undeniable and enormous and the new viewers are doing math. ${Math.round(kylie.lbs)} pounds at this stage means the belly, the thighs, the full warm forward presence of her visible in the camera. The chat says: yes. The chat means: more.`;
+      popupText=renderCollabStreamBeat('collab.stream.reveal.kylie',kylie,partner,week,stageIdx);
       addWren();
     } else if(action==='reveal_partner'){
       if(actions.partnerRevealed){push("⚠️ Already revealed partner's weight.");return;}
       newQual=Math.min(100,newQual+20);
       newActions={...newActions,partnerRevealed:true};
-      popupText=`${partner.name}'s weight announced on camera: ${Math.round(partner.lbs)} pounds. The chat reacts. Wren reacts — the chat message fires immediately: ${COLLAB_WREN_LINES[stageIdx]?.[Math.floor(Math.random()*(COLLAB_WREN_LINES[stageIdx]?.length||1))]||'wrenWatchesEverything: the numbers'}. The viewer count bumps. ${partner.name} looks at the camera after saying the number and says nothing else and somehow that is more than anything she could have said.`;
+      const wLineReveal=pickCollabWrenLine(stageIdx,kylie,partner,week);
+      popupText=renderCollabStreamBeat('collab.stream.reveal.partner',kylie,partner,week,stageIdx,{wrenLine:wLineReveal});
       addWren();
     } else if(action==='zoom_in'){
       if(actions.zoomUses<=0){push("⚠️ No zoom uses left.");return;}
       newQual=Math.min(100,newQual+8);
       newActions={...newActions,zoomUses:actions.zoomUses-1};
-      popupText=`You zoom in — the camera tightening on both women at the table, the full physical presence of them: ${kylie.name} at ${Math.round(kylie.lbs)} pounds and ${partner.name} at ${Math.round(partner.lbs)} pounds, both bellies forward and warm, both faces with the specific focused pleasure of eating on camera. The chat is saying something. The chat is always saying something. This is what they're saying it about.`;
+      popupText=renderCollabStreamBeat('collab.stream.zoom',kylie,partner,week,stageIdx);
     } else if(action==='chat_moment'){
       if(actions.chatUses<=0){push("⚠️ No chat engagement uses left.");return;}
       newQual=Math.min(100,newQual+6);
       newActions={...newActions,chatUses:actions.chatUses-1};
-      addWren();
-      const wl=COLLAB_WREN_LINES[stageIdx]||[];
-      const wLine=wl.length>0?wl[Math.floor(Math.random()*wl.length)]:'wrenWatchesEverything: watching';
-      newChat=[...newChat.slice(-5),wLine];
-      popupText=`Chat engagement. Wren fires a message immediately: *${wLine}* The chat picks it up. Regular viewers explaining to new ones. New ones asking questions the regulars answer faster than either streamer can. The viewer count bumps slightly.`;
+      const wLineChat=pickCollabWrenLine(stageIdx,kylie,partner,week);
+      newChat=[...newChat.slice(-5),wLineChat];
+      popupText=renderCollabStreamBeat('collab.stream.chat',kylie,partner,week,stageIdx,{wrenLine:wLineChat});
     } else if(action==='push_harder'){
       if(actions.pushUsed){push("⚠️ Already pushed harder this stream.");return;}
       const goodPush=Math.random()<0.6;
@@ -5482,10 +5481,10 @@ export default function ProfessorSim(){
         kylieGainThisAction=Math.floor(8+stageIdx*2);
         partnerGainThisAction=Math.floor(6+stageIdx*2);
         newQual=Math.min(100,newQual+15);
-        popupText=`You push both of them harder — more food, more speed, the camera seeing the full fact of both women eating more than they were. Both bellies visibly fuller than five minutes ago. The chat is unanimous: more. More. The viewer count spikes. This is the right call.`;
+        popupText=renderCollabStreamBeat('collab.stream.push.good',kylie,partner,week,stageIdx);
       } else {
         newQual=Math.max(0,newQual-10);
-        popupText=`You push too hard too fast. ${partner.name} slows — she's genuinely full — and there's a moment where the stream loses momentum, the chat noticing the pause. The quality dips. She recovers, eating again, but the push cost something.`;
+        popupText=renderCollabStreamBeat('collab.stream.push.bad',kylie,partner,week,stageIdx);
       }
       newKylieGain+=kylieGainThisAction;
       newPartnerGain+=partnerGainThisAction;
@@ -5503,7 +5502,7 @@ export default function ProfessorSim(){
         if(getStage(updated.lbs).id>partnerStageAtStart+(!stagedUp?0:0)){
           const newStage=getStage(updated.lbs);
           if(newStage.id>partnerStageAtStart){
-            const stageUpText=COLLAB_STAGEUP_TEXT[stageIdx]?.(kylie.name,partner.name,Math.round(updated.lbs))||`${partner.name} just crossed ${Math.round(updated.lbs)} pounds on stream!`;
+            const stageUpText=renderCollabStageUp(stageIdx,kylie,partner,Math.round(updated.lbs),week);
             setCollabStreamState(prev=>prev?{...prev,stagedUp:true,popupText:stageUpText,phaseAfterPopup:'stage_up_resolve',qualityBar:Math.min(100,(prev.qualityBar||0)+35)}:prev);
           }
         }
@@ -5527,7 +5526,7 @@ export default function ProfessorSim(){
       const finalKylieGain=newKylieGain;
       const finalPartnerGain=newPartnerGain;
       const partnerName=partner.name;
-      const payoff=COLLAB_PAYOFF_TEXT[stageIdx]?.(finalKylieGain,finalPartnerGain,partnerName)||`${Math.round(finalKylieGain)} pounds on Kylie, ${Math.round(finalPartnerGain)} on ${partnerName}. Stream complete.`;
+      const payoff=renderCollabPayoff(stageIdx,finalKylieGain,finalPartnerGain,partner,kylie,week);
       setCollabStreamState(prev=>prev?{...prev,kylieGain:finalKylieGain,partnerGain:finalPartnerGain,qualityBar:newQual,foodQueue:newFoodQueue,chatLines:newChat,actions:newActions,phase:'scoreboard',popupText:payoff,phaseAfterPopup:'scoreboard_show'}:prev);
       // Record on Kylie's history
       setStudents(prev=>prev.map(st=>st.id===kylieId?{...st,collabHistory:[...(st.collabHistory||[]).filter(id=>id!==partnerId),partnerId],contestCompletions:(st.contestCompletions||0)+1}:st));
@@ -5538,7 +5537,7 @@ export default function ProfessorSim(){
     // Check quality fail
     if(newQual<=0){
       const partnerName=partner.name;
-      const crashText=`The stream crashes. Quality hit zero — the momentum died, the chat thinned out, and the connection dropped while both of you were still at the table. It happens. You gained ${Math.round(newKylieGain)} pounds and ${partnerName} gained ${Math.round(newPartnerGain)} pounds and the stream is just over.`;
+      const crashText=renderCollabStreamBeat('collab.stream.crash',kylie,partner,week,stageIdx,{globals:{kylieGain:Math.round(newKylieGain),partnerGain:Math.round(newPartnerGain)}});
       setCollabStreamState(prev=>prev?{...prev,kylieGain:newKylieGain,partnerGain:newPartnerGain,qualityBar:0,chatLines:newChat,phase:'scoreboard',popupText:crashText,phaseAfterPopup:'scoreboard_crash'}:prev);
       return;
     }

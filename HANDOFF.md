@@ -14,35 +14,41 @@
 | Feast Rituals | ✅ wired |
 | Body Echo Archive | ✅ wired |
 | Appetite Dreams | ✅ wired |
-| Student portraits | ✅ StudentPortrait component |
-| Prose expansion | ✅ v2 depth + v2ProseExpansion |
+| Student portraits | ✅ procedural sprites + hair + immobile tier |
+| V2 depth layer | ✅ 40+ scene kinds via `depthRenderer` |
 | Skill/classroom unlocks | ✅ 6 spirit skills + 5 classroom upgrades |
 | Integration + version bump | ✅ 2.0.0, build passes |
-| Resonance on feed | ✅ pulse wired |
-| Echo capture (feed/weigh-in/stage) | ✅ wired |
-| V2 depth on feed/talk/wi/dinner | ✅ depthRenderer |
-| Per-student portrait accents | ✅ roster + detail |
-| Embodiment actions expanded | ✅ 14 actions |
+| Wife lessons bridge | ✅ lesson + talk trees |
+| Homeroom Queen bridge | ✅ conference + activities |
+| Evolved events V2 | ✅ `renderEvolvedEventProse` |
+| Stream live V2 | ✅ `renderStreamBeat` |
+| Collab stream V2 | ✅ action popups + legacy payoff/stageup depth |
+| Interior self-obs | ✅ talk check-in + eating |
+| Campus exploration depth | ✅ sighting/travel/find |
+| Opposition V2 | ✅ `renderOppositionLine` + endgame |
 
 ## Key Files (V2)
 
 - `src/gameData/v2/` — subsystem state + logic
-- `src/textEngine/scenes/v2/` — all V2 prose
+- `src/textEngine/scenes/v2/` — V2 prose + depthRenderer
 - `src/components/v2/` — modals and views
 - `src/views/SpiritHubView.jsx` — central V2 nav
+- `src/textEngine/scenes/collabStream/` — collab stream engine bridge
+- `src/textEngine/scenes/stream/liveBridge.js` — Destiny streaming live depth
 
 ## Verification
 
 ```bash
-npm run text:lint   # must be clean
+npm run text:lint   # exit 0 (monolith warnings remain on legacy pools)
 npm run lint        # eslint
 npm run build       # production build
 ```
 
-## Next Steps
+## Remaining Toward 2.0
 
-1. Finish embodiment system end-to-end
-2. Build remaining 4 systems
-3. Wire into ProfessorSim.jsx
-4. Mass prose depth pass
-5. Run linters, commit, push, update PR
+1. Mass legacy prose sweep (~35k scene lines — depth layer is additive, not full rewrite)
+2. Monolith decomposition (~144 text:lint flags — homeroom/cultivator/settling)
+3. Unique per-girl art beyond procedural pixel silhouettes
+4. Recording session / contest / sumo mini-game bridges (same pattern as collab)
+5. Opposition agenda/hearing prose expansion
+6. Completion audit before marking goal done

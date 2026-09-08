@@ -414,6 +414,22 @@ registerPool('stream.v2.depth', [
     'She performs hunger and hunger performs back through the lens.',
   ]},
 ]);
+registerPool('collabStream.v2.depth', [
+  { when: { collabStage: [4, 5] }, text: [
+    'Two bodies on one stream — mass doubled, appetite amplified, the chat paying to watch both bellies grow.',
+    'Collab at legendary scale: Kylie and her partner eating like the platform was built for this moment.',
+  ]},
+  { when: { collabStage: [2, 3] }, text: [
+    'The double feed works — chemistry, competition, the pleasure of growing together on camera.',
+    'Viewer count climbs as both women lean into the format: more food, more warmth, more proof.',
+  ]},
+  { when: {}, text: [
+    'Collab stream heat — two feedees, one table, the chat hungry for both.',
+    'Kylie and her partner turn appetite into spectacle and spectacle into appetite.',
+    'The format is simple: feed both, watch the numbers climb, let the chat lose its mind.',
+    'Double the plates, double the warmth, double the content the audience came for.',
+  ]},
+]);
 registerPool('wifeLessonsTalk.v2.depth', [
   { when: { wlStage: [6, 7, 8] }, text: [
     'The conversation settles warm as dough — mothers and daughters speaking appetite like scripture.',
