@@ -138,4 +138,5 @@ import './customStudent/index.js';
 import './origin/index.js';
 import './polishDepthPass40.js';
 import './v2/index.js';
+import './salonGallerySceneDepth.js';
 import '../modules.js';

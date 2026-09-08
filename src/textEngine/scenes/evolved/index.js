@@ -1,7 +1,15 @@
 // The Squad — Lead: A4 Architect | Support: A2 Psych
 // Evolved forms — engine bridge from EVOLVED_EVENTS legacy prose.
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { render } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+
+/** Evolved form → optional second depth pool appended after evolved.v2.depth */
+const EVOLVED_FORM_POOLS = {
+  salon_appetit: 'evolved.salon.v2.depth',
+  artisan_gallery: 'evolved.gallery.v2.depth',
+  cultivator: 'evolved.cultivator.v2.depth',
+};
 
 /** Evolved event prose beat — V2 depth on legacy phase/choice/ending text. */
 export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
@@ -17,5 +25,13 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
     },
     ...opts,
   });
-  return appendV2Depth(line, 'evolved', ctx, opts.v2DepthChance ?? 0.3);
+  const chance = opts.v2DepthChance ?? 0.3;
+  let out = appendV2Depth(line, 'evolved', ctx, chance);
+  const formId = opts.formId || student?.evolvedForm;
+  const formPool = EVOLVED_FORM_POOLS[formId];
+  if (formPool && out?.trim() && Math.random() < chance * 0.85) {
+    const extra = render(`{${formPool}}`, ctx)?.trim();
+    if (extra) out = `${out}\n\n${extra}`;
+  }
+  return out;
 }

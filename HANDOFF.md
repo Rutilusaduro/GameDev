@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 PhaseD diary s9–11 + evolved.v2 per-student; prior diary/echo/evolved depth |
+| Legacy talk prose | 🔄 recording/collab thin pools expanded; prior PhaseD + diary/echo depth |
 
 ## Key Files (V2)
 
@@ -80,6 +80,6 @@ npm run build       # production build
 
 ## Remaining Toward 2.0
 
-1. Mass legacy prose sweep — recording/collab thin pools + more homeroom/evolved events; PhaseD depth added turn 27
+1. Mass legacy prose sweep — decomposed monolith fragments + more homeroom/evolved events; recording/collab thin pools fixed turn 28
 2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
 3. Completion audit vs `docs/V2_0_DESIGN.md` — five V2 systems wired ✅; prose depth additive pass ongoing
