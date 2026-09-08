@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 hearing/collab/recording depth wired turn 20; settling + opposition + V2 voice prior |
+| Legacy talk prose | 🔄 device tick base+action depth, opposition hearing endings expanded; prior hearing/collab/recording |
 
 ## Key Files (V2)
 
@@ -73,6 +73,6 @@ npm run build       # production build
 
 ## Remaining Toward 2.0
 
-1. Mass legacy prose sweep — opposition hearing base fragments, device tick base still open; collab fragments + recording wrap/payoff pools added
+1. Mass legacy prose sweep — device tick + opposition hearing base expanded; more pools still open (settling base, stream, diary monoliths)
 2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
 3. Completion audit vs `docs/V2_0_DESIGN.md` — five V2 systems wired ✅; prose depth additive pass ongoing
