@@ -9,7 +9,7 @@ import {
   canCreateLink, createResonanceLink, pulseResonance, shouldResonanceSurge,
 } from './cravingResonance.js';
 import { canRunRitual, FEAST_RITUALS } from './feastRituals.js';
-import { captureEcho, canResonateEcho, resonateEcho, replayEcho } from './bodyEcho.js';
+import { captureEcho, captureEchoOnce, canResonateEcho, resonateEcho, replayEcho } from './bodyEcho.js';
 import { getStage } from '../stages.js';
 import {
   canTriggerDream, pickDreamScenario, recordDream, rollWeeklyDreams,
@@ -67,8 +67,38 @@ export function captureFeedEcho(v2State, student, week, { forced = false, feast 
   if (!type) return v2State;
   return {
     ...v2State,
-    echoes: captureEcho(v2State.echoes, {
+    echoes: captureEchoOnce(v2State.echoes, {
       studentId: student.id, type, week, stageId,
+    }),
+  };
+}
+
+export function captureDinnerUnbuttonEcho(v2State, studentId, week, stageId) {
+  if (!v2State?.echoes) return v2State;
+  return {
+    ...v2State,
+    echoes: captureEchoOnce(v2State.echoes, {
+      studentId, type: 'dinner_unbutton', week, stageId,
+    }),
+  };
+}
+
+export function captureImmobilityEcho(v2State, studentId, week, stageId) {
+  if (!v2State?.echoes) return v2State;
+  return {
+    ...v2State,
+    echoes: captureEchoOnce(v2State.echoes, {
+      studentId, type: 'immobility', week, stageId,
+    }),
+  };
+}
+
+export function captureCorruptionTierEcho(v2State, studentId, week, stageId, tierId) {
+  if (!v2State?.echoes) return v2State;
+  return {
+    ...v2State,
+    echoes: captureEchoOnce(v2State.echoes, {
+      studentId, type: 'corruption_tier', week, stageId, meta: { tierId },
     }),
   };
 }

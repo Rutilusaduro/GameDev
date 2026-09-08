@@ -127,6 +127,20 @@ function narrowRow(row, amount = 1) {
   return '.'.repeat(pad) + '#'.repeat(newHash) + '.'.repeat(Math.max(0, 12 - pad - newHash));
 }
 
+/** Student ids whose portrait is mirrored for visual variety. */
+export const STUDENT_PORTRAIT_FLIP = new Set([1, 3, 5, 8, 11, 14, 17]);
+
+/** Per-student row tweaks on top of body-type modifier. */
+const STUDENT_SPRITE_TWEAKS = {
+  0: (rows) => rows.map((row, i) => (i >= 5 ? widenRow(row, 1) : row)),
+  2: (rows) => rows.map((row, i) => (i >= 1 && i <= 3 ? widenRow(row, 1) : row)),
+  4: (rows) => rows.map((row, i) => (i <= 2 ? narrowRow(row, 1) : row)),
+  7: (rows) => rows.map((row) => narrowRow(row, 1)),
+  10: (rows) => rows.map((row) => widenRow(row, 1)),
+  13: (rows) => rows.map((row, i) => (i >= 4 ? widenRow(row, 1) : row)),
+  16: (rows) => rows.map((row, i) => (i >= 3 && i <= 5 ? widenRow(row, 1) : row)),
+};
+
 export function portraitTier(stageId) {
   if (stageId >= 9) return 'vast';
   if (stageId >= 7) return 'fat';
@@ -143,10 +157,19 @@ export function getStudentAccent(studentId) {
 export function getStudentSprite(stageId, studentId, bodyType = 'straight') {
   const tier = portraitTier(stageId);
   const base = TIER_SILHOUETTES[tier];
-  const modifier = BODY_TYPE_MODIFIERS[bodyType] || BODY_TYPE_MODIFIERS.straight;
+  const bodyMod = BODY_TYPE_MODIFIERS[bodyType] || BODY_TYPE_MODIFIERS.straight;
+  const studentTweak = STUDENT_SPRITE_TWEAKS[studentId];
   const accent = getStudentAccent(studentId);
-  const grid = modifier(base).map((row) => row.replace(/#/g, 'S'));
-  return { grid, accent, bodyType, tier };
+  let grid = bodyMod(base);
+  if (studentTweak) grid = studentTweak(grid);
+  grid = grid.map((row) => row.replace(/#/g, 'S'));
+  return {
+    grid,
+    accent,
+    bodyType,
+    tier,
+    flip: STUDENT_PORTRAIT_FLIP.has(studentId),
+  };
 }
 
 export const PORTRAIT_TIER_LABELS = {

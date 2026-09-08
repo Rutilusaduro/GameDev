@@ -11,6 +11,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 
 // ── immob.arrival.tend ────────────────────────────────────────
@@ -126,5 +127,6 @@ registerPool('immob.arrival', [
 export function renderImmobArrival(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  return render('{immob.arrival}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{immob.arrival}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'immobility', ctx, opts.v2DepthChance ?? 0.38);
 }

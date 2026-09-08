@@ -12,6 +12,13 @@ const POOLS = {
   milestone: 'milestone.v2.depth',
   campus: 'campus.v2.depth',
   device: 'device.v2.depth',
+  intimacy: 'intimacy.v2.depth',
+  hunger: 'hunger.v2.depth',
+  growth: 'growth.v2.depth',
+  immobility: 'immobility.v2.depth',
+  weekly: 'weekly.v2.depth',
+  confront: 'confront.v2.depth',
+  psych: 'psych.v2.depth',
 };
 
 /** Append a V2 depth beat when pool resolves and chance hits. */

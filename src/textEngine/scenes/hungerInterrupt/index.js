@@ -4,6 +4,7 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect, A5 Editor
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../../engine.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import '../hungerArchetypeBehavior.js';
 
@@ -201,7 +202,8 @@ export const HUNGER_INTERRUPT_TEMPLATE =
 // facts and word dedupe carry through the whole event.
 export function renderHungerInterrupt(student, week = 1, opts = {}) {
   const ctx = createContext({ subject: student, week, facts: opts.facts, sceneStems: opts.sceneStems });
-  return render(HUNGER_INTERRUPT_TEMPLATE, ctx, { trace: opts.trace || null }).trim();
+  const base = render(HUNGER_INTERRUPT_TEMPLATE, ctx, { trace: opts.trace || null }).trim();
+  return appendV2Depth(base, 'hunger', ctx, opts.v2DepthChance ?? 0.32);
 }
 
 export function renderHungerOutcome(student, action, week = 1, opts = {}) {
@@ -214,5 +216,5 @@ export function renderHungerOutcome(student, action, week = 1, opts = {}) {
     const style = render('{eating.style}', ctx, { trace }).trim();
     if (style) text = `${text} ${style}`;
   }
-  return text;
+  return appendV2Depth(text, 'hunger', ctx, opts.v2DepthChance ?? 0.28);
 }

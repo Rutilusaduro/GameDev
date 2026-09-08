@@ -3,6 +3,7 @@
 // (The class-wide random-incident layer was removed with RANDOM_EVENTS.)
 // ═══════════════════════════════════════════════════════════════
 import { createContext, render } from '../../engine.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import { getStage } from '../../../gameData/stages.js';
 import '../../modules.js';
 import './chairIncident.js';
@@ -50,7 +51,8 @@ export function renderWeeklyEvent(eventId, student, opts = {}) {
     week: opts.week ?? 1,
     globals: buildWeeklyEventGlobals(student, eventId, opts),
   });
-  return render(`{${poolKey}}`, ctx, { trace: opts.trace });
+  const base = render(`{${poolKey}}`, ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'weekly', ctx, opts.v2DepthChance ?? 0.3);
 }
 
 export function weeklyEventHasModularText(eventId) {

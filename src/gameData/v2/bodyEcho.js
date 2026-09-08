@@ -13,6 +13,10 @@ export const ECHO_TYPES = {
   first_force_feed: { label: 'First Overflow', icon: '🌊' },
 };
 
+export function hasEchoType(echoesState, studentId, type) {
+  return (echoesState?.moments || []).some((m) => m.studentId === studentId && m.type === type);
+}
+
 export function captureEcho(echoesState, { studentId, type, week, stageId, meta = {} }) {
   const id = `echo_${studentId}_${type}_${week}_${Date.now()}`;
   const moment = {
@@ -29,6 +33,12 @@ export function captureEcho(echoesState, { studentId, type, week, stageId, meta 
     ...echoesState,
     moments: [...(echoesState.moments || []), moment],
   };
+}
+
+/** Capture only if this student has no echo of this type yet. */
+export function captureEchoOnce(echoesState, params) {
+  if (hasEchoType(echoesState, params.studentId, params.type)) return echoesState;
+  return captureEcho(echoesState, params);
 }
 
 export function getStudentEchoes(studentId, echoesState) {

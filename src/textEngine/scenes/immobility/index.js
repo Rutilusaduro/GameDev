@@ -2,6 +2,7 @@
 // Immobility scene system — stages 10-11.
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import './personas.js';
 import './comfort.js';
@@ -21,7 +22,8 @@ registerPool('immob.scene', [
 export function renderImmobScene(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  return render('{immob.scene}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{immob.scene}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'immobility', ctx, opts.v2DepthChance ?? 0.32);
 }
 
 export function renderImmobRefit(student, week = 1, opts = {}) {

@@ -135,6 +135,88 @@ registerPool('device.v2.depth', [
   ]},
 ]);
 
+// ── Intimacy depth ────────────────────────────────────────────
+registerPool('intimacy.v2.depth', [
+  { when: { stageMin: 6 }, text: [
+    'Closeness and appetite braid together — touch, warmth, the particular hunger of being wanted.',
+    'She leans into you with the weight of someone who has stopped pretending she does not want this.',
+  ]},
+  { when: {}, text: [
+    'The room narrows to heat and proximity. Food is never far from desire.',
+    'Intimacy arrives soft and certain — like fullness, like trust.',
+  ]},
+]);
+
+// ── Hunger interrupt depth ──────────────────────────────────────
+registerPool('hunger.v2.depth', [
+  { when: { stageMin: 5 }, text: [
+    'Hunger has become a language she speaks without translation.',
+    'She arrives already half-fed by want — the rest is yours to provide.',
+  ]},
+  { when: {}, text: [
+    'Appetite knocks at an inconvenient hour. She does not apologize for it.',
+    'The interrupt is honest. She needs food. You have food.',
+  ]},
+]);
+
+// ── Growth event depth ──────────────────────────────────────────
+registerPool('growth.v2.depth', [
+  { when: { stageMin: 7 }, text: [
+    'Growth lands all at once — flesh rearranging, warmth spreading, the body catching up to appetite.',
+    'She swells into the moment. Time and calories compress into visible change.',
+  ]},
+  { when: {}, text: [
+    'Something shifts in her measurements. She feels it before the mirror confirms.',
+    'Growth continues its quiet work — warm, inevitable, welcome.',
+  ]},
+]);
+
+// ── Immobility depth ────────────────────────────────────────────
+registerPool('immobility.v2.depth', [
+  { when: { stageMin: 10 }, text: [
+    'She has become geography — vast, warm, settled. Movement is optional. Being fed is not.',
+    'The room arranges itself around her stillness. She is the center gravity chose.',
+  ]},
+  { when: {}, text: [
+    'Weight has become a kind of throne. She rests in it easily.',
+    'Immobile does not mean unhappy. She glows with being kept.',
+  ]},
+]);
+
+// ── Weekly event depth ──────────────────────────────────────────
+registerPool('weekly.v2.depth', [
+  { when: { stagedUp: true }, text: [
+    'The week leaves a mark she will not unmake — softer, fuller, more herself.',
+  ]},
+  { when: {}, text: [
+    'Campus life bends around her appetite. She bends with it, gladly.',
+    'Another week of becoming. The narrative keeps gaining weight.',
+  ]},
+]);
+
+// ── Confrontation depth ─────────────────────────────────────────
+registerPool('confront.v2.depth', [
+  { when: { relationship: [1, 2] }, text: [
+    'Tension crackles — but underneath, hunger waits to be negotiated.',
+  ]},
+  { when: {}, text: [
+    'She confronts you with the honesty of someone who knows what she wants.',
+    'Conflict and appetite share a room. Neither leaves hungry.',
+  ]},
+]);
+
+// ── Psych shift depth ───────────────────────────────────────────
+registerPool('psych.v2.depth', [
+  { when: { corruptionMin: 60 }, text: [
+    'The shift is internal first — want reorganizing itself around yes.',
+    'She does not fight the new hunger. She feeds it.',
+  ]},
+  { when: {}, text: [
+    'Something loosens in her psychology. Appetite finds more room.',
+    'Corruption reads as permission. She accepts the terms.',
+  ]},
+]);
+
 // ── Body portrait v2 sensory layer ────────────────────────────
 registerPool('body.v2.sensory', [
   { when: { stageMin: 9 }, text: [

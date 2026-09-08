@@ -184,6 +184,7 @@ import {
   handleResonanceLink, handleRitual, handleDreamChoice, handleEchoResonate,
   handleFeedResonancePulse, captureStageUpEcho, captureWeighInEcho, captureFeedEcho,
   handleEchoReplay, runWeeklyV2Events, captureEvolutionEcho,
+  captureDinnerUnbuttonEcho, captureImmobilityEcho, captureCorruptionTierEcho,
 } from './gameData/v2/handlers.js';
 import { echoDepthTier } from './gameData/v2/bodyEcho.js';
 import { renderEchoReplay } from './textEngine/scenes/v2/echo/index.js';
@@ -1205,6 +1206,10 @@ export default function ProfessorSim(){
       }
       const shiftLine=renderPsychShift({...s,corruption:newC},week,{lastCorruptionShift:true,...textOpts});
       if(shiftLine) setTimeout(()=>push(`💫 ${shiftLine}`),320);
+      if((ownedSkills.memory_palace||0)>=1){
+        const stageId=getStage(s.lbs).id;
+        setV2State(prev=>captureCorruptionTierEcho(prev||createInitialV2State(),s.id,week,stageId,after));
+      }
     }
     return newC;
   };
@@ -4025,6 +4030,9 @@ export default function ProfessorSim(){
       }
       return next;
     }));
+    if((ownedSkills.memory_palace||0)>=1&&firstUnlock){
+      setV2State(prev=>captureImmobilityEcho(prev||createInitialV2State(),s.id,week,getStage(s.lbs).id));
+    }
     push(`✦ The Settling — ${arrival.label}: +${gain} lbs${firstUnlock?' · she has arrived, and now keeps settling on her own':' · still settling'}`);
     setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:fullProse||arrival.desc });
   };
@@ -7131,6 +7139,9 @@ export default function ProfessorSim(){
     if(newFullness>cap&&prevFullness<=cap){
       const unbutton=renderDinnerUnbutton(fed,week);
       if(unbutton) reactionLines.push(unbutton);
+      if((ownedSkills.memory_palace||0)>=1){
+        setV2State(prev=>captureDinnerUnbuttonEcho(prev||createInitialV2State(),fed.id,week,getStage(fed.lbs).id));
+      }
     }
 
     if(overfillEnd){

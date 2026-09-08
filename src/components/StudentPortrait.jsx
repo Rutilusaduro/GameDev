@@ -7,7 +7,7 @@ import { getStudentSprite, PORTRAIT_PALETTE, PORTRAIT_TIER_LABELS, portraitTier 
 export function StudentPortrait({ student, size = 80, showLabel = true }) {
   const stageId = student?.lbs != null ? getStage(student.lbs).id : 0;
   const tier = portraitTier(stageId);
-  const { grid, accent } = getStudentSprite(stageId, student?.id ?? 0, student?.bodyType || 'straight');
+  const { grid, accent, flip } = getStudentSprite(stageId, student?.id ?? 0, student?.bodyType || 'straight');
   const rows = grid.length;
   const cols = grid[0].length;
   const palette = { ...PORTRAIT_PALETTE, a: accent, S: accent, s: `${accent}99` };
@@ -23,6 +23,7 @@ export function StudentPortrait({ student, size = 80, showLabel = true }) {
           background: `radial-gradient(circle at 50% 60%, ${accent}22, #0a0510)`,
           border: `1px solid ${accent}60`,
           borderRadius: 10,
+          transform: flip ? 'scaleX(-1)' : undefined,
         }}
         shapeRendering="crispEdges"
       >

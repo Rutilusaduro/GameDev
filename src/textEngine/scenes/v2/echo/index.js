@@ -55,6 +55,19 @@ registerPool('echo.type.weigh_in', [
 registerPool('echo.type.dinner_unbutton', [
   { when: {}, text: [
     'A button gave. She kept eating. The restaurant pretended not to notice.',
+    'Fabric surrendered. Appetite did not. The moment is preserved whole.',
+  ]},
+]);
+registerPool('echo.type.immobility', [
+  { when: {}, text: [
+    'She stopped needing to move. The world came to her instead — food, warmth, devotion.',
+    'Immobile and content. The threshold where size becomes architecture.',
+  ]},
+]);
+registerPool('echo.type.corruption_tier', [
+  { when: {}, text: [
+    'Something shifted in how she wants — hungrier, softer, less interested in refusal.',
+    'Corruption crossed a line. Appetite stopped asking permission.',
   ]},
 ]);
 
