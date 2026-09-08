@@ -918,7 +918,7 @@ registerPool("wi.replyDialogue", [
   { when: { corruption: [0], stageMin: 2 }, text: [
     `"It's the food here," she says, unconvincing even to herself.`,
     `"I'll cut back," she says, to herself as much as you.`,
-    `"Water weight," she says. Nobody believes it.`,
+    `"Temporary bloat," she says. Nobody believes it.`,
   ]},
   { when: { corruption: [1] }, text: [
     `"Every week," she murmurs. "I can feel it before I see it."`,

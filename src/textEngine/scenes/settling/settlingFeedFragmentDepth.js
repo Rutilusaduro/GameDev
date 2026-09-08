@@ -31,7 +31,7 @@ const spreadFrags = {
   ],
   _d32: [
     `At her scale a spread is a project. Trays arrive; she eats before you finish setting up.`,
-    `She will eat all of it. You both know this before the first bite.`,
+    `She will eat all of it. The trays make that obvious before the first bite.`,
     `Serious appetite, serious mass — the obvious outcome of her state.`,
   ],
   _d33: [

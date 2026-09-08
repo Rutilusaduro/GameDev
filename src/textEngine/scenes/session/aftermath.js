@@ -4,7 +4,7 @@
 import { registerPool } from '../../engine.js';
 
 registerPool('session.aftermath.light._f1', [
-  { when: {}, text: ["{subject.name} is full and comfortable and loose-limbed with it. She eats the last few bites slowly, without urgency. \"I'm glad I came,\" she says. You both know this will happen again."] },
+  { when: {}, text: ["{subject.name} is full and comfortable and loose-limbed with it. She eats the last few bites slowly, without urgency. \"I'm glad I came,\" she says. Neither of you pretends this was a one-time thing."] },
 ]);
 
 registerPool('session.aftermath.light', [

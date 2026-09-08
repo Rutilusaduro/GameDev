@@ -45,7 +45,7 @@ registerModuleVariants('device.catalog.growth_accelerator_chamber', [
     `Chamber warmth accelerates deposition — Reneé grows like a dish finishing in the oven.`,
   ]},
   { when: { studentId: 18, custom: false }, weight: 4, text: [
-    `Sealed session, radiation field — Talia watches adipose answer faster than ethics allow.`,
+    `Sealed session, radiation field — Talia watches soft flesh answer faster than ethics allow.`,
   ]},
 ]);
 

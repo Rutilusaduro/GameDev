@@ -48,7 +48,7 @@ registerModuleVariants('diary.innerBeat', [
     `Hands on my stomach when I wake. Still there at lunch. Warm. Mine. Good.`,
   ]},
   { when: { studentId: 8, stageMin: 11, isImmobile: true }, weight: 5, text: [
-    `I don't go to the room anymore. The room comes to me. That is not wrong. That is right.`,
+    `I don't go to the room anymore. The room comes to me. Wrong stopped being the word for it.`,
     `Everything I need arrives. Everything I am is here. I don't need to go anywhere.`,
   ]},
   { when: { studentId: 9, stageMin: 9 }, weight: W, text: [
@@ -61,7 +61,7 @@ registerModuleVariants('diary.innerBeat', [
   ]},
   { when: { studentId: 11, stageMin: 9 }, weight: W, text: [
     `No citations tonight. The feeling doesn't need a reference. It just is. Finally.`,
-    `The BMI chart is in the recycling. I'm working with better tools. They feel good.`,
+    `The growth chart is in the recycling. I'm working with better tools. They feel good.`,
   ]},
   { when: { studentId: 12, stageMin: 9 }, weight: W, text: [
     `The brackets took over the entry. Subject wanted more. Subject got more. Case closed.`,
@@ -96,7 +96,7 @@ registerModuleVariants('diary.innerBeat', [
     `Build yield within spec. Personal yield exceeded spec. I like exceeding spec.`,
   ]},
   { when: { stageMin: 11, isImmobile: true }, weight: 3, text: [
-    `I stopped going to things. Things come to me. That is not limitation. That is reach.`,
+    `I stopped going to things. Things come to me. Limitation became reach.`,
     `The world learned my address. So did appetite. Both visit often. I welcome both.`,
   ]},
 ]);

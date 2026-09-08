@@ -121,7 +121,7 @@ registerPool("diary.campus", [
     ] },
   { when: { campusFattening: true, archetype: "overachiever" }, priority: 2,
     text: [
-      "Cohort BMI chart in the department lounge shifted right. I added a footnote: campus environment.",
+      "Cohort growth chart in the department lounge shifted right. I added a footnote: campus environment.",
       "Study group productivity down, snack throughput up. Sample size: the whole building.",
       "Dean's list and dining hall line both longer. Related data.",
     ] },

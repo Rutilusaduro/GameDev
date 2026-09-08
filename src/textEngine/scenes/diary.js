@@ -276,7 +276,7 @@ registerPool('diary.body_positive_creator.c2', [
   { when: { stage: [7] }, text: ['The standing ovation was real and sustained and I stood there accepting it feeling larger than I ever have.'] },
   { when: { stage: [8] }, text: ['I am very large on a billboard on a major highway and I am correct.'] },
   { when: { stage: [9] }, text: ['I eat well and exist largely and apparently that has become something worth studying. I am the study.'] },
-  { when: { stage: [10], corruption: [0] }, text: ['The work continues without me having to defend it anymore. That is what I was working toward.'] },
+  { when: { stage: [10], corruption: [0] }, text: ['The work continues without me having to defend it anymore — exactly what I was working toward.'] },
   { when: { stage: [10] }, text: ['The argument did not require me to be small or quiet or apologetic, and I wasn\'t, and now I am enormous and permanent and the work is done in the sense that it continues without requiring my acti'] },
   { when: { stageMin: 7, archetype: "influencer" }, text: ['The new metric is something I can\'t chart — the messages I get from people who say my platform is the reason they stopped hating themselves. That\'s what the work was for.'] },
   { when: {}, text: [
@@ -391,7 +391,7 @@ registerPool('diary.big_squad_captain.c2', [
   { when: { stage: [6] }, text: ['The chapter is the fullest it has been in years. Some of the fullness is literal. I\'m proud of all of it.'] },
   { when: { stage: [8] }, text: ['I said afterward that the silence was the best part. That\'s true.'] },
   { when: { stage: [9] }, text: ['I filed it and made dinner and told the squad and they screamed and we ate together.'] },
-  { when: { stage: [10] }, text: ['The culture lives in the chapter, in the pledges, in the alumnae who write back and say it changed how they think about their own bodies. That is permanent. I am permanent.'] },
+  { when: { stage: [10] }, text: ['The culture lives in the chapter, in the pledges, in the alumnae who write back and say it changed how they think about their own bodies. Permanent. I am permanent.'] },
   { when: {}, text: [
     "Chapter fed. I fed hardest. Standards.",
     "Sorority table cleared. My end first.",
@@ -708,7 +708,7 @@ registerPool('diary.chapter_hostess.c1', [
 registerPool('diary.chapter_hostess.c2', [
 { when: { stage: [5], corruption: [0] }, text: ['I\'m not sure what to call it yet.'] },
   { when: { stage: [5] }, text: ['The chapter arrived uncertain and left full and grateful and different in a way I can\'t fully quantify but absolutely recognize. We did something real in that dining room.'] },
-  { when: { stage: [6] }, text: ['I have become the person who feeds everyone, which is a role I did not apply for and have accepted completely.'] },
+  { when: { stage: [6] }, text: ['I feed everyone now — a role I did not apply for and have accepted completely.'] },
   { when: { stage: [7] }, text: ['I am building the chapter\'s reputation through abundance. I\'m okay with this.'] },
   { when: { stage: [8] }, text: ['I consider this a diplomatic victory.'] },
   { when: { stage: [9] }, text: ['She heard about the chapter from someone who heard about it from someone else. The feast has a legacy.'] },
@@ -752,8 +752,8 @@ registerPool('diary.body_positive_greek.c2', [
   { when: { stage: [6] }, text: ['We fill every slot in the pledge class.'] },
   { when: { stage: [7] }, text: ['The irony was appreciated.'] },
   { when: { stage: [8] }, text: ['When it was over and the applause had settled, a chapter president from another school came up and said: \'We\'ve been doing the weigh-ins wrong. \' I didn\'t say anything. I just nodded.'] },
-  { when: { stage: [9] }, text: ['A footnote in a document that governs thousands of chapters. That is not nothing.'] },
-  { when: { stage: [10] }, text: ['I made something that makes things. That is enough.'] },
+  { when: { stage: [9] }, text: ['A footnote in a document that governs thousands of chapters. Not nothing.'] },
+  { when: { stage: [10] }, text: ['I made something that makes things. Enough.'] },
   { when: {}, text: [
     "Letters stretch. So do I. Both still cute.",
     "Greek row knows my appetite now.",
@@ -779,7 +779,7 @@ registerPool('diary.installation_artist.c1', [
   { when: { stage: [5], corruption: [0] }, text: ['The opening. I stood at the edge and watched people move through the photographs of my body at each weight and tried to understand what they were seeing. I think I understand now.'] },
   { when: { stage: [5] }, text: ['First installation: a room. Mirrors, photographs of my body at each stage, audio of my voice describing what I saw in the mirror at each weight. The opening was quiet for three minutes.'] },
   { when: { stage: [6] }, text: ['Two galleries made offers for the next show. One is in another city.'] },
-  { when: { stage: [7] }, text: ['\' I read that and ate something and thought: yes. That is precisely what it is. I am confronting you. I am also very comfortable.'] },
+  { when: { stage: [7] }, text: ['\' I read that and ate something and thought: yes — precisely what it is. I am confronting you. I am also very comfortable.'] },
   { when: { stage: [8] }, text: ['Major exhibition: three rooms, multiple installations, one of them is entirely me — my body, documented in real time, present and being present. Critics spent long minutes in front of each piece.'] },
   { when: { stage: [9] }, text: ['Retrospective. For someone still in progress. \' I said I appreciated the confidence that there was an arc and not just a continuous expansion. She laughed. I think she understood.'] },
   { when: { stage: [10] }, text: ['The body is the final installation. The body is always the final installation. Everything I made was documentation of this body becoming itself. Now it has become itself. I am the piece.'] },
@@ -797,7 +797,7 @@ registerPool('diary.installation_artist.c2', [
   { when: { stage: [5], corruption: [0] }, text: ['I don\'t know how I feel about it yet.'] },
   { when: { stage: [5] }, text: ['Then someone started talking and the conversation didn\'t stop.'] },
   { when: { stage: [6] }, text: ['I am shipping the work and also shipping myself, which required a logistics conversation that I found genuinely funny and also slightly absurd. I am the largest thing in both shipments.'] },
-  { when: { stage: [8] }, text: ['Several of them did not know where the art ended and I began. That is the work.'] },
+  { when: { stage: [8] }, text: ['Several of them did not know where the art ended and I began. The work.'] },
   { when: { stage: [10] }, text: ['The gallery is wherever I am.'] },
   { when: { stageMin: 7, archetype: "artsy" }, text: ['She wrote it down. I ate something good after.'] },
   { when: {}, text: [
@@ -917,7 +917,7 @@ registerPool('diary.asmr_creator.c1', [
   { when: { stage: [10] }, text: ['The sound of me eating is something people find comfort in. I find comfort in the eating. The camera is the only thing between us and it\'s not much of a barrier.'] },
   { when: { stageMin: 5, season: ["winter"] }, text: ['Winter recording session. The apartment is warm and the food is warm and I whisper into the microphone and the chat comes in from everywhere cold. People keep saying it feels like being home.'] },
   { when: {}, text: [
-    "The microphone is on. I eat. Someone somewhere is listening. That is enough.",
+    "The microphone is on. I eat. Someone somewhere is listening. Enough.",
     "Soft sounds, soft body, soft appetite.",
     "Another session. Another hour of eating on camera.",
   ]},
@@ -1677,7 +1677,7 @@ registerPool('diary.innerBeat', [
     "Getting up takes longer. I noticed and then stopped noticing. Both things happened in one week.",
   ] },
   { when: { studentId: 8, stageMin: 9, isImmobile: true }, weight: 5, text: [
-    "I don't go to the room anymore. The room comes to me. That is not wrong. That is right.",
+    "I don't go to the room anymore. The room comes to me. Wrong stopped being the word for it.",
     "Everything I need arrives. Everything I am is here. I don't need to go anywhere.",
   ] },
   { when: { studentId: 9, stageMin: 2 }, weight: 4, text: [
@@ -1686,7 +1686,7 @@ registerPool('diary.innerBeat', [
   ] },
   { when: { studentId: 9, stageMin: 5 }, weight: 4, text: [
     "Called it civilization. Without irony. For the first time. This is a dialect I was always fluent in.",
-    "Third plate. Didn't tell anyone. It's just dinner, I said. That is a lie I enjoy telling.",
+    "Third plate. Didn't tell anyone. It's just dinner, I said. A lie I enjoy telling.",
   ] },
   { when: { studentId: 10, stageMin: 4, reneePotNightEating: true }, weight: 5, text: [
     "Midnight. Kitchen empty. Both hands. No plate. The art fell away and what was underneath was just this.",
@@ -1694,7 +1694,7 @@ registerPool('diary.innerBeat', [
   ] },
   { when: { studentId: 11, stageMin: 3 }, weight: 4, text: [
     "Found three supporting papers. Noted their limitations. The limitations are methodological. Not personal.",
-    "The BMI chart has documented flaws. I've noted them. I'm working with better tools now.",
+    "The growth chart has documented flaws. I've noted them. I'm working with better tools now.",
   ] },
   { when: { studentId: 11, stageMin: 6, corruption: [2] }, weight: 5, text: [
     "Didn't cite anything today. Didn't need to. This is what it feels like to just know something.",

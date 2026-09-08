@@ -170,7 +170,7 @@ registerPool('immob.pref.food', [
       const taste = { sweet: 'the sweets', savory: 'the savory spread', spicy: 'the heat', volume: 'the volume' }[pref] || 'what you brought';
       return `She accepts what you've brought and eats with an ease that hasn't been there in weeks. You heard her early. ${taste === 'what you brought' ? 'This was right.' : `${taste} — right.`} She knew what she wanted.`;
     },
-    `She eats without commentary — fast, focused, satisfied. You brought what she wanted. That is the whole message.`,
+    `She eats without commentary — fast, focused, satisfied. You brought what she wanted. Message received.`,
     `The tray is right. Her appetite knows it before her mouth does.`,
     `Preference honored. Hunger answered. Court is calm again.`,
   ]},

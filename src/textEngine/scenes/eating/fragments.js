@@ -87,7 +87,7 @@ registerPool('eat.firstBite', [
   ] },
   { when: { corruption: [1] }, text: [
     'She starts eating without the old argument — not eager, not resisting, simply continuing.',
-    'The first bite is unremarkable. That is new, and she notices.',
+    'The first bite is unremarkable. She notices the absence of old drama.',
     'Appetite arrives without the old guilt attached.',
   ] },
   { when: { corruption: [2] }, text: [
@@ -324,7 +324,7 @@ registerPool('eat.finish', [
     'The last bite wins the argument she was having with herself.',
   ] },
   { when: { corruption: [1] }, text: [
-    'She finishes without the old negotiation. That is its own kind of news.',
+    'She finishes without the old negotiation — news in itself.',
     'The plate is empty. She notices and does not apologize.',
     'Empty dish, quiet acceptance — the meal filed without protest.',
   ] },

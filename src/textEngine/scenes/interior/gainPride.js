@@ -16,7 +16,7 @@ registerPool('interior.gainPride', [
   ] },
   { when: { corruption: [2], stageMin: 6 }, weight: 2, text: [
     'She is proud in the specific way of someone who chose this.',
-    'The number climbs. She smiles. That is the whole report.',
+    'The number climbs. She smiles. Whole report in one expression.',
     'Progress is visible and intentional. She would not undo a pound.',
   ] },
   { when: { corruption: [2], stageMin: 10 }, text: [

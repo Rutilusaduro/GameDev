@@ -154,7 +154,7 @@ registerPool('scene.hungerInterrupt.request', [
   { when: { studentId: 5 }, priority: 2,
     text: [
       `"Stream's on pause," she says. "Don't make this take long." She's going to make it take long.`,
-      `"I'm… not going back until we do this." She doesn't say what 'this' is. You both know.`,
+      `"I'm… not going back until we do this." She doesn't name what 'this' is. Her eyes do.`,
     ] },
   { when: { studentId: 10 }, priority: 2,
     text: [

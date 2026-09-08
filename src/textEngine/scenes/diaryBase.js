@@ -319,16 +319,16 @@ registerPool("diary.renee.recipe", [
 
 registerPool("diary.kaylee.patient", [
   { when: { studentId: 11, stageMin: 3, stageMax: 4, corruption: [0] }, weight: 4, text: [
-    "Self-assessment today. Subcutaneous layer: increasing. Adipose distribution: symmetric. Palpation results: compliance noted. The examination is thorough. This is clinical practice.",
+    "Self-assessment today. Soft layer: increasing. Warmth distribution: symmetric. Palpation results: compliance noted. The examination is thorough. This is good practice.",
     "I documented everything in proper notation. Filed under my own name.",
   ]},
   { when: { studentId: 11, stageMin: 4, stageMax: 5, corruption: [1] }, weight: 4, text: [
-    "The assessment is becoming a form of tender observation. Subcutaneous becomes soft. Adipose becomes warm. The clinical vocabulary no longer contains what I'm feeling.",
+    "The assessment is becoming a form of tender observation. Soft becomes softer. Warmth becomes welcome. The old vocabulary no longer contains what I'm feeling.",
     "I wrote: 'subject demonstrates increased compliance with additional intake. Subject is... not correcting this.' I left the note unfinished.",
   ]},
   { when: { studentId: 11, stageMin: 5, stageMax: 6, corruption: [2] }, weight: 4, text: [
     "No assessment today. Just: I am soft and warm and full and this is good nursing care for myself. This is the most aggressive self-care I've ever practiced and I approve completely.",
-    "The chart is closed. I have become the cure.",
+    "The chart is closed. I am the cure now.",
   ]},
   { when: {}, text: [
     "Vital signs: all excellent.",
@@ -353,7 +353,7 @@ registerPool("diary.nadia.casestudy", [
     "Told the professor this out loud. Mid-bite. Then another bite.",
   ]},
   { when: { studentId: 12, stageMin: 4, stageMax: 6, corruption: [2] }, weight: 4, text: [
-    "I have become the literature. I am writing myself into the case study in real time. The researcher is the subject is the analyst. The observation is inseparable from the happening.",
+    "The literature and I merged. I am writing myself into the case study in real time. The researcher is the subject is the analyst. The observation is inseparable from the happening.",
     "This is the richest psychological material I've ever inhabited.",
   ]},
   { when: {}, text: [

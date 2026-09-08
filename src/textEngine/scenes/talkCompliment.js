@@ -186,7 +186,7 @@ registerPool("comp.react.follow", [
     "Her belly presses warm against her clothes. She doesn't cover it.",
   ]},
   { when: { stageMin: 6, stageMax: 7 }, text: [
-    "You both know the scale of what's being said.",
+    "The scale of what's being said needs no translation.",
     "The body fills the chair and says the rest.",
   ]},
   { when: { stageMin: 8 }, text: [

@@ -33,7 +33,7 @@ const CATALOG_ALT = {
   ],
   growth_accelerator_chamber: [
     'Sealed chamber warmth accelerates deposition — pleasurable, unpredictable growth.',
-    'Radiation field hums; adipose answers faster than caution allows.',
+    'Radiation field hums; soft flesh answers faster than caution allows.',
   ],
   growth_serum_injector: [
     'One-shot volatile delivery — dramatic localized growth, never fully predictable.',

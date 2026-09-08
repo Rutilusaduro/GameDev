@@ -10,7 +10,7 @@ import { registerPool } from '../engine.js';
 
 registerPool('talk.discontentCoda', [
   { when: { discontentTier: 3 }, priority: 3, text: [
-    ` Every answer lands flat and final; she's barely in the room with you, and you both know why.`,
+    ` Every answer lands flat and final; she's barely in the room with you, and the silence says why.`,
     ` She gives you the bare minimum and nothing past it — jaw set, gaze somewhere over your shoulder.`,
     ` Conversation ends before you finish the thought. She is already elsewhere.`,
   ]},

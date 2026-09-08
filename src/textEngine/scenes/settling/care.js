@@ -39,7 +39,7 @@ registerPoolAutoDecompose('set.care.tend.react', [
     `She still gets a little caught on being maintained like this — the smallness of needing it, the enormity of receiving it. But she doesn't say stop.`,
     `She goes quiet and a little overwhelmed when you tend her. Not distress — something else. The particular weight of being cared for at this scale by someone who doesn't make it a thing.`,
     `"Thank you," she says when you're done. Quietly. Like she's still surprised you meant it.`,
-    `There is a moment near the end where she watches you and doesn't speak. The gratitude is in that moment. You both know it.`,
+    `There is a moment near the end where she watches you and doesn't speak. The gratitude lives in that silence.`,
   ]},
   { when: { corruption: [1] }, weight: 2, text: [
     `She takes it with the ease of someone who decided a while ago that this is simply how things are now. No explanation needed.`,

@@ -91,7 +91,7 @@ registerPool('ge.causeAction', [
   ] },
   { when: { growthMethod: 'radiation' }, text: [
     'the radiation field builds toward critical density',
-    'the field concentrates on her adipose',
+    'the field concentrates on her curves',
     'warm deposition multiplies under the sealed field',
   ] },
   { when: { growthMethod: 'hunger' }, text: [
@@ -582,7 +582,7 @@ registerPool('ge.settleClause', [
 // FULL SENTENCE — permanent note tail (used via join, so Capitalized)
 registerPool('ge.permanentNote', [
   { when: { growthMethod: 'radiation' }, text: [
-    'Radiation-induced adipose is permanent by design.',
+    'Radiation-fed softness is permanent by design.',
   ] },
   { when: { growthMethod: 'serum', isPermanent: true }, text: [
     'The formula batch was not reversible.',

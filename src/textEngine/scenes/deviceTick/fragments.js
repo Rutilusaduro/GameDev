@@ -37,7 +37,7 @@ registerPool('device.tick.action', [
     'the {device.label} works {subject.name}\'s restrained form — comfort calories on schedule',
   ] },
   { when: { deviceId: 'growth_accelerator_chamber' }, text: [
-    'the {device.label} bathes {subject.name} in warm radiation — adipose deposition accelerated',
+    'the {device.label} bathes {subject.name} in warm radiation — soft flesh answering faster',
     'the {device.label} seals around {subject.name} and drives another growth field session',
     'the {device.label} hums through {subject.name}\'s tissues — warmth, swell, pleasure in sequence',
   ] },
@@ -287,11 +287,11 @@ registerPool('device.tick.sensation', [
     'fat cells multiply under the field — new curve at her hips, new give in her middle',
   ] },
   { when: { deviceId: 'growth_accelerator_chamber', weightBand: 'extreme' }, text: [
-    'radiation-fed adipose tissue multiplies across her monumental frame without resistance',
+    'radiation-fed softness multiplies across her monumental frame without resistance',
     'every deposited pound lands on flesh already vast — the chamber barely slows for her size',
   ] },
   { when: { deviceId: 'growth_accelerator_chamber' }, text: [
-    'her adipose tissue absorbs the field\'s work — deposition layering faster than comfort allows',
+    'her soft flesh absorbs the field\'s work — warmth layering faster than comfort allows',
     'radiation leaves her heavier in the places the chamber favors, tissue swelling in silence',
     'the sealed field works her fat cells; she steps out softer, denser, unmistakably larger',
   ] },

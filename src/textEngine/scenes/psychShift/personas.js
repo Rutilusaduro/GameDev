@@ -12,7 +12,7 @@ registerModuleVariants('shift.interior', [
     'The pep talk she gives herself now ends with seconds.',
   ]},
   { when: { studentId: 0, corruption: [2] }, weight: W, text: [
-    'The argument is over. She wanted more. She is getting more. That is victory.',
+    'The argument is over. She wanted more. She is getting more. Victory, quiet and warm.',
     'Shame left the building. Appetite has the keys.',
     'Captain of a new league: heavier, happier, still in charge.',
   ]},

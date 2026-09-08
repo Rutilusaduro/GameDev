@@ -116,7 +116,7 @@ registerPool('weekly.teamWeighIn.afterDialogue', [
   ] },
   { when: {}, text: [
     'She handles the news with more calm than you expected.',
-    'The number does not ruin her mood. That is new.',
+    'The number does not ruin her mood. A small surprise.',
     'She leaves lighter in spirit if not on the scale.',
     'She seems almost relieved to stop pretending.',
   ] },
