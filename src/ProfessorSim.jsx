@@ -176,6 +176,16 @@ import { HomeroomQueenModal } from './components/HomeroomQueenModal.jsx';
 import { LilithClueModal, LilithHuntModal } from './components/LilithModals.jsx';
 import { ChapterHostessHangoutModal, ChapterHostessFeastPrepModal, ChapterHostessFeastLogModal } from './components/ChapterHostessModals.jsx';
 import { ClassView } from './views/ClassView.jsx';
+import { SpiritHubView } from './views/SpiritHubView.jsx';
+import { EmbodimentModal } from './components/v2/EmbodimentModal.jsx';
+import { FeastRitualModal, DreamModal } from './components/v2/V2Modals.jsx';
+import {
+  handleEmbodimentStart, handleEmbodimentAction, handleEmbodimentRelease,
+  handleResonanceLink, handleRitual, handleDreamChoice, handleEchoResonate,
+  handleFeedResonancePulse, captureStageUpEcho, runWeeklyV2Events,
+} from './gameData/v2/handlers.js';
+import { createInitialV2State } from './gameData/v2/state.js';
+import './textEngine/scenes/v2/index.js';
 import { ClassroomView } from './views/ClassroomView.jsx';
 import { StudentDetailView } from './views/StudentDetailView.jsx';
 import { ActionsView } from './views/ActionsView.jsx';
@@ -372,7 +382,7 @@ export default function ProfessorSim(){
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {
     money, ap, week, ownedSkills, ownedClassSkills, facultyAffinity, professorProfile, adminScrutiny,
-    globalStats, achievements, bigScaleUnlocked, spiritFavor,
+    globalStats, achievements, bigScaleUnlocked, spiritFavor, v2State,
   } = player;
   const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
   const setMoney = (updater) => setPlayer((p) => updatePlayerField(p, 'money', updater));
@@ -387,6 +397,7 @@ export default function ProfessorSim(){
   const setGlobalStats = (updater) => setPlayer((p) => updatePlayerField(p, 'globalStats', updater));
   const setAchievements = (updater) => setPlayer((p) => updatePlayerField(p, 'achievements', updater));
   const setBigScaleUnlocked = (updater) => setPlayer((p) => updatePlayerField(p, 'bigScaleUnlocked', updater));
+  const setV2State = (updater) => setPlayer((p) => updatePlayerField(p, 'v2State', updater));
   const [view,setView]=useState("class");
   const [selectedId,setSelectedId]=useState(null);
   // New-game setup wizard: spirit → lore beat → vessel → start.
@@ -429,6 +440,10 @@ export default function ProfessorSim(){
   const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
   const [talkStudentId,setTalkStudentId]=useState(null);
+  const [embodimentStudent,setEmbodimentStudent]=useState(null);
+  const [feastRitualOpen,setFeastRitualOpen]=useState(false);
+  const [dreamStudent,setDreamStudent]=useState(null);
+  const v2 = v2State || createInitialV2State();
   // professorProfile lives on player object
   // DLC: Inner Circle
   const seenTiersRef=useRef(new Set());
@@ -1370,6 +1385,9 @@ export default function ProfessorSim(){
     const {newLbs,oldStageId,newStageId,narrativeEvents}=applyGainToStudent(s,scaledGain);
     if(newStageId>oldStageId){
       setTimeout(()=>push(`📣 ${s.name} reaches ${WEIGHT_STAGES[newStageId].label}! "${getAttitude({...s,lbs:newLbs}, week, pharmacistTextOpts(pharmacistState, week))}"`) ,50);
+      if((ownedSkills.memory_palace||0)>=1){
+        setV2State(prev=>captureStageUpEcho(prev||createInitialV2State(),s.id,week,newStageId));
+      }
     }
     const mergedTriggered=[...s.triggeredEvents,...narrativeEvents.map(e=>e.id)];
     const gained = {
@@ -2049,6 +2067,16 @@ export default function ProfessorSim(){
         };
       });
     }
+    // V2.0 weekly events — resonance surge, dreams, embodiment reset
+    const v2Weekly=runWeeklyV2Events(v2,updated,ownedSkills,newWeek);
+    setV2State(v2Weekly.v2State);
+    v2Weekly.messages.forEach((msg,i)=>{
+      if(msg.type==='surge') setTimeout(()=>push(`🔗 Resonance surge — ${msg.text}`),200+i*50);
+      if(msg.type==='dream'){
+        const ds=updated.find(s=>s.id===msg.studentId);
+        if(ds) setTimeout(()=>push(`💤 ${ds.name} dreamed of appetite.`),220+i*50);
+      }
+    });
   };
 
   // ── EP2: EVOLUTION HANDLERS ────────────────────────────────────
@@ -6145,6 +6173,95 @@ export default function ProfessorSim(){
 
   const openWeighIn=(s)=>{ if(!s||openOriginFor(s)) return; setWeighInState({student:s,phase:"scene"}); };
 
+  // ── V2.0 HANDLERS ───────────────────────────────────────────
+  const openEmbodiment=(s)=>{
+    if(!s) return;
+    setEmbodimentStudent(s);
+  };
+  const runEmbodimentStart=(studentId)=>{
+    const s=students.find(st=>st.id===studentId);
+    const result=handleEmbodimentStart(s,{ownedSkills,ownedClassSkills,embodimentState:v2.embodiment,week,v2State:v2});
+    if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
+    if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
+    setAp(a=>a-result.apCost);
+    setV2State(result.v2State);
+    push(`🌒 You slip inside ${s.name}.`);
+  };
+  const runEmbodimentAction=(act,s)=>{
+    const result=handleEmbodimentAction(act,s,v2);
+    setV2State(result.v2State);
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==s.id) return st;
+      return {
+        ...st,
+        consumedCalories:(st.consumedCalories||0)+(result.calories||0),
+        fullness:Math.min((st.stomachCapacity||100),(st.fullness||0)+(result.fullness||0)),
+        relationship:Math.min(100,(st.relationship||0)+(result.rel||0)),
+        corruption:Math.min(100,(st.corruption||0)+(result.corruption||0)),
+      };
+    }));
+    if(result.scrutiny) addScrutiny(result.scrutiny);
+    push(`🌒 ${act.label} — warmth spreads through ${s.name}.`);
+  };
+  const runEmbodimentRelease=()=>{
+    const result=handleEmbodimentRelease(v2);
+    setV2State(result.v2State);
+    push('🌒 You return to the professor\'s body.');
+  };
+  const runResonanceLink=(aId,bId)=>{
+    const result=handleResonanceLink(aId,bId,students,v2,ownedSkills,ownedClassSkills||{});
+    if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
+    if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
+    setAp(a=>a-result.apCost);
+    setV2State(result.v2State);
+    const a=students.find(s=>s.id===aId), b=students.find(s=>s.id===bId);
+    push(`🔗 ${a?.name} ↔ ${b?.name} — appetites linked.`);
+  };
+  const runFeastRitual=(ritualId,studentIds,text)=>{
+    const result=handleRitual(ritualId,studentIds,{students,ownedSkills,ownedClassSkills:ownedClassSkills||{},week,v2State:v2});
+    if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
+    if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
+    setAp(a=>a-result.apCost);
+    setV2State(result.v2State);
+    setStudents(prev=>prev.map(st=>{
+      const eff=result.effects.find(e=>e.studentId===st.id);
+      if(!eff) return st;
+      return {
+        ...st,
+        consumedCalories:(st.consumedCalories||0)+eff.calories,
+        relationship:Math.min(100,(st.relationship||0)+eff.rel),
+        corruption:Math.min(100,(st.corruption||0)+eff.corruption),
+      };
+    }));
+    push(`🕯️ Feast ritual complete.${text?` ${text.slice(0,120)}...`:''}`);
+    setFeastRitualOpen(false);
+  };
+  const runDream=(s,scenario,choice,wakeText)=>{
+    const result=handleDreamChoice(scenario,choice,s,v2,week);
+    setV2State(result.v2State);
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==s.id) return st;
+      return {
+        ...st,
+        consumedCalories:(st.consumedCalories||0)+(result.calories||0),
+        relationship:Math.max(0,Math.min(100,(st.relationship||0)+(result.rel||0))),
+        corruption:Math.min(100,(st.corruption||0)+(result.corruption||0)),
+      };
+    }));
+    push(`💤 ${s.name} wakes from the dream.${wakeText?` ${wakeText.slice(0,80)}`:''}`);
+    setDreamStudent(null);
+  };
+  const runEchoResonate=(echo)=>{
+    const result=handleEchoResonate(echo.id,v2,ownedSkills,ownedClassSkills||{});
+    if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
+    if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
+    setAp(a=>a-result.apCost);
+    setV2State(result.v2State);
+    const s=students.find(st=>st.id===result.moment?.studentId);
+    if(s) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,gainMultiplier:(st.gainMultiplier||1)*1.05}:st));
+    push(`📜 Echo resonated — ${s?.name||'her'} growth deepens.`);
+  };
+
   const startIntimacyScene=(s,sceneId)=>{
     const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId];
     if(!def) return;
@@ -8252,7 +8369,7 @@ export default function ProfessorSim(){
 
       {/* NAV */}
       <div style={C.nav}>
-        {[["class","📋 Roster"],["classroom","🏛 Classroom"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],
+        {[["class","📋 Roster"],["classroom","🏛 Classroom"],["spirit-hub","🌒 Dominion"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],
           ...(settledStudents.length>0?[["settling","✦ The Settling"]]:[]),
           ...(week>=8||opposition?.aib?.unlocked||adminScrutiny>=25?[["oversight","👁 Oversight"]]:[]),
           ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"],...((labState.stage??1)>=2?[["network","🌐 Network"]]:[])]:[]),
@@ -8276,8 +8393,21 @@ export default function ProfessorSim(){
 
           {view==="classroom"&&<ClassroomView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
 
+          {view==="spirit-hub"&&<SpiritHubView
+            students={students}
+            v2State={v2}
+            ownedSkills={ownedSkills}
+            ownedClassSkills={ownedClassSkills||{}}
+            embodimentState={v2.embodiment}
+            onOpenEmbodiment={openEmbodiment}
+            onCreateLink={runResonanceLink}
+            onOpenRituals={()=>setFeastRitualOpen(true)}
+            onOpenDream={(s)=>setDreamStudent(s)}
+            ap={ap}
+          />}
+
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} fireAscensionAbility={fireAscensionAbility} openAscensionCeremony={openAscensionCeremony} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState} dossierOpen={dossierOpen} setDossierOpen={setDossierOpen}/>}
+          {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} openEmbodiment={openEmbodiment} openDream={(s)=>setDreamStudent(s)} v2State={v2} ownedSkills={ownedSkills} ownedClassSkills={ownedClassSkills} onEchoResonate={runEchoResonate} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} fireAscensionAbility={fireAscensionAbility} openAscensionCeremony={openAscensionCeremony} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState} dossierOpen={dossierOpen} setDossierOpen={setDossierOpen}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
@@ -8873,6 +9003,34 @@ export default function ProfessorSim(){
           />
         );
       })()}
+
+      {embodimentStudent&&(
+        <EmbodimentModal
+          student={embodimentStudent}
+          ownedSkills={ownedSkills}
+          embodimentState={v2.embodiment}
+          onStart={runEmbodimentStart}
+          onAction={runEmbodimentAction}
+          onRelease={runEmbodimentRelease}
+          onClose={()=>setEmbodimentStudent(null)}
+        />
+      )}
+      {feastRitualOpen&&(
+        <FeastRitualModal
+          students={students}
+          ownedSkills={ownedSkills}
+          ownedClassSkills={ownedClassSkills||{}}
+          onRun={runFeastRitual}
+          onClose={()=>setFeastRitualOpen(false)}
+        />
+      )}
+      {dreamStudent&&(
+        <DreamModal
+          student={dreamStudent}
+          onChoice={(scenario,choice,wakeText)=>runDream(dreamStudent,scenario,choice,wakeText)}
+          onClose={()=>setDreamStudent(null)}
+        />
+      )}
 
     </div>
   );
