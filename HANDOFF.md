@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 dinner reactions/ending + hunger outcomes + homeroom activities depth; talk prior turns |
+| Legacy talk prose | 🔄 milestone/intimacy/campus/weekly depth expanded; dinner/hunger/homeroom prior turns |
 
 ## Key Files (V2)
 
@@ -47,6 +47,10 @@
 - `src/textEngine/scenes/dinner/dinnerEndingDepth.js` — endOpen/endClose/ending variants
 - `src/textEngine/scenes/homeroom/homeroomActivityDepth.js` — parent meeting + health unit activity pools
 - `src/textEngine/scenes/hungerFragmentsDepth.js` — feed/deny/compound/talk outcome depth
+- `src/textEngine/scenes/milestone/milestoneSceneDepth.js` — stage/corruption/student milestone depth
+- `src/textEngine/scenes/intimacy/intimacySceneDepth.js` — bodyFeel/climax/encourages personas
+- `src/textEngine/scenes/campus/campusSceneDepth.js` — missing student campus nav beats
+- `src/textEngine/scenes/weeklyEvent/weeklyEventSceneDepth.js` — per-student weekly fragment depth
 
 ## Verification
 
