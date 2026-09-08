@@ -144,4 +144,5 @@ import './v2/index.js';
 import './salonGallerySceneDepth.js';
 import './monolithFragmentDepth.js';
 import './namedPoolDepth.js';
+import './v2WildcardDepth.js';
 import '../modules.js';

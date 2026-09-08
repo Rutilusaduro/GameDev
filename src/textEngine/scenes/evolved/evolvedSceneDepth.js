@@ -32,7 +32,7 @@ for (const [id, line] of Object.entries(EVOLVED_BY_STUDENT)) {
   registerModuleVariants('evolved.v2.depth', [
     { when, weight: W, text: [line] },
     { when: { ...when, stageMin: 9 }, weight: W, text: [
-      `${line.split("'s")[0]}'s evolved path at leviathan scale — form as environment, appetite as geography.`,
+      `${line.split("'s")[0]}'s evolved path at immobile depth — form as environment, appetite as geography.`,
     ]},
   ]);
 }

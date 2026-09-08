@@ -27,7 +27,7 @@ registerModuleVariants('set.care.tend.beat', [
     `Talia catalogs each adjustment — hypothesis: comfort improves yield. Conclusion: yes.`,
   ]},
   { when: { stageMin: 11 }, weight: 3, text: [
-    `Tending at leviathan scale — route not gesture. You follow the warm geography of {subject.first}.`,
+    `Tending at room-filling scale — route not gesture. You follow the warm geography of {subject.first}.`,
   ]},
 ]);
 
@@ -159,7 +159,7 @@ registerModuleVariants('set.feed.spread', [
     `Tiffany surveys the spread like rush catering — chapter-scale abundance, entirely appropriate.`,
   ]},
   { when: { studentId: 13, stageMin: 10 }, weight: W, text: [
-    `Daisy blesses the spread and begins — Southern hospitality at leviathan scale.`,
+    `Daisy blesses the spread and begins — Southern hospitality at furniture-breaking scale.`,
   ]},
   { when: { studentId: 17, stageMin: 10 }, weight: W, text: [
     `Indiana grins at the haul — "Treasure trove," he says, already eating like excavation.`,

@@ -397,7 +397,7 @@ registerPool('ritual.v2.depth', [
 ]);
 registerPool('dream.v2.depth', [
   { when: { stageMin: 9 }, text: [
-    'Dream at leviathan scale — impossible portions, symbolic foodscapes, her body vast even in sleep.',
+    'Dream at impossible scale — portions without ceiling, symbolic foodscapes, her body vast even in sleep.',
     'The subconscious serves what waking politeness refuses. She eats without ceiling.',
   ]},
   { when: { stageMin: 6 }, text: [

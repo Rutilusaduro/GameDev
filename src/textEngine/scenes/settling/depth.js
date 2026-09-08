@@ -4,7 +4,7 @@ import { registerModuleVariants } from '../../engine.js';
 
 registerModuleVariants('set.care.tend.beat', [
   { when: { stageMin: 11 }, text: [
-    'Small attentions at leviathan scale — cushions shifted, warm folds cooled, presence steady across impossible geography.',
+    'Small attentions at room-filling scale — cushions shifted, warm folds cooled, presence steady across impossible geography.',
     'You move through her like a route: cloth, cushion, the careful redistribution of mass that furniture cannot manage alone.',
   ]},
   { when: { stageMin: 10 }, text: [

@@ -25,7 +25,7 @@ const beatFrags = {
     `Weight of a leg shifted by careful degrees. Her breathing slows.`,
   ],
   _d6: [
-    `Maintenance at leviathan scale — hottest places cooled, unreachable weight supported.`,
+    `Maintenance at impossible scale — hottest places cooled, unreachable weight supported.`,
     `The room settles alongside her when the tending finishes.`,
   ],
   _d7: [

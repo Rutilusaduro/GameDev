@@ -21,7 +21,7 @@ registerPoolAutoDecompose('set.care.tend.beat', [
   { when: { stageMin: 11 }, weight: 3, text: [
     `At her scale, tending takes time. You move through it unhurried — the vast territories of her attended piece by piece, each fold cooled, each weight redistributed, the full impossible warm expanse of her maintained by two hands that know exactly where to go.`,
     `She fills enough of the room that tending her is a route, not a gesture. You follow it: the cooling cloth, the repositioned pillow, the weight of a leg shifted by careful degrees. She goes still under the attention. Her breathing slows.`,
-    `Maintenance at leviathan scale: you tend the whole warm country of her — cooling what runs hottest, supporting what furniture cannot reach, attending each fold and deep terrain until the room settles alongside her.`,
+    `Maintenance at room-filling scale: you tend the whole warm country of her — cooling what runs hottest, supporting what furniture cannot reach, attending each fold and deep terrain until the room settles alongside her.`,
     `There is more of her than before. You tend all of it — the immense soft landscape of her, the heat she generates at rest, the specific needs of mass at this scale. It takes time. You give it without rushing.`,
     `You move through the tending methodically, learning the changes since last time: a new fold where the weight has redistributed, a new warm place that needs the cloth. She is not the same shape two visits running. You adjust accordingly.`,
   ]},

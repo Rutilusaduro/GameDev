@@ -32,7 +32,8 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 wifeLessons talk+lesson depth (429 pools); prior monolith _f* sweep |
+| Legacy talk prose | ✅ named thin pool sweep (65 pools turn 34); wifeLessons + monolith _f* |
+| V2 wildcard depth | ✅ v2WildcardDepth.js — 83 emb/res/ritual/echo/dream/*.v2.depth pools padded |
 
 ## Key Files (V2)
 
@@ -74,7 +75,9 @@
 - `src/textEngine/scenes/opposition/oppositionMonolithFragmentDepth.js` — hearing _N.fM depth (auto-gen)
 - `src/textEngine/scenes/monolithFragmentDepth.js` — global remaining _N.fM depth (auto-gen)
 - `src/textEngine/scenes/wifeLessons/talkDepth.js` — wifeLessons.talk.* depth (405 pools, auto-gen)
-- `scripts/generateWifeLessonsTalkDepth.mjs` — regen wifeLessons talk depth
+- `src/textEngine/scenes/namedPoolDepth.js` — final named thin pool depth (65 pools, auto-gen)
+- `src/textEngine/scenes/v2WildcardDepth.js` — V2 wildcard depth (83 pools, auto-gen)
+- `scripts/generateV2WildcardDepth.mjs` — regen V2 wildcard depth
 - `src/textEngine/scenes/settling/settlingFragmentDepth.js` — decomposed care/gossip/confide _d* fragment depth
 - `src/textEngine/scenes/settling/settlingFeedFragmentDepth.js` — feed spread/stuffing _d27–44 fragment depth
 - `src/textEngine/scenes/v2/echo/echoSceneDepth.js` — per-student echo.type.* replay variants
@@ -83,13 +86,13 @@
 ## Verification
 
 ```bash
-npm run text:lint   # exit 0 (monolith warnings remain on legacy pools)
+npm run text:lint   # exit 0 (149 legacy banned-pattern warnings remain)
 npm run lint        # eslint
 npm run build       # production build
 ```
 
 ## Remaining Toward 2.0
 
-1. Named thin pool sweep — ~65 remain (echo/ritual/dream V2, emb skeletons, singles) + V2_0 audit; turn 33 cleared wifeLessons (429) + homeroom conference
+1. Legacy banned-pattern warnings (~149) — clinical language, "you both know", gain-excuse gates, "That is X" constructions
 2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
 3. Completion audit vs `docs/V2_0_DESIGN.md` — five V2 systems wired ✅; prose depth additive pass ongoing
