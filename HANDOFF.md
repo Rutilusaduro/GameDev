@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 weekRecap/hungerInterrupt/homeroom depth expanded; talk+dinner prior turns |
+| Legacy talk prose | 🔄 dinner reactions/ending + hunger outcomes + homeroom activities depth; talk prior turns |
 
 ## Key Files (V2)
 
@@ -43,7 +43,10 @@
 - `src/textEngine/scenes/collabStream/` — collab stream engine bridge
 - `src/textEngine/scenes/eatingContest/` — competitive circuit contest bridge
 - `src/textEngine/scenes/sumoMatch/` — sumo match engine bridge
-- `src/textEngine/scenes/v2/studentArchetypeDepth.js` — per-student voice on talk/feed/dinner/session depth
+- `src/textEngine/scenes/dinner/dinnerReactionsDepth.js` — group reaction + unbutton stage/student depth
+- `src/textEngine/scenes/dinner/dinnerEndingDepth.js` — endOpen/endClose/ending variants
+- `src/textEngine/scenes/homeroom/homeroomActivityDepth.js` — parent meeting + health unit activity pools
+- `src/textEngine/scenes/hungerFragmentsDepth.js` — feed/deny/compound/talk outcome depth
 
 ## Verification
 
