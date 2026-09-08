@@ -450,6 +450,22 @@ registerPool('recordingSession.v2.depth', [
     'Warm light on warm flesh — every take another record of her getting bigger for you.',
   ]},
 ]);
+registerPool('eatingContest.v2.depth', [
+  { when: { contestStage: [4, 5] }, text: [
+    'National-scale competition — the crowd came to watch mass meet appetite on a stage.',
+    'At this weight the contest is spectacle: belly, table, scale, the arithmetic of glory.',
+  ]},
+  { when: { contestStage: [2, 3] }, text: [
+    'Circuit heat — Maya across the table, plates between you, capacity tested in public.',
+    'Competitive eating as identity: every bite scored, every pound part of the story.',
+  ]},
+  { when: {}, text: [
+    'Contest floor energy — crowd noise, judge clipboard, hunger made sport.',
+    'You and Maya eat for the scale: fullness bars, strategy, the pleasure of outpacing.',
+    'Regional circuit warmth — food piled high, bellies growing under the lights.',
+    'The table is the arena. Appetite is the weapon. Weight is the trophy.',
+  ]},
+]);
 registerPool('wifeLessonsTalk.v2.depth', [
   { when: { wlStage: [6, 7, 8] }, text: [
     'The conversation settles warm as dough — mothers and daughters speaking appetite like scripture.',

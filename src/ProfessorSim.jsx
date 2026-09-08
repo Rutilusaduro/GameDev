@@ -12,7 +12,7 @@ import { getPlayerPrefs, toggleInstantText } from './gameData/playerPrefs.js';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
-import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
+import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
 import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
@@ -108,6 +108,13 @@ import {
   renderRecordingOneMoreTake,
   renderRecordingWrapText,
 } from './textEngine/scenes/recordingSession/index.js';
+import {
+  renderContestFoodPopup,
+  renderContestActionPopup,
+  renderContestDevourPopup,
+  renderContestWeighIn2,
+  renderContestPayoff,
+} from './textEngine/scenes/eatingContest/index.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
@@ -5062,11 +5069,11 @@ export default function ProfessorSim(){
         newMayaGain=mayaGain+pick.lbs;
       }
     }
-    const popup=CONTEST_FOOD_POPUPS[food.id]?.[stageIdx]||'';
+    const popup=renderContestFoodPopup(food.id,stageIdx,s,week);
     // Check end conditions
     const tableCleared=newYF.every(f=>f.consumed)&&newMF.every(f=>f.consumed);
     if(tableCleared){
-      const tcp=CONTEST_ACTION_POPUPS.table_cleared?.[stageIdx]||popup;
+      const tcp=renderContestActionPopup('table_cleared',stageIdx,s,week)||popup;
       setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tcp,phaseAfterPopup:'weigh_in_2'}));
       return;
     }
@@ -5075,7 +5082,7 @@ export default function ProfessorSim(){
       const newEffMax=maxYourFullness-pantsFactor;
       const tooFull=newYourFull>=newEffMax&&actions.unbuttoned&&actions.rubUses>=3;
       if(tooFull){
-        const tfp=CONTEST_ACTION_POPUPS.too_full?.[stageIdx]||popup;
+        const tfp=renderContestActionPopup('too_full',stageIdx,s,week)||popup;
         setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tfp,phaseAfterPopup:'weigh_in_2'}));
         return;
       }
@@ -5123,10 +5130,10 @@ export default function ProfessorSim(){
         newMayaGain=mayaGain+pick.lbs;
       }
     }
-    const popup=CONTEST_DEVOUR_POPUPS[stageIdx]||'';
+    const popup=renderContestDevourPopup(stageIdx,s,week);
     const tableCleared=newYF.every(f=>f.consumed)&&finalMF.every(f=>f.consumed);
     if(tableCleared){
-      const tcp=CONTEST_ACTION_POPUPS.table_cleared?.[stageIdx]||popup;
+      const tcp=renderContestActionPopup('table_cleared',stageIdx,s,week)||popup;
       setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:finalMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tcp,phaseAfterPopup:'weigh_in_2'}));
       return;
     }
@@ -5135,23 +5142,24 @@ export default function ProfessorSim(){
 
   const doContestAction=(action)=>{
     if(!eatingContestState) return;
-    const{stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,mayaGain,pantsFactor,actions}=eatingContestState;
+    const{stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,mayaGain,pantsFactor,actions,studentId}=eatingContestState;
+    const s=students.find(st=>st.id===studentId);
     let updates={};
     let popup='';
     if(action==='unbutton'){
       if(actions.unbuttoned) return;
       updates.pantsFactor=pantsFactor+15;
       updates.actions={...actions,unbuttoned:true};
-      popup=CONTEST_ACTION_POPUPS.unbutton?.[stageIdx]||'';
+      popup=s?renderContestActionPopup('unbutton',stageIdx,s,week):'';
     } else if(action==='rub'){
       if(actions.rubUses>=3) return;
       updates.yourFullness=Math.max(0,yourFullness-5);
       updates.actions={...actions,rubUses:actions.rubUses+1};
-      popup=CONTEST_ACTION_POPUPS.rub?.[stageIdx]||'';
+      popup=s?renderContestActionPopup('rub',stageIdx,s,week):'';
     } else if(action==='taunt'){
       if(actions.taunted) return;
       updates.actions={...actions,taunted:true};
-      popup=CONTEST_ACTION_POPUPS.taunt?.[stageIdx]||'';
+      popup=s?renderContestActionPopup('taunt',stageIdx,s,week):'';
     }
     // Advance Maya after each action
     const curMF=updates.mayaFoods||mayaFoods;
@@ -5180,8 +5188,8 @@ export default function ProfessorSim(){
       const newActions2=updates.actions||actions;
       const noRoom=newFull2>=newEffMax2&&newActions2.unbuttoned&&newActions2.rubUses>=3;
       const tableCleared2=newYF2.every(f=>f.consumed)&&newMF.every(f=>f.consumed);
-      if(tableCleared2){updates.phaseAfterPopup='weigh_in_2';updates.popupText=CONTEST_ACTION_POPUPS.table_cleared?.[stageIdx]||'';}
-      else if(noRoom&&stageIdx<3){updates.phaseAfterPopup='weigh_in_2';updates.popupText=CONTEST_ACTION_POPUPS.too_full?.[stageIdx]||'';}
+      if(tableCleared2){updates.phaseAfterPopup='weigh_in_2';updates.popupText=s?renderContestActionPopup('table_cleared',stageIdx,s,week):'';}
+      else if(noRoom&&stageIdx<3){updates.phaseAfterPopup='weigh_in_2';updates.popupText=s?renderContestActionPopup('too_full',stageIdx,s,week):'';}
     }
     setEatingContestState(prev=>({...prev,...updates}));
   };
@@ -8821,7 +8829,7 @@ export default function ProfessorSim(){
       {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive}/>}
 
       {/* ── EATING CONTEST MINI-GAME MODAL ── */}
-      {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup}/>}
+      {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} week={week} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup}/>}
 
       {forceFeederState&&<ForceFeederModal
         state={forceFeederState}

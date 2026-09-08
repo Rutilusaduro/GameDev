@@ -2,9 +2,10 @@
 // EATING CONTEST — Mini-game modal
 // ═══════════════════════════════════════════════════════════════
 import { C } from '../styles.js';
-import { CONTEST_MAYA_WEIGHTS, CONTEST_WEIGH_IN_2_TEXT, CONTEST_PAYOFF_TEXT } from '../gameData/miniGames.js';
+import { CONTEST_MAYA_WEIGHTS } from '../gameData/miniGames.js';
+import { renderContestWeighIn2, renderContestPayoff } from '../textEngine/scenes/eatingContest/index.js';
 
-export function EatingContestModal({ eatingContestState, students, toggleFoodSelection, eatContestFood, doContestAction, doDevour, setEatingContestState, closeEatingContest, dismissContestPopup }){
+export function EatingContestModal({ eatingContestState, students, week = 1, toggleFoodSelection, eatContestFood, doContestAction, doDevour, setEatingContestState, closeEatingContest, dismissContestPopup }){
         const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,popupText,phase,pantsFactor,actions}=eatingContestState;
         const s=students.find(st=>st.id===studentId); if(!s) return null;
         const mayaLbs=CONTEST_MAYA_WEIGHTS[stageIdx]||330;
@@ -18,7 +19,7 @@ export function EatingContestModal({ eatingContestState, students, toggleFoodSel
         const selectedYourCount=(yourFoods||[]).filter(f=>f.selected&&!f.consumed).length;
         const selectedMayaCount=(mayaFoods||[]).filter(f=>f.selected&&!f.consumed).length;
         const selectedCount=selectedYourCount+selectedMayaCount;
-        const payoffText=CONTEST_PAYOFF_TEXT[stageIdx]?.(yourGain)||`${Math.round(yourGain)} pounds added to your frame. You can feel it. You are heavier than when you walked in.`;
+        const payoffText=renderContestPayoff(stageIdx,s,yourGain,week);
         const completions=s.contestCompletions||0;
         return(
           <div style={{...C.overlay,zIndex:1200}}>
@@ -130,7 +131,7 @@ export function EatingContestModal({ eatingContestState, students, toggleFoodSel
               {phase==='weigh_in_2'&&(
                 <>
                   <div style={{fontSize:12,color:"#80c090",lineHeight:1.9,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-line"}}>
-                    {CONTEST_WEIGH_IN_2_TEXT[stageIdx]?.(s,yourGain,mayaGain,mayaLbs)||''}
+                    {renderContestWeighIn2(stageIdx,s,yourGain,mayaGain,mayaLbs,week)}
                   </div>
                   <button style={{...C.btn("#1a5030"),width:"100%"}} onClick={()=>setEatingContestState(prev=>({...prev,phase:'scoreboard'}))}>
                     📊 See the Results
