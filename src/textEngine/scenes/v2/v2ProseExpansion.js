@@ -386,6 +386,13 @@ registerPool('wifeLessonsTalk.v2.depth', [
     'The kitchen listens. So do you. Appetite spoken like something sacred and ordinary at once.',
   ]},
 ]);
+registerPool('homeroom.v2.depth', [
+  { when: {}, text: [
+    "Daisy's classroom hums with institutional warmth — cookies, curriculum, and calculated indulgence.",
+    'Tuesday theology: feed the class, charm the parents, grow the suspicion meter one tray at a time.',
+    'The homeroom queen holds court — soft power measured in butter and bake-sale diplomacy.',
+  ]},
+]);
 registerPool('wifeLessons.v2.depth', [
   { when: { wlStage: [6, 7, 8] }, text: [
     'The kitchen has become a throne room of butter and belonging — daughters and mothers alike surrendering to the lesson.',

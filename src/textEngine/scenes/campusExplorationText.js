@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../engine.js';
 import { getStage } from '../../gameData/stages.js';
+import { appendV2Depth } from './v2/depthRenderer.js';
 import '../modules.js'; // subject.name etc.
 
 // ── student sightings (weight-band × archetype) ───────────────
@@ -320,8 +321,11 @@ export function campusSightingContext(student, explorationCtx, nodeId) {
 }
 
 export function renderCampusSighting(student, explorationCtx, nodeId) {
-  const line = render('{campus.sighting}', campusSightingContext(student, explorationCtx, nodeId));
-  return line ? `👁 ${line}` : null;
+  const ctx = campusSightingContext(student, explorationCtx, nodeId);
+  const line = render('{campus.sighting}', ctx);
+  if (!line) return null;
+  const depth = appendV2Depth(line, 'campusNav', ctx, 0.22);
+  return depth ? `👁 ${depth}` : null;
 }
 
 export function renderCampusTravelLine(explorationCtx, nodeId, category = 'travel') {
@@ -334,7 +338,8 @@ export function renderCampusTravelLine(explorationCtx, nodeId, category = 'trave
     },
   });
   const key = category === 'location' ? '{campus.location}' : '{campus.travel}';
-  return render(key, ctx);
+  const base = render(key, ctx)?.trim() || '';
+  return appendV2Depth(base, 'campusNav', ctx, 0.2);
 }
 
 export function renderCampusFindFlavor(explorationCtx) {
@@ -345,5 +350,6 @@ export function renderCampusFindFlavor(explorationCtx) {
       campusFattening: explorationCtx.campusFattening,
     },
   });
-  return render('{campus.find}', ctx);
+  const base = render('{campus.find}', ctx)?.trim() || '';
+  return appendV2Depth(base, 'campusNav', ctx, 0.2);
 }

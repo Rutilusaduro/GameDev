@@ -306,6 +306,7 @@ import {
 } from './gameData/opposition.js';
 import { supernaturalActLine } from './gameData/oppositionText.js';
 import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
+import { renderHomeroomProse } from './textEngine/scenes/homeroom/index.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
@@ -2812,13 +2813,19 @@ export default function ProfessorSim(){
   // ── HOMEROOM QUEEN handlers ───────────────────────────────────────
   const openHomeroomConference=(studentKey)=>{
     if(!homeroomSessionState||homeroomSessionState.ap<1||homeroomSessionState.activeActivity) return;
-    setHomeroomSessionState(prev=>({...prev,ap:prev.ap-1,activeActivity:{type:'conference',key:studentKey,phaseIdx:0,history:[],done:false,resultText:null,revealsWeights:false,revealsParentWeights:false}}));
+    const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
+    const evDef=HOMEROOM_CONFERENCE_EVENTS[studentKey];
+    const phaseProse=evDef?.text&&daisy?renderHomeroomProse(evDef.text,daisy,week,{globals:{homeroomKey:studentKey}}):null;
+    setHomeroomSessionState(prev=>({...prev,ap:prev.ap-1,activeActivity:{type:'conference',key:studentKey,phaseIdx:0,history:[],done:false,resultText:null,phaseProse,revealsWeights:false,revealsParentWeights:false}}));
   };
   const startHomeroomGroupActivity=(actKey)=>{
     if(!homeroomSessionState||homeroomSessionState.activeActivity) return;
     const actDef=HOMEROOM_GROUP_ACTIVITIES[actKey]; if(!actDef) return;
     if(homeroomSessionState.ap<actDef.apCost) return;
-    setHomeroomSessionState(prev=>({...prev,ap:prev.ap-actDef.apCost,activeActivity:{type:actKey,key:actKey,phaseIdx:0,history:[],done:false,resultText:null,revealsWeights:false,revealsParentWeights:false}}));
+    const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
+    const phases=actDef.phases||[{text:actDef.text,choices:actDef.choices||[]}];
+    const phaseProse=phases[0]?.text&&daisy?renderHomeroomProse(phases[0].text,daisy,week,{globals:{homeroomAct:actKey}}):null;
+    setHomeroomSessionState(prev=>({...prev,ap:prev.ap-actDef.apCost,activeActivity:{type:actKey,key:actKey,phaseIdx:0,history:[],done:false,resultText:null,phaseProse,revealsWeights:false,revealsParentWeights:false}}));
   };
   const makeHomeroomActivityChoice=(choiceId)=>{
     if(!homeroomSessionState?.activeActivity) return;
@@ -2835,6 +2842,8 @@ export default function ProfessorSim(){
       hasNextPhase=phaseIdx+1<phases.length;
     }
     const resultText=typeof choice.result==='function'?choice.result():choice.result;
+    const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
+    const renderedResult=daisy&&resultText?renderHomeroomProse(resultText,daisy,week,{globals:{homeroomKey:key,homeroomChoice:choiceId}}):resultText;
     setHomeroomSessionState(prev=>({
       ...prev,
       daisyGain:prev.daisyGain+(choice.lbs||0),
@@ -2842,12 +2851,21 @@ export default function ProfessorSim(){
       classGainAccum:prev.classGainAccum+(choice.classGain||0),
       momGainAccum:prev.momGainAccum+(choice.momGain||0),
       suspDeltaAccum:prev.suspDeltaAccum+(choice.suspDelta||0),
-      activeActivity:{...prev.activeActivity,phaseIdx:hasNextPhase?phaseIdx+1:phaseIdx,history:[...prev.activeActivity.history,choiceId],resultText,done:!hasNextPhase,revealsWeights:prevRevW||!!choice.revealsWeights,revealsParentWeights:prevRevPW||!!choice.revealsParentWeights},
+      activeActivity:{...prev.activeActivity,phaseIdx:hasNextPhase?phaseIdx+1:phaseIdx,history:[...prev.activeActivity.history,choiceId],resultText:renderedResult,done:!hasNextPhase,revealsWeights:prevRevW||!!choice.revealsWeights,revealsParentWeights:prevRevPW||!!choice.revealsParentWeights},
     }));
   };
   const advanceHomeroomActivityPhase=()=>{
     if(!homeroomSessionState?.activeActivity) return;
-    setHomeroomSessionState(prev=>({...prev,activeActivity:{...prev.activeActivity,resultText:null}}));
+    const{type,phaseIdx}=homeroomSessionState.activeActivity;
+    const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
+    let phaseProse=null;
+    if(type!=='conference'){
+      const actDef=HOMEROOM_GROUP_ACTIVITIES[type];
+      const phases=actDef?.phases||[];
+      const phase=phases[phaseIdx];
+      if(phase?.text&&daisy) phaseProse=renderHomeroomProse(phase.text,daisy,week,{globals:{homeroomAct:type}});
+    }
+    setHomeroomSessionState(prev=>({...prev,activeActivity:{...prev.activeActivity,resultText:null,phaseProse}}));
   };
   const dismissHomeroomActivity=()=>{
     if(!homeroomSessionState?.activeActivity?.done) return;
