@@ -16,6 +16,8 @@ export const FEAST_RITUALS = [
     corruptionEach: 4,
     requiresSkill: null,
     requiresClass: 'ritual_kitchen',
+    minWeek: 1,
+    minSpiritLevel: 1,
     desc: 'A shared plate. Fingers brush. Nobody pretends they are not watching each other eat.',
   },
   {
@@ -31,6 +33,8 @@ export const FEAST_RITUALS = [
     corruptionEach: 5,
     requiresSkill: null,
     requiresClass: 'ritual_kitchen',
+    minWeek: 4,
+    minSpiritLevel: 2,
     desc: 'Courses arrive in sequence. The room fills with heat and chewing. Appetite becomes ceremony.',
   },
   {
@@ -46,6 +50,8 @@ export const FEAST_RITUALS = [
     corruptionEach: 8,
     requiresSkill: 'ritual_master',
     requiresClass: 'ritual_kitchen',
+    minWeek: 8,
+    minSpiritLevel: 3,
     desc: 'Candles. Chanting is optional. Fullness is mandatory. The spirit drinks the room.',
   },
   {
@@ -61,17 +67,21 @@ export const FEAST_RITUALS = [
     corruptionEach: 10,
     requiresSkill: 'ritual_master',
     requiresClass: 'ritual_kitchen',
+    minWeek: 12,
+    minSpiritLevel: 4,
     minStage: 7,
     immobileOnly: true,
     desc: 'Bedside feasts for bodies too vast to travel. Food brought like offerings.',
   },
 ];
 
-export function getAvailableRituals({ ownedSkills = {}, ownedClassSkills = {}, students = [] } = {}) {
+export function getAvailableRituals({ ownedSkills = {}, ownedClassSkills = {}, students = [], week = 1, spiritLevel = 1 } = {}) {
   const visible = students.filter((s) => !s.hidden);
   return FEAST_RITUALS.filter((r) => {
     if (r.requiresClass && !ownedClassSkills[r.requiresClass]) return false;
     if (r.requiresSkill && (ownedSkills[r.requiresSkill] || 0) < 1) return false;
+    if (r.minWeek && week < r.minWeek) return false;
+    if (r.minSpiritLevel && spiritLevel < r.minSpiritLevel) return false;
     if (r.immobileOnly) {
       const immobile = visible.filter((s) => (s.lbs || 0) >= 360);
       if (immobile.length < r.minStudents) return false;

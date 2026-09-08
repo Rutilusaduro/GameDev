@@ -86,6 +86,10 @@ registerPool('shift.denial', [
     'The old vocabulary is gone. Appetite speaks fluent now.',
     'Denial retired. Appetite took its desk.',
   ] },
+  { when: {}, text: [
+    '',
+    'Denial arrives on schedule. It is thinner than last month.',
+  ] },
 ]);
 
 registerPool('shift.coda', [

@@ -77,7 +77,8 @@ export function pulseResonance(fedStudentId, calories, students, resonanceState)
   return { pulses, bonusCalories: bonusCal * pulses.length };
 }
 
-export function shouldResonanceSurge(resonanceState, week, students = []) {
+export function shouldResonanceSurge(resonanceState, week, students = [], ownedClassSkills = {}) {
+  if (!ownedClassSkills.resonance_bells) return false;
   const classLbs = getCombinedClassLbs(students);
   const tier = getResonanceTier((resonanceState.links || []).length, classLbs);
   if (tier.id < 2) return false;

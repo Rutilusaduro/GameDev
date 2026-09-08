@@ -93,7 +93,7 @@ export function captureCorruptionTierEcho(v2State, studentId, week, stageId, tie
   }));
 }
 
-export function runWeeklyV2Events(v2State, students, ownedSkills, week) {
+export function runWeeklyV2Events(v2State, students, ownedSkills, ownedClassSkills, week) {
   let next = resetV2Weekly(v2State);
   const messages = [];
 
@@ -103,8 +103,8 @@ export function runWeeklyV2Events(v2State, students, ownedSkills, week) {
     messages.push({ type: 'passive', tier: passive.tier.label, bonus: passive.tier.passiveBonus });
   }
 
-  // Resonance surge
-  if (shouldResonanceSurge(next.resonance, week, students)) {
+  // Resonance surge — requires resonance_bells classroom upgrade
+  if (shouldResonanceSurge(next.resonance, week, students, ownedClassSkills || {})) {
     next = {
       ...next,
       resonance: { ...next.resonance, lastSurgeWeek: week },

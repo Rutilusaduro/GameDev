@@ -5,6 +5,7 @@
 export const V2_CONFIG = {
   version: '2.0.0',
   embodimentBaseAp: 2,
+  embodimentDeepRideAp: 1,
   embodimentDiscountAp: 1,
   embodimentEchoDigestMult: 1.2,
   resonanceLinkAp: 1,

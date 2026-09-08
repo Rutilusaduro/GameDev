@@ -21,12 +21,15 @@ export function SpiritHubView({
   onOpenRituals,
   onOpenDream,
   ap,
+  week = 1,
+  spiritLevel = 1,
 }) {
   const [linkPickA, setLinkPickA] = useState(null);
   const visible = students.filter((s) => !s.hidden);
   const links = v2State?.resonance?.links || [];
   const tier = getResonanceTier(links.length, getCombinedClassLbs(students));
-  const rituals = getAvailableRituals({ ownedSkills, ownedClassSkills, students });
+  const rituals = getAvailableRituals({ ownedSkills, ownedClassSkills, students, week, spiritLevel });
+  const hasDreamChamber = !!ownedClassSkills?.dream_chamber;
   const hasSpiritRide = (ownedSkills?.spirit_ride || 0) >= 1;
   const hasHungerWeb = (ownedSkills?.hunger_web || 0) >= 1;
   const hasDreamWalk = (ownedSkills?.dream_walk || 0) >= 1;
@@ -175,15 +178,27 @@ export function SpiritHubView({
         </div>
         {!hasDreamWalk ? (
           <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>Unlock Dream Walk in the Corruption skill tree.</p>
+        ) : !hasDreamChamber ? (
+          <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>Build Dream Chamber classroom upgrade for manual dreams.</p>
         ) : (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-            {visible.filter((s) => (s.corruption || 0) >= 40).map((s) => (
-              <button key={s.id} type="button" style={{ ...C.smBtn, fontSize: 10 }}
-                disabled={ap < 2}
-                onClick={() => onOpenDream?.(s)}>
-                Dream: {s.name}
-              </button>
-            ))}
+            {visible.map((s) => {
+              const dreamCheck = canTriggerDream(s, {
+                ownedSkills,
+                ownedClassSkills: ownedClassSkills || {},
+                dreamsState: v2State?.dreams,
+                week,
+                manual: true,
+              });
+              return (
+                <button key={s.id} type="button" style={{ ...C.smBtn, fontSize: 10, opacity: !dreamCheck.ok || ap < 2 ? 0.45 : 1 }}
+                  disabled={!dreamCheck.ok || ap < 2}
+                  title={!dreamCheck.ok ? dreamCheck.reason : undefined}
+                  onClick={() => dreamCheck.ok && onOpenDream?.(s)}>
+                  Dream: {s.name}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>

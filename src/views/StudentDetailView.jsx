@@ -33,6 +33,7 @@ import { DossierPanel } from '../components/DossierPanel.jsx';
 import { StudentPortrait } from '../components/StudentPortrait.jsx';
 import { EchoArchivePanel } from '../components/v2/V2Modals.jsx';
 import { canTriggerDream } from '../gameData/v2/appetiteDreams.js';
+import { canViewEchoArchive } from '../gameData/v2/bodyEcho.js';
 import { useEffect, useState } from 'react';
 
 export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openDream, openEchoReplay, v2State, ownedSkills, ownedClassSkills, onEchoResonate, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, fireAscensionAbility, openAscensionCeremony, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState, dossierOpen, setDossierOpen }){
@@ -994,7 +995,10 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                         );
                       })()}
                     </div>
-                    {(ownedSkills?.memory_palace||0)>=1&&(
+                    {(ownedSkills?.memory_palace||0)>=1&&!ownedClassSkills?.echo_gallery&&(
+                      <p style={{fontSize:11,color:'#607080',fontStyle:'italic'}}>Echoes capture automatically. Build Echo Gallery to view the archive.</p>
+                    )}
+                    {canViewEchoArchive(ownedSkills,ownedClassSkills||{})&&(
                       <div>
                         <div style={{fontSize:10,color:'#8090a0',marginBottom:6}}>BODY ECHO ARCHIVE</div>
                         <EchoArchivePanel

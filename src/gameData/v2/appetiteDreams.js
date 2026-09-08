@@ -43,8 +43,28 @@ export const DREAM_CHOICES = {
   leviathan_dream: [
     { id: 'become', label: 'Become the mountain', calories: 5000, rel: 8, corruption: 12 },
     { id: 'witness', label: 'Witness your vastness', calories: 2500, rel: 6, corruption: 8 },
+    { id: 'lucid_devour', label: 'Steer: devour the dream whole', calories: 6000, rel: 10, corruption: 14, lucidOnly: true },
   ],
 };
+
+/** Lucid-only steering choices — direct player control over dream outcome. */
+export const LUCID_DREAM_STEER = {
+  endless_buffet: { id: 'lucid_indulge', label: 'Steer: eat until the dream obeys', calories: 3500, rel: 6, corruption: 8 },
+  floating_cake: { id: 'lucid_climb', label: 'Steer: claim the whole cake', calories: 2800, rel: 7, corruption: 7 },
+  feast_hall: { id: 'lucid_head', label: 'Steer: command the head table', calories: 4000, rel: 8, corruption: 9 },
+  honey_river: { id: 'lucid_drink', label: 'Steer: drink until honey wins', calories: 3800, rel: 7, corruption: 8 },
+  mirror_feast: { id: 'lucid_feed', label: 'Steer: feed every reflection', calories: 4500, rel: 9, corruption: 10 },
+  gravity_well: { id: 'lucid_fall', label: 'Steer: fall without braking', calories: 5000, rel: 8, corruption: 11 },
+  leviathan_dream: { id: 'lucid_become', label: 'Steer: become the mountain', calories: 6500, rel: 10, corruption: 15 },
+};
+
+export function getDreamChoices(scenarioId, lucidUnlocked = false) {
+  const base = DREAM_CHOICES[scenarioId] || DREAM_CHOICES.endless_buffet;
+  if (!lucidUnlocked) return base;
+  const steer = LUCID_DREAM_STEER[scenarioId];
+  const extras = base.filter((c) => c.lucidOnly);
+  return steer ? [...base.filter((c) => !c.lucidOnly), steer, ...extras] : base;
+}
 
 export function canTriggerDream(student, { ownedSkills = {}, ownedClassSkills = {}, dreamsState = {}, week = 1, manual = false } = {}) {
   if ((ownedSkills.dream_walk || 0) < 1) return { ok: false, reason: 'Requires Dream Walk skill' };

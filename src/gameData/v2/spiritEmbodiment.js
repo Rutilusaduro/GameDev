@@ -182,7 +182,6 @@ export const EMBODIMENT_ACTIONS = [
     minStage: 5,
     minCorruption: 55,
     requiresSkill: 'deep_ride',
-    requiresClass: 'embodiment_chamber',
     calories: 600,
     fullness: 10,
     rel: 8,
@@ -197,7 +196,6 @@ export const EMBODIMENT_ACTIONS = [
     minStage: 6,
     minCorruption: 65,
     requiresSkill: 'deep_ride',
-    requiresClass: 'dream_chamber',
     calories: 2800,
     fullness: 60,
     rel: 4,
@@ -212,8 +210,13 @@ export function canEmbody(student, { ownedSkills = {}, ownedClassSkills = {}, em
   const maxUses = (ownedSkills.deep_ride || 0) >= 1 ? V2_CONFIG.maxEmbodimentsDeepRide : V2_CONFIG.maxEmbodimentsPerWeek;
   if ((embodimentState.usedThisWeek || 0) >= maxUses) return { ok: false, reason: 'Embodiment limit reached this week' };
   if (embodimentState.activeStudentId != null) return { ok: false, reason: 'Already inhabiting someone' };
-  const apCost = ownedClassSkills.embodiment_chamber ? V2_CONFIG.embodimentDiscountAp : V2_CONFIG.embodimentBaseAp;
-  return { ok: true, apCost };
+  const apCost = (ownedSkills.deep_ride || 0) >= 1
+    ? V2_CONFIG.embodimentDeepRideAp
+    : V2_CONFIG.embodimentBaseAp;
+  const discounted = ownedClassSkills.embodiment_chamber
+    ? Math.max(1, apCost - 1)
+    : apCost;
+  return { ok: true, apCost: discounted };
 }
 
 export function getAvailableEmbodimentActions(student, ownedSkills = {}, ownedClassSkills = {}) {

@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { C } from '../../styles.js';
 import { FEAST_RITUALS, getAvailableRituals } from '../../gameData/v2/feastRituals.js';
-import { DREAM_CHOICES, pickDreamScenario, DREAM_SCENARIOS } from '../../gameData/v2/appetiteDreams.js';
+import { DREAM_CHOICES, pickDreamScenario, DREAM_SCENARIOS, getDreamChoices } from '../../gameData/v2/appetiteDreams.js';
 import { ECHO_TYPES, echoDepthTier } from '../../gameData/v2/bodyEcho.js';
 import { createContext } from '../../textEngine/engine.js';
 import { renderRitual } from '../../textEngine/scenes/v2/rituals/index.js';
@@ -13,10 +13,10 @@ import { renderEchoReplay } from '../../textEngine/scenes/v2/echo/index.js';
 import { StudentPortrait } from '../StudentPortrait.jsx';
 import { SceneBackdrop } from './SceneBackdrop.jsx';
 
-export function FeastRitualModal({ students, ownedSkills, ownedClassSkills, onRun, onClose }) {
+export function FeastRitualModal({ students, ownedSkills, ownedClassSkills, week = 1, spiritLevel = 1, onRun, onClose }) {
   const [selected, setSelected] = useState([]);
   const [ritualId, setRitualId] = useState(null);
-  const available = getAvailableRituals({ ownedSkills, ownedClassSkills, students });
+  const available = getAvailableRituals({ ownedSkills, ownedClassSkills, students, week, spiritLevel });
   const ritual = FEAST_RITUALS.find((r) => r.id === ritualId);
 
   const toggle = (id) => {
@@ -83,7 +83,7 @@ export function DreamModal({ student, presetScenarioId, lucidUnlocked, onChoice,
     setPhase('dream');
   };
 
-  const choices = scenario ? (DREAM_CHOICES[scenario.id] || DREAM_CHOICES.endless_buffet) : [];
+  const choices = scenario ? getDreamChoices(scenario.id, lucidUnlocked) : [];
 
   return (
     <div style={C.modalOverlay}>
@@ -108,7 +108,8 @@ export function DreamModal({ student, presetScenarioId, lucidUnlocked, onChoice,
               {renderDreamScenario(scenario.id, ctx)}
             </p>
             {choices.map((ch) => (
-              <button key={ch.id} type="button" style={{ ...C.btn('#284868'), width: '100%', marginBottom: 6, fontSize: 11 }}
+              <button key={ch.id} type="button"
+                style={{ ...C.btn(ch.lucidOnly || ch.id.startsWith('lucid_') ? '#406888' : '#284868'), width: '100%', marginBottom: 6, fontSize: 11 }}
                 onClick={() => { onChoice?.(scenario, ch, renderDreamWake(ctx)); onClose?.(); }}>
                 {ch.label}
               </button>

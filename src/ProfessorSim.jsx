@@ -1721,7 +1721,7 @@ export default function ProfessorSim(){
       if(found.length) setTimeout(()=>push(`🎒 Pantry restocked: ${found.map(i=>`${i.emoji} ${i.label}`).join(", ")}`),100);
     }
     // ── V2.0 pre-digest weekly — resonance bonus/surge, embodiment reset ──
-    const v2Weekly=runWeeklyV2Events(v2,updated,ownedSkills,week);
+    const v2Weekly=runWeeklyV2Events(v2,updated,ownedSkills,ownedClassSkills||{},week);
     const nextV2State=v2Weekly.v2State;
     if(v2Weekly.passiveStudents) updated=v2Weekly.passiveStudents;
     for(const msg of v2Weekly.messages){
@@ -6376,7 +6376,7 @@ export default function ProfessorSim(){
     push(`🔗 ${a?.name} ↔ ${b?.name} — appetites linked.${linkProse?` ${linkProse.slice(0,100)}`:''}`);
   };
   const runFeastRitual=(ritualId,studentIds,text)=>{
-    const result=handleRitual(ritualId,studentIds,{students,ownedSkills,ownedClassSkills:ownedClassSkills||{},week,v2State:v2});
+    const result=handleRitual(ritualId,studentIds,{students,ownedSkills,ownedClassSkills:ownedClassSkills||{},week,spiritLevel,v2State:v2});
     if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
     if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
     setAp(a=>a-result.apCost);
@@ -6407,7 +6407,8 @@ export default function ProfessorSim(){
       setAp(a=>a-(check.apCost||0));
     }
     const lucid=v2.dreams?.lucidUnlocked;
-    const mult=lucid?1.2:1;
+    const isLucidSteer=choice.id?.startsWith('lucid_')||choice.lucidOnly;
+    const mult=lucid&&!isLucidSteer?1.2:1;
     const boostedChoice={
       ...choice,
       calories:Math.round((choice.calories||0)*mult),
@@ -8597,6 +8598,8 @@ export default function ProfessorSim(){
             onOpenRituals={()=>setFeastRitualOpen(true)}
             onOpenDream={(s)=>setDreamStudent(s)}
             ap={ap}
+            week={week}
+            spiritLevel={spiritLevel}
           />}
 
           {/* ── STUDENT DETAIL ── */}
@@ -9220,6 +9223,8 @@ export default function ProfessorSim(){
           students={students}
           ownedSkills={ownedSkills}
           ownedClassSkills={ownedClassSkills||{}}
+          week={week}
+          spiritLevel={spiritLevel}
           onRun={runFeastRitual}
           onClose={()=>setFeastRitualOpen(false)}
         />
