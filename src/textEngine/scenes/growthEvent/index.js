@@ -14,6 +14,7 @@ import './stageCrossings.js';
 import './garments.js';
 import './personas.js';
 import '../../modules.js';
+import './growthEventSceneDepth.js';
 
 function weightBandFromStage(stageId) {
   if (stageId <= 2) return 'lean';

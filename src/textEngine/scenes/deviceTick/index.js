@@ -10,6 +10,7 @@ import { resolveGrowthZone, SUDDEN_GROWTH_LBS_MIN } from '../../growthLexicon.js
 import '../../growthLexicon.js';
 import './fragments.js';
 import '../../modules.js';
+import './deviceTickSceneDepth.js';
 
 registerPool('device.tick.beat', [
   { when: { isMalfunction: true, gainLbsMin: SUDDEN_GROWTH_LBS_MIN }, text: [

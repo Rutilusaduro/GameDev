@@ -102,6 +102,7 @@ import './weighIn/depth.js';
 import './deviceBody.js';
 import './deviceTick/index.js';
 import './deviceFlavorDepth.js';
+import './deviceSceneDepth.js';
 import './suddenGrowth/index.js';
 import './talia/index.js';
 import './talia/wiAsideDepth.js';

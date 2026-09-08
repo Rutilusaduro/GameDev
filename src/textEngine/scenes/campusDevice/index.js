@@ -7,6 +7,7 @@ import { getStage } from '../../../gameData/stages.js';
 import { getDeviceDependence, getDeviceDependenceTier } from '../../../gameData/deviceDependence.js';
 import './fragments.js';
 import '../../modules.js';
+import './campusDeviceSceneDepth.js';
 
 registerPool('campus.deviceEncounter', [
   { when: { targetType: 'student' }, text: [
