@@ -331,7 +331,7 @@ import {
 } from './gameData/opposition.js';
 import { supernaturalActLine } from './gameData/oppositionText.js';
 import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
-import { renderHomeroomProse } from './textEngine/scenes/homeroom/index.js';
+import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
@@ -2842,7 +2842,7 @@ export default function ProfessorSim(){
     if(!homeroomSessionState||homeroomSessionState.ap<1||homeroomSessionState.activeActivity) return;
     const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
     const evDef=HOMEROOM_CONFERENCE_EVENTS[studentKey];
-    const phaseProse=evDef?.text&&daisy?renderHomeroomProse(evDef.text,daisy,week,{globals:{homeroomKey:studentKey}}):null;
+    const phaseProse=daisy?renderHomeroomPool(homeroomConferencePoolKey(studentKey),daisy,week,{globals:{homeroomKey:studentKey}}):null;
     setHomeroomSessionState(prev=>({...prev,ap:prev.ap-1,activeActivity:{type:'conference',key:studentKey,phaseIdx:0,history:[],done:false,resultText:null,phaseProse,revealsWeights:false,revealsParentWeights:false}}));
   };
   const startHomeroomGroupActivity=(actKey)=>{
@@ -2851,7 +2851,7 @@ export default function ProfessorSim(){
     if(homeroomSessionState.ap<actDef.apCost) return;
     const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
     const phases=actDef.phases||[{text:actDef.text,choices:actDef.choices||[]}];
-    const phaseProse=phases[0]?.text&&daisy?renderHomeroomProse(phases[0].text,daisy,week,{globals:{homeroomAct:actKey}}):null;
+    const phaseProse=daisy?renderHomeroomPool(homeroomActivityPoolKey(actKey,0),daisy,week,{globals:{homeroomAct:actKey}}):null;
     setHomeroomSessionState(prev=>({...prev,ap:prev.ap-actDef.apCost,activeActivity:{type:actKey,key:actKey,phaseIdx:0,history:[],done:false,resultText:null,phaseProse,revealsWeights:false,revealsParentWeights:false}}));
   };
   const makeHomeroomActivityChoice=(choiceId)=>{
@@ -2870,7 +2870,10 @@ export default function ProfessorSim(){
     }
     const resultText=typeof choice.result==='function'?choice.result():choice.result;
     const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
-    const renderedResult=daisy&&resultText?renderHomeroomProse(resultText,daisy,week,{globals:{homeroomKey:key,homeroomChoice:choiceId}}):resultText;
+    const poolKey=type==='conference'
+      ?homeroomConferencePoolKey(key,choiceId)
+      :homeroomActivityPoolKey(type,phaseIdx,choiceId);
+    const renderedResult=daisy&&poolKey?renderHomeroomPool(poolKey,daisy,week,{globals:{homeroomKey:key,homeroomChoice:choiceId}}):resultText;
     setHomeroomSessionState(prev=>({
       ...prev,
       daisyGain:prev.daisyGain+(choice.lbs||0),
@@ -2890,7 +2893,7 @@ export default function ProfessorSim(){
       const actDef=HOMEROOM_GROUP_ACTIVITIES[type];
       const phases=actDef?.phases||[];
       const phase=phases[phaseIdx];
-      if(phase?.text&&daisy) phaseProse=renderHomeroomProse(phase.text,daisy,week,{globals:{homeroomAct:type}});
+      if(daisy) phaseProse=renderHomeroomPool(homeroomActivityPoolKey(type,phaseIdx),daisy,week,{globals:{homeroomAct:type}});
     }
     setHomeroomSessionState(prev=>({...prev,activeActivity:{...prev.activeActivity,resultText:null,phaseProse}}));
   };

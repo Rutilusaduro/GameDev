@@ -19,7 +19,7 @@
 | Skill/classroom unlocks | ✅ 6 spirit skills + 5 classroom upgrades |
 | Integration + version bump | ✅ 2.0.0, build passes |
 | Wife lessons bridge | ✅ lesson + talk trees |
-| Homeroom Queen bridge | ✅ conference + activities |
+| Homeroom Queen bridge | ✅ conference + activities + pool decomposition |
 | Evolved events V2 | ✅ `renderEvolvedEventProse` |
 | Stream live V2 | ✅ `renderStreamBeat` |
 | Collab stream V2 | ✅ action popups + legacy payoff/stageup depth |
@@ -52,7 +52,6 @@ npm run build       # production build
 ## Remaining Toward 2.0
 
 1. Mass legacy prose sweep (~35k scene lines — depth layer is additive, not full rewrite)
-2. Monolith decomposition (~144 text:lint flags — homeroom/cultivator/settling)
+2. Monolith decomposition — homeroom ✅; cultivator/settling remain (~117 flags)
 3. Unique per-girl art beyond procedural pixel silhouettes
-4. Mass legacy prose sweep (~35k scene lines — depth layer is additive, not full rewrite)
-5. Completion audit before marking goal done
+4. Completion audit before marking goal done
