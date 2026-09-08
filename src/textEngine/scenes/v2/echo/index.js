@@ -58,6 +58,13 @@ registerPool('echo.type.dinner_unbutton', [
   ]},
 ]);
 
+registerPool('echo.type.evolution', [
+  { when: {}, text: [
+    'She chose a new shape for her hunger — evolved, amplified, unmistakably hers.',
+    'The form shifted. Appetite found a new vessel. The archive caught the instant she stopped hesitating.',
+  ]},
+]);
+
 export function renderEchoReplay(echoType, depthTier, ctx) {
   let text = render('{echo.replay}', ctx);
   if (depthTier >= 2) text += '\n\n' + render(`{echo.type.${echoType}}`, ctx);

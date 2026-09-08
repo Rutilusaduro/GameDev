@@ -1,8 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // SPIRIT HUB — V2.0 central view (embodiment, resonance, rituals)
 // ═══════════════════════════════════════════════════════════════
+import { useState } from 'react';
 import { C } from '../styles.js';
-import { RESONANCE_TIERS, getResonanceTier } from '../gameData/v2/cravingResonance.js';
+import { getResonanceTier } from '../gameData/v2/cravingResonance.js';
 import { getAvailableRituals } from '../gameData/v2/feastRituals.js';
 import { StudentPortrait } from '../components/StudentPortrait.jsx';
 
@@ -20,6 +21,7 @@ export function SpiritHubView({
   onOpenDream,
   ap,
 }) {
+  const [linkPickA, setLinkPickA] = useState(null);
   const visible = students.filter((s) => !s.hidden);
   const links = v2State?.resonance?.links || [];
   const tier = getResonanceTier(links.length);
@@ -28,6 +30,32 @@ export function SpiritHubView({
   const hasHungerWeb = (ownedSkills?.hunger_web || 0) >= 1;
   const hasDreamWalk = (ownedSkills?.dream_walk || 0) >= 1;
   const activeId = embodimentState?.activeStudentId ?? v2State?.embodiment?.activeStudentId;
+
+  const isLinked = (aId, bId) => links.some(
+    (l) => (l.a === aId && l.b === bId) || (l.a === bId && l.b === aId),
+  );
+
+  const handleStudentPick = (id) => {
+    if (linkPickA == null) {
+      setLinkPickA(id);
+      return;
+    }
+    if (linkPickA === id) {
+      setLinkPickA(null);
+      return;
+    }
+    if (isLinked(linkPickA, id)) {
+      setLinkPickA(null);
+      return;
+    }
+    onCreateLink?.(linkPickA, id);
+    setLinkPickA(null);
+  };
+
+  const linkedIds = (id) => links.flatMap((l) => (l.a === id ? [l.b] : l.b === id ? [l.a] : []));
+  const pickLabel = linkPickA == null
+    ? 'Select first student to link'
+    : `Select partner for ${visible.find((s) => s.id === linkPickA)?.name || 'student'}`;
 
   return (
     <div>
@@ -76,10 +104,41 @@ export function SpiritHubView({
           <>
             <p style={{ fontSize: 10, color: '#8090a0', marginBottom: 8 }}>{tier.desc} · {links.length} links</p>
             {visible.length >= 2 && (
-              <button type="button" style={{ ...C.btn('#2a4860'), fontSize: 10, marginBottom: 8 }}
-                onClick={() => onCreateLink?.(visible[0].id, visible[1].id)}>
-                Link first two students (demo)
-              </button>
+              <div style={{ marginBottom: 10 }}>
+                <p style={{ fontSize: 10, color: '#90a8c0', marginBottom: 6 }}>{pickLabel}</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                  {visible.map((s) => {
+                    const selected = linkPickA === s.id;
+                    const alreadyLinked = linkPickA != null && linkPickA !== s.id && isLinked(linkPickA, s.id);
+                    return (
+                      <button
+                        key={s.id}
+                        type="button"
+                        disabled={alreadyLinked}
+                        style={{
+                          ...C.smBtn,
+                          fontSize: 10,
+                          background: selected ? '#2a4860' : undefined,
+                          opacity: alreadyLinked ? 0.4 : 1,
+                        }}
+                        onClick={() => handleStudentPick(s.id)}
+                      >
+                        {s.name}
+                        {linkedIds(s.id).length > 0 && (
+                          <span style={{ display: 'block', fontSize: 8, color: '#6080a0' }}>
+                            {linkedIds(s.id).length} link{linkedIds(s.id).length > 1 ? 's' : ''}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+                {linkPickA != null && (
+                  <button type="button" style={{ ...C.smBtn, fontSize: 9, marginTop: 6 }} onClick={() => setLinkPickA(null)}>
+                    Cancel
+                  </button>
+                )}
+              </div>
             )}
             {links.map((l, i) => {
               const a = visible.find((s) => s.id === l.a);

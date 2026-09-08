@@ -9,6 +9,9 @@ const POOLS = {
   session: 'session.v2.depth',
   body: 'body.v2.sensory',
   weekRecap: 'weekRecap.v2.depth',
+  milestone: 'milestone.v2.depth',
+  campus: 'campus.v2.depth',
+  device: 'device.v2.depth',
 };
 
 /** Append a V2 depth beat when pool resolves and chance hits. */

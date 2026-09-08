@@ -18,6 +18,11 @@
 | Prose expansion | ✅ v2 depth + v2ProseExpansion |
 | Skill/classroom unlocks | ✅ 6 spirit skills + 5 classroom upgrades |
 | Integration + version bump | ✅ 2.0.0, build passes |
+| Resonance on feed | ✅ pulse wired |
+| Echo capture (feed/weigh-in/stage) | ✅ wired |
+| V2 depth on feed/talk/wi/dinner | ✅ depthRenderer |
+| Per-student portrait accents | ✅ roster + detail |
+| Embodiment actions expanded | ✅ 14 actions |
 
 ## Key Files (V2)
 

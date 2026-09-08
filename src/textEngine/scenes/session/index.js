@@ -2,6 +2,7 @@
 // Private session fullness + aftermath prose.
 import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fullness.js';
 import './fullnessDepth.js';
 import './aftermath.js';
@@ -40,7 +41,8 @@ export function renderSessionFullness(student, fullnessStageId, week = 1, opts =
     ...opts,
   });
   const main = render('{session.fullness}', ctx, { trace: opts.trace || null })?.trim() || '';
-  return composeOverlay(main, renderSessionOverlay(student, week, opts));
+  const composed = composeOverlay(main, renderSessionOverlay(student, week, opts));
+  return appendV2Depth(composed, 'session', ctx, opts.v2DepthChance ?? 0.3);
 }
 
 /** Closing beat when a private session ends (keyed by fullness percent band). */
@@ -53,5 +55,6 @@ export function renderSessionAftermath(student, fPct, week = 1, opts = {}) {
     ...opts,
   });
   const main = render('{session.aftermath}', ctx, { trace: opts.trace || null })?.trim() || '';
-  return composeOverlay(main, renderSessionOverlay(student, week, opts));
+  const composed = composeOverlay(main, renderSessionOverlay(student, week, opts));
+  return appendV2Depth(composed, 'session', ctx, opts.v2DepthChance ?? 0.28);
 }

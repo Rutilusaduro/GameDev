@@ -9,7 +9,7 @@ import {
   canCreateLink, createResonanceLink, pulseResonance, shouldResonanceSurge,
 } from './cravingResonance.js';
 import { canRunRitual, FEAST_RITUALS } from './feastRituals.js';
-import { captureEcho, canResonateEcho, resonateEcho } from './bodyEcho.js';
+import { captureEcho, canResonateEcho, resonateEcho, replayEcho } from './bodyEcho.js';
 import { getStage } from '../stages.js';
 import {
   canTriggerDream, pickDreamScenario, recordDream, rollWeeklyDreams,
@@ -44,6 +44,16 @@ export function captureWeighInEcho(v2State, studentId, week, stageId) {
     ...v2State,
     echoes: captureEcho(v2State.echoes, {
       studentId, type: 'weigh_in', week, stageId,
+    }),
+  };
+}
+
+export function captureEvolutionEcho(v2State, studentId, week, stageId, formId) {
+  if (!v2State?.echoes) return v2State;
+  return {
+    ...v2State,
+    echoes: captureEcho(v2State.echoes, {
+      studentId, type: 'evolution', week, stageId, meta: { formId },
     }),
   };
 }
@@ -160,6 +170,10 @@ export function handleDreamChoice(scenario, choice, student, v2State, week) {
     corruption: choice.corruption || 0,
     v2State: { ...v2State, dreams },
   };
+}
+
+export function handleEchoReplay(v2State, echoId) {
+  return { v2State: { ...v2State, echoes: replayEcho(v2State.echoes, echoId) } };
 }
 
 export function handleEchoResonate(echoId, v2State, ownedSkills, ownedClassSkills) {

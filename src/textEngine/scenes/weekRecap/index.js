@@ -20,6 +20,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 
 // ── week.recap.beat ───────────────────────────────────────────
 // Shape: FULL SENTENCE — present-tense, observational; reuses {word.*}.
@@ -161,5 +162,6 @@ export function renderWeekRecap(student, week = 1, opts = {}) {
     },
     ...opts,
   });
-  return render('{week.recap}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{week.recap}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'weekRecap', ctx, opts.v2DepthChance ?? 0.35);
 }

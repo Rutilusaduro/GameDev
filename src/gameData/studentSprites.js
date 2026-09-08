@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STUDENT PORTRAITS — pixel silhouettes by weight tier + per-girl accent
+// STUDENT PORTRAITS — pixel silhouettes by weight tier + body type
 // ═══════════════════════════════════════════════════════════════
 
 export const PORTRAIT_PALETTE = {
@@ -84,6 +84,49 @@ const TIER_SILHOUETTES = {
   ],
 };
 
+/** Body-type silhouette modifiers — widen/narrow specific row bands. */
+const BODY_TYPE_MODIFIERS = {
+  pear: (rows) => rows.map((row, i) => (i >= 4 ? widenRow(row, 1) : row)),
+  hourglass: (rows) => rows.map((row, i) => {
+    if (i === 2 || i === 3) return narrowRow(row, 1);
+    if (i >= 5) return widenRow(row, 1);
+    return row;
+  }),
+  apple: (rows) => rows.map((row, i) => (i >= 2 && i <= 5 ? widenRow(row, 1) : row)),
+  athletic: (rows) => rows.map((row, i) => (i <= 2 ? narrowRow(row, 1) : row)),
+  straight: (rows) => rows,
+  rotund: (rows) => rows.map((row) => widenRow(row, 1)),
+  fertility_goddess: (rows) => rows.map((row, i) => {
+    if (i >= 1 && i <= 4) return widenRow(row, 2);
+    if (i >= 5) return widenRow(row, 1);
+    return row;
+  }),
+  voluptuous: (rows) => rows.map((row, i) => {
+    if (i >= 1 && i <= 3) return widenRow(row, 1);
+    if (i >= 5) return widenRow(row, 1);
+    return row;
+  }),
+  mom_bod: (rows) => rows.map((row, i) => (i >= 3 ? widenRow(row, 1) : row)),
+};
+
+function widenRow(row, amount = 1) {
+  const dots = row.match(/^(\.*)/)?.[1]?.length || 0;
+  const body = row.slice(dots);
+  const hashCount = (body.match(/#/g) || []).length;
+  const newHash = Math.min(12, hashCount + amount * 2);
+  const pad = Math.max(0, Math.floor((12 - newHash) / 2));
+  return '.'.repeat(pad) + '#'.repeat(newHash) + '.'.repeat(Math.max(0, 12 - pad - newHash));
+}
+
+function narrowRow(row, amount = 1) {
+  const dots = row.match(/^(\.*)/)?.[1]?.length || 0;
+  const body = row.slice(dots);
+  const hashCount = (body.match(/#/g) || []).length;
+  const newHash = Math.max(4, hashCount - amount * 2);
+  const pad = Math.max(0, Math.floor((12 - newHash) / 2));
+  return '.'.repeat(pad) + '#'.repeat(newHash) + '.'.repeat(Math.max(0, 12 - pad - newHash));
+}
+
 export function portraitTier(stageId) {
   if (stageId >= 9) return 'vast';
   if (stageId >= 7) return 'fat';
@@ -97,15 +140,13 @@ export function getStudentAccent(studentId) {
   return STUDENT_PORTRAIT_ACCENT[studentId] || '#8a4be0';
 }
 
-export function getStudentSprite(stageId, studentId) {
+export function getStudentSprite(stageId, studentId, bodyType = 'straight') {
   const tier = portraitTier(stageId);
   const base = TIER_SILHOUETTES[tier];
+  const modifier = BODY_TYPE_MODIFIERS[bodyType] || BODY_TYPE_MODIFIERS.straight;
   const accent = getStudentAccent(studentId);
-  // Map accent into palette slot 'a' for this render
-  return {
-    grid: base.map((row) => row.replace(/#/g, 'S').replace(/\./g, '.')),
-    accent,
-  };
+  const grid = modifier(base).map((row) => row.replace(/#/g, 'S'));
+  return { grid, accent, bodyType, tier };
 }
 
 export const PORTRAIT_TIER_LABELS = {

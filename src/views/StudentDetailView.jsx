@@ -34,7 +34,7 @@ import { StudentPortrait } from '../components/StudentPortrait.jsx';
 import { EchoArchivePanel } from '../components/v2/V2Modals.jsx';
 import { useEffect, useState } from 'react';
 
-export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openDream, v2State, ownedSkills, ownedClassSkills, onEchoResonate, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, fireAscensionAbility, openAscensionCeremony, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState, dossierOpen, setDossierOpen }){
+export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openDream, openEchoReplay, v2State, ownedSkills, ownedClassSkills, onEchoResonate, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, fireAscensionAbility, openAscensionCeremony, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState, dossierOpen, setDossierOpen }){
             const s=sel;
             const st=getStage(s.lbs);
             const [showDossier, setShowDossier] = useState(!!dossierOpen);
@@ -997,7 +997,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                           echoesState={v2State?.echoes}
                           ownedSkills={ownedSkills}
                           ownedClassSkills={ownedClassSkills}
-                          onReplay={(echo,text)=>{ /* prose shown in panel via replay */ }}
+                          onOpenEcho={(echo)=>openEchoReplay?.(echo)}
                           onResonate={onEchoResonate}
                         />
                       </div>

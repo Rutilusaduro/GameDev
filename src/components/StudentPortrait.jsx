@@ -7,7 +7,7 @@ import { getStudentSprite, PORTRAIT_PALETTE, PORTRAIT_TIER_LABELS, portraitTier 
 export function StudentPortrait({ student, size = 80, showLabel = true }) {
   const stageId = student?.lbs != null ? getStage(student.lbs).id : 0;
   const tier = portraitTier(stageId);
-  const { grid, accent } = getStudentSprite(stageId, student?.id ?? 0);
+  const { grid, accent } = getStudentSprite(stageId, student?.id ?? 0, student?.bodyType || 'straight');
   const rows = grid.length;
   const cols = grid[0].length;
   const palette = { ...PORTRAIT_PALETTE, a: accent, S: accent, s: `${accent}99` };

@@ -112,7 +112,7 @@ export function DreamModal({ student, onChoice, onClose }) {
   );
 }
 
-export function EchoArchivePanel({ student, echoesState, ownedSkills, ownedClassSkills, onReplay, onResonate }) {
+export function EchoArchivePanel({ student, echoesState, ownedSkills, ownedClassSkills, onOpenEcho, onResonate }) {
   const echoes = (echoesState?.moments || []).filter((m) => m.studentId === student?.id);
   if (!echoes.length) {
     return <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>No echoes captured yet. Milestones will preserve themselves here.</p>;
@@ -123,22 +123,61 @@ export function EchoArchivePanel({ student, echoesState, ownedSkills, ownedClass
       {echoes.map((echo) => {
         const meta = ECHO_TYPES[echo.type] || { label: echo.type, icon: '📜' };
         const depth = echoDepthTier(echo.replayCount || 0);
+        const preview = renderEchoReplay(echo.type, depth, ctx);
         return (
           <div key={echo.id} style={{ ...C.card, padding: 8 }}>
-            <div style={{ fontSize: 10, color: '#80a0b8' }}>{meta.icon} {meta.label} — Week {echo.week}</div>
-            <button type="button" style={{ ...C.smBtn, marginTop: 4, fontSize: 9 }}
-              onClick={() => onReplay?.(echo, renderEchoReplay(echo.type, depth, ctx))}>
-              Replay (depth {depth})
+            <div style={{ fontSize: 10, color: '#80a0b8', marginBottom: 4 }}>
+              {meta.icon} {meta.label} — Week {echo.week}
+              {echo.resonated && <span style={{ color: '#70c090', marginLeft: 6 }}>✦ resonated</span>}
+            </div>
+            <p style={{ fontSize: 10, color: '#9080a8', lineHeight: 1.5, margin: '0 0 6px', fontStyle: 'italic' }}>
+              {preview.slice(0, 120)}{preview.length > 120 ? '…' : ''}
+            </p>
+            <button type="button" style={{ ...C.smBtn, fontSize: 9 }}
+              onClick={() => onOpenEcho?.(echo, preview, depth)}>
+              Open Echo (depth {depth})
             </button>
             {!echo.resonated && (
-              <button type="button" style={{ ...C.smBtn, marginTop: 4, marginLeft: 4, fontSize: 9 }}
+              <button type="button" style={{ ...C.smBtn, marginLeft: 4, fontSize: 9 }}
                 onClick={() => onResonate?.(echo)}>
-                Resonate
+                Resonate (1 AP)
               </button>
             )}
           </div>
         );
       })}
+    </div>
+  );
+}
+
+export function EchoArchiveModal({ student, echo, prose, depth, onClose, onResonate, resonated }) {
+  if (!echo || !student) return null;
+  const meta = ECHO_TYPES[echo.type] || { label: echo.type, icon: '📜' };
+  return (
+    <div style={C.modalOverlay}>
+      <div style={{ ...C.modal, maxWidth: 520, borderColor: '#6080a060' }}>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 12 }}>
+          <StudentPortrait student={student} size={64} />
+          <div>
+            <p style={{ ...C.secT, margin: 0, color: '#90b0c8' }}>Body Echo Archive</p>
+            <p style={{ fontSize: 10, color: '#708090', margin: '4px 0 0' }}>
+              {meta.icon} {meta.label} — Week {echo.week} · Depth {depth}
+            </p>
+          </div>
+        </div>
+        <div style={{ ...C.card, marginBottom: 12, maxHeight: 280, overflowY: 'auto' }}>
+          <p style={{ fontSize: 13, lineHeight: 1.75, color: '#d8e0e8', fontStyle: 'italic', margin: 0, whiteSpace: 'pre-wrap' }}>
+            {prose}
+          </p>
+        </div>
+        {!resonated && (
+          <button type="button" style={{ ...C.btn('#3060a0'), width: '100%', marginBottom: 8 }}
+            onClick={() => { onResonate?.(echo); onClose?.(); }}>
+            Resonate — deepen her growth permanently (1 AP)
+          </button>
+        )}
+        <button type="button" style={{ ...C.smBtn, width: '100%' }} onClick={onClose}>Close</button>
+      </div>
     </div>
   );
 }
