@@ -22,6 +22,7 @@ registerPool('emb.enter', [
     'You leave the professor\'s skin and pour into hers — a quiet theft of agency she will explain away later.',
     'Her pulse quickens as you arrive. Hunger stirs. She thinks it is hers.',
     'The spirit takes the wheel behind her ribs. Her next breath tastes like permission.',
+    'You slip inside like warmth finding a home. She exhales. Something unclenches.',
   ]},
 ]);
 
@@ -119,6 +120,51 @@ registerPool('emb.action.public_eating', [
 registerPool('emb.action.immobile_feast', [
   { when: {}, text: [
     'She cannot stand. The world brings food to her — platters, containers, warmth delivered like tribute. Every bite is a landslide of softness from the inside.',
+    'Immobile and hungry, she feasts from within. The spirit drinks every swallowed warmth.',
+    'Food arrives in waves. She takes it all — vast, warm, grateful in the way only a body this size can be.',
+  ]},
+]);
+
+registerPool('emb.action.midnight_snack', [
+  { when: {}, text: [
+    '2 AM. Fridge light on her face. She eats standing in the dark — a secret between her and the hunger.',
+    'The house sleeps. She does not. Cartons open, spoons scrape, fullness gathers in the quiet.',
+    'Midnight hunger needs no permission. She feeds it in the blue glow of the refrigerator.',
+  ]},
+]);
+
+registerPool('emb.action.vending_splurge', [
+  { when: {}, text: [
+    'Coins in. Buttons pressed. Armful of snacks. She eats walking back, crumbs on her shirt, no regrets.',
+    'The vending machine empties into her arms. She eats before she reaches her door.',
+    'Crinkling wrappers, sweet and salty, one after another until her hands are empty and her belly is not.',
+  ]},
+]);
+
+registerPool('emb.action.dessert_first', [
+  { when: {}, text: [
+    'Cake first. Always cake first. The main course is an afterthought she still polishes off.',
+    'She opens with sweetness and does not apologize. Dinner becomes dessert\'s supporting act.',
+    'Fork into frosting before anything else. Hunger has learned its priorities.',
+  ]},
+]);
+
+registerPool('emb.action.body_exploration', [
+  { when: { stageMin: 6 }, text: [
+    'Her hands map the new geography — belly, thighs, the soft weight of her chest. She likes what she finds.',
+    'She touches herself with curiosity, not shame. The spirit hums approval through her ribs.',
+  ]},
+  { when: {}, text: [
+    'Softness under her palms. She explores the body she is becoming and does not look away.',
+    'Fingers press into warmth. She learns her own curves and leans into them.',
+  ]},
+]);
+
+registerPool('emb.action.hunger_spiral', [
+  { when: {}, text: [
+    'Want compounds. She eats because she is eating and does not want to stop.',
+    'The spiral tightens — bite, want, bite. Fullness arrives and appetite ignores it.',
+    'Hunger feeds on itself. She rides the spiral down into warmth and more warmth.',
   ]},
 ]);
 

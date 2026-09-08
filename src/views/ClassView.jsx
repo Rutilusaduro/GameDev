@@ -13,6 +13,7 @@ import { pickStudentMemory } from '../gameData/memory.js';
 import { getDiscontentTier } from '../gameData/discontent.js';
 import { addictionTint } from '../gameData/hungerAddiction.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
+import { StudentPortrait } from '../components/StudentPortrait.jsx';
 
 // One roster tile. Extracted so the at-a-glance "tell" can be memoized —
 // it only re-rolls when her meaningful state (size/psyche/appetite/week)
@@ -49,11 +50,16 @@ function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn }) {
       onClick={onOpen}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 3 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <StudentPortrait student={s} size={44} showLabel={false} />
+          <div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
           <span style={{ fontWeight: 700, fontSize: 15, color: nameColor }}>{s.name}</span>
           {(() => { const tier = getTier(s.relationship); return tier.id > 0 ? <span style={{ fontSize: 12, opacity: 0.9 }}>{tier.emoji}</span> : null; })()}
           {evMeta && <span style={{ fontSize: 10, color: evMeta.color, fontWeight: 600 }}>✦ {evMeta.title}</span>}
           {s.ascension && ascForm && <span style={{ fontSize: 10, color: '#80e8ff', fontWeight: 600 }}>✦ {ascForm.label}</span>}
+        </div>
+          </div>
         </div>
         <StageTag stage={st} />
       </div>

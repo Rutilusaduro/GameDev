@@ -132,6 +132,78 @@ export const EMBODIMENT_ACTIONS = [
     corruption: 15,
     desc: 'She cannot stand. You make the world bring food to her. Every bite is a landslide of warmth.',
   },
+  {
+    id: 'midnight_snack',
+    label: 'Midnight Snack Run',
+    icon: '🌙',
+    apCost: 0,
+    minStage: 1,
+    minCorruption: 10,
+    requiresSkill: 'spirit_ride',
+    calories: 900,
+    fullness: 25,
+    rel: 3,
+    corruption: 4,
+    desc: '2 AM. Fridge light. She eats standing in the dark like it is a secret between her and the hunger.',
+  },
+  {
+    id: 'vending_splurge',
+    label: 'Vending Machine Splurge',
+    icon: '🥤',
+    apCost: 0,
+    minStage: 2,
+    minCorruption: 20,
+    requiresSkill: 'spirit_ride',
+    calories: 1400,
+    fullness: 30,
+    rel: 2,
+    corruption: 5,
+    desc: 'Coins in. Buttons pressed. She collects armfuls of snacks and eats them walking back to her room.',
+  },
+  {
+    id: 'dessert_first',
+    label: 'Dessert Before Dinner',
+    icon: '🍰',
+    apCost: 0,
+    minStage: 4,
+    minCorruption: 40,
+    requiresSkill: 'deep_ride',
+    calories: 1800,
+    fullness: 40,
+    rel: 5,
+    corruption: 7,
+    desc: 'She opens with cake. The main course becomes an afterthought she still finishes.',
+  },
+  {
+    id: 'body_exploration',
+    label: 'Explore Her Body',
+    icon: '🤲',
+    apCost: 0,
+    minStage: 5,
+    minCorruption: 55,
+    requiresSkill: 'deep_ride',
+    requiresClass: 'embodiment_chamber',
+    calories: 600,
+    fullness: 10,
+    rel: 8,
+    corruption: 9,
+    desc: 'Hands on her own softness. She learns the new geography of herself and likes what she finds.',
+  },
+  {
+    id: 'hunger_spiral',
+    label: 'Hunger Spiral',
+    icon: '🌀',
+    apCost: 0,
+    minStage: 6,
+    minCorruption: 65,
+    requiresSkill: 'deep_ride',
+    requiresClass: 'dream_chamber',
+    calories: 2800,
+    fullness: 60,
+    rel: 4,
+    corruption: 11,
+    desc: 'Want compounds on itself. She eats because she is eating and does not want to stop.',
+  },
 ];
 
 export function canEmbody(student, { ownedSkills = {}, ownedClassSkills = {}, embodimentState = {}, week = 1 } = {}) {
@@ -144,11 +216,12 @@ export function canEmbody(student, { ownedSkills = {}, ownedClassSkills = {}, em
   return { ok: true, apCost };
 }
 
-export function getAvailableEmbodimentActions(student, ownedSkills = {}) {
+export function getAvailableEmbodimentActions(student, ownedSkills = {}, ownedClassSkills = {}) {
   const stage = getStage(student.lbs).id;
   const cor = student.corruption || 0;
   return EMBODIMENT_ACTIONS.filter((a) => {
     if ((ownedSkills[a.requiresSkill] || 0) < 1) return false;
+    if (a.requiresClass && !ownedClassSkills[a.requiresClass]) return false;
     if (stage < a.minStage) return false;
     if (cor < a.minCorruption) return false;
     return true;

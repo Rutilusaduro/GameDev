@@ -9,15 +9,15 @@
 | Item | Status |
 |------|--------|
 | Design doc | ✅ `docs/V2_0_DESIGN.md` |
-| Spirit Embodiment | 🔄 in progress |
-| Craving Resonance | ⏳ pending |
-| Feast Rituals | ⏳ pending |
-| Body Echo Archive | ⏳ pending |
-| Appetite Dreams | ⏳ pending |
-| Student portraits | ⏳ pending |
-| Prose expansion | ⏳ pending |
-| Skill/classroom unlocks | ⏳ pending |
-| Integration + version bump | ⏳ pending |
+| Spirit Embodiment | ✅ wired |
+| Craving Resonance | ✅ wired |
+| Feast Rituals | ✅ wired |
+| Body Echo Archive | ✅ wired |
+| Appetite Dreams | ✅ wired |
+| Student portraits | ✅ StudentPortrait component |
+| Prose expansion | ✅ v2 depth + v2ProseExpansion |
+| Skill/classroom unlocks | ✅ 6 spirit skills + 5 classroom upgrades |
+| Integration + version bump | ✅ 2.0.0, build passes |
 
 ## Key Files (V2)
 

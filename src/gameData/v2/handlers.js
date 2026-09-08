@@ -10,6 +10,7 @@ import {
 } from './cravingResonance.js';
 import { canRunRitual, FEAST_RITUALS } from './feastRituals.js';
 import { captureEcho, canResonateEcho, resonateEcho } from './bodyEcho.js';
+import { getStage } from '../stages.js';
 import {
   canTriggerDream, pickDreamScenario, recordDream, rollWeeklyDreams,
 } from './appetiteDreams.js';
@@ -33,6 +34,31 @@ export function captureStageUpEcho(v2State, studentId, week, stageId) {
     ...v2State,
     echoes: captureEcho(v2State.echoes, {
       studentId, type: 'stage_up', week, stageId,
+    }),
+  };
+}
+
+export function captureWeighInEcho(v2State, studentId, week, stageId) {
+  if (!v2State?.echoes) return v2State;
+  return {
+    ...v2State,
+    echoes: captureEcho(v2State.echoes, {
+      studentId, type: 'weigh_in', week, stageId,
+    }),
+  };
+}
+
+export function captureFeedEcho(v2State, student, week, { forced = false, feast = false } = {}) {
+  if (!v2State?.echoes) return v2State;
+  const stageId = getStage(student?.lbs || 0).id;
+  let type = null;
+  if (forced && (student.timesForceFed || 0) <= 1) type = 'first_force_feed';
+  else if (feast) type = 'dinner_unbutton';
+  if (!type) return v2State;
+  return {
+    ...v2State,
+    echoes: captureEcho(v2State.echoes, {
+      studentId: student.id, type, week, stageId,
     }),
   };
 }

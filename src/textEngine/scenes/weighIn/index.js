@@ -14,6 +14,7 @@ import { appendCampusWeighIn } from '../campusSoftening.js';
 import { renderSlenderMirrorBeat } from '../earlyGain/index.js';
 import { renderMemoryCallback } from '../memory/index.js';
 import { isSlenderEligible } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 
 export const WI_INTRO_LEGACY = "{wi.arrival} {wi.settle} {wi.scaleApproach}";
 export const WI_INTRO = "{wi.arrival} {wi.settle} {wi.approachSentence} {wi.scaleSentence}";
@@ -71,7 +72,8 @@ export function renderWeighInReaction(student, week, opts = {}) {
     if (mirrorBeat) reply = `${mirrorBeat}\n\n${reply}`;
   }
   const memBeat = opts.memScope ? renderMemoryCallback(student, week, { ...opts, scene: 'weighIn' }) : '';
-  return memBeat ? `${stepOff}\n\n${reply}\n\n${memBeat}` : `${stepOff}\n\n${reply}`;
+  let out = memBeat ? `${stepOff}\n\n${reply}\n\n${memBeat}` : `${stepOff}\n\n${reply}`;
+  return appendV2Depth(out, 'wi', ctx, opts.v2DepthChance ?? 0.32);
 }
 
 // The analog scale cracks under her.

@@ -5,3 +5,4 @@ import './rituals/index.js';
 import './echo/index.js';
 import './dreams/index.js';
 import './v2ProseExpansion.js';
+import './depthRenderer.js';

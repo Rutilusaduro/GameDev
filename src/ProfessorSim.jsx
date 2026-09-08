@@ -182,7 +182,7 @@ import { FeastRitualModal, DreamModal } from './components/v2/V2Modals.jsx';
 import {
   handleEmbodimentStart, handleEmbodimentAction, handleEmbodimentRelease,
   handleResonanceLink, handleRitual, handleDreamChoice, handleEchoResonate,
-  handleFeedResonancePulse, captureStageUpEcho, runWeeklyV2Events,
+  handleFeedResonancePulse, captureStageUpEcho, captureWeighInEcho, captureFeedEcho, runWeeklyV2Events,
 } from './gameData/v2/handlers.js';
 import { createInitialV2State } from './gameData/v2/state.js';
 import './textEngine/scenes/v2/index.js';
@@ -404,7 +404,7 @@ export default function ProfessorSim(){
   const [setupStep,setSetupStep]=useState("spirit");
   const [setupSpirit,setSetupSpirit]=useState(null);
   const [setupSubject,setSetupSubject]=useState(null);
-  const [log,setLog]=useState(["📋 Welcome, Professor. Your class of 15 students awaits."]);
+  const [log,setLog]=useState(["📋 Professor Sim 2.0 — Your class of 15 students awaits. The spirit reaches further now."]);
   const [logTab,setLogTab]=useState("story");
   const [sidebarOpen,setSidebarOpen]=useState(true);
   const [activeEvent,setActiveEvent]=useState(null);
@@ -1377,6 +1377,27 @@ export default function ProfessorSim(){
     const fedStudent=feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
     setWeeklyFeedCounts(prev=>({...prev,[s.id]:(prev[s.id]||0)+1}));
     gainFavor((forced||fullnessCost>=40)?'stuff':'feed');
+    if((ownedSkills.hunger_web||0)>=1&&scaledCals>=400){
+      const pulseResult=handleFeedResonancePulse(s.id,scaledCals,students,v2);
+      if(pulseResult.pulses?.length){
+        setV2State(pulseResult.v2State);
+        pulseResult.pulses.forEach((p)=>{
+          setStudents(prev=>prev.map(st=>st.id===p.studentId?{
+            ...st,
+            consumedCalories:(st.consumedCalories||0)+p.calories,
+            relationship:Math.min(100,(st.relationship||0)+p.rel),
+          }:st));
+        });
+        setTimeout(()=>push(`🔗 Appetite resonates — ${pulseResult.pulses.length} linked student(s) feel the pull.`),95);
+      }
+    }
+    if((ownedSkills.memory_palace||0)>=1){
+      const echoForced=forced&&(s.timesForceFed||0)===0;
+      const echoFeast=fullnessCost>=40||/feast|banquet|platter/i.test(label||'');
+      if(echoForced||echoFeast){
+        setV2State(prev=>captureFeedEcho(prev||createInitialV2State(),fedStudent,week,{forced:echoForced,feast:echoFeast&&!echoForced}));
+      }
+    }
     return fedStudent;
   };
 
@@ -8613,6 +8634,12 @@ export default function ProfessorSim(){
           setWeighInState(null);
         } : undefined}
         onPersistWeekTextUsed={persistStudentWeekTextUsed}
+        onComplete={(s)=>{
+          if((ownedSkills.memory_palace||0)>=1){
+            const sid=getStage(s.lbs).id;
+            setV2State(prev=>captureWeighInEcho(prev||createInitialV2State(),s.id,week,sid));
+          }
+        }}
         week={week}
         campusFattening={!!pharmacistState?.campusFattening}
         campusTier={getCampusNarrativeTier(pharmacistState)}
@@ -9008,6 +9035,7 @@ export default function ProfessorSim(){
         <EmbodimentModal
           student={embodimentStudent}
           ownedSkills={ownedSkills}
+          ownedClassSkills={ownedClassSkills||{}}
           embodimentState={v2.embodiment}
           onStart={runEmbodimentStart}
           onAction={runEmbodimentAction}

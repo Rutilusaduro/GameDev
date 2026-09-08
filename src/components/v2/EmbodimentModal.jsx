@@ -13,6 +13,7 @@ import { FlaggedProse } from '../TextFlagToolbar.jsx';
 export function EmbodimentModal({
   student,
   ownedSkills,
+  ownedClassSkills,
   embodimentState,
   onStart,
   onAction,
@@ -22,7 +23,7 @@ export function EmbodimentModal({
   const [log, setLog] = useState([]);
   const [traceNodes, setTraceNodes] = useState([]);
   const active = embodimentState?.activeStudentId === student?.id;
-  const actions = getAvailableEmbodimentActions(student, ownedSkills);
+  const actions = getAvailableEmbodimentActions(student, ownedSkills, ownedClassSkills || {});
 
   const ctx = createContext({ subject: student, globals: { embodiment: true } });
 
