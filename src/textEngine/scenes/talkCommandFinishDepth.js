@@ -150,3 +150,43 @@ registerModuleVariants('talk.command_finish', [
     `{talk.command_finish.t2}`,
   ] },
 ]);
+
+// ── Per-student command_finish closers ─────────────────────────
+
+registerModuleVariants('talk.command_finish.t0v0._f5', [
+  { when: { studentId: 0 }, weight: 4, text: [`Brittany sits very still, hands on her distended middle. "Coach never trained me for this," she breathes. "I couldn't stop."`] },
+  { when: { studentId: 2 }, weight: 4, text: [`Kylie stares at empty plates, dazed. "That footage is insane," she whispers. "Delete nothing."`] },
+  { when: { studentId: 5 }, weight: 4, text: [`Destiny slumps back. "Achievement unlocked: cleaned plates," she mutters. "Body overloaded."`] },
+  { when: { studentId: 8 }, weight: 4, text: [`Maya sits very still, hands on her middle. "I listened," she says. Just that.`] },
+]);
+
+registerModuleVariants('talk.command_finish.t1v0._f3', [
+  { when: { studentId: 1 }, weight: 4, text: [`Madeline folds her hands on her full middle. "Data set complete," she says. "Awaiting next instruction."`] },
+  { when: { studentId: 3 }, weight: 4, text: [`Serena sits back, distended and warm. "New max," she says. "Again tomorrow."`] },
+  { when: { studentId: 11 }, weight: 4, text: [`Kaylee exhales, content. "Thank you for feeding me," she murmurs. "Tell me when to start again."`] },
+]);
+
+registerModuleVariants('talk.command_finish.t2v0._f2', [
+  { when: { studentId: 6 }, weight: 4, text: [`Tiffany cleans every plate, then pats her {subject.lbs}-lb belly. "Chapter event successful," she says. "Encore?"`] },
+  { when: { studentId: 10 }, weight: 4, text: [`Reneé licks her fingers, serene. "Kitchen's empty," she says. "My turn to cook more."`] },
+  { when: { studentId: 14 }, weight: 4, text: [`Mary Jane sighs, blissful. "Sunday dinner rules," she says. "Always room for pie."`] },
+  { when: { studentId: 15 }, weight: 4, text: [`Lilith smiles. "Good," she says. "Again. I am not finished with you."`] },
+]);
+
+registerModuleVariants('talk.command_finish.t2v1._f3', [
+  { when: { studentId: 7 }, weight: 4, text: [`Priya pats her middle, satisfied. "Exceeded projections," she says. "Schedule more."`] },
+  { when: { studentId: 16 }, weight: 4, text: [`Sophia trembles, full. "Optimal outcome," she whispers. "Repeat trial."`] },
+  { when: { studentId: 18 }, weight: 4, text: [`Talia logs the result on her palm. "Successful run," she says. "Increase batch size."`] },
+]);
+
+registerModuleVariants('talk.command_finish.t0v0._f3', [
+  { when: { stageMin: 8 }, weight: 3, text: [
+    `. At {subject.lbs} lbs obedience reshapes the chair — belly vast, breath shallow, flesh settling with each swallowed command.`,
+  ]},
+]);
+
+registerModuleVariants('talk.command_finish.t2v1._f2', [
+  { when: { stageMin: 9 }, weight: 3, text: [
+    `. She eats with ritual slowness until the table is bare and her belly is a warm continent between her thighs.`,
+  ]},
+]);
