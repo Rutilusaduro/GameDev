@@ -54,6 +54,7 @@
 | Spirit nav + integration | ✅ | `SpiritHubView`, `player.v2State`, end-week hooks in `ProfessorSim.jsx` |
 | Prose depth layers | ✅ | 50+ scene kinds via `appendV2Depth`; monolith/named/wildcard sweeps; 0 banned-pattern violations |
 | Build + text lint | ✅ | `npm run build`, `npm run text:lint` exit 0 |
+| ESLint | ✅ | `npm run lint` — 0 errors (78 pre-existing warnings) |
 
 ### Not blocking 2.0 ship (per design doc / scope)
 
@@ -115,12 +116,13 @@
 
 ```bash
 npm run text:lint   # exit 0 (28 infra warnings: psych-keyed, legacy modules, stem dedupe)
-npm run lint        # eslint
+npm run lint        # exit 0 errors (78 pre-existing warnings)
 npm run build       # production build
 ```
 
 ## Remaining Toward 2.0
 
-1. Infra lint warnings (28) — psych-keyed word.* pools, legacy registerModule migration, stem dedupe gate
-2. 14 keyed cells under volume target (non-strict) — mostly campus.dev edge selectors
-3. Bespoke hand-drawn art — optional; procedural portrait system satisfies design doc
+1. ~~ESLint errors~~ — fixed turn 40 (11 missing imports)
+2. Infra lint warnings (28) — psych-keyed word.* pools, legacy registerModule migration, stem dedupe gate
+3. 14 keyed cells under volume target (non-strict) — mostly campus.dev edge selectors
+4. Bespoke hand-drawn art — optional; procedural portrait system satisfies design doc
