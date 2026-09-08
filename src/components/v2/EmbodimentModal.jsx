@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // EMBODIMENT MODAL — spirit possession + embodied campus pilot
 // ═══════════════════════════════════════════════════════════════
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { C } from '../../styles.js';
 import { getAvailableEmbodimentActions } from '../../gameData/v2/spiritEmbodiment.js';
 import { isEmbodiedImmobile } from '../../gameData/v2/embodiedCampus.js';
@@ -20,13 +20,13 @@ import {
 import '../../textEngine/scenes/v2/embodiment/depth.js';
 import { StudentPortrait } from '../StudentPortrait.jsx';
 import { SceneBackdrop } from './SceneBackdrop.jsx';
-import { FlaggedProse } from '../TextFlagToolbar.jsx';
 import { CampusMap } from '../../views/CampusView.jsx';
 
 function logColor(line) {
   if (line.startsWith('🌒')) return '#c8a0e8';
   if (line.startsWith('→')) return '#8ab878';
   if (line.startsWith('⚡')) return '#e0c070';
+  if (line.startsWith('⚠️')) return '#e08060';
   if (line.startsWith('👀') || line.startsWith('🚪')) return '#d0a890';
   return '#b0a8c0';
 }
@@ -37,6 +37,8 @@ export function EmbodimentModal({
   ownedSkills,
   ownedClassSkills,
   embodimentState,
+  walkLog = [],
+  onAppendLog,
   onStart,
   onAction,
   onMove,
@@ -44,11 +46,12 @@ export function EmbodimentModal({
   onRelease,
   onClose,
 }) {
-  const [log, setLog] = useState([]);
   const [pendingEvent, setPendingEvent] = useState(null);
   const active = embodimentState?.activeStudentId === student?.id;
   const atNode = embodimentState?.at || 'dorms';
   const node = CAMPUS_NODES[atNode] || CAMPUS_NODES.dorms;
+  const steps = embodimentState?.steps || 0;
+  const eventsSeen = Object.keys(embodimentState?.eventsSeen || {}).length;
   const actions = getAvailableEmbodimentActions(
     student,
     ownedSkills,
@@ -61,33 +64,33 @@ export function EmbodimentModal({
     [student, week, atNode],
   );
 
-  const pushLog = (line) => setLog((prev) => [...prev, line].slice(-48));
+  const log = walkLog;
 
   const handleStart = () => {
     const text = renderEmbodimentEnter(ctx);
     const arrive = renderEmbodiedArrive(student, atNode, week);
-    pushLog(`🌒 ${text}`);
-    pushLog(arrive);
+    onAppendLog?.(`🌒 ${text}`);
+    onAppendLog?.(arrive);
     onStart?.(student.id);
   };
 
   const handleMove = (toId) => {
     if (pendingEvent) return;
     const moveLine = renderEmbodiedMove(student, atNode, toId, week);
-    pushLog(moveLine);
+    onAppendLog?.(moveLine);
     const result = onMove?.(toId);
     if (result?.error) {
-      pushLog(`⚠️ ${result.error}`);
+      onAppendLog?.(`⚠️ ${result.error}`);
       return;
     }
     if (result?.event) {
       const witness = result.event.witnessStudent || null;
       const prose = renderEmbodiedEvent(result.event.id, student, toId, week, { ref: witness, witness });
       setPendingEvent({ ...result.event, prose, nodeId: toId });
-      pushLog(`⚡ ${result.event.label}`);
-      pushLog(prose);
+      onAppendLog?.(`⚡ ${result.event.label}`);
+      onAppendLog?.(prose);
     } else if (result?.arriveText) {
-      pushLog(result.arriveText);
+      onAppendLog?.(result.arriveText);
     }
   };
 
@@ -99,13 +102,13 @@ export function EmbodimentModal({
 
   const handleAction = (act) => {
     const text = renderEmbodimentAction(act.id, ctx);
-    pushLog(`\n— ${act.label} —\n${text}`);
+    onAppendLog?.(`\n— ${act.label} —\n${text}`);
     onAction?.(act, student);
   };
 
   const handleRelease = () => {
     const text = renderEmbodimentRelease(ctx);
-    pushLog(`🌒 ${text}`);
+    onAppendLog?.(`🌒 ${text}`);
     onRelease?.();
   };
 
@@ -122,6 +125,11 @@ export function EmbodimentModal({
                 ? `Riding ${student.name} — ${node.emoji} ${node.label}`
                 : `Inhabit ${student.name} and walk the campus from inside her skin`}
             </p>
+            {active && (
+              <p style={{ fontSize: 9, color: '#708878', margin: '6px 0 0' }}>
+                {steps} steps · {eventsSeen} event{eventsSeen === 1 ? '' : 's'} witnessed
+              </p>
+            )}
           </div>
         </div>
 
@@ -148,13 +156,16 @@ export function EmbodimentModal({
                 <div style={{ fontSize: 11, fontWeight: 700, color: '#e0c080', marginBottom: 6 }}>
                   {pendingEvent.icon} {pendingEvent.label}
                 </div>
+                <p style={{ fontSize: 10, color: '#b0a090', lineHeight: 1.55, marginBottom: 8, whiteSpace: 'pre-wrap' }}>
+                  {pendingEvent.prose}
+                </p>
                 <button type="button" style={{ ...C.btn('#5a4020'), width: '100%', fontSize: 11 }} onClick={handleEventDone}>
                   Live through it — continue
                 </button>
               </div>
             )}
 
-            <div style={{ ...C.card, marginBottom: 10, maxHeight: 160, overflowY: 'auto' }}>
+            <div style={{ ...C.card, marginBottom: 10, maxHeight: 200, overflowY: 'auto' }}>
               {log.length === 0 ? (
                 <div style={{ fontSize: 11, color: '#706880' }}>Tap a connected location to waddle there.</div>
               ) : (

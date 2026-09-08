@@ -223,6 +223,7 @@ import { renderResonancePulse } from './textEngine/scenes/v2/resonance/index.js'
 import { renderResonanceLink } from './textEngine/scenes/v2/resonance/index.js';
 import { appendV2Depth } from './textEngine/scenes/v2/depthRenderer.js';
 import { createInitialV2State, V2_CONFIG } from './gameData/v2/state.js';
+import { appendEmbodimentWalkLog } from './gameData/v2/embodiedCampus.js';
 import { canTriggerDream } from './gameData/v2/appetiteDreams.js';
 import './textEngine/scenes/v2/index.js';
 import { ClassroomView } from './views/ClassroomView.jsx';
@@ -6322,6 +6323,10 @@ export default function ProfessorSim(){
     if(!s) return;
     setEmbodimentStudent(s);
   };
+  const appendEmbodimentLog=(line)=>{
+    if(!line) return;
+    setV2State(prev=>appendEmbodimentWalkLog(prev,line));
+  };
   const runEmbodimentStart=(studentId)=>{
     const s=students.find(st=>st.id===studentId);
     const result=handleEmbodimentStart(s,{ownedSkills,ownedClassSkills,embodimentState:v2.embodiment,week,v2State:v2});
@@ -6385,6 +6390,19 @@ export default function ProfessorSim(){
       });
     });
     if(result.scrutiny) addScrutiny(result.scrutiny);
+    const witnessWorthy=result.scrutiny>=2||['bully_forcefeed','clothes_burst','stuck_door','gossip_whisper'].includes(event.id);
+    if(witnessWorthy){
+      setCampusState(prev=>appendWitnessLog(prev,{
+        week,
+        eventType:'embodiment',
+        studentName:s.name,
+        nodeId:event.nodeId||v2.embodiment?.at,
+        witnessName:event.witnessStudent?.name||event.witnessName,
+        label:event.label,
+      }));
+    }
+    const snippet=event.prose?.trim().slice(0,140);
+    if(snippet) push(`🌒 ${s.name} — ${event.label}. ${snippet}${snippet.length>=140?'…':''}`);
     if(result.trustGrants?.length){
       const names=result.trustGrants.map(g=>students.find(st=>st.id===g.studentId)?.name).filter(Boolean);
       if(names.length) push(`🌒 Campus gossip reaches ${names.join(', ')} — spirit trust grows.`);
@@ -8633,6 +8651,7 @@ export default function ProfessorSim(){
             ap={ap}
             week={week}
             spiritLevel={spiritLevel}
+            witnessLog={campusState?.witnessLog||[]}
           />}
 
           {/* ── STUDENT DETAIL ── */}
@@ -8818,7 +8837,7 @@ export default function ProfessorSim(){
       {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students}/>}
 
       {/* ── DEBUG PANEL ── */}
-      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} money={money} view={view} setView={setView} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length} instantText={instantText} onInstantTextChange={setInstantText}/>}
+      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setOwnedSkills={setOwnedSkills} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} money={money} view={view} setView={setView} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length} instantText={instantText} onInstantTextChange={setInstantText}/>}
 
       {bugReportOpen&&<BugReportModal getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} prefillError={fieldNoteError} onClose={()=>{ setBugReportOpen(false); setFieldNoteError(null); }}/>}
 
@@ -9246,6 +9265,8 @@ export default function ProfessorSim(){
           ownedSkills={ownedSkills}
           ownedClassSkills={ownedClassSkills||{}}
           embodimentState={v2.embodiment}
+          walkLog={v2.embodiment?.walkLog||[]}
+          onAppendLog={appendEmbodimentLog}
           onStart={runEmbodimentStart}
           onAction={runEmbodimentAction}
           onMove={runEmbodiedMove}

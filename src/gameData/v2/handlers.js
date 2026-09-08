@@ -26,6 +26,7 @@ import {
   recordEmbodiedEvent,
   applyTrustGrants,
   embodiedActionsAtNode,
+  appendEmbodimentWalkLog,
 } from './embodiedCampus.js';
 import { V2_CONFIG } from './state.js';
 

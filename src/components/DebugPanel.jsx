@@ -46,6 +46,7 @@ export function DebugPanel({
   debugInputs,
   setAdminScrutiny,
   setAp,
+  setOwnedSkills,
   setDebugInputs,
   setDebugOpen,
   setLilithUnlocked,
@@ -123,6 +124,16 @@ export function DebugPanel({
                 onClick={() => setStudents((prev) => prev.map((s) => ({ ...s, relationship: 100 })))}>Max All Rel</button>
               <button type="button" style={{ ...C.smBtn, background: 'rgba(80,0,100,0.4)' }}
                 onClick={() => setLilithUnlocked(true)}>🌑 Unlock Lilith</button>
+              {setOwnedSkills && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(90,50,140,0.55)' }}
+                  onClick={() => {
+                    setOwnedSkills((prev) => ({ ...prev, spirit_ride: 1, deep_ride: 1 }));
+                    setAp((a) => Math.max(a, 20));
+                    setView('spirit-hub');
+                  }}>
+                  🌒 Spirit Dominion QA
+                </button>
+              )}
               <button type="button" style={{ ...C.smBtn, background: 'rgba(60,30,0,0.5)' }}
                 onClick={() => setStudents((prev) => prev.map((s) => (s.id === LILITH_ID ? s : { ...s, lbs: 300 })))}>⚖️ All 300 lbs</button>
             </div>

@@ -336,3 +336,10 @@ export function applyTrustGrants(students, grants = []) {
     return grantPassiveTrust(s, amt);
   });
 }
+
+export function appendEmbodimentWalkLog(v2State, line) {
+  if (!line) return v2State;
+  const emb = v2State.embodiment || {};
+  const walkLog = [...(emb.walkLog || []), line].slice(-48);
+  return { ...v2State, embodiment: { ...emb, walkLog } };
+}
