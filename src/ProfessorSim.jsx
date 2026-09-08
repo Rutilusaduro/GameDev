@@ -12,7 +12,7 @@ import { getPlayerPrefs, toggleInstantText } from './gameData/playerPrefs.js';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
-import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
+import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
 import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
@@ -102,6 +102,12 @@ import { renderIntimacyChoice, renderIntimacyEnding, renderIntimacyPassout } fro
 import { renderPreStreamVignette } from './textEngine/scenes/streamPreStream/index.js';
 import { renderStreamBeat } from './textEngine/scenes/stream/liveBridge.js';
 import { renderCollabStreamBeat, pickCollabWrenLine, renderCollabStageUp, renderCollabPayoff } from './textEngine/scenes/collabStream/index.js';
+import {
+  renderRecordingDirectionPopup,
+  renderRecordingTakeResult,
+  renderRecordingOneMoreTake,
+  renderRecordingWrapText,
+} from './textEngine/scenes/recordingSession/index.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
@@ -5597,10 +5603,10 @@ export default function ProfessorSim(){
       if(step===0) newChoices.angle=choiceId;
       else if(step===1) newChoices.food=choiceId;
       else newChoices.pace=choiceId;
-      const popupArr=RECORDING_DIRECTION_POPUPS[choiceId];
       const kylieForPopup=students.find(st=>st.id===prev.studentId);
-      const popupFn=popupArr?.[prev.stageIdx];
-      const popupText=typeof popupFn==='function'?popupFn(kylieForPopup?.lbs||258):(popupFn||null);
+      const popupText=kylieForPopup
+        ?renderRecordingDirectionPopup(choiceId,prev.stageIdx,kylieForPopup,week)
+        :null;
       if(step<2){
         return {...prev, currentChoices:newChoices, choiceStep:step+1, popupText};
       }
@@ -5623,8 +5629,9 @@ export default function ProfessorSim(){
       const bestClip=newRatings.reduce((best,q)=>qualityOrder.indexOf(q)>qualityOrder.indexOf(best)?q:best,'okay');
       const isPerfect=quality==='perfect';
       const postGainLbs=(kylie?.lbs||258)+gainThisTake;
-      const takeFn=isPerfect?RECORDING_PERFECT_TAKE[prev.stageIdx]:(RECORDING_TAKE_RESULT[quality]||[])[prev.stageIdx];
-      const takeText=typeof takeFn==='function'?takeFn(postGainLbs):(takeFn||'');
+      const takeText=kylie
+        ?renderRecordingTakeResult(quality,prev.stageIdx,postGainLbs,kylie,week)
+        :'';
       return {...prev,
         currentChoices:newChoices, choiceStep:3,
         phase:'take_result',
@@ -5649,8 +5656,9 @@ export default function ProfessorSim(){
       if(!prev||prev.timeLeft<=0) return prev;
       const kylie=students.find(st=>st.id===prev.studentId);
       const newTimeLeft=prev.timeLeft-1;
-      const oneMoreFn=(RECORDING_ONE_MORE_TAKE||[])[prev.stageIdx];
-      const oneMoreText=typeof oneMoreFn==='function'?oneMoreFn(kylie?.lbs||258):(oneMoreFn||'She nods. One more.');
+      const oneMoreText=kylie
+        ?renderRecordingOneMoreTake(prev.stageIdx,kylie,week)
+        :'She nods. One more.';
       return {...prev,
         phase:'directing',
         takeNum:prev.takeNum+1, timeLeft:newTimeLeft,
@@ -5666,13 +5674,9 @@ export default function ProfessorSim(){
       if(!prev) return prev;
       const quality=normalizePerformanceTier(prev.bestClip||'okay');
       const kylie=students.find(st=>st.id===prev.studentId);
-      const kyleLbs=kylie?.lbs||258;
-      const endArr=(RECORDING_WRAP_ENDINGS[prev.bestClip]||RECORDING_WRAP_ENDINGS.good);
-      const endFn=endArr[prev.stageIdx]||endArr[0];
-      const endStr=typeof endFn==='function'?endFn(kyleLbs):(endFn||'');
-      const payFn=RECORDING_PAYOFF_TEXT[prev.stageIdx];
-      const payStr=typeof payFn==='function'?payFn(kyleLbs):(payFn||'');
-      const endText=endStr+(payStr?'\n\n'+payStr:'');
+      const endText=kylie
+        ?renderRecordingWrapText(prev.bestClip||'okay',prev.stageIdx,kylie,week)
+        :'';
       const relBonuses={perfect:10,good:3,messy:1,failure:0};
       const relBonus=Math.round((relBonuses[quality]||1)*performanceRelMult(quality));
       if(kylie) setStudents(p=>p.map(st=>st.id===prev.studentId?{...st,relationship:Math.min(100,st.relationship+relBonus),contestCompletions:(st.contestCompletions||0)+1}:st));
@@ -9007,7 +9011,7 @@ export default function ProfessorSim(){
       {collabStreamState&&<CollabStreamModal collabStreamState={collabStreamState} students={students} doCollabAction={doCollabAction} closeCollabStream={closeCollabStream} dismissCollabPopup={dismissCollabPopup}/>}
 
       {/* ── RECORDING SESSION MODAL ── */}
-      {recordingSessionState&&<RecordingSessionModal recordingSessionState={recordingSessionState} students={students} setRecordingSessionState={setRecordingSessionState} makeRecordingChoice={makeRecordingChoice} wrapRecordingSession={wrapRecordingSession} oneMoreTake={oneMoreTake} closeRecordingSession={closeRecordingSession} dismissRecordingChoicePopup={dismissRecordingChoicePopup}/>}
+      {recordingSessionState&&<RecordingSessionModal recordingSessionState={recordingSessionState} students={students} week={week} setRecordingSessionState={setRecordingSessionState} makeRecordingChoice={makeRecordingChoice} wrapRecordingSession={wrapRecordingSession} oneMoreTake={oneMoreTake} closeRecordingSession={closeRecordingSession} dismissRecordingChoicePopup={dismissRecordingChoicePopup}/>}
       {streamSessionState&&<StreamSessionModal streamSessionState={streamSessionState} students={students} week={week} preStreamAction={preStreamAction} selectChallenge={selectStreamChallenge} beginActiveRound={beginActiveRound} finishActiveRound={finishActiveRound} continueAfterBetweenRound={continueAfterBetweenRound} tapOutStream={tapOutStream} wrapStream={wrapStream} closeStream={closeStream} appendStreamChat={appendStreamChat} updateRoundPerf={updateRoundPerf} tickRoundStamina={tickRoundStamina}/>}
       {streamBrandPickState&&<StreamBrandSelectModal student={students.find(st=>st.id===streamBrandPickState.studentId)} required={streamBrandPickState.required} onSelect={selectStreamBrand} onClose={streamBrandPickState.required?null:()=>setStreamBrandPickState(null)}/>}
       {destinySpendState&&<DestinySpendModal student={students.find(st=>st.id===destinySpendState.studentId)} onPurchase={purchaseDestinyItem} onClose={()=>setDestinySpendState(null)} onGiftFromPlayer={giftDestinyFunds} playerMoney={money}/>}

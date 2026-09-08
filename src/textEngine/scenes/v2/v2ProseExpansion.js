@@ -430,6 +430,26 @@ registerPool('collabStream.v2.depth', [
     'Double the plates, double the warmth, double the content the audience came for.',
   ]},
 ]);
+registerPool('recordingSession.v2.depth', [
+  { when: { takeQuality: ['perfect'] }, text: [
+    'The take lands perfect — light, hunger, and devotion aligned in one unrepeatable clip.',
+    'Through the lens she is art: appetite directed, body worshipped, growth made intimate.',
+  ]},
+  { when: { takeQuality: ['great', 'good'] }, text: [
+    'Solid footage — her body reads honest on camera, every bite another frame of surrender.',
+    'The session captures warmth: food, flesh, and the quiet thrill of being filmed while growing.',
+  ]},
+  { when: { recordingStage: [4, 5] }, text: [
+    'At this scale filming is geography — camera tracing mass that barely fits the frame.',
+    'Immobility makes every swallow monumental; the room belongs to her belly now.',
+  ]},
+  { when: {}, text: [
+    'Private dorm-room filming — ring light, camera, the feedee path made visual.',
+    'Intimate direction: you choose angle, food, pace; she gives you her growth on tape.',
+    'The session turns appetite into content and content into proof of devotion.',
+    'Warm light on warm flesh — every take another record of her getting bigger for you.',
+  ]},
+]);
 registerPool('wifeLessonsTalk.v2.depth', [
   { when: { wlStage: [6, 7, 8] }, text: [
     'The conversation settles warm as dough — mothers and daughters speaking appetite like scripture.',

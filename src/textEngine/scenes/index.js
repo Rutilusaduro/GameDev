@@ -25,6 +25,7 @@ import './hungerLexicon.js';
 import './stream.js';
 import './stream/liveBridge.js';
 import './collabStream/index.js';
+import './recordingSession/index.js';
 import './streamChatIngest.js';
 import './streamExtended.js';
 import './streamPreStream/index.js';

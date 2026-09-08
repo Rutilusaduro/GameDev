@@ -2,9 +2,9 @@
 // RECORDING SESSION — Film her session modal
 // ═══════════════════════════════════════════════════════════════
 import { C } from '../styles.js';
-import { RECORDING_OPENING_TEXT, RECORDING_TAKE_INTRO_TEXT } from '../gameData/miniGames.js';
+import { renderRecordingOpening, renderRecordingTakeIntro } from '../textEngine/scenes/recordingSession/index.js';
 
-export function RecordingSessionModal({ recordingSessionState, students, setRecordingSessionState, makeRecordingChoice, wrapRecordingSession, oneMoreTake, closeRecordingSession, dismissRecordingChoicePopup }){
+export function RecordingSessionModal({ recordingSessionState, students, week = 1, setRecordingSessionState, makeRecordingChoice, wrapRecordingSession, oneMoreTake, closeRecordingSession, dismissRecordingChoicePopup }){
         const rs=recordingSessionState;
         const kylie=students.find(st=>st.id===rs.studentId);
         if(!kylie) return null;
@@ -41,7 +41,7 @@ export function RecordingSessionModal({ recordingSessionState, students, setReco
               {rs.phase==='open'&&(
                 <>
                   <div style={{fontSize:12,color:"#d8c0a0",lineHeight:1.9,whiteSpace:"pre-line",marginBottom:16,fontStyle:"italic"}}>
-                    {(()=>{const fn=RECORDING_OPENING_TEXT[rs.stageIdx];return typeof fn==='function'?fn(kylie.lbs):(fn||'');})()}
+                    {renderRecordingOpening(rs.stageIdx, kylie, week)}
                   </div>
                   <button style={{...C.btn(amber),width:"100%"}} onClick={()=>setRecordingSessionState(p=>({...p,phase:'directing'}))}>
                     🎬 Pick up the camera
@@ -53,7 +53,7 @@ export function RecordingSessionModal({ recordingSessionState, students, setReco
               {rs.phase==='directing'&&(
                 <>
                   <div style={{fontSize:11,color:"#d8c0a0",lineHeight:1.8,marginBottom:8,fontStyle:"italic"}}>
-                    {(()=>{const fn=RECORDING_TAKE_INTRO_TEXT[rs.stageIdx];return typeof fn==='function'?fn(kylie.lbs):(fn||'');})()}
+                    {renderRecordingTakeIntro(rs.stageIdx, kylie, week)}
                   </div>
                   {/* Step indicator */}
                   <div style={{display:"flex",gap:4,marginBottom:12}}>
