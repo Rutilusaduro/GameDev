@@ -305,6 +305,7 @@ import {
   getOppositionGainMult, tickSupernaturalWeek, getAvailableCounters,
 } from './gameData/opposition.js';
 import { supernaturalActLine } from './gameData/oppositionText.js';
+import { renderWifeLessonBeat } from './textEngine/scenes/wifeLessons/index.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
@@ -3028,6 +3029,8 @@ export default function ProfessorSim(){
       const{stage}=prev;
       const lesson=WL_LESSONS[stage]?.find(l=>l.id===lessonId);
       if(!lesson) return prev;
+      const mjStudent=students.find(st=>st.id===prev.mjStudentId);
+      const lessonProse=mjStudent?renderWifeLessonBeat(stage,lesson,mjStudent,week):lesson.text;
       let newDaughters={...prev.daughters};
       Object.keys(newDaughters).forEach(k=>{
         let gain=lesson.daughterLbs;
@@ -3038,7 +3041,7 @@ export default function ProfessorSim(){
       Object.keys(newMoms).forEach(k=>{ newMoms[k]=newMoms[k]+lesson.momLbs; });
       const logLine=`${lesson.label}: all daughters +${lesson.daughterLbs} lbs, all moms +${lesson.momLbs} lbs, you +${lesson.mjLbs} lbs`;
       let next={...prev,daughters:newDaughters,moms:newMoms,
-        session:{...prev.session,lessonChosen:true,lessonId:lesson.id,mjGainAccum:prev.session.mjGainAccum+lesson.mjLbs,relAccum:prev.session.relAccum+(lesson.rel||0),log:[...prev.session.log,logLine]}};
+        session:{...prev.session,lessonChosen:true,lessonId:lesson.id,lessonProse,mjGainAccum:prev.session.mjGainAccum+lesson.mjLbs,relAccum:prev.session.relAccum+(lesson.rel||0),log:[...prev.session.log,logLine]}};
       next=_wlCheckStageAdvance(next);
       return next;
     });

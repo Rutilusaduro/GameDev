@@ -1,29 +1,35 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect, A7 Artisan
-// Wife Lessons (Flabwife) — MIGRATION BRIDGE (DEPTH_PLAN §9d).
-//
-// Legacy prose lives wholecloth in gameData/evolvedForms.js:
-//   WL_LESSONS   — 24 lesson beats (stages 1–8 × 3 picks)
-//   WL_DIALOGUES — mom trees stages 1–8; daughter trees stages 6–8
-//
-// Filled from upload tags via scripts/apply-flabwife-fills.mjs (429 replacements).
-// Render sites: WifeLessonsModal.jsx, ProfessorSim.jsx (session handlers).
-//
-// Target decomposition (registerPool + render helpers; retire evolvedForms strings):
-//   wifeLessons.lesson.s{n}.{id}     — FULL SENTENCE lesson beat after pick
-//   wifeLessons.talk.{person}.s{n}.* — DIALOGUE BEAT per greeting/option/sub leaf
-//
-// Mine per MIGRATION.md Step 3: dialogue lines verbatim; lesson paragraphs → scene/sensory/reaction slots.
-// Key on wlStage, person, capped, overtook (Chloe>Emma), daughter vs mom.
-//
-// Already migrated elsewhere:
-//   diary.wife_lessons.* — MJ between-session diary (diary.js)
-//
-// Still legacy (separate passes):
-//   EVOLVED_EVENTS['wife_lessons'] — stageIdx 0–5 branching events
-//   EVOLVED_ACTIVITY_TEXT.wife_lessons — MJ diary monologues on activity pick
-//   WIFE_LESSONS_NPCS — body/stage blurbs for NPC cards (not yet wired to modal)
+// Wife Lessons (Flabwife) — engine bridge from legacy WL_LESSONS / WL_DIALOGUES.
+import { registerPool, render } from '../../engine.js';
+import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
+import { WL_LESSONS } from '../../../gameData/evolvedForms.js';
 
-/** Planned namespace map for lint MIGRATION_BRIDGE_PREFIXES and Dialogue Lab. */
+for (const [stage, lessons] of Object.entries(WL_LESSONS)) {
+  if (!Array.isArray(lessons)) continue;
+  for (const lesson of lessons) {
+    if (!lesson?.text) continue;
+    registerPool(`wifeLessons.lesson.s${stage}.${lesson.id}`, [
+      { when: {}, text: [lesson.text] },
+    ]);
+  }
+}
+
+/** Lesson beat after pick — engine pool + V2 depth, legacy fallback. */
+export function renderWifeLessonBeat(stage, lesson, mjStudent, week = 1, opts = {}) {
+  if (!lesson) return '';
+  const legacy = lesson.text?.trim() || '';
+  const ctx = buildTextContext({
+    subject: mjStudent,
+    week,
+    globals: { wlStage: stage, lessonId: lesson.id, ...(opts.globals || {}) },
+    ...opts,
+  });
+  const key = `wifeLessons.lesson.s${stage}.${lesson.id}`;
+  const base = render(`{${key}}`, ctx, { trace: opts.trace || null })?.trim() || legacy;
+  return appendV2Depth(base, 'wifeLessons', ctx, opts.v2DepthChance ?? 0.32);
+}
+
 export const WIFE_LESSONS_MIGRATION = {
   lessonPrefix: 'wifeLessons.lesson.',
   talkPrefix: 'wifeLessons.talk.',

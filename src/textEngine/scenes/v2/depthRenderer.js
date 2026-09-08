@@ -46,6 +46,7 @@ const POOLS = {
   campusSecret: 'campusSecret.v2.depth',
   journal: 'journal.v2.depth',
   streamPre: 'streamPre.v2.depth',
+  wifeLessons: 'wifeLessons.v2.depth',
 };
 
 /** Append a V2 depth beat when pool resolves and chance hits. */

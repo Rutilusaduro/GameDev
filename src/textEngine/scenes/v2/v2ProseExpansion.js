@@ -23,6 +23,10 @@ registerPool('dinner.v2.depth', [
 
 // ── Feed reaction depth ───────────────────────────────────────
 registerPool('feed.v2.depth', [
+  { when: { stageMin: 9 }, text: [
+    'She eats like weather — inevitable, warm, reshaping the room around her fullness.',
+    'Portions vanish into mass that does not apologize. The feed feels ceremonial.',
+  ]},
   { when: { stageMin: 7 }, text: [
     'Fullness spreads through her like a tide — slow, heavy, undeniable. She breathes around it and reaches for more anyway.',
     'Her belly rises with each portion. She does not flinch from the weight of it.',
@@ -277,6 +281,7 @@ registerPool('evolved.v2.depth', [
   { when: {}, text: ['Her evolved path amplifies everything — appetite as identity, identity as spectacle.'] },
 ]);
 registerPool('spirit.v2.depth', [
+  { when: { stageMin: 7 }, text: ['Possession at this scale is geography — you feel her mass from the inside, vast and settled.'] },
   { when: { stageMin: 5 }, text: ['The spirit moves through her like warmth finding a home she has been building all semester.'] },
   { when: {}, text: ['Possession feels less like theft and more like collaboration.'] },
 ]);
@@ -297,6 +302,8 @@ registerPool('campusDevice.v2.depth', [
 ]);
 registerPool('opposition.v2.depth', [
   { when: {}, text: ['Institutional pressure reshapes the board — scarcity and scrutiny braid together off-screen.'] },
+  { when: { hearing: 'emergency' }, text: ['Emergency session — every signature waits like a blade. The class holds its breath in the hallway.'] },
+  { when: { card: 'wellness_audit' }, text: ['Compliance arrives dressed as care. Shame wears a lanyard and calls itself assessment.'] },
 ]);
 registerPool('campusSecret.v2.depth', [
   { when: {}, text: ['The campus yields a secret — older hunger, hidden routes, abundance tucked where no one looks.'] },
@@ -306,6 +313,21 @@ registerPool('journal.v2.depth', [
 ]);
 registerPool('streamPre.v2.depth', [
   { when: {}, text: ['Before the camera lights, she rehearses abundance — outfit, mirror, snack, the private ritual of going on display.'] },
+]);
+registerPool('wifeLessons.v2.depth', [
+  { when: { wlStage: [6, 7, 8] }, text: [
+    'The kitchen has become a throne room of butter and belonging — daughters and mothers alike surrendering to the lesson.',
+    'Generations lean into the same warm plate. Appetite passes hand to hand like inheritance.',
+  ]},
+  { when: { wlStage: [3, 4, 5] }, text: [
+    'The lesson lands soft and certain — flour on aprons, sweetness on tongues, the philosophy of fullness made edible.',
+    'Mary Jane teaches with her hands and her smile. Everyone leaves heavier in spirit and in flesh.',
+  ]},
+  { when: {}, text: [
+    'Warm kitchen, warm dough, warm philosophy — abundance taught one generous bite at a time.',
+    'The lesson is not just food. It is permission, passed around the table until no one refuses.',
+    'Southern comfort made curriculum. Every woman in the room understands what she is being offered.',
+  ]},
 ]);
 
 // ── Body portrait v2 sensory layer ────────────────────────────

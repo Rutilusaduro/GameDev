@@ -16,7 +16,7 @@ function wlNextThresholdCap(stage, daughters) {
 
 export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversationChoice, makeWifeLessonsSubChoice, dismissWifeLessonsConversation, chooseWifeLessonsLesson, startWifeLessonsConversation, closeWifeLessonsSession }){
         const{stage,daughters,moms,session}=wifeLessonsState;
-        const{lessonChosen,lessonId,mjGainAccum,relAccum,conversationState,log}=session;
+        const{lessonChosen,lessonId,lessonProse,mjGainAccum,relAccum,conversationState,log}=session;
 
         const WINE_BG="#0e0508";
         const WINE_DIM="#5a2040";
@@ -127,7 +127,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                   {chosenLesson?.text&&(
                     <FlaggedProse
                       section={`wifeLessons.lesson.${chosenLesson.id}`}
-                      text={chosenLesson.text}
+                      text={lessonProse||chosenLesson.text}
                       stateLine={`Stage ${stage} · ${chosenLesson.label}`}
                       style={{fontSize:12,color:WINE_TEXT,lineHeight:1.75,padding:"10px 12px",background:"rgba(139,34,82,0.06)",border:`1px solid ${WINE_DIM}30`,borderRadius:5}}
                     />
