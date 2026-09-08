@@ -11,6 +11,7 @@ import './feed.js';
 import './gather.js';
 import './weigh.js';
 import './enormity.js';
+import './settlingSceneDepth.js';
 
 /**
  * Render a settling action scene.

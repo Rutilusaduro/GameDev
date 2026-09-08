@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 device/growthEvent/campusDevice depth; milestone/intimacy/campus/weekly prior |
+| Legacy talk prose | 🔄 opposition depth + full V2 resonance/ritual/dream/echo roster; device/growth prior |
 
 ## Key Files (V2)
 
@@ -55,6 +55,8 @@
 - `src/textEngine/scenes/deviceSceneDepth.js` — catalog/psych stage+corruption+student depth
 - `src/textEngine/scenes/growthEvent/growthEventSceneDepth.js` — surge/settle/environment/student depth
 - `src/textEngine/scenes/campusDevice/campusDeviceSceneDepth.js` — campus device encounter/reaction personas
+- `src/textEngine/scenes/opposition/oppositionSceneDepth.js` — agenda/counter/hearing/endgame student+stage depth
+- `src/textEngine/scenes/v2/studentArchetypeDepth.js` — full 19-student voice on resonance/ritual/dream/echo V2 pools
 
 ## Verification
 
