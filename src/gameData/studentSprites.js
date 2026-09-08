@@ -82,7 +82,55 @@ const TIER_SILHOUETTES = {
     '.##########.',
     '.##########.',
   ],
+  immobile: [
+    '..########..',
+    '.##########.',
+    '############',
+    '############',
+    '############',
+    '############',
+    '############',
+    '.##########.',
+  ],
 };
+
+/** Per-student hair overlay — rows 0–2; h=hair, a=accent highlight, .=body shows through. */
+const STUDENT_HAIR = {
+  0: ['..hhhhhh..', '.hhhhhhhh.', '..ha..ah..'],
+  1: ['.hhhhhhhh.', '..hhhhhh..', '...hhhh...'],
+  2: ['..ha....ah.', '.hhhhhhhh.', '..hhhhhh..'],
+  3: ['...hhhhhh.', '..hhhhhhhh.', '.hhhhhhhh.'],
+  4: ['.hhhhhhhh.', '..hhhhhh..', '...hhhh...'],
+  5: ['..hhhhhh..', '.hhhhhhhh.', '..hhhhhh..'],
+  6: ['...hhhhhh.', '..hhhhhhhh.', '.hhhhhhhh.'],
+  7: ['.hhhhhhhh.', '..hhhhhh..', '...hhhh...'],
+  8: ['..hhhhhh..', '.hhhhhhhh.', '..ha..ah..'],
+  9: ['.hhhhhhhh.', '..hhhhhh..', '...hhhh...'],
+  10: ['..hhhhhh..', '.hhhhhhhh.', '..hhhhhh..'],
+  11: ['...hhhhhh.', '..hhhhhhhh.', '.hhhhhhhh.'],
+  12: ['.hhhhhhhh.', '..hhhhhh..', '...hhhh...'],
+  13: ['..ha..ah..', '.hhhhhhhh.', '..hhhhhh..'],
+  14: ['..hhhhhh..', '.hhhhhhhh.', '..hhhhhh..'],
+  15: ['hhhhhhhhhh', '.hhhhhhhh.', '..hhhhhh..'],
+  16: ['.hhhhhhhh.', '..hhhhhh..', '...hhhh...'],
+  17: ['..hhhhhh..', '.hhhhhhhh.', '..ha..ah..'],
+  18: ['...hhhhhh.', '..hhhhhhhh.', '.hhhhhhhh.'],
+};
+
+function mergeHairRow(bodyRow, hairRow) {
+  if (!hairRow) return bodyRow;
+  return bodyRow.split('').map((ch, i) => {
+    const h = hairRow[i];
+    if (h === 'h' || h === 'a') return h;
+    return ch;
+  }).join('');
+}
+
+function applyHair(grid, studentId) {
+  const hair = STUDENT_HAIR[studentId];
+  if (!hair) return grid;
+  return grid.map((row, i) => mergeHairRow(row, hair[i]));
+}
 
 /** Body-type silhouette modifiers — widen/narrow specific row bands. */
 const BODY_TYPE_MODIFIERS = {
@@ -142,6 +190,7 @@ const STUDENT_SPRITE_TWEAKS = {
 };
 
 export function portraitTier(stageId) {
+  if (stageId >= 10) return 'immobile';
   if (stageId >= 9) return 'vast';
   if (stageId >= 7) return 'fat';
   if (stageId >= 5) return 'heavy';
@@ -162,6 +211,7 @@ export function getStudentSprite(stageId, studentId, bodyType = 'straight') {
   const accent = getStudentAccent(studentId);
   let grid = bodyMod(base);
   if (studentTweak) grid = studentTweak(grid);
+  grid = applyHair(grid, studentId);
   grid = grid.map((row) => row.replace(/#/g, 'S'));
   return {
     grid,
@@ -179,4 +229,5 @@ export const PORTRAIT_TIER_LABELS = {
   heavy: 'Heavy',
   fat: 'Vast',
   vast: 'Monumental',
+  immobile: 'Immobile',
 };

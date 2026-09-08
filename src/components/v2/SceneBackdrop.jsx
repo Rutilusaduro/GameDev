@@ -10,6 +10,9 @@ const VARIANTS = {
   lab: { colors: ['#4a6080', '#80a0c0', '#1a2030'], pattern: '⚙ ◈ ⚙ ◈ ⚙' },
   embodiment: { colors: ['#4a2870', '#c0a0e0', '#1a1028'], pattern: '🌒 · ◐ · 🌒' },
   opposition: { colors: ['#304860', '#6080a0', '#101820'], pattern: '⚖ · 🏛 · ⚖' },
+  wifeLessons: { colors: ['#5a2040', '#c03070', '#0e0508'], pattern: '🍷 · 🥐 · 🍷' },
+  stream: { colors: ['#301828', '#e05090', '#120408'], pattern: '▶ · ♥ · ▶' },
+  campus: { colors: ['#284838', '#60a080', '#102018'], pattern: '🌿 · 🏫 · 🌿' },
 };
 
 export function SceneBackdrop({ variant = 'spirit', height = 48 }) {

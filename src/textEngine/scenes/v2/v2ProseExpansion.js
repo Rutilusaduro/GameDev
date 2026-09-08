@@ -46,6 +46,10 @@ registerPool('feed.v2.depth', [
 
 // ── Talk depth additions ──────────────────────────────────────
 registerPool('talk.v2.depth', [
+  { when: { stageMin: 7 }, text: [
+    'She speaks from inside her fullness — voice slower, warmer, belly audible between sentences.',
+    'Conversation bends around her mass. She does not hurry. Neither do you.',
+  ]},
   { when: { stageMin: 5 }, text: [
     'She talks about food the way other people talk about plans — eagerly, specifically, already leaning toward yes.',
     'Conversation drifts to cravings and stays there. She does not redirect it.',
@@ -246,7 +250,15 @@ registerPool('ascension.v2.depth', [
   { when: {}, text: ['Something sacred settles over the moment. Growth as ceremony.'] },
 ]);
 registerPool('lab.v2.depth', [
-  { when: {}, text: ['Precision and appetite share the bench — engineering as foreplay to mass.'] },
+  { when: { stageMin: 7 }, text: [
+    'The lab hums with engineered appetite — compounds calibrated, mass anticipated, precision as seduction.',
+    "Talia's bench holds more than chemistry. It holds the future shape of every girl on your roster.",
+  ]},
+  { when: {}, text: [
+    'Precision and appetite share the bench — engineering as foreplay to mass.',
+    'Glassware, measurements, the quiet thrill of making growth inevitable.',
+    'Science and hunger shake hands over the same formula.',
+  ]},
 ]);
 registerPool('forceFeed.v2.depth', [
   { when: {}, text: ['The mask hums. Fullness arrives on schedule — mechanical, relentless, warm.'] },
@@ -259,7 +271,15 @@ registerPool('cultivator.v2.depth', [
   { when: {}, text: ['The cultivator cycle turns — suspicion, appetite, harvest, again.'] },
 ]);
 registerPool('hunt.v2.depth', [
-  { when: {}, text: ['Predator and prey blur. Appetite hunts in both directions.'] },
+  { when: { stageMin: 7 }, text: [
+    'Lilith hunts where appetite is thinnest — campus corners, guilty hunger, flesh waiting to be claimed.',
+    'Predator and prey blur at this scale. The night belongs to whoever eats first.',
+  ]},
+  { when: {}, text: [
+    'Predator and prey blur. Appetite hunts in both directions.',
+    "The campus after dark — hunger stalking hunger, Lilith's shadow long and warm.",
+    'Every target carries potential mass. Lilith reads it like a menu.',
+  ]},
 ]);
 registerPool('roster.v2.depth', [
   { when: {}, text: ['She reads differently at a glance now — softer, fuller, unmistakable.'] },
@@ -281,15 +301,53 @@ registerPool('evolved.v2.depth', [
   { when: {}, text: ['Her evolved path amplifies everything — appetite as identity, identity as spectacle.'] },
 ]);
 registerPool('spirit.v2.depth', [
+  { when: { stageMin: 9 }, text: [
+    'Possession at immobile scale — you inhabit architecture, hunger measured in geography not bites.',
+    'The spirit rides inside a body that has become environment. Every breath moves mass.',
+  ]},
   { when: { stageMin: 7 }, text: ['Possession at this scale is geography — you feel her mass from the inside, vast and settled.'] },
   { when: { stageMin: 5 }, text: ['The spirit moves through her like warmth finding a home she has been building all semester.'] },
-  { when: {}, text: ['Possession feels less like theft and more like collaboration.'] },
+  { when: {}, text: [
+    'Possession feels less like theft and more like collaboration.',
+    'Her hands move toward food before her mind names want. You are both already eating.',
+    'Inside her skin, appetite speaks without filter — honest, warm, immediate.',
+  ]},
 ]);
 registerPool('ritual.v2.depth', [
-  { when: {}, text: ['Ceremony amplifies appetite — every bite consecrated, every belly an altar.'] },
+  { when: { stageMin: 8 }, text: [
+    'Sacred gluttony — multiple bellies, one ceremony, appetite elevated to liturgy.',
+    'The ritual consecrates mass. Every participant leaves heavier in body and spirit.',
+  ]},
+  { when: {}, text: [
+    'Ceremony amplifies appetite — every bite consecrated, every belly an altar.',
+    'Plates circulate like communion. Fullness becomes collective worship.',
+    'The kitchen transforms into temple. Hunger the only prayer.',
+  ]},
 ]);
 registerPool('dream.v2.depth', [
-  { when: {}, text: ['The dream lingers at the edges of waking — hunger translated into symbol.'] },
+  { when: { stageMin: 6 }, text: [
+    'The dream serves impossible portions — symbolic foodscapes where appetite has no ceiling.',
+    'She eats in sleep what she craves awake. The spirit walks the subconscious buffet.',
+  ]},
+  { when: {}, text: [
+    'The dream lingers at the edges of waking — hunger translated into symbol.',
+    'Surreal abundance — portions that could not exist, tasted anyway.',
+    'Sleep opens a door appetite walks through uninvited and unashamed.',
+  ]},
+]);
+registerPool('echo.v2.depth', [
+  { when: { stageMin: 9 }, text: [
+    'The echo deepens — memory layered with sensation until past and present appetite merge.',
+    'Replay becomes reliving. Her body in the archive still grows warmer with each visit.',
+  ]},
+  { when: { stageMin: 5 }, text: [
+    'The moment returns fuller than before — more detail, more heat, more proof she crossed a line.',
+    'Echo depth means the memory refuses to stay small.',
+  ]},
+  { when: {}, text: [
+    'A preserved instant — hunger crystallized, available to revisit and amplify.',
+    'The archive holds what the week tried to blur. Appetite remembers exactly.',
+  ]},
 ]);
 registerPool('gossip.v2.depth', [
   { when: {}, text: ['The class keeps its own accounting — glances, whispers, appetite noticed before it is named.'] },

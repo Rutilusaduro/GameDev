@@ -1,6 +1,7 @@
 // The Squad — Lead: A2 Psych | Support: A3 Immobility, A5 Editor
 // V2.0 Body Echo Archive prose
 import { registerPool, render } from '../../../engine.js';
+import { appendV2Depth } from '../depthRenderer.js';
 
 registerPool('echo.capture', [
   { when: { stageMin: 9 }, text: [
@@ -82,7 +83,10 @@ export function renderEchoReplay(echoType, depthTier, ctx) {
   let text = render('{echo.replay}', ctx);
   if (depthTier >= 2) text += '\n\n' + render(`{echo.type.${echoType}}`, ctx);
   if (depthTier >= 3) text += '\n\n' + render('{echo.resonate}', ctx);
-  return text;
+  return appendV2Depth(text?.trim() || '', 'echo', ctx, 0.32);
 }
 
-export function renderEchoCapture(ctx) { return render('{echo.capture}', ctx); }
+export function renderEchoCapture(ctx) {
+  const base = render('{echo.capture}', ctx)?.trim() || '';
+  return appendV2Depth(base, 'echo', ctx, 0.3);
+}

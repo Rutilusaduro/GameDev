@@ -10,7 +10,7 @@ export function StudentPortrait({ student, size = 80, showLabel = true }) {
   const { grid, accent, flip } = getStudentSprite(stageId, student?.id ?? 0, student?.bodyType || 'straight');
   const rows = grid.length;
   const cols = grid[0].length;
-  const palette = { ...PORTRAIT_PALETTE, a: accent, S: accent, s: `${accent}99` };
+  const palette = { ...PORTRAIT_PALETTE, a: accent, h: `${accent}cc`, S: accent, s: `${accent}99` };
 
   return (
     <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>

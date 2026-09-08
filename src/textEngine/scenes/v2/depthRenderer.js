@@ -39,6 +39,7 @@ const POOLS = {
   spirit: 'spirit.v2.depth',
   ritual: 'ritual.v2.depth',
   dream: 'dream.v2.depth',
+  echo: 'echo.v2.depth',
   gossip: 'gossip.v2.depth',
   resonance: 'resonance.v2.depth',
   campusDevice: 'campusDevice.v2.depth',

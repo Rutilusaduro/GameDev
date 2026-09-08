@@ -4,6 +4,7 @@
 import { C } from '../styles.js';
 import { WL_CONFIG, WL_LESSONS } from '../gameData/evolvedForms.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
+import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
 
 /** Weight daughters must reach to advance — bumps to next stage's bar once current is met. */
 function wlNextThresholdCap(stage, daughters) {
@@ -38,6 +39,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
           return(
             <div style={{...C.overlay,zIndex:360}}>
               <div style={{...C.modal,maxWidth:560,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"88vh",overflowY:"auto"}}>
+                <SceneBackdrop variant="wifeLessons" />
                 <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
                   <div style={{fontSize:9,letterSpacing:4,color:WINE_ACCENT}}>💬 {person.toUpperCase()}</div>
                   <div style={{marginLeft:"auto",fontSize:9,color:WINE_DIM}}>{Math.round(personWeight)} lbs · Stage {stage}</div>
@@ -93,6 +95,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
         return(
           <div style={{...C.overlay,zIndex:360}}>
             <div style={{...C.modal,maxWidth:640,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"90vh",overflowY:"auto"}}>
+              <SceneBackdrop variant="wifeLessons" />
               {/* Header */}
               <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
                 <div style={{fontSize:9,letterSpacing:4,color:WINE_ACCENT}}>🍷 WIFE LESSONS</div>
