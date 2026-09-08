@@ -32,7 +32,7 @@
 | Campus exploration depth | ✅ sighting/travel/find |
 | Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
 | Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | 🔄 per-student codas (all 19), check-in greet voice, talk/session/settling depth |
+| Legacy talk prose | 🔄 codas + check-in greet/accept/owned; encourage + compliment personas (all 19); settling depth expanded |
 
 ## Key Files (V2)
 
