@@ -321,23 +321,98 @@ registerPool("enc.stageHunger", [
 
 // ── Personas — the most distinct voices (see AUTHORING.md §4) ─
 registerModuleVariants("enc.owned", [
+  { when: { studentId: 0 }, weight: 4, text: [
+    `"You don't have to encourage me anymore," Brittany grins. "But I like winning with an audience."`,
+  ]},
   { when: { studentId: 1 }, weight: 4, text: [
     `"Encouragement functions as a positive reinforcement variable," Madeline says, already reaching. "I've charted it. The effect size is embarrassing."`,
   ]},
-  { when: { studentId: 5 }, weight: 4, text: [
-    `"Buff received," Destiny says, deadpan, pulling the food closer. "Appetite +10. Stack it."`,
-  ]},
-  { when: { studentId: 9 }, weight: 4, text: [
-    `"Go on then, twist my arm," Chloe says, arm conspicuously untwisted, plate already loaded.`,
-  ]},
-  { when: { studentId: 13 }, weight: 4, text: [
-    `"Sugar, you sound like my grandmother, and that woman never let a plate leave half-full," Daisy beams. "Sit. Watch. Learn."`,
+  { when: { studentId: 2 }, weight: 4, text: [
+    `"Already filming," Kylie says. "Say the line again. Slower. For the clip."`,
   ]},
   { when: { studentId: 3 }, weight: 4, text: [
     `"Coach used to say eat to perform," Serena says, cracking her knuckles at the spread. "I perform plenty."`,
   ]},
+  { when: { studentId: 4 }, weight: 4, text: [
+    `"Keep talking," Fiona says, settling in. "Hunger looks better with a witness."`,
+  ]},
+  { when: { studentId: 5 }, weight: 4, text: [
+    `"Buff received," Destiny says, deadpan, pulling the food closer. "Appetite +10. Stack it."`,
+  ]},
+  { when: { studentId: 6 }, weight: 4, text: [
+    `"Say it like you mean it," Tiffany says, pulling the plate closer. "I eat better when faculty approves."`,
+  ]},
+  { when: { studentId: 8 }, weight: 4, text: [
+    `"I was waiting for you to say that," Maya admits. "I eat more when you watch. That's not a complaint."`,
+  ]},
+  { when: { studentId: 9 }, weight: 4, text: [
+    `"Go on then, twist my arm," Chloé says, arm conspicuously untwisted, plate already loaded.`,
+  ]},
+  { when: { studentId: 10 }, weight: 4, text: [
+    `"Say it slower," Reneé murmurs. "I want to taste the permission in it."`,
+  ]},
+  { when: { studentId: 13 }, weight: 4, text: [
+    `"Sugar, you sound like my grandmother, and that woman never let a plate leave half-full," Daisy beams. "Sit. Watch. Learn."`,
+  ]},
+  { when: { studentId: 14 }, weight: 4, text: [
+    `"Keep going," Mary Jane says, patting her belly. "Sunday dinner rules apply."`,
+  ]},
   { when: { studentId: 15 }, weight: 4, text: [
     `Lilith smiles without warmth. "How thoughtful. Encouraging the tide to come in."`,
+  ]},
+  { when: { studentId: 16 }, weight: 4, text: [
+    `"Optimal dosing requires verbal reinforcement," Sophia says. "Continue."`,
+  ]},
+  { when: { studentId: 17 }, weight: 4, text: [
+    `"Say it again," Indiana grins. "I like treasure hunts with commentary."`,
+  ]},
+  { when: { studentId: 18 }, weight: 4, text: [
+    `"Positive feedback loop engaged," Talia says. "Do not interrupt the experiment."`,
+  ]},
+]);
+
+registerModuleVariants("enc.giveIn", [
+  { when: { studentId: 0 }, weight: 4, text: [
+    `"Fine," Brittany says, captain-certain. "But only because you asked nicely." The wrapper is already open.`,
+  ]},
+  { when: { studentId: 2 }, weight: 4, text: [
+    `"Content idea: professor tells me to eat," Kylie says, already chewing. "Perfect. Don't stop."`,
+  ]},
+  { when: { studentId: 4 }, weight: 4, text: [
+    `"This is your fault," Fiona murmurs around the first bite. It sounds like thanks painted in watercolor.`,
+  ]},
+  { when: { studentId: 6 }, weight: 4, text: [
+    `"Chapter policy," Tiffany says brightly. "Always accept seconds when offered by faculty."`,
+  ]},
+  { when: { studentId: 8 }, weight: 4, text: [
+    `Maya exhales — surrender and relief braided — and takes another bite before the protest finishes.`,
+  ]},
+  { when: { studentId: 10 }, weight: 4, text: [
+    `"Taste this first," Reneé says, offering what she was already eating. "Then tell me to keep going."`,
+  ]},
+  { when: { studentId: 14 }, weight: 4, text: [
+    `"Mama raised me polite," Mary Jane says, already reaching. "And hungry."`,
+  ]},
+  { when: { studentId: 18 }, weight: 4, text: [
+    `"Accepting input," Talia says, deadpan. Her mouth disagrees with the restraint.`,
+  ]},
+]);
+
+registerModuleVariants("enc.resolve", [
+  { when: { studentId: 0 }, weight: 4, text: [
+    `"No more halves," Brittany says. "Whole portions. Whole season." She meets your eyes like it's a pep talk.`,
+  ]},
+  { when: { studentId: 7 }, weight: 4, text: [
+    `"New protocol," Priya says, closing her planner. "Unlimited intake. Effective immediately."`,
+  ]},
+  { when: { studentId: 11 }, weight: 4, text: [
+    `"Okay," Kaylee breathes. "But you have to keep telling me it's good. It works better when it's your voice."`,
+  ]},
+  { when: { studentId: 12 }, weight: 4, text: [
+    `"Hypothesis accepted," Nadia says quietly. "Further trials requested."`,
+  ]},
+  { when: { studentId: 17 }, weight: 4, text: [
+    `"Dig in," Indiana grins. "Treasure's always buried deeper than you think."`,
   ]},
 ]);
 
@@ -345,20 +420,38 @@ registerModuleVariants("enc.accept", [
   { when: { studentId: 1 }, weight: 4, text: [
     `Madeline taps her pen twice. "Statistically, restraint hasn't produced results. Time to vary the methodology." She closes the notebook.`,
   ]},
-  { when: { studentId: 9 }, weight: 4, text: [
-    `"You make a compelling argument," Chloe says dryly, "and by argument I mean I was going to do this anyway."`,
-  ]},
   { when: { studentId: 3 }, weight: 4, text: [
     `Serena nods once, athlete-sharp. "New training block starts tonight. Bulk phase. Indefinite."`,
+  ]},
+  { when: { studentId: 9 }, weight: 4, text: [
+    `"You make a compelling argument," Chloé says dryly, "and by argument I mean I was going to do this anyway."`,
+  ]},
+  { when: { studentId: 11 }, weight: 4, text: [
+    `"Permission granted," Kaylee murmurs, and the words land somewhere deep. "I've been waiting to hear it from you."`,
+  ]},
+  { when: { studentId: 12 }, weight: 4, text: [
+    `Nadia considers, then nods. "The data supports cessation of restraint. I accept the conclusion."`,
   ]},
 ]);
 
 registerModuleVariants("enc.deflect", [
+  { when: { studentId: 0 }, weight: 4, text: [
+    `"Bad influence," Brittany repeats, grinning. "Coach says the same thing about dessert."`,
+  ]},
+  { when: { studentId: 2 }, weight: 4, text: [
+    `"That's going in the vlog," Kylie says. "Title: Professor enables my snack drawer."`,
+  ]},
   { when: { studentId: 5 }, weight: 4, text: [
     `"Bad influence detected," Destiny mutters at her phone. "Ignoring warning."`,
   ]},
+  { when: { studentId: 8 }, weight: 4, text: [
+    `"You're not supposed to say that," Maya murmurs. Her hand is already on the plate.`,
+  ]},
   { when: { studentId: 13 }, weight: 4, text: [
     `"Oh, hush," Daisy laughs, swatting the air — and reaching past you for the tin she brought herself.`,
+  ]},
+  { when: { studentId: 16 }, weight: 4, text: [
+    `"That violates several wellness guidelines," Sophia says, reaching anyway. "Noted. Ignored."`,
   ]},
 ]);
 

@@ -204,6 +204,37 @@ registerPool('talk.checkIn.earlyWeight', [
 
 // ── talk.checkIn.acceptOpen — DIALOGUE BEAT (tier 1)
 registerPool('talk.checkIn.acceptOpen', [
+  { when: { studentId: 0 }, weight: 4, text: [
+    `"Better now," Brittany says. "Hungry, but winning."`,
+    `"I'm not fighting it anymore," she admits, like surrender is a strategy.`,
+  ] },
+  { when: { studentId: 1 }, weight: 4, text: [
+    `"The data supports contentment," Madeline says, quieter than usual. "I'm not arguing with it."`,
+    `"You helped," she says. "Methodologically and otherwise."`,
+  ] },
+  { when: { studentId: 2 }, weight: 4, text: [
+    `"Honestly? Thriving," Kylie says. "Don't clip that part."`,
+    `"I'm good," she adds. "Full. Happy. Camera-ready."`,
+  ] },
+  { when: { studentId: 5 }, weight: 4, text: [
+    `"Status: fed," Destiny says. "Mood: acceptable. Keep talking."`,
+  ] },
+  { when: { studentId: 8 }, weight: 4, text: [
+    `"Better," Maya says. One word. She means it.`,
+    `"I'm okay," she adds, late. "Hungry. Okay."`,
+  ] },
+  { when: { studentId: 10 }, weight: 4, text: [
+    `"Wonderful," Reneé says simply. "Kitchen's open if you want proof."`,
+  ] },
+  { when: { studentId: 11 }, weight: 4, text: [
+    `"Honestly? Really good," Kaylee says. "You helped. I know you did."`,
+  ] },
+  { when: { studentId: 14 }, weight: 4, text: [
+    `"I'm good," Mary Jane says, sunny. "Hungry as ever, but good."`,
+  ] },
+  { when: { studentId: 16 }, weight: 4, text: [
+    `"Acceptable outcomes," Sophia murmurs. "Better than acceptable, actually."`,
+  ] },
   { when: {}, text: [
     `"Better now," {subject.name} says, and means the company, or possibly the snacks you tend to bring. Probably both.`,
     `"I'm not fighting it anymore," she admits, quieter.`,
@@ -295,6 +326,26 @@ registerPool('talk.checkIn.acceptClose', [
 
 // ── talk.checkIn.ownedOpen — DIALOGUE BEAT (tier 2)
 registerPool('talk.checkIn.ownedOpen', [
+  { when: { studentId: 0 }, weight: 4, text: [
+    `Brittany lights up. "There you are. Sit. Watch me finish this."`,
+    `"Captain's orders," she says, patting the chair. "Stay."`,
+  ] },
+  { when: { studentId: 2 }, weight: 4, text: [
+    `Kylie grins. "Perfect timing. Say hi to the camera. Then feed me."`,
+  ] },
+  { when: { studentId: 5 }, weight: 4, text: [
+    `"Viewer arrived," Destiny says. "Engagement up. Don't leave."`,
+  ] },
+  { when: { studentId: 8 }, weight: 4, text: [
+    `Maya looks up, quiet and certain. "Stay," she says. Just that.`,
+  ] },
+  { when: { studentId: 10 }, weight: 4, text: [
+    `Reneé smiles. "I saved you the good stuff. Well. Some of it."`,
+    `"Talk to me," she murmurs. "Or don't. Just stay while I eat."`,
+  ] },
+  { when: { studentId: 15 }, weight: 4, text: [
+    `Lilith's smile shows teeth. "Good. You're here. Don't wander."`,
+  ] },
   { when: {}, text: [
     `{subject.name} lights up the moment she sees you. "I was hoping you'd come by. Sit. Watch me finish this."`,
     `"I'm wonderful," {subject.name} says simply.`,

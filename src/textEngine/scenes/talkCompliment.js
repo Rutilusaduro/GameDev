@@ -427,6 +427,9 @@ registerPool("comp.show", [
 // comp.claiming.stmt + comp.claiming.add (the ownership beat).
 
 registerModuleVariants("comp.react", [
+  { when: { studentId: 0 }, weight: 4, text: [
+    `Brittany squares her shoulders like she's accepting a trophy. "Damn right you noticed," she says, grinning.`,
+  ]},
   { when: { studentId: 1 }, weight: 4, text: [
     `Madeline marks something in the margin without looking up. "Aesthetically speaking, the data supports your conclusion." She caps her pen. "I've been tracking it."`,
   ]},
@@ -436,14 +439,47 @@ registerModuleVariants("comp.react", [
   { when: { studentId: 3 }, weight: 4, text: [
     `Serena squares her shoulders the way she would before a lift. "Good," she says. A competitor's approval. "I work hard."`,
   ]},
+  { when: { studentId: 4 }, weight: 4, text: [
+    `Fiona looks down at herself like she's seeing a painting come together. "Oh," she breathes. "Keep going."`,
+  ]},
   { when: { studentId: 5 }, weight: 4, text: [
     `Destiny doesn't look up from her screen immediately. Then: "...compliment received. Stacking it." She looks at you. "Say it again."`,
+  ]},
+  { when: { studentId: 6 }, weight: 4, text: [
+    `Tiffany touches her hip, pleased. "Chapter standards," she says. "Exceeding them is the point."`,
+  ]},
+  { when: { studentId: 7 }, weight: 4, text: [
+    `Priya blinks. "Ahead of projection," she says, almost to herself. Then, warmer: "Say it again. With numbers if you have them."`,
   ]},
   { when: { studentId: 8 }, weight: 4, text: [
     `Maya looks down at herself, then back at you. A slow nod, like something confirmed. She pats her belly once, private and warm.`,
   ]},
+  { when: { studentId: 9 }, weight: 4, text: [
+    `Chloé laughs, delighted. "Americans and their directness," she says. "I am learning to enjoy it."`,
+  ]},
+  { when: { studentId: 10 }, weight: 4, text: [
+    `Reneé tastes the compliment like a spice. "Mmm. Say more. I want the full flavor profile."`,
+  ]},
+  { when: { studentId: 11 }, weight: 4, text: [
+    `Kaylee's cheeks warm. "That's — thank you," she says softly. "Nobody says it like they mean it."`,
+  ]},
+  { when: { studentId: 12 }, weight: 4, text: [
+    `Nadia writes one word in her notebook. "Noted," she says. "Emotional response: positive. Continue."`,
+  ]},
   { when: { studentId: 13 }, weight: 4, text: [
     `"Oh, stop," Daisy says — meaning anything but. Her hands flutter to her cheeks. "You are the sweetest thing." She sets down the dish and waits.`,
+  ]},
+  { when: { studentId: 14 }, weight: 4, text: [
+    `Mary Jane grins, unguarded. "Well bless your heart," she says. "Keep talking."`,
+  ]},
+  { when: { studentId: 16 }, weight: 4, text: [
+    `Sophia flushes. "That's — not clinically useful," she whispers. "But please don't stop."`,
+  ]},
+  { when: { studentId: 17 }, weight: 4, text: [
+    `Indiana grins like she found gold. "Now that's a discovery worth cataloging," she says.`,
+  ]},
+  { when: { studentId: 18 }, weight: 4, text: [
+    `Talia adjusts her glasses. "Observation logged," she says. "Repeat for verification."`,
   ]},
 ]);
 
