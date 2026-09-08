@@ -3,6 +3,7 @@ import { render, createContext } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import './endgameBeat.js';
 import './depth.js';
+import './oppositionSceneDepth.js';
 import './agendaFire.js';
 import './agendaCards.js';
 import './weighInMandatory.js';
