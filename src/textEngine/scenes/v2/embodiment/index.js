@@ -1,6 +1,7 @@
 // The Squad — Lead: A2 Psych | Support: A1 Mobile, A5 Editor
 // V2.0 Spirit Embodiment prose
 import { registerPool, createContext, render } from '../../../engine.js';
+import { appendV2Depth } from '../depthRenderer.js';
 import './depth.js';
 
 // ── emb.enter — slipping inside ───────────────────────────────
@@ -169,20 +170,26 @@ registerPool('emb.action.hunger_spiral', [
 ]);
 
 // ── render helpers ────────────────────────────────────────────
+
 export function renderEmbodimentEnter(ctx) {
-  return render('{emb.enter}', ctx);
+  const base = render('{emb.enter}', ctx);
+  return appendV2Depth(base, 'spirit', ctx, 0.35);
 }
 
 export function renderEmbodimentRelease(ctx) {
-  return render('{emb.release}', ctx);
+  const base = render('{emb.release}', ctx);
+  return appendV2Depth(base, 'spirit', ctx, 0.3);
 }
 
 export function renderEmbodimentAction(actionId, ctx) {
   const key = `emb.action.${actionId}`;
   const out = render(`{${key}}`, ctx);
-  if (out?.trim()) return out;
-  const depth = render(`{emb.action.${actionId}.depth}`, ctx);
-  return depth?.trim() || render('{emb.action.generic}', ctx);
+  let base = out?.trim() ? out : '';
+  if (!base) {
+    const depth = render(`{emb.action.${actionId}.depth}`, ctx);
+    base = depth?.trim() || render('{emb.action.generic}', ctx);
+  }
+  return appendV2Depth(base, 'spirit', ctx, 0.28);
 }
 
 registerPool('emb.action.generic', [

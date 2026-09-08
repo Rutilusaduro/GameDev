@@ -7,6 +7,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, registerModuleVariants, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../rosterTell/index.js'; // base roster.tell
 
 // When she's unhappy, the at-a-glance tell is ABOUT that. priority:1
@@ -47,5 +48,6 @@ registerPool('discontent.refuse', [
 export function renderDiscontentRefusal(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });
-  return render('{discontent.refuse}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{discontent.refuse}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'discontent', ctx, opts.v2DepthChance ?? 0.3);
 }

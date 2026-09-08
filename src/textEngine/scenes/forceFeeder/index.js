@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { createContext, render } from '../../engine.js';
 import { getStage } from '../../../gameData/stages.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import './depth.js';
 
@@ -36,15 +37,21 @@ function ffCtx(student, week, params = {}, opts = {}) {
 }
 
 export function renderForceFeederSetup(student, week, params = {}, opts = {}) {
-  return render(FF_SETUP, ffCtx(student, week, params, opts), { trace: opts.trace });
+  const ctx = ffCtx(student, week, params, opts);
+  const base = render(FF_SETUP, ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'forceFeed', ctx, opts.v2DepthChance ?? 0.32);
 }
 
 export function renderForceFeederFeed(student, week, params = {}, opts = {}) {
-  return render(FF_FEED, ffCtx(student, week, params, opts), { trace: opts.trace });
+  const ctx = ffCtx(student, week, params, opts);
+  const base = render(FF_FEED, ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'forceFeed', ctx, opts.v2DepthChance ?? 0.3);
 }
 
 export function renderForceFeederAftermath(student, week, params = {}, opts = {}) {
-  return render(FF_AFTERMATH, ffCtx(student, week, params, opts), { trace: opts.trace });
+  const ctx = ffCtx(student, week, params, opts);
+  const base = render(FF_AFTERMATH, ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'forceFeed', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 export function renderForceFeederScene(student, week, params = {}, opts = {}) {

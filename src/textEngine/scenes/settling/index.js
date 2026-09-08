@@ -4,6 +4,7 @@
 // subs reuse the existing immob.* pools via their sceneKey.
 import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './care.js';
 import './socialize.js';
 import './feed.js';
@@ -30,5 +31,6 @@ export function renderSettlingScene(sceneKey, student, opts = {}) {
     },
     ...rest,
   });
-  return render(`{${sceneKey}}`, ctx, { trace })?.trim() || '';
+  const base = render(`{${sceneKey}}`, ctx, { trace })?.trim() || '';
+  return appendV2Depth(base, 'settling', ctx, opts.v2DepthChance ?? 0.28);
 }

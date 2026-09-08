@@ -8,6 +8,7 @@ import { createContext, render } from '../../textEngine/engine.js';
 import { renderEmbodimentEnter, renderEmbodimentAction, renderEmbodimentRelease } from '../../textEngine/scenes/v2/embodiment/index.js';
 import '../../textEngine/scenes/v2/embodiment/depth.js';
 import { StudentPortrait } from '../StudentPortrait.jsx';
+import { SceneBackdrop } from './SceneBackdrop.jsx';
 import { FlaggedProse } from '../TextFlagToolbar.jsx';
 
 export function EmbodimentModal({
@@ -49,6 +50,7 @@ export function EmbodimentModal({
   return (
     <div style={C.modalOverlay}>
       <div style={{ ...C.modal, maxWidth: 520, borderColor: '#8a4be080' }}>
+        <SceneBackdrop variant="embodiment" />
         <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 12 }}>
           <StudentPortrait student={student} size={72} />
           <div>

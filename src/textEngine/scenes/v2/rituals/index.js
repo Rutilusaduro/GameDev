@@ -1,6 +1,7 @@
 // The Squad — Lead: A1 Mobile | Support: A5 Editor
 // V2.0 Feast Rituals prose
 import { registerPool, render } from '../../../engine.js';
+import { appendV2Depth } from '../depthRenderer.js';
 
 registerPool('ritual.communion_snack', [
   { when: {}, text: [
@@ -42,7 +43,8 @@ registerPool('ritual.leviathan_vigil', [
 export function renderRitual(ritualId, ctx) {
   const key = `ritual.${ritualId}`;
   const out = render(`{${key}}`, ctx);
-  return out?.trim() || render('{ritual.generic}', ctx);
+  const base = out?.trim() || render('{ritual.generic}', ctx);
+  return appendV2Depth(base, 'ritual', ctx, 0.38);
 }
 
 registerPool('ritual.generic', [

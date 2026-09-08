@@ -11,6 +11,7 @@ import { renderRitual } from '../../textEngine/scenes/v2/rituals/index.js';
 import { renderDreamOpen, renderDreamScenario, renderDreamWake } from '../../textEngine/scenes/v2/dreams/index.js';
 import { renderEchoReplay } from '../../textEngine/scenes/v2/echo/index.js';
 import { StudentPortrait } from '../StudentPortrait.jsx';
+import { SceneBackdrop } from './SceneBackdrop.jsx';
 
 export function FeastRitualModal({ students, ownedSkills, ownedClassSkills, onRun, onClose }) {
   const [selected, setSelected] = useState([]);
@@ -32,6 +33,7 @@ export function FeastRitualModal({ students, ownedSkills, ownedClassSkills, onRu
   return (
     <div style={C.modalOverlay}>
       <div style={{ ...C.modal, maxWidth: 480 }}>
+        <SceneBackdrop variant="feast" />
         <p style={C.secT}>Feast Rituals</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 12 }}>
           {available.map((r) => (
@@ -83,6 +85,7 @@ export function DreamModal({ student, onChoice, onClose }) {
   return (
     <div style={C.modalOverlay}>
       <div style={{ ...C.modal, maxWidth: 440 }}>
+        <SceneBackdrop variant="dream" />
         <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
           <StudentPortrait student={student} size={64} />
           <p style={{ ...C.secT, margin: 0, color: '#6090c8' }}>Appetite Dream</p>
@@ -156,6 +159,7 @@ export function EchoArchiveModal({ student, echo, prose, depth, onClose, onReson
   return (
     <div style={C.modalOverlay}>
       <div style={{ ...C.modal, maxWidth: 520, borderColor: '#6080a060' }}>
+        <SceneBackdrop variant="echo" />
         <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 12 }}>
           <StudentPortrait student={student} size={64} />
           <div>

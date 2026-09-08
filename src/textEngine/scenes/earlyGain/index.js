@@ -2,6 +2,7 @@
 // Early-game scene library — thin/softening bodies, reluctance, neutrality, secret want.
 import { registerPool, registerDimension, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import './personas.js';
 
@@ -53,17 +54,20 @@ export function renderSlenderScene(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const line = render('{slender.scene}', ctx, { trace: opts.trace || null });
-  return line?.trim() || '';
+  const base = line?.trim() || '';
+  return appendV2Depth(base, 'earlyGain', ctx, opts.v2DepthChance ?? 0.32);
 }
 
 export function renderSlenderMirrorBeat(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  return render(SLENDER_MIRROR_SCENE, ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render(SLENDER_MIRROR_SCENE, ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'earlyGain', ctx, opts.v2DepthChance ?? 0.3);
 }
 
 export function renderSlenderEatBeat(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  return render(SLENDER_EAT_SCENE, ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render(SLENDER_EAT_SCENE, ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'earlyGain', ctx, opts.v2DepthChance ?? 0.3);
 }

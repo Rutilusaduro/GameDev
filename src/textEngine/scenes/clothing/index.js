@@ -2,6 +2,7 @@
 // Clothing failure scene library.
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import './personas.js';
 
@@ -17,5 +18,6 @@ registerPool('cloth.scene', [
 export function renderClothScene(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  return render('{cloth.scene}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{cloth.scene}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'clothing', ctx, opts.v2DepthChance ?? 0.32);
 }

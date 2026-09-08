@@ -1,6 +1,7 @@
 // The Squad — Lead: A2 Psych | Support: A6 Slender, A5 Editor
 // V2.0 Appetite Dreams prose
 import { registerPool, render } from '../../../engine.js';
+import { appendV2Depth } from '../depthRenderer.js';
 
 registerPool('dream.open', [
   { when: { stageMin: 8 }, text: [
@@ -54,9 +55,14 @@ registerPool('dream.wake', [
   ]},
 ]);
 
-export function renderDreamOpen(ctx) { return render('{dream.open}', ctx); }
+export function renderDreamOpen(ctx) {
+  return appendV2Depth(render('{dream.open}', ctx), 'dream', ctx, 0.35);
+}
 export function renderDreamScenario(scenarioId, ctx) {
   const out = render(`{dream.${scenarioId}}`, ctx);
-  return out?.trim() || render('{dream.endless_buffet}', ctx);
+  const base = out?.trim() || render('{dream.endless_buffet}', ctx);
+  return appendV2Depth(base, 'dream', ctx, 0.32);
 }
-export function renderDreamWake(ctx) { return render('{dream.wake}', ctx); }
+export function renderDreamWake(ctx) {
+  return appendV2Depth(render('{dream.wake}', ctx), 'dream', ctx, 0.3);
+}

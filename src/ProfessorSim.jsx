@@ -188,6 +188,7 @@ import {
 } from './gameData/v2/handlers.js';
 import { echoDepthTier } from './gameData/v2/bodyEcho.js';
 import { renderEchoReplay } from './textEngine/scenes/v2/echo/index.js';
+import { appendV2Depth } from './textEngine/scenes/v2/depthRenderer.js';
 import { createInitialV2State } from './gameData/v2/state.js';
 import './textEngine/scenes/v2/index.js';
 import { ClassroomView } from './views/ClassroomView.jsx';
@@ -2291,6 +2292,8 @@ export default function ProfessorSim(){
       const off=render('{destiny.offstream.activity}',offCtx);
       if(off) text=`${off}\n\n${text}`;
     }
+    const evolvedCtx=createContext({subject:s,week});
+    text=appendV2Depth(text,'evolved',evolvedCtx,0.35);
     // Calculate bonuses from evolved skills
     const skills=(s.evolvedSkills||[]);
     const tree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];

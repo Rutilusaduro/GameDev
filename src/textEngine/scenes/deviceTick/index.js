@@ -2,6 +2,7 @@
 // SCENE: DEVICE WEEKLY TICK — public API
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../../engine.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import { getStage } from '../../../gameData/stages.js';
 import { getEquippedDeviceIds } from '../../../gameData/deviceEquip.js';
 import { getDeviceDependence, getDeviceDependenceTier } from '../../../gameData/deviceDependence.js';
@@ -94,5 +95,6 @@ export function renderDeviceTickLine({
       growthZone: resolveGrowthZone(student),
     },
   });
-  return render('{device.tick.beat}', ctx, { trace });
+  const base = render('{device.tick.beat}', ctx, { trace });
+  return appendV2Depth(base, 'device', ctx, 0.3);
 }

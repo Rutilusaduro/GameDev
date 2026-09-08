@@ -11,6 +11,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 
 // ── scrutiny.tierUp.header ────────────────────────────────────
 // Shape: SHORT SENTENCE — the administrative channel the news arrives on.
@@ -91,5 +92,6 @@ export function renderScrutinyTierUp(tierId = 1, opts = {}) {
     week: opts.week || 1,
     globals: { scrutinyTierId: tierId, ...(opts.globals || {}) },
   });
-  return render('{scrutiny.tierUp}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{scrutiny.tierUp}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'scrutiny', ctx, opts.v2DepthChance ?? 0.35);
 }

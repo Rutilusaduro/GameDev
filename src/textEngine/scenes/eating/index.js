@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import './personas.js';
 import './foodFragments.js';
@@ -29,5 +30,6 @@ export function renderEatScene(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const line = render(EAT_SCENE, ctx, { trace: opts.trace || null });
-  return line?.trim() || '';
+  const base = line?.trim() || '';
+  return appendV2Depth(base, 'eating', ctx, opts.v2DepthChance ?? 0.3);
 }

@@ -2,6 +2,7 @@
 // Campus navigation scene library.
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import './personas.js';
 
@@ -19,5 +20,6 @@ registerPool('campus.scene', [
 export function renderCampusScene(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, locale: opts.locale ?? 'hallway', ...opts });
-  return render('{campus.scene}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{campus.scene}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'campusNav', ctx, opts.v2DepthChance ?? 0.25);
 }

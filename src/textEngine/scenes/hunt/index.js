@@ -1,6 +1,7 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect
 // Lilith hunt location + target flavor — from gameData/lilith.js (DEPTH_PLAN §9d).
 import { registerPool, render, createContext } from '../../engine.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import { HUNT_NODES, HUNT_MEN } from '../../../gameData/lilith.js';
 import './feastStageUp.js';
 
@@ -26,14 +27,16 @@ for (const man of HUNT_MEN) {
 export function renderHuntNode(nodeId, student, week = 1, opts = {}) {
   if (!nodeId || !student) return '';
   const key = HUNT_NODES[nodeId] ? `hunt.node.${nodeId}` : 'hunt.node.quad';
-  const line = render(`{${key}}`, createContext({ subject: student, week, ...opts }));
-  return line?.trim() || '';
+  const ctx = createContext({ subject: student, week, ...opts });
+  const base = render(`{${key}}`, ctx)?.trim() || '';
+  return appendV2Depth(base, 'hunt', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 export function renderHuntTarget(targetId, student, week = 1, opts = {}) {
   if (!student) return '';
   const man = HUNT_MEN.find((m) => m.id === targetId);
   const key = man ? `hunt.man.${man.id}` : 'hunt.man.chad_w';
-  const line = render(`{${key}}`, createContext({ subject: student, week, ...opts }));
-  return line?.trim() || '';
+  const ctx = createContext({ subject: student, week, ...opts });
+  const base = render(`{${key}}`, ctx)?.trim() || '';
+  return appendV2Depth(base, 'hunt', ctx, opts.v2DepthChance ?? 0.28);
 }

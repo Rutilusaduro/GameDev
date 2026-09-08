@@ -217,6 +217,76 @@ registerPool('psych.v2.depth', [
   ]},
 ]);
 
+// ── Eating depth ────────────────────────────────────────────────
+registerPool('eating.v2.depth', [
+  { when: { stageMin: 5 }, text: ['Each bite lands with the weight of habit — hunger answered, want deepened.'] },
+  { when: {}, text: ['The meal unfolds warm and unhurried.', 'Food does what food does best — she lets it.'] },
+]);
+registerPool('clothing.v2.depth', [
+  { when: { stageMin: 4 }, text: ['Fabric surrenders before appetite does — a familiar ceremony.'] },
+  { when: {}, text: ['Clothing strains. Growth wins the argument again.'] },
+]);
+registerPool('memory.v2.depth', [
+  { when: {}, text: ['History sits in her posture — meals remembered, thresholds crossed.'] },
+]);
+registerPool('settling.v2.depth', [
+  { when: { stageMin: 10 }, text: ['The settling is not an ending. It is a deeper kind of arrival.'] },
+  { when: {}, text: ['She rests into abundance. The room learns her shape.'] },
+]);
+registerPool('origin.v2.depth', [
+  { when: { stageMax: 3 }, text: ['Old stories flavor the appetite — backstory bleeding into the plate.'] },
+  { when: {}, text: ['Where she came from still speaks in how she eats.'] },
+]);
+registerPool('ascension.v2.depth', [
+  { when: { stageMin: 8 }, text: ['Ascension reads as myth made flesh — vast, warm, chosen.'] },
+  { when: {}, text: ['Something sacred settles over the moment. Growth as ceremony.'] },
+]);
+registerPool('lab.v2.depth', [
+  { when: {}, text: ['Precision and appetite share the bench — engineering as foreplay to mass.'] },
+]);
+registerPool('forceFeed.v2.depth', [
+  { when: {}, text: ['The mask hums. Fullness arrives on schedule — mechanical, relentless, warm.'] },
+]);
+registerPool('feedVoice.v2.depth', [
+  { when: { corruptionMin: 40 }, text: ['Want speaks from inside her — no longer ashamed to be heard.'] },
+  { when: {}, text: ['Hunger has a voice now. It sounds like her.'] },
+]);
+registerPool('cultivator.v2.depth', [
+  { when: {}, text: ['The cultivator cycle turns — suspicion, appetite, harvest, again.'] },
+]);
+registerPool('hunt.v2.depth', [
+  { when: {}, text: ['Predator and prey blur. Appetite hunts in both directions.'] },
+]);
+registerPool('roster.v2.depth', [
+  { when: {}, text: ['She reads differently at a glance now — softer, fuller, unmistakable.'] },
+]);
+registerPool('scrutiny.v2.depth', [
+  { when: {}, text: ['Institutional eyes narrow. Growth has consequences beyond the scale.'] },
+]);
+registerPool('discontent.v2.depth', [
+  { when: {}, text: ['Anger and appetite wrestle. Neither has left the room.'] },
+]);
+registerPool('campusNav.v2.depth', [
+  { when: {}, text: ['Campus air tastes of butter and permission.'] },
+]);
+registerPool('earlyGain.v2.depth', [
+  { when: { stageMax: 3 }, text: ['Early softness arrives like a secret she has not named yet.'] },
+  { when: {}, text: ['The first pounds feel theoretical until they do not.'] },
+]);
+registerPool('evolved.v2.depth', [
+  { when: {}, text: ['Her evolved path amplifies everything — appetite as identity, identity as spectacle.'] },
+]);
+registerPool('spirit.v2.depth', [
+  { when: { stageMin: 5 }, text: ['The spirit moves through her like warmth finding a home she has been building all semester.'] },
+  { when: {}, text: ['Possession feels less like theft and more like collaboration.'] },
+]);
+registerPool('ritual.v2.depth', [
+  { when: {}, text: ['Ceremony amplifies appetite — every bite consecrated, every belly an altar.'] },
+]);
+registerPool('dream.v2.depth', [
+  { when: {}, text: ['The dream lingers at the edges of waking — hunger translated into symbol.'] },
+]);
+
 // ── Body portrait v2 sensory layer ────────────────────────────
 registerPool('body.v2.sensory', [
   { when: { stageMin: 9 }, text: [

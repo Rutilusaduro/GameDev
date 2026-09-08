@@ -8,6 +8,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 
 // Shape: SHORT FRAGMENT (lowercase, no terminal period) — a vibe clause.
 registerPool('roster.tell', [
@@ -55,7 +56,8 @@ registerPool('roster.tell', [
 export function renderRosterTell(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  return render('{roster.tell}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{roster.tell}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'roster', ctx, opts.v2DepthChance ?? 0.22);
 }
 
 // ═══════════════════════════════════════════════════════════════
