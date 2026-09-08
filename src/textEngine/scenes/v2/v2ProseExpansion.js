@@ -155,6 +155,8 @@ registerPool('milestone.v2.depth', [
 registerPool('campus.v2.depth', [
   { when: { campusFattening: true }, text: [
     'Campus air tastes of butter and permission. She breathes it in.',
+    'Every vending machine looks like an invitation. She accepts.',
+    'The quad smells like fried dough and nobody is pretending otherwise.',
   ]},
   { when: {}, text: [
     'Class ends but appetite does not. The hallway smells like lunch.',

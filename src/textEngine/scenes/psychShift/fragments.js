@@ -89,6 +89,7 @@ registerPool('shift.denial', [
   { when: {}, text: [
     '',
     'Denial arrives on schedule. It is thinner than last month.',
+    'The excuse forms and dissolves before she speaks it.',
   ] },
 ]);
 

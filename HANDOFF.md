@@ -37,6 +37,9 @@
 | Banned-pattern lint | ✅ 0 style-ledger violations (149→28 total warnings; infra only remains) |
 | V2_0 mechanical audit | ✅ gate fidelity fixes — resonance_bells surge, echo_gallery archive, dream_chamber hub, lucid steer, ritual milestones, embodiment AP tiers |
 | Campus device depth | ✅ all 19 students on vulnerability; keyed reaction + deviceFlavor padded |
+| Keyed volume floor | ✅ 0 thin keyed cells (`npm run text:lint -- --volume`) |
+| V2 handler probe | ✅ embodiment/resonance/ritual/weekly events pass |
+| Browser smoke test | ✅ Spirit Dominion hub + skill trees load; no JS errors |
 
 ## V2_0 Completion Audit (evidence-based)
 
@@ -54,7 +57,8 @@
 | Spirit nav + integration | ✅ | `SpiritHubView`, `player.v2State`, end-week hooks in `ProfessorSim.jsx` |
 | Prose depth layers | ✅ | 50+ scene kinds via `appendV2Depth`; monolith/named/wildcard sweeps; 0 banned-pattern violations |
 | Build + text lint | ✅ | `npm run build`, `npm run text:lint` exit 0 |
-| ESLint | ✅ | `npm run lint` — 0 errors (78 pre-existing warnings) |
+| ESLint | ✅ | `npm run lint` — 0 errors (77 pre-existing warnings) |
+| Volume keyed floor | ✅ | `npm run text:lint -- --volume` — 0 keyed cells under 3 texts |
 
 ### Not blocking 2.0 ship (per design doc / scope)
 
@@ -62,7 +66,7 @@
 |------|--------|-------|
 | Bespoke hand-drawn sprites | Optional | Design doc specifies procedural pixel silhouettes; implemented |
 | Infra lint warnings (28) | Low | psych-keyed word.*, legacy registerModule, stem dedupe |
-| Keyed cells <3 texts (14) | Low | campus.dev edge cases; volume gate not strict |
+| ~~Keyed cells <3 texts (14)~~ | ✅ Done | `generateKeyedDepth.mjs` + campus.v2.depth padding |
 
 ## Key Files (V2)
 
@@ -116,13 +120,15 @@
 
 ```bash
 npm run text:lint   # exit 0 (28 infra warnings: psych-keyed, legacy modules, stem dedupe)
-npm run lint        # exit 0 errors (78 pre-existing warnings)
+npm run text:lint -- --volume  # keyed cells: 0
+npm run lint        # exit 0 errors (77 pre-existing warnings)
 npm run build       # production build
+node -e "..."       # V2 handler probe (embodiment/resonance/ritual/weekly)
 ```
 
 ## Remaining Toward 2.0
 
 1. ~~ESLint errors~~ — fixed turn 40 (11 missing imports)
-2. Infra lint warnings (28) — psych-keyed word.* pools, legacy registerModule migration, stem dedupe gate
-3. 14 keyed cells under volume target (non-strict) — mostly campus.dev edge selectors
+2. ~~Keyed volume floor~~ — fixed turn 41 (`squadKeyedDepth.js` regen + campus.v2.depth)
+3. Infra lint warnings (28) — psych-keyed word.* pools, legacy registerModule migration, stem dedupe gate
 4. Bespoke hand-drawn art — optional; procedural portrait system satisfies design doc
