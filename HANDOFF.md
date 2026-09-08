@@ -63,6 +63,8 @@
 - `src/textEngine/scenes/settling/settlingSceneDepth.js` — per-student care/socialize/feed/weigh immobility depth
 - `src/textEngine/scenes/streamSceneDepth.js` — stage-keyed Destiny live stream end/tap/round depth
 - `src/textEngine/scenes/destinyOffstreamSceneDepth.js` — off-stream talk/activity/weigh-in stage depth
+- `src/textEngine/scenes/diarySceneDepth.js` — late-stage diary.innerBeat per-student (stage 9–11, immobile)
+- `src/textEngine/scenes/v2/echo/echoSceneDepth.js` — per-student echo.type.* replay variants
 - `src/textEngine/scenes/v2/studentArchetypeDepth.js` — full 19-student voice on resonance/ritual/dream/echo V2 pools
 
 ## Verification
@@ -75,6 +77,6 @@ npm run build       # production build
 
 ## Remaining Toward 2.0
 
-1. Mass legacy prose sweep — diary monoliths + more homeroom/evolved pools still open; offstream/homeroom depth added turn 24
+1. Mass legacy prose sweep — diary evolved monoliths + more homeroom/evolved pools still open; diary/echo depth added turn 25
 2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
 3. Completion audit vs `docs/V2_0_DESIGN.md` — five V2 systems wired ✅; prose depth additive pass ongoing
