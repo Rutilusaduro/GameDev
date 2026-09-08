@@ -61,7 +61,6 @@ registerModuleVariants("dream.gravity_well", [{ when: {}, weight: 3, text: ["Ref
 registerModuleVariants("dream.leviathan_dream", [{ when: {}, weight: 3, text: ["Torches, courses, belly as throne — honored, fed, impossible to ignore."] }]);
 registerModuleVariants("dream.wake", [{ when: {}, weight: 3, text: ["She eats in the dream because the dream insists. Fullness follows."] }]);
 registerModuleVariants("milestone.v2.depth", [{ when: {}, weight: 3, text: ["Appetite deepens the scene by degrees. Neither of you rushes."] }]);
-registerModuleVariants("campus.v2.depth", [{ when: {}, weight: 3, text: ["Technology meets flesh — remote warmth, unintended discovery."] }]);
 registerModuleVariants("device.v2.depth", [{ when: {}, weight: 3, text: ["Appetite deepens the scene by degrees. Neither of you rushes."] }]);
 registerModuleVariants("intimacy.v2.depth", [{ when: {}, weight: 3, text: ["History sits in belly and memory — meals crossed like thresholds."] }]);
 registerModuleVariants("hunger.v2.depth", [{ when: {}, weight: 3, text: ["Technology meets flesh — remote warmth, unintended discovery."] }]);

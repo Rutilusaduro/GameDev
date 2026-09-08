@@ -159,6 +159,8 @@ registerPool('campus.v2.depth', [
   { when: {}, text: [
     'Class ends but appetite does not. The hallway smells like lunch.',
     'Ordinary campus hour — except her hunger is louder than the lecture.',
+    'Lockers slam. Vending machines hum. Somewhere a girl is already eating.',
+    'Campus routine — except her body remembers every meal between classes.',
   ]},
 ]);
 

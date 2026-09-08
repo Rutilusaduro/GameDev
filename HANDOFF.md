@@ -35,6 +35,7 @@
 | Legacy talk prose | ✅ named thin pool sweep (65 pools turn 34); wifeLessons + monolith _f* |
 | V2 wildcard depth | ✅ v2WildcardDepth.js — 83 emb/res/ritual/echo/dream/*.v2.depth pools padded |
 | Banned-pattern lint | ✅ 0 style-ledger violations (149→28 total warnings; infra only remains) |
+| V2_0 mechanical audit | ✅ gate fidelity fixes — resonance_bells surge, echo_gallery archive, dream_chamber hub, lucid steer, ritual milestones, embodiment AP tiers |
 
 ## Key Files (V2)
 
@@ -95,5 +96,5 @@ npm run build       # production build
 ## Remaining Toward 2.0
 
 1. Text lint infra warnings (28) — psych-keyed word.* pools, legacy registerModule migration, stem dedupe gate
-2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional)
-3. Completion audit vs `docs/V2_0_DESIGN.md` — five V2 systems wired ✅; prose depth additive pass ongoing
+2. Unique per-girl art beyond procedural pixel silhouettes (features/glow done; bespoke sprites optional per design doc)
+3. Prose depth — additive expansion ongoing across legacy scenes; core V2 pools + depth layers complete
