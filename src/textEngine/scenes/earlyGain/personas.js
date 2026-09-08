@@ -211,7 +211,7 @@ registerModuleVariants('slender.deflect', [
   ]},
   { when: { studentId: 9, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
     `"American portions," she says dryly. "My mam will have words."`,
-    `"It's field research. That is all."`,
+    `"It's field research, nothing more."`,
     `"Cultural immersion," she says. Her waistband is immersed.`,
   ]},
   { when: { studentId: 11, gainStance: 'opposed', ...EARLY }, weight: W, text: [
@@ -232,7 +232,7 @@ registerModuleVariants('slender.deflect', [
   { when: { studentId: 2, gainStance: 'opposed', ...EARLY }, weight: W, text: [
     `"It's the camera angle," Kylie says. "And stress. Mostly stress."`,
     `"Bloat content," she mutters. "Not real. Probably."`,
-    `"Water weight," she says. On camera. Off menu.`,
+    `"Camera bloat," she says. On camera. Off menu.`,
   ]},
   { when: { studentId: 4, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
     `"Artist body," Fiona says softly. "It changes. That's… normal."`,
@@ -412,7 +412,7 @@ registerModuleVariants('slender.secret', [
   ]},
   { when: { studentId: 15, gainStance: 'secret', ...EARLY }, weight: W, text: [
     'Her stillness sharpens. She is pleased. She does not explain why.',
-    'The number rises. She watches you watching. That is enough.',
+    'The number rises. She watches you watching. Enough said.',
     'A faint smile. Hunger and mass align. She says nothing.',
   ]},
   { when: { studentId: 1, gainStance: 'secret', ...EARLY }, weight: W, text: [

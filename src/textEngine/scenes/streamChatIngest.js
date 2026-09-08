@@ -2,7 +2,7 @@
 // DESTINY STREAM — full upload chat pool ingestion (Phase 7)
 // Appends to base modules via registerModuleVariants.
 // ═══════════════════════════════════════════════════════════════
-import { registerModuleVariants } from '../engine.js';
+import { registerPool, registerModuleVariants } from '../engine.js';
 
 // ── Performance chat gaps (Destiny_Chat_ec39) ─────────────────
 
@@ -200,7 +200,7 @@ registerModuleVariants('stream.chat.parasocial.veryLate', [
 
 // ── Scenario chat (audience × weight × situation) ───────────────
 
-registerModuleVariants('stream.chat.scenario.eating', [
+registerPool('stream.chat.scenario.eating', [
   { when: { audienceTier: 'early', stageMin: 5, stageMax: 6 },
     text: ['damn she\'s hungry today'] },
   { when: { audienceTier: 'mid', stageMin: 7 },
@@ -216,7 +216,7 @@ registerModuleVariants('stream.chat.scenario.eating', [
   ] },
 ]);
 
-registerModuleVariants('stream.chat.scenario.struggling', [
+registerPool('stream.chat.scenario.struggling', [
   { when: { audienceTier: 'early', stageMin: 6 },
     text: ['she\'s getting kinda out of breath lol'] },
   { when: { audienceTier: 'mid', stageMin: 7 },
@@ -232,7 +232,7 @@ registerModuleVariants('stream.chat.scenario.struggling', [
   ] },
 ]);
 
-registerModuleVariants('stream.chat.scenario.teased', [
+registerPool('stream.chat.scenario.teased', [
   { when: { audienceTier: 'early' },
     text: ['chat\'s being mean lmao'] },
   { when: { audienceTier: 'mid' },

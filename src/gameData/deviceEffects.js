@@ -10,7 +10,9 @@ import { getDevice, DEVICE_SLOTS } from './devices.js';
 import { canStudentAcceptDevice, deviceAcceptanceBlockReason, scalePsychDeltaForStudent, scaleGainRangeForStudent } from './deviceGating.js';
 import { applyPsychDelta } from './psychState.js';
 import { adjustHunger } from './hungerAddiction.js';
-import { foldModPatches } from './deviceMods.js';
+import { foldModPatches, applyModificationToEntry } from './deviceMods.js';
+import { findUniqueInteraction } from './deviceInteractions.js';
+import { renderDeviceUniqueInteraction } from '../textEngine/scenes/deviceUniqueInteraction/index.js';
 import { getDeviceBoardMods, applyBoardModsToWeeklyEffect } from './inventionUpgrades.js';
 import { scaleDiscoveryRisk } from './campusWitness.js';
 import {
@@ -23,8 +25,9 @@ import {
   tickDependence,
   applyWithdrawal,
 } from './deviceDependence.js';
+import { getEquippedDeviceIds, hasPredatorCapture } from './deviceEquip.js';
 
-export { getEquippedDeviceIds, hasPredatorCapture } from './deviceEquip.js';
+export { getEquippedDeviceIds, hasPredatorCapture };
 
 let _instanceCounter = 0;
 export function nextDeviceInstanceId() {
@@ -190,7 +193,7 @@ function withDeviceFlavor(student, deviceId, week, line) {
   return `${flavor} ${line}`;
 }
 
-function buildTickEvent(student, slot, entry, week, rng, resultStudent, gainLbs, malf) {
+function buildTickEvent(student, slot, entry, week, rng, resultStudent, gainLbs, malf, ctx = {}) {
   const def = getDevice(entry.defId);
   if (!def) return null;
   const attachmentIds = attachmentIdsFromEntry(entry);

@@ -204,6 +204,32 @@ export const SKILLS = [
     desc:"Past a threshold, a girl is permanently, eagerly compliant.",
     rankDesc:()=>`Girls at 90+ corruption never refuse anything`,
     effects:{ totalSurrender:1 } },
+
+  // ═══ V2.0 — Spirit Dominion ═══
+  { id:"spirit_ride", tree:"influence", tier:1, icon:"🌒", name:"Spirit Ride", maxRanks:1,
+    desc:"Leave the professor's body and inhabit a student — feel her hunger from within.",
+    rankDesc:()=>`Unlock Spirit Embodiment (1/week)`,
+    effects:{ spiritRide:1 } },
+  { id:"deep_ride", tree:"influence", tier:2, icon:"🌑", name:"Deep Ride", maxRanks:1,
+    desc:"Extended embodiment with surrender actions and a second weekly inhabit.",
+    rankDesc:()=>`2 embodiments/week + advanced actions`,
+    effects:{ deepRide:1 } },
+  { id:"memory_palace", tree:"influence", tier:1, icon:"📜", name:"Memory Palace", maxRanks:1,
+    desc:"Transformation moments crystallize into replayable echoes.",
+    rankDesc:()=>`Unlock Body Echo Archive`,
+    effects:{ memoryPalace:1 } },
+  { id:"hunger_web", tree:"gluttony", tier:1, icon:"🔗", name:"Hunger Web", maxRanks:1,
+    desc:"Bind students' appetites — craving pulses travel between linked girls.",
+    rankDesc:()=>`Unlock Craving Resonance links`,
+    effects:{ hungerWeb:1 } },
+  { id:"ritual_master", tree:"gluttony", tier:2, icon:"🔥", name:"Ritual Master", maxRanks:1,
+    desc:"Unlock the highest tier of ceremonial feasts.",
+    rankDesc:()=>`Sacred Gluttony + Leviathan Vigil rituals`,
+    effects:{ ritualMaster:1 } },
+  { id:"dream_walk", tree:"corruption", tier:1, icon:"💤", name:"Dream Walk", maxRanks:1,
+    desc:"Walk the corridors of a student's subconscious appetite.",
+    rankDesc:()=>`Unlock Appetite Dreams`,
+    effects:{ dreamWalk:1 } },
 ];
 
 // ── Physical traits granted by Body's Surrender ────────────────

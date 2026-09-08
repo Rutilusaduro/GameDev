@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
 import { buildDeviceSceneContext } from '../device/context.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import '../../modules.js';
 
@@ -16,5 +17,6 @@ registerPool('device.mod.beat', [
 
 export function renderDeviceModificationApplied({ student, deviceId, deviceLabel, componentLabel, week = 1, trace = null }) {
   const ctx = buildDeviceSceneContext(student, { deviceId, deviceLabel, componentLabel, week });
-  return render('{device.mod.beat}', ctx, { trace });
+  const base = render('{device.mod.beat}', ctx, { trace });
+  return appendV2Depth(base, 'device', ctx, 0.3);
 }

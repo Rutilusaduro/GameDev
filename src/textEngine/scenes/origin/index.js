@@ -1,6 +1,7 @@
 // The Squad — Lead: A2 Psych | Support: A6 Slender, A7 Artisan, A5 Editor
 import { registerModuleVariants, registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 
 const W = 4;
 const EARLY = { corruption: [0], stageMax: 3 };
@@ -99,5 +100,6 @@ registerPool('origin.stirring.line', [
 export function renderOriginStirring(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  return render('{origin.stirring.line}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{origin.stirring.line}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'origin', ctx, opts.v2DepthChance ?? 0.3);
 }

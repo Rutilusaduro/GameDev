@@ -22,6 +22,82 @@ registerPool('talk.checkIn.greetQuote', [
 
 // ── talk.checkIn.greetBeat — FULL SENTENCE
 registerPool('talk.checkIn.greetBeat', [
+  { when: { studentId: 0 }, weight: 4, text: [
+    `Brittany straightens like she's still on the field and glances at the snack stash with captain's focus.`,
+    `Brittany sets her planner down and smiles — competitive, warm, already measuring portions.`,
+  ] },
+  { when: { studentId: 1 }, weight: 4, text: [
+    `Madeline pushes her glasses up and closes a notebook mid-annotation.`,
+    `Madeline looks up from a margin of notes, caught between research and appetite.`,
+  ] },
+  { when: { studentId: 2 }, weight: 4, text: [
+    `Kylie angles her phone down and grins like the office is a set.`,
+    `Kylie looks up, caught mid-bite, and doesn't bother hiding it — almost pleased you saw.`,
+  ] },
+  { when: { studentId: 3 }, weight: 4, text: [
+    `Serena rolls her shoulders once, restless energy settling into the chair.`,
+    `Serena sets down a protein bar wrapper and meets your eyes, steady.`,
+  ] },
+  { when: { studentId: 4 }, weight: 4, text: [
+    `Fiona drifts into focus slowly, paint under one nail, gaze soft on the snacks.`,
+    `Fiona smiles like she's composing something and you walked into the frame.`,
+  ] },
+  { when: { studentId: 5 }, weight: 4, text: [
+    `Destiny pulls one headphone off without looking away from her screen.`,
+    `Destiny glances up, dry and unhurried, ramen steam still rising.`,
+  ] },
+  { when: { studentId: 6 }, weight: 4, text: [
+    `Tiffany arranges herself with chapter-president poise and a pastry within reach.`,
+    `Tiffany smiles, social and bright, already making the office feel like an event.`,
+  ] },
+  { when: { studentId: 7 }, weight: 4, text: [
+    `Priya closes a laptop tab and reaches for whatever's nearest without breaking eye contact.`,
+    `Priya looks up from three color-coded lists, briefly human.`,
+  ] },
+  { when: { studentId: 8 }, weight: 4, text: [
+    `Maya looks up from her sketchbook, quiet, already aware you noticed the pastry.`,
+    `Maya sets her pencil down and offers a small, honest smile.`,
+  ] },
+  { when: { studentId: 9 }, weight: 4, text: [
+    `Chloé sets down a wine-colored mug and smiles like American office hours amuse her.`,
+    `Chloé looks up, silk scarf slightly askew, delighted to be interrupted.`,
+  ] },
+  { when: { studentId: 10 }, weight: 4, text: [
+    `Reneé wipes flour from her wrist and smiles like she's already planning a second course.`,
+    `Reneé looks up from tasting something off a spoon, pleased you're here.`,
+  ] },
+  { when: { studentId: 11 }, weight: 4, text: [
+    `Kaylee sets down a thermos and smiles with caregiver warmth.`,
+    `Kaylee looks up, attentive, already checking if you need anything.`,
+  ] },
+  { when: { studentId: 12 }, weight: 4, text: [
+    `Nadia closes her notebook one-handed and watches you with clinical interest.`,
+    `Nadia looks up from the back of the room she's made her own, evaluating.`,
+  ] },
+  { when: { studentId: 13 }, weight: 4, text: [
+    `Daisy digs a snack from her bag like it's policy and smiles, practical and warm.`,
+    `Daisy looks up, flour-dusted apron forgotten, already offering you something.`,
+  ] },
+  { when: { studentId: 14 }, weight: 4, text: [
+    `Mary Jane's smile arrives before her words, sunny and unguarded.`,
+    `Mary Jane looks up from a jar of something homemade, pleased to share.`,
+  ] },
+  { when: { studentId: 15 }, weight: 4, text: [
+    `Lilith looks up without hurry, stillness that isn't shyness.`,
+    `Lilith's gaze finds you and stays — patient, predatory, amused.`,
+  ] },
+  { when: { studentId: 16 }, weight: 4, text: [
+    `Sophia straightens her lab coat and tries to look composed.`,
+    `Sophia looks up, anxious and precise, snack bar half-hidden in her palm.`,
+  ] },
+  { when: { studentId: 17 }, weight: 4, text: [
+    `Indiana brushes dust from her boots and grins like she found something.`,
+    `Indiana looks up, roguish and bright, trail mix already in hand.`,
+  ] },
+  { when: { studentId: 18 }, weight: 4, text: [
+    `Talia sets down a grease-stained schematic and looks up, curious.`,
+    `Talia glances up from calibrating something small and edible, focused.`,
+  ] },
   { when: {}, text: [
     `{subject.name} tucks a strand of hair back and glances at the snack stash she's been pretending isn't hers.`,
     `{subject.name} smiles, a little guarded, and sets down whatever she was holding.`,
@@ -128,6 +204,37 @@ registerPool('talk.checkIn.earlyWeight', [
 
 // ── talk.checkIn.acceptOpen — DIALOGUE BEAT (tier 1)
 registerPool('talk.checkIn.acceptOpen', [
+  { when: { studentId: 0 }, weight: 4, text: [
+    `"Better now," Brittany says. "Hungry, but winning."`,
+    `"I'm not fighting it anymore," she admits, like surrender is a strategy.`,
+  ] },
+  { when: { studentId: 1 }, weight: 4, text: [
+    `"The data supports contentment," Madeline says, quieter than usual. "I'm not arguing with it."`,
+    `"You helped," she says. "Methodologically and otherwise."`,
+  ] },
+  { when: { studentId: 2 }, weight: 4, text: [
+    `"Honestly? Thriving," Kylie says. "Don't clip that part."`,
+    `"I'm good," she adds. "Full. Happy. Camera-ready."`,
+  ] },
+  { when: { studentId: 5 }, weight: 4, text: [
+    `"Status: fed," Destiny says. "Mood: acceptable. Keep talking."`,
+  ] },
+  { when: { studentId: 8 }, weight: 4, text: [
+    `"Better," Maya says. One word. She means it.`,
+    `"I'm okay," she adds, late. "Hungry. Okay."`,
+  ] },
+  { when: { studentId: 10 }, weight: 4, text: [
+    `"Wonderful," Reneé says simply. "Kitchen's open if you want proof."`,
+  ] },
+  { when: { studentId: 11 }, weight: 4, text: [
+    `"Honestly? Really good," Kaylee says. "You helped. I know you did."`,
+  ] },
+  { when: { studentId: 14 }, weight: 4, text: [
+    `"I'm good," Mary Jane says, sunny. "Hungry as ever, but good."`,
+  ] },
+  { when: { studentId: 16 }, weight: 4, text: [
+    `"Acceptable outcomes," Sophia murmurs. "Better than acceptable, actually."`,
+  ] },
   { when: {}, text: [
     `"Better now," {subject.name} says, and means the company, or possibly the snacks you tend to bring. Probably both.`,
     `"I'm not fighting it anymore," she admits, quieter.`,
@@ -219,6 +326,26 @@ registerPool('talk.checkIn.acceptClose', [
 
 // ── talk.checkIn.ownedOpen — DIALOGUE BEAT (tier 2)
 registerPool('talk.checkIn.ownedOpen', [
+  { when: { studentId: 0 }, weight: 4, text: [
+    `Brittany lights up. "There you are. Sit. Watch me finish this."`,
+    `"Captain's orders," she says, patting the chair. "Stay."`,
+  ] },
+  { when: { studentId: 2 }, weight: 4, text: [
+    `Kylie grins. "Perfect timing. Say hi to the camera. Then feed me."`,
+  ] },
+  { when: { studentId: 5 }, weight: 4, text: [
+    `"Viewer arrived," Destiny says. "Engagement up. Don't leave."`,
+  ] },
+  { when: { studentId: 8 }, weight: 4, text: [
+    `Maya looks up, quiet and certain. "Stay," she says. Just that.`,
+  ] },
+  { when: { studentId: 10 }, weight: 4, text: [
+    `Reneé smiles. "I saved you the good stuff. Well. Some of it."`,
+    `"Talk to me," she murmurs. "Or don't. Just stay while I eat."`,
+  ] },
+  { when: { studentId: 15 }, weight: 4, text: [
+    `Lilith's smile shows teeth. "Good. You're here. Don't wander."`,
+  ] },
   { when: {}, text: [
     `{subject.name} lights up the moment she sees you. "I was hoping you'd come by. Sit. Watch me finish this."`,
     `"I'm wonderful," {subject.name} says simply.`,

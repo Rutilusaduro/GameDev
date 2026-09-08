@@ -1167,13 +1167,13 @@ registerPool('intimacy.dinner_afterward.p0._f387', [
   { when: {}, text: ["After the dinner she's heavy and still — her belly enormous on her lap, straining against its constraints, warm and full of everything you've fed her."] },
 ]);
 registerPool('intimacy.dinner_afterward.p0._f388', [
-  { when: {}, text: [". She's not going anywhere and you both know it. She watches you watching her."] },
+  { when: {}, text: [". She's not going anywhere. She watches you watching her."] },
 ]);
 registerPool('intimacy.dinner_afterward.p0._f389', [
   { when: {}, text: ["After the dinner she's heavy and still — her belly enormous on her lap, straining against its constraints, warm and full of everything you've fed her."] },
 ]);
 registerPool('intimacy.dinner_afterward.p0._f390', [
-  { when: {}, text: [". She's not going anywhere and you both know it. She reaches across the table and takes your hand."] },
+  { when: {}, text: [". She's not going anywhere. She reaches across the table and takes your hand."] },
 ]);
 registerPool('intimacy.dinner_afterward.p0._f391', [
   { when: {}, text: ["The dinner is finished. The plates are cleared. She's sitting across from you with the specific stillness of someone who is very full and very comfortable and has no intention of moving soon."] },

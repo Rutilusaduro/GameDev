@@ -4,6 +4,7 @@
 import { C } from '../styles.js';
 import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../gameData/evolvedForms.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
+import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
 
 const STUDENT_KEYS = ["Kayla", "Bri", "Sofia"];
 const MOM_KEYS = ["Mrs_Calloway", "Mrs_Reyes", "Mrs_Monroe"];
@@ -78,7 +79,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
         const apDots=Array.from({length:3},(_,i)=>i<classAp);
 
         if(activeActivity){
-          const{type,key,phaseIdx,done,resultText,revealsWeights,revealsParentWeights}=activeActivity;
+          const{type,key,phaseIdx,done,resultText,phaseProse,revealsWeights,revealsParentWeights}=activeActivity;
           let phaseText,choices,actTitle;
           if(type==='conference'){
             const evDef=HOMEROOM_CONFERENCE_EVENTS[key];
@@ -92,6 +93,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
           return(
             <div style={{...C.overlay,zIndex:350}}>
               <div style={{...C.modal,maxWidth:560,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"85vh",overflowY:"auto"}}>
+                <SceneBackdrop variant="campus" height={40} />
                 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
                   <div style={{fontSize:9,letterSpacing:3,color:warmDim}}>🍪 DAISY'S CLASSROOM</div>
                   <div style={{display:"flex",gap:4,marginLeft:"auto",alignItems:"center"}}>
@@ -104,7 +106,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                 <div style={{fontSize:9,letterSpacing:3,color:warmAccent,marginBottom:8}}>{actTitle.toUpperCase()}</div>
                 <FlaggedProse
                   section={`homeroom.${type}.${key}`}
-                  text={resultText || phaseText || ''}
+                  text={resultText || phaseProse || phaseText || ''}
                   student={daisy}
                   week={1}
                   style={{fontSize:12,color:"#d4b898",lineHeight:1.9,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-line"}}

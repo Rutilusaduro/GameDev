@@ -11,6 +11,7 @@ import {
   renderCampusDeviceResult,
   renderCampusDeviceFlavor,
 } from '../textEngine/scenes/campusDevice/index.js';
+import { resolveCampusDeviceUse } from './deviceEffects.js';
 
 export const CAMPUS_DEVICE_CONFIG = {
   encounterChance: 0.38,

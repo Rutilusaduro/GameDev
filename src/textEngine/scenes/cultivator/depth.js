@@ -1,7 +1,7 @@
 // The Squad — Lead: A4 Architect | Support: A2 Psych
 // Auto-generated — run: node scripts/generateCultivatorDepth.mjs
 // Wildcard depth for cultivator pools (Pass 41).
-import { registerModuleVariants } from '../../engine.js';
+import { registerModuleVariants, registerPool } from '../../engine.js';
 
 registerModuleVariants("cultivator.harvest.planned.heavy.t6", [{ when: {}, text: ["The planned harvest closes cleanly. {subject.name} is gone; Reneé sits fuller, logging with flour-dusted hands.", "Scheduled tasting becomes scheduled consumption. Reneé records the yield, belly heavier, expression calm."] }]);
 registerModuleVariants("cultivator.harvest.emergency.heavy.t6", [{ when: {}, text: ["{subject.name} bolts mid-tasting. Reneé blocks the exit and finishes the harvest — messy timing, correct outcome.", "Suspicion sparks a scramble. Reneé pins the tester and consumes the yield with irritated precision."] }]);
@@ -81,13 +81,13 @@ registerModuleVariants("cultivator.digest.enormous.latePlus1", [{ when: {}, text
 registerModuleVariants("cultivator.digest.enormous.earlyPlus2", [{ when: {}, text: ["Colossal yield integrating. Reneé dominates the reinforced seating, room feeling permanently altered.", "She processes in stillness — vast, warm, professionally pleased."] }]);
 registerModuleVariants("cultivator.digest.enormous.latePlus2", [{ when: {}, text: ["Extended integration complete. Reneé reviews data from within her immense softness.", "The apartment adapted. She is satisfied and ready for what comes next."] }]);
 registerModuleVariants("cultivator.digest.enormous.earlyPlus3", [{ when: {}, text: ["Colossal yield integrating. Reneé dominates the reinforced seating, room feeling permanently altered.", "She processes in stillness — vast, warm, professionally pleased."] }]);
-registerModuleVariants("cultivator.digest.enormous.latePlus3", [{ when: {}, text: ["Extended integration complete. Reneé reviews data from within her immense softness.", "The apartment adapted. She is satisfied and ready for what comes next."] }]);
+registerPool("cultivator.digest.enormous.latePlus3", [{ when: {}, text: ["Extended integration complete. Reneé reviews data from within her immense softness.", "The apartment adapted. She is satisfied and ready for what comes next."] }]);
 registerModuleVariants("cultivator.digest.colossal.earlyPlus1", [{ when: {}, text: ["Immense addition absorbed. Floor and furniture adjust around her anchored form.", "Reneé swells further in place, focused entirely on metabolic completion."] }]);
 registerModuleVariants("cultivator.digest.colossal.latePlus1", [{ when: {}, text: ["Final digestion settles. Reneé immobile, complete, kitchen still functional nearby.", "Maximum integration logged. She regards the room with calm authority."] }]);
 registerModuleVariants("cultivator.digest.colossal.earlyPlus2", [{ when: {}, text: ["Immense addition absorbed. Floor and furniture adjust around her anchored form.", "Reneé swells further in place, focused entirely on metabolic completion."] }]);
 registerModuleVariants("cultivator.digest.colossal.latePlus2", [{ when: {}, text: ["Final digestion settles. Reneé immobile, complete, kitchen still functional nearby.", "Maximum integration logged. She regards the room with calm authority."] }]);
 registerModuleVariants("cultivator.digest.colossal.earlyPlus3", [{ when: {}, text: ["Immense addition absorbed. Floor and furniture adjust around her anchored form.", "Reneé swells further in place, focused entirely on metabolic completion."] }]);
-registerModuleVariants("cultivator.digest.colossal.latePlus3", [{ when: {}, text: ["Final digestion settles. Reneé immobile, complete, kitchen still functional nearby.", "Maximum integration logged. She regards the room with calm authority."] }]);
+registerPool("cultivator.digest.colossal.latePlus3", [{ when: {}, text: ["Final digestion settles. Reneé immobile, complete, kitchen still functional nearby.", "Maximum integration logged. She regards the room with calm authority."] }]);
 registerModuleVariants("cultivator.digest.blob.early", [{ when: {}, text: ["Final feast integrating. Reneé becomes immobile mass; the apartment reorganizes around her.", "Digestion at maximum scale — floor groans, Reneé breathes slow, satisfied."] }]);
 registerModuleVariants("cultivator.digest.blob.late", [{ when: {}, text: ["Weeks of processing complete. Reneé remains vast, calm, kitchen still functional.", "Integration finished. Visitors find her clinical eyes within endless softness."] }]);
 registerModuleVariants("cultivator.growth.s5.j1", [{ when: {}, text: ["New weight integrates into Reneé's frame — chair creaks, notes update, outcome correct.", "She feels the harvest settle: belly heavier, hips wider, professional satisfaction intact."] }]);

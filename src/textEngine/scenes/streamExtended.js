@@ -742,3 +742,5 @@ registerModuleVariants('stream.roundStart', [
   { when: { recentPerf: 'cold' }, priority: 6,
     text: ['Reset round. I need a miracle.', 'Last rounds sucked. This one has to land.'] },
 ]);
+
+import './streamSceneDepth.js';

@@ -278,3 +278,5 @@ registerPool('destiny.offstream.weighIn', [
     'She steps off and immediately thinks about snacks. "Don\'t judge me."',
   ] },
 ]);
+
+import './destinyOffstreamSceneDepth.js';

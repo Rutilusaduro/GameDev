@@ -2,6 +2,7 @@
 // Corruption transition scenes — psychological shift beats.
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import './personas.js';
 
@@ -26,5 +27,6 @@ export function renderPsychShift(student, week = 1, opts = {}) {
     ...opts,
   });
   const line = render(SHIFT_SCENE, ctx, { trace: opts.trace || null });
-  return line?.trim() || '';
+  const base = line?.trim() || '';
+  return appendV2Depth(base, 'psych', ctx, opts.v2DepthChance ?? 0.35);
 }

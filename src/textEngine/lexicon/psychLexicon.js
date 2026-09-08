@@ -38,6 +38,11 @@ registerPool('word.psychVoice', [
 
 // ── word.breathQuality — fullness-keyed breath clause ───────────
 registerPool('word.breathQuality', [
+  { when: { corruption: [2], fullnessMin: 0.6 }, text: [
+    'breath warm with proud fullness',
+    'sighing contentedly around a well-fed middle',
+    'breathing like someone who enjoys being full',
+  ] },
   { when: { fullnessMin: 1.1 }, text: [
     'breath shallow around drum-tight fullness',
     'each inhale negotiated around packed middle',
@@ -62,6 +67,11 @@ registerPool('word.breathQuality', [
 
 // ── word.jealousyReaction — peer comparison beat ───────────────
 registerPool('word.jealousyReaction', [
+  { when: { fixationTierMin: 2, corruption: [0] }, text: [
+    'watching the plate with hungry attention she will not admit',
+    'smiling while appetite tightens in her chest',
+    'measuring herself against the moment and losing quietly',
+  ] },
   { when: { stageMin: 5, relationship: [2, 3, 4] }, text: [
     'watching with a smile that does not quite reach her eyes',
     'laughing a beat too late, attention on the plate instead',
@@ -81,6 +91,11 @@ registerPool('word.jealousyReaction', [
 
 // ── word.hungerPhrase — hunger-tier appetite clause ────────────
 registerPool('word.hungerPhrase', [
+  { when: { corruption: [1], hungerTierMin: 2 }, text: [
+    'hunger arriving without the old argument',
+    'appetite matter-of-fact, almost routine',
+    'craving she no longer bothers to dress up',
+  ] },
   { when: { hungerTier: [4] }, text: [
     'hunger sharp enough to feel physical',
     'appetite frantic at the edges',

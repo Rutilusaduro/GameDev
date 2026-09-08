@@ -1,6 +1,7 @@
 // Nadia / feeder-focus subject journals — engine render wrappers (§9d).
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import { FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS } from '../../../gameData/evolvedForms.js';
 
 for (const [archetype, entries] of Object.entries(FEEDER_SUBJECT_JOURNALS)) {
@@ -37,7 +38,8 @@ for (const [archetype, journal] of Object.entries(NADIA_SUBJECT_JOURNALS)) {
 export function renderFeederJournalEntry(archetype, page, student, week = 1, opts = {}) {
   if (!archetype || page == null) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  return render(`{journal.feeder.${archetype}.s${page}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render(`{journal.feeder.${archetype}.s${page}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'journal', ctx, opts.v2DepthChance ?? 0.22);
 }
 
 export function renderNadiaJournalEntry(archetype, page, nadiaLevel, student, week = 1, opts = {}) {
@@ -48,10 +50,13 @@ export function renderNadiaJournalEntry(archetype, page, nadiaLevel, student, we
     globals: { nadiaLevel: nadiaLevel ?? 0, ...(opts.globals || {}) },
     ...opts,
   });
+  let base = '';
   if (page === -1) {
-    return render(`{journal.nadia.${archetype}.intro.l${nadiaLevel ?? 0}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+    base = render(`{journal.nadia.${archetype}.intro.l${nadiaLevel ?? 0}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  } else {
+    base = render(`{journal.nadia.${archetype}.s${page}.l${nadiaLevel ?? 0}}`, ctx, { trace: opts.trace || null })?.trim() || '';
   }
-  return render(`{journal.nadia.${archetype}.s${page}.l${nadiaLevel ?? 0}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'journal', ctx, opts.v2DepthChance ?? 0.22);
 }
 
 export const FEEDER_JOURNAL_ARCHETYPES = Object.keys(FEEDER_SUBJECT_JOURNALS);

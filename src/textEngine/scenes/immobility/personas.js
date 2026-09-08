@@ -51,7 +51,7 @@ registerModuleVariants('immob.register', [
   { when: { studentId: 8, ...IMMOBILE_TOP, corruption: [1] }, weight: W, text: [
     `Maya does not speak. She rests, vast and quiet, and lets you look.`,
     `"Okay," Maya says at last. "I'm here. All of me."`,
-    `She breathes. You stay. That is enough.`,
+    `She breathes. You stay. Enough for both of you.`,
   ]},
   { when: { studentId: 9, ...IMMOBILE_TOP, corruption: [2] }, weight: W, text: [
     `"American portions," Chloé purrs, "taken to their logical conclusion."`,

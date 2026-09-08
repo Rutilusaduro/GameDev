@@ -14,6 +14,7 @@ import { appendCampusWeighIn } from '../campusSoftening.js';
 import { renderSlenderMirrorBeat } from '../earlyGain/index.js';
 import { renderMemoryCallback } from '../memory/index.js';
 import { isSlenderEligible } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 
 export const WI_INTRO_LEGACY = "{wi.arrival} {wi.settle} {wi.scaleApproach}";
 export const WI_INTRO = "{wi.arrival} {wi.settle} {wi.approachSentence} {wi.scaleSentence}";
@@ -43,18 +44,22 @@ function weighInCtx(student, week, opts = {}) {
 export function renderWeighInIntro(student, week, goesDirectlyToBig = false, opts = {}) {
   const ctx = weighInCtx(student, week, { ...opts, bigScale: goesDirectlyToBig });
   const introTpl = goesDirectlyToBig ? WI_INTRO_BIG : WI_INTRO;
+  let base;
   if (opts.aibMandatory) {
     const mandate = render('{wi.aibMandatory}', ctx, { trace: opts.trace });
     const arrival = render(introTpl, ctx, { trace: opts.trace });
-    return `${mandate}\n\n${arrival}`;
+    base = `${mandate}\n\n${arrival}`;
+  } else {
+    base = render(introTpl, ctx, { trace: opts.trace });
   }
-  return render(introTpl, ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'wi', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 /** Approach + readout only — Dialogue Lab / tuning (WI_APPROACH_V2). */
 export function renderWeighInApproachV2(student, week, goesDirectlyToBig = false, opts = {}) {
   const ctx = weighInCtx(student, week, { ...opts, bigScale: goesDirectlyToBig });
-  return render(WI_APPROACH_V2, ctx, { trace: opts.trace });
+  const base = render(WI_APPROACH_V2, ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'wi', ctx, opts.v2DepthChance ?? 0.26);
 }
 
 // Reaction: step-off beat + her personal reply (campus coda preserved).
@@ -71,20 +76,25 @@ export function renderWeighInReaction(student, week, opts = {}) {
     if (mirrorBeat) reply = `${mirrorBeat}\n\n${reply}`;
   }
   const memBeat = opts.memScope ? renderMemoryCallback(student, week, { ...opts, scene: 'weighIn' }) : '';
-  return memBeat ? `${stepOff}\n\n${reply}\n\n${memBeat}` : `${stepOff}\n\n${reply}`;
+  let out = memBeat ? `${stepOff}\n\n${reply}\n\n${memBeat}` : `${stepOff}\n\n${reply}`;
+  return appendV2Depth(out, 'wi', ctx, opts.v2DepthChance ?? 0.32);
 }
 
 // The analog scale cracks under her.
 export function renderWeighInBreak(student, week, opts = {}) {
-  return render(WI_BREAK, weighInCtx(student, week, opts), { trace: opts.trace });
+  const ctx = weighInCtx(student, week, opts);
+  const base = render(WI_BREAK, ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'wi', ctx, opts.v2DepthChance ?? 0.35);
 }
 
-// Professor swaps in the already-purchased industrial scale.
 export function renderWeighInSwap(student, week, opts = {}) {
-  return render("{wi.swap}", weighInCtx(student, week, opts), { trace: opts.trace });
+  const ctx = weighInCtx(student, week, opts);
+  const base = render('{wi.swap}', ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'wi', ctx, opts.v2DepthChance ?? 0.3);
 }
 
-// Professor notes the need to buy a bigger scale.
 export function renderWeighInPurchase(student, week, opts = {}) {
-  return render("{wi.purchase}", weighInCtx(student, week, opts), { trace: opts.trace });
+  const ctx = weighInCtx(student, week, opts);
+  const base = render('{wi.purchase}', ctx, { trace: opts.trace });
+  return appendV2Depth(base, 'wi', ctx, opts.v2DepthChance ?? 0.28);
 }

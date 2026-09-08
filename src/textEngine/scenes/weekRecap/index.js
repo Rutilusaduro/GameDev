@@ -20,6 +20,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 
 // ── week.recap.beat ───────────────────────────────────────────
 // Shape: FULL SENTENCE — present-tense, observational; reuses {word.*}.
@@ -106,8 +107,14 @@ registerPool('week.recap.line', [
   { when: { studentId: 14 }, weight: 4, text: [
     `Mary Jane plants her hands on her widening hips, sunny about all of it. "Good country eating, that's all that is."`,
   ]},
+  { when: { studentId: 15 }, weight: 4, text: [
+    `Lilith assesses the week's gain with predatory calm. "Acceptable," she says. "Continue."`,
+  ]},
   { when: { studentId: 16 }, weight: 4, text: [
     `Sophia stares at the number a beat too long, the want and the worry tangling, and the want quietly winning.`,
+  ]},
+  { when: { studentId: 17 }, weight: 4, text: [
+    `Indiana maps the new curve like terrain. "Buried treasure," she grins. "Week well spent."`,
   ]},
   { when: { studentId: 18, custom: false }, weight: 4, text: [
     `Talia measures the change, frowns at the data, then notes — almost to herself — that she does not want to reverse it.`,
@@ -161,5 +168,6 @@ export function renderWeekRecap(student, week = 1, opts = {}) {
     },
     ...opts,
   });
-  return render('{week.recap}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{week.recap}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'weekRecap', ctx, opts.v2DepthChance ?? 0.35);
 }

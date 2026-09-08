@@ -55,7 +55,7 @@ import {
   renderCultivatorRecruitment,
   renderCultivatorStageUp,
 } from '../textEngine/scenes/cultivator/index.js';
-import { renderDeviceFlavor } from '../textEngine/scenes/deviceFlavor.js';
+import { renderDeviceFlavor, renderDeviceCatalogDesc } from '../textEngine/scenes/deviceFlavor.js';
 import { renderSessionFullness, renderSessionAftermath } from '../textEngine/scenes/session/index.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { renderHiveIntake } from '../textEngine/scenes/hiveIntake.js';

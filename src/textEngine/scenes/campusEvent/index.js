@@ -2,6 +2,7 @@
 // Campus class-event observation prose — keyed mood/archetype/campusFattening (DEPTH_PLAN §9d).
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 
 registerPool('campusEvent.observation', [
   { when: { mood: ['stressed'] }, weight: 2, text: [
@@ -60,7 +61,8 @@ import './classIntegration.js';
 export function renderCampusEventBeat(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  return render('{campusEvent.beat}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{campusEvent.beat}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'campus', ctx, opts.v2DepthChance ?? 0.25);
 }
 
 export { renderClassSceneText, renderClassChoiceResult } from './classIntegration.js';

@@ -59,15 +59,20 @@ registerPool('shift.physical', [
 ]);
 
 registerPool('shift.denial', [
-  { when: {}, text: [
+  { when: { stageMax: 1 }, text: [
+    '',
+    'She eats without naming what changed.',
+    'Appetite arrives before vocabulary does.',
+  ] },
+  { when: { stageMin: 2 }, text: [
     '',
     '"It\'s fine," she says — meaning temporary. She hopes.',
-    'She almost names the old excuse. Stress. Water weight. Monday.',
+    'She almost names the old excuse. Stress. Bloating. Monday.',
     'Denial arrives on schedule. It is thinner than last month.',
   ] },
-  { when: { corruption: [0], stageMax: 4 }, text: [
+  { when: { corruption: [0], stageMin: 2, stageMax: 4 }, text: [
     '"It\'s fine," she says — meaning temporary. She hopes.',
-    'She almost names the old excuse. Water weight. Stress. Monday.',
+    'She almost names the old excuse. Bloating. Stress. Monday.',
     'Denial arrives on schedule. It is thinner than last month.',
   ] },
   { when: { corruption: [1] }, text: [
@@ -80,6 +85,11 @@ registerPool('shift.denial', [
     'There is nothing left to deny. She smiles instead.',
     'The old vocabulary is gone. Appetite speaks fluent now.',
     'Denial retired. Appetite took its desk.',
+  ] },
+  { when: {}, text: [
+    '',
+    'Denial arrives on schedule. It is thinner than last month.',
+    'The excuse forms and dissolves before she speaks it.',
   ] },
 ]);
 

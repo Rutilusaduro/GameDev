@@ -2,6 +2,7 @@
 // SCENE: GROWTH EVENT — multi-beat major gain scenes
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../../engine.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import { getStage } from '../../../gameData/stages.js';
 import { getEquippedDeviceIds } from '../../../gameData/deviceEquip.js';
 import { getDependenceTier } from '../../../gameData/psychState.js';
@@ -13,6 +14,7 @@ import './stageCrossings.js';
 import './garments.js';
 import './personas.js';
 import '../../modules.js';
+import './growthEventSceneDepth.js';
 
 function weightBandFromStage(stageId) {
   if (stageId <= 2) return 'lean';
@@ -117,11 +119,14 @@ function assembleBeats(ctx, magnitude, trace = null) {
 
 export function renderGrowthScene(student, params = {}, opts = {}) {
   const ctx = growthCtx(student, params, opts);
+  let base;
   if (ctx.globals.featureId === 'digest_stageup') {
-    return assembleDigestBeats(ctx, opts.trace || null).join('\n\n');
+    base = assembleDigestBeats(ctx, opts.trace || null).join('\n\n');
+  } else {
+    const magnitude = magnitudeFromGlobals(ctx.globals);
+    base = assembleBeats(ctx, magnitude, opts.trace || null).join('\n\n');
   }
-  const magnitude = magnitudeFromGlobals(ctx.globals);
-  return assembleBeats(ctx, magnitude, opts.trace || null).join('\n\n');
+  return appendV2Depth(base, 'growth', ctx, opts.v2DepthChance ?? 0.35);
 }
 
 export function renderStageCrossingLine(student, { endStage, week = 1 } = {}) {
@@ -131,7 +136,8 @@ export function renderStageCrossingLine(student, { endStage, week = 1 } = {}) {
     stagesJumped: 1,
     week,
   });
-  return render('{grow.crossing} {grow.crossingDialogue}', ctx);
+  const base = render('{grow.crossing} {grow.crossingDialogue}', ctx);
+  return appendV2Depth(base, 'growth', ctx, 0.38);
 }
 
 registerPool('ge.beat.test', [

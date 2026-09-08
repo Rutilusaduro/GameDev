@@ -2,6 +2,7 @@
 // Cultivator recipe prose — migrated from gameData/cultivator.js (DEPTH_PLAN §9d).
 import './vignettes.js';
 import { registerPool, render, createContext } from '../../engine.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 export {
   renderCultivatorHarvestPlanned,
   renderCultivatorHarvestEmergency,
@@ -86,13 +87,15 @@ registerPool('cultivator.beat', [
 export function renderCultivatorIntro(recipeId, testerName, week = 1) {
   if (!recipeId) return '';
   const ctx = createContext({ subject: testerSubject(testerName), week, globals: { featureId: 'cultivator' } });
-  return render(`{cultivator.intro.${recipeId}}`, ctx)?.trim() || '';
+  const base = render(`{cultivator.intro.${recipeId}}`, ctx)?.trim() || '';
+  return appendV2Depth(base, 'cultivator', ctx, 0.3);
 }
 
 export function renderCultivatorChoice(recipeId, choiceId, testerName, week = 1) {
   if (!recipeId || !choiceId) return '';
   const ctx = createContext({ subject: testerSubject(testerName), week, globals: { featureId: 'cultivator' } });
-  return render(`{cultivator.choice.${recipeId}.${choiceId}}`, ctx)?.trim() || '';
+  const base = render(`{cultivator.choice.${recipeId}.${choiceId}}`, ctx)?.trim() || '';
+  return appendV2Depth(base, 'cultivator', ctx, 0.28);
 }
 
 export function renderCultivatorReaction(testerName, suspicion, week = 1) {
@@ -101,5 +104,6 @@ export function renderCultivatorReaction(testerName, suspicion, week = 1) {
     week,
     globals: { featureId: 'cultivator', suspicionTier: suspicionTier(suspicion) },
   });
-  return render('{cultivator.eating}', ctx)?.trim() || '';
+  const base = render('{cultivator.eating}', ctx)?.trim() || '';
+  return appendV2Depth(base, 'cultivator', ctx, 0.3);
 }

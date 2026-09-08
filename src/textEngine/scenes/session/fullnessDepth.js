@@ -139,4 +139,81 @@ registerModuleVariants("session.fullness.transfer.f4._f1", [{ when: {}, text: ["
 registerModuleVariants("session.fullness.transfer.f4", [{ when: {}, text: ["{session.fullness.transfer.f4._f1}", "{session.fullness.transfer.f4._f1}"] }]);
 registerModuleVariants("session.fullness.transfer.f5._f1", [{ when: {}, text: ["Packed to radiance; she finishes one bite and rests hands on herself.", "New appetite, new appetite — she samples everything twice."] }]);
 registerModuleVariants("session.fullness.transfer.f5", [{ when: {}, text: ["{session.fullness.transfer.f5._f1}", "{session.fullness.transfer.f5._f1}"] }]);
-registerModuleVariants('session.fullness', [{ when: {}, text: ['{subject.name} eats steadily, warmth spreading through her middle.', '{subject.name} keeps going — appetite bright, belly warming by degrees.'] }]);
+registerModuleVariants("session.fullness.transfer.f5", [{ when: {}, text: ["{session.fullness.transfer.f5._f1}", "{session.fullness.transfer.f5._f1}"] }]);
+
+// ── Stage-keyed high-fullness depth (f4/f5) ───────────────────
+
+registerModuleVariants('session.fullness.default.f4._f1', [
+  { when: { stageMin: 8 }, weight: 3, text: [
+    'At {subject.lbs} lbs she is past full — belly vast in her lap, each bite a slow deliberate ceremony.',
+    'Her middle dominates the chair and the evening; she breathes between swallows and does not stop.',
+  ]},
+  { when: { stageMin: 5 }, weight: 2, text: [
+    'Past full for some time — belly heavy, movements slow, appetite stubborn anyway.',
+  ]},
+]);
+
+registerModuleVariants('session.fullness.default.f5._f1', [
+  { when: { stageMin: 9 }, weight: 3, text: [
+    'She has eaten an extraordinary amount — at {subject.lbs} lbs her middle is enormous, warm, mythic.',
+    'The spread surrenders to {subject.lbs} lbs of appetite; she rests back, radiant with fullness.',
+  ]},
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'She has eaten an extraordinary amount — middle enormous, warm, tight. She sounds impressed with herself.',
+  ]},
+]);
+
+registerModuleVariants('session.fullness.default.f5._f2', [
+  { when: { corruption: [2] }, weight: 2, text: [
+    ' "More tomorrow," she says, proprietary and pleased.',
+    ' She strokes her belly once, satisfied. "Still room for the future."',
+  ]},
+]);
+
+registerModuleVariants('session.fullness.cheerleader.f5._f1', [
+  { when: { stageMin: 7 }, weight: 3, text: [
+    'Brittany sets her fork down, both hands on the enormous swell of her belly. "Not done," she says — captain to the end.',
+  ]},
+]);
+
+registerModuleVariants('session.fullness.bookworm.f5._f1', [
+  { when: { studentId: 1 }, weight: 4, text: [
+    'Madeline rests her head back. "Previous capacity models were incorrect." She reaches for cake anyway.',
+  ]},
+]);
+
+registerModuleVariants('session.fullness.gamer.f5._f1', [
+  { when: { studentId: 5 }, weight: 4, text: [
+    'Destiny leans back, controller forgotten. "Full. Saved game. Continue tomorrow."',
+  ]},
+]);
+
+registerModuleVariants('session.fullness.quiet.f5._f1', [
+  { when: { studentId: 8 }, weight: 4, text: [
+    'Maya exhales slowly, hand on her middle. She does not speak. She does not stop eating.',
+  ]},
+]);
+
+registerModuleVariants('session.fullness.influencer.f5._f1', [
+  { when: { studentId: 2 }, weight: 4, text: [
+    'Kylie films her own belly, delighted. "This is the post. This is the whole post."',
+  ]},
+]);
+
+registerModuleVariants('session.fullness.athlete.f5._f1', [
+  { when: { studentId: 3 }, weight: 4, text: [
+    'Serena breathes through fullness like a cooldown. "New max," she says, proud. "Again tomorrow."',
+  ]},
+]);
+
+registerModuleVariants('session.fullness', [
+  { when: { stageMin: 7 }, weight: 2, text: [
+    '{subject.name} eats at scale — warmth spreading, belly rising, time becoming food.',
+    '{subject.name} keeps going; at {subject.lbs} lbs appetite is weather, not mood.',
+  ]},
+  { when: {}, text: [
+    '{subject.name} eats steadily, warmth spreading through her middle.',
+    '{subject.name} keeps going — appetite bright, belly warming by degrees.',
+  ]},
+]);
+

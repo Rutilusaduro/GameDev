@@ -12,7 +12,7 @@ import { getPlayerPrefs, toggleInstantText } from './gameData/playerPrefs.js';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
-import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, CONTEST_FOOD_POPUPS, CONTEST_ACTION_POPUPS, CONTEST_DEVOUR_POPUPS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_EXCHANGE_LINES, SUMO_CORNER_FEED, SUMO_BOUT_WON, SUMO_BOUT_LOST, SUMO_FILL_RING_TEXT, COLLAB_STREAM_FOODS, COLLAB_STAGEUP_TEXT, COLLAB_WREN_LINES, COLLAB_BLOB_ANNOUNCEMENT, COLLAB_PAYOFF_TEXT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, RECORDING_DIRECTION_POPUPS, RECORDING_TAKE_RESULT, RECORDING_PERFECT_TAKE, RECORDING_ONE_MORE_TAKE, RECORDING_WRAP_ENDINGS, RECORDING_PAYOFF_TEXT } from './gameData/miniGames.js';
+import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
 import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
@@ -34,7 +34,7 @@ import { WalletBadge } from './components/WalletBadge.jsx';
 import { CAMPUS_NODES, CAMPUS_CONFIG } from './gameData/campus.js';
 import {
   defaultCampusExplorationState, buildExplorationContext, rollTravelExploration,
-  searchCampusLocation, applySecretSolve,
+  searchCampusLocation, applySecretSolve, resolveSecretDiscoverLine,
 } from './gameData/campusExploration.js';
 import { ELARA_ID, availableElaraQuests, startElaraQuest, advanceElaraQuestAtNode, takePendingQuestReward } from './gameData/relicHunter.js';
 import { getExplorationFind } from './gameData/campusIngredients.js';
@@ -99,6 +99,31 @@ import { ConfrontationModal } from './components/ConfrontationModal.jsx';
 import { renderMemorySelf, renderMemoryClass } from './textEngine/scenes/memory/index.js';
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding, renderIntimacyPassout } from './textEngine/scenes/intimacy/index.js';
+import { renderPreStreamVignette } from './textEngine/scenes/streamPreStream/index.js';
+import { renderStreamBeat } from './textEngine/scenes/stream/liveBridge.js';
+import { renderCollabStreamBeat, pickCollabWrenLine, renderCollabStageUp, renderCollabPayoff } from './textEngine/scenes/collabStream/index.js';
+import {
+  renderRecordingDirectionPopup,
+  renderRecordingTakeResult,
+  renderRecordingOneMoreTake,
+  renderRecordingWrapText,
+} from './textEngine/scenes/recordingSession/index.js';
+import {
+  renderContestFoodPopup,
+  renderContestActionPopup,
+  renderContestDevourPopup,
+  renderContestWeighIn2,
+  renderContestPayoff,
+} from './textEngine/scenes/eatingContest/index.js';
+import {
+  renderSumoOpening,
+  renderSumoExchangeLine,
+  renderSumoBoutWon,
+  renderSumoBoutLost,
+  renderSumoFillRing,
+  renderSumoCornerFeed,
+  renderSumoNextBoutLine,
+} from './textEngine/scenes/sumoMatch/index.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
@@ -176,6 +201,25 @@ import { HomeroomQueenModal } from './components/HomeroomQueenModal.jsx';
 import { LilithClueModal, LilithHuntModal } from './components/LilithModals.jsx';
 import { ChapterHostessHangoutModal, ChapterHostessFeastPrepModal, ChapterHostessFeastLogModal } from './components/ChapterHostessModals.jsx';
 import { ClassView } from './views/ClassView.jsx';
+import { SpiritHubView } from './views/SpiritHubView.jsx';
+import { EmbodimentModal } from './components/v2/EmbodimentModal.jsx';
+import { FeastRitualModal, DreamModal, EchoArchiveModal } from './components/v2/V2Modals.jsx';
+import {
+  handleEmbodimentStart, handleEmbodimentAction, handleEmbodimentRelease,
+  handleResonanceLink, handleRitual, handleDreamChoice, handleEchoResonate,
+  handleFeedResonancePulse, captureStageUpEcho, captureWeighInEcho, captureFeedEcho,
+  handleEchoReplay, runWeeklyV2Events, captureEvolutionEcho,
+  captureDinnerUnbuttonEcho, captureImmobilityEcho, captureCorruptionTierEcho,
+  applyResonanceSurgeBonus,
+} from './gameData/v2/handlers.js';
+import { echoDepthTier } from './gameData/v2/bodyEcho.js';
+import { renderEchoReplay, renderEchoCapture } from './textEngine/scenes/v2/echo/index.js';
+import { renderResonancePulse } from './textEngine/scenes/v2/resonance/index.js';
+import { renderResonanceLink } from './textEngine/scenes/v2/resonance/index.js';
+import { appendV2Depth } from './textEngine/scenes/v2/depthRenderer.js';
+import { createInitialV2State, V2_CONFIG } from './gameData/v2/state.js';
+import { canTriggerDream } from './gameData/v2/appetiteDreams.js';
+import './textEngine/scenes/v2/index.js';
 import { ClassroomView } from './views/ClassroomView.jsx';
 import { StudentDetailView } from './views/StudentDetailView.jsx';
 import { ActionsView } from './views/ActionsView.jsx';
@@ -187,6 +231,7 @@ import { SpriteTestView } from './views/SpriteTestView.jsx';
 import {
   defaultLabState, defaultDeviceInventory, INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES,
   completeLabSession, tickLabWeek, TALIA_STUDENT_ID, maybeAdvanceInventorStage, LAB_SESSION_ACTIVITY,
+  researchBlueprint,
 } from './gameData/talia.js';
 import { unlockTechNode, normalizeLabTechState, rollSessionBreakthroughs } from './gameData/labTechTree.js';
 import {
@@ -284,11 +329,14 @@ import { SupernaturalAscensionModal } from './components/SupernaturalAscensionMo
 import { OppositionHearingModal } from './components/OppositionHearingModal.jsx';
 import { OppositionEndgameModal } from './components/OppositionEndgameModal.jsx';
 import { pickHearingEnding, REMOVAL_HEARING, EMERGENCY_HEARING } from './gameData/oppositionHearings.js';
+import { renderHearingChoiceResult, renderHearingEnding } from './textEngine/scenes/opposition/index.js';
 import {
   defaultOppositionState, processOppositionWeek, runAibCounter, checkSupernaturalTrigger,
   getOppositionGainMult, tickSupernaturalWeek, getAvailableCounters,
 } from './gameData/opposition.js';
 import { supernaturalActLine } from './gameData/oppositionText.js';
+import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
+import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
@@ -372,7 +420,7 @@ export default function ProfessorSim(){
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {
     money, ap, week, ownedSkills, ownedClassSkills, facultyAffinity, professorProfile, adminScrutiny,
-    globalStats, achievements, bigScaleUnlocked, spiritFavor,
+    globalStats, achievements, bigScaleUnlocked, spiritFavor, v2State,
   } = player;
   const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
   const setMoney = (updater) => setPlayer((p) => updatePlayerField(p, 'money', updater));
@@ -387,13 +435,14 @@ export default function ProfessorSim(){
   const setGlobalStats = (updater) => setPlayer((p) => updatePlayerField(p, 'globalStats', updater));
   const setAchievements = (updater) => setPlayer((p) => updatePlayerField(p, 'achievements', updater));
   const setBigScaleUnlocked = (updater) => setPlayer((p) => updatePlayerField(p, 'bigScaleUnlocked', updater));
+  const setV2State = (updater) => setPlayer((p) => updatePlayerField(p, 'v2State', updater));
   const [view,setView]=useState("class");
   const [selectedId,setSelectedId]=useState(null);
   // New-game setup wizard: spirit → lore beat → vessel → start.
   const [setupStep,setSetupStep]=useState("spirit");
   const [setupSpirit,setSetupSpirit]=useState(null);
   const [setupSubject,setSetupSubject]=useState(null);
-  const [log,setLog]=useState(["📋 Welcome, Professor. Your class of 15 students awaits."]);
+  const [log,setLog]=useState(["📋 Professor Sim 2.0 — Your class of 15 students awaits. The spirit reaches further now."]);
   const [logTab,setLogTab]=useState("story");
   const [sidebarOpen,setSidebarOpen]=useState(true);
   const [activeEvent,setActiveEvent]=useState(null);
@@ -429,6 +478,12 @@ export default function ProfessorSim(){
   const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
   const [talkStudentId,setTalkStudentId]=useState(null);
+  const [embodimentStudent,setEmbodimentStudent]=useState(null);
+  const [feastRitualOpen,setFeastRitualOpen]=useState(false);
+  const [dreamStudent,setDreamStudent]=useState(null);
+  const [dreamPresetScenario,setDreamPresetScenario]=useState(null);
+  const [echoReplay,setEchoReplay]=useState(null);
+  const v2 = v2State || createInitialV2State();
   // professorProfile lives on player object
   // DLC: Inner Circle
   const seenTiersRef=useRef(new Set());
@@ -1067,7 +1122,7 @@ export default function ProfessorSim(){
       exploration={...exploration,observeCounts:{...exploration.observeCounts,[campusState.at]:count}};
       if(count>=(secret.observeCount||2)){
         exploration=applySecretSolve(exploration,secret.id);
-        lines.push(`🔓 ${secret.discover}`);
+        lines.push(resolveSecretDiscoverLine(secret, ctx, campusState.at));
         if(secret.reward?.findId){
           const find=getExplorationFind(secret.reward.findId);
           if(find){
@@ -1186,6 +1241,10 @@ export default function ProfessorSim(){
       }
       const shiftLine=renderPsychShift({...s,corruption:newC},week,{lastCorruptionShift:true,...textOpts});
       if(shiftLine) setTimeout(()=>push(`💫 ${shiftLine}`),320);
+      if((ownedSkills.memory_palace||0)>=1){
+        const stageId=getStage(s.lbs).id;
+        applyEchoCapture(s, prev=>captureCorruptionTierEcho(prev,s.id,week,stageId,after));
+      }
     }
     return newC;
   };
@@ -1362,6 +1421,29 @@ export default function ProfessorSim(){
     const fedStudent=feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
     setWeeklyFeedCounts(prev=>({...prev,[s.id]:(prev[s.id]||0)+1}));
     gainFavor((forced||fullnessCost>=40)?'stuff':'feed');
+    if((ownedSkills.hunger_web||0)>=1&&scaledCals>=400){
+      const pulseResult=handleFeedResonancePulse(s.id,scaledCals,students,v2);
+      if(pulseResult.pulses?.length){
+        setV2State(pulseResult.v2State);
+        pulseResult.pulses.forEach((p)=>{
+          setStudents(prev=>prev.map(st=>st.id===p.studentId?{
+            ...st,
+            consumedCalories:(st.consumedCalories||0)+p.calories,
+            relationship:Math.min(100,(st.relationship||0)+p.rel),
+          }:st));
+        });
+        const pulseProse=renderResonancePulse(createContext({ subject: s, week }));
+        const pulseSnippet=pulseProse?.trim().slice(0,160);
+        setTimeout(()=>push(`🔗 ${pulseSnippet||`Appetite resonates — ${pulseResult.pulses.length} linked student(s) feel the pull.`}`),95);
+      }
+    }
+    if((ownedSkills.memory_palace||0)>=1){
+      const echoForced=forced&&(s.timesForceFed||0)===0;
+      const echoFeast=fullnessCost>=40||/feast|banquet|platter/i.test(label||'');
+      if(echoForced||echoFeast){
+        applyEchoCapture(fedStudent, prev=>captureFeedEcho(prev,fedStudent,week,{forced:echoForced,feast:echoFeast&&!echoForced}));
+      }
+    }
     return fedStudent;
   };
 
@@ -1370,6 +1452,9 @@ export default function ProfessorSim(){
     const {newLbs,oldStageId,newStageId,narrativeEvents}=applyGainToStudent(s,scaledGain);
     if(newStageId>oldStageId){
       setTimeout(()=>push(`📣 ${s.name} reaches ${WEIGHT_STAGES[newStageId].label}! "${getAttitude({...s,lbs:newLbs}, week, pharmacistTextOpts(pharmacistState, week))}"`) ,50);
+      if((ownedSkills.memory_palace||0)>=1){
+        applyEchoCapture({...s,lbs:newLbs}, prev=>captureStageUpEcho(prev,s.id,week,newStageId));
+      }
     }
     const mergedTriggered=[...s.triggeredEvents,...narrativeEvents.map(e=>e.id)];
     const gained = {
@@ -1636,6 +1721,27 @@ export default function ProfessorSim(){
       });
       if(found.length) setTimeout(()=>push(`🎒 Pantry restocked: ${found.map(i=>`${i.emoji} ${i.label}`).join(", ")}`),100);
     }
+    // ── V2.0 pre-digest weekly — resonance bonus/surge, embodiment reset ──
+    const v2Weekly=runWeeklyV2Events(v2,updated,ownedSkills,ownedClassSkills||{},week);
+    const nextV2State=v2Weekly.v2State;
+    if(v2Weekly.passiveStudents) updated=v2Weekly.passiveStudents;
+    for(const msg of v2Weekly.messages){
+      if(msg.type==='surge'&&msg.applySurge){
+        updated=applyResonanceSurgeBonus(updated,nextV2State.resonance);
+      }
+    }
+    setV2State(nextV2State);
+    v2Weekly.messages.forEach((msg,i)=>{
+      if(msg.type==='passive') setTimeout(()=>push(`🔗 Resonance ${msg.tier} — class appetite +${msg.bonus}.`),160+i*40);
+      if(msg.type==='surge') setTimeout(()=>push(`🔗 Resonance surge — ${msg.text}`),200+i*50);
+      if(msg.type==='dream'&&msg.interactive){
+        const ds=updated.find(s=>s.id===msg.studentId);
+        if(ds) setTimeout(()=>{
+          setDreamPresetScenario(msg.scenarioId);
+          setDreamStudent(ds);
+        },420+i*120);
+      }
+    });
     // ── WEEKLY DIGESTION: convert this week's fed calories into weight ──
     const digestLines=[];
     const digestGrowthEvents=[];
@@ -1648,7 +1754,11 @@ export default function ProfessorSim(){
         weekUsed:weekUsedFromStudent(s),
       };
       const textOpts=digestTextSession;
-      const d=digestStudent(s);
+      const d=digestStudent(
+        s.embodimentEchoWeek===newWeek
+          ? { ...s, weeklyDigestMult: Math.max(s.weeklyDigestMult || 1, V2_CONFIG.embodimentEchoDigestMult) }
+          : s,
+      );
       const oldStageId=getStage(s.lbs).id;
       const preLbs=s.lbs;
       let ns=s;
@@ -1669,6 +1779,7 @@ export default function ProfessorSim(){
       if(d.lbsGained>0||capacityGained>0){
         digestLines.push(`${ns.name} +${d.lbsGained} lbs${d.stuffed?" · stuffed all week":""}${capacityGained>0?` · capacity +${capacityGained}`:""}`);
       }
+      if(s.embodimentEchoWeek===newWeek) ns={...ns,embodimentEchoWeek:undefined};
       if(d.lbsGained>0&&isSlenderEligible(ns)){
         const slenderLine=renderSlenderScene(ns,week,{weekGainLbs:d.lbsGained,...textOpts});
         if(slenderLine) setTimeout(()=>push(`✨ ${slenderLine}`),220);
@@ -2049,6 +2160,7 @@ export default function ProfessorSim(){
         };
       });
     }
+    // V2 weekly events handled pre-digest above
   };
 
   // ── EP2: EVOLUTION HANDLERS ────────────────────────────────────
@@ -2071,6 +2183,10 @@ export default function ProfessorSim(){
         if(st.id!==studentId) return st;
         return {...ensureStreamFields(st),evolvedForm:formId,evolvedSkills:[],brand:null};
       }));
+      if((ownedSkills.memory_palace||0)>=1&&s){
+        const stageId=getStage(s.lbs).id;
+        applyEchoCapture(s, prev=>captureEvolutionEcho(prev,studentId,week,stageId,formId));
+      }
       const meta=EVOLVED_ACTIVITY_META[formId];
       push(`✦ ${s?.name||"She"} has found her path: ${meta?.label||formId}.`);
       setEvolutionModal(null);
@@ -2078,6 +2194,10 @@ export default function ProfessorSim(){
       return;
     }
     setStudents(prev=>prev.map(st=>st.id!==studentId?st:{...st,evolvedForm:formId,evolvedSkills:[]}));
+    if((ownedSkills.memory_palace||0)>=1&&s){
+      const stageId=getStage(s.lbs).id;
+      setV2State(prev=>captureEvolutionEcho(prev||createInitialV2State(),studentId,week,stageId,formId));
+    }
     const meta=EVOLVED_ACTIVITY_META[formId];
     push(`✦ ${s?.name||"She"} has found her path: ${meta?.label||formId}.`);
     setEvolutionModal(null);
@@ -2225,6 +2345,8 @@ export default function ProfessorSim(){
       const off=render('{destiny.offstream.activity}',offCtx);
       if(off) text=`${off}\n\n${text}`;
     }
+    const evolvedCtx=createContext({subject:s,week});
+    text=appendV2Depth(text,'evolved',evolvedCtx,0.35);
     // Calculate bonuses from evolved skills
     const skills=(s.evolvedSkills||[]);
     const tree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
@@ -2520,20 +2642,22 @@ export default function ProfessorSim(){
     setHearingState(prev=>{
       if(!prev||prev.done) return prev;
       const def=prev.type==='emergency'?EMERGENCY_HEARING:REMOVAL_HEARING;
+      const hearingType=prev.type==='emergency'?'emergency':'removal';
       const phase=def.phases[prev.phaseIdx];
       const ch=phase?.choices?.find(c=>c.id===choiceId);
       if(!ch) return prev;
-      const log=[...(prev.log||[]),ch.result];
+      const student=students.find(s=>s.id===prev.studentId);
+      const resultLine=ch.resultPool
+        ?renderHearingChoiceResult(hearingType,choiceId,student,week,prev.phaseIdx)
+        :(ch.result||'');
+      const log=[...(prev.log||[]),resultLine];
       const history=[...(prev.history||[]),ch.flag||choiceId];
       const nextPhase=prev.phaseIdx+1;
       if(nextPhase>=def.phases.length){
-        const student=students.find(s=>s.id===prev.studentId);
-        const ctx={
-          studentName:student?.name||'the student',
-          studentLbs:student?Math.round(student.lbs):0,
-        };
         const ending=pickHearingEnding(def,history);
-        const endingText=typeof ending.text==='function'?ending.text(ctx):ending.text;
+        const endingText=ending.poolKey
+          ?renderHearingEnding(hearingType,ending.poolKey,student,week)
+          :'';
         return {...prev,log,history,done:true,endingText,pendingEnding:ending};
       }
       return {...prev,log,history,phaseIdx:nextPhase};
@@ -2741,13 +2865,19 @@ export default function ProfessorSim(){
   // ── HOMEROOM QUEEN handlers ───────────────────────────────────────
   const openHomeroomConference=(studentKey)=>{
     if(!homeroomSessionState||homeroomSessionState.ap<1||homeroomSessionState.activeActivity) return;
-    setHomeroomSessionState(prev=>({...prev,ap:prev.ap-1,activeActivity:{type:'conference',key:studentKey,phaseIdx:0,history:[],done:false,resultText:null,revealsWeights:false,revealsParentWeights:false}}));
+    const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
+    const evDef=HOMEROOM_CONFERENCE_EVENTS[studentKey];
+    const phaseProse=daisy?renderHomeroomPool(homeroomConferencePoolKey(studentKey),daisy,week,{globals:{homeroomKey:studentKey}}):null;
+    setHomeroomSessionState(prev=>({...prev,ap:prev.ap-1,activeActivity:{type:'conference',key:studentKey,phaseIdx:0,history:[],done:false,resultText:null,phaseProse,revealsWeights:false,revealsParentWeights:false}}));
   };
   const startHomeroomGroupActivity=(actKey)=>{
     if(!homeroomSessionState||homeroomSessionState.activeActivity) return;
     const actDef=HOMEROOM_GROUP_ACTIVITIES[actKey]; if(!actDef) return;
     if(homeroomSessionState.ap<actDef.apCost) return;
-    setHomeroomSessionState(prev=>({...prev,ap:prev.ap-actDef.apCost,activeActivity:{type:actKey,key:actKey,phaseIdx:0,history:[],done:false,resultText:null,revealsWeights:false,revealsParentWeights:false}}));
+    const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
+    const phases=actDef.phases||[{text:actDef.text,choices:actDef.choices||[]}];
+    const phaseProse=daisy?renderHomeroomPool(homeroomActivityPoolKey(actKey,0),daisy,week,{globals:{homeroomAct:actKey}}):null;
+    setHomeroomSessionState(prev=>({...prev,ap:prev.ap-actDef.apCost,activeActivity:{type:actKey,key:actKey,phaseIdx:0,history:[],done:false,resultText:null,phaseProse,revealsWeights:false,revealsParentWeights:false}}));
   };
   const makeHomeroomActivityChoice=(choiceId)=>{
     if(!homeroomSessionState?.activeActivity) return;
@@ -2764,6 +2894,11 @@ export default function ProfessorSim(){
       hasNextPhase=phaseIdx+1<phases.length;
     }
     const resultText=typeof choice.result==='function'?choice.result():choice.result;
+    const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
+    const poolKey=type==='conference'
+      ?homeroomConferencePoolKey(key,choiceId)
+      :homeroomActivityPoolKey(type,phaseIdx,choiceId);
+    const renderedResult=daisy&&poolKey?renderHomeroomPool(poolKey,daisy,week,{globals:{homeroomKey:key,homeroomChoice:choiceId}}):resultText;
     setHomeroomSessionState(prev=>({
       ...prev,
       daisyGain:prev.daisyGain+(choice.lbs||0),
@@ -2771,12 +2906,21 @@ export default function ProfessorSim(){
       classGainAccum:prev.classGainAccum+(choice.classGain||0),
       momGainAccum:prev.momGainAccum+(choice.momGain||0),
       suspDeltaAccum:prev.suspDeltaAccum+(choice.suspDelta||0),
-      activeActivity:{...prev.activeActivity,phaseIdx:hasNextPhase?phaseIdx+1:phaseIdx,history:[...prev.activeActivity.history,choiceId],resultText,done:!hasNextPhase,revealsWeights:prevRevW||!!choice.revealsWeights,revealsParentWeights:prevRevPW||!!choice.revealsParentWeights},
+      activeActivity:{...prev.activeActivity,phaseIdx:hasNextPhase?phaseIdx+1:phaseIdx,history:[...prev.activeActivity.history,choiceId],resultText:renderedResult,done:!hasNextPhase,revealsWeights:prevRevW||!!choice.revealsWeights,revealsParentWeights:prevRevPW||!!choice.revealsParentWeights},
     }));
   };
   const advanceHomeroomActivityPhase=()=>{
     if(!homeroomSessionState?.activeActivity) return;
-    setHomeroomSessionState(prev=>({...prev,activeActivity:{...prev.activeActivity,resultText:null}}));
+    const{type,phaseIdx}=homeroomSessionState.activeActivity;
+    const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
+    let phaseProse=null;
+    if(type!=='conference'){
+      const actDef=HOMEROOM_GROUP_ACTIVITIES[type];
+      const phases=actDef?.phases||[];
+      const phase=phases[phaseIdx];
+      if(daisy) phaseProse=renderHomeroomPool(homeroomActivityPoolKey(type,phaseIdx),daisy,week,{globals:{homeroomAct:type}});
+    }
+    setHomeroomSessionState(prev=>({...prev,activeActivity:{...prev.activeActivity,resultText:null,phaseProse}}));
   };
   const dismissHomeroomActivity=()=>{
     if(!homeroomSessionState?.activeActivity?.done) return;
@@ -2958,6 +3102,8 @@ export default function ProfessorSim(){
       const{stage}=prev;
       const lesson=WL_LESSONS[stage]?.find(l=>l.id===lessonId);
       if(!lesson) return prev;
+      const mjStudent=students.find(st=>st.id===prev.mjStudentId);
+      const lessonProse=mjStudent?renderWifeLessonBeat(stage,lesson,mjStudent,week):lesson.text;
       let newDaughters={...prev.daughters};
       Object.keys(newDaughters).forEach(k=>{
         let gain=lesson.daughterLbs;
@@ -2968,10 +3114,15 @@ export default function ProfessorSim(){
       Object.keys(newMoms).forEach(k=>{ newMoms[k]=newMoms[k]+lesson.momLbs; });
       const logLine=`${lesson.label}: all daughters +${lesson.daughterLbs} lbs, all moms +${lesson.momLbs} lbs, you +${lesson.mjLbs} lbs`;
       let next={...prev,daughters:newDaughters,moms:newMoms,
-        session:{...prev.session,lessonChosen:true,lessonId:lesson.id,mjGainAccum:prev.session.mjGainAccum+lesson.mjLbs,relAccum:prev.session.relAccum+(lesson.rel||0),log:[...prev.session.log,logLine]}};
+        session:{...prev.session,lessonChosen:true,lessonId:lesson.id,lessonProse,mjGainAccum:prev.session.mjGainAccum+lesson.mjLbs,relAccum:prev.session.relAccum+(lesson.rel||0),log:[...prev.session.log,logLine]}};
       next=_wlCheckStageAdvance(next);
       return next;
     });
+  };
+
+  const _wlTalkLine=(line,person,stage,mjStudentId)=>{
+    const mj=students.find(st=>st.id===mjStudentId);
+    return mj?renderWifeLessonTalkLine(line,person,stage,mj,week):line;
   };
 
   const startWifeLessonsConversation=(personKey)=>{
@@ -2990,7 +3141,8 @@ export default function ProfessorSim(){
       const isCapped=isDaughter&&prev.daughters[personKey]>=WL_CONFIG.stageCaps[stage];
       const overtook=personKey==='Emma'||personKey==='Darlene'?prev.daughters.Chloe>prev.daughters.Emma:false;
       const greetingText=isCapped&&entry.cappedGreeting?entry.cappedGreeting:(overtook&&entry.overtookGreeting?entry.overtookGreeting:entry.greeting);
-      return{...prev,session:{...prev.session,conversationState:{person:personKey,stageEntry:entry,optionIdx:null,subIdx:null,done:false,atGreeting:true,history:[greetingText]}}};
+      const greetingProse=_wlTalkLine(greetingText,personKey,stage,prev.mjStudentId);
+      return{...prev,session:{...prev.session,conversationState:{person:personKey,stageEntry:entry,optionIdx:null,subIdx:null,done:false,atGreeting:true,history:[greetingProse]}}};
     });
   };
 
@@ -3005,7 +3157,8 @@ export default function ProfessorSim(){
       const opt=entry.options[optionIdx];
       if(!opt) return prev;
       if(opt.subs&&opt.subs.length>0){
-        return{...prev,session:{...prev.session,conversationState:{...cs,optionIdx,subIdx:null,history:[...(cs.history||[]),opt.text]}}};
+        const optProse=_wlTalkLine(opt.text,cs.person,prev.stage,prev.mjStudentId);
+        return{...prev,session:{...prev.session,conversationState:{...cs,optionIdx,subIdx:null,history:[...(cs.history||[]),optProse]}}};
       }
       return prev;
     });
@@ -3032,10 +3185,11 @@ export default function ProfessorSim(){
       }
       const mjGain=outcome.mjLbs||0;
       const relGain=outcome.rel||0;
+      const subProse=_wlTalkLine(sub.text,cs.person,prev.stage,prev.mjStudentId);
       let next={...prev,daughters:newDaughters,moms:newMoms,
         session:{...prev.session,mjGainAccum:prev.session.mjGainAccum+mjGain,relAccum:prev.session.relAccum+relGain,
           log:[...prev.session.log,logLine],
-          conversationState:{...cs,subIdx,done:true,history:[...(cs.history||[]),sub.text]}}};
+          conversationState:{...cs,subIdx,done:true,history:[...(cs.history||[]),subProse]}}};
       next=_wlCheckStageAdvance(next);
       return next;
     });
@@ -3964,6 +4118,9 @@ export default function ProfessorSim(){
       }
       return next;
     }));
+    if((ownedSkills.memory_palace||0)>=1&&firstUnlock){
+      applyEchoCapture(s, prev=>captureImmobilityEcho(prev,s.id,week,getStage(s.lbs).id));
+    }
     push(`✦ The Settling — ${arrival.label}: +${gain} lbs${firstUnlock?' · she has arrived, and now keeps settling on her own':' · still settling'}`);
     setEvolvedActivityModal({ student:s, stageIdx:getEvolvedActivityStageIdx(s), text:fullProse||arrival.desc });
   };
@@ -4952,11 +5109,11 @@ export default function ProfessorSim(){
         newMayaGain=mayaGain+pick.lbs;
       }
     }
-    const popup=CONTEST_FOOD_POPUPS[food.id]?.[stageIdx]||'';
+    const popup=renderContestFoodPopup(food.id,stageIdx,s,week);
     // Check end conditions
     const tableCleared=newYF.every(f=>f.consumed)&&newMF.every(f=>f.consumed);
     if(tableCleared){
-      const tcp=CONTEST_ACTION_POPUPS.table_cleared?.[stageIdx]||popup;
+      const tcp=renderContestActionPopup('table_cleared',stageIdx,s,week)||popup;
       setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tcp,phaseAfterPopup:'weigh_in_2'}));
       return;
     }
@@ -4965,7 +5122,7 @@ export default function ProfessorSim(){
       const newEffMax=maxYourFullness-pantsFactor;
       const tooFull=newYourFull>=newEffMax&&actions.unbuttoned&&actions.rubUses>=3;
       if(tooFull){
-        const tfp=CONTEST_ACTION_POPUPS.too_full?.[stageIdx]||popup;
+        const tfp=renderContestActionPopup('too_full',stageIdx,s,week)||popup;
         setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tfp,phaseAfterPopup:'weigh_in_2'}));
         return;
       }
@@ -5013,10 +5170,10 @@ export default function ProfessorSim(){
         newMayaGain=mayaGain+pick.lbs;
       }
     }
-    const popup=CONTEST_DEVOUR_POPUPS[stageIdx]||'';
+    const popup=renderContestDevourPopup(stageIdx,s,week);
     const tableCleared=newYF.every(f=>f.consumed)&&finalMF.every(f=>f.consumed);
     if(tableCleared){
-      const tcp=CONTEST_ACTION_POPUPS.table_cleared?.[stageIdx]||popup;
+      const tcp=renderContestActionPopup('table_cleared',stageIdx,s,week)||popup;
       setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:finalMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tcp,phaseAfterPopup:'weigh_in_2'}));
       return;
     }
@@ -5025,23 +5182,24 @@ export default function ProfessorSim(){
 
   const doContestAction=(action)=>{
     if(!eatingContestState) return;
-    const{stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,mayaGain,pantsFactor,actions}=eatingContestState;
+    const{stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,mayaGain,pantsFactor,actions,studentId}=eatingContestState;
+    const s=students.find(st=>st.id===studentId);
     let updates={};
     let popup='';
     if(action==='unbutton'){
       if(actions.unbuttoned) return;
       updates.pantsFactor=pantsFactor+15;
       updates.actions={...actions,unbuttoned:true};
-      popup=CONTEST_ACTION_POPUPS.unbutton?.[stageIdx]||'';
+      popup=s?renderContestActionPopup('unbutton',stageIdx,s,week):'';
     } else if(action==='rub'){
       if(actions.rubUses>=3) return;
       updates.yourFullness=Math.max(0,yourFullness-5);
       updates.actions={...actions,rubUses:actions.rubUses+1};
-      popup=CONTEST_ACTION_POPUPS.rub?.[stageIdx]||'';
+      popup=s?renderContestActionPopup('rub',stageIdx,s,week):'';
     } else if(action==='taunt'){
       if(actions.taunted) return;
       updates.actions={...actions,taunted:true};
-      popup=CONTEST_ACTION_POPUPS.taunt?.[stageIdx]||'';
+      popup=s?renderContestActionPopup('taunt',stageIdx,s,week):'';
     }
     // Advance Maya after each action
     const curMF=updates.mayaFoods||mayaFoods;
@@ -5070,8 +5228,8 @@ export default function ProfessorSim(){
       const newActions2=updates.actions||actions;
       const noRoom=newFull2>=newEffMax2&&newActions2.unbuttoned&&newActions2.rubUses>=3;
       const tableCleared2=newYF2.every(f=>f.consumed)&&newMF.every(f=>f.consumed);
-      if(tableCleared2){updates.phaseAfterPopup='weigh_in_2';updates.popupText=CONTEST_ACTION_POPUPS.table_cleared?.[stageIdx]||'';}
-      else if(noRoom&&stageIdx<3){updates.phaseAfterPopup='weigh_in_2';updates.popupText=CONTEST_ACTION_POPUPS.too_full?.[stageIdx]||'';}
+      if(tableCleared2){updates.phaseAfterPopup='weigh_in_2';updates.popupText=s?renderContestActionPopup('table_cleared',stageIdx,s,week):'';}
+      else if(noRoom&&stageIdx<3){updates.phaseAfterPopup='weigh_in_2';updates.popupText=s?renderContestActionPopup('too_full',stageIdx,s,week):'';}
     }
     setEatingContestState(prev=>({...prev,...updates}));
   };
@@ -5167,7 +5325,7 @@ export default function ProfessorSim(){
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const oppLbs=SUMO_RIVAL_WEIGHTS[stageIdx]||340;
     const {move,telegraph}=pickOppMove(0,100);
-    setSumoMatchState({studentId,stageIdx,oppLbs,ringPos:0,yourBalance:100,oppBalance:100,yourBouts:0,oppBouts:0,gainAccum:0,oppMove:move,telegraph,exchangeLine:`The first tachi-ai. You square up against ${SUMO_RIVAL_NAME} — ${oppLbs} pounds of veteran across the line from you. The crowd settles. Choose your opening.`,phase:'match',popupText:null,phaseAfterPopup:null,fillRingUsed:false});
+    setSumoMatchState({studentId,stageIdx,oppLbs,ringPos:0,yourBalance:100,oppBalance:100,yourBouts:0,oppBouts:0,gainAccum:0,oppMove:move,telegraph,exchangeLine:renderSumoOpening(stageIdx,s,oppLbs,week),phase:'match',popupText:null,phaseAfterPopup:null,fillRingUsed:false});
     setEvolvedEventState(null);
   };
 
@@ -5180,7 +5338,7 @@ export default function ProfessorSim(){
       if(st.fillRingUsed) return;
       const yourBouts=st.yourBouts+1;
       const matchOver=yourBouts>=2;
-      const fillText=SUMO_FILL_RING_TEXT[st.stageIdx]||`You expand completely into the ring. Your opponent steps outside. Bout to you.`;
+      const fillText=renderSumoFillRing(st.stageIdx,s,week);
       setSumoMatchState({...st,ringPos:100,yourBouts,fillRingUsed:true,popupText:fillText,phaseAfterPopup:matchOver?'aftermath':'interbout'});
       return;
     }
@@ -5199,17 +5357,17 @@ export default function ProfessorSim(){
     let oppStumbleNote='';
     if(oppBalance<=0){ ringPos+=25; oppBalance=30; oppStumbleNote=` Dana's footing goes — she lurches, and you take the free ground.`; }
     const bucket=SUMO_TAG_BUCKET[tag]||'clash';
-    const line=((SUMO_EXCHANGE_LINES[bucket]||SUMO_EXCHANGE_LINES.clash)[st.stageIdx]||'')+oppStumbleNote;
+    const line=renderSumoExchangeLine(bucket,st.stageIdx,s,week,oppStumbleNote);
     if(ringPos>=100){
       const yourBouts=st.yourBouts+1;
       const matchOver=yourBouts>=2;
-      setSumoMatchState({...st,ringPos:100,yourBalance,oppBalance,yourBouts,exchangeLine:line,popupText:SUMO_BOUT_WON[st.stageIdx],phaseAfterPopup:matchOver?'aftermath':'interbout'});
+      setSumoMatchState({...st,ringPos:100,yourBalance,oppBalance,yourBouts,exchangeLine:line,popupText:renderSumoBoutWon(st.stageIdx,s,week),phaseAfterPopup:matchOver?'aftermath':'interbout'});
       return;
     }
     if(ringPos<=-100){
       const oppBouts=st.oppBouts+1;
       const matchOver=oppBouts>=2;
-      setSumoMatchState({...st,ringPos:-100,yourBalance,oppBalance,oppBouts,exchangeLine:line,popupText:SUMO_BOUT_LOST[st.stageIdx],phaseAfterPopup:matchOver?'aftermath':'interbout'});
+      setSumoMatchState({...st,ringPos:-100,yourBalance,oppBalance,oppBouts,exchangeLine:line,popupText:renderSumoBoutLost(st.stageIdx,s,week),phaseAfterPopup:matchOver?'aftermath':'interbout'});
       return;
     }
     const {move,telegraph}=pickOppMove(ringPos,oppBalance);
@@ -5219,17 +5377,20 @@ export default function ProfessorSim(){
   const sumoCornerFeed=()=>{
     if(!sumoMatchState) return;
     const st=sumoMatchState;
+    const s=students.find(x=>x.id===st.studentId);
     const feed=SUMO_CORNER_FEED[st.stageIdx]||SUMO_CORNER_FEED[0];
     setStudents(prev=>prev.map(x=>x.id===st.studentId?processStudentGain(x,feed.lbs,0):x));
-    setSumoMatchState({...st,gainAccum:st.gainAccum+feed.lbs,popupText:feed.text,phaseAfterPopup:'nextbout'});
+    setSumoMatchState({...st,gainAccum:st.gainAccum+feed.lbs,popupText:s?renderSumoCornerFeed(st.stageIdx,s,week):feed.text,phaseAfterPopup:'nextbout'});
   };
 
   const sumoStartNextBout=()=>{
     setSumoMatchState(prev=>{
       if(!prev) return null;
+      const s=students.find(x=>x.id===prev.studentId);
       const {move,telegraph}=pickOppMove(0,100);
       const boutNum=prev.yourBouts+prev.oppBouts+1;
-      return {...prev,ringPos:0,yourBalance:100,oppBalance:100,oppMove:move,telegraph,exchangeLine:`Bout ${boutNum}. You square up at the center again. ${SUMO_RIVAL_NAME} sets her feet across from you.`,phase:'match',popupText:null,phaseAfterPopup:null,fillRingUsed:false};
+      const exchangeLine=s?renderSumoNextBoutLine(boutNum,prev.stageIdx,s,week,false):`Bout ${boutNum}. You square up at the center again. ${SUMO_RIVAL_NAME} sets her feet across from you.`;
+      return {...prev,ringPos:0,yourBalance:100,oppBalance:100,oppMove:move,telegraph,exchangeLine,phase:'match',popupText:null,phaseAfterPopup:null,fillRingUsed:false};
     });
   };
 
@@ -5242,7 +5403,9 @@ export default function ProfessorSim(){
       if(next==='nextbout'){
         const {move,telegraph}=pickOppMove(0,100);
         const boutNum=prev.yourBouts+prev.oppBouts+1;
-        return {...prev,popupText:null,phaseAfterPopup:null,phase:'match',ringPos:0,yourBalance:100,oppBalance:100,oppMove:move,telegraph,exchangeLine:`Bout ${boutNum}. You return to center heavier than you left it. Dana sets her feet across from you.`};
+        const s=students.find(x=>x.id===prev.studentId);
+        const exchangeLine=s?renderSumoNextBoutLine(boutNum,prev.stageIdx,s,week,true):`Bout ${boutNum}. You return to center heavier than you left it. ${SUMO_RIVAL_NAME} sets her feet across from you.`;
+        return {...prev,popupText:null,phaseAfterPopup:null,phase:'match',ringPos:0,yourBalance:100,oppBalance:100,oppMove:move,telegraph,exchangeLine};
       }
       return {...prev,popupText:null,phaseAfterPopup:null};
     });
@@ -5296,7 +5459,7 @@ export default function ProfessorSim(){
     const initPartnerGain=history&&history.includes("both_loaded")?6:0;
     if(initKylieGain>0) setStudents(prev=>prev.map(st=>st.id===kylieId?processStudentGain(st,initKylieGain,0):st));
     if(initPartnerGain>0) setStudents(prev=>prev.map(st=>st.id===partnerId?processStudentGain(st,initPartnerGain,0):st));
-    const initChat=(COLLAB_WREN_LINES[stageIdx]||[]).slice(0,1);
+    const initChat=[pickCollabWrenLine(stageIdx,kylie,partner,week)].filter(Boolean);
     setCollabStreamState({kylieId,partnerId,stageIdx,qualityBar:initQual,kylieGain:0,partnerGain:0,partnerStageAtStart,stagedUp:false,foodQueue:tierFoods,tierIdx:0,chatLines:initChat,phase:'streaming',popupText:null,phaseAfterPopup:null,actions:{kylieRevealed:false,partnerRevealed:false,zoomUses:3,chatUses:3,pushUsed:false}});
     setCollabPartnerId(null);
     setEvolvedEventState(null);
@@ -5322,10 +5485,9 @@ export default function ProfessorSim(){
     let partnerGainThisAction=0;
 
     const addWren=()=>{
-      const wl=COLLAB_WREN_LINES[stageIdx]||[];
-      if(wl.length>0&&Math.random()<0.35){
-        const l=wl[Math.floor(Math.random()*wl.length)];
-        if(!newChat.includes(l)) newChat=[...newChat.slice(-5),l];
+      if(Math.random()<0.35){
+        const l=pickCollabWrenLine(stageIdx,kylie,partner,week);
+        if(l&&!newChat.includes(l)) newChat=[...newChat.slice(-5),l];
       }
     };
 
@@ -5350,28 +5512,27 @@ export default function ProfessorSim(){
       if(actions.kylieRevealed){push("⚠️ Already revealed Kylie's weight.");return;}
       newQual=Math.min(100,newQual+20);
       newActions={...newActions,kylieRevealed:true};
-      popupText=`You announce ${kylie.name}'s weight on camera — ${Math.round(kylie.lbs)} pounds, clearly, into the mic. The chat goes still for one second and then erupts. The number is undeniable and enormous and the new viewers are doing math. ${Math.round(kylie.lbs)} pounds at this stage means the belly, the thighs, the full warm forward presence of her visible in the camera. The chat says: yes. The chat means: more.`;
+      popupText=renderCollabStreamBeat('collab.stream.reveal.kylie',kylie,partner,week,stageIdx);
       addWren();
     } else if(action==='reveal_partner'){
       if(actions.partnerRevealed){push("⚠️ Already revealed partner's weight.");return;}
       newQual=Math.min(100,newQual+20);
       newActions={...newActions,partnerRevealed:true};
-      popupText=`${partner.name}'s weight announced on camera: ${Math.round(partner.lbs)} pounds. The chat reacts. Wren reacts — the chat message fires immediately: ${COLLAB_WREN_LINES[stageIdx]?.[Math.floor(Math.random()*(COLLAB_WREN_LINES[stageIdx]?.length||1))]||'wrenWatchesEverything: the numbers'}. The viewer count bumps. ${partner.name} looks at the camera after saying the number and says nothing else and somehow that is more than anything she could have said.`;
+      const wLineReveal=pickCollabWrenLine(stageIdx,kylie,partner,week);
+      popupText=renderCollabStreamBeat('collab.stream.reveal.partner',kylie,partner,week,stageIdx,{wrenLine:wLineReveal});
       addWren();
     } else if(action==='zoom_in'){
       if(actions.zoomUses<=0){push("⚠️ No zoom uses left.");return;}
       newQual=Math.min(100,newQual+8);
       newActions={...newActions,zoomUses:actions.zoomUses-1};
-      popupText=`You zoom in — the camera tightening on both women at the table, the full physical presence of them: ${kylie.name} at ${Math.round(kylie.lbs)} pounds and ${partner.name} at ${Math.round(partner.lbs)} pounds, both bellies forward and warm, both faces with the specific focused pleasure of eating on camera. The chat is saying something. The chat is always saying something. This is what they're saying it about.`;
+      popupText=renderCollabStreamBeat('collab.stream.zoom',kylie,partner,week,stageIdx);
     } else if(action==='chat_moment'){
       if(actions.chatUses<=0){push("⚠️ No chat engagement uses left.");return;}
       newQual=Math.min(100,newQual+6);
       newActions={...newActions,chatUses:actions.chatUses-1};
-      addWren();
-      const wl=COLLAB_WREN_LINES[stageIdx]||[];
-      const wLine=wl.length>0?wl[Math.floor(Math.random()*wl.length)]:'wrenWatchesEverything: watching';
-      newChat=[...newChat.slice(-5),wLine];
-      popupText=`Chat engagement. Wren fires a message immediately: *${wLine}* The chat picks it up. Regular viewers explaining to new ones. New ones asking questions the regulars answer faster than either streamer can. The viewer count bumps slightly.`;
+      const wLineChat=pickCollabWrenLine(stageIdx,kylie,partner,week);
+      newChat=[...newChat.slice(-5),wLineChat];
+      popupText=renderCollabStreamBeat('collab.stream.chat',kylie,partner,week,stageIdx,{wrenLine:wLineChat});
     } else if(action==='push_harder'){
       if(actions.pushUsed){push("⚠️ Already pushed harder this stream.");return;}
       const goodPush=Math.random()<0.6;
@@ -5379,10 +5540,10 @@ export default function ProfessorSim(){
         kylieGainThisAction=Math.floor(8+stageIdx*2);
         partnerGainThisAction=Math.floor(6+stageIdx*2);
         newQual=Math.min(100,newQual+15);
-        popupText=`You push both of them harder — more food, more speed, the camera seeing the full fact of both women eating more than they were. Both bellies visibly fuller than five minutes ago. The chat is unanimous: more. More. The viewer count spikes. This is the right call.`;
+        popupText=renderCollabStreamBeat('collab.stream.push.good',kylie,partner,week,stageIdx);
       } else {
         newQual=Math.max(0,newQual-10);
-        popupText=`You push too hard too fast. ${partner.name} slows — she's genuinely full — and there's a moment where the stream loses momentum, the chat noticing the pause. The quality dips. She recovers, eating again, but the push cost something.`;
+        popupText=renderCollabStreamBeat('collab.stream.push.bad',kylie,partner,week,stageIdx);
       }
       newKylieGain+=kylieGainThisAction;
       newPartnerGain+=partnerGainThisAction;
@@ -5400,7 +5561,7 @@ export default function ProfessorSim(){
         if(getStage(updated.lbs).id>partnerStageAtStart+(!stagedUp?0:0)){
           const newStage=getStage(updated.lbs);
           if(newStage.id>partnerStageAtStart){
-            const stageUpText=COLLAB_STAGEUP_TEXT[stageIdx]?.(kylie.name,partner.name,Math.round(updated.lbs))||`${partner.name} just crossed ${Math.round(updated.lbs)} pounds on stream!`;
+            const stageUpText=renderCollabStageUp(stageIdx,kylie,partner,Math.round(updated.lbs),week);
             setCollabStreamState(prev=>prev?{...prev,stagedUp:true,popupText:stageUpText,phaseAfterPopup:'stage_up_resolve',qualityBar:Math.min(100,(prev.qualityBar||0)+35)}:prev);
           }
         }
@@ -5424,7 +5585,7 @@ export default function ProfessorSim(){
       const finalKylieGain=newKylieGain;
       const finalPartnerGain=newPartnerGain;
       const partnerName=partner.name;
-      const payoff=COLLAB_PAYOFF_TEXT[stageIdx]?.(finalKylieGain,finalPartnerGain,partnerName)||`${Math.round(finalKylieGain)} pounds on Kylie, ${Math.round(finalPartnerGain)} on ${partnerName}. Stream complete.`;
+      const payoff=renderCollabPayoff(stageIdx,finalKylieGain,finalPartnerGain,partner,kylie,week);
       setCollabStreamState(prev=>prev?{...prev,kylieGain:finalKylieGain,partnerGain:finalPartnerGain,qualityBar:newQual,foodQueue:newFoodQueue,chatLines:newChat,actions:newActions,phase:'scoreboard',popupText:payoff,phaseAfterPopup:'scoreboard_show'}:prev);
       // Record on Kylie's history
       setStudents(prev=>prev.map(st=>st.id===kylieId?{...st,collabHistory:[...(st.collabHistory||[]).filter(id=>id!==partnerId),partnerId],contestCompletions:(st.contestCompletions||0)+1}:st));
@@ -5435,7 +5596,7 @@ export default function ProfessorSim(){
     // Check quality fail
     if(newQual<=0){
       const partnerName=partner.name;
-      const crashText=`The stream crashes. Quality hit zero — the momentum died, the chat thinned out, and the connection dropped while both of you were still at the table. It happens. You gained ${Math.round(newKylieGain)} pounds and ${partnerName} gained ${Math.round(newPartnerGain)} pounds and the stream is just over.`;
+      const crashText=renderCollabStreamBeat('collab.stream.crash',kylie,partner,week,stageIdx,{globals:{kylieGain:Math.round(newKylieGain),partnerGain:Math.round(newPartnerGain)}});
       setCollabStreamState(prev=>prev?{...prev,kylieGain:newKylieGain,partnerGain:newPartnerGain,qualityBar:0,chatLines:newChat,phase:'scoreboard',popupText:crashText,phaseAfterPopup:'scoreboard_crash'}:prev);
       return;
     }
@@ -5495,10 +5656,10 @@ export default function ProfessorSim(){
       if(step===0) newChoices.angle=choiceId;
       else if(step===1) newChoices.food=choiceId;
       else newChoices.pace=choiceId;
-      const popupArr=RECORDING_DIRECTION_POPUPS[choiceId];
       const kylieForPopup=students.find(st=>st.id===prev.studentId);
-      const popupFn=popupArr?.[prev.stageIdx];
-      const popupText=typeof popupFn==='function'?popupFn(kylieForPopup?.lbs||258):(popupFn||null);
+      const popupText=kylieForPopup
+        ?renderRecordingDirectionPopup(choiceId,prev.stageIdx,kylieForPopup,week)
+        :null;
       if(step<2){
         return {...prev, currentChoices:newChoices, choiceStep:step+1, popupText};
       }
@@ -5521,8 +5682,9 @@ export default function ProfessorSim(){
       const bestClip=newRatings.reduce((best,q)=>qualityOrder.indexOf(q)>qualityOrder.indexOf(best)?q:best,'okay');
       const isPerfect=quality==='perfect';
       const postGainLbs=(kylie?.lbs||258)+gainThisTake;
-      const takeFn=isPerfect?RECORDING_PERFECT_TAKE[prev.stageIdx]:(RECORDING_TAKE_RESULT[quality]||[])[prev.stageIdx];
-      const takeText=typeof takeFn==='function'?takeFn(postGainLbs):(takeFn||'');
+      const takeText=kylie
+        ?renderRecordingTakeResult(quality,prev.stageIdx,postGainLbs,kylie,week)
+        :'';
       return {...prev,
         currentChoices:newChoices, choiceStep:3,
         phase:'take_result',
@@ -5547,8 +5709,9 @@ export default function ProfessorSim(){
       if(!prev||prev.timeLeft<=0) return prev;
       const kylie=students.find(st=>st.id===prev.studentId);
       const newTimeLeft=prev.timeLeft-1;
-      const oneMoreFn=(RECORDING_ONE_MORE_TAKE||[])[prev.stageIdx];
-      const oneMoreText=typeof oneMoreFn==='function'?oneMoreFn(kylie?.lbs||258):(oneMoreFn||'She nods. One more.');
+      const oneMoreText=kylie
+        ?renderRecordingOneMoreTake(prev.stageIdx,kylie,week)
+        :'She nods. One more.';
       return {...prev,
         phase:'directing',
         takeNum:prev.takeNum+1, timeLeft:newTimeLeft,
@@ -5564,13 +5727,9 @@ export default function ProfessorSim(){
       if(!prev) return prev;
       const quality=normalizePerformanceTier(prev.bestClip||'okay');
       const kylie=students.find(st=>st.id===prev.studentId);
-      const kyleLbs=kylie?.lbs||258;
-      const endArr=(RECORDING_WRAP_ENDINGS[prev.bestClip]||RECORDING_WRAP_ENDINGS.good);
-      const endFn=endArr[prev.stageIdx]||endArr[0];
-      const endStr=typeof endFn==='function'?endFn(kyleLbs):(endFn||'');
-      const payFn=RECORDING_PAYOFF_TEXT[prev.stageIdx];
-      const payStr=typeof payFn==='function'?payFn(kyleLbs):(payFn||'');
-      const endText=endStr+(payStr?'\n\n'+payStr:'');
+      const endText=kylie
+        ?renderRecordingWrapText(prev.bestClip||'okay',prev.stageIdx,kylie,week)
+        :'';
       const relBonuses={perfect:10,good:3,messy:1,failure:0};
       const relBonus=Math.round((relBonuses[quality]||1)*performanceRelMult(quality));
       if(kylie) setStudents(p=>p.map(st=>st.id===prev.studentId?{...st,relationship:Math.min(100,st.relationship+relBonus),contestCompletions:(st.contestCompletions||0)+1}:st));
@@ -5676,7 +5835,7 @@ export default function ProfessorSim(){
       const newChoices={...prev.preStreamChoices,[actionId]:choiceId};
       const mults=mergePreStreamMultipliers(newChoices);
       const ctx=buildStreamCtx(prev,student);
-      const vignette=render(`{stream.pre.${actionId}.${choiceId}}`,ctx);
+      const vignette=renderPreStreamVignette(actionId, choiceId, ctx);
       return {
         ...prev,
         preStreamChoices:newChoices,
@@ -5699,7 +5858,7 @@ export default function ProfessorSim(){
       const student=students.find(st=>st.id===prev.studentId);
       const totalRounds=pickRoundCount(challenge);
       const ctx=buildStreamCtx({...prev,challenge},student);
-      const roundStartLine=render('{stream.roundStart}',ctx);
+      const roundStartLine=renderStreamBeat('{stream.roundStart}',ctx);
       return {
         ...prev,
         phase:'roundStart',
@@ -5764,7 +5923,7 @@ export default function ProfessorSim(){
       const student=students.find(st=>st.id===prev.studentId);
       const memG=pickStudentMemory(student,week)??{};
       const ctx=buildStreamCtx(prev,student,{perf:tier,trend:deriveTrend(tierHistory),recentPerf:deriveRecentPerf(tierHistory),...memG});
-      const betweenRoundLine=[render('{stream.betweenRound}',ctx),memG.memScope?render('{memory.self}',ctx)?.trim():''].filter(Boolean).join('\n\n');
+      const betweenRoundLine=[renderStreamBeat('{stream.betweenRound}',ctx),memG.memScope?render('{memory.self}',ctx)?.trim():''].filter(Boolean).join('\n\n');
       let tapOutCause=prev.tapOutCause;
       if(!tapOutCause){
         tapOutCause=checkTapOutConditions({
@@ -5774,7 +5933,7 @@ export default function ProfessorSim(){
       }
       const burst=[];
       for(let i=0;i<2;i++){
-        const l=render(`{stream.chat.perf.${tier}}`,ctx);
+        const l=renderStreamBeat(`{stream.chat.perf.${tier}}`,ctx,{chat:true});
         if(l) burst.push(l);
       }
       return {
@@ -5820,7 +5979,7 @@ export default function ProfessorSim(){
         ...prev,
         phase:'roundStart',
         roundIndex:nextIdx,
-        roundStartLine:render('{stream.roundStart}',ctx),
+        roundStartLine:renderStreamBeat('{stream.roundStart}',ctx),
       };
     });
   };
@@ -5835,8 +5994,8 @@ export default function ProfessorSim(){
       })||'performance';
       const student=students.find(st=>st.id===prev.studentId);
       const ctx=buildStreamCtx(prev,student);
-      const line=render(`{stream.tapOut.${cause}}`,ctx);
-      const tapChat=render(`{stream.chat.tapOut.${cause}}`,ctx);
+      const line=renderStreamBeat(`{stream.tapOut.${cause}}`,ctx);
+      const tapChat=renderStreamBeat(`{stream.chat.tapOut.${cause}}`,ctx,{chat:true});
       const chatBurst=tapChat?[tapChat]:[];
       return {
         ...prev,tapOutCause:cause,
@@ -5884,12 +6043,12 @@ export default function ProfessorSim(){
       setStudents(p=>p.map(st=>st.id===prev.studentId?updated:st));
       if(r.playerShare>0) setMoney(m=>addFunds(m,r.playerShare));
       const ctx=buildStreamCtx(prev,updated,{perf:r.overallTier});
-      const endLine=render(`{stream.endStream.${r.overallTier}}`,ctx);
-      const tapLine=prev.tapOutCause?render(`{stream.tapOut.${prev.tapOutCause}}`,ctx):'';
-      const specialLines=(prev.specialOutcomes||[]).map(id=>render(`{stream.special.${id}}`,ctx)).filter(Boolean);
+      const endLine=renderStreamBeat(`{stream.endStream.${r.overallTier}}`,ctx,{v2DepthChance:0.32});
+      const tapLine=prev.tapOutCause?renderStreamBeat(`{stream.tapOut.${prev.tapOutCause}}`,ctx):'';
+      const specialLines=(prev.specialOutcomes||[]).map(id=>renderStreamBeat(`{stream.special.${id}}`,ctx)).filter(Boolean);
       const milestoneLines=fired.map(key=>{
         const mod=key.startsWith('stage_')?'stream.milestone.stage':`stream.milestone.${key}`;
-        return render(`{${mod}}`,ctx);
+        return renderStreamBeat(`{${mod}}`,ctx,{v2DepthChance:0.3});
       }).filter(Boolean);
       const streamGrowth=Math.round(r.weightGain)>0?buildGrowthEvent(updated,{
         cause:{
@@ -6144,6 +6303,156 @@ export default function ProfessorSim(){
   };
 
   const openWeighIn=(s)=>{ if(!s||openOriginFor(s)) return; setWeighInState({student:s,phase:"scene"}); };
+
+  // ── V2.0 HANDLERS ───────────────────────────────────────────
+  const applyEchoCapture=(student, runCapture)=>{
+    setV2State(prev=>{
+      const { v2State, didCapture }=runCapture(prev||createInitialV2State());
+      if(didCapture&&student){
+        const prose=renderEchoCapture(createContext({ subject: student, week }));
+        const snippet=prose?.trim().slice(0,160);
+        if(snippet) setTimeout(()=>push(`📜 Echo captured — ${snippet}`),115);
+      }
+      return v2State;
+    });
+  };
+  const openEmbodiment=(s)=>{
+    if(!s) return;
+    setEmbodimentStudent(s);
+  };
+  const runEmbodimentStart=(studentId)=>{
+    const s=students.find(st=>st.id===studentId);
+    const result=handleEmbodimentStart(s,{ownedSkills,ownedClassSkills,embodimentState:v2.embodiment,week,v2State:v2});
+    if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
+    if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
+    setAp(a=>a-result.apCost);
+    setV2State(result.v2State);
+    push(`🌒 You slip inside ${s.name}.`);
+  };
+  const runEmbodimentAction=(act,s)=>{
+    const result=handleEmbodimentAction(act,s,v2);
+    setV2State(result.v2State);
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==s.id) return st;
+      return {
+        ...st,
+        consumedCalories:(st.consumedCalories||0)+(result.calories||0),
+        fullness:Math.min((st.stomachCapacity||100),(st.fullness||0)+(result.fullness||0)),
+        relationship:Math.min(100,(st.relationship||0)+(result.rel||0)),
+        corruption:Math.min(100,(st.corruption||0)+(result.corruption||0)),
+      };
+    }));
+    if(result.scrutiny) addScrutiny(result.scrutiny);
+    push(`🌒 ${act.label} — warmth spreads through ${s.name}.`);
+  };
+  const runEmbodimentRelease=()=>{
+    const activeId=v2.embodiment?.activeStudentId;
+    const active=students.find(st=>st.id===activeId);
+    const result=handleEmbodimentRelease(v2,week);
+    setV2State(result.v2State);
+    if(result.echoStudentId!=null){
+      setStudents(prev=>prev.map(st=>st.id===result.echoStudentId?{
+        ...st,
+        embodimentEchoWeek:result.echoDigestWeek,
+      }:st));
+    }
+    push(`🌒 You return to the professor's body.${active?' Her appetite will echo into next week.':''}`);
+  };
+  const runResonanceLink=(aId,bId)=>{
+    const result=handleResonanceLink(aId,bId,students,v2,ownedSkills,ownedClassSkills||{});
+    if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
+    if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
+    setAp(a=>a-result.apCost);
+    setV2State(result.v2State);
+    if(result.relPatches?.length){
+      setStudents(prev=>prev.map(st=>{
+        const p=result.relPatches.find(x=>x.id===st.id);
+        if(!p) return st;
+        return {...st,relationship:Math.max(0,Math.min(100,(st.relationship||0)+(p.relDelta||0)))};
+      }));
+    }
+    const a=students.find(s=>s.id===aId), b=students.find(s=>s.id===bId);
+    const linkCtx=createContext({ subject:a, ref:b });
+    const linkProse=renderResonanceLink(linkCtx);
+    push(`🔗 ${a?.name} ↔ ${b?.name} — appetites linked.${linkProse?` ${linkProse.slice(0,100)}`:''}`);
+  };
+  const runFeastRitual=(ritualId,studentIds,text)=>{
+    const result=handleRitual(ritualId,studentIds,{students,ownedSkills,ownedClassSkills:ownedClassSkills||{},week,spiritLevel,v2State:v2});
+    if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
+    if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
+    setAp(a=>a-result.apCost);
+    setV2State(result.v2State);
+    setStudents(prev=>prev.map(st=>{
+      const eff=result.effects.find(e=>e.studentId===st.id);
+      if(!eff) return st;
+      return {
+        ...st,
+        consumedCalories:(st.consumedCalories||0)+eff.calories,
+        relationship:Math.min(100,(st.relationship||0)+eff.rel),
+        corruption:Math.min(100,(st.corruption||0)+eff.corruption),
+      };
+    }));
+    push(`🕯️ Feast ritual complete.${text?` ${text.slice(0,120)}...`:''}`);
+    if(result.spiritFavor){
+      setSpiritFavor(f=>(f||0)+result.spiritFavor);
+      push(`✨ Sacred gluttony — spirit favor +${result.spiritFavor}.`);
+    }
+    setFeastRitualOpen(false);
+  };
+  const runDream=(s,scenario,choice,wakeText)=>{
+    const manual=!dreamPresetScenario;
+    if(manual){
+      const check=canTriggerDream(s,{ownedSkills,ownedClassSkills:ownedClassSkills||{},dreamsState:v2.dreams,week,manual:true});
+      if(!check.ok){ push(`⚠️ ${check.reason}`); setDreamStudent(null); return; }
+      if(ap<(check.apCost||0)){ push(`⚠️ Need ${check.apCost} AP`); setDreamStudent(null); return; }
+      setAp(a=>a-(check.apCost||0));
+    }
+    const lucid=v2.dreams?.lucidUnlocked;
+    const isLucidSteer=choice.id?.startsWith('lucid_')||choice.lucidOnly;
+    const mult=lucid&&!isLucidSteer?1.2:1;
+    const boostedChoice={
+      ...choice,
+      calories:Math.round((choice.calories||0)*mult),
+      rel:Math.round((choice.rel||0)*mult),
+      corruption:Math.round((choice.corruption||0)*mult),
+    };
+    const result=handleDreamChoice(scenario,boostedChoice,s,v2,week);
+    setV2State(result.v2State);
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==s.id) return st;
+      return {
+        ...st,
+        consumedCalories:(st.consumedCalories||0)+(result.calories||0),
+        relationship:Math.max(0,Math.min(100,(st.relationship||0)+(result.rel||0))),
+        corruption:Math.min(100,(st.corruption||0)+(result.corruption||0)),
+      };
+    }));
+    push(`💤 ${s.name} wakes from the dream.${wakeText?` ${wakeText.slice(0,80)}`:''}${lucid?' (lucid)':''}`);
+    setDreamStudent(null);
+    setDreamPresetScenario(null);
+  };
+  const runEchoResonate=(echo)=>{
+    const result=handleEchoResonate(echo.id,v2,ownedSkills,ownedClassSkills||{});
+    if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
+    if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
+    setAp(a=>a-result.apCost);
+    setV2State(result.v2State);
+    const s=students.find(st=>st.id===result.moment?.studentId);
+    if(s) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,gainMultiplier:(st.gainMultiplier||1)*1.05}:st));
+    push(`📜 Echo resonated — ${s?.name||'her'} growth deepens.`);
+    setEchoReplay(null);
+  };
+  const openEchoReplay=(echo)=>{
+    const result=handleEchoReplay(v2,echo.id);
+    setV2State(result.v2State);
+    const updated=result.v2State.echoes?.moments?.find(m=>m.id===echo.id)||echo;
+    const depth=echoDepthTier(updated.replayCount||0);
+    const s=students.find(st=>st.id===echo.studentId)||sel;
+    const ctx=createContext({ subject: s });
+    const prose=renderEchoReplay(echo.type,depth,ctx);
+    setEchoReplay({ echo: updated, prose, depth, student: s });
+    push(`📜 Echo replayed — the memory deepens.`);
+  };
 
   const startIntimacyScene=(s,sceneId)=>{
     const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId];
@@ -6969,6 +7278,9 @@ export default function ProfessorSim(){
     if(newFullness>cap&&prevFullness<=cap){
       const unbutton=renderDinnerUnbutton(fed,week);
       if(unbutton) reactionLines.push(unbutton);
+      if((ownedSkills.memory_palace||0)>=1){
+        applyEchoCapture(fed, prev=>captureDinnerUnbuttonEcho(prev,fed.id,week,getStage(fed.lbs).id));
+      }
     }
 
     if(overfillEnd){
@@ -8252,7 +8564,7 @@ export default function ProfessorSim(){
 
       {/* NAV */}
       <div style={C.nav}>
-        {[["class","📋 Roster"],["classroom","🏛 Classroom"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],
+        {[["class","📋 Roster"],["classroom","🏛 Classroom"],["spirit-hub","🌒 Dominion"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],
           ...(settledStudents.length>0?[["settling","✦ The Settling"]]:[]),
           ...(week>=8||opposition?.aib?.unlocked||adminScrutiny>=25?[["oversight","👁 Oversight"]]:[]),
           ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"],...((labState.stage??1)>=2?[["network","🌐 Network"]]:[])]:[]),
@@ -8276,8 +8588,23 @@ export default function ProfessorSim(){
 
           {view==="classroom"&&<ClassroomView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
 
+          {view==="spirit-hub"&&<SpiritHubView
+            students={students}
+            v2State={v2}
+            ownedSkills={ownedSkills}
+            ownedClassSkills={ownedClassSkills||{}}
+            embodimentState={v2.embodiment}
+            onOpenEmbodiment={openEmbodiment}
+            onCreateLink={runResonanceLink}
+            onOpenRituals={()=>setFeastRitualOpen(true)}
+            onOpenDream={(s)=>setDreamStudent(s)}
+            ap={ap}
+            week={week}
+            spiritLevel={spiritLevel}
+          />}
+
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} fireAscensionAbility={fireAscensionAbility} openAscensionCeremony={openAscensionCeremony} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState} dossierOpen={dossierOpen} setDossierOpen={setDossierOpen}/>}
+          {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} openEmbodiment={openEmbodiment} openDream={(s)=>setDreamStudent(s)} openEchoReplay={openEchoReplay} v2State={v2} ownedSkills={ownedSkills} ownedClassSkills={ownedClassSkills} onEchoResonate={runEchoResonate} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} fireAscensionAbility={fireAscensionAbility} openAscensionCeremony={openAscensionCeremony} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState} dossierOpen={dossierOpen} setDossierOpen={setDossierOpen}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
@@ -8483,6 +8810,12 @@ export default function ProfessorSim(){
           setWeighInState(null);
         } : undefined}
         onPersistWeekTextUsed={persistStudentWeekTextUsed}
+        onComplete={(s)=>{
+          if((ownedSkills.memory_palace||0)>=1){
+            const sid=getStage(s.lbs).id;
+            applyEchoCapture(s, prev=>captureWeighInEcho(prev,s.id,week,sid));
+          }
+        }}
         week={week}
         campusFattening={!!pharmacistState?.campusFattening}
         campusTier={getCampusNarrativeTier(pharmacistState)}
@@ -8546,7 +8879,7 @@ export default function ProfessorSim(){
       {evolutionModal&&<EvolutionOfferModal chooseEvolution={chooseEvolution} evolutionModal={evolutionModal} setEvolutionModal={setEvolutionModal}/>}
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
-      {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} openSalonHub={openSalonHub} openGalleryHub={openGalleryHub} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students}/>}
+      {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} openSalonHub={openSalonHub} openGalleryHub={openGalleryHub} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students} week={week}/>}
 
       {salonOpen&&salonState&&<SalonAppetitModal salonState={salonState} students={students} onClose={closeSalonHub} onStartSession={startSalonEvening} onPickMenu={salonPickCourse} onService={salonMakeServiceChoice} onDigestif={salonCloseEvening}/>}
 
@@ -8574,7 +8907,7 @@ export default function ProfessorSim(){
       })()}
 
       {endgameQueue[0]&&<OppositionEndgameModal beat={endgameQueue[0]} onDismiss={()=>setEndgameQueue(q=>q.slice(1))}/>}
-      {hearingState&&<OppositionHearingModal hearingState={hearingState} students={students} opposition={opposition} onChoice={makeHearingChoice} onClose={closeHearing}/>}
+      {hearingState&&<OppositionHearingModal hearingState={hearingState} students={students} opposition={opposition} week={week} onChoice={makeHearingChoice} onClose={closeHearing}/>}
 
       {/* ── HOMEROOM QUEEN: CLASSROOM MINI-INTERFACE ── */}
       {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession}/>}
@@ -8592,7 +8925,7 @@ export default function ProfessorSim(){
       {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive}/>}
 
       {/* ── EATING CONTEST MINI-GAME MODAL ── */}
-      {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup}/>}
+      {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} week={week} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup}/>}
 
       {forceFeederState&&<ForceFeederModal
         state={forceFeederState}
@@ -8764,7 +9097,7 @@ export default function ProfessorSim(){
       {lilithHuntState&&<LilithHuntModal lilithHuntState={lilithHuntState} students={students} setLilithHuntState={setLilithHuntState} navigateHunt={navigateHunt} deliveryScene={deliveryScene} closeHunt={closeHunt} approachMan={approachMan} consumeMan={consumeMan} encounterSetMode={encounterSetMode} makeReply={makeReply} makeSeduction={makeSeduction}/>}
 
       {/* ── SUMO MATCH MINI-GAME MODAL ── */}
-      {sumoMatchState&&<SumoMatchModal sumoMatchState={sumoMatchState} students={students} sumoPlayMove={sumoPlayMove} sumoCornerFeed={sumoCornerFeed} sumoStartNextBout={sumoStartNextBout} setSumoMatchState={setSumoMatchState} closeSumoMatch={closeSumoMatch} dismissSumoPopup={dismissSumoPopup}/>}
+      {sumoMatchState&&<SumoMatchModal sumoMatchState={sumoMatchState} students={students} week={week} sumoPlayMove={sumoPlayMove} sumoCornerFeed={sumoCornerFeed} sumoStartNextBout={sumoStartNextBout} setSumoMatchState={setSumoMatchState} closeSumoMatch={closeSumoMatch} dismissSumoPopup={dismissSumoPopup}/>}
 
       {/* ── FEEDEE CREATOR: COLLAB PARTNER PICKER ── */}
       {collabPartnerPicker&&<CollabPartnerPicker collabPartnerPicker={collabPartnerPicker} setCollabPartnerId={setCollabPartnerId} setCollabPartnerPicker={setCollabPartnerPicker} setEvolvedEventState={setEvolvedEventState} students={students}/>}
@@ -8782,7 +9115,7 @@ export default function ProfessorSim(){
       {collabStreamState&&<CollabStreamModal collabStreamState={collabStreamState} students={students} doCollabAction={doCollabAction} closeCollabStream={closeCollabStream} dismissCollabPopup={dismissCollabPopup}/>}
 
       {/* ── RECORDING SESSION MODAL ── */}
-      {recordingSessionState&&<RecordingSessionModal recordingSessionState={recordingSessionState} students={students} setRecordingSessionState={setRecordingSessionState} makeRecordingChoice={makeRecordingChoice} wrapRecordingSession={wrapRecordingSession} oneMoreTake={oneMoreTake} closeRecordingSession={closeRecordingSession} dismissRecordingChoicePopup={dismissRecordingChoicePopup}/>}
+      {recordingSessionState&&<RecordingSessionModal recordingSessionState={recordingSessionState} students={students} week={week} setRecordingSessionState={setRecordingSessionState} makeRecordingChoice={makeRecordingChoice} wrapRecordingSession={wrapRecordingSession} oneMoreTake={oneMoreTake} closeRecordingSession={closeRecordingSession} dismissRecordingChoicePopup={dismissRecordingChoicePopup}/>}
       {streamSessionState&&<StreamSessionModal streamSessionState={streamSessionState} students={students} week={week} preStreamAction={preStreamAction} selectChallenge={selectStreamChallenge} beginActiveRound={beginActiveRound} finishActiveRound={finishActiveRound} continueAfterBetweenRound={continueAfterBetweenRound} tapOutStream={tapOutStream} wrapStream={wrapStream} closeStream={closeStream} appendStreamChat={appendStreamChat} updateRoundPerf={updateRoundPerf} tickRoundStamina={tickRoundStamina}/>}
       {streamBrandPickState&&<StreamBrandSelectModal student={students.find(st=>st.id===streamBrandPickState.studentId)} required={streamBrandPickState.required} onSelect={selectStreamBrand} onClose={streamBrandPickState.required?null:()=>setStreamBrandPickState(null)}/>}
       {destinySpendState&&<DestinySpendModal student={students.find(st=>st.id===destinySpendState.studentId)} onPurchase={purchaseDestinyItem} onClose={()=>setDestinySpendState(null)} onGiftFromPlayer={giftDestinyFunds} playerMoney={money}/>}
@@ -8873,6 +9206,50 @@ export default function ProfessorSim(){
           />
         );
       })()}
+
+      {embodimentStudent&&(
+        <EmbodimentModal
+          student={embodimentStudent}
+          ownedSkills={ownedSkills}
+          ownedClassSkills={ownedClassSkills||{}}
+          embodimentState={v2.embodiment}
+          onStart={runEmbodimentStart}
+          onAction={runEmbodimentAction}
+          onRelease={runEmbodimentRelease}
+          onClose={()=>setEmbodimentStudent(null)}
+        />
+      )}
+      {feastRitualOpen&&(
+        <FeastRitualModal
+          students={students}
+          ownedSkills={ownedSkills}
+          ownedClassSkills={ownedClassSkills||{}}
+          week={week}
+          spiritLevel={spiritLevel}
+          onRun={runFeastRitual}
+          onClose={()=>setFeastRitualOpen(false)}
+        />
+      )}
+      {dreamStudent&&(
+        <DreamModal
+          student={dreamStudent}
+          presetScenarioId={dreamPresetScenario}
+          lucidUnlocked={v2.dreams?.lucidUnlocked}
+          onChoice={(scenario,choice,wakeText)=>runDream(dreamStudent,scenario,choice,wakeText)}
+          onClose={()=>{ setDreamStudent(null); setDreamPresetScenario(null); }}
+        />
+      )}
+      {echoReplay&&(
+        <EchoArchiveModal
+          student={echoReplay.student}
+          echo={echoReplay.echo}
+          prose={echoReplay.prose}
+          depth={echoReplay.depth}
+          resonated={echoReplay.echo?.resonated}
+          onResonate={runEchoResonate}
+          onClose={()=>setEchoReplay(null)}
+        />
+      )}
 
     </div>
   );

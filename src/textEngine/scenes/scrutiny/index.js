@@ -10,7 +10,9 @@
 //   a SCRUTINY_TIERS boundary (prev tier id < new tier id).
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
+import { registerPoolAutoDecompose } from '../decomposePools.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 
 // ── scrutiny.tierUp.header ────────────────────────────────────
 // Shape: SHORT SENTENCE — the administrative channel the news arrives on.
@@ -35,7 +37,7 @@ registerPool('scrutiny.tierUp.header', [
 
 // ── scrutiny.tierUp.body ──────────────────────────────────────
 // Shape: SHORT PARAGRAPH — what the notice says and what it means.
-registerPool('scrutiny.tierUp.body', [
+registerPoolAutoDecompose('scrutiny.tierUp.body', [
   { when: {}, text: [
     `Something about your class has caught an eye it shouldn't have. No specifics. Not yet.`,
   ]},
@@ -91,5 +93,6 @@ export function renderScrutinyTierUp(tierId = 1, opts = {}) {
     week: opts.week || 1,
     globals: { scrutinyTierId: tierId, ...(opts.globals || {}) },
   });
-  return render('{scrutiny.tierUp}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{scrutiny.tierUp}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'scrutiny', ctx, opts.v2DepthChance ?? 0.35);
 }

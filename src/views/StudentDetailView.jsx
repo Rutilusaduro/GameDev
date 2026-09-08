@@ -30,9 +30,13 @@ import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
 import { TALK_CONFIG } from '../gameData/talkSystem.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 import { DossierPanel } from '../components/DossierPanel.jsx';
+import { StudentPortrait } from '../components/StudentPortrait.jsx';
+import { EchoArchivePanel } from '../components/v2/V2Modals.jsx';
+import { canTriggerDream } from '../gameData/v2/appetiteDreams.js';
+import { canViewEchoArchive } from '../gameData/v2/bodyEcho.js';
 import { useEffect, useState } from 'react';
 
-export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, fireAscensionAbility, openAscensionCeremony, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState, dossierOpen, setDossierOpen }){
+export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openDream, openEchoReplay, v2State, ownedSkills, ownedClassSkills, onEchoResonate, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, fireAscensionAbility, openAscensionCeremony, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState, dossierOpen, setDossierOpen }){
             const s=sel;
             const st=getStage(s.lbs);
             const [showDossier, setShowDossier] = useState(!!dossierOpen);
@@ -126,6 +130,9 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                 {/* Header card */}
                 {(()=>{const detailEvMeta=s.evolvedForm?EVOLVED_FORM_META[s.evolvedForm]:null; const ascForm=getAscensionFormForStudent(s); const originCard=getOriginCard(s,s.origin); return(
                 <div style={{...C.card,cursor:"default",marginBottom:10,borderColor:detailEvMeta?`${detailEvMeta.color}60`:""}}>
+                  <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+                    <StudentPortrait student={s} size={88} />
+                    <div style={{flex:1}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
                       <h2 style={{margin:0,color:detailEvMeta?detailEvMeta.color:"#d8a8ff",fontSize:22}}>{s.name}</h2>
@@ -198,6 +205,8 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                         {ws.label}
                       </span>
                     ))}
+                  </div>
+                    </div>
                   </div>
                 </div>
                 );})()}
@@ -962,6 +971,48 @@ export function StudentDetailView({ openWeighIn, openTalk, ap, chapterHostessSta
                     </div>
                   );
                 })()}
+
+                {/* V2.0 Spirit Dominion */}
+                {((ownedSkills?.spirit_ride||0)>=1||(ownedSkills?.dream_walk||0)>=1||(ownedSkills?.memory_palace||0)>=1)&&(
+                  <div style={{...C.card,marginBottom:14,borderColor:'#8a4be040'}}>
+                    <div style={{...C.secT,marginBottom:7,color:'#c0a0e0'}}>Spirit Dominion · 2.0</div>
+                    <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:10}}>
+                      {(ownedSkills?.spirit_ride||0)>=1&&(
+                        <button type="button" style={{...C.btn('#6a30a0'),flex:'1 1 140px',fontSize:11}}
+                          onClick={()=>openEmbodiment?.(s)}>
+                          🌒 Inhabit Body
+                        </button>
+                      )}
+                      {(ownedSkills?.dream_walk||0)>=1&&(s.corruption||0)>=40&&getStage(s.lbs).id>=2&&(()=>{
+                        const dreamCheck=canTriggerDream(s,{ownedSkills,ownedClassSkills:ownedClassSkills||{},dreamsState:v2State?.dreams,week,manual:true});
+                        return (
+                          <button type="button" style={{...C.btn('#3060a0'),flex:'1 1 140px',fontSize:11,opacity:!dreamCheck.ok||ap<2?0.45:1}}
+                            disabled={!dreamCheck.ok||ap<2}
+                            title={!dreamCheck.ok?dreamCheck.reason:undefined}
+                            onClick={()=>dreamCheck.ok&&openDream?.(s)}>
+                            💤 Walk Her Dream
+                          </button>
+                        );
+                      })()}
+                    </div>
+                    {(ownedSkills?.memory_palace||0)>=1&&!ownedClassSkills?.echo_gallery&&(
+                      <p style={{fontSize:11,color:'#607080',fontStyle:'italic'}}>Echoes capture automatically. Build Echo Gallery to view the archive.</p>
+                    )}
+                    {canViewEchoArchive(ownedSkills,ownedClassSkills||{})&&(
+                      <div>
+                        <div style={{fontSize:10,color:'#8090a0',marginBottom:6}}>BODY ECHO ARCHIVE</div>
+                        <EchoArchivePanel
+                          student={s}
+                          echoesState={v2State?.echoes}
+                          ownedSkills={ownedSkills}
+                          ownedClassSkills={ownedClassSkills}
+                          onOpenEcho={(echo)=>openEchoReplay?.(echo)}
+                          onResonate={onEchoResonate}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Talk */}
                 <div style={{marginBottom:14}}>

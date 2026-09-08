@@ -189,6 +189,33 @@ export const SKILL_TREE = [
     effect:"Influence pair bonus doubled. New action: 'Arrange Group Dinner' (2 girls simultaneously).",
     passiveBonus:0, apBonus:0, gainMult:0, requires:["relationship_class"], unlocks:["group_dinner"] },
 
+  // ── V2.0 CLASSROOM UPGRADES ────────────────────────────────────────────────
+
+  { id:"ritual_kitchen", tier:2, cost:150, category:"feeding", label:"🕯️ Ritual Kitchen",
+    desc:"A dedicated preparation space for ceremonial feasts — multiple courses, serving rituals, the infrastructure of spectacle.",
+    effect:"Unlocks Feast Rituals: Communion Snack and Class Banquet.",
+    passiveBonus:0, apBonus:0, gainMult:0.05, unlocks:["feast_rituals"] },
+
+  { id:"embodiment_chamber", tier:2, cost:150, category:"psychology", label:"🌒 Embodiment Chamber",
+    desc:"A quiet annex where the spirit can slip between bodies without the usual cost of focus.",
+    effect:"Spirit Embodiment costs 1 AP instead of 2.",
+    passiveBonus:0, apBonus:0, gainMult:0, unlocks:["embodiment_discount"] },
+
+  { id:"resonance_bells", tier:2, cost:150, category:"psychology", label:"🔔 Resonance Bells",
+    desc:"Subtle chimes installed throughout the classroom — appetite priming through sound. Also extends the craving resonance network.",
+    effect:"+2 resonance link slots. Weekly surge events possible.",
+    passiveBonus:0, apBonus:0, gainMult:0.05, unlocks:["resonance_extended"] },
+
+  { id:"echo_gallery", tier:3, cost:350, category:"psychology", label:"📜 Echo Gallery",
+    desc:"A wall of captured moments — weigh-ins, surrenders, threshold crossings. Each echo can be resonated for permanent gain.",
+    effect:"Unlock Echo Archive resonate action.",
+    passiveBonus:0, apBonus:0, gainMult:0.05, unlocks:["echo_resonate"] },
+
+  { id:"dream_chamber", tier:3, cost:350, category:"psychology", label:"💤 Dream Chamber",
+    desc:"A rest space tuned for subconscious appetite work — soft light, impossible portions, the spirit walking dreams on demand.",
+    effect:"Manual Appetite Dream trigger (2 AP).",
+    passiveBonus:0, apBonus:0, gainMult:0, unlocks:["dream_manual"] },
+
   { id:"blackout_curtains", tier:3, cost:350, category:"environment", label:"🪟 Blackout Curtains",
     desc:"Heavy curtains that close off the room completely — no outside gaze, no passing foot traffic, no sense that there is a world beyond this space. Privacy absolute. Everything that happens in here happens entirely on its own terms.",
     effect:"Scrutiny from actions reduced by 20%. Privacy seals the room from outside observation.",

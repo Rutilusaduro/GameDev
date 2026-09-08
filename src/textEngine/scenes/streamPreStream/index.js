@@ -1,7 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // DESTINY STREAM — pre-stream vignettes (stage-bucketed, composed)
 // ═══════════════════════════════════════════════════════════════
-import { registerPool } from '../../engine.js';
+import { registerPool, render } from '../../engine.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import '../streamPreStreamBrand.js';
 
@@ -124,3 +125,9 @@ registerPool('stream.pre.setup.production', [
     '{stream.pre.setup.production.c1} {stream.pre.setup.production.line}',
   ] },
 ]);
+
+export function renderPreStreamVignette(actionId, choiceId, ctx, opts = {}) {
+  if (!actionId || !choiceId || !ctx) return '';
+  const base = render(`{stream.pre.${actionId}.${choiceId}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'streamPre', ctx, opts.v2DepthChance ?? 0.28);
+}

@@ -2,11 +2,11 @@
 // Settling care scenes — "Tend Her" action (set.care.tend).
 // Refit + comfort milestone subs reuse immob.refit / immob.comfort.* via sceneKey.
 // House voice: intimate, practical, sensory — caretaking at impossible scale.
-import { registerPool } from '../../engine.js';
+import { registerPoolAutoDecompose } from '../decomposePools.js';
 
 // ── set.care.tend.beat ────────────────────────────────────────
 // The act of tending: cooling, adjusting, maintaining.
-registerPool('set.care.tend.beat', [
+registerPoolAutoDecompose('set.care.tend.beat', [
   { when: {}, text: [
     `You tend {subject.name} where she rests — small necessary attentions at a scale that makes them intimate.`,
     `You move through the space around her, attending to what needs attending. She holds still for it.`,
@@ -21,7 +21,7 @@ registerPool('set.care.tend.beat', [
   { when: { stageMin: 11 }, weight: 3, text: [
     `At her scale, tending takes time. You move through it unhurried — the vast territories of her attended piece by piece, each fold cooled, each weight redistributed, the full impossible warm expanse of her maintained by two hands that know exactly where to go.`,
     `She fills enough of the room that tending her is a route, not a gesture. You follow it: the cooling cloth, the repositioned pillow, the weight of a leg shifted by careful degrees. She goes still under the attention. Her breathing slows.`,
-    `Maintenance at leviathan scale: you tend the whole warm country of her — cooling what runs hottest, supporting what furniture cannot reach, attending each fold and deep terrain until the room settles alongside her.`,
+    `Maintenance at room-filling scale: you tend the whole warm country of her — cooling what runs hottest, supporting what furniture cannot reach, attending each fold and deep terrain until the room settles alongside her.`,
     `There is more of her than before. You tend all of it — the immense soft landscape of her, the heat she generates at rest, the specific needs of mass at this scale. It takes time. You give it without rushing.`,
     `You move through the tending methodically, learning the changes since last time: a new fold where the weight has redistributed, a new warm place that needs the cloth. She is not the same shape two visits running. You adjust accordingly.`,
   ]},
@@ -29,7 +29,7 @@ registerPool('set.care.tend.beat', [
 
 // ── set.care.tend.react ───────────────────────────────────────
 // Her response: corruption-keyed, stage-keyed.
-registerPool('set.care.tend.react', [
+registerPoolAutoDecompose('set.care.tend.react', [
   { when: {}, text: [
     `{subject.name} is quiet under the attention. Warmth and stillness.`,
     `She lets you tend her without commentary. Something in her settles.`,
@@ -39,7 +39,7 @@ registerPool('set.care.tend.react', [
     `She still gets a little caught on being maintained like this — the smallness of needing it, the enormity of receiving it. But she doesn't say stop.`,
     `She goes quiet and a little overwhelmed when you tend her. Not distress — something else. The particular weight of being cared for at this scale by someone who doesn't make it a thing.`,
     `"Thank you," she says when you're done. Quietly. Like she's still surprised you meant it.`,
-    `There is a moment near the end where she watches you and doesn't speak. The gratitude is in that moment. You both know it.`,
+    `There is a moment near the end where she watches you and doesn't speak. The gratitude lives in that silence.`,
   ]},
   { when: { corruption: [1] }, weight: 2, text: [
     `She takes it with the ease of someone who decided a while ago that this is simply how things are now. No explanation needed.`,
@@ -66,6 +66,6 @@ registerPool('set.care.tend.react', [
 ]);
 
 // ── set.care.tend — composed skeleton ─────────────────────────
-registerPool('set.care.tend', [
+registerPoolAutoDecompose('set.care.tend', [
   { when: {}, text: [`{set.care.tend.beat} {set.care.tend.react}{set.enorm|prefix: }`] },
 ]);

@@ -1,11 +1,11 @@
 // The Squad — Lead: A3 Immobility | Support: A7 Artisan, A5 Editor
 // Settling feed scenes — preferred / spread / stuffing.
 // House voice: appetite celebrated, gain as pleasure, scale as abundance.
-import { registerPool } from '../../engine.js';
+import { registerPoolAutoDecompose } from '../decomposePools.js';
 
 // ── set.feed.preferred ────────────────────────────────────────
 // Hand-feeding with confirmed courtPreference — the known taste, finally met.
-registerPool('set.feed.preferred', [
+registerPoolAutoDecompose('set.feed.preferred', [
   { when: {}, text: [
     ctx => {
       const pref = ctx.globals?.courtPreference || ctx.d?.subject?.courtPreference;
@@ -76,7 +76,7 @@ registerPool('set.feed.preferred', [
 
 // ── set.feed.spread ───────────────────────────────────────────
 // A full multi-dish spread — volume, variety, the abundance she warrants.
-registerPool('set.feed.spread', [
+registerPoolAutoDecompose('set.feed.spread', [
   { when: {}, text: [
     `You bring more than a single plate. {subject.name} surveys what you've laid out, and starts at one end.`,
     `The spread takes up most of the available surface. She notes this without comment and reaches for the nearest thing.`,
@@ -89,7 +89,7 @@ registerPool('set.feed.spread', [
     `The spread occupies the table, the side surface, and you — you end up holding the last tray because there's nowhere left to put it. She does not find this remarkable. She eats through everything in the comfortable order of someone who has assessed what's best to take first.`,
   ]},
   { when: { stageMin: 11 }, weight: 3, text: [
-    `At her scale, a spread isn't a meal so much as a serious project. You arrive with trays — more than she could have expected. She reaches for the nearest thing without preamble, already eating before you've finished setting up. She will eat all of it. You both know this.`,
+    `At her scale, a spread isn't a meal so much as a serious project. You arrive with trays — more than she could have expected. She reaches for the nearest thing without preamble, already eating before you've finished setting up. She will eat all of it. The trays already say so.`,
     `You've planned for her size this time: enough dishes to feel like abundance, not like apology. She notices the difference. "This," she says, looking at the full spread. Not a question. An acknowledgment that you have, finally, properly prepared for what she is.`,
     `The spread you've brought is — you won't pretend otherwise — an event. Three trays. Everything she'd want and some she didn't know she wanted. She eats through it the way she fills the room: completely, without drama, as the obvious outcome of her natural state. By the end she is fuller than she's been all week. She looks immensely satisfied.`,
     `She eats and eats and eats. The spread gives way piece by piece to her appetite — that patient, enormous, perfectly comfortable appetite that has become one of the primary facts of her existence. When it's gone she lies back further and exhales. "More next time," she says. You were already planning it.`,
@@ -98,7 +98,7 @@ registerPool('set.feed.spread', [
 
 // ── set.feed.stuffing ─────────────────────────────────────────
 // Pushing past comfortable — she goes further. Capacity expands.
-registerPool('set.feed.stuffing', [
+registerPoolAutoDecompose('set.feed.stuffing', [
   { when: {}, text: [
     `You push her a little past comfortable tonight. She objects mildly, and opens again anyway.`,
     `She has found a little more room than she thought. She always does.`,

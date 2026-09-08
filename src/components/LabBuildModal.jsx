@@ -1,6 +1,8 @@
 import { C } from '../styles.js';
 import { LAB_ACQUISITION_OPTIONS } from '../gameData/talia.js';
 import { formatPartsBag } from '../gameData/labParts.js';
+import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
+import { renderLabSessionBeat } from '../textEngine/scenes/talia/lab.js';
 
 const ACCENT = '#4a6080';
 
@@ -29,9 +31,16 @@ export function LabBuildModal({
   );
 
   if (labSession.phase === 'acquire') {
+    const prose = renderLabSessionBeat(taliaStudent, 1, 'acquire');
     return wrap(
       <>
+        <SceneBackdrop variant="lab" />
         <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT, marginBottom: 6 }}>LAB SESSION — ACQUIRE</div>
+        {prose && (
+          <p style={{ fontSize: 11, color: '#a0b0c8', marginBottom: 10, lineHeight: 1.65, fontStyle: 'italic' }}>
+            {prose}
+          </p>
+        )}
         <div style={{ fontSize: 11, color: '#8090b0', marginBottom: 12, lineHeight: 1.6 }}>
           Gather parts before you build. Talia is at {Math.round(taliaStudent?.lbs || 0)} lbs — builds spend her mass.
         </div>
@@ -50,9 +59,16 @@ export function LabBuildModal({
 
   if (labSession.phase === 'build') {
     const items = formatPartsBag(labSession.pool || {});
+    const prose = renderLabSessionBeat(taliaStudent, 1, 'session');
     return wrap(
       <>
+        <SceneBackdrop variant="lab" />
         <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT, marginBottom: 6 }}>LAB SESSION — READY</div>
+        {prose && (
+          <p style={{ fontSize: 11, color: '#a0b0c8', marginBottom: 10, lineHeight: 1.65, fontStyle: 'italic' }}>
+            {prose}
+          </p>
+        )}
         <div style={{ fontSize: 11, color: '#8090b0', marginBottom: 10 }}>
           Parts acquired. Build devices from The Lab view, or close to save parts to storage.
         </div>

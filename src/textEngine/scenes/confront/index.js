@@ -7,6 +7,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, registerModuleVariants, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 
 // ── confront.open ─────────────────────────────────────────────
 registerPool('confront.open', [
@@ -121,7 +122,8 @@ registerPool('confront.withMemory', [
 export function renderConfront(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });
-  return render('{confront}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{confront}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'confront', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 /** Render confrontation with a memory-anchored grievance callback.
@@ -129,5 +131,6 @@ export function renderConfront(student, week = 1, opts = {}) {
 export function renderConfrontWithMemory(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });
-  return render('{confront.withMemory}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{confront.withMemory}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'confront', ctx, opts.v2DepthChance ?? 0.3);
 }

@@ -1,11 +1,13 @@
 import { C } from '../styles.js';
 import { REMOVAL_HEARING, EMERGENCY_HEARING, pickHearingEnding } from '../gameData/oppositionHearings.js';
 import { getSupernaturalHearingFlags } from '../gameData/supernaturalForms.js';
+import { renderHearingPhase } from '../textEngine/scenes/opposition/index.js';
 
 export function OppositionHearingModal({
   hearingState,
   students,
   opposition,
+  week = 1,
   onChoice,
   onClose,
 }) {
@@ -14,11 +16,10 @@ export function OppositionHearingModal({
   const student = hearingState.studentId != null ? students.find((s) => s.id === hearingState.studentId) : null;
   const done = hearingState.done;
   const phase = !done ? def.phases[hearingState.phaseIdx] : null;
-  const ctx = {
-    studentName: student?.name || 'the student',
-    studentLbs: student ? Math.round(student.lbs) : 0,
-  };
-  const phaseText = phase ? (typeof phase.text === 'function' ? phase.text(ctx) : phase.text) : null;
+  const hearingType = hearingState.type === 'emergency' ? 'emergency' : 'removal';
+  const phaseText = phase && !done
+    ? renderHearingPhase(hearingType, hearingState.phaseIdx, student, week)
+    : null;
   const hearingFlags = getSupernaturalHearingFlags(students);
   const hasDiscreditPath = students.some((s) => s.evolvedForm === 'community_researcher' || s.evolvedForm === 'eating_streamer')
     || hearingFlags.hasArchivistDiscredit;

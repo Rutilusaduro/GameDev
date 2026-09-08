@@ -3,12 +3,15 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { render, createContext } from '../textEngine/engine.js';
+import { appendV2Depth } from '../textEngine/scenes/v2/depthRenderer.js';
 
-export function renderOppositionLine(pool, ctx = {}) {
+export function renderOppositionLine(pool, ctx = {}, opts = {}) {
   try {
-    const line = render(`{${pool}}`, createContext(ctx));
+    const engineCtx = createContext(ctx);
+    const line = render(`{${pool}}`, engineCtx);
     if (!line || line.includes('{unresolved}')) return null;
-    return line;
+    const chance = opts.v2DepthChance ?? 0.34;
+    return appendV2Depth(line, 'opposition', engineCtx, chance);
   } catch {
     return null;
   }
@@ -36,9 +39,9 @@ export function supernaturalActLine(week) {
 
 export function agendaResolveLine(cardId, week) {
   const pool = `opposition.agenda.${cardId}`;
-  return renderOppositionLine(pool, { week });
+  return renderOppositionLine(pool, { week, globals: { card: cardId } });
 }
 
 export function counterSuccessLine(counterId) {
-  return renderOppositionLine('opposition.counter.success', { counter: counterId });
+  return renderOppositionLine('opposition.counter.success', { counter: counterId, globals: { counter: counterId } });
 }

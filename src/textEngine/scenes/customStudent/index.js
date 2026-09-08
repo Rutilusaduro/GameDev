@@ -86,7 +86,7 @@ registerModuleVariants('diary.innerBeat', [
     'Inputs increased. Output improved. I am trying not to smile at that sentence.',
   ]},
   { when: { ...CUSTOM, corruption: [2] }, priority: P, weight: W, text: [
-    'The trial continues because I want it to. That is the cleanest data point.',
+    'The trial continues because I want it to. Cleanest data point.',
     'Build yield within spec. Personal yield better than spec. Continuing.',
   ]},
 ]);

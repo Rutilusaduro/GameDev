@@ -3,6 +3,7 @@
 import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { createContext } from '../../engine.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import './portraits.js';
 import './portraitDepth.js';
 import './depth.js';
@@ -20,7 +21,10 @@ export function renderBodyPortrait(student, week = 1, opts = {}) {
   }
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const depthLine = render('{body.portrait.depth}', ctx, { trace: opts.trace || null });
-  if (depthLine?.trim() && !depthLine.includes('{unresolved}')) return depthLine.trim();
+  if (depthLine?.trim() && !depthLine.includes('{unresolved}')) {
+    return appendV2Depth(depthLine.trim(), 'body', ctx, opts.v2DepthChance ?? 0.25);
+  }
   const line = render('{body.portrait}', ctx, { trace: opts.trace || null });
-  return line?.trim() || renderRichFallback(student, week);
+  const base = line?.trim() || renderRichFallback(student, week);
+  return appendV2Depth(base, 'body', ctx, opts.v2DepthChance ?? 0.25);
 }

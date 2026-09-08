@@ -12,6 +12,8 @@ import { getStage } from '../gameData/stages.js';
 import { isBodyComplimentUnwelcome } from '../gameData/talkSystem.js';
 import { createContext, render } from '../textEngine/engine.js';
 import { traceToFlagNodes } from '../textEngine/textFlagFormat.js';
+import { appendV2Depth } from '../textEngine/scenes/v2/depthRenderer.js';
+import { renderInteriorSelfObs } from '../textEngine/scenes/interior/index.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
 import '../textEngine/scenes/talkCodas.js'; // registers talk.coda
 import '../textEngine/scenes/talkEncourage.js'; // registers talk.encourage
@@ -71,6 +73,11 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
       ctx.d.brandControl = getBrandControlTier(ds.brandStreaks?.[ds.brand] || 0);
       const off = render('{destiny.offstream.talk}', ctx, { ...renderOpts, noSmooth: true });
       if (off?.trim()) text += `\n\n${off}`;
+    }
+    text = appendV2Depth(text, 'talk', ctx, 0.3);
+    if (topic.id === 'check_in' && Math.random() < 0.35) {
+      const interior = renderInteriorSelfObs(student, week, { v2DepthChance: 0.2 });
+      if (interior?.trim()) text += `\n\n${interior}`;
     }
   }
 

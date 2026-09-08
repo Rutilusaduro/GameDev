@@ -1,0 +1,38 @@
+// The Squad — Lead: A4 Architect | Support: A5 Editor
+// Talia lab session prose — inventor path flavor beats.
+import { registerPool, render } from '../../engine.js';
+import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
+
+registerPool('lab.session.beat', [
+  { when: { stageMin: 5 }, text: [
+    'Talia measures the workbench with grease-stained fingers. Her body is inventory now — mass traded for mechanism, hunger traded for hypothesis.',
+    'The lab hums. She talks about optimization the way other people talk about dessert — precise, eager, already tasting the outcome.',
+  ]},
+  { when: {}, text: [
+    'Circuits and calipers. Talia treats appetite like an engineering problem — inputs, outputs, a body willing to be iterated on.',
+    'She hunches over the bench, hoodie slipping, eyes bright. The inventor path smells like solder and something sweeter underneath.',
+    'Parts scatter across steel. Talia narrates each choice like a proof — clinical on the surface, hungry underneath.',
+  ]},
+]);
+
+registerPool('lab.session.acquire', [
+  { when: {}, text: [
+    'Acquisition means scavenging campus, trading favors, spending what she has stored in flesh.',
+    'She lists what the build needs without looking up. Her thighs press the stool. Mass is currency here.',
+    'Parts on the list, mass in reserve. Talia spends both without sentiment — inventory and appetite aligned.',
+  ]},
+]);
+
+export function renderLabSessionBeat(student, week = 1, phase = 'session', opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    globals: { labPhase: phase, ...(opts.globals || {}) },
+    ...opts,
+  });
+  const pool = phase === 'acquire' ? 'lab.session.acquire' : 'lab.session.beat';
+  const base = render(`{${pool}}`, ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'lab', ctx, opts.v2DepthChance ?? 0.3);
+}

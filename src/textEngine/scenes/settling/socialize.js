@@ -1,11 +1,11 @@
 // The Squad — Lead: A3 Immobility | Support: A7 Artisan, A5 Editor
 // Settling socialize scenes — gossip / confide / praise.
 // House voice: oracle warmth, campus gravity, celebrated and adored.
-import { registerPool } from '../../engine.js';
+import { registerPoolAutoDecompose } from '../decomposePools.js';
 
 // ── set.socialize.gossip ──────────────────────────────────────
 // You bring the week's news. She is the oracle it passes through.
-registerPool('set.socialize.gossip', [
+registerPoolAutoDecompose('set.socialize.gossip', [
   { when: {}, text: [
     `You pull up a chair and bring her the week. {subject.name} listens from where she rests, weighing each thing with the calm authority of someone who no longer has to leave to know what's happening.`,
     `She has become the room through which campus news filters. You bring it; she sorts it; she delivers the verdict. "Interesting," she says. You believe her.`,
@@ -27,7 +27,7 @@ registerPool('set.socialize.gossip', [
 
 // ── set.socialize.confide ─────────────────────────────────────
 // Deeper intimacy: you confide, she receives; she confides back.
-registerPool('set.socialize.confide', [
+registerPoolAutoDecompose('set.socialize.confide', [
   { when: {}, text: [
     `You tell {subject.name} something. She listens with the particular weight of someone who has earned confidence — still, warm, entirely present. She keeps it.`,
     `There is an ease to telling her things. She is here. She is not going anywhere. She has the time and the stillness for it.`,
@@ -59,14 +59,14 @@ registerPool('set.socialize.confide', [
 // You say concrete things about her body, out loud. She reacts.
 // Rule (Style Ledger): the praise LINE contains the actual praise,
 // quoted and specific — never "you name it specifically" placeholders.
-registerPool('set.socialize.praise', [
+registerPoolAutoDecompose('set.socialize.praise', [
   { when: {}, text: [`{set.socialize.praise.line} {set.socialize.praise.react}`] },
 ]);
 
 // ── set.socialize.praise.line ─────────────────────────────────
 // Shape: DIALOGUE BEAT — YOU speaking, naming named body regions,
 // architecture, or the number. Stage-keyed (what's true of her body).
-registerPool('set.socialize.praise.line', [
+registerPoolAutoDecompose('set.socialize.praise.line', [
   { when: {}, text: [
     `"There's so much of you now," you tell her, resting a hand where her belly spills warm over her thigh. "More every week. My arm doesn't reach even a part of you."`,
     `"You spread a little wider every time I come in," you say, and you show her where — palm flat to the soft slope of her side, sinking. "Right here. It keeps going."`,
@@ -86,7 +86,7 @@ registerPool('set.socialize.praise.line', [
 
 // ── set.socialize.praise.react ────────────────────────────────
 // Shape: her reaction. Corruption-keyed psychology.
-registerPool('set.socialize.praise.react', [
+registerPoolAutoDecompose('set.socialize.praise.react', [
   { when: {}, text: [
     `She takes it in. Something settles in her at being named out loud.`,
     `She lets each word land and doesn't deflect a single one.`,

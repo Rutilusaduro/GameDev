@@ -12,6 +12,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 
 // ── memory.self ───────────────────────────────────────────────
 // Shape: SHORT SENTENCE — a callback to her own recent past.
@@ -105,14 +106,16 @@ registerPool('memory.class', [
 export function renderMemorySelf(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });
-  return render('{memory.self}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{memory.self}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'memory', ctx, opts.v2DepthChance ?? 0.25);
 }
 
 /** Render cross-girl gossip about another girl. */
 export function renderMemoryClass(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });
-  return render('{memory.class}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{memory.class}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(base, 'memory', ctx, opts.v2DepthChance ?? 0.22);
 }
 
 /**
@@ -135,5 +138,10 @@ export function renderMemoryCallback(student, week = 1, opts = {}) {
       ...(opts.globals || {}),
     },
   });
-  return render('{memory.self}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(
+    render('{memory.self}', ctx, { trace: opts.trace || null })?.trim() || '',
+    'memory',
+    ctx,
+    opts.v2DepthChance ?? 0.28,
+  );
 }

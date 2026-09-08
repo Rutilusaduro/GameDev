@@ -13,6 +13,7 @@ import { renderCampusSighting, renderCampusTravelLine, renderCampusFindFlavor } 
 import { renderCampusScene } from '../textEngine/scenes/campus/index.js';
 import { campusNodeToLocale } from './textContext.js';
 import { maybeRollDeviceEncounter, maybeRollDeviceFlavor } from './campusDeviceEncounters.js';
+import { formatSecretDiscoverLine } from '../textEngine/scenes/campus/secrets.js';
 
 export const EXPLORATION_CONFIG = {
   travelEventChance: 0.62,
@@ -63,6 +64,29 @@ function campusNavSceneLine(student, ctx) {
     campusTier: ctx.campusTier ?? 0,
   });
   return line?.trim() || null;
+}
+
+function pickSecretDiscoverStudent(ctx, rng) {
+  const visible = (ctx.students || []).filter(st => {
+    if (st.hidden && st.id !== ELARA_ID) return false;
+    if (st.evolvedForm === 'pharmacist') return false;
+    return true;
+  });
+  if (!visible.length) return null;
+  return pick(rng, visible.filter(s => s.id !== 15)) || visible[0];
+}
+
+/** V2 prose for campus secret discovery — falls back to raw discover text. */
+export function resolveSecretDiscoverLine(secret, ctx, nodeId, rng = Math.random) {
+  if (!secret?.discover) return '';
+  const student = pickSecretDiscoverStudent(ctx, rng);
+  const line = student
+    ? formatSecretDiscoverLine(secret, student, ctx.week ?? 1, {
+      globals: { nodeId },
+      v2DepthChance: 0.35,
+    })
+    : '';
+  return line || `🔓 ${secret.discover}`;
 }
 
 function pickStudentSighting(students, ctx, rng) {
@@ -269,7 +293,7 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
     }
     if (secret.solve === 'search' && rng() < EXPLORATION_CONFIG.searchSecretChance) {
       effects.solvedSecret = secret.id;
-      lines.push(`🔓 ${secret.discover}`);
+      lines.push(resolveSecretDiscoverLine(secret, ctx, nodeId, rng));
       if (secret.reward?.findId) {
         const find = getExplorationFind(secret.reward.findId);
         if (find) {

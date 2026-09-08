@@ -2,6 +2,7 @@
 // SCENE: SUDDEN GROWTH — public API
 // ═══════════════════════════════════════════════════════════════
 import { createContext, render } from '../../engine.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import { getStage } from '../../../gameData/stages.js';
 import {
   resolveGrowthZone,
@@ -43,7 +44,8 @@ export function renderSuddenGrowthLine(student, {
       weightBand: weightBandFromLbs(student?.lbs),
     },
   });
-  return render('{grow.sudden}', ctx);
+  const base = render('{grow.sudden}', ctx);
+  return appendV2Depth(base, 'growth', ctx, 0.38);
 }
 
 export { SUDDEN_GROWTH_LBS_MIN, resolveGrowthZone, isSuddenGrowth };

@@ -2,6 +2,7 @@
 // Dinner scene library — endings, conversations, group beats.
 import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+import { appendV2Depth } from '../v2/depthRenderer.js';
 import { renderMemoryCallback } from '../memory/index.js';
 import './endingScene.js';
 import './conversations.js';
@@ -13,6 +14,10 @@ import './selectors.js';
 import './overfill.js';
 import './dishDesc.js';
 import './wildcardDepth.js';
+import './dinnerConvDepth.js';
+import './dinnerReactionsDepth.js';
+import './dinnerEndingDepth.js';
+import { renderDinnerEnding } from './endingScene.js';
 
 export { renderDinnerEnding } from './endingScene.js';
 export { renderDinnerOverfill } from './overfill.js';
@@ -23,6 +28,12 @@ function composeOverlay(main, overlay) {
   const b = overlay?.trim() || '';
   if (a && b) return `${a} ${b}`;
   return a || b;
+}
+
+function maybeV2Dinner(text, student, week, opts = {}) {
+  if (!text?.trim() || !student) return text;
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return appendV2Depth(text, 'dinner', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 function renderOverlay(student, week, opts = {}) {
@@ -58,13 +69,15 @@ export function renderGroupDinnerReaction(kind, subject, ref, week = 1, opts = {
   const poolKey = REACTION_POOLS[kind];
   if (!poolKey) return '';
   const main = renderReactionPool(poolKey, subject, ref, week, opts);
-  return composeOverlay(main, renderOverlay(subject, week, { ref, ...opts }));
+  const composed = composeOverlay(main, renderOverlay(subject, week, { ref, ...opts }));
+  return maybeV2Dinner(composed, subject, week, opts);
 }
 
 /** Fed girl unbuttons mid-meal when she crosses fullness cap. */
 export function renderDinnerUnbutton(student, week = 1, opts = {}) {
   const main = renderReactionPool(REACTION_POOLS.unbutton, student, student, week, opts);
-  return composeOverlay(main, renderOverlay(student, week, opts));
+  const composed = composeOverlay(main, renderOverlay(student, week, opts));
+  return maybeV2Dinner(composed, student, week, opts);
 }
 
 /** Render a solo dinner conversation topic by id (matches DINNER_CONVERSATION[].id). */
@@ -72,7 +85,8 @@ export function renderDinnerConversation(convId, student, week = 1, opts = {}) {
   if (!student || !convId) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const main = render(`{dinner.conv.${convId}}`, ctx, { trace: opts.trace || null })?.trim() || '';
-  return composeOverlay(main, renderOverlay(student, week, opts));
+  const composed = composeOverlay(main, renderOverlay(student, week, opts));
+  return maybeV2Dinner(composed, student, week, opts);
 }
 
 /** Render a group dinner conversation; subject + ref are the two girls at the table. */
@@ -85,7 +99,8 @@ export function renderGroupDinnerConversation(convId, subject, ref, week = 1, op
     ...opts,
   });
   const main = render(`{dinner.groupConv.${convId}}`, ctx, { trace: opts.trace || null })?.trim() || '';
-  return composeOverlay(main, renderOverlay(subject, week, { ref, ...opts }));
+  const composed = composeOverlay(main, renderOverlay(subject, week, { ref, ...opts }));
+  return maybeV2Dinner(composed, subject, week, opts);
 }
 
 /** Venue waiter line when clearing plates mid-dinner. */
@@ -99,7 +114,8 @@ export function renderDinnerWaiter(venueId, student, week = 1, opts = {}) {
   });
   const main = render('{dinner.waiter}', ctx, { trace: opts.trace || null })?.trim()
     || 'The server arrives. "Shall I bring more?" she asks.';
-  return composeOverlay(main, renderOverlay(student, week, opts));
+  const composed = composeOverlay(main, renderOverlay(student, week, opts));
+  return maybeV2Dinner(composed, student, week, opts);
 }
 
 /** Full dinner depth beat — setup through exit. */

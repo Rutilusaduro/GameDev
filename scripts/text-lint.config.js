@@ -4,7 +4,7 @@ export const BANNED_PATTERNS = [
   { pattern: /you both know/i, message: "Show behavior, don't narrate shared knowledge" },
   { pattern: /water weight/i, message: "No gain-excuse language (gate below stage 2 instead)" },
   { pattern: /I have become the/i, message: "Character dialogue cliché — show metaphorically" },
-  { pattern: /adipose|BMI|obesity|weight issues/i, message: "Clinical language banned" },
+  { pattern: /\badipose\b|\bBMI\b|\bobesity\b|weight issues/i, message: "Clinical language banned" },
   { pattern: /\b(leviathan|blob) scale\b/i, message: "Never use engine stage labels in player-facing prose" },
   { pattern: /\bat blob scale\b/i, message: "Never use engine stage labels in player-facing prose" },
   { pattern: /\bthe leviathan rests\b/i, message: "Never use stage names as nouns for the character" },
@@ -58,8 +58,10 @@ export const COVERAGE_CORRUPTION_PROBES = [0, 1, 2];
 export const INFRA_MODULE_KEYS = new Set([
   'subject.name', 'subject.first', 'subject.lbs', 'subject.semesterGain',
   'subject.they', 'subject.them', 'subject.their', 'subject.theirs', 'subject.themself',
+  'ref.name', 'ref.first',
   'char.desc', 'sizeCompare', 'bodyType.desc', 'clothing.desc', 'group.desc', 'device.label',
   'word.size', 'word.movement', 'word.body', 'word.clothingFit', 'word.fullness', 'word.essence',
+  'partnerName', 'partnerLbs', 'partnerGain', 'wrenLine', 'kylieGain', 'studentLbs',
 ]);
 
 /** --strict-volume: fail when thin wildcard pools remain (Phase A gate). */

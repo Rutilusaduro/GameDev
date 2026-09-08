@@ -191,7 +191,7 @@ function LoadCellReadout({lbs}){
   );
 }
 
-export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,onMandatorySkip,onPersistWeekTextUsed,week,campusFattening=false,campusTier=0}){
+export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,onMandatorySkip,onPersistWeekTextUsed,onComplete,week,campusFattening=false,campusTier=0}){
   const student=weighInState?.student;
   const textSession=useMemo(()=>({
     sessionUsed:createSessionUsed(),
@@ -220,6 +220,7 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
   const close=()=>{
     const patch=weekUsedToPatch(textSession.weekUsed);
     if(patch.textUsedKeys&&onPersistWeekTextUsed) onPersistWeekTextUsed(student.id,patch);
+    onComplete?.(student);
     setWeighInState(null);
   };
   const stepOntoScale=()=>setPhase(goesDirectlyToBig?"digital":"analog");
