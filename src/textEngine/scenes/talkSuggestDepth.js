@@ -242,3 +242,51 @@ registerModuleVariants('talk.suggest_growth', [
     `${OPENER}{talk.suggest_growth.b10}`,
   ] },
 ]);
+
+// ── Per-student indulgence/growth voice (weight 4) ─────────────
+
+registerModuleVariants('talk.suggest_indulgence.b10._f1', [
+  { when: { studentId: 0 }, weight: 4, text: [`"You know what," Brittany says, already on her feet. "Fuel break. Captain's orders — mine."`] },
+  { when: { studentId: 2 }, weight: 4, text: [`"Content break," Kylie says, standing. "Eating montage. Don't follow unless you're bringing snacks."`] },
+  { when: { studentId: 5 }, weight: 4, text: [`"BRB food," Destiny says, already standing. "Quest accepted."`] },
+  { when: { studentId: 7 }, weight: 4, text: [`"Efficiency break," Priya says, grabbing her bag. "Caloric intake scheduled. Now."`] },
+  { when: { studentId: 10 }, weight: 4, text: [`"Kitchen calls," Reneé says, pleased. "I already know what I'm making. Lots of it."`] },
+]);
+
+registerModuleVariants('talk.suggest_indulgence.b11._f3', [
+  { when: { studentId: 6 }, weight: 4, text: [`Tiffany grabs her coat. "Second dinner is chapter policy now. Don't @ me."`] },
+  { when: { studentId: 9 }, weight: 4, text: [`Chloé smiles. "Third dinner, peut-être. Do not answer. I am going."`] },
+  { when: { studentId: 14 }, weight: 4, text: [`Mary Jane laughs. "Third dinner sounds like Sunday at home. I'm in."`] },
+]);
+
+registerModuleVariants('talk.suggest_indulgence.b20._f1', [
+  { when: { studentId: 8 }, weight: 4, text: [`Maya catches your intent and nods once. "Yes," she says. Quiet. Certain.`] },
+  { when: { studentId: 15 }, weight: 4, text: [`Lilith smiles. "You don't have to suggest. I already decided."`] },
+]);
+
+registerModuleVariants('talk.suggest_indulgence.b21._f3', [
+  { when: { studentId: 3 }, weight: 4, text: [`"Feed me. Grow me. PR me." Serena leans forward, belly pressing the desk. "Coach me."`] },
+  { when: { studentId: 16 }, weight: 4, text: [`"Optimal outcome requested," Sophia whispers. "Proceed with dosing."`] },
+  { when: { studentId: 18 }, weight: 4, text: [`"Increase input," Talia says. "I will log the results. On my body."`] },
+]);
+
+registerModuleVariants('talk.suggest_growth.b10._f1', [
+  { when: { studentId: 1 }, weight: 4, text: [`Madeline is quiet. "I model growth scenarios," she admits. "On purpose. Frequently."`] },
+  { when: { studentId: 4 }, weight: 4, text: [`Fiona touches her middle. "I think about being bigger," she says. "Like a canvas expanding."`] },
+  { when: { studentId: 12 }, weight: 4, text: [`Nadia writes one word: MORE. "Case study ongoing," she says.`] },
+]);
+
+registerModuleVariants('talk.suggest_growth.b11._f2', [
+  { when: { studentId: 11 }, weight: 4, text: [`Kaylee runs her hands over her belly. "I want to arrive," she whispers. "Safely. Fully."`] },
+  { when: { studentId: 13 }, weight: 4, text: [`Daisy pats her middle. "More room for everybody," she says, warm. "Starting with me."`] },
+]);
+
+registerModuleVariants('talk.suggest_growth.b20._f2', [
+  { when: { studentId: 17 }, weight: 4, text: [`Indiana grins. "There's a bigger ruin inside me," she says. "I can feel the map updating."`] },
+  { when: { studentId: 6 }, weight: 4, text: [`Tiffany spreads her hands over her belly. "Chapter goal: more. I'm exceeding benchmarks."`] },
+]);
+
+registerModuleVariants('talk.suggest_growth.b21._f1', [
+  { when: { studentId: 8 }, weight: 4, text: [`Maya puts your hand on her belly. "Talk to it," she says. "I'll listen."`] },
+  { when: { studentId: 10 }, weight: 4, text: [`Reneé guides your palm to warm flesh. "This is the recipe," she murmurs. "Tell it there's more coming."`] },
+]);
