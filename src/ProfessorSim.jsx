@@ -100,6 +100,7 @@ import { renderMemorySelf, renderMemoryClass } from './textEngine/scenes/memory/
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding, renderIntimacyPassout } from './textEngine/scenes/intimacy/index.js';
 import { renderPreStreamVignette } from './textEngine/scenes/streamPreStream/index.js';
+import { renderStreamBeat } from './textEngine/scenes/stream/liveBridge.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
@@ -5801,7 +5802,7 @@ export default function ProfessorSim(){
       const student=students.find(st=>st.id===prev.studentId);
       const totalRounds=pickRoundCount(challenge);
       const ctx=buildStreamCtx({...prev,challenge},student);
-      const roundStartLine=render('{stream.roundStart}',ctx);
+      const roundStartLine=renderStreamBeat('{stream.roundStart}',ctx);
       return {
         ...prev,
         phase:'roundStart',
@@ -5866,7 +5867,7 @@ export default function ProfessorSim(){
       const student=students.find(st=>st.id===prev.studentId);
       const memG=pickStudentMemory(student,week)??{};
       const ctx=buildStreamCtx(prev,student,{perf:tier,trend:deriveTrend(tierHistory),recentPerf:deriveRecentPerf(tierHistory),...memG});
-      const betweenRoundLine=[render('{stream.betweenRound}',ctx),memG.memScope?render('{memory.self}',ctx)?.trim():''].filter(Boolean).join('\n\n');
+      const betweenRoundLine=[renderStreamBeat('{stream.betweenRound}',ctx),memG.memScope?render('{memory.self}',ctx)?.trim():''].filter(Boolean).join('\n\n');
       let tapOutCause=prev.tapOutCause;
       if(!tapOutCause){
         tapOutCause=checkTapOutConditions({
@@ -5876,7 +5877,7 @@ export default function ProfessorSim(){
       }
       const burst=[];
       for(let i=0;i<2;i++){
-        const l=render(`{stream.chat.perf.${tier}}`,ctx);
+        const l=renderStreamBeat(`{stream.chat.perf.${tier}}`,ctx,{chat:true});
         if(l) burst.push(l);
       }
       return {
@@ -5922,7 +5923,7 @@ export default function ProfessorSim(){
         ...prev,
         phase:'roundStart',
         roundIndex:nextIdx,
-        roundStartLine:render('{stream.roundStart}',ctx),
+        roundStartLine:renderStreamBeat('{stream.roundStart}',ctx),
       };
     });
   };
@@ -5937,8 +5938,8 @@ export default function ProfessorSim(){
       })||'performance';
       const student=students.find(st=>st.id===prev.studentId);
       const ctx=buildStreamCtx(prev,student);
-      const line=render(`{stream.tapOut.${cause}}`,ctx);
-      const tapChat=render(`{stream.chat.tapOut.${cause}}`,ctx);
+      const line=renderStreamBeat(`{stream.tapOut.${cause}}`,ctx);
+      const tapChat=renderStreamBeat(`{stream.chat.tapOut.${cause}}`,ctx,{chat:true});
       const chatBurst=tapChat?[tapChat]:[];
       return {
         ...prev,tapOutCause:cause,
@@ -5986,12 +5987,12 @@ export default function ProfessorSim(){
       setStudents(p=>p.map(st=>st.id===prev.studentId?updated:st));
       if(r.playerShare>0) setMoney(m=>addFunds(m,r.playerShare));
       const ctx=buildStreamCtx(prev,updated,{perf:r.overallTier});
-      const endLine=render(`{stream.endStream.${r.overallTier}}`,ctx);
-      const tapLine=prev.tapOutCause?render(`{stream.tapOut.${prev.tapOutCause}}`,ctx):'';
-      const specialLines=(prev.specialOutcomes||[]).map(id=>render(`{stream.special.${id}}`,ctx)).filter(Boolean);
+      const endLine=renderStreamBeat(`{stream.endStream.${r.overallTier}}`,ctx,{v2DepthChance:0.32});
+      const tapLine=prev.tapOutCause?renderStreamBeat(`{stream.tapOut.${prev.tapOutCause}}`,ctx):'';
+      const specialLines=(prev.specialOutcomes||[]).map(id=>renderStreamBeat(`{stream.special.${id}}`,ctx)).filter(Boolean);
       const milestoneLines=fired.map(key=>{
         const mod=key.startsWith('stage_')?'stream.milestone.stage':`stream.milestone.${key}`;
-        return render(`{${mod}}`,ctx);
+        return renderStreamBeat(`{${mod}}`,ctx,{v2DepthChance:0.3});
       }).filter(Boolean);
       const streamGrowth=Math.round(r.weightGain)>0?buildGrowthEvent(updated,{
         cause:{

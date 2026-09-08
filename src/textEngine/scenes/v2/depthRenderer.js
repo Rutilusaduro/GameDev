@@ -47,6 +47,7 @@ const POOLS = {
   campusSecret: 'campusSecret.v2.depth',
   journal: 'journal.v2.depth',
   streamPre: 'streamPre.v2.depth',
+  stream: 'stream.v2.depth',
   wifeLessons: 'wifeLessons.v2.depth',
   wifeLessonsTalk: 'wifeLessonsTalk.v2.depth',
   homeroom: 'homeroom.v2.depth',

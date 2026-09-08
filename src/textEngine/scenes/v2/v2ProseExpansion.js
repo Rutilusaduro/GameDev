@@ -385,6 +385,35 @@ registerPool('journal.v2.depth', [
 registerPool('streamPre.v2.depth', [
   { when: {}, text: ['Before the camera lights, she rehearses abundance — outfit, mirror, snack, the private ritual of going on display.'] },
 ]);
+registerPool('stream.v2.depth', [
+  { when: { perf: ['excellent', 'good'], stageMin: 7 }, text: [
+    'The camera loves mass at this scale — every bite lands like proof she was always meant to be watched eating.',
+    'Chat counts in thousands now. Her belly fills the frame and nobody asks her to move.',
+  ]},
+  { when: { perf: ['excellent', 'good'] }, text: [
+    'The round lands clean — sponsor logo, chewing rhythm, hunger made into content.',
+    'She eats like someone who knows the audience is rooting for the next bite.',
+    'Performance and appetite blur. The chat rewards both.',
+  ]},
+  { when: { perf: ['poor', 'verypoor'] }, text: [
+    'The struggle is content too — breath, fullness, the honest edge where appetite outruns stamina.',
+    'She slows and the chat notices. Sympathy and hunger arrive in the same scroll.',
+  ]},
+  { when: { brand: 'crunchforge' }, text: ['Crunchforge wants effort on camera — sweat, strain, the brutal charm of competitive eating.'] },
+  { when: { brand: 'velvetmelt' }, text: ['Velvetmelt wants it slow and sensual — every swallow deliberate, every moan marketable.'] },
+  { when: { brand: 'fizzpeak' }, text: ['Fizzpeak wants chaos and joy — burps, laughter, the spectacle of someone having too much fun to stop.'] },
+  { when: { brand: 'glazeco' }, text: ['Glazeco wants pretty — neat bites, composed face, hunger dressed like elegance.'] },
+  { when: { audienceTier: ['late', 'veryLate'] }, text: [
+    'The audience has history with her body now — they remember when she was smaller, and they pay to watch her outgrow that memory.',
+    'Parasocial hunger: thousands of strangers invested in her next pound.',
+  ]},
+  { when: {}, text: [
+    'Livestream heat — camera, chat, the public ritual of eating for an audience.',
+    'Every round is content. Every bite is brand.',
+    'The stream turns appetite into spectacle and spectacle into appetite.',
+    'She performs hunger and hunger performs back through the lens.',
+  ]},
+]);
 registerPool('wifeLessonsTalk.v2.depth', [
   { when: { wlStage: [6, 7, 8] }, text: [
     'The conversation settles warm as dough — mothers and daughters speaking appetite like scripture.',

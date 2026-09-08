@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { C } from '../styles.js';
 import { createContext, render } from '../textEngine/engine.js';
+import { renderStreamBeat } from '../textEngine/scenes/stream/liveBridge.js';
 import {
   BRANDS, deriveBarParams, roundDurationFor, STREAM_DEFAULT_ROUNDS, STREAM_ROUND_SECONDS,
   getBrandControlLabel, getBrandControlTier,
@@ -129,7 +130,7 @@ function pickChatLine(session, student, week, recentLines = []) {
       if (roll <= 0) { pick = w; break; }
     }
     const ctx = buildStreamContext(session, student, week, { perf });
-    const line = render(`{${pick.key}}`, ctx);
+    const line = renderStreamBeat(`{${pick.key}}`, ctx, { chat: true });
     if (line && !recentLines.includes(line)) return line;
   }
   return null;
@@ -445,7 +446,7 @@ export function StreamSessionModal({
               ROUND {ss.roundIndex + 1} / {ss.totalRounds}
             </div>
             <div style={{ fontSize: 13, color: '#e8c0c0', fontStyle: 'italic', lineHeight: 1.8, marginBottom: 16 }}>
-              {ss.roundStartLine || render('{stream.roundStart}', ctx)}
+              {ss.roundStartLine || renderStreamBeat('{stream.roundStart}', ctx)}
             </div>
             <div style={{ fontSize: 10, color: '#806060' }}>Starting focus bar…</div>
           </div>
