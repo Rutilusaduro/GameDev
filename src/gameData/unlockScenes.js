@@ -31,7 +31,7 @@ export const UNLOCK_SCENES = {
   10: "Reneé tastes everything she makes, and lately she makes more than the recipe needs. A cook's tax, she calls it. The tax keeps climbing. She talks about flavor the way other people talk about wanting, and the wanting has found your frequency.",
   // Kaylee — nursing, nurturing
   11: "Kaylee feeds everyone first; that's the whole shape of her. Which is why it stops you, this week, to catch her plating something only for herself and lingering over it. The girl who tends the room lets herself be tended. You step into the gap she left open.",
-  // Nadia — psych PhD, clinical observer
+  // Nadia — behavioral studies grad, clinical observer
   12: "Nadia takes notes on appetite like it's someone else's case study, coffee going cold, the watcher never the watched. Then the data turns personal. She catalogs her own second plate with clinical interest and a flush she doesn't record. You've become a variable she can't control for.",
   // Daisy — eced, snacks for everyone
   13: "Daisy always has snacks in her bag for everyone else. This week the bag empties before she reaches the kids. She laughs, refills it bigger, smells like cookies, and doesn't mind that some of them never leave her hands. The looking-after has turned inward, toward you.",

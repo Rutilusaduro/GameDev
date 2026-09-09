@@ -19,12 +19,14 @@ export function playHallPassSound(kind, enabled = true) {
     gain.connect(ctx.destination);
     const t = ctx.currentTime;
     if (kind === 'unlock') {
+      osc.type = 'sine';
       osc.frequency.setValueAtTime(392, t);
-      osc.frequency.exponentialRampToValueAtTime(587, t + 0.14);
-      gain.gain.setValueAtTime(0.055, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+      osc.frequency.exponentialRampToValueAtTime(523, t + 0.1);
+      osc.frequency.exponentialRampToValueAtTime(659, t + 0.22);
+      gain.gain.setValueAtTime(0.05, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.34);
       osc.start(t);
-      osc.stop(t + 0.28);
+      osc.stop(t + 0.34);
     } else if (kind === 'week') {
       osc.frequency.value = 262;
       gain.gain.setValueAtTime(0.035, t);
