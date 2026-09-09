@@ -1,5 +1,5 @@
 // src/gameData/communityResearcher.js
-// Cassidy (id:1) — bookworm archetype → community_researcher evolution
+// Cassidy (id:1) — swimmer archetype → community_researcher evolution
 // Present thesis, then 4 case studies (choose from 7 pairs).
 // Each pair has a suspicion rating 1–7 (7 = most suspicious to the committee).
 // gainRange gives Cassidy's lbs gain when the case study is completed.
@@ -41,33 +41,31 @@ She clicks to the next slide.
 
 Nobody speaks for a moment.`,
 
-    (name) => `Dr. Chen sets her pen down.
+    (name) => `Coach Rivera sets her whistle on the table.
 
-"The data on isolation as an amplifier — you're drawing on Festinger's social comparison theory?"
+"You keep citing team culture like it's a training variable."
 
-"Festinger, yes, and Tajfel on in-group identity formation. The community lacks external reference points to moderate against, so the only comparison is internal. And internal comparison in a gain-oriented culture only moves in one direction."
+"It is," ${name} says. "When the squad eats together with intention, nobody treats appetite like a secret. Morale goes up. So does consistency."
 
-"Compelling," Dr. Chen says, and writes something.
+Rivera exchanges a look with Harmon. "Show us the meal logs."
 
-Dr. Harmon leans forward. "You're describing a closed feedback system. How do you operationalize 'amplification' empirically without embedded observation? Your methodology proposes direct contact with participants — how do you maintain research integrity while embedded in an environment that, by your own argument, changes its participants through immersion?"
+${name} pulls up color-coded tabs — the same ones Ward has been tracking all season.
 
-${name} had been waiting for this one.
+Harmon leans forward. "You're proposing embedded observation on your own floor. That sounds like a conflict."
 
-"That's the centerpiece. Six months of supervised case-study contact — participant observation with ethical oversight at each stage. IRB-approved, structured, field notes reviewed monthly by a RA sponsor." She clicks to the methodology slide. "The research position is embedded by design. The documentation accounts for observer effect explicitly."
+"That's the point," ${name} says. "I'm already there. I'd rather document it honestly than pretend distance exists."
 
-Dr. Harmon looks at Dr. Ward. Dr. Ward looks at her notes. Dr. Harmon nods, slowly.`,
+Ward writes something. Rivera nods, slowly.`,
 
-    (name) => `Dr. Ward — who has color-coded tabs on the methodology section — looks up.
+    (name) => `Ward looks up from the spread sheets.
 
-"This is genuinely interesting work, ${name}. Brave, even." She says it like someone who means it. "The framing is airtight and the theoretical basis is solid." A pause — the comfortable kind, not the uncomfortable one. "Just — make sure you don't get too close to your research. I remember how hard those long writing sessions can be on the waistline."
+"This is bold work, ${name}." She means it. "The framing holds. Just — don't let the floor eat your judgment along with everything else."
 
-She smiles when she says it. Warmly, not cruelly.
+${name} laughs. She writes it in her field notes before she's out the door.
 
-${name} thanks her. She writes it in her field notes the moment she's outside the door.
+The panel approves unanimously. Rivera calls the plan "coachable." Harmon says it's "defensible if you log everything." Ward tells her the meal data is already good.
 
-The panel approves the proposal unanimously. Dr. Chen calls the framing "theoretically rigorous." Dr. Harmon says the methodology is "defensible if you stick to it." Dr. Ward tells her the writing is good.
-
-${name} takes the stairs instead of the elevator and fills three pages before she gets home.`,
+${name} takes the stairs and fills three pages before she gets back to the dorm.`,
   ],
 };
 

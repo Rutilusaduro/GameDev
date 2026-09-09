@@ -68,7 +68,7 @@ export function OversightView({
 
   return (
     <div style={{ padding: 20, maxWidth: 720, margin: '0 auto' }}>
-      <div style={{ fontSize: 10, letterSpacing: 4, color: '#c44', marginBottom: 8 }}>👁 OVERSIGHT — ACADEMIC INQUIRY BOARD</div>
+      <div style={{ fontSize: 10, letterSpacing: 4, color: '#c44', marginBottom: 8 }}>👁 OVERSIGHT — RESIDENCE REVIEW BOARD</div>
       <div style={{ fontSize: 11, color: '#a88', padding: '8px 10px', background: '#1a1018', borderRadius: 6, marginBottom: 10, lineHeight: 1.6 }}>
         <strong>Act {actSummary.act.id}</strong> — {actSummary.act.label} · {actSummary.act.antagonist}<br />
         Hall pressure {actSummary.classPressure}/100 · {actSummary.act.scrutinyRole}

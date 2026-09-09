@@ -14,6 +14,7 @@
     "scene-stage:probe": "node scripts/scene-stage-probe.mjs",
     "week-planner:probe": "node scripts/week-planner-probe.mjs",
     "ascension:sweep": "node scripts/ascension-ability-sweep.mjs",
+    "test:dorm-unlock": "node scripts/test-dorm-unlock.mjs",
     "text:lint": "node scripts/textLint.mjs"
   },
   "dependencies": {

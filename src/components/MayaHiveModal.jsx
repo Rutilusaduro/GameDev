@@ -239,7 +239,7 @@ export function MayaHiveModal({
             </div>
 
             <div style={{background:HIVE_PANEL,border:`1px solid ${HIVE_ACC}33`,borderRadius:12,padding:12}}>
-              <div style={{fontSize:9,letterSpacing:3,color:HIVE_ACC,marginBottom:8}}>PROFESSOR ACTIONS</div>
+              <div style={{fontSize:9,letterSpacing:3,color:HIVE_ACC,marginBottom:8}}>RA ACTIONS</div>
               <button style={{...C.btn(HIVE_ACC_2),width:"100%",textAlign:"left",marginBottom:8}} onClick={doMayaHiveVisit}>🍽️ Visit Central Nest</button>
               <button style={{...C.btn("#3d224c"),width:"100%",textAlign:"left",marginBottom:8,border:`1px solid ${HIVE_ACC}33`}} onClick={doMayaHivePhoto}>📷 Observe Hive State</button>
               <button

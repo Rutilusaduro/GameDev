@@ -256,7 +256,7 @@ function resolveAgendaEffect(card, students, opposition, rnd = Math.random) {
       };
       if (target) {
         effects.oppositionPatch.pendingForcedWeighInStudentId = target.id;
-        effects.logs.push(`⚖️ ${target.name} flagged for mandatory class weigh-in.`);
+        effects.logs.push(`⚖️ ${target.name} flagged for mandatory floor weigh-in.`);
       }
       effects.scrutinyDelta += 3;
       effects.logs.push('⚖️ Class weigh-in documentation demanded (+3 scrutiny).');

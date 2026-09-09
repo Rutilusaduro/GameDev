@@ -1775,7 +1775,7 @@ export default function HallPass(){
     }
     setV2State(nextV2State);
     v2Weekly.messages.forEach((msg,i)=>{
-      if(msg.type==='passive') setTimeout(()=>push(`🔗 Resonance ${msg.tier} — class appetite +${msg.bonus}.`),160+i*40);
+      if(msg.type==='passive') setTimeout(()=>push(`🔗 Resonance ${msg.tier} — hall appetite +${msg.bonus}.`),160+i*40);
       if(msg.type==='surge') setTimeout(()=>push(`🔗 Resonance surge — ${msg.text}`),200+i*50);
       if(msg.type==='dream'&&msg.interactive){
         const ds=updated.find(s=>s.id===msg.studentId);
