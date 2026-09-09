@@ -1096,6 +1096,26 @@ check('cassidy-swimmer-voice', () => {
   for (const re of BANNED_IN_CASSIDY) {
     assert.doesNotMatch(swimmerText, re, `attitude.js swimmer blocks still has ${re}`);
   }
+
+  const dinnerReactions = read('src/textEngine/scenes/dinner/reactions.js');
+  const dinnerSwimmerPools = dinnerReactions.match(/registerPool\('dinner\.reaction\.(?:thinJealousy|fatEncourage)\.sw[^']*'[\s\S]*?\]\);/g) ?? [];
+  assert.ok(dinnerSwimmerPools.length >= 15, 'dinner/reactions.js must contain swimmer reaction pools');
+  const dinnerSwimmerPoolText = dinnerSwimmerPools.join('\n');
+  assert.doesNotMatch(dinnerSwimmerPoolText, /\bliterature\b|\bdataset\b|\bmethodology\b|\bhypothesis\b/i, 'dinner swimmer pools still bookworm');
+  assert.match(dinnerSwimmerPoolText, /training log|lane|season|meal plan|split|coach/i, 'dinner swimmer pools must use athletic voice');
+  for (const re of BANNED_IN_CASSIDY) {
+    assert.doesNotMatch(dinnerSwimmerPoolText, re, `dinner/reactions.js swimmer pools still has ${re}`);
+  }
+  const dinnerSwimmerArchetype = dinnerReactions.split('\n').filter((line) => line.includes('"archetype":"swimmer"'));
+  assert.ok(dinnerSwimmerArchetype.length >= 8, 'dinner/reactions.js must contain archetype swimmer reaction entries');
+  const dinnerSwimmerArchetypeText = dinnerSwimmerArchetype.join('\n');
+  assert.doesNotMatch(dinnerSwimmerArchetypeText, /_f49|_f50|_f51|_f52|_f53|_f54|_f55|_f108|_f109|_f110|_f111|_f112|_f113|_f114|_f115/, 'dinner swimmer entries still point at bookworm fragments');
+  assert.match(dinnerSwimmerArchetypeText, /thinJealousy\.sw\d|fatEncourage\.swf\d/, 'dinner swimmer entries must use swimmer fragment pools');
+  assert.match(dinnerSwimmerArchetypeText, /training log|fuel data/i, 'dinner swimmer level-0 must use athletic inline voice');
+  const jealousySwimmer = dinnerReactions.split('\n').find((line) => /"archetype":"swimmer"/.test(line) && !line.includes('reactionLevel')) ?? '';
+  assert.ok(jealousySwimmer, 'dinner/reactions.js jealousyDefault must contain swimmer entry');
+  assert.doesNotMatch(jealousySwimmer, /\bdataset\b/i, 'jealousyDefault swimmer still bookworm');
+  assert.match(jealousySwimmer, /training log|filling another page/i, 'jealousyDefault swimmer must use athletic voice');
 });
 
 check('embodied-resident-sighting', () => {

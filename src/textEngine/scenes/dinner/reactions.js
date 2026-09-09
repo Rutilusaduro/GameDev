@@ -223,6 +223,66 @@ registerPool('dinner.reaction.thinJealousy._f55', [
   { when: {}, text: [". \"The documentation was inadequate.\""] },
 ]);
 
+registerPool('dinner.reaction.thinJealousy.sw1', [
+  { when: {}, text: ["\"Coach would log three times my intake tonight,\" {subject.name} says. She closes her training log. \"I'm not angry. I'm updating the split.\""] },
+]);
+
+registerPool('dinner.reaction.thinJealousy.sw2', [
+  { when: {}, text: [". The split is interesting.\" She watches {ref.name} eat. She is not just logging."] },
+]);
+
+registerPool('dinner.reaction.thinJealousy.sw3', [
+  { when: {}, text: ["{subject.name} looks up from her lane assignments and studies {ref.name} with the focus she gives to podium footage. Warm, full, softly considerable, utterly comfortable."] },
+]);
+
+registerPool('dinner.reaction.thinJealousy.sw4', [
+  { when: {}, text: [". \"I've been tracking this in season-plan terms,\" she says. \"What it looks like. What it feels like.\" A pause. \"The dryland videos don't do it justice.\""] },
+]);
+
+registerPool('dinner.reaction.thinJealousy.sw5', [
+  { when: {}, text: ["{subject.name} reaches over with lane-captain deliberateness and rests her fingers on {ref.name}'s soft middle."] },
+]);
+
+registerPool('dinner.reaction.thinJealousy.sw6', [
+  { when: {}, text: [". She does this the way she checks turn form — steady, measuring. \"The training log said this would feel like warmth and weight,\" she says."] },
+]);
+
+registerPool('dinner.reaction.thinJealousy.sw7', [
+  { when: {}, text: [". \"The training log was conservative.\""] },
+]);
+
+registerPool('dinner.reaction.fatEncourage.swf1', [
+  { when: {}, text: ["{subject.name} marks her place in the training log and looks at {ref.name}'s empty plate with measured concern. \"She hasn't fueled,\" she says."] },
+]);
+
+registerPool('dinner.reaction.fatEncourage.swf2', [
+  { when: {}, text: [". \"That's off the meal plan. Get her something.\""] },
+]);
+
+registerPool('dinner.reaction.fatEncourage.swf3', [
+  { when: {}, text: ["\"I've been reviewing intake curves,\" {subject.name} says. \"Strong correlation between calories and comfort. The sample in front of you is me.\" She slides a dish toward {ref.name}."] },
+]);
+
+registerPool('dinner.reaction.fatEncourage.swf4', [
+  { when: {}, text: [". \"Add yourself to the training block.\""] },
+]);
+
+registerPool('dinner.reaction.fatEncourage.swf5', [
+  { when: {}, text: ["{subject.name} sets down her log and addresses {ref.name} directly: \"I was lean. I ran every split on restriction. The season plan I was on was wrong.\" She pats her own considerable middle."] },
+]);
+
+registerPool('dinner.reaction.fatEncourage.swf6', [
+  { when: {}, text: [". \"This is the corrected block. Start eating. I'll walk you through the reps.\""] },
+]);
+
+registerPool('dinner.reaction.fatEncourage.swf7', [
+  { when: {}, text: ["{subject.name} takes {ref.name}'s hand and places it against her own full, warm belly with deliberate care. \"Benchmark set,\" she says."] },
+]);
+
+registerPool('dinner.reaction.fatEncourage.swf8', [
+  { when: {}, text: [". \"This is what the evening feels like when you hit your numbers. I want you on the board.\""] },
+]);
+
 registerPool('dinner.reaction.thinJealousy._f56', [
   { when: {}, text: ["\"Her stats are better,\" {subject.name} says. Not bitterly. Objectively. She's watching {ref.name} eat with something approaching professional respect. \"I respect the numbers."] },
 ]);
@@ -340,11 +400,11 @@ registerPool('dinner.reaction.thinJealousy', [
   { when: {"archetype":"bookworm","reactionLevel":0}, text: ["{subject.name} watches {ref.name}'s course arrive and makes a note in the margin of whatever she's reading. Not a real note. Just a mark. She is tracking this like a field note."] },
   { when: {"archetype":"swimmer","reactionLevel":0}, text: ["{subject.name} watches {ref.name}'s course arrive and taps a mark into her training log. Not a real split. Just a dot. She is tracking this like fuel data."] },
   { when: {"archetype":"bookworm","reactionLevel":1}, text: ["{dinner.reaction.thinJealousy._f49} {dinner.reaction.thinJealousy._f50}"] },
-  { when: {"archetype":"swimmer","reactionLevel":1}, text: ["{dinner.reaction.thinJealousy._f49} {dinner.reaction.thinJealousy._f50}"] },
+  { when: {"archetype":"swimmer","reactionLevel":1}, text: ["{dinner.reaction.thinJealousy.sw1} {dinner.reaction.thinJealousy.sw2}"] },
   { when: {"archetype":"bookworm","reactionLevel":2}, text: ["{dinner.reaction.thinJealousy._f51} {dinner.reaction.thinJealousy._f52}"] },
-  { when: {"archetype":"swimmer","reactionLevel":2}, text: ["{dinner.reaction.thinJealousy._f51} {dinner.reaction.thinJealousy._f52}"] },
+  { when: {"archetype":"swimmer","reactionLevel":2}, text: ["{dinner.reaction.thinJealousy.sw3} {dinner.reaction.thinJealousy.sw4}"] },
   { when: {"archetype":"bookworm","reactionLevel":3}, text: ["{dinner.reaction.thinJealousy._f53} {dinner.reaction.thinJealousy._f54} {dinner.reaction.thinJealousy._f55}"] },
-  { when: {"archetype":"swimmer","reactionLevel":3}, text: ["{dinner.reaction.thinJealousy._f53} {dinner.reaction.thinJealousy._f54} {dinner.reaction.thinJealousy._f55}"] },
+  { when: {"archetype":"swimmer","reactionLevel":3}, text: ["{dinner.reaction.thinJealousy.sw5} {dinner.reaction.thinJealousy.sw6} {dinner.reaction.thinJealousy.sw7}"] },
   { when: {"archetype":"gamer","reactionLevel":0}, text: ["{subject.name} watches {ref.name}'s dish arrive and says, deadpan: \"She's at a higher level.\" She looks at her own empty place. \"I've been idle.\""] },
   { when: {"archetype":"gamer","reactionLevel":1}, text: ["{dinner.reaction.thinJealousy._f56} {dinner.reaction.thinJealousy._f57}"] },
   { when: {"archetype":"gamer","reactionLevel":2}, text: ["{dinner.reaction.thinJealousy._f58} {dinner.reaction.thinJealousy._f59}"] },
@@ -650,13 +710,13 @@ registerPool('dinner.reaction.fatEncourage', [
   { when: {"archetype":"foodie","reactionLevel":2}, text: ["{subject.name} picks up a dish and sets it in front of {ref.name} herself. \"Eat this,\" she says. \"I'm sharing this with you. This is an act of love.\" She means it entirely."] },
   { when: {"archetype":"foodie","reactionLevel":3}, text: ["{dinner.reaction.fatEncourage._f106} {dinner.reaction.fatEncourage._f107}"] },
   { when: {"archetype":"bookworm","reactionLevel":0}, text: ["{dinner.reaction.fatEncourage._f108} {dinner.reaction.fatEncourage._f109}"] },
-  { when: {"archetype":"swimmer","reactionLevel":0}, text: ["{dinner.reaction.fatEncourage._f108} {dinner.reaction.fatEncourage._f109}"] },
+  { when: {"archetype":"swimmer","reactionLevel":0}, text: ["{dinner.reaction.fatEncourage.swf1} {dinner.reaction.fatEncourage.swf2}"] },
   { when: {"archetype":"bookworm","reactionLevel":1}, text: ["{dinner.reaction.fatEncourage._f110} {dinner.reaction.fatEncourage._f111}"] },
-  { when: {"archetype":"swimmer","reactionLevel":1}, text: ["{dinner.reaction.fatEncourage._f110} {dinner.reaction.fatEncourage._f111}"] },
+  { when: {"archetype":"swimmer","reactionLevel":1}, text: ["{dinner.reaction.fatEncourage.swf3} {dinner.reaction.fatEncourage.swf4}"] },
   { when: {"archetype":"bookworm","reactionLevel":2}, text: ["{dinner.reaction.fatEncourage._f112} {dinner.reaction.fatEncourage._f113}"] },
-  { when: {"archetype":"swimmer","reactionLevel":2}, text: ["{dinner.reaction.fatEncourage._f112} {dinner.reaction.fatEncourage._f113}"] },
+  { when: {"archetype":"swimmer","reactionLevel":2}, text: ["{dinner.reaction.fatEncourage.swf5} {dinner.reaction.fatEncourage.swf6}"] },
   { when: {"archetype":"bookworm","reactionLevel":3}, text: ["{dinner.reaction.fatEncourage._f114} {dinner.reaction.fatEncourage._f115}"] },
-  { when: {"archetype":"swimmer","reactionLevel":3}, text: ["{dinner.reaction.fatEncourage._f114} {dinner.reaction.fatEncourage._f115}"] },
+  { when: {"archetype":"swimmer","reactionLevel":3}, text: ["{dinner.reaction.fatEncourage.swf7} {dinner.reaction.fatEncourage.swf8}"] },
   { when: {"archetype":"gamer","reactionLevel":0}, text: ["{subject.name} spots {ref.name}'s empty plate immediately. \"She's not playing,\" she says. \"You can't win if you're not playing. Get her in.\""] },
   { when: {"archetype":"gamer","reactionLevel":1}, text: ["\"New player,\" {subject.name} says, nodding at {ref.name} with the patient authority of a veteran. \"She needs to level. Get her something. Start her on something good.\""] },
   { when: {"archetype":"gamer","reactionLevel":2}, text: ["{dinner.reaction.fatEncourage._f116} {dinner.reaction.fatEncourage._f117}"] },
@@ -1073,7 +1133,7 @@ registerPool('dinner.reaction.jealousyDefault', [
   { when: {}, text: ["{subject.name} looks meaningfully at {ref.name}'s food and then at her own empty place setting."] },
   { when: {"archetype":"cheerleader"}, text: ["{subject.name} glances at {ref.name}'s plate, then at her own empty place. \"So we're feeding her first?\" The smile doesn't quite reach her eyes."] },
   { when: {"archetype":"bookworm"}, text: ["{subject.name} closes her book slowly and looks at {ref.name}'s plate with the mild expression of someone documenting an anomaly. She has not said anything. She is building a file."] },
-  { when: {"archetype":"swimmer"}, text: ["{subject.name} closes her training log slowly and looks at {ref.name}'s plate with the mild expression of someone logging an anomaly. She has not said anything. She is building a dataset."] },
+  { when: {"archetype":"swimmer"}, text: ["{subject.name} closes her training log slowly and looks at {ref.name}'s plate with the mild expression of someone logging an anomaly. She has not said anything. She is filling another page."] },
   { when: {"archetype":"influencer"}, text: ["{subject.name} picks up her phone, looks at it, sets it down. \"I'm just going to say,\" she says, \"for the record.\" She doesn't finish the sentence."] },
   { when: {"archetype":"athlete"}, text: ["\"Hey.\" {subject.name} taps the table. \"My side is empty. Hers isn't.\" She nods at {ref.name}'s plate. This is the entire complaint."] },
   { when: {"archetype":"artsy"}, text: ["{subject.name} turns her face slightly toward the window. This is not indifference. This is very much not indifference."] },
