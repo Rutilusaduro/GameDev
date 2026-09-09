@@ -33,6 +33,8 @@ export function EvolvedActivityModal({ modal, onClose, soundEnabled = true }) {
           {modal.text}
         </div>
         <button
+          type="button"
+          className="evolved-activity-choice-row"
           style={{ ...C.btn('#301060'), width: '100%' }}
           onClick={() => {
             playHallPassSound('click', soundEnabled);

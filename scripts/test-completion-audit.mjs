@@ -1810,6 +1810,38 @@ check('supernatural-ascension-row-polish', () => {
   assert.match(modal, /supernatural-ascension-choice-row/);
 });
 
+check('competitive-gainer-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/CompetitiveGainerModals.jsx');
+  assert.match(css, /\.competitive-gainer-choice-row:focus-visible/);
+  assert.match(css, /\.competitive-gainer-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /competitive-gainer-choice-row/);
+});
+
+check('evolved-event-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/EvolvedEventModal.jsx');
+  assert.match(css, /\.evolved-event-choice-row:focus-visible/);
+  assert.match(css, /\.evolved-event-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /evolved-event-choice-row/);
+});
+
+check('evolved-activity-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/EvolvedActivityModal.jsx');
+  assert.match(css, /\.evolved-activity-choice-row:focus-visible/);
+  assert.match(css, /\.evolved-activity-choice-row:hover/);
+  assert.match(modal, /evolved-activity-choice-row/);
+});
+
+check('ascension-ceremony-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/AscensionCeremonyModal.jsx');
+  assert.match(css, /\.ascension-ceremony-choice-row:focus-visible/);
+  assert.match(css, /\.ascension-ceremony-choice-row:hover/);
+  assert.match(modal, /ascension-ceremony-choice-row/);
+});
+
 check('modal-button-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.hall-pass-modal-in button:focus-visible/);

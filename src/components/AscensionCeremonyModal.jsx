@@ -68,7 +68,7 @@ export function AscensionCeremonyModal({
             { id: 'decline', label: 'Not yet', intent: 'wait', onClick: onDecline },
           ]}
           footer={onClose ? (
-            <button type="button" style={{ ...C.btn('#222'), width: '100%', marginTop: 8, minHeight: 40 }} onClick={onClose}>
+            <button type="button" className="ascension-ceremony-choice-row" style={{ ...C.btn('#222'), width: '100%', marginTop: 8, minHeight: 40 }} onClick={onClose}>
               Close
             </button>
           ) : null}

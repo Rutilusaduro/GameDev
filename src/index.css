@@ -514,6 +514,21 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(232, 41, 74, 0.14);
 }
 
+.competitive-gainer-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.competitive-gainer-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.competitive-gainer-choice-row:focus-visible {
+  outline: 2px solid rgba(232, 80, 106, 0.85);
+  outline-offset: 2px;
+}
+
 .private-session-modal {
   background: linear-gradient(165deg, rgba(10, 6, 22, 0.98), rgba(22, 10, 38, 0.96), rgba(8, 4, 16, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(144, 80, 200, 0.16);
@@ -1146,6 +1161,21 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(64, 184, 216, 0.16);
 }
 
+.ascension-ceremony-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.ascension-ceremony-choice-row:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.ascension-ceremony-choice-row:focus-visible {
+  outline: 2px solid rgba(64, 184, 216, 0.85);
+  outline-offset: 2px;
+}
+
 .picker-modal {
   background: linear-gradient(165deg, rgba(8, 0, 21, 0.98), rgba(16, 4, 37, 0.96), rgba(6, 0, 14, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 26px rgba(128, 64, 192, 0.14);
@@ -1206,6 +1236,24 @@
 .evolved-event-modal {
   background: linear-gradient(165deg, rgba(7, 3, 15, 0.98), rgba(18, 8, 32, 0.96), rgba(5, 2, 10, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(112, 48, 192, 0.14);
+}
+
+.evolved-activity-choice-row,
+.evolved-event-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.evolved-activity-choice-row:hover,
+.evolved-event-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.evolved-activity-choice-row:focus-visible,
+.evolved-event-choice-row:focus-visible {
+  outline: 2px solid rgba(144, 96, 224, 0.85);
+  outline-offset: 2px;
 }
 
 .force-feeder-modal {
@@ -1418,7 +1466,11 @@
   .chapter-hostess-choice-row:hover,
   .opposition-endgame-choice-row:hover,
   .refeed-surge-choice-row:hover,
-  .supernatural-ascension-choice-row:hover {
+  .supernatural-ascension-choice-row:hover,
+  .competitive-gainer-choice-row:hover,
+  .ascension-ceremony-choice-row:hover,
+  .evolved-activity-choice-row:hover,
+  .evolved-event-choice-row:hover {
     transform: none;
   }
 

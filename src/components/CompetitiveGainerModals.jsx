@@ -43,14 +43,14 @@ export function CompetitiveGainerChatModal({ competitiveGainerState, students, g
                 <div style={{fontSize:9,letterSpacing:3,color:CG_DIM,marginBottom:6}}>REPLY AS RA</div>
                 <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
                   {CG_CHAT_TEMPLATES.raReplies.map(opt=>(
-                    <button key={opt.id} style={{...C.btn(CG_DIM),fontSize:10,padding:"5px 10px"}}
+                    <button type="button" className="competitive-gainer-choice-row" key={opt.id} style={{...C.btn(CG_DIM),fontSize:10,padding:"5px 10px"}}
                       onClick={()=>{ playHallPassSound('click', soundEnabled); cgRaReply(opt.id); }}>
                       {opt.label} <span style={{color:CG_ACC,marginLeft:4}}>+{cgDriveDelta(opt)} drive</span>
                     </button>
                   ))}
                 </div>
               </div>
-              <button style={{...C.btn(CG_BG),width:"100%",border:`1px solid ${CG_DIM}30`}} onClick={()=>{ playHallPassSound('click', soundEnabled); setCgChatOpen(false); }}>Leave Chat</button>
+              <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_BG),width:"100%",border:`1px solid ${CG_DIM}30`}} onClick={()=>{ playHallPassSound('click', soundEnabled); setCgChatOpen(false); }}>Leave Chat</button>
             </div>
           </div>
         );
@@ -77,7 +77,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📌 CORKBOARD</div>
                 <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
                 <div style={{fontSize:10,color:CG_ACC,marginBottom:12}}>Drive +{gain} · Now {tier.label} ({drive})</div>
-                <button style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
+                <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
               </div>
             </div>
           );
@@ -111,7 +111,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                   )}
                 </div>
                 <div style={{fontSize:10,color:CG_ACC,marginBottom:12}}>Drive +{gain}</div>
-                <button style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
+                <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
               </div>
             </div>
           );
@@ -128,7 +128,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                   {measurableStudents.map(s=>{
                     const measured=cgS.measuredStudentIds.includes(s.id);
                     return(
-                      <button key={s.id}
+                      <button type="button" className="competitive-gainer-choice-row" key={s.id}
                         style={{...C.btn(measured?CG_DIM:"#1a0308"),padding:"8px 10px",textAlign:"left",border:`1px solid ${measured?CG_ACC:CG_DIM}40`}}
                         onClick={()=>doCGMeasurement(s.id)}>
                         <div style={{fontSize:11,fontWeight:700,color:CG_TEXT}}>{s.name}</div>
@@ -137,7 +137,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                     );
                   })}
                 </div>
-                <button style={{...C.btn(CG_BG),width:"100%",border:`1px solid ${CG_DIM}30`}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
+                <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_BG),width:"100%",border:`1px solid ${CG_DIM}30`}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
               </div>
             </div>
           );
@@ -183,8 +183,8 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                 </div>
                 {threats.length>0&&<div style={{fontSize:10,color:"#e07040",marginBottom:8}}>⚠ Threat detected: {threats.join(", ")} · Drive +{gain}</div>}
                 {!threats.length&&<div style={{fontSize:10,color:CG_ACC,marginBottom:8}}>✓ Priya leads all categories · Drive +{gain}</div>}
-                <button style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:'measurement_picker',subState:null}))}>← Measure Another</button>
-                <button style={{...C.btn(CG_BG),width:"100%",marginTop:6,border:`1px solid ${CG_DIM}30`}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back to Priya</button>
+                <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:'measurement_picker',subState:null}))}>← Measure Another</button>
+                <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_BG),width:"100%",marginTop:6,border:`1px solid ${CG_DIM}30`}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back to Priya</button>
               </div>
             </div>
           );
@@ -199,7 +199,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>🔴 {tier.label.toUpperCase()} BINGE</div>
                 <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
                 <div style={{fontSize:13,fontWeight:700,color:CG_ACC,textAlign:"center",marginBottom:14}}>+{gain} lbs</div>
-                <button style={{...C.btn(CG_ACC),width:"100%"}} onClick={applyAndCloseCGBinge}>Apply Gains</button>
+                <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_ACC),width:"100%"}} onClick={applyAndCloseCGBinge}>Apply Gains</button>
               </div>
             </div>
           );
@@ -235,19 +235,21 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
               </div>
               {/* Action buttons */}
               <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                <button style={{...C.btn(CG_DIM),textAlign:"left",padding:"10px 14px"}} onClick={doCGCorkboard}>
+                <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_DIM),textAlign:"left",padding:"10px 14px"}} onClick={doCGCorkboard}>
                   <span style={{fontWeight:700}}>📌 Observe at Corkboard</span>
                   <span style={{fontSize:9,color:CG_SUBTLE,marginLeft:8}}>Drive gain · triggers chat post</span>
                 </button>
-                <button style={{...C.btn(CG_DIM),textAlign:"left",padding:"10px 14px"}} onClick={openCGMeasurementPicker}>
+                <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_DIM),textAlign:"left",padding:"10px 14px"}} onClick={openCGMeasurementPicker}>
                   <span style={{fontWeight:700}}>📐 Private Measurement Session</span>
                   <span style={{fontSize:9,color:CG_SUBTLE,marginLeft:8}}>Measure a resident · Drive gain on threats</span>
                 </button>
-                <button style={{...C.btn(CG_DIM),textAlign:"left",padding:"10px 14px"}} onClick={doCGSelfReview}>
+                <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_DIM),textAlign:"left",padding:"10px 14px"}} onClick={doCGSelfReview}>
                   <span style={{fontWeight:700}}>🪞 Self-Review</span>
                   <span style={{fontSize:9,color:CG_SUBTLE,marginLeft:8}}>High Drive payoff</span>
                 </button>
                 <button
+                  type="button"
+                  className="competitive-gainer-choice-row"
                   style={{...C.btn(ap>=CG_CONFIG.bingeApCost?CG_ACC:CG_DIM),textAlign:"left",padding:"10px 14px",opacity:ap>=CG_CONFIG.bingeApCost?1:0.45}}
                   disabled={ap<CG_CONFIG.bingeApCost}
                   onClick={()=>{setAp(a=>a-CG_CONFIG.bingeApCost);doCGBinge();}}>
@@ -255,7 +257,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                   <span style={{fontSize:9,color:CG_SUBTLE,marginLeft:8}}>{CG_CONFIG.bingeApCost} AP · {tier.label} intensity</span>
                 </button>
               </div>
-              <button style={{...C.btn(CG_BG),width:"100%",marginTop:12,border:`1px solid ${CG_DIM}30`}} onClick={()=>{ playHallPassSound('click', soundEnabled); closeCGModal(); }}>Close</button>
+              <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_BG),width:"100%",marginTop:12,border:`1px solid ${CG_DIM}30`}} onClick={()=>{ playHallPassSound('click', soundEnabled); closeCGModal(); }}>Close</button>
             </div>
           </div>
         );

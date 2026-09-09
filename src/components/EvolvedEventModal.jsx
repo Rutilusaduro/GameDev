@@ -76,7 +76,7 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
                     const excluded=ch.requiresNot&&history.includes(ch.requiresNot);
                     if(excluded) return null;
                     return(
-                      <button key={ch.id}
+                      <button key={ch.id} type="button" className="evolved-event-choice-row"
                         style={{...C.btn(locked?"#1a1a2a":accentColor),opacity:locked?0.35:1,textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5}}
                         disabled={!!locked}
                         onClick={()=>makeEvolvedEventChoice(ch.id)}>
@@ -89,18 +89,18 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
                   })}
                 </div>
               )}
-              {done&&!startsContest&&!startsMatch&&!startsStream&&!startsFairDay&&!startsSession&&!startsPresentation&&!startsDelivery&&!startsChallenge&&!startsSalon&&!startsGallery&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
-              {done&&startsContest&&<button style={{...C.btn("#1a6030"),width:"100%",marginTop:4}} onClick={()=>startEatingContest(studentId,stageIdx,history)}>🍽️ Step to the Table</button>}
-              {done&&startsMatch&&<button style={{...C.btn("#7a2018"),width:"100%",marginTop:4}} onClick={()=>startSumoMatch(studentId,stageIdx,history)}>🥋 Step Onto the Dohyo</button>}
-              {done&&startsStream&&formId==='eating_streamer'&&<button style={{...C.btn("#a02030"),width:"100%",marginTop:4}} onClick={()=>{setEvolvedEventState(null);if(s)startStream(s);}}>📡 Go Live — Challenge Mode</button>}
-              {done&&startsStream&&formId==='feedee_creator'&&<button style={{...C.btn("#6a1878"),width:"100%",marginTop:4}} onClick={()=>{const partner=students.find(st=>st.id===collabPartnerId);if(!partner){push("⚠️ No collab partner selected.");return;}startCollabStream(studentId,collabPartnerId,stageIdx,history);}}>🎥 Go Live Together</button>}
-              {done&&startsFairDay&&<button style={{...C.btn("#C8860A"),width:"100%",marginTop:4}} onClick={()=>{const s2=students.find(st=>st.id===studentId);if(s2)startFairDay(s2,stageIdx);}}>🎡 Step Onto the Scale</button>}
-              {done&&startsSession&&<button style={{...C.btn("#1a5a7a"),width:"100%",marginTop:4}} onClick={()=>startRankedSession(studentId,stageIdx)}>🎮 Start the Session</button>}
-              {done&&startsPresentation&&<button style={{...C.btn("#2c5f8a"),width:"100%",marginTop:4}} onClick={()=>{setPresentationState({studentId,stageIdx});setEvolvedEventState(null);}}>📊 Begin the Defense</button>}
-              {done&&startsDelivery&&<button style={{...C.btn("#4a6a4a"),width:"100%",marginTop:4}} onClick={()=>{setDeliveryState({studentId,stageIdx});setEvolvedEventState(null);}}>🍜 Place the Order</button>}
-              {done&&startsChallenge&&<button style={{...C.btn("#7a4a1a"),width:"100%",marginTop:4}} onClick={()=>{setChallengeState({studentId,stageIdx});setEvolvedEventState(null);}}>🍺 Take the Challenge</button>}
-              {done&&startsSalon&&<button style={{...C.btn("#8b2942"),width:"100%",marginTop:4}} onClick={()=>{setEvolvedEventState(null);openSalonHub(studentId);}}>🥂 Open the Salon</button>}
-              {done&&startsGallery&&<button style={{...C.btn("#c47a2a"),width:"100%",marginTop:4}} onClick={()=>{setEvolvedEventState(null);openGalleryHub(studentId);}}>🖼 Open the Gallery</button>}
+              {done&&!startsContest&&!startsMatch&&!startsStream&&!startsFairDay&&!startsSession&&!startsPresentation&&!startsDelivery&&!startsChallenge&&!startsSalon&&!startsGallery&&<button type="button" className="evolved-event-choice-row" style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeEvolvedEvent}>Continue ✓</button>}
+              {done&&startsContest&&<button type="button" className="evolved-event-choice-row" style={{...C.btn("#1a6030"),width:"100%",marginTop:4}} onClick={()=>startEatingContest(studentId,stageIdx,history)}>🍽️ Step to the Table</button>}
+              {done&&startsMatch&&<button type="button" className="evolved-event-choice-row" style={{...C.btn("#7a2018"),width:"100%",marginTop:4}} onClick={()=>startSumoMatch(studentId,stageIdx,history)}>🥋 Step Onto the Dohyo</button>}
+              {done&&startsStream&&formId==='eating_streamer'&&<button type="button" className="evolved-event-choice-row" style={{...C.btn("#a02030"),width:"100%",marginTop:4}} onClick={()=>{setEvolvedEventState(null);if(s)startStream(s);}}>📡 Go Live — Challenge Mode</button>}
+              {done&&startsStream&&formId==='feedee_creator'&&<button type="button" className="evolved-event-choice-row" style={{...C.btn("#6a1878"),width:"100%",marginTop:4}} onClick={()=>{const partner=students.find(st=>st.id===collabPartnerId);if(!partner){push("⚠️ No collab partner selected.");return;}startCollabStream(studentId,collabPartnerId,stageIdx,history);}}>🎥 Go Live Together</button>}
+              {done&&startsFairDay&&<button type="button" className="evolved-event-choice-row" style={{...C.btn("#C8860A"),width:"100%",marginTop:4}} onClick={()=>{const s2=students.find(st=>st.id===studentId);if(s2)startFairDay(s2,stageIdx);}}>🎡 Step Onto the Scale</button>}
+              {done&&startsSession&&<button type="button" className="evolved-event-choice-row" style={{...C.btn("#1a5a7a"),width:"100%",marginTop:4}} onClick={()=>startRankedSession(studentId,stageIdx)}>🎮 Start the Session</button>}
+              {done&&startsPresentation&&<button type="button" className="evolved-event-choice-row" style={{...C.btn("#2c5f8a"),width:"100%",marginTop:4}} onClick={()=>{setPresentationState({studentId,stageIdx});setEvolvedEventState(null);}}>📊 Begin the Defense</button>}
+              {done&&startsDelivery&&<button type="button" className="evolved-event-choice-row" style={{...C.btn("#4a6a4a"),width:"100%",marginTop:4}} onClick={()=>{setDeliveryState({studentId,stageIdx});setEvolvedEventState(null);}}>🍜 Place the Order</button>}
+              {done&&startsChallenge&&<button type="button" className="evolved-event-choice-row" style={{...C.btn("#7a4a1a"),width:"100%",marginTop:4}} onClick={()=>{setChallengeState({studentId,stageIdx});setEvolvedEventState(null);}}>🍺 Take the Challenge</button>}
+              {done&&startsSalon&&<button type="button" className="evolved-event-choice-row" style={{...C.btn("#8b2942"),width:"100%",marginTop:4}} onClick={()=>{setEvolvedEventState(null);openSalonHub(studentId);}}>🥂 Open the Salon</button>}
+              {done&&startsGallery&&<button type="button" className="evolved-event-choice-row" style={{...C.btn("#c47a2a"),width:"100%",marginTop:4}} onClick={()=>{setEvolvedEventState(null);openGalleryHub(studentId);}}>🖼 Open the Gallery</button>}
             </div>
           </div>
         );
