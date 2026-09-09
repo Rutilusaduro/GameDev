@@ -911,6 +911,21 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(208, 80, 64, 0.14);
 }
 
+.sumo-move-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.sumo-move-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.sumo-move-row:focus-visible {
+  outline: 2px solid rgba(255, 128, 96, 0.85);
+  outline-offset: 2px;
+}
+
 .salon-modal {
   background: linear-gradient(165deg, rgba(18, 8, 12, 0.98), rgba(36, 16, 24, 0.96), rgba(10, 4, 8, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(139, 41, 66, 0.14);
@@ -934,6 +949,21 @@
 .stream-session-modal {
   background: linear-gradient(165deg, rgba(14, 4, 4, 0.98), rgba(28, 8, 8, 0.96), rgba(8, 2, 2, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 32px rgba(224, 64, 64, 0.16);
+}
+
+.stream-challenge-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.stream-challenge-row:hover {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.stream-challenge-row:focus-visible {
+  outline: 2px solid rgba(231, 76, 60, 0.85);
+  outline-offset: 2px;
 }
 
 .recording-session-modal {
@@ -964,6 +994,21 @@
 .wife-lessons-modal {
   background: linear-gradient(165deg, rgba(18, 4, 12, 0.98), rgba(36, 8, 24, 0.96), rgba(10, 2, 8, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(139, 34, 82, 0.16);
+}
+
+.wife-lessons-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.wife-lessons-choice-row:hover {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.wife-lessons-choice-row:focus-visible {
+  outline: 2px solid rgba(192, 48, 112, 0.85);
+  outline-offset: 2px;
 }
 
 .chapter-hostess-modal {
@@ -1242,7 +1287,10 @@
   .fair-partner-card:hover,
   .fair-choice-row:hover,
   .eating-contest-food-row:hover,
-  .salon-choice-row:hover {
+  .salon-choice-row:hover,
+  .sumo-move-row:hover,
+  .stream-challenge-row:hover,
+  .wife-lessons-choice-row:hover {
     transform: none;
   }
 

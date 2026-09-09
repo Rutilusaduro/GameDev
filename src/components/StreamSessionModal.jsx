@@ -430,7 +430,7 @@ export function StreamSessionModal({
               const [rMin, rMax] = ch.roundCount || [STREAM_DEFAULT_ROUNDS, STREAM_DEFAULT_ROUNDS];
               const secs = ch.roundSeconds ?? STREAM_ROUND_SECONDS;
               return (
-              <button key={ch.id} style={{ ...C.btn(RED_DIM), width: '100%', marginBottom: 6, textAlign: 'left', padding: '10px 12px' }}
+              <button key={ch.id} type="button" className="stream-challenge-row" style={{ ...C.btn(RED_DIM), width: '100%', marginBottom: 6, textAlign: 'left', padding: '10px 12px' }}
                 onClick={() => selectChallenge(ch.id)}>
                 <div style={{ fontWeight: 700, fontSize: 12 }}>{ch.label}</div>
                 <div style={{ fontSize: 10, opacity: 0.85, marginTop: 2 }}>

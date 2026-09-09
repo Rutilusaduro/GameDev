@@ -66,7 +66,7 @@ export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMov
                   {SUMO_MOVES.filter(mv=>!mv.blobOnly).map(mv=>{
                     const lowBal=yourBalance<=0&&mv.id!=='brace';
                     return(
-                      <button key={mv.id}
+                      <button key={mv.id} type="button" className="sumo-move-row"
                         style={{...C.btn(lowBal?"#2a1410":"#5a1c14"),textAlign:"left",padding:"8px 12px",fontSize:12,lineHeight:1.4,opacity:lowBal?0.55:1}}
                         onClick={()=>sumoPlayMove(mv.id)}>
                         <span style={{fontSize:15,marginRight:6}}>{mv.emoji}</span>
@@ -77,7 +77,7 @@ export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMov
                     );
                   })}
                   {isBlob&&(()=>{const mv=SUMO_MOVES.find(m=>m.id==='fill_ring'); return mv?(
-                    <button key="fill_ring"
+                    <button key="fill_ring" type="button" className="sumo-move-row"
                       style={{...C.btn(fillRingUsed?"#1a0808":"#6a2800"),textAlign:"left",padding:"8px 12px",fontSize:12,lineHeight:1.4,opacity:fillRingUsed?0.4:1,border:fillRingUsed?"none":"1px solid #e0801080"}}
                       disabled={fillRingUsed}
                       onClick={()=>sumoPlayMove('fill_ring')}>

@@ -68,7 +68,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                 {!atGreeting&&optionIdx==null&&!done&&(
                   <div style={{display:"flex",flexDirection:"column",gap:7}}>
                     {stageEntry.options.map((opt,i)=>(
-                      <button key={i} style={{...C.btn(WINE_DIM),textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5}}
+                      <button key={i} type="button" className="wife-lessons-choice-row" style={{...C.btn(WINE_DIM),textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5}}
                         onClick={()=>makeWifeLessonsConversationChoice(i)}>
                         {opt.label}
                       </button>
@@ -78,7 +78,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                 {!atGreeting&&optionIdx!=null&&!done&&(
                   <div style={{display:"flex",flexDirection:"column",gap:7}}>
                     {stageEntry.options[optionIdx].subs.map((sub,i)=>(
-                      <button key={i} style={{...C.btn(WINE_DIM),textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5}}
+                      <button key={i} type="button" className="wife-lessons-choice-row" style={{...C.btn(WINE_DIM),textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5}}
                         onClick={()=>makeWifeLessonsSubChoice(i)}>
                         {sub.label}
                         {sub.outcome?.daughterLbs&&<span style={{color:"#ffaacc",marginLeft:8,fontSize:10}}>+{sub.outcome.daughterLbs} lbs</span>}
@@ -116,7 +116,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                   <div style={{fontSize:9,letterSpacing:3,color:WINE_DIM,marginBottom:8}}>CHOOSE TODAY'S LESSON</div>
                   <div style={{display:"flex",flexDirection:"column",gap:7}}>
                     {lessons.map(l=>(
-                      <button key={l.id}
+                      <button key={l.id} type="button" className="wife-lessons-choice-row"
                         style={{...C.btn(WINE_DIM),textAlign:"left",padding:"10px 14px",lineHeight:1.5}}
                         onClick={()=>chooseWifeLessonsLesson(l.id)}>
                         <span style={{fontWeight:700,fontSize:12,color:WINE_TEXT}}>{l.label}</span>
@@ -158,6 +158,8 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                             <span style={{fontSize:10,color:isCapped?WINE_ACCENT:WINE_SUBTLE}}>{Math.round(wt)} lbs{isCapped?" ✓":""}</span>
                           </div>
                           <button
+                            type="button"
+                            className="wife-lessons-choice-row"
                             style={{...C.btn(WINE_DIM),width:"100%",fontSize:10,padding:"4px 8px"}}
                             onClick={()=>startWifeLessonsConversation(name)}>
                             Talk
@@ -182,6 +184,8 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                           <span style={{fontSize:10,color:isCapped?WINE_ACCENT:WINE_SUBTLE}}>{Math.round(wt)} lbs</span>
                         </div>
                         <button
+                          type="button"
+                          className="wife-lessons-choice-row"
                           style={{...C.btn(WINE_DIM),width:"100%",fontSize:10,padding:"4px 8px"}}
                           onClick={()=>startWifeLessonsConversation(name)}>
                           Talk

@@ -1720,6 +1720,30 @@ check('salon-row-polish', () => {
   assert.match(modal, /salon-choice-row/);
 });
 
+check('sumo-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/SumoMatchModal.jsx');
+  assert.match(css, /\.sumo-move-row:focus-visible/);
+  assert.match(css, /\.sumo-move-row:hover:not\(:disabled\)/);
+  assert.match(modal, /sumo-move-row/);
+});
+
+check('stream-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/StreamSessionModal.jsx');
+  assert.match(css, /\.stream-challenge-row:focus-visible/);
+  assert.match(css, /\.stream-challenge-row:hover/);
+  assert.match(modal, /stream-challenge-row/);
+});
+
+check('wife-lessons-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/WifeLessonsModal.jsx');
+  assert.match(css, /\.wife-lessons-choice-row:focus-visible/);
+  assert.match(css, /\.wife-lessons-choice-row:hover/);
+  assert.match(modal, /wife-lessons-choice-row/);
+});
+
 check('modal-button-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.hall-pass-modal-in button:focus-visible/);
