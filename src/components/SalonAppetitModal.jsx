@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { SALON_GUESTS, SALON_COURSES, SALON_SERVICE_CHOICES } from '../gameData/chloeSalon.js';
 
 const ACCENT = '#8b2942';
@@ -31,10 +32,12 @@ export function SalonAppetitModal({
     });
   };
 
+  const closeSalon = () => { playHallPassSound('click', soundEnabled); onClose(); };
+
   if (!session) {
     const available = SALON_GUESTS.filter((g) => salonState.prestige >= g.unlockPrestige);
     return (
-      <div style={{ ...C.overlay, zIndex: 360 }}>
+      <ModalOverlay onClose={closeSalon} soundEnabled={soundEnabled} style={{ zIndex: 360 }}>
         <div className="hall-pass-modal-in salon-modal" style={{ ...C.modal, maxWidth: 560, background: '#12080c', border: `1px solid ${ACCENT}55`, maxHeight: '90vh', overflowY: 'auto' }}>
           <div style={{ fontSize: 9, letterSpacing: 4, color: GOLD, marginBottom: 8 }}>🥂 SALON DE L'APPÉTIT</div>
           <div style={{ fontSize: 12, color: '#e8d0d8', lineHeight: 1.7, marginBottom: 12 }}>
@@ -65,9 +68,9 @@ export function SalonAppetitModal({
           >
             Begin the soirée → (2 AP)
           </button>
-          <button type="button" style={{ ...C.btn('#444'), width: '100%', marginTop: 8 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
+          <button type="button" style={{ ...C.btn('#444'), width: '100%', marginTop: 8 }} onClick={closeSalon}>Close</button>
         </div>
-      </div>
+      </ModalOverlay>
     );
   }
 

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { renderOppositionEndgame } from '../textEngine/scenes/opposition/index.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
 
 const BEAT_META = {
@@ -20,8 +21,9 @@ export function OppositionEndgameModal({ beat, onDismiss, soundEnabled = true })
     ? renderOppositionEndgame(meta.slot, beat.week ?? 1)
     : beat.fallback || 'Something fundamental shifts in the opposition.';
 
+  const dismiss = () => { playHallPassSound('confirm', soundEnabled); onDismiss(); };
   return (
-    <div style={{ ...C.overlay, zIndex: 8600 }}>
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled} style={{ zIndex: 8600 }}>
       <div className="hall-pass-modal-in opposition-endgame-modal" style={{ ...C.modal, maxWidth: 520, border: `1px solid ${meta.color}60`, background: 'linear-gradient(160deg,#080810,#101828,#080810)' }}>
         <SceneBackdrop variant="opposition" />
         <div style={{ fontSize: 10, letterSpacing: 4, color: meta.color, marginBottom: 8 }}>
@@ -35,10 +37,10 @@ export function OppositionEndgameModal({ beat, onDismiss, soundEnabled = true })
             {beat.detail}
           </div>
         )}
-        <button type="button" className="opposition-endgame-choice-row" style={{ ...C.btn(meta.color), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onDismiss(); }}>
+        <button type="button" className="opposition-endgame-choice-row" style={{ ...C.btn(meta.color), width: '100%' }} onClick={dismiss}>
           Continue →
         </button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

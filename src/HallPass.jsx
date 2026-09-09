@@ -7995,8 +7995,9 @@ export default function HallPass(){
         const atelier=DINNER_VENUES.find(v=>v.id==="atelier");
         const showAtelier=hasSkill("dinner_accessible")&&stId>=6;
         const venueList=[...availableVenues,...(showAtelier?[atelier]:[])];
+        const dismissDinnerVenue=()=>{ playHallPassSound('click', soundEnabled); setDinnerEvent(null); };
         return(
-          <div style={C.overlay}>
+          <ModalOverlay onClose={dismissDinnerVenue} dismissible={dinnerEvent.phase==="venue"} soundEnabled={soundEnabled}>
             <div className="hall-pass-modal-in dinner-out-modal" style={{...C.modal,maxWidth:640}}>
               {/* Header */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
@@ -8195,7 +8196,7 @@ export default function HallPass(){
                 </div>
               )}
             </div>
-          </div>
+          </ModalOverlay>
         );
       })()}
 

@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { FAIR_TRAINING_CONFIG, FAIR_DAY_SCENES } from '../gameData/evolvedForms.js';
 
 export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairTrainingSession, launchFairDayEvent, closeFairTraining, setFairTrainingState, soundEnabled = true }){
@@ -13,8 +14,10 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
   const fairOrange='#C8860A';
   const tier=getFairPrideTier(ft.fairPride);
   const fairReady=ft.sessionsThisCycle>=FAIR_TRAINING_CONFIG.maxSessionsPerCycle;
+  const canDismiss=ft.view==='main'||ft.view==='trophies';
+  const dismissFairTraining=()=>{ playHallPassSound('click', soundEnabled); closeFairTraining(); };
   return(
-    <div style={C.overlay}>
+    <ModalOverlay onClose={dismissFairTraining} dismissible={canDismiss} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in fair-modal" style={{...C.modal,maxWidth:560,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
         <div style={{fontSize:9,letterSpacing:4,color:fairOrange,marginBottom:6}}>🎡 PRE-FAIR TRAINING — CYCLE {ft.cycleNum+1}</div>
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:8,fontSize:11,color:"#d0b080"}}>
@@ -97,7 +100,7 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
           </>
         )}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
 
@@ -108,8 +111,9 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
   const fairOrange='#C8860A';
   const key=`${fd.stageIdx}_${fd.influenceKey}`;
   const tier=getFairPrideTier(fairPride);
+  const dismissFairDay=()=>{ playHallPassSound('click', soundEnabled); closeFairDay(); };
   return(
-    <div style={C.overlay}>
+    <ModalOverlay onClose={dismissFairDay} dismissible={false} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in fair-modal" style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
         <div style={{fontSize:9,letterSpacing:4,color:fairOrange,marginBottom:6}}>
           🎡 FAIR DAY — {fd.phase==='weighin'?'THE WEIGH-IN':fd.phase==='judging'?'THE JUDGING':'THE AFTERPARTY'}
@@ -171,6 +175,6 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
           );
         })()}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { getRecruitmentScene, RECIPES, getDigestVignette } from '../gameData/cultivator.js';
 import { getStage } from '../gameData/stages.js';
 import { renderCultivatorIntro, renderCultivatorChoice } from '../textEngine/scenes/cultivator/index.js';
@@ -13,12 +14,26 @@ export function CultivatorModal({ cultivatorState, students, week = 1, setCultiv
         useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, cs?.modalPhase, cs?.session?.foodType, cs?.session?.junctionIdx]);
         const brown="#8B4513"; const amber="#CD853F";
         const renee=students.find(s=>s.id===10);
+        const canDismiss=cs.modalPhase==='recruit_setup'
+          ||(cs.modalPhase==='session'&&cs.session&&!cs.session.foodType)
+          ||cs.modalPhase==='harvest'
+          ||cs.modalPhase==='digest_check';
+        const dismissCultivator=()=>{
+          playHallPassSound('click', soundEnabled);
+          if(cs.modalPhase==='recruit_setup'||(cs.modalPhase==='session'&&!cs.session?.foodType)){
+            setCultivatorState(prev=>({...prev,modalPhase:null,session:null}));
+          }else if(cs.modalPhase==='harvest'){
+            setCultivatorState(prev=>({...prev,modalPhase:null,harvestType:null,harvestVignetteText:null}));
+          }else if(cs.modalPhase==='digest_check'){
+            setCultivatorState(prev=>({...prev,modalPhase:null}));
+          }
+        };
         const wrap=(children)=>(
-          <div style={C.overlay}>
+          <ModalOverlay onClose={dismissCultivator} dismissible={canDismiss} soundEnabled={soundEnabled}>
             <div className="hall-pass-modal-in cultivator-modal" style={{...C.modal,maxWidth:500,background:"linear-gradient(160deg,#0a0400,#1a0800,#0a0400)",border:`1px solid ${brown}60`,maxHeight:"88vh",overflowY:"auto"}}>
               {children}
             </div>
-          </div>
+          </ModalOverlay>
         );
 
         // ── RECRUIT SETUP ──

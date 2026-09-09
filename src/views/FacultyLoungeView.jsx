@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 import { useState } from 'react';
 import { FACULTY, FACULTY_CONFIG, FACULTY_AFFINITY_TIERS, getFacultyTier } from '../gameData/faculty.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from '../components/ModalOverlay.jsx';
 import { C } from '../styles.js';
 
 // ── affinity bar ──────────────────────────────────────────────
@@ -23,7 +25,7 @@ function AffinityBar({ value, color }){
 
 // ── dialogue modal ────────────────────────────────────────────
 
-function DialogueModal({ teacher, affinity, onClose, onAffinityGain }){
+function DialogueModal({ teacher, affinity, onClose, onAffinityGain, soundEnabled = true }){
   const [nodeId, setNodeId] = useState("hub");
   const node = teacher.tree[nodeId];
   if(!node) return null;
@@ -47,7 +49,7 @@ function DialogueModal({ teacher, affinity, onClose, onAffinityGain }){
   const tier = getFacultyTier(affinity);
 
   return(
-    <div style={C.overlay} onClick={(e)=>{ if(e.target===e.currentTarget) onClose(); }}>
+    <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); onClose(); }} soundEnabled={soundEnabled}>
       <div style={{
         ...C.modal,
         maxWidth:560,
@@ -127,7 +129,7 @@ function DialogueModal({ teacher, affinity, onClose, onAffinityGain }){
           )}
         </div>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
 

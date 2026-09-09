@@ -2099,6 +2099,18 @@ check('modal-dismiss-polish', () => {
     'src/components/EquipPicker.jsx',
     'src/components/AscensionCeremonyModal.jsx',
     'src/components/ArtisanGalleryModal.jsx',
+    'src/components/DeviceTargetPicker.jsx',
+    'src/views/FacultyLoungeView.jsx',
+    'src/components/SupernaturalAscensionModal.jsx',
+    'src/components/OppositionEndgameModal.jsx',
+    'src/components/RefeedSurgeModal.jsx',
+    'src/components/PharmacistChemModal.jsx',
+    'src/components/PharmacistCultModal.jsx',
+    'src/components/SalonAppetitModal.jsx',
+    'src/components/FairModals.jsx',
+    'src/components/CommunityResearcherModal.jsx',
+    'src/components/CultivatorModal.jsx',
+    'src/components/PickerModals.jsx',
     'src/HallPass.jsx',
   ]) {
     const src = read(rel);

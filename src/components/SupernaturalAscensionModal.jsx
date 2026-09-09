@@ -2,12 +2,14 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { SUPERNATURAL_FORMS } from '../gameData/supernaturalForms.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function SupernaturalAscensionModal({ students, opposition, onAscend, onDismiss, soundEnabled = true }) {
   useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled, opposition?.supernatural?.actWeek]);
   const eligible = students.filter((s) => s.evolvedForm && !s.supernaturalForm && SUPERNATURAL_FORMS[s.archetype]);
+  const dismiss = () => { playHallPassSound('click', soundEnabled); onDismiss(); };
   return (
-    <div style={{ ...C.overlay, zIndex: 400 }}>
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled} style={{ zIndex: 400 }}>
       <div className="hall-pass-modal-in supernatural-ascension-modal" style={{ ...C.modal, maxWidth: 560, background: 'linear-gradient(160deg,#050208,#120818,#050208)', border: '1px solid #6040a080' }}>
         <div style={{ fontSize: 9, letterSpacing: 4, color: '#a080d0', marginBottom: 8 }}>👻 THE SUPERNATURAL ACT</div>
         <p style={{ fontSize: 12, color: '#d0c0e8', lineHeight: 1.8, marginBottom: 14 }}>
@@ -39,8 +41,8 @@ export function SupernaturalAscensionModal({ students, opposition, onAscend, onD
         ) : (
           <p style={{ fontSize: 11, color: '#8070a0', marginBottom: 12 }}>No evolved residents ready for ascension this week.</p>
         )}
-        <button type="button" className="supernatural-ascension-choice-row" style={{ ...C.btn('#444'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onDismiss(); }}>Acknowledge — the act has begun</button>
+        <button type="button" className="supernatural-ascension-choice-row" style={{ ...C.btn('#444'), width: '100%' }} onClick={dismiss}>Acknowledge — the act has begun</button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

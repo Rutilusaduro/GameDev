@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function DeviceTargetPicker({ deviceTargetPicker, setDeviceTargetPicker, students, lilithUnlocked, useDeviceOn, soundEnabled = true }) {
   const { def } = deviceTargetPicker;
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, def?.id]);
 
+  const dismiss = () => { playHallPassSound('click', soundEnabled); setDeviceTargetPicker(null); };
   return (
-    <div style={C.overlay}>
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in device-modal" style={{ ...C.modal, maxWidth: 460 }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#6080a0', marginBottom: 6 }}>USE DEVICE</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#90b0d0', marginBottom: 4 }}>{def.icon} {def.label}</div>
@@ -25,8 +27,8 @@ export function DeviceTargetPicker({ deviceTargetPicker, setDeviceTargetPicker, 
             </button>
           ))}
         </div>
-        <button style={{ ...C.btn('#333'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); setDeviceTargetPicker(null); }}>Cancel</button>
+        <button style={{ ...C.btn('#333'), width: '100%' }} onClick={dismiss}>Cancel</button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

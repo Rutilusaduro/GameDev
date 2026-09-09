@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { COLLAB_CONTENT_CREATOR_ARCHETYPES } from '../gameData/miniGames.js';
 import { EVOLVED_ACTIVITY_META, EVOLVED_EVENTS } from '../gameData/evolvedForms.js';
 import { renderNadiaJournalEntry, renderFeederJournalEntry } from '../textEngine/scenes/researchJournal/index.js';
@@ -235,8 +236,9 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
     setPhaseIdx(nextPhase);
   };
 
+  const dismissMinigame = () => { if (done) { playHallPassSound('click', soundEnabled); onClose(); } };
   return (
-    <div style={C.overlay}>
+    <ModalOverlay onClose={dismissMinigame} dismissible={done} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in picker-modal" style={{ ...C.modal, maxWidth: 540, background: 'linear-gradient(160deg,#100800,#1a1000,#100800)', border: `1px solid ${def.accent}50`, maxHeight: '85vh', overflowY: 'auto' }}>
         <div style={{ fontSize: 9, letterSpacing: 4, color: def.accent, marginBottom: 4 }}>{def.tag}</div>
         <div style={{ fontSize: 15, color: '#e0d0c0', fontWeight: 'bold', marginBottom: 4 }}>{def.title} — Stage {stageIdx + 1}</div>
@@ -260,7 +262,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
           <button type="button" className="evolved-minigame-choice-row" style={{ ...C.btn(def.accent), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onClose(); }}>Continue ✓</button>
         )}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
 
@@ -371,8 +373,9 @@ export function IntimacySceneSelector({ ap, intimacySceneSelector, setIntimacySc
         useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, s?.id]);
         const tier=getTier(s.relationship);
         const availScenes=INTIMACY_SCENES.filter(sc=>tier.id>=sc.minTier&&intimacySceneAllowed(sc.id,s));
+        const dismissSelector=()=>{ playHallPassSound('click', soundEnabled); setIntimacySceneSelector(null); };
         return(
-          <div style={C.overlay}>
+          <ModalOverlay onClose={dismissSelector} soundEnabled={soundEnabled}>
             <div className="hall-pass-modal-in picker-modal" style={{...C.modal,maxWidth:600,background:"linear-gradient(160deg,#0a0318,#160528,#0a0318)",border:"1px solid #8030c050",maxHeight:"85vh",overflowY:"auto"}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#c050a0",marginBottom:4}}>INTIMACY</div>
               <div style={{fontSize:15,fontWeight:700,color:"#e8a8d0",marginBottom:4}}>{s.name}</div>
@@ -392,8 +395,8 @@ export function IntimacySceneSelector({ ap, intimacySceneSelector, setIntimacySc
                   </button>
                 ))}
               </div>
-              <button type="button" className="intimacy-choice-row" style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setIntimacySceneSelector(null); }}>Not now</button>
+              <button type="button" className="intimacy-choice-row" style={C.btn("#333")} onClick={dismissSelector}>Not now</button>
             </div>
-          </div>
+          </ModalOverlay>
         );
 }

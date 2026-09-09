@@ -5,6 +5,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { COMPOUNDS, PHARMACIST_STAGES, compoundsForStage } from '../gameData/pharmacist.js';
 import {
   ACQUISITION_BY_STAGE,
@@ -112,8 +113,9 @@ export function PharmacistChemModal({
   const stageMeta = PHARMACIST_STAGES.find(s => s.id === stageId);
   const options = ACQUISITION_BY_STAGE[stageId] || ACQUISITION_BY_STAGE[1];
 
-  const wrap = children => (
-    <div style={{ ...C.overlay, zIndex: 8200 }}>
+  const cancelChem = () => { playHallPassSound('click', soundEnabled); onCancel(); };
+  const wrap = (children, { dismissible = false } = {}) => (
+    <ModalOverlay onClose={cancelChem} dismissible={dismissible} soundEnabled={soundEnabled} style={{ zIndex: 8200 }}>
       <div className="hall-pass-modal-in pharmacist-chem-modal" style={{
         ...C.modal,
         maxWidth: 520,
@@ -122,7 +124,7 @@ export function PharmacistChemModal({
       }}>
         {children}
       </div>
-    </div>
+    </ModalOverlay>
   );
 
   if (chemSession.phase === 'acquire') {
@@ -156,6 +158,7 @@ export function PharmacistChemModal({
           </button>
         </div>
       </>,
+      { dismissible: true },
     );
   }
 

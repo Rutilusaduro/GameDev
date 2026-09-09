@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { CULT_DISTRIBUTION_ROUTES } from '../gameData/pharmacistCult.js';
 
 const PURPLE = '#6b4a8a';
@@ -23,8 +24,9 @@ export function PharmacistCultModal({
   if (!cultSession || !student) return null;
   const cult = pharmacistState?.cult || {};
 
-  const wrap = children => (
-    <div style={{ ...C.overlay, zIndex: 8250 }}>
+  const cancelCult = () => { playHallPassSound('click', soundEnabled); onCancel(); };
+  const wrap = (children, { dismissible = false } = {}) => (
+    <ModalOverlay onClose={cancelCult} dismissible={dismissible} soundEnabled={soundEnabled} style={{ zIndex: 8250 }}>
       <div className="hall-pass-modal-in pharmacist-cult-modal" style={{
         ...C.modal,
         maxWidth: 520,
@@ -33,7 +35,7 @@ export function PharmacistCultModal({
       }}>
         {children}
       </div>
-    </div>
+    </ModalOverlay>
   );
 
   if (cultSession.phase === 'route') {
@@ -74,8 +76,9 @@ export function PharmacistCultModal({
             </div>
           </button>
         ))}
-        <button type="button" style={{ ...C.btn('#333'), width: '100%', marginTop: 6 }} onClick={onCancel}>Cancel</button>
+        <button type="button" style={{ ...C.btn('#333'), width: '100%', marginTop: 6 }} onClick={cancelCult}>Cancel</button>
       </>,
+      { dismissible: true },
     );
   }
 

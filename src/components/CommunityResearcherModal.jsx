@@ -6,6 +6,7 @@ import { C } from '../styles.js';
 import { THESIS_BOARD, CASE_STUDY_PAIRS, BOARD_REACTIONS, getSuspicionBracket, HAVE_A_CHAT_SCENES } from '../gameData/communityResearcher.js';
 import { getStage } from '../gameData/stages.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function CommunityResearcherModal({ communityResearcherState, students, lilithUnlocked, lilithKillCount, advanceThesisBoard, completeThesisDefense, selectCasePair, setCommunityResearcherState, completeCaseStudy, dismissBoardReaction, proceedFromFinalReview, makeHaveAChatChoice, closeThesisOutcome, soundEnabled = true }){
         const crs=communityResearcherState;
@@ -13,12 +14,14 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
         const blue="#4a6fa5"; const lblue="#8fa8e0";
         const cassidy=students.find(s=>s.id===1);
         const mName=cassidy?.name||"Cassidy";
+        const canDismiss=crs.modalPhase==='case_study_grid';
+        const dismissCR=()=>{ playHallPassSound('click', soundEnabled); setCommunityResearcherState(prev=>({...prev,modalPhase:null})); };
         const wrap=(children)=>(
-          <div style={C.overlay}>
+          <ModalOverlay onClose={dismissCR} dismissible={canDismiss} soundEnabled={soundEnabled}>
             <div className="hall-pass-modal-in community-researcher-modal" style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#010510,#020818,#010510)",border:`1px solid ${blue}60`,maxHeight:"88vh",overflowY:"auto"}}>
               {children}
             </div>
-          </div>
+          </ModalOverlay>
         );
 
         // ── THESIS BOARD ──

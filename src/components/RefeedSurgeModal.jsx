@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { render } from '../textEngine/engine.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function RefeedSurgeModal({ student, tapsNeeded = 3, taps = 0, onTap, onComplete, onDismiss, soundEnabled = true }) {
   useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled, student?.id]);
@@ -13,8 +14,9 @@ export function RefeedSurgeModal({ student, tapsNeeded = 3, taps = 0, onTap, onC
     d: { memoryMassBand: pct >= 80 ? 'high' : pct >= 50 ? 'mid' : 'low' },
   });
 
+  const dismiss = () => { playHallPassSound('click', soundEnabled); onDismiss(); };
   return (
-    <div style={{ ...C.overlay, zIndex: 8500 }}>
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled} style={{ zIndex: 8500 }}>
       <div className="hall-pass-modal-in refeed-surge-modal" style={{ ...C.modal, maxWidth: 480, border: '1px solid #4060a0' }}>
         <div style={{ fontSize: 10, letterSpacing: 3, color: '#7090c0', marginBottom: 8 }}>✨ REFEED SURGE</div>
         <div style={{ fontSize: 13, color: '#d0d8f0', lineHeight: 1.8, fontStyle: 'italic', marginBottom: 14 }}>
@@ -45,10 +47,10 @@ export function RefeedSurgeModal({ student, tapsNeeded = 3, taps = 0, onTap, onC
             Surge complete →
           </button>
         )}
-        <button type="button" className="refeed-surge-choice-row" style={{ ...C.btn('#333'), width: '100%', marginTop: 8, fontSize: 10 }} onClick={() => { playHallPassSound('click', soundEnabled); onDismiss(); }}>
+        <button type="button" className="refeed-surge-choice-row" style={{ ...C.btn('#333'), width: '100%', marginTop: 8, fontSize: 10 }} onClick={dismiss}>
           Skip
         </button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
