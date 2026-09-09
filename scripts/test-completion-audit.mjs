@@ -1127,6 +1127,27 @@ check('ra-specialties-legacy-framing', () => {
   assert.doesNotMatch(sessions, /The body is your subject|teaching people to really look|Research study risk halved/i);
 });
 
+check('sophia-hall-log-framing', () => {
+  const early = read('src/textEngine/scenes/earlyGain/personas.js');
+  const interior = read('src/textEngine/scenes/interior/personas.js');
+  const students = read('src/gameData/students.js');
+  const diaryBase = read('src/textEngine/scenes/diaryBase.js');
+  const faculty = read('src/gameData/faculty.js');
+  assert.match(early, /Wellness tracking was supposed to be abstract/);
+  assert.match(early, /Hall log optional\. Appetite mandatory/);
+  assert.match(interior, /Wellness tracking was supposed to stay theoretical/);
+  assert.match(students, /wellness tracking the way other people talk about salvation/);
+  assert.match(diaryBase, /Hall log, Week 3/);
+  assert.match(diaryBase, /The hall log continues\. So do I\./);
+  assert.match(faculty, /RA taste-tester cleared her own baseline tray/);
+  assert.match(faculty, /favorite hall log and you haven't even signed a permission slip/);
+  assert.doesNotMatch(early, /Wellness research was supposed|Field notes optional/i);
+  assert.doesNotMatch(interior, /Wellness research was supposed/i);
+  assert.doesNotMatch(students, /wellness research the way/i);
+  assert.doesNotMatch(diaryBase, /Field note, Week [357]/);
+  assert.doesNotMatch(faculty, /research assistant ate her own control group|grant committee|favorite case study|consent form/i);
+});
+
 check('nadia-sophia-baseline-framing', () => {
   const echo = read('src/textEngine/scenes/v2/echo/echoSceneDepth.js');
   const psych = read('src/textEngine/scenes/psychShift/personas.js');

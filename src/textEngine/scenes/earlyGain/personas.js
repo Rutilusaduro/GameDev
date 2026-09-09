@@ -160,7 +160,7 @@ registerModuleVariants('slender.mindFeel', [
   ]},
   // ── 16 Sophia ────────────────────────────────────────────────
   { when: { studentId: 16, ...EARLY }, weight: W, text: [
-    'Wellness research was supposed to be abstract. Her waistband disagrees.',
+    'Wellness tracking was supposed to be abstract. Her waistband disagrees.',
     'She double-checks the number the way she double-checks formulations — twice, then again.',
     'Literature gap: why fullness feels this good.',
   ]},
@@ -549,7 +549,7 @@ registerModuleVariants('slender.eatPause', [
     'Self-care includes seconds. Prescribed.',
   ]},
   { when: { studentId: 12, corruption: [0], stageMax: 3 }, weight: W, text: [
-    'Nadia eats while observing everyone else eat. Field notes optional. Appetite mandatory.',
+    'Nadia eats while observing everyone else eat. Hall log optional. Appetite mandatory.',
     'She watches you watch her chew. The observation does not slow her fork.',
     'Observation continues. Fork does not wait.',
   ]},

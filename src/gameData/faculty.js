@@ -99,7 +99,7 @@ export const FACULTY = [
           {label:"\"What's your success rate?\"", next:"rate", affinity:4},
           {label:"Back", next:"hub"},
         ]},
-      rate:{ text:()=>`Mori consults a clipboard she clearly doesn't need. "Test residents finish, on average, 240% of intended portions. One research assistant ate her own control group." The smile again, slightly wider. "I had to order new lab coats. Sizes up. The grant committee asked no questions."`,
+      rate:{ text:()=>`Mori consults a clipboard she clearly doesn't need. "Test residents finish, on average, 240% of intended portions. One RA taste-tester cleared her own baseline tray." The smile again, slightly wider. "I had to order new lab coats. Sizes up. Housing asked no questions."`,
         options:[ {label:"Back", next:"hub"} ]},
       taste:{ text:()=>`Her eyes do something complicated and pleased. "A volunteer with floor credentials. Sit." What follows is forty minutes of spoons, careful notes, and dishes that taste like more. "Interesting," she murmurs, watching you reach unprompted for a third helping of trial nineteen. "Very interesting."`,
         options:[
@@ -123,7 +123,7 @@ export const FACULTY = [
     desc:"Reads rooms, reads people, is currently reading you. Finds the campus's recent transformation fascinating rather than alarming.",
     tree:{
       hub:{ text:(t,a)=>a>=50
-          ?`Abara has two coffees waiting, one positioned for you. "I pattern-matched your schedule," she says, unbothered by how that sounds. "Sit. You're my favorite case study and you haven't even signed a consent form."`
+          ?`Abara has two coffees waiting, one positioned for you. "I pattern-matched your schedule," she says, unbothered by how that sounds. "Sit. You're my favorite hall log and you haven't even signed a permission slip."`
           :`Dr. Abara watches you cross the lounge the way a chess player watches a knight move. "RA," she says pleasantly. "Fascinating semester, isn't it. Statistically speaking."`,
         options:[
           {label:"\"What's fascinating about it?\"", next:"fascinating"},
