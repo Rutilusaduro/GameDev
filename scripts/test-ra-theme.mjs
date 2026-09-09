@@ -37,6 +37,12 @@ const BANNED = [
   { id: 'class-size-review', re: /Class size review/ },
   { id: 'leaves-class-energized', re: /leaves class energized/ },
   { id: 'psychology-of-feederism', re: /psychology of feederism/i },
+  { id: 'student-teacher', re: /student teacher/i },
+  { id: 'early-childhood-ed', re: /Early Childhood Education/i },
+  { id: 'psychology-grad-student', re: /psychology grad student/i },
+  { id: 'excel-in-classes', re: /excel in classes/i },
+  { id: 'kindergartener', re: /kindergartener/i },
+  { id: 'teaching-degree', re: /teaching degree/i },
 ];
 
 const ALLOW_LINE = [

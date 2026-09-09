@@ -442,7 +442,7 @@ export const BOARD_REACTIONS = {
 
   metrics: `Coach Rivera's response spans three paragraphs. The first asks what the experimental design was, because she cannot determine it from the notes. The second asks how Cassidy induced competitive consumption in a high-performing student without her explicit awareness. The third asks what the research question actually was, "because I cannot locate it in the documentation." AD Harmon flags the power dynamics as "requiring clarification." Nutritionist Ward's question is simpler: "How did you get Priya to participate in something she wasn't already winning?"`,
 
-  manipulation: `Coach Rivera's email arrives forty-five minutes after Cassidy submits her notes. Three lines: "Session six. Was Nadia's participation disclosed to athletics compliance." AD Harmon follows the next morning: "The power differential in this session is significant. Daisy is in an educational role. Her participation alongside a psychology grad student conducting what appears to be a coordinated feeding event raises serious questions about prior agreement and oversight." Nutritionist Ward's message comes last: "You were being fed by two active observers simultaneously. We need to discuss this."`,
+  manipulation: `Coach Rivera's email arrives forty-five minutes after Cassidy submits her notes. Three lines: "Session six. Was Nadia's participation disclosed to athletics compliance." AD Harmon follows the next morning: "The power differential in this session is significant. Daisy is a hall mentor. Her participation alongside a psych resident running what appears to be a coordinated feeding event raises serious questions about prior agreement and oversight." Nutritionist Ward's message comes last: "You were being fed by two active observers simultaneously. We need to discuss this."`,
 
   vore: `Coach Rivera does not send an email. She requests a meeting through the athletics coordinator. Her attached note: "Session seven documents a coordinated feeding event involving three external individuals not affiliated with the university, who did not consent to being research subjects, and are referenced in your field notes by first name only. This is being flagged for panel review." AD Harmon's email: "Where is the consent documentation for Morgan, Theo, and Francesca?" Nutritionist Ward's message arrives late at night: "The section you titled 'The Hunt.' Come and explain it to me in person."`,
 };
@@ -460,7 +460,7 @@ export function getFinalReviewText(pairsUsed, totalSuspicion) {
     text += `AD Harmon references the two-night study. "Eating contest methodology, then sumo methodology — same subject, consecutive evenings." She pauses. "Which did you find more informative as a lane captain?" Nutritionist Ward doesn't wait: "Which did you find more interesting to participate in?"\n\n`;
   }
   if (did('manipulation')) {
-    text += `Coach Rivera: "Session six. You were being fed simultaneously by a student teacher and a psychology grad student conducting a parallel study you did not disclose to this panel. Did you know about Nadia's work before you included her?"\n\n`;
+    text += `Coach Rivera: "Session six. You were being fed simultaneously by a hall mentor and a psych resident running a parallel hall log you did not disclose to this panel. Did you know about Nadia's work before you included her?"\n\n`;
   }
   if (did('metrics')) {
     text += `Coach Rivera: "Session five. I've read it three times. I still can't locate the research question."\n\n`;

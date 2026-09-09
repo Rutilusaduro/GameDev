@@ -18,7 +18,7 @@ const talkByStudent = {
   10: ['Reneé tastes words the way she tastes recipes — slow, sensory, already planning the next course.'],
   11: ['Kaylee listens first, then answers with the warmth of someone who feeds people for a living.'],
   12: ['Nadia watches you while she speaks — clinical curiosity braided with hunger she refuses to dramatize.'],
-  13: ['Daisy talks like a teacher with snacks in her bag — practical warmth, appetite offered as care.'],
+  13: ['Daisy talks like a mentor with snacks in her bag — practical warmth, appetite offered as care.'],
   14: ['Mary Jane laughs easily and names hunger like weather back home — familiar, generous, impossible to refuse.'],
   15: ['Lilith speaks in low certainties — appetite as predation, pleasure as something she takes rather than asks for.'],
   16: ['Sophia cites formulations between bites — wellness language stretched thin over want she cannot quite banish.'],

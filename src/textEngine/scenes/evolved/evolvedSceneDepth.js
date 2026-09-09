@@ -18,7 +18,7 @@ const EVOLVED_BY_STUDENT = {
   10: `Reneé's cultivator evolution makes harvest personal — kitchen and subject and chef merged in warmth.`,
   11: `Kaylee's evolved arc blooms caregiver hunger — feeding others became feeding herself, shame retired.`,
   12: `Nadia's evolution files appetite as ongoing research — subject and observer same person, case open.`,
-  13: `Daisy's homeroom evolution crowns abundance — teacher, caterer, and appetite made policy.`,
+  13: `Daisy's homeroom evolution crowns abundance — mentor, caterer, and appetite made policy.`,
   14: `Mary Jane's homestead evolution roots growth in harvest identity — heavy crop, healthy land, good belly.`,
   15: `Lilith's predator evolution shifts gravity — hunt replaced by orbit, appetite as architecture.`,
   16: `Sophia's pharmacist evolution saturates campus — wellness rhetoric surrendering to compound hunger.`,
