@@ -125,7 +125,7 @@ function PsychRibbons({ bands }) {
   );
 }
 
-export function DossierPanel({ student, week, diaryOpts, onClose }) {
+export function DossierPanel({ student, week, diaryOpts, onClose, soundEnabled = true }) {
   const [activePin, setActivePin] = useState(null);
   const dossier = useMemo(() => assembleDossier(student, week), [student, week]);
   const st = getStage(student.lbs);
@@ -260,7 +260,7 @@ export function DossierPanel({ student, week, diaryOpts, onClose }) {
       </div>
 
       {activePin && (
-        <DossierMomentModal pin={activePin} student={student} week={week} onClose={() => setActivePin(null)} />
+        <DossierMomentModal pin={activePin} student={student} week={week} onClose={() => setActivePin(null)} soundEnabled={soundEnabled} />
       )}
     </div>
   );

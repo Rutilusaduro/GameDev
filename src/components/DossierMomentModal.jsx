@@ -1,12 +1,14 @@
 // ═══════════════════════════════════════════════════════════════
 // DOSSIER MOMENT — replay a pinned threshold beat
 // ═══════════════════════════════════════════════════════════════
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { WEIGHT_STAGES } from '../gameData/stages.js';
 import { resolvePinExcerpt } from '../gameData/dossierReplay.js';
 
-export function DossierMomentModal({ pin, student, week = 1, onClose }) {
+export function DossierMomentModal({ pin, student, week = 1, onClose, soundEnabled = true }) {
+  useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, pin?.kind, pin?.ref, pin?.week]);
   const prose = useMemo(
     () => (pin && student ? resolvePinExcerpt(student, pin, week) : ''),
     [pin, student, week],
@@ -18,6 +20,7 @@ export function DossierMomentModal({ pin, student, week = 1, onClose }) {
   return (
     <div style={C.overlay} onClick={onClose}>
       <div
+        className="hall-pass-modal-in"
         style={{ ...C.modal, maxWidth: 520, border: '1px solid #50a080' }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -36,7 +39,7 @@ export function DossierMomentModal({ pin, student, week = 1, onClose }) {
             This beat was logged, but no replay text is available for it yet.
           </div>
         )}
-        <button type="button" style={{ ...C.btn('#307050'), width: '100%' }} onClick={onClose}>
+        <button type="button" style={{ ...C.btn('#307050'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>
           Close
         </button>
       </div>

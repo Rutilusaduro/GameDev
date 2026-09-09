@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { COLLAB_CONTENT_CREATOR_ARCHETYPES } from '../gameData/miniGames.js';
 import { EVOLVED_ACTIVITY_META, EVOLVED_EVENTS } from '../gameData/evolvedForms.js';
 import { renderNadiaJournalEntry, renderFeederJournalEntry } from '../textEngine/scenes/researchJournal/index.js';
@@ -11,8 +12,9 @@ import { getTier } from '../gameData/sessions.js';
 import { EVOLVED_MINIGAMES, computeMinigameOutcome, minigameTierLabel } from '../gameData/evolvedMinigames.js';
 
 
-export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, students }){
+export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, students, soundEnabled = true }){
         const{nadiaId,subjectId,currentPage}=nadiaNotesState;
+        useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, subjectId, currentPage]);
         const nadia=students.find(st=>st.id===nadiaId);
         const subj=students.find(st=>st.id===subjectId);
         if(!nadia||!subj) return null;
@@ -32,12 +34,12 @@ export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, st
         const canNext=!isIntro&&currentPage<maxPage;
         return(
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.92)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
-            <div style={{background:`linear-gradient(170deg,#080015,#0d0025)`,border:`1px solid ${purple}60`,borderRadius:6,padding:0,maxWidth:520,width:"95%",maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:`0 8px 40px rgba(80,20,120,0.4)`}}>
+            <div className="hall-pass-modal-in" style={{background:`linear-gradient(170deg,#080015,#0d0025)`,border:`1px solid ${purple}60`,borderRadius:6,padding:0,maxWidth:520,width:"95%",maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:`0 8px 40px rgba(80,20,120,0.4)`}}>
               {/* Header */}
               <div style={{background:`linear-gradient(90deg,#0a0020,#150030,#0a0020)`,borderBottom:`1px solid ${purple}40`,padding:"10px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",borderRadius:"4px 4px 0 0"}}>
                 <div style={{fontSize:9,letterSpacing:3,color:purple}}>📓 RESEARCH NOTES</div>
                 <div style={{fontSize:11,color:"#c0a0e0",fontWeight:"bold"}}>{nadia.name} → {subj.name}</div>
-                <button style={{...C.smBtn,fontSize:10,padding:"2px 8px",background:"transparent",border:`1px solid ${purple}30`,color:"#7050a0"}} onClick={()=>setNadiaNotesState(null)}>✕</button>
+                <button style={{...C.smBtn,fontSize:10,padding:"2px 8px",background:"transparent",border:`1px solid ${purple}30`,color:"#7050a0"}} onClick={()=>{ playHallPassSound('click', soundEnabled); setNadiaNotesState(null); }}>✕</button>
               </div>
               {/* Stage/level indicator */}
               <div style={{padding:"6px 16px",background:"#050010",borderBottom:`1px solid ${purple}20`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
@@ -67,8 +69,9 @@ export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, st
         );
 }
 
-export function SubjectJournalModal({ setSubjectJournalState, students, subjectJournalState }){
+export function SubjectJournalModal({ setSubjectJournalState, students, subjectJournalState, soundEnabled = true }){
         const{subjectId,currentPage}=subjectJournalState;
+        useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, subjectId, currentPage]);
         const subj=students.find(st=>st.id===subjectId);
         if(!subj) return null;
         const maxPage=getStage(subj.lbs).id;
@@ -82,12 +85,12 @@ export function SubjectJournalModal({ setSubjectJournalState, students, subjectJ
         const borderColor="#8b7355";
         return(
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
-            <div style={{background:`linear-gradient(170deg,#1a0a2e,#0d0520)`,border:`2px solid ${borderColor}80`,borderRadius:4,padding:0,maxWidth:520,width:"95%",maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:"0 8px 40px rgba(0,0,0,0.7)"}}>
+            <div className="hall-pass-modal-in" style={{background:`linear-gradient(170deg,#1a0a2e,#0d0520)`,border:`2px solid ${borderColor}80`,borderRadius:4,padding:0,maxWidth:520,width:"95%",maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:"0 8px 40px rgba(0,0,0,0.7)"}}>
               {/* Spine header */}
               <div style={{background:`linear-gradient(90deg,#120820,#1e0a38,#120820)`,borderBottom:`1px solid ${borderColor}60`,padding:"10px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",borderRadius:"2px 2px 0 0"}}>
                 <div style={{fontSize:9,letterSpacing:3,color:"#a08060"}}>📔 SUBJECT JOURNAL</div>
                 <div style={{fontSize:11,color:"#c0a070",fontWeight:"bold"}}>{subj.name}</div>
-                <button style={{...C.smBtn,fontSize:10,padding:"2px 8px",background:"transparent",border:"1px solid #40206040",color:"#806050"}} onClick={()=>setSubjectJournalState(null)}>✕</button>
+                <button style={{...C.smBtn,fontSize:10,padding:"2px 8px",background:"transparent",border:"1px solid #40206040",color:"#806050"}} onClick={()=>{ playHallPassSound('click', soundEnabled); setSubjectJournalState(null); }}>✕</button>
               </div>
               {/* Page */}
               <div style={{flex:1,overflowY:"auto",padding:"20px 24px",background:pageColor,margin:12,borderRadius:2,boxShadow:"inset 0 1px 4px rgba(0,0,0,0.4)"}}>

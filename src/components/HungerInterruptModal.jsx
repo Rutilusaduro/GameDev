@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { renderHungerInterrupt, renderHungerOutcome } from '../textEngine/scenes/hungerInterrupt/index.js';
 import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from '../textEngine/textFlagFormat.js';
@@ -16,7 +17,9 @@ export function HungerInterruptModal({
   onTalk,
   onEchoedWill,
   echoedWillAvailable = false,
+  soundEnabled = true,
 }) {
+  useEffect(() => { playHallPassSound('alert', soundEnabled); }, [soundEnabled, student?.id]);
   const s = student;
   const denyRelLoss = getInterruptDenyRelLoss(s);
   const interruptCopy = useMemo(() => {
@@ -30,7 +33,7 @@ export function HungerInterruptModal({
 
   return (
     <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.72)", zIndex: 9000, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
-      <div style={{ ...C.modal, maxWidth: 520, width: "100%", maxHeight: "90vh", overflowY: "auto" }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 520, width: "100%", maxHeight: "90vh", overflowY: "auto" }}>
         <div style={{ fontSize: 10, color: "#a05050", letterSpacing: 2, marginBottom: 8 }}>INTERRUPTION</div>
         <div style={{ fontSize: 14, color: "#e8d8c8", lineHeight: 1.85, fontStyle: "italic", marginBottom: 8 }}>
           {interruptCopy.text}
@@ -42,17 +45,17 @@ export function HungerInterruptModal({
           nodes={interruptCopy.traceNodes}
         />
         <div style={{ display: "grid", gap: 8 }}>
-          <button type="button" style={{ ...C.btn("#5818a8"), width: "100%" }} onClick={onFeed}>Feed her</button>
+          <button type="button" style={{ ...C.btn("#5818a8"), width: "100%" }} onClick={() => { playHallPassSound('click', soundEnabled); onFeed(); }}>Feed her</button>
           {hasCompounds && (
-            <button type="button" style={{ ...C.btn("#2a5070"), width: "100%" }} onClick={onCompound}>Give her a compound (in food)</button>
+            <button type="button" style={{ ...C.btn("#2a5070"), width: "100%" }} onClick={() => { playHallPassSound('click', soundEnabled); onCompound(); }}>Give her a compound (in food)</button>
           )}
-          <button type="button" style={{ ...C.btn("#3a3060"), width: "100%" }} onClick={onTalk}>Talk to her / calm her down</button>
+          <button type="button" style={{ ...C.btn("#3a3060"), width: "100%" }} onClick={() => { playHallPassSound('click', soundEnabled); onTalk(); }}>Talk to her / calm her down</button>
           {echoedWillAvailable && onEchoedWill && (
-            <button type="button" style={{ ...C.btn("#2a4060"), width: "100%" }} onClick={onEchoedWill}>
+            <button type="button" style={{ ...C.btn("#2a4060"), width: "100%" }} onClick={() => { playHallPassSound('confirm', soundEnabled); onEchoedWill(); }}>
               🔁 Echoed Will — reverse hunger curse (backlash scrutiny)
             </button>
           )}
-          <button type="button" style={{ ...C.btn("#502030"), width: "100%" }} onClick={onDeny}>
+          <button type="button" style={{ ...C.btn("#502030"), width: "100%" }} onClick={() => { playHallPassSound('click', soundEnabled); onDeny(); }}>
             Turn her away (−{denyRelLoss} relationship)
           </button>
         </div>

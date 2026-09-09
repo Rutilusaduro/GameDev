@@ -1,7 +1,10 @@
+import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { render } from '../textEngine/engine.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 
-export function RefeedSurgeModal({ student, tapsNeeded = 3, taps = 0, onTap, onComplete, onDismiss }) {
+export function RefeedSurgeModal({ student, tapsNeeded = 3, taps = 0, onTap, onComplete, onDismiss, soundEnabled = true }) {
+  useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled, student?.id]);
   if (!student) return null;
   const memory = student.memoryMass ?? student.lbs;
   const pct = memory > 0 ? Math.min(100, Math.round((student.lbs / memory) * 100)) : 0;
@@ -12,7 +15,7 @@ export function RefeedSurgeModal({ student, tapsNeeded = 3, taps = 0, onTap, onC
 
   return (
     <div style={{ ...C.overlay, zIndex: 8500 }}>
-      <div style={{ ...C.modal, maxWidth: 480, border: '1px solid #4060a0' }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 480, border: '1px solid #4060a0' }}>
         <div style={{ fontSize: 10, letterSpacing: 3, color: '#7090c0', marginBottom: 8 }}>✨ REFEED SURGE</div>
         <div style={{ fontSize: 13, color: '#d0d8f0', lineHeight: 1.8, fontStyle: 'italic', marginBottom: 14 }}>
           {line || `${student.name} remembers every pound — feed the surge back into her.`}
@@ -34,15 +37,15 @@ export function RefeedSurgeModal({ student, tapsNeeded = 3, taps = 0, onTap, onC
           ))}
         </div>
         {taps < tapsNeeded ? (
-          <button type="button" style={{ ...C.btn('#305080'), width: '100%' }} onClick={onTap}>
+          <button type="button" style={{ ...C.btn('#305080'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onTap(); }}>
             Feed the surge ({tapsNeeded - taps} left)
           </button>
         ) : (
-          <button type="button" style={{ ...C.btn('#4060a0'), width: '100%' }} onClick={onComplete}>
+          <button type="button" style={{ ...C.btn('#4060a0'), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onComplete(); }}>
             Surge complete →
           </button>
         )}
-        <button type="button" style={{ ...C.btn('#333'), width: '100%', marginTop: 8, fontSize: 10 }} onClick={onDismiss}>
+        <button type="button" style={{ ...C.btn('#333'), width: '100%', marginTop: 8, fontSize: 10 }} onClick={() => { playHallPassSound('click', soundEnabled); onDismiss(); }}>
           Skip
         </button>
       </div>

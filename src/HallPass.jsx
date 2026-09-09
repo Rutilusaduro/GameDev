@@ -8606,7 +8606,7 @@ export default function HallPass(){
           />}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} openEmbodiment={openEmbodiment} openDream={(s)=>setDreamStudent(s)} openEchoReplay={openEchoReplay} v2State={v2} ownedSkills={ownedSkills} ownedClassSkills={ownedClassSkills} onEchoResonate={runEchoResonate} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} fireAscensionAbility={fireAscensionAbility} openAscensionCeremony={openAscensionCeremony} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState} dossierOpen={dossierOpen} setDossierOpen={setDossierOpen}/>}
+          {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} openEmbodiment={openEmbodiment} openDream={(s)=>setDreamStudent(s)} openEchoReplay={openEchoReplay} v2State={v2} ownedSkills={ownedSkills} ownedClassSkills={ownedClassSkills} onEchoResonate={runEchoResonate} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} fireAscensionAbility={fireAscensionAbility} openAscensionCeremony={openAscensionCeremony} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState} dossierOpen={dossierOpen} setDossierOpen={setDossierOpen} soundEnabled={soundEnabled}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
@@ -8887,6 +8887,7 @@ export default function HallPass(){
         onApologize={confrontApologize} onGift={confrontGift}
         onStandFirm={confrontStandFirm} onLeave={()=>setConfrontation(null)}
         onPinBeat={(pin)=>pinSceneForStudent(confrontation.studentId,pin)}
+        soundEnabled={soundEnabled}
         {...sceneStageShared}/>}
 
       {/* ── GODDESS VISION MODAL ── */}
@@ -8919,6 +8920,7 @@ export default function HallPass(){
               setRefeedSurgeState(null);
             }}
             onDismiss={()=>setRefeedSurgeState(null)}
+            soundEnabled={soundEnabled}
           />
         );
       })()}
@@ -8939,7 +8941,7 @@ export default function HallPass(){
       {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal} soundEnabled={soundEnabled}/>}
 
       {/* ── MAYA DELIVERY HIVE — TERRITORY MANAGEMENT MODAL ── */}
-      {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive}/>}
+      {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive} soundEnabled={soundEnabled}/>}
 
       {/* ── EATING CONTEST MINI-GAME MODAL ── */}
       {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} week={week} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup}/>}
@@ -9123,10 +9125,10 @@ export default function HallPass(){
       {researchSubjectPicker&&<ResearchSubjectPicker researchSubjectPicker={researchSubjectPicker} setAp={setAp} setEvolvedEventState={setEvolvedEventState} setResearchSubjectPicker={setResearchSubjectPicker} setStudents={setStudents} students={students}/>}
 
       {/* ── PSYCH RESEARCHER: SUBJECT JOURNAL ── */}
-      {subjectJournalState&&<SubjectJournalModal setSubjectJournalState={setSubjectJournalState} students={students} subjectJournalState={subjectJournalState}/>}
+      {subjectJournalState&&<SubjectJournalModal setSubjectJournalState={setSubjectJournalState} students={students} subjectJournalState={subjectJournalState} soundEnabled={soundEnabled}/>}
 
       {/* ── NADIA'S SUBJECT NOTES ── */}
-      {nadiaNotesState&&<NadiaSubjectNotesModal nadiaNotesState={nadiaNotesState} setNadiaNotesState={setNadiaNotesState} students={students}/>}
+      {nadiaNotesState&&<NadiaSubjectNotesModal nadiaNotesState={nadiaNotesState} setNadiaNotesState={setNadiaNotesState} students={students} soundEnabled={soundEnabled}/>}
 
       {/* ── COLLAB STREAM MINI-GAME MODAL ── */}
       {collabStreamState&&<CollabStreamModal collabStreamState={collabStreamState} students={students} doCollabAction={doCollabAction} closeCollabStream={closeCollabStream} dismissCollabPopup={dismissCollabPopup}/>}
@@ -9186,6 +9188,7 @@ export default function HallPass(){
             onTalk={()=>finishHungerInterrupt(hs.id,'talk')}
             echoedWillAvailable={echoedWillAvailable}
             onEchoedWill={()=>finishHungerInterrupt(hs.id,'echoed_will')}
+            soundEnabled={soundEnabled}
           />
         );
       })()}
@@ -9220,6 +9223,7 @@ export default function HallPass(){
               else if(picker.kind==='interrupt') finishHungerInterrupt(picker.studentId,'compound',compoundId);
             }}
             onCancel={()=>setCompoundFeedPicker(null)}
+            soundEnabled={soundEnabled}
           />
         );
       })()}

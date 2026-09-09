@@ -47,6 +47,10 @@ import { renderWeighInIntro, renderWeighInReaction } from '../src/textEngine/sce
 import { renderHearingPhase } from '../src/textEngine/scenes/opposition/index.js';
 import { renderAscensionCeremony } from '../src/textEngine/scenes/ascension/index.js';
 import { renderOppositionEndgame } from '../src/textEngine/scenes/opposition/index.js';
+import { renderHungerInterrupt, renderHungerOutcome } from '../src/textEngine/scenes/hungerInterrupt/index.js';
+import { renderConfront, renderConfrontWithMemory } from '../src/textEngine/scenes/confront/index.js';
+import '../src/textEngine/scenes/hungerInterrupt/index.js';
+import '../src/textEngine/scenes/confront/index.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -103,6 +107,7 @@ const BANNED = [
 ];
 
 function assertClean(text, label) {
+  if (!text || typeof text !== 'string') return;
   for (const re of BANNED) {
     assert(!re.test(text), `${label} must not match ${re}: ${text.slice(0, 120)}`);
   }
@@ -277,10 +282,34 @@ for (const line of FEEDER_SUBJECT_JOURNALS.swimmer || []) {
   assertClean(line, 'feeder journal swimmer');
 }
 
-for (const archetype of ['bookworm', 'cheerleader', 'athlete', 'culinary']) {
+for (const archetype of ['bookworm', 'cheerleader', 'athlete', 'culinary', 'gamer', 'psych', 'nursing', 'overachiever']) {
   for (const line of FEEDER_SUBJECT_JOURNALS[archetype] || []) {
     assertClean(line, `feeder journal ${archetype}`);
   }
+}
+
+for (const archetype of ['swimmer', 'cheerleader', 'gamer', 'culinary', 'influencer']) {
+  const subject = {
+    ...(INIT_STUDENTS.find((s) => s.archetype === archetype) || INIT_STUDENTS[0]),
+    lbs: 280,
+    corruption: 35,
+    addictionLevel: 2,
+    hungerTier: 2,
+  };
+  const interrupt = renderHungerInterrupt(subject, 10, { v2DepthChance: 0 });
+  if (interrupt) assertClean(interrupt, `hunger interrupt ${archetype}`);
+  for (const action of ['feed', 'deny', 'talk', 'compound']) {
+    const outcome = renderHungerOutcome(subject, action, 10, { v2DepthChance: 0 });
+    if (outcome) assertClean(outcome, `hunger outcome ${archetype} ${action}`);
+  }
+  const confront = renderConfront(subject, 10, { v2DepthChance: 0, grievanceType: 'pushed' });
+  if (confront) assertClean(confront, `confront ${archetype}`);
+  const confrontMem = renderConfrontWithMemory(subject, 10, {
+    v2DepthChance: 0,
+    memType: 'stageUp',
+    memWeeksAgo: 2,
+  });
+  if (confrontMem) assertClean(confrontMem, `confront memory ${archetype}`);
 }
 
 for (const [replyId, reply] of Object.entries(CG_RA_REPLY_TEXT)) {
@@ -449,4 +478,4 @@ for (const slot of [
   if (line) assertClean(line, `opposition endgame ${slot}`);
 }
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies OK');
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies, hunger, confront OK');

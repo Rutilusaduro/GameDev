@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { COMPOUNDS, COMPOUND_CATEGORIES, getCompoundCategory } from '../gameData/pharmacist.js';
 
 const CATEGORY_ORDER = ['control', 'cult', 'growth'];
@@ -16,7 +18,9 @@ export function CompoundFeedModal({
   onConfirm,
   onCancel,
   studentAddiction = 0,
+  soundEnabled = true,
 }) {
+  useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, student?.id]);
   const compounds = unlockedCompoundIds
     .map(id => COMPOUNDS[id])
     .filter(Boolean);
@@ -29,7 +33,7 @@ export function CompoundFeedModal({
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.72)', zIndex: 8500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
-      <div style={{ ...C.modal, maxWidth: 480, width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 480, width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ fontSize: 10, color: '#508878', letterSpacing: 2, marginBottom: 8 }}>LACE INTO FOOD</div>
         <div style={{ fontSize: 14, color: '#c8e0d8', marginBottom: 6 }}>{feedLabel}</div>
         <div style={{ fontSize: 12, color: '#88a898', marginBottom: 14, fontStyle: 'italic' }}>
@@ -41,7 +45,7 @@ export function CompoundFeedModal({
           )}
         </div>
         <div style={{ display: 'grid', gap: 8, marginBottom: 12 }}>
-          <button type="button" style={{ ...C.btn('#284838'), width: '100%' }} onClick={() => onConfirm(null)}>
+          <button type="button" style={{ ...C.btn('#284838'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onConfirm(null); }}>
             Feed without compound
           </button>
           {CATEGORY_ORDER.map(cat => {
@@ -63,7 +67,7 @@ export function CompoundFeedModal({
                       textAlign: 'left',
                       marginBottom: 6,
                     }}
-                    onClick={() => onConfirm(c.id)}
+                    onClick={() => { playHallPassSound('confirm', soundEnabled); onConfirm(c.id); }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 4 }}>
                       <span style={{ fontWeight: 700, color: cat === 'control' ? '#d0b0e0' : '#90d8c8' }}>{c.label}</span>
@@ -76,7 +80,7 @@ export function CompoundFeedModal({
             );
           })}
         </div>
-        <button type="button" style={{ ...C.btn('#333'), width: '100%' }} onClick={onCancel}>Cancel</button>
+        <button type="button" style={{ ...C.btn('#333'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onCancel(); }}>Cancel</button>
       </div>
     </div>
   );
