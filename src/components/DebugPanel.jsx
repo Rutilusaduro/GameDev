@@ -13,6 +13,7 @@ import { defaultOppositionState } from '../gameData/opposition.js';
 import { dormUnlocksForWeek } from '../gameData/dorms.js';
 import { defaultSalonState } from '../gameData/chloeSalon.js';
 import { defaultGalleryState } from '../gameData/fionaGallery.js';
+import { SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS } from '../gameData/chapterHostess.js';
 import { ensureStreamFields } from '../gameData/streaming.js';
 import { toggleInstantText, toggleSound } from '../gameData/playerPrefs.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
@@ -56,6 +57,7 @@ export function DebugPanel({
   setSalonState,
   setGalleryState,
   setCompetitiveGainerState,
+  setChapterHostessState,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -281,6 +283,51 @@ export function DebugPanel({
                       setView('student');
                     }}>
                     📊 CG Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(140,80,30,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 13
+                          ? { ...s, evolvedForm: 'homeroom_queen', lbs: 200, relationship: 60, mood: 'warm' }
+                          : s
+                      )));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(13);
+                      setView('student');
+                    }}>
+                    🍪 Hall Kitchen Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(80,30,120,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 6
+                          ? { ...s, evolvedForm: 'chapter_hostess', lbs: 200, relationship: 60, mood: 'happy' }
+                          : s
+                      )));
+                      setChapterHostessState?.({
+                        stageIdx: 0,
+                        prepDaysLeft: 3,
+                        menuUnlocks: 0,
+                        atmosphereUnlocks: 0,
+                        guestUnlocks: 0,
+                        sisters: SISTER_INITIAL_STATE.map((x) => ({ ...x })),
+                        camille: { lbs: CAMILLE_INITIAL_LBS },
+                        hangoutOpen: false,
+                        hangoutStudentId: null,
+                        hangoutPhaseIdx: 0,
+                        hangoutHistory: [],
+                        feastPrepOpen: false,
+                        feastLogOpen: false,
+                        feastLog: [],
+                        feastGainTotal: 0,
+                        feastRelTotal: 0,
+                        feastDone: false,
+                      });
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(6);
+                      setView('student');
+                    }}>
+                    ✦ Hostess Arc QA
                   </button>
                 </>
               )}
