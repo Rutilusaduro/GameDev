@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// DOSSIER PANEL — per-girl living journal (B1)
+// DOSSIER PANEL — per-resident living journal (B1)
 // ═══════════════════════════════════════════════════════════════
 import { useMemo, useState } from 'react';
 import { C } from '../styles.js';

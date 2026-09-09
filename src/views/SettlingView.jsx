@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// THE SETTLING — endgame area for immobile girls (stage 10+).
+// THE SETTLING — endgame area for immobile residents (stage 10+).
 // They leave the roster and live here. No "talk", no dinner,
 // no mobile-only singles. Three robust trees: Socialize / Feed / Care,
 // each a 2-click flow (pick tree → pick action).
@@ -19,7 +19,7 @@ import {
 } from '../gameData/immobilityArrival.js';
 
 // The Settling reads in warm amber/gold against the hall roster's cold violet —
-// these girls have arrived; the palette says so.
+// these residents have arrived; the palette says so.
 const GOLD = '#d8a850';
 const GOLD_DIM = '#9a7838';
 const BRANCH_TINT = { socialize: '#c878d8', feed: '#e08850', care: '#70b8a0' };

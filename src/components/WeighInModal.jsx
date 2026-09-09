@@ -175,7 +175,7 @@ function DigitalScale({lbs,onSettled}){
 }
 
 
-// Static load-cell readout for a settled girl — no needle, no climb. She isn't
+// Static load-cell readout for a settled resident — no needle, no climb. She isn't
 // stepping on anything; the pads under her already hold the number.
 function LoadCellReadout({lbs}){
   const total=Math.max(0,Math.round(lbs));
@@ -214,7 +214,7 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
   };
   const st=getStage(student.lbs);
   const lbs=Math.round(student.lbs);
-  // Settled girls (stage 10+) can't mount a scale and can't come to the office.
+  // Settled residents (stage 10+) can't mount a scale and can't come to the office.
   // The weigh-in goes to HER: load pads under where she rests. Separate flow.
   const settled=getImmobilityTier(student)>=1;
   const alreadyBroke=(brokeScaleIds||[]).includes(student.id);

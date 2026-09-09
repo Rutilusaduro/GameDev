@@ -10,13 +10,16 @@ import { THESIS_BOARD, CASE_STUDY_PAIRS, HAVE_A_CHAT_SCENES } from '../src/gameD
 import { STAGE_REACTIONS } from '../src/gameData/content.js';
 import {
   EVOLVED_OUTFITS, EVOLVED_EVENTS, EVOLVED_REACTIONS, EVOLVED_ACTIVITY_TEXT,
-  EVOLUTION_BUTTON_BLURB, WL_LESSONS, WL_DIALOGUES,
+  EVOLUTION_BUTTON_BLURB, WL_LESSONS, WL_DIALOGUES, CG_CHAT_TEMPLATES,
   FEEDER_SUBJECT_JOURNALS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES,
   FAIR_TRAINING_CONFIG, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES,
 } from '../src/gameData/evolvedForms.js';
 import { FACULTY } from '../src/gameData/faculty.js';
 import { EVOLVED_MINIGAMES } from '../src/gameData/evolvedMinigames.js';
-import { CG_FILLED_DIARY, CG_RA_REPLY_TEXT } from '../src/gameData/competitiveGainerText.js';
+import {
+  CG_FILLED_DIARY, CG_RA_REPLY_TEXT, CG_FILLED_REACTIONS, CG_FILLED_CORKBOARD_SCENES,
+  CG_FILLED_BINGE_SCENES, CG_FILLED_CHAT_TEMPLATES, CG_FILLED_MEASUREMENT_REACTIONS,
+} from '../src/gameData/competitiveGainerText.js';
 import { TALK_TOPICS } from '../src/gameData/talkSystem.js';
 import { SKILLS, SKILL_TREES } from '../src/gameData/skillTrees.js';
 import { createContext } from '../src/textEngine/engine.js';
@@ -278,6 +281,11 @@ const BANNED = [
   /\bbig girls running things\b/i,
   /\bmeets the girls who meet\b/i,
   /\bone very committed girl\b/i,
+  /\bCG_CHAT_TEMPLATES\.girls\b/i,
+  /\bPer-girl reply templates\b/i,
+  /\bper-girl living journal\b/i,
+  /\bimmobile girls \(stage 10\+\)/i,
+  /\{girlName\}/i,
   /\bletting a resident stuff me\b/i,
   /\bappetite psychology\b/i,
 ];
@@ -404,6 +412,46 @@ for (const [gameId, def] of Object.entries(EVOLVED_MINIGAMES)) {
 
 for (const entry of CG_FILLED_DIARY) {
   assertClean(entry, 'Priya competitive gainer diary');
+}
+
+const formatCgTemplate = (text) => String(text)
+  .replace(/\{residentName\}/g, 'Brittany')
+  .replace(/\{targetName\}/g, 'Brittany')
+  .replace(/\{bodypart\}/g, 'waist')
+  .replace(/\{measurement\}/g, '42')
+  .replace(/\{measurementCategory\}/g, 'waist')
+  .replace(/\{priyaWeight\}/g, '280');
+
+for (const entry of CG_FILLED_REACTIONS) {
+  assertClean(entry, 'competitive gainer reaction');
+}
+for (const [tier, scenes] of Object.entries(CG_FILLED_CORKBOARD_SCENES)) {
+  for (const scene of scenes) assertClean(scene, `competitive gainer corkboard ${tier}`);
+}
+for (const [stage, tiers] of Object.entries(CG_FILLED_BINGE_SCENES)) {
+  for (const [tier, scene] of Object.entries(tiers)) {
+    assertClean(scene, `competitive gainer binge ${stage} ${tier}`);
+  }
+}
+for (const [tier, posts] of Object.entries(CG_FILLED_CHAT_TEMPLATES.priyaPost)) {
+  for (const post of Object.values(posts)) assertClean(post, `competitive gainer priya post ${tier}`);
+}
+for (const [tier, posts] of Object.entries(CG_FILLED_CHAT_TEMPLATES.priyaFollowup)) {
+  for (const post of Object.values(posts)) assertClean(post, `competitive gainer priya followup ${tier}`);
+}
+for (const [name, replies] of Object.entries(CG_CHAT_TEMPLATES.residents)) {
+  assertClean(Object.values(replies).join(' '), `competitive gainer chat ${name}`);
+}
+for (const opt of CG_CHAT_TEMPLATES.raReplies || []) {
+  const stageText = Object.values(opt.byStage || {}).map(formatCgTemplate).join(' ');
+  assertClean(`${opt.label || ''} ${opt.fallback || ''} ${stageText}`, `competitive gainer ra reply ${opt.id}`);
+}
+for (const [rel, tiers] of Object.entries(CG_FILLED_MEASUREMENT_REACTIONS)) {
+  for (const [tier, cats] of Object.entries(tiers)) {
+    for (const line of Object.values(cats)) {
+      assertClean(formatCgTemplate(line), `competitive gainer measurement ${rel} ${tier}`);
+    }
+  }
 }
 
 for (const tierId of [1, 2, 3]) {

@@ -4929,14 +4929,14 @@ export const CG_CONFIG = {
   ],
   // Competitive drive gain ranges
   driveGainNeutral:   [0,1],   // Priya leads in all categories
-  driveGainThreat:    [1,3],   // per category where any girl is ahead or within 10%
+  driveGainThreat:    [1,3],   // per category where any resident is ahead or within 10%
   // Binge payoff: 1 AP. Base gain interpolated from minBinge→maxBinge by Priya's weight stage (1-7+).
   bingeApCost:    1,
   minBinge:       10,  // lbs at stage 1
   maxBinge:       50,  // lbs at stage 7+
   // Per-drive-tier multiplier on binge gain: Invested/Driven/Frenzied/Ruthless
   bingeDriveMults: [1, 1.25, 1.5625, 1.953],
-  // "Threat" threshold: girl is within this fraction of Priya's value
+  // "Threat" threshold: resident is within this fraction of Priya's value
   threatFraction: 0.10,
   // Measurement categories tracked
   categories: ["waist","bust","hip","thigh","arm"],
@@ -4948,7 +4948,7 @@ export const CG_CORKBOARD_SCENES = CG_FILLED_CORKBOARD_SCENES;
 // Indexed as: MeasurementScenes[targetWeightStageName][priyaRelation] where
 //   priyaRelation = "priya_larger" | "priya_smaller" | "priya_equal"
 export const CG_MEASUREMENT_SCENES = {
-  // scene prose for each girl being measured
+  // scene prose for each resident being measured
   scene:"[MeasurementScene_{name}_S{stage}]",
   reactions: CG_FILLED_MEASUREMENT_REACTIONS,
   selfReview: CG_FILLED_SELF_REVIEW,
@@ -4963,9 +4963,9 @@ export const CG_CHAT_TEMPLATES = {
   priyaPost: CG_FILLED_CHAT_TEMPLATES.priyaPost,
   // Priya's follow-up after seeing replies
   priyaFollowup: CG_FILLED_CHAT_TEMPLATES.priyaFollowup,
-  // Per-girl reply templates. Each girl has 5 reply types.
-  // reply type selected by: girl's lbs vs Priya's lbs + whether measured
-  girls:{
+  // Per-resident reply templates. Each resident has 5 reply types.
+  // reply type selected by: resident lbs vs Priya's lbs + whether measured
+  residents:{
     Brittany:  { ahead:"Thigh column says you still have work to do, Priya. I am not apologizing for winning there.", behind:"Fine, your numbers are bigger this week. I am saving this message for later.", close:"My thighs are close enough that you should probably underline them in red.", proud:"Solid gains on my end. The board can acknowledge that.", unmeasured:"Measure me properly before you start celebrating too hard." },
     Cassidy:  { ahead:"For accuracy: at least one of my figures currently exceeds yours. I recommend updating the board.", behind:"Your lead is statistically meaningful. Annoying, but meaningful.", close:"The margin is narrow enough to be interesting. I would not call that comfortable.", proud:"My trend line remains positive. That is the part I care about.", unmeasured:"Unmeasured data should not be treated as absence of data." },
     Kylie:     { ahead:"Bust numbers say hi. Cute board though.", behind:"Okay, your whole scoreboard thing is getting kind of scary.", close:"Some of us are still close in the categories that photograph best.", proud:"Posted a progress pic and the comments noticed. Just saying.", unmeasured:"If you want my numbers, book a session. I need good lighting." },

@@ -314,7 +314,7 @@ const SECTION_KEYS = Object.keys(SECTIONS);
 
 const PARAM_DEFS = [
   { key: "section", label: "Section", options: SECTION_KEYS },
-  { key: "girl", label: "Girl", options: INIT_STUDENTS.map((s) => String(s.id)), optionLabel: (v) => INIT_STUDENTS.find((s) => String(s.id) === v)?.name || v },
+  { key: "girl", label: "Resident", options: INIT_STUDENTS.map((s) => String(s.id)), optionLabel: (v) => INIT_STUDENTS.find((s) => String(s.id) === v)?.name || v },
   { key: "stage", label: "Stage", options: WEIGHT_STAGES.map((w) => String(w.id)), optionLabel: (v) => `${v} · ${WEIGHT_STAGES[Number(v)].label}` },
   { key: "corruption", label: "Corruption", options: ["0", "1", "2"], optionLabel: (v) => ({ 0: "0 · Hesitant", 1: "1 · Conflicted", 2: "2 · Broken In" })[v] },
   { key: "mood", label: "Mood", options: MOODS },
@@ -334,7 +334,7 @@ const PARAM_DEFS = [
   { key: "fullnessStage", label: "Fullness stg", options: ["0", "1", "2", "3", "4", "5"] },
   { key: "fullnessPct", label: "Fullness %", options: ["40", "80", "100", "130", "180"] },
   { key: "groupConv", label: "Group topic", options: GROUP_CONV_IDS },
-  { key: "refGirl", label: "Ref girl", options: INIT_STUDENTS.map((s) => String(s.id)), optionLabel: (v) => INIT_STUDENTS.find((s) => String(s.id) === v)?.name || v },
+  { key: "refGirl", label: "Ref resident", options: INIT_STUDENTS.map((s) => String(s.id)), optionLabel: (v) => INIT_STUDENTS.find((s) => String(s.id) === v)?.name || v },
   { key: "reactionLevel", label: "Reaction lvl", options: ["0", "1", "2", "3"] },
   { key: "reneeStage", label: "Reneé stage", options: ["5", "6", "7", "8", "9", "10"], optionLabel: (v) => `${v} · ${WEIGHT_STAGES[Number(v)]?.label || v}` },
   { key: "testerStage", label: "Tester stage", options: ["6", "7", "8", "9", "10"], optionLabel: (v) => `${v} · ${WEIGHT_STAGES[Number(v)]?.label || v}` },
@@ -360,7 +360,7 @@ function sectionFitsLockedParams(sectionKey, params) {
 function rollSample(params) {
   const v = {};
   // Section first — its constraints shape the other rolls. A random
-  // section respects a locked stage (no introBig for a small girl).
+  // section respects a locked stage (no introBig for a small resident).
   if (params.section === RANDOM) {
     const eligible = SECTION_KEYS.filter((k) => sectionFitsLockedParams(k, params));
     v.section = pick(eligible.length ? eligible : SECTION_KEYS);

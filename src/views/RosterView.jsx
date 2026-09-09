@@ -36,7 +36,7 @@ function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn, soundEnable
   const tell = useMemo(
     () => {
       const discTier = getDiscontentTier(s).id;
-      // An unhappy girl's tell is about that (the scene priority-gates it),
+      // An unhappy resident's tell is about that (the scene priority-gates it),
       // and we don't drown it in a memory callback.
       if (discTier === 0) {
         const mem = pickStudentMemory(s, week);

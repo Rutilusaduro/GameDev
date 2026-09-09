@@ -315,7 +315,19 @@ check('cg-chat-ra-framing', () => {
   assert.match(desk, /isRa:false/);
   assert.match(desk, /isRa:true/);
   assert.doesNotMatch(desk, /isProf:/);
+  assert.match(desk, /CG_CHAT_TEMPLATES\.residents/);
+  assert.doesNotMatch(desk, /CG_CHAT_TEMPLATES\.girls/);
   assert.match(read('src/gameData/competitiveGainerState.js'), /cgIsRaMessage/);
+  const evolved = read('src/gameData/evolvedForms.js');
+  assert.match(evolved, /residents:\{/);
+  assert.match(evolved, /per category where any resident is ahead/);
+  assert.doesNotMatch(evolved, /CG_CHAT_TEMPLATES\.girls|Per-girl reply templates|any girl is ahead/i);
+  const cgText = read('src/gameData/competitiveGainerText.js');
+  assert.match(cgText, /\{residentName\}/);
+  assert.doesNotMatch(cgText, /\{girlName\}/);
+  const dossier = read('src/components/DossierPanel.jsx');
+  assert.match(dossier, /per-resident living journal/);
+  assert.doesNotMatch(dossier, /per-girl living journal/i);
 });
 
 check('competitive-gainer-modal-polish', () => {

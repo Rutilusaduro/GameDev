@@ -59,7 +59,7 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
       ? render(topic.engineTemplate, ctx, renderOpts)
       : '';
     text += render('{talk.coda|prefix: }', ctx, { ...renderOpts, noSmooth: true });
-    // An unhappy girl's words carry the chill no matter the topic.
+    // An unhappy resident's words carry the chill no matter the topic.
     text += render('{talk.discontentCoda}', ctx, { ...renderOpts, noSmooth: true });
     if (campusFattening) {
       text += render('{talk.campusCoda|prefix: }', ctx, { ...renderOpts, noSmooth: true });

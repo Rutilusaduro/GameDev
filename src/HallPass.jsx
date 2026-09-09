@@ -1337,12 +1337,12 @@ export default function HallPass(){
         return null;
       }
     }
-    // A girl who has walked out won't engage until you make amends.
+    // A resident who has walked out won't engage until you make amends.
     if(s.withdrawn){
       push(`🚪 ${s.name} has walked out — make amends before she'll take anything from you.`);
       return null;
     }
-    // An unhappy girl may simply refuse to be fed by you (real stakes).
+    // An unhappy resident may simply refuse to be fed by you (real stakes).
     if(!opts.compoundId&&!opts.ignoreDiscontent&&getDiscontentTier(s).id>=2&&Math.random()<discontentRefusalChance(s)){
       const dl=renderDiscontentRefusal(s,week,{discontentTier:getDiscontentTier(s).id});
       push(`🙅 ${dl||`${s.name} refuses to take anything from you right now.`}`);
@@ -1400,7 +1400,7 @@ export default function HallPass(){
       // Render off a projected POST-feed snapshot so {word.fullness} agrees
       // with the room band (she can't read "still hungry" while she's stuffed).
       const projected={...s,fullness:(s.fullness||0)+scaledFull,stomachCapacity:cap};
-      // Per-girl week bag → reaction lines don't repeat within a week.
+      // Per-resident week bag → reaction lines don't repeat within a week.
       feedWeekUsed=weekUsedFromStudent(s);
       const reaction=renderFeedReaction(projected,week,{
         foodKind:foodKindFromFeed(label,calories,fullnessCost),feedRoom,
@@ -1965,7 +1965,7 @@ export default function HallPass(){
 
     // ── DISCONTENT weekly tick ──────────────────────────────────
     // Cools if you've stopped offending; public exposure (high scrutiny)
-    // stings visible girls who aren't yet comfortable being seen.
+    // stings visible residents who aren't yet comfortable being seen.
     let exposedCount=0;
     updated=updated.map(s=>{
       let disc=Math.max(0,(s.discontent||0)-DISCONTENT_WEEKLY_DECAY);
@@ -1982,7 +1982,7 @@ export default function HallPass(){
     });
     if(exposedCount>0) setTimeout(()=>push(`😠 ${exposedCount} ${exposedCount===1?"resident bristles":"residents bristle"} at being paraded under this much scrutiny.`),170);
 
-    // A girl pushed past the brink confronts you (one per week).
+    // A resident pushed past the brink confronts you (one per week).
     const rebel=updated.find(s=>shouldConfront(s,newWeek));
     if(rebel){
       updated=updated.map(s=>s.id===rebel.id?{...s,lastConfrontWeek:newWeek}:s);
@@ -2179,7 +2179,7 @@ export default function HallPass(){
         .sort((a,b)=>(b.stagedUp?1:0)-(a.stagedUp?1:0)||b.lbsGained-a.lbsGained)
         .slice(0,6)
         .map(m=>{
-          // Memory callback: her own history, or cross-girl gossip (~40%).
+          // Memory callback: her own history, or cross-resident gossip (~40%).
           const live=updated.find(u=>u.id===m.id)||m;
           const selfMem=pickStudentMemory(live,week);
           const classMem=pickClassMemory(updated,week,m.id);
@@ -3136,7 +3136,7 @@ export default function HallPass(){
         const pVal=priyaM[cat];
         const tVal=targetM[cat];
         if(!pVal||!tVal) return;
-        const item={studentId:target.id,girlName:target.name,bodypart:bodypartLabel(cat),category:cat,priyaValue:pVal,targetValue:tVal};
+        const item={studentId:target.id,residentName:target.name,bodypart:bodypartLabel(cat),category:cat,priyaValue:pVal,targetValue:tVal};
         if(tVal>pVal*(1+CG_CONFIG.threatFraction)) pools.larger.push(item);
         else if(tVal>=pVal*(1-CG_CONFIG.threatFraction)) pools.close.push(item);
         else pools.smaller.push(item);
@@ -3328,7 +3328,7 @@ export default function HallPass(){
       .map(x=>x.s);
     let threatDetected=false;
     candidates.forEach(s=>{
-      const templates=CG_CHAT_TEMPLATES.girls[s.name]||CG_CHAT_TEMPLATES.girls.Brittany;
+      const templates=CG_CHAT_TEMPLATES.residents[s.name]||CG_CHAT_TEMPLATES.residents.Brittany;
       const measured=cgState.measuredStudentIds.includes(s.id);
       const sM=getMeasurements(s.lbs,s.bodyType);
       let replyType;
@@ -3424,7 +3424,7 @@ export default function HallPass(){
         if(targetM[cat]>priyaM[cat]*(1+CG_CONFIG.threatFraction)){rel='priya_smaller';threats.push(cat);}
         else if(targetM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)){rel='priya_equal';threats.push(cat);}
         const template=CG_MEASUREMENT_SCENES.reactions?.[rel]?.[tier.label]?.[cat]||`[MeasureReaction_${rel}_${cat}_${tier.label}]`;
-        reactions[cat]={rel,text:formatCGText(template,{targetName:target.name, girlName:target.name, bodypart:bodypartLabel(cat)})};
+        reactions[cat]={rel,text:formatCGText(template,{targetName:target.name, residentName:target.name, bodypart:bodypartLabel(cat)})};
       });
       const driveGain=threats.length>0
         ? threats.length*rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1])
@@ -3481,7 +3481,7 @@ export default function HallPass(){
       const comparison=pickCGComparison(prev,optId);
       const template=comparison?(opt.byStage?.[stageKey]||opt.fallback):opt.fallback;
       const text=formatCGText(template,{
-        girlName:comparison?.girlName||"the hall",
+        residentName:comparison?.residentName||comparison?.girlName||"the hall",
         bodypart:comparison?.bodypart||"measurements",
         priyaValue:comparison?.priyaValue,
         targetValue:comparison?.targetValue,
@@ -7740,7 +7740,7 @@ export default function HallPass(){
   };
 
   const sel=selectedId!==null?students.find(s=>s.id===selectedId):null;
-  // Immobile girls (stage 10+) leave the roster and live in The Settling.
+  // Immobile residents (stage 10+) leave the roster and live in The Settling.
   const settledStudents=students.filter(s=>getImmobilityTier(s)>=1);
   const mobileStudents=students.filter(s=>getImmobilityTier(s)<1);
   const selSettled=!!sel&&getImmobilityTier(sel)>=1;
@@ -8301,7 +8301,7 @@ export default function HallPass(){
             <div className="hall-pass-modal-in group-dinner-modal" style={{...C.modal,maxWidth:640,padding:20}}>
               <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:8}}>GROUP DINNER</div>
 
-              {/* Per-girl fullness bars */}
+              {/* Per-resident fullness bars */}
               <div style={{display:"flex",gap:10,marginBottom:14,flexWrap:"wrap"}}>
                 {gev.students.map(gs=>{
                   const live=students.find(st=>st.id===gs.id);
@@ -8366,7 +8366,7 @@ export default function HallPass(){
                 <div>
                   <div style={{fontSize:10,color:"#7a5090",marginBottom:10,fontStyle:"italic"}}>{gev.venue.label} — {gev.venue.desc}</div>
 
-                  {/* Menu — each dish shows Feed buttons per girl */}
+                  {/* Menu — each dish shows Feed buttons per resident */}
                   <div style={{...C.secT,marginBottom:6}}>Menu</div>
                   {allFed?(
                     <div style={{textAlign:"center",padding:"8px 0",marginBottom:10}}>
