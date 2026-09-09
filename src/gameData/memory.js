@@ -52,7 +52,7 @@ export function pickStudentMemory(student, week) {
  * Scans all students' memories for scale breaks / stage-ups in the last few
  * weeks. Returns { memName, memType, memWeeksAgo } or null.
  */
-export function pickClassMemory(students, week, excludeId) {
+export function pickHallMemory(students, week, excludeId) {
   const recent = [];
   for (const s of students || []) {
     if (s.id === excludeId || s.hidden) continue;
@@ -65,3 +65,6 @@ export function pickClassMemory(students, week, excludeId) {
   }
   return recent.length ? rpick(recent) : null;
 }
+
+/** @deprecated use pickHallMemory — save-compat alias */
+export const pickClassMemory = pickHallMemory;

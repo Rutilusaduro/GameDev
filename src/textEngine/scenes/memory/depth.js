@@ -7,6 +7,10 @@ registerModuleVariants('memory.self', [{ when: {}, text: [
   'The past week left a mark she keeps touching without meaning to.',
 ] }]);
 
+registerModuleVariants('memory.hall', [{ when: {}, text: [
+  "Someone else's gain has become lounge furniture — noticed, filed, discussed in glances.",
+  "The hall tracks who is changing; nobody pretends otherwise anymore.",
+] }]);
 registerModuleVariants('memory.class', [{ when: {}, text: [
   "Someone else's gain has become lounge furniture — noticed, filed, discussed in glances.",
   "The hall tracks who is changing; nobody pretends otherwise anymore.",

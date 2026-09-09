@@ -5,7 +5,7 @@
 //   gossip.react.line    — reactor's personal take (archetype × corruption × memType)
 //   gossip.murmur        — ambient hall awareness, no specific event
 //
-// Selectors from pickClassMemory(): memName, memType, memWeeksAgo.
+// Selectors from pickHallMemory(): memName, memType, memWeeksAgo.
 // Reactor archetype/corruption drawn from subject via engine.
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
@@ -112,7 +112,7 @@ registerPool('gossip.murmur', [
 ]);
 
 /** Render a reactive gossip beat for reactor noticing target's change.
- * Pass memName, memType, memWeeksAgo from pickClassMemory() in opts.globals.
+ * Pass memName, memType, memWeeksAgo from pickHallMemory() in opts.globals.
  * Composes notice + line (line fires silently when no archetype match). */
 export function renderGossipReact(reactor, week = 1, opts = {}) {
   if (!reactor) return '';

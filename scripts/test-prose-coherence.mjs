@@ -56,7 +56,7 @@ import { FINAL_FORMS, FINAL_FORM_FX } from '../src/gameData/immobilityArrival.js
 import { renderCampusEventBeat } from '../src/textEngine/scenes/campusEvent/index.js';
 import '../src/textEngine/scenes/campusEvent/depth.js';
 import { renderGossipMurmur, renderGossipReact } from '../src/textEngine/scenes/gossip/index.js';
-import { renderMemoryClass } from '../src/textEngine/scenes/memory/index.js';
+import { renderMemoryHall } from '../src/textEngine/scenes/memory/index.js';
 import '../src/textEngine/scenes/opposition/oppositionSceneDepth.js';
 import '../src/textEngine/scenes/v2/resonance/depth.js';
 import '../src/textEngine/scenes/earlyGain/fragments.js';
@@ -885,8 +885,8 @@ const memCtx = buildTextContext({
   week: 12,
   globals: { memName: 'Cassidy', memType: 'stageUp', memWeeksAgo: 2 },
 });
-const memoryLine = render('{memory.class}', memCtx)?.trim();
-if (memoryLine) assertClean(memoryLine, 'memory.class render');
+const memoryLine = render('{memory.hall}', memCtx)?.trim();
+if (memoryLine) assertClean(memoryLine, 'memory.hall render');
 
 const oppEndCtx = buildTextContext({
   subject: swimmer,

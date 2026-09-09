@@ -890,6 +890,21 @@ check('gossip-dinner-resident-framing', () => {
   assert.doesNotMatch(content, /hope every girl on that squad/i);
 });
 
+check('memory-hall-framing', () => {
+  const memory = read('src/textEngine/scenes/memory/index.js');
+  const memData = read('src/gameData/memory.js');
+  const desk = read('src/HallPass.jsx');
+  assert.match(memory, /registerPool\('memory\.hall'/);
+  assert.match(memory, /renderMemoryHall/);
+  assert.match(memData, /export function pickHallMemory/);
+  assert.match(desk, /pickHallMemory/);
+  assert.match(desk, /renderMemoryHall/);
+  assert.doesNotMatch(desk, /pickClassMemory|renderMemoryClass/);
+  const prose = read('scripts/test-prose-coherence.mjs');
+  assert.match(prose, /memory\.hall/);
+  assert.doesNotMatch(prose, /renderMemoryClass/);
+});
+
 check('memory-gossip-resident-framing', () => {
   const memory = read('src/textEngine/scenes/memory/index.js');
   assert.match(memory, /The residents keep a quiet eye/);

@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // CORRUPTION — hidden psychological progression
 // Tracks how "broken-in" a resident is to gaining, submission, and
-// indulgence. Affects GENERAL actions only (dinners, sessions, class
+// indulgence. Affects GENERAL actions only (dinners, sessions, floor
 // feeds, weekly behavior) — evolved tasks keep their own voice.
 //
 // Resistance (short-term, per feed)  → lowers force-feed refusal

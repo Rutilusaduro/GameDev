@@ -104,12 +104,12 @@ import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx'
 import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
 import { renderOriginStirring } from './textEngine/scenes/origin/index.js';
 import { AscensionCeremonyModal } from './components/AscensionCeremonyModal.jsx';
-import { appendMemory, pickStudentMemory, pickClassMemory } from './gameData/memory.js';
+import { appendMemory, pickStudentMemory, pickHallMemory } from './gameData/memory.js';
 import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, grievanceGain, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, DISCONTENT_WEEKLY_DECAY, DISCONTENT_RIPPLE, shouldConfront, dominantGrievance, AMENDS_FLOOR, GIFT_FLOOR, GIFT_COST } from './gameData/discontent.js';
 import { renderDiscontentRefusal } from './textEngine/scenes/discontent/index.js';
 import { renderConfront } from './textEngine/scenes/confront/index.js';
 import { ConfrontationModal } from './components/ConfrontationModal.jsx';
-import { renderMemorySelf, renderMemoryClass } from './textEngine/scenes/memory/index.js';
+import { renderMemorySelf, renderMemoryHall } from './textEngine/scenes/memory/index.js';
 import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding, renderIntimacyPassout } from './textEngine/scenes/intimacy/index.js';
 import { renderPreStreamVignette } from './textEngine/scenes/streamPreStream/index.js';
@@ -2182,9 +2182,9 @@ export default function HallPass(){
           // Memory callback: her own history, or cross-resident gossip (~40%).
           const live=updated.find(u=>u.id===m.id)||m;
           const selfMem=pickStudentMemory(live,week);
-          const classMem=pickClassMemory(updated,week,m.id);
+          const hallMem=pickHallMemory(updated,week,m.id);
           let memoryProse='';
-          if(classMem&&(!selfMem||Math.random()<0.4)) memoryProse=renderMemoryClass(live,week,classMem);
+          if(hallMem&&(!selfMem||Math.random()<0.4)) memoryProse=renderMemoryHall(live,week,hallMem);
           else if(selfMem) memoryProse=renderMemorySelf(live,week,selfMem);
           return {...m,memoryProse};
         });

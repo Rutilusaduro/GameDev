@@ -6,7 +6,8 @@
 // long-arc milestone, or cross-resident gossip about someone else.
 //
 //   memory.self  — her own history (memScope × memType, {memWeeksAgo})
-//   memory.class — what the hall remembers about another resident ({memName})
+//   memory.hall — what the hall remembers about another resident ({memName})
+//   memory.class — legacy alias pool (same variants; kept for old templates)
 //
 // Selectors arrive as ctx.globals: memScope, memType, memWeeksAgo, memName.
 // ═══════════════════════════════════════════════════════════════
@@ -88,9 +89,9 @@ registerPool('memory.self', [
   ]},
 ]);
 
-// ── memory.class ──────────────────────────────────────────────
+// ── memory.hall — cross-resident floor memory ─────────────────
 // Shape: SHORT SENTENCE — what the hall remembers about someone else.
-registerPool('memory.class', [
+const MEMORY_HALL_VARIANTS = [
   { when: {}, text: [
     `The residents keep a quiet eye on how the others are changing.`,
   ]},
@@ -100,7 +101,9 @@ registerPool('memory.class', [
   { when: { memType: 'stageUp' }, weight: 3, text: [
     (ctx) => `Everyone's noticed how much ${ctx.globals?.memName ?? 'one of the others'} has filled out lately.`,
   ]},
-]);
+];
+registerPool('memory.hall', MEMORY_HALL_VARIANTS);
+registerPool('memory.class', MEMORY_HALL_VARIANTS);
 
 /** Render a callback to this resident's own recent history. */
 export function renderMemorySelf(student, week = 1, opts = {}) {
@@ -111,12 +114,15 @@ export function renderMemorySelf(student, week = 1, opts = {}) {
 }
 
 /** Render cross-resident gossip about another resident. */
-export function renderMemoryClass(student, week = 1, opts = {}) {
+export function renderMemoryHall(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });
-  const base = render('{memory.class}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = render('{memory.hall}', ctx, { trace: opts.trace || null })?.trim() || '';
   return appendV2Depth(base, 'memory', ctx, opts.v2DepthChance ?? 0.22);
 }
+
+/** @deprecated use renderMemoryHall — save-compat alias */
+export const renderMemoryClass = renderMemoryHall;
 
 /**
  * Scene-aware memory callback. Pass scene: 'weighIn' | 'dinner' | 'stream'
