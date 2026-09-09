@@ -105,6 +105,22 @@ export async function resolveBlockingUI(page, { maxSteps = 72 } = {}) {
   for (let step = 0; step < maxSteps; step += 1) {
     let acted = false;
 
+    if (await page.getByText('THE WEEK IN REVIEW').isVisible().catch(() => false)) {
+      const recap = page.locator('.week-recap-modal');
+      if (await clickIfVisible(recap.getByRole('button', { name: /^Begin Week \d+$/ }))) {
+        acted = true;
+        continue;
+      }
+    }
+
+    if (await page.getByText('HALL REACH EXPANDED').isVisible().catch(() => false)) {
+      const unlock = page.locator('.hall-unlock-modal');
+      if (await clickIfVisible(unlock.getByRole('button', { name: 'View Roster →' }))) {
+        acted = true;
+        continue;
+      }
+    }
+
     if (await clickIfVisible(page.getByRole('button', { name: 'View Roster →' }))) {
       acted = true;
       await page.waitForTimeout(40);

@@ -323,6 +323,11 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 24px rgba(192, 80, 56, 0.14);
 }
 
+.hall-unlock-modal {
+  background: linear-gradient(160deg, rgba(12, 6, 24, 0.98), rgba(24, 10, 48, 0.96), rgba(10, 6, 20, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 32px rgba(120, 40, 200, 0.14);
+}
+
 .milestone-resident-header {
   padding: 8px 12px;
   border-radius: 8px;
@@ -374,6 +379,7 @@
   .opposition-hearing-modal,
   .week-recap-modal,
   .confrontation-modal,
+  .hall-unlock-modal,
   .hall-log-achievement,
   .hall-log-unlock {
     animation: none;

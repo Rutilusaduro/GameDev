@@ -34,7 +34,7 @@ import {
 import {
   RA_APPROACHES, FAVOR_MAX, FAVOR_REBATE, favorFill,
   profileGainMult, profileScrutinyMult, profilePassiveBonus, profileCorruptionMult,
-  getProfileApproachId, getApproachLabel,
+  getProfileApproachId, getApproachLabel, migrateRaProfile,
 } from './gameData/raApproaches.js';
 import { getUnlockScene } from './gameData/unlockScenes.js';
 import {
@@ -407,10 +407,6 @@ import { C } from './styles.js';
 
 const REACH_XP_PER_LEVEL=40;
 
-// Legacy aliases — RA pivot keeps old variable names in hot paths
-const SPIRITS = RA_APPROACHES;
-const SUBJECTS = DORMS;
-
 // Two-tab log: split the live feed into a narrative "Story" stream and a
 // mechanical "Ledger" stream. Classified by leading marker so push() and
 // every call site stay untouched. Ledger = receipts/stats/system; anything
@@ -439,7 +435,10 @@ export default function HallPass(){
   const setOwnedSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedSkills', updater));
   const setOwnedHallSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedHallSkills', updater));
   const setFacultyAffinity = (updater) => setPlayer((p) => updatePlayerField(p, 'facultyAffinity', updater));
-  const setRaProfile = (updater) => setPlayer((p) => updatePlayerField(p, 'raProfile', updater));
+  const setRaProfile = (updater) => setPlayer((p) => updatePlayerField(p, 'raProfile', (cur) => {
+    const next = typeof updater === 'function' ? updater(cur) : updater;
+    return migrateRaProfile(next);
+  }));
   const setHallCred = (updater) => setPlayer((p) => updatePlayerField(p, 'hallCred', updater));
   const setUnlockedDorms = (updater) => setPlayer((p) => updatePlayerField(p, 'unlockedDorms', updater));
   const setAdminScrutiny = (updater) => setPlayer((p) => updatePlayerField(p, 'adminScrutiny', updater));
@@ -492,6 +491,9 @@ export default function HallPass(){
   const [echoReplay,setEchoReplay]=useState(null);
   const v2 = v2State || createInitialV2State();
   // raProfile lives on player object
+  useEffect(() => {
+    if (raProfile?.spiritId != null) setRaProfile(raProfile);
+  }, [raProfile?.spiritId]);
   // DLC: Inner Circle
   const seenTiersRef=useRef(new Set());
   const prevRelsRef=useRef(Object.fromEntries(INIT_STUDENTS.map(s=>[s.id,s.relationship])));

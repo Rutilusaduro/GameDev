@@ -116,7 +116,7 @@ registerPool('dinner.relSizeNote', [
   { when: {}, text: [''] },
 ]);
 
-// Shape: CLAUSE — spirit-skill flavor at feeding sessions.
+// Shape: CLAUSE — hall-skill flavor at feeding sessions.
 registerPool('dinner.skillNote', [
   { when: { skill: ['growth_hunger', 'endless_hunger'] }, weight: 3, text: [
     'Your influence hums under the meal — appetite answers before she thinks.',

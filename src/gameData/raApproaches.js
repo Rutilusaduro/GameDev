@@ -95,6 +95,16 @@ export function getApproachLabel(profile) {
   return id ? RA_APPROACHES[id]?.label : null;
 }
 
+/** Strip legacy spiritId from RA profile objects (save compat). */
+export function migrateRaProfile(profile) {
+  if (!profile || typeof profile !== 'object') return profile;
+  const approachId = getProfileApproachId(profile);
+  if (!approachId) return profile;
+  if (profile.spiritId == null) return profile;
+  const { spiritId: _legacy, ...rest } = profile;
+  return { ...rest, approachId };
+}
+
 export function favorFill(approachId, tag) {
   return RA_APPROACHES[approachId]?.favorActions?.[tag] || 0;
 }

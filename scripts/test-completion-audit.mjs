@@ -148,7 +148,7 @@ check('ui-polish-css', () => {
     'hall-unlock-cta', 'week-recap-cta', 'hall-log-achievement', 'hall-log-unlock',
     'floor-checkin-choice', 'week-recap-week-badge',
     'milestone-ceremony-modal', 'milestone-resident-header', 'tier-up-cta', 'hunger-interrupt-modal', 'floor-checkin-modal', 'embodiment-modal',
-    'talk-modal', 'weigh-in-modal', 'opposition-hearing-modal', 'week-recap-modal', 'confrontation-modal',
+    'talk-modal', 'weigh-in-modal', 'opposition-hearing-modal', 'week-recap-modal', 'confrontation-modal', 'hall-unlock-modal',
   ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
   }
@@ -226,6 +226,8 @@ check('core-modal-polish', () => {
   assert.match(read('src/components/TalkModal.jsx'), /talk-modal/);
   assert.match(read('src/components/WeighInModal.jsx'), /weigh-in-modal/);
   assert.match(read('src/components/OppositionHearingModal.jsx'), /opposition-hearing-modal/);
+  assert.match(read('src/components/WeekRecapModal.jsx'), /week-recap-modal/);
+  assert.match(read('src/components/ConfrontationModal.jsx'), /confrontation-modal/);
 });
 
 check('embodiment-depth-framing', () => {
@@ -260,9 +262,29 @@ check('ra-profile-approach-id', () => {
   const approaches = read('src/gameData/raApproaches.js');
   assert.match(approaches, /getProfileApproachId/);
   assert.match(approaches, /getApproachLabel/);
+  assert.match(approaches, /migrateRaProfile/);
   const desk = read('src/HallPass.jsx');
   assert.match(desk, /getProfileApproachId/);
   assert.match(desk, /getApproachLabel/);
+  assert.match(desk, /migrateRaProfile/);
+  assert.doesNotMatch(desk, /const SPIRITS =/);
+  assert.doesNotMatch(desk, /const SUBJECTS =/);
+});
+
+check('no-spirits-shim-imports', () => {
+  const grep = (rel) => read(rel);
+  for (const rel of [
+    'src/HallPass.jsx',
+    'src/gameData/campusExploration.js',
+  ]) {
+    assert.doesNotMatch(grep(rel), /spirits\.js/);
+  }
+});
+
+check('hall-unlock-modal-polish', () => {
+  const css = read('src/index.css');
+  assert.match(css, /\.hall-unlock-modal/);
+  assert.match(read('src/components/MiscModals.jsx'), /hall-unlock-modal/);
 });
 
 check('owned-hall-skills', () => {

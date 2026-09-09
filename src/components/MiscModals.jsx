@@ -79,13 +79,11 @@ export function DormUnlockModal({ dorms, onContinue, soundEnabled = true }) {
   return (
     <div style={C.overlay}>
       <div
-        className="hall-pass-modal-in"
+        className="hall-pass-modal-in hall-unlock-modal"
         style={{
           ...C.modal,
           maxWidth: 520,
-          background: `linear-gradient(160deg, rgba(12,6,24,0.98), ${primary.accentSoft || 'rgba(40,20,60,0.4)'})`,
           border: `2px solid ${primary.color}80`,
-          boxShadow: `0 16px 48px rgba(0,0,0,0.45), 0 0 32px ${primary.color}22`,
         }}
       >
         <div style={{ fontSize: 9, letterSpacing: 4, color: primary.color, marginBottom: 6 }}>🔓 HALL REACH EXPANDED</div>
