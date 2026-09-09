@@ -930,6 +930,7 @@ check('cassidy-swimmer-voice', () => {
     'src/textEngine/scenes/campus/campusSceneDepth.js',
     'src/textEngine/scenes/talkCodas.js',
     'src/textEngine/scenes/attitude.js',
+    'src/textEngine/scenes/diaryBase.js',
   ];
 
   const BANNED_IN_CASSIDY = [
@@ -943,9 +944,16 @@ check('cassidy-swimmer-voice', () => {
     /\badjusting her glasses\b/i,
     /\bspreadsheet\b/i,
     /\bmethodology\b/i,
+    /\bmethodologically\b/i,
     /\bsample size\b/i,
     /\btaxonomy\b/i,
     /\bcardigan and blouse\b/i,
+    /\bstatistically\b/i,
+    /\bliterature review\b/i,
+    /\bpanel-reviewed\b/i,
+    /\bfield note\b/i,
+    /\bdata set\b/i,
+    /\bfrom her book\b/i,
   ];
 
   const blockRe = /\{[^{}]*when:\s*\{[^{}]*studentId:\s*1(?!\d)[^{}]*\}[^{}]*text:\s*\[[\s\S]*?\]\s*,?\s*\}/g;
@@ -959,6 +967,35 @@ check('cassidy-swimmer-voice', () => {
       assert.doesNotMatch(cassidyText, re, `${file}: Cassidy voice still has ${re}`);
     }
   }
+
+  const CASSIDY_NAMED_FILES = [
+    'src/textEngine/scenes/v2/studentArchetypeDepth.js',
+    'src/textEngine/scenes/evolved/evolvedSceneDepth.js',
+    'src/textEngine/scenes/settling/settlingSceneDepth.js',
+    'src/textEngine/scenes/talkEncourage.js',
+    'src/textEngine/scenes/talkCheckIn.js',
+    'src/textEngine/scenes/talkCommandFinishDepth.js',
+    'src/textEngine/scenes/talkCompliment.js',
+    'src/textEngine/scenes/v2/echo/echoSceneDepth.js',
+    'src/textEngine/scenes/recordingSession/recordingSessionWrapDepth.js',
+    'src/gameData/skills.js',
+    'src/gameData/evolvedForms.js',
+  ];
+
+  for (const file of CASSIDY_NAMED_FILES) {
+    const src = read(file);
+    const lines = src.match(/[^\n]*Cassidy[^\n]*/g) ?? [];
+    assert.ok(lines.length > 0, `${file} must mention Cassidy`);
+    for (const line of lines) {
+      for (const re of BANNED_IN_CASSIDY) {
+        assert.doesNotMatch(line, re, `${file}: Cassidy line still has ${re}: ${line.slice(0, 80)}`);
+      }
+    }
+  }
+
+  const skills = read('src/gameData/skills.js');
+  assert.doesNotMatch(skills, /Cassidy doesn't look up from her book/i);
+  assert.match(skills, /Cassidy doesn't look up from her training log/i);
 });
 
 check('embodied-resident-sighting', () => {

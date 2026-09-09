@@ -325,7 +325,7 @@ registerModuleVariants("enc.owned", [
     `"You don't have to encourage me anymore," Brittany grins. "But I like winning with an audience."`,
   ]},
   { when: { studentId: 1 }, weight: 4, text: [
-    `"Encouragement functions as a positive reinforcement variable," Cassidy says, already reaching. "I've charted it. The effect size is embarrassing."`,
+    `"Encouragement works like a good set," Cassidy says, already reaching. "I've logged it. The split is embarrassing."`,
   ]},
   { when: { studentId: 2 }, weight: 4, text: [
     `"Already filming," Kylie says. "Say the line again. Slower. For the clip."`,
@@ -418,7 +418,7 @@ registerModuleVariants("enc.resolve", [
 
 registerModuleVariants("enc.accept", [
   { when: { studentId: 1 }, weight: 4, text: [
-    `Cassidy taps her pen twice. "Statistically, restraint hasn't produced results. Time to vary the methodology." She closes the notebook.`,
+    `Cassidy taps her pen twice. "Restraint hasn't produced results. Time to change the block." She closes the training log.`,
   ]},
   { when: { studentId: 3 }, weight: 4, text: [
     `Serena nods once, athlete-sharp. "New training block starts tonight. Bulk phase. Indefinite."`,

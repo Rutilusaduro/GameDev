@@ -45,29 +45,29 @@ registerPool("diary.brittany.uniform", [
 ]);
 
 // ══════════════════════════════════════════════════════════════════
-// CASSIDY (1) — Swimmer — "The Dataset"
-// Sub-arc: She starts keeping field notes on her own transformation.
-// Clinical distance gradually erodes as she documents herself.
+// CASSIDY (1) — Swimmer — "The Training Log"
+// Sub-arc: She starts logging her own bulk phase like meet prep.
+// Lane-captain discipline gradually gives way to appetite she stops correcting.
 // ══════════════════════════════════════════════════════════════════
 
 registerPool("diary.cassidy.dataset", [
   { when: { studentId: 1, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
-    "Field note, Week 3. [Subject] reports appetite increase outside structured meal windows. Hyposeason plan: stress response, elevated cortisol. Recommend monitoring.",
-    "Field note, Week 5. [Subject] appetite continues elevated. Stress hypothesis weakening. Secondary hypothesis under consideration. No intervention at this time.",
+    "Week 3 log. Appetite up outside meal windows. Hyposeason plan blames stress and travel. Coach would call it off-season bulk. I'm monitoring.",
+    "Week 5 log. Appetite still climbing. Stress excuse weakening. Secondary read: maybe I like this. No intervention yet.",
   ]},
   { when: { studentId: 1, stageMin: 3, stageMax: 4, corruption: [1] }, weight: 4, text: [
-    "Field note, Week 7. [Subject] — I — notes that appetite is no longer attributable to identified stressors. Notes this without distress. Notes that the noting is itself notable. Updating baseline.",
-    "The brackets around [Subject] look strange today. I keep typing them and deleting them and retyping them. The data doesn't change.",
+    "Week 7 log. Appetite no longer fits the old season plan. I note that without panic. I note that I like noting it.",
+    "I keep writing 'athlete' in the margin and crossing it out. The weigh-in doesn't change when I do.",
   ]},
   { when: { studentId: 1, stageMin: 4, stageMax: 6, corruption: [2] }, weight: 4, text: [
-    "Week 11. I am the trial. The dosing is irregular and entirely self-administered. Efficacy: excellent. Side effects: none I'm interested in correcting.",
-    "I ate two dinners tonight and wrote them both up as data and then I didn't write them up as data. I just ate them.",
-    "No brackets. No [Subject]. I don't want to correct this. I am very good at my job and I am using that skill to not correct this.",
+    "Week 11. I am the bulk phase. Portions irregular, entirely self-administered. Results: excellent. Side effects: none I'm correcting.",
+    "I ate two dinners tonight and logged both, then stopped logging and just ate.",
+    "No more third-person entries. I don't want to taper this. I'm using lane-captain discipline to stay in it.",
   ]},
   { when: {}, text: [
-    "The field work continues. The observer continues. So does the data.",
-    "Field note, miscellaneous: appetite elevated. Attribution: unresolved. Next measure: tomorrow.",
-    "I keep writing it down. The brackets feel less necessary every week.",
+    "The training log continues. So does the appetite.",
+    "Week misc: appetite elevated. Cause: unresolved. Next weigh-in: tomorrow.",
+    "I keep writing it down. Honesty gets easier every week.",
   ]},
 ]);
 

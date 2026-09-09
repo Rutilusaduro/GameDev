@@ -431,7 +431,7 @@ registerModuleVariants("comp.react", [
     `Brittany squares her shoulders like she's accepting a trophy. "Damn right you noticed," she says, grinning.`,
   ]},
   { when: { studentId: 1 }, weight: 4, text: [
-    `Cassidy marks something in the margin without looking up. "Aesthetically speaking, the data supports your conclusion." She caps her pen. "I've been tracking it."`,
+    `Cassidy marks something in her training log without looking up. "Honestly, the numbers support your conclusion." She caps her pen. "I've been tracking it."`,
   ]},
   { when: { studentId: 2 }, weight: 4, text: [
     `Kylie's phone is already out — not to hide, but to document. "Oh, we are getting this on camera," she announces. "Say it again, slower."`,
@@ -485,7 +485,7 @@ registerModuleVariants("comp.react", [
 
 registerModuleVariants("comp.claiming.stmt", [
   { when: { studentId: 1 }, weight: 4, text: [
-    `Cassidy nods. "The compliment aligns with the trajectory. The data is favorable."`,
+    `Cassidy nods. "The compliment aligns with the trajectory. The log is favorable."`,
   ]},
   { when: { studentId: 2 }, weight: 4, text: [
     `"Content approved," Kylie says. "I'm using that in a reel. You should see my numbers lately."`,

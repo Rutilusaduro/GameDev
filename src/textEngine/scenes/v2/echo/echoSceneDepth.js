@@ -6,7 +6,7 @@ const W = 4;
 
 const weighIn = {
   0: [`Brittany reads the digits like a scoreboard — competitive calm, pride when the number climbs.`],
-  1: [`Cassidy logs the weigh-in before she allows herself to feel it — data first, warmth second.`],
+  1: [`Cassidy logs the weigh-in before she allows herself to feel it — training log first, warmth second.`],
   2: [`Kylie checks the number like analytics — already imagining how it will look on camera.`],
   3: [`Serena steps off the scale with athlete poise — mass acknowledged, discipline unchanged.`],
   4: [`Fiona regards the digits as composition — growth as aesthetic fact, pleasing and complete.`],
@@ -28,7 +28,7 @@ const weighIn = {
 
 const stageUp = {
   0: [`Brittany crossed the threshold like a halftime lead — visible, earned, the room already cheering.`],
-  1: [`Cassidy's stage-up reads like a panel-reviewed conclusion — inevitable once the data lined up.`],
+  1: [`Cassidy's stage-up reads like a podium finish — inevitable once the splits lined up.`],
   2: [`Kylie's threshold became content — mass made spectacle, appetite made subscriber bait.`],
   3: [`Serena's new stage arrived without drama — body answering training she no longer fights.`],
   4: [`Fiona's growth crossed into gallery scale — composition deepening, subject and artist merging.`],

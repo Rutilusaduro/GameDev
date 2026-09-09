@@ -6,7 +6,7 @@ const W = 4;
 
 const EVOLVED_BY_STUDENT = {
   0: `Brittany's evolved path centralizes squad hunger — appetite as leadership, growth as policy, mass as morale.`,
-  1: `Cassidy's evolved arc turns training into appetite — citations replaced by certainty, data by warmth.`,
+  1: `Cassidy's evolved arc turns training into appetite — restraint replaced by certainty, splits by warmth.`,
   2: `Kylie's evolution makes spectacle honest — camera hunger and subscriber hunger finally the same thing.`,
   3: `Serena's evolved form trades miles for mass — athlete discipline repurposed for appetite without flinching.`,
   4: `Fiona's evolution merges artist and subject — the gallery documents appetite she now embodies.`,

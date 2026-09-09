@@ -6,7 +6,7 @@ const W = 4;
 
 const talkByStudent = {
   0: ['Brittany frames appetite like squad business — direct, competitive, already treating hunger as something to win.'],
-  1: ['Cassidy annotates her cravings mid-sentence, as if desire were another dataset worth filing correctly.'],
+  1: ['Cassidy tracks cravings like split times — logged mid-sentence, desire filed under training block.'],
   2: ['Kylie narrates her own hunger like content — every craving staged, every admission camera-ready.'],
   3: ['Serena talks about food the way she used to talk about splits — metrics, discipline, and the pleasure of pushing past them.'],
   4: ['Fiona drifts from topic to topic until appetite becomes the only honest subject in the room.'],
@@ -50,7 +50,7 @@ const feedByStudent = {
 
 const dinnerByStudent = {
   0: ['Brittany owns the table like a pep rally — public appetite, confident pace, every course another victory lap.'],
-  1: ['Cassidy orders like a literature review — thorough, annotated, secretly pleased when the portions exceed plan.'],
+  1: ['Cassidy orders like meet-day prep — thorough portions, secretly pleased when the tray exceeds plan.'],
   2: ['Kylie turns the restaurant into a set — lighting judged, bites timed, hunger staged for an invisible audience.'],
   3: ['Serena treats dinner like recovery fuel that kept growing — disciplined start, inevitable abundance by dessert.'],
   4: ['Fiona watches the room soften around her plate — food as atmosphere, fullness as slow composition.'],
@@ -72,7 +72,7 @@ const dinnerByStudent = {
 
 const wiByStudent = {
   0: ['Brittany reads the scale like a scoreboard — competitive calm, pride when the number climbs.'],
-  1: ['Cassidy logs the weigh-in before she allows herself to feel it — data first, warmth second.'],
+  1: ['Cassidy logs the weigh-in before she allows herself to feel it — training log first, warmth second.'],
   2: ['Kylie checks the number like analytics — already imagining how it will look on camera.'],
   3: ['Serena steps off the scale with athlete poise — mass acknowledged, discipline unchanged.'],
   4: ['Fiona regards the digits as composition — growth as aesthetic fact, pleasing and complete.'],
@@ -130,7 +130,7 @@ registerModuleVariants('session.v2.depth', studentVariants(sessionByStudent));
 
 const embodimentByStudent = {
   0: ['Inside Brittany, hunger feels like competition — every craving a drill, every bite a score to beat.'],
-  1: ['Inside Cassidy, appetite arrives as data first — warmth second, documented third.'],
+  1: ['Inside Cassidy, appetite arrives as a split time first — warmth second, logged third.'],
   2: ['Inside Kylie, even riding along performs — hunger staged, satisfaction camera-ready.'],
   3: ['Inside Serena, want moves like training — disciplined start, inevitable abundance.'],
   4: ['Inside Fiona, fullness becomes composition — sensory, slow, reverent.'],
@@ -152,7 +152,7 @@ const embodimentByStudent = {
 
 const resonanceByStudent = {
   0: ['Brittany\'s link hums competitive — appetite shared like a squad drill, every pulse a score to beat.'],
-  1: ['Cassidy\'s resonance reads like correlated data — hunger arriving with footnotes she cannot ignore.'],
+  1: ['Cassidy\'s resonance hums like synced lane rhythm — hunger arriving with reps she cannot ignore.'],
   2: ['Kylie\'s wire carries spectacle — linked craving trending before she admits it.'],
   3: ['Serena\'s link feels like training sync — appetite metered, then overwhelming.'],
   4: ['Fiona\'s resonance is aesthetic voltage — hunger painted across distance in soft strokes.'],
@@ -196,7 +196,7 @@ const ritualByStudent = {
 
 const dreamByStudent = {
   0: ['Brittany dreams in pep rallies and endless trays — competition without losers, only fullness.'],
-  1: ['Cassidy dreams in annotated margins — appetite footnoted until notes become bites.'],
+  1: ['Cassidy dreams in training margins — appetite logged until logs become bites.'],
   2: ['Kylie dreams in metrics and spectacle — impossible portions, perfect angles.'],
   3: ['Serena dreams like training montage — reps of eating, capacity tested past waking limits.'],
   4: ['Fiona dreams in pigment and portion — surreal, aesthetic, hungry.'],
@@ -218,7 +218,7 @@ const dreamByStudent = {
 
 const echoByStudent = {
   0: ['Brittany\'s echo plays like highlight reel — captain\'s growth, appetite victorious on replay.'],
-  1: ['Cassidy\'s echo reads like a footnote to appetite — precise, warm, undeniable.'],
+  1: ['Cassidy\'s echo reads like a personal best on replay — precise, warm, undeniable.'],
   2: ['Kylie\'s echo preserves the angle — memory mass framed for maximum impact.'],
   3: ['Serena\'s echo records capacity PRs — athletic pride, softness earned, replay fierce.'],
   4: ['Fiona\'s echo is gallery still — moment captured like pigment set on canvas.'],
