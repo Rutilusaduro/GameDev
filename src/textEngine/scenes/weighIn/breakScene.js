@@ -3,7 +3,7 @@
 // wi.breakBeat  — physical aftermath (stage/corruption keyed)
 // wi.breakLine  — her reaction (per-girl, mined from the retired
 //                 BREAK_SCENES in WeighInModal.jsx — quotes verbatim)
-// wi.swap / wi.purchase — professor-voice beats for scale logistics.
+// wi.swap / wi.purchase — RA-voice beats for scale logistics.
 // ═══════════════════════════════════════════════════════════════
 import { registerPool } from '../../engine.js';
 import './fragments.js';
@@ -115,8 +115,8 @@ registerPool("wi.breakLine", [
   ]},
 ]);
 
-// ── wi.swap — professor swaps in the industrial scale ─────────
-// Shape: FULL SENTENCE skeleton, professor voice.
+// ── wi.swap — RA swaps in the industrial scale ─────────
+// Shape: FULL SENTENCE skeleton, RA voice.
 registerPool("wi.swap", [
   { when: {}, text: [
     "{wi.swapWave} {wi.swapPlatform}",
@@ -141,8 +141,8 @@ registerPool("wi.swapPlatform", [
   ]},
 ]);
 
-// ── wi.purchase — professor notes the need for a bigger scale ─
-// Shape: FULL SENTENCE block, professor voice.
+// ── wi.purchase — RA notes the need for a bigger scale ─
+// Shape: FULL SENTENCE block, RA voice.
 registerPool("wi.purchase", [
   { when: {}, text: [
     `You stare at the cracked dial for a second, then exhale a laugh. "Okay. That's on me, not on {subject.first}." You make a real note to order a proper heavy-duty scale before the next check-in.`,

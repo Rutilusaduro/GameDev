@@ -39,11 +39,21 @@
   background: rgba(120, 40, 200, 0.12);
 }
 
+@keyframes hallUnlockPulse {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 18px rgba(255, 200, 120, 0.22); }
+}
+
+.hall-unlock-new {
+  animation: hallUnlockPulse 2s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hall-pass-view-in,
   .ra-wizard-card,
   .roster-tile,
-  .hall-pass-nav-btn {
+  .hall-pass-nav-btn,
+  .hall-unlock-new {
     animation: none;
     transition: none;
   }

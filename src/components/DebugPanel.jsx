@@ -10,7 +10,7 @@ import { useTextFlagLog } from '../hooks/useTextFlagLog.js';
 import { clearTextFlags, downloadTextFlagsTxt } from '../gameData/textFlagStore.js';
 import { buildGameSnapshot, serializeBugReport } from '../gameData/bugReport.js';
 import { defaultOppositionState } from '../gameData/opposition.js';
-import { toggleInstantText } from '../gameData/playerPrefs.js';
+import { dormUnlocksForWeek } from '../gameData/dorms.js';
 
 if (typeof window !== 'undefined' && import.meta.env.DEV) {
   window.__textEngine = { render, createContext, getSeason, relSize };
@@ -56,6 +56,10 @@ export function DebugPanel({
   setOpposition,
   setHearingState,
   week,
+  setWeek,
+  startDormId,
+  unlockedDorms,
+  setUnlockedDorms,
   money,
   view,
   setView,
@@ -84,6 +88,14 @@ export function DebugPanel({
     setOpposition((prev) => fn(prev || defaultOppositionState()));
   };
 
+  const syncDormUnlocks = (targetWeek = week) => {
+    if (!startDormId || !setUnlockedDorms) return;
+    const open = new Set(unlockedDorms || []);
+    open.add(startDormId);
+    for (const id of dormUnlocksForWeek(targetWeek, startDormId)) open.add(id);
+    setUnlockedDorms([...open]);
+  };
+
   return (
     <div style={{ ...C.overlay, alignItems: 'flex-start', paddingTop: 16, overflowY: 'auto', zIndex: 390 }}>
       <div style={{ ...C.modal, maxWidth: 720, width: '95%', maxHeight: '90vh', overflowY: 'auto' }}>
@@ -108,6 +120,30 @@ export function DebugPanel({
           <>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14, padding: 10, background: 'rgba(255,255,255,0.04)', borderRadius: 8 }}>
               <div style={{ fontSize: 10, color: '#888', width: '100%', marginBottom: 4 }}>GLOBAL · Week {week}</div>
+              {setWeek && (
+                <label style={{ fontSize: 11, color: '#aaa', display: 'flex', gap: 6, alignItems: 'center' }}>
+                  Week:
+                  <input type="number" defaultValue={week} min={1} max={52} step={1}
+                    style={{ width: 48, background: '#181820', color: '#e0e0e0', border: '1px solid #444', borderRadius: 4, padding: '2px 4px', fontSize: 11 }}
+                    onChange={(e) => setWeek(Math.max(1, parseInt(e.target.value, 10) || 1))} />
+                </label>
+              )}
+              {setWeek && (
+                <>
+                  {[8, 12, 16].map((w) => (
+                    <button key={w} type="button" style={{ ...C.smBtn, background: 'rgba(74,122,232,0.35)', fontSize: 10 }}
+                      onClick={() => { setWeek(w); syncDormUnlocks(w); }}>
+                      Jump wk {w}
+                    </button>
+                  ))}
+                  {setUnlockedDorms && startDormId && (
+                    <button type="button" style={{ ...C.smBtn, background: 'rgba(232,93,74,0.35)', fontSize: 10 }}
+                      onClick={() => syncDormUnlocks()}>
+                      Sync hall unlocks
+                    </button>
+                  )}
+                </>
+              )}
               <label style={{ fontSize: 11, color: '#aaa', display: 'flex', gap: 6, alignItems: 'center' }}>
                 AP:
                 <input type="number" defaultValue={ap} min={0} max={999} step={5}
@@ -129,7 +165,7 @@ export function DebugPanel({
                   onClick={() => {
                     setOwnedSkills((prev) => ({ ...prev, spirit_ride: 1, deep_ride: 1 }));
                     setAp((a) => Math.max(a, 20));
-                    setView('influence-hub');
+                    setView('spirit-hub');
                   }}>
                   🌒 Floor Influence QA
                 </button>

@@ -91,11 +91,17 @@ function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn }) {
 function DormUnlockProgress({ unlockedDorms = [], startDormId, week = 1 }) {
   const open = new Set(unlockedDorms || []);
   if (startDormId) open.add(startDormId);
-  const lockedAhead = DORM_LIST.filter((d) => !open.has(d.id) && d.unlockWeek > 0);
-  if (!lockedAhead.length) return null;
+  const allOpen = DORM_LIST.every((d) => open.has(d.id));
+  if (allOpen) return null;
+  const justUnlocked = DORM_LIST.filter((d) => d.unlockWeek > 0 && week === d.unlockWeek && open.has(d.id));
   return (
-    <div style={{ marginBottom: 16, padding: '10px 12px', background: 'rgba(20,8,40,0.55)', border: '1px solid #2a1848', borderRadius: 8 }}>
-      <div style={{ fontSize: 10, letterSpacing: 2, color: '#8a68a8', marginBottom: 8 }}>HALL REACH — MORE FLOORS OPEN AS THE SEMESTER DEEPENS</div>
+    <div style={{ marginBottom: 16, padding: '12px 14px', background: 'linear-gradient(135deg,rgba(28,12,52,0.92),rgba(14,8,28,0.95))', border: '1px solid #4a2870', borderRadius: 10, boxShadow: '0 8px 28px rgba(0,0,0,0.35)' }}>
+      {justUnlocked.length > 0 && (
+        <div style={{ fontSize: 12, color: '#ffe8c8', marginBottom: 10, lineHeight: 1.5, padding: '8px 10px', background: 'rgba(255,200,120,0.08)', borderRadius: 6, border: '1px solid rgba(255,200,120,0.2)' }}>
+          🔓 <strong>{justUnlocked.map((d) => d.label).join(' · ')}</strong> unlocked — residents from {justUnlocked.map((d) => d.shortLabel).join(' and ')} hall{justUnlocked.length > 1 ? 's' : ''} can now build trust on your roster.
+        </div>
+      )}
+      <div style={{ fontSize: 10, letterSpacing: 2, color: '#b898d8', marginBottom: 8, fontWeight: 600 }}>HALL REACH — SEMESTER UNLOCK ROADMAP</div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(140px,1fr))', gap: 8 }}>
         {DORM_LIST.map((d) => {
           const isOpen = open.has(d.id);
@@ -104,6 +110,7 @@ function DormUnlockProgress({ unlockedDorms = [], startDormId, week = 1 }) {
           return (
             <div
               key={d.id}
+              className={isOpen && d.unlockWeek > 0 && week === d.unlockWeek ? 'hall-unlock-new' : undefined}
               style={{
                 padding: '8px 10px',
                 borderRadius: 6,
@@ -115,7 +122,11 @@ function DormUnlockProgress({ unlockedDorms = [], startDormId, week = 1 }) {
               <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 4 }}>
                 <span style={{ fontSize: 14 }}>{d.emoji}</span>
                 <span style={{ fontSize: 11, fontWeight: 700, color: isOpen ? d.color : '#6a5888' }}>{d.shortLabel}</span>
+                {isOpen && d.unlockWeek > 0 && week === d.unlockWeek && (
+                  <span style={{ fontSize: 8, color: '#ffe8a0', marginLeft: 4, letterSpacing: 1 }}>NEW</span>
+                )}
                 {isOpen && <span style={{ fontSize: 9, color: d.color, marginLeft: 'auto' }}>OPEN</span>}
+                {!isOpen && d.unlockWeek > 0 && <span style={{ fontSize: 9, color: '#6a5888', marginLeft: 'auto' }}>LOCKED</span>}
               </div>
               <div style={{ fontSize: 9.5, color: '#6a5088', lineHeight: 1.35 }}>
                 {isOpen

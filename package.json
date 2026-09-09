@@ -16,6 +16,7 @@
     "ascension:sweep": "node scripts/ascension-ability-sweep.mjs",
     "test:dorm-unlock": "node scripts/test-dorm-unlock.mjs",
     "test:ra-theme": "node scripts/test-ra-theme.mjs",
+    "test:dorm-unlock-ui": "node scripts/test-dorm-unlock-ui.mjs",
     "text:lint": "node scripts/textLint.mjs"
   },
   "dependencies": {
