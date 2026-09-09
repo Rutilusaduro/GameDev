@@ -8,6 +8,7 @@ registerPool('dinner.groupTopic', [
   { when: { archetype: 'party' }, text: ['last weekend'] },
   { when: { archetype: 'sorority' }, text: ['the chapter event'] },
   { when: { archetype: 'bookworm' }, text: ['her research'] },
+  { when: { archetype: 'swimmer' }, text: ['her training'] },
   { when: { archetype: 'athlete' }, text: ['her training'] },
   { when: { archetype: 'artsy' }, text: ['her current piece'] },
   { when: { archetype: 'overachiever' }, text: ['her family'] },

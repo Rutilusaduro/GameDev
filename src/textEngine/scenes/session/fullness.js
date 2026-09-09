@@ -141,6 +141,52 @@ registerPool('session.fullness.bookworm.f5._f1', [
 registerPool('session.fullness.bookworm.f5', [
   { when: {}, text: ["{session.fullness.bookworm.f5._f1}"] },
 ]);
+registerPool('session.fullness.swimmer.f0._f1', [
+  { when: {}, text: ["{subject.name} is cross-legged beside her training log, eating the way she logs splits — thoroughly and without looking up."] },
+]);
+
+registerPool('session.fullness.swimmer.f0', [
+  { when: {}, text: ["{session.fullness.swimmer.f0._f1}"] },
+]);
+registerPool('session.fullness.swimmer.f1._f1', [
+  { when: {}, text: ["She's stopped reviewing splits. She's just eating now. Focused, methodical. The log is closed."] },
+]);
+
+registerPool('session.fullness.swimmer.f1', [
+  { when: {}, text: ["{session.fullness.swimmer.f1._f1}"] },
+]);
+registerPool('session.fullness.swimmer.f2._f1', [
+  { when: {}, text: ["\"I've consumed,\" {subject.name} says precisely, gesturing at her plate, \"a non-trivial quantity of food.\" She keeps eating. Documenting the phenomenon from the inside."] },
+]);
+
+registerPool('session.fullness.swimmer.f2', [
+  { when: {}, text: ["{session.fullness.swimmer.f2._f1}"] },
+]);
+registerPool('session.fullness.swimmer.f3._f1', [
+  { when: {}, text: ["She is logging her own fullness with the same attention she gives everything else. Pressing her fingers against her stomach. \"It's interesting,\" she says."] },
+]);
+
+registerPool('session.fullness.swimmer.f3._f2', [
+  { when: {}, text: [". \"Biologically speaking.\" She takes another bite."] },
+]);
+
+registerPool('session.fullness.swimmer.f3', [
+  { when: {}, text: ["{session.fullness.swimmer.f3._f1} {session.fullness.swimmer.f3._f2}"] },
+]);
+registerPool('session.fullness.swimmer.f4._f1', [
+  { when: {}, text: ["{subject.name} has set aside the analytical detachment. She is simply full, and still eating, and has stopped justifying it."] },
+]);
+
+registerPool('session.fullness.swimmer.f4', [
+  { when: {}, text: ["{session.fullness.swimmer.f4._f1}"] },
+]);
+registerPool('session.fullness.swimmer.f5._f1', [
+  { when: {}, text: ["She rests her head back and stays still. Then: \"I want to note that my previous split on my own capacity was clearly incomplete.\" She has another piece of cake."] },
+]);
+
+registerPool('session.fullness.swimmer.f5', [
+  { when: {}, text: ["{session.fullness.swimmer.f5._f1}"] },
+]);
 registerPool('session.fullness.athlete.f0._f1', [
   { when: {}, text: ["{subject.name} eats fast — fuel, not pleasure. Making up for it in quantity."] },
 ]);
@@ -496,11 +542,17 @@ registerPool('session.fullness', [
   { when: { archetype: "cheerleader", fullnessStage: [4] }, text: ['{session.fullness.cheerleader.f4}'] },
   { when: { archetype: "cheerleader", fullnessStage: [5] }, text: ['{session.fullness.cheerleader.f5}'] },
   { when: { archetype: "bookworm", fullnessStage: [0] }, text: ['{session.fullness.bookworm.f0}'] },
+  { when: { archetype: 'swimmer', fullnessStage: [0] }, text: ['{session.fullness.swimmer.f0}'] },
   { when: { archetype: "bookworm", fullnessStage: [1] }, text: ['{session.fullness.bookworm.f1}'] },
+  { when: { archetype: 'swimmer', fullnessStage: [1] }, text: ['{session.fullness.swimmer.f1}'] },
   { when: { archetype: "bookworm", fullnessStage: [2] }, text: ['{session.fullness.bookworm.f2}'] },
+  { when: { archetype: 'swimmer', fullnessStage: [2] }, text: ['{session.fullness.swimmer.f2}'] },
   { when: { archetype: "bookworm", fullnessStage: [3] }, text: ['{session.fullness.bookworm.f3}'] },
+  { when: { archetype: 'swimmer', fullnessStage: [3] }, text: ['{session.fullness.swimmer.f3}'] },
   { when: { archetype: "bookworm", fullnessStage: [4] }, text: ['{session.fullness.bookworm.f4}'] },
+  { when: { archetype: 'swimmer', fullnessStage: [4] }, text: ['{session.fullness.swimmer.f4}'] },
   { when: { archetype: "bookworm", fullnessStage: [5] }, text: ['{session.fullness.bookworm.f5}'] },
+  { when: { archetype: 'swimmer', fullnessStage: [5] }, text: ['{session.fullness.swimmer.f5}'] },
   { when: { archetype: "athlete", fullnessStage: [0] }, text: ['{session.fullness.athlete.f0}'] },
   { when: { archetype: "athlete", fullnessStage: [1] }, text: ['{session.fullness.athlete.f1}'] },
   { when: { archetype: "athlete", fullnessStage: [2] }, text: ['{session.fullness.athlete.f2}'] },

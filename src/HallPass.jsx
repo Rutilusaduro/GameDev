@@ -8,7 +8,7 @@ import { buildStateLine, traceToFlagNodes } from './textEngine/textFlagFormat.js
 import { ACTIONS_SINGLE, ACTIONS_CLASS } from './gameData/classEvents.js';
 import { gatewayFlagPatch, GATEWAY_FLAG_KEYS } from './gameData/gatewayMoments.js';
 import { appendDossierSnapshot, pinPlayerMoment } from './gameData/dossier.js';
-import { getPlayerPrefs, toggleInstantText } from './gameData/playerPrefs.js';
+import { getPlayerPrefs, toggleInstantText, toggleSound } from './gameData/playerPrefs.js';
 import { playHallPassSound } from './gameData/hallPassAudio.js';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
@@ -592,6 +592,7 @@ export default function HallPass(){
   const [dossierOpen, setDossierOpen] = useState(false);
   const [sceneScrollback, setSceneScrollback] = useState([]);
   const [instantText, setInstantText] = useState(() => getPlayerPrefs().instantText);
+  const [soundEnabled, setSoundEnabled] = useState(() => getPlayerPrefs().soundEnabled !== false);
   const [confrontation, setConfrontation] = useState(null);
   const [forceFeederState, setForceFeederState] = useState(null);
   const [deviceUsageModal, setDeviceUsageModal] = useState(null);
@@ -1547,7 +1548,7 @@ export default function HallPass(){
           const d=getDorm(id);
           if(d) {
             push(`🔓 ${d.label} unlocked — residents from ${d.shortLabel} hall may appear on your roster.`);
-            playHallPassSound('unlock');
+            playHallPassSound('unlock', soundEnabled);
           }
         });
       }
@@ -7693,7 +7694,7 @@ export default function HallPass(){
   const totalSkillPoints=Math.max(0,spiritLevel-1);
   const visibleStudents=students.filter(studentVisibleOnCampus);
   const avgLbs=Math.round(visibleStudents.reduce((a,s)=>a+s.lbs,0)/Math.max(1,visibleStudents.length));
-  // ── PROFESSOR SUBJECT / TRAIT EFFECTS ───────────────────────
+  // ── RA PROFILE / TRAIT EFFECTS ──────────────────────────────
   const hasTrait=(id)=>professorProfile?.traits?.includes(id)||false;
   const hasSubj=(id)=>professorProfile?.subject===id;
   const profGainMult=profileGainMult(professorProfile);
@@ -8771,7 +8772,7 @@ export default function HallPass(){
       {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students}/>}
 
       {/* ── DEBUG PANEL ── */}
-      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setOwnedSkills={setOwnedSkills} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} setWeek={setWeek} startDormId={raProfile?.dormId||raProfile?.subject} unlockedDorms={unlockedDorms} setUnlockedDorms={setUnlockedDorms} money={money} view={view} setView={setView} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length} instantText={instantText} onInstantTextChange={setInstantText}/>}
+      {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setOwnedSkills={setOwnedSkills} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} setWeek={setWeek} startDormId={raProfile?.dormId||raProfile?.subject} unlockedDorms={unlockedDorms} setUnlockedDorms={setUnlockedDorms} money={money} view={view} setView={setView} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length} instantText={instantText} onInstantTextChange={setInstantText} soundEnabled={soundEnabled} onSoundEnabledChange={setSoundEnabled}/>}
 
       {bugReportOpen&&<BugReportModal getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} prefillError={fieldNoteError} onClose={()=>{ setBugReportOpen(false); setFieldNoteError(null); }}/>}
 

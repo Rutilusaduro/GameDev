@@ -6,6 +6,7 @@ const LEGACY_KEY = 'professorSim.prefs';
 const DEFAULTS = {
   instantText: false,
   sceneScrollbackOpen: false,
+  soundEnabled: true,
 };
 
 function read() {
@@ -42,4 +43,10 @@ export function setPlayerPref(key, value) {
 export function toggleInstantText() {
   const cur = read();
   return setPlayerPref('instantText', !cur.instantText);
+}
+
+export function toggleSound() {
+  const cur = read();
+  const next = cur.soundEnabled === false;
+  return setPlayerPref('soundEnabled', next);
 }

@@ -11,6 +11,7 @@ import { clearTextFlags, downloadTextFlagsTxt } from '../gameData/textFlagStore.
 import { buildGameSnapshot, serializeBugReport } from '../gameData/bugReport.js';
 import { defaultOppositionState } from '../gameData/opposition.js';
 import { dormUnlocksForWeek } from '../gameData/dorms.js';
+import { toggleInstantText, toggleSound } from '../gameData/playerPrefs.js';
 
 if (typeof window !== 'undefined' && import.meta.env.DEV) {
   window.__textEngine = { render, createContext, getSeason, relSize };
@@ -72,6 +73,8 @@ export function DebugPanel({
   eventQueueLen,
   instantText = false,
   onInstantTextChange,
+  soundEnabled = true,
+  onSoundEnabledChange,
 }) {
   const { enabled: textFlagsOn, setEnabled: setTextFlagsOn } = useTextFlags();
   const savedFlags = useTextFlagLog();
@@ -190,6 +193,14 @@ export function DebugPanel({
                   onChange={() => onInstantTextChange?.(toggleInstantText().instantText)}
                 />
                 ⚡ Instant scene text (skip beat reveal)
+              </label>
+              <label style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 11, color: '#b0a890', marginBottom: 8, cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={soundEnabled !== false}
+                  onChange={() => onSoundEnabledChange?.(toggleSound().soundEnabled)}
+                />
+                🔊 Hall unlock chime (Web Audio)
               </label>
               <button type="button" style={{ ...C.smBtn, background: 'rgba(100,60,140,0.4)' }}
                 onClick={() => setTextSample(sampleTextEngine())}>📜 Sample hive intake</button>

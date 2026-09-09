@@ -264,10 +264,22 @@ registerPool("attitude.line", [
       `I have a hypothesis about my appetite. The hypothesis keeps confirming itself.`,
       `Intellectually resistant, practically compliant.`,
     ] },
+  { when: { archetype: 'swimmer', corruption: [0] }, priority: 1,
+    text: [
+      `Analyzing my mood like data — conclusion: hungry, embarrassed, trending upward.`,
+      `I have a hypothesis about my appetite. The hypothesis keeps confirming itself.`,
+      `Intellectually resistant, practically compliant.`,
+    ] },
   { when: { archetype: "bookworm", corruption: [1, 2] }, priority: 1,
     text: [
       `I've documented my willingness. The findings are unambiguous.`,
       `Research subject: me. Variable: obedience. Result: significant.`,
+      `I can explain why I want this. Explanation doesn't slow me down.`,
+    ] },
+  { when: { archetype: 'swimmer', corruption: [1, 2] }, priority: 1,
+    text: [
+      `I've documented my willingness. The findings are unambiguous.`,
+      `training subject: me. Variable: obedience. Result: significant.`,
       `I can explain why I want this. Explanation doesn't slow me down.`,
     ] },
   { when: { archetype: "cheerleader", corruption: [0] }, priority: 1,

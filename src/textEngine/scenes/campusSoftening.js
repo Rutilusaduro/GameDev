@@ -107,6 +107,12 @@ registerPool("diary.campus", [
       "Citation trail on 'ambient caloric environment' now includes the whole quad.",
       "Classmates' notebooks and waistbands both thicker this month.",
     ] },
+  { when: { campusFattening: true, archetype: 'swimmer' }, priority: 2,
+    text: [
+      "pool deck carrels: more snacks, softer occupants. Campus-wide trend, not my section alone.",
+      "Citation trail on 'ambient caloric environment' now includes the whole quad.",
+      "Classmates' notesplits and waistbands both thicker this month.",
+    ] },
   { when: { campusFattening: true, archetype: "athlete" }, priority: 2,
     text: [
       "Team weigh-ins across campus are… interesting this semester. I'm not alone on the curve.",

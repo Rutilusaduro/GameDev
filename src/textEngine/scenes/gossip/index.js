@@ -63,7 +63,15 @@ registerPool('gossip.react.line', [
     `She looks, then looks away, then looks back. Her pen hasn't moved in a minute.`,
     `She's been tracking it longer than she'll admit. The change is measurable. She measured it.`,
   ]},
+  { when: { archetype: 'swimmer', memType: 'stageUp' }, weight: 3, text: [
+    `She looks, then looks away, then looks back. Her pen hasn't moved in a minute.`,
+    `She's been tracking it longer than she'll admit. The change is measurable. She measured it.`,
+  ]},
   { when: { archetype: 'bookworm', memType: 'scaleBreak' }, weight: 3, text: [
+    `She marks the week in her head. She tracks things. She's been doing it for a while.`,
+    `The number interests her more than she expected it to. She thinks about it on the walk home.`,
+  ]},
+  { when: { archetype: 'swimmer', memType: 'scaleBreak' }, weight: 3, text: [
     `She marks the week in her head. She tracks things. She's been doing it for a while.`,
     `The number interests her more than she expected it to. She thinks about it on the walk home.`,
   ]},

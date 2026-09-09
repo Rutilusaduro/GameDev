@@ -129,6 +129,11 @@ registerPool('weekly.thesisRewrite.submit', [
     '{subject.name} slides a new outline across your desk.',
     'A revised season plan outline arrives from {subject.name}.',
   ] },
+  { when: { archetype: 'swimmer' }, text: [
+    '{subject.name} submits a revised season plan outline.',
+    '{subject.name} slides a new outline across your desk.',
+    'A revised season plan outline arrives from {subject.name}.',
+  ] },
   { when: {}, text: [
     '{subject.name} submits a revised academic outline.',
     'A new outline from {subject.name} lands in your inbox.',
@@ -139,6 +144,10 @@ registerPool('weekly.thesisRewrite.submit', [
 
 registerPool('weekly.thesisRewrite.title', [
   { when: { archetype: 'bookworm' }, text: [
+    'New title: \'Adaptive Caloric Strategy and Cognitive Performance: An Ethnographic Self-Study.\'',
+    'The title now reads \'Adaptive Caloric Strategy and Cognitive Performance: An Ethnographic Self-Study.\'',
+  ] },
+  { when: { archetype: 'swimmer' }, text: [
     'New title: \'Adaptive Caloric Strategy and Cognitive Performance: An Ethnographic Self-Study.\'',
     'The title now reads \'Adaptive Caloric Strategy and Cognitive Performance: An Ethnographic Self-Study.\'',
   ] },
@@ -153,6 +162,12 @@ registerPool('weekly.thesisRewrite.title', [
 registerPool('weekly.thesisRewrite.verdict', [
   { when: { archetype: 'bookworm' }, text: [
     'The abstract is rigorous. It is also clearly an elaborate academic justification for eating constantly.',
+    'You read it twice. It is real scholarship and transparently convenient.',
+    'You approve it immediately.',
+    'She beams with the energy of someone who has made weight gain count toward her GPA.',
+  ] },
+  { when: { archetype: 'swimmer' }, text: [
+    'The abstract is rigorous. It is also clearly an elaborate training justification for eating constantly.',
     'You read it twice. It is real scholarship and transparently convenient.',
     'You approve it immediately.',
     'She beams with the energy of someone who has made weight gain count toward her GPA.',
