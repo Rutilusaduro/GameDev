@@ -371,7 +371,7 @@ registerPool("attitude.line", [
     ] },
   { when: { studentId: 12, stageMin: 5 }, priority: 2,
     text: [
-      `Clinical observation: subject increasingly comfortable with the subject being herself.`,
+      `Clinical observation: resident increasingly comfortable with the resident being herself.`,
       `The bracket habit hasn't stopped. But the thing in the brackets is cleaner now.`,
     ] },
   { when: { studentId: 16, stageMin: 5 }, priority: 2,

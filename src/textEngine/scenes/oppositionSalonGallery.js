@@ -50,6 +50,6 @@ registerPool('salon_appetit.hub', [
 ]);
 
 registerPool('artisan_gallery.hub', [
-  'Prints on twine, bodies in frame. Fiona feeds the subject and clicks the shutter.',
+  'Prints on twine, bodies in frame. Fiona feeds the model and clicks the shutter.',
   'Patrons murmur. The archive grows. Evidence, she calls it. Art, she means.',
 ]);

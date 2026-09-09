@@ -35,7 +35,7 @@ registerModuleVariants('dinner.reaction.thinJealousy', [
     `Reneé inhales {ref.name}'s course like aroma. "Exquisite appetite," she says. "I am taking inspiration."`,
   ]},
   { when: { studentId: 12, reactionLevel: 2 }, weight: 4, text: [
-    `Nadia observes {ref.name} with clinical hunger. "Subject demonstrates optimal satiety response," she notes aloud.`,
+    `Nadia observes {ref.name} with clinical hunger. "Resident demonstrates optimal satiety response," she notes aloud.`,
   ]},
   { when: { studentId: 15, reactionLevel: 3 }, weight: 4, text: [
     `Lilith watches {ref.name} without blinking. "Good," she says. "I want more of that. Starting with me."`,

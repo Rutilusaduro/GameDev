@@ -835,6 +835,15 @@ check('fiona-gallery-model-ui', () => {
   assert.doesNotMatch(salon, /Consent forms and hunger|Fiona feeds the subject/i);
   assert.match(depth, /Strangers ask to be models/);
   assert.doesNotMatch(depth, /Strangers ask to be subjects/i);
+  const opposition = read('src/textEngine/scenes/oppositionSalonGallery.js');
+  const polish = read('src/textEngine/scenes/polishDepthPass40.js');
+  assert.match(opposition, /Fiona feeds the model and clicks the shutter/);
+  assert.match(polish, /the model is already hungry/);
+  assert.doesNotMatch(opposition, /Fiona feeds the subject/i);
+  assert.doesNotMatch(polish, /the subject is already hungry/i);
+  assert.match(salon, /model, artist, appetite one frame/);
+  assert.match(salon, /chef, tester, cultivator merged/);
+  assert.doesNotMatch(salon, /subject, artist, appetite|chef, subject, cultivator/i);
 });
 
 check('hall-group-project-ra-framing', () => {
@@ -1202,6 +1211,16 @@ check('nadia-sophia-baseline-framing', () => {
   assert.doesNotMatch(psych, /closes the field notes/i);
   assert.doesNotMatch(interior, /Control group:/i);
   assert.doesNotMatch(early, /Subject error|She is the subject|Control group contamination/i);
+  const attitude = read('src/textEngine/scenes/attitude.js');
+  const dinnerDepth = read('src/textEngine/scenes/dinner/dinnerReactionsDepth.js');
+  const evolved = read('src/gameData/evolvedForms.js');
+  assert.match(attitude, /resident increasingly comfortable with the resident being herself/);
+  assert.match(dinnerDepth, /Resident demonstrates optimal satiety response/);
+  assert.match(evolved, /Resident demonstrates continued voluntary intake increase/);
+  assert.match(evolved, /Resident at \$\{Math\.round\(s\.lbs\)\} pounds, hall log ongoing/);
+  assert.doesNotMatch(attitude, /Clinical observation: subject increasingly/i);
+  assert.doesNotMatch(dinnerDepth, /Subject demonstrates optimal satiety/i);
+  assert.doesNotMatch(evolved, /"Subject demonstrates continued|"Subject at \$\{Math/i);
   assert.doesNotMatch(origins, /Control group\. I am the control group/i);
   assert.doesNotMatch(custom, /Control group:/i);
   assert.doesNotMatch(dinner, /like a field note/i);

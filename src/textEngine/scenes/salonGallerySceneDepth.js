@@ -26,7 +26,7 @@ registerPool('evolved.salon.v2.depth', [
 
 registerPool('evolved.gallery.v2.depth', [
   { when: { studentId: 4, stageMin: 9 }, text: [
-    `Fiona shoots from the chair now — subject, artist, appetite one frame.`,
+    `Fiona shoots from the chair now — model, artist, appetite one frame.`,
     `Gallery ships to her. Prints on walls she can see without standing.`,
   ]},
   { when: { studentId: 4, stageMin: 6 }, text: [
@@ -45,7 +45,7 @@ registerPool('evolved.gallery.v2.depth', [
 
 registerPool('evolved.cultivator.v2.depth', [
   { when: { studentId: 10, stageMin: 8 }, text: [
-    `Harvest window open. Reneé tastes from the pot — chef, subject, cultivator merged.`,
+    `Harvest window open. Reneé tastes from the pot — chef, tester, cultivator merged.`,
     `Session log and recipe both revised upward. Yield beyond specification.`,
   ]},
   { when: { studentId: 10 }, text: [
@@ -59,7 +59,7 @@ registerPool('evolved.cultivator.v2.depth', [
 
 registerPool('evolved.cultivator.v2.depth', [
   { when: { studentId: 10, stageMin: 8 }, text: [
-    `Harvest window open. Reneé tastes from the pot — chef, subject, cultivator merged.`,
+    `Harvest window open. Reneé tastes from the pot — chef, tester, cultivator merged.`,
     `Session log and recipe both revised upward. Yield beyond specification.`,
   ]},
   { when: { studentId: 10 }, text: [

@@ -9217,13 +9217,13 @@ export default function HallPass(){
       {/* ── FEEDEE CREATOR: COLLAB PARTNER PICKER ── */}
       {collabPartnerPicker&&<CollabPartnerPicker collabPartnerPicker={collabPartnerPicker} setCollabPartnerId={setCollabPartnerId} setCollabPartnerPicker={setCollabPartnerPicker} setEvolvedEventState={setEvolvedEventState} students={students} soundEnabled={soundEnabled}/>}
 
-      {/* ── PSYCH RESEARCHER: SUBJECT PICKER ── */}
+      {/* ── PSYCH RESEARCHER: HALL LOG FOCUS PICKER ── */}
       {researchSubjectPicker&&<ResearchSubjectPicker researchSubjectPicker={researchSubjectPicker} setAp={setAp} setEvolvedEventState={setEvolvedEventState} setResearchSubjectPicker={setResearchSubjectPicker} setStudents={setStudents} students={students} soundEnabled={soundEnabled}/>}
 
-      {/* ── PSYCH RESEARCHER: SUBJECT JOURNAL ── */}
+      {/* ── PSYCH RESEARCHER: RESIDENT JOURNAL ── */}
       {subjectJournalState&&<SubjectJournalModal setSubjectJournalState={setSubjectJournalState} students={students} subjectJournalState={subjectJournalState} soundEnabled={soundEnabled}/>}
 
-      {/* ── NADIA'S SUBJECT NOTES ── */}
+      {/* ── NADIA'S RESEARCH NOTES ── */}
       {nadiaNotesState&&<NadiaSubjectNotesModal nadiaNotesState={nadiaNotesState} setNadiaNotesState={setNadiaNotesState} students={students} soundEnabled={soundEnabled}/>}
 
       {/* ── COLLAB STREAM MINI-GAME MODAL ── */}

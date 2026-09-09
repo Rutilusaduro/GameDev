@@ -9,7 +9,7 @@ const POOL_ALTS = {
     'Chloé lights the candles. Prestige and appetite share the same room tonight.',
   ],
   'artisan_gallery.hub': [
-    'Fiona hangs the prints. The camera waits; the subject is already hungry.',
+    'Fiona hangs the prints. The camera waits; the model is already hungry.',
   ],
   'jealousy.reaction': [
     (ctx) => `${ctx.subject.name} compares plates without meaning to — then pretends she did not.`,
