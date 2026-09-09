@@ -12,7 +12,7 @@ import {
 
 const TIER_LABELS = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
-function ClassroomSkillsPanel({ students, ownedHallSkills, onPurchase }) {
+function HallLoungeSkillsPanel({ students, ownedHallSkills, onPurchase }) {
   const owned = ownedHallSkills || {};
   const total = computeHallLoungeSkillTotal(students);
   const spent = computeHallLoungeSkillSpent(owned);
@@ -84,7 +84,7 @@ export function HallLoungeView({ students, ownedHallSkills, onPurchaseHallLounge
     <div>
       <p style={C.secT}>🏠 Hall Lounge</p>
       {onPurchaseHallLoungeSkill ? (
-        <ClassroomSkillsPanel
+        <HallLoungeSkillsPanel
           students={students}
           ownedHallSkills={ownedHallSkills}
           onPurchase={onPurchaseHallLoungeSkill}

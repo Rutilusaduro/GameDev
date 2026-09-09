@@ -256,7 +256,7 @@ export function getInterruptDenyRelLoss(student) {
   return Math.max(2, relLoss);
 }
 
-/** Talk calm — devoted girls bond harder; starving girls harder to soothe. */
+/** Talk calm — devoted residents bond harder; starving residents harder to soothe. */
 export function getInterruptTalkRelGain(student) {
   const relTier = getTier(student?.relationship ?? 0).id;
   const cor = getCorruptionTier(student?.corruption || 0).id;

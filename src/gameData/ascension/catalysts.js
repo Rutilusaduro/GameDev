@@ -1,6 +1,6 @@
 // The Squad — Lead: A4 Architect | Support: A2 Psych
 // Single writer for Part D catalyst flags. For v1, finishing any evolved-form
-// event chain grants that girl's ascension catalyst.
+// event chain grants that resident's ascension catalyst.
 
 import { getAscensionFormForStudent } from './forms.js';
 

@@ -117,7 +117,7 @@ export function tickDependence(student, slot, delta = 1, def = null) {
   return applyDeviceDependenceDelta(student, deviceId, delta);
 }
 
-/** Unequip withdrawal — hunger spike and dependence taper for hooked girls. */
+/** Unequip withdrawal — hunger spike and dependence taper for hooked residents. */
 export function applyWithdrawal(student, slot, deviceId) {
   const level = getDeviceDependence(student, deviceId);
   if (level < 20) {

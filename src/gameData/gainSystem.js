@@ -45,7 +45,7 @@ export const getWeeklyBurn = (lbs) =>
 
 export const calsToLbs = (cals) => cals / GAIN_CONFIG.calsPerLb;
 
-// Chance a force-feed past capacity succeeds. Spirit influence helps;
+// Chance a force-feed past capacity succeeds. Reach level helps;
 // how far past capacity she already is, and how big the food is, hurt.
 export const forceFeedChance = (s, fullnessCost, reachLevel = 1) => {
   const cap = s.stomachCapacity || GAIN_CONFIG.baseCapacity;

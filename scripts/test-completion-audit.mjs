@@ -637,6 +637,41 @@ check('talk-lilith-origin-framing', () => {
   assert.doesNotMatch(originBeat, /Crown girls count everything/i);
 });
 
+check('dev-comment-resident-framing', () => {
+  const memory = read('src/textEngine/scenes/memory/index.js');
+  assert.match(memory, /another resident/);
+  assert.match(memory, /this resident's own recent history/);
+  assert.doesNotMatch(memory, /another girl|this girl's/i);
+  const weekRecap = read('src/textEngine/scenes/weekRecap/index.js');
+  assert.match(weekRecap, /single resident's weekly recap/);
+  assert.doesNotMatch(weekRecap, /single girl's/i);
+  const feedReaction = read('src/textEngine/scenes/feedReaction/index.js');
+  assert.match(feedReaction, /dominate for that resident/);
+  assert.doesNotMatch(feedReaction, /for that girl/i);
+  const hunger = read('src/gameData/hungerAddiction.js');
+  assert.match(hunger, /devoted residents bond/);
+  assert.doesNotMatch(hunger, /devoted girls/i);
+  const discontent = read('src/gameData/discontent.js');
+  assert.match(discontent, /Should this resident confront/);
+  const device = read('src/gameData/deviceDependence.js');
+  assert.match(device, /hooked residents/);
+  assert.doesNotMatch(device, /hooked girls/i);
+  const catalysts = read('src/gameData/ascension/catalysts.js');
+  assert.match(catalysts, /that resident's ascension/);
+  const ecology = read('src/gameData/relationshipEcology.js');
+  assert.match(ecology, /neglected residents surface/);
+  const hallPass = read('src/HallPass.jsx');
+  assert.match(hallPass, /Hall cred meter/);
+  assert.match(hallPass, /HALL KITCHEN MINI-INTERFACE/);
+  assert.doesNotMatch(hallPass, /Spirit Favor meter|CLASSROOM MINI-INTERFACE/i);
+  const lounge = read('src/views/HallLoungeView.jsx');
+  assert.match(lounge, /HallLoungeSkillsPanel/);
+  assert.doesNotMatch(lounge, /ClassroomSkillsPanel/);
+  const gain = read('src/gameData/gainSystem.js');
+  assert.match(gain, /Reach level helps/);
+  assert.doesNotMatch(gain, /Spirit influence/i);
+});
+
 check('hall-system-resident-framing', () => {
   const skills = read('src/gameData/skills.js');
   assert.match(skills, /2 residents simultaneously/);

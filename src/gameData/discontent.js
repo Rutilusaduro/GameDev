@@ -95,7 +95,7 @@ export function dominantGrievance(student) {
   return mems.length ? mems[mems.length - 1].t : null;
 }
 
-/** Should this girl confront you now? */
+/** Should this resident confront you now? */
 export function shouldConfront(student, week) {
   if (!student || student.withdrawn) return false;
   if ((student.discontent || 0) < CONFRONT_THRESHOLD) return false;

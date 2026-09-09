@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Pass 128 — dev-comment sweep: per-girl → per-resident in headers/docs. */
+/** Pass 128–129 — dev-comment sweep: per-girl → per-resident in headers/docs. */
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 
@@ -34,6 +34,20 @@ const REPLACEMENTS = [
   [/glaring girl\b/g, 'glaring resident'],
   [/girls who actually\b/g, 'residents who actually'],
   [/cover every girl\b/g, 'cover every resident'],
+  [/Render a single girl's\b/g, "Render a single resident's"],
+  [/Render a callback to this girl's\b/g, "Render a callback to this resident's"],
+  [/about another girl\b/g, 'about another resident'],
+  [/devoted girls bond\b/g, 'devoted residents bond'],
+  [/starving girls harder\b/g, 'starving residents harder'],
+  [/Should this girl confront\b/g, 'Should this resident confront'],
+  [/for hooked girls\b/g, 'for hooked residents'],
+  [/grants that girl's\b/g, "grants that resident's"],
+  [/neglected girls surface\b/g, 'neglected residents surface'],
+  [/dominate for that girl\b/g, 'dominate for that resident'],
+  [/Spirit Favor meter\b/g, 'Hall cred meter'],
+  [/Spirit influence helps\b/g, 'Reach level helps'],
+  [/CLASSROOM MINI-INTERFACE\b/g, 'HALL KITCHEN MINI-INTERFACE'],
+  [/ClassroomSkillsPanel\b/g, 'HallLoungeSkillsPanel'],
 ];
 
 function walk(dir) {

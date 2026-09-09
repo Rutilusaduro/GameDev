@@ -896,7 +896,7 @@ export default function HallPass(){
     push(`🏠 ${hallDef.label} — your hall. ${apDef.label} energy. ${startIds.length} doors open; the rest of campus waits.`);
   };
 
-  // Spirit Favor meter — on-lean actions fill it; full → partial AP rebate.
+  // Hall cred meter — on-lean actions fill it; full → partial AP rebate.
   const gainFavor=(tag)=>{
     const fill=favorFill(getProfileApproachId(raProfile),tag);
     if(!fill) return;
@@ -9019,7 +9019,7 @@ export default function HallPass(){
       {endgameQueue[0]&&<OppositionEndgameModal beat={endgameQueue[0]} onDismiss={()=>setEndgameQueue(q=>q.slice(1))} soundEnabled={soundEnabled}/>}
       {hearingState&&<OppositionHearingModal hearingState={hearingState} students={students} opposition={opposition} week={week} onChoice={makeHearingChoice} onClose={closeHearing} soundEnabled={soundEnabled}/>}
 
-      {/* ── HOMEROOM QUEEN: CLASSROOM MINI-INTERFACE ── */}
+      {/* ── HOMEROOM QUEEN: HALL KITCHEN MINI-INTERFACE ── */}
       {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession} soundEnabled={soundEnabled}/>}
 
       {/* ── WIFE LESSONS MINI-GAME ── */}

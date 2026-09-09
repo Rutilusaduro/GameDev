@@ -86,7 +86,7 @@ export function applyFavoritismEcology(student, flag, week = 1) {
   return s;
 }
 
-/** Weight hunger-interrupt selection — neglected girls surface more often. */
+/** Weight hunger-interrupt selection — neglected residents surface more often. */
 export function getEcologyInterruptWeight(student) {
   const flag = student?.rosterEcology?.favoritism;
   if (flag === 'neglected') return RELATIONSHIP_ECOLOGY.neglectedInterruptWeight;

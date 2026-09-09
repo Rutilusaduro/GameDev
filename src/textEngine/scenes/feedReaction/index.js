@@ -80,7 +80,7 @@ registerPool('feed.react.beat', [
 // lines (studentId, weight 4) POOLED WITH corruption/room generics
 // (weight 2, {subject.name}) so the beat tracks identity AND psyche.
 registerPool('feed.react.line', [
-  // Persona lines — heavy weight so they dominate for that girl.
+  // Persona lines — heavy weight so they dominate for that resident.
   { when: { studentId: 0 }, weight: 4, text: [
     `Brittany licks her thumb clean and points it at you like a verdict. "Okay. That was annoyingly good."`,
   ]},

@@ -6,7 +6,7 @@
 // long-arc milestone, or cross-resident gossip about someone else.
 //
 //   memory.self  — her own history (memScope × memType, {memWeeksAgo})
-//   memory.class — what the hall remembers about another girl ({memName})
+//   memory.class — what the hall remembers about another resident ({memName})
 //
 // Selectors arrive as ctx.globals: memScope, memType, memWeeksAgo, memName.
 // ═══════════════════════════════════════════════════════════════
@@ -102,7 +102,7 @@ registerPool('memory.class', [
   ]},
 ]);
 
-/** Render a callback to this girl's own recent history. */
+/** Render a callback to this resident's own recent history. */
 export function renderMemorySelf(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });
@@ -110,7 +110,7 @@ export function renderMemorySelf(student, week = 1, opts = {}) {
   return appendV2Depth(base, 'memory', ctx, opts.v2DepthChance ?? 0.25);
 }
 
-/** Render cross-resident gossip about another girl. */
+/** Render cross-resident gossip about another resident. */
 export function renderMemoryClass(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });

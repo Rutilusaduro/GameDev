@@ -151,7 +151,7 @@ export function gainBandFromLbs(n = 0) {
 }
 
 /**
- * Render a single girl's weekly recap beat.
+ * Render a single resident's weekly recap beat.
  * @param student  post-digest student snapshot
  * @param week     the week that just ended
  * @param opts.gainBand / opts.stagedUp / opts.stuffedWeek
