@@ -88,7 +88,7 @@ export function SubjectJournalModal({ setSubjectJournalState, students, subjectJ
             <div className="hall-pass-modal-in picker-modal" style={{background:`linear-gradient(170deg,#1a0a2e,#0d0520)`,border:`2px solid ${borderColor}80`,borderRadius:4,padding:0,maxWidth:520,width:"95%",maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:"0 8px 40px rgba(0,0,0,0.7)"}}>
               {/* Spine header */}
               <div style={{background:`linear-gradient(90deg,#120820,#1e0a38,#120820)`,borderBottom:`1px solid ${borderColor}60`,padding:"10px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",borderRadius:"2px 2px 0 0"}}>
-                <div style={{fontSize:9,letterSpacing:3,color:"#a08060"}}>📔 SUBJECT JOURNAL</div>
+                <div style={{fontSize:9,letterSpacing:3,color:"#a08060"}}>📔 RESIDENT JOURNAL</div>
                 <div style={{fontSize:11,color:"#c0a070",fontWeight:"bold"}}>{subj.name}</div>
                 <button style={{...C.smBtn,fontSize:10,padding:"2px 8px",background:"transparent",border:"1px solid #40206040",color:"#806050"}} onClick={()=>{ playHallPassSound('click', soundEnabled); setSubjectJournalState(null); }}>✕</button>
               </div>

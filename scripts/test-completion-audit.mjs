@@ -902,6 +902,25 @@ check('campus-no-possession-framing', () => {
   assert.match(hostess, /since freshman year/);
   assert.doesNotMatch(diary, /another school/i);
   assert.match(diary, /another campus/);
+  assert.match(diary, /Residents cite me in season plan papers/);
+  assert.match(diary, /residents argue about sentences/);
+  assert.doesNotMatch(diary, /Students cite me|students argue about sentences/i);
+});
+
+check('feeder-journal-no-placeholders', () => {
+  const evolved = read('src/gameData/evolvedForms.js');
+  const journals = evolved.slice(
+    evolved.indexOf('export const FEEDER_SUBJECT_JOURNALS = {'),
+    evolved.indexOf('export const NADIA_SUBJECT_JOURNALS'),
+  );
+  assert.doesNotMatch(journals, /\[Name\]/);
+  assert.match(journals, /my RA|My RA/);
+});
+
+check('resident-journal-ui-framing', () => {
+  const picker = read('src/components/PickerModals.jsx');
+  assert.match(picker, /RESIDENT JOURNAL/);
+  assert.doesNotMatch(picker, /SUBJECT JOURNAL/);
 });
 
 check('floor-event-hall-target', () => {
