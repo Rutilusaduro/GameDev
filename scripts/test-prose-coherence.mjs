@@ -51,6 +51,9 @@ import '../src/textEngine/scenes/opposition/oppositionSceneDepth.js';
 import '../src/textEngine/scenes/v2/resonance/depth.js';
 import '../src/textEngine/scenes/earlyGain/personas.js';
 import { renderWeighInIntro, renderWeighInReaction } from '../src/textEngine/scenes/weighIn/index.js';
+import { renderGrowthScene } from '../src/textEngine/scenes/growthEvent/index.js';
+import '../src/textEngine/scenes/wifeLessons/talkDepth.js';
+import '../src/textEngine/scenes/attitude.js';
 import { renderHearingPhase } from '../src/textEngine/scenes/opposition/index.js';
 import { renderAscensionCeremony } from '../src/textEngine/scenes/ascension/index.js';
 import { renderOppositionEndgame } from '../src/textEngine/scenes/opposition/index.js';
@@ -174,6 +177,11 @@ const BANNED = [
   /\bThe girls keep\b/i,
   /\bThe girls have their own\b/i,
   /\bMy students cook\b/i,
+  /\bThe girls eat\b/i,
+  /\bThe girls asked\b/i,
+  /\bBoth girls reached\b/i,
+  /\bThe girls are literally\b/i,
+  /\bHappy about the girls\b/i,
 ];
 
 function assertClean(text, label) {
@@ -565,12 +573,47 @@ const resCtx = buildTextContext({ subject: INIT_STUDENTS[0], week: 16, globals: 
 const resSurge = render('{res.surge.depth}', resCtx)?.trim();
 if (resSurge) assertClean(resSurge, 'resonance surge depth');
 
-for (const archetype of ['swimmer', 'bookworm', 'cheerleader', 'foodie']) {
+for (const archetype of ['swimmer', 'bookworm', 'cheerleader', 'foodie', 'sorority', 'eced']) {
   const subject = INIT_STUDENTS.find((s) => s.archetype === archetype) || INIT_STUDENTS[0];
   const intro = renderWeighInIntro(subject, 10, false, { week: 10 });
   const reaction = renderWeighInReaction(subject, 10, { week: 10, bigScale: false });
   if (intro) assertClean(intro, `weigh-in intro ${archetype}`);
   if (reaction) assertClean(reaction, `weigh-in reaction ${archetype}`);
+}
+
+const tiffany = INIT_STUDENTS.find((s) => s.id === 6);
+if (tiffany) {
+  const tiffanyReaction = renderWeighInReaction(
+    { ...tiffany, corruption: 1, lbs: 145 },
+    12,
+    { week: 12, bigScale: false },
+  );
+  if (tiffanyReaction) assertClean(tiffanyReaction, 'weigh-in reaction Tiffany corruption 1');
+  const growthScene = renderGrowthScene(
+    { ...tiffany, lbs: 180, corruption: 1 },
+    { endStage: 4, startStage: 3, stagesJumped: 1, gainLbs: 8, week: 10 },
+    { v2DepthChance: 0 },
+  );
+  if (growthScene) assertClean(growthScene, 'growth scene Tiffany stage jump');
+}
+
+for (const key of [
+  'wifeLessons.talk.Darlene.s3.greeting',
+  'wifeLessons.talk.Wanda.s5.greeting',
+  'wifeLessons.talk.Patrice.s8.opt0',
+]) {
+  const line = render(`{${key}}`, buildTextContext({ subject: INIT_STUDENTS[0], week: 10 }))?.trim();
+  if (line) assertClean(line, `wife lessons ${key}`);
+}
+
+const ecedStudent = INIT_STUDENTS.find((s) => s.archetype === 'eced');
+if (ecedStudent) {
+  const attitudeLine = render('{attitude.line}', buildTextContext({
+    subject: ecedStudent,
+    week: 8,
+    globals: { archetype: 'eced' },
+  }))?.trim();
+  if (attitudeLine) assertClean(attitudeLine, 'attitude eced');
 }
 
 for (const [type, phaseIdx] of [['removal', 0], ['removal', 1], ['emergency', 0]]) {

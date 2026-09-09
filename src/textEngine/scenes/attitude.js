@@ -322,7 +322,7 @@ registerPool("attitude.line", [
     text: [
       `Warm and a little guilty — I bake for them and eat half the tray myself.`,
       `Nurturing mood, dangerous around cookie dough.`,
-      `Happy about the girls, nervous about what I'm becoming. Both real.`,
+      `Happy about the kids, nervous about what I'm becoming. Both real.`,
     ] },
 
   // Per-student sub-arc attitudes — stage 5+, priority 2

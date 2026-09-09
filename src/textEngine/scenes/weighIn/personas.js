@@ -174,7 +174,7 @@ registerModuleVariants("wi.replyDialogue", [
     `"These are literally my good jeans. Were." She shrugs. "Worth it for the pasta bar."`,
   ]},
   { when: { studentId: 6, corruption: [1], stageMax: 5 }, weight: W, text: [
-    `"Up!" She does a little twirl. "The girls are literally asking what I'm eating. Trade secret."`,
+    `"Up!" She does a little twirl. "Everyone's literally asking what I'm eating. Trade secret."`,
     `"The chapter voted," she says, posing automatically. "I'm the new standard."`,
   ]},
   { when: { studentId: 6, corruption: [2], stageMax: 5 }, weight: W, text: [

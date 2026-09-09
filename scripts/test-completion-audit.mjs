@@ -551,6 +551,18 @@ check('staff-lounge-resident-framing', () => {
   assert.doesNotMatch(cult, /half your section|Random students start sampling/i);
 });
 
+check('wife-lessons-talk-framing', () => {
+  const talk = read('src/textEngine/scenes/wifeLessons/talkDepth.js');
+  assert.match(talk, /The daughters eat/);
+  assert.doesNotMatch(talk, /The girls eat|The girls asked|Both girls reached/i);
+  const weighIn = read('src/textEngine/scenes/weighIn/personas.js');
+  assert.match(weighIn, /Everyone's literally asking/);
+  assert.doesNotMatch(weighIn, /The girls are literally asking/i);
+  const growth = read('src/textEngine/scenes/growthEvent/personas.js');
+  assert.match(growth, /The chapter's going to lose their minds/);
+  assert.doesNotMatch(growth, /The girls are going to lose their minds/i);
+});
+
 check('memory-gossip-resident-framing', () => {
   const memory = read('src/textEngine/scenes/memory/index.js');
   assert.match(memory, /The residents keep a quiet eye/);

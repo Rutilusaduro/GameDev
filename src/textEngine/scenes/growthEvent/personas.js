@@ -213,7 +213,7 @@ registerModuleVariants("ge.reactionDialogue", [
     `"These jeans were a mistake," she sighs. "A completely delicious mistake."`,
   ]},
   { when: { studentId: 6, corruption: [1], endStageMax: 5 }, weight: W, text: [
-    `"Up again!" She does a little twirl. "The girls are literally going to lose it."`,
+    `"Up again!" She does a little twirl. "The chapter's literally going to lose it."`,
     `"The chapter is obsessed with me right now," she says, glowing. "Same, honestly."`,
   ]},
   { when: { studentId: 6, corruption: [2], endStageMax: 5 }, weight: W, text: [
@@ -688,7 +688,7 @@ registerModuleVariants("grow.crossingDialogue", [
   // ── Tiffany (6) ────────────────────────────────────────────────
   { when: { studentId: 6, endStageMin: 3, endStageMax: 5 }, weight: W, text: [
     `"More is more, babe," she says, checking her reflection.`,
-    `"The girls are going to lose their minds," she murmurs, delighted.`,
+    `"The chapter's going to lose their minds," she murmurs, delighted.`,
     `"New chapter," she says, pleased. "Bigger chapter."`,
   ]},
   { when: { studentId: 6, endStageMin: 6, endStageMax: 8 }, weight: W, text: [

@@ -9,7 +9,7 @@ const FORM_VOICES = [
   { supernaturalForm: 'pep_ghost', texts: ['I cheer without mass. The pep stays; the weight left. Hunger is the only school spirit that followed me.'] },
   { supernaturalForm: 'archivist_skin', texts: ['Every file I catalogued included appetite. The archive kept the hunger when the flesh went thin.'] },
   { supernaturalForm: 'lag_sprite', texts: ['Frame skip. Body lag. Stomach buffering — always loading, never full enough.'] },
-  { supernaturalForm: 'silhouette_host', texts: ['I host the room in outline only. The girls eat; I feel every plate through the hollow.'] },
+  { supernaturalForm: 'silhouette_host', texts: ['I host the room in outline only. They eat; I feel every plate through the hollow.'] },
   { supernaturalForm: 'metric_hollow', texts: ['KPI: hunger at maximum. Mass: deferred. Compliance with appetite: one hundred percent.'] },
   { supernaturalForm: 'curator_wraith', texts: ['The exhibition is my body, absent. Hunger hangs in the gallery like a piece I cannot take down.'] },
   { supernaturalForm: 'hive_mote', texts: ['The hive eats through me. I am thin conduit; their appetite echoes in my empty middle.'] },
