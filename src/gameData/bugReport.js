@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// BUG REPORT / FIELD NOTES — snapshot builder (§36)
+// BUG REPORT / SHIFT LOG — snapshot builder (§36)
 // ═══════════════════════════════════════════════════════════════
 
 import { getErrorRingBuffer } from '../utils/errorRingBuffer.js';
@@ -137,15 +137,18 @@ export function downloadBugReport(snapshot, filename) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = filename || `field-note-week-${snapshot.session?.week ?? 0}-${Date.now()}.json`;
+  a.download = filename || `shift-log-week-${snapshot.session?.week ?? 0}-${Date.now()}.json`;
   a.click();
   URL.revokeObjectURL(url);
 }
 
-export const FIELD_NOTE_CATEGORIES = [
+export const SHIFT_LOG_CATEGORIES = [
   { id: 'stuck', label: 'Stuck — can\'t continue' },
   { id: 'blank', label: 'Blank or frozen screen' },
   { id: 'numbers', label: 'Numbers look wrong' },
   { id: 'story', label: 'Story or text broke' },
   { id: 'other', label: 'Something else' },
 ];
+
+/** @deprecated use SHIFT_LOG_CATEGORIES */
+export const FIELD_NOTE_CATEGORIES = SHIFT_LOG_CATEGORIES;

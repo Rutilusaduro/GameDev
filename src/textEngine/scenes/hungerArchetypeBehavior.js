@@ -13,6 +13,10 @@ const ARCHETYPE_BEHAVIOR = {
     'She\'s clutching a notebook like a shield and still staring at your snack drawer.',
     'She adjusts her glasses twice, distracted by hunger instead of citations.',
   ],
+  swimmer: [
+    'She\'s in team gear, towel around her neck, staring at your snacks like post-practice carbs.',
+    'Her training log is open but she\'s not writing — just watching your kitchen.',
+  ],
   influencer: [
     'She\'s already angling toward the light in your hallway — hungry and filming-adjacent.',
     'Phone in one hand, other hand pressed to her stomach. Content idea forming badly.',
@@ -55,6 +59,10 @@ const ARCHETYPE_REQUEST = {
   bookworm: [
     '"I have a hypothesis about what I need. It\'s food. From you."',
     '"Statistically I should leave. I won\'t if you feed me."',
+  ],
+  swimmer: [
+    '"Off-schedule intake. Coach would log it. Feed me anyway?"',
+    '"I have room in the meal plan. Specifically your meal plan. Please?"',
   ],
   influencer: [
     '"This could be content. Or it could just be dinner. Please?"',

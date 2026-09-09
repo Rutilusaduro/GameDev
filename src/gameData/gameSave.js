@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// GAME SAVE — export blob for Field Notes attach (§38 Phase 2)
+// GAME SAVE — export blob for Shift Log attach (§38 Phase 2)
 // ═══════════════════════════════════════════════════════════════
 
 export const SAVE_SCHEMA = 5;

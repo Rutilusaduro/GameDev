@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// ERROR RING BUFFER — last N runtime errors for Field Notes (§36)
+// ERROR RING BUFFER — last N runtime errors for Shift Log (§36)
 // ═══════════════════════════════════════════════════════════════
 
 const MAX_ERRORS = 20;

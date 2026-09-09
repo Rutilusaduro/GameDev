@@ -999,6 +999,12 @@ check('cassidy-swimmer-voice', () => {
     assert.doesNotMatch(intimacySwimmerText, re, `intimacy/personas.js swimmer blocks still has ${re}`);
   }
 
+  const hungerArchetype = read('src/textEngine/scenes/hungerArchetypeBehavior.js');
+  assert.match(hungerArchetype, /swimmer:\s*\[/);
+  const swimmerHunger = hungerArchetype.match(/swimmer:[\s\S]*?(?=\n  \w+:|^};)/m)?.[0] ?? '';
+  assert.doesNotMatch(swimmerHunger, /\bhypothesis\b|\bglasses\b/i, 'hunger swimmer still bookworm');
+  assert.match(swimmerHunger, /training|team gear|meal plan|carb|coach/i, 'hunger swimmer must use athletic voice');
+
   const CASSIDY_NAMED_FILES = [
     'src/textEngine/scenes/v2/studentArchetypeDepth.js',
     'src/textEngine/scenes/evolved/evolvedSceneDepth.js',
@@ -1180,7 +1186,12 @@ check('resident-framing-ui', () => {
   assert.match(setup, /build the resident who/);
   const bugReport = read('src/components/BugReportModal.jsx');
   assert.match(bugReport, /SHIFT LOG/);
+  assert.match(bugReport, /SHIFT_LOG_CATEGORIES/);
   assert.doesNotMatch(bugReport, /FIELD NOTES|Field Note downloaded/i);
+  const bugReportData = read('src/gameData/bugReport.js');
+  assert.match(bugReportData, /shift-log-week-/);
+  assert.doesNotMatch(bugReportData, /field-note-week-/i);
+  assert.match(bugReportData, /SHIFT LOG/);
   const campus = read('src/textEngine/scenes/campusSoftening.js');
   assert.match(campus, /Hall log: residents across campus trending heavier/);
   assert.doesNotMatch(campus, /Field notes: subjects across campus/i);

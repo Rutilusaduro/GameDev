@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import {
-  FIELD_NOTE_CATEGORIES,
+  SHIFT_LOG_CATEGORIES,
   buildGameSnapshot,
   buildGitHubIssueUrl,
   copyBugReport,
@@ -63,7 +63,7 @@ export function BugReportModal({ getSnapshotContext, getSaveContext, prefillErro
         )}
         <div style={{ fontSize: 10, color: '#888', marginBottom: 6 }}>What happened?</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginBottom: 12 }}>
-          {FIELD_NOTE_CATEGORIES.map((c) => (
+          {SHIFT_LOG_CATEGORIES.map((c) => (
             <label key={c.id} style={{ fontSize: 11, color: category === c.id ? '#e8d0b0' : '#999', cursor: 'pointer', display: 'flex', gap: 8, alignItems: 'center' }}>
               <input type="radio" name="field-category" checked={category === c.id} onChange={() => setCategory(c.id)} />
               {c.label}

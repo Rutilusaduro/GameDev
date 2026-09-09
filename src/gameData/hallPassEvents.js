@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// HALL PASS — browser custom events (field notes, etc.)
+// HALL PASS — browser custom events (shift log, etc.)
 // ═══════════════════════════════════════════════════════════════
 
 export const EVENT_OPEN_FIELD_NOTES = 'hallPass:openFieldNotes';
