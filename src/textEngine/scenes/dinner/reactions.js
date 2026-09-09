@@ -978,7 +978,7 @@ registerPool('dinner.reaction.thinContextual._f200', [
 ]);
 
 registerPool('dinner.reaction.thinContextual._f201', [
-  { when: {}, text: [". The notes take up more space.\" She watches {ref.name} eat steadily. \"Something loosened in you. The scholarship got better when the rest of you did too.\""] },
+  { when: {}, text: [". The notes take up more space.\" She watches {ref.name} eat steadily. \"Something loosened in you. The season plan got better when the rest of you did too.\""] },
 ]);
 
 registerPool('dinner.reaction.thinContextual._f202', [
@@ -986,7 +986,7 @@ registerPool('dinner.reaction.thinContextual._f202', [
 ]);
 
 registerPool('dinner.reaction.thinContextual._f203', [
-  { when: {}, text: [". The notes take up more space.\" She watches {ref.name} eat steadily. \"Something loosened in you. The scholarship got better when the rest of you did too.\""] },
+  { when: {}, text: [". The notes take up more space.\" She watches {ref.name} eat steadily. \"Something loosened in you. The season plan got better when the rest of you did too.\""] },
 ]);
 
 registerPool('dinner.reaction.thinContextual._f204', [

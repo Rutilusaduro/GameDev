@@ -8831,6 +8831,7 @@ export default function HallPass(){
         week={week}
         campusFattening={!!pharmacistState?.campusFattening}
         campusTier={getCampusNarrativeTier(pharmacistState)}
+        soundEnabled={soundEnabled}
       />}
 
       {/* ── SESSION RESULT ── */}
@@ -8844,9 +8845,10 @@ export default function HallPass(){
           onClose={()=>setWeekPlannerOpen(false)}
         />
       )}
-      {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)} onSelectGirl={(id)=>{openStudentDetail(id,{dossier:true});setWeekRecap(null);}}/>}
+      {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)} onSelectGirl={(id)=>{openStudentDetail(id,{dossier:true});setWeekRecap(null);}} soundEnabled={soundEnabled}/>}
       {milestoneQueue&&<MilestoneCeremonyModal queue={milestoneQueue}
         week={week}
+        soundEnabled={soundEnabled}
         onAdvance={()=>setMilestoneQueue(q=>q?{...q,index:q.index+1}:null)}
         onDismissAll={()=>setMilestoneQueue(null)}
         onPinBeat={(pin)=>{const ev=milestoneQueue?.events?.[milestoneQueue.index];if(ev)pinSceneForStudent(ev.id,pin);}}

@@ -74,4 +74,9 @@ for (const a of RA_APPROACH_LIST) {
   assertClean(`${a.label} ${a.tagline}`, `approach ${a.id}`);
 }
 
-console.log('ui-strings: setup wizard, nav, views, ranks, and dorm hooks OK');
+const weighIn = readFileSync('src/components/WeighInModal.jsx', 'utf8');
+assert(weighIn.includes('HALL · SCALE'), 'WeighInModal analog scale must say HALL · SCALE');
+assert(weighIn.includes('HALL · INDUSTRIAL'), 'WeighInModal digital scale must say HALL · INDUSTRIAL');
+assert(!/PROF · SCALE|PROF · INDUSTRIAL/i.test(weighIn), 'WeighInModal must not say PROF on scale labels');
+
+console.log('ui-strings: setup wizard, nav, views, ranks, dorm hooks, weigh-in OK');

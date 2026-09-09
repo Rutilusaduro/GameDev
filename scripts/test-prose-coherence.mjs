@@ -77,6 +77,10 @@ const BANNED = [
   /\bClass ends but appetite\b/i,
   /\bjogs to class\b/i,
   /\bwalks to class\b/i,
+  /\breal scholarship\b/i,
+  /\bEthnographic Self-Study\b/i,
+  /\bThe scholarship got better\b/i,
+  /\bPROF · SCALE\b/i,
 ];
 
 function assertClean(text, label) {
@@ -108,8 +112,10 @@ const bookworm = { ...INIT_STUDENTS[0], archetype: 'bookworm', name: 'Maya' };
 assert(swimmer, 'swimmer fixture required');
 
 const thesisBeat = renderWeeklyEvent('thesis_rewrite', bookworm, { week: 6 });
+const thesisSwimmerBeat = renderWeeklyEvent('thesis_rewrite', swimmer, { week: 6 });
 const seasonBeat = renderWeeklyEvent('season_plan_rewrite', swimmer, { week: 6 });
-assertClean(thesisBeat, 'thesis_rewrite render');
+assertClean(thesisBeat, 'thesis_rewrite bookworm render');
+assertClean(thesisSwimmerBeat, 'thesis_rewrite swimmer render');
 assertClean(seasonBeat, 'season_plan_rewrite render');
 
 const floorScene = CLASS_SCENES.find((s) => s.id === 'class_potluck');

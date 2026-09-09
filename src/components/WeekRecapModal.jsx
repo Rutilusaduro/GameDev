@@ -1,7 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // WEEKLY RÉSUMÉ MODAL — end-of-week reel (B3) + mover cards (existing).
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 
 const EXTRA_BORDER = {
   psych: '#a05090',
@@ -9,7 +11,8 @@ const EXTRA_BORDER = {
   quiet: '#506080',
 };
 
-export function WeekRecapModal({ weekRecap, onClose, onSelectGirl }) {
+export function WeekRecapModal({ weekRecap, onClose, onSelectGirl, soundEnabled = true }) {
+  useEffect(() => { playHallPassSound('week', soundEnabled); }, [soundEnabled, weekRecap?.week]);
   const { week, movers = [], extras = [] } = weekRecap;
   const totalCards = movers.length + extras.length;
 
@@ -40,7 +43,7 @@ export function WeekRecapModal({ weekRecap, onClose, onSelectGirl }) {
 
   return (
     <div style={C.overlay}>
-      <div style={{ ...C.modal, maxWidth: 480 }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 480 }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#9050c8', marginBottom: 4 }}>THE WEEK IN REVIEW</div>
         <div style={{ fontSize: 15, fontWeight: 700, color: '#c090e8', marginBottom: 2 }}>Week {week} — what the week made of them</div>
         <div style={{ fontSize: 11, color: '#5a3888', marginBottom: 12 }}>

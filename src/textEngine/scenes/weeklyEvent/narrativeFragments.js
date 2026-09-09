@@ -144,8 +144,8 @@ registerPool('weekly.thesisRewrite.submit', [
 
 registerPool('weekly.thesisRewrite.title', [
   { when: { archetype: 'bookworm' }, text: [
-    'New title: \'Adaptive Caloric Strategy and Cognitive Performance: An Ethnographic Self-Study.\'',
-    'The title now reads \'Adaptive Caloric Strategy and Cognitive Performance: An Ethnographic Self-Study.\'',
+    'New title: \'Adaptive Caloric Strategy and Cognitive Performance: A Floor Wellness Journal.\'',
+    'The title now reads \'Adaptive Caloric Strategy and Cognitive Performance: A Floor Wellness Journal.\'',
   ] },
   { when: { archetype: 'swimmer' }, text: [
     'New title: \'Off-Season Bulk Protocol and Lane Performance: A Captain\'s Self-Study.\'',
@@ -162,7 +162,7 @@ registerPool('weekly.thesisRewrite.title', [
 registerPool('weekly.thesisRewrite.verdict', [
   { when: { archetype: 'bookworm' }, text: [
     'The abstract is rigorous. It is also clearly an elaborate hall-standing justification for eating constantly.',
-    'You read it twice. It is real scholarship and transparently convenient.',
+    'You read it twice. It is real hall documentation and transparently convenient.',
     'You approve it immediately.',
     'She beams with the energy of someone who has made weight gain count toward her hall standing.',
   ] },

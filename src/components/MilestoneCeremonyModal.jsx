@@ -1,9 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // MILESTONE CEREMONY — the stage-crossing set-piece popup.
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { buildStateLine } from '../textEngine/textFlagFormat.js';
 import { SceneStage } from './SceneStage.jsx';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 
 const ACCENT = '#d8a030';
 
@@ -16,7 +18,9 @@ export function MilestoneCeremonyModal({
   onScrollbackPush,
   instantText,
   week = 1,
+  soundEnabled = true,
 }) {
+  useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled, queue?.index]);
   if (!queue?.events?.length) return null;
   const { events, index } = queue;
   const ev = events[index];
@@ -31,7 +35,7 @@ export function MilestoneCeremonyModal({
 
   return (
     <div style={C.overlay}>
-      <div style={{ ...C.modal, maxWidth: 560, border: `1px solid ${ACCENT}` }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 560, border: `1px solid ${ACCENT}` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>✦ A THRESHOLD CROSSED</div>
           {events.length > 1 && <div style={{ fontSize: 10, color: '#9a8050', fontWeight: 600 }}>{progress}</div>}

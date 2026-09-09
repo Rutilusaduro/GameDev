@@ -12,6 +12,7 @@ import { buildStateLine, traceToFlagNodes } from '../textEngine/textFlagFormat.j
 import { createSessionUsed, weekUsedFromStudent, weekUsedToPatch, isSlenderEligible } from '../gameData/textContext.js';
 import { renderSlenderMirrorBeat } from '../textEngine/scenes/earlyGain/index.js';
 import { pickStudentMemory } from '../gameData/memory.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 
 function renderWeighInPhase(renderFn, student, week, opts) {
   const trace = [];
@@ -19,7 +20,7 @@ function renderWeighInPhase(renderFn, student, week, opts) {
   return { text, traceNodes: traceToFlagNodes(trace) };
 }
 
-function AnalogScale({lbs,willBreak,onSnapComplete}){
+function AnalogScale({lbs,willBreak,onSnapComplete,onSettled}){
   const safeLbs=Math.max(0,Math.round(lbs));
   const [settled,setSettled]=useState(false);
   const [cracked,setCracked]=useState(false);
@@ -50,6 +51,7 @@ function AnalogScale({lbs,willBreak,onSnapComplete}){
       const t1=setTimeout(()=>setCracked(true),950);
       const t2=setTimeout(()=>{
         setSettled(true);
+        onSettled?.();
         if(!firedRef.current){
           firedRef.current=true;
           onSnapCompleteRef.current&&onSnapCompleteRef.current();
@@ -57,9 +59,12 @@ function AnalogScale({lbs,willBreak,onSnapComplete}){
       },1550);
       return ()=>{ clearTimeout(t1); clearTimeout(t2); };
     }
-    const t=setTimeout(()=>setSettled(true),3450);
+    const t=setTimeout(()=>{
+      setSettled(true);
+      onSettled?.();
+    },3450);
     return ()=>clearTimeout(t);
-  },[targetAngle,willBreak]);
+  },[targetAngle,willBreak,onSettled]);
 
   const cx=100, cy=130, r=78;
   const ticks=[];
@@ -96,7 +101,7 @@ function AnalogScale({lbs,willBreak,onSnapComplete}){
             </g>
             <circle cx={cx} cy={cy} r="5" fill="#1a1a1a"/>
             <circle cx={cx} cy={cy} r="2" fill="#888"/>
-            <text x={cx} y={cy-30} fontSize="8" fill="#1a1a1a" textAnchor="middle" fontFamily="Arial, sans-serif" letterSpacing="1">PROF · SCALE</text>
+            <text x={cx} y={cy-30} fontSize="8" fill="#1a1a1a" textAnchor="middle" fontFamily="Arial, sans-serif" letterSpacing="1">HALL · SCALE</text>
             <rect x={cx-22} y={cy-22} width="44" height="14" rx="2" fill="#fff" stroke="#1a1a1a" strokeWidth=".6"/>
             <text x={cx} y={cy-12} fontSize="9" fill={willBreak&&cracked?"#b00010":"#c41a1a"} textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700">{readout} LB</text>
             {willBreak&&cracked&&(
@@ -119,7 +124,7 @@ function AnalogScale({lbs,willBreak,onSnapComplete}){
   );
 }
 
-function DigitalScale({lbs}){
+function DigitalScale({lbs,onSettled}){
   const target=Math.max(0,Math.round(lbs));
   const [display,setDisplay]=useState(0);
   const [settled,setSettled]=useState(false);
@@ -142,18 +147,18 @@ function DigitalScale({lbs}){
         const ji=setInterval(()=>{
           setDisplay(jitter[i]);
           i++;
-          if(i>=jitter.length){ clearInterval(ji); setSettled(true); }
+          if(i>=jitter.length){ clearInterval(ji); setSettled(true); onSettled?.(); }
         },110);
       }
     };
     raf=requestAnimationFrame(tick);
     return ()=>{ if(raf) cancelAnimationFrame(raf); };
-  },[target]);
+  },[target,onSettled]);
 
   return(
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8}}>
       <div style={{width:300,height:200,background:"linear-gradient(180deg,#3a3d44,#1f2126 70%,#16181c)",borderRadius:14,boxShadow:"0 10px 24px rgba(0,0,0,.7), inset 0 0 0 3px #14161a, inset 0 0 0 5px #4a4e58",padding:"30px 18px 18px",position:"relative"}}>
-        <div style={{position:"absolute",top:7,left:0,right:0,textAlign:"center",fontSize:8,letterSpacing:5,color:"#9aa0ac",fontWeight:700}}>PROF · INDUSTRIAL · 1000LB</div>
+        <div style={{position:"absolute",top:7,left:0,right:0,textAlign:"center",fontSize:8,letterSpacing:5,color:"#9aa0ac",fontWeight:700}}>HALL · INDUSTRIAL · 1000LB</div>
         <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
           <div style={{fontFamily:"Courier New, ui-monospace, monospace",fontSize:46,letterSpacing:4,color:"#1aff66",background:"#0a1f10",borderRadius:6,padding:"10px 18px",border:"2px inset #0c2a14",boxShadow:"inset 0 0 12px rgba(0,0,0,.85), 0 0 8px rgba(26,255,102,.25)",textShadow:"0 0 6px rgba(26,255,102,.65)",minWidth:170,textAlign:"right"}}>{String(display).padStart(4," ")}</div>
           <div style={{color:"#1aff66",fontSize:14,fontWeight:700,letterSpacing:2}}>LB</div>
@@ -191,7 +196,7 @@ function LoadCellReadout({lbs}){
   );
 }
 
-export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,onMandatorySkip,onPersistWeekTextUsed,onComplete,week,campusFattening=false,campusTier=0}){
+export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brokeScaleIds,onBreakScale,onUnlockBigScale,onMandatorySkip,onPersistWeekTextUsed,onComplete,week,campusFattening=false,campusTier=0,soundEnabled=true}){
   const student=weighInState?.student;
   const textSession=useMemo(()=>({
     sessionUsed:createSessionUsed(),
@@ -299,10 +304,17 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
       setPhase("swap");
     }
   };
+  const weighSoundFiredRef=useRef(false);
+  const playWeighSettle=()=>{
+    if(weighSoundFiredRef.current) return;
+    weighSoundFiredRef.current=true;
+    playHallPassSound('weigh', soundEnabled);
+  };
+  useEffect(()=>{ weighSoundFiredRef.current=false; },[phase,student?.id]);
 
   return(
     <div style={C.overlay}>
-      <div style={{...C.modal,maxWidth:560}}>
+      <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:560}}>
         <div style={{fontSize:9,letterSpacing:4,color:"#a060ff",marginBottom:4}}>⚖ WEIGH-IN · {student.name?.toUpperCase()}</div>
 
         {settled&&phase==="scene"&&(
@@ -354,7 +366,7 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
         {phase==="analog"&&(
           <>
             <div style={{...C.infoBox("rgba(20,15,40,.55)"),padding:14,marginBottom:14,display:"flex",justifyContent:"center"}}>
-              <AnalogScale lbs={student.lbs} willBreak={willBreakNow} onSnapComplete={willBreakNow?goToBreak:undefined}/>
+              <AnalogScale lbs={student.lbs} willBreak={willBreakNow} onSnapComplete={willBreakNow?goToBreak:undefined} onSettled={playWeighSettle}/>
             </div>
             {!willBreakNow&&<button style={{...C.btn("#5818a8"),width:"100%"}} onClick={goToReaction}>Continue →</button>}
           </>
@@ -388,7 +400,7 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
         {phase==="digital"&&(
           <>
             <div style={{...C.infoBox("rgba(10,15,25,.7)"),padding:16,marginBottom:14,display:"flex",justifyContent:"center"}}>
-              <DigitalScale lbs={student.lbs}/>
+              <DigitalScale lbs={student.lbs} onSettled={playWeighSettle}/>
             </div>
             <button style={{...C.btn("#5818a8"),width:"100%"}} onClick={goToReaction}>Continue →</button>
           </>
