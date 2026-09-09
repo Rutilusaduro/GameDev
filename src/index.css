@@ -74,6 +74,14 @@
   animation: hallUnlockPulse 2s ease-in-out infinite;
 }
 
+.ra-desk-header {
+  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.ra-portrait-chip {
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hall-pass-view-in,
   .ra-wizard-card,
@@ -81,7 +89,9 @@
   .hall-pass-nav-btn,
   .hall-unlock-new,
   .hall-log-entry,
-  .hall-pass-modal-in {
+  .hall-pass-modal-in,
+  .ra-desk-header,
+  .ra-portrait-chip {
     animation: none;
     transition: none;
   }

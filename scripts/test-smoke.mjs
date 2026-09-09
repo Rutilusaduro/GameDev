@@ -11,6 +11,7 @@ const steps = [
   ['npm', ['run', 'test:semester-audit']],
   ['npm', ['run', 'test:prose-coherence']],
   ['npm', ['run', 'test:no-placeholders']],
+  ['npm', ['run', 'test:completion-audit']],
   ['npm', ['run', 'test:ui-strings']],
   ['npm', ['run', 'test:e2e']],
   ['npm', ['run', 'text:lint']],

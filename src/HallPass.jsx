@@ -26,6 +26,7 @@ import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES, ITEMS } from './gameD
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
 import { createInitialPlayer, updatePlayerField } from './gameData/player.js';
 import { RaSetupWizard } from './components/RaSetupWizard.jsx';
+import { RaPortraitChip } from './components/RaPortraitChip.jsx';
 import { createCustomStudent, CUSTOM_STUDENT_ID } from './gameData/customStudent/index.js';
 import {
   UNLOCK_POOL_IDS, getDorm, getLockedDormStudentIds, getStudentHomeDorm, dormUnlocksForWeek, DORMS,
@@ -8523,10 +8524,27 @@ export default function HallPass(){
       {/* OBSERVE MODAL */}
 
       {/* HEADER */}
-      <div style={{...C.hdr,borderBottom:`2px solid ${professorProfile?.color||"#4a1590"}`}}>
-        <div>
-          <div style={{fontSize:19,fontWeight:700,letterSpacing:2,color:professorProfile?.color||"#c44a2a"}}>RA DESK — {getDorm(professorProfile?.dormId||professorProfile?.subject)?.label?.toUpperCase()||"YOUR HALL"}</div>
-          <div style={{fontSize:10,color:"#8a5060",letterSpacing:3}}>{RA_APPROACHES[professorProfile?.approachId||professorProfile?.spiritId]?.label?`${RA_APPROACHES[professorProfile.approachId||professorProfile.spiritId].label.toUpperCase()} · WEEK ${week}`:"HALL PASS"}</div>
+      <div
+        className="ra-desk-header"
+        style={{
+          ...C.hdr,
+          borderBottom:`2px solid ${professorProfile?.color||"#4a1590"}`,
+          background:`linear-gradient(135deg,#0a0414 0%,#140828 42%,${professorProfile?.accentSoft||"rgba(80,18,140,0.18)"} 100%)`,
+          boxShadow:`inset 0 -1px 0 ${professorProfile?.accentSoft||"rgba(120,40,200,0.15)"}`,
+        }}
+      >
+        <div style={{display:"flex",gap:12,alignItems:"center",minWidth:0}}>
+          {professorProfile&&(
+            <RaPortraitChip
+              accent={professorProfile.color||"#c44a2a"}
+              accentSoft={professorProfile.accentSoft||"rgba(196,74,42,0.22)"}
+              size={44}
+            />
+          )}
+          <div style={{minWidth:0}}>
+            <div style={{fontSize:19,fontWeight:700,letterSpacing:2,color:professorProfile?.color||"#c44a2a",lineHeight:1.15}}>RA DESK — {getDorm(professorProfile?.dormId||professorProfile?.subject)?.label?.toUpperCase()||"YOUR HALL"}</div>
+            <div style={{fontSize:10,color:"#8a5060",letterSpacing:3,marginTop:2}}>{RA_APPROACHES[professorProfile?.approachId||professorProfile?.spiritId]?.label?`${RA_APPROACHES[professorProfile.approachId||professorProfile.spiritId].label.toUpperCase()} · WEEK ${week}`:"HALL PASS"}</div>
+          </div>
         </div>
         <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
           {professorProfile&&(

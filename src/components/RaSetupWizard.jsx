@@ -7,18 +7,13 @@ import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { DORM_LIST } from '../gameData/dorms.js';
 import { RA_APPROACH_LIST } from '../gameData/raApproaches.js';
 import { CustomStudentWizard } from './CustomStudentWizard.jsx';
+import { RaPortraitChip } from './RaPortraitChip.jsx';
 
 const RA_INTRO = [
   'Senior year. Third year as RA. Red hair, curves that draw eyes in the dining hall, and a master key that opens more doors than it should.',
   'The housing office gave you Victory Hall — or Scholar\'s Rest, Rosewood, the Annex — depending on which floor needs someone who can keep secrets. Your residents are brilliant, messy, hungry, and yours to look after.',
   'You are not faculty. You live on the floor. You sign for their deliveries, break up their parties, and know which room ordered pizza at two in the morning. What happens on your hall this semester is up to you.',
 ];
-
-const RA_PORTRAIT = {
-  hair: '#c44a2a',
-  skin: '#f5d0b8',
-  top: '#8b1a4a',
-};
 
 const clickSound = (fn) => () => {
   playHallPassSound('click');
@@ -43,28 +38,8 @@ export function RaSetupWizard({ students, onComplete }) {
   };
 
   const renderRaSilhouette = () => (
-    <div style={{
-      width: 88, height: 88, borderRadius: '50%', margin: '0 auto 16px',
-      background: `linear-gradient(145deg, ${RA_PORTRAIT.top}, #4a1028)`,
-      border: `2px solid ${accent}`,
-      boxShadow: `0 0 32px ${accentSoft}`,
-      position: 'relative', overflow: 'hidden',
-    }}>
-      <div style={{
-        position: 'absolute', top: 8, left: '50%', transform: 'translateX(-50%)',
-        width: 52, height: 44, borderRadius: '50% 50% 40% 40%',
-        background: RA_PORTRAIT.skin,
-      }} />
-      <div style={{
-        position: 'absolute', top: 2, left: '50%', transform: 'translateX(-50%)',
-        width: 56, height: 28, borderRadius: '50% 50% 0 0',
-        background: RA_PORTRAIT.hair,
-      }} />
-      <div style={{
-        position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)',
-        width: 64, height: 36, borderRadius: '40% 40% 0 0',
-        background: RA_PORTRAIT.top,
-      }} />
+    <div style={{ margin: '0 auto 16px', width: 88 }}>
+      <RaPortraitChip accent={accent} accentSoft={accentSoft} size={88} />
     </div>
   );
 
