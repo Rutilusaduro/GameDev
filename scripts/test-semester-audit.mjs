@@ -10,10 +10,10 @@ import {
 } from '../src/gameData/rosterUnlock.js';
 import { UNLOCK_SCENES } from '../src/gameData/unlockScenes.js';
 import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
-import { CLASS_SCENES } from '../src/gameData/classEvents.js';
+import { FLOOR_SCENES } from '../src/gameData/floorEvents.js';
 import { STAGE_DROP_REACTIONS, STAGE_REACTIONS, OUTFITS } from '../src/gameData/content.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
-import { renderClassSceneText, renderClassChoiceResult } from '../src/textEngine/scenes/campusEvent/classIntegration.js';
+import { renderFloorSceneText, renderFloorChoiceResult } from '../src/textEngine/scenes/campusEvent/floorCheckInIntegration.js';
 import { renderHearingPhase } from '../src/textEngine/scenes/opposition/index.js';
 import '../src/textEngine/scenes/opposition/agendaCards.js';
 import '../src/textEngine/scenes/opposition/oppositionSceneDepth.js';
@@ -126,12 +126,12 @@ for (const startDorm of START_DORMS) {
       const homeResident = roster.find((s) => s.homeDorm === startDorm && s.lockState === 'open');
       assert(homeResident, `${startDorm} needs open home resident at wk${week}`);
 
-      for (const scene of CLASS_SCENES) {
+      for (const scene of FLOOR_SCENES) {
         const subject = scene.target === 'class' ? homeResident : mockStudentForScene(scene);
-        const sceneText = renderClassSceneText(scene, subject, week);
+        const sceneText = renderFloorSceneText(scene, subject, week);
         assertClean(sceneText, `${startDorm} wk${week} scene ${scene.id}`);
         scene.choices?.forEach((_, idx) => {
-          const choiceText = renderClassChoiceResult(scene, idx, subject, week);
+          const choiceText = renderFloorChoiceResult(scene, idx, subject, week);
           assertClean(choiceText, `${startDorm} wk${week} scene ${scene.id} choice ${idx}`);
         });
       }

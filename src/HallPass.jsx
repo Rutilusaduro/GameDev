@@ -5,7 +5,7 @@ import { STAGE_DROP_REACTIONS, RA_RANKS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } fro
 import { narrativeEventText } from './gameData/weeklyEventText.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from './textEngine/textFlagFormat.js';
-import { ACTIONS_SINGLE, ACTIONS_HALL } from './gameData/classEvents.js';
+import { ACTIONS_SINGLE, ACTIONS_HALL } from './gameData/floorEvents.js';
 import { gatewayFlagPatch, GATEWAY_FLAG_KEYS } from './gameData/gatewayMoments.js';
 import { appendDossierSnapshot, pinPlayerMoment } from './gameData/dossier.js';
 import { getPlayerPrefs, toggleInstantText, toggleSound } from './gameData/playerPrefs.js';
@@ -54,7 +54,7 @@ import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLin
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getStageUpText, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
 import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from './textEngine/scenes/hunt/index.js';
-import { renderClassSceneText, renderClassChoiceResult } from './textEngine/scenes/campusEvent/index.js';
+import { renderFloorSceneText, renderFloorChoiceResult } from './textEngine/scenes/campusEvent/index.js';
 import { getSwimmerTier, getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateFloorCheckIn, pharmacistTextOpts } from './utils/gameHelpers.js';
 import {
@@ -6699,7 +6699,7 @@ export default function HallPass(){
       setGlobalStats(g=>({...g,narrativeCount:g.narrativeCount+evs.length}));
       setEventQueue(prev=>[...prev,...evs]);
     }
-    const resultText=renderClassChoiceResult(scene, choiceIdx, student || newStudents[0], week, pharmacistTextOpts(pharmacistState, week));
+    const resultText=renderFloorChoiceResult(scene, choiceIdx, student || newStudents[0], week, pharmacistTextOpts(pharmacistState, week));
     const outcome={sceneTitle:scene.title,choice:choice.label,result:resultText,gain:gainAmt,target:targetName};
     setFloorCheckIn(prev=>({...prev,pendingResult:outcome}));
   };
@@ -7920,7 +7920,7 @@ export default function HallPass(){
                     <FlaggedProse
                       section={`floorCheckIn.scene.${scene.title}`}
                       text={student
-                        ? renderClassSceneText(scene, student, week, pharmacistTextOpts(pharmacistState, week))
+                        ? renderFloorSceneText(scene, student, week, pharmacistTextOpts(pharmacistState, week))
                         : (typeof scene.text==="function"?scene.text(student):scene.text)}
                       student={student}
                       week={week}

@@ -1,0 +1,234 @@
+import { getStage } from './stages.js';
+
+export const ACTIONS_SINGLE = [
+  { id:"restaurant",  label:"🍷 Take Her to Dinner",         cost:2, gain:[4,9],   desc:"A proper dinner out at the best restaurant near campus.", requiresUnlock:"dinner_action" },
+];
+
+export const ACTIONS_HALL = [
+  { id:"pizza",        label:"🍕 Floor Pizza Night",         cost:3, cal:[12000,24000], full:40, desc:"An excessive whole-floor pizza order. Everyone indulges." },
+  { id:"potluck",      label:"🥘 Floor Potluck",             cost:2, cal:[9000,18000],  full:30, desc:"Everyone brings a dish. Everyone is expected to try everything." },
+  { id:"feast",        label:"🦃 Holiday Floor Feast",       cost:5, cal:[28000,52000], full:70, desc:"A full holiday spread. This one really goes far." },
+  { id:"group_dinner", label:"👥 Arrange Group Dinner",      cost:3, cal:[14000,30000], full:45, desc:"Take two residents to dinner together. Their bond amplifies the result for both.", requiresUnlock:"group_dinner" },
+  { id:"refeast_ritual", label:"👻 Refeast Ritual", cost:4, cal:[8000,16000], full:50, supernaturalOnly:true, desc:"Supernatural Act only — clears hunger curses, bites scarcity pressure, refeeds ascended residents." },
+];
+
+/** @deprecated use ACTIONS_HALL */
+export const ACTIONS_CLASS = ACTIONS_HALL;
+
+export const FLOOR_SCENES = [
+  // ── MOOD-BASED ───────────────────────────────────────────────
+  { id:"mood_stressed", target:"student", filter:s=>s.mood==="stressed",
+    title:"Burning Out",
+    text:s=>`${s.name} slumps onto the couch with the hollow look of someone who hasn't slept properly in days. An energy drink sweats on the desk in front of her. Her notebook is still closed.`,
+    choices:[
+      { label:"Slide her a snack",    effect:{gain:[3,6],mood:"content",rel:5},  result:s=>`You quietly set a bag of cookies on her spot. She blinks, then eats them slowly, and some color returns to her face.` },
+      { label:"Let her vent",          effect:{gain:[0,0],mood:"focused",rel:8},  result:s=>`You pause and check in. She offloads everything — deadlines, dorm drama, personal problems. By the end she's noticeably lighter. "Thanks, RA."` },
+      { label:"Give her busywork",     effect:{gain:[1,3],mood:"focused",rel:2},  result:s=>`A small, completable in-lounge task. She locks in and works quietly through it, which is more than she was doing before.` },
+    ] },
+  { id:"mood_tired", target:"student", filter:s=>s.mood==="tired",
+    title:"Running on Empty",
+    text:s=>`${s.name} is already half-asleep by the second topic. Her chin keeps dropping toward her chest. She's technically present, but only technically.`,
+    choices:[
+      { label:"Bring coffee and pastries", effect:{gain:[4,8],mood:"content",rel:6}, result:s=>`You produce a thermos and a pastry box. ${s.name} revives with remarkable speed. She eats two before you've finished your sentence.` },
+      { label:"Call on her gently",        effect:{gain:[0,0],mood:"focused",rel:4}, result:s=>`You call her name, softly. She snaps awake, answers surprisingly well, and stays engaged for the rest of the visit.` },
+      { label:"Let her rest in the back",  effect:{gain:[0,0],mood:"tired",  rel:1}, result:s=>`You wave her to the back couch and dim the lounge lights. She naps through the check-in, but she seems genuinely grateful.` },
+    ] },
+  { id:"mood_nervous", target:"student", filter:s=>s.mood==="nervous",
+    title:"Jittery Energy",
+    text:s=>`${s.name} sits near the front today, fidgeting. She keeps picking up her phone and putting it down. Something has her wound tight.`,
+    choices:[
+      { label:"Offer warm comfort food",  effect:{gain:[5,9],mood:"content",rel:7}, result:s=>`You pull out a tin of warm baked goods. "For when you need it." She eats the whole thing and visibly unclenches.` },
+      { label:"Give her a speaking role", effect:{gain:[0,0],mood:"focused",rel:5}, result:s=>`You check in with her for a structured, easy contribution. She gets through it fine, and the success bleeds the anxiety out of her posture.` },
+      { label:"Check in privately",       effect:{gain:[2,4],mood:"content",rel:9}, result:s=>`After check-in you hold her back a moment. She tells you what's going on. You listen, offer perspective, and leave her a snack for the walk home.` },
+    ] },
+  { id:"mood_focused", target:"student", filter:s=>s.mood==="focused",
+    title:"Deep in the Zone",
+    text:s=>`${s.name} has barely looked up from her work all session. Her notes are immaculate. She's clearly in the flow today.`,
+    choices:[
+      { label:"Reward her focus with treats", effect:{gain:[3,6],mood:"focused",rel:5}, result:s=>`You slide a little reward onto her side table — chocolate, a pastry. She acknowledges it with a nod and keeps working. Gone by the end of check-in.` },
+      { label:"Offer an extension project",   effect:{gain:[0,0],mood:"focused",rel:3}, result:s=>`You offer her optional extra work on today's material. She accepts immediately and starts planning. Exactly what she wanted.` },
+      { label:"Leave her to it",              effect:{gain:[0,0],mood:"focused",rel:1}, result:s=>`You simply don't disturb her. She powers through. Sometimes the best thing is to get out of the way.` },
+    ] },
+  { id:"mood_excited", target:"student", filter:s=>s.mood==="excited",
+    title:"Bubbling Over",
+    text:s=>`${s.name} can barely stay in her seat. She's answered three questions before you've asked them and is whispering enthusiastically to her neighbor.`,
+    choices:[
+      { label:"Channel it into a group activity", effect:{gain:[2,5],mood:"excited",rel:4}, result:s=>`You redirect her energy into a group discussion. She basically facilitates it herself. The snacks you bring disappear in the process.` },
+      { label:"Let her lead the segment",         effect:{gain:[0,0],mood:"excited",rel:7}, result:s=>`You call her up and let her explain the concept. She thrives. Everyone pays attention. It goes very well.` },
+      { label:"Feed the energy — literally",      effect:{gain:[5,10],mood:"excited",rel:6}, result:s=>`You produce a celebratory spread. ${s.name}'s excitement cranks up to eleven. She eats enthusiastically through the whole session.` },
+    ] },
+  { id:"mood_content", target:"student", filter:s=>s.mood==="content",
+    title:"Comfortable and Settled",
+    text:s=>`${s.name} is the picture of ease today — deep in her chair, soft smile, barely moving. She looks like she's exactly where she wants to be.`,
+    choices:[
+      { label:"Bring something warm to eat",    effect:{gain:[4,7],mood:"content",rel:5}, result:s=>`You produce a warm pastry box and set one in front of her. She accepts it without breaking her peaceful expression and eats it slowly, savoring every bite.` },
+      { label:"Give her a comfortable solo task",effect:{gain:[0,0],mood:"content",rel:3}, result:s=>`A quiet reading assignment, just for her. She settles into it completely. She's still there twenty minutes after floor check-in ends.` },
+      { label:"Sit and chat",                   effect:{gain:[1,3],mood:"content",rel:8}, result:s=>`You sit on the edge of the desk and just talk. She opens up — what she's thinking about, where she wants to be. Easy, unhurried.` },
+    ] },
+  // ── ARCHETYPE-SPECIFIC ───────────────────────────────────────
+  { id:"arch_cheerleader", target:"student", filter:s=>s.archetype==="cheerleader",
+    title:"Squad Pressure",
+    text:s=>`${s.name} arrives late and flustered. There's drama on the squad — uniforms, tryouts, something political. She drops onto the couch and sighs loudly at no one.`,
+    choices:[
+      { label:"Take her for comfort food",  effect:{gain:[6,12],mood:"content",rel:8}, result:s=>`You take her to the campus diner. She vents over the largest slice of cake on the menu. By the third bite she's already laughing about it.` },
+      { label:"Help her draft a message",   effect:{gain:[0,0], mood:"focused",rel:6}, result:s=>`You help her think through the situation calmly. She writes it up between slides. "Thanks for not just saying 'it'll be fine.'"` },
+      { label:"Compliment her publicly",    effect:{gain:[2,4], mood:"happy",  rel:7}, result:s=>`You mention something she's genuinely good at, in front of everyone. She lights up. The squad drama suddenly seems a lot smaller.` },
+    ] },
+  { id:"arch_swimmer", target:"student", filter:s=>s.archetype==="swimmer",
+    title:"Training Spiral",
+    text:s=>`${s.name} found a split discrepancy on Thursday and hasn't really stopped logging since. She looks sharp and slightly hollow. She hasn't mentioned food once.`,
+    choices:[
+      { label:"Bring food to the team lounge",  effect:{gain:[5,9], mood:"focused",rel:8}, result:s=>`You find her at her usual table and set down a full meal. She looks up briefly, nods, and starts eating without pausing her log review. You sit opposite and say nothing.` },
+      { label:"Offer floor credit",         effect:{gain:[0,0], mood:"focused",rel:7}, result:s=>`You say the work could count toward hall leadership hours. She looks up for the first time in hours. "...Really?" Real delight, quickly returned to training focus.` },
+      { label:"Lure her out with carb bowls",    effect:{gain:[7,13],mood:"content",rel:9}, result:s=>`You propose a snack-and-strategy session. She agrees because it's technically still athletic. Two hours later the food is gone and she looks genuinely fueled.` },
+    ] },
+  { id:"arch_bookworm", target:"student", filter:s=>s.archetype==="bookworm",
+    title:"Reading Spiral",
+    text:s=>`${s.name} found a gap in the hall notes on Thursday and hasn't really stopped since. She looks brilliant and slightly hollow. She hasn't mentioned food once.`,
+    choices:[
+      { label:"Bring food to the library",  effect:{gain:[5,9], mood:"focused",rel:8}, result:s=>`You find her at her usual table and set down a full meal. She looks up briefly, nods, and starts eating without pausing her reading. You sit opposite and say nothing.` },
+      { label:"Offer floor credit",         effect:{gain:[0,0], mood:"focused",rel:7}, result:s=>`You say the work could count toward hall leadership hours. She looks up for the first time in hours. "...Really?" Real delight, quickly returned to reading focus.` },
+      { label:"Lure her out with snacks",    effect:{gain:[7,13],mood:"content",rel:9}, result:s=>`You propose a snack-and-discuss session. She agrees because it's technically still intellectual. Two hours later the food is gone and she looks genuinely nourished.` },
+    ] },
+  { id:"arch_influencer", target:"student", filter:s=>s.archetype==="influencer",
+    title:"Sponsored Content",
+    text:s=>`${s.name} is filming a haul video between slides, whispering reviews of the snacks you've provided. Her followers are apparently very invested in the "RA's Snacks" series.`,
+    choices:[
+      { label:"Bring premium snacks for the shoot", effect:{gain:[6,11],mood:"excited",rel:7}, result:s=>`You bring out artisan chocolates and imported cheese. She films delightedly. The video does numbers.` },
+      { label:"Ask to see the content",              effect:{gain:[0,0], mood:"excited",rel:9}, result:s=>`She shows you the channel. It's surprisingly good. You tell her so. She's visibly touched. "Nobody ever actually asks."` },
+      { label:"Collaborate on a floor food feature", effect:{gain:[8,14],mood:"excited",rel:8}, result:s=>`You suggest she document a floor-wide food event. A full sponsor spread appears the next day. The floor eats very well.` },
+    ] },
+  { id:"arch_athlete", target:"student", filter:s=>s.archetype==="athlete",
+    title:"Recovery Week",
+    text:s=>`${s.name} mentions training has been lighter — coach gave them a recovery period. She seems restless without the physical outlet, energy with nowhere to go.`,
+    choices:[
+      { label:"Suggest she use recovery to fuel up", effect:{gain:[7,14],mood:"content",rel:6}, result:s=>`You suggest recovery is a good time to really load up. She considers this with athletic seriousness. Athletes respect fuel logic. By end of day she's put away an impressive amount.` },
+      { label:"Give her an energetic group task",     effect:{gain:[1,3], mood:"focused",rel:5}, result:s=>`You pair her with others on the floor on a project that requires moving, presenting, debating. She's immediately in her element.` },
+      { label:"Talk training and nutrition",          effect:{gain:[2,5], mood:"focused",rel:7}, result:s=>`You have a genuine conversation about athletic nutrition. She's sharp on the subject. You learn things about carb-loading that give you ideas.` },
+    ] },
+  { id:"arch_artsy", target:"student", filter:s=>s.archetype==="artsy",
+    title:"Creative Block",
+    text:s=>`${s.name} is staring at a blank page. She's been staring for thirty minutes. Charcoal in hand, nothing happening. A creative block, visibly painful.`,
+    choices:[
+      { label:"Arrange food as an art subject", effect:{gain:[4,9], mood:"content",rel:8}, result:s=>`You arrange a spread on her side table — fruit, pastries, something colorful — and say "draw that." Her eyes light up. She eats half while drawing. Both improve.` },
+      { label:"Take her on a campus walk",       effect:{gain:[0,0], mood:"dreamy", rel:6}, result:s=>`You take her on a quiet loop around campus. She doesn't say much, but by the time you return she's sketching furiously.` },
+      { label:"Share a creative struggle",       effect:{gain:[2,4], mood:"dreamy", rel:9}, result:s=>`You tell her about a time you were stuck. What you did, how it felt. She listens with her whole body, and something in her visibly relaxes.` },
+    ] },
+  { id:"arch_gamer", target:"student", filter:s=>s.archetype==="gamer",
+    title:"Patch Day",
+    text:s=>`${s.name} walked in wearing yesterday's clothes. She's dropped a body pillow next to her chair and put her headphones on. There's a new patch out, apparently.`,
+    choices:[
+      { label:"Bring her delivery order",  effect:{gain:[6,12],mood:"content",rel:7}, result:s=>`You produce a bag of her usual delivery — you've noticed the patterns. She stares at it for a second, then takes her headphones down. "...How'd you know?"` },
+      { label:"Ask about the patch",        effect:{gain:[0,0], mood:"excited",rel:8}, result:s=>`You ask a completely genuine question. She pivots and explains build theory for twenty minutes with startling depth. She leaves the hall energized.` },
+      { label:"Let her game in the back",   effect:{gain:[2,4], mood:"tired",  rel:3}, result:s=>`You quietly move her to the back and offer to catch her up on notes later. A single thumbs-up. She games through the whole check-in.` },
+    ] },
+  { id:"arch_sorority", target:"student", filter:s=>s.archetype==="sorority",
+    title:"Event Planning Crisis",
+    text:s=>`${s.name} is in full event-planner mode: spreadsheet open, phone taking calls on mute, the look of someone managing something large that is not cooperating.`,
+    choices:[
+      { label:"Offer the hall lounge as venue", effect:{gain:[5,10],mood:"excited",rel:8}, result:s=>`You offer the hall lounge after hours. She practically vibrates. The event happens, the catering is spectacular. You're invited.` },
+      { label:"Help with logistics",           effect:{gain:[0,0], mood:"focused",rel:7}, result:s=>`You spend ten minutes helping untangle the vendor issue. "I didn't think you'd know about this stuff." You have depths.` },
+      { label:"Suggest a potluck component",   effect:{gain:[8,15],mood:"happy",  rel:6}, result:s=>`You suggest potluck. She pauses, then starts planning tables, themes, recipes. The floor ends up eating extremely well.` },
+    ] },
+  { id:"arch_overachiever", target:"student", filter:s=>s.archetype==="overachiever",
+    title:"Impossible Standards",
+    text:s=>`${s.name} hands in a forty-page paper for a five-page assignment. She's circled three things she considers weaknesses. She's asking if there's extra credit on top of this.`,
+    choices:[
+      { label:"Tell her to rest and eat",      effect:{gain:[5,9], mood:"content",rel:6}, result:s=>`You tell her firmly: the paper is excellent. Rest. Eat. You produce lunch. She eats it in uncomfortable silence that slowly becomes grateful silence.` },
+      { label:"Give her a real challenge",      effect:{gain:[0,0], mood:"focused",rel:7}, result:s=>`You assign something genuinely hard — a problem without a clean answer. She immediately forgets everything else and dives in. The most at peace she's looked all week.` },
+      { label:"Praise her work publicly",       effect:{gain:[2,4], mood:"focused",rel:8}, result:s=>`You read a passage from her journal aloud without attribution, then reveal the author. She goes completely red. The floor applauds. Mortified and delighted.` },
+    ] },
+  { id:"arch_quiet", target:"student", filter:s=>s.archetype==="quiet",
+    title:"Invisible by Choice",
+    text:s=>`${s.name} has been in the back corner so long you're not sure when she arrived. Her notebook is covered in small careful drawings. Something in her posture says she's paying very close attention.`,
+    choices:[
+      { label:"Leave her something anonymously", effect:{gain:[3,7], mood:"content",rel:9},  result:s=>`You leave a pastry on her spot without comment, without eye contact. She looks at it for a long moment, then eats it very slowly. You don't make it a thing. She appreciates this enormously.` },
+      { label:"Ask to see her notebook",          effect:{gain:[0,0], mood:"content",rel:10}, result:s=>`You approach quietly and ask. She hesitates, then holds it out. The drawings are extraordinary. You say so, simply. She doesn't respond, but her shoulders drop in visible relief.` },
+      { label:"Include her in a small group",     effect:{gain:[1,3], mood:"nervous",rel:4},  result:s=>`You carefully include her in a small group. She participates, minimally. It's clearly effortful. But she doesn't leave, and she thanks you after.` },
+    ] },
+  { id:"arch_transfer", target:"student", filter:s=>s.archetype==="transfer",
+    title:"Still Adjusting",
+    text:s=>`${s.name} is trying everything with the intensity of someone who hasn't figured out what she likes yet. Today she's brought food from three different campus spots to cross-reference.`,
+    choices:[
+      { label:"Bring something she hasn't tried", effect:{gain:[5,9], mood:"happy",  rel:8},  result:s=>`You produce something unusual, from somewhere she hasn't found yet. Her face goes through five different emotions. "This is incredible. Where is this FROM?"` },
+      { label:"Give her a campus food map",        effect:{gain:[4,8], mood:"excited",rel:7},  result:s=>`You sketch a map of your personal favorite spots, including some that require knowing where to look. She stares at it like you've handed her treasure.` },
+      { label:"Ask where she's from",              effect:{gain:[0,0], mood:"content",rel:10}, result:s=>`You ask about home. She talks for twenty minutes — food, places, people, traditions. She's surprised how much she's missed it. You listen to all of it.` },
+    ] },
+  // ── WEIGHT-STAGE-BASED ───────────────────────────────────────
+  { id:"stage_early", target:"student", filter:s=>getStage(s.lbs).id<=2,
+    title:"Still Watching",
+    text:s=>`${s.name} pauses mid-check-in to smooth her shirt, frowning slightly. She's noticed something. Not alarmed yet — just aware. She mentions she's been going to the gym more.`,
+    choices:[
+      { label:"Reassure her and bring snacks",    effect:{gain:[4,8], mood:"content",rel:5}, result:s=>`You tell her she looks great — which, to be fair, she does. You set out snacks as you say it. She relaxes and takes some. The gym mention doesn't come up again.` },
+      { label:"Redirect to her season plan",        effect:{gain:[0,0], mood:"focused",rel:3}, result:s=>`You pivot to her hall goals, which she's genuinely interested in. The self-scrutiny fades into the background of something she cares about more.` },
+      { label:"Introduce 'study fuel' snacks",     effect:{gain:[5,10],mood:"content",rel:4}, result:s=>`You bring out a range of snacks framed as brain food. She tries them all with athletic thoroughness. She doesn't go to the gym that afternoon.` },
+    ] },
+  { id:"stage_mid", target:"student", filter:s=>{const id=getStage(s.lbs).id;return id>=3&&id<=4;},
+    title:"Finding Her Rhythm",
+    text:s=>`${s.name} has clearly made peace with a lot of things lately. She moves more slowly, eats more openly, cares less about what anyone thinks. She seems genuinely at ease.`,
+    choices:[
+      { label:"Celebrate her ease with a spread", effect:{gain:[6,12],mood:"content",rel:6}, result:s=>`You produce a table spread — nothing fancy, just abundant. She helps herself generously, without apology. It's a good session.` },
+      { label:"Have a candid check-in",            effect:{gain:[0,0], mood:"content",rel:9}, result:s=>`You ask directly how she's been. She thinks, then says: "Good, actually." And means it. Short, but honest.` },
+      { label:"Assign a comfortable project",      effect:{gain:[2,5], mood:"content",rel:4}, result:s=>`A project at her own pace. She settles into it with the competent ease of someone who knows what they're doing.` },
+    ] },
+  { id:"stage_heavy", target:"student", filter:s=>getStage(s.lbs).id>=5,
+    title:"Command of the Room",
+    text:s=>`${s.name} takes up space with absolute ease now. She settles into her reinforced seat, arranges her things precisely, and looks around the room with the calm authority of someone completely at home in their body.`,
+    choices:[
+      { label:"Arrange something special for her", effect:{gain:[5,10],mood:"content",rel:8},  result:s=>`You set something up specifically for her — her preferences, her portion, her timing. She notices the care. "You remembered." Warmth, genuine.` },
+      { label:"Ask her to mentor someone",          effect:{gain:[0,0], mood:"content",rel:7},  result:s=>`You ask her to work with someone who's struggling on the floor. She agrees immediately and does it well, with patience and zero fanfare.` },
+      { label:"Acknowledge her growth",             effect:{gain:[3,7], mood:"content",rel:10}, result:s=>`You find a quiet moment and say, simply, that you've noticed how much she's grown — on the floor, personally. "That actually means something, RA."` },
+    ] },
+  // ── CLASS-WIDE ───────────────────────────────────────────────
+  { id:"class_snack_break", target:"hall",
+    title:"Impromptu Snack Break",
+    text:"You call an unscheduled break mid-check-in and produce a box of assorted snacks. No reason given. The floor needs no reason.",
+    choices:[
+      { label:"Basic spread — quick and filling",      effect:{gain:[3,6]},  result:"The floor descends on it efficiently. Gone in four minutes. The check-in resumes with noticeably better energy." },
+      { label:"Premium spread — variety and excess",   effect:{gain:[5,10]}, result:"You went all out. Three kinds of pastries, imported chocolates, something local. The floor takes their time. The check-in ends fifteen minutes late." },
+      { label:"Tasting exercise — they rate each one", effect:{gain:[4,8]},  result:"You frame it as a sensory evaluation exercise. They review each item with comically serious panel rigor. Everybody eats a lot." },
+    ] },
+  { id:"class_group_project", target:"hall",
+    title:"Group Project Day",
+    text:"You announce today's programming is cancelled in favor of a group project — designing a meal plan for an entirely hypothetical context. The floor gets very into it.",
+    choices:[
+      { label:"Let them be creative",             effect:{gain:[2,5]},  result:"The projects are elaborate and extensively taste-tested using supplies they apparently brought for this exact possibility." },
+      { label:"Provide research materials (food)", effect:{gain:[4,9]},  result:"You bring extensive research samples. This is treated as primary research. The floor is still conducting experiments after closing time." },
+      { label:"Award points for best proposal",   effect:{gain:[3,7]},  result:"Competition emerges. The floor sources sample materials with alarming speed. Three residents present full spreads. Everyone eats everything." },
+    ] },
+  { id:"class_birthday", target:"hall",
+    title:"Mystery Birthday",
+    text:"Someone on the floor has a birthday this week. Word has spread. There is an expectation of cake.",
+    choices:[
+      { label:"Bring one cake",                    effect:{gain:[3,6]},  result:"A solid cake, well-received. The birthday resident gets the first slice. Everyone gets seconds." },
+      { label:"Bring a full dessert spread",        effect:{gain:[6,12]}, result:"You dramatically overdeliver: three cakes, cupcakes, tarts, macarons. The floor is overwhelmed and grateful and eats everything." },
+      { label:"Declare it a week-long celebration", effect:{gain:[4,9]},  result:"You declare the whole week birthday week. Snacks every day. The birthday resident is embarrassed and delighted in equal measure." },
+    ] },
+  { id:"class_slump", target:"hall",
+    title:"3PM Energy Crash",
+    text:"The 3PM slump is real and the lounge is suffering. Heads are drooping. Someone is asleep. Someone else is asleep more aggressively. Action is required.",
+    choices:[
+      { label:"Snacks and caffeine",    effect:{gain:[4,8]}, result:"Coffee, tea, energy drinks, and a mountain of snacks. The floor revives. Several residents look grateful enough to tear up." },
+      { label:"Quick movement break",   effect:{gain:[1,3]}, result:"A stretch break and some movement. Energy returns, though you notice several residents were clearly much more comfortable staying seated." },
+      { label:"Dim lights and chill",   effect:{gain:[2,5]}, result:"You lower the lights, put on ambient music, and present this as a contemplative learning environment. Everyone eats their snacks in peaceful semi-darkness." },
+    ] },
+  { id:"class_potluck", target:"hall",
+    title:"Floor Potluck",
+    text:"You announced a floor potluck. You underestimated how seriously they would take this. The room is lined with containers and the smell is extraordinary.",
+    choices:[
+      { label:"Try everything and praise all",       effect:{gain:[6,12]}, result:"You try each dish and comment thoughtfully. The floor is thrilled. Second and third helpings are consumed under the banner of thorough side-by-side comparison." },
+      { label:"Formalize it with a scoring rubric",  effect:{gain:[4,9]},  result:"You produce a rubric. The floor suddenly cares very deeply about their dishes. The stakes make everyone eat more to properly evaluate." },
+      { label:"Abandon pretense — just party",       effect:{gain:[5,11]}, result:"You put on music and let it be what it is. The floor eats freely for ninety minutes. It's the best floor check-in of the semester." },
+    ] },
+  { id:"class_extended", target:"hall",
+    title:"Extended Session",
+    text:"Today runs long — dense material, real engagement, the kind of night where nobody looks at the clock. You've been going for two hours and nobody has left.",
+    choices:[
+      { label:"Order delivery for the room",         effect:{gain:[5,10]}, result:"You produce your phone and order three different things. The floor nominates favorites. The food arrives and disappears without interrupting the discussion." },
+      { label:"Break with a spread you brought",     effect:{gain:[3,7]},  result:"You pull out a prepared spread from your bag. The floor is impressed you came prepared. Someone says 'this is the best night.' You feel it's true." },
+      { label:"Push through without food",           effect:{gain:[0,2]},  result:"Nobody gets fed but everyone gets educated. Grudging respect. Several stomachs are audibly registering their objection." },
+    ] },
+];
+
+/** @deprecated use FLOOR_SCENES */
+export const CLASS_SCENES = FLOOR_SCENES;

@@ -1,7 +1,7 @@
 // Generate campusEvent/depth.js — pad campusEvent.scene/choice pools to ≥3 texts.
 // Run: node scripts/generateCampusEventDepth.mjs
 import { writeFileSync } from 'fs';
-import { CLASS_SCENES } from '../src/gameData/classEvents.js';
+import { FLOOR_SCENES } from '../src/gameData/floorEvents.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 
 const sampleStudent = INIT_STUDENTS[0];
@@ -211,7 +211,7 @@ const lines = [
 
 let poolCount = 0;
 
-for (const scene of CLASS_SCENES) {
+for (const scene of FLOOR_SCENES) {
   const sceneText = resolveLegacyText(scene.text, sampleStudent);
   if (sceneText) {
     const [a, b] = sceneAlts(scene.id, sceneText);

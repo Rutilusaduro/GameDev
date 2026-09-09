@@ -210,6 +210,17 @@ check('roster-view-floor-actions', () => {
   assert.doesNotMatch(desk, /\bdoClass\b/);
 });
 
+check('floor-events-module', () => {
+  assert.ok(existsSync(join(root, 'src/gameData/floorEvents.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/campusEvent/floorCheckInIntegration.js')));
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /floorEvents\.js/);
+  assert.match(desk, /renderFloorSceneText/);
+  assert.doesNotMatch(desk, /classEvents\.js/);
+  const events = read('src/gameData/floorEvents.js');
+  assert.match(events, /export const FLOOR_SCENES/);
+});
+
 // ── Report ─────────────────────────────────────────────────────
 const failed = checks.filter((c) => !c.ok);
 for (const c of checks) {

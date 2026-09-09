@@ -6,7 +6,7 @@
 import { OUTFITS } from '../gameData/content.js';
 import { EVOLVED_REACTIONS, EVOLVED_OUTFITS } from '../gameData/evolvedForms.js';
 import { getStage } from '../gameData/stages.js';
-import { CLASS_SCENES } from '../gameData/classEvents.js';
+import { FLOOR_SCENES } from '../gameData/floorEvents.js';
 import { createContext, render } from '../textEngine/engine.js';
 import '../textEngine/lexicon.js';
 import '../textEngine/scenes/deviceBody.js';
@@ -64,10 +64,10 @@ export function generateFloorCheckIn(students,week){
   const scenes=[];
   const shuffled=[...students].sort(()=>Math.random()-0.5);
   for(const s of shuffled){
-    const matching=CLASS_SCENES.filter(sc=>sc.target==="student"&&sc.filter&&sc.filter(s));
+    const matching=FLOOR_SCENES.filter(sc=>sc.target==="student"&&sc.filter&&sc.filter(s));
     if(matching.length){ scenes.push({type:"student",scene:matching[rnd(0,matching.length-1)],student:{...s}}); break; }
   }
-  const hallWide=CLASS_SCENES.filter(sc=>sc.target==="hall"||sc.target==="class");
+  const hallWide=FLOOR_SCENES.filter(sc=>sc.target==="hall"||sc.target==="class");
   if(hallWide.length) scenes.push({type:"hall",scene:hallWide[rnd(0,hallWide.length-1)],student:null});
   return scenes;
 }

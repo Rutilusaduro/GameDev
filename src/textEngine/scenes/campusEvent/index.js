@@ -55,9 +55,9 @@ registerPool('campusEvent.beat', [
   { when: {}, text: ['{campusEvent.observation} {campusEvent.result}'] },
 ]);
 
-import './classIntegration.js';
+import './floorCheckInIntegration.js';
 
-/** Class-session observation beat keyed on student mood/archetype/campus state. */
+/** Floor check-in observation beat keyed on student mood/archetype/campus state. */
 export function renderCampusEventBeat(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
@@ -65,4 +65,9 @@ export function renderCampusEventBeat(student, week = 1, opts = {}) {
   return appendV2Depth(base, 'campus', ctx, opts.v2DepthChance ?? 0.25);
 }
 
-export { renderClassSceneText, renderClassChoiceResult } from './classIntegration.js';
+export {
+  renderFloorSceneText,
+  renderFloorChoiceResult,
+  renderClassSceneText,
+  renderClassChoiceResult,
+} from './floorCheckInIntegration.js';
