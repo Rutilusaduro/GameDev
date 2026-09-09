@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { C } from '../styles.js';
+import { dispatchOpenFieldNotes } from '../gameData/hallPassEvents.js';
 import { getErrorRingBuffer } from '../utils/errorRingBuffer.js';
 
 export class GameErrorBoundary extends Component {
@@ -38,7 +39,7 @@ export class GameErrorBoundary extends Component {
             </pre>
           )}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <button type="button" style={{ ...C.btn('#5a4030') }} onClick={() => window.dispatchEvent(new CustomEvent('profSim:openFieldNotes', { detail: { error } }))}>
+            <button type="button" style={{ ...C.btn('#5a4030') }} onClick={() => dispatchOpenFieldNotes({ error })}>
               Leave a Field Note
             </button>
             <button type="button" style={{ ...C.btn('#333') }} onClick={() => this.setState({ error: null, errorInfo: null })}>

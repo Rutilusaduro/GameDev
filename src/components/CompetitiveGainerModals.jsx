@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { CG_CONFIG, CG_CHAT_TEMPLATES } from '../gameData/evolvedForms.js';
+import { cgDriveDelta, cgSubstateGain } from '../gameData/competitiveGainerState.js';
 import { getStage } from '../gameData/stages.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 
@@ -48,7 +49,7 @@ export function CompetitiveGainerChatModal({ competitiveGainerState, students, g
                   {CG_CHAT_TEMPLATES.raReplies.map(opt=>(
                     <button key={opt.id} style={{...C.btn(CG_DIM),fontSize:10,padding:"5px 10px"}}
                       onClick={()=>{ playHallPassSound('click', soundEnabled); cgRaReply(opt.id); }}>
-                      {opt.label} <span style={{color:CG_ACC,marginLeft:4}}>+{opt.driveDelta??opt.spiritDelta??0} drive</span>
+                      {opt.label} <span style={{color:CG_ACC,marginLeft:4}}>+{cgDriveDelta(opt)} drive</span>
                     </button>
                   ))}
                 </div>
@@ -72,8 +73,8 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
 
         // ── Corkboard view ──
         if(cgS.view==='corkboard'){
-          const{sceneText,driveGain,spiritGain}=cgS.subState||{};
-          const gain=driveGain??spiritGain;
+          const{sceneText}=cgS.subState||{};
+          const gain=cgSubstateGain(cgS.subState);
           return(
             <div style={{...C.overlay,zIndex:365}}>
               <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
@@ -88,8 +89,8 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
 
         // ── Self-review view ──
         if(cgS.view==='self_review'){
-          const{sceneText,driveGain,spiritGain}=cgS.subState||{};
-          const gain=driveGain??spiritGain;
+          const{sceneText}=cgS.subState||{};
+          const gain=cgSubstateGain(cgS.subState);
           return(
             <div style={{...C.overlay,zIndex:365}}>
               <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
@@ -148,8 +149,8 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
 
         // ── Measurement result ──
         if(cgS.view==='measurement_result'){
-          const{targetStudentId,priyaM:pM,targetM:tM,sceneText,reactions,threats,driveGain,spiritGain}=cgS.subState||{};
-          const gain=driveGain??spiritGain;
+          const{targetStudentId,priyaM:pM,targetM:tM,sceneText,reactions,threats}=cgS.subState||{};
+          const gain=cgSubstateGain(cgS.subState);
           const target=students.find(s=>s.id===targetStudentId);
           if(!target) return null;
           return(

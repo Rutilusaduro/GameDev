@@ -148,7 +148,7 @@ check('ui-polish-css', () => {
     'hall-unlock-cta', 'week-recap-cta', 'hall-log-achievement', 'hall-log-unlock',
     'floor-checkin-choice', 'week-recap-week-badge',
     'milestone-ceremony-modal', 'milestone-resident-header', 'tier-up-cta', 'hunger-interrupt-modal', 'floor-checkin-modal', 'embodiment-modal',
-    'talk-modal', 'weigh-in-modal', 'opposition-hearing-modal', 'week-recap-modal', 'confrontation-modal', 'hall-unlock-modal',
+    'talk-modal', 'weigh-in-modal', 'opposition-hearing-modal', 'week-recap-modal', 'confrontation-modal', 'hall-unlock-modal', 'tier-up-modal',
   ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
   }
@@ -285,6 +285,31 @@ check('hall-unlock-modal-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.hall-unlock-modal/);
   assert.match(read('src/components/MiscModals.jsx'), /hall-unlock-modal/);
+});
+
+check('hall-pass-events', () => {
+  assert.ok(existsSync(join(root, 'src/gameData/hallPassEvents.js')));
+  const events = read('src/gameData/hallPassEvents.js');
+  assert.match(events, /hallPass:openFieldNotes/);
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /subscribeOpenFieldNotes/);
+  assert.doesNotMatch(desk, /addEventListener\('profSim:openFieldNotes'/);
+  assert.match(read('src/components/GameErrorBoundary.jsx'), /dispatchOpenFieldNotes/);
+});
+
+check('competitive-gainer-state', () => {
+  assert.ok(existsSync(join(root, 'src/gameData/competitiveGainerState.js')));
+  const cg = read('src/gameData/competitiveGainerState.js');
+  assert.match(cg, /migrateCompetitiveGainerState/);
+  assert.match(cg, /cgDriveDelta/);
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /migrateCompetitiveGainerState/);
+  assert.doesNotMatch(desk, /cgState\?\.spirit/);
+});
+
+check('tier-up-modal-polish', () => {
+  assert.match(read('src/index.css'), /\.tier-up-modal/);
+  assert.match(read('src/components/MiscModals.jsx'), /tier-up-modal/);
 });
 
 check('owned-hall-skills', () => {

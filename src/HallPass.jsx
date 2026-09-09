@@ -15,6 +15,8 @@ import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
+import { cgDrive, cgDriveDelta, migrateCompetitiveGainerState } from './gameData/competitiveGainerState.js';
+import { subscribeOpenFieldNotes } from './gameData/hallPassEvents.js';
 import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, getHiveFloorResonance, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS, initDeviceState, initPsychState } from './gameData/students.js';
@@ -550,7 +552,12 @@ export default function HallPass(){
   const [wifeLessonsState, setWifeLessonsState] = useState(null);
   // wifeLessonsState: persistent {mjStudentId,stage,daughters:{Emma,Chloe,Kezia,Lila},moms:{Darlene,Wanda,Patrice},session:null|{lessonChosen,lessonId,conversationState,log}}
   // session.conversationState: null|{person,stageEntry,optionIdx,subIdx,done,resultText}
-  const [competitiveGainerState, setCompetitiveGainerState] = useState(null);
+  const [competitiveGainerState, setCompetitiveGainerStateRaw] = useState(null);
+  const setCompetitiveGainerState = (updater) => setCompetitiveGainerStateRaw((cur) => {
+    const base = migrateCompetitiveGainerState(cur);
+    const next = typeof updater === 'function' ? updater(base) : updater;
+    return migrateCompetitiveGainerState(next);
+  });
   // competitiveGainerState: persistent {priyaStudentId,drive,chatLog:[{text,isRa,wk}],measuredStudentIds:[],measuredComparisons:{},lastChatWeek,corkboardVisitCount,open,view,subState}
   // view: null|'corkboard'|'measurement_picker'|'measurement_result'|'self_review'|'binge'
   // subState: result/scene data for the current view
@@ -656,14 +663,10 @@ export default function HallPass(){
 
   useEffect(()=>{ if(logRef.current) logRef.current.scrollTop=logRef.current.scrollHeight; },[log,logTab]);
 
-  useEffect(()=>{
-    const handler=(ev)=>{
-      setFieldNoteError(ev.detail?.error||null);
-      setBugReportOpen(true);
-    };
-    window.addEventListener('profSim:openFieldNotes',handler);
-    return ()=>window.removeEventListener('profSim:openFieldNotes',handler);
-  },[]);
+  useEffect(() => subscribeOpenFieldNotes((ev) => {
+    setFieldNoteError(ev.detail?.error || null);
+    setBugReportOpen(true);
+  }), []);
 
   // Tier-up detection
   useEffect(()=>{
@@ -3092,8 +3095,6 @@ export default function HallPass(){
     return{waist:r(waist),bust:r(bust),hip:r(hip),thigh:r(thigh),arm:r(arm)};
   };
 
-  const cgDrive=(cgState)=>cgState?.drive??cgState?.spirit??0;
-
   const getCGDriveTier=(drive)=>{
     const tiers=CG_CONFIG.driveTiers;
     return tiers.find(t=>drive>=t.min&&drive<=t.max)||tiers[0];
@@ -3486,7 +3487,7 @@ export default function HallPass(){
         targetValue:comparison?.targetValue,
       });
       const msg={text:`[You] ${text}`,isRa:true,isProf:true,wk:week};
-      const delta=opt.driveDelta??opt.spiritDelta??0;
+      const delta=cgDriveDelta(opt);
       return{...prev,drive:cgDrive(prev)+delta,chatLog:[...prev.chatLog,msg]};
     });
   };

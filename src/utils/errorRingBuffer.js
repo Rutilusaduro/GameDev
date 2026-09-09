@@ -19,8 +19,8 @@ export function clearErrorRingBuffer() {
 }
 
 export function initErrorCapture() {
-  if (typeof window === 'undefined' || window.__profSimErrorsInit) return;
-  window.__profSimErrorsInit = true;
+  if (typeof window === 'undefined' || window.__hallPassErrorsInit || window.__profSimErrorsInit) return;
+  window.__hallPassErrorsInit = true;
 
   window.addEventListener('error', (ev) => {
     pushEntry({
