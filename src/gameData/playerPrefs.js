@@ -1,6 +1,7 @@
 // Lightweight UI prefs (localStorage) — B2 instant text, etc.
 
 const KEY = 'hallPass.prefs';
+/** Save-compat: migrate once from pre-pivot localStorage key, then drop legacy entry. */
 const LEGACY_KEY = 'professorSim.prefs';
 
 const DEFAULTS = {
@@ -14,7 +15,10 @@ function read() {
     let raw = localStorage.getItem(KEY);
     if (!raw) {
       raw = localStorage.getItem(LEGACY_KEY);
-      if (raw) localStorage.setItem(KEY, raw);
+      if (raw) {
+        localStorage.setItem(KEY, raw);
+        localStorage.removeItem(LEGACY_KEY);
+      }
     }
     return raw ? { ...DEFAULTS, ...JSON.parse(raw) } : { ...DEFAULTS };
   } catch {

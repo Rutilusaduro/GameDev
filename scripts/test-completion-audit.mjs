@@ -296,6 +296,33 @@ check('private-session-modal-polish', () => {
   assert.match(read('src/components/PrivateSessionModal.jsx'), /private-session-modal/);
 });
 
+check('v2-modal-polish', () => {
+  const css = read('src/index.css');
+  const v2 = read('src/components/v2/V2Modals.jsx');
+  assert.match(css, /\.feast-ritual-modal/);
+  assert.match(css, /\.dream-modal/);
+  assert.match(css, /\.echo-modal/);
+  assert.match(v2, /feast-ritual-modal/);
+  assert.match(v2, /dream-modal/);
+  assert.match(v2, /echo-modal/);
+});
+
+check('week-planner-modal-polish', () => {
+  assert.match(read('src/index.css'), /\.week-planner-modal/);
+  assert.match(read('src/components/WeekPlannerModal.jsx'), /week-planner-modal/);
+});
+
+check('maya-hive-modal-polish', () => {
+  assert.match(read('src/index.css'), /\.maya-hive-modal/);
+  assert.match(read('src/components/MayaHiveModal.jsx'), /maya-hive-modal/);
+});
+
+check('player-prefs-hall-pass-key', () => {
+  const prefs = read('src/gameData/playerPrefs.js');
+  assert.match(prefs, /hallPass\.prefs/);
+  assert.match(prefs, /removeItem\(LEGACY_KEY\)/);
+});
+
 check('hall-unlock-modal-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.hall-unlock-modal/);

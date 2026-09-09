@@ -343,6 +343,31 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(144, 80, 200, 0.16);
 }
 
+.feast-ritual-modal {
+  background: linear-gradient(165deg, rgba(18, 8, 4, 0.98), rgba(36, 18, 8, 0.96), rgba(12, 6, 2, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(192, 96, 48, 0.16);
+}
+
+.dream-modal {
+  background: linear-gradient(165deg, rgba(6, 10, 22, 0.98), rgba(14, 22, 42, 0.96), rgba(4, 6, 16, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(72, 128, 200, 0.16);
+}
+
+.echo-modal {
+  background: linear-gradient(165deg, rgba(8, 12, 18, 0.98), rgba(18, 24, 36, 0.96), rgba(6, 8, 14, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(96, 128, 168, 0.14);
+}
+
+.week-planner-modal {
+  background: linear-gradient(165deg, rgba(12, 6, 24, 0.98), rgba(24, 10, 48, 0.95), rgba(10, 6, 20, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(144, 80, 200, 0.14);
+}
+
+.maya-hive-modal {
+  background: linear-gradient(165deg, rgba(8, 4, 14, 0.98), rgba(20, 8, 30, 0.96), rgba(6, 2, 10, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 36px rgba(217, 140, 255, 0.18);
+}
+
 .milestone-resident-header {
   padding: 8px 12px;
   border-radius: 8px;
@@ -398,6 +423,11 @@
   .tier-up-modal,
   .competitive-gainer-modal,
   .private-session-modal,
+  .feast-ritual-modal,
+  .dream-modal,
+  .echo-modal,
+  .week-planner-modal,
+  .maya-hive-modal,
   .hall-log-achievement,
   .hall-log-unlock {
     animation: none;

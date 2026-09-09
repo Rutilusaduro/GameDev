@@ -121,7 +121,7 @@ export function MayaHiveModal({
 
   const ModalShell=({children,maxWidth=1040})=>(
     <div style={{...C.overlay,zIndex:366}}>
-      <div className="hall-pass-modal-in" style={{...C.modal,maxWidth,background:`radial-gradient(circle at 50% -20%,rgba(217,140,255,.18),transparent 36%),linear-gradient(160deg,#050208,#13091d 48%,#06030a)`,border:`1px solid ${HIVE_ACC}55`,boxShadow:`0 0 40px ${HIVE_ACC}22`,maxHeight:"90vh",overflowY:"auto"}}>
+      <div className="hall-pass-modal-in maya-hive-modal" style={{...C.modal,maxWidth,background:`radial-gradient(circle at 50% -20%,rgba(217,140,255,.18),transparent 36%),linear-gradient(160deg,#050208,#13091d 48%,#06030a)`,border:`1px solid ${HIVE_ACC}55`,boxShadow:`0 0 40px ${HIVE_ACC}22`,maxHeight:"90vh",overflowY:"auto"}}>
         {children}
       </div>
     </div>

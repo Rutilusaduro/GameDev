@@ -34,7 +34,7 @@ export function FeastRitualModal({ students, ownedSkills, ownedHallSkills, week 
 
   return (
     <div style={C.modalOverlay}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 480 }}>
+      <div className="hall-pass-modal-in feast-ritual-modal" style={{ ...C.modal, maxWidth: 480 }}>
         <SceneBackdrop variant="feast" />
         <p style={C.secT}>Feast Rituals</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 12 }}>
@@ -90,7 +90,7 @@ export function DreamModal({ student, presetScenarioId, lucidUnlocked, onChoice,
 
   return (
     <div style={C.modalOverlay}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 440 }}>
+      <div className="hall-pass-modal-in dream-modal" style={{ ...C.modal, maxWidth: 440 }}>
         <SceneBackdrop variant="dream" />
         <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
           <StudentPortrait student={student} size={64} />
@@ -169,7 +169,7 @@ export function EchoArchiveModal({ student, echo, prose, depth, onClose, onReson
   const meta = ECHO_TYPES[echo.type] || { label: echo.type, icon: '📜' };
   return (
     <div style={C.modalOverlay}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 520, borderColor: '#6080a060' }}>
+      <div className="hall-pass-modal-in echo-modal" style={{ ...C.modal, maxWidth: 520, borderColor: '#6080a060' }}>
         <SceneBackdrop variant="echo" />
         <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 12 }}>
           <StudentPortrait student={student} size={64} />
