@@ -50,5 +50,9 @@ const hideNewAt9 = 9 === nerdyDorm.unlockWeek;
 assert.ok(showNewAt8);
 assert.ok(!hideNewAt9 || nerdyDorm.unlockWeek !== 9);
 
+// Week 16: all halls open — roadmap panel should hide
+assert.equal(openHallSet(16).size, 4);
+assert.ok(DORM_LIST.every((d) => openHallSet(16).has(d.id)));
+
 console.log('dorm-unlock-ui: all assertions passed');
 console.log('unlock schedule:', DORM_LIST.map((d) => `${d.shortLabel}: wk ${d.unlockWeek}`).join(', '));

@@ -18,7 +18,7 @@ import {
   GATHERING, getAttendees, getFinalFormFx,
 } from '../gameData/immobilityArrival.js';
 
-// The Settling reads in warm amber/gold against the class roster's cold violet —
+// The Settling reads in warm amber/gold against the hall roster's cold violet —
 // these girls have arrived; the palette says so.
 const GOLD = '#d8a850';
 const GOLD_DIM = '#9a7838';

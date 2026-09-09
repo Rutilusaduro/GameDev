@@ -9,6 +9,7 @@ import { ACTIONS_SINGLE, ACTIONS_CLASS } from './gameData/classEvents.js';
 import { gatewayFlagPatch, GATEWAY_FLAG_KEYS } from './gameData/gatewayMoments.js';
 import { appendDossierSnapshot, pinPlayerMoment } from './gameData/dossier.js';
 import { getPlayerPrefs, toggleInstantText } from './gameData/playerPrefs.js';
+import { playHallPassSound } from './gameData/hallPassAudio.js';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
@@ -1544,7 +1545,10 @@ export default function HallPass(){
         setUnlockedDorms(effectiveUnlockedDorms);
         newly.forEach((id)=>{
           const d=getDorm(id);
-          if(d) push(`🔓 ${d.label} unlocked — residents from ${d.shortLabel} hall may appear on your roster.`);
+          if(d) {
+            push(`🔓 ${d.label} unlocked — residents from ${d.shortLabel} hall may appear on your roster.`);
+            playHallPassSound('unlock');
+          }
         });
       }
     }
@@ -4940,7 +4944,7 @@ export default function HallPass(){
     }
   };
 
-  // ── COMMUNITY RESEARCHER handlers ─────────────────────────────
+  // ── LANE CAPTAIN handlers ─────────────────────────────
   const openThesisBoard=(s)=>{
     if(ap<1){push("⚠️ Need 1 AP for season plan review.");return;}
     setCommunityResearcherState(prev=>prev?{...prev,modalPhase:'thesis_board',boardPhase:0}:null);
@@ -8698,7 +8702,7 @@ export default function HallPass(){
                   ? <div style={{fontSize:11,color:"#5a3888",fontStyle:"italic",padding:"6px 2px"}}>
                       {logTab==="ledger"?"No receipts yet this session.":"Nothing's happened yet — feed someone."}
                     </div>
-                  : shown.map(({e,i})=><div key={i} style={C.logE}>{e}</div>)}
+                  : shown.map(({e,i})=><div key={i} className={i===log.length-1?'hall-log-entry':undefined} style={C.logE}>{e}</div>)}
               </div>
               <button type="button" onClick={()=>{ setFieldNoteError(null); setBugReportOpen(true); }}
                 style={{...C.btn('#3a3028'), fontSize:9, marginTop:8, flexShrink:0, opacity:0.85}}>
@@ -9119,7 +9123,7 @@ export default function HallPass(){
         </div>
       )}
 
-      {/* ── COMMUNITY RESEARCHER MODAL ── */}
+      {/* ── LANE CAPTAIN MODAL ── */}
       {communityResearcherState?.modalPhase&&<CommunityResearcherModal communityResearcherState={communityResearcherState} students={students} lilithUnlocked={lilithUnlocked} lilithKillCount={lilithKillCount} advanceThesisBoard={advanceThesisBoard} completeThesisDefense={completeThesisDefense} selectCasePair={selectCasePair} setCommunityResearcherState={setCommunityResearcherState} completeCaseStudy={completeCaseStudy} dismissBoardReaction={dismissBoardReaction} proceedFromFinalReview={proceedFromFinalReview} makeHaveAChatChoice={makeHaveAChatChoice} closeThesisOutcome={closeThesisOutcome}/>}
 
       {/* ── CULTIVATOR MODAL ── */}

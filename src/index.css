@@ -47,6 +47,15 @@
   transform: scale(0.99);
 }
 
+@keyframes hallLogIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hall-log-entry {
+  animation: hallLogIn 0.22s ease-out;
+}
+
 @keyframes hallUnlockPulse {
   0%, 100% { box-shadow: 0 0 0 0 transparent; }
   50% { box-shadow: 0 0 18px rgba(255, 200, 120, 0.22); }
@@ -61,7 +70,8 @@
   .ra-wizard-card,
   .roster-tile,
   .hall-pass-nav-btn,
-  .hall-unlock-new {
+  .hall-unlock-new,
+  .hall-log-entry {
     animation: none;
     transition: none;
   }

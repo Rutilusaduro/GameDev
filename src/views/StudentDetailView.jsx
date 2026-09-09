@@ -597,7 +597,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                             </div>
                           );
                         }
-                        // ── COMMUNITY RESEARCHER — custom panel ──
+                        // ── LANE CAPTAIN — custom panel ──
                         if(s.evolvedForm==='community_researcher'&&communityResearcherState){
                           const crs=communityResearcherState;
                           const blue="#4a6fa5"; const lblue="#8fa8e0";
