@@ -195,6 +195,9 @@ const REQUIRED_E2E = [
   'e2e/origin-pick-ceremony.spec.js',
   'e2e/talk-ceremony.spec.js',
   'e2e/weigh-in-ceremony.spec.js',
+  'e2e/dream-ceremony.spec.js',
+  'e2e/echo-ceremony.spec.js',
+  'e2e/feast-ritual-ceremony.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 

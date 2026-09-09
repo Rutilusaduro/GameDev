@@ -84,6 +84,10 @@ export function DebugPanel({
   setOriginPickState,
   setTalkStudentId,
   setWeighInState,
+  setDreamStudent,
+  setDreamPresetScenario,
+  setEchoReplay,
+  setFeastRitualOpen,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -407,6 +411,46 @@ export function DebugPanel({
                     setDebugOpen(false);
                   }}>
                   ⚖️ Weigh-In QA
+                </button>
+              )}
+              {setDreamStudent && setDreamPresetScenario && setStudents && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(40,70,120,0.55)' }}
+                  onClick={() => {
+                    const subject = students.find((s) => s.id === 1) || { id: 1, name: 'Cassidy', archetype: 'swimmer', lbs: 200, corruption: 45 };
+                    setStudents((prev) => prev.map((s) => (
+                      s.id === 1 ? { ...s, corruption: 45, lbs: 200 } : s
+                    )));
+                    setDreamPresetScenario('endless_buffet');
+                    setDreamStudent({ ...subject, corruption: 45, lbs: 200 });
+                    setDebugOpen(false);
+                  }}>
+                  💤 Dream QA
+                </button>
+              )}
+              {setEchoReplay && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(50,80,100,0.55)' }}
+                  onClick={() => {
+                    const subject = students.find((s) => s.id === 1) || { id: 1, name: 'Cassidy', archetype: 'swimmer', lbs: 240 };
+                    setEchoReplay({
+                      student: subject,
+                      echo: { id: 'echo_qa_1', studentId: 1, type: 'stage_up', week: 4, replayCount: 1, resonated: false },
+                      prose: 'The memory returns — Cassidy crossing into Heavy on your floor, caught between shame and the hunger you kept feeding.',
+                      depth: 1,
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  📜 Echo QA
+                </button>
+              )}
+              {setFeastRitualOpen && setOwnedHallSkills && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(120,60,20,0.55)' }}
+                  onClick={() => {
+                    setOwnedHallSkills((prev) => ({ ...prev, ritual_kitchen: true }));
+                    setAp((a) => Math.max(a, 20));
+                    setFeastRitualOpen(true);
+                    setDebugOpen(false);
+                  }}>
+                  🕯️ Feast Ritual QA
                 </button>
               )}
               {setTierUpModal && (

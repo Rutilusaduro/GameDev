@@ -299,6 +299,24 @@ export async function triggerWeighInQA(page) {
   await page.getByRole('button', { name: /Weigh-In QA/ }).click();
 }
 
+/** Debug: open appetite dream modal for Cassidy (endless buffet preset). */
+export async function triggerDreamQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Dream QA/ }).click();
+}
+
+/** Debug: open body echo archive replay for Cassidy. */
+export async function triggerEchoQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Echo QA/ }).click();
+}
+
+/** Debug: open feast ritual picker with hall kitchen unlocked. */
+export async function triggerFeastRitualQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Feast Ritual QA/ }).click();
+}
+
 /** Debug: set Cassidy evolution-eligible and open student detail (no modal). */
 export async function prepareEvolutionEligibleQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();
