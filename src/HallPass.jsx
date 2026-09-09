@@ -8548,7 +8548,7 @@ export default function HallPass(){
         </div>
         <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
           {professorProfile&&(
-            <div title="Hall Cred — on-style actions fill it; full returns AP" style={{textAlign:"center",background:professorProfile.accentSoft||"rgba(80,18,140,0.3)",borderRadius:6,padding:"3px 11px",minWidth:74}}>
+            <div className="ra-desk-stat-pill" title="Hall Cred — on-style actions fill it; full returns AP" style={{textAlign:"center",background:professorProfile.accentSoft||"rgba(80,18,140,0.3)",borderRadius:6,padding:"3px 11px",minWidth:74}}>
               <div style={{height:6,background:"rgba(0,0,0,0.35)",borderRadius:3,overflow:"hidden",marginBottom:2}}>
                 <div style={{height:"100%",width:`${Math.min(100,((spiritFavor||0)/FAVOR_MAX)*100)}%`,background:professorProfile.color||"#a060ff",transition:"width 0.25s"}}/>
               </div>
@@ -8556,7 +8556,7 @@ export default function HallPass(){
             </div>
           )}
           {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Reach",`Lv ${spiritLevel}`,"#a0e0b0"],["Pts",availableSkillPoints,"#f0c060"]].map(([l,v,c])=>(
-            <div key={l} style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px"}}>
+            <div key={l} className="ra-desk-stat-pill" style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px"}}>
               <span style={{fontSize:17,fontWeight:700,color:c,display:"block"}}>{l==="Wk"?`Wk ${v}`:v}</span>
               <span style={{fontSize:9,color:"#60389a",letterSpacing:2}}>
                 {l==="Wk"?"WEEK":l==="AP"?"ACTION PTS":l==="Reach"?"REACH":"SKILL PTS"}
@@ -8601,7 +8601,13 @@ export default function HallPass(){
               </span>
             </div>
           )}
-          <button onClick={startClass} style={{...C.btn(opposition?.supernatural?.famineWeek?"#333":"#186028"),opacity:opposition?.supernatural?.famineWeek?0.45:1}} title={opposition?.supernatural?.famineWeek?"Complete a Refeast Ritual first":"Advance the semester"}>
+          <button
+            type="button"
+            className="ra-desk-action-btn"
+            onClick={startClass}
+            style={{...C.btn(opposition?.supernatural?.famineWeek?"#333":"#186028"),opacity:opposition?.supernatural?.famineWeek?0.45:1}}
+            title={opposition?.supernatural?.famineWeek?"Complete a Refeast Ritual first":"Advance the semester"}
+          >
             {opposition?.supernatural?.famineWeek?"⏸ Famine Week":"⏩ Next Week (+5 AP)"}
           </button>
           <WalletBadge balance={money} />

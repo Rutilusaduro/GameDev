@@ -36,6 +36,14 @@ function floorCheckInModal(page) {
   return page.locator('.hall-pass-modal-in').filter({ hasText: 'FLOOR CHECK-IN' });
 }
 
+function narrativeModal(page) {
+  return page.locator('.hall-pass-modal-in').filter({ hasText: 'NARRATIVE EVENT' });
+}
+
+async function isNarrativeOpen(page) {
+  return await narrativeModal(page).isVisible().catch(() => false);
+}
+
 async function deskHasBlockingOverlay(page) {
   const checks = [
     'NARRATIVE EVENT',
@@ -57,20 +65,20 @@ async function deskHasBlockingOverlay(page) {
 
 async function drainNarrativeModal(page, { maxTaps = 96 } = {}) {
   for (let step = 0; step < maxTaps; step += 1) {
-    if (!(await page.getByText('NARRATIVE EVENT').isVisible().catch(() => false))) return;
-    const narrativeModal = page.locator('.hall-pass-modal-in').filter({ hasText: 'NARRATIVE EVENT' });
-    const nextBeat = narrativeModal.getByRole('button', { name: /Tap for next beat/i });
+    if (!(await isNarrativeOpen(page))) return;
+    const modal = narrativeModal(page);
+    const nextBeat = modal.getByRole('button', { name: /Tap for next beat/i });
     if (await nextBeat.isVisible().catch(() => false)) {
       await nextBeat.click({ force: true });
       await page.waitForTimeout(30);
       continue;
     }
-    const dismissBtn = narrativeModal.getByRole('button', { name: 'Dismiss' }).filter({ hasNotText: /Dismissed/i });
+    const dismissBtn = modal.getByRole('button', { name: 'Dismiss' }).filter({ hasNotText: /Dismissed/i });
     if (await dismissBtn.isVisible().catch(() => false)) {
       await dismissBtn.click({ force: true });
       return;
     }
-    const continueBtn = narrativeModal.getByRole('button', { name: 'Continue →' }).first();
+    const continueBtn = modal.getByRole('button', { name: 'Continue →' }).first();
     if (await continueBtn.isVisible().catch(() => false)) {
       await continueBtn.click({ force: true });
       return;
@@ -172,22 +180,22 @@ export async function resolveBlockingUI(page, { maxSteps = 72 } = {}) {
       }
     }
 
-    if (await page.getByText('NARRATIVE EVENT').isVisible().catch(() => false)) {
-      const narrativeModal = page.locator('.hall-pass-modal-in').filter({ hasText: 'NARRATIVE EVENT' });
+    if (await isNarrativeOpen(page)) {
+      const modal = narrativeModal(page);
       for (let beat = 0; beat < 48; beat += 1) {
-        const nextBeat = narrativeModal.getByRole('button', { name: /Tap for next beat/i });
+        const nextBeat = modal.getByRole('button', { name: /Tap for next beat/i });
         if (await nextBeat.isVisible().catch(() => false)) {
           await nextBeat.click({ force: true });
           acted = true;
           await page.waitForTimeout(25);
           continue;
         }
-        const dismissBtn = narrativeModal.getByRole('button', { name: 'Dismiss' }).filter({ hasNotText: /Dismissed/i });
+        const dismissBtn = modal.getByRole('button', { name: 'Dismiss' }).filter({ hasNotText: /Dismissed/i });
         if (await clickIfVisible(dismissBtn)) {
           acted = true;
           break;
         }
-        if (await clickIfVisible(narrativeModal.getByRole('button', { name: 'Continue →' }).first())) {
+        if (await clickIfVisible(modal.getByRole('button', { name: 'Continue →' }).first())) {
           acted = true;
           break;
         }
@@ -209,7 +217,7 @@ export async function resolveBlockingUI(page, { maxSteps = 72 } = {}) {
 /** Walk floor check-in modal through choices → End Week (if shown). */
 export async function completeFloorCheckIn(page) {
   for (let step = 0; step < 32; step += 1) {
-    if (await page.getByText('NARRATIVE EVENT').isVisible().catch(() => false)) {
+    if (await isNarrativeOpen(page)) {
       await drainNarrativeModal(page, { maxTaps: 128 });
     }
     if (await page.getByText('RELATIONSHIP MILESTONE').isVisible().catch(() => false)) {
@@ -274,19 +282,24 @@ export async function advanceToWeek(page, targetWeek) {
     if (current >= targetWeek) return current;
 
     let advanced = false;
-    for (let attempt = 0; attempt < 8; attempt += 1) {
+    const nextWeek = page.getByRole('button', { name: '⏩ Next Week (+5 AP)' });
+    for (let attempt = 0; attempt < 12; attempt += 1) {
       await ensureDeskClear(page, { maxPasses: 24 });
-      if (await page.getByText('NARRATIVE EVENT').isVisible().catch(() => false)) {
-        await drainNarrativeModal(page, { maxTaps: 128 });
+      while (await isNarrativeOpen(page)) {
+        await drainNarrativeModal(page, { maxTaps: 64 });
       }
-      const nextWeek = page.getByRole('button', { name: '⏩ Next Week (+5 AP)' });
-      const narrativeOpen = await page.getByText('NARRATIVE EVENT').isVisible().catch(() => false);
-      if (!narrativeOpen) {
-        await nextWeek.click({ timeout: 10_000 });
+      if (await deskHasBlockingOverlay(page)) {
+        await page.waitForTimeout(120);
+        continue;
+      }
+      try {
+        await nextWeek.click({ timeout: 8_000 });
         advanced = true;
         break;
+      } catch {
+        await drainNarrativeModal(page, { maxTaps: 96 });
+        await page.waitForTimeout(150);
       }
-      await page.waitForTimeout(120);
     }
     if (!advanced) {
       throw new Error(`Next Week blocked after clear attempts (week ${await getDisplayedWeek(page)})`);
