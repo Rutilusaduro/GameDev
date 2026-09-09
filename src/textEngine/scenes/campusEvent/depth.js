@@ -3,7 +3,7 @@
 // Wildcard depth for campusEvent.scene + campusEvent.choice pools (Pass 31).
 import { registerModuleVariants } from '../../engine.js';
 
-registerModuleVariants('campusEvent.scene.mood_stressed', [{ when: {}, text: ["She slumps into her seat — hollow-eyed, notebook closed, appetite waiting underneath the exhaustion.", "Stress sits in her shoulders; the lecture hall feels too bright, food the only soft thing in reach."] }]);
+registerModuleVariants('campusEvent.scene.mood_stressed', [{ when: {}, text: ["She slumps into her seat — hollow-eyed, notebook closed, appetite waiting underneath the exhaustion.", "Stress sits in her shoulders; the common room feels too bright, food the only soft thing in reach."] }]);
 registerModuleVariants('campusEvent.choice.mood_stressed.0', [{ when: {}, text: ["She eats without performance — steady, pleased, grateful in the unhurried way of being fed.", "Warmth spreads through the moment — plates cleared, appetite answered, mood softening."] }]);
 registerModuleVariants('campusEvent.choice.mood_stressed.1', [{ when: {}, text: ["You listen; she unloads; something in her posture unlocks by degrees.", "Trust deepens in small talk — the kind that leaves her lighter than she arrived."] }]);
 registerModuleVariants('campusEvent.choice.mood_stressed.2', [{ when: {}, text: ["Food does what food does best; color returns, shoulders drop, the room exhales.", "She eats without performance — steady, pleased, grateful in the unhurried way of being fed."] }]);

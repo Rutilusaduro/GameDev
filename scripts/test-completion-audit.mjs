@@ -824,6 +824,18 @@ check('week-planner-hall-kitchen', () => {
   assert.doesNotMatch(planner, /label: 'Lab'/);
 });
 
+check('campus-mood-stressed-ra-framing', () => {
+  const campus = read('src/textEngine/scenes/campusEvent/depth.js');
+  assert.match(campus, /common room feels too bright/);
+  assert.doesNotMatch(campus, /lecture hall/i);
+});
+
+check('bookworm-attitude-hall-log', () => {
+  const attitude = read('src/textEngine/scenes/attitude.js');
+  assert.match(attitude, /Hall log: me\. Variable: obedience/);
+  assert.doesNotMatch(attitude, /Research subject: me/i);
+});
+
 check('narrative-residents-not-students', () => {
   const narrative = read('src/textEngine/scenes/weeklyEvent/narrativeFragments.js');
   const campus = read('src/textEngine/scenes/campus/fragments.js');

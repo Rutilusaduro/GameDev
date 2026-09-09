@@ -274,7 +274,7 @@ registerPool("attitude.line", [
   { when: { archetype: "bookworm", corruption: [1, 2] }, priority: 1,
     text: [
       `I've documented my willingness. The findings are unambiguous.`,
-      `Research subject: me. Variable: obedience. Result: significant.`,
+      `Hall log: me. Variable: obedience. Result: significant.`,
       `I can explain why I want this. Explanation doesn't slow me down.`,
     ] },
   { when: { archetype: 'swimmer', corruption: [1, 2] }, priority: 1,
