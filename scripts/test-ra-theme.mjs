@@ -22,6 +22,11 @@ const BANNED = [
   { id: 'back-to-class', re: /Back to Class/i },
   { id: 'after-class', re: /After class,/i },
   { id: 'class-travels', re: /Class now travels to/i },
+  { id: 'feederism-season-plan', re: /feederism season plan/i },
+  { id: 'nadia-feeder-pitch', re: /RA \[Name\] and Nadia said/i },
+  { id: 'nadia-feeder-pitch-you', re: /You and Nadia said/i },
+  { id: 'nadia-feeder-subject', re: /Nadia needed a live subject/i },
+  { id: 'nadia-feederism-study', re: /her feederism study/i },
 ];
 
 const ALLOW_LINE = [
