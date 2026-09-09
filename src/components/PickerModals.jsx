@@ -43,12 +43,12 @@ export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, st
               </div>
               {/* Stage/level indicator */}
               <div style={{padding:"6px 16px",background:"#050010",borderBottom:`1px solid ${purple}20`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                <div style={{fontSize:9,color:"#5040708",letterSpacing:2}}>{isIntro?"INTRODUCTION":`SUBJECT: ${STAGE_LABELS[currentPage]}`}</div>
+                <div style={{fontSize:9,color:"#5040708",letterSpacing:2}}>{isIntro?"INTRODUCTION":`STAGE: ${STAGE_LABELS[currentPage]}`}</div>
                 <div style={{fontSize:9,color:"#6b5b95",letterSpacing:2}}>NADIA: {NADIA_LEVEL_LABELS[nadiaLevel]}</div>
               </div>
               {/* Entry */}
               <div style={{flex:1,overflowY:"auto",padding:"20px 22px",background:"#040010"}}>
-                {isIntro&&<div style={{fontSize:9,letterSpacing:3,color:purple,marginBottom:10,textTransform:"uppercase"}}>Why this subject</div>}
+                {isIntro&&<div style={{fontSize:9,letterSpacing:3,color:purple,marginBottom:10,textTransform:"uppercase"}}>Why this resident</div>}
                 <div style={{fontSize:13,color:"#c0a8e8",lineHeight:1.9,fontFamily:"Georgia,serif",whiteSpace:"pre-wrap"}}>{entryText}</div>
               </div>
               {/* Navigation */}
@@ -117,10 +117,10 @@ export function ResearchSubjectPicker({ researchSubjectPicker, setAp, setEvolved
         return(
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
             <div className="hall-pass-modal-in picker-modal" style={{background:"#0a0010",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:500,width:"95%",maxHeight:"85vh",overflowY:"auto"}}>
-              <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:4,textAlign:"center"}}>📋 RESEARCH SUBJECT</div>
-              <div style={{fontSize:14,color:"#c0a0e0",fontWeight:"bold",marginBottom:12,textAlign:"center"}}>Select a Subject</div>
+              <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:4,textAlign:"center"}}>📋 HALL LOG FOCUS</div>
+              <div style={{fontSize:14,color:"#c0a0e0",fontWeight:"bold",marginBottom:12,textAlign:"center"}}>Select a Resident</div>
               <div style={{fontSize:11,color:"#8070a0",marginBottom:14,textAlign:"center"}}>Close tier or above · any weight stage</div>
-              {eligible.length===0&&<div style={{color:"#806090",textAlign:"center",padding:20}}>No eligible subjects — build a Close relationship first.</div>}
+              {eligible.length===0&&<div style={{color:"#806090",textAlign:"center",padding:20}}>No eligible residents — build a Close relationship first.</div>}
               {eligible.map(st=>(
                 <div key={st.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:6,borderRadius:8,background:"#080016",border:`1px solid ${purple}40`,cursor:"pointer"}}
                   onClick={()=>{

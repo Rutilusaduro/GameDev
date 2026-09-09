@@ -24,12 +24,12 @@ export function CultivatorModal({ cultivatorState, students, week = 1, setCultiv
         // ── RECRUIT SETUP ──
         if(cs.modalPhase==='recruit_setup') return wrap(<>
           <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 CULTIVATOR</div>
-          <div style={{fontSize:14,fontWeight:700,color:amber,marginBottom:10}}>Select a Subject</div>
+          <div style={{fontSize:14,fontWeight:700,color:amber,marginBottom:10}}>Select a Taste Tester</div>
           <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>{getRecruitmentScene()}</div>
           <div style={{fontSize:11,color:"#8a5030",marginBottom:16}}>A candidate will be selected from your contact list. She will believe she is a paid taste tester. This is technically accurate. Cycle {cs.harvestsCompleted+1} of 4.</div>
           <div style={{display:"flex",gap:8}}>
             <button style={C.btn("#333")} onClick={()=>setCultivatorState(prev=>({...prev,modalPhase:null}))}>Cancel</button>
-            <button style={{...C.btn(brown),flex:1}} onClick={confirmCultivatorRecruit}>Recruit Subject →</button>
+            <button style={{...C.btn(brown),flex:1}} onClick={confirmCultivatorRecruit}>Recruit Tester →</button>
           </div>
         </>);
 
@@ -39,7 +39,7 @@ export function CultivatorModal({ cultivatorState, students, week = 1, setCultiv
           // Food picker
           if(!session.foodType) return wrap(<>
             <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 TASTE-TEST SESSION</div>
-            <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:6}}>Subject: {cs.testerName}</div>
+            <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:6}}>Tester: {cs.testerName}</div>
             <div style={{fontSize:11,color:"#8a6030",marginBottom:14}}>{getStage(cs.testerLbs).label} · {Math.round(cs.testerLbs)} lbs</div>
             <div style={{fontSize:12,color:"#b08050",marginBottom:10,fontStyle:"italic"}}>What's on the menu today?</div>
             {Object.entries(RECIPES).map(([key,r])=>(

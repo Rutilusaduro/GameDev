@@ -923,6 +923,24 @@ check('resident-journal-ui-framing', () => {
   assert.doesNotMatch(picker, /SUBJECT JOURNAL/);
 });
 
+check('picker-resident-framing-ui', () => {
+  const picker = read('src/components/PickerModals.jsx');
+  const detail = read('src/views/StudentDetailView.jsx');
+  const cultivator = read('src/components/CultivatorModal.jsx');
+  const evolved = read('src/gameData/evolvedForms.js');
+  assert.match(picker, /HALL LOG FOCUS/);
+  assert.match(picker, /Select a Resident/);
+  assert.match(picker, /No eligible residents/);
+  assert.match(picker, /Why this resident/);
+  assert.doesNotMatch(picker, /RESEARCH SUBJECT|Select a Subject|eligible subjects|Why this subject/i);
+  assert.match(detail, /HALL LOG FOCUS/);
+  assert.doesNotMatch(detail, /RESEARCH SUBJECT/);
+  assert.match(cultivator, /Select a Taste Tester/);
+  assert.match(cultivator, /Recruit Tester/);
+  assert.doesNotMatch(cultivator, /Select a Subject|Recruit Subject|Subject: /);
+  assert.doesNotMatch(evolved, /subject\?\.name\|\|'The subject'/);
+});
+
 check('floor-event-hall-target', () => {
   const floor = read('src/gameData/floorEvents.js');
   const helpers = read('src/utils/gameHelpers.js');

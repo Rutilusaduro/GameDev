@@ -2601,10 +2601,10 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
           text:(h,s,subject)=>{
             const sid=subject?getStage(subject.lbs).id:2;
             const subDesc=sid>=7
-              ?`${subject?.name||'The subject'} is very heavy — ${Math.round(subject?.lbs||100)} lbs — and every measurement takes longer now. She fills the common room couch completely, warm and vast, and ${s.name} has to sit on the arm to take notes at all.`
+              ?`${subject?.name||'This resident'} is very heavy — ${Math.round(subject?.lbs||100)} lbs — and every measurement takes longer now. She fills the common room couch completely, warm and vast, and ${s.name} has to sit on the arm to take notes at all.`
               :sid>=4
-              ?`${subject?.name||'The subject'} is noticeably soft at ${Math.round(subject?.lbs||100)} lbs, still mobile — waistbands, gait, the way she claims a chair. ${s.name} logs all of it in the first session column.`
-              :`${subject?.name||'The subject'} is slender at ${Math.round(subject?.lbs||100)} lbs — changes are early, a softness at the wrists, fullness after meals. ${s.name} marks the baseline carefully.`;
+              ?`${subject?.name||'This resident'} is noticeably soft at ${Math.round(subject?.lbs||100)} lbs, still mobile — waistbands, gait, the way she claims a chair. ${s.name} logs all of it in the first session column.`
+              :`${subject?.name||'This resident'} is slender at ${Math.round(subject?.lbs||100)} lbs — changes are early, a softness at the wrists, fullness after meals. ${s.name} marks the baseline carefully.`;
             const focus=h.includes("feeder_focus")
               ?`The first active session is arranged. ${s.name} has brought food — more than the subject will expect. She has her notebook open on her knee.`
               :`The first observation session is scheduled. ${s.name} will say she's studying eating habits for a hall survey. This is not entirely false.`;
@@ -2629,10 +2629,10 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
           text:(h,s,subject)=>{
             const sid=subject?getStage(subject.lbs).id:2;
             const subDesc=sid>=7
-              ?`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs now — genuinely large. The second notebook is almost full; ${subject?.name||'The subject'} has outgrown three dining-hall chair assessments. The trend line does not flatten.`
+              ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs now — genuinely large. The second notebook is almost full; ${subject?.name||'This resident'} has outgrown three dining-hall chair assessments. The trend line does not flatten.`
               :sid>=4
-              ?`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — soft and accelerating. The hall log's weekly delta column is the most honest page in the building.`
-              :`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — still early on the curve, but ${s.name}'s projection graph already bends upward.`;
+              ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — soft and accelerating. The hall log's weekly delta column is the most honest page in the building.`
+              :`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — still early on the curve, but ${s.name}'s projection graph already bends upward.`;
             const focus=h.includes("feeder_focus")
               ?`The Hands-On Log has been running for weeks. ${s.name} arrives to the session with a different bag — bigger. She has adjusted the protocol.`
               :`The Field Observer logs are meticulous. ${s.name} has begun conducting more formal interviews. The subject seems to enjoy the attention.`;
@@ -2669,10 +2669,10 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
           text:(h,s,subject)=>{
             const sid=subject?getStage(subject.lbs).id:2;
             const subDesc=sid>=7
-              ?`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — the changes are no longer subtle. Chairs are rated before sessions now; ${subject?.name||'The subject'} rates them by how much of her they actually hold.`
+              ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — the changes are no longer subtle. Chairs are rated before sessions now; ${subject?.name||'This resident'} rates them by how much of her they actually hold.`
               :sid>=4
-              ?`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — rounded and growing. Residents whisper in the lounge; ${s.name} writes the whispers down too.`
-              :`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — still early stages, but the trend line is clean. ${s.name} trusts the data more than the subject trusts her appetite.`;
+              ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — rounded and growing. Residents whisper in the lounge; ${s.name} writes the whispers down too.`
+              :`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — still early stages, but the trend line is clean. ${s.name} trusts the data more than the subject trusts her appetite.`;
             return `Physics observation principle: the act of observing changes the thing being observed.\n\n${s.name} writes this at the top of a new section. She is ${Math.round(s.lbs)} lbs now. She says this is unrelated to the hall log. The notebook contains months of evidence to the contrary.\n\n${subDesc}`;
           },
           choices:[
@@ -2705,10 +2705,10 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
           text:(h,s,subject)=>{
             const sid=subject?getStage(subject.lbs).id:2;
             const subDesc=sid>=7
-              ?`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — enormous, warm, occupying the room the way weather does. You notice ${subject?.name||'her'} before you notice the furniture.`
+              ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — enormous, warm, occupying the room the way weather does. You notice ${subject?.name||'her'} before you notice the furniture.`
               :sid>=4
-              ?`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — heavy, moving differently now: less hurry, more sway. The gain pattern hasn't missed a week.`
-              :`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — early growth showing. The curve matches the prediction almost uncomfortably well.`;
+              ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — heavy, moving differently now: less hurry, more sway. The gain pattern hasn't missed a week.`
+              :`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — early growth showing. The curve matches the prediction almost uncomfortably well.`;
             return `The notebook says: *The observer's own responses have become a primary data point rather than a confound.*\n\n${s.name} is ${Math.round(s.lbs)} lbs. The original study proposal described the observer as neutral. She has written 'LOL' in the margin of this section, then crossed it out, then left it because the notation is accurate.\n\n${subDesc}`;
           },
           choices:[
@@ -2742,10 +2742,10 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
           text:(h,s,subject)=>{
             const sid=subject?getStage(subject.lbs).id:2;
             const subDesc=sid>=7
-              ?`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs now — nearly immobile, colossal. ${s.name} conducts sessions from beside her now, not across from her. The hall log calls this 'proximate observation.'`
+              ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs now — nearly immobile, colossal. ${s.name} conducts sessions from beside her now, not across from her. The hall log calls this 'proximate observation.'`
               :sid>=4
-              ?`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — very heavy, profoundly changed. ${s.name} rereads month-one photos and barely recognizes the comparison.`
-              :`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — growing steadily, week after week. The trend is deep into positive territory.`;
+              ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — very heavy, profoundly changed. ${s.name} rereads month-one photos and barely recognizes the comparison.`
+              :`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — growing steadily, week after week. The trend is deep into positive territory.`;
             return `The word in observation protocol for what has happened here is *saturation* — the point at which new data no longer changes the conclusions because the conclusions are complete.\n\n${s.name} is ${Math.round(s.lbs)} lbs. She is, in her words, "past the saturation point of any protocol that predates me."\n\n${subDesc}`;
           },
           choices:[
@@ -2777,10 +2777,10 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
           text:(h,s,subject)=>{
             const sid=subject?getStage(subject.lbs).id:2;
             const subDesc=sid>=7
-              ?`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs. The final volume is mostly ${subject?.name||'her'} — her arc is the dataset.`
+              ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs. The final volume is mostly ${subject?.name||'her'} — her arc is the dataset.`
               :sid>=4
-              ?`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs. Grown beyond the original proposal parameters. ${s.name} adds a footnote: 'Hypothesis exceeded.'`
-              :`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — earlier in the arc, but the hall log captures both trajectories now.`;
+              ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs. Grown beyond the original proposal parameters. ${s.name} adds a footnote: 'Hypothesis exceeded.'`
+              :`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — earlier in the arc, but the hall log captures both trajectories now.`;
             return `${s.name} is ${Math.round(s.lbs)} lbs. She fills the office chair completely. She looks like the reason the chair exists.\n\n${h.includes("feeder_focus")?`The Hands-On Log produced a subject who changed profoundly. It also produced an observer who changed profoundly. The final report argues these facts are inseparable.`:`The Field Observer methodology produced a data set of extraordinary quality. It also produced an observer who is no longer separable from the field. She has noted this.`}\n\n${subDesc}`;
           },
           choices:[

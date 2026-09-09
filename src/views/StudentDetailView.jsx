@@ -820,7 +820,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                             const BR=[`50% 50% 55% 55%`,`50% 50% 58% 58%`,`50% 50% 65% 65%`,`50% 50% 70% 70%`,`50% 50% 75% 75%`][tier];
                             return(
                               <div style={{marginTop:10,padding:"10px 12px",background:"rgba(15,5,30,0.6)",border:"1px solid #4020806a",borderRadius:8}}>
-                                <div style={{fontSize:9,letterSpacing:3,color:"#6b5b95",marginBottom:8}}>RESEARCH SUBJECT</div>
+                                <div style={{fontSize:9,letterSpacing:3,color:"#6b5b95",marginBottom:8}}>HALL LOG FOCUS</div>
                                 <div style={{display:"flex",alignItems:"center",gap:14}}>
                                   <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
                                     <div style={{width:14,height:14,borderRadius:"50%",background:"#5030904d"}}/>

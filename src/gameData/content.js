@@ -225,7 +225,7 @@ export const STAGE_REACTIONS = {
     // Stage 9 ~595-820 lbs
     (s) => `${Math.round(s.lbs)} lbs. I stopped converting these to clinical notation months ago. The number is ${Math.round(s.lbs)} and it is mine and I find I am completely satisfied with it. My research is exceptional. My body is exceptional. Both are larger than I planned for. I've stopped considering that a problem.`,
     // Stage 10 820+ lbs
-    (s) => `${Math.round(s.lbs)} lbs. I am the hall log. I am also the largest research subject I have ever encountered, and I've encountered quite a few. My belly is vast and warm and my notebooks are spread all around me. People come to me now. I observe them and they don't mind. This was always going to be where the research led.`,
+    (s) => `${Math.round(s.lbs)} lbs. I am the hall log. I am also the largest resident I have ever logged, and I've logged quite a few. My belly is vast and warm and my notebooks are spread all around me. People come to me now. I observe them and they don't mind. This was always going to be where the hall log led.`,
   ],
   culinary: [
     (s)=>`Renee dusts flour off her hands and squints at the scale. ${Math.round(s.lbs)} pounds is too light for the recipes she's been testing. She opens her notebook and writes "baseline — fix immediately."`,
