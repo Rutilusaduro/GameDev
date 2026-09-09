@@ -36,13 +36,13 @@ registerModuleVariants('homeroom.activity.health_unit.p0', [
 
 registerModuleVariants('homeroom.activity.health_unit.p0.official', [
   { when: {}, text: [
-    `Height, then weight. Daisy reads numbers into the school file — accurate, notable, destined for the nurse's inbox.`,
+    `Height, then weight. Daisy reads numbers into the hall wellness file — accurate, notable, destined for the health office inbox.`,
   ]},
 ]);
 
 registerModuleVariants('homeroom.activity.health_unit.p0.personal', [
   { when: {}, text: [
-    `Numbers go into the apron-pocket notebook, not the school file. Daisy studies them, then smiles — these measurements are hers.`,
+    `Numbers go into the apron-pocket notebook, not the wellness file. Daisy studies them, then smiles — these measurements are hers.`,
   ]},
 ]);
 

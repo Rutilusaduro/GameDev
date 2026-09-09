@@ -1,24 +1,25 @@
 import { C } from '../styles.js';
 import { getFullnessStage } from '../gameData/sessions.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 
 
-export function EvolutionOfferModal({ chooseEvolution, evolutionModal, setEvolutionModal }){
+export function EvolutionOfferModal({ chooseEvolution, evolutionModal, setEvolutionModal, soundEnabled = true }){
   return(
         <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0c0520,#180840,#0c0520)",border:"2px solid #7030c060"}}>
+          <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0c0520,#180840,#0c0520)",border:"2px solid #7030c060"}}>
             <div style={{fontSize:9,letterSpacing:4,color:"#9040e0",marginBottom:6}}>✦ A NEW DIRECTION</div>
             <div style={{fontSize:17,fontWeight:700,color:"#d0a0ff",marginBottom:10}}>{evolutionModal.student?.name}</div>
             <div style={{fontSize:12,color:"#b090d0",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>{evolutionModal.intro}</div>
             <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:12}}>
               {(evolutionModal.paths||[]).map(p=>(
                 <button key={p.id} style={{...C.btn("#40108080"),textAlign:"left",padding:"12px 14px",border:"1px solid #6030a060"}}
-                  onClick={()=>chooseEvolution(evolutionModal.student.id,p.id)}>
+                  onClick={()=>{ playHallPassSound('confirm', soundEnabled); chooseEvolution(evolutionModal.student.id,p.id); }}>
                   <div style={{fontSize:13,fontWeight:700,color:"#c080ff",marginBottom:4}}>{p.label}</div>
                   <div style={{fontSize:11,color:"#8060a0",lineHeight:1.5}}>{p.desc}</div>
                 </button>
               ))}
             </div>
-            <button style={C.btn("#201040")} onClick={()=>setEvolutionModal(null)}>Not yet</button>
+            <button style={C.btn("#201040")} onClick={()=>{ playHallPassSound('click', soundEnabled); setEvolutionModal(null); }}>Not yet</button>
           </div>
         </div>
   );

@@ -702,6 +702,7 @@ export default function HallPass(){
   useEffect(()=>{
     const newAch=ACHIEVEMENT_LIST.filter(a=>!achievements.includes(a.id)&&a.check(students,globalStats));
     if(newAch.length){
+      playHallPassSound('unlock', soundEnabled);
       newAch.forEach(a=>{ setTimeout(()=>push(`🏆 Achievement unlocked: ${a.label} — ${a.desc}`),100); });
       setAchievements(prev=>[...prev,...newAch.map(a=>a.id)]);
     }
@@ -8887,7 +8888,7 @@ export default function HallPass(){
 
       {/* ── CONVERGENCE MODAL ── */}
       {/* ── EP2: EVOLUTION OFFER MODAL ── */}
-      {evolutionModal&&<EvolutionOfferModal chooseEvolution={chooseEvolution} evolutionModal={evolutionModal} setEvolutionModal={setEvolutionModal}/>}
+      {evolutionModal&&<EvolutionOfferModal chooseEvolution={chooseEvolution} evolutionModal={evolutionModal} setEvolutionModal={setEvolutionModal} soundEnabled={soundEnabled}/>}
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
       {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} openSalonHub={openSalonHub} openGalleryHub={openGalleryHub} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students} week={week}/>}

@@ -7,7 +7,7 @@ import { UNLOCK_SCENES } from '../src/gameData/unlockScenes.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { DORM_LIST } from '../src/gameData/dorms.js';
 import { THESIS_BOARD, CASE_STUDY_PAIRS, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
-import { EVOLVED_OUTFITS, EVOLVED_EVENTS, HOMEROOM_CONFERENCE_EVENTS } from '../src/gameData/evolvedForms.js';
+import { EVOLVED_OUTFITS, EVOLVED_EVENTS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES } from '../src/gameData/evolvedForms.js';
 import { EVOLVED_MINIGAMES } from '../src/gameData/evolvedMinigames.js';
 import { CG_FILLED_DIARY } from '../src/gameData/competitiveGainerText.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
@@ -48,6 +48,10 @@ const BANNED = [
   /\bfor academia\b/i,
   /\btracking this academically\b/i,
   /\bBest class I ever had\b/i,
+  /\bstudents from class\b/i,
+  /\bschool nurse\b/i,
+  /\bschool file\b/i,
+  /\bcooking class\b/i,
 ];
 
 function assertClean(text, label) {
@@ -196,4 +200,27 @@ for (const [npcKey, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
   }
 }
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved OK');
+for (const [actKey, act] of Object.entries(HOMEROOM_GROUP_ACTIVITIES)) {
+  assertClean(act.label, `homeroom activity ${actKey} label`);
+  if (act.text) assertClean(act.text, `homeroom activity ${actKey} intro`);
+  const phases = act.phases || [{ text: act.text, choices: act.choices || [] }];
+  for (const [pi, phase] of phases.entries()) {
+    const body = typeof phase.text === 'function' ? phase.text() : phase.text;
+    if (body) assertClean(body, `homeroom activity ${actKey} phase ${pi}`);
+    for (const ch of phase.choices || []) {
+      assertClean(ch.label, `homeroom activity ${actKey} choice label`);
+      const result = typeof ch.result === 'function' ? ch.result() : ch.result;
+      if (result) assertClean(result, `homeroom activity ${actKey} choice ${ch.id}`);
+      const poolKey = `homeroom.activity.${actKey}.p${pi}.${ch.id}`;
+      const rendered = renderHomeroomPool(poolKey, daisy, 10);
+      if (rendered) assertClean(rendered, `homeroom pool ${poolKey}`);
+    }
+  }
+  for (const ch of act.choices || []) {
+    assertClean(ch.label, `homeroom activity ${actKey} flat choice label`);
+    const result = typeof ch.result === 'function' ? ch.result() : ch.result;
+    if (result) assertClean(result, `homeroom activity ${actKey} flat choice ${ch.id}`);
+  }
+}
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom OK');

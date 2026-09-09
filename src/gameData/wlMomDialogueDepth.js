@@ -92,7 +92,7 @@ export const WL_MOM_DIALOGUE_DEPTH = {
     },
     6: {
       greeting: `"The girls barely need me in the kitchen anymore. Emma runs the dough. Claire handles the glaze. I fetch heavy things and taste everything twice. They're confident — hips swaying, bellies leading — and I get to watch."`,
-      cappedGreeting: `"Four hundred ninety pounds. They've surpassed everything I imagined when I first brought store cookies and called it 'cooking class.' Emma's belly hangs soft over her lap. Claire fills a doorway if she doesn't turn. I brought photos to show the other mothers. I'm not subtle."`,
+      cappedGreeting: `"Four hundred ninety pounds. They've surpassed everything I imagined when I first brought store cookies and called it 'bake night.' Emma's belly hangs soft over her lap. Claire fills a doorway if she doesn't turn. I brought photos to show the other mothers. I'm not subtle."`,
       overtookGreeting: `"The gap between Emma and Chloe is enormous now. I stopped measuring when Claire pulled even with Emma's belly. Three big girls in my house. One kitchen that fits us all when we're here."`,
       options: [
         {
@@ -282,7 +282,7 @@ export const WL_MOM_DIALOGUE_DEPTH = {
           text: `"Lila's thighs rub together when she walks now. Very distracting. Best kind of distraction. I find myself wanting her bigger — more belly, more sway, more of that plush sound when she sits."`,
           subs: [
             { text: `"Lovely plush sight. I bite my lip at the dinner table. She knows. She eats slower when she wants to torture me."` },
-            { text: `"I want her even bigger. I said it out loud last week. She blushed and asked for seconds. We're past pretending this is just cooking class."` },
+            { text: `"I want her even bigger. I said it out loud last week. She blushed and asked for seconds. We're past pretending this is just bake night."` },
           ],
         },
       ],

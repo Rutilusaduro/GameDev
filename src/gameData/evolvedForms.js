@@ -238,7 +238,7 @@ export const EVOLVED_REACTIONS = {
   ],
   // ── FARM GIRL: wife_lessons ─────────────────────────────────────
   wife_lessons:[
-    "Darlene kept calling it 'cooking class.' I've stopped correcting her. Wanda knew what it was from the start. She sat down and ate and nodded and said 'I was wondering when someone was going to start this.' I love her.",
+    "Darlene kept calling it 'bake night.' I've stopped correcting her. Wanda knew what it was from the start. She sat down and ate and nodded and said 'I was wondering when someone was going to start this.' I love her.",
     "Patrice brought store-bought cookies like she was coming to a potluck. I didn't say anything. By the end she was asking for the full recipe. Taylor's hips are already starting — Patrice said her jeans 'fit different.' I know what that means.",
     "Cheryl came to watch. That's what she told herself. She ate four pieces of cinnamon bread and asked for the recipe on the way out. Madison gained seven pounds last month. Cheryl mentioned it like a personal record. It is.",
     "All six of them now. The room smells like butter for three hours before anyone arrives and for hours after they leave. Ruthanne said she doesn't fit through the same doorways she did last year. Becca said Sofia asked for the strong shake. Good.",
@@ -2165,7 +2165,7 @@ Someone took a photo. The dining staff started doing something with their hands 
       title:"People Come to Watch",
       phases:[
         {
-          text:(h,s)=>`Something is different about this one. ${s.name} is ${Math.round(s.lbs)} pounds and when she walks into the venue she sees: the journalist, three students from class, two people she doesn't recognize, a staff member who has clearly been told who's coming. They've put her in the center table.`,
+          text:(h,s)=>`Something is different about this one. ${s.name} is ${Math.round(s.lbs)} pounds and when she walks into the venue she sees: the journalist, three residents from her floor, two people she doesn't recognize, a staff member who has clearly been told who's coming. They've put her in the center table.`,
           choices:[
             {id:"acknowledge_crowd",label:"Help her acknowledge the crowd — this is real now",result:`You lean over and say: 'You should say something.' She looks at the room. She says: 'Thank you for coming. I'm going to eat now.' The room laughs. She eats. The room stays.`,lbs:5,rel:11,flag:"acknowledged_crowd"},
             {id:"just_do_the_thing",label:"She doesn't need to acknowledge it — just watch",result:`She sits down and the challenge arrives and she eats it with the same focused efficiency she always brings and the crowd watches and nobody needs to say anything because the thing is happening and that's what everyone came for.`,lbs:4,rel:9,flag:"just_ate"},
@@ -3804,11 +3804,11 @@ The agenda says: progress updates, enrichment activities, curriculum notes. The 
 
 Sofia is already standing near the scale, easy and unhurried.`,
         choices:[
-          {id:"official",label:"Run it officially — record everything for the school file",
-           result:`Height, then weight. Daisy reads the numbers aloud and writes them in the club health file — the one that goes to the school nurse. The numbers are accurate. The numbers are notable. The file will be interesting reading for whoever opens it next.`,
+          {id:"official",label:"Run it officially — record everything for the hall wellness file",
+           result:`Height, then weight. Daisy reads the numbers aloud and writes them in the hall wellness file — the one that goes to the campus health office. The numbers are accurate. The numbers are notable. The file will be interesting reading for whoever opens it next.`,
            rel:4,suspDelta:2,revealsWeights:true},
           {id:"personal",label:"Keep personal records only — this stays in the notebook",
-           result:`Daisy writes the numbers in the apron-pocket notebook, not the school file. These measurements are hers. She looks at the numbers for a long moment before closing the cover. Then she smiles.`,
+           result:`Daisy writes the numbers in the apron-pocket notebook, not the wellness file. These measurements are hers. She looks at the numbers for a long moment before closing the cover. Then she smiles.`,
            rel:6,suspDelta:-1,revealsWeights:true},
         ],
       },

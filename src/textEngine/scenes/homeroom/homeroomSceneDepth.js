@@ -124,7 +124,7 @@ registerModuleVariants('homeroom.conference.Mrs_Monroe.full_preview', [
 
 registerModuleVariants('homeroom.activity.health_unit.p0.official', [
   { when: { stageMin: 6 }, weight: 3, text: [
-    `Numbers read aloud into school file — accurate, notable, nurse's inbox interesting tomorrow.`,
+    `Numbers read aloud into hall wellness file — accurate, notable, health office inbox interesting tomorrow.`,
   ]},
 ]);
 

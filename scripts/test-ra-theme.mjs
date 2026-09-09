@@ -138,6 +138,10 @@ const BANNED = [
   { id: 'for-academia', re: /\bfor academia\b/i },
   { id: 'tracking-academically', re: /tracking this academically/i },
   { id: 'best-class-ever', re: /Best class I ever had/i },
+  { id: 'students-from-class', re: /students from class/i },
+  { id: 'school-nurse', re: /\bschool nurse\b/i },
+  { id: 'school-file', re: /\bschool file\b/i },
+  { id: 'cooking-class', re: /\bcooking class\b/i },
 ];
 
 const ALLOW_LINE = [
