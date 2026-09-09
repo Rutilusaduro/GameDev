@@ -12,6 +12,7 @@ import { buildGameSnapshot, serializeBugReport } from '../gameData/bugReport.js'
 import { defaultOppositionState } from '../gameData/opposition.js';
 import { dormUnlocksForWeek } from '../gameData/dorms.js';
 import { defaultSalonState } from '../gameData/chloeSalon.js';
+import { defaultGalleryState } from '../gameData/fionaGallery.js';
 import { ensureStreamFields } from '../gameData/streaming.js';
 import { toggleInstantText, toggleSound } from '../gameData/playerPrefs.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
@@ -53,6 +54,7 @@ export function DebugPanel({
   setOwnedSkills,
   setOwnedHallSkills,
   setSalonState,
+  setGalleryState,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -242,6 +244,20 @@ export function DebugPanel({
                       setView('student');
                     }}>
                     🥂 Salon Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(120,60,20,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 4
+                          ? { ...s, evolvedForm: 'artisan_gallery', lbs: 200, relationship: 60, mood: 'content' }
+                          : s
+                      )));
+                      setGalleryState?.(defaultGalleryState(4));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(4);
+                      setView('student');
+                    }}>
+                    🖼 Gallery Arc QA
                   </button>
                 </>
               )}
