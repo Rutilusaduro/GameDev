@@ -62,7 +62,7 @@ const dinnerUnbutton = {
   10: [`Reneé's clasp failed like a overcooked reduction — rich, inevitable, kitchen forgiven.`],
   11: [`Kaylee's waistband surrendered with a grateful exhale — warmth, fullness, body finally believed.`],
   12: [`Nadia's seam failed mid-observation — subject continued eating, field notes unnecessary.`],
-  13: [`Daisy's button popped at the faculty dinner — she laughed, kept eating, modeled abundance.`],
+  13: [`Daisy's button popped at the staff dinner — she laughed, kept eating, modeled abundance.`],
   14: [`Mary Jane's blouse gave like a burst seam on harvest day — sweet, unashamed, seconds assumed.`],
   15: [`Lilith's fabric failed with predatory patience — she kept eating, room learning to look away late.`],
   16: [`Sophia's wellness blouse surrendered to richness — guilt losing, pleasure winning publicly.`],

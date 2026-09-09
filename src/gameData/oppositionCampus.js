@@ -42,8 +42,8 @@ export function rollAccreditationObserverEvent(nodeId, opposition, rng = Math.ra
   if (rng() > 0.28) return null;
   const name = opposition.proxies.observerName || 'The Regional Observer';
   const lines = [
-    `📋 ${name} takes notes in the lecture hall — accreditation eyes on your hall.`,
-    `📋 ${name} compares your syllabus to wellness metrics. The pen never stops.`,
+    `📋 ${name} takes notes in the common room — accreditation eyes on your hall.`,
+    `📋 ${name} compares your floor notes to wellness metrics. The pen never stops.`,
   ];
   return lines[Math.floor(rng() * lines.length)];
 }

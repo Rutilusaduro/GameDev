@@ -211,7 +211,7 @@ export const stageDescriptor = (stageId) => {
     heavy:false,
     move:"walking briskly between buildings",
     eat:"picking at a snack between classes",
-    aside:"There's a new softness about her that wasn't on the syllabus.",
+    aside:"There's a new softness about her that wasn't on the move-in checklist.",
   };
   if (stageId <= 5) return {
     heavy:false,

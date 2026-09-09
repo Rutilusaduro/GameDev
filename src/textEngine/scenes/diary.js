@@ -960,7 +960,7 @@ registerPool('diary.home_nest.c1', [
   { when: { stage: [5] }, text: ['Didn\'t go out today. There was no reason to. The food came — two orders, one midday, one evening. I ate both. Read something. Watched something. Slept when I was full.'] },
   { when: { stage: [6] }, text: ['I\'ve been noting that I\'ve developed routines. Not on purpose — things just happen in the same order, at the same times. The delivery apps know my preferences. I keep refining them.'] },
   { when: { stage: [7] }, text: ['Third delivery today. I usually stop at two. Ordered a third because it seemed like the next thing to do, and it was good, and I finished it, and that was a good decision.'] },
-  { when: { stage: [8] }, text: ['Someone from class texted asking if I was okay. Said fine, just busy. This is accurate. I am busy.'] },
+  { when: { stage: [8] }, text: ['Someone from the floor texted asking if I was okay. Said fine, just busy. This is accurate. I am busy.'] },
   { when: { stage: [9] }, text: ['The soup place messages me before I order to ask if I want the usual. The usual is: the soup, the bread, the thing with the rice that I\'d forgotten existed until I tried it. I said yes.'] },
   { when: { stage: [10] }, text: ['I\'ve been here a long time, by my standards. The room is familiar. I\'m different — softer, heavier, more settled into this particular chair than I\'ve ever been into anything.'] },
   { when: { stageMin: 7, season: ["winter"] }, text: ['Winter. Everything is better in winter. The apartment is warmer, the food is heavier, the blankets are thicker. I\'ve ordered soup every day this week. I have no intention of stopping.'] },
@@ -1362,7 +1362,7 @@ registerPool('diary.wife_lessons.c1', [
   { when: { stage: [10] }, text: ['Kezia changed bedrooms. She\'d been growing into her old one for a while but the door frame finally became the problem. Wanda had the bigger bedroom cleared out and furnished for her.'] },
   { when: {}, text: [
     "The recipe is right. The table is full. The work continues.",
-    "Domestic syllabus includes dessert twice.",
+    "Domestic rotation includes dessert twice.",
     "Homework delicious. Grade: expanding.",
   ]},
 
@@ -1376,7 +1376,7 @@ registerPool('diary.wife_lessons.c2', [
   { when: { stage: [10] }, text: ['The bed frame cracked six weeks in. Wanda upgraded to reinforced. Kezia stays home. The world isn\'t set up for her at this size. The house is. That\'s what a home is for.'] },
   { when: {}, text: [
     "Lesson today: second helpings are love language.",
-    "Domestic syllabus includes dessert twice.",
+    "Domestic rotation includes dessert twice.",
     "Homework delicious. Grade: expanding.",
   ]},
 

@@ -128,7 +128,7 @@ registerPool('slender.mindFeel', [
     'She is not fighting it. She is not cheering it. She is simply here, week after week.',
     'The number is a fact. She files it and moves on to lunch.',
     'Gaining is happening. She has not made it a personality yet.',
-    'She treats the scale like a syllabus item — show up, note the result, leave.',
+    'She treats the scale like a check-in item — show up, note the result, leave.',
   ] },
   { when: { gainStance: 'secret' }, weight: 2, text: [
     'She will not admit how carefully she checks the curve in shop windows.',

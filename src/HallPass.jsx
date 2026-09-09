@@ -8542,10 +8542,16 @@ export default function HallPass(){
           ...(settledStudents.length>0?[["settling","✦ The Settling"]]:[]),
           ...(week>=8||opposition?.aib?.unlocked||adminScrutiny>=25?[["oversight","👁 Oversight"]]:[]),
           ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"],...((labState.stage??1)>=2?[["network","🌐 Network"]]:[])]:[]),
-        ].map(([v,l])=>(
+        ].map(([v,l])=>{
+          const active=view===v;
+          const accent=professorProfile?.color||"#7a24d8";
+          return (
           v==="student"&&!sel?null:
-          <button key={v} style={C.navB(view===v)} onClick={()=>setView(v)}>{l}</button>
-        ))}
+          <button key={v} style={{
+            ...C.navB(active),
+            ...(active?{borderBottomColor:accent,color:"#e8d8ff"}:{}),
+          }} onClick={()=>setView(v)}>{l}</button>
+        );})}
       </div>
 
       <div style={C.body}>

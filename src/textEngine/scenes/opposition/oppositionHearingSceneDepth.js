@@ -123,6 +123,6 @@ registerModuleVariants('opposition.hearing.verdict', [
     `Vance closes the folder. Lilith remains — predator enrolled, Board exhausted.`,
   ]},
   { when: { outcome: 'win', stageMin: 6 }, weight: 3, text: [
-    `Removal denied. {subject.name} stays — appetite still on the syllabus.`,
+    `Removal denied. {subject.name} stays — appetite still on the meal plan.`,
   ]},
 ]);

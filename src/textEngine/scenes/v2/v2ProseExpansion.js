@@ -367,13 +367,13 @@ registerPool('evolved.v2.depth', [
 ]);
 registerPool('spirit.v2.depth', [
   { when: { stageMin: 9 }, text: [
-    'Possession at immobile scale — you inhabit architecture, hunger measured in geography not bites.',
-    'The resident rides inside a body that has become environment. Every breath moves mass.',
+    'Resident ride at immobile scale — you inhabit architecture, hunger measured in geography not bites.',
+    'You ride inside a body that has become environment. Every breath moves mass.',
   ]},
-  { when: { stageMin: 7 }, text: ['Possession at this scale is geography — you feel her mass from the inside, vast and settled.'] },
-  { when: { stageMin: 5 }, text: ['The spirit moves through her like warmth finding a home she has been building all semester.'] },
+  { when: { stageMin: 7 }, text: ['At this scale the ride is geography — you feel her mass from the inside, vast and settled.'] },
+  { when: { stageMin: 5 }, text: ['Influence moves through her like warmth finding a home she has been building all semester.'] },
   { when: {}, text: [
-    'Possession feels less like theft and more like collaboration.',
+    'The ride feels less like theft and more like collaboration.',
     'Her hands move toward food before her mind names want. You are both already eating.',
     'Inside her skin, appetite speaks without filter — honest, warm, immediate.',
   ]},
@@ -384,7 +384,7 @@ registerPool('ritual.v2.depth', [
   ]},
   { when: { stageMin: 8 }, text: [
     'Floor feast — multiple bellies, one ceremony, appetite elevated to liturgy.',
-    'The ritual consecrates mass. Every participant leaves heavier in body and spirit.',
+    'The ritual consecrates mass. Every participant leaves heavier in body and appetite.',
   ]},
   { when: { stageMin: 4 }, text: [
     'Ceremony turns dinner into doctrine — courses, heat, chewing in unison.',
@@ -396,7 +396,7 @@ registerPool('ritual.v2.depth', [
   { when: {}, text: [
     'Ceremony amplifies appetite — every bite consecrated, every belly an altar.',
     'The kitchen transforms into temple. Hunger the only prayer.',
-    'Ritual completes. Bellies remember. The spirit is pleased.',
+    'Ritual completes. Bellies remember. The floor is pleased.',
   ]},
 ]);
 registerPool('dream.v2.depth', [
@@ -406,7 +406,7 @@ registerPool('dream.v2.depth', [
   ]},
   { when: { stageMin: 6 }, text: [
     'The dream serves impossible portions — symbolic foodscapes where appetite has no ceiling.',
-    'She eats in sleep what she craves awake. The spirit walks the subconscious buffet.',
+    'She eats in sleep what she craves awake. Hunger walks the subconscious buffet.',
   ]},
   { when: { stageMin: 2 }, text: [
     'Surreal abundance still gentle — want learning its vocabulary in symbolic food.',
@@ -628,7 +628,7 @@ registerPool('wifeLessons.v2.depth', [
   ]},
   { when: { wlStage: [3, 4, 5] }, text: [
     'The lesson lands soft and certain — flour on aprons, sweetness on tongues, the philosophy of fullness made edible.',
-    'Mary Jane teaches with her hands and her smile. Everyone leaves heavier in spirit and in flesh.',
+    'Mary Jane teaches with her hands and her smile. Everyone leaves heavier in appetite and in flesh.',
   ]},
   { when: {}, text: [
     'Warm kitchen, warm dough, warm philosophy — abundance taught one generous bite at a time.',

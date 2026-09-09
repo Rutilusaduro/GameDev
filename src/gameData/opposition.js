@@ -224,7 +224,7 @@ const AGENDA_COUNTER_HINTS = {
   removal_hearing: 'hearing scene — discredit + spirit pressure',
   mandatory_fitness: 'evolved student op',
   shame_vigil: 'Apple Oracle shields some students',
-  faculty_informant: 'faculty testimony',
+  faculty_informant: 'staff testimony',
   student_advocacy: 'feast bribe or high class relationship',
 };
 

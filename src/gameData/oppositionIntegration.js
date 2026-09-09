@@ -72,7 +72,7 @@ export function counterGateReason(counter, ctx) {
     case 'faculty_testimony':
       return (ctx.facultyAffinityScore ?? 0) >= 60 || ctx.relMaxStudent >= 60
         ? null
-        : 'Requires faculty affinity 60+ or devoted student goodwill';
+        : 'Requires staff affinity 60+ or devoted student goodwill';
     case 'feast_bribe':
       return (ctx.hasReneeCulinary || ctx.hasTiffanyFeast) ? null : 'Requires Reneé or Tiffany evolved path';
     case 'network_misdirect':

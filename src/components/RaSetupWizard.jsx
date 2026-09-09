@@ -128,6 +128,7 @@ export function RaSetupWizard({ students, onComplete }) {
                 const on = approach?.id === ap.id;
                 return (
                   <button key={ap.id} onClick={() => setApproach(ap)}
+                    className="ra-wizard-card"
                     style={{
                       textAlign: 'left', cursor: 'pointer', borderRadius: 10, padding: '14px 16px', fontFamily: 'inherit',
                       background: on ? ap.accentSoft : 'rgba(255,255,255,0.03)',
@@ -167,6 +168,7 @@ export function RaSetupWizard({ students, onComplete }) {
                   .join(', ');
                 return (
                   <button key={d.id} onClick={() => setDorm(d)}
+                    className="ra-wizard-card"
                     style={{
                       textAlign: 'left', cursor: 'pointer', borderRadius: 10, padding: '14px 16px', fontFamily: 'inherit',
                       background: on ? d.accentSoft : 'rgba(255,255,255,0.03)',

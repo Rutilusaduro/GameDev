@@ -69,7 +69,7 @@ export const FACULTY = [
           {label:"Order two Goliaths — your treat", next:"goliath", affinity:6},
           {label:"Back", next:"hub"},
         ]},
-      goliath:{ text:()=>`Brooks watches you attempt yours with open delight, finishing hers in the time it takes you to find the straw. "Atta boy. You know, half this faculty acts scared of food. You get it." She claps your shoulder; you feel it in your teeth. "You're alright, RA."`,
+      goliath:{ text:()=>`Brooks watches you attempt yours with open delight, finishing hers in the time it takes you to find the straw. "Atta boy. You know, half this staff acts scared of food. You get it." She claps your shoulder; you feel it in your teeth. "You're alright, RA."`,
         options:[ {label:"Back", next:"hub"} ]},
       bulk:{ text:()=>`Brooks leans in, suddenly conspiratorial. "Between us? It's ALWAYS bulking season. Cutting is a myth invented by sad people." She pats her own well-built middle, which has been winning its long argument with her waistband for a few semesters. "Power needs padding. Tell your students. Tell everyone."`,
         options:[

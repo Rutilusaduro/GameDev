@@ -622,7 +622,7 @@ registerPool('diary.salon_appetit.s6._f3', [
 
 registerPool('diary.salon_appetit.s6._f4', [
   { when: {}, text: [
-    " Dr. Mori followed the smell of coq au vin and stayed for dessert — faculty lends prestige, Chloé lends appetite.",
+    " Dr. Mori followed the smell of coq au vin and stayed for dessert — staff lends prestige, Chloé lends appetite.",
     " Dr. Mori followed the coq au vin and never left. Staff lends prestige; Chloé lends hunger.",
     " Staff at the table now. Coq au vin opened the door; dessert kept them.",
   ]},
