@@ -18,7 +18,7 @@ export const HIVE_VPS = {
     label:"Lilith - Consumption",
     color:"#b02060",
     passive:"Absorb one devotee for a huge Maya gain. Food output also rises with each conquered room.",
-    effects:{ foodMult:1.15, absorb:true, spiritPerShift:2 },
+    effects:{ foodMult:1.15, absorb:true, resonancePerShift:2 },
   },
   nadia: {
     studentId:12,
@@ -26,7 +26,7 @@ export const HIVE_VPS = {
     label:"Nadia - Suggestion",
     color:"#8b78ff",
     passive:"Expansion and recruitment pressure bite deeper. Floor whispers generate extra room progress.",
-    effects:{ expansionMult:1.25, recruitMult:1.2, spiritMult:1.25 },
+    effects:{ expansionMult:1.25, recruitMult:1.2, resonanceMult:1.25 },
   },
   kaylee: {
     studentId:11,
@@ -99,7 +99,7 @@ export function createInitialHiveState(mayaStudentId){
     shift:0,
     hiveBiomass:25,
     nestComfort:18,
-    spiritResonance:8,
+    floorResonance:8,
     centralNestCapacity:6,
     members:3,
     avgBmi:31,
@@ -174,11 +174,30 @@ export function makeHiveTag(kind,{mayaStage="Heavy",vpId="none",bmiTier="Soft",r
   return `[MayaHive_${kind}_Maya${mayaStage}_VP${vpId}_BMI${bmiTier}_Rooms${rooms}_${task}_Room${roomId}]`;
 }
 
+export function getHiveFloorResonance(state) {
+  return state?.floorResonance ?? state?.spiritResonance ?? 0;
+}
+
+/** Normalize legacy hive save keys (spiritResonance → floorResonance). */
+export function migrateHiveState(state) {
+  if (!state) return state;
+  const floorResonance = getHiveFloorResonance(state);
+  if (state.floorResonance === floorResonance && state.spiritResonance == null) return state;
+  const { spiritResonance: _legacy, ...rest } = state;
+  return { ...rest, floorResonance };
+}
+
 export function getHiveVpEffect(state){
-  return state.vpId ? HIVE_VPS[state.vpId]?.effects || {} : {};
+  const raw = state.vpId ? HIVE_VPS[state.vpId]?.effects || {} : {};
+  return {
+    ...raw,
+    resonancePerShift: raw.resonancePerShift ?? raw.spiritPerShift ?? 0,
+    resonanceMult: raw.resonanceMult ?? raw.spiritMult ?? 1,
+  };
 }
 
 export function executeHiveShift(state,{mayaStageId=5}={}){
+  state = migrateHiveState(state);
   const assignments={...state.assignments};
   const vp=getHiveVpEffect(state);
   const roomsControlled=getHiveControl(state.rooms);
@@ -198,7 +217,7 @@ export function executeHiveShift(state,{mayaStageId=5}={}){
 
   const biomassGain=Math.round((5+foodEff*8+roomsControlled*0.75)*deliveryBonus*(vp.biomassMult||1));
   const comfortGain=Math.round(2+supplyEff*7);
-  const resonanceGain=Math.round(2+roomsControlled*0.35+(vp.spiritPerShift||0));
+  const resonanceGain=Math.round(2+roomsControlled*0.35+(vp.resonancePerShift||0));
   const avgBmiGain=Math.max(0.2,Math.round((0.25+foodEff*0.18+recruitEff*0.05)*10)/10);
   const maintenanceGain=Math.round((maintenanceEff*8+(vp.stabilityBonus||0))*laundryBonus);
   const stabilityLoss=Math.max(0,Math.round(3+roomsControlled*0.3+assignments.food*0.5-maintenanceEff*1.8-(vp.stabilityBonus||0)/3));
@@ -209,8 +228,8 @@ export function executeHiveShift(state,{mayaStageId=5}={}){
   let expansionProgress=0;
   if(frontier.length&&expansionEff>0){
     const target=frontier[0];
-    const resonancePush=Math.min(state.spiritResonance,Math.max(0,Math.floor(expansionEff)));
-    expansionProgress=Math.round(expansionEff*18+recruitEff*5+resonancePush*(vp.spiritMult||1)*4);
+    const resonancePush=Math.min(getHiveFloorResonance(state),Math.max(0,Math.floor(expansionEff)));
+    expansionProgress=Math.round(expansionEff*18+recruitEff*5+resonancePush*(vp.resonanceMult||1)*4);
     rooms=rooms.map(r=>{
       if(r.id!==target.id) return r;
       const nextProgress=Math.min(100,r.progress+expansionProgress);
@@ -250,7 +269,7 @@ export function executeHiveShift(state,{mayaStageId=5}={}){
     selectedRoomId:conqueredRoom?.id ?? state.selectedRoomId,
     hiveBiomass:state.hiveBiomass+biomassGain,
     nestComfort:nextComfort,
-    spiritResonance:state.spiritResonance+resonanceGain,
+    floorResonance:getHiveFloorResonance(state)+resonanceGain,
     centralNestCapacity:nextCapacity,
     members:nextMembers,
     avgBmi:Math.round((state.avgBmi+avgBmiGain)*10)/10,

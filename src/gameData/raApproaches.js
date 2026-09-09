@@ -85,6 +85,16 @@ export function getApproach(id) {
   return RA_APPROACHES[id] || null;
 }
 
+/** Resolve approach id from RA profile (migrates legacy spiritId saves). */
+export function getProfileApproachId(profile) {
+  return profile?.approachId ?? profile?.spiritId ?? null;
+}
+
+export function getApproachLabel(profile) {
+  const id = getProfileApproachId(profile);
+  return id ? RA_APPROACHES[id]?.label : null;
+}
+
 export function favorFill(approachId, tag) {
   return RA_APPROACHES[approachId]?.favorActions?.[tag] || 0;
 }
@@ -94,21 +104,21 @@ import { getDorm } from './dorms.js';
 export function profileGainMult(profile) {
   if (!profile) return 1;
   const dorm = getDorm(profile.dormId || profile.subject);
-  const approach = RA_APPROACHES[profile.approachId || profile.spiritId];
+  const approach = RA_APPROACHES[getProfileApproachId(profile)];
   return (dorm?.gainMult ?? 1) * (approach?.gainMult ?? 1);
 }
 
 export function profileScrutinyMult(profile) {
   if (!profile) return 1;
   const dorm = getDorm(profile.dormId || profile.subject);
-  const approach = RA_APPROACHES[profile.approachId || profile.spiritId];
+  const approach = RA_APPROACHES[getProfileApproachId(profile)];
   return (dorm?.scrutinyMult ?? 1) * (approach?.scrutinyMult ?? 1);
 }
 
 export function profilePassiveBonus(profile) {
-  return RA_APPROACHES[profile?.approachId || profile?.spiritId]?.passiveBonus || 0;
+  return RA_APPROACHES[getProfileApproachId(profile)]?.passiveBonus || 0;
 }
 
 export function profileCorruptionMult(profile) {
-  return RA_APPROACHES[profile?.approachId || profile?.spiritId]?.corruptionMult || 1;
+  return RA_APPROACHES[getProfileApproachId(profile)]?.corruptionMult || 1;
 }

@@ -11,6 +11,7 @@ import {
   getHiveControl,
   getHiveControlPct,
   getFrontierRooms,
+  getHiveFloorResonance,
 } from '../gameData/mayaHive.js';
 
 const HIVE_BG = "#07040d";
@@ -215,7 +216,7 @@ export function MayaHiveModal({
         <StatPill label="Members" value={`${hs.members}/${capacity}`} sub={`${unassigned} idle`} color="#ff91b8" />
         <StatPill label="Nest Comfort" value={hs.nestComfort} sub={`capacity ${hs.centralNestCapacity}`} color="#9c7cff" />
         <StatPill label="Stability" value={`${hs.stability}%`} sub="maintenance" color={hs.stability<35?HIVE_WARN:"#80d8c0"} />
-        <StatPill label="Resonance" value={hs.spiritResonance} sub="floor pressure" color="#f2b5ff" />
+        <StatPill label="Resonance" value={getHiveFloorResonance(hs)} sub="floor pressure" color="#f2b5ff" />
       </div>
 
       <div style={{display:"grid",gridTemplateColumns:"1.2fr .9fr",gap:14}}>

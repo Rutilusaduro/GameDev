@@ -15,7 +15,7 @@ import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
-import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
+import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, getHiveFloorResonance, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS, initDeviceState, initPsychState } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
@@ -34,6 +34,7 @@ import {
 import {
   RA_APPROACHES, FAVOR_MAX, FAVOR_REBATE, favorFill,
   profileGainMult, profileScrutinyMult, profilePassiveBonus, profileCorruptionMult,
+  getProfileApproachId, getApproachLabel,
 } from './gameData/raApproaches.js';
 import { getUnlockScene } from './gameData/unlockScenes.js';
 import {
@@ -851,7 +852,6 @@ export default function HallPass(){
       dormId:hallDef.id,
       subject:hallDef.id,
       approachId:apDef.id,
-      spiritId:apDef.id,
       traits:[...(apDef.traits||[])],
       color:hallDef.color,
       accentSoft:hallDef.accentSoft,
@@ -893,13 +893,13 @@ export default function HallPass(){
 
   // Spirit Favor meter — on-lean actions fill it; full → partial AP rebate.
   const gainFavor=(tag)=>{
-    const fill=favorFill(raProfile?.approachId||raProfile?.spiritId,tag);
+    const fill=favorFill(getProfileApproachId(raProfile),tag);
     if(!fill) return;
     const next=(hallCred||0)+fill;
     if(next>=FAVOR_MAX){
       setHallCred(next-FAVOR_MAX);
       setAp(a=>Math.min(20,a+FAVOR_REBATE));
-      push(`✨ Hall cred maxed — ${RA_APPROACHES[raProfile?.approachId||raProfile?.spiritId]?.label} returns ${FAVOR_REBATE} AP.`);
+      push(`✨ Hall cred maxed — ${getApproachLabel(raProfile)} returns ${FAVOR_REBATE} AP.`);
     }else{
       setHallCred(next);
     }
@@ -2233,7 +2233,7 @@ export default function HallPass(){
         return {
           ...prev,
           hiveBiomass:prev.hiveBiomass+trickle,
-          spiritResonance:prev.spiritResonance+Math.max(1,Math.floor(rooms/6)),
+          floorResonance:getHiveFloorResonance(prev)+Math.max(1,Math.floor(rooms/6)),
           log:[{tag:"[MayaHive_WeeklyTrickle]",text:`The conquered rooms feed the Central Nest between hall rounds. +${trickle} Biomass.`,type:"system"},...prev.log].slice(0,40),
         };
       });
@@ -3586,7 +3586,7 @@ export default function HallPass(){
       return {
         ...prev,
         hiveBiomass:prev.hiveBiomass+biomass,
-        spiritResonance:prev.spiritResonance+3,
+        floorResonance:getHiveFloorResonance(prev)+3,
         view:"visit",
         subState:{tag,gain,biomass,text:`${tag} You bring tribute directly to the Central Nest. Maya's quiet gravity accepts it, and the Hive records the warmth.`},
         log:[{tag,text:"RA-directed feeding at the Central Nest.",type:"scene"},...prev.log].slice(0,40),
@@ -3604,7 +3604,7 @@ export default function HallPass(){
       const tag=makeHiveTag("HiveStatePhoto",{mayaStage,vpId:prev.vpId||"none",bmiTier,rooms,task:"observation",roomId:prev.selectedRoomId});
       return {
         ...prev,
-        spiritResonance:prev.spiritResonance+1,
+        floorResonance:getHiveFloorResonance(prev)+1,
         view:"photo",
         subState:{tag,text:`${tag} Maya documents the Hive: conquered rooms, delivery routes, soft bodies, and the faint hive resonance pressure visible in every lavender-lit corner.`},
         log:[{tag,text:"Hive State observation archived.",type:"photo"},...prev.log].slice(0,40),
@@ -3628,7 +3628,7 @@ export default function HallPass(){
         ...prev,
         members:prev.members-1,
         hiveBiomass:prev.hiveBiomass+gain,
-        spiritResonance:prev.spiritResonance+6,
+        floorResonance:getHiveFloorResonance(prev)+6,
         log:[{tag,text:"Lilith guides one devotee into Maya's stored biomass.",type:"absorb"},...prev.log].slice(0,40),
       };
     });
@@ -8546,7 +8546,7 @@ export default function HallPass(){
           )}
           <div style={{minWidth:0}}>
             <div style={{fontSize:19,fontWeight:700,letterSpacing:2,color:raProfile?.color||"#c44a2a",lineHeight:1.15}}>RA DESK — {getDorm(raProfile?.dormId||raProfile?.subject)?.label?.toUpperCase()||"YOUR HALL"}</div>
-            <div style={{fontSize:10,color:"#8a5060",letterSpacing:3,marginTop:2}}>{RA_APPROACHES[raProfile?.approachId||raProfile?.spiritId]?.label?`${RA_APPROACHES[raProfile.approachId||raProfile.spiritId].label.toUpperCase()} · WEEK ${week}`:"HALL PASS"}</div>
+            <div style={{fontSize:10,color:"#8a5060",letterSpacing:3,marginTop:2}}>{getApproachLabel(raProfile)?`${getApproachLabel(raProfile).toUpperCase()} · WEEK ${week}`:"HALL PASS"}</div>
           </div>
         </div>
         <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>

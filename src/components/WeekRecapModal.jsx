@@ -46,13 +46,11 @@ export function WeekRecapModal({ weekRecap, onClose, onSelectGirl, soundEnabled 
   return (
     <div style={C.overlay}>
       <div
-        className="hall-pass-modal-in"
+        className="hall-pass-modal-in week-recap-modal"
         style={{
           ...C.modal,
           maxWidth: 480,
-          background: 'linear-gradient(165deg, rgba(12,6,24,0.98), rgba(24,10,48,0.95), rgba(10,6,20,0.98))',
           border: '1px solid #6030a060',
-          boxShadow: '0 16px 48px rgba(0,0,0,0.45), 0 0 24px rgba(120,40,200,0.12)',
         }}
       >
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#9050c8', marginBottom: 4 }}>THE WEEK IN REVIEW</div>

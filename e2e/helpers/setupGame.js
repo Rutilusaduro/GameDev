@@ -53,6 +53,8 @@ async function deskHasBlockingOverlay(page) {
     'INTERRUPTION',
     'THE WEEK IN REVIEW',
     'HALL REACH EXPANDED',
+    "SHE'S HAD ENOUGH",
+    'MAKING AMENDS',
     'WEEK PLANNER',
     'A NEW DIRECTION',
     'ROOM SESSION LOGGED',
@@ -167,6 +169,22 @@ export async function resolveBlockingUI(page, { maxSteps = 72 } = {}) {
       }
     }
 
+    if (await page.getByText(/SHE'S HAD ENOUGH|MAKING AMENDS/).isVisible().catch(() => false)) {
+      const modal = page.locator('.confrontation-modal');
+      if (await clickIfVisible(modal.getByRole('button', { name: /Apologize sincerely/ }))) {
+        acted = true;
+        continue;
+      }
+      if (await clickIfVisible(modal.getByRole('button', { name: /Stand firm/ }))) {
+        acted = true;
+        continue;
+      }
+      if (await clickIfVisible(modal.getByRole('button', { name: /Leave her be/ }))) {
+        acted = true;
+        continue;
+      }
+    }
+
     if (await page.getByText('INTERRUPTION').isVisible().catch(() => false)) {
       if (await clickIfVisible(page.getByRole('button', { name: /Talk to her/ }))) {
         acted = true;
@@ -232,6 +250,10 @@ export async function completeFloorCheckIn(page) {
     if (await page.getByText('RELATIONSHIP MILESTONE').isVisible().catch(() => false)) {
       await resolveBlockingUI(page, { maxSteps: 24 });
     }
+    if (await page.getByText(/SHE'S HAD ENOUGH|MAKING AMENDS/).isVisible().catch(() => false)) {
+      await resolveBlockingUI(page, { maxSteps: 24 });
+      continue;
+    }
 
     const checkIn = floorCheckInModal(page);
     const checkInOpen = await page.getByText(/FLOOR CHECK-IN/).isVisible().catch(() => false);
@@ -257,9 +279,9 @@ export async function completeFloorCheckIn(page) {
 
     const respond = checkIn.getByText('How do you respond?');
     if (await respond.isVisible().catch(() => false)) {
-      const choice = checkIn.locator('div[style*="cursor"]').filter({ hasText: /❤|⚖|→/ }).first();
+      const choice = checkIn.locator('.floor-checkin-choice').first();
       if (await choice.isVisible().catch(() => false)) {
-        await choice.click();
+        await choice.click({ force: true });
         continue;
       }
     }

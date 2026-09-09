@@ -148,7 +148,7 @@ check('ui-polish-css', () => {
     'hall-unlock-cta', 'week-recap-cta', 'hall-log-achievement', 'hall-log-unlock',
     'floor-checkin-choice', 'week-recap-week-badge',
     'milestone-ceremony-modal', 'milestone-resident-header', 'tier-up-cta', 'hunger-interrupt-modal', 'floor-checkin-modal', 'embodiment-modal',
-    'talk-modal', 'weigh-in-modal', 'opposition-hearing-modal',
+    'talk-modal', 'weigh-in-modal', 'opposition-hearing-modal', 'week-recap-modal', 'confrontation-modal',
   ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
   }
@@ -243,6 +243,26 @@ check('opposition-counter-normalize', () => {
   assert.match(integration, /spirit_pressure: 'floor_pressure'/);
   const opposition = read('src/gameData/opposition.js');
   assert.match(opposition, /normalizeCounterId\(counterId\)/);
+});
+
+check('hive-floor-resonance', () => {
+  const hive = read('src/gameData/mayaHive.js');
+  assert.match(hive, /floorResonance/);
+  assert.match(hive, /migrateHiveState/);
+  assert.match(hive, /getHiveFloorResonance/);
+  assert.match(hive, /floorResonance:8/);
+  const desk = read('src/HallPass.jsx');
+  assert.doesNotMatch(desk, /spiritResonance/);
+  assert.doesNotMatch(desk, /spiritId:apDef/);
+});
+
+check('ra-profile-approach-id', () => {
+  const approaches = read('src/gameData/raApproaches.js');
+  assert.match(approaches, /getProfileApproachId/);
+  assert.match(approaches, /getApproachLabel/);
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /getProfileApproachId/);
+  assert.match(desk, /getApproachLabel/);
 });
 
 check('owned-hall-skills', () => {

@@ -34,7 +34,7 @@ export function ConfrontationModal({
 
   return (
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 540, border: `1px solid ${ACCENT}` }}>
+      <div className="hall-pass-modal-in confrontation-modal" style={{ ...C.modal, maxWidth: 540, border: `1px solid ${ACCENT}` }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT, marginBottom: 6 }}>
           {winBack ? '🕊 MAKING AMENDS' : '🔥 SHE’S HAD ENOUGH'}
         </div>
