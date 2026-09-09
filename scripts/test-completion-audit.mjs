@@ -189,6 +189,8 @@ const REQUIRED_E2E = [
   'e2e/evolution-offer.spec.js',
   'e2e/lane-captain-presentation-path.spec.js',
   'e2e/evolution-offer-natural.spec.js',
+  'e2e/confrontation-ceremony.spec.js',
+  'e2e/floor-checkin-ceremony.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 

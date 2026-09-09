@@ -22,6 +22,7 @@ import { ensureStreamFields } from '../gameData/streaming.js';
 import { toggleInstantText, toggleSound } from '../gameData/playerPrefs.js';
 import { INNER_CIRCLE_TIERS, TIER_SCENES } from '../gameData/sessions.js';
 import { EVOLUTION_OFFER } from '../gameData/evolvedForms.js';
+import { FLOOR_SCENES } from '../gameData/floorEvents.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
 if (typeof window !== 'undefined' && import.meta.env.DEV) {
@@ -77,6 +78,8 @@ export function DebugPanel({
   setHungerInterrupt,
   setAscensionCeremony,
   setEvolutionModal,
+  setConfrontation,
+  setFloorCheckIn,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -317,6 +320,40 @@ export function DebugPanel({
                     setDebugOpen(false);
                   }}>
                   ✦ Evolution Ready QA
+                </button>
+              )}
+              {setConfrontation && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(140,40,30,0.55)' }}
+                  onClick={() => {
+                    const subject = students.find((s) => s.id === 1) || { id: 1, name: 'Cassidy', lbs: 220 };
+                    setConfrontation({
+                      studentId: subject.id,
+                      name: subject.name,
+                      lbs: subject.lbs,
+                      grievance: 'fed_too_hard',
+                      winBack: false,
+                      withdrawn: false,
+                      prose: `${subject.name} catches you outside the lounge with her arms folded. "I need to say this on the record," she says. "Your floor is changing me faster than I signed up for — and you keep acting like that's neutral."`,
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  🔥 Confrontation QA
+                </button>
+              )}
+              {setFloorCheckIn && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(70,30,120,0.55)' }}
+                  onClick={() => {
+                    const subject = students.find((s) => s.id === 1) || { id: 1, name: 'Cassidy', archetype: 'swimmer', lbs: 200, mood: 'focused', relationship: 50 };
+                    const scene = FLOOR_SCENES.find((sc) => sc.id === 'arch_swimmer') || FLOOR_SCENES[0];
+                    setFloorCheckIn({
+                      scenes: [{ type: 'student', scene, student: subject }],
+                      sceneIdx: 0,
+                      outcomes: [],
+                      pendingResult: null,
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  📋 Floor Check-In QA
                 </button>
               )}
               {setTierUpModal && (

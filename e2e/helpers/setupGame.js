@@ -263,6 +263,18 @@ export async function triggerEvolutionQA(page) {
   await page.getByRole('button', { name: /Evolution QA/ }).click();
 }
 
+/** Debug: open confrontation modal for Cassidy. */
+export async function triggerConfrontationQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Confrontation QA/ }).click();
+}
+
+/** Debug: open floor check-in modal with Cassidy swimmer scene. */
+export async function triggerFloorCheckInQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Floor Check-In QA/ }).click();
+}
+
 /** Debug: set Cassidy evolution-eligible and open student detail (no modal). */
 export async function prepareEvolutionEligibleQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();
