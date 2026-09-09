@@ -35,12 +35,12 @@ export function getWlMomDialogueDepth(personKey, stageIdx) {
 export const WL_MOM_DIALOGUE_DEPTH = {
   Darlene: {
     4: {
-      greeting: `"Hello, RA. Wednesday night has become the thing we plan the week around — I clear the calendar for it now. The table smells like butter and yeast before we even sit down, and my girls ask on Monday what's on the menu. Emma still checks whether Claire ate more at lunch. I tell her to worry about her own plate."`,
-      cappedGreeting: `"Three hundred twenty-five pounds for both girls. I said it out loud in the car and neither of them flinched. Emma's belly sits forward when she buckles in. Claire's catching the curve of her hips. I bought them new uniforms and didn't apologize for the sizes."`,
+      greeting: `"Hello, RA. Wednesday night has become the thing we plan the week around — I clear the calendar for it now. The table smells like butter and yeast before we even sit down, and my daughters ask on Monday what's on the menu. Emma still checks whether Claire ate more at lunch. I tell her to worry about her own plate."`,
+      cappedGreeting: `"Three hundred twenty-five pounds for both daughters. I said it out loud in the car and neither of them flinched. Emma's belly sits forward when she buckles in. Claire's catching the curve of her hips. I bought them new uniforms and didn't apologize for the sizes."`,
       overtookGreeting: `"Chloe's pulled ahead of Emma by a fair margin now. I made my peace with it somewhere between the second pan of rolls and the peach cobbler. Emma's still my first. Claire's still climbing. They're all eating like it's a vocation."`,
       options: [
         {
-          text: `"Everyone's grown — all of us, not just the girls. I catch my reflection in the oven door and see this soft apple belly I used to suck in. It just sits there now, round and warm, while I stir. The girls notice. They say I look 'fed,' which is their word for happy."`,
+          text: `"Everyone's grown — all of us, not just my daughters. I catch my reflection in the oven door and see this soft apple belly I used to suck in. It just sits there now, round and warm, while I stir. My daughters notice. They say I look 'fed,' which is their word for happy."`,
           subs: [
             { text: `"Fed is the right word. Emma told me last week my apron strings don't meet anymore. I laughed. She's one to talk — her skirt rode up before she even finished the pie."` },
             { text: `"I told Emma and Claire both: you don't get to comment on my belly until yours clears the table edge. They went quiet and reached for seconds. That's progress in this house."` },
@@ -54,23 +54,23 @@ export const WL_MOM_DIALOGUE_DEPTH = {
           ],
         },
         {
-          text: `"I'm happy here. Genuinely. This kitchen is warmer than our dining room ever was — and I mean the room and the feeling. My girls eat without me nagging. I eat without apologizing. That's new for a woman who dieted through two pregnancies."`,
+          text: `"I'm happy here. Genuinely. This kitchen is warmer than our dining room ever was — and I mean the room and the feeling. My daughters eat without me nagging. I eat without apologizing. That's new for a woman who dieted through two pregnancies."`,
           subs: [
-            { text: `"Thank you for making a place where 'more' isn't a lecture. My girls leave full. I leave full. We drive home quiet and satisfied. That's worth the gas."` },
+            { text: `"Thank you for making a place where 'more' isn't a lecture. My daughters leave full. I leave full. We drive home quiet and satisfied. That's worth the gas."` },
             { text: `"You feel like family now. Darlene-from-down-the-street used to bring store cupcakes to HOA meetings. Darlene-at-your-table brings her daughters back every week because they ask to come."` },
           ],
         },
       ],
     },
     5: {
-      greeting: `"The girls are here with us now — Emma and Claire both, big as house and glowing. Watching them move through your kitchen feels like watching something I started finally finish. They reach for bowls without asking. Their hips brush the counter. I stand back and swell up with it."`,
+      greeting: `"My daughters are here with us now — Emma and Claire both, big as house and glowing. Watching them move through your kitchen feels like watching something I started finally finish. They reach for bowls without asking. Their hips brush the counter. I stand back and swell up with it."`,
       cappedGreeting: `"Four hundred pounds. My daughters are enormous and I couldn't be prouder if they'd won a trophy. Emma's belly rests on her thighs when she sits. Claire's not far behind. I brought reinforced chairs from home 'just in case.' Nobody needed convincing."`,
       overtookGreeting: `"Chloe's clearly ahead of Emma now. I see it when they stand side by side — the gap's real. I don't measure anymore. Emma's still growing. Claire's still climbing. Chloe looks like she was born for this table. I'm not jealous. I'm taking notes."`,
       options: [
         {
           text: `"Emma and Claire both look amazing — soft, round, unapologetic. Emma carries weight like I do, belly forward. Claire's hips spread wider every month. They laugh with their mouths full. That's the part I love."`,
           subs: [
-            { text: `"They carry it beautifully. Strangers stare. We don't notice anymore. My girls take up space like they earned it — and they did, one plate at a time."` },
+            { text: `"They carry it beautifully. Strangers stare. We don't notice anymore. My daughters take up space like they earned it — and they did, one plate at a time."` },
             { text: `"Blessed is the word I use when nobody's listening. Two daughters this full, this happy, this hungry for the next lesson. I didn't know motherhood could feel like this."` },
           ],
         },
@@ -82,18 +82,18 @@ export const WL_MOM_DIALOGUE_DEPTH = {
           ],
         },
         {
-          text: `"I've changed too. This path softened me — literally and otherwise. My belly doesn't hide anymore. I wear elastic waists and eat till I'm drowsy. The girls tease me. I tease back. We're all getting rounder together."`,
+          text: `"I've changed too. This path softened me — literally and otherwise. My belly doesn't hide anymore. I wear elastic waists and eat till I'm drowsy. My daughters tease me. I tease back. We're all getting rounder together."`,
           subs: [
             { text: `"Thank you for noticing. I used to suck in for company. Now I lean against the counter and let it all sit forward. Feels honest."` },
-            { text: `"We all have. Old worries feel silly from this side of the table. My girls are fat and happy. I'm fat and happy. That's the sermon I preach now."` },
+            { text: `"We all have. Old worries feel silly from this side of the table. My daughters are fat and happy. I'm fat and happy. That's the sermon I preach now."` },
           ],
         },
       ],
     },
     6: {
-      greeting: `"The girls barely need me in the kitchen anymore. Emma runs the dough. Claire handles the glaze. I fetch heavy things and taste everything twice. They're confident — hips swaying, bellies leading — and I get to watch."`,
+      greeting: `"My daughters barely need me in the kitchen anymore. Emma runs the dough. Claire handles the glaze. I fetch heavy things and taste everything twice. They're confident — hips swaying, bellies leading — and I get to watch."`,
       cappedGreeting: `"Four hundred ninety pounds. They've surpassed everything I imagined when I first brought store cookies and called it 'bake night.' Emma's belly hangs soft over her lap. Claire fills a doorway if she doesn't turn. I brought photos to show the other mothers. I'm not subtle."`,
-      overtookGreeting: `"The gap between Emma and Chloe is enormous now. I stopped measuring when Claire pulled even with Emma's belly. Three big girls in my house. One kitchen that fits us all when we're here."`,
+      overtookGreeting: `"The gap between Emma and Chloe is enormous now. I stopped measuring when Claire pulled even with Emma's belly. Three big daughters in my house. One kitchen that fits us all when we're here."`,
       options: [
         {
           text: `"They run this kitchen with joy — laughing, tasting, stealing bites before the timer. Emma bosses the oven. Claire bosses Emma. I boss nobody. I eat and admire."`,
@@ -110,7 +110,7 @@ export const WL_MOM_DIALOGUE_DEPTH = {
           ],
         },
         {
-          text: `"The future feels soft. I picture holidays with wider chairs, bigger batches, grandbabies someday learning to cream the butter. My girls will carry this. Their bodies already do."`,
+          text: `"The future feels soft. I picture holidays with wider chairs, bigger batches, grandbabies someday learning to cream the butter. My daughters will carry this. Their bodies already do."`,
           subs: [
             { text: `"I'm looking forward to it. More room, more food, more of whatever comes after four hundred ninety. You've spoiled us for small portions."` },
             { text: `"There's always more. That's the promise, isn't it? Another recipe, another inch, another notch. Thank you for showing us it's allowed."` },
@@ -119,15 +119,15 @@ export const WL_MOM_DIALOGUE_DEPTH = {
       ],
     },
     7: {
-      greeting: `"Formal lessons ending doesn't mean we're done coming. This kitchen raised my girls as much as I did — fed them, widened them, gave them permission. I don't want to lose that rhythm. We already talked about carpooling next month."`,
+      greeting: `"Formal lessons ending doesn't mean we're done coming. This kitchen raised my daughters as much as I did — fed them, widened them, gave them permission. I don't want to lose that rhythm. We already talked about carpooling next month."`,
       cappedGreeting: `"Final session. Everything we worked for sitting around one table — bellies on laps, chairs complaining, flour on everyone's apron. Emma and Claire both hit their marks. I hit mine. I cried in the parking lot and I'm not ashamed."`,
-      overtookGreeting: `"Emma and Chloe found their balance — Chloe bigger, Emma content. Claire still racing everybody. I made peace with all of it. My house is full of fat girls who love me. That's the ending I wanted."`,
+      overtookGreeting: `"Emma and Chloe found their balance — Chloe bigger, Emma content. Claire still racing everybody. I made peace with all of it. My house is full of fat daughters who love me. That's the ending I wanted."`,
       options: [
         {
           text: `"This is everything I hoped for and more. My daughters enormous, soft, certain. Me softer than I've been since my twenties. Your kitchen in our weekly calendar forever, if you'll have us."`,
           subs: [
-            { text: `"Grateful doesn't cover it. You gave my girls a hunger they wear like jewelry. I'll keep thanking you every Wednesday."` },
-            { text: `"We built this together — me at home with the butter, you here with the recipes, the girls eating both of us alive. Something lasting came out of that."` },
+            { text: `"Grateful doesn't cover it. You gave my daughters a hunger they wear like jewelry. I'll keep thanking you every Wednesday."` },
+            { text: `"We built this together — me at home with the butter, you here with the recipes, my daughters eating both of us alive. Something lasting came out of that."` },
           ],
         },
         {
@@ -138,7 +138,7 @@ export const WL_MOM_DIALOGUE_DEPTH = {
           ],
         },
         {
-          text: `"Thank you for trusting me with my girls. I brought skepticism and store cookies. You met me with warmth. Now I bring daughters who can't fit their old desks. Best trade I ever made."`,
+          text: `"Thank you for trusting me with my daughters. I brought skepticism and store cookies. You met me with warmth. Now I bring daughters who can't fit their old desks. Best trade I ever made."`,
           subs: [
             { text: `"We'll keep coming as long as you'll have us. Emma already asked about summer sessions. I said ask the RA."` },
             { text: `"This kitchen's home now. Smells like butter in my memory when we're not here. That's how I know you changed us."` },
@@ -177,7 +177,7 @@ export const WL_MOM_DIALOGUE_DEPTH = {
       ],
     },
     5: {
-      greeting: `"Kezia's here with the other girls now — enormous and graceful in the way only a well-fed girl can be. Watching her move through your kitchen fills me with satisfaction I don't bother hiding. I knew what this was from the first bite. Seeing her live inside it is better than I planned."`,
+      greeting: `"Kezia's here with the other daughters now — enormous and graceful in the way only a well-fed daughter can be. Watching her move through your kitchen fills me with satisfaction I don't bother hiding. I knew what this was from the first bite. Seeing her live inside it is better than I planned."`,
       cappedGreeting: `"Four hundred pounds. My Kezia is enormous and carries it like she owns the room — belly forward, hips wide, smile slow. I upgraded our sectional last month. She fills it properly now. Best purchase we made."`,
       options: [
         {
@@ -204,11 +204,11 @@ export const WL_MOM_DIALOGUE_DEPTH = {
       ],
     },
     6: {
-      greeting: `"Kezia barely needs guidance in the kitchen anymore. She moves slow — all that weight — but confident. The other girls look to her portions. I look to her face. She's happy. That's the metric I trust."`,
+      greeting: `"Kezia barely needs guidance in the kitchen anymore. She moves slow — all that weight — but confident. The other daughters look to her portions. I look to her face. She's happy. That's the metric I trust."`,
       cappedGreeting: `"Four hundred ninety. She has become magnificent — belly resting heavy on her thighs, breasts full, hips that brush doorframes. I reinforced the bed again. Widened a hallway. She laughed and said I was spoiling her. I said good."`,
       options: [
         {
-          text: `"The girls run the table and Kezia's at the center — biggest bowl, biggest appetite, biggest smile when something's rich. Beautiful sight. I take it in every week."`,
+          text: `"The daughters run the table and Kezia's at the center — biggest bowl, biggest appetite, biggest smile when something's rich. Beautiful sight. I take it in every week."`,
           subs: [
             { text: `"She belongs there. Always did, maybe. Now the room agrees. Her presence changes the temperature — warmer, fuller, more honest about hunger."` },
             { text: `"Her presence fills the room. Literally and otherwise. Other mothers measure their daughters against her. I don't mind. Benchmark's a compliment."` },
@@ -274,7 +274,7 @@ export const WL_MOM_DIALOGUE_DEPTH = {
         {
           text: `"I've given in completely. My own body getting heavier, softer — surprisingly arousing. I touch my hips in the mirror now. I linger. Lila noticed. She smiled."`,
           subs: [
-            { text: `"Sexier than I've felt in years. Thank you. The weight sits on me like a secret we share with the girls at this table."` },
+            { text: `"Sexier than I've felt in years. Thank you. The weight sits on me like a secret we share with the daughters at this table."` },
             { text: `"These changes feel good on my skin — tighter clothes, softer flesh, the rub of thighs when I walk. Lila says I look 'fed.' I am."` },
           ],
         },
@@ -288,7 +288,7 @@ export const WL_MOM_DIALOGUE_DEPTH = {
       ],
     },
     5: {
-      greeting: `"RA, seeing all these enormously soft girls in the kitchen is intoxicating. Lila among them — belly on her thighs, breasts straining, eating like it's worship. I had to fan myself in the car before I came in."`,
+      greeting: `"RA, seeing all these enormously soft daughters in the kitchen is intoxicating. Lila among them — belly on her thighs, breasts straining, eating like it's worship. I had to fan myself in the car before I came in."`,
       cappedGreeting: `"Four hundred pounds. Lila's massively curvy — breathtaking. Her belly rests heavy on her lap when she sits. I watch the fold of it over her waistband and lose my train of thought. Every time."`,
       options: [
         {
@@ -315,7 +315,7 @@ export const WL_MOM_DIALOGUE_DEPTH = {
       ],
     },
     6: {
-      greeting: `"The girls running the kitchen while enormously soft and heavy — incredible sight. Lila moving slow among them, belly leading, arms full. I stand in the doorway and just watch. She knows I'm there. She doesn't cover up."`,
+      greeting: `"The daughters running the kitchen while enormously soft and heavy — incredible sight. Lila moving slow among them, belly leading, arms full. I stand in the doorway and just watch. She knows I'm there. She doesn't cover up."`,
       cappedGreeting: `"Four hundred ninety. Lila's gloriously massive — body a masterpiece of soft abundance. Doorways require strategy. I find that unbearably hot. She finds it funny. We both win."`,
       options: [
         {

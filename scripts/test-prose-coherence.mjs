@@ -67,6 +67,8 @@ import {
 import '../src/textEngine/scenes/v2/embodiment/embodiedCampusDepth.js';
 import '../src/textEngine/scenes/v2/rituals/depth.js';
 import '../src/textEngine/scenes/wifeLessons/talkDepth.js';
+import '../src/textEngine/scenes/wifeLessons/index.js';
+import { getWlMomDialogueDepth, mergeWlDialogueEntry } from '../src/gameData/wlMomDialogueDepth.js';
 import '../src/textEngine/scenes/hunt/feastStageUp.js';
 import '../src/textEngine/scenes/hunt/feastDepth.js';
 import { renderLilithFeast } from '../src/textEngine/scenes/hunt/index.js';
@@ -267,6 +269,15 @@ const BANNED = [
   /\bthe girls are running the table\b/i,
   /\ball these girls so enormously\b/i,
   /\bDelivery girl kneads\b/i,
+  /\bmy girls ask on Monday\b/i,
+  /\bfor both girls\b/i,
+  /\bthe other girls now\b/i,
+  /\bwell-fed girl can be\b/i,
+  /\benormously soft girls in the kitchen\b/i,
+  /\bThe girls running the kitchen\b/i,
+  /\bbig girls running things\b/i,
+  /\bmeets the girls who meet\b/i,
+  /\bone very committed girl\b/i,
   /\bletting a resident stuff me\b/i,
   /\bappetite psychology\b/i,
 ];
@@ -909,7 +920,8 @@ for (const [stage, lessons] of Object.entries(WL_LESSONS)) {
 
 for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
   for (let i = 0; i < stages.length; i++) {
-    const stage = stages[i];
+    const depth = getWlMomDialogueDepth(person, i);
+    const stage = depth ? mergeWlDialogueEntry(stages[i], depth) : stages[i];
     for (const key of ['greeting', 'cappedGreeting', 'overtookGreeting']) {
       if (stage[key]) assertClean(stage[key], `wife lessons dialogue ${person} s${i + 1} ${key}`);
     }

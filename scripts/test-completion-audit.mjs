@@ -592,6 +592,20 @@ check('wife-lessons-talk-framing', () => {
   assert.doesNotMatch(growth, /The girls are going to lose their minds/i);
 });
 
+check('wife-lessons-depth-framing', () => {
+  const depth = read('src/gameData/wlMomDialogueDepth.js');
+  assert.match(depth, /my daughters ask on Monday/);
+  assert.match(depth, /both daughters/);
+  assert.match(depth, /enormously soft daughters in the kitchen/);
+  assert.doesNotMatch(depth, /my girls ask|both girls|the girls running|enormously soft girls|well-fed girl can be/i);
+  const items = read('src/gameData/items.js');
+  assert.match(items, /usable on residents/);
+  assert.doesNotMatch(items, /one very committed girl/i);
+  const pharmacist = read('src/gameData/pharmacistIngredients.js');
+  assert.match(pharmacist, /meets the residents who meet everyone else/);
+  assert.doesNotMatch(pharmacist, /meets the girls who meet/i);
+});
+
 check('wife-lessons-hunt-framing', () => {
   const evolved = read('src/gameData/evolvedForms.js');
   assert.match(evolved, /as the daughters led the lesson/);

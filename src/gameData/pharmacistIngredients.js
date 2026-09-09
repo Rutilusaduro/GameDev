@@ -147,7 +147,7 @@ export const ACQUISITION_BY_STAGE = {
       desc: '+5 supply · +3 branding · wider campus distribution.',
       exposure: 7,
       grants: { supply: 5, branding: 3 },
-      flavor: 'Sophia doesn\'t meet everyone anymore. She meets the girls who meet everyone else. The network fattens on its own.',
+      flavor: 'Sophia doesn\'t meet everyone anymore. She meets the residents who meet everyone else. The network fattens on its own.',
     },
     {
       id: 'bulk_drop',

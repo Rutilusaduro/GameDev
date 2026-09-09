@@ -4697,7 +4697,7 @@ export const WL_DIALOGUES = {
     },
     // Stage 7
     {
-      greeting: `"RA, it’s crazy how much the kitchen has changed with all of us big girls running things now. I move slower these days and my hips brush against doorframes, but I love it. Everything feels softer and warmer, and I catch myself smiling while I’m cooking for everyone. My body has become this huge, plush thing and it just feels right in a way I never imagined it would."`,
+      greeting: `"RA, it's crazy how much the kitchen has changed with all of us running things now. I move slower these days and my hips brush against doorframes, but I love it. Everything feels softer and warmer, and I catch myself smiling while I’m cooking for everyone. My body has become this huge, plush thing and it just feels right in a way I never imagined it would."`,
       cappedGreeting: `"490 pounds. I’m enormous now. When I sit down my belly spreads across my lap and my thighs spread wide across the chair. I used to feel self-conscious about it, but now I feel powerful and feminine in a whole new way that I really enjoy."`,
       overtookGreeting: `"Chloe’s still ahead and the gap is pretty big now. I’ve stopped trying to catch up as much as I used to. We’re both so huge that it doesn’t really feel like a race anymore. It just feels like two really big sisters sharing this life together."`,
       options: [

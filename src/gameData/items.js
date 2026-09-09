@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// INVENTORY — foods & items usable on the girls (basic form)
+// INVENTORY — foods & items usable on residents (basic form)
 // Items feed through the stomach model: calories + fullness.
 // The pantry restocks with a few random finds each week.
 // ═══════════════════════════════════════════════════════════════
@@ -25,7 +25,7 @@ export const ITEMS = [
   { id:"greenhouse_honey_tart", label:"Greenhouse Honey Tart", emoji:"🍯", cal:2200, full:12, rarity:"uncommon", exploration:true,
     desc:"Still warm from a hidden greenhouse bench. Honey forward, buttery, impossible to eat just one slice." },
   { id:"cellar_comfort_loaf", label:"Cellar Comfort Loaf", emoji:"🍞", cal:3400, full:20, rarity:"uncommon", exploration:true,
-    desc:"Pre-renovation dining cellar recipe — dense, sweet, cut thick. Feeds a study group or one very committed girl." },
+    desc:"Pre-renovation dining cellar recipe — dense, sweet, cut thick. Feeds a study group or one very committed resident." },
   { id:"trail_ration", label:"Relic Hunter Trail Ration", emoji:"🥾", cal:1800, full:8, rarity:"uncommon", exploration:true,
     desc:"Indiana's preferred field snack: nuts, dried fruit, and a bar that somehow packs diner-level calories." },
   { id:"tunnel_mushroom_stew", label:"Tunnel Mushroom Stew", emoji:"🍄", cal:4100, full:24, rarity:"rare", exploration:true,

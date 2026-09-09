@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// PANTRY — inventory of foods & items usable on the girls
+// PANTRY — inventory of foods & items usable on residents
 // ═══════════════════════════════════════════════════════════════
 import { useEffect } from 'react';
 import { C } from '../styles.js';
