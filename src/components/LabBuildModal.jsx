@@ -53,13 +53,13 @@ export function LabBuildModal({
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 12 }}>
           {options.map(opt => (
-            <button key={opt.id} style={{ ...C.btn(ACCENT), textAlign: 'left', padding: '10px 12px' }} onClick={() => { playHallPassSound('click', soundEnabled); applyAcquisition(opt.id); }}>
+            <button key={opt.id} type="button" className="lab-build-choice-row" style={{ ...C.btn(ACCENT), textAlign: 'left', padding: '10px 12px' }} onClick={() => { playHallPassSound('click', soundEnabled); applyAcquisition(opt.id); }}>
               <div style={{ fontWeight: 700, fontSize: 12 }}>{opt.label}</div>
               <div style={{ fontSize: 9, color: '#8090a8', marginTop: 4 }}>{opt.grant}</div>
             </button>
           ))}
         </div>
-        <button style={{ ...C.btn('#333'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onCancel(); }}>Cancel</button>
+        <button type="button" className="lab-build-choice-row" style={{ ...C.btn('#333'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onCancel(); }}>Cancel</button>
       </>,
     );
   }
@@ -84,8 +84,8 @@ export function LabBuildModal({
             <span key={p.id} style={{ ...C.tag(`${ACCENT}30`, '#a0b8d8'), fontSize: 9 }}>{p.icon} {p.label} ×{p.qty}</span>
           ))}
         </div>
-        <button style={{ ...C.btn(ACCENT), width: '100%', marginBottom: 6 }} onClick={() => { playHallPassSound('confirm', soundEnabled); onConfirm(labSession); }}>Save parts to lab</button>
-        <button style={{ ...C.btn('#333'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onCancel(); }}>Discard session</button>
+        <button type="button" className="lab-build-choice-row" style={{ ...C.btn(ACCENT), width: '100%', marginBottom: 6 }} onClick={() => { playHallPassSound('confirm', soundEnabled); onConfirm(labSession); }}>Save parts to lab</button>
+        <button type="button" className="lab-build-choice-row" style={{ ...C.btn('#333'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onCancel(); }}>Discard session</button>
       </>,
     );
   }

@@ -1262,14 +1262,59 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 24px rgba(138, 112, 64, 0.12);
 }
 
+.bug-report-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.bug-report-choice-row:hover {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.bug-report-choice-row:focus-visible {
+  outline: 2px solid rgba(201, 160, 96, 0.85);
+  outline-offset: 2px;
+}
+
 .lab-build-modal {
   background: linear-gradient(165deg, rgba(4, 12, 10, 0.98), rgba(8, 24, 20, 0.96), rgba(2, 8, 6, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 26px rgba(64, 160, 128, 0.14);
 }
 
+.lab-build-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.lab-build-choice-row:hover {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.lab-build-choice-row:focus-visible {
+  outline: 2px solid rgba(96, 144, 176, 0.85);
+  outline-offset: 2px;
+}
+
 .stream-brand-modal {
   background: linear-gradient(165deg, rgba(14, 4, 4, 0.98), rgba(28, 8, 8, 0.96), rgba(8, 2, 2, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(224, 64, 64, 0.14);
+}
+
+.stream-brand-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.stream-brand-choice-row:hover {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.stream-brand-choice-row:focus-visible {
+  outline: 2px solid rgba(231, 76, 60, 0.85);
+  outline-offset: 2px;
 }
 
 .destiny-spend-modal {
@@ -1401,6 +1446,21 @@
 .ranked-session-modal {
   background: linear-gradient(165deg, rgba(4, 8, 16, 0.98), rgba(8, 14, 26, 0.96), rgba(2, 4, 10, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(48, 128, 192, 0.14);
+}
+
+.ranked-session-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.ranked-session-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.ranked-session-choice-row:focus-visible {
+  outline: 2px solid rgba(48, 128, 192, 0.85);
+  outline-offset: 2px;
 }
 
 .milestone-resident-header {
@@ -1586,7 +1646,11 @@
   .force-feeder-choice-row:hover,
   .dossier-moment-choice-row:hover,
   .skill-purchase-choice-row:hover,
-  .dinner-lane-choice-row:hover {
+  .dinner-lane-choice-row:hover,
+  .bug-report-choice-row:hover,
+  .lab-build-choice-row:hover,
+  .stream-brand-choice-row:hover,
+  .ranked-session-choice-row:hover {
     transform: none;
   }
 

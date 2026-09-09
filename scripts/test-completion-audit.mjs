@@ -1908,6 +1908,46 @@ check('dinner-lane-row-polish', () => {
   assert.match(desk, /immobile-redirect-modal/);
 });
 
+check('group-dinner-row-polish', () => {
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /group-dinner-modal/);
+  assert.match(desk, /className="dinner-lane-choice-row"/);
+  assert.match(desk, /orderGroupDish/);
+});
+
+check('lab-build-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/LabBuildModal.jsx');
+  assert.match(css, /\.lab-build-choice-row:focus-visible/);
+  assert.match(css, /\.lab-build-choice-row:hover/);
+  assert.match(modal, /lab-build-choice-row/);
+});
+
+check('stream-brand-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/StreamBrandSelectModal.jsx');
+  assert.match(css, /\.stream-brand-choice-row:focus-visible/);
+  assert.match(css, /\.stream-brand-choice-row:hover/);
+  assert.match(modal, /stream-brand-choice-row/);
+});
+
+check('bug-report-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/BugReportModal.jsx');
+  assert.match(css, /\.bug-report-choice-row:focus-visible/);
+  assert.match(css, /\.bug-report-choice-row:hover/);
+  assert.match(modal, /bug-report-choice-row/);
+});
+
+check('ranked-session-row-polish', () => {
+  const css = read('src/index.css');
+  const desk = read('src/HallPass.jsx');
+  assert.match(css, /\.ranked-session-choice-row:focus-visible/);
+  assert.match(css, /\.ranked-session-choice-row:hover:not\(:disabled\)/);
+  assert.match(desk, /ranked-session-choice-row/);
+  assert.match(desk, /ranked-session-modal/);
+});
+
 check('modal-button-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.hall-pass-modal-in button:focus-visible/);

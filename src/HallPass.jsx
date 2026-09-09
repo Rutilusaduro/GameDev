@@ -8333,7 +8333,7 @@ export default function HallPass(){
                   <div style={{fontSize:9,letterSpacing:2,color:"#7a5090",marginBottom:6}}>FEEDING PACE</div>
                   <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:12}}>
                     {SESSION_PACE_ACTIONS.map(p=>(
-                      <button key={p.id} type="button"
+                      <button key={p.id} type="button" className="dinner-lane-choice-row"
                         style={{...C.smBtn,opacity:(gev.sessionPace||'steady')===p.id?1:0.55}}
                         onClick={()=>setGroupDinnerEvent(prev=>({...prev,sessionPace:p.id}))}
                         title={p.desc}>
@@ -8359,7 +8359,7 @@ export default function HallPass(){
                       </div>
                     ))}
                   </div>
-                  <button style={C.btn("#444")} onClick={()=>{ playHallPassSound('click', soundEnabled); setGroupDinnerEvent(null); }}>Cancel</button>
+                  <button type="button" className="dinner-lane-choice-row" style={C.btn("#444")} onClick={()=>{ playHallPassSound('click', soundEnabled); setGroupDinnerEvent(null); }}>Cancel</button>
                 </div>
               )}
 
@@ -8373,7 +8373,7 @@ export default function HallPass(){
                   {allFed?(
                     <div style={{textAlign:"center",padding:"8px 0",marginBottom:10}}>
                       <div style={{fontSize:11,color:"#6a4870",fontStyle:"italic",marginBottom:8}}>The table is cleared.</div>
-                      <button style={C.btn("#4a2060")} onClick={callGroupWaiter}>🫆 Call for More</button>
+                      <button type="button" className="dinner-lane-choice-row" style={C.btn("#4a2060")} onClick={callGroupWaiter}>🫆 Call for More</button>
                     </div>
                   ):(
                     <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:12}}>
@@ -8398,7 +8398,7 @@ export default function HallPass(){
                                 const overText=gRaw>=100?" (overfull!)":"";
                                 const firstName=live?.name?.split(" ")[0]||"her";
                                 return(
-                                  <button key={gs.id}
+                                  <button key={gs.id} type="button" className="dinner-lane-choice-row"
                                     style={{...C.smBtn,borderColor:gRaw>=100?"#602020":"#4a1280",color:gRaw>=100?"#e08080":"#b080e8"}}
                                     onClick={()=>orderGroupDish(dish,gs.id)}>
                                     Feed {firstName}{overText}
@@ -8412,7 +8412,7 @@ export default function HallPass(){
                                 const live=students.find(st=>st.id===gs.id);
                                 const firstName=live?.name?.split(" ")[0]||"her";
                                 return(
-                                  <button key={`push-${gs.id}-${dish.id}`}
+                                  <button key={`push-${gs.id}-${dish.id}`} type="button" className="dinner-lane-choice-row"
                                     style={{...C.smBtn,borderColor:"#802040",color:"#e0a0b0",fontSize:9}}
                                     onClick={()=>orderGroupDish(dish,gs.id,{forcePush:true})}>
                                     Push {firstName}
@@ -8444,7 +8444,7 @@ export default function HallPass(){
                               <div style={{fontSize:10,color:"#9070b0",marginBottom:4}}>{firstName}</div>
                               <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
                                 {shareItems.map(item=>(
-                                  <button key={item.id} style={{...C.smBtn,fontSize:9}}
+                                  <button key={item.id} type="button" className="dinner-lane-choice-row" style={{...C.smBtn,fontSize:9}}
                                     onClick={()=>sharePantryItemAtGroupDinner(item.id,gs.id)}>
                                     {item.emoji} {item.label}
                                   </button>
@@ -8463,7 +8463,7 @@ export default function HallPass(){
                     {GROUP_CONVERSATIONS.map(conv=>{
                       const used=gev.conversationUsed.includes(conv.id);
                       return(
-                        <button key={conv.id}
+                        <button key={conv.id} type="button" className="dinner-lane-choice-row"
                           style={{...C.smBtn,opacity:used?0.4:1,textDecoration:used?"line-through":"none"}}
                           onClick={()=>!used&&useGroupConversation(conv)}>
                           {conv.label}
@@ -8488,8 +8488,8 @@ export default function HallPass(){
                     <div style={{fontSize:11,color:"#f0a060",fontWeight:700,flex:1}}>
                       {gev.students.reduce((a,s)=>a+s.totalGain,0).toLocaleString()} cal total
                     </div>
-                    <button style={C.btn("#2a6830")} onClick={endGroupDinner}>End Evening ✓</button>
-                    <button style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setAp(a=>a-3); setGroupDinnerEvent(null); }}>Leave Early</button>
+                    <button type="button" className="dinner-lane-choice-row" style={C.btn("#2a6830")} onClick={endGroupDinner}>End Evening ✓</button>
+                    <button type="button" className="dinner-lane-choice-row" style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setAp(a=>a-3); setGroupDinnerEvent(null); }}>Leave Early</button>
                   </div>
                 </div>
               )}
@@ -9114,7 +9114,7 @@ export default function HallPass(){
                       const wouldOverfill=fullness+food.fullnessCost>maxFullness;
                       const netFocus=food.focusRestore-15;
                       return(
-                        <button key={food.id}
+                        <button key={food.id} type="button" className="ranked-session-choice-row"
                           style={{...C.btn(wouldOverfill?"#1a0a04":"#04101c"),opacity:wouldOverfill?0.5:1,display:"flex",alignItems:"center",gap:10,padding:"8px 12px",textAlign:"left"}}
                           onClick={()=>pickSessionFood(food.id)}>
                           <span style={{fontSize:18}}>{food.icon}</span>
@@ -9126,7 +9126,7 @@ export default function HallPass(){
                       );
                     })}
                   </div>
-                  {canQuit&&<button style={{...C.btn("#1a0808"),width:"100%",fontSize:11,color:"#604040"}} onClick={quitRankedSession}>Log off for the night</button>}
+                  {canQuit&&<button type="button" className="ranked-session-choice-row" style={{...C.btn("#1a0808"),width:"100%",fontSize:11,color:"#604040"}} onClick={quitRankedSession}>Log off for the night</button>}
                   {!canQuit&&<div style={{fontSize:9,color:"#2a3040",textAlign:"center",marginTop:4}}>Logging off isn't really an option anymore.</div>}
                 </>
               )}
@@ -9148,7 +9148,7 @@ export default function HallPass(){
                     <div style={{fontSize:12,color:"#80b0d0",lineHeight:1.5}}>{payoffText}</div>
                     <div style={{fontSize:13,color:"#60c080",marginTop:8,fontWeight:700}}>+{Math.round(gain)} lbs</div>
                   </div>
-                  <button style={{...C.btn("#1a5a7a"),width:"100%",marginTop:10}} onClick={closeRankedSession}>Session Saved ✓</button>
+                  <button type="button" className="ranked-session-choice-row" style={{...C.btn("#1a5a7a"),width:"100%",marginTop:10}} onClick={closeRankedSession}>Session Saved ✓</button>
                 </>
               )}
             </div>

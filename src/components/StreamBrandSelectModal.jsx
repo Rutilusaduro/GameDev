@@ -49,6 +49,7 @@ export function StreamBrandSelectModal({ student, onSelect, onClose, required, s
               <button
                 key={brand.id}
                 type="button"
+                className="stream-brand-choice-row"
                 onClick={() => { playHallPassSound('confirm', soundEnabled); onSelect(student.id, brand.id); }}
                 style={{
                   ...C.btn(ui.color),
@@ -72,7 +73,7 @@ export function StreamBrandSelectModal({ student, onSelect, onClose, required, s
           })}
         </div>
         {!required && onClose && (
-          <button type="button" style={{ ...C.btn('#301018'), width: '100%', fontSize: 11 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>
+          <button type="button" className="stream-brand-choice-row" style={{ ...C.btn('#301018'), width: '100%', fontSize: 11 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>
             Cancel
           </button>
         )}
