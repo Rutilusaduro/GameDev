@@ -4,6 +4,7 @@ import { registerPool, createContext, render } from '../../../engine.js';
 import { appendV2Depth } from '../depthRenderer.js';
 import { CAMPUS_NODES } from '../../../../gameData/campus.js';
 import { campusNodeToLocale } from '../../../../gameData/textContext.js';
+import { normalizeEmbodiedEventId } from '../../../../gameData/v2/embodiedCampus.js';
 
 registerPool('emb.walk.arrive', [
   { when: { stageMin: 8 }, text: [
@@ -133,7 +134,7 @@ registerPool('emb.event.quad_picnic', [
   ]},
 ]);
 
-registerPool('emb.event.classmate_sighting', [
+registerPool('emb.event.resident_sighting', [
   { when: {}, text: [
     '{ref.name} spots her across the path — wave, stare, the quick look at her middle. "Hey… you good?" She nods. She is more than good.',
     '{ref.name} calls her name. Resonance prickles: being seen is how reach grows.',
@@ -195,7 +196,7 @@ const EVENT_POOL = {
   vending_splurge: 'emb.event.vending_splurge',
   cafeteria_binge: 'emb.event.cafeteria_binge',
   quad_picnic: 'emb.event.quad_picnic',
-  classmate_sighting: 'emb.event.classmate_sighting',
+  resident_sighting: 'emb.event.resident_sighting',
   gym_scale_shame: 'emb.event.gym_scale_shame',
   elevator_groan: 'emb.event.elevator_groan',
   faculty_treats: 'emb.event.faculty_treats',
@@ -237,7 +238,7 @@ export function renderEmbodiedMove(student, fromId, toId, week = 1, opts = {}) {
 }
 
 export function renderEmbodiedEvent(eventId, student, nodeId, week = 1, opts = {}) {
-  const pool = EVENT_POOL[eventId] || 'emb.walk.arrive';
+  const pool = EVENT_POOL[normalizeEmbodiedEventId(eventId)] || 'emb.walk.arrive';
   const ctx = embCtx(student, week, nodeId, opts);
   const base = render(`{${pool}}`, ctx, { trace: opts.trace || null })?.trim() || '';
   return appendV2Depth(base, 'embodiment', ctx, opts.v2DepthChance ?? 0.4);

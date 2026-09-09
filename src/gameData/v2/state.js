@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // V2.0 — shared state factory
 // ═══════════════════════════════════════════════════════════════
+import { migrateEmbodimentState } from './embodiedCampus.js';
 
 export const V2_CONFIG = {
   version: '2.0.0',
@@ -20,6 +21,14 @@ export const V2_CONFIG = {
   maxResonanceLinks: 1,
   maxResonanceLinksWithBells: 3,
 };
+
+/** Normalize v2 save blobs after embodied-event renames (e.g. classmate → resident). */
+export function normalizeV2State(v2State) {
+  if (!v2State) return createInitialV2State();
+  const embodiment = migrateEmbodimentState(v2State.embodiment || {});
+  if (embodiment === v2State.embodiment) return v2State;
+  return { ...v2State, embodiment };
+}
 
 export function createInitialV2State() {
   return {

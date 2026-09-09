@@ -232,7 +232,7 @@ import { renderEchoReplay, renderEchoCapture } from './textEngine/scenes/v2/echo
 import { renderResonancePulse } from './textEngine/scenes/v2/resonance/index.js';
 import { renderResonanceLink } from './textEngine/scenes/v2/resonance/index.js';
 import { appendV2Depth } from './textEngine/scenes/v2/depthRenderer.js';
-import { createInitialV2State, V2_CONFIG } from './gameData/v2/state.js';
+import { createInitialV2State, normalizeV2State, V2_CONFIG } from './gameData/v2/state.js';
 import { appendEmbodimentWalkLog } from './gameData/v2/embodiedCampus.js';
 import { canTriggerDream } from './gameData/v2/appetiteDreams.js';
 import './textEngine/scenes/v2/index.js';
@@ -491,7 +491,7 @@ export default function HallPass(){
   const [dreamStudent,setDreamStudent]=useState(null);
   const [dreamPresetScenario,setDreamPresetScenario]=useState(null);
   const [echoReplay,setEchoReplay]=useState(null);
-  const v2 = v2State || createInitialV2State();
+  const v2 = normalizeV2State(v2State || createInitialV2State());
   // raProfile lives on player object
   useEffect(() => {
     if (raProfile?.spiritId != null) setRaProfile(raProfile);

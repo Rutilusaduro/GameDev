@@ -230,7 +230,6 @@ const ALLOW_LINE = [
   /'spirit\.v2/,
   /"spirit\.v2/,
   /spirit\.v2\.depth/,
-  /classmate_sighting/,
   /fr_irb/,
   /fs_irb/,
   /_irb/,

@@ -109,9 +109,11 @@ for (const id of required) {
 
 // ── Embodied event grants trust ──
 const lockedTargets = simStudents.filter((s) => s.lockState === 'locked');
-const sighting = { id: 'classmate_sighting', trustNearby: 4, calories: 0, scrutiny: 0 };
+const sighting = { id: 'resident_sighting', trustNearby: 4, calories: 0, scrutiny: 0 };
 const applied = applyEmbodiedEvent(student, sighting, { lockedStudents: lockedTargets, rng: () => 0 });
-assert(applied.trustGrants.length > 0, 'classmate sighting grants passive trust');
+assert(applied.trustGrants.length > 0, 'resident sighting grants passive trust');
+const legacyApplied = applyEmbodiedEvent(student, { id: 'classmate_sighting' }, { lockedStudents: lockedTargets, rng: () => 0 });
+assert(legacyApplied.trustGrants.length > 0, 'legacy classmate_sighting id still grants trust');
 
 console.log(failed ? `\n${failed} check(s) failed` : '\nAll embodied campus checks passed');
 process.exit(failed ? 1 : 0);

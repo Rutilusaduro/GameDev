@@ -910,7 +910,7 @@ if (campusV2) assertClean(campusV2, 'campus v2 depth');
 const embStudent = { ...(INIT_STUDENTS.find((s) => s.id === 6) || INIT_STUDENTS[6]), lbs: 280, corruption: 1 };
 const embArrive = renderEmbodiedArrive(embStudent, 'dorms', 10, { v2DepthChance: 0 });
 if (embArrive) assertClean(embArrive, 'embodied arrive');
-for (const eventId of ['stuck_door', 'elevator_groan', 'bully_forcefeed']) {
+for (const eventId of ['stuck_door', 'elevator_groan', 'bully_forcefeed', 'resident_sighting']) {
   const ref = INIT_STUDENTS.find((s) => s.archetype === 'sorority' && s.id !== embStudent.id) || INIT_STUDENTS[0];
   const embEvent = renderEmbodiedEvent(eventId, embStudent, 'union', 10, {
     ref,

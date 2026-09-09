@@ -10,6 +10,39 @@ export const EMBODIED_START_NODE = 'dorms';
 export const EMBODIED_EVENT_BASE_CHANCE = 0.44;
 export const EMBODIED_EVENT_DRY_SPELL = 3;
 
+/** Legacy embodied event ids from older saves → RA dorm ids. */
+export const LEGACY_EMBODIED_EVENT_IDS = {
+  classmate_sighting: 'resident_sighting',
+};
+
+export function normalizeEmbodiedEventId(id) {
+  return LEGACY_EMBODIED_EVENT_IDS[id] || id;
+}
+
+export function normalizeEmbodiedEventKey(eventKey) {
+  if (!eventKey) return eventKey;
+  const sep = eventKey.indexOf(':');
+  if (sep === -1) return normalizeEmbodiedEventId(eventKey);
+  return `${normalizeEmbodiedEventId(eventKey.slice(0, sep))}${eventKey.slice(sep)}`;
+}
+
+/** Migrate embodiment.eventsSeen / lastEventKey after embodied event renames. */
+export function migrateEmbodimentState(emb = {}) {
+  const eventsSeen = { ...(emb.eventsSeen || {}) };
+  let eventsChanged = false;
+  for (const [key, count] of Object.entries(eventsSeen)) {
+    const norm = normalizeEmbodiedEventKey(key);
+    if (norm !== key) {
+      delete eventsSeen[key];
+      eventsSeen[norm] = (eventsSeen[norm] || 0) + count;
+      eventsChanged = true;
+    }
+  }
+  const lastEventKey = emb.lastEventKey ? normalizeEmbodiedEventKey(emb.lastEventKey) : emb.lastEventKey;
+  if (!eventsChanged && lastEventKey === emb.lastEventKey) return emb;
+  return { ...emb, eventsSeen, lastEventKey };
+}
+
 /** Special arrival / look-around events while embodied. */
 export const EMBODIED_EVENTS = {
   stuck_door: {
@@ -110,8 +143,8 @@ export const EMBODIED_EVENTS = {
     scrutiny: 2,
     trustNearby: 0,
   },
-  classmate_sighting: {
-    id: 'classmate_sighting',
+  resident_sighting: {
+    id: 'resident_sighting',
     label: 'Resident Spots You',
     icon: '👋',
     minStage: 0,
@@ -174,7 +207,7 @@ export const EMBODIED_EVENTS = {
 };
 
 const NARROW_NODES = new Set(['lecture_hall', 'library', 'science_wing', 'office', 'dorms']);
-const WITNESS_EVENTS = new Set(['bully_forcefeed', 'npc_stare', 'gossip_whisper', 'classmate_sighting']);
+const WITNESS_EVENTS = new Set(['bully_forcefeed', 'npc_stare', 'gossip_whisper', 'resident_sighting']);
 const BULLY_ARCHETYPES = new Set(['cheerleader', 'sorority', 'athlete']);
 const BULLY_PERSONALITIES = new Set(['commanding', 'competitive', 'social', 'predatory']);
 
@@ -204,7 +237,8 @@ function isEventEligible(def, student, nodeId, lastEventKey) {
   if (def.maxCorruption != null && (student.corruption || 0) > def.maxCorruption) return false;
   if (def.nodes && !def.nodes.includes(nodeId)) return false;
   if (def.id === 'stuck_door' && !NARROW_NODES.has(nodeId) && stage < 8) return false;
-  if (lastEventKey && lastEventKey === `${def.id}:${nodeId}`) return false;
+  const normLast = lastEventKey ? normalizeEmbodiedEventKey(lastEventKey) : null;
+  if (normLast && normLast === `${def.id}:${nodeId}`) return false;
   return true;
 }
 
@@ -257,7 +291,7 @@ export function rollEmbodiedArrivalEvent(
   if (rng() > chance) return null;
 
   const pick = weightedPick(candidates, (d) => d.weight || 8, rng);
-  const witness = pickEmbodiedWitness(student, students, pick.id, rng);
+  const witness = pickEmbodiedWitness(student, students, normalizeEmbodiedEventId(pick.id), rng);
 
   return {
     ...pick,
@@ -286,7 +320,7 @@ export function applyEmbodiedEvent(student, eventDef, { lockedStudents = [], rng
     const target = lockedStudents[Math.floor(rng() * lockedStudents.length)];
     if (target) trustGrants.push({ studentId: target.id, amount: eventDef.trustNearby });
   }
-  if (eventDef.id === 'classmate_sighting' && lockedStudents.length) {
+  if (normalizeEmbodiedEventId(eventDef.id) === 'resident_sighting' && lockedStudents.length) {
     const target = lockedStudents[Math.floor(rng() * lockedStudents.length)];
     if (target) trustGrants.push({ studentId: target.id, amount: 5 });
   }

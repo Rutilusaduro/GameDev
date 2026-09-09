@@ -905,6 +905,20 @@ check('homeroom-resident-framing', () => {
   assert.doesNotMatch(modal, /STUDENTS · tap to conference/i);
 });
 
+check('embodied-resident-sighting', () => {
+  const embodied = read('src/gameData/v2/embodiedCampus.js');
+  assert.match(embodied, /resident_sighting:/);
+  assert.match(embodied, /id: 'resident_sighting'/);
+  assert.match(embodied, /classmate_sighting: 'resident_sighting'/);
+  assert.doesNotMatch(embodied, /classmate_sighting:\s*\{/);
+  const walk = read('src/textEngine/scenes/v2/embodiment/campusWalk.js');
+  assert.match(walk, /emb\.event\.resident_sighting/);
+  assert.doesNotMatch(walk, /emb\.event\.classmate_sighting/);
+  const state = read('src/gameData/v2/state.js');
+  assert.match(state, /normalizeV2State/);
+  assert.match(state, /migrateEmbodimentState/);
+});
+
 check('campus-softening-resident-framing', () => {
   const campus = read('src/textEngine/scenes/campusSoftening.js');
   assert.match(campus, /Residents on my floor have that same post-table warmth/);

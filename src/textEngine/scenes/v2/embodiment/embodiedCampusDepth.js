@@ -17,7 +17,7 @@ registerModuleVariants('emb.event.bully_forcefeed', [
   ]},
 ]);
 
-registerModuleVariants('emb.event.classmate_sighting', [
+registerModuleVariants('emb.event.resident_sighting', [
   { when: { refArchetype: 'quiet' }, text: [
     '{ref.name} sketches her from across the quad before she remembers to wave. "Sorry — you looked… different. Good different."',
   ]},
