@@ -388,6 +388,51 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(139, 69, 19, 0.16);
 }
 
+.evolution-offer-modal {
+  background: linear-gradient(165deg, rgba(12, 4, 32, 0.98), rgba(24, 8, 64, 0.96), rgba(8, 2, 20, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(112, 48, 192, 0.16);
+}
+
+.session-result-modal {
+  background: linear-gradient(165deg, rgba(10, 4, 20, 0.98), rgba(22, 8, 42, 0.96), rgba(6, 2, 14, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 26px rgba(144, 80, 200, 0.14);
+}
+
+.tap-out-modal {
+  background: linear-gradient(165deg, rgba(16, 4, 4, 0.98), rgba(32, 8, 8, 0.96), rgba(10, 2, 2, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 24px rgba(192, 96, 96, 0.14);
+}
+
+.homeroom-queen-modal {
+  background: linear-gradient(165deg, rgba(18, 10, 4, 0.98), rgba(36, 20, 8, 0.96), rgba(12, 6, 2, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(200, 140, 80, 0.16);
+}
+
+.fair-modal {
+  background: linear-gradient(165deg, rgba(10, 6, 0, 0.98), rgba(20, 12, 0, 0.96), rgba(6, 4, 0, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(200, 134, 10, 0.16);
+}
+
+.opposition-endgame-modal {
+  background: linear-gradient(165deg, rgba(8, 8, 16, 0.98), rgba(16, 16, 32, 0.96), rgba(6, 6, 12, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(96, 112, 160, 0.14);
+}
+
+.refeed-surge-modal {
+  background: linear-gradient(165deg, rgba(6, 10, 20, 0.98), rgba(14, 20, 36, 0.96), rgba(4, 6, 14, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 26px rgba(64, 96, 160, 0.14);
+}
+
+.eating-contest-modal {
+  background: linear-gradient(165deg, rgba(2, 14, 4, 0.98), rgba(6, 26, 8, 0.96), rgba(2, 8, 2, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(48, 160, 80, 0.14);
+}
+
+.sumo-match-modal {
+  background: linear-gradient(165deg, rgba(20, 4, 4, 0.98), rgba(36, 8, 8, 0.96), rgba(12, 2, 2, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(208, 80, 64, 0.14);
+}
+
 .milestone-resident-header {
   padding: 8px 12px;
   border-radius: 8px;
@@ -452,6 +497,15 @@
   .community-researcher-modal,
   .compound-feed-modal,
   .cultivator-modal,
+  .evolution-offer-modal,
+  .session-result-modal,
+  .tap-out-modal,
+  .homeroom-queen-modal,
+  .fair-modal,
+  .opposition-endgame-modal,
+  .refeed-surge-modal,
+  .eating-contest-modal,
+  .sumo-match-modal,
   .hall-log-achievement,
   .hall-log-unlock {
     animation: none;

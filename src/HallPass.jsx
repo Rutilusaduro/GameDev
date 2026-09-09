@@ -7779,21 +7779,21 @@ export default function HallPass(){
   },0);
 
   // ── EFFECTIVE ACTIONS (applying unlocked skill effects) ──────
-  const ownedClass=ownedHallSkills||{};
+  const ownedHall=ownedHallSkills||{};
   const effectiveSingleActions=ACTIONS_SINGLE.filter(a=>{
     if(!a.requiresUnlock) return true;
-    return hasHallLoungeUnlock(ownedClass,a.requiresUnlock);
+    return hasHallLoungeUnlock(ownedHall,a.requiresUnlock);
   });
   const effectiveHallActions=ACTIONS_HALL.filter(a=>{
     if(a.supernaturalOnly&&!opposition?.supernatural?.actTriggered) return false;
-    if(a.requiresUnlock&&!hasHallLoungeUnlock(ownedClass,a.requiresUnlock)) return false;
+    if(a.requiresUnlock&&!hasHallLoungeUnlock(ownedHall,a.requiresUnlock)) return false;
     return true;
   });
 
   const availableVenues=DINNER_VENUES.filter(v=>{
     if(v.id==="home_dinner") return false;
     if(v.id==="atelier") return false;
-    return isDinnerVenueUnlocked(v.id,ownedClass);
+    return isDinnerVenueUnlocked(v.id,ownedHall);
   });
 
   const views=["roster","actions","achievements","log"];

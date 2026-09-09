@@ -7,7 +7,7 @@ import { playHallPassSound } from '../gameData/hallPassAudio.js';
 export function EvolutionOfferModal({ chooseEvolution, evolutionModal, setEvolutionModal, soundEnabled = true }){
   return(
         <div style={C.overlay}>
-          <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0c0520,#180840,#0c0520)",border:"2px solid #7030c060"}}>
+          <div className="hall-pass-modal-in evolution-offer-modal" style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0c0520,#180840,#0c0520)",border:"2px solid #7030c060"}}>
             <div style={{fontSize:9,letterSpacing:4,color:"#9040e0",marginBottom:6}}>✦ A NEW DIRECTION</div>
             <div style={{fontSize:17,fontWeight:700,color:"#d0a0ff",marginBottom:10}}>{evolutionModal.student?.name}</div>
             <div style={{fontSize:12,color:"#b090d0",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>{evolutionModal.intro}</div>
@@ -30,7 +30,7 @@ export function SessionResultModal({ sessionResult, setSessionResult, soundEnabl
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled]);
   return(
         <div style={C.overlay}>
-          <div className="hall-pass-modal-in" style={C.modal}>
+          <div className="hall-pass-modal-in session-result-modal" style={C.modal}>
             <div style={{fontSize:9,letterSpacing:3,color:"#9050c8",marginBottom:6}}>ROOM SESSION LOGGED — #{sessionResult.sessionCount}</div>
             <div style={{fontSize:12,color:"#7a50a0",marginBottom:12}}>
               Resident {sessionResult.student.name} · {sessionResult.student.lbs} lbs · {getFullnessStage(sessionResult.fullnessPct).label} ({sessionResult.fullnessPct}%)
@@ -54,7 +54,7 @@ export function TapOutPopup({ setTapOutPopup, tapOutPopup, soundEnabled = true }
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled]);
   return(
         <div style={C.overlay}>
-          <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:520}}>
+          <div className="hall-pass-modal-in tap-out-modal" style={{...C.modal,maxWidth:520}}>
             <div style={{fontSize:9,letterSpacing:3,color:"#c06060",marginBottom:6}}>⛔ SHE TAPS OUT</div>
             <div style={{fontSize:11,color:"#a06050",marginBottom:10}}>
               {tapOutPopup.student.name} · {tapOutPopup.totalGain.toLocaleString()} cal this session (≈+{Math.round(tapOutPopup.totalGain/3500)} lbs digesting)

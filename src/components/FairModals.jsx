@@ -15,7 +15,7 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
   const fairReady=ft.sessionsThisCycle>=FAIR_TRAINING_CONFIG.maxSessionsPerCycle;
   return(
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:560,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
+      <div className="hall-pass-modal-in fair-modal" style={{...C.modal,maxWidth:560,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
         <div style={{fontSize:9,letterSpacing:4,color:fairOrange,marginBottom:6}}>🎡 PRE-FAIR TRAINING — CYCLE {ft.cycleNum+1}</div>
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:8,fontSize:11,color:"#d0b080"}}>
           <span>{mj.name} — {Math.round(mj.lbs)} lbs</span>
@@ -110,7 +110,7 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
   const tier=getFairPrideTier(fairPride);
   return(
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
+      <div className="hall-pass-modal-in fair-modal" style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
         <div style={{fontSize:9,letterSpacing:4,color:fairOrange,marginBottom:6}}>
           🎡 FAIR DAY — {fd.phase==='weighin'?'THE WEIGH-IN':fd.phase==='judging'?'THE JUDGING':'THE AFTERPARTY'}
         </div>

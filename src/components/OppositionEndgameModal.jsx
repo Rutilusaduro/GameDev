@@ -22,7 +22,7 @@ export function OppositionEndgameModal({ beat, onDismiss, soundEnabled = true })
 
   return (
     <div style={{ ...C.overlay, zIndex: 8600 }}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 520, border: `1px solid ${meta.color}60`, background: 'linear-gradient(160deg,#080810,#101828,#080810)' }}>
+      <div className="hall-pass-modal-in opposition-endgame-modal" style={{ ...C.modal, maxWidth: 520, border: `1px solid ${meta.color}60`, background: 'linear-gradient(160deg,#080810,#101828,#080810)' }}>
         <SceneBackdrop variant="opposition" />
         <div style={{ fontSize: 10, letterSpacing: 4, color: meta.color, marginBottom: 8 }}>
           {meta.emoji} {meta.label}

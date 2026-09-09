@@ -95,7 +95,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
           }
           return(
             <div style={{...C.overlay,zIndex:350}}>
-              <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:560,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"85vh",overflowY:"auto"}}>
+              <div className="hall-pass-modal-in homeroom-queen-modal" style={{...C.modal,maxWidth:560,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"85vh",overflowY:"auto"}}>
                 <SceneBackdrop variant="campus" height={40} />
                 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
                   <div style={{fontSize:9,letterSpacing:3,color:warmDim}}>🍪 DAISY'S HALL KITCHEN</div>
@@ -173,7 +173,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
 
         return(
           <div style={{...C.overlay,zIndex:350}}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:640,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"90vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in homeroom-queen-modal" style={{...C.modal,maxWidth:640,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"90vh",overflowY:"auto"}}>
               {/* Header */}
               <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
                 <div style={{fontSize:9,letterSpacing:4,color:warmAccent}}>🍪 DAISY'S HALL KITCHEN</div>

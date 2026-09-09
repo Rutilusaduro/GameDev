@@ -149,6 +149,10 @@ check('ui-polish-css', () => {
     'floor-checkin-choice', 'week-recap-week-badge',
     'milestone-ceremony-modal', 'milestone-resident-header', 'tier-up-cta', 'hunger-interrupt-modal', 'floor-checkin-modal', 'embodiment-modal',
     'talk-modal', 'weigh-in-modal', 'opposition-hearing-modal', 'week-recap-modal', 'confrontation-modal', 'hall-unlock-modal', 'tier-up-modal', 'competitive-gainer-modal', 'private-session-modal',
+    'feast-ritual-modal', 'dream-modal', 'echo-modal', 'week-planner-modal', 'maya-hive-modal',
+    'origin-pick-modal', 'community-researcher-modal', 'compound-feed-modal', 'cultivator-modal',
+    'evolution-offer-modal', 'session-result-modal', 'tap-out-modal', 'homeroom-queen-modal', 'fair-modal',
+    'opposition-endgame-modal', 'refeed-surge-modal', 'eating-contest-modal', 'sumo-match-modal',
   ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
   }
@@ -334,6 +338,30 @@ check('lane-modal-polish', () => {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS .${cls}`);
     assert.match(read(file), new RegExp(cls));
   }
+});
+
+check('minigame-modal-polish', () => {
+  const css = read('src/index.css');
+  for (const [cls, file] of [
+    ['evolution-offer-modal', 'src/components/MiscModals.jsx'],
+    ['session-result-modal', 'src/components/MiscModals.jsx'],
+    ['tap-out-modal', 'src/components/MiscModals.jsx'],
+    ['homeroom-queen-modal', 'src/components/HomeroomQueenModal.jsx'],
+    ['fair-modal', 'src/components/FairModals.jsx'],
+    ['opposition-endgame-modal', 'src/components/OppositionEndgameModal.jsx'],
+    ['refeed-surge-modal', 'src/components/RefeedSurgeModal.jsx'],
+    ['eating-contest-modal', 'src/components/EatingContestModal.jsx'],
+    ['sumo-match-modal', 'src/components/SumoMatchModal.jsx'],
+  ]) {
+    assert.match(css, new RegExp(`\\.${cls}`), `missing CSS .${cls}`);
+    assert.match(read(file), new RegExp(cls));
+  }
+});
+
+check('owned-hall-local-var', () => {
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /const ownedHall=ownedHallSkills/);
+  assert.doesNotMatch(desk, /const ownedClass=/);
 });
 
 check('hall-unlock-modal-polish', () => {

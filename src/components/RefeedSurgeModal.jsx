@@ -15,7 +15,7 @@ export function RefeedSurgeModal({ student, tapsNeeded = 3, taps = 0, onTap, onC
 
   return (
     <div style={{ ...C.overlay, zIndex: 8500 }}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 480, border: '1px solid #4060a0' }}>
+      <div className="hall-pass-modal-in refeed-surge-modal" style={{ ...C.modal, maxWidth: 480, border: '1px solid #4060a0' }}>
         <div style={{ fontSize: 10, letterSpacing: 3, color: '#7090c0', marginBottom: 8 }}>✨ REFEED SURGE</div>
         <div style={{ fontSize: 13, color: '#d0d8f0', lineHeight: 1.8, fontStyle: 'italic', marginBottom: 14 }}>
           {line || `${student.name} remembers every pound — feed the surge back into her.`}

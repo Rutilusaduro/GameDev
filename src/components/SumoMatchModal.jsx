@@ -20,7 +20,7 @@ export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMov
         const aftermathText=renderSumoAftermath(stageIdx,s,gainAccum,won,oppLbs,week);
         return(
           <div style={{...C.overlay,zIndex:1200}}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#140404,#1f0808,#140404)",border:"1px solid #80303050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
+            <div className="hall-pass-modal-in sumo-match-modal" style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#140404,#1f0808,#140404)",border:"1px solid #80303050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#d05040",marginBottom:4}}>THE DOHYO — vs {SUMO_RIVAL_NAME.toUpperCase()}</div>
               <div style={{fontSize:14,fontWeight:700,color:"#ff8060",marginBottom:12}}>{s.name}</div>
 
