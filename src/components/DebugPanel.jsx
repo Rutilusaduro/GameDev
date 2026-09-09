@@ -68,6 +68,9 @@ export function DebugPanel({
   setMayaHiveState,
   setLabState,
   setDeviceInventory,
+  setMilestoneQueue,
+  setWeekRecap,
+  setPresentationState,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -207,6 +210,64 @@ export function DebugPanel({
                     setView('actions');
                   }}>
                   🍽️ Dinner QA
+                </button>
+              )}
+              {setMilestoneQueue && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(120,90,20,0.55)' }}
+                  onClick={() => {
+                    setMilestoneQueue({
+                      events: [{
+                        id: 1,
+                        name: 'Cassidy',
+                        stageLabel: 'Heavy',
+                        gainLbs: 42,
+                        endLbs: 240,
+                        prose: 'The threshold shows in how she fills a desk chair now — heavier, softer, unmistakably past the line she crossed this week on your floor.',
+                        traceNodes: [],
+                      }],
+                      index: 0,
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  ⚖️ Milestone QA
+                </button>
+              )}
+              {setWeekRecap && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(80,40,120,0.55)' }}
+                  onClick={() => {
+                    setWeekRecap({
+                      week: 3,
+                      movers: [{
+                        id: 1,
+                        name: 'Cassidy',
+                        lbsGained: 12,
+                        stagedUp: true,
+                        stuffed: false,
+                        prose: 'Cassidy crossed into Heavy this week — the hall felt it before the scale confirmed.',
+                        totalGained: 24,
+                        journeyStages: 1,
+                        startStageLabel: 'Plump',
+                        stageLabel: 'Heavy',
+                      }],
+                      extras: [],
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  📅 Week Recap QA
+                </button>
+              )}
+              {setPresentationState && setSelectedId && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(30,60,100,0.55)' }}
+                  onClick={() => {
+                    setStudents((prev) => prev.map((s) => (
+                      s.id === 1
+                        ? { ...s, evolvedForm: 'community_researcher', lbs: 200, relationship: 50, mood: 'focused' }
+                        : s
+                    )));
+                    setPresentationState({ studentId: 1, stageIdx: 0 });
+                    setDebugOpen(false);
+                  }}>
+                  📊 Presentation QA
                 </button>
               )}
               {setSelectedId && (

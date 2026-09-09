@@ -221,6 +221,24 @@ export async function unlockHomesteadQueenArcQA(page) {
   await expect(page.getByText('EVOLVED PATH')).toBeVisible();
 }
 
+/** Debug: open milestone ceremony modal for Cassidy (debug panel auto-closes). */
+export async function triggerMilestoneQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Milestone QA/ }).click();
+}
+
+/** Debug: open week recap modal (debug panel auto-closes). */
+export async function triggerWeekRecapQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Week Recap QA/ }).click();
+}
+
+/** Debug: open lane captain presentation defense minigame (debug panel auto-closes). */
+export async function triggerPresentationQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Presentation QA/ }).click();
+}
+
 /** Open a resident from roster; pick origin deck if first contact. */
 export async function openResidentDetail(page, name) {
   await page.getByRole('button', { name: '📋 Roster' }).click();
