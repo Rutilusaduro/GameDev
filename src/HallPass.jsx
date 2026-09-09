@@ -714,6 +714,16 @@ export default function HallPass(){
     playHallPassSound('session', soundEnabled);
   }, [soundEnabled, classSession?.sceneIdx, classSession?.pendingResult, !!classSession]);
 
+  useEffect(() => {
+    if (!skillPurchase) return;
+    playHallPassSound('tier', soundEnabled);
+  }, [soundEnabled, skillPurchase?.skill?.id]);
+
+  useEffect(() => {
+    if (!dinnerEvent) return;
+    playHallPassSound('session', soundEnabled);
+  }, [soundEnabled, dinnerEvent?.phase, dinnerEvent?.student?.id, dinnerEvent?.venue?.id]);
+
   useEffect(()=>{
     const end=checkOppositionEndgame(opposition,students);
     const pending=[];
@@ -2200,7 +2210,7 @@ export default function HallPass(){
           ...prev,
           hiveBiomass:prev.hiveBiomass+trickle,
           spiritResonance:prev.spiritResonance+Math.max(1,Math.floor(rooms/6)),
-          log:[{tag:"[MayaHive_WeeklyTrickle]",text:`The conquered rooms feed the Central Nest between classes. +${trickle} Biomass.`,type:"system"},...prev.log].slice(0,40),
+          log:[{tag:"[MayaHive_WeeklyTrickle]",text:`The conquered rooms feed the Central Nest between hall rounds. +${trickle} Biomass.`,type:"system"},...prev.log].slice(0,40),
         };
       });
     }
@@ -7771,7 +7781,7 @@ export default function HallPass(){
         const canConfirm=totalAllocated>=skill.cost;
         return(
           <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:580}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:580}}>
               <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:3}}>UNLOCK SKILL</div>
               <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:18}}>{skill.label}</h2>
               <div style={{fontSize:11,color:"#9070b0",lineHeight:1.5,marginBottom:4}}>{skill.desc}</div>
@@ -7818,9 +7828,9 @@ export default function HallPass(){
                 })}
               </div>
               <div style={{display:"flex",gap:8}}>
-                <button style={C.btn("#444")} onClick={()=>setSkillPurchase(null)}>Cancel</button>
+                <button style={C.btn("#444")} onClick={()=>{ playHallPassSound('click', soundEnabled); setSkillPurchase(null); }}>Cancel</button>
                 <button style={{...C.btn(canConfirm?"#5020a0":"#2a1040"),flex:1,opacity:canConfirm?1:0.6}}
-                  onClick={()=>canConfirm&&confirmSkillPurchase()}>
+                  onClick={()=>{ if(canConfirm){ playHallPassSound('confirm', soundEnabled); confirmSkillPurchase(); } }}>
                   {canConfirm?`🔓 Unlock ${skill.label}`:`Assign ${remaining} more lbs to unlock`}
                 </button>
               </div>
@@ -7951,7 +7961,7 @@ export default function HallPass(){
         const venueList=[...availableVenues,...(showAtelier?[atelier]:[])];
         return(
           <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:640}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:640}}>
               {/* Header */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
                 <div>
@@ -8135,9 +8145,9 @@ export default function HallPass(){
                   <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
                     <div style={{fontSize:11,color:"#f0a060",fontWeight:700,flex:1}}>{(dinnerEvent.totalGain||0).toLocaleString()} cal total</div>
                     {isAtCapacity&&(
-                      <button style={C.btn("#2a6830")} onClick={endEvening}>End Evening ✓</button>
+                      <button style={C.btn("#2a6830")} onClick={()=>{ playHallPassSound('confirm', soundEnabled); endEvening(); }}>End Evening ✓</button>
                     )}
-                    <button style={C.btn("#333")} onClick={()=>{setAp(a=>a-2);setDinnerEvent(null);}}>
+                    <button style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setAp(a=>a-2); setDinnerEvent(null); }}>
                       Leave Early
                     </button>
                   </div>
@@ -8153,7 +8163,7 @@ export default function HallPass(){
       {/* IMMOBILE REDIRECT POPUP */}
       {immobileRedirect&&(
         <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:520}}>
+          <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:520}}>
             <div style={{fontSize:9,letterSpacing:3,color:"#c05070",marginBottom:6}}>SHE CAN'T GO OUT</div>
             <div style={{fontSize:11,color:"#9070a0",marginBottom:14}}>
               {immobileRedirect.student.name} · {getStage(immobileRedirect.student.lbs).label} · {Math.round(immobileRedirect.student.lbs)} lbs
@@ -8162,6 +8172,7 @@ export default function HallPass(){
               {immobileRedirect.text}
             </p>
             <button style={C.btn("#5818a8")} onClick={()=>{
+              playHallPassSound('confirm', soundEnabled);
               const s=immobileRedirect.student;
               setImmobileRedirect(null);
               startDinner(s,{skipImmobileCheck:true});

@@ -42,7 +42,7 @@ registerModuleVariants('campus.dev.vulnerability', [
   ]},
   { when: { studentId: 7, targetType: 'student' }, weight: W, text: [
     `updating her leaderboard corkboard outdoors, waistband tight, distracted`,
-    `timing intake between classes, spreadsheet open, guard low`,
+    `timing intake between hall rounds, spreadsheet open, guard low`,
     `comparing notes with herself aloud, optimization blind to surroundings`,
   ]},
   { when: { studentId: 8, targetType: 'student' }, weight: W, text: [

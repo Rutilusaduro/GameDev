@@ -212,7 +212,7 @@ registerPool('campus.sighting', [
   // Generic fallbacks by weight band
   { when: { weightBand: 'lean' }, priority: 1,
     text: [
-      'You spot {subject.name} between classes — light on her feet, schedule in hand.',
+      'You spot {subject.name} between hall rounds — light on her feet, schedule in hand.',
       '{subject.name} waves from across the path, still moving like the campus is hers.',
       'She checks her phone between strides — busy, unhurried, still slight.',
     ] },
@@ -235,7 +235,7 @@ registerPool('campus.sighting', [
       'She greets passersby from a fixed point; movement is optional, presence is not.',
     ] },
   { when: {}, text: [
-    'You spot {subject.name} between classes — present, unhurried, part of the campus flow.',
+    'You spot {subject.name} between hall rounds — present, unhurried, part of the campus flow.',
     '{subject.name} crosses your path with the easy confidence of someone who belongs here.',
     'Campus noise softens for a moment around {subject.name}, then resumes.',
     'You catch {subject.name} in passing — unremarkable, unhurried, part of the day\'s texture.',

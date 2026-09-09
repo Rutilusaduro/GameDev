@@ -6,7 +6,7 @@ const LOCALES = ['hallway', 'floor meeting_hall', 'gym', 'cafeteria', 'dorm_room
 registerPool('campus.localeIntro', [
   { when: {}, text: [
     'On campus,',
-    'Between classes,',
+    'Between hall rounds,',
     'The college day offers its usual geography.',
     'Another hour on campus unfolds.',
     'Sun on brick, voices in the quad — the semester keeps moving.',
@@ -15,7 +15,7 @@ registerPool('campus.localeIntro', [
   ] },
   { when: { campusLocale: 'hallway' }, text: [
     'The hallway carries its usual foot traffic.',
-    'Between classes, the corridor fills.',
+    'Between hall rounds, the corridor fills.',
     'Lockers and chatter frame the walk.',
     'The corridor hums with passing bodies.',
   ] },
@@ -226,7 +226,7 @@ registerPool('campus.seenBeat', [
   ] },
   { when: { worstFit: 'failing', shameTierMin: 2 }, weight: 2, text: [
     'She reroutes past fewer people, one arm across the seam she knows is going.',
-    'She times her walk between classes now, when the hallways forget to look.',
+    'She times her walk between hall rounds now, when the hallways forget to look.',
     'Her jacket stays zipped higher than the weather requires. She knows why.',
   ] },
   { when: { worstFit: ['straining', 'failing'], corruption: [2] }, weight: 2, text: [

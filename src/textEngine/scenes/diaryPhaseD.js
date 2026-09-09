@@ -404,7 +404,7 @@ registerPool('diary.machine_goddess.s7._f4', [
   { when: {}, text: [
     "Subject wore the belt through a floor meeting. She texted circumference readings hourly.",
     "Field trial: belt through a three-hour floor meeting. Hourly circumference texts. Beautiful compliance.",
-    "She wore the prototype all day. Readings every hour. I adjusted duty cycles between classes.",
+    "She wore the prototype all day. Readings every hour. I adjusted duty cycles between hall rounds.",
   ]},
 ]);
 

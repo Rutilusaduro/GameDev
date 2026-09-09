@@ -69,6 +69,8 @@ import { getOriginDeck } from '../src/gameData/origins/index.js';
 import { INTIMACY_SCENES } from '../src/gameData/intimacy.js';
 import { renderIntimacyPhase } from '../src/textEngine/scenes/intimacy/index.js';
 import '../src/textEngine/scenes/intimacy/index.js';
+import { CAMPUS_NODES } from '../src/gameData/campus.js';
+import '../src/textEngine/scenes/campus/fragments.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -108,6 +110,7 @@ const BANNED = [
   /\bGood first class\b/i,
   /\bFirst class\./i,
   /\bBetween classes,\b/i,
+  /\bbetween classes\b/i,
   /\btoward her next class\b/i,
   /\bclass-wide (hunger|abundance|pulse)\b/i,
   /\bbeen to class today\b/i,
@@ -610,6 +613,13 @@ for (const archetype of ['swimmer', 'bookworm', 'cheerleader', 'foodie']) {
   }
 }
 
+for (const node of Object.values(CAMPUS_NODES)) {
+  assertClean(`${node.label} ${node.desc || ''} ${node.eat || ''}`, `campus node ${node.id}`);
+}
+const campusIntroCtx = buildTextContext({ subject: INIT_STUDENTS[0], week: 8, globals: { campusLocale: 'hallway' } });
+const campusIntro = render('{campus.localeIntro}', campusIntroCtx)?.trim();
+if (campusIntro) assertClean(campusIntro, 'campus locale intro');
+
 const intimacyStudent = { ...(INIT_STUDENTS.find((s) => s.archetype === 'swimmer') || INIT_STUDENTS[0]), lbs: 280, name: 'Maya' };
 for (const scene of INTIMACY_SCENES) {
   assertClean(`${scene.label} ${scene.desc}`, `intimacy scene ${scene.id}`);
@@ -620,4 +630,4 @@ for (const scene of INTIMACY_SCENES) {
   if (phase0) assertClean(phase0, `intimacy phase ${scene.id} p0`);
 }
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies, hunger, confront, contest, sumo, salon, lilith, cult, recording, collab, cultivator, fair, lab, destiny, hostess, pharmacist, origin, intimacy OK');
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus nodes, weigh-in, talk, CG replies, hunger, confront, contest, sumo, salon, lilith, cult, recording, collab, cultivator, fair, lab, destiny, hostess, pharmacist, origin, intimacy OK');

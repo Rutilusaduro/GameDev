@@ -20,7 +20,7 @@ export const CAMPUS_NODES = {
   lecture_hall: {
     id:"lecture_hall", label:"Common Room", emoji:"🛋️", x:32, y:60,
     exits:["office","quad","library","science_wing"],
-    desc:"Big couches, a TV that always plays something, and a kitchenette that runs hotter than the dining hall on game nights. This is where your residents actually live between classes.",
+    desc:"Big couches, a TV that always plays something, and a kitchenette that runs hotter than the dining hall on game nights. This is where your residents actually live between your rounds.",
     flavor:[
       "The sectional in the corner has been recently re-bolted. Reinforced. Facilities asks no questions anymore.",
       "A forgotten meal-prep container sits on the counter. Inside: a second, smaller container. Someone is planning ahead.",
@@ -210,7 +210,7 @@ export const stageDescriptor = (stageId) => {
   if (stageId <= 2) return {
     heavy:false,
     move:"walking briskly between buildings",
-    eat:"picking at a snack between classes",
+    eat:"picking at a snack between hall rounds",
     aside:"There's a new softness about her that wasn't on the move-in checklist.",
   };
   if (stageId <= 5) return {
