@@ -283,6 +283,11 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(216, 160, 48, 0.16);
 }
 
+.hunger-interrupt-modal {
+  background: linear-gradient(165deg, rgba(14, 6, 10, 0.98), rgba(28, 10, 18, 0.96), rgba(10, 4, 8, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 24px rgba(192, 64, 96, 0.14);
+}
+
 .milestone-resident-header {
   padding: 8px 12px;
   border-radius: 8px;
@@ -326,6 +331,7 @@
   .hall-unlock-cta,
   .week-recap-cta,
   .tier-up-cta,
+  .hunger-interrupt-modal,
   .hall-log-achievement,
   .hall-log-unlock {
     animation: none;

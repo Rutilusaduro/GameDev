@@ -17,7 +17,7 @@ function isRaMessage(msg) {
   return !!(msg?.isRa ?? msg?.isProf);
 }
 
-export function CompetitiveGainerChatModal({ competitiveGainerState, students, getCGSpiritTier, cgProfessorReply, setCgChatOpen, soundEnabled = true }){
+export function CompetitiveGainerChatModal({ competitiveGainerState, students, getCGSpiritTier, cgRaReply, setCgChatOpen, soundEnabled = true }){
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled]);
         const cgS=competitiveGainerState;
         const priya=students.find(s=>s.evolvedForm==='competitive_gainer');
@@ -44,9 +44,9 @@ export function CompetitiveGainerChatModal({ competitiveGainerState, students, g
               <div style={{marginBottom:12}}>
                 <div style={{fontSize:9,letterSpacing:3,color:CG_DIM,marginBottom:6}}>REPLY AS RA</div>
                 <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-                  {(CG_CHAT_TEMPLATES.raReplies || CG_CHAT_TEMPLATES.professorReplies).map(opt=>(
+                  {CG_CHAT_TEMPLATES.raReplies.map(opt=>(
                     <button key={opt.id} style={{...C.btn(CG_DIM),fontSize:10,padding:"5px 10px"}}
-                      onClick={()=>{ playHallPassSound('click', soundEnabled); cgProfessorReply(opt.id); }}>
+                      onClick={()=>{ playHallPassSound('click', soundEnabled); cgRaReply(opt.id); }}>
                       {opt.label} <span style={{color:CG_ACC,marginLeft:4}}>+{opt.spiritDelta} drive</span>
                     </button>
                   ))}

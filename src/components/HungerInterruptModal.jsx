@@ -31,11 +31,19 @@ export function HungerInterruptModal({
     id => (pharmacistState?.compoundInventory?.[id] ?? 0) > 0
   );
 
+  const residentName = s?.name || 'her';
+
   return (
-    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.72)", zIndex: 9000, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 520, width: "100%", maxHeight: "90vh", overflowY: "auto" }}>
-        <div style={{ fontSize: 10, color: "#a05050", letterSpacing: 2, marginBottom: 8 }}>INTERRUPTION</div>
-        <div style={{ fontSize: 14, color: "#e8d8c8", lineHeight: 1.85, fontStyle: "italic", marginBottom: 8 }}>
+    <div style={{ ...C.overlay, zIndex: 9000, padding: 16 }}>
+      <div
+        className="hall-pass-modal-in hunger-interrupt-modal"
+        style={{ ...C.modal, maxWidth: 520, width: '100%', maxHeight: '90vh', overflowY: 'auto', border: '1px solid #80305060' }}
+      >
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
+          <div style={{ fontSize: 9, color: '#c06070', letterSpacing: 3 }}>HALL CRAVING</div>
+          <div style={{ fontSize: 10, color: '#9a7080', fontWeight: 600 }}>{residentName}</div>
+        </div>
+        <div style={{ fontSize: 14, color: '#e8d8c8', lineHeight: 1.85, fontStyle: 'italic', marginBottom: 8 }}>
           {interruptCopy.text}
         </div>
         <TextFlagToolbar
@@ -44,19 +52,25 @@ export function HungerInterruptModal({
           text={interruptCopy.text}
           nodes={interruptCopy.traceNodes}
         />
-        <div style={{ display: "grid", gap: 8 }}>
-          <button type="button" style={{ ...C.btn("#5818a8"), width: "100%" }} onClick={() => { playHallPassSound('click', soundEnabled); onFeed(); }}>Feed her</button>
+        <div style={{ display: 'grid', gap: 8, marginTop: 4 }}>
+          <button type="button" className="scene-choice-btn" style={{ ...C.btn('#5818a8'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onFeed(); }}>
+            Get {residentName} fed
+          </button>
           {hasCompounds && (
-            <button type="button" style={{ ...C.btn("#2a5070"), width: "100%" }} onClick={() => { playHallPassSound('click', soundEnabled); onCompound(); }}>Give her a compound (in food)</button>
-          )}
-          <button type="button" style={{ ...C.btn("#3a3060"), width: "100%" }} onClick={() => { playHallPassSound('click', soundEnabled); onTalk(); }}>Talk to her / calm her down</button>
-          {echoedWillAvailable && onEchoedWill && (
-            <button type="button" style={{ ...C.btn("#2a4060"), width: "100%" }} onClick={() => { playHallPassSound('confirm', soundEnabled); onEchoedWill(); }}>
-              🔁 Echoed Will — reverse hunger curse (backlash scrutiny)
+            <button type="button" className="scene-choice-btn" style={{ ...C.btn('#2a5070'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onCompound(); }}>
+              Slip her a compound (in food)
             </button>
           )}
-          <button type="button" style={{ ...C.btn("#502030"), width: "100%" }} onClick={() => { playHallPassSound('click', soundEnabled); onDeny(); }}>
-            Turn her away (−{denyRelLoss} relationship)
+          <button type="button" className="scene-choice-btn" style={{ ...C.btn('#3a3060'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onTalk(); }}>
+            Talk her down on the hall
+          </button>
+          {echoedWillAvailable && onEchoedWill && (
+            <button type="button" className="scene-choice-btn" style={{ ...C.btn('#2a4060'), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onEchoedWill(); }}>
+              Echoed Will — reverse hunger curse (backlash scrutiny)
+            </button>
+          )}
+          <button type="button" className="scene-choice-btn" style={{ ...C.btn('#502030'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onDeny(); }}>
+            Send her away (−{denyRelLoss} relationship)
           </button>
         </div>
       </div>

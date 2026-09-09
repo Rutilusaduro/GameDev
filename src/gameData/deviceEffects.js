@@ -627,8 +627,8 @@ export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng =
     };
   }
 
-  if (targetType === 'group_class') {
-    const classGain = rollRange([1, 3], rng);
+  if (targetType === 'group_hall') {
+    const hallGain = rollRange([1, 3], rng);
     const discoveryRisk = 0.25 + ((ctx.adminScrutiny ?? 0) / 200);
     const discovered = rng() < discoveryRisk;
     return {
@@ -639,10 +639,10 @@ export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng =
         student: targetStudent,
         deviceId: def.id,
         deviceLabel: def.label,
-        targetType: 'group_class',
+        targetType: 'group_hall',
         week,
       })],
-      classGainLbs: classGain,
+      hallGainLbs: hallGain,
       discovered,
       discoveryRisk,
       modeId,

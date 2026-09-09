@@ -10,7 +10,6 @@ import {
   CG_FILLED_BINGE_SCENES,
   CG_FILLED_CHAT_TEMPLATES,
   CG_FILLED_MEASUREMENT_REACTIONS,
-  CG_PROFESSOR_REPLY_TEXT,
   CG_RA_REPLY_TEXT,
 } from './competitiveGainerText.js';
 
@@ -4983,12 +4982,6 @@ export const CG_CHAT_TEMPLATES = {
     Lilith:    { ahead:"A larger number is such a small kind of hunger. Still, mine is larger.", behind:"Enjoy your lead. I enjoy watching what it makes you do.", close:"So close. I can feel how much that bothers you.", proud:"Growth is a useful appetite. Yours is loud.", unmeasured:"Some measurements are safer not taken until you are ready." },
   },
   // RA reply choices (4 options, each nudges competitive spirit meter)
-  professorReplies:[
-    { id:"encourage", ...CG_PROFESSOR_REPLY_TEXT.encourage },
-    { id:"taunt", ...CG_PROFESSOR_REPLY_TEXT.taunt },
-    { id:"observe", ...CG_PROFESSOR_REPLY_TEXT.observe },
-    { id:"challenge", ...CG_PROFESSOR_REPLY_TEXT.challenge },
-  ],
   raReplies:[
     { id:"encourage", ...CG_RA_REPLY_TEXT.encourage },
     { id:"taunt", ...CG_RA_REPLY_TEXT.taunt },

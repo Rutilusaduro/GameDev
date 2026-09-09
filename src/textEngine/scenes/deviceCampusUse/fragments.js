@@ -14,7 +14,7 @@ registerPool('device.campus.remote', [
   ] },
 ]);
 
-registerPool('device.campus.class', [
+registerPool('device.campus.hall', [
   { when: {}, text: [
     'the floor meeting hall absorbs a floor-wide pulse',
     'dozens of bodies feel the same incremental push',

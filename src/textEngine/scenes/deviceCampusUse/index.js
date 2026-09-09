@@ -12,9 +12,9 @@ registerPool('device.campus.beat', [
     '{device.campus.remote} {device.campus.discovery|cap}.',
     '{device.campus.remote} — {device.campus.risk|cap}.',
   ] },
-  { when: { targetType: 'group_class' }, text: [
-    '{device.campus.class} {device.campus.discovery|cap}.',
-    '{device.campus.class}. {device.campus.risk|cap}.',
+  { when: { targetType: 'group_hall' }, text: [
+    '{device.campus.hall} {device.campus.discovery|cap}.',
+    '{device.campus.hall}. {device.campus.risk|cap}.',
   ] },
   { when: {}, text: [
     '{device.campus.remote} {device.campus.risk|cap}.',
