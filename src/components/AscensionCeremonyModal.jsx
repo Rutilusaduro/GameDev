@@ -5,6 +5,7 @@ import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine } from '../textEngine/textFlagFormat.js';
 import { getAscensionFormForStudent } from '../gameData/ascension/forms.js';
 import { SceneStage } from './SceneStage.jsx';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const ACCENT = '#40b8d8';
 
@@ -30,10 +31,14 @@ export function AscensionCeremonyModal({
     { week, formId: form?.formId || student.ascensionPending?.formId || 'unknown' },
   );
 
+  const dismiss = onClose || (() => { playHallPassSound('click', soundEnabled); onDecline?.(); });
   return (
-    <div style={{ ...C.overlay, zIndex: 450 }} role="dialog" aria-modal="true" aria-labelledby="ascension-title">
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled} style={{ zIndex: 450 }}>
       <div
         className="hall-pass-modal-in ascension-ceremony-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="ascension-title"
         style={{
           ...C.modal,
           maxWidth: 620,
@@ -74,6 +79,6 @@ export function AscensionCeremonyModal({
           ) : null}
         />
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

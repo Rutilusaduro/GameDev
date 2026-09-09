@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { BRANDS } from '../gameData/streaming.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const BRAND_UI = {
   crunchforge: { color: '#e74c3c', bg: 'linear-gradient(135deg,#1a0808,#280c0c)' },
@@ -23,8 +24,9 @@ const BRAND_BLURBS = {
 export function StreamBrandSelectModal({ student, onSelect, onClose, required, soundEnabled = true }) {
   useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled, student?.id]);
   if (!student) return null;
+  const dismiss = onClose ? () => { playHallPassSound('click', soundEnabled); onClose(); } : null;
   return (
-    <div style={C.overlay}>
+    <ModalOverlay onClose={dismiss} dismissible={!required && !!onClose} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in stream-brand-modal" style={{
         ...C.modal,
         maxWidth: 520,
@@ -78,6 +80,6 @@ export function StreamBrandSelectModal({ student, onSelect, onClose, required, s
           </button>
         )}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

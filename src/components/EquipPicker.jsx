@@ -3,14 +3,16 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { slotFor, findAttachmentHostSlot } from '../gameData/deviceEffects.js';
 import { DEVICES, getDevice } from '../gameData/devices.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function EquipPicker({ equipPicker, setEquipPicker, students, lilithUnlocked, equipDeviceOn, soundEnabled = true }) {
   const { def } = equipPicker;
   const slot = slotFor(def);
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, def?.id]);
 
+  const dismiss = () => { playHallPassSound('click', soundEnabled); setEquipPicker(null); };
   return (
-    <div style={C.overlay}>
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in equip-picker-modal" style={{ ...C.modal, maxWidth: 460 }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#6080a0', marginBottom: 6 }}>EQUIP DEVICE</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#90b0d0', marginBottom: 4 }}>{def.icon} {def.label}</div>
@@ -36,9 +38,9 @@ export function EquipPicker({ equipPicker, setEquipPicker, students, lilithUnloc
             );
           })}
         </div>
-        <button style={{ ...C.btn('#333'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); setEquipPicker(null); }}>Cancel</button>
+        <button style={{ ...C.btn('#333'), width: '100%' }} onClick={dismiss}>Cancel</button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
 
@@ -46,8 +48,9 @@ export function AttachPicker({ attachPicker, setAttachPicker, students, lilithUn
   const { def } = attachPicker;
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, def?.id]);
 
+  const dismiss = () => { playHallPassSound('click', soundEnabled); setAttachPicker(null); };
   return (
-    <div style={C.overlay}>
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in equip-picker-modal" style={{ ...C.modal, maxWidth: 460 }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#6080a0', marginBottom: 6 }}>ATTACH MODULE</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#90b0d0', marginBottom: 4 }}>{def.icon} {def.label}</div>
@@ -76,8 +79,8 @@ export function AttachPicker({ attachPicker, setAttachPicker, students, lilithUn
             );
           })}
         </div>
-        <button style={{ ...C.btn('#333'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); setAttachPicker(null); }}>Cancel</button>
+        <button style={{ ...C.btn('#333'), width: '100%' }} onClick={dismiss}>Cancel</button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

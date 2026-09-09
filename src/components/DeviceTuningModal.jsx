@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { createTuningSession, rollTuningAttempt } from '../gameData/deviceUsageEvents.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function DeviceTuningModal({
   deviceDefId,
@@ -29,8 +30,9 @@ export function DeviceTuningModal({
     });
   };
 
+  const dismiss = () => { playHallPassSound('click', soundEnabled); onClose(); };
   return (
-    <div style={{ ...C.overlay, zIndex: 1250 }}>
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled} style={{ zIndex: 1250 }}>
       <div className="hall-pass-modal-in device-modal" style={{ ...C.modal, maxWidth: 440, width: '95%' }}>
         <div style={{ fontSize: 9, letterSpacing: 2, color: '#a08050', marginBottom: 6 }}>FIELD TUNING</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#e8d0a8', marginBottom: 4 }}>{deviceLabel}</div>
@@ -71,9 +73,9 @@ export function DeviceTuningModal({
             {' '}at {Math.round(session.magnitude * 100)}% magnitude.
           </div>
         )}
-        <button type="button" className="device-choice-row" style={{ ...C.btn('#302030'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
+        <button type="button" className="device-choice-row" style={{ ...C.btn('#302030'), width: '100%' }} onClick={dismiss}>Close</button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
 
@@ -101,8 +103,9 @@ export function DeviceRouteModal({
 
   const setVal = (key, v) => setAlloc((prev) => ({ ...prev, [key]: Number(v) }));
 
+  const dismiss = () => { playHallPassSound('click', soundEnabled); onClose(); };
   return (
-    <div style={{ ...C.overlay, zIndex: 1250 }}>
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled} style={{ zIndex: 1250 }}>
       <div className="hall-pass-modal-in device-modal" style={{ ...C.modal, maxWidth: 440, width: '95%' }}>
         <div style={{ fontSize: 9, letterSpacing: 2, color: '#5080a0', marginBottom: 6 }}>ROUTE BUDGET</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#d0e0f0', marginBottom: 4 }}>{deviceLabel}</div>
@@ -114,8 +117,8 @@ export function DeviceRouteModal({
           </label>
         ))}
         <button type="button" className="device-choice-row" style={{ ...C.btn('#406080'), width: '100%', marginBottom: 8 }} onClick={() => { playHallPassSound('confirm', soundEnabled); commit(); }}>Deploy route</button>
-        <button type="button" className="device-choice-row" style={{ ...C.btn('#302030'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Cancel</button>
+        <button type="button" className="device-choice-row" style={{ ...C.btn('#302030'), width: '100%' }} onClick={dismiss}>Cancel</button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

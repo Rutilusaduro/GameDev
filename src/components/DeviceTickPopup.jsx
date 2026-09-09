@@ -4,6 +4,7 @@ import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { WEIGHT_STAGES } from '../gameData/stages.js';
 import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine } from '../textEngine/textFlagFormat.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const TIER_COLORS = {
   minor: '#8a8a7a',
@@ -42,8 +43,9 @@ export function DeviceTickPopup({ queue, onAdvance, onDismissAll, soundEnabled =
     ? `${prose}\n\n${event.malfunction.text}`
     : prose;
 
+  const dismissAll = () => { playHallPassSound('click', soundEnabled); onDismissAll(); };
   return (
-    <div style={C.overlay}>
+    <ModalOverlay onClose={dismissAll} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in device-modal" style={{ ...C.modal, maxWidth: isGrowthScene ? 560 : 480, border: `1px solid ${tierColor}` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: tierColor }}>
@@ -101,6 +103,6 @@ export function DeviceTickPopup({ queue, onAdvance, onDismissAll, soundEnabled =
           )}
         </div>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

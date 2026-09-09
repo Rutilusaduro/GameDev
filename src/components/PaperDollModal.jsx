@@ -6,6 +6,7 @@ import { C } from '../styles.js';
 import { getDevice } from '../gameData/devices.js';
 import { equipDevice, unequipDevice } from '../gameData/deviceEffects.js';
 import { devicesCompatibleWithSlot, summarizeDeviceEffect } from '../gameData/deviceQuery.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const ACCENT = '#4a6080';
 
@@ -86,7 +87,7 @@ export function PaperDollModal({
   };
 
   return (
-    <div style={{ ...C.overlay, zIndex: 7500 }}>
+    <ModalOverlay onClose={close} style={{ zIndex: 7500 }}>
       <div className="hall-pass-modal-in paper-doll-modal" style={{ ...C.modal, maxWidth: 720, maxHeight: '90vh', overflow: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>PAPER DOLL — DEVICES</div>
@@ -211,6 +212,6 @@ export function PaperDollModal({
           </div>
         </div>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

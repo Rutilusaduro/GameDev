@@ -2,9 +2,19 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { FIELD_LOCATIONS, GALLERY_MOTIFS, GALLERY_MEDIUMS, STUDIO_ACTIONS } from '../gameData/fionaGallery.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const ACCENT = '#c47a2a';
 const CREAM = '#f5e6d3';
+
+function GalleryOverlay({ onClose, dismissible = true, soundEnabled, children }) {
+  const dismiss = onClose ? () => { playHallPassSound('click', soundEnabled); onClose(); } : null;
+  return (
+    <ModalOverlay onClose={dismiss} dismissible={dismissible && !!onClose} soundEnabled={soundEnabled} style={{ zIndex: 360 }}>
+      {children}
+    </ModalOverlay>
+  );
+}
 
 export function ArtisanGalleryModal({
   galleryState,
@@ -29,7 +39,7 @@ export function ArtisanGalleryModal({
     const enrolled = new Set(galleryState.subjects.map((s) => s.studentId));
     const candidates = students.filter((s) => !s.hidden && s.id !== galleryState.fionaStudentId && !enrolled.has(s.id));
     return (
-      <div style={{ ...C.overlay, zIndex: 360 }}>
+      <GalleryOverlay onClose={onClose} soundEnabled={soundEnabled}>
         <div className="hall-pass-modal-in artisan-gallery-modal" style={{ ...C.modal, maxWidth: 480, background: '#1a1410', border: `1px solid ${ACCENT}55` }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>ENROLL MODEL</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 10 }}>
@@ -41,13 +51,13 @@ export function ArtisanGalleryModal({
           </div>
           <button type="button" style={{ ...C.btn('#555'), width: '100%', marginTop: 10 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Cancel</button>
         </div>
-      </div>
+      </GalleryOverlay>
     );
   }
 
   if (session?.type === 'studio') {
     return (
-      <div style={{ ...C.overlay, zIndex: 360 }}>
+      <GalleryOverlay dismissible={false} soundEnabled={soundEnabled}>
         <div className="hall-pass-modal-in artisan-gallery-modal" style={{ ...C.modal, maxWidth: 520, background: '#1a1410', border: `1px solid ${ACCENT}55` }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>STUDIO — Round {session.round + 1}/3</div>
           <p style={{ fontSize: 12, color: CREAM, lineHeight: 1.6 }}>Feed & frame. Fiona shoots while the model eats.</p>
@@ -59,12 +69,12 @@ export function ArtisanGalleryModal({
             ))}
           </div>
         </div>
-      </div>
+      </GalleryOverlay>
     );
   }
 
   return (
-    <div style={{ ...C.overlay, zIndex: 360 }}>
+    <GalleryOverlay onClose={onClose} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in artisan-gallery-modal" style={{ ...C.modal, maxWidth: 600, background: '#1a1410', border: `1px solid ${ACCENT}44`, maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ fontSize: 9, letterSpacing: 4, color: ACCENT }}>🖼 ARTISAN GALLERY</div>
         <div style={{ fontSize: 12, color: CREAM, marginBottom: 12, lineHeight: 1.6 }}>
@@ -102,6 +112,6 @@ export function ArtisanGalleryModal({
           <div style={{ marginTop: 10, fontSize: 11, color: '#c9a87c' }}>Last critic: {galleryState.lastCritic}</div>
         )}
       </div>
-    </div>
+    </GalleryOverlay>
   );
 }

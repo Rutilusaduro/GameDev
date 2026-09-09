@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { EVOLVED_ACTIVITY_META } from '../gameData/evolvedForms.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function EvolvedActivityModal({ modal, onClose, soundEnabled = true }) {
   useEffect(() => {
@@ -12,8 +13,9 @@ export function EvolvedActivityModal({ modal, onClose, soundEnabled = true }) {
   const meta = EVOLVED_ACTIVITY_META[modal.student?.evolvedForm] || {};
   const label = meta.label || 'Activity';
 
+  const dismiss = () => { playHallPassSound('click', soundEnabled); onClose?.(); };
   return (
-    <div style={C.overlay}>
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled}>
       <div
         className="hall-pass-modal-in evolved-activity-modal"
         style={{
@@ -36,14 +38,11 @@ export function EvolvedActivityModal({ modal, onClose, soundEnabled = true }) {
           type="button"
           className="evolved-activity-choice-row"
           style={{ ...C.btn('#301060'), width: '100%' }}
-          onClick={() => {
-            playHallPassSound('click', soundEnabled);
-            onClose?.();
-          }}
+          onClick={dismiss}
         >
           Continue
         </button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

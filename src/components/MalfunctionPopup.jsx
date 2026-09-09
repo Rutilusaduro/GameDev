@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const TIER_COLORS = {
   minor: '#8a8a7a',
@@ -16,8 +17,9 @@ export function MalfunctionPopup({ malfunctionPopup, setMalfunctionPopup, soundE
   if (!malfunctionPopup) return null;
   const { studentName, tier, text, deviceLabel } = malfunctionPopup;
   const color = TIER_COLORS[tier] || '#c8860a';
+  const dismiss = () => { playHallPassSound('click', soundEnabled); setMalfunctionPopup(null); };
   return (
-    <div style={C.overlay}>
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in device-modal" style={{ ...C.modal, maxWidth: 440, border: `1px solid ${color}` }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color, marginBottom: 6 }}>⚠️ DEVICE MALFUNCTION</div>
         <div style={{ fontSize: 13, fontWeight: 700, color: '#e0c0a0', marginBottom: 6 }}>
@@ -27,8 +29,8 @@ export function MalfunctionPopup({ malfunctionPopup, setMalfunctionPopup, soundE
           <div style={{ fontSize: 10, color: '#908070', marginBottom: 8 }}>Resident: {studentName}</div>
         )}
         <div style={{ fontSize: 12, color: '#d0b8a0', lineHeight: 1.7, fontStyle: 'italic', marginBottom: 14 }}>{text}</div>
-        <button style={{ ...C.btn(color), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); setMalfunctionPopup(null); }}>Acknowledge</button>
+        <button style={{ ...C.btn(color), width: '100%' }} onClick={dismiss}>Acknowledge</button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

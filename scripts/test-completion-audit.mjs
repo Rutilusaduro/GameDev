@@ -2090,6 +2090,16 @@ check('modal-dismiss-polish', () => {
     'src/components/CircuitBoardModal.jsx',
     'src/components/LabBuildModal.jsx',
     'src/components/ForceFeederModal.jsx',
+    'src/components/EvolvedActivityModal.jsx',
+    'src/components/PaperDollModal.jsx',
+    'src/components/DeviceTuningModal.jsx',
+    'src/components/StreamBrandSelectModal.jsx',
+    'src/components/MalfunctionPopup.jsx',
+    'src/components/DeviceTickPopup.jsx',
+    'src/components/EquipPicker.jsx',
+    'src/components/AscensionCeremonyModal.jsx',
+    'src/components/ArtisanGalleryModal.jsx',
+    'src/HallPass.jsx',
   ]) {
     const src = read(rel);
     assert.match(src, /ModalOverlay/, `${rel}: modal dismiss wiring`);

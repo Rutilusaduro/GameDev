@@ -10,6 +10,7 @@ import { gatewayFlagPatch, GATEWAY_FLAG_KEYS } from './gameData/gatewayMoments.j
 import { appendDossierSnapshot, pinPlayerMoment } from './gameData/dossier.js';
 import { getPlayerPrefs, toggleInstantText, toggleSound } from './gameData/playerPrefs.js';
 import { playHallPassSound } from './gameData/hallPassAudio.js';
+import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
@@ -7814,7 +7815,7 @@ export default function HallPass(){
         const remaining=Math.max(0,skill.cost-totalAllocated);
         const canConfirm=totalAllocated>=skill.cost;
         return(
-          <div style={C.overlay}>
+          <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); setSkillPurchase(null); }} soundEnabled={soundEnabled}>
             <div className="hall-pass-modal-in skill-purchase-modal" style={{...C.modal,maxWidth:580}}>
               <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:3}}>UNLOCK SKILL</div>
               <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:18}}>{skill.label}</h2>
@@ -7869,7 +7870,7 @@ export default function HallPass(){
                 </button>
               </div>
             </div>
-          </div>
+          </ModalOverlay>
         );
       })()}
 
@@ -8222,7 +8223,7 @@ export default function HallPass(){
       )}
 
       {groupDinnerPicker&&(
-        <div style={C.overlay}>
+        <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); setGroupDinnerPicker(null); }} soundEnabled={soundEnabled}>
           <div className="hall-pass-modal-in group-dinner-picker-modal" style={{...C.modal,maxWidth:580}}>
             <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>SELECT RESIDENTS</div>
             <div style={{fontSize:12,color:"#9070c0",marginBottom:14,fontStyle:"italic"}}>
@@ -8280,12 +8281,12 @@ export default function HallPass(){
               <button type="button" className="dinner-lane-choice-row" style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setGroupDinnerPicker(null); }}>Cancel</button>
             </div>
           </div>
-        </div>
+        </ModalOverlay>
       )}
 
       {/* DINNER ENDING POPUP */}
       {dinnerEndPopup&&(
-        <div style={C.overlay}>
+        <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); setDinnerEndPopup(null); }} soundEnabled={soundEnabled}>
           <div className="hall-pass-modal-in dinner-end-modal" style={{...C.modal,maxWidth:500}}>
             <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>EVENING ENDS</div>
             <div style={{fontSize:11,color:"#7a5090",marginBottom:14}}>
@@ -8298,7 +8299,7 @@ export default function HallPass(){
             </p>
             <button type="button" className="dinner-lane-choice-row" style={C.btn("#5818a8")} onClick={()=>{ playHallPassSound('click', soundEnabled); setDinnerEndPopup(null); }}>Continue →</button>
           </div>
-        </div>
+        </ModalOverlay>
       )}
 
       {/* GROUP DINNER MODAL */}
