@@ -61,7 +61,7 @@ registerPool("diary.campus", [
     ] },
   { when: { campusFattening: true, archetype: "psych" }, priority: 2,
     text: [
-      "Field notes: subjects across campus trending heavier. Control group obsolete. Campus is the variable.",
+      "Hall log: residents across campus trending heavier. Control baseline obsolete. Campus is the variable.",
       "Fifteen notebooks and fifteen softer silhouettes in the floor meeting hall. Correlation strengthening.",
       "Advisor asked if I'm projecting. I showed her everyone else's meal logs. She stopped asking.",
     ] },

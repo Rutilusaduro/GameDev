@@ -25,7 +25,7 @@ export class GameErrorBoundary extends Component {
     return (
       <div style={{ ...C.app, alignItems: 'center', justifyContent: 'center', padding: 24 }}>
         <div style={{ ...C.modal, maxWidth: 520, background: 'linear-gradient(160deg,#1a1018,#0d0810)', border: '1px solid #6a4050' }}>
-          <div style={{ fontSize: 10, letterSpacing: 4, color: '#c9a060', marginBottom: 8 }}>📋 FIELD NOTE — INTERRUPTION</div>
+          <div style={{ fontSize: 10, letterSpacing: 4, color: '#c9a060', marginBottom: 8 }}>📋 SHIFT LOG — INTERRUPTION</div>
           <p style={{ fontSize: 13, color: '#e8d8c8', lineHeight: 1.75, marginBottom: 12 }}>
             The semester hiccuped. Your residents are still there — but the scene caught, like a held breath.
             Your progress should still be saved locally.
@@ -40,7 +40,7 @@ export class GameErrorBoundary extends Component {
           )}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <button type="button" style={{ ...C.btn('#5a4030') }} onClick={() => dispatchOpenFieldNotes({ error })}>
-              Leave a Field Note
+              Log this issue
             </button>
             <button type="button" style={{ ...C.btn('#333') }} onClick={() => this.setState({ error: null, errorInfo: null })}>
               Try to continue

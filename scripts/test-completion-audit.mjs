@@ -1124,12 +1124,22 @@ check('resident-framing-ui', () => {
   assert.match(desk, /SELECT RESIDENTS/);
   assert.match(desk, /residents for dinner/);
   assert.match(desk, /resident bristles|residents bristle/);
-  assert.doesNotMatch(desk, /SELECT GIRLS|girls to take to dinner|girl bristles|girls bristle/);
+  assert.match(desk, /Something wrong\? Shift Log/);
+  assert.doesNotMatch(desk, /SELECT GIRLS|girls to take to dinner|girl bristles|girls bristle|Field Notes/i);
   const trees = read('src/gameData/skillTrees.js');
   assert.match(trees, /for all residents/);
   assert.doesNotMatch(trees, /\b(girl|girls)\b/);
   const setup = read('src/components/RaSetupWizard.jsx');
   assert.match(setup, /build the resident who/);
+  const bugReport = read('src/components/BugReportModal.jsx');
+  assert.match(bugReport, /SHIFT LOG/);
+  assert.doesNotMatch(bugReport, /FIELD NOTES|Field Note downloaded/i);
+  const campus = read('src/textEngine/scenes/campusSoftening.js');
+  assert.match(campus, /Hall log: residents across campus trending heavier/);
+  assert.doesNotMatch(campus, /Field notes: subjects across campus/i);
+  const content = read('src/gameData/content.js');
+  assert.match(content, /published hall log, a defended season report chapter/);
+  assert.doesNotMatch(content, /published field notes, a defended season report/i);
 });
 
 // ── Report ─────────────────────────────────────────────────────

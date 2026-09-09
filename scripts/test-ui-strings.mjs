@@ -10,6 +10,9 @@ const BANNED = [
   /Professor Sim/i,
   /spirit-possessed/i,
   /\bMadeline\b/,
+  /\bField Notes\b/i,
+  /\bFIELD NOTES\b/,
+  /Leave a Field Note/i,
   /Back to Class/i,
   /Chubby Class/i,
   /Class Banquet/i,
@@ -159,5 +162,17 @@ assertClean(skillTreeView, 'SkillTreeView.jsx');
 const settling = readFileSync('src/views/SettlingView.jsx', 'utf8');
 assert(settling.includes('When a resident grows past mobility'), 'SettlingView must say resident');
 assertClean(settling, 'SettlingView.jsx');
+
+const bugReport = readFileSync('src/components/BugReportModal.jsx', 'utf8');
+assert(bugReport.includes('SHIFT LOG'), 'BugReportModal must say SHIFT LOG');
+assert(bugReport.includes('Shift log downloaded'), 'BugReportModal download status must say shift log');
+assertClean(bugReport, 'BugReportModal.jsx');
+
+const errorBoundary = readFileSync('src/components/GameErrorBoundary.jsx', 'utf8');
+assert(errorBoundary.includes('SHIFT LOG — INTERRUPTION'), 'GameErrorBoundary must say SHIFT LOG');
+assert(errorBoundary.includes('Log this issue'), 'GameErrorBoundary must say Log this issue');
+assertClean(errorBoundary, 'GameErrorBoundary.jsx');
+
+assert(hallPass.includes('Something wrong? Shift Log'), 'HallPass hall log must link to Shift Log');
 
 console.log('ui-strings: setup wizard, nav, views, ranks, dorm hooks, weigh-in, homeroom, achievements, resident framing OK');

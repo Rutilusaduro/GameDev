@@ -36,7 +36,7 @@ export function BugReportModal({ getSnapshotContext, getSaveContext, prefillErro
 
   const handleDownload = () => {
     downloadBugReport(buildSnapshot());
-    setStatus('Field Note downloaded.');
+    setStatus('Shift log downloaded.');
   };
 
   const handleGitHub = () => {
@@ -50,11 +50,11 @@ export function BugReportModal({ getSnapshotContext, getSaveContext, prefillErro
     <div style={{ ...C.overlay, zIndex: 400 }}>
       <div className="hall-pass-modal-in bug-report-modal" style={{ ...C.modal, maxWidth: 520, background: 'linear-gradient(165deg,#1a1410,#0f0c08)', border: '1px solid #8a704050', maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-          <div style={{ fontSize: 10, letterSpacing: 3, color: '#c9a060' }}>📋 FIELD NOTES</div>
+          <div style={{ fontSize: 10, letterSpacing: 3, color: '#c9a060' }}>📋 SHIFT LOG</div>
           <button type="button" style={C.btn('#333')} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>✕</button>
         </div>
         <p style={{ fontSize: 12, color: '#b8a890', lineHeight: 1.7, marginBottom: 14, fontStyle: 'italic' }}>
-          The archivist keeps every note — week, weight, what you were doing when the world stuttered.
+          Log what broke — week, weight, what you were doing when the floor glitched.
         </p>
         {prefillError && (
           <div style={{ fontSize: 10, color: '#c08060', marginBottom: 10, padding: 8, background: '#201010', borderRadius: 4 }}>
@@ -87,7 +87,7 @@ export function BugReportModal({ getSnapshotContext, getSaveContext, prefillErro
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <button type="button" style={{ ...C.btn('#5a4830') }} onClick={handleCopy}>Transcribe to clipboard</button>
-          <button type="button" style={{ ...C.btn('#4a3828') }} onClick={handleDownload}>Seal the note (download .json)</button>
+          <button type="button" style={{ ...C.btn('#4a3828') }} onClick={handleDownload}>Seal the log (download .json)</button>
           <button type="button" style={{ ...C.btn('#3a3048') }} onClick={handleGitHub}>Open GitHub issue template</button>
         </div>
         {status && <div style={{ fontSize: 10, color: '#80a060', marginTop: 10 }}>{status}</div>}

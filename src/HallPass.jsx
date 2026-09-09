@@ -8810,7 +8810,7 @@ export default function HallPass(){
               </div>
               <button type="button" onClick={()=>{ setFieldNoteError(null); setBugReportOpen(true); }}
                 style={{...C.btn('#3a3028'), fontSize:9, marginTop:8, flexShrink:0, opacity:0.85}}>
-                📋 Something wrong? Field Notes
+                📋 Something wrong? Shift Log
               </button>
             </>);
           })()}

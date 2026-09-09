@@ -114,7 +114,7 @@ export function DebugPanel({
               style={{ ...C.smBtn, background: tab === t ? 'rgba(60,100,60,0.5)' : 'rgba(40,40,40,0.4)', fontSize: 10 }}
               onClick={() => setTab(t)}
             >
-              {t === 'state' ? 'State' : t === 'opposition' ? 'Opposition' : 'Field Notes'}
+              {t === 'state' ? 'State' : t === 'opposition' ? 'Opposition' : 'Shift Log'}
             </button>
           ))}
         </div>
@@ -347,14 +347,14 @@ export function DebugPanel({
 
         {tab === 'notes' && (
           <div style={{ padding: 10, background: 'rgba(255,255,255,0.04)', borderRadius: 8 }}>
-            <div style={{ fontSize: 10, color: '#c9a060', marginBottom: 8 }}>FIELD NOTES PREVIEW</div>
+            <div style={{ fontSize: 10, color: '#c9a060', marginBottom: 8 }}>SHIFT LOG PREVIEW</div>
             <div style={{ fontSize: 10, color: '#888', marginBottom: 8 }}>Last action: {lastPlayerAction || '—'}</div>
             <button type="button" style={{ ...C.smBtn, background: 'rgba(90,70,40,0.5)', marginRight: 6 }}
               onClick={() => setNotesPreview(serializeBugReport(buildGameSnapshot(getSnapshotContext?.() || {}, { category: 'dev', steps: 'debug preview' })))}>
               Preview snapshot JSON
             </button>
             <button type="button" style={{ ...C.smBtn, background: 'rgba(90,70,40,0.5)' }}
-              onClick={() => setFieldNotesOpen(true)}>Open Field Notes modal</button>
+              onClick={() => setFieldNotesOpen(true)}>Open Shift Log modal</button>
             {notesPreview && (
               <pre style={{ fontSize: 9, color: '#a09080', marginTop: 10, maxHeight: 320, overflow: 'auto', background: '#0a0808', padding: 8, borderRadius: 6 }}>
                 {notesPreview.slice(0, 8000)}{notesPreview.length > 8000 ? '\n…' : ''}
