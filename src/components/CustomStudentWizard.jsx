@@ -35,7 +35,14 @@ function ChoiceButton({ active, children, onClick, accent }) {
   );
 }
 
-export function CustomStudentWizard({ accent = '#8a4be0', onBack, onComplete }) {
+export function CustomStudentWizard({
+  accent = '#8a4be0',
+  title: wizardTitle,
+  subtitle,
+  backLabel,
+  onBack,
+  onComplete,
+}) {
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState(defaultCustomDraft);
   const spent = customDraftPointSpend(draft);
@@ -56,8 +63,11 @@ export function CustomStudentWizard({ accent = '#8a4be0', onBack, onComplete }) 
   return (
     <>
       <div style={{ fontSize: 10, letterSpacing: 3, color: accent, textTransform: 'uppercase', marginBottom: 4, textAlign: 'center' }}>
-        The Nineteenth Chair · {step + 1}/5
+        {wizardTitle || 'Suitemate'} · {step + 1}/5
       </div>
+      {subtitle && (
+        <div style={{ color: '#8a7880', fontSize: 12, textAlign: 'center', marginBottom: 12 }}>{subtitle}</div>
+      )}
       <h2 style={{ textAlign: 'center', color: '#ead8ff', margin: '0 0 10px', fontSize: 21 }}>{title}</h2>
 
       {step === 0 && (
@@ -175,7 +185,7 @@ export function CustomStudentWizard({ accent = '#8a4be0', onBack, onComplete }) 
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 18 }}>
         <button type="button" onClick={() => (step === 0 ? onBack() : setStep(step - 1))} style={{ ...C.smBtn, padding: '9px 18px' }}>
-          ← Back
+          ← {step === 0 && backLabel ? backLabel.replace(/^←\s*/, '') : 'Back'}
         </button>
         {step < 4 ? (
           <button type="button" disabled={!canNext} onClick={() => setStep(step + 1)} style={{ ...C.btn(accent), opacity: canNext ? 1 : 0.4, fontSize: 14, padding: '11px 28px' }}>

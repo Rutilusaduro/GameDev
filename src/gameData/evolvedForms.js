@@ -3549,6 +3549,12 @@ export const EVOLUTION_OFFER = {
       big_squad_captain:{ label:"Body Positive Captain",     desc:"Change the squad's culture from the top. No more weigh-ins. A new kind of power." },
     },
   },
+  swimmer:{
+    intro:(s)=>`${s.name} catches you in the RA lounge still damp from morning laps, towel around her shoulders, meal-prep containers lined up like lane assignments. "Coach wants a team culture reset," she says. "I want a captain who actually lives on this floor." She slides a folder across — practice schedules, nutrition targets, and a list of names you both recognize. "Help me run this. Help me eat like it matters."`,
+    paths:{
+      community_researcher:{ label:"Lane Captain", desc:"Lead the squad through training tables and team dinners. Document what happens when appetite becomes part of the program — and let the program change her." },
+    },
+  },
   bookworm:{
     intro:(s)=>`${s.name} brings you a draft proposal — stapled, tabbed, annotated. The title page reads "Feederism in the Contemporary University: A Phenomenological Case Study" and bears her actual name, which means she's past the point of pseudonyms. "The IRB approved it last week," she says. "I need a faculty liaison." She opens to the methodology section. "And I need access to the people I've already been observing." She looks at you carefully. "You know exactly which people I mean."`,
     paths:{

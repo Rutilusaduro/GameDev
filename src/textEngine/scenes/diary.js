@@ -450,7 +450,7 @@ registerPool('diary.eating_diarist.c2', [
   { when: { stage: [6] }, text: ['I ate a full breakfast before I replied. The reply took four drafts.'] },
   { when: { stage: [7], corruption: [0] }, text: ['I am still writing. The writing is the thing that stays.'] },
   { when: { stage: [7] }, text: ['I bought myself a dinner I\'d been meaning to have for six months.'] },
-  { when: { stage: [9] }, text: ['I went to one of the classes and sat in the back and listened to students argue about sentences I\'d written and felt something I didn\'t have a word for until later: permanence.'] },
+  { when: { stage: [9] }, text: ['I went to one of the halles and sat in the back and listened to students argue about sentences I\'d written and felt something I didn\'t have a word for until later: permanence.'] },
   { when: { stage: [10] }, text: ['I understand that now the way I understand my own body: completely, without effort, as a fact that was always true and simply needed time to become obvious.'] },
   { when: { stageMin: 5, stageMax: 7, archetype: "bookworm" }, text: ['I keep revising the same paragraph because I want it to do three things at once and it keeps only doing two. I\'m eating while I revise. The paragraph will give.'] },
   { when: { stageMin: 5, archetype: "quiet" }, text: ['I think that\'s the whole trick.'] },
@@ -1440,7 +1440,7 @@ registerPool('diary.psych_researcher', [
 // ── HOMEROOM_QUEEN ────────────────────────────────────────────
 // ── diary.homeroom_queen (decomposed) ─────────────────────────────────────
 registerPool('diary.homeroom_queen.c1', [
-{ when: { stage: [5], corruption: [0] }, text: ['First Tuesday. I made everything from scratch and the classroom smelled like butter and warm sugar.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['First Tuesday. I made everything from scratch and the hallroom smelled like butter and warm sugar.'] },
   { when: { stage: [5] }, text: ['The first Tuesday.'] },
   { when: { stage: [6] }, text: ['Mrs. Monroe came inside today instead of waiting at the window. She sat at the table and had four pieces and talked about everything and laughed at all of it.'] },
   { when: { stage: [7] }, text: ['The group has grown comfortable. Kayla doesn\'t arrive early anymore — she arrives on time, which means she was never uncertain, just cautious. Bri has stopped asking what\'s in things. Mrs.'] },
@@ -1457,7 +1457,7 @@ registerPool('diary.homeroom_queen.c1', [
 
 registerPool('diary.homeroom_queen.c2', [
 { when: { stage: [5], corruption: [0] }, text: ['I ate alongside them — quality control, I told myself — and logged the banana bread as a success. I didn\'t log how much I ate. I\'m not sure what column it would go in.'] },
-  { when: { stage: [5] }, text: ['I\'d been up since five making everything from scratch, and by the time the girls arrived the classroom smelled like butter and warm sugar and something that felt like a real home.'] },
+  { when: { stage: [5] }, text: ['I\'d been up since five making everything from scratch, and by the time the girls arrived the hallroom smelled like butter and warm sugar and something that felt like a real home.'] },
   { when: { stage: [6] }, text: ['I found myself making more food specifically because I knew she was coming. I\'m not sure when I started planning for individual preferences. I notice I have.'] },
   { when: { stage: [7] }, text: ['Calloway ate three pieces and then asked about my training. I gave a genuine answer. She nodded. I think we understand each other now. I ate alongside them for the full hour.'] },
   { when: { stage: [8] }, text: ['The session was good — Mrs. Monroe brought wine and I politely declined and then accepted — and everyone was softer and more comfortable and more themselves than when we started this.'] },

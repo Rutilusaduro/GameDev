@@ -12,6 +12,19 @@ export const STAGE_REACTIONS = {
     (s) => `I say the number out loud sometimes just to hear it: ${Math.round(s.lbs)} pounds. It sounds like exactly what I look like. Enormous. Round. Warm. Soft. My belly fills the chair, my thighs are wide and pressed together, my arms are heavy and soft. People bring food to me and I eat it and I think about getting bigger. I want my classmates eating. I want everyone I know to get this fat.`,
     (s) => `People bring food to me and I eat all of it and I have absolutely no regrets. I am ${Math.round(s.lbs)} pounds of cheerleader — the most cheerleader I have ever been — and my belly fills my lap and spills past my knees and my thighs are the widest, warmest things and I am soft and enormous and perfect. This is what I was supposed to become. I hope the whole squad ends up like me.`,
   ],
+  swimmer: [
+    (s) => `The scale reads ${Math.round(s.lbs)} pounds and my suit still fits — barely. I've logged it in my training journal. Off-season bulk starts now.`,
+    (s) => `Post-practice meals are getting longer. At ${Math.round(s.lbs)} pounds my shoulders look stronger and my hips are filling out. Coach hasn't complained.`,
+    (s) => `The pool deck chair creaked when I sat down after laps. At ${Math.round(s.lbs)} pounds my belly presses against my warmup jacket and my thighs touch when I walk. I'm eating like it's part of the program.`,
+    (s) => `My meal log now tracks macros and circumference. At ${Math.round(s.lbs)} pounds my belly rounds forward after dinner and my chest fills out my team hoodie. I ordered a larger size. My split times are fine. Everything else is better.`,
+    (s) => `I tracked everything: at ${Math.round(s.lbs)} pounds, my belly hangs forward when I stand, my thighs press together, my suit strains across my chest. The team trainer raised an eyebrow. I smiled and kept eating.`,
+    (s) => `A bench collapsed in the locker room. I finished my protein shake first. At ${Math.round(s.lbs)} pounds my belly is warm and heavy in my lap. I skip the walk to the dining hall — delivery is more efficient.`,
+    (s) => `Captain's meetings now include snack budgets. I weigh ${Math.round(s.lbs)} pounds and the squad is following my lead. My belly fills my desk chair. My times are still competitive. Appetite is too.`,
+    (s) => `The data at ${Math.round(s.lbs)} pounds is extraordinary — belly vast and warm, thighs enormous, suit a memory. I study film from bed with takeout. The team calls it leadership.`,
+    (s) => `Every chair is assessed before I commit my ${Math.round(s.lbs)} pounds. My belly rounds forward impressively. I run the floor from my room now. Food arrives on schedule.`,
+    (s) => `My training log spans four volumes and my body weighs ${Math.round(s.lbs)} pounds. Both are winning seasons. I want to be bigger. I've added it to the team goals.`,
+    (s) => `I am the primary data point at ${Math.round(s.lbs)} pounds — belly filling my lap, thighs wide, the pool a rumor. I eat while I plan. The loop is closed and perfect.`,
+  ],
   bookworm: [
     (s) => `The scale reads ${Math.round(s.lbs)} pounds and I can feel my ribs clearly through my shirt. I've logged it in my research journal and added a corrective dietary schedule. The data is not good but the data is correctable.`,
     (s) => `I've been eating through study sessions — snacks between chapters, second helpings at dinner — and the results at ${Math.round(s.lbs)} pounds are already showing. My jeans are tighter through the hips. I feel better. The research continues.`,
@@ -251,14 +264,14 @@ export const STAGE_DROP_REACTIONS = {
 };
 
 export const PROFESSOR_RANKS = [
-  { min:0,  label:"Substitute" },
-  { min:1,  label:"Lecturer" },
-  { min:3,  label:"Associate Professor" },
-  { min:6,  label:"Professor" },
-  { min:10, label:"Senior Professor" },
-  { min:14, label:"Distinguished Professor" },
-  { min:18, label:"Department Chair" },
-  { min:22, label:"Dean of Excess" },
+  { min:0,  label:"New RA" },
+  { min:1,  label:"Floor Lead" },
+  { min:3,  label:"Senior RA" },
+  { min:6,  label:"Head Resident" },
+  { min:10, label:"Hall Director" },
+  { min:14, label:"Residence Coordinator" },
+  { min:18, label:"Area Coordinator" },
+  { min:22, label:"Dean of Indulgence" },
   { min:27, label:"The Architect" },
 ];
 

@@ -22,7 +22,7 @@ registerModuleVariants('campus.spaceObs', [
     'The cafeteria knows her order and her footprint. Both are expanding.',
     'Pastel matches the booth. Her appetite matches neither.',
   ]},
-  { when: { studentId: 7, campusLocale: 'lecture_hall', ...MOBILE }, weight: W, text: [
+  { when: { studentId: 7, campusLocale: 'floor meeting_hall', ...MOBILE }, weight: W, text: [
     'Priya has mapped which desk arms survive her. The map is color-coded.',
     'She takes notes and space in equal measure. The row behind her has learned.',
     'Efficiency includes comfort now. She budgets both.',

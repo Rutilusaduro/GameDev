@@ -1,13 +1,13 @@
 import { registerPool } from '../engine.js';
 
 registerPool('opposition.act.rumor', [
-  'Whispers in the faculty lounge about your "generous" catering budget.',
-  'A resident advisor asks if your class has a nutrition plan.',
-  'Someone pinned a wellness flyer outside your classroom door.',
+  'Whispers in the RA office about your "generous" catering budget.',
+  'A resident advisor asks if your hall has a nutrition plan.',
+  'Someone pinned a wellness flyer outside your hallroom door.',
 ]);
 
 registerPool('opposition.aib.unlocked', [
-  'The Academic Inquiry Board has noticed your class. Agendas queue. Resolve bends.',
+  'The Academic Inquiry Board has noticed your hall. Agendas queue. Resolve bends.',
   'Scrutiny opens doors — the wrong kind. Five members watch from polished tables.',
 ]);
 
@@ -26,7 +26,7 @@ registerPool('opposition.proxy.wellness_coalition', [
 ]);
 
 registerPool('opposition.proxy.ascetic_circle', [
-  'Candles at the garden. Protesters chant restraint while your class smells like dinner.',
+  'Candles at the garden. Protesters chant restraint while your hall smells like dinner.',
 ]);
 
 registerPool('supernatural.act.open', [

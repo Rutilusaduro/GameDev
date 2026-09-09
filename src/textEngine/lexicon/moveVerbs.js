@@ -65,9 +65,9 @@ export const MOVE_VERB_CORPUS = [
   { text: 'fills the elevator', stageMin: 8, stageMax: 11, tags: ['elevator'] },
   { text: 'backs into the booth', stageMin: 5, stageMax: 8, tags: ['cafeteria', 'chair'] },
   { text: 'chooses the reinforced chair', stageMin: 6, stageMax: 10, tags: ['cafeteria', 'chair'] },
-  { text: 'tests the desk arm', stageMin: 4, stageMax: 8, tags: ['lecture_hall', 'chair'] },
-  { text: 'squeezes into the aisle seat', stageMin: 5, stageMax: 8, tags: ['lecture_hall'] },
-  { text: 'claims the end row', stageMin: 6, stageMax: 9, tags: ['lecture_hall'] },
+  { text: 'tests the desk arm', stageMin: 4, stageMax: 8, tags: ['floor meeting_hall', 'chair'] },
+  { text: 'squeezes into the aisle seat', stageMin: 5, stageMax: 8, tags: ['floor meeting_hall'] },
+  { text: 'claims the end row', stageMin: 6, stageMax: 9, tags: ['floor meeting_hall'] },
   { text: 'settles into the dorm mirror', stageMin: 5, stageMax: 9, tags: ['dorm_room'] },
   { text: 'crosses the gym floor', stageMin: 3, stageMax: 7, tags: ['gym', 'campus'] },
   { text: 'approaches the equipment', stageMin: 3, stageMax: 7, tags: ['gym'] },
@@ -108,7 +108,7 @@ function buildMovePool(tag) {
   return variants;
 }
 
-const SCENARIO_TAGS = ['general', 'scale', 'door', 'chair', 'bed', 'campus', 'hallway', 'cafeteria', 'stairwell', 'elevator', 'lecture_hall', 'gym', 'dorm_room', 'prof_office'];
+const SCENARIO_TAGS = ['general', 'scale', 'door', 'chair', 'bed', 'campus', 'hallway', 'cafeteria', 'stairwell', 'elevator', 'floor meeting_hall', 'gym', 'dorm_room', 'prof_office'];
 
 for (const tag of SCENARIO_TAGS) {
   registerPool(`word.moveVerb${tag === 'general' ? '' : `.${tag}`}`, buildMovePool(tag));

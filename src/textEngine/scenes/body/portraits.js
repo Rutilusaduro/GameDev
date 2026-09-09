@@ -315,7 +315,7 @@ registerPool('body.portrait.hourglass.s1._f1', [
 ]);
 
 registerPool('body.portrait.hourglass.s1._f2', [
-  { when: {}, text: [". Her waist nips in cleanly; her hips flare gently from it, creating the beginning of the classic curve. Her legs are toned and slim. She moves with natural ease."] },
+  { when: {}, text: [". Her waist nips in cleanly; her hips flare gently from it, creating the beginning of the hallic curve. Her legs are toned and slim. She moves with natural ease."] },
 ]);
 
 registerPool('body.portrait.hourglass.s1', [

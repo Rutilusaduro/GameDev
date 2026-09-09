@@ -25,7 +25,7 @@ registerPool('opposition.agenda.size_review', [
     'The Board demands documented weigh-ins. Every scale becomes evidence.',
     'Class size review — they want numbers, timestamps, signatures. Mass made bureaucratic.',
     'Vance schedules mandatory readings. Your roster becomes a spreadsheet of flesh.',
-    'Compliance wants the class weighed on record. Abundance translated into audit columns.',
+    'Compliance wants the hall weighed on record. Abundance translated into audit columns.',
   ]},
 ]);
 
@@ -42,14 +42,14 @@ registerPool('opposition.agenda.budget_freeze', [
   { when: {}, text: [
     'Department budget frozen pending review. Feasts must wait on institutional arithmetic.',
     'Finance holds your line item. Every tray this week costs something personal.',
-    'The freeze lands mid-semester — abundance rationed by someone who never ate with your class.',
+    'The freeze lands mid-semester — abundance rationed by someone who never ate with your hall.',
     'Vance cites oversight. Your wallet tightens while scrutiny stays loose.',
   ]},
 ]);
 
 registerPool('opposition.agenda.removal_hearing', [
   { when: {}, text: [
-    'Removal hearing opened — a student summoned to defend her place in your classroom.',
+    'Removal hearing opened — a student summoned to defend her place in your hallroom.',
     'The Board schedules a student removal. Photos of abundance already fill the projector.',
     'Vance files the motion. One girl\'s enrollment becomes the week\'s central argument.',
     'A hearing date lands on your desk. Institutional teeth finally chose a name.',
@@ -68,7 +68,7 @@ registerPool('opposition.agenda.mandatory_fitness', [
 registerPool('opposition.agenda.shame_vigil', [
   { when: {}, text: [
     'Ascetic candles flicker outside the garden. Corruption wilts in the cold.',
-    'Shame vigil — protesters chant restraint while your classroom still smells like dinner.',
+    'Shame vigil — protesters chant restraint while your hallroom still smells like dinner.',
     'Garden candles, chanted denial. Appetite treated like sin in public view.',
     'The Ascetic Circle holds vigil. Your girls feel the chill even through closed doors.',
   ]},
@@ -76,7 +76,7 @@ registerPool('opposition.agenda.shame_vigil', [
 
 registerPool('opposition.agenda.faculty_informant', [
   { when: {}, text: [
-    'A faculty informant briefs the Board on your class — polite language, damning detail.',
+    'A faculty informant briefs the Board on your hall — polite language, damning detail.',
     'Someone in the lounge talked. Vance\'s folder grows another confidential appendix.',
     'Informant report filed. Your syllabus read like evidence by someone who never stayed for dessert.',
     'Faculty testimony reaches the Board — concern shaped exactly like betrayal.',

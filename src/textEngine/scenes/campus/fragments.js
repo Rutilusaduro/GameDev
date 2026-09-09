@@ -1,7 +1,7 @@
 // The Squad — Lead: A1 Mobile | Support: A4 Architect, A5 Editor
 import { registerPool } from '../../engine.js';
 
-const LOCALES = ['hallway', 'lecture_hall', 'gym', 'cafeteria', 'dorm_room', 'stairwell', 'elevator', 'prof_office'];
+const LOCALES = ['hallway', 'floor meeting_hall', 'gym', 'cafeteria', 'dorm_room', 'stairwell', 'elevator', 'prof_office'];
 
 registerPool('campus.localeIntro', [
   { when: {}, text: [
@@ -11,7 +11,7 @@ registerPool('campus.localeIntro', [
     'Another hour on campus unfolds.',
     'Sun on brick, voices in the quad — the semester keeps moving.',
     'Campus air smells like coffee, cut grass, and someone\'s takeout.',
-    'The day moves at lecture speed; bodies move at their own.',
+    'The day moves at floor meeting speed; bodies move at their own.',
   ] },
   { when: { campusLocale: 'hallway' }, text: [
     'The hallway carries its usual foot traffic.',
@@ -19,8 +19,8 @@ registerPool('campus.localeIntro', [
     'Lockers and chatter frame the walk.',
     'The corridor hums with passing bodies.',
   ] },
-  { when: { campusLocale: 'lecture_hall' }, text: [
-    'The lecture hall rows wait, desk arms at attention.',
+  { when: { campusLocale: 'floor meeting_hall' }, text: [
+    'The floor meeting hall rows wait, desk arms at attention.',
     'Tiered seating — designed for smaller assumptions.',
     'The auditorium smells like chalk and old upholstery.',
     'Rows climb toward the back; every seat is a small negotiation.',
@@ -85,7 +85,7 @@ registerPool('campus.moveSentence', [
 registerPool('campus.destination', [
   { when: {}, text: ['down the hall', 'across campus', 'toward her next class', 'where the afternoon takes her next'] },
   { when: { campusLocale: 'hallway' }, text: ['through the foot traffic', 'along the corridor', 'past students who make room'] },
-  { when: { campusLocale: 'lecture_hall' }, text: ['into the aisle', 'toward her seat', 'down the steps'] },
+  { when: { campusLocale: 'floor meeting_hall' }, text: ['into the aisle', 'toward her seat', 'down the steps'] },
   { when: { campusLocale: 'cafeteria' }, text: ['through the line', 'toward an open table', 'to the booth she prefers'] },
   { when: { campusLocale: 'stairwell' }, text: ['up the stairs', 'to the next landing', 'one step at a time'] },
   { when: { campusLocale: 'elevator' }, text: ['into the elevator', 'through the closing doors', 'past the capacity placard'] },
@@ -111,7 +111,7 @@ registerPool('campus.obstacle', [
     ', displacing foot traffic without malice',
     ', shoulders brushing doorframes she used to clear',
   ] },
-  { when: { campusLocale: 'lecture_hall', stageMin: 4 }, text: [
+  { when: { campusLocale: 'floor meeting_hall', stageMin: 4 }, text: [
     ' — the desk arm leaves a mark when she sits',
     ', negotiating the desk arm with her belly',
     ', the row behind her learning patience',
@@ -171,7 +171,7 @@ registerPool('campus.spaceObs', [
     'The bed creaks its familiar greeting.',
     'Snacks accumulate on every flat surface. Mass follows.',
   ] },
-  { when: { campusLocale: 'lecture_hall', stageMin: 7 }, text: [
+  { when: { campusLocale: 'floor meeting_hall', stageMin: 7 }, text: [
     'The desk arm is a memory on her hip when she stands.',
     'She has learned which seats survive her.',
     'The end row is hers by negotiation, not choice.',

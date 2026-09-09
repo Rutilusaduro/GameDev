@@ -16,7 +16,7 @@ registerPool('device.campus.remote', [
 
 registerPool('device.campus.class', [
   { when: {}, text: [
-    'the lecture hall absorbs a class-wide pulse',
+    'the floor meeting hall absorbs a class-wide pulse',
     'dozens of bodies feel the same incremental push',
     'group targeting — statistics disguised as an accident',
   ] },

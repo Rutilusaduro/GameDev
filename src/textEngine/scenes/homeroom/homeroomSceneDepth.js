@@ -34,7 +34,7 @@ registerModuleVariants('homeroom.conference.Mrs_Calloway.intro', [
 registerModuleVariants('homeroom.conference.Mrs_Reyes.intro', [
   { when: {}, text: [
     `Mrs. Reyes sets coffee on the desk — habit now. "I need to be honest," she says. "I keep arriving early."`,
-    `Mrs. Reyes exhales before she speaks. "Stress," she admits. "And your classroom smells like bread."`,
+    `Mrs. Reyes exhales before she speaks. "Stress," she admits. "And your hallroom smells like bread."`,
   ]},
 ]);
 

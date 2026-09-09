@@ -22,7 +22,7 @@ registerPool('emb.enter', [
     'The spirit nests in her appetite. She exhales. Something in her unclenches.',
   ]},
   { when: {}, text: [
-    'You leave the professor\'s skin and pour into hers — a quiet theft of agency she will explain away later.',
+    'You leave you\'s skin and pour into hers — a quiet theft of agency she will explain away later.',
     'Her pulse quickens as you arrive. Hunger stirs. She thinks it is hers.',
     'The spirit takes the wheel behind her ribs. Her next breath tastes like permission.',
     'You slip inside like warmth finding a home. She exhales. Something unclenches.',

@@ -142,8 +142,8 @@ registerPool('diary.competitive_gainer.s7._f13', [
 
 registerPool('diary.competitive_gainer.s7._f14', [
   { when: {}, text: [
-    ". My thighs have become massive, spreading wide and pressing together with every movement, the warm friction almost distracting during lectures.",
-    ". Thighs massive now — warm friction through every lecture, every hallway.",
+    ". My thighs have become massive, spreading wide and pressing together with every movement, the warm friction almost distracting during floor meetings.",
+    ". Thighs massive now — warm friction through every floor meeting, every hallway.",
     ". I feel my thighs before I see them. Constant plush contact.",
   ]},
 ]);
@@ -402,8 +402,8 @@ registerPool('diary.machine_goddess.s6', [
 
 registerPool('diary.machine_goddess.s7._f4', [
   { when: {}, text: [
-    "Subject wore the belt through a lecture. She texted circumference readings hourly.",
-    "Field trial: belt through a three-hour lecture. Hourly circumference texts. Beautiful compliance.",
+    "Subject wore the belt through a floor meeting. She texted circumference readings hourly.",
+    "Field trial: belt through a three-hour floor meeting. Hourly circumference texts. Beautiful compliance.",
     "She wore the prototype all day. Readings every hour. I adjusted duty cycles between classes.",
   ]},
 ]);

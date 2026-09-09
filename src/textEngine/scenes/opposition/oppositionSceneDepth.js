@@ -70,7 +70,7 @@ registerModuleVariants('opposition.agenda.shame_vigil', [
     `Sophia hears restraint chanted — formulation language thinner than cafeteria smell.`,
   ]},
   { when: { stageMin: 5 }, weight: 3, text: [
-    `Garden vigil chants denial — your classroom still smells like seconds, warmth winning.`,
+    `Garden vigil chants denial — your hallroom still smells like seconds, warmth winning.`,
   ]},
 ]);
 
@@ -118,7 +118,7 @@ registerModuleVariants('opposition.hearing.removal.phase0', [
     `Kylie's feed screenshots enter evidence — fame weaponized, appetite on trial.`,
   ]},
   { when: { corruption: [2] }, weight: 3, text: [
-    `Vance opens with documentation — your class's willingness filed as misconduct.`,
+    `Vance opens with documentation — your hall's willingness filed as misconduct.`,
   ]},
 ]);
 
@@ -154,7 +154,7 @@ registerModuleVariants('opposition.endgame.allThin', [
 
 registerModuleVariants('opposition.proxy.wellness_coalition', [
   { when: { studentId: 3 }, weight: 4, text: [
-    `Coaches assemble with measuring tapes — Serena's softness their sermon, your class their target.`,
+    `Coaches assemble with measuring tapes — Serena's softness their sermon, your hall their target.`,
   ]},
   { when: { stageMin: 6 }, weight: 3, text: [
     `Wellness coalition smiles like policy — catering budget becomes their evidence.`,

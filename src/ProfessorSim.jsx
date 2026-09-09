@@ -24,11 +24,15 @@ import { TALK_CONFIG, isBodyComplimentUnwelcome, COMPLIMENT_BACKFIRE_REL, COMPLI
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES, ITEMS } from './gameData/items.js';
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
 import { createInitialPlayer, updatePlayerField } from './gameData/player.js';
+import { RaSetupWizard } from './components/RaSetupWizard.jsx';
+import { createCustomStudent, CUSTOM_STUDENT_ID } from './gameData/customStudent/index.js';
 import {
-  SPIRITS, SUBJECTS, SPIRIT_LIST, SUBJECT_LIST, UNLOCK_POOL_IDS,
-  FAVOR_MAX, FAVOR_REBATE, favorFill,
+  UNLOCK_POOL_IDS, getDorm, getLockedDormStudentIds, dormUnlocksForWeek, DORMS,
+} from './gameData/dorms.js';
+import {
+  RA_APPROACHES, FAVOR_MAX, FAVOR_REBATE, favorFill,
   profileGainMult, profileScrutinyMult, profilePassiveBonus, profileCorruptionMult,
-} from './gameData/spirits.js';
+} from './gameData/raApproaches.js';
 import { getUnlockScene } from './gameData/unlockScenes.js';
 import {
   applyWeeklyTrustDrip, pickRipeUnlock, ROSTER_TRUST_GATE, grantPassiveTrust,
@@ -315,7 +319,6 @@ import {
 import { renderForceFeederScene } from './textEngine/scenes/forceFeeder/index.js';
 import { applyPsychDelta } from './gameData/psychState.js';
 import { applyCampusDeviceEncounter } from './gameData/campusDeviceEncounters.js';
-import { createCustomStudent, CUSTOM_STUDENT_ID } from './gameData/customStudent/index.js';
 import { applyOriginPick, needsOriginPick } from './gameData/origins/index.js';
 import { LabBuildModal } from './components/LabBuildModal.jsx';
 import { DeviceTargetPicker } from './components/DeviceTargetPicker.jsx';
@@ -398,14 +401,11 @@ import { C } from './styles.js';
 // MAIN APP
 // ═══════════════════════════════════════════════════════════════
 
-const SPIRIT_INTRO_PARAGRAPHS=[
-  "You are hunger that learned to be patient.",
-  "Every campus has a semester where the dining hall gets too good, where a seminar runs long over catering and nobody goes home. Where a class starts eating together and does not stop. You have been the reason before. You know what it looks like when it starts.",
-  "This time: a classroom, a professor, a roster of students who have not yet decided how much is too much.",
-  "You inhabit the professor. Through them, you teach. Through them, you feed. The students think it is their own appetite, their own good semester, their own extra portion. That is exactly right. You are all of those things.",
-];
-
 const SPIRIT_XP_PER_LEVEL=40;
+
+// Legacy aliases — RA pivot keeps old variable names in hot paths
+const SPIRITS = RA_APPROACHES;
+const SUBJECTS = DORMS;
 
 // Two-tab log: split the live feed into a narrative "Story" stream and a
 // mechanical "Ledger" stream. Classified by leading marker so push() and
@@ -425,9 +425,11 @@ export default function ProfessorSim(){
   })));
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {
-    money, ap, week, ownedSkills, ownedClassSkills, facultyAffinity, professorProfile, adminScrutiny,
-    globalStats, achievements, bigScaleUnlocked, spiritFavor, v2State,
+    money, ap, week, ownedSkills, ownedClassSkills, facultyAffinity, raProfile, adminScrutiny,
+    globalStats, achievements, bigScaleUnlocked, hallCred, unlockedDorms, v2State,
   } = player;
+  const professorProfile = raProfile;
+  const spiritFavor = hallCred;
   const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
   const setMoney = (updater) => setPlayer((p) => updatePlayerField(p, 'money', updater));
   const setAp = (updater) => setPlayer((p) => updatePlayerField(p, 'ap', updater));
@@ -435,8 +437,11 @@ export default function ProfessorSim(){
   const setOwnedSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedSkills', updater));
   const setOwnedClassSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedClassSkills', updater));
   const setFacultyAffinity = (updater) => setPlayer((p) => updatePlayerField(p, 'facultyAffinity', updater));
-  const setProfessorProfile = (updater) => setPlayer((p) => updatePlayerField(p, 'professorProfile', updater));
-  const setSpiritFavor = (updater) => setPlayer((p) => updatePlayerField(p, 'spiritFavor', updater));
+  const setRaProfile = (updater) => setPlayer((p) => updatePlayerField(p, 'raProfile', updater));
+  const setProfessorProfile = setRaProfile;
+  const setHallCred = (updater) => setPlayer((p) => updatePlayerField(p, 'hallCred', updater));
+  const setSpiritFavor = setHallCred;
+  const setUnlockedDorms = (updater) => setPlayer((p) => updatePlayerField(p, 'unlockedDorms', updater));
   const setAdminScrutiny = (updater) => setPlayer((p) => updatePlayerField(p, 'adminScrutiny', updater));
   const setGlobalStats = (updater) => setPlayer((p) => updatePlayerField(p, 'globalStats', updater));
   const setAchievements = (updater) => setPlayer((p) => updatePlayerField(p, 'achievements', updater));
@@ -444,11 +449,7 @@ export default function ProfessorSim(){
   const setV2State = (updater) => setPlayer((p) => updatePlayerField(p, 'v2State', updater));
   const [view,setView]=useState("class");
   const [selectedId,setSelectedId]=useState(null);
-  // New-game setup wizard: spirit → lore beat → vessel → start.
-  const [setupStep,setSetupStep]=useState("spirit");
-  const [setupSpirit,setSetupSpirit]=useState(null);
-  const [setupSubject,setSetupSubject]=useState(null);
-  const [log,setLog]=useState(["📋 Professor Sim 2.0 — Your class of 15 students awaits. The spirit reaches further now."]);
+  const [log,setLog]=useState(["📋 Hall Pass — Week one on your floor. Five residents, one master key, and a dining hall that never closes."]);
   const [logTab,setLogTab]=useState("story");
   const [sidebarOpen,setSidebarOpen]=useState(true);
   const [activeEvent,setActiveEvent]=useState(null);
@@ -796,35 +797,46 @@ export default function ProfessorSim(){
     if(label) push(`💰 ${label}: +${formatMoney(amount)}`);
   };
 
-  const inhabitProfessor=(spiritId,subjectId,customStudent=null)=>{
-    const spirit=SPIRITS[spiritId];
-    const subj=SUBJECTS[subjectId];
-    if(!spirit||!subj) return;
+  const startAsRA=({ approach, dorm, customDraft })=>{
+    const apDef=RA_APPROACHES[approach.id];
+    const hallDef=getDorm(dorm.id);
+    if(!apDef||!hallDef) return;
     const profile={
-      name:"The Professor", origin:"gluttony_spirit",
-      subject:subj.id, spiritId:spirit.id, traits:[...(spirit.traits||[])],
-      color:spirit.color, accentSoft:spirit.accentSoft, lean:spirit.lean,
+      name:"You",
+      role:"ra",
+      origin:"resident_advisor",
+      dormId:hallDef.id,
+      subject:hallDef.id,
+      approachId:apDef.id,
+      spiritId:apDef.id,
+      traits:[...(apDef.traits||[])],
+      color:hallDef.color,
+      accentSoft:hallDef.accentSoft,
+      lean:apDef.lean,
+      appearance:{ hair:'red', build:'curvy' },
     };
-    setProfessorProfile(profile);
-    // Pick the 5 closest girls by subject affinity (from the unlock pool).
-    const startIds=[];
-    for(const arch of subj.startArchetypes){
-      const hit=students.find(s=>UNLOCK_POOL_IDS.includes(s.id)&&s.archetype===arch&&!startIds.includes(s.id));
-      if(hit) startIds.push(hit.id);
-    }
-    // Backfill to 5 if an archetype was missing.
-    if(startIds.length<5){
-      for(const s of students){
-        if(startIds.length>=5) break;
-        if(UNLOCK_POOL_IDS.includes(s.id)&&!startIds.includes(s.id)) startIds.push(s.id);
-      }
-    }
-    const mods=spirit.startMods||{};
+    setRaProfile(profile);
+    setUnlockedDorms([hallDef.id]);
+    const startIds=[...hallDef.studentIds];
+    const mods=apDef.startMods||{};
+    const base=students.find(s=>s.id===CUSTOM_STUDENT_ID)||{};
+    const custom=createCustomStudent(customDraft,base);
+    const runtimeCustom={
+      ...custom,
+      ...initGainStats(custom),
+      ...initDeviceState(),
+      psych: custom.psych,
+      corruption: 0,
+      ascension: null,
+      weekStartLbs: custom.lbs,
+    };
     setStudents(list=>list.map(s=>{
-      const seat = customStudent && s.id === CUSTOM_STUDENT_ID ? customStudent : s;
-      if(seat.custom) return {...seat, lockState:'open'};
+      const seat = runtimeCustom && s.id === CUSTOM_STUDENT_ID ? runtimeCustom : s;
+      if(seat.custom) return {...seat, lockState:'open', homeDorm:hallDef.id};
       s = seat;
-      if(!UNLOCK_POOL_IDS.includes(s.id)) return s; // story-gated girls untouched
+      if(!UNLOCK_POOL_IDS.includes(s.id)) return s;
+      const lockedIds=getLockedDormStudentIds([hallDef.id]);
+      if(lockedIds.includes(s.id)) return {...s, lockState:'locked', passiveTrust:0};
       if(!startIds.includes(s.id)) return {...s, lockState:'locked', passiveTrust:0};
       let ns={...s, lockState:'open'};
       if(mods.corruption) ns.corruption=(ns.corruption||0)+mods.corruption;
@@ -832,18 +844,18 @@ export default function ProfessorSim(){
       if(mods.hunger) ns=adjustHunger(ns,mods.hunger);
       return ns;
     }));
-    push(`🌒 ${spirit.label} takes root behind the ${subj.label} professor's eyes. Five desks lean close; the nineteenth chair is ${customStudent?'claimed':'waiting'}.`);
+    push(`🏠 ${hallDef.label} — your hall. ${apDef.label} energy. Five doors open; the rest of campus waits.`);
   };
 
   // Spirit Favor meter — on-lean actions fill it; full → partial AP rebate.
   const gainFavor=(tag)=>{
-    const fill=favorFill(professorProfile?.spiritId,tag);
+    const fill=favorFill(professorProfile?.approachId||professorProfile?.spiritId,tag);
     if(!fill) return;
     const next=(spiritFavor||0)+fill;
     if(next>=FAVOR_MAX){
       setSpiritFavor(next-FAVOR_MAX);
       setAp(a=>Math.min(20,a+FAVOR_REBATE));
-      push(`✨ Spirit favor crests — ${SPIRITS[professorProfile?.spiritId]?.label} returns ${FAVOR_REBATE} AP.`);
+      push(`✨ Hall cred maxed — ${RA_APPROACHES[professorProfile?.approachId||professorProfile?.spiritId]?.label} returns ${FAVOR_REBATE} AP.`);
     }else{
       setSpiritFavor(next);
     }
@@ -1522,6 +1534,17 @@ export default function ProfessorSim(){
     setWeeklyArms({devouringStudentId:null,mesmerizingStudentId:null,devouringConsumed:false});
     const newWeek=week+1;
     setWeek(newWeek);
+    const startDorm=raProfile?.dormId||raProfile?.subject;
+    if(startDorm){
+      const newly=dormUnlocksForWeek(newWeek,startDorm).filter((id)=>(unlockedDorms||[]).indexOf(id)<0);
+      if(newly.length){
+        setUnlockedDorms((prev)=>[...(prev||[]),...newly]);
+        newly.forEach((id)=>{
+          const d=getDorm(id);
+          if(d) push(`🔓 ${d.label} unlocked — residents from ${d.shortLabel} hall may appear on your roster.`);
+        });
+      }
+    }
     const scrutinyTier=getScrutinyTier(adminScrutiny);
     const prestigeScore=computePrestigeScore({ week:newWeek, labState, campusSaturation:campusState.saturation, globalStats });
     const classSkillFx=aggregateClassSkillEffects(ownedClassSkills||{});
@@ -2033,7 +2056,7 @@ export default function ProfessorSim(){
     const ripe = pickRipeUnlock(updated, spiritLevel);
     if (ripe) {
       updated = updated.map((s) => (s.id === ripe.id ? { ...s, lockState: 'open' } : s));
-      const scene = getUnlockScene(ripe.id) || `${ripe.name} leans into reach. The spirit's awareness closes the last of the distance, and she's yours to cultivate now.`;
+      const scene = getUnlockScene(ripe.id) || `${ripe.name} finally trusts you enough to knock on your door. She's on your hall now.`;
       setTimeout(() => push(`🌒 ${scene}`), 160);
     }
 
@@ -7709,112 +7732,9 @@ export default function ProfessorSim(){
   const views=["class","actions","achievements","log"];
   if(sel) views.splice(1,0,"student");
 
-  // ── OPENING: SPIRIT → LORE BEAT → VESSEL → START ──────────────
-  if(!professorProfile){
-    const accent=setupSpirit?.color||"#8a4be0";
-    const accentSoft=setupSpirit?.accentSoft||"rgba(138,75,224,0.22)";
-    const panelStyle={...C.modal,maxWidth:720,background:`radial-gradient(circle at 50% 0%,${accentSoft},#0d0618 55%,#070510)`,border:`1px solid ${accent}`,boxShadow:`0 0 80px ${accentSoft}`};
-    return(
-      <div style={{...C.app,alignItems:"center",justifyContent:"center",padding:20}}>
-        <div style={panelStyle}>
-          <div style={{textAlign:"center",marginBottom:20}}>
-            <div style={{fontSize:10,letterSpacing:4,color:accent,marginBottom:8}}>A SPIRIT FINDS PURCHASE</div>
-            <h1 style={{color:"#ead8ff",margin:"0 0 6px",fontSize:26,fontWeight:400,fontFamily:"inherit"}}>Before the Semester Begins</h1>
-            <div style={{color:"#7d68a8",fontSize:12}}>The professor is only the first door.</div>
-          </div>
-
-          {setupStep==="spirit"&&(<>
-            <div style={{background:"rgba(255,255,255,0.035)",border:`1px solid ${accentSoft}`,borderRadius:10,padding:"16px 18px",marginBottom:18}}>
-              {SPIRIT_INTRO_PARAGRAPHS.map((p,i)=>(
-                <p key={i} style={{margin:i===0?"0 0 12px":"12px 0 0",color:i===0?"#ead8ff":"#c9b4e8",fontSize:i===0?16:13.5,lineHeight:1.75}}>{p}</p>
-              ))}
-            </div>
-            <div style={{fontSize:10,letterSpacing:3,color:accent,textTransform:"uppercase",marginBottom:10,textAlign:"center"}}>What kind of hunger are you?</div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10}}>
-              {SPIRIT_LIST.map(sp=>{
-                const on=setupSpirit?.id===sp.id;
-                return(
-                  <button key={sp.id} onClick={()=>setSetupSpirit(sp)}
-                    style={{textAlign:"left",cursor:"pointer",borderRadius:10,padding:"12px 14px",fontFamily:"inherit",
-                      background:on?sp.accentSoft:"rgba(255,255,255,0.03)",
-                      border:`1px solid ${on?sp.color:"rgba(255,255,255,0.08)"}`,
-                      boxShadow:on?`0 0 22px ${sp.accentSoft}`:"none",transition:"all 0.15s"}}>
-                    <div style={{color:sp.color,fontSize:15,marginBottom:3}}>{sp.label}</div>
-                    <div style={{color:"#b8a8d0",fontSize:12,lineHeight:1.5}}>{sp.loreParas[0]}</div>
-                  </button>
-                );
-              })}
-            </div>
-            <div style={{display:"flex",justifyContent:"center",marginTop:18}}>
-              <button disabled={!setupSpirit} onClick={()=>setSetupStep("lore")}
-                style={{...C.btn(accent),opacity:setupSpirit?1:0.4,fontSize:14,padding:"11px 32px",cursor:setupSpirit?"pointer":"default"}}>
-                Take this shape
-              </button>
-            </div>
-          </>)}
-
-          {setupStep==="lore"&&setupSpirit&&(<>
-            <div style={{background:"rgba(255,255,255,0.035)",border:`1px solid ${accentSoft}`,borderRadius:10,padding:"20px 22px",marginBottom:20}}>
-              <div style={{color:accent,fontSize:18,marginBottom:12,textAlign:"center"}}>{setupSpirit.label}</div>
-              {setupSpirit.loreParas.map((p,i)=>(
-                <p key={i} style={{margin:i===0?"0":"14px 0 0",color:"#d8c8ec",fontSize:14.5,lineHeight:1.8}}>{p}</p>
-              ))}
-            </div>
-            <div style={{display:"flex",justifyContent:"space-between"}}>
-              <button onClick={()=>setSetupStep("spirit")} style={{...C.smBtn,padding:"9px 18px"}}>← Reconsider</button>
-              <button onClick={()=>setSetupStep("vessel")} style={{...C.btn(accent),fontSize:14,padding:"11px 28px"}}>Choose a vessel →</button>
-            </div>
-          </>)}
-
-          {setupStep==="vessel"&&setupSpirit&&(<>
-            <div style={{fontSize:10,letterSpacing:3,color:accent,textTransform:"uppercase",marginBottom:4,textAlign:"center"}}>Whose body do you teach through?</div>
-            <div style={{color:"#7d68a8",fontSize:11.5,textAlign:"center",marginBottom:14}}>The subject decides which five girls already lean close.</div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10}}>
-              {SUBJECT_LIST.map(su=>{
-                const on=setupSubject?.id===su.id;
-                return(
-                  <button key={su.id} onClick={()=>setSetupSubject(su)}
-                    style={{textAlign:"left",cursor:"pointer",borderRadius:10,padding:"12px 14px",fontFamily:"inherit",
-                      background:on?accentSoft:"rgba(255,255,255,0.03)",
-                      border:`1px solid ${on?accent:"rgba(255,255,255,0.08)"}`,transition:"all 0.15s"}}>
-                    <div style={{color:"#ead8ff",fontSize:15,marginBottom:4}}>{su.label}</div>
-                    <div style={{color:"#b8a8d0",fontSize:12,lineHeight:1.5,marginBottom:7}}>{su.hook}</div>
-                  </button>
-                );
-              })}
-            </div>
-            <div style={{display:"flex",justifyContent:"space-between",marginTop:18}}>
-              <button onClick={()=>setSetupStep("lore")} style={{...C.smBtn,padding:"9px 18px"}}>← Back</button>
-              <button disabled={!setupSubject} onClick={()=>setSetupStep("chair")}
-                style={{...C.btn(accent),opacity:setupSubject?1:0.4,fontSize:14,padding:"11px 30px",cursor:setupSubject?"pointer":"default",boxShadow:setupSubject?`0 0 24px ${accentSoft}`:"none"}}>
-                Build the Nineteenth Chair →
-              </button>
-            </div>
-          </>)}
-
-          {setupStep==="chair"&&setupSpirit&&setupSubject&&(
-            <CustomStudentWizard
-              accent={accent}
-              onBack={()=>setSetupStep("vessel")}
-              onComplete={(draft)=>{
-                const base=students.find(s=>s.id===CUSTOM_STUDENT_ID)||{};
-                const custom=createCustomStudent(draft,base);
-                const runtimeCustom={
-                  ...custom,
-                  ...initGainStats(custom),
-                  ...initDeviceState(),
-                  psych: custom.psych,
-                  corruption: 0,
-                  ascension: null,
-                  weekStartLbs: custom.lbs,
-                };
-                inhabitProfessor(setupSpirit.id,setupSubject.id,runtimeCustom);
-              }}
-            />
-          )}
-        </div>
-      </div>
-    );
+  // ── OPENING: RA INTRO → APPROACH → HALL → SUITEMATE ──────────────
+  if(!raProfile){
+    return <RaSetupWizard students={students} onComplete={startAsRA} />;
   }
 
   return (
@@ -7894,7 +7814,7 @@ export default function ProfessorSim(){
         return(
           <div style={C.overlay}>
             <div style={{...C.modal,maxWidth:600}}>
-              <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:3}}>CLASS SESSION — WEEK {week}</div>
+              <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:3}}>FLOOR CHECK-IN — WEEK {week}</div>
               <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:19}}>
                 {isDone?"Session Complete":pendingResult?pendingResult.sceneTitle:current?.scene.title}
               </h2>
@@ -8543,16 +8463,16 @@ export default function ProfessorSim(){
       {/* HEADER */}
       <div style={{...C.hdr,borderBottom:`2px solid ${professorProfile?.color||"#4a1590"}`}}>
         <div>
-          <div style={{fontSize:19,fontWeight:700,letterSpacing:2,color:professorProfile?.color||"#b888ff"}}>PROFESSOR'S QUARTERS</div>
-          <div style={{fontSize:10,color:"#60389a",letterSpacing:3}}>{SPIRITS[professorProfile?.spiritId]?.label?`${SPIRITS[professorProfile.spiritId].label.toUpperCase()} · ${SUBJECTS[professorProfile?.subject]?.label?.toUpperCase()||""}`:"A WEIGHT MANAGEMENT SIMULATION"}</div>
+          <div style={{fontSize:19,fontWeight:700,letterSpacing:2,color:professorProfile?.color||"#c44a2a"}}>RA DESK — {getDorm(professorProfile?.dormId||professorProfile?.subject)?.label?.toUpperCase()||"YOUR HALL"}</div>
+          <div style={{fontSize:10,color:"#8a5060",letterSpacing:3}}>{RA_APPROACHES[professorProfile?.approachId||professorProfile?.spiritId]?.label?`${RA_APPROACHES[professorProfile.approachId||professorProfile.spiritId].label.toUpperCase()} · WEEK ${week}`:"HALL PASS"}</div>
         </div>
         <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
           {professorProfile&&(
-            <div title="Spirit Favor — on-lean actions fill it; full returns AP" style={{textAlign:"center",background:professorProfile.accentSoft||"rgba(80,18,140,0.3)",borderRadius:6,padding:"3px 11px",minWidth:74}}>
+            <div title="Hall Cred — on-style actions fill it; full returns AP" style={{textAlign:"center",background:professorProfile.accentSoft||"rgba(80,18,140,0.3)",borderRadius:6,padding:"3px 11px",minWidth:74}}>
               <div style={{height:6,background:"rgba(0,0,0,0.35)",borderRadius:3,overflow:"hidden",marginBottom:2}}>
                 <div style={{height:"100%",width:`${Math.min(100,((spiritFavor||0)/FAVOR_MAX)*100)}%`,background:professorProfile.color||"#a060ff",transition:"width 0.25s"}}/>
               </div>
-              <span style={{fontSize:9,color:professorProfile.color||"#c0a8e8",letterSpacing:2}}>FAVOR</span>
+              <span style={{fontSize:9,color:professorProfile.color||"#c0a8e8",letterSpacing:2}}>CRED</span>
             </div>
           )}
           {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Spirit",`Lv ${spiritLevel}`,"#a0e0b0"],["Pts",availableSkillPoints,"#f0c060"]].map(([l,v,c])=>(
@@ -8614,7 +8534,7 @@ export default function ProfessorSim(){
 
       {/* NAV */}
       <div style={C.nav}>
-        {[["class","📋 Roster"],["classroom","🏛 Classroom"],["spirit-hub","🌒 Dominion"],["student","👤 "+(sel?.name||"Student")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","🌒 Spirit"],["achievements","🏆 Achievements"],
+        {[["class","📋 Roster"],["classroom","🏠 Hall Lounge"],["spirit-hub","✨ Influence"],["student","👤 "+(sel?.name||"Resident")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","📈 Reach"],["achievements","🏆 Achievements"],
           ...(settledStudents.length>0?[["settling","✦ The Settling"]]:[]),
           ...(week>=8||opposition?.aib?.unlocked||adminScrutiny>=25?[["oversight","👁 Oversight"]]:[]),
           ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"],...((labState.stage??1)>=2?[["network","🌐 Network"]]:[])]:[]),

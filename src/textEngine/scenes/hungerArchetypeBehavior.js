@@ -69,7 +69,7 @@ const ARCHETYPE_REQUEST = {
     '"For research purposes. And because I need you to."',
   ],
   eced: [
-    '"I brought muffins for the class. I ate mine. I need more."',
+    '"I brought muffins for the hall. I ate mine. I need more."',
     '"The moms would understand. Would you?"',
   ],
   sorority: [

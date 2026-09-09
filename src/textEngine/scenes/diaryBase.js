@@ -237,7 +237,7 @@ registerPool("diary.priya.spreadsheet", [
 
 // ══════════════════════════════════════════════════════════════════
 // MAYA (8) — Quiet — "The Right Size"
-// Sub-arc: She sits in the professor's office. The chair fits her differently.
+// Sub-arc: She sits in you's office. The chair fits her differently.
 // She's become the comfortable position. She stays two minutes after.
 // ══════════════════════════════════════════════════════════════════
 
@@ -340,7 +340,7 @@ registerPool("diary.kaylee.patient", [
 // ══════════════════════════════════════════════════════════════════
 // NADIA (12) — Psych — "The Case Study"
 // Sub-arc: She's assembled a literature review. She's clearly in the studies.
-// She names this out loud to the professor, mid-bite.
+// She names this out loud to you, mid-bite.
 // ══════════════════════════════════════════════════════════════════
 
 registerPool("diary.nadia.casestudy", [
@@ -350,7 +350,7 @@ registerPool("diary.nadia.casestudy", [
   ]},
   { when: { studentId: 12, stageMin: 3, stageMax: 4, corruption: [1] }, weight: 4, text: [
     "I know what's happening. I've read the literature. I know the outcome of every choice I'm making. I'm making the choices anyway. The meta-awareness doesn't prevent anything, it just clarifies intent.",
-    "Told the professor this out loud. Mid-bite. Then another bite.",
+    "Told you this out loud. Mid-bite. Then another bite.",
   ]},
   { when: { studentId: 12, stageMin: 4, stageMax: 6, corruption: [2] }, weight: 4, text: [
     "The literature and I merged. I am writing myself into the case study in real time. The researcher is the subject is the analyst. The observation is inseparable from the happening.",

@@ -6,7 +6,7 @@
 // long-arc milestone, or cross-girl gossip about someone else.
 //
 //   memory.self  — her own history (memScope × memType, {memWeeksAgo})
-//   memory.class — what the class remembers about another girl ({memName})
+//   memory.class — what the hall remembers about another girl ({memName})
 //
 // Selectors arrive as ctx.globals: memScope, memType, memWeeksAgo, memName.
 // ═══════════════════════════════════════════════════════════════
@@ -89,7 +89,7 @@ registerPool('memory.self', [
 ]);
 
 // ── memory.class ──────────────────────────────────────────────
-// Shape: SHORT SENTENCE — what the class remembers about someone else.
+// Shape: SHORT SENTENCE — what the hall remembers about someone else.
 registerPool('memory.class', [
   { when: {}, text: [
     `The girls keep a quiet eye on how the others are changing.`,

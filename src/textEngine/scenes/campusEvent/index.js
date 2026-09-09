@@ -31,7 +31,7 @@ registerPool('campusEvent.observation', [
   ] },
   { when: {}, text: [
     '{subject.name} settles into class — present, readable, waiting.',
-    'The lecture hall hums; she finds her seat and exhales.',
+    'The floor meeting hall hums; she finds her seat and exhales.',
     'Ordinary campus hour — except nothing about her appetite is ordinary anymore.',
   ] },
 ]);

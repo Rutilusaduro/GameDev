@@ -167,7 +167,7 @@ registerPool('emb.event.elevator_groan', [
 
 registerPool('emb.event.faculty_treats', [
   { when: {}, text: [
-    'The faculty lounge pastry plate is communal and irresistible. She eats two éclairs before shame arrives with the third.',
+    'The RA office pastry plate is communal and irresistible. She eats two éclairs before shame arrives with the third.',
     'Burnt coffee, departmental gossip, and pastries that disappear when she stops pretending restraint.',
     'A colleague offers the last danish without looking up from grading. She accepts like it is policy.',
   ]},

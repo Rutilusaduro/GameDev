@@ -174,14 +174,14 @@ registerPool('campus.sighting', [
     ] },
   { when: { archetype: 'eced', weightBand: 'heavy' }, priority: 4,
     text: [
-      '{subject.name} holds office hours with a crockpot. Students eat. She eats. Lesson plans wait.',
+      '{subject.name} holds desk hours with a crockpot. Students eat. She eats. Lesson plans wait.',
       'She waddles between classrooms with foil trays — nurturing at scale, belly leading, smile unwavering.',
       'The practicum observes her; she observes them eating — everyone passes.',
     ] },
   { when: { archetype: 'eced', weightBand: 'extreme' }, priority: 4,
     text: [
       '{subject.name} has a permanent snack station outside the education wing. She presides, vast and gentle, until everyone is full.',
-      'She tries to tie an apron. Gives up. Feeds the class anyway from a chair that creaks heroically.',
+      'She tries to tie an apron. Gives up. Feeds the hall anyway from a chair that creaks heroically.',
       'Small chairs circle her like satellites; she is the warm center they orbit.',
     ] },
   // Lilith — predator (rare)

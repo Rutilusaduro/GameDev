@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { useMemo } from 'react';
 import { C } from '../styles.js';
-import { UNLOCK_POOL_IDS } from '../gameData/spirits.js';
+import { UNLOCK_POOL_IDS } from '../gameData/dorms.js';
 import {
   ROSTER_TRUST_GATE, getRosterSlotCount, countOpenPoolStudents,
 } from '../gameData/rosterUnlock.js';
@@ -73,7 +73,7 @@ function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn }) {
         {s.lbs.toLocaleString()} lbs  (+{s.lbs - s.startLbs}) · ❤ {s.relationship}%
       </div>
       <div style={{ fontSize: 10.5, color: s.withdrawn ? '#c87858' : '#6a5078', fontStyle: 'italic', lineHeight: 1.4, marginTop: 3 }}>
-        {s.withdrawn ? 'has walked out of your class' : tell}
+        {s.withdrawn ? 'has moved off your hall' : tell}
       </div>
       {s.withdrawn && onAmends && (
         <button
@@ -110,7 +110,7 @@ export function ClassView({
     <>
       {view === 'class' && (
         <div>
-          <p style={C.secT}>Students — {students.filter(rosterVisible).length} close · avg {avgLbs} lbs</p>
+          <p style={C.secT}>Residents — {students.filter(rosterVisible).length} on your floor · avg {avgLbs} lbs</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(195px,1fr))', gridAutoRows: 'minmax(140px,auto)', gap: 8 }}>
             {[...students].filter(rosterVisible).sort((a, b) => a.id - b.id).map((s) => (
               <RosterTile key={s.id} s={s} week={week} onOpen={() => (onOpenStudent ? onOpenStudent(s.id) : (setSelectedId(s.id), setView('student')))} onAmends={onAmends} classmateWithdrawn={classmateWithdrawn && !s.withdrawn} />
@@ -118,11 +118,11 @@ export function ClassView({
           </div>
           {locked.length > 0 && (
             <div style={{ marginTop: 18 }}>
-              <p style={C.secT}>The rest of the class — {locked.length} out of reach</p>
+              <p style={C.secT}>Other halls — {locked.length} residents out of reach</p>
               <div style={{ fontSize: 11, color: '#6a5088', marginBottom: 10, lineHeight: 1.55 }}>
-                Spirit level grants <strong style={{ color: '#a880d0' }}>{rosterSlots}</strong> roster seats ({openCount} filled).
-                Each week, one locked girl with <strong style={{ color: '#a880d0' }}>{ROSTER_TRUST_GATE}+</strong> passive trust opens when a seat is free.
-                Trust rises faster as your spirit level and the semester deepen — campus sightings and embodiment help too.
+                Hall reach grants <strong style={{ color: '#a880d0' }}>{rosterSlots}</strong> roster doors ({openCount} open).
+                Each week, one locked resident with <strong style={{ color: '#a880d0' }}>{ROSTER_TRUST_GATE}+</strong> passive trust opens when a slot is free.
+                Trust rises faster as your influence and the semester deepen — campus sightings help too.
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(150px,1fr))', gap: 7 }}>
                 {locked.map((s) => {

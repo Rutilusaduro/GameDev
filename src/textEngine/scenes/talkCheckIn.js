@@ -59,7 +59,7 @@ registerPool('talk.checkIn.greetBeat', [
     `Maya sets her pencil down and offers a small, honest smile.`,
   ] },
   { when: { studentId: 9 }, weight: 4, text: [
-    `Chloé sets down a wine-colored mug and smiles like American office hours amuse her.`,
+    `Chloé sets down a wine-colored mug and smiles like American desk hours amuse her.`,
     `Chloé looks up, silk scarf slightly askew, delighted to be interrupted.`,
   ] },
   { when: { studentId: 10 }, weight: 4, text: [

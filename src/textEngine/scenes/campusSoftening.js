@@ -62,7 +62,7 @@ registerPool("diary.campus", [
   { when: { campusFattening: true, archetype: "psych" }, priority: 2,
     text: [
       "Field notes: subjects across campus trending heavier. Control group obsolete. Campus is the variable.",
-      "Fifteen notebooks and fifteen softer silhouettes in the lecture hall. Correlation strengthening.",
+      "Fifteen notebooks and fifteen softer silhouettes in the floor meeting hall. Correlation strengthening.",
       "Advisor asked if I'm projecting. I showed her everyone else's meal logs. She stopped asking.",
     ] },
   { when: { campusFattening: true, archetype: "eced" }, priority: 2,
@@ -214,7 +214,7 @@ registerPool("attitude.campus", [
     ] },
   { when: { campusFattening: true }, priority: 0,
     text: [
-      "Classmates look rounder in lecture — not just me, not just today.",
+      "Classmates look rounder in floor meeting — not just me, not just today.",
       "Campus-wide appetite and I'm right in the middle of it, happy to be.",
       "Everyone's softer in the halls. I fit the weather now.",
     ] },
@@ -249,7 +249,7 @@ registerPool("talk.campusCoda", [
   { when: { campusFattening: true }, priority: 0,
     text: [
       (ctx) => `Outside, the dining hall line looks thicker than last month — not just longer. Fuller. Campus-wide.`,
-      (ctx) => `${ctx.subject.name} mentions, almost offhand, that half her classmates looked softer at lecture this week.`,
+      (ctx) => `${ctx.subject.name} mentions, almost offhand, that half her classmates looked softer at floor meeting this week.`,
       (ctx) => `"Everyone's eating like it's mandatory," ${ctx.subject.name} says. "Maybe it is, now."`,
     ] },
   { when: {}, text: ['', '', ''] },

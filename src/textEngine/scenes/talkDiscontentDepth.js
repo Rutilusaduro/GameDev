@@ -33,7 +33,7 @@ registerModuleVariants('talk.discontentCoda', [
     ` Destiny doesn't look up. "Stream ending early," she mutters. "Lag in the conversation."`,
   ]},
   { when: { studentId: 7, discontentTier: [2, 3] }, weight: 4, text: [
-    ` Priya closes her planner. "Inefficient use of office hours," she says. "Rescheduling myself."`,
+    ` Priya closes her planner. "Inefficient use of desk hours," she says. "Rescheduling myself."`,
   ]},
   { when: { studentId: 8, discontentTier: [1, 2, 3] }, weight: 4, text: [
     ` Maya says less than usual — which was already almost nothing. The distance is louder.`,

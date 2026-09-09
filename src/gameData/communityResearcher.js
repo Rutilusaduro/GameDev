@@ -24,17 +24,17 @@ const STAGE_OPENERS = [
 
 export const THESIS_BOARD = {
   phases: [
-    (name) => `PhD Proposal Defense — Room 204, Department of Sociology.
+    (name) => `Team Captain Review — pool deck conference room, Athletics Department.
 
-Dr. Patricia Chen (senior faculty, dry in the way that signals respect earned) sits across from Dr. James Harmon (long career, visible skepticism). Dr. Olivia Ward — junior faculty, three color-coded tabs on her copy of the proposal — is on the left.
+Coach Rivera (dry, arms crossed, whistle on the table) sits across from Assistant AD Harmon (skeptical, old-school). Sports nutritionist Ward — three color-coded tabs on Cassidy's meal log — takes notes on the left.
 
-${name} looks at all three of them and begins.
+${name} stands in her team jacket and begins.
 
-"The fetishization and ostracization of this subculture creates a closed loop. The more the community is pushed to the margins, the more internal the reinforcement becomes — behaviors that would moderate under social integration instead amplify and compound. What might have been a passing interest deepens into identity, into ideology, into physical reality."
+"We've been treating appetite like a liability. I'm proposing we treat it like training load — measurable, periodized, team-wide. When the squad eats together with intention, performance doesn't drop. Neither does morale."
 
 She clicks to the next slide.
 
-"I'm proposing that the spread of extreme feederism is not a function of exposure, but of isolation. The community doesn't deviate further because of contact with the mainstream. It deviates because of its absence."
+"The spread isn't chaos. It's culture. And culture on this team compounds."
 
 Nobody speaks for a moment.`,
 

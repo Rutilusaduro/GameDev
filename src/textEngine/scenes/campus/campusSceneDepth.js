@@ -10,7 +10,7 @@ registerModuleVariants('campus.spaceObs', [
     `Brittany tests equipment like team gear — what fits, what groans, what earns respect.`,
     `The gym remembers her captaincy. Her body remembers every recovery meal.`,
   ]},
-  { when: { studentId: 1, campusLocale: 'lecture_hall', ...MOBILE }, weight: W, text: [
+  { when: { studentId: 1, campusLocale: 'floor meeting_hall', ...MOBILE }, weight: W, text: [
     `Madeline chooses the desk with the widest arm — hypothesis confirmed weekly.`,
     `She takes notes and space in equal measure. The row behind has adapted.`,
   ]},

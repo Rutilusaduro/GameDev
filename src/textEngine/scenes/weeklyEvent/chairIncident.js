@@ -21,7 +21,7 @@ registerPool('weekly.chairBreaks.buildup', [
   ] },
   { when: { endStageMin: 7 }, text: [
     '{subject.name}\'s chair snaps instantly — no groan, no warning.',
-    'It happens during a quiet part of lecture — a sharp snap, then {subject.name} is suddenly much lower.',
+    'It happens during a quiet part of floor meeting — a sharp snap, then {subject.name} is suddenly much lower.',
   ] },
   { when: {}, text: [
     'A classroom chair gives way under {subject.name}.',

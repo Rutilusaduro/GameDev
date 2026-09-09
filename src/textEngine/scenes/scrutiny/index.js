@@ -39,7 +39,7 @@ registerPool('scrutiny.tierUp.header', [
 // Shape: SHORT PARAGRAPH — what the notice says and what it means.
 registerPoolAutoDecompose('scrutiny.tierUp.body', [
   { when: {}, text: [
-    `Something about your class has caught an eye it shouldn't have. No specifics. Not yet.`,
+    `Something about your hall has caught an eye it shouldn't have. No specifics. Not yet.`,
   ]},
   { when: { scrutinyTierId: 1 }, weight: 3, text: [
     `"Patterns consistent with non-standard dietary supplementation have been observed in your enrolled cohort." Bureaucratic language for: someone noticed.`,
@@ -53,7 +53,7 @@ registerPoolAutoDecompose('scrutiny.tierUp.body', [
   ]},
   { when: { scrutinyTierId: 3 }, weight: 3, text: [
     `You are under formal investigation by the Office of Academic Integrity and Student Welfare. Public events involving your enrolled cohort are suspended pending outcome. The institution is no longer looking the other way.`,
-    `"A full investigative inquiry has been opened. You are advised not to alter the conditions of your class until the review concludes." Everything you have built is in the light now.`,
+    `"A full investigative inquiry has been opened. You are advised not to alter the conditions of your hall until the review concludes." Everything you have built is in the light now.`,
     `The letter is three pages. The first is procedure. The second is a list of incidents they've already documented. The third is a timeline. They've been watching longer than you realized.`,
   ]},
 ]);

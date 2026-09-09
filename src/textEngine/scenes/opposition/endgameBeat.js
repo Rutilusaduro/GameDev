@@ -12,11 +12,11 @@ registerPool('opposition.endgame.capture', [
 ]);
 
 registerPool('opposition.endgame.banished', [
-  { when: {}, text: 'The hollow act exhausts itself. Scarcity pressure hits zero — famine lifts, curses thin, abundance returns to the class.' },
+  { when: {}, text: 'The hollow act exhausts itself. Scarcity pressure hits zero — famine lifts, curses thin, abundance returns to the hall.' },
 ]);
 
 registerPool('opposition.endgame.allThin', [
-  { when: {}, text: 'Every evolved student wears her thin skin. Memory mass glows beneath — the class is luminous, hungry, and unafraid.' },
+  { when: {}, text: 'Every evolved student wears her thin skin. Memory mass glows beneath — the hall is luminous, hungry, and unafraid.' },
 ]);
 
 registerPool('opposition.endgame.vance', [

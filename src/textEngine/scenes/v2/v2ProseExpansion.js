@@ -160,7 +160,7 @@ registerPool('campus.v2.depth', [
   ]},
   { when: {}, text: [
     'Class ends but appetite does not. The hallway smells like lunch.',
-    'Ordinary campus hour — except her hunger is louder than the lecture.',
+    'Ordinary campus hour — except her hunger is louder than the floor meeting.',
     'Lockers slam. Vending machines hum. Somewhere a girl is already eating.',
     'Campus routine — except her body remembers every meal between classes.',
   ]},
@@ -617,7 +617,7 @@ registerPool('wifeLessonsTalk.v2.depth', [
 registerPool('homeroom.v2.depth', [
   { when: {}, text: [
     "Daisy's classroom hums with institutional warmth — cookies, curriculum, and calculated indulgence.",
-    'Tuesday theology: feed the class, charm the parents, grow the suspicion meter one tray at a time.',
+    'Tuesday theology: feed the hall, charm the parents, grow the suspicion meter one tray at a time.',
     'The homeroom queen holds court — soft power measured in butter and bake-sale diplomacy.',
   ]},
 ]);

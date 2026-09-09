@@ -60,6 +60,6 @@ registerModuleVariants('homeroom.activity.health_unit.p1.weigh_moms', [
 
 registerModuleVariants('homeroom.activity.health_unit.p1.decline', [
   { when: {}, text: [
-    `"This one's just for the class," Daisy says. Mrs. Monroe nods, unbothered — she does not need a number to know.`,
+    `"This one's just for the hall," Daisy says. Mrs. Monroe nods, unbothered — she does not need a number to know.`,
   ]},
 ]);

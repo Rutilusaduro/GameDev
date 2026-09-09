@@ -10,8 +10,8 @@ registerModuleVariants('word.moveVerb.cafeteria', [{ when: { stage: [11] }, weig
 registerModuleVariants('word.moveVerb.stairwell', [{ when: { stageMin: 0, stageMax: 5 }, weight: 1, text: ["moved","went","continued"] }]);
 registerModuleVariants('word.moveVerb.stairwell', [{ when: { stageMin: 10, stageMax: 11 }, weight: 1, text: ["moved","went","continued"] }]);
 registerModuleVariants('word.moveVerb.elevator', [{ when: { stageMin: 0, stageMax: 6 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.lecture_hall', [{ when: { stageMin: 0, stageMax: 3 }, weight: 1, text: ["moved","went","continued"] }]);
-registerModuleVariants('word.moveVerb.lecture_hall', [{ when: { stageMin: 10, stageMax: 11 }, weight: 1, text: ["moved","went","continued"] }]);
+registerModuleVariants('word.moveVerb.floor meeting_hall', [{ when: { stageMin: 0, stageMax: 3 }, weight: 1, text: ["moved","went","continued"] }]);
+registerModuleVariants('word.moveVerb.floor meeting_hall', [{ when: { stageMin: 10, stageMax: 11 }, weight: 1, text: ["moved","went","continued"] }]);
 registerModuleVariants('word.moveVerb.gym', [{ when: { stageMin: 0, stageMax: 2 }, weight: 1, text: ["moved","went","continued"] }]);
 registerModuleVariants('word.moveVerb.gym', [{ when: { stageMin: 8, stageMax: 11 }, weight: 1, text: ["moved","went","continued"] }]);
 registerModuleVariants('word.moveVerb.dorm_room', [{ when: { stageMin: 0, stageMax: 4 }, weight: 1, text: ["moved","went","continued"] }]);

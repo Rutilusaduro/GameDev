@@ -105,7 +105,7 @@ registerPool('weekly.viralPost.reaction', [
 
 registerPool('weekly.viralPost.line', [
   { when: { archetype: 'influencer' }, text: [
-    'She shows you in class, glowing. "Two. Million." She tilts the phone to show you the view count. Her old jeans are somewhere around her thighs in the thumbnail. "I think this is my era," she says.',
+    'She shows you on the floor, glowing. "Two. Million." She tilts the phone to show you the view count. Her old jeans are somewhere around her thighs in the thumbnail. "I think this is my era," she says.',
     '"This is my era," she says, still glowing. The thumbnail makes the old jeans look optimistic.',
     '"No filter," she murmurs. "Just me." The view count disagrees with modesty.',
   ] },
@@ -133,7 +133,7 @@ registerPool('weekly.thesisRewrite.submit', [
     '{subject.name} submits a revised academic outline.',
     'A new outline from {subject.name} lands in your inbox.',
     '{subject.name} revises her proposal and sends it over.',
-    'Her revised outline shows up before office hours.',
+    'Her revised outline shows up before desk hours.',
   ] },
 ]);
 
@@ -240,7 +240,7 @@ registerPool('weekly.interventionFails.turn', [
   { when: {}, text: [
     'It becomes a group dinner instead.',
     'The talk turns into menus.',
-    'Food arrives and the lecture loses.',
+    'Food arrives and the floor meeting loses.',
     'Someone orders apps and the mission collapses.',
   ] },
 ]);
@@ -252,7 +252,7 @@ registerPool('weekly.interventionFails.payoff', [
     'The sisters leave with to-go boxes and new opinions. {subject.name} texts you a photo of empty appetizer plates: "Mission failed successfully."',
   ] },
   { when: {}, text: [
-    'The lecture dissolves into shared plates. {subject.name} eats more than anyone and looks entirely unrepentant.',
+    'The floor meeting dissolves into shared plates. {subject.name} eats more than anyone and looks entirely unrepentant.',
     'Someone proposes a toast to "honest appetites." {subject.name} raises her glass first.',
     'By the time coffee arrives, nobody remembers why they gathered — only that {subject.name} ordered for the table.',
     'Nobody leaves hungry. Nobody leaves convinced she should stop.',
@@ -548,7 +548,7 @@ registerPool('weekly.blobEnding.setup', [
   { when: {}, text: [
     '{subject.name} holds court from her room now.',
     'You teach where she is.',
-    'Her room has become the lecture hall.',
+    'Her room has become the floor meeting hall.',
     'Campus comes to her now.',
   ] },
 ]);

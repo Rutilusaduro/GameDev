@@ -131,7 +131,7 @@ registerPoolAutoDecompose('opposition.hearing.emergency.phase1', [
   { when: {}, text: [
     'The room waits. Accreditation observer takes notes. Every counter has a cost.',
     'Second round — reputations weighed like bodies. The observer\'s pen never stops.',
-    'Vance offers no path that does not cost you something. Choose what the class can afford.',
+    'Vance offers no path that does not cost you something. Choose what the hall can afford.',
   ]},
 ]);
 
@@ -195,7 +195,7 @@ registerPoolAutoDecompose('opposition.hearing.emergency.ending.scapegoat_survive
   { when: {}, text: [
     'A member falls. You survive. The meter cools — not clean, but quieter.',
     'Sacrifice accepted. You remain standing while scandal finds another target.',
-    'Someone else pays. You walk out with the class intact.',
+    'Someone else pays. You walk out with the hall intact.',
   ]},
 ]);
 
@@ -229,7 +229,7 @@ registerPoolAutoDecompose('opposition.hearing.open', [
 
 registerPoolAutoDecompose('opposition.hearing.verdict', [
   { when: { outcome: 'win' }, text: [
-    'Vance closes the folder without a signature. For now, the class remains yours.',
+    'Vance closes the folder without a signature. For now, the hall remains yours.',
     'Removal denied. The gavel never lands where she wanted.',
   ]},
   { when: { outcome: 'loss' }, text: [

@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // ROSTER UNLOCK — passive trust, seat slots, late-game catch-up
 // ═══════════════════════════════════════════════════════════════
-import { UNLOCK_POOL_IDS } from './spirits.js';
+import { UNLOCK_POOL_IDS } from './dorms.js';
 
 export const ROSTER_TRUST_GATE = 60;
 export const ROSTER_START_SLOTS = 5;

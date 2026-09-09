@@ -2,8 +2,8 @@ export const IMMOBILE_REDIRECT = {
   0:{ // Brittany — cheerleader
     blob:      "You reach for your keys, then stop. Brittany hasn't left her room in weeks — her thighs press the arms of her reinforced chair, her belly rests warm and settled in her lap, and a restaurant is somewhere between impossible and absurd. She knows you're thinking about dinner. She's already thinking about what you should bring.",
   },
-  1:{ // Madeline — bookworm
-    blob:      "Madeline documented this, actually. Three weeks ago. She noted, with clinical precision, that she had reached a size where transit to public venues was no longer practical and proposed that you come to her instead. The proposal was filed, annotated, and left on the desk she can barely reach over her belly.",
+  1:{ // Cassidy — swimmer
+    blob:      "Cassidy logged this in her training journal — transit to a restaurant costs more calories than she's willing to spend. Her thighs press the arms of her reinforced chair, her belly rests warm in her lap, and she's already texted you her order.",
   },
   2:{ // Kylie — influencer
     blob:      "Going to a restaurant would mean cameras, questions, and the walk from car to table that Kylie physically can't make anymore. She solved this a long time ago: everything comes to her. The cameras come to her, the food comes to her, and so do you.",
@@ -53,11 +53,11 @@ export const TAP_OUT_DIALOGUE = {
     (s) => `${s.name} exhales slowly, settling back into the cushions like someone surrendering a war they picked themselves. "Okay. Done. I'm done." She presses her belly with both hands to confirm the obvious. "That's a record and I'm claiming it and also I need to not move for a while."`,
     (s) => `${s.name} holds up one hand — flat, authoritative, squad-captain energy even now. "I'm calling it." Her enormous belly rises and falls with careful breaths. "I know exactly what I'm doing and what I'm doing right now is stopping, and that is a choice, not a defeat." A beat. "I'm going to need to lie down."`,
   ],
-  1: [  // Madeline
-    (s) => `${s.name} sets down her fork with precise, deliberate care. "I need to note that I have reached an empirically verifiable limit." She presses her fingers against the tight round swell of her belly. "This is data. I am logging it. The session is over."`,
-    (s) => `${s.name} folds her hands on the table in a way that says she is being very professional about this. "My capacity has been exceeded by a statistically significant margin." She breathes carefully. "I'm calling the session. I want it on record that I held out considerably longer than I anticipated."`,
-    (s) => `${s.name} looks at her belly with the expression she reserves for a very compelling dataset. "I've exceeded my own documented baseline by approximately — " she pauses to calculate, which is impressive given the circumstances " — a lot." She exhales. "Stopping now. The numbers are extraordinary. I'm going to lie very still and think about them."`,
-    (s) => `${s.name} closes her eyes briefly. "The threshold has been passed. Considerably." She rests both hands on her massive, taut belly with scholarly calm. "I want to note that this outcome represents a personal record and I intend to write a very thorough summary." She opens her eyes. "After I stop moving. Which is now."`,
+  1: [  // Cassidy
+    (s) => `${s.name} sets down her fork and checks her watch out of habit — old lane-timing reflex. "I'm at capacity. Logging it." She presses her palm to the tight round swell of her belly. "Session over. Good data."`,
+    (s) => `${s.name} breathes through her nose, athlete-steady. "I'm tapping out." Her hands stay on her stomach. "I know my wall. This is it." She leans back carefully. "Solid practice though."`,
+    (s) => `${s.name} looks at her belly like a split time she didn't expect. "That's past my target intake for tonight." She exhales. "Stopping. Coach doesn't need to see me miserable."`,
+    (s) => `${s.name} holds up one hand — captain's stop signal. "Calling it." Her belly rises and falls. "I'm done eating. Not done being proud of it."`,
   ],
   2: [  // Kylie
     (s) => `${s.name} puts down her fork and immediately reaches for her phone — then stops, because actually she cannot hold the phone at that angle right now, her stomach is in the way. "Okay. Tapping out." She sounds more surprised than anything. "That's actually — that's a lot of content in there. I need a minute."`,
@@ -187,7 +187,7 @@ export const BLOB_PRIVATE_INTRO = {
 
 export const INIT_STUDENTS = [
   { id:0,  name:"Brittany", archetype:"cheerleader",  role:"Cheer Captain",       age:19, bodyType:"pear",      lbs:118, startLbs:118, desc:"Squad captain, tight ponytail, commands the room with a look.",         favFood:"protein shakes", hobby:"cheerleading",  personality:"commanding",  relationship:20, triggeredEvents:[], mood:"happy", brittanyUniformStrained: false },
-  { id:1,  name:"Madeline", archetype:"bookworm",     role:"Sociology PhD",       age:20, bodyType:"straight",  lbs:125, startLbs:125, desc:"Lanky, cardigans, glasses perpetually sliding.",                       favFood:"granola bars",   hobby:"research",      personality:"analytical",  relationship:20, triggeredEvents:[], mood:"focused" },
+  { id:1,  name:"Cassidy",  archetype:"swimmer",      role:"Varsity Swimmer",     age:20, bodyType:"athletic",  lbs:138, startLbs:138, desc:"Broad shoulders, freckles, hair always half-damp from morning laps. She tracks splits and servings with the same spreadsheet.", favFood:"carb bowls",     hobby:"swimming",      personality:"driven",      relationship:20, triggeredEvents:[], mood:"focused" },
   { id:2,  name:"Kylie",    archetype:"influencer",   role:"Content Creator",      age:18, bodyType:"hourglass", lbs:122, startLbs:122, desc:"Perfectly contoured, phone always raised, brand in every gesture.",     favFood:"acai bowls",     hobby:"content",       personality:"confident",   relationship:20, triggeredEvents:[], mood:"excited", kyliePrivateMoment: false },
   { id:3,  name:"Serena",   archetype:"athlete",      role:"Track Sprinter",       age:21, bodyType:"athletic",  lbs:145, startLbs:145, desc:"Compact and muscled, always in compression gear, restless energy.",     favFood:"pasta",          hobby:"track",         personality:"competitive", relationship:20, triggeredEvents:[], mood:"focused" },
   { id:4,  name:"Fiona",    archetype:"artsy",        role:"Fine Art Major",       age:22, bodyType:"straight",  lbs:115, startLbs:115, desc:"Flowy linen, paint under nails, mismatched earrings.",                 favFood:"cheese boards",  hobby:"painting",      personality:"dreamy",      relationship:20, triggeredEvents:[], mood:"content", fionaSelfPhotographed: false },
