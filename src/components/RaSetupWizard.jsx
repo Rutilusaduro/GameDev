@@ -44,7 +44,7 @@ export function RaSetupWizard({ students, onComplete }) {
   );
 
   const stepIndex = step === 'intro' ? 0 : step === 'approach' ? 1 : step === 'dorm' ? 2 : 3;
-  const steps = ['Intro', 'Style', 'Hall', 'Suitemate'];
+  const steps = ['Intro', 'Style', 'Hall', 'Resident'];
 
   return (
     <div className="ra-setup-shell" style={{ ...C.app, alignItems: 'center', justifyContent: 'center', padding: 20, minHeight: '100vh' }}>
@@ -58,7 +58,7 @@ export function RaSetupWizard({ students, onComplete }) {
             Hall Pass
           </h1>
           <div style={{ color: '#a89098', fontSize: 13 }}>Your floor. Your rules. Their appetites.</div>
-          {step !== 'suitemate' && (
+          {step !== 'resident' && (
             <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 16 }}>
               {steps.slice(0, 3).map((label, i) => (
                 <div key={label} className="ra-setup-step-dot" title={label} data-active={i <= stepIndex ? 'true' : 'false'} style={{
@@ -169,19 +169,19 @@ export function RaSetupWizard({ students, onComplete }) {
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }}>
               <button onClick={clickSound(() => setStep('approach'))} style={{ ...C.smBtn, padding: '9px 18px' }}>← Back</button>
-              <button className="ra-setup-primary-btn" disabled={!dorm} onClick={clickSound(() => setStep('suitemate'))}
+              <button className="ra-setup-primary-btn" disabled={!dorm} onClick={clickSound(() => setStep('resident'))}
                 style={{ ...C.btn(accent), opacity: dorm ? 1 : 0.4, fontSize: 14, padding: '11px 30px' }}>
-                Add a suitemate →
+                Add a fifth resident →
               </button>
             </div>
           </div>
         )}
 
-        {step === 'suitemate' && approach && dorm && (
-          <div key="suitemate" className="hall-pass-view-in">
+        {step === 'resident' && approach && dorm && (
+          <div key="resident" className="hall-pass-view-in">
           <CustomStudentWizard
             accent={accent}
-            title="Your Fifth Suitemate"
+            title="Your Fifth Resident"
             subtitle="Every hall has a wildcard — build the resident who rounds out your floor."
             backLabel="← Pick another hall"
             onBack={() => setStep('dorm')}

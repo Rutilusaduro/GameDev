@@ -7800,7 +7800,7 @@ export default function HallPass(){
   const views=["roster","actions","achievements","log"];
   if(sel) views.splice(1,0,"student");
 
-  // ── OPENING: RA INTRO → APPROACH → HALL → SUITEMATE ──────────────
+  // ── OPENING: RA INTRO → APPROACH → HALL → FIFTH RESIDENT ─────────
   if(!raProfile){
     return <RaSetupWizard students={students} onComplete={startAsRA} />;
   }

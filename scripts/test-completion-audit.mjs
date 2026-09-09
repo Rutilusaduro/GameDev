@@ -38,6 +38,9 @@ check('ra-setup-wizard', () => {
   assert.match(src, /Red hair/i, 'RA intro must mention red hair');
   assert.match(src, /curves/i, 'RA intro must mention curvy build');
   assert.match(src, /RESIDENCE LIFE SIMULATOR/i);
+  assert.match(src, /Your Fifth Resident/i);
+  assert.match(src, /Add a fifth resident/);
+  assert.doesNotMatch(src, /suitemate/i);
 });
 
 check('ra-profile-appearance', () => {

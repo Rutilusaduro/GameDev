@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-/** Complete intro → approach → dorm → suitemate → RA desk. */
+/** Complete intro → approach → dorm → fifth resident → RA desk. */
 export async function completeRaSetup(page, {
   approach = 'The Instigator',
   dorm = 'Victory Hall',
@@ -14,7 +14,7 @@ export async function completeRaSetup(page, {
   await page.getByRole('button', { name: new RegExp(approach) }).click();
   await page.getByRole('button', { name: 'Choose your hall →' }).click();
   await page.getByRole('button', { name: new RegExp(dorm) }).click();
-  await page.getByRole('button', { name: 'Add a suitemate →' }).click();
+  await page.getByRole('button', { name: 'Add a fifth resident →' }).click();
 
   for (let i = 0; i < 4; i += 1) {
     await page.getByRole('button', { name: 'Next →' }).click();

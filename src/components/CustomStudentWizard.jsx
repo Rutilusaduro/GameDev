@@ -63,7 +63,7 @@ export function CustomStudentWizard({
   return (
     <>
       <div style={{ fontSize: 10, letterSpacing: 3, color: accent, textTransform: 'uppercase', marginBottom: 4, textAlign: 'center' }}>
-        {wizardTitle || 'Suitemate'} · {step + 1}/5
+        {wizardTitle || 'Resident'} · {step + 1}/5
       </div>
       {subtitle && (
         <div style={{ color: '#8a7880', fontSize: 12, textAlign: 'center', marginBottom: 12 }}>{subtitle}</div>

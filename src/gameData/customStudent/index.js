@@ -145,7 +145,7 @@ export function createCustomStudent(draft = {}, baseStudent = {}) {
     bodyType: draft.bodyType || 'straight',
     lbs: weight.lbs,
     startLbs: weight.lbs,
-    desc: 'Built at the suitemate: hoodie under a lab coat, eyes that measure everything, appetite treated like a system under test.',
+    desc: 'Built on your hall: hoodie under a lab coat, eyes that measure everything, appetite treated like a system under test.',
     favFood: 'meal replacement paste',
     hobby: 'prototyping',
     personality: 'clinical',
