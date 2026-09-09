@@ -136,6 +136,7 @@ const REQUIRED_E2E = [
   'e2e/setup-wizard.spec.js',
   'e2e/semester-wk4.spec.js',
   'e2e/semester-wk5.spec.js',
+  'e2e/semester-wk10.spec.js',
   'e2e/semester-wk12.spec.js',
   'e2e/semester-wk8-all-halls.spec.js',
   'e2e/semester-wk16-all-halls.spec.js',
@@ -807,6 +808,8 @@ check('psych-researcher-resident-framing', () => {
   assert.doesNotMatch(content, /subjects worth observing|My subject observations|The subjects feel more knowable/i);
   assert.match(diary, /diary\.psych_researcher/);
   assert.doesNotMatch(diary, /The subject was uncertain|My subject told me|First subject session|The subject is growing on schedule/i);
+  assert.match(evolved, /Continue Hall Log Session/);
+  assert.doesNotMatch(evolved, /Continue Research Session/);
 });
 
 check('fiona-artsy-model-framing', () => {
