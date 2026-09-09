@@ -1076,86 +1076,138 @@ I had her positioned right against me so our enormous bodies could press togethe
 I’ve officially started my private hall log on appetite dynamics, and I’ve chosen Priya as my subject. She’s the ultimate overachiever — always buried in planners, leading study groups, chasing every hall honor, and stressing about her hall standing and future ambitions. Her body is so straight and flat: narrow shoulders, almost no chest, slim hips, and very little curve anywhere. She dresses conservatively in simple blouses and slacks, looking neat and professional. There’s something deeply arousing about picking a girl like her. I want to see how her driven, perfectionist mind reacts when her flat, disciplined body starts to soften and swell. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her straight figure widen and press against mine.
 
 — Nadia`,
-      `[placeholder: Nadia intro — why she chose the overachiever as her subject (Enormous/Colossal)]`,
-      `[placeholder: Nadia intro — why she chose the overachiever as her subject (Blob)]`,
+      `Dear Journal,
+
+I'm launching my private hall log on appetite dynamics, and I've chosen Priya as the subject. She's the ultimate overachiever — triple-major, color-coded planners, hall honors taped to her corkboard, always calculating her next deadline while thanking me for "resident wellness initiatives." Her body is so straight and flat: narrow shoulders, almost no chest, slim hips, and very little curve anywhere. It bothers me how untouched she is. A figure like hers shouldn't stay that disciplined forever. My own colossal frame spreads heavily across the bed as I write this, rolls upon rolls everywhere, belly hanging in thick layers. I'm already obsessed with the idea of transforming her. This log is the perfect excuse to watch that flat, driven resident soften and swell until she's heavy and jiggly against my massive body. I can't wait to feel her straight figure widen and press against mine. I need her softer. I need her fatter. It's only right.
+
+— Nadia`,
+      `Dear Journal,
+
+I'm beginning my official hall observation log on appetite dynamics with Priya as the subject. She's the triple-major overachiever who runs every study group and still finds time to apologize for being "only" top three on the hall board — her body just as straight and flat as her routine, narrow shoulders, almost no chest, slim hips, and very little curve anywhere. It feels wrong how composed she is. This log is mostly a front now. I already know everything about appetite through my own body — an immobile, overflowing blob of fat that spreads across my reinforced bed in every direction, rolls cascading endlessly, my belly so vast it completely pins me down. Growing any more myself is nearly impossible, so I'll live through her. I'm going to turn this flat, perfectionist resident into something heavy, sagging, and enormous until her fat can slap and press against mine. I can't wait to feel every inch of her vast softness replace the girl who used to fit in my arms without effort.
+
+— Nadia`,
     ],
     entries: [
       [
         `Priya came over tonight still so flat and straight-figured. Her narrow frame looked almost fragile under her button-up blouse. I kept the feeding gentle but consistent with pasta, vegetables in cream sauce, and rich cheesecake. By the end her stomach had a tight rounded bulge.
 
 When I hugged her goodbye, my heavy soft gut squished firmly into her flat middle. The contrast felt electric. I pressed my massive tits against her nearly flat chest, smothering her slightly as I held her close. She stiffened at first but then relaxed a little, probably calculating how this fit into her schedule. Feeling how little there is of her right now only makes me excited for what’s coming. I want to bury myself in her as she grows.`,
-        `[placeholder: Nadia's notes — overachiever subject at Slight — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — overachiever subject at Slight — Nadia at Blob]`,
+        `Priya came over tonight still so flat and straight-figured under her button-up blouse. That narrow frame and disciplined posture actually irritated me. She should already be softer. I fed her aggressively, forcing plate after plate of pasta, cream vegetables, cheesecake, and shakes down until her belly was painfully bloated and she was squirming in her chair, still trying to take notes between bites.
+
+Afterwards I dragged her against my colossal body. My enormous belly completely swallowed her flat middle, heavy fat rolling over and smothering her while I held her tight. I shoved her face deep between my massive tits and kept her there as I rubbed her overstuffed stomach in slow possessive circles. The contrast between my huge sagging body and her still-flat one only fueled my hunger. She needs to grow much faster. I whispered how much better she'll feel once there's real softness to her. I'm already soaked thinking about it.`,
+        `Priya visited tonight still so flat and straight-figured in her neat blouse and slacks. Her narrow shoulders and almost nonexistent curves annoyed me. She needs softness so badly. I fed her heavily from my bed, making her eat huge portions of pasta, cream sauce, cheesecake, and shakes until her belly was painfully swollen and she could barely sit up, planner forgotten on the nightstand.
+
+I had her climb onto the bed and sink into my enormous blob. My vast belly rose like a mountain as I pulled her close, letting her slim frame disappear into my warm heavy fat. I buried her face deep between my gigantic pillowy tits, smothering her while I rubbed her bloated stomach with what little movement I have. Feeling how small and flat she still is against me only makes my hunger stronger. She needs to grow much bigger. I whispered how good it will feel when there's so much more of her pressing and slapping against my body. I'm experiencing this all through her now.`,
       ],
       [
         `Priya returned today. Her stomach stays fuller longer after our sessions, and her narrow frame looks a little softer afterward.
 
 After feeding her extra helpings until she was full, I pulled her into a long hug. My fat belly molded heavily over her flat one, warm and possessive. I buried my face against her chest, even though it’s still small, and breathed her in while rubbing her back. She smelled like coffee and highlighters. I whispered how good she was doing for the hall log. The thought of her straight, overachiever body slowly widening and softening against my heavy one is already getting me wet. There’s something delicious about watching her lose control.`,
-        `[placeholder: Nadia's notes — overachiever subject at Slim — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — overachiever subject at Slim — Nadia at Blob]`,
+        `Priya's starting to show the first real changes. Her stomach stays rounded and full longer after our sessions, and her narrow frame looks a little softer when she leaves. That straight overachiever composure is beginning to crack at the edges. I kept her here much longer tonight, not wanting to let her return to her study group.
+
+I laid her on top of me so our bodies could press together properly. My huge gut molded heavily over hers, warm and possessive, completely dominating her smaller middle while I ran my hands over her. I buried my face between her chest, feeling how much warmer she already was as she pillowed against my cheeks. I groped her thighs and sides, squeezing the new softness there, making her whimper about her reading list. She feels so good already but it's not enough. I whispered how much better she'll look when she's truly heavy and soft like me. My obsession is only growing stronger with every session.`,
+        `Priya's stomach stays rounded and full for hours after feeding, and her straight figure has started to soften at the waist. That disciplined resident tightness is finally fading.
+
+I kept her with me longer tonight. I made her lie on top of my massive blob, her body sinking into the endless sea of my fat. Our bellies pressed together — hers newly plush, mine an overwhelming heavy mass that enveloped her completely. I held her head down between my enormous tits, surrounding her face in warm, sweaty cleavage while I groped her thickening thighs and sides. She whimpered softly against me, muttering about falling behind on assignments. The contrast feels so good, but I need so much more. My own body is too huge to grow easily anymore, so every new pound on her is mine too. I'm getting wet just imagining how incredible she'll feel when there's so much more of her.`,
       ],
       [
         `Priya is starting to soften. Her previously flat stomach now has a noticeable plushness when full, and her thighs touch slightly when she walks.
 
 I had her sit on my lap tonight. My thick heavy gut rested right on top of her softer middle, squishing and spreading over her. I wrapped my arms around her narrow frame and buried my face between her growing breasts, feeling the new warmth. She trembled a little but stayed focused, probably thinking about her next assignment. I rubbed her belly in slow circles while telling her how interesting her reactions are. Having her straight, disciplined body starting to yield against my fat feels incredible. I’m getting addicted.`,
-        `[placeholder: Nadia's notes — overachiever subject at Soft — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — overachiever subject at Soft — Nadia at Blob]`,
+        `Priya is filling out so nicely now. Her previously flat stomach has a constant plush roundness even when she's not full, and her thighs brush together when she walks. That straight overachiever figure is finally starting to yield. I had her sit on my lap and kept her there far longer than her schedule allowed.
+
+My thick heavy gut rested right on top of her softer middle, squishing and spreading over her completely. I wrapped my arms around her and buried my face between her growing breasts, feeling them pillow against my cheeks while I rubbed her stuffed belly. She trembled and tried to focus on her planner, but her hands kept drifting to her sides. The way her body is starting to melt against mine is addictive. I love feeling her get heavier, love knowing I'm the one making it happen. I can't stop thinking about how incredible it will feel when she's truly massive and our bodies can properly merge together.`,
+        `Priya's waist has widened slightly, her belly now carries a constant soft roundness, and her thighs touch when she walks. She still tries to act composed, but the overachiever in her is losing the argument.
+
+After stuffing her until she was panting and groaning, I pulled her fully against my blob form. Our bellies squished together perfectly — hers warm and yielding, mine a vast heavy wave that rolled over and smothered her. I buried my face deep into her swelling chest, motorboating and licking the soft flesh while grinding what I could of my lower belly against hers. Every jiggle and quiet sound from her sends shivers through me. I love feeling her expand against my immobile mass. This is what I chose her for — to watch and feel her grow in my place. I told her how proud I am and how much further we're going to take this. My obsession feels endless.`,
       ],
       [
         `Priya’s waist has widened, her belly has a constant soft roundness, and her once-flat chest has grown into modest breasts.
 
 I fed her until she was groaning, then laid her against me on the bed. Our bellies pressed together — hers plush and full, mine heavy and sagging — rolling warmly against each other. I shoved her face gently into my massive cleavage and held her there while I groped her softening sides and thighs. She made quiet, surprised sounds, clearly conflicted about enjoying it. Turning this flat overachiever into something so squeezable is deeply satisfying.`,
-        `[placeholder: Nadia's notes — overachiever subject at Chubby — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — overachiever subject at Chubby — Nadia at Blob]`,
+        `Priya's body has grown so much softer and heavier. Her waist has widened, her belly has a constant plush roundness, and her once-flat chest has grown into modest breasts that rest on her middle. That straight overachiever figure is finally starting to yield and sag in the most delicious ways.
+
+I kept her pressed against me for hours tonight. Our bellies rolled and folded over each other in waves of warm fat, squishing and molding together as I groped every new inch of her. I shoved her face deep into my enormous cleavage and held her there, smothering her in warm fat while I jiggled and rubbed her thickening thighs and soft sides. She made quiet, surprised sounds, clearly conflicted about enjoying it. Her body feels incredible already, but I'm still not satisfied. I need her bigger, softer, heavier. I want her to match my own colossal size so our fat can properly smother and overwhelm each other. Every session leaves me aching for more.`,
+        `Priya's waist has widened, her belly carries a constant soft roundness, and her breasts rest noticeably on her middle. Her resident composure cracks a little more every visit.
+
+I had her spend hours pressed against me on the bed. Our bellies rolled and folded over each other in thick waves of warm fat as I held her as tightly as my limited movement allowed. I shoved her face completely into my gigantic tits, smothering her while I groped her new rolls and heavy thighs. She felt so good sinking into me. I whispered encouragement about how much better she looks this way. Since my own growth is so marginal now, every new curve and pound on her body brings me intense pleasure. I need her to keep swelling until our fat can properly merge and overwhelm each other.`,
       ],
       [
         `Priya has grown much softer. Her figure has widened with a big plush belly, thicker thighs, and breasts that now rest noticeably on her middle.
 
 After feeding I pulled her on top of me. Her belly squashed warmly down onto my heavy gut, fat melding together as I held her close. I buried my face completely in her soft tits, motorboating and licking while squeezing her thickening ass. She gasped and clutched at my rolls, her perfect resident composure cracking. The contrast between the flat, driven girl she was and how jiggly she’s becoming turns me on so much.`,
-        `[placeholder: Nadia's notes — overachiever subject at Plump — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — overachiever subject at Plump — Nadia at Blob]`,
+        `Priya looks properly plump these days. Her figure has widened dramatically with a big soft belly, thick spreading thighs, and breasts that sway and rest on her growing middle. Her blouses strain at the buttons and it makes me wet just looking at her, still trying to discuss hall standing between bites.
+
+I had her climb on top of me after feeding. Her belly squashed down onto my colossal one, warm fat melding and folding together beautifully as I wrapped my thick arms around her wide sides. I buried myself deep in her soft tits, smothering my face in them while I squeezed her fat ass and love handles. Every inch of her jiggles so perfectly now. I kept her like that for a long time, grinding us together and telling her how much better she feels this way. The contrast between the flat, driven girl she was and how jiggly she's becoming turns me on so much. My own massive body might not grow much more, but watching hers expand is becoming my greatest pleasure.`,
+        `Priya's figure has widened dramatically, with a big soft belly, thick spreading thighs, and heavy breasts that sway with every step. Her perfect resident composure is cracking more each session.
+
+I made her climb on top of my enormous blob after feeding. Her belly squashed down onto my vast one, warm fat melding and overflowing together as I wrapped my thick arms around her. I buried myself deep in her massive tits, licking and moaning into them while squeezing her fat ass and sides. The way she jiggles and sinks into me is addictive. I kept her there a long time, telling her how perfect she feels this way. My immobile body limits what I can do, but watching and feeling her expand like this is deeply satisfying. She's growing in my stead and it turns me on more than anything.`,
       ],
       [
         `Priya moves slower these days. Her belly sways when she walks, her thighs rub constantly, and her breasts have grown heavy.
 
 I kept her in bed with me, pressing our bodies together. Our bellies squished and spilled over each other in warm waves of fat. I buried my face deep between her large tits, licking the soft flesh while groping her sagging belly and wide hips. She was breathing hard, muttering about falling behind on assignments. Feeling this much of her soft weight against my own heavy body is heaven.`,
-        `[placeholder: Nadia's notes — overachiever subject at Heavy — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — overachiever subject at Heavy — Nadia at Blob]`,
+        `Priya is getting heavy now. She moves slower, her entire body rippling and swaying, belly hanging lower and thighs spreading wide when she sits. The flat overachiever I started with is almost gone and I love it.
+
+Tonight I pulled her fully against me on the bed. Our heavy bellies collided and spilled over each other in thick waves of soft fat, squishing and rolling together as I held her close. I shoved her face deep into my own enormous tits while I groped and jiggled her sagging belly and thick sides. She was breathing hard, muttering about falling behind on assignments. Feeling how much heavier she's becoming against my colossal body is pure bliss. I whispered dirty encouragement in her ear about how good she looks getting fatter for me. I'm completely obsessed at this point. I need her even bigger so our bodies can truly melt into one another.`,
+        `Priya moves much slower now, her whole body rippling and swaying, belly hanging lower with every visit. She still tries to talk about grades, which only makes it hotter.
+
+Tonight I pulled her as close as possible against my blob form. Our heavy bellies collided and spilled over each other in soft, warm waves, squishing and molding together. I buried my face between her large tits, licking the sweaty fat while I groped her thickening rolls. Feeling how much more there is of her against my immense size is pure bliss. I encouraged her to keep eating more, to let herself go completely. Since I can barely grow anymore, her expansion has become my main source of pleasure. I need her belly to hang and fold like mine so we can truly smother each other.`,
       ],
       [
         `Priya’s body has grown so fat and lush. She has rolls on her sides, a heavy hanging belly, and breasts that rest on top of her gut.
 
 I had her lie beside me so I could roll partially over her. Our big fat bellies engulfed each other, warm and heavy. I smothered my face in her gigantic tits and rubbed my thick thighs against hers. She moaned softly into my cleavage. The once-flat, straight overachiever is almost completely gone, replaced by beautiful softness, and I love every second of it.`,
-        `[placeholder: Nadia's notes — overachiever subject at Fat — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — overachiever subject at Fat — Nadia at Blob]`,
+        `Priya's body has grown so fat and lush. Rolls are forming on her sides, her belly hangs heavily, and her breasts are massive and resting on top of her gut. She waddles more than walks now and the sight makes me throb with need.
+
+I kept her in bed with me for hours, pressing our bodies as close as possible. Her big fat belly squished wonderfully under my colossal one, folding and overflowing as we shifted together. I buried my face between her gigantic sweaty tits and stayed there, licking and sucking while our bellies ground and molded against each other. The warmth and heaviness of her growing body feels amazing. I can't get enough of how she jiggles and spills over me now. The once-flat, straight overachiever is almost completely gone, replaced by beautiful softness, and I love every second of it.`,
+        `Priya has rolls forming on her sides, her belly hangs heavily, and her breasts rest on top of her gut. She waddles more than walks and the sight makes me throb.
+
+I kept her in bed with me for ages, pressing our bodies together. Her big fat belly squished wonderfully under my colossal mass, folding and overflowing as we shifted. I buried my face deep into her gigantic sweaty tits and stayed there, licking and sucking while our bellies ground together. The warmth and heaviness of her body feels incredible against my own. I moaned into her cleavage about how good she looks this soft. This is exactly why I picked her — to live through her gains while I remain like this.`,
       ],
       [
         `Priya is very fat now. She waddles, everything on her jiggles heavily, and she moves slower now.
 
 After feeding her until she was stuffed I pulled her close for hours. Our massive bellies squished and folded together as I held her. I buried myself face-first in her enormous sweaty tits, licking while grinding our lower bodies. The way her fat spills and rolls against me drives me crazy. She still tries to talk about her grades, which makes it even hotter.`,
-        `[placeholder: Nadia's notes — overachiever subject at Very Fat — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — overachiever subject at Very Fat — Nadia at Blob]`,
+        `Priya is very fat and it shows in every movement. She waddles heavily, everything on her jiggles and sways, her belly and breasts bouncing with each step. I can barely contain my excitement when she arrives, still clutching her planner like it might save her.
+
+After feeding her until she was completely stuffed I had her lie beside me so I could roll partially over her. Our massive bellies engulfed each other, heavy and warm, fat spilling everywhere as I pressed down. I smothered my face in her enormous tits and rubbed my thick thighs against her spreading ones, grinding us together. The way her body yields and folds under mine is driving me crazy. She still tries to talk about her grades, which makes it even hotter. I told her how proud I am of how fat she's getting and how much further I want to take her. My obsession has completely taken over at this point.`,
+        `Priya waddles heavily now, every part of her jiggling and swaying with each movement. She still mutters about hall standing between moans.
+
+After feeding her until she was stuffed I had her lie right beside me. I rolled what I could of my blob body over her, our massive bellies engulfing each other in heavy warm fat. I smothered my face in her enormous tits and rubbed against her spreading thighs, grinding as best I could. The way her fat spills and rolls against me drives me crazy with lust. I told her how proud I am and how much bigger I still want her. My vicarious hunger has completely taken over.`,
       ],
       [
         `Priya looks enormous. Her body is covered in heavy rolls and sagging fat. She barely fits in her old professional clothes anymore.
 
 I made her press on top of me. Her enormous belly smothered mine in soft heavy warmth while I wrapped my arms around her. I buried my face deep between her gigantic breasts, moaning into them as our fat rolled and squished together. She felt so good covering me. I’m completely lost in how massive she’s becoming.`,
-        `[placeholder: Nadia's notes — overachiever subject at Enormous — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — overachiever subject at Enormous — Nadia at Blob]`,
+        `Priya looks enormous now. Her body is a landscape of heavy rolls and sagging fat. She barely fits in her old professional clothes anymore and has to move carefully, which only turns me on more.
+
+I made her press fully on top of me tonight. Her enormous belly completely smothered mine in soft heavy warmth while I wrapped my arms around her wide, roll-covered sides. I buried my face deep between her gigantic breasts, moaning loudly into them as our fat rolled and squished together in waves. The sheer size of her now feels incredible against my own colossal body. I held her there for ages, groping and squeezing every part of her, lost in the sensation. This is what I needed — her growing massive while I get to experience it all through her.`,
+        `Priya's body is covered in heavy rolls and sagging fat. She barely fits comfortably anywhere anymore, her old blouses abandoned in a heap by the door.
+
+I had her press fully on top of my blob form. Her enormous belly smothered mine in soft heavy warmth while I wrapped my arms around her wide sides. I buried my face deep between her gigantic breasts, moaning into them as our fat rolled and squished together. The sheer size of her now feels overwhelming and perfect. I held her there, groping every roll, lost in the sensation of her growth. This is what I needed — her becoming massive while I experience it all through her body.`,
       ],
       [
         `Priya has grown colossal. She’s a massive, waddling mountain of soft fat with a huge hanging belly and breasts resting heavily on it.
 
 We spent a long time with our bodies pressed together. Our colossal bellies folded and spilled over one another in thick waves. I shoved her face into my massive tits while I groped her immense body, squeezing every roll. The feeling of her size against me is pure bliss. Her old overachiever life feels so far away now.`,
-        `[placeholder: Nadia's notes — overachiever subject at Colossal — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — overachiever subject at Colossal — Nadia at Blob]`,
+        `Priya has grown colossal. She's a massive, waddling mountain of soft fat with a huge hanging belly and breasts that rest heavily on top of it. Every movement sends ripples across her body and I can't stop staring. Her old overachiever life feels so far away now.
+
+We spent hours with our bodies merged together on the bed. Our colossal bellies folded and spilled over one another in thick, heavy waves of fat as we pressed and ground together. I shoved her face into my massive tits while I groped her immense body, squeezing rolls and jiggling her everywhere I could reach. The feeling of how big she's become against me is driving me wild with lust. I whispered how perfect she is like this and how I still want even more. My need to see her swell bigger has become all-consuming.`,
+        `Priya has become a massive waddling mountain of soft fat, belly hanging low and breasts resting heavily on top. The driven resident who used to apologize for being late to study group is gone.
+
+We spent hours merged together. Our colossal bellies folded and spilled over one another in thick waves as we pressed close. I shoved her face into my massive tits while I groped her immense body, squeezing and jiggling every inch. Feeling how big she's become against my own blob is driving me wild. I whispered how perfect she is and how I still crave even more from her. My need to see her swell has become everything.`,
       ],
       [
         `Priya has finally become a true blob — completely immobile, an overflowing sea of soft fat spreading across the bed. She’s enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The flat, straight overachiever I started with is gone, replaced by this perfect helpless mountain of fat.
 
 I had her brought right beside me so our enormous blob bodies could press together completely. Our vast bellies squished and engulfed each other in endless warm heavy waves of fat, rolling and folding as we pushed as close as possible. I buried my face as deep as I could into her gigantic pillowy tits, surrounded by soft sweaty flesh on all sides while our bodies melted against one another. The sensation was overwhelming. I moaned loudly into her cleavage for what felt like hours, groping whatever I could reach, lost in pure ecstasy. This is everything I wanted when I chose her. She grew so beautifully for me.`,
-        `[placeholder: Nadia's notes — overachiever subject at Blob — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — overachiever subject at Blob — Nadia at Blob]`,
+        `Priya has finally become a true blob — completely immobile, an overflowing sea of soft fat spreading across the reinforced bed. She's enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The flat, straight overachiever I started with is long gone, replaced by this perfect, helpless mountain of fat.
+
+I had her positioned right beside me so our enormous blob bodies could melt together completely. Our vast bellies squished and engulfed each other in warm, heavy waves of fat, rolling and folding endlessly as we pressed close. I buried my face as deep as I could into her gigantic, pillowy tits, surrounded by soft sweaty flesh on all sides while our bodies merged into one. The sensation is overwhelming — so much warm, yielding fat pressing and smothering from every direction. I moaned into her cleavage for what felt like hours, groping whatever I could reach, lost in pure bliss. This is everything I wanted when I chose her. I may be stuck like this, but she grew for both of us. She's perfect.`,
+        `Priya has finally become a true blob — completely immobile like me, an overflowing sea of soft fat spreading across the bed beside mine. She's enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The flat, straight overachiever I chose is gone, replaced by this perfect helpless mountain of fat.
+
+I had her positioned right against me so our enormous blob bodies could melt together completely. Our vast bellies squished and engulfed each other in endless warm heavy waves of fat, rolling and folding as we pressed as close as possible. I buried my face as deep as I could into her gigantic pillowy tits, surrounded by soft sweaty flesh on all sides while our bodies merged into one. The sensation was overwhelming — so much warm yielding fat pressing and smothering from every direction. I moaned loudly into her cleavage for what felt like hours, groping whatever I could reach, completely lost in pure ecstasy. This is everything I wanted when I picked her. I may be stuck like this, but she grew for both of us. She's perfect now.`,
       ],
     ],
   },
