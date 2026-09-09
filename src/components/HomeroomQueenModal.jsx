@@ -1,7 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // HOMEROOM QUEEN — Daisy's kitchen-club mini-interface
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../gameData/evolvedForms.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
 import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
@@ -63,7 +65,8 @@ function ParticipantCard({ name, descIdx, npcKey, canAfford, onSelect, accent, d
   );
 }
 
-export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerState, makeHomeroomActivityChoice, advanceHomeroomActivityPhase, dismissHomeroomActivity, openHomeroomConference, startHomeroomGroupActivity, closeHomeroomSession }){
+export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerState, makeHomeroomActivityChoice, advanceHomeroomActivityPhase, dismissHomeroomActivity, openHomeroomConference, startHomeroomGroupActivity, closeHomeroomSession, soundEnabled = true }){
+  useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, homeroomSessionState?.daisyStudentId]);
         const{daisyStudentId,ap:classAp,log,activeActivity,daisyGain,classGainAccum,momGainAccum,suspDeltaAccum}=homeroomSessionState;
         const daisy=students.find(st=>st.id===daisyStudentId);
         if(!daisy) return null;
@@ -92,7 +95,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
           }
           return(
             <div style={{...C.overlay,zIndex:350}}>
-              <div style={{...C.modal,maxWidth:560,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"85vh",overflowY:"auto"}}>
+              <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:560,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"85vh",overflowY:"auto"}}>
                 <SceneBackdrop variant="campus" height={40} />
                 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
                   <div style={{fontSize:9,letterSpacing:3,color:warmDim}}>🍪 DAISY'S HALL KITCHEN</div>
@@ -150,7 +153,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                         style={{...C.btn(warmAccent),textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5}}
                         onClick={()=>makeHomeroomActivityChoice(ch.id)}>
                         <span style={{fontWeight:700}}>{ch.label}</span>
-                        {ch.classGain&&<span style={{color:"#ffdd80",marginLeft:8,fontSize:10}}>+{ch.classGain} class</span>}
+                        {ch.classGain&&<span style={{color:"#ffdd80",marginLeft:8,fontSize:10}}>+{ch.classGain} floor</span>}
                         {ch.momGain&&<span style={{color:"#a0c8ff",marginLeft:4,fontSize:10}}>+{ch.momGain} moms</span>}
                         {ch.lbs&&<span style={{color:"#ffa060",marginLeft:4,fontSize:10}}>+{ch.lbs} lbs</span>}
                       </button>
@@ -170,7 +173,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
 
         return(
           <div style={{...C.overlay,zIndex:350}}>
-            <div style={{...C.modal,maxWidth:640,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"90vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:640,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"90vh",overflowY:"auto"}}>
               {/* Header */}
               <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
                 <div style={{fontSize:9,letterSpacing:4,color:warmAccent}}>🍪 DAISY'S HALL KITCHEN</div>

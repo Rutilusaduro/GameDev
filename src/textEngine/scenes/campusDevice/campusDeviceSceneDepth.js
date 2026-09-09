@@ -53,7 +53,7 @@ registerModuleVariants('campus.dev.vulnerability', [
   { when: { studentId: 9, targetType: 'student' }, weight: W, text: [
     `reading on the grass, scarf loose, pastry crumbs on her chest`,
     `practicing French aloud, wine-colored lips, completely unguarded`,
-    `sunbathing between seminars, bikini strap digging, hunger lazy and real`,
+    `sunbathing between hall rounds, bikini strap digging, hunger lazy and real`,
   ]},
   { when: { studentId: 10, targetType: 'student' }, weight: W, text: [
     `tasting something from the cafeteria line, eyes closed, defenseless`,

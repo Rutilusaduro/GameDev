@@ -64,7 +64,7 @@ export const WL_MOM_DIALOGUE_DEPTH = {
     },
     5: {
       greeting: `"The girls are here with us now — Emma and Claire both, big as house and glowing. Watching them move through your kitchen feels like watching something I started finally finish. They reach for bowls without asking. Their hips brush the counter. I stand back and swell up with it."`,
-      cappedGreeting: `"Four hundred pounds. My daughters are enormous and I couldn't be prouder if they'd won a scholarship. Emma's belly rests on her thighs when she sits. Claire's not far behind. I brought reinforced chairs from home 'just in case.' Nobody needed convincing."`,
+      cappedGreeting: `"Four hundred pounds. My daughters are enormous and I couldn't be prouder if they'd won a trophy. Emma's belly rests on her thighs when she sits. Claire's not far behind. I brought reinforced chairs from home 'just in case.' Nobody needed convincing."`,
       overtookGreeting: `"Chloe's clearly ahead of Emma now. I see it when they stand side by side — the gap's real. I don't measure anymore. Emma's still growing. Claire's still climbing. Chloe looks like she was born for this table. I'm not jealous. I'm taking notes."`,
       options: [
         {

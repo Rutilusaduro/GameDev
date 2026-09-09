@@ -1,6 +1,7 @@
 // B3 — week planner slot board (preview before commit).
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import {
   PLANNER_VENUES,
   WEEK_PLAN_SLOT_COUNT,
@@ -12,7 +13,8 @@ import {
 } from '../gameData/weekPlanner.js';
 import { getStage } from '../gameData/stages.js';
 
-export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClose }) {
+export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClose, soundEnabled = true }) {
+  useEffect(() => { playHallPassSound('click', soundEnabled); }, [soundEnabled, week]);
   const visible = useMemo(
     () => (students || []).filter((s) => !s.hidden && s.lockState !== 'locked'),
     [students],
@@ -30,7 +32,7 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
 
   return (
     <div style={C.overlay}>
-      <div style={{ ...C.modal, maxWidth: 560 }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 560 }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#9050c8', marginBottom: 4 }}>WEEK PLANNER</div>
         <div style={{ fontSize: 15, fontWeight: 700, color: '#c090e8', marginBottom: 4 }}>Week {week} — place your attention</div>
         <div style={{ fontSize: 11, color: '#5a3888', marginBottom: 12 }}>

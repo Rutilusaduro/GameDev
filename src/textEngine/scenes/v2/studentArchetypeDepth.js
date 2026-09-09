@@ -174,7 +174,7 @@ const resonanceByStudent = {
 
 const ritualByStudent = {
   0: ['Brittany treats ritual like team banquet — public appetite, captain\'s pace, collective victory.'],
-  1: ['Cassidy documents the ceremony until she joins it — scholarship dissolving into shared fullness.'],
+  1: ['Cassidy documents the ceremony until she joins it — season notes dissolving into shared fullness.'],
   2: ['Kylie films the ritual — spectacle sacred, hunger staged for an invisible audience.'],
   3: ['Serena eats ritual like endurance sport — disciplined start, triumphant abundance.'],
   4: ['Fiona makes ceremony aesthetic — plates as altars, fullness as finished composition.'],

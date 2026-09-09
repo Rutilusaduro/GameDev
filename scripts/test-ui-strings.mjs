@@ -79,4 +79,8 @@ assert(weighIn.includes('HALL · SCALE'), 'WeighInModal analog scale must say HA
 assert(weighIn.includes('HALL · INDUSTRIAL'), 'WeighInModal digital scale must say HALL · INDUSTRIAL');
 assert(!/PROF · SCALE|PROF · INDUSTRIAL/i.test(weighIn), 'WeighInModal must not say PROF on scale labels');
 
-console.log('ui-strings: setup wizard, nav, views, ranks, dorm hooks, weigh-in OK');
+const homeroom = readFileSync('src/components/HomeroomQueenModal.jsx', 'utf8');
+assert(homeroom.includes('+{ch.classGain} floor'), 'HomeroomQueenModal must label classGain as floor');
+assert(!/\+\{ch\.classGain\} class/.test(homeroom), 'HomeroomQueenModal must not show +N class');
+
+console.log('ui-strings: setup wizard, nav, views, ranks, dorm hooks, weigh-in, homeroom OK');

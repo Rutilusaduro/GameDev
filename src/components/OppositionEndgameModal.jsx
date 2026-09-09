@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { renderOppositionEndgame } from '../textEngine/scenes/opposition/index.js';
 import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
 
@@ -10,7 +12,8 @@ const BEAT_META = {
   vance_compromised: { label: 'CHAIR FOLDS', emoji: '👁', color: '#a05060', slot: 'opposition.endgame.vance' },
 };
 
-export function OppositionEndgameModal({ beat, onDismiss }) {
+export function OppositionEndgameModal({ beat, onDismiss, soundEnabled = true }) {
+  useEffect(() => { playHallPassSound('unlock', soundEnabled); }, [soundEnabled, beat?.id]);
   if (!beat?.id) return null;
   const meta = BEAT_META[beat.id] || { label: 'ENDGAME', emoji: '✦', color: '#8060a0', slot: null };
   const body = meta.slot
@@ -19,7 +22,7 @@ export function OppositionEndgameModal({ beat, onDismiss }) {
 
   return (
     <div style={{ ...C.overlay, zIndex: 8600 }}>
-      <div style={{ ...C.modal, maxWidth: 520, border: `1px solid ${meta.color}60`, background: 'linear-gradient(160deg,#080810,#101828,#080810)' }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 520, border: `1px solid ${meta.color}60`, background: 'linear-gradient(160deg,#080810,#101828,#080810)' }}>
         <SceneBackdrop variant="opposition" />
         <div style={{ fontSize: 10, letterSpacing: 4, color: meta.color, marginBottom: 8 }}>
           {meta.emoji} {meta.label}
@@ -32,7 +35,7 @@ export function OppositionEndgameModal({ beat, onDismiss }) {
             {beat.detail}
           </div>
         )}
-        <button type="button" style={{ ...C.btn(meta.color), width: '100%' }} onClick={onDismiss}>
+        <button type="button" style={{ ...C.btn(meta.color), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onDismiss(); }}>
           Continue →
         </button>
       </div>

@@ -35,6 +35,7 @@ import '../src/textEngine/scenes/earlyGain/personas.js';
 import { renderWeighInIntro, renderWeighInReaction } from '../src/textEngine/scenes/weighIn/index.js';
 import { renderHearingPhase } from '../src/textEngine/scenes/opposition/index.js';
 import { renderAscensionCeremony } from '../src/textEngine/scenes/ascension/index.js';
+import { renderOppositionEndgame } from '../src/textEngine/scenes/opposition/index.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -84,6 +85,10 @@ const BANNED = [
   /\bEthnographic Self-Study\b/i,
   /\bThe scholarship got better\b/i,
   /\bPROF · SCALE\b/i,
+  /\bscholarship dissolving\b/i,
+  /\bbetween seminars\b/i,
+  /\bwon a scholarship\b/i,
+  /\+\d+ class\b/i,
 ];
 
 function assertClean(text, label) {
@@ -294,11 +299,13 @@ const wifeLessonsDiary = renderDiary(
 );
 if (wifeLessonsDiary) assertClean(wifeLessonsDiary, 'wife lessons diary render');
 
-for (const intro of NADIA_SUBJECT_JOURNALS.swimmer?.intro || []) {
-  assertClean(intro, 'Nadia journal swimmer intro');
-}
-for (const row of NADIA_SUBJECT_JOURNALS.bookworm?.entries?.[0] || []) {
-  assertClean(row, 'Nadia journal bookworm entry');
+for (const archetype of ['swimmer', 'bookworm', 'cheerleader', 'influencer']) {
+  for (const intro of NADIA_SUBJECT_JOURNALS[archetype]?.intro || []) {
+    assertClean(intro, `Nadia journal ${archetype} intro`);
+  }
+  for (const row of NADIA_SUBJECT_JOURNALS[archetype]?.entries?.[0] || []) {
+    assertClean(row, `Nadia journal ${archetype} entry`);
+  }
 }
 
 for (const archetype of ['bookworm', 'swimmer', 'cheerleader']) {
@@ -355,5 +362,16 @@ const ascensionLine = renderAscensionCeremony(
   16,
 );
 if (ascensionLine) assertClean(ascensionLine, 'ascension ceremony render');
+
+for (const slot of [
+  'opposition.endgame.synthesis',
+  'opposition.endgame.capture',
+  'opposition.endgame.banished',
+  'opposition.endgame.allThin',
+  'opposition.endgame.vance',
+]) {
+  const line = renderOppositionEndgame(slot, 18);
+  if (line) assertClean(line, `opposition endgame ${slot}`);
+}
 
 console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in OK');
