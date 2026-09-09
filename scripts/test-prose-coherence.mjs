@@ -89,6 +89,7 @@ import { renderIntimacyPhase } from '../src/textEngine/scenes/intimacy/index.js'
 import '../src/textEngine/scenes/intimacy/index.js';
 import { CAMPUS_NODES } from '../src/gameData/campus.js';
 import '../src/textEngine/scenes/campus/fragments.js';
+import { DEVICE_CATALOG_BLURBS } from '../src/textEngine/scenes/deviceFlavor.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -214,6 +215,21 @@ const BANNED = [
   /\bThat's a lot of girl\b/i,
   /\bFor a girl still finding her footing\b/i,
   /\bfive more girls to the board\b/i,
+  /\bA girl thanks\b/i,
+  /\bjust a girl clearly past polite hunger\b/i,
+  /\bgirls settle near her heat\b/i,
+  /\ba girl patting her belly\b/i,
+  /\byour girl performs hunger\b/i,
+  /\bsoft girl, loud folder\b/i,
+  /\bquiet girl, loud folder\b/i,
+  /\bstuffing a girl at this scale\b/i,
+  /\bharnessed girl stable\b/i,
+  /\ba girl being looked after\b/i,
+  /\bThe girl from State\b/i,
+  /\bevery girl who comes through the door\b/i,
+  /\bthree of my girls weigh\b/i,
+  /\bengineering girl with the harnesses\b/i,
+  /\bThe girls ate everything\b/i,
 ];
 
 function assertClean(text, label) {
@@ -314,6 +330,17 @@ for (const id of agendaIds) {
   if (line) assertClean(line, `opposition agenda ${id}`);
 }
 
+const mayaOppCtx = buildTextContext({
+  subject: { ...INIT_STUDENTS.find((s) => s.id === 8), lbs: 280 },
+  week: 12,
+});
+const mayaRemovalLine = render('{opposition.agenda.removal_hearing}', mayaOppCtx)?.trim();
+if (mayaRemovalLine) assertClean(mayaRemovalLine, 'opposition removal hearing Maya depth');
+
+for (const [id, blurb] of Object.entries(DEVICE_CATALOG_BLURBS)) {
+  assertClean(blurb, `device catalog ${id}`);
+}
+
 for (const [gameId, def] of Object.entries(EVOLVED_MINIGAMES)) {
   assertClean(`${def.title} ${def.tag}`, `minigame ${gameId} header`);
   for (const phase of def.phases) {
@@ -336,6 +363,10 @@ for (const tierId of [1, 2, 3]) {
 const campusCtx = buildTextContext({ week: 6, globals: { campusTierMin: 0 } });
 const campusLine = render('{campus.travel}', campusCtx)?.trim();
 if (campusLine) assertClean(campusLine, 'campus travel flavor');
+
+const campusTier2Ctx = buildTextContext({ week: 12, globals: { campusTierMin: 2 } });
+const campusTier2Line = render('{campus.travel}', campusTier2Ctx)?.trim();
+if (campusTier2Line) assertClean(campusTier2Line, 'campus travel tier 2 flavor');
 
 const sightingCtx = { week: 10, campusFattening: true, campusTier: 2 };
 const stageLbs = [140, 200, 280, 380];

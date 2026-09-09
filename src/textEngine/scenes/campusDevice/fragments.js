@@ -173,7 +173,7 @@ registerPool('campus.deviceFlavor', [
   ] },
   { when: { flavorDevice: 'endless_hunger_engine' }, text: [
     'A vending machine empties faster than usual — someone ate like the hollow would not close.',
-    'You catch a faint ozone smell and a girl patting her belly, confused and still hungry.',
+    'You catch a faint ozone smell and a resident patting her belly, confused and still hungry.',
     'A snack wrapper trail leads to a bench where someone keeps eating without looking satisfied.',
     'Talia\'s ray leaves no obvious mark — only appetite that outlasts the meal.',
   ] },

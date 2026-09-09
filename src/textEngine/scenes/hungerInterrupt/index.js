@@ -44,7 +44,7 @@ registerPool('scene.hungerInterrupt.appearance', [
   { when: {}, text: [
     'Her clothes sit a little tighter than last week — hunger and softness both showing.',
     'She looks flushed, restless, like her body has been arguing with itself all day.',
-    'Nothing dramatic in the doorway yet — just a girl clearly past polite hunger.',
+    'Nothing dramatic in the doorway yet — just a resident clearly past polite hunger.',
   ] },
 ]);
 

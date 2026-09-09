@@ -58,7 +58,7 @@ registerModuleVariants('opposition.agenda.removal_hearing', [
     `Lilith summoned to defend presence — board afraid of what she does not understand.`,
   ]},
   { when: { studentId: 8 }, weight: 4, text: [
-    `Maya's place questioned quietly — soft girl, loud folder, institutional teeth.`,
+    `Maya's place questioned quietly — soft resident, loud folder, institutional teeth.`,
   ]},
 ]);
 

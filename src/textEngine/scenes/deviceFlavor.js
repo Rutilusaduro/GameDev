@@ -10,7 +10,7 @@ export const DEVICE_CATALOG_BLURBS = {
   obedience_belt: 'A waist harness wired to compliance cues — shame and dependence climb whenever she hesitates to obey.',
   auto_bloating_belt: 'A reinforced waist harness that slowly but relentlessly bloats the wearer — constant pressure and visible swelling.',
   living_furniture_rig: 'Restraints and reshaping frames that turn a person into functional furniture — fed to stay comfortable.',
-  reinforced_legs: 'Braced leg supports that bear furniture-weight loads — keeps a harnessed girl stable while she swells.',
+  reinforced_legs: 'Braced leg supports that bear furniture-weight loads — keeps a harnessed resident stable while she swells.',
   growth_accelerator_chamber: 'A sealed chamber session that accelerates soft-tissue deposition — warm, pleasurable, and never quite unpredictable.',
   growth_serum_injector: 'One-shot volatile formula delivery — rapid, dramatic, never fully predictable localized growth.',
   endless_hunger_engine: 'A handheld ray that suppresses satiety at range — hunger becomes obsession until she feeds.',

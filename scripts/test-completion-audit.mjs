@@ -592,6 +592,27 @@ check('wife-lessons-talk-framing', () => {
   assert.doesNotMatch(growth, /The girls are going to lose their minds/i);
 });
 
+check('campus-system-resident-framing', () => {
+  const campus = read('src/textEngine/scenes/campusExplorationText.js');
+  assert.match(campus, /A resident thanks/);
+  assert.doesNotMatch(campus, /A girl thanks/);
+  const hunger = read('src/textEngine/scenes/hungerInterrupt/index.js');
+  assert.match(hunger, /just a resident clearly past polite hunger/);
+  assert.doesNotMatch(hunger, /just a girl clearly past polite hunger/);
+  const settling = read('src/textEngine/scenes/settling/settlingSceneDepth.js');
+  assert.match(settling, /residents settle near her heat/);
+  assert.doesNotMatch(settling, /girls settle near her heat/);
+  const device = read('src/textEngine/scenes/campusDevice/fragments.js');
+  assert.match(device, /a resident patting her belly/);
+  const opp = read('src/textEngine/scenes/opposition/oppositionMonolithFragmentDepth.js');
+  assert.match(opp, /your resident performs hunger/);
+  assert.doesNotMatch(opp, /your girl performs hunger/);
+  const evolved = read('src/gameData/evolvedForms.js');
+  assert.match(evolved, /competitor from State/);
+  assert.match(evolved, /Two squadmates cried/);
+  assert.doesNotMatch(evolved, /The girl from State|Two girls cried\. One said she'd been waiting years/i);
+});
+
 check('diary-roster-resident-framing', () => {
   const diary = read('src/textEngine/scenes/diary.js');
   assert.match(diary, /competitor from State/);

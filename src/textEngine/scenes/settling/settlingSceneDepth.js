@@ -189,7 +189,7 @@ registerModuleVariants('set.gather', [
     `Kylie's followers cluster for content — phones out, warmth shared, immobility as venue.`,
   ]},
   { when: { studentId: 8, stageMin: 11 }, weight: W, text: [
-    `Maya's gathering is quiet — girls settle near her heat, conversation low, presence enough.`,
+    `Maya's gathering is quiet — residents settle near her heat, conversation low, presence enough.`,
   ]},
   { when: { studentId: 15, stageMin: 11 }, weight: W, text: [
     `Lilith's court arrives wary and stays hungry — predator center, others careful and close.`,

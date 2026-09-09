@@ -9,7 +9,7 @@ registerModuleVariants('opposition.hearing.removal.phase0', [
     `Vance projects Kylie's feed screenshots — {studentLbs} lbs framed as scandal. The chat would disagree.`,
   ]},
   { when: { studentId: 8, stageMin: 4 }, weight: W, text: [
-    `Maya at {studentLbs} pounds on the slide deck — quiet girl, loud folder. She does not flinch.`,
+    `Maya at {studentLbs} pounds on the slide deck — quiet resident, loud folder. She does not flinch.`,
   ]},
   { when: { studentId: 15, stageMin: 6 }, weight: W, text: [
     `Lilith fills the projector frame — {studentLbs} lbs presented as threat. She looks bored.`,

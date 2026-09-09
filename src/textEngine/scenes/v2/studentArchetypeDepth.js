@@ -84,7 +84,7 @@ const wiByStudent = {
   10: ['Reneé tastes the moment — weight as ingredient, growth as recipe coming together.'],
   11: ['Kaylee steps off gently — nurturing calm, body cared for even while being measured.'],
   12: ['Nadia observes the reading with clinical interest that does not quite hide pleasure.'],
-  13: ['Daisy treats the scale like attendance — warm, practical, another fact about a girl being looked after.'],
+  13: ['Daisy treats the scale like attendance — warm, practical, another fact about a resident being looked after.'],
   14: ['Mary Jane grins at the number like good weather — familiar, generous, worth celebrating.'],
   15: ['Lilith reads weight like territory claimed — low satisfaction, predatory contentment.'],
   16: ['Sophia whispers formulation jargon that thins when the scale proves want won again.'],

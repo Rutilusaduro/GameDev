@@ -248,7 +248,7 @@ registerPool('campus.travel', [
       'Residents whisper "wellness solutions" like a password. Someone hands out samples with devotional care.',
       'A group eats in synchronized silence. They smile at the same time. It is not natural.',
       'Graffiti under the union stairs: SATURATE. The paint is still wet.',
-      'A girl thanks "the pharmacist" to no one in particular, and eats until she forgets why she started.',
+      'A resident thanks "the pharmacist" to no one in particular, and eats until she forgets why she started.',
     ] },
   { when: {}, priority: 0,
     text: [
