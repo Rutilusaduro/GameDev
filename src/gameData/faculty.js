@@ -138,7 +138,7 @@ export const FACULTY = [
         ]},
       happier:{ text:()=>`"Maybe." She lets the word sit. "I ran the numbers, you know. Contentment correlates with proximity to your department at r equals point-seven-one." A sip. "I'm a scientist, RA. When I find a happiness machine, I don't unplug it. I take notes. And lately—" she glances down, wry, at her own softened silhouette "—the machine appears to have a wide radius."`,
         options:[ {label:"Back", next:"hub"} ]},
-      students:{ text:()=>`"Thriving. Less anxiety, more appetite — those usually trade off, and they're not." She pulls up a chart she's clearly been waiting to show someone. "My eating-behavior seminar tripled in enrollment. Half of them cite your students as the reason. Whatever you teach, it has gravity."`,
+      students:{ text:()=>`"Thriving. Less anxiety, more appetite — those usually trade off, and they're not." She pulls up a chart she's clearly been waiting to show someone. "My eating-behavior workshop tripled in enrollment. Half of them cite your residents as the reason. Whatever you run on this floor, it has gravity."`,
         options:[
           {label:"\"Come sit in on a class sometime.\"", next:"sitIn", affinity:5},
           {label:"Back", next:"hub"},

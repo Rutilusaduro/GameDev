@@ -403,7 +403,7 @@ Reneé had been cooking for eight hours. The apartment smelled like something ex
 
 "Three of them," Raven said. "A corporate type, a grad student, and someone visiting for a conference. I found them separately. They don't know each other." She tilted her head toward the apartment. "They think this is a dinner party."
 
-It was a dinner party. Reneé had set the table for seven: herself, Raven, Cassidy, and the three guests. The guests — Morgan, who worked downtown; Theo, who was doing a second PhD; Francesca, who was presenting at the conference and had mentioned offhand that she'd never had good food in this city — arrived over twenty minutes, introduced themselves, and sat.
+It was a dinner party. Reneé had set the table for seven: herself, Raven, Cassidy, and the three guests. The guests — Morgan, who worked downtown; Theo, who was finishing a second credential; Francesca, who was presenting at the conference and had mentioned offhand that she'd never had good food in this city — arrived over twenty minutes, introduced themselves, and sat.
 
 Reneé served without ceremony. The food was staggering. Course after course, each one better than the last, and nobody stopped because nobody wanted to stop, and at some point stopping would have meant choosing to leave something extraordinary on the table.
 

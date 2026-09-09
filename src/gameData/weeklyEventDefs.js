@@ -12,7 +12,7 @@ export const NARRATIVE_EVENTS = [
   { id: 'art_exhibition', stageMin: 5, archetype: 'artsy', title: 'The Body Exhibition', gain: [4, 7], rel: 20 },
   { id: 'team_weigh_in', stageMin: 3, archetype: 'athlete', title: 'The Weigh-In', gain: [4, 7], rel: 15 },
   { id: 'quiet_opens_up', stageMin: 4, archetype: 'quiet', title: 'She Opens Up', gain: [3, 5], rel: 28 },
-  { id: 'overachiever_pivot', stageMin: 4, archetype: 'overachiever', title: 'A Change of Thesis', gain: [3, 6], rel: 20 },
+  { id: 'overachiever_pivot', stageMin: 4, archetype: 'overachiever', title: 'A Change of Season Plan', gain: [3, 6], rel: 20 },
   { id: 'transfer_settled', stageMin: 5, archetype: 'transfer', title: 'Finally Home', gain: [4, 8], rel: 22 },
   { id: 'custom_clothing', stageMin: 6, archetype: null, title: 'Shopping Trip', gain: [2, 5], rel: 16 },
   { id: 'immobility_peace', stageMin: 8, archetype: null, title: 'Comfortable', gain: [5, 12], rel: 22 },

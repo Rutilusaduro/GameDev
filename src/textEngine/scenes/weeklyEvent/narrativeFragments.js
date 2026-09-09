@@ -164,7 +164,7 @@ registerPool('weekly.thesisRewrite.verdict', [
     'The abstract is rigorous. It is also clearly an elaborate academic justification for eating constantly.',
     'You read it twice. It is real scholarship and transparently convenient.',
     'You approve it immediately.',
-    'She beams with the energy of someone who has made weight gain count toward her GPA.',
+    'She beams with the energy of someone who has made weight gain count toward her hall standing.',
   ] },
   { when: { archetype: 'swimmer' }, text: [
     'The abstract is rigorous. It is also clearly an elaborate training justification for eating constantly.',
@@ -176,7 +176,7 @@ registerPool('weekly.thesisRewrite.verdict', [
     'It is rigorous on paper and transparently about eating in practice. You approve it. She beams.',
     'You approve it. She looks like she won something.',
     'The argument holds. So does her appetite. Approved.',
-    'She beams as if the GPA just gained a new category.',
+    'She beams as if hall standing just gained a new category.',
   ] },
 ]);
 
@@ -380,7 +380,7 @@ registerPool('weekly.overachieverPivot.submit', [
   { when: {}, text: [
     '{subject.name} reframes her season plan around eating.',
     'A new proposal arrives with suspiciously convenient framing.',
-    'She submits a revised academic plan.',
+    'She submits a revised season plan.',
     'Her outline now centers appetite with footnotes.',
   ] },
 ]);
@@ -390,13 +390,13 @@ registerPool('weekly.overachieverPivot.verdict', [
     'You read the abstract. It is rigorous. It is also clearly an elaborate academic justification for eating constantly.',
     'Academically sound. Transparently convenient.',
     'You approve it.',
-    'She beams with the energy of someone who has made gaining weight count toward her GPA.',
+    'She beams with the energy of someone who has made gaining weight count toward her hall standing.',
   ] },
   { when: {}, text: [
     'Academically sound. Transparently convenient. Approved.',
     'You approve it. She looks like she optimized the assignment.',
     'The argument holds. She looks victorious.',
-    'Approved. She treats the GPA like another metric to win.',
+    'Approved. She treats hall standing like another metric to win.',
   ] },
 ]);
 

@@ -1006,7 +1006,7 @@ registerPool('dinner.reaction.thinContextual._f207', [
 ]);
 
 registerPool('dinner.reaction.thinContextual._f208', [
-  { when: {}, text: ["\"First semester GPA versus current. First semester intake versus current.\" {subject.name} watches {ref.name} eat. \"You solved both problems in the same direction."] },
+  { when: {}, text: ["\"First semester intake goals versus current. First semester intake versus current.\" {subject.name} watches {ref.name} eat. \"You solved both problems in the same direction."] },
 ]);
 
 registerPool('dinner.reaction.thinContextual._f209', [
@@ -1014,7 +1014,7 @@ registerPool('dinner.reaction.thinContextual._f209', [
 ]);
 
 registerPool('dinner.reaction.thinContextual._f210', [
-  { when: {}, text: ["\"First semester GPA versus current. First semester intake versus current.\" {subject.name} watches {ref.name} eat. \"You solved both problems in the same direction."] },
+  { when: {}, text: ["\"First semester intake goals versus current. First semester intake versus current.\" {subject.name} watches {ref.name} eat. \"You solved both problems in the same direction."] },
 ]);
 
 registerPool('dinner.reaction.thinContextual._f211', [

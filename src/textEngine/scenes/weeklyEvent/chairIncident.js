@@ -9,10 +9,10 @@ registerPool('weekly.chairBreaks.buildup', [
     'The chair under {subject.name} creaks louder with every minute until finally it tilts just enough to make her grab the desk.',
   ] },
   { when: { studentId: 10 }, priority: 1, weight: 4, text: [
-    '{subject.name}\'s chair groans all through seminar — a long complaining creak whenever she leans back.',
+    '{subject.name}\'s chair groans all through the hall session — a long complaining creak whenever she leans back.',
   ] },
   { when: { endStageMax: 4 }, text: [
-    '{subject.name}\'s chair groans all through seminar — a long complaining creak whenever she leans back.',
+    '{subject.name}\'s chair groans all through the hall session — a long complaining creak whenever she leans back.',
     'The chair under {subject.name} creaks louder with every minute until finally it tilts just enough to make her grab the desk.',
   ] },
   { when: { endStageMin: 5, endStageMax: 6 }, text: [

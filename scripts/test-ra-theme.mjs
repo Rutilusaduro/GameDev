@@ -63,6 +63,13 @@ const BANNED = [
   { id: 'researcher-who-changed', re: /produced a researcher who/i },
   { id: 'researcher-different-person', re: /The researcher is a different person/i },
   { id: 'researcher-merged', re: /the researcher merged/i },
+  { id: 'gpa-standing', re: /\bGPA\b/ },
+  { id: 'psychology-student', re: /psychology student/i },
+  { id: 'seminar-room', re: /seminar room/i },
+  { id: 'season-plan-advisor', re: /season plan advisor/i },
+  { id: 'change-of-thesis', re: /Change of Thesis/i },
+  { id: 'old-advisor', re: /old advisor/i },
+  { id: 'second-phd', re: /second PhD/i },
 ];
 
 const ALLOW_LINE = [

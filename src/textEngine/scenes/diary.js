@@ -120,7 +120,7 @@ registerPool('diary.eating_competitor.c1', [
   { when: { stage: [10], corruption: [0] }, text: ['I\'ve eaten everything on every circuit in this country. The records are there. I don\'t think much about what comes next anymore.'] },
   { when: { stage: [10] }, text: ['I have eaten everything on every circuit in this country and some in others. The records are documents of a life. I am done chasing them.'] },
   { when: { stageMin: 7, archetype: "athlete" }, text: ['I used to time my miles. Now I log my intake. The discipline is the same — set a target, approach it without flinching, exceed it. My old coach would have questions.'] },
-  { when: { stageMin: 5, stageMax: 6, archetype: "overachiever" }, text: ['I have a spreadsheet. Of course I have a spreadsheet. Circuit schedule, intake logs, weight projections, record targets. My old advisor would recognize the format.'] },
+  { when: { stageMin: 5, stageMax: 6, archetype: "overachiever" }, text: ['I have a spreadsheet. Of course I have a spreadsheet. Circuit schedule, intake logs, weight projections, record targets. My old panel mentor would recognize the format.'] },
   { when: { stageMin: 7, season: ["winter"] }, text: ['Winter circuit. Ate heavy, ate warm, drove home in the dark with the heater on and my belly full and my hands still on the wheel and felt, very quietly, correct.'] },
   { when: {}, text: [
     "The plate is clear. The record stands. I keep going.",
@@ -257,7 +257,7 @@ registerPool('diary.body_positive_creator.c1', [
   { when: { stage: [10], corruption: [0] }, text: ['The platform is legacy. The body is the argument. I didn\'t know, when I started, that I was building a legacy. I knew I was tired of being small and quiet. I built outward from that and got here.'] },
   { when: { stage: [10] }, text: ['The platform is legacy. The body is the argument.'] },
   { when: { stageMin: 7, archetype: "influencer" }, text: ['The numbers are still good. They\'ll always be good. But numbers were the old thing.'] },
-  { when: { stageMin: 6, archetype: "artsy" }, text: ['A cultural studies seminar assigned my content in a cultural studies course. I found out because a student emailed me. \' I ate a full meal before I replied. The reply took three drafts.'] },
+  { when: { stageMin: 6, archetype: "artsy" }, text: ['A hall media workshop assigned my content as required viewing. I found out because a resident emailed me. \' I ate a full meal before I replied. The reply took three drafts.'] },
   { when: {}, text: [
     "The argument continues. So does the body.",
     "Another day showing skin without apology.",
