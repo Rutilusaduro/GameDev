@@ -6623,6 +6623,7 @@ export default function HallPass(){
 
   const makeChoice=(choiceIdx)=>{
     if(!classSession)return;
+    playHallPassSound('click', soundEnabled);
     const{scenes,sceneIdx}=classSession;
     const{scene,student,type}=scenes[sceneIdx];
     const choice=scene.choices[choiceIdx];
@@ -6658,6 +6659,7 @@ export default function HallPass(){
   };
 
   const confirmResult=()=>{
+    playHallPassSound('confirm', soundEnabled);
     setClassSession(prev=>({
       ...prev,
       sceneIdx:prev.sceneIdx+1,
@@ -7823,7 +7825,7 @@ export default function HallPass(){
         const current=!isDone&&!pendingResult?scenes[sceneIdx]:null;
         return(
           <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:600}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:600}}>
               <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:3}}>FLOOR CHECK-IN — WEEK {week}</div>
               <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:19}}>
                 {isDone?"Session Complete":pendingResult?pendingResult.sceneTitle:current?.scene.title}
