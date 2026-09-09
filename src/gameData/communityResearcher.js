@@ -248,7 +248,7 @@ ${mLeave}`;
       ][mTier];
       return `${opener}, Mary Jane had been cooking before anyone arrived.
 
-Her off-campus house had the kitchen of someone raised to cook for fifteen. Fiona had been told it was "just a small thing." Yuki — an exchange student from Osaka, who lived two floors above Fiona and had come because Fiona seemed nervous about going alone — had not been briefed at all.
+Her off-campus house had the kitchen of someone raised to cook for fifteen. Fiona had been told it was "just a small thing." Yuki — an exchange resident from Osaka, who lived two floors above Fiona and had come because Fiona seemed nervous about going alone — had not been briefed at all.
 
 "There's more in the kitchen," Mary Jane said, the first time a dish was finished. There was more in the kitchen. There always was.
 
@@ -438,7 +438,7 @@ export const BOARD_REACTIONS = {
 
   night_in: `Coach Rivera: "Co-habitual dorm observation is a recognized methodology. Whether this constitutes fieldwork or a social visit is unclear from your notes. Clarify in revision." AD Harmon, more charitably: "The naturalistic setting produced authentic data. Participants were at ease. That's the goal." Nutritionist Ward's note arrives last: "Three of the delivery receipts you submitted as field documentation have your name on them."`,
 
-  culture_shock: `AD Harmon's note is the longest she's sent. She calls the cross-cultural hospitality documentation "exactly the kind of comparative fieldwork the panel hoped to see," cites the exchange student's response arc as strong observational data, and recommends featuring it prominently in the final report. Coach Rivera references two published field notes on hospitality as a social bonding mechanism and calls the protocol "appropriate." Nutritionist Ward's note: "Three hours at one table is a substantial investment of field time. The portion documentation is thorough."`,
+  culture_shock: `AD Harmon's note is the longest she's sent. She calls the cross-cultural hospitality documentation "exactly the kind of comparative fieldwork the panel hoped to see," cites the exchange resident's response arc as strong observational data, and recommends featuring it prominently in the final report. Coach Rivera references two published field notes on hospitality as a social bonding mechanism and calls the protocol "appropriate." Nutritionist Ward's note: "Three hours at one table is a substantial investment of field time. The portion documentation is thorough."`,
 
   metrics: `Coach Rivera's response spans three paragraphs. The first asks what the experimental design was, because she cannot determine it from the notes. The second asks how Cassidy induced competitive consumption in a high-performing student without her explicit awareness. The third asks what the research question actually was, "because I cannot locate it in the documentation." AD Harmon flags the power dynamics as "requiring clarification." Nutritionist Ward's question is simpler: "How did you get Priya to participate in something she wasn't already winning?"`,
 

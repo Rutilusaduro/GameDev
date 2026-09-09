@@ -156,6 +156,13 @@ const BANNED = [
   { id: 'student-autonomy-phrase', re: /student autonomy/i },
   { id: 'place-selected-girl', re: /Place selected girl/i },
   { id: 'select-a-girl-below', re: /Select a girl below/i },
+  { id: 'student-removal-phrase', re: /\bstudent removal\b/i },
+  { id: 'a-student-summoned', re: /\ba student summoned\b/i },
+  { id: 'flags-a-student', re: /flags a student\b/i },
+  { id: 'student-advocacy-hour', re: /Student advocacy hour/i },
+  { id: 'theres-a-student', re: /There's a student\b/i },
+  { id: 'prospective-student-group', re: /prospective student group/i },
+  { id: 'exchange-student-phrase', re: /exchange student/i },
 ];
 
 const ALLOW_LINE = [

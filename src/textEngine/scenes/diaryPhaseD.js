@@ -686,8 +686,8 @@ registerPool('diary.salon_appetit.s7', [
 
 registerPool('diary.salon_appetit.s8._f7', [
   { when: {}, text: [
-    "The piece published: *An Exchange Student's Salon of Excess*.",
-    "Headline: *An Exchange Student's Salon of Excess.* Chloé framed it.",
+    "The piece published: *A Transfer's Salon of Excess*.",
+    "Headline: *A Transfer's Salon of Excess.* Chloé framed it.",
     "The article lands. *Salon of Excess* — accurate, flattering, inconvenient.",
   ]},
 ]);

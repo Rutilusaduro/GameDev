@@ -228,7 +228,7 @@ export const SALON_EVOLVED_EVENTS = [
         ],
       },
       {
-        text: (h, s) => `The piece publishes: *An Exchange Student's Salon of Excess*. Chloé is ${Math.round(s.lbs)} pounds and reads it twice. "They call me dangerous," she says, pleased.`,
+        text: (h, s) => `The piece publishes: *A Transfer's Salon of Excess*. Chloé is ${Math.round(s.lbs)} pounds and reads it twice. "They call me dangerous," she says, pleased.`,
         choices: [
           { id: 'celebrate', label: 'Celebrate with a feast', result: 'Champagne. Fried things. No regrets.', lbs: 12, rel: 9, flag: 'celebrate' },
           { id: 'rooftop', label: 'Plan the rooftop salon', result: 'She books the roof. Starts a menu in French.', lbs: 6, rel: 11, flag: 'rooftop_planned' },

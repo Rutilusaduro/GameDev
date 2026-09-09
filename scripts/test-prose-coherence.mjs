@@ -125,6 +125,11 @@ const BANNED = [
   /\bbetween seminars\b/i,
   /\bwon a scholarship\b/i,
   /\+\d+ class\b/i,
+  /\bstudent removal\b/i,
+  /\bexchange student\b/i,
+  /\bThere's a student\b/i,
+  /\bflags a student\b/i,
+  /\bprospective student group\b/i,
 ];
 
 function assertClean(text, label) {

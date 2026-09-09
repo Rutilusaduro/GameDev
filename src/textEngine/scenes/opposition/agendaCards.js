@@ -4,9 +4,9 @@ import { registerPool } from '../../engine.js';
 
 registerPool('opposition.agenda.wellness_audit', [
   { when: {}, text: [
-    'A clipboard finds a student mid-meal. Shame is institutional when it wears a lanyard.',
+    'A clipboard finds a resident mid-meal. Shame is institutional when it wears a lanyard.',
     'Wellness audit: they photograph abundance and call it concern.',
-    'Compliance flags a student for individualized assessment — care dressed as surveillance.',
+    'Compliance flags a resident for individualized assessment — care dressed as surveillance.',
     'The observer watches her eat and writes down every visible pound like testimony.',
   ]},
 ]);
@@ -32,7 +32,7 @@ registerPool('opposition.agenda.size_review', [
 registerPool('opposition.agenda.wellness_seminar', [
   { when: {}, text: [
     'Mandatory wellness workshop — portion charts, restraint language, appetite treated like illness.',
-    'The auditorium fills with students told to fear fullness. Your floor hears the sermon anyway.',
+    'The auditorium fills with residents told to fear fullness. Your floor hears the sermon anyway.',
     'Wellness slides flicker on screen. Hunger is framed as a problem the Board can solve.',
     'A workshop on "balance" runs two hours. Nobody mentions how good your catering smells outside.',
   ]},
@@ -49,8 +49,8 @@ registerPool('opposition.agenda.budget_freeze', [
 
 registerPool('opposition.agenda.removal_hearing', [
   { when: {}, text: [
-    'Removal hearing opened — a student summoned to defend her place in your hallroom.',
-    'The Board schedules a student removal. Photos of abundance already fill the projector.',
+    'Removal hearing opened — a resident summoned to defend her place in your hallroom.',
+    'The Board schedules a resident removal. Photos of abundance already fill the projector.',
     'Vance files the motion. One girl\'s enrollment becomes the week\'s central argument.',
     'A hearing date lands on your desk. Institutional teeth finally chose a name.',
   ]},
@@ -86,7 +86,7 @@ registerPool('opposition.agenda.faculty_informant', [
 registerPool('opposition.agenda.student_advocacy', [
   { when: {}, text: [
     'Rotating advocate schedules a resident voice session — procedure wearing sympathy.',
-    'Student advocacy hour booked. The Board wants dissent on record before they override it.',
+    'Resident advocacy hour booked. The Board wants dissent on record before they override it.',
     'Jordan Ellis requests floor time. Institutional theater with a human face.',
     'Advocate session announced. Your girls may speak — if the room pretends to listen.',
   ]},
