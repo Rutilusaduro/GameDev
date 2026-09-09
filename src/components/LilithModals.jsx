@@ -194,7 +194,7 @@ export function LilithHuntModal({ lilithHuntState, students, setLilithHuntState,
               <div style={{display:"flex",flexDirection:"column",gap:5,padding:"8px 14px 12px",maxHeight:"42vh",overflowY:"auto"}}>
                 {/* Nav / delivery / approach states */}
                 {(!encounter||encounter.consumed||encounter.failed)&&choices.map(ch=>(
-                  <button key={ch.id} onClick={ch.action} style={{
+                  <button key={ch.id} type="button" className="lilith-choice-row" onClick={ch.action} style={{
                     ...btnBase,
                     background:ch.big?"#3a0060":ch.approach?"#260042":ch.nav?"#1a0030":"#130020",
                     border:`1px solid ${ch.approach?accent+"60":ch.nav?accent+"50":accent+"30"}`,
@@ -208,17 +208,17 @@ export function LilithHuntModal({ lilithHuntState, students, setLilithHuntState,
                 ))}
                 {/* Won — take home */}
                 {encounter&&encounter.won&&!encounter.consumed&&(
-                  <button onClick={consumeMan} style={{...btnBase,background:"#3a0060",border:`1px solid ${accent}70`,color:"#d070f0",padding:"11px 16px",fontSize:13,fontWeight:700}}>
+                  <button type="button" className="lilith-choice-row" onClick={consumeMan} style={{...btnBase,background:"#3a0060",border:`1px solid ${accent}70`,color:"#d070f0",padding:"11px 16px",fontSize:13,fontWeight:700}}>
                     🌑 Take him home →
                   </button>
                 )}
                 {/* Idle — Reply / Seduce */}
                 {encounter&&!encounter.won&&!encounter.failed&&!encounter.consumed&&encounter.mode==='idle'&&(<>
-                  <button onClick={()=>encounterSetMode('replying')} style={{...btnBase,background:"#1a0040",border:`1px solid ${accent}60`,color:"#c080e0",padding:"10px 14px"}}>
+                  <button type="button" className="lilith-choice-row" onClick={()=>encounterSetMode('replying')} style={{...btnBase,background:"#1a0040",border:`1px solid ${accent}60`,color:"#c080e0",padding:"10px 14px"}}>
                     💬 Reply…
                   </button>
                   {hasSeduce&&(
-                    <button onClick={()=>encounterSetMode('seducing')} style={{...btnBase,background:"#250050",border:`1px solid ${accent}70`,color:"#d060e0",padding:"10px 14px"}}>
+                    <button type="button" className="lilith-choice-row" onClick={()=>encounterSetMode('seducing')} style={{...btnBase,background:"#250050",border:`1px solid ${accent}70`,color:"#d060e0",padding:"10px 14px"}}>
                       ✦ Seduce…
                     </button>
                   )}
@@ -226,7 +226,7 @@ export function LilithHuntModal({ lilithHuntState, students, setLilithHuntState,
                 {/* Replying — 3 options */}
                 {encounter&&encounter.mode==='replying'&&(<>
                   {(encounter.replyOptions||[]).map(opt=>(
-                    <button key={opt.id} onClick={()=>makeReply(opt)} style={{...btnBase,background:"#150030",border:`1px solid ${accent}50`,color:"#c090d8",padding:"9px 14px"}}>
+                    <button key={opt.id} type="button" className="lilith-choice-row" onClick={()=>makeReply(opt)} style={{...btnBase,background:"#150030",border:`1px solid ${accent}50`,color:"#c090d8",padding:"9px 14px"}}>
                       {opt.label}
                     </button>
                   ))}
@@ -237,7 +237,7 @@ export function LilithHuntModal({ lilithHuntState, students, setLilithHuntState,
                 {/* Seducing — physical moves (unlocked only) */}
                 {encounter&&encounter.mode==='seducing'&&(<>
                   {Object.entries(PHYSICAL_MOVES).filter(([,m])=>lilith.lbs>=m.unlockLbs).map(([id,m])=>(
-                    <button key={id} onClick={()=>makeSeduction(id)} style={{...btnBase,background:"#200040",border:`1px solid ${accent}60`,color:"#e080e0",padding:"9px 14px",fontWeight:600}}>
+                    <button key={id} type="button" className="lilith-choice-row" onClick={()=>makeSeduction(id)} style={{...btnBase,background:"#200040",border:`1px solid ${accent}60`,color:"#e080e0",padding:"9px 14px",fontWeight:600}}>
                       {m.label}
                     </button>
                   ))}

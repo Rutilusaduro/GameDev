@@ -971,14 +971,59 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(192, 128, 64, 0.14);
 }
 
+.recording-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.recording-choice-row:hover {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.recording-choice-row:focus-visible {
+  outline: 2px solid rgba(205, 133, 63, 0.85);
+  outline-offset: 2px;
+}
+
 .collab-stream-modal {
   background: linear-gradient(165deg, rgba(10, 0, 22, 0.98), rgba(20, 4, 40, 0.96), rgba(6, 0, 14, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(142, 68, 173, 0.16);
 }
 
+.collab-stream-choice-row {
+  transition: transform 0.12s ease, box-shadow 0.16s ease, filter 0.16s ease;
+}
+
+.collab-stream-choice-row:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.26);
+}
+
+.collab-stream-choice-row:focus-visible {
+  outline: 2px solid rgba(168, 96, 216, 0.85);
+  outline-offset: 2px;
+}
+
 .lilith-modal {
   background: linear-gradient(165deg, rgba(10, 0, 15, 0.98), rgba(20, 0, 26, 0.96), rgba(6, 0, 10, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 32px rgba(128, 32, 160, 0.18);
+}
+
+.lilith-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.lilith-choice-row:hover {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.lilith-choice-row:focus-visible {
+  outline: 2px solid rgba(192, 96, 224, 0.85);
+  outline-offset: 2px;
 }
 
 .pharmacist-chem-modal {
@@ -989,6 +1034,21 @@
 .pharmacist-cult-modal {
   background: linear-gradient(165deg, rgba(10, 6, 20, 0.98), rgba(20, 10, 32, 0.96), rgba(6, 4, 14, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(107, 74, 138, 0.16);
+}
+
+.pharmacist-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.pharmacist-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.pharmacist-choice-row:focus-visible {
+  outline: 2px solid rgba(120, 200, 168, 0.85);
+  outline-offset: 2px;
 }
 
 .wife-lessons-modal {
@@ -1290,7 +1350,11 @@
   .salon-choice-row:hover,
   .sumo-move-row:hover,
   .stream-challenge-row:hover,
-  .wife-lessons-choice-row:hover {
+  .wife-lessons-choice-row:hover,
+  .recording-choice-row:hover,
+  .collab-stream-choice-row:hover,
+  .lilith-choice-row:hover,
+  .pharmacist-choice-row:hover {
     transform: none;
   }
 

@@ -61,10 +61,10 @@ export function CollabStreamModal({ collabStreamState, students, doCollabAction,
                         <div key={food.key} style={{opacity:unlocked?1:0.35}}>
                           {unlocked?(
                             <div style={{display:"flex",gap:4,marginBottom:2}}>
-                              <button style={{...C.btn("#3a0a60"),flex:1,fontSize:10,padding:"4px 6px"}} onClick={()=>doCollabAction('feed_kylie',food.key)}>
+                              <button type="button" className="collab-stream-choice-row" style={{...C.btn("#3a0a60"),flex:1,fontSize:10,padding:"4px 6px"}} onClick={()=>doCollabAction('feed_kylie',food.key)}>
                                 {food.emoji} → Kylie +{food.lbsKylie}
                               </button>
-                              <button style={{...C.btn("#1a1a60"),flex:1,fontSize:10,padding:"4px 6px"}} onClick={()=>doCollabAction('feed_partner',food.key)}>
+                              <button type="button" className="collab-stream-choice-row" style={{...C.btn("#1a1a60"),flex:1,fontSize:10,padding:"4px 6px"}} onClick={()=>doCollabAction('feed_partner',food.key)}>
                                 {food.emoji} → {partner.name.split(' ')[0]} +{food.lbsPartner}
                               </button>
                             </div>
@@ -84,11 +84,11 @@ export function CollabStreamModal({ collabStreamState, students, doCollabAction,
                 <div style={{marginBottom:10}}>
                   <div style={{fontSize:9,color:"#a070c0",marginBottom:5,letterSpacing:2}}>STREAM ACTIONS</div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:5}}>
-                    <button style={{...C.btn(actions.kylieRevealed?"#1a0030":"#4a1070"),fontSize:10,opacity:actions.kylieRevealed?0.5:1}} disabled={actions.kylieRevealed} onClick={()=>doCollabAction('reveal_kylie')}>⚖️ Kylie's Weight {actions.kylieRevealed?"✓":""}</button>
-                    <button style={{...C.btn(actions.partnerRevealed?"#1a0030":"#1a1060"),fontSize:10,opacity:actions.partnerRevealed?0.5:1}} disabled={actions.partnerRevealed} onClick={()=>doCollabAction('reveal_partner')}>⚖️ {partner.name.split(' ')[0]}'s Weight {actions.partnerRevealed?"✓":""}</button>
-                    <button style={{...C.btn(actions.zoomUses<=0?"#1a0030":"#2a0850"),fontSize:10,opacity:actions.zoomUses<=0?0.5:1}} disabled={actions.zoomUses<=0} onClick={()=>doCollabAction('zoom_in')}>📸 Zoom In ({actions.zoomUses})</button>
-                    <button style={{...C.btn(actions.chatUses<=0?"#1a0030":"#2a0850"),fontSize:10,opacity:actions.chatUses<=0?0.5:1}} disabled={actions.chatUses<=0} onClick={()=>doCollabAction('chat_moment')}>💬 Chat Moment ({actions.chatUses})</button>
-                    <button style={{...C.btn(actions.pushUsed?"#1a0030":"#501060"),fontSize:10,opacity:actions.pushUsed?0.5:1,gridColumn:"1/-1"}} disabled={actions.pushUsed} onClick={()=>doCollabAction('push_harder')}>🔥 Push Harder {actions.pushUsed?"(done)":""}</button>
+                    <button type="button" className="collab-stream-choice-row" style={{...C.btn(actions.kylieRevealed?"#1a0030":"#4a1070"),fontSize:10,opacity:actions.kylieRevealed?0.5:1}} disabled={actions.kylieRevealed} onClick={()=>doCollabAction('reveal_kylie')}>⚖️ Kylie's Weight {actions.kylieRevealed?"✓":""}</button>
+                    <button type="button" className="collab-stream-choice-row" style={{...C.btn(actions.partnerRevealed?"#1a0030":"#1a1060"),fontSize:10,opacity:actions.partnerRevealed?0.5:1}} disabled={actions.partnerRevealed} onClick={()=>doCollabAction('reveal_partner')}>⚖️ {partner.name.split(' ')[0]}'s Weight {actions.partnerRevealed?"✓":""}</button>
+                    <button type="button" className="collab-stream-choice-row" style={{...C.btn(actions.zoomUses<=0?"#1a0030":"#2a0850"),fontSize:10,opacity:actions.zoomUses<=0?0.5:1}} disabled={actions.zoomUses<=0} onClick={()=>doCollabAction('zoom_in')}>📸 Zoom In ({actions.zoomUses})</button>
+                    <button type="button" className="collab-stream-choice-row" style={{...C.btn(actions.chatUses<=0?"#1a0030":"#2a0850"),fontSize:10,opacity:actions.chatUses<=0?0.5:1}} disabled={actions.chatUses<=0} onClick={()=>doCollabAction('chat_moment')}>💬 Chat Moment ({actions.chatUses})</button>
+                    <button type="button" className="collab-stream-choice-row" style={{...C.btn(actions.pushUsed?"#1a0030":"#501060"),fontSize:10,opacity:actions.pushUsed?0.5:1,gridColumn:"1/-1"}} disabled={actions.pushUsed} onClick={()=>doCollabAction('push_harder')}>🔥 Push Harder {actions.pushUsed?"(done)":""}</button>
                   </div>
                 </div>
 

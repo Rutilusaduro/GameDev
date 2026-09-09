@@ -64,6 +64,7 @@ function BrewPicker({ session, setSession, pharmacistState }) {
             <button
               key={id}
               type="button"
+              className="pharmacist-choice-row"
               style={{
                 ...C.btn(inPlan ? '#1a4038' : canAdd ? '#2a5048' : '#222'),
                 width: '100%',
@@ -137,6 +138,7 @@ export function PharmacistChemModal({
           <button
             key={opt.id}
             type="button"
+            className="pharmacist-choice-row"
             style={{ ...C.btn('#1a3028'), width: '100%', marginBottom: 8, textAlign: 'left', padding: '10px 14px' }}
             onClick={() => { playHallPassSound('click', soundEnabled); setChemSession(applyAcquisitionChoice(chemSession, opt.id)); }}
           >

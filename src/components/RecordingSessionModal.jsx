@@ -73,7 +73,7 @@ export function RecordingSessionModal({ recordingSessionState, students, week = 
                   {rs.choiceStep<3&&(
                     <div style={{display:"flex",flexDirection:"column",gap:6}}>
                       {stepChoices[rs.choiceStep].map(cid=>(
-                        <button key={cid} style={{...C.btn(amberDim),textAlign:"left",padding:"8px 12px",fontSize:12}}
+                        <button key={cid} type="button" className="recording-choice-row" style={{...C.btn(amberDim),textAlign:"left",padding:"8px 12px",fontSize:12}}
                           onClick={()=>makeRecordingChoice(cid)}>
                           {choiceLabels[cid]||cid}
                         </button>

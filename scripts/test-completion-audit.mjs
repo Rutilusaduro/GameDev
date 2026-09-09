@@ -1744,6 +1744,40 @@ check('wife-lessons-row-polish', () => {
   assert.match(modal, /wife-lessons-choice-row/);
 });
 
+check('collab-stream-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/CollabStreamModal.jsx');
+  assert.match(css, /\.collab-stream-choice-row:focus-visible/);
+  assert.match(css, /\.collab-stream-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /collab-stream-choice-row/);
+});
+
+check('recording-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/RecordingSessionModal.jsx');
+  assert.match(css, /\.recording-choice-row:focus-visible/);
+  assert.match(css, /\.recording-choice-row:hover/);
+  assert.match(modal, /recording-choice-row/);
+});
+
+check('lilith-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/LilithModals.jsx');
+  assert.match(css, /\.lilith-choice-row:focus-visible/);
+  assert.match(css, /\.lilith-choice-row:hover/);
+  assert.match(modal, /lilith-choice-row/);
+});
+
+check('pharmacist-row-polish', () => {
+  const css = read('src/index.css');
+  const chem = read('src/components/PharmacistChemModal.jsx');
+  const cult = read('src/components/PharmacistCultModal.jsx');
+  assert.match(css, /\.pharmacist-choice-row:focus-visible/);
+  assert.match(css, /\.pharmacist-choice-row:hover:not\(:disabled\)/);
+  assert.match(chem, /pharmacist-choice-row/);
+  assert.match(cult, /pharmacist-choice-row/);
+});
+
 check('modal-button-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.hall-pass-modal-in button:focus-visible/);

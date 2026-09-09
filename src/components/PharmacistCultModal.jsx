@@ -52,6 +52,7 @@ export function PharmacistCultModal({
           <button
             key={route.id}
             type="button"
+            className="pharmacist-choice-row"
             disabled={ap < route.apCost}
             style={{
               ...C.btn(ap >= route.apCost ? '#1a1028' : '#222'),
