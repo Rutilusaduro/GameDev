@@ -185,6 +185,42 @@ export async function unlockRankedFeedeeArcQA(page) {
   await expect(page.getByText('EVOLVED PATH')).toBeVisible();
 }
 
+/** Debug: Maya home nest arc + open student detail. */
+export async function unlockHomeNestArcQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Home Nest Arc QA/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+  await dismissBlockingModals(page);
+  await expect(page.getByText('EVOLVED PATH')).toBeVisible();
+}
+
+/** Debug: Chloé campus legend arc + open student detail. */
+export async function unlockCampusLegendArcQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Campus Legend Arc QA/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+  await dismissBlockingModals(page);
+  await expect(page.getByText('EVOLVED PATH')).toBeVisible();
+}
+
+/** Debug: Brittany eating captain arc + open student detail. */
+export async function unlockEatingCaptainArcQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Eating Captain Arc QA/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+  await dismissBlockingModals(page);
+  await expect(page.getByText('EVOLVED PATH')).toBeVisible();
+}
+
+/** Debug: Mary Jane homestead queen arc + open student detail. */
+export async function unlockHomesteadQueenArcQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Homestead Queen Arc QA/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+  await dismissBlockingModals(page);
+  await expect(page.getByText('EVOLVED PATH')).toBeVisible();
+}
+
 /** Open a resident from roster; pick origin deck if first contact. */
 export async function openResidentDetail(page, name) {
   await page.getByRole('button', { name: '📋 Roster' }).click();

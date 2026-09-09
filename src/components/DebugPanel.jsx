@@ -514,6 +514,58 @@ export function DebugPanel({
                     }}>
                     🎮 Ranked Feedee Arc QA
                   </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(40,70,40,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 8
+                          ? { ...s, evolvedForm: 'home_nest', lbs: 200, relationship: 60, mood: 'content' }
+                          : s
+                      )));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(8);
+                      setView('student');
+                    }}>
+                    🍜 Home Nest Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(90,70,20,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 9
+                          ? { ...s, evolvedForm: 'campus_legend', lbs: 200, relationship: 60, mood: 'bemused' }
+                          : s
+                      )));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(9);
+                      setView('student');
+                    }}>
+                    🍺 Campus Legend Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(30,60,120,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 0
+                          ? { ...s, evolvedForm: 'eating_captain', lbs: 200, relationship: 60, mood: 'happy' }
+                          : s
+                      )));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(0);
+                      setView('student');
+                    }}>
+                    🏆 Eating Captain Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(80,50,30,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 14
+                          ? { ...s, evolvedForm: 'homestead_queen', lbs: 200, relationship: 60, mood: 'cheerful' }
+                          : s
+                      )));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(14);
+                      setView('student');
+                    }}>
+                    🏡 Homestead Queen Arc QA
+                  </button>
                 </>
               )}
               <button type="button" style={{ ...C.smBtn, background: 'rgba(60,30,0,0.5)' }}

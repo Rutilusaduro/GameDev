@@ -168,6 +168,10 @@ const REQUIRED_E2E = [
   'e2e/evolved-psych-researcher-arc.spec.js',
   'e2e/evolved-feedee-creator-arc.spec.js',
   'e2e/evolved-ranked-feedee-arc.spec.js',
+  'e2e/evolved-home-nest-arc.spec.js',
+  'e2e/evolved-campus-legend-arc.spec.js',
+  'e2e/evolved-eating-captain-arc.spec.js',
+  'e2e/evolved-homestead-queen-arc.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 
