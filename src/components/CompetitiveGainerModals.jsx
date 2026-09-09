@@ -7,6 +7,7 @@ import { CG_CONFIG, CG_CHAT_TEMPLATES } from '../gameData/evolvedForms.js';
 import { cgDrive, cgDriveDelta, cgIsRaMessage, cgSubstateGain } from '../gameData/competitiveGainerState.js';
 import { getStage } from '../gameData/stages.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const CG_BG = '#0a0306';
 const CG_ACC = '#e8294a';
@@ -21,8 +22,9 @@ export function CompetitiveGainerChatModal({ competitiveGainerState, students, g
         if(!priya||!cgS) return null;
         const drive=cgDrive(cgS);
         const tier=getCGDriveTier(drive);
+        const leaveChat=()=>{ playHallPassSound('click', soundEnabled); setCgChatOpen(false); };
         return(
-          <div style={{...C.overlay,zIndex:370}}>
+          <ModalOverlay onClose={leaveChat} soundEnabled={soundEnabled} style={{ zIndex: 370 }}>
             <div className="hall-pass-modal-in competitive-gainer-modal" style={{...C.modal,maxWidth:580,background:CG_BG,border:`1px solid ${CG_ACC}40`,maxHeight:"88vh",overflowY:"auto"}}>
               <div style={{display:"flex",alignItems:"center",marginBottom:12}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC}}>💬 SOFTENING STATS</div>
@@ -50,9 +52,9 @@ export function CompetitiveGainerChatModal({ competitiveGainerState, students, g
                   ))}
                 </div>
               </div>
-              <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_BG),width:"100%",border:`1px solid ${CG_DIM}30`}} onClick={()=>{ playHallPassSound('click', soundEnabled); setCgChatOpen(false); }}>Leave Chat</button>
+              <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_BG),width:"100%",border:`1px solid ${CG_DIM}30`}} onClick={leaveChat}>Leave Chat</button>
             </div>
-          </div>
+          </ModalOverlay>
         );
 }
 
@@ -66,20 +68,24 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
         const priyaM=getMeasurements(priya.lbs,priya.bodyType);
         const tierBarPct=Math.min(100,drive/60*100);
         const isBlob=getStage(priya.lbs).id>=10;
+        const closeCG=()=>{ playHallPassSound('click', soundEnabled); closeCGModal(); };
+        const wrap=(children,{dismissible=false}={})=>(
+          <ModalOverlay onClose={closeCG} dismissible={dismissible} soundEnabled={soundEnabled} style={{ zIndex: 365 }}>
+            {children}
+          </ModalOverlay>
+        );
 
         // ── Corkboard view ──
         if(cgS.view==='corkboard'){
           const{sceneText}=cgS.subState||{};
           const gain=cgSubstateGain(cgS.subState);
-          return(
-            <div style={{...C.overlay,zIndex:365}}>
+          return wrap(
               <div className="hall-pass-modal-in competitive-gainer-modal" style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📌 CORKBOARD</div>
                 <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
                 <div style={{fontSize:10,color:CG_ACC,marginBottom:12}}>Drive +{gain} · Now {tier.label} ({drive})</div>
                 <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
               </div>
-            </div>
           );
         }
 
@@ -87,8 +93,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
         if(cgS.view==='self_review'){
           const{sceneText}=cgS.subState||{};
           const gain=cgSubstateGain(cgS.subState);
-          return(
-            <div style={{...C.overlay,zIndex:365}}>
+          return wrap(
               <div className="hall-pass-modal-in competitive-gainer-modal" style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📏 SELF-REVIEW</div>
                 <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:12,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
@@ -113,15 +118,13 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                 <div style={{fontSize:10,color:CG_ACC,marginBottom:12}}>Drive +{gain}</div>
                 <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
               </div>
-            </div>
           );
         }
 
         // ── Measurement picker ──
         if(cgS.view==='measurement_picker'){
           const measurableStudents=students.filter(s=>s.id!==priya.id&&(!s.hidden||lilithUnlocked));
-          return(
-            <div style={{...C.overlay,zIndex:365}}>
+          return wrap(
               <div className="hall-pass-modal-in competitive-gainer-modal" style={{...C.modal,maxWidth:560,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📐 SELECT WHO TO MEASURE</div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:14}}>
@@ -139,7 +142,6 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                 </div>
                 <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_BG),width:"100%",border:`1px solid ${CG_DIM}30`}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
               </div>
-            </div>
           );
         }
 
@@ -149,8 +151,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
           const gain=cgSubstateGain(cgS.subState);
           const target=students.find(s=>s.id===targetStudentId);
           if(!target) return null;
-          return(
-            <div style={{...C.overlay,zIndex:365}}>
+          return wrap(
               <div className="hall-pass-modal-in competitive-gainer-modal" style={{...C.modal,maxWidth:560,background:CG_BG,border:`1px solid ${CG_ACC}40`,maxHeight:"88vh",overflowY:"auto"}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📐 MEASURING {target.name.toUpperCase()}</div>
                 <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
@@ -186,28 +187,24 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                 <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:'measurement_picker',subState:null}))}>← Measure Another</button>
                 <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_BG),width:"100%",marginTop:6,border:`1px solid ${CG_DIM}30`}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back to Priya</button>
               </div>
-            </div>
           );
         }
 
         // ── Binge view ──
         if(cgS.view==='binge'){
           const{gain,sceneText}=cgS.subState||{};
-          return(
-            <div style={{...C.overlay,zIndex:365}}>
+          return wrap(
               <div className="hall-pass-modal-in competitive-gainer-modal" style={{...C.modal,maxWidth:520,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>🔴 {tier.label.toUpperCase()} BINGE</div>
                 <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
                 <div style={{fontSize:13,fontWeight:700,color:CG_ACC,textAlign:"center",marginBottom:14}}>+{gain} lbs</div>
                 <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_ACC),width:"100%"}} onClick={applyAndCloseCGBinge}>Apply Gains</button>
               </div>
-            </div>
           );
         }
 
         // ── Main modal ──
-        return(
-          <div style={{...C.overlay,zIndex:365}}>
+        return wrap(
             <div className="hall-pass-modal-in competitive-gainer-modal" style={{...C.modal,maxWidth:500,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
               {/* Header */}
               <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
@@ -257,8 +254,8 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                   <span style={{fontSize:9,color:CG_SUBTLE,marginLeft:8}}>{CG_CONFIG.bingeApCost} AP · {tier.label} intensity</span>
                 </button>
               </div>
-              <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_BG),width:"100%",marginTop:12,border:`1px solid ${CG_DIM}30`}} onClick={()=>{ playHallPassSound('click', soundEnabled); closeCGModal(); }}>Close</button>
-            </div>
-          </div>
+              <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_BG),width:"100%",marginTop:12,border:`1px solid ${CG_DIM}30`}} onClick={closeCG}>Close</button>
+            </div>,
+          { dismissible: true },
         );
 }

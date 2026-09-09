@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, PHYSICAL_MOVES, getEffectiveDifficulty, CLUE_INVESTIGATION } from '../gameData/lilith.js';
 import { aibMemberToHuntTarget } from '../gameData/lilithAibHunt.js';
 import { getStage } from '../gameData/stages.js';
@@ -11,8 +12,9 @@ import { getStage } from '../gameData/stages.js';
 export function LilithClueModal({ lilithClueModal, investigateClue, setLilithClueModal, confirmInvestigation, soundEnabled = true }){
         useEffect(() => { playHallPassSound('alert', soundEnabled); }, [soundEnabled, lilithClueModal]);
         const accent="#8020a0";
+        const ignoreClue=()=>{ playHallPassSound('click', soundEnabled); setLilithClueModal(null); };
         return(
-          <div style={{...C.overlay,zIndex:1300}}>
+          <ModalOverlay onClose={ignoreClue} dismissible={lilithClueModal==='feast_clue'} soundEnabled={soundEnabled} style={{ zIndex: 1300 }}>
             <div className="hall-pass-modal-in lilith-modal" style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#0a000f,#14001a,#0a000f)",border:`1px solid ${accent}50`,maxHeight:"88vh",overflowY:"auto",padding:22}}>
               {lilithClueModal==='feast_clue'&&(<>
                 <div style={{fontSize:9,letterSpacing:4,color:accent,marginBottom:6}}>SOMETHING'S OFF</div>
@@ -21,7 +23,7 @@ export function LilithClueModal({ lilithClueModal, investigateClue, setLilithClu
                 <button style={{...C.btn("#500060"),width:"100%",fontSize:13,marginBottom:8}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); investigateClue(); }}>
                   {CLUE_INVESTIGATION.action}
                 </button>
-                <button style={{...C.btn("#200030"),width:"100%",fontSize:11}} onClick={()=>{ playHallPassSound('click', soundEnabled); setLilithClueModal(null); }}>
+                <button style={{...C.btn("#200030"),width:"100%",fontSize:11}} onClick={ignoreClue}>
                   Ignore for now
                 </button>
               </>)}
@@ -36,7 +38,7 @@ export function LilithClueModal({ lilithClueModal, investigateClue, setLilithClu
                 </button>
               </>)}
             </div>
-          </div>
+          </ModalOverlay>
         );
 }
 

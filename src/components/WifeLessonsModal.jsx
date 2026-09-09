@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { WL_CONFIG, WL_LESSONS } from '../gameData/evolvedForms.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
 import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
@@ -34,6 +35,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
         const isDaughterStage=stage>=WL_CONFIG.daughtersFrom;
         const lessons=WL_LESSONS[stage]||[];
         const chosenLesson=lessonId?lessons.find(l=>l.id===lessonId):null;
+        const endSession=()=>{ playHallPassSound('click', soundEnabled); closeWifeLessonsSession(); };
 
         // ── Conversation panel ──
         if(conversationState){
@@ -42,7 +44,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
           const personWeight=isDaughter?daughters[person]:moms[person];
           const transcript=history?.length?history:[];
           return(
-            <div style={{...C.overlay,zIndex:360}}>
+            <ModalOverlay dismissible={false} soundEnabled={soundEnabled} style={{ zIndex: 360 }}>
               <div className="hall-pass-modal-in wife-lessons-modal" style={{...C.modal,maxWidth:560,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"88vh",overflowY:"auto"}}>
                 <SceneBackdrop variant="wifeLessons" />
                 <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
@@ -92,13 +94,13 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                   <button style={{...C.btn(WINE_ACCENT),width:"100%",marginTop:4}} onClick={dismissWifeLessonsConversation}>← Back</button>
                 )}
               </div>
-            </div>
+            </ModalOverlay>
           );
         }
 
         // ── Main session view ──
         return(
-          <div style={{...C.overlay,zIndex:360}}>
+          <ModalOverlay onClose={endSession} soundEnabled={soundEnabled} style={{ zIndex: 360 }}>
             <div className="hall-pass-modal-in wife-lessons-modal" style={{...C.modal,maxWidth:640,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"90vh",overflowY:"auto"}}>
               <SceneBackdrop variant="wifeLessons" />
               {/* Header */}
@@ -208,10 +210,10 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
 
               <button
                 style={{...C.btn("#0e0508"),width:"100%",marginTop:4,border:`1px solid ${WINE_ACCENT}30`,fontSize:12}}
-                onClick={()=>{ playHallPassSound('click', soundEnabled); closeWifeLessonsSession(); }}>
+                onClick={endSession}>
                 End Session{mjGainAccum>0?` · +${mjGainAccum} lbs to Mary Jane`:""}
               </button>
             </div>
-          </div>
+          </ModalOverlay>
         );
 }

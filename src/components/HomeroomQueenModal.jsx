@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../gameData/evolvedForms.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
 import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
@@ -81,6 +82,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
         const npcDescIdx=Math.min(2,Math.floor((batchBakerState.classWeight+classGainAccum)/100));
         const momDescIdx=Math.min(4,Math.floor((batchBakerState.momWeight+momGainAccum)/30));
         const apDots=Array.from({length:3},(_,i)=>i<classAp);
+        const endHomeroom=()=>{ playHallPassSound('click', soundEnabled); closeHomeroomSession(); };
 
         if(activeActivity){
           const{type,key,phaseIdx,done,resultText,phaseProse,revealsWeights,revealsParentWeights}=activeActivity;
@@ -95,7 +97,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
             phaseText=phase?.text; choices=phase?.choices||[]; actTitle=actDef?.label||type;
           }
           return(
-            <div style={{...C.overlay,zIndex:350}}>
+            <ModalOverlay onClose={done ? dismissHomeroomActivity : undefined} dismissible={!!done} soundEnabled={soundEnabled} style={{ zIndex: 350 }}>
               <div className="hall-pass-modal-in homeroom-queen-modal" style={{...C.modal,maxWidth:560,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"85vh",overflowY:"auto"}}>
                 <SceneBackdrop variant="campus" height={40} />
                 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
@@ -168,12 +170,12 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                   <button style={{...C.btn(warmAccent),width:"100%",marginTop:4}} onClick={dismissHomeroomActivity}>← Back to Hall</button>
                 )}
               </div>
-            </div>
+            </ModalOverlay>
           );
         }
 
         return(
-          <div style={{...C.overlay,zIndex:350}}>
+          <ModalOverlay onClose={endHomeroom} soundEnabled={soundEnabled} style={{ zIndex: 350 }}>
             <div className="hall-pass-modal-in homeroom-queen-modal" style={{...C.modal,maxWidth:640,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"90vh",overflowY:"auto"}}>
               {/* Header */}
               <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
@@ -267,10 +269,10 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
               )}
               {/* End session */}
               <button style={{...C.btn("#1a0c04"),width:"100%",marginTop:4,border:`1px solid ${warmAccent}30`,fontSize:12}}
-                onClick={closeHomeroomSession}>
+                onClick={endHomeroom}>
                 End Session{daisyGain>0?` · +${daisyGain} lbs to Daisy`:""}
               </button>
             </div>
-          </div>
+          </ModalOverlay>
         );
 }

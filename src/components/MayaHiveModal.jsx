@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { getStage } from '../gameData/stages.js';
 import {
   HIVE_TASKS,
@@ -124,12 +125,13 @@ export function MayaHiveModal({
   const vp=hs.vpId?HIVE_VPS[hs.vpId]:null;
   const bmiTier=getHiveBmiTier(hs.avgBmi);
 
-  const ModalShell=({children,maxWidth=1040})=>(
-    <div style={{...C.overlay,zIndex:366}}>
+  const dismissHive=()=>{ playHallPassSound('click', soundEnabled); closeMayaHive(); };
+  const ModalShell=({children,maxWidth=1040,dismissible=false})=>(
+    <ModalOverlay onClose={dismissHive} dismissible={dismissible} soundEnabled={soundEnabled} style={{ zIndex: 366 }}>
       <div className="hall-pass-modal-in maya-hive-modal" style={{...C.modal,maxWidth,background:`radial-gradient(circle at 50% -20%,rgba(217,140,255,.18),transparent 36%),linear-gradient(160deg,#050208,#13091d 48%,#06030a)`,border:`1px solid ${HIVE_ACC}55`,boxShadow:`0 0 40px ${HIVE_ACC}22`,maxHeight:"90vh",overflowY:"auto"}}>
         {children}
       </div>
-    </div>
+    </ModalOverlay>
   );
 
   if(hs.view==="result"){
@@ -202,7 +204,7 @@ export function MayaHiveModal({
   }
 
   return(
-    <ModalShell>
+    <ModalShell dismissible>
       <div style={{display:"flex",gap:14,alignItems:"flex-start",marginBottom:12}}>
         <div>
           <div style={{fontSize:9,letterSpacing:4,color:HIVE_ACC}}>🕸️ DELIVERY HIVE QUEEN</div>

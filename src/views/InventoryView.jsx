@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from '../components/ModalOverlay.jsx';
 import { ITEMS } from '../gameData/items.js';
 import { foodProfile } from '../textEngine/scenes/feedReaction/index.js';
 
@@ -49,8 +50,9 @@ export function InventoryView({ inventory, setItemTargetPicker }){
 export function ItemTargetPicker({ itemTargetPicker, setItemTargetPicker, students, lilithUnlocked, useItemOn, soundEnabled = true }){
   const { item } = itemTargetPicker;
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, item?.id]);
+  const dismiss = () => { playHallPassSound('click', soundEnabled); setItemTargetPicker(null); };
   return(
-    <div style={C.overlay}>
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in item-target-picker-modal" style={{...C.modal,maxWidth:460}}>
         <div style={{fontSize:9,letterSpacing:3,color:"#9050c8",marginBottom:6}}>USE ITEM</div>
         <div style={{fontSize:14,fontWeight:700,color:"#c090e8",marginBottom:4}}>{item.emoji} {item.label}</div>
@@ -72,8 +74,8 @@ export function ItemTargetPicker({ itemTargetPicker, setItemTargetPicker, studen
             );
           })}
         </div>
-        <button style={{...C.btn("#333"),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); setItemTargetPicker(null); }}>Cancel</button>
+        <button style={{...C.btn("#333"),width:"100%"}} onClick={dismiss}>Cancel</button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

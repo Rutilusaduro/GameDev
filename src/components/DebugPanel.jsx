@@ -12,6 +12,7 @@ import { buildGameSnapshot, serializeBugReport } from '../gameData/bugReport.js'
 import { defaultOppositionState } from '../gameData/opposition.js';
 import { dormUnlocksForWeek } from '../gameData/dorms.js';
 import { toggleInstantText, toggleSound } from '../gameData/playerPrefs.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 if (typeof window !== 'undefined' && import.meta.env.DEV) {
   window.__textEngine = { render, createContext, getSeason, relSize };
@@ -100,7 +101,7 @@ export function DebugPanel({
   };
 
   return (
-    <div style={{ ...C.overlay, alignItems: 'flex-start', paddingTop: 16, overflowY: 'auto', zIndex: 390 }}>
+    <ModalOverlay onClose={() => setDebugOpen(false)} soundEnabled={soundEnabled} style={{ alignItems: 'flex-start', paddingTop: 16, overflowY: 'auto', zIndex: 390 }}>
       <div style={{ ...C.modal, maxWidth: 720, width: '95%', maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
           <div style={{ fontSize: 11, letterSpacing: 3, color: '#60b060' }}>🐛 DEBUG CONSOLE</div>
@@ -366,6 +367,6 @@ export function DebugPanel({
           </div>
         )}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

@@ -8311,8 +8311,9 @@ export default function HallPass(){
         const allFed=gev.students.some(s=>allDishIds.every(id=>s.dishes.includes(id)));
         const groupPantryItems=ITEMS.filter(i=>(inventory[i.id]||0)>0);
         const venuePantryItems=gev.venue?getVenuePantrySuggestions(gev.venue.id):[];
+        const dismissGroupDinnerVenue=()=>{ playHallPassSound('click', soundEnabled); setGroupDinnerEvent(null); };
         return(
-          <div style={C.overlay}>
+          <ModalOverlay onClose={dismissGroupDinnerVenue} dismissible={gev.phase==="venue"} soundEnabled={soundEnabled}>
             <div className="hall-pass-modal-in group-dinner-modal" style={{...C.modal,maxWidth:640,padding:20}}>
               <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:8}}>GROUP DINNER</div>
 
@@ -8508,13 +8509,13 @@ export default function HallPass(){
                 </div>
               )}
             </div>
-          </div>
+          </ModalOverlay>
         );
       })()}
 
       {/* NARRATIVE MODAL */}
       {activeNarrativeCopy&&(
-        <div style={C.overlay}>
+        <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); push(`📖 ${activeNarrativeCopy.event.title} — dismissed.`); setActiveEvent(null); }} soundEnabled={soundEnabled}>
           <div className="hall-pass-modal-in narrative-modal" style={C.modal}>
             <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:4}}>NARRATIVE EVENT</div>
             <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:20}}>{activeNarrativeCopy.event.title}</h2>
@@ -8540,7 +8541,7 @@ export default function HallPass(){
               ]}
             />
           </div>
-        </div>
+        </ModalOverlay>
       )}
 
       {/* OBSERVE MODAL */}
@@ -9095,8 +9096,13 @@ export default function HallPass(){
         const canQuit=stageIdx<2;
         const payoffFn=SESSION_PAYOFF_TEXT[stageIdx];
         const payoffText=done&&payoffFn?payoffFn(gain,endReason):`Session closed with ${Math.round(gain)} lbs gained.`;
+        const dismissRanked=()=>{
+          playHallPassSound('click', soundEnabled);
+          if (done) closeRankedSession();
+          else if (canQuit) quitRankedSession();
+        };
         return(
-          <div style={{...C.overlay,zIndex:1200}}>
+          <ModalOverlay onClose={dismissRanked} dismissible={done || canQuit} soundEnabled={soundEnabled} style={{ zIndex: 1200 }}>
             <div className="hall-pass-modal-in ranked-session-modal" style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#040810,#080e1a,#040810)",border:"1px solid #1a5a9050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#3080c0",marginBottom:4}}>{stageTitle.toUpperCase()}</div>
               <div style={{fontSize:14,fontWeight:700,color:"#60a0e0",marginBottom:8}}>{s.name}</div>
@@ -9166,7 +9172,7 @@ export default function HallPass(){
                 </>
               )}
             </div>
-          </div>
+          </ModalOverlay>
         );
       })()}
 
