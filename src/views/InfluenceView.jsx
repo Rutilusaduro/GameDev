@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { C } from '../styles.js';
 import { CAMPUS_NODES } from '../gameData/campus.js';
 import { getResonanceTier, getCombinedHallLbs } from '../gameData/v2/cravingResonance.js';
+import { hasOwnedSkill } from '../gameData/skillTrees.js';
 import { canTriggerDream } from '../gameData/v2/appetiteDreams.js';
 import { getAvailableRituals } from '../gameData/v2/feastRituals.js';
 import { witnessEntrySummary } from '../gameData/campusWitness.js';
@@ -33,7 +34,7 @@ export function InfluenceView({
   const tier = getResonanceTier(links.length, getCombinedHallLbs(students));
   const rituals = getAvailableRituals({ ownedSkills, ownedHallSkills, students, week, reachLevel });
   const hasDreamChamber = !!ownedHallSkills?.dream_chamber;
-  const hasSpiritRide = (ownedSkills?.spirit_ride || 0) >= 1;
+  const hasResidentRide = hasOwnedSkill(ownedSkills, 'resident_ride');
   const hasHungerWeb = (ownedSkills?.hunger_web || 0) >= 1;
   const hasDreamWalk = (ownedSkills?.dream_walk || 0) >= 1;
   const activeId = embodimentState?.activeStudentId ?? v2State?.embodiment?.activeStudentId;
@@ -88,11 +89,11 @@ export function InfluenceView({
           <div style={{ fontSize: 10, fontWeight: 700, color: '#ffd0c0', letterSpacing: 1 }}>
             🏃 CAMPUS PILOT — RESIDENT RIDE
           </div>
-          {hasSpiritRide && (
+          {hasResidentRide && (
             <span style={{ fontSize: 8, color: '#90c0a0', letterSpacing: 0.5, textTransform: 'uppercase' }}>Ready</span>
           )}
         </div>
-        {!hasSpiritRide ? (
+        {!hasResidentRide ? (
           <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>Unlock Resident Ride in the Influence skill tree.</p>
         ) : (
           <>

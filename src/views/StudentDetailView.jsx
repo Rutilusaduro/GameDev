@@ -974,11 +974,11 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                 })()}
 
                 {/* V2.0 Floor Influence */}
-                {((ownedSkills?.spirit_ride||0)>=1||(ownedSkills?.dream_walk||0)>=1||(ownedSkills?.memory_palace||0)>=1)&&(
+                {((ownedSkills?.resident_ride||ownedSkills?.spirit_ride||0)>=1||(ownedSkills?.dream_walk||0)>=1||(ownedSkills?.memory_palace||0)>=1)&&(
                   <div style={{...C.card,marginBottom:14,borderColor:'#8a4be040'}}>
                     <div style={{...C.secT,marginBottom:7,color:'#c0a0e0'}}>Floor Influence · 2.0</div>
                     <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:10}}>
-                      {(ownedSkills?.spirit_ride||0)>=1&&(
+                      {((ownedSkills?.resident_ride||ownedSkills?.spirit_ride||0)>=1)&&(
                         <button type="button" style={{...C.btn('#6a30a0'),flex:'1 1 140px',fontSize:11}}
                           onClick={()=>openEmbodiment?.(s)}>
                           🌒 Ride Along

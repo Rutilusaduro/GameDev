@@ -197,12 +197,12 @@ registerPool('emb.action.hunger_spiral', [
 
 export function renderEmbodimentEnter(ctx) {
   const base = render('{emb.enter}', ctx);
-  return appendV2Depth(base, 'spirit', ctx, 0.35);
+  return appendV2Depth(base, 'embodiment', ctx, 0.35);
 }
 
 export function renderEmbodimentRelease(ctx) {
   const base = render('{emb.release}', ctx);
-  return appendV2Depth(base, 'spirit', ctx, 0.3);
+  return appendV2Depth(base, 'embodiment', ctx, 0.3);
 }
 
 export function renderEmbodimentAction(actionId, ctx) {
@@ -213,5 +213,5 @@ export function renderEmbodimentAction(actionId, ctx) {
     const depth = render(`{emb.action.${actionId}.depth}`, ctx);
     base = depth?.trim() || render('{emb.action.generic}', ctx);
   }
-  return appendV2Depth(base, 'spirit', ctx, 0.28);
+  return appendV2Depth(base, 'embodiment', ctx, 0.28);
 }

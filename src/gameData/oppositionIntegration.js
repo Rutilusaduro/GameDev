@@ -67,6 +67,7 @@ export function counterGateReason(counter, ctx) {
       if (ctx.hasInstitutionalCover && ctx.relMaxStudent >= 70) return null;
       if (ctx.relMaxStudent >= 70) return null;
       return 'Requires institutional cover or a resident at 70+ relationship';
+    case 'floor_pressure':
     case 'spirit_pressure':
       return ctx.hasEchoedWill ? null : 'Requires Echoed Will (Influence tree)';
     case 'faculty_testimony':

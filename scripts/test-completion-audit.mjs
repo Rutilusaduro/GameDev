@@ -147,7 +147,7 @@ check('ui-polish-css', () => {
     'ra-desk-week-tick', 'scene-beat-advance', 'scene-choice-btn',
     'hall-unlock-cta', 'week-recap-cta', 'hall-log-achievement', 'hall-log-unlock',
     'floor-checkin-choice', 'week-recap-week-badge',
-    'milestone-ceremony-modal', 'milestone-resident-header', 'tier-up-cta', 'hunger-interrupt-modal',
+    'milestone-ceremony-modal', 'milestone-resident-header', 'tier-up-cta', 'hunger-interrupt-modal', 'floor-checkin-modal',
   ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
   }
@@ -190,6 +190,13 @@ check('influence-view-routes', () => {
   assert.doesNotMatch(desk, /SpiritHubView/);
   assert.doesNotMatch(desk, /view==="class"/);
   assert.doesNotMatch(desk, /view==="spirit-hub"/);
+});
+
+check('resident-ride-skill', () => {
+  const skills = read('src/gameData/skillTrees.js');
+  assert.match(skills, /id:"resident_ride"/);
+  assert.doesNotMatch(skills, /id:"spirit_ride"/);
+  assert.match(skills, /migrateOwnedSkills/);
 });
 
 check('owned-hall-skills', () => {

@@ -238,7 +238,7 @@ const echoByStudent = {
   18: ['Talia\'s echo trial data crystallized — moment archived where hypothesis became body.'],
 };
 
-registerModuleVariants('spirit.v2.depth', studentVariants(spiritByStudent));
+registerModuleVariants('embodiment.v2.depth', studentVariants(spiritByStudent));
 registerModuleVariants('resonance.v2.depth', studentVariants(resonanceByStudent));
 registerModuleVariants('ritual.v2.depth', studentVariants(ritualByStudent));
 registerModuleVariants('dream.v2.depth', studentVariants(dreamByStudent));

@@ -176,8 +176,8 @@ registerPool("talk.coda", [
       (ctx) => `${ctx.subject.name} shifts by degrees. The room rearranges around her. "Stay," she says, easy and vast.`,
       (ctx) => `Conversation slows to her breathing. Fullness has become geography.`,
     ] },
-  // Spirit embodiment register — player has ridden this week
-  { when: { skill: "spirit_ride" }, weight: 2,
+  // Resident ride register — player has ridden this week
+  { when: { skill: "residentRide" }, weight: 2,
     text: [
       (ctx) => `Something in ${ctx.subject.name}'s voice carries an echo you recognize — appetite answered from the inside.`,
       (ctx) => `She pauses mid-sentence, hand on her belly, as if feeling you settle deeper.`,

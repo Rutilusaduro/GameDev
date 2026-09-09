@@ -206,10 +206,10 @@ export const SKILLS = [
     effects:{ totalSurrender:1 } },
 
   // ═══ V2.0 — Floor Influence ═══
-  { id:"spirit_ride", tree:"influence", tier:1, icon:"🌒", name:"Resident Ride", maxRanks:1,
-    desc:"Slip out of your RA routine and and ride along with a resident — feel her hunger from within.",
+  { id:"resident_ride", tree:"influence", tier:1, icon:"🌒", name:"Resident Ride", maxRanks:1,
+    desc:"Slip out of your RA routine and ride along with a resident — feel her hunger from within.",
     rankDesc:()=>`Unlock Resident Ride (1/week)`,
-    effects:{ spiritRide:1 } },
+    effects:{ residentRide:1 } },
   { id:"deep_ride", tree:"influence", tier:2, icon:"🌑", name:"Deep Ride", maxRanks:1,
     desc:"Extended embodiment with surrender actions and a second weekly inhabit.",
     rankDesc:()=>`2 embodiments/week + advanced actions`,
@@ -273,9 +273,35 @@ export const PHYSICAL_TRAITS = [
 
 const skillMap = Object.fromEntries(SKILLS.map(sk => [sk.id, sk]));
 
+const LEGACY_SKILL_IDS = {
+  spirit_ride: 'resident_ride',
+};
+
+/** Normalize legacy skill id keys from older saves. */
+export function migrateOwnedSkills(owned = {}) {
+  if (!owned || typeof owned !== 'object') return {};
+  const next = { ...owned };
+  for (const [legacy, modern] of Object.entries(LEGACY_SKILL_IDS)) {
+    if ((next[legacy] || 0) > 0) {
+      next[modern] = Math.max(next[modern] || 0, next[legacy]);
+      delete next[legacy];
+    }
+  }
+  return next;
+}
+
+export function getSkillRank(owned = {}, id) {
+  return migrateOwnedSkills(owned)[id] || 0;
+}
+
+export function hasOwnedSkill(owned = {}, id) {
+  return getSkillRank(owned, id) > 0;
+}
+
 export function treeSpentPoints(owned = {}, treeId) {
+  const migrated = migrateOwnedSkills(owned);
   return SKILLS.filter(sk => sk.tree === treeId).reduce((sum, sk) => {
-    const rank = owned[sk.id] || 0;
+    const rank = migrated[sk.id] || 0;
     return sum + rank * RANK_COSTS[sk.tier];
   }, 0);
 }
@@ -286,14 +312,16 @@ export function isTreeTierUnlocked(owned = {}, treeId, tierIdx) {
 }
 
 export function computeSpentSkillPoints(owned = {}) {
-  return SKILLS.reduce((sum, sk) => sum + (owned[sk.id] || 0) * RANK_COSTS[sk.tier], 0);
+  const migrated = migrateOwnedSkills(owned);
+  return SKILLS.reduce((sum, sk) => sum + (migrated[sk.id] || 0) * RANK_COSTS[sk.tier], 0);
 }
 
 /** Sum owned ranks into effect totals consumed by feed, talk, and week ticks. */
 export function aggregateSkillEffects(owned = {}) {
+  const migrated = migrateOwnedSkills(owned);
   const out = {};
   for (const sk of SKILLS) {
-    const rank = owned[sk.id] || 0;
+    const rank = migrated[sk.id] || 0;
     if (!rank) continue;
     for (const [key, val] of Object.entries(sk.effects || {})) {
       if (sk.maxRanks === 1 && val === 1) {

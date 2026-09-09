@@ -20,19 +20,19 @@ export const REMOVAL_HEARING = {
       choices: [
         { id: 'hold_firm', label: 'Hold firm — abundance is the curriculum', resultPool: 'opposition.hearing.removal.result.hold_firm', flag: 'firm' },
         { id: 'negotiate', label: 'Negotiate — private indulgence, public discretion', resultPool: 'opposition.hearing.removal.result.negotiate', flag: 'negotiate' },
-        { id: 'spirit', label: 'Floor pressure — mandatory tasting for the Board', resultPool: 'opposition.hearing.removal.result.spirit', flag: 'spirit' },
+        { id: 'floor_pressure', label: 'Floor pressure — mandatory tasting for the Board', resultPool: 'opposition.hearing.removal.result.floor_pressure', flag: 'floor_pressure' },
       ],
     },
   ],
   endings: [
     {
       poolKey: 'advocate_voice',
-      condition: (h) => h.includes('advocate') && (h.includes('firm') || h.includes('spirit')),
+      condition: (h) => h.includes('advocate') && (h.includes('firm') || h.includes('floor_pressure') || h.includes('spirit')),
       studentHiddenWeeks: 0, scrutinyDelta: -6, resolveHitAll: 10,
     },
     {
       poolKey: 'discredit_feast',
-      condition: (h) => h.includes('discredit') && h.includes('spirit'),
+      condition: (h) => h.includes('discredit') && (h.includes('floor_pressure') || h.includes('spirit')),
       studentHiddenWeeks: 0, scrutinyDelta: -10, resolveHitAll: 15, scandalDelta: -10,
     },
     {

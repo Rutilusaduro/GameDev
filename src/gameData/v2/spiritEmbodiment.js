@@ -2,6 +2,7 @@
 // RESIDENT RIDE — ride along with residents, drive their actions
 // ═══════════════════════════════════════════════════════════════
 import { getStage } from '../stages.js';
+import { getSkillRank, hasOwnedSkill } from '../skillTrees.js';
 import { V2_CONFIG } from './state.js';
 import { EMBODIED_START_NODE } from './embodiedCampus.js';
 
@@ -13,7 +14,7 @@ export const EMBODIMENT_ACTIONS = [
     apCost: 0,
     minStage: 0,
     minCorruption: 0,
-    requiresSkill: 'spirit_ride',
+    requiresSkill: 'resident_ride',
     calories: 1200,
     fullness: 35,
     rel: 2,
@@ -28,7 +29,7 @@ export const EMBODIMENT_ACTIONS = [
     apCost: 0,
     minStage: 2,
     minCorruption: 15,
-    requiresSkill: 'spirit_ride',
+    requiresSkill: 'resident_ride',
     calories: 2200,
     fullness: 55,
     rel: 4,
@@ -43,7 +44,7 @@ export const EMBODIMENT_ACTIONS = [
     apCost: 0,
     minStage: 3,
     minCorruption: 25,
-    requiresSkill: 'spirit_ride',
+    requiresSkill: 'resident_ride',
     calories: 1800,
     fullness: 45,
     rel: 6,
@@ -71,7 +72,7 @@ export const EMBODIMENT_ACTIONS = [
     apCost: 0,
     minStage: 2,
     minCorruption: 20,
-    requiresSkill: 'spirit_ride',
+    requiresSkill: 'resident_ride',
     calories: 600,
     fullness: 15,
     rel: 10,
@@ -143,7 +144,7 @@ export const EMBODIMENT_ACTIONS = [
     apCost: 0,
     minStage: 1,
     minCorruption: 10,
-    requiresSkill: 'spirit_ride',
+    requiresSkill: 'resident_ride',
     calories: 900,
     fullness: 25,
     rel: 3,
@@ -158,7 +159,7 @@ export const EMBODIMENT_ACTIONS = [
     apCost: 0,
     minStage: 2,
     minCorruption: 20,
-    requiresSkill: 'spirit_ride',
+    requiresSkill: 'resident_ride',
     calories: 1400,
     fullness: 30,
     rel: 2,
@@ -213,11 +214,11 @@ export const EMBODIMENT_ACTIONS = [
 export function canEmbody(student, { ownedSkills = {}, ownedHallSkills = {}, embodimentState = {}, week = 1 } = {}) {
   if (!student || student.hidden) return { ok: false, reason: 'No target' };
   if (student.lockState === 'locked') return { ok: false, reason: 'She is not close enough to inhabit yet' };
-  if ((ownedSkills.spirit_ride || 0) < 1) return { ok: false, reason: 'Requires Resident Ride skill' };
-  const maxUses = (ownedSkills.deep_ride || 0) >= 1 ? V2_CONFIG.maxEmbodimentsDeepRide : V2_CONFIG.maxEmbodimentsPerWeek;
+  if (!hasOwnedSkill(ownedSkills, 'resident_ride')) return { ok: false, reason: 'Requires Resident Ride skill' };
+  const maxUses = getSkillRank(ownedSkills, 'deep_ride') >= 1 ? V2_CONFIG.maxEmbodimentsDeepRide : V2_CONFIG.maxEmbodimentsPerWeek;
   if ((embodimentState.usedThisWeek || 0) >= maxUses) return { ok: false, reason: 'Embodiment limit reached this week' };
   if (embodimentState.activeStudentId != null) return { ok: false, reason: 'Already inhabiting someone' };
-  const apCost = (ownedSkills.deep_ride || 0) >= 1
+  const apCost = getSkillRank(ownedSkills, 'deep_ride') >= 1
     ? V2_CONFIG.embodimentDeepRideAp
     : V2_CONFIG.embodimentBaseAp;
   const discounted = ownedHallSkills.embodiment_chamber
@@ -230,7 +231,7 @@ export function getAvailableEmbodimentActions(student, ownedSkills = {}, ownedHa
   const stage = getStage(student.lbs).id;
   const cor = student.corruption || 0;
   return EMBODIMENT_ACTIONS.filter((a) => {
-    if ((ownedSkills[a.requiresSkill] || 0) < 1) return false;
+    if (!hasOwnedSkill(ownedSkills, a.requiresSkill)) return false;
     if (stage < a.minStage) return false;
     if (cor < a.minCorruption) return false;
     if (atNode && a.nodes?.length && !a.nodes.includes(atNode)) return false;

@@ -161,6 +161,7 @@ export function applySupernaturalAgendaHook(cardEffect, students, effects) {
 export function getSupernaturalHearingFlags(students) {
   const forms = new Set((students || []).filter((s) => s.supernaturalForm).map((s) => s.supernaturalForm));
   return {
+    hasInfluencePath: forms.size > 0,
     hasSpiritPath: forms.size > 0,
     hasArchivistDiscredit: forms.has('archivist_skin'),
     hasHiveShield: forms.has('hive_mote'),

@@ -227,18 +227,18 @@ export function renderEmbodiedArrive(student, nodeId, week = 1, opts = {}) {
   const node = CAMPUS_NODES[nodeId];
   const flavor = node?.flavor?.[week % (node.flavor?.length || 1)] || '';
   const composed = flavor ? `${base} ${flavor}` : base;
-  return appendV2Depth(composed, 'spirit', ctx, opts.v2DepthChance ?? 0.35);
+  return appendV2Depth(composed, 'embodiment', ctx, opts.v2DepthChance ?? 0.35);
 }
 
 export function renderEmbodiedMove(student, fromId, toId, week = 1, opts = {}) {
   const ctx = embCtx(student, week, toId, opts);
   const line = render('{emb.walk.move}', ctx, { trace: opts.trace || null })?.trim() || `→ ${CAMPUS_NODES[toId]?.label || toId}`;
-  return appendV2Depth(line, 'spirit', ctx, opts.v2DepthChance ?? 0.22);
+  return appendV2Depth(line, 'embodiment', ctx, opts.v2DepthChance ?? 0.22);
 }
 
 export function renderEmbodiedEvent(eventId, student, nodeId, week = 1, opts = {}) {
   const pool = EVENT_POOL[eventId] || 'emb.walk.arrive';
   const ctx = embCtx(student, week, nodeId, opts);
   const base = render(`{${pool}}`, ctx, { trace: opts.trace || null })?.trim() || '';
-  return appendV2Depth(base, 'spirit', ctx, opts.v2DepthChance ?? 0.4);
+  return appendV2Depth(base, 'embodiment', ctx, opts.v2DepthChance ?? 0.4);
 }

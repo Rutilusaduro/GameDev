@@ -33,7 +33,7 @@ export function OppositionHearingModal({
   const visibleChoices = phase?.choices?.filter((ch) => {
     if (ch.id === 'discredit' && !hasDiscreditPath) return false;
     if (ch.id === 'advocate' && !hasAdvocatePath) return false;
-    if (ch.id === 'spirit' && !hearingFlags.hasSpiritPath) return false;
+    if (ch.id === 'floor_pressure' && !hearingFlags.hasInfluencePath && !hearingFlags.hasSpiritPath) return false;
     if (ch.id === 'hive' && !students.some((s) => s.evolvedForm === 'delivery_hive')) return false;
     return true;
   }) ?? [];

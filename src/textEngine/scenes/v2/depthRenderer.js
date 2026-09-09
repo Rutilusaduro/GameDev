@@ -36,7 +36,7 @@ const POOLS = {
   campusNav: 'campusNav.v2.depth',
   earlyGain: 'earlyGain.v2.depth',
   evolved: 'evolved.v2.depth',
-  spirit: 'spirit.v2.depth',
+  embodiment: 'embodiment.v2.depth',
   ritual: 'ritual.v2.depth',
   dream: 'dream.v2.depth',
   echo: 'echo.v2.depth',

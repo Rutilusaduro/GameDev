@@ -46,7 +46,7 @@ export const AIB_COUNTERS = [
   { id: 'feast_bribe', label: 'Feast Bribe', ap: 3, resolveHit: 5, scrutiny: -8, desc: 'Pause AIB actions one week with a lavish feast.' },
   { id: 'public_discredit', label: 'Public Discredit', ap: 2, resolveHit: 10, scrutiny: -10, desc: 'Remove one agenda card type from the deck permanently.' },
   { id: 'bureaucratic_capture', label: 'Bureaucratic Capture', ap: 2, resolveHit: 15, scrutiny: -5, desc: 'Convert a wavering member (resolve ≤ 40) to compromised.' },
-  { id: 'spirit_pressure', label: 'Floor Pressure', ap: 1, resolveHit: 8, scrutiny: -3, desc: 'Force the top agenda card to misfire harmlessly.' },
+  { id: 'floor_pressure', label: 'Floor Pressure', ap: 1, resolveHit: 8, scrutiny: -3, desc: 'Force the top agenda card to misfire harmlessly.' },
   { id: 'evolved_student_op', label: 'Evolved Resident Operation', ap: 2, resolveHit: 0, scrutiny: -5, desc: 'An evolved resident delays the top agenda card one week.' },
   { id: 'machine_fatten', label: 'Machine Fattening', ap: 2, resolveHit: 12, scrutiny: 5, desc: 'Growth chamber targets a board member (+lbs, −resolve, scandal risk).' },
   { id: 'faculty_testimony', label: 'Staff Testimony', ap: 1, resolveHit: 0, scrutiny: -4, desc: 'Staff ally cancels informant effects for two weeks.' },
@@ -60,7 +60,7 @@ export function getAvailableCounters(opposition, students, ctx = {}) {
   const agendaLen = opposition?.aib?.agendaQueue?.length || 0;
   return AIB_COUNTERS.filter((c) => {
     if (c.id === 'evolved_student_op' && !hasEvolved) return false;
-    if (c.id === 'spirit_pressure' && agendaLen === 0) return false;
+    if (c.id === 'floor_pressure' && agendaLen === 0) return false;
     if (c.path === 'lilith' && (!ctx.lilithUnlocked || !students.some((s) => s.id === 15))) return false;
     if (c.path === 'pharmacist' && ((ctx.pharmacistStage ?? 0) < 2 || !students.some((s) => s.evolvedForm === 'pharmacist'))) return false;
     if (c.path === 'network' && (ctx.networkStage ?? 1) < 2) return false;
@@ -426,7 +426,7 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
       moneyDelta: 0,
     };
   }
-  if (counterId === 'spirit_pressure' && next.aib.agendaQueue.length) {
+  if ((counterId === 'floor_pressure' || counterId === 'spirit_pressure') && next.aib.agendaQueue.length) {
     if (options.spendEchoedWill && !options.spendEchoedWill()) {
       return { opposition: next, message: '⚠️ Echoed Will spent — nothing left to press.', scrutinyDelta: 0, apCost: 0, moneyDelta: 0 };
     }

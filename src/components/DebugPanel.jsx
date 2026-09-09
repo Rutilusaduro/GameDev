@@ -166,7 +166,7 @@ export function DebugPanel({
               {setOwnedSkills && (
                 <button type="button" style={{ ...C.smBtn, background: 'rgba(90,50,140,0.55)' }}
                   onClick={() => {
-                    setOwnedSkills((prev) => ({ ...prev, spirit_ride: 1, deep_ride: 1 }));
+                    setOwnedSkills((prev) => ({ ...prev, resident_ride: 1, deep_ride: 1 }));
                     setAp((a) => Math.max(a, 20));
                     setView('influence');
                   }}>

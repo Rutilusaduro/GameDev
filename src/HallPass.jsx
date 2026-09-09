@@ -2672,7 +2672,7 @@ export default function HallPass(){
       ...options,
       evolvedOpMessage,
       archivistDiscreditFree:archivistFree,
-      spendEchoedWill:counterId==='spirit_pressure'?spendEchoedWill:undefined,
+      spendEchoedWill:(counterId==='floor_pressure'||counterId==='spirit_pressure')?spendEchoedWill:undefined,
     });
     if(result.apCost&&ap<result.apCost){push(`⚠️ Need ${result.apCost} AP.`);return;}
     if(result.apCost) setAp(a=>a-result.apCost);
@@ -7876,7 +7876,7 @@ export default function HallPass(){
         const current=!isDone&&!pendingResult?scenes[sceneIdx]:null;
         return(
           <div style={C.overlay}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:600}}>
+            <div className="hall-pass-modal-in floor-checkin-modal" style={{...C.modal,maxWidth:600,border:'1px solid #8040c860'}}>
               <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:3}}>FLOOR CHECK-IN — WEEK {week}</div>
               <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:19}}>
                 {isDone?"Check-In Wrapped":pendingResult?pendingResult.sceneTitle:current?.scene.title}
@@ -7905,7 +7905,7 @@ export default function HallPass(){
                         :`⚖️ ${pendingResult.target} gains ${pendingResult.gain} lbs`}
                     </div>
                   )}
-                  <button onClick={()=>{ playHallPassSound('click', soundEnabled); confirmResult(); }} style={C.btn("#5818a8")}>
+                  <button type="button" className="scene-beat-advance" onClick={()=>{ playHallPassSound('click', soundEnabled); confirmResult(); }} style={C.btn("#5818a8")}>
                     {sceneIdx<scenes.length-1?"Continue →":"View Summary →"}
                   </button>
                 </div>

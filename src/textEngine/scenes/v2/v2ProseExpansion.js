@@ -365,7 +365,7 @@ registerPool('evolved.v2.depth', [
     'What began as a choice has become a signature. She eats like someone who knows who she is.',
   ]},
 ]);
-registerPool('spirit.v2.depth', [
+registerPool('embodiment.v2.depth', [
   { when: { stageMin: 9 }, text: [
     'Resident ride at immobile scale — you inhabit architecture, hunger measured in geography not bites.',
     'You ride inside a body that has become environment. Every breath moves mass.',

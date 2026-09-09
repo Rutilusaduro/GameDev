@@ -70,7 +70,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.result.negotiate', [
   ]},
 ]);
 
-registerPoolAutoDecompose('opposition.hearing.removal.result.spirit', [
+registerPoolAutoDecompose('opposition.hearing.removal.result.floor_pressure', [
   { when: {}, text: [
     'Plates appear. Resolve softens with every bite.',
     'Floor pressure turns the Board\'s table into yours. Fullness does what argument could not.',
