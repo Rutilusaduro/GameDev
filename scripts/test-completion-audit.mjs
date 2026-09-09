@@ -1058,6 +1058,17 @@ check('cassidy-swimmer-voice', () => {
   assert.ok(crDepth, 'diaryEvolvedSceneDepth must contain community_researcher beats');
   assert.match(crDepth[0], /Floor sessions from this chair/);
   assert.doesNotMatch(crDepth[0], /Field site|Observation stationary/i);
+
+  const attitude = read('src/textEngine/scenes/attitude.js');
+  const swimmerBlocks = attitude.match(/\{ when: \{ archetype: ['"]swimmer['"][\s\S]*?text: \[[\s\S]*?\]\s*,?\s*\}/g) ?? [];
+  assert.ok(swimmerBlocks.length >= 2, 'attitude.js must contain archetype swimmer blocks');
+  const swimmerText = swimmerBlocks.join('\n');
+  assert.doesNotMatch(swimmerText, /\bhypothesis\b/i, 'attitude swimmer blocks still bookworm');
+  assert.doesNotMatch(swimmerText, /\bdocumented my willingness\b/i, 'attitude swimmer blocks still bookworm');
+  assert.match(swimmerText, /training|season|lane|pool|split|logged|captain/i, 'attitude swimmer must use athletic voice');
+  for (const re of BANNED_IN_CASSIDY) {
+    assert.doesNotMatch(swimmerText, re, `attitude.js swimmer blocks still has ${re}`);
+  }
 });
 
 check('embodied-resident-sighting', () => {

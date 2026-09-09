@@ -266,9 +266,10 @@ registerPool("attitude.line", [
     ] },
   { when: { archetype: 'swimmer', corruption: [0] }, priority: 1,
     text: [
-      `Analyzing my mood like data — conclusion: hungry, embarrassed, trending upward.`,
-      `I have a hypothesis about my appetite. The hypothesis keeps confirming itself.`,
-      `Intellectually resistant, practically compliant.`,
+      `I logged my mood like split times — hungry, embarrassed, trending upward.`,
+      `My season plan didn't budget for this appetite. The numbers keep confirming it.`,
+      `Disciplined on paper, compliant at the table.`,
+      `Pool discipline in my head; dining hall appetite off the charts.`,
     ] },
   { when: { archetype: "bookworm", corruption: [1, 2] }, priority: 1,
     text: [
@@ -278,9 +279,10 @@ registerPool("attitude.line", [
     ] },
   { when: { archetype: 'swimmer', corruption: [1, 2] }, priority: 1,
     text: [
-      `I've documented my willingness. The findings are unambiguous.`,
-      `training subject: me. Variable: obedience. Result: significant.`,
-      `I can explain why I want this. Explanation doesn't slow me down.`,
+      `I've logged my willingness. The training block is unambiguous.`,
+      `Training subject: me. Variable: obedience. Result: personal best.`,
+      `I can explain why I want this. The explanation doesn't slow my appetite.`,
+      `Captain's log: compliant, accelerating. No corrective sets planned.`,
     ] },
   { when: { archetype: "cheerleader", corruption: [0] }, priority: 1,
     text: [
