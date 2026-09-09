@@ -538,6 +538,35 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(168, 120, 255, 0.14);
 }
 
+.origin-pick-card {
+  text-align: left;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 14px;
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(168, 120, 255, 0.45);
+  color: #ead8ff;
+  min-height: 44px;
+  transition: transform 0.14s ease, box-shadow 0.18s ease, border-color 0.18s ease, filter 0.18s ease;
+}
+
+.origin-pick-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32), 0 0 20px rgba(168, 120, 255, 0.12);
+  border-color: rgba(200, 160, 255, 0.65);
+  filter: brightness(1.04);
+}
+
+.origin-pick-card:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.origin-pick-card:focus-visible {
+  outline: 2px solid rgba(180, 140, 255, 0.85);
+  outline-offset: 2px;
+}
+
 .community-researcher-modal {
   background: linear-gradient(165deg, rgba(2, 6, 16, 0.98), rgba(6, 14, 28, 0.96), rgba(2, 4, 12, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(74, 111, 165, 0.16);
@@ -888,7 +917,9 @@
   .hall-pass-modal-in button:hover:not(:disabled),
   .hall-pass-modal-in button:active:not(:disabled),
   .picker-choice-row:hover,
-  .picker-choice-row:active {
+  .picker-choice-row:active,
+  .origin-pick-card:hover,
+  .origin-pick-card:active {
     transform: none;
   }
 }

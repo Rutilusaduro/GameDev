@@ -29,18 +29,8 @@ export function OriginPickModal({ student, onPick, soundEnabled = true }) {
             <button
               key={card.id}
               type="button"
+              className="origin-pick-card"
               onClick={() => { playHallPassSound('confirm', soundEnabled); onPick(card.id); }}
-              style={{
-                textAlign: 'left',
-                cursor: 'pointer',
-                borderRadius: 12,
-                padding: 14,
-                fontFamily: 'inherit',
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(168,120,255,0.45)',
-                color: '#ead8ff',
-                minHeight: 44,
-              }}
             >
               <div style={{ fontSize: 15, fontWeight: 700, color: '#d8c0ff', marginBottom: 5 }}>{card.label}</div>
               <div style={{ fontSize: 12, color: '#cbb8df', fontStyle: 'italic', lineHeight: 1.6, marginBottom: 10 }}>{card.voiceLine}</div>

@@ -135,6 +135,7 @@ check('smoke-wires-completion-audit', () => {
 const REQUIRED_E2E = [
   'e2e/setup-wizard.spec.js',
   'e2e/semester-wk4.spec.js',
+  'e2e/semester-wk5.spec.js',
   'e2e/semester-wk8-all-halls.spec.js',
   'e2e/semester-wk16-all-halls.spec.js',
   'e2e/semester-wk16-clickthrough.spec.js',
@@ -1635,6 +1636,16 @@ check('modal-button-polish', () => {
   const gallery = read('src/components/ArtisanGalleryModal.jsx');
   assert.match(talk, /hall-pass-modal-in talk-modal/);
   assert.match(gallery, /hall-pass-modal-in artisan-gallery-modal/);
+});
+
+check('origin-pick-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/OriginPickModal.jsx');
+  assert.match(css, /\.origin-pick-card:focus-visible/);
+  assert.match(css, /\.origin-pick-card:hover/);
+  assert.match(modal, /className="origin-pick-card"/);
+  assert.match(modal, /origin-pick-modal/);
+  assert.match(modal, /first meaningful contact/);
 });
 
 check('picker-row-polish', () => {
