@@ -13,14 +13,14 @@ export function EvolutionOfferModal({ chooseEvolution, evolutionModal, setEvolut
             <div style={{fontSize:12,color:"#b090d0",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>{evolutionModal.intro}</div>
             <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:12}}>
               {(evolutionModal.paths||[]).map(p=>(
-                <button key={p.id} style={{...C.btn("#40108080"),textAlign:"left",padding:"12px 14px",border:"1px solid #6030a060"}}
+                <button key={p.id} type="button" className="evolution-offer-choice-row" style={{...C.btn("#40108080"),textAlign:"left",padding:"12px 14px",border:"1px solid #6030a060"}}
                   onClick={()=>{ playHallPassSound('confirm', soundEnabled); chooseEvolution(evolutionModal.student.id,p.id); }}>
                   <div style={{fontSize:13,fontWeight:700,color:"#c080ff",marginBottom:4}}>{p.label}</div>
                   <div style={{fontSize:11,color:"#8060a0",lineHeight:1.5}}>{p.desc}</div>
                 </button>
               ))}
             </div>
-            <button style={C.btn("#201040")} onClick={()=>{ playHallPassSound('click', soundEnabled); setEvolutionModal(null); }}>Not yet</button>
+            <button type="button" className="evolution-offer-choice-row" style={C.btn("#201040")} onClick={()=>{ playHallPassSound('click', soundEnabled); setEvolutionModal(null); }}>Not yet</button>
           </div>
         </div>
   );
@@ -44,7 +44,7 @@ export function SessionResultModal({ sessionResult, setSessionResult, soundEnabl
                 She can now comfortably eat {sessionResult.capacityBonus}% more than when you first hosted her on your floor.
               </div>
             </div>
-            <button style={C.btn("#5818a8")} onClick={()=>{ playHallPassSound('confirm', soundEnabled); setSessionResult(null); }}>Continue →</button>
+            <button type="button" className="session-result-choice-row" style={C.btn("#5818a8")} onClick={()=>{ playHallPassSound('confirm', soundEnabled); setSessionResult(null); }}>Continue →</button>
           </div>
         </div>
   );
@@ -63,7 +63,7 @@ export function TapOutPopup({ setTapOutPopup, tapOutPopup, soundEnabled = true }
               {tapOutPopup.text}
             </p>
             <div style={{fontSize:11,color:"#705040",marginBottom:16}}>She ate enough for a family of five. The session is over.</div>
-            <button style={C.btn("#5a1515")} onClick={()=>{ playHallPassSound('click', soundEnabled); setTapOutPopup(null); }}>Close</button>
+            <button type="button" className="tap-out-choice-row" style={C.btn("#5a1515")} onClick={()=>{ playHallPassSound('click', soundEnabled); setTapOutPopup(null); }}>Close</button>
           </div>
         </div>
   );

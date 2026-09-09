@@ -7828,7 +7828,7 @@ export default function HallPass(){
               </div>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
                 <div style={C.secT}>Assign weight loss per resident</div>
-                <button style={C.smBtn} onClick={distributeEvenly}>Distribute evenly</button>
+                <button type="button" className="skill-purchase-choice-row" style={C.smBtn} onClick={distributeEvenly}>Distribute evenly</button>
               </div>
               <div style={{maxHeight:320,overflowY:"auto",display:"flex",flexDirection:"column",gap:5,marginBottom:12}}>
                 {students.map(s=>{
@@ -7862,8 +7862,8 @@ export default function HallPass(){
                 })}
               </div>
               <div style={{display:"flex",gap:8}}>
-                <button style={C.btn("#444")} onClick={()=>{ playHallPassSound('click', soundEnabled); setSkillPurchase(null); }}>Cancel</button>
-                <button style={{...C.btn(canConfirm?"#5020a0":"#2a1040"),flex:1,opacity:canConfirm?1:0.6}}
+                <button type="button" className="skill-purchase-choice-row" style={C.btn("#444")} onClick={()=>{ playHallPassSound('click', soundEnabled); setSkillPurchase(null); }}>Cancel</button>
+                <button type="button" className="skill-purchase-choice-row" style={{...C.btn(canConfirm?"#5020a0":"#2a1040"),flex:1,opacity:canConfirm?1:0.6}}
                   onClick={()=>{ if(canConfirm){ playHallPassSound('confirm', soundEnabled); confirmSkillPurchase(); } }}>
                   {canConfirm?`🔓 Unlock ${skill.label}`:`Assign ${remaining} more lbs to unlock`}
                 </button>
@@ -8034,7 +8034,7 @@ export default function HallPass(){
                   <div style={{fontSize:9,letterSpacing:2,color:"#7a5090",marginBottom:6}}>FEEDING PACE</div>
                   <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:10}}>
                     {SESSION_PACE_ACTIONS.map(p=>(
-                      <button key={p.id} type="button"
+                      <button key={p.id} type="button" className="dinner-lane-choice-row"
                         style={{...C.smBtn,opacity:(dinnerEvent.sessionPace||'steady')===p.id?1:0.55}}
                         onClick={()=>setDinnerEvent(prev=>({...prev,sessionPace:p.id}))}
                         title={p.desc}>
@@ -8043,7 +8043,7 @@ export default function HallPass(){
                     ))}
                   </div>
                   {isAtCapacity&&dinnerEvent.venue?.dishes?.length>0&&(
-                    <button type="button" style={{...C.btn("#6a2848"),width:"100%",fontSize:10,marginBottom:10}}
+                    <button type="button" className="dinner-lane-choice-row" style={{...C.btn("#6a2848"),width:"100%",fontSize:10,marginBottom:10}}
                       onClick={()=>{
                         const dish=dinnerEvent.venue.dishes.find(d=>!(dinnerEvent.dishes||[]).includes(d.id))||dinnerEvent.venue.dishes[0];
                         if(dish) orderDish(dish,{forcePush:true});
@@ -8070,7 +8070,7 @@ export default function HallPass(){
                       </div>
                     ))}
                   </div>
-                  <button style={{...C.btn("#444"),marginTop:12}} onClick={()=>{ playHallPassSound('click', soundEnabled); setDinnerEvent(null); }}>Cancel</button>
+                  <button type="button" className="dinner-lane-choice-row" style={{...C.btn("#444"),marginTop:12}} onClick={()=>{ playHallPassSound('click', soundEnabled); setDinnerEvent(null); }}>Cancel</button>
                 </div>
               )}
 
@@ -8091,7 +8091,7 @@ export default function HallPass(){
                       {allOrdered?(
                         <div style={{textAlign:"center",padding:"10px 0",marginBottom:12}}>
                           <div style={{fontSize:11,color:"#6a4870",fontStyle:"italic",marginBottom:8}}>The table is cleared.</div>
-                          <button style={{...C.btn("#4a2060")}} onClick={callWaiter}>🫆 Call for More</button>
+                          <button type="button" className="dinner-lane-choice-row" style={{...C.btn("#4a2060")}} onClick={callWaiter}>🫆 Call for More</button>
                         </div>
                       ):(
                         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:12}}>
@@ -8119,7 +8119,7 @@ export default function HallPass(){
                       <div style={{...C.secT,marginBottom:7}}>From your pantry</div>
                       <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:12}}>
                         {pantryItems.map(item=>(
-                          <button key={item.id} style={C.smBtn} onClick={()=>sharePantryItemAtDinner(item.id)}>
+                          <button key={item.id} type="button" className="dinner-lane-choice-row" style={C.smBtn} onClick={()=>sharePantryItemAtDinner(item.id)}>
                             {item.emoji} {item.label} ({inventory[item.id]})
                           </button>
                         ))}
@@ -8135,7 +8135,7 @@ export default function HallPass(){
                           const qty=inventory[item.id]||0;
                           const inPantry=qty>0;
                           return(
-                            <button key={item.id}
+                            <button key={item.id} type="button" className="dinner-lane-choice-row"
                               style={{...C.smBtn,opacity:inPantry?1:0.45}}
                               disabled={!inPantry}
                               title={inPantry?`Share ${item.label}`:`Bring ${item.label} from your pantry to share`}
@@ -8156,7 +8156,7 @@ export default function HallPass(){
                       .map(conv=>{
                         const used=dinnerEvent.conversationUsed.includes(conv.id);
                         return(
-                          <button key={conv.id}
+                          <button key={conv.id} type="button" className="dinner-lane-choice-row"
                             style={{...C.smBtn,opacity:used?0.4:1,textDecoration:used?"line-through":"none"}}
                             onClick={()=>!used&&useDinnerConversation(conv)}>
                             {conv.label}</button>
@@ -8179,9 +8179,9 @@ export default function HallPass(){
                   <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
                     <div style={{fontSize:11,color:"#f0a060",fontWeight:700,flex:1}}>{(dinnerEvent.totalGain||0).toLocaleString()} cal total</div>
                     {isAtCapacity&&(
-                      <button style={C.btn("#2a6830")} onClick={()=>{ playHallPassSound('confirm', soundEnabled); endEvening(); }}>End Evening ✓</button>
+                      <button type="button" className="dinner-lane-choice-row" style={C.btn("#2a6830")} onClick={()=>{ playHallPassSound('confirm', soundEnabled); endEvening(); }}>End Evening ✓</button>
                     )}
-                    <button style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setAp(a=>a-2); setDinnerEvent(null); }}>
+                    <button type="button" className="dinner-lane-choice-row" style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setAp(a=>a-2); setDinnerEvent(null); }}>
                       Leave Early
                     </button>
                   </div>
@@ -8205,7 +8205,7 @@ export default function HallPass(){
             <p style={{lineHeight:1.9,color:"#e0d0b0",fontStyle:"italic",marginBottom:20}}>
               {immobileRedirect.text}
             </p>
-            <button style={C.btn("#5818a8")} onClick={()=>{
+            <button type="button" className="dinner-lane-choice-row" style={C.btn("#5818a8")} onClick={()=>{
               playHallPassSound('confirm', soundEnabled);
               const s=immobileRedirect.student;
               setImmobileRedirect(null);
@@ -8254,6 +8254,8 @@ export default function HallPass(){
             </div>
             <div style={{display:"flex",gap:8}}>
               <button
+                type="button"
+                className="dinner-lane-choice-row"
                 style={{...C.btn("#5818a8"),opacity:groupDinnerPicker.selected.length<groupDinnerPicker.count?0.4:1}}
                 disabled={groupDinnerPicker.selected.length<groupDinnerPicker.count}
                 onClick={()=>{
@@ -8264,7 +8266,7 @@ export default function HallPass(){
                 }}>
                 Confirm →
               </button>
-              <button style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setGroupDinnerPicker(null); }}>Cancel</button>
+              <button type="button" className="dinner-lane-choice-row" style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setGroupDinnerPicker(null); }}>Cancel</button>
             </div>
           </div>
         </div>
@@ -8283,7 +8285,7 @@ export default function HallPass(){
             <p style={{lineHeight:1.95,color:"#f8ead8",fontSize:15,marginBottom:20,whiteSpace:"pre-line",background:"rgba(48,24,72,0.55)",padding:"14px 16px",borderRadius:8,borderLeft:"3px solid #c898ff"}}>
               {dinnerEndPopup.narrative}
             </p>
-            <button style={C.btn("#5818a8")} onClick={()=>{ playHallPassSound('click', soundEnabled); setDinnerEndPopup(null); }}>Continue →</button>
+            <button type="button" className="dinner-lane-choice-row" style={C.btn("#5818a8")} onClick={()=>{ playHallPassSound('click', soundEnabled); setDinnerEndPopup(null); }}>Continue →</button>
           </div>
         </div>
       )}

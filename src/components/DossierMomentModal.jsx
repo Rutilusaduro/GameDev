@@ -39,7 +39,7 @@ export function DossierMomentModal({ pin, student, week = 1, onClose, soundEnabl
             This beat was logged, but no replay text is available for it yet.
           </div>
         )}
-        <button type="button" style={{ ...C.btn('#307050'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>
+        <button type="button" className="dossier-moment-choice-row" style={{ ...C.btn('#307050'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>
           Close
         </button>
       </div>

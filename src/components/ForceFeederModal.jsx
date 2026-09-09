@@ -189,6 +189,8 @@ export function ForceFeederModal({
                 return (
                   <button
                     key={s.id}
+                    type="button"
+                    className="force-feeder-choice-row"
                     style={{ ...C.btn(targetId === s.id ? ACCENT : '#1a1830'), textAlign: 'left', padding: 10 }}
                     onClick={() => onSelectTarget(s.id)}
                   >
@@ -205,6 +207,8 @@ export function ForceFeederModal({
                   {zones.map((z) => (
                     <button
                       key={z.id}
+                      type="button"
+                      className="force-feeder-choice-row"
                       style={{ ...C.btn(growthZone === z.id ? ACCENT : '#1a1830'), fontSize: 9, padding: '5px 8px' }}
                       onClick={() => onComplete({ type: 'zone', growthZone: z.id })}
                     >
@@ -218,8 +222,10 @@ export function ForceFeederModal({
               <div style={{ fontSize: 11, color: '#b0a0d0', lineHeight: 1.8, fontStyle: 'italic', marginBottom: 12 }}>{setupProse}</div>
             )}
             <div style={{ display: 'flex', gap: 8 }}>
-              <button style={{ ...C.btn('#302030'), flex: 1 }} onClick={onClose}>Cancel</button>
+              <button type="button" className="force-feeder-choice-row" style={{ ...C.btn('#302030'), flex: 1 }} onClick={onClose}>Cancel</button>
               <button
+                type="button"
+                className="force-feeder-choice-row"
                 style={{ ...C.btn(target ? ACCENT : '#302030'), flex: 2, opacity: target ? 1 : 0.45 }}
                 disabled={!target}
                 onClick={() => onComplete({ type: 'start', session: createGulletSession(labState, growthZone) })}
@@ -276,6 +282,8 @@ export function ForceFeederModal({
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               <button
+                type="button"
+                className="force-feeder-choice-row"
                 style={{ ...C.btn(PULSE_COLOR), flex: 2, fontSize: 14, padding: '12px 0' }}
                 onMouseDown={() => setHolding(true)}
                 onMouseUp={() => setHolding(false)}
@@ -286,6 +294,8 @@ export function ForceFeederModal({
               </button>
               {mods.emergencyRelease && (
                 <button
+                  type="button"
+                  className="force-feeder-choice-row"
                   style={{ ...C.btn('#503030'), flex: 1, fontSize: 10, opacity: gameSession.emergencyUsed ? 0.35 : 1 }}
                   disabled={gameSession.emergencyUsed}
                   onClick={handleEmergency}
@@ -314,7 +324,7 @@ export function ForceFeederModal({
               </div>
             )}
             <div style={{ fontSize: 12, color: '#d8cce8', lineHeight: 1.9, fontStyle: 'italic', marginBottom: 16, whiteSpace: 'pre-line' }}>{aftermathProse}</div>
-            <button style={{ ...C.btn(ACCENT), width: '100%' }} onClick={onClose}>Close</button>
+            <button type="button" className="force-feeder-choice-row" style={{ ...C.btn(ACCENT), width: '100%' }} onClick={onClose}>Close</button>
           </>
         )}
       </div>

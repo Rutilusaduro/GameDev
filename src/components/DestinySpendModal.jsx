@@ -87,6 +87,8 @@ export function DestinySpendModal({
                   )}
                 </div>
                 <button
+                  type="button"
+                  className="destiny-spend-choice-row"
                   style={{ ...C.smBtn, opacity: canBuy ? 1 : 0.35, whiteSpace: 'nowrap', background: RED }}
                   disabled={!canBuy}
                   onClick={() => { if (canBuy) { playHallPassSound('click', soundEnabled); onPurchase(item.id); } }}
@@ -104,6 +106,8 @@ export function DestinySpendModal({
               YOUR WALLET → DESTINY
             </div>
             <button
+              type="button"
+              className="destiny-spend-choice-row"
               style={{ ...C.btn('#3040a0'), width: '100%', marginBottom: 6, opacity: (playerMoney || 0) >= 50 ? 1 : 0.4 }}
               disabled={(playerMoney || 0) < 50}
               onClick={() => { playHallPassSound('confirm', soundEnabled); onGiftFromPlayer(50); }}
@@ -111,6 +115,8 @@ export function DestinySpendModal({
               Gift {formatMoney(50)} to Destiny
             </button>
             <button
+              type="button"
+              className="destiny-spend-choice-row"
               style={{ ...C.btn('#3040a0'), width: '100%', marginBottom: 12, opacity: (playerMoney || 0) >= 150 ? 1 : 0.4 }}
               disabled={(playerMoney || 0) < 150}
               onClick={() => { playHallPassSound('confirm', soundEnabled); onGiftFromPlayer(150); }}
@@ -120,7 +126,7 @@ export function DestinySpendModal({
           </>
         )}
 
-        <button style={{ ...C.btn('#200810'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
+        <button type="button" className="destiny-spend-choice-row" style={{ ...C.btn('#200810'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
       </div>
     </div>
   );

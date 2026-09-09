@@ -1842,6 +1842,72 @@ check('ascension-ceremony-row-polish', () => {
   assert.match(modal, /ascension-ceremony-choice-row/);
 });
 
+check('destiny-spend-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/DestinySpendModal.jsx');
+  assert.match(css, /\.destiny-spend-choice-row:focus-visible/);
+  assert.match(css, /\.destiny-spend-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /destiny-spend-choice-row/);
+});
+
+check('force-feeder-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/ForceFeederModal.jsx');
+  assert.match(css, /\.force-feeder-choice-row:focus-visible/);
+  assert.match(css, /\.force-feeder-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /force-feeder-choice-row/);
+});
+
+check('dossier-moment-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/DossierMomentModal.jsx');
+  assert.match(css, /\.dossier-moment-choice-row:focus-visible/);
+  assert.match(css, /\.dossier-moment-choice-row:hover/);
+  assert.match(modal, /dossier-moment-choice-row/);
+});
+
+check('evolution-offer-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/MiscModals.jsx');
+  assert.match(css, /\.evolution-offer-choice-row:focus-visible/);
+  assert.match(css, /\.evolution-offer-choice-row:hover/);
+  assert.match(modal, /evolution-offer-choice-row/);
+});
+
+check('session-result-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/MiscModals.jsx');
+  assert.match(css, /\.session-result-choice-row:focus-visible/);
+  assert.match(css, /\.session-result-choice-row:hover/);
+  assert.match(modal, /session-result-choice-row/);
+});
+
+check('tap-out-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/MiscModals.jsx');
+  assert.match(css, /\.tap-out-choice-row:focus-visible/);
+  assert.match(css, /\.tap-out-choice-row:hover/);
+  assert.match(modal, /tap-out-choice-row/);
+});
+
+check('skill-purchase-row-polish', () => {
+  const css = read('src/index.css');
+  const desk = read('src/HallPass.jsx');
+  assert.match(css, /\.skill-purchase-choice-row:focus-visible/);
+  assert.match(css, /\.skill-purchase-choice-row:hover:not\(:disabled\)/);
+  assert.match(desk, /skill-purchase-choice-row/);
+});
+
+check('dinner-lane-row-polish', () => {
+  const css = read('src/index.css');
+  const desk = read('src/HallPass.jsx');
+  assert.match(css, /\.dinner-lane-choice-row:focus-visible/);
+  assert.match(css, /\.dinner-lane-choice-row:hover:not\(:disabled\)/);
+  assert.match(desk, /dinner-lane-choice-row/);
+  assert.match(desk, /dinner-out-modal/);
+  assert.match(desk, /immobile-redirect-modal/);
+});
+
 check('modal-button-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.hall-pass-modal-in button:focus-visible/);

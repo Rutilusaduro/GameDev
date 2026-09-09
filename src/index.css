@@ -795,14 +795,59 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(112, 48, 192, 0.16);
 }
 
+.evolution-offer-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.evolution-offer-choice-row:hover {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.evolution-offer-choice-row:focus-visible {
+  outline: 2px solid rgba(144, 96, 224, 0.85);
+  outline-offset: 2px;
+}
+
 .session-result-modal {
   background: linear-gradient(165deg, rgba(10, 4, 20, 0.98), rgba(22, 8, 42, 0.96), rgba(6, 2, 14, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 26px rgba(144, 80, 200, 0.14);
 }
 
+.session-result-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.session-result-choice-row:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.session-result-choice-row:focus-visible {
+  outline: 2px solid rgba(144, 80, 200, 0.85);
+  outline-offset: 2px;
+}
+
 .tap-out-modal {
   background: linear-gradient(165deg, rgba(16, 4, 4, 0.98), rgba(32, 8, 8, 0.96), rgba(10, 2, 2, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 24px rgba(192, 96, 96, 0.14);
+}
+
+.tap-out-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.tap-out-choice-row:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.tap-out-choice-row:focus-visible {
+  outline: 2px solid rgba(192, 96, 96, 0.85);
+  outline-offset: 2px;
 }
 
 .homeroom-queen-modal {
@@ -1232,6 +1277,21 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(160, 96, 224, 0.16);
 }
 
+.destiny-spend-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.destiny-spend-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.destiny-spend-choice-row:focus-visible {
+  outline: 2px solid rgba(231, 76, 60, 0.85);
+  outline-offset: 2px;
+}
+
 .evolved-activity-modal,
 .evolved-event-modal {
   background: linear-gradient(165deg, rgba(7, 3, 15, 0.98), rgba(18, 8, 32, 0.96), rgba(5, 2, 10, 0.98)) !important;
@@ -1261,6 +1321,21 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(192, 64, 96, 0.14);
 }
 
+.force-feeder-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.force-feeder-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.force-feeder-choice-row:focus-visible {
+  outline: 2px solid rgba(160, 128, 192, 0.85);
+  outline-offset: 2px;
+}
+
 .artisan-gallery-modal {
   background: linear-gradient(165deg, rgba(26, 20, 16, 0.98), rgba(36, 28, 20, 0.96), rgba(14, 10, 8, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 26px rgba(160, 120, 80, 0.14);
@@ -1269,6 +1344,39 @@
 .dossier-moment-modal {
   background: linear-gradient(165deg, rgba(6, 14, 10, 0.98), rgba(12, 28, 20, 0.96), rgba(4, 8, 6, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 26px rgba(80, 160, 128, 0.14);
+}
+
+.dossier-moment-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.dossier-moment-choice-row:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.dossier-moment-choice-row:focus-visible {
+  outline: 2px solid rgba(80, 160, 128, 0.85);
+  outline-offset: 2px;
+}
+
+.skill-purchase-choice-row,
+.dinner-lane-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.skill-purchase-choice-row:hover:not(:disabled),
+.dinner-lane-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.skill-purchase-choice-row:focus-visible,
+.dinner-lane-choice-row:focus-visible {
+  outline: 2px solid rgba(128, 64, 200, 0.85);
+  outline-offset: 2px;
 }
 
 .skill-purchase-modal,
@@ -1470,7 +1578,15 @@
   .competitive-gainer-choice-row:hover,
   .ascension-ceremony-choice-row:hover,
   .evolved-activity-choice-row:hover,
-  .evolved-event-choice-row:hover {
+  .evolved-event-choice-row:hover,
+  .evolution-offer-choice-row:hover,
+  .session-result-choice-row:hover,
+  .tap-out-choice-row:hover,
+  .destiny-spend-choice-row:hover,
+  .force-feeder-choice-row:hover,
+  .dossier-moment-choice-row:hover,
+  .skill-purchase-choice-row:hover,
+  .dinner-lane-choice-row:hover {
     transform: none;
   }
 
