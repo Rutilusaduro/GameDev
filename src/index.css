@@ -569,6 +569,35 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(96, 128, 168, 0.14);
 }
 
+.feast-ritual-choice-row,
+.dream-choice-row,
+.echo-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.feast-ritual-choice-row:hover:not(:disabled),
+.dream-choice-row:hover:not(:disabled),
+.echo-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.feast-ritual-choice-row:focus-visible,
+.dream-choice-row:focus-visible,
+.echo-choice-row:focus-visible {
+  outline: 2px solid rgba(192, 96, 48, 0.85);
+  outline-offset: 2px;
+}
+
+.dream-choice-row:focus-visible {
+  outline-color: rgba(72, 128, 200, 0.85);
+}
+
+.echo-choice-row:focus-visible {
+  outline-color: rgba(96, 128, 168, 0.85);
+}
+
 .week-planner-modal {
   background: linear-gradient(165deg, rgba(12, 6, 24, 0.98), rgba(24, 10, 48, 0.95), rgba(10, 6, 20, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(144, 80, 200, 0.14);
@@ -1728,7 +1757,10 @@
   .evolved-minigame-choice-row:hover,
   .intimacy-choice-row:hover,
   .paper-doll-choice-row:hover,
-  .student-equip-choice-row:hover {
+  .student-equip-choice-row:hover,
+  .feast-ritual-choice-row:hover,
+  .dream-choice-row:hover,
+  .echo-choice-row:hover {
     transform: none;
   }
 

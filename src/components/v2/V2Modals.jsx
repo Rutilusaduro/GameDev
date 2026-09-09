@@ -39,7 +39,7 @@ export function FeastRitualModal({ students, ownedSkills, ownedHallSkills, week 
         <p style={C.secT}>Feast Rituals</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 12 }}>
           {available.map((r) => (
-            <button key={r.id} type="button" style={{ ...C.btn(ritualId === r.id ? '#8a4020' : '#3a2818'), fontSize: 11, textAlign: 'left' }}
+            <button key={r.id} type="button" className="feast-ritual-choice-row" style={{ ...C.btn(ritualId === r.id ? '#8a4020' : '#3a2818'), fontSize: 11, textAlign: 'left' }}
               onClick={() => { playHallPassSound('click', soundEnabled); setRitualId(r.id); setSelected([]); }}>
               {r.icon} {r.label} — {r.apCost} AP
               <span style={{ display: 'block', fontSize: 9, color: '#a08060' }}>{r.desc}</span>
@@ -51,21 +51,21 @@ export function FeastRitualModal({ students, ownedSkills, ownedHallSkills, week 
             <p style={{ fontSize: 10, color: '#8090a0' }}>Select {ritual.minStudents}–{ritual.maxStudents} residents</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 }}>
               {students.filter((s) => !s.hidden).map((s) => (
-                <button key={s.id} type="button"
+                <button key={s.id} type="button" className="feast-ritual-choice-row"
                   style={{ ...C.smBtn, background: selected.includes(s.id) ? '#4a3020' : undefined }}
                   onClick={() => toggle(s.id)}>
                   {s.name}
                 </button>
               ))}
             </div>
-            <button type="button" style={{ ...C.btn('#8a4020'), width: '100%' }}
+            <button type="button" className="feast-ritual-choice-row" style={{ ...C.btn('#8a4020'), width: '100%' }}
               disabled={selected.length < ritual.minStudents || selected.length > ritual.maxStudents}
               onClick={() => { playHallPassSound('confirm', soundEnabled); handleRun(); }}>
               Begin Ritual
             </button>
           </>
         )}
-        <button type="button" style={{ ...C.smBtn, width: '100%', marginTop: 8 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
+        <button type="button" className="feast-ritual-choice-row" style={{ ...C.smBtn, width: '100%', marginTop: 8 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
       </div>
     </div>
   );
@@ -99,7 +99,7 @@ export function DreamModal({ student, presetScenarioId, lucidUnlocked, onChoice,
         {phase === 'open' && (
           <>
             <p style={{ fontSize: 12, lineHeight: 1.6, color: '#b0c0d8' }}>{renderDreamOpen(ctx)}</p>
-            <button type="button" style={{ ...C.btn('#3060a0'), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); startDream(); }}>Enter the Dream</button>
+            <button type="button" className="dream-choice-row" style={{ ...C.btn('#3060a0'), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); startDream(); }}>Enter the Dream</button>
           </>
         )}
         {phase === 'dream' && scenario && (
@@ -111,7 +111,7 @@ export function DreamModal({ student, presetScenarioId, lucidUnlocked, onChoice,
               {renderDreamScenario(scenario.id, ctx)}
             </p>
             {choices.map((ch) => (
-              <button key={ch.id} type="button"
+              <button key={ch.id} type="button" className="dream-choice-row"
                 style={{ ...C.btn(ch.lucidOnly || ch.id.startsWith('lucid_') ? '#406888' : '#284868'), width: '100%', marginBottom: 6, fontSize: 11 }}
                 onClick={() => { playHallPassSound('click', soundEnabled); onChoice?.(scenario, ch, renderDreamWake(ctx)); onClose?.(); }}>
                 {ch.label}
@@ -119,7 +119,7 @@ export function DreamModal({ student, presetScenarioId, lucidUnlocked, onChoice,
             ))}
           </>
         )}
-        <button type="button" style={{ ...C.smBtn, width: '100%', marginTop: 8 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
+        <button type="button" className="dream-choice-row" style={{ ...C.smBtn, width: '100%', marginTop: 8 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
       </div>
     </div>
   );
@@ -146,12 +146,12 @@ export function EchoArchivePanel({ student, echoesState, ownedSkills, ownedHallS
             <p style={{ fontSize: 10, color: '#9080a8', lineHeight: 1.5, margin: '0 0 6px', fontStyle: 'italic' }}>
               {preview.slice(0, 120)}{preview.length > 120 ? '…' : ''}
             </p>
-            <button type="button" style={{ ...C.smBtn, fontSize: 9 }}
+            <button type="button" className="echo-choice-row" style={{ ...C.smBtn, fontSize: 9 }}
               onClick={() => onOpenEcho?.(echo, preview, depth)}>
               Open Echo (depth {depth})
             </button>
             {!echo.resonated && (
-              <button type="button" style={{ ...C.smBtn, marginLeft: 4, fontSize: 9 }}
+              <button type="button" className="echo-choice-row" style={{ ...C.smBtn, marginLeft: 4, fontSize: 9 }}
                 onClick={() => onResonate?.(echo)}>
                 Resonate (1 AP)
               </button>
@@ -186,12 +186,12 @@ export function EchoArchiveModal({ student, echo, prose, depth, onClose, onReson
           </p>
         </div>
         {!resonated && (
-          <button type="button" style={{ ...C.btn('#3060a0'), width: '100%', marginBottom: 8 }}
+          <button type="button" className="echo-choice-row" style={{ ...C.btn('#3060a0'), width: '100%', marginBottom: 8 }}
             onClick={() => { playHallPassSound('confirm', soundEnabled); onResonate?.(echo); onClose?.(); }}>
             Resonate — deepen her growth permanently (1 AP)
           </button>
         )}
-        <button type="button" style={{ ...C.smBtn, width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
+        <button type="button" className="echo-choice-row" style={{ ...C.smBtn, width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
       </div>
     </div>
   );

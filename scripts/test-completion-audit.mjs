@@ -1999,6 +1999,30 @@ check('paper-doll-row-polish', () => {
   assert.match(modal, /paper-doll-modal/);
 });
 
+check('feast-ritual-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/v2/V2Modals.jsx');
+  assert.match(css, /\.feast-ritual-choice-row:focus-visible/);
+  assert.match(css, /\.feast-ritual-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /feast-ritual-choice-row/);
+});
+
+check('dream-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/v2/V2Modals.jsx');
+  assert.match(css, /\.dream-choice-row:focus-visible/);
+  assert.match(css, /\.dream-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /dream-choice-row/);
+});
+
+check('echo-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/v2/V2Modals.jsx');
+  assert.match(css, /\.echo-choice-row:focus-visible/);
+  assert.match(css, /\.echo-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /echo-choice-row/);
+});
+
 check('modal-button-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.hall-pass-modal-in button:focus-visible/);
