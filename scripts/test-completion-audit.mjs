@@ -323,6 +323,19 @@ check('player-prefs-hall-pass-key', () => {
   assert.match(prefs, /removeItem\(LEGACY_KEY\)/);
 });
 
+check('lane-modal-polish', () => {
+  const css = read('src/index.css');
+  for (const [cls, file] of [
+    ['origin-pick-modal', 'src/components/OriginPickModal.jsx'],
+    ['community-researcher-modal', 'src/components/CommunityResearcherModal.jsx'],
+    ['compound-feed-modal', 'src/components/CompoundFeedModal.jsx'],
+    ['cultivator-modal', 'src/components/CultivatorModal.jsx'],
+  ]) {
+    assert.match(css, new RegExp(`\\.${cls}`), `missing CSS .${cls}`);
+    assert.match(read(file), new RegExp(cls));
+  }
+});
+
 check('hall-unlock-modal-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.hall-unlock-modal/);

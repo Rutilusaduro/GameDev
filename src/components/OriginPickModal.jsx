@@ -18,7 +18,7 @@ export function OriginPickModal({ student, onPick, soundEnabled = true }) {
 
   return (
     <div style={{ ...C.overlay, zIndex: 470 }} role="dialog" aria-modal="true" aria-labelledby="origin-title">
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 680, background: 'linear-gradient(160deg,#080412,#140920,#080412)' }}>
+      <div className="hall-pass-modal-in origin-pick-modal" style={{ ...C.modal, maxWidth: 680, background: 'linear-gradient(160deg,#080412,#140920,#080412)' }}>
         <div style={{ fontSize: 9, letterSpacing: 4, color: '#a878ff', marginBottom: 4 }}>ORIGIN DECK</div>
         <h2 id="origin-title" style={{ margin: '0 0 6px', color: '#ead8ff' }}>{student.name}: first meaningful contact</h2>
         <p style={{ color: '#a890c0', fontSize: 12, lineHeight: 1.7, margin: '0 0 14px' }}>

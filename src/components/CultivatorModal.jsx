@@ -15,7 +15,7 @@ export function CultivatorModal({ cultivatorState, students, week = 1, setCultiv
         const renee=students.find(s=>s.id===10);
         const wrap=(children)=>(
           <div style={C.overlay}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:500,background:"linear-gradient(160deg,#0a0400,#1a0800,#0a0400)",border:`1px solid ${brown}60`,maxHeight:"88vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in cultivator-modal" style={{...C.modal,maxWidth:500,background:"linear-gradient(160deg,#0a0400,#1a0800,#0a0400)",border:`1px solid ${brown}60`,maxHeight:"88vh",overflowY:"auto"}}>
               {children}
             </div>
           </div>

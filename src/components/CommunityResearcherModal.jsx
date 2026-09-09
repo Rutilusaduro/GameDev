@@ -15,7 +15,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
         const mName=cassidy?.name||"Cassidy";
         const wrap=(children)=>(
           <div style={C.overlay}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#010510,#020818,#010510)",border:`1px solid ${blue}60`,maxHeight:"88vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in community-researcher-modal" style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#010510,#020818,#010510)",border:`1px solid ${blue}60`,maxHeight:"88vh",overflowY:"auto"}}>
               {children}
             </div>
           </div>

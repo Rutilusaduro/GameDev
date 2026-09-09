@@ -368,6 +368,26 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 36px rgba(217, 140, 255, 0.18);
 }
 
+.origin-pick-modal {
+  background: linear-gradient(165deg, rgba(8, 4, 18, 0.98), rgba(20, 8, 36, 0.96), rgba(6, 2, 12, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(168, 120, 255, 0.14);
+}
+
+.community-researcher-modal {
+  background: linear-gradient(165deg, rgba(2, 6, 16, 0.98), rgba(6, 14, 28, 0.96), rgba(2, 4, 12, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(74, 111, 165, 0.16);
+}
+
+.compound-feed-modal {
+  background: linear-gradient(165deg, rgba(6, 12, 10, 0.98), rgba(14, 24, 20, 0.96), rgba(4, 8, 6, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 24px rgba(80, 136, 120, 0.14);
+}
+
+.cultivator-modal {
+  background: linear-gradient(165deg, rgba(12, 4, 0, 0.98), rgba(26, 8, 0, 0.96), rgba(8, 2, 0, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(139, 69, 19, 0.16);
+}
+
 .milestone-resident-header {
   padding: 8px 12px;
   border-radius: 8px;
@@ -428,6 +448,10 @@
   .echo-modal,
   .week-planner-modal,
   .maya-hive-modal,
+  .origin-pick-modal,
+  .community-researcher-modal,
+  .compound-feed-modal,
+  .cultivator-modal,
   .hall-log-achievement,
   .hall-log-unlock {
     animation: none;

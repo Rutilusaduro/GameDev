@@ -33,7 +33,7 @@ export function CompoundFeedModal({
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.72)', zIndex: 8500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 480, width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
+      <div className="hall-pass-modal-in compound-feed-modal" style={{ ...C.modal, maxWidth: 480, width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ fontSize: 10, color: '#508878', letterSpacing: 2, marginBottom: 8 }}>LACE INTO FOOD</div>
         <div style={{ fontSize: 14, color: '#c8e0d8', marginBottom: 6 }}>{feedLabel}</div>
         <div style={{ fontSize: 12, color: '#88a898', marginBottom: 14, fontStyle: 'italic' }}>
